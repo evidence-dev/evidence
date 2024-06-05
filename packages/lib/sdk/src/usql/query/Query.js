@@ -863,7 +863,7 @@ DESCRIBE ${this.text.trim()}
 			);
 
 		Query.#constructing = true;
-		const output = new Query(query, executeQuery, opts);
+		const output = new this(query, executeQuery, opts);
 		if (!opts.disableCache) {
 			Query.#addToCache(output);
 			Query.#cacheCleanup();

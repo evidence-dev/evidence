@@ -14,16 +14,12 @@ export const processMetric = (metric) => {
 		`(!inputs[MetricsInputKey].${metric.name}?.${keyPath}[Unset] && inputs[MetricsInputKey].${metric.name}?.${keyPath}${valuePath})`;
 	const queryString = `
         SELECT 
+            ${metric.aggregation}(${metric.expression}) as ${metric.name},
             \${
                 ${hasValue('dimensions', '?.rawValues?.length')}
                     ? inputs[MetricsInputKey].${metric.name}.dimensions?.rawValues?.map(d => \`"\${d.value}"\`)?.join(', ') + ','
                     : ''
             } -- dimensions
-            \${
-                ${hasValue('aggs', '?.rawValues?.length')}
-                    ? inputs[MetricsInputKey].${metric.name}.aggs?.rawValues?.map(d => \`\${d.value}\`)?.join(', ') + ',' 
-                    : ''
-            } -- aggs
             \${
                 ${hasValue('time_grain', '.value')}
                     ? \`date_trunc(
@@ -32,13 +28,10 @@ export const processMetric = (metric) => {
                     ) as grain,\` 
                     : ''
             } -- grains
-            \${
-                ${hasValue('aggs', '?.rawValues?.length')}
-                    ? ''
-                    : '${metric.expression} as "${metric.name}" -- Select this last to avoid trailing comma shenanigans' 
-            }
+
+        FROM 
+            ${'query' in metric.source ? `(${metric.source.query}) as ${metric.name}_source` : `"${metric.source.datasource}"."${metric.source.table}"`}
             
-        FROM ${metric.source.datasource}.${metric.source.table}
         GROUP BY ALL
     `;
 

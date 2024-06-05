@@ -14,51 +14,44 @@
 	const metricInputs = writable(setTrackProxy({}));
 	onMount(() => metricInputs.subscribe((v) => ($inputs[MetricsInputKey][metric] = v)));
 	setContext(INPUTS_CONTEXT_KEY, metricInputs);
-
-	$: console.log(JSON.parse(JSON.stringify($metricInputs)));
 </script>
 
-{#if metric in metricsContext}
-	<Dropdown title="Dimensions" name="dimensions" multiple>
-		{#each metricsContext[metric].dimensions as dimension}
-			<DropdownOption value={dimension} />
-		{/each}
-	</Dropdown>
+<div
+	class="flex justify-between border border-gray-200 rounded w-full items-center gap-8 py-1 px-2"
+>
+	<div>{metric}</div>
+	{#if metric in metricsContext}
+		<div class="flex-1 flex justify-end">
+			<Dropdown title="Dimensions" name="dimensions" multiple>
+				{#each metricsContext[metric].dimensions as dimension}
+					<DropdownOption value={dimension} />
+				{/each}
+			</Dropdown>
 
-	{#if metricsContext[metric].timeGrains.length}
-		<Dropdown title="Grain" name="time_grain">
-			<DropdownOption value="" valueLabel="All-Time" />
-			{#if metricsContext[metric].timeGrains.includes('day')}<DropdownOption
-					value="day"
-					valueLabel="Day"
-				/>{/if}
-			{#if metricsContext[metric].timeGrains.includes('week')}<DropdownOption
-					value="week"
-					valueLabel="Week"
-				/>{/if}
-			{#if metricsContext[metric].timeGrains.includes('month')}<DropdownOption
-					value="month"
-					valueLabel="Month"
-				/>{/if}
-			{#if metricsContext[metric].timeGrains.includes('quarter')}<DropdownOption
-					value="quarter"
-					valueLabel="Quarter"
-				/>{/if}
-			{#if metricsContext[metric].timeGrains.includes('year')}<DropdownOption
-					value="year"
-					valueLabel="Year"
-				/>{/if}
-		</Dropdown>
+			{#if metricsContext[metric].timeGrains.length}
+				<Dropdown title="Grain" name="time_grain">
+					<DropdownOption value="" valueLabel="All-Time" />
+					{#if metricsContext[metric].timeGrains.includes('day')}
+						<DropdownOption value="day" valueLabel="Day" />
+					{/if}
+					{#if metricsContext[metric].timeGrains.includes('week')}
+						<DropdownOption value="week" valueLabel="Week" />
+					{/if}
+					{#if metricsContext[metric].timeGrains.includes('month')}
+						<DropdownOption value="month" valueLabel="Month" />
+					{/if}
+					{#if metricsContext[metric].timeGrains.includes('quarter')}
+						<DropdownOption value="quarter" valueLabel="Quarter" />
+					{/if}
+					{#if metricsContext[metric].timeGrains.includes('year')}
+						<DropdownOption value="year" valueLabel="Year" />
+					{/if}
+				</Dropdown>
+			{/if}
+		</div>
+	{:else if metric}
+		Metric {metric} not found
+	{:else}
+		metric attribute is required
 	{/if}
-	<Dropdown title="Aggregations" name="aggs" multiple>
-		<DropdownOption value="sum(sales) as sum_sales" valueLabel="Sum" />
-		<DropdownOption value="count(sales) as count_sales" valueLabel="Count" />
-		<DropdownOption value="avg(sales) as avg_sales" valueLabel="Average" />
-		<DropdownOption value="min(sales) as min_sales" valueLabel="Minimum" />
-		<DropdownOption value="max(sales) as max_sales" valueLabel="Maximum" />
-	</Dropdown>
-{:else if metric}
-	Metric {metric} not found
-{:else}
-	metric attribute is required
-{/if}
+</div>

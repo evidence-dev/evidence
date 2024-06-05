@@ -1,5 +1,3 @@
-<MetricFilter metric=Sales/>
-<DataTable data={Sales}/>
+<MetricFilter metric=avg_sales/>
 
-
-<pre>{Sales.text}</pre>
+<LineChart data={avg_sales} x=grain y=avg_sales series=state />
