@@ -30,12 +30,12 @@ export const wrapSimpleConnector = (mod, source) => {
 				if (sourceFile.name === 'connection.yaml' || sourceFile.name === 'connection.options.yaml')
 					continue;
 				if (sourceFile.isDirectory()) {
-					yield* processDir(path.join(source.dir, sourceFile.name));
+					yield* processDir(path.join(sourceFile.path, sourceFile.name));
 					continue;
 				}
 
 				if (!sourceFile.isFile()) continue;
-				const sourceFilePath = path.join(source.dir, sourceFile.name);
+				const sourceFilePath = path.join(sourceFile.path, sourceFile.name);
 				const stat = statSync(sourceFilePath);
 				let sourceFileContent;
 				if (stat.size > 1024 * 1024 * 128 /* 128 Megabytes */) {
@@ -44,7 +44,6 @@ export const wrapSimpleConnector = (mod, source) => {
 				} else {
 					sourceFileContent = readFileSync(sourceFilePath, 'utf-8');
 				}
-
 				yield {
 					name: /** @type {string} */ (sourceFile.name.split('.').at(0)),
 					content: sourceFileContent,
