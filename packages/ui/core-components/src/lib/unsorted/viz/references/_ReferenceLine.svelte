@@ -114,7 +114,7 @@
 		try {
 			configData = [];
 			if (typeof x !== 'undefined' && typeof y !== 'undefined') {
-				throw new Error("{data} can only be used with x or y, not both");
+				throw new Error('{data} can only be used with x or y, not both');
 			} else if (x) {
 				checkInputs(data, [x]);
 				for (let i = 0; i < data.length; i++) {
@@ -144,10 +144,10 @@
 			try {
 				if (x2 || y2) {
 					const coord1 = { name: label, coord: [x, y] };
-					const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol};
+					const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol };
 					configData.push([coord1, coord2]);
 				} else {
-					throw new Error("If you supply x and y, either x2 or y2 must be defined");
+					throw new Error('If you supply x and y, either x2 or y2 must be defined');
 				}
 			} catch (e) {
 				error = e;
@@ -190,7 +190,7 @@
 									)}`
 								: '';
 						} else {
-							result = !(hideValue  || (typeof x !== 'undefined' && typeof y !== 'undefined'))
+							result = !(hideValue || (typeof x !== 'undefined' && typeof y !== 'undefined'))
 								? `${params.name} (${formatValue(
 										y ? params.data.yAxis : x ? params.data.xAxis : params.value,
 										y ? yFormat : x ? xFormat : 'string'
