@@ -86,6 +86,27 @@ where date_column between '${inputs.name_of_date_range.start}' and '${inputs.nam
 ```
 ````
 
+### Customizing Singluar Preset Ranges
+
+<DateRange presetRanges={['last7Days']}/>
+
+````markdown
+<DateRange
+    name=name_of_date_range
+    presetRanges={['last7Days']}
+/>
+````
+
+### Customizing Multiple Preset Ranges
+
+<DateRange presetRanges={['last7Days', 'last3Months', 'lastYear', 'allTime']}/>
+
+````markdown
+<DateRange
+    name=name_of_date_range
+    presetRanges={['last7Days', 'last3Months', 'lastYear', 'allTime']}
+/>
+````
 
  ## Options
 
@@ -138,6 +159,19 @@ A manually specified end date to use for the range
 Title to display in the Date Range component
 
 </PropListing>
+
+
+<PropListing 
+    name="presetRanges"
+    options= "array of values e.g. {['last7Days']} or {['last7Days', 'last6Months']}"
+    default=undefined
+>
+
+Customize "Select a Range" drop down, by including present range options. Range options include: 'last7Days', 'last30Days', 'last90Days', 'last3Months', 'last6Months', 'last12Months', 'lastMonth', 'lastYear', 'monthToDate', 'yearToDate', 'allTime'.
+
+</PropListing>
+
+
 <PropListing 
     name="hideDuringPrint"
     options={["true", "false"]}
@@ -147,4 +181,3 @@ Title to display in the Date Range component
 Hide the component when the report is printed
 
 </PropListing>
-
