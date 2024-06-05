@@ -16,7 +16,6 @@
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import DateRange from './DateRange.svelte';
-	import WithScopedInputStore from '$lib/storybook-helpers/WithScopedInputStore.svelte';
 </script>
 
 <Template let:args>
