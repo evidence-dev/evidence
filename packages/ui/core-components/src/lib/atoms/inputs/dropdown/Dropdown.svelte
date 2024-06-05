@@ -174,10 +174,8 @@
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	let queryOptions;
-	console.log($queryOptions);
 
 	const updateQueryOptions = debounce(async () => {
-		console.log($queryOptions);
 		if (search && hasQuery) {
 			// When search changes, we want to update the query
 
@@ -288,9 +286,17 @@
 	const DISPLAYED_OPTIONS = 5;
 
 	function selectAllOptions() {
-		$queryOptions.forEach((opt) => {
-			flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
-		});
+		if ($queryOptions) {
+			$queryOptions.forEach((opt) => {
+				flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
+			});
+		}
+
+		if ($options) {
+			$options.forEach((opt) => {
+				flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
+			});
+		}
 	}
 
 	function getIdx(queryOpt) {
