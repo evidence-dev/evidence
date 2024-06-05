@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Fix auto-casing on tooltip titles
+Handle all-null x columns in Line.svelte

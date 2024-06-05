@@ -174,8 +174,10 @@
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	let queryOptions;
+	console.log($queryOptions);
 
 	const updateQueryOptions = debounce(async () => {
+		console.log($queryOptions);
 		if (search && hasQuery) {
 			// When search changes, we want to update the query
 
@@ -186,7 +188,7 @@
 			await searchQ.fetch();
 
 			queryOptions = searchQ;
-
+			console.log($queryOptions);
 			if ($selectedOptions.length) {
 				// We don't want to get rid of selections that already exist when searching
 				$selectedOptions.forEach(($selectedOption) => {
@@ -200,6 +202,8 @@
 				if ($option.removeOnDeselect) flagOption([$option, DropdownValueFlag.REMOVE_ON_DESELECT]);
 			});
 			queryOptions = query;
+			hasHadSelection = false;
+			optionUpdates = undefined;
 		}
 	}, 250);
 
@@ -220,7 +224,6 @@
 			if (!hasHadSelection) {
 				setTimeout(evalDefaults, 0);
 				optionUpdates();
-				optionUpdates = undefined;
 			}
 		});
 	}
@@ -289,6 +292,11 @@
 			flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
 		});
 	}
+
+	function getIdx(queryOpt) {
+		if ('similarity' in queryOpt) return queryOpt.similarity * -1;
+		return queryOpt.ordinal ?? 0;
+	}
 </script>
 
 <slot />
@@ -298,7 +306,7 @@
 		<DropdownOption
 			value={queryOpt.value}
 			valueLabel={queryOpt.label}
-			idx={(queryOpt.similarity ?? 0) * -1 ?? -1}
+			idx={getIdx(queryOpt)}
 			__auto
 		/>
 	{/each}

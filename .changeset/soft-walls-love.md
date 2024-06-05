@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': minor
 ---
 
-Added sorting for numerical options in dropdop
+Value component now accepts agg prop

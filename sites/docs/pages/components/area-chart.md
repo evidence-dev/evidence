@@ -245,11 +245,11 @@ Note that an array must be surrounded by curly braces.
 </PropListing>
 <PropListing
     name="seriesColors"
-    options="object with series names and assigned colors seriesColors={`{{'Canada': 'red', 'US': 'blue'}}`}"
+    options="object with series names and assigned colors"
     defaultValue="colors applied by order of series in data"
 >
 
-Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax
+Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax `seriesColors={{"Canada": "red", "US": "blue"}}`
 
 </PropListing>
 

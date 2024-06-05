@@ -104,7 +104,10 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 	}
 
 	if (order) {
-		q.orderby(order);
+		q.orderby(sql`${order}`);
+		q.select({
+			ordinal: sql`row_number() over (ORDER BY ${order})`
+		});
 	}
 
 	const newQuery = buildQuery(q.toString(), id, initialData, { noResolve: parentHasNoResolve });

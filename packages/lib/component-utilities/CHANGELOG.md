@@ -1,5 +1,19 @@
 # @evidence-dev/component-utilities
 
+## 3.1.0
+
+### Minor Changes
+
+- 737642a0: Created input slider component and docs
+
+## 3.0.5-features-b.0
+
+### Patch Changes
+
+- acba0f3a6: Toasts that are created with the same id now UPDATE the existing toast, rather than appearing twice with the same id
+- Updated dependencies [dc8f01be2]
+  - @evidence-dev/sdk@1.2.3-features-b.0
+
 ## 3.0.4
 
 ### Patch Changes
