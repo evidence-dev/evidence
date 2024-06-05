@@ -76,6 +76,33 @@ If you wanted to add a custom border to the bars with `echartsOptions`, you woul
 />
 ```
 
+<BarChart
+    data={country_sales}
+    x=year
+    y=sales
+    series=country
+    echartsOptions={{
+            series: [
+                {itemStyle: {
+                    borderWidth: 1,
+                    borderColor: 'red'
+                }},
+                {itemStyle: {
+                    borderWidth: 1,
+                    borderColor: 'red'
+                }},
+                {itemStyle: {
+                    borderWidth: 1,
+                    borderColor: 'red'
+                }},
+                {itemStyle: {
+                    borderWidth: 1,
+                    borderColor: 'red'
+                }}
+            ]
+        }}
+/>
+
 With `seriesOptions`, you can specify the changes once and have them applied to all series in the chart, like so:
 
 ```html
@@ -92,6 +119,37 @@ With `seriesOptions`, you can specify the changes once and have them applied to 
     }}
 />
 ```
+
+```country_sales
+select 'Canada' as country, 2020 as year, 100 as sales
+union all
+select 'Canada' as country, 2021 as year, 150 as sales
+union all
+select 'Canada' as country, 2022 as year, 200 as sales
+union all
+select 'Canada' as country, 2023 as year, 250 as sales
+union all
+select 'US' as country, 2020 as year, 200 as sales
+union all
+select 'US' as country, 2021 as year, 350 as sales
+union all
+select 'US' as country, 2022 as year, 400 as sales
+union all
+select 'US' as country, 2023 as year, 450 as sales
+```
+
+<BarChart
+    data={country_sales}
+    x=year
+    y=sales
+    series=country
+    seriesOptions={{
+        itemStyle: {
+            borderWidth: 1,
+            borderColor: 'red'
+        }
+    }}
+/>
 
 ## Print ECharts Config
 
@@ -132,6 +190,28 @@ echartsOptions={{
 }}
 ```
 
+<BarChart
+    data={country_sales}
+    x=year
+    y=sales
+    series=country
+echartsOptions={{
+    legend: {
+        right: 'right',
+        top: 'middle',
+        align: 'auto',
+        orient: 'vertical',
+        padding: 7,
+        borderColor: '#ccc',
+        borderWidth: 1,
+    },
+    grid: {
+        right: '120px'
+    }
+}}
+/>
+
+
 ### Add Data Zoom
 
 ```markdown
@@ -148,6 +228,25 @@ echartsOptions={{
 }}
 ```
 
+
+<BarChart
+    data={country_sales}
+    x=year
+    y=sales
+    series=country
+echartsOptions={{
+    dataZoom: [
+        {
+            start: 0,
+            end: 100,
+        },
+    ],
+    grid: {
+        bottom: '50px',
+    },
+}}
+/>
+
 ### Add Series Labels Next to Chart
 
 ```markdown
@@ -157,15 +256,14 @@ echartsOptions={{
         endLabel: {
             show: true,
             formatter: (params) => params.seriesName,
-            offset: [0, -5], // [x, y] offset from the end of the line
+            offset: [0, 0], // [x, y] offset from the end of the line
         }
     },
-    ,
     {
         endLabel: {
             show: true,
-            formatter: () => "AOV",
-            offset: [0, 70], // [x, y] offset from the end of the line
+            formatter: (params) => params.seriesName,
+            offset: [0, 0], // [x, y] offset from the end of the line
         }
     }
     ],
@@ -175,6 +273,37 @@ echartsOptions={{
     }
 }}
 ```
+
+<LineChart
+    data={country_sales}
+    x=year
+    y=sales
+    series=country
+    legend=false
+echartsOptions={{
+    series: [
+    {
+        endLabel: {
+            show: true,
+            formatter: (params) => params.seriesName,
+            offset: [0, 0], // [x, y] offset from the end of the line
+        }
+    },
+    {
+        endLabel: {
+            show: true,
+            formatter: (params) => params.seriesName,
+            offset: [0, 0], // [x, y] offset from the end of the line
+        }
+    }
+    ],
+    grid: {
+        right: '50px',
+        top: '10px'
+    }
+}}
+/>
+
 
 ### Add Axis Pointer to Tooltip
 
@@ -191,3 +320,22 @@ echartsOptions={{
     },
 }}
 ```
+
+
+<BarChart
+    data={country_sales}
+    x=year
+    y=sales
+    series=country
+    echartsOptions={{
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#6a7985'
+            }
+        }
+    },
+}}
+/>

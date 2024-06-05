@@ -50,10 +50,11 @@ when there were <Value data={monthly_orders} column=orders/> orders.
 Override errors with the optional `placeholder` argument. This is useful for drafting reports _before_ writing your queries.
 
 ```markdown
-<Value placeholder="Report Date"/>
+<Value placeholder="sales last year"/>
 ```
 
-![value-placeholder](/img/value-placeholder.png)
+Sales in the last fiscal year were <Value placeholder="sales last year"/>, a change of <Value placeholder="X%"/> vs. the prior year.
+ 
 
 ## Formatting Values
 Evidence supports a variety of formats - see [value formatting](/core-concepts/formatting) and the `fmt` prop below for more info.
