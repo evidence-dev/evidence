@@ -1,5 +1,11 @@
 # @evidence-dev/sdk
 
+## 1.2.3-features-b.0
+
+### Patch Changes
+
+- dc8f01be2: QueryBuilder functions now inherit several parent options
+
 ## 1.2.2
 
 ### Patch Changes
