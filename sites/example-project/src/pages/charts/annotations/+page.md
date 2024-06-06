@@ -298,7 +298,7 @@ FROM sums, means
     />
 </ScatterPlot>
 
-#### Swapped X and Y
+#### Arrow
 
 <BarChart 
     data={countries}

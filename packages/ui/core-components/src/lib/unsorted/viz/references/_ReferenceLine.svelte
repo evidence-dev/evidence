@@ -25,7 +25,12 @@
 	export let labelColor = undefined;
 	export let lineWidth = undefined;
 	export let lineType = 'dashed'; // solid, dashed, or dotted
-	export let symbol = 'none'; // none, circle, rect, roundRect, triangle, diamond, pin, arrow
+	// Override arrow symbol with custom svg path which is a nice aspect triangle
+	let arrowPath = 'path://M0,10 L5,0 L10,10 z';
+	export let symbol = 'none';
+	if (symbol === 'arrow') {
+    	symbol = arrowPath;
+	}
 
 	export let labelPosition = 'aboveEnd';
 	export let labelTextOutline = false;
@@ -144,7 +149,7 @@
 			try {
 				if (x2 || y2) {
 					const coord1 = { name: label, coord: [x, y] };
-					const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol };
+					const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol, symbolKeepAspect: true};
 					configData.push([coord1, coord2]);
 				} else {
 					throw new Error('If you supply x and y, either x2 or y2 must be defined');
