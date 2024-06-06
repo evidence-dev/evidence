@@ -1167,7 +1167,7 @@ DESCRIBE ${this.text.trim()}
 
 	/**
 	 * @param {string} searchTerm
-	 * @param {string} searchCol
+	 * @param {string | string[]} searchCol
 	 * @param {number} searchThreshold
 	 * @returns {QueryValue<RowType & {similarity: number}>}
 	 */
@@ -1181,18 +1181,32 @@ DESCRIBE ${this.text.trim()}
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const typedCreateFn = Query.create;
 
+		const escapedSearchTerm = searchTerm.replaceAll("'", "''");
+
+		const cols = Array.isArray(searchCol) ? searchCol : [searchCol];
+		const statements = cols
+			.map((col) => {
+				const similarity = taggedSql`jaro_winkler_similarity(lower('${escapedSearchTerm}'), lower("${col}"))`;
+				const exactMatch =
+					escapedSearchTerm.length >= 4
+						? taggedSql`CASE WHEN lower("${col}") LIKE lower('%${escapedSearchTerm}%') THEN 1 ELSE 0 END`
+						: taggedSql`0`;
+				return taggedSql`GREATEST((${similarity}), (${exactMatch}))`;
+			})
+			.join(',');
+
 		/** @type {QueryValue<RowType & {similarity: number}>} */
 		const output = typedCreateFn(
 			this.#query
 				.clone()
 				.$select(
 					{
-						similarity: taggedSql`jaro_winkler_similarity(lower('${searchTerm.replaceAll("'", "''")}'), lower(${searchCol}))`
+						similarity: taggedSql`GREATEST(${statements})`
 					},
 					'*'
 				)
-				.where(taggedSql`similarity > ${searchThreshold} `)
-				.orderby(taggedSql`similarity DESC`),
+				.where(taggedSql`"similarity" > ${searchThreshold} `)
+				.orderby(taggedSql`"similarity" DESC`),
 			this.#executeQuery,
 			{
 				knownColumns: colsWithSimilarity,

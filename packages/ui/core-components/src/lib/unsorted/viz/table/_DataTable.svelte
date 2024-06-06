@@ -10,7 +10,6 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
-	import Fuse from 'fuse.js';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
@@ -23,8 +22,10 @@
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import EnterFullScreen from './EnterFullScreen.svelte';
 	import Fullscreen from '../../../atoms/fullscreen/Fullscreen.svelte';
-	import { browser } from '$app/environment';
 	import Column from './Column.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import debounce from 'lodash.debounce';
+	import { toasts } from '@evidence-dev/component-utilities/stores';
 
 	// Set up props store
 	let props = writable({});
@@ -181,53 +182,39 @@
 	// SEARCH
 	// ---------------------------------------------------------------------------------------
 	let searchValue = '';
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	let filteredData;
 	$: filteredData = data;
 	let showNoResults = false;
-	let fuse;
 
-	// Function to initialize or update Fuse instance
-	function updateFuse() {
-		fuse = new Fuse(data, {
-			getFn: (row, [path]) => {
-				const summary = columnSummary?.find((d) => d.id === path) ?? {};
-				return summary.type === 'date' &&
-					row[summary.id] != null &&
-					row[summary.id] instanceof Date &&
-					!isNaN(row[summary.id].getTime())
-					? row[summary.id].toISOString()
-					: row[summary.id]?.toString() ?? '';
-			},
-			keys: columnSummary?.map((d) => d.id) ?? [],
-			threshold: 0.4
-		});
-	}
-
-	// Reactively update Fuse when `data` or `columnSummary` changes
-	$: if (browser && !error) {
-		updateFuse();
-		if (searchValue !== '') {
-			runSearch(searchValue);
-		}
-	}
-
-	$: runSearch = (searchValue) => {
-		if (searchValue !== '') {
-			// Reset pagination to first page:
-			index = 0;
-			inputPage = null;
-
-			filteredData = fuse.search(searchValue).map((x) => x.item);
-			showNoResults = filteredData.length === 0;
+	const runSearch = debounce(() => {
+		if (Query.isQuery(data)) {
+			// throw new Error();
+			if (searchValue) {
+				const searched = data.search(
+					searchValue,
+					data.columns.map((c) => c.column_name),
+					0.7
+				);
+				searched.fetch().then(() => {
+					if (!searched.error) filteredData = searched;
+				});
+			} else {
+				filteredData = data;
+			}
 		} else {
-			filteredData = data;
-			showNoResults = false;
-
-			// Reset pagination to first page:
-			index = 0;
-			inputPage = null;
+			// TODO: Toast Warning
+			toasts.add({
+				status: 'warning',
+				title: 'Search Failed',
+				description: 'Please use a query instead.',
+				timeout: 5000
+			});
 		}
-	};
+	});
+	$: if (search) {
+		runSearch(searchValue, data);
+	}
 
 	// ---------------------------------------------------------------------------------------
 	// SORTING
