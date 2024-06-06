@@ -70,8 +70,8 @@ You can start Evidence from VSCode, or from the Command Line. Both will work for
 <div class="tab-bottom-padding">
 <Tabs>
    <Tab label="VSCode">
-         Click `Start Evidence` in the bottom status bar:
-         <img src="/img/getting-started/start_evidence.png" width="300" class="tut-img"/>
+      Click `Start Evidence` in the bottom status bar:
+      <img src="/img/getting-started/start_evidence.png" width="300" class="tut-img"/>
    </Tab>
    <Tab label="Command Line">
       From the root of your project directory:
@@ -86,7 +86,7 @@ If you chose a different setup during [Install Evidence](/install-evidence/#othe
 
 Your browser should open automatically. If it doesn't, open your browser and navigate to `localhost:3000` in the address bar. You should see your Evidence project:
 
-<img src="/img/getting-started/evidence_landing.png" width="400" class="tut-img"/>
+![Evidence landing page](/img/getting-started/evidence_landing.png)
 
 Congratulations! You've started Evidence. You are now running a local development server.
 
@@ -112,7 +112,7 @@ This is a new page in Evidence.
 
 Head back to Evidence in your browser. You should see your new page in the sidebar. If not, refresh:
 
-<img src="/img/getting-started/new_page.png" width="400" class="tut-img"/>
+![New page in Evidence](/img/getting-started/new_page.png)
 
 ## 3. Make more changes
 Make some more changes to the page. You'll see them reflected "live" in the browser, immediately after saving. There is no need to restart the server. 
@@ -145,7 +145,7 @@ This is an image inserted using HTML:
 
 And here's how it will look when rendered in the browser:
 
-<img src="/img/getting-started/markdown_html.png" width="400" class="tut-img"/>
+![Markdown rendered in Evidence.](/img/getting-started/markdown_html.png)
 
 Now that you know how to create and edit pages, let's move on to working with data.
 
@@ -156,7 +156,7 @@ Navigate to `localhost:3000/settings` in your browser.
 
 Here you'll find our demo dataset, `needful_things`. It is a [DuckDB](https://duckdb.org/) database, which is one of many databases that Evidence supports.
 
-<img src="/img/getting-started/duck_db.png" width="90%" class="tut-img"/>
+![The Evidence settings page.](/img/getting-started/duck_db.png)
 
 Later in this tutorial you will learn how to load a new data source. For now, we will use `needful_things` to write a **source query**.
 
