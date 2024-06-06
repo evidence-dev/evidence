@@ -266,6 +266,15 @@ importers:
         specifier: 5.4.2
         version: 5.4.2
 
+  packages/datasources/motherduck:
+    dependencies:
+      '@evidence-dev/db-commons':
+        specifier: workspace:*
+        version: link:../../lib/db-commons
+      '@evidence-dev/duckdb':
+        specifier: workspace:*
+        version: link:../duckdb
+
   packages/datasources/mssql:
     dependencies:
       '@evidence-dev/db-commons':
@@ -1459,6 +1468,9 @@ importers:
       '@evidence-dev/faker-datasource':
         specifier: workspace:*
         version: link:../../packages/datasources/faker
+      '@evidence-dev/motherduck':
+        specifier: workspace:^
+        version: link:../../packages/datasources/motherduck
       '@evidence-dev/postgres':
         specifier: workspace:*
         version: link:../../packages/datasources/postgres
@@ -6066,7 +6078,6 @@ packages:
       term-size: 2.2.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/reporter-dev-server@2.12.0(@parcel/core@2.12.0):
@@ -6090,7 +6101,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/resolver-default@2.12.0(@parcel/core@2.12.0):
@@ -6238,7 +6248,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-js@2.12.0(@parcel/core@2.12.0):
@@ -6560,8 +6569,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@pkgjs/parseargs@0.11.0:
