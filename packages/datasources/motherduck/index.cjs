@@ -4,12 +4,15 @@ const runQuery = require('@evidence-dev/duckdb');
 /**
  * @typedef {Object} MotherDuckOptions
  * @property {string} token
+ * @property {string} [database]
  */
 
 /** @type {import("@evidence-dev/db-commons").GetRunner<MotherDuckOptions>} */
 module.exports.getRunner = (opts) => {
 	return async (queryText) => {
-		return runQuery(queryText, { filename: `md:?motherduck_token=${opts.token}` });
+		return runQuery(queryText, {
+			filename: `md:${opts.database ?? ''}?motherduck_token=${opts.token}`
+		});
 	};
 };
 
@@ -22,7 +25,7 @@ module.exports.testConnection = async (opts) => {
 	}, 2500);
 
 	const result = await runQuery('SELECT 1', {
-		filename: `md:?motherduck_token=${opts.token}`
+		filename: `md:${opts.database ?? ''}?motherduck_token=${opts.token}`
 	})
 		.then((r) => {
 			clearTimeout(warning);
@@ -40,9 +43,21 @@ module.exports.options = {
 		description: 'MotherDuck API token.',
 		type: 'string',
 		secret: true,
-		shown: true,
+		shown: false,
 		virtual: false,
 		nest: false,
+		required: true,
+		default: ''
+	},
+	database: {
+		title: 'Database',
+		description: 'Specific database to connect to',
+		type: 'string',
+		secret: false,
+		shown: false,
+		virtual: false,
+		nest: false,
+		required: false,
 		default: ''
 	}
 };
