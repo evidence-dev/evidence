@@ -17,8 +17,8 @@ module.exports.getRunner = (opts) => {
 module.exports.testConnection = async (opts) => {
 	const warning = setTimeout(() => {
 		console.warn('[!] It looks like Motherduck is taking a bit to connect.');
-        console.warn('    Motherduck connections are only compatible with motherduck >= 0.10.0');
-        console.warn('    Make sure that you have upgraded your instance to at least 0.10.0');
+		console.warn('    Motherduck connections are only compatible with motherduck >= 0.10.0');
+		console.warn('    Make sure that you have upgraded your instance to at least 0.10.0');
 	}, 2500);
 
 	const result = await runQuery('SELECT 1', {

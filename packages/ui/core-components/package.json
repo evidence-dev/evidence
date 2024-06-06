@@ -40,6 +40,7 @@
 		"@docsearch/css": "^3.6.0",
 		"@docsearch/js": "^3.6.0",
 		"@evidence-dev/component-utilities": "workspace:*",
+		"@evidence-dev/icons": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
 		"@internationalized/date": "^3.5.4",
 		"@steeze-ui/radix-icons": "^1.1.2",

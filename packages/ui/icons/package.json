@@ -1,19 +1,19 @@
 {
-  "name": "@evidence-dev/icons",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "node index.js && tsc -p tsconfig.json"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@steeze-ui/icons": "^2.1.0"
-  },
-  "type": "module",
-  "exports": {
+	"name": "@evidence-dev/icons",
+	"version": "0.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "node index.js && tsc -p tsconfig.json"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"@steeze-ui/icons": "^2.1.0"
+	},
+	"type": "module",
+	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js",
@@ -24,6 +24,6 @@
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
-  ],
-  "typescript": "^5.1.3"
+	],
+	"typescript": "^5.1.3"
 }

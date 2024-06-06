@@ -1,4 +1,4 @@
-import { ThemeBuilder } from '@steeze-ui/icons'
+import { ThemeBuilder } from '@steeze-ui/icons';
 
 const builder = new ThemeBuilder({
 	sources: {
@@ -11,6 +11,6 @@ const builder = new ThemeBuilder({
 		excludeSvgAttributes: ['xmlns', 'width', 'height', 'class'], //* exclude certain attributes from the svg's, which might be controlled by the used Icon component
 		extendSvgAttributes: {} //* extend the svg's attributes
 	}
-})
+});
 
-builder.build() //* if neither collectFromDir or collectFromSuffix are defined, a already populated themes directory with at least a default theme is necessary (see example in this themplate)
+builder.build(); //* if neither collectFromDir or collectFromSuffix are defined, a already populated themes directory with at least a default theme is necessary (see example in this themplate)

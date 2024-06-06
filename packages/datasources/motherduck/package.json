@@ -1,22 +1,27 @@
 {
-  "name": "@evidence-dev/motherduck",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.cjs",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": ["motherduck", "duckdb", "evidence", "evidence-datasource"],
-  "author": "Brian Donald",
-  "license": "MIT",
-  "dependencies": {
-    "@evidence-dev/db-commons": "workspace:*",
+	"name": "@evidence-dev/motherduck",
+	"version": "0.0.0",
+	"description": "",
+	"main": "index.cjs",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"motherduck",
+		"duckdb",
+		"evidence",
+		"evidence-datasource"
+	],
+	"author": "Brian Donald",
+	"license": "MIT",
+	"dependencies": {
+		"@evidence-dev/db-commons": "workspace:*",
 		"@evidence-dev/duckdb": "workspace:*"
-  },
-  "evidence": {
+	},
+	"evidence": {
 		"datasources": [
 			"motherduck"
 		],
-    "icon": "Motherduck"
+		"icon": "Motherduck"
 	}
 }
