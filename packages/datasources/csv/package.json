@@ -19,7 +19,8 @@
 	"evidence": {
 		"datasources": [
 			"csv"
-		]
+		],
+		"icon": "Clipboard"
 	},
 	"keywords": [
 		"evidence",

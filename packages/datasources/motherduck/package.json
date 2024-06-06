@@ -16,6 +16,7 @@
   "evidence": {
 		"datasources": [
 			"motherduck"
-		]
+		],
+    "icon": "Motherduck"
 	}
 }

@@ -31,7 +31,8 @@
 	"evidence": {
 		"datasources": [
 			"faker"
-		]
+		],
+		"icon": "Pencil"
 	},
 	"keywords": [
 		"evidence",
