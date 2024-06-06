@@ -14,6 +14,7 @@
 	import * as Select from '$lib/atoms/shadcn/select/index.js';
 	import * as Popover from '$lib/atoms/shadcn/popover/index.js';
 	import { Separator } from '$lib/atoms/shadcn/separator/index.js';
+	import { onMount } from 'svelte';
 
 	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
@@ -29,7 +30,7 @@
 	});
 
 	/** @type {import('bits-ui').DateRange | undefined} */
-	export let selectedDateRange;
+	export let selectedDateRange = undefined;
 	/** @type {string} */
 	export let start;
 	/** @type {string} */
@@ -37,17 +38,10 @@
 	export let loaded = true;
 	/** @type {[]string] | undefined} */
 	export let presetRanges;
+	/** @type {string] | undefined} */
+	export let defaultValue;
 
-	$: calendarStart = YYYYMMDDToCalendar(start);
-	$: calendarEnd = YYYYMMDDToCalendar(end);
-
-	function updateDateRange(start, end) {
-		selectedDateRange = { start, end };
-	}
-
-	$: updateDateRange(calendarStart, calendarEnd);
-
-	/** @type {{label: string, group: string, range: import('bits-ui').DateRange}[]} */
+	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
 		{
 			label: 'Last 7 Days',
@@ -162,10 +156,48 @@
 	let placeholder;
 	$: setPlaceholderDefault(calendarEnd);
 
-	//group exists check for nicely rendering group border for dropdown
+	// group exists check for nicely rendering group border for dropdown
 	function groupExists(groupName) {
 		return presets.some((preset) => preset.group === groupName);
 	}
+	function camelCaseString(unformatedStr) {
+		return unformatedStr
+			.toString()
+			.toLowerCase()
+			.replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase());
+	}
+
+	/**
+	 * @param {typeof presets[number] | string} v
+	 */
+	function applyPreset(v) {
+		if (!v) return;
+		const targetPreset = presets.find(
+			(preset) =>
+				camelCaseString(preset.label) === camelCaseString(typeof v === 'string' ? v : v.label)
+		);
+		if (!targetPreset) return;
+		selectedDateRange = targetPreset.range ?? targetPreset.value;
+		selectedPreset = targetPreset;
+	}
+
+	$: if (
+		typeof defaultValue === 'string' &&
+		!selectedDateRange &&
+		!selectedPreset &&
+		presets.length
+	)
+		applyPreset(defaultValue);
+
+	$: calendarStart = YYYYMMDDToCalendar(start);
+	$: calendarEnd = YYYYMMDDToCalendar(end);
+
+	function updateDateRange(start, end) {
+		if (selectedPreset) return;
+		selectedDateRange = { start, end };
+	}
+
+	$: updateDateRange(calendarStart, calendarEnd);
 </script>
 
 <div class="flex">
@@ -235,9 +267,8 @@
 
 	<Select.Root
 		onSelectedChange={(v) => {
-			if (!v) return;
-			selectedDateRange = presets.filter((presets) => presets.label == v.label)[0].range;
-			selectedPreset = v;
+			v.range = v.value;
+			applyPreset(v);
 		}}
 		bind:selected={selectedPreset}
 		disabled={!loaded}
