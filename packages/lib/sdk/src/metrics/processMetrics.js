@@ -5,7 +5,6 @@
  */
 export const processMetric = (metric) => {
 	/**
-	 *
 	 * @param {string} keyPath
 	 * @param {string} valuePath
 	 * @returns

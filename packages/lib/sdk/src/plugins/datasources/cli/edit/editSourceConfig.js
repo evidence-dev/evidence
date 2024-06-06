@@ -226,7 +226,7 @@ export const editSourceConfig = async (source, plugin) => {
 		console.log('\n\n');
 		// TODO: this is duplicated with the sources cli command, should be a shared func
 		const evaluatedManifest = await evalSources(dataDirectory, metaDirectory, filter);
-		await updateManifest({ renderedFiles: evaluatedManifest }, dataDirectory, filter);
+		await updateManifest(evaluatedManifest, dataDirectory);
 	}
 
 	return;

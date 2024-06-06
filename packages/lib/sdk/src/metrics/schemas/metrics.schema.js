@@ -4,7 +4,7 @@ export const MetricTimeGrainsSchema = z.enum(['day', 'week', 'month', 'quarter',
 
 export const MetricDefSchema = z.object({
 	name: z.string(),
-	description: z.string(),
+	description: z.string().optional(),
 	source: z.union([
 		z.object({ datasource: z.string(), table: z.string() }),
 		z.object({ query: z.string() }),

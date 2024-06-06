@@ -11,8 +11,6 @@
     #   SELECT * FROM orders 
     # -- or
     # some yaml query thing
-    #
-    # 
   expression: sales
   aggregation: avg
   default_dimension: state

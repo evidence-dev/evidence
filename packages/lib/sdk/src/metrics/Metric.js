@@ -23,29 +23,29 @@ export class Metric extends Query {
     /** @type {string[]} */
     activeDimensions = [];
 
-	constructor(...args) {
-		super(...args);
-	}
+	// constructor(...args) {
+	// 	super(...args);
+	// }
 
-	/**
-	 * @param {import("./types.js").MetricDef} metric
-	 * @param {Parameters<typeof Query['create']>} args
-	 */
-	static create(metric, ...args) {
-		const out = super.create(...args);
-        if (!(out instanceof Metric)) {
-            throw new Error('Expected returned value to be a metric, not a query')
-        }
+	// /**
+	//  * @param {import("./types.js").MetricDef} metric
+	//  * @param {Parameters<typeof Query['create']>} args
+	//  */
+	// static create(metric, ...args) {
+	// 	const out = super.create(...args);
+    //     if (!(out instanceof Metric)) {
+    //         throw new Error('Expected returned value to be a metric, not a query')
+    //     }
 
-		out.name = metric.name;
-		out.description = metric.description;
-		out.chartSpec = {
-			x: 'grain',
-			y: metric.name,
-			series: [] // figure out how to use activeDimensions
-		};
-		return out;
-	}
+	// 	out.name = metric.name;
+	// 	out.description = metric.description;
+	// 	out.chartSpec = {
+	// 		x: 'grain',
+	// 		y: metric.name,
+	// 		series: [] // figure out how to use activeDimensions
+	// 	};
+	// 	return out;
+	// }
 
 	/**
 	 * @param {string[]} dimensions
