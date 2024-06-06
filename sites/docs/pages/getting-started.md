@@ -70,14 +70,17 @@ You can start Evidence from VSCode, or from the Command Line. Both will work for
 <div class="tab-bottom-padding">
 <Tabs>
    <Tab label="VSCode">
+
       Click `Start Evidence` in the bottom status bar:
+
       <img src="/img/getting-started/start_evidence.png" width="300" class="tut-img"/>
    </Tab>
    <Tab label="Command Line">
-      From the root of your project directory:
-      ```bash
-      npm run dev
-      ```
+
+      From the root of your project directory: 
+      
+      `npm run dev`
+      
    </Tab>
 </Tabs>
 </div>
