@@ -2,7 +2,9 @@
 	"name": "@evidence-dev/icons",
 	"version": "0.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "./dist/index.js",
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"scripts": {
 		"build": "node index.js && tsc -p tsconfig.json"
 	},
