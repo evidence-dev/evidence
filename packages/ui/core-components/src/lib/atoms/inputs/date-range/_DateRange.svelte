@@ -132,17 +132,23 @@
 		}
 	];
 
+	function lowerCaseNoSpaceString(unformattedStr) {
+		return unformattedStr.toString().toLowerCase().replace(/\s+/g, '');
+	}
+
 	$: {
+		if (typeof presetRanges === 'string') {
+			presetRanges = [presetRanges];
+		}
+
 		if (presetRanges && typeof presetRanges[0] === 'string') {
 			//filters out present range strings matching in preset array to be displayed to user
+			const formattedPresetRanges = presetRanges.map((preset) => lowerCaseNoSpaceString(preset));
 
-			// let processedPresetRanges = presetRanges.map((preset) => {
-			// 	return preset.toLocaleLowerCase().replace(/\s/g, '');
-			// });
-
-			let filteredPresets = presets.filter((preset) =>
-				presetRanges.includes(camelCaseString(preset.label))
-			);
+			let filteredPresets = presets.filter((preset) => {
+				return formattedPresetRanges.includes(lowerCaseNoSpaceString(preset.label));
+			});
+			console.log(filteredPresets);
 			presets = filteredPresets;
 		}
 	}
@@ -159,12 +165,6 @@
 	function groupExists(groupName) {
 		return presets.some((preset) => preset.group === groupName);
 	}
-	function camelCaseString(unformatedStr) {
-		return unformatedStr
-			.toString()
-			.toLowerCase()
-			.replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase());
-	}
 
 	/**
 	 * @param {typeof presets[number] | string} v
@@ -174,7 +174,8 @@
 		console.log(v, presets);
 		const targetPreset = presets.find(
 			(preset) =>
-				camelCaseString(preset.label) === (typeof v === 'string' ? v : camelCaseString(v.label))
+				lowerCaseNoSpaceString(preset.label) ===
+				lowerCaseNoSpaceString(typeof v === 'string' ? v : v.label)
 		);
 		if (!targetPreset) return;
 		selectedDateRange = targetPreset.range ?? targetPreset.value;
