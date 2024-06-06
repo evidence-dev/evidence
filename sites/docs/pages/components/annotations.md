@@ -9,14 +9,16 @@ queries:
 Annotations help you add important context directly within a chart - highlight important dates, time periods, or specific points on a chart to make it easier for your audience to pull insights from the information.
 
 Evidence currently offers 2 types of annotations, which can be defined inline or with a dataset:
-- [`ReferenceLine`](#reference-line): draw a horizontal or vertical line on a chart (e.g., annual sales target line, launch dates)
+- [`ReferenceLine`](#reference-line): draw a line on a chart (e.g., sales target, launch dates, linear regression)
 - [`ReferenceArea`](#reference-area): highlight an area on a chart (e.g., holiday shopping periods, metric control ranges)
 
 <img src="/img/annotations-example.png"  width='600px'/>
 
 # Reference Line 
 
-Reference lines allow you to add horizontal or vertical lines to a chart to provide additional context within the visualization. These lines can be produced by providing a specific value (`y=50` or `x='2020-03-14'`) or by providing a dataset (e.g., `date`, `event_name`).
+Reference lines allow you to add lines to a chart to provide additional context within the visualization. These lines can be produced by providing a specific value (`y=50` or `x='2020-03-14'`) or by providing a dataset (e.g., `date`, `event_name`).
+
+If you provide coordinates for `[x, y]` and `[x2, y2]`, you can create sloped lines between points.
 
 When a dataset is provided, `ReferenceLine` can generate multiple lines - one for each row in the dataset. This can be helpful for plotting things like important milestones, launch dates, or experiment start dates.
 
@@ -62,8 +64,6 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 ```
 
 ### X-axis from Data
-<!-- Remove -->
-<img src="/img/refline-x-multi.png"  width='600px'/>
 
 ```sql multiple_dates
 select '2019-12-05'::date as start_date, '2020-02-05'::date as end_date, 'Campaign 1' as campaign_name union all
@@ -71,17 +71,137 @@ select '2020-07-14'::date, '2020-09-14'::date, 'Campaign 2' union all
 select '2021-04-14'::date, '2021-06-14'::date, 'Campaign 3'
 ```
 
-<!-- Bug? -->
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-    <ReferenceLine data={multiple_dates} x=start_date/>
+    <ReferenceLine data={multiple_dates} x=start_date label=campaign_name hideValue/>
 </LineChart>
 
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-    <ReferenceLine data={multiple_dates} x=start_date/>
+    <ReferenceLine data={multiple_dates} x=start_date label=campaign_name hideValue/>
 </LineChart>
 ```
+
+### Sloped Line Inline
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceLine x='2019-01-01' y=6500 x2='2021-12-01' y2=12000 label="Growth Trend" labelPosition=belowEnd/>
+</LineChart>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceLine x='2019-01-01' y=6500 x2='2021-12-01' y2=12000 label="Growth Trend" labelPosition=belowEnd/>
+</LineChart>
+```
+
+### Linear Regression from Data
+
+```sql orders_by_state
+select 
+    state,
+    sum(sales) as sales,
+    count(*) as num_orders
+from orders
+group by all
+```
+
+```sql regression
+WITH
+means AS (
+    SELECT 
+        AVG(sales) as mean_sales,
+        AVG(num_orders) as mean_num_orders
+    FROM ${orders_by_state}
+),
+sums AS (
+    SELECT 
+        SUM((sales - mean_sales) * (num_orders - mean_num_orders)) as sum_xy,
+        SUM((sales - mean_sales) * (sales - mean_sales)) as sum_xx
+    FROM ${orders_by_state}, means
+),
+coeffs as (
+    SELECT 
+        sum_xy / sum_xx as slope,
+        mean_num_orders - (sum_xy / sum_xx) * mean_sales as intercept
+    FROM sums, means
+),
+min_max as (
+    SELECT 
+        MIN(sales) as min_sales,
+        MAX(sales) as max_sales
+    FROM ${orders_by_state}
+)
+SELECT min_sales as x_val, max_sales as x2, min_sales * slope + intercept as y, max_sales * slope + intercept as y2, 'Best Fit (y = ' || ROUND(slope, 2) || 'x + ' || ROUND(intercept, 2) || ')' as label
+FROM coeffs, min_max
+```
+
+<ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0>
+    <ReferenceLine data={regression} x=x_val y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
+</ScatterPlot>
+
+
+<Tabs>
+
+<Tab label="Markdown">
+
+```html
+<ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0>
+    <ReferenceLine data={regression} x=x_val y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
+</ScatterPlot>
+```
+
+</Tab>
+
+
+<Tab label="SQL Queries">
+
+
+````markdown
+```sql orders_by_state
+select 
+    state,
+    sum(sales) as sales,
+    count(*) as num_orders
+from orders
+group by all
+```
+
+```sql regression
+WITH
+means AS (
+    SELECT 
+        AVG(sales) as mean_sales,
+        AVG(num_orders) as mean_num_orders
+    FROM ${orders_by_state}
+),
+sums AS (
+    SELECT 
+        SUM((sales - mean_sales) * (num_orders - mean_num_orders)) as sum_xy,
+        SUM((sales - mean_sales) * (sales - mean_sales)) as sum_xx
+    FROM ${orders_by_state}, means
+),
+coeffs as (
+    SELECT 
+        sum_xy / sum_xx as slope,
+        mean_num_orders - (sum_xy / sum_xx) * mean_sales as intercept
+    FROM sums, means
+),
+min_max as (
+    SELECT 
+        MIN(sales) as min_sales,
+        MAX(sales) as max_sales
+    FROM ${orders_by_state}
+)
+SELECT min_sales as x_val, max_sales as x2, min_sales * slope + intercept as y, max_sales * slope + intercept as y2, 'Best Fit (y = ' || ROUND(slope, 2) || 'x + ' || ROUND(intercept, 2) || ')' as label
+FROM coeffs, min_max
+```
+````
+
+</Tab>
+
+</Tabs>
+
+
 
 ### Custom Styling
 
@@ -150,15 +270,27 @@ A reference line can be produced by defining values inline or by supplying a dat
 
     <PropListing
         name=x
-        description="x-axis value where line will be plotted"
+        description="x-axis value where line will be plotted, or coordinate where line will start if x2 is provided"
         required="false"
         options="number | string | date"
     />
     <PropListing
         name=y
-        description="y-axis value where line will be plotted"
+        description="y-axis value where line will be plotted, or coordinate where line will start if y2 is provided"
         required="false"
         options="number"    
+    />
+    <PropListing
+        name=x2
+        description="x-axis value for line endpoint"
+        required="false"
+        options="number | string | date"
+    />
+    <PropListing
+        name=y2
+        description="y-axis value for line endpoint"
+        required="false"
+        options="number"
     />
     <PropListing
         name=label
@@ -167,9 +299,27 @@ A reference line can be produced by defining values inline or by supplying a dat
         options="string"
     />
 
+<LineBreak/>
 
-- One of `x` or `y` is required to plot a line.
-- If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
+This table shows how you combine `x`, `y`, `x2`, and `y2` to create different types of lines:
+
+```sql xy_config_table
+select 5 as x, null as y, null as x2, null as y2, 'Vertical line at x=5' as Result union all
+select null, 100, null, null, 'Horizontal line at y=100' union all
+select 5, 100, null, null, 'Vertical line at x=5 (ignores y)' union all
+select 5, 100, 10, 200, 'Sloped line from [5, 100] to [10, 200]' union all
+select 5, 100, null, 200, 'Vertical line from [5, 100] to [5, 200]' union all
+select 5, 100, 10, null, 'Horizontal line from [5, 100] to [10, 100]'
+order by 2 nulls first, 1 nulls first, 3 nulls first, 4 nulls first
+```
+
+<DataTable data={xy_config_table} formatColumnTitles=false/>
+
+<Alert status=warning>
+
+If you provide `[x, y]` and `[x2, y2]`, coordinates must fall within the chart's boundaries in order for the line to be drawn.
+
+</Alert>
 
 ### Supplying a Dataset
 
@@ -181,12 +331,22 @@ A reference line can be produced by defining values inline or by supplying a dat
     />
     <PropListing
         name=x
-        description="Column containing x-axis values"
+        description="Column containing x-axis values for lines (or starting points if x2 is provided)"
         options="column name"
     />
     <PropListing
         name=y
-        description="Column containing y-axis values"
+        description="Column containing y-axis values for lines (or starting points if y2 is provided)"
+        options="column name"
+    />
+    <PropListing
+        name=x2
+        description="Column containing x-axis values for line endpoints."
+        options="column name"
+    />
+    <PropListing
+        name=y2
+        description="Column containing y-axis values for line endpoints."
         options="column name"
     />
     <PropListing
@@ -202,7 +362,21 @@ A reference line can be produced by defining values inline or by supplying a dat
         defaultValue=false
     />
 
-- If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
+```sql xy_data_table
+select 'x_col' as x, null as y, null as x2, null as y2, 'Vertical lines at values in x_col' as Result union all
+select null, 'y_col', null, null, 'Horizontal lines at values in y_col' union all
+select 'x_col', 'y_col', null, null, 'Vertical lines at x_col (ignores y_col)' union all
+select 'x_col', 'y_col', 'x2_col', 'y2_col', 'Sloped Lines from [x_col, y_col] to [x2_col, y2_col]'
+order by 2 nulls first, 1 nulls first, 3 nulls first, 4 nulls first
+```
+
+<DataTable data={xy_data_table} formatColumnTitles=false/>
+
+<Alert status=warning>
+
+If you provide `[x, y]` and `[x2, y2]`, coordinates must fall within the chart's boundaries in order for lines to be drawn.
+
+</Alert>
 
 ### Styling
 
