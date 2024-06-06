@@ -160,7 +160,7 @@
 		]);
 	}
 
-	const identifier = `reference-area-${xMin}-${yMin}-${xMax}-${yMax}-${label}-${labelPosition}`;
+	const identifier = String(Math.random());
 	let baseConfig;
 
 	$: if (!error) {

@@ -170,7 +170,8 @@
 		}
 	}
 
-	const identifier = `reference-line-${x}-${y}-${x2}-${y2}-${label}-${labelPosition}`;
+	const identifier = String(Math.random());
+
 	let baseConfig;
 
 	$: if (!error) {
