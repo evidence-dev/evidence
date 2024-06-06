@@ -39,8 +39,7 @@ description: A 10 minute guide to building your first dashboard in Evidence.
 </ul>
 </div>
 
-<Alert status="info"> 
-
+<Alert> 
 
   **By the end of this 10 minute guide, you will be able to:** 
   - Create and edit a page in Evidence 
@@ -49,11 +48,6 @@ description: A 10 minute guide to building your first dashboard in Evidence.
   - Create a chart 
   - Connect a new CSV data source 
 
-</Alert>
-
-
-<Alert status="info">
-Casey note: I like how the Rails tutorial calls out what you'll achieve, and adds these satisfying green checkmarks. I think it makes the reader feel good and excited. Baked my own CSS for this, happy to change to your suggestions
 </Alert>
 
 ## Prerequisites
@@ -102,6 +96,16 @@ Dev server? localhost:3000? Hot reload? Static site generator? If you're new to 
 <br/><br/>
 It's not required for this tutorial, but if you want to find out more about what's going on under the hood, take a look at this FAQ about local development. [TODO add link]
 </div>
+
+<Alert>
+
+**What's a development server?**
+
+Dev server? localhost:3000? Hot reload? Static site generator? If you're new to web development, this tutorial will introduce some unfamiliar terms. Don't worry.
+<br/>
+It's not required for this tutorial, but if you want to find out more about what's going on under the hood, take a look at this FAQ about local development. [TODO add link]
+</Alert>
+
 
 ## 2. Add a new page
 
@@ -199,14 +203,31 @@ npm run sources
 ```
 
 <div id="objectives" class="alert svelte-17118v7">
+   
 <strong>Why would you want to manually run sources?</strong>
-<br/>
+
 If you're working with large data sources, running queries can be slow. You may not need the latest data while you are building a page, or designing charts.
-<br/><br/>
+
+
  Not running automatic queries while you are working will allow for faster page loads, and speed up the process of iteration.
-<br/><br/>
-When the page is complete, you can then run sources to reflect the latest data. To learn more about running sources efficently, take a look at Core Concepts > <a href="/core-concepts/data-sources/">Data Sources</a>. #TODO fix link
+
+
+When the page is complete, you can then run sources to reflect the latest data. To learn more about running sources efficently, take a look at Core Concepts &gt; [Data Sources](/core-concepts/data-sources/).
 </div>
+
+<Alert>
+
+**Why would you want to manually run sources?**
+
+If you're working with large data sources, running queries can be slow. You may not need the latest data while you are building a page, or designing charts.
+<br/>
+
+Not running automatic queries while you are working will allow for faster page loads, and speed up the process of iteration.
+<br/>
+
+When the page is complete, you can then run sources to reflect the latest data. To learn more about running sources efficently, take a look at Core Concepts &gt; [Data Sources](/core-concepts/data-sources/).
+
+</Alert>
 
 
 ## 5. Create a table
