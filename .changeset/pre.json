@@ -1,5 +1,5 @@
 {
-  "mode": "pre",
+  "mode": "exit",
   "tag": "features-b",
   "initialVersions": {
     "@evidence-dev/bigquery": "2.0.5",

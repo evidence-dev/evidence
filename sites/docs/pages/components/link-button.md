@@ -3,11 +3,12 @@ title: Link Button
 sidebar_position: 1
 ---
 
-<img src="/img/link-button.png" alt="link-button" width="200"/>
-
+<LinkButton url='/components/link-button'>
+  My Link Button
+</LinkButton>
 
 ```markdown
-<LinkButton url='/other-page'>
+<LinkButton url='/components/link-button'>
   My Link Button
 </LinkButton>
 ```
