@@ -29,7 +29,7 @@
 	let arrowPath = 'path://M0,10 L5,0 L10,10 z';
 	export let symbol = 'none';
 	if (symbol === 'arrow') {
-    	symbol = arrowPath;
+		symbol = arrowPath;
 	}
 
 	export let labelPosition = 'aboveEnd';
@@ -149,7 +149,7 @@
 			try {
 				if (x2 || y2) {
 					const coord1 = { name: label, coord: [x, y] };
-					const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol, symbolKeepAspect: true};
+					const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol, symbolKeepAspect: true };
 					configData.push([coord1, coord2]);
 				} else {
 					throw new Error('If you supply x and y, either x2 or y2 must be defined');
