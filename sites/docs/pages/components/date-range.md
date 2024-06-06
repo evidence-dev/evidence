@@ -107,6 +107,16 @@ where date_column between '${inputs.name_of_date_range.start}' and '${inputs.nam
     presetRanges={['last7Days', 'last3Months', 'lastYear', 'allTime']}
 />
 ````
+### Default Value for Preset Ranges
+
+<DateRange defaultValue={'last7Days'}/>
+
+````markdown
+<DateRange
+    name=name_of_date_range
+    defaultValue={'last7Days'}
+/>
+````
 
  ## Options
 
@@ -159,8 +169,6 @@ A manually specified end date to use for the range
 Title to display in the Date Range component
 
 </PropListing>
-
-
 <PropListing 
     name="presetRanges"
     options= "array of values e.g. {['last7Days']} or {['last7Days', 'last6Months']}"
@@ -170,8 +178,15 @@ Title to display in the Date Range component
 Customize "Select a Range" drop down, by including present range options. Range options include: 'last7Days', 'last30Days', 'last90Days', 'last3Months', 'last6Months', 'last12Months', 'lastMonth', 'lastYear', 'monthToDate', 'yearToDate', 'allTime'.
 
 </PropListing>
+<PropListing 
+    name="defaultValue"
+    options= "string e.g. {'last7Days'} or {'last6Months'}"
+    default=undefined
+>
 
+Accepts preset in string format to apply default value in Date Range picker. Range options include: 'last7Days', 'last30Days', 'last90Days', 'last3Months', 'last6Months', 'last12Months', 'lastMonth', 'lastYear', 'monthToDate', 'yearToDate', 'allTime'.
 
+</PropListing>
 <PropListing 
     name="hideDuringPrint"
     options={["true", "false"]}

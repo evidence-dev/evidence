@@ -137,12 +137,12 @@
 		if (presetRanges && typeof presetRanges[0] === 'string') {
 			//filters out present range strings matching in preset array to be displayed to user
 
-			let processedPresetRanges = presetRanges.map((preset) => {
-				return preset.toLocaleLowerCase().replace(/\s/g, '');
-			});
+			// let processedPresetRanges = presetRanges.map((preset) => {
+			// 	return preset.toLocaleLowerCase().replace(/\s/g, '');
+			// });
 
 			let filteredPresets = presets.filter((preset) =>
-				processedPresetRanges.includes(preset.label.toLocaleLowerCase().replace(/\s/g, ''))
+				presetRanges.includes(camelCaseString(preset.label))
 			);
 			presets = filteredPresets;
 		}
@@ -172,9 +172,10 @@
 	 */
 	function applyPreset(v) {
 		if (!v) return;
+		console.log(v, presets);
 		const targetPreset = presets.find(
 			(preset) =>
-				camelCaseString(preset.label) === camelCaseString(typeof v === 'string' ? v : v.label)
+				camelCaseString(preset.label) === (typeof v === 'string' ? v : camelCaseString(v.label))
 		);
 		if (!targetPreset) return;
 		selectedDateRange = targetPreset.range ?? targetPreset.value;

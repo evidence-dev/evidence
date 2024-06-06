@@ -35,7 +35,7 @@
 
 <Story
 	name="Multiple presetRanges that are not present"
-	args={{ presetRanges: ['tomorrow', 'firstWeek', '30DaysLater', 'Forever'] }}
+	args={{ presetRanges: ['Last Month', 'Last7Days', 'lastyear', 'ALLTIME'] }}
 />
 
-<Story name="Default alt Value preset Ranges" args={{ defaultValue: 'Last 12 Months' }} />
+<Story name="Default Value" args={{ defaultValue: 'lastMonth' }} />
