@@ -39,14 +39,16 @@ description: A 10 minute guide to building your first dashboard in Evidence.
 </ul>
 </div>
 
-<Alert status="info">
-   # Title
-   **By the end of this 10 minute guide, you will be able to:**
-   - Create and edit a page in Evidence
-   - Write a query on demo data
-   - Create a table
-   - Create a chart
-   - Connect a new CSV data source
+<Alert status="info"> 
+
+
+  **By the end of this 10 minute guide, you will be able to:** 
+  - Create and edit a page in Evidence 
+  - Write a query on demo data 
+  - Create a table 
+  - Create a chart 
+  - Connect a new CSV data source 
+
 </Alert>
 
 
