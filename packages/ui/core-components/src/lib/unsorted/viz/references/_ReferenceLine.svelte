@@ -119,7 +119,26 @@
 		try {
 			configData = [];
 			if (typeof x !== 'undefined' && typeof y !== 'undefined') {
-				throw new Error('{data} can only be used with x or y, not both');
+				checkInputs(data, [x]);
+				checkInputs(data, [y]);
+				for (let i = 0; i < data.length; i++) {
+					try {
+						if (x2 || y2) {
+							const coord1 = { 
+								name: data[i][label] ?? label, 
+								coord: [data[i][x], data[i][y]] };
+							const coord2 = { 
+								coord: [data[i][x2 || x], data[i][y2 || y]], 
+								symbol: symbol, 
+								symbolKeepAspect: true };
+							configData.push([coord1, coord2]);
+						} else {
+							throw new Error('If you supply x and y, either x2 or y2 must be defined');
+						}
+					} catch (e) {
+						error = e;
+					}
+				}	
 			} else if (x) {
 				checkInputs(data, [x]);
 				for (let i = 0; i < data.length; i++) {
