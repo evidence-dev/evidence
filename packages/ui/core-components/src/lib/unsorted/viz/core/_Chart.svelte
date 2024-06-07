@@ -180,8 +180,6 @@
 	let y2UnitSummary;
 	let xDistinct;
 
-	let zoom;
-
 	// Individual Config Sections:
 	let horizAxisConfig;
 	let verticalAxisConfig;
