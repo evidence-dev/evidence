@@ -230,13 +230,84 @@ When the page is complete, you can then run sources to reflect the latest data. 
 </Alert>
 
 
-## 5. Create a table
+## 5. Create a Markdown query and a Data Table
 
-Quick brown fox
+Next, you'll take the results from your source queries and display them on your page. One simple way to display data is with a table. 
 
-## 6. Create a chart
+Clean up everything from your page, and add the following:
 
-Neque porro quisquam est qui dolorem ipsum 
+**new-page.md**
+```markdown
+## Hello Evidence
+
+### Orders Table
+
+&#96;&#96;&#96;my_query_summary
+SELECT * FROM needful_things.my_query
+&#96;&#96;&#96;
+
+<DataTable data={my_query_summary}/>
+```
+
+Refresh the page in your browser, and you should see the following:
+
+![A DataTable in Evidence](/img/getting-started/new_table.png)
+
+Let's break down what's happening here.
+
+This section is called an **markdown query**:
+
+```markdown
+&#96;&#96;&#96;my_query_summary
+SELECT * FROM needful_things.my_query
+&#96;&#96;&#96;
+```
+
+A Markdown query is defined within your page itself, and is always written in the DuckDB dialect of SQL regardless of what type your data source is.
+
+This Markdown query isn't doing much for us right now. It's simply displaying all 10,000 records and all columns. We can make it more useful.
+
+Let's say we want to pull the 100 most recent orders, in order to send these customers a discount code. Change the Markdown query to:
+
+```markdown
+&#96;&#96;&#96;my_query_summary
+SELECT 
+   order_datetime, 
+   first_name, 
+   last_name, 
+   email 
+FROM needful_things.my_query
+ORDER BY order_datetime DESC
+LIMIT 100
+&#96;&#96;&#96;
+```
+
+Now refresh, and notice that your table has changed to show only the most recent 100 orders, with only the columns you specified:
+
+add image TODO
+
+You can further select or rename the columns that appear in your table by specifying them in the `DataTable` component:
+
+```markdown
+<DataTable data={my_query_summary}/>
+   <Column id=order_datetime title="Order Date"/>
+   <Column id=first_name />
+   <Column id=email />
+</DataTable>
+```  
+This will display:
+
+add image TODO
+
+A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components/).
+
+## 6. Create a Histogram
+
+Next, let's create a visualization. There are many possible visualizations to choose from in Evidence, but we'll start with a simple [Histogram](/components/histogram) that allows us to see our orders over time.
+
+add histogram TODO
+
+
 
 ## 7. Connect a new CSV data source
 
