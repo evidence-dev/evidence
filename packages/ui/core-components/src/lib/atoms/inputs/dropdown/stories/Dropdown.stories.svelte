@@ -19,13 +19,13 @@
 	// Play Functions
 	const openDropdown = async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		let dropdown = await waitFor(() => canvas.getByRole('combo-box'));
+		let dropdown = await canvas.getByRole('combo-box');
 		userEvent.click(dropdown);
 	};
 
-	const searchDropdown = async ({ canvasElement, step }) => {
+	const searchDropdown = async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		let dropdown = await waitFor(() => canvas.getByRole('combo-box'));
+		let dropdown = await canvas.getByRole('combo-box');
 		await userEvent.click(dropdown);
 		await userEvent.keyboard('Alliance');
 	};
