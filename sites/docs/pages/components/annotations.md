@@ -106,37 +106,27 @@ group by all
 ```
 
 ```sql regression
-WITH
-means AS (
-    SELECT 
-        AVG(sales) as mean_sales,
-        AVG(num_orders) as mean_num_orders
-    FROM ${orders_by_state}
-),
-sums AS (
-    SELECT 
-        SUM((sales - mean_sales) * (num_orders - mean_num_orders)) as sum_xy,
-        SUM((sales - mean_sales) * (sales - mean_sales)) as sum_xx
-    FROM ${orders_by_state}, means
-),
-coeffs as (
-    SELECT 
-        sum_xy / sum_xx as slope,
-        mean_num_orders - (sum_xy / sum_xx) * mean_sales as intercept
-    FROM sums, means
-),
-min_max as (
-    SELECT 
-        MIN(sales) as min_sales,
-        MAX(sales) as max_sales
+WITH 
+coeffs AS (
+    SELECT
+        regr_slope(num_orders, sales) AS slope,
+        regr_intercept(num_orders, sales) AS intercept,
+        regr_r2(num_orders, sales) AS r_squared
     FROM ${orders_by_state}
 )
-SELECT min_sales as x_val, max_sales as x2, min_sales * slope + intercept as y, max_sales * slope + intercept as y2, 'Best Fit (y = ' || ROUND(slope, 2) || 'x + ' || ROUND(intercept, 2) || ')' as label
-FROM coeffs, min_max
+
+SELECT 
+    min(sales) AS x, 
+    max(sales) AS x2, 
+    min(sales) * slope + intercept AS y, 
+    max(sales) * slope + intercept AS y2, 
+    'Best Fit (y = ' || ROUND(slope, 2) || 'x + ' || ROUND(intercept, 2) || ', R^2 = ' || ROUND(r_squared, 3) || ')' AS label
+FROM coeffs, ${orders_by_state}
+GROUP BY slope, intercept, r_squared
 ```
 
-<ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0>
-    <ReferenceLine data={regression} x=x_val y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
+<ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0 xFmt=usd>
+    <ReferenceLine data={regression} x=x y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
 </ScatterPlot>
 
 
@@ -146,7 +136,7 @@ FROM coeffs, min_max
 
 ```html
 <ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0>
-    <ReferenceLine data={regression} x=x_val y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
+    <ReferenceLine data={regression} x=x y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
 </ScatterPlot>
 ```
 
@@ -167,33 +157,23 @@ group by all
 ```
 
 ```sql regression
-WITH
-means AS (
-    SELECT 
-        AVG(sales) as mean_sales,
-        AVG(num_orders) as mean_num_orders
-    FROM ${orders_by_state}
-),
-sums AS (
-    SELECT 
-        SUM((sales - mean_sales) * (num_orders - mean_num_orders)) as sum_xy,
-        SUM((sales - mean_sales) * (sales - mean_sales)) as sum_xx
-    FROM ${orders_by_state}, means
-),
-coeffs as (
-    SELECT 
-        sum_xy / sum_xx as slope,
-        mean_num_orders - (sum_xy / sum_xx) * mean_sales as intercept
-    FROM sums, means
-),
-min_max as (
-    SELECT 
-        MIN(sales) as min_sales,
-        MAX(sales) as max_sales
+WITH 
+coeffs AS (
+    SELECT
+        regr_slope(num_orders, sales) AS slope,
+        regr_intercept(num_orders, sales) AS intercept,
+        regr_r2(num_orders, sales) AS r_squared
     FROM ${orders_by_state}
 )
-SELECT min_sales as x_val, max_sales as x2, min_sales * slope + intercept as y, max_sales * slope + intercept as y2, 'Best Fit (y = ' || ROUND(slope, 2) || 'x + ' || ROUND(intercept, 2) || ')' as label
-FROM coeffs, min_max
+
+SELECT 
+    min(sales) AS x, 
+    max(sales) AS x2, 
+    min(sales) * slope + intercept AS y, 
+    max(sales) * slope + intercept AS y2, 
+    'Best Fit (y = ' || ROUND(slope, 2) || 'x + ' || ROUND(intercept, 2) || ', R^2 = ' || ROUND(r_squared, 3) || ')' AS label
+FROM coeffs, ${orders_by_state}
+GROUP BY slope, intercept, r_squared
 ```
 ````
 
