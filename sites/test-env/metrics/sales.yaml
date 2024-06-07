@@ -1,66 +1,30 @@
+source:
+  datasource: needful_things
+  table: orders
+
 # Metric references are key
-- name: avg_sales
-  title: Average Sales
-  description: |
-    This is the average sale $ amount, used for quarterly revenue calcs
-  source:
-    datasource: needful_things
-    table: orders
+metrics:
+  - name: avg_sales
+    title: Average Sales
+    description: |
+      This is the average sale $ amount, used for quarterly revenue calcs
     # -- or
     # query: |
     #   SELECT * FROM orders 
     # -- or
     # some yaml query thing
-  expression: sales
-  aggregation: avg
-  default_dimension: state
-  dimensions:
-    - state
-    - channel
-  default_grain: day
-  time_grains:
-    - day
-    - week
-    - month
-    - quarter
-    - year
-  time_expression: order_datetime
-
-# Targets:
-# Targets are calculable from a query
-# e.g.
-# Could be another metric
-#   could be prev grain sales * 1.1
-#   could be hard coded (e.g. quarterly sales > 1000)
-#   could be calculated from other metric
-
-# "Canonical Page"
-# Tell the Evidence system that this markdown file is a canonical page for a dimension
-# /orders/[state]
-# Frontmatter has `canonical: [some dimension]`
-# If you make a table using a metric definition (e.g. sales / state) it will automatically be linked to the canonical page
-# In theory - you don't need to include any content on this page, so we can show graphs of all of the metrics that have the dimension
-# Can go the other way, have a metric and can go to a page that has content for that metric, e.g. when sales is referenced we can provide a drill path
-
-# Metrics will frequently automatically handle joins for you
-# e.g. metric isn't defined on a table that exists, instead is defined on a join expression
-# This frequently solves "double counting"
-#   Consider sales + line items join
-#     if metricing sales after joining line items, then sales gets messed up without this feature (e.g. multicounting sales)
-
-- name: avg_sales_modified
-  source:
-    datasource: needful_things
-    table: orders
-  expression: sales * 2
-  aggregation: avg
-  dimensions:
-    - state
-    - channel
-  time_grains:
-    - day
-    - week
-    - month
-    - quarter
-    - year
-  time_expression: order_datetime
+    expression: sales
+    aggregation: avg
+    distinct:
+      - category # becomes avg(sales) over distinct category
+    dimensions:
+      - state
+      - channel
+    default_grain: day
+    time_grains:
+      - day
+      - week
+      - month
+      - quarter
+      - year
+    time_expression: order_datetime

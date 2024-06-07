@@ -51,9 +51,9 @@ export type QueryOpts<RowType extends QueryResultRow = QueryResultRow> = {
 	noResolve?: boolean;
 };
 
-export type QueryReactivityOpts<T extends QueryResultRow = QueryResultRow> = {
+export type QueryReactivityOpts<T extends QueryResultRow = QueryResultRow, M = any> = {
 	loadGracePeriod?: number;
-	callback: (v: QueryValue<T>) => void;
+	callback: (v: QueryValue<T>, metadata?: M) => void;
 	execFn: Runner<T>;
 };
 

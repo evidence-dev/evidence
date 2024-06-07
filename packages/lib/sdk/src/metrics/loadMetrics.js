@@ -5,6 +5,9 @@ import { metricsDirectory } from '../build-dev/vite/virtuals/node/projectPaths.j
 import { MetricFileSchema } from './schemas/metrics.schema.js';
 import { cleanZodErrors } from '../lib/cleanZodErrors.js';
 
+/**
+ * @returns {Promise<import('./types.js').MetricSpec[]>}
+ */
 export const loadMetrics = async () => {
 	const exists = await fs
 		.stat(metricsDirectory)
@@ -15,6 +18,7 @@ export const loadMetrics = async () => {
 	const metricFiles = await fs.readdir(metricsDirectory);
 
 	const metrics = [];
+
 	for (const metricFile of metricFiles) {
 		console.log(`Loading ${metricFile}`);
 
@@ -27,7 +31,7 @@ export const loadMetrics = async () => {
 			console.error(yaml.stringify(cleanZodErrors(metric.error.format())));
 			process.exit(1);
 		} else {
-			metrics.push(...metric.data);
+			metrics.push(...metric.data.metrics.map((v) => ({ ...v, source: metric.data.source })));
 		}
 	}
 	return metrics;

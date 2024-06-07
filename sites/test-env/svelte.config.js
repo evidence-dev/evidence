@@ -16,12 +16,12 @@ export default {
 					if (attributes.context === 'module') return;
 					if (!metricSpecs) {
 						const metrics = await loadMetrics();
-						metricSpecs = await Promise.all(metrics.map(processMetric));
 
 						metricDefString = `
-						import {MetricsInputKey, MetricsContextKey} from '@evidence-dev/sdk/metrics/browser';
+						import {Metric, MetricsInputKey, MetricsContextKey} from '@evidence-dev/sdk/metrics/browser';
 						import {Unset} from '@evidence-dev/sdk/usql';
-						${metricSpecs
+						
+						${metrics
 							.map((spec) => {
 								return `
 								// This code lifted from process-queries
@@ -30,14 +30,18 @@ export default {
 								/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 								let ${spec.name};
 								
-								$: __${spec.name}Text = \`${spec.query}\`;
-								$: __${spec.name}Factory(__${spec.name}Text)
+								$: __${spec.name}Cut = {
+									dimensions: !inputs[MetricsInputKey].${spec.name}.dimensions[Unset] ? inputs[MetricsInputKey].${spec.name}.dimensions?.rawValues?.map(v => v.value) ?? [] : undefined,
+									time_grain: !inputs[MetricsInputKey].${spec.name}.time_grain[Unset] && inputs[MetricsInputKey].${spec.name}.time_grain ? inputs[MetricsInputKey].${spec.name}.time_grain.value : undefined
+								}
+								$: __${spec.name}Factory(__${spec.name}Cut)
 								
-								const __${spec.name}Factory = Query.createReactive(
+								const __${spec.name}Factory = Metric.createMetric(
+									${JSON.stringify(spec)},
 									{ callback: $v => ${spec.name} = $v, execFn: queryFunc },
 									{ id: 'Metric-${spec.name}' }
 								)
-								__${spec.name}Factory(__${spec.name}Text)
+								__${spec.name}Factory({})
 								globalThis[Symbol.for("Metric-${spec.name}")] = { get value() { return ${spec.name} } }
 								`;
 							})

@@ -33,6 +33,7 @@ export const processMetric = (metric) => {
             
         GROUP BY ALL
     `;
+    console.log(queryString)
 
 	return {
 		query: queryString,

@@ -102,6 +102,7 @@ export class Query {
 	/// Columns
 	/** @type {import('../../types/duckdb-wellknown.js').DescribeResultRow[]} */
 	#columns = [];
+
 	/** @type {Record<keyof RowType, undefined> | undefined} */
 	#mockRow = undefined;
 
@@ -687,11 +688,11 @@ DESCRIBE ${this.text.trim()}
 	};
 
 	/**
-	 *
-	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
+	 * @template [MetaData=any]
+	 * @param {import('../types.js').QueryReactivityOpts<any, MetaData>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
 	 */
-	static createReactive = (reactiveOpts, opts) => {
+	static createReactive(reactiveOpts, opts) {
 		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
 
 		/** @type {import('../types.js').CreateQuery<any>} */
@@ -706,9 +707,10 @@ DESCRIBE ${this.text.trim()}
 			/**
 			 * @param {string | Query} nextQuery
 			 * @param {import('../types.js').QueryOpts<any>} [newOpts]
+			 * @param {MetaData} [metadata]
 			 * @returns {Promise<void> | void}
 			 */
-			(nextQuery, newOpts) => {
+			(nextQuery, newOpts, metadata) => {
 				changeIdx += 1;
 				const targetChangeIdx = changeIdx;
 				Query.#debugStatic(
@@ -729,7 +731,7 @@ DESCRIBE ${this.text.trim()}
 					: createFn(
 							nextQuery,
 							execFn,
-							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined })
+							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined }),
 						);
 
 				if (newQuery.hash === activeQuery.hash) return; // no-op
@@ -751,7 +753,7 @@ DESCRIBE ${this.text.trim()}
 						}
 						unsub?.();
 						activeQuery = newQuery.value;
-						unsub = activeQuery.subscribe(callback);
+						unsub = activeQuery.subscribe((v) => callback(v, metadata));
 					},
 					dataMaybePromise,
 					(e) => {
@@ -768,13 +770,14 @@ DESCRIBE ${this.text.trim()}
 		/**
 		 * @param {string} queryText
 		 * @param {import('../types.js').QueryOpts<any>} [newOpts]
+		 * @param {MetaData} [metadata]
 		 * @returns {void}
 		 */
-		return (queryText, newOpts) => {
+		return (queryText, newOpts, metadata) => {
 			if (activeQuery) {
 				resolveMaybePromise(
 					() => {},
-					waitFor(queryText, newOpts),
+					waitFor(queryText, newOpts, metadata),
 					(e) => {
 						console.warn(`Error while attempting to update reactive query: ${e.message}`);
 					}
@@ -789,7 +792,7 @@ DESCRIBE ${this.text.trim()}
 			resolveMaybePromise(removeInitialState, fetched);
 
 			// We don't want to use this after the initial creation!
-			unsub = activeQuery.subscribe(callback);
+			unsub = activeQuery.subscribe((v) => callback(v, metadata));
 			callback(activeQuery);
 			return;
 		};
@@ -866,7 +869,7 @@ DESCRIBE ${this.text.trim()}
 			);
 
 		Query.#constructing = true;
-		const output = new this(query, executeQuery, opts);
+		const output = new Query(query, executeQuery, opts);
 		if (!opts.disableCache) {
 			Query.#addToCache(output);
 			Query.#cacheCleanup();
@@ -961,6 +964,7 @@ DESCRIBE ${this.text.trim()}
 	 * @deprecated Use {@link Query.create} instead
 	 */
 	constructor(query, executeQuery, opts = {}) {
+		console.log({self: this})
 		const {
 			id,
 			initialData = undefined,

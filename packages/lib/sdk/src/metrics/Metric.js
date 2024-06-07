@@ -1,4 +1,5 @@
 import { Query } from '../usql/index.js';
+import { metricDefToSql } from './metricDefToSql.js';
 
 export class Metric extends Query {
 	/** @type {string} */
@@ -14,38 +15,67 @@ export class Metric extends Query {
 		series: ''
 	};
 
-	/** @type {Metric[]} */
-	dependencies = [];
-
 	/** @type {{value: string, label: string}[]} */
 	timeGrains = [];
 
-    /** @type {string[]} */
-    activeDimensions = [];
+	/** @type {string[]} */
+	activeDimensions = [];
 
-	// constructor(...args) {
-	// 	super(...args);
-	// }
+	/** @type {import("./types.js").MetricSpec | undefined} */
+	#metric = undefined;
+	/**
+	 * @protected
+	 * @param {import("./types.js").MetricSpec} metric
+	 * */
+	registerMetric = (metric) => {
+		if (this.#metric) throw new Error('Metric already registered');
+		this.#metric = metric;
+	};
 
-	// /**
-	//  * @param {import("./types.js").MetricDef} metric
-	//  * @param {Parameters<typeof Query['create']>} args
-	//  */
-	// static create(metric, ...args) {
-	// 	const out = super.create(...args);
-    //     if (!(out instanceof Metric)) {
-    //         throw new Error('Expected returned value to be a metric, not a query')
-    //     }
+	/** @type {import("./types.js").MetricCut | undefined} */
+	#cut = undefined;
+	/**
+	 * @protected
+	 * @param {import("./types.js").MetricCut} cut
+	 */
+	registerCut = (cut) => {
+		if (this.#cut) throw new Error('Cut already registered');
+		this.#cut = cut;
+	};
 
-	// 	out.name = metric.name;
-	// 	out.description = metric.description;
-	// 	out.chartSpec = {
-	// 		x: 'grain',
-	// 		y: metric.name,
-	// 		series: [] // figure out how to use activeDimensions
-	// 	};
-	// 	return out;
-	// }
+	/** @returns {import('../usql/index.js').QueryValue<any>} */
+	static create() {
+		throw new Error('Use Metric.createMetric');
+	}
+
+	/**
+	 * @param {import('./types.js').MetricSpec} metric
+	 * @param {import('../usql/types.js').QueryReactivityOpts} reactiveOpts
+	 * @param {import('../usql/types.js').QueryOpts} queryOpts
+	 */
+	static createMetric(metric, reactiveOpts, queryOpts) {
+		
+		if (!metric) throw new Error('Metric must be defined');
+		const factory = super.createReactive.bind(Metric)(
+			{
+				...reactiveOpts,
+				callback: (newMetric, cut) => {
+					if (!(newMetric instanceof Metric)) throw new Error('Expected return value to be Metric');
+					console.log(newMetric)
+					newMetric.registerMetric(metric);
+					// newMetric.registerCut(cut);
+					reactiveOpts.callback(newMetric);
+				}
+			},
+			{ ...queryOpts, id: `Metric-${metric.name}` }
+		);
+		/**
+		 * @param {any} cut
+		 */
+		return (cut) => {
+			factory(metricDefToSql(metric, cut), undefined, cut);
+		};
+	}
 
 	/**
 	 * @param {string[]} dimensions
@@ -64,4 +94,7 @@ export class Metric extends Query {
 		// TODO: is out a Metric or a Query?
 		return out;
 	}
+
+
+	constructor(...args) {super(...args)}
 }
