@@ -3,7 +3,11 @@ sidebar_position: 1
 title: Delta
 ---
 
-<img src="/img/delta-pos.png" width="150"/>
+```sql growth
+select 0.366 as positive, -0.366 as negative
+```
+
+<Delta data={growth} column=positive fmt=pct1 />
 
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 />
@@ -19,18 +23,18 @@ title: Delta
 
 #### Positive
 
-<img src="/img/delta-pos.png" width="130"/>
+<Delta data={growth} column=positive fmt=pct1 />
 
 #### Negative 
 
-<img src="/img/delta-neg.png" width="150"/>
+<Delta data={growth} column=negative fmt=pct1 />
 
 #### Neutral*
 *Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 neutralMin=-0.4 neutralMax=0.4 />
 ```
-<img src="/img/delta-neut.png" width="130"/>
+<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
 
 ### Chips
 
@@ -40,18 +44,18 @@ title: Delta
 
 #### Positive
 
-<img src="/img/delta-chip-pos.png" width="130"/>
+<Delta data={growth} column=positive fmt=pct1 chip=true/>
 
 #### Negative 
 
-<img src="/img/delta-chip-neg.png" width="130"/>
+<Delta data={growth} column=negative fmt=pct1 chip=true/>
 
 #### Neutral*
 *Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 chip=true neutralMin=-0.4 neutralMax=0.4 />
 ```
-<img src="/img/delta-chip-neut.png" width="130"/>
+<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4 chip=true/>
 
 ### Symbol Position
 
@@ -61,7 +65,7 @@ title: Delta
 <Delta data={sales} column=growth fmt=pct1 symbolPosition=left/>
 ```
 
-<img src="/img/delta-left.png" width="130"/>
+<Delta data={growth} column=positive fmt=pct1 symbolPosition=left/>
 
 #### Symbol on Left in Chip
 
@@ -69,7 +73,7 @@ title: Delta
 <Delta data={sales} column=growth fmt=pct1 chip=true symbolPosition=left/>
 ```
 
-<img src="/img/delta-left-neg.png" width="130"/>
+<Delta data={growth} column=negative fmt=pct1 symbolPosition=left/>
 
 ## Options
 <PropListing

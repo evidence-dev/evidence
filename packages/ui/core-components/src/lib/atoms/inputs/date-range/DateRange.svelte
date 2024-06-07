@@ -36,6 +36,8 @@
 	export let data;
 	/** @type {string | undefined} */
 	export let dates;
+	/** @type {[]string | undefined} */
+	export let presetRanges;
 
 	const exec = getQueryFunction();
 	let query;
@@ -115,6 +117,7 @@
 					start={startString}
 					end={endString}
 					loaded={loaded?.ready ?? true}
+					{presetRanges}
 				/>
 			</QueryLoad>
 		{/if}
