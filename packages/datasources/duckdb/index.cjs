@@ -7,6 +7,7 @@ const {
 } = require('@evidence-dev/db-commons');
 const { Database } = require('duckdb-async');
 const path = require('path');
+const fs = require('fs/promises');
 
 /**
  * Converts BigInt values to Numbers in an object.
@@ -46,7 +47,6 @@ function nativeTypeToEvidenceType(data) {
 }
 
 /**
- *
  * @param {Record<string, unknown>[]} rows
  * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
  */
@@ -64,7 +64,6 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 };
 
 /**
- *
  * @param {{ column_name: string; column_type: string; }[]} describe
  * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
  */
@@ -140,6 +139,18 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 			custom_user_agent: 'evidence-dev'
 		});
 		const conn = await db.connect();
+
+		if (database.directory) {
+			const contents = await fs.readdir(database.directory);
+			if (contents.find((d) => d === 'initialize.sql')) {
+				const initScript = await fs.readFile(path.resolve(database.directory, 'initialize.sql'), {
+					encoding: 'utf-8'
+				});
+				await conn.exec(initScript);
+				console.log(`Ran Initialize`, initScript);
+			}
+		}
+
 		const stream = conn.stream(queryString);
 
 		const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
@@ -178,6 +189,7 @@ module.exports = runQuery;
 /**
  * @typedef {Object} DuckDBOptions
  * @property {string} filename
+ * @property {string} directory
  */
 
 /**
@@ -195,6 +207,7 @@ module.exports.getRunner = async (opts, directory) => {
 	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
+		if (queryPath.endsWith('initialize.sql')) return null;
 		return runQuery(queryContent, { ...opts, directory: directory }, batchSize);
 	};
 };
