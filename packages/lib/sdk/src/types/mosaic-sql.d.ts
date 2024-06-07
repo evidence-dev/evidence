@@ -20,4 +20,7 @@ declare module '@uwdata/mosaic-sql' {
 	const count = CallableFunction;
 	const sum = CallableFunction;
 	const avg = CallableFunction;
+	const min = CallableFunction;
+	const max = CallableFunction;
+	const median = CallableFunction;
 }

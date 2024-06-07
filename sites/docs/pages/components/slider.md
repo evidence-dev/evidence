@@ -108,7 +108,7 @@ The default size of the slider can be altered with the size property using; medi
     required
 >
 
-name of the slider, used to reference the selected value elsewhere as `{inputs.name.value}`
+name of the slider, used to reference the selected value elsewhere as `{inputs.name}`
 
 </PropListing>
 <PropListing 
