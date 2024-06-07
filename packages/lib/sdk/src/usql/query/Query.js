@@ -306,6 +306,7 @@ export class Query {
 ---- Data ${this.#id} ${this.#hash}
 ${this.text.trim()}
         `.trim() + '\n';
+		console.log({dataQuery})
 
 		this.#debugStyled('data query text', '\n' + dataQuery, 'font-family: monospace;');
 
@@ -690,14 +691,15 @@ DESCRIBE ${this.text.trim()}
 	 *
 	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
+	 * @param {QueryValue<any>} [initialQuery]
 	 */
-	static createReactive = (reactiveOpts, opts) => {
+	static createReactive = (reactiveOpts, opts, initialQuery) => {
 		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
 
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const createFn = Query.create;
-		/** @type {QueryValue<any>} */
-		let activeQuery;
+		/** @type {QueryValue<any> | undefined} */
+		let activeQuery = initialQuery;
 
 		let changeIdx = 0;
 		/** @type {() => unknown} */
@@ -709,6 +711,7 @@ DESCRIBE ${this.text.trim()}
 			 * @returns {Promise<void> | void}
 			 */
 			(nextQuery, newOpts) => {
+				if (!activeQuery) throw new Error()
 				changeIdx += 1;
 				const targetChangeIdx = changeIdx;
 				Query.#debugStatic(
@@ -1186,12 +1189,13 @@ DESCRIBE ${this.text.trim()}
 		const cols = Array.isArray(searchCol) ? searchCol : [searchCol];
 		const statements = cols
 			.map((col) => {
+				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
 				const similarity = taggedSql`jaro_winkler_similarity(lower('${escapedSearchTerm}'), lower("${col}"))`;
-				const exactMatch =
-					escapedSearchTerm.length >= 4
-						? taggedSql`CASE WHEN lower("${col}") LIKE lower('%${escapedSearchTerm}%') THEN 1 ELSE 0 END`
-						: taggedSql`0`;
-				return taggedSql`GREATEST((${similarity}), (${exactMatch}))`;
+				const exactSubMatch =
+					// escapedSearchTerm.length >= 4
+						taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(" ").join("%")}%') THEN 1 ELSE 0 END`
+						// : taggedSql`0`;
+				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
 			})
 			.join(',');
 
@@ -1201,7 +1205,7 @@ DESCRIBE ${this.text.trim()}
 				.clone()
 				.$select(
 					{
-						similarity: taggedSql`GREATEST(${statements})`
+						similarity: taggedSql`GREATEST(${statements})`,
 					},
 					'*'
 				)

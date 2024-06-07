@@ -8,7 +8,7 @@
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Viz/Datatable',
-		component: DataTable
+		component: DataTable,
 	};
 </script>
 

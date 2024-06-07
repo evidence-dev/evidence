@@ -24,8 +24,10 @@
 	import Fullscreen from '../../../atoms/fullscreen/Fullscreen.svelte';
 	import Column from './Column.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import debounce from 'lodash.debounce';
+	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte'
 	import { toasts } from '@evidence-dev/component-utilities/stores';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 
 	// Set up props store
 	let props = writable({});
@@ -187,33 +189,45 @@
 	$: filteredData = data;
 	let showNoResults = false;
 
-	const runSearch = debounce(() => {
-		if (Query.isQuery(data)) {
-			// throw new Error();
-			if (searchValue) {
-				const searched = data.search(
+	/** @type {ReturnValue<typeof Query["createReactive"]>}*/
+	let searchFactory;
+	$: if (Query.isQuery(data) && search) {
+		searchFactory = Query.createReactive(
+			{
+				loadGracePeriod: 1000,
+				callback: (v) => {
+					filteredData = v;
+					console.log(JSON.parse(JSON.stringify(v.slice(0,10))))
+				},
+				execFn: query
+			},
+			data.opts
+			,data
+		);
+	}
+
+	$: if (searchFactory) {
+		if (searchValue) {
+			searchFactory(
+				data.search(
 					searchValue,
 					data.columns.map((c) => c.column_name),
-					0.7
-				);
-				searched.fetch().then(() => {
-					if (!searched.error) filteredData = searched;
-				});
-			} else {
-				filteredData = data;
-			}
-		} else {
-			// TODO: Toast Warning
-			toasts.add({
-				status: 'warning',
-				title: 'Search Failed',
-				description: 'Please use a query instead.',
-				timeout: 5000
-			});
+					searchValue.length === 1 ? 0.5 : 
+					searchValue.length >= 6 ? 0.9 : 0.8
+				),
+				data
+			);
 		}
-	});
-	$: if (search) {
-		runSearch(searchValue, data);
+		else filteredData = data;
+	}
+
+	$: if (search && !Query.isQuery(data)) {
+		toasts.add({
+			status: 'warning',
+			title: 'Search Failed',
+			description: 'Please use a query instead.',
+			timeout: 5000
+		});
 	}
 
 	// ---------------------------------------------------------------------------------------
@@ -446,7 +460,7 @@
 		on:mouseleave={() => (hovering = false)}
 	>
 		{#if search}
-			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
+			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
 		{/if}
 
 		<div class="scrollbox" style:background-color={backgroundColor}>
@@ -468,30 +482,61 @@
 					{wrapTitles}
 				/>
 
-				{#if groupBy && groupedData && searchValue === ''}
-					{#each sortedGroupNames as groupName}
-						{#if groupType === 'accordion'}
-							<GroupRow
-								{groupName}
-								currentGroupData={groupedData[groupName]}
-								toggled={groupToggleStates[groupName]}
-								on:toggle={handleToggle}
-								{columnSummary}
-								rowColor={accordionRowColor}
-								{rowNumbers}
-								{subtotals}
-								{compact}
-								finalColumnOrder={getFinalColumnOrder(
-									$props.columns.length > 0
-										? $props.columns.map((d) => d.id)
-										: Object.keys(data[0]),
-									$props.priorityColumns
-								)}
-							/>
-							{#if groupToggleStates[groupName]}
+				<QueryLoad data={filteredData}>
+					<svelte:fragment slot="skeleton">
+						<tr>
+							<td colspan={filteredData.columns.length} class="h-32">
+								<Skeleton />
+							</td>
+						</tr>
+					</svelte:fragment>
+					{#if groupBy && groupedData && searchValue === ''}
+						{#each sortedGroupNames as groupName}
+							{#if groupType === 'accordion'}
+								<GroupRow
+									{groupName}
+									currentGroupData={groupedData[groupName]}
+									toggled={groupToggleStates[groupName]}
+									on:toggle={handleToggle}
+									{columnSummary}
+									rowColor={accordionRowColor}
+									{rowNumbers}
+									{subtotals}
+									{compact}
+									finalColumnOrder={getFinalColumnOrder(
+										$props.columns.length > 0
+											? $props.columns.map((d) => d.id)
+											: Object.keys(data[0]),
+										$props.priorityColumns
+									)}
+								/>
+								{#if groupToggleStates[groupName]}
+									<TableRow
+										displayedData={groupedData[groupName]}
+										{groupType}
+										{rowShading}
+										{link}
+										{rowNumbers}
+										{rowLines}
+										{compact}
+										{index}
+										{columnSummary}
+										grouped={true}
+										groupColumn={groupBy}
+										finalColumnOrder={getFinalColumnOrder(
+											$props.columns.length > 0
+												? $props.columns.map((d) => d.id)
+												: Object.keys(data[0]),
+											$props.priorityColumns
+										)}
+									/>
+								{/if}
+							{:else if groupType === 'section'}
 								<TableRow
-									displayedData={groupedData[groupName]}
+									groupColumn={groupBy}
 									{groupType}
+									rowSpan={groupedData[groupName].length}
+									displayedData={groupedData[groupName]}
 									{rowShading}
 									{link}
 									{rowNumbers}
@@ -500,7 +545,7 @@
 									{index}
 									{columnSummary}
 									grouped={true}
-									groupColumn={groupBy}
+									{groupNamePosition}
 									finalColumnOrder={getFinalColumnOrder(
 										$props.columns.length > 0
 											? $props.columns.map((d) => d.id)
@@ -508,81 +553,59 @@
 										$props.priorityColumns
 									)}
 								/>
+								{#if subtotals}
+									<SubtotalRow
+										{groupName}
+										currentGroupData={groupedData[groupName]}
+										{columnSummary}
+										rowColor={subtotalRowColor}
+										fontColor={subtotalFontColor}
+										{groupType}
+										{groupBy}
+										{compact}
+										finalColumnOrder={getFinalColumnOrder(
+											$props.columns.length > 0
+												? $props.columns.map((d) => d.id)
+												: Object.keys(data[0]),
+											$props.priorityColumns
+										)}
+									/>
+								{/if}
 							{/if}
-						{:else if groupType === 'section'}
-							<TableRow
-								groupColumn={groupBy}
-								{groupType}
-								rowSpan={groupedData[groupName].length}
-								displayedData={groupedData[groupName]}
-								{rowShading}
-								{link}
-								{rowNumbers}
-								{rowLines}
-								{compact}
-								{index}
-								{columnSummary}
-								grouped={true}
-								{groupNamePosition}
-								finalColumnOrder={getFinalColumnOrder(
-									$props.columns.length > 0
-										? $props.columns.map((d) => d.id)
-										: Object.keys(data[0]),
-									$props.priorityColumns
-								)}
-							/>
-							{#if subtotals}
-								<SubtotalRow
-									{groupName}
-									currentGroupData={groupedData[groupName]}
-									{columnSummary}
-									rowColor={subtotalRowColor}
-									fontColor={subtotalFontColor}
-									{groupType}
-									{groupBy}
-									{compact}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
-								/>
-							{/if}
-						{/if}
-					{/each}
-				{:else}
-					<TableRow
-						{displayedData}
-						{rowShading}
-						{link}
-						{rowNumbers}
-						{rowLines}
-						{compact}
-						{index}
-						{columnSummary}
-						finalColumnOrder={getFinalColumnOrder(
-							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-							$props.priorityColumns
-						)}
-					/>
-				{/if}
+						{/each}
+					{:else}
+						<TableRow
+							{displayedData}
+							{rowShading}
+							{link}
+							{rowNumbers}
+							{rowLines}
+							{compact}
+							{index}
+							{columnSummary}
+							finalColumnOrder={getFinalColumnOrder(
+								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+								$props.priorityColumns
+							)}
+						/>
+					{/if}
 
-				{#if totalRow && searchValue === ''}
-					<TotalRow
-						{data}
-						{rowNumbers}
-						{columnSummary}
-						rowColor={totalRowColor}
-						fontColor={totalFontColor}
-						{groupType}
-						{compact}
-						finalColumnOrder={getFinalColumnOrder(
-							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-							$props.priorityColumns
-						)}
-					/>
-				{/if}
+					{#if totalRow && searchValue === ''}
+						<TotalRow
+							{data}
+							{rowNumbers}
+							{columnSummary}
+							rowColor={totalRowColor}
+							fontColor={totalFontColor}
+							{groupType}
+							{compact}
+							finalColumnOrder={getFinalColumnOrder(
+								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+								$props.priorityColumns
+							)}
+						/>
+					{/if}
+				</QueryLoad>
 			</table>
 		</div>
 
