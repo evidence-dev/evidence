@@ -5,6 +5,8 @@
 
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
+	import { userEvent, within, waitFor } from '@storybook/test';
+
 	import Dropdown from '../Dropdown.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
@@ -13,14 +15,51 @@
 	import DependentDropdowns from './DependentDropdowns.story.svelte';
 
 	import DropdownCharts from './DropdownCharts.story.svelte';
+
+	// Play Functions
+	const openDropdown = async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		let dropdown = await waitFor(() => canvas.getByRole('combo-box'));
+		userEvent.click(dropdown);
+	};
+
+	const searchDropdown = async ({ canvasElement, step }) => {
+		const canvas = within(canvasElement);
+		let dropdown = await waitFor(() => canvas.getByRole('combo-box'));
+		await userEvent.click(dropdown);
+		await userEvent.keyboard('Alliance');
+	};
+
+	const multiSelectSelectAll = async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		let dropdown = await waitFor(() => canvas.getByRole('combo-box'));
+		await userEvent.click(dropdown, { delay: 100 });
+		await userEvent.keyboard('{Enter}');
+	};
 </script>
 
 <Story name="Basic Usage">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown name="test" {data} value="value" label="label" />
 </Story>
-<Story name="Number filtering">
-	<Dropdown name="Number filtering">
+
+<Story name="Loading state">
+	{@const data = Query.create(`SELECT 100`, query, { noResolve: true })}
+	<Dropdown name="test" {data} value="value" label="label" />
+</Story>
+
+<Story name="Open" play={openDropdown}>
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="test" {data} value="value" label="label" />
+</Story>
+
+<Story name="Search" play={searchDropdown}>
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="test" {data} value="value" label="label" />
+</Story>
+
+<Story name="Number Sorting">
+	<Dropdown name="Number Sorting">
 		<DropdownOption value={222} />
 		<DropdownOption value={2} />
 		<DropdownOption value={10} />
@@ -30,7 +69,7 @@
 	</Dropdown>
 </Story>
 
-<Story name="Alphabetic filtering">
+<Story name="Alphabetic Sorting">
 	<Dropdown name="test" defaultValue="Bottom 100">
 		<DropdownOption value="Fig" />
 		<DropdownOption value="Honeydew" />
@@ -44,7 +83,7 @@
 	</Dropdown>
 </Story>
 
-<Story name="String Number filtering">
+<Story name="String Number Sorting">
 	<Dropdown name="test" defaultValue="Bottom 100">
 		<DropdownOption value="Top {100}" />
 		<DropdownOption value="Top {101}" />
@@ -58,7 +97,7 @@
 	</Dropdown>
 </Story>
 
-<Story name="Strings and Mixed String-Numbers filtering">
+<Story name="Strings and Mixed String-Numbers Sorting">
 	<Dropdown name="test" defaultValue="Bottom 100">
 		<DropdownOption value="Top {100}" />
 		<DropdownOption value="Top {101}" />
@@ -71,10 +110,22 @@
 		<DropdownOption value="Bottom 101" />
 	</Dropdown>
 </Story>
+
 <Story name="Multiselect">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown multiple name="test" {data} value="value" label="label" />
 </Story>
+
+<Story name="Multiselect Open" play={openDropdown}>
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown multiple name="test" {data} value="value" label="label" />
+</Story>
+
+<Story name="Multiselect Select All" play={multiSelectSelectAll}>
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown multiple name="test" {data} value="value" label="label" />
+</Story>
+
 <Story name="Select all by default">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown multiple name="test" {data} value="value" label="label" selectAllByDefault />

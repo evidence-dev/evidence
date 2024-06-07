@@ -46,6 +46,7 @@
 		"@steeze-ui/simple-icons": "^1.7.1",
 		"@steeze-ui/svelte-icon": "1.5.0",
 		"@steeze-ui/tabler-icons": "2.1.1",
+		"@storybook/test": "^8.1.6",
 		"@types/leaflet": "^1.9.12",
 		"@types/lodash.merge": "^4.6.9",
 		"bits-ui": "^0.11.8",
