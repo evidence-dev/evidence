@@ -26,7 +26,7 @@
 	<DateRange {...args} />
 </Story>
 
-<Story name="Single presetRanges" args={{ presetRanges: ['last7Days'] }} />
+<Story name="Single presetRanges" args={{ presetRanges: 'last7Days' }} />
 
 <Story
 	name="Multiple presetRanges"
@@ -34,6 +34,8 @@
 />
 
 <Story
-	name="Multiple presetRanges that are not present"
-	args={{ presetRanges: ['tomorrow', 'firstWeek', '30DaysLater', 'Forever'] }}
+	name="Multiple presetRanges without camelCase format"
+	args={{ presetRanges: ['Last Month', 'Last7Days', 'lastyear', 'ALLTIME'] }}
 />
+
+<Story name="Default Value" args={{ defaultValue: 'last Month' }} />
