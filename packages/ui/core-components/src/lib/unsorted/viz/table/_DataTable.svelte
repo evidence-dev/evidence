@@ -28,6 +28,7 @@
 	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
+	import {debounce} from 'perfect-debounce'
 
 	// Set up props store
 	let props = writable({});
@@ -192,18 +193,17 @@
 	/** @type {ReturnValue<typeof Query["createReactive"]>}*/
 	let searchFactory;
 	$: if (Query.isQuery(data) && search) {
-		searchFactory = Query.createReactive(
+		searchFactory = debounce(Query.createReactive(
 			{
 				loadGracePeriod: 1000,
 				callback: (v) => {
 					filteredData = v;
-					console.log(JSON.parse(JSON.stringify(v.slice(0,10))))
 				},
 				execFn: query
 			},
 			data.opts
 			,data
-		);
+		), 200);
 	}
 
 	$: if (searchFactory) {

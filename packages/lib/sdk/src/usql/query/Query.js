@@ -1190,7 +1190,7 @@ DESCRIBE ${this.text.trim()}
 		const statements = cols
 			.map((col) => {
 				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
-				const similarity = taggedSql`jaro_winkler_similarity(lower('${escapedSearchTerm}'), lower("${col}"))`;
+				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
 				const exactSubMatch =
 					// escapedSearchTerm.length >= 4
 						taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(" ").join("%")}%') THEN 1 ELSE 0 END`
