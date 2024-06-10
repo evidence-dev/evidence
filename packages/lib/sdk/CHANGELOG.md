@@ -1,5 +1,15 @@
 # @evidence-dev/sdk
 
+## 1.3.0
+
+### Minor Changes
+
+- 5705a7eb: Added Aggregation functions min, max, median
+
+### Patch Changes
+
+- dc8f01be: QueryBuilder functions now inherit several parent options
+
 ## 1.2.3-features-b.0
 
 ### Patch Changes

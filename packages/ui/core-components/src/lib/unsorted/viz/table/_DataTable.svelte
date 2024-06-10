@@ -340,6 +340,9 @@
 		pageCount = Math.ceil(filteredData.length / rows);
 		displayedData = filteredData.slice(index, index + rows);
 		displayedPageLength = displayedData.length;
+		if (pageCount < currentPage) {
+			goToPage(pageCount - 1);
+		}
 	} else {
 		currentPage = 1;
 		displayedData = filteredData;
