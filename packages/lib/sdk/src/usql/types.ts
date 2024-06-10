@@ -65,15 +65,15 @@ export interface CreateQuery<RowType extends QueryResultRow = QueryResultRow> {
 		_?: never
 	): QueryValue<RowType>;
 
-	/**
-	 * @deprecated id has been moved to the options argument
-	 */
-	(
-		query: QueryBuilder | string,
-		executeQuery: Runner,
-		id?: string,
-		opts?: Omit<QueryOpts<RowType>, 'id'>
-	): QueryValue<RowType>;
+	// /**
+	//  * @deprecated id has been moved to the options argument
+	//  */
+	// (
+	// 	query: QueryBuilder | string,
+	// 	executeQuery: Runner,
+	// 	id?: string,
+	// 	opts?: Omit<QueryOpts<RowType>, 'id'>
+	// ): QueryValue<RowType>;
 }
 
 export type LengthResultRow = { rowCount: number };

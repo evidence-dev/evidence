@@ -1,3 +1,4 @@
+import { QueryValue } from '../usql/index.js';
 import {
 	MetricTimeGrainsSchema,
 	MetricDefSchema,
@@ -6,6 +7,7 @@ import {
 	MetricFileSchema
 } from './schemas/metrics.schema.js';
 import { z } from 'zod';
+import { Metric } from './Metric.js';
 
 export type MetricTimeGrains = z.infer<typeof MetricTimeGrainsSchema>;
 export type MetricDef = z.infer<typeof MetricDefSchema>;
@@ -23,3 +25,6 @@ export type MetricCut = {
 	dimensions?: string[];
 	grain?: MetricTimeGrains;
 };
+
+
+export type MetricValue = QueryValue<any> & Metric

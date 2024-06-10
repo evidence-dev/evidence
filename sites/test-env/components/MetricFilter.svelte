@@ -4,7 +4,7 @@
 	import { writable } from 'svelte/store';
 	import { setTrackProxy } from '@evidence-dev/sdk/usql';
 	import { MetricsInputKey, MetricsContextKey } from '@evidence-dev/sdk/metrics/browser';
-	import { Dropdown, DropdownOption } from '@evidence-dev/core-components';
+	import { Dropdown, DropdownOption, TextInput } from '@evidence-dev/core-components';
 
 	export let metric;
 	const metricsContext = getContext(MetricsContextKey);
@@ -22,11 +22,16 @@
 	<div>{metric}</div>
 	{#if metric in metricsContext}
 		<div class="flex-1 flex justify-end">
-			<Dropdown title="Dimensions" name="dimensions" multiple>
-				{#each metricsContext[metric].dimensions as dimension}
-					<DropdownOption value={dimension} />
-				{/each}
-			</Dropdown>
+			<div class="flex flex-col">
+				<Dropdown title="Dimensions" name="dimensions" multiple>
+					{#each metricsContext[metric].dimensions as dimension}
+						<DropdownOption value={dimension} />
+					{/each}
+				</Dropdown>
+				{#if $metricInputs.dimensions.rawValues.length}
+					<TextInput name="dimensions_filter" />
+				{/if}
+			</div>
 
 			{#if metricsContext[metric].timeGrains.length}
 				<Dropdown title="Grain" name="time_grain">

@@ -161,6 +161,7 @@ export class Query {
 
 	/** @type {QueryBuilder} */
 	#query;
+
 	/** @type {string} */
 	#originalText;
 	/**
@@ -1149,10 +1150,14 @@ DESCRIBE ${this.text.trim()}
 	//////////////////////////////////
 	/** @param {string} filterStatement */
 	where = (filterStatement) =>
-		Query.create(this.#query.clone().where(taggedSql`${filterStatement}`), this.#executeQuery, {
-			knownColumns: this.#columns,
-			noResolve: this.#opts.noResolve
-		});
+		Query.create.bind(this.constructor)(
+			this.#query.clone().where(taggedSql`${filterStatement}`),
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				noResolve: this.#opts.noResolve
+			}
+		);
 
 	/**
 	 * Attaches an `ordinal` column to the query based on some window statement
@@ -1165,7 +1170,7 @@ DESCRIBE ${this.text.trim()}
 		newQ.select({
 			ordinal: taggedSql`row_number() over (${windowStatement})`
 		});
-		return Query.create(newQ, this.#executeQuery, {
+		return Query.create.bind(this.constructor)(newQ, this.#executeQuery, {
 			...this.#inheritableOpts,
 			knownColumns: this.#columns
 		});
@@ -1185,7 +1190,7 @@ DESCRIBE ${this.text.trim()}
 		];
 
 		/** @type {import('../types.js').CreateQuery<any>} */
-		const typedCreateFn = Query.create;
+		const typedCreateFn = Query.create.bind(this.constructor);
 
 		/** @type {QueryValue<RowType & {similarity: number}>} */
 		const output = typedCreateFn(
@@ -1210,14 +1215,14 @@ DESCRIBE ${this.text.trim()}
 
 	/** @param {number} limit */
 	limit = (limit) =>
-		Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
+		Query.create.bind(this.constructor)(this.#query.clone().limit(limit), this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
 
 	/** @param {number} offset */
 	offset = (offset) =>
-		Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
+		Query.create.bind(this.constructor)(this.#query.clone().offset(offset), this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
@@ -1226,22 +1231,35 @@ DESCRIBE ${this.text.trim()}
 	 * @param {number} limit
 	 */
 	paginate = (offset, limit) =>
-		Query.create(this.#query.clone().offset(offset).limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
-		});
+		Query.create.bind(this.constructor)(
+			this.#query.clone().offset(offset).limit(limit),
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				...this.#inheritableOpts
+			}
+		);
 
 	/**
 	 * @param {string[]} columns
 	 * @param {boolean} [withRowCount=true]
 	 */
 	groupBy = (columns, withRowCount) => {
+		console.log({ columns, withRowCount });
 		const query = this.#query.clone();
-		query.$select(columns);
+		console.log(query.toString());
+		query.$select('*');
+		query.$groupby();
+		console.log(query.toString());
+		columns.forEach((c) => {
+			query.select(c.toString());
+			query.groupby(c.toString());
+			console.log(query.toString());
+		});
 		if (withRowCount) query.select({ rows: qCount('*') });
-		query.$groupby(columns);
+		console.log(query.toString());
 
-		return Query.create(query, this.#executeQuery, {
+		return Query.create.bind(this.constructor)(query, this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
@@ -1291,9 +1309,19 @@ DESCRIBE ${this.text.trim()}
 				});
 			}
 		}
-		return Query.create(query, this.#executeQuery, {
+		return Query.create.bind(this.constructor)(query, this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
+		});
+	};
+	/**
+	 * @param {string | QueryBuilder} query
+	 * @param {import('../types.js').QueryOpts<any>} [opts]
+	 */
+	derive = (query, opts) => {
+		return Query.create.bind(this.constructor)(query, this.#executeQuery, {
+			...this.#inheritableOpts,
+			...opts
 		});
 	};
 

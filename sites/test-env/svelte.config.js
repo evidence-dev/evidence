@@ -32,7 +32,7 @@ export default {
 								
 								$: __${spec.name}Cut = {
 									dimensions: !inputs[MetricsInputKey].${spec.name}.dimensions[Unset] ? inputs[MetricsInputKey].${spec.name}.dimensions?.rawValues?.map(v => v.value) ?? [] : undefined,
-									time_grain: !inputs[MetricsInputKey].${spec.name}.time_grain[Unset] && inputs[MetricsInputKey].${spec.name}.time_grain ? inputs[MetricsInputKey].${spec.name}.time_grain.value : undefined
+									grain: !inputs[MetricsInputKey].${spec.name}.time_grain[Unset] && inputs[MetricsInputKey].${spec.name}.time_grain ? inputs[MetricsInputKey].${spec.name}.time_grain.value : undefined
 								}
 
 								$: __${spec.name}Factory(__${spec.name}Cut)

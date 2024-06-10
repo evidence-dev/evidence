@@ -23,4 +23,6 @@ declare module '@uwdata/mosaic-sql' {
 	const min = CallableFunction;
 	const max = CallableFunction;
 	const median = CallableFunction;
+	const and = CallableFunction;
+	const or = CallableFunction;
 }

@@ -1,5 +1,6 @@
-import { Query } from '../usql/index.js';
-import { metricDefToSql } from './metricDefToSql.js';
+import { Query, hashQuery } from '../usql/index.js';
+import { applyCut, metricDefToSql } from './metricDefToSql.js';
+import { sql as taggedSql } from '@uwdata/mosaic-sql';
 
 export class Metric extends Query {
 	/** @type {string} */
@@ -9,10 +10,12 @@ export class Metric extends Query {
 	description = '';
 
 	/** @type {Object} */
-	chartSpec = {
-		x: '',
-		y: '',
-		series: ''
+	get chartSpec()  {
+		return {
+			x: 'grain',
+			y: this.#metric?.name,
+			series: this.#cut?.dimensions
+		}
 	};
 
 	/** @type {{value: string, label: string}[]} */
@@ -40,13 +43,16 @@ export class Metric extends Query {
 	 * @param {import("./types.js").MetricCut} cut
 	 */
 	registerCut = (cut) => {
-		if (this.#cut) throw new Error('Cut already registered');
-		this.#cut = cut;
+		if (!this.#cut) this.#cut = cut;
 	};
 
-	/** @returns {import('../usql/index.js').QueryValue<any>} */
-	static create() {
-		throw new Error('Use Metric.createMetric');
+	/**
+	 * @param {Parameters<import('../usql/types.js').CreateQuery<any>>} args
+	 * @returns {import('./types.js').MetricValue}
+	 */
+	static create(...args) {
+		console.warn('Use Metric.createMetric rather than Metric.create');
+		return /** @type {import('./types.js').MetricValue} */ (super.create.bind(this)(...args));
 	}
 
 	/**
@@ -78,21 +84,47 @@ export class Metric extends Query {
 	};
 
 	/**
+	 * Groups a metric by some time grain and set of dimensions
 	 * @param {string[]} dimensions
 	 * @param {import("./types.js").MetricTimeGrains} grain
-	 * @returns {import('../usql/query/Query.js').QueryValue}
+	 * @returns {import('./types.js').MetricValue}
 	 */
 	cut(dimensions, grain) {
-		/** @type {import('../usql/query/Query.js').QueryValue<any>} */
-		let out = this.value;
-		if (dimensions?.length) {
-			out = out.groupBy(dimensions, false);
-		}
-		if (grain) {
-			out = out.groupBy([grain], false);
-		}
-		// TODO: is out a Metric or a Query?
+		if (!this.#metric) throw new Error('Metric must be defined');
+		const q = applyCut(this.#metric, { dimensions, grain });
+
+		const out = /** @type {import('./types.js').MetricValue} */ (
+			this.derive(q, {
+				id: `Metric-${this.#metric.name}-cut-${hashQuery(JSON.stringify({ dimensions, grain }))}`
+			})
+		);
+		out.registerCut({ dimensions, grain });
+		out.registerMetric(this.#metric);
+
 		return out;
+	}
+
+	/**
+	 * Expands to include child metrics as rows
+	 */
+	expand() {}
+
+	/**
+	 * Filters the metric on dimension or set of dimensions
+	 * @param {Record<string, string>} filters
+	 */
+	filter(filters) {
+		if (!this.#metric || !this.#cut) throw new Error(`Metric was not registered, not ready to filter yet`)
+		let out = applyCut(this.#metric, this.#cut);
+		for (const [ dimension, value ] of Object.entries(filters)) {
+			if (!this.#metric?.dimensions.includes(dimension)){
+				console.warn(`Unknown dimension: ${dimension}`);
+				continue
+			}
+			out = out.where(taggedSql`"${dimension}" = '${value}'`);
+		}
+
+		return this.derive(out)
 	}
 
 	/**

@@ -1,18 +1,15 @@
 source:
   datasource: needful_things
   table: orders
+  # -- or
+  # query: |
+  #   SELECT * FROM orders   
 
-# Metric references are key
 metrics:
   - name: avg_sales
     title: Average Sales
     description: |
-      This is the average sale $ amount, used for quarterly revenue calcs
-    # -- or
-    # query: |
-    #   SELECT * FROM orders 
-    # -- or
-    # some yaml query thing
+      This is the average sale $ amount
     expression: sales
     aggregation: avg
     distinct:
@@ -28,3 +25,48 @@ metrics:
       - quarter
       - year
     time_expression: order_datetime
+
+  - name: avg_costs
+    title: Average Costs
+    description: |
+      This is the average costs $ amount
+    expression: sales
+    aggregation: avg
+    distinct:
+      - category # becomes avg(sales) over distinct category
+    dimensions:
+      - state
+      - channel
+    default_grain: day
+    time_grains:
+      - day
+      - week
+      - month
+      - quarter
+      - year
+    time_expression: order_datetime
+
+  - # Metadata
+    name: avg_profit
+    title: Average Profit
+    description: |
+      This is the average profits per sale
+    # Actual Definition
+    expression: metric(sales) / metric(cost)
+    aggregation: avg
+    fmt: pct
+    distinct:
+      - category # becomes avg(sales) over distinct category
+    # Dimensions
+    dimensions:
+      - state
+      - channel
+    # Time
+    time_expression: order_datetime
+    default_grain: day
+    time_grains:
+      - day
+      - week
+      - month
+      - quarter
+      - year
