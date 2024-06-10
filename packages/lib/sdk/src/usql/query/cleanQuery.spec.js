@@ -47,4 +47,16 @@ FROM table
 WHERE id = 1`;
 		expect(cleanQuery(query)).toBe(expected);
 	});
+    
+    it('should handle empty row at end of string', () => {
+        const query = `SELECT *
+FROM table
+WHERE id = 1; --
+
+`;
+        const expected = `SELECT *
+FROM table
+WHERE id = 1`;
+        expect(cleanQuery(query)).toBe(expected);
+    });
 });
