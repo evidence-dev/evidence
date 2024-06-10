@@ -24,7 +24,8 @@
 	"evidence": {
 		"datasources": [
 			"snowflake"
-		]
+		],
+		"icon": "Snowflake"
 	},
 	"keywords": [
 		"evidence",
