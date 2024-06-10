@@ -19,6 +19,58 @@
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown name="test" {data} value="value" label="label" />
 </Story>
+<Story name="Number filtering">
+	<Dropdown name="Number filtering">
+		<DropdownOption value={222} />
+		<DropdownOption value={2} />
+		<DropdownOption value={10} />
+		<DropdownOption value={-5} />
+		<DropdownOption value={99} />
+		<DropdownOption value={1} />
+	</Dropdown>
+</Story>
+
+<Story name="Alphabetic filtering">
+	<Dropdown name="test" defaultValue="Bottom 100">
+		<DropdownOption value="Fig" />
+		<DropdownOption value="Honeydew" />
+		<DropdownOption value="Apple" />
+		<DropdownOption value="Clementine" />
+		<DropdownOption value="Dragon Fruit" />
+		<DropdownOption value="Elderberry" />
+		<DropdownOption value="Ichang Papeda" />
+		<DropdownOption value="Grape" />
+		<DropdownOption value="Banana" />
+	</Dropdown>
+</Story>
+
+<Story name="String Number filtering">
+	<Dropdown name="test" defaultValue="Bottom 100">
+		<DropdownOption value="Top {100}" />
+		<DropdownOption value="Top {101}" />
+		<DropdownOption value="Top {1001}" />
+		<DropdownOption value="Top {102}" />
+		<DropdownOption value="Top {111}" />
+		<DropdownOption value="Top {199}" />
+		<DropdownOption value="Top {10000}" />
+		<DropdownOption value="Bottom {100}" />
+		<DropdownOption value="Bottom {101}" />
+	</Dropdown>
+</Story>
+
+<Story name="Strings and Mixed String-Numbers filtering">
+	<Dropdown name="test" defaultValue="Bottom 100">
+		<DropdownOption value="Top {100}" />
+		<DropdownOption value="Top {101}" />
+		<DropdownOption value="Top {1001}" />
+		<DropdownOption value="Top 102" />
+		<DropdownOption value="Top {111}" />
+		<DropdownOption value="Top {199}" />
+		<DropdownOption value="Top 10000" />
+		<DropdownOption value="Bottom {100}" />
+		<DropdownOption value="Bottom 101" />
+	</Dropdown>
+</Story>
 <Story name="Multiselect">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown multiple name="test" {data} value="value" label="label" />
@@ -29,7 +81,7 @@
 </Story>
 <Story name="With a default value">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
-	<Dropdown defaultValue={0} name="test1" {data} value="value" label="label" />
+	<Dropdown defaultValue={[1]} name="test1" {data} value="value" label="label" />
 </Story>
 <Story name="With a non-static default value">
 	{@const data = Query.create(
@@ -48,7 +100,7 @@
 	)}
 
 	<Dropdown
-		defaultValue={new Date(Date.now() - 86400000).toISOString().split('T')[0]}
+		defaultValue={[new Date(Date.now() - 86400000).toISOString().split('T')[0]]}
 		name="your-dropdown"
 		{data}
 		value="value"
@@ -62,6 +114,9 @@
 	<Dropdown name="test">
 		<DropdownOption value="All" />
 		<DropdownOption value="Top 100" />
+		<DropdownOption value="Double line breaking option" />
+		<DropdownOption value="Triple line breaking option Triple line breaking option" />
+		<DropdownOption value="Top 1002" />
 	</Dropdown>
 </Story>
 
@@ -131,4 +186,31 @@
 
 <Story name="Driving a Bar Chart">
 	<DropdownCharts />
+</Story>
+
+<Story name="With custom ordering">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`)}
+	<Dropdown name="test" {data} value="value" label="label" order="label desc" />
+</Story>
+
+<Story name="no query multiselect">
+	<Dropdown multiple name="test">
+		<DropdownOption value="Top {100}" />
+		<DropdownOption value="Top {101}" />
+		<DropdownOption value="Top {1001}" />
+		<DropdownOption value="Top 102" />
+		<DropdownOption value="Top {111}" />
+		<DropdownOption value="Top {199}" />
+		<DropdownOption value="Top 10000" />
+		<DropdownOption value="Bottom {100}" />
+		<DropdownOption value="Bottom 101" />
+	</Dropdown>
+</Story>
+
+<Story name="Using query + non-query options multiselect">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown multiple name="test" {data} value="value" label="label">
+		<DropdownOption value="All" />
+		<DropdownOption value="Top 100" />
+	</Dropdown>
 </Story>

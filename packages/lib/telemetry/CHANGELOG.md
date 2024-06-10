@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 2.1.0
+
+### Minor Changes
+
+- af9b74ee: Upgrade Segment dependency
+
 ## 2.0.4
 
 ### Patch Changes

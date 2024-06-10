@@ -1,0 +1,54 @@
+name: "Bug"
+description: Report an issue with Evidence
+title: '[Bug]: '
+labels: ['bug', 'to-review']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to submit this bug! 
+
+        If you have a usage question, please reach out to us in [Slack](http://slack.evidence.dev).
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: If you intend to submit a PR for this issue, tell us in the description. Thanks!
+      placeholder: Bug description
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce 
+      description: Steps that we can take to reproduce the bug. 
+      placeholder: Reproduction
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: "Please include any relevant browser console or server logs from around the time this bug occurred."
+      render: Shell
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: Output of `npx envinfo --system --binaries --browsers --npmPackages`
+      render: Shell
+      placeholder: System, Binaries, Browsers
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - annoyance
+        - serious, but I can work around it
+        - blocking all usage of Evidence
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Information, or Workarounds 

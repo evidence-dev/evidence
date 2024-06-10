@@ -1,5 +1,35 @@
 # @evidence-dev/component-utilities
 
+## 3.1.0
+
+### Minor Changes
+
+- 737642a0: Created input slider component and docs
+
+## 3.0.5-features-b.0
+
+### Patch Changes
+
+- acba0f3a6: Toasts that are created with the same id now UPDATE the existing toast, rather than appearing twice with the same id
+- Updated dependencies [dc8f01be2]
+  - @evidence-dev/sdk@1.2.3-features-b.0
+
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [4e3b925e]
+  - @evidence-dev/sdk@1.2.2
+
+## 3.0.3
+
+### Patch Changes
+
+- 43d66875: buildReactiveInputQuery is more careful with publishing updates
+- Updated dependencies [25ea0fe4]
+- Updated dependencies [e400971e]
+  - @evidence-dev/sdk@1.2.1
+
 ## 3.0.2
 
 ### Patch Changes

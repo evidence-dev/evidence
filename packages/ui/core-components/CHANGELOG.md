@@ -1,5 +1,100 @@
 # @evidence-dev/core-components
 
+## 4.3.0
+
+### Minor Changes
+
+- f8f7ebdb: Added sorting for numerical options in dropdop
+
+### Patch Changes
+
+- 064a5c96: Add optional title slot to Accordian Items
+- 54546362: Adjust DownloadData component for general use
+- 9dd69149: Fix auto-casing on tooltip titles
+- ac0df6ca: Fix Prism imports in CodeBlock
+- Updated dependencies [737642a0]
+  - @evidence-dev/component-utilities@3.1.0
+
+## 4.3.0-features-b.6
+
+### Patch Changes
+
+- a24deaf04: Dropdown now sorts using label before value
+
+## 4.3.0-features-b.5
+
+### Patch Changes
+
+- e058d2d35: Dropdown Index was returning NaN for all non-search queries
+
+## 4.3.0-features-b.4
+
+### Patch Changes
+
+- 9fdc805b5: DateRange uses QueryLoad + Skeleton to have a proper loading state
+
+## 4.3.0-features-b.3
+
+### Patch Changes
+
+- 90f381dc1: Dropdown option store uses sharedPromise to handle concurrency / races better. Select operations now wait for options to settle (all pending adds/removes must finish first), Add / Removes now wait for flags to finish
+- a2af0beaf: DateRange now waits for the query to resolve, if one is available
+
+## 4.3.0-features-b.2
+
+### Patch Changes
+
+- 73fc7ebfe: Add ordinal functionality to buildInputQuery and withOrdinal to Query - leverage this in Dropdown to maintain user-specified sorting until search is activated
+
+## 4.3.0-features-b.1
+
+### Minor Changes
+
+- f8f7ebdbc: Added sorting for numerical options in dropdop
+
+### Patch Changes
+
+- 064a5c96e: Add optional title slot to Accordian Items
+- 9dd691497: Fix auto-casing on tooltip titles
+
+## 4.2.1-features-b.0
+
+### Patch Changes
+
+- 97cb3a7c3: Handle all-null x columns in Line.svelte
+- f6b22bbce: Dropdown behavior when using selectAllByDefault improved
+- 106222df8: - startingZoom is now respected more consistently in Map.svelte
+  - startingZoom does not need to specified with startingLat/Long, and can be used independently
+  - zoomSnap has been modified to allow finer control over the zoom level
+- 106222df8: Mitigated white lines appearing in map
+- Updated dependencies [acba0f3a6]
+  - @evidence-dev/component-utilities@3.0.5-features-b.0
+
+## 4.2.0
+
+### Minor Changes
+
+- 1377e0ed: Interactive map components
+- 6157db9a: Add checkbox component
+
+### Patch Changes
+
+- 2a396873: Adding a selectAllByDefault property to Dropdowns
+- 40c83ee2: Fix BigValue downIsGood
+  - @evidence-dev/component-utilities@3.0.4
+
+## 4.1.1
+
+### Patch Changes
+
+- b3e10dac: Added loading state to ButtonGroup to prevent layout shifts while Query is executing
+- a6414446: $slots.\_error is not $slots.error
+- e400971e: TextInput now respects Unset more effectively
+- 52b3fde1: - Dropdown no longer renders a skeleton
+  - Dropdown ensures that only one options subscription exists at a time to prevent over-evaluating defaults
+- Updated dependencies [43d66875]
+  - @evidence-dev/component-utilities@3.0.3
+
 ## 4.1.0
 
 ### Minor Changes

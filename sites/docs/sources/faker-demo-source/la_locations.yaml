@@ -1,0 +1,25 @@
+rows: 35
+schema:
+  id:
+    type: id
+  point_name:
+    category: location
+    item: city
+  lat:
+    category: location
+    item: latitude
+    options:
+      - min: 33.7103
+        max: 34.8233
+  long:
+    category: location
+    item: longitude
+    options:
+      - min: -118.9448
+        max: -117.6464 
+  sales:
+    category: number
+    item: int
+    options:
+      - min: 1000
+        max: 234593

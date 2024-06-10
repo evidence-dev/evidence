@@ -115,10 +115,10 @@
 		)
 	);
 	onMount(() =>
-		inputs.subscribe(($i) => {
-			const providedValues = Array.isArray($i[name].rawValues)
-				? $i[name]?.rawValues
-				: [$i[name]?.rawValues];
+		inputs.subscribe((i) => {
+			const providedValues = Array.isArray(i[name]?.rawValues)
+				? i[name]?.rawValues
+				: [i[name]?.rawValues];
 			const knownValues = $selectedOptions;
 
 			if (
@@ -186,7 +186,6 @@
 			await searchQ.fetch();
 
 			queryOptions = searchQ;
-
 			if ($selectedOptions.length) {
 				// We don't want to get rid of selections that already exist when searching
 				$selectedOptions.forEach(($selectedOption) => {
@@ -200,6 +199,8 @@
 				if ($option.removeOnDeselect) flagOption([$option, DropdownValueFlag.REMOVE_ON_DESELECT]);
 			});
 			queryOptions = query;
+			hasHadSelection = false;
+			optionUpdates = undefined;
 		}
 	}, 250);
 
@@ -220,7 +221,6 @@
 			if (!hasHadSelection) {
 				setTimeout(evalDefaults, 0);
 				optionUpdates();
-				optionUpdates = undefined;
 			}
 		});
 	}
@@ -282,10 +282,17 @@
 		);
 	}
 
+	const DISPLAYED_OPTIONS = 5;
+
 	function selectAllOptions() {
-		$queryOptions.forEach((opt) => {
+		$options.forEach((opt) => {
 			flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
 		});
+	}
+
+	function getIdx(queryOpt) {
+		if ('similarity' in queryOpt) return queryOpt.similarity * -1;
+		return queryOpt.ordinal ?? 0;
 	}
 </script>
 
@@ -296,7 +303,7 @@
 		<DropdownOption
 			value={queryOpt.value}
 			valueLabel={queryOpt.label}
-			idx={(queryOpt.similarity ?? 0) * -1 ?? -1}
+			idx={getIdx(queryOpt)}
 			__auto
 		/>
 	{/each}
@@ -364,20 +371,42 @@
 						<Command.List>
 							<Command.Empty>No results found.</Command.Empty>
 							<Command.Group>
-								<VirtualList height="160px" items={$options} let:item={option}>
-									<DropdownOptionDisplay
-										value={option?.value}
-										valueLabel={option?.label}
-										handleSelect={({ value, label }) => {
-											select({ value, label });
-											if (!multiple) open = false;
-										}}
-										{multiple}
-										active={$selectedOptions.some(
-											(x) => x.value === option.value && x.label === option.label
-										)}
-									/>
-								</VirtualList>
+								{#if $options.length <= DISPLAYED_OPTIONS}
+									{#each $options as option, i}
+										<DropdownOptionDisplay
+											id={i}
+											value={option.value}
+											valueLabel={option.label}
+											handleSelect={({ value, label }) => {
+												select({ value, label });
+												if (!multiple) open = false;
+											}}
+											{multiple}
+											active={$selectedOptions.some(
+												(x) => x.value === option.value && x.label === option.label
+											)}
+										/>
+									{/each}
+								{:else}
+									<VirtualList
+										height={`${DISPLAYED_OPTIONS * 32}px`}
+										items={$options}
+										let:item={option}
+									>
+										<DropdownOptionDisplay
+											value={option?.value}
+											valueLabel={option?.label}
+											handleSelect={({ value, label }) => {
+												select({ value, label });
+												if (!multiple) open = false;
+											}}
+											{multiple}
+											active={$selectedOptions.some(
+												(x) => x.value === option.value && x.label === option.label
+											)}
+										/>
+									</VirtualList>
+								{/if}
 							</Command.Group>
 							{#if multiple}
 								{#if !disableSelectAll}

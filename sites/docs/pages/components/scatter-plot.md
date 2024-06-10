@@ -1,46 +1,62 @@
 ---
 title: Scatter Plot
 sidebar_position: 1
+queries:
+- price_vs_volume.sql
 ---
 
-![scatter-plot](/img/exg-scatter-nt.svg)
+
+<ScatterPlot 
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    xFmt=usd0
+    series=category
+/>
 
 ```markdown
 <ScatterPlot 
-    data={query_name} 
-    x=column_x 
-    y=column_y
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    xFmt=usd0
+    series=category
 />
 ```
 
 ## Examples
 
-### Scatter Plot
+### Default
 
-![scatter-plot](/img/exg-scatter-nt.svg)
+<ScatterPlot 
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+/>
 
 ```markdown
 <ScatterPlot 
-    data={census} 
-    y=median_rent_usd 
-    x=income_per_capita_usd 
-    xAxisTitle="Income Per Capita" 
-    yAxisTitle="Median Rent" 
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
 />
 ```
 
-### Multi-Series Scatter Plot
+### Multi-Series
 
-![scatter-plot](/img/exg-multi-series-scatter-nt.svg)
+<ScatterPlot 
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    series=category
+/>
 
 ```markdown
 <ScatterPlot 
-    data={scores_by_region} 
-    x=score_a 
-    y=score_b 
-    series=region 
-    xAxisTitle=true 
-    yAxisTitle=true
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    series=category
 />
 ```
 
@@ -206,7 +222,7 @@ Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88
     defaultValue="colors applied by order of series in data"
 >
 
-Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax
+Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax `seriesColors={{"Canada": "red", "US": "blue"}}`
 
 </PropListing>
 

@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.9
+
+### Patch Changes
+
+- 2b5f94e3: Bump to 10.0.2
+
 ## 1.0.8
 
 ### Patch Changes

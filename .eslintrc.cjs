@@ -4,7 +4,7 @@ module.exports = {
 	overrides: [{ files: ['*.spec.js', '*.spec.cjs'], env: { jest: true } }],
 	parserOptions: {
 		sourceType: 'module',
-		ecmaVersion: 2020
+		ecmaVersion: 13
 	},
 	env: {
 		browser: true,

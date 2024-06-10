@@ -8,7 +8,7 @@ module.exports = {
 	],
 	parserOptions: {
 		sourceType: 'module',
-		ecmaVersion: 2020,
+		ecmaVersion: 13,
 		extraFileExtensions: ['.svelte']
 	},
 	env: {
