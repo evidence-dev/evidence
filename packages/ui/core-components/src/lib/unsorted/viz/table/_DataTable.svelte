@@ -693,7 +693,7 @@
 				{`<DataTable data={${queryID}}>`}
 				<br />
 				{#each Object.keys(data[0]) as column}
-					{`	<Column id=${column}/>`}
+					{`   <Column id=${column.includes(' ') ? `'${column}'` : column}/>`}
 					<br />
 				{/each}
 				{`</DataTable>`}
