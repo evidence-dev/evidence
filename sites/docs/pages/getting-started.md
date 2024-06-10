@@ -229,12 +229,43 @@ When the page is complete, you can then run sources to reflect the latest data. 
 
 </Alert>
 
-
-## 5. Create a Markdown query and a Data Table
-
-Next, you'll take the results from your source queries and display them on your page. One simple way to display data is with a table. 
+## 6. Set up a Markdown Query
+Before you can use a data source on your page, you need to set up a **Markdown query** for it.
 
 Clean up everything from your page, and add the following:
+
+**new-page.md**
+```markdown
+## Hello Evidence
+
+### Orders Table
+
+&#96;&#96;&#96;my_query_summary
+SELECT * FROM needful_things.my_query
+&#96;&#96;&#96;
+```
+Refresh, and you'll see this. Not very exciting, but we'll use this data in the next section.
+
+TODO add image
+
+<div id="objectives" class="alert svelte-17118v7">
+
+**What's the difference between a Source Query and a Markdown Query?**
+
+A **source query** filters and transforms data at the database level. It is written in the dialect of SQL that matches your data source. You can choose the timing of source queries by running them manually. This may be useful when working with data sources that are slow to query (i.e large datasets, or data accessed over a network).
+
+
+A **Markdown query** filters and transforms data at page level. It is always written in the DuckDB dialect. Markdown queries run with every page load, so any changes will be instantly reflected in charts and tables.
+
+To learn more about Markdown queries, including how to reuse them across pages, take a look at Core Concepts &gt; [Markdown Queries](/core-concepts/markdown-queries/).
+</div>
+
+
+# Adding components
+
+## 6.5. Create a Data Table
+
+One simple way to display data is with a [Data Table](/components/data-table/):
 
 **new-page.md**
 ```markdown
@@ -249,23 +280,13 @@ SELECT * FROM needful_things.my_query
 <DataTable data={my_query_summary}/>
 ```
 
-Refresh the page in your browser, and you should see the following:
+Refresh the page in your browser, and you should see:
 
 ![A DataTable in Evidence](/img/getting-started/new_table.png)
 
-Let's break down what's happening here.
+Nice! You just made your first Evidence component. Now, let's refine things a bit.
 
-This section is called an **markdown query**:
-
-```markdown
-&#96;&#96;&#96;my_query_summary
-SELECT * FROM needful_things.my_query
-&#96;&#96;&#96;
-```
-
-A Markdown query is defined within your page itself, and is always written in the DuckDB dialect of SQL regardless of what type your data source is.
-
-This Markdown query isn't doing much for us right now. It's simply displaying all 10,000 records and all columns. We can make it more useful.
+The Markdown query isn't doing much for us right now. It's simply displaying all 10,000 records and all columns. We can make it more useful.
 
 Let's say we want to pull the 100 most recent orders, in order to send these customers a discount code. Change the Markdown query to:
 
@@ -282,7 +303,7 @@ LIMIT 100
 &#96;&#96;&#96;
 ```
 
-Now refresh, and notice that your table has changed to show only the most recent 100 orders, with only the columns you specified:
+Now refresh, and notice that your table has changed to show only the most recent 100 orders, with only the table columns you specified:
 
 add image TODO
 
@@ -301,13 +322,29 @@ add image TODO
 
 A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components/).
 
-## 6. Create a Histogram
+## 6. Create a Bar Chart
 
-Next, let's create a visualization. There are many possible visualizations to choose from in Evidence, but we'll start with a simple [Histogram](/components/histogram) that allows us to see our orders over time.
+Next, let's visualize orders over the past year using a [Bar Chart](/components/bar-chart). Add the following to your page:
 
-add histogram TODO
+```markdown
+### Orders by Month
 
+&#96;&#96;&#96;orders_by_month
+SELECT order_month, count(*) AS orders FROM needful_things.my_query
+GROUP BY order_month ORDER BY order_month DESC
+LIMIT 12
+&#96;&#96;&#96;
+<BarChart 
+    data={orders_by_month} 
+    x=order_month 
+    y=orders
+	xFmt="mmm yyyy"
+	xAxisTitle="Month"
+	yAxisTitle="Orders"
+/>
+```
 
+TODO add bar chart image
 
 ## 7. Connect a new CSV data source
 
