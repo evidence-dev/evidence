@@ -1,4 +1,4 @@
-import { loadMetrics, processMetric } from '@evidence-dev/sdk/metrics';
+import { loadMetrics } from '@evidence-dev/sdk/metrics';
 /** @type {import("@sveltejs/kit").Config} */
 export default {
 	preprocess: [
@@ -34,8 +34,8 @@ export default {
 									dimensions: !inputs[MetricsInputKey].${spec.name}.dimensions[Unset] ? inputs[MetricsInputKey].${spec.name}.dimensions?.rawValues?.map(v => v.value) ?? [] : undefined,
 									time_grain: !inputs[MetricsInputKey].${spec.name}.time_grain[Unset] && inputs[MetricsInputKey].${spec.name}.time_grain ? inputs[MetricsInputKey].${spec.name}.time_grain.value : undefined
 								}
+
 								$: __${spec.name}Factory(__${spec.name}Cut)
-								
 								const __${spec.name}Factory = Metric.createMetric(
 									${JSON.stringify(spec)},
 									{ callback: $v => ${spec.name} = $v, execFn: queryFunc },
@@ -43,7 +43,7 @@ export default {
 								)
 								__${spec.name}Factory({})
 								globalThis[Symbol.for("Metric-${spec.name}")] = { get value() { return ${spec.name} } }
-								`;
+							`;
 							})
 							.join('\n')}
 

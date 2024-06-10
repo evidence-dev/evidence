@@ -14,12 +14,12 @@ export type MetricSource = z.infer<typeof MetricSourceSchema>;
 export type MetricFile = z.infer<typeof MetricFileSchema>;
 
 export type ChartSpec = {
-	x: string,
-	y: string,
-	series?: string[]
-}
+	x: string;
+	y: string;
+	series?: string[];
+};
 
 export type MetricCut = {
-	dimensions?: string[],
-	grain?: MetricTimeGrains
-}
+	dimensions?: string[];
+	grain?: MetricTimeGrains;
+};

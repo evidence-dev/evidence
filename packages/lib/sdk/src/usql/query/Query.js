@@ -688,15 +688,16 @@ DESCRIBE ${this.text.trim()}
 	};
 
 	/**
+	 * @this {typeof Query}
 	 * @template [MetaData=any]
 	 * @param {import('../types.js').QueryReactivityOpts<any, MetaData>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
 	 */
-	static createReactive(reactiveOpts, opts) {
+	static createReactive = function (reactiveOpts, opts) {
 		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
 
 		/** @type {import('../types.js').CreateQuery<any>} */
-		const createFn = Query.create;
+		const createFn = Query.create.bind(this);
 		/** @type {QueryValue<any>} */
 		let activeQuery;
 
@@ -731,7 +732,7 @@ DESCRIBE ${this.text.trim()}
 					: createFn(
 							nextQuery,
 							execFn,
-							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined }),
+							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined })
 						);
 
 				if (newQuery.hash === activeQuery.hash) return; // no-op
@@ -811,10 +812,11 @@ DESCRIBE ${this.text.trim()}
 	};
 
 	/**
+	 * @this {typeof Query}
 	 * @template {QueryResultRow} [RowType=QueryResultRow]
 	 * @type {import("../types.js").CreateQuery<RowType>}
 	 */
-	static create = (query, executeQuery, optsOrId, maybeOpts) => {
+	static create = function (query, executeQuery, optsOrId, maybeOpts) {
 		if (import.meta.hot) {
 			Query.#devModeBootstraps();
 		}
@@ -869,7 +871,8 @@ DESCRIBE ${this.text.trim()}
 			);
 
 		Query.#constructing = true;
-		const output = new Query(query, executeQuery, opts);
+		const output = new this(query, executeQuery, opts);
+
 		if (!opts.disableCache) {
 			Query.#addToCache(output);
 			Query.#cacheCleanup();
@@ -964,7 +967,6 @@ DESCRIBE ${this.text.trim()}
 	 * @deprecated Use {@link Query.create} instead
 	 */
 	constructor(query, executeQuery, opts = {}) {
-		console.log({self: this})
 		const {
 			id,
 			initialData = undefined,

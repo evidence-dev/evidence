@@ -28,8 +28,9 @@ export class Metric extends Query {
 	 * @param {import("./types.js").MetricSpec} metric
 	 * */
 	registerMetric = (metric) => {
-		if (this.#metric) throw new Error('Metric already registered');
-		this.#metric = metric;
+		if (!this.#metric) {
+			this.#metric = metric;
+		}
 	};
 
 	/** @type {import("./types.js").MetricCut | undefined} */
@@ -53,17 +54,16 @@ export class Metric extends Query {
 	 * @param {import('../usql/types.js').QueryReactivityOpts} reactiveOpts
 	 * @param {import('../usql/types.js').QueryOpts} queryOpts
 	 */
-	static createMetric(metric, reactiveOpts, queryOpts) {
-		
+	static createMetric = (metric, reactiveOpts, queryOpts) => {
 		if (!metric) throw new Error('Metric must be defined');
-		const factory = super.createReactive.bind(Metric)(
+		const factory = super.createReactive(
 			{
 				...reactiveOpts,
 				callback: (newMetric, cut) => {
+					if (!Metric.isMetric(newMetric)) throw new Error('Expected return value to be Metric');
 					if (!(newMetric instanceof Metric)) throw new Error('Expected return value to be Metric');
-					console.log(newMetric)
 					newMetric.registerMetric(metric);
-					// newMetric.registerCut(cut);
+					newMetric.registerCut(cut);
 					reactiveOpts.callback(newMetric);
 				}
 			},
@@ -75,7 +75,7 @@ export class Metric extends Query {
 		return (cut) => {
 			factory(metricDefToSql(metric, cut), undefined, cut);
 		};
-	}
+	};
 
 	/**
 	 * @param {string[]} dimensions
@@ -95,6 +95,25 @@ export class Metric extends Query {
 		return out;
 	}
 
+	/**
+	 * @ignore
+	 * @private
+	 */
+	get isMetric() {
+		return true;
+	}
 
-	constructor(...args) {super(...args)}
+	/**
+	 * @param {unknown} m
+	 * @returns {q is Metric}
+	 */
+	static isMetric = (m) => {
+		// TODO: Should we type-narrow on row type as well
+		// Type narrow
+		if (typeof m !== 'object' || !m) return false;
+
+		const hasDuckType = 'isMetric' in m && m['isMetric'] === true;
+
+		return hasDuckType;
+	};
 }
