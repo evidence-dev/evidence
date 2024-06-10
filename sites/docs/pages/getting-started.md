@@ -348,7 +348,38 @@ TODO add bar chart image
 
 ## 7. Connect a new CSV data source
 
-Nullam fermentum, ex ac volutpat porta,
+Go to `localhost:3000/settings`, and select **Add new source**:
+
+![Add new source](/img/getting-started/add_new_source.png)
+
+Choose **CSV** as the source type, and upload a CSV file of your choice.
+
+Here, we'll use [**us_alt_fuel_stations.csv**](https://datacatalog.urban.org/node/6463/revisions/15648/view) - a public data source on EV charging stations across the US.
+
+Select Source Type: **CSV**, and give your source a name. Hit Confirm:
+
+![Add new source](/img/getting-started/add_new_source2.png)
+
+You can read about various configuration options for CSV files [here](https://docs.evidence.dev/core-concepts/data-sources/#csv-files). For now, leave this blank, and hit **Confirm Changes**:
+
+![Add new source](/img/getting-started/add_new_source_confirm_changes.png)
+
+You should now see your new source under the sources folder. Copy your CSV file into it:
+
+![Add new source](/img/getting-started/add_new_source4.png)
+
+That's it! You've set up a new data source. If you'd like to use it, try adding the following Markdown Query and the [USMap](/components/us-map) component:
+
+```markdown
+### EV Map
+&#96;&#96;&#96;ev_map
+SELECT State, count(*) AS ev_station_count FROM ev_stations.us_alt_fuel_stations
+WHERE State NOT IN ('CA')
+GROUP BY State ORDER BY ev_station_count DESC
+&#96;&#96;&#96;
+
+<USMap data={ev_map} state=State abbreviations=true value=ev_station_count/>
+```
 
 # Next steps
 
