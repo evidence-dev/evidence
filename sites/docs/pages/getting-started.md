@@ -305,12 +305,12 @@ LIMIT 100
 
 Now refresh, and notice that your table has changed to show only the most recent 100 orders, with only the table columns you specified:
 
-add image TODO
+![Edited markdown query](/img/getting-started/edited_markdown_query.png)
 
 You can further select or rename the columns that appear in your table by specifying them in the `DataTable` component:
 
 ```markdown
-<DataTable data={my_query_summary}/>
+<DataTable data={my_query_summary}>
    <Column id=order_datetime title="Order Date"/>
    <Column id=first_name />
    <Column id=email />
@@ -318,7 +318,7 @@ You can further select or rename the columns that appear in your table by specif
 ```  
 This will display:
 
-add image TODO
+![Edited columns](/img/getting-started/edited_columns.png)
 
 A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components/).
 
@@ -343,8 +343,9 @@ LIMIT 12
 	yAxisTitle="Orders"
 />
 ```
+And you should see:
 
-TODO add bar chart image
+![Bar chart](/img/getting-started/bar_chart.png)
 
 ## 7. Connect a new CSV data source
 
@@ -380,6 +381,12 @@ GROUP BY State ORDER BY ev_station_count DESC
 
 <USMap data={ev_map} state=State abbreviations=true value=ev_station_count/>
 ```
+
+And you should see:
+
+![US EV Map](/img/getting-started/us_map.png)
+
+That's it! You now know the basics of setting up data sources, writing queries, and creating components in Evidence.
 
 # Next steps
 
