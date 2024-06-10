@@ -40,7 +40,7 @@ export const cleanQuery = (query) => {
 		}
 	}
 
-	cleanedQuery = cleanedQuery.trim();
+	cleanedQuery = cleanedQuery.replace(/\s\s+/g, ' ').trim();
 
 	return cleanedQuery;
 };
