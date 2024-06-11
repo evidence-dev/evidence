@@ -24,7 +24,8 @@
 				"bigquery",
 				"bq"
 			]
-		]
+		],
+		"icon": "Googlebigquery"
 	},
 	"keywords": [
 		"evidence",

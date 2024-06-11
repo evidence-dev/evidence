@@ -16,7 +16,8 @@
 	"evidence": {
 		"datasources": [
 			"trino"
-		]
+		],
+		"icon": "Trino"
 	},
 	"keywords": [
 		"evidence",
