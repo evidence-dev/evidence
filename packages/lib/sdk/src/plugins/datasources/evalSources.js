@@ -19,9 +19,10 @@ import { dataUrlPrefix } from '../../build-dev/vite/virtuals/node/projectPaths.j
  * @param {string} dataPath
  * @param {string} metaPath
  * @param {import('./types.js').SourceFilters} [filters] `sources` or `queries` being null means no filter
+ * @param {boolean} [strict]
  * @returns {Promise<import('./types.js').Manifest>}
  */
-export const evalSources = async (dataPath, metaPath, filters) => {
+export const evalSources = async (dataPath, metaPath, filters, strict) => {
 	const pluginLoader = ora({ text: 'Loading plugins & sources' }).start();
 
 	// Setup work
@@ -69,17 +70,38 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 		if (!outputManifest.locatedFiles) outputManifest.locatedFiles = {};
 		outputManifest.locatedFiles[source.name] = [];
 
-		for await (const table of tableIter(
-			source.options,
-			await buildSourceDirectoryProxy(source.dir),
-			utils
-		)) {
+		const iter = tableIter(source.options, await buildSourceDirectoryProxy(source.dir), utils)[
+			Symbol.asyncIterator
+		](); // this is required for typescript to be happy
+
+		/** @type {IteratorResult<import('./types.js').QueryResultTable<any> | EvidenceError>} */
+		let iterResult;
+
+		while (((iterResult = await iter.next()), !iterResult.done)) {
+			if (iterResult.done) continue;
+			if (iterResult.value instanceof Error) {
+				const error = iterResult.value;
+				let tableName = 'Unknown';
+				if (error instanceof EvidenceError) {
+					if (error.metadata.tableName) tableName = error.metadata.tableName;
+				}
+				ora({
+					prefixText: `  ${tableName}`,
+					spinner: 'triangle',
+					discardStdin: false,
+					interval: 250
+				}).fail(`Error: ${error.message}`);
+				if (strict) throw error;
+				continue;
+			}
+			const table = { ...iterResult.value };
 			const spinner = ora({
 				prefixText: `  ${table.name}`,
 				spinner: 'triangle',
 				discardStdin: false,
 				interval: 250
 			});
+
 			outputManifest.locatedFiles[source.name].push(table.name);
 			spinner.start('Processing...');
 			if (utils.isFiltered(table.name)) {

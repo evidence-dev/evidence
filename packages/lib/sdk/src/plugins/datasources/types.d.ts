@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ManifestSchema } from './schemas/manifest.schema.js';
+import { EvidenceError } from '../../lib/EvidenceError.js';
 
 type FileContent = () => Promise<string>;
 
@@ -37,7 +38,7 @@ export type ProcessSourceFn<T extends Record<string, unknown> = Record<string, u
 		shouldRun: (name: string, content: string) => boolean;
 		addToCache: (name: string, content: string) => void;
 	}
-) => AsyncIterable<QueryResultTable>;
+) => AsyncIterable<QueryResultTable | EvidenceError>;
 
 export type Manifest = z.infer<typeof ManifestSchema>;
 

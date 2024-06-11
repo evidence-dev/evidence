@@ -46,6 +46,7 @@ fsExtra.outputFileSync(
 	`import { sveltekit } from "@sveltejs/kit/vite"
 	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
 	import { createLogger } from 'vite';
+	import { sourceQueryHmr } from '@evidence-dev/sdk/vite';
 
 	const logger = createLogger();
 	const loggerWarn = logger.warn;
@@ -72,7 +73,7 @@ fsExtra.outputFileSync(
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [sveltekit(), evidenceVitePlugin()],
+        plugins: [sveltekit(), evidenceVitePlugin(), sourceQueryHmr()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts', 
 				// We need these to prevent HMR from doing a full page reload

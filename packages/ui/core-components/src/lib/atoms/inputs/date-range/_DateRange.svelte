@@ -29,7 +29,7 @@
 	});
 
 	/** @type {import('bits-ui').DateRange | undefined} */
-	export let selectedDateRange;
+	export let selectedDateRange = undefined;
 	/** @type {string} */
 	export let start;
 	/** @type {string} */
@@ -37,17 +37,10 @@
 	export let loaded = true;
 	/** @type {[]string] | undefined} */
 	export let presetRanges;
+	/** @type {string] | undefined} */
+	export let defaultValue;
 
-	$: calendarStart = YYYYMMDDToCalendar(start);
-	$: calendarEnd = YYYYMMDDToCalendar(end);
-
-	function updateDateRange(start, end) {
-		selectedDateRange = { start, end };
-	}
-
-	$: updateDateRange(calendarStart, calendarEnd);
-
-	/** @type {{label: string, group: string, range: import('bits-ui').DateRange}[]} */
+	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
 		{
 			label: 'Last 7 Days',
@@ -139,17 +132,23 @@
 		}
 	];
 
+	function lowerCaseNoSpaceString(unformattedStr) {
+		return unformattedStr.toString().toLowerCase().replace(/\s+/g, '');
+	}
+
 	$: {
+		if (typeof presetRanges === 'string') {
+			presetRanges = [presetRanges];
+		}
+
 		if (presetRanges && typeof presetRanges[0] === 'string') {
 			//filters out present range strings matching in preset array to be displayed to user
+			const formattedPresetRanges = presetRanges.map((preset) => lowerCaseNoSpaceString(preset));
 
-			let processedPresetRanges = presetRanges.map((preset) => {
-				return preset.toLocaleLowerCase().replace(/\s/g, '');
+			let filteredPresets = presets.filter((preset) => {
+				return formattedPresetRanges.includes(lowerCaseNoSpaceString(preset.label));
 			});
-
-			let filteredPresets = presets.filter((preset) =>
-				processedPresetRanges.includes(preset.label.toLocaleLowerCase().replace(/\s/g, ''))
-			);
+			console.log(filteredPresets);
 			presets = filteredPresets;
 		}
 	}
@@ -162,10 +161,44 @@
 	let placeholder;
 	$: setPlaceholderDefault(calendarEnd);
 
-	//group exists check for nicely rendering group border for dropdown
+	// group exists check for nicely rendering group border for dropdown
 	function groupExists(groupName) {
 		return presets.some((preset) => preset.group === groupName);
 	}
+
+	/**
+	 * @param {typeof presets[number] | string} v
+	 */
+	function applyPreset(v) {
+		if (!v) return;
+		console.log(v, presets);
+		const targetPreset = presets.find(
+			(preset) =>
+				lowerCaseNoSpaceString(preset.label) ===
+				lowerCaseNoSpaceString(typeof v === 'string' ? v : v.label)
+		);
+		if (!targetPreset) return;
+		selectedDateRange = targetPreset.range ?? targetPreset.value;
+		selectedPreset = targetPreset;
+	}
+
+	$: if (
+		typeof defaultValue === 'string' &&
+		!selectedDateRange &&
+		!selectedPreset &&
+		presets.length
+	)
+		applyPreset(defaultValue);
+
+	$: calendarStart = YYYYMMDDToCalendar(start);
+	$: calendarEnd = YYYYMMDDToCalendar(end);
+
+	function updateDateRange(start, end) {
+		if (selectedPreset) return;
+		selectedDateRange = { start, end };
+	}
+
+	$: updateDateRange(calendarStart, calendarEnd);
 </script>
 
 <div class="flex">
@@ -235,9 +268,8 @@
 
 	<Select.Root
 		onSelectedChange={(v) => {
-			if (!v) return;
-			selectedDateRange = presets.filter((presets) => presets.label == v.label)[0].range;
-			selectedPreset = v;
+			v.range = v.value;
+			applyPreset(v);
 		}}
 		bind:selected={selectedPreset}
 		disabled={!loaded}

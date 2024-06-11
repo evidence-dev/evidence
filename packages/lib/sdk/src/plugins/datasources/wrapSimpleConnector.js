@@ -22,7 +22,7 @@ export const wrapSimpleConnector = (mod, source) => {
 		/**
 		 *
 		 * @param {string} dir
-		 * @returns {AsyncGenerator<import('./types.js').QueryResultTable>}
+		 * @returns {AsyncGenerator<import('./types.js').QueryResultTable | EvidenceError>}
 		 */
 		const processDir = async function* (dir) {
 			const sourceFiles = await fs.readdir(dir, { withFileTypes: true });
@@ -44,16 +44,32 @@ export const wrapSimpleConnector = (mod, source) => {
 				} else {
 					sourceFileContent = readFileSync(sourceFilePath, 'utf-8');
 				}
-				yield {
-					name: /** @type {string} */ (sourceFile.name.split('.').at(0)),
-					content: sourceFileContent,
-					columnTypes: [],
-					...(await runner(
-						sourceFileContent,
-						sourceFilePath,
-						1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
-					))
-				};
+				const sourceFileName = sourceFile.name.split('.').at(0);
+				try {
+					yield {
+						name: /** @type {string} */ (sourceFileName),
+						content: sourceFileContent,
+						columnTypes: [],
+						...(await runner(
+							sourceFileContent,
+							sourceFilePath,
+							1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
+						))
+					};
+				} catch (e) {
+					let message = 'Unknown Error';
+					if (e instanceof Error) message = e.message;
+					if (e instanceof EvidenceError) {
+						e.metadata.tableName = sourceFileName;
+						yield e;
+					}
+					yield new EvidenceError(
+						message,
+						[sourceFileName ?? ''],
+						{ cause: e },
+						{ tableName: sourceFileName }
+					);
+				}
 			}
 		};
 

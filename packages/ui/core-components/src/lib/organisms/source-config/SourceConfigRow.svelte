@@ -3,6 +3,7 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import * as simpleIcons from '@steeze-ui/simple-icons';
+	import * as evidenceIcons from '@evidence-dev/icons';
 	import { Button } from '../../atoms/button';
 
 	import { Database, ExclamationCircle, Pencil } from '@steeze-ui/tabler-icons';
@@ -22,6 +23,8 @@
 <div class="contents text-xs odd:bg-gray-200">
 	{#if simpleIcons[sourcePlugin?.package.package.evidence.icon]}
 		<Icon src={simpleIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
+	{:else if evidenceIcons[sourcePlugin?.package.package.evidence.icon]}
+		<Icon src={evidenceIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
 	{:else if !sourcePlugin}
 		<Icon src={ExclamationCircle} class="w-6 h-6 text-red-500" />
 	{:else}

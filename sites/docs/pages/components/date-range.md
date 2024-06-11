@@ -147,23 +147,33 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
 
 ### Customizing Singluar Preset Ranges
 
-<DateRange presetRanges={['last7Days']}/>
+<DateRange presetRanges={'Last 7 Days'}/>
 
 ````markdown
 <DateRange
     name=name_of_date_range
-    presetRanges={['last7Days']}
+    presetRanges={'Last 7 Days'}
 />
 ````
 
 ### Customizing Multiple Preset Ranges
 
-<DateRange presetRanges={['last7Days', 'last3Months', 'lastYear', 'allTime']}/>
+<DateRange presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}/>
 
 ````markdown
 <DateRange
     name=name_of_date_range
-    presetRanges={['last7Days', 'last3Months', 'lastYear', 'allTime']}
+    presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}
+/>
+````
+### Default Value for Preset Ranges
+
+<DateRange defaultValue={'Last 7 Days'}/>
+
+````markdown
+<DateRange
+    name=name_of_date_range
+    defaultValue={'Last 7 Days'}
 />
 ````
 
@@ -203,18 +213,25 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
 Title to display in the Date Range component
 
 </PropListing>
-
-
 <PropListing 
     name="presetRanges"
-    options= "array of values e.g. {['last7Days']} or {['last7Days', 'last6Months']}"
+    options= "string | array of values e.g. {['Last 7 Days', 'Last 6 Months']}"
     default=undefined
 >
 
-Customize "Select a Range" drop down, by including present range options. Range options include: 'last7Days', 'last30Days', 'last90Days', 'last3Months', 'last6Months', 'last12Months', 'lastMonth', 'lastYear', 'monthToDate', 'yearToDate', 'allTime'.
+Customize "Select a Range" drop down, by including present range options. **Range options**: `'Last 7 Days'` `'Last 30 Days'` `'Last 90 Days'` `'Last 3 Months'` `'Last 6 Months'` `'Last 12 Months'` `'Last Month'` `'Last Year'` `'Month to Date'` `'Year to Date'` `'All Time'`
 
 </PropListing>
+<PropListing 
+    name="defaultValue"
+    options= "string e.g. {'Last 7 Days'} or {'Last 6 Months'}"
+    default=undefined
+>
 
+
+Accepts preset in string format to apply default value in Date Range picker. **Range options**: `'Last 7 Days'` `'Last 30 Days'` `'Last 90 Days'` `'Last 3 Months'` `'Last 6 Months'` `'Last 12 Months'` `'Last Month'` `'Last Year'` `'Month to Date'` `'Year to Date'` `'All Time'`
+
+</PropListing>
 <PropListing 
     name="hideDuringPrint"
     description="Hide the component when the report is printed"

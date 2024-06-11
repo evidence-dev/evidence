@@ -27,6 +27,7 @@ const safeLoadManifest = async (dataDir) => {
 /**
  * @param {import('./types.js').Manifest} updatedManifest
  * @param {string} dataDir
+ * @returns {Promise<import('./types.js').Manifest>}
  */
 export const updateManifest = async (updatedManifest, dataDir) => {
 	await fs.mkdir(path.join(dataDir), { recursive: true });
@@ -37,7 +38,7 @@ export const updateManifest = async (updatedManifest, dataDir) => {
 
 	if (!updatedManifest.locatedFiles) {
 		console.warn(chalk.yellow('[!] No queries were located, operation was a was no-op'));
-		return;
+		return updatedManifest;
 	}
 
 	if (existingManifest) {
@@ -71,4 +72,5 @@ export const updateManifest = async (updatedManifest, dataDir) => {
 	}
 
 	await fs.writeFile(path.join(dataDir, 'manifest.json'), JSON.stringify(finalManifest));
+	return finalManifest;
 };

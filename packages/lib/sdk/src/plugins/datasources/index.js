@@ -4,6 +4,7 @@ import { rootCli } from '../../cli.root.js';
 import { resolveMaybePromise } from '../../usql/utilities/resolveMaybePromise.js';
 
 /**
+ * This function is provided to create a compatibility layer between the legacy Evidence CLI and the new SDK CLI
  * @param  {...string} args
  * @returns {Promise<void>}
  */
