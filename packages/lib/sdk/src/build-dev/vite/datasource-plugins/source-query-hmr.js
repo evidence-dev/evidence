@@ -13,8 +13,8 @@ export const sourceQueryHmr = () => {
 	/** @type {import('vite').ViteDevServer | undefined} */
 	let server;
 
-    /** @type {import('../../../plugins/datasources/types.js').Manifest | undefined} */
-    let latestManifest
+	/** @type {import('../../../plugins/datasources/types.js').Manifest | undefined} */
+	let latestManifest;
 
 	/**
 	 * @param {string} datasource
@@ -78,11 +78,10 @@ export const sourceQueryHmr = () => {
 		configureServer: (s) => {
 			server = s;
 			processingQueue.addListener('done', () => {
-                console.log("Dispatched queue empty")
-                console.log({latestManifest})
 				s.hot.send(VITE_EVENTS.RESET_QUERIES, { latestManifest });
 			});
 		},
+		/** @type {import("vite").Plugin['watchChange']} */
 		watchChange: async function (id) {
 			if (!id.startsWith(sourcesDirectory)) return; // don't care
 			const parts = id.replace(sourcesDirectory, '').split('/');

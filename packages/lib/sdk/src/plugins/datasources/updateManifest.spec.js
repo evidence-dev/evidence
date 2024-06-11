@@ -140,6 +140,6 @@ describe('updateManifest', () => {
 			JSON.stringify({
 				renderedFiles: updatedManifest.renderedFiles
 			})
-		)
-	})
+		);
+	});
 });

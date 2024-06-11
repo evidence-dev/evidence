@@ -63,7 +63,12 @@ export const wrapSimpleConnector = (mod, source) => {
 						e.metadata.tableName = sourceFileName;
 						yield e;
 					}
-					yield new EvidenceError(message, [sourceFileName ?? ''], { cause: e }, { tableName: sourceFileName });
+					yield new EvidenceError(
+						message,
+						[sourceFileName ?? ''],
+						{ cause: e },
+						{ tableName: sourceFileName }
+					);
 				}
 			}
 		};

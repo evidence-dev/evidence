@@ -72,5 +72,5 @@ export const updateManifest = async (updatedManifest, dataDir) => {
 	}
 
 	await fs.writeFile(path.join(dataDir, 'manifest.json'), JSON.stringify(finalManifest));
-	return finalManifest
+	return finalManifest;
 };

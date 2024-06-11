@@ -13,7 +13,7 @@ export class EvidenceError extends Error {
 	constructor(message, context, opts, metadata) {
 		super(message, opts);
 
-		this.context = Array.isArray(context) ? context : [context ?? ""];
+		this.context = Array.isArray(context) ? context : [context ?? ''];
 		if (!context) this.context = /** @type {string[]} */ ([]);
 		this.#metadata = metadata;
 		if (!Array.isArray(this.context)) this.context = [];

@@ -138,7 +138,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		custom_user_agent: 'evidence-dev'
 	});
 	const conn = await db.connect();
-	
+
 	const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
 	const expected_count = await db.all(count_query);
 	const expected_row_count = expected_count?.[0]['count_star()'];
