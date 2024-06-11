@@ -6,7 +6,7 @@ import { applySidecarConfig, getSidecarApp } from './sidecar-app.js';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { getManifest } from './virtuals/node/static-assets.js';
-import { fileWatcher } from './file-watcher.js';
+import { copyToLayout } from './layout-plugins/copy-to-layout.js';
 import { dataDirectory, evidenceDirectory } from './virtuals/node/projectPaths.js';
 /** @type {Record<string, () => string>} */
 import * as dynamicVirtuals from './virtuals-dynamic.js';
@@ -27,7 +27,7 @@ export const evidencePlugin = async () => {
 
 		buildStart: async function () {
 			if (this.meta.watchMode) {
-				await fileWatcher();
+				await copyToLayout();
 			} else {
 				this.emitFile({
 					type: 'asset',
