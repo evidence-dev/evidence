@@ -36,6 +36,12 @@
 			"import": "./src/plugins/datasources/index.js",
 			"require": null,
 			"types": "./src/plugins/datasources/index.d.ts"
+		},
+		"./vite": {
+			"default": "./src/build-dev/vite/plugins.js",
+			"import": "./src/build-dev/vite/plugins.js",
+			"types": "./types/build-dev/vite/plugins.js",
+			"require": null
 		}
 	},
 	"scripts": {
