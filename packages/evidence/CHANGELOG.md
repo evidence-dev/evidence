@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 38.0.0
+
+### Patch Changes
+
+- Updated dependencies [f411c8650]
+- Updated dependencies [79f4758e0]
+- Updated dependencies [b041f5f9a]
+  - @evidence-dev/core-components@4.5.0
+  - @evidence-dev/db-orchestrator@3.1.2
+
 ## 37.0.0
 
 ### Patch Changes
