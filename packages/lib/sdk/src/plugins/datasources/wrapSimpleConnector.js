@@ -36,6 +36,9 @@ export const wrapSimpleConnector = (mod, source) => {
 
 				if (!sourceFile.isFile()) continue;
 				const sourceFilePath = path.join(sourceFile.path, sourceFile.name);
+				console.log({
+					sourceFile, sourceFilePath, sourceFiles, dir
+				})
 				const stat = statSync(sourceFilePath);
 				let sourceFileContent;
 				if (stat.size > 1024 * 1024 * 128 /* 128 Megabytes */) {
