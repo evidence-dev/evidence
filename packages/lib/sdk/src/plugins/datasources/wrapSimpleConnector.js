@@ -27,20 +27,19 @@ export const wrapSimpleConnector = (mod, source) => {
 		const processDir = async function* (dir) {
 			const sourceFiles = await fs.readdir(dir, { withFileTypes: true });
 			for (const sourceFile of sourceFiles) {
+				const dirPath = 'parentPath' in sourceFile ? sourceFile.parentPath + '' : sourceFile.path;
 				if (sourceFile.name === 'connection.yaml' || sourceFile.name === 'connection.options.yaml')
 					continue;
 				if (sourceFile.isDirectory()) {
-					yield* processDir(path.join(sourceFile.path, sourceFile.name));
+					yield* processDir(path.join(dirPath, sourceFile.name));
 					continue;
 				}
 
 				if (!sourceFile.isFile()) continue;
 
-				/** @type {string} */
-				const parent = 'parentPath' in sourceFile ? sourceFile.parentPath + '' : sourceFile.path;
+				const sourceFilePath = path.join(dirPath, sourceFile.name);
+				const sourceFileName = sourceFile.name.split('.').at(0);
 
-				const sourceFilePath = path.join(parent, sourceFile.name);
-				
 				const stat = statSync(sourceFilePath);
 				let sourceFileContent;
 				if (stat.size > 1024 * 1024 * 128 /* 128 Megabytes */) {
@@ -49,7 +48,8 @@ export const wrapSimpleConnector = (mod, source) => {
 				} else {
 					sourceFileContent = readFileSync(sourceFilePath, 'utf-8');
 				}
-				const sourceFileName = sourceFile.name.split('.').at(0);
+				
+				
 				try {
 					yield {
 						name: /** @type {string} */ (sourceFileName),
