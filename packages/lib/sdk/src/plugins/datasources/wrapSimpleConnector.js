@@ -35,10 +35,12 @@ export const wrapSimpleConnector = (mod, source) => {
 				}
 
 				if (!sourceFile.isFile()) continue;
-				const sourceFilePath = path.join(sourceFile.path, sourceFile.name);
-				console.log({
-					sourceFile, sourceFilePath, sourceFiles, dir
-				})
+
+				/** @type {string} */
+				const parent = 'parentPath' in sourceFile ? sourceFile.parentPath + '' : sourceFile.path;
+
+				const sourceFilePath = path.join(parent, sourceFile.name);
+				
 				const stat = statSync(sourceFilePath);
 				let sourceFileContent;
 				if (stat.size > 1024 * 1024 * 128 /* 128 Megabytes */) {
