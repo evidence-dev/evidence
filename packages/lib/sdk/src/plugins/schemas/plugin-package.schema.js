@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import * as evidenceIcons from '@evidence-dev/icons'
+import * as evidenceIcons from '@evidence-dev/icons';
 import * as simpler from '@steeze-ui/simple-icons';
 import * as tabler from '@steeze-ui/tabler-icons';
 import { copyMethods } from '../layouts/copyMethods/index.js';

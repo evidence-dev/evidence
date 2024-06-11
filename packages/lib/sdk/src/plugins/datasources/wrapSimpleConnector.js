@@ -48,8 +48,7 @@ export const wrapSimpleConnector = (mod, source) => {
 				} else {
 					sourceFileContent = readFileSync(sourceFilePath, 'utf-8');
 				}
-				
-				
+
 				try {
 					yield {
 						name: /** @type {string} */ (sourceFileName),
