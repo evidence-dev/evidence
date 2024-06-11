@@ -50,13 +50,33 @@ when there were <Value data={monthly_orders} column=orders/> orders.
 Override errors with the optional `placeholder` argument. This is useful for drafting reports _before_ writing your queries.
 
 ```markdown
-<Value placeholder="Report Date"/>
+<Value placeholder="sales last year"/>
 ```
 
-![value-placeholder](/img/value-placeholder.png)
+Sales in the last fiscal year were <Value placeholder="sales last year"/>, a change of <Value placeholder="X%"/> vs. the prior year.
+ 
 
 ## Formatting Values
 Evidence supports a variety of formats - see [value formatting](/core-concepts/formatting) and the `fmt` prop below for more info.
+
+## Aggregated Values
+
+Values support basic aggregations such as, `min`, `max`, `median`, `sum`, `avg`
+
+
+```sql orders
+SELECT 
+    email, item, sales
+FROM 
+    needful_things.orders
+```
+```markdown
+<Value data={orders} column="sales" agg="avg" fmt="usd0" />
+```
+
+<div>
+    <Value data={orders} column="sales" agg="avg" fmt="usd0" />
+</div>
 
 ## Options
 
@@ -119,5 +139,14 @@ Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty
 >
 
 Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
+<PropListing
+    name="agg"
+    options={['sum', 'avg', 'min', 'median', 'max']}
+    defaultValue="null"
+>
+
+Adds aggregation to query, column name required.
 
 </PropListing>

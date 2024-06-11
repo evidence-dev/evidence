@@ -139,6 +139,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	});
 	const conn = await db.connect();
 
+<<<<<<< HEAD
 	const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
 	const expected_count = await db.all(count_query);
 	const expected_row_count = expected_count?.[0]['count_star()'];
@@ -150,6 +151,25 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		.catch(() => null);
 
 	const stream = conn.stream(queryString);
+=======
+	const db = await Database.create(filename, {
+		access_mode: mode,
+		custom_user_agent: 'evidence-dev'
+	});
+	const conn = await db.connect();
+	const stream = conn.stream(queryString);
+
+	const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
+	const expected_count = await db.all(count_query).catch(() => null);
+	const expected_row_count = expected_count?.[0]['count_star()'];
+
+	const column_query = `DESCRIBE ${cleanQuery(queryString)}`;
+	const column_types = await db
+		.all(column_query)
+		.then(duckdbDescribeToEvidenceType)
+		.catch(() => null);
+
+>>>>>>> origin/next
 	const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 		mapResultsToEvidenceColumnTypes:
 			column_types == null ? mapResultsToEvidenceColumnTypes : undefined,

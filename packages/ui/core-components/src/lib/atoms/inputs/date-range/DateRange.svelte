@@ -36,6 +36,10 @@
 	export let data;
 	/** @type {string | undefined} */
 	export let dates;
+	/** @type {[]string | undefined} */
+	export let presetRanges;
+	/** @type {string | undefined} */
+	export let defaultValue;
 
 	const exec = getQueryFunction();
 	let query;
@@ -115,6 +119,8 @@
 					start={startString}
 					end={endString}
 					loaded={loaded?.ready ?? true}
+					{presetRanges}
+					{defaultValue}
 				/>
 			</QueryLoad>
 		{/if}

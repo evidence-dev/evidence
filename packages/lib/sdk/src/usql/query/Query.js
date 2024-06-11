@@ -5,6 +5,9 @@ import {
 	sql as taggedSql,
 	sum as qSum,
 	avg as qAvg,
+	min as qMin,
+	max as qMax,
+	median as qMedian,
 	count as qCount
 } from '@uwdata/mosaic-sql';
 import { sharedPromise } from '../../lib/sharedPromise.js';
@@ -1241,6 +1244,9 @@ DESCRIBE ${this.text.trim()}
 	 * @typedef {Object} AggArgs
 	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} sum
 	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} avg
+	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} min
+	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} max
+	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} median
 	 */
 
 	/**
@@ -1248,7 +1254,10 @@ DESCRIBE ${this.text.trim()}
 	 */
 	static #aggFns = {
 		sum: qSum,
-		avg: qAvg
+		avg: qAvg,
+		min: qMin,
+		max: qMax,
+		median: qMedian
 	};
 	/**
 	 *

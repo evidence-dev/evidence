@@ -340,6 +340,9 @@
 		pageCount = Math.ceil(filteredData.length / rows);
 		displayedData = filteredData.slice(index, index + rows);
 		displayedPageLength = displayedData.length;
+		if (pageCount < currentPage) {
+			goToPage(pageCount - 1);
+		}
 	} else {
 		currentPage = 1;
 		displayedData = filteredData;
@@ -693,7 +696,7 @@
 				{`<DataTable data={${queryID}}>`}
 				<br />
 				{#each Object.keys(data[0]) as column}
-					{`	<Column id=${column}/>`}
+					{`   <Column id=${column.includes(' ') ? `'${column}'` : column}/>`}
 					<br />
 				{/each}
 				{`</DataTable>`}
