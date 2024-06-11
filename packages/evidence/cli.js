@@ -222,7 +222,13 @@ ${chalk.bold('[!] Unable to load source manifest')}
 			shell: true,
 			detached: false,
 			cwd: '.evidence/template',
-			stdio: 'inherit'
+			stdio: 'inherit',
+			env: {
+				...process.env,
+				// used for source query HMR
+				EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
+				EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
+			}
 		});
 
 		child.on('exit', function () {
