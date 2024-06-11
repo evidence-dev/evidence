@@ -826,6 +826,9 @@ importers:
       '@clack/prompts':
         specifier: ^0.7.0
         version: 0.7.0
+      '@evidence-dev/icons':
+        specifier: workspace:^
+        version: link:../../ui/icons
       '@evidence-dev/universal-sql':
         specifier: workspace:*
         version: link:../universal-sql
