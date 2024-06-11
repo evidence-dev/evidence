@@ -157,11 +157,18 @@ const strictMode = function () {
 const buildHelper = function (command, args) {
 	const watchers = runFileWatcher(watchPatterns);
 	const flatArgs = flattenArguments(args);
+
 	// Run svelte kit build in the hidden directory
 	const child = spawn(command, flatArgs, {
 		shell: true,
 		cwd: '.evidence/template',
-		stdio: 'inherit'
+		stdio: 'inherit',
+		env: {
+			...process.env,
+			// used for source query HMR
+			EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
+			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
+		}
 	});
 	// Copy the outputs to the root of the project upon successful exit
 	child.on('exit', function (code) {
