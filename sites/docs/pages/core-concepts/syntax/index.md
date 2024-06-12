@@ -31,7 +31,7 @@ Evidence looks for images in your `static` folder, e.g. `static/my-logo.png`.
 
 ## SQL
 
-Code fences in Evidence markdown files run inline queries and return data. These code fences run the [DuckDB SQL](https://duckdb.org/docs/sql/introduction) dialect. [More on Queries](/core-concepts/queries).
+Code fences in Evidence markdown files run inline queries and return data. These code fences run the [DuckDB SQL](https://duckdb.org/docs/sql/introduction) dialect. [More on Queries](/core-concepts/markdown-queries).
 
 ````markdown
 ```sql orders_by_month

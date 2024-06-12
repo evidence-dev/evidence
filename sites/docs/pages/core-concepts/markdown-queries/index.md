@@ -130,7 +130,7 @@ queries:
 
 #### File Query Chaining
 
-SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_file_query` depends on `some_category_my_category_file_query`, then you will have to have them both in your [frontmatter](/reference/markdown/#frontmatter), as shown above.
+SQL file queries can [depend on other query files](/core-concepts/markdown-queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_file_query` depends on `some_category_my_category_file_query`, then you will have to have them both in your [frontmatter](/reference/markdown/#frontmatter), as shown above.
 
 ## Query Parameters
 

@@ -22,7 +22,7 @@ Install Evidence with the [VSCode Extension](vscode:extension/Evidence.evidence-
 Evidence renders a BI website from markdown files:
 
 1. [Data sources](/core-concepts/data-sources) can include data warehouses, flat files and non-SQL data sources
-1. [SQL statements](/core-concepts/queries) inside markdown files run queries against data sources
+1. [SQL statements](/core-concepts/markdown-queries) inside markdown files run queries against data sources
 1. [Charts and components](/core-concepts/components) are rendered using these query results
 1. [Templated pages](/core-concepts/templated-pages) generate many pages from a single markdown template
 1. [Loops](/core-concepts/loops) and [If / Else](/core-concepts/if-else) statements allow control of what is displayed to users
