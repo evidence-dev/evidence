@@ -801,15 +801,6 @@ describe('Query', () => {
 			*/
 			expect(mockRunner).toHaveBeenCalledTimes(3);
 		});
-		it('should inherit noResolve from the parent query', () => {
-			let initial = getMockQuery('SELECT 1', { noResolve: true });
-			let filtered = initial.where('1 = 1');
-			expect(filtered.opts.noResolve).toBe(true);
-
-			initial = getMockQuery('SELECT 1', { noResolve: false });
-			filtered = initial.where('1 = 1');
-			expect(filtered.opts.noResolve).toBe(false);
-		});
 	});
 
 	describe('EventEmitter interface', () => {

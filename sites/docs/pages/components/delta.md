@@ -3,11 +3,7 @@ sidebar_position: 1
 title: Delta
 ---
 
-```sql growth
-select 0.366 as positive, -0.366 as negative
-```
-
-<Delta data={growth} column=positive fmt=pct1 />
+<img src="/img/delta-pos.png" width="150"/>
 
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 />
@@ -23,18 +19,18 @@ select 0.366 as positive, -0.366 as negative
 
 #### Positive
 
-<Delta data={growth} column=positive fmt=pct1 />
+<img src="/img/delta-pos.png" width="130"/>
 
 #### Negative 
 
-<Delta data={growth} column=negative fmt=pct1 />
+<img src="/img/delta-neg.png" width="150"/>
 
 #### Neutral*
 *Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 neutralMin=-0.4 neutralMax=0.4 />
 ```
-<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
+<img src="/img/delta-neut.png" width="130"/>
 
 ### Chips
 
@@ -44,18 +40,18 @@ select 0.366 as positive, -0.366 as negative
 
 #### Positive
 
-<Delta data={growth} column=positive fmt=pct1 chip=true/>
+<img src="/img/delta-chip-pos.png" width="130"/>
 
 #### Negative 
 
-<Delta data={growth} column=negative fmt=pct1 chip=true/>
+<img src="/img/delta-chip-neg.png" width="130"/>
 
 #### Neutral*
 *Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 chip=true neutralMin=-0.4 neutralMax=0.4 />
 ```
-<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4 chip=true/>
+<img src="/img/delta-chip-neut.png" width="130"/>
 
 ### Symbol Position
 
@@ -65,7 +61,7 @@ select 0.366 as positive, -0.366 as negative
 <Delta data={sales} column=growth fmt=pct1 symbolPosition=left/>
 ```
 
-<Delta data={growth} column=positive fmt=pct1 symbolPosition=left/>
+<img src="/img/delta-left.png" width="130"/>
 
 #### Symbol on Left in Chip
 
@@ -73,7 +69,7 @@ select 0.366 as positive, -0.366 as negative
 <Delta data={sales} column=growth fmt=pct1 chip=true symbolPosition=left/>
 ```
 
-<Delta data={growth} column=negative fmt=pct1 symbolPosition=left/>
+<img src="/img/delta-left-neg.png" width="130"/>
 
 ## Options
 <PropListing

@@ -28,4 +28,3 @@ yarn.lock
 packages/evidence/scripts/svelte.config.js
 **/node_modules
 **/**/node_modules
-packages/ui/icons/src

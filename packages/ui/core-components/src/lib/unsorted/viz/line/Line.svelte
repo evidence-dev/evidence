@@ -96,21 +96,11 @@
 		name = name ?? formatTitle(y, columnSummary[y].title);
 	} else {
 		// Multi Series
-		try {
-			data = getCompletedData(data, x, y, series);
-		} catch (e) {
-			console.warn('Failed to complete data', { e });
-			data = [];
-		}
+		data = getCompletedData(data, x, y, series);
 	}
 
 	$: if (handleMissing === 'zero') {
-		try {
-			data = getCompletedData(data, x, y, series, true);
-		} catch (e) {
-			console.warn('Failed to complete data', { e });
-			data = [];
-		}
+		data = getCompletedData(data, x, y, series, true);
 	}
 
 	// Value label positions:

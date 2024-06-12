@@ -18,7 +18,7 @@ A useful reference can be found in the [Needful Things example project](https://
 
 ## Quickstart: VS Code Extension
 
-1. **Create a [SQL file query](/core-concepts/markdown-queries/#sql-file-queries) in your sources folder**. It should return:
+1. **Create a [SQL file query](/core-concepts/queries/#sql-file-queries) in your sources folder**. It should return:
    - **One row per page** you want to generate
    - **A column containing a unique name or id** for each page
    - **Other columns containing data you want** to use in the pages
@@ -182,3 +182,4 @@ group by 1
 
 {params.customer} bought items worth <Value data={customers} column=sales_usd />.
 ````
+

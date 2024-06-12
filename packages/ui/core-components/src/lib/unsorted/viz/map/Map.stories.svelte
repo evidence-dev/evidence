@@ -15,13 +15,12 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
-
-	const data = Query.create(`SELECT * from locations order by point_name asc limit 20`, query);
-	const la_zip_sales = Query.create(`select * from la_zip_sales where zip_code <> 90704`, query);
-	const la_locations = Query.create(`select * from la_locations`, query);
 </script>
 
 <Story name="Basic Usage">
+	{@const data = Query.create(`SELECT * from locations order by point_name asc limit 20`, query)}
+	{@const la_zip_sales = Query.create(`select * from la_zip_sales where zip_code <> 90704`, query)}
+	{@const la_locations = Query.create(`select * from la_locations`, query)}
 	<BaseMap title="My Map" height="300">
 		<Points
 			data={la_locations}
@@ -83,8 +82,4 @@
 	/>
 	<PointMap data={la_locations} lat="lat" long="long" />
 	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" />
-</Story>
-
-<Story name="Point Map">
-	<PointMap data={la_locations} lat="lat" long="long" />
 </Story>

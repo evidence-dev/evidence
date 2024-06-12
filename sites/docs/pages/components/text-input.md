@@ -7,12 +7,7 @@ Creates a text input that can be used to filter or search
 
 To see how to filter a query using a text input, see [Filters](/core-concepts/filters).
 
-<TextInput
-    name=text_input_name
-    title="Search"
-/>
-
-Selected: {inputs.text_input_name}
+<img src="/img/text-input.png" alt="TextInput" width="300px"/>
 
 ````markdown
 <TextInput
@@ -25,11 +20,7 @@ Selected: {inputs.text_input_name}
 
 ### Basic Text Input
 
-<TextInput
-    name=name_of_input
-/>
-
-Selected: {inputs.name_of_input}
+<img src="/img/text-input-basic.png" alt="TextInput" width="300px"/>
 
 ````markdown
 <TextInput
@@ -39,12 +30,7 @@ Selected: {inputs.name_of_input}
 
 ### With Title
 
-<TextInput
-    name=text_input2
-    title="Search"
-/>
-
-Selected: {inputs.text_input2}
+<img src="/img/text-input.png" alt="TextInput" width="300px"/>
 
 ````markdown
 <TextInput
@@ -55,13 +41,7 @@ Selected: {inputs.text_input2}
 
 ### With Placeholder
 
-<TextInput
-    name=text_input3
-    title="Freetext Search"
-    placeholder="Start typing"
-/>
-
-Selected: {inputs.text_input3}
+<img src="/img/text-input-placeholder.png" alt="TextInput" width="300px"/>
 
 ````markdown
 <TextInput
@@ -73,13 +53,7 @@ Selected: {inputs.text_input3}
 
 ### With Default Text Prefilled
 
-<TextInput
-    name=text_input4
-    title="Default Selected"
-    defaultValue="Sporting"
-/>
-
-Selected: {inputs.text_input4}
+<img src="/img/text-input-default.png" alt="TextInput" width="300px"/>
 
 ````markdown
 <TextInput
@@ -88,6 +62,9 @@ Selected: {inputs.text_input4}
     defaultValue="Sporting"
 />
 ````
+
+
+
 
 ### Fuzzy Finding (Searching)
 

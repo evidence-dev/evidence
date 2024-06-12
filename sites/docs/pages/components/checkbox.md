@@ -64,28 +64,6 @@ WHERE  not ${inputs.exclude_low_value} -- When True, Do not evaluate the next co
 
 <BigValue fmt=num0 value=records_count data={orders}/>
 
-# Checkbox
-
-## Options
-
-<PropListing 
-    name="name"
-    required
->
-
-Name of the checkbox, used to reference the selected value elsewhere as `{inputs.name.value}`
-
-</PropListing>
-<PropListing 
-    name="defaultValue"
-    options="boolean"
-    defaultValue=false
->
-
-Value to use when checkbox is first loaded. True value for checked, false for unchecked
-
-</PropListing>
-
 
 
 

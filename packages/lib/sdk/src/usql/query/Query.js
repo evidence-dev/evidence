@@ -5,9 +5,6 @@ import {
 	sql as taggedSql,
 	sum as qSum,
 	avg as qAvg,
-	min as qMin,
-	max as qMax,
-	median as qMedian,
 	count as qCount
 } from '@uwdata/mosaic-sql';
 import { sharedPromise } from '../../lib/sharedPromise.js';
@@ -927,16 +924,6 @@ DESCRIBE ${this.text.trim()}
 	#hash;
 	/** @type {import('../types.js').QueryOpts<RowType>} */
 	#opts;
-
-	/** @type {Pick<import("../types.js").QueryOpts<RowType>, 'autoScore' | 'noResolve' | 'disableCache'>} */
-	get #inheritableOpts() {
-		return {
-			autoScore: this.#opts.autoScore,
-			noResolve: this.#opts.noResolve,
-			disableCache: this.#opts.disableCache
-		};
-	}
-
 	/** @type {string} */
 	get id() {
 		return this.#id;
@@ -1144,26 +1131,8 @@ DESCRIBE ${this.text.trim()}
 	/** @param {string} filterStatement */
 	where = (filterStatement) =>
 		Query.create(this.#query.clone().where(taggedSql`${filterStatement}`), this.#executeQuery, {
-			knownColumns: this.#columns,
-			noResolve: this.#opts.noResolve
-		});
-
-	/**
-	 * Attaches an `ordinal` column to the query based on some window statement
-	 * @example myQuery.withOrdinal('partition by a order by b')
-	 * @param {string} windowStatement
-	 * @returns
-	 */
-	withOrdinal = (windowStatement) => {
-		const newQ = this.#query.clone();
-		newQ.select({
-			ordinal: taggedSql`row_number() over (${windowStatement})`
-		});
-		return Query.create(newQ, this.#executeQuery, {
-			...this.#inheritableOpts,
 			knownColumns: this.#columns
 		});
-	};
 
 	/**
 	 * @param {string} searchTerm
@@ -1195,8 +1164,7 @@ DESCRIBE ${this.text.trim()}
 				.orderby(taggedSql`similarity DESC`),
 			this.#executeQuery,
 			{
-				knownColumns: colsWithSimilarity,
-				...this.#inheritableOpts
+				knownColumns: colsWithSimilarity
 			}
 		);
 		return output;
@@ -1205,15 +1173,13 @@ DESCRIBE ${this.text.trim()}
 	/** @param {number} limit */
 	limit = (limit) =>
 		Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
+			knownColumns: this.#columns
 		});
 
 	/** @param {number} offset */
 	offset = (offset) =>
 		Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
+			knownColumns: this.#columns
 		});
 	/**
 	 * @param {number} offset
@@ -1221,8 +1187,7 @@ DESCRIBE ${this.text.trim()}
 	 */
 	paginate = (offset, limit) =>
 		Query.create(this.#query.clone().offset(offset).limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
+			knownColumns: this.#columns
 		});
 
 	/**
@@ -1236,8 +1201,7 @@ DESCRIBE ${this.text.trim()}
 		query.$groupby(columns);
 
 		return Query.create(query, this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
+			knownColumns: this.#columns
 		});
 	};
 
@@ -1245,9 +1209,6 @@ DESCRIBE ${this.text.trim()}
 	 * @typedef {Object} AggArgs
 	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} sum
 	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} avg
-	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} min
-	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} max
-	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} median
 	 */
 
 	/**
@@ -1255,10 +1216,7 @@ DESCRIBE ${this.text.trim()}
 	 */
 	static #aggFns = {
 		sum: qSum,
-		avg: qAvg,
-		min: qMin,
-		max: qMax,
-		median: qMedian
+		avg: qAvg
 	};
 	/**
 	 *
@@ -1285,10 +1243,7 @@ DESCRIBE ${this.text.trim()}
 				});
 			}
 		}
-		return Query.create(query, this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
-		});
+		return Query.create(query, this.#executeQuery, { knownColumns: this.#columns });
 	};
 
 	////////////////////////////////////

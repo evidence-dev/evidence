@@ -271,11 +271,13 @@ DuckDB is a local file-based database. If using a persistent database, it should
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
-### MotherDuck
-
-[Motherduck](https://motherduck.com) is a cloud-based DuckDB database.
+#### MotherDuck
 
 To connect to MotherDuck, you will need a [service token](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token).
+
+In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`.
+
+You can also specify a database: `md:my_database?motherduck_token=[YOUR_SERVICE_TOKEN]`.
 
 ### Databricks
 

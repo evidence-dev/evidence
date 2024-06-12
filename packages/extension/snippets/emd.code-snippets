@@ -262,11 +262,6 @@
 		"body": ["<Details title=${1:'More Details'}>\n\t${2:Details Content}\n</Details>\n\n"],
 		"description": "Insert Details"
 	},
-	"DownloadData": {
-		"prefix": "/DownloadData",
-		"body": ["<DownloadData data={${1:query_name}} text='Download'/>\n\n"],
-		"description": "Insert DownloadData"
-	},
 	"Code Block": {
 		"prefix": "/Code Block",
 		"body": ["```${1:python}", "\t${2:}", "```\n\n"],

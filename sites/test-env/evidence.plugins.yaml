@@ -7,4 +7,3 @@ datasources:
     @evidence-dev/postgres: { }
     @evidence-dev/sqlite: { }
     @evidence-dev/snowflake: { }
-    @evidence-dev/motherduck: { }

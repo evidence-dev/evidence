@@ -56,7 +56,7 @@
 		<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
 
 		<QueryLoad let:loaded data={depQuery}>
-			<Dropdown name="user" data={loaded} value="value" label="label" multiple selectAllByDefault>
+			<Dropdown name="user" data={loaded} value="value" label="label">
 				<DropdownOption value="All" />
 			</Dropdown>
 		</QueryLoad>

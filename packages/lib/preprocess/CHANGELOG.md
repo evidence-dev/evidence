@@ -1,11 +1,5 @@
 # @evidence-dev/preprocess
 
-## 5.1.2
-
-### Patch Changes
-
-- 87e56af2: Handle noResolve state while on the server
-
 ## 5.1.1
 
 ### Patch Changes

@@ -11,8 +11,6 @@
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
-	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
-	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 
 	function dateToYYYYMMDD(date) {
 		return date.toISOString().split('T')[0];
@@ -36,10 +34,6 @@
 	export let data;
 	/** @type {string | undefined} */
 	export let dates;
-	/** @type {[]string | undefined} */
-	export let presetRanges;
-	/** @type {string | undefined} */
-	export let defaultValue;
 
 	const exec = getQueryFunction();
 	let query;
@@ -76,11 +70,7 @@
 					? dateToYYYYMMDD($query?.[0].end)
 					: dateToYYYYMMDD(new Date());
 
-	$: {
-		if ((query && $query.loaded) || !query) {
-			$inputs[name] = { start: startString, end: endString };
-		}
-	}
+	$: $inputs[name] = { start: startString, end: endString };
 
 	let selectedDateRange;
 	$: if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
@@ -109,20 +99,12 @@
 				</span>
 			</span>
 		{:else}
-			<QueryLoad data={query} let:loaded>
-				<svelte:fragment slot="skeleton">
-					<Skeleton class="h-8 w-72" />
-				</svelte:fragment>
-
-				<DateRange
-					bind:selectedDateRange
-					start={startString}
-					end={endString}
-					loaded={loaded?.ready ?? true}
-					{presetRanges}
-					{defaultValue}
-				/>
-			</QueryLoad>
+			<DateRange
+				bind:selectedDateRange
+				start={startString}
+				end={endString}
+				loaded={$query?.ready ?? true}
+			/>
 		{/if}
 	</div>
 </HiddenInPrint>

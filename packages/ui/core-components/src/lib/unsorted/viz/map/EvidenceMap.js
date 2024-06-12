@@ -13,16 +13,10 @@ export class EvidenceMap {
 	/** @type {import('leaflet').Map | undefined} */
 	#map;
 
-	/**
-	 * Manages the last clicked marker to track selection states.
-	 * @type {import("leaflet").Marker}
-	 */
+	/** Manages the last clicked marker to track selection states. */
 	#lastClickedMarker = null;
 
-	/**
-	 * Stores original styles of markers to restore after changes.
-	 * @type {Map<import("leaflet").Marker>}
-	 */
+	/** Stores original styles of markers to restore after changes. */
 	#markerStyles = new Map();
 
 	/** @type {HTMLDivElement | undefined} */
@@ -31,10 +25,7 @@ export class EvidenceMap {
 	/** Handles the promises associated with the initialization of the map component. */
 	#sharedPromise = sharedPromise();
 
-	/**
-	 * Manages the bounds of the map to adjust the view based on the layers added.
-	 * @type {import('leaflet').Bounds}
-	 */
+	/** Manages the bounds of the map to adjust the view based on the layers added. */
 	#bounds;
 
 	/** Tracks whether the initial view has been set based on data bounds. */
@@ -62,17 +53,11 @@ export class EvidenceMap {
 	}
 
 	/**
-	 * @type {number}
-	 */
-	#initZoom;
-
-	/**
 	 * Initializes the map within the provided HTML element with specified starting coordinates and zoom level.
 	 * @param {HTMLDivElement} mapEl - The HTML element to initialize the map in.
 	 * @param {string} basemap - The URL template for the basemap.
-	 * @param {import('leaflet').LatLngExpression} [startingCoords] - The starting coordinates for the map.
-	 * @param {number} [startingZoom] - The starting zoom level for the map.
-	 * @param {boolean} [userDefinedView=false]
+	 * @param {import('leaflet').LatLngExpression} startingCoords - The starting coordinates for the map.
+	 * @param {number} startingZoom - The starting zoom level for the map.
 	 * @returns {Promise<void>}
 	 */
 	async init(mapEl, basemap, startingCoords, startingZoom, userDefinedView = false) {
@@ -85,8 +70,6 @@ export class EvidenceMap {
 				});
 		}
 
-		this.#initZoom = startingZoom;
-
 		if (this.#mapEl) {
 			const e = new Error('Evidence Map already initialized');
 			this.#sharedPromise.reject(e);
@@ -94,9 +77,9 @@ export class EvidenceMap {
 		}
 
 		this.#mapEl = mapEl;
-		this.#map = Leaflet.map(this.#mapEl, { zoomControl: false, zoomSnap: 0.25 }).setView(
+		this.#map = Leaflet.map(this.#mapEl, { zoomControl: false }).setView(
 			startingCoords,
-			startingZoom ?? 1
+			startingZoom
 		);
 		if (userDefinedView) {
 			this.#initialViewSet = true; // Mark initial view as set
@@ -138,8 +121,7 @@ export class EvidenceMap {
 		});
 
 		if (this.#bounds.isValid()) {
-			this.#map.fitBounds(this.#bounds, { maxZoom: 12 });
-			if (this.#initZoom) this.#map.setZoom(this.#initZoom);
+			this.#map.fitBounds(this.#bounds);
 		} else {
 			console.error('Bounds are invalid!', this.#bounds);
 			throw new Error('Bounds are invalid!');
@@ -209,8 +191,6 @@ export class EvidenceMap {
 		this.#bounds.extend(geoJsonLayer.getBounds());
 		if (!this.#initialViewSet) {
 			this.updateBounds();
-		} else {
-			this.#map.setZoom(this.#initZoom ?? 5);
 		}
 		geoJsonLayer.bringToBack();
 		return geoJsonLayer;
@@ -274,8 +254,6 @@ export class EvidenceMap {
 		if (coords && Array.isArray(coords) && coords.length === 2 && !this.#initialViewSet) {
 			this.#bounds.extend(coords);
 			this.updateBounds();
-		} else {
-			this.#map.setZoom(this.#initZoom ?? 5);
 		}
 
 		return marker;

@@ -3,22 +3,7 @@ title: Sparkline
 sidebar_position: 1
 ---
 
-```sql orders_by_month
-select order_month as month, sum(sales) as sales_usd0k, count(1) as orders from needful_things.orders
-group by all
-```
-
-```sql orders_by_category
-select category, order_month as month, sum(sales) as sales_usd0k, count(1) as orders from needful_things.orders
-group by all
-```
-
-<Sparkline 
-    data={orders_by_month}
-    dateCol=month
-    valueCol=sales_usd0k 
-    color=navy
-/>
+<img src="/img/sparkline-basic.png" width="150"/>
 
 ```markdown
 <Sparkline 
@@ -32,9 +17,7 @@ group by all
 
 ### Connected Sparkline
 
-<Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=bar  valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
-<Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=area color=maroon valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
-<Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=line color=purple valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
+<img src="/img/sparkline-connected.gif" width="400"/>
 
 ```html
 <Sparkline data={sales_by_date} dateCol=date valueCol=sales type=bar  valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>

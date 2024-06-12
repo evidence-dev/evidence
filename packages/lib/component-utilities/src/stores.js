@@ -24,19 +24,7 @@ function createToastsObject() {
 		add: (toast, timeout = 2000) => {
 			// Totally safe ids
 			toast.id = toast.id ?? Math.random().toString();
-			update(($toasts) => {
-				const existing = $toasts.find((t) => t.id === toast.id);
-				if (existing) {
-					Object.assign(existing, toast);
-					if (timeoutMap.has(toast.id)) {
-						clearTimeout(timeoutMap.get(toast.id));
-						timeoutMap.delete(toast.id);
-					}
-				} else {
-					$toasts.push(toast);
-				}
-				return $toasts;
-			});
+			update(($toasts) => ($toasts.push(toast), $toasts));
 			if (timeout) {
 				const timeoutId = setTimeout(() => {
 					removeToast(toast.id);

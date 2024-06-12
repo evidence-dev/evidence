@@ -74,8 +74,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				} else {
 					// On server
 					try {
-						if (!__${id}HasUnresolved)
-							${id}InitialStates.initialData = profile(__db.query, __${id}Text, { query_name: '${id}' })
+						${id}InitialStates.initialData = profile(__db.query, __${id}Text, { query_name: '${id}' })
 					} catch (e) {
 						console.error(e)
 						if (import.meta.env.VITE_BUILD_STRICT) throw e;

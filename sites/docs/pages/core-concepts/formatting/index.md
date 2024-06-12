@@ -160,7 +160,7 @@ order by row_num
 
 
 ### Numbers
-The default number format (when no `fmt` is specified) automatically handles decimal places and summary units (in the same way that `usd` does for currency).
+
 
 ```sql number_formats
 select 'num0' as format_name, '#,##0' as format_code, '11.23168' as example_input, '11' as example_output, 0 as row_num union all

@@ -6,7 +6,6 @@
 	import { dev } from '$app/environment';
 	export let error;
 	export let chartType;
-	export let minHeight = '150';
 
 	const DevMissingCredentialsError = 'SQL Error: Missing datasource connection.';
 	const ProdMissingCredentialsError =
@@ -15,7 +14,7 @@
 
 <div
 	width="100%"
-	class="grid grid-rows-auto box-content grid-cols-1 justify-center bg-red-50 text-grey-700 font-ui font-normal rounded border border-red-200 min-h-[{minHeight}px] py-5 px-8 my-5 print:break-inside-avoid"
+	class="grid grid-rows-auto box-content grid-cols-1 justify-center bg-red-50 text-grey-700 font-ui font-normal rounded border border-red-200 min-h-[150px] py-5 px-8 my-5 print:break-inside-avoid"
 >
 	<div class="m-auto w-full">
 		<div class="font-bold text-center text-lg">

@@ -53,7 +53,7 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
 /**
  * Returns an Evidence format object to be used in the applyFormatting function
  * @param {string} formatString string containing an Excel-style format code, or a format name matching a built-in or custom format
- * @param {'number' | 'date' | 'boolean' | 'string'} [valueType] optional - a string representing the data type within the column that will be formatted ('number', 'date', 'boolean', or 'string)
+ * @param {string} valueType optional - a string representing the data type within the column that will be formatted ('number', 'date', 'boolean', or 'string)
  * @returns a format object based on the formatString matching a built-in or custom format name, or a new custom format object containing an Excel-style format code
  */
 export function getFormatObjectFromString(formatString, valueType = undefined) {
