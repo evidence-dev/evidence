@@ -1,7 +1,7 @@
 import {
 	initDB,
 	setParquetURLs,
-	updateSearchPath,
+	updateSearchPath
 } from '@evidence-dev/universal-sql/client-duckdb';
 
 export async function initialize() {
@@ -11,7 +11,7 @@ export async function initialize() {
 		await setParquetURLs(res.renderedFiles ?? {});
 		await updateSearchPath(Object.keys(res.renderedFiles ?? {}));
 		if (!res.renderedFiles) console.error('No fixture data available!');
-	}catch (e) {
+	} catch (e) {
 		console.error('Failed to initialize USQL ', e);
 	}
 }

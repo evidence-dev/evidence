@@ -11,7 +11,7 @@ const preview = {
 				color: /(background|color)$/i,
 				date: /Date$/
 			}
-		},
+		}
 	},
 	argTypes: {
 		data: { table: { disable: true } },
