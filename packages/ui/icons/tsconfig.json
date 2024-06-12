@@ -1,0 +1,9 @@
+{
+	"files": ["./src/lib/index.ts"],
+	"compilerOptions": {
+		"rootDir": "./src/lib",
+		"outDir": "./dist",
+		"declaration": true,
+		"module": "esnext"
+	}
+}

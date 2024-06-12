@@ -19,7 +19,8 @@
 	"evidence": {
 		"datasources": [
 			"databricks"
-		]
+		],
+		"icon": "Databricks"
 	},
 	"keywords": [
 		"evidence",

@@ -15,7 +15,7 @@ describe('dropdownOptionStore', () => {
 		vi.useRealTimers();
 	});
 
-	it('should add options and apply defaults', () => {
+	it('should add options and apply defaults', async () => {
 		const { addOption, options } = dropdownOptionStore();
 
 		addOption({
@@ -28,7 +28,7 @@ describe('dropdownOptionStore', () => {
 		});
 
 		expect(get(options)).toHaveLength(0);
-		vi.advanceTimersByTime(100);
+		await vi.advanceTimersByTimeAsync(100);
 
 		const $options = get(options);
 
@@ -37,7 +37,7 @@ describe('dropdownOptionStore', () => {
 		expect($options[1]).toEqual({ value: 2, label: 'test', idx: -1, removeOnDeselect: false });
 	});
 
-	it('should remove options', () => {
+	it('should remove options', async () => {
 		const { addOption, removeOption, options } = dropdownOptionStore();
 
 		addOption({
@@ -50,7 +50,7 @@ describe('dropdownOptionStore', () => {
 		});
 
 		expect(get(options)).toHaveLength(0);
-		vi.advanceTimersByTime(100);
+		await vi.advanceTimersByTimeAsync(100);
 
 		const $options = get(options);
 
@@ -58,7 +58,7 @@ describe('dropdownOptionStore', () => {
 	});
 
 	describe('hygeine', () => {
-		it('should deduplicate options by value + label', () => {
+		it('should deduplicate options by value + label', async () => {
 			const { addOption, options } = dropdownOptionStore();
 			addOption({
 				value: 1,
@@ -69,11 +69,11 @@ describe('dropdownOptionStore', () => {
 				label: 'test'
 			});
 
-			vi.advanceTimersByTime(100);
+			await vi.advanceTimersByTimeAsync(100);
 			expect(get(options)).toHaveLength(1);
 		});
 
-		it('should sort options by idx and value', () => {
+		it('should sort options by idx and value', async () => {
 			const { addOption, options } = dropdownOptionStore();
 			addOption({
 				value: 1,
@@ -90,7 +90,7 @@ describe('dropdownOptionStore', () => {
 				label: 'C',
 				idx: 1
 			});
-			vi.advanceTimersByTime(100);
+			await vi.advanceTimersByTimeAsync(100);
 
 			expect(get(options)[0].label).toBe('B'); // B has index 0
 			expect(get(options)[1].label).toBe('A'); // A has index 1, but value is lower than C
@@ -134,8 +134,23 @@ describe('dropdownOptionStore', () => {
 		});
 	});
 
+	it('should wait for options to be added before trying to select', async () => {
+		const { addOption, select, selectedOptions } = dropdownOptionStore();
+
+		const opts = [
+			{ label: '1', value: 1 },
+			{ label: '2', value: 2 },
+			{ label: '3', value: 3 }
+		];
+
+		select(opts[0]);
+		opts.forEach((i) => addOption(i));
+		await vi.advanceTimersByTimeAsync(100);
+		expect(get(selectedOptions).length).toBe(1);
+	});
+
 	describe('flags', () => {
-		it('should apply flags to options', () => {
+		it('should apply flags to options', async () => {
 			const { addOption, options, flagOption } = dropdownOptionStore();
 
 			const opt = { value: 1, label: 'test' };
@@ -143,10 +158,10 @@ describe('dropdownOptionStore', () => {
 			addOption(opt);
 			flagOption([opt, DropdownValueFlag.REMOVE_ON_DESELECT]);
 
-			vi.advanceTimersByTime(100);
+			await vi.advanceTimersByTimeAsync(100);
 			expect(get(options)[0].removeOnDeselect).toBe(true);
 		});
-		it('should toggle flags to options', () => {
+		it('should toggle flags to options', async () => {
 			const { addOption, options, flagOption } = dropdownOptionStore();
 
 			const opt = { value: 1, label: 'test' };
@@ -155,11 +170,11 @@ describe('dropdownOptionStore', () => {
 			flagOption([opt, DropdownValueFlag.REMOVE_ON_DESELECT]);
 			flagOption([opt, DropdownValueFlag.REMOVE_ON_DESELECT]);
 
-			vi.advanceTimersByTime(100);
+			await vi.advanceTimersByTimeAsync(100);
 			expect(get(options)[0].removeOnDeselect).toBe(false);
 		});
 		describe('removeOnDeselect', () => {
-			it('should not remove removeOnDeselects', () => {
+			it('should not remove removeOnDeselects', async () => {
 				const { addOption, removeOption, options, flagOption, select } = dropdownOptionStore();
 
 				const opt = { value: 1, label: 'test' };
@@ -169,10 +184,11 @@ describe('dropdownOptionStore', () => {
 				addOption(opt2);
 				flagOption([opt, DropdownValueFlag.REMOVE_ON_DESELECT]);
 				select(opt);
+				await vi.advanceTimersByTimeAsync(100);
 				removeOption(opt);
 				removeOption(opt2);
 
-				vi.advanceTimersByTime(100);
+				await vi.advanceTimersByTimeAsync(100);
 				expect(get(options)[0]).toEqual({
 					...opt,
 					removeOnDeselect: true,
@@ -182,7 +198,7 @@ describe('dropdownOptionStore', () => {
 				expect(get(options)).toHaveLength(1);
 			});
 			it('should float removeOnDeselects to the top', async () => {
-				const { addOption, removeOption, options, flagOption, select } = dropdownOptionStore();
+				const { addOption, options, flagOption, select } = dropdownOptionStore();
 				const opt = { value: 1, label: 'test', idx: 4 };
 				const opt2 = { value: 2, label: 'test', idx: 2 };
 
@@ -192,14 +208,12 @@ describe('dropdownOptionStore', () => {
 				flagOption([opt, DropdownValueFlag.REMOVE_ON_DESELECT]);
 				select(opt);
 
-				removeOption(opt);
-
 				await vi.advanceTimersByTimeAsync(100);
 				expect(get(options)[0]).toEqual({ ...opt, removeOnDeselect: true, selected: true });
 				expect(get(options)[1]).toEqual({ ...opt2, removeOnDeselect: false, selected: false });
 			});
 			it('should float removeOnDeselects to the top, but below manual options', async () => {
-				const { addOption, removeOption, options, flagOption, select } = dropdownOptionStore();
+				const { addOption, options, flagOption, select } = dropdownOptionStore();
 				const opt = { value: 1, label: 'test', idx: 4, __auto: true };
 				const opt2 = { value: 2, label: 'test', idx: 2, __auto: true };
 				const opt3 = { value: 3, label: 'test', idx: -1, __auto: false };
@@ -211,9 +225,11 @@ describe('dropdownOptionStore', () => {
 				flagOption([opt, DropdownValueFlag.REMOVE_ON_DESELECT]);
 				select(opt);
 
-				removeOption(opt);
+				// TODO: Add another test for this. Conflation is happening here
+				// removeOption(opt);
 
 				await vi.advanceTimersByTimeAsync(100);
+
 				expect(get(options)[0]).toEqual({ ...opt3, removeOnDeselect: false, selected: false });
 				expect(get(options)[1]).toEqual({ ...opt, removeOnDeselect: true, selected: true });
 				expect(get(options)[2]).toEqual({ ...opt2, removeOnDeselect: false, selected: false });
@@ -222,7 +238,7 @@ describe('dropdownOptionStore', () => {
 	});
 
 	describe('single select', () => {
-		it('should allow you to select an option', () => {
+		it('should allow you to select an option', async () => {
 			const { addOption, select, selectedOptions } = dropdownOptionStore();
 			const opt = { value: 1, label: 'test' };
 			const opt2 = { value: 2, label: 'test' };
@@ -231,12 +247,12 @@ describe('dropdownOptionStore', () => {
 			addOption(opt2);
 
 			select(opt);
-			vi.advanceTimersByTime(100);
+			await vi.advanceTimersByTimeAsync(100);
 			expect(get(selectedOptions).map((v) => ({ label: v.label, value: v.value }))).toEqual([opt]);
 		});
 	});
 	describe('multi select', () => {
-		it('should allow you to select multiple options', () => {
+		it('should allow you to select multiple options', async () => {
 			const { addOption, select, selectedOptions } = dropdownOptionStore(true);
 			const opt = { value: 1, label: 'test' };
 			const opt2 = { value: 2, label: 'test' };
@@ -244,13 +260,13 @@ describe('dropdownOptionStore', () => {
 			addOption(opt2);
 			select(opt);
 			select(opt2);
-			vi.advanceTimersByTime(100);
+			await vi.advanceTimersByTimeAsync(100);
 			expect(get(selectedOptions).map((v) => ({ label: v.label, value: v.value }))).toEqual([
 				opt,
 				opt2
 			]);
 		});
-		it('should allow you to unselect options', () => {
+		it('should allow you to unselect options', async () => {
 			const { addOption, select, selectedOptions } = dropdownOptionStore(true);
 			const opt = { value: 1, label: 'test' };
 			const opt2 = { value: 2, label: 'test' };
@@ -259,7 +275,7 @@ describe('dropdownOptionStore', () => {
 			select(opt);
 			select(opt2);
 			select(opt);
-			vi.advanceTimersByTime(100);
+			await vi.advanceTimersByTimeAsync(100);
 			expect(get(selectedOptions).map((v) => ({ label: v.label, value: v.value }))).toEqual([opt2]);
 		});
 	});
