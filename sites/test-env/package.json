@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.34",
+	"version": "3.0.37",
 	"private": true,
 	"scripts": {
 		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 evidence build",
@@ -21,6 +21,7 @@
 		"@evidence-dev/duckdb": "workspace:*",
 		"@evidence-dev/evidence": "workspace:*",
 		"@evidence-dev/faker-datasource": "workspace:*",
+		"@evidence-dev/motherduck": "workspace:^",
 		"@evidence-dev/postgres": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
 		"@evidence-dev/sqlite": "workspace:*"

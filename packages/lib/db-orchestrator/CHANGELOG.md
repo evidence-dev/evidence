@@ -1,5 +1,16 @@
 # @evidence-dev/db-orchestrator
 
+## 3.1.2
+
+### Patch Changes
+
+- Updated dependencies [6421c6d9b]
+  - @evidence-dev/bigquery@2.0.6
+  - @evidence-dev/csv@1.0.10
+  - @evidence-dev/databricks@1.0.6
+  - @evidence-dev/snowflake@1.0.6
+  - @evidence-dev/trino@1.0.6
+
 ## 3.1.1
 
 ### Patch Changes

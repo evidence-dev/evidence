@@ -1,60 +1,93 @@
 ---
 title: Button Group
 sidebar_position: 1
+queries:
+- categories.sql
 ---
 
 Creates a group of single-select buttons for quick filtering
 
 To see how to filter a query using a Button Group, see [Filters](/core-concepts/filters).
 
-<img src="/img/button-group-title.png" alt="Button Group" width="550px"/>
-
-
-````markdown
-<ButtonGroup
-    data={query_name} 
-    name=name_of_button_group
-    value=column_name
+<ButtonGroup 
+    data={categories} 
+    name=selected_category 
+    value=category
 />
-````
+
+Selected: {inputs.selected_category}
+
+```markdown
+<ButtonGroup 
+    data={categories} 
+    name=selected_category 
+    value=category
+/>
+
+Selected: {inputs.selected_category}
+```
 
 ## Examples
 
 ### Button Group using Options from a Query
 
-<img src="/img/button-group-query-selected.png" alt="Button Group" width="550px"/>
-
-````markdown
-<ButtonGroup
-    data={query_name} 
-    name=name_of_button_group
-    value=column_name
+<ButtonGroup 
+    data={categories} 
+    name=category_picker 
+    value=category
 />
-````
+
+Selected: {inputs.category_picker}
+
+```markdown
+<ButtonGroup 
+    data={categories} 
+    name=category_picker 
+    value=category
+/>
+
+Selected: {inputs.category_picker}
+```
 
 ### With a Title
 
-<img src="/img/button-group-title.png" alt="Button Group With Title" width="550px"/>
-
-````markdown
-<ButtonGroup
-    data={query_name} 
-    name=name_of_button_group
-    value=column_name
+<ButtonGroup 
+    data={categories} 
+    name=category_selector 
+    value=category
     title="Select a Category"
 />
-````
+
+Selected: {inputs.category_selector}
+
+```markdown
+<ButtonGroup 
+    data={categories} 
+    name=category_selector 
+    value=category
+    title="Select a Category"
+/>
+
+Selected: {inputs.category_selector}
+```
 
 ### With a Default Value
 
-<img src="/img/button-group-default.png" alt="Button Group With Default Value" width="675px"/>
+<ButtonGroup
+    data={categories}
+    name=selected_button
+    value=category
+>
+    <ButtonGroupItem valueLabel="All Categories" value="%" default />
+</ButtonGroup>
+
+Selected: {inputs.selected_button}
 
 ````markdown
 <ButtonGroup
-    data={query_name} 
-    name=name_of_button_group
-    value=column_name
-    title="Select a Category"
+    data={categories} 
+    name=selected_button
+    value=category
 >
     <ButtonGroupItem valueLabel="All Categories" value="%" default />
 </ButtonGroup>
@@ -65,115 +98,131 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 
 ### With Hardcoded Options
 
-<img src="/img/button-group-hardcoded.png" alt="Button Group Hardcoded" width="300px"/>
-
-
-````markdown
-<ButtonGroup name=name_of_button_group>
+<ButtonGroup name=hardcoded_options>
     <ButtonGroupItem valueLabel="Option One" value="1" />
     <ButtonGroupItem valueLabel="Option Two" value="2" />
     <ButtonGroupItem valueLabel="Option Three" value="3" />
 </ButtonGroup>
+
+Selected: {inputs.hardcoded_options}
+
+
+````markdown
+<ButtonGroup name=hardcoded_options>
+    <ButtonGroupItem valueLabel="Option One" value="1" />
+    <ButtonGroupItem valueLabel="Option Two" value="2" />
+    <ButtonGroupItem valueLabel="Option Three" value="3" />
+</ButtonGroup>
+
+Selected: {inputs.hardcoded_options}
 ````
 
 ### Alternative Labels
 
-<img src="/img/button-group-alt-labels.png" alt="Button Group Alternative Labels" width="200px"/>
+<ButtonGroup
+    data={categories} 
+    name=alternative_labels_selector
+    value=category
+    label=short_category
+/>
+
+Selected: {inputs.alternative_labels_selector}
+
 
 ````markdown
 <ButtonGroup
-    data={query_name} 
-    name=name_of_button_group
-    value=column_name
-    label=column_name_containg_label
+    data={categories} 
+    name=alternative_labels_selector
+    value=category
+    label=short_category
 />
+
+Selected: {inputs.alternative_labels_selector}
 ````
 
 ### Filtering a Query
 
-````markdown
 <ButtonGroup
-    data={query_name} 
-    name=name_of_button_group
-    value=column_name
+    data={categories} 
+    name=category_button_group
+    value=category
 />
 
 ```sql filtered_query
-select *
-from source_name.table
-where column_name like '${inputs.name_of_button_group}'
+select 
+    category, item, sum(sales) as total_sales
+from needful_things.orders
+where category like '${inputs.category_button_group}'
+group by all
 ```
+
+<DataTable data={filtered_query} emptySet=pass emptyMessage="No category selected"/>
+
+
+````markdown
+<ButtonGroup
+    data={categories} 
+    name=category_button_group
+    value=category
+/>
+
+```sql filtered_query
+select 
+    category, item, sum(sales) as total_sales
+from needful_things.orders
+where category like '${inputs.category_button_group}'
+group by all
+```
+
+<DataTable data={filtered_query} emptySet=pass emptyMessage="No category selected"/>
 ````
 
 # ButtonGroup
 
 ## Options
+
 <PropListing 
     name="name"
-    required
->
-
-Name of the button group, used to reference the selected value elsewhere as `{inputs.name}`
-
-</PropListing>
+    description="Name of the button group, used to reference the selected value elsewhere as {`{inputs.name}`}"
+    required=true
+/>
 <PropListing 
     name="preset"
+    description="Preset values to use"
     options="dates"
->
-
-Preset values to use
-
-</PropListing>
+/>
 <PropListing 
     name="data"
+    description="Query name, wrapped in curly braces"
     options="query name"
->
-
-Query name, wrapped in curly braces
-
-</PropListing>
+/>
 <PropListing 
     name="value"
+    description="Column name from the query containing values to pick from"
     options="column name"
->
-
-Column name from the query containing values to pick from
-
-</PropListing>
+/>
 <PropListing 
     name="label"
+    description="Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)"
     options="column name"
     defaultValue="Uses the column in value"
->
-
-Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)
-
-</PropListing>
+/>
 <PropListing 
     name="title"
+    description="Title to display above the button group"
     options="string"
->
-
-Title to display above the button group
-
-</PropListing>
+/>
 <PropListing 
     name="order"
+    description="Column to sort options by"
     options="column name"
     defaultValue="Uses the same order as the query in `data`"
->
-
-Column to sort options by
-
-</PropListing>
+/>
 <PropListing 
     name="where"
+    description="SQL where fragment to filter options by (e.g., where sales > 40000)"
     options="SQL where clause"
->
-
-SQL where fragment to filter options by (e.g., where sales > 40000)
-
-</PropListing>
+/>
 
 # ButtonGroupItem
 
@@ -183,28 +232,18 @@ The ButtonGroupItem component can be used to manually add options to a button gr
 
 <PropListing 
     name="value"
-    required
->
-
-Value to use when the option is selected
-
-</PropListing>
+    description="Value to use when the option is selected"
+    required=true
+/>
 <PropListing 
     name="valueLabel"
+    description="Label to display for the option in the dropdown"
     options="string"
     defaultValue="Uses value"
->
-
-Label to display for the option in the dropdown
-
-</PropListing>
+/>
 <PropListing 
     name="hideDuringPrint"
+    description="Hide the component when the report is printed"
     options={["true", "false"]}
     defaultValue=true
->
-
-Hide the component when the report is printed
-
-</PropListing>
-
+/>

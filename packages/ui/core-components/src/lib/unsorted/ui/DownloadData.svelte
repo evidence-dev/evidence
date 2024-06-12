@@ -9,7 +9,8 @@
 	export let data = undefined;
 	export let queryID = undefined;
 	export let text = 'Download';
-	export let display = undefined;
+	export let display = true;
+	$: display = display === 'true' || display === true;
 
 	const date = new Date();
 	const localISOTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000)

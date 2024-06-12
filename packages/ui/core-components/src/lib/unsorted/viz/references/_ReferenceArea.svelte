@@ -235,6 +235,7 @@
 {#if error}
 	<ErrorChart
 		{error}
+		minHeight="50"
 		chartType={chartType === 'Reference Area' ? chartType : `${chartType}: Reference Area`}
 	/>
 {/if}

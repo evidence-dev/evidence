@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/csv",
-	"version": "1.0.9",
+	"version": "1.0.10",
 	"description": "CSV driver for Evidence projects, based on DuckDB driver",
 	"main": "index.cjs",
 	"author": "Sean Hughes",
@@ -19,7 +19,8 @@
 	"evidence": {
 		"datasources": [
 			"csv"
-		]
+		],
+		"icon": "Clipboard"
 	},
 	"keywords": [
 		"evidence",

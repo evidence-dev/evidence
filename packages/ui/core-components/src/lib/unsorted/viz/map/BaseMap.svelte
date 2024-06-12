@@ -12,20 +12,19 @@
 
 	let mapElement;
 
-	/** @type {number} */
-	export let startingLat = 39.077;
-	/** @type {number} */
-	export let startingLong = -180;
-	/** @type {number} */
-	export let startingZoom = 5;
+	/** @type {number | undefined} */
+	export let startingLat = undefined;
+	/** @type {number | undefined} */
+	export let startingLong = undefined;
+	/** @type {number | undefined} */
+	export let startingZoom = undefined;
 
+	// TODO: Move these to a constants file
 	const defaultLat = 39.077;
 	const defaultLong = -180;
-	const defaultZoom = 5;
 
 	// Determine if the initial view is user-defined
-	const userDefinedView =
-		startingLat !== defaultLat || startingLong !== defaultLong || startingZoom !== defaultZoom;
+	const userDefinedView = startingLat || startingLong;
 
 	/** @type {number} */
 	export let height = 300; // height in pixels
@@ -46,13 +45,10 @@
 	onMount(async () => {
 		if (browser) {
 			try {
-				await evidenceMap.init(
-					mapElement,
-					basemap,
-					[startingLat, startingLong],
-					startingZoom,
-					userDefinedView
-				);
+				const initCoords =
+					startingLat ?? false ? [startingLat, startingLong] : [defaultLat, defaultLong];
+
+				await evidenceMap.init(mapElement, basemap, initCoords, startingZoom, userDefinedView);
 				return () => evidenceMap.cleanup();
 			} catch (e) {
 				error = e.message;
@@ -80,6 +76,14 @@
 {/if}
 
 <style>
+	div :global(.leaflet-container img.leaflet-tile) {
+		/* 
+			See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 
+			See: https://github.com/Leaflet/Leaflet/issues/3575
+		*/
+		mix-blend-mode: plus-lighter;
+	}
+
 	div :global(.leaflet-popup-content-wrapper) {
 		background-color: white;
 		box-shadow: 0 1px 3px rgb(0, 0, 0, 0.4);
