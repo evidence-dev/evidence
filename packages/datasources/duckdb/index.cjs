@@ -116,7 +116,7 @@ function duckdbDescribeToEvidenceType(describe) {
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
-	let filename = ':memory';
+	let filename = ':memory:';
 
 	if (database?.filename) {
 		if (database.filename.startsWith('md:') || database.filename === ':memory:') {
