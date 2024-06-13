@@ -28,7 +28,7 @@
 	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
-	import { debounce } from 'lodash.debounce';
+	import debounce from 'lodash.debounce';
 
 	// Set up props store
 	let props = writable({});
