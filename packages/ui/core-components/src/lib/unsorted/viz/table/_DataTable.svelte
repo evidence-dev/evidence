@@ -24,11 +24,11 @@
 	import Fullscreen from '../../../atoms/fullscreen/Fullscreen.svelte';
 	import Column from './Column.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte'
+	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte';
 	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
-	import {debounce} from 'lodash.debounce'
+	import { debounce } from 'lodash.debounce';
 
 	// Set up props store
 	let props = writable({});
@@ -193,17 +193,20 @@
 	/** @type {ReturnValue<typeof Query["createReactive"]>}*/
 	let searchFactory;
 	$: if (Query.isQuery(data) && search) {
-		searchFactory = debounce(Query.createReactive(
-			{
-				loadGracePeriod: 1000,
-				callback: (v) => {
-					filteredData = v;
+		searchFactory = debounce(
+			Query.createReactive(
+				{
+					loadGracePeriod: 1000,
+					callback: (v) => {
+						filteredData = v;
+					},
+					execFn: query
 				},
-				execFn: query
-			},
-			data.opts
-			,data
-		), 200);
+				data.opts,
+				data
+			),
+			200
+		);
 	}
 
 	$: if (searchFactory) {
@@ -212,13 +215,11 @@
 				data.search(
 					searchValue,
 					data.columns.map((c) => c.column_name),
-					searchValue.length === 1 ? 0.5 : 
-					searchValue.length >= 6 ? 0.9 : 0.8
+					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
 				),
 				data
 			);
-		}
-		else filteredData = data;
+		} else filteredData = data;
 	}
 
 	$: if (search && !Query.isQuery(data)) {

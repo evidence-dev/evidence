@@ -306,7 +306,6 @@ export class Query {
 ---- Data ${this.#id} ${this.#hash}
 ${this.text.trim()}
         `.trim() + '\n';
-		console.log({dataQuery})
 
 		this.#debugStyled('data query text', '\n' + dataQuery, 'font-family: monospace;');
 
@@ -711,7 +710,7 @@ DESCRIBE ${this.text.trim()}
 			 * @returns {Promise<void> | void}
 			 */
 			(nextQuery, newOpts) => {
-				if (!activeQuery) throw new Error()
+				if (!activeQuery) throw new Error();
 				changeIdx += 1;
 				const targetChangeIdx = changeIdx;
 				Query.#debugStatic(
@@ -1193,8 +1192,8 @@ DESCRIBE ${this.text.trim()}
 				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
 				const exactSubMatch =
 					// escapedSearchTerm.length >= 4
-						taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(" ").join("%")}%') THEN 1 ELSE 0 END`
-						// : taggedSql`0`;
+					taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`;
+				// : taggedSql`0`;
 				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
 			})
 			.join(',');
@@ -1205,7 +1204,7 @@ DESCRIBE ${this.text.trim()}
 				.clone()
 				.$select(
 					{
-						similarity: taggedSql`GREATEST(${statements})`,
+						similarity: taggedSql`GREATEST(${statements})`
 					},
 					'*'
 				)

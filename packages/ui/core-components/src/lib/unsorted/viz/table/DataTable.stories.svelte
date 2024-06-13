@@ -8,7 +8,7 @@
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Viz/Datatable',
-		component: DataTable,
+		component: DataTable
 	};
 </script>
 
@@ -39,5 +39,5 @@
 
 <Story name="With Search (Long Columns)">
 	{@const data = Query.create(`SELECT * from blog_posts`, query)}
-	<DataTable {data} title="Blog Posts" search/>
+	<DataTable {data} title="Blog Posts" search />
 </Story>
