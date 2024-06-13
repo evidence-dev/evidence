@@ -116,19 +116,16 @@ function duckdbDescribeToEvidenceType(describe) {
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
-	let filename;
+	let filename = ':memory';
 
-	if (database && database.filename) {
+	if (database?.filename) {
 		if (database.filename.startsWith('md:') || database.filename === ':memory:') {
 			// MotherDuck or in-memory database
 			filename = database.filename;
-		} else {
+		} else if (database.directory) {
 			// Local database stored in source directory
 			filename = path.join(database.directory, database.filename);
 		}
-	} else {
-		// Check the filenames from environment variables
-		filename = ':memory:';
 	}
 
 	const mode = filename !== ':memory:' ? 'READ_ONLY' : 'READ_WRITE';
