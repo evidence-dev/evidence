@@ -50,6 +50,7 @@ import { getQueryScore } from './queryScore.js';
  * @typedef {Object} QueryGlobalEvents
  * @property {undefined} inFlightQueryStart
  * @property {undefined} inFlightQueryEnd
+ * @property {{raw: Query<any>, proxied: QueryValue<any>}} queryCreated
  */
 /** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
@@ -80,15 +81,22 @@ export class Query {
 	/// Data
 	/** @type {RowType[]} */
 	#data = [];
+	/** @type {number} */
+	#dataQueryTime = -1;
 	get dataLoaded() {
 		return ['resolved', 'rejected'].includes(this.#sharedDataPromise.state);
 	}
 	get dataLoading() {
 		return this.#sharedDataPromise.state === 'loading';
 	}
+	get dataQueryTime() {
+		return this.#dataQueryTime;
+	}
 	/// Length
 	/** @type {number} */
 	#length = 0;
+	/** @type {number} */
+	#lengthQueryTime = -1;
 	get length() {
 		return this.#length;
 	}
@@ -98,12 +106,17 @@ export class Query {
 	get lengthLoading() {
 		return this.#sharedLengthPromise.state === 'loading';
 	}
+	get lengthQueryTime() {
+		return this.#lengthQueryTime;
+	}
 
 	/// Columns
 	/** @type {import('../../types/duckdb-wellknown.js').DescribeResultRow[]} */
 	#columns = [];
 	/** @type {Record<keyof RowType, undefined> | undefined} */
 	#mockRow = undefined;
+	/** @type {number} */
+	#columnsQueryTime = -1;
 
 	get columns() {
 		return this.#columns;
@@ -113,6 +126,9 @@ export class Query {
 	}
 	get columnsLoading() {
 		return this.#sharedColumnsPromise.state === 'loading';
+	}
+	get columnsQueryTime() {
+		return this.#columnsQueryTime;
 	}
 
 	/**
@@ -219,7 +235,8 @@ export class Query {
 	/** @type {import("../types.js").EventMap<QueryGlobalEvents>} */
 	static #globalHandlerMap = {
 		inFlightQueryStart: new Set(),
-		inFlightQueryEnd: new Set()
+		inFlightQueryEnd: new Set(),
+		queryCreated: new Set()
 	};
 	/**
 	 * @template {keyof QueryGlobalEvents} Event
@@ -323,6 +340,8 @@ ${this.text.trim()}
 					this.#debug('long-running', `Query took ${before - after}ms to execute`);
 				}
 
+				this.#dataQueryTime = after - before;
+
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
@@ -422,10 +441,12 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 			(this.#executeQuery);
 
 		this.#debugStyled('length query text', '\n' + lengthQuery, 'font-family: monospace;');
-
+		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(lengthResult, isPromise) => {
+				const after = performance.now();
+				this.#lengthQueryTime = after - before;
 				this.#length = lengthResult[0].rowCount;
 				this.#sharedLengthPromise.resolve(this);
 				if (isPromise) {
@@ -483,9 +504,11 @@ DESCRIBE ${this.text.trim()}
 		const typedRunner =
 			/** @type {import('../types.js').Runner<import('../../types/duckdb-wellknown.js').DescribeResultRow>} */
 			(this.#executeQuery);
-
+		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			(description, isPromise) => {
+				const after = performance.now();
+				this.#columnsQueryTime = after - before;
 				// Update inner value
 				this.#columns = description;
 				// Resolve store
@@ -826,9 +849,10 @@ DESCRIBE ${this.text.trim()}
 			};
 		} else if (optsOrId) {
 			opts = optsOrId;
+			if (!opts.id) opts.id = queryHash + '-' + Math.random().toString(36).substring(0, 4);
 		} else {
 			opts = {
-				id: queryHash
+				id: queryHash + '-' + Math.random().toString(36).substring(0, 4)
 			};
 		}
 		if (!('autoScore' in opts)) {
@@ -866,7 +890,9 @@ DESCRIBE ${this.text.trim()}
 			);
 
 		Query.#constructing = true;
+		console.log(opts.id);
 		const output = new Query(query, executeQuery, opts);
+		Query.#globalEmit('queryCreated', { raw: output, proxied: output.value });
 		if (!opts.disableCache) {
 			Query.#addToCache(output);
 			Query.#cacheCleanup();
