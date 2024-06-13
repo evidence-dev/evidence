@@ -136,7 +136,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	});
 	const conn = await db.connect();
 
-	if (database.directory) {
+	if (database?.directory) {
 		const contents = await fs.readdir(database.directory);
 		if (contents.find((d) => d === 'initialize.sql')) {
 			const initScript = await fs.readFile(path.resolve(database.directory, 'initialize.sql'), {
