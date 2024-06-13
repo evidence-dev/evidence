@@ -1,5 +1,30 @@
 # @evidence-dev/core-components
 
+## 4.4.0
+
+### Minor Changes
+
+- 2523e5f1: Value component now accepts agg prop
+
+### Patch Changes
+
+- 9fdc805b: DateRange uses QueryLoad + Skeleton to have a proper loading state
+- 97cb3a7c: Handle all-null x columns in Line.svelte
+- e058d2d3: Dropdown Index was returning NaN for all non-search queries
+- 73fc7ebf: Add ordinal functionality to buildInputQuery and withOrdinal to Query - leverage this in Dropdown to maintain user-specified sorting until search is activated
+- 8f374326: updated dropdown select all function for non-query options
+- f6b22bbc: Dropdown behavior when using selectAllByDefault improved
+- a24deaf0: Dropdown now sorts using label before value
+- 106222df: - startingZoom is now respected more consistently in Map.svelte
+  - startingZoom does not need to specified with startingLat/Long, and can be used independently
+  - zoomSnap has been modified to allow finer control over the zoom level
+- 90f381dc: Dropdown option store uses sharedPromise to handle concurrency / races better. Select operations now wait for options to settle (all pending adds/removes must finish first), Add / Removes now wait for flags to finish
+- a2af0bea: DateRange now waits for the query to resolve, if one is available
+- 106222df: Mitigated white lines appearing in map
+- Updated dependencies [3d1c42e0]
+- Updated dependencies [acba0f3a]
+  - @evidence-dev/component-utilities@3.2.0
+
 ## 4.3.0
 
 ### Minor Changes

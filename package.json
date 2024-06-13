@@ -72,7 +72,7 @@
 		"preview:docs": "pnpm --filter ./sites/docs preview",
 		"preview:example-project": "pnpm --filter ./sites/example-project preview",
 		"preview:test-env": "pnpm --filter ./sites/test-env preview",
-		"package:core-components": "pnpm --filter ./packages/ui/core-components package",
+		"package:core-components": "pnpm --filter ./packages/ui/icons build && pnpm --filter ./packages/ui/core-components package",
 		"package:evidence": "pnpm --filter ./packages/evidence package",
 		"build:evidence": "pnpm --filter ./packages/evidence build",
 		"build:preprocess": "pnpm --filter ./packages/lib/preprocess build",

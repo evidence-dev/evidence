@@ -133,55 +133,51 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 
 	const mode = filename !== ':memory:' ? 'READ_ONLY' : 'READ_WRITE';
 
-	try {
-		const db = await Database.create(filename, {
-			access_mode: mode,
-			custom_user_agent: 'evidence-dev'
-		});
-		const conn = await db.connect();
+	const db = await Database.create(filename, {
+		access_mode: mode,
+		custom_user_agent: 'evidence-dev'
+	});
+	const conn = await db.connect();
 
-		if (database.directory) {
-			const contents = await fs.readdir(database.directory);
-			if (contents.find((d) => d === 'initialize.sql')) {
-				const initScript = await fs.readFile(path.resolve(database.directory, 'initialize.sql'), {
-					encoding: 'utf-8'
-				});
-				await conn.exec(initScript);
-				console.log(`Ran Initialize`, initScript);
-			}
+	if (database.directory) {
+		const contents = await fs.readdir(database.directory);
+		if (contents.find((d) => d === 'initialize.sql')) {
+			const initScript = await fs.readFile(path.resolve(database.directory, 'initialize.sql'), {
+				encoding: 'utf-8'
+			});
+			await conn.exec(initScript);
+			console.log(`Ran Initialize`, initScript);
 		}
-
-		const stream = conn.stream(queryString);
-
-		const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
-		const expected_count = await db.all(count_query).catch(() => null);
-		const expected_row_count = expected_count?.[0]['count_star()'];
-
-		const column_query = `DESCRIBE ${cleanQuery(queryString)}`;
-		const column_types = await db
-			.all(column_query)
-			.then(duckdbDescribeToEvidenceType)
-			.catch(() => null);
-
-		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
-			mapResultsToEvidenceColumnTypes:
-				column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
-			standardizeRow,
-			closeConnection: () => db.close()
-		});
-		if (column_types != null) {
-			results.columnTypes = column_types;
-		}
-		results.expectedRowCount = expected_row_count;
-		if (typeof results.expectedRowCount === 'bigint') {
-			// newer versions of ddb return a bigint
-			results.expectedRowCount = Number(results.expectedRowCount);
-		}
-
-		return results;
-	} catch (err) {
-		throw err;
 	}
+
+	const stream = conn.stream(queryString);
+
+	const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
+	const expected_count = await db.all(count_query).catch(() => null);
+	const expected_row_count = expected_count?.[0]['count_star()'];
+
+	const column_query = `DESCRIBE ${cleanQuery(queryString)}`;
+	const column_types = await db
+		.all(column_query)
+		.then(duckdbDescribeToEvidenceType)
+		.catch(() => null);
+
+	const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
+		mapResultsToEvidenceColumnTypes:
+			column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
+		standardizeRow,
+		closeConnection: () => db.close()
+	});
+	if (column_types != null) {
+		results.columnTypes = column_types;
+	}
+	results.expectedRowCount = expected_row_count;
+	if (typeof results.expectedRowCount === 'bigint') {
+		// newer versions of ddb return a bigint
+		results.expectedRowCount = Number(results.expectedRowCount);
+	}
+
+	return results;
 };
 
 module.exports = runQuery;
