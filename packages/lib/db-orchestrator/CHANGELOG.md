@@ -1,5 +1,14 @@
 # @evidence-dev/db-orchestrator
 
+## 3.1.3
+
+### Patch Changes
+
+- Updated dependencies [06c1e74e5]
+- Updated dependencies [cd9e7df35]
+  - @evidence-dev/duckdb@1.0.10
+  - @evidence-dev/csv@1.0.11
+
 ## 3.1.2
 
 ### Patch Changes

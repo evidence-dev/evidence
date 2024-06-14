@@ -1,5 +1,18 @@
 # @evidence-dev/evidence
 
+## 38.0.1
+
+### Patch Changes
+
+- Updated dependencies [c10e35be1]
+- Updated dependencies [08d7b9405]
+- Updated dependencies [8a0ba1414]
+  - @evidence-dev/core-components@4.5.1
+  - @evidence-dev/sdk@1.3.1
+  - @evidence-dev/db-orchestrator@3.1.3
+  - @evidence-dev/component-utilities@3.2.1
+  - @evidence-dev/plugin-connector@2.1.4
+
 ## 38.0.0
 
 ### Patch Changes
