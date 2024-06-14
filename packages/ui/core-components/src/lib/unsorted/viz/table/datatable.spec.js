@@ -2,11 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { weightedMean } from './datatable.js';
 
 describe('weightedMean', () => {
-	it('should return 0 when data is empty', () => {
-		const result = weightedMean([], 'value', 'weight');
-		expect(result).toBe(0);
-	});
-
 	it('should return weighted mean when data is not empty', () => {
 		const result = weightedMean(
 			[
@@ -52,5 +47,21 @@ describe('weightedMean', () => {
 			'weight'
 		);
 		expect(result).toBe(result2);
+	});
+
+	it('should return null when data is empty', () => {
+		const result = weightedMean([], 'value', 'weight');
+		expect(result).toBe(null);
+	});
+	it('should return null when weightCol is not provided', () => {
+		const result = weightedMean(
+			[
+				{ value: 1, weight: 3 },
+				{ value: 2, weight: 2 },
+				{ value: 3, weight: 3 }
+			],
+			'value'
+		);
+		expect(result).toBe(null);
 	});
 });
