@@ -50,7 +50,7 @@ import { getQueryScore } from './queryScore.js';
  * @typedef {Object} QueryGlobalEvents
  * @property {undefined} inFlightQueryStart
  * @property {undefined} inFlightQueryEnd
- * @property {{raw: Query<any>, proxied: QueryValue<any>}} queryCreated
+ * @property {import('../types.js').QueryDebugPayload} queryCreated
  */
 /** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
@@ -892,7 +892,10 @@ DESCRIBE ${this.text.trim()}
 		Query.#constructing = true;
 		console.log(opts.id);
 		const output = new Query(query, executeQuery, opts);
-		Query.#globalEmit('queryCreated', { raw: output, proxied: output.value });
+		Query.#globalEmit('queryCreated', {
+			raw: output,
+			proxied: output.value
+		});
 		if (!opts.disableCache) {
 			Query.#addToCache(output);
 			Query.#cacheCleanup();
@@ -978,6 +981,13 @@ DESCRIBE ${this.text.trim()}
 	/** @type {import('../types.js').QueryOpts} */
 	opts;
 
+	/** @type {string | undefined} */
+	#createdStack;
+
+	get createdStack() {
+		return this.#createdStack;
+	}
+
 	// TODO: Score (this should be done in another file)
 	// TODO: When dealing with builder functions, add a `select` or similar
 	/**
@@ -987,6 +997,11 @@ DESCRIBE ${this.text.trim()}
 	 * @deprecated Use {@link Query.create} instead
 	 */
 	constructor(query, executeQuery, opts = {}) {
+		this.#createdStack = new Error().stack
+			?.split('\n')
+			.slice(2)
+			.map((line) => line.slice('    at '.length))
+			.join('\n');
 		const {
 			id,
 			initialData = undefined,
