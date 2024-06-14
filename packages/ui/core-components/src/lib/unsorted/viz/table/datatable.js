@@ -26,8 +26,8 @@ export function weightedMean(data, valueCol, weightCol) {
 	let totalWeight = 0;
 
 	data.forEach((item) => {
-		const value = Number(item[valueCol]);
-		const weight = Number(item[weightCol] || 1); // Default to 1 if weightCol is not specified or missing in the item
+		const value = Number(item[valueCol] || 0);
+		const weight = Number(item[weightCol] || 0); // Default to 1 if weightCol is not specified or missing in the item
 		totalWeightedValue += value * weight;
 		totalWeight += weight;
 	});
