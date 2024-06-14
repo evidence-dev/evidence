@@ -1,0 +1,18 @@
+rows: 10000
+fuzz: 0
+
+schema:
+  id:
+    type: id
+
+  title:
+    category: lorem
+    item: words
+    options:
+      - 5
+  content:
+    category: lorem
+    item: paragraphs
+    options:
+      - min: 2
+        max: 6

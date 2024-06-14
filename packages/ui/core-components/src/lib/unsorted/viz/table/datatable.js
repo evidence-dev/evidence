@@ -21,13 +21,22 @@ export function safeExtractColumn(column, columnSummary) {
 	return foundCols[0];
 }
 
+/**
+ *
+ * @param {object[]} data
+ * @param {string} valueCol
+ * @param {string} weightCol
+ * @returns {number | null} Null when weightCol is missing, or data is empty
+ */
 export function weightedMean(data, valueCol, weightCol) {
+	if (!weightCol) return null;
+	if (!data.length) return null;
 	let totalWeightedValue = 0;
 	let totalWeight = 0;
 
 	data.forEach((item) => {
-		const value = Number(item[valueCol]);
-		const weight = Number(item[weightCol] || 1); // Default to 1 if weightCol is not specified or missing in the item
+		const value = Number(item[valueCol] ?? 0);
+		const weight = Number(item[weightCol] ?? 0);
 		totalWeightedValue += value * weight;
 		totalWeight += weight;
 	});
