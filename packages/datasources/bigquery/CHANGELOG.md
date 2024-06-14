@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 2.0.6
+
+### Patch Changes
+
+- 6421c6d9b: Add icon to source configuration
+
 ## 2.0.5
 
 ### Patch Changes
