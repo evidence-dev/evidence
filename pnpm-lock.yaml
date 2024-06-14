@@ -213,8 +213,8 @@ importers:
         specifier: workspace:*
         version: link:../../lib/db-commons
       duckdb-async:
-        specifier: 0.10.2
-        version: 0.10.2
+        specifier: 1.0.0
+        version: 1.0.0
     devDependencies:
       dotenv:
         specifier: ^16.0.1
@@ -1042,9 +1042,6 @@ importers:
       export-to-csv:
         specifier: 0.2.1
         version: 0.2.1
-      fuse.js:
-        specifier: ^7.0.0
-        version: 7.0.0
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
@@ -5752,7 +5749,7 @@ packages:
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
       '@parcel/graph': 3.2.0
       '@parcel/logger': 2.12.0
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/profiler': 2.12.0
       '@parcel/rust': 2.12.0
@@ -5927,14 +5924,14 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
-      '@swc/core': 1.5.29(@swc/helpers@0.5.11)
+      '@swc/core': 1.5.29
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
       - '@swc/helpers'
     dev: true
 
-  /@parcel/package-manager@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11):
+  /@parcel/package-manager@2.12.0(@parcel/core@2.12.0):
     resolution: {integrity: sha512-0nvAezcjPx9FT+hIL+LS1jb0aohwLZXct7jAh7i0MLMtehOi0z1Sau+QpgMlA9rfEZZ1LIeFdnZZwqSy7Ccspw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -5948,7 +5945,7 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
-      '@swc/core': 1.5.29(@swc/helpers@0.5.11)
+      '@swc/core': 1.5.29
       semver: 7.6.2
     transitivePeerDependencies:
       - '@swc/helpers'
@@ -6030,7 +6027,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-wasm@2.12.0(@parcel/core@2.12.0):
@@ -6050,17 +6046,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
-    dev: true
-
-  /@parcel/plugin@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11):
-    resolution: {integrity: sha512-nc/uRA8DiMoe4neBbzV6kDndh/58a4wQuGKw5oEoIwBCHUvE2W8ZFSu7ollSXUGRzfacTt4NdY8TwS73ScWZ+g==}
-    engines: {node: '>= 12.0.0'}
-    dependencies:
-      '@parcel/types': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
-    transitivePeerDependencies:
-      - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/profiler@2.12.0:
@@ -6083,7 +6068,6 @@ packages:
       term-size: 2.2.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/reporter-dev-server@2.12.0(@parcel/core@2.12.0):
@@ -6107,7 +6091,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/resolver-default@2.12.0(@parcel/core@2.12.0):
@@ -6255,7 +6238,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-js@2.12.0(@parcel/core@2.12.0):
@@ -6266,7 +6248,7 @@ packages:
     dependencies:
       '@parcel/core': 2.12.0
       '@parcel/diagnostic': 2.12.0
-      '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
+      '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/rust': 2.12.0
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
@@ -6376,7 +6358,6 @@ packages:
       typescript: 5.4.2
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/ts-utils@2.12.0(typescript@5.4.2):
@@ -6395,22 +6376,7 @@ packages:
       '@parcel/cache': 2.12.0(@parcel/core@2.12.0)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
-      '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
-      utility-types: 3.11.0
-    transitivePeerDependencies:
-      - '@parcel/core'
-      - '@swc/helpers'
-    dev: true
-
-  /@parcel/types@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11):
-    resolution: {integrity: sha512-8zAFiYNCwNTQcglIObyNwKfRYQK5ELlL13GuBOrSMxueUiI5ylgsGbTS1N7J3dAGZixHO8KhHGv5a71FILn9rQ==}
-    dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/diagnostic': 2.12.0
-      '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/source-map': 2.1.1
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
       utility-types: 3.11.0
@@ -8576,7 +8542,7 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core@1.5.29(@swc/helpers@0.5.11):
+  /@swc/core@1.5.29:
     resolution: {integrity: sha512-nvTtHJI43DUSOAf3h9XsqYg8YXKc0/N4il9y4j0xAkO0ekgDNo+3+jbw6MInawjKJF9uulyr+f5bAutTsOKVlw==}
     engines: {node: '>=10'}
     requiresBuild: true
@@ -8587,7 +8553,6 @@ packages:
         optional: true
     dependencies:
       '@swc/counter': 0.1.3
-      '@swc/helpers': 0.5.11
       '@swc/types': 0.1.8
     optionalDependencies:
       '@swc/core-darwin-arm64': 1.5.29
@@ -12100,18 +12065,18 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /duckdb-async@0.10.2:
-    resolution: {integrity: sha512-Lf9MSnfcflyo8lpOfhDTOGsqkKeippJm2RZzry9sOG2Kvz+pDfLMuqhWQ4CQayud+Ktfs1L8DsrTIAsUCmbTlA==}
+  /duckdb-async@1.0.0:
+    resolution: {integrity: sha512-1UTAZ2LVk9s4NPMiLnB9L2DI716I/LqtDYL8I7RFEP981/fo0SaqcRQFwtgPPz8MyEPcx8QPPmAWEsal5q68xQ==}
     dependencies:
-      duckdb: 0.10.2
+      duckdb: 1.0.0
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb@0.10.2:
-    resolution: {integrity: sha512-7UGLRp+zkAzE0AQjyUfOyEjuX7Xs3St452+ZtUSbQEE8DJjc6GUWscxYPm5XPe5fX4nL+Zy9lVMEss1Yuw74kA==}
+  /duckdb@1.0.0:
+    resolution: {integrity: sha512-QwpcIeN42A2lL19S70mUFibZgRcEcZpCkKHdzDgecHaYZhXj3+1i2cxSDyAk/RVg5CYnqj1Dp4jAuN4cc80udA==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
@@ -13362,11 +13327,6 @@ packages:
 
   /functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
-
-  /fuse.js@7.0.0:
-    resolution: {integrity: sha512-14F4hBIxqKvD4Zz/XjDc3y94mNZN6pRv3U13Udo0lNLCWRBUsrMv2xwcF/y/Z5sV6+FQW+/ow68cHpm4sunt8Q==}
-    engines: {node: '>=10'}
-    dev: false
 
   /fuzzysearch@1.0.3:
     resolution: {integrity: sha512-s+kNWQuI3mo9OALw0HJ6YGmMbLqEufCh2nX/zzV5CrICQ/y4AwPxM+6TIiF9ItFCHXFCyM/BfCCmN57NTIJuPg==}
@@ -17286,6 +17246,9 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)(postcss@8.4.38)(typescript@5.4.2)
       '@parcel/core': 2.12.0
@@ -17293,7 +17256,7 @@ packages:
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
       '@parcel/logger': 2.12.0
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-cli': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-dev-server': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-tracer': 2.12.0(@parcel/core@2.12.0)
@@ -19096,6 +19059,9 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
+    peerDependenciesMeta:
+      node-gyp:
+        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
