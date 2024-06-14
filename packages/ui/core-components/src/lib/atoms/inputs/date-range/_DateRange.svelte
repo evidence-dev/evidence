@@ -148,7 +148,6 @@
 			let filteredPresets = presets.filter((preset) => {
 				return formattedPresetRanges.includes(lowerCaseNoSpaceString(preset.label));
 			});
-			console.log(filteredPresets);
 			presets = filteredPresets;
 		}
 	}
@@ -171,7 +170,6 @@
 	 */
 	function applyPreset(v) {
 		if (!v) return;
-		console.log(v, presets);
 		const targetPreset = presets.find(
 			(preset) =>
 				lowerCaseNoSpaceString(preset.label) ===

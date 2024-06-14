@@ -16,6 +16,8 @@
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import DateRange from './DateRange.svelte';
+	import Tab from '$lib/unsorted/ui/Tabs/Tab.svelte';
+	import Tabs from '$lib/unsorted/ui/Tabs/Tabs.svelte';
 </script>
 
 <Template let:args>
@@ -39,3 +41,22 @@
 />
 
 <Story name="Default Value" args={{ defaultValue: 'last Month' }} />
+
+<Story name="Date Range with tabs">
+	<Tabs>
+		<Tab label="Tab 1">
+			<DateRange
+				name="dateRange-one"
+				presetRanges={['last7Days', 'Last Month']}
+				defaultValue="last7Days"
+			/>
+		</Tab>
+		<Tab label="Tab 2">
+			<DateRange
+				name="dateRange-two"
+				presetRanges={['last7Days', 'Last Month']}
+				defaultValue="Last Month"
+			/>
+		</Tab>
+	</Tabs>
+</Story>

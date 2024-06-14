@@ -32,11 +32,12 @@
 	/////
 
 	/** @type {string} */
-	export let title = undefined;
-
-	/** @type {string} */
 	export let name;
 
+	/** @type {string} */
+	export let title = undefined;
+	console.log($inputs[name].label);
+	console.log($inputs[name]);
 	/**
 	 * When true, multiple values can be selected
 	 * @type {boolean}

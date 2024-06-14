@@ -1,4 +1,5 @@
 <script context="module">
+	import WithScopedInputStore from '../../../../storybook-helpers/WithScopedInputStore.svelte';
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = { title: 'Atoms/Inputs/Dropdown', decorators: [() => WithScopedInputStore] };
 </script>
@@ -8,11 +9,11 @@
 	import Dropdown from '../Dropdown.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import WithScopedInputStore from '../../../../storybook-helpers/WithScopedInputStore.svelte';
 	import DropdownOption from '../helpers/DropdownOption.svelte';
 	import DependentDropdowns from './DependentDropdowns.story.svelte';
-
 	import DropdownCharts from './DropdownCharts.story.svelte';
+	import Tab from '$lib/unsorted/ui/Tabs/Tab.svelte';
+	import Tabs from '$lib/unsorted/ui/Tabs/Tabs.svelte';
 </script>
 
 <Story name="Basic Usage">
@@ -213,4 +214,49 @@
 		<DropdownOption value="All" />
 		<DropdownOption value="Top 100" />
 	</Dropdown>
+</Story>
+
+<Story name="Using query + tabs">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Tabs>
+		<Tab label="Tab 1">
+			<Dropdown multiple name="dropdown-one" {data} value="value" label="label">
+				<DropdownOption value="All" />
+				<DropdownOption value="Top 100" />
+			</Dropdown>
+		</Tab>
+		<Tab label="Tab 2">
+			<Dropdown multiple name="dropdown-two" {data} value="value" label="label">
+				<DropdownOption value="All" />
+				<DropdownOption value="Top 100" />
+			</Dropdown>
+		</Tab>
+	</Tabs>
+</Story>
+
+<Story name="Using Two dropdown query + tabs">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Tabs>
+		<Tab label="Tab 1">
+			<Dropdown name="dropdown-one" {data} value="value" label="label" />
+			<Dropdown name="dropdown-two" {data} value="value" label="label" />
+		</Tab>
+		<Tab label="Tab 2">
+			<Dropdown name="dropdown-three" {data} value="value" label="label" />
+			<Dropdown name="dropdown-four" {data} value="value" label="label" />
+		</Tab>
+	</Tabs>
+</Story>
+<Story name="Using Multiple dropdown query + tabs">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Tabs>
+		<Tab label="Tab 1">
+			<Dropdown multiple name="dropdown-one" {data} value="value" label="label" />
+			<Dropdown multiple name="dropdown-two" {data} value="value" label="label" />
+		</Tab>
+		<Tab label="Tab 2">
+			<Dropdown multiple name="dropdown-three" {data} value="value" label="label" />
+			<Dropdown multiple name="dropdown-four" {data} value="value" label="label" />
+		</Tab>
+	</Tabs>
 </Story>

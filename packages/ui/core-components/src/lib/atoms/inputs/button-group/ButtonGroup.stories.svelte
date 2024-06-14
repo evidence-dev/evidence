@@ -1,22 +1,26 @@
-<script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
-	import ButtonGroup from './ButtonGroup.svelte';
-	import ButtonGroupItem from './ButtonGroupItem.svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
-	import { fakerSeries } from '$lib/faker-data-queries.js';
-	// From layout.js
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
+<script context="module">
+	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
+	/** @type {import("@storybook/svelte").Meta}*/
+	export const meta = {
+		title: 'Atoms/inputs/ButtonGroup',
+		argTypes: {},
+		args: {
+			title: 'Group of buttons',
+			name: 'buttonGroup',
+			omitGroup: []
+		},
+		decorators: [() => WithScopedInputStore]
+	};
 </script>
 
-<Meta
-	title="Atoms/inputs/ButtonGroup"
-	component={ButtonGroup}
-	argTypes={{}}
-	args={{ title: 'Group of buttons', name: 'buttonGroup' }}
-/>
+<script>
+	import { Template, Story } from '@storybook/addon-svelte-csf';
+	import ButtonGroup from './ButtonGroup.svelte';
+	import ButtonGroupItem from './ButtonGroupItem.svelte';
+	import { fakerSeries } from '$lib/faker-data-queries.js';
+	import Tab from '$lib/unsorted/ui/Tabs/Tab.svelte';
+	import Tabs from '$lib/unsorted/ui/Tabs/Tabs.svelte';
+</script>
 
 <Template let:args>
 	<div class="h-64">
@@ -36,8 +40,6 @@
 			<ButtonGroupItem valueLabel="Option 4" value={4} />
 		</ButtonGroup>
 	</div>
-
-	Current Value: {$inputStore[args.name]}
 </Story>
 
 <Story name="Large Number of Entries " let:args>
@@ -48,8 +50,6 @@
 			{/each}
 		</ButtonGroup>
 	</div>
-
-	Current Value: {$inputStore[args.name]}
 </Story>
 
 <Story
@@ -64,8 +64,6 @@
 	<div class="mb-8">
 		<ButtonGroup {...args} />
 	</div>
-
-	Current Value: {$inputStore[args.name]}
 </Story>
 
 <Story
@@ -80,8 +78,6 @@
 	<div class="mb-8">
 		<ButtonGroup {...args} />
 	</div>
-
-	Current Value: {$inputStore[args.name]}
 </Story>
 
 <Story
@@ -99,8 +95,6 @@
 			<ButtonGroupItem valueLabel="Option 2" value="option_2" />
 		</ButtonGroup>
 	</div>
-
-	Current Value: {$inputStore[args.name]}
 </Story>
 
 <Story
@@ -118,14 +112,30 @@
 			<ButtonGroupItem valueLabel="Option 2" value="option_2" />
 		</ButtonGroup>
 	</div>
-
-	Current Value: {$inputStore[args.name]}
 </Story>
 
 <Story name="Preset - Date Agg" let:args>
 	<div class="mb-8">
 		<ButtonGroup {...args} preset="dates" />
 	</div>
+</Story>
 
-	Current Value: {$inputStore[args.name]}
+<Story name="Buttons with tabs" let:args>
+	<Tabs>
+		<Tab label="Tab 1">
+			<div class="mb-8">
+				<ButtonGroup {...args}>
+					<ButtonGroupItem valueLabel="Option 1" value={1} />
+					<ButtonGroupItem valueLabel="Option 2" value={2} />
+					<ButtonGroupItem valueLabel="Option 3" value={3} />
+					<ButtonGroupItem valueLabel="Option 4" value={4} />
+				</ButtonGroup>
+			</div>
+		</Tab>
+		<Tab label="Tab 2">
+			<div class="mb-8">
+				<ButtonGroup {...args} preset="dates" />
+			</div>
+		</Tab>
+	</Tabs>
 </Story>
