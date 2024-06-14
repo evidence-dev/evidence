@@ -29,15 +29,19 @@ export interface SourceDirectory {
 	[filename: string]: SourceDirectory | FileContent;
 }
 
+export type SourceUtils = {
+	isCached: (name: string, content: string) => boolean;
+	isFiltered: (name: string) => boolean;
+	shouldRun: (name: string, content: string) => boolean;
+	addToCache: (name: string, content: string) => void;
+	subSourceVariables: (query: string) => string;
+	escape: (tableName: string, tableContent: string) => QueryResultTable;
+};
+
 export type ProcessSourceFn<T extends Record<string, unknown> = Record<string, unknown>> = (
 	opts: T,
 	files: SourceDirectory,
-	utils: {
-		isCached: (name: string, content: string) => boolean;
-		isFiltered: (name: string) => boolean;
-		shouldRun: (name: string, content: string) => boolean;
-		addToCache: (name: string, content: string) => void;
-	}
+	utils: SourceUtils
 ) => AsyncIterable<QueryResultTable | EvidenceError>;
 
 export type Manifest = z.infer<typeof ManifestSchema>;

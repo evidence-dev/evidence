@@ -118,6 +118,7 @@ function duckdbDescribeToEvidenceType(describe) {
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
 	let filename;
+	console.log({ database });
 
 	if (database && database.filename) {
 		if (database.filename.startsWith('md:') || database.filename === ':memory:') {
@@ -140,7 +141,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	const conn = await db.connect();
 
 	const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
-	const expected_count = await db.all(count_query);
+	const expected_count = await db.all(count_query).catch(() => null);
 	const expected_row_count = expected_count?.[0]['count_star()'];
 
 	const column_query = `DESCRIBE ${cleanQuery(queryString)}`;

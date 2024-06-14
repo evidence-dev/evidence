@@ -64,6 +64,7 @@
 		"@brianmd/citty": "^0.0.1",
 		"@clack/prompts": "^0.7.0",
 		"@evidence-dev/icons": "workspace:^",
+		"@evidence-dev/telemetry": "workspace:^",
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@steeze-ui/simple-icons": "^1.7.1",
 		"@steeze-ui/tabler-icons": "^2.1.1",

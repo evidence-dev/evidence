@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import { EvidenceError } from '../../lib/EvidenceError.js';
 import path from 'path';
 import { readFileSync, statSync } from 'fs';
+import chalk from 'chalk';
+
 /**
  * @param {import("./Datasources.js").Datasource} mod
  * @param {import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}} source
@@ -16,7 +18,8 @@ export const wrapSimpleConnector = (mod, source) => {
 	/**
 	 * @type {import('./types.js').ProcessSourceFn}
 	 */
-	return async function* () {
+	return async function* (...args) {
+		const [, , utils] = args;
 		const runner = await mod.getRunner(source.options, source.dir);
 		// TODO: Use fsproxy instead of fs
 		/**
@@ -38,15 +41,21 @@ export const wrapSimpleConnector = (mod, source) => {
 				if (!sourceFile.isFile()) continue;
 
 				const sourceFilePath = path.join(dirPath, sourceFile.name);
-				const sourceFileName = sourceFile.name.split('.').at(0);
+				const sourceFileName = sourceFile.name.split('.').at(0) ?? '';
 
 				const stat = statSync(sourceFilePath);
 				let sourceFileContent;
 				if (stat.size > 1024 * 1024 * 128 /* 128 Megabytes */) {
-					console.warn('Will not load files larger than 128 Megabytes');
+					console.debug(chalk.dim('Will not eagerly load files larger than 128 Megabytes.'));
 					sourceFileContent = '';
 				} else {
 					sourceFileContent = readFileSync(sourceFilePath, 'utf-8');
+				}
+
+				// Check if it should be skipped, and return an empty result (this is handled above)
+				if (!utils.shouldRun(sourceFileName, sourceFileContent)) {
+					yield utils.escape(sourceFileName, sourceFileContent);
+					continue;
 				}
 
 				try {
@@ -55,7 +64,7 @@ export const wrapSimpleConnector = (mod, source) => {
 						content: sourceFileContent,
 						columnTypes: [],
 						...(await runner(
-							sourceFileContent,
+							utils.subSourceVariables(sourceFileContent),
 							sourceFilePath,
 							1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
 						))

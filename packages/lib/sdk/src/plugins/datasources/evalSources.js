@@ -11,9 +11,10 @@ import { buildSourceDirectoryProxy } from './buildSourceDirectoryProxy.js';
 import { addToCache, checkCache, flushCache, loadCache } from './SourceResultCache.js';
 import ora from 'ora';
 import { dataUrlPrefix } from '../../build-dev/vite/virtuals/node/projectPaths.js';
+import { subSourceVariables } from './sub-source-vars.js';
+import { logQueryEvent } from '@evidence-dev/telemetry';
 
-// TODO: Telemetry
-// TODO: Test
+// TODO: This is a great candidate for unit testing - but it may need to be broken down further to make that more achievable, right now it would take a _lot_ of mocks
 
 /**
  * @param {string} dataPath
@@ -51,6 +52,7 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 
 		const plugin = sourcePlugins.getBySource(source.type);
 		if (!plugin) {
+			logQueryEvent('source-connector-not-found', source.type, source.name);
 			// TODO: How forgiving do we want to be here?
 			// TODO: If we want to be really fancy; we could batch these, and do an NPM lookup at the end to say "these packages provide those datasources"
 			throw new EvidenceError(
@@ -60,6 +62,16 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 			);
 		}
 		const [, mod] = plugin;
+		console.log(source.options);
+		const testResult = await mod.testConnection(source.options, source.dir);
+		if (testResult !== true) {
+			logQueryEvent('db-connection-error', source.type, source.name);
+			throw new EvidenceError(
+				`Error connecting to datasource ${chalk.bold(source.name)}: ${testResult.reason}`
+			);
+		} else {
+			logQueryEvent('db-connection-success', source.type, source.name);
+		}
 
 		/** @type {import('./types.js').ProcessSourceFn} */
 		const tableIter = 'processSource' in mod ? mod.processSource : wrapSimpleConnector(mod, source);
@@ -91,6 +103,7 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 					discardStdin: false,
 					interval: 250
 				}).fail(`Error: ${error.message}`);
+				logQueryEvent('db-error', source.type, source.name, tableName);
 				if (strict) throw error;
 				continue;
 			}
@@ -108,10 +121,12 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 				spinner.warn('Skipping: Filtered');
 				continue;
 			}
-			if (filters?.only_changed && utils.isCached(table.name, table.content)) {
+			if (utils.isCached(table.name, table.content)) {
 				spinner.warn('Skipping: Cached');
+				logQueryEvent('cache-query', source.type, source.name);
 				continue;
 			}
+			logQueryEvent('db-query', source.type, source.name, table.name);
 
 			if ('url' in table) {
 				outputManifest.renderedFiles[source.name].push(table.url);
@@ -173,15 +188,17 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
  *
  * @param {Awaited<ReturnType<typeof loadSources>>[number]} source
  * @param {import('./types.js').SourceFilters} [filters]
- * @returns
+ * @returns {import('./types.js').SourceUtils}
  */
 const buildUtils = (source, filters) => {
+	/** @type {import('./types.js').SourceUtils} */
 	const utils = {
 		/**
 		 * @param {string} name
 		 * @param {string} content
 		 */
-		isCached: (name, content) => checkCache(source.name, name, content),
+		isCached: (name, content) =>
+			Boolean(filters?.only_changed && checkCache(source.name, name, content)),
 		/**
 		 * @param {string} name
 		 * @returns {boolean} true if query is included in filters
@@ -195,15 +212,19 @@ const buildUtils = (source, filters) => {
 		 * @param {string} content
 		 * @returns {boolean}
 		 */
-		shouldRun: (name, content) =>
-			!utils.isFiltered(name) &&
-			Boolean(filters?.only_changed) &&
-			!checkCache(source.name, name, content),
+		shouldRun: (name, content) => !utils.isFiltered(name) && !utils.isCached(name, content),
 		/**
 		 * @param {string} name
 		 * @param {string} content
 		 */
-		addToCache: (name, content) => addToCache(source.name, name, content)
+		addToCache: (name, content) => addToCache(source.name, name, content),
+		subSourceVariables: subSourceVariables,
+		escape: (tableName, tableContent) => ({
+			name: tableName,
+			content: tableContent,
+			rows: [],
+			columnTypes: []
+		})
 	};
 
 	return utils;
