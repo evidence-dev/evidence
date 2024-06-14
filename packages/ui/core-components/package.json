@@ -57,7 +57,6 @@
 		"echarts": "5.4.3",
 		"echarts-stat": "1.2.0",
 		"export-to-csv": "0.2.1",
-		"fuse.js": "^7.0.0",
 		"leaflet": "^1.9.4",
 		"lodash.debounce": "^4.0.8",
 		"lodash.merge": "^4.6.2",
