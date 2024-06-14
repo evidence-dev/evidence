@@ -1,5 +1,13 @@
 # @evidence-dev/core-components
 
+## 4.5.1
+
+### Patch Changes
+
+- c10e35be1: Updated Running EvalDefault Condition to wait for option store to be populated
+- 08d7b9405: Fix weighted mean behavior
+  - @evidence-dev/component-utilities@3.2.1
+
 ## 4.5.0
 
 ### Minor Changes

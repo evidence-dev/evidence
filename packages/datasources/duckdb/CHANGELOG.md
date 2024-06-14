@@ -1,5 +1,12 @@
 # @evidence-dev/duckdb
 
+## 1.0.10
+
+### Patch Changes
+
+- 06c1e74e5: Add support for `initialize.sql`
+- cd9e7df35: Bumps duckDB connector to 1.0
+
 ## 1.0.9
 
 ### Patch Changes
