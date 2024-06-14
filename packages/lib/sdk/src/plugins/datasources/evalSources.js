@@ -62,7 +62,6 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 			);
 		}
 		const [, mod] = plugin;
-		console.log(source.options);
 		const testResult = await mod.testConnection(source.options, source.dir);
 		if (testResult !== true) {
 			logQueryEvent('db-connection-error', source.type, source.name);

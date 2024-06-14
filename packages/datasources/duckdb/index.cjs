@@ -142,7 +142,6 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 				encoding: 'utf-8'
 			});
 			await conn.exec(initScript);
-			console.log(`Ran Initialize`, initScript);
 		}
 	}
 
