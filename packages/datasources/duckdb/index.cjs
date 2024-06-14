@@ -7,6 +7,7 @@ const {
 } = require('@evidence-dev/db-commons');
 const { Database } = require('duckdb-async');
 const path = require('path');
+const fs = require('fs/promises');
 
 /**
  * Converts BigInt values to Numbers in an object.
@@ -46,7 +47,6 @@ function nativeTypeToEvidenceType(data) {
 }
 
 /**
- *
  * @param {Record<string, unknown>[]} rows
  * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
  */
@@ -64,7 +64,6 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 };
 
 /**
- *
  * @param {{ column_name: string; column_type: string; }[]} describe
  * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
  */
@@ -117,20 +116,16 @@ function duckdbDescribeToEvidenceType(describe) {
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
-	let filename;
-	console.log({ database });
+	let filename = ':memory:';
 
-	if (database && database.filename) {
+	if (database?.filename) {
 		if (database.filename.startsWith('md:') || database.filename === ':memory:') {
 			// MotherDuck or in-memory database
 			filename = database.filename;
-		} else {
+		} else if (database.directory) {
 			// Local database stored in source directory
 			filename = path.join(database.directory, database.filename);
 		}
-	} else {
-		// Check the filenames from environment variables
-		filename = ':memory:';
 	}
 
 	const mode = filename !== ':memory:' ? 'READ_ONLY' : 'READ_WRITE';
@@ -139,6 +134,19 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		custom_user_agent: 'evidence-dev'
 	});
 	const conn = await db.connect();
+
+	if (database?.directory) {
+		const contents = await fs.readdir(database.directory);
+		if (contents.find((d) => d === 'initialize.sql')) {
+			const initScript = await fs.readFile(path.resolve(database.directory, 'initialize.sql'), {
+				encoding: 'utf-8'
+			});
+			await conn.exec(initScript);
+			console.log(`Ran Initialize`, initScript);
+		}
+	}
+
+	const stream = conn.stream(queryString);
 
 	const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
 	const expected_count = await db.all(count_query).catch(() => null);
@@ -149,8 +157,6 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		.all(column_query)
 		.then(duckdbDescribeToEvidenceType)
 		.catch(() => null);
-
-	const stream = conn.stream(queryString);
 
 	const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 		mapResultsToEvidenceColumnTypes:
@@ -175,6 +181,7 @@ module.exports = runQuery;
 /**
  * @typedef {Object} DuckDBOptions
  * @property {string} filename
+ * @property {string} directory
  */
 
 /**
@@ -192,6 +199,7 @@ module.exports.getRunner = async (opts, directory) => {
 	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
+		if (queryPath.endsWith('initialize.sql')) return null;
 		return runQuery(queryContent, { ...opts, directory: directory }, batchSize);
 	};
 };
