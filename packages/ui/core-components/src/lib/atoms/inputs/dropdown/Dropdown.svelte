@@ -210,7 +210,7 @@
 	let optionUpdates;
 	$: if (!optionUpdates && ((hasQuery && $query) || !hasQuery)) {
 		let firstRun = true;
-		optionUpdates = options.subscribe(() => {
+		optionUpdates = options.subscribe((_opts) => {
 			// The store is going to initially publish the _current_ value, which isn't what we want
 			// So we can ignore the first update
 			if (firstRun) {
@@ -218,7 +218,7 @@
 				return;
 			}
 			// This is the run which actually has what we want
-			if (!hasHadSelection) {
+			if (!hasHadSelection && _opts.length) {
 				setTimeout(evalDefaults, 0);
 				optionUpdates();
 			}
@@ -228,7 +228,7 @@
 	/**
 	 * Resets the defaults whenever parameters change
 	 */
-	function evalDefaults() {
+	const evalDefaults = () => {
 		resolveMaybePromise(
 			() => {
 				if ($selectedOptions.length) {
@@ -280,7 +280,7 @@
 				console.error(`Error while updating Dropdown Query: ${err.message}`);
 			}
 		);
-	}
+	};
 
 	const DISPLAYED_OPTIONS = 5;
 

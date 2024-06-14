@@ -13,6 +13,7 @@ import {
 import { sharedPromise } from '../../lib/sharedPromise.js';
 import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
+import { sterilizeQuery } from './sterilizeQuery.js';
 
 /**
  * @typedef {import("../types.js").QueryResultRow} QueryResultRow
@@ -690,14 +691,15 @@ DESCRIBE ${this.text.trim()}
 	 *
 	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
+	 * @param {QueryValue<any>} [initialQuery]
 	 */
-	static createReactive = (reactiveOpts, opts) => {
+	static createReactive = (reactiveOpts, opts, initialQuery) => {
 		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
 
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const createFn = Query.create;
-		/** @type {QueryValue<any>} */
-		let activeQuery;
+		/** @type {QueryValue<any> | undefined} */
+		let activeQuery = initialQuery;
 
 		let changeIdx = 0;
 		/** @type {() => unknown} */
@@ -709,6 +711,7 @@ DESCRIBE ${this.text.trim()}
 			 * @returns {Promise<void> | void}
 			 */
 			(nextQuery, newOpts) => {
+				if (!activeQuery) throw new Error();
 				changeIdx += 1;
 				const targetChangeIdx = changeIdx;
 				Query.#debugStatic(
@@ -995,7 +998,7 @@ DESCRIBE ${this.text.trim()}
 						Use of nanoid prevent ambiguity when dealing with nested Queries; 
 						in theory this could be the querystring has but that's kinda gross 
 					*/
-					[`inputQuery-${nanoid(2)}`]: taggedSql`(${query})`
+					[`inputQuery-${nanoid(2)}`]: taggedSql`(${sterilizeQuery(query)})`
 				})
 				.select('*');
 			this.#query = q;
@@ -1167,7 +1170,7 @@ DESCRIBE ${this.text.trim()}
 
 	/**
 	 * @param {string} searchTerm
-	 * @param {string} searchCol
+	 * @param {string | string[]} searchCol
 	 * @param {number} searchThreshold
 	 * @returns {QueryValue<RowType & {similarity: number}>}
 	 */
@@ -1181,18 +1184,33 @@ DESCRIBE ${this.text.trim()}
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const typedCreateFn = Query.create;
 
+		const escapedSearchTerm = searchTerm.replaceAll("'", "''");
+
+		const cols = Array.isArray(searchCol) ? searchCol : [searchCol];
+		const statements = cols
+			.map((col) => {
+				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
+				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
+				const exactSubMatch =
+					// escapedSearchTerm.length >= 4
+					taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`;
+				// : taggedSql`0`;
+				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
+			})
+			.join(',');
+
 		/** @type {QueryValue<RowType & {similarity: number}>} */
 		const output = typedCreateFn(
 			this.#query
 				.clone()
 				.$select(
 					{
-						similarity: taggedSql`jaro_winkler_similarity(lower('${searchTerm.replaceAll("'", "''")}'), lower(${searchCol}))`
+						similarity: taggedSql`GREATEST(${statements})`
 					},
 					'*'
 				)
-				.where(taggedSql`similarity > ${searchThreshold} `)
-				.orderby(taggedSql`similarity DESC`),
+				.where(taggedSql`"similarity" > ${searchThreshold} `)
+				.orderby(taggedSql`"similarity" DESC`),
 			this.#executeQuery,
 			{
 				knownColumns: colsWithSimilarity,
