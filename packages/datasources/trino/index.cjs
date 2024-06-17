@@ -181,7 +181,7 @@ module.exports.options = {
 		title: 'Password',
 		type: 'string',
 		secret: true,
-		required: true
+		required: false
 	},
 	catalog: {
 		title: 'Catalog',
