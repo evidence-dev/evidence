@@ -100,6 +100,33 @@ NODE_OPTIONS="--max-old-space-size=4096" npm run sources
 set NODE_OPTIONS=--max-old-space-size=4096 && npm run sources
 ```
 
+### Build Time Variables
+
+You can pass variables to your source queries at build time using environment variables of the format `EVIDENCE_VAR__variable_name=value`.
+
+`.env`
+```bash
+EVIDENCE_VAR__client_id=123
+```
+
+Then in your **source queries**, you can access the variable using `${}` syntax:
+
+```sql
+select * from customers
+where client_id = ${client_id}
+```
+
+This will interpolate the value of `client_id` into the query:
+
+```sql
+select * from customers
+where client_id = 123
+```
+
+Note that these variables are only accessible in source queries, not in file queries or queries in markdown files.
+
+
+
 ## Supported data sources
 
 Evidence supports:

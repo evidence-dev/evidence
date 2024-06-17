@@ -68,3 +68,7 @@ The format of environment variables for database credentials is `EVIDENCE_SOURCE
 You can copy all your current environment variable values from the settings page at [localhost:3000/settings](http://localhost:3000/settings).
 
 N.B. Environment variables are **case sensitive**, so you should preserve the case specified in the settings page.
+
+### .env Files
+
+Evidence will read in environment variables from a `.env` file in the root of your project. This is useful for local development.
