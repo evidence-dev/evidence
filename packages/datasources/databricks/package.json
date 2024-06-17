@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/databricks",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Databricks driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -19,7 +19,8 @@
 	"evidence": {
 		"datasources": [
 			"databricks"
-		]
+		],
+		"icon": "Databricks"
 	},
 	"keywords": [
 		"evidence",

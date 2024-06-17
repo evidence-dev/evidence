@@ -5,7 +5,11 @@ title: Install Evidence
 description: Install Evidence with the VSCode Extension, from the command line, alongside dbt, or using Codespaces.
 ---
 
+<Alert status=success>
+
 The easiest way to get started with Evidence is to use the [VSCode Extension](vscode:extension/Evidence.evidence-vscode).
+
+</Alert>
 
 ## VSCode Extension
 

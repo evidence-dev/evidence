@@ -10,7 +10,7 @@ Check your versions with `node -v` and `npm -v`
 
 **Note:** if you are installing NodeJS for the first time, be sure to install the Long term suppport (LTS) version 
 
-<a class="external" href="https://nodejs.org/en/download">Download Node.js + NPM (LTS version)</a>
+<LinkButton url="https://nodejs.org/en/download">Download Node.js + NPM (LTS version)</LinkButton>
 
 ### Updating
 

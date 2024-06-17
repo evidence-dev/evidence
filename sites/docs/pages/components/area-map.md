@@ -272,6 +272,9 @@ where zip_code = ${inputs.my_area_map.zip_code} OR ${inputs.my_area_map.zip_code
     <Column id=sales fmt=usd/> 	
 </DataTable>
 
+## Required GeoJSON Data Structure
+The GeoJSON data you pass to the map must be a feature collection. [See here for an example](https://gist.github.com/sgillies/1233327#file-geojson-spec-1-0-L50)
+
 ## Options
 
 ### Areas
@@ -446,18 +449,43 @@ Determines whether tooltips are activated by hover or click.
 </PropListing>
 
 <PropListing
-name="tooltip"
-options="array of objects"
->
-Configuration for tooltips associated with each area. See Custom Tooltip example above for format
-</PropListing>
-
-<PropListing
 name="tooltipClass"
 options="CSS class"
 >
 CSS class applied to the tooltip content. You can pass Tailwind classes into this prop to custom-style the tooltip
 </PropListing>
+
+<PropListing
+name="tooltip"
+options="array of objects"
+>
+Configuration for tooltips associated with each area. See below example for format
+</PropListing>
+
+<LineBreak/>
+
+#### `tooltip` example:
+
+```javascript
+tooltip={[
+    {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
+    {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
+    {id: 'zip_code', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+]}
+```
+
+#### All options available in `tooltip`:
+- `id`: column ID
+- `title`: custom string to use as title of field
+- `fmt`: format to use for value
+- `showColumnName`: whether to show the column name. If `false`, only the value will be shown
+- `contentType`: currently can only be "link"
+- `linkLabel`: text to show for a link when contentType="link"
+- `formatColumnTitle`: whether to automatically uppercase the first letter of the title. Only applies when `title` not passed explicitly
+- `valueClass`: custom Tailwind classes to style the values
+- `fieldClass`: custom Tailwind classes to style the column names
+
+
 
 ### Base Map
 

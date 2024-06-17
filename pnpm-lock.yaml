@@ -29,9 +29,6 @@ importers:
       '@evidence-dev/core-components':
         specifier: link:packages/ui/core-components
         version: link:packages/ui/core-components
-      '@evidence-dev/db-orchestrator':
-        specifier: link:packages/lib/db-orchestrator
-        version: link:packages/lib/db-orchestrator
       '@evidence-dev/evidence':
         specifier: link:packages/evidence
         version: link:packages/evidence
@@ -216,8 +213,8 @@ importers:
         specifier: workspace:*
         version: link:../../lib/db-commons
       duckdb-async:
-        specifier: 0.10.2
-        version: 0.10.2
+        specifier: 1.0.0
+        version: 1.0.0
     devDependencies:
       dotenv:
         specifier: ^16.0.1
@@ -265,6 +262,15 @@ importers:
       typescript:
         specifier: 5.4.2
         version: 5.4.2
+
+  packages/datasources/motherduck:
+    dependencies:
+      '@evidence-dev/db-commons':
+        specifier: workspace:*
+        version: link:../../lib/db-commons
+      '@evidence-dev/duckdb':
+        specifier: workspace:*
+        version: link:../duckdb
 
   packages/datasources/mssql:
     dependencies:
@@ -445,9 +451,6 @@ importers:
       '@evidence-dev/core-components':
         specifier: workspace:*
         version: link:../ui/core-components
-      '@evidence-dev/db-orchestrator':
-        specifier: workspace:*
-        version: link:../lib/db-orchestrator
       '@evidence-dev/tailwind':
         specifier: workspace:*
         version: link:../ui/tailwind
@@ -577,57 +580,6 @@ importers:
       jest:
         specifier: ^28.1.3
         version: 28.1.3
-
-  packages/lib/db-orchestrator:
-    dependencies:
-      '@evidence-dev/bigquery':
-        specifier: workspace:*
-        version: link:../../datasources/bigquery
-      '@evidence-dev/csv':
-        specifier: workspace:*
-        version: link:../../datasources/csv
-      '@evidence-dev/databricks':
-        specifier: workspace:*
-        version: link:../../datasources/databricks
-      '@evidence-dev/db-commons':
-        specifier: workspace:*
-        version: link:../db-commons
-      '@evidence-dev/duckdb':
-        specifier: workspace:*
-        version: link:../../datasources/duckdb
-      '@evidence-dev/mssql':
-        specifier: workspace:*
-        version: link:../../datasources/mssql
-      '@evidence-dev/mysql':
-        specifier: workspace:*
-        version: link:../../datasources/mysql
-      '@evidence-dev/postgres':
-        specifier: workspace:*
-        version: link:../../datasources/postgres
-      '@evidence-dev/redshift':
-        specifier: workspace:*
-        version: link:../../datasources/redshift
-      '@evidence-dev/snowflake':
-        specifier: workspace:*
-        version: link:../../datasources/snowflake
-      '@evidence-dev/sqlite':
-        specifier: workspace:*
-        version: link:../../datasources/sqlite
-      '@evidence-dev/telemetry':
-        specifier: workspace:*
-        version: link:../telemetry
-      '@evidence-dev/trino':
-        specifier: workspace:*
-        version: link:../../datasources/trino
-      blueimp-md5:
-        specifier: 2.18.0
-        version: 2.18.0
-      chalk:
-        specifier: 4.1.0
-        version: 4.1.0
-      fs-extra:
-        specifier: 11.2.0
-        version: 11.2.0
 
   packages/lib/plugin-connector:
     dependencies:
@@ -1039,6 +991,9 @@ importers:
       '@evidence-dev/component-utilities':
         specifier: workspace:*
         version: link:../../lib/component-utilities
+      '@evidence-dev/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@evidence-dev/tailwind':
         specifier: workspace:*
         version: link:../tailwind
@@ -1087,9 +1042,6 @@ importers:
       export-to-csv:
         specifier: 0.2.1
         version: 0.2.1
-      fuse.js:
-        specifier: ^7.0.0
-        version: 7.0.0
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
@@ -1250,6 +1202,12 @@ importers:
       vitest:
         specifier: ^0.34.6
         version: 0.34.6
+
+  packages/ui/icons:
+    dependencies:
+      '@steeze-ui/icons':
+        specifier: ^2.1.0
+        version: 2.1.0
 
   packages/ui/tailwind:
     dependencies:
@@ -1459,6 +1417,9 @@ importers:
       '@evidence-dev/faker-datasource':
         specifier: workspace:*
         version: link:../../packages/datasources/faker
+      '@evidence-dev/motherduck':
+        specifier: workspace:^
+        version: link:../../packages/datasources/motherduck
       '@evidence-dev/postgres':
         specifier: workspace:*
         version: link:../../packages/datasources/postgres
@@ -7462,6 +7423,12 @@ packages:
     resolution: {integrity: sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==}
     dev: false
 
+  /@steeze-ui/icons@2.1.0:
+    resolution: {integrity: sha512-eLUYBIquPcq+6obFXPp4/aY/HWYJ30fEixR0VluY5e3/dc5tyc034SOvqCcZ83Bk5DSLcKkwvFOBy2u3mSpxNA==}
+    dependencies:
+      html-parse-stringify: 3.0.1
+    dev: false
+
   /@steeze-ui/radix-icons@1.1.2:
     resolution: {integrity: sha512-Oh8+pC4TwBNDmYEw0lnbNXV3EPqJdAN1XMu/ZzwkrnNz0mOBMr7vhGqynNZH7572QOv01ORLUhHjRhg2B0tykw==}
     dev: false
@@ -9894,6 +9861,7 @@ packages:
   /are-we-there-yet@2.0.0:
     resolution: {integrity: sha512-Ci/qENmwHnsYo9xKIcUJN5LeDKdJ6R1Z1j9V/J5wyq8nh/mYPEpIKJbBZXtZjG04HiK7zV/p6Vs9952MrMeUIw==}
     engines: {node: '>=10'}
+    deprecated: This package is no longer supported.
     dependencies:
       delegates: 1.0.0
       readable-stream: 3.6.2
@@ -9902,6 +9870,7 @@ packages:
   /are-we-there-yet@3.0.1:
     resolution: {integrity: sha512-QZW4EDmGwlYur0Yyf/b2uGucHQMa8aFUP7eu9ddR73vvhFyt4V0Vl3QHPcTNJ8l6qYOBdxgXdnBXQrHilfRQBg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+    deprecated: This package is no longer supported.
     dependencies:
       delegates: 1.0.0
       readable-stream: 3.6.2
@@ -10331,10 +10300,6 @@ packages:
   /bluebird@3.4.7:
     resolution: {integrity: sha512-iD3898SR7sWVRHbiQv+sHUtHnMvC1o3nW5rAcqnq3uOn07DSAppZYUkIGslDz6gXC7HfunPe7YVBgoEJASPcHA==}
     dev: true
-
-  /blueimp-md5@2.18.0:
-    resolution: {integrity: sha512-vE52okJvzsVWhcgUHOv+69OG3Mdg151xyn41aVQN/5W5S+S43qZhxECtYLAEHMSFWX6Mv5IZrzj3T5+JqXfj5Q==}
-    dev: false
 
   /blueimp-md5@2.19.0:
     resolution: {integrity: sha512-DRQrD6gJyy8FbiE4s+bDoXS9hiW3Vbx5uCdwvcCf3zLHL+Iv7LtGHLpr+GZV8rHG8tK766FGYBwRbu8pELTt+w==}
@@ -11966,18 +11931,18 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /duckdb-async@0.10.2:
-    resolution: {integrity: sha512-Lf9MSnfcflyo8lpOfhDTOGsqkKeippJm2RZzry9sOG2Kvz+pDfLMuqhWQ4CQayud+Ktfs1L8DsrTIAsUCmbTlA==}
+  /duckdb-async@1.0.0:
+    resolution: {integrity: sha512-1UTAZ2LVk9s4NPMiLnB9L2DI716I/LqtDYL8I7RFEP981/fo0SaqcRQFwtgPPz8MyEPcx8QPPmAWEsal5q68xQ==}
     dependencies:
-      duckdb: 0.10.2
+      duckdb: 1.0.0
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb@0.10.2:
-    resolution: {integrity: sha512-7UGLRp+zkAzE0AQjyUfOyEjuX7Xs3St452+ZtUSbQEE8DJjc6GUWscxYPm5XPe5fX4nL+Zy9lVMEss1Yuw74kA==}
+  /duckdb@1.0.0:
+    resolution: {integrity: sha512-QwpcIeN42A2lL19S70mUFibZgRcEcZpCkKHdzDgecHaYZhXj3+1i2cxSDyAk/RVg5CYnqj1Dp4jAuN4cc80udA==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
@@ -13229,11 +13194,6 @@ packages:
   /functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
-  /fuse.js@7.0.0:
-    resolution: {integrity: sha512-14F4hBIxqKvD4Zz/XjDc3y94mNZN6pRv3U13Udo0lNLCWRBUsrMv2xwcF/y/Z5sV6+FQW+/ow68cHpm4sunt8Q==}
-    engines: {node: '>=10'}
-    dev: false
-
   /fuzzysearch@1.0.3:
     resolution: {integrity: sha512-s+kNWQuI3mo9OALw0HJ6YGmMbLqEufCh2nX/zzV5CrICQ/y4AwPxM+6TIiF9ItFCHXFCyM/BfCCmN57NTIJuPg==}
     dev: false
@@ -13241,6 +13201,7 @@ packages:
   /gauge@3.0.2:
     resolution: {integrity: sha512-+5J6MS/5XksCuXq++uFRsnUd7Ovu1XenbeuIuNRJxYWjgQbPuFhT14lAvsWfqfAmnwluf1OwMjz39HjfLPci0Q==}
     engines: {node: '>=10'}
+    deprecated: This package is no longer supported.
     dependencies:
       aproba: 2.0.0
       color-support: 1.1.3
@@ -13256,6 +13217,7 @@ packages:
   /gauge@4.0.4:
     resolution: {integrity: sha512-f9m+BEN5jkg6a0fZjleidjN51VE1X+mPFQ2DJ0uv1V39oCLCbsGe6yjbBnp7eK7z/+GAon99a3nHuqbuuthyPg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+    deprecated: This package is no longer supported.
     dependencies:
       aproba: 2.0.0
       color-support: 1.1.3
@@ -13805,6 +13767,12 @@ packages:
 
   /html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
+
+  /html-parse-stringify@3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
 
   /htmlnano@2.1.1(postcss@8.4.38)(svgo@2.8.0)(typescript@5.4.2):
     resolution: {integrity: sha512-kAERyg/LuNZYmdqgCdYvugyLWNFAm8MWXpQMz1pLpetmCbFwoMxvkSoaAMlFrOC4OKTWI4KlZGT/RsNxg4ghOw==}
@@ -16783,6 +16751,7 @@ packages:
 
   /npmlog@5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
+    deprecated: This package is no longer supported.
     dependencies:
       are-we-there-yet: 2.0.0
       console-control-strings: 1.1.0
@@ -16793,6 +16762,7 @@ packages:
   /npmlog@6.0.2:
     resolution: {integrity: sha512-/vBvz5Jfr9dT/aFWd0FIRf+T/Q2WBsLENygUaFUqstqsycmZAP/t5BvFJTK0viFmSUxiUKTUplWy5vt+rvKIxg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+    deprecated: This package is no longer supported.
     dependencies:
       are-we-there-yet: 3.0.1
       console-control-strings: 1.1.0
@@ -18409,6 +18379,7 @@ packages:
 
   /rimraf@2.7.1:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
     dependencies:
       glob: 7.2.3
@@ -20749,6 +20720,11 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: false
+
+  /void-elements@3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /w3c-keyname@2.2.8:

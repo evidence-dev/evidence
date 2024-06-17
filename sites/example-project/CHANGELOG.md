@@ -1,5 +1,130 @@
 # @evidence-dev/components
 
+## 3.5.6
+
+### Patch Changes
+
+- Updated dependencies [c10e35be1]
+- Updated dependencies [06c1e74e5]
+- Updated dependencies [cd9e7df35]
+- Updated dependencies [08d7b9405]
+  - @evidence-dev/core-components@4.5.1
+  - @evidence-dev/duckdb@1.0.10
+  - @evidence-dev/csv@1.0.11
+  - @evidence-dev/component-utilities@3.2.1
+  - @evidence-dev/plugin-connector@2.1.4
+
+## 3.5.5
+
+### Patch Changes
+
+- Updated dependencies [f411c8650]
+- Updated dependencies [79f4758e0]
+- Updated dependencies [6421c6d9b]
+- Updated dependencies [b041f5f9a]
+  - @evidence-dev/core-components@4.5.0
+  - @evidence-dev/bigquery@2.0.6
+  - @evidence-dev/csv@1.0.10
+  - @evidence-dev/databricks@1.0.6
+  - @evidence-dev/snowflake@1.0.6
+  - @evidence-dev/trino@1.0.6
+
+## 3.5.4
+
+### Patch Changes
+
+- Updated dependencies [9fdc805b]
+- Updated dependencies [97cb3a7c]
+- Updated dependencies [e058d2d3]
+- Updated dependencies [73fc7ebf]
+- Updated dependencies [87e56af2]
+- Updated dependencies [3d1c42e0]
+- Updated dependencies [8f374326]
+- Updated dependencies [f6b22bbc]
+- Updated dependencies [a24deaf0]
+- Updated dependencies [acba0f3a]
+- Updated dependencies [106222df]
+- Updated dependencies [90f381dc]
+- Updated dependencies [a2af0bea]
+- Updated dependencies [2523e5f1]
+- Updated dependencies [106222df]
+  - @evidence-dev/core-components@4.4.0
+  - @evidence-dev/preprocess@5.1.2
+  - @evidence-dev/component-utilities@3.2.0
+  - @evidence-dev/plugin-connector@2.1.4
+
+## 3.5.3
+
+### Patch Changes
+
+- Updated dependencies [064a5c96]
+- Updated dependencies [737642a0]
+- Updated dependencies [54546362]
+- Updated dependencies [9dd69149]
+- Updated dependencies [f8f7ebdb]
+- Updated dependencies [ac0df6ca]
+  - @evidence-dev/core-components@4.3.0
+  - @evidence-dev/component-utilities@3.1.0
+  - @evidence-dev/plugin-connector@2.1.4
+
+## 3.5.3-features-b.6
+
+### Patch Changes
+
+- Updated dependencies [a24deaf04]
+  - @evidence-dev/core-components@4.3.0-features-b.6
+
+## 3.5.3-features-b.5
+
+### Patch Changes
+
+- Updated dependencies [e058d2d35]
+  - @evidence-dev/core-components@4.3.0-features-b.5
+
+## 3.5.3-features-b.4
+
+### Patch Changes
+
+- Updated dependencies [9fdc805b5]
+  - @evidence-dev/core-components@4.3.0-features-b.4
+
+## 3.5.3-features-b.3
+
+### Patch Changes
+
+- Updated dependencies [90f381dc1]
+- Updated dependencies [a2af0beaf]
+  - @evidence-dev/core-components@4.3.0-features-b.3
+
+## 3.5.3-features-b.2
+
+### Patch Changes
+
+- Updated dependencies [73fc7ebfe]
+  - @evidence-dev/core-components@4.3.0-features-b.2
+
+## 3.5.3-features-b.1
+
+### Patch Changes
+
+- Updated dependencies [064a5c96e]
+- Updated dependencies [9dd691497]
+- Updated dependencies [f8f7ebdbc]
+  - @evidence-dev/core-components@4.3.0-features-b.1
+
+## 3.5.3-features-b.0
+
+### Patch Changes
+
+- Updated dependencies [97cb3a7c3]
+- Updated dependencies [f6b22bbce]
+- Updated dependencies [acba0f3a6]
+- Updated dependencies [106222df8]
+- Updated dependencies [106222df8]
+  - @evidence-dev/core-components@4.2.1-features-b.0
+  - @evidence-dev/component-utilities@3.0.5-features-b.0
+  - @evidence-dev/plugin-connector@2.1.4
+
 ## 3.5.2
 
 ### Patch Changes

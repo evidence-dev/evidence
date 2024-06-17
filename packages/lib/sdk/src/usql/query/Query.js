@@ -5,11 +5,15 @@ import {
 	sql as taggedSql,
 	sum as qSum,
 	avg as qAvg,
+	min as qMin,
+	max as qMax,
+	median as qMedian,
 	count as qCount
 } from '@uwdata/mosaic-sql';
 import { sharedPromise } from '../../lib/sharedPromise.js';
 import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
+import { sterilizeQuery } from './sterilizeQuery.js';
 
 /**
  * @typedef {import("../types.js").QueryResultRow} QueryResultRow
@@ -687,14 +691,15 @@ DESCRIBE ${this.text.trim()}
 	 *
 	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
+	 * @param {QueryValue<any>} [initialQuery]
 	 */
-	static createReactive = (reactiveOpts, opts) => {
+	static createReactive = (reactiveOpts, opts, initialQuery) => {
 		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
 
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const createFn = Query.create;
-		/** @type {QueryValue<any>} */
-		let activeQuery;
+		/** @type {QueryValue<any> | undefined} */
+		let activeQuery = initialQuery;
 
 		let changeIdx = 0;
 		/** @type {() => unknown} */
@@ -706,6 +711,7 @@ DESCRIBE ${this.text.trim()}
 			 * @returns {Promise<void> | void}
 			 */
 			(nextQuery, newOpts) => {
+				if (!activeQuery) throw new Error();
 				changeIdx += 1;
 				const targetChangeIdx = changeIdx;
 				Query.#debugStatic(
@@ -924,6 +930,16 @@ DESCRIBE ${this.text.trim()}
 	#hash;
 	/** @type {import('../types.js').QueryOpts<RowType>} */
 	#opts;
+
+	/** @type {Pick<import("../types.js").QueryOpts<RowType>, 'autoScore' | 'noResolve' | 'disableCache'>} */
+	get #inheritableOpts() {
+		return {
+			autoScore: this.#opts.autoScore,
+			noResolve: this.#opts.noResolve,
+			disableCache: this.#opts.disableCache
+		};
+	}
+
 	/** @type {string} */
 	get id() {
 		return this.#id;
@@ -982,7 +998,7 @@ DESCRIBE ${this.text.trim()}
 						Use of nanoid prevent ambiguity when dealing with nested Queries; 
 						in theory this could be the querystring has but that's kinda gross 
 					*/
-					[`inputQuery-${nanoid(2)}`]: taggedSql`(${query})`
+					[`inputQuery-${nanoid(2)}`]: taggedSql`(${sterilizeQuery(query)})`
 				})
 				.select('*');
 			this.#query = q;
@@ -1131,12 +1147,30 @@ DESCRIBE ${this.text.trim()}
 	/** @param {string} filterStatement */
 	where = (filterStatement) =>
 		Query.create(this.#query.clone().where(taggedSql`${filterStatement}`), this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			noResolve: this.#opts.noResolve
 		});
 
 	/**
+	 * Attaches an `ordinal` column to the query based on some window statement
+	 * @example myQuery.withOrdinal('partition by a order by b')
+	 * @param {string} windowStatement
+	 * @returns
+	 */
+	withOrdinal = (windowStatement) => {
+		const newQ = this.#query.clone();
+		newQ.select({
+			ordinal: taggedSql`row_number() over (${windowStatement})`
+		});
+		return Query.create(newQ, this.#executeQuery, {
+			...this.#inheritableOpts,
+			knownColumns: this.#columns
+		});
+	};
+
+	/**
 	 * @param {string} searchTerm
-	 * @param {string} searchCol
+	 * @param {string | string[]} searchCol
 	 * @param {number} searchThreshold
 	 * @returns {QueryValue<RowType & {similarity: number}>}
 	 */
@@ -1150,21 +1184,37 @@ DESCRIBE ${this.text.trim()}
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const typedCreateFn = Query.create;
 
+		const escapedSearchTerm = searchTerm.replaceAll("'", "''");
+
+		const cols = Array.isArray(searchCol) ? searchCol : [searchCol];
+		const statements = cols
+			.map((col) => {
+				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
+				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
+				const exactSubMatch =
+					// escapedSearchTerm.length >= 4
+					taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`;
+				// : taggedSql`0`;
+				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
+			})
+			.join(',');
+
 		/** @type {QueryValue<RowType & {similarity: number}>} */
 		const output = typedCreateFn(
 			this.#query
 				.clone()
 				.$select(
 					{
-						similarity: taggedSql`jaro_winkler_similarity(lower('${searchTerm.replaceAll("'", "''")}'), lower(${searchCol}))`
+						similarity: taggedSql`GREATEST(${statements})`
 					},
 					'*'
 				)
-				.where(taggedSql`similarity > ${searchThreshold} `)
-				.orderby(taggedSql`similarity DESC`),
+				.where(taggedSql`"similarity" > ${searchThreshold} `)
+				.orderby(taggedSql`"similarity" DESC`),
 			this.#executeQuery,
 			{
-				knownColumns: colsWithSimilarity
+				knownColumns: colsWithSimilarity,
+				...this.#inheritableOpts
 			}
 		);
 		return output;
@@ -1173,13 +1223,15 @@ DESCRIBE ${this.text.trim()}
 	/** @param {number} limit */
 	limit = (limit) =>
 		Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
 		});
 
 	/** @param {number} offset */
 	offset = (offset) =>
 		Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
 		});
 	/**
 	 * @param {number} offset
@@ -1187,7 +1239,8 @@ DESCRIBE ${this.text.trim()}
 	 */
 	paginate = (offset, limit) =>
 		Query.create(this.#query.clone().offset(offset).limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
 		});
 
 	/**
@@ -1201,7 +1254,8 @@ DESCRIBE ${this.text.trim()}
 		query.$groupby(columns);
 
 		return Query.create(query, this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
 		});
 	};
 
@@ -1209,6 +1263,9 @@ DESCRIBE ${this.text.trim()}
 	 * @typedef {Object} AggArgs
 	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} sum
 	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} avg
+	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} min
+	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} max
+	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} median
 	 */
 
 	/**
@@ -1216,7 +1273,10 @@ DESCRIBE ${this.text.trim()}
 	 */
 	static #aggFns = {
 		sum: qSum,
-		avg: qAvg
+		avg: qAvg,
+		min: qMin,
+		max: qMax,
+		median: qMedian
 	};
 	/**
 	 *
@@ -1243,7 +1303,10 @@ DESCRIBE ${this.text.trim()}
 				});
 			}
 		}
-		return Query.create(query, this.#executeQuery, { knownColumns: this.#columns });
+		return Query.create(query, this.#executeQuery, {
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
+		});
 	};
 
 	////////////////////////////////////
