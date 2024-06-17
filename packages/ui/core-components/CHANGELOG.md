@@ -1,5 +1,26 @@
 # @evidence-dev/core-components
 
+## 4.5.1
+
+### Patch Changes
+
+- c10e35be1: Updated Running EvalDefault Condition to wait for option store to be populated
+- 08d7b9405: Fix weighted mean behavior
+  - @evidence-dev/component-utilities@3.2.1
+
+## 4.5.0
+
+### Minor Changes
+
+- b041f5f9a: updated camelCase acceptance for presetRanges prop, created default value prop for dateRange
+
+### Patch Changes
+
+- f411c8650: added datatable to add in ' when it contains a space
+- 79f4758e0: Fix stale pagination where current page extends beyond pageCount after a filter change
+- Updated dependencies [010424745]
+  - @evidence-dev/icons@1.0.0
+
 ## 4.4.0
 
 ### Minor Changes
