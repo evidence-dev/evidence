@@ -11,27 +11,17 @@
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
 
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { fakerSeries } from '$lib/faker-data-queries.js';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 
-	// From layout.js
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
 
 <Story name="Basic Usage">
-	<DimensionGrid data={fakerSeries.airlines.flights.store} name="BasicUsage" />
+	<DimensionGrid data={fakerSeries.airlines.flights.store} name="BasicUsage"/>
 </Story>
 
 <Story name="Named as an Input">
-	<div class="my-2 bg-gray-50 border-2 border-dashed font-mono rounded p-2 text-xs">
-		<dt class=" font-semibold">$inputs.dimensiongrid</dt>
-		<dd>{$inputStore.dimensiongrid}</dd>
-	</div>
 	<DimensionGrid name="dimensiongrid" data={fakerSeries.airlines.flights.store} />
 </Story>
 

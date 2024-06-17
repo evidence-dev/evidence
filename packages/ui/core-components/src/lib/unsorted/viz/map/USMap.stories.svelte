@@ -1,6 +1,6 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
-	export const meta = { title: 'Charts/USMap', decorators: [() => WithScopedInputStore] };
+	export const meta = { title: 'Charts/USMap' };
 </script>
 
 <script>
@@ -8,7 +8,6 @@
 	import USMap from './USMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 </script>
 
 <Story name="Basic Usage">

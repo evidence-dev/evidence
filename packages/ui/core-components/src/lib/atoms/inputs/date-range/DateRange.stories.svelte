@@ -1,5 +1,4 @@
 <script context="module">
-	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Atoms/inputs/DateRange',
@@ -8,8 +7,7 @@
 			title: 'Date Range, Including Presets',
 			name: 'dateRange',
 			omitGroup: []
-		},
-		decorators: [() => WithScopedInputStore]
+		}
 	};
 </script>
 

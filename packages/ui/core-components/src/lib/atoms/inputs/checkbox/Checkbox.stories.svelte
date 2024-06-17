@@ -1,14 +1,12 @@
 <script context="module">
-	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Atoms/inputs/Checkbox',
 		argTypes: {},
 		args: {
 			title: 'Hide Month Zero',
-			name: 'Hide Month Zero'
+			name: 'hide_month_zero'
 		},
-		decorators: [() => WithScopedInputStore]
 	};
 </script>
 

@@ -1,6 +1,6 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
-	export const meta = { title: 'Atoms/Inputs/Dropdown', decorators: [() => WithScopedInputStore] };
+	export const meta = { title: 'Atoms/Inputs/Dropdown' };
 </script>
 
 <script>
@@ -10,7 +10,6 @@
 	import Dropdown from '../Dropdown.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import WithScopedInputStore from '../../../../storybook-helpers/WithScopedInputStore.svelte';
 	import DropdownOption from '../helpers/DropdownOption.svelte';
 	import DependentDropdowns from './DependentDropdowns.story.svelte';
 
