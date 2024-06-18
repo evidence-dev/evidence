@@ -13,6 +13,7 @@ import {
 import { sharedPromise } from '../../lib/sharedPromise.js';
 import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
+import { VITE_EVENTS } from '../../build-dev/vite/constants.js';
 import { sterilizeQuery } from './sterilizeQuery.js';
 
 /**
@@ -735,8 +736,6 @@ DESCRIBE ${this.text.trim()}
 							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined })
 						);
 
-				if (newQuery.hash === activeQuery.hash) return; // no-op
-
 				const fetched = newQuery.fetch();
 				let dataMaybePromise = fetched;
 				if (fetched instanceof Promise) {
@@ -804,7 +803,7 @@ DESCRIBE ${this.text.trim()}
 		Query.#devModeBootstrapped = true;
 		// We need to do some dev mode pipeing
 		import.meta.hot.data.hmr = false;
-		import.meta.hot.on('vite:beforeUpdate', () => {
+		import.meta.hot.on(VITE_EVENTS.RESET_QUERIES, () => {
 			if (import.meta.hot) import.meta.hot.data.hmr = true;
 			Query.emptyCache();
 		});
