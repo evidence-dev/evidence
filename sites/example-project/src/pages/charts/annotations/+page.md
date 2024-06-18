@@ -510,3 +510,8 @@ where year = ${inputs.year.value}
     <ReferenceLine data={target_filtered} y=target label="Target"/>
     <ReferenceArea data={target_filtered} yMin=target yMax=stretch />
 </LineChart>
+
+<DataTable data={generated_multiple_dates}>
+    <Column id='start_date' fmt='iso'/>
+    <Column id='end_date'/>
+</DataTable>
