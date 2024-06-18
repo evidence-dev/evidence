@@ -36,8 +36,6 @@
 
 	/** @type {string} */
 	export let title = undefined;
-	console.log($inputs[name].label);
-	console.log($inputs[name]);
 	/**
 	 * When true, multiple values can be selected
 	 * @type {boolean}
@@ -247,6 +245,12 @@
 						return; // Action was taken
 					}
 					if (presentValues.length) return; // no need to take action
+				}
+
+				// checking if there is already a value you in input store, before default value checks
+				if ($inputs[name]) {
+					console.log(name, presentValues);
+					return;
 				}
 
 				if (selectAllByDefault && multiple) {
