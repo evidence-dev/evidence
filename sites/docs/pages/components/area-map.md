@@ -64,6 +64,33 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 />
 ```
 
+### Using an Online GeoJSON
+
+```sql orders_by_state
+select state, count(*) as orders
+from orders
+where state != 'Alaska' and state != 'Hawaii'
+group by state
+```
+
+<AreaMap 
+    data={orders_by_state} 
+    areaCol=state
+    geoJsonUrl=https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson
+    geoId=name
+    value=orders
+/>
+
+```svelte
+<AreaMap 
+    data={orders_by_state} 
+    areaCol=state
+    geoJsonUrl=https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson
+    geoId=name
+    value=orders
+/>
+```
+
 ### Custom Tooltip
 
 #### `tooltipType=hover`
