@@ -275,6 +275,48 @@ where zip_code = ${inputs.my_area_map.zip_code} OR ${inputs.my_area_map.zip_code
 ## Required GeoJSON Data Structure
 The GeoJSON data you pass to the map must be a feature collection. [See here for an example](https://gist.github.com/sgillies/1233327#file-geojson-spec-1-0-L50)
 
+## Map Resources
+
+```sql all_geojson_urls
+select * exclude(properties)
+from geojson_urls
+order by scale, category, file
+```
+
+```sql useful_geojson_urls
+select * 
+from ${all_geojson_urls}
+where category in ('political_countries', 'political_states')
+or file ilike 'populated_places%'
+order by scale desc, category, file
+```
+
+Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com/) project, and hosted by [GeoJSON.xyz](https://geojson.xyz/).
+
+### Country, State, and City Locations
+
+<DataTable data={useful_geojson_urls} rows=100>
+    <Column id=file/>
+    <Column id=category/>
+    <Column id=scale/>
+    <Column id=summary/>
+    <Column id=size fmt='0.0,," MB"'/>
+    <Column id=url contentType=link title=URL/>
+</DataTable>
+
+<Details title="All GeoJSON Files" summary="Click to see all available GeoJSON files">
+
+<DataTable data={all_geojson_urls} rows=all compact>
+    <Column id=file/>
+    <Column id=category/>
+    <Column id=scale/>
+    <Column id=summary/>
+    <Column id=size fmt='0.0,," MB"'/>
+    <Column id=url contentType=link title=URL/>
+</DataTable>
+
+</Details>
+
 ## Options
 
 ### Areas
