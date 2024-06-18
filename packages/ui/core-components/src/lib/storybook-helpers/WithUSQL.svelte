@@ -1,4 +1,5 @@
 <script>
+	
 	// Mocks universal SQL and global input stores, adds UI to show these in stories.
 	import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
@@ -6,9 +7,7 @@
 	import { writable } from 'svelte/store';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { setTrackProxy } from '@evidence-dev/sdk/usql';
-	import { Tabs } from 'bits-ui';
-	import Accordion from '../atoms/accordion/Accordion.svelte';
-	import AccordionItem from '../atoms/accordion/AccordionItem.svelte';
+	import DebugBar from './DebugBar.svelte';
 
 	setQueryFunction(query);
 
@@ -23,35 +22,4 @@
 
 <slot />
 
-<Accordion class="fixed bottom-0 right-0 left-0 px-2 bg-white border-t">
-	<AccordionItem
-		title="{Object.keys($inputStore)?.length} Input{Object.keys($inputStore)?.length === 1
-			? ''
-			: 's'}"
-		class="text-xs border-none"
-	>
-		<Tabs.Root>
-			<Tabs.List class="flex pt-1 overflow-x-auto">
-				{#each Object.keys($inputStore) as input}
-					<Tabs.Trigger
-						value={input}
-						class="text-gray-900 border-b border-white font-medium font-mono data-[state=active]:bg-gray-800 hover:bg-gray-100 data-[state=active]:text-gray-50 data-[state=active]:border-gray-600 px-3 py-1 rounded-t transition-colors duration-100"
-					>
-						inputs.{input}
-					</Tabs.Trigger>
-				{/each}
-			</Tabs.List>
-			{#each Object.keys($inputStore) as input}
-				<Tabs.Content value={input}>
-					<pre
-						class="text-xs font-mono bg-gray-800 text-gray-50 rounded-b rounded-tr p-4 h-64 overflow-auto text-xs">{JSON.stringify(
-							$inputStore[input],
-							null,
-							2
-						)} 
-					</pre>
-				</Tabs.Content>
-			{/each}
-		</Tabs.Root>
-	</AccordionItem>
-</Accordion>
+<DebugBar />
