@@ -304,7 +304,7 @@ Below are a selection of publically available GeoJSON files that may be useful f
     <Column id=url contentType=link title=URL/>
 </DataTable>
 
-<Details title="All GeoJSON Files" summary="Click to see all available GeoJSON files">
+<Details title="All GeoJSON Files">
 
 <DataTable data={all_geojson_urls} rows=all compact>
     <Column id=file/>
@@ -333,7 +333,11 @@ name="geoJsonUrl"
 required
 options="URL"
 >
-Path to source geoJSON data from - can be a URL or a file in your project. If the file is in your project, store it in a `static` folder in the root of your project.
+
+Path to source geoJSON data from - can be a URL (see [Map Resources](#map-resources)) or a file in your project. 
+
+If the file is in your project, store it in a `static` folder in the root of your project, and reference it as `geoJsonUrl="/your_file.geojson"`
+
 </PropListing>
 
 <PropListing
@@ -347,9 +351,9 @@ Column in the data that specifies the area each row belongs to.
 <PropListing
 name="geoId"
 required
-options="geoJSON field name"
+options="geoJSON property name"
 >
-Column in the GeoJSON that uniquely identifies each feature.
+Property in the GeoJSON that uniquely identifies each feature.
 </PropListing>
 
 <PropListing
