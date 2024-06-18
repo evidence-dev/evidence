@@ -13,9 +13,10 @@ const runQuery = async (queryString, database) => {
 			port: database.port,
 			user: database.user,
 			source: 'evidence',
-			basic_auth: auth(database.user, database.password),
+			basic_auth: database.password ? auth(database.user, database.password) : undefined,
 			catalog: database.catalog,
 			schema: database.schema,
+			timeout: null,
 			engine: engine ? engine : 'trino'
 		});
 
@@ -144,7 +145,7 @@ module.exports.getRunner = async (opts) => {
 
 /** @type {import('@evidence-dev/db-commons').ConnectionTester<DatabricksOptions>} */
 module.exports.testConnection = async (opts) => {
-	return await runQuery('SELECT 1;', opts)
+	return await runQuery('SELECT 1', opts)
 		.then(() => true)
 		.catch((e) => ({ reason: e.message ?? (e.toString() || 'Invalid Credentials') }));
 };
@@ -180,7 +181,7 @@ module.exports.options = {
 		title: 'Password',
 		type: 'string',
 		secret: true,
-		required: true
+		required: false
 	},
 	catalog: {
 		title: 'Catalog',
