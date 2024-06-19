@@ -51,21 +51,9 @@
 	});
 </script>
 
-<div class="grid grid-cols-2">
-	<div>
-		<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
-
-		<QueryLoad let:loaded data={depQuery}>
-			<Dropdown name="user" data={loaded} value="value" label="label" multiple selectAllByDefault>
-				<DropdownOption value="All" />
-			</Dropdown>
-		</QueryLoad>
-	</div>
-	<div>
-		<QueryLoad let:loaded data={depQuery}>
-			<pre class="text-xs">{loaded.originalText}</pre>
-			<pre class="text-xs overflow-y-auto">{JSON.stringify(loaded, null, 2)}</pre>
-		</QueryLoad>
-		{displayQuery.text}
-	</div>
-</div>
+<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
+<QueryLoad let:loaded data={depQuery}>
+	<Dropdown name="user" data={loaded} value="value" label="label" multiple selectAllByDefault>
+		<DropdownOption value="All" />
+	</Dropdown>
+</QueryLoad>

@@ -1,6 +1,8 @@
 <script>
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
-	import { genSeries } from '@evidence-dev/component-utilities/tests/getCompletedData.fixture';
+
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 
 	import LineChart from './LineChart.svelte';
 	import Chart from '../core/Chart.svelte';
@@ -32,16 +34,10 @@
 		series: { control: 'text' }
 	}}
 	args={{
-		data: genSeries({
-			xHasGaps: false,
-			yHasNulls: false,
-			seriesAlwaysExists: true,
-			maxSeriesLen: 10,
-			maxSeriesCount: 2,
-			xType: 'number'
-		}).data,
-		x: 'time',
-		y: 'value'
+		data: Query.create('select * from series_demo_source.numeric_series', query), 
+		x: 'x',
+		y: 'y',
+		series: 'series'
 	}}
 />
 

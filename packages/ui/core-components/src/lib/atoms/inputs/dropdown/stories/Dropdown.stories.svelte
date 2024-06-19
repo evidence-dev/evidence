@@ -214,7 +214,10 @@
 	</Dropdown>
 </Story>
 
-<Story name="Using multiple dropdowns (same query + same name)">
+<Story
+	name="Using multiple dropdowns (same query + same name)"
+	parameters={{ chromatic: { delay: 300 } }}
+>
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown name="test" {data} value="value" label="label">
 		<DropdownOption value="All" />
