@@ -28,7 +28,10 @@
 </Story>
 
 <Story name="With Groups">
-	{@const data = Query.create(`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`, query)}
+	{@const data = Query.create(
+		`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`,
+		query
+	)}
 	<DataTable {data} title="Flights" search groupBy="regulator">
 		<Column id="id" title="ID" />
 		<Column id="airline" title="Airline" />
