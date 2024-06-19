@@ -39,7 +39,7 @@ import { isGitRepository } from './utils/gitCheck';
 import { countFilesInDirectory, countTemplatedPages } from './utils/fsUtils';
 import * as path from 'path';
 import * as fs from 'fs';
-import { SchemaViewProvider, ColumnItem } from './providers/schemaViewProvider'; 
+import { SchemaViewProvider, ColumnItem } from './providers/schemaViewProvider';
 
 export const enum Context {
 	isNewLine = 'evidence.isNewLine',
@@ -124,15 +124,15 @@ export async function activate(context: ExtensionContext) {
 	// register markdown symbol provider
 	const markdownLanguage = { language: 'emd', scheme: 'file' };
 	const provider = new MarkdownSymbolProvider();
-    // const selector: DocumentSelector = { language: 'emd', scheme: 'file' };
+	// const selector: DocumentSelector = { language: 'emd', scheme: 'file' };
 
-    // const symbolProviderRegistration = languages.registerDocumentSymbolProvider(
-    //     selector,
-    //     provider
-    // );
+	// const symbolProviderRegistration = languages.registerDocumentSymbolProvider(
+	//     selector,
+	//     provider
+	// );
 
-    // // Add to context subscriptions to ensure proper disposal
-    // context.subscriptions.push(symbolProviderRegistration);
+	// // Add to context subscriptions to ensure proper disposal
+	// context.subscriptions.push(symbolProviderRegistration);
 	// languages.registerDocumentSymbolProvider(markdownLanguage, provider);
 
 	// load package.json
@@ -155,7 +155,7 @@ export async function activate(context: ExtensionContext) {
 			let frontmatterDecorationType: TextEditorDecorationType;
 			let svelteEachDecorationType: TextEditorDecorationType;
 			let svelteIfDecorationType: TextEditorDecorationType;
-		
+
 			const getThemeBasedDecorationType = () => {
 				const colorTheme = window.activeColorTheme.kind;
 				const isLightTheme = colorTheme === ColorThemeKind.Light;
@@ -165,21 +165,21 @@ export async function activate(context: ExtensionContext) {
 				});
 
 				frontmatterDecorationType = window.createTextEditorDecorationType({
-					backgroundColor: isLightTheme ? 'rgba(197, 220, 237, 0.2)' : 'rgba(197, 220, 237, 0.05)', // light blue or darker blue background with some transparency
+					backgroundColor: isLightTheme ? 'rgba(84, 134, 209, 0.04)' : 'rgba(84, 134, 209, 0.05)', // light blue or darker blue background with some transparency
 					isWholeLine: true
 				});
-		
+
 				svelteEachDecorationType = window.createTextEditorDecorationType({
 					backgroundColor: isLightTheme ? 'rgba(156, 58, 176, 0.05)' : 'rgba(75, 0, 130, 0.05)', // light purple or darker purple background with some transparency
 					isWholeLine: true
 				});
-		
+
 				svelteIfDecorationType = window.createTextEditorDecorationType({
 					backgroundColor: isLightTheme ? 'rgba(255, 165, 0, 0.08)' : 'rgba(255, 140, 0, 0.05)', // light orange or darker orange background with some transparency
 					isWholeLine: true
 				});
 			};
-		
+
 			const clearDecorations = (editor: TextEditor) => {
 				if (sqlDecorationType) {
 					editor.setDecorations(sqlDecorationType, []);
@@ -194,28 +194,33 @@ export async function activate(context: ExtensionContext) {
 					editor.setDecorations(svelteIfDecorationType, []);
 				}
 			};
-		
+
 			const highlightCodeBlocks = (editor: TextEditor) => {
-				if (!editor) {return;};
+				if (!editor) {
+					return;
+				}
 
 				const config = workspace.getConfiguration('evidence');
 				const enableSQLBackground = config.get<boolean>('enableSQLBackground', true);
-				const enableFrontmatterBackground = config.get<boolean>('enableFrontmatterBackground', true);
+				const enableFrontmatterBackground = config.get<boolean>(
+					'enableFrontmatterBackground',
+					true
+				);
 				const enableIfBackground = config.get<boolean>('enableIfBackground', true);
 				const enableEachBackground = config.get<boolean>('enableEachBackground', true);
-		
+
 				const text = editor.document.getText();
-		
+
 				const sqlRegex = /```[\s\S]*?```/gm;
 				const frontmatterRegex = /^---[\s\S]*?---/g;
 				const svelteEachRegex = /{#each[\s\S]*?{\/each}/gm;
 				const svelteIfRegex = /{#if[\s\S]*?{\/if}/gm;
-		
+
 				const sqlRanges: DecorationOptions[] = [];
 				const frontmatterRanges: DecorationOptions[] = [];
 				const svelteEachRanges: DecorationOptions[] = [];
 				const svelteIfRanges: DecorationOptions[] = [];
-		
+
 				let match;
 				if (enableSQLBackground) {
 					while ((match = sqlRegex.exec(text)) !== null) {
@@ -234,8 +239,8 @@ export async function activate(context: ExtensionContext) {
 						frontmatterRanges.push({ range });
 					}
 				}
-		
-				if(enableEachBackground){
+
+				if (enableEachBackground) {
 					while ((match = svelteEachRegex.exec(text)) !== null) {
 						const startPos = editor.document.positionAt(match.index);
 						const endPos = editor.document.positionAt(match.index + match[0].length);
@@ -243,21 +248,21 @@ export async function activate(context: ExtensionContext) {
 						svelteEachRanges.push({ range });
 					}
 				}
-		
+
 				const svelteIfRangesRecursively = (regex: RegExp, text: string, startIndex = 0) => {
 					let nestedCount = 0;
 					let startPos: number | null = null;
 					const ranges: Range[] = [];
-		
+
 					let match;
 					regex.lastIndex = startIndex;
 					while ((match = regex.exec(text)) !== null) {
-						if (match[0].startsWith("{#if")) {
+						if (match[0].startsWith('{#if')) {
 							if (nestedCount === 0) {
 								startPos = match.index;
 							}
 							nestedCount++;
-						} else if (match[0] === "{/if}") {
+						} else if (match[0] === '{/if}') {
 							nestedCount--;
 							if (nestedCount === 0 && startPos !== null) {
 								const start = editor.document.positionAt(startPos);
@@ -269,27 +274,27 @@ export async function activate(context: ExtensionContext) {
 					}
 					return ranges;
 				};
-		
-				if(enableIfBackground){
-					svelteIfRangesRecursively(/({#if.*?})|({\/if})/gm, text).forEach(range => {
+
+				if (enableIfBackground) {
+					svelteIfRangesRecursively(/({#if.*?})|({\/if})/gm, text).forEach((range) => {
 						svelteIfRanges.push({ range });
 					});
 				}
-		
+
 				const svelteEachRangesRecursively = (regex: RegExp, text: string, startIndex = 0) => {
 					let nestedCount = 0;
 					let startPos: number | null = null;
 					const ranges: Range[] = [];
-		
+
 					let match;
 					regex.lastIndex = startIndex;
 					while ((match = regex.exec(text)) !== null) {
-						if (match[0].startsWith("{#each")) {
+						if (match[0].startsWith('{#each')) {
 							if (nestedCount === 0) {
 								startPos = match.index;
 							}
 							nestedCount++;
-						} else if (match[0] === "{/each}") {
+						} else if (match[0] === '{/each}') {
 							nestedCount--;
 							if (nestedCount === 0 && startPos !== null) {
 								const start = editor.document.positionAt(startPos);
@@ -301,47 +306,63 @@ export async function activate(context: ExtensionContext) {
 					}
 					return ranges;
 				};
-		
-				if(enableEachBackground){
-				svelteEachRangesRecursively(/({#each.*?})|({\/each})/gm, text).forEach(range => {
-					svelteEachRanges.push({ range });
-				});
-			}
-		
+
+				if (enableEachBackground) {
+					svelteEachRangesRecursively(/({#each.*?})|({\/each})/gm, text).forEach((range) => {
+						svelteEachRanges.push({ range });
+					});
+				}
+
 				editor.setDecorations(sqlDecorationType, sqlRanges);
 				editor.setDecorations(frontmatterDecorationType, frontmatterRanges);
 				editor.setDecorations(svelteEachDecorationType, svelteEachRanges);
 				editor.setDecorations(svelteIfDecorationType, svelteIfRanges);
 			};
-		
+
 			// Initial setup
 			getThemeBasedDecorationType();
-		
-			window.onDidChangeActiveTextEditor(editor => {
-				if (editor && editor.document.languageId === 'emd') {
-					highlightCodeBlocks(editor);
-				}
-			}, null, context.subscriptions);
-		
-			workspace.onDidChangeTextDocument(event => {
-				const editor = window.activeTextEditor;
-				if (editor && event.document === editor.document && editor.document.languageId === 'emd') {
-					highlightCodeBlocks(editor);
-				}
-			}, null, context.subscriptions);
-		
+
+			window.onDidChangeActiveTextEditor(
+				(editor) => {
+					if (editor && editor.document.languageId === 'emd') {
+						highlightCodeBlocks(editor);
+					}
+				},
+				null,
+				context.subscriptions
+			);
+
+			workspace.onDidChangeTextDocument(
+				(event) => {
+					const editor = window.activeTextEditor;
+					if (
+						editor &&
+						event.document === editor.document &&
+						editor.document.languageId === 'emd'
+					) {
+						highlightCodeBlocks(editor);
+					}
+				},
+				null,
+				context.subscriptions
+			);
+
 			// Reapply decorations on theme change
-			window.onDidChangeActiveColorTheme(() => {
-				// Update decoration types
-				getThemeBasedDecorationType();
-				// Reapply decorations in the active editor
-				const editor = window.activeTextEditor;
-				if (editor && editor.document.languageId === 'emd') {
-					clearDecorations(editor);
-					highlightCodeBlocks(editor);
-				}
-			}, null, context.subscriptions);
-		
+			window.onDidChangeActiveColorTheme(
+				() => {
+					// Update decoration types
+					getThemeBasedDecorationType();
+					// Reapply decorations in the active editor
+					const editor = window.activeTextEditor;
+					if (editor && editor.document.languageId === 'emd') {
+						clearDecorations(editor);
+						highlightCodeBlocks(editor);
+					}
+				},
+				null,
+				context.subscriptions
+			);
+
 			// Highlight code blocks in the active editor if it's an emd file
 			if (window.activeTextEditor && window.activeTextEditor.document.languageId === 'emd') {
 				highlightCodeBlocks(window.activeTextEditor);
@@ -595,7 +616,10 @@ export async function activate(context: ExtensionContext) {
 			workspace.onDidCreateFiles((event) => {
 				try {
 					event.files.forEach((file) => {
-						if (fs.lstatSync(file.path).isDirectory() && file.path.includes(`${path.sep}pages${path.sep}`)) {
+						if (
+							fs.lstatSync(file.path).isDirectory() &&
+							file.path.includes(`${path.sep}pages${path.sep}`)
+						) {
 							const isTemplated = /\[.+\]/.test(file.path);
 							telemetryService?.sendEvent('createDirectory', { templated: isTemplated.toString() });
 						}
@@ -684,7 +708,7 @@ export async function activate(context: ExtensionContext) {
 						} else if (item.label && typeof item.label.label === 'string') {
 							label = item.label.label;
 						}
-			
+
 						if (label) {
 							env.clipboard.writeText(label);
 							window.showInformationMessage(`Copied: ${label}`);

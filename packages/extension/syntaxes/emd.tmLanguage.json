@@ -21,7 +21,7 @@
 					"include": "#svelte-js-expression"
 				}
 			],
-			"repository": {			
+			"repository": {
 				"svelte-tag": {
 					"patterns": [
 						{
@@ -35,7 +35,7 @@
 							]
 						}
 					]
-				},	
+				},
 				"svelte-template": {
 					"patterns": [
 						{
@@ -1093,8 +1093,6 @@
 				}
 			}
 		}
-
-		
 	},
 	"scopeName": "text.html.markdown.svelte"
 }

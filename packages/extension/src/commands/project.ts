@@ -189,7 +189,7 @@ async function createProjectFolder(templateFolder: Uri, projectFolder: Uri) {
  */
 export async function openIndex() {
 	let openMarkdownFiles = workspace.textDocuments.filter((doc) => doc.fileName.endsWith('.md'));
-	
+
 	// check if evidence is in a subdirectory - don't open index/walkthrough if monorepo
 	const packageJsonFolder = await getPackageJsonFolder();
 

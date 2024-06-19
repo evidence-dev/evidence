@@ -64,10 +64,10 @@
 				"category": "Evidence"
 			},
 			{
-                "command": "evidence.copyColumnName",
-                "title": "Copy",
-                "category": "Evidence"
-            },
+				"command": "evidence.copyColumnName",
+				"title": "Copy",
+				"category": "Evidence"
+			},
 			{
 				"command": "evidence.createTemplatedPageFromQuery",
 				"title": "Create Templated Page from Query",
@@ -259,12 +259,12 @@
 				}
 			],
 			"view/item/context": [
-                {
-                    "command": "evidence.copyColumnName",
-                    "when": "view == schemaView && viewItem == columnItem",
-                    "group": "inline"
-                }
-            ]
+				{
+					"command": "evidence.copyColumnName",
+					"when": "view == schemaView && viewItem == columnItem",
+					"group": "inline"
+				}
+			]
 		},
 		"configuration": {
 			"title": "Evidence",
@@ -311,22 +311,22 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Enable background color shading for SQL blocks."
-				  },
-				  "evidence.enableIfBackground": {
+				},
+				"evidence.enableIfBackground": {
 					"type": "boolean",
 					"default": true,
 					"description": "Enable background color shading for if blocks."
-				  },
-				  "evidence.enableEachBackground": {
+				},
+				"evidence.enableEachBackground": {
 					"type": "boolean",
 					"default": true,
 					"description": "Enable background color shading for each blocks."
-				  },
-				  "evidence.enableFrontmatterBackground": {
+				},
+				"evidence.enableFrontmatterBackground": {
 					"type": "boolean",
 					"default": true,
 					"description": "Enable background color shading for markdown frontmatter."
-				  }
+				}
 			}
 		},
 		"languages": [

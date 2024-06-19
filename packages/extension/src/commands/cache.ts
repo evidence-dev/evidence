@@ -8,23 +8,23 @@ import * as path from 'path';
  */
 let cachePath = '';
 if (workspace.workspaceFolders && workspace.workspaceFolders.length > 0) {
-    const workspaceFolderPath = workspace.workspaceFolders[0].uri.fsPath;
-    cachePath = path.join(workspaceFolderPath, '.evidence', 'template', '.evidence-queries');
+	const workspaceFolderPath = workspace.workspaceFolders[0].uri.fsPath;
+	cachePath = path.join(workspaceFolderPath, '.evidence', 'template', '.evidence-queries');
 }
 
 /**
  * Deletes Evidence application cache directory.
  */
 export async function clearCache() {
-    if (!cachePath) {
-        window.showErrorMessage('No workspace folder is open.');
-        return;
-    }
+	if (!cachePath) {
+		window.showErrorMessage('No workspace folder is open.');
+		return;
+	}
 
-    if (await deleteFolder(cachePath)) {
-        window.showInformationMessage('Cache cleared.');
-    } else {
-        window.showInformationMessage('Cache is already empty.');
-    }
-    telemetryService?.sendEvent('clearCache');
+	if (await deleteFolder(cachePath)) {
+		window.showInformationMessage('Cache cleared.');
+	} else {
+		window.showInformationMessage('Cache is already empty.');
+	}
+	telemetryService?.sendEvent('clearCache');
 }
