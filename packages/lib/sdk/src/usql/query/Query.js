@@ -892,7 +892,6 @@ DESCRIBE ${this.text.trim()}
 			);
 
 		Query.#constructing = true;
-		console.log(opts.id);
 		const output = new Query(query, executeQuery, opts);
 		Query.#globalEmit('queryCreated', { raw: output, proxied: output.value });
 		if (!opts.disableCache) {
