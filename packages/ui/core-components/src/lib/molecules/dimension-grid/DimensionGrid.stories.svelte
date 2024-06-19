@@ -95,7 +95,7 @@
 
 <Story name="No String Columns">
 	<DimensionGrid
-		data={Query.create('SELECT fare FROM series_demo_source.flights', query, {
+		data={Query.create('SELECT fare FROM series_demo_source.flights limit 10', query, {
 			disableCache: true
 		})}
 	/>
