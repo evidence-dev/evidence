@@ -21,7 +21,6 @@ const deepMerge = (a, b) => {
 	return a;
 };
 
-
 const logger = createLogger();
 const loggerWarn = logger.warn;
 const loggerOnce = logger.warnOnce;
@@ -60,9 +59,9 @@ const config = {
 	plugins: [sveltekit(), evidenceVitePlugin()],
 	optimizeDeps: {
 		include: [
-            'blueimp-md5',
-            'nanoid',
-            '@uwdata/mosaic-sql',
+			'blueimp-md5',
+			'nanoid',
+			'@uwdata/mosaic-sql',
 			// We need these to prevent HMR from doing a full page reload
 			...(process.env.EVIDENCE_DISABLE_INCLUDE
 				? []
@@ -75,8 +74,7 @@ const config = {
 						'@evidence-dev/component-utilities/profile',
 						'debounce',
 						'@duckdb/duckdb-wasm',
-						'apache-arrow',
-
+						'apache-arrow'
 					])
 		],
 		exclude: ['svelte-icons', '@evidence-dev/universal-sql']
@@ -87,7 +85,7 @@ const config = {
 	server: {
 		fs: {
 			strict: strictFs // allow template to get dependencies outside the .evidence folder
-		},
+		}
 		// hmr: {
 		// 	overlay: false
 		// }
@@ -104,14 +102,12 @@ const config = {
 	customLogger: logger
 };
 
-
-
 async function loadUserConfiguration() {
 	if (!process.cwd().includes('.evidence')) return;
 	const rootDir = process.cwd().split('.evidence')[0];
 	const rootDirContents = fs.readdirSync(rootDir);
 
-    console.log("No custom vite.config.js found")
+	console.log('No custom vite.config.js found');
 	if (!rootDirContents.includes('vite.config.js')) return;
 
 	const configFileLocation = path.join(rootDir, 'vite.config.js');
