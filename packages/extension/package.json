@@ -69,6 +69,11 @@
 				"category": "Evidence"
 			},
 			{
+				"command": "evidence.copyTableName",
+				"title": "Copy",
+				"category": "Evidence"
+			},
+			{
 				"command": "evidence.createTemplatedPageFromQuery",
 				"title": "Create Templated Page from Query",
 				"category": "Evidence"
@@ -256,12 +261,21 @@
 				{
 					"command": "evidence.copyColumnName",
 					"when": "never"
+				},
+				{
+					"command": "evidence.copyTableName",
+					"when": "never"
 				}
 			],
 			"view/item/context": [
 				{
 					"command": "evidence.copyColumnName",
 					"when": "view == schemaView && viewItem == columnItem",
+					"group": "inline"
+				},
+				{
+					"command": "evidence.copyTableName",
+					"when": "view == schemaView && viewItem == tableItem",
 					"group": "inline"
 				}
 			]

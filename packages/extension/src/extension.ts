@@ -10,7 +10,8 @@ import {
 	ConfigurationTarget,
 	TextEditorDecorationType,
 	env,
-	ColorThemeKind
+	ColorThemeKind,
+	Uri
 } from 'vscode';
 
 import { TelemetryService } from './telemetryService';
@@ -39,7 +40,7 @@ import { isGitRepository } from './utils/gitCheck';
 import { countFilesInDirectory, countTemplatedPages } from './utils/fsUtils';
 import * as path from 'path';
 import * as fs from 'fs';
-import { SchemaViewProvider, ColumnItem } from './providers/schemaViewProvider';
+import { SchemaViewProvider, ColumnItem, TableItem } from './providers/schemaViewProvider';
 
 export const enum Context {
 	isNewLine = 'evidence.isNewLine',
@@ -103,6 +104,67 @@ function isPagesDirectory() {
 		pageContext = false;
 	}
 	return pageContext;
+}
+
+async function initializeSchemaViewer(context: ExtensionContext) {
+    try {
+        console.log('Initializing schema viewer...');
+        
+        if (await isUSQL()) {
+            const manifestUri = await getManifestUri();
+			const workspaceFolder = workspace.workspaceFolders?.[0];
+			const packageJsonFolder = await getPackageJsonFolder();
+			const manifestPath = workspaceFolder ? path.join(
+				workspaceFolder.uri.fsPath,
+				packageJsonFolder ?? '',
+				'.evidence',
+				'template',
+				'static',
+				'data',
+				'manifest.json'
+			) : '';
+			
+            const manifestWatcher = workspace.createFileSystemWatcher(manifestUri ? manifestUri.fsPath : manifestPath);
+            registerCopyCommands(context);
+
+            const schemaViewProvider = new SchemaViewProvider(manifestUri ?? Uri.file(manifestPath));
+            window.registerTreeDataProvider('schemaView', schemaViewProvider);
+
+            manifestWatcher.onDidChange(() => schemaViewProvider.refresh());
+            manifestWatcher.onDidCreate(() => schemaViewProvider.refresh());
+            manifestWatcher.onDidDelete(() => schemaViewProvider.refresh());
+
+            context.subscriptions.push(manifestWatcher);
+
+            commands.executeCommand(Commands.SetContext, Context.isNonLegacyProject, await isUSQL());
+        }
+    } catch (error) {
+        console.error('Error initializing schema viewer:', error);
+    }
+}
+
+function registerCopyCommands(context: ExtensionContext) {
+    context.subscriptions.push(
+        commands.registerCommand('evidence.copyColumnName', (item: ColumnItem) => {
+            let label = '';
+
+            if (typeof item.label === 'string') {
+                label = item.label;
+            } else if (item.label && typeof item.label.label === 'string') {
+                label = item.label.label;
+            }
+
+            if (label) {
+                env.clipboard.writeText(label);
+                window.showInformationMessage(`Copied: ${label}`);
+            }
+        }),
+        commands.registerCommand('evidence.copyTableName', (item: TableItem) => {
+            const label = `${item.id}`;
+            env.clipboard.writeText(label);
+            window.showInformationMessage(`Copied: ${label}`);
+        })
+    );
 }
 
 /**
@@ -694,42 +756,7 @@ export async function activate(context: ExtensionContext) {
 		// open index.md if no other files are open
 		openIndex();
 
-		try {
-			if ((await isUSQL()) && (await hasManifest())) {
-				const manifestUri = await getManifestUri();
-				const manifest = await getManifest(manifestUri);
-				const manifestWatcher = workspace.createFileSystemWatcher(manifestUri.fsPath);
-
-				context.subscriptions.push(
-					commands.registerCommand('evidence.copyColumnName', (item: ColumnItem) => {
-						let label = '';
-						if (typeof item.label === 'string') {
-							label = item.label;
-						} else if (item.label && typeof item.label.label === 'string') {
-							label = item.label.label;
-						}
-
-						if (label) {
-							env.clipboard.writeText(label);
-							window.showInformationMessage(`Copied: ${label}`);
-						}
-					})
-				);
-
-				// if there's no manifest, either the project is unbuilt, or it's legacy - either way there's nothing to show
-				if (manifest) {
-					const schemaViewProvider = new SchemaViewProvider(manifestUri);
-					window.registerTreeDataProvider('schemaView', schemaViewProvider);
-					manifestWatcher.onDidChange(() => schemaViewProvider.refresh());
-					manifestWatcher.onDidCreate(() => schemaViewProvider.refresh());
-					manifestWatcher.onDidDelete(() => schemaViewProvider.refresh());
-					context.subscriptions.push(manifestWatcher);
-				}
-				commands.executeCommand(Commands.SetContext, Context.isNonLegacyProject, !!manifest);
-			}
-		} catch (e) {
-			console.log(e);
-		}
+		initializeSchemaViewer(context);
 
 		if (autoStart) {
 			startServer();
