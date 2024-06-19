@@ -15,7 +15,7 @@
 		"prepublishOnly": "npm run package",
 		"preview": "vite preview",
 		"build-demo-source": "evidence-faker build-series-source && npm run sources",
-		"sources": "__EXAMPLE_PROJECT=true evidence sources",
+		"sources": "EVIDENCE_DATA_DIR=./static/data EVIDENCE_DATA_URL_PREFIX=static/data evidence sources",
 		"storybook": "storybook dev -p 6006",
 		"test:unit": "vitest",
 		"chromatic": "npx chromatic --project-token=chpt_c7afdf83f264eaf"
