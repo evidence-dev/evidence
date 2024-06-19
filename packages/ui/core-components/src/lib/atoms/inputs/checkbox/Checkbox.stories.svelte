@@ -24,5 +24,5 @@
 </Template>
 
 <Story name="Default" />
-<Story name="WithDefaultFalse" args={{ defaultValue: false }} />
+<Story name="WithDefaultFalse" args={{ defaultValue: true }} />
 <Story name="WithDefaultTrue" args={{ defaultValue: true }} />
