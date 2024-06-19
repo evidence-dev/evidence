@@ -2,7 +2,7 @@
 	"name": "evidence-vscode",
 	"displayName": "Evidence",
 	"description": "Build polished data products with SQL and Markdown",
-	"version": "1.4.15",
+	"version": "1.5.0",
 	"private": true,
 	"engines": {
 		"vscode": "^1.52.0"
@@ -63,6 +63,11 @@
 				"title": "Getting Started Walkthrough",
 				"category": "Evidence"
 			},
+			{
+                "command": "evidence.copyColumnName",
+                "title": "Copy",
+                "category": "Evidence"
+            },
 			{
 				"command": "evidence.createTemplatedPageFromQuery",
 				"title": "Create Templated Page from Query",
@@ -247,8 +252,19 @@
 				{
 					"command": "evidence.preview",
 					"when": "never"
+				},
+				{
+					"command": "evidence.copyColumnName",
+					"when": "never"
 				}
-			]
+			],
+			"view/item/context": [
+                {
+                    "command": "evidence.copyColumnName",
+                    "when": "view == schemaView && viewItem == columnItem",
+                    "group": "inline"
+                }
+            ]
 		},
 		"configuration": {
 			"title": "Evidence",
@@ -290,7 +306,27 @@
 						"Open in external web browser",
 						"No automatic preview shown"
 					]
-				}
+				},
+				"evidence.enableSQLBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for SQL blocks."
+				  },
+				  "evidence.enableIfBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for if blocks."
+				  },
+				  "evidence.enableEachBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for each blocks."
+				  },
+				  "evidence.enableFrontmatterBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for markdown frontmatter."
+				  }
 			}
 		},
 		"languages": [

@@ -98,21 +98,19 @@ class TableItem extends vscode.TreeItem {
 		);
 	}
 }
-
-class ColumnItem extends vscode.TreeItem {
-	constructor(name: string, table: string, schema: string, evidenceType: string) {
-		super(name, vscode.TreeItemCollapsibleState.None);
-		this.description = evidenceType;
-		this.id = `${table}.${schema}.${name}`;
-		this.iconPath =
-			evidenceType === 'string'
-				? new vscode.ThemeIcon('symbol-string')
-				: evidenceType === 'number'
-					? new vscode.ThemeIcon('symbol-number')
-					: evidenceType === 'boolean'
-						? new vscode.ThemeIcon('symbol-boolean')
-						: new vscode.ThemeIcon('calendar');
-	}
-
-	// todo: convert evidenceType to iconPath like sqltools
+export class ColumnItem extends vscode.TreeItem {
+    constructor(name: string, table: string, schema: string, evidenceType: string) {
+        super(name, vscode.TreeItemCollapsibleState.None);
+        this.description = evidenceType;
+        this.id = `${table}.${schema}.${name}`;
+        this.iconPath =
+            evidenceType === 'string'
+                ? new vscode.ThemeIcon('symbol-string')
+                : evidenceType === 'number'
+                    ? new vscode.ThemeIcon('symbol-number')
+                    : evidenceType === 'boolean'
+                        ? new vscode.ThemeIcon('symbol-boolean')
+                        : new vscode.ThemeIcon('calendar');
+        this.contextValue = 'columnItem';
+    }
 }

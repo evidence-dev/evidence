@@ -1,16 +1,16 @@
 import {
-	languages,
 	window,
 	workspace,
 	ExtensionContext,
-	ProgressLocation,
 	TextEditor,
 	DecorationOptions,
 	Range,
 	Position,
 	commands,
-	extensions,
-	ConfigurationTarget
+	ConfigurationTarget,
+	TextEditorDecorationType,
+	env,
+	ColorThemeKind
 } from 'vscode';
 
 import { TelemetryService } from './telemetryService';
@@ -32,15 +32,14 @@ import {
 } from './utils/jsonUtils';
 import { Settings, getConfig, updateProjectContext } from './config';
 import { startServer } from './commands/server';
-import { openIndex, openWalkthrough } from './commands/project';
+import { openIndex } from './commands/project';
 import { statusBar } from './statusBar';
 import { closeTerminal } from './terminal';
 import { isGitRepository } from './utils/gitCheck';
 import { countFilesInDirectory, countTemplatedPages } from './utils/fsUtils';
 import * as path from 'path';
 import * as fs from 'fs';
-import { SchemaViewProvider } from './providers/schemaViewProvider';
-import { profile } from 'console';
+import { SchemaViewProvider, ColumnItem } from './providers/schemaViewProvider'; 
 
 export const enum Context {
 	isNewLine = 'evidence.isNewLine',
@@ -125,6 +124,15 @@ export async function activate(context: ExtensionContext) {
 	// register markdown symbol provider
 	const markdownLanguage = { language: 'emd', scheme: 'file' };
 	const provider = new MarkdownSymbolProvider();
+    // const selector: DocumentSelector = { language: 'emd', scheme: 'file' };
+
+    // const symbolProviderRegistration = languages.registerDocumentSymbolProvider(
+    //     selector,
+    //     provider
+    // );
+
+    // // Add to context subscriptions to ensure proper disposal
+    // context.subscriptions.push(symbolProviderRegistration);
 	// languages.registerDocumentSymbolProvider(markdownLanguage, provider);
 
 	// load package.json
@@ -142,6 +150,202 @@ export async function activate(context: ExtensionContext) {
 	) {
 		try {
 			telemetryService?.sendEvent('preActivate');
+
+			let sqlDecorationType: TextEditorDecorationType;
+			let frontmatterDecorationType: TextEditorDecorationType;
+			let svelteEachDecorationType: TextEditorDecorationType;
+			let svelteIfDecorationType: TextEditorDecorationType;
+		
+			const getThemeBasedDecorationType = () => {
+				const colorTheme = window.activeColorTheme.kind;
+				const isLightTheme = colorTheme === ColorThemeKind.Light;
+				sqlDecorationType = window.createTextEditorDecorationType({
+					backgroundColor: isLightTheme ? 'rgba(219, 219, 219, 0.2)' : 'rgba(219,219,219, 0.03)', // light blue or darker blue background with some transparency
+					isWholeLine: true
+				});
+
+				frontmatterDecorationType = window.createTextEditorDecorationType({
+					backgroundColor: isLightTheme ? 'rgba(197, 220, 237, 0.2)' : 'rgba(197, 220, 237, 0.05)', // light blue or darker blue background with some transparency
+					isWholeLine: true
+				});
+		
+				svelteEachDecorationType = window.createTextEditorDecorationType({
+					backgroundColor: isLightTheme ? 'rgba(156, 58, 176, 0.05)' : 'rgba(75, 0, 130, 0.05)', // light purple or darker purple background with some transparency
+					isWholeLine: true
+				});
+		
+				svelteIfDecorationType = window.createTextEditorDecorationType({
+					backgroundColor: isLightTheme ? 'rgba(255, 165, 0, 0.08)' : 'rgba(255, 140, 0, 0.05)', // light orange or darker orange background with some transparency
+					isWholeLine: true
+				});
+			};
+		
+			const clearDecorations = (editor: TextEditor) => {
+				if (sqlDecorationType) {
+					editor.setDecorations(sqlDecorationType, []);
+				}
+				if (frontmatterDecorationType) {
+					editor.setDecorations(frontmatterDecorationType, []);
+				}
+				if (svelteEachDecorationType) {
+					editor.setDecorations(svelteEachDecorationType, []);
+				}
+				if (svelteIfDecorationType) {
+					editor.setDecorations(svelteIfDecorationType, []);
+				}
+			};
+		
+			const highlightCodeBlocks = (editor: TextEditor) => {
+				if (!editor) {return;};
+
+				const config = workspace.getConfiguration('evidence');
+				const enableSQLBackground = config.get<boolean>('enableSQLBackground', true);
+				const enableFrontmatterBackground = config.get<boolean>('enableFrontmatterBackground', true);
+				const enableIfBackground = config.get<boolean>('enableIfBackground', true);
+				const enableEachBackground = config.get<boolean>('enableEachBackground', true);
+		
+				const text = editor.document.getText();
+		
+				const sqlRegex = /```[\s\S]*?```/gm;
+				const frontmatterRegex = /^---[\s\S]*?---/g;
+				const svelteEachRegex = /{#each[\s\S]*?{\/each}/gm;
+				const svelteIfRegex = /{#if[\s\S]*?{\/if}/gm;
+		
+				const sqlRanges: DecorationOptions[] = [];
+				const frontmatterRanges: DecorationOptions[] = [];
+				const svelteEachRanges: DecorationOptions[] = [];
+				const svelteIfRanges: DecorationOptions[] = [];
+		
+				let match;
+				if (enableSQLBackground) {
+					while ((match = sqlRegex.exec(text)) !== null) {
+						const startPos = editor.document.positionAt(match.index);
+						const endPos = editor.document.positionAt(match.index + match[0].length);
+						const range = new Range(startPos, endPos);
+						sqlRanges.push({ range });
+					}
+				}
+
+				if (enableFrontmatterBackground) {
+					while ((match = frontmatterRegex.exec(text)) !== null) {
+						const startPos = editor.document.positionAt(match.index);
+						const endPos = editor.document.positionAt(match.index + match[0].length);
+						const range = new Range(startPos, endPos);
+						frontmatterRanges.push({ range });
+					}
+				}
+		
+				if(enableEachBackground){
+					while ((match = svelteEachRegex.exec(text)) !== null) {
+						const startPos = editor.document.positionAt(match.index);
+						const endPos = editor.document.positionAt(match.index + match[0].length);
+						const range = new Range(startPos, endPos);
+						svelteEachRanges.push({ range });
+					}
+				}
+		
+				const svelteIfRangesRecursively = (regex: RegExp, text: string, startIndex = 0) => {
+					let nestedCount = 0;
+					let startPos: number | null = null;
+					const ranges: Range[] = [];
+		
+					let match;
+					regex.lastIndex = startIndex;
+					while ((match = regex.exec(text)) !== null) {
+						if (match[0].startsWith("{#if")) {
+							if (nestedCount === 0) {
+								startPos = match.index;
+							}
+							nestedCount++;
+						} else if (match[0] === "{/if}") {
+							nestedCount--;
+							if (nestedCount === 0 && startPos !== null) {
+								const start = editor.document.positionAt(startPos);
+								const end = editor.document.positionAt(match.index + match[0].length);
+								ranges.push(new Range(start, end));
+								startPos = null;
+							}
+						}
+					}
+					return ranges;
+				};
+		
+				if(enableIfBackground){
+					svelteIfRangesRecursively(/({#if.*?})|({\/if})/gm, text).forEach(range => {
+						svelteIfRanges.push({ range });
+					});
+				}
+		
+				const svelteEachRangesRecursively = (regex: RegExp, text: string, startIndex = 0) => {
+					let nestedCount = 0;
+					let startPos: number | null = null;
+					const ranges: Range[] = [];
+		
+					let match;
+					regex.lastIndex = startIndex;
+					while ((match = regex.exec(text)) !== null) {
+						if (match[0].startsWith("{#each")) {
+							if (nestedCount === 0) {
+								startPos = match.index;
+							}
+							nestedCount++;
+						} else if (match[0] === "{/each}") {
+							nestedCount--;
+							if (nestedCount === 0 && startPos !== null) {
+								const start = editor.document.positionAt(startPos);
+								const end = editor.document.positionAt(match.index + match[0].length);
+								ranges.push(new Range(start, end));
+								startPos = null;
+							}
+						}
+					}
+					return ranges;
+				};
+		
+				if(enableEachBackground){
+				svelteEachRangesRecursively(/({#each.*?})|({\/each})/gm, text).forEach(range => {
+					svelteEachRanges.push({ range });
+				});
+			}
+		
+				editor.setDecorations(sqlDecorationType, sqlRanges);
+				editor.setDecorations(frontmatterDecorationType, frontmatterRanges);
+				editor.setDecorations(svelteEachDecorationType, svelteEachRanges);
+				editor.setDecorations(svelteIfDecorationType, svelteIfRanges);
+			};
+		
+			// Initial setup
+			getThemeBasedDecorationType();
+		
+			window.onDidChangeActiveTextEditor(editor => {
+				if (editor && editor.document.languageId === 'emd') {
+					highlightCodeBlocks(editor);
+				}
+			}, null, context.subscriptions);
+		
+			workspace.onDidChangeTextDocument(event => {
+				const editor = window.activeTextEditor;
+				if (editor && event.document === editor.document && editor.document.languageId === 'emd') {
+					highlightCodeBlocks(editor);
+				}
+			}, null, context.subscriptions);
+		
+			// Reapply decorations on theme change
+			window.onDidChangeActiveColorTheme(() => {
+				// Update decoration types
+				getThemeBasedDecorationType();
+				// Reapply decorations in the active editor
+				const editor = window.activeTextEditor;
+				if (editor && editor.document.languageId === 'emd') {
+					clearDecorations(editor);
+					highlightCodeBlocks(editor);
+				}
+			}, null, context.subscriptions);
+		
+			// Highlight code blocks in the active editor if it's an emd file
+			if (window.activeTextEditor && window.activeTextEditor.document.languageId === 'emd') {
+				highlightCodeBlocks(window.activeTextEditor);
+			}
 
 			// set up file watcher for .profile.json
 			const workspaceFolder = workspace.workspaceFolders?.[0];
@@ -363,7 +567,7 @@ export async function activate(context: ExtensionContext) {
 			// Track file changes in pages directory:
 			workspace.onDidCreateFiles((event) => {
 				event.files.forEach((file) => {
-					if (file.path.endsWith('.md') && file.path.includes('/pages/')) {
+					if (file.path.endsWith('.md') && file.path.includes(`${path.sep}pages${path.sep}`)) {
 						const isTemplated = /\[.+\]/.test(file.path);
 						telemetryService?.sendEvent('createMarkdownFile', {
 							templated: isTemplated.toString()
@@ -375,7 +579,7 @@ export async function activate(context: ExtensionContext) {
 			workspace.onDidDeleteFiles((event) => {
 				event.files.forEach((file) => {
 					const isTemplated = /\[.+\]/.test(file.path);
-					const isInPagesDirectory = file.path.includes('/pages/');
+					const isInPagesDirectory = file.path.includes(`${path.sep}pages${path.sep}`);
 
 					if (file.path.endsWith('.md') && isInPagesDirectory) {
 						telemetryService?.sendEvent('deleteMarkdownFile', {
@@ -391,7 +595,7 @@ export async function activate(context: ExtensionContext) {
 			workspace.onDidCreateFiles((event) => {
 				try {
 					event.files.forEach((file) => {
-						if (fs.lstatSync(file.path).isDirectory() && file.path.includes('/pages/')) {
+						if (fs.lstatSync(file.path).isDirectory() && file.path.includes(`${path.sep}pages${path.sep}`)) {
 							const isTemplated = /\[.+\]/.test(file.path);
 							telemetryService?.sendEvent('createDirectory', { templated: isTemplated.toString() });
 						}
@@ -471,6 +675,22 @@ export async function activate(context: ExtensionContext) {
 				const manifestUri = await getManifestUri();
 				const manifest = await getManifest(manifestUri);
 				const manifestWatcher = workspace.createFileSystemWatcher(manifestUri.fsPath);
+
+				context.subscriptions.push(
+					commands.registerCommand('evidence.copyColumnName', (item: ColumnItem) => {
+						let label = '';
+						if (typeof item.label === 'string') {
+							label = item.label;
+						} else if (item.label && typeof item.label.label === 'string') {
+							label = item.label.label;
+						}
+			
+						if (label) {
+							env.clipboard.writeText(label);
+							window.showInformationMessage(`Copied: ${label}`);
+						}
+					})
+				);
 
 				// if there's no manifest, either the project is unbuilt, or it's legacy - either way there's nothing to show
 				if (manifest) {

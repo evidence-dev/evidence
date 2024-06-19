@@ -18,7 +18,7 @@ export async function createTemplatedPageFromQuery() {
 	if (
 		!activeEditor ||
 		!activeEditor.document.fileName.endsWith('.sql') ||
-		!activeEditor.document.fileName.includes((await isUSQL()) ? '/queries/' : '/sources/')
+		!activeEditor.document.fileName.includes((await isUSQL()) ? `${path.sep}queries${path.sep}` : `${path.sep}sources${path.sep}`)
 	) {
 		window.showWarningMessage(
 			`This command can only be run from within a .sql file in your ${(await isUSQL()) ? 'queries' : 'sources'} folder`,
