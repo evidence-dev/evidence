@@ -4,7 +4,6 @@
 		"@duckdb/duckdb-wasm": "1.28.0",
 		"@evidence-dev/component-utilities": "link:packages/lib/component-utilities",
 		"@evidence-dev/core-components": "link:packages/ui/core-components",
-		"@evidence-dev/db-orchestrator": "link:packages/lib/db-orchestrator",
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/plugin-connector": "link:packages/lib/plugin-connector",
 		"@evidence-dev/preprocess": "link:packages/lib/preprocess",

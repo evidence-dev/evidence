@@ -1,5 +1,32 @@
 # evidence-docs
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [c10e35be1]
+- Updated dependencies [06c1e74e5]
+- Updated dependencies [cd9e7df35]
+- Updated dependencies [08d7b9405]
+  - @evidence-dev/core-components@4.5.1
+  - @evidence-dev/duckdb@1.0.10
+  - @evidence-dev/evidence@38.0.1
+  - @evidence-dev/csv@1.0.11
+  - @evidence-dev/component-utilities@3.2.1
+
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [f411c8650]
+- Updated dependencies [79f4758e0]
+- Updated dependencies [6421c6d9b]
+- Updated dependencies [b041f5f9a]
+  - @evidence-dev/core-components@4.5.0
+  - @evidence-dev/csv@1.0.10
+  - @evidence-dev/faker-datasource@2.1.2
+  - @evidence-dev/evidence@38.0.0
+
 ## 0.0.8
 
 ### Patch Changes

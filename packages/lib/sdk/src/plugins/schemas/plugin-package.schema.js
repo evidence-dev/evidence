@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import * as evidenceIcons from '@evidence-dev/icons';
 import * as simpler from '@steeze-ui/simple-icons';
 import * as tabler from '@steeze-ui/tabler-icons';
 import { copyMethods } from '../layouts/copyMethods/index.js';
@@ -6,7 +7,8 @@ import path from 'path';
 
 const iconKeys = /** @type {[string, ...string[]]} */ ([
 	...Object.keys(simpler),
-	...Object.keys(tabler)
+	...Object.keys(tabler),
+	...Object.keys(evidenceIcons)
 ]);
 
 /*

@@ -83,7 +83,7 @@ const dummy_pages = new Map();
 
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({ fetch, route, params, url }) => {
-	const [customFormattingSettings, pagesManifest, evidencemeta] = await Promise.all([
+	const [{ customFormattingSettings }, pagesManifest, evidencemeta] = await Promise.all([
 		fetch('/api/customFormattingSettings.json/GET.json').then((x) => x.json()),
 		fetch('/api/pagesManifest.json').then((x) => x.json()),
 		fetch(`/api/${route.id}/evidencemeta.json`)

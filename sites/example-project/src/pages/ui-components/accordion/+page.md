@@ -68,3 +68,32 @@ For creating complex accordion titles that incorporate other components or custo
   This is the third item's accordion body.
 </AccordionItem>
 </Accordion>
+
+# Driven by a query 
+
+```all_categories
+
+select distinct category from needful_things.orders 
+
+```
+
+
+<Dropdown data={all_categories} name=selected_category value=category multiple selectAllByDefault/>
+
+```example_query
+
+select distinct category from needful_things.orders 
+where category in ${inputs.selected_category.value}
+order by 1 desc 
+
+```
+
+<Accordion>
+{#each example_query as row}
+<AccordionItem title={row.category}>
+
+<Value data={row} /> 
+
+</AccordionItem>
+{/each}
+</Accordion>
