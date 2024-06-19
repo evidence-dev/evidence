@@ -96,7 +96,7 @@ export class TableItem extends vscode.TreeItem {
 		this.columns = table.columns.map(
 			({ name, evidenceType }) => new ColumnItem(name, table.name, schema, evidenceType)
 		);
-		this.contextValue = 'tableItem'; 
+		this.contextValue = 'tableItem';
 	}
 }
 export class ColumnItem extends vscode.TreeItem {

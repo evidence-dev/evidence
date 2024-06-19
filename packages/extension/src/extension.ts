@@ -107,64 +107,68 @@ function isPagesDirectory() {
 }
 
 async function initializeSchemaViewer(context: ExtensionContext) {
-    try {
-        console.log('Initializing schema viewer...');
-        
-        if (await isUSQL()) {
-            const manifestUri = await getManifestUri();
+	try {
+		console.log('Initializing schema viewer...');
+
+		if (await isUSQL()) {
+			const manifestUri = await getManifestUri();
 			const workspaceFolder = workspace.workspaceFolders?.[0];
 			const packageJsonFolder = await getPackageJsonFolder();
-			const manifestPath = workspaceFolder ? path.join(
-				workspaceFolder.uri.fsPath,
-				packageJsonFolder ?? '',
-				'.evidence',
-				'template',
-				'static',
-				'data',
-				'manifest.json'
-			) : '';
-			
-            const manifestWatcher = workspace.createFileSystemWatcher(manifestUri ? manifestUri.fsPath : manifestPath);
-            registerCopyCommands(context);
+			const manifestPath = workspaceFolder
+				? path.join(
+						workspaceFolder.uri.fsPath,
+						packageJsonFolder ?? '',
+						'.evidence',
+						'template',
+						'static',
+						'data',
+						'manifest.json'
+					)
+				: '';
 
-            const schemaViewProvider = new SchemaViewProvider(manifestUri ?? Uri.file(manifestPath));
-            window.registerTreeDataProvider('schemaView', schemaViewProvider);
+			const manifestWatcher = workspace.createFileSystemWatcher(
+				manifestUri ? manifestUri.fsPath : manifestPath
+			);
+			registerCopyCommands(context);
 
-            manifestWatcher.onDidChange(() => schemaViewProvider.refresh());
-            manifestWatcher.onDidCreate(() => schemaViewProvider.refresh());
-            manifestWatcher.onDidDelete(() => schemaViewProvider.refresh());
+			const schemaViewProvider = new SchemaViewProvider(manifestUri ?? Uri.file(manifestPath));
+			window.registerTreeDataProvider('schemaView', schemaViewProvider);
 
-            context.subscriptions.push(manifestWatcher);
+			manifestWatcher.onDidChange(() => schemaViewProvider.refresh());
+			manifestWatcher.onDidCreate(() => schemaViewProvider.refresh());
+			manifestWatcher.onDidDelete(() => schemaViewProvider.refresh());
 
-            commands.executeCommand(Commands.SetContext, Context.isNonLegacyProject, await isUSQL());
-        }
-    } catch (error) {
-        console.error('Error initializing schema viewer:', error);
-    }
+			context.subscriptions.push(manifestWatcher);
+
+			commands.executeCommand(Commands.SetContext, Context.isNonLegacyProject, await isUSQL());
+		}
+	} catch (error) {
+		console.error('Error initializing schema viewer:', error);
+	}
 }
 
 function registerCopyCommands(context: ExtensionContext) {
-    context.subscriptions.push(
-        commands.registerCommand('evidence.copyColumnName', (item: ColumnItem) => {
-            let label = '';
+	context.subscriptions.push(
+		commands.registerCommand('evidence.copyColumnName', (item: ColumnItem) => {
+			let label = '';
 
-            if (typeof item.label === 'string') {
-                label = item.label;
-            } else if (item.label && typeof item.label.label === 'string') {
-                label = item.label.label;
-            }
+			if (typeof item.label === 'string') {
+				label = item.label;
+			} else if (item.label && typeof item.label.label === 'string') {
+				label = item.label.label;
+			}
 
-            if (label) {
-                env.clipboard.writeText(label);
-                window.showInformationMessage(`Copied: ${label}`);
-            }
-        }),
-        commands.registerCommand('evidence.copyTableName', (item: TableItem) => {
-            const label = `${item.id}`;
-            env.clipboard.writeText(label);
-            window.showInformationMessage(`Copied: ${label}`);
-        })
-    );
+			if (label) {
+				env.clipboard.writeText(label);
+				window.showInformationMessage(`Copied: ${label}`);
+			}
+		}),
+		commands.registerCommand('evidence.copyTableName', (item: TableItem) => {
+			const label = `${item.id}`;
+			env.clipboard.writeText(label);
+			window.showInformationMessage(`Copied: ${label}`);
+		})
+	);
 }
 
 /**
