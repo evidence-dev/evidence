@@ -41,12 +41,16 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 	/** @type {import('./types.js').Manifest} */
 	const outputManifest = { renderedFiles: {}, locatedFiles: {} };
 
+	/** @type {string[]} */
+	const skippedSources = [];
+
 	for (const source of sources) {
-		console.log(chalk.dim('-'.repeat(5)));
 		if (filters?.sources?.size && !filters?.sources?.has(source.name)) {
-			console.log(`  [Filtered] ${chalk.bold(source.name)}`);
+			console.debug(`  [Skipping]: ${chalk.bold(source.name)}`);
+			skippedSources.push(source.name);
 			continue;
 		} else {
+			console.log(chalk.dim('-'.repeat(5)));
 			console.log(chalk.green(`  [Processing] ${chalk.bold(source.name)}`));
 		}
 
@@ -117,11 +121,11 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 			outputManifest.locatedFiles[source.name].push(table.name);
 			spinner.start('Processing...');
 			if (utils.isFiltered(table.name)) {
-				spinner.warn('Skipping: Filtered');
+				spinner.warn('This query not run due to filters');
 				continue;
 			}
 			if (utils.isCached(table.name, table.content)) {
-				spinner.warn('Skipping: Cached');
+				spinner.warn('This query was not run because it is already cached');
 				logQueryEvent('cache-query', source.type, source.name);
 				continue;
 			}
@@ -177,6 +181,13 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 		}
 	}
 	console.log(chalk.dim('-'.repeat(5)));
+
+	if (skippedSources.length)
+		console.log(
+			chalk.dim(
+				`  ${skippedSources.length} source${skippedSources.length === 1 ? '' : 's'} were not run due to filters`
+			)
+		);
 
 	await flushCache(metaPath);
 
