@@ -40,16 +40,36 @@ const initializeProfile = async () => {
 
 const getProfile = async () => {
 	if (!pathExistsSync(PROFILES_PATH) && !maybeMigrateProfile()) {
+		// Profile file doesn't exist and migration wasn't needed, initialize it
 		const profile = await initializeProfile();
 		return profile;
 	} else {
-		let profile = readJSONSync(PROFILES_PATH);
+		try {
+			let profile = {};
 
-		if (profile.anonymousId === 'b958769d-6b88-43f3-978a-b970a146ffd2') {
-			// This anon ID was incorrectly committed to the template project, replace with a fresh ID going forward
-			profile = await initializeProfile();
+			if (pathExistsSync(PROFILES_PATH)) {
+				try {
+					profile = readJSONSync(PROFILES_PATH);
+				} catch (e) {
+					profile = {};
+				}
+			}
+
+			// Check if profile is empty or invalid
+			if (Object.keys(profile).length === 0) {
+				profile = await initializeProfile();
+			} else if (profile.anonymousId === 'b958769d-6b88-43f3-978a-b970a146ffd2') {
+				// Handle special case where anonymousId is incorrect
+				profile = await initializeProfile();
+			}
+
+			return profile;
+		} catch (error) {
+			console.error('Error in getProfile:', error);
+			// Initialize a new profile in case of errors
+			const profile = await initializeProfile();
+			return profile;
 		}
-		return profile;
 	}
 };
 
