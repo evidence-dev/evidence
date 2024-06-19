@@ -34,7 +34,7 @@
 		series: { control: 'text' }
 	}}
 	args={{
-		data: Query.create('select * from series_demo_source.numeric_series', query), 
+		data: Query.create('select * from series_demo_source.numeric_series', query),
 		x: 'x',
 		y: 'y',
 		series: 'series'

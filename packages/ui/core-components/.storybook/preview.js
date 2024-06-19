@@ -13,7 +13,7 @@ const preview = {
 			}
 		},
 		chromatic: {
-			diffThreshold: 0.1,
+			diffThreshold: 0.1
 		}
 	},
 	argTypes: {
