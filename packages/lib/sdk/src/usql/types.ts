@@ -79,3 +79,8 @@ export interface CreateQuery<RowType extends QueryResultRow = QueryResultRow> {
 export type LengthResultRow = { rowCount: number };
 
 export type MaybeAliasedCol = string | { col: string; as: string };
+
+export type QueryDebugPayload = {
+	raw: Query<any>;
+	proxied: QueryValue<any>;
+};

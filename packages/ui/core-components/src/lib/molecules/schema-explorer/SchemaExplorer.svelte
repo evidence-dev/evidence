@@ -1,7 +1,8 @@
 <script>
 	import { browser } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Abc, Calendar, _123, CircleHalf2, Table, Database } from '@steeze-ui/tabler-icons';
+	import { Table, Database } from '@steeze-ui/tabler-icons';
+	import TableView from '../../atoms/table-view/TableView.svelte';
 	export let data;
 	let { __db: db } = data;
 
@@ -71,26 +72,7 @@
 									</button>
 								</li>
 								{#if selectedTable === tableMeta}
-									<ul class="list-none m-0 flex flex-col gap-1">
-										{#each tableMeta.columns as column (column.column_name)}
-											<li class="font-mono text-sm ml-6 rounded flex flex-row">
-												<div class="flex px-2 py-1 rounded w-full hover:bg-blue-50">
-													{#if column.data_type === 'INT' || column.data_type === 'BIGINT' || column.data_type === 'SMALLINT' || column.data_type === 'TINYINT' || column.data_type === 'DOUBLE'}
-														<Icon src={_123} class="text-gray-700 w-5 h-5" />
-													{:else if column.data_type === 'DATE' || column.data_type === 'DATETIME' || column.data_type === 'TIMESTAMP'}
-														<Icon src={Calendar} class="text-gray-700 w-5 h-5" />
-													{:else if column.data_type === 'BOOLEAN'}
-														<Icon src={CircleHalf2} class="text-gray-700 w-5 h-5" />
-													{:else}
-														<Icon src={Abc} class="text-gray-700 w-5 h-5" />
-													{/if}
-													<div class="pl-2 lowercase">
-														<b>{column.column_name}</b>&nbsp; {column.data_type}
-													</div>
-												</div>
-											</li>
-										{/each}
-									</ul>
+									<TableView columns={tableMeta.columns} rowClass="ml-6 " />
 								{/if}
 							{/each}
 						</ul>
