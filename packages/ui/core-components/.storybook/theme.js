@@ -5,5 +5,5 @@ export default create({
 	brandTitle: 'Evidence Core Components',
 	brandUrl: 'https://docs.evidence.dev',
 	brandTarget: '_blank',
-	appBg: 'rgb(249 250 251)',
+	appBg: 'rgb(249 250 251)'
 });

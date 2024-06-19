@@ -11,14 +11,14 @@
 </script>
 
 {#key title}
-<BaseAccordion.Item value={title} class={className}>
-	<BaseAccordion.Trigger>
-		<slot name="title">
-			{title}
-		</slot>
-	</BaseAccordion.Trigger>
-	<BaseAccordion.Content>
-		<slot />
-	</BaseAccordion.Content>
-</BaseAccordion.Item>
+	<BaseAccordion.Item value={title} class={className}>
+		<BaseAccordion.Trigger>
+			<slot name="title">
+				{title}
+			</slot>
+		</BaseAccordion.Trigger>
+		<BaseAccordion.Content>
+			<slot />
+		</BaseAccordion.Content>
+	</BaseAccordion.Item>
 {/key}

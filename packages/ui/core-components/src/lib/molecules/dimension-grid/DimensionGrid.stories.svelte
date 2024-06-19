@@ -14,11 +14,10 @@
 	import { fakerSeries } from '$lib/faker-data-queries.js';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-
 </script>
 
 <Story name="Basic Usage">
-	<DimensionGrid data={fakerSeries.airlines.flights.store} name="BasicUsage"/>
+	<DimensionGrid data={fakerSeries.airlines.flights.store} name="BasicUsage" />
 </Story>
 
 <Story name="Named as an Input">

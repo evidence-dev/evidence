@@ -6,7 +6,7 @@
 		args: {
 			title: 'Hide Month Zero',
 			name: 'hide_month_zero'
-		},
+		}
 	};
 </script>
 
