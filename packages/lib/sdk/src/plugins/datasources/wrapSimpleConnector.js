@@ -48,8 +48,8 @@ export const wrapSimpleConnector = (mod, source) => {
 
 				const stat = statSync(sourceFilePath);
 				let sourceFileContent;
-				if (stat.size > 1024 * 1024 * 128 /* 128 Megabytes */) {
-					console.debug(chalk.dim('Will not eagerly load files larger than 128 Megabytes.'));
+				if (stat.size > 1024 * 1024 * 32 /* 32 Megabytes */) {
+					console.debug(chalk.dim('Will not eagerly load files larger than 32 Megabytes.'));
 					sourceFileContent = '';
 				} else {
 					sourceFileContent = readFileSync(sourceFilePath, 'utf-8');
