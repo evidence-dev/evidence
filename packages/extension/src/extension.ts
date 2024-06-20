@@ -169,36 +169,35 @@ function registerCopyCommands(context: ExtensionContext) {
 			window.showInformationMessage(`Copied: ${label}`);
 		}),
 		commands.registerCommand('evidence.insertColumnName', (item: ColumnItem) => {
-            let label = '';
+			let label = '';
 
-            if (typeof item.label === 'string') {
-                label = item.label;
-            } else if (item.label && typeof item.label.label === 'string') {
-                label = item.label.label;
-            }
+			if (typeof item.label === 'string') {
+				label = item.label;
+			} else if (item.label && typeof item.label.label === 'string') {
+				label = item.label.label;
+			}
 
-            if (label) {
-                insertTextAtCursor(label);
-                window.showInformationMessage(`Inserted: ${label}`);
-            }
-        }),
-        commands.registerCommand('evidence.insertTableName', (item: TableItem) => {
+			if (label) {
+				insertTextAtCursor(label);
+				window.showInformationMessage(`Inserted: ${label}`);
+			}
+		}),
+		commands.registerCommand('evidence.insertTableName', (item: TableItem) => {
 			const label = `${item.id}`;
-            insertTextAtCursor(label);
-            window.showInformationMessage(`Inserted: ${label}`);
-        })
+			insertTextAtCursor(label);
+			window.showInformationMessage(`Inserted: ${label}`);
+		})
 	);
 }
 
-
 function insertTextAtCursor(text: string) {
-    const editor = window.activeTextEditor;
-    if (editor) {
-        const position = editor.selection.active;
-        editor.edit(editBuilder => {
-            editBuilder.insert(position, text);
-        });
-    }
+	const editor = window.activeTextEditor;
+	if (editor) {
+		const position = editor.selection.active;
+		editor.edit((editBuilder) => {
+			editBuilder.insert(position, text);
+		});
+	}
 }
 
 /**
