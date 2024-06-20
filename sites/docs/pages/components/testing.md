@@ -15,7 +15,7 @@ Big Value displays a large value, and can be configured to include a comparison 
   comparison=order_growth
   comparisonFmt=pct1
   comparisonTitle="vs. Last Month"
-  url='/components/big-value/'
+  href='/components/big-value/'
 />
 
 

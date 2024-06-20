@@ -123,7 +123,31 @@ Multiple cards will align themselves into a row.
   comparisonTitle="MoM"
 />
 ```
+### Linking to other pages
 
+href can be used to link to external or internal pages
+
+<BigValue 
+  data={orders_with_comparisons} 
+  value=num_orders
+  sparkline=month
+  comparison=order_growth
+  comparisonFmt=pct1
+  comparisonTitle="vs. Last Month"
+  href='/components/big-value/'
+/>
+
+```html
+<BigValue 
+  data={orders_with_comparisons} 
+  value=num_orders
+  sparkline=month
+  comparison=order_growth
+  comparisonFmt=pct1
+  comparisonTitle="vs. Last Month"
+  href='/components/big-value/'
+/>
+```
 
 ### Non-Delta Comparisons
 
@@ -153,7 +177,6 @@ Multiple cards will align themselves into a row.
   value=sales
   sparkline=month
 />
-
 
 ## Options
 
@@ -205,6 +228,11 @@ Multiple cards will align themselves into a row.
     options="string"
     defaultValue="No records"
 />
+
+<PropListing name="href">
+
+The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
+</PropListing>
 
 ### Comparison Options
 

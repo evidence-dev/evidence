@@ -41,9 +41,7 @@
 	let comparisonColor = 'var(--grey-700)';
 
 	/** @type {string}*/
-	export let url = undefined;
-
-	let chartType = 'Big Value';
+	export let href = undefined;
 
 	let error = undefined;
 	$: try {
@@ -148,8 +146,8 @@
 			{/if}
 		{/if}
 	{/if}
-	{#if url}
-		<a href={url}
+	{#if href}
+		<a {href}
 			><div
 				class="flex items-center w-fit m-1 ml-0 mr-0 pr-[1.25px] border-b border-transparent hover:border-gray-500"
 			>
