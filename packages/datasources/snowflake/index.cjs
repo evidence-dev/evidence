@@ -153,6 +153,10 @@ const getCredentials = (database = {}) => {
 	const role = database.role;
 	const schema = database.schema;
 
+	// optional
+	const proxyHost = database.proxyHost;
+	const proxyPort = database.proxyPort;
+
 	if (authenticator === 'snowflake_jwt') {
 		const private_key = database.private_key;
 		const passphrase = database.passphrase;
@@ -206,6 +210,8 @@ const getCredentials = (database = {}) => {
 			database: default_database,
 			warehouse,
 			schema,
+			proxyHost,
+			proxyPort,
 			role
 		};
 	}
