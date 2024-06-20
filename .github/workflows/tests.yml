@@ -49,6 +49,7 @@ jobs:
       - run: pnpm test
         env:
           SEND_ANONYMOUS_USAGE_STATS: ${{ secrets.SEND_ANONYMOUS_USAGE_STATS }}
+          EVIDENCE_DEBUG: true
 
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
