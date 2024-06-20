@@ -216,7 +216,7 @@ Selected: {inputs.category_multi_default.value}
     name=name_of_dropdown
     value=column_name
     multiple=true
-	defaultValue={['value1', 'value2']}
+	defaultValue={['Sinister Toys', 'Mysterious Apparel']}
 />
 ````
 
