@@ -21,15 +21,15 @@
 		expect(await canvas.getByText('Content 2')).toBeInTheDocument();
 	};
 
-    const testSingle = async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        let itemOne = await canvas.getByText('Item 1');
+	const testSingle = async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		let itemOne = await canvas.getByText('Item 1');
 		let itemTwo = await canvas.getByText('Item 2');
-        await userEvent.click(itemOne);
+		await userEvent.click(itemOne);
 		await userEvent.click(itemTwo, { delay: 300 });
 		expect(await canvas.getByText('Content 2')).toBeInTheDocument();
 		expect(await canvas.queryByText('Content 1')).not.toBeInTheDocument();
-    };
+	};
 </script>
 
 <Story name="Basic Usage">
