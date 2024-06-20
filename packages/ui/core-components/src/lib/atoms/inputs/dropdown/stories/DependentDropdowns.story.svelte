@@ -39,16 +39,6 @@
 		callback: ($v) => (depQuery = $v),
 		loadGracePeriod: 2000
 	});
-
-	$: displayQueryFactory(`
-        SELECT '${$inputs?.user?.value ?? -1}'
-    `);
-	let displayQuery;
-	const displayQueryFactory = Query.createReactive({
-		execFn: slowQuery,
-		callback: ($v) => (displayQuery = $v),
-		loadGracePeriod: 2000
-	});
 </script>
 
 <Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
