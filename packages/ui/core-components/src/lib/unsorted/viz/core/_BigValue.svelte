@@ -40,8 +40,8 @@
 	let positive = true;
 	let comparisonColor = 'var(--grey-700)';
 
-	/** @type {string}*/
-	export let url = undefined;
+	/** @type {string | null}*/
+	export let url = null;
 
 	let error = undefined;
 	$: try {
@@ -106,7 +106,13 @@
 	{:else}
 		<p class="text-sm text-gray-700">{title}</p>
 		<div class="relative text-xl font-medium text-gray-700 my-0.5">
-			<Value {data} column={value} {fmt} />
+			{#if url}
+				<a class="hover:bg-gray-100" href={url}>
+					<Value {data} column={value} {fmt} />
+				</a>
+			{:else}
+				<Value {data} column={value} {fmt} />
+			{/if}
 			{#if sparkline}
 				<Sparkline
 					height="15"
@@ -140,22 +146,16 @@
 				</p>
 			{:else}
 				<p class="text-xs font-sans text-gray-500 pt-[0.5px]">
-					<Value {data} column={comparison} fmt={comparisonFmt} />
+					{#if url}
+						<a class="hover:bg-gray-100" href={url}>
+							<Value {data} column={comparison} fmt={comparisonFmt} />
+						</a>
+					{:else}
+						<Value {data} column={comparison} fmt={comparisonFmt} />
+					{/if}
 					<span>{comparisonTitle}</span>
 				</p>
 			{/if}
 		{/if}
-	{/if}
-	{#if url}
-		<a href={url}>
-			<div
-				class="flex items-center w-fit m-1 ml-0 mr-0 pr-[1.25px] border-b border-transparent hover:border-gray-500"
-			>
-				<svg viewBox="1 4.5 14 14" fill="currentColor" width="10" height="10">
-					<path d="M9 6l6 6-6 6V6z" transform="translate(-7, 0)" />
-				</svg>
-				<span style="font-size: 10px; margin:0px;">Details</span>
-			</div>
-		</a>
 	{/if}
 </div>
