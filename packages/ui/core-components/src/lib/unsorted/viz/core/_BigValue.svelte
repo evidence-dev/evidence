@@ -41,7 +41,7 @@
 	let comparisonColor = 'var(--grey-700)';
 
 	/** @type {string}*/
-	export let href = undefined;
+	export let url = undefined;
 
 	let error = undefined;
 	$: try {
@@ -146,9 +146,9 @@
 			{/if}
 		{/if}
 	{/if}
-	{#if href}
-		<a {href}
-			><div
+	{#if url}
+		<a href={url}>
+			<div
 				class="flex items-center w-fit m-1 ml-0 mr-0 pr-[1.25px] border-b border-transparent hover:border-gray-500"
 			>
 				<svg viewBox="1 4.5 14 14" fill="currentColor" width="10" height="10">

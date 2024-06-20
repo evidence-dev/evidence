@@ -125,7 +125,7 @@ Multiple cards will align themselves into a row.
 ```
 ### Linking to other pages
 
-href can be used to link to external or internal pages
+url can be used to link to external or internal pages
 
 <BigValue 
   data={orders_with_comparisons} 
@@ -134,7 +134,7 @@ href can be used to link to external or internal pages
   comparison=order_growth
   comparisonFmt=pct1
   comparisonTitle="vs. Last Month"
-  href='/components/big-value/'
+  url='/components/big-value/'
 />
 
 ```html
@@ -145,7 +145,7 @@ href can be used to link to external or internal pages
   comparison=order_growth
   comparisonFmt=pct1
   comparisonTitle="vs. Last Month"
-  href='/components/big-value/'
+  url='/components/big-value/'
 />
 ```
 
@@ -229,7 +229,7 @@ href can be used to link to external or internal pages
     defaultValue="No records"
 />
 
-<PropListing name="href">
+<PropListing name="url">
 
 The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
 </PropListing>
