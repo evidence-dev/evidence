@@ -11,7 +11,7 @@
 
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
-	import { userEvent, within, expect, waitFor } from '@storybook/test';
+	import { userEvent, within, expect } from '@storybook/test';
 
 	// Play Functions
 	const openItem = async ({ canvasElement }) => {
