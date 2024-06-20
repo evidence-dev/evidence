@@ -34,10 +34,7 @@
 		series: { control: 'text' }
 	}}
 	args={{
-		data: Query.create('select * from series_demo_source.numeric_series', query),
-		x: 'x',
-		y: 'y',
-		series: 'series'
+		data: Query.create('select * from series_demo_source.numeric_series', query)
 	}}
 />
 
@@ -45,7 +42,7 @@
 	<LineChart {...args} />
 </Template>
 
-<Story name="Default" />
+<Story name="Default" args={{ x: 'x', y: 'y', series: 'series' }} />
 
 <Story
 	name="X Axis Unsorted"
@@ -56,7 +53,9 @@
 			{ time: 4, value: 0 },
 			{ time: 1, value: 1 },
 			{ time: 3, value: 10 }
-		]
+		],
+		x: 'time',
+		y: 'value'
 	}}
 />
 
