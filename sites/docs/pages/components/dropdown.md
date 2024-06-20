@@ -64,6 +64,7 @@ Selected: {inputs.category3.value}
     name=category4
     value=category_name
     title="Select a Category"
+    defaultValue="%"
 >
     <DropdownOption valueLabel="All Categories" value="%" />
 </Dropdown>
@@ -76,13 +77,13 @@ Selected: {inputs.category4.value}
     name=category4
     value=category_name
     title="Select a Category"
+    defaultValue="%"
 >
     <DropdownOption valueLabel="All Categories" value="%" />
 </Dropdown>
 ````
 
 Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${inputs.name_of_dropdown}'` to return all values.
-
 
 ### With Hardcoded Options
 
@@ -227,6 +228,31 @@ where column_name in '${inputs.name_of_dropdown.value}'
 ```
 ````
 
+### Select all by Default Value with Multiple
+
+<Dropdown
+    data={categories} 
+    name=category_multi_selectAllByDefault
+    value=category_name
+    title="Select a Category"
+    multiple=true
+    selectAllByDefault=true
+/>
+
+Selected: {inputs.category_multi_selectAllByDefault.value}
+
+````markdown
+<Dropdown
+    data={categories} 
+    name=category_multi_selectAllByDefault
+    value=category_name
+    title="Select a Category"
+    multiple=true
+    selectAllByDefault=true
+/>
+````
+Select and return all values in the dropdown list, requires "multiple" prop.
+
 # Dropdown
 
 ## Options
@@ -256,6 +282,12 @@ where column_name in '${inputs.name_of_dropdown.value}'
     name="defaultValue"
     description="Value to use when the dropdown is first loaded. Must be one of the options in the dropdown. Arrays supported for multi-select."
     options="value from dropdown | array of values e.g. {`{['Value 1', 'Value 2']}`}"
+/>
+<PropListing 
+    name="selectAllByDefault"
+    description="Selects and returns all values, multiple property required"
+    options={['true', 'false']}
+    defaultValue="false"
 />
 <PropListing 
     name="noDefault"
