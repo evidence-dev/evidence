@@ -58,7 +58,7 @@ export class SchemaViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
 	}
 }
 
-class SchemaItem extends vscode.TreeItem {
+export class SchemaItem extends vscode.TreeItem {
 	constructor(
 		private schema: string,
 		private tables: vscode.Uri[]

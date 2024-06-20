@@ -11,7 +11,11 @@ import {
 	TextEditorDecorationType,
 	env,
 	ColorThemeKind,
-	Uri
+	Uri,
+	languages,
+	CompletionItem,
+	CompletionItemKind,
+	TextDocument
 } from 'vscode';
 
 import { TelemetryService } from './telemetryService';
@@ -40,7 +44,12 @@ import { isGitRepository } from './utils/gitCheck';
 import { countFilesInDirectory, countTemplatedPages } from './utils/fsUtils';
 import * as path from 'path';
 import * as fs from 'fs';
-import { SchemaViewProvider, ColumnItem, TableItem } from './providers/schemaViewProvider';
+import {
+	SchemaViewProvider,
+	ColumnItem,
+	TableItem,
+	SchemaItem
+} from './providers/schemaViewProvider';
 
 export const enum Context {
 	isNewLine = 'evidence.isNewLine',
@@ -145,6 +154,110 @@ async function initializeSchemaViewer(context: ExtensionContext) {
 	} catch (error) {
 		console.error('Error initializing schema viewer:', error);
 	}
+}
+
+function registerCompletionProvider(context: ExtensionContext) {
+	const provider = languages.registerCompletionItemProvider(
+		['emd', 'sql'],
+		{
+			async provideCompletionItems(document: TextDocument, position: Position) {
+				if (isInSQLCodeBlock(document, position) || isInQueriesDirectory(document)) {
+					return provideSQLCompletionItems();
+				}
+				return undefined;
+			}
+		},
+		'.',
+		' ',
+		'('
+	);
+
+	context.subscriptions.push(provider);
+}
+
+function isInSQLCodeBlock(document: TextDocument, position: Position): boolean {
+	const text = document.getText();
+	const offset = document.offsetAt(position);
+
+	const sqlCodeBlockPattern = /```sql([\s\S]+?)```/g;
+	let match;
+
+	while ((match = sqlCodeBlockPattern.exec(text)) !== null) {
+		const start = match.index;
+		const end = match.index + match[0].length;
+
+		if (offset > start && offset < end) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function isInQueriesDirectory(document: TextDocument): boolean {
+	const filePath = document.uri.fsPath;
+	const queriesDir = path.join(workspace.workspaceFolders?.[0].uri.fsPath || '', 'queries');
+	return filePath.endsWith('.sql') && filePath.startsWith(queriesDir);
+}
+
+async function provideSQLCompletionItems(): Promise<CompletionItem[]> {
+	const completionItems: CompletionItem[] = [];
+	const schemaItems = await getSchemaItems();
+
+	for (const schemaItem of schemaItems) {
+		const schemaName = schemaItem.label;
+		const tables = await schemaItem.getTables();
+
+		for (const table of tables) {
+			const tableName = table.label;
+
+			// Add table completion item
+			const tableCompletionItem = new CompletionItem(
+				`${schemaName}.${tableName}`,
+				CompletionItemKind.Struct
+			);
+			completionItems.push(tableCompletionItem);
+
+			// Add column completion items
+			for (const column of table.columns) {
+				const columnName = column.label;
+				const columnCompletionItem = new CompletionItem(
+					{
+						label: `${columnName}`,
+						detail: ` ${schemaName}.${tableName}`
+					},
+					CompletionItemKind.Field
+				);
+
+				completionItems.push(columnCompletionItem);
+			}
+		}
+	}
+
+	return completionItems;
+}
+
+async function getSchemaItems(): Promise<SchemaItem[]> {
+	const manifestUri = await getManifestUri();
+	if (!manifestUri) {
+		return [];
+	}
+
+	const manifest = await getManifest(manifestUri);
+	if (!manifest) {
+		return [];
+	}
+
+	// ./.evidence/template/static/data/manifest.json -> ./.evidence/template
+	const templateDirectory = path.dirname(path.dirname(path.dirname(manifestUri.fsPath)));
+
+	return Object.entries(manifest.renderedFiles).map(([schemaName, schemaFiles]) => {
+		const schemaFilesUris = schemaFiles.map((schemaFile) => {
+			const schemaFilePath = `${schemaFile.slice(0, -'.parquet'.length)}.schema.json`;
+			return Uri.file(path.join(templateDirectory, schemaFilePath));
+		});
+		return new SchemaItem(schemaName, schemaFilesUris);
+	});
 }
 
 function registerCopyCommands(context: ExtensionContext) {
@@ -790,6 +903,7 @@ export async function activate(context: ExtensionContext) {
 		openIndex();
 
 		initializeSchemaViewer(context);
+		registerCompletionProvider(context);
 
 		if (autoStart) {
 			startServer();
