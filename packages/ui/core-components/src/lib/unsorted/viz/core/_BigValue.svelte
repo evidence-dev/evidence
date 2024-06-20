@@ -40,6 +40,11 @@
 	let positive = true;
 	let comparisonColor = 'var(--grey-700)';
 
+	/** @type {string}*/
+	export let url = undefined;
+
+	let chartType = 'Big Value';
+
 	let error = undefined;
 	$: try {
 		error = undefined;
@@ -142,5 +147,17 @@
 				</p>
 			{/if}
 		{/if}
+	{/if}
+	{#if url}
+		<a href={url}
+			><div
+				class="flex items-center w-fit m-1 ml-0 mr-0 pr-[1.25px] border-b border-transparent hover:border-gray-500"
+			>
+				<svg viewBox="1 4.5 14 14" fill="currentColor" width="10" height="10">
+					<path d="M9 6l6 6-6 6V6z" transform="translate(-7, 0)" />
+				</svg>
+				<span style="font-size: 10px; margin:0px;">Details</span>
+			</div>
+		</a>
 	{/if}
 </div>
