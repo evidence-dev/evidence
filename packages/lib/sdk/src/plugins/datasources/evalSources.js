@@ -121,11 +121,11 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 			outputManifest.locatedFiles[source.name].push(table.name);
 			spinner.start('Processing...');
 			if (utils.isFiltered(table.name)) {
-				spinner.warn('This query not run due to filters');
+				spinner.info('Skipped');
 				continue;
 			}
 			if (utils.isCached(table.name, table.content)) {
-				spinner.warn('This query was not run because it is already cached');
+				spinner.info('From Cache');
 				logQueryEvent('cache-query', source.type, source.name);
 				continue;
 			}
