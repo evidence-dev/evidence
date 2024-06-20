@@ -143,12 +143,6 @@ Selected: {inputs.category_multi.value}
     value=category_name
     multiple=true
 />
-
-```sql filtered_query
-select *
-from source_name.table
-where column_name in ${inputs.name_of_dropdown.value}
-```
 ````
 
 ### Filtering a Query
@@ -218,14 +212,6 @@ Selected: {inputs.category_multi_default.value}
     multiple=true
 	defaultValue={['Sinister Toys', 'Mysterious Apparel']}
 />
-````
-
-````markdown
-```sql filtered_query
-select *
-from source_name.table
-where column_name in '${inputs.name_of_dropdown.value}'
-```
 ````
 
 ### Select all by Default Value with Multiple
