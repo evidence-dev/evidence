@@ -14,6 +14,10 @@
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import DateRange from './DateRange.svelte';
+
+	// Mock "today"
+	import MockDate from 'mockdate';
+	MockDate.set('2024-06-19');
 </script>
 
 <Template let:args>
