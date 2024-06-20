@@ -58,7 +58,7 @@ export class SchemaViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
 	}
 }
 
-class SchemaItem extends vscode.TreeItem {
+export class SchemaItem extends vscode.TreeItem {
 	constructor(
 		private schema: string,
 		private tables: vscode.Uri[]
@@ -87,23 +87,23 @@ type Table = {
 	columns: { name: string; evidenceType: string }[];
 };
 
-class TableItem extends vscode.TreeItem {
+export class TableItem extends vscode.TreeItem {
 	columns: ColumnItem[];
 
 	constructor(table: Table, schema: string) {
 		super(table.name, vscode.TreeItemCollapsibleState.Collapsed);
-		this.id = `${table.name}.${schema}`;
+		this.id = `${schema}.${table.name}`;
 		this.columns = table.columns.map(
 			({ name, evidenceType }) => new ColumnItem(name, table.name, schema, evidenceType)
 		);
+		this.contextValue = 'tableItem';
 	}
 }
-
-class ColumnItem extends vscode.TreeItem {
+export class ColumnItem extends vscode.TreeItem {
 	constructor(name: string, table: string, schema: string, evidenceType: string) {
 		super(name, vscode.TreeItemCollapsibleState.None);
 		this.description = evidenceType;
-		this.id = `${table}.${schema}.${name}`;
+		this.id = `${schema}.${table}.${name}`;
 		this.iconPath =
 			evidenceType === 'string'
 				? new vscode.ThemeIcon('symbol-string')
@@ -112,7 +112,6 @@ class ColumnItem extends vscode.TreeItem {
 					: evidenceType === 'boolean'
 						? new vscode.ThemeIcon('symbol-boolean')
 						: new vscode.ThemeIcon('calendar');
+		this.contextValue = 'columnItem';
 	}
-
-	// todo: convert evidenceType to iconPath like sqltools
 }
