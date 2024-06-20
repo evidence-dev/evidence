@@ -1,11 +1,9 @@
 <script context="module">
 	import Value from './Value.svelte';
-	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Atoms/Value',
-		component: Value,
-		decorators: [() => WithScopedInputStore]
+		component: Value
 	};
 </script>
 

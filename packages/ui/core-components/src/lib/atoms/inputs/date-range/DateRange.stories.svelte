@@ -1,5 +1,4 @@
 <script context="module">
-	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Atoms/inputs/DateRange',
@@ -8,14 +7,17 @@
 			title: 'Date Range, Including Presets',
 			name: 'dateRange',
 			omitGroup: []
-		},
-		decorators: [() => WithScopedInputStore]
+		}
 	};
 </script>
 
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import DateRange from './DateRange.svelte';
+
+	// Mock "today"
+	import MockDate from 'mockdate';
+	MockDate.set('2024-06-19');
 </script>
 
 <Template let:args>

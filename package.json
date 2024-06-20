@@ -77,7 +77,8 @@
 		"build:preprocess": "pnpm --filter ./packages/lib/preprocess build",
 		"build:plugin-connector": "pnpm --filter ./packages/lib/plugin-connector build",
 		"build:tailwind": "pnpm --filter ./packages/ui/tailwind build",
-		"build:query-store": "pnpm --filter ./packages/lib/query-store build"
+		"build:query-store": "pnpm --filter ./packages/lib/query-store build",
+		"sources:core-components": "pnpm --filter ./packages/ui/core-components sources"
 	},
 	"pnpm": {
 		"overrides": {

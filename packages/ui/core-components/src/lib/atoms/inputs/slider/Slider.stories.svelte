@@ -1,5 +1,4 @@
 <script context="module">
-	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Atoms/inputs/Slider',
@@ -11,8 +10,7 @@
 			min: 0,
 			max: 100,
 			step: 1
-		},
-		decorators: [() => WithScopedInputStore]
+		}
 	};
 </script>
 

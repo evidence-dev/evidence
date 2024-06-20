@@ -1,6 +1,6 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
-	export const meta = { title: 'Charts/Map', decorators: [() => WithScopedInputStore] };
+	export const meta = { title: 'Charts/Map' };
 </script>
 
 <script>
@@ -14,11 +14,16 @@
 	import Areas from './components/Areas.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 
-	const data = Query.create(`SELECT * from locations order by point_name asc limit 20`, query);
-	const la_zip_sales = Query.create(`select * from la_zip_sales where zip_code <> 90704`, query);
-	const la_locations = Query.create(`select * from la_locations`, query);
+	const data = Query.create(
+		`SELECT * from locations order by point_name asc limit 20 order by 1`,
+		query
+	);
+	const la_zip_sales = Query.create(
+		`select * from la_zip_sales where zip_code <> 90704 order by 1`,
+		query
+	);
+	const la_locations = Query.create(`select * from la_locations order by 1`, query);
 </script>
 
 <Story name="Basic Usage">
@@ -85,6 +90,6 @@
 	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" />
 </Story>
 
-<Story name="Point Map">
+<Story name="Points Map">
 	<PointMap data={la_locations} lat="lat" long="long" />
 </Story>
