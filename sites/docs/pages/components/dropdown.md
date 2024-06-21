@@ -64,10 +64,8 @@ Selected: {inputs.category3.value}
     name=category4
     value=category_name
     title="Select a Category"
-    defaultValue="%"
->
-    <DropdownOption valueLabel="All Categories" value="%" />
-</Dropdown>
+    defaultValue="Odd Equipment"
+/>
 
 Selected: {inputs.category4.value}
 
@@ -77,10 +75,8 @@ Selected: {inputs.category4.value}
     name=category4
     value=category_name
     title="Select a Category"
-    defaultValue="%"
->
-    <DropdownOption valueLabel="All Categories" value="%" />
-</Dropdown>
+    defaultValue="Odd Equipment"
+/>
 ````
 
 Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${inputs.name_of_dropdown}'` to return all values.
