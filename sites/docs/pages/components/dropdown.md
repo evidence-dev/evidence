@@ -79,8 +79,6 @@ Selected: {inputs.category4.value}
 />
 ````
 
-Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${inputs.name_of_dropdown}'` to return all values.
-
 ### With Hardcoded Options
 
 <Dropdown name=hardcoded>
