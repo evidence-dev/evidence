@@ -103,7 +103,7 @@ export async function emptyDbFs(targetGlob) {
 export async function setParquetURLs(urls, append = false) {
 	if (!append) await emptyDbFs('*');
 
-	const pathDelimiterRegex = /[\\/]/
+	const pathDelimiterRegex = /[\\/]/;
 
 	if (process.env.VITE_EVIDENCE_DEBUG) console.log(`Updating Parquet URLs`);
 	for (const source in urls) {
@@ -115,7 +115,12 @@ export async function setParquetURLs(urls, append = false) {
 				await emptyDbFs(file_name);
 				await emptyDbFs(url);
 			}
-			db.registerFileURL(file_name, url.split(pathDelimiterRegex).join(path.sep), DuckDBDataProtocol.NODE_FS, false);
+			db.registerFileURL(
+				file_name,
+				url.split(pathDelimiterRegex).join(path.sep),
+				DuckDBDataProtocol.NODE_FS,
+				false
+			);
 			connection.query(
 				`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
 			);
