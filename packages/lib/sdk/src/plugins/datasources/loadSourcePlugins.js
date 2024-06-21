@@ -28,7 +28,7 @@ export const loadSourcePlugins = async () => {
 
 		const packageMainpath = path.join(pack.dir.replace('package.json', ''), pack.main);
 
-		const plugin = await import(packageMainpath);
+		const plugin = await import(new URL('file://' + packageMainpath).toString());
 		const source = DatasourceSchema.safeParse(plugin);
 		if (!source.success) {
 			console.warn(
