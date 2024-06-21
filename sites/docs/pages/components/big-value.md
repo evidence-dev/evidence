@@ -125,7 +125,7 @@ Multiple cards will align themselves into a row.
 ```
 ### Linking to other pages
 
-link can be used to link to external or internal pages
+The link property makes the Value component clickable, allowing navigation to other pages.
 
 <BigValue 
   data={orders_with_comparisons} 
@@ -148,8 +148,6 @@ link can be used to link to external or internal pages
   link='/components/big-value/'
 />
 ```
-
-Allows the Value component to be a clickable link tag to other pages.
 
 ### Non-Delta Comparisons
 
