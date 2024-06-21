@@ -125,7 +125,7 @@ Multiple cards will align themselves into a row.
 ```
 ### Linking to other pages
 
-url can be used to link to external or internal pages
+link can be used to link to external or internal pages
 
 <BigValue 
   data={orders_with_comparisons} 
@@ -134,7 +134,7 @@ url can be used to link to external or internal pages
   comparison=order_growth
   comparisonFmt=pct1
   comparisonTitle="vs. Last Month"
-  url='/components/big-value/'
+  link='/components/big-value/'
 />
 
 ```html
@@ -145,9 +145,11 @@ url can be used to link to external or internal pages
   comparison=order_growth
   comparisonFmt=pct1
   comparisonTitle="vs. Last Month"
-  url='/components/big-value/'
+  link='/components/big-value/'
 />
 ```
+
+Allows the Value component to be a clickable link tag to other pages.
 
 ### Non-Delta Comparisons
 
@@ -229,9 +231,9 @@ url can be used to link to external or internal pages
     defaultValue="No records"
 />
 
-<PropListing name="url">
+<PropListing name="link">
 
-The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
+Used to navigate to other pages. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
 </PropListing>
 
 ### Comparison Options

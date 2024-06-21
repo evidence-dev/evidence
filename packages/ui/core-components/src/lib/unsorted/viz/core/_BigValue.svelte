@@ -41,7 +41,7 @@
 	let comparisonColor = 'var(--grey-700)';
 
 	/** @type {string | null}*/
-	export let url = null;
+	export let link = null;
 
 	let error = undefined;
 	$: try {
@@ -106,8 +106,8 @@
 	{:else}
 		<p class="text-sm text-gray-700">{title}</p>
 		<div class="relative text-xl font-medium text-gray-700 my-0.5">
-			{#if url}
-				<a class="hover:bg-gray-100" href={url}>
+			{#if link}
+				<a class="hover:bg-gray-100" href={link}>
 					<Value {data} column={value} {fmt} />
 				</a>
 			{:else}
@@ -146,8 +146,8 @@
 				</p>
 			{:else}
 				<p class="text-xs font-sans text-gray-500 pt-[0.5px]">
-					{#if url}
-						<a class="hover:bg-gray-100" href={url}>
+					{#if link}
+						<a class="hover:bg-gray-100" href={link}>
 							<Value {data} column={comparison} fmt={comparisonFmt} />
 						</a>
 					{:else}
