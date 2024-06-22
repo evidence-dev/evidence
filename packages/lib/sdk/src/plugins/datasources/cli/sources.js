@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import {
 	dataDirectory,
 	metaDirectory
@@ -53,11 +54,7 @@ export const sources = {
 
 		console.log('  Evaluated sources, saving manifest');
 
-		await updateManifest({ renderedFiles: evaluatedManifest }, dataDirectory, {
-			sources,
-			queries,
-			only_changed: args.changed === true
-		});
-		console.log('  Done!');
+		await updateManifest(evaluatedManifest, dataDirectory);
+		console.log(chalk.bold.green('  ✅ Done!'));
 	}
 };

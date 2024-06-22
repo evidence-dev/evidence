@@ -13,6 +13,8 @@ import {
 import { sharedPromise } from '../../lib/sharedPromise.js';
 import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
+import { VITE_EVENTS } from '../../build-dev/vite/constants.js';
+import { sterilizeQuery } from './sterilizeQuery.js';
 
 /**
  * @typedef {import("../types.js").QueryResultRow} QueryResultRow
@@ -50,6 +52,7 @@ import { getQueryScore } from './queryScore.js';
  * @typedef {Object} QueryGlobalEvents
  * @property {undefined} inFlightQueryStart
  * @property {undefined} inFlightQueryEnd
+ * @property {{raw: Query<any>, proxied: QueryValue<any>}} queryCreated
  */
 /** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
@@ -80,15 +83,22 @@ export class Query {
 	/// Data
 	/** @type {RowType[]} */
 	#data = [];
+	/** @type {number} */
+	#dataQueryTime = -1;
 	get dataLoaded() {
 		return ['resolved', 'rejected'].includes(this.#sharedDataPromise.state);
 	}
 	get dataLoading() {
 		return this.#sharedDataPromise.state === 'loading';
 	}
+	get dataQueryTime() {
+		return this.#dataQueryTime;
+	}
 	/// Length
 	/** @type {number} */
 	#length = 0;
+	/** @type {number} */
+	#lengthQueryTime = -1;
 	get length() {
 		return this.#length;
 	}
@@ -98,12 +108,17 @@ export class Query {
 	get lengthLoading() {
 		return this.#sharedLengthPromise.state === 'loading';
 	}
+	get lengthQueryTime() {
+		return this.#lengthQueryTime;
+	}
 
 	/// Columns
 	/** @type {import('../../types/duckdb-wellknown.js').DescribeResultRow[]} */
 	#columns = [];
 	/** @type {Record<keyof RowType, undefined> | undefined} */
 	#mockRow = undefined;
+	/** @type {number} */
+	#columnsQueryTime = -1;
 
 	get columns() {
 		return this.#columns;
@@ -113,6 +128,9 @@ export class Query {
 	}
 	get columnsLoading() {
 		return this.#sharedColumnsPromise.state === 'loading';
+	}
+	get columnsQueryTime() {
+		return this.#columnsQueryTime;
 	}
 
 	/**
@@ -219,7 +237,8 @@ export class Query {
 	/** @type {import("../types.js").EventMap<QueryGlobalEvents>} */
 	static #globalHandlerMap = {
 		inFlightQueryStart: new Set(),
-		inFlightQueryEnd: new Set()
+		inFlightQueryEnd: new Set(),
+		queryCreated: new Set()
 	};
 	/**
 	 * @template {keyof QueryGlobalEvents} Event
@@ -323,6 +342,8 @@ ${this.text.trim()}
 					this.#debug('long-running', `Query took ${before - after}ms to execute`);
 				}
 
+				this.#dataQueryTime = after - before;
+
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
@@ -422,10 +443,12 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 			(this.#executeQuery);
 
 		this.#debugStyled('length query text', '\n' + lengthQuery, 'font-family: monospace;');
-
+		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(lengthResult, isPromise) => {
+				const after = performance.now();
+				this.#lengthQueryTime = after - before;
 				this.#length = lengthResult[0].rowCount;
 				this.#sharedLengthPromise.resolve(this);
 				if (isPromise) {
@@ -483,9 +506,11 @@ DESCRIBE ${this.text.trim()}
 		const typedRunner =
 			/** @type {import('../types.js').Runner<import('../../types/duckdb-wellknown.js').DescribeResultRow>} */
 			(this.#executeQuery);
-
+		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			(description, isPromise) => {
+				const after = performance.now();
+				this.#columnsQueryTime = after - before;
 				// Update inner value
 				this.#columns = description;
 				// Resolve store
@@ -690,14 +715,15 @@ DESCRIBE ${this.text.trim()}
 	 *
 	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
+	 * @param {QueryValue<any>} [initialQuery]
 	 */
-	static createReactive = (reactiveOpts, opts) => {
+	static createReactive = (reactiveOpts, opts, initialQuery) => {
 		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
 
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const createFn = Query.create;
-		/** @type {QueryValue<any>} */
-		let activeQuery;
+		/** @type {QueryValue<any> | undefined} */
+		let activeQuery = initialQuery;
 
 		let changeIdx = 0;
 		/** @type {() => unknown} */
@@ -709,6 +735,7 @@ DESCRIBE ${this.text.trim()}
 			 * @returns {Promise<void> | void}
 			 */
 			(nextQuery, newOpts) => {
+				if (!activeQuery) throw new Error();
 				changeIdx += 1;
 				const targetChangeIdx = changeIdx;
 				Query.#debugStatic(
@@ -731,8 +758,6 @@ DESCRIBE ${this.text.trim()}
 							execFn,
 							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined })
 						);
-
-				if (newQuery.hash === activeQuery.hash) return; // no-op
 
 				const fetched = newQuery.fetch();
 				let dataMaybePromise = fetched;
@@ -801,7 +826,7 @@ DESCRIBE ${this.text.trim()}
 		Query.#devModeBootstrapped = true;
 		// We need to do some dev mode pipeing
 		import.meta.hot.data.hmr = false;
-		import.meta.hot.on('vite:beforeUpdate', () => {
+		import.meta.hot.on(VITE_EVENTS.RESET_QUERIES, () => {
 			if (import.meta.hot) import.meta.hot.data.hmr = true;
 			Query.emptyCache();
 		});
@@ -826,9 +851,10 @@ DESCRIBE ${this.text.trim()}
 			};
 		} else if (optsOrId) {
 			opts = optsOrId;
+			if (!opts.id) opts.id = queryHash + '-' + Math.random().toString(36).substring(0, 4);
 		} else {
 			opts = {
-				id: queryHash
+				id: queryHash + '-' + Math.random().toString(36).substring(0, 4)
 			};
 		}
 		if (!('autoScore' in opts)) {
@@ -867,6 +893,7 @@ DESCRIBE ${this.text.trim()}
 
 		Query.#constructing = true;
 		const output = new Query(query, executeQuery, opts);
+		Query.#globalEmit('queryCreated', { raw: output, proxied: output.value });
 		if (!opts.disableCache) {
 			Query.#addToCache(output);
 			Query.#cacheCleanup();
@@ -995,7 +1022,7 @@ DESCRIBE ${this.text.trim()}
 						Use of nanoid prevent ambiguity when dealing with nested Queries; 
 						in theory this could be the querystring has but that's kinda gross 
 					*/
-					[`inputQuery-${nanoid(2)}`]: taggedSql`(${query})`
+					[`inputQuery-${nanoid(2)}`]: taggedSql`(${sterilizeQuery(query)})`
 				})
 				.select('*');
 			this.#query = q;
@@ -1167,7 +1194,7 @@ DESCRIBE ${this.text.trim()}
 
 	/**
 	 * @param {string} searchTerm
-	 * @param {string} searchCol
+	 * @param {string | string[]} searchCol
 	 * @param {number} searchThreshold
 	 * @returns {QueryValue<RowType & {similarity: number}>}
 	 */
@@ -1181,18 +1208,33 @@ DESCRIBE ${this.text.trim()}
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const typedCreateFn = Query.create;
 
+		const escapedSearchTerm = searchTerm.replaceAll("'", "''");
+
+		const cols = Array.isArray(searchCol) ? searchCol : [searchCol];
+		const statements = cols
+			.map((col) => {
+				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
+				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
+				const exactSubMatch =
+					// escapedSearchTerm.length >= 4
+					taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`;
+				// : taggedSql`0`;
+				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
+			})
+			.join(',');
+
 		/** @type {QueryValue<RowType & {similarity: number}>} */
 		const output = typedCreateFn(
 			this.#query
 				.clone()
 				.$select(
 					{
-						similarity: taggedSql`jaro_winkler_similarity(lower('${searchTerm.replaceAll("'", "''")}'), lower(${searchCol}))`
+						similarity: taggedSql`GREATEST(${statements})`
 					},
 					'*'
 				)
-				.where(taggedSql`similarity > ${searchThreshold} `)
-				.orderby(taggedSql`similarity DESC`),
+				.where(taggedSql`"similarity" > ${searchThreshold} `)
+				.orderby(taggedSql`"similarity" DESC`),
 			this.#executeQuery,
 			{
 				knownColumns: colsWithSimilarity,

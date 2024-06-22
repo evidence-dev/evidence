@@ -10,7 +10,6 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
-	import Fuse from 'fuse.js';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
@@ -23,8 +22,13 @@
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import EnterFullScreen from './EnterFullScreen.svelte';
 	import Fullscreen from '../../../atoms/fullscreen/Fullscreen.svelte';
-	import { browser } from '$app/environment';
 	import Column from './Column.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte';
+	import { toasts } from '@evidence-dev/component-utilities/stores';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
+	import debounce from 'lodash.debounce';
 
 	// Set up props store
 	let props = writable({});
@@ -181,53 +185,51 @@
 	// SEARCH
 	// ---------------------------------------------------------------------------------------
 	let searchValue = '';
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	let filteredData;
 	$: filteredData = data;
 	let showNoResults = false;
-	let fuse;
 
-	// Function to initialize or update Fuse instance
-	function updateFuse() {
-		fuse = new Fuse(data, {
-			getFn: (row, [path]) => {
-				const summary = columnSummary?.find((d) => d.id === path) ?? {};
-				return summary.type === 'date' &&
-					row[summary.id] != null &&
-					row[summary.id] instanceof Date &&
-					!isNaN(row[summary.id].getTime())
-					? row[summary.id].toISOString()
-					: row[summary.id]?.toString() ?? '';
-			},
-			keys: columnSummary?.map((d) => d.id) ?? [],
-			threshold: 0.4
+	/** @type {ReturnValue<typeof Query["createReactive"]>}*/
+	let searchFactory;
+	$: if (Query.isQuery(data) && search) {
+		searchFactory = debounce(
+			Query.createReactive(
+				{
+					loadGracePeriod: 1000,
+					callback: (v) => {
+						filteredData = v;
+					},
+					execFn: query
+				},
+				data.opts,
+				data
+			),
+			200
+		);
+	}
+
+	$: if (searchFactory) {
+		if (searchValue) {
+			searchFactory(
+				data.search(
+					searchValue,
+					data.columns.map((c) => c.column_name),
+					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
+				),
+				data
+			);
+		} else filteredData = data;
+	}
+
+	$: if (search && !Query.isQuery(data)) {
+		toasts.add({
+			status: 'warning',
+			title: 'Search Failed',
+			description: 'Please use a query instead.',
+			timeout: 5000
 		});
 	}
-
-	// Reactively update Fuse when `data` or `columnSummary` changes
-	$: if (browser && !error) {
-		updateFuse();
-		if (searchValue !== '') {
-			runSearch(searchValue);
-		}
-	}
-
-	$: runSearch = (searchValue) => {
-		if (searchValue !== '') {
-			// Reset pagination to first page:
-			index = 0;
-			inputPage = null;
-
-			filteredData = fuse.search(searchValue).map((x) => x.item);
-			showNoResults = filteredData.length === 0;
-		} else {
-			filteredData = data;
-			showNoResults = false;
-
-			// Reset pagination to first page:
-			index = 0;
-			inputPage = null;
-		}
-	};
 
 	// ---------------------------------------------------------------------------------------
 	// SORTING
@@ -462,7 +464,7 @@
 		on:mouseleave={() => (hovering = false)}
 	>
 		{#if search}
-			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
+			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
 		{/if}
 
 		<div class="scrollbox" style:background-color={backgroundColor}>
@@ -484,30 +486,61 @@
 					{wrapTitles}
 				/>
 
-				{#if groupBy && groupedData && searchValue === ''}
-					{#each sortedGroupNames as groupName}
-						{#if groupType === 'accordion'}
-							<GroupRow
-								{groupName}
-								currentGroupData={groupedData[groupName]}
-								toggled={groupToggleStates[groupName]}
-								on:toggle={handleToggle}
-								{columnSummary}
-								rowColor={accordionRowColor}
-								{rowNumbers}
-								{subtotals}
-								{compact}
-								finalColumnOrder={getFinalColumnOrder(
-									$props.columns.length > 0
-										? $props.columns.map((d) => d.id)
-										: Object.keys(data[0]),
-									$props.priorityColumns
-								)}
-							/>
-							{#if groupToggleStates[groupName]}
+				<QueryLoad data={filteredData}>
+					<svelte:fragment slot="skeleton">
+						<tr>
+							<td colspan={filteredData.columns.length} class="h-32">
+								<Skeleton />
+							</td>
+						</tr>
+					</svelte:fragment>
+					{#if groupBy && groupedData && searchValue === ''}
+						{#each sortedGroupNames as groupName}
+							{#if groupType === 'accordion'}
+								<GroupRow
+									{groupName}
+									currentGroupData={groupedData[groupName]}
+									toggled={groupToggleStates[groupName]}
+									on:toggle={handleToggle}
+									{columnSummary}
+									rowColor={accordionRowColor}
+									{rowNumbers}
+									{subtotals}
+									{compact}
+									finalColumnOrder={getFinalColumnOrder(
+										$props.columns.length > 0
+											? $props.columns.map((d) => d.id)
+											: Object.keys(data[0]),
+										$props.priorityColumns
+									)}
+								/>
+								{#if groupToggleStates[groupName]}
+									<TableRow
+										displayedData={groupedData[groupName]}
+										{groupType}
+										{rowShading}
+										{link}
+										{rowNumbers}
+										{rowLines}
+										{compact}
+										{index}
+										{columnSummary}
+										grouped={true}
+										groupColumn={groupBy}
+										finalColumnOrder={getFinalColumnOrder(
+											$props.columns.length > 0
+												? $props.columns.map((d) => d.id)
+												: Object.keys(data[0]),
+											$props.priorityColumns
+										)}
+									/>
+								{/if}
+							{:else if groupType === 'section'}
 								<TableRow
-									displayedData={groupedData[groupName]}
+									groupColumn={groupBy}
 									{groupType}
+									rowSpan={groupedData[groupName].length}
+									displayedData={groupedData[groupName]}
 									{rowShading}
 									{link}
 									{rowNumbers}
@@ -516,7 +549,7 @@
 									{index}
 									{columnSummary}
 									grouped={true}
-									groupColumn={groupBy}
+									{groupNamePosition}
 									finalColumnOrder={getFinalColumnOrder(
 										$props.columns.length > 0
 											? $props.columns.map((d) => d.id)
@@ -524,81 +557,59 @@
 										$props.priorityColumns
 									)}
 								/>
+								{#if subtotals}
+									<SubtotalRow
+										{groupName}
+										currentGroupData={groupedData[groupName]}
+										{columnSummary}
+										rowColor={subtotalRowColor}
+										fontColor={subtotalFontColor}
+										{groupType}
+										{groupBy}
+										{compact}
+										finalColumnOrder={getFinalColumnOrder(
+											$props.columns.length > 0
+												? $props.columns.map((d) => d.id)
+												: Object.keys(data[0]),
+											$props.priorityColumns
+										)}
+									/>
+								{/if}
 							{/if}
-						{:else if groupType === 'section'}
-							<TableRow
-								groupColumn={groupBy}
-								{groupType}
-								rowSpan={groupedData[groupName].length}
-								displayedData={groupedData[groupName]}
-								{rowShading}
-								{link}
-								{rowNumbers}
-								{rowLines}
-								{compact}
-								{index}
-								{columnSummary}
-								grouped={true}
-								{groupNamePosition}
-								finalColumnOrder={getFinalColumnOrder(
-									$props.columns.length > 0
-										? $props.columns.map((d) => d.id)
-										: Object.keys(data[0]),
-									$props.priorityColumns
-								)}
-							/>
-							{#if subtotals}
-								<SubtotalRow
-									{groupName}
-									currentGroupData={groupedData[groupName]}
-									{columnSummary}
-									rowColor={subtotalRowColor}
-									fontColor={subtotalFontColor}
-									{groupType}
-									{groupBy}
-									{compact}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
-								/>
-							{/if}
-						{/if}
-					{/each}
-				{:else}
-					<TableRow
-						{displayedData}
-						{rowShading}
-						{link}
-						{rowNumbers}
-						{rowLines}
-						{compact}
-						{index}
-						{columnSummary}
-						finalColumnOrder={getFinalColumnOrder(
-							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-							$props.priorityColumns
-						)}
-					/>
-				{/if}
+						{/each}
+					{:else}
+						<TableRow
+							{displayedData}
+							{rowShading}
+							{link}
+							{rowNumbers}
+							{rowLines}
+							{compact}
+							{index}
+							{columnSummary}
+							finalColumnOrder={getFinalColumnOrder(
+								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+								$props.priorityColumns
+							)}
+						/>
+					{/if}
 
-				{#if totalRow && searchValue === ''}
-					<TotalRow
-						{data}
-						{rowNumbers}
-						{columnSummary}
-						rowColor={totalRowColor}
-						fontColor={totalFontColor}
-						{groupType}
-						{compact}
-						finalColumnOrder={getFinalColumnOrder(
-							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-							$props.priorityColumns
-						)}
-					/>
-				{/if}
+					{#if totalRow && searchValue === ''}
+						<TotalRow
+							{data}
+							{rowNumbers}
+							{columnSummary}
+							rowColor={totalRowColor}
+							fontColor={totalFontColor}
+							{groupType}
+							{compact}
+							finalColumnOrder={getFinalColumnOrder(
+								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+								$props.priorityColumns
+							)}
+						/>
+					{/if}
+				</QueryLoad>
 			</table>
 		</div>
 

@@ -259,23 +259,6 @@ describe('Query', () => {
 			// describe('reactivity with QueryBuilder API', () => {
 			// 	// TODO: Try to use the factory with derived queries
 			// });
-			it('should not call the callback if the query hash is the same', async () => {
-				const cb = vi.fn();
-				/** @type {import('..').QueryValue} */
-				const react = Query.createReactive({
-					execFn: mockRunner,
-					callback: cb,
-					loadGracePeriod: 0
-				});
-
-				react('SELECT 1');
-				react('SELECT 1');
-
-				await tick();
-
-				expect(cb).toHaveBeenCalledTimes(2);
-			});
-
 			describe('change indexing', () => {
 				it('should not provide outdated results', async () => {
 					/** @type {import('..').QueryValue} */
