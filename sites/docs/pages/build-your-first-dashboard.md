@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 hide_table_of_contents: false
 title: Build your first dashboard
 description: A 10 minute guide to building your first dashboard in Evidence.
@@ -58,8 +58,8 @@ New to web development? Start with the [Basics](#basics).
 
 Familiar with running a server at `localhost`, and writing pages in Markdown? Skip to [Working with data](#working-with-data).
 
-# Basics
-## 1. Start Evidence
+## Basics
+### 1. Start Evidence
 
 You can start Evidence from VSCode, or from the Command Line. Both will work for this tutorial. If you're unsure, start with VSCode:
 
@@ -107,7 +107,7 @@ It's not required for this tutorial, but if you want to find out more about what
 </Alert>
 
 
-## 2. Add a new page
+### 2. Add a new page
 
 Go back to VSCode (or your file editor of choice) and open the `src/pages` directory. Right-click on the `pages` directory and select `New File`. Name the file `new-page.md`, or a name of your choice.
 
@@ -123,7 +123,7 @@ Head back to Evidence in your browser. You should see your new page in the sideb
 
 ![New page in Evidence](/img/getting-started/new_page.png)
 
-## 3. Make more changes
+### 3. Write Markdown
 Make some more changes to the page. You'll see them reflected "live" in the browser, immediately after saving. There is no need to restart the server. 
 
 This is called **hot reloading**, and it allows you to see your changes in real-time.
@@ -158,8 +158,8 @@ And here's how it will look when rendered in the browser:
 
 Now that you know how to create and edit pages, let's move on to working with data.
 
-# Working with data
-## 4. Understand data sources and queries
+## Working with data
+### 4. Understand data sources and queries
 
 Navigate to `localhost:3000/settings` in your browser.
 
@@ -178,19 +178,19 @@ A data source in Evidence consists of 3 parts:
 You will see this reflected in the folder structure for each data source under the `sources` folder:
 <img src="/img/getting-started/sources.png" width="70%" class="tut-img"/>
 
-## 5. Set up a source query
+### 5. Set up a source query
 Add a new `.sql` file to the `sources/needful_things` directory. Name it `my_query.sql`, or a name of your choice.
 
 Perhaps you're only interested in the categories of your orders for now. In this file, write a query to select just the `category` column from the `orders` table:
 
 **my_query.sql**
 ```sql
-SELECT category FROM orders
+select category from orders
 ```
 
 Save the file. Later, you'll be able to refer to this data source as `needful_things.my_query`.
 
-## 4.5 Run sources
+### 4.5 Run sources
 
 Once you have configured source queries, you need to **run sources** to actually execute them.
 
@@ -229,21 +229,21 @@ When the page is complete, you can then run sources to reflect the latest data. 
 
 </Alert>
 
-## 6. Set up a Markdown Query
+### 6. Set up a Markdown Query
 Before you can use a data source on your page, you need to set up a **Markdown query** for it.
 
 Clean up everything from your page, and add the following:
 
 **new-page.md**
-```markdown
+````markdown
 ## Hello Evidence
 
 ### Orders Table
 
-&#96;&#96;&#96;my_query_summary
-SELECT * FROM needful_things.my_query
-&#96;&#96;&#96;
+```my_query_summary
+select * from needful_things.my_query
 ```
+````
 Refresh, and you'll see this. Not very exciting, but we'll use this data in the next section.
 
 TODO add image
@@ -261,24 +261,24 @@ To learn more about Markdown queries, including how to reuse them across pages, 
 </div>
 
 
-# Adding components
+## Adding components
 
-## 6.5. Create a Data Table
+### 6.5. Create a Data Table
 
 One simple way to display data is with a [Data Table](/components/data-table/):
 
 **new-page.md**
-```markdown
+````markdown
 ## Hello Evidence
 
 ### Orders Table
 
-&#96;&#96;&#96;my_query_summary
-SELECT * FROM needful_things.my_query
-&#96;&#96;&#96;
+```my_query_summary
+select * from needful_things.my_query
+```
 
 <DataTable data={my_query_summary}/>
-```
+````
 
 Refresh the page in your browser, and you should see:
 
@@ -290,18 +290,18 @@ The Markdown query isn't doing much for us right now. It's simply displaying all
 
 Let's say we want to pull the 100 most recent orders, in order to send these customers a discount code. Change the Markdown query to:
 
-```markdown
-&#96;&#96;&#96;my_query_summary
-SELECT 
+````markdown
+```my_query_summary
+select 
    order_datetime, 
    first_name, 
    last_name, 
    email 
-FROM needful_things.my_query
-ORDER BY order_datetime DESC
-LIMIT 100
-&#96;&#96;&#96;
+from needful_things.my_query
+order by order_datetime desc
+limit 100
 ```
+````
 
 Now refresh, and notice that your table has changed to show only the most recent 100 orders, with only the table columns you specified:
 
@@ -322,18 +322,18 @@ This will display:
 
 A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components/).
 
-## 6. Create a Bar Chart
+### 6. Create a Bar Chart
 
 Next, let's visualize orders over the past year using a [Bar Chart](/components/bar-chart). Add the following to your page:
 
-```markdown
+````markdown
 ### Orders by Month
 
-&#96;&#96;&#96;orders_by_month
-SELECT order_month, count(*) AS orders FROM needful_things.my_query
-GROUP BY order_month ORDER BY order_month DESC
-LIMIT 12
-&#96;&#96;&#96;
+```orders_by_month
+select order_month, count(*) as orders from needful_things.my_query
+group by order_month order by order_month desc
+limit 12
+```
 <BarChart 
     data={orders_by_month} 
     x=order_month 
@@ -342,12 +342,12 @@ LIMIT 12
 	xAxisTitle="Month"
 	yAxisTitle="Orders"
 />
-```
+````
 And you should see:
 
 ![Bar chart](/img/getting-started/bar_chart.png)
 
-## 7. Connect a new CSV data source
+### 7. Connect a new CSV data source
 
 Go to `localhost:3000/settings`, and select **Add new source**:
 
@@ -371,16 +371,16 @@ You should now see your new source under the sources folder. Copy your CSV file 
 
 That's it! You've set up a new data source. If you'd like to use it, try adding the following Markdown Query and the [USMap](/components/us-map) component:
 
-```markdown
+````markdown
 ### EV Map
-&#96;&#96;&#96;ev_map
-SELECT State, count(*) AS ev_station_count FROM ev_stations.us_alt_fuel_stations
-WHERE State NOT IN ('CA')
-GROUP BY State ORDER BY ev_station_count DESC
-&#96;&#96;&#96;
+```ev_map
+select State, count(*) AS ev_station_count from ev_stations.us_alt_fuel_stations
+where State not in ('CA')
+group by State order by ev_station_count desc
+```
 
 <USMap data={ev_map} state=State abbreviations=true value=ev_station_count/>
-```
+````
 
 And you should see:
 
@@ -388,13 +388,13 @@ And you should see:
 
 That's it! You now know the basics of setting up data sources, writing queries, and creating components in Evidence.
 
-# Next steps
+## Next steps
 
 <Alert status="info">
 TODO: suggestions for extending the tutorial, and pathways into further documentation
 </Alert>
 
-## Help and support
+### Help and support
 If you run into any issues, [reach out in Slack.](https://slack.evidence.dev)
 
 <Alert status="info">
