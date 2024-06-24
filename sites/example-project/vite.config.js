@@ -1,8 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
+import { sourceQueryHmr } from '@evidence-dev/sdk/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), sourceQueryHmr()],
 	optimizeDeps: {
 		include: ['echarts-stat', 'echarts'],
 		exclude: ['svelte-icons']

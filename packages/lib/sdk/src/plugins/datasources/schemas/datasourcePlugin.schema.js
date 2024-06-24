@@ -6,7 +6,10 @@ const BaseDatasourceSchema = z.object({
 	options: DatasourceOptionSpecSchema,
 	testConnection: z
 		.function()
-		.args(z.any({ description: 'Connection Options' }))
+		.args(
+			z.any({ description: 'Connection Options' }),
+			z.string({ description: 'Datasource directory' })
+		)
 		.returns(z.promise(z.union([z.literal(true), z.object({ reason: z.string() })])))
 });
 

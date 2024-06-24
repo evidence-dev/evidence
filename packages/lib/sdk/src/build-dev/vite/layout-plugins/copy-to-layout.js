@@ -1,13 +1,13 @@
 import chokidar from 'chokidar';
-import { loadLayoutPlugin } from '../../plugins/layouts/loadLayoutPlugin.js';
+import { loadLayoutPlugin } from '../../../plugins/layouts/loadLayoutPlugin.js';
 import path from 'path';
-import { projectRoot } from '../../lib/projectRoot.js';
-import { copyMethods } from '../../plugins/layouts/copyMethods/index.js';
+import { projectRoot } from '../../../lib/projectRoot.js';
+import { copyMethods } from '../../../plugins/layouts/copyMethods/index.js';
 import fs from 'fs/promises';
-import { EvidenceError } from '../../lib/EvidenceError.js';
+import { EvidenceError } from '../../../lib/EvidenceError.js';
 import chalk from 'chalk';
 
-export const fileWatcher = async () => {
+export const copyToLayout = async () => {
 	const plugin = await loadLayoutPlugin();
 	if (!plugin) return false;
 
