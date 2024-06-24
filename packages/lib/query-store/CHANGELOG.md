@@ -1,5 +1,14 @@
 # @evidence-dev/query-store
 
+## 2.1.5
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/universal-sql@2.1.3
+
 ## 2.1.4
 
 ### Patch Changes

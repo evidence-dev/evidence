@@ -1,5 +1,37 @@
 # @evidence-dev/evidence
 
+## 38.1.0
+
+### Minor Changes
+
+- a08542924: Switch to using sdk for datasources instead of plugin connector
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- 38c669d2e: Fixed Custom Formatting
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [0bb7718a2]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [f15071659]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [93a838ca2]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [3daa83ffc]
+- Updated dependencies [6cdedceb0]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [9982970fd]
+  - @evidence-dev/sdk@1.3.2
+  - @evidence-dev/universal-sql@2.1.3
+  - @evidence-dev/core-components@4.5.2
+  - @evidence-dev/preprocess@5.1.3
+  - @evidence-dev/component-utilities@3.2.2
+  - @evidence-dev/plugin-connector@2.1.5
+  - @evidence-dev/query-store@2.1.5
+  - @evidence-dev/telemetry@2.1.1
+  - @evidence-dev/tailwind@2.1.1
+
 ## 38.0.1
 
 ### Patch Changes
