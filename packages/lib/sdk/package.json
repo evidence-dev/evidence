@@ -46,7 +46,6 @@
 	},
 	"scripts": {
 		"prepack": "npm run check && npm run build",
-		"postinstall": "npm run build",
 		"test": "vitest",
 		"check:types": "tsc -p tsconfig.json --noEmit",
 		"check": "tsc -p tsconfig.json --noEmit && eslint src",
