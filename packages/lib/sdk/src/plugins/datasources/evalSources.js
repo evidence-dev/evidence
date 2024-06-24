@@ -77,7 +77,7 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 		}
 
 		/** @type {import('./types.js').ProcessSourceFn} */
-		const tableIter = 'processSource' in mod ? mod.processSource : wrapSimpleConnector(mod, source);
+		const tableIter = 'processSource' in mod ? mod.processSource : wrapSimpleConnector(mod, source, source.buildOptions.batchSize);
 
 		const utils = buildUtils(source, filters);
 
@@ -151,8 +151,7 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 					tmpDir,
 					outDir,
 					filename,
-					table.expectedRowCount,
-					1000 * 1000 // TODO: Configurable?
+					source.buildOptions.batchSize
 				);
 
 				if (writtenRows === false) {
