@@ -1,5 +1,11 @@
 # @evidence-dev/sdk
 
+## 1.3.3
+
+### Patch Changes
+
+- 244c795be: Remove postinstall script
+
 ## 1.3.2
 
 ### Patch Changes
