@@ -7,10 +7,9 @@ import chalk from 'chalk';
 /**
  * @param {import("./Datasources.js").Datasource} mod
  * @param {import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}} source
- * @param {number} [batchSize]
  * @returns {import('./types.js').ProcessSourceFn}
  */
-export const wrapSimpleConnector = (mod, source, batchSize = 1000 * 1000) => {
+export const wrapSimpleConnector = (mod, source) => {
 	if (!('getRunner' in mod))
 		throw new EvidenceError(
 			'Internal Error',
@@ -70,7 +69,7 @@ export const wrapSimpleConnector = (mod, source, batchSize = 1000 * 1000) => {
 						...(await runner(
 							utils.subSourceVariables(sourceFileContent),
 							sourceFilePath,
-							batchSize // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
+							source.buildOptions.batchSize ?? 1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
 						))
 					};
 				} catch (e) {

@@ -77,10 +77,7 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 		}
 
 		/** @type {import('./types.js').ProcessSourceFn} */
-		const tableIter =
-			'processSource' in mod
-				? mod.processSource
-				: wrapSimpleConnector(mod, source, source.buildOptions.batchSize);
+		const tableIter = 'processSource' in mod ? mod.processSource : wrapSimpleConnector(mod, source);
 
 		const utils = buildUtils(source, filters);
 
