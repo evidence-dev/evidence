@@ -1,5 +1,29 @@
 # evidence-test-environment
 
+## 3.0.39
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [0bb7718a2]
+- Updated dependencies [e74affd64]
+- Updated dependencies [a08542924]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [6cdedceb0]
+- Updated dependencies [38c669d2e]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [9982970fd]
+  - @evidence-dev/core-components@4.5.2
+  - @evidence-dev/duckdb@1.0.11
+  - @evidence-dev/evidence@38.1.0
+  - @evidence-dev/csv@1.0.12
+  - @evidence-dev/faker-datasource@2.1.3
+  - @evidence-dev/motherduck@1.0.2
+  - @evidence-dev/postgres@1.0.6
+  - @evidence-dev/snowflake@1.0.7
+  - @evidence-dev/sqlite@2.0.5
+  - @evidence-dev/component-utilities@3.2.2
+
 ## 3.0.38
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @evidence-dev/component-utilities
 
+## 3.2.2
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [f15071659]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [93a838ca2]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [3daa83ffc]
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/sdk@1.3.2
+
 ## 3.2.1
 
 ### Patch Changes
