@@ -69,7 +69,7 @@ export const wrapSimpleConnector = (mod, source) => {
 						...(await runner(
 							utils.subSourceVariables(sourceFileContent),
 							sourceFilePath,
-							1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
+							source.buildOptions.batchSize ?? 1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
 						))
 					};
 				} catch (e) {

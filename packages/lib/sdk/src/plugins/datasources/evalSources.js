@@ -151,8 +151,7 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 					tmpDir,
 					outDir,
 					filename,
-					table.expectedRowCount,
-					1000 * 1000 // TODO: Configurable?
+					source.buildOptions.batchSize
 				);
 
 				if (writtenRows === false) {
