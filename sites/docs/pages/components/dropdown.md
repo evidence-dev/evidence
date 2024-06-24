@@ -64,9 +64,8 @@ Selected: {inputs.category3.value}
     name=category4
     value=category_name
     title="Select a Category"
->
-    <DropdownOption valueLabel="All Categories" value="%" />
-</Dropdown>
+    defaultValue="Odd Equipment"
+/>
 
 Selected: {inputs.category4.value}
 
@@ -76,13 +75,9 @@ Selected: {inputs.category4.value}
     name=category4
     value=category_name
     title="Select a Category"
->
-    <DropdownOption valueLabel="All Categories" value="%" />
-</Dropdown>
+    defaultValue="Odd Equipment"
+/>
 ````
-
-Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${inputs.name_of_dropdown}'` to return all values.
-
 
 ### With Hardcoded Options
 
@@ -142,12 +137,6 @@ Selected: {inputs.category_multi.value}
     value=category_name
     multiple=true
 />
-
-```sql filtered_query
-select *
-from source_name.table
-where column_name in ${inputs.name_of_dropdown.value}
-```
 ````
 
 ### Filtering a Query
@@ -215,17 +204,34 @@ Selected: {inputs.category_multi_default.value}
     name=name_of_dropdown
     value=column_name
     multiple=true
-	defaultValue={['value1', 'value2']}
+	defaultValue={['Sinister Toys', 'Mysterious Apparel']}
 />
 ````
 
+### Select all by Default Value with Multiple
+
+<Dropdown
+    data={categories} 
+    name=category_multi_selectAllByDefault
+    value=category_name
+    title="Select a Category"
+    multiple=true
+    selectAllByDefault=true
+/>
+
+Selected: {inputs.category_multi_selectAllByDefault.value}
+
 ````markdown
-```sql filtered_query
-select *
-from source_name.table
-where column_name in '${inputs.name_of_dropdown.value}'
-```
+<Dropdown
+    data={categories} 
+    name=category_multi_selectAllByDefault
+    value=category_name
+    title="Select a Category"
+    multiple=true
+    selectAllByDefault=true
+/>
 ````
+Select and return all values in the dropdown list, requires "multiple" prop.
 
 # Dropdown
 
@@ -256,6 +262,12 @@ where column_name in '${inputs.name_of_dropdown.value}'
     name="defaultValue"
     description="Value to use when the dropdown is first loaded. Must be one of the options in the dropdown. Arrays supported for multi-select."
     options="value from dropdown | array of values e.g. {`{['Value 1', 'Value 2']}`}"
+/>
+<PropListing 
+    name="selectAllByDefault"
+    description="Selects and returns all values, multiple property required"
+    options={['true', 'false']}
+    defaultValue="false"
 />
 <PropListing 
     name="noDefault"
