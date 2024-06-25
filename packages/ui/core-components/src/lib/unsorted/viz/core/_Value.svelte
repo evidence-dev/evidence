@@ -14,6 +14,9 @@
 	export let row = 0;
 	export let column = null;
 
+	//Passing in link for anchor tag
+	export let link;
+
 	// alias for column
 	export let value = null;
 	$: if (value && column) {
@@ -101,9 +104,17 @@
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
 {:else if !error}
-	<span>
-		{formatValue(selected_value, format_object)}
-	</span>
+	{#if link}
+		<a class="hover:bg-blue-100" href={link}>
+			<span>
+				{formatValue(selected_value, format_object)}
+			</span>
+		</a>
+	{:else}
+		<span>
+			{formatValue(selected_value, format_object)}
+		</span>
+	{/if}
 {:else}
 	<ValueError {error} />
 {/if}

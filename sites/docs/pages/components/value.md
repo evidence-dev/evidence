@@ -78,6 +78,25 @@ FROM
     <Value data={orders} column="sales" agg="avg" fmt="usd0" />
 </div>
 
+## Linking to other pages
+
+The link property makes the Value component clickable, allowing navigation to other pages.
+
+```sql total_sales
+SELECT 
+ sum(sales) as total_sales
+FROM 
+    needful_things.orders
+```
+
+```markdown
+<Value data={total_sales} column="total_sales" agg="avg" fmt="usd0" link='/components/value' />
+```
+
+<div>
+    <Value data={total_sales} column="total_sales" agg="avg" fmt="usd0" link='/components/value' />
+</div>
+
 ## Options
 
 <PropListing
@@ -143,10 +162,13 @@ Text to display when an empty dataset is received - only applies when `emptySet`
 </PropListing>
 <PropListing
     name="agg"
-    options={['sum', 'avg', 'min', 'median', 'max']}
     defaultValue="null"
 >
 
 Adds aggregation to query, column name required.
 
+</PropListing>
+<PropListing name="link">
+
+Used to navigate to other pages. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
 </PropListing>
