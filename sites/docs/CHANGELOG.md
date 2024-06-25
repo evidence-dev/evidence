@@ -1,5 +1,13 @@
 # evidence-docs
 
+## 0.0.12
+
+### Patch Changes
+
+- @evidence-dev/evidence@38.1.1
+- @evidence-dev/component-utilities@3.2.3
+- @evidence-dev/core-components@4.5.3
+
 ## 0.0.11
 
 ### Patch Changes
