@@ -12,6 +12,12 @@
 
 	export let id;
 
+	export let num;
+
+	let prevID = id;
+
+	// $: id, console.log('prevID', prevID, 'id', id, 'column', num);
+
 	// Simple check of column name in dataset. Should be replaced with robust error handling in the future:
 	$: checkColumnName();
 
@@ -154,6 +160,7 @@
 	 * Without this function, props are only used on first render, and are not reactive
 	 * @returns {void}
 	 */
+
 	const updateProps = () => {
 		props.update((d) => {
 			const matchingIndex = d.columns.findIndex((c) => c.id === id);
