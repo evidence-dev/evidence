@@ -129,3 +129,15 @@
 
 	Current Value: {$inputStore[args.name]}
 </Story>
+
+<Story name="Default Value" let:args>
+	<div class="mb-8">
+		<ButtonGroup {...args}>
+			<ButtonGroupItem valueLabel="Option 1" value="option_1" />
+			<ButtonGroupItem valueLabel="Option 2" value="option_2" default />
+			<ButtonGroupItem valueLabel="Option 3" value="option_3" />
+		</ButtonGroup>
+	</div>
+
+	Current Value: {$inputStore[args.name]}
+</Story>
