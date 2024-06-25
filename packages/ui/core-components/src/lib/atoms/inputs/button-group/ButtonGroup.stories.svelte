@@ -1,3 +1,11 @@
+<script context="module">
+	export const meta = {
+		title: 'Atoms/inputs/ButtonGroup',
+		component: ButtonGroup,
+		args: { title: 'Group of buttons', name: 'buttonGroup' }
+	};
+</script>
+
 <script>
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
 	import ButtonGroup from './ButtonGroup.svelte';
@@ -10,13 +18,6 @@
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
-
-<Meta
-	title="Atoms/inputs/ButtonGroup"
-	component={ButtonGroup}
-	argTypes={{}}
-	args={{ title: 'Group of buttons', name: 'buttonGroup' }}
-/>
 
 <Template let:args>
 	<div class="h-64">
