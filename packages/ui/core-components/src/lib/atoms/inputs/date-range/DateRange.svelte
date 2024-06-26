@@ -4,8 +4,6 @@
 
 <script>
 	import DateRange from './_DateRange.svelte';
-	import { getContext } from 'svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 	import { getLocalTimeZone } from '@internationalized/date';
@@ -13,13 +11,13 @@
 	import { page } from '$app/stores';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
 	function dateToYYYYMMDD(date) {
 		return date.toISOString().split('T')[0];
 	}
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
-
+	const inputs = getInputContext();
 	/** @type {string} */
 	export let name;
 	/** @type {string | undefined} */
