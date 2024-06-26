@@ -117,7 +117,6 @@
 	},
 	"peerDependencies": {
 		"@evidence-dev/universal-sql": "workspace:*",
-		"nanoid": "^5.0.4",
 		"perfect-debounce": "^1.0.0"
 	}
 }
