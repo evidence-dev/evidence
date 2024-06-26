@@ -162,6 +162,7 @@ Text to display when an empty dataset is received - only applies when `emptySet`
 </PropListing>
 <PropListing
     name="agg"
+    options={['sum', 'avg', 'min', 'median', 'max']}
     defaultValue="null"
 >
 
@@ -170,5 +171,5 @@ Adds aggregation to query, column name required.
 </PropListing>
 <PropListing name="link">
 
-Used to navigate to other pages. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
+Used to navigate to other pages. Can be a full external link like `https://google.com` or an internal link like `/sales/avg-sales`
 </PropListing>

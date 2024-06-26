@@ -15,7 +15,7 @@
 	export let column = null;
 
 	//Passing in link for anchor tag
-	export let link;
+	export let link = undefined;
 
 	// alias for column
 	export let value = null;
@@ -105,7 +105,7 @@
 	>
 {:else if !error}
 	{#if link}
-		<a class="hover:bg-blue-100" href={link}>
+		<a class="markdown" href={link}>
 			<span>
 				{formatValue(selected_value, format_object)}
 			</span>
