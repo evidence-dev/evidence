@@ -12,6 +12,8 @@ The fastest way to build highly interactive data apps
 
 </div>
 
+***This documentation has not been updated for the latest versions of the SDK***
+
 ## How it works
 
 The Evidence SDK contains all the tools needed to build interactive data apps, all the way from the database to the browser.
