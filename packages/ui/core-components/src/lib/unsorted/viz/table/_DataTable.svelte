@@ -30,10 +30,6 @@
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import debounce from 'lodash.debounce';
 
-	// Set up props store
-	let props = writable({});
-	setContext(propKey, props);
-
 	// Data, pagination, and row index numbers
 	export let data;
 	export let queryID = undefined;
@@ -106,13 +102,6 @@
 	let error = undefined;
 
 	// ---------------------------------------------------------------------------------------
-	// Add props to store to let child components access them
-	// ---------------------------------------------------------------------------------------
-	props.update((d) => {
-		return { ...d, data, columns: [] };
-	});
-
-	// ---------------------------------------------------------------------------------------
 	// STYLING
 	// ---------------------------------------------------------------------------------------
 	export let rowShading = false;
@@ -142,9 +131,15 @@
 
 	let priorityColumns = [groupBy];
 
-	props.update((d) => {
-		return { ...d, priorityColumns };
+	// ---------------------------------------------------------------------------------------
+	// Add props to store to let child components access them
+	// ---------------------------------------------------------------------------------------
+	let props = writable({
+		data,
+		columns: [],
+		priorityColumns
 	});
+	setContext(propKey, props);
 
 	$: try {
 		error = undefined;

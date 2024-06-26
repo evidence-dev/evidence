@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
+	import { onMount, getContext } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 
 	let props = getContext(propKey);
@@ -176,5 +176,13 @@
 			return d;
 		});
 	};
-	$: options, updateProps();
+	$: options,
+		props.update((d) => {
+			console.log(id, JSON.parse(JSON.stringify(d)));
+			return d;
+		});
+	props.update((d) => {
+		d.columns.push(options);
+		return d;
+	});
 </script>

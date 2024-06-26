@@ -138,5 +138,8 @@ export function aggregateColumn(data, columnName, aggType, columnType, weightCol
  */
 export function getFinalColumnOrder(columns, priorityColumns) {
 	const restColumns = columns.filter((key) => !priorityColumns.includes(key));
+	console.log({
+		columns, priorityColumns
+	})
 	return [...priorityColumns, ...restColumns];
 }
