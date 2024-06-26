@@ -30,8 +30,6 @@
     `,
 		query
 	);
-
-	$: if ($data) console.log($data[0]?.tag, $data[1]?.tag, $data[2]?.tag);
 </script>
 
 <Story name="Generated from a query">
