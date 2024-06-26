@@ -168,6 +168,7 @@
 	{renderer}
 	{connectGroup}
 	{seriesColors}
+	{...$$restProps}
 >
 	<Bar
 		{type}
