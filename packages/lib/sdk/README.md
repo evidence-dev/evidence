@@ -12,7 +12,7 @@ The fastest way to build highly interactive data apps
 
 </div>
 
-***This documentation has not been updated for the latest versions of the SDK***
+**_This documentation has not been updated for the latest versions of the SDK_**
 
 ## How it works
 
