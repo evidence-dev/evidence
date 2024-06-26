@@ -6,7 +6,7 @@
 	import { getContext, beforeUpdate } from 'svelte';
 	import { propKey, configKey } from '@evidence-dev/component-utilities/chartContext';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import ErrorChart from '../core/ErrorChart.svelte';
+	import ErrorChart from '../../core/ErrorChart.svelte';
 	let props = getContext(propKey);
 	let config = getContext(configKey);
 
@@ -232,6 +232,7 @@
 	});
 </script>
 
+bingbong
 {#if error}
 	<ErrorChart
 		{error}
