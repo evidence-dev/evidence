@@ -1053,6 +1053,9 @@ importers:
       mermaid:
         specifier: ^10.9.1
         version: 10.9.1
+      nanoid:
+        specifier: ^5.0.4
+        version: 5.0.7
       prismjs:
         specifier: 1.29.0
         version: 1.29.0
