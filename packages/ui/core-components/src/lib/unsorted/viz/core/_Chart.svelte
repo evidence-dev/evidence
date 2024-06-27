@@ -1055,10 +1055,13 @@
 	/** @type {string | undefined} */
 	export let targetColumn = undefined;
 
+	/** @type {boolean} */
+	export let required = false;
+
 	/** @type {ReturnType<typeof getInputSetter>} */
 	let setInput = () => {};
 	if (name) {
-		setInput = getInputSetter(name, { toggle, defaultSqlFragment: 'true' });
+		setInput = getInputSetter(name, { toggle, defaultSqlFragment: required ? 'false' : 'true' });
 		setInput(undefined);
 	}
 </script>
@@ -1107,32 +1110,6 @@
 					yCol = allYColumns[targetYIdx];
 				}
 
-				// const allYColumns = isMultiY
-				// 	? [...(Array.isArray(y) ? y : [y]), y2]
-				// 	: Array.isArray(y)
-				// 		? y
-				// 		: [y];
-
-				// const targetYIdx = Math.floor(event.detail.seriesIndex % allYColumns.length);
-				// const targetY = isMultiY ? allYColumns[targetYIdx] : y;
-
-				// switch (targetValue) {
-				// 	case 'x':
-				// 		value = event.detail.data[0];
-				// 		break;
-				// 	case 'y':
-				// 		value = event.detail.data[1];
-				// 		break;
-				// 	default:
-				// 	case 'series':
-				// 		if (isMultiY) {
-				// 			value = correctedSeries;
-				// 		} else {
-				// 			value = event.detail.seriesName;
-				// 		}
-				// 		break;
-				// }
-
 				let col;
 				if (targetColumn) {
 					col = targetColumn;
@@ -1164,7 +1141,7 @@
 					x: event.detail.data[0],
 					y: event.detail.data[1],
 					series: _series,
-					yCol: yCol
+					yAxis: yCol
 				};
 				if (series) additionalValue[series] = _series;
 
