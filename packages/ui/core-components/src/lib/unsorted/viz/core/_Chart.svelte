@@ -40,6 +40,7 @@
 	export let series = undefined;
 	export let size = undefined;
 	export let tooltipTitle = undefined;
+	export let link = undefined;
 
 	export let showAllXAxisLabels = false;
 
@@ -356,6 +357,9 @@
 			if (tooltipTitle) {
 				optCols.push(tooltipTitle);
 			}
+			if (link) {
+				optCols.push(link);
+			}
 
 			checkInputs(data, inputCols, optCols);
 
@@ -617,7 +621,8 @@
 					chartAreaHeight,
 					chartType,
 					yCount,
-					y2Count
+					y2Count,
+					link
 				};
 			});
 
@@ -1022,7 +1027,9 @@
 				series: [],
 				animation: true,
 				graphic: horizAxisTitleConfig,
-				color: colorPalette
+				color: colorPalette,
+				// passing link
+				link: link
 			};
 
 			config.update(() => {
