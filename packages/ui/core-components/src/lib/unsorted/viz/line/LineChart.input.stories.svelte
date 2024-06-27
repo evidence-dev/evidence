@@ -86,3 +86,84 @@ GROUP BY ALL
 	{$inputs.tag.label.toString() || 'All'} Post and Authors by Gender
 	<DataTable data={depends} />
 </Story>
+<Story name="Input with y + y2" let:args>
+	{@const data = Query.create(
+		`
+SELECT COUNT(distinct posts.id) as "Post Count", COUNT(distinct posts.user_id) as "Author Count", tag as hashtag
+FROM posts
+		INNER JOIN post_tags pt ON pt.post_id = posts.id
+		INNER JOIN hashtags h ON h.id = pt.hashtag_id
+        INNER JOIN users u ON u.id = posts.user_id
+GROUP BY ALL
+`,
+		query
+	)}
+
+	<LineChart {...args} name="tag" toggle x="hashtag" y2="Author Count" y="Post Count" {data} />
+
+	{@const depends = Query.create(
+		`
+		SELECT 
+			tag, 
+			gender, 
+			COUNT(distinct p.id) as "Post Count", 
+			COUNT(distinct u.id) as "Author Count"
+		FROM hashtags h
+		INNER JOIN post_tags pt ON pt.hashtag_id = h.id
+		INNER JOIN posts p ON p.id = pt.post_id
+		INNER JOIN users u ON u.id = p.user_id
+		WHERE ${$inputs.tag}
+		GROUP BY ALL
+		`,
+		query
+	)}
+
+	{$inputs.tag['Post Count']}
+
+	{$inputs.tag.label.toString() || 'All'} Post and Authors by Gender
+	<DataTable data={depends} />
+</Story>
+<Story name="Input with series and y + y2" let:args>
+	{@const data = Query.create(
+		`
+SELECT COUNT(distinct posts.id) as "Post Count", COUNT(distinct posts.user_id) as "Author Count", tag as hashtag, gender
+FROM posts
+		INNER JOIN post_tags pt ON pt.post_id = posts.id
+		INNER JOIN hashtags h ON h.id = pt.hashtag_id
+        INNER JOIN users u ON u.id = posts.user_id
+GROUP BY ALL
+`,
+		query
+	)}
+
+	<LineChart
+		{...args}
+		name="tag"
+		toggle
+		x="hashtag"
+		y2="Author Count"
+		y="Post Count"
+		series="gender"
+		{data}
+	/>
+
+	{@const depends = Query.create(
+		`
+		SELECT 
+			tag, 
+			gender, 
+			COUNT(distinct p.id) as "Post Count", 
+			COUNT(distinct u.id) as "Author Count"
+		FROM hashtags h
+		INNER JOIN post_tags pt ON pt.hashtag_id = h.id
+		INNER JOIN posts p ON p.id = pt.post_id
+		INNER JOIN users u ON u.id = p.user_id
+		WHERE ${$inputs.tag}
+		GROUP BY ALL
+		`,
+		query
+	)}
+
+	{$inputs.tag.label.toString() || 'All'} Post and Authors by Gender
+	<DataTable data={depends} />
+</Story>

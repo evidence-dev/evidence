@@ -27,7 +27,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
 	import EmptyChart from './EmptyChart.svelte';
-	import { getInputSetter, setInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { getInputSetter } from '@evidence-dev/sdk/utils/svelte';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -1055,9 +1055,6 @@
 	/** @type {string | undefined} */
 	export let targetColumn = undefined;
 
-	/** @type {'series' | 'x' | 'y'} */
-	export let targetValue = series ? 'series' : 'x';
-
 	/** @type {ReturnType<typeof getInputSetter>} */
 	let setInput = () => {};
 	if (name) {
@@ -1090,39 +1087,51 @@
 				if (!setInput) return;
 				// TODO: Emphasis to be accomplished with a seriesFocus prop that accepts the chart's input
 				if (!name) return;
-				let value;
+				// let value;
 
-				// TODO: Fix Multiple Y Behavior
+				// // TODO: Fix Multiple Y Behavior
 				const isMultiY = y2 || (Array.isArray(y) && y.length > 1);
-				const correctedSeries = isMultiY
-					? event.detail.seriesName.split(' - ').slice(0, -1).join(' - ')
-					: event.detail.seriesName;
+				// const correctedSeries = isMultiY
+				// 	? event.detail.seriesName.split(' - ').slice(0, -1).join(' - ')
+				// 	: event.detail.seriesName;
 
-				const allYColumns = isMultiY
-					? [...(Array.isArray(y) ? y : [y]), y2]
-					: Array.isArray(y)
-						? y
-						: [y];
+				let yCol = y;
+				if (isMultiY) {
+					const allYColumns = isMultiY
+						? [...(Array.isArray(y) ? y : [y]), y2]
+						: Array.isArray(y)
+							? y
+							: [y];
 
-				const targetYIdx = Math.floor(event.detail.seriesIndex % allYColumns.length);
-				const targetY = isMultiY ? allYColumns[targetYIdx] : y;
-
-				switch (targetValue) {
-					case 'x':
-						value = event.detail.data[0];
-						break;
-					case 'y':
-						value = event.detail.data[1];
-						break;
-					default:
-					case 'series':
-						if (isMultiY) {
-							value = correctedSeries;
-						} else {
-							value = event.detail.seriesName;
-						}
-						break;
+					const targetYIdx = Math.floor(event.detail.seriesIndex % allYColumns.length);
+					yCol = allYColumns[targetYIdx];
 				}
+
+				// const allYColumns = isMultiY
+				// 	? [...(Array.isArray(y) ? y : [y]), y2]
+				// 	: Array.isArray(y)
+				// 		? y
+				// 		: [y];
+
+				// const targetYIdx = Math.floor(event.detail.seriesIndex % allYColumns.length);
+				// const targetY = isMultiY ? allYColumns[targetYIdx] : y;
+
+				// switch (targetValue) {
+				// 	case 'x':
+				// 		value = event.detail.data[0];
+				// 		break;
+				// 	case 'y':
+				// 		value = event.detail.data[1];
+				// 		break;
+				// 	default:
+				// 	case 'series':
+				// 		if (isMultiY) {
+				// 			value = correctedSeries;
+				// 		} else {
+				// 			value = event.detail.seriesName;
+				// 		}
+				// 		break;
+				// }
 
 				let col;
 				if (targetColumn) {
@@ -1136,19 +1145,28 @@
 					label = event.detail.seriesName + ' - ' + label;
 				}
 
+				let _series = event.detail.seriesName;
+				if (series && isMultiY) {
+					const zeroWidthSpace = '\u200B';
+					const [selectedSeries, , yTitle] = event.detail.seriesName.split(zeroWidthSpace);
+					_series = selectedSeries;
+					yCol = yTitle;
+				}
 				let sqlFragment = `"${col}" = ${typeof event.detail.data[0] === 'string' ? `'${event.detail.data[0]}'` : event.detail.data[0]}`;
 				if (series) {
-					sqlFragment = `(${sqlFragment} AND "${series}" = '${event.detail.seriesName}')`;
+					sqlFragment = `(${sqlFragment} AND "${series}" = '${_series}')`;
 				}
+				// target series column prop is also needed
 
 				const additionalValue = {
-						[x]: event.detail.data[0],
-						[targetY]: event.detail.data[1],
-						x: event.detail.data[0],
-						y: event.detail.data[1],
-						series: correctedSeries,
-					}
-				if (series) additionalValue[series] = event.detail.seriesName;
+					[x]: event.detail.data[0],
+					[yCol]: event.detail.data[1],
+					x: event.detail.data[0],
+					y: event.detail.data[1],
+					series: _series,
+					yCol: yCol
+				};
+				if (series) additionalValue[series] = _series;
 
 				setInput(event.detail.data[1], {
 					label: label,
