@@ -11,12 +11,6 @@
 			emptyMessage: {
 				control: 'text'
 			},
-			x: {
-				control: 'number'
-			},
-			y: {
-				control: 'number'
-			},
 			label: {
 				control: 'text'
 			},
@@ -57,10 +51,6 @@
 			labelBackground: {
 				control: 'color'
 			}
-		},
-		args: {
-			x: 24,
-			y: 500
 		}
 	};
 </script>
@@ -75,15 +65,51 @@
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 
 	import ReferencePoint from './ReferencePoint.svelte';
+	import DataTable from '../../table/_DataTable.svelte';
+	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
-
-	const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query);
 </script>
 
-<Story name="Basic Usage" let:args>
+<Story
+	name="Basic hardcoded x,y"
+	args={{ x: 24, y: 500, label: 'Whoa look at this data!' }}
+	argTypes={{ x: { control: 'number' }, y: { control: 'number' } }}
+	let:args
+>
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
 	<LineChart x="x" y="y" {data}>
 		<ReferencePoint {...args} />
 	</LineChart>
+</Story>
+
+<Story
+	name="Using dynamic data"
+	args={{ x: 'x', y: 'y', label: 'label' }}
+	argTypes={{ x: { control: 'text' }, y: { control: 'text' } }}
+	let:args
+>
+	{@const chartData = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	{@const referencePointData = Query.create(
+		`
+		SELECT
+			x,
+			y,
+			row_number() over(order by x) as label
+		FROM numeric_series
+		WHERE
+			series='pink' AND
+			x in (30, 50, 70)
+	`,
+		query
+	)}
+
+	<QueryLoad data={chartData}>
+		<LineChart x="x" y="y" data={chartData}>
+			<QueryLoad data={referencePointData}>
+				<ReferencePoint {...args} data={referencePointData} />
+			</QueryLoad>
+		</LineChart>
+	</QueryLoad>
 </Story>

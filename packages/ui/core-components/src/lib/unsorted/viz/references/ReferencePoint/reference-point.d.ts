@@ -9,8 +9,9 @@ export type LabelPosition = MarkPointComponentOption['label']['position'];
 export type Symbol = 'circle' | 'rect' | 'roundRect' | 'triangle' | 'diamond' | 'pin' | 'arrow';
 
 export type ReferencePointStoreState = {
-	x?: number;
-	y?: number;
+	data?: any;
+	x?: number | string;
+	y?: number | string;
 	label?: string;
 	symbol?: Symbol;
 	color: Color;

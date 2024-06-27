@@ -1,6 +1,9 @@
 <!-- TODO include value in label? -->
 <!-- TODO prop for label visible always, only on hover -->
 <!-- TODO prop for label visible during print -->
+<!-- TODO support specifying just x/y and looking up series value for other coord -->
+<!-- TODO support specifying series prop to determine which series to use for lookup ^ -->
+<!-- TODO error handling in store and rendering error here -->
 
 <script context="module">
 	export const evidenceInclude = true;
@@ -21,13 +24,12 @@
 	/** @type {string | undefined} */
 	export let emptyMessage = undefined;
 
-	/** @type {number | undefined} */
+	/** @type {number | string | undefined} */
 	export let x = undefined;
 
-	/** @type {number | undefined} */
+	/** @type {number | string | undefined} */
 	export let y = undefined;
 
-	// TODO implement
 	/** @type {unknown} */
 	export let data = undefined;
 
@@ -66,6 +68,7 @@
 	const store = createReferencePointStore(config);
 
 	$: $store = {
+		data,
 		x,
 		y,
 		label,
