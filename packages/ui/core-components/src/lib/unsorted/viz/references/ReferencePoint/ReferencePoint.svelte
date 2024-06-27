@@ -84,7 +84,7 @@
 {#if $store.error}
 	<ErrorChart error={$store.error} minHeight="50px" {chartType} />
 {:else}
-	<QueryLoad {data} let:loaded>
+	<QueryLoad {data}>
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 		<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
 	</QueryLoad>
