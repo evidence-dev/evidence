@@ -3,15 +3,6 @@ import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
 import { batchedAsyncGeneratorToArray, TypeFidelity } from '@evidence-dev/db-commons';
 
-
-const timezoneInsertedQuery = `select
-  timestamp with time zone '2024-06-27 00:00:00+00' as timestamp_explicit_utc,
-  timestamp with time zone '2024-06-27 02:00:00+02' as timestamp_explicit_berlin,
-  timestamp with time zone '2024-06-26 17:00:00-07' as timestamp_explicit_los_angeles,
-  timestamp without time zone '2024-06-27 00:00:00' as timestamp_implicit_utc,
-  timestamp without time zone '2024-06-27 02:00:00' as timestamp_implicit_berlin,
-  timestamp without time zone '2024-06-26 17:00:00' as timestamp_implicit_los_angeles`;
-
 test('query runs', async () => {
 	try {
 		const { rows: row_generator, columnTypes } = await runQuery(
@@ -87,6 +78,15 @@ test('query batches results properly', async () => {
 		throw Error(e);
 	}
 });
+
+const timezoneInsertedQuery = `select
+  timestamp with time zone '2024-06-27 00:00:00+00' as timestamp_explicit_utc,
+  timestamp with time zone '2024-06-27 02:00:00+02' as timestamp_explicit_berlin,
+  timestamp with time zone '2024-06-26 17:00:00-07' as timestamp_explicit_los_angeles,
+  timestamp without time zone '2024-06-27 00:00:00' as timestamp_implicit_utc,
+  timestamp without time zone '2024-06-27 02:00:00' as timestamp_implicit_berlin,
+  timestamp without time zone '2024-06-26 17:00:00' as timestamp_implicit_los_angeles`;
+
 
 test('timestamps are converted to UTC', async () => {
 	const timeZoneQuery = `select
