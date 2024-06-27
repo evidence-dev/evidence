@@ -1028,7 +1028,7 @@
 				series: [],
 				animation: true,
 				graphic: horizAxisTitleConfig,
-				color: colorPalette,
+				color: colorPalette
 			};
 
 			config.update(() => {
@@ -1073,7 +1073,7 @@
 		/>
 	{/if}
 	{#if link}
-	<InvisibleLinks {data} {link} />
+		<InvisibleLinks {data} {link} />
 	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />

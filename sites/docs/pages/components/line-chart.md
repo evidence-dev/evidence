@@ -175,6 +175,38 @@ group by all
 />
 ```
 
+### Links
+
+``` category
+SELECT category, order_month AS month, sum(sales) as sales, CONCAT('/categories/', category) as category_url
+FROM needful_things.orders
+group by all
+ORDER BY month, category
+limit 250
+```
+
+Double Click on datapoints to travel to Link
+
+<LineChart 
+    data={category}
+    x=month
+    y=sales
+    series=category
+    title="Sales by Category"
+    link=category_url
+/>
+
+```markdown
+<LineChart 
+    data={category}
+    x=month
+    y=sales
+    series=category
+    title="Sales by Category"
+    link=category_url
+/>
+```
+
 
 ### Custom Color Palette
 
@@ -313,6 +345,14 @@ group by all
     description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
     options="string"
 />
+<PropListing
+    name="link"
+    options="column name"
+>
+
+Column containing links. When supplied, enables double-clicking on chart data points to navigate directly to the associated link. 
+
+</PropListing>
 
 ### Formatting & Styling
 

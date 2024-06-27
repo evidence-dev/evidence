@@ -200,7 +200,6 @@
 		tooltipTitle,
 		undefined,
 		link
-
 	);
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);

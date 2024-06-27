@@ -64,9 +64,8 @@
 		labelFormat = getFormatObjectFromString(labelFmt);
 	}
 	export let showAllLabels = false;
-	
-	export let link
 
+	export let link;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;

@@ -65,6 +65,42 @@ queries:
 />
 ```
 
+### Links
+
+``` category
+SELECT
+    item,
+    category,
+    sum(sales) as total_sales,
+    count(*) as number_of_units,
+    avg(sales) as price,
+    CONCAT('/categories/', category) as category_url
+FROM needful_things.orders
+GROUP BY item, category
+```
+
+Double Click on datapoints to travel to Link
+
+<BubbleChart 
+    data={category}
+    x=price
+    y=number_of_units
+    series=category
+    size=total_sales
+    link=category_url
+/>
+
+```markdown
+<BubbleChart 
+    data={category}
+    x=price
+    y=number_of_units
+    series=category
+    size=total_sales
+    link=category_url
+/>
+```
+
 ## Options
 
 ### Data
@@ -128,6 +164,14 @@ queries:
     options="string"
     defaultValue='No records'
 />
+<PropListing
+    name="link"
+    options="column name"
+>
+
+Column containing links. When supplied, enables double-clicking on chart data points to navigate directly to the associated link. 
+
+</PropListing>
 
 ### Formatting & Styling
 

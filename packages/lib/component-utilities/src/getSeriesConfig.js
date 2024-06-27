@@ -106,8 +106,8 @@ export default function getSeriesConfig(
 
 			// Append link label if supplied:
 			if (link) {
-			let linkData = filteredData.map((d) => d[link]);
-			seriesData.forEach((item, index) => item.push(linkData[index]));
+				let linkData = filteredData.map((d) => d[link]);
+				seriesData.forEach((item, index) => item.push(linkData[index]));
 			}
 
 			// Set series name:
@@ -155,8 +155,8 @@ export default function getSeriesConfig(
 
 				// Append link label if supplied:
 				if (link) {
-				let linkData = filteredData.map((d) => d[link]);
-				seriesData.forEach((item, index) => item.push(linkData[index]));
+					let linkData = filteredData.map((d) => d[link]);
+					seriesData.forEach((item, index) => item.push(linkData[index]));
 				}
 
 				// Set series name:
@@ -194,8 +194,8 @@ export default function getSeriesConfig(
 
 			// Append link label if supplied:
 			if (link) {
-			let linkData = data.map((d) => d[link]);
-			seriesData.forEach((item, index) => item.push(linkData[index]));
+				let linkData = data.map((d) => d[link]);
+				seriesData.forEach((item, index) => item.push(linkData[index]));
 			}
 
 			seriesName = columnSummary[yList[i][0]].title;

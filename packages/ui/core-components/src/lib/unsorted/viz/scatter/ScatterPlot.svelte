@@ -64,7 +64,7 @@
 
 	export let connectGroup = undefined;
 
-	export let link
+	export let link;
 </script>
 
 <Chart

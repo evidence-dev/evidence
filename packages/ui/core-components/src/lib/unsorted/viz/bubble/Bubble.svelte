@@ -35,7 +35,7 @@
 	export let useTooltip = false;
 	export let tooltipTitle;
 
-	export let link
+	export let link;
 
 	let multiSeries;
 	let tooltipOutput;
