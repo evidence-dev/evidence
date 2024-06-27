@@ -108,7 +108,6 @@ test('timestamps are converted to UTC', async () => {
 	});
 	const rows = await batchedAsyncGeneratorToArray(row_generator);
 	const result = rows[0];
-	console.log('result', result);
 	// All these should give the same result
 	assert.equal(
 		result.timestamp_explicit_utc.getTime(),
