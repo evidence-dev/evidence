@@ -3,6 +3,15 @@ import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
 import { batchedAsyncGeneratorToArray, TypeFidelity } from '@evidence-dev/db-commons';
 
+
+const timezoneInsertedQuery = `select
+  timestamp with time zone '2024-06-27 00:00:00+00' as timestamp_explicit_utc,
+  timestamp with time zone '2024-06-27 02:00:00+02' as timestamp_explicit_berlin,
+  timestamp with time zone '2024-06-26 17:00:00-07' as timestamp_explicit_los_angeles,
+  timestamp without time zone '2024-06-27 00:00:00' as timestamp_implicit_utc,
+  timestamp without time zone '2024-06-27 02:00:00' as timestamp_implicit_berlin,
+  timestamp without time zone '2024-06-26 17:00:00' as timestamp_implicit_los_angeles`;
+
 test('query runs', async () => {
 	try {
 		const { rows: row_generator, columnTypes } = await runQuery(
@@ -78,5 +87,62 @@ test('query batches results properly', async () => {
 		throw Error(e);
 	}
 });
+
+test('timestamps are converted to UTC', async () => {
+	const timeZoneQuery = `select
+		timestamp_explicit_utc,
+		timestamp_explicit_berlin,
+		timestamp_explicit_los_angeles,
+		timestamp_implicit_utc AT TIME ZONE 'UTC' as timestamp_implicit_utc_converted,
+		timestamp_implicit_berlin AT TIME ZONE 'Europe/Berlin' as timestamp_implicit_berlin_converted,
+		timestamp_implicit_los_angeles AT TIME ZONE 'America/Los_Angeles' as timestamp_implicit_los_angeles_converted
+		from (${timezoneInsertedQuery})`;
+
+	const { rows: row_generator, columnTypes } = await runQuery(timeZoneQuery, {
+		host: process.env.POSTGRES_HOST,
+		password: process.env.POSTGRES_PASSWORD,
+		database: process.env.POSTGRES_DATABASE,
+		user: process.env.POSTGRES_USER,
+		port: process.env.POSTGRES_PORT,
+		ssl: process.env.POSTGRES_SSL
+	});
+	const rows = await batchedAsyncGeneratorToArray(row_generator);
+	const result = rows[0];
+	console.log('result', result);
+	// All these should give the same result
+	assert.equal(
+		result.timestamp_explicit_utc.getTime(),
+		new Date('2024-06-27T00:00:00Z').getTime(),
+		'Explicit UTC timestamps should remain the same'
+	);
+	assert.equal(
+		result.timestamp_explicit_berlin.getTime(),
+		new Date('2024-06-27T00:00:00Z').getTime(),
+		'Explicit Berlin timestamps should be converted to UTC'
+	);
+	assert.equal(
+		result.timestamp_explicit_los_angeles.getTime(),
+		new Date('2024-06-27T00:00:00Z').getTime(),
+		'Explicit Los Angeles timestamps should be converted to UTC'
+	);
+	assert.equal(
+		result.timestamp_implicit_utc_converted.getTime(),
+		new Date('2024-06-27T00:00:00Z').getTime(),
+		'Implicit UTC timestamps should be converted to UTC by the user query'
+	);
+	assert.equal(
+		result.timestamp_implicit_berlin_converted.getTime(),
+		new Date('2024-06-27T00:00:00Z').getTime(),
+		'Implicit Berlin timestamps should be converted to UTC by the user query'
+	);
+	assert.equal(
+		result.timestamp_implicit_los_angeles_converted.getTime(),
+		new Date('2024-06-27T00:00:00Z').getTime(),
+		'Implicit Los Angeles timestamps should be converted to UTC by the user query'
+	);
+});
+
+
+
 
 test.run();
