@@ -20,6 +20,7 @@ export type ReferencePointStoreState = {
 	symbolSize: number;
 	labelPosition: LabelPosition;
 	labelBackground: string;
+	labelVisible: 'always' | 'hover';
 };
 
 export type ReferencePointStore = Writable<ReferencePointStoreState>;

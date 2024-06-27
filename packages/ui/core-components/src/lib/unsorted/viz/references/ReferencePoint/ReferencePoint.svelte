@@ -1,5 +1,3 @@
-<!-- TODO prop for label visible always, only on hover -->
-<!-- TODO prop for label visible during print -->
 <!-- TODO support specifying just x/y and looking up series value for other coord -->
 <!-- TODO support specifying series prop to determine which series to use for lookup ^ -->
 <!-- TODO error handling in store and rendering error here -->
@@ -58,6 +56,9 @@
 	/** @type {string} */
 	export let labelBackground = 'hsla(360, 100%, 100%, 0.7)';
 
+	/** @type {'always' | 'hover'} */
+	export let labelVisible = 'always';
+
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 	$: isInitial = Query.isQuery(data) && data.hash === initialHash;
 
@@ -77,7 +78,8 @@
 		symbolColor,
 		symbolSize,
 		labelPosition,
-		labelBackground
+		labelBackground,
+		labelVisible
 	};
 </script>
 

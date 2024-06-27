@@ -19,7 +19,7 @@ export const createReferencePointStore = (configStore) => {
 	const set = (state) => {
 		const { labelColor, symbolColor } = getLineAndSymbolColors(state);
 
-		const { data, x, y, label } = state;
+		const { data, x, y, label, labelVisible } = state;
 
 		/** @type {Partial<import('echarts').MarkPointComponentOption['data'][number]>} */
 		const seriesDataCommon = {
@@ -61,19 +61,30 @@ export const createReferencePointStore = (configStore) => {
 			// Log here saying user must provide data or x/y?
 		}
 
-		/** @type {import('echarts').SeriesOption & { evidenceSeriesType: 'reference_point' }} */
+		/** @type {import('echarts').LineSeriesOption['markPoint']['label']} */
+		const labelStyle = {
+			position: state.labelPosition,
+			color: labelColor,
+			backgroundColor: state.labelBackground
+		};
+
+		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */
 		const series = {
 			evidenceSeriesType: 'reference_point',
 			id,
 			type: 'line',
 			markPoint: {
 				data: seriesData,
-				silent: true,
+				silent: false,
 				label: {
-					show: true,
-					position: state.labelPosition,
-					color: labelColor,
-					backgroundColor: state.labelBackground
+					show: labelVisible === 'always',
+					...labelStyle
+				},
+				emphasis: {
+					label: {
+						show: true,
+						...labelStyle
+					}
 				}
 			}
 		};

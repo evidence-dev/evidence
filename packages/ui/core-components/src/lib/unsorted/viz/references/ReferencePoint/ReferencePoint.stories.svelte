@@ -50,6 +50,10 @@
 			},
 			labelBackground: {
 				control: 'color'
+			},
+			labelVisible: {
+				control: 'select',
+				options: ['always', 'hover']
 			}
 		}
 	};
@@ -65,7 +69,6 @@
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 
 	import ReferencePoint from './ReferencePoint.svelte';
-	import DataTable from '../../table/_DataTable.svelte';
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	const inputStore = writable({});
@@ -74,7 +77,7 @@
 
 <Story
 	name="Basic hardcoded x,y"
-	args={{ x: 24, y: 500, label: 'Whoa look at this data!' }}
+	args={{ x: 24, y: 514, label: 'Whoa look at this data!' }}
 	argTypes={{ x: { control: 'number' }, y: { control: 'number' } }}
 	let:args
 >
