@@ -44,6 +44,7 @@ export const updateManifest = async (updatedManifest, dataDir) => {
 	if (existingManifest) {
 		for (const schema of Object.keys(updatedManifest.locatedFiles)) {
 			if (!(schema in existingManifest.renderedFiles)) {
+				finalManifest.renderedFiles[schema] = updatedManifest.renderedFiles[schema];
 				continue;
 			}
 			const locatedQueries = updatedManifest.locatedFiles[schema];
