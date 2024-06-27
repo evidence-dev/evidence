@@ -81,7 +81,11 @@
 	};
 </script>
 
-<QueryLoad {data} let:loaded>
-	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
-</QueryLoad>
+{#if $store.error}
+	<ErrorChart error={$store.error} minHeight="50px" {chartType} />
+{:else}
+	<QueryLoad {data} let:loaded>
+		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
+		<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+	</QueryLoad>
+{/if}

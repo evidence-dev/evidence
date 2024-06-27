@@ -23,7 +23,7 @@ export type ReferencePointStoreState = {
 	labelVisible: 'always' | 'hover';
 };
 
-export type ReferencePointStore = Writable<ReferencePointStoreState>;
+export type ReferencePointStore = Writable<ReferencePointStoreState> & Readable<{ error?: string }>;
 
 export type ReferencePointChartData = MarkPointComponentOption['data'][number] & {
 	evidenceSeriesType: 'reference_point';

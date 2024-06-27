@@ -116,3 +116,11 @@
 		</LineChart>
 	</QueryLoad>
 </Story>
+
+<!-- Specifying x without y -->
+<Story name="Error" args={{ x: 24 }} let:args>
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	<LineChart x="x" y="y" {data}>
+		<ReferencePoint {...args} />
+	</LineChart>
+</Story>
