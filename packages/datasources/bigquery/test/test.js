@@ -167,4 +167,61 @@ test('query batches results properly', async () => {
 	assert.equal(expectedRowCount, 5);
 });
 
+const timezoneInsertedQuery = `select
+  timestamp '2024-06-27 00:00:00 UTC' as timestamp_explicit_utc,
+  timestamp '2024-06-27 02:00:00 Europe/Berlin' as timestamp_explicit_berlin,
+  timestamp '2024-06-26 17:00:00 America/Los_Angeles' as timestamp_explicit_los_angeles,
+  timestamp '2024-06-27 00:00:00'    as timestamp_implicit_utc,
+  timestamp '2024-06-27 02:00:00'    as timestamp_implicit_berlin,
+  timestamp '2024-06-26 17:00:00'    as timestamp_implicit_los_angeles`;
+
+
+test('timestamps are converted to UTC', async () => {
+	const timeZoneQuery = `select
+		timestamp_explicit_utc,
+		timestamp_explicit_berlin,
+		timestamp_explicit_los_angeles,
+		timestamp(datetime(timestamp_implicit_utc), 'UTC') as timestamp_implicit_utc_converted,
+		timestamp(datetime(timestamp_implicit_berlin), 'Europe/Berlin') as timestamp_implicit_berlin_converted,
+		timestamp(datetime(timestamp_implicit_los_angeles), 'America/Los_Angeles') as timestamp_implicit_los_angeles_converted
+		from (${timezoneInsertedQuery})`;
+	const { rows: row_generator, columnTypes } = await runQuery(timeZoneQuery, {
+		project_id: process.env.BIGQUERY_PROJECT_ID,
+		client_email: process.env.BIGQUERY_CLIENT_EMAIL,
+		private_key: process.env.BIGQUERY_PRIVATE_KEY
+	});
+	const rows = await batchedAsyncGeneratorToArray(row_generator);
+	const result = rows[0];
+	// All these should give the same result
+	assert.equal(
+		result.timestamp_explicit_utc.getTime(),
+		new Date('2024-06-27T00:00:00.000Z').getTime(),
+		'Explicit UTC timestamps should remain the same'
+	);
+	assert.equal(
+		result.timestamp_explicit_berlin.getTime(),
+		new Date('2024-06-27T00:00:00.000Z').getTime(),
+		'Explicit Berlin timestamps should be converted to UTC'
+	);
+	assert.equal(
+		result.timestamp_explicit_los_angeles.getTime(),
+		new Date('2024-06-27T00:00:00.000Z').getTime(),
+		'Explicit Los Angeles timestamps should be converted to UTC'
+	);
+	assert.equal(
+		result.timestamp_implicit_utc_converted.getTime(),
+		new Date('2024-06-27T00:00:00.000Z').getTime(),
+		'Implicit UTC timestamps should remain the same when converted by the user query'
+	);
+	assert.equal(
+		result.timestamp_implicit_berlin_converted.getTime(),
+		new Date('2024-06-27T00:00:00.000Z').getTime(),
+		'Implicit Berlin timestamps should be convertable to UTC by the user query'
+	);
+	assert.equal(
+		result.timestamp_implicit_los_angeles_converted.getTime(),
+		new Date('2024-06-27T00:00:00.000Z').getTime(),
+		'Implicit Los Angeles timestamps should be convertable to UTC by the user query'
+	);
+});
 test.run();
