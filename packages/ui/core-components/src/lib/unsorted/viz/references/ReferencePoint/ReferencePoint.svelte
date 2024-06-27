@@ -1,5 +1,3 @@
-<!-- TODO support specifying just x/y and looking up series value for other coord -->
-<!-- TODO support specifying series prop to determine which series to use for lookup ^ -->
 <!-- TODO error handling in store and rendering error here -->
 
 <script context="module">
