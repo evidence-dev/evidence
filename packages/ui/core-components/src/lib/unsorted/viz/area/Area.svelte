@@ -64,6 +64,9 @@
 		labelFormat = getFormatObjectFromString(labelFmt);
 	}
 	export let showAllLabels = false;
+	
+	export let link
+
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
@@ -75,6 +78,7 @@
 	$: xMismatch = $props.xMismatch;
 	$: columnSummary = $props.columnSummary;
 	$: series = seriesSet ? series : $props.series;
+	$: link = link ?? $props.link;
 
 	let stackName;
 	$: if (!series && typeof y !== 'object') {
@@ -155,7 +159,11 @@
 		baseConfig,
 		name,
 		xMismatch,
-		columnSummary
+		columnSummary,
+		undefined,
+		undefined,
+		undefined,
+		link
 	);
 
 	$: config.update((d) => {

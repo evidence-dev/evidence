@@ -27,6 +27,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
 	import EmptyChart from './EmptyChart.svelte';
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -1028,8 +1029,6 @@
 				animation: true,
 				graphic: horizAxisTitleConfig,
 				color: colorPalette,
-				// passing link
-				link: link
 			};
 
 			config.update(() => {
@@ -1072,6 +1071,9 @@
 			{connectGroup}
 			{seriesColors}
 		/>
+	{/if}
+	{#if link}
+	<InvisibleLinks {data} {link} />
 	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />

@@ -64,6 +64,7 @@
 	export let seriesColors = undefined;
 
 	export let connectGroup = undefined;
+	export let link
 </script>
 
 <Chart
@@ -107,6 +108,7 @@
 	{renderer}
 	{connectGroup}
 	{seriesColors}
+	{link}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
 	<slot />

@@ -112,6 +112,18 @@ export default (node, option) => {
 	chart.on('click', function (params) {
 		dispatch('click', params);
 	});
+	
+	chart.on('dblclick', function (params) {
+		//This may need tweaking to handle future charts, consideration, change bubble from scatter to bubble name in params
+		//Bubble date, value and size property at index 0,1,2 so link gets pushed into index 3
+		if(params.dimensionNames.length === 4 ) {
+			window.location = params.data[3];
+		} else {
+			//otherwise all other charts thusfar links are at index 2
+			window.location = params.data[2];
+		}
+		dispatch('dblclick', params);
+	});
 
 	// Resize logic:
 	const containerElement = document.getElementById('evidence-main-article');
