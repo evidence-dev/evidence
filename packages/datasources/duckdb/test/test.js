@@ -211,7 +211,7 @@ const timezoneInsertedQuery = `select
   timestamp without time zone '2024-06-27 02:00:00' as timestamp_implicit_berlin,
   timestamp without time zone '2024-06-26 17:00:00' as timestamp_implicit_los_angeles`;
 
-  test('timestamps are converted to UTC', async () => {
+test('timestamps are converted to UTC', async () => {
 	const timeZoneQuery = `select
 		timestamp_explicit_utc,
 		timestamp_explicit_berlin,
@@ -256,6 +256,5 @@ const timezoneInsertedQuery = `select
 		'Implicit Los Angeles timestamps should be converted to UTC by the user query'
 	);
 });
-
 
 test.run();
