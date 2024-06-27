@@ -1,5 +1,3 @@
-<!-- TODO error handling in store and rendering error here -->
-
 <script context="module">
 	export const evidenceInclude = true;
 </script>
