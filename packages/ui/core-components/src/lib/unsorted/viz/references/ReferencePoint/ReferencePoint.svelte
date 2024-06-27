@@ -1,4 +1,3 @@
-<!-- TODO include value in label? -->
 <!-- TODO prop for label visible always, only on hover -->
 <!-- TODO prop for label visible during print -->
 <!-- TODO support specifying just x/y and looking up series value for other coord -->
