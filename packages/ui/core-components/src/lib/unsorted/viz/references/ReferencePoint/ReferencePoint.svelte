@@ -30,15 +30,21 @@
 	/** @type {string | undefined} */
 	export let label = undefined;
 
-	/** @type {import('./reference-point.d.ts').Symbol}*/
+	/**
+	 * @type {import('./reference-point.d.ts').Symbol}
+	 * @default "circle"
+	 */
 	export let symbol = 'circle';
 
-	/** @type {number | string} */
+	/**
+	 * @type {number | string}
+	 * @default 8
+	 */
 	export let symbolSize = 8;
 	$: symbolSize = toNumber(symbolSize);
 
-	/** @type {number | string} */
-	export let symbolOpacity = 1;
+	/** @type {number | string | undefined} */
+	export let symbolOpacity = undefined;
 	$: symbolOpacity = toNumber(symbolOpacity);
 
 	/** @type {number | string | undefined} */
@@ -48,7 +54,10 @@
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
 
-	/** @type {import('../colors.js').Color} */
+	/**
+	 * @type {import('../colors.js').Color}
+	 * @default "gray"
+	 */
 	export let color = 'gray';
 
 	/** @type {import('../colors.js').Color | undefined} */
@@ -61,10 +70,16 @@
 	export let labelWidth = undefined;
 	$: labelWidth = toNumber(labelWidth);
 
-	/** @type {import('./reference-point.d.ts').LabelPosition} */
+	/**
+	 * @type {import('./reference-point.d.ts').LabelPosition}
+	 * @default "top"
+	 */
 	export let labelPosition = 'top';
 
-	/** @type {string} */
+	/**
+	 * @type {string}
+	 * @default "hsla(360, 100%, 100%, 0.7)"
+	 */
 	export let labelBackground = 'hsla(360, 100%, 100%, 0.7)';
 
 	/** @type {number | string | undefined} */
@@ -81,14 +96,17 @@
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined}*/
 	export let labelBorderType = undefined;
 
-	/** @type {'always' | 'hover'} */
+	/**
+	 * @type {'always' | 'hover'}
+	 * @default "always"
+	 */
 	export let labelVisible = 'always';
 
 	/** @type {number | string | undefined}*/
 	export let fontSize = undefined;
 	$: fontSize = toNumber(fontSize);
 
-	/** @type {'left' | 'center' | 'right' | undefined}*/
+	/** @type {'left' | 'center' | 'right' | undefined} */
 	export let align = undefined;
 
 	/** @type {boolean | undefined} */
