@@ -108,9 +108,10 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
+	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	import ReferencePoint from './ReferencePoint.svelte';
-	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
+	import Callout from './Callout.svelte';
 
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
@@ -175,5 +176,12 @@
 	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
 	<LineChart x="x" y="y" {data}>
 		<ReferencePoint {...args} />
+	</LineChart>
+</Story>
+
+<Story id="callout" name="Callout" args={{ x: 24, y: 514, label: 'This is a Callout!' }} let:args>
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	<LineChart x="x" y="y" {data}>
+		<Callout {...args} />
 	</LineChart>
 </Story>

@@ -1,3 +1,5 @@
+<!-- When adding/removing props here, make sure to change them in Callout.svelte as well -->
+
 <script context="module">
 	export const evidenceInclude = true;
 </script>
@@ -12,7 +14,7 @@
 	import { createReferencePointStore } from './reference-point.store.js';
 	import { toNumber } from '../../../../utils.js';
 
-	/** @type {'pass' | 'warn' | 'error'}*/
+	/** @type {'pass' | 'warn' | 'error'} */
 	export let emptySet = undefined;
 
 	/** @type {string | undefined} */
@@ -70,7 +72,7 @@
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
 
-	/** @type {'solid' | 'dotted' | 'dashed' | undefined}*/
+	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
 
 	/**
@@ -79,7 +81,7 @@
 	 */
 	export let labelVisible = 'always';
 
-	/** @type {number | string | undefined}*/
+	/** @type {number | string | undefined} */
 	export let fontSize = undefined;
 	$: fontSize = toNumber(fontSize);
 
@@ -126,7 +128,9 @@
 	let slotElement = undefined;
 	$: label = label ?? slotElement?.textContent;
 
-	const chartType = 'Reference Point';
+	// The chartType prop is only used here to allow Callout to use this component
+	// chartType shouldnt be used by consumers of Evidence
+	const chartType = $$props.chartType ?? 'Reference Point';
 
 	const config = getConfigContext();
 	const store = createReferencePointStore(config);
