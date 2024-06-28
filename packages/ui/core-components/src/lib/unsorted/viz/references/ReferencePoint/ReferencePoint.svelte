@@ -27,44 +27,17 @@
 	/** @type {unknown} */
 	export let data = undefined;
 
-	/** @type {string | undefined} */
-	export let label = undefined;
-
-	/**
-	 * @type {import('./reference-point.d.ts').Symbol}
-	 * @default "circle"
-	 */
-	export let symbol = 'circle';
-
-	/**
-	 * @type {number | string}
-	 * @default 8
-	 */
-	export let symbolSize = 8;
-	$: symbolSize = toNumber(symbolSize);
-
-	/** @type {number | string | undefined} */
-	export let symbolOpacity = undefined;
-	$: symbolOpacity = toNumber(symbolOpacity);
-
-	/** @type {number | string | undefined} */
-	export let symbolBorderWidth = undefined;
-	$: symbolBorderWidth = toNumber(symbolBorderWidth);
-
-	/** @type {string | undefined} */
-	export let symbolBorderColor = undefined;
-
 	/**
 	 * @type {import('../colors.js').Color}
 	 * @default "gray"
 	 */
 	export let color = 'gray';
 
-	/** @type {import('../colors.js').Color | undefined} */
-	export let labelColor = undefined;
+	/** @type {string | undefined} */
+	export let label = undefined;
 
 	/** @type {import('../colors.js').Color | undefined} */
-	export let symbolColor = undefined;
+	export let labelColor = undefined;
 
 	/** @type {number | string | undefined} */
 	export let labelWidth = undefined;
@@ -114,6 +87,33 @@
 
 	/** @type {boolean | undefined} */
 	export let italic = undefined;
+
+	/**
+	 * @type {import('./reference-point.d.ts').Symbol}
+	 * @default "circle"
+	 */
+	export let symbol = 'circle';
+
+	/** @type {import('../colors.js').Color | undefined} */
+	export let symbolColor = undefined;
+
+	/**
+	 * @type {number | string}
+	 * @default 8
+	 */
+	export let symbolSize = 8;
+	$: symbolSize = toNumber(symbolSize);
+
+	/** @type {number | string | undefined} */
+	export let symbolOpacity = undefined;
+	$: symbolOpacity = toNumber(symbolOpacity);
+
+	/** @type {number | string | undefined} */
+	export let symbolBorderWidth = undefined;
+	$: symbolBorderWidth = toNumber(symbolBorderWidth);
+
+	/** @type {string | undefined} */
+	export let symbolBorderColor = undefined;
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 	$: isInitial = Query.isQuery(data) && data.hash === initialHash;

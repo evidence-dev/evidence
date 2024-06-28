@@ -11,32 +11,13 @@
 			emptyMessage: {
 				control: 'text'
 			},
-			label: {
-				control: 'text'
-			},
-			symbol: {
-				control: 'select',
-				options: ['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none']
-			},
-			symbolSize: {
-				control: 'number'
-			},
-			symbolOpacity: {
-				control: 'number'
-			},
-			symbolBorderWidth: {
-				control: 'number'
-			},
-			symbolBorderColor: {
-				control: 'color'
-			},
 			color: {
 				control: 'color'
 			},
-			labelColor: {
-				control: 'color'
+			label: {
+				control: 'text'
 			},
-			symbolColor: {
+			labelColor: {
 				control: 'color'
 			},
 			labelWidth: {
@@ -92,6 +73,25 @@
 			},
 			italic: {
 				control: 'boolean'
+			},
+			symbol: {
+				control: 'select',
+				options: ['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none']
+			},
+			symbolColor: {
+				control: 'color'
+			},
+			symbolSize: {
+				control: 'number'
+			},
+			symbolOpacity: {
+				control: 'number'
+			},
+			symbolBorderWidth: {
+				control: 'number'
+			},
+			symbolBorderColor: {
+				control: 'color'
 			}
 		}
 	};
