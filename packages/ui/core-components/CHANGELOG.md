@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 4.5.4
+
+### Patch Changes
+
+- cb3f17c9e: Fix reactively updating ReferenceLine x/y value
+- 1009026e8: Fix regression in Tabs where label always overrides id
+- 3a1e1d664: Fix dynamically generated tabs from a query
+  - @evidence-dev/component-utilities@3.2.4
+
 ## 4.5.3
 
 ### Patch Changes

@@ -1,5 +1,22 @@
 # @evidence-dev/evidence
 
+## 38.1.2
+
+### Patch Changes
+
+- 6e184f95e: Fixed optimizeDeps firing on dev server start. Removed dead package
+- 69bd76b47: Fix HMR
+- Updated dependencies [cb3f17c9e]
+- Updated dependencies [1009026e8]
+- Updated dependencies [20af8e6b6]
+- Updated dependencies [3a1e1d664]
+- Updated dependencies [55bc6a52b]
+- Updated dependencies [e8a5d9964]
+  - @evidence-dev/core-components@4.5.4
+  - @evidence-dev/sdk@1.3.4
+  - @evidence-dev/component-utilities@3.2.4
+  - @evidence-dev/plugin-connector@2.1.5
+
 ## 38.1.1
 
 ### Patch Changes
