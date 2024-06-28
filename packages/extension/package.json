@@ -377,21 +377,24 @@
 					"description": "Enable or disable SQL autocomplete."
 				},
 				"evidence.sqlAcceptSuggestionsOnEnter": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Accept suggestions on Enter in SQL blocks."
-                },
-                "evidence.slashCommandsAcceptSuggestionsOnEnter": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Accept suggestions on Enter for slash commands."
-                },
+					"type": "boolean",
+					"default": false,
+					"description": "Accept suggestions on Enter in SQL blocks."
+				},
+				"evidence.slashCommandsAcceptSuggestionsOnEnter": {
+					"type": "boolean",
+					"default": true,
+					"description": "Accept suggestions on Enter for slash commands."
+				},
 				"evidence.sqlKeywordSuggestionCase": {
-                    "type": "string",
-                    "enum": ["uppercase", "lowercase"],
-                    "default": "lowercase",
-                    "description": "Choose whether SQL keyword suggestions should be in uppercase or lowercase"
-                }
+					"type": "string",
+					"enum": [
+						"uppercase",
+						"lowercase"
+					],
+					"default": "lowercase",
+					"description": "Choose whether SQL keyword suggestions should be in uppercase or lowercase"
+				}
 			}
 		},
 		"languages": [

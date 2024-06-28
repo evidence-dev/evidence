@@ -25,7 +25,7 @@ let _activePort: number = <number>getConfig(Settings.DefaultPort);
 
 // Set a context key
 const setContext = (key: any, value: any) => {
-    commands.executeCommand('setContext', key, value);
+	commands.executeCommand('setContext', key, value);
 };
 
 /**
