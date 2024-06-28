@@ -1,5 +1,25 @@
 # @evidence-dev/core-components
 
+## 4.5.3
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.3
+
+## 4.5.2
+
+### Patch Changes
+
+- 0bb7718a2: Added url prop to Big value Component
+- d6b25b02c: Fix source query triggering HMR on the page
+- 6cdedceb0: Remove db-orchestrator
+- df9159f2b: Added a new <QueryDebugger/> component to ease investigation into which queries have run on the page
+- 9982970fd: Support dynamic title inputs in accordions
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/component-utilities@3.2.2
+  - @evidence-dev/icons@1.0.1
+  - @evidence-dev/tailwind@2.1.1
+
 ## 4.5.1
 
 ### Patch Changes

@@ -1,5 +1,30 @@
 # @evidence-dev/sdk
 
+## 1.3.3
+
+### Patch Changes
+
+- 244c795be: Remove postinstall script
+
+## 1.3.2
+
+### Patch Changes
+
+- b84ef07ac: Add buildOptions.batchSize to connection.yaml spec
+- c14bc0a66: Added specific updates to manifest support
+- c14bc0a66: Added concept of locatedFiles to manifest
+- f15071659: Added plugins/datasources export to SDK
+- d6b25b02c: Fix source query triggering HMR on the page
+- 93a838ca2: Added legacy compatibility functionality to getEvidenceConfig
+- df9159f2b: Added queryCreated event and query time fields to Query
+- 3daa83ffc: Fixed issue with nested directories in sources
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/universal-sql@2.1.3
+  - @evidence-dev/telemetry@2.1.1
+  - @evidence-dev/icons@1.0.1
+
 ## 1.3.1
 
 ### Patch Changes

@@ -1,5 +1,33 @@
 # evidence-docs
 
+## 0.0.12
+
+### Patch Changes
+
+- @evidence-dev/evidence@38.1.1
+- @evidence-dev/component-utilities@3.2.3
+- @evidence-dev/core-components@4.5.3
+
+## 0.0.11
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [0bb7718a2]
+- Updated dependencies [e74affd64]
+- Updated dependencies [a08542924]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [6cdedceb0]
+- Updated dependencies [38c669d2e]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [9982970fd]
+  - @evidence-dev/core-components@4.5.2
+  - @evidence-dev/duckdb@1.0.11
+  - @evidence-dev/evidence@38.1.0
+  - @evidence-dev/csv@1.0.12
+  - @evidence-dev/faker-datasource@2.1.3
+  - @evidence-dev/component-utilities@3.2.2
+
 ## 0.0.10
 
 ### Patch Changes
