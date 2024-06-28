@@ -45,7 +45,7 @@ export const subSourceVariables = (queryString) => {
 	return output;
 };
 
-process.env.EVIDENCE_VAR__var_a = 'abc';   // "hack", usually already set in the calling environment
+process.env.EVIDENCE_VAR__var_a = 'abc'; // "hack", usually already set in the calling environment
 process.env.EVIDENCE_VAR__var_b = 'def';
 process.env.EVIDENCE_VAR__var_c = 'ghi';
 
