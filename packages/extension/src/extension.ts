@@ -544,7 +544,14 @@ const duckdbFunctions = [
 		snippet:
 			'CASE\n\tWHEN ${1:expr} THEN ${2:value}\n\tELSE ${3:fallback_value}\nEND AS ${4:alias}',
 		documentation: 'Conditional statement'
-	}
+	},
+	{
+		name: 'EXCLUDE',
+		detail: 'EXCLUDE (column)',
+		snippet: 'EXCLUDE (${1:column})',
+		documentation:
+			'Exclude specific columns - use after a select *'
+	},
 ];
 
 const duckdbCompletionItems = duckdbKeywords.map((keyword) => {
