@@ -40,17 +40,41 @@ export const updateManifest = async (updatedManifest, dataDir) => {
 		console.warn(chalk.yellow('[!] No queries were located, operation was a was no-op'));
 		return updatedManifest;
 	}
+	if (!updatedManifest.locatedSchemas) {
+		console.warn(chalk.yellow('[!] No sources were located, operation was a was no-op'));
+		return updatedManifest;
+	}
 
 	if (existingManifest) {
-		for (const schema of Object.keys(updatedManifest.locatedFiles)) {
+		for (const schema of updatedManifest.locatedSchemas) {
+			console.debug("  Updating schema '" + schema + "'");
 			if (!(schema in existingManifest.renderedFiles)) {
+				console.debug('  | Schema is new');
+				console.debug(
+					`  |   ${updatedManifest.renderedFiles[schema].length} ${updatedManifest.renderedFiles[schema].length === 1 ? 'query' : 'queries'} will be added`
+				);
 				finalManifest.renderedFiles[schema] = updatedManifest.renderedFiles[schema];
 				continue;
+			} else {
+				console.debug('  | Schema exists already');
 			}
 			const locatedQueries = updatedManifest.locatedFiles[schema];
+			if (!locatedQueries?.length) {
+				console.debug('  | No queries were located, but schema exists already');
+				console.debug('  |   Previous files will be kept');
+				continue;
+			}
+			console.debug(
+				`  | ${locatedQueries.length} ${locatedQueries.length === 1 ? 'query' : 'queries'} found`
+			);
+			locatedQueries.forEach((q) => console.debug('  |   ' + q));
 			const newQueries = updatedManifest.renderedFiles[schema].filter((queryPath) => {
 				return !existingManifest.renderedFiles[schema].includes(queryPath);
 			});
+			console.debug(
+				`  | ${newQueries.length} ${newQueries.length === 1 ? 'query' : 'queries'} are new`
+			);
+			newQueries.forEach((q) => console.debug('  |   ' + q));
 			const existingQueries = existingManifest.renderedFiles[schema]
 				.filter((queryPath) => {
 					return locatedQueries.includes(path.basename(queryPath, '.parquet'));
@@ -64,9 +88,23 @@ export const updateManifest = async (updatedManifest, dataDir) => {
 								path.basename(newQueryPath, '.parquet') === path.basename(queryPath, '.parquet')
 						)
 				);
+			console.debug(
+				`  | ${existingQueries.length} ${existingQueries.length === 1 ? 'query' : 'queries'} already ${existingQueries.length ? 'exists' : 'exist'}`
+			);
+			existingQueries.forEach((q) => console.debug('  |   ' + q));
 
 			const result = [...existingQueries, ...newQueries].sort((a, b) => a.localeCompare(b));
+			console.debug(
+				`  | ${result.length} ${result.length === 1 ? 'query' : 'queries'} to be rendered`
+			);
+			result.forEach((q) => console.debug('  |   ' + q));
 			finalManifest.renderedFiles[schema] = result;
+		}
+		for (const schema of Object.keys(existingManifest.renderedFiles)) {
+			if (!updatedManifest.locatedSchemas.includes(schema)) {
+				console.debug("  Removing schema '" + schema + "'");
+				delete finalManifest.renderedFiles[schema];
+			}
 		}
 	} else {
 		Object.assign(finalManifest, { renderedFiles: updatedManifest.renderedFiles });

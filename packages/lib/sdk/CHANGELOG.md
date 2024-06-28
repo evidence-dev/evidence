@@ -1,5 +1,14 @@
 # @evidence-dev/sdk
 
+## 1.3.4
+
+### Patch Changes
+
+- 20af8e6b6: Fix issue where datasources were not being removed from the manifest when they were removed from the project
+- 55bc6a52b: - Creating new sources now updates the manifest file properly
+  - .schema.json files are being created again
+- e8a5d9964: Fix support for Advanced datasources
+
 ## 1.3.3
 
 ### Patch Changes
