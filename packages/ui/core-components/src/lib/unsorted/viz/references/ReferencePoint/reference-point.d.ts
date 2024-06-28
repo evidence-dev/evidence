@@ -6,7 +6,15 @@ import type { Color } from '../colors.js';
 
 export type LabelPosition = MarkPointComponentOption['label']['position'];
 
-export type Symbol = 'circle' | 'rect' | 'roundRect' | 'triangle' | 'diamond' | 'pin' | 'arrow';
+export type Symbol =
+	| 'circle'
+	| 'rect'
+	| 'roundRect'
+	| 'triangle'
+	| 'diamond'
+	| 'pin'
+	| 'arrow'
+	| 'none';
 
 export type ReferencePointStoreState = {
 	data?: any;

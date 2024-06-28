@@ -19,14 +19,26 @@ export const createReferencePointStore = (configStore) => {
 	const set = (state) => {
 		const { labelColor, symbolColor } = getLineAndSymbolColors(state);
 
+		/** @type {string} */
+		let symbol = state.symbol;
+		let symbolSize = state.symbolSize;
+		if (symbol === 'arrow') {
+			// Use a nicer arrow symbol
+			symbol = 'path://M0,10 L5,0 L10,10 z';
+		} else if (symbol === 'none') {
+			// using symbol=none removes the label, which we dont want
+			// so we set symbolSize=0 instead
+			symbol = undefined;
+			symbolSize = 0;
+		}
+
 		const { data, x, y, label, labelVisible } = state;
 
 		/** @type {Partial<import('echarts').MarkPointComponentOption['data'][number]>} */
 		const seriesDataCommon = {
-			// Override arrow symbol with a nicer path
-			symbol: state.symbol === 'arrow' ? 'path://M0,10 L5,0 L10,10 z' : state.symbol,
+			symbol,
+			symbolSize,
 			symbolKeepAspect: true,
-			symbolSize: state.symbolSize,
 			itemStyle: {
 				color: symbolColor
 			}
