@@ -30,9 +30,6 @@ export const createReferencePointStore = (configStore) => {
 			labelVisible
 		} = state;
 
-		// Parse string size
-		if (typeof symbolSize === 'string') symbolSize = parseFloat(symbolSize);
-
 		/** @type {string} */
 		let symbol = state.symbol;
 		if (symbol === 'arrow') {
