@@ -39,7 +39,9 @@ export const subSourceVariables = (queryString) => {
 				let newOutput = output.replace(fullMatch, value);
 				output = newOutput;
 			} else {
-				console.warn(`Missed substitution for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`);
+				console.warn(
+					`Missed substitution for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
+				);
 			}
 		}
 	}
