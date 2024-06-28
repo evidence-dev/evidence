@@ -5,6 +5,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import mermaid from 'mermaid';
+	import { chartColours } from '@evidence-dev/component-utilities/colours';
 
 	/** @type {string} */
 	export let chart = undefined;
@@ -35,6 +36,17 @@
 		// This breaks when using the slot method
 		if (chart) updateChart(chartSpec);
 	});
+		// set default mermaid config
+		mermaid.initialize({
+		startOnLoad: false,
+		theme: 'base',
+		themeVariables: {
+			primaryColor: chartColours[2],
+			primaryBorderColor: chartColours[0],
+			fontFamily: 'Inter',
+			edgeLabelBackground: '#ffffffff'
+		}
+	});
 </script>
 
 {#if $$slots.default}
@@ -43,6 +55,6 @@
 	</div>
 {/if}
 
-<div bind:this={container}>
+<div bind:this={container} class="mb-4">
 	{chartSpec}
 </div>
