@@ -34,4 +34,4 @@ const AdvancedDatasourceSchema = BaseDatasourceSchema.extend({
 });
 
 /** @typedef {z.infer<typeof DatasourceSchema>} Datasource */
-export const DatasourceSchema = SimpleDatasourceSchema.or(AdvancedDatasourceSchema);
+export const DatasourceSchema = AdvancedDatasourceSchema.or(SimpleDatasourceSchema);
