@@ -1,10 +1,24 @@
 # Timezones
 
-## TLDR
+## Overview
 
-- Your source queries should return data in UTC
-- You can configure the timezone in which data is displayed by setting the timezone field in `evidence.plugins.yaml` (default UTC)
-- Only one display timezone can be set for the whole project, and it is used for all viewers, irrespective of their local timezone
+<Flowchart 
+    chart='graph LR
+    A("`**Data Sources**
+    Any TZ`") --"Source 
+    Queries"--> B
+    B("`**Unified 
+    Data Cache**
+    UTC`") --"Markdown 
+    Queries"--> C
+    C("`**Component 
+    Display**
+    Configured`")'
+/>
+
+- Source queries should return data in UTC ([How?](#returning-data-in-utc))
+- Configure the display timezone in `evidence.plugins.yaml` (default  is UTC)
+- One display timezone is used for the whole project, and it is used for all viewers, irrespective of local timezones.
 
 ## Why are Timezones Important?
 
@@ -16,33 +30,35 @@ If you fail to consider timezone when working with data, you can end up with the
 Correctly handling timezones is essential to avoid this.
 
 There are 4 contexts for timezones in Evidence.
-- [Database Timezones](#database-timezone-support) - Timezones stored explicitly or implicitly in databases containing columns with date and time information.
+- [Database Timezones](#database-timezones) - Timezones stored explicitly or implicitly in databases containing columns with date and time information.
 - [Unified Data Cache Timezones](#unified-data-cache) - The timezone used in the data cache (always UTC).
-- [SQL Engine Timezone](#sql-engine) - The timezone used by the Evidence SQL engine (default UTC, configurable).
-- [Viewer Timezone](#viewer) - The timezone used when displaying data on the page (default UTC, configurable).
+- [Markdown Queries](#markdown-queries) - The timezone used by the Evidence SQL engine (default UTC, configurable).
+- [Component Display](#component-display) - The timezone used when displaying data on the page (default UTC, configurable).
 
-## Database Timezone Support
+## Database Timezones
 
 Most, but not all Evidence data sources have native date and time data types that support timezones.
 
 ```sql timezone_support
-select 'BigQuery' as source, 'Yes' as timezone_support union all,
-select 'Snowflake', 'Yes' union all,
-select 'Redshift', 'Yes' union all,
-select 'PostgreSQL', 'Yes' union all,
-select 'Timescale', 'Yes' union all,
-select 'Trino', 'Yes' union all,
-select 'Microsoft SQL Server', 'Yes' union all,
-select 'MySQL', 'Yes' union all,
-select 'SQLite', 'Yes' union all,
-select 'DuckDB', 'Yes' union all,
-select 'MotherDuck', 'Yes' union all,
-select 'Databricks', 'Yes' union all,
-select 'Cube', '?' union all,
-select 'Google Sheets', 'No' union all,
-select 'CSV', 'No' union all,
+select 'BigQuery' as source, 'Yes' as timezone_support union all
+select 'Snowflake', 'Yes' union all
+select 'Redshift', 'Yes' union all
+select 'PostgreSQL', 'Yes' union all
+select 'Timescale', 'Yes' union all
+select 'Trino', 'Yes' union all
+select 'Microsoft SQL Server', 'Yes' union all
+select 'MySQL', 'Yes' union all
+select 'SQLite', 'Yes' union all
+select 'DuckDB', 'Yes' union all
+select 'MotherDuck', 'Yes' union all
+select 'Databricks', 'Yes' union all
+select 'Cube', '?' union all
+select 'Google Sheets', 'No' union all
+select 'CSV', 'No' union all
 select 'Parquet', 'No'
+order by 1
 ```
+<DataTable data={timezone_support} compact rows=all/>
 
 
 ## Unified Data Cache
@@ -55,46 +71,65 @@ Parquet stores date and time information using the TIMESTAMP type, which does su
 
 Specifically, [TIMESTAMP in Parquet](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md#timestamp) stores an integer number of milliseconds since the Unix epoch (1970-01-01 00:00:00 UTC).
 
+### Time-like Data Types
+
+Databases typically store time-like data in two ways:
+- Timestamp with timezone: Stored **with** an explicit timezone like `2024-06-27 02:00:00 +02`
+- Timestamp without timezone: Stored **without** an explicit timezone like `2024-06-27 02:00:00`
+
+Evidence will automatically store timestamps with timezone as UTC.
+
+For timestamps without timezone, Evidence will assume they are UTC, unless you specify otherwise.
+
+### Returning Data in UTC
+
+If you have **timestamps without timezones**, you should convert them to UTC in your source queries. The syntax for this varies.
+
+Assume you have the column `created_at_berlin`, a timestamp without timezone in your database: e.g. `2024-06-27 02:00:00`, which is in Berlin time.
+
+```sql syntax_for_utc_conversion
+select 'BigQuery' as source, '<code class=markdown>timestamp(datetime(created_at_berlin), ''Europe/Berlin'')</code>' as conversion_syntax union all
+select 'Snowflake', '<code class=markdown>convert_timezone(''Europe/Berlin'', ''UTC'', created_at_berlin )</code>'
+union all
+select 'PostgreSQL', '<code class=markdown>created_at_berlin at time zone ''Europe/Berlin''</code>'
+union all
+select 'DuckDB', '<code class=markdown>created_at_berlin at time zone ''Europe/Berlin''</code>'
+```
+
+Consult the documentation for your database to find the appropriate syntax for your source.
+
+<DataTable data={syntax_for_utc_conversion} rows=all>
+    <Column id=source/>
+    <Column id=conversion_syntax contentType=html/>
+</DataTable>
+
 To inspect the data in your cache to see whether it is correctly in UTC, install a Parquet viewing tool like [Parquet Viewer](https://marketplace.visualstudio.com/items?itemName=dvirtz.parquet-viewer), navigate to the `.evidence/template/static/data` directory, and open the `.parquet` files. 
 
 You may find it helpful to use an epoch time converter like [Epoch Converter](https://marketplace.visualstudio.com/items?itemName=makhan.epoch-converter), which can be configured to show human readable times when you hover over epoch timestamps.
 
-## SQL Engine
+## Markdown Queries
 
 Evidence's SQL Engine is powered by DuckDB, which by default uses the UTC timezone for date and time aggregations.
 
-However, the [ICU extension](https://duckdb.org/docs/sql/functions/timestamptz.html) is available in DuckDB, which provides a range of functions for working with timezones.
+The SQL engine uses the timezone specified in `evidence.plugins.yaml` for time related functions, e.g.
 
-With Evidence, you can configure the timezone used by the SQL engine in DuckDB by setting the timezone field in ?? evidence.plugins.yaml
-
-This timezone will be used when you run use time related functions in your SQL queries.
-
-### Example
-
-#### UTC
-
-`date_trunc('day', timestamptz '2022-01-01 12:00:00+00')` returns `2022-01-01 00:00:00+00`
-
-#### America/New_York
-
-`date_trunc('day', timestamptz '2022-01-01 12:00:00+00')` returns `2022-01-01 05:00:00+00`
-
-```code
+```yaml
 timezone: America/New_York
 ```
 
-```sql timezones
-from pg_timezone_names()
-```
+Timezone support is powered by [ICU extension](https://duckdb.org/docs/sql/functions/timestamptz.html) in DuckDB, which provides a range of functions for working with timezones.
 
-<Details title="Full list of timezones">
 
-<DataTable data={timezones} compact/>
+## Component Display
 
-</Details>
-
-## Viewer Timezone
-
-The viewer timezone is also configured using the timezone field in  `evidence.plugins.yaml`. This sets the timezone used when displaying data on the page.
+Components will display data in the timezone specified in `evidence.plugins.yaml`.
 
 You set this globally for the project, which means that all viewers will see the data in the same timezone, irrespective of their local timezone.
+
+### Set the Display Timezone
+
+`evidence.plugins.yaml`
+
+```yaml
+timezone: America/New_York
+```
