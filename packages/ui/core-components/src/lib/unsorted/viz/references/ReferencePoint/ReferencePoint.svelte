@@ -80,7 +80,7 @@
 	 * @type {string}
 	 * @default "hsla(360, 100%, 100%, 0.7)"
 	 */
-	export let labelBackground = 'hsla(360, 100%, 100%, 0.7)';
+	export let labelBackgroundColor = 'hsla(360, 100%, 100%, 0.7)';
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -142,7 +142,7 @@
 		symbolBorderColor,
 		labelWidth,
 		labelPosition,
-		labelBackground,
+		labelBackgroundColor,
 		labelBorderWidth,
 		labelBorderRadius,
 		labelBorderColor,

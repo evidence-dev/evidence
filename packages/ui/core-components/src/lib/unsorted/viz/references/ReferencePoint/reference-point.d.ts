@@ -31,7 +31,7 @@ export type ReferencePointStoreState = {
 	symbolBorderColor?: string;
 	labelWidth?: number;
 	labelPosition?: LabelPosition;
-	labelBackground?: string;
+	labelBackgroundColor?: string;
 	labelBorderColor?: string;
 	labelBorderWidth?: number;
 	labelBorderRadius?: number;

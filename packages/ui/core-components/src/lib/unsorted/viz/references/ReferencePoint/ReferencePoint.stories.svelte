@@ -60,7 +60,7 @@
 					'insideBottomRight'
 				]
 			},
-			labelBackground: {
+			labelBackgroundColor: {
 				control: 'color'
 			},
 			labelBorderWidth: {

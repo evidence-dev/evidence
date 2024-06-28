@@ -105,7 +105,7 @@ export const createReferencePointStore = (configStore) => {
 			position: state.labelPosition,
 			color: labelColor,
 			opacity: 1,
-			backgroundColor: state.labelBackground,
+			backgroundColor: state.labelBackgroundColor,
 			borderColor: state.labelBorderColor,
 			borderWidth: state.labelBorderWidth,
 			borderRadius: state.labelBorderRadius,
