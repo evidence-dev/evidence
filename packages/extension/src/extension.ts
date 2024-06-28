@@ -486,9 +486,9 @@ const duckdbFunctions = [
     },
 	{
         name: 'PIVOT',
-        detail: 'PIVOT (dataset)\nON (columns_to_pivot)\nUSING (aggregation)',
-		snippet: "PIVOT (${1:dataset})\nON (${2:columns_to_pivot})\nUSING (${3:aggregation})",
-		documentation: 'Pivot the dataset'
+        detail: 'PIVOT dataset\nON columns_to_pivot\nUSING (aggregation)',
+		snippet: "PIVOT ${1:dataset}\nON ${2:columns_to_pivot}\nUSING (${3:aggregation})",
+		documentation: 'Creates columns from the entries in columns_to_pivot and fills in the cells with aggregation'
     },
 	{
         name: 'CASE',
@@ -556,7 +556,7 @@ async function provideSQLCompletionItems(document: TextDocument, position: Posit
     const config = workspace.getConfiguration('evidence');
     const sqlKeywordSuggestionCase = config.get('sqlKeywordSuggestionCase', 'uppercase') as string;
 
-    const fromPattern = /\bFROM\s+([a-zA-Z0-9_\.]*)$/i;
+    const fromPattern = /(?<!\bextract\([^\)]*)\bFROM\s+([a-zA-Z0-9_\.]*)$/i;
 	const joinPattern = /\bJOIN\s+([a-zA-Z0-9_\.]*)$/i;
     const fromMatch = fromPattern.exec(textBeforePosition);
     const joinMatch = joinPattern.exec(textBeforePosition);
