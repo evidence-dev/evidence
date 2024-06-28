@@ -35,17 +35,18 @@ export const subSourceVariables = (queryString) => {
 		const varName = match[1]; // e.g. variable
 		if (varName in validVars && validVars[varName]) {
 			const value = validVars[varName];
-			let newOuput = output.replaceAll(fullMatch, value);
-			output = newOuput;
-		} else
-			console.warn(
-				`Missed substition for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
-			);
+			if (value !== undefined) {
+				let newOutput = output.replace(fullMatch, value);
+				output = newOutput;
+			} else {
+				console.warn(`Missed substitution for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`);
+			}
+		}
 	}
 	return output;
 };
 
-process.env.EVIDENCE_VAR__var_a = 'abc'; // "hack", usually already set in the calling environment
+process.env.EVIDENCE_VAR__var_a = 'abc';
 process.env.EVIDENCE_VAR__var_b = 'def';
 process.env.EVIDENCE_VAR__var_c = 'ghi';
 
