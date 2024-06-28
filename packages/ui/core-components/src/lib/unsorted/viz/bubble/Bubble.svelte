@@ -59,7 +59,12 @@
 		multiSeries = false;
 	} else {
 		// Multi Series
-		data = getCompletedData(data, x, y, series);
+		try {
+			data = getCompletedData(data, x, y, series);
+		} catch (e) {
+			console.warn('Failed to complete data', { e });
+			data = [];
+		}
 		multiSeries = true;
 	}
 

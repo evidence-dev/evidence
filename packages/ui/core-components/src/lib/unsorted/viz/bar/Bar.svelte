@@ -90,7 +90,12 @@
 		name = name ?? formatTitle(y, columnSummary[y].title);
 
 		if (swapXY && xType !== 'category') {
-			data = getCompletedData(data, x, y, series, true, xType !== 'time');
+			try {
+				data = getCompletedData(data, x, y, series, true, xType !== 'time');
+			} catch (e) {
+				console.warn('Failed to complete data', { e });
+				data = [];
+			}
 			xType = 'category';
 		}
 
@@ -117,10 +122,20 @@
 
 		// Run fill for missing series entries, only if it's a stacked bar
 		if (swapXY || ((xType === 'value' || xType === 'category') && type.includes('stacked'))) {
-			data = getCompletedData(data, x, y, series, true, xType === 'value');
+			try {
+				data = getCompletedData(data, x, y, series, true, xType !== 'value');
+			} catch (e) {
+				console.warn('Failed to complete data', { e });
+				data = [];
+			}
 			xType = 'category';
 		} else if (xType === 'time' && type.includes('stacked')) {
-			data = getCompletedData(data, x, y, series, true, true);
+			try {
+				data = getCompletedData(data, x, y, series, true, true);
+			} catch (e) {
+				console.warn('Failed to complete data', { e });
+				data = [];
+			}
 		}
 
 		if (type.includes('stacked')) {
