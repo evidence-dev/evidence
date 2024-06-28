@@ -751,25 +751,6 @@ importers:
         specifier: ^0.34.2
         version: 0.34.6
 
-  packages/lib/query-store:
-    dependencies:
-      '@evidence-dev/universal-sql':
-        specifier: workspace:*
-        version: link:../universal-sql
-      '@sqltools/formatter':
-        specifier: ^1.2.5
-        version: 1.2.5
-      '@uwdata/mosaic-sql':
-        specifier: ^0.3.2
-        version: 0.3.5
-    devDependencies:
-      typescript:
-        specifier: 5.4.2
-        version: 5.4.2
-      vitest:
-        specifier: ^0.34.1
-        version: 0.34.6
-
   packages/lib/sdk:
     dependencies:
       '@brianmd/citty':
@@ -6084,6 +6065,7 @@ packages:
       term-size: 2.2.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/reporter-dev-server@2.12.0(@parcel/core@2.12.0):
@@ -6107,6 +6089,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/resolver-default@2.12.0(@parcel/core@2.12.0):
@@ -6559,8 +6542,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@pkgjs/parseargs@0.11.0:
@@ -7502,10 +7483,6 @@ packages:
       '@smithy/abort-controller': 3.1.0
       '@smithy/types': 3.2.0
       tslib: 2.6.3
-    dev: false
-
-  /@sqltools/formatter@1.2.5:
-    resolution: {integrity: sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==}
     dev: false
 
   /@steeze-ui/icons@2.1.0:
