@@ -1070,6 +1070,16 @@
 			{renderer}
 			{connectGroup}
 			{seriesColors}
+			on:dblclick={(params) => {
+				//This may need tweaking to handle future charts, consideration, change bubble from scatter to bubble name in params
+				//Bubble date, value and size property at index 0,1,2 so link gets pushed into index 3
+				if (params.dimensionNames.length === 4) {
+					window.location = params.data[3];
+				} else {
+					//otherwise all other charts thusfar links are at index 2
+					window.location = params.data[2];
+				}
+			}}
 		/>
 	{/if}
 	{#if link}
