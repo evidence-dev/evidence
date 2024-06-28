@@ -60,6 +60,7 @@ export const createReferencePointStore = (configStore) => {
 
 		/** @type {import('echarts').LineSeriesOption['markPoint']['label']} */
 		const labelStyle = {
+			width: state.labelWidth,
 			position: state.labelPosition,
 			color: labelColor,
 			backgroundColor: state.labelBackground,

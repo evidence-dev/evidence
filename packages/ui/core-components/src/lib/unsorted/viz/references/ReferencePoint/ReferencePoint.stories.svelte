@@ -30,6 +30,9 @@
 			symbolColor: {
 				control: 'color'
 			},
+			labelWidth: {
+				control: 'number'
+			},
 			labelPosition: {
 				control: 'select',
 				options: [

@@ -46,6 +46,9 @@
 	/** @type {import('../colors.js').Color | undefined} */
 	export let symbolColor = undefined;
 
+	/** @type {number | undefined} */
+	export let labelWidth = undefined;
+
 	/** @type {import('./reference-point.d.ts').LabelPosition} */
 	export let labelPosition = 'top';
 
@@ -98,6 +101,7 @@
 		labelColor,
 		symbolColor,
 		symbolSize,
+		labelWidth,
 		labelPosition,
 		labelBackground,
 		labelBorderWidth,
