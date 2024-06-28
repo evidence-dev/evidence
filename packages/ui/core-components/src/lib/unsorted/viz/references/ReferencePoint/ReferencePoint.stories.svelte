@@ -117,6 +117,18 @@
 	</QueryLoad>
 </Story>
 
+<Story
+	name="Label from slot"
+	args={{ x: 24, y: 514 }}
+	argTypes={{ label: { control: false } }}
+	let:args
+>
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	<LineChart x="x" y="y" {data}>
+		<ReferencePoint {...args}>This label is passed via the default slot</ReferencePoint>
+	</LineChart>
+</Story>
+
 <!-- Specifying x without y -->
 <Story name="Error" args={{ x: 24 }} let:args>
 	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}

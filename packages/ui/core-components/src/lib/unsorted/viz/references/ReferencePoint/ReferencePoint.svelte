@@ -58,6 +58,10 @@
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 	$: isInitial = Query.isQuery(data) && data.hash === initialHash;
 
+	/** @type {HTMLElement | undefined} */
+	let slotElement = undefined;
+	$: label = label ?? slotElement?.textContent;
+
 	const chartType = 'Reference Point';
 
 	const config = getConfigContext();
@@ -78,6 +82,12 @@
 		labelVisible
 	};
 </script>
+
+{#if $$slots.default}
+	<div class="invisible" bind:this={slotElement}>
+		<slot />
+	</div>
+{/if}
 
 {#if $store.error}
 	<ErrorChart error={$store.error} minHeight="50px" {chartType} />
