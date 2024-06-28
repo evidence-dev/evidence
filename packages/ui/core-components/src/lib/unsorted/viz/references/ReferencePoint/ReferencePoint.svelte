@@ -43,6 +43,10 @@
 	export let labelWidth = undefined;
 	$: labelWidth = toNumber(labelWidth);
 
+	/** @type {number | string | undefined} */
+	export let labelPadding = undefined;
+	$: labelPadding = toNumber(labelPadding);
+
 	/**
 	 * @type {import('./reference-point.d.ts').LabelPosition}
 	 * @default "top"
@@ -141,6 +145,7 @@
 		symbolBorderWidth,
 		symbolBorderColor,
 		labelWidth,
+		labelPadding,
 		labelPosition,
 		labelBackgroundColor,
 		labelBorderWidth,

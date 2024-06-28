@@ -23,6 +23,9 @@
 			labelWidth: {
 				control: 'number'
 			},
+			labelPadding: {
+				control: 'number'
+			},
 			labelPosition: {
 				control: 'select',
 				options: [
