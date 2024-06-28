@@ -66,7 +66,8 @@ export const createReferencePointStore = (configStore) => {
 			borderColor: state.labelBorderColor,
 			borderWidth: state.labelBorderWidth,
 			borderRadius: state.labelBorderRadius,
-			borderType: state.labelBorderType
+			borderType: state.labelBorderType,
+			overflow: 'break'
 		};
 
 		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */
