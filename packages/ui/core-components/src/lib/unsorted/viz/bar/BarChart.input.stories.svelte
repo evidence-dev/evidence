@@ -17,10 +17,6 @@
 	const inputs = getInputContext();
 </script>
 
-
-
-
-
 <Story name="Simple Input" let:args>
 	{@const data = Query.create(
 		`
@@ -33,7 +29,15 @@ GROUP BY ALL
 		query
 	)}
 
-	<BarChart {...args} name="posts_by_tag" targetColumn="tag" toggle x="hashtag" y="Post Count" {data} />
+	<BarChart
+		{...args}
+		name="posts_by_tag"
+		targetColumn="tag"
+		toggle
+		x="hashtag"
+		y="Post Count"
+		{data}
+	/>
 
 	{@const depends = Query.create(
 		`
@@ -52,27 +56,11 @@ GROUP BY ALL
 		query
 	)}
 
-	<pre class='text-xs'>{depends.originalText}</pre>
+	<pre class="text-xs">{depends.originalText}</pre>
 
 	{$inputs.tag.label.toString() || 'All'} Post and Authors by Gender
 	<DataTable data={depends} />
 </Story>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <Story name="Input with Series" let:args>
 	{@const data = Query.create(
@@ -87,17 +75,16 @@ GROUP BY ALL
 		query
 	)}
 
-	<BarChart {...args} 
-		toggle 
-		name="posts_by_tag_and_gender" 
-
+	<BarChart
+		{...args}
+		toggle
+		name="posts_by_tag_and_gender"
 		targetColumn="tag"
-		targetSeriesColumn="gender" 
-		
-		x="hashtag" 
-		y="Post Count" 
-		series="gender" 
-		{data} 
+		targetSeriesColumn="gender"
+		x="hashtag"
+		y="Post Count"
+		series="gender"
+		{data}
 	/>
 
 	{@const depends = Query.create(

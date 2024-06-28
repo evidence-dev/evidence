@@ -180,7 +180,7 @@ GROUP BY ALL
 		query
 	)}
 
-	<LineChart {...args} name="tag" toggle x="hashtag" y={["Post Count", "Author Count"]} {data} />
+	<LineChart {...args} name="tag" toggle x="hashtag" y={['Post Count', 'Author Count']} {data} />
 
 	{@const depends = Query.create(
 		`
@@ -202,10 +202,11 @@ GROUP BY ALL
 		query
 	)}
 
-	<pre class='text-xs'>{depends.originalText}</pre>
+	<pre class="text-xs">{depends.originalText}</pre>
 
 	{#if $inputs.tag.value}
-		{$inputs.tag.label.toString() || 'All'} {$inputs.tag.yAxis} by Gender
+		{$inputs.tag.label.toString() || 'All'}
+		{$inputs.tag.yAxis} by Gender
 		<DataTable data={depends} />
 	{/if}
 </Story>
@@ -228,7 +229,7 @@ GROUP BY ALL
 		name="tag"
 		toggle
 		x="hashtag"
-		y={["Post Count", "Author Count"]}
+		y={['Post Count', 'Author Count']}
 		series="gender"
 		{data}
 	/>
