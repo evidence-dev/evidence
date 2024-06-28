@@ -37,6 +37,10 @@ export type ReferencePointStoreState = {
 	labelBorderRadius?: number;
 	labelBorderType?: 'solid' | 'dotted' | 'dashed';
 	labelVisible: 'always' | 'hover';
+	fontSize?: number;
+	align?: 'left' | 'center' | 'right';
+	bold?: boolean;
+	italic?: boolean;
 };
 
 export type ReferencePointStore = Writable<ReferencePointStoreState> & Readable<{ error?: string }>;

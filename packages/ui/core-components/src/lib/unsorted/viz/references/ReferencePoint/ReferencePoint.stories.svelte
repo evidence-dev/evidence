@@ -79,6 +79,19 @@
 			labelVisible: {
 				control: 'select',
 				options: ['always', 'hover']
+			},
+			fontSize: {
+				control: 'number'
+			},
+			align: {
+				control: 'select',
+				options: ['left', 'center', 'right']
+			},
+			bold: {
+				control: 'boolean'
+			},
+			italic: {
+				control: 'boolean'
 			}
 		}
 	};

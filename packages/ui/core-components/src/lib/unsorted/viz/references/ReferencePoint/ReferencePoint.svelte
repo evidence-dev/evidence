@@ -79,6 +79,18 @@
 	/** @type {'always' | 'hover'} */
 	export let labelVisible = 'always';
 
+	/** @type {number | undefined}*/
+	export let fontSize = undefined;
+
+	/** @type {'left' | 'center' | 'right' | undefined}*/
+	export let align = undefined;
+
+	/** @type {boolean | undefined} */
+	export let bold = undefined;
+
+	/** @type {boolean | undefined} */
+	export let italic = undefined;
+
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 	$: isInitial = Query.isQuery(data) && data.hash === initialHash;
 
@@ -129,7 +141,11 @@
 		labelBorderRadius,
 		labelBorderColor,
 		labelBorderType,
-		labelVisible
+		labelVisible,
+		fontSize,
+		align,
+		bold,
+		italic
 	};
 </script>
 

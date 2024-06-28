@@ -84,7 +84,11 @@ export const createReferencePointStore = (configStore) => {
 			borderWidth: state.labelBorderWidth,
 			borderRadius: state.labelBorderRadius,
 			borderType: state.labelBorderType,
-			overflow: 'break'
+			overflow: 'break',
+			fontSize: state.fontSize,
+			align: state.align,
+			fontWeight: state.bold ? 'bold' : undefined,
+			fontStyle: state.italic ? 'italic' : undefined
 		};
 
 		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */
