@@ -16,7 +16,7 @@ export const colorList = {
 /** @typedef {keyof typeof colorList | (string & {})} Color */
 
 /**
- * @param {{ color: string; labelColor?: string; symbolColor?: string }} colors
+ * @param {{ color?: string; labelColor?: string; symbolColor?: string }} colors
  * @returns {{labelColor: string, symbolColor: string}}
  */
 export const getLineAndSymbolColors = (colors) => {
