@@ -19,9 +19,22 @@ export const createReferencePointStore = (configStore) => {
 	const set = (state) => {
 		const { labelColor, symbolColor } = getLineAndSymbolColors(state);
 
+		// Destructure some properties for QOL preprocessing
+		let {
+			symbolSize,
+			label,
+			labelBorderWidth,
+			labelBorderColor,
+			symbolBorderWidth,
+			symbolBorderColor,
+			labelVisible
+		} = state;
+
+		// Parse string size
+		if (typeof symbolSize === 'string') symbolSize = parseFloat(symbolSize);
+
 		/** @type {string} */
 		let symbol = state.symbol;
-		let symbolSize = state.symbolSize;
 		if (symbol === 'arrow') {
 			// Use a nicer arrow symbol
 			symbol = 'path://M0,10 L5,0 L10,10 z';
@@ -32,7 +45,19 @@ export const createReferencePointStore = (configStore) => {
 			symbolSize = 0;
 		}
 
-		const { data, x, y, label, labelVisible } = state;
+		// Default labelBorderWidth and labelBorderColor if only one is given
+		if (labelBorderColor && typeof labelBorderWidth === 'undefined') {
+			labelBorderWidth = 1;
+		} else if (labelBorderWidth && !labelBorderColor) {
+			labelBorderColor = 'gray';
+		}
+
+		// Default symbolBorderWidth and symbolBorderColor if only one is given
+		if (symbolBorderColor && typeof symbolBorderWidth === 'undefined') {
+			symbolBorderWidth = 1;
+		} else if (symbolBorderWidth && !symbolBorderColor) {
+			symbolBorderColor = 'gray';
+		}
 
 		/** @type {Partial<import('echarts').MarkPointComponentOption['data'][number]>} */
 		const seriesDataCommon = {
@@ -47,6 +72,7 @@ export const createReferencePointStore = (configStore) => {
 			}
 		};
 
+		const { data, x, y } = state;
 		/** @type {import('echarts').MarkPointComponentOption['data'][number][]} */
 		let seriesData = [];
 		if (typeof x !== 'undefined' && typeof y !== 'undefined') {

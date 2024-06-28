@@ -33,9 +33,7 @@
 	export let symbol = 'circle';
 
 	/** @type {number | string} */
-	let rawSymbolSize = 8;
-	export { rawSymbolSize as symbolSize };
-	$: symbolSize = typeof rawSymbolSize === 'string' ? parseFloat(rawSymbolSize) : rawSymbolSize;
+	export let symbolSize = 8;
 
 	/** @type {number} */
 	export let symbolOpacity = 1;
@@ -97,24 +95,6 @@
 	/** @type {HTMLElement | undefined} */
 	let slotElement = undefined;
 	$: label = label ?? slotElement?.textContent;
-
-	// Default labelBorderWidth and labelBorderColor if only one is given
-	$: {
-		if (labelBorderColor && typeof labelBorderWidth === 'undefined') {
-			labelBorderWidth = 1;
-		} else if (labelBorderWidth && !labelBorderColor) {
-			labelBorderColor = 'gray';
-		}
-	}
-
-	// Default symbolBorderWidth and symbolBorderColor if only one is given
-	$: {
-		if (symbolBorderColor && typeof symbolBorderWidth === 'undefined') {
-			symbolBorderWidth = 1;
-		} else if (symbolBorderWidth && !symbolBorderColor) {
-			symbolBorderColor = 'gray';
-		}
-	}
 
 	const chartType = 'Reference Point';
 
