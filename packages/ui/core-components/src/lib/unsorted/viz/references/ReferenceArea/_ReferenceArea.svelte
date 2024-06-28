@@ -232,7 +232,6 @@
 	});
 </script>
 
-bingbong
 {#if error}
 	<ErrorChart
 		{error}
