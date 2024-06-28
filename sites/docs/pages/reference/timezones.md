@@ -27,15 +27,15 @@ If you fail to consider timezone when working with data, you can end up with the
 - The date displayed is one day off from what you expected
 - Aggregating and grouping by time periods gives incorrect aggregate values
 
-Correctly handling timezones is essential to avoid this.
+Correctly handling timezones is essential to avoid these kind of problems.
 
 There are 4 contexts for timezones in Evidence.
-- [Database Timezones](#database-timezones) - Timezones stored explicitly or implicitly in databases containing columns with date and time information.
-- [Unified Data Cache Timezones](#unified-data-cache) - The timezone used in the data cache (always UTC).
+- [Data Sources](#data-source-timezones) - Timezones stored explicitly or implicitly in databases containing columns with date and time information.
+- [Unified Data Cache](#unified-data-cache) - The timezone used in the data cache (always UTC).
 - [Markdown Queries](#markdown-queries) - The timezone used by the Evidence SQL engine (default UTC, configurable).
 - [Component Display](#component-display) - The timezone used when displaying data on the page (default UTC, configurable).
 
-## Database Timezones
+## Data Source Timezones
 
 Most, but not all Evidence data sources have native date and time data types that support timezones.
 
@@ -53,15 +53,17 @@ select 'DuckDB', 'Yes' union all
 select 'MotherDuck', 'Yes' union all
 select 'Databricks', 'Yes' union all
 select 'Cube', '?' union all
-select 'Google Sheets', 'No' union all
-select 'CSV', 'No' union all
-select 'Parquet', 'No'
+select 'Google Sheets', '-' union all
+select 'CSV', '-' union all
+select 'Parquet', '-'
 order by 1
 ```
 <DataTable data={timezone_support} compact rows=all/>
 
 
 ## Unified Data Cache
+
+Data in the Unified Data Cache should be stored in UTC.
 
 Evidence extracts data from all your sources, and caches it in the unified data cache. This cache is a set of Parquet files (stored in `.evidence/template/static/data`).
 
