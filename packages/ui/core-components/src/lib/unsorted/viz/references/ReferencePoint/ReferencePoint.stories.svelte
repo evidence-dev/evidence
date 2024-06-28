@@ -21,6 +21,15 @@
 			symbolSize: {
 				control: 'number'
 			},
+			symbolOpacity: {
+				control: 'number'
+			},
+			symbolBorderWidth: {
+				control: 'number'
+			},
+			symbolBorderColor: {
+				control: 'color'
+			},
 			color: {
 				control: 'color'
 			},

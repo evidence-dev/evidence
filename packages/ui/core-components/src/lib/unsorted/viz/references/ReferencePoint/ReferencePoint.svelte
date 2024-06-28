@@ -37,6 +37,15 @@
 	export { rawSymbolSize as symbolSize };
 	$: symbolSize = typeof rawSymbolSize === 'string' ? parseFloat(rawSymbolSize) : rawSymbolSize;
 
+	/** @type {number} */
+	export let symbolOpacity = 1;
+
+	/** @type {number | undefined} */
+	export let symbolBorderWidth = undefined;
+
+	/** @type {string | undefined} */
+	export let symbolBorderColor = undefined;
+
 	/** @type {import('../colors.js').Color} */
 	export let color = 'gray';
 
@@ -86,6 +95,15 @@
 		}
 	}
 
+	// Default symbolBorderWidth and symbolBorderColor if only one is given
+	$: {
+		if (symbolBorderColor && typeof symbolBorderWidth === 'undefined') {
+			symbolBorderWidth = 1;
+		} else if (symbolBorderWidth && !symbolBorderColor) {
+			symbolBorderColor = 'gray';
+		}
+	}
+
 	const chartType = 'Reference Point';
 
 	const config = getConfigContext();
@@ -101,6 +119,9 @@
 		labelColor,
 		symbolColor,
 		symbolSize,
+		symbolOpacity,
+		symbolBorderWidth,
+		symbolBorderColor,
 		labelWidth,
 		labelPosition,
 		labelBackground,

@@ -40,7 +40,10 @@ export const createReferencePointStore = (configStore) => {
 			symbolSize,
 			symbolKeepAspect: true,
 			itemStyle: {
-				color: symbolColor
+				color: symbolColor,
+				opacity: state.symbolOpacity,
+				borderWidth: state.symbolBorderWidth,
+				borderColor: state.symbolBorderColor
 			}
 		};
 
@@ -75,6 +78,7 @@ export const createReferencePointStore = (configStore) => {
 			width: state.labelWidth,
 			position: state.labelPosition,
 			color: labelColor,
+			opacity: 1,
 			backgroundColor: state.labelBackground,
 			borderColor: state.labelBorderColor,
 			borderWidth: state.labelBorderWidth,
