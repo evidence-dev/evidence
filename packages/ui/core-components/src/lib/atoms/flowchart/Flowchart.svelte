@@ -36,8 +36,7 @@
 		// This breaks when using the slot method
 		if (chart) updateChart(chartSpec);
 	});
-		// set default mermaid config
-		mermaid.initialize({
+	mermaid.initialize({
 		startOnLoad: false,
 		theme: 'base',
 		themeVariables: {
