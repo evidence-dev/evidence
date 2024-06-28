@@ -62,7 +62,11 @@ export const createReferencePointStore = (configStore) => {
 		const labelStyle = {
 			position: state.labelPosition,
 			color: labelColor,
-			backgroundColor: state.labelBackground
+			backgroundColor: state.labelBackground,
+			borderColor: state.labelBorderColor,
+			borderWidth: state.labelBorderWidth,
+			borderRadius: state.labelBorderRadius,
+			borderType: state.labelBorderType
 		};
 
 		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */

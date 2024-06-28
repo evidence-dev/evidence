@@ -51,6 +51,19 @@
 			labelBackground: {
 				control: 'color'
 			},
+			labelBorderWidth: {
+				control: 'number'
+			},
+			labelBorderRadius: {
+				control: 'number'
+			},
+			labelBorderColor: {
+				control: 'color'
+			},
+			labelBorderType: {
+				control: 'select',
+				options: ['solid', 'dotted', 'dashed']
+			},
 			labelVisible: {
 				control: 'select',
 				options: ['always', 'hover']

@@ -41,16 +41,28 @@
 	export let color = 'gray';
 
 	/** @type {import('../colors.js').Color | undefined} */
-	export let labelColor;
+	export let labelColor = undefined;
 
 	/** @type {import('../colors.js').Color | undefined} */
-	export let symbolColor;
+	export let symbolColor = undefined;
 
 	/** @type {import('./reference-point.d.ts').LabelPosition} */
 	export let labelPosition = 'top';
 
 	/** @type {string} */
 	export let labelBackground = 'hsla(360, 100%, 100%, 0.7)';
+
+	/** @type {number | undefined} */
+	export let labelBorderWidth = undefined;
+
+	/** @type {number | undefined} */
+	export let labelBorderRadius = undefined;
+
+	/** @type {string | undefined} */
+	export let labelBorderColor = undefined;
+
+	/** @type {'solid' | 'dotted' | 'dashed' | undefined}*/
+	export let labelBorderType = undefined;
 
 	/** @type {'always' | 'hover'} */
 	export let labelVisible = 'always';
@@ -61,6 +73,15 @@
 	/** @type {HTMLElement | undefined} */
 	let slotElement = undefined;
 	$: label = label ?? slotElement?.textContent;
+
+	// Default labelBorderWidth and labelBorderColor if only one is given
+	$: {
+		if (labelBorderColor && typeof labelBorderWidth === 'undefined') {
+			labelBorderWidth = 1;
+		} else if (labelBorderWidth && !labelBorderColor) {
+			labelBorderColor = 'gray';
+		}
+	}
 
 	const chartType = 'Reference Point';
 
@@ -79,6 +100,10 @@
 		symbolSize,
 		labelPosition,
 		labelBackground,
+		labelBorderWidth,
+		labelBorderRadius,
+		labelBorderColor,
+		labelBorderType,
 		labelVisible
 	};
 </script>

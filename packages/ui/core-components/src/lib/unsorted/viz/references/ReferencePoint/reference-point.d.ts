@@ -20,6 +20,10 @@ export type ReferencePointStoreState = {
 	symbolSize: number;
 	labelPosition: LabelPosition;
 	labelBackground: string;
+	labelBorderColor?: string;
+	labelBorderWidth?: number;
+	labelBorderRadius?: number;
+	labelBorderType?: 'solid' | 'dotted' | 'dashed';
 	labelVisible: 'always' | 'hover';
 };
 
