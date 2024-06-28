@@ -10,6 +10,7 @@
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { createReferencePointStore } from './reference-point.store.js';
+	import { toNumber } from '../../../../utils.js';
 
 	/** @type {'pass' | 'warn' | 'error'}*/
 	export let emptySet = undefined;
@@ -34,12 +35,15 @@
 
 	/** @type {number | string} */
 	export let symbolSize = 8;
+	$: symbolSize = toNumber(symbolSize);
 
-	/** @type {number} */
+	/** @type {number | string} */
 	export let symbolOpacity = 1;
+	$: symbolOpacity = toNumber(symbolOpacity);
 
-	/** @type {number | undefined} */
+	/** @type {number | string | undefined} */
 	export let symbolBorderWidth = undefined;
+	$: symbolBorderWidth = toNumber(symbolBorderWidth);
 
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
@@ -53,8 +57,9 @@
 	/** @type {import('../colors.js').Color | undefined} */
 	export let symbolColor = undefined;
 
-	/** @type {number | undefined} */
+	/** @type {number | string | undefined} */
 	export let labelWidth = undefined;
+	$: labelWidth = toNumber(labelWidth);
 
 	/** @type {import('./reference-point.d.ts').LabelPosition} */
 	export let labelPosition = 'top';
@@ -62,11 +67,13 @@
 	/** @type {string} */
 	export let labelBackground = 'hsla(360, 100%, 100%, 0.7)';
 
-	/** @type {number | undefined} */
+	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
+	$: labelBorderWidth = toNumber(labelBorderWidth);
 
-	/** @type {number | undefined} */
+	/** @type {number | string | undefined} */
 	export let labelBorderRadius = undefined;
+	$: labelBorderRadius = toNumber(labelBorderRadius);
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
@@ -77,8 +84,9 @@
 	/** @type {'always' | 'hover'} */
 	export let labelVisible = 'always';
 
-	/** @type {number | undefined}*/
+	/** @type {number | string | undefined}*/
 	export let fontSize = undefined;
+	$: fontSize = toNumber(fontSize);
 
 	/** @type {'left' | 'center' | 'right' | undefined}*/
 	export let align = undefined;
