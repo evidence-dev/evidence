@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 38.1.3
+
+### Patch Changes
+
+- 90668a4c6: Remove sdk from deps
+
 ## 38.1.2
 
 ### Patch Changes
