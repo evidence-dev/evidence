@@ -32,6 +32,14 @@
 	);
 </script>
 
+<Story name="Basic Usage">
+	<Tabs>
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
+	</Tabs>
+</Story>
+
 <Story name="Generated from a query">
 	<TextInput name="offset" title="Offset" />
 

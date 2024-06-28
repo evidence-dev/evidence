@@ -14,7 +14,7 @@
 	 * @type {string}
 	 */
 	export let id;
-	$: id = label;
+	$: id = id ?? label;
 
 	/**
 	 * @type {boolean}
