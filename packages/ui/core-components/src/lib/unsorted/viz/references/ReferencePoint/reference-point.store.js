@@ -149,6 +149,7 @@ export const createReferencePointStore = (configStore) => {
 	return {
 		subscribe: store.subscribe,
 		set: (state) => {
+			store.set({ error: undefined });
 			try {
 				set(state);
 			} catch (e) {
