@@ -23,11 +23,13 @@ export const createReferencePointStore = (configStore) => {
 		let {
 			symbolSize,
 			label,
+			labelPosition,
 			labelBorderWidth,
 			labelBorderColor,
 			symbolBorderWidth,
 			symbolBorderColor,
-			labelVisible
+			labelVisible,
+			align
 		} = state;
 
 		/** @type {string} */
@@ -99,7 +101,7 @@ export const createReferencePointStore = (configStore) => {
 		const labelStyle = {
 			width: state.labelWidth,
 			padding: state.labelPadding,
-			position: state.labelPosition,
+			position: labelPosition,
 			color: labelColor,
 			opacity: 1,
 			backgroundColor: state.labelBackgroundColor,
@@ -109,7 +111,7 @@ export const createReferencePointStore = (configStore) => {
 			borderType: state.labelBorderType,
 			overflow: 'break',
 			fontSize: state.fontSize,
-			align: state.align,
+			align,
 			fontWeight: state.bold ? 'bold' : undefined,
 			fontStyle: state.italic ? 'italic' : undefined
 		};
