@@ -41,9 +41,12 @@
 	/** @type {import('../colors.js').Color | undefined} */
 	export let labelColor = undefined;
 
-	/** @type {number | string | undefined} */
-	export let labelWidth = undefined;
-	$: labelWidth = toNumber(labelWidth);
+	/**
+	 * @type {number | "fit" | string}
+	 * @default "fit"
+	 */
+	export let labelWidth = 'fit';
+	$: labelWidth = labelWidth === 'fit' ? undefined : toNumber(labelWidth);
 
 	/** @type {number | string | undefined} */
 	export let labelPadding = undefined;

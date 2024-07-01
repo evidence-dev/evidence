@@ -185,3 +185,14 @@
 		<Callout {...args} />
 	</LineChart>
 </Story>
+
+<Story
+	name="Callout with `labelWidth=fit`"
+	args={{ x: 24, y: 514, labelWidth: 'fit', label: 'This is a Callout!' }}
+	let:args
+>
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	<LineChart x="x" y="y" {data}>
+		<Callout {...args} />
+	</LineChart>
+</Story>
