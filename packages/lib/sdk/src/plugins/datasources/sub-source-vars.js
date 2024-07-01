@@ -29,11 +29,12 @@ export const subSourceVariables = (queryString) => {
 	const regex = RegExp(/(?<!\$)\$\{(.+?)\}/, 'g');
 
 	let match;
-	while ((match = regex.exec(queryString)) !== null) {
+	while ((match = regex.exec(output)) !== null) {
+		console.log(match)
 		const fullMatch = match[0]; // e.g. ${variable}
 		const varName = match[1]; // e.g. variable
 		const start = match.index;
-		const end = match[0].length + start;
+		const end = match[0].length + start;	
 
 		if (varName in validVars && validVars[varName]) {
 			const value = validVars[varName];
@@ -41,6 +42,8 @@ export const subSourceVariables = (queryString) => {
 			const before = output.substring(0, start);
 			const after = output.substring(end);
 			output = `${before}${value}${after}`;
+        // Update the lastIndex of the regular expression to continue the search from the end of the replacement
+        regex.lastIndex = start + value.length;
 		} else
 			console.warn(
 				`Missed substition for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
@@ -51,3 +54,8 @@ export const subSourceVariables = (queryString) => {
 
 	return output;
 };
+
+
+process.env.EVIDENCE_VAR__var_a = 'abc';   // "hack", usually already set in the calling environment
+process.env.EVIDENCE_VAR__var_b = 'def';
+console.log(subSourceVariables('|${var_a}|${var_b}|'));
