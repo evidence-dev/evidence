@@ -31,9 +31,9 @@
 
 	/**
 	 * @type {import('../colors.js').Color}
-	 * @default "gray"
+	 * @default "grey"
 	 */
-	export let color = 'gray';
+	export let color = 'grey';
 
 	/** @type {string | undefined} */
 	export let label = undefined;
