@@ -676,3 +676,312 @@ A reference area can be produced by defining values inline or by supplying a dat
         options="number"
         defaultValue="1"
     />
+
+# Reference Point
+
+Reference points allow you to add labels on certain points to emphasize them in the chart. They can be produced by providing a specific x/y coordinate (e.g. `x="2021-05-01"` `y=11012`) or by providing a dataset (e.g. `anomalies`, `points`).
+
+When a dataset is provided, `ReferencePoint` will generate multiple points - one for each row in the dataset. This can be helpful for plotting a large number of points with a succinct syntax.
+
+## Examples
+
+### Defined Point
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint x="2019-07-01" y=6590 label="2019-07-01 : Big drop" labelPosition=bottom/>
+</LineChart>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint x="2019-07-01" y=6590 label="2019-07-01 : Big drop" labelPosition=bottom/>
+</LineChart>
+```
+
+### Points from Data
+
+```sales_drops
+select
+    month,
+    sales,
+    concat('-$', round(abs(sales_diff))::int::text) as label
+from (
+    select
+        month,
+        sales,
+        sales - lag(sales) over (order by month) as sales_diff
+    from ${orders_by_month}
+)
+where sales_diff < -2000
+```
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint data={sales_drops} x=month y=sales label=label labelPosition=bottom />
+</LineChart>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint data={sales_drops} x=month y=sales label=label labelPosition=bottom />
+</LineChart>
+```
+
+### Custom Styling
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint
+        x="2019-07-01"
+        y=6590
+        label="2019-07-01 : Big drop"
+        labelPosition=right
+        color=red
+        symbolSize=16
+        symbolBorderWidth=1
+        symbolBorderColor=red
+        symbolOpacity=0.25
+    />
+</LineChart>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint
+        x="2019-07-01"
+        y=6590
+        label="2019-07-01 : Big drop"
+        labelPosition=right
+        color=red
+        symbolSize=16
+        symbolBorderWidth=1
+        symbolBorderColor=red
+        symbolOpacity=0.25
+    />
+</LineChart>
+```
+
+### Label Positions
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint x="2019-07-01" y=6590 label=top labelPosition=top/>
+    <ReferencePoint x="2019-07-01" y=6590 label=right labelPosition=right/>
+    <ReferencePoint x="2019-07-01" y=6590 label=bottom labelPosition=bottom/>
+    <ReferencePoint x="2019-07-01" y=6590 label=left labelPosition=left/>
+</LineChart>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint x="2019-07-01" y=6590 label=top labelPosition=top/>
+    <ReferencePoint x="2019-07-01" y=6590 label=right labelPosition=right/>
+    <ReferencePoint x="2019-07-01" y=6590 label=bottom labelPosition=bottom/>
+    <ReferencePoint x="2019-07-01" y=6590 label=left labelPosition=left/>
+</LineChart>
+```
+
+#### Multiline label
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint x="2019-07-01" y=6590 labelPosition=bottom align=left>
+        A label with
+        line breaks in it
+        to allow longer text
+    </ReferencePoint>
+</LineChart>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint x="2019-07-01" y=6590 labelPosition=bottom align=left>
+        A label with
+        line breaks in it
+        to allow longer text
+    </ReferencePoint>
+</LineChart>
+```
+
+### Colours
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint x="2019-03-01" y=3000 color=blue label=blue />
+    <ReferencePoint x="2019-09-01" y=3000 color=red label=red />
+    <ReferencePoint x="2020-03-01" y=3000 color=yellow label=yellow />
+    <ReferencePoint x="2020-09-01" y=3000 color=green label=green />
+    <ReferencePoint x="2021-03-01" y=3000 color=grey label=grey />
+    <ReferencePoint x="2021-09-01" y=3000 color=#63178f label=custom />
+</LineChart>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferencePoint x="2019-03-01" y=3000 color=blue label=blue />
+    <ReferencePoint x="2019-09-01" y=3000 color=red label=red />
+    <ReferencePoint x="2020-03-01" y=3000 color=yellow label=yellow />
+    <ReferencePoint x="2020-09-01" y=3000 color=green label=green />
+    <ReferencePoint x="2021-03-01" y=3000 color=grey label=grey />
+    <ReferencePoint x="2021-09-01" y=3000 color=#63178f label=custom />
+</LineChart>
+```
+
+## Options
+
+### Defining Values Inline
+
+    <PropListing
+        name=x
+        description="x coordinate value where the point will be plotted"
+        options="number | string | date"
+    />
+    <PropListing
+        name=y
+        description="y coordinate value where the point will be plotted"
+        options="number | string | date"
+    />
+    <PropListing
+        name=label
+        description="Text to show as label for the point"
+        required=true
+        options="string"
+    />
+
+### Supplying a Dataset
+
+    <PropListing
+        name=data
+        description="Query name, wrapped in curly braces"
+        required=true
+        options="query name"
+    />
+    <PropListing
+        name=x
+        description="Column containing x-axis values for points"
+        options="column name"
+    />
+    <PropListing
+        name=y
+        description="Column containing y-axis values for points"
+        options="column name"
+    />
+    <PropListing
+        name=label
+        description="Column containing a label to use for each line"
+        required=true
+        options="column name"
+    />
+
+### Styling
+
+    <PropListing
+        name=color
+        description="Color to override default line and label colors"
+        options="CSS name | hexademical | RGB | HSL"
+        defaultValue=grey
+    />
+    <PropListing
+        name=labelColor
+        description="Color to override default label color. If used, takes precedence over `color`"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=labelWidth
+        description="The width available for the label. If text is longer than this width, it will wrap to new lines."
+        options="fit | string | number"
+        defaultValue=fit
+    />
+    <PropListing
+        name=labelPadding
+        options=number
+        description="Padding between the text and the border of the label background"
+    />
+    <PropListing
+        name=labelPosition
+        description="Where the label will appear relative to the point"
+        options={["top", "right", "bottom", "left"]}
+        defaultValue=top
+    />
+    <PropListing
+        name=labelBackgroundColor
+        description="The color of the background behind the label"
+        options="CSS name | hexademical | RGB | HSL"
+        defaultValue="hsla(360, 100%, 100%, 0.7)"
+    />
+    <PropListing
+        name=labelBorderWidth
+        description="The thickness of the border around the label (in pixels)"
+        options=number
+    />
+    <PropListing
+        name=labelBorderRadius
+        description="The radius of rounded corners on the label background (in pixels)"
+        options=number
+    />
+    <PropListing
+        name=labelBorderColor
+        description="The color of the border around the label background"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=labelBorderType
+        description="The type of border around the label background (dashed or dotted)"
+        options={['solid', 'dotted', 'dashed']}
+    />
+    <PropListing
+        name=labelVisible
+        description="Whether to always show the label, or only when the symbol is hovered"
+        options={['always', 'hover']}
+        defaultValue=always
+    />
+    <PropListing
+        name=fontSize
+        description="The size of the font in the label"
+        options=number
+    />
+    <PropListing
+        name=align
+        description="How to align the label to the symbol, and the text within the label"
+        options={['left', 'center', 'right']}
+    />
+    <PropListing
+        name=bold
+        description="Make the label text bold"
+        options={[true, false]}
+        defaultValue=false
+    />
+    <PropListing
+        name=italic
+        description="Make the label text italic"
+        options={[true, false]}
+        defaultValue=false
+    />
+    <PropListing
+        name=symbol
+        description="The type of symbol used to mark the x/y coordinate(s)"
+        options={['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none']}
+        defaultValue=circle
+    />
+    <PropListing
+        name=symbolColor
+        description="Color to override default symbol color. If used, takes precedence over `color`"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=symbolSize
+        description="The size of the symbol"
+        options=number
+        defaultValue=8
+    />
+    <PropListing
+        name=symbolOpacity
+        description="The opacity of the symbol"
+        options=number
+    />
+    <PropListing
+        name=symbolBorderWidth
+        description="The width of the border around the symbol"
+        options=number
+    />
+    <PropListing
+        name=symbolBorderColor
+        description="The color of the border around the symbol"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=preserveWhitespace
+        description="When true, stops multiline labels from having whitespace at the start/end of lines trimmed"
+        options={[true, false]}
+        defaultValue=false
+    />
+
