@@ -43,3 +43,6 @@
 <Story name="Agg median Usage">
 	<Value {data} column="fare" agg="median" fmt="usd0" />
 </Story>
+<Story name="Link Prop Usage">
+	<Value {data} column="fare" agg="median" fmt="usd0" link="https://evidence.dev/" />
+</Story>
