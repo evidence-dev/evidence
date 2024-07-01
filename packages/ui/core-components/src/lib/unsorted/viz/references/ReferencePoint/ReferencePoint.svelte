@@ -147,8 +147,6 @@
 		}
 	}
 
-	$: console.log({ slotElement, label, preserveWhitespace });
-
 	// The chartType prop is only used here to allow Callout to use this component
 	// chartType shouldnt be used by consumers of Evidence
 	const chartType = $$props.chartType ?? 'Reference Point';

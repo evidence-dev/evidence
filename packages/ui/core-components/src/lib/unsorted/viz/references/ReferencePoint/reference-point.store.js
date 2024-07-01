@@ -76,7 +76,6 @@ export const createReferencePointStore = (configStore) => {
 			if (typeof data !== 'undefined' && data[Symbol.iterator]) {
 				checkInputs(data, [x, y]);
 				for (let i = 0; i < data.length; i++) {
-					console.log(data[i]);
 					seriesData.push({
 						...seriesDataCommon,
 						coord: [data[i][x], data[i][y]],
