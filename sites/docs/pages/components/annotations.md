@@ -8,11 +8,35 @@ queries:
 
 Annotations help you add important context directly within a chart - highlight important dates, time periods, or specific points on a chart to make it easier for your audience to pull insights from the information.
 
-Evidence currently offers 2 types of annotations, which can be defined inline or with a dataset:
-- [`ReferenceLine`](#reference-line): draw a line on a chart (e.g., sales target, launch dates, linear regression)
-- [`ReferenceArea`](#reference-area): highlight an area on a chart (e.g., holiday shopping periods, metric control ranges)
+## At a glance
 
-<img src="/img/annotations-example.png"  width='600px'/>
+Evidence currently offers 4 types of annotations, which can be defined inline or with a dataset:
+- [`ReferenceLine`](#reference-line): draw a line on a chart (e.g. sales target, launch dates, linear regression)
+- [`ReferenceArea`](#reference-area): highlight an area on a chart (e.g. holiday shopping periods, metric control ranges)
+- [`ReferencePoint`](#reference-point): highlight specific points on a chart (e.g. anomalies, points of interest)
+- [`Callout`](#callout): draw attention to data (e.g. data trend explanation)
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferenceLine y=7500 label="Reference Line" hideValue labelPosition="aboveStart" color=green/>
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label="Reference Area" color=yellow/>
+    <ReferencePoint x="2019-07-01" y=6590 label="Reference Point" labelPosition=bottom color=red/>
+    <Callout x="2021-05-01" y=11012 labelPosition=bottom labelWidth=fit>
+        Callout
+        Data trending up here
+    </Callout>
+</LineChart>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferenceLine y=7500 label="Reference Line" hideValue labelPosition="aboveStart" color=green/>
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label="Reference Area" color=yellow/>
+    <ReferencePoint x="2019-07-01" y=6590 label="Reference Point" labelPosition=bottom color=red/>
+    <Callout x="2021-05-01" y=11012 labelPosition=bottom labelWidth=fit>
+        Callout
+        Data trending up here
+    </Callout>
+</LineChart>
+```
 
 # Reference Line 
 
