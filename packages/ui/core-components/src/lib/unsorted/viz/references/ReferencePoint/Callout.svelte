@@ -127,6 +127,7 @@
 </script>
 
 <ReferencePoint
+	chartType="Callout"
 	{emptySet}
 	{emptyMessage}
 	{x}
