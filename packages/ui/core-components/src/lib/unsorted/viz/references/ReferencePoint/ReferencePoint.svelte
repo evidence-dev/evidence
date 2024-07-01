@@ -124,12 +124,30 @@
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
 
+	/**
+	 * @type {boolean}
+	 * @default false
+	 */
+	export let preserveWhitespace = false;
+
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 	$: isInitial = Query.isQuery(data) && data.hash === initialHash;
 
+	// Accept label from slot
 	/** @type {HTMLElement | undefined} */
 	let slotElement = undefined;
-	$: label = label ?? slotElement?.textContent;
+	$: if (slotElement?.textContent) {
+		if (preserveWhitespace) {
+			label = slotElement.textContent;
+		} else {
+			label = slotElement.textContent
+				.split('\n')
+				.map((line) => line.trim())
+				.join('\n');
+		}
+	}
+
+	$: console.log({ slotElement, label, preserveWhitespace });
 
 	// The chartType prop is only used here to allow Callout to use this component
 	// chartType shouldnt be used by consumers of Evidence

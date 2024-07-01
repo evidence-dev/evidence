@@ -95,6 +95,9 @@
 			},
 			symbolBorderColor: {
 				control: 'color'
+			},
+			preserveWhitespace: {
+				control: 'boolean'
 			}
 		}
 	};
@@ -194,5 +197,22 @@
 	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
 	<LineChart x="x" y="y" {data}>
 		<Callout {...args} />
+	</LineChart>
+</Story>
+
+<Story
+	name="Callout with line breaks"
+	args={{ x: 24, y: 514 }}
+	argTypes={{ label: { control: false } }}
+	let:args
+>
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	<LineChart x="x" y="y" {data}>
+		<!-- prettier-ignore -->
+		<Callout {...args}>
+			Callout slot label
+			with
+			line breaks
+		</Callout>
 	</LineChart>
 </Story>

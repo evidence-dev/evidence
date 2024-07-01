@@ -124,6 +124,12 @@
 
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
+
+	/**
+	 * @type {boolean}
+	 * @default false
+	 */
+	export let preserveWhitespace = false;
 </script>
 
 <ReferencePoint
@@ -155,6 +161,7 @@
 	{symbolOpacity}
 	{symbolBorderWidth}
 	{symbolBorderColor}
+	{preserveWhitespace}
 >
 	<slot />
 </ReferencePoint>
