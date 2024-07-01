@@ -6,7 +6,7 @@
 
 <script>
 	// @ts-check
-	import { getConfigContext } from '@evidence-dev/component-utilities/chartContext';
+	import { getConfigContext, getPropContext } from '@evidence-dev/component-utilities/chartContext';
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 	import EmptyChart from '../../core/EmptyChart.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
@@ -132,36 +132,39 @@
 	// chartType shouldnt be used by consumers of Evidence
 	const chartType = $$props.chartType ?? 'Reference Point';
 
+	const props = getPropContext();
 	const config = getConfigContext();
 	const store = createReferencePointStore(config);
 
-	$: $store = {
-		data,
-		x,
-		y,
-		label,
-		symbol,
-		color,
-		labelColor,
-		symbolColor,
-		symbolSize,
-		symbolOpacity,
-		symbolBorderWidth,
-		symbolBorderColor,
-		labelWidth,
-		labelPadding,
-		labelPosition,
-		labelBackgroundColor,
-		labelBorderWidth,
-		labelBorderRadius,
-		labelBorderColor,
-		labelBorderType,
-		labelVisible,
-		fontSize,
-		align,
-		bold,
-		italic
-	};
+	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
+	$: $props,
+		($store = {
+			data,
+			x,
+			y,
+			label,
+			symbol,
+			color,
+			labelColor,
+			symbolColor,
+			symbolSize,
+			symbolOpacity,
+			symbolBorderWidth,
+			symbolBorderColor,
+			labelWidth,
+			labelPadding,
+			labelPosition,
+			labelBackgroundColor,
+			labelBorderWidth,
+			labelBorderRadius,
+			labelBorderColor,
+			labelBorderType,
+			labelVisible,
+			fontSize,
+			align,
+			bold,
+			italic
+		});
 </script>
 
 {#if $$slots.default}
