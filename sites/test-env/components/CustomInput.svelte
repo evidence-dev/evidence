@@ -3,10 +3,9 @@
 </script>
 
 <script>
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { getContext } from 'svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	const inputs = getInputContext();
 
 	export let name;
 	export let lower = 250;

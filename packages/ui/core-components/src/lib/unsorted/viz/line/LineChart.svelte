@@ -146,6 +146,7 @@
 	{renderer}
 	{connectGroup}
 	{seriesColors}
+	{...$$restProps}
 >
 	<Line
 		{lineColor}

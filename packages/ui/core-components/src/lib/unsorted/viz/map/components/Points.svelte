@@ -10,15 +10,15 @@
 	import Point from './Point.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
 
 	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;

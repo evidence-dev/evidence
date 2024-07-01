@@ -4,9 +4,8 @@
 
 <script>
 	import VirtualList from './Virtual.svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import { getContext, onMount, setContext, tick } from 'svelte';
+	import { onMount, setContext, tick } from 'svelte';
 	import { page } from '$app/stores';
 	import DropdownOption from './helpers/DropdownOption.svelte';
 	import DropdownOptionDisplay from './helpers/DropdownOptionDisplay.svelte';
@@ -25,8 +24,8 @@
 	import QueryLoad from '../../query-load/QueryLoad.svelte';
 	import { DropdownValueFlag, dropdownOptionStore } from './dropdownOptionStore.js';
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
-
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputs = getInputContext();
 	/////
 	// Component Things
 	/////

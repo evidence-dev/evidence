@@ -118,6 +118,7 @@
 	{renderer}
 	{connectGroup}
 	{seriesColors}
+	{...$$restProps}
 >
 	<Area
 		{line}

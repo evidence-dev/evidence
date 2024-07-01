@@ -146,8 +146,11 @@ export default function getSeriesConfig(
 					seriesData.forEach((item, index) => item.push(tooltipData[index]));
 				}
 
+				// We can use this to split this back out and get the individual parts of the series
+				const zeroWidthSpace = '\u200B';
+
 				// Set series name:
-				seriesName = (seriesDistinct[i] ?? 'null') + ' - ' + columnSummary[yList[j][0]].title;
+				seriesName = `${seriesDistinct[i] ?? 'null'}${zeroWidthSpace} - ${zeroWidthSpace}${columnSummary[yList[j][0]].title}`;
 
 				// Set y-axis index (used for multi-y axis charts):
 				yAxisIndex = yList[j][1];
