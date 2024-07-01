@@ -36,10 +36,10 @@
 	export let labelColor = undefined;
 
 	/**
-	 * @type {number | string | undefined}
-	 * @default 200
+	 * @type {number | "fit" | string | undefined}
+	 * @default 80
 	 */
-	export let labelWidth = 200;
+	export let labelWidth = 80;
 
 	/**
 	 * @type {number | string | undefined}
@@ -89,11 +89,8 @@
 	/** @type {number | string | undefined} */
 	export let fontSize = undefined;
 
-	/**
-	 * @type {'left' | 'center' | 'right' | undefined}
-	 * @default "left"
-	 */
-	export let align = 'left';
+	/** @type {'left' | 'center' | 'right' | undefined} */
+	export let align = undefined;
 
 	/** @type {boolean | undefined} */
 	export let bold = undefined;
