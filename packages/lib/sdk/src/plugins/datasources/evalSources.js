@@ -162,6 +162,11 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 				outputManifest.renderedFiles[source.name].push(
 					`${dataUrlPrefix}/${source.name}/${table.name}/${filename}`
 				);
+				await fs.writeFile(
+					path.join(outDir, table.name + '.schema.json'),
+					JSON.stringify(table.columnTypes)
+				);
+
 				addToCache(source.name, table.name, table.content);
 
 				spinner.succeed(`Finished, wrote ${writtenRows} rows.`);

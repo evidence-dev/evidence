@@ -171,6 +171,7 @@
 	{connectGroup}
 	{seriesColors}
 	{link}
+	{...$$restProps}
 >
 	<Bar
 		{type}

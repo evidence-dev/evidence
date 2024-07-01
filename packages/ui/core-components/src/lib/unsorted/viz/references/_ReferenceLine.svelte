@@ -115,79 +115,82 @@
 	$: labelPosition = labelPositions[labelPosition] ?? 'insideEndTop';
 
 	let configData = [];
-	$: if (data && !error) {
-		try {
-			configData = [];
-			if (typeof x !== 'undefined' && typeof y !== 'undefined') {
-				checkInputs(data, [x]);
-				checkInputs(data, [y]);
-				for (let i = 0; i < data.length; i++) {
-					try {
-						if (x2 || y2) {
-							const coord1 = {
-								name: data[i][label] ?? label,
-								coord: [data[i][x], data[i][y]]
-							};
-							const coord2 = {
-								coord: [data[i][x2 || x], data[i][y2 || y]],
-								symbol: symbol,
-								symbolKeepAspect: true
-							};
-							configData.push([coord1, coord2]);
-						} else {
-							throw new Error('If you supply x and y, either x2 or y2 must be defined');
-						}
-					} catch (e) {
-						error = e;
-					}
-				}
-			} else if (x) {
-				checkInputs(data, [x]);
-				for (let i = 0; i < data.length; i++) {
-					if (data[i][x] !== null) {
-						configData.push({
-							name: data[i][label],
-							xAxis: data[i][x]
-						});
-					}
-				}
-			} else if (y) {
-				checkInputs(data, [y]);
-				for (let i = 0; i < data.length; i++) {
-					if (data[i][y] !== null) {
-						configData.push({
-							name: data[i][label],
-							yAxis: data[i][y]
-						});
-					}
-				}
-			}
-		} catch (e) {
-			error = e;
-		}
-	} else {
-		if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+	$: {
+		configData = [];
+
+		if (data && !error) {
 			try {
-				if (x2 || y2) {
-					const coord1 = { name: label, coord: [x, y] };
-					const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol, symbolKeepAspect: true };
-					configData.push([coord1, coord2]);
-				} else {
-					throw new Error('If you supply x and y, either x2 or y2 must be defined');
+				if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+					checkInputs(data, [x]);
+					checkInputs(data, [y]);
+					for (let i = 0; i < data.length; i++) {
+						try {
+							if (x2 || y2) {
+								const coord1 = {
+									name: data[i][label] ?? label,
+									coord: [data[i][x], data[i][y]]
+								};
+								const coord2 = {
+									coord: [data[i][x2 || x], data[i][y2 || y]],
+									symbol: symbol,
+									symbolKeepAspect: true
+								};
+								configData.push([coord1, coord2]);
+							} else {
+								throw new Error('If you supply x and y, either x2 or y2 must be defined');
+							}
+						} catch (e) {
+							error = e;
+						}
+					}
+				} else if (x) {
+					checkInputs(data, [x]);
+					for (let i = 0; i < data.length; i++) {
+						if (data[i][x] !== null) {
+							configData.push({
+								name: data[i][label],
+								xAxis: data[i][x]
+							});
+						}
+					}
+				} else if (y) {
+					checkInputs(data, [y]);
+					for (let i = 0; i < data.length; i++) {
+						if (data[i][y] !== null) {
+							configData.push({
+								name: data[i][label],
+								yAxis: data[i][y]
+							});
+						}
+					}
 				}
 			} catch (e) {
 				error = e;
 			}
-		} else if (x) {
-			configData.push({
-				name: label,
-				xAxis: x
-			});
-		} else if (y) {
-			configData.push({
-				name: label,
-				yAxis: y
-			});
+		} else {
+			if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+				try {
+					if (x2 || y2) {
+						const coord1 = { name: label, coord: [x, y] };
+						const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol, symbolKeepAspect: true };
+						configData.push([coord1, coord2]);
+					} else {
+						throw new Error('If you supply x and y, either x2 or y2 must be defined');
+					}
+				} catch (e) {
+					error = e;
+				}
+			} else if (x) {
+				configData.push({
+					name: label,
+					xAxis: x
+				});
+			} else if (y) {
+				configData.push({
+					name: label,
+					yAxis: y
+				});
+			}
 		}
 	}
 

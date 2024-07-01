@@ -21,10 +21,10 @@ schema:
     item: arrayElement
     withBias: true
     options:
-      - Male
-      - Male
-      - Male
-      - Female
-      - Female
-      - Female
-      - Other
+      - - Male
+        - Male
+        - Male
+        - Female
+        - Female
+        - Female
+        - Other

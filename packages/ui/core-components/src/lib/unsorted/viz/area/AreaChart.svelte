@@ -120,6 +120,7 @@
 	{connectGroup}
 	{seriesColors}
 	{link}
+	{...$$restProps}
 >
 	<Area
 		{line}

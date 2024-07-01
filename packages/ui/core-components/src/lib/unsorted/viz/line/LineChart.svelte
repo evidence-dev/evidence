@@ -148,6 +148,7 @@
 	{connectGroup}
 	{seriesColors}
 	{link}
+	{...$$restProps}
 >
 	<Line
 		{lineColor}
