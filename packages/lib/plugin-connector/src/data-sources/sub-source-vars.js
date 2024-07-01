@@ -24,37 +24,32 @@ export const subSourceVariables = (queryString) => {
 				return [name, value];
 			})
 	);
-
 	let output = queryString;
 	// This regex is prefixed with a negative lookbehind to disqualify $${var} patterns
 	const regex = RegExp(/(?<!\$)\$\{(.+?)\}/, 'g');
 
 	let match;
-	while ((match = regex.exec(queryString)) !== null) {
+	while ((match = regex.exec(output)) !== null) {
 		const fullMatch = match[0]; // e.g. ${variable}
 		const varName = match[1]; // e.g. variable
+		const start = match.index;
+		const end = match[0].length + start;
+
 		if (varName in validVars && validVars[varName]) {
 			const value = validVars[varName];
-			if (value !== undefined) {
-				let newOutput = output.replace(fullMatch, value);
-				output = newOutput;
-			} else {
-				console.warn(
-					`Missed substitution for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
-				);
-			}
-		}
+			if (!value) throw new Error('Value somehow became undefined');
+			const before = output.substring(0, start);
+			const after = output.substring(end);
+			output = `${before}${value}${after}`;
+			// Update the lastIndex of the regular expression to continue the search from the end of the replacement
+			regex.lastIndex = start + value.length;
+		} else
+			console.warn(
+				`Missed substition for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
+			);
 	}
+
+	output = output.replaceAll('$${', '${');
+
 	return output;
 };
-
-process.env.EVIDENCE_VAR__var_a = 'abc';
-process.env.EVIDENCE_VAR__var_b = 'def';
-process.env.EVIDENCE_VAR__var_c = 'ghi';
-
-console.log(subSourceVariables('|${var_a}|${var_b}|${var_c}|'));
-console.log(subSourceVariables('|${var_a}|${var_z}|${var_c}|'));
-console.log(subSourceVariables('|${var_a}|'));
-console.log(subSourceVariables('|${var_b}|'));
-console.log(subSourceVariables('|${var_c}|'));
-console.log(subSourceVariables('|${var_z}|'));

@@ -31,12 +31,16 @@ describe('subSourceVars', () => {
 		vi.stubEnv('EVIDENCE_VAR__test', 'var-val');
 		vi.stubEnv('EVIDENCE_VAR__test2', 'var-val2');
 		vi.stubEnv('EVIDENCE_VAR__test3', 'var-val3');
-		expect(subSourceVariables('|${test}|${test2}|${test3}|')).toEqual('|var-val|var-val2|var-val3|');
+		expect(subSourceVariables('|${test}|${test2}|${test3}|')).toEqual(
+			'|var-val|var-val2|var-val3|'
+		);
 	});
 	it('should convert 2 different variables and fail 1', () => {
 		vi.stubEnv('EVIDENCE_VAR__test', 'var-val');
 		vi.stubEnv('EVIDENCE_VAR__test2', 'var-val2');
 		vi.stubEnv('EVIDENCE_VAR__test3', 'var-val3');
-		expect(subSourceVariables('${test}\n${testZ}\n${test3}')).toEqual('var-val\n${testZ}\nvar-val3');
+		expect(subSourceVariables('${test}\n${testZ}\n${test3}')).toEqual(
+			'var-val\n${testZ}\nvar-val3'
+		);
 	});
 });
