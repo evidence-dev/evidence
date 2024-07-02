@@ -13,3 +13,10 @@ series:
           max: 1000
     series:
       count: 4
+    y2:
+      category: number
+      item: int
+      options:
+        - min: 0
+          max: 1000
+

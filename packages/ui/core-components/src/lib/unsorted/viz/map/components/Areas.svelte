@@ -10,14 +10,14 @@
 	import MapArea from './MapArea.svelte';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import ErrorChart from '../../core/ErrorChart.svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
 
 	if (!map) throw new Error('Evidence Map Context has not been set. Areas will not function');
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;

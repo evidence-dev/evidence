@@ -74,6 +74,7 @@
 	{emptyMessage}
 	{renderer}
 	{connectGroup}
+	{...$$restProps}
 >
 	<Hist {fillColor} {fillOpacity} />
 	<slot />

@@ -3,10 +3,8 @@
 	import Accordion from '../atoms/accordion/Accordion.svelte';
 	import AccordionItem from '../atoms/accordion/AccordionItem.svelte';
 
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { getContext } from 'svelte';
-
-	const inputStore = getContext(INPUTS_CONTEXT_KEY);
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputStore = getInputContext();
 
 	$: keys = Object.keys($inputStore);
 </script>
@@ -34,7 +32,8 @@
 							$inputStore[input],
 							null,
 							2
-						)} 
+						)}
+SQL Auto Fragment: {$inputStore[input]}
 					</pre>
 				</Tabs.Content>
 			{/each}

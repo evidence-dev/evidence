@@ -31,6 +31,12 @@
 			"require": null,
 			"types": "./src/utils/index.d.ts"
 		},
+		"./utils/svelte": {
+			"default": "./src/utils/svelte/index.js",
+			"import": "./src/utils/svelte/index.js",
+			"require": null,
+			"types": "./src/utils/svelte/index.d.ts"
+		},
 		"./plugins/datasources": {
 			"default": "./src/plugins/datasources/index.js",
 			"import": "./src/plugins/datasources/index.js",
@@ -117,6 +123,6 @@
 	},
 	"peerDependencies": {
 		"@evidence-dev/universal-sql": "workspace:*",
-		"perfect-debounce": "^1.0.0"
+		"svelte": "^4.2.12"
 	}
 }

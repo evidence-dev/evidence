@@ -28,7 +28,8 @@
 			xHasGaps: false,
 			yHasNulls: false,
 			seriesAlwaysExists: true
-		}
+		},
+		component: BarChart
 	};
 </script>
 
@@ -52,6 +53,7 @@
 </Template>
 
 <Story name="Base" />
+
 <!-- 
 <Story name="Query" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric", query), x: "x", y: "y", series: "series"}} />
 <Story name="Query (X Gaps)" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric_gaps", query), x: "x", y: "y", series: "series"}} />
