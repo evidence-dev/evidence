@@ -121,6 +121,7 @@ export const createReferencePointStore = (configStore) => {
 			evidenceSeriesType: 'reference_point',
 			id,
 			type: 'line',
+			animation: false,
 			markPoint: {
 				data: seriesData,
 				silent: false,
