@@ -74,7 +74,7 @@ SELECT
     sum(sales) as total_sales,
     count(*) as number_of_units,
     avg(sales) as price,
-    CONCAT('/categories/', category) as category_url
+    CONCAT('https://www.google.com/search?q=', category) as category_url
 FROM needful_things.orders
 GROUP BY item, category
 ```

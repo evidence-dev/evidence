@@ -178,7 +178,7 @@ group by all
 ### Links
 
 ``` category
-SELECT category, order_month AS month, sum(sales) as sales, CONCAT('/categories/', category) as category_url
+SELECT category, order_month AS month, sum(sales) as sales, CONCAT('https://www.google.com/search?q=', category) as category_url
 FROM needful_things.orders
 group by all
 ORDER BY month, category
