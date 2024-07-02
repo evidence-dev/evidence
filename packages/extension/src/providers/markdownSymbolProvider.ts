@@ -31,7 +31,6 @@ export class MarkdownSymbolProvider implements DocumentSymbolProvider {
 					line.range
 				);
 				this.addToHierarchy(symbols, stack, symbol, level);
-				console.log(`Header: ${headerMatch[2]} at level ${level}, stack length: ${stack.length}`);
 				continue;
 			}
 
@@ -72,9 +71,6 @@ export class MarkdownSymbolProvider implements DocumentSymbolProvider {
 				if (!isSelfClosing) {
 					i = componentEndLine;
 				}
-				console.log(
-					`Svelte Component: ${componentName}, level: ${level}, stack length: ${stack.length}`
-				);
 				continue;
 			}
 
@@ -120,9 +116,6 @@ export class MarkdownSymbolProvider implements DocumentSymbolProvider {
 					const level = stack.length > 0 ? stack[0].level + 1 : 1;
 					this.addToHierarchy(symbols, stack, controlBlockSymbol, level);
 					i = endLine;
-					console.log(
-						`Control Block: ${blockName}, level: ${level}, stack length: ${stack.length}`
-					);
 				}
 				continue;
 			}

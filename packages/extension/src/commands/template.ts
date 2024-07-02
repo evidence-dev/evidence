@@ -201,7 +201,6 @@ export async function cloneTemplateRepository(
 					// degit.json does not seem to be respected by tiged in this case
 					// add credentials file to .evidence/template/evidence.settings.json if it is using default template, and also delete the degit.json file
 					if (templateRepositoryUrl === templateProjectUrl) {
-						console.log('Adding credentials file to .evidence/template/evidence.settings.json');
 						let credentialsString = `{"database":"duckdb","credentials":{"filename":"needful_things.duckdb","gitignoreDuckdb":null}}`;
 						await workspace.fs.writeFile(
 							Uri.file(`${projectFolderPath}/.evidence/template/evidence.settings.json`),
