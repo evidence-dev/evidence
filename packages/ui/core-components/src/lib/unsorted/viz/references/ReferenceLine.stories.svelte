@@ -7,20 +7,17 @@
 </script>
 
 <script>
-	import { writable } from 'svelte/store';
-	import { setContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 	import { Slider } from '$lib/atoms/inputs/slider';
 	import { userEvent, within } from '@storybook/test';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
 	import ReferenceLine from './ReferenceLine.svelte';
 
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
+	const inputStore = getInputContext();
 
 	const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query);
 </script>
