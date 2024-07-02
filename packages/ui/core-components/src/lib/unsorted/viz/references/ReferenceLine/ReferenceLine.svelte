@@ -3,10 +3,10 @@
 </script>
 
 <script>
-	import { QueryLoad } from '../../../atoms/query-load';
+	import { QueryLoad } from '../../../../atoms/query-load';
 	import ReferenceLine from './_ReferenceLine.svelte';
-	import EmptyChart from '../core/EmptyChart.svelte';
-	import ErrorChart from '../core/ErrorChart.svelte';
+	import EmptyChart from '../../core/EmptyChart.svelte';
+	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 
 	export let data = undefined;
