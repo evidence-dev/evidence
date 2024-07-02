@@ -15,9 +15,9 @@ export const createReferencePointStore = (configStore) => {
 
 	const id = nanoid();
 
-	/** @param {import('./reference-point.d.ts').ReferencePointStoreState} state */
-	const set = (state) => {
-		const { labelColor, symbolColor } = getLineAndSymbolColors(state);
+	/** @param {import('./reference-point.d.ts').ReferencePointStoreValue} value */
+	const set = (value) => {
+		const { labelColor, symbolColor } = getLineAndSymbolColors(value);
 
 		// Destructure some properties for QOL preprocessing
 		let {
@@ -30,10 +30,10 @@ export const createReferencePointStore = (configStore) => {
 			symbolBorderColor,
 			labelVisible,
 			align
-		} = state;
+		} = value;
 
 		/** @type {string} */
-		let symbol = state.symbol;
+		let symbol = value.symbol;
 		if (symbol === 'arrow') {
 			// Use a nicer arrow symbol
 			symbol = 'path://M0,10 L5,0 L10,10 z';
@@ -65,13 +65,13 @@ export const createReferencePointStore = (configStore) => {
 			symbolKeepAspect: true,
 			itemStyle: {
 				color: symbolColor,
-				opacity: state.symbolOpacity,
-				borderWidth: state.symbolBorderWidth,
-				borderColor: state.symbolBorderColor
+				opacity: value.symbolOpacity,
+				borderWidth: value.symbolBorderWidth,
+				borderColor: value.symbolBorderColor
 			}
 		};
 
-		const { data, x, y } = state;
+		const { data, x, y } = value;
 		/** @type {import('echarts').MarkPointComponentOption['data'][number][]} */
 		let seriesData = [];
 		if (typeof x !== 'undefined' && typeof y !== 'undefined') {
@@ -99,21 +99,21 @@ export const createReferencePointStore = (configStore) => {
 
 		/** @type {import('echarts').LineSeriesOption['markPoint']['label']} */
 		const labelStyle = {
-			width: state.labelWidth,
-			padding: state.labelPadding,
+			width: value.labelWidth,
+			padding: value.labelPadding,
 			position: labelPosition,
 			color: labelColor,
 			opacity: 1,
-			backgroundColor: state.labelBackgroundColor,
-			borderColor: state.labelBorderColor,
-			borderWidth: state.labelBorderWidth,
-			borderRadius: state.labelBorderRadius,
-			borderType: state.labelBorderType,
+			backgroundColor: value.labelBackgroundColor,
+			borderColor: value.labelBorderColor,
+			borderWidth: value.labelBorderWidth,
+			borderRadius: value.labelBorderRadius,
+			borderType: value.labelBorderType,
 			overflow: 'break',
-			fontSize: state.fontSize,
+			fontSize: value.fontSize,
 			align,
-			fontWeight: state.bold ? 'bold' : undefined,
-			fontStyle: state.italic ? 'italic' : undefined
+			fontWeight: value.bold ? 'bold' : undefined,
+			fontStyle: value.italic ? 'italic' : undefined
 		};
 
 		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */
@@ -151,10 +151,10 @@ export const createReferencePointStore = (configStore) => {
 
 	return {
 		subscribe: store.subscribe,
-		set: (state) => {
+		set: (value) => {
 			store.set({ error: undefined });
 			try {
-				set(state);
+				set(value);
 			} catch (e) {
 				store.set({ error: e });
 			}

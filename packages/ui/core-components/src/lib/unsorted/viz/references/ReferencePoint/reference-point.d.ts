@@ -16,7 +16,7 @@ export type Symbol =
 	| 'arrow'
 	| 'none';
 
-export type ReferencePointStoreState = {
+export type ReferencePointStoreValue = {
 	data?: any;
 	x?: number | string;
 	y?: number | string;
@@ -44,7 +44,7 @@ export type ReferencePointStoreState = {
 	italic?: boolean;
 };
 
-export type ReferencePointStore = Writable<ReferencePointStoreState> & Readable<{ error?: string }>;
+export type ReferencePointStore = Writable<ReferencePointStoreValue> & Readable<{ error?: string }>;
 
 export type ReferencePointChartData = MarkPointComponentOption['data'][number] & {
 	evidenceSeriesType: 'reference_point';
