@@ -1,4 +1,4 @@
-rows: 250
+rows: 2500
 
 schema:
     id:
@@ -17,4 +17,4 @@ schema:
         item: recent
         withBias: true
         options:
-            - days: 365 # Past Year
+            - days: 90 # Past Year

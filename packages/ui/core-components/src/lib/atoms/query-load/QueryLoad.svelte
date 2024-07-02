@@ -41,7 +41,7 @@
 	</slot>
 {:else if _data.error && $$slots.error}
 	<slot name="error" loaded={_data} />
-{:else if !_data.length && !_data.error && $$slots._empty}
+{:else if !_data.length && !_data.error && $$slots.empty}
 	<slot name="empty" loaded={_data} />
 {:else}
 	<slot loaded={_data} />

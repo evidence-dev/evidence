@@ -2,7 +2,7 @@
 	"name": "evidence-vscode",
 	"displayName": "Evidence",
 	"description": "Build polished data products with SQL and Markdown",
-	"version": "1.4.14",
+	"version": "1.5.0",
 	"private": true,
 	"engines": {
 		"vscode": "^1.52.0"
@@ -61,6 +61,26 @@
 			{
 				"command": "evidence.openWalkthrough",
 				"title": "Getting Started Walkthrough",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.insertColumnName",
+				"title": "Insert",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.insertTableName",
+				"title": "Insert",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.copyColumnName",
+				"title": "Copy",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.copyTableName",
+				"title": "Copy",
 				"category": "Evidence"
 			},
 			{
@@ -247,6 +267,44 @@
 				{
 					"command": "evidence.preview",
 					"when": "never"
+				},
+				{
+					"command": "evidence.copyColumnName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.copyTableName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.insertColumnName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.insertTableName",
+					"when": "never"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "evidence.insertColumnName",
+					"when": "view == schemaView && viewItem == columnItem",
+					"group": "inline@1"
+				},
+				{
+					"command": "evidence.insertTableName",
+					"when": "view == schemaView && viewItem == tableItem",
+					"group": "inline@1"
+				},
+				{
+					"command": "evidence.copyColumnName",
+					"when": "view == schemaView && viewItem == columnItem",
+					"group": "inline@2"
+				},
+				{
+					"command": "evidence.copyTableName",
+					"when": "view == schemaView && viewItem == tableItem",
+					"group": "inline@2"
 				}
 			]
 		},
@@ -290,6 +348,26 @@
 						"Open in external web browser",
 						"No automatic preview shown"
 					]
+				},
+				"evidence.enableSQLBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for SQL blocks."
+				},
+				"evidence.enableIfBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for if blocks."
+				},
+				"evidence.enableEachBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for each blocks."
+				},
+				"evidence.enableFrontmatterBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for markdown frontmatter."
 				}
 			}
 		},

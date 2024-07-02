@@ -97,7 +97,6 @@ describe('buildMultipartParquet', () => {
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
 			'out.parquet',
-			2,
 			1
 		);
 		expect(r).toBe(2);
@@ -157,7 +156,6 @@ describe('buildMultipartParquet', () => {
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
 			'out.parquet',
-			VERY_LARGE_NUMBER,
 			1
 		);
 		expect(r).toBe(VERY_LARGE_NUMBER);

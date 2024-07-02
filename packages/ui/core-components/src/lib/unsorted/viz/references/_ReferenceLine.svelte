@@ -15,6 +15,8 @@
 
 	export let x = undefined;
 	export let y = undefined;
+	export let x2 = undefined;
+	export let y2 = undefined;
 	export let data = undefined;
 	export let label = undefined;
 
@@ -23,6 +25,12 @@
 	export let labelColor = undefined;
 	export let lineWidth = undefined;
 	export let lineType = 'dashed'; // solid, dashed, or dotted
+	// Override arrow symbol with custom svg path which is a nice aspect triangle
+	let arrowPath = 'path://M0,10 L5,0 L10,10 z';
+	export let symbol = 'none';
+	if (symbol === 'arrow') {
+		symbol = arrowPath;
+	}
 
 	export let labelPosition = 'aboveEnd';
 	export let labelTextOutline = false;
@@ -85,6 +93,7 @@
 
 			if (swapXY) {
 				[x, y] = [y, x];
+				[x2, y2] = [y2, x2];
 				[xFormat, yFormat] = [yFormat, xFormat];
 			}
 		} catch (e) {
@@ -106,48 +115,87 @@
 	$: labelPosition = labelPositions[labelPosition] ?? 'insideEndTop';
 
 	let configData = [];
-	$: if (data && !error) {
-		try {
-			configData = [];
-			if (x) {
-				checkInputs(data, [x]);
-				for (let i = 0; i < data.length; i++) {
-					if (data[i][x] !== null) {
-						configData.push({
-							name: data[i][label],
-							xAxis: data[i][x]
-						});
+	$: {
+		configData = [];
+
+		if (data && !error) {
+			try {
+				if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+					checkInputs(data, [x]);
+					checkInputs(data, [y]);
+					for (let i = 0; i < data.length; i++) {
+						try {
+							if (x2 || y2) {
+								const coord1 = {
+									name: data[i][label] ?? label,
+									coord: [data[i][x], data[i][y]]
+								};
+								const coord2 = {
+									coord: [data[i][x2 || x], data[i][y2 || y]],
+									symbol: symbol,
+									symbolKeepAspect: true
+								};
+								configData.push([coord1, coord2]);
+							} else {
+								throw new Error('If you supply x and y, either x2 or y2 must be defined');
+							}
+						} catch (e) {
+							error = e;
+						}
+					}
+				} else if (x) {
+					checkInputs(data, [x]);
+					for (let i = 0; i < data.length; i++) {
+						if (data[i][x] !== null) {
+							configData.push({
+								name: data[i][label],
+								xAxis: data[i][x]
+							});
+						}
+					}
+				} else if (y) {
+					checkInputs(data, [y]);
+					for (let i = 0; i < data.length; i++) {
+						if (data[i][y] !== null) {
+							configData.push({
+								name: data[i][label],
+								yAxis: data[i][y]
+							});
+						}
 					}
 				}
-			} else if (y) {
-				checkInputs(data, [y]);
-				for (let i = 0; i < data.length; i++) {
-					if (data[i][y] !== null) {
-						configData.push({
-							name: data[i][label],
-							yAxis: data[i][y]
-						});
-					}
-				}
+			} catch (e) {
+				error = e;
 			}
-		} catch (e) {
-			error = e;
-		}
-	} else {
-		if (x) {
-			configData.push({
-				name: label,
-				xAxis: x
-			});
-		} else if (y) {
-			configData.push({
-				name: label,
-				yAxis: y
-			});
+		} else {
+			if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+				try {
+					if (x2 || y2) {
+						const coord1 = { name: label, coord: [x, y] };
+						const coord2 = { coord: [x2 || x, y2 || y], symbol: symbol, symbolKeepAspect: true };
+						configData.push([coord1, coord2]);
+					} else {
+						throw new Error('If you supply x and y, either x2 or y2 must be defined');
+					}
+				} catch (e) {
+					error = e;
+				}
+			} else if (x) {
+				configData.push({
+					name: label,
+					xAxis: x
+				});
+			} else if (y) {
+				configData.push({
+					name: label,
+					yAxis: y
+				});
+			}
 		}
 	}
 
 	const identifier = String(Math.random());
+
 	let baseConfig;
 
 	$: if (!error) {
@@ -165,14 +213,14 @@
 						let result;
 						if (params.name === '') {
 							// If no label supplied
-							result = !hideValue
+							result = !(hideValue || (typeof x !== 'undefined' && typeof y !== 'undefined'))
 								? `${formatValue(
 										y ? params.data.yAxis : x ? params.data.xAxis : params.value,
 										y ? yFormat : x ? xFormat : 'string'
 									)}`
 								: '';
 						} else {
-							result = !hideValue
+							result = !(hideValue || (typeof x !== 'undefined' && typeof y !== 'undefined'))
 								? `${params.name} (${formatValue(
 										y ? params.data.yAxis : x ? params.data.xAxis : params.value,
 										y ? yFormat : x ? xFormat : 'string'
@@ -217,6 +265,7 @@
 {#if error}
 	<ErrorChart
 		{error}
+		minHeight="50px"
 		chartType={chartType === 'Reference Line' ? chartType : `${chartType}: Reference Line`}
 	/>
 {/if}

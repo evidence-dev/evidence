@@ -1,15 +1,22 @@
 ---
 title: 'Area Chart'
 sidebar_position: 1
+queries:
+- orders_by_month.sql
+- orders_by_category_2021.sql
 ---
 
-![area](/img/exg-area-nt.svg)
+<AreaChart 
+    data={orders_by_month}
+    x=month
+    y=sales
+/>
 
 ```markdown
 <AreaChart 
-    data={query_name} 
-    x=column_x 
-    y=column_y
+    data={orders_by_month}
+    x=month
+    y=sales
 />
 ```
 
@@ -17,54 +24,114 @@ sidebar_position: 1
 
 ### Area
 
-![area](/img/exg-area-nt.svg)
+<AreaChart 
+    data={orders_by_month}
+    x=month
+    y=sales
+/>
 
 ```markdown
 <AreaChart 
-    data={fed_reserve_district_sf} 
-    x=established_date 
-    y=banks_created
+    data={orders_by_month}
+    x=month
+    y=sales
 />
 ```
 
-### Stacked Area
 
-![stacked-area](/img/exg-stacked-area-nt.svg)
+### Stacked
+
+<AreaChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+/>
 
 ```markdown
 <AreaChart 
-    data={fed_reserve_district}  
-    x=established_date 
-    y=banks_created
-    series=fed_reserve_district
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
 />
 ```
 
-### 100% Stacked Area
+### 100% Stacked
 
-![100-stacked-area](/img/100-stacked-area.svg)
+<AreaChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+    type=stacked100
+/>
 
 ```markdown
 <AreaChart 
-    data={fed_reserve_district}  
-    x=established_date 
-    y=banks_created
-    series=fed_reserve_district
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
     type=stacked100
 />
 ```
 
-### Area with Step Line
+### Stepped Line
 
-<img src='/img/exg-multi-series-step-area.png' width='576px'/>
+<AreaChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+    step=true
+/>
 
 ```markdown
-<AreaChart
-    data={simpler_bar}
-    x=year
-    y=value
-    series=country
+<AreaChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
     step=true
+/>
+```
+
+### Y-Axis Formatting
+
+<AreaChart 
+    data={orders_by_month}
+    x=month
+    y=sales
+    yFmt=usd0
+/>
+
+```markdown
+<AreaChart 
+    data={orders_by_month}
+    x=month
+    y=sales
+    yFmt=usd0
+/>
+```
+
+### Labels
+
+<AreaChart 
+    data={orders_by_month}
+    x=month
+    y=sales
+    labels=true
+    labelFmt=usd1k
+/>
+
+```markdown
+<AreaChart 
+    data={orders_by_month}
+    x=month
+    y=sales
+    labels=true
+    labelFmt=usd0k
 />
 ```
 
@@ -259,21 +326,18 @@ sidebar_position: 1
 <PropListing
     name="yLog"
     description="Whether to use a log scale for the y-axis"
-    required=false
     options={["true", "false"]}
     defaultValue="false"
 />
 <PropListing
     name="yLogBase"
     description="Base to use when log scale is enabled"
-    required=false
     options="number"
     defaultValue="10"
 />
 <PropListing
     name="xAxisTitle"
     description="Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false"
-    required=false
     options={["true", "string", "false"]}
     defaultValue="false"
 />
@@ -438,8 +502,8 @@ sidebar_position: 1
 Area charts can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
-<AreaChart data="{sales_data}" x="date" y="sales">
-	<ReferenceLine data="{target_data}" y="target" label="name" />
-	<ReferenceArea xMin="2020-03-14" xMax="2020-05-01" />
+<AreaChart data={sales_data} x=date y=sales>
+	<ReferenceLine data={target_data} y=target label=name />
+	<ReferenceArea xMin='2020-03-14' xMax='2020-05-01' />
 </AreaChart>
 ```

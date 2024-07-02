@@ -29,23 +29,18 @@
 	});
 
 	/** @type {import('bits-ui').DateRange | undefined} */
-	export let selectedDateRange;
+	export let selectedDateRange = undefined;
 	/** @type {string} */
 	export let start;
 	/** @type {string} */
 	export let end;
 	export let loaded = true;
+	/** @type {[]string] | undefined} */
+	export let presetRanges;
+	/** @type {string] | undefined} */
+	export let defaultValue;
 
-	$: calendarStart = YYYYMMDDToCalendar(start);
-	$: calendarEnd = YYYYMMDDToCalendar(end);
-
-	function updateDateRange(start, end) {
-		selectedDateRange = { start, end };
-	}
-
-	$: updateDateRange(calendarStart, calendarEnd);
-
-	/** @type {{label: string, group: string, range: import('bits-ui').DateRange}[]} */
+	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
 		{
 			label: 'Last 7 Days',
@@ -137,6 +132,26 @@
 		}
 	];
 
+	function lowerCaseNoSpaceString(unformattedStr) {
+		return unformattedStr.toString().toLowerCase().replace(/\s+/g, '');
+	}
+
+	$: {
+		if (typeof presetRanges === 'string') {
+			presetRanges = [presetRanges];
+		}
+
+		if (presetRanges && typeof presetRanges[0] === 'string') {
+			//filters out present range strings matching in preset array to be displayed to user
+			const formattedPresetRanges = presetRanges.map((preset) => lowerCaseNoSpaceString(preset));
+
+			let filteredPresets = presets.filter((preset) => {
+				return formattedPresetRanges.includes(lowerCaseNoSpaceString(preset.label));
+			});
+			presets = filteredPresets;
+		}
+	}
+
 	function setPlaceholderDefault(d) {
 		placeholder = d;
 	}
@@ -144,6 +159,44 @@
 	let selectedPreset;
 	let placeholder;
 	$: setPlaceholderDefault(calendarEnd);
+
+	// group exists check for nicely rendering group border for dropdown
+	function groupExists(groupName) {
+		return presets.some((preset) => preset.group === groupName);
+	}
+
+	/**
+	 * @param {typeof presets[number] | string} v
+	 */
+	function applyPreset(v) {
+		if (!v) return;
+		const targetPreset = presets.find(
+			(preset) =>
+				lowerCaseNoSpaceString(preset.label) ===
+				lowerCaseNoSpaceString(typeof v === 'string' ? v : v.label)
+		);
+		if (!targetPreset) return;
+		selectedDateRange = targetPreset.range ?? targetPreset.value;
+		selectedPreset = targetPreset;
+	}
+
+	$: if (
+		typeof defaultValue === 'string' &&
+		!selectedDateRange &&
+		!selectedPreset &&
+		presets.length
+	)
+		applyPreset(defaultValue);
+
+	$: calendarStart = YYYYMMDDToCalendar(start);
+	$: calendarEnd = YYYYMMDDToCalendar(end);
+
+	function updateDateRange(start, end) {
+		if (selectedPreset) return;
+		selectedDateRange = { start, end };
+	}
+
+	$: updateDateRange(calendarStart, calendarEnd);
 </script>
 
 <div class="flex">
@@ -213,9 +266,8 @@
 
 	<Select.Root
 		onSelectedChange={(v) => {
-			if (!v) return;
-			selectedDateRange = presets.filter((presets) => presets.label == v.label)[0].range;
-			selectedPreset = v;
+			v.range = v.value;
+			applyPreset(v);
 		}}
 		bind:selected={selectedPreset}
 		disabled={!loaded}
@@ -228,30 +280,42 @@
 				<span class="sm:hidden"> Range </span>
 			{/if}
 		</Select.Trigger>
-		<Select.Content>
-			{#each presets.filter((d) => d.group === 'Days') as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-			<Separator orientation="horizontal" />
-			{#each presets.filter((d) => d.group === 'Months') as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-			<Separator orientation="horizontal" />
-			{#each presets.filter((d) => d.group === 'Last') as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-			<Separator orientation="horizontal" />
-			{#each presets.filter((d) => d.group === 'To Date') as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-		</Select.Content>
+		{#if presets && presets.length === 0}
+			<Select.Content class="text-sm text-center">
+				<p>No Valid Presets</p>
+			</Select.Content>
+		{:else}
+			<Select.Content>
+				{#each presets.filter((d) => d.group === 'Days') as preset}
+					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+						>{preset.label}</Select.Item
+					>
+				{/each}
+				{#if groupExists('Months')}
+					<Separator orientation="horizontal" />
+				{/if}
+				{#each presets.filter((d) => d.group === 'Months') as preset}
+					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+						>{preset.label}</Select.Item
+					>
+				{/each}
+				{#if groupExists('Last')}
+					<Separator orientation="horizontal" />
+				{/if}
+				{#each presets.filter((d) => d.group === 'Last') as preset}
+					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+						>{preset.label}</Select.Item
+					>
+				{/each}
+				{#if groupExists('To Date')}
+					<Separator orientation="horizontal" />
+				{/if}
+				{#each presets.filter((d) => d.group === 'To Date') as preset}
+					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+						>{preset.label}</Select.Item
+					>
+				{/each}
+			</Select.Content>
+		{/if}
 	</Select.Root>
 </div>

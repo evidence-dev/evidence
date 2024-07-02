@@ -81,8 +81,8 @@
 		"body": ["<Value data={${1:query_name}} column=${2:column_name} fmt=${3:usd}/>"],
 		"description": "Value Component"
 	},
-	"Loop": {
-		"prefix": "/Loop",
+	"Each Block": {
+		"prefix": "/Each Block",
 		"body": [
 			"{#each ${1:query_name} as row}\n\n\t- <Value data={row} column=${4:column_name}/>\n\n{/each}\n\n"
 		],
@@ -247,6 +247,13 @@
 		],
 		"description": "Insert Accordion"
 	},
+	"AccordionItem": {
+		"prefix": "/AccordionItem",
+		"body": [
+			"<AccordionItem title='${1:Item One}'>\n\t\t${2:Item One Content}\n</AccordionItem>\n\n"
+		],
+		"description": "Insert AccordionItem"
+	},
 	"LinkButton": {
 		"prefix": "/LinkButton",
 		"body": ["<LinkButton url=${2:'/other-page'}>\n\t${3:Button Label}\n</LinkButton>\n\n"],
@@ -261,6 +268,11 @@
 		"prefix": "/Details",
 		"body": ["<Details title=${1:'More Details'}>\n\t${2:Details Content}\n</Details>\n\n"],
 		"description": "Insert Details"
+	},
+	"DownloadData": {
+		"prefix": "/DownloadData",
+		"body": ["<DownloadData data={${1:query_name}} text='Download'/>\n\n"],
+		"description": "Insert DownloadData"
 	},
 	"Code Block": {
 		"prefix": "/Code Block",
@@ -292,6 +304,11 @@
 		"prefix": "/DropdownMultiSelect",
 		"body": "<Dropdown multiple=true data={data} name=${1:name_of_dropdown} value=${2:column_name}/>\n\n",
 		"description": "Insert dropdown with multi-select"
+	},
+	"DropdownOption": {
+		"prefix": "/DropdownOption",
+		"body": "<DropdownOption value=${1:value}/>\n\n",
+		"description": "Insert dropdown component"
 	},
 	"TextInput": {
 		"prefix": "/TextInput",
@@ -356,5 +373,33 @@
 		"prefix": "/Delta",
 		"body": ["<Delta data={${1:query_name}} column=${2:column_name} fmt=${3:usd}/>"],
 		"description": "Delta Component"
+	},
+	"AreaMap": {
+		"prefix": "/AreaMap",
+		"body": [
+			"<AreaMap\n\tdata={${1:query_name}}\n\tgeoJsonUrl=${2:'path/to/geoJson/'}\n\tgeoId=${3:geoJsonField}\n\tareaCol=${4:column}\n\tvalue=${5:column}\n/>\n\n"
+		],
+		"description": "Insert AreaMap"
+	},
+	"PointMap": {
+		"prefix": "/PointMap",
+		"body": [
+			"<PointMap\n\tdata={${1:query_name}}\n\tlat=${2:column}\n\tlong=${3:column}\n\tvalue=${4:column}\n/>\n\n"
+		],
+		"description": "Insert PointMap"
+	},
+	"BubbleMap": {
+		"prefix": "/BubbleMap",
+		"body": [
+			"<BubbleMap\n\tdata={${1:query_name}}\n\tlat=${2:column}\n\tlong=${3:column}\n\tsize=${4:column}\n/>\n\n"
+		],
+		"description": "Insert BubbleMap"
+	},
+	"BaseMap": {
+		"prefix": "/BaseMap",
+		"body": [
+			"<BaseMap>\n\t<Areas data={${1:query_name}} geoJsonUrl='path/to/geoJson' geoId=geoJsonField areaCol=column_name/>\n\t<Points data={${1:query_name}} lat=lat long=long/>\n</BaseMap>"
+		],
+		"description": "Insert Map"
 	}
 }

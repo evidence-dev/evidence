@@ -7,7 +7,12 @@ Creates a text input that can be used to filter or search
 
 To see how to filter a query using a text input, see [Filters](/core-concepts/filters).
 
-<img src="/img/text-input.png" alt="TextInput" width="300px"/>
+<TextInput
+    name=text_input_name
+    title="Search"
+/>
+
+Selected: {inputs.text_input_name}
 
 ````markdown
 <TextInput
@@ -20,7 +25,11 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 
 ### Basic Text Input
 
-<img src="/img/text-input-basic.png" alt="TextInput" width="300px"/>
+<TextInput
+    name=name_of_input
+/>
+
+Selected: {inputs.name_of_input}
 
 ````markdown
 <TextInput
@@ -30,7 +39,12 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 
 ### With Title
 
-<img src="/img/text-input.png" alt="TextInput" width="300px"/>
+<TextInput
+    name=text_input2
+    title="Search"
+/>
+
+Selected: {inputs.text_input2}
 
 ````markdown
 <TextInput
@@ -41,7 +55,13 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 
 ### With Placeholder
 
-<img src="/img/text-input-placeholder.png" alt="TextInput" width="300px"/>
+<TextInput
+    name=text_input3
+    title="Freetext Search"
+    placeholder="Start typing"
+/>
+
+Selected: {inputs.text_input3}
 
 ````markdown
 <TextInput
@@ -53,7 +73,13 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 
 ### With Default Text Prefilled
 
-<img src="/img/text-input-default.png" alt="TextInput" width="300px"/>
+<TextInput
+    name=text_input4
+    title="Default Selected"
+    defaultValue="Sporting"
+/>
+
+Selected: {inputs.text_input4}
 
 ````markdown
 <TextInput
@@ -62,9 +88,6 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
     defaultValue="Sporting"
 />
 ````
-
-
-
 
 ### Fuzzy Finding (Searching)
 
@@ -95,24 +118,36 @@ LIMIT 10 -- Optionally limit to only show the 10 closest results
 
 <PropListing 
     name="name"
-    description="Name of the text input, used to reference the selected value elsewhere as {`{inputs.name.value}`}"
     required
     options=string
-/>
+>
+
+Name of the text input, used to reference the selected value elsewhere as `{inputs.name.value}`
+
+</PropListing>
 <PropListing 
     name="title"
-    description="Title displayed above the text input"
     options=string
-/>
+>
+
+Title displayed above the text input
+
+</PropListing>
 <PropListing 
     name="placeholder"
-    description="Alternative placeholder text displayed in the text input"
     options=string
     defaultValue="Type to search"
-/>
+>
+
+Alternative placeholder text displayed in the text input
+
+</PropListing>
 <PropListing 
     name="hideDuringPrint"
-    description="Hide the component when the report is printed"
     options={['true', 'false']}
     defaultValue="true"
-/>
+>
+
+Hide the component when the report is printed
+
+</PropListing>

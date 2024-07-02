@@ -5,6 +5,7 @@
 <script>
 	export let title = 'Details';
 	export let open = false;
+	$: open = open === 'true' || open === true;
 	import { slide } from 'svelte/transition';
 </script>
 

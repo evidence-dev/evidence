@@ -1,0 +1,16 @@
+rows: 4000
+schema:
+  id:
+    type: id
+  zip_code:
+    category: number
+    item: int
+    options:
+      - min: 90001
+        max: 90899
+  sales:
+    category: number
+    item: int
+    options:
+      - min: 1000
+        max: 234593

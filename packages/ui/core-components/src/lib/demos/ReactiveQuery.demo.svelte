@@ -4,12 +4,12 @@
 
 	let v = 5;
 
-	let queryText = `SELECT ${v}`;
-	$: queryText = `SELECT ${v}`;
-
-	let { initialValue: data, updater: queryFactory } = Query.reactive(query, queryText);
-
-	$: queryFactory(queryText).then((v) => (data = v));
+	let reactiveQuery;
+	const reactiveQueryFactory = Query.createReactive(
+		{ callback: (v) => (reactiveQuery = v), execFn: query },
+		{ initialData: [{ initialData: 'Change the story source code and this should go away' }] }
+	);
+	$: reactiveQueryFactory(`SELECT ${v}`);
 </script>
 
 <label>
@@ -18,9 +18,5 @@
 </label>
 
 <pre>
-    {$data?.originalText}
-</pre>
-
-<pre>
-    {JSON.stringify($data)}
+    {JSON.stringify(reactiveQuery)}
 </pre>

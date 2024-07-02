@@ -2,6 +2,8 @@ import { findFile } from 'pkg-types';
 import yaml from 'yaml';
 import fs from 'fs/promises';
 import { EvidenceConfigSchema } from './schemas/config.schema.js';
+import { EvidenceError } from '../lib/EvidenceError.js';
+import { getEvidenceConfigLegacy } from './getEvidenceConfig.legacy.js';
 
 /**
  * @returns {Promise<import("zod").infer<typeof EvidenceConfigSchema>>}
@@ -17,10 +19,11 @@ export const getEvidenceConfig = async () => {
 		return EvidenceConfigSchema.parse(result);
 	} catch (e) {
 		if (e instanceof Error && e.message.startsWith('Cannot find matching evidence.config.yaml')) {
-			throw new Error(
-				'Could not find an evidence.config.yaml file, if this is an Evidence project, please create that file'
-			);
+			return await getEvidenceConfigLegacy();
+			// throw new EvidenceError(
+			// 	'Could not find an evidence.config.yaml file, if this is an Evidence project, please create that file'
+			// );
 		}
-		throw e;
+		throw new EvidenceError('Unknown Error while loading Evidence Configuration', [], { cause: e });
 	}
 };

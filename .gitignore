@@ -26,6 +26,8 @@ connection.options.yaml
 .idea
 packages/core-components/.evidence-queries
 packages/core-components/.profile.json
+packages/ui/core-components/.evidence-queries/sources/hashes.json
+
 
 packages/extension/node_modules
 packages/extension/out

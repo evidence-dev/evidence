@@ -3,13 +3,31 @@ title: Funnel Chart
 sidebar_position: 1
 ---
 
-<img src="/img/funnel-default.png" width="700"/>
+```sql funnel_data
+select * from (
+    select 150 as customers, 'Show' as stage, 1 as stage_id
+    union all
+    select 102 as customers, 'Click' as stage, 2 as stage_id
+    union all
+    select 49 as customers, 'Visit' as stage, 3 as stage_id
+    union all
+    select 40 as customers, 'Inquiry' as stage, 4 as stage_id
+    union all
+    select 14 as customers, 'Order' as stage, 5 as stage_id
+) order by stage_id asc
+```
+
+<FunnelChart 
+    data={funnel_data} 
+    nameCol=stage
+    valueCol=customers
+/>
 
 ```markdown
 <FunnelChart 
-    data={query_name} 
-    nameCol=column_name
-    valueCol=column_value
+    data={funnel_data} 
+    nameCol=stage
+    valueCol=customers
 />
 ```
 
@@ -17,39 +35,54 @@ sidebar_position: 1
 
 ### Ascending
 
-<img src="/img/funnel-asc.png" width="700"/>
+<FunnelChart 
+    data={funnel_data} 
+    nameCol=stage
+    valueCol=customers
+    funnelSort=ascending
+/>
 
 ```markdown
 <FunnelChart 
-    data={query_name} 
-    nameCol=column_name
-    valueCol=column_value
+    data={funnel_data} 
+    nameCol=stage
+    valueCol=customers
     funnelSort=ascending
 />
 ```
 
 ### Alignment
 
-<img src="/img/funnel-align.png" width="700"/>
+<FunnelChart 
+    data={funnel_data} 
+    nameCol=stage
+    valueCol=customers
+    funnelAlign=left
+/>
 
 ```markdown
 <FunnelChart 
-    data={query_name} 
-    nameCol=column_name
-    valueCol=column_value
+    data={funnel_data} 
+    nameCol=stage
+    valueCol=customers
     funnelAlign=left
 />
 ```
 
 ### Show Percent Label
 
-<img src="/img/funnel-showpct.png" alt="funnel-show-percent" width="700"/>
+<FunnelChart 
+    data={funnel_data} 
+    nameCol=stage
+    valueCol=customers
+    showPercent=true
+/>
 
 ```markdown
 <FunnelChart 
-    data={query_name} 
-    nameCol=column_name
-    valueCol=column_value
+    data={funnel_data} 
+    nameCol=stage
+    valueCol=customers
     showPercent=true
 />
 ```

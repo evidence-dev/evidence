@@ -55,7 +55,9 @@ ORDER BY row_num
 </DataTable>
 
 
-Evidence's `dev`, `build` and `preview` commands run using Vite, and so support [Vite's options](https://vitejs.dev/guide/cli.html#options).
+Evidence's `dev` and `build` commands run using Vite, and so support [Vite's options](https://vitejs.dev/guide/cli.html#options).
+
+Evidence's `preview` command runs using `npx serve` and supports [Serve's options](https://github.com/vercel/serve/blob/main/source/utilities/cli.ts#L30)
 
 ## Environment Variables
 
@@ -66,3 +68,7 @@ The format of environment variables for database credentials is `EVIDENCE_SOURCE
 You can copy all your current environment variable values from the settings page at [localhost:3000/settings](http://localhost:3000/settings).
 
 N.B. Environment variables are **case sensitive**, so you should preserve the case specified in the settings page.
+
+### .env Files
+
+Evidence will read in environment variables from a `.env` file in the root of your project. This is useful for local development.

@@ -1,5 +1,52 @@
 # @evidence-dev/sdk
 
+## 1.3.1
+
+### Patch Changes
+
+- 8a0ba1414: User queries have comments and semicolons handled better
+
+## 1.3.0
+
+### Minor Changes
+
+- 5705a7eb: Added Aggregation functions min, max, median
+
+### Patch Changes
+
+- dc8f01be: QueryBuilder functions now inherit several parent options
+
+## 1.2.3-features-b.0
+
+### Patch Changes
+
+- dc8f01be2: QueryBuilder functions now inherit several parent options
+
+## 1.2.2
+
+### Patch Changes
+
+- 4e3b925e: Fix JSON serialization
+
+## 1.2.1
+
+### Patch Changes
+
+- 25ea0fe4: Query.createReactive now handles sync updates better
+- e400971e: SetTrackProxy is now callable to ensure that function values don't break pages
+
+## 1.2.0
+
+### Minor Changes
+
+- 1e1486f3: Added Query.createReactive as a canonical way to have reactive queries; converted preprocessor to leverage this
+- 1e1486f3: Created new input proxy, added tests, converted to use this instead of existing in-place proxy + detection method
+
+### Patch Changes
+
+- 276718dd: Add /utils export and a batchup util
+- 7f85e600: version bumps
+
 ## 1.1.1
 
 ### Patch Changes

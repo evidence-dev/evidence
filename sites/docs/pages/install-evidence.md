@@ -1,11 +1,15 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 hide_table_of_contents: false
 title: Install Evidence
 description: Install Evidence with the VSCode Extension, from the command line, alongside dbt, or using Codespaces.
 ---
 
-The easiest way to get started with Evidence is to use the VSCode Extension.
+<Alert status=success>
+
+The easiest way to get started with Evidence is to use the [VSCode Extension](vscode:extension/Evidence.evidence-vscode).
+
+</Alert>
 
 ## VSCode Extension
 
@@ -73,13 +77,6 @@ This currently needs to be done from the terminal, rather than from the dbt Clou
 
 **Note:** Codespaces is much faster on the Desktop app. After the Codespace has booted, select the hamburger menu &rarr; Open in VS Code Desktop.
 
-</Tab>
-
-<Tab value="docker" label="Docker">
-
-Evidence provides a development Docker image.
-
-See our [Docker Development Environment repository](https://github.com/evidence-dev/docker-devenv) for instructions.
 </Tab>
 </Tabs>
 

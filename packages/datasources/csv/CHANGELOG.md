@@ -1,5 +1,26 @@
 # @evidence-dev/csv
 
+## 1.0.11
+
+### Patch Changes
+
+- Updated dependencies [06c1e74e5]
+- Updated dependencies [cd9e7df35]
+  - @evidence-dev/duckdb@1.0.10
+
+## 1.0.10
+
+### Patch Changes
+
+- 6421c6d9b: Add icon to source configuration
+
+## 1.0.9
+
+### Patch Changes
+
+- Updated dependencies [2b5f94e3]
+  - @evidence-dev/duckdb@1.0.9
+
 ## 1.0.8
 
 ### Patch Changes

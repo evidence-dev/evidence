@@ -31,16 +31,20 @@
 	export let unsafe = false;
 	$: unsafe = unsafe === true || unsafe === 'true';
 
+	let touched = false;
 	$: {
-		let sqlString = value;
-		if (!unsafe) sqlString = sqlString.replaceAll("'", "''");
-		$inputs[name] = {
-			toString() {
-				return sqlString;
-			},
-			sql: `'${sqlString}'`,
-			search: (col) => `damerau_levenshtein(${col}, '${sqlString}')`
-		};
+		if (value) touched = true;
+		if (touched) {
+			let sqlString = value;
+			if (!unsafe) sqlString = sqlString.replaceAll("'", "''");
+			$inputs[name] = {
+				toString() {
+					return sqlString;
+				},
+				sql: `'${sqlString}'`,
+				search: (col) => `damerau_levenshtein(${col}, '${sqlString}')`
+			};
+		}
 	}
 
 	let value = defaultValue;

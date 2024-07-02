@@ -1,28 +1,29 @@
 {
-  "name": "my-evidence-project",
-  "version": "0.0.5",
-  "scripts": {
-    "build": "evidence build",
-    "build:strict": "evidence build:strict",
-    "dev": "evidence dev --open /",
-    "sources": "evidence sources",
-    "preview": "evidence preview"
-  },
-  "engines": {
-    "npm": ">=7.0.0",
-    "node": ">=18.0.0"
-  },
-  "type": "module",
-  "dependencies": {
-    "@evidence-dev/component-utilities": "workspace:*",
-    "@evidence-dev/core-components": "workspace:*",
-    "@evidence-dev/csv": "workspace:*",
-    "@evidence-dev/duckdb": "workspace:*",
-    "@evidence-dev/evidence": "workspace:*"
-  },
-  "overrides": {
-    "jsonwebtoken": "9.0.0",
-    "trim@<0.0.3": ">0.0.3",
-    "sqlite3": "5.1.5"
-  }
+	"name": "my-evidence-project",
+	"version": "0.0.10",
+	"scripts": {
+		"build": "evidence build",
+		"build:strict": "evidence build:strict",
+		"dev": "EVIDENCE_DISABLE_INCLUDE=true evidence dev --open /",
+		"sources": "evidence sources",
+		"preview": "evidence preview"
+	},
+	"engines": {
+		"npm": ">=7.0.0",
+		"node": ">=18.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@evidence-dev/component-utilities": "workspace:*",
+		"@evidence-dev/core-components": "workspace:*",
+		"@evidence-dev/csv": "workspace:*",
+		"@evidence-dev/duckdb": "workspace:*",
+		"@evidence-dev/evidence": "workspace:*",
+		"@evidence-dev/faker-datasource": "workspace:^"
+	},
+	"overrides": {
+		"jsonwebtoken": "9.0.0",
+		"trim@<0.0.3": ">0.0.3",
+		"sqlite3": "5.1.5"
+	}
 }

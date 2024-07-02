@@ -3,13 +3,24 @@ title: Grid
 sidebar_position: 1
 ---
 
-```markdown
+```sql orders_by_category
+select order_month, count(1) as orders from needful_things.orders
+group by all
+```
+
 <Grid cols=2>
-    <!-- 2x2 grid of barcharts -->
-    <BarChart ... />
-    <BarChart ... />
-    <BarChart ... />
-    <BarChart ... />
+    <LineChart data={orders_by_category} x=order_month y=orders/>
+    <BarChart data={orders_by_category} x=order_month y=orders fillColor=#00b4e0/>
+    <ScatterPlot data={orders_by_category} x=order_month y=orders fillColor=#015c08/>
+    <AreaChart data={orders_by_category} x=order_month y=orders fillColor=#b8645e lineColor=#b8645e/>
+</Grid>
+
+```svelte
+<Grid cols=2>
+    <LineChart data={orders_by_category} x=order_month y=orders/>
+    <BarChart data={orders_by_category} x=order_month y=orders fillColor=#00b4e0/>
+    <ScatterPlot data={orders_by_category} x=order_month y=orders fillColor=#015c08/>
+    <AreaChart data={orders_by_category} x=order_month y=orders fillColor=#b8645e lineColor=#b8645e/>
 </Grid>
 ```
 

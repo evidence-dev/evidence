@@ -3,7 +3,19 @@ title: Heatmap
 sidebar_position: 1
 ---
 
-<img src="/img/heatmap-basic.png" width="700"/>
+```orders
+select category, dayname(order_datetime) as day, dayofweek(order_datetime) as day_num, count(*) as order_count from needful_things.orders
+group by all
+order by category, day_num  
+```
+
+<Heatmap 
+    data={orders} 
+    x=day 
+    y=category 
+    value=order_count 
+    valueFmt=usd 
+/>
 
 ```markdown
 <Heatmap 
@@ -95,7 +107,13 @@ Heatmap currently only works with string columns. If you would like to use a dat
 
 ### Basic Heatmap
 
-<img src="/img/heatmap-basic.png" width="700"/>
+<Heatmap 
+    data={orders} 
+    x=day 
+    y=category 
+    value=order_count 
+    valueFmt=usd 
+/>
 
 ```markdown
 <Heatmap 
@@ -109,25 +127,35 @@ Heatmap currently only works with string columns. If you would like to use a dat
 
 ### Custom Color Palette
 
-<img src="/img/heatmap-category-day-green.png" width="700"/>
-
-```markdown
 <Heatmap 
     data={orders} 
     x=day 
     y=category 
     value=order_count 
+    valueFmt=usd 
     colorPalette={['white', 'green']}
-    title="Weekday Orders"
-    subtitle="By Category"
+/>
+
+```svelte
+<Heatmap 
+    data={orders} 
+    x=day 
+    y=category 
+    value=order_count 
+    valueFmt=usd 
+    colorPalette={['white', 'green']}
 />
 ```
 
 ### Rotated Labels
 
-<img src="/img/heatmap-item-state.png" width="700"/>
 
-```markdown
+```item_state
+select item, state, count(1) as orders from needful_things.orders
+group by all
+order by state asc, item asc
+```
+
 <Heatmap 
     data={item_state} 
     x=item 
@@ -139,10 +167,24 @@ Heatmap currently only works with string columns. If you would like to use a dat
     subtitle="By State"
     rightPadding=40
     cellHeight=25
+    nullsZero=false
+/>
+
+```svelte
+<Heatmap 
+    data={item_state} 
+    x=item 
+    y=state 
+    value=orders 
+    xLabelRotation=-45
+    colorPalette={['white', 'maroon']} 
+    title="Item Sales"
+    subtitle="By State"
+    rightPadding=40
+    cellHeight=25
+    nullsZero=false
 />
 ```
-
-
 
 
 ## Options

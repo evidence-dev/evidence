@@ -1,65 +1,81 @@
 ---
 title: Calendar Heatmap
 sidebar_position: 1
+queries:
+- orders_by_day.sql
+- orders_by_day_2021.sql
 ---
 
-<img src="/img/calendar-heatmap-noyear.png" width="700"/>
-
-```markdown
-<CalendarHeatmap
-    data={oneyear}
-    date=date
-    value=orders
+<CalendarHeatmap 
+    data={orders_by_day_2021}    
+    date=day
+    value=sales
     title="Calendar Heatmap"
-    subtitle="Daily Orders"
-    yearLabel=false
+    subtitle="Daily Sales"
 />
-```
-
-## Examples
-
-### Multi-year Calendar Heatmap
-
-<img src="/img/calendar-heatmap-multiyear.png" width="700"/>
 
 ```markdown
 <CalendarHeatmap 
-    data={orders_by_day} 
-    date=date 
-    value=orders 
+    data={orders_by_day_2021}
+    date=day
+    value=sales
     title="Calendar Heatmap"
     subtitle="Daily Sales"
 />
 ```
 
+## Examples
+
+### Multi-Year
+
+<CalendarHeatmap 
+    data={orders_by_day}    
+    date=day
+    value=sales
+/>
+
+```markdown
+<CalendarHeatmap 
+    data={orders_by_day}
+    date=day
+    value=sales
+/>
+```
+
 ### Custom Color Palette
 
-<img src="/img/calendar-heatmap-customcolor.png" width="700"/>
+<CalendarHeatmap
+    data={orders_by_day_2021}
+    date=day
+    value=sales
+    colorPalette={['navy', 'lightyellow', 'purple']}
+/>
 
 ```markdown
 <CalendarHeatmap
-    data={oneyear}
-    date=date
-    value=orders
-    title="Calendar Heatmap"
-    subtitle="Daily Orders"
+    data={orders_by_day_2021}
+    date=day
+    value=sales
     colorPalette={['navy', 'lightyellow', 'purple']}
 />
 ```
 
 ### Without Year Label
 
-<img src="/img/calendar-heatmap-noyear.png" width="700"/>
-
-```markdown
-<CalendarHeatmap
-    data={oneyear}
-    date=date
-    value=orders
-    title="Calendar Heatmap"
-    subtitle="Daily Orders"
+<CalendarHeatmap 
+    data={orders_by_day_2021}    
+    date=day
+    value=sales
     yearLabel=false
 />
+
+```markdown
+<CalendarHeatmap 
+    data={orders_by_day_2021}
+    date=day
+    value=sales
+    yearLabel=false
+/> 
 ```
 
 
