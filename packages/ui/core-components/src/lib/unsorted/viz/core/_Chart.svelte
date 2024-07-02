@@ -27,6 +27,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
 	import EmptyChart from './EmptyChart.svelte';
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 	import { getInputSetter } from '@evidence-dev/sdk/utils/svelte';
 
 	// ---------------------------------------------------------------------------------------
@@ -41,6 +42,7 @@
 	export let series = undefined;
 	export let size = undefined;
 	export let tooltipTitle = undefined;
+	export let link = undefined;
 
 	export let showAllXAxisLabels = false;
 
@@ -359,6 +361,9 @@
 			if (tooltipTitle) {
 				optCols.push(tooltipTitle);
 			}
+			if (link) {
+				optCols.push(link);
+			}
 
 			checkInputs(data, inputCols, optCols);
 
@@ -620,7 +625,8 @@
 					chartAreaHeight,
 					chartType,
 					yCount,
-					y2Count
+					y2Count,
+					link
 				};
 			});
 
@@ -1086,6 +1092,17 @@
 			{renderer}
 			{connectGroup}
 			{seriesColors}
+			on:dblclick={(params) => {
+				if (!link) return;
+				//This may need tweaking to handle future charts, consideration, change bubble from scatter to bubble name in params
+				//Bubble date, value and size property at index 0,1,2 so link gets pushed into index 3
+				if (params.detail.dimensionNames[3] !== undefined) {
+					window.location = params.detail.data[3];
+				} else {
+					//otherwise all other charts thusfar links are at index 2
+					window.location = params.detail.data[2];
+				}
+			}}
 			on:click={(/** @type {CustomEvent<import("echarts").ElementEvent>} */ event) => {
 				if (!setInput) return;
 				// TODO: Emphasis to be accomplished with a seriesFocus prop that accepts the chart's input
@@ -1152,6 +1169,9 @@
 				});
 			}}
 		/>
+	{/if}
+	{#if link}
+		<InvisibleLinks {data} {link} />
 	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />

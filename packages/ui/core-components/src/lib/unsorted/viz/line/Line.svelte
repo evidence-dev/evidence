@@ -76,6 +76,8 @@
 	 */
 	export let stepPosition = 'end';
 
+	export let link;
+
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
@@ -90,6 +92,7 @@
 	$: xMismatch = $props.xMismatch;
 	$: columnSummary = $props.columnSummary;
 	$: series = seriesSet ? series : $props.series;
+	$: link = link ?? $props.link;
 
 	$: if (!series && typeof y !== 'object') {
 		// Single Series
@@ -191,7 +194,8 @@
 		columnSummary,
 		undefined,
 		undefined,
-		y2
+		y2,
+		link
 	);
 
 	$: config.update((d) => {

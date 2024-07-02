@@ -12,7 +12,8 @@ export default function getSeriesConfig(
 	columnSummary,
 	size = undefined,
 	tooltipTitle = undefined,
-	y2 = undefined
+	y2 = undefined,
+	link = undefined
 ) {
 	function generateTempConfig(seriesData, seriesName, yAxisIndex, baseConfig) {
 		let tempConfig = {
@@ -103,6 +104,12 @@ export default function getSeriesConfig(
 				seriesData.forEach((item, index) => item.push(tooltipData[index]));
 			}
 
+			// Append link label if supplied:
+			if (link) {
+				let linkData = filteredData.map((d) => d[link]);
+				seriesData.forEach((item, index) => item.push(linkData[index]));
+			}
+
 			// Set series name:
 			seriesName = seriesDistinct[i] ?? 'null';
 
@@ -146,6 +153,11 @@ export default function getSeriesConfig(
 					seriesData.forEach((item, index) => item.push(tooltipData[index]));
 				}
 
+				// Append link label if supplied:
+				if (link) {
+					let linkData = filteredData.map((d) => d[link]);
+					seriesData.forEach((item, index) => item.push(linkData[index]));
+				}
 				// We can use this to split this back out and get the individual parts of the series
 				const zeroWidthSpace = '\u200B';
 
@@ -182,6 +194,12 @@ export default function getSeriesConfig(
 				seriesData.forEach((item, index) => item.push(tooltipData[index]));
 			}
 
+			// Append link label if supplied:
+			if (link) {
+				let linkData = data.map((d) => d[link]);
+				seriesData.forEach((item, index) => item.push(linkData[index]));
+			}
+
 			seriesName = columnSummary[yList[i][0]].title;
 
 			// Set y-axis index (used for multi-y axis charts):
@@ -210,6 +228,12 @@ export default function getSeriesConfig(
 		if (tooltipTitle) {
 			let tooltipData = data.map((d) => d[tooltipTitle]);
 			seriesData.forEach((item, index) => item.push(tooltipData[index]));
+		}
+
+		// Append link label if supplied:
+		if (link) {
+			let linkData = data.map((d) => d[link]);
+			seriesData.forEach((item, index) => item.push(linkData[index]));
 		}
 
 		seriesName = columnSummary[yList[0][0]].title;

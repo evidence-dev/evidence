@@ -8,17 +8,14 @@
 </script>
 
 <script>
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { Story } from '@storybook/addon-svelte-csf';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import Tab from './Tab.svelte';
 	import TextInput from '../../../atoms/inputs/text/TextInput.svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
+	const inputStore = getInputContext();
 
 	$: data = Query.create(
 		`
