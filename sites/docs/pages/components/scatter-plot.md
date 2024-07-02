@@ -60,6 +60,40 @@ queries:
 />
 ```
 
+### Links
+
+``` category
+SELECT
+    item,
+    category,
+    sum(sales) as total_sales,
+    count(*) as number_of_units,
+    avg(sales) as price,
+    CONCAT('/categories/', category) as category_url
+FROM needful_things.orders
+GROUP BY item, category
+```
+
+Double Click on datapoints to travel to Link
+
+<ScatterPlot 
+    data={category}
+    x=price
+    y=number_of_units
+    series=category
+    link=category_url
+/>
+
+```markdown
+<ScatterPlot 
+    data={category}
+    x=price
+    y=number_of_units
+    series=category
+    link=category_url
+/>
+```
+
 ## Options
 
 ### Data
@@ -134,6 +168,14 @@ Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty
 >
 
 Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
+<PropListing
+    name="link"
+    options="column name"
+>
+
+Column containing links. When supplied, enables double-clicking on chart data points to navigate directly to the associated link. 
 
 </PropListing>
 

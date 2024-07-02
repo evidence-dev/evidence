@@ -135,6 +135,38 @@ queries:
 />
 ```
 
+### Links
+
+``` category
+SELECT category, order_month AS month, sum(sales) as sales, CONCAT('/categories/', category) as category_url
+FROM needful_things.orders
+group by all
+ORDER BY month, category
+limit 250
+```
+
+Double Click on datapoints to travel to Link
+
+<AreaChart 
+    data={category}
+    x=month
+    y=sales
+    series=category
+    title="Sales by Category"
+    link=category_url
+/>
+
+```markdown
+<AreaChart 
+    data={category}
+    x=month
+    y=sales
+    series=category
+    title="Sales by Category"
+    link=category_url
+/>
+```
+
 ## Options
 
 ### Data
@@ -201,6 +233,14 @@ queries:
     options="string"
     defaultValue="No records"
 />
+<PropListing
+    name="link"
+    options="column name"
+>
+
+Column containing links. When supplied, enables double-clicking on chart data points to navigate directly to the associated link. 
+
+</PropListing>
 
 ### Formatting & Styling
 

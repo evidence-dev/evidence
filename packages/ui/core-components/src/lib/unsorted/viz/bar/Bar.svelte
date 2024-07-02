@@ -63,6 +63,8 @@
 	$: stackTotalLabel = stackTotalLabel === 'true' || stackTotalLabel === true;
 	export let showAllLabels = false;
 
+	export let link;
+
 	let barMaxWidth = 60;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
@@ -80,6 +82,7 @@
 	$: columnSummary = $props.columnSummary;
 	$: sort = $props.sort;
 	$: series = seriesSet ? series : $props.series;
+	$: link = link ?? $props.link;
 
 	let stackedData;
 	let sortOrder;
@@ -207,7 +210,8 @@
 		columnSummary,
 		undefined,
 		undefined,
-		y2
+		y2,
+		link
 	);
 
 	$: config.update((d) => {

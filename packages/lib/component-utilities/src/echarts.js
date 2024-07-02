@@ -113,6 +113,10 @@ export default (node, option) => {
 		dispatch('click', params);
 	});
 
+	chart.on('dblclick', function (params) {
+		dispatch('dblclick', params);
+	});
+
 	// Resize logic:
 	const containerElement = document.getElementById('evidence-main-article');
 	// watching parent element is necessary for charts within `Fullscreen` components
