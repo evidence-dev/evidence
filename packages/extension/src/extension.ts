@@ -549,9 +549,8 @@ const duckdbFunctions = [
 		name: 'EXCLUDE',
 		detail: 'EXCLUDE (column)',
 		snippet: 'EXCLUDE (${1:column})',
-		documentation:
-			'Exclude specific columns - use after a select *'
-	},
+		documentation: 'Exclude specific columns - use after a select *'
+	}
 ];
 
 const duckdbCompletionItems = duckdbKeywords.map((keyword) => {
