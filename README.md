@@ -1,6 +1,9 @@
 <div id="top" align="center">
 
-<img src="sites/docs/static/img/wordmark.svg" alt="evidence-logo" width="100%" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./sites/docs/static/img/wordmark-dark.svg">
+  <img alt="Evidence Logo" src="./sites/docs/static/img/wordmark-light.svg">
+</picture>
 
 Business Intelligence as Code: Generate reports using SQL and markdown
 
