@@ -5,8 +5,6 @@
 </script>
 
 <script>
-	import { colorList } from '../colors.js';
-
 	// @ts-check
 	import ReferencePoint from './ReferencePoint.svelte';
 
