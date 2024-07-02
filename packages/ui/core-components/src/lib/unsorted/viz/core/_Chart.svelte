@@ -1093,6 +1093,7 @@
 			{connectGroup}
 			{seriesColors}
 			on:dblclick={(params) => {
+				if (!link) return;
 				//This may need tweaking to handle future charts, consideration, change bubble from scatter to bubble name in params
 				//Bubble date, value and size property at index 0,1,2 so link gets pushed into index 3
 				if (params.detail.dimensionNames[3] !== undefined) {
