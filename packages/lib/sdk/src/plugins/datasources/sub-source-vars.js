@@ -29,7 +29,7 @@ export const subSourceVariables = (queryString) => {
 	const regex = RegExp(/(?<!\$)\$\{(.+?)\}/, 'g');
 
 	let match;
-	while ((match = regex.exec(queryString)) !== null) {
+	while ((match = regex.exec(output)) !== null) {
 		const fullMatch = match[0]; // e.g. ${variable}
 		const varName = match[1]; // e.g. variable
 		const start = match.index;
@@ -41,6 +41,8 @@ export const subSourceVariables = (queryString) => {
 			const before = output.substring(0, start);
 			const after = output.substring(end);
 			output = `${before}${value}${after}`;
+			// Update the lastIndex of the regular expression to continue the search from the end of the replacement
+			regex.lastIndex = start + value.length;
 		} else
 			console.warn(
 				`Missed substition for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
