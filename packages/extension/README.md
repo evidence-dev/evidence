@@ -38,7 +38,7 @@ This extension also depends on [Svelte for VS Code](https://marketplace.visualst
 
 ## Installation
 
-You can install the Evidence extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=evidence-dev.evidence-vscode), or by searching for `Evidence` in the VS Code Extensions tab.
+You can install the Evidence extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode), or by searching for `Evidence` in the VS Code Extensions tab.
 
 ![Evidence Extension Installation](/docs/images/evidence-extension-install.png)
 
@@ -139,9 +139,9 @@ Note that after editing some settings you may need to close and reopen VS Code f
 | `evidence.defaultPort`        | Default Port         | number     | `3000`                                                                            | Default Evidence app dev server port.                                                                                                                                                                                                                                                                                                                          |
 | `evidence.autoStart`          | Auto Start           | boolean    | `false`                                                                           | Automatically start Evidence app dev server when opening a project.                                                                                                                                                                                                                                                                                            |
 | `evidence.slashCommands`      | Slash Commands       | boolean    | `true`                                                                            | Enabled slash commands - get component suggestions when typing `/`                                                                                                                                                                                                                                                                                             |
-| `evidence.templateProjectUrl` | Template Project Url | Url string | [`/template`](https://github.com/evidence-dev/evidence-vscode/tree/main/template) | Evidence `template` project GitHub Url or local `file://` path to the project template folder to use when creating new Evidence projects. Defaults to the built-in Evidence extension [`/template`](https://github.com/evidence-dev/evidence-vscode/tree/main/template) project that ships with this extenstion for faster `New Evidence Project` scaffolding. |
+| `evidence.templateProjectUrl` | Template Project Url | Url string | [`/template`](https://github.com/evidence-dev/template) | Evidence `template` project GitHub Url or local `file://` path to the project template folder to use when creating new Evidence projects. Defaults to the Evidence template Github repository [`/template`](https://github.com/evidence-dev/template) |
 
-You can request new Evidence extension settings to enhance this extension user experience in VS Code by submitting a [feature request](https://github.com/evidence-dev/evidence-vscode/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=) or [pull request](https://github.com/evidence-dev/evidence-vscode/pulls).
+You can request new Evidence extension settings to enhance this extension user experience in VS Code by submitting a [feature request](https://github.com/evidence-dev/evidence/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=) or [pull request](https://github.com/evidence-dev/evidence/pulls).
 
 ### VS Code Settings JSON
 
@@ -155,7 +155,7 @@ Edit your settings in `./vscode/settings.json` by opening the `Command Palette..
 
 All Evidence extension settings start with `evidence.` prefix. You can overwrite default Evidence extension settings in the open workspace directly by opening and changing `/.vscode/settings.json` in your project.
 
-The following Evidence project workspace `/.vscode/settings.json` example sets different default Evidence dev server port, overwrites new dev server `autoStart` setting, and uses a modified local copy of the built-in Evidence [`/template`](https://github.com/evidence-dev/evidence-vscode/tree/main/template) project with `file://` Uri to create new Evidence projects.
+The following Evidence project workspace `/.vscode/settings.json` example sets different default Evidence dev server port, overwrites new dev server `autoStart` setting, and uses a modified local copy of the built-in Evidence [`/template`](https://github.com/evidence-dev/template) project with `file://` Uri to create new Evidence projects.
 
 ```
 {
@@ -167,31 +167,12 @@ The following Evidence project workspace `/.vscode/settings.json` example sets d
 
 ## Contribute to this extension
 
-If you would like to contribute to this VS Code extension, we welcome PRs and issues in the [Github repo](https://github.com/evidence-dev/evidence-vscode).
-
-You can start by building the extension locally and making changes from there.
-
-To build the latest version of Evidence VS Code extension from source:
-
-1. Clone this github repository and run the following commands from the command line:
-
-```
-$ git clone https://github.com/evidence-dev/evidence-vscode
-$ cd evidence-vscode
-$ npm install
-$ npm run compile
-$ code .
-```
-
-2. Press `F5` to start debugging Evidence VS Code extension.
-3. Open any Evidence project folder in the new `Extension Host Window` to try updated extension commands and features.
-
-See the official [Debugging extension](https://code.visualstudio.com/api/get-started/your-first-extension#debugging-the-extension) documentation for more information about developing extensions in VS Code.
+If you would like to contribute to this VS Code extension, we welcome PRs and issues in the [Github repo](https://github.com/evidence-dev/evidence).
 
 ## Support
 
 If you run into any issues setting up the extension, please reach out:
 
-- [Open an issue on GitHub](https://github.com/evidence-dev/evidence-vscode/issues)
+- [Open an issue on GitHub](https://github.com/evidence-dev/evidence/issues)
 - Post in our [Slack community](https://slack.evidence.dev)
 - Email <support@evidence.dev>
