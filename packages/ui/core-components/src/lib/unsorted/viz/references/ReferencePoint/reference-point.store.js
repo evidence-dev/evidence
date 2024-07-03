@@ -28,7 +28,6 @@ export const createReferencePointStore = (configStore) => {
 			labelBorderColor,
 			symbolBorderWidth,
 			symbolBorderColor,
-			labelVisible,
 			align
 		} = state;
 
@@ -107,7 +106,6 @@ export const createReferencePointStore = (configStore) => {
 			markPoint: {
 				data: seriesData,
 				label: {
-					show: labelVisible === 'always',
 					width: state.labelWidth,
 					padding: state.labelPadding,
 					position: labelPosition,
