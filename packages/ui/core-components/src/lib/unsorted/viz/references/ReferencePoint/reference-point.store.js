@@ -97,25 +97,6 @@ export const createReferencePointStore = (configStore) => {
 			throw new Error('x and y required');
 		}
 
-		/** @type {import('echarts').LineSeriesOption['markPoint']['label']} */
-		const labelStyle = {
-			width: state.labelWidth,
-			padding: state.labelPadding,
-			position: labelPosition,
-			color: labelColor,
-			opacity: 1,
-			backgroundColor: state.labelBackgroundColor,
-			borderColor: state.labelBorderColor,
-			borderWidth: state.labelBorderWidth,
-			borderRadius: state.labelBorderRadius,
-			borderType: state.labelBorderType,
-			overflow: 'break',
-			fontSize: state.fontSize,
-			align,
-			fontWeight: state.bold ? 'bold' : undefined,
-			fontStyle: state.italic ? 'italic' : undefined
-		};
-
 		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */
 		const series = {
 			evidenceSeriesType: 'reference_point',
@@ -125,16 +106,23 @@ export const createReferencePointStore = (configStore) => {
 			silent: true,
 			markPoint: {
 				data: seriesData,
-				silent: false,
 				label: {
 					show: labelVisible === 'always',
-					...labelStyle
-				},
-				emphasis: {
-					label: {
-						show: true,
-						...labelStyle
-					}
+					width: state.labelWidth,
+					padding: state.labelPadding,
+					position: labelPosition,
+					color: labelColor,
+					opacity: 1,
+					backgroundColor: state.labelBackgroundColor,
+					borderColor: state.labelBorderColor,
+					borderWidth: state.labelBorderWidth,
+					borderRadius: state.labelBorderRadius,
+					borderType: state.labelBorderType,
+					overflow: 'break',
+					fontSize: state.fontSize,
+					align,
+					fontWeight: state.bold ? 'bold' : undefined,
+					fontStyle: state.italic ? 'italic' : undefined
 				}
 			}
 		};
