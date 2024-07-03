@@ -8,7 +8,7 @@
 	// @ts-check
 	import ReferencePoint from './ReferencePoint.svelte';
 
-	/** @type {'pass' | 'warn' | 'error'} */
+	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
 
 	/** @type {string | undefined} */

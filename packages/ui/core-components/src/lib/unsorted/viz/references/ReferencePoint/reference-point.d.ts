@@ -1,6 +1,6 @@
 // @ts-check
 
-import type { Writable } from 'svelte/store';
+import type { Writable, Readable } from 'svelte/store';
 import type { MarkPointComponentOption } from 'echarts';
 import type { Color } from '../colors.js';
 
@@ -37,14 +37,15 @@ export type ReferencePointStoreState = {
 	labelBorderWidth?: number;
 	labelBorderRadius?: number;
 	labelBorderType?: 'solid' | 'dotted' | 'dashed';
-	labelVisible: 'always' | 'hover';
+	labelVisible?: 'always' | 'hover';
 	fontSize?: number;
 	align?: 'left' | 'center' | 'right';
 	bold?: boolean;
 	italic?: boolean;
+	error?: string;
 };
 
-export type ReferencePointStore = Writable<ReferencePointStoreState> & Readable<{ error?: string }>;
+export type ReferencePointStore = Writable<ReferencePointStoreState>;
 
 export type ReferencePointChartData = MarkPointComponentOption['data'][number] & {
 	evidenceSeriesType: 'reference_point';
