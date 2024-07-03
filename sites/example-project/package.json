@@ -5,7 +5,8 @@
 		"dev": "cross-env EVIDENCE_DATA_DIR=./static/data EVIDENCE_DATA_URL_PREFIX=static/data vite dev --port 3000",
 		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
 		"sources": "cross-env EVIDENCE_DATA_DIR=./static/data EVIDENCE_DATA_URL_PREFIX=static/data evidence sources",
-		"preview": "vite preview --port 3000"
+		"preview": "vite preview --port 3000",
+		"test": "vitest"
 	},
 	"type": "module",
 	"dependencies": {
