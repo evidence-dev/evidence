@@ -3,10 +3,10 @@
 </script>
 
 <script>
-	export let href;
+	export let link;
 </script>
 
-<a {href}>
+<a href={link}>
 	<div>
 		<span>
 			<slot />

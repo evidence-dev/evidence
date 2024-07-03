@@ -3,18 +3,22 @@ title: Big Link
 sidebar_position: 1
 ---
 
-<BigLink href=''>My Big Link</BigLink>
+<BigLink link='/components/big-link/'>My Big Link</BigLink>
 
 
 ```markdown
-<BigLink href='/other-page'>
+<BigLink link='/components/big-link/'>
   My Big Link
 </BigLink>
 ```
 
 ## Options
 
-<PropListing name="href" required>
+<PropListing
+  name="link"
+  required
+  options="string"
+>
+Used to direct the page to a specified URL. It can accept either a full external link, such as  `https://google.com`, or an internal link, such as `/sales/performance`.
 
-The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
 </PropListing>

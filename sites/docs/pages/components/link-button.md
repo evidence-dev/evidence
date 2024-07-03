@@ -3,12 +3,12 @@ title: Link Button
 sidebar_position: 1
 ---
 
-<LinkButton url='/components/link-button'>
+<LinkButton link='/components/link-button'>
   My Link Button
 </LinkButton>
 
 ```markdown
-<LinkButton url='/components/link-button'>
+<LinkButton link='/components/link-button'>
   My Link Button
 </LinkButton>
 ```
@@ -17,11 +17,10 @@ sidebar_position: 1
 
 
 <PropListing
-  name="url"
+  name="link"
   required
   options="string"
 >
-
-The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
+Used to direct the page to a specified URL. It can accept either a full external link, such as  `https://google.com`, or an internal link, such as `/sales/performance`.
 
 </PropListing>
