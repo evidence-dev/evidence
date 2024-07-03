@@ -12,5 +12,5 @@
 </script>
 
 <Story name="Base">
-	<LinkButton link={'https://evidence.dev/'}>Best Website Ever</LinkButton>
+	<LinkButton url={'https://evidence.dev/'}>Best Website Ever</LinkButton>
 </Story>

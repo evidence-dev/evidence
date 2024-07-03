@@ -12,5 +12,5 @@
 </script>
 
 <Story name="Base">
-	<BigLink link={'https://evidence.dev/'}>Best Website Ever</BigLink>
+	<BigLink href={'https://evidence.dev/'}>Best Website Ever</BigLink>
 </Story>
