@@ -163,4 +163,63 @@ describe('hasUnsetValues', () => {
 			expect(hasUnsetValues`${v.a.b}`).toBeFalsy();
 		});
 	});
+	// describe('setTrackProxy with arrays', () => {
+	// 	it('should handle direct array assignment', () => {
+	// 		const v = setTrackProxy();
+	// 		v.someInput = [1, 2, 3];
+	// 		expect(Array.isArray(v.someInput)).toBeTruthy();
+	// 		expect(v.someInput[0]).toBe(1);
+	// 		expect(v.someInput[1]).toBe(2);
+	// 		expect(v.someInput[2]).toBe(3);
+	// 	});
+
+	// 	it('should handle nested arrays within objects', () => {
+	// 		const v = setTrackProxy();
+	// 		v.someInput = { a: [1, 2, 3] };
+	// 		expect(Array.isArray(v.someInput.a)).toBeTruthy();
+	// 		expect(v.someInput.a[0]).toBe(1);
+	// 		expect(v.someInput.a[1]).toBe(2);
+	// 		expect(v.someInput.a[2]).toBe(3);
+	// 	});
+
+	// 	it('should track modifications within arrays', () => {
+	// 		const v = setTrackProxy();
+	// 		v.someInput = [1, 2, 3];
+	// 		v.someInput[1] = 42;
+	// 		expect(v.someInput[1]).toBe(42);
+	// 		expect(v.someInput[1][Unset]).toBeFalsy();
+	// 	});
+
+	// 	it('should track added elements to arrays', () => {
+	// 		const v = setTrackProxy();
+	// 		v.someInput = [1, 2, 3];
+	// 		v.someInput.push(4);
+	// 		expect(v.someInput[3]).toBe(4);
+	// 		expect(v.someInput[3][Unset]).toBeFalsy();
+	// 	});
+
+	// 	it('should track removed elements from arrays', () => {
+	// 		const v = setTrackProxy();
+	// 		v.someInput = [1, 2, 3];
+	// 		v.someInput.pop();
+	// 		expect(v.someInput.length).toBe(2);
+	// 	});
+
+	// 	it('should wrap objects within arrays in proxies', () => {
+	// 		const v = setTrackProxy();
+	// 		v.someInput = [{ a: 1 }];
+	// 		expect(v.someInput[0][IsSetTracked]).toBeTruthy();
+	// 		v.someInput[0].a = 2;
+	// 		expect(v.someInput[0].a).toBe(2);
+	// 	});
+
+	// 	it('should handle nested arrays within arrays', () => {
+	// 		const v = setTrackProxy();
+	// 		v.someInput = [[1, 2, 3]];
+	// 		expect(Array.isArray(v.someInput[0])).toBeTruthy();
+	// 		expect(v.someInput[0][0]).toBe(1);
+	// 		expect(v.someInput[0][1]).toBe(2);
+	// 		expect(v.someInput[0][2]).toBe(3);
+	// 	});
+	// });
 });
