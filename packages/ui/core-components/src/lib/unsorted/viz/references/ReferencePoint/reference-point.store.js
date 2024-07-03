@@ -122,6 +122,7 @@ export const createReferencePointStore = (configStore) => {
 			id,
 			type: 'line',
 			animation: false,
+			silent: true,
 			markPoint: {
 				data: seriesData,
 				silent: false,
