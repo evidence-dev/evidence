@@ -148,7 +148,7 @@ export const load = async ({ fetch, route, params, url }) => {
 		if (tree.frontMatter?.breadcrumb) {
 			let { breadcrumb } = tree.frontMatter;
 			for (const [param, value] of Object.entries(params)) {
-				breadcrumb = breadcrumb.replaceAll(`{params.${param}}`, value);
+				breadcrumb = breadcrumb.replaceAll(`\${params.${param}}`, value);
 			}
 			tree.title = (await query(breadcrumb))[0]?.breadcrumb;
 		}
