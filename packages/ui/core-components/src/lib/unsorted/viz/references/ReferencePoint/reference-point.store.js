@@ -123,6 +123,9 @@ export const createReferencePointStore = (configStore) => {
 					align,
 					fontWeight: state.bold ? 'bold' : undefined,
 					fontStyle: state.italic ? 'italic' : undefined
+				},
+				emphasis: {
+					disabled: true
 				}
 			}
 		};
