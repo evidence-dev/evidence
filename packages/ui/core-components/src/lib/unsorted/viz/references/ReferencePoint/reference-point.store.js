@@ -13,6 +13,10 @@ export const createReferencePointStore = (configStore) => {
 	/** @type {import('./reference-point.d.ts').ReferencePointStore} */
 	const store = writable({});
 
+	/** @param {string | undefined} error */
+	const setError = (error) => store.update((state) => ({ ...state, error }));
+	const clearError = () => setError(undefined);
+
 	const id = nanoid();
 
 	/** @param {import('./reference-point.d.ts').ReferencePointStoreState} state */
@@ -94,7 +98,7 @@ export const createReferencePointStore = (configStore) => {
 				});
 			}
 		} else {
-			state.error = 'You must provide x and y';
+			throw new Error('You must provide x and y');
 		}
 
 		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */
@@ -146,21 +150,21 @@ export const createReferencePointStore = (configStore) => {
 	return {
 		subscribe: store.subscribe,
 		set: (state) => {
+			clearError();
 			try {
-				state.error = undefined;
 				updateChartConfig(state);
 			} catch (e) {
-				state.error = String(e);
+				setError(String(e));
 			}
 		},
 		update: (cb) => {
+			clearError();
 			let state = get(store);
 			try {
 				state = cb(state);
-				state.error = undefined;
 				updateChartConfig(state);
 			} catch (e) {
-				state.error = String(e);
+				setError(String(e));
 			}
 		}
 	};
