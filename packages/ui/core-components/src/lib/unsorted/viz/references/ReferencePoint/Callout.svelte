@@ -69,13 +69,13 @@
 	 * @type {number | string | undefined}
 	 * @default 5
 	 */
-	export let labelBorderRadius = 5;
+	export let labelBorderRadius = 4;
 
 	/**
 	 * @type {string | undefined}
 	 * @default "gray"
 	 */
-	export let labelBorderColor = 'gray';
+	export let labelBorderColor = 'rgb(154, 165, 177)';
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;

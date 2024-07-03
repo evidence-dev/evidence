@@ -703,7 +703,7 @@ When a dataset is provided, `ReferencePoint` will generate multiple points - one
 select
     month,
     sales,
-    concat('-$', round(abs(sales_diff))::int::text) as label
+    concat('Sales dropped $', round(abs(sales_diff))::int::text) as label
 from (
     select
         month,
@@ -715,12 +715,12 @@ where sales_diff < -2000
 ```
 
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <ReferencePoint data={sales_drops} x=month y=sales label=label labelPosition=bottom />
+    <ReferencePoint data={sales_drops} x=month y=sales label=label labelPosition=bottom align=right />
 </LineChart>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <ReferencePoint data={sales_drops} x=month y=sales label=label labelPosition=bottom />
+    <ReferencePoint data={sales_drops} x=month y=sales label=label labelPosition=bottom align=right />
 </LineChart>
 ```
 
@@ -1011,7 +1011,7 @@ When a dataset is provided, `Callout` will generate multiple points - one for ea
 select
     month,
     sales,
-    concat('Sales dropped -$', round(abs(sales_diff))::int::text) as label
+    concat('Sales dropped $', round(abs(sales_diff))::int::text) as label
 from (
     select
         month,
