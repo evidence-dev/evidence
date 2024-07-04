@@ -19,6 +19,17 @@ description: A 10 minute guide to building your first dashboard in Evidence.
 	margin-left: 1rem;
 }
 
+.alert-copy {
+   top: 3.5rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+    padding: 0.5rem;
+    --tw-text-opacity: 1;
+    color: rgb(31 41 55 / var(--tw-text-opacity));
+}
+
 .tab-bottom-padding {
    margin-bottom: 2rem;
 }
@@ -91,13 +102,13 @@ Your browser should open automatically. If it doesn't, open your browser and nav
 
 Congratulations! You've started Evidence. You are now running a local development server.
 
-<div id="objectives" class="alert svelte-17118v7">
+<!-- <div id="objectives" class="alert svelte-17118v7">
 <strong>What's a development server?</strong>
 <br/>
 Dev server? localhost:3000? Hot reload? Static site generator? If you're new to web development, this tutorial will introduce some unfamiliar terms. Don't worry.
 <br/><br/>
 It's not required for this tutorial, but if you want to find out more about what's going on under the hood, take a look at this FAQ about local development. [TODO add link]
-</div>
+</div> -->
 
 <Alert>
 
@@ -211,7 +222,7 @@ To run sources manually from the Command Line:
 npm run sources
 ```
 
-<div id="objectives" class="alert svelte-17118v7">
+<!-- <div id="objectives" class="alert svelte-17118v7">
    
 <strong>Why would you want to manually run sources?</strong>
 
@@ -222,7 +233,7 @@ If you're working with large data sources, running queries can be slow. You may 
 
 
 When the page is complete, you can then run sources to reflect the latest data. To learn more about running sources efficently, take a look at Core Concepts &gt; [Data Sources](/core-concepts/data-sources/).
-</div>
+</div> -->
 
 <Alert>
 
@@ -260,7 +271,7 @@ select * from needful_things.my_query
 
 Not very exciting, but we'll use this data in the next section.
 
-<div id="objectives" class="alert svelte-17118v7">
+<div class="alert-copy">
 
 **What's the difference between a Source Query and a Markdown Query?**
 
@@ -272,6 +283,7 @@ A **Markdown query** filters and transforms data at page level. It is always wri
 To learn more about Markdown queries, including how to reuse them across pages, take a look at Core Concepts &gt; [Markdown Queries](/core-concepts/queries/).
 </div>
 
+<!-- had trouble making this one work as an Alert with markdown formatting and line breaks -->
 
 ## Adding components
 
