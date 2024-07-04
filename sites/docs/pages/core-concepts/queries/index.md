@@ -94,7 +94,7 @@ To use sql file queries, you need to place them in the `queries` directory, and 
 
 An example setup could be:
 
-```
+```code
 my-evidence-project/
   pages/
     my_page.md
