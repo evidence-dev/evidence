@@ -253,9 +253,12 @@ Clean up everything from your page, and add the following:
 select * from needful_things.my_query
 ```
 ````
-Refresh, and you'll see this. Not very exciting, but we'll use this data in the next section.
+Refresh, and you'll see a grey box that looks like this: 
+```my_query_summary
+select * from needful_things.my_query
+```
 
-TODO add image
+Not very exciting, but we'll use this data in the next section.
 
 <div id="objectives" class="alert svelte-17118v7">
 
@@ -289,9 +292,14 @@ select * from needful_things.my_query
 <DataTable data={my_query_summary}/>
 ````
 
-Refresh the page in your browser, and you should see:
+Refresh the page in your browser, and you should now see:
 
-![A DataTable in Evidence](/img/getting-started/new_table.png)
+```my_query_summary
+select * from needful_things.orders
+```
+<DataTable data={my_query_summary}/>
+
+<!-- ![A DataTable in Evidence](/img/getting-started/new_table.png) -->
 
 Nice! You just made your first Evidence component. Now, let's refine things a bit.
 
@@ -314,7 +322,20 @@ limit 100
 
 Now refresh, and notice that your table has changed to show only the most recent 100 orders, with only the table columns you specified:
 
-![Edited markdown query](/img/getting-started/edited_markdown_query.png)
+```my_query_summary
+select 
+   order_datetime, 
+   first_name, 
+   last_name, 
+   email 
+from needful_things.orders
+order by order_datetime desc
+limit 100
+```
+<DataTable data={my_query_summary}/>
+
+
+<!-- ![Edited markdown query](/img/getting-started/edited_markdown_query.png) -->
 
 You can further select or rename the columns that appear in your table by specifying them in the `DataTable` component:
 
@@ -327,7 +348,13 @@ You can further select or rename the columns that appear in your table by specif
 ```  
 This will display:
 
-![Edited columns](/img/getting-started/edited_columns.png)
+<DataTable data={my_query_summary}>
+   <Column id=order_datetime title="Order Date"/>
+   <Column id=first_name />
+   <Column id=email />
+</DataTable>
+
+<!-- ![Edited columns](/img/getting-started/edited_columns.png) -->
 
 A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components/).
 
@@ -354,7 +381,21 @@ limit 12
 ````
 And you should see:
 
-![Bar chart](/img/getting-started/bar_chart.png)
+```orders_by_month
+select order_month, count(*) as orders from needful_things.orders
+group by order_month order by order_month desc
+limit 12
+```
+<BarChart 
+    data={orders_by_month} 
+    x=order_month 
+    y=orders
+	xFmt="mmm yyyy"
+	xAxisTitle="Month"
+	yAxisTitle="Orders"
+/>
+
+<!-- ![Bar chart](/img/getting-started/bar_chart.png) -->
 
 ### 7. Connect a new CSV data source
 
@@ -401,7 +442,15 @@ group by State order by ev_station_count desc
 
 And you should see:
 
-![US EV Map](/img/getting-started/us_map.png)
+```ev_map
+select State, count(*) AS ev_station_count from ev_stations.us_alt_fuel_stations
+where State not in ('CA')
+group by State order by ev_station_count desc
+```
+
+<USMap data={ev_map} state=State abbreviations=true value=ev_station_count/>
+
+<!-- ![US EV Map](/img/getting-started/us_map.png) -->
 
 That's it! You now know the basics of setting up data sources, writing queries, and creating components in Evidence.
 
