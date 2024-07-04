@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 4.6.0
+
+### Minor Changes
+
+- 0b4ae10c5: Add ReferencePoint and Callout components
+
+### Patch Changes
+
+- dbc4116e3: updated link component stories and docs
+- 42ca6d4ce: Remove non-functional labelVisible prop from ReferencePoint and Callout
+
 ## 4.5.4
 
 ### Patch Changes
