@@ -73,7 +73,7 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 		/** @type {NonNullable<import('echarts').MarkLineComponentOption['data']>[number][]} */
 		const seriesData = [];
 
-		if (typeof data !== 'undefined' && !data[Symbol.iterator]) {
+		if (typeof data !== 'undefined' && data[Symbol.iterator]) {
 			checkInputs(
 				data,
 				[x, y, x2, y2].filter((col) => typeof col !== 'undefined')
