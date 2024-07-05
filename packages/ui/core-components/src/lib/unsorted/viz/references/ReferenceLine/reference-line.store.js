@@ -152,14 +152,18 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 							params.data
 						);
 
+						const hasY = typeof y !== 'undefined';
+						const hasX = typeof x !== 'undefined';
+						const isSloped = hasY && hasX;
+
 						const value = formatValue(
-							typeof y !== 'undefined' ? yAxis : typeof x !== 'undefined' ? xAxis : params.value,
-							typeof y !== 'undefined' ? yFormat : typeof x !== 'undefined' ? xFormat : 'string'
+							hasY ? yAxis : hasX ? xAxis : params.value,
+							hasY ? yFormat : hasX ? xFormat : 'string'
 						);
 
 						if (label) {
 							result += label;
-							if (!hideValue) {
+							if (!hideValue && !isSloped) {
 								result += ` (${value})`;
 							}
 						} else if (!hideValue) {
