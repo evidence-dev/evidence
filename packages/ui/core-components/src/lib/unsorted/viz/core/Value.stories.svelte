@@ -47,11 +47,36 @@
 </Story>
 <Story name="Scale Color">
 	<DataTable data={data2} />
-	<div>Min <Value {data} column="fare" agg="min" fmt="usd0" color="blue" /></div>
-	<div>Max <Value {data} column="fare" agg="max" fmt="usd0" color="green" /></div>
-	<div>Median <Value {data} column="fare" agg="median" fmt="usd0" /></div>
-	<div>Avg <Value {data} column="fare" agg="avg" fmt="usd0" /></div>
+	<div>Min color=#00FF00 - <Value {data} column="fare" agg="min" fmt="usd0" color="#00FF00" /></div>
+	<div>Max color=#674EA7 - <Value {data} column="fare" agg="max" fmt="usd0" color="#674EA7" /></div>
+	<div>Median color="" - <Value {data} column="fare" agg="median" fmt="usd0" color="" /></div>
 	<div>
-		NegativeValue <Value data={data2} column="NegativeFare" agg="avg" fmt="usd0" color="red" />
+		Avg color="#45818E" redNegative="true" - <Value
+			{data}
+			column="fare"
+			agg="avg"
+			fmt="usd0"
+			color="#45818E"
+			redNegative="true"
+		/>
+	</div>
+	<div>
+		NegativeValue color="#45818E" redNegative="true" - <Value
+			data={data2}
+			column="NegativeFare"
+			agg="avg"
+			fmt="usd0"
+			color="#45818E"
+			redNegative="true"
+		/>
+	</div>
+	<div>
+		NegativeValue redNegative="true" - <Value
+			data={data2}
+			column="NegativeFare"
+			agg="avg"
+			fmt="usd0"
+			redNegative="true"
+		/>
 	</div>
 </Story>

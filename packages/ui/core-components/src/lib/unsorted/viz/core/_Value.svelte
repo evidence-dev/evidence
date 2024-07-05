@@ -33,13 +33,18 @@
 	let selected_value;
 	let error;
 
-	// conditonal font color
+	// Value Styling Props:
 	export let color = undefined;
-	// export let condition = undefined;
-	let valueColor = undefined;
+	export let redNegative = undefined;
+	let fontColor = '';
+	// export let valueClass = undefined;
 
-	$: if (color) {
-		valueColor = `text-${color}-500`;
+	$: if (redNegative || color) {
+		if (redNegative && selected_value < 0) {
+			fontColor = 'text-red-500';
+		} else if (color) {
+			fontColor = color;
+		}
 	}
 
 	let columnSummary;
@@ -110,7 +115,7 @@
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
 {:else if !error}
-	<span class={valueColor}>
+	<span class={fontColor} style="color: {fontColor}">
 		{formatValue(selected_value, format_object)}
 	</span>
 {:else}
