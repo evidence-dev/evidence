@@ -2,19 +2,11 @@
 
 import type { Writable } from 'svelte/store';
 import type { MarkPointComponentOption } from 'echarts';
+
 import type { Color } from '../colors.js';
+import type { Symbol } from '../references.d.ts';
 
 export type LabelPosition = MarkPointComponentOption['label']['position'];
-
-export type Symbol =
-	| 'circle'
-	| 'rect'
-	| 'roundRect'
-	| 'triangle'
-	| 'diamond'
-	| 'pin'
-	| 'arrow'
-	| 'none';
 
 export type ReferencePointStoreValue = {
 	data?: any;
