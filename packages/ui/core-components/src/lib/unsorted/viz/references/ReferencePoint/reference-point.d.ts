@@ -3,8 +3,7 @@
 import type { Writable } from 'svelte/store';
 import type { MarkPointComponentOption } from 'echarts';
 
-import type { Color } from '../colors.js';
-import type { Symbol } from '../references.d.ts';
+import type { Color, Symbol } from '../types.js';
 
 export type LabelPosition = MarkPointComponentOption['label']['position'];
 

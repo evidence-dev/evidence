@@ -170,6 +170,18 @@
 	</LineChart>
 </Story>
 
+<Story name="Colors">
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	<LineChart x="x" y="y" {data}>
+		<ReferencePoint x="10" y="100" color="blue" label="blue" />
+		<ReferencePoint x="20" y="100" color="red" label="red" />
+		<ReferencePoint x="30" y="100" color="yellow" label="yellow" />
+		<ReferencePoint x="40" y="100" color="green" label="green" />
+		<ReferencePoint x="50" y="100" color="grey" label="grey" />
+		<ReferencePoint x="60" y="100" color="#63178f" label="custom" />
+	</LineChart>
+</Story>
+
 <!-- Specifying x without y -->
 <Story name="Error" args={{ x: 24 }} let:args>
 	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}

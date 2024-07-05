@@ -2,8 +2,9 @@
 
 import { get, writable } from 'svelte/store';
 import { nanoid } from 'nanoid';
-import { getLineAndSymbolColors } from '../colors.js';
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+import { isPresetColor } from '../types.js';
+import { COLORS } from './constants.js';
 
 /**
  * @param {import('svelte/store').Writable<any>} configStore
@@ -17,12 +18,14 @@ export const createReferencePointStore = (configStore) => {
 
 	/** @param {import('./reference-point.d.ts').ReferencePointStoreValue} value */
 	const set = (value) => {
-		const { labelColor, symbolColor } = getLineAndSymbolColors(value);
-
 		// Destructure some properties for QOL preprocessing
 		let {
+			color,
+			symbol,
 			symbolSize,
+			symbolColor,
 			label,
+			labelColor,
 			labelPosition,
 			labelBorderWidth,
 			labelBorderColor,
@@ -31,8 +34,6 @@ export const createReferencePointStore = (configStore) => {
 			align
 		} = value;
 
-		/** @type {string} */
-		let symbol = value.symbol;
 		if (symbol === 'arrow') {
 			// Use a nicer arrow symbol
 			symbol = 'path://M0,10 L5,0 L10,10 z';
@@ -41,6 +42,14 @@ export const createReferencePointStore = (configStore) => {
 			// so we set symbolSize=0 instead
 			symbol = undefined;
 			symbolSize = 0;
+		}
+
+		// Use preset colors
+		labelColor = labelColor ?? color;
+		symbolColor = symbolColor ?? color;
+		if (isPresetColor(color)) {
+			if (!labelColor) labelColor = COLORS[color].labelColor;
+			if (!symbolColor) symbolColor = COLORS[color].symbolColor;
 		}
 
 		// Default labelBorderWidth and labelBorderColor if only one is given

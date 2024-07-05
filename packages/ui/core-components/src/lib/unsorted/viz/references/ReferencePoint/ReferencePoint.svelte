@@ -30,7 +30,7 @@
 	export let data = undefined;
 
 	/**
-	 * @type {import('../colors.js').Color}
+	 * @type {import('../types.js').Color}
 	 * @default "grey"
 	 */
 	export let color = 'grey';
@@ -38,7 +38,7 @@
 	/** @type {string | undefined} */
 	export let label = undefined;
 
-	/** @type {import('../colors.js').Color | undefined} */
+	/** @type {import('../types.js').Color | undefined} */
 	export let labelColor = undefined;
 
 	/**
@@ -92,12 +92,12 @@
 	export let italic = undefined;
 
 	/**
-	 * @type {import('./reference-point.d.ts').Symbol}
+	 * @type {import('../types.js').Symbol}
 	 * @default "circle"
 	 */
 	export let symbol = 'circle';
 
-	/** @type {import('../colors.js').Color | undefined} */
+	/** @type {import('../types.js').Color | undefined} */
 	export let symbolColor = undefined;
 
 	/**

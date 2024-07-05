@@ -4,7 +4,8 @@ import { nanoid } from 'nanoid';
 import { get, writable } from 'svelte/store';
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 import { formatValue } from '@evidence-dev/component-utilities/formatting';
-import { getLineAndSymbolColors } from '../colors.js';
+import { isPresetColor } from '../types.js';
+import { COLORS, LABEL_POSITIONS } from './constants.js';
 
 /**
  * @param {import('svelte/store').Writable<any>} propsStore
@@ -23,7 +24,8 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 
 	/** @param {import('./reference-line.d.ts').ReferenceLineStoreValue} value */
 	const set = (value) => {
-		let { data, x, y, x2, y2, label, hideValue, symbol, symbolSize } = value;
+		let { data, x, y, x2, y2, color, labelColor, lineColor, label, hideValue, symbol, symbolSize } =
+			value;
 
 		// TODO maybe we could subscribe to this in here instead of the jank reactive statement in the component
 		const props = get(propsStore);
@@ -38,9 +40,15 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 			[xFormat, yFormat] = [yFormat, xFormat];
 		}
 
-		// TODO make colors suck less
-		// This probably doesnt work as is
-		const { labelColor, symbolColor } = getLineAndSymbolColors(value);
+		// Use preset colors
+		labelColor = labelColor ?? color;
+		lineColor = lineColor ?? color;
+		if (isPresetColor(labelColor)) {
+			labelColor = COLORS[labelColor].labelColor;
+		}
+		if (isPresetColor(lineColor)) {
+			lineColor = COLORS[lineColor].lineColor;
+		}
 
 		const labelPosition = value.labelPosition
 			? LABEL_POSITIONS[value.labelPosition]
@@ -175,7 +183,7 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 					}
 				},
 				lineStyle: {
-					color: symbolColor,
+					color: lineColor,
 					width: value.lineWidth,
 					type: value.lineType
 				}
@@ -218,14 +226,3 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 		}
 	};
 };
-
-const LABEL_POSITIONS = /** @type {const} */ ({
-	aboveEnd: 'insideEndTop',
-	aboveStart: 'insideStartTop',
-	aboveCenter: 'insideMiddleTop',
-	aboveCentre: 'insideMiddleTop',
-	belowEnd: 'insideEndBottom',
-	belowStart: 'insideStartBottom',
-	belowCenter: 'insideMiddleBottom',
-	belowCentre: 'insideMiddleBottom'
-});

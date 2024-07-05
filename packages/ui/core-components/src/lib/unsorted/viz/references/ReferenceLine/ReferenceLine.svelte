@@ -38,7 +38,7 @@
 	export let label = undefined;
 
 	/**
-	 * @type {import('../colors.js').Color}
+	 * @type {import('../types.js').Color}
 	 * @default "grey"
 	 */
 	export let color = 'grey';
@@ -49,7 +49,7 @@
 	 */
 	export let lineType = 'dashed';
 
-	/** @type {import('../colors.js').Color | undefined} */
+	/** @type {import('../types.js').Color | undefined} */
 	export let lineColor = undefined;
 
 	/**
@@ -59,7 +59,7 @@
 	export let lineWidth = 1.3;
 
 	/**
-	 * @type {import('../references.js').Symbol}
+	 * @type {import('../types.js').Symbol}
 	 * @default "none"
 	 */
 	export let symbol = 'none';
@@ -76,7 +76,7 @@
 	 */
 	export let hideValue = false;
 
-	/** @type {import('../colors.js').Color | undefined} */
+	/** @type {import('../types.js').Color | undefined} */
 	export let labelColor = undefined;
 
 	/**

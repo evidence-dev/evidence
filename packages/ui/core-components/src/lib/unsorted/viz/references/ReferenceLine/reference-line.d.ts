@@ -2,8 +2,7 @@
 
 import { Writable, Readable } from 'svelte/store';
 
-import type { Color } from '../colors.js';
-import type { Symbol } from '../references.d.ts';
+import type { Color, Symbol } from '../types.js';
 import type { MarkLineComponentOption } from 'echarts';
 
 export type LabelPosition =
