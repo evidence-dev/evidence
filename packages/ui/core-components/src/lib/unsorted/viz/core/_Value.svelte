@@ -33,6 +33,15 @@
 	let selected_value;
 	let error;
 
+	// conditonal font color
+	export let color = undefined;
+	// export let condition = undefined;
+	let valueColor = undefined;
+
+	$: if (color) {
+		valueColor = `text-${color}-500`;
+	}
+
 	let columnSummary;
 	$: {
 		try {
@@ -101,7 +110,7 @@
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
 {:else if !error}
-	<span>
+	<span class={valueColor}>
 		{formatValue(selected_value, format_object)}
 	</span>
 {:else}
