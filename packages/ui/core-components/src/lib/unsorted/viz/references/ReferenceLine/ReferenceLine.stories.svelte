@@ -123,3 +123,19 @@
 <Story name="Error: Outside of a chart">
 	<ReferenceLine x={50} label="Reference Line" />
 </Story>
+
+<Story name="Error: Missing column">
+	{@const referenceLineData = Query.create(
+		`
+			select 30 as x, 'Line 1' as label union all
+			select 50, 'Line 2' union all
+			select 70, 'Line 3'
+		`,
+		query
+	)}
+	<LineChart x="x" y="y" {data}>
+		<QueryLoad data={referenceLineData}>
+			<ReferenceLine data={referenceLineData} x="non-existent-column" label="label" />
+		</QueryLoad>
+	</LineChart>
+</Story>

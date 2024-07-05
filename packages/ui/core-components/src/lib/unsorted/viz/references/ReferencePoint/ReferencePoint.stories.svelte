@@ -224,3 +224,33 @@
 		</Callout>
 	</LineChart>
 </Story>
+
+<Story
+	name="Error: Missing column"
+	args={{ x: 'x', y: 'non-existent-column', label: 'label' }}
+	argTypes={{ x: { control: 'text' }, y: { control: 'text' } }}
+	let:args
+>
+	{@const chartData = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	{@const referencePointData = Query.create(
+		`
+		SELECT
+			x,
+			y,
+			row_number() over(order by x) as label
+		FROM numeric_series
+		WHERE
+			series='pink' AND
+			x in (30, 50, 70)
+	`,
+		query
+	)}
+
+	<QueryLoad data={chartData}>
+		<LineChart x="x" y="y" data={chartData}>
+			<QueryLoad data={referencePointData}>
+				<ReferencePoint {...args} data={referencePointData} />
+			</QueryLoad>
+		</LineChart>
+	</QueryLoad>
+</Story>
