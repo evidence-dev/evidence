@@ -60,10 +60,6 @@
 				control: 'select',
 				options: ['solid', 'dotted', 'dashed']
 			},
-			labelVisible: {
-				control: 'select',
-				options: ['always', 'hover']
-			},
 			fontSize: {
 				control: 'number'
 			},

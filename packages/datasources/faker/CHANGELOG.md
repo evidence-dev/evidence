@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.1.3
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+
 ## 2.1.2
 
 ### Patch Changes

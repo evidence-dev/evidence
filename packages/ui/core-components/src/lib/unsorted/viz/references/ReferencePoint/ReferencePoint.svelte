@@ -78,12 +78,6 @@
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
 
-	/**
-	 * @type {'always' | 'hover'}
-	 * @default "always"
-	 */
-	export let labelVisible = 'always';
-
 	/** @type {number | string | undefined} */
 	export let fontSize = undefined;
 	$: fontSize = toNumber(fontSize);
@@ -178,7 +172,6 @@
 			labelBorderRadius,
 			labelBorderColor,
 			labelBorderType,
-			labelVisible,
 			fontSize,
 			align,
 			bold,
