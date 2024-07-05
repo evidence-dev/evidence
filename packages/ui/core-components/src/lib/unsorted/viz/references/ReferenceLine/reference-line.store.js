@@ -117,7 +117,8 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 					seriesData.push({ yAxis: _y, name });
 				}
 			} else {
-				seriesData.push({ yAxis: y });
+				const name = label;
+				seriesData.push({ yAxis: y, name });
 			}
 		} else {
 			throw new Error('Either x or y must be provided when data is provided');
