@@ -17,7 +17,7 @@
 	/** @type {string} */
 	export let name;
 
-	$: dimensions = data?.columns?.filter((col) => col.column_type === 'VARCHAR');
+	$: dimensions = data?.columns?.filter((col) => col.column_type === 'VARCHAR' || 'DOUBLE');
 	let selectedDimensions = writable([]);
 	setContext('selected-dimensions', selectedDimensions);
 
