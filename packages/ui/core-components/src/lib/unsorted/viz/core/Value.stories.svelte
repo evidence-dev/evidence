@@ -51,32 +51,32 @@
 	<div>Max color=#674EA7 - <Value {data} column="fare" agg="max" fmt="usd0" color="#674EA7" /></div>
 	<div>Median color="" - <Value {data} column="fare" agg="median" fmt="usd0" color="" /></div>
 	<div>
-		Avg color="#45818E" redNegative="true" - <Value
+		Avg color="#45818E" redNegatives="true" - <Value
 			{data}
 			column="fare"
 			agg="avg"
 			fmt="usd0"
 			color="#45818E"
-			redNegative="true"
+			redNegatives="true"
 		/>
 	</div>
 	<div>
-		NegativeValue color="#45818E" redNegative="true" - <Value
+		NegativeValue color="#45818E" redNegatives="true" - <Value
 			data={data2}
 			column="NegativeFare"
 			agg="avg"
 			fmt="usd0"
 			color="#45818E"
-			redNegative="true"
+			redNegatives="true"
 		/>
 	</div>
 	<div>
-		NegativeValue redNegative="true" - <Value
+		NegativeValue redNegatives="true" - <Value
 			data={data2}
 			column="NegativeFare"
 			agg="avg"
 			fmt="usd0"
-			redNegative="true"
+			redNegatives="true"
 		/>
 	</div>
 </Story>

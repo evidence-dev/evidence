@@ -35,13 +35,13 @@
 
 	// Value Styling Props:
 	export let color = undefined;
-	export let redNegative = undefined;
+	export let redNegatives = undefined;
 	let fontColor = '';
 	// export let valueClass = undefined;
 
-	$: if (redNegative || color) {
-		if (redNegative && selected_value < 0) {
-			fontColor = 'text-red-500';
+	$: if (redNegatives || color) {
+		if (redNegatives && selected_value < 0) {
+			fontColor = 'rgb(220 38 38)';
 		} else if (color) {
 			fontColor = color;
 		}

@@ -111,11 +111,11 @@ FROM
 If the value is negative, the font color will automatically change to red, overriding any color specified by the color prop.
 
 <div>
-    <Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegative=true />
+    <Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives=true />
 </div>
 
 ```markdown
-<Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegative=true />
+<Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives=true />
 ```
 
 ## Options
@@ -191,16 +191,15 @@ Adds aggregation to query, column name required.
 
 </PropListing>
 <PropListing
-    name="color"
-    options={[`#85BB65`, `#00008B`]}
-    defaultValue="null"
+        name=color
+        options="CSS name | hexademical | RGB | HSL"
 >
 
-Specifies the font color of the Value using a selected hex code.
+Specifies the font color of the Value.
 
 </PropListing>
 <PropListing
-    name="redNegative"
+    name="redNegatives"
     options={[`True`, `False`]}
     defaultValue="false"
 >
