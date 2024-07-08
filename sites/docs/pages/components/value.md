@@ -81,9 +81,6 @@ FROM
 
 ## Customize Color Values
 
-
-Select custom colors for the Value component by specifying a hex code, such as `#85BB65`, `#00008B`,
-
 <div>
     <Value data={orders} column="sales" agg="avg" fmt="usd0" color="#85BB65" />
 </div>
@@ -92,11 +89,18 @@ Select custom colors for the Value component by specifying a hex code, such as `
 <Value data={orders} column="sales" agg="avg" fmt="usd0" color="#85BB65" />
 ```
 <div>
-    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="#00008B" />
+    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="blue" />
 </div>
 
 ```markdown
-<Value data={orders} column="sales" agg="avg" fmt="usd0" color="#00008B" />
+<Value data={orders} column="sales" agg="avg" fmt="usd0" color="blue" />
+```
+<div>
+    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="rgb(200,5,200)" />
+</div>
+
+```markdown
+<Value data={orders} column="sales" agg="avg" fmt="usd0" color="rgb(200,5,200)" />
 ```
 
 ## Red Negative Values
