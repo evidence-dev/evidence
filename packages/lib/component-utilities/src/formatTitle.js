@@ -6,10 +6,6 @@ export default function formatTitle(column, columnFormat) {
 	let acronyms = ['id', 'gdp'];
 	// Allow some joining words to remain fully lowercased in title:
 	let lowercase = ['of', 'the', 'and', 'in', 'on'];
-	// Function to remove double quotes from a string
-	function removeDoubleQuotes(str) {
-		return str.replace(/"/g, '');
-	}
 	// Set name to proper casing:
 	function toTitleCase(str) {
 		return str.replace(/\S*/g, function (txt) {
@@ -22,7 +18,7 @@ export default function formatTitle(column, columnFormat) {
 			}
 		});
 	}
-	// Remove all underscores before passing to title case function:
-	result = toTitleCase(removeDoubleQuotes(result.replace(/_/g, ' ')));
+	// Remove all underscores & double quotes before passing to title case function:
+	result = toTitleCase(column.replace(/"/g, '').replace(/_/g, ' '));
 	return result;
 }
