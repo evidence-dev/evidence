@@ -423,6 +423,10 @@ ${this.text.trim()}
 			this.#sharedLengthPromise.resolve(this);
 			return this.#sharedLengthPromise.promise;
 		}
+		if (this.#sharedLengthPromise.state !== 'init') {
+			return this.#sharedLengthPromise.promise;
+		}
+
 		if (this.#error) {
 			this.#debug(
 				'length error',
@@ -484,6 +488,9 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 	);
 	/** @returns {MaybePromise<Query<RowType>>} */
 	#fetchColumns = () => {
+		if (this.#sharedColumnsPromise.state !== 'init') {
+			return this.#sharedColumnsPromise.promise;
+		}
 		if (this.#error) {
 			this.#debug(
 				'cols query error',
