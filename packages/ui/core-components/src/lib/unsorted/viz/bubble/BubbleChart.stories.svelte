@@ -1,54 +1,38 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
-		title: 'Charts/BarCharts',
-		argTypes: {
-			xHasGaps: {
-				type: 'boolean',
-				description: 'Determines if every series has every x value',
-				defaultValue: false
-			},
-			yHasNulls: {
-				type: 'boolean',
-				description: 'Determines if y can have nulls',
-				defaultValue: false
-			},
-			seriesAlwaysExists: {
-				type: 'boolean',
-				description: 'Determines if the series prop can be null',
-				defaultValue: true
-			},
-			type: {
-				type: 'string',
-				options: ['stacked', 'grouped', 'stacked100'],
-				control: { type: 'select' }
-			}
-		},
-		args: {
-			xHasGaps: false,
-			yHasNulls: false,
-			seriesAlwaysExists: true
-		}
+		title: 'Charts/BubbleCharts'
 	};
 </script>
 
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
-
-	import BarChart from './BarChart.svelte';
-
-	import { fakerSeries } from '$lib/faker-data-queries';
+	import DataTable from '../../viz/table/DataTable.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import BubbleChart from './BubbleChart.svelte';
 </script>
 
 <Template let:args>
-	<BarChart
-		{...args}
-		x="x"
-		y="y"
-		series="series"
-		data={fakerSeries['numeric_series'][args.xHasGaps][args.yHasNulls][args.seriesAlwaysExists]
-			.store}
-	/>
+	{@const data = Query.create(
+		'SELECT plane, fare, SUM(fare) as total_sales, SUM(distance) as total_distance FROM flights WHERE plane IN (SELECT DISTINCT plane FROM flights LIMIT 2) GROUP BY plane, fare LIMIT 25',
+		query
+	)}
+	<DataTable {data} />
+	<BubbleChart x="fare" y="total_distance" size="total_sales" {data} {...args} />
 </Template>
 
 <Story name="Base" />
+<Story name="Series" args={{ series: 'plane' }} />
+<Story name="Sort" args={{ series: 'plane', sort: false }} />
+<Story name="Empty Set">
+	{@const emptyData = []}
+	<BubbleChart
+		x="fare"
+		y="total_distance"
+		size="total_sales"
+		data={emptyData}
+		emptySet="warn"
+		emptyMessage="data set is empty"
+	/>
+</Story>
