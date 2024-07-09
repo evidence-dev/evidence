@@ -1312,6 +1312,16 @@ Group name to display above a group of columns. Columns with the same group name
 
 </PropListing>
 
+<PropListing
+    name="redNegatives"
+    options={[`True`, `False`]}
+    defaultValue="false"
+>
+
+Conditionally sets the font color to red based on whether the selected value is less than 0
+
+</PropListing>
+
 ### Images
 
 `contentType=image`
@@ -1474,7 +1484,7 @@ Set a maximum for the scale. Any values above that maximum will appear in the hi
 Array of numbers to use as breakpoints for each color in your color scale. Should line up with the colors you provide in `scaleColor`
 
 </PropListing>
-/>
+
 <PropListing
     name=scaleColumn
     options="column name"
