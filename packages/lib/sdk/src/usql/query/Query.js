@@ -332,8 +332,14 @@ ${this.text.trim()}
 		const typedRunner = /** @type {import('../types.js').Runner<RowType>} */ (this.#executeQuery);
 		Query.#markInFlight(this);
 		const before = performance.now();
+		this.#debug(`Data query starting`, {
+			hasInitialData: Boolean(this.opts.initialData),
+			hasInitialError: Boolean(this.opts.initialError)
+		});
+
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
+				this.#debug(`Data query finished`);
 				this.#data = result;
 				const after = performance.now();
 
@@ -811,6 +817,9 @@ DESCRIBE ${this.text.trim()}
 			activeQuery = createFn(queryText, execFn, Object.assign({}, opts, newOpts));
 
 			const fetched = activeQuery.fetch();
+			console.log(activeQuery.opts);
+			console.log('Fetch initiated!');
+
 			resolveMaybePromise(removeInitialState, fetched);
 
 			// We don't want to use this after the initial creation!
