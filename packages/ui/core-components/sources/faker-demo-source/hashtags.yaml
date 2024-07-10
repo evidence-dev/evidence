@@ -7,27 +7,27 @@ schema:
       - category: helpers
         item: fake
         options:
-          - "#{{company.buzzAdjective}}"
+          - '#{{company.buzzAdjective}}'
       - category: helpers
         item: fake
         options:
-          - "#{{company.buzzNoun}}"
+          - '#{{company.buzzNoun}}'
       - category: helpers
         item: fake
         options:
-          - "#{{company.catchPhraseAdjective}}"
+          - '#{{company.catchPhraseAdjective}}'
       - category: helpers
         item: fake
         options:
-          - "#{{company.catchPhraseNoun}}"
+          - '#{{company.catchPhraseNoun}}'
       - category: helpers
         item: fake
         options:
-          - "#{{person.jobDescriptor}}{{company.catchPhraseNoun}}"
+          - '#{{person.jobDescriptor}}{{company.catchPhraseNoun}}'
       - category: helpers
         item: fake
         options:
-          - "#{{hacker.ingverb}}{{hacker.noun}}"
+          - '#{{hacker.ingverb}}{{hacker.noun}}'
 filters:
   - type: unique
     fields:

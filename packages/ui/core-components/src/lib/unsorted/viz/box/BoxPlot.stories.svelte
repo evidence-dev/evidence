@@ -154,7 +154,7 @@ limit 50`,
 		intervalBottom: 'min_fare',
 		midpoint: 'median_fare',
 		intervalTop: 'max_fare',
-		yFmt:"usd0"
+		yFmt: 'usd0'
 	}}
 	let:args
 >
@@ -170,7 +170,7 @@ limit 50`,
 		intervalBottom: 'min_fare',
 		midpoint: 'median_fare',
 		intervalTop: 'max_fare',
-		yFmt:"usd0"
+		yFmt: 'usd0'
 	}}
 	let:args
 >
@@ -183,9 +183,9 @@ limit 50`,
 		intervalBottom: 'intervalBottom_fare',
 		midpoint: 'median_fare',
 		intervalTop: 'intervalTop_fare',
-		max:"max_fare",
-		min:"min_fare",
-		yFmt:"usd0"
+		max: 'max_fare',
+		min: 'min_fare',
+		yFmt: 'usd0'
 	}}
 	let:args
 >
