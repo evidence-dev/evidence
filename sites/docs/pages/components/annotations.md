@@ -748,10 +748,9 @@ A reference area can be produced by defining values inline or by supplying a dat
     options="CSS name | hexademical | RGB | HSL"
 />
 <PropListing
-    name=labelBackground
-    description="Option to show a white semi-transparent background behind the label. Helps when label is shown in front of darker colours."
-    options={["true", "false"]}
-    defaultValue="true"
+    name=labelBackgroundColor
+    description="The color of the background behind the label"
+    options="CSS name | hexademical | RGB | HSL"
 />
 <PropListing
     name=labelPadding
