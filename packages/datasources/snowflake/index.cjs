@@ -153,7 +153,7 @@ const getCredentials = (database = {}) => {
 	const role = database.role;
 	const schema = database.schema;
 
-	// optional
+	// optional fields. will be undefined if not provided
 	const proxyHost = database.proxyHost;
 	const proxyPort = database.proxyPort;
 
