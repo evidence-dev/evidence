@@ -115,7 +115,7 @@
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
 {:else if !error}
-	<span class={fontColor} style="color: {fontColor}">
+	<span style="color: {fontColor}">
 		{formatValue(selected_value, format_object)}
 	</span>
 {:else}
