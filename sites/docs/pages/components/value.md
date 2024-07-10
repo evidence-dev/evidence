@@ -115,11 +115,11 @@ FROM
 If the value is negative, the font color will automatically change to red, overriding any color specified by the color prop.
 
 <div>
-    <Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives=true />
+    <Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives="true" />
 </div>
 
 ```markdown
-<Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives=true />
+<Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives="true" />
 ```
 
 ## Options
