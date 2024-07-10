@@ -120,9 +120,8 @@
 	let inputs = [xMin, xMax, yMin, yMax, label];
 	let reqCols = [];
 	$: for (let i = 0; i < inputs.length; i++) {
-		reqCols = [];
 		if (inputs[i] !== undefined) {
-			reqCols.push(inputs[i]);
+			reqCols = [...reqCols, inputs[i]];
 		}
 	}
 
