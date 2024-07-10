@@ -2,7 +2,100 @@
 	/** @type {import('@storybook/addon-svelte-csf').MetaProps}*/
 	export const meta = {
 		title: 'viz/references/ReferenceArea',
-		component: ReferenceArea
+		component: ReferenceArea,
+		argTypes: {
+			emptySet: {
+				control: 'select',
+				options: ['pass', 'warn', 'error']
+			},
+			emptyMessage: {
+				control: 'text'
+			},
+			color: {
+				control: 'color'
+			},
+			areaColor: {
+				control: 'color'
+			},
+			opacity: {
+				control: 'number'
+			},
+			border: {
+				control: 'boolean'
+			},
+			borderType: {
+				control: 'select',
+				options: ['solid', 'dotted', 'dashed']
+			},
+			borderColor: {
+				control: 'color'
+			},
+			borderWidth: {
+				control: 'number'
+			},
+			label: {
+				control: 'text'
+			},
+			labelColor: {
+				control: 'color'
+			},
+			labelPadding: {
+				control: 'number'
+			},
+			labelPosition: {
+				control: 'select',
+				options: [
+					'left',
+					'right',
+					'top',
+					'bottom',
+					'inside',
+					'insideLeft',
+					'insideRight',
+					'insideTop',
+					'insideBottom',
+					'insideTopLeft',
+					'insideTopRight',
+					'insideBottomLeft',
+					'insideBottomRight'
+				]
+			},
+			labelBackgroundColor: {
+				control: 'color'
+			},
+			labelBorderWidth: {
+				control: 'number'
+			},
+			labelBorderRadius: {
+				control: 'number'
+			},
+			labelBorderColor: {
+				control: 'color'
+			},
+			labelBorderType: {
+				control: 'select',
+				options: ['solid', 'dotted', 'dashed']
+			},
+			fontSize: {
+				control: 'number'
+			},
+			align: {
+				control: 'select',
+				options: ['left', 'center', 'right']
+			},
+			bold: {
+				control: 'boolean'
+			},
+			italic: {
+				control: 'boolean'
+			},
+			preserveWhitespace: {
+				control: 'boolean'
+			}
+		},
+		args: {
+			label: 'Reference Area'
+		}
 	};
 </script>
 
@@ -19,21 +112,63 @@
 	const data = Query.create(`select * FROM numeric_series WHERE series='pink'`, query);
 </script>
 
-<Story name="Hardcoded: x">
+<Story
+	name="Hardcoded: x"
+	argTypes={{
+		xMin: {
+			control: 'number'
+		},
+		xMax: {
+			control: 'number'
+		}
+	}}
+	args={{ xMin: 20, xMax: 40 }}
+	let:args
+>
 	<LineChart x="x" y="y" {data}>
-		<ReferenceArea xMin={20} xMax={40} label="Reference Area" />
+		<ReferenceArea {...args} />
 	</LineChart>
 </Story>
 
-<Story name="Hardcoded: y">
+<Story
+	name="Hardcoded: y"
+	argTypes={{
+		yMin: {
+			control: 'number'
+		},
+		yMax: {
+			control: 'number'
+		}
+	}}
+	args={{ yMin: 450, yMax: 700 }}
+	let:args
+>
 	<LineChart x="x" y="y" {data}>
-		<ReferenceArea yMin={450} yMax={700} label="Reference Area" />
+		<ReferenceArea {...args} />
 	</LineChart>
 </Story>
 
-<Story name="Hardcoded: x/y">
+<Story
+	name="Hardcoded: x/y"
+	argTypes={{
+		xMin: {
+			control: 'number'
+		},
+		xMax: {
+			control: 'number'
+		},
+		yMin: {
+			control: 'number'
+		},
+		yMax: {
+			control: 'number'
+		}
+	}}
+	args={{ xMin: 20, xMax: 40, yMin: 450, yMax: 700 }}
+	let:args
+>
 	<LineChart x="x" y="y" {data}>
-		<ReferenceArea xMin={20} xMax={40} yMin={450} yMax={700} label="Reference Area" />
+		<ReferenceArea {...args} />
 	</LineChart>
 </Story>
 
