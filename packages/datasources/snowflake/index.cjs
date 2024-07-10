@@ -395,13 +395,13 @@ module.exports.options = {
 					title: 'Host',
 					type: 'string',
 					secret: false,
-					required: false
+					required: true
 				},
 				port: {
 					title: 'Port',
 					type: 'number',
 					secret: false,
-					required: false
+					required: true
 				},
 				username: {
 					title: 'Username',
