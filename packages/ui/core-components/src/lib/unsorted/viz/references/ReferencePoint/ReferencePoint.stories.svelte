@@ -107,6 +107,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
+	import BarChart from '$lib/unsorted/viz//bar/BarChart.svelte';
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	import ReferencePoint from './ReferencePoint.svelte';
@@ -168,6 +169,20 @@
 	<LineChart x="x" y="y" {data}>
 		<ReferencePoint {...args}>This label is passed via the default slot</ReferencePoint>
 	</LineChart>
+</Story>
+
+<Story name="Swap XY">
+	{@const data = Query.create(
+		`
+			select 'a' as x, 10 as y union all
+			select 'b', 20 union all
+			select 'c', 30
+		`,
+		query
+	)}
+	<BarChart x="x" y="y" swapXY {data}>
+		<ReferencePoint x="b" y="30" label="Reference Point" />
+	</BarChart>
 </Story>
 
 <Story name="Colors">

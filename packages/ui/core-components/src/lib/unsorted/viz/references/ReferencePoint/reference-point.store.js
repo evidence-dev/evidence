@@ -21,6 +21,9 @@ export const createReferencePointStore = (propsStore, configStore) => {
 	const set = (value) => {
 		// Destructure some properties for QOL preprocessing
 		let {
+			data,
+			x,
+			y,
 			color,
 			symbol,
 			symbolSize,
@@ -38,6 +41,10 @@ export const createReferencePointStore = (propsStore, configStore) => {
 		const props = get(propsStore);
 		if (typeof props === 'undefined') {
 			throw new Error('Reference Point cannot be used outside of a chart');
+		}
+
+		if (props.swapXY) {
+			[x, y] = [y, x];
 		}
 
 		if (symbol === 'arrow') {
@@ -85,7 +92,6 @@ export const createReferencePointStore = (propsStore, configStore) => {
 			}
 		};
 
-		const { data, x, y } = value;
 		/** @type {import('echarts').MarkPointComponentOption['data'][number][]} */
 		let seriesData = [];
 		if (typeof x !== 'undefined' && typeof y !== 'undefined') {
