@@ -690,45 +690,118 @@ A reference area can be produced by defining values inline or by supplying a dat
 
 ### Styling
 
-    <PropListing
-        name=labelPosition
-        description="Where label will appear within the area"
-        options={["topLeft", "top", "topRight", "left", "center", "right", "bottomLeft", "bottom", "bottomRight"]}
-        defaultValue="topLeft"
-    />
-    <PropListing
-        name=color
-        description="Color to override default area and label colors"
-        options="CSS name | hexademical | RGB | HSL"
-    />
-    <PropListing
-        name=labelColor
-        description="Color to override default label color. If used, takes precedence over `color`"
-        options="CSS name | hexademical | RGB | HSL"
-    />
-    <PropListing
-        name=border
-        description="Whether border should be shown"
-        options={["true", "false"]}
-        defaultValue="false"
-    />
-    <PropListing
-        name=borderColor
-        description="Color to override default border color"
-        options="CSS name | hexademical | RGB | HSL"
-    />
-    <PropListing
-        name=borderType
-        description="Options to show breaks in a line (dashed or dotted)"
-        options={["solid", "dashed", "dotted"]}
-        defaultValue="dashed"
-    />
-    <PropListing
-        name=borderWidth
-        description="Thickness of line (in pixels)"
-        options="number"
-        defaultValue="1"
-    />
+<PropListing
+    name=color
+    description="Color to override default area and label colors"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+
+<!-- Area-related props -->
+<PropListing
+    name=areaColor
+    description="Color to override default area color. If used, takes precedence over `color`"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=opacity
+    description="Opacity of the highlighted area"
+    options="number"
+/>
+<PropListing
+    name=border
+    description="Renders a border around the highlighted area"
+    option={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=borderColor
+    description="Color to override default border color"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=borderType
+    description="Options to show breaks in a line (dashed or dotted)"
+    options={["solid", "dashed", "dotted"]}
+    defaultValue="dashed"
+/>
+<PropListing
+    name=borderWidth
+    description="Thickness of border (in pixels)"
+    options="number"
+/>
+
+<!-- Label-related props -->
+<PropListing
+    name=labelPosition
+    description="Where label will appear within the area"
+    options={["topLeft", "top", "topRight", "left", "center", "right", "bottomLeft", "bottom", "bottomRight"]}
+    defaultValue="topLeft"
+/>
+<PropListing
+    name=labelColor
+    description="Color to override default label color. If used, takes precedence over `color`"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=labelColor
+    description="Color to override default label color. If used, takes precedence over `color`"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=labelBackground
+    description="Option to show a white semi-transparent background behind the label. Helps when label is shown in front of darker colours."
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name=labelPadding
+    options=number
+    description="Padding between the text and the border of the label background"
+/>
+<PropListing
+    name=labelBorderWidth
+    description="The thickness of the border around the label (in pixels)"
+    options=number
+/>
+<PropListing
+    name=labelBorderRadius
+    description="The radius of rounded corners on the label background (in pixels)"
+    options=number
+/>
+<PropListing
+    name=labelBorderColor
+    description="The color of the border around the label background"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=labelBorderType
+    description="The type of border around the label background (dashed or dotted)"
+    options={['solid', 'dotted', 'dashed']}
+/>
+
+<!-- Font-related props -->
+<PropListing
+    name=fontSize
+    description="The size of the font in the label"
+    options=number
+/>
+<PropListing
+    name=align
+    description="How to align the label to the symbol, and the text within the label"
+    options={['left', 'center', 'right']}
+/>
+<PropListing
+    name=bold
+    description="Make the label text bold"
+    options={[true, false]}
+    defaultValue=false
+/>
+<PropListing
+    name=italic
+    description="Make the label text italic"
+    options={[true, false]}
+    defaultValue=false
+/>
 
 # Reference Point
 
