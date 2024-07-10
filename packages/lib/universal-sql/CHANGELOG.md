@@ -1,5 +1,12 @@
 # @evidence-dev/universal-sql
 
+## 2.1.3
+
+### Patch Changes
+
+- b84ef07ac: Add buildOptions.batchSize to connection.yaml spec
+- 6cdedceb0: Remove db-orchestrator
+
 ## 2.1.2
 
 ### Patch Changes
