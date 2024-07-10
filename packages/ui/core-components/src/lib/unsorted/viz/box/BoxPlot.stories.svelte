@@ -12,15 +12,16 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import DataTable from '../table/DataTable.svelte';
+	const data = Query.create(`SELECT * from flights`, query);
 	const flightData = Query.create(
 		`
 SELECT 
     airline, 
-    MAX(distance) AS max_distance, 
-    MIN(COALESCE(distance, 0)) AS min_distance, 
-    MEDIAN(distance) AS median_distance,
-		MAX(distance)-5 AS intervalTop_distance,
-		MIN(distance)+5 AS intervalBottom_distance,
+    MAX(fare) AS max_fare, 
+    MIN(COALESCE(fare, 0)) AS min_fare, 
+    MEDIAN(fare) AS median_fare,
+		MAX(fare)-500 AS intervalTop_fare,
+		MIN(fare)+500 AS intervalBottom_fare,
 
     CASE 
         WHEN airline = 'Qatar Airways' THEN 'red' 
@@ -39,9 +40,9 @@ limit 50`,
 	<BoxPlot
 		data={flightData}
 		name="airline"
-		intervalBottom="min_distance"
-		midpoint="median_distance"
-		intervalTop="max_distance"
+		intervalBottom="min_fare"
+		midpoint="median_fare"
+		intervalTop="max_fare"
 		title="Flights"
 	/>
 </Template>
@@ -49,13 +50,13 @@ limit 50`,
 <Story name="Base" />
 
 <Story name="swapXY=true colors">
-	<DataTable data={flightData} />
+	<DataTable data={data} />
 	<BoxPlot
 		data={flightData}
 		name="airline"
-		intervalBottom="intervalBottom_distance"
-		midpoint="median_distance"
-		intervalTop="intervalTop_distance"
+		intervalBottom="intervalBottom_fare"
+		midpoint="median_fare"
+		intervalTop="intervalTop_fare"
 		swapXY="true"
 		color="color"
 		title="Flights: swapXY=true, colors"
@@ -67,11 +68,11 @@ limit 50`,
 	<BoxPlot
 		data={flightData}
 		name="airline"
-		intervalBottom="intervalBottom_distance"
-		midpoint="median_distance"
-		intervalTop="intervalTop_distance"
-		max="max_distance"
-		min="min_distance"
+		intervalBottom="intervalBottom_fare"
+		midpoint="median_fare"
+		intervalTop="intervalTop_fare"
+		max="max_fare"
+		min="min_fare"
 		title="Flights: whiskers"
 	/>
 </Story>
