@@ -204,7 +204,7 @@ Specifies the font color of the Value.
 </PropListing>
 <PropListing
     name="redNegatives"
-    options={[`True`, `False`]}
+    options={[`true`, `false`]}
     defaultValue="false"
 >
 

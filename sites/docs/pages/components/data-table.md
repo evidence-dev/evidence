@@ -1314,7 +1314,7 @@ Group name to display above a group of columns. Columns with the same group name
 
 <PropListing
     name="redNegatives"
-    options={[`True`, `False`]}
+    options={[`true`, `false`]}
     defaultValue="false"
 >
 
