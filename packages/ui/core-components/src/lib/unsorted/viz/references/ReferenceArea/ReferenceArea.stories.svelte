@@ -11,6 +11,7 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
+	import BarChart from '../../bar/BarChart.svelte';
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	import ReferenceArea from './ReferenceArea.svelte';
@@ -89,6 +90,20 @@
 			/>
 		</QueryLoad>
 	</LineChart>
+</Story>
+
+<Story name="Swap XY">
+	{@const data = Query.create(
+		`
+			select 'a' as x, 10 as y union all
+			select 'b', 20 union all
+			select 'c', 30
+		`,
+		query
+	)}
+	<BarChart x="x" y="y" swapXY {data}>
+		<ReferenceArea xMin="a" xMax="a" yMin={15} yMax={25} label="Reference Area" />
+	</BarChart>
 </Story>
 
 <Story name="Colors">
