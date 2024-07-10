@@ -1,46 +1,167 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
-		title: 'Charts/AreaCharts',
+		title: 'Charts/AreaChart',
+		component: AreaChart,
 		argTypes: {
-			xHasGaps: {
-				type: 'boolean',
-				description: 'Determines if every series has every x value',
-				defaultValue: false
+			series: {
+				control: 'string'
 			},
-			yHasNulls: {
-				type: 'boolean',
-				description: 'Determines if y can have nulls',
-				defaultValue: false
-			},
-			seriesAlwaysExists: {
-				type: 'boolean',
-				description: 'Determines if the series prop can be null',
-				defaultValue: true
+			sort: {
+				control: 'boolean',
+				options: [true, false]
 			},
 			type: {
-				type: 'string',
-				options: ['stacked', 'grouped', 'stacked100'],
-				control: { type: 'select' }
+				control: 'options',
+				options: ['stacked', 'stacked100']
+			},
+			handleMissing: {
+				control: 'options',
+				options: ['gap', 'connect', 'zero']
+			},
+			emptySet: {
+				control: 'options',
+				options: ['pass', 'warn', 'error']
+			},
+			emptyMessage: {
+				control: 'text'
+			},
+			xFmt: {
+				control: 'text'
+			},
+			yFmt: {
+				control: 'text'
+			},
+			step: {
+				control: 'boolean'
+			},
+			stepPosition: {
+				control: 'options',
+				options: ['start', 'middle', 'end']
+			},
+			fillColor: {
+				control: 'color'
+			},
+			lineColor: {
+				control: 'color'
+			},
+			fillOpacity: {
+				control: 'number'
+			},
+			line: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			colorPalette: {
+				control: 'array'
+			},
+			seriesColors: {
+				control: 'object'
+			},
+			labels: {
+				control: 'boolean'
+			},
+			labelSize: {
+				control: 'number'
+			},
+			labelPosition: {
+				control: 'options',
+				options: ['top', 'bottom', 'left', 'right']
+			},
+			labelColor: {
+				control: 'color'
+			},
+			labelFmt: {
+				control: 'text'
+			},
+			showAllLabels: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			yLog: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			yLogBase: {
+				control: 'number'
+			},
+			xAxisTitle: {
+				control: 'text',
+			},
+			yAxisTitle: {
+				control: 'text',
+			},
+			xGridlines: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			yGridlines: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			xAxisLabels: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			yAxisLabels: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			xBaseline: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			yBaseline: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			xTickMarks: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			yTickMarks: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			yMin: {
+				control: 'number'
+			},
+			yMax: {
+				control: 'number'
+			},
+			yScale: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			title: {
+				control: 'text'
+			},
+			subtitle: {
+				control: 'text'
+			},
+			legend: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			chartAreaHeight: {
+				control: 'number'
+			},
+			renderer: {
+				control: 'options',
+				options: ['canvas', 'svg']
 			}
-		},
-		args: {
-			xHasGaps: false,
-			yHasNulls: false,
-			seriesAlwaysExists: true
 		}
 	};
 </script>
 
 <script>
-	import { Template, Story } from '@storybook/addon-svelte-csf';
+	import { Story } from '@storybook/addon-svelte-csf';
 
 	import AreaChart from './AreaChart.svelte';
 
 	import { fakerSeries } from '$lib/faker-data-queries';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import DataTable from '../table/DataTable.svelte';
 	const flightData = Query.create(`SELECT * from flights LIMIT 100`, query);
 	const planeData = Query.create(
 		`
@@ -57,42 +178,70 @@ LIMIT 200`,
 	);
 </script>
 
-<Template let:args>
+<Story
+	name="Base"
+	args={{
+		x: 'x',
+		y: 'y',
+		series: 'series',
+		xHasGaps: false,
+		yHasNulls: false,
+		seriesAlwaysExists: true
+	}}
+	let:args
+>
 	<AreaChart
 		{...args}
-		x="x"
-		y="y"
-		series="series"
 		data={fakerSeries['numeric_series'][args.xHasGaps][args.yHasNulls][args.seriesAlwaysExists]
 			.store}
 	/>
-</Template>
-
-<Story name="Base" />
-
-<Story name="With Link">
-	<DataTable data={planeData} />
-	<AreaChart
-		data={planeData}
-		x="departure_date"
-		y="total_fare"
-		link="plane_url"
-		series="plane"
-		xFmt="date"
-		yFmt="usd0"
-	/>
 </Story>
 
-<Story name="With steps, fmt and labels">
-	<DataTable data={flightData} />
-	<AreaChart
-		data={flightData}
-		x="distance"
-		y="fare"
-		yFmt="usd0"
-		step="true"
-		labels="true"
-		labelFmt="usd0"
-	/>
-	<AreaChart data={flightData} x="distance" y="fare" yFmt="usd0" step="false" />
+<Story
+	name="With Link"
+	args={{
+		x: 'departure_date',
+		y: 'total_fare',
+		link: 'plane_url',
+		series: 'plane',
+		xFmt: 'date',
+		yFmt: 'usd0'
+	}}
+	let:args
+>
+	<AreaChart data={planeData} {...args} />
+</Story>
+<Story
+	name="With steps, fmt and labels"
+	args={{
+		x: 'departure_date',
+		y: 'total_fare',
+		xFmt: 'date',
+		yFmt: 'usd0',
+		labels: 'true',
+		labelFmt: 'usd0',
+		step: 'true',
+	}}
+	let:args
+>
+	<AreaChart data={planeData} {...args} />
+</Story>
+
+
+<Story
+	name="With empty set"
+	args={{
+		x: 'departure_date',
+		y: 'total_fare',
+		xFmt: 'date',
+		yFmt: 'usd0',
+		labels: 'true',
+		labelFmt: 'usd0',
+		emptySet:'warn',
+		emptyMessage:"Data is a empty Set"
+	}}
+	let:args
+>
+{@const emptySet = []}
+	<AreaChart data={emptySet} {...args} />
 </Story>
