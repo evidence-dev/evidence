@@ -147,7 +147,7 @@
 
 	const props = getPropContext();
 	const config = getConfigContext();
-	const store = createReferencePointStore(config);
+	const store = createReferencePointStore(props, config);
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,

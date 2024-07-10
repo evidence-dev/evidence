@@ -225,6 +225,10 @@
 	</LineChart>
 </Story>
 
+<Story name="Error: Outside of a chart">
+	<ReferencePoint label="Reference Point" />
+</Story>
+
 <Story
 	name="Error: Missing column"
 	args={{ x: 'x', y: 'non-existent-column', label: 'label' }}

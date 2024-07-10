@@ -7,10 +7,11 @@ import { isPresetColor } from '../types.js';
 import { COLORS } from './constants.js';
 
 /**
+ * @param {import('svelte/store').Writable<any>} propsStore
  * @param {import('svelte/store').Writable<any>} configStore
  * @returns {import('./reference-point.d.ts').ReferencePointStore}
  */
-export const createReferencePointStore = (configStore) => {
+export const createReferencePointStore = (propsStore, configStore) => {
 	/** @type {import('./reference-point.d.ts').ReferencePointStore} */
 	const store = writable({});
 
@@ -33,6 +34,11 @@ export const createReferencePointStore = (configStore) => {
 			symbolBorderColor,
 			align
 		} = value;
+
+		const props = get(propsStore);
+		if (typeof props === 'undefined') {
+			throw new Error('Reference Point cannot be used outside of a chart');
+		}
 
 		if (symbol === 'arrow') {
 			// Use a nicer arrow symbol
