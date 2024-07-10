@@ -86,10 +86,10 @@
 				control: 'number'
 			},
 			xAxisTitle: {
-				control: 'text',
+				control: 'text'
 			},
 			yAxisTitle: {
-				control: 'text',
+				control: 'text'
 			},
 			xGridlines: {
 				control: 'boolean',
@@ -220,13 +220,12 @@ LIMIT 200`,
 		yFmt: 'usd0',
 		labels: 'true',
 		labelFmt: 'usd0',
-		step: 'true',
+		step: 'true'
 	}}
 	let:args
 >
 	<AreaChart data={planeData} {...args} />
 </Story>
-
 
 <Story
 	name="With empty set"
@@ -237,11 +236,11 @@ LIMIT 200`,
 		yFmt: 'usd0',
 		labels: 'true',
 		labelFmt: 'usd0',
-		emptySet:'warn',
-		emptyMessage:"Data is a empty Set"
+		emptySet: 'warn',
+		emptyMessage: 'Data is a empty Set'
 	}}
 	let:args
 >
-{@const emptySet = []}
+	{@const emptySet = []}
 	<AreaChart data={emptySet} {...args} />
 </Story>
