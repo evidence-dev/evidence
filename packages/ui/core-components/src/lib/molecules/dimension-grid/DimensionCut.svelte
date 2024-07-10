@@ -18,6 +18,10 @@
 	export let metricLabel;
 	export let limit;
 
+	if (dimension.column_name.includes(' ')) {
+		dimension.column_name = `"${dimension.column_name}"`;
+	}
+
 	// Selected Value
 	let selectedDimensions = getContext('selected-dimensions');
 	let selectedValue;
