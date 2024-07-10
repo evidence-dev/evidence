@@ -2,7 +2,94 @@
 	/** @type {import('@storybook/addon-svelte-csf').MetaProps}*/
 	export const meta = {
 		title: 'viz/references/ReferenceLine',
-		component: ReferenceLine
+		component: ReferenceLine,
+		argTypes: {
+			emptySet: {
+				control: 'select',
+				options: ['pass', 'warn', 'error']
+			},
+			emptyMessage: {
+				control: 'text'
+			},
+			label: {
+				control: 'text'
+			},
+			color: {
+				control: 'color'
+			},
+			lineType: {
+				control: 'select',
+				options: ['solid', 'dotted', 'dashed']
+			},
+			lineColor: {
+				control: 'color'
+			},
+			lineWidth: {
+				control: 'number'
+			},
+			hideValue: {
+				control: 'boolean'
+			},
+			labelColor: {
+				control: 'color'
+			},
+			labelPadding: {
+				control: 'number'
+			},
+			labelPosition: {
+				control: 'select',
+				options: [
+					'left',
+					'right',
+					'top',
+					'bottom',
+					'inside',
+					'insideLeft',
+					'insideRight',
+					'insideTop',
+					'insideBottom',
+					'insideTopLeft',
+					'insideTopRight',
+					'insideBottomLeft',
+					'insideBottomRight'
+				]
+			},
+			labelBackgroundColor: {
+				control: 'color'
+			},
+			labelBorderWidth: {
+				control: 'number'
+			},
+			labelBorderRadius: {
+				control: 'number'
+			},
+			labelBorderColor: {
+				control: 'color'
+			},
+			labelBorderType: {
+				control: 'select',
+				options: ['solid', 'dotted', 'dashed']
+			},
+			fontSize: {
+				control: 'number'
+			},
+			align: {
+				control: 'select',
+				options: ['left', 'center', 'right']
+			},
+			bold: {
+				control: 'boolean'
+			},
+			italic: {
+				control: 'boolean'
+			},
+			preserveWhitespace: {
+				control: 'boolean'
+			}
+		},
+		args: {
+			label: 'Reference Line'
+		}
 	};
 </script>
 
@@ -25,21 +112,36 @@
 	const data = Query.create(`select * FROM numeric_series WHERE series='pink'`, query);
 </script>
 
-<Story name="Hardcoded: x">
+<Story name="Hardcoded: x" argTypes={{ x: { control: 'number' } }} args={{ x: 50 }} let:args>
 	<LineChart x="x" y="y" {data}>
-		<ReferenceLine x={50} label="Reference Line" />
+		<ReferenceLine {...args} />
 	</LineChart>
 </Story>
 
-<Story name="Hardcoded: y">
+<Story name="Hardcoded: y" argTypes={{ y: { control: 'number' } }} args={{ y: 600 }} let:args>
 	<LineChart x="x" y="y" {data}>
-		<ReferenceLine y={600} label="Reference Line" />
+		<ReferenceLine {...args} />
 	</LineChart>
 </Story>
 
-<Story name="Hardcoded: sloped">
+<Story
+	name="Hardcoded: sloped"
+	argTypes={{
+		x: { control: 'number' },
+		y: { control: 'number' },
+		x2: { control: 'number' },
+		y2: { control: 'number' }
+	}}
+	args={{
+		x: 50,
+		y: 600,
+		x2: 60,
+		y2: 700
+	}}
+	let:args
+>
 	<LineChart x="x" y="y" {data}>
-		<ReferenceLine x={50} y={600} x2={60} y2={700} label="Reference Line" />
+		<ReferenceLine {...args} />
 	</LineChart>
 </Story>
 
