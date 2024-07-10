@@ -24,8 +24,7 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 
 	/** @param {import('./reference-line.d.ts').ReferenceLineStoreValue} value */
 	const set = (value) => {
-		let { data, x, y, x2, y2, color, labelColor, lineColor, label, hideValue, symbol, symbolSize } =
-			value;
+		let { data, x, y, x2, y2, color, labelColor, lineColor, label, hideValue } = value;
 
 		// TODO maybe we could subscribe to this in here instead of the jank reactive statement in the component
 		const props = get(propsStore);
@@ -54,22 +53,6 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 			? LABEL_POSITIONS[value.labelPosition]
 			: 'insideEndTop';
 
-		if (symbol === 'arrow') {
-			// Use a nicer arrow symbol
-			symbol = 'path://M0,10 L5,0 L10,10 z';
-		} else if (symbol === 'none') {
-			// using symbol=none removes the label, which we dont want
-			// so we set symbolSize=0 instead
-			symbol = undefined;
-			symbolSize = 0;
-		}
-
-		const symbolOpts = {
-			symbol,
-			symbolSize,
-			symbolKeepAspect: true
-		};
-
 		/** @type {NonNullable<import('echarts').MarkLineComponentOption['data']>[number][]} */
 		const seriesData = [];
 
@@ -92,19 +75,13 @@ export const createReferenceLineStore = (propsStore, configStore) => {
 					const _x2 = data[i][x2 || x];
 					const _y2 = data[i][y2 || y];
 					const name = label ? data[i][label] ?? label : undefined;
-					seriesData.push([
-						{ coord: [_x1, _y1], name },
-						{ coord: [_x2, _y2], ...symbolOpts }
-					]);
+					seriesData.push([{ coord: [_x1, _y1], name }, { coord: [_x2, _y2] }]);
 				}
 			} else {
 				const _x2 = x2 || x;
 				const _y2 = y2 || y;
 				const name = label;
-				seriesData.push([
-					{ coord: [x, y], name },
-					{ coord: [_x2, _y2], ...symbolOpts }
-				]);
+				seriesData.push([{ coord: [x, y], name }, { coord: [_x2, _y2] }]);
 			}
 		} else if (typeof x !== 'undefined') {
 			if (typeof data !== 'undefined' && data[Symbol.iterator]) {

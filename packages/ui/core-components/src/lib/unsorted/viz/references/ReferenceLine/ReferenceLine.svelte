@@ -59,18 +59,6 @@
 	export let lineWidth = 1.3;
 
 	/**
-	 * @type {import('../types.js').Symbol}
-	 * @default "none"
-	 */
-	export let symbol = 'none';
-
-	/**
-	 * @type {number | string}
-	 * @default 8
-	 */
-	export let symbolSize = 8;
-
-	/**
 	 * @type {boolean | string}
 	 * @default false
 	 */
@@ -166,8 +154,6 @@
 			lineType,
 			lineColor,
 			lineWidth: toNumber(lineWidth),
-			symbol,
-			symbolSize: toNumber(symbolSize),
 			labelColor,
 			labelPadding: toNumber(labelPadding),
 			labelPosition,

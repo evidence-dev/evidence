@@ -2,7 +2,7 @@
 
 import { Writable, Readable } from 'svelte/store';
 
-import type { Color, Symbol } from '../types.js';
+import type { Color } from '../types.js';
 import type { MarkLineComponentOption } from 'echarts';
 
 export type LabelPosition =
@@ -29,8 +29,6 @@ export type ReferenceLineStoreValue = {
 	lineType?: 'solid' | 'dotted' | 'dashed';
 	lineColor?: Color;
 	lineWidth?: number;
-	symbol?: Symbol;
-	symbolSize?: number;
 
 	// Label styling
 	labelColor?: Color;
