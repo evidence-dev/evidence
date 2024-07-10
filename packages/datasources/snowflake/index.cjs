@@ -150,10 +150,10 @@ const getCredentials = (database = {}) => {
 	const username = database.username;
 	const default_database = database.database;
 	const warehouse = database.warehouse;
-	const role = database.role;
-	const schema = database.schema;
 
 	// optional fields. will be undefined if not provided
+	const role = database.role;
+	const schema = database.schema;
 	const proxyHost = database.proxyHost;
 	const proxyPort = database.proxyPort;
 
@@ -179,6 +179,8 @@ const getCredentials = (database = {}) => {
 			warehouse,
 			role,
 			schema,
+			proxyHost,
+			proxyPort,
 			authenticator
 		};
 	} else if (authenticator === 'externalbrowser') {
@@ -189,6 +191,8 @@ const getCredentials = (database = {}) => {
 			warehouse,
 			role,
 			schema,
+			proxyHost,
+			proxyPort,
 			authenticator
 		};
 	} else if (authenticator === 'okta') {
@@ -200,6 +204,8 @@ const getCredentials = (database = {}) => {
 			warehouse,
 			role,
 			schema,
+			proxyHost,
+			proxyPort,
 			authenticator: database.okta_url
 		};
 	} else {
@@ -334,6 +340,18 @@ module.exports.options = {
 	schema: {
 		title: 'Schema',
 		type: 'string',
+		secret: false,
+		required: false
+	},
+	proxyHost: {
+		title: 'Proxy Host',
+		type: 'string',
+		secret: false,
+		required: false
+	},
+	proxyPort: {
+		title: 'Proxy Port',
+		type: 'number',
 		secret: false,
 		required: false
 	},
