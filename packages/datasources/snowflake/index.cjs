@@ -150,12 +150,19 @@ const getCredentials = (database = {}) => {
 	const username = database.username;
 	const default_database = database.database;
 	const warehouse = database.warehouse;
-
-	// optional fields. will be undefined if not provided
 	const role = database.role;
 	const schema = database.schema;
-	const proxyHost = database.proxyHost;
-	const proxyPort = database.proxyPort;
+
+	// https://docs.snowflake.com/en/developer-guide/node-js/nodejs-driver-connect#label-nodejs-proxy-connection
+	const proxyOptions = database.proxy
+		? {
+				proxyHost: database.proxy.host ?? undefined,
+				proxyPort: database.proxy.port,
+				proxyUser: database.proxy.username,
+				proxyPassword: database.proxy.password,
+				proxyProtocol: database.proxy.protocol
+			}
+		: {};
 
 	const baseOptions = {
 		account,
@@ -164,8 +171,7 @@ const getCredentials = (database = {}) => {
 		warehouse,
 		role,
 		schema,
-		proxyHost,
-		proxyPort
+		...proxyOptions
 	};
 
 	if (authenticator === 'snowflake_jwt') {
@@ -326,18 +332,6 @@ module.exports.options = {
 		secret: false,
 		required: false
 	},
-	proxyHost: {
-		title: 'Proxy Host',
-		type: 'string',
-		secret: false,
-		required: false
-	},
-	proxyPort: {
-		title: 'Proxy Port',
-		type: 'number',
-		secret: false,
-		required: false
-	},
 	authenticator: {
 		title: 'Auth Method',
 		type: 'select',
@@ -385,6 +379,48 @@ module.exports.options = {
 					type: 'string',
 					secret: true,
 					required: true
+				}
+			}
+		}
+	},
+	proxy: {
+		title: 'Connect through an authenticated proxy?',
+		type: 'boolean',
+		secret: false,
+		required: false,
+		nest: true,
+		children: {
+			[true]: {
+				host: {
+					title: 'Host',
+					type: 'string',
+					secret: false,
+					required: false
+				},
+				port: {
+					title: 'Port',
+					type: 'number',
+					secret: false,
+					required: false
+				},
+				username: {
+					title: 'Username',
+					type: 'string',
+					secret: true,
+					shown: true,
+					required: false
+				},
+				password: {
+					title: 'Password',
+					type: 'string',
+					secret: true,
+					required: false
+				},
+				protocol: {
+					title: 'Protocol',
+					type: 'string',
+					secret: false,
+					required: false
 				}
 			}
 		}
