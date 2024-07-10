@@ -72,11 +72,8 @@
 	/** @type {import('./reference-area.js').LabelPosition | undefined} */
 	export let labelPosition = undefined;
 
-	/**
-	 * @type {string}
-	 * @default "hsla(360, 100%, 100%, 0.7)"
-	 */
-	export let labelBackgroundColor = 'hsla(360, 100%, 100%, 0.7)';
+	/** @type {string | undefined} */
+	export let labelBackgroundColor = undefined;
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
