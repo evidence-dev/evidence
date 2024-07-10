@@ -156,7 +156,7 @@ const getCredentials = (database = {}) => {
 	// https://docs.snowflake.com/en/developer-guide/node-js/nodejs-driver-connect#label-nodejs-proxy-connection
 	const proxyOptions = database.proxy
 		? {
-				proxyHost: database.proxy.host ?? undefined,
+				proxyHost: database.proxy.host,
 				proxyPort: database.proxy.port,
 				proxyUser: database.proxy.username,
 				proxyPassword: database.proxy.password,
