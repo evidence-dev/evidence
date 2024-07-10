@@ -117,6 +117,10 @@
 	</LineChart>
 </Story>
 
+<Story name="Error: Outside of a chart">
+	<ReferenceArea label="Reference Area" />
+</Story>
+
 <Story name="Error: Missing column">
 	{@const referenceAreaData = Query.create(
 		`
