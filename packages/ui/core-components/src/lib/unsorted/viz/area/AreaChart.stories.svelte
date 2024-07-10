@@ -162,7 +162,6 @@
 	import { fakerSeries } from '$lib/faker-data-queries';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	const flightData = Query.create(`SELECT * from flights LIMIT 100`, query);
 	const planeData = Query.create(
 		`
 SELECT f.departure_date, SUM(f.fare) AS total_fare, CONCAT('https://www.google.com/search?q=', ANY_VALUE(f.plane)) as plane_url, f.plane
