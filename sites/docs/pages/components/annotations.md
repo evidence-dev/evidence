@@ -919,12 +919,6 @@ where sales_diff < -2000
         options={['solid', 'dotted', 'dashed']}
     />
     <PropListing
-        name=labelVisible
-        description="Whether to always show the label, or only when the symbol is hovered"
-        options={['always', 'hover']}
-        defaultValue=always
-    />
-    <PropListing
         name=fontSize
         description="The size of the font in the label"
         options=number
@@ -1227,12 +1221,6 @@ where sales_diff < -2000
         name=labelBorderType
         description="The type of border around the label background (dashed or dotted)"
         options={['solid', 'dotted', 'dashed']}
-    />
-    <PropListing
-        name=labelVisible
-        description="Whether to always show the label, or only when the symbol is hovered"
-        options={['always', 'hover']}
-        defaultValue=always
     />
     <PropListing
         name=fontSize

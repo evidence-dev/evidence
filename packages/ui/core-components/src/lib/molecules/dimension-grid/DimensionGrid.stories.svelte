@@ -100,3 +100,15 @@
 		})}
 	/>
 </Story>
+
+<Story name="string query with spaces">
+	<DimensionGrid
+		data={Query.create(
+			`SELECT "fare" as "fare price", "airline" as "Airline Name" from flights limit 10`,
+			query,
+			{
+				disableCache: true
+			}
+		)}
+	/>
+</Story>
