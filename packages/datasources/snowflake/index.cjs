@@ -157,6 +157,17 @@ const getCredentials = (database = {}) => {
 	const proxyHost = database.proxyHost;
 	const proxyPort = database.proxyPort;
 
+	const baseOptions = {
+		account,
+		database: default_database,
+		username,
+		warehouse,
+		role,
+		schema,
+		proxyHost,
+		proxyPort
+	};
+
 	if (authenticator === 'snowflake_jwt') {
 		const private_key = database.private_key;
 		const passphrase = database.passphrase;
@@ -172,53 +183,25 @@ const getCredentials = (database = {}) => {
 		});
 
 		return {
+			...baseOptions,
 			privateKey: decrypted_private_key,
-			username,
-			account,
-			database: default_database,
-			warehouse,
-			role,
-			schema,
-			proxyHost,
-			proxyPort,
 			authenticator
 		};
 	} else if (authenticator === 'externalbrowser') {
 		return {
-			username,
-			account,
-			database: default_database,
-			warehouse,
-			role,
-			schema,
-			proxyHost,
-			proxyPort,
+			...baseOptions,
 			authenticator
 		};
 	} else if (authenticator === 'okta') {
 		return {
-			username,
+			...baseOptions,
 			password: database.password,
-			account,
-			database: default_database,
-			warehouse,
-			role,
-			schema,
-			proxyHost,
-			proxyPort,
 			authenticator: database.okta_url
 		};
 	} else {
 		return {
-			username,
-			password: database.password,
-			account,
-			database: default_database,
-			warehouse,
-			schema,
-			proxyHost,
-			proxyPort,
-			role
+			...baseOptions,
+			password: database.password
 		};
 	}
 };
