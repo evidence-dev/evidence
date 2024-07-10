@@ -13,6 +13,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
+	import BarChart from '$lib/unsorted/viz/bar/BarChart.svelte';
 	import { Slider } from '$lib/atoms/inputs/slider';
 	import { userEvent, within } from '@storybook/test';
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
@@ -107,6 +108,20 @@
 	<LineChart x="x" y="y" {data}>
 		<ReferenceLine x={$inputStore.x} label="Reference Line" />
 	</LineChart>
+</Story>
+
+<Story name="Swap XY">
+	{@const data = Query.create(
+		`
+			select 'a' as x, 10 as y union all
+			select 'b', 20 union all
+			select 'c', 30
+		`,
+		query
+	)}
+	<BarChart x="x" y="y" swapXY {data}>
+		<ReferenceLine y="20" label="Reference Area" />
+	</BarChart>
 </Story>
 
 <Story name="Colors">
