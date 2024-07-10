@@ -384,45 +384,98 @@ If you provide `[x, y]` and `[x2, y2]`, coordinates must fall within the chart's
 
 ### Styling
 
-    <PropListing
-        name=labelPosition
-        description="Where label will appear on the line"
-        options={["aboveStart", "aboveCenter", "aboveEnd", "belowStart", "belowCenter", "belowEnd"]}
-        defaultValue="aboveEnd"
-    />
-    <PropListing
-        name=color
-        description="Color to override default line and label colors"
-        options="CSS name | hexademical | RGB | HSL"
-    />
-    <PropListing
-        name=lineColor
-        description="Color to override default line color. If used, takes precedence over `color`"
-        options="CSS name | hexademical | RGB | HSL"
-    />
-    <PropListing
-        name=labelColor
-        description="Color to override default label color. If used, takes precedence over `color`"
-        options="CSS name | hexademical | RGB | HSL"
-    />
-    <PropListing
-        name=lineType
-        description="Options to show breaks in a line (dashed or dotted)"
-        options={["solid", "dashed", "dotted"]}
-        defaultValue="dashed"
-    />
-    <PropListing
-        name=lineWidth
-        description="Thickness of line (in pixels)"
-        options="number"
-        defaultValue="1.3"
-    />
-    <PropListing
-        name=labelBackground
-        description="Option to show a white semi-transparent background behind the label. Helps when label is shown in front of darker colours."
-        options={["true", "false"]}
-        defaultValue="true"
-    />
+<PropListing
+    name=color
+    description="Color to override default line and label colors"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+
+<!-- Line-related props -->
+<PropListing
+    name=lineColor
+    description="Color to override default line color. If used, takes precedence over `color`"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=lineType
+    description="Options to show breaks in a line (dashed or dotted)"
+    options={["solid", "dashed", "dotted"]}
+    defaultValue="dashed"
+/>
+<PropListing
+    name=lineWidth
+    description="Thickness of line (in pixels)"
+    options="number"
+    defaultValue="1.3"
+/>
+
+<!-- Label-related props -->
+<PropListing
+    name=labelPosition
+    description="Where label will appear on the line"
+    options={["aboveStart", "aboveCenter", "aboveEnd", "belowStart", "belowCenter", "belowEnd"]}
+    defaultValue="aboveEnd"
+/>
+<PropListing
+    name=labelColor
+    description="Color to override default label color. If used, takes precedence over `color`"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=labelBackground
+    description="Option to show a white semi-transparent background behind the label. Helps when label is shown in front of darker colours."
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name=labelPadding
+    options=number
+    description="Padding between the text and the border of the label background"
+/>
+<PropListing
+    name=labelBorderWidth
+    description="The thickness of the border around the label (in pixels)"
+    options=number
+/>
+<PropListing
+    name=labelBorderRadius
+    description="The radius of rounded corners on the label background (in pixels)"
+    options=number
+/>
+<PropListing
+    name=labelBorderColor
+    description="The color of the border around the label background"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=labelBorderType
+    description="The type of border around the label background (dashed or dotted)"
+    options={['solid', 'dotted', 'dashed']}
+/>
+
+<!-- Font-related props -->
+<PropListing
+    name=fontSize
+    description="The size of the font in the label"
+    options=number
+/>
+<PropListing
+    name=align
+    description="How to align the label to the symbol, and the text within the label"
+    options={['left', 'center', 'right']}
+/>
+<PropListing
+    name=bold
+    description="Make the label text bold"
+    options={[true, false]}
+    defaultValue=false
+/>
+<PropListing
+    name=italic
+    description="Make the label text italic"
+    options={[true, false]}
+    defaultValue=false
+/>
 
 
 # Reference Area
