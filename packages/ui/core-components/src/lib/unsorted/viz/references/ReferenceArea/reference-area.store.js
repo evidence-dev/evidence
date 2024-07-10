@@ -42,7 +42,7 @@ export const createReferenceAreaStore = (propsStore, configStore) => {
 		// TODO maybe we could subscribe to props in here instead of the jank reactive statement in the component
 		const props = get(propsStore);
 		if (typeof props === 'undefined') {
-			throw new Error('Reference Line cannot be used outside of a chart');
+			throw new Error('Reference Area cannot be used outside of a chart');
 		}
 
 		if (props.swapXY) {
