@@ -131,8 +131,7 @@
 </script>
 
 <script>
-	import { Template, Story } from '@storybook/addon-svelte-csf';
-	import DataTable from '../../viz/table/DataTable.svelte';
+	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import BubbleChart from './BubbleChart.svelte';
