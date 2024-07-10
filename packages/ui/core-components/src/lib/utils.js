@@ -59,3 +59,13 @@ export const flyAndScale = (node, params = { y: -8, x: 0, start: 0.95, duration:
 		easing: cubicOut
 	};
 };
+
+/**
+ * @param {unknown} value
+ * @returns {number | null | undefined}
+ */
+export const toNumber = (value) => {
+	if (value === null) return null;
+	if (typeof value === 'undefined') return undefined;
+	return Number(value);
+};

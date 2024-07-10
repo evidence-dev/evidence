@@ -20,7 +20,8 @@ describe('updateManifest', () => {
 			},
 			locatedFiles: {
 				csv: ['data', 'nullish']
-			}
+			},
+			locatedSchemas: ['csv']
 		};
 
 		const dataDir = '/_evidence';
@@ -44,7 +45,8 @@ describe('updateManifest', () => {
 			},
 			locatedFiles: {
 				csv: ['data']
-			}
+			},
+			locatedSchemas: ['csv']
 		};
 		const dataDir = '/_evidence';
 		await fs.mkdir(path.join(dataDir), { recursive: true });
@@ -70,7 +72,8 @@ describe('updateManifest', () => {
 			renderedFiles: fsManifest.renderedFiles,
 			locatedFiles: {
 				csv: ['data', 'nullish']
-			}
+			},
+			locatedSchemas: ['csv']
 		};
 		const dataDir = '/_evidence';
 		await fs.mkdir(path.join(dataDir), { recursive: true });
@@ -99,7 +102,8 @@ describe('updateManifest', () => {
 			},
 			locatedFiles: {
 				csv: ['data', 'nullish']
-			}
+			},
+			locatedSchemas: ['csv', 'json']
 		};
 		const dataDir = '/_evidence';
 		await fs.mkdir(path.join(dataDir), { recursive: true });
@@ -127,7 +131,8 @@ describe('updateManifest', () => {
 			},
 			locatedFiles: {
 				csv: ['data', 'nullish']
-			}
+			},
+			locatedSchemas: ['csv']
 		};
 		const dataDir = '/_evidence';
 		await fs.mkdir(path.join(dataDir), { recursive: true });
@@ -141,5 +146,55 @@ describe('updateManifest', () => {
 				renderedFiles: updatedManifest.renderedFiles
 			})
 		);
+	});
+	it('should merge a new source correctly', async () => {
+		const fsManifest = {
+			renderedFiles: {
+				needful_things: ['static/data/needful_things/orders/orders.parquet']
+			}
+		};
+		const updatedManifest = {
+			renderedFiles: {
+				my_csv: ['static/data/my_csv/x/x.parquet'],
+				needful_things: ['static/data/needful_things/orders/orders.parquet']
+			},
+			locatedFiles: {
+				my_csv: ['x'],
+				needful_things: ['needful_things', 'orders']
+			},
+			locatedSchemas: ['my_csv', 'needful_things']
+		};
+		const dataDir = '/_evidence';
+		await fs.mkdir(path.join(dataDir), { recursive: true });
+		await fs.writeFile(
+			path.join(dataDir, 'manifest.json'),
+			JSON.stringify({ renderedFiles: fsManifest.renderedFiles })
+		);
+		await updateManifest(updatedManifest, dataDir);
+		expect(JSON.parse(await fs.readFile(path.join(dataDir, 'manifest.json'), 'utf8'))).toEqual({
+			renderedFiles: updatedManifest.renderedFiles
+		});
+	});
+	it('should remove an old source correctly', async () => {
+		const fsManifest = {
+			renderedFiles: {
+				needful_things: ['static/data/needful_things/orders/orders.parquet']
+			}
+		};
+		const updatedManifest = {
+			renderedFiles: {},
+			locatedFiles: {},
+			locatedSchemas: []
+		};
+		const dataDir = '/_evidence';
+		await fs.mkdir(path.join(dataDir), { recursive: true });
+		await fs.writeFile(
+			path.join(dataDir, 'manifest.json'),
+			JSON.stringify({ renderedFiles: fsManifest.renderedFiles })
+		);
+		await updateManifest(updatedManifest, dataDir);
+		expect(JSON.parse(await fs.readFile(path.join(dataDir, 'manifest.json'), 'utf8'))).toEqual({
+			renderedFiles: updatedManifest.renderedFiles
+		});
 	});
 });

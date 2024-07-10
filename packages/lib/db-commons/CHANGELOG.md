@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 1.0.5
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+
 ## 1.0.4
 
 ### Patch Changes

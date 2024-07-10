@@ -39,12 +39,14 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 	pluginLoader.succeed();
 
 	/** @type {import('./types.js').Manifest} */
-	const outputManifest = { renderedFiles: {}, locatedFiles: {} };
+	const outputManifest = { renderedFiles: {}, locatedFiles: {}, locatedSchemas: [] };
 
 	/** @type {string[]} */
 	const skippedSources = [];
 
 	for (const source of sources) {
+		outputManifest.locatedSchemas ??= [];
+		outputManifest.locatedSchemas.push(source.name);
 		if (filters?.sources?.size && !filters?.sources?.has(source.name)) {
 			console.debug(`  [Skipping]: ${chalk.bold(source.name)}`);
 			skippedSources.push(source.name);
@@ -151,8 +153,7 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 					tmpDir,
 					outDir,
 					filename,
-					table.expectedRowCount,
-					1000 * 1000 // TODO: Configurable?
+					source.buildOptions.batchSize
 				);
 
 				if (writtenRows === false) {
@@ -163,6 +164,11 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 				outputManifest.renderedFiles[source.name].push(
 					`${dataUrlPrefix}/${source.name}/${table.name}/${filename}`
 				);
+				await fs.writeFile(
+					path.join(outDir, table.name + '.schema.json'),
+					JSON.stringify(table.columnTypes)
+				);
+
 				addToCache(source.name, table.name, table.content);
 
 				spinner.succeed(`Finished, wrote ${writtenRows} rows.`);

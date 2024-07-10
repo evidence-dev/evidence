@@ -1,20 +1,21 @@
+import fs from 'fs/promises';
+import path from 'path';
 import preprocessor from '@evidence-dev/preprocess';
 import { json } from '@sveltejs/kit';
 
 export const prerender = true;
 
-const routes = import.meta.glob('../../../**/+page.md', { query: '?raw', import: 'default' });
-
-export function entries() {
-	return Object.keys(routes).map((route) => ({
-		route: route.slice('../../../'.length, -'/+page.md'.length)
-	}));
-}
-
 /** @type {import("./$types").RequestHandler} */
 export async function GET({ params: { route } }) {
-	const cleaned = `../../../${route}/+page.md`.split('/').filter(Boolean).join('/');
-	const content = await routes[cleaned]();
+	let routesDir;
+	if ((await fs.readdir(process.cwd())).includes('src')) {
+		routesDir = path.join('src', 'pages'); // example project wackiness
+	} else {
+		routesDir = path.join('.evidence', 'template', 'src', 'pages');
+	}
+	const routePath = path.join(process.cwd(), routesDir, route, '+page.md');
+
+	const content = await fs.readFile(routePath, 'utf8');
 
 	const partialInjectedContent = preprocessor.injectPartials(content);
 	const queries = preprocessor.extractQueries(partialInjectedContent);

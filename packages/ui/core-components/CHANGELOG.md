@@ -1,5 +1,45 @@
 # @evidence-dev/core-components
 
+## 4.6.0
+
+### Minor Changes
+
+- 0b4ae10c5: Add ReferencePoint and Callout components
+
+### Patch Changes
+
+- dbc4116e3: updated link component stories and docs
+- 42ca6d4ce: Remove non-functional labelVisible prop from ReferencePoint and Callout
+
+## 4.5.4
+
+### Patch Changes
+
+- cb3f17c9e: Fix reactively updating ReferenceLine x/y value
+- 1009026e8: Fix regression in Tabs where label always overrides id
+- 3a1e1d664: Fix dynamically generated tabs from a query
+  - @evidence-dev/component-utilities@3.2.4
+
+## 4.5.3
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.3
+
+## 4.5.2
+
+### Patch Changes
+
+- 0bb7718a2: Added url prop to Big value Component
+- d6b25b02c: Fix source query triggering HMR on the page
+- 6cdedceb0: Remove db-orchestrator
+- df9159f2b: Added a new <QueryDebugger/> component to ease investigation into which queries have run on the page
+- 9982970fd: Support dynamic title inputs in accordions
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/component-utilities@3.2.2
+  - @evidence-dev/icons@1.0.1
+  - @evidence-dev/tailwind@2.1.1
+
 ## 4.5.1
 
 ### Patch Changes

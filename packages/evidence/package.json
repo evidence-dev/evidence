@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "38.0.1",
+	"version": "39.0.0",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -40,7 +40,6 @@
 	"dependencies": {
 		"@evidence-dev/plugin-connector": "workspace:*",
 		"@evidence-dev/preprocess": "workspace:*",
-		"@evidence-dev/query-store": "workspace:*",
 		"@evidence-dev/telemetry": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@sveltejs/adapter-static": "3.0.1",
@@ -53,7 +52,6 @@
 		"@evidence-dev/component-utilities": "workspace:*",
 		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/sdk": "workspace:*",
-		"@evidence-dev/query-store": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
 		"@sveltejs/kit": "2.5.4",
 		"autoprefixer": "^10.4.7",
