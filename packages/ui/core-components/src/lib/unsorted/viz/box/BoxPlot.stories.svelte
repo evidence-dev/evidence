@@ -45,8 +45,7 @@
 				control: 'object'
 			},
 			swapXY: {
-				control: 'boolean',
-				options: [true, false]
+				control: 'boolean'
 			},
 			xAxisTitle: {
 				control: 'text'
@@ -55,28 +54,22 @@
 				control: 'text'
 			},
 			xGridlines: {
-				control: 'boolean',
-				options: [true, false]
+				control: 'boolean'
 			},
 			yGridlines: {
-				control: 'boolean',
-				options: [true, false]
+				control: 'boolean'
 			},
 			xBaseline: {
-				control: 'boolean',
-				options: [true, false]
+				control: 'boolean'
 			},
 			yBaseline: {
-				control: 'boolean',
-				options: [true, false]
+				control: 'boolean'
 			},
 			xTickMarks: {
-				control: 'boolean',
-				options: [true, false]
+				control: 'boolean'
 			},
 			yTickMarks: {
-				control: 'boolean',
-				options: [true, false]
+				control: 'boolean'
 			},
 			yMin: {
 				control: 'number'
@@ -85,8 +78,7 @@
 				control: 'number'
 			},
 			showAllAxisLabels: {
-				control: 'boolean',
-				options: [true, false]
+				control: 'boolean'
 			},
 			title: {
 				control: 'text'
@@ -138,10 +130,10 @@ SELECT
         WHEN airline = 'Qatar Airways' THEN 'red' 
         WHEN airline = 'AirAsia' THEN 'blue' 
         ELSE 'gray' 
-    END AS color
+    END AS colorColumn
 FROM flights
 WHERE airline IN ('Qatar Airways', 'AirAsia')
-GROUP BY airline, color
+GROUP BY airline, colorColumn
 limit 50`,
 		query
 	);
@@ -162,10 +154,23 @@ limit 50`,
 </Story>
 
 <Story
-	name="swapXY=true colors"
+	name="swapXY=true"
 	args={{
-		color: 'color',
 		swapXY: 'true',
+		name: 'airline',
+		intervalBottom: 'min_fare',
+		midpoint: 'median_fare',
+		intervalTop: 'max_fare',
+		yFmt: 'usd0'
+	}}
+	let:args
+>
+	<BoxPlot {...args} data={flightData} />
+</Story>
+<Story
+	name="colored BoxPlots"
+	args={{
+		color: 'colorColumn',
 		name: 'airline',
 		intervalBottom: 'min_fare',
 		midpoint: 'median_fare',
@@ -190,4 +195,20 @@ limit 50`,
 	let:args
 >
 	<BoxPlot {...args} data={flightData} />
+</Story>
+<Story
+	name="empty set"
+	args={{
+		name: 'airline',
+		midpoint: 'median_fare',
+		max: 'max_fare',
+		min: 'min_fare',
+		yFmt: 'usd0',
+		emptySet: 'warn',
+		emptyMessage: 'No data, data is a empty set'
+	}}
+	let:args
+>
+	{@const emptySet = []}
+	<BoxPlot {...args} data={emptySet} />
 </Story>
