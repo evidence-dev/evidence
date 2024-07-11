@@ -100,7 +100,7 @@
 				control: 'object'
 			},
 			printEchartsConfig: {
-				control: 'boolean',
+				control: 'boolean'
 			}
 		}
 	};
