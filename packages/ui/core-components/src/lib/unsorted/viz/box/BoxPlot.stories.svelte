@@ -101,7 +101,6 @@
 			},
 			printEchartsConfig: {
 				control: 'boolean',
-				options: ['true', 'false']
 			}
 		}
 	};
