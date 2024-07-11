@@ -7,6 +7,8 @@ const { Analytics } = require('@segment/analytics-node');
 const PROFILES_PATH = '../customization/.profile.json';
 const LEGACY_PROFILES_PATH = './.profile.json';
 
+const INVALID_ANONYMOUS_ID = 'b958769d-6b88-43f3-978a-b970a146ffd2';
+
 /**
  * @typedef {'usageStatsDisabled' |
  * 			 'db-plugin-unvailable' |
@@ -38,37 +40,25 @@ const initializeProfile = async () => {
 	return projectProfile;
 };
 
+/**
+ * Reads the profile from the file system, or initializes a new one if necessary.
+ * @returns {Promise<Object>} The profile object.
+ */
 const getProfile = async () => {
 	if (!pathExistsSync(PROFILES_PATH) && !maybeMigrateProfile()) {
-		// Profile file doesn't exist and migration wasn't needed, initialize it
-		const profile = await initializeProfile();
-		return profile;
+		return await initializeProfile();
 	} else {
 		try {
-			let profile = {};
+			const profile = readJSONSync(PROFILES_PATH, { throws: false }) || {};
 
-			if (pathExistsSync(PROFILES_PATH)) {
-				try {
-					profile = readJSONSync(PROFILES_PATH);
-				} catch (e) {
-					profile = {};
-				}
-			}
-
-			// Check if profile is empty or invalid
-			if (Object.keys(profile).length === 0) {
-				profile = await initializeProfile();
-			} else if (profile.anonymousId === 'b958769d-6b88-43f3-978a-b970a146ffd2') {
-				// Handle special case where anonymousId is incorrect
-				profile = await initializeProfile();
+			if (!profile.anonymousId || profile.anonymousId === INVALID_ANONYMOUS_ID) {
+				return await initializeProfile();
 			}
 
 			return profile;
 		} catch (error) {
 			console.error('Error in getProfile:', error);
-			// Initialize a new profile in case of errors
-			const profile = await initializeProfile();
-			return profile;
+			return await initializeProfile();
 		}
 	}
 };
