@@ -1239,8 +1239,14 @@ importers:
         specifier: workspace:*
         version: link:../../packages/evidence
       '@evidence-dev/faker-datasource':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/datasources/faker
+      '@evidence-dev/sdk':
+        specifier: workspace:*
+        version: link:../../packages/lib/sdk
+      '@evidence-dev/tailwind':
+        specifier: workspace:*
+        version: link:../../packages/ui/tailwind
 
   sites/example-project:
     dependencies:
@@ -1277,12 +1283,18 @@ importers:
       '@evidence-dev/preprocess':
         specifier: workspace:*
         version: link:../../packages/lib/preprocess
+      '@evidence-dev/sdk':
+        specifier: workspace:*
+        version: link:../../packages/lib/sdk
       '@evidence-dev/snowflake':
         specifier: workspace:*
         version: link:../../packages/datasources/snowflake
       '@evidence-dev/sqlite':
         specifier: workspace:*
         version: link:../../packages/datasources/sqlite
+      '@evidence-dev/tailwind':
+        specifier: workspace:*
+        version: link:../../packages/ui/tailwind
       '@evidence-dev/telemetry':
         specifier: workspace:*
         version: link:../../packages/lib/telemetry
