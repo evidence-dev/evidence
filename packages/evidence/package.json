@@ -49,8 +49,6 @@
 		"sade": "^1.8.1"
 	},
 	"peerDependencies": {
-		"@evidence-dev/component-utilities": "workspace:*",
-		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
 		"@sveltejs/kit": "2.5.4",
