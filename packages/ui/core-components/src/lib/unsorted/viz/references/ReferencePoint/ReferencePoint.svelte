@@ -14,7 +14,7 @@
 	import { createReferencePointStore } from './reference-point.store.js';
 	import { toNumber } from '../../../../utils.js';
 
-	/** @type {'pass' | 'warn' | 'error'} */
+	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
 
 	/** @type {string | undefined} */
@@ -42,7 +42,7 @@
 	export let labelColor = undefined;
 
 	/**
-	 * @type {number | "fit" | string}
+	 * @type {number | "fit" | string | undefined}
 	 * @default "fit"
 	 */
 	export let labelWidth = 'fit';
@@ -105,7 +105,7 @@
 	 * @default 8
 	 */
 	export let symbolSize = 8;
-	$: symbolSize = toNumber(symbolSize);
+	$: symbolSize = toNumber(symbolSize) ?? 0;
 
 	/** @type {number | string | undefined} */
 	export let symbolOpacity = undefined;

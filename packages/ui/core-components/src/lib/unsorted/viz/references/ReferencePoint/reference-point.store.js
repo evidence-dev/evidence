@@ -13,10 +13,14 @@ export const createReferencePointStore = (configStore) => {
 	/** @type {import('./reference-point.d.ts').ReferencePointStore} */
 	const store = writable({});
 
+	/** @param {string | undefined} error */
+	const setError = (error) => store.update((state) => ({ ...state, error }));
+	const clearError = () => setError(undefined);
+
 	const id = nanoid();
 
 	/** @param {import('./reference-point.d.ts').ReferencePointStoreState} state */
-	const set = (state) => {
+	const updateChartConfig = (state) => {
 		const { labelColor, symbolColor } = getLineAndSymbolColors(state);
 
 		// Destructure some properties for QOL preprocessing
@@ -31,7 +35,7 @@ export const createReferencePointStore = (configStore) => {
 			align
 		} = state;
 
-		/** @type {string} */
+		/** @type {import('./reference-point.d.ts').Symbol | string | undefined} */
 		let symbol = state.symbol;
 		if (symbol === 'arrow') {
 			// Use a nicer arrow symbol
@@ -57,7 +61,7 @@ export const createReferencePointStore = (configStore) => {
 			symbolBorderColor = 'gray';
 		}
 
-		/** @type {Partial<import('echarts').MarkPointComponentOption['data'][number]>} */
+		/** @type {Partial<NonNullable<import('echarts').MarkPointComponentOption['data']>[number]>} */
 		const seriesDataCommon = {
 			symbol,
 			symbolSize,
@@ -71,7 +75,7 @@ export const createReferencePointStore = (configStore) => {
 		};
 
 		const { data, x, y } = state;
-		/** @type {import('echarts').MarkPointComponentOption['data'][number][]} */
+		/** @type {NonNullable<import('echarts').MarkPointComponentOption['data']>[number][]} */
 		let seriesData = [];
 		if (typeof x !== 'undefined' && typeof y !== 'undefined') {
 			if (typeof data !== 'undefined' && data[Symbol.iterator]) {
@@ -80,20 +84,20 @@ export const createReferencePointStore = (configStore) => {
 					seriesData.push({
 						...seriesDataCommon,
 						coord: [data[i][x], data[i][y]],
-						name: data[i][label] ?? label,
-						value: data[i][label] ?? label
+						name: (label ? data[i][label] : undefined) ?? label,
+						value: (label ? data[i][label] : undefined) ?? label
 					});
 				}
 			} else {
 				seriesData.push({
 					...seriesDataCommon,
 					coord: [x, y],
-					name: label,
+					name: label ?? id,
 					value: label
 				});
 			}
 		} else {
-			throw new Error('x and y required');
+			throw new Error('You must provide x and y');
 		}
 
 		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */
@@ -129,7 +133,9 @@ export const createReferencePointStore = (configStore) => {
 		};
 
 		configStore.update((config) => {
-			const existingDataIndex = config.series.findIndex((series) => series.id === id);
+			const existingDataIndex = config.series.findIndex(
+				(/** @type {{ id?: string; }} */ series) => series.id === id
+			);
 			if (existingDataIndex === -1) {
 				config.series.push(series);
 			} else {
@@ -142,16 +148,22 @@ export const createReferencePointStore = (configStore) => {
 	return {
 		subscribe: store.subscribe,
 		set: (state) => {
-			store.set({ error: undefined });
+			clearError();
 			try {
-				set(state);
+				updateChartConfig(state);
 			} catch (e) {
-				store.set({ error: e });
+				setError(String(e));
 			}
 		},
 		update: (cb) => {
-			const updatedStore = cb(get(store));
-			set(updatedStore);
+			clearError();
+			let state = get(store);
+			try {
+				state = cb(state);
+				updateChartConfig(state);
+			} catch (e) {
+				setError(String(e));
+			}
 		}
 	};
 };
