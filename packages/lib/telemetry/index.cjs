@@ -7,60 +7,70 @@ const { Analytics } = require('@segment/analytics-node');
 const PROFILES_PATH = '../customization/.profile.json';
 const LEGACY_PROFILES_PATH = './.profile.json';
 
-const INVALID_ANONYMOUS_ID = 'b958769d-6b88-43f3-978a-b970a146ffd2';
-
 /**
  * @typedef {'usageStatsDisabled' |
- * 			 'db-plugin-unvailable' |
- * 			 'db-connection-error' |
- * 			 'db-connection-success' |
- * 			 'source-connector-not-found' |
- * 			 'db-error' |
- * 			 'db-query'|
- * 			 'cache-query' |
- * 			 'dev-server-start' |
- * 			 'build-start' |
- * 			 'build-strict-start' |
- * 			 'build-sources-start' |
- * 			 'preview-server-start'
- * 	} TelemetryEventName
+ *           'db-plugin-unvailable' |
+ *           'db-connection-error' |
+ *           'db-connection-success' |
+ *           'source-connector-not-found' |
+ *           'db-error' |
+ *           'db-query'|
+ *           'cache-query' |
+ *           'dev-server-start' |
+ *           'build-start' |
+ *           'build-strict-start' |
+ *           'build-sources-start' |
+ *           'preview-server-start'
+ * } TelemetryEventName
  */
-const initializeProfile = async () => {
-	const projectProfile = {
-		anonymousId: secure.v4(),
-		traits: {
-			projectCreated: new Date()
-		}
-	};
-	writeJSONSync(PROFILES_PATH, projectProfile);
-
-	const analytics = new Analytics({ writeKey: wK });
-	analytics.identify(projectProfile);
-
-	return projectProfile;
-};
 
 /**
- * Reads the profile from the file system, or initializes a new one if necessary.
- * @returns {Promise<Object>} The profile object.
+ * @typedef {Object} Traits
+ * @property {Date} projectCreated
  */
+
+/**
+ * @typedef {Object} Profile
+ * @property {string} anonymousId
+ * @property {Traits} traits
+ */
+
+const initializeProfile = async () => {
+    /** @type {Profile} */
+    const projectProfile = {
+        anonymousId: secure.v4(),
+        traits: {
+            projectCreated: new Date()
+        }
+    };
+    writeJSONSync(PROFILES_PATH, projectProfile);
+
+    const analytics = new Analytics({ writeKey: wK });
+    analytics.identify(projectProfile);
+
+    return projectProfile;
+};
+
 const getProfile = async () => {
-	if (!pathExistsSync(PROFILES_PATH) && !maybeMigrateProfile()) {
-		return await initializeProfile();
-	} else {
-		try {
-			const profile = readJSONSync(PROFILES_PATH, { throws: false }) || {};
+    if (!pathExistsSync(PROFILES_PATH) && !maybeMigrateProfile()) {
+        // Profile file doesn't exist and migration wasn't needed, initialize it
+        return await initializeProfile();
+    } else {
+        try {
+            /** @type {Profile | null} */
+            let profile = readJSONSync(PROFILES_PATH, { throws: false });
 
-			if (!profile.anonymousId || profile.anonymousId === INVALID_ANONYMOUS_ID) {
-				return await initializeProfile();
-			}
+            if (!profile || !profile.anonymousId || profile.anonymousId === 'b958769d-6b88-43f3-978a-b970a146ffd2') {
+                profile = await initializeProfile();
+            }
 
-			return profile;
-		} catch (error) {
-			console.error('Error in getProfile:', error);
-			return await initializeProfile();
-		}
-	}
+            return profile;
+        } catch (error) {
+            console.error('Error in getProfile:', error);
+            // Initialize a new profile in case of errors
+            return await initializeProfile();
+        }
+    }
 };
 
 /**
@@ -73,119 +83,119 @@ const getProfile = async () => {
  * @param {string | undefined} [queryName]
  */
 const logEvent = async (
-	eventName,
-	dev,
-	settings,
-	databaseName = undefined,
-	sourceName = undefined,
-	queryName = undefined
+    eventName,
+    dev,
+    settings,
+    databaseName = undefined,
+    sourceName = undefined,
+    queryName = undefined
 ) => {
-	try {
-		let usageStats = settings
-			? settings.send_anonymous_usage_stats ?? 'yes'
-			: process.env['SEND_ANONYMOUS_USAGE_STATS'] ??
-				process.env['send_anonymous_usage_stats'] ??
-				'yes';
-		let repo;
-		let database;
-		let demoDb;
+    try {
+        const usageStats = settings
+            ? settings.send_anonymous_usage_stats ?? 'yes'
+            : process.env['SEND_ANONYMOUS_USAGE_STATS'] ??
+              process.env['send_anonymous_usage_stats'] ??
+              'yes';
+        let repo;
+        let database;
+        let demoDb;
 
-		if (settings) {
-			if (settings.gitRepo) {
-				repo = md5(settings.gitRepo);
-			}
+        if (settings) {
+            if (settings.gitRepo) {
+                repo = md5(settings.gitRepo);
+            }
 
-			if (databaseName) {
-				database = databaseName;
-			} else if (settings.database) {
-				//legacy - remove this post migration
-				database = settings.database;
-			}
+            if (databaseName) {
+                database = databaseName;
+            } else if (settings.database) {
+                //legacy - remove this post migration
+                database = settings.database;
+            }
 
-			if (settings.credentials?.filename) {
-				demoDb = md5(settings.credentials.filename) === md5('needful_things.duckdb');
-			}
-		}
+            if (settings.credentials?.filename) {
+                demoDb = md5(settings.credentials.filename) === md5('needful_things.duckdb');
+            }
+        }
 
-		let homeDirectory = undefined;
-		let codespaces = false;
+        let homeDirectory = undefined;
+        let codespaces = false;
 
-		if (process.env) {
-			const { HOME, CODESPACES } = process.env;
-			homeDirectory = HOME;
-			if (CODESPACES) {
-				codespaces = CODESPACES === 'true';
-			}
-		}
+        if (process.env) {
+            const { HOME, CODESPACES } = process.env;
+            homeDirectory = HOME;
+            if (CODESPACES) {
+                codespaces = CODESPACES === 'true';
+            }
+        }
 
-		if (usageStats === 'yes') {
-			const projectProfile = await getProfile();
-			const analytics = new Analytics({ writeKey: wK });
-			const payload = {
-				anonymousId: projectProfile.anonymousId,
-				event: eventName,
-				properties: {
-					devMode: dev,
-					repoHash: repo,
-					database: database, // logs database type (postgres, snowflake, etc.)
-					sourceNameHash: sourceName ? md5(sourceName) : undefined, //logs the hashed name of the source this is associated with (e.g md5('pet-store')))
-					queryNameHash: queryName ? md5(queryName) : undefined, //logs the hashed name of the query this is associated with (e.g md5('pet-store')))
-					operatingSystem: process.platform, // logs operating system name
-					nodeVersion: process.version, // logs active version of NodeJS
-					arch: process.arch,
-					directoryHash: homeDirectory ? md5(homeDirectory) : undefined,
-					demoDb: demoDb,
-					codespaces: codespaces,
-					postUSQL: true
-				}
-			};
-			analytics.track(payload);
-		}
-	} catch {
-		// do nothing
-	}
+        if (usageStats === 'yes') {
+            const projectProfile = await getProfile();
+            const analytics = new Analytics({ writeKey: wK });
+            const payload = {
+                anonymousId: projectProfile.anonymousId,
+                event: eventName,
+                properties: {
+                    devMode: dev,
+                    repoHash: repo,
+                    database: database, // logs database type (postgres, snowflake, etc.)
+                    sourceNameHash: sourceName ? md5(sourceName) : undefined, //logs the hashed name of the source this is associated with (e.g md5('pet-store')))
+                    queryNameHash: queryName ? md5(queryName) : undefined, //logs the hashed name of the query this is associated with (e.g md5('pet-store')))
+                    operatingSystem: process.platform, // logs operating system name
+                    nodeVersion: process.version, // logs active version of NodeJS
+                    arch: process.arch,
+                    directoryHash: homeDirectory ? md5(homeDirectory) : undefined,
+                    demoDb: demoDb,
+                    codespaces: codespaces,
+                    postUSQL: true
+                }
+            };
+            analytics.track(payload);
+        }
+    } catch {
+        // do nothing
+    }
 };
 
 /**
- * Logs an event emiited from source queries
+ * Logs an event emitted from source queries
  * @param {TelemetryEventName} eventName
  * @param {string | undefined} [databaseName]
  * @param {string | undefined} [sourceName]
  * @param {string | undefined} [queryName]
  */
 const logQueryEvent = async (eventName, databaseName, sourceName, queryName, dev = false) => {
-	//TODO there is no concept of dev mode when running npm run sources
-	try {
-		await logEvent(eventName, dev, loadSettings(), databaseName, sourceName, queryName);
-	} catch (e) {
-		//do nothing
-	}
+    //TODO there is no concept of dev mode when running npm run sources
+    try {
+        await logEvent(eventName, dev, loadSettings(), databaseName, sourceName, queryName);
+    } catch (e) {
+        //do nothing
+    }
 };
 
 function loadSettings() {
-	let settings = {};
-	try {
-		settings = readJSONSync('evidence.settings.json');
-	} catch (e) {
-		//do nothing
-	}
-	return settings;
+    let settings = {};
+    try {
+        settings = readJSONSync('evidence.settings.json');
+    } catch (e) {
+        //do nothing
+    }
+    return settings;
 }
 
 /**
- * Checks for existance of legacy profile and then moves it to the new location
+ * Checks for existence of legacy profile and then moves it to the new location
  * @returns {boolean} true if profile was migrated
  */
 function maybeMigrateProfile() {
-	if (pathExistsSync(LEGACY_PROFILES_PATH)) {
-		copySync(LEGACY_PROFILES_PATH, PROFILES_PATH);
-		return true;
-	} else {
-		return false;
-	}
+    if (pathExistsSync(LEGACY_PROFILES_PATH)) {
+        copySync(LEGACY_PROFILES_PATH, PROFILES_PATH);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 module.exports = {
-	logEvent,
-	logQueryEvent
+    logEvent,
+    logQueryEvent
 };
