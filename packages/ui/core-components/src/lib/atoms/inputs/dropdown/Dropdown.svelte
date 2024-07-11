@@ -233,6 +233,7 @@
 	const evalDefaults = async () => {
 		try {
 			if (query) await query.fetch();
+			await state.flushed;
 
 			if ($selectedOptions.length) {
 				const presentValues = $selectedOptions.filter((x) =>

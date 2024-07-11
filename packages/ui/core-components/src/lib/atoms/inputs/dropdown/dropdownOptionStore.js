@@ -270,6 +270,13 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				if (autoOnly && !opt.__auto) continue;
 				select(opt);
 			}
+		},
+		get flushed() {
+			return Promise.all([
+				addOptionSharedPromise.promise,
+				removeOptionSharedPromise.promise,
+				flagOptionSharedPromise.promise
+			]);
 		}
 	};
 };
