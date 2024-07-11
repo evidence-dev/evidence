@@ -1,5 +1,41 @@
+<script context="module">
+	/** @type {import('@storybook/addon-svelte-csf').MetaProps}*/
+	export const meta = {
+		title: 'atoms/inputs/ButtonGroup',
+		component: ButtonGroup,
+		argTypes: {
+			preset: {
+				control: 'select',
+				options: [ null ,'dates']
+			},
+			value: {
+				control: 'text'
+			},
+			label: {
+				control: 'text'
+			},
+			title: {
+				control: 'text'
+			},
+			order: {
+				control: 'number'
+			},
+			where: {
+				control: 'text'
+			},
+			valueLabel: {
+				control: 'text'
+			},
+			hideDuringPrint: {
+				control: 'boolean'
+			}
+
+		}
+	};
+</script>
+
 <script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
+	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import ButtonGroup from './ButtonGroup.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
@@ -10,13 +46,6 @@
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
-
-<Meta
-	title="Atoms/inputs/ButtonGroup"
-	component={ButtonGroup}
-	argTypes={{}}
-	args={{ title: 'Group of buttons', name: 'buttonGroup' }}
-/>
 
 <Template let:args>
 	<div class="h-64">
