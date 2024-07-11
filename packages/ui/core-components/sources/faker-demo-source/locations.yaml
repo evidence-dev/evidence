@@ -16,7 +16,7 @@ schema:
     item: longitude
     options:
       - min: -90.4175
-        max: -82.1221  
+        max: -82.1221
   sales:
     category: number
     item: int
