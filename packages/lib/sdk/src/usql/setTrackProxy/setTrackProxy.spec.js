@@ -163,6 +163,24 @@ describe('hasUnsetValues', () => {
 			expect(hasUnsetValues`${v.a.b}`).toBeFalsy();
 		});
 	});
+});
+	describe('setTrackProxy with arrays', () => {
+		it('should setTrack the child arrays', () => {
+			const v = setTrackProxy();
+			v.someInput = [1, 2, 3];
+			expect(v.someInput[IsSetTracked]).toBeTruthy()
+		})
+		it('should handle direct array assignment', () => {
+			const v = setTrackProxy();
+			v.someInput = [1, 2, 3];
+			expect(v.someInput[Unset]).toBeFalsy();
+			expect(v.someInput[IsSetTracked]).toBeTruthy();
+			expect(v.someInput[0]).toBe(1);
+			expect(v.someInput[1]).toBe(2);
+			expect(v.someInput[2]).toBe(3);
+			expect(Array.isArray(v.someInput)).toBeTruthy();
+		});
+	});
 	// describe('setTrackProxy with arrays', () => {
 	// 	it('should handle direct array assignment', () => {
 	// 		const v = setTrackProxy();
@@ -188,6 +206,7 @@ describe('hasUnsetValues', () => {
 	// 		v.someInput[1] = 42;
 	// 		expect(v.someInput[1]).toBe(42);
 	// 		expect(v.someInput[1][Unset]).toBeFalsy();
+	// 		expect(v.someInput[1][IsSetTracked]).toBeTrue();
 	// 	});
 
 	// 	it('should track added elements to arrays', () => {
@@ -222,4 +241,4 @@ describe('hasUnsetValues', () => {
 	// 		expect(v.someInput[0][2]).toBe(3);
 	// 	});
 	// });
-});
+
