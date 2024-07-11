@@ -40,6 +40,7 @@
 	"dependencies": {
 		"@evidence-dev/plugin-connector": "workspace:*",
 		"@evidence-dev/preprocess": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/telemetry": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@sveltejs/adapter-static": "3.0.1",
@@ -49,8 +50,6 @@
 		"sade": "^1.8.1"
 	},
 	"peerDependencies": {
-		"@evidence-dev/sdk": "workspace:*",
-		"@evidence-dev/tailwind": "workspace:*",
 		"@sveltejs/kit": "2.5.4",
 		"autoprefixer": "^10.4.7",
 		"debounce": "^1.2.1",

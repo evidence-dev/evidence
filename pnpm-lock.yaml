@@ -32,12 +32,6 @@ importers:
       '@evidence-dev/preprocess':
         specifier: link:packages/lib/preprocess
         version: link:packages/lib/preprocess
-      '@evidence-dev/sdk':
-        specifier: link:packages/lib/sdk
-        version: link:packages/lib/sdk
-      '@evidence-dev/tailwind':
-        specifier: link:packages/ui/tailwind
-        version: link:packages/ui/tailwind
       '@evidence-dev/telemetry':
         specifier: link:packages/lib/telemetry
         version: link:packages/lib/telemetry
@@ -1428,12 +1422,18 @@ importers:
       '@evidence-dev/postgres':
         specifier: workspace:*
         version: link:../../packages/datasources/postgres
+      '@evidence-dev/sdk':
+        specifier: workspace:*
+        version: link:../../packages/lib/sdk
       '@evidence-dev/snowflake':
         specifier: workspace:*
         version: link:../../packages/datasources/snowflake
       '@evidence-dev/sqlite':
         specifier: workspace:*
         version: link:../../packages/datasources/sqlite
+      '@evidence-dev/tailwind':
+        specifier: workspace:*
+        version: link:../../packages/ui/tailwind
     devDependencies:
       cross-env:
         specifier: ^7.0.3
