@@ -6,7 +6,7 @@
 		argTypes: {
 			preset: {
 				control: 'select',
-				options: [ null ,'dates']
+				options: [null, 'dates']
 			},
 			value: {
 				control: 'text'
@@ -29,7 +29,6 @@
 			hideDuringPrint: {
 				control: 'boolean'
 			}
-
 		}
 	};
 </script>
