@@ -115,22 +115,24 @@
 		)
 	);
 	onMount(() =>
-		inputs.subscribe((i) => {
-			const providedValues = Array.isArray(i[name]?.rawValues)
-				? i[name]?.rawValues
-				: [i[name]?.rawValues];
-			const knownValues = $selectedOptions;
+		inputs.subscribe(
+			debounce((i) => {
+				const providedValues = Array.isArray(i[name]?.rawValues)
+					? i[name]?.rawValues
+					: [i[name]?.rawValues];
+				const knownValues = $selectedOptions;
 
-			if (
-				providedValues.every(Boolean) &&
-				providedValues.length !== knownValues.length &&
-				JSON.stringify(providedValues) !== JSON.stringify(knownValues)
-			) {
-				// External change, we need to react to this
-				// Be VERY careful with this; it can lead to an infinite loop
-				providedValues.forEach(select);
-			}
-		})
+				if (
+					providedValues.every(Boolean) &&
+					providedValues.length !== knownValues.length &&
+					JSON.stringify(providedValues) !== JSON.stringify(knownValues)
+				) {
+					// External change, we need to react to this
+					// Be VERY careful with this; it can lead to an infinite loop
+					providedValues.forEach(select);
+				}
+			}, 10)
+		)
 	);
 
 	let open = false;
