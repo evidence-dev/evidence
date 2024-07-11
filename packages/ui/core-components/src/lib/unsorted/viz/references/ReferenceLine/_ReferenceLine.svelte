@@ -7,7 +7,7 @@
 	import { propKey, configKey } from '@evidence-dev/component-utilities/chartContext';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import ErrorChart from '../core/ErrorChart.svelte';
+	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 
 	let props = getContext(propKey);
