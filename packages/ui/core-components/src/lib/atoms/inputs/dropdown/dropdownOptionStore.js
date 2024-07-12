@@ -192,20 +192,6 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	}, delay);
 
 	/**
-	 * @param {DropdownValue[]} opts
-	 */
-	const selectArray = (opts) => {
-		if (!opts || !opts.length) return;
-		options.update(($options) => {
-			$options = $options.map(($opt) => {
-				if (opts.includes($opt)) $opt.selected = !$opt.selected;
-				return $opt;
-			});
-			return hygiene($options);
-		});
-	};
-
-	/**
 	 * @param {DropdownValue} opt
 	 */
 	const select = (opt) => {
@@ -274,7 +260,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				flagOptionSharedPromise.promise
 			]);
 			cleanRemoveOnSelects(selectOptions, get(options));
-			selectArray(selectOptions);
+			selectOptions.map((o) => select(o));
 		}, delay),
 		deselectAll: (autoOnly = false) => {
 			cleanRemoveOnSelects(get(selectedOptions), get(options));
