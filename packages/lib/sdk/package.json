@@ -31,11 +31,11 @@
 			"require": null,
 			"types": "./src/utils/index.d.ts"
 		},
-		"./plugins/datasources": {
-			"default": "./src/plugins/datasources/index.js",
-			"import": "./src/plugins/datasources/index.js",
+		"./legacy-compat": {
+			"default": "./src/legacy-compat.js",
+			"import": "./src/legacy-compat.js",
 			"require": null,
-			"types": "./src/plugins/datasources/index.d.ts"
+			"types": "./src/legacy-compat.d.ts"
 		},
 		"./vite": {
 			"default": "./src/build-dev/vite/plugins.js",
