@@ -74,7 +74,7 @@ export const toNumber = (value) => {
  * @param {unknown} value
  * @returns {boolean | undefined}
  */
-export const toBoolean = (value, name) => {
+export const toBoolean = (value) => {
 	if (typeof value === 'undefined') return undefined;
 	if (value === 'true') return true;
 	if (value === 'false') return false;
