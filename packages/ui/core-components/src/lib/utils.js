@@ -69,3 +69,14 @@ export const toNumber = (value) => {
 	if (typeof value === 'undefined') return undefined;
 	return Number(value);
 };
+
+/**
+ * @param {unknown} value
+ * @returns {boolean | undefined}
+ */
+export const toBoolean = (value) => {
+	if (typeof value === 'undefined') return undefined;
+	if (value === 'true') return true;
+	if (value === 'false') return false;
+	return Boolean(value);
+};
