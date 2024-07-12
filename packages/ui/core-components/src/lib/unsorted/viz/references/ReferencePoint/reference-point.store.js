@@ -15,10 +15,14 @@ export const createReferencePointStore = (propsStore, configStore) => {
 	/** @type {import('./reference-point.d.ts').ReferencePointStore} */
 	const store = writable({});
 
+	/** @param {string | undefined} error */
+	const setError = (error) => store.update((state) => ({ ...state, error }));
+	const clearError = () => setError(undefined);
+
 	const id = nanoid();
 
 	/** @param {import('./reference-point.d.ts').ReferencePointStoreValue} value */
-	const set = (value) => {
+	const updateChartConfig = (value) => {
 		// Destructure some properties for QOL preprocessing
 		let {
 			data,
@@ -79,7 +83,7 @@ export const createReferencePointStore = (propsStore, configStore) => {
 			symbolBorderColor = 'gray';
 		}
 
-		/** @type {Partial<import('echarts').MarkPointComponentOption['data'][number]>} */
+		/** @type {Partial<NonNullable<import('echarts').MarkPointComponentOption['data']>[number]>} */
 		const seriesDataCommon = {
 			symbol,
 			symbolSize,
@@ -92,7 +96,7 @@ export const createReferencePointStore = (propsStore, configStore) => {
 			}
 		};
 
-		/** @type {import('echarts').MarkPointComponentOption['data'][number][]} */
+		/** @type {NonNullable<import('echarts').MarkPointComponentOption['data']>[number][]} */
 		let seriesData = [];
 		if (typeof x !== 'undefined' && typeof y !== 'undefined') {
 			if (typeof data !== 'undefined' && data[Symbol.iterator]) {
@@ -101,20 +105,20 @@ export const createReferencePointStore = (propsStore, configStore) => {
 					seriesData.push({
 						...seriesDataCommon,
 						coord: [data[i][x], data[i][y]],
-						name: data[i][label] ?? label,
-						value: data[i][label] ?? label
+						name: (label ? data[i][label] : undefined) ?? label,
+						value: (label ? data[i][label] : undefined) ?? label
 					});
 				}
 			} else {
 				seriesData.push({
 					...seriesDataCommon,
 					coord: [x, y],
-					name: label,
+					name: label ?? id,
 					value: label
 				});
 			}
 		} else {
-			throw new Error('x and y required');
+			throw new Error('You must provide x and y');
 		}
 
 		/** @type {import('echarts').LineSeriesOption & { evidenceSeriesType: 'reference_point' }} */
@@ -150,7 +154,9 @@ export const createReferencePointStore = (propsStore, configStore) => {
 		};
 
 		configStore.update((config) => {
-			const existingDataIndex = config.series.findIndex((series) => series.id === id);
+			const existingDataIndex = config.series.findIndex(
+				(/** @type {{ id?: string; }} */ series) => series.id === id
+			);
 			if (existingDataIndex === -1) {
 				config.series.push(series);
 			} else {
@@ -162,17 +168,23 @@ export const createReferencePointStore = (propsStore, configStore) => {
 
 	return {
 		subscribe: store.subscribe,
-		set: (value) => {
-			store.set({ error: undefined });
+		set: (state) => {
+			clearError();
 			try {
-				set(value);
+				updateChartConfig(state);
 			} catch (e) {
-				store.set({ error: e });
+				setError(String(e));
 			}
 		},
 		update: (cb) => {
-			const updatedStore = cb(get(store));
-			set(updatedStore);
+			clearError();
+			let state = get(store);
+			try {
+				state = cb(state);
+				updateChartConfig(state);
+			} catch (e) {
+				setError(String(e));
+			}
 		}
 	};
 };
