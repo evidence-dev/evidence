@@ -1,5 +1,15 @@
 # @evidence-dev/core-components
 
+## 4.6.1
+
+### Patch Changes
+
+- a5b141dec: Enable strict mode
+- c392866a0: added bubblechart stories
+- 6754944ca: Dont use a date in Dropdown story to enable UI testing
+- e6aa2021d: Updated Dimension grid take in queries with spaces
+- 6d2a194e6: Fix Dropdown query-based default value performance and race conditions
+
 ## 4.6.0
 
 ### Minor Changes
