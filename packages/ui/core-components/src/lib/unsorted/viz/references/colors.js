@@ -17,14 +17,18 @@ export const colorList = {
 
 /**
  * @param {{ color?: string; labelColor?: string; symbolColor?: string }} colors
- * @returns {{labelColor: string, symbolColor: string}}
+ * @returns {{labelColor?: string, symbolColor?: string}}
  */
 export const getLineAndSymbolColors = (colors) => {
-	const labelColor = colors.labelColor ?? colors.color;
-	const symbolColor = colors.symbolColor ?? colors.color;
+	let labelColor = colors.labelColor ?? colors.color;
+	if (labelColor && labelColor in colorList) {
+		labelColor = colorList[/** @type {keyof typeof colorList} */ (labelColor)].labelColor;
+	}
 
-	return {
-		labelColor: colorList[labelColor]?.labelColor ?? labelColor,
-		symbolColor: colorList[symbolColor]?.symbolColor ?? symbolColor
-	};
+	let symbolColor = colors.symbolColor ?? colors.color;
+	if (symbolColor && symbolColor in colorList) {
+		symbolColor = colorList[/** @type {keyof typeof colorList} */ (symbolColor)].symbolColor;
+	}
+
+	return { labelColor, symbolColor };
 };

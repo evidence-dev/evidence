@@ -62,10 +62,10 @@ export const flyAndScale = (node, params = { y: -8, x: 0, start: 0.95, duration:
 
 /**
  * @param {unknown} value
- * @returns {number | null | undefined}
+ * @returns {number | undefined}
  */
 export const toNumber = (value) => {
-	if (value === null) return null;
+	if (value === null) return undefined;
 	if (typeof value === 'undefined') return undefined;
 	return Number(value);
 };

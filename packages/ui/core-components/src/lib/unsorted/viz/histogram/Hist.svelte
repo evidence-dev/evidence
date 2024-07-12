@@ -19,6 +19,7 @@
 	export let fillOpacity = 1;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
+	let data;
 	$: data = $props.data;
 	$: x = x ?? $props.x;
 	$: x = xSet ? x : $props.x;
