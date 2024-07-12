@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.6.2
+
+### Patch Changes
+
+- a2f9bfb7a: Fix dropdown selection
+
 ## 4.6.1
 
 ### Patch Changes
