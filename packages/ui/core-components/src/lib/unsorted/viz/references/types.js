@@ -10,6 +10,6 @@ export const isPresetColor = (s) => PRESET_COLORS.includes(s);
 
 // Hack to prevent typescript from reducing this type to just `string`
 // See: https://stackoverflow.com/a/61048124
-/** @typedef {PresetColor | (string & {})} Color */
+/** @typedef {PresetColor | (string & {})} ReferenceColor */
 
 /** @typedef {'circle' | 'rect' | 'roundRect' | 'triangle' | 'diamond' | 'pin' | 'arrow' | 'none' | `path://${string}`} Symbol */

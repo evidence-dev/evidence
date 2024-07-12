@@ -5,7 +5,7 @@ import { uiColours } from '@evidence-dev/component-utilities/colours';
 export const COLORS =
 	/**
 	 * @type {const}
-	 * @satisfies {Record<import('../types.js').Color, { symbolColor: string; labelColor: string }>}
+	 * @satisfies {Record<import('../types.js').ReferenceColor, { symbolColor: string; labelColor: string }>}
 	 */
 	({
 		red: { symbolColor: '#b04646', labelColor: '#b04646' },

@@ -38,7 +38,7 @@
 	export let label = undefined;
 
 	/**
-	 * @type {import('../types.js').Color}
+	 * @type {import('../types.js').ReferenceColor}
 	 * @default "grey"
 	 */
 	export let color = 'grey';
@@ -49,7 +49,7 @@
 	 */
 	export let lineType = 'dashed';
 
-	/** @type {import('../types.js').Color | undefined} */
+	/** @type {import('../types.js').ReferenceColor | undefined} */
 	export let lineColor = undefined;
 
 	/**
@@ -64,7 +64,7 @@
 	 */
 	export let hideValue = false;
 
-	/** @type {import('../types.js').Color | undefined} */
+	/** @type {import('../types.js').ReferenceColor | undefined} */
 	export let labelColor = undefined;
 
 	/**
