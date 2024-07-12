@@ -1,5 +1,18 @@
 # evidence-test-environment
 
+## 3.0.44
+
+### Patch Changes
+
+- 6d2a194e6: Fix Dropdown query-based default value performance and race conditions
+- Updated dependencies [a5b141dec]
+- Updated dependencies [c392866a0]
+- Updated dependencies [6754944ca]
+- Updated dependencies [e6aa2021d]
+- Updated dependencies [6d2a194e6]
+  - @evidence-dev/core-components@4.6.1
+  - @evidence-dev/evidence@39.0.1
+
 ## 3.0.43
 
 ### Patch Changes
