@@ -75,7 +75,9 @@ export const toNumber = (value) => {
  */
 export const toBoolean = (value) => {
 	if (typeof value === 'undefined') return undefined;
-	if (value === 'true') return true;
-	if (value === 'false') return false;
+	if (typeof value === 'string') {
+		if (value.toLowerCase() === 'true') return true;
+		if (value.toLowerCase() === 'false') return false;
+	}
 	return Boolean(value);
 };
