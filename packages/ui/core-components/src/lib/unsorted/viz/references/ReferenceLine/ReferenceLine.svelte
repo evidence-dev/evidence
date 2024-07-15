@@ -10,7 +10,7 @@
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getConfigContext, getPropContext } from '@evidence-dev/component-utilities/chartContext';
-	import { createReferenceLineStore } from './reference-line.store.js';
+	import { ReferenceLineStore } from './reference-line.store.js';
 	import { toBoolean, toNumber } from '../../../../utils.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined}*/
@@ -139,11 +139,11 @@
 
 	const props = getPropContext();
 	const config = getConfigContext();
-	const store = createReferenceLineStore(props, config);
+	const store = new ReferenceLineStore(props, config);
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,
-		($store = {
+		store.setConfig({
 			x,
 			y,
 			x2,

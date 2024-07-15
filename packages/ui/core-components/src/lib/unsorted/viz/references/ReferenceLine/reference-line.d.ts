@@ -13,7 +13,7 @@ export type LabelPosition =
 	| 'belowCenter'
 	| 'belowEnd';
 
-export type ReferenceLineStoreValue = {
+export type ReferenceLineConfig = {
 	// Data
 	data?: any;
 	x?: number | string;
@@ -44,11 +44,11 @@ export type ReferenceLineStoreValue = {
 	align?: 'left' | 'center' | 'right';
 	bold?: boolean;
 	italic?: boolean;
-
-	error?: string;
 };
 
-export type ReferenceLineStore = Writable<ReferenceLineStoreValue>;
+export type ReferenceLineStoreValue = {
+	error?: string
+}
 
 export type ReferenceLineChartData = MarkLineComponentOption['data'][number] & {
 	evidenceSeriesType: 'reference_line';
