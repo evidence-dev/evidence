@@ -2,4 +2,4 @@
 '@evidence-dev/sqlite': patch
 ---
 
-Fixed date columns
+Parse date column string values to real dates
