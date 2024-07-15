@@ -48,3 +48,9 @@
 		<ReferenceLine x={$inputStore.x} label="Reference Line" />
 	</LineChart>
 </Story>
+
+<Story name="symbol">
+	<LineChart x="x" y="y" {data}>
+		<ReferenceLine x={50} label="Reference Line" symbol="arrow" />
+	</LineChart>
+</Story>
