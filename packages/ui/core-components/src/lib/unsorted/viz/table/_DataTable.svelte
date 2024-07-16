@@ -448,6 +448,7 @@
 
 	{#if link}
 		<InvisibleLinks {data} {link} />
+		{console.log(data)}
 	{/if}
 	{#each $props.columns.filter((column) => column.contentType === 'link') as column}
 		<InvisibleLinks {data} link={column.id} />

@@ -179,7 +179,7 @@
 				itemStyle: {
 					color: areaColor,
 					opacity: opacity,
-					borderWidth: border ? borderWidth ?? 1 : null,
+					borderWidth: border ? (borderWidth ?? 1) : null,
 					borderColor: borderColor,
 					borderType: borderType ?? 'dashed'
 				},

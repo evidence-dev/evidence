@@ -199,8 +199,13 @@ export class EvidenceMap {
 						this.lastSelectedLayer = layer;
 					}
 					onclick(feature);
+				});
+				layer.on('dblclick', () => {
+					console.log(link);
+					//handles map drilldowns
 					if (link) {
 						window.location.href = link;
+						this.map.doubleClickZoom.disable();
 					}
 				});
 			}
@@ -264,9 +269,12 @@ export class EvidenceMap {
 				onclick(marker);
 			}
 			marker.bringToFront();
-
+		});
+		marker.on('dblclick', () => {
+			//handles map drilldowns
 			if (link) {
 				window.location.href = link;
+				this.map.doubleClickZoom.disable();
 			}
 		});
 

@@ -6,6 +6,7 @@
 	import Areas from './components/Areas.svelte';
 	import BaseMap from './BaseMap.svelte';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import { QueryLoad } from '../../../atoms/query-load';
 
 	let error;
 
@@ -51,12 +52,15 @@
 
 	/** @type {string|undefined} */
 	export let title = undefined;
+
+	/** @type {string|undefined} */
+	export let link = undefined;
 </script>
 
 {#if error}
 	<ErrorChart {error} chartType="Area Map" />
 {:else}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Areas {data} {geoJsonUrl} {geoId} {areaCol} {...$$restProps} />
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {link}>
+		<Areas {data} {geoJsonUrl} {geoId} {areaCol} {link} {...$$restProps} />
 	</BaseMap>
 {/if}

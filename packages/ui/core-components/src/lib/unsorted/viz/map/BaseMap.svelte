@@ -9,6 +9,8 @@
 	import 'leaflet/dist/leaflet.css';
 	import { EvidenceMap } from './EvidenceMap.js';
 	import { mapContextKey } from './constants.js';
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
+
 
 	let mapElement;
 
@@ -46,7 +48,7 @@
 		if (browser) {
 			try {
 				const initCoords =
-					startingLat ?? false ? [startingLat, startingLong] : [defaultLat, defaultLong];
+					(startingLat ?? false) ? [startingLat, startingLong] : [defaultLat, defaultLong];
 
 				await evidenceMap.init(mapElement, basemap, initCoords, startingZoom, userDefinedView);
 				return () => evidenceMap.cleanup();
@@ -74,6 +76,7 @@
 		</div>
 	</div>
 {/if}
+<!-- await block  -->
 
 <style>
 	div :global(.leaflet-container img.leaflet-tile) {
