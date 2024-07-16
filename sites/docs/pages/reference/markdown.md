@@ -157,7 +157,7 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 
 <PropListing
     name="title"
-    description="Changes the name of the tab, adds a header to your page, and changes the title displayed in the sidebar"
+    description="Changes the name of the tab, the title displayed in the sidebar, adds a header to your page, and changes the breadcrumb for the page."
 />
 <PropListing
     name="hide_title"

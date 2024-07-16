@@ -145,7 +145,9 @@ export const load = async ({ fetch, route, params, url }) => {
 	for (const part of (route.id ?? '').split('/').slice(1)) {
 		tree = tree.children[part];
 		if (!tree) break;
-		if (tree.frontMatter?.breadcrumb) {
+		if (tree.frontMatter?.title) {
+			tree.title = tree.frontMatter.title;
+		} else if (tree.frontMatter?.breadcrumb) {
 			let { breadcrumb } = tree.frontMatter;
 			for (const [param, value] of Object.entries(params)) {
 				breadcrumb = breadcrumb.replaceAll(`\${params.${param}}`, value);
