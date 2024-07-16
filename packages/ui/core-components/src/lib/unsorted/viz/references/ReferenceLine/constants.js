@@ -18,7 +18,7 @@ export const COLORS =
 export const LABEL_POSITIONS =
 	/**
 	 * @type {const}
-	 * @satisfies {Record<import('./reference-line.js').LabelPosition, string> & Record<string, unknown>}
+	 * @satisfies {Record<import('./types.js').LabelPosition, string> & Record<string, unknown>}
 	 */
 	({
 		aboveEnd: 'insideEndTop',

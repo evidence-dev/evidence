@@ -7,25 +7,30 @@ import { formatValue } from '@evidence-dev/component-utilities/formatting';
 import { isPresetColor } from '../types.js';
 import { COLORS, LABEL_POSITIONS } from './constants.js';
 
-/**
- * @typedef {import('svelte/store').Readable<import('./reference-line.js').ReferenceLineStoreValue>} IReferenceLineStore
- * @implements {IReferenceLineStore}
- */
+/** @template T @typedef {import('svelte/store').Writable<T>} Writable */
+/** @template T @typedef {import('svelte/store').Readable<T>} Readable */
+/** @typedef {import('echarts').EChartsOption} EChartsOption */
+/** @typedef {NonNullable<import('echarts').MarkLineComponentOption['data']>[number][]} MarkLineData */
+/** @typedef {import('echarts').LineSeriesOption} LineSeriesOption */
+/** @typedef {import('./types.js').ReferenceLineStoreValue} ReferenceLineStoreValue */
+/** @typedef {import('./types.js').ReferenceLineConfig} ReferenceLineConfig */
+
+/** @implements {Readable<ReferenceLineStoreValue>} */
 export class ReferenceLineStore {
-	/** @type {import('svelte/store').Writable<import('./reference-line.js').ReferenceLineStoreValue>} */
+	/** @type {Writable<ReferenceLineStoreValue>} */
 	#store = writable({});
 
 	#id = nanoid();
 
-	/** @type {import('svelte/store').Writable<any>} */
+	/** @type {Readable<any>} */
 	#propsStore;
 
-	/** @type {import('svelte/store').Writable<any>} */
+	/** @type {Writable<EChartsOption>} */
 	#configStore;
 
 	/**
-	 * @param {import('svelte/store').Writable<any>} propsStore
-	 * @param {import('svelte/store').Writable<any>} configStore
+	 * @param {Readable<any>} propsStore
+	 * @param {Writable<EChartsOption>} configStore
 	 */
 	constructor(propsStore, configStore) {
 		this.#propsStore = propsStore;
@@ -39,7 +44,7 @@ export class ReferenceLineStore {
 
 	clearError = () => this.setError(undefined);
 
-	/** @param {import('./reference-line.js').ReferenceLineConfig} value */
+	/** @param {ReferenceLineConfig} value */
 	setConfig = (value) => {
 		this.clearError();
 		try {
@@ -72,7 +77,7 @@ export class ReferenceLineStore {
 				? LABEL_POSITIONS[value.labelPosition]
 				: 'insideEndTop';
 
-			/** @type {NonNullable<import('echarts').MarkLineComponentOption['data']>[number][]} */
+			/** @type {MarkLineData} */
 			const seriesData = [];
 
 			if (typeof data !== 'undefined' && data[Symbol.iterator]) {
@@ -128,7 +133,7 @@ export class ReferenceLineStore {
 				throw new Error('Either x or y must be provided when data is provided');
 			}
 
-			/** @type {import('echarts').LineSeriesOption & {evidenceSeriesType: 'reference_line' }} */
+			/** @satisfies {LineSeriesOption & {evidenceSeriesType: 'reference_line' }} */
 			const series = {
 				evidenceSeriesType: 'reference_line',
 				id: this.#id,
@@ -187,9 +192,10 @@ export class ReferenceLineStore {
 			};
 
 			this.#configStore.update((config) => {
-				const existingDataIndex = config.series.findIndex(
-					(/** @type {{ id?: string; }} */ series) => series.id === this.#id
-				);
+				if (!config.series) config.series = [];
+				if (!Array.isArray(config.series)) config.series = [config.series];
+
+				const existingDataIndex = config.series.findIndex((series) => series.id === this.#id);
 				if (existingDataIndex === -1) {
 					config.series.push(series);
 				} else {

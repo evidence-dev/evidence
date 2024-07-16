@@ -74,7 +74,7 @@
 	export let labelPadding = 1;
 
 	/**
-	 * @type {import('./reference-line.js').LabelPosition}
+	 * @type {import('./types.js').LabelPosition}
 	 * @default "aboveEnd"
 	 */
 	export let labelPosition = 'aboveEnd';
