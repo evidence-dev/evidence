@@ -200,6 +200,10 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
     name="sidebar_link"
     description="When set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link."
 />
+<PropListing
+    name="breadcrumb"
+    description="Specify a query that returns a breadcrumb column. The query can use `${params}` to reference the URL parameters for the page."
+/>
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
 
