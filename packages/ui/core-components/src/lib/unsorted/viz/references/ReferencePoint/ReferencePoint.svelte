@@ -46,11 +46,9 @@
 	 * @default "fit"
 	 */
 	export let labelWidth = 'fit';
-	$: labelWidth = labelWidth === 'fit' ? undefined : toNumber(labelWidth);
 
 	/** @type {number | string | undefined} */
 	export let labelPadding = undefined;
-	$: labelPadding = toNumber(labelPadding);
 
 	/**
 	 * @type {import('./types.js').LabelPosition}
@@ -66,11 +64,9 @@
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
-	$: labelBorderWidth = toNumber(labelBorderWidth);
 
 	/** @type {number | string | undefined} */
 	export let labelBorderRadius = undefined;
-	$: labelBorderRadius = toNumber(labelBorderRadius);
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
@@ -80,7 +76,6 @@
 
 	/** @type {number | string | undefined} */
 	export let fontSize = undefined;
-	$: fontSize = toNumber(fontSize);
 
 	/** @type {'left' | 'center' | 'right' | undefined} */
 	export let align = undefined;
@@ -105,15 +100,12 @@
 	 * @default 8
 	 */
 	export let symbolSize = 8;
-	$: symbolSize = toNumber(symbolSize) ?? 0;
 
 	/** @type {number | string | undefined} */
 	export let symbolOpacity = undefined;
-	$: symbolOpacity = toNumber(symbolOpacity);
 
 	/** @type {number | string | undefined} */
 	export let symbolBorderWidth = undefined;
-	$: symbolBorderWidth = toNumber(symbolBorderWidth);
 
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
@@ -160,19 +152,19 @@
 			color,
 			labelColor,
 			symbolColor,
-			symbolSize,
-			symbolOpacity,
-			symbolBorderWidth,
+			symbolSize: toNumber(symbolSize),
+			symbolOpacity: toNumber(symbolOpacity),
+			symbolBorderWidth: toNumber(symbolBorderWidth),
 			symbolBorderColor,
-			labelWidth,
-			labelPadding,
+			labelWidth: labelWidth === 'fit' ? undefined : toNumber(labelWidth),
+			labelPadding: toNumber(labelPadding),
 			labelPosition,
 			labelBackgroundColor,
-			labelBorderWidth,
-			labelBorderRadius,
+			labelBorderWidth: toNumber(labelBorderWidth),
+			labelBorderRadius: toNumber(labelBorderRadius),
 			labelBorderColor,
 			labelBorderType,
-			fontSize,
+			fontSize: toNumber(fontSize),
 			align,
 			bold,
 			italic
