@@ -17,6 +17,27 @@
 			color: {
 				control: 'color'
 			},
+			symbol: {
+				control: 'select',
+				options: ['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none']
+			},
+			symbolSize: {
+				control: 'number'
+			},
+			symbolStart: {
+				control: 'select',
+				options: ['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none']
+			},
+			symbolStartSize: {
+				control: 'number'
+			},
+			symbolEnd: {
+				control: 'select',
+				options: ['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none']
+			},
+			symbolEndSize: {
+				control: 'number'
+			},
 			lineType: {
 				control: 'select',
 				options: ['solid', 'dotted', 'dashed']
@@ -118,7 +139,29 @@
 	</LineChart>
 </Story>
 
+<Story
+	name="Hardcoded: x with symbols"
+	argTypes={{ x: { control: 'number' } }}
+	args={{ x: 50, symbolStart: 'arrow', symbolEnd: 'square' }}
+	let:args
+>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceLine {...args} />
+	</LineChart>
+</Story>
+
 <Story name="Hardcoded: y" argTypes={{ y: { control: 'number' } }} args={{ y: 600 }} let:args>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceLine {...args} />
+	</LineChart>
+</Story>
+
+<Story
+	name="Hardcoded: y with symbols"
+	argTypes={{ y: { control: 'number' } }}
+	args={{ y: 600, symbol: 'arrow', symbolStart: 'circle' }}
+	let:args
+>
 	<LineChart x="x" y="y" {data}>
 		<ReferenceLine {...args} />
 	</LineChart>
@@ -145,6 +188,28 @@
 	</LineChart>
 </Story>
 
+<Story
+	name="Hardcoded: sloped with symbols"
+	argTypes={{
+		x: { control: 'number' },
+		y: { control: 'number' },
+		x2: { control: 'number' },
+		y2: { control: 'number' }
+	}}
+	args={{
+		x: 50,
+		y: 600,
+		x2: 60,
+		y2: 700,
+		symbol: 'arrow'
+	}}
+	let:args
+>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceLine {...args} />
+	</LineChart>
+</Story>
+
 <Story name="Dynamic Data: x">
 	{@const referenceLineData = Query.create(
 		`
@@ -157,6 +222,26 @@
 	<LineChart x="x" y="y" {data}>
 		<QueryLoad data={referenceLineData}>
 			<ReferenceLine data={referenceLineData} x="x" label="label" />
+		</QueryLoad>
+	</LineChart>
+</Story>
+
+<Story
+	name="Dynamic Data: x with symbols"
+	args={{ symbolStart: 'circle', symbolEnd: 'arrow' }}
+	let:args
+>
+	{@const referenceLineData = Query.create(
+		`
+			select 30 as x, 'Line 1' as label union all
+			select 50, 'Line 2' union all
+			select 70, 'Line 3'
+		`,
+		query
+	)}
+	<LineChart x="x" y="y" {data}>
+		<QueryLoad data={referenceLineData}>
+			<ReferenceLine data={referenceLineData} x="x" label="label" {...args} />
 		</QueryLoad>
 	</LineChart>
 </Story>
@@ -177,6 +262,26 @@
 	</LineChart>
 </Story>
 
+<Story
+	name="Dynamic Data: y with symbols"
+	args={{ symbolStart: 'rect', symbolEnd: 'arrow' }}
+	let:args
+>
+	{@const referenceLineData = Query.create(
+		`
+			select 300 as y, 'Line 1' as label union all
+			select 500, 'Line 2' union all
+			select 700, 'Line 3'
+		`,
+		query
+	)}
+	<LineChart x="x" y="y" {data}>
+		<QueryLoad data={referenceLineData}>
+			<ReferenceLine data={referenceLineData} y="y" label="label" {...args} />
+		</QueryLoad>
+	</LineChart>
+</Story>
+
 <Story name="Dynamic Data: sloped">
 	{@const referenceLineData = Query.create(
 		`
@@ -190,6 +295,23 @@
 	<LineChart x="x" y="y" {data}>
 		<QueryLoad data={referenceLineData}>
 			<ReferenceLine data={referenceLineData} x="x" y="y" x2="x2" y2="y2" label="label" />
+		</QueryLoad>
+	</LineChart>
+</Story>
+
+<Story name="Dynamic Data: sloped with symbols" args={{ symbol: 'arrow' }} let:args>
+	{@const referenceLineData = Query.create(
+		`
+			select 30 as x, 300 as y, 40 as x2, 400 as y2, 'Line 1' as label union all
+			select 50, 500, 60, 400, 'Line 2' union all
+			select 80, 800, 70, 1, 'Line 3' union all
+			select 20, 400, 10, 1000, 'Line 4'
+		`,
+		query
+	)}
+	<LineChart x="x" y="y" {data}>
+		<QueryLoad data={referenceLineData}>
+			<ReferenceLine data={referenceLineData} x="x" y="y" x2="x2" y2="y2" label="label" {...args} />
 		</QueryLoad>
 	</LineChart>
 </Story>

@@ -64,6 +64,33 @@
 	 */
 	export let hideValue = false;
 
+	/** @type {import('../types.js').Symbol | undefined} */
+	export let symbol = undefined;
+
+	/**
+	 * @type {number | string}
+	 * @default 8
+	 */
+	export let symbolSize = 8;
+
+	/** @type {import('../types.js').Symbol | undefined} */
+	export let symbolStart = undefined;
+
+	/**
+	 * @type {number | string}
+	 * @default 8
+	 */
+	export let symbolStartSize = 8;
+
+	/** @type {import('../types.js').Symbol | undefined} */
+	export let symbolEnd = undefined;
+
+	/**
+	 * @type {number | string}
+	 * @default 8
+	 */
+	export let symbolEndSize = 8;
+
 	/** @type {import('../types.js').ReferenceColor | undefined} */
 	export let labelColor = undefined;
 
@@ -151,6 +178,10 @@
 			data,
 			label,
 			color,
+			symbolStart: symbolStart ?? 'none',
+			symbolStartSize: toNumber(symbolStartSize),
+			symbolEnd: symbolEnd ?? symbol ?? 'none',
+			symbolEndSize: symbolEndSize ? toNumber(symbolEndSize) : toNumber(symbolSize),
 			lineType,
 			lineColor,
 			lineWidth: toNumber(lineWidth),

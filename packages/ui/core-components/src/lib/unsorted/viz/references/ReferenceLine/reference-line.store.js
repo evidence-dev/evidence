@@ -63,6 +63,30 @@ export class ReferenceLineStore {
 				[xFormat, yFormat] = [yFormat, xFormat];
 			}
 
+			const symbolStartConfig = {
+				symbol: config.symbolStart,
+				symbolSize: config.symbolStartSize,
+				symbolKeepAspect: true
+			};
+
+			const symbolEndConfig = {
+				symbol: config.symbolEnd,
+				symbolSize: config.symbolEndSize,
+				symbolKeepAspect: true
+			};
+
+			[symbolStartConfig, symbolEndConfig].forEach((symbolConfig) => {
+				if (symbolConfig.symbol === 'arrow') {
+					// Use a nicer arrow symbol
+					symbolConfig.symbol = 'path://M0,10 L5,0 L10,10 z';
+				} else if (symbolConfig.symbol === 'none') {
+					// using symbol=none removes the label, which we dont want
+					// so we set symbolSize=0 instead
+					symbolConfig.symbol = undefined;
+					symbolConfig.symbolSize = 0;
+				}
+			});
+
 			// Use preset colors
 			labelColor = labelColor ?? color;
 			lineColor = lineColor ?? color;
@@ -99,35 +123,38 @@ export class ReferenceLineStore {
 						const _x2 = data[i][x2 || x];
 						const _y2 = data[i][y2 || y];
 						const name = label ? (data[i][label] ?? label) : undefined;
-						seriesData.push([{ coord: [_x1, _y1], name }, { coord: [_x2, _y2] }]);
+						seriesData.push([
+							{ coord: [_x1, _y1], name, ...symbolStartConfig },
+							{ coord: [_x2, _y2] }
+						]);
 					}
 				} else {
 					const _x2 = x2 || x;
 					const _y2 = y2 || y;
 					const name = label;
-					seriesData.push([{ coord: [x, y], name }, { coord: [_x2, _y2] }]);
+					seriesData.push([{ coord: [x, y], name, ...symbolStartConfig }, { coord: [_x2, _y2] }]);
 				}
 			} else if (typeof x !== 'undefined') {
 				if (typeof data !== 'undefined' && data[Symbol.iterator]) {
 					for (let i = 0; i < data.length; i++) {
 						const _x = data[i][x];
 						const name = label ? (data[i][label] ?? label) : undefined;
-						seriesData.push({ xAxis: _x, name });
+						seriesData.push({ xAxis: _x, name, ...symbolStartConfig });
 					}
 				} else {
 					const name = label;
-					seriesData.push({ xAxis: x, name });
+					seriesData.push({ xAxis: x, name, ...symbolStartConfig });
 				}
 			} else if (typeof y !== 'undefined') {
 				if (typeof data !== 'undefined' && data[Symbol.iterator]) {
 					for (let i = 0; i < data.length; i++) {
 						const _y = data[i][y];
 						const name = label ? (data[i][label] ?? label) : undefined;
-						seriesData.push({ yAxis: _y, name });
+						seriesData.push({ yAxis: _y, name, ...symbolStartConfig });
 					}
 				} else {
 					const name = label;
-					seriesData.push({ yAxis: y, name });
+					seriesData.push({ yAxis: y, name, ...symbolStartConfig });
 				}
 			} else {
 				throw new Error('Either x or y must be provided when data is provided');
@@ -143,7 +170,7 @@ export class ReferenceLineStore {
 				markLine: {
 					data: seriesData,
 					animation: false,
-					symbol: 'none',
+					...symbolEndConfig,
 					emphasis: {
 						disabled: true
 					},

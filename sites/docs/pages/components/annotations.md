@@ -409,6 +409,33 @@ If you provide `[x, y]` and `[x2, y2]`, coordinates must fall within the chart's
     defaultValue="1.3"
 />
 
+<!-- Symbol related props -->
+<PropListing
+    name=symbolStart
+    description="The type of symbol used to mark the start of the line"
+    options={['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none']}
+    defaultValue=circle
+/>
+<PropListing
+    name=symbolStartSize
+    description="The size of the symbol at the start of the line"
+    options=number
+    defaultValue=8
+/>
+<PropListing
+    name=symbolEnd
+    description="The type of symbol used to mark the end of the line"
+    options={['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none']}
+    defaultValue=circle
+/>
+<PropListing
+    name=symbolEndSize
+    description="The size of the symbol at the end of the line"
+    options=number
+    defaultValue=8
+/>
+
+
 <!-- Label-related props -->
 <PropListing
     name=labelPosition
