@@ -474,9 +474,9 @@
 					{headerColor}
 					{headerFontColor}
 					finalColumnOrder={getFinalColumnOrder(
-								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-								$props.priorityColumns
-							)}
+						$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+						$props.priorityColumns
+					)}
 					{columnSummary}
 					{compact}
 					{sortable}

@@ -53,7 +53,17 @@
 {#if error}
 	<ErrorChart {error} chartType="Point Map" />
 {:else}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {data} {link} {tooltip}>
+	<BaseMap
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{data}
+		{link}
+		{tooltip}
+	>
 		<Points {data} {lat} {long} {link} {tooltip} {...$$restProps} />
 	</BaseMap>
 {/if}

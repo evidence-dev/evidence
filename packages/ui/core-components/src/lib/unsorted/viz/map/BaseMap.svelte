@@ -47,10 +47,9 @@
 	/** @type {string|undefined} */
 	let linkCol = undefined;
 
-	$: if (tooltip?.some(obj => obj.contentType === "link")) {
-		linkCol = tooltip.find(obj => obj.contentType === "link").id;
+	$: if (tooltip?.some((obj) => obj.contentType === 'link')) {
+		linkCol = tooltip.find((obj) => obj.contentType === 'link').id;
 	}
-
 
 	const evidenceMap = new EvidenceMap();
 	setContext(mapContextKey, evidenceMap);

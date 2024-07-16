@@ -56,13 +56,23 @@
 	export let link = undefined;
 
 	/** @type {object|undefined} */
-	export let tooltip = undefined
+	export let tooltip = undefined;
 </script>
 
 {#if error}
 	<ErrorChart {error} chartType="Area Map" />
 {:else}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {data} {link} {tooltip}>
+	<BaseMap
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{data}
+		{link}
+		{tooltip}
+	>
 		<Areas {data} {geoJsonUrl} {geoId} {areaCol} {link} {tooltip} {...$$restProps} />
 	</BaseMap>
 {/if}
