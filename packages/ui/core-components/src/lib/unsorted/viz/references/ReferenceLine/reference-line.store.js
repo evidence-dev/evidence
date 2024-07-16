@@ -44,11 +44,11 @@ export class ReferenceLineStore {
 
 	clearError = () => this.setError(undefined);
 
-	/** @param {ReferenceLineConfig} value */
-	setConfig = (value) => {
+	/** @param {ReferenceLineConfig} config */
+	setConfig = (config) => {
 		this.clearError();
 		try {
-			let { data, x, y, x2, y2, color, labelColor, lineColor, label, hideValue } = value;
+			let { data, x, y, x2, y2, color, labelColor, lineColor, label, hideValue } = config;
 
 			// TODO maybe we could subscribe to this in here instead of the jank reactive statement in the component
 			const props = get(this.#propsStore);
@@ -73,8 +73,8 @@ export class ReferenceLineStore {
 				lineColor = COLORS[lineColor].lineColor;
 			}
 
-			const labelPosition = value.labelPosition
-				? LABEL_POSITIONS[value.labelPosition]
+			const labelPosition = config.labelPosition
+				? LABEL_POSITIONS[config.labelPosition]
 				: 'insideEndTop';
 
 			/** @type {MarkLineData} */
@@ -151,9 +151,9 @@ export class ReferenceLineStore {
 						show: true,
 						position: labelPosition,
 						color: labelColor,
-						backgroundColor: value.labelBackgroundColor,
-						padding: value.labelPadding,
-						borderRadius: value.labelBorderRadius,
+						backgroundColor: config.labelBackgroundColor,
+						padding: config.labelPadding,
+						borderRadius: config.labelBorderRadius,
 						formatter: (params) => {
 							const label = params.name;
 							let result = '';
@@ -185,8 +185,8 @@ export class ReferenceLineStore {
 					},
 					lineStyle: {
 						color: lineColor,
-						width: value.lineWidth,
-						type: value.lineType
+						width: config.lineWidth,
+						type: config.lineType
 					}
 				}
 			};

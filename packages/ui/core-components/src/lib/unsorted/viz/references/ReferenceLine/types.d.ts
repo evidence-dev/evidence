@@ -47,9 +47,5 @@ export type ReferenceLineConfig = {
 };
 
 export type ReferenceLineStoreValue = {
-	error?: string
-}
-
-export type ReferenceLineChartData = MarkLineComponentOption['data'][number] & {
-	evidenceSeriesType: 'reference_line';
+	error?: string;
 };

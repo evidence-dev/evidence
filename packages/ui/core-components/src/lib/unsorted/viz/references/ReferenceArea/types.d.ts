@@ -17,7 +17,7 @@ export type LabelPosition =
 	| 'center'
 	| 'right';
 
-export type ReferenceAreaStoreValue = {
+export type ReferenceAreaConfig = {
 	// Data
 	data?: any;
 	xMin?: number | string;
@@ -50,12 +50,8 @@ export type ReferenceAreaStoreValue = {
 	align?: 'left' | 'center' | 'right';
 	bold?: boolean;
 	italic?: boolean;
-
-	error?: string;
 };
 
-export type ReferenceAreaStore = Writable<ReferenceAreaStoreValue>;
-
-export type ReferenceAreaChartData = MarkAreaComponentOption['data'][number] & {
-	evidenceSeriesType: 'reference_area';
+export type ReferenceAreaStoreValue = {
+	error?: string;
 };

@@ -6,200 +6,228 @@ import { COLORS } from './constants.js';
 import { isPresetColor } from '../types.js';
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
-/**
- * @param {import('svelte/store').Writable<any>} propsStore
- * @param {import('svelte/store').Writable<any>} configStore
- * @returns {import('./reference-area.js').ReferenceAreaStore}
- */
-export const createReferenceAreaStore = (propsStore, configStore) => {
-	/** @type {import('./reference-area.d.ts').ReferenceAreaStore} */
-	const store = writable({});
+/** @template T @typedef {import('svelte/store').Writable<T>} Writable */
+/** @template T @typedef {import('svelte/store').Readable<T>} Readable */
+/** @typedef {import('echarts').EChartsOption} EChartsOption */
+/** @typedef {NonNullable<import('echarts').MarkAreaComponentOption['data']>[number][]} MarkAreaData */
+/** @typedef {import('echarts').SeriesOption} SeriesOption */
+/** @typedef {import('echarts').BarSeriesOption} BarSeriesOption */
+/** @typedef {import('echarts').LineSeriesOption} LineSeriesOption */
+/** @typedef {import('./types.js').ReferenceAreaStoreValue} ReferenceAreaStoreValue */
+/** @typedef {import('./types.js').ReferenceAreaConfig} ReferenceAreaConfig */
+
+/** @implements {Readable<ReferenceAreaStoreValue>} */
+export class ReferenceAreaStore {
+	/** @type {Writable<ReferenceAreaStoreValue>} */
+	#store = writable({});
+
+	#id = nanoid();
+
+	/** @type {Readable<any>} */
+	#propsStore;
+
+	/** @type {Writable<EChartsOption>} */
+	#configStore;
+
+	/**
+	 * @param {Readable<any>} propsStore
+	 * @param {Writable<EChartsOption>} configStore
+	 */
+	constructor(propsStore, configStore) {
+		this.#propsStore = propsStore;
+		this.#configStore = configStore;
+	}
+
+	subscribe = this.#store.subscribe;
 
 	/** @param {string | undefined} error */
-	const setError = (error) => store.update((value) => ({ ...value, error }));
-	const clearError = () => setError(undefined);
+	setError = (error) => this.#store.update((value) => ({ ...value, error }));
 
-	const id = nanoid();
+	clearError = () => this.setError(undefined);
 
-	/** @param {import('./reference-area.d.ts').ReferenceAreaStoreValue} value */
-	const set = (value) => {
-		let {
-			data,
-			xMin,
-			xMax,
-			yMin,
-			yMax,
-			color,
-			areaColor,
-			labelColor,
-			label,
-			labelPosition,
-			border,
-			borderWidth,
-			borderColor
-		} = value;
-
-		// TODO maybe we could subscribe to props in here instead of the jank reactive statement in the component
-		const props = get(propsStore);
-		if (typeof props === 'undefined') {
-			throw new Error('Reference Area cannot be used outside of a chart');
-		}
-
-		if (props.swapXY) {
-			[xMin, xMax, yMin, yMax] = [yMin, yMax, xMin, xMax];
-		}
-
-		// Default label position based on props
-		if (typeof labelPosition === 'undefined') {
-			if (props.swapXY) labelPosition = 'topRight';
-			else if (yMin && yMax && xMin && xMax) labelPosition = 'topLeft';
-			else if (yMin || yMax) labelPosition = 'right';
-			else labelPosition = 'top';
-		}
-
-		if (border && typeof borderWidth === 'undefined') {
-			borderWidth = 1;
-		}
-
-		// Use preset colors
-		labelColor = labelColor ?? color;
-		areaColor = areaColor ?? color;
-		borderColor = borderColor ?? color;
-		if (isPresetColor(labelColor)) {
-			labelColor = COLORS[labelColor].labelColor;
-		}
-		if (isPresetColor(areaColor)) {
-			areaColor = COLORS[areaColor].areaColor;
-		}
-		if (isPresetColor(borderColor)) {
-			borderColor = COLORS[borderColor].borderColor;
-		}
-
-		if (typeof data !== 'undefined') {
-			checkInputs(
+	/** @param {ReferenceAreaConfig} config */
+	setConfig = (config) => {
+		this.clearError();
+		try {
+			let {
 				data,
-				[xMin, xMax, yMin, yMax].filter((col) => typeof col !== 'undefined')
-			);
-		}
+				xMin,
+				xMax,
+				yMin,
+				yMax,
+				color,
+				areaColor,
+				labelColor,
+				label,
+				labelPosition,
+				border,
+				borderWidth,
+				borderColor
+			} = config;
 
-		/** @type {NonNullable<import('echarts').MarkAreaComponentOption['data']>[number][]} */
-		const seriesData = [];
+			// TODO maybe we could subscribe to props in here instead of the jank reactive statement in the component
+			const props = get(this.#propsStore);
+			if (typeof props === 'undefined') {
+				throw new Error('Reference Area cannot be used outside of a chart');
+			}
 
-		if (data) {
-			for (let i = 0; i < data.length; i++) {
+			if (props.swapXY) {
+				[xMin, xMax, yMin, yMax] = [yMin, yMax, xMin, xMax];
+			}
+
+			// Default label position based on props
+			if (typeof labelPosition === 'undefined') {
+				if (props.swapXY) labelPosition = 'topRight';
+				else if (yMin && yMax && xMin && xMax) labelPosition = 'topLeft';
+				else if (yMin || yMax) labelPosition = 'right';
+				else labelPosition = 'top';
+			}
+
+			if (border && typeof borderWidth === 'undefined') {
+				borderWidth = 1;
+			}
+
+			// Use preset colors
+			labelColor = labelColor ?? color;
+			areaColor = areaColor ?? color;
+			borderColor = borderColor ?? color;
+			if (isPresetColor(labelColor)) {
+				labelColor = COLORS[labelColor].labelColor;
+			}
+			if (isPresetColor(areaColor)) {
+				areaColor = COLORS[areaColor].areaColor;
+			}
+			if (isPresetColor(borderColor)) {
+				borderColor = COLORS[borderColor].borderColor;
+			}
+
+			/** @type {MarkAreaData} */
+			const seriesData = [];
+
+			if (data) {
+				checkInputs(
+					data,
+					[xMin, xMax, yMin, yMax].filter((col) => typeof col !== 'undefined')
+				);
+
+				for (let i = 0; i < data.length; i++) {
+					seriesData.push([
+						{
+							name: label ? (data[i][label] ?? label) : undefined,
+							xAxis: xMin ? data[i][xMin] : undefined,
+							yAxis: yMin ? data[i][yMin] : undefined
+						},
+						{
+							xAxis: xMax ? data[i][xMax] : undefined,
+							yAxis: yMax ? data[i][yMax] : undefined
+						}
+					]);
+				}
+			} else {
 				seriesData.push([
 					{
-						name: data[i][label] ?? label,
-						xAxis: data[i][xMin],
-						yAxis: data[i][yMin]
+						name: label,
+						xAxis: xMin,
+						yAxis: yMin
 					},
 					{
-						xAxis: data[i][xMax],
-						yAxis: data[i][yMax]
+						xAxis: xMax,
+						yAxis: yMax
 					}
 				]);
 			}
-		} else {
-			seriesData.push([
-				{
-					name: label,
-					xAxis: xMin,
-					yAxis: yMin
-				},
-				{
-					xAxis: xMax,
-					yAxis: yMax
-				}
-			]);
-		}
 
-		// Find the series for the bar chart data (if it exists) so we can use the appropriate stack
-		const barStack = get(configStore).series.find(
-			(s) => s.type === 'bar' && !s.evidenceSeriesType
-		)?.stack;
-
-		/** @type {(import('echarts').LineSeriesOption | import('echarts').BarSeriesOption) & {evidenceSeriesType: 'reference_area' }} */
-		const series = {
-			evidenceSeriesType: 'reference_area',
-			id,
-			type: get(propsStore).chartType === 'Bar Chart' ? 'bar' : 'line',
-			stack: barStack,
-			animation: false,
-			silent: true,
-			markArea: {
-				data: seriesData,
-				emphasis: {
-					disabled: true
-				},
-				itemStyle: {
-					color: areaColor,
-					opacity: 1,
-					borderWidth,
-					borderColor,
-					borderType: value.borderType
-				},
-				label: {
-					show: true,
-					position: LABEL_POSITIONS[labelPosition],
-					color: labelColor
-				}
-			}
-		};
-
-		configStore.update((config) => {
-			const existingDataIndex = config.series.findIndex(
-				(/** @type {{ id?: string; }} */ series) => series.id === id
-			);
-			if (existingDataIndex === -1) {
-				config.series.push(series);
-			} else {
-				config.series[existingDataIndex] = series;
+			// Find the series for the bar chart data (if it exists) so we can use the appropriate stack
+			/** @type {BarSeriesOption | undefined} */
+			let barSeries;
+			const allSeries = get(this.#configStore).series;
+			if (Array.isArray(allSeries)) {
+				barSeries = allSeries.find(isBarSeries);
+			} else if (allSeries) {
+				barSeries = isBarSeries(allSeries) ? allSeries : undefined;
 			}
 
-			// Make sure area aligns with categorical axis on bar charts correctly
-			if (props.swapXY) {
-				config.yAxis = {
-					...config.yAxis,
-					axisTick: {
-						alignWithLabel: false
+			/** @type {(LineSeriesOption | BarSeriesOption) & {evidenceSeriesType: 'reference_area' }} */
+			const series = {
+				evidenceSeriesType: 'reference_area',
+				id: this.#id,
+				type: get(this.#propsStore).chartType === 'Bar Chart' ? 'bar' : 'line',
+				stack: barSeries?.stack,
+				animation: false,
+				silent: true,
+				markArea: {
+					data: seriesData,
+					emphasis: {
+						disabled: true
+					},
+					itemStyle: {
+						color: areaColor,
+						opacity: 1,
+						borderWidth,
+						borderColor,
+						borderType: config.borderType
+					},
+					label: {
+						show: true,
+						position: LABEL_POSITIONS[labelPosition],
+						color: labelColor
 					}
-				};
-			} else {
-				config.xAxis = {
-					...config.xAxis,
-					axisTick: {
-						alignWithLabel: false
+				}
+			};
+
+			this.#configStore.update((config) => {
+				if (!config.series) config.series = [];
+				if (!Array.isArray(config.series)) config.series = [config.series];
+
+				const existingDataIndex = config.series.findIndex((series) => series.id === this.#id);
+				if (existingDataIndex === -1) {
+					config.series.push(series);
+				} else {
+					config.series[existingDataIndex] = series;
+				}
+
+				// Make sure area aligns with categorical axis on bar charts correctly
+				if (props.swapXY) {
+					if (Array.isArray(config.yAxis)) {
+						config.yAxis.forEach((yAxis) => {
+							if (yAxis.type === 'category') {
+								yAxis.axisTick = {
+									...yAxis.axisTick,
+									alignWithLabel: false
+								};
+							}
+						});
+					} else if (config.yAxis) {
+						config.yAxis.axisTick = {
+							...config.yAxis.axisTick,
+							alignWithLabel: false
+						};
 					}
-				};
-			}
+				} else {
+					if (Array.isArray(config.xAxis)) {
+						config.xAxis.forEach((xAxis) => {
+							if (xAxis.type === 'category') {
+								xAxis.axisTick = {
+									...xAxis.axisTick,
+									alignWithLabel: false
+								};
+							}
+						});
+					} else if (config.xAxis) {
+						config.xAxis.axisTick = {
+							...config.xAxis.axisTick,
+							alignWithLabel: false
+						};
+					}
+				}
 
-			return config;
-		});
-	};
-
-	return {
-		subscribe: store.subscribe,
-		set: (value) => {
-			clearError();
-			try {
-				set(value);
-			} catch (e) {
-				setError(String(/** @type {any} */ (e).message));
-			}
-		},
-		update: (cb) => {
-			clearError();
-			let value = get(store);
-			try {
-				value = cb(value);
-				value.error = undefined;
-				set(value);
-			} catch (e) {
-				setError(String(/** @type {any} */ (e).message));
-			}
+				return config;
+			});
+		} catch (e) {
+			this.setError(String(/** @type {any} */ (e).message));
 		}
 	};
-};
+}
 
 export const LABEL_POSITIONS = /** @type {const} */ ({
 	topLeft: 'insideTopLeft',
@@ -213,3 +241,9 @@ export const LABEL_POSITIONS = /** @type {const} */ ({
 	centre: 'inside',
 	right: 'insideRight'
 });
+
+/**
+ * @param {SeriesOption} series
+ * @returns {series is BarSeriesOption}
+ */
+const isBarSeries = (series) => series.type === 'bar' && !('evidenceSeriesType' in series);

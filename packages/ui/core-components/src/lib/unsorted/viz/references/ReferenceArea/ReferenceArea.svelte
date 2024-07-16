@@ -10,7 +10,7 @@
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getConfigContext, getPropContext } from '@evidence-dev/component-utilities/chartContext';
-	import { createReferenceAreaStore } from './reference-area.store.js';
+	import { ReferenceAreaStore } from './reference-area.store.js';
 	import { toBoolean, toNumber } from '../../../../utils.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined}*/
@@ -69,7 +69,7 @@
 	 */
 	export let labelPadding = 1;
 
-	/** @type {import('./reference-area.js').LabelPosition | undefined} */
+	/** @type {import('./types.js').LabelPosition | undefined} */
 	export let labelPosition = undefined;
 
 	/** @type {string | undefined} */
@@ -126,11 +126,11 @@
 
 	const props = getPropContext();
 	const config = getConfigContext();
-	const store = createReferenceAreaStore(props, config);
+	const store = new ReferenceAreaStore(props, config);
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,
-		($store = {
+		store.setConfig({
 			xMin,
 			xMax,
 			yMin,
