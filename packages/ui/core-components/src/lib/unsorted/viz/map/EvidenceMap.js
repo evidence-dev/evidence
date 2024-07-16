@@ -201,7 +201,6 @@ export class EvidenceMap {
 					onclick(feature);
 				});
 				layer.on('dblclick', () => {
-					console.log(link);
 					//handles map drilldowns
 					if (link) {
 						window.location.href = link;
@@ -309,6 +308,7 @@ export class EvidenceMap {
 	 */
 	buildTooltip(item, tooltip) {
 		let tooltipCode = '';
+		console.log(tooltip);
 
 		let processedTooltip = tooltip.map((item) => ({
 			id: item.id,

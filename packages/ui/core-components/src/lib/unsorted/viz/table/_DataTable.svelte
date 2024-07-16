@@ -448,7 +448,6 @@
 
 	{#if link}
 		<InvisibleLinks {data} {link} />
-		{console.log(data, link)}
 	{/if}
 	{#each $props.columns.filter((column) => column.contentType === 'link') as column}
 		<InvisibleLinks {data} link={column.id} />
@@ -469,15 +468,15 @@
 		{/if}
 
 		<div class="scrollbox" style:background-color={backgroundColor}>
-			<!-- <table>
+			<table>
 				<TableHeader
 					{rowNumbers}
 					{headerColor}
 					{headerFontColor}
 					finalColumnOrder={getFinalColumnOrder(
-						$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-						$props.priorityColumns
-					)}
+								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+								$props.priorityColumns
+							)}
 					{columnSummary}
 					{compact}
 					{sortable}
@@ -611,7 +610,7 @@
 						/>
 					{/if}
 				</QueryLoad>
-			</table> -->
+			</table>
 		</div>
 
 		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>

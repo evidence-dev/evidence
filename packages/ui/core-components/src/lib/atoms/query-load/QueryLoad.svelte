@@ -21,8 +21,8 @@
 	onDestroy(unsub);
 </script>
 
-{#if !data}
-	<!-- data prop was not provided. Component to handle this prop-related error -->
+{#if !data} 
+<!-- data prop was not provided. Component to handle this prop-related error -->
 	<slot loaded={data} />
 {:else if !Query.isQuery(data)}
 	<!-- data prop was provided, but it is not a query store -->

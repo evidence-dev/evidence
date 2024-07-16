@@ -4,34 +4,34 @@ schema:
     type: id
   plane:
     category: airline
-    item: airplane 
+    item: airplane
     targetField: name
   airline:
     category: airline
-    item: airline 
+    item: airline
     targetField: name
-  fare: 
+  fare:
     category: number
-    item: float 
+    item: float
     options:
       - max: 100
         min: 0
         fractionDigits: 21
-  distance: 
+  distance:
     category: number
-    item: float 
+    item: float
     options:
       - max: 100
         min: 75
         fractionDigits: 21
-  departure_airport: 
+  departure_airport:
     category: airline
-    item: airport 
-    targetField: name 
-  arrival_airport: 
+    item: airport
+    targetField: name
+  arrival_airport:
     category: airline
-    item: airport 
-    targetField: name 
+    item: airport
+    targetField: name
   seat:
     category: airline
     item: seat
@@ -40,6 +40,6 @@ schema:
     item: recent
     options:
       - days: 365
-  regulator: 
-    category: location 
-    item: country 
+  regulator:
+    category: location
+    item: country

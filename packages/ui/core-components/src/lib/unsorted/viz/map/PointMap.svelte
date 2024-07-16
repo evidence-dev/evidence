@@ -42,12 +42,18 @@
 
 	/** @type {string|undefined} */
 	export let title = undefined;
+
+	/** @type {string|undefined} */
+	export let link = undefined;
+
+	/** @type {object|undefined} */
+	export let tooltip = undefined;
 </script>
 
 {#if error}
 	<ErrorChart {error} chartType="Point Map" />
 {:else}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Points {data} {lat} {long} {...$$restProps} />
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {data} {link} {tooltip}>
+		<Points {data} {lat} {long} {link} {tooltip} {...$$restProps} />
 	</BaseMap>
 {/if}
