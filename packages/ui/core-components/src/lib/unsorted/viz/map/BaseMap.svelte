@@ -11,7 +11,6 @@
 	import { mapContextKey } from './constants.js';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 
-
 	let mapElement;
 
 	/** @type {number | undefined} */
@@ -76,6 +75,7 @@
 		</div>
 	</div>
 {/if}
+
 <!-- await block  -->
 
 <style>
