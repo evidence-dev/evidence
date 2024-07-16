@@ -7,7 +7,7 @@ import type { ReferenceColor, Symbol } from '../types.js';
 
 export type LabelPosition = MarkPointComponentOption['label']['position'];
 
-export type ReferencePointStoreValue = {
+export type ReferencePointConfig = {
 	data?: any;
 	x?: number | string;
 	y?: number | string;
@@ -32,11 +32,8 @@ export type ReferencePointStoreValue = {
 	align?: 'left' | 'center' | 'right';
 	bold?: boolean;
 	italic?: boolean;
-	error?: string;
 };
 
-export type ReferencePointStore = Writable<ReferencePointStoreState>;
-
-export type ReferencePointChartData = MarkPointComponentOption['data'][number] & {
-	evidenceSeriesType: 'reference_point';
+export type ReferencePointStoreValue = {
+	error?: string;
 };

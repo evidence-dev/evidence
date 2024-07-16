@@ -11,7 +11,7 @@
 	import EmptyChart from '../../core/EmptyChart.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import { createReferencePointStore } from './reference-point.store.js';
+	import { ReferencePointStore } from './reference-point.store.js';
 	import { toNumber } from '../../../../utils.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
@@ -53,7 +53,7 @@
 	$: labelPadding = toNumber(labelPadding);
 
 	/**
-	 * @type {import('./reference-point.d.ts').LabelPosition}
+	 * @type {import('./types.js').LabelPosition}
 	 * @default "top"
 	 */
 	export let labelPosition = 'top';
@@ -147,11 +147,11 @@
 
 	const props = getPropContext();
 	const config = getConfigContext();
-	const store = createReferencePointStore(props, config);
+	const store = new ReferencePointStore(props, config);
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,
-		($store = {
+		store.setConfig({
 			data,
 			x,
 			y,

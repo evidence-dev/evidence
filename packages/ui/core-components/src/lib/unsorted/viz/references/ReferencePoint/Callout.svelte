@@ -48,7 +48,7 @@
 	export let labelPadding = 5;
 
 	/**
-	 * @type {import('./reference-point.d.ts').LabelPosition}
+	 * @type {import('./types.js').LabelPosition}
 	 * @default "top"
 	 */
 	export let labelPosition = 'top';
