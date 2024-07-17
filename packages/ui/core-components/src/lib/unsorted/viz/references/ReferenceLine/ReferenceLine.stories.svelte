@@ -59,21 +59,7 @@
 			},
 			labelPosition: {
 				control: 'select',
-				options: [
-					'left',
-					'right',
-					'top',
-					'bottom',
-					'inside',
-					'insideLeft',
-					'insideRight',
-					'insideTop',
-					'insideBottom',
-					'insideTopLeft',
-					'insideTopRight',
-					'insideBottomLeft',
-					'insideBottomRight'
-				]
+				options: ['aboveStart', 'aboveCenter', 'aboveEnd', 'belowStart', 'belowCenter', 'belowEnd']
 			},
 			labelBackgroundColor: {
 				control: 'color'
@@ -356,6 +342,34 @@
 		<ReferenceLine x="40" color="blue" label="blue" />
 		<ReferenceLine x="50" color="grey" label="grey" />
 		<ReferenceLine x="60" color="#63178f" label="custom" />
+	</LineChart>
+</Story>
+
+<Story
+	name="Very styled"
+	args={{
+		x: 50,
+		lineType: 'dotted',
+		lineColor: 'red',
+		lineWidth: 5,
+		hideValue: true,
+		labelColor: 'cyan',
+		labelPadding: 10,
+		labelPosition: 'belowCenter',
+		labelBackgroundColor: 'purple',
+		labelBorderWidth: 12,
+		labelBorderRadius: 8,
+		labelBorderColor: 'orangered',
+		labelBorderType: 'dashed',
+		fontSize: 15,
+		align: 'center',
+		bold: true,
+		italic: true
+	}}
+	let:args
+>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceLine {...args} />
 	</LineChart>
 </Story>
 

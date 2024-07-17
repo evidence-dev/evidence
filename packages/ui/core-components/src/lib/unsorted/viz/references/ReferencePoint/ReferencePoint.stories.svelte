@@ -95,6 +95,9 @@
 			preserveWhitespace: {
 				control: 'boolean'
 			}
+		},
+		args: {
+			label: 'Reference Point'
 		}
 	};
 </script>
@@ -237,6 +240,36 @@
 			with
 			line breaks
 		</Callout>
+	</LineChart>
+</Story>
+
+<Story
+	name="Very styled"
+	args={{
+		x: 24,
+		y: 514,
+		labelColor: 'lightgreen',
+		labelPadding: 10,
+		labelPosition: 'bottom',
+		labelBackgroundColor: 'cornflowerblue',
+		labelBorderWidth: 3,
+		labelBorderRadius: 999,
+		labelBorderColor: 'orangered',
+		labelBorderType: 'dashed',
+		fontSize: 10,
+		align: 'center',
+		bold: true,
+		italic: true,
+		symbolSize: 30,
+		symbolOpacity: 0.5,
+		symbolBorderWidth: 10,
+		symbolBorderColor: 'plum'
+	}}
+	let:args
+>
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	<LineChart x="x" y="y" {data}>
+		<ReferencePoint {...args} />
 	</LineChart>
 </Story>
 

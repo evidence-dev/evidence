@@ -85,11 +85,8 @@
 	/** @type {import('../types.js').Symbol | undefined} */
 	export let symbolEnd = undefined;
 
-	/**
-	 * @type {number | string}
-	 * @default 8
-	 */
-	export let symbolEndSize = 8;
+	/** @type {number | string | undefined} */
+	export let symbolEndSize = undefined;
 
 	/** @type {import('../types.js').ReferenceColor | undefined} */
 	export let labelColor = undefined;

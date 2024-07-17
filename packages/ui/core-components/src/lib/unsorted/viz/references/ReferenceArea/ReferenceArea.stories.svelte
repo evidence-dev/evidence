@@ -45,19 +45,15 @@
 			labelPosition: {
 				control: 'select',
 				options: [
-					'left',
-					'right',
+					'topLeft',
 					'top',
+					'topRight',
+					'bottomLeft',
 					'bottom',
-					'inside',
-					'insideLeft',
-					'insideRight',
-					'insideTop',
-					'insideBottom',
-					'insideTopLeft',
-					'insideTopRight',
-					'insideBottomLeft',
-					'insideBottomRight'
+					'bottomRight',
+					'left',
+					'center',
+					'right'
 				]
 			},
 			labelBackgroundColor: {
@@ -249,6 +245,37 @@
 		<ReferenceArea xMin="40" xMax="50" color="blue" label="blue" />
 		<ReferenceArea xMin="50" xMax="60" color="grey" label="grey" />
 		<ReferenceArea xMin="60" xMax="70" color="#f2dbff" labelColor="#4d1070" label="custom" />
+	</LineChart>
+</Story>
+
+<Story
+	name="Very styled"
+	args={{
+		xMin: 20,
+		xMax: 40,
+		areaColor: 'red',
+		opacity: 0.2,
+		border: true,
+		borderType: 'dotted',
+		borderColor: 'orange',
+		borderWidth: 14,
+		labelColor: 'purple',
+		labelPadding: 10,
+		labelPosition: 'topRight',
+		labelBackgroundColor: 'cornflowerblue',
+		labelBorderWidth: 12,
+		labelBorderRadius: 8,
+		labelBorderColor: 'plum',
+		labelBorderType: 'dashed',
+		fontSize: 18,
+		align: 'center',
+		bold: true,
+		italic: true
+	}}
+	let:args
+>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceArea {...args} />
 	</LineChart>
 </Story>
 
