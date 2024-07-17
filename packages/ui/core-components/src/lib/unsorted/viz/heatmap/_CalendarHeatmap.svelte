@@ -16,7 +16,6 @@
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 
-
 	export let data;
 	export let queryID;
 	export let date;
@@ -81,7 +80,6 @@
 	let baseCalendarConfig;
 	let calendarConfig = [];
 	let seriesConfig = [];
-	
 
 	let mobileCalendarConfig;
 
