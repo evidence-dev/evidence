@@ -1,6 +1,5 @@
 <script>
 	import TimeSeriesPanelChart from './TimeSeriesPanelChart.svelte';
-	export let data;
 </script>
 
 <div
@@ -13,7 +12,7 @@
 					class="flex justify-between text-xs rounded py-2 px-2 border-b border-dashed hover:text-gray-950 last:border-none cursor-pointer"
 				>
 					<div class="whitespace-nowrap truncate font-semibold">{metric}</div>
-					<div class="flex gap-3 tabular-nums ">
+					<div class="flex gap-3 tabular-nums">
 						<span class="font-semibold">{Math.floor(Math.random() * 5000).toLocaleString()}</span>
 						<span class="text-green-600">+{Math.floor(Math.random() * 11).toLocaleString()}</span>
 						<span class="px-3 bg-green-200/40 rounded-sm text-green-700"
@@ -23,7 +22,7 @@
 				</div>
 			{:else}
 				<div
-					class="flex justify-between text-xs rounded py-2 px-2 border-b border-dashed hover:text-gray-950 text-gray-700 last:border-none cursor-pointer "
+					class="flex justify-between text-xs rounded py-2 px-2 border-b border-dashed hover:text-gray-950 text-gray-700 last:border-none cursor-pointer"
 				>
 					<div class="whitespace-nowrap truncate">{metric}</div>
 					<div class="flex gap-3 tabular-nums">
@@ -37,5 +36,7 @@
 			{/if}
 		{/each}
 	</div>
+	<div>
 		<TimeSeriesPanelChart />
+	</div>
 </div>

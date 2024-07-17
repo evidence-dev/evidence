@@ -1,5 +1,6 @@
 <script>
 	import { init, graphic } from 'echarts';
+	import { ToggleGroup } from 'bits-ui';
 
 	let fakeData = [
 		{ date: '2024-01-01', value: 0.941 },
@@ -99,7 +100,7 @@
 		const chart = init(node, null, { renderer: 'svg' });
 		chart.setOption({
 			animation: false,
-            
+
 			dataset: {
 				source: fakeData
 			},
@@ -115,7 +116,7 @@
 				{
 					name: 'vvv',
 					type: 'line',
-                    silent:true,
+					silent: true,
 					showSymbol: false,
 					smooth: true,
 					lineStyle: {
@@ -158,18 +159,35 @@
 			}
 		};
 	};
-
 </script>
 
-<div class="px-2 relative">
-	<div class="absolute top-0 left-2">
-		<div class="text-lg font-bold text-gray-800">ARR</div>
-		<span class="text-sm font-light text-gray-700 rounded">$4.28M</span>
+<div class="px-2 flex flex-col gap-2">
+	<div class="relative">
+		<div class="absolute top-0 left-2">
+			<div class="text-lg font-bold text-gray-800">ARR</div>
+			<span class="text-sm font-light text-gray-700 rounded">$4.28M</span>
+		</div>
+		<div class="h-full w-full min-h-32 rounded-lg overflow-clip" use:makeChart>
+			<div
+				class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
+			></div>
+		</div>
 	</div>
-	<div></div>
-	<div class="h-full w-full min-h-32 rounded-lg overflow-clip" use:makeChart>
-		<div
-			class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
-		></div>
-	</div>
+	<ToggleGroup.Root class="flex gap-4 text-xs text-gray-600 pt-1">
+		<ToggleGroup.Item value="1M" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
+			>1M</ToggleGroup.Item
+		>
+		<ToggleGroup.Item value="3M" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
+			>3M</ToggleGroup.Item
+		>
+		<ToggleGroup.Item value="1Y" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
+			>1Y</ToggleGroup.Item
+		>
+		<ToggleGroup.Item value="YTD" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
+			>YTD</ToggleGroup.Item
+		>
+		<ToggleGroup.Item value="All" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
+			>All</ToggleGroup.Item
+		>
+	</ToggleGroup.Root>
 </div>
