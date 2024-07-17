@@ -45,19 +45,15 @@
 			labelPosition: {
 				control: 'select',
 				options: [
-					'left',
-					'right',
+					'topLeft',
 					'top',
+					'topRight',
+					'bottomLeft',
 					'bottom',
-					'inside',
-					'insideLeft',
-					'insideRight',
-					'insideTop',
-					'insideBottom',
-					'insideTopLeft',
-					'insideTopRight',
-					'insideBottomLeft',
-					'insideBottomRight'
+					'bottomRight',
+					'left',
+					'center',
+					'right'
 				]
 			},
 			labelBackgroundColor: {
