@@ -1,6 +1,5 @@
 <script>
-	import { registerTheme, init, connect, graphic } from 'echarts';
-	import { SVGRenderer } from 'echarts/renderers';
+	import { init, graphic } from 'echarts';
 
 	let fakeData = [
 		{ date: '2024-01-01', value: 0.941 },
@@ -96,10 +95,11 @@
 		{ date: '2024-03-31', value: 2.285 }
 	];
 
-	const makeChart = (el) => {
-		const chart = init(el, null, { renderer: 'svg' });
+	const makeChart = (node) => {
+		const chart = init(node, null, { renderer: 'svg' });
 		chart.setOption({
 			animation: false,
+            
 			dataset: {
 				source: fakeData
 			},
@@ -113,23 +113,24 @@
 			},
 			series: [
 				{
+					name: 'vvv',
 					type: 'line',
+                    silent:true,
 					showSymbol: false,
-                    silent: true, // <---- here
-
 					smooth: true,
 					lineStyle: {
 						color: '#16a34a',
-						width: 1
+						width: 1.25,
+						opacity: 1
 					},
 					areaStyle: {
 						color: new graphic.LinearGradient(0, 0, 0, 1, [
 							{
 								offset: 0,
-								color: '#16a34a'
+								color: '#22c55e'
 							},
 							{
-								offset: 1,
+								offset: 0.75,
 								color: '#f9fafb'
 							}
 						]),
@@ -151,8 +152,24 @@
 			chart.resize();
 		});
 
-		return chart;
+		return {
+			destroy() {
+				chart.dispose();
+			}
+		};
 	};
+
 </script>
 
-<div class="h-full w-full min-h-32 rounded-lg overflow-clip" use:makeChart></div>
+<div class="px-2 relative">
+	<div class="absolute top-0 left-2">
+		<div class="text-lg font-bold text-gray-800">ARR</div>
+		<span class="text-sm font-light text-gray-700 rounded">$4.28M</span>
+	</div>
+	<div></div>
+	<div class="h-full w-full min-h-32 rounded-lg overflow-clip" use:makeChart>
+		<div
+			class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
+		></div>
+	</div>
+</div>
