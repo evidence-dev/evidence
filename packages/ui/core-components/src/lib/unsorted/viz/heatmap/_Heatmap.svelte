@@ -17,6 +17,7 @@
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import getSortedDistinctValues from '@evidence-dev/component-utilities/getSortedDistinctValues';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 
 	export let data;
 	export let queryID;
@@ -29,6 +30,7 @@
 	export let value;
 	export let valueFmt;
 	export let valueLabels = true;
+	export let link = undefined;
 	$: valueLabels = valueLabels === 'true' || valueLabels === true;
 
 	export let mobileValueLabels = false;
@@ -85,10 +87,11 @@
 	$: height = undefined;
 	$: gridHeight = undefined;
 
-	function mapColumnsToArray(arrayOfObjects, col1, col2, col3) {
-		// x and y must be converted to strings, otherwise echarts will interpret them as index positions
-		return arrayOfObjects.map((obj) => [`${obj[col1]}`, `${obj[col2]}`, obj[col3]]);
+	function mapColumnsToArray(arrayOfObjects, ...columns) {
+		// x, y, and z must be converted to strings, otherwise echarts will interpret them as index positions
+		return arrayOfObjects.map((obj) => columns.map((col) => `${obj[col]}`));
 	}
+
 	let xDistinct;
 	let yDistinct;
 	let arrayOfArrays;
@@ -105,9 +108,7 @@
 
 	$: try {
 		checkInputs(data, [x, y, value]);
-
 		data = getCompletedData(data, x, value, y, nullsZero); // works slightly differently than regular chart - requires y column to be treated as series for this function
-
 		if (min) {
 			// if min was user-supplied
 			min = Number(min);
@@ -136,7 +137,12 @@
 			? getSortedDistinctValues(data, y, ySort, ySortOrder)
 			: getDistinctValues(data, y);
 
-		arrayOfArrays = mapColumnsToArray(data, x, y, value);
+		if (link) {
+			// if link was user-supplied
+			arrayOfArrays = mapColumnsToArray(data, x, y, value);
+		} else {
+			arrayOfArrays = mapColumnsToArray(data, x, y, value);
+		}
 
 		// ---------------------------------------------------------------------------------------
 		// Get column information
@@ -354,5 +360,17 @@
 		evidenceChartTitle={title}
 		{renderer}
 		{connectGroup}
+		{link}
+		on:dblclick={(params) => {
+			//searches through data for link and redirects if found
+			let dataIndex = params.detail.dataIndex;
+			let dataItem = data[dataIndex];
+			if (dataItem[link]) {
+				window.location = dataItem[link];
+			}
+		}}
 	/>
+	{#if link}
+		<InvisibleLinks {data} {link} />
+	{/if}
 {/if}

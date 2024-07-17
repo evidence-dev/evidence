@@ -100,20 +100,14 @@
 </script>
 
 <script>
-	import { writable } from 'svelte/store';
-	import { setContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	import ReferencePoint from './ReferencePoint.svelte';
 	import Callout from './Callout.svelte';
-
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
 
 <Story
