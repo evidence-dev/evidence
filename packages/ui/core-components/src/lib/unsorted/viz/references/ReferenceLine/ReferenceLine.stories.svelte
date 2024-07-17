@@ -59,21 +59,7 @@
 			},
 			labelPosition: {
 				control: 'select',
-				options: [
-					'left',
-					'right',
-					'top',
-					'bottom',
-					'inside',
-					'insideLeft',
-					'insideRight',
-					'insideTop',
-					'insideBottom',
-					'insideTopLeft',
-					'insideTopRight',
-					'insideBottomLeft',
-					'insideBottomRight'
-				]
+				options: ['aboveStart', 'aboveCenter', 'aboveEnd', 'belowStart', 'belowCenter', 'belowEnd']
 			},
 			labelBackgroundColor: {
 				control: 'color'
