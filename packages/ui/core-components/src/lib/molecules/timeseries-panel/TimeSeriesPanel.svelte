@@ -1,3 +1,7 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
 	import TimeSeriesPanelChart from './TimeSeriesPanelChart.svelte';
 </script>

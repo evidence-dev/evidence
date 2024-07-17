@@ -163,7 +163,7 @@
 
 <div class="px-2 flex flex-col gap-2">
 	<div class="relative">
-		<div class="absolute top-0 left-2">
+		<div class="absolute top-0 left-2 z-10">
 			<div class="text-lg font-bold text-gray-800">ARR</div>
 			<span class="text-sm font-light text-gray-700 rounded">$4.28M</span>
 		</div>
@@ -173,7 +173,7 @@
 			></div>
 		</div>
 	</div>
-	<ToggleGroup.Root class="flex gap-4 text-xs text-gray-600 pt-1">
+	<ToggleGroup.Root class="flex gap-4 text-xs text-gray-600 pt-1 justify-end">
 		<ToggleGroup.Item value="1M" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
 			>1M</ToggleGroup.Item
 		>
