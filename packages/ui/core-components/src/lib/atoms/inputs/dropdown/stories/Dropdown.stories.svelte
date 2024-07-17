@@ -141,6 +141,21 @@
 	<DependentDropdowns />
 </Story>
 
+<Story name="Using query with null value">
+	{@const data = Query.create(
+		`
+		select 'abc' as option
+		union all
+		select null as option
+		union all
+		select 'ghi' as option
+	`,
+		query
+	)}
+
+	<Dropdown {data} name="test" value="option" />
+</Story>
+
 <Story name="Using non-query options">
 	<Dropdown name="test">
 		<DropdownOption value="All" />
