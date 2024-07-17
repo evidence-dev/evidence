@@ -162,7 +162,7 @@ export class ReferenceAreaStore {
 					},
 					itemStyle: {
 						color: areaColor,
-						opacity: 1,
+						opacity: config.opacity,
 						borderWidth,
 						borderColor,
 						borderType: config.borderType
@@ -170,7 +170,17 @@ export class ReferenceAreaStore {
 					label: {
 						show: true,
 						position: LABEL_POSITIONS[labelPosition],
-						color: labelColor
+						color: labelColor,
+						padding: config.labelPadding,
+						backgroundColor: config.labelBackgroundColor,
+						borderColor: config.labelBorderColor,
+						borderWidth: config.labelBorderWidth,
+						borderRadius: config.labelBorderRadius,
+						borderType: config.labelBorderType,
+						fontSize: config.fontSize,
+						align: config.align,
+						fontWeight: config.bold ? 'bold' : undefined,
+						fontStyle: config.italic ? 'italic' : undefined
 					}
 				}
 			};
