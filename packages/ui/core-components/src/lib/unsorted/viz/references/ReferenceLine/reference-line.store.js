@@ -179,8 +179,15 @@ export class ReferenceLineStore {
 						position: labelPosition,
 						color: labelColor,
 						backgroundColor: config.labelBackgroundColor,
-						padding: config.labelPadding,
+						borderColor: config.labelBorderColor,
+						borderWidth: config.labelBorderWidth,
 						borderRadius: config.labelBorderRadius,
+						borderType: config.labelBorderType,
+						padding: config.labelPadding,
+						fontSize: config.fontSize,
+						align: config.align,
+						fontWeight: config.bold ? 'bold' : undefined,
+						fontStyle: config.italic ? 'italic' : undefined,
 						formatter: (params) => {
 							const label = params.name;
 							let result = '';
