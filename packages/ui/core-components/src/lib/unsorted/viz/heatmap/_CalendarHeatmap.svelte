@@ -14,6 +14,8 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
+
 
 	export let data;
 	export let queryID;
@@ -55,6 +57,8 @@
 
 	export let connectGroup = undefined;
 
+	export let link = undefined;
+
 	function mapColumnsToArray(arrayOfObjects, col1, col2) {
 		return arrayOfObjects.map((obj) => [
 			new Date(obj[col1]).toISOString().split('T')[0],
@@ -77,6 +81,7 @@
 	let baseCalendarConfig;
 	let calendarConfig = [];
 	let seriesConfig = [];
+	
 
 	let mobileCalendarConfig;
 
@@ -366,5 +371,16 @@
 		{connectGroup}
 		{echartsOptions}
 		{seriesOptions}
+		on:dblclick={(params) => {
+			//searches through data for link and redirects if found
+			let dataIndex = params.detail.dataIndex;
+			let dataItem = data[dataIndex];
+			if (dataItem[link]) {
+				window.location = dataItem[link];
+			}
+		}}
 	/>
+	{#if link}
+		<InvisibleLinks {data} {link} />
+	{/if}
 {/if}
