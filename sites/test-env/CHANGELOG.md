@@ -1,5 +1,88 @@
 # evidence-test-environment
 
+## 3.0.45
+
+### Patch Changes
+
+- Updated dependencies [a2f9bfb7a]
+  - @evidence-dev/core-components@4.6.2
+  - @evidence-dev/evidence@39.0.2
+
+## 3.0.44
+
+### Patch Changes
+
+- 6d2a194e6: Fix Dropdown query-based default value performance and race conditions
+- Updated dependencies [a5b141dec]
+- Updated dependencies [c392866a0]
+- Updated dependencies [6754944ca]
+- Updated dependencies [e6aa2021d]
+- Updated dependencies [6d2a194e6]
+  - @evidence-dev/core-components@4.6.1
+  - @evidence-dev/evidence@39.0.1
+
+## 3.0.43
+
+### Patch Changes
+
+- Updated dependencies [0b4ae10c5]
+- Updated dependencies [dbc4116e3]
+- Updated dependencies [42ca6d4ce]
+  - @evidence-dev/core-components@4.6.0
+  - @evidence-dev/evidence@39.0.0
+
+## 3.0.42
+
+### Patch Changes
+
+- Updated dependencies [90668a4c6]
+  - @evidence-dev/evidence@38.1.3
+
+## 3.0.41
+
+### Patch Changes
+
+- Updated dependencies [cb3f17c9e]
+- Updated dependencies [1009026e8]
+- Updated dependencies [6e184f95e]
+- Updated dependencies [3a1e1d664]
+- Updated dependencies [69bd76b47]
+  - @evidence-dev/core-components@4.5.4
+  - @evidence-dev/evidence@38.1.2
+  - @evidence-dev/component-utilities@3.2.4
+
+## 3.0.40
+
+### Patch Changes
+
+- @evidence-dev/evidence@38.1.1
+- @evidence-dev/component-utilities@3.2.3
+- @evidence-dev/core-components@4.5.3
+
+## 3.0.39
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [0bb7718a2]
+- Updated dependencies [e74affd64]
+- Updated dependencies [a08542924]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [6cdedceb0]
+- Updated dependencies [38c669d2e]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [9982970fd]
+  - @evidence-dev/core-components@4.5.2
+  - @evidence-dev/duckdb@1.0.11
+  - @evidence-dev/evidence@38.1.0
+  - @evidence-dev/csv@1.0.12
+  - @evidence-dev/faker-datasource@2.1.3
+  - @evidence-dev/motherduck@1.0.2
+  - @evidence-dev/postgres@1.0.6
+  - @evidence-dev/snowflake@1.0.7
+  - @evidence-dev/sqlite@2.0.5
+  - @evidence-dev/component-utilities@3.2.2
+
 ## 3.0.38
 
 ### Patch Changes

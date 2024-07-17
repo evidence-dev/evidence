@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.1
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+
 ## 1.3.17 - 2023-10-06
 
 - Bumps Evidence to v22.0.0
