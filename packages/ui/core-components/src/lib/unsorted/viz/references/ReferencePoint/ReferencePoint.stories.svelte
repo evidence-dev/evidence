@@ -107,6 +107,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
+	import BarChart from '$lib/unsorted/viz//bar/BarChart.svelte';
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	import ReferencePoint from './ReferencePoint.svelte';
@@ -170,6 +171,32 @@
 	</LineChart>
 </Story>
 
+<Story name="Swap XY">
+	{@const data = Query.create(
+		`
+			select 'a' as x, 10 as y union all
+			select 'b', 20 union all
+			select 'c', 30
+		`,
+		query
+	)}
+	<BarChart x="x" y="y" swapXY {data}>
+		<ReferencePoint x="b" y="30" label="Reference Point" />
+	</BarChart>
+</Story>
+
+<Story name="Colors">
+	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	<LineChart x="x" y="y" {data}>
+		<ReferencePoint x="10" y="100" color="blue" label="blue" />
+		<ReferencePoint x="20" y="100" color="red" label="red" />
+		<ReferencePoint x="30" y="100" color="yellow" label="yellow" />
+		<ReferencePoint x="40" y="100" color="green" label="green" />
+		<ReferencePoint x="50" y="100" color="grey" label="grey" />
+		<ReferencePoint x="60" y="100" color="#63178f" label="custom" />
+	</LineChart>
+</Story>
+
 <!-- Specifying x without y -->
 <Story name="Error" args={{ x: 24 }} let:args>
 	{@const data = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
@@ -211,4 +238,38 @@
 			line breaks
 		</Callout>
 	</LineChart>
+</Story>
+
+<Story name="Error: Outside of a chart">
+	<ReferencePoint label="Reference Point" />
+</Story>
+
+<Story
+	name="Error: Missing column"
+	args={{ x: 'x', y: 'non-existent-column', label: 'label' }}
+	argTypes={{ x: { control: 'text' }, y: { control: 'text' } }}
+	let:args
+>
+	{@const chartData = Query.create(`SELECT * FROM numeric_series WHERE series='pink'`, query)}
+	{@const referencePointData = Query.create(
+		`
+		SELECT
+			x,
+			y,
+			row_number() over(order by x) as label
+		FROM numeric_series
+		WHERE
+			series='pink' AND
+			x in (30, 50, 70)
+	`,
+		query
+	)}
+
+	<QueryLoad data={chartData}>
+		<LineChart x="x" y="y" data={chartData}>
+			<QueryLoad data={referencePointData}>
+				<ReferencePoint {...args} data={referencePointData} />
+			</QueryLoad>
+		</LineChart>
+	</QueryLoad>
 </Story>
