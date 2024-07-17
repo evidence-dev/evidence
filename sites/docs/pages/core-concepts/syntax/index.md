@@ -151,7 +151,7 @@ Partials allow you to reuse chunks of Evidence markdown. [More on Partials](/ref
 
 `./pages/index.md`
 ```markdown
-&#123;@partial "my-first-partial.md"/&#125;
+&#123;@partial "my-first-partial.md"&#125;
 
 And some content specific to this page.
 ```

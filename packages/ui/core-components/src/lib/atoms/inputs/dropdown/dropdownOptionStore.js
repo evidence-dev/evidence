@@ -260,9 +260,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				flagOptionSharedPromise.promise
 			]);
 			cleanRemoveOnSelects(selectOptions, get(options));
-			for (const option of selectOptions) {
-				select(option);
-			}
+			selectOptions.map((o) => select(o));
 		}, delay),
 		deselectAll: (autoOnly = false) => {
 			cleanRemoveOnSelects(get(selectedOptions), get(options));
@@ -270,6 +268,13 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				if (autoOnly && !opt.__auto) continue;
 				select(opt);
 			}
+		},
+		get flushed() {
+			return Promise.all([
+				addOptionSharedPromise.promise,
+				removeOptionSharedPromise.promise,
+				flagOptionSharedPromise.promise
+			]);
 		}
 	};
 };
