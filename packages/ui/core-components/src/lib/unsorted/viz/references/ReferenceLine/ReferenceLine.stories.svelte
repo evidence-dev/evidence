@@ -345,6 +345,34 @@
 	</LineChart>
 </Story>
 
+<Story
+	name="Very styled"
+	args={{
+		x: 50,
+		lineType: 'dotted',
+		lineColor: 'red',
+		lineWidth: 5,
+		hideValue: true,
+		labelColor: 'cyan',
+		labelPadding: 10,
+		labelPosition: 'belowCenter',
+		labelBackgroundColor: 'purple',
+		labelBorderWidth: 12,
+		labelBorderRadius: 8,
+		labelBorderColor: 'orangered',
+		labelBorderType: 'dashed',
+		fontSize: 15,
+		align: 'center',
+		bold: true,
+		italic: true
+	}}
+	let:args
+>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceLine {...args} />
+	</LineChart>
+</Story>
+
 <Story name="Error: Outside of a chart">
 	<ReferenceLine x={50} label="Reference Line" />
 </Story>

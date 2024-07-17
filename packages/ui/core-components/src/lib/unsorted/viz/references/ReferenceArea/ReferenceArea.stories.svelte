@@ -248,6 +248,37 @@
 	</LineChart>
 </Story>
 
+<Story
+	name="Very styled"
+	args={{
+		xMin: 20,
+		xMax: 40,
+		areaColor: 'red',
+		opacity: 0.2,
+		border: true,
+		borderType: 'dotted',
+		borderColor: 'orange',
+		borderWidth: 14,
+		labelColor: 'purple',
+		labelPadding: 10,
+		labelPosition: 'topRight',
+		labelBackgroundColor: 'cornflowerblue',
+		labelBorderWidth: 12,
+		labelBorderRadius: 8,
+		labelBorderColor: 'plum',
+		labelBorderType: 'dashed',
+		fontSize: 18,
+		align: 'center',
+		bold: true,
+		italic: true
+	}}
+	let:args
+>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceArea {...args} />
+	</LineChart>
+</Story>
+
 <Story name="Error: Outside of a chart">
 	<ReferenceArea label="Reference Area" />
 </Story>
