@@ -221,7 +221,7 @@ group by state
 
 
 ### Link Drilldown
-Pass in a `link` column to enable navigation on click of the point. These can be absolute or relative URLs
+Pass a link column to enable navigation by double-clicking on the point. These can be absolute or relative URLs.
 
 <AreaMap 
     data={la_zip_sales} 
@@ -428,7 +428,7 @@ Maximum value to use for the color scale.
 name="link"
 options="URL"
 >
-URL to navigate to when a area is clicked.
+URL to navigate to when a area is double clicked.
 </PropListing>
 
 <PropListing

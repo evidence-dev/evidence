@@ -211,7 +211,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 ```
 
 ### Link Drilldown
-Pass in a `link` column to enable navigation on click of the point. These can be absolute or relative URLs
+Pass a link column to enable navigation by double-clicking on the point. These can be absolute or relative URLs.
 
 <BubbleMap 
     data={la_locations} 
