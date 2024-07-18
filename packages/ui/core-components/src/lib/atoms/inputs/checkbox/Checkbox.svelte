@@ -7,6 +7,7 @@
 	import { getContext } from 'svelte';
 	import Button from '../../shadcn/button/button.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import { toBoolean } from '../../../utils.js';
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
 	/////
@@ -24,9 +25,8 @@
 	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
 
 	export let defaultValue = false;
-	$: defaultValue = defaultValue === 'true' || defaultValue === true;
 
-	$inputs[name] = defaultValue;
+	$: $inputs[name] = toBoolean(defaultValue);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
