@@ -102,7 +102,7 @@ const processQueryResults = function (queryResults) {
 /**
  * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
  * @property {(rows: Record<string, unknown>[]) => QueryResult["columnTypes"]} [mapResultsToEvidenceColumnTypes]
- * @property {(row: unknown) => Record<string, unknown>} [standardizeRow]
+ * @property {(row: unknown, columnTypes?: ColumnDefinition[]) => Record<string, unknown>} [standardizeRow]
  * @property {() => void | Promise<void>} [closeConnection]
  */
 
@@ -145,9 +145,9 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 
 	const rows = async function* () {
 		let batch = [];
-		batch.push(...preread_rows);
+		batch.push(...preread_rows.map((row) => standardizeRow(row, columnTypes)));
 		for await (const row of iterable) {
-			batch.push(standardizeRow(row));
+			batch.push(standardizeRow(row, columnTypes));
 			if (batch.length >= batchSize) {
 				yield batch;
 				batch = [];

@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.6
+
+### Patch Changes
+
+- c3b86ef5f: Updated sub-source-vars logic to handle multiple env vars in the same string
+
 ## 2.1.5
 
 ### Patch Changes

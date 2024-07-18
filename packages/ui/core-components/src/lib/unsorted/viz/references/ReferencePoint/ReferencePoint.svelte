@@ -11,10 +11,10 @@
 	import EmptyChart from '../../core/EmptyChart.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import { createReferencePointStore } from './reference-point.store.js';
+	import { ReferencePointStore } from './reference-point.store.js';
 	import { toNumber } from '../../../../utils.js';
 
-	/** @type {'pass' | 'warn' | 'error'} */
+	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
 
 	/** @type {string | undefined} */
@@ -30,7 +30,7 @@
 	export let data = undefined;
 
 	/**
-	 * @type {import('../colors.js').Color}
+	 * @type {import('../types.js').ReferenceColor}
 	 * @default "grey"
 	 */
 	export let color = 'grey';
@@ -38,22 +38,20 @@
 	/** @type {string | undefined} */
 	export let label = undefined;
 
-	/** @type {import('../colors.js').Color | undefined} */
+	/** @type {import('../types.js').ReferenceColor | undefined} */
 	export let labelColor = undefined;
 
 	/**
-	 * @type {number | "fit" | string}
+	 * @type {number | "fit" | string | undefined}
 	 * @default "fit"
 	 */
 	export let labelWidth = 'fit';
-	$: labelWidth = labelWidth === 'fit' ? undefined : toNumber(labelWidth);
 
 	/** @type {number | string | undefined} */
 	export let labelPadding = undefined;
-	$: labelPadding = toNumber(labelPadding);
 
 	/**
-	 * @type {import('./reference-point.d.ts').LabelPosition}
+	 * @type {import('./types.js').LabelPosition}
 	 * @default "top"
 	 */
 	export let labelPosition = 'top';
@@ -66,11 +64,9 @@
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
-	$: labelBorderWidth = toNumber(labelBorderWidth);
 
 	/** @type {number | string | undefined} */
 	export let labelBorderRadius = undefined;
-	$: labelBorderRadius = toNumber(labelBorderRadius);
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
@@ -80,7 +76,6 @@
 
 	/** @type {number | string | undefined} */
 	export let fontSize = undefined;
-	$: fontSize = toNumber(fontSize);
 
 	/** @type {'left' | 'center' | 'right' | undefined} */
 	export let align = undefined;
@@ -92,12 +87,12 @@
 	export let italic = undefined;
 
 	/**
-	 * @type {import('./reference-point.d.ts').Symbol}
+	 * @type {import('../types.js').Symbol}
 	 * @default "circle"
 	 */
 	export let symbol = 'circle';
 
-	/** @type {import('../colors.js').Color | undefined} */
+	/** @type {import('../types.js').ReferenceColor | undefined} */
 	export let symbolColor = undefined;
 
 	/**
@@ -105,15 +100,12 @@
 	 * @default 8
 	 */
 	export let symbolSize = 8;
-	$: symbolSize = toNumber(symbolSize);
 
 	/** @type {number | string | undefined} */
 	export let symbolOpacity = undefined;
-	$: symbolOpacity = toNumber(symbolOpacity);
 
 	/** @type {number | string | undefined} */
 	export let symbolBorderWidth = undefined;
-	$: symbolBorderWidth = toNumber(symbolBorderWidth);
 
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
@@ -147,11 +139,11 @@
 
 	const props = getPropContext();
 	const config = getConfigContext();
-	const store = createReferencePointStore(config);
+	const store = new ReferencePointStore(props, config);
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,
-		($store = {
+		store.setConfig({
 			data,
 			x,
 			y,
@@ -160,19 +152,19 @@
 			color,
 			labelColor,
 			symbolColor,
-			symbolSize,
-			symbolOpacity,
-			symbolBorderWidth,
+			symbolSize: toNumber(symbolSize),
+			symbolOpacity: toNumber(symbolOpacity),
+			symbolBorderWidth: toNumber(symbolBorderWidth),
 			symbolBorderColor,
-			labelWidth,
-			labelPadding,
+			labelWidth: labelWidth === 'fit' ? undefined : toNumber(labelWidth),
+			labelPadding: toNumber(labelPadding),
 			labelPosition,
 			labelBackgroundColor,
-			labelBorderWidth,
-			labelBorderRadius,
+			labelBorderWidth: toNumber(labelBorderWidth),
+			labelBorderRadius: toNumber(labelBorderRadius),
 			labelBorderColor,
 			labelBorderType,
-			fontSize,
+			fontSize: toNumber(fontSize),
 			align,
 			bold,
 			italic
