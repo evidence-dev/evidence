@@ -15,10 +15,7 @@ import {
 	getSpecAtPath
 } from './Options.js';
 import { encodeBase64Deep } from '../../../../lib/b64Deep.js';
-import {
-	dataDirectory,
-	metaDirectory
-} from '../../../../build-dev/vite/virtuals/node/projectPaths.js';
+import { dataDirectory, metaDirectory } from '../../../../lib/projectPaths.js';
 import { evalSources } from '../../evalSources.js';
 import { updateManifest } from '../../updateManifest.js';
 

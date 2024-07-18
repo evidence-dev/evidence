@@ -1,6 +1,6 @@
 import path from 'path';
 import { evalSources } from '../../../plugins/datasources/evalSources.js';
-import { dataDirectory, metaDirectory, sourcesDirectory } from '../virtuals/node/projectPaths.js';
+import { dataDirectory, metaDirectory, sourcesDirectory } from '../../../lib/projectPaths.js';
 import { updateManifest } from '../../../plugins/datasources/updateManifest.js';
 import { ProcessingQueue } from '../../../lib/processing-queue.js';
 import { VITE_EVENTS } from '../constants.js';

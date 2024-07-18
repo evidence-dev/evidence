@@ -6,12 +6,6 @@
 		"evidence-sdk": "./src/cli.js"
 	},
 	"exports": {
-		".": {
-			"default": "./src/index.js",
-			"import": "./src/index.js",
-			"require": null,
-			"types": "./types/index.d.ts"
-		},
 		"./ambient": {
 			"default": null,
 			"import": null,
@@ -42,6 +36,12 @@
 			"import": "./src/build-dev/vite/plugins.js",
 			"types": "./types/build-dev/vite/plugins.js",
 			"require": null
+		},
+		"./meta": {
+			"default": "./src/meta.js",
+			"import": "./src/meta.js",
+			"require": null,
+			"types": "./src/meta.js"
 		}
 	},
 	"scripts": {
