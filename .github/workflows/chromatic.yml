@@ -15,6 +15,7 @@ jobs:
           version: 8.6.9
       - uses: actions/setup-node@v4
         with:
+          node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm sources:core-components

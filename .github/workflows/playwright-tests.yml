@@ -38,7 +38,7 @@ jobs:
           version: 8.6.9
       - uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile && cd ./tests && npx playwright install --with-deps && pnpm run test:ui
         env:
