@@ -14,7 +14,7 @@ export const entries = async () => {
 		f.endsWith('.md')
 	); // Discard everything that isn't a page
 	const output = allPages.map((filepath) => {
-		// Chop the /+page.md off the end
+		// Chop the '.md' off the end
 		let result = filepath.slice(0, -'.md'.length);
 		if (filepath.endsWith('index.md')) result = result.replaceAll(/\/?index/g, '');
 		return { route: result };
