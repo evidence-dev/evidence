@@ -2,4 +2,4 @@
 '@evidence-dev/mssql': patch
 ---
 
-Resolve security vulnerability in mssql <11"
+Update mssql to v11 to resolve security vulnerability in @azure/identity
