@@ -6,6 +6,7 @@
 
 	/** @type {import("@evidence-dev/sdk/usql).Query | unknown}*/
 	export let data;
+	$: console.log(data);
 
 	$: if (Query.isQuery(data)) {
 		data.fetch(); // Somebody wants this to load. Without this the query builder features don't work
