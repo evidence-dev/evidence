@@ -17,9 +17,6 @@ export const entries = async () => {
 	const output = allPages.map((filepath) => {
 		// Example Project is special
 		const removal = isExampleProject ? "/+page.md" : ".md"
-
-
-		// Chop the /+page.md off the end
 		let result = filepath.slice(0, -removal.length);
 		if (filepath.endsWith('index.md')) result = result.replaceAll(/\/?index/g, '');
 		return { route: result };
