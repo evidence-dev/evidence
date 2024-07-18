@@ -480,7 +480,7 @@ importers:
         version: 0.9.6(tslib@2.6.3)
       '@vscode/vsce':
         specifier: ^2.21.1
-        version: 2.30.0
+        version: 2.31.0
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1739,8 +1739,8 @@ packages:
       '@aws-sdk/util-user-agent-node': 3.614.0
       '@aws-sdk/xml-builder': 3.609.0
       '@smithy/config-resolver': 3.0.5
-      '@smithy/core': 2.2.7
-      '@smithy/eventstream-serde-browser': 3.0.4
+      '@smithy/core': 2.2.8
+      '@smithy/eventstream-serde-browser': 3.0.5
       '@smithy/eventstream-serde-config-resolver': 3.0.3
       '@smithy/eventstream-serde-node': 3.0.4
       '@smithy/fetch-http-handler': 3.2.2
@@ -1751,23 +1751,23 @@ packages:
       '@smithy/md5-js': 3.0.3
       '@smithy/middleware-content-length': 3.0.4
       '@smithy/middleware-endpoint': 3.0.5
-      '@smithy/middleware-retry': 3.0.10
+      '@smithy/middleware-retry': 3.0.11
       '@smithy/middleware-serde': 3.0.3
       '@smithy/middleware-stack': 3.0.3
       '@smithy/node-config-provider': 3.1.4
       '@smithy/node-http-handler': 3.1.3
       '@smithy/protocol-http': 4.0.4
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       '@smithy/url-parser': 3.0.3
       '@smithy/util-base64': 3.0.0
       '@smithy/util-body-length-browser': 3.0.0
       '@smithy/util-body-length-node': 3.0.0
-      '@smithy/util-defaults-mode-browser': 3.0.10
-      '@smithy/util-defaults-mode-node': 3.0.10
+      '@smithy/util-defaults-mode-browser': 3.0.11
+      '@smithy/util-defaults-mode-node': 3.0.11
       '@smithy/util-endpoints': 2.0.5
       '@smithy/util-retry': 3.0.3
-      '@smithy/util-stream': 3.1.0
+      '@smithy/util-stream': 3.1.1
       '@smithy/util-utf8': 3.0.0
       '@smithy/util-waiter': 3.1.2
       tslib: 2.6.3
@@ -1796,26 +1796,26 @@ packages:
       '@aws-sdk/util-user-agent-browser': 3.609.0
       '@aws-sdk/util-user-agent-node': 3.614.0
       '@smithy/config-resolver': 3.0.5
-      '@smithy/core': 2.2.7
+      '@smithy/core': 2.2.8
       '@smithy/fetch-http-handler': 3.2.2
       '@smithy/hash-node': 3.0.3
       '@smithy/invalid-dependency': 3.0.3
       '@smithy/middleware-content-length': 3.0.4
       '@smithy/middleware-endpoint': 3.0.5
-      '@smithy/middleware-retry': 3.0.10
+      '@smithy/middleware-retry': 3.0.11
       '@smithy/middleware-serde': 3.0.3
       '@smithy/middleware-stack': 3.0.3
       '@smithy/node-config-provider': 3.1.4
       '@smithy/node-http-handler': 3.1.3
       '@smithy/protocol-http': 4.0.4
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       '@smithy/url-parser': 3.0.3
       '@smithy/util-base64': 3.0.0
       '@smithy/util-body-length-browser': 3.0.0
       '@smithy/util-body-length-node': 3.0.0
-      '@smithy/util-defaults-mode-browser': 3.0.10
-      '@smithy/util-defaults-mode-node': 3.0.10
+      '@smithy/util-defaults-mode-browser': 3.0.11
+      '@smithy/util-defaults-mode-node': 3.0.11
       '@smithy/util-endpoints': 2.0.5
       '@smithy/util-middleware': 3.0.3
       '@smithy/util-retry': 3.0.3
@@ -1842,26 +1842,26 @@ packages:
       '@aws-sdk/util-user-agent-browser': 3.609.0
       '@aws-sdk/util-user-agent-node': 3.614.0
       '@smithy/config-resolver': 3.0.5
-      '@smithy/core': 2.2.7
+      '@smithy/core': 2.2.8
       '@smithy/fetch-http-handler': 3.2.2
       '@smithy/hash-node': 3.0.3
       '@smithy/invalid-dependency': 3.0.3
       '@smithy/middleware-content-length': 3.0.4
       '@smithy/middleware-endpoint': 3.0.5
-      '@smithy/middleware-retry': 3.0.10
+      '@smithy/middleware-retry': 3.0.11
       '@smithy/middleware-serde': 3.0.3
       '@smithy/middleware-stack': 3.0.3
       '@smithy/node-config-provider': 3.1.4
       '@smithy/node-http-handler': 3.1.3
       '@smithy/protocol-http': 4.0.4
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       '@smithy/url-parser': 3.0.3
       '@smithy/util-base64': 3.0.0
       '@smithy/util-body-length-browser': 3.0.0
       '@smithy/util-body-length-node': 3.0.0
-      '@smithy/util-defaults-mode-browser': 3.0.10
-      '@smithy/util-defaults-mode-node': 3.0.10
+      '@smithy/util-defaults-mode-browser': 3.0.11
+      '@smithy/util-defaults-mode-node': 3.0.11
       '@smithy/util-endpoints': 2.0.5
       '@smithy/util-middleware': 3.0.3
       '@smithy/util-retry': 3.0.3
@@ -1890,26 +1890,26 @@ packages:
       '@aws-sdk/util-user-agent-browser': 3.609.0
       '@aws-sdk/util-user-agent-node': 3.614.0
       '@smithy/config-resolver': 3.0.5
-      '@smithy/core': 2.2.7
+      '@smithy/core': 2.2.8
       '@smithy/fetch-http-handler': 3.2.2
       '@smithy/hash-node': 3.0.3
       '@smithy/invalid-dependency': 3.0.3
       '@smithy/middleware-content-length': 3.0.4
       '@smithy/middleware-endpoint': 3.0.5
-      '@smithy/middleware-retry': 3.0.10
+      '@smithy/middleware-retry': 3.0.11
       '@smithy/middleware-serde': 3.0.3
       '@smithy/middleware-stack': 3.0.3
       '@smithy/node-config-provider': 3.1.4
       '@smithy/node-http-handler': 3.1.3
       '@smithy/protocol-http': 4.0.4
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       '@smithy/url-parser': 3.0.3
       '@smithy/util-base64': 3.0.0
       '@smithy/util-body-length-browser': 3.0.0
       '@smithy/util-body-length-node': 3.0.0
-      '@smithy/util-defaults-mode-browser': 3.0.10
-      '@smithy/util-defaults-mode-node': 3.0.10
+      '@smithy/util-defaults-mode-browser': 3.0.11
+      '@smithy/util-defaults-mode-node': 3.0.11
       '@smithy/util-endpoints': 2.0.5
       '@smithy/util-middleware': 3.0.3
       '@smithy/util-retry': 3.0.3
@@ -1923,10 +1923,10 @@ packages:
     resolution: {integrity: sha512-BUuS5/1YkgmKc4J0bg83XEtMyDHVyqG2QDzfmhYe8gbOIZabUl1FlrFVwhCAthtrrI6MPGTQcERB4BtJKUSplw==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      '@smithy/core': 2.2.7
+      '@smithy/core': 2.2.8
       '@smithy/protocol-http': 4.0.4
       '@smithy/signature-v4': 3.1.2
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       fast-xml-parser: 4.2.5
       tslib: 2.6.3
@@ -1951,9 +1951,9 @@ packages:
       '@smithy/node-http-handler': 3.1.3
       '@smithy/property-provider': 3.1.3
       '@smithy/protocol-http': 4.0.4
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
-      '@smithy/util-stream': 3.1.0
+      '@smithy/util-stream': 3.1.1
       tslib: 2.6.3
     dev: false
 
@@ -2126,7 +2126,7 @@ packages:
       '@smithy/node-config-provider': 3.1.4
       '@smithy/protocol-http': 4.0.4
       '@smithy/signature-v4': 3.1.2
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       '@smithy/util-config-provider': 3.0.0
       tslib: 2.6.3
@@ -5713,7 +5713,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/cache@2.12.0(@parcel/core@2.12.0):
@@ -5727,8 +5726,6 @@ packages:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/codeframe@2.12.0:
@@ -5745,7 +5742,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/config-default@2.12.0(@parcel/core@2.12.0)(postcss@8.4.39)(typescript@5.4.2):
@@ -5890,7 +5886,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/node-resolver-core@3.3.0(@parcel/core@2.12.0):
@@ -5921,7 +5916,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/optimizer-htmlnano@2.12.0(@parcel/core@2.12.0)(postcss@8.4.39)(typescript@5.4.2):
@@ -5935,7 +5929,6 @@ packages:
       svgo: 2.8.0
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
       - cssnano
       - postcss
       - purgecss
@@ -5958,8 +5951,6 @@ packages:
       '@parcel/rust': 2.12.0
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/optimizer-svgo@2.12.0(@parcel/core@2.12.0):
@@ -5972,7 +5963,6 @@ packages:
       svgo: 2.8.0
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/optimizer-swc@2.12.0(@parcel/core@2.12.0):
@@ -5983,7 +5973,7 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
-      '@swc/core': 1.6.13
+      '@swc/core': 1.7.0
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
@@ -6004,7 +5994,7 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
-      '@swc/core': 1.6.13
+      '@swc/core': 1.7.0
       semver: 7.6.3
     transitivePeerDependencies:
       - '@swc/helpers'
@@ -6022,7 +6012,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-html@2.12.0(@parcel/core@2.12.0):
@@ -6036,7 +6025,6 @@ packages:
       posthtml: 0.16.6
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-js@2.12.0(@parcel/core@2.12.0):
@@ -6053,7 +6041,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-raw@2.12.0(@parcel/core@2.12.0):
@@ -6063,7 +6050,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-svg@2.12.0(@parcel/core@2.12.0):
@@ -6076,7 +6062,6 @@ packages:
       posthtml: 0.16.6
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-ts@2.12.0(@parcel/core@2.12.0):
@@ -6095,7 +6080,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/plugin@2.12.0(@parcel/core@2.12.0):
@@ -6137,7 +6121,6 @@ packages:
       '@parcel/utils': 2.12.0
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/reporter-tracer@2.12.0(@parcel/core@2.12.0):
@@ -6160,7 +6143,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/runtime-browser-hmr@2.12.0(@parcel/core@2.12.0):
@@ -6171,7 +6153,6 @@ packages:
       '@parcel/utils': 2.12.0
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/runtime-js@2.12.0(@parcel/core@2.12.0):
@@ -6184,7 +6165,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/runtime-react-refresh@2.12.0(@parcel/core@2.12.0):
@@ -6197,7 +6177,6 @@ packages:
       react-refresh: 0.9.0
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/runtime-service-worker@2.12.0(@parcel/core@2.12.0):
@@ -6209,7 +6188,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/rust@2.12.0:
@@ -6238,7 +6216,6 @@ packages:
       semver: 7.6.3
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-css@2.12.0(@parcel/core@2.12.0):
@@ -6254,7 +6231,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-html@2.12.0(@parcel/core@2.12.0):
@@ -6272,7 +6248,6 @@ packages:
       srcset: 4.0.0
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-image@2.12.0(@parcel/core@2.12.0):
@@ -6286,8 +6261,6 @@ packages:
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-inline-string@2.12.0(@parcel/core@2.12.0):
@@ -6327,7 +6300,6 @@ packages:
       json5: 2.2.3
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-postcss@2.12.0(@parcel/core@2.12.0):
@@ -6344,7 +6316,6 @@ packages:
       semver: 7.6.3
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-posthtml@2.12.0(@parcel/core@2.12.0):
@@ -6360,7 +6331,6 @@ packages:
       semver: 7.6.3
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-raw@2.12.0(@parcel/core@2.12.0):
@@ -6370,7 +6340,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-react-refresh-wrap@2.12.0(@parcel/core@2.12.0):
@@ -6382,7 +6351,6 @@ packages:
       react-refresh: 0.9.0
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-svg@2.12.0(@parcel/core@2.12.0):
@@ -6399,7 +6367,6 @@ packages:
       semver: 7.6.3
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-typescript-types@2.12.0(@parcel/core@2.12.0)(typescript@5.4.2):
@@ -6840,15 +6807,15 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@smithy/core@2.2.7:
-    resolution: {integrity: sha512-Wwd9QWKaYdR+n/oIqJbuwSr9lHuv7sa1e3Zu4wIToZl0sS7xapTYYqQtXP1hKKtIWz0jl8AhvOfNwkfT5jjV0w==}
+  /@smithy/core@2.2.8:
+    resolution: {integrity: sha512-1Y0XX0Ucyg0LWTfTVLWpmvSRtFRniykUl3dQ0os1sTd03mKDudR6mVyX+2ak1phwPXx2aEWMAAdW52JNi0mc3A==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@smithy/middleware-endpoint': 3.0.5
-      '@smithy/middleware-retry': 3.0.10
+      '@smithy/middleware-retry': 3.0.11
       '@smithy/middleware-serde': 3.0.3
       '@smithy/protocol-http': 4.0.4
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       '@smithy/util-middleware': 3.0.3
       tslib: 2.6.3
@@ -6874,8 +6841,8 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@smithy/eventstream-serde-browser@3.0.4:
-    resolution: {integrity: sha512-Eo4anLZX6ltGJTZ5yJMc80gZPYYwBn44g0h7oFq6et+TYr5dUsTpIcDbz2evsOKIZhZ7zBoFWHtBXQ4QQeb5xA==}
+  /@smithy/eventstream-serde-browser@3.0.5:
+    resolution: {integrity: sha512-dEyiUYL/ekDfk+2Ra4GxV+xNnFoCmk1nuIXg+fMChFTrM2uI/1r9AdiTYzPqgb72yIv/NtAj6C3dG//1wwgakQ==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@smithy/eventstream-serde-universal': 3.0.4
@@ -6998,14 +6965,14 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@smithy/middleware-retry@3.0.10:
-    resolution: {integrity: sha512-+6ibpv6jpkTNJS6yErQSEjbxCWf1/jMeUSlpSlUiTYf73LGR9riSRlIrL1+JEW0eEpb6MelQ04BIc38aj8GtxQ==}
+  /@smithy/middleware-retry@3.0.11:
+    resolution: {integrity: sha512-/TIRWmhwMpv99JCGuMhJPnH7ggk/Lah7s/uNDyr7faF02BxNsyD/fz9Tw7pgCf9tYOKgjimm2Qml1Aq1pbkt6g==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@smithy/node-config-provider': 3.1.4
       '@smithy/protocol-http': 4.0.4
       '@smithy/service-error-classification': 3.0.3
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       '@smithy/util-middleware': 3.0.3
       '@smithy/util-retry': 3.0.3
@@ -7111,15 +7078,15 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@smithy/smithy-client@3.1.8:
-    resolution: {integrity: sha512-nUNGCa0NgvtD0eM45732EBp1H9JQITChMBegGtPRhJD00v3hiFF6tibiOihcYwP5mbp9Kui+sOCl86rDT/Ew2w==}
+  /@smithy/smithy-client@3.1.9:
+    resolution: {integrity: sha512-My2RaInZ4gSwJUPMaiLR/Nk82+c4LlvqpXA+n7lonGYgCZq23Tg+/xFhgmiejJ6XPElYJysTPyV90vKyp17+1g==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@smithy/middleware-endpoint': 3.0.5
       '@smithy/middleware-stack': 3.0.3
       '@smithy/protocol-http': 4.0.4
       '@smithy/types': 3.3.0
-      '@smithy/util-stream': 3.1.0
+      '@smithy/util-stream': 3.1.1
       tslib: 2.6.3
     dev: false
 
@@ -7183,26 +7150,26 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@smithy/util-defaults-mode-browser@3.0.10:
-    resolution: {integrity: sha512-WgaNxh33md2zvlD+1TSceVmM7DIy7qYMtuhOat+HYoTntsg0QTbNvoB/5DRxEwSpN84zKf9O34yqzRRtxJZgFg==}
+  /@smithy/util-defaults-mode-browser@3.0.11:
+    resolution: {integrity: sha512-O3s9DGb3bmRvEKmT8RwvSWK4A9r6svfd+MnJB+UMi9ZcCkAnoRtliulOnGF0qCMkKF9mwk2tkopBBstalPY/vg==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       '@smithy/property-provider': 3.1.3
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       bowser: 2.11.0
       tslib: 2.6.3
     dev: false
 
-  /@smithy/util-defaults-mode-node@3.0.10:
-    resolution: {integrity: sha512-3x/pcNIFyaAEQqXc3qnQsCFLlTz/Mwsfl9ciEPU56/Dk/g1kTFjkzyLbUNJaeOo5HT01VrpJBKrBuN94qbPm9A==}
+  /@smithy/util-defaults-mode-node@3.0.11:
+    resolution: {integrity: sha512-qd4a9qtyOa/WY14aHHOkMafhh9z8D2QTwlcBoXMTPnEwtcY+xpe1JyFm9vya7VsB8hHsfn3XodEtwqREiu4ygQ==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       '@smithy/config-resolver': 3.0.5
       '@smithy/credential-provider-imds': 3.1.4
       '@smithy/node-config-provider': 3.1.4
       '@smithy/property-provider': 3.1.3
-      '@smithy/smithy-client': 3.1.8
+      '@smithy/smithy-client': 3.1.9
       '@smithy/types': 3.3.0
       tslib: 2.6.3
     dev: false
@@ -7240,8 +7207,8 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@smithy/util-stream@3.1.0:
-    resolution: {integrity: sha512-QEMvyv58QIptWA8cpQPbHagJOAlrbCt3ueB9EShwdFfVMYAviXdVtksszQQq+o+dv5dalUMWUbUHUDSJgkF9xg==}
+  /@smithy/util-stream@3.1.1:
+    resolution: {integrity: sha512-EhRnVvl3AhoHAT2rGQ5o+oSDRM/BUSMPLZZdRJZLcNVUsFAjOs4vHaPdNQivTSzRcFxf5DA4gtO46WWU2zimaw==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@smithy/fetch-http-handler': 3.2.2
@@ -7917,8 +7884,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@swc/core-darwin-arm64@1.6.13:
-    resolution: {integrity: sha512-SOF4buAis72K22BGJ3N8y88mLNfxLNprTuJUpzikyMGrvkuBFNcxYtMhmomO0XHsgLDzOJ+hWzcgjRNzjMsUcQ==}
+  /@swc/core-darwin-arm64@1.7.0:
+    resolution: {integrity: sha512-2ylhM7f0HwUwLrFYZAe/dse8PCbPsYcJS3Dt7Q8NT3PUn7vy6QOMxNcOPPuDrnmaXqQQO3oxdmRapguTxaat9g==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
@@ -7926,8 +7893,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-darwin-x64@1.6.13:
-    resolution: {integrity: sha512-AW8akFSC+tmPE6YQQvK9S2A1B8pjnXEINg+gGgw0KRUUXunvu1/OEOeC5L2Co1wAwhD7bhnaefi06Qi9AiwOag==}
+  /@swc/core-darwin-x64@1.7.0:
+    resolution: {integrity: sha512-SgVnN4gT1Rb9YfTkp4FCUITqSs7Yj0uB2SUciu5CV3HuGvS5YXCUzh+KrwpLFtx8NIgivISKcNnb41mJi98X8Q==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [darwin]
@@ -7935,8 +7902,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm-gnueabihf@1.6.13:
-    resolution: {integrity: sha512-f4gxxvDXVUm2HLYXRd311mSrmbpQF2MZ4Ja6XCQz1hWAxXdhRl1gpnZ+LH/xIfGSwQChrtLLVrkxdYUCVuIjFg==}
+  /@swc/core-linux-arm-gnueabihf@1.7.0:
+    resolution: {integrity: sha512-+Z9Dayart1iKJQEJJ9N/KS4z5EdXJE3WPFikY0jonKTo4Dd8RuyVz5yLvqcIMeVdz/SwximATaL6iJXw7hZS9A==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
@@ -7944,8 +7911,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm64-gnu@1.6.13:
-    resolution: {integrity: sha512-Nf/eoW2CbG8s+9JoLtjl9FByBXyQ5cjdBsA4efO7Zw4p+YSuXDgc8HRPC+E2+ns0praDpKNZtLvDtmF2lL+2Gg==}
+  /@swc/core-linux-arm64-gnu@1.7.0:
+    resolution: {integrity: sha512-UnLrCiZ1EI4shznJn0xP6DLgsXUSwtfsdgHhGYCrvbgVBBve3S9iFgVFEB3SPl7Q/TdowNbrN4zHU0oChfiNfw==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -7953,8 +7920,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm64-musl@1.6.13:
-    resolution: {integrity: sha512-2OysYSYtdw79prJYuKIiux/Gj0iaGEbpS2QZWCIY4X9sGoETJ5iMg+lY+YCrIxdkkNYd7OhIbXdYFyGs/w5LDg==}
+  /@swc/core-linux-arm64-musl@1.7.0:
+    resolution: {integrity: sha512-H724UANA+ptsfwKRr9mnaDa9cb5fw0oFysiGKTgb3DMYcgk3Od0jMTnXVPFSVpo7FlmyxeC9K8ueUPBOoOK6XA==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -7962,8 +7929,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-x64-gnu@1.6.13:
-    resolution: {integrity: sha512-PkR4CZYJNk5hcd2+tMWBpnisnmYsUzazI1O5X7VkIGFcGePTqJ/bWlfUIVVExWxvAI33PQFzLbzmN5scyIUyGQ==}
+  /@swc/core-linux-x64-gnu@1.7.0:
+    resolution: {integrity: sha512-SY3HA0K0Dpqt1HIfMLGpwL4hd4UaL2xHP5oZXPlRQPhUDZrbb4PbI3ZJnh66c63eL4ZR8EJ+HRFI0Alx5p69Zw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -7971,8 +7938,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-x64-musl@1.6.13:
-    resolution: {integrity: sha512-OdsY7wryTxCKwGQcwW9jwWg3cxaHBkTTHi91+5nm7hFPpmZMz1HivJrWAMwVE7iXFw+M4l6ugB/wCvpYrUAAjA==}
+  /@swc/core-linux-x64-musl@1.7.0:
+    resolution: {integrity: sha512-cEJ2ebtV1v/5Ilb55E05J6F5SrHKQWzUttIhR5Mkayyo+yvPslcpByuFC3D+J7X1ebziTOBpWuMpUdjLfh3SMQ==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -7980,8 +7947,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-arm64-msvc@1.6.13:
-    resolution: {integrity: sha512-ap6uNmYjwk9M/+bFEuWRNl3hq4VqgQ/Lk+ID/F5WGqczNr0L7vEf+pOsRAn0F6EV+o/nyb3ePt8rLhE/wjHpPg==}
+  /@swc/core-win32-arm64-msvc@1.7.0:
+    resolution: {integrity: sha512-ecQOOmzEssz+m0pR4xDYCGuvn3E/l0nQ3tk5jp1NA1lsAy4bMV0YbYCHjptYvWL/UjhIerIp3IlCJ8x5DodSog==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [win32]
@@ -7989,8 +7956,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-ia32-msvc@1.6.13:
-    resolution: {integrity: sha512-IJ8KH4yIUHTnS/U1jwQmtbfQals7zWPG0a9hbEfIr4zI0yKzjd83lmtS09lm2Q24QBWOCFGEEbuZxR4tIlvfzA==}
+  /@swc/core-win32-ia32-msvc@1.7.0:
+    resolution: {integrity: sha512-gz81seZkRn3zMnVOc7L5k6F4vQC82gIxmHiL+GedK+A37XI/X26AASU3zxvORnqQbwQYXQ+AEVckxBmFlz3v2g==}
     engines: {node: '>=10'}
     cpu: [ia32]
     os: [win32]
@@ -7998,8 +7965,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-x64-msvc@1.6.13:
-    resolution: {integrity: sha512-f6/sx6LMuEnbuxtiSL/EkR0Y6qUHFw1XVrh6rwzKXptTipUdOY+nXpKoh+1UsBm/r7H0/5DtOdrn3q5ZHbFZjQ==}
+  /@swc/core-win32-x64-msvc@1.7.0:
+    resolution: {integrity: sha512-b5Fd1xEOw9uqBpj2lqsaR4Iq9UhiL84hNDcEsi6DQA7Y1l85waQAslTbS0E4/pJ1PISAs0jW0zIGLco1eaWBOg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
@@ -8007,8 +7974,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core@1.6.13:
-    resolution: {integrity: sha512-eailUYex6fkfaQTev4Oa3mwn0/e3mQU4H8y1WPuImYQESOQDtVrowwUGDSc19evpBbHpKtwM+hw8nLlhIsF+Tw==}
+  /@swc/core@1.7.0:
+    resolution: {integrity: sha512-d4vMzH6ICllDwlPuhset2h8gu/USHdbyfJim+2hQEdxC0UONtfpmu38XBgNqRjStrji1Q5M10jfeUZL3cu1i8g==}
     engines: {node: '>=10'}
     requiresBuild: true
     peerDependencies:
@@ -8020,16 +7987,16 @@ packages:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.9
     optionalDependencies:
-      '@swc/core-darwin-arm64': 1.6.13
-      '@swc/core-darwin-x64': 1.6.13
-      '@swc/core-linux-arm-gnueabihf': 1.6.13
-      '@swc/core-linux-arm64-gnu': 1.6.13
-      '@swc/core-linux-arm64-musl': 1.6.13
-      '@swc/core-linux-x64-gnu': 1.6.13
-      '@swc/core-linux-x64-musl': 1.6.13
-      '@swc/core-win32-arm64-msvc': 1.6.13
-      '@swc/core-win32-ia32-msvc': 1.6.13
-      '@swc/core-win32-x64-msvc': 1.6.13
+      '@swc/core-darwin-arm64': 1.7.0
+      '@swc/core-darwin-x64': 1.7.0
+      '@swc/core-linux-arm-gnueabihf': 1.7.0
+      '@swc/core-linux-arm64-gnu': 1.7.0
+      '@swc/core-linux-arm64-musl': 1.7.0
+      '@swc/core-linux-x64-gnu': 1.7.0
+      '@swc/core-linux-x64-musl': 1.7.0
+      '@swc/core-win32-arm64-msvc': 1.7.0
+      '@swc/core-win32-ia32-msvc': 1.7.0
+      '@swc/core-win32-x64-msvc': 1.7.0
     dev: true
 
   /@swc/counter@0.1.3:
@@ -9013,8 +8980,8 @@ packages:
       '@vscode/vsce-sign-win32-x64': 2.0.2
     dev: false
 
-  /@vscode/vsce@2.30.0:
-    resolution: {integrity: sha512-MBYpXdCY1SCdc2u/y11kmJuSODKFyZRpeRTQq5p4rSg05QSjSy5pz6h/BGLNdSahgXfKRBATEkjAcJFdJuDz8Q==}
+  /@vscode/vsce@2.31.0:
+    resolution: {integrity: sha512-iZvx9Vn3E81BCwZUAFctQyVxJE09LJ/nLHLGVZmKB5Pjtn62EgjWfJupehmWGmRYMS6ViK+7q7ysNrjxNFhh1g==}
     engines: {node: '>= 16'}
     hasBin: true
     dependencies:
@@ -10688,16 +10655,16 @@ packages:
       stream-transform: 2.1.3
     dev: true
 
-  /cytoscape-cose-bilkent@4.1.0(cytoscape@3.30.0):
+  /cytoscape-cose-bilkent@4.1.0(cytoscape@3.30.1):
     resolution: {integrity: sha512-wgQlVIUJF13Quxiv5e1gstZ08rnZj2XaLHGoFMYXz7SkNfCDOOteKBE6SYRfA9WxxI/iBc3ajfDoc6hb/MRAHQ==}
     peerDependencies:
       cytoscape: ^3.2.0
     dependencies:
       cose-base: 1.0.3
-      cytoscape: 3.30.0
+      cytoscape: 3.30.1
 
-  /cytoscape@3.30.0:
-    resolution: {integrity: sha512-l590mjTHT6/Cbxp13dGPC2Y7VXdgc+rUeF8AnF/JPzhjNevbDJfObnJgaSjlldOgBQZbue+X6IUZ7r5GAgvauQ==}
+  /cytoscape@3.30.1:
+    resolution: {integrity: sha512-TRJc3HbBPkHd50u9YfJh2FxD1lDLZ+JXnJoyBn5LkncoeuT7fapO/Hq/Ed8TdFclaKshzInge2i30bg7VKeoPQ==}
     engines: {node: '>=0.10'}
 
   /d3-array@2.12.1:
@@ -10982,8 +10949,8 @@ packages:
       es-errors: 1.3.0
       is-data-view: 1.0.1
 
-  /dayjs@1.11.11:
-    resolution: {integrity: sha512-okzr3f11N6WuqYtZSvm+F776mB41wRZMhKP+hc34YdW+KmtYYK9iqvHSwo2k9FEH3fhGXvOPV6yz2IcSrfRUDg==}
+  /dayjs@1.11.12:
+    resolution: {integrity: sha512-Rt2g+nTbLlDWZTwwrIXjy9MeiZmSDI375FvZs72ngxx8PDC6YXOeR3q5LAuPzjZQxhiWdRKac7RKV+YyQYfYIg==}
 
   /debounce@1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
@@ -12447,8 +12414,8 @@ packages:
   /flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
 
-  /flow-parser@0.239.1:
-    resolution: {integrity: sha512-topOrETNxJ6T2gAnQiWqAlzGPj8uI2wtmNOlDIMNB+qyvGJZ6R++STbUOTAYmvPhOMz2gXnXPH0hOvURYmrBow==}
+  /flow-parser@0.241.0:
+    resolution: {integrity: sha512-82yKXpz7iWknWFsognZUf5a6mBQLnVrYoYSU9Nbu7FTOpKlu3v9ehpiI9mYXuaIO3J0ojX1b83M/InXvld9HUw==}
     engines: {node: '>=0.4.0'}
 
   /fn.name@1.1.0:
@@ -13507,8 +13474,8 @@ packages:
       ci-info: 3.9.0
     dev: true
 
-  /is-core-module@2.14.0:
-    resolution: {integrity: sha512-a5dFJih5ZLYlRtDc0dZWP7RiKr6xIKzmn/oAYCDvdLThadVgyJwlaoQPmRtMSpz+rk0OGAgIu+TcM9HUF0fk1A==}
+  /is-core-module@2.15.0:
+    resolution: {integrity: sha512-Dd+Lb2/zvk9SKy1TGCt1wFJFo/MWBPMX5x7KcvLajWTGuomczdQX61PvY5yK6SVACwpoexWo81IfFyoKY2QnTA==}
     engines: {node: '>= 0.4'}
     dependencies:
       hasown: 2.0.2
@@ -14434,7 +14401,7 @@ packages:
       '@babel/register': 7.24.6(@babel/core@7.24.9)
       babel-core: 7.0.0-bridge.0(@babel/core@7.24.9)
       chalk: 4.1.2
-      flow-parser: 0.239.1
+      flow-parser: 0.241.0
       graceful-fs: 4.2.11
       micromatch: 4.0.7
       neo-async: 2.6.2
@@ -15262,12 +15229,12 @@ packages:
       '@braintree/sanitize-url': 6.0.4
       '@types/d3-scale': 4.0.8
       '@types/d3-scale-chromatic': 3.0.3
-      cytoscape: 3.30.0
-      cytoscape-cose-bilkent: 4.1.0(cytoscape@3.30.0)
+      cytoscape: 3.30.1
+      cytoscape-cose-bilkent: 4.1.0(cytoscape@3.30.1)
       d3: 7.9.0
       d3-sankey: 0.12.3
       dagre-d3-es: 7.0.10
-      dayjs: 1.11.11
+      dayjs: 1.11.12
       dompurify: 3.1.6
       elkjs: 0.9.3
       katex: 0.16.11
@@ -17522,7 +17489,7 @@ packages:
     resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==}
     hasBin: true
     dependencies:
-      is-core-module: 2.14.0
+      is-core-module: 2.15.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
