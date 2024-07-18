@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-added bubblechart stories
+Dropdown can have option with null value/label

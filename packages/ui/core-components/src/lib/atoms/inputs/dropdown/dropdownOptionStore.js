@@ -1,10 +1,12 @@
+// @ts-check
+
 import { writable, derived, get, readonly } from 'svelte/store';
 import { batchUp, sharedPromise } from '@evidence-dev/sdk/utils';
 
 /**
  * @typedef {Object} DropdownValue
- * @property {string} label
- * @property {string} value
+ * @property {string | undefined | null} label
+ * @property {string | undefined | null} value
  * @property {number} idx
  * @property {boolean} [removeOnDeselect]
  * @property {boolean} [ignoreSelected]
@@ -38,7 +40,7 @@ const optEq = (a, b) => {
  * @param {DropdownValue} a
  * @returns {string}
  */
-const optStr = (a) => a.value + a.label;
+const optStr = (a) => String(a.value) + String(a.label);
 
 /**
  * @param {boolean} [multi=false]
@@ -60,7 +62,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				a.push(c);
 			}
 			return a;
-		}, []);
+		}, /** @type {DropdownValue[]} */ ([]));
 
 		// sort
 		$options = $options.sort((a, b) => {
@@ -79,19 +81,35 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				return a.idx - b.idx;
 			}
 
-			if (a.label !== b.label) return a.label.toString().localeCompare(b.label.toString());
+			if (
+				typeof a.label !== 'undefined' &&
+				a.label !== null &&
+				typeof b.label !== 'undefined' &&
+				b.label !== null &&
+				a.label !== b.label
+			)
+				return a.label.toString().localeCompare(b.label.toString());
 
 			if (typeof a.value === 'number' && typeof b.value === 'number') {
 				return a.value - b.value;
 			}
 
-			return a.value.toString().localeCompare(b.value.toString());
+			if (
+				a.value !== null &&
+				typeof a.value !== 'undefined' &&
+				b.value !== null &&
+				typeof b.value !== 'undefined'
+			) {
+				return a.value.toString().localeCompare(b.value.toString());
+			}
+
+			return 0;
 		});
 
 		return $options;
 	};
 
-	/** @type {import("svelte/store").Writable<DropdownValue[]>} */
+	/** @type {import("svelte/store").Readable<DropdownValue[]>} */
 	const selectedOptions = derived(options, (x) => x.filter((y) => y.selected));
 
 	/** @type {import("svelte/store").Unsubscriber[]} */
@@ -154,7 +172,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	}, delay);
 
 	/**
-	 * @param {[DropdownValue, DropdownValueFlag][]} opts
+	 * @param {[DropdownValue, DropdownValueFlag][]} flaggedOptions
 	 */
 	const flagOption = flagBatchup((flaggedOptions) => {
 		try {
@@ -190,20 +208,6 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 			flagOptionSharedPromise.resolve();
 		}
 	}, delay);
-
-	/**
-	 * @param {DropdownValue[]} opts
-	 */
-	const selectArray = (opts) => {
-		if (!opts || !opts.length) return;
-		options.update(($options) => {
-			$options = $options.map(($opt) => {
-				if (opts.includes($opt)) $opt.selected = !$opt.selected;
-				return $opt;
-			});
-			return hygiene($options);
-		});
-	};
 
 	/**
 	 * @param {DropdownValue} opt
@@ -247,25 +251,30 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 			cleanup.forEach((c) => c());
 		},
 		selectedOptions,
-		addOption: (...args) => {
+		/** @param {DropdownValue} option */
+		addOption: (option) => {
 			if (addOptionSharedPromise.state !== 'loading') {
 				addOptionSharedPromise = sharedPromise();
 				addOptionSharedPromise.start();
 			}
-			addOption(...args);
+			addOption(option);
 		},
-		removeOption: (...args) => {
+		/** @param {DropdownValue} option */
+		removeOption: (option) => {
 			if (removeOptionSharedPromise.state !== 'loading') {
 				removeOptionSharedPromise = sharedPromise();
 				removeOptionSharedPromise.start();
 			}
-			removeOption(...args);
+			removeOption(option);
 		},
-		flagOption: (...args) => {
+		/**
+		 * @param {[DropdownValue, DropdownValueFlag]} args
+		 */
+		flagOption: (args) => {
 			if (flagOptionSharedPromise.state !== 'loading') {
 				flagOptionSharedPromise.start();
 			}
-			flagOption(...args);
+			flagOption(args);
 		},
 		select: typedBatchup(async (selectOptions) => {
 			await Promise.all([
@@ -274,7 +283,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				flagOptionSharedPromise.promise
 			]);
 			cleanRemoveOnSelects(selectOptions, get(options));
-			selectArray(selectOptions);
+			selectOptions.map((o) => select(o));
 		}, delay),
 		deselectAll: (autoOnly = false) => {
 			cleanRemoveOnSelects(get(selectedOptions), get(options));

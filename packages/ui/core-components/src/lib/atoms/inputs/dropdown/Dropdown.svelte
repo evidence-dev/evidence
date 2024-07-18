@@ -18,7 +18,7 @@
 	import Separator from '$lib/atoms/shadcn/separator/separator.svelte';
 	import Badge from '$lib/atoms/shadcn/badge/badge.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
-	import debounce from 'lodash.debounce';
+	import { debounce } from 'perfect-debounce';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import { DropdownContext } from './constants.js';

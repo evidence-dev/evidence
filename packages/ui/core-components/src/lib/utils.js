@@ -65,7 +65,6 @@ export const flyAndScale = (node, params = { y: -8, x: 0, start: 0.95, duration:
  * @returns {number | undefined}
  */
 export const toNumber = (value) => {
-	if (value === null) return undefined;
 	if (typeof value === 'undefined') return undefined;
 	return Number(value);
 };
@@ -76,7 +75,9 @@ export const toNumber = (value) => {
  */
 export const toBoolean = (value) => {
 	if (typeof value === 'undefined') return undefined;
-	if (value === 'true') return true;
-	if (value === 'false') return false;
+	if (typeof value === 'string') {
+		if (value.toLowerCase() === 'true') return true;
+		if (value.toLowerCase() === 'false') return false;
+	}
 	return Boolean(value);
 };

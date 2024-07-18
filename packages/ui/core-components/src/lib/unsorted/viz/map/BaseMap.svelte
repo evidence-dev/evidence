@@ -46,7 +46,7 @@
 		if (browser) {
 			try {
 				const initCoords =
-					startingLat ?? false ? [startingLat, startingLong] : [defaultLat, defaultLong];
+					(startingLat ?? false) ? [startingLat, startingLong] : [defaultLat, defaultLong];
 
 				await evidenceMap.init(mapElement, basemap, initCoords, startingZoom, userDefinedView);
 				return () => evidenceMap.cleanup();

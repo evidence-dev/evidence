@@ -1,0 +1,5 @@
+# This file was automatically generated
+name: sqlite
+type: sqlite
+options:
+  filename: hello.sqlite
