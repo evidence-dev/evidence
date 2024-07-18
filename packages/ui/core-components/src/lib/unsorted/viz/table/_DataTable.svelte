@@ -28,7 +28,7 @@
 	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
-	import debounce from 'perfect-debounce';
+	import { debounce } from 'perfect-debounce';
 
 	// Set up props store
 	let props = writable({});
@@ -198,12 +198,14 @@
 				{
 					loadGracePeriod: 1000,
 					callback: (v) => {
+						console.log('debounced data', Array.from(v));
 						filteredData = v;
 					},
 					execFn: query
 				},
 				data.opts,
-				data
+				data,
+				console.log(data, data.opts)
 			),
 			200
 		);
@@ -320,6 +322,11 @@
 
 	let pageCount;
 	let currentPage = 1;
+
+	// Prevent 0 page numbers on search
+	$: if (currentPage === 0 && searchValue) {
+		goToPage(0);
+	}
 
 	$: currentPage = Math.ceil((index + rows) / rows);
 	$: currentPageElWidth = `${(currentPage ?? 1).toString().length}ch`;
