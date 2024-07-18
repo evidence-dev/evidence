@@ -328,11 +328,9 @@ prog
 
 		// The data directory is defined at import time (because we aren't using getters, and it is set once)
 		// So we need to import it here to give the opportunity to override it above
-		const sourcesCli = await import('@evidence-dev/sdk/plugins/datasources').then(
-			(m) => m.sourcesCli
-		);
+		const cli = await import('@evidence-dev/sdk/legacy-compat').then((m) => m.cli);
 		logQueryEvent('build-sources-start');
-		await sourcesCli(...process.argv);
+		await cli(...process.argv);
 		return;
 	});
 
@@ -366,6 +364,15 @@ prog
 		child.on('exit', function () {
 			child.kill();
 		});
+	});
+
+prog
+	.command('upgrade')
+	.describe('upgrade evidence to the latest version')
+	.action(async () => {
+		const cli = await import('@evidence-dev/sdk/legacy-compat').then((m) => m.cli);
+		await cli(...process.argv);
+		return;
 	});
 
 prog.parse(process.argv);
