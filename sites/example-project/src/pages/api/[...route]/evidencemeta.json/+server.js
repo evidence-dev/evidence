@@ -2,8 +2,26 @@ import fs from 'fs/promises';
 import path from 'path';
 import preprocessor from '@evidence-dev/preprocess';
 import { json } from '@sveltejs/kit';
+import { paths } from '@evidence-dev/sdk/meta';
 
 export const prerender = true;
+
+/** @type {import('./$types').EntryGenerator} */
+export const entries = async () => {
+	const pagesDir = paths.pagesDirectory;
+
+	const allPages = (await fs.readdir(pagesDir, { recursive: true })).filter((f) =>
+		f.endsWith('.md')
+	); // Discard everything that isn't a page
+	const output = allPages.map((filepath) => {
+		// Chop the /+page.md off the end
+		let result = filepath.slice(0, -'.md'.length);
+		if (filepath.endsWith('index.md')) result = result.replaceAll(/\/?index/g, '');
+		return { route: result };
+	});
+
+	return output;
+};
 
 /** @type {import("./$types").RequestHandler} */
 export async function GET({ params: { route } }) {
