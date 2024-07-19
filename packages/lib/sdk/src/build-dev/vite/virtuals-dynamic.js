@@ -1,5 +1,5 @@
+import { getEvidenceConfig } from '../../configuration/getEvidenceConfig.js';
 import { nanoid } from 'nanoid';
-import { getEvidenceConfig } from '../../index.js';
 
 export const build = () => `
 export const BUILD_ID = import.meta.env.MODE === "development" ? "DEV" : "${nanoid(8)}";

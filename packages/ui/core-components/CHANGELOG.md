@@ -1,5 +1,26 @@
 # @evidence-dev/core-components
 
+## 4.7.1
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.6
+
+## 4.7.0
+
+### Minor Changes
+
+- 731d0bb06: Refactor ReferenceLine and ReferenceArea to use a store, add additional styling props
+- 7cb558c32: allow for dynamic breadcrumbs via frontmatter
+
+### Patch Changes
+
+- 08818477d: Dropdown can have option with null value/label
+- 0558bae48: updated checkbox stories
+- f5decad6b: Added CalendarHeatmap Stories
+- ee8f135ac: Fix font styling props for ReferenceLine/ReferenceArea
+  - @evidence-dev/component-utilities@3.2.5
+
 ## 4.6.2
 
 ### Patch Changes
