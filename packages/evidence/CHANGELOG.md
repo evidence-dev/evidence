@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 39.1.1
+
+### Patch Changes
+
+- Updated dependencies [3571b0b3a]
+  - @evidence-dev/sdk@1.3.6
+  - @evidence-dev/plugin-connector@2.1.6
+
 ## 39.1.0
 
 ### Minor Changes
