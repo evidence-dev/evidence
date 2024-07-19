@@ -198,14 +198,12 @@
 				{
 					loadGracePeriod: 1000,
 					callback: (v) => {
-						console.log('debounced data', Array.from(v));
 						filteredData = v;
 					},
 					execFn: query
 				},
 				data.opts,
-				data,
-				console.log(data, data.opts)
+				data
 			),
 			200
 		);
@@ -213,10 +211,14 @@
 
 	$: if (searchFactory) {
 		if (searchValue) {
+			let searchCol =
+				$props.columns.length > 0
+					? $props.columns.map((c) => c.id)
+					: data.columns.map((c) => c.column_name);
 			searchFactory(
 				data.search(
 					searchValue,
-					data.columns.map((c) => c.column_name),
+					searchCol,
 					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
 				),
 				data
@@ -323,11 +325,6 @@
 	let pageCount;
 	let currentPage = 1;
 
-	// Prevent 0 page numbers on search
-	$: if (currentPage === 0 && searchValue) {
-		goToPage(0);
-	}
-
 	$: currentPage = Math.ceil((index + rows) / rows);
 	$: currentPageElWidth = `${(currentPage ?? 1).toString().length}ch`;
 	let max;
@@ -347,10 +344,15 @@
 
 	$: if (paginated) {
 		pageCount = Math.ceil(filteredData.length / rows);
+
 		displayedData = filteredData.slice(index, index + rows);
 		displayedPageLength = displayedData.length;
+		//Might want to look for why page count doesnt update with filter
+		//might be related to why search isnt registering char by char e.g "qa" = no data "qatar" = data
 		if (pageCount < currentPage) {
 			goToPage(pageCount - 1);
+		} else if (currentPage < 1) {
+			goToPage(0);
 		}
 	} else {
 		currentPage = 1;
