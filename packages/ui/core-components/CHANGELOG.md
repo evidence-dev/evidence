@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.7.2
+
+### Patch Changes
+
+- 3698967f1: References wait for data before updating ECharts config
+
 ## 4.7.1
 
 ### Patch Changes
