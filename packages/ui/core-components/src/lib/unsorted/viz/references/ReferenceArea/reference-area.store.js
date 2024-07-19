@@ -5,6 +5,7 @@ import { get, writable } from 'svelte/store';
 import { COLORS } from './constants.js';
 import { isPresetColor } from '../types.js';
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+import { Query } from '@evidence-dev/sdk/usql';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable */
@@ -46,7 +47,7 @@ export class ReferenceAreaStore {
 	clearError = () => this.setError(undefined);
 
 	/** @param {ReferenceAreaConfig} config */
-	setConfig = (config) => {
+	setConfig = async (config) => {
 		this.clearError();
 		try {
 			let {
@@ -64,6 +65,10 @@ export class ReferenceAreaStore {
 				borderWidth,
 				borderColor
 			} = config;
+
+			if (Query.isQuery(data)) {
+				await data.fetch();
+			}
 
 			// TODO maybe we could subscribe to props in here instead of the jank reactive statement in the component
 			const props = get(this.#propsStore);

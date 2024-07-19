@@ -6,6 +6,7 @@ import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 import { formatValue } from '@evidence-dev/component-utilities/formatting';
 import { isPresetColor } from '../types.js';
 import { COLORS, LABEL_POSITIONS } from './constants.js';
+import { Query } from '@evidence-dev/sdk/usql';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable */
@@ -45,10 +46,14 @@ export class ReferenceLineStore {
 	clearError = () => this.setError(undefined);
 
 	/** @param {ReferenceLineConfig} config */
-	setConfig = (config) => {
+	setConfig = async (config) => {
 		this.clearError();
 		try {
 			let { data, x, y, x2, y2, color, labelColor, lineColor, label, hideValue } = config;
+
+			if (Query.isQuery(data)) {
+				await data.fetch();
+			}
 
 			// TODO maybe we could subscribe to this in here instead of the jank reactive statement in the component
 			const props = get(this.#propsStore);

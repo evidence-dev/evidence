@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 import { isPresetColor } from '../types.js';
 import { COLORS } from './constants.js';
+import { Query } from '@evidence-dev/sdk/usql';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable */
@@ -44,7 +45,7 @@ export class ReferencePointStore {
 	clearError = () => this.setError(undefined);
 
 	/** @param {ReferencePointConfig} config */
-	setConfig = (config) => {
+	setConfig = async (config) => {
 		this.clearError();
 		try {
 			// Destructure some properties for QOL preprocessing
@@ -65,6 +66,10 @@ export class ReferencePointStore {
 				symbolBorderColor,
 				align
 			} = config;
+
+			if (Query.isQuery(data)) {
+				await data.fetch();
+			}
 
 			const props = get(this.#propsStore);
 			if (typeof props === 'undefined') {
