@@ -221,9 +221,11 @@
 					searchCol,
 					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
 				),
-				data
+				data.opts
 			);
-		} else filteredData = data;
+		} else {
+			searchFactory(data, data.opts);
+		}
 	}
 
 	$: if (search && !Query.isQuery(data)) {
