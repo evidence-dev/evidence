@@ -1,5 +1,29 @@
 # evidence-test-environment
 
+## 3.0.46
+
+### Patch Changes
+
+- Updated dependencies [08818477d]
+- Updated dependencies [08818477d]
+- Updated dependencies [df8e87625]
+- Updated dependencies [0558bae48]
+- Updated dependencies [db8326efa]
+- Updated dependencies [731d0bb06]
+- Updated dependencies [0de6bc76c]
+- Updated dependencies [db8326efa]
+- Updated dependencies [f5decad6b]
+- Updated dependencies [804949397]
+- Updated dependencies [ee8f135ac]
+- Updated dependencies [3b2e06a0b]
+- Updated dependencies [7cb558c32]
+  - @evidence-dev/core-components@4.7.0
+  - @evidence-dev/sdk@1.3.5
+  - @evidence-dev/sqlite@2.0.6
+  - @evidence-dev/evidence@39.1.0
+  - @evidence-dev/snowflake@1.1.0
+  - @evidence-dev/component-utilities@3.2.5
+
 ## 3.0.45
 
 ### Patch Changes
