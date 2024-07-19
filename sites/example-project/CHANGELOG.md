@@ -1,5 +1,28 @@
 # @evidence-dev/components
 
+## 3.5.13
+
+### Patch Changes
+
+- Updated dependencies [08818477d]
+- Updated dependencies [08818477d]
+- Updated dependencies [16b69f04e]
+- Updated dependencies [df8e87625]
+- Updated dependencies [0558bae48]
+- Updated dependencies [731d0bb06]
+- Updated dependencies [0de6bc76c]
+- Updated dependencies [db8326efa]
+- Updated dependencies [f5decad6b]
+- Updated dependencies [ee8f135ac]
+- Updated dependencies [7cb558c32]
+  - @evidence-dev/core-components@4.7.0
+  - @evidence-dev/sdk@1.3.5
+  - @evidence-dev/mssql@1.0.9
+  - @evidence-dev/sqlite@2.0.6
+  - @evidence-dev/snowflake@1.1.0
+  - @evidence-dev/component-utilities@3.2.5
+  - @evidence-dev/plugin-connector@2.1.6
+
 ## 3.5.12
 
 ### Patch Changes

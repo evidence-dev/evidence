@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 1.1.0
+
+### Minor Changes
+
+- 0de6bc76c: Add Proxy config section/options to snowflake connector
+
 ## 1.0.7
 
 ### Patch Changes
