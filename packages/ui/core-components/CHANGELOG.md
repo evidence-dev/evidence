@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.7.1
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.6
+
 ## 4.7.0
 
 ### Minor Changes

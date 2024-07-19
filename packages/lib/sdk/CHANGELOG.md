@@ -1,5 +1,11 @@
 # @evidence-dev/sdk
 
+## 1.3.6
+
+### Patch Changes
+
+- 3571b0b3a: Update scripts, fix build
+
 ## 1.3.5
 
 ### Patch Changes
