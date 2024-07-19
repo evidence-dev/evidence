@@ -31,7 +31,7 @@ jobs:
       # TODO: Should we instead pin the versions we are using for our os?
       - run: pip install setuptools
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -39,7 +39,7 @@ jobs:
         with:
           version: 8.6.9
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm

@@ -153,6 +153,27 @@ const getCredentials = (database = {}) => {
 	const role = database.role;
 	const schema = database.schema;
 
+	// https://docs.snowflake.com/en/developer-guide/node-js/nodejs-driver-connect#label-nodejs-proxy-connection
+	const proxyOptions = database.proxy
+		? {
+				proxyHost: database.proxy.host,
+				proxyPort: database.proxy.port,
+				proxyUser: database.proxy.username,
+				proxyPassword: database.proxy.password,
+				proxyProtocol: database.proxy.protocol
+			}
+		: {};
+
+	const baseOptions = {
+		account,
+		database: default_database,
+		username,
+		warehouse,
+		role,
+		schema,
+		...proxyOptions
+	};
+
 	if (authenticator === 'snowflake_jwt') {
 		const private_key = database.private_key;
 		const passphrase = database.passphrase;
@@ -168,45 +189,25 @@ const getCredentials = (database = {}) => {
 		});
 
 		return {
+			...baseOptions,
 			privateKey: decrypted_private_key,
-			username,
-			account,
-			database: default_database,
-			warehouse,
-			role,
-			schema,
 			authenticator
 		};
 	} else if (authenticator === 'externalbrowser') {
 		return {
-			username,
-			account,
-			database: default_database,
-			warehouse,
-			role,
-			schema,
+			...baseOptions,
 			authenticator
 		};
 	} else if (authenticator === 'okta') {
 		return {
-			username,
+			...baseOptions,
 			password: database.password,
-			account,
-			database: default_database,
-			warehouse,
-			role,
-			schema,
 			authenticator: database.okta_url
 		};
 	} else {
 		return {
-			username,
-			password: database.password,
-			account,
-			database: default_database,
-			warehouse,
-			schema,
-			role
+			...baseOptions,
+			password: database.password
 		};
 	}
 };
@@ -378,6 +379,48 @@ module.exports.options = {
 					type: 'string',
 					secret: true,
 					required: true
+				}
+			}
+		}
+	},
+	proxy: {
+		title: 'Connect through an authenticated proxy?',
+		type: 'boolean',
+		secret: false,
+		required: false,
+		nest: true,
+		children: {
+			[true]: {
+				host: {
+					title: 'Host',
+					type: 'string',
+					secret: false,
+					required: true
+				},
+				port: {
+					title: 'Port',
+					type: 'number',
+					secret: false,
+					required: true
+				},
+				username: {
+					title: 'Username',
+					type: 'string',
+					secret: true,
+					shown: true,
+					required: false
+				},
+				password: {
+					title: 'Password',
+					type: 'string',
+					secret: true,
+					required: false
+				},
+				protocol: {
+					title: 'Protocol',
+					type: 'string',
+					secret: false,
+					required: false
 				}
 			}
 		}
