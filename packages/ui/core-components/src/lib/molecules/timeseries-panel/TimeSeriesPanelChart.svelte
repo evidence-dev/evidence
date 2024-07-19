@@ -3,6 +3,7 @@
 	import { ToggleGroup } from 'bits-ui';
 
 	let fakeData = [
+		{ date: '2024-01-02', value: 0.931 },
 		{ date: '2024-01-01', value: 0.941 },
 		{ date: '2024-01-02', value: 0.931 },
 		{ date: '2024-01-03', value: 0.924 },
@@ -159,35 +160,35 @@
 			}
 		};
 	};
+	let selectedTimeRange = '1Y';
 </script>
 
-<div class="px-2 flex flex-col gap-2">
-	<div class="relative">
-		<div class="absolute top-0 left-2 z-10">
-			<div class="text-lg font-bold text-gray-800">ARR</div>
-			<span class="text-sm font-light text-gray-700 rounded">$4.28M</span>
-		</div>
-		<div class="h-full w-full min-h-32 rounded-lg overflow-clip" use:makeChart>
+<div class="p-2 relative ">
+	<div class="absolute top-2 left-2 z-10 bg-gradient-to-br from-gray-50/90 via-gray-50/60 to-gray-50/30 rounded pr-3">
+		<span class="block font-bold text-gray-800">ARR</span>
+		<span class="block text-sm font-light text-gray-800 rounded">$4.28M</span>
+	</div>
+	<div class="flex flex-col justify-between">
+		<div class="min-h-32 flex-grow rounded-lg overflow-clip relative" use:makeChart>
 			<div
-				class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
-			></div>
+				class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
+			/>
+		</div>
+		<div>
+			<ToggleGroup.Root
+				class="flex gap-1 text-xs text-gray-600 font-light justify-end z-20"
+				type="single"
+				bind:value={selectedTimeRange}
+			>
+				{#each ['1W', '1M', '3M', '1Y', 'YTD', 'All'] as timeRange (timeRange)}
+					<ToggleGroup.Item
+						value={timeRange}
+						class="hover:bg-gray-100 py-0.5 px-3 rounded cursor-pointer data-[state=on]:bg-gray-100 data-[state=on]:text-gray-900 data-[state=on]:font-medium transition-all duration-200"
+					>
+						{timeRange}
+					</ToggleGroup.Item>
+				{/each}
+			</ToggleGroup.Root>
 		</div>
 	</div>
-	<ToggleGroup.Root class="flex gap-4 text-xs text-gray-600 pt-1 justify-end">
-		<ToggleGroup.Item value="1M" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
-			>1M</ToggleGroup.Item
-		>
-		<ToggleGroup.Item value="3M" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
-			>3M</ToggleGroup.Item
-		>
-		<ToggleGroup.Item value="1Y" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
-			>1Y</ToggleGroup.Item
-		>
-		<ToggleGroup.Item value="YTD" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
-			>YTD</ToggleGroup.Item
-		>
-		<ToggleGroup.Item value="All" class="hover:bg-gray-200 p-1 rounded cursor-pointer"
-			>All</ToggleGroup.Item
-		>
-	</ToggleGroup.Root>
 </div>

@@ -7,9 +7,9 @@
 </script>
 
 <div
-	class="rounded-xl p-2 grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-4 bg-gradient-to-tr from-gray-50 to-gray-50 mb-4"
+	class="rounded-xl p-2 grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-4 bg-gray-50 mb-4"
 >
-	<div class="">
+	<div>
 		{#each ['ARR', 'WAU', 'Cloud WAU', 'Week 4 Retention', 'GH Stars'] as metric}
 			{#if metric === 'ARR'}
 				<div
