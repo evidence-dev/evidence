@@ -66,7 +66,7 @@ export class ReferenceAreaStore {
 				borderColor
 			} = config;
 
-			if (Query.isQuery(data)) {
+			if (Query.isQuery(data) && !data.dataLoaded) {
 				await data.fetch();
 			}
 

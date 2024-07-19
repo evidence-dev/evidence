@@ -51,7 +51,7 @@ export class ReferenceLineStore {
 		try {
 			let { data, x, y, x2, y2, color, labelColor, lineColor, label, hideValue } = config;
 
-			if (Query.isQuery(data)) {
+			if (Query.isQuery(data) && !data.dataLoaded) {
 				await data.fetch();
 			}
 

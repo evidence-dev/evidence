@@ -67,7 +67,7 @@ export class ReferencePointStore {
 				align
 			} = config;
 
-			if (Query.isQuery(data)) {
+			if (Query.isQuery(data) && !data.dataLoaded) {
 				await data.fetch();
 			}
 
