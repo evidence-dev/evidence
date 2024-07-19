@@ -549,10 +549,7 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 ```
 
 ### X-axis from Data
-<!-- remove -->
-<img src="/img/refarea-x-multi-data.png"  width='600px'/>
 
-<!-- Bug? -->
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
     <ReferenceArea data={multiple_dates} xMin=start_date xMax=end_date label=campaign_name/>
 </LineChart>
