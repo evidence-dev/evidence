@@ -32,7 +32,7 @@ schema:
     category: date
     item: recent
     options:
-      - days: 365
+      - days: 1000
   regulator:
     category: location
     item: country

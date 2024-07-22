@@ -10,12 +10,17 @@
 
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
-
-	import { fakerSeries } from '$lib/faker-data-queries.js';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 </script>
 
 <Story name="Basic Usage">
-	<TimeSeriesPanel data={fakerSeries.airlines.flights.store} name="BasicUsage" />
+	<TimeSeriesPanel
+		data={Query.create(
+			'SELECT departure_date::date as date, count(*)*power(1.001,row_number() OVER ()) as growing_value, count(*)-100*power(1.001,row_number() OVER ()) as declining_value FROM series_demo_source.flights group by all ',
+			query,
+			{ disableCache: true }
+		)}
+		name="BasicUsage"
+	/>
 </Story>
