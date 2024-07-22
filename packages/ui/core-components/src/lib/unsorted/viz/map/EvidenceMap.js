@@ -308,7 +308,6 @@ export class EvidenceMap {
 	 */
 	buildTooltip(item, tooltip) {
 		let tooltipCode = '';
-		console.log(tooltip);
 
 		let processedTooltip = tooltip.map((item) => ({
 			id: item.id,
