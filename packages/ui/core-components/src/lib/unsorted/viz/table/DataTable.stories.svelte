@@ -18,7 +18,17 @@
 </Story>
 
 <Story name="With Search">
-	{@const data = Query.create(`SELECT * from flights`, query)}
+	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
+	<DataTable {data} title="Flights" search>
+		<Column id="id" title="ID" />
+		<Column id="airline" title="Airline" />
+		<Column id="departure_airport" title="Departure Airport" />
+		<Column id="arrival_airport" title="Arrival Airport" />
+	</DataTable>
+</Story>
+
+<Story name="With Search (LIMIT 100000)">
+	{@const data = Query.create(`SELECT * from flights LIMIT 100000`, query)}
 	<DataTable {data} title="Flights" search>
 		<Column id="id" title="ID" />
 		<Column id="airline" title="Airline" />

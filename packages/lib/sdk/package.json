@@ -1,17 +1,11 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "1.3.4",
+	"version": "1.3.6",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js"
 	},
 	"exports": {
-		".": {
-			"default": "./src/index.js",
-			"import": "./src/index.js",
-			"require": null,
-			"types": "./types/index.d.ts"
-		},
 		"./ambient": {
 			"default": null,
 			"import": null,
@@ -42,15 +36,20 @@
 			"import": "./src/build-dev/vite/plugins.js",
 			"types": "./types/build-dev/vite/plugins.js",
 			"require": null
+		},
+		"./meta": {
+			"default": "./src/meta.js",
+			"import": "./src/meta.js",
+			"require": null,
+			"types": "./src/meta.js"
 		}
 	},
 	"scripts": {
-		"prepack": "npm run check && npm run build",
 		"test": "vitest",
 		"check:types": "tsc -p tsconfig.json --noEmit",
 		"check": "tsc -p tsconfig.json --noEmit && eslint src",
-		"build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-		"build": "tsc -p tsconfig.json --emitDeclarationOnly",
+		"build:types": "npm run check && tsc -p tsconfig.json --emitDeclarationOnly",
+		"build": "npm run check && tsc -p tsconfig.json --emitDeclarationOnly",
 		"format": "prettier src -w",
 		"lint": "eslint src --fix",
 		"cli": "node ./src/cli.js"

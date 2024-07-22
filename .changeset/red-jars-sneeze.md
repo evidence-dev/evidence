@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-updated checkbox stories
+Allows using total labels without series labels

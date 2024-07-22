@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Added CalendarHeatmap Stories
+added boxplot stories

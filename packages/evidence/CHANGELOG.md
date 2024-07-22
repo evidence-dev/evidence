@@ -1,5 +1,29 @@
 # @evidence-dev/evidence
 
+## 39.1.1
+
+### Patch Changes
+
+- Updated dependencies [3571b0b3a]
+  - @evidence-dev/sdk@1.3.6
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 39.1.0
+
+### Minor Changes
+
+- 804949397: frontmatter title option sets breadcrumb
+- 7cb558c32: allow for dynamic breadcrumbs via frontmatter
+
+### Patch Changes
+
+- db8326efa: Re-added entry detection to evidencemeta, fixes SPA mode
+- 3b2e06a0b: Remove unnecessary core-component and component-utilities peer dependencies.
+- Updated dependencies [08818477d]
+- Updated dependencies [db8326efa]
+  - @evidence-dev/sdk@1.3.5
+  - @evidence-dev/plugin-connector@2.1.6
+
 ## 39.0.2
 
 ### Patch Changes
