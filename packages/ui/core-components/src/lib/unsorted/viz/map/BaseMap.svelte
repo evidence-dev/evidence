@@ -89,13 +89,13 @@
 {/if}
 {#if link}
 	<QueryLoad {data} let:loaded>
-		<svelte:fragment slot="skelton"></svelte:fragment>
+		<svelte:fragment slot="skeleton"></svelte:fragment>
 		<InvisibleLinks data={loaded} {link} />
 	</QueryLoad>
 {/if}
 {#if linkCol}
 	<QueryLoad {data} let:loaded>
-		<svelte:fragment slot="skelton"></svelte:fragment>
+		<svelte:fragment slot="skeleton"></svelte:fragment>
 		<InvisibleLinks data={loaded} link={linkCol} />
 	</QueryLoad>
 {/if}

@@ -204,6 +204,7 @@ export class EvidenceMap {
 					//handles map drilldowns
 					if (link) {
 						window.location.href = link;
+						//Prevents zoom in leaflet layer before navigating to another page
 						this.map.doubleClickZoom.disable();
 					}
 				});
@@ -273,6 +274,7 @@ export class EvidenceMap {
 			//handles map drilldowns
 			if (link) {
 				window.location.href = link;
+				//Prevents zoom in leaflet markers before navigating to another page
 				this.map.doubleClickZoom.disable();
 			}
 		});
