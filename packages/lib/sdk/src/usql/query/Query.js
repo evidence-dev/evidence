@@ -1216,9 +1216,9 @@ DESCRIBE ${this.text.trim()}
 				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
 				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
 				const exactSubMatch =
-					// escapedSearchTerm.length >= 4
-					taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`;
-				// : taggedSql`0`;
+					escapedSearchTerm.length >= 1
+						? taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`
+						: taggedSql`0`;
 				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
 			})
 			.join(',');
