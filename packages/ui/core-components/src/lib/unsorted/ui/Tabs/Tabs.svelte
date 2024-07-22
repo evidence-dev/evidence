@@ -8,7 +8,7 @@
 
 	const classes = {
 		notActive:
-			'border-gray-100 border-2 text-gray-600 border-b-2 bg-gray-50 border-b-gray-200 hover:text-gray-800 hover:bg-gray-200 hover:border-b-gray-400',
+			'border-gray-100 text-gray-600 border-b-2 bg-gray-50 border-b-gray-200 hover:text-gray-800 hover:bg-gray-200 hover:border-b-gray-400',
 		active: 'text-black border-b-2 border-[--borderColor] bg-[--bgColor]'
 	};
 
