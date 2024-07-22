@@ -1,0 +1,24 @@
+{
+	"name": "@evidence-dev/motherduck",
+	"version": "1.0.2",
+	"description": "",
+	"main": "index.cjs",
+	"keywords": [
+		"motherduck",
+		"duckdb",
+		"evidence",
+		"evidence-datasource"
+	],
+	"author": "Brian Donald",
+	"license": "MIT",
+	"dependencies": {
+		"@evidence-dev/db-commons": "workspace:*",
+		"@evidence-dev/duckdb": "workspace:*"
+	},
+	"evidence": {
+		"datasources": [
+			"motherduck"
+		],
+		"icon": "Motherduck"
+	}
+}

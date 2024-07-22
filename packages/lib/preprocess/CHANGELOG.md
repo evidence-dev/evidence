@@ -1,5 +1,18 @@
 # @evidence-dev/preprocess
 
+## 5.1.3
+
+### Patch Changes
+
+- d6b25b02c: Fix source query triggering HMR on the page
+- 6cdedceb0: Remove db-orchestrator
+
+## 5.1.2
+
+### Patch Changes
+
+- 87e56af2: Handle noResolve state while on the server
+
 ## 5.1.1
 
 ### Patch Changes

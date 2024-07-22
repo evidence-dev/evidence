@@ -3,7 +3,7 @@ import {
 	tableFromIPC,
 	initDB,
 	setParquetURLs,
-	query,
+	query as usqlQuery,
 	updateSearchPath,
 	arrowTableToJSON
 } from '@evidence-dev/universal-sql/client-duckdb';
@@ -83,7 +83,7 @@ const dummy_pages = new Map();
 
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({ fetch, route, params, url }) => {
-	const [customFormattingSettings, pagesManifest, evidencemeta] = await Promise.all([
+	const [{ customFormattingSettings }, pagesManifest, evidencemeta] = await Promise.all([
 		fetch('/api/customFormattingSettings.json/GET.json').then((x) => x.json()),
 		fetch('/api/pagesManifest.json').then((x) => x.json()),
 		fetch(`/api/${route.id}/evidencemeta.json`)
@@ -121,26 +121,44 @@ export const load = async ({ fetch, route, params, url }) => {
 		data = await getPrerenderedQueries(routeHash, paramsHash, fetch);
 	}
 
+	/** @type {App.PageData["__db"]["query"]} */
+	function query(sql, { query_name, callback = (x) => x } = {}) {
+		if (browser) {
+			return (async () => {
+				await database_initialization;
+				const result = await usqlQuery(sql);
+				return callback(result);
+			})();
+		}
+
+		return callback(
+			usqlQuery(sql, {
+				route_hash: routeHash,
+				additional_hash: paramsHash,
+				query_name,
+				prerendering: building
+			})
+		);
+	}
+
+	let tree = pagesManifest;
+	for (const part of (route.id ?? '').split('/').slice(1)) {
+		tree = tree.children[part];
+		if (!tree) break;
+		if (tree.frontMatter?.title) {
+			tree.title = tree.frontMatter.title;
+		} else if (tree.frontMatter?.breadcrumb) {
+			let { breadcrumb } = tree.frontMatter;
+			for (const [param, value] of Object.entries(params)) {
+				breadcrumb = breadcrumb.replaceAll(`\${params.${param}}`, value);
+			}
+			tree.title = (await query(breadcrumb))[0]?.breadcrumb;
+		}
+	}
+
 	return /** @type {App.PageData} */ ({
 		__db: {
-			query(sql, { query_name, callback = (x) => x } = {}) {
-				if (browser) {
-					return (async () => {
-						await database_initialization;
-						const result = await query(sql);
-						return callback(result);
-					})();
-				}
-
-				return callback(
-					query(sql, {
-						route_hash: routeHash,
-						additional_hash: paramsHash,
-						query_name,
-						prerendering: building
-					})
-				);
-			},
+			query,
 			async load() {
 				return database_initialization;
 			},

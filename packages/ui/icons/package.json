@@ -1,0 +1,31 @@
+{
+	"name": "@evidence-dev/icons",
+	"version": "1.0.1",
+	"description": "",
+	"main": "./dist/index.js",
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"scripts": {
+		"build": "node index.js && tsc -p tsconfig.json"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"@steeze-ui/icons": "^2.1.0"
+	},
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"svelte": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"typescript": "^5.1.3"
+}

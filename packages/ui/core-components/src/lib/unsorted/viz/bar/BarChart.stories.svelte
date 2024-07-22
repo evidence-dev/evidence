@@ -22,6 +22,18 @@
 				type: 'string',
 				options: ['stacked', 'grouped', 'stacked100'],
 				control: { type: 'select' }
+			},
+			labels: {
+				type: 'boolean',
+				control: { type: 'boolean' }
+			},
+			stackTotalLabel: {
+				type: 'boolean',
+				control: { type: 'boolean' }
+			},
+			seriesLabels: {
+				type: 'boolean',
+				control: { type: 'boolean' }
 			}
 		},
 		args: {
@@ -68,6 +80,9 @@
 </Template>
 
 <Story name="Base" />
+<Story name="Labels" args={{ labels: true }} />
+<Story name="Total Labels Only" args={{ labels: true, seriesLabels: false }} />
+
 <!-- 
 <Story name="Query" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric", query), x: "x", y: "y", series: "series"}} />
 <Story name="Query (X Gaps)" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric_gaps", query), x: "x", y: "y", series: "series"}} />

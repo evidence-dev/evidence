@@ -1,14 +1,20 @@
 ---
 title: US Map
 sidebar_position: 1
+queries:
+- state_population.sql
 ---
 
-<img src='/img/map-blue2.png' width='500px'/>
+<USMap
+    data={state_population}
+    state=state_name
+    value=population
+/>
 
 ```html
 <USMap
-    data={state_pop}
-    state=name
+    data={state_population}
+    state=state_name
     value=population
 />
 ```
@@ -19,33 +25,59 @@ sidebar_position: 1
 
 `colorScale=blue`
 
-<img src='/img/map-blue2.png' width='500px'/>
+<USMap
+    data={state_population}
+    state=state_name
+    value=population
+    colorScale=blue
+/>
 
 `colorScale=green`
 
-<img src='/img/map-green2.png' width='500px'/>
+<USMap
+    data={state_population}
+    state=state_name
+    value=population
+    colorScale=green
+/>
 
 `colorScale=red`
 
-<img src='/img/map-red2.png' width='500px'/>
+<USMap
+    data={state_population}
+    state=state_name
+    value=population
+    colorScale=red
+/>
 
 `colorScale=bluegreen`
 
-<img src='/img/map-bluegreen2.png' width='500px'/>
+<USMap
+    data={state_population}
+    state=state_name
+    value=population
+    colorScale=bluegreen
+/>
 
 ### Custom Color Scale
 
 ```html
 <USMap
-    data={state_pop}
-    state=name
+    data={state_population}
+    state=state_name
     value=population
     colorPalette={['maroon','white','#1c0d80']}
     legend=true
 />
 ```
 
-<img src='/img/usmap-custom-color2.png' width='500px'/>
+<USMap
+    data={state_population}
+    state=state_name
+    value=population
+    colorPalette={['maroon','white','#1c0d80']}
+    legend=true
+/>
 
 ### Legend
 
@@ -53,23 +85,27 @@ sidebar_position: 1
 
 ```html
 <USMap
-    data={state_pop}
-    state=name
+    data={state_population}
+    state=state_name
     value=population
     legend=true
 />
 ```
 
-<img src='/img/map-default-legend.png' width='500px'/>
-
+<USMap
+    data={state_population}
+    state=state_name
+    value=population
+    legend=true
+/>
 
 
 #### With Filter
 
 ```html
 <USMap
-    data={state_pop}
-    state=name
+    data={state_population}
+    state=state_name
     value=population
     colorPalette={['maroon','white','#1c0d80']}
     legend=true
@@ -77,8 +113,14 @@ sidebar_position: 1
 />
 ```
 
-<img src='/img/map-filter-legend.gif' width='500px'/>
-
+<USMap
+    data={state_population}
+    state=state_name
+    value=population
+    colorPalette={['maroon','white','#1c0d80']}
+    legend=true
+    filter=true
+/>
 
 ### Links
 
@@ -96,21 +138,13 @@ sidebar_position: 1
 
 <img src='/img/map-links.gif' width='500px'/>
 
-### Full State Names
-
-```html
-<USMap data={map_data} state=state_name value=sales_usd />
-```
-
-<img src='/img/map-fullname.png' width='500px'/>
-
 ### State Abbreviations
 
 ```html
 <USMap data={map_data} state=state_abbrev value=sales_usd abbreviations=true />
 ```
 
-<img src='/img/map-abbrev.png' width='500px'/>
+<USMap data={state_population} state=state_abbrev value=population abbreviations=true />
 
 
 ## Options

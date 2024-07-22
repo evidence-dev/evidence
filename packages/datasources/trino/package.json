@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/trino",
-	"version": "1.0.5",
+	"version": "1.0.7",
 	"description": "Trino driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -16,7 +16,8 @@
 	"evidence": {
 		"datasources": [
 			"trino"
-		]
+		],
+		"icon": "Trino"
 	},
 	"keywords": [
 		"evidence",
