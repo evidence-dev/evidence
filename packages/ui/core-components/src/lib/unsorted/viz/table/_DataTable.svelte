@@ -349,8 +349,6 @@
 
 		displayedData = filteredData.slice(index, index + rows);
 		displayedPageLength = displayedData.length;
-		//Might want to look for why page count doesnt update with filter
-		//might be related to why search isnt registering char by char e.g "qa" = no data "qatar" = data
 		if (pageCount < currentPage) {
 			goToPage(pageCount - 1);
 		} else if (currentPage < 1) {
