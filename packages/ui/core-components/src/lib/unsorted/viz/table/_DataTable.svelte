@@ -28,7 +28,7 @@
 	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
-	import debounce from 'lodash.debounce';
+	import { debounce } from 'perfect-debounce';
 
 	// Set up props store
 	let props = writable({});
@@ -211,15 +211,21 @@
 
 	$: if (searchFactory) {
 		if (searchValue) {
+			let searchCol =
+				$props.columns.length > 0
+					? $props.columns.map((c) => c.id)
+					: data.columns.map((c) => c.column_name);
 			searchFactory(
 				data.search(
 					searchValue,
-					data.columns.map((c) => c.column_name),
+					searchCol,
 					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
 				),
-				data
+				data.opts
 			);
-		} else filteredData = data;
+		} else {
+			searchFactory(data, data.opts);
+		}
 	}
 
 	$: if (search && !Query.isQuery(data)) {
@@ -340,10 +346,13 @@
 
 	$: if (paginated) {
 		pageCount = Math.ceil(filteredData.length / rows);
+
 		displayedData = filteredData.slice(index, index + rows);
 		displayedPageLength = displayedData.length;
 		if (pageCount < currentPage) {
 			goToPage(pageCount - 1);
+		} else if (currentPage < 1) {
+			goToPage(0);
 		}
 	} else {
 		currentPage = 1;

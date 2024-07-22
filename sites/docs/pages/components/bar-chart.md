@@ -415,7 +415,13 @@ queries:
 />
 <PropListing
     name=stackTotalLabel
-    description="Whether to show a total at the top of stacked bar chart"
+    description="If using labels, whether to show a total at the top of stacked bar chart"
+    options={['true', 'false']}
+    defaultValue=true
+/>
+<PropListing
+    name=seriesLabels
+    description="If using labels, whether to show series labels"
     options={['true', 'false']}
     defaultValue=true
 />
