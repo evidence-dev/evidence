@@ -2,6 +2,8 @@
 	import { init, graphic } from 'echarts';
 	import { RadioGroup } from 'bits-ui';
 	import { blur, fly, fade } from 'svelte/transition';
+	import { cubicInOut } from 'svelte/easing';
+	import { crossfade } from 'svelte/transition';
 
 	export let data;
 	export let selectedMetric = undefined;
@@ -62,7 +64,7 @@
 							if (params.seriesData && params.seriesData.length > 0) {
 								const value = params.seriesData[0].value[selectedMetric];
 								currentValue = Number(value.toFixed(2));
-							} 
+							}
 							return '';
 						}
 					}
@@ -121,44 +123,50 @@
 	}
 
 	let selectedTimeRange = '1Y';
+
+	const [send, receive] = crossfade({
+		duration: 200,
+		easing: cubicInOut
+	});
 </script>
 
-<div class="p-2 relative">
-	<div
-		class="absolute top-2 left-2 z-10 bg-gradient-to-br from-gray-50/90 via-gray-50/60 to-gray-50/30 rounded pr-3"
-	>
-		<span class="block font-bold text-gray-800">ARR</span>
-		{#key currentValue}
-			<span class="block text-sm font-light text-gray-800 rounded">${currentValue}M</span>
-		{/key}
+<div class="grid grid-rows-6 gap-y-1">
+	<div class="row-span-2">
+		<div class="font-bold text-sm text-gray-800">ARR</div>
+		<div class="text-xs font-light text-gray-800">${currentValue}M</div>
 	</div>
-	<div class="flex flex-col justify-between">
+	<div class="row-span-3">
 		{#key selectedMetric}
-			<div
-				class="min-h-32 flex-grow rounded-lg overflow-clip relative"
-				use:makeChart
-				in:fade|local
-			>
+			<div class="h-full rounded-lg overflow-clip relative" use:makeChart in:fade|local>
 				<div
 					class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
 				/>
 			</div>
 		{/key}
-		<div>
-			<RadioGroup.Root
-				class="flex gap-1 text-xs text-gray-600 font-light justify-end z-20"
-				type="single"
-				bind:value={selectedTimeRange}
-			>
-				{#each ['1W', '1M', '3M', '1Y', 'YTD', 'All'] as timeRange (timeRange)}
-					<RadioGroup.Item
-						value={timeRange}
-						class="hover:bg-gray-100 py-0.5 px-3 rounded cursor-pointer data-[state=checked]:bg-gray-100 data-[state=checked]:shadow-inner  data-[state=checked]:text-gray-900 text-gray-400 font-medium transition-all duration-200"
-					>
-						{timeRange}
-					</RadioGroup.Item>
-				{/each}
-			</RadioGroup.Root>
-		</div>
+	</div>
+	<div class="row-span-1">
+		<RadioGroup.Root
+			class="flex gap-1 text-xs text-gray-600 font-light justify-end"
+			type="single"
+			bind:value={selectedTimeRange}
+			orientation="horizontal"
+		>
+			{#each ['1W', '1M', '3M', '1Y', 'YTD', 'All'] as timeRange (timeRange)}
+				<RadioGroup.Item
+					value={timeRange}
+					class="hover:bg-gray-100 py-1 px-3 rounded cursor-pointer  data-[state=checked]:text-gray-900 text-gray-400 font-medium transition-all relative "
+				>
+					{timeRange}
+
+					{#if selectedTimeRange === timeRange}
+						<div
+							in:send={{ key: 'trigger' }}
+							out:receive={{ key: 'trigger' }}
+							class="absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-gray-600"
+						/>
+					{/if}
+				</RadioGroup.Item>
+			{/each}
+		</RadioGroup.Root>
 	</div>
 </div>

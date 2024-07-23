@@ -16,7 +16,7 @@
 	let queryString = `
 SELECT 
 	departure_date::date as date, 
-	count(*)*power(1.001,row_number() OVER ()) as arr, 
+	greatest(200,count(*)*power(1.001,row_number() OVER ())) as arr, 
 	count(*)-100*power(1.002,row_number() OVER ()) as wau, 
 	count(*)*power(1.001,row_number() OVER ()) as cloud_wau, 
 	count(*)-100*power(1.001,row_number() OVER ()) as week_4_retention, 
