@@ -58,7 +58,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				// Give initial states for these variables
 				/** @type {boolean} */
 				let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				/** @type {string]} */
+				/** @type {string} */
 				let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 
 
