@@ -1,5 +1,19 @@
 # @evidence-dev/mssql
 
+## 1.0.9
+
+### Patch Changes
+
+- 16b69f04e: Update mssql to v11 to resolve security vulnerability in @azure/identity
+
+## 1.0.8
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/db-commons@1.0.5
+
 ## 1.0.7
 
 ### Patch Changes

@@ -100,6 +100,33 @@ NODE_OPTIONS="--max-old-space-size=4096" npm run sources
 set NODE_OPTIONS=--max-old-space-size=4096 && npm run sources
 ```
 
+### Build Time Variables
+
+You can pass variables to your source queries at build time using environment variables of the format `EVIDENCE_VAR__variable_name=value`.
+
+`.env`
+```bash
+EVIDENCE_VAR__client_id=123
+```
+
+Then in your **source queries**, you can access the variable using `${}` syntax:
+
+```sql
+select * from customers
+where client_id = ${client_id}
+```
+
+This will interpolate the value of `client_id` into the query:
+
+```sql
+select * from customers
+where client_id = 123
+```
+
+Note that these variables are only accessible in source queries, not in file queries or queries in markdown files.
+
+
+
 ## Supported data sources
 
 Evidence supports:
@@ -212,6 +239,33 @@ postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootc
 ```
 
 Replace the various `{properties}` as needed, and replace `/path/to/file/ca-certificate.crt` with the path and filename of your certificate.
+
+Currently the UI does not support adding ssl with client certificates as authentication method. If you want to use this, you need to manually change your connection.yaml to:
+
+```yaml
+name: mydatabase
+type: postgres
+options:
+  host: example.myhost.com
+  port: 5432
+  database: mydatabase
+  ssl:
+    sslmode: require
+```
+
+and your connection.options.yaml to:
+
+```yaml
+user: "USERNAME_AS_BASE64"
+ssl:
+  rejectUnauthorized: true
+  key: "USER_KEY_AS_BASE64"
+  cert: "USER_CERT_AS_BASE64"
+
+```
+
+Here you encode the full user key and cert file as base64 and put them in the correct options. If you do not want to verify the server certificate, for example because you have a self signed certificate, then change rejectUnauthorized to false.
+
 
 ### Trino
 

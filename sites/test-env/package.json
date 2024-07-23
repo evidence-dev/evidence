@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.38",
+	"version": "3.0.48",
 	"private": true,
 	"scripts": {
 		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 evidence build",
@@ -11,10 +11,12 @@
 	},
 	"engines": {
 		"npm": ">=7.0.0",
-		"node": ">=14.0.0"
+		"node": ">=18.0.0"
 	},
 	"type": "module",
 	"dependencies": {
+		"@evidence-dev/sdk": "workspace:*",
+		"@evidence-dev/tailwind": "workspace:*",
 		"@evidence-dev/component-utilities": "workspace:*",
 		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/csv": "workspace:*",

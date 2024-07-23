@@ -6,7 +6,10 @@ const BaseDatasourceSchema = z.object({
 	options: DatasourceOptionSpecSchema,
 	testConnection: z
 		.function()
-		.args(z.any({ description: 'Connection Options' }))
+		.args(
+			z.any({ description: 'Connection Options' }),
+			z.string({ description: 'Datasource directory' })
+		)
 		.returns(z.promise(z.union([z.literal(true), z.object({ reason: z.string() })])))
 });
 
@@ -31,4 +34,4 @@ const AdvancedDatasourceSchema = BaseDatasourceSchema.extend({
 });
 
 /** @typedef {z.infer<typeof DatasourceSchema>} Datasource */
-export const DatasourceSchema = SimpleDatasourceSchema.or(AdvancedDatasourceSchema);
+export const DatasourceSchema = AdvancedDatasourceSchema.or(SimpleDatasourceSchema);

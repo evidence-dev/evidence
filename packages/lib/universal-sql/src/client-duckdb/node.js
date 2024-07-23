@@ -103,17 +103,24 @@ export async function emptyDbFs(targetGlob) {
 export async function setParquetURLs(urls, append = false) {
 	if (!append) await emptyDbFs('*');
 
+	const pathDelimiterRegex = /[\\/]/;
+
 	if (process.env.VITE_EVIDENCE_DEBUG) console.log(`Updating Parquet URLs`);
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 		for (const url of urls[source]) {
-			const table = url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
+			const table = url.split(pathDelimiterRegex).at(-1).slice(0, -'.parquet'.length);
 			const file_name = `${source}_${table}.parquet`;
 			if (append) {
 				await emptyDbFs(file_name);
 				await emptyDbFs(url);
 			}
-			db.registerFileURL(file_name, url, DuckDBDataProtocol.NODE_FS, false);
+			db.registerFileURL(
+				file_name,
+				url.split(pathDelimiterRegex).join(path.sep),
+				DuckDBDataProtocol.NODE_FS,
+				false
+			);
 			connection.query(
 				`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
 			);

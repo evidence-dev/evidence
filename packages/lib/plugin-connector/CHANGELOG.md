@@ -1,5 +1,22 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.6
+
+### Patch Changes
+
+- c3b86ef5f: Updated sub-source-vars logic to handle multiple env vars in the same string
+
+## 2.1.5
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/universal-sql@2.1.3
+  - @evidence-dev/db-commons@1.0.5
+  - @evidence-dev/telemetry@2.1.1
+
 ## 2.1.4
 
 ### Patch Changes

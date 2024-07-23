@@ -1,5 +1,19 @@
 # @evidence-dev/snowflake
 
+## 1.1.0
+
+### Minor Changes
+
+- 0de6bc76c: Add Proxy config section/options to snowflake connector
+
+## 1.0.7
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/db-commons@1.0.5
+
 ## 1.0.6
 
 ### Patch Changes

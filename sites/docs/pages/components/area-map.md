@@ -64,6 +64,33 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 />
 ```
 
+### Using an Online GeoJSON
+
+```sql orders_by_state
+select state, count(*) as orders
+from orders
+where state != 'Alaska' and state != 'Hawaii'
+group by state
+```
+
+<AreaMap 
+    data={orders_by_state} 
+    areaCol=state
+    geoJsonUrl=https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson
+    geoId=name
+    value=orders
+/>
+
+```svelte
+<AreaMap 
+    data={orders_by_state} 
+    areaCol=state
+    geoJsonUrl=https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson
+    geoId=name
+    value=orders
+/>
+```
+
 ### Custom Tooltip
 
 #### `tooltipType=hover`
@@ -77,8 +104,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     height=250
     tooltip={[
         {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'zip_code', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
     ]}
 />
 
@@ -93,8 +119,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     height=250
     tooltip={[
         {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'zip_code', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
     ]}
 />
 
@@ -275,6 +300,48 @@ where zip_code = ${inputs.my_area_map.zip_code} OR ${inputs.my_area_map.zip_code
 ## Required GeoJSON Data Structure
 The GeoJSON data you pass to the map must be a feature collection. [See here for an example](https://gist.github.com/sgillies/1233327#file-geojson-spec-1-0-L50)
 
+## Map Resources
+
+```sql all_geojson_urls
+select * exclude(properties)
+from geojson_urls
+order by scale, category, file
+```
+
+```sql useful_geojson_urls
+select * 
+from ${all_geojson_urls}
+where category in ('political_countries', 'political_states')
+or file ilike 'populated_places%'
+order by scale desc, category, file
+```
+
+Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com/) project, and hosted by [GeoJSON.xyz](https://geojson.xyz/).
+
+### Country, State, and City Locations
+
+<DataTable data={useful_geojson_urls} rows=100>
+    <Column id=file/>
+    <Column id=category/>
+    <Column id=scale/>
+    <Column id=summary/>
+    <Column id=size fmt='0.0,," MB"'/>
+    <Column id=url contentType=link title=URL/>
+</DataTable>
+
+<Details title="All GeoJSON Files">
+
+<DataTable data={all_geojson_urls} rows=all compact>
+    <Column id=file/>
+    <Column id=category/>
+    <Column id=scale/>
+    <Column id=summary/>
+    <Column id=size fmt='0.0,," MB"'/>
+    <Column id=url contentType=link title=URL/>
+</DataTable>
+
+</Details>
+
 ## Options
 
 ### Areas
@@ -291,7 +358,11 @@ name="geoJsonUrl"
 required
 options="URL"
 >
-Path to source geoJSON data from - can be a URL or a file in your project. If the file is in your project, store it in a `static` folder in the root of your project.
+
+Path to source geoJSON data from - can be a URL (see [Map Resources](#map-resources)) or a file in your project. 
+
+If the file is in your project, store it in a `static` folder in the root of your project, and reference it as `geoJsonUrl="/your_file.geojson"`
+
 </PropListing>
 
 <PropListing
@@ -305,9 +376,9 @@ Column in the data that specifies the area each row belongs to.
 <PropListing
 name="geoId"
 required
-options="geoJSON field name"
+options="geoJSON property name"
 >
-Column in the GeoJSON that uniquely identifies each feature.
+Property in the GeoJSON that uniquely identifies each feature.
 </PropListing>
 
 <PropListing

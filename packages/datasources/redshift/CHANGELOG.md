@@ -1,5 +1,14 @@
 # @evidence-dev/redshift
 
+## 1.0.6
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/postgres@1.0.6
+  - @evidence-dev/db-commons@1.0.5
+
 ## 1.0.5
 
 ### Patch Changes

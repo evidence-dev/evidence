@@ -1,11 +1,11 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "5.1.2",
+	"version": "5.1.3",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",
 	"engines": {
-		"node": ">=16"
+		"node": ">=18"
 	},
 	"scripts": {
 		"test": "vitest --run",

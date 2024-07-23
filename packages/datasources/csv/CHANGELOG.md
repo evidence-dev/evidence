@@ -1,5 +1,15 @@
 # @evidence-dev/csv
 
+## 1.0.12
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [e74affd64]
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/duckdb@1.0.11
+  - @evidence-dev/db-commons@1.0.5
+
 ## 1.0.11
 
 ### Patch Changes

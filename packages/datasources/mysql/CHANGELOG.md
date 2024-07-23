@@ -1,5 +1,13 @@
 # @evidence-dev/mysql
 
+## 1.1.3
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/db-commons@1.0.5
+
 ## 1.1.2
 
 ### Patch Changes
