@@ -1,6 +1,6 @@
 <script>
 	import { init, graphic } from 'echarts';
-	import { ToggleGroup } from 'bits-ui';
+	import { RadioGroup } from 'bits-ui';
 	import { blur, fly, fade } from 'svelte/transition';
 
 	export let data;
@@ -15,7 +15,6 @@
 		updateChartOptions();
 
 		chart.on('globalout', function () {
-			console.log('mouseout');
 			currentValue = '4.28';
 		});
 
@@ -146,20 +145,20 @@
 			</div>
 		{/key}
 		<div>
-			<ToggleGroup.Root
+			<RadioGroup.Root
 				class="flex gap-1 text-xs text-gray-600 font-light justify-end z-20"
 				type="single"
 				bind:value={selectedTimeRange}
 			>
 				{#each ['1W', '1M', '3M', '1Y', 'YTD', 'All'] as timeRange (timeRange)}
-					<ToggleGroup.Item
+					<RadioGroup.Item
 						value={timeRange}
-						class="hover:bg-gray-100 py-0.5 px-3 rounded cursor-pointer data-[state=on]:bg-gray-100 data-[state=on]:shadow-inner  data-[state=on]:text-gray-900 text-gray-400 font-medium transition-all duration-200"
+						class="hover:bg-gray-100 py-0.5 px-3 rounded cursor-pointer data-[state=checked]:bg-gray-100 data-[state=checked]:shadow-inner  data-[state=checked]:text-gray-900 text-gray-400 font-medium transition-all duration-200"
 					>
 						{timeRange}
-					</ToggleGroup.Item>
+					</RadioGroup.Item>
 				{/each}
-			</ToggleGroup.Root>
+			</RadioGroup.Root>
 		</div>
 	</div>
 </div>

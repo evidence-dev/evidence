@@ -4,47 +4,45 @@
 
 <script>
 	import TimeSeriesPanelChart from './TimeSeriesPanelChart.svelte';
-	export let data;
 	import { QueryLoad } from '../../atoms/query-load/index.js';
+	import { RadioGroup } from 'bits-ui';
 
-	let selectedMetric = 'growing_value';
+	export let data = undefined;
+	export let metrics = undefined;
+
+	let selectedMetric = metrics[0];
 </script>
 
 <QueryLoad {data} let:loaded>
 	<div class="rounded-xl p-2 grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-4 bg-gray-50 mb-4">
-		<div>
-			{#each ['ARR', 'WAU', 'Cloud WAU', 'Week 4 Retention', 'GH Stars'] as metric}
-				{#if metric === 'ARR'}
-					<div
-						class="flex justify-between text-xs rounded py-2 px-2 hover:text-gray-950 last:border-none cursor-pointer select-none"
-						on:click={() => (selectedMetric = 'growing_value')}
-					>
-						<div class="whitespace-nowrap truncate font-semibold">{metric}</div>
-						<div class="flex gap-3 tabular-nums">
-							<span class="font-semibold">{Math.floor(Math.random() * 5000).toLocaleString()}</span>
-							<span class="text-green-600">+{Math.floor(Math.random() * 11).toLocaleString()}</span>
-							<span class="px-3 bg-green-200/40 rounded-sm text-green-700"
-								>+{Math.floor(Math.random() * 10).toLocaleString()}%</span
-							>
-						</div>
-					</div>
-				{:else}
-					<div
-						class="flex justify-between text-xs rounded py-2 px-2 hover:text-gray-950 text-gray-700 last:border-none cursor-pointer"
-						on:click={() => (selectedMetric = 'declining_value')}
-					>
-						<div class="whitespace-nowrap truncate">{metric}</div>
-						<div class="flex gap-3 tabular-nums">
-							<span class="">{Math.floor(Math.random() * 5000).toLocaleString()}</span>
-							<span class="text-green-600">+{Math.floor(Math.random() * 11).toLocaleString()}</span>
-							<span class="px-3 bg-green-200/40 rounded-sm text-green-700"
-								>+{Math.floor(Math.random() * 10).toLocaleString()}%</span
-							>
-						</div>
-					</div>
-				{/if}
-			{/each}
-		</div>
+			<RadioGroup.Root bind:value={selectedMetric} type="single" asChild let:builder>
+				<div
+					class="text-xs py-2 px-2 text-gray-600 grid grid-cols-6 tabular-nums gap-y-3 gap-x-2"
+					use:builder.action
+					{...builder}
+				>
+					{#each metrics as metric}
+						<RadioGroup.Item value={metric} asChild let:builder>
+							<div class="contents cursor-pointer group" use:builder.action {...builder}>
+								<div class="truncate capitalize col-span-3 text-left font-medium shrink">
+									{metric}
+								</div>
+								<div class="text-right">
+									{Math.floor(Math.random() * 5000).toLocaleString()}
+								</div>
+								<div class="text-green-600 text-right">
+									+{Math.floor(Math.random() * 11).toLocaleString()}
+								</div>
+								<div class="text-right">
+									<span class="px-3 bg-green-200/40 rounded-sm text-green-700">
+										+{Math.floor(Math.random() * 10).toLocaleString()}%
+									</span>
+								</div>
+							</div>
+						</RadioGroup.Item>
+					{/each}
+				</div>
+			</RadioGroup.Root>
 		<div class="">
 			<TimeSeriesPanelChart {data} {selectedMetric} />
 		</div>
@@ -56,5 +54,3 @@
 		<!-- No loading state -->
 	</svelte:fragment>
 </QueryLoad>
-
-{selectedMetric}
