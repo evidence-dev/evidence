@@ -70,6 +70,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						} else {
 							${id}InitialStates.initialData = data.${id}
 						}
+						if (data.${id}__DESCRIBE) {
+							${id}InitialStates.knownColumns = data.${id}__DESCRIBE
+						}
 					}
 				} else {
 					// On server
@@ -95,7 +98,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					{ callback: v => {
 						${id} = v
 					}, execFn: queryFunc },
-					{ id: '${id}', initialData: ${id}InitialStates.initialData, initialError: ${id}InitialStates.initialError }
+					{ id: '${id}', ...${id}InitialStates }
 				)
 
 				// Assign a value for the initial run-through
