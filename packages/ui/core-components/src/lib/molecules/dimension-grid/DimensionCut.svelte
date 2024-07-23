@@ -26,7 +26,13 @@
 	let selectedDimensions = getContext('selected-dimensions');
 	let selectedValue;
 
+	//multiple prop
+	let multiple = true;
+	let multipleSelectedValues = [];
+	
+	
 	$: if (selectedValue !== undefined) {
+		console.log('running')
 		selectedDimensions.update((v) => {
 			let newV = v.filter((d) => d.dimension !== dimension.column_name);
 			newV.push({ dimension: dimension.column_name, value: selectedValue });
@@ -38,11 +44,21 @@
 		});
 	}
 	const updateSelected = (row) => {
-		selectedValue === row.dimensionValue
+		if (multiple) {
+			if (!multipleSelectedValues.includes(row.dimensionValue)) {
+				multipleSelectedValues = [...multipleSelectedValues, row.dimensionValue];
+			} else {
+				multipleSelectedValues = multipleSelectedValues.filter((v) => v !== row.dimensionValue);
+			}
+		} else {
+			selectedValue === row.dimensionValue
 			? (selectedValue = undefined)
 			: (selectedValue = row.dimensionValue);
+		}
 	};
 
+	// $:console.log(selectedValue)
+	
 	// Dimension Cut Query
 	let dimensionCutQuery = getDimensionCutQuery(
 		data,
@@ -116,6 +132,7 @@
 						<DimensionRow
 							{row}
 							{selectedValue}
+							{multipleSelectedValues}
 							value={formatValue(
 								row.metric,
 								columnSummary[0].format,
@@ -124,6 +141,7 @@
 						/>
 					</div>
 				{/each}
+				<p></p>
 			</div>
 		{:else}
 			<p class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded">No Records</p>
