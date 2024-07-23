@@ -58,7 +58,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				// Give initial states for these variables
 				/** @type {boolean} */
 				let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				/** @type {string]} */
+				/** @type {string} */
 				let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 
 
@@ -69,6 +69,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							${id}InitialStates.initialError = data.${id}
 						} else {
 							${id}InitialStates.initialData = data.${id}
+						}
+						if (data.${id}__DESCRIBE) {
+							${id}InitialStates.knownColumns = data.${id}__DESCRIBE
 						}
 					}
 				} else {
@@ -95,7 +98,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					{ callback: v => {
 						${id} = v
 					}, execFn: queryFunc },
-					{ id: '${id}', initialData: ${id}InitialStates.initialData, initialError: ${id}InitialStates.initialError }
+					{ id: '${id}', ...${id}InitialStates }
 				)
 
 				// Assign a value for the initial run-through
