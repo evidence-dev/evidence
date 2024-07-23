@@ -101,10 +101,7 @@
 </script>
 
 <script>
-<<<<<<< HEAD
-=======
 	import { getContext } from 'svelte';
->>>>>>> origin/next
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
@@ -114,9 +111,7 @@
 	import { userEvent, within } from '@storybook/test';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
-	import ReferenceLine from './ReferenceLine.svelte';
-
-	const inputStore = getInputContext();
+	const inputStore = getContext();
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	import ReferenceLine from './ReferenceLine.svelte';
