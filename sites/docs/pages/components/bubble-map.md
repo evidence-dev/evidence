@@ -69,8 +69,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     tooltipType=hover
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
     ]}
 />
 
@@ -87,8 +86,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     tooltipType=hover
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
     ]}
 />
 ```

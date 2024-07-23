@@ -19,4 +19,11 @@ export const dataUrlPrefix =
 
 export const metaDirectory = path.resolve(evidenceDirectory, 'meta');
 
-export const sourcesDirectory = path.resolve(...(inTemplate ? ['..', '..'] : []), 'sources');
+export const projectRoot = path.resolve(...(inTemplate ? ['..', '..'] : []));
+
+export const sourcesDirectory = path.resolve(projectRoot, 'sources');
+
+export const pagesDirectory =
+	'EVIDENCE_PAGES_DIR' in process.env && process.env.EVIDENCE_PAGES_DIR
+		? path.resolve(process.env.EVIDENCE_PAGES_DIR)
+		: path.resolve(projectRoot, 'pages');

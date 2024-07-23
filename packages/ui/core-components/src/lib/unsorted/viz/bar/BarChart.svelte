@@ -96,6 +96,7 @@
 	export let y2LabelFmt = undefined;
 
 	export let stackTotalLabel = undefined;
+	export let seriesLabels = undefined;
 	export let showAllLabels = undefined;
 
 	export let yAxisColor = undefined;
@@ -187,6 +188,7 @@
 		{yLabelFmt}
 		{y2LabelFmt}
 		{stackTotalLabel}
+		{seriesLabels}
 		{showAllLabels}
 		{y2SeriesType}
 	/>

@@ -24,7 +24,7 @@
 	export let data = undefined;
 
 	/**
-	 * @type {import('../colors.js').Color}
+	 * @type {import('../types.js').ReferenceColor}
 	 * @default "grey"
 	 */
 	export let color = 'grey';
@@ -32,7 +32,7 @@
 	/** @type {string | undefined} */
 	export let label = undefined;
 
-	/** @type {import('../colors.js').Color | undefined} */
+	/** @type {import('../types.js').ReferenceColor | undefined} */
 	export let labelColor = undefined;
 
 	/**
@@ -48,7 +48,7 @@
 	export let labelPadding = 5;
 
 	/**
-	 * @type {import('./reference-point.d.ts').LabelPosition}
+	 * @type {import('./types.js').LabelPosition}
 	 * @default "top"
 	 */
 	export let labelPosition = 'top';
@@ -93,12 +93,12 @@
 	export let italic = undefined;
 
 	/**
-	 * @type {import('./reference-point.d.ts').Symbol}
+	 * @type {import('../types.js').Symbol}
 	 * @default "circle"
 	 */
 	export let symbol = 'circle';
 
-	/** @type {import('../colors.js').Color | undefined} */
+	/** @type {import('../types.js').ReferenceColor | undefined} */
 	export let symbolColor = undefined;
 
 	/**

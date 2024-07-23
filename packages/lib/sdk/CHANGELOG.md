@@ -1,5 +1,18 @@
 # @evidence-dev/sdk
 
+## 1.3.6
+
+### Patch Changes
+
+- 3571b0b3a: Update scripts, fix build
+
+## 1.3.5
+
+### Patch Changes
+
+- 08818477d: Export sharedPromise from utils/index.d.ts to get type when importing
+- db8326efa: Minor changes to exports
+
 ## 1.3.4
 
 ### Patch Changes
