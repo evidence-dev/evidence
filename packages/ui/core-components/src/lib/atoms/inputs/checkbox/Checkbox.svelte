@@ -7,6 +7,7 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
+	import { toBoolean } from '../../../utils.js';
 
 	/////
 	// Component Things
@@ -23,9 +24,8 @@
 	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
 
 	export let defaultValue = false;
-	$: defaultValue = defaultValue === 'true' || defaultValue === true;
 
-	$inputs[name] = defaultValue;
+	$: $inputs[name] = toBoolean(defaultValue);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
