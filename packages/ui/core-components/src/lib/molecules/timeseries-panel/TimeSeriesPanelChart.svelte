@@ -132,8 +132,8 @@
 
 <div class="grid grid-rows-6 gap-y-1">
 	<div class="row-span-2">
-		<div class="font-bold text-sm text-gray-800">ARR</div>
-		<div class="text-xs font-light text-gray-800">${currentValue}M</div>
+		<div class="font-bold text-gray-700">ARR</div>
+		<div class="text-sm font-light text-gray-800">${currentValue}M</div>
 	</div>
 	<div class="row-span-3">
 		{#key selectedMetric}
@@ -154,7 +154,7 @@
 			{#each ['1W', '1M', '3M', '1Y', 'YTD', 'All'] as timeRange (timeRange)}
 				<RadioGroup.Item
 					value={timeRange}
-					class="hover:bg-gray-100 py-1 px-3 rounded cursor-pointer  data-[state=checked]:text-gray-900 text-gray-400 font-medium transition-all relative "
+					class="hover:bg-gray-100 py-1 px-3 rounded cursor-pointer  data-[state=checked]:text-gray-700 text-gray-400 font-medium transition-all relative "
 				>
 					{timeRange}
 
@@ -162,7 +162,7 @@
 						<div
 							in:send={{ key: 'trigger' }}
 							out:receive={{ key: 'trigger' }}
-							class="absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-gray-600"
+							class="absolute bottom-0 left-1/2 h-1 rounded-full w-1 -translate-x-1/2 bg-gray-900"
 						/>
 					{/if}
 				</RadioGroup.Item>
