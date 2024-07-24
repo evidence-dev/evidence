@@ -28,15 +28,13 @@ The easiest way to get started is using the [VS Code Extension](https://marketpl
 
 ```bash
 npx degit evidence-dev/template my-project
-cd my-project 
-npm install 
+cd my-project
+npm install
 npm run sources
-npm run dev 
+npm run dev
 ```
 
 Check out the docs for [alternative install methods](https://docs.evidence.dev/getting-started/install-evidence) including Docker, Github Codespaces, and alongside dbt.
-
-
 
 ## Learning More
 
