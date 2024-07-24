@@ -186,6 +186,40 @@ order by state asc, item asc
 />
 ```
 
+### Link Drilldown
+Pass a `link` column to enable navigation by double-clicking on the cell. These can be absolute or relative URLs.
+
+```ordersURL
+SELECT category, 
+       DAYNAME(order_datetime) AS day, 
+       DAYOFWEEK(order_datetime) AS day_num, 
+       COUNT(*) AS order_count, 
+       CONCAT('https://www.google.com/search?q=',category) AS category_url
+FROM needful_things.orders
+GROUP BY category, day, day_num
+ORDER BY category, day_num;
+```
+
+<Heatmap 
+    data={ordersURL} 
+    x=day 
+    y=category 
+    value=order_count 
+    valueFmt=usd 
+    link=category_url
+/>
+
+```svelte
+<Heatmap 
+    data={ordersURL} 
+    x=day 
+    y=category 
+    value=order_count 
+    valueFmt=usd 
+    link=category_url
+/>
+```
+
 
 ## Options
 
@@ -238,6 +272,11 @@ order by state asc, item asc
     description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
     options="string"
     defaultValue="No records"
+/>
+<PropListing
+    name="link"
+    options="column name"
+    description="Column containing links. When supplied, enables double-clicking on chart data points to navigate directly to the associated link. "
 />
 
 ### Formatting & Styling

@@ -13,6 +13,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import InvisibleLinks from '$lib/atoms/InvisibleLinks.svelte';
 
 	export let data = undefined;
 	export let nameCol = undefined;
@@ -41,6 +42,8 @@
 
 	export let showPercent = false;
 	$: showPercent = showPercent === 'true' || showPercent === true;
+
+	export let link = undefined;
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
@@ -243,7 +246,18 @@
 		{renderer}
 		{connectGroup}
 		{seriesOptions}
+		on:dblclick={(params) => {
+			//searches through data for link and redirects if found
+			let dataIndex = params.detail.dataIndex;
+			let dataItem = data[dataIndex];
+			if (dataItem[link]) {
+				window.location = dataItem[link];
+			}
+		}}
 	/>
+	{#if link}
+		<InvisibleLinks {data} {link} />
+	{/if}
 {:else}
 	<ErrorChart {error} chartType="Funnel Chart" />
 {/if}

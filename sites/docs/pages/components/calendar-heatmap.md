@@ -78,6 +78,43 @@ queries:
 /> 
 ```
 
+### Link Drilldown
+Pass a `link` column to enable navigation by double-clicking on the cell. These can be absolute or relative URLs.
+
+```ordersURL
+SELECT
+    date_trunc('day', order_datetime) AS day,
+    category,
+    COUNT(*) AS num_orders,
+    SUM(sales) AS sales,
+    SUM(sales) / COUNT(*) AS aov,
+    CONCAT('https://www.google.com/search?q=', category) AS category_url
+FROM needful_things.orders
+WHERE order_datetime > '2021-01-02'
+GROUP BY 1, category
+ORDER BY 1;
+```
+
+<CalendarHeatmap 
+    data={ordersURL}    
+    date=day
+    value=sales
+    title="Calendar Heatmap + Links"
+    subtitle="Daily Sales"
+    link='category_url'
+/>
+
+```markdown
+<CalendarHeatmap 
+    data={ordersURL}    
+    date=day
+    value=sales
+    title="Calendar Heatmap + Links"
+    subtitle="Daily Sales"
+    link='category_url'
+/>
+```
+
 
 
 
@@ -126,6 +163,11 @@ queries:
     description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
     options="string"
     defaultValue="No records"
+/>
+<PropListing
+    name="link"
+    options="column name"
+    description="Column containing links. When supplied, enables double-clicking on chart data points to navigate directly to the associated link. "
 />
 
 ### Formatting & Styling
