@@ -7,7 +7,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { getManifest } from './virtuals/node/static-assets.js';
 import { copyToLayout } from './layout-plugins/copy-to-layout.js';
-import { dataDirectory, evidenceDirectory } from './virtuals/node/projectPaths.js';
+import { dataDirectory, evidenceDirectory } from './../../lib/projectPaths.js';
 /** @type {Record<string, () => string>} */
 import * as dynamicVirtuals from './virtuals-dynamic.js';
 
