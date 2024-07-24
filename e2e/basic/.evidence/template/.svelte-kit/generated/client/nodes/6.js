@@ -1,1 +1,0 @@
-export { default as component } from "../../../../src/pages/explore/schema/+page.svelte";
