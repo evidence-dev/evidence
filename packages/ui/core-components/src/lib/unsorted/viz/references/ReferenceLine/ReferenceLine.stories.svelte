@@ -110,7 +110,9 @@
 	import { userEvent, within } from '@storybook/test';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
-	const inputStore = getContext();
+	import ReferenceLine from './ReferenceLine.svelte';
+
+	const inputStore = getInputContext();
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	const data = Query.create(`select * FROM numeric_series WHERE series='pink'`, query);
