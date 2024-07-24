@@ -1,5 +1,4 @@
 packages:
-  - 'packages/**/*'
-  - 'packages/*'
+  - 'e2e/*'
+  - 'packages/**'
   - 'sites/*'
-  - '!packages/components'
