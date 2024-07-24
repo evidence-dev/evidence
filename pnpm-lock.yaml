@@ -267,6 +267,9 @@ importers:
       '@types/node':
         specifier: ^20.14.12
         version: 20.14.12
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
 
   packages/datasources/bigquery:
     dependencies:

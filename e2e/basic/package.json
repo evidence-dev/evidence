@@ -6,9 +6,10 @@
 		"build": "evidence build",
 		"build:strict": "evidence build:strict",
 		"dev": "evidence dev --open /",
-		"test": "playwright test",
 		"sources": "evidence sources",
-		"preview": "evidence preview"
+		"preview": "evidence preview",
+		"test": "playwright test",
+		"test:dev": "cross-env DEV=true playwright test"
 	},
 	"engines": {
 		"npm": ">=7.0.0",
@@ -37,6 +38,7 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.45.3",
-		"@types/node": "^20.14.12"
+		"@types/node": "^20.14.12",
+		"cross-env": "^7.0.3"
 	}
 }
