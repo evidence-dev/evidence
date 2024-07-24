@@ -101,7 +101,6 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
@@ -113,8 +112,6 @@
 
 	const inputStore = getContext();
 	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
-
-	import ReferenceLine from './ReferenceLine.svelte';
 
 	const data = Query.create(`select * FROM numeric_series WHERE series='pink'`, query);
 </script>
