@@ -168,7 +168,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 ```
 
 ### Link Drilldown
-Pass in a `link` column to enable navigation on click of the point. These can be absolute or relative URLs
+Pass a link column to enable navigation by double-clicking on the point. These can be absolute or relative URLs.
 
 <PointMap 
     data={la_locations} 
@@ -294,7 +294,7 @@ Maximum value to use for the color scale.
 name="link"
 options="URL"
 >
-URL to navigate to when a point is clicked.
+URL to navigate to when a point is double clicked.
 </PropListing>
 
 <PropListing
