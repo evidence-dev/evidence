@@ -1,5 +1,5 @@
 <script>
-	import defaultLogo from './wordmark-gray-800.png';
+	import defaultLogo from './wordmark-gray-800.svg';
 	export let logo;
 	export let title;
 </script>
