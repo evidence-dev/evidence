@@ -6,7 +6,7 @@
 		"build": "evidence build",
 		"build:strict": "evidence build:strict",
 		"dev": "evidence dev --open /",
-		"test": "evidence build",
+		"test": "playwright test",
 		"sources": "evidence sources",
 		"preview": "evidence preview"
 	},
@@ -34,5 +34,9 @@
 		"jsonwebtoken": "9.0.0",
 		"trim@<0.0.3": ">0.0.3",
 		"sqlite3": "5.1.5"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.45.3",
+		"@types/node": "^20.14.12"
 	}
 }

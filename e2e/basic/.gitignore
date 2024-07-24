@@ -8,3 +8,7 @@ static/data
 .vscode/settings.json
 .env
 .evidence/meta
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
