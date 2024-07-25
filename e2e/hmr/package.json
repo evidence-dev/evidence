@@ -8,7 +8,7 @@
     "dev": "evidence dev --open /",
     "sources": "evidence sources",
     "preview": "evidence preview",
-    "test": "playwright test",
+    "test:preview": "echo e2e/hmr has no preview mode tests",
     "test:dev": "cross-env DEV=true playwright test"
   },
   "engines": {

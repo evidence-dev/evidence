@@ -1,5 +1,10 @@
 {
   "name": "e2e",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "test": "pnpm test:dev && pnpm test:preview",
+    "test:preview": "pnpm -r --workspace-concurrency 1 --filter \"./*\" test:preview",
+    "test:dev": "pnpm -r --workspace-concurrency 1 --filter \"./*\" test:dev"
+  }
 }
