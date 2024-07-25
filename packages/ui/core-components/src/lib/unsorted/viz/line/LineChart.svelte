@@ -94,6 +94,7 @@
 	export let seriesColors = undefined;
 
 	export let connectGroup = undefined;
+	export let link = undefined;
 </script>
 
 <Chart
@@ -146,6 +147,8 @@
 	{renderer}
 	{connectGroup}
 	{seriesColors}
+	{link}
+	{...$$restProps}
 >
 	<Line
 		{lineColor}

@@ -40,7 +40,8 @@
 			xHasGaps: false,
 			yHasNulls: false,
 			seriesAlwaysExists: true
-		}
+		},
+		component: BarChart
 	};
 </script>
 

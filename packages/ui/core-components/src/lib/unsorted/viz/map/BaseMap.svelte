@@ -9,7 +9,8 @@
 	import 'leaflet/dist/leaflet.css';
 	import { EvidenceMap } from './EvidenceMap.js';
 	import { mapContextKey } from './constants.js';
-
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
+	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte';
 	let mapElement;
 
 	/** @type {number | undefined} */
@@ -34,9 +35,21 @@
 
 	/** @type {string|undefined} */
 	export let title = undefined;
+	/** @type {string|undefined} */
+	export let link = undefined;
+	/** @type {object|undefined} */
+	export let tooltip = undefined;
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+	export let data;
 
 	/** @type {string|undefined} */
 	let error = undefined;
+	/** @type {string|undefined} */
+	let linkCol = undefined;
+
+	$: if (tooltip?.some((obj) => obj.contentType === 'link')) {
+		linkCol = tooltip.find((obj) => obj.contentType === 'link').id;
+	}
 
 	const evidenceMap = new EvidenceMap();
 	setContext(mapContextKey, evidenceMap);
@@ -73,6 +86,18 @@
 			<slot></slot>
 		</div>
 	</div>
+{/if}
+{#if link}
+	<QueryLoad {data} let:loaded>
+		<svelte:fragment slot="skeleton"></svelte:fragment>
+		<InvisibleLinks data={loaded} {link} />
+	</QueryLoad>
+{/if}
+{#if linkCol}
+	<QueryLoad {data} let:loaded>
+		<svelte:fragment slot="skeleton"></svelte:fragment>
+		<InvisibleLinks data={loaded} link={linkCol} />
+	</QueryLoad>
 {/if}
 
 <style>

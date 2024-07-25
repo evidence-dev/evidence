@@ -101,20 +101,19 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 	import BarChart from '$lib/unsorted/viz/bar/BarChart.svelte';
 	import { Slider } from '$lib/atoms/inputs/slider';
 	import { userEvent, within } from '@storybook/test';
-	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
 	import ReferenceLine from './ReferenceLine.svelte';
 
-	const inputStore = getContext(INPUTS_CONTEXT_KEY);
+	const inputStore = getInputContext();
+	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	const data = Query.create(`select * FROM numeric_series WHERE series='pink'`, query);
 </script>

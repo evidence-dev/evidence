@@ -47,13 +47,16 @@
 	export let basemap = undefined;
 
 	/** @type {string|undefined} */
-	export let title = undefined;
+	export let link = undefined;
+
+	/** @type {object|undefined} */
+	export let tooltip = undefined;
 </script>
 
 {#if error}
 	<ErrorChart {error} chartType="Bubble Map" />
 {:else}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Bubbles {data} {lat} {long} {size} {...$$restProps} />
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {data} {link} {tooltip}>
+		<Bubbles {data} {lat} {long} {size} {link} {...$$restProps} />
 	</BaseMap>
 {/if}

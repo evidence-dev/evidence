@@ -35,6 +35,8 @@
 	export let useTooltip = false;
 	export let tooltipTitle;
 
+	export let link;
+
 	let multiSeries;
 	let tooltipOutput;
 
@@ -52,6 +54,7 @@
 	$: series = seriesSet ? series : $props.series;
 	$: size = size ?? $props.size;
 	$: tooltipTitle = tooltipTitle ?? $props.tooltipTitle;
+	$: link = link ?? $props.link;
 
 	$: if (!series && typeof y !== 'object') {
 		// Single Series
@@ -247,7 +250,9 @@
 		xMismatch,
 		columnSummary,
 		size,
-		tooltipTitle
+		tooltipTitle,
+		undefined,
+		link
 	);
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);

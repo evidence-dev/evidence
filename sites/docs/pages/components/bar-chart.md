@@ -213,6 +213,38 @@ queries:
 />
 ```
 
+### Links
+
+``` category
+SELECT category, order_month AS month, sum(sales) as sales, CONCAT('https://www.google.com/search?q=', category) as category_url
+FROM needful_things.orders
+group by all
+ORDER BY month, category
+limit 250
+```
+
+Double Click on datapoints to travel to Link
+
+<BarChart 
+    data={category}
+    x=month
+    y=sales
+    series=category
+    title="Sales by Category"
+    link=category_url
+/>
+
+```markdown
+<BarChart 
+    data={category}
+    x=month
+    y=sales
+    series=category
+    title="Sales by Category"
+    link=category_url
+/>
+```
+
 ### Custom Color Palette
 
 <BarChart 
@@ -352,6 +384,14 @@ queries:
     options="string"
     defaultValue="No records"
 />
+<PropListing
+    name="link"
+    options="column name"
+>
+
+Column containing links. When supplied, enables double-clicking on chart data points to navigate directly to the associated link. 
+
+</PropListing>
 
 ### Formatting & Styling
 

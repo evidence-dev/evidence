@@ -87,6 +87,40 @@ select * from (
 />
 ```
 
+### Link Drilldown
+Pass a `link` column to enable navigation by double-clicking on a segment. These can be absolute or relative URLs.
+
+```sql funnel_data_links
+SELECT *, CONCAT('https://www.google.com/search?q=', stage) AS stage_url
+FROM (
+    SELECT 150 AS customers, 'Show' AS stage, 1 AS stage_id
+    UNION ALL
+    SELECT 102 AS customers, 'Click' AS stage, 2 AS stage_id
+    UNION ALL
+    SELECT 49 AS customers, 'Visit' AS stage, 3 AS stage_id
+    UNION ALL
+    SELECT 40 AS customers, 'Inquiry' AS stage, 4 AS stage_id
+    UNION ALL
+    SELECT 14 AS customers, 'Order' AS stage, 5 AS stage_id
+) AS funnel_data_links
+ORDER BY stage_id ASC;
+```
+
+<FunnelChart 
+    data={funnel_data_links} 
+    nameCol=stage
+    valueCol=customers
+    link=stage_url
+/>
+
+```markdown
+<FunnelChart 
+    data={funnel_data_links} 
+    nameCol=stage
+    valueCol=customers
+    link=stage_url
+/>
+```
 
 ## Options
 
@@ -121,6 +155,11 @@ select * from (
     description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
     options="string"
     defaultValue="No records"
+/>
+<PropListing
+    name="link"
+    options="column name"
+    description="Column containing links. When supplied, enables double-clicking on chart data points to navigate directly to the associated link. "
 />
 
 ### Formatting & Styling
@@ -224,3 +263,4 @@ select * from (
     name=connectGroup
     description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
 />
+

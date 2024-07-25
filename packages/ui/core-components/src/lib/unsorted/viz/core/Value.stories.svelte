@@ -45,6 +45,10 @@
 <Story name="Agg median Usage">
 	<Value {data} column="fare" agg="median" fmt="usd0" />
 </Story>
+<Story name="Link Prop Usage">
+	<Value {data} column="fare" agg="median" fmt="usd0" link="https://evidence.dev/" />
+</Story>
+
 <Story name="Scale Color">
 	<DataTable data={data2} />
 	<div>Min color=#00FF00 - <Value {data} column="fare" agg="min" fmt="usd0" color="#00FF00" /></div>

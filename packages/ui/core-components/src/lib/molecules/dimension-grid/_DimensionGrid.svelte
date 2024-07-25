@@ -1,7 +1,6 @@
 <script>
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-
-	import { setContext, getContext } from 'svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import DimensionCut from './DimensionCut.svelte';
 	import { getWhereClause } from './dimensionGridQuery.js';
@@ -21,7 +20,7 @@
 	let selectedDimensions = writable([]);
 	setContext('selected-dimensions', selectedDimensions);
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	const inputs = getInputContext();
 	$: $inputs[name] = getWhereClause($selectedDimensions);
 </script>
 

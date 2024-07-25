@@ -5,8 +5,7 @@
 <script>
 	import { presets, setButtonGroupContext } from './lib.js';
 	import { writable, readonly } from 'svelte/store';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { getContext } from 'svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
@@ -22,10 +21,11 @@
 	/** @type {keyof typeof presets | undefined} */
 	export let preset = undefined;
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	const inputs = getInputContext();
 
 	const valueStore = writable(null);
 
+	// TODO: Use getInputSetter instead
 	setButtonGroupContext((v) => {
 		$valueStore = v;
 		// the assignment to $inputs is necessary to trigger the change on SSR
