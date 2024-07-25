@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 import { createFile, deleteFile, editFile, restoreChangedFiles } from '../../fs-utils';
 
-test.afterAll(() => {
+test.afterEach(() => {
 	restoreChangedFiles();
 });
 
