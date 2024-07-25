@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 5.1.4
+
+### Patch Changes
+
+- e50e7ed58: Pre-render column information using DESCRIBE query
+
 ## 5.1.3
 
 ### Patch Changes
