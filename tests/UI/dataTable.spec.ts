@@ -3,7 +3,7 @@ import { supportLocalDev } from './local';
 
 test.beforeEach(async ({ page }) => {
 	await page.goto('/tables/data-table', supportLocalDev());
-	await page.waitForTimeout(500);
+	await page.waitForTimeout(5_000);
 });
 
 test.describe('DataTable: New Table', () => {

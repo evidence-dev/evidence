@@ -344,6 +344,7 @@ ${this.text.trim()}
 
 				this.#dataQueryTime = after - before;
 
+				this.#fetchLength();
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
@@ -366,9 +367,7 @@ ${this.text.trim()}
 		return resolved;
 	};
 	fetch = async () => {
-		return Promise.allSettled([this.#fetchColumns(), this.#fetchData(), this.#fetchLength()]).then(
-			() => this.value
-		);
+		return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -1068,6 +1067,7 @@ DESCRIBE ${this.text.trim()}
 			if (!Array.isArray(knownColumns))
 				throw new Error(`Expected knownColumns to be an array`, { cause: knownColumns });
 			this.#columns = knownColumns;
+			this.#sharedColumnsPromise.resolve(this);
 		} else {
 			resolveMaybePromise(
 				() => {
@@ -1216,9 +1216,9 @@ DESCRIBE ${this.text.trim()}
 				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
 				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
 				const exactSubMatch =
-					// escapedSearchTerm.length >= 4
-					taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`;
-				// : taggedSql`0`;
+					escapedSearchTerm.length >= 1
+						? taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`
+						: taggedSql`0`;
 				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
 			})
 			.join(',');
