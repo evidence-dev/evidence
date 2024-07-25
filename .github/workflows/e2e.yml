@@ -1,0 +1,27 @@
+name: E2E Tests
+
+on:
+  # TODO remove once we know this action is working correctly
+  push:
+    branches: [test/2255-hmr-tests]
+    
+  pull_request:
+    branches: [main, next]
+
+jobs:
+  tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        # with:
+        #   ref: ${{ github.event.pull_request.head.sha }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8.15.8
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile && cd ./e2e && pnpx playwright install --with-deps && pnpm run test
