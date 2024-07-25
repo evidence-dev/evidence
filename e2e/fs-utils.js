@@ -7,6 +7,9 @@ const originalFiles = new Map();
 /** @type {Set<string>} */
 const createdFiles = new Set();
 
+/** @type {Map<string, string>} */
+const deletedFiles = new Map();
+
 export const restoreChangedFiles = () => {
 	originalFiles.forEach((content, file) => {
 		fs.writeFileSync(file, content, 'utf-8');
@@ -17,6 +20,11 @@ export const restoreChangedFiles = () => {
 		fs.unlinkSync(file);
 	});
 	createdFiles.clear();
+
+	deletedFiles.forEach((content, file) => {
+		fs.writeFileSync(file, content, 'utf-8');
+	});
+	deletedFiles.clear();
 };
 
 /**
@@ -36,4 +44,10 @@ export const createFile = (filePath, content) => {
 	fs.mkdirSync(path.dirname(filePath), { recursive: true });
 	fs.writeFileSync(filePath, content);
 	createdFiles.add(filePath);
+};
+
+export const deleteFile = (filePath) => {
+	const content = fs.readFileSync(filePath, 'utf-8');
+	deletedFiles.set(filePath, content);
+	fs.unlinkSync(filePath);
 };
