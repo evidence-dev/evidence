@@ -344,6 +344,7 @@ ${this.text.trim()}
 
 				this.#dataQueryTime = after - before;
 
+				this.#fetchLength();
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
@@ -366,9 +367,7 @@ ${this.text.trim()}
 		return resolved;
 	};
 	fetch = async () => {
-		return Promise.allSettled([this.#fetchColumns(), this.#fetchData(), this.#fetchLength()]).then(
-			() => this.value
-		);
+		return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -1068,6 +1067,7 @@ DESCRIBE ${this.text.trim()}
 			if (!Array.isArray(knownColumns))
 				throw new Error(`Expected knownColumns to be an array`, { cause: knownColumns });
 			this.#columns = knownColumns;
+			this.#sharedColumnsPromise.resolve(this);
 		} else {
 			resolveMaybePromise(
 				() => {

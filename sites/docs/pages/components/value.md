@@ -78,6 +78,50 @@ FROM
     <Value data={orders} column="sales" agg="avg" fmt="usd0" />
 </div>
 
+
+## Customize Color Values
+
+<div>
+    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="#85BB65" />
+</div>
+
+```markdown
+<Value data={orders} column="sales" agg="avg" fmt="usd0" color="#85BB65" />
+```
+<div>
+    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="blue" />
+</div>
+
+```markdown
+<Value data={orders} column="sales" agg="avg" fmt="usd0" color="blue" />
+```
+<div>
+    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="rgb(200,5,200)" />
+</div>
+
+```markdown
+<Value data={orders} column="sales" agg="avg" fmt="usd0" color="rgb(200,5,200)" />
+```
+
+## Red Negative Values
+
+```sql NegativeSales
+SELECT 
+      MAX(sales)*-1 as max_sales
+FROM 
+    needful_things.orders
+```
+
+If the value is negative, the font color will automatically change to red, overriding any color specified by the color prop.
+
+<div>
+    <Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives="true" />
+</div>
+
+```markdown
+<Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives="true" />
+```
+
 ## Options
 
 <PropListing
@@ -148,5 +192,22 @@ Text to display when an empty dataset is received - only applies when `emptySet`
 >
 
 Adds aggregation to query, column name required.
+
+</PropListing>
+<PropListing
+        name=color
+        options="CSS name | hexademical | RGB | HSL"
+>
+
+Specifies the font color of the Value.
+
+</PropListing>
+<PropListing
+    name="redNegatives"
+    options={[`true`, `false`]}
+    defaultValue="false"
+>
+
+Conditionally sets the font color to red based on whether the selected value is less than 0
 
 </PropListing>

@@ -38,6 +38,8 @@
 
 	export let labels = false;
 	$: labels = labels === 'true' || labels === true;
+	export let seriesLabels = true;
+	$: seriesLabels = seriesLabels === 'true' || seriesLabels === true;
 	export let labelSize = 11;
 	export let labelPosition = undefined;
 	export let labelColor = undefined;
@@ -157,7 +159,7 @@
 		type: 'bar',
 		stack: stackName,
 		label: {
-			show: labels,
+			show: labels && seriesLabels,
 			// formatter: function (params) {
 			// 	let output;
 			// 	output =
