@@ -1,5 +1,25 @@
 # @evidence-dev/components
 
+## 3.5.16
+
+### Patch Changes
+
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [70130373a]
+- Updated dependencies [f8e76c7d9]
+- Updated dependencies [8782d9e95]
+- Updated dependencies [5922269dc]
+- Updated dependencies [a5f972352]
+- Updated dependencies [fbdfe2dd6]
+- Updated dependencies [4ae4427ea]
+- Updated dependencies [318196074]
+  - @evidence-dev/preprocess@5.1.4
+  - @evidence-dev/sdk@1.3.7
+  - @evidence-dev/trino@1.0.8
+  - @evidence-dev/core-components@4.7.3
+  - @evidence-dev/component-utilities@3.2.7
+  - @evidence-dev/plugin-connector@2.1.6
+
 ## 3.5.15
 
 ### Patch Changes

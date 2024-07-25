@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 39.1.2
+
+### Patch Changes
+
+- e50e7ed58: Pre-render column information using DESCRIBE query
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [fbdfe2dd6]
+  - @evidence-dev/preprocess@5.1.4
+  - @evidence-dev/sdk@1.3.7
+  - @evidence-dev/plugin-connector@2.1.6
+
 ## 39.1.1
 
 ### Patch Changes

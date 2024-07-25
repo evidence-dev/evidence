@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 1.3.7
+
+### Patch Changes
+
+- e50e7ed58: Pre-render column information using DESCRIBE query
+- fbdfe2dd6: Fix sources HMR on Windows
+
 ## 1.3.6
 
 ### Patch Changes
