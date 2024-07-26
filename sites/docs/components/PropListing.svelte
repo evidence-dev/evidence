@@ -20,7 +20,7 @@
 	}
 </script>
 
-<section class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4">
+<section class="pt-4 pb-4 my-2 border-b text-sm flex flex-col lg:flex-row gap-4">
 	<div class="min-w-48 flex justify-between mr-4">
 		<div class="font-mono">
 			<span
