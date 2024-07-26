@@ -2,12 +2,25 @@
 import { test, expect } from '@playwright/test';
 import { createFile, deleteFile, editFile, restoreChangedFiles } from '../../fs-utils';
 
+const waitForDevModeToLoad = async (page) => {
+	if (!process.env.DEV) return;
+
+	await Promise.all([
+		page.waitForTimeout(100), // wait for preloading to start
+		page.waitForLoadState('networkidle') // wait for preloading to finish
+	]);
+
+	await expect(page.getByTestId('#__evidence_project_splash')).not.toBeVisible();
+};
+
 test.afterEach(() => {
 	restoreChangedFiles();
 });
 
 test('editing a page should HMR', async ({ page }) => {
 	await page.goto('/page');
+	await waitForDevModeToLoad(page);
+
 	await expect(page.getByText('This page has some text on it')).toBeVisible();
 
 	editFile('pages/page.md', (content) => content.replace('some text', 'some different text'));
@@ -19,6 +32,8 @@ test('creating a new page should add it to the sidebar and allow navigation to i
 	page
 }) => {
 	await page.goto('/');
+	await waitForDevModeToLoad(page);
+
 	await expect(page.getByText('Index')).toBeVisible();
 
 	createFile('pages/new-page.md', 'This is a new page');
@@ -32,6 +47,8 @@ test('deleting a page should remove it from the sidebar and prevent navigation t
 	page
 }) => {
 	await page.goto('/');
+	await waitForDevModeToLoad(page);
+
 	await expect(page.getByText('Index')).toBeVisible();
 
 	deleteFile('pages/page.md');
