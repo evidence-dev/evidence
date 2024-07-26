@@ -9,6 +9,6 @@ static/data
 .env
 .evidence/meta
 /test-results/
-/playwright-report/
+/playwright-reports/
 /blob-report/
 /playwright/.cache/
