@@ -5,10 +5,7 @@ import { createFile, deleteFile, editFile, restoreChangedFiles } from '../../fs-
 const waitForDevModeToLoad = async (page) => {
 	if (!process.env.DEV) return;
 
-	await Promise.all([
-		page.waitForTimeout(100), // wait for preloading to start
-		page.waitForLoadState('networkidle') // wait for preloading to finish
-	]);
+	await Promise.all([page.waitForTimeout(100), page.waitForLoadState('networkidle')]);
 
 	await expect(page.getByTestId('#__evidence_project_splash')).not.toBeVisible();
 };
