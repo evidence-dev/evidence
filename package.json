@@ -72,7 +72,6 @@
 	"scripts": {
 		"release": "run-s package:core-components build:tailwind build:evidence build:plugin-connector && pnpm changeset publish",
 		"test": "pnpm -r test",
-		"test:e2e": "pnpm --filter e2e test",
 		"test:component-utilities:watch": "pnpm --filter ./packages/lib/component-utilities test:watch",
 		"postinstall": "run-s build:plugin-connector build:preprocess build:tailwind package:core-components build:evidence",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
