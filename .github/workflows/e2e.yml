@@ -52,7 +52,7 @@ jobs:
         run: pnpm playwright install --with-deps
 
       - name: Go to project directory
-        run: cd ${{ matrix.project }}
+        run: cd e2e/${{ matrix.project }}
 
       - name: Run dev mode tests
         run: pnpm run test:dev
