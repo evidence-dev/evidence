@@ -26,7 +26,7 @@
 					{...builder}
 				>
 					<div
-						class="truncate text-left shrink col-span-3 font-medium relative z-10 group-data-[state=checked]:text-gray-900  transition duration-200"
+						class="truncate text-left shrink col-span-3 font-medium relative z-10 group-data-[state=checked]:text-gray-900 transition duration-200"
 					>
 						{metric.label}
 					</div>

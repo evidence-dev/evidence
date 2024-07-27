@@ -21,7 +21,8 @@
 	let chart;
 	$: lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date();
 	$: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
-	$: currentValue = filteredData.length > 0 ? filteredData[filteredData.length - 1][selectedMetric] : 4.28;
+	$: currentValue =
+		filteredData.length > 0 ? filteredData[filteredData.length - 1][selectedMetric] : 4.28;
 	$: if (selectedTimeRange) {
 		filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
 	}
@@ -57,7 +58,9 @@
 				startDate.setFullYear(startDate.getFullYear() - 1);
 		}
 
-		return data.filter(item => new Date(item.date) >= startDate && new Date(item.date) <= endDate);
+		return data.filter(
+			(item) => new Date(item.date) >= startDate && new Date(item.date) <= endDate
+		);
 	}
 
 	$: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
@@ -193,7 +196,11 @@
 	</div>
 	<div class="row-span-3 relative">
 		{#key selectedMetric}
-			<div class="h-full rounded-lg overflow-clip" use:makeChart data-testid="time-series-chart"></div>
+			<div
+				class="h-full rounded-lg overflow-clip"
+				use:makeChart
+				data-testid="time-series-chart"
+			></div>
 		{/key}
 	</div>
 	<div class="row-span-1">
