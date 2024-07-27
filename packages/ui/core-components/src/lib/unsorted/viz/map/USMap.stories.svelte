@@ -1,6 +1,6 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
-	export const meta = { 
+	export const meta = {
 		title: 'Charts/USMap',
 		argTypes: {
 			downloadableData: {
@@ -10,7 +10,7 @@
 			downloadableImage: {
 				control: 'boolean',
 				options: [true, false]
-			},
+			}
 		}
 	};
 </script>
@@ -24,6 +24,5 @@
 
 <Story name="Basic Usage" let:args>
 	{@const data = Query.create(`SELECT * from state_sales`, query)}
-	<USMap {data} {...args}
-		state="state" value="sales" />
+	<USMap {data} {...args} state="state" value="sales" />
 </Story>

@@ -157,7 +157,7 @@
 			downloadableImage: {
 				control: 'boolean',
 				options: [true, false]
-			},
+			}
 		}
 	};
 </script>

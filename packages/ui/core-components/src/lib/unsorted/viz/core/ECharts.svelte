@@ -100,10 +100,10 @@
 		{seriesOptions}
 		{seriesColors}
 	/>
-	
+
 	{#if downloadableData || downloadableImage}
 		<div class="chart-footer">
-			{#if downloadableImage}	
+			{#if downloadableImage}
 				<DownloadData
 					text="Save Image"
 					class="download-button"

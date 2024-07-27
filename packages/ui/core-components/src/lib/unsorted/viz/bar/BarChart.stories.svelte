@@ -42,7 +42,7 @@
 			downloadableImage: {
 				control: 'boolean',
 				options: [true, false]
-			},
+			}
 		},
 		args: {
 			xHasGaps: false,
