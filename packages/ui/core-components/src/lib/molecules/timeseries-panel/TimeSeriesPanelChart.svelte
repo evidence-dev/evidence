@@ -4,20 +4,70 @@
 	import { blur, fly, fade } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
+	import {
+		CalendarDate,
+		DateFormatter,
+		getLocalTimeZone,
+		startOfMonth,
+		endOfMonth,
+		startOfYear,
+		endOfYear
+	} from '@internationalized/date';
 
 	export let data;
 	export let selectedMetric = undefined;
 	export let declining = false;
 
 	let chart;
-	let currentValue = 4.28; // Default value
+	$: lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date();
+	$: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
+	$: currentValue = filteredData.length > 0 ? filteredData[filteredData.length - 1][selectedMetric] : 4.28;
+	$: if (selectedTimeRange) {
+		filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
+	}
+
+	function filterDataByTimeRange(data, lastDate, timeRange) {
+		const endDate = new Date(lastDate);
+		let startDate;
+
+		switch (timeRange) {
+			case '1W':
+				startDate = new Date(endDate);
+				startDate.setDate(startDate.getDate() - 7);
+				break;
+			case '1M':
+				startDate = new Date(endDate);
+				startDate.setMonth(startDate.getMonth() - 1);
+				break;
+			case '3M':
+				startDate = new Date(endDate);
+				startDate.setMonth(startDate.getMonth() - 3);
+				break;
+			case '1Y':
+				startDate = new Date(endDate);
+				startDate.setFullYear(startDate.getFullYear() - 1);
+				break;
+			case 'YTD':
+				startDate = new Date(endDate.getFullYear(), 0, 1);
+				break;
+			case 'All':
+				return data;
+			default:
+				startDate = new Date(endDate);
+				startDate.setFullYear(startDate.getFullYear() - 1);
+		}
+
+		return data.filter(item => new Date(item.date) >= startDate && new Date(item.date) <= endDate);
+	}
+
+	$: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
 
 	const makeChart = (node) => {
 		chart = init(node, null, { renderer: 'svg' });
 		updateChartOptions();
 
 		chart.on('globalout', function () {
-			currentValue = '4.28';
+			currentValue = data.length > 0 ? data[data.length - 1][selectedMetric] : 4.28;
 		});
 
 		window.addEventListener('resize', function () {
@@ -32,12 +82,15 @@
 	};
 
 	function updateChartOptions() {
-		if (!chart) return;
+		if (!chart || !selectedMetric || !filteredData) return;
+
+		const color = declining ? '#dc2626' : '#16a34a';
+		const gradientColor = declining ? '#ef4444' : '#22c55e';
 
 		chart.setOption({
 			animation: false,
 			dataset: {
-				source: data
+				source: filteredData
 			},
 			xAxis: {
 				type: 'time',
@@ -63,7 +116,7 @@
 						formatter: function (params) {
 							if (params.seriesData && params.seriesData.length > 0) {
 								const value = params.seriesData[0].value[selectedMetric];
-								currentValue = Number(value.toFixed(2));
+								currentValue = value;
 							}
 							return '';
 						}
@@ -84,19 +137,19 @@
 					symbolSize: 1,
 					smooth: true,
 					lineStyle: {
-						color: '#16a34a',
+						color: color,
 						width: 1.25,
 						opacity: 1
 					},
 					itemStyle: {
-						color: '#16a34a',
+						color: color,
 						opacity: 1
 					},
 					areaStyle: {
 						color: new graphic.LinearGradient(0, 0, 0, 1, [
 							{
 								offset: 0,
-								color: '#22c55e'
+								color: gradientColor
 							},
 							{
 								offset: 0.75,
@@ -118,7 +171,7 @@
 		});
 	}
 
-	$: if (chart && selectedMetric) {
+	$: if (chart && selectedMetric && filteredData) {
 		updateChartOptions();
 	}
 
@@ -130,23 +183,22 @@
 	});
 </script>
 
-<div class="grid grid-rows-6 gap-y-1">
-	<div class="row-span-2">
-		<div class="font-bold text-gray-700">ARR</div>
-		<div class="text-sm font-light text-gray-800">${currentValue}M</div>
+<div class="grid grid-rows-6 gap-y-1 relative">
+	<div
+		class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
+	/>
+	<div class="row-span-2 relative">
+		<div class="font-bold text-gray-700">{selectedMetric}</div>
+		<div class="text-sm font-light text-gray-800">${Number(currentValue.toFixed(2))}</div>
 	</div>
-	<div class="row-span-3">
+	<div class="row-span-3 relative">
 		{#key selectedMetric}
-			<div class="h-full rounded-lg overflow-clip relative" use:makeChart in:fade|local>
-				<div
-					class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
-				/>
-			</div>
+			<div class="h-full rounded-lg overflow-clip" use:makeChart data-testid="time-series-chart"></div>
 		{/key}
 	</div>
 	<div class="row-span-1">
 		<RadioGroup.Root
-			class="flex gap-1 text-xs text-gray-600 font-light justify-end"
+			class="flex gap-1 text-xs text-gray-600 font-light justify-end "
 			type="single"
 			bind:value={selectedTimeRange}
 			orientation="horizontal"
@@ -154,17 +206,21 @@
 			{#each ['1W', '1M', '3M', '1Y', 'YTD', 'All'] as timeRange (timeRange)}
 				<RadioGroup.Item
 					value={timeRange}
-					class="hover:bg-gray-100 py-1 px-3 rounded cursor-pointer  data-[state=checked]:text-gray-700 text-gray-400 font-medium transition-all relative "
+					class=" rounded cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2"
 				>
-					{timeRange}
+					<div
+						class="hover:text-gray-700 group-data-[state=checked]:text-gray-700 text-gray-400 font-medium relative py-1 px-3 transition-colors"
+					>
+						{timeRange}
 
-					{#if selectedTimeRange === timeRange}
-						<div
-							in:send={{ key: 'trigger' }}
-							out:receive={{ key: 'trigger' }}
-							class="absolute bottom-0 left-1/2 h-1 rounded-full w-1 -translate-x-1/2 bg-gray-900"
-						/>
-					{/if}
+						{#if selectedTimeRange === timeRange}
+							<div
+								in:send={{ key: 'trigger' }}
+								out:receive={{ key: 'trigger' }}
+								class="absolute bottom-0 left-1/2 h-1 rounded-full w-1 -translate-x-1/2 bg-gray-900"
+							/>
+						{/if}
+					</div>
 				</RadioGroup.Item>
 			{/each}
 		</RadioGroup.Root>
