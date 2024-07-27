@@ -128,6 +128,15 @@ queries:
     options="string"
     defaultValue='No records'
 />
+<PropListing
+    name=downloadable
+    options={['true', 'false']}
+    defaultValue=true
+>
+
+Enable download data button below the table on hover
+
+</PropListing>
 
 ### Formatting & Styling
 

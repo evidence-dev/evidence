@@ -39,6 +39,8 @@
 
 	export let connectGroup = undefined;
 
+	export let downloadable = true;
+
 	export let showPercent = false;
 	$: showPercent = showPercent === 'true' || showPercent === true;
 
@@ -243,6 +245,7 @@
 		{renderer}
 		{connectGroup}
 		{seriesOptions}
+		{downloadable}
 	/>
 {:else}
 	<ErrorChart {error} chartType="Funnel Chart" />

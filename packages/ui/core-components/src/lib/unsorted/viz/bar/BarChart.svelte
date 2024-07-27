@@ -113,6 +113,8 @@
 	export let seriesColors = undefined;
 
 	export let connectGroup = undefined;
+
+	export let downloadable = true;
 </script>
 
 <Chart
@@ -169,6 +171,7 @@
 	{renderer}
 	{connectGroup}
 	{seriesColors}
+	{downloadable}
 >
 	<Bar
 		{type}

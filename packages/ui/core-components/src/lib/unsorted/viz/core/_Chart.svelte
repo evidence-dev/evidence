@@ -46,6 +46,8 @@
 	export let printEchartsConfig = false; // helper for custom chart development
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
+	export let downloadable = undefined;
+
 	// This should be reworked to fit better with svelte's reactivity.
 
 	// We rewrite the x and y values with fallbacks if they aren't present
@@ -1064,6 +1066,7 @@
 			{renderer}
 			{connectGroup}
 			{seriesColors}
+			{downloadable}
 		/>
 	{/if}
 {:else}

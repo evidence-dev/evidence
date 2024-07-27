@@ -51,6 +51,8 @@
 
 	export let linkColor = 'grey'; // grey (default), source, target, gradient
 
+	export let downloadable = undefined;
+
 	// Data Formatting
 	let names = [];
 	let links;
@@ -303,5 +305,5 @@
 {#if error}
 	<ErrorChart chartType="Sankey Diagram" {error} />
 {:else}
-	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} />
+	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} {downloadable} />
 {/if}

@@ -532,6 +532,15 @@ Text to display when an empty dataset is received - only applies when `emptySet`
 Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
 
 </PropListing>
+<PropListing
+    name=downloadable
+    options={['true', 'false']}
+    defaultValue=true
+>
+
+Enable download data button below the table on hover
+
+</PropListing>
 
 ### Formatting & Styling
 

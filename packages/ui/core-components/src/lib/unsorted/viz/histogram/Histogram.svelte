@@ -42,6 +42,8 @@
 	export let renderer = undefined;
 
 	export let connectGroup = undefined;
+
+	export let downloadable = true;
 </script>
 
 <Chart
@@ -74,6 +76,7 @@
 	{emptyMessage}
 	{renderer}
 	{connectGroup}
+	{downloadable}
 >
 	<Hist {fillColor} {fillOpacity} />
 	<slot />

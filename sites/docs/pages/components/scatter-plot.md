@@ -136,7 +136,15 @@ Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty
 Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
 
 </PropListing>
+<PropListing
+    name=downloadable
+    options={['true', 'false']}
+    defaultValue=true
+>
 
+Enable download data button below the table on hover
+
+</PropListing>
 ### Formatting & Styling
 
 <PropListing

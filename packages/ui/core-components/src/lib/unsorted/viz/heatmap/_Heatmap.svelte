@@ -79,6 +79,8 @@
 
 	export let connectGroup = undefined;
 
+	export let downloadable = true;
+
 	export let nullsZero = true; // if nulls or missing records should display as zero or missing values (blank grey squares)
 	export let zeroDisplay = '—'; // what to display in place of zeros
 
@@ -354,5 +356,6 @@
 		evidenceChartTitle={title}
 		{renderer}
 		{connectGroup}
+		{downloadable}
 	/>
 {/if}

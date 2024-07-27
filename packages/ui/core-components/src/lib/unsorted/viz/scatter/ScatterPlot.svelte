@@ -63,6 +63,8 @@
 	export let seriesColors = undefined;
 
 	export let connectGroup = undefined;
+
+	export let downloadable = true; 
 </script>
 
 <Chart
@@ -105,6 +107,7 @@
 	{renderer}
 	{connectGroup}
 	{seriesColors}
+	{downloadable}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 	<slot />

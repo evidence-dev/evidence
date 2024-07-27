@@ -32,6 +32,9 @@
 
 	export let connectGroup = undefined;
 
+	export let downloadable = true;
+	$: downloadable = downloadable === 'true' || downloadable === true;
+
 	const dispatch = createEventDispatcher();
 
 	let downloadChart = false;
@@ -111,7 +114,7 @@
 				}, 0);
 			}}
 			display={hovering}
-			{queryID}
+			{queryID} 
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +132,7 @@
 				<path d="M20.4 14.5L16 10 4 20" />
 			</svg>
 		</DownloadData>
-		{#if data}
+		{#if data && downloadable}
 			<DownloadData
 				text="Download data"
 				{data}

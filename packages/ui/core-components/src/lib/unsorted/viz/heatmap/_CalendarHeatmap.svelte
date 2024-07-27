@@ -55,6 +55,8 @@
 
 	export let connectGroup = undefined;
 
+	export let downloadable = true;
+
 	function mapColumnsToArray(arrayOfObjects, col1, col2) {
 		return arrayOfObjects.map((obj) => [
 			new Date(obj[col1]).toISOString().split('T')[0],
@@ -366,5 +368,6 @@
 		{connectGroup}
 		{echartsOptions}
 		{seriesOptions}
+		{downloadable}
 	/>
 {/if}

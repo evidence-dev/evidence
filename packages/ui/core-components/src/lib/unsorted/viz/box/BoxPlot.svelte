@@ -54,6 +54,8 @@
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;
 
+	export let downloadable = true;
+
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -109,6 +111,7 @@
 	{renderer}
 	{connectGroup}
 	{seriesColors}
+	{downloadable}
 >
 	<Box {boxPlotData} {color} {min} {max} />
 	<slot />
