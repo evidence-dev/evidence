@@ -46,6 +46,8 @@
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
+	export let downloadableData = undefined;
+	export let downloadableImage = undefined;
 
 	export let connectGroup = undefined;
 
@@ -107,6 +109,8 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{downloadableData}
+	{downloadableImage}
 	{connectGroup}
 	{seriesColors}
 >

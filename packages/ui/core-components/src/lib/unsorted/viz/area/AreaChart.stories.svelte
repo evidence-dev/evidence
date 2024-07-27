@@ -149,7 +149,15 @@
 			renderer: {
 				control: 'options',
 				options: ['canvas', 'svg']
-			}
+			},
+			downloadableData: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			downloadableImage: {
+				control: 'boolean',
+				options: [true, false]
+			},
 		}
 	};
 </script>
@@ -242,4 +250,17 @@ LIMIT 200`,
 >
 	{@const emptySet = []}
 	<AreaChart data={emptySet} {...args} />
+</Story>
+
+<Story
+	name="Non-downloadable"
+	args={{
+		x: 'departure_date',
+		y: 'total_fare',
+		downloadableData: false,
+		downloadableImage: false
+	}}
+	let:args
+>
+	<AreaChart data={planeData} {...args} />
 </Story>
