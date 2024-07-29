@@ -64,9 +64,9 @@ jobs:
         run: pnpm run test:preview
 
       - name: Upload Playwright reports
+        working-directory: ./e2e/${{ matrix.project }}
         if: always()
         uses: actions/upload-artifact@v4
-        working-directory: ./e2e/${{ matrix.project }}
         with:
           name: ${{ matrix.project }}/playwright-reports
           path: ./playwright-reports
