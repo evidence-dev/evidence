@@ -67,5 +67,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.project }}/playwright-reports
+          name: playwright-reports_${{ matrix.project }}
           path: e2e/${{ matrix.project }}/playwright-reports
