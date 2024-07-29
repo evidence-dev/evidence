@@ -43,7 +43,7 @@ jobs:
           node-version: 20
           cache: pnpm
 
-      # TODO: I think we could do installation in a previous job and share files between the jobs using upload/download artifact to speed up this action
+      # TODO: I think we could do installation in a previous job (instead of every matrix job) and share files between the jobs using upload/download artifact to speed up this action
       # https://stackoverflow.com/a/75021352/9080819
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -52,15 +52,15 @@ jobs:
         run: pnpm playwright install --with-deps
 
       - name: Run dev mode tests
-        working-directory: e2e/${{ matrix.project }}
+        working-directory: ./e2e/${{ matrix.project }}
         run: pnpm run test:dev
 
       - name: Build
-        working-directory: e2e/${{ matrix.project }}
+        working-directory: ./e2e/${{ matrix.project }}
         run: pnpm run build
 
       - name: Run preview mode tests
-        working-directory: e2e/${{ matrix.project }}
+        working-directory: ./e2e/${{ matrix.project }}
         run: pnpm run test:preview
 
       - name: Upload Playwright reports
