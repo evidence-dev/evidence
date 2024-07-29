@@ -70,7 +70,7 @@ const getProfile = async () => {
 
 			return profile;
 		} catch (error) {
-			console.error('Error in getProfile:', error);
+			console.error('Error in getProfile:', error instanceof Error ? error.message : error);
 			// Initialize a new profile in case of errors
 			return await initializeProfile();
 		}
