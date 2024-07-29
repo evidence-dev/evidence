@@ -4,7 +4,7 @@ on:
   # TODO remove once we know this action is working correctly
   push:
     branches: [test/2255-hmr-tests]
-    
+
   pull_request:
     branches: [main, next]
 
@@ -16,7 +16,7 @@ jobs:
       e2e-test-projects: ${{ steps.e2e-test-projects.outputs.e2e-test-projects }}
     steps:
       - uses: actions/checkout@v4
-      
+
       - id: e2e-test-projects
         run: echo "e2e-test-projects=$(find e2e -maxdepth 1 -type d -printf "%f\n" | jq --raw-input --slurp --compact-output 'split("\n")[1:-1]')" >> ${GITHUB_OUTPUT}
 

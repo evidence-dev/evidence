@@ -5,15 +5,18 @@ This directory of tests is for end-to-end testing of _real_ Evidence projects (c
 ## How to create another test project
 
 1. Create a new Evidence project from the template
+
 ```sh
 npx degit https://github.com/evidence-dev/template my-tests
 cd my-tests
 ```
+
 _Replace `my-tests` with the name of your new test suite here and in the subsequent commands._
 
 2. Add `"private": true` to `package.json`
 
 3. Replace `@evidence-dev` dependency versions with `workspace:*` in `package.json`
+
 ```diff
 {
 	"dependencies": {
@@ -33,19 +36,23 @@ _Replace `my-tests` with the name of your new test suite here and in the subsequ
 4. Delete `package-lock.json`
 
 5. Install dependencies
+
 ```sh
 pnpm install --ignore-scripts
 ```
 
 6. Install Playwright
+
 ```sh
 pnpm create playwright@latest --lang=js --no-browsers --quiet
 ```
+
 _Since this installs packages, our `postinstall` script will run to build everything. The Playwright CLI doesn't accept the `--ignore-scripts` flag, so if you want to skip the building, just temporarily remove the `postinstall` script from the root `package.json`._
 
 7. Delete `tests-examples/`
 
 8. Reconfigure `playwright.config.js` to use `import`/`export` syntax
+
 ```diff
 -const { defineConfig, devices } = require('@playwright/test');
 +import { defineConfig, devices } from '@playwright/test';
@@ -59,17 +66,20 @@ _Since this installs packages, our `postinstall` script will run to build everyt
 9. Rename `tests/example.spec.js` to `tests/tests.spec.js`
 
 10. Recondigure `tests/tests.spec.js` to use `import`/`export` syntax
+
 ```diff
 -const { test, expect } = require('@playwright/test');
 +import { test, expect } from '@playwright/test';
 ```
 
 11. Install `cross-env`
+
 ```sh
 pnpm install -D cross-env --ignore-scripts
 ```
 
 12. Replace the `test` script in `package.json` with the following
+
 ```diff
 {
 	"scripts": {
@@ -81,10 +91,13 @@ pnpm install -D cross-env --ignore-scripts
 ```
 
 13. Run the tests!
+
 ```sh
 pnpm test
 ```
+
 Output:
+
 ```
 > my-evidence-project@0.0.1 test /home/zach/code/evidence/evidence/e2e/hmr
 > playwright test
@@ -99,6 +112,7 @@ To open last HTML report run:
 ```
 
 14. Commit and push your changes
+
 ```sh
 # Make sure the .evidence/meta and .evidence/template directories aren't committed, they should be in the .gitignore
 # If they are showing in your diff, run the following:
