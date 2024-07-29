@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { createFile, deleteFile, editFile, restoreChangedFiles } from '../../fs-utils';
+import { createFile, deleteFile, editFile, restoreChangedFiles } from './fs-utils';
 
 const waitForDevModeToLoad = async (page) => {
 	if (!process.env.DEV) return;
