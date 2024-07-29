@@ -51,16 +51,16 @@ jobs:
       - name: Install Playwright and browsers
         run: pnpm playwright install --with-deps
 
-      - name: Go to project directory
-        run: cd e2e/${{ matrix.project }}
-
       - name: Run dev mode tests
+        working-directory: e2e/${{ matrix.project }}
         run: pnpm run test:dev
 
       - name: Build
+        working-directory: e2e/${{ matrix.project }}
         run: pnpm run build
 
       - name: Run preview mode tests
+        working-directory: e2e/${{ matrix.project }}
         run: pnpm run test:preview
 
       - name: Upload Playwright reports
