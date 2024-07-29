@@ -66,6 +66,7 @@ jobs:
       - name: Upload Playwright reports
         if: always()
         uses: actions/upload-artifact@v4
+        working-directory: ./e2e/${{ matrix.project }}
         with:
-          name: ${{ matrix.project}}/playwright-reports
+          name: ${{ matrix.project }}/playwright-reports
           path: ./playwright-reports
