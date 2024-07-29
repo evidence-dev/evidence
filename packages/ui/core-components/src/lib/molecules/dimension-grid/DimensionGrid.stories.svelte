@@ -17,7 +17,7 @@
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { userEvent, within, waitFor } from '@storybook/test';
+	import { userEvent, within } from '@storybook/test';
 
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
