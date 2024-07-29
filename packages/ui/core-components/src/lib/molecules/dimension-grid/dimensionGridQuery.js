@@ -14,7 +14,11 @@ export const getWhereClause = function (selectedDimensions, excludeDimension) {
 				if (d.value === null) {
 					return `${d.dimension} is null`;
 				} else {
-					return `${d.dimension} = '${d.value.replaceAll("'", "''")}'`;
+					if (Array.isArray(d.value)) {
+						return `${d.dimension} in (${d.value.map((v) => `'${v.replaceAll("'", "''")}'`).join(',')})`;
+					} else {
+						return `${d.dimension} = '${d.value.replaceAll("'", "''")}'`;
+					}
 				}
 			})
 			.join(' and ');
@@ -58,13 +62,7 @@ export const getDimensionCutQuery = function (
         from (${data.originalText}) 
         where 
         ${getWhereClause(selectedDimensions, dimension.column_name)} and 
-        ${
-					selectedValue
-						? `${dimension.column_name} = '${selectedValue?.replaceAll("'", "''")}' and ${
-								dimension.column_name
-							} not in (select dimensionValue from topN)`
-						: 'false'
-				}  
+        ${filterBySelect(selectedValue, dimension.column_name)}  
         group by 1,2 
     ),
     final as ( 
@@ -80,4 +78,33 @@ export const getDimensionCutQuery = function (
 
 `;
 	return query;
+};
+
+/**
+ * @param {string | string[] | undefined} selectedValue
+ * @param {string} colName
+ * @returns {string}
+ */
+const filterBySelect = (selectedValue, colName) => {
+	if (Array.isArray(selectedValue)) {
+		if (selectedValue.length === 0) {
+			return 'false';
+		} else {
+			const selectedConditions = selectedValue
+				.map((v) => `${colName} = '${v?.replaceAll("'", "''")}'`)
+				.join(' or ');
+
+			return `(${selectedConditions}) and ${colName} not in (select dimensionValue from topN)`;
+			// selectedValue.map((v) => `${colName} = '${v?.replaceAll("'", "''")}'`).join(' or ') +
+			// `and ${colName} not in (select dimensionValue from topN)`
+			// need to adjust line 95
+			// cannot have duplicate keys, (dimensionValue = column name string) and (dimensionName = column name variable)
+		}
+	} else if (typeof selectedValue === 'string') {
+		return `${colName} = '${selectedValue?.replaceAll("'", "''")}' and ${
+			colName
+		} not in (select dimensionValue from topN)`;
+	} else {
+		return 'false';
+	}
 };

@@ -16,12 +16,14 @@
 	export let limit = 10;
 	/** @type {string} */
 	export let name;
+	/** @type {boolean} */
+	export let multiple = true;
 </script>
 
 <QueryLoad {data} let:loaded>
-	<DimensionGrid data={loaded} {metric} {metricLabel} {limit} {name} />
+	<DimensionGrid data={loaded} {metric} {metricLabel} {limit} {name} {multiple} />
 	<svelte:fragment let:loaded slot="error">
-		<DimensionGrid data={loaded} {metric} {metricLabel} {limit} {name} />
+		<DimensionGrid data={loaded} {metric} {metricLabel} {limit} {name} {multiple} />
 	</svelte:fragment>
 	<svelte:fragment slot="skeleton">
 		<!-- No loading state -->

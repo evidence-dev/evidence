@@ -2,7 +2,12 @@
 	import { cn } from '$lib/utils';
 	export let row;
 	export let value;
+	/** @type {string | string[] | undefined}*/
 	export let selectedValue;
+
+	$: isSelected = Array.isArray(selectedValue)
+		? selectedValue.includes(row.dimensionValue)
+		: selectedValue === row.dimensionValue;
 </script>
 
 <div class={cn('flex-1 relative truncate flex gap-8 justify-between py-0.5 text-xs')}>
@@ -11,7 +16,7 @@
 		class={cn(
 			'group-hover:bg-blue-100 absolute inset-y-0 left-0 z-[-10] transition duration-100 w-full',
 			{
-				'bg-gray-100': selectedValue === row.dimensionValue
+				'bg-gray-100': isSelected
 			}
 		)}
 	/>
@@ -19,7 +24,7 @@
 		class={cn(
 			'bg-blue-50 group-hover:bg-blue-200 absolute inset-y-0 left-0 z-[-10] transition duration-100',
 			{
-				'bg-blue-200': selectedValue === row.dimensionValue
+				'bg-blue-200': isSelected
 			}
 		)}
 		style={'width:' + row.percentOfTop * 100 + '%'}
@@ -29,7 +34,7 @@
 		class={cn(
 			'truncate text-gray-900 transition duration-100',
 			{
-				'font-medium': selectedValue === row.dimensionValue
+				'font-medium': isSelected
 			},
 			{
 				'text-gray-800': row.dimensionValue === null

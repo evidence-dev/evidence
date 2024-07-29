@@ -18,7 +18,6 @@ order_month,
 sum(sales)filter(${inputs.selected_dimensions}) as sales_usd0 
 from needful_things.orders 
 group by all 
-
 ```
 
 <DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions /> 
