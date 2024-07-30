@@ -110,7 +110,7 @@ const logEvent = async (
 
 		if (usageStats === 'yes') {
 			const projectProfile = await getProfile();
-			const analytics = new Analytics({ writeKey: wK });
+			const analytics = new Analytics({ writeKey: wK, flushAt: 1 });
 			const payload = {
 				anonymousId: projectProfile.anonymousId,
 				event: eventName,
