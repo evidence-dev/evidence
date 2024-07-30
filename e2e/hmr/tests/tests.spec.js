@@ -52,3 +52,20 @@ test.describe('pages', () => {
 		await expect(page.getByText('Page Not Found')).toBeVisible();
 	});
 });
+
+test.describe('sources', () => {
+	test('editing should HMR', async ({ page }) => {
+		await page.goto('/orders');
+		await waitForDevModeToLoad(page);
+
+		await expect(page.getByText('Loaded 10000 orders')).toBeVisible();
+
+		editFile('sources/needful_things/orders.sql', (content) => `${content} limit 100`);
+
+		// Should see toast
+		await expect(page.getByText('Finished needful_things.orders')).toBeVisible();
+
+		// Page should use new query
+		await expect(page.getByText('Loaded 100 orders')).toBeVisible();
+	});
+});
