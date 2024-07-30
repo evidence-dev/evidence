@@ -30,7 +30,7 @@ jobs:
         os: [ubuntu-latest, maxOS-latest, windows-latest]
         node-version: [18, 20]
 
-    name: ${{ matrix.project }} tests
+    name: e2e/${{ matrix.project }}/${{ matrix.os }}/${{ matrix.node-version}}
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -70,5 +70,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-reports_${{ matrix.project }}
+          name: e2e_${{ matrix.project }}_${{ matrix.os }}_${{ matrix.node-version }}_playwright-reports
           path: e2e/${{ matrix.project }}/playwright-reports
