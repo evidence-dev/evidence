@@ -23,11 +23,16 @@ jobs:
   run-tests:
     needs:
       - find-e2e-test-projects
+
     strategy:
       matrix:
         project: ${{ fromJson(needs.find-e2e-test-projects.outputs.e2e-test-projects) }}
+        os: [ubuntu-latest, maxOS-latest, windows-latest]
+        node-version: [18, 20]
+
     name: ${{ matrix.project }} tests
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -35,16 +40,14 @@ jobs:
       - name: Action Setup (pnpm)
         uses: pnpm/action-setup@v4
         with:
-          version: 8.15.8
+          version: 8
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: pnpm
 
-      # TODO: I think we could do installation in a previous job (instead of every matrix job) and share files between the jobs using upload/download artifact to speed up this action
-      # https://stackoverflow.com/a/75021352/9080819
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
