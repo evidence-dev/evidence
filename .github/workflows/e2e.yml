@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         project: ${{ fromJson(needs.find-e2e-test-projects.outputs.e2e-test-projects) }}
-        os: [ubuntu-latest, maxOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         node-version: [18, 20]
 
     name: e2e/${{ matrix.project }}/${{ matrix.os }}/node-${{ matrix.node-version}}
