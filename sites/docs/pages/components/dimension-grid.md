@@ -20,9 +20,10 @@ from needful_things.orders
 group by all 
 ```
 
+<LineChart data={monthly_sales} handleMissing=zero/> 
+
 <DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions /> 
 
-<LineChart data={monthly_sales} handleMissing=zero/> 
 
 
 
@@ -51,6 +52,40 @@ Dimension grid produces a condition for all of the selected dimensions which is 
 select *
 from source_name.table
 where ${inputs.selected_dimensions}
+```
+````
+
+### Multi Select 
+
+Using the multiple prop, Dimension grid can filter by multiple rows in the same column. Default value is false
+
+```monthly_sales_multi
+
+select 
+order_month, 
+sum(sales)filter(${inputs.multi_dimensions}) as sales_usd0 
+from needful_things.orders 
+group by all 
+```
+<LineChart data={monthly_sales_multi} handleMissing=zero/> 
+
+<DimensionGrid data={orders} metric='sum(sales)' name=multi_dimensions multiple/>
+
+````html
+<DimensionGrid 
+    data={orders} 
+    metric='sum(sales)' 
+    name=multi_dimensions 
+    multiple
+/>
+
+
+```monthly_sales_multi
+select 
+order_month, 
+sum(sales)filter(${inputs.multi_dimensions}) as sales_usd0 
+from needful_things.orders 
+group by all 
 ```
 ````
 
@@ -97,5 +132,14 @@ Label for the metric
 >
 
 Maximum number of rows to include in each table
+
+</PropListing>
+<PropListing 
+    name="multiple"
+    options="boolean"
+    default="false"
+>
+
+Allows for multiple rows in a column to be selected and filtered
 
 </PropListing>

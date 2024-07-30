@@ -171,7 +171,7 @@
 		await userEvent.click(airline2);
 	}}
 >
-	<DimensionGrid {data} />
+	<DimensionGrid {data} multiple />
 </Story>
 <Story
 	name="Selecting Multiple Values in Multiple Columns"
@@ -185,6 +185,8 @@
 		const plane = await screen.findByText('Boeing 757');
 		await userEvent.click(plane);
 
+		await delay(750);
+
 		const airline2 = await screen.findByText('Japan Airlines');
 		await userEvent.click(airline2);
 
@@ -192,7 +194,7 @@
 		await userEvent.click(plane2);
 	}}
 >
-	<DimensionGrid {data} />
+	<DimensionGrid {data} multiple />
 </Story>
 <Story
 	name="Deselecting Multiple Values in Multiple Columns"
@@ -202,18 +204,16 @@
 
 		const airline = await screen.findByText('China Eastern Airlines');
 		await userEvent.click(airline);
+		await delay(750);
+		await userEvent.click(airline);
 
 		const plane = await screen.findByText('Boeing 757');
 		await userEvent.click(plane);
-
-		const airline2 = await screen.findByText('Japan Airlines');
-		await userEvent.click(airline2);
-
-		const plane2 = await screen.findByText('Boeing 767');
-		await userEvent.click(plane2);
+		await delay(750);
+		await userEvent.click(plane);
 	}}
 >
-	<DimensionGrid {data} />
+	<DimensionGrid {data} multiple />
 </Story>
 
 <Story
@@ -227,13 +227,13 @@
 
 		await delay(500);
 
-		const plane = await screen.findByText('Boeing 757');
-		await userEvent.click(plane);
+		const airline2 = await screen.findByText('Japan Airlines');
+		await userEvent.click(airline2);
 
 		await delay(500);
 
-		const airline2 = await screen.findByText('Japan Airlines');
-		await userEvent.click(airline2);
+		const plane = await screen.findByText('Boeing 757');
+		await userEvent.click(plane);
 
 		await delay(500);
 
@@ -256,5 +256,5 @@
 		await userEvent.click(plane3);
 	}}
 >
-	<DimensionGrid {data} />
+	<DimensionGrid {data} multiple />
 </Story>

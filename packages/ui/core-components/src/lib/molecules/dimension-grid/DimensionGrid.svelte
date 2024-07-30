@@ -17,7 +17,7 @@
 	/** @type {string} */
 	export let name;
 	/** @type {boolean} */
-	export let multiple = true;
+	export let multiple = false;
 </script>
 
 <QueryLoad {data} let:loaded>
