@@ -25,6 +25,7 @@ jobs:
       - find-e2e-test-projects
 
     strategy:
+      fail-fast: false
       matrix:
         project: ${{ fromJson(needs.find-e2e-test-projects.outputs.e2e-test-projects) }}
         os: [ubuntu-latest, maxOS-latest, windows-latest]
