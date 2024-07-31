@@ -35,6 +35,9 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: Set OS environment variable
+        run: echo "__E2E_WORKFLOW_OS__=${{ matrix.os }}" >> $GITHUB_ENV
+
       - name: Checkout Repo
         uses: actions/checkout@v4
 

@@ -45,10 +45,15 @@ export default defineConfig({
 			use: { ...devices['Desktop Firefox'] }
 		},
 
-		{
-			name: 'webkit',
-			use: { ...devices['Desktop Safari'] }
-		}
+		// Only test webkit on macOS
+		...(process.env.CI && process.env.__E2E_WORKFLOW_OS__ !== 'macOS'
+			? []
+			: [
+					{
+						name: 'webkit',
+						use: { ...devices['Desktop Safari'] }
+					}
+				])
 
 		/* Test against mobile viewports. */
 		// {
