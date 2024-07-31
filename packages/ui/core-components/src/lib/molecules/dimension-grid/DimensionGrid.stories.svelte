@@ -30,7 +30,7 @@
 </script>
 
 <Story name="Basic Usage">
-	<DimensionGrid data={fakerSeries.airlines.flights.store} name="BasicUsage" />
+	<DimensionGrid {data} name="BasicUsage" />
 </Story>
 
 <Story name="Named as an Input">
@@ -257,4 +257,14 @@
 	}}
 >
 	<DimensionGrid {data} multiple />
+</Story>
+
+<Story name="Null Metric Values Multiple">
+	<DimensionGrid
+		data={Query.create(
+			"SELECT case when fare > 500 then 'Big Fare!!' else null end as nullable_string_column, * FROM series_demo_source.flights",
+			query,
+			{ disableCache: true }
+		)}
+	/>
 </Story>

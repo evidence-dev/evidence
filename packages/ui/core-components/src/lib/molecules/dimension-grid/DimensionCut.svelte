@@ -73,6 +73,7 @@
 
 	let results = buildQuery(dimensionCutQuery, `dimension-cut-${dimension.column_name}`);
 
+	// TODO:i think we can remove this
 	results.fetch();
 
 	$: {
@@ -112,12 +113,13 @@
 		{#if loaded?.length > 0}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
 			<div class="transition-all" style={`height:${heightRem}rem`}>
+				{console.log([...loaded])}
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
 						on:click={updateSelected(row)}
 						on:keydown={updateSelected(row)}
-						animate:flip={{ duration: 100 }}
+						animate:flip={{ duration: 200 }}
 						role="button"
 						tabindex="-1"
 					>
