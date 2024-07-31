@@ -1,8 +1,6 @@
 import {
 	Query as QueryBuilder,
 	sql as taggedSql,
-	literalToSQL,
-	toSQL,
 	literal,
 	desc
 } from '@evidence-dev/sdk/query-builder';
