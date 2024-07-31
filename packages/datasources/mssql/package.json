@@ -21,7 +21,7 @@
 		"datasources": [
 			"mssql"
 		],
-		"icon": "Microsoftsqlserver"
+		"icon": ""
 	},
 	"keywords": [
 		"evidence",
