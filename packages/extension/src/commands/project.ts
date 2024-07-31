@@ -195,8 +195,8 @@ export async function openIndex() {
 
 	if (packageJsonFolder === '' && openMarkdownFiles.length === 0) {
 		const folderPath = getWorkspaceFolder();
-		const filePath = folderPath?.uri.toString() + '/pages/index.md';
-		const fileUri = Uri.parse(filePath);
+		const filePath = path.join(folderPath?.uri.fsPath || '', 'pages', 'index.md');
+		const fileUri = Uri.file(filePath);
 		await commands.executeCommand('vscode.open', fileUri, 1);
 		await commands.executeCommand('vscode.open', fileUri, 2);
 		openWalkthrough();
@@ -440,7 +440,6 @@ async function runDegitCommand(workspaceRoot: string): Promise<void> {
 					reject(error);
 					return;
 				}
-				console.log(stdout);
 
 				// Move contents from usql-template to workspace root
 				await moveContents(usqlTemplatePath, workspaceRoot);
@@ -601,11 +600,8 @@ async function processDirectory(directory: string, sourcesFolderPath: string): P
 async function handleMarkdownFile(filePath: string, sourcesFolderPath: string): Promise<void> {
 	// Here, you can call all the functions required to process the Markdown file
 	await updateFrontmatterInFile(filePath);
-	console.log('Chagned frontmatter to reference queries instead of sources');
 	await processCodeFences(filePath, sourcesFolderPath);
-	console.log('Extracted inline queries into source query files');
 	await updatePageParamsSyntax(filePath);
-	console.log('Updated page parameter syntax');
 }
 
 // Function to update frontmatter in a single file

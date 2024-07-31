@@ -1,5 +1,99 @@
 # @evidence-dev/core-components
 
+## 4.7.3
+
+### Patch Changes
+
+- f8e76c7d9: changed tabs inactive border styling
+- 8782d9e95: added boxplot stories
+- 5922269dc: Allows using total labels without series labels
+- 4ae4427ea: Updated Value component's props for conditional color rendering
+- 318196074: Fixed char by char search, search by filteredCols, fixed out of bounds pagination
+  - @evidence-dev/component-utilities@3.2.7
+
+## 4.7.2
+
+### Patch Changes
+
+- 3698967f1: References wait for data before updating ECharts config
+
+## 4.7.1
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.6
+
+## 4.7.0
+
+### Minor Changes
+
+- 731d0bb06: Refactor ReferenceLine and ReferenceArea to use a store, add additional styling props
+- 7cb558c32: allow for dynamic breadcrumbs via frontmatter
+
+### Patch Changes
+
+- 08818477d: Dropdown can have option with null value/label
+- 0558bae48: updated checkbox stories
+- f5decad6b: Added CalendarHeatmap Stories
+- ee8f135ac: Fix font styling props for ReferenceLine/ReferenceArea
+  - @evidence-dev/component-utilities@3.2.5
+
+## 4.6.2
+
+### Patch Changes
+
+- a2f9bfb7a: Fix dropdown selection
+
+## 4.6.1
+
+### Patch Changes
+
+- a5b141dec: Enable strict mode
+- c392866a0: added bubblechart stories
+- 6754944ca: Dont use a date in Dropdown story to enable UI testing
+- e6aa2021d: Updated Dimension grid take in queries with spaces
+- 6d2a194e6: Fix Dropdown query-based default value performance and race conditions
+
+## 4.6.0
+
+### Minor Changes
+
+- 0b4ae10c5: Add ReferencePoint and Callout components
+
+### Patch Changes
+
+- dbc4116e3: updated link component stories and docs
+- 42ca6d4ce: Remove non-functional labelVisible prop from ReferencePoint and Callout
+
+## 4.5.4
+
+### Patch Changes
+
+- cb3f17c9e: Fix reactively updating ReferenceLine x/y value
+- 1009026e8: Fix regression in Tabs where label always overrides id
+- 3a1e1d664: Fix dynamically generated tabs from a query
+  - @evidence-dev/component-utilities@3.2.4
+
+## 4.5.3
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.3
+
+## 4.5.2
+
+### Patch Changes
+
+- 0bb7718a2: Added url prop to Big value Component
+- d6b25b02c: Fix source query triggering HMR on the page
+- 6cdedceb0: Remove db-orchestrator
+- df9159f2b: Added a new <QueryDebugger/> component to ease investigation into which queries have run on the page
+- 9982970fd: Support dynamic title inputs in accordions
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/component-utilities@3.2.2
+  - @evidence-dev/icons@1.0.1
+  - @evidence-dev/tailwind@2.1.1
+
 ## 4.5.1
 
 ### Patch Changes

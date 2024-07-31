@@ -1,9 +1,10 @@
 import path from 'path';
 import { evalSources } from '../../../plugins/datasources/evalSources.js';
-import { dataDirectory, metaDirectory, sourcesDirectory } from '../virtuals/node/projectPaths.js';
+import { dataDirectory, metaDirectory, sourcesDirectory } from '../../../lib/projectPaths.js';
 import { updateManifest } from '../../../plugins/datasources/updateManifest.js';
 import { ProcessingQueue } from '../../../lib/processing-queue.js';
 import { VITE_EVENTS } from '../constants.js';
+import { debounce } from 'perfect-debounce';
 /**
  * @returns {import("vite").Plugin}
  */
@@ -17,8 +18,8 @@ export const sourceQueryHmr = () => {
 	let latestManifest;
 
 	/**
-	 * @param {string} datasource
-	 * @param {string} table
+	 * @param {string | null} datasource
+	 * @param {string | null} table
 	 */
 	const processSource = (datasource, table) => async () => {
 		if (!server) {
@@ -39,8 +40,8 @@ export const sourceQueryHmr = () => {
 				dataDirectory,
 				metaDirectory,
 				{
-					sources: new Set([datasource]),
-					queries: new Set([table]),
+					sources: datasource ? new Set([datasource]) : null,
+					queries: table ? new Set([table]) : null,
 					only_changed: false
 				},
 				true
@@ -67,6 +68,18 @@ export const sourceQueryHmr = () => {
 		}
 	};
 
+	const queueOptions = debounce(
+		/**
+		 * Whenever sources are saved, the connection.options.yaml file and the connection.yaml file are written
+		 * Because we are using a file-watch, this would double up the executions, so we debounce them to prevent that
+		 * @param {string} sourceName
+		 */
+		(sourceName) => {
+			processingQueue.add(processSource(sourceName, null));
+		},
+		50
+	);
+
 	/** @type {import("vite").Plugin} */
 	return {
 		name: 'evidence:source-query-hmr',
@@ -83,17 +96,22 @@ export const sourceQueryHmr = () => {
 		},
 		/** @type {import("vite").Plugin['watchChange']} */
 		watchChange: async function (id) {
-			if (!id.startsWith(sourcesDirectory)) return; // don't care
-			const parts = id.replace(sourcesDirectory, '').split('/');
+			const changed = path.resolve(id);
+			if (!changed.startsWith(sourcesDirectory)) return; // don't care
+
+			const parts = changed.replace(sourcesDirectory, '').split(path.sep);
 			const sourceName = parts.at(1);
-			const queryName = path.basename(id).split('.').at(0);
+			const queryName = path.basename(changed).split('.').at(0);
 			if (!sourceName || !queryName) {
 				console.warn(
-					`Failed to HMR source query at ${id}, could not identify source or query name`
+					`Failed to HMR source query at ${changed}, could not identify source or query name`
 				);
 				return;
 			}
-			processingQueue.add(processSource(sourceName, queryName));
+			// TODO: How can we debounce a little bit to make sure we don't run twice?
+			if (queryName === 'connection' || queryName === 'connection.options')
+				queueOptions(sourceName);
+			else processingQueue.add(processSource(sourceName, queryName));
 		}
 	};
 };

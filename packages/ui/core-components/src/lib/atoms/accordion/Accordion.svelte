@@ -4,10 +4,12 @@
 
 <script>
 	import * as BaseAccordion from '../shadcn/accordion';
-
 	export let single = false;
+
+	let className = undefined;
+	export { className as class };
 </script>
 
-<BaseAccordion.Root class="mb-6 w-full" multiple={!single}>
+<BaseAccordion.Root class={className} multiple={!single}>
 	<slot />
 </BaseAccordion.Root>

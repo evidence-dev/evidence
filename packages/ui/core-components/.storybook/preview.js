@@ -1,5 +1,7 @@
 import '../src/app.postcss';
-import WithUSQL from '../src/lib/storybook-helpers/WithUSQL.svelte';
+import WithEvidence from '../src/lib/storybook-helpers/WithEvidence.svelte';
+import { initialize } from '../src/lib/storybook-helpers/initializeUSQL.js';
+
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
 	parameters: {
@@ -9,6 +11,9 @@ const preview = {
 				color: /(background|color)$/i,
 				date: /Date$/
 			}
+		},
+		chromatic: {
+			diffThreshold: 0.28
 		}
 	},
 	argTypes: {
@@ -16,7 +21,12 @@ const preview = {
 		evidenceInclude: { table: { disable: true } },
 		series: { table: { disable: true } }
 	},
-	decorators: [() => WithUSQL]
+	decorators: [() => WithEvidence],
+	loaders: [
+		async () => ({
+			usqlLoaded: await initialize()
+		})
+	]
 };
 
 export default preview;

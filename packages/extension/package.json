@@ -2,7 +2,7 @@
 	"name": "evidence-vscode",
 	"displayName": "Evidence",
 	"description": "Build polished data products with SQL and Markdown",
-	"version": "1.4.15",
+	"version": "1.5.1",
 	"private": true,
 	"engines": {
 		"vscode": "^1.52.0"
@@ -17,7 +17,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/evidence-dev/evidence-vscode.git"
+		"url": "https://github.com/evidence-dev/evidence.git"
 	},
 	"keywords": [
 		"evidence",
@@ -28,7 +28,7 @@
 		"analytics"
 	],
 	"bugs": {
-		"url": "https://github.com/evidence-dev/evidence-vscode/issues"
+		"url": "https://github.com/evidence-dev/evidence/issues"
 	},
 	"homepage": "https://evidence.dev",
 	"icon": "icons/evidence-logo.png",
@@ -61,6 +61,26 @@
 			{
 				"command": "evidence.openWalkthrough",
 				"title": "Getting Started Walkthrough",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.insertColumnName",
+				"title": "Insert",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.insertTableName",
+				"title": "Insert",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.copyColumnName",
+				"title": "Copy",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.copyTableName",
+				"title": "Copy",
 				"category": "Evidence"
 			},
 			{
@@ -156,7 +176,7 @@
 				"command": "runCommands",
 				"key": "/",
 				"enablement": "evidence.hasProject",
-				"when": "editorTextFocus && resourceLangId == 'emd' && evidence.isPagesDirectory == true && evidence.slashCommands == true",
+				"when": "editorTextFocus && resourceLangId == 'emd' && evidence.isPagesDirectory == true && evidence.slashCommands == true && evidence.isSQLContext === false",
 				"args": {
 					"commands": [
 						{
@@ -173,15 +193,17 @@
 			},
 			{
 				"command": "evidence.startServer",
-				"key": "ctrl+R",
-				"mac": "cmd+R",
-				"enablement": "evidence.hasProject"
+				"key": "ctrl+shift+R",
+				"mac": "cmd+shift+R",
+				"enablement": "evidence.hasProject",
+				"when": "!evidence.serverRunning"
 			},
 			{
 				"command": "evidence.stopServer",
 				"key": "ctrl+shift+R",
 				"mac": "cmd+shift+R",
-				"enablement": "evidence.hasProject"
+				"enablement": "evidence.hasProject",
+				"when": "evidence.serverRunning"
 			},
 			{
 				"command": "evidence.build",
@@ -247,6 +269,44 @@
 				{
 					"command": "evidence.preview",
 					"when": "never"
+				},
+				{
+					"command": "evidence.copyColumnName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.copyTableName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.insertColumnName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.insertTableName",
+					"when": "never"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "evidence.insertColumnName",
+					"when": "view == schemaView && viewItem == columnItem",
+					"group": "inline@1"
+				},
+				{
+					"command": "evidence.insertTableName",
+					"when": "view == schemaView && viewItem == tableItem",
+					"group": "inline@1"
+				},
+				{
+					"command": "evidence.copyColumnName",
+					"when": "view == schemaView && viewItem == columnItem",
+					"group": "inline@2"
+				},
+				{
+					"command": "evidence.copyTableName",
+					"when": "view == schemaView && viewItem == tableItem",
+					"group": "inline@2"
 				}
 			]
 		},
@@ -290,6 +350,50 @@
 						"Open in external web browser",
 						"No automatic preview shown"
 					]
+				},
+				"evidence.enableSqlBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for SQL blocks."
+				},
+				"evidence.enableIfBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for if blocks."
+				},
+				"evidence.enableEachBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for each blocks."
+				},
+				"evidence.enableFrontmatterBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for markdown frontmatter."
+				},
+				"evidence.enableSqlAutocomplete": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable or disable SQL autocomplete."
+				},
+				"evidence.sqlAcceptSuggestionsOnEnter": {
+					"type": "boolean",
+					"default": false,
+					"description": "Accept suggestions on Enter in SQL blocks."
+				},
+				"evidence.slashCommandsAcceptSuggestionsOnEnter": {
+					"type": "boolean",
+					"default": true,
+					"description": "Accept suggestions on Enter for slash commands."
+				},
+				"evidence.sqlKeywordSuggestionCase": {
+					"type": "string",
+					"enum": [
+						"uppercase",
+						"lowercase"
+					],
+					"default": "lowercase",
+					"description": "Choose whether SQL keyword suggestions should be in uppercase or lowercase"
 				}
 			}
 		},
@@ -335,14 +439,15 @@
 			"[emd]": {
 				"editor.wordWrap": "on",
 				"editor.suggest.showWords": false,
+				"editor.suggest.snippetsPreventQuickSuggestions": false
+			},
+			"[sql]": {
+				"editor.acceptSuggestionOnEnter": "off",
 				"editor.quickSuggestions": {
-					"other": false,
+					"other": true,
 					"comments": false,
 					"strings": false
-				},
-				"editor.suggest.snippetsPreventQuickSuggestions": false,
-				"editor.quickSuggestionsDelay": 300,
-				"editor.acceptSuggestionOnEnter": "on"
+				}
 			}
 		},
 		"snippets": [

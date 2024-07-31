@@ -18,7 +18,7 @@ export default function formatTitle(column, columnFormat) {
 			}
 		});
 	}
-	// Remove all underscores before passing to title case function:
-	result = toTitleCase(result.replace(/_/g, ' '));
+	// Remove all underscores & double quotes before passing to title case function:
+	result = toTitleCase(column.replace(/"/g, '').replace(/_/g, ' '));
 	return result;
 }

@@ -1,5 +1,13 @@
 # @evidence-dev/bigquery
 
+## 2.0.7
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/db-commons@1.0.5
+
 ## 2.0.6
 
 ### Patch Changes

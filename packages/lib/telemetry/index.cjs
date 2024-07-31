@@ -96,10 +96,10 @@ const logEvent = async (
 ) => {
 	try {
 		const usageStats = settings
-			? settings.send_anonymous_usage_stats ?? 'yes'
-			: process.env['SEND_ANONYMOUS_USAGE_STATS'] ??
+			? (settings.send_anonymous_usage_stats ?? 'yes')
+			: (process.env['SEND_ANONYMOUS_USAGE_STATS'] ??
 				process.env['send_anonymous_usage_stats'] ??
-				'yes';
+				'yes');
 		let repo;
 		let database;
 		let demoDb;
@@ -134,7 +134,7 @@ const logEvent = async (
 
 		if (usageStats === 'yes') {
 			const projectProfile = await getProfile();
-			const analytics = new Analytics({ writeKey: wK });
+			const analytics = new Analytics({ writeKey: wK, flushAt: 1 });
 			const payload = {
 				anonymousId: projectProfile.anonymousId,
 				event: eventName,

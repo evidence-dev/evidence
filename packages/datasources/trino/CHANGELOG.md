@@ -1,5 +1,20 @@
 # @evidence-dev/trino
 
+## 1.0.8
+
+### Patch Changes
+
+- 70130373a: allow for passwordless auth and https
+- a5f972352: Fix and update to trino client.
+
+## 1.0.7
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/db-commons@1.0.5
+
 ## 1.0.6
 
 ### Patch Changes

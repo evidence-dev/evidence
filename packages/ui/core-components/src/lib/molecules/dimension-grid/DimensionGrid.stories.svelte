@@ -11,16 +11,9 @@
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
 
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { fakerSeries } from '$lib/faker-data-queries.js';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-
-	// From layout.js
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
 
 <Story name="Basic Usage">
@@ -28,10 +21,6 @@
 </Story>
 
 <Story name="Named as an Input">
-	<div class="my-2 bg-gray-50 border-2 border-dashed font-mono rounded p-2 text-xs">
-		<dt class=" font-semibold">$inputs.dimensiongrid</dt>
-		<dd>{$inputStore.dimensiongrid}</dd>
-	</div>
 	<DimensionGrid name="dimensiongrid" data={fakerSeries.airlines.flights.store} />
 </Story>
 
@@ -106,8 +95,20 @@
 
 <Story name="No String Columns">
 	<DimensionGrid
-		data={Query.create('SELECT fare FROM series_demo_source.flights', query, {
+		data={Query.create('SELECT fare FROM series_demo_source.flights limit 10', query, {
 			disableCache: true
 		})}
+	/>
+</Story>
+
+<Story name="string query with spaces">
+	<DimensionGrid
+		data={Query.create(
+			`SELECT "fare" as "fare price", "airline" as "Airline Name" from flights limit 10`,
+			query,
+			{
+				disableCache: true
+			}
+		)}
 	/>
 </Story>
