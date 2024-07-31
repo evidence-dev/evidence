@@ -15,8 +15,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@evidence-dev/sdk": "workspace:*",
-		"@evidence-dev/tailwind": "workspace:*",
 		"@evidence-dev/component-utilities": "workspace:*",
 		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/csv": "workspace:*",
@@ -24,9 +22,12 @@
 		"@evidence-dev/evidence": "workspace:*",
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/motherduck": "workspace:^",
+		"@evidence-dev/mssql": "workspace:^",
 		"@evidence-dev/postgres": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
-		"@evidence-dev/sqlite": "workspace:*"
+		"@evidence-dev/sqlite": "workspace:*",
+		"@evidence-dev/tailwind": "workspace:*"
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3"
