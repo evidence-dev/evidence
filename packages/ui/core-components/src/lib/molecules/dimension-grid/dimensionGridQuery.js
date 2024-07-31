@@ -107,7 +107,6 @@ export const getDimensionCutQuery = function (
  * @returns {string}
  */
 const filterBySelect = (selectedValue, colName) => {
-	console.log({ selectedValue, colName });
 	if (Array.isArray(selectedValue)) {
 		if (selectedValue.length === 0) {
 			return 'false';

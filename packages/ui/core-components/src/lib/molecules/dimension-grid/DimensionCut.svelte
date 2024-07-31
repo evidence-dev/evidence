@@ -71,10 +71,12 @@
 		selectedValue
 	);
 
-	let results = buildQuery(dimensionCutQuery, `dimension-cut-${dimension.column_name}`);
+	/** @type {import("@evidence-dev/sdk/usql").Query}*/
+	let results;
 
-	// TODO:i think we can remove this
-	results.fetch();
+	$: if (dimensionCutQuery) {
+		results = buildQuery(dimensionCutQuery, `dimension-cut-${dimension.column_name}`);
+	}
 
 	$: {
 		const updatedResults = buildQuery(dimensionCutQuery);
@@ -113,7 +115,6 @@
 		{#if loaded?.length > 0}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
 			<div class="transition-all" style={`height:${heightRem}rem`}>
-				{console.log([...loaded])}
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
