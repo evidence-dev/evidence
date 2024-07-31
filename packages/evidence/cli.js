@@ -11,6 +11,12 @@ import { logQueryEvent } from '@evidence-dev/telemetry';
 
 import { loadEnv } from 'vite';
 
+const increaseNodeMemoryLimit = () => {
+	// Don't override the memory limit if it's already set
+	if (process.env.NODE_OPTIONS?.includes('--max-old-space-size')) return;
+	process.env.NODE_OPTIONS = `${process.env.NODE_OPTIONS || ''} --max-old-space-size=4096`;
+};
+
 const loadEnvFile = () => {
 	const envFile = loadEnv('', '.', ['EVIDENCE_']);
 	Object.assign(process.env, envFile);
@@ -193,6 +199,7 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -248,6 +255,7 @@ prog
 	.option('--include-values', 'Includes Environment Variable Values, this will show secrets!')
 	.describe('Prints out Evidence variables from the environment and .env file')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		const { 'include-values': includeValues } = args;
 		loadEnvFile();
 		const evidenceVars = Object.fromEntries(
@@ -265,6 +273,7 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -281,6 +290,7 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs and fails on error')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -338,6 +348,7 @@ prog
 	.command('preview')
 	.describe('preview the production build')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
