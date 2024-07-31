@@ -10,6 +10,12 @@ const waitForDevModeToLoad = async (page) => {
 	await expect(page.getByTestId('#__evidence_project_splash')).not.toBeVisible();
 };
 
+const waitForHMR = async (page) => {
+	await page.waitForEvent('console', (message) => {
+		return message.text() === '[vite] connected.';
+	});
+};
+
 test.afterEach(() => {
 	restoreChangedFiles();
 });
@@ -22,6 +28,7 @@ test.describe('pages', () => {
 		await expect(page.getByText('This page has some text on it')).toBeVisible();
 
 		editFile('pages/page.md', (content) => content.replace('some text', 'some different text'));
+		await waitForHMR(page);
 
 		await expect(page.getByText('This page has some different text on it')).toBeVisible();
 	});
@@ -33,6 +40,7 @@ test.describe('pages', () => {
 		await expect(page.getByText('Index')).toBeVisible();
 
 		createFile('pages/new-page.md', 'This is a new page');
+		await waitForHMR(page);
 
 		await expect(page.getByRole('link', { name: 'New Page' })).toBeVisible();
 		await page.goto('/new-page');
@@ -46,6 +54,7 @@ test.describe('pages', () => {
 		await expect(page.getByText('Index')).toBeVisible();
 
 		deleteFile('pages/page.md');
+		await waitForHMR(page);
 
 		await expect(page.getByRole('link', { name: 'Page' })).not.toBeVisible();
 		await page.goto('/page');
