@@ -1,5 +1,14 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.7
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- Updated dependencies [3572fcfd7]
+- Updated dependencies [907efee29]
+  - @evidence-dev/telemetry@2.1.2
+
 ## 2.1.6
 
 ### Patch Changes

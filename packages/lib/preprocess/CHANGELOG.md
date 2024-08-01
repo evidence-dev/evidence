@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 5.1.5
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+
 ## 5.1.4
 
 ### Patch Changes
