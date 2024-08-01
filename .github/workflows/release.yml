@@ -6,32 +6,9 @@ on:
       - main
 
 jobs:
-  prerelease:
-    if: github.repository == 'evidence-dev/evidence'
-    name: Prerelease
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v2.2.1
-        with:
-          version: 8.6.9
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-          registry-url: 'https://registry.npmjs.org'
-          cache: pnpm
-      - name: Publish tag:next to npm registry
-        run: pnpm run release:next
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   release:
     # prevents this action from running on forks
     if: github.repository == 'evidence-dev/evidence'
-    needs: prerelease # wait on pre-release before starting, to ensure @next is updated
     name: Release
     runs-on: ubuntu-latest
     outputs:
@@ -39,17 +16,17 @@ jobs:
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
-      - uses: pnpm/action-setup@v2.2.1
+      - uses: pnpm/action-setup@v4.0.0
         with:
           version: 8.6.9
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 20
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile

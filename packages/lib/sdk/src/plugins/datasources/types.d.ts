@@ -1,3 +1,7 @@
+import { z } from 'zod';
+import { ManifestSchema } from './schemas/manifest.schema.js';
+import { EvidenceError } from '../../lib/EvidenceError.js';
+
 type FileContent = () => Promise<string>;
 
 type QueryResultMeta = {
@@ -25,23 +29,22 @@ export interface SourceDirectory {
 	[filename: string]: SourceDirectory | FileContent;
 }
 
+export type SourceUtils = {
+	isCached: (name: string, content: string) => boolean;
+	isFiltered: (name: string) => boolean;
+	shouldRun: (name: string, content: string) => boolean;
+	addToCache: (name: string, content: string) => void;
+	subSourceVariables: (query: string) => string;
+	escape: (tableName: string, tableContent: string) => QueryResultTable;
+};
+
 export type ProcessSourceFn<T extends Record<string, unknown> = Record<string, unknown>> = (
 	opts: T,
 	files: SourceDirectory,
-	utils: {
-		isCached: (name: string, content: string) => boolean;
-		isFiltered: (name: string) => boolean;
-		shouldRun: (name: string, content: string) => boolean;
-		addToCache: (name: string, content: string) => void;
-	}
-) => AsyncIterable<QueryResultTable>;
+	utils: SourceUtils
+) => AsyncIterable<QueryResultTable | EvidenceError>;
 
-export type Manifest = {
-	/**
-	 * Map of schema names to file URLs
-	 */
-	renderedFiles: Record<string, string[]>;
-};
+export type Manifest = z.infer<typeof ManifestSchema>;
 
 export type SourceFilters = {
 	sources: Set<string> | null;

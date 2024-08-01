@@ -1,5 +1,122 @@
 # @evidence-dev/component-utilities
 
+## 3.2.7
+
+### Patch Changes
+
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [fbdfe2dd6]
+  - @evidence-dev/sdk@1.3.7
+
+## 3.2.6
+
+### Patch Changes
+
+- Updated dependencies [3571b0b3a]
+  - @evidence-dev/sdk@1.3.6
+
+## 3.2.5
+
+### Patch Changes
+
+- Updated dependencies [08818477d]
+- Updated dependencies [db8326efa]
+  - @evidence-dev/sdk@1.3.5
+
+## 3.2.4
+
+### Patch Changes
+
+- Updated dependencies [20af8e6b6]
+- Updated dependencies [55bc6a52b]
+- Updated dependencies [e8a5d9964]
+  - @evidence-dev/sdk@1.3.4
+
+## 3.2.3
+
+### Patch Changes
+
+- Updated dependencies [244c795be]
+  - @evidence-dev/sdk@1.3.3
+
+## 3.2.2
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [f15071659]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [93a838ca2]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [3daa83ffc]
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/sdk@1.3.2
+
+## 3.2.1
+
+### Patch Changes
+
+- Updated dependencies [8a0ba1414]
+  - @evidence-dev/sdk@1.3.1
+
+## 3.2.0
+
+### Minor Changes
+
+- 3d1c42e0: Updated DateRange input prop to filter out presets
+
+### Patch Changes
+
+- acba0f3a: Toasts that are created with the same id now UPDATE the existing toast, rather than appearing twice with the same id
+- Updated dependencies [dc8f01be]
+- Updated dependencies [5705a7eb]
+  - @evidence-dev/sdk@1.3.0
+
+## 3.1.0
+
+### Minor Changes
+
+- 737642a0: Created input slider component and docs
+
+## 3.0.5-features-b.0
+
+### Patch Changes
+
+- acba0f3a6: Toasts that are created with the same id now UPDATE the existing toast, rather than appearing twice with the same id
+- Updated dependencies [dc8f01be2]
+  - @evidence-dev/sdk@1.2.3-features-b.0
+
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [4e3b925e]
+  - @evidence-dev/sdk@1.2.2
+
+## 3.0.3
+
+### Patch Changes
+
+- 43d66875: buildReactiveInputQuery is more careful with publishing updates
+- Updated dependencies [25ea0fe4]
+- Updated dependencies [e400971e]
+  - @evidence-dev/sdk@1.2.1
+
+## 3.0.2
+
+### Patch Changes
+
+- 1e1486f3: `buildInputQuery` now passes noResolve state to created queries to prevent error flickers
+- 85d01792: Handle nulls for multiple y columns
+- Updated dependencies [1e1486f3]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [276718dd]
+- Updated dependencies [7f85e600]
+  - @evidence-dev/sdk@1.2.0
+
 ## 3.0.1
 
 ### Patch Changes

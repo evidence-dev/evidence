@@ -78,6 +78,54 @@ In dev mode, if you have large sources which take a while to run, it can be help
    - `npm run sources -- --sources my_source` run `my_source` only
    - `npm run sources -- --sources my_source --queries query_one,query_two` run `my_source.query_one` and `my_source.query_two` only
 
+### Increase Process Memory
+
+If you are working with large data sources (~1M+ rows), your `npm run sources` process may run out of memory, with an error similar to this:
+
+```code
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+```
+
+One way to circumvent this is to increase the amount of memory allocated to the process. The below command increases the memory to 4GB (the number is measured in MB), but you can set it arbitrarily up to the RAM of your machine
+
+#### Mac OS / Linux
+
+```code
+NODE_OPTIONS="--max-old-space-size=4096" npm run sources
+```
+
+#### Windows
+
+```code
+set NODE_OPTIONS=--max-old-space-size=4096 && npm run sources
+```
+
+### Build Time Variables
+
+You can pass variables to your source queries at build time using environment variables of the format `EVIDENCE_VAR__variable_name=value`.
+
+`.env`
+```bash
+EVIDENCE_VAR__client_id=123
+```
+
+Then in your **source queries**, you can access the variable using `${}` syntax:
+
+```sql
+select * from customers
+where client_id = ${client_id}
+```
+
+This will interpolate the value of `client_id` into the query:
+
+```sql
+select * from customers
+where client_id = 123
+```
+
+Note that these variables are only accessible in source queries, not in file queries or queries in markdown files.
+
+
 
 ## Supported data sources
 
@@ -192,6 +240,33 @@ postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootc
 
 Replace the various `{properties}` as needed, and replace `/path/to/file/ca-certificate.crt` with the path and filename of your certificate.
 
+Currently the UI does not support adding ssl with client certificates as authentication method. If you want to use this, you need to manually change your connection.yaml to:
+
+```yaml
+name: mydatabase
+type: postgres
+options:
+  host: example.myhost.com
+  port: 5432
+  database: mydatabase
+  ssl:
+    sslmode: require
+```
+
+and your connection.options.yaml to:
+
+```yaml
+user: "USERNAME_AS_BASE64"
+ssl:
+  rejectUnauthorized: true
+  key: "USER_KEY_AS_BASE64"
+  cert: "USER_CERT_AS_BASE64"
+
+```
+
+Here you encode the full user key and cert file as base64 and put them in the correct options. If you do not want to verify the server certificate, for example because you have a self signed certificate, then change rejectUnauthorized to false.
+
+
 ### Trino
 
 #### Supported Authentication Types
@@ -250,13 +325,11 @@ DuckDB is a local file-based database. If using a persistent database, it should
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
-#### MotherDuck
+### MotherDuck
+
+[Motherduck](https://motherduck.com) is a cloud-based DuckDB database.
 
 To connect to MotherDuck, you will need a [service token](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token).
-
-In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`.
-
-You can also specify a database: `md:my_database?motherduck_token=[YOUR_SERVICE_TOKEN]`.
 
 ### Databricks
 

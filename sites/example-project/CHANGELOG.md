@@ -1,5 +1,336 @@
 # @evidence-dev/components
 
+## 3.5.16
+
+### Patch Changes
+
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [70130373a]
+- Updated dependencies [f8e76c7d9]
+- Updated dependencies [8782d9e95]
+- Updated dependencies [5922269dc]
+- Updated dependencies [a5f972352]
+- Updated dependencies [fbdfe2dd6]
+- Updated dependencies [4ae4427ea]
+- Updated dependencies [318196074]
+  - @evidence-dev/preprocess@5.1.4
+  - @evidence-dev/sdk@1.3.7
+  - @evidence-dev/trino@1.0.8
+  - @evidence-dev/core-components@4.7.3
+  - @evidence-dev/component-utilities@3.2.7
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 3.5.15
+
+### Patch Changes
+
+- Updated dependencies [3698967f1]
+  - @evidence-dev/core-components@4.7.2
+
+## 3.5.14
+
+### Patch Changes
+
+- Updated dependencies [3571b0b3a]
+  - @evidence-dev/sdk@1.3.6
+  - @evidence-dev/component-utilities@3.2.6
+  - @evidence-dev/core-components@4.7.1
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 3.5.13
+
+### Patch Changes
+
+- Updated dependencies [08818477d]
+- Updated dependencies [08818477d]
+- Updated dependencies [16b69f04e]
+- Updated dependencies [df8e87625]
+- Updated dependencies [0558bae48]
+- Updated dependencies [731d0bb06]
+- Updated dependencies [0de6bc76c]
+- Updated dependencies [db8326efa]
+- Updated dependencies [f5decad6b]
+- Updated dependencies [ee8f135ac]
+- Updated dependencies [7cb558c32]
+  - @evidence-dev/core-components@4.7.0
+  - @evidence-dev/sdk@1.3.5
+  - @evidence-dev/mssql@1.0.9
+  - @evidence-dev/sqlite@2.0.6
+  - @evidence-dev/snowflake@1.1.0
+  - @evidence-dev/component-utilities@3.2.5
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 3.5.12
+
+### Patch Changes
+
+- Updated dependencies [a2f9bfb7a]
+  - @evidence-dev/core-components@4.6.2
+
+## 3.5.11
+
+### Patch Changes
+
+- Updated dependencies [a5b141dec]
+- Updated dependencies [c3b86ef5f]
+- Updated dependencies [c392866a0]
+- Updated dependencies [6754944ca]
+- Updated dependencies [e6aa2021d]
+- Updated dependencies [6d2a194e6]
+  - @evidence-dev/core-components@4.6.1
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 3.5.10
+
+### Patch Changes
+
+- Updated dependencies [0b4ae10c5]
+- Updated dependencies [dbc4116e3]
+- Updated dependencies [42ca6d4ce]
+  - @evidence-dev/core-components@4.6.0
+
+## 3.5.9
+
+### Patch Changes
+
+- Updated dependencies [cb3f17c9e]
+- Updated dependencies [1009026e8]
+- Updated dependencies [3a1e1d664]
+  - @evidence-dev/core-components@4.5.4
+  - @evidence-dev/component-utilities@3.2.4
+  - @evidence-dev/plugin-connector@2.1.5
+
+## 3.5.8
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.3
+- @evidence-dev/core-components@4.5.3
+- @evidence-dev/plugin-connector@2.1.5
+
+## 3.5.7
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- 4fb6d83b2: Added selectAllByDefault example and props to Docs
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [0bb7718a2]
+- Updated dependencies [e74affd64]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [6cdedceb0]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [9982970fd]
+  - @evidence-dev/universal-sql@2.1.3
+  - @evidence-dev/core-components@4.5.2
+  - @evidence-dev/duckdb@1.0.11
+  - @evidence-dev/preprocess@5.1.3
+  - @evidence-dev/bigquery@2.0.7
+  - @evidence-dev/csv@1.0.12
+  - @evidence-dev/databricks@1.0.7
+  - @evidence-dev/mssql@1.0.8
+  - @evidence-dev/mysql@1.1.3
+  - @evidence-dev/postgres@1.0.6
+  - @evidence-dev/snowflake@1.0.7
+  - @evidence-dev/sqlite@2.0.5
+  - @evidence-dev/trino@1.0.7
+  - @evidence-dev/component-utilities@3.2.2
+  - @evidence-dev/plugin-connector@2.1.5
+  - @evidence-dev/telemetry@2.1.1
+
+## 3.5.6
+
+### Patch Changes
+
+- Updated dependencies [c10e35be1]
+- Updated dependencies [06c1e74e5]
+- Updated dependencies [cd9e7df35]
+- Updated dependencies [08d7b9405]
+  - @evidence-dev/core-components@4.5.1
+  - @evidence-dev/duckdb@1.0.10
+  - @evidence-dev/csv@1.0.11
+  - @evidence-dev/component-utilities@3.2.1
+  - @evidence-dev/plugin-connector@2.1.4
+
+## 3.5.5
+
+### Patch Changes
+
+- Updated dependencies [f411c8650]
+- Updated dependencies [79f4758e0]
+- Updated dependencies [6421c6d9b]
+- Updated dependencies [b041f5f9a]
+  - @evidence-dev/core-components@4.5.0
+  - @evidence-dev/bigquery@2.0.6
+  - @evidence-dev/csv@1.0.10
+  - @evidence-dev/databricks@1.0.6
+  - @evidence-dev/snowflake@1.0.6
+  - @evidence-dev/trino@1.0.6
+
+## 3.5.4
+
+### Patch Changes
+
+- Updated dependencies [9fdc805b]
+- Updated dependencies [97cb3a7c]
+- Updated dependencies [e058d2d3]
+- Updated dependencies [73fc7ebf]
+- Updated dependencies [87e56af2]
+- Updated dependencies [3d1c42e0]
+- Updated dependencies [8f374326]
+- Updated dependencies [f6b22bbc]
+- Updated dependencies [a24deaf0]
+- Updated dependencies [acba0f3a]
+- Updated dependencies [106222df]
+- Updated dependencies [90f381dc]
+- Updated dependencies [a2af0bea]
+- Updated dependencies [2523e5f1]
+- Updated dependencies [106222df]
+  - @evidence-dev/core-components@4.4.0
+  - @evidence-dev/preprocess@5.1.2
+  - @evidence-dev/component-utilities@3.2.0
+  - @evidence-dev/plugin-connector@2.1.4
+
+## 3.5.3
+
+### Patch Changes
+
+- Updated dependencies [064a5c96]
+- Updated dependencies [737642a0]
+- Updated dependencies [54546362]
+- Updated dependencies [9dd69149]
+- Updated dependencies [f8f7ebdb]
+- Updated dependencies [ac0df6ca]
+  - @evidence-dev/core-components@4.3.0
+  - @evidence-dev/component-utilities@3.1.0
+  - @evidence-dev/plugin-connector@2.1.4
+
+## 3.5.3-features-b.6
+
+### Patch Changes
+
+- Updated dependencies [a24deaf04]
+  - @evidence-dev/core-components@4.3.0-features-b.6
+
+## 3.5.3-features-b.5
+
+### Patch Changes
+
+- Updated dependencies [e058d2d35]
+  - @evidence-dev/core-components@4.3.0-features-b.5
+
+## 3.5.3-features-b.4
+
+### Patch Changes
+
+- Updated dependencies [9fdc805b5]
+  - @evidence-dev/core-components@4.3.0-features-b.4
+
+## 3.5.3-features-b.3
+
+### Patch Changes
+
+- Updated dependencies [90f381dc1]
+- Updated dependencies [a2af0beaf]
+  - @evidence-dev/core-components@4.3.0-features-b.3
+
+## 3.5.3-features-b.2
+
+### Patch Changes
+
+- Updated dependencies [73fc7ebfe]
+  - @evidence-dev/core-components@4.3.0-features-b.2
+
+## 3.5.3-features-b.1
+
+### Patch Changes
+
+- Updated dependencies [064a5c96e]
+- Updated dependencies [9dd691497]
+- Updated dependencies [f8f7ebdbc]
+  - @evidence-dev/core-components@4.3.0-features-b.1
+
+## 3.5.3-features-b.0
+
+### Patch Changes
+
+- Updated dependencies [97cb3a7c3]
+- Updated dependencies [f6b22bbce]
+- Updated dependencies [acba0f3a6]
+- Updated dependencies [106222df8]
+- Updated dependencies [106222df8]
+  - @evidence-dev/core-components@4.2.1-features-b.0
+  - @evidence-dev/component-utilities@3.0.5-features-b.0
+  - @evidence-dev/plugin-connector@2.1.4
+
+## 3.5.2
+
+### Patch Changes
+
+- 9338738d: prevent gap on drop down
+- Updated dependencies [2a396873]
+- Updated dependencies [af9b74ee]
+- Updated dependencies [1377e0ed]
+- Updated dependencies [2b5f94e3]
+- Updated dependencies [40c83ee2]
+- Updated dependencies [6157db9a]
+  - @evidence-dev/core-components@4.2.0
+  - @evidence-dev/telemetry@2.1.0
+  - @evidence-dev/duckdb@1.0.9
+  - @evidence-dev/plugin-connector@2.1.4
+  - @evidence-dev/csv@1.0.9
+  - @evidence-dev/component-utilities@3.0.4
+
+## 3.5.1
+
+### Patch Changes
+
+- Updated dependencies [c88cb063]
+- Updated dependencies [b3e10dac]
+- Updated dependencies [a6414446]
+- Updated dependencies [e400971e]
+- Updated dependencies [43d66875]
+- Updated dependencies [52b3fde1]
+  - @evidence-dev/preprocess@5.1.1
+  - @evidence-dev/core-components@4.1.1
+  - @evidence-dev/component-utilities@3.0.3
+  - @evidence-dev/plugin-connector@2.1.3
+
+## 3.5.0
+
+### Minor Changes
+
+- 1e1486f3: Created new input proxy, added tests, converted to use this instead of existing in-place proxy + detection method
+- dd0dbc16: add show/hide/never sidebar toggle in frontmatter
+
+### Patch Changes
+
+- Updated dependencies [9e0f10cc]
+- Updated dependencies [3f6975af]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [f4d9b336]
+- Updated dependencies [3f53e809]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [85d01792]
+- Updated dependencies [53f7bd14]
+- Updated dependencies [abae3ed9]
+- Updated dependencies [30c942b1]
+- Updated dependencies [cafc814b]
+- Updated dependencies [51dd57fb]
+- Updated dependencies [b0539005]
+- Updated dependencies [564f3444]
+- Updated dependencies [71dabb41]
+- Updated dependencies [9e8f8b1a]
+- Updated dependencies [7f85e600]
+- Updated dependencies [dd0dbc16]
+  - @evidence-dev/core-components@4.1.0
+  - @evidence-dev/component-utilities@3.0.2
+  - @evidence-dev/preprocess@5.1.0
+  - @evidence-dev/mysql@1.1.2
+  - @evidence-dev/plugin-connector@2.1.3
+
 ## 3.4.13
 
 ### Patch Changes

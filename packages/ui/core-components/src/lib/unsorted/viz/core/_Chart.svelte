@@ -3,6 +3,7 @@
 	import { setContext } from 'svelte';
 	import { propKey, configKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	let props = writable({});
+	/** @type {import("svelte/store").Writable<import("echarts").Options>} */
 	let config = writable({});
 
 	$: setContext(propKey, props);
@@ -25,6 +26,7 @@
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
+	import EmptyChart from './EmptyChart.svelte';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -153,6 +155,10 @@
 	export let chartAreaHeight;
 
 	export let renderer = undefined; // can be canvas (default) or SVG
+	export let downloadableData = true;
+	$: downloadableData = downloadableData === 'true' || downloadableData === true;
+	export let downloadableImage = true;
+	$: downloadableImage = downloadableImage === 'true' || downloadableImage === true;
 
 	export let connectGroup = undefined; // string represent name of group for connected charts. Charts with same connectGroup will have connected interactions
 
@@ -1044,22 +1050,28 @@
 
 {#if !error}
 	<slot />
-	<ECharts
-		config={$config}
-		{height}
-		{width}
-		{data}
-		{queryID}
-		evidenceChartTitle={title}
-		{showAllXAxisLabels}
-		{swapXY}
-		{echartsOptions}
-		{seriesOptions}
-		{printEchartsConfig}
-		{renderer}
-		{connectGroup}
-		{seriesColors}
-	/>
+	{#if !$config.series.length}
+		<EmptyChart emptySet="pass" />
+	{:else}
+		<ECharts
+			config={$config}
+			{height}
+			{width}
+			{data}
+			{queryID}
+			evidenceChartTitle={title}
+			{showAllXAxisLabels}
+			{swapXY}
+			{echartsOptions}
+			{seriesOptions}
+			{printEchartsConfig}
+			{renderer}
+			{downloadableData}
+			{downloadableImage}
+			{connectGroup}
+			{seriesColors}
+		/>
+	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}

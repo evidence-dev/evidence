@@ -24,7 +24,7 @@ export default (node, option) => {
 	registerTheme('evidence-light', evidenceThemeLight);
 
 	const chart = init(node, 'evidence-light', {
-		renderer: useSvg ? 'svg' : option.renderer ?? 'canvas'
+		renderer: useSvg ? 'svg' : (option.renderer ?? 'canvas')
 	});
 
 	// If connectGroup supplied, connect chart to other charts matching that connectGroup
@@ -77,7 +77,11 @@ export default (node, option) => {
 		if (option.seriesOptions) {
 			const reference_index = option.config.series.reduce(
 				(acc, { evidenceSeriesType }, reference_index) => {
-					if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+					if (
+						evidenceSeriesType === 'reference_line' ||
+						evidenceSeriesType === 'reference_area' ||
+						evidenceSeriesType === 'reference_point'
+					) {
 						acc.push(reference_index);
 					}
 					return acc;

@@ -1,5 +1,17 @@
 # @evidence-dev/faker-datasource
 
+## 2.1.3
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+
+## 2.1.2
+
+### Patch Changes
+
+- 6421c6d9b: Add icon to source configuration
+
 ## 2.1.1
 
 ### Patch Changes

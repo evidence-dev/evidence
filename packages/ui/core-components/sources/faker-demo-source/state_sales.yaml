@@ -1,0 +1,13 @@
+rows: 50
+schema:
+  id:
+    type: id
+  state:
+    category: location
+    item: state
+  sales:
+    category: number
+    item: int
+    options:
+      - min: 1000
+        max: 234593

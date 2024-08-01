@@ -1,6 +1,6 @@
 import { setContext, getContext } from 'svelte';
 import { Query as QueryBuilder, sql } from '@uwdata/mosaic-sql';
-import { Query } from '@evidence-dev/sdk/usql';
+import { Query, resolveMaybePromise } from '@evidence-dev/sdk/usql';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
 import { derived, writable } from 'svelte/store';
 
@@ -23,7 +23,7 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  * @property {string} [value] Column to be used as value when selected
  * @property {string} [label] (optional) Column to be used as label for each value
  * @property {string | string[] | Record<string, string>} [select] (optional) any additional fields to include (e.g. not value or label)
- * @property {string | Query} [data] Table or subquery to select from
+ * @property {string | import("@evidence-dev/sdk/usql").QueryValue} [data] Table or subquery to select from
  * @property {string} [where] (optional) Where clause for dataset
  * @property {string} [order] (optional) Order by clause for dataset
  */
@@ -49,17 +49,15 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 			if (!hasQuery) {
 				internal.set({ hasQuery: false });
 			} else {
-				if (query.hash !== currentQuery) {
-					const fetched = query.fetch();
-					if (fetched instanceof Promise)
-						fetched.then(() => {
-							currentQuery = query;
-							internal.set({ hasQuery, query });
-						});
-				} else {
-					currentQuery = query;
-					internal.set({ hasQuery, query });
-				}
+				// We can run .fetch() with wreckless abandon because if the query
+				// has already been fetched (e.g. hasn't changed), then this
+				// is basically a no-op
+				resolveMaybePromise(() => {
+					if (query.hash !== currentQuery?.hash) {
+						currentQuery = query;
+						internal.set({ hasQuery, query });
+					}
+				}, query.fetch());
 			}
 		}
 	};
@@ -74,6 +72,7 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 export const buildInputQuery = ({ value, label, select, data, where, order }, id, initialData) => {
 	if (!data || !(value || select)) return { hasQuery: false };
 
+	let parentHasNoResolve = false;
 	const q = new QueryBuilder().distinct();
 	if (value) q.select({ value: sql`${value}` });
 	if (label) {
@@ -95,6 +94,7 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 		// data is a QueryStore
 		// use that as a subquery
 		q.from(sql`(${data.text})`);
+		parentHasNoResolve = data.opts.noResolve ?? false;
 	} else {
 		return { hasQuery: false };
 	}
@@ -104,10 +104,13 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 	}
 
 	if (order) {
-		q.orderby(order);
+		q.orderby(sql`${order}`);
+		q.select({
+			ordinal: sql`row_number() over (ORDER BY ${order})`
+		});
 	}
 
-	const newQuery = buildQuery(q.toString(), id, initialData);
+	const newQuery = buildQuery(q.toString(), id, initialData, { noResolve: parentHasNoResolve });
 	// Don't make the component author bother with this, just provide the data
 	newQuery.fetch();
 	return {
@@ -121,9 +124,10 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
  * @param {string} queryString
  * @param {string} id
  * @param {any[]} initialData
+ * @param {Omit<import('@evidence-dev/sdk/usql').QueryOpts, 'initialData'>} [opts]
  *
  * @returns {Query}
  */
-export const buildQuery = (queryString, id, initialData) => {
-	return Query.create(queryString, queryFunction, id, { initialData });
+export const buildQuery = (queryString, id, initialData, opts) => {
+	return Query.create(queryString, queryFunction, id, { ...opts, initialData });
 };

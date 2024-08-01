@@ -12,29 +12,39 @@
 	export let logo = undefined;
 	export let builtWithEvidence = undefined;
 	export let hideHeader = false;
+	export let sidebarFrontMatter = undefined;
+
+	function deleteEmptyNodes(node) {
+		Object.keys(node.children).forEach(function (key) {
+			deleteEmptyNodes(node.children[key]);
+			if (!node.children[key].label && !node.children[key].href) {
+				delete node.children[key];
+			}
+		});
+	}
 
 	// sort children arrays by sidebar_position
 	function sortChildrenBySidebarPosition(node) {
-		if (node.children) {
-			node.children = node.children.sort((a, b) => {
-				if (!isNaN(a.frontMatter?.sidebar_position) && !isNaN(b.frontMatter?.sidebar_position)) {
-					return (
-						a.frontMatter.sidebar_position - b.frontMatter.sidebar_position ||
-						a.label.localeCompare(b.label)
-					);
-				} else if (!isNaN(a.frontMatter?.sidebar_position)) {
-					return -1;
-				} else if (!isNaN(b.frontMatter?.sidebar_position)) {
-					return 1;
-				} else {
-					return a.label.localeCompare(b.label);
-				}
-			});
-			node.children.forEach(sortChildrenBySidebarPosition);
-		}
+		node.children = Object.values(node.children).sort((a, b) => {
+			if (!isNaN(a.frontMatter?.sidebar_position) && !isNaN(b.frontMatter?.sidebar_position)) {
+				return (
+					a.frontMatter.sidebar_position - b.frontMatter.sidebar_position ||
+					a.label.localeCompare(b.label)
+				);
+			} else if (!isNaN(a.frontMatter?.sidebar_position)) {
+				return -1;
+			} else if (!isNaN(b.frontMatter?.sidebar_position)) {
+				return 1;
+			} else {
+				return a.label.localeCompare(b.label);
+			}
+		});
+		node.children.forEach(sortChildrenBySidebarPosition);
 		return node;
 	}
 
+	fileTree = structuredClone(fileTree);
+	deleteEmptyNodes(fileTree);
 	fileTree = sortChildrenBySidebarPosition(fileTree);
 
 	// children of the index page
@@ -191,7 +201,7 @@
 {/if}
 
 <!-- Desktop Sidebar -->
-<aside class="w-48 hidden md:flex flex-none">
+<aside class="w-48 flex-none {sidebarFrontMatter === 'hide' ? 'hidden' : 'hidden md:flex'}">
 	{#if !mobileSidebarOpen}
 		<div
 			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500 pretty-scrollbar"

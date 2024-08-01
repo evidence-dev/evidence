@@ -17,16 +17,17 @@ yarn.lock
 /packages/preprocess/src/process-frontmatter/handle-og.svelte
 **/template/*
 /packages/components/*
-**/sites/docs/*
 **/dist/*   
 .changeset/*
 
 *.yaml
 /packages/ui/storybook-static/*
 **/sites/example-project/src/pages/**/+page.md
+**/sites/docs/pages/**/*
 **/sites/test-env/pages/**/*
 **/static/data/*
 
 **/node_modules
 **/**/node_modules
 packages/lib/sdk/types
+packages/ui/icons/src

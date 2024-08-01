@@ -1,7 +1,5 @@
-import {
-	dataDirectory,
-	metaDirectory
-} from '../../../build-dev/vite/virtuals/node/projectPaths.js';
+import chalk from 'chalk';
+import { dataDirectory, metaDirectory } from '../../../lib/projectPaths.js';
 import { evalSources } from '../evalSources.js';
 import { updateManifest } from '../updateManifest.js';
 
@@ -53,11 +51,7 @@ export const sources = {
 
 		console.log('  Evaluated sources, saving manifest');
 
-		await updateManifest({ renderedFiles: evaluatedManifest }, dataDirectory, {
-			sources,
-			queries,
-			only_changed: args.changed === true
-		});
-		console.log('  Done!');
+		await updateManifest(evaluatedManifest, dataDirectory);
+		console.log(chalk.bold.green('  ✅ Done!'));
 	}
 };

@@ -7,10 +7,46 @@ The SankeyDiagram component accepts a query and displays a flow from one set of 
 
 To display a flow with multiple levels, like these examples, see [Mutli-level](#multi-level) below.
 
-![sankey](/img/exg-sankey.svg)
+```sql simple_sankey
+select 'products' as source, 'profits' as target, 100 as amount, 0.67 as percent
+union all
+select 'products' as source, 'expenses' as target, 50 as amount, 0.33 as percent
+union all
+select 'services' as source, 'profits' as target, 25 as amount, 0.50 as percent
+union all
+select 'services' as source, 'expenses' as target, 25 as amount, 0.50 as percent
+```
 
-```markdown
+```sql traffic_data
+select 'google' as source, 'all_traffic' as target, 100 as count
+union all
+select 'direct' as source, 'all_traffic' as target, 50 as count
+union all
+select 'facebook' as source, 'all_traffic' as target, 25 as count
+union all
+select 'bing' as source, 'all_traffic' as target, 25 as count
+union all
+select 'tiktok' as source, 'all_traffic' as target, 25 as count
+union all
+select 'twitter' as source, 'all_traffic' as target, 25 as count
+union all
+select 'linkedin' as source, 'all_traffic' as target, 25 as count
+union all
+select 'pinterest' as source, 'all_traffic' as target, 25 as count
+union all
+select 'all_traffic' as source, '/' as target, 50 as count
+union all
+select 'all_traffic' as source, '/docs' as target, 150 as count
+union all
+select 'all_traffic' as source, '/blog' as target, 25 as count
+union all
+select 'all_traffic' as source, '/about' as target, 75 as count
+```
 
+<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
+
+
+```svelte
 <SankeyDiagram 
     data={query_name} 
     sourceCol= sourceCol
@@ -21,21 +57,21 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 
 ## Vertical
 
-![sankey](/img/exg-sankey-vertical.svg)
+<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count orient=vertical/>
 
-```markdown
+```svelte
 <SankeyDiagram 
     data={query_name} 
-    sourceCol= sourceCol
-    targetCol = targetCol
-    valueCol= valueCol
-    orient = vertical
+    sourceCol=sourceCol
+    targetCol=targetCol
+    valueCol=valueCol
+    orient=vertical
 />
 ```
 
 # Echarts Options String 
 
-```html
+```svelte
 <SankeyDiagram 
     data={traffic_data} 
     title="Sankey" 
@@ -55,11 +91,43 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 
 ```
 
-![sankey](/img/sankey_echarts_options.png)
+<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count 
+    echartsOptions={{
+        title: {
+            text: "Custom Echarts Option",
+            textStyle: {
+              color: '#476fff'
+            }
+        }
+    }}
+/>
 
 # Node Depth Override
 
-```html
+
+```sql apple_income_statement
+select 'iphone' as source, 'product revenue' as target, 51 as amount_usd
+union all
+select 'mac' as source, 'product revenue' as target, 10 as amount_usd
+union all
+select 'ipad' as source, 'product revenue' as target, 8 as amount_usd
+union all
+select 'wearables and home' as source, 'product revenue' as target, 9 as amount_usd
+union all
+select 'services revenue' as source, 'revenue' as target, 20 as amount_usd
+union all
+select 'product revenue' as source, 'revenue' as target, 78 as amount_usd
+union all
+select 'revenue' as source, 'gross profit' as target, 43 as amount_usd
+union all
+select 'gross profit' as source, 'operating profit' as target, 30 as amount_usd
+union all
+select 'gross profit' as source, 'operating expenses' as target, 13 as amount_usd
+union all
+select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
+```
+
+```svelte
 <SankeyDiagram 
     data={apple_income_statement} 
     title="Apple Income Statement" 
@@ -72,14 +140,23 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 />
 ```
 
-![sankey](/img/sankey_depth_override.png)
+<SankeyDiagram 
+    data={apple_income_statement} 
+    title="Apple Income Statement" 
+    subtitle="USD Billions" 
+    sourceCol=source 
+    targetCol=target 
+    valueCol=amount_usd 
+    depthOverride={{'services revenue': 1}}
+    nodeAlign=left
+/>
 
 # Labels
 
 ## Node Labels
 
 ### `nodeLabels=name` (default)
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -90,10 +167,17 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 />
 ```
 
-![sankey](/img/sankey_nodelabel_name.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=name
+/>
 
 ### `nodeLabels=value`
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -106,10 +190,17 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 
 The value labels can be formatted using the `valueFmt` option.
 
-![sankey](/img/sankey_nodelabel_value.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=value
+/>
 
 ### `nodeLabels=full`
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -121,13 +212,21 @@ The value labels can be formatted using the `valueFmt` option.
 />
 ```
 
-![sankey](/img/sankey_nodelabel_full.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=full
+  valueFmt=usd
+/>
 
 ## Link Labels
 
 ### `linkLabels=full` (default)
 Requires `percentCol` to show percentage beside value
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -139,10 +238,18 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_linklabel_full.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=full
+/>
 
 ### `linkLabels=value`
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -154,10 +261,18 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_linklabel_value.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=value
+/>
 
 ### `linkLabels=percent`
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -169,11 +284,18 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_linklabel_percent.png)
-
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=percent
+/>
 
 ## Custom Color Palette
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -185,12 +307,20 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_palette.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=grey
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
 
 ## Link Colors
 
 ### `linkColor=grey` (default)
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -202,10 +332,18 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_palette.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=grey
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
 
 ### `linkColor=source` 
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -217,10 +355,18 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_source.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=source
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
 
 ### `linkColor=target` 
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -232,10 +378,18 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_target.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=target
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
 
 ### `linkColor=gradient` 
-```html
+```svelte
 <SankeyDiagram 
   data={simple_sankey} 
   sourceCol=source 
@@ -247,7 +401,15 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_gradient.png)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=gradient
+  colorPalette={['#6e0e08', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
 
 ## Multi-level
 
@@ -258,7 +420,7 @@ underlying query must represent all the levels using the same
 
 For example, here is the source for the visuals above.
 
-```markdown
+```svelte
 ```sql traffic_source
 select 
     channel as source,
@@ -292,161 +454,239 @@ group by 1, 2
 ### Data
 
 <PropListing
-    name=data
-    description="Query name, wrapped in curly braces"
+    name="data"
     required
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing
-    name=sourceCol
-    description="Column to use for the source of the diagram"
+    name="sourceCol"
     required
     options="column name"
-/>
+>
+
+Column to use for the source of the diagram
+
+</PropListing>
 <PropListing
-    name=targetCol
-    description="Column to use for the target of the diagram"
+    name="targetCol"
     required
     options="column name"
-/>
+>
+
+Column to use for the target of the diagram
+
+</PropListing>
 <PropListing
-    name=valueCol
-    description="Column to use for the value of the diagram"
+    name="valueCol"
     required
     options="column name"
-/>
+>
+
+Column to use for the value of the diagram
+
+</PropListing>
 <PropListing
-    name=percentCol
-    description="Column to use for the percent labels of the diagram"
+    name="percentCol"
     options="column name"
-/>
+>
+
+Column to use for the percent labels of the diagram
+
+</PropListing>
 <PropListing
-    name=depthOverride
-    description="Manual adjustment to location of each node {`{{'services revenue': 2}}`}"
+    name="depthOverride"
     options="object containing node name and depth level (0 is first level)"
-/>
+>
+
+Manual adjustment to location of each node `{{'services revenue': 2}}`
+
+</PropListing>
 <PropListing
-    name=emptySet
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    name="emptySet"
     options={['error', 'warn', 'pass']}
-    default="error"
-/>
+    defaultValue="error"
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
 <PropListing
-    name=emptyMessage
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    name="emptyMessage"
     options="string"
-    default="No records"
-/>
+    defaultValue="No records"
+>
+
+Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
 <PropListing
-    name=printEchartsConfig
-    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    name="printEchartsConfig"
     options={['true', 'false']}
-    default="false"
-/>
+    defaultValue="false"
+>
+
+Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
+
+</PropListing>
 
 ### Formatting & Styling
 
 <PropListing
-    name=valueFmt
-    description="Format to use for `valueCol` (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    name="valueFmt"
     options="Excel-style format | built-in format | custom format"
-/>
+>
+
+Format to use for `valueCol` ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing
-    name=orient
-    description="Layout direction of the nodes in the diagram."
+    name="orient"
     options={['horizontal', 'vertical']}
-    default="horizontal"
-/>
+    defaultValue="horizontal"
+>
+
+Layout direction of the nodes in the diagram.
+
+</PropListing>
 <PropListing
-    name=sort
-    description="Whether the nodes are sorted by size in the diagram"
+    name="sort"
     options={['true', 'false']}
-    default="false"
-/>
+    defaultValue="false"
+>
+
+Whether the nodes are sorted by size in the diagram
+
+</PropListing>
 <PropListing
-    name=nodeAlign
-    description="Controls the horizontal alignment of nodes in the diagram. When orient is vertical, nodeAlign controls vertical alignment."
+    name="nodeAlign"
     options={['justify', 'left', 'right']}
-    default="justify"
-/>
+    defaultValue="justify"
+>
+
+Controls the horizontal alignment of nodes in the diagram. When orient is vertical, nodeAlign controls vertical alignment.
+
+</PropListing>
 <PropListing
-    name=nodeGap
-    description="The gap between any two rectangles in each column of the the diagram."
+    name="nodeGap"
     options="number"
-    default="8"
-/>
+    defaultValue="8"
+>
+
+The gap between any two rectangles in each column of the the diagram.
+
+</PropListing>
 <PropListing
-    name=nodeWidth
-    description="The node width of rectangle in the diagram."
+    name="nodeWidth"
     options="number"
-    default="20"
-/>
+    defaultValue="20"
+>
+
+The node width of rectangle in the diagram.
+
+</PropListing>
 <PropListing
-    name=outlineColor
-    description="Border color. Only accepts a single color."
+    name="outlineColor"
     options="CSS name | hexademical | RGB | HSL"
-    default="transparent"
-/>
+    defaultValue="transparent"
+>
+
+Border color. Only accepts a single color.
+
+</PropListing>
 <PropListing
-    name=outlineWidth
-    description="Border Width. It should be a natural number."
+    name="outlineWidth"
     options="number"
-    default="1"
-/>
+    defaultValue="1"
+>
+
+Border Width. It should be a natural number.
+
+</PropListing>
 <PropListing
-    name=colorPalette
-    description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
+    name="colorPalette"
     options="array of color strings (CSS name | hexademical | RGB | HSL)"
-    default="built-in color palette"
-/>
+    defaultValue="built-in color palette"
+>
+
+Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88a87']}`
+
+</PropListing>
 <PropListing
-    name=linkColor
-    description="Color to use for the links between nodes in the diagram"
+    name="linkColor"
     options={['grey', 'source', 'target', 'gradient']}
-    default="grey"
-/>
+    defaultValue="grey"
+>
+
+Color to use for the links between nodes in the diagram
+
+</PropListing>
 
 ### Chart
 
 <PropListing
-    name=title
-    description="Chart title. Appears at top left of chart."
+    name="title"
     options="string"
-/>
+>
+
+Chart title. Appears at top left of chart.
+
+</PropListing>
 <PropListing
-    name=subtitle
-    description="Chart subtitle. Appears just under title."
+    name="subtitle"
     options="string"
-/>
+>
+
+Chart subtitle. Appears just under title.
+
+</PropListing>
 <PropListing
-    name=nodeLabels
-    description="Adds labels to the nodes of the diagram"
+    name="nodeLabels"
     options={['name', 'value', 'full']}
-    default="name"
-/>
+    defaultValue="name"
+>
+
+Adds labels to the nodes of the diagram
+
+</PropListing>
 <PropListing
-    name=linkLabels
-    description="Adds labels to the links between nodes"
+    name="linkLabels"
     options={['full', 'value', 'percent']}
-    default="full (requires percentCol)"
-/>
+    defaultValue="full (requires percentCol)"
+>
+
+Adds labels to the links between nodes
+
+</PropListing>
 <PropListing
-    name=chartAreaHeight
-    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
+    name="chartAreaHeight"
     options="number"
-    default="180"
-/>
+    defaultValue="180"
+>
+
+Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.
+
+</PropListing>
 
 ### Custom Echarts Options
 
 <PropListing
-    name=echartsOptions
-    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    name="echartsOptions"
     options="{`{{exampleOption:'exampleValue'}}`}"
-/>
+>
+
+Custom Echarts options to override the default options. See [reference page](/components/echarts-options/) for available options.
+
+</PropListing>
 <PropListing
-    name=printEchartsConfig
-    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    name="printEchartsConfig"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
+
+</PropListing>

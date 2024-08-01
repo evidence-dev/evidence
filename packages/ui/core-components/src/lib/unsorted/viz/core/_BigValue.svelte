@@ -30,6 +30,7 @@
 
 	// Delta controls
 	export let downIsGood = false;
+	$: downIsGood = downIsGood === 'true' || downIsGood === true;
 	export let neutralMin = 0;
 	export let neutralMax = 0;
 
@@ -38,6 +39,9 @@
 
 	let positive = true;
 	let comparisonColor = 'var(--grey-700)';
+
+	/** @type {string | null}*/
+	export let link = null;
 
 	let error = undefined;
 	$: try {
@@ -102,7 +106,13 @@
 	{:else}
 		<p class="text-sm text-gray-700">{title}</p>
 		<div class="relative text-xl font-medium text-gray-700 my-0.5">
-			<Value {data} column={value} {fmt} />
+			{#if link}
+				<a class="hover:bg-gray-100" href={link}>
+					<Value {data} column={value} {fmt} />
+				</a>
+			{:else}
+				<Value {data} column={value} {fmt} />
+			{/if}
 			{#if sparkline}
 				<Sparkline
 					height="15"
@@ -131,11 +141,18 @@
 						{neutralMin}
 						{neutralMax}
 						text={comparisonTitle}
+						{downIsGood}
 					/>
 				</p>
 			{:else}
 				<p class="text-xs font-sans text-gray-500 pt-[0.5px]">
-					<Value {data} column={comparison} fmt={comparisonFmt} />
+					{#if link}
+						<a class="hover:bg-gray-100" href={link}>
+							<Value {data} column={comparison} fmt={comparisonFmt} />
+						</a>
+					{:else}
+						<Value {data} column={comparison} fmt={comparisonFmt} />
+					{/if}
 					<span>{comparisonTitle}</span>
 				</p>
 			{/if}

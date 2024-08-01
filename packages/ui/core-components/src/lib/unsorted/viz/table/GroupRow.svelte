@@ -20,6 +20,7 @@
 	export let rowColor = undefined;
 	export let subtotals = true;
 	export let finalColumnOrder = undefined;
+	export let compact = undefined;
 
 	const dispatch = createEventDispatcher();
 
@@ -50,14 +51,19 @@
 				: column_format}
 		{@const useFormat = format?.valueType === 'date' ? '' : format}
 		{#if j === 0}
-			<TableCell class="font-medium py-[3px]" colSpan={rowNumbers ? 2 : 1} paddingLeft="1px">
+			<TableCell
+				class="font-medium py-[3px]"
+				{compact}
+				colSpan={rowNumbers ? 2 : 1}
+				paddingLeft="1px"
+			>
 				<div class="items-center gap-2 align-top">
 					<span class="inline-flex print-hidden chevron"><TableGroupIcon {toggled} /></span>
 					{groupName}
 				</div>
 			</TableCell>
 		{:else if subtotals}
-			<TableCell class="{useCol.type} font-medium" align={column.align}>
+			<TableCell class="{useCol.type} font-medium" {compact} align={column.align}>
 				{#if [undefined, 'sum', 'mean', 'median', 'min', 'max', 'weightedMean', 'count', 'countDistinct'].includes(column.totalAgg) || column.subtotalFmt}
 					{#if column.contentType === 'delta'}
 						<Delta

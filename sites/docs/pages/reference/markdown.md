@@ -95,7 +95,7 @@ WHERE category = 'Sinister Toys'
 ```
 ````
 
-The exception is if you use one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/supportedLanguages.cjs), which will render the code in a code block.
+The exception is if you use one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/lib/preprocess/src/utils/supportedLanguages.cjs), which will render the code in a code block.
 
 ````markdown
 ```python
@@ -157,43 +157,52 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 
 <PropListing
     name="title"
-    description="changes the name of the tab, adds a header to your page, and changes the title displayed in the sidebar"
+    description="Changes the name of the tab, the title displayed in the sidebar, adds a header to your page, and changes the breadcrumb for the page."
 />
 <PropListing
     name="hide_title"
-    description="if true, the title will not show as a header on the page"
+    description="If true, the title will not show as a header on the page"
 />
 <PropListing
     name="description"
-    description="is used for search engines"
+    description="Is used for search engines"
 />
 <PropListing
     name="og"
-    description="changes how your link shows up when shared on things like Slack, Facebook, Twitter, Discord, etc"
+    description="Changes how your link shows up when shared on things like Slack, Facebook, Twitter, Discord, etc"
 />
 <PropListing
     name="og.title"
-    description="changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vice versa)"
+    description="Changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vice versa)"
 />
 <PropListing
     name="og.description"
-    description="changes the body of the embed"
+    description="Changes the body of the embed"
 />
 <PropListing
     name="og.image"
-    description="will appear in the embed if specified, but it is not required."
+    description="Will appear in the embed if specified, but it is not required."
 />
 <PropListing
     name="queries"
-    description="references SQL queries stored in the /queries directory."
+    description="References SQL queries stored in the /queries directory."
+/>
+<PropListing
+    name="sidebar"
+    description="Changes the visibility of the sidebar. 'show' results in a responsive sidebar, 'hide' results in a sidebar accessible via hamburger button and 'never' hides both - the sidebar and the hamburger button."
+    options={['show', 'hide', 'never']}
 />
 <PropListing
     name="sidebar_position"
-    description="changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar."
+    description="Changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar."
 />
 <PropListing
     name="sidebar_link"
-    description="when set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link."
+    description="When set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link."
+/>
+<PropListing
+    name="breadcrumb"
+    description="Specify a query that returns a breadcrumb column. The query can use $&#123params&#125 to reference the URL parameters for the page."
 />
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.

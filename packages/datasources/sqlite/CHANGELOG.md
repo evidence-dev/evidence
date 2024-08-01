@@ -1,5 +1,19 @@
 # @evidence-dev/sqlite
 
+## 2.0.6
+
+### Patch Changes
+
+- df8e87625: Parse date column string values to real dates
+
+## 2.0.5
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/db-commons@1.0.5
+
 ## 2.0.4
 
 ### Patch Changes

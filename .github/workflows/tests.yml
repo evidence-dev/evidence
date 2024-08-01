@@ -6,7 +6,7 @@ on:
 jobs:
   Tests-sources:
     runs-on: ${{ matrix.os }}
-    if: ${{ github.triggering_actor == 'archiewood' || github.triggering_actor == 'mcrascal' || github.triggering_actor == 'ud3sh' || github.triggering_actor == 'hughess' || github.triggering_actor == 'winterhart' ||  github.triggering_actor == 'itsmebriand'  ||  github.triggering_actor == 'csjh'}}
+    if: ${{ github.triggering_actor == 'archiewood' || github.triggering_actor == 'mcrascal' || github.triggering_actor == 'ud3sh' || github.triggering_actor == 'hughess' || github.triggering_actor == 'winterhart' || github.triggering_actor == 'itsmebriand' || github.triggering_actor == 'kwongz' || github.triggering_actor == 'zachstence'}}
     timeout-minutes: 20
 
     # Conditional Strategy logic from https://github.com/orgs/community/discussions/26253#discussioncomment-3250989
@@ -31,15 +31,15 @@ jobs:
       # TODO: Should we instead pin the versions we are using for our os?
       - run: pip install setuptools
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: pnpm/action-setup@v2.2.4
+      - uses: pnpm/action-setup@v4.0.0
         with:
           version: 8.6.9
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm

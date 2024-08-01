@@ -3,19 +3,18 @@ title: Big Link
 sidebar_position: 1
 ---
 
-<img src="/img/big-link.png" alt="big-link" width="900"/>
+<BigLink href='/components/big-link/'>My Big Link</BigLink>
 
 
 ```markdown
-<BigLink href='/other-page'>
+<BigLink href='/components/big-link/'>
   My Big Link
 </BigLink>
 ```
 
 ## Options
 
-<PropListing
-    name="href"
-    description="The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`"
-    required=true
-/>
+<PropListing name="href" required options='string'>
+
+Renders a link that, when clicked, navigates to the specified URL. It can accept either a full external link (e.g. `https://google.com`) or link to another page within your evidence project (e.g. `/sales/performance`).
+</PropListing>

@@ -1,19 +1,18 @@
 {
 	"name": "@evidence-dev/telemetry",
-	"version": "2.0.4",
+	"version": "2.1.1",
 	"description": "Annonymous usage telemetry for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
 	"license": "MIT",
 	"dependencies": {
 		"@lukeed/uuid": "2.0.0",
-		"analytics-node": "5.0.0",
+		"@segment/analytics-node": "^2.1.2",
 		"blueimp-md5": "^2.19.0",
 		"fs-extra": "11.2.0"
 	},
 	"devDependencies": {
 		"@types/blueimp-md5": "^2.18.2",
-		"@types/analytics-node": "3.1.14",
 		"@types/fs-extra": "11.0.4"
 	},
 	"type": "module"

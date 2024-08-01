@@ -1,5 +1,27 @@
 # @evidence-dev/duckdb
 
+## 1.0.11
+
+### Patch Changes
+
+- e74affd64: Rearrange execution order; remove useless try/catch
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/db-commons@1.0.5
+
+## 1.0.10
+
+### Patch Changes
+
+- 06c1e74e5: Add support for `initialize.sql`
+- cd9e7df35: Bumps duckDB connector to 1.0
+
+## 1.0.9
+
+### Patch Changes
+
+- 2b5f94e3: Bump to 10.0.2
+
 ## 1.0.8
 
 ### Patch Changes

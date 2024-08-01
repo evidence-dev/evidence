@@ -10,11 +10,10 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
-	import Fuse from 'fuse.js';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
-	import { safeExtractColumn, aggregateColumn, getFinalColumnOrder } from './datatable.js';
+	import { aggregateColumn, getFinalColumnOrder } from './datatable.js';
 	import TableRow from './TableRow.svelte';
 	import TotalRow from './TotalRow.svelte';
 	import SubtotalRow from './SubtotalRow.svelte';
@@ -23,8 +22,13 @@
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import EnterFullScreen from './EnterFullScreen.svelte';
 	import Fullscreen from '../../../atoms/fullscreen/Fullscreen.svelte';
-	import { browser } from '$app/environment';
 	import Column from './Column.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte';
+	import { toasts } from '@evidence-dev/component-utilities/stores';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
+	import { debounce } from 'perfect-debounce';
 
 	// Set up props store
 	let props = writable({});
@@ -128,6 +132,8 @@
 
 	export let backgroundColor = 'white';
 
+	export let compact = undefined;
+
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP
 	// ---------------------------------------------------------------------------------------
@@ -163,15 +169,6 @@
 		for (let i = 0; i < columnSummary.length; i++) {
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
 		}
-
-		for (const column of $props.columns) {
-			const summary = safeExtractColumn(column, columnSummary);
-			if (summary.format === undefined && column.fmt !== undefined) {
-				throw new Error(
-					`Column "${column.id}" unable to be formatted. Please cast the results to dates or numbers.`
-				);
-			}
-		}
 	} catch (e) {
 		error = e.message;
 		if (strictBuild) {
@@ -182,58 +179,63 @@
 	let index = 0;
 
 	let inputPage = null;
+	$: inputPageElWidth = `${(inputPage ?? 1).toString().length}ch`;
 
 	// ---------------------------------------------------------------------------------------
 	// SEARCH
 	// ---------------------------------------------------------------------------------------
 	let searchValue = '';
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	let filteredData;
 	$: filteredData = data;
 	let showNoResults = false;
-	let fuse;
 
-	// Function to initialize or update Fuse instance
-	function updateFuse() {
-		fuse = new Fuse(data, {
-			getFn: (row, [path]) => {
-				const summary = columnSummary?.find((d) => d.id === path) ?? {};
-				return summary.type === 'date' &&
-					row[summary.id] != null &&
-					row[summary.id] instanceof Date &&
-					!isNaN(row[summary.id].getTime())
-					? row[summary.id].toISOString()
-					: row[summary.id]?.toString() ?? '';
-			},
-			keys: columnSummary?.map((d) => d.id) ?? [],
-			threshold: 0.4
+	/** @type {ReturnValue<typeof Query["createReactive"]>}*/
+	let searchFactory;
+	$: if (Query.isQuery(data) && search) {
+		searchFactory = debounce(
+			Query.createReactive(
+				{
+					loadGracePeriod: 1000,
+					callback: (v) => {
+						filteredData = v;
+					},
+					execFn: query
+				},
+				data.opts,
+				data
+			),
+			200
+		);
+	}
+
+	$: if (searchFactory) {
+		if (searchValue) {
+			let searchCol =
+				$props.columns.length > 0
+					? $props.columns.map((c) => c.id)
+					: data.columns.map((c) => c.column_name);
+			searchFactory(
+				data.search(
+					searchValue,
+					searchCol,
+					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
+				),
+				data.opts
+			);
+		} else {
+			searchFactory(data, data.opts);
+		}
+	}
+
+	$: if (search && !Query.isQuery(data)) {
+		toasts.add({
+			status: 'warning',
+			title: 'Search Failed',
+			description: 'Please use a query instead.',
+			timeout: 5000
 		});
 	}
-
-	// Reactively update Fuse when `data` or `columnSummary` changes
-	$: if (browser && !error) {
-		updateFuse();
-		if (searchValue !== '') {
-			runSearch(searchValue);
-		}
-	}
-
-	$: runSearch = (searchValue) => {
-		if (searchValue !== '') {
-			// Reset pagination to first page:
-			index = 0;
-			inputPage = null;
-
-			filteredData = fuse.search(searchValue).map((x) => x.item);
-			showNoResults = filteredData.length === 0;
-		} else {
-			filteredData = data;
-			showNoResults = false;
-
-			// Reset pagination to first page:
-			index = 0;
-			inputPage = null;
-		}
-	};
 
 	// ---------------------------------------------------------------------------------------
 	// SORTING
@@ -326,6 +328,7 @@
 	let currentPage = 1;
 
 	$: currentPage = Math.ceil((index + rows) / rows);
+	$: currentPageElWidth = `${(currentPage ?? 1).toString().length}ch`;
 	let max;
 
 	$: goToPage = (pageNumber) => {
@@ -343,8 +346,14 @@
 
 	$: if (paginated) {
 		pageCount = Math.ceil(filteredData.length / rows);
+
 		displayedData = filteredData.slice(index, index + rows);
 		displayedPageLength = displayedData.length;
+		if (pageCount < currentPage) {
+			goToPage(pageCount - 1);
+		} else if (currentPage < 1) {
+			goToPage(0);
+		}
 	} else {
 		currentPage = 1;
 		displayedData = filteredData;
@@ -464,10 +473,10 @@
 		on:mouseleave={() => (hovering = false)}
 	>
 		{#if search}
-			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
+			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
 		{/if}
 
-		<div class="container" style:background-color={backgroundColor}>
+		<div class="scrollbox" style:background-color={backgroundColor}>
 			<table>
 				<TableHeader
 					{rowNumbers}
@@ -478,6 +487,7 @@
 						$props.priorityColumns
 					)}
 					{columnSummary}
+					{compact}
 					{sortable}
 					{sort}
 					{formatColumnTitles}
@@ -485,37 +495,70 @@
 					{wrapTitles}
 				/>
 
-				{#if groupBy && groupedData && searchValue === ''}
-					{#each sortedGroupNames as groupName}
-						{#if groupType === 'accordion'}
-							<GroupRow
-								{groupName}
-								currentGroupData={groupedData[groupName]}
-								toggled={groupToggleStates[groupName]}
-								on:toggle={handleToggle}
-								{columnSummary}
-								rowColor={accordionRowColor}
-								{rowNumbers}
-								{subtotals}
-								finalColumnOrder={getFinalColumnOrder(
-									$props.columns.length > 0
-										? $props.columns.map((d) => d.id)
-										: Object.keys(data[0]),
-									$props.priorityColumns
-								)}
-							/>
-							{#if groupToggleStates[groupName]}
+				<QueryLoad data={filteredData}>
+					<svelte:fragment slot="skeleton">
+						<tr>
+							<td colspan={filteredData.columns.length} class="h-32">
+								<Skeleton />
+							</td>
+						</tr>
+					</svelte:fragment>
+					{#if groupBy && groupedData && searchValue === ''}
+						{#each sortedGroupNames as groupName}
+							{#if groupType === 'accordion'}
+								<GroupRow
+									{groupName}
+									currentGroupData={groupedData[groupName]}
+									toggled={groupToggleStates[groupName]}
+									on:toggle={handleToggle}
+									{columnSummary}
+									rowColor={accordionRowColor}
+									{rowNumbers}
+									{subtotals}
+									{compact}
+									finalColumnOrder={getFinalColumnOrder(
+										$props.columns.length > 0
+											? $props.columns.map((d) => d.id)
+											: Object.keys(data[0]),
+										$props.priorityColumns
+									)}
+								/>
+								{#if groupToggleStates[groupName]}
+									<TableRow
+										displayedData={groupedData[groupName]}
+										{groupType}
+										{rowShading}
+										{link}
+										{rowNumbers}
+										{rowLines}
+										{compact}
+										{index}
+										{columnSummary}
+										grouped={true}
+										groupColumn={groupBy}
+										finalColumnOrder={getFinalColumnOrder(
+											$props.columns.length > 0
+												? $props.columns.map((d) => d.id)
+												: Object.keys(data[0]),
+											$props.priorityColumns
+										)}
+									/>
+								{/if}
+							{:else if groupType === 'section'}
 								<TableRow
-									displayedData={groupedData[groupName]}
+									groupColumn={groupBy}
 									{groupType}
+									rowSpan={groupedData[groupName].length}
+									displayedData={groupedData[groupName]}
 									{rowShading}
 									{link}
 									{rowNumbers}
 									{rowLines}
+									{compact}
 									{index}
 									{columnSummary}
 									grouped={true}
-									groupColumn={groupBy}
+									{groupNamePosition}
 									finalColumnOrder={getFinalColumnOrder(
 										$props.columns.length > 0
 											? $props.columns.map((d) => d.id)
@@ -523,77 +566,59 @@
 										$props.priorityColumns
 									)}
 								/>
+								{#if subtotals}
+									<SubtotalRow
+										{groupName}
+										currentGroupData={groupedData[groupName]}
+										{columnSummary}
+										rowColor={subtotalRowColor}
+										fontColor={subtotalFontColor}
+										{groupType}
+										{groupBy}
+										{compact}
+										finalColumnOrder={getFinalColumnOrder(
+											$props.columns.length > 0
+												? $props.columns.map((d) => d.id)
+												: Object.keys(data[0]),
+											$props.priorityColumns
+										)}
+									/>
+								{/if}
 							{/if}
-						{:else if groupType === 'section'}
-							<TableRow
-								groupColumn={groupBy}
-								{groupType}
-								rowSpan={groupedData[groupName].length}
-								displayedData={groupedData[groupName]}
-								{rowShading}
-								{link}
-								{rowNumbers}
-								{rowLines}
-								{index}
-								{columnSummary}
-								grouped={true}
-								{groupNamePosition}
-								finalColumnOrder={getFinalColumnOrder(
-									$props.columns.length > 0
-										? $props.columns.map((d) => d.id)
-										: Object.keys(data[0]),
-									$props.priorityColumns
-								)}
-							/>
-							{#if subtotals}
-								<SubtotalRow
-									{groupName}
-									currentGroupData={groupedData[groupName]}
-									{columnSummary}
-									rowColor={subtotalRowColor}
-									fontColor={subtotalFontColor}
-									{groupType}
-									{groupBy}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
-								/>
-							{/if}
-						{/if}
-					{/each}
-				{:else}
-					<TableRow
-						{displayedData}
-						{rowShading}
-						{link}
-						{rowNumbers}
-						{rowLines}
-						{index}
-						{columnSummary}
-						finalColumnOrder={getFinalColumnOrder(
-							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-							$props.priorityColumns
-						)}
-					/>
-				{/if}
+						{/each}
+					{:else}
+						<TableRow
+							{displayedData}
+							{rowShading}
+							{link}
+							{rowNumbers}
+							{rowLines}
+							{compact}
+							{index}
+							{columnSummary}
+							finalColumnOrder={getFinalColumnOrder(
+								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+								$props.priorityColumns
+							)}
+						/>
+					{/if}
 
-				{#if totalRow && searchValue === ''}
-					<TotalRow
-						{data}
-						{rowNumbers}
-						{columnSummary}
-						rowColor={totalRowColor}
-						fontColor={totalFontColor}
-						{groupType}
-						finalColumnOrder={getFinalColumnOrder(
-							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-							$props.priorityColumns
-						)}
-					/>
-				{/if}
+					{#if totalRow && searchValue === ''}
+						<TotalRow
+							{data}
+							{rowNumbers}
+							{columnSummary}
+							rowColor={totalRowColor}
+							fontColor={totalFontColor}
+							{groupType}
+							{compact}
+							finalColumnOrder={getFinalColumnOrder(
+								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+								$props.priorityColumns
+							)}
+						/>
+					{/if}
+				</QueryLoad>
 			</table>
 		</div>
 
@@ -624,11 +649,13 @@
 							<Icon src={ChevronLeft} class="h-[0.83em]" />
 						</div>
 					</button>
-					<span class="page-count"
-						>Page <input
+					<span class="page-count">
+						Page
+						<input
 							class="page-input"
 							class:hovering
 							class:error={inputPage > pageCount}
+							style="width: {inputPage ? inputPageElWidth : currentPageElWidth};"
 							type="number"
 							bind:value={inputPage}
 							on:keyup={() => goToPage((inputPage ?? 1) - 1)}
@@ -636,11 +663,11 @@
 							placeholder={currentPage}
 						/>
 						/
-						<span class="page-count ml-1">{pageCount.toLocaleString()}</span></span
-					>
+						<span class="page-count ml-1">{pageCount.toLocaleString()}</span>
+					</span>
 					<span class="print-page-count">
-						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span
-					>
+						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records
+					</span>
 					<button
 						aria-label="next-page"
 						class="page-changer"
@@ -689,7 +716,7 @@
 				{`<DataTable data={${queryID}}>`}
 				<br />
 				{#each Object.keys(data[0]) as column}
-					{`	<Column id=${column}/>`}
+					{`   <Column id=${column.includes(' ') ? `'${column}'` : column}/>`}
 					<br />
 				{/each}
 				{`</DataTable>`}
@@ -703,10 +730,9 @@
 <style>
 	.table-container {
 		font-size: 9.5pt;
-		width: 98%;
 	}
 
-	.container {
+	.scrollbox {
 		width: 100%;
 		overflow-x: auto;
 		/* border-bottom: 1px solid var(--grey-200);    */
@@ -722,31 +748,31 @@
 		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
 	}
 
-	.container::-webkit-scrollbar {
+	.scrollbox::-webkit-scrollbar {
 		height: var(--scrollbar-size);
 		width: var(--scrollbar-size);
 	}
 
-	.container::-webkit-scrollbar-track {
+	.scrollbox::-webkit-scrollbar-track {
 		background-color: var(--scrollbar-track-color);
 	}
 
-	.container::-webkit-scrollbar-thumb {
+	.scrollbox::-webkit-scrollbar-thumb {
 		background-color: var(--scrollbar-color);
 		border-radius: 7px;
 		background-clip: padding-box;
 	}
 
-	.container::-webkit-scrollbar-thumb:hover {
+	.scrollbox::-webkit-scrollbar-thumb:hover {
 		background-color: var(--scrollbar-active-color);
 	}
 
-	.container::-webkit-scrollbar-thumb:vertical {
+	.scrollbox::-webkit-scrollbar-thumb:vertical {
 		min-height: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}
 
-	.container::-webkit-scrollbar-thumb:horizontal {
+	.scrollbox::-webkit-scrollbar-thumb:horizontal {
 		min-width: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}
@@ -817,9 +843,9 @@
 	}
 
 	.page-input {
-		width: 23px;
+		box-sizing: content-box;
 		text-align: center;
-		padding: 0;
+		padding: 0.25em 0.5em;
 		margin: 0;
 		border: 1px solid transparent;
 		border-radius: 4px;

@@ -1,0 +1,549 @@
+{
+	"name": "evidence-vscode",
+	"displayName": "Evidence",
+	"description": "Build polished data products with SQL and Markdown",
+	"version": "1.5.1",
+	"private": true,
+	"engines": {
+		"vscode": "^1.52.0"
+	},
+	"categories": [
+		"Data Science",
+		"Programming Languages",
+		"Visualization",
+		"Other"
+	],
+	"publisher": "Evidence",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/evidence-dev/evidence.git"
+	},
+	"keywords": [
+		"evidence",
+		"sql",
+		"markdown",
+		"vscode",
+		"data",
+		"analytics"
+	],
+	"bugs": {
+		"url": "https://github.com/evidence-dev/evidence/issues"
+	},
+	"homepage": "https://evidence.dev",
+	"icon": "icons/evidence-logo.png",
+	"main": "./dist/extension.js",
+	"activationEvents": [
+		"onLanguage:emd",
+		"onLanguage:markdown",
+		"onLanguage:javascript",
+		"onLanguage:json",
+		"onLanguage:svelte",
+		"workspaceContains:**/package.json",
+		"onView:simpleBrowser.view",
+		"onCommand:evidence.newProject",
+		"onCommand:evidence.createProjectFromTemplate",
+		"onCommand:evidence.openSettings",
+		"onCommand:evidence.installDependencies",
+		"onCommand:evidence.updateDependencies",
+		"onCommand:evidence.clearCache",
+		"onCommand:evidence.startServer",
+		"onCommand:evidence.stopServer",
+		"onCommand:evidence.runSources",
+		"onCommand:evidence.preview",
+		"onCommand:evidence.viewSettings",
+		"onCommand:evidence.build",
+		"onCommand:evidence.buildStrict",
+		"onCommand:evidence.showOutput"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "evidence.openWalkthrough",
+				"title": "Getting Started Walkthrough",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.insertColumnName",
+				"title": "Insert",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.insertTableName",
+				"title": "Insert",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.copyColumnName",
+				"title": "Copy",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.copyTableName",
+				"title": "Copy",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.createTemplatedPageFromQuery",
+				"title": "Create Templated Page from Query",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.newProject",
+				"title": "New Evidence Project",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.copyProject",
+				"title": "Copy Existing Project",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.openSettings",
+				"title": "Open Project Settings File",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.installDependencies",
+				"title": "Install Dependencies",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.updateDependencies",
+				"title": "Update to Latest Version",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.runSources",
+				"title": "Run Sources",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.migrateProjectToUSQL",
+				"title": "Migrate Project to USQL",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.startServer",
+				"title": "Start Evidence Server",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.stopServer",
+				"title": "Stop Evidence Server",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.preview",
+				"title": "Preview",
+				"category": "Evidence",
+				"icon": "$(preview)",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.viewSettings",
+				"title": "VS Code Extension Settings",
+				"category": "Evidence"
+			},
+			{
+				"command": "evidence.clearCache",
+				"title": "Clear Cache",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.build",
+				"title": "Build",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.buildStrict",
+				"title": "Build Strict",
+				"category": "Evidence",
+				"enablement": "evidence.hasProject"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "runCommands",
+				"key": "/",
+				"enablement": "evidence.hasProject",
+				"when": "editorTextFocus && resourceLangId == 'emd' && evidence.isPagesDirectory == true && evidence.slashCommands == true && evidence.isSQLContext === false",
+				"args": {
+					"commands": [
+						{
+							"command": "type",
+							"args": {
+								"text": "/"
+							}
+						},
+						{
+							"command": "editor.action.triggerSuggest"
+						}
+					]
+				}
+			},
+			{
+				"command": "evidence.startServer",
+				"key": "ctrl+shift+R",
+				"mac": "cmd+shift+R",
+				"enablement": "evidence.hasProject",
+				"when": "!evidence.serverRunning"
+			},
+			{
+				"command": "evidence.stopServer",
+				"key": "ctrl+shift+R",
+				"mac": "cmd+shift+R",
+				"enablement": "evidence.hasProject",
+				"when": "evidence.serverRunning"
+			},
+			{
+				"command": "evidence.build",
+				"key": "ctrl+shift+B",
+				"mac": "cmd+shift+B",
+				"enablement": "evidence.hasProject"
+			},
+			{
+				"command": "evidence.buildStrict",
+				"key": "ctrl+shift+alt+B",
+				"mac": "cmd+shift+alt+B",
+				"enablement": "evidence.hasProject"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "evidence.newProject",
+					"group": "2_workspace",
+					"when": "explorerResourceIsFolder && !isVirtualResource"
+				},
+				{
+					"command": "evidence.preview",
+					"when": "resourceLangId == emd",
+					"group": "navigation"
+				},
+				{
+					"command": "markdown.showPreview",
+					"when": "resourceLangId == emd",
+					"group": "navigation"
+				},
+				{
+					"command": "markdown.showPreviewToSide",
+					"when": "resourceLangId == emd",
+					"group": "navigation"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "evidence.preview",
+					"when": "resourceLangId == emd",
+					"group": "navigation"
+				}
+			],
+			"editor/title/context": [
+				{
+					"command": "evidence.preview",
+					"when": "resourceLangId == emd",
+					"group": "navigation"
+				},
+				{
+					"command": "markdown.showPreview",
+					"when": "!notebookEditorFocused && resourceLangId == emd",
+					"group": "1_open"
+				},
+				{
+					"command": "markdown.showPreviewToSide",
+					"when": "!notebookEditorFocused && resourceLangId == emd",
+					"group": "navigation"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "evidence.preview",
+					"when": "never"
+				},
+				{
+					"command": "evidence.copyColumnName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.copyTableName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.insertColumnName",
+					"when": "never"
+				},
+				{
+					"command": "evidence.insertTableName",
+					"when": "never"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "evidence.insertColumnName",
+					"when": "view == schemaView && viewItem == columnItem",
+					"group": "inline@1"
+				},
+				{
+					"command": "evidence.insertTableName",
+					"when": "view == schemaView && viewItem == tableItem",
+					"group": "inline@1"
+				},
+				{
+					"command": "evidence.copyColumnName",
+					"when": "view == schemaView && viewItem == columnItem",
+					"group": "inline@2"
+				},
+				{
+					"command": "evidence.copyTableName",
+					"when": "view == schemaView && viewItem == tableItem",
+					"group": "inline@2"
+				}
+			]
+		},
+		"configuration": {
+			"title": "Evidence",
+			"type": "object",
+			"properties": {
+				"evidence.slashCommands": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable slash commands in Evidence Markdown files (offers a list of suggested components after typing a slash). Uses a keybinding on the slash key. You may need to reopen VS Code after changing this setting."
+				},
+				"evidence.autoStart": {
+					"type": "boolean",
+					"default": false,
+					"description": "Autostart Evidence server when VS Code opens Evidence project workspace."
+				},
+				"evidence.defaultPort": {
+					"type": "number",
+					"default": 3000,
+					"description": "Default Evidence server port."
+				},
+				"evidence.templateProjectUrl": {
+					"type": "string",
+					"default": "https://github.com/evidence-dev/template",
+					"description": "Evidence template project GitHub URL or local file:// path to the project template folder to use when creating new Evidence projects. Defaults to the built-in Evidence extension /template project."
+				},
+				"evidence.previewType": {
+					"type": "string",
+					"markdownDescription": "Preview location",
+					"enum": [
+						"internal",
+						"internal - side-by-side",
+						"external",
+						"none"
+					],
+					"default": "external",
+					"markdownEnumDescriptions": [
+						"VS Code default browser - full width",
+						"VS Code default browser - split-screen",
+						"Open in external web browser",
+						"No automatic preview shown"
+					]
+				},
+				"evidence.enableSqlBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for SQL blocks."
+				},
+				"evidence.enableIfBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for if blocks."
+				},
+				"evidence.enableEachBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for each blocks."
+				},
+				"evidence.enableFrontmatterBackground": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable background color shading for markdown frontmatter."
+				},
+				"evidence.enableSqlAutocomplete": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable or disable SQL autocomplete."
+				},
+				"evidence.sqlAcceptSuggestionsOnEnter": {
+					"type": "boolean",
+					"default": false,
+					"description": "Accept suggestions on Enter in SQL blocks."
+				},
+				"evidence.slashCommandsAcceptSuggestionsOnEnter": {
+					"type": "boolean",
+					"default": true,
+					"description": "Accept suggestions on Enter for slash commands."
+				},
+				"evidence.sqlKeywordSuggestionCase": {
+					"type": "string",
+					"enum": [
+						"uppercase",
+						"lowercase"
+					],
+					"default": "lowercase",
+					"description": "Choose whether SQL keyword suggestions should be in uppercase or lowercase"
+				}
+			}
+		},
+		"languages": [
+			{
+				"id": "emd",
+				"aliases": [
+					"Evidence Markdown",
+					"emd"
+				],
+				"extensions": [
+					".md"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "emd",
+				"scopeName": "text.html.markdown.svelte",
+				"path": "./syntaxes/emd.tmLanguage.json",
+				"embeddedLanguages": {
+					"source.svelte": "svelte",
+					"source.js": "javascript",
+					"text.html.markdown": "markdown",
+					"meta.tag.svelte": "svelte",
+					"meta.embedded.block.sql": "sql",
+					"markup.fenced_code.block.markdown": "sql"
+				}
+			},
+			{
+				"scopeName": "markdown.sql.codeblock",
+				"path": "./syntaxes/markdown-sql.json",
+				"injectTo": [
+					"text.html.markdown"
+				],
+				"embeddedLanguages": {
+					"meta.embedded.block.sql": "sql"
+				}
+			}
+		],
+		"configurationDefaults": {
+			"[emd]": {
+				"editor.wordWrap": "on",
+				"editor.suggest.showWords": false,
+				"editor.suggest.snippetsPreventQuickSuggestions": false
+			},
+			"[sql]": {
+				"editor.acceptSuggestionOnEnter": "off",
+				"editor.quickSuggestions": {
+					"other": true,
+					"comments": false,
+					"strings": false
+				}
+			}
+		},
+		"snippets": [
+			{
+				"language": "markdown",
+				"path": "./snippets/emd.code-snippets"
+			},
+			{
+				"language": "svelte",
+				"path": "./snippets/svelte.code-snippets"
+			},
+			{
+				"language": "sql",
+				"path": "./snippets/sql.code-snippets"
+			},
+			{
+				"language": "javascript",
+				"path": "./snippets/js.code-snippets"
+			}
+		],
+		"walkthroughs": [
+			{
+				"id": "getStarted",
+				"title": "Get Started with Evidence",
+				"description": "Preview your markdown files in VSCode.",
+				"steps": [
+					{
+						"id": "createProject",
+						"title": "1. Create Project",
+						"description": "Click to create a new Evidence project.\n[$(plus) Create Project](command:evidence.newProject)",
+						"media": {
+							"markdown": "media/new_project.md"
+						},
+						"completionEvents": [
+							"onCommand:newProject"
+						],
+						"when": "evidence.hasProject == false"
+					},
+					{
+						"id": "startApp",
+						"title": "Start Evidence",
+						"description": "Click below to start Evidence.\n[$(play)Start Evidence](command:evidence.startServer)",
+						"media": {
+							"markdown": "media/start_app.md"
+						},
+						"completionEvents": [
+							"onCommand:startServer"
+						],
+						"when": "evidence.hasProject == true"
+					}
+				]
+			}
+		],
+		"views": {
+			"explorer": [
+				{
+					"id": "schemaView",
+					"name": "Evidence Schema View",
+					"when": "evidence.isNonLegacyProject"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"lint": "eslint src --ext ts"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.4",
+		"@types/js-yaml": "^4.0.9",
+		"@types/mocha": "^9.0.0",
+		"@types/node": "14.x",
+		"@types/vscode": "^1.52.0",
+		"@typescript-eslint/eslint-plugin": "^5.1.0",
+		"@typescript-eslint/parser": "^5.1.0",
+		"@vscode/test-electron": "^1.6.2",
+		"eslint": "^8.1.0",
+		"glob": "^7.1.7",
+		"mocha": "^9.1.3",
+		"ts-loader": "^9.2.5",
+		"typescript": "^4.4.4",
+		"webpack": "^5.52.1",
+		"webpack-cli": "^4.8.0"
+	},
+	"extensionDependencies": [
+		"svelte.svelte-vscode"
+	],
+	"dependencies": {
+		"@vscode/extension-telemetry": "^0.9.0",
+		"@vscode/vsce": "^2.21.1",
+		"js-yaml": "^4.1.0",
+		"tiged": "^2.12.5"
+	}
+}

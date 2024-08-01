@@ -135,7 +135,7 @@ There were {orders_by_month[0].number_of_orders} orders last month.
 
 It can be useful to include code that isn't SQL, eg for documentation or examples.
 
-If a code fence is named one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/src/utils/supportedLanguages.cjs), such as `python` or `r`, the code fence will render a code block. The code is _not_ executed.
+If a code fence is named one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/lib/preprocess/src/utils/supportedLanguages.cjs), such as `python` or `r`, the code fence will render a code block. The code is _not_ executed.
 
 ````markdown
 ```python
@@ -151,7 +151,7 @@ Partials allow you to reuse chunks of Evidence markdown. [More on Partials](/ref
 
 `./pages/index.md`
 ```markdown
-&#123;@partial "my-first-partial.md"/&#125;
+&#123;@partial "my-first-partial.md"&#125;
 
 And some content specific to this page.
 ```

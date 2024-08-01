@@ -1,49 +1,67 @@
 ---
 title: Bubble Chart
 sidebar_position: 1
+queries:
+- price_vs_volume.sql
 ---
 
-![bubble](/img/exg-multi-series-bubble-nt.svg)
+<BubbleChart 
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    xFmt=usd0
+    series=category
+    size=total_sales
+/>
 
 ```markdown
 <BubbleChart 
-    data={query_name} 
-    x=column_x 
-    y=column_y
-    size=column_size
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    xFmt=usd0
+    series=category
+    size=total_sales
 />
 ```
 
 ## Examples
 
-### Bubble
+### Default
 
-![bubble](/img/exg-bubble-nt.svg)
+<BubbleChart 
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    size=total_sales
+/>
 
 ```markdown
 <BubbleChart 
-    data={simple_example} 
-    x=x 
-    y=y 
-    size=size 
-    xAxisTitle=true 
-    yAxisTitle=true
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    size=total_sales
 />
 ```
 
-### Multi-Series Bubble
+### Multi-Series
 
-![bubble](/img/exg-multi-series-bubble-nt.svg)
+<BubbleChart 
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    series=category
+    size=total_sales
+/>
 
 ```markdown
 <BubbleChart 
-    data={scores_by_region} 
-    x=score_a 
-    y=score_b 
-    size=size 
-    series=region 
-    xAxisTitle=true 
-    yAxisTitle=true
+    data={price_vs_volume}
+    x=price
+    y=number_of_units
+    series=category
+    size=total_sales
 />
 ```
 
@@ -320,6 +338,20 @@ sidebar_position: 1
     options="canvas | svg"
     defaultValue='canvas'
 />
+<PropListing
+    name="downloadableData"
+    description="Whether to show the download button to allow users to download the data"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name="downloadableImage"
+    description="Whether to show the button to allow users to save the chart as an image"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
 
 ### Custom Echarts Options
 
@@ -353,9 +385,30 @@ sidebar_position: 1
 
 Bubble charts can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
-```html
-<BubbleChart data={sales_data} x=date y=sales>
-  <ReferenceLine data={target_data} y=target label=name/>
-  <ReferenceArea xMin='2020-03-14' xMax='2020-05-01'/>
+<BubbleChart 
+    data={price_vs_volume}
+    x=price
+    xFmt=usd0
+    y=number_of_units
+    size=total_sales
+>
+    <ReferenceLine
+        x=75
+        label="Consumer Limit"
+    />
+</BubbleChart>
+
+```markdown
+<BubbleChart 
+    data={price_vs_volume}
+    x=price
+    xFmt=usd0
+    y=number_of_units
+    size=total_sales
+>
+    <ReferenceLine
+        x=75
+        label="Consumer Limit"
+    />
 </BubbleChart>
 ```

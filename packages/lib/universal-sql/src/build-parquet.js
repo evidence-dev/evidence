@@ -64,7 +64,6 @@ function convertArrayToVector(column, rawValues) {
  * @param {string} tmpDir
  * @param {string} outDir
  * @param {string} outputFilename
- * @param {number} [expectedRowCount]
  * @param {number} [batchSize]
  * @returns {Promise<number>} Number of rows
  */
@@ -74,7 +73,6 @@ export async function buildMultipartParquet(
 	tmpDir,
 	outDir,
 	outputFilename,
-	expectedRowCount,
 	batchSize = 1000000
 ) {
 	let batchNum = 0;

@@ -65,14 +65,20 @@ sidebar_position: 1
 
 <PropListing
     name="id"
-    description="Unique Id for this set of tabs. When set, the selected tab is included in the URL so it can be shared."
-/>
+>
+
+Unique Id for this set of tabs. When set, the selected tab is included in the URL so it can be shared.
+
+</PropListing>
 <PropListing
     name="color"
-    description="Color for the active tab."
     options="Any valid hex, rgb, or hsl string"
-    defaultValue=blue
-/>
+    defaultValue="blue"
+>
+
+Color for the active tab.
+
+</PropListing>
 
 # Tab
 
@@ -80,10 +86,16 @@ sidebar_position: 1
 
 <PropListing
     name="label"
-    description="Label for the tab"
     required
-/>
+>
+
+Label for the tab
+
+</PropListing>
 <PropListing
     name="id"
-    description="Unique Id for this tab. Only needed if 2 tabs have the same label (not recommended)."
-/>
+>
+
+Unique Id for this tab. Only needed if 2 tabs have the same label (not recommended).
+
+</PropListing>

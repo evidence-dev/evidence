@@ -3,13 +3,29 @@ title: Line Chart
 sidebar_position: 1
 ---
 
-![line](/img/exg-line-nt.svg)
+```sql orders_by_month
+select order_month as month, sum(sales) as sales_usd0k, count(1) as orders from needful_things.orders
+group by all
+```
 
-```markdown
+```sql orders_by_category
+select category, order_month as month, sum(sales) as sales_usd0k, count(1) as orders from needful_things.orders
+group by all
+```
+
 <LineChart 
-    data={query_name}  
-    x=column_x 
-    y=column_y
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+/>
+
+```svelte
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
 />
 ```
 
@@ -17,104 +33,144 @@ sidebar_position: 1
 
 ### Line
 
-![line](/img/exg-line-nt.svg)
-
-```markdown
 <LineChart 
-    data={daily_complaints} 
-    x=date 
-    y=number_of_complaints 
-    yAxisTitle="calls to Austin 311 per day"
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    title="Monthly Sales"
+    subtitle="Includes all categories"
+/>
+
+```svelte
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    title="Monthly Sales"
+    subtitle="Includes all categories"
 />
 ```
 
 ### Multi-Series Line
 
-![multi-series-line](/img/exg-multi-series-line-nt.svg)
+<LineChart 
+    data={orders_by_category}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    series=category
+/>
 
 ```markdown
 <LineChart 
-    data={daily_volume_yoy} 
-    x=day_of_year 
-    y=cum_vol 
-    series=year 
-    yAxisTitle="cumulative calls" 
-    xAxisTitle="day of year"
+    data={orders_by_category}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    series=category
 />
 ```
 
 ### Multi-Series Line with Steps
 
-<img src='/img/exg-multi-series-step-line.png' width='576px'/>
+<LineChart 
+    data={orders_by_category}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    series=category
+    step=true
+/>
 
-```markdown
-<LineChart
-    data={simpler_bar}
-    x=year
-    y=value
-    series=country
+```svelte
+<LineChart 
+    data={orders_by_category}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    series=category
     step=true
 />
 ```
 
 ### Multiple y Columns
 
-![multiple-y-line](/img/exg-multiple-y-line-nt.svg)
-
-```markdown
-<LineChart
-data={fda_recalls}  
- x=year
-y={["voluntary_recalls", "fda_recalls"]}
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y={['sales_usd0k','orders']} 
+    yAxisTitle="Sales per Month"
 />
-```
-
-Because x is the first column in the dataset and we want to plot all the remaining numerical columns in the table, we can simplify our code down to:
-
-```markdown
-<LineChart data={fda_recalls}/>
-```
-
-Evidence will automatically pick the first column as `x` and use all other numerical columns for `y`.
-
-### Secondary y Axis
-
-<img src="/img/multi-y-axes.png"  width='700px'/>
 
 ```markdown
 <LineChart 
-    data={orders_by_month} 
-    x=month 
-    y=sales_usd0k 
-    y2=num_orders_num0
+    data={orders_by_month}
+    x=month
+    y={['sales_usd0k','orders']} 
+    yAxisTitle="Sales per Month"
+/>
+```
+
+### Secondary y Axis
+
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k
+    y2=orders
+    yAxisTitle="Sales per Month"
+/>
+
+```markdown
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k
+    y2=orders
+    yAxisTitle="Sales per Month"
 />
 ```
 
 ### Secondary Axis with Bar
 
-<img src="/img/line-bar.png"  width='700px'/>
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k
+    y2=orders
+    y2SeriesType=bar
+    yAxisTitle="Sales per Month"
+/>
 
 ```markdown
 <LineChart 
-    data={orders_by_month} 
-    x=month 
-    y=sales_usd0k 
-    y2=num_orders_num0
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k
+    y2=orders
     y2SeriesType=bar
+    yAxisTitle="Sales per Month"
 />
 ```
 
 ### Value Labels
 
-<img src="/img/line-labels.png"  width='700px'/>
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    labels=true
+/>
 
 ```markdown
 <LineChart 
-    data={orders_by_month} 
+    data={orders_by_month}
     x=month
-    y=sales
+    y=sales_usd0k 
     yAxisTitle="Sales per Month"
-    yFmt=eur0k
     labels=true
 />
 ```
@@ -122,15 +178,30 @@ Evidence will automatically pick the first column as `x` and use all other numer
 
 ### Custom Color Palette
 
-<img src="/img/line-colorpalette.png"  width='700px'/>
+<LineChart 
+    data={orders_by_category}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    series=category
+    colorPalette={
+        [
+        '#cf0d06',
+        '#eb5752',
+        '#e88a87',
+        '#fcdad9',
+        ]
+    }
+/>
 
 ```markdown
 <LineChart 
-  data={simpler_bar} 
-  x=year 
-  y=value 
-  series=country
-  colorPalette={
+    data={orders_by_category}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    series=category
+    colorPalette={
         [
         '#cf0d06',
         '#eb5752',
@@ -141,6 +212,44 @@ Evidence will automatically pick the first column as `x` and use all other numer
 />
 ```
 
+### Markers
+
+#### Default
+
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k 
+    markers=true
+/>
+
+```svelte
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k
+    markers=true 
+/>
+```
+
+#### `markerShape=emptyCircle`
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k 
+    markers=true
+    markerShape=emptyCircle
+/>
+
+```svelte
+<LineChart 
+    data={orders_by_month}
+    x=month
+    y=sales_usd0k 
+    markers=true
+    markerShape=emptyCircle
+/>
+```
 
 
 ## Options
@@ -496,6 +605,20 @@ Evidence will automatically pick the first column as `x` and use all other numer
     description="Which chart renderer type (canvas or SVG) to use. See ECharts' <a href='https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/' class=markdown>documentation on renderers</a>."
     options={["canvas", "svg"]}
     defaultValue="canvas"
+/>
+<PropListing
+    name="downloadableData"
+    description="Whether to show the download button to allow users to download the data"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name="downloadableImage"
+    description="Whether to show the button to allow users to save the chart as an image"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
 />
 
 ### Custom Echarts Options

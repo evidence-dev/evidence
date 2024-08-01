@@ -1,5 +1,268 @@
 # @evidence-dev/core-components
 
+## 4.7.3
+
+### Patch Changes
+
+- f8e76c7d9: changed tabs inactive border styling
+- 8782d9e95: added boxplot stories
+- 5922269dc: Allows using total labels without series labels
+- 4ae4427ea: Updated Value component's props for conditional color rendering
+- 318196074: Fixed char by char search, search by filteredCols, fixed out of bounds pagination
+  - @evidence-dev/component-utilities@3.2.7
+
+## 4.7.2
+
+### Patch Changes
+
+- 3698967f1: References wait for data before updating ECharts config
+
+## 4.7.1
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.6
+
+## 4.7.0
+
+### Minor Changes
+
+- 731d0bb06: Refactor ReferenceLine and ReferenceArea to use a store, add additional styling props
+- 7cb558c32: allow for dynamic breadcrumbs via frontmatter
+
+### Patch Changes
+
+- 08818477d: Dropdown can have option with null value/label
+- 0558bae48: updated checkbox stories
+- f5decad6b: Added CalendarHeatmap Stories
+- ee8f135ac: Fix font styling props for ReferenceLine/ReferenceArea
+  - @evidence-dev/component-utilities@3.2.5
+
+## 4.6.2
+
+### Patch Changes
+
+- a2f9bfb7a: Fix dropdown selection
+
+## 4.6.1
+
+### Patch Changes
+
+- a5b141dec: Enable strict mode
+- c392866a0: added bubblechart stories
+- 6754944ca: Dont use a date in Dropdown story to enable UI testing
+- e6aa2021d: Updated Dimension grid take in queries with spaces
+- 6d2a194e6: Fix Dropdown query-based default value performance and race conditions
+
+## 4.6.0
+
+### Minor Changes
+
+- 0b4ae10c5: Add ReferencePoint and Callout components
+
+### Patch Changes
+
+- dbc4116e3: updated link component stories and docs
+- 42ca6d4ce: Remove non-functional labelVisible prop from ReferencePoint and Callout
+
+## 4.5.4
+
+### Patch Changes
+
+- cb3f17c9e: Fix reactively updating ReferenceLine x/y value
+- 1009026e8: Fix regression in Tabs where label always overrides id
+- 3a1e1d664: Fix dynamically generated tabs from a query
+  - @evidence-dev/component-utilities@3.2.4
+
+## 4.5.3
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.3
+
+## 4.5.2
+
+### Patch Changes
+
+- 0bb7718a2: Added url prop to Big value Component
+- d6b25b02c: Fix source query triggering HMR on the page
+- 6cdedceb0: Remove db-orchestrator
+- df9159f2b: Added a new <QueryDebugger/> component to ease investigation into which queries have run on the page
+- 9982970fd: Support dynamic title inputs in accordions
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/component-utilities@3.2.2
+  - @evidence-dev/icons@1.0.1
+  - @evidence-dev/tailwind@2.1.1
+
+## 4.5.1
+
+### Patch Changes
+
+- c10e35be1: Updated Running EvalDefault Condition to wait for option store to be populated
+- 08d7b9405: Fix weighted mean behavior
+  - @evidence-dev/component-utilities@3.2.1
+
+## 4.5.0
+
+### Minor Changes
+
+- b041f5f9a: updated camelCase acceptance for presetRanges prop, created default value prop for dateRange
+
+### Patch Changes
+
+- f411c8650: added datatable to add in ' when it contains a space
+- 79f4758e0: Fix stale pagination where current page extends beyond pageCount after a filter change
+- Updated dependencies [010424745]
+  - @evidence-dev/icons@1.0.0
+
+## 4.4.0
+
+### Minor Changes
+
+- 2523e5f1: Value component now accepts agg prop
+
+### Patch Changes
+
+- 9fdc805b: DateRange uses QueryLoad + Skeleton to have a proper loading state
+- 97cb3a7c: Handle all-null x columns in Line.svelte
+- e058d2d3: Dropdown Index was returning NaN for all non-search queries
+- 73fc7ebf: Add ordinal functionality to buildInputQuery and withOrdinal to Query - leverage this in Dropdown to maintain user-specified sorting until search is activated
+- 8f374326: updated dropdown select all function for non-query options
+- f6b22bbc: Dropdown behavior when using selectAllByDefault improved
+- a24deaf0: Dropdown now sorts using label before value
+- 106222df: - startingZoom is now respected more consistently in Map.svelte
+  - startingZoom does not need to specified with startingLat/Long, and can be used independently
+  - zoomSnap has been modified to allow finer control over the zoom level
+- 90f381dc: Dropdown option store uses sharedPromise to handle concurrency / races better. Select operations now wait for options to settle (all pending adds/removes must finish first), Add / Removes now wait for flags to finish
+- a2af0bea: DateRange now waits for the query to resolve, if one is available
+- 106222df: Mitigated white lines appearing in map
+- Updated dependencies [3d1c42e0]
+- Updated dependencies [acba0f3a]
+  - @evidence-dev/component-utilities@3.2.0
+
+## 4.3.0
+
+### Minor Changes
+
+- f8f7ebdb: Added sorting for numerical options in dropdop
+
+### Patch Changes
+
+- 064a5c96: Add optional title slot to Accordian Items
+- 54546362: Adjust DownloadData component for general use
+- 9dd69149: Fix auto-casing on tooltip titles
+- ac0df6ca: Fix Prism imports in CodeBlock
+- Updated dependencies [737642a0]
+  - @evidence-dev/component-utilities@3.1.0
+
+## 4.3.0-features-b.6
+
+### Patch Changes
+
+- a24deaf04: Dropdown now sorts using label before value
+
+## 4.3.0-features-b.5
+
+### Patch Changes
+
+- e058d2d35: Dropdown Index was returning NaN for all non-search queries
+
+## 4.3.0-features-b.4
+
+### Patch Changes
+
+- 9fdc805b5: DateRange uses QueryLoad + Skeleton to have a proper loading state
+
+## 4.3.0-features-b.3
+
+### Patch Changes
+
+- 90f381dc1: Dropdown option store uses sharedPromise to handle concurrency / races better. Select operations now wait for options to settle (all pending adds/removes must finish first), Add / Removes now wait for flags to finish
+- a2af0beaf: DateRange now waits for the query to resolve, if one is available
+
+## 4.3.0-features-b.2
+
+### Patch Changes
+
+- 73fc7ebfe: Add ordinal functionality to buildInputQuery and withOrdinal to Query - leverage this in Dropdown to maintain user-specified sorting until search is activated
+
+## 4.3.0-features-b.1
+
+### Minor Changes
+
+- f8f7ebdbc: Added sorting for numerical options in dropdop
+
+### Patch Changes
+
+- 064a5c96e: Add optional title slot to Accordian Items
+- 9dd691497: Fix auto-casing on tooltip titles
+
+## 4.2.1-features-b.0
+
+### Patch Changes
+
+- 97cb3a7c3: Handle all-null x columns in Line.svelte
+- f6b22bbce: Dropdown behavior when using selectAllByDefault improved
+- 106222df8: - startingZoom is now respected more consistently in Map.svelte
+  - startingZoom does not need to specified with startingLat/Long, and can be used independently
+  - zoomSnap has been modified to allow finer control over the zoom level
+- 106222df8: Mitigated white lines appearing in map
+- Updated dependencies [acba0f3a6]
+  - @evidence-dev/component-utilities@3.0.5-features-b.0
+
+## 4.2.0
+
+### Minor Changes
+
+- 1377e0ed: Interactive map components
+- 6157db9a: Add checkbox component
+
+### Patch Changes
+
+- 2a396873: Adding a selectAllByDefault property to Dropdowns
+- 40c83ee2: Fix BigValue downIsGood
+  - @evidence-dev/component-utilities@3.0.4
+
+## 4.1.1
+
+### Patch Changes
+
+- b3e10dac: Added loading state to ButtonGroup to prevent layout shifts while Query is executing
+- a6414446: $slots.\_error is not $slots.error
+- e400971e: TextInput now respects Unset more effectively
+- 52b3fde1: - Dropdown no longer renders a skeleton
+  - Dropdown ensures that only one options subscription exists at a time to prevent over-evaluating defaults
+- Updated dependencies [43d66875]
+  - @evidence-dev/component-utilities@3.0.3
+
+## 4.1.0
+
+### Minor Changes
+
+- 1e1486f3: Dropdown component overhaul, see #1944
+- 1e1486f3: Created new input proxy, added tests, converted to use this instead of existing in-place proxy + detection method
+- dd0dbc16: add show/hide/never sidebar toggle in frontmatter
+
+### Patch Changes
+
+- 9e0f10cc: Fix ReferenceLine and ReferenceArea reactivity
+- 3f6975af: Fix reactivity in Sparklines
+- f4d9b336: Improve responsiveness of button groups
+- 3f53e809: Add syntax highlighting to code blocks
+- 53f7bd14: Add additional date range presets to DateRange input component
+- abae3ed9: Renamed all instances of `container` class to prevent collisions with tailwind container
+- 30c942b1: fix: DataTable pagination input box width overflow
+- cafc814b: Adds support for a more compact table view that allows more content vertically and horizontally
+- 51dd57fb: Fix Details component open option
+- b0539005: Add loading state to `DateRange`
+- 564f3444: fix minor bugs in queryload/querystore/preprocess, add strict cast to daterange
+- 71dabb41: Fix errors caused by formatting null table columns
+- 9e8f8b1a:
+- 7f85e600: version bumps
+- Updated dependencies [1e1486f3]
+- Updated dependencies [85d01792]
+  - @evidence-dev/component-utilities@3.0.2
+
 ## 4.0.2
 
 ### Patch Changes

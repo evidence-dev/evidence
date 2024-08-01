@@ -26,6 +26,7 @@
 	export let rowSpan = undefined;
 	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 	export let finalColumnOrder = undefined;
+	export let compact = undefined;
 
 	function handleRowClick(url) {
 		if (link) {
@@ -42,7 +43,7 @@
 		class:row-lines={rowLines}
 	>
 		{#if rowNumbers && groupType !== 'section'}
-			<TableCell class="index w-[2%]">
+			<TableCell class={'index w-[2%]'} {compact}>
 				{#if i === 0}
 					{(index + i + 1).toLocaleString()}
 				{:else}
@@ -98,6 +99,7 @@
 						: ''}
 				<TableCell
 					class={useCol?.type}
+					{compact}
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
 					rowSpan={groupType === 'section' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === useCol.id && i !== 0)}
@@ -191,6 +193,7 @@
 				<!-- Check if last row in table-->
 				<TableCell
 					class={column.type}
+					{compact}
 					rowSpan={groupType === 'section' && groupColumn === column.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === column.id && i !== 0)}
 					paddingLeft={j === 0 && grouped && groupType === 'accordion' && !rowNumbers

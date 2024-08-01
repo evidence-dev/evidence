@@ -1,5 +1,17 @@
 # @evidence-dev/telemetry
 
+## 2.1.1
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+
+## 2.1.0
+
+### Minor Changes
+
+- af9b74ee: Upgrade Segment dependency
+
 ## 2.0.4
 
 ### Patch Changes

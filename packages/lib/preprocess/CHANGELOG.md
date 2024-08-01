@@ -1,5 +1,42 @@
 # @evidence-dev/preprocess
 
+## 5.1.4
+
+### Patch Changes
+
+- e50e7ed58: Pre-render column information using DESCRIBE query
+
+## 5.1.3
+
+### Patch Changes
+
+- d6b25b02c: Fix source query triggering HMR on the page
+- 6cdedceb0: Remove db-orchestrator
+
+## 5.1.2
+
+### Patch Changes
+
+- 87e56af2: Handle noResolve state while on the server
+
+## 5.1.1
+
+### Patch Changes
+
+- c88cb063: Rearranged component initialization to ensure initial data is populating more correctly
+
+## 5.1.0
+
+### Minor Changes
+
+- 1e1486f3: Added Query.createReactive as a canonical way to have reactive queries; converted preprocessor to leverage this
+- 1e1486f3: Created new input proxy, added tests, converted to use this instead of existing in-place proxy + detection method
+
+### Patch Changes
+
+- 3f53e809: Add syntax highlighting to code blocks
+- 564f3444: fix minor bugs in queryload/querystore/preprocess, add strict cast to daterange
+
 ## 5.0.0
 
 ### Major Changes

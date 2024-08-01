@@ -24,7 +24,19 @@ function createToastsObject() {
 		add: (toast, timeout = 2000) => {
 			// Totally safe ids
 			toast.id = toast.id ?? Math.random().toString();
-			update(($toasts) => ($toasts.push(toast), $toasts));
+			update(($toasts) => {
+				const existing = $toasts.find((t) => t.id === toast.id);
+				if (existing) {
+					Object.assign(existing, toast);
+					if (timeoutMap.has(toast.id)) {
+						clearTimeout(timeoutMap.get(toast.id));
+						timeoutMap.delete(toast.id);
+					}
+				} else {
+					$toasts.push(toast);
+				}
+				return $toasts;
+			});
 			if (timeout) {
 				const timeoutId = setTimeout(() => {
 					removeToast(toast.id);
@@ -67,7 +79,7 @@ const getStoreVal = (store) => {
  * @returns {Writable<T>}
  */
 export const localStorageStore = (key, init) => {
-	const store = writable(browser ? JSON.parse(localStorage.getItem(key)) ?? init : init);
+	const store = writable(browser ? (JSON.parse(localStorage.getItem(key)) ?? init) : init);
 	const { subscribe, set } = store;
 
 	/** @type {(v: T) => void} */
