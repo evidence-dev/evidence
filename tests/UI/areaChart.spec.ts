@@ -62,8 +62,8 @@ test.describe('Charts: Area', () => {
 		await page.waitForTimeout(300);
 
 		// grab the save and download button
-		const saveImageButton: Locator = await page.getByRole('button', { name: 'Save image' });
-		const downloadDataButton: Locator = await page.getByRole('button', { name: 'Download data' });
+		const saveImageButton: Locator = await page.getByRole('button', { name: 'Save Image' });
+		const downloadDataButton: Locator = await page.getByRole('button', { name: 'Download Data' });
 
 		// button should be visible
 		await expect(saveImageButton).toBeVisible();

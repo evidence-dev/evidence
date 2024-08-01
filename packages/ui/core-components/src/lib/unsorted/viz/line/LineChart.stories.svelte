@@ -31,7 +31,15 @@
 	component={LineChart}
 	argTypes={{
 		title: { control: 'text' },
-		series: { control: 'text' }
+		series: { control: 'text' },
+		downloadableData: {
+			control: 'boolean',
+			options: [true, false]
+		},
+		downloadableImage: {
+			control: 'boolean',
+			options: [true, false]
+		}
 	}}
 	args={{
 		data: Query.create('select * from series_demo_source.numeric_series', query)
