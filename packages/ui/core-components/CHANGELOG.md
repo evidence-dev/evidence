@@ -1,5 +1,15 @@
 # @evidence-dev/core-components
 
+## 4.7.4
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- 6ff0e92b8: Adds option to disable downloads for data and/or images from charts
+- Updated dependencies [32035eeaa]
+  - @evidence-dev/tailwind@2.1.2
+  - @evidence-dev/component-utilities@3.2.8
+
 ## 4.7.3
 
 ### Patch Changes

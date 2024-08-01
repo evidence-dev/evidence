@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 39.1.3
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- dc29b7fd0: Increase node memory limit to 4GB
+- Updated dependencies [32035eeaa]
+- Updated dependencies [3572fcfd7]
+- Updated dependencies [907efee29]
+  - @evidence-dev/plugin-connector@2.1.7
+  - @evidence-dev/preprocess@5.1.5
+  - @evidence-dev/sdk@1.3.8
+  - @evidence-dev/telemetry@2.1.2
+
 ## 39.1.2
 
 ### Patch Changes
