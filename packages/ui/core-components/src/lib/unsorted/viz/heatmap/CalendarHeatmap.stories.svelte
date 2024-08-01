@@ -50,6 +50,12 @@
 			renderer: {
 				control: 'select',
 				options: ['canvas', 'svg']
+			},
+			downloadableData: {
+				control: 'boolean'
+			},
+			downloadableImage: {
+				control: 'boolean'
 			}
 		}
 	};
