@@ -73,9 +73,12 @@
 
 	/** @type {import("@evidence-dev/sdk/usql").Query}*/
 	let results;
+	/** @type {boolean} */
+	let queryRun = false;
 
-	$: if (dimensionCutQuery) {
+	$: if (!queryRun && dimensionCutQuery) {
 		results = buildQuery(dimensionCutQuery, `dimension-cut-${dimension.column_name}`);
+		queryRun = true;
 	}
 
 	$: {
