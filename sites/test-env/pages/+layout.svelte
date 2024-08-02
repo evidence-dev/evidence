@@ -16,6 +16,5 @@
 </script>
 
 <EvidenceDefaultLayout {data} title="Evidence Test Environment">
-	<!-- <AddMiddleware middlewareType="map" middleware={v => { v.setMinZoom(5); v.setMaxZoom(5); console.log(v); return v;}} /> -->
 	<slot slot="content" />
 </EvidenceDefaultLayout>

@@ -10,4 +10,3 @@ export * from './flowchart';
 export * from './grid';
 export * from './hover-card';
 export * from './query-debugger';
-export { default as AddMiddleware } from './middleware/AddMiddleware.svelte';
