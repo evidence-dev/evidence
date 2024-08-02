@@ -78,5 +78,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2e_${{ matrix.project }}_${{ matrix.os }}_node-${{ matrix.node-version }}_playwright-reports
-          path: e2e/${{ matrix.project }}/playwright-reports
+          name: playwright-report__e2e_${{ matrix.project }}_${{ matrix.os }}_node-${{ matrix.node-version }}
+          path: e2e/${{ matrix.project }}/playwright-report

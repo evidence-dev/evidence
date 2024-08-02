@@ -8,8 +8,8 @@
 		"dev": "evidence dev --open /",
 		"sources": "evidence sources",
 		"preview": "evidence preview",
-		"test:preview": "cross-env PLAYWRIGHT_HTML_OUTPUT_DIR=./playwright-reports/preview playwright test",
-		"test:dev": "cross-env PLAYWRIGHT_HTML_OUTPUT_DIR=./playwright-reports/dev DEV=true playwright test"
+		"test:preview": "cross-env playwright test",
+		"test:dev": "cross-env DEV=true playwright test"
 	},
 	"engines": {
 		"npm": ">=7.0.0",

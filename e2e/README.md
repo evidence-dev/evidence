@@ -35,7 +35,7 @@ _Replace `my-tests` with the name of your new test suite here and in the subsequ
 
 4. Delete `package-lock.json`
 
-5. Install dependencies
+5. Install dependencies with PNPM
 
 ```sh
 pnpm install --ignore-scripts
@@ -44,32 +44,37 @@ pnpm install --ignore-scripts
 6. Install Playwright
 
 ```sh
-pnpm create playwright@latest --lang=js --no-browsers --quiet
+pnpm create playwright@latest --lang=js --no-browsers --no-examples --quiet
 ```
 
-_Since this installs packages, our `postinstall` script will run to build everything. The Playwright CLI doesn't accept the `--ignore-scripts` flag, so if you want to skip the building, just temporarily remove the `postinstall` script from the root `package.json`._
+_Since this installs a package, our `postinstall` script will run to build everything. The Playwright CLI doesn't accept the `--ignore-scripts` flag, so if you want to skip the building, just temporarily remove the `postinstall` script from the root `package.json`._
 
-7. Delete `tests-examples/`
+8. Configure Playwright
 
-8. Reconfigure `playwright.config.js` to use `import`/`export` syntax
+In `playwright.config.js`, replace the default config with our shared config in `e2e/playwright-config.js`
 
-```diff
--const { defineConfig, devices } = require('@playwright/test');
-+import { defineConfig, devices } from '@playwright/test';
+You can override any options necessary for your new test project ([see here for an example](/e2e/hmr/playwright.config.js))
+
+```js
+import { defineConfig } from '@playwright/test';
+import { config } from '../playwright-config';
+
+export default defineConfig(config);
 ```
 
-```diff
--module.exports = defineConfig({
-+export default defineConfig({
-```
+8. Create `tests/tests.js` with the following contents
 
-9. Rename `tests/example.spec.js` to `tests/tests.spec.js`
+```js
+// @ts-check
+import { test, expect } from '@playwright/test';
+import { waitForDevModeToLoad } from '../../test-utils';
 
-10. Recondigure `tests/tests.spec.js` to use `import`/`export` syntax
+test('has title', async ({ page }) => {
+	await page.goto('/');
+	await waitForDevModeToLoad(page);
 
-```diff
--const { test, expect } = require('@playwright/test');
-+import { test, expect } from '@playwright/test';
+	await expect(page).toHaveTitle(/Welcome to Evidence/);
+});
 ```
 
 11. Install `cross-env`
@@ -84,7 +89,7 @@ pnpm install -D cross-env --ignore-scripts
 {
 	"scripts": {
 -		"test": "evidence build",
-+		"test": "playwright test",
++		"test:preview": "cross-env playwright test",
 +		"test:dev": "cross-env DEV=true playwright test"
 	}
 }
@@ -93,22 +98,10 @@ pnpm install -D cross-env --ignore-scripts
 13. Run the tests!
 
 ```sh
-pnpm test
-```
+pnpm test:dev
 
-Output:
-
-```
-> my-evidence-project@0.0.1 test /home/zach/code/evidence/evidence/e2e/hmr
-> playwright test
-
-
-Running 6 tests using 4 workers
-  6 passed (4.7s)
-
-To open last HTML report run:
-
-  pnpm exec playwright show-report
+pnpm build
+pnpm test:preview
 ```
 
 14. Commit and push your changes
@@ -123,11 +116,3 @@ git commit -m "test: add e2e/my-tests"
 ```
 
 You're now ready to start writing your tests!
-
-## Commands
-
-`pnpm test` will first build and run the app in preview mode, then run the tests
-
-`pnpm test:dev` will first run the dev server, then run the tests
-
-Adding `--ui` to either test command will open the Playwright interactive UI to help debug tests easier

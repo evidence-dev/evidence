@@ -9,7 +9,7 @@
 		"sources": "evidence sources",
 		"preview": "evidence preview",
 		"test:preview": "echo e2e/hmr has no preview mode tests",
-		"test:dev": "cross-env PLAYWRIGHT_HTML_OUTPUT_DIR=./playwright-reports/dev DEV=true playwright test"
+		"test:dev": "cross-env DEV=true playwright test"
 	},
 	"engines": {
 		"npm": ">=7.0.0",

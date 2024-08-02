@@ -1,14 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 import { createFile, deleteFile, editFile, restoreChangedFiles } from './fs-utils';
-
-const waitForDevModeToLoad = async (page) => {
-	if (!process.env.DEV) return;
-
-	await Promise.all([page.waitForTimeout(100), page.waitForLoadState('networkidle')]);
-
-	await expect(page.getByTestId('#__evidence_project_splash')).not.toBeVisible();
-};
+import { waitForDevModeToLoad } from '../../test-utils';
 
 const waitForHMR = async (page) => {
 	await page.waitForEvent('console', (message) => {
