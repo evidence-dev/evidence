@@ -93,7 +93,6 @@
 	}
 
 	// container height
-	// $: numSelectedValues = Array.isArray(selectedValue) ? selectedValue.length : 1;
 	$: heightRem = 1.2 * Math.max(Number(limit), $results.length);
 </script>
 
@@ -138,6 +137,35 @@
 						/>
 					</div>
 				{/each}
+				<!-- if selectedValues is an array, and if a value in selected values is not in loaded, render a <p>Missing Value</p> -->
+				{#if Array.isArray(selectedValue) && selectedValue.some((v) => !loaded
+								.map((d) => d.dimensionValue)
+								.includes(v))}
+					<!-- create an array of all missing values -->
+					{@const missingValues = selectedValue.filter(
+						(v) => !loaded.map((d) => d.dimensionValue).includes(v)
+					)}
+					{#each missingValues as missingValue (missingValue)}
+						<div
+							class={cn('flex transition duration-100 group cursor-pointer')}
+							on:click={updateSelected({ dimensionValue: missingValue })}
+							on:keydown={updateSelected({ dimensionValue: missingValue })}
+							animate:flip={{ duration: 200 }}
+							role="button"
+							tabindex="-1"
+						>
+							<DimensionRow
+								row={{ dimensionValue: missingValue }}
+								{selectedValue}
+								value={formatValue(
+									missingValue,
+									columnSummary[0].format,
+									columnSummary[0].columnUnitSummary
+								)}
+							/>
+						</div>
+					{/each}
+				{/if}
 			</div>
 		{:else}
 			<p class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded">No Records</p>

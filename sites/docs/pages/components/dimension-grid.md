@@ -63,7 +63,9 @@ Using the multiple prop, Dimension grid can filter by multiple rows in the same 
 
 select 
 order_month, 
-sum(sales)filter(${inputs.multi_dimensions}) as sales_usd0 
+sum(sales) filter (
+    ${inputs.multi_dimensions}
+) as sales_usd0 
 from needful_things.orders 
 group by all 
 ```
