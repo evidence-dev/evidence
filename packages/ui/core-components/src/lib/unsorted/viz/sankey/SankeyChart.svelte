@@ -1,4 +1,4 @@
-<!-- kept backwards compatability -->
+<!-- kept backwards compatibility -->
 <script context="module">
 	export const evidenceInclude = true;
 </script>

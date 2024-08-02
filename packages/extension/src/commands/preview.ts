@@ -57,7 +57,7 @@ export async function preview(uri?: Uri) {
 		if (uri.scheme === 'file ') {
 			outputChannel.appendLine(`Requested document preview: ${uri.fsPath}`); // skip encoding
 		} else if (uri.scheme === 'http' || uri.scheme === 'https') {
-			// must be a valide http or https
+			// must be a valid http or https
 			outputChannel.appendLine(`Requested page preview: ${uri.path}`); // skip encoding
 		}
 	}

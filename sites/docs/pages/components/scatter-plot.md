@@ -184,7 +184,7 @@ Change size of all points on the chart
 </PropListing>
 <PropListing
     name="fillColor"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 >
 
 Color to override default series color. Only accepts a single color.
@@ -201,7 +201,7 @@ Width of line surrounding each shape
 </PropListing>
 <PropListing
     name="outlineColor"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 >
 
 Color to use for outline if outlineWidth > 0
@@ -209,7 +209,7 @@ Color to use for outline if outlineWidth > 0
 </PropListing>
 <PropListing
     name="colorPalette"
-    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    options="array of color strings (CSS name | hexadecimal | RGB | HSL)"
     defaultValue="built-in color palette"
 >
 

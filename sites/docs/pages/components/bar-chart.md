@@ -373,7 +373,7 @@ queries:
 <PropListing
     name=fillColor
     description="Color to override default series color. Only accepts a single color."
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=fillOpacity
@@ -390,12 +390,12 @@ queries:
 <PropListing
     name=outlineColor
     description="Color to use for outline if outlineWidth > 0"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=colorPalette
     description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
-    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    options="array of color strings (CSS name | hexadecimal | RGB | HSL)"
     defaultValue="built-in color palette"
 />
 <PropListing
@@ -440,7 +440,7 @@ queries:
 <PropListing
     name=labelColor
     description="Font color of value labels"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
     defaultValue="Automatic based on color contrast of background"
 />
 <PropListing
@@ -617,7 +617,7 @@ queries:
 <PropListing
     name=yAxisColor
     description="Turns on/off color on the y-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color"
-    options={['true', 'false', 'color string (CSS name | hexademical | RGB | HSL)']}
+    options={['true', 'false', 'color string (CSS name | hexadecimal | RGB | HSL)']}
     defaultValue="true when y2 used; false otherwise"
 />
 

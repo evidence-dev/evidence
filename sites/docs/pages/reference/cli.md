@@ -38,8 +38,8 @@ Some of the most common are:
 
 ```sql options
 select '<code>sources</code>' as "Command", '<code>--changed</code>' as "Flag", 'Run sources whose queries have changed' as "Description", null as "Detail", 0 as row_num UNION ALL
-select '<code>sources</code>' as "Command", '<code>--sources [source_name]</code>' as "Flag", 'Run sources from the specified sources' as "Description", 'Seperate with commas <code>--sources source1,source2</code>' as "Detail", 1 as row_num UNION ALL
-select '<code>sources</code>' as "Command", '<code>--queries [query_name]</code>' as "Flag", 'Run the specified queries' as "Description", 'Seperate with commas' as "Detail", 2 as row_num UNION ALL
+select '<code>sources</code>' as "Command", '<code>--sources [source_name]</code>' as "Flag", 'Run sources from the specified sources' as "Description", 'Separate with commas <code>--sources source1,source2</code>' as "Detail", 1 as row_num UNION ALL
+select '<code>sources</code>' as "Command", '<code>--queries [query_name]</code>' as "Flag", 'Run the specified queries' as "Description", 'Separate with commas' as "Detail", 2 as row_num UNION ALL
 select '<code>sources</code>' as "Command", '<code>--debug</code>' as "Flag", 'Show debug output' as "Description", null as "Detail", 3 as row_num UNION ALL
 select '<code>dev</code>' as "Command", '<code>--open [path]</code>' as "Flag", 'Open browser to <code>path</code> on startup' as "Description", 'Default <code>--open /</code> opens in root of the project' as "Detail", 4 as row_num UNION ALL
 select '<code>dev</code>' as "Command", '<code>--host [host]</code>' as "Flag", 'Specify hostname' as "Description", '<code>--host 0.0.0.0</code> can be helpful in containers' as "Detail", 5 as row_num UNION ALL

@@ -97,7 +97,7 @@ describe('setTrackProxy', () => {
 		expect(v.a.b[IsSetTracked]).toBeTruthy();
 	});
 
-	it('should mark any existing values as set when receving an object', () => {
+	it('should mark any existing values as set when receiving an object', () => {
 		const v = setTrackProxy();
 		v.a.b = { x: 1 };
 
@@ -114,7 +114,7 @@ describe('setTrackProxy', () => {
 		expect(() => JSON.stringify(v)).not.toThrow();
 		expect(() => v.toJSON()).not.toThrow();
 	});
-	it('should not break when primative serializing', () => {
+	it('should not break when primitive serializing', () => {
 		const v = setTrackProxy();
 
 		expect(() => v.toPrimitive()).not.toThrow();

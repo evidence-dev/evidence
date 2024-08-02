@@ -36,11 +36,11 @@ WITH USER_METRICS AS (
                 SELECT COUNT(distinct l.id) FROM posts p
                 INNER JOIN likes l on p.id = l.post_id
                 WHERE p.user_id = u.id
-            ) as recieved_likes
+            ) as received_likes
     from users U
 )
 SELECT  AVG(user_likes) as avg_likes_given,
-        AVG(recieved_likes) as avg_likes_received,
+        AVG(received_likes) as avg_likes_received,
         AVG(user_comments) as avg_comments,
         AVG(user_posts) as avg_posts
 FROM USER_METRICS

@@ -37,7 +37,7 @@ If you want your site to update on a regular schedule, you can use GitHub Action
    ![netlify-add-build-hook](/img/netlify-add-build-hook.png)
    This will give you a URL that GitHub will use to trigger builds
 
-2. Add `NETLIFY_BUILD_HOOK` to your Github Repo's Secrets
+2. Add `NETLIFY_BUILD_HOOK` to your GitHub Repo's Secrets
 
 - In your GitHub repo, go to Settings > Secrets > Actions and click **New repository secret**<br/><br/>
   ![netlify-github-new-secret](/img/netlify-github-new-secret.png)

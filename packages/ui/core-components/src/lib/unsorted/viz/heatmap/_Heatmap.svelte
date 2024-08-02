@@ -64,7 +64,7 @@
 
 	export let chartAreaHeight = undefined;
 
-	export let xLabelRotation = undefined; // degress to rotate x axis labels
+	export let xLabelRotation = undefined; // degrees to rotate x axis labels
 
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;

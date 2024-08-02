@@ -57,7 +57,7 @@ describe('Datasources', () => {
 			expect(result[0]).toBe(pack);
 			expect(result[1]).toBe(source1);
 		});
-		it('should throw if a source is overriden twice', () => {
+		it('should throw if a source is overridden twice', () => {
 			const datasources = new Datasources();
 			const pack = { evidence: { datasources: ['ddb'] }, name: 'test-package' };
 			const pack2 = { evidence: { datasources: ['ddb'] }, name: 'test-package-2' };

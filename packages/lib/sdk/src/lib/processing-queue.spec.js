@@ -11,7 +11,7 @@ describe('ProcessingQueue', () => {
 	it('Should be defined', () => {
 		expect(ProcessingQueue).toBeDefined();
 	});
-	it('Should execute a syncronous function', () => {
+	it('Should execute a synchronous function', () => {
 		const q = ProcessingQueue();
 
 		q.add(testFn);
@@ -54,7 +54,7 @@ describe('ProcessingQueue', () => {
 		expect(testFn).toHaveBeenCalledTimes(2);
 	});
 
-	it('Should execute multiple syncronous functions when queued separately', async () => {
+	it('Should execute multiple synchronous functions when queued separately', async () => {
 		const q = ProcessingQueue();
 
 		testFn.toString = () => 'MockedFn';
@@ -102,7 +102,7 @@ describe('ProcessingQueue', () => {
 		expect(asyncTest).toHaveBeenCalledTimes(3);
 	});
 
-	it('Should handle a syncronous function that throws an error', async () => {
+	it('Should handle a synchronous function that throws an error', async () => {
 		const q = ProcessingQueue();
 		const innerError = new Error('Hello!');
 		testFn.mockImplementation(() => {
@@ -116,7 +116,7 @@ describe('ProcessingQueue', () => {
 		expect(eventListener).toHaveBeenCalledWith(innerError);
 	});
 
-	it('Should handle an asyncronous function that throws an error', async () => {
+	it('Should handle an asynchronous function that throws an error', async () => {
 		const q = ProcessingQueue();
 		const innerError = new Error('Hello!');
 		testFn.mockImplementation(async () => {

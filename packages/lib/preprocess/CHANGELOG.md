@@ -126,7 +126,7 @@
   QueryStore now accepts initialError when SSR query fails
 
   SSR / QueryStore now swallow errors unless build:strict is enabled
-  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+  (e.g. the error propagates to the UI where the user can more easily find it in dev mode / regular builds)
 
 - 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
 - 1dcb5afe: Escape undefined when looking for unset inputs
@@ -234,7 +234,7 @@
   QueryStore now accepts initialError when SSR query fails
 
   SSR / QueryStore now swallow errors unless build:strict is enabled
-  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+  (e.g. the error propagates to the UI where the user can more easily find it in dev mode / regular builds)
 
 - 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
 
@@ -349,7 +349,7 @@
 
 ### Minor Changes
 
-- de129514: Addtional UI components added
+- de129514: Additional UI components added
 
 ### Patch Changes
 
@@ -365,7 +365,7 @@
 
 ### Minor Changes
 
-- de129514: Addtional UI components added
+- de129514: Additional UI components added
 
 ## 4.0.0-usql.2
 

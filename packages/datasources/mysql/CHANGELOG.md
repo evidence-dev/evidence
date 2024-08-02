@@ -25,7 +25,7 @@
 
 ### Minor Changes
 
-- 5d5cb2de: Upate mysql2 to next major version
+- 5d5cb2de: Update mysql2 to next major version
 
 ## 1.0.3
 

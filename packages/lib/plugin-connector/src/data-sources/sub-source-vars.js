@@ -45,7 +45,7 @@ export const subSourceVariables = (queryString) => {
 			regex.lastIndex = start + value.length;
 		} else
 			console.warn(
-				`Missed substition for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
+				`Missed substitution for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
 			);
 	}
 

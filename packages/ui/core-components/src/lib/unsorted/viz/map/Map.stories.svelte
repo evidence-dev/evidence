@@ -26,7 +26,7 @@
 	const la_locations = Query.create(`select * from la_locations order by 1`, query);
 </script>
 
-<!-- Exlcuded from chromatic, map layers don't reliably load in the same order -->
+<!-- Excluded from chromatic, map layers don't reliably load in the same order -->
 <Story name="Basic Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<BaseMap title="My Map" height="300">
 		<Points

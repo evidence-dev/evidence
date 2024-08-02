@@ -45,7 +45,7 @@ export async function getAppPageUri(pageUrl?: string): Promise<Uri> {
 	if (pageUrl === undefined) {
 		pageUrl = serverUrl;
 	} else if (pageUrl.startsWith('/')) {
-		// construct page url for page path wihtout host and port
+		// construct page url for page path without host and port
 		pageUrl = `${localAppUrl}:${defaultPort}${pageUrl}`;
 	}
 

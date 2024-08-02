@@ -10,7 +10,7 @@ describe('queryScore', () => {
 
 		expect(result).toBe(8);
 	});
-	it('should return x for a Query with 5 string columms, and 5 rows', async () => {
+	it('should return x for a Query with 5 string columns, and 5 rows', async () => {
 		const cols = [
 			{ column_name: 'var_char_col1', column_type: 'VARCHAR' },
 			{ column_name: 'var_char_col2', column_type: 'VARCHAR' },

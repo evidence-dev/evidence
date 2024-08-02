@@ -27,7 +27,7 @@ const resolveChildOptions = (fieldSpec, prop, sourceOptions, opts) => {
 	if (currentValue && !(currentValue in fieldSpec.children)) {
 		throw new EvidenceError('Internal Error', [
 			'Attempted to access value not found in Options specification',
-			'Error occured while trying to access a child value',
+			'Error occurred while trying to access a child value',
 			JSON.stringify({ currentValue, fieldSpec })
 		]);
 	}

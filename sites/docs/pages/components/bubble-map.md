@@ -410,7 +410,7 @@ Width of the border around each point.
 <PropListing
 name="borderColor"
 options="CSS color value"
-defaultVallue="white"
+defaultValue="white"
 >
 Color of the border around each point.
 </PropListing>
@@ -444,7 +444,7 @@ When point is selected: Width of the border around each point.
 <PropListing
 name="selectedBorderColor"
 options="CSS color value"
-defaultVallue="white"
+defaultValue="white"
 >
 When point is selected: Color of the border around each point.
 </PropListing>

@@ -602,7 +602,7 @@ describe('Query', () => {
 		});
 	});
 
-	describe('Query/Array Masquarade', () => {
+	describe('Query/Array Masquerade', () => {
 		it('it should pass Array.isArray', () => {
 			const q = getMockQuery('SELECT 1');
 

@@ -196,7 +196,7 @@ Adds aggregation to query, column name required.
 </PropListing>
 <PropListing
         name=color
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
 >
 
 Specifies the font color of the Value.

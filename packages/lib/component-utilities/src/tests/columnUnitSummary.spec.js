@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { getColumnUnitSummary } from '../getColumnExtents';
 
 describe('getColumnUnitSummary', () => {
-	it('should return correct values with real valued nubmer array', () => {
+	it('should return correct values with real valued number array', () => {
 		const data = [
 			{ columnOne: 'three', columnTwo: 3 },
 			{ columnOne: 'threpointone', columnTwo: 3.1 },

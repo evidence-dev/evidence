@@ -57,7 +57,7 @@ describe('dropdownOptionStore', () => {
 		expect($options).toHaveLength(0);
 	});
 
-	describe('hygeine', () => {
+	describe('hygiene', () => {
 		it('should deduplicate options by value + label', async () => {
 			const { addOption, options } = dropdownOptionStore();
 			addOption({

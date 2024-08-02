@@ -96,7 +96,7 @@ If you have built custom components that you would like other Evidence users to 
 ## Utility Functions
 Evidence provides a collection of helpful utility functions to use within custom components, for things like error handling, data manipulation, and value formatting.
 
-To use these in your project, you must import them explicitly in the script tag portion of your component. The import line for each utlity function is included for reference below:
+To use these in your project, you must import them explicitly in the script tag portion of your component. The import line for each utility function is included for reference below:
 
 ### Error Handling
 
@@ -179,7 +179,7 @@ import getCompletedData from '@evidence-dev/component-utilities/getCompletedData
 - `y`: name of column for y-axis
 - `series`: name of column for series
 - `nullsZero`: if true, will treat nulls as zeroes; otherwise, will leave as nulls
-- `fillX`: if true, will find the smallest increment in the x-axis values and create rows as needed to create a continous series
+- `fillX`: if true, will find the smallest increment in the x-axis values and create rows as needed to create a continuous series
 
 <br/>
 

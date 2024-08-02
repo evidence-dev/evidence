@@ -306,7 +306,7 @@ Used to navigate to other pages. Can be a full external link like `https://googl
 <PropListing
     name="sparklineColor"
     description="Color of visualization"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name="sparklineYScale"

@@ -131,7 +131,7 @@ Object containing Algolia docsearch credentials
     defaultValue='https://github.com/evidence-dev/evidence'
 >
 
-Link to a Github Repo which will appear in the header using the Github Logo
+Link to a GitHub Repo which will appear in the header using the GitHub Logo
 
 </PropListing>
 <PropListing
@@ -192,7 +192,7 @@ This is the default text style, which is used when you write text in a markdown 
 
 Include an `app.css` file in your project root directory to customize the base styles of your project.
 
-_The recommended approach is to copy and edit the default css file from `[my-project]/.evidence/template/src/app.css`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/app.css)._
+_The recommended approach is to copy and edit the default css file from `[my-project]/.evidence/template/src/app.css`, also found in the [Evidence GitHub repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/app.css)._
 
 ### What can be customized with app.css?
 
@@ -214,7 +214,7 @@ You **cannot** currently easily customize the default styles of the following (a
 
 If you include a `+layout.svelte` file in a directory, any markdown files in that directory (and its subdirectories) will use this layout file instead of the default layout file.
 
-_The recommended approach is to copy and edit the default layout file from `[my-project]/.evidence/template/src/pages/+layout.svelte`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/pages/+layout.svelte)._
+_The recommended approach is to copy and edit the default layout file from `[my-project]/.evidence/template/src/pages/+layout.svelte`, also found in the [Evidence GitHub repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/pages/+layout.svelte)._
 
 ### What can be customized with +layout.svelte?
 

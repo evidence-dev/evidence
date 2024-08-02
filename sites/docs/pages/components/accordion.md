@@ -158,7 +158,7 @@ select 0.366 as positive, -0.366 as negative
 
 <PropListing
     name="single"
-    description="When true, only a single accordian item can be open at once."
+    description="When true, only a single accordion item can be open at once."
     options={['true', 'false']}
 />
 

@@ -795,7 +795,7 @@
 - 130950d7: revamp toast notifications
 - b6683ba0: Deploy screen now shows environment variables for USQL
 - 9b1ac9b7: removed evidencemeta on the data object
-- 0a60b724: Remove reduntant QueryStatus notifications
+- 0a60b724: Remove redundant QueryStatus notifications
 - 20722eab: build:sources is now sources
   build:sources outputs a deprecation notice to prevent immediate breakage of existing projects
 - 73cfef71: Removed legacy database settings UI
@@ -1280,7 +1280,7 @@
 
 ### Patch Changes
 
-- 0a60b724: Remove reduntant QueryStatus notifications
+- 0a60b724: Remove redundant QueryStatus notifications
 - Updated dependencies [4ac6a688]
 - Updated dependencies [91034294]
 - Updated dependencies [0a60b724]

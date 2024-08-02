@@ -346,7 +346,7 @@ group by all
 <PropListing
     name=lineColor
     description="Color to override default series color. Only accepts a single color"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=lineOpacity
@@ -387,7 +387,7 @@ group by all
 <PropListing
     name=colorPalette
     description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
-    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    options="array of color strings (CSS name | hexadecimal | RGB | HSL)"
 />
 <PropListing
     name=seriesColors
@@ -415,7 +415,7 @@ group by all
 <PropListing
     name=labelColor
     description="Font color of value labels"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=labelFmt

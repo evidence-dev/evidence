@@ -181,7 +181,7 @@ export const evidencePlugin = async () => {
 						if (environmentOptions.length > 1) {
 							console.warn(
 								chalk.yellow(
-									`[!] Multiple Import Files found for $evidence/${idNoPrefix}, this is ambigious and should be corrected. ${environmentOptions.join(
+									`[!] Multiple Import Files found for $evidence/${idNoPrefix}, this is ambiguous and should be corrected. ${environmentOptions.join(
 										', '
 									)}`
 								)
@@ -192,7 +192,7 @@ export const evidencePlugin = async () => {
 						// There are no specifics
 						console.warn(
 							chalk.yellow(
-								`[!] Multiple Import Files found for $evidence/${idNoPrefix}, this is ambigious and should be corrected. ${matches.join(
+								`[!] Multiple Import Files found for $evidence/${idNoPrefix}, this is ambiguous and should be corrected. ${matches.join(
 									', '
 								)}`
 							)

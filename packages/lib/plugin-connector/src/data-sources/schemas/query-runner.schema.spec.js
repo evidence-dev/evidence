@@ -75,7 +75,7 @@ describe('QueryResultSchema', () => {
 		};
 		QueryResultSchema.parse(fixture);
 		expect(i).toEqual(1);
-		// Ensure that i is actually being incremeneted properly
+		// Ensure that i is actually being incremented properly
 		fixture.rows.forEach((f) => f.x);
 		expect(i).toEqual(11);
 	});

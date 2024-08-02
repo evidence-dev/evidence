@@ -97,7 +97,7 @@ Email us: [archie@evidence.dev](mailto:archie@evidence.dev), or reach out on Evi
 
 <Details title="How do I add a new developer to my Evidence project?">
 
-Give them access to your [Github repository](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository). All Evidence Cloud plans come with unlimited developer accounts.
+Give them access to your [GitHub repository](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository). All Evidence Cloud plans come with unlimited developer accounts.
 
 </Details>
 

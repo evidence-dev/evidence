@@ -19,4 +19,4 @@ Don't clone this repo, just download the code using the steps above.
 
 - [Docs](https://docs.evidence.dev/)
 - [Project Home Page](https://www.evidence.dev)
-- [Github](https://github.com/evidence-dev/evidence)
+- [GitHub](https://github.com/evidence-dev/evidence)

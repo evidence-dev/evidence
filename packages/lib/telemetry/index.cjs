@@ -9,7 +9,7 @@ const LEGACY_PROFILES_PATH = './.profile.json';
 
 /**
  * @typedef {'usageStatsDisabled' |
- *           'db-plugin-unvailable' |
+ *           'db-plugin-unavailable' |
  *           'db-connection-error' |
  *           'db-connection-success' |
  *           'source-connector-not-found' |
