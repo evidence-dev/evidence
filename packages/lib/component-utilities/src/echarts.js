@@ -118,6 +118,11 @@ export default (node, option) => {
 	});
 
 	chart.on('dblclick', function (params) {
+		params = {
+			...params,
+			convertFromPixel: chart.convertFromPixel.bind(chart),
+			getModel: chart.getModel.bind(chart)
+		};
 		dispatch('dblclick', params);
 	});
 
