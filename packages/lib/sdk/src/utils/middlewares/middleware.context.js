@@ -15,7 +15,6 @@ export const createMiddlewareContext = () => {
 				[MiddlewareMapKey]: []
 			})
 		);
-		console.log('Created Middleware Context!');
 	}
 };
 
@@ -24,19 +23,17 @@ export const createMiddlewareContext = () => {
 
 /**
  * @param {MiddlewareContextValue[MiddlewareMapKey][number]} value
- * @param {boolean} [prepend=false]
+ * @param {{prepend?: boolean}} [opts]
  */
-export const addMapMiddleware = (value, prepend) => {
-	console.log(getAllContexts());
+export const addMapMiddleware = (value, opts = { prepend: false }) => {
 	/** @type {MiddlewareContext} */
 	const { update } = getContext(MiddlewareContextKey);
 
 	update((v) => {
-		if (prepend) v[MiddlewareMapKey].unshift(value);
+		if (opts.prepend) v[MiddlewareMapKey].unshift(value);
 		else v[MiddlewareMapKey].push(value);
 		return v;
 	});
-	console.log('We added a middleware!');
 };
 
 export const getMapMiddleware = () => get(getContext(MiddlewareContextKey))[MiddlewareMapKey];
@@ -47,7 +44,6 @@ export const getMapMiddleware = () => get(getContext(MiddlewareContextKey))[Midd
  * @param {import("./types.js").Middlewares<T>} middlewares
  */
 export const processMiddlewares = (initialValue, middlewares) => {
-	console.log('Processing Middlewares!', { initialValue, middlewares });
 	let value = initialValue;
 	for (const middleware of middlewares) {
 		const output = middleware(value);
