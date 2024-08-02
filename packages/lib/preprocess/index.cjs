@@ -8,11 +8,12 @@ const processFrontmatter = require('./src/frontmatter/process-frontmatter.cjs');
 const injectPartials = require('./src/partials/inject-partials.cjs');
 const rehypeSlug = require('rehype-slug');
 const rehypeAutolinkHeadings = require('rehype-autolink-headings');
-
+const { addMiddlewareContext } = require('./src/add-middleware-context.mjs');
 module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 	return [
 		injectPartials,
 		addScriptTags,
+		addMiddlewareContext(),
 		processQueries(componentDevelopmentMode),
 		mdsvex.mdsvex({
 			extensions: ['.md'],

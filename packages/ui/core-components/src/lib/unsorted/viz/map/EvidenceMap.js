@@ -2,7 +2,7 @@ import { sharedPromise } from '@evidence-dev/sdk/utils';
 import debounce from 'lodash.debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
-
+import { getMapMiddleware, processMiddlewares } from '@evidence-dev/sdk/utils';
 /** @type {import('leaflet') | undefined} */
 let Leaflet;
 
@@ -40,9 +40,12 @@ export class EvidenceMap {
 	/** Tracks whether the initial view has been set based on data bounds. */
 	#initialViewSet = false;
 
+	#middlewares;
+
 	constructor() {
 		this.#lastClickedMarker = null;
 		this.#markerStyles = new Map();
+		this.#middlewares = getMapMiddleware();
 	}
 
 	/**
@@ -98,15 +101,18 @@ export class EvidenceMap {
 			startingCoords,
 			startingZoom ?? 1
 		);
+
+		processMiddlewares(this.#map, this.#middlewares);
+
 		if (userDefinedView) {
 			this.#initialViewSet = true; // Mark initial view as set
 		}
 
-		const processedBasemap = this.processBasemapUrl(basemap);
-		Leaflet.tileLayer(processedBasemap, {
-			subdomains: 'abcd',
-			maxZoom: 20
-		}).addTo(this.#map);
+		// const processedBasemap = this.processBasemapUrl(basemap);
+		// Leaflet.tileLayer(processedBasemap, {
+		// 	subdomains: 'abcd',
+		// 	maxZoom: 20
+		// }).addTo(this.#map);
 		this.#map.removeControl(this.#map.attributionControl);
 
 		this.#bounds = Leaflet.latLngBounds();

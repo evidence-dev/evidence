@@ -16,7 +16,7 @@ union all
 select 'Portugal' as country, 50 as sales
 ```
 
-<AreaMap title="Area Map" data={la_zip_sales} geoId=ZCTA5CE10 areaCol=zip_code value=sales/>
+<!-- <AreaMap title="Area Map" data={la_zip_sales} geoId=ZCTA5CE10 areaCol=zip_code value=sales/> -->
 
 <PointMap title="Point Map" data={la_locations} lat=lat long=long/>
 
