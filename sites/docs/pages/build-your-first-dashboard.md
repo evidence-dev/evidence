@@ -382,7 +382,7 @@ Go to `localhost:3000/settings`, and select **Add new source**:
 
 Choose **CSV** as the source type, and upload a CSV file of your choice.
 
-Here, we'll use [**us_alt_fuel_stations.csv**](https://datacatalog.urban.org/node/6463/revisions/15648/view) - a public data source on EV charging stations across the US.
+Here, we'll use [**us_alt_fuel_stations.csv**](https://catalog.data.gov/dataset/alternative-fueling-station-locations-422f2/resource/341957d8-daf6-4a38-ab1d-8ec1bc21cfb9) - a public data source on EV charging stations across the US.
 
 Select Source Type: **CSV**, and give your source a name. Hit Confirm:
 
