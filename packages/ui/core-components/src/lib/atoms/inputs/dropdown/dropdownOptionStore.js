@@ -1,5 +1,7 @@
-import { derived, readonly, writable } from 'svelte/store';
+import { derived, get, readonly, writable } from 'svelte/store';
 import { batchUp } from '@evidence-dev/sdk/utils';
+// TODO use lodash/merge not lodash.merge
+import merge from 'lodash.merge';
 /** @template T @typedef {import("svelte/store").R} */
 
 /**
@@ -9,8 +11,15 @@ import { batchUp } from '@evidence-dev/sdk/utils';
  * @property {number} idx
  * @property {boolean} selected
  * @property {boolean} [__auto]
- * @property {boolean} [hangover]
+ * @property {boolean} [__removeOnDeselect]
  */
+
+/**
+ * @param {DropdownValue} a
+ * @returns {string}
+ */
+const optStr = (a) => String(a.value) + String(a.label);
+
 
 /**
  * @param {DropdownValue} a
@@ -34,12 +43,49 @@ const defaultOpts = {
 	defaultValues: []
 };
 
+const hygiene = ($options) => {
+	// Uniqueify
+	const knownValues = new Set();
+	$options = $options.reduce((a, c) => {
+		if (!knownValues.has(optStr(c))) {
+			knownValues.add(optStr(c));
+			a.push(c);
+		}
+		return a;
+	}, /** @type {DropdownValue[]} */ ([]));
+
+	// Sort
+	$options = $options.sort((a, b) => {
+		// Selected options go to the top
+		if (a.selected && !b.selected) return -1;
+		if (b.selected && !a.selected) return 1;
+
+		// Auto options go to the bottom
+		if (a.__auto && !b.__auto) return 1;
+		if (b.__auto && !a.__auto) return -1;
+
+		// Sort by index
+		if (a.idx !== b.idx) {
+			return a.idx - b.idx;
+		}
+
+		// Sort by label
+		const labelDiff = a.label.localeCompare(b.label);
+		if (labelDiff !== 0) return labelDiff;
+
+		// If labels are the same, sort by value
+		return a.value.toString().localeCompare(b.value.toString());
+	});
+
+	return $options;
+};
+
 /**
  * @param {Partial<DropdownStoreOpts>} opts
  * @returns
  */
-export const dropdownOptionStore = (opts = {}) => {
-	Object.assign(opts, defaultOpts, opts); // Merge in default options
+export const dropdownOptionStore = (inputOptions = {}) => {
+	const opts = merge({}, defaultOpts, inputOptions);
 
 	/** @type {import("svelte/store").Writable<DropdownValue[]>} */
 	const options = writable([]);
@@ -49,6 +95,12 @@ export const dropdownOptionStore = (opts = {}) => {
 	const selectedOptions = derived(options, ($options) =>
 		$options.filter((option) => option.selected)
 	);
+
+	options.update = (updater) => {
+		// Enforce hygiene
+		const result = updater(get(options));
+		options.set(hygiene(result));
+	}
 
 	return {
 		/**
@@ -88,7 +140,7 @@ export const dropdownOptionStore = (opts = {}) => {
 					return $options.reduce((a, v) => {
 						if (!v) return a;
 						if (opts.find((x) => optEq(x, v))) {
-							if (v.selected) v.hangover = true;
+							if (v.selected) v.__removeOnDeselect = true;
 							else return a;
 						}
 						a.push(v);
@@ -112,10 +164,10 @@ export const dropdownOptionStore = (opts = {}) => {
 						return $options.reduce((a, v) => {
 							if (!v) return a;
 							if (toToggle.find((x) => optEq(x, v))) {
-								if (v.hangover) {
+								if (v.__removeOnDeselect) {
 									if (!v.selected) {
-										console.warn(
-											'A dropdown option should never be hungover AND not selected at the same time.\nOption will be removed'
+										console.debug(
+											'A dropdown option should never have __removeOnDeselect AND not selected at the same time.\nOption will be removed'
 										);
 									}
 									return a;
@@ -127,12 +179,24 @@ export const dropdownOptionStore = (opts = {}) => {
 						}, /** @type {DropdownValue[]} */ ([]));
 					} else {
 						// For single-select, deselect everything and select only the last option
-						const updated = $options.map(o => {o.selected = false; return o;})
-						const toSelect = toggleOptions.at(-1);
-						return updated.map(v => {
-							if (optEq(v, toSelect)) v.selected = true;
-							return v;
-						})
+						$options.forEach((o) => (o.selected = false));
+
+						const toSelect = toToggle.at(-1);
+
+						const output = $options.reduce((a, v) => {
+							if (optEq(v, toSelect)) {
+								v.selected = true;
+							}
+
+							if (v.__removeOnDeselect && !v.selected) {
+								return a;
+							}
+
+							a.push(v);
+							return a;
+						}, /** @type {DropdownValue[]} */ ([]));
+
+						return output;
 					}
 				});
 			},

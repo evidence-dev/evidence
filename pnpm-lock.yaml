@@ -1033,6 +1033,9 @@ importers:
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       lodash.debounce:
         specifier: ^4.0.8
         version: 4.0.8
@@ -1085,6 +1088,9 @@ importers:
       '@evidence-dev/universal-sql':
         specifier: workspace:*
         version: link:../../lib/universal-sql
+      '@fakerjs/faker':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@storybook/addon-essentials':
         specifier: ^8.1.3
         version: 8.2.5(storybook@8.2.5)
@@ -4730,6 +4736,198 @@ packages:
   /@faker-js/faker@8.4.1:
     resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
+
+  /@fakerjs/age@2.1.1:
+    resolution: {integrity: sha512-9MQcaL86EbO43d3EjoSPJ4+Yu37zEex0hH+u33zNjm7dIIrr3mEzeFBUvAow9I0sR4oK7QbM1j2Sju+PvJGpDA==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /@fakerjs/animal@2.2.0:
+    resolution: {integrity: sha512-EEFtmbcodyuGd2Sw5bfG513kPtEc1EU7+q14rtoJXQ6oJx1W4trRMDilQeNGeVxwHl90K9m5uTETLxxA1Xinhg==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/blood@1.0.0:
+    resolution: {integrity: sha512-VP790P5exHez0Yb3UcZ/rraW4bnPe818cZKHI9fe7taCCkFyloWLYS8Zy5+LUtSLK0mQZaJ3MzcF4LZhiBTXzQ==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /@fakerjs/boolean@2.1.1:
+    resolution: {integrity: sha512-OJWuAFs3QEZangHn8tvckr2E+sevjOVwzAfsuWDwDL+ymPNCMjvISvBDW6d7k3I3wgZhjaBLngdZfEl+bhisTQ==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /@fakerjs/browser@1.1.1:
+    resolution: {integrity: sha512-d/nzWRlRGox7pen+3JrU9D3hhXQ6s20RJ0I5i2Q1UiKaLNyq8hW+26Ulr2YXPA9baLqFsrSkMnEoUODTF7jdrQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/domain@1.1.0:
+    resolution: {integrity: sha512-odr4j98GIpyuPYrP8nV8Q7tcSB9VYu3a0Q9Kgx112oTauS7L3TsDbmi8+x2prT6fjHAfZ/eZ5zpDEtjsPVAJsg==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@fakerjs/tld': 1.1.0
+      '@fakerjs/word': 1.0.1
+    dev: true
+
+  /@fakerjs/email@1.0.0:
+    resolution: {integrity: sha512-metzbdFNwkZsR5Se7OIPkpMGbkTHdCejB0Tg/Q+M0hYyQnYMyaVdZf53/hb7TMKbNM8HewTERQFPDePiABEKQg==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@fakerjs/domain': 1.1.0
+      '@fakerjs/word': 1.0.1
+    dev: true
+
+  /@fakerjs/faker@3.0.0:
+    resolution: {integrity: sha512-sN4LBgZQGEsZw+bzmXf9VwzpfJ1B/ZhqU19NSHku8ywih2g+Kq7uBa7nlmYUUmSlYe6p5cx5eRusswrfm+6Wbw==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@fakerjs/age': 2.1.1
+      '@fakerjs/animal': 2.2.0
+      '@fakerjs/blood': 1.0.0
+      '@fakerjs/boolean': 2.1.1
+      '@fakerjs/browser': 1.1.1
+      '@fakerjs/domain': 1.1.0
+      '@fakerjs/email': 1.0.0
+      '@fakerjs/firstname': 1.0.1
+      '@fakerjs/float': 2.1.1
+      '@fakerjs/game': 1.0.1
+      '@fakerjs/gender': 2.3.1
+      '@fakerjs/house': 1.0.2
+      '@fakerjs/integer': 2.1.1
+      '@fakerjs/ip': 2.1.1
+      '@fakerjs/lastname': 1.0.1
+      '@fakerjs/letter': 2.2.2
+      '@fakerjs/paragraph': 1.0.0
+      '@fakerjs/profession': 2.2.0
+      '@fakerjs/sentence': 1.0.0
+      '@fakerjs/sport': 1.0.0
+      '@fakerjs/string': 2.1.1
+      '@fakerjs/superhero': 1.2.0
+      '@fakerjs/tld': 1.1.0
+      '@fakerjs/url': 1.0.0
+      '@fakerjs/word': 1.0.1
+    dev: true
+
+  /@fakerjs/firstname@1.0.1:
+    resolution: {integrity: sha512-Z+Ss9jUOm1SJulf/P0jxdE1OosBxbUkN18wDdPdNUl/bdpEsxbya1jsFvQk8vjP8fHwOe5RnEiVwRr03Kp5CPg==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/float@2.1.1:
+    resolution: {integrity: sha512-VUX+xCzS0PW2OLtgqVxnU4qqZ3tvzyOFLKRmZlptCAmpTg3jKUbqdt8agHPL8KUjQaXr4UxHdegYNg2R2z2hAw==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /@fakerjs/game@1.0.1:
+    resolution: {integrity: sha512-w+Htk1jqUrb0GKyjjqLhUCzbu9OtGcpSujlsb3Baj3S5v39ikv3nR2iFL/Bhgs9nrql0ynlYYN/V2oifURAQfw==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/gender@2.3.1:
+    resolution: {integrity: sha512-qerBcx9mTPLZFnmJJBnEYlc0BkCdaUfVWWGsLKC7U0Vloai9reS4ArZTFz+Cm0eHNVX1b9RdBIPh9aHIeR2LcQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/house@1.0.2:
+    resolution: {integrity: sha512-DsgcRinbadBQKcXRHQX9lU8xMAdK2nPT/EZwTMA1y56a52XworVOaCecdkGcubzLxdAuMBPLeOMvJxXLswWL/w==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/integer@2.1.1:
+    resolution: {integrity: sha512-yAqbw7SpN1p6XX5JsgIN6xrpGG6Qdl14/9x5RMUG5TL+/LVySg2TberY0rWRyYsRVpOMOJ8hhMaaBAARtxdMwA==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /@fakerjs/ip@2.1.1:
+    resolution: {integrity: sha512-oY8+k4c04YF4eLU8brNVUAr5jvmXuzKKCn+qCseDQMK8abDarAJ/c0ig1XpZRBfywUjKxQNGZrfAEvfYiFFdeQ==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /@fakerjs/lastname@1.0.1:
+    resolution: {integrity: sha512-7BJp9D5F4ESBf7MHN4Z8I96Ie78n9qftAwL0591xkHCoIpVpGVq/56ggCaowcxGGvxNYJ3t2OF4P7VLNQtNoDA==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/letter@2.2.2:
+    resolution: {integrity: sha512-JuIqMpefN4JYzinI8Cm+K477xogilhOdLIDtOZ8EwgMSQCcvkB+mBYarNRwwC3FIFjtXGVvMNBe398cB4IEvjg==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/paragraph@1.0.0:
+    resolution: {integrity: sha512-usbAIhWVtSf2eHbY5YEXRnEj4otLLKLvOwAoCQ+cxtMd3FGYLxBLNGVwjDXoSl8FOdTbA57Yt1tsu+v21xsoUw==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@fakerjs/sentence': 1.0.0
+    dev: true
+
+  /@fakerjs/profession@2.2.0:
+    resolution: {integrity: sha512-yktaNnN8nmr+5wn8m6hE/bhaiYtbBQ5CqttIws+q7SwBx4Ip5/uEttP9UBTZCfACu07gB0RYvb7xDxtFT+dFkw==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/sentence@1.0.0:
+    resolution: {integrity: sha512-DRpKfj/dbdMYtW5+k0/wB6oqd0tnOzLCVyKFM50hVF43gXShj4arg23ql2CXxNakagi3yNzBk9W5Am6Y12H6CA==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@fakerjs/word': 1.0.1
+    dev: true
+
+  /@fakerjs/sport@1.0.0:
+    resolution: {integrity: sha512-ShkZ6QSzwQP+NRKwkaL3MUG63NTcjzk5ppen3DoOV0GGwDnOTS2OFN5AvtmqjgJD4bAhekPYkHSGN/Pbgk3dSw==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/string@2.1.1:
+    resolution: {integrity: sha512-6EfjvoRh+b91MjP/ciOmLJmwtEAvjAqATgaZM1khwEO0azRtnmdXHuxTVl1o+Uvq4kP2zjXvuXqkIZdprNyPyg==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /@fakerjs/superhero@1.2.0:
+    resolution: {integrity: sha512-xxKscBJSvSX90Krq2bk2O2V438byQL2hdxzRAGkJ50G/gUUap2NOvOERlunlJ8GadQrlnvEeU4UEk6/Gm3FSwQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/tld@1.1.0:
+    resolution: {integrity: sha512-qsJUB6wm3+KpT+ZKhlRDB7GKh89Nt702ezEnbREtn+nSME6P4aJLygd3GnRtriVYmjokz8RSW/pABS+ft8BeZw==}
+    engines: {node: '>=12'}
+    dependencies:
+      load-json-file: 7.0.1
+    dev: true
+
+  /@fakerjs/url@1.0.0:
+    resolution: {integrity: sha512-Enf9RMHRnRYcFA3dciYVBwHXpJFvMRmyoQVp2vjvyAhkNZ5rl8L5XaGOP3/c8//vry/MuhA+eIqtrs7U4ElLjQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@fakerjs/domain': 1.1.0
+    dev: true
+
+  /@fakerjs/word@1.0.1:
+    resolution: {integrity: sha512-ilyTmSakl4K/osCEE5kUdyAFXxZnmh3WLXlQHKU4ytbkHLHh67f+h25JVrrD+N3Dv7D/7gQlfj/YBH+QuERJlw==}
+    engines: {node: '>=12'}
+    dev: true
 
   /@floating-ui/core@1.6.5:
     resolution: {integrity: sha512-8GrTWmoFhm5BsMZOTHeGD2/0FLKLQQHvO/ZmQga4tKempYRLz8aqJGqXVuQgisnMObq2YZ2SgkwctN1LOOxcqA==}
@@ -14835,6 +15033,11 @@ packages:
       parse-json: 4.0.0
       pify: 3.0.0
       strip-bom: 3.0.0
+    dev: true
+
+  /load-json-file@7.0.1:
+    resolution: {integrity: sha512-Gnxj3ev3mB5TkVBGad0JM6dmLiQL+o0t23JPBZ9sd+yvSLk05mFoqKBw5N8gbbkU4TNXyqCgIrl/VM17OgUIgQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
   /load-yaml-file@0.2.0:
