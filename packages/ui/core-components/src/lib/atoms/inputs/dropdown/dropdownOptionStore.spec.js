@@ -11,6 +11,126 @@ describe('dropdownOptionStore', () => {
 		vi.useRealTimers();
 	});
 
+	describe('initialization', () => {
+		describe('initial state', () => {
+			it('should initialize with an empty array', async () => {
+				const { options } = dropdownOptionStore({ noDefault: true });
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)).toHaveLength(0);
+			});
+			it('should accept an initial state', async () => {
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
+				addOptions({
+					value: 1,
+					label: 'test'
+				});
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)).toHaveLength(1);
+			});
+			it('should allow selections to exist in the initial state', async () => {
+				const { addOptions, selectedOptions } = dropdownOptionStore({ noDefault: true });
+				addOptions({
+					value: 1,
+					label: 'test',
+					selected: true
+				});
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(selectedOptions).length).toBe(1);
+			});
+			it('should perform hygene on the initial state', async () => {
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
+				addOptions(
+					{
+						value: 1,
+						label: 'test'
+					},
+					{
+						value: 0,
+						label: 'test'
+					}
+				);
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)[0].value).toBe(0);
+			});
+		});
+		describe('default selections', () => {
+			it('should select the first option by default for single-selects', async () => {
+				const { addOptions, options } = dropdownOptionStore();
+				addOptions(
+					{
+						value: 1,
+						label: 'test'
+					},
+					{
+						value: 0,
+						label: 'test'
+					}
+				);
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)[0].selected).toBe(true);
+			});
+			it('should not select the first option by default for multiselect', async () => {
+				const { addOptions, options } = dropdownOptionStore({ multiselect: true });
+				addOptions(
+					{
+						value: 1,
+						label: 'test'
+					},
+					{
+						value: 0,
+						label: 'test'
+					}
+				);
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)[0].selected).toBe(false);
+			});
+			it('should select options as they are added if their values are in defaultValues (multiselect)', async () => {
+				const { addOptions, options } = dropdownOptionStore({
+					defaultValues: [1, 2, 3], multiselect: true
+				});
+				addOptions(
+					{
+						value: 1,
+						label: 'test'
+					},
+					{
+						value: 2,
+						label: 'test'
+					},
+					{
+						value: 3,
+						label: 'test'
+					}
+				);
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options).every((v) => v.selected)).toBe(true);
+			});
+			it('should only select the first default value if multiselect is false', async () => {
+				const { addOptions, options } = dropdownOptionStore({
+					defaultValues: [1, 2, 3], multiselect: false
+				});
+				addOptions(
+					{
+						value: 1,
+						label: 'test'
+					},
+					{
+						value: 2,
+						label: 'test'
+					},
+					{
+						value: 3,
+						label: 'test'
+					}
+				);
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)[0].selected).toBe(true);
+				expect(get(options)[1].selected).toBe(false);
+				expect(get(options)[2].selected).toBe(false);
+			});
+		});
+	});
+
 	// TODO this seems counter-intuitive, should we realy enable selecting an option that doesnt exist yet?
 	// Seems like this should be handled via default values
 	it.skip('should select an option after it is added', async () => {
@@ -18,7 +138,7 @@ describe('dropdownOptionStore', () => {
 			addOptions: addOption,
 			toggleSelected: select,
 			selectedOptions
-		} = dropdownOptionStore();
+		} = dropdownOptionStore({ noDefault: true });
 
 		const opts = [
 			{ label: '1', value: 1 },
@@ -34,7 +154,7 @@ describe('dropdownOptionStore', () => {
 
 	describe('hygiene', () => {
 		it('should deduplicate options by value + label', async () => {
-			const { addOptions, options } = dropdownOptionStore();
+			const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 			addOptions({
 				value: 1,
 				label: 'test'
@@ -49,6 +169,46 @@ describe('dropdownOptionStore', () => {
 		});
 
 		describe('Sorting', () => {
+			it('should handle null labels', async () => {
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
+				addOptions({ value: 1, label: null });
+				addOptions({ value: 2, label: null });
+				addOptions({ value: 3, label: null });
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)[0].label).toBe(null);
+				expect(get(options)[1].label).toBe(null);
+				expect(get(options)[2].label).toBe(null);
+			})
+			it('should sort labels numerically if they are both numbers', async () => {
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
+				addOptions({ value: 1, label: 10 });
+				addOptions({ value: 2, label: 2 });
+				addOptions({ value: 3, label: 3 });
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)[0].label).toBe(2);
+				expect(get(options)[1].label).toBe(3);
+				expect(get(options)[2].label).toBe(10);
+			})
+			it('should sort labels lexically if they are not all numbers', async () => {
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
+				const opt0 = { value: 1, label: 1 };
+				const opt1 = { value: 1, label: '10' };
+				const opt2 = { value: 2, label: '2' };
+				const opt3 = { value: 3, label: '3' };
+				const opt4 = { value: 12, label: '1' };
+				const opt5 = { value: 1, label: 2 };
+				const opts = shuffle([opt4, opt1, opt2, opt3, opt0, opt5]);
+				addOptions(...opts);
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)).toStrictEqual([
+					opt0,
+					opt4,
+					opt1,
+					opt5,
+					opt2,
+					opt3,
+				]);
+			})
 			it('should put selected options above all other options', async () => {
 				const opt1 = {
 					value: 1,
@@ -68,7 +228,7 @@ describe('dropdownOptionStore', () => {
 					__auto: true
 				};
 
-				const { addOptions, options } = dropdownOptionStore();
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 
 				addOptions(opt1, opt2, opt3);
 				await vi.advanceTimersByTimeAsync(100);
@@ -86,7 +246,7 @@ describe('dropdownOptionStore', () => {
 					__auto: false
 				};
 
-				const { addOptions, options } = dropdownOptionStore();
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 
 				addOptions(opt1, opt2);
 				await vi.advanceTimersByTimeAsync(100);
@@ -104,7 +264,7 @@ describe('dropdownOptionStore', () => {
 					idx: 1
 				};
 
-				const { addOptions, options } = dropdownOptionStore();
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 
 				addOptions(opt1, opt2);
 				await vi.advanceTimersByTimeAsync(100);
@@ -122,7 +282,7 @@ describe('dropdownOptionStore', () => {
 					idx: 2
 				};
 
-				const { addOptions, options } = dropdownOptionStore();
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 
 				addOptions(opt1, opt2);
 				await vi.advanceTimersByTimeAsync(100);
@@ -140,7 +300,7 @@ describe('dropdownOptionStore', () => {
 					idx: 2
 				};
 
-				const { addOptions, options } = dropdownOptionStore();
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 
 				addOptions(opt1, opt2);
 				await vi.advanceTimersByTimeAsync(100);
@@ -218,7 +378,7 @@ describe('dropdownOptionStore', () => {
 				const expected = allOptions.map((opt) => opt.label);
 				const shuffled = shuffle(allOptions);
 
-				const { addOptions, options } = dropdownOptionStore();
+				const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 				addOptions(...shuffled);
 
 				await vi.advanceTimersByTimeAsync(100);
@@ -231,7 +391,7 @@ describe('dropdownOptionStore', () => {
 
 	describe('option management', () => {
 		it('should add options one at a time', async () => {
-			const { addOptions, options } = dropdownOptionStore();
+			const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 			addOptions({
 				value: 1,
 				label: 'test'
@@ -245,7 +405,7 @@ describe('dropdownOptionStore', () => {
 			expect(get(options)).toHaveLength(2);
 		});
 		it('should add 2 options at once', async () => {
-			const { addOptions, options } = dropdownOptionStore();
+			const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 			addOptions(
 				{
 					value: 1,
@@ -262,7 +422,7 @@ describe('dropdownOptionStore', () => {
 		});
 		it('should add a lot of options at once', async () => {
 			const opts = new Array(100).fill(null).map((_, i) => ({ value: i, label: i.toString() }));
-			const { addOptions, options } = dropdownOptionStore();
+			const { addOptions, options } = dropdownOptionStore({ noDefault: true });
 			addOptions(...opts);
 			expect(get(options)).toHaveLength(0);
 			await vi.advanceTimersByTimeAsync(100);
@@ -270,7 +430,7 @@ describe('dropdownOptionStore', () => {
 		});
 
 		it('should remove an option', async () => {
-			const { addOptions, removeOptions, options } = dropdownOptionStore();
+			const { addOptions, removeOptions, options } = dropdownOptionStore({ noDefault: true });
 
 			addOptions({
 				value: 1,
@@ -287,7 +447,11 @@ describe('dropdownOptionStore', () => {
 		});
 
 		it('should remove options', async () => {
-			const { addOptions: addOption, removeOptions: removeOption, options } = dropdownOptionStore();
+			const {
+				addOptions: addOption,
+				removeOptions: removeOption,
+				options
+			} = dropdownOptionStore({ noDefault: true });
 
 			addOption({
 				value: 1,
@@ -306,7 +470,7 @@ describe('dropdownOptionStore', () => {
 			expect($options).toHaveLength(0);
 		});
 		it('should apply option defaults', async () => {
-			const { addOptions: addOption, options } = dropdownOptionStore();
+			const { addOptions: addOption, options } = dropdownOptionStore({ noDefault: true });
 
 			addOption({
 				value: 1,
@@ -327,7 +491,8 @@ describe('dropdownOptionStore', () => {
 
 	describe('single-select', () => {
 		const baseOptions = {
-			multiselect: false
+			multiselect: false,
+			noDefault: true
 		};
 		it('should allow you to select an option', async () => {
 			const { addOptions, toggleSelected, selectedOptions } = dropdownOptionStore(baseOptions);
@@ -374,7 +539,8 @@ describe('dropdownOptionStore', () => {
 	});
 	describe('multi-select', () => {
 		const baseOptions = {
-			multiselect: true
+			multiselect: true,
+			noDefault: true
 		};
 		it('should allow you to select an option', async () => {
 			const { addOptions, toggleSelected, selectedOptions } = dropdownOptionStore(baseOptions);

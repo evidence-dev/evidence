@@ -41,9 +41,13 @@
 	});
 </script>
 
-<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
-<QueryLoad let:loaded data={depQuery}>
-	<Dropdown name="user" data={loaded} value="value" label="label" multiple selectAllByDefault>
-		<DropdownOption value="All" />
-	</Dropdown>
-</QueryLoad>
+<div class="grid grid-cols-2 gap-8">
+	<div>
+		<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
+	</div>
+	<div>
+		<Dropdown name="user" data={depQuery} value="value" label="label" multiple selectAllByDefault>
+			<DropdownOption value="All" />
+		</Dropdown>
+	</div>
+</div>
