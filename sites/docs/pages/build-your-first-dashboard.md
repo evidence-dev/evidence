@@ -9,16 +9,6 @@ description: A 10 minute guide to building your first dashboard in Evidence.
 	--lightest-gray: #dee2e6;
   }
 
-#objectives {
-	background-color: var(--lightest-gray);
-	padding: 1rem;
-}
-
-#objectives ul li {
-	list-style-image: url(/img/getting-started/check.svg);
-	margin-left: 1rem;
-}
-
 .alert-copy {
    top: 3.5rem;
     margin-bottom: 1rem;
@@ -40,17 +30,6 @@ description: A 10 minute guide to building your first dashboard in Evidence.
 }
 
 </style>
-
-<!-- <div id="objectives" class="alert svelte-17118v7">
-<strong>By the end of this 10 minute guide, you will be able to:</strong>
-<ul>
-   <li>Create and edit a page in Evidence</li>
-   <li>Write a query on demo data</li>
-   <li>Create a table</li>
-   <li>Create a chart</li>
-   <li>Connect a new CSV data source</li>
-</ul>
-</div> -->
 
 <Alert> 
 
@@ -276,7 +255,7 @@ select * from needful_things.orders
 ```
 <DataTable data={my_query_summary}/>
 
-<!-- ![A DataTable in Evidence](/img/getting-started/new_table.png) -->
+
 
 Very nice - you just made your first Evidence component. Let's refine things a bit.
 
@@ -312,7 +291,7 @@ limit 100
 <DataTable data={my_query_summary}/>
 
 
-<!-- ![Edited markdown query](/img/getting-started/edited_markdown_query.png) -->
+
 
 You can further select or rename the columns that appear in your table by specifying them in the `DataTable` component:
 
@@ -331,7 +310,7 @@ This will display:
    <Column id=email />
 </DataTable>
 
-<!-- ![Edited columns](/img/getting-started/edited_columns.png) -->
+
 
 A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components/).
 
@@ -372,8 +351,6 @@ limit 12
 	yAxisTitle="Orders"
 />
 
-<!-- ![Bar chart](/img/getting-started/bar_chart.png) -->
-
 ### 10. Connect a new CSV data source
 
 Go to `localhost:3000/settings`, and select **Add new source**:
@@ -402,7 +379,6 @@ You should now see your new source under the sources folder. Copy your CSV file 
       `-- us_alt_fuel_stations.csv
 ```
 
-<!-- ![Add new source](/img/getting-started/add_new_source4.png) -->
 
 That's it! You've set up a new data source. If you'd like to use it, try adding the following Markdown Query and the [USMap](/components/us-map) component:
 
@@ -426,8 +402,6 @@ group by State order by ev_station_count desc
 ```
 
 <USMap data={ev_map} state=State abbreviations=true value=ev_station_count/>
-
-<!-- ![US EV Map](/img/getting-started/us_map.png) -->
 
 That's it! You now know the basics of setting up data sources, writing queries, and creating components in Evidence.
 
