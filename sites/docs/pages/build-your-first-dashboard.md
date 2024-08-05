@@ -67,14 +67,14 @@ description: A 10 minute guide to building your first dashboard in Evidence.
 
 Please ensure that you have already installed Evidence: [Install Evidence](/install-evidence).
 
-New to web development? Start with the [Basics](#basics).
+If you are new to web development, start with the [Basics](#basics).
 
-Familiar with running a server at `localhost`, and writing pages in Markdown? Skip to [Working with data](#working-with-data).
+If you are familiar with running a server at `localhost`, and writing pages in Markdown, skip to [Working with data](#working-with-data).
 
 ## Basics
 ### 1. Start Evidence
 
-You can start Evidence from VSCode, or from the Command Line. Both will work for this tutorial. If you're unsure, start with VSCode:
+Evidence can be started from VSCode, or from the Command Line. Both will work for this tutorial. If you're unsure, start with VSCode:
 
 <div class="tab-bottom-padding">
 <Tabs>
@@ -100,24 +100,7 @@ Your browser should open automatically. If it doesn't, open your browser and nav
 
 ![Evidence landing page](/img/getting-started/evidence_landing.png)
 
-Congratulations! You've started Evidence. You are now running a local development server.
-
-<!-- <div id="objectives" class="alert svelte-17118v7">
-<strong>What's a development server?</strong>
-<br/>
-Dev server? localhost:3000? Hot reload? Static site generator? If you're new to web development, this tutorial will introduce some unfamiliar terms. Don't worry.
-<br/><br/>
-It's not required for this tutorial, but if you want to find out more about what's going on under the hood, take a look at this FAQ about local development. [TODO add link]
-</div> -->
-
-<Alert>
-
-**What's a development server?**
-
-Dev server? localhost:3000? Hot reload? Static site generator? If you're new to web development, this tutorial will introduce some unfamiliar terms. Don't worry.
-<br/>
-It's not required for this tutorial, but if you want to find out more about what's going on under the hood, take a look at this FAQ about local development. [TODO add link]
-</Alert>
+You have now started Evidence in a **local development server** on your own machine.
 
 
 ### 2. Add a new page
@@ -132,14 +115,14 @@ Add the following to the file and save it (`Ctrl+S` or `Cmd+S`):
 This is a new page in Evidence.
 ```
 
-Head back to Evidence in your browser. You should see your new page in the sidebar. If not, refresh:
+Refresh Evidence in your browser. You should see your new page in the sidebar:
 
 ![New page in Evidence](/img/getting-started/new_page.png)
 
 ### 3. Write Markdown
 Make some more changes to the page. You'll see them reflected "live" in the browser, immediately after saving. There is no need to restart the server. 
 
-This is called **hot reloading**, and it allows you to see your changes in real-time.
+This is called **hot reloading**, and it allows you to see your changes in real-time as you are building your page.
 
 Evidence pages are `.md` files, and are written in a popular language called Markdown. You can learn more about Markdown [here](https://docs.evidence.dev/reference/markdown/).
 
@@ -165,7 +148,7 @@ This is an image inserted using HTML:
 
 ```
 
-And here's how it will look when rendered in the browser:
+Here's how it will look when rendered in the browser:
 
 ![Markdown rendered in Evidence.](/img/getting-started/markdown_html.png)
 
@@ -210,49 +193,34 @@ select category from orders
 
 Save the file. Later, you'll be able to refer to this data source as `needful_things.my_query`.
 
-### 4.5 Run sources
+### 6. Run sources
 
 Once you have configured source queries, you need to **run sources** to actually execute them.
 
-If your local development server is running, sources will run automatically by default when you make changes to your source queries or configuration. This behaviour can be disabled.
+If your dev server is running, sources will run automatically if you make changes to your queries.
 
-To run sources manually from the Command Line:
+If your data source itself has changed, or if you are building pages [for deployment](/deployment/overview/), you may need to run sources manually from the Command Line:
 
 ```bash
 npm run sources
 ```
 
-<!-- <div id="objectives" class="alert svelte-17118v7">
-   
-<strong>Why would you want to manually run sources?</strong>
-
-If you're working with large data sources, running queries can be slow. You may not need the latest data while you are building a page, or designing charts.
-
-
- Not running automatic queries while you are working will allow for faster page loads, and speed up the process of iteration.
-
-
-When the page is complete, you can then run sources to reflect the latest data. To learn more about running sources efficently, take a look at Core Concepts &gt; [Data Sources](/core-concepts/data-sources/).
-</div> -->
-
 <Alert>
 
-**Why would you want to manually run sources?**
-
-If you're working with large data sources, running queries can be slow. You may not need the latest data while you are building a page, or designing charts.
+**What does it mean to run sources?**
 <br/>
 
-Not running automatic queries while you are working will allow for faster page loads, and speed up the process of iteration.
+Data from various sources and formats (i.e. Snowflake, a Postgres database, and a CSV) normally cannot be queried and joined using the same syntax or SQL dialect. Evidence uses configuration specified in each source query to normalize all data sources into one unified **data cache**, which can then be used within your pages.
 <br/>
 
-When the page is complete, you can then run sources to reflect the latest data. To learn more about running sources efficently, take a look at Core Concepts &gt; [Data Sources](/core-concepts/data-sources/).
 
+Learn more at at Core Concepts &gt; [Data Sources](/core-concepts/data-sources/).
 </Alert>
 
-### 6. Set up a Markdown Query
-Before you can use a data source on your page, you need to set up a **Markdown query** for it.
+### 7. Set up a Markdown Query
+In order to make data from the data cache available for use on pages, you must create a **Markdown query** for it.
 
-Clean up everything from your page, and add the following:
+Clean up everything from your page, and add the following to create a Markdown query named `my_query_summary`:
 
 **new-page.md**
 ````markdown
@@ -273,23 +241,20 @@ Not very exciting, but we'll use this data in the next section.
 
 <div class="alert-copy">
 
-**What's the difference between a Source Query and a Markdown Query?**
+**What is the difference between a Source Query and a Markdown Query?**
 
-A **source query** filters and transforms data at the database level. It is written in the dialect of SQL that matches your data source. You can choose the timing of source queries by running them manually. This may be useful when working with data sources that are slow to query (i.e large datasets, or data accessed over a network).
+A **source query** is run directly against your data source, and must be written in the dialect of SQL that matches it. Running sources populates the data cache, which is not directly accesible by components. Sources can be run manually.
 
-
-A **Markdown query** filters and transforms data at page level. It is always written in the DuckDB dialect. Markdown queries run with every page load, so any changes will be instantly reflected in charts and tables.
+A **Markdown query** is written in the DuckDB dialect, and is run against the data cache. Markdown queries run with every page load, and their outputs are directly accessible by components within your pages.
 
 To learn more about Markdown queries, including how to reuse them across pages, take a look at Core Concepts &gt; [Markdown Queries](/core-concepts/queries/).
 </div>
 
-<!-- had trouble making this one work as an Alert with markdown formatting and line breaks -->
-
 ## Adding components
 
-### 6.5. Create a Data Table
+### 8. Create a Data Table
 
-One simple way to display data is with a [Data Table](/components/data-table/):
+One simple way to display data is with a [Data Table](/components/data-table/). Add a `DataTable` component that uses `my_query_summary` as its data source:
 
 **new-page.md**
 ````markdown
@@ -313,9 +278,9 @@ select * from needful_things.orders
 
 <!-- ![A DataTable in Evidence](/img/getting-started/new_table.png) -->
 
-Nice! You just made your first Evidence component. Now, let's refine things a bit.
+Very nice - you just made your first Evidence component. Let's refine things a bit.
 
-The Markdown query isn't doing much for us right now. It's simply displaying all 10,000 records and all columns. We can make it more useful.
+The Markdown query isn't doing much at the moment. It's simply displaying all 10,000 records and all columns. We can make it more useful.
 
 Let's say we want to pull the 100 most recent orders, in order to send these customers a discount code. Change the Markdown query to:
 
@@ -370,9 +335,9 @@ This will display:
 
 A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components/).
 
-### 6. Create a Bar Chart
+### 9. Create a Bar Chart
 
-Next, let's visualize orders over the past year using a [Bar Chart](/components/bar-chart). Add the following to your page:
+Next, let's visualize orders over the past year using a [Bar Chart](/components/bar-chart). Add the following to your page. Notice that we are creating a new Markdown query called `orders_by_month`:
 
 ````markdown
 ### Orders by Month
@@ -409,7 +374,7 @@ limit 12
 
 <!-- ![Bar chart](/img/getting-started/bar_chart.png) -->
 
-### 7. Connect a new CSV data source
+### 10. Connect a new CSV data source
 
 Go to `localhost:3000/settings`, and select **Add new source**:
 
@@ -468,13 +433,9 @@ That's it! You now know the basics of setting up data sources, writing queries, 
 
 ## Next steps
 
-<Alert status="info">
-TODO: suggestions for extending the tutorial, and pathways into further documentation
-</Alert>
+- Explore other components: [All Components](/components/all-components/)
+- Learn how to deploy your Evidence project: [Deployment](/deployment/overview/)
+- Learn more about writing and organizing Markdown queries: [SQL Queries](/core-concepts/queries/)
 
 ### Help and support
-If you run into any issues, [reach out in Slack.](https://slack.evidence.dev)
-
-<Alert status="info">
-TODO / thought: Not sure how much Slack retention history you guys have, but it might be nice to have a dedicated channel for tutorial support, so users can search for their issue in case someone else has already encountered it. Or post new ones (i.e. if this tut goes out of date)
-</Alert>
+If you need help, or have corrections and suggestions for this tutorial, please join the [Evidence Slack community](https://slack.evidence.dev).
