@@ -1,303 +1,272 @@
-// @ts-check
+import { derived, get, readonly, writable } from 'svelte/store';
+import { batchUp } from '@evidence-dev/sdk/utils';
+import merge from 'lodash/merge';
+import { z } from 'zod';
 
-import { writable, derived, get, readonly } from 'svelte/store';
-import { batchUp, sharedPromise } from '@evidence-dev/sdk/utils';
+/** @template T @typedef {import("svelte/store").Readable<T>} Readable<T> */
+/** @template T @typedef {import("svelte/store").Writable<T>} Writable<T> */
 
 /**
- * @typedef {Object} DropdownValue
- * @property {string | undefined | null} label
- * @property {string | undefined | null} value
- * @property {number} idx
- * @property {boolean} [removeOnDeselect]
- * @property {boolean} [ignoreSelected]
- * @property {boolean} selected
- * @property {boolean} [__auto]
+ * @typedef {z.infer<typeof DropdownOptionSchema>} DropdownOption
  */
 
-// Enum
-/** @enum {Symbol} */
-export const DropdownValueFlag = Object.freeze({
-	REMOVE_ON_DESELECT: Symbol('removeOnDeselect'),
-	IGNORE_SELECTED: Symbol('ignoreSelected'),
-	FORCE_SELECT: Symbol('forceSelect'),
-	FORCE_DESELECT: Symbol('forceDeselect')
+const DropdownOptionSchema = z.object({
+	label: z.union([z.string(), z.number()]).optional().nullable(),
+	value: z.union([z.string(), z.number()]).optional().nullable(),
+	idx: z.number().optional(),
+	selected: z.boolean().optional(),
+	__auto: z.boolean().optional(),
+	__removeOnDeselect: z.boolean().optional()
 });
 
-/** @type {typeof batchUp<DropdownValue>} */
-const typedBatchup = batchUp;
-/** @type {typeof batchUp<[DropdownValue, DropdownValueFlag]>} */
-const flagBatchup = batchUp;
+/**
+ *
+ * @param {unknown} v
+ * @returns {v is DropdownOption}
+ */
+const isDropdownOption = (v) => DropdownOptionSchema.safeParse(v).success;
+
+/*
+	When do defaults get applied?
+	  - When we have created the store
+	  - After the waitFor conditions
+*/
 
 /**
- * @param {DropdownValue} a
- * @param {DropdownValue} b
- * @returns {boolean}
+ * @typedef {Object} DropdownOptionStoreOpts
+ * @property {boolean} [multiselect=false]
+ * @property {DropdownOption[]} [initialOptions] This should be pulled from $inputs[name].rawValues
+ * @property {((string | number)[])} defaultValues
+ * @property {boolean} [noDefault=false] Does not select the first value by default
+ * @property {boolean} [selectAllByDefault=false]
  */
-const optEq = (a, b) => {
-	return a.value === b.value && a.label === b.label;
+
+/** @type {DropdownOptionStoreOpts} */
+const defaultOpts = {
+	multiselect: false,
+	initialOptions: [],
+	defaultValues: [],
+	noDefault: false
 };
+
 /**
- * @param {DropdownValue} a
+ * @param {DropdownOptionStoreOpts} opts
+ */
+export const dropdownOptionStore = (opts = {}) => {
+	const config = merge({}, defaultOpts, opts);
+
+	/** @type {Writable<DropdownOption[]>} */
+	const options = writable(hygiene(config.initialOptions));
+
+	const getSelected = ($options) => $options.filter((option) => option.selected);
+	/** @type {Readable<DropdownOption[]>} */
+	const selectedOptions = derived(
+		options,
+		($value) => getSelected($value),
+		getSelected(config.initialOptions)
+	);
+
+	let sortingPaused = false;
+	options.update = (updater) => {
+		// Enforce hygiene
+		const result = updater(get(options));
+		options.set(hygiene(result, sortingPaused));
+	};
+
+	const defaults = new Set(config.defaultValues);
+	if (!config.multiselect && defaults.size > 1) {
+		defaults.clear();
+		defaults.add(config.defaultValues[0]);
+		console.debug('Single-select dropdowns only accept one default value.');
+	}
+	if (config.initialOptions.length > 0) {
+		// We don't apply anything with defaults
+		defaults.clear();
+	}
+	let selectFirst = !config.multiselect && !config.noDefault && config.defaultValues.length === 0;
+	let selectAll = config.multiselect && config.selectAllByDefault && !config.initialOptions?.length;
+
+	return {
+		/**
+		 * @param {...DropdownOption} option
+		 */
+		addOptions: batchUp(
+			/**
+			 * @param  {...(DropdownOption[] | DropdownOption)} newOptions
+			 */
+			(...newOptions) => {
+				const opts = newOptions.flat();
+				options.update(($options) => {
+					opts.forEach((option) => {
+						if (!isDropdownOption(option)) {
+							return;
+						}
+
+						if (selectFirst) {
+							option.selected = true;
+							selectFirst = false;
+						}
+
+						// Apply defaults
+						if (defaults.has(option.value)) {
+							option.selected = true;
+							defaults.delete(option.value);
+						}
+
+						// Apply defaults for option
+						if (!('__auto' in option)) option.__auto = false;
+						if (!('selected' in option)) option.selected = false;
+						if (!('idx' in option)) option.idx = -1; // non-auto options float to the top
+						const exists = $options.find((other) => optEq(other, option));
+						if (selectAll) option.selected = true;
+
+						if (!exists) $options.push(option);
+					});
+					return $options;
+				});
+				selectAll = false;
+			},
+			100
+		),
+		/**
+		 * @param  {...DropdownOption} removeOptions
+		 */
+		removeOptions: batchUp(
+			/** @param {...(DropdownOption[] | DropdownOption)} removeOptions */
+			(...removeOptions) => {
+				const opts = removeOptions.flat();
+				options.update(($options) => {
+					return $options.reduce((a, v) => {
+						if (opts.find((x) => optEq(x, v))) {
+							if (v.selected) v.__removeOnDeselect = true;
+							else return a;
+						}
+						a.push(v);
+						return a;
+					}, /** @type {DropdownOption[]} */ ([]));
+				});
+			},
+			100
+		),
+		/**
+		 * @param  {...DropdownOption} toggleOptions
+		 * @returns {void}
+		 */
+		toggleSelected: batchUp(
+			/** @param {...(DropdownOption[] | DropdownOption)} removeOptions */
+			(...toggleOptions) => {
+				const toToggle = toggleOptions.flat();
+				options.update(($options) => {
+					if (config.multiselect) {
+						// For multi-select, toggle each option
+						return $options.reduce((a, v) => {
+							if (toToggle.find((x) => optEq(x, v))) {
+								v.selected = !v.selected;
+							}
+							a.push(v);
+							return a;
+						}, /** @type {DropdownOption[]} */ ([]));
+					} else {
+						// For single-select, deselect everything and select only the last option
+						$options.forEach((o) => (o.selected = false));
+
+						const toSelect = toToggle.at(-1);
+
+						const output = $options.reduce((a, v) => {
+							if (optEq(v, toSelect)) {
+								v.selected = true;
+							}
+
+							a.push(v);
+							return a;
+						}, /** @type {DropdownOption[]} */ ([]));
+
+						return output;
+					}
+				});
+			},
+			100
+		),
+		selectAll: () => options.update((o) => o.map((o) => ({ ...o, selected: true }))),
+		deselectAll: () => options.update((o) => o.map((o) => ({ ...o, selected: false }))),
+		options: readonly(options),
+		selectedOptions,
+		pauseSorting: () => {
+			sortingPaused = true;
+		},
+		resumeSorting: () => {
+			sortingPaused = false;
+			options.set(hygiene(get(options)));
+		},
+		forceSort: () => {
+			options.set(hygiene(get(options)));
+		}
+	};
+};
+
+const hygiene = ($options, skipSort = false) => {
+	// Process __removeOnDeselect
+	$options = $options.filter((o) => !(o.__removeOnDeselect && !o.selected));
+
+	// Uniqueify
+	const knownValues = new Set();
+	$options = $options.reduce((a, c) => {
+		if (!knownValues.has(optStr(c))) {
+			knownValues.add(optStr(c));
+			a.push(c);
+		}
+		return a;
+	}, /** @type {DropdownOption[]} */ ([]));
+	if (skipSort) {
+		return $options;
+	}
+
+	// Sort
+	$options = $options.sort((a, b) => {
+		// Selected options go to the top
+		if (a.selected && !b.selected) return -1;
+		if (b.selected && !a.selected) return 1;
+
+		// Auto options go to the bottom
+		if (a.__auto && !b.__auto) return 1;
+		if (b.__auto && !a.__auto) return -1;
+
+		// Sort by index
+		if (a.idx !== b.idx) {
+			return a.idx - b.idx;
+		}
+
+		// Sort by label
+		// Nulls go to the bottom
+		if (a.label === null && b.label !== null) return 1;
+		if (b.label === null && a.label !== null) return -1;
+		if (a.label === null && b.label === null) return 0;
+		// Compare numbers
+		if (typeof a.label === 'number' && typeof b.label === 'number' && a.label !== b.label) {
+			return a.label - b.label;
+		}
+		// Compare strings
+		const labelDiff = a.label.toString().localeCompare(b.label.toString());
+		if (labelDiff !== 0) return labelDiff;
+
+		// If labels are the same, sort by value
+		return a.value.toString().localeCompare(b.value.toString());
+	});
+
+	return $options;
+};
+
+/**
+ * @param {DropdownOption} a
  * @returns {string}
  */
 const optStr = (a) => String(a.value) + String(a.label);
 
 /**
- * @param {boolean} [multi=false]
- * @param {number} [delay=100]
+ * @param {DropdownOption} a
+ * @param {DropdownOption} b
+ * @returns {boolean}
  */
-export const dropdownOptionStore = (multi = false, delay = 100) => {
-	/** @type {import("svelte/store").Writable<DropdownValue[]>} */
-	const options = writable([]);
-
-	/**
-	 * @param {DropdownValue[]} $options
-	 */
-	const hygiene = ($options) => {
-		const knownValues = new Set();
-		// uniqueify
-		$options = $options.reduce((a, c) => {
-			if (!knownValues.has(optStr(c))) {
-				knownValues.add(optStr(c));
-				a.push(c);
-			}
-			return a;
-		}, /** @type {DropdownValue[]} */ ([]));
-
-		// sort
-		$options = $options.sort((a, b) => {
-			// automatic values should fall below all query options
-			if (a.__auto && !b.__auto) return 1;
-			if (b.__auto && !a.__auto) return -1;
-
-			if (a.removeOnDeselect && a.selected) {
-				return -1;
-			}
-			if (b.removeOnDeselect && b.selected) {
-				return 1;
-			}
-
-			if (a.idx !== b.idx) {
-				return a.idx - b.idx;
-			}
-
-			if (
-				typeof a.label !== 'undefined' &&
-				a.label !== null &&
-				typeof b.label !== 'undefined' &&
-				b.label !== null &&
-				a.label !== b.label
-			)
-				return a.label.toString().localeCompare(b.label.toString());
-
-			if (typeof a.value === 'number' && typeof b.value === 'number') {
-				return a.value - b.value;
-			}
-
-			if (
-				a.value !== null &&
-				typeof a.value !== 'undefined' &&
-				b.value !== null &&
-				typeof b.value !== 'undefined'
-			) {
-				return a.value.toString().localeCompare(b.value.toString());
-			}
-
-			return 0;
-		});
-
-		return $options;
-	};
-
-	/** @type {import("svelte/store").Readable<DropdownValue[]>} */
-	const selectedOptions = derived(options, (x) => x.filter((y) => y.selected));
-
-	/** @type {import("svelte/store").Unsubscriber[]} */
-	const cleanup = [];
-
-	/*
-		We use these 2 shared promises to avoid concurrency issues
-		If we have any pending option changes, all select operations
-		will wait for them to finish out before operating.
-		This helps prevent issues when trying to select defaults that
-		don't yet exist because addOption hasn't processed them into
-		the store yet.
-	*/
-	let addOptionSharedPromise = sharedPromise();
-	addOptionSharedPromise.resolve(); // initially these are resolved
-
-	let removeOptionSharedPromise = sharedPromise();
-	removeOptionSharedPromise.resolve(); // initially these are resolved
-
-	let flagOptionSharedPromise = sharedPromise();
-	flagOptionSharedPromise.resolve(); // initially these are resolved
-
-	const addOption = typedBatchup(async (addedOptions) => {
-		await flagOptionSharedPromise.promise;
-		try {
-			// Apply defaults
-			addedOptions = addedOptions.map((opt) => ({
-				...opt,
-				idx: opt.idx ?? -1,
-				removeOnDeselect: opt.removeOnDeselect ?? false
-			}));
-			if (!addedOptions.length) return;
-			options.update(($options) => {
-				$options.push(...addedOptions);
-				return hygiene($options);
-			});
-		} finally {
-			addOptionSharedPromise.resolve();
-		}
-	}, delay);
-
-	const removeOption = typedBatchup(async (removedOptions) => {
-		await flagOptionSharedPromise.promise;
-		try {
-			if (!removedOptions.length) return;
-			options.update(($options) => {
-				$options = $options.filter((option) => {
-					const optionIsTargetted = removedOptions.some((removedOption) =>
-						optEq(option, removedOption)
-					);
-					if (!optionIsTargetted) return true;
-					if (option.selected && !option.ignoreSelected) return true;
-					return false;
-				});
-				return hygiene($options);
-			});
-		} finally {
-			removeOptionSharedPromise.resolve();
-		}
-	}, delay);
-
-	/**
-	 * @param {[DropdownValue, DropdownValueFlag][]} flaggedOptions
-	 */
-	const flagOption = flagBatchup((flaggedOptions) => {
-		try {
-			if (!flaggedOptions.length) return;
-			options.update(($options) => {
-				$options = $options.map(($option) => {
-					const flagApplications = flaggedOptions.filter(([flagOption]) =>
-						optEq($option, flagOption)
-					);
-					// More than one flag application may appear in a single update
-					// We need to ensure that the full operation list is applied
-					for (const application of flagApplications) {
-						switch (application[1]) {
-							case DropdownValueFlag.REMOVE_ON_DESELECT:
-								$option.removeOnDeselect = !$option.removeOnDeselect;
-								break;
-							case DropdownValueFlag.IGNORE_SELECTED:
-								$option.ignoreSelected = !$option.ignoreSelected;
-								break;
-							case DropdownValueFlag.FORCE_SELECT:
-								$option.selected = true;
-								break;
-							case DropdownValueFlag.FORCE_DESELECT:
-								$option.selected = true;
-								break;
-						}
-					}
-					return $option;
-				});
-				return hygiene($options);
-			});
-		} finally {
-			flagOptionSharedPromise.resolve();
-		}
-	}, delay);
-
-	/**
-	 * @param {DropdownValue} opt
-	 */
-	const select = (opt) => {
-		if (!opt) return;
-		options.update(($options) => {
-			const target = $options.find((x) => x.value === opt.value && x.label === opt.label);
-			if (multi) {
-				if (target) target.selected = !target.selected;
-			} else {
-				$options = $options.map(($opt) => {
-					if (optEq($opt, opt)) $opt.selected = true;
-					else $opt.selected = false;
-					return $opt;
-				});
-			}
-			return hygiene($options);
-		});
-	};
-
-	/**
-	 * @param {DropdownValue[]} selectionToggles
-	 * @param {DropdownValue[]} allOptions
-	 */
-	const cleanRemoveOnSelects = (selectionToggles, allOptions) => {
-		for (const option of allOptions) {
-			if (option.selected && option.removeOnDeselect) {
-				const matchingToggles = selectionToggles.filter((x) => optEq(x, option));
-				if (matchingToggles.length % 2 === 1) {
-					// odd number means the state will be opposite
-					removeOption(option);
-				}
-			}
-		}
-	};
-
-	return {
-		options: readonly(options),
-		destroy() {
-			cleanup.forEach((c) => c());
-		},
-		selectedOptions,
-		/** @param {DropdownValue} option */
-		addOption: (option) => {
-			if (addOptionSharedPromise.state !== 'loading') {
-				addOptionSharedPromise = sharedPromise();
-				addOptionSharedPromise.start();
-			}
-			addOption(option);
-		},
-		/** @param {DropdownValue} option */
-		removeOption: (option) => {
-			if (removeOptionSharedPromise.state !== 'loading') {
-				removeOptionSharedPromise = sharedPromise();
-				removeOptionSharedPromise.start();
-			}
-			removeOption(option);
-		},
-		/**
-		 * @param {[DropdownValue, DropdownValueFlag]} args
-		 */
-		flagOption: (args) => {
-			if (flagOptionSharedPromise.state !== 'loading') {
-				flagOptionSharedPromise.start();
-			}
-			flagOption(args);
-		},
-		select: typedBatchup(async (selectOptions) => {
-			await Promise.all([
-				addOptionSharedPromise.promise,
-				removeOptionSharedPromise.promise,
-				flagOptionSharedPromise.promise
-			]);
-			cleanRemoveOnSelects(selectOptions, get(options));
-			selectOptions.map((o) => select(o));
-		}, delay),
-		deselectAll: (autoOnly = false) => {
-			cleanRemoveOnSelects(get(selectedOptions), get(options));
-			for (const opt of get(selectedOptions)) {
-				if (autoOnly && !opt.__auto) continue;
-				select(opt);
-			}
-		},
-		get flushed() {
-			return Promise.all([
-				addOptionSharedPromise.promise,
-				removeOptionSharedPromise.promise,
-				flagOptionSharedPromise.promise
-			]);
-		}
-	};
+const optEq = (a, b) => {
+	return a.value === b.value && a.label === b.label;
 };
