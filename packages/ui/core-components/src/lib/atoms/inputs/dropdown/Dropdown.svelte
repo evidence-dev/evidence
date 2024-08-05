@@ -64,7 +64,7 @@
 	 */
 	export let selectAllByDefault = false;
 
-	const state = dropdownOptionStore(multiple);
+	const state = dropdownOptionStore(multiple, 100, $inputs[name]);
 	const { selectedOptions, options, addOption, removeOption, flagOption, select, deselectAll } =
 		state;
 
@@ -235,6 +235,8 @@
 			if (query) await query.fetch();
 			await state.flushed;
 
+			console.log({$selectedOptions, $options})
+
 			if ($selectedOptions.length) {
 				const presentValues = $selectedOptions.filter((x) =>
 					$options.some((o) => o.value === x.value && o.label === x.label)
@@ -251,6 +253,7 @@
 				}
 				if (presentValues.length) return; // no need to take action
 			}
+
 
 			if (selectAllByDefault && multiple) {
 				selectAllOptions();

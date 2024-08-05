@@ -14,6 +14,7 @@
 	import DependentDropdowns from './DependentDropdowns.story.svelte';
 
 	import DropdownCharts from './DropdownCharts.story.svelte';
+	import { Tabs, Tab } from '../../../../unsorted/ui/Tabs';
 
 	// Play Functions
 	const openDropdown = async ({ canvasElement }) => {
@@ -263,4 +264,26 @@
 		<DropdownOption value="All" />
 		<DropdownOption value="Top 100" />
 	</Dropdown>
+</Story>
+
+<Story name="Dropdown with rendering / unrendering">
+	<Tabs>
+		<Tab label="Dropdown No Query">
+			<Dropdown multiple name="test" selectAllByDefault defatulValue={["Bottom 101"]}>
+				<DropdownOption value="Top {100}" />
+				<DropdownOption value="Top {101}" />
+				<DropdownOption value="Top {1001}" />
+				<DropdownOption value="Top 102" />
+				<DropdownOption value="Top {111}" />
+				<DropdownOption value="Top {199}" />
+				<DropdownOption value="Top 10000" />
+				<DropdownOption value="Bottom {100}" />
+				<DropdownOption value="Bottom 101" />
+			</Dropdown>
+		</Tab>
+		<Tab label="Dropdown w/ default + query">
+			{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+			<Dropdown name="test1" {data} value="value" label="label" multiple selectAllByDefault />
+		</Tab>
+	</Tabs>
 </Story>

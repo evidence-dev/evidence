@@ -45,8 +45,14 @@ const optStr = (a) => String(a.value) + String(a.label);
 /**
  * @param {boolean} [multi=false]
  * @param {number} [delay=100]
+ * @param {DropdownValue[]} initialState
  */
-export const dropdownOptionStore = (multi = false, delay = 100) => {
+export const dropdownOptionStore = (multi = false, delay = 100, initialState = []) => {
+	if (Array.isArray(initialState)) {
+		console.log({
+			initialState: JSON.parse(JSON.stringify([...initialState]))
+		})
+	}
 	/** @type {import("svelte/store").Writable<DropdownValue[]>} */
 	const options = writable([]);
 
@@ -110,7 +116,15 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	};
 
 	/** @type {import("svelte/store").Readable<DropdownValue[]>} */
-	const selectedOptions = derived(options, (x) => x.filter((y) => y.selected));
+	console.log('creating selectedOptions', {
+		options: JSON.parse(JSON.stringify(get(options))),
+		selected: JSON.parse(JSON.stringify(get(options).filter(o => o.selected)))
+	})
+	const selectedOptions = derived(options, ($options) => {
+		const selected = $options.filter(option => option.selected)
+		console.log('deriving selectedOptions', JSON.parse(JSON.stringify({ $options, selected })))
+		return selected
+	});
 
 	/** @type {import("svelte/store").Unsubscriber[]} */
 	const cleanup = [];
@@ -210,20 +224,23 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	}, delay);
 
 	/**
-	 * @param {DropdownValue} opt
+	 * @param {DropdownValue[]} opts
 	 */
-	const select = (opt) => {
-		if (!opt) return;
+	const select = (opts) => {
 		options.update(($options) => {
-			const target = $options.find((x) => x.value === opt.value && x.label === opt.label);
-			if (multi) {
-				if (target) target.selected = !target.selected;
-			} else {
-				$options = $options.map(($opt) => {
-					if (optEq($opt, opt)) $opt.selected = true;
-					else $opt.selected = false;
-					return $opt;
-				});
+			console.log({$options})
+			for (const opt of opts) {
+				if (!opt) continue;
+				const target = $options.find((x) => x.value === opt.value && x.label === opt.label);
+				if (multi) {
+					if (target) target.selected = !target.selected;
+				} else {
+					$options = $options.map(($opt) => {
+						if (optEq($opt, opt)) $opt.selected = true;
+						else $opt.selected = false;
+						return $opt;
+					});
+				}
 			}
 			return hygiene($options);
 		});
@@ -283,14 +300,16 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				flagOptionSharedPromise.promise
 			]);
 			cleanRemoveOnSelects(selectOptions, get(options));
-			selectOptions.map((o) => select(o));
+			select(selectOptions);
 		}, delay),
 		deselectAll: (autoOnly = false) => {
 			cleanRemoveOnSelects(get(selectedOptions), get(options));
-			for (const opt of get(selectedOptions)) {
-				if (autoOnly && !opt.__auto) continue;
-				select(opt);
-			}
+			const toDeselect = get(selectedOptions).filter((opt) => {
+				// If autoOnly is true, only deselect options that are auto
+				if (autoOnly && !opt.__auto) return false;
+				return true;
+			})
+			select(toDeselect);
 		},
 		get flushed() {
 			return Promise.all([
