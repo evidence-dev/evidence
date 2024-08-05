@@ -65,7 +65,7 @@
 	export let selectAllByDefault = false;
 
 	const state = dropdownOptionStore(multiple, 100, $inputs[name]);
-	const { selectedOptions, options, addOption, removeOption, flagOption, select, deselectAll } =
+	const { selectedOptions, options, addOptions: addOption, removeOptions: removeOption, flagOption, toggleSelected: select, deselectAll } =
 		state;
 
 	setContext(DropdownContext, {
