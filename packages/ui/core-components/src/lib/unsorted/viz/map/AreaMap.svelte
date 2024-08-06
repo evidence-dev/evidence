@@ -6,6 +6,15 @@
 	import Areas from './components/Areas.svelte';
 	import BaseMap from './BaseMap.svelte';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import EmptyChart from '../core/EmptyChart.svelte';
+	import { QueryLoad } from '../../../atoms/query-load';
+	import { Query } from '@evidence-dev/sdk/usql';
+
+	/** @type {'pass' | 'warn' | 'error' | undefined} */
+	export let emptySet = undefined;
+
+	/** @type {string | undefined} */
+	export let emptyMessage = undefined;
 
 	let error;
 
@@ -51,12 +60,18 @@
 
 	/** @type {string|undefined} */
 	export let title = undefined;
+
+	const chartType = 'Area Map';
+
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
+	$: isInitial = data?.hash === initialHash;
 </script>
 
-{#if error}
-	<ErrorChart {error} chartType="Area Map" />
-{:else}
+<QueryLoad {data} let:loaded>
+	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
+	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Areas {data} {geoJsonUrl} {geoId} {areaCol} {...$$restProps} />
+		<Areas data={loaded} {geoJsonUrl} {geoId} {areaCol} {...$$restProps} />
 	</BaseMap>
-{/if}
+</QueryLoad>
