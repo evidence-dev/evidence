@@ -49,7 +49,7 @@ pnpm create playwright@latest --lang=js --no-browsers --no-examples --quiet
 
 _Since this installs a package, our `postinstall` script will run to build everything. The Playwright CLI doesn't accept the `--ignore-scripts` flag, so if you want to skip the building, just temporarily remove the `postinstall` script from the root `package.json`._
 
-8. Configure Playwright
+7. Configure Playwright
 
 In `playwright.config.js`, replace the default config with our shared config in `e2e/playwright-config.js`
 
@@ -62,7 +62,9 @@ import { config } from '../playwright-config';
 export default defineConfig(config);
 ```
 
-8. Create `tests/tests.js` with the following contents
+8. Create `tests/tests.spec.js` with the following contents
+
+_If necessary, create multiple test files for your project_
 
 ```js
 // @ts-check
@@ -77,13 +79,13 @@ test('has title', async ({ page }) => {
 });
 ```
 
-11. Install `cross-env`
+9. Install `cross-env`
 
 ```sh
 pnpm install -D cross-env --ignore-scripts
 ```
 
-12. Replace the `test` script in `package.json` with the following
+10. Replace the `test` script in `package.json` with the following
 
 ```diff
 {
@@ -95,7 +97,7 @@ pnpm install -D cross-env --ignore-scripts
 }
 ```
 
-13. Run the tests!
+11. Run the tests!
 
 ```sh
 pnpm test:dev
@@ -104,7 +106,7 @@ pnpm build
 pnpm test:preview
 ```
 
-14. Commit and push your changes
+12. Commit and push your changes
 
 ```sh
 # Make sure the .evidence/meta and .evidence/template directories aren't committed, they should be in the .gitignore
