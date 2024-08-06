@@ -19,8 +19,6 @@
 
 	let _data;
 	onDestroy(unsub);
-
-	$: console.log({ dataLoaded: _data?.dataLoaded, error: _data?.error });
 </script>
 
 {#if !data}
