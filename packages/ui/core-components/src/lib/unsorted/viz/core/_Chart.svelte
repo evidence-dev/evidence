@@ -155,6 +155,10 @@
 	export let chartAreaHeight;
 
 	export let renderer = undefined; // can be canvas (default) or SVG
+	export let downloadableData = true;
+	$: downloadableData = downloadableData === 'true' || downloadableData === true;
+	export let downloadableImage = true;
+	$: downloadableImage = downloadableImage === 'true' || downloadableImage === true;
 
 	export let connectGroup = undefined; // string represent name of group for connected charts. Charts with same connectGroup will have connected interactions
 
@@ -1062,6 +1066,8 @@
 			{seriesOptions}
 			{printEchartsConfig}
 			{renderer}
+			{downloadableData}
+			{downloadableImage}
 			{connectGroup}
 			{seriesColors}
 		/>

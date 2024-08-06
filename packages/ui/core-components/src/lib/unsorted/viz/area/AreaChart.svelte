@@ -73,6 +73,8 @@
 	export let emptyMessage = undefined;
 
 	export let renderer = undefined;
+	export let downloadableData = undefined;
+	export let downloadableImage = undefined;
 	export let seriesColors = undefined;
 
 	export let connectGroup = undefined;
@@ -116,6 +118,8 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{downloadableData}
+	{downloadableImage}
 	{connectGroup}
 	{seriesColors}
 >
