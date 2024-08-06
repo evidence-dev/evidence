@@ -1,5 +1,4 @@
 import path from 'path';
-import { findDirectory } from '../../lib/pkg-types.helpers.js';
 import fs from 'fs/promises';
 import chalk from 'chalk';
 import { loadSourceConfig } from './loadSourceConfig.js';
