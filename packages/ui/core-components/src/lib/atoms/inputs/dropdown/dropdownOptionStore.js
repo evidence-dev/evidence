@@ -12,7 +12,7 @@ import { z } from 'zod';
 
 const DropdownOptionSchema = z.object({
 	label: z.union([z.string(), z.number()]).optional().nullable(),
-	value: z.union([z.string(), z.number()]).optional().nullable(),
+	value: z.union([z.string(), z.number()]),
 	idx: z.number().optional(),
 	selected: z.boolean().optional(),
 	__auto: z.boolean().optional(),

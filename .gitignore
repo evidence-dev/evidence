@@ -36,3 +36,4 @@ packages/extension/.vscode-test
 packages/extension/*.vsix
 packages/extension/.DS_Store
 packages/ui/core-components/coverage
+sites/docs/.evidence/meta/query-cache/hashes.json

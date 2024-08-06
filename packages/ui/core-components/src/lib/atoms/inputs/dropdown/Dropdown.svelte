@@ -164,16 +164,17 @@
 	$: search, updateQuery();
 
 	$: open ? pauseSorting() : resumeSorting();
+	const toKey = (queryOpt) => queryOpt[value]?.toString() + queryOpt[label]?.toString();
 </script>
 
 <slot />
 
 <QueryLoad data={finalQuery} let:loaded>
 	<div slot="skeleton"></div>
-	{#each loaded ?? [] as queryOpt (queryOpt.value?.toString() + queryOpt.label?.toString())}
+	{#each loaded ?? [] as queryOpt (isNaN(toKey(queryOpt)) ? Math.random().toString() : toKey(queryOpt))}
 		<DropdownOption
-			value={queryOpt.value}
-			valueLabel={queryOpt.label}
+			value={queryOpt[value]}
+			valueLabel={queryOpt[label]}
 			idx={getIdx(queryOpt)}
 			__auto
 		/>
