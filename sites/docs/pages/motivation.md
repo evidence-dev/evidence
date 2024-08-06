@@ -8,7 +8,7 @@ og:
 
 We think it's still too difficult to build high quality data products. Businesses are stuck with BI software that delivers slow and clunky outputs, and analysts are stuck manually configuring reports.
 
-Our mission is to give you the tools to deliver production-quality data products that look and feel more like the [New York Times' data journalism](https://www.nytimes.com/interactive/2023/us/covid-cases.html) than a drag-and-drop dashboard.
+Our mission is to give you the tools to deliver production-quality data products that look and feel more like the New York Times' data journalism than a drag-and-drop dashboard.
 
 Evidence combines the best of modern web frameworks with the best parts of BI:
 
