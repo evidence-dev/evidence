@@ -1,10 +1,6 @@
 name: E2E Tests
 
 on:
-  # TODO remove once we know this action is working correctly
-  push:
-    branches: [test/2255-hmr-tests]
-
   pull_request:
     branches: [main, next]
 
@@ -30,6 +26,17 @@ jobs:
         project: ${{ fromJson(needs.find-e2e-test-projects.outputs.e2e-test-projects) }}
         os: [ubuntu-latest, macOS-latest, windows-latest]
         node-version: [18, 20]
+
+        # When not on main, exclude non-latest node version and macOS/Windows
+        isMain:
+          - ${{ github.base_ref == 'main' }}
+        exclude:
+          - isMain: false
+            node-version: 18
+          - isMain: false
+            os: macOS-latest
+          - isMain: false
+            os: windows-latest
 
     name: e2e/${{ matrix.project }}/${{ matrix.os }}/node-${{ matrix.node-version}}
     runs-on: ${{ matrix.os }}
