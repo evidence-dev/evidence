@@ -60,7 +60,7 @@
 
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
 		<Points data={loaded} {lat} {long} {...$$restProps} />
