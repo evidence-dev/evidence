@@ -115,6 +115,7 @@
 
 	$: baseConfig = {
 		type: 'line',
+		triggerLineEvent: true,
 		stack: stackName,
 		areaStyle: {
 			color: fillColor,
