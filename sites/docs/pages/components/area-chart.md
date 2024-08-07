@@ -145,7 +145,7 @@ ORDER BY month, category
 limit 250
 ```
 
-Double Click on datapoints to travel to Link
+Double Click on datapoints or areas to travel to Link
 
 <AreaChart 
     data={category}

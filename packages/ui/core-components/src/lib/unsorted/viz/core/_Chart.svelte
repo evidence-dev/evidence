@@ -1095,27 +1095,31 @@
 			on:dblclick={(params) => {
 				let pointInPixel = [params.detail.event.offsetX, params.detail.event.offsetY];
 				let pointInGrid = params.detail.convertFromPixel('grid', pointInPixel);
+				let pointSeriesName = params.detail.seriesName;
 				let closestDateObject = null;
 				let minDifference = Infinity;
 				let targetX = pointInGrid[0];
 
 				if (link) {
 					// check if line point has been clicked
-					if (params.detail.dimensionNames) {
-						window.location = params.detail.data[3] ?? params.detail.data[2];
+					if (params.detail.data) {
+						return (window.location = params.detail.data[3] ?? params.detail.data[2]);
 					}
 					// if area has been click, handle pointInGrid search
 					if (xFmt === 'date') {
 						targetX = new Date(pointInGrid[0]);
+					} else if (xFmt) {
+						targetX = formatAxisValue(pointInGrid[0], xFormat, xUnitSummary);
 					}
+
 					for (const obj of data) {
 						const diff = Math.abs(obj[x] - targetX);
-						if (diff < minDifference) {
+						if (diff < minDifference && obj[series] === pointSeriesName) {
 							minDifference = diff;
 							closestDateObject = obj;
 						}
 					}
-					window.location = closestDateObject[link];
+					return (window.location = closestDateObject[link]);
 				}
 			}}
 			on:click={(/** @type {CustomEvent<import("echarts").ElementEvent>} */ event) => {
