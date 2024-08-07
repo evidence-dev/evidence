@@ -22,7 +22,7 @@
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;
 	/** @type {string} */
-	export let geoJsonUrl = 'https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'; // URL to the GeoJSON file
+	export let geoJsonUrl = '/geo-json/ca_california_zip_codes_geo_1.min.json'; // URL to the GeoJSON file
 	/** @type {string|undefined} */
 	export let areaCol = undefined;
 	/** @type {string|undefined} */

@@ -86,7 +86,7 @@
 		/>
 		<Areas
 			data={la_zip_sales}
-			geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json"
+			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
 			areaCol="zip_code"
 			name="area"
 			value="sales"
@@ -100,7 +100,7 @@
 
 	<AreaMap
 		data={la_zip_sales}
-		geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json"
+		geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
 		value="sales"
 		geoId="ZCTA5CE10"
 		areaCol="zip_code"
