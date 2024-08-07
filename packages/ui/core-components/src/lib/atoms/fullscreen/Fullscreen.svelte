@@ -11,7 +11,9 @@
 	/** @type {import("svelte/action").Action<HTMLDialogElement, boolean>}*/
 	function popup(node, isOpen) {
 		if (isOpen) {
+			const scrollY = window.scrollY;
 			node.showModal();
+			window.scrollTo(0, scrollY);
 		} else {
 			node.close();
 		}
@@ -28,6 +30,14 @@
 			open = false;
 		}
 
+		/** @type {HTMLDialogElement["onkeydown"]} */
+		function handleKeyDown(event) {
+			if (event.key === 'Escape') {
+				open = false;
+			}
+		}
+
+		node.addEventListener('keydown', handleKeyDown);
 		node.addEventListener('click', handleDialogClick);
 		const closeButton = node.firstElementChild;
 		closeButton.addEventListener('click', handleCloseClick);
@@ -35,12 +45,17 @@
 		return {
 			update(isOpen) {
 				if (isOpen) {
+					const scrollY = window.scrollY;
 					node.showModal();
+					window.scrollTo(0, scrollY);
+					document.body.style.overflow = 'hidden';
 				} else {
 					node.close();
+					document.body.style.overflow = '';
 				}
 			},
 			destroy() {
+				node.removeEventListener('keydown', handleKeyDown);
 				node.removeEventListener('click', handleDialogClick);
 				closeButton.removeEventListener('click', handleCloseClick);
 			}
@@ -48,7 +63,7 @@
 	}
 </script>
 
-<dialog class="w-[90vw] rounded-lg relative" use:popup={open}>
+<dialog class="w-[90vw] rounded-lg fixed" use:popup={open}>
 	<button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none"
 		><Icon class="w-6 h-6" src={X} /></button
 	>
