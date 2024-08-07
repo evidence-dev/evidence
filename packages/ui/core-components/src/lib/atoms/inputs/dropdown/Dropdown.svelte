@@ -154,7 +154,7 @@
 	let search = '';
 
 	let searchIdx = 0;
-	
+
 	$: finalQuery = Query.isQuery(data) ? data : $query;
 	const updateQuery = debounce(async () => {
 		searchIdx++;
