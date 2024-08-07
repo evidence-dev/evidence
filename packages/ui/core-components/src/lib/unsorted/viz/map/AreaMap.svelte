@@ -9,6 +9,7 @@
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -70,6 +71,11 @@
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
+
+	<!-- Override default skeleton to match height of map -->
+	<div slot="skeleton" class="w-full" style="height: {height}px">
+		<Skeleton />
+	</div>
 
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
 		<Areas data={loaded} {geoJsonUrl} {geoId} {areaCol} {...$$restProps} />
