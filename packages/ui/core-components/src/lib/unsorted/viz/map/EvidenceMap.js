@@ -2,7 +2,7 @@ import { sharedPromise } from '@evidence-dev/sdk/utils';
 import debounce from 'lodash.debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
-import { get, writable, derived } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -375,6 +375,9 @@ export class EvidenceMap {
 		return newUrl;
 	}
 
+	/** @type {Map<string, Promise<any>>} */
+	static #geoJsonCache = new Map();
+
 	/** @type {Writable<Map<string, any | null>>} */
 	#geoJsonData = writable(new Map());
 
@@ -388,12 +391,15 @@ export class EvidenceMap {
 	 * @returns {Promise<any>} GeoJSON data
 	 */
 	async loadGeoJson(url) {
-		const cached = get(this.#geoJsonData).get(url);
+		const cached = EvidenceMap.#geoJsonCache.get(url);
 		if (cached) return cached;
+
+		const promise = fetch(url).then((r) => r.json());
+		EvidenceMap.#geoJsonCache.set(url, promise);
 
 		// Set null to indicate we are loading data for this URL
 		this.#geoJsonData.update((map) => map.set(url, null));
-		const data = await fetch(url).then((r) => r.json());
+		const data = await promise;
 		this.#geoJsonData.update((map) => map.set(url, data));
 
 		return data;
