@@ -80,14 +80,14 @@ export class EvidenceMap {
 		if (!Leaflet) {
 			this.#sharedPromise.start();
 			Leaflet = await import('leaflet')
-			.then((m) => {
-				const Leaflet = m.default;
-				initSmoothZoom(Leaflet);  // Initialize smooth zoom after importing Leaflet
-				return Leaflet;
-			})
-			.catch((e) => {
-				this.#sharedPromise.reject(e);
-			});
+				.then((m) => {
+					const Leaflet = m.default;
+					initSmoothZoom(Leaflet); // Initialize smooth zoom after importing Leaflet
+					return Leaflet;
+				})
+				.catch((e) => {
+					this.#sharedPromise.reject(e);
+				});
 		}
 
 		this.#initZoom = startingZoom;
@@ -99,15 +99,12 @@ export class EvidenceMap {
 		}
 
 		this.#mapEl = mapEl;
-		this.#map = Leaflet.map(this.#mapEl, { 
+		this.#map = Leaflet.map(this.#mapEl, {
 			zoomControl: false,
 			scrollWheelZoom: false, // disable original zoom function
-			smoothWheelZoom: true,  // enable smooth zoom 
-			smoothSensitivity: 5,   // zoom speed. default is 1 
-		}).setView(
-			startingCoords,
-			startingZoom ?? 5
-		);
+			smoothWheelZoom: true, // enable smooth zoom
+			smoothSensitivity: 5 // zoom speed. default is 1
+		}).setView(startingCoords, startingZoom ?? 5);
 		if (userDefinedView) {
 			this.#initialViewSet = true; // Mark initial view as set
 		}
