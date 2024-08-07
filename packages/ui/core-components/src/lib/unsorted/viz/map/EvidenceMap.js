@@ -2,6 +2,10 @@ import { sharedPromise } from '@evidence-dev/sdk/utils';
 import { debounce } from 'perfect-debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+import { writable, derived } from 'svelte/store';
+
+/** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
+/** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
 
 /** @type {import('leaflet') | undefined} */
 let Leaflet;
@@ -96,7 +100,7 @@ export class EvidenceMap {
 		this.#mapEl = mapEl;
 		this.#map = Leaflet.map(this.#mapEl, { zoomControl: false, zoomSnap: 0.25 }).setView(
 			startingCoords,
-			startingZoom ?? 1
+			startingZoom ?? 5
 		);
 		if (userDefinedView) {
 			this.#initialViewSet = true; // Mark initial view as set
@@ -369,5 +373,35 @@ export class EvidenceMap {
 		}
 
 		return newUrl;
+	}
+
+	/** @type {Map<string, Promise<any>>} */
+	static #geoJsonCache = new Map();
+
+	/** @type {Writable<Map<string, any | null>>} */
+	#geoJsonData = writable(new Map());
+
+	// allGeoJsonLoaded = writable(false);
+	allGeoJsonLoaded = derived(this.#geoJsonData, ($geoJsonData) => {
+		return Array.from($geoJsonData.values()).every(Boolean);
+	});
+
+	/**
+	 * @param {string} url
+	 * @returns {Promise<any>} GeoJSON data
+	 */
+	async loadGeoJson(url) {
+		const cached = EvidenceMap.#geoJsonCache.get(url);
+		if (cached) return cached;
+
+		const promise = fetch(url).then((r) => r.json());
+		EvidenceMap.#geoJsonCache.set(url, promise);
+
+		// Set null to indicate we are loading data for this URL
+		this.#geoJsonData.update((map) => map.set(url, null));
+		const data = await promise;
+		this.#geoJsonData.update((map) => map.set(url, data));
+
+		return data;
 	}
 }

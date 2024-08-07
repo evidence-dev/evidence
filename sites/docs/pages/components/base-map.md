@@ -43,7 +43,7 @@ See the pages for [Area Map](/components/area-map), [Point Map](/components/poin
   <Areas 
     data={la_zip_sales}
     areaCol=zip_code
-    geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json"
+    geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -128,7 +128,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -146,7 +146,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -165,7 +165,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -185,7 +185,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
