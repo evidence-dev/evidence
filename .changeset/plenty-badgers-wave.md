@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Added area drilldowsn in areacharts
+Added area drilldown in areacharts
