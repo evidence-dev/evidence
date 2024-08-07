@@ -10,10 +10,10 @@
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
-		"build": "parcel build",
+		"build": "parcel build --no-cache",
 		"watch": "parcel watch",
 		"dev": "parcel watch",
-		"prepublish": "parcel build"
+		"prepublish": "parcel build --no-cache"
 	},
 	"dependencies": {
 		"blueimp-md5": "^2.19.0",
