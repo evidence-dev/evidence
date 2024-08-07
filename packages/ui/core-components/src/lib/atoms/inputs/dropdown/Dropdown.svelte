@@ -11,6 +11,7 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import DropdownOption from './helpers/DropdownOption.svelte';
 	import QueryLoad from '../../query-load/QueryLoad.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import { page } from '$app/stores';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
@@ -153,7 +154,8 @@
 	let search = '';
 
 	let searchIdx = 0;
-	$: finalQuery = $data ?? $query;
+	
+	$: finalQuery = Query.isQuery(data) ? data : $query;
 	const updateQuery = debounce(async () => {
 		searchIdx++;
 		if (search && hasQuery) {
@@ -165,7 +167,7 @@
 			}
 			await tick();
 		} else {
-			finalQuery = $query ?? $data;
+			finalQuery = query ?? data;
 		}
 		forceSort();
 	}, 100);
