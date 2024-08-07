@@ -18,6 +18,8 @@
 	// Play Functions
 	const openDropdown = async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
+		// Potentially has flake
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 		let dropdown = await canvas.getByRole('combo-box');
 		userEvent.click(dropdown);
 	};
@@ -47,6 +49,11 @@
 	<Dropdown name="test" {data} value="value" label="label" />
 </Story>
 
+<Story name="With explicit noDefault">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="test" {data} value="value" label="label" noDefault />
+</Story>
+
 <Story name="Open" play={openDropdown}>
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown name="test" {data} value="value" label="label" />
@@ -57,6 +64,7 @@
 	<Dropdown name="test" {data} value="value" label="label" />
 </Story>
 
+<!-- TODO: This story is no longer useful, this needs to be a query instead -->
 <Story name="Number Sorting">
 	<Dropdown name="Number Sorting">
 		<DropdownOption value={222} />

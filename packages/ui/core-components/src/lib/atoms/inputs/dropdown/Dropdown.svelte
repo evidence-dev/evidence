@@ -84,10 +84,13 @@
 	$: if (query) query.fetch();
 	$: ({ hasQuery, query } = $results);
 
+	// Extract initial state
+	const initial = name in $inputs && 'rawValues' in $inputs[name] ? $inputs[name].rawValues : [];
+
 	const state = dropdownOptionStore({
 		multiselect: multiple,
 		defaultValues: Array.isArray(defaultValue) ? defaultValue : [defaultValue],
-		initialOptions: Array.isArray($inputs[name].rawValues) ? $inputs[name].rawValues : [],
+		initialOptions: initial,
 		noDefault,
 		selectAllByDefault
 	});
@@ -104,8 +107,13 @@
 		forceSort
 	} = state;
 
-	$: if ($selectedOptions) {
+	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
+	$: if ($selectedOptions && hasHadSelection) {
 		const values = $selectedOptions;
+		console.log({
+			$selectedOptions,
+			hasHadSelection
+		});
 		if (multiple) {
 			$inputs[name] = {
 				label: values.map((x) => x.label).join(', '),
