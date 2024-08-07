@@ -22,7 +22,7 @@
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;
 	/** @type {string} */
-	export let geoJsonUrl = 'https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'; // URL to the GeoJSON file
+	export let geoJsonUrl = '/geo-json/ca_california_zip_codes_geo_1.min.json'; // URL to the GeoJSON file
 	/** @type {string|undefined} */
 	export let areaCol = undefined;
 	/** @type {string|undefined} */
@@ -174,29 +174,12 @@
 		interactive: true
 	};
 
-	let geoJsonData;
-	// let error = undefined;
-
-	/**
-	 * Load the GeoJSON data from the URL.
-	 * @returns {Promise<void>}
-	 */
-	async function loadGeoJson() {
-		try {
-			const response = await fetch(geoJsonUrl);
-			geoJsonData = await response.json();
-		} catch (e) {
-			console.error('Failed to load GeoJSON:', e);
-			// error = e.toString();
-		}
-	}
-
 	/**
 	 * Process the areas and filter the GeoJSON data.
-	 * @returns {object[]} The filtered GeoJSON features.
+	 * @returns {Promise<object[]>} The filtered GeoJSON features.
 	 */
-	function processAreas() {
-		if (!geoJsonData) return;
+	async function processAreas() {
+		const geoJsonData = await map.loadGeoJson(geoJsonUrl);
 		const areaSet = new Set(data.map((d) => d[areaCol].toString())); // Ensure string format
 		const filteredGeoJson = geoJsonData.features.filter((geo) =>
 			areaSet.has(geo.properties[geoId])
@@ -212,7 +195,6 @@
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
-		await loadGeoJson();
 		await data.fetch();
 
 		checkInputs(data, [areaCol]);
@@ -223,7 +205,7 @@
 			.scale(colorPalette)
 			.domain([min ?? Math.min(...values), max ?? Math.max(...values)]);
 
-		filteredGeoJson = processAreas();
+		filteredGeoJson = await processAreas();
 
 		if (name && $data.length > 0) {
 			setInputDefault($data[0], name);
