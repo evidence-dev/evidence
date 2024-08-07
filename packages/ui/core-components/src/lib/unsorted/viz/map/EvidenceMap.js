@@ -96,7 +96,7 @@ export class EvidenceMap {
 		this.#mapEl = mapEl;
 		this.#map = Leaflet.map(this.#mapEl, { zoomControl: false, zoomSnap: 0.25 }).setView(
 			startingCoords,
-			startingZoom ?? 1
+			startingZoom ?? 5
 		);
 		if (userDefinedView) {
 			this.#initialViewSet = true; // Mark initial view as set
