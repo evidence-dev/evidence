@@ -1101,22 +1101,30 @@
 				let targetX = pointInGrid[0];
 
 				if (link) {
-					// check if line point has been clicked
+					// check if point containing link data has been clicked
+					// Future Changes: Ensure that columns applied in getSeriesConfig are in same order as expected
 					if (params.detail.data) {
 						return (window.location = params.detail.data[3] ?? params.detail.data[2]);
 					}
-					// if area has been click, handle pointInGrid search
-					if (xFmt === 'date') {
-						targetX = new Date(pointInGrid[0]);
-					} else if (xFmt) {
-						targetX = formatAxisValue(pointInGrid[0], xFormat, xUnitSummary);
+
+					// if area has been click, handle xType searches
+					if (xType === 'category' || xType === 'value') {
+						closestDateObject = data.find(
+							(obj) => obj[series] === pointSeriesName && obj[x] === xDistinct[targetX]
+						);
+						return (window.location = closestDateObject[link]);
 					}
 
-					for (const obj of data) {
-						const diff = Math.abs(obj[x] - targetX);
-						if (diff < minDifference && obj[series] === pointSeriesName) {
-							minDifference = diff;
-							closestDateObject = obj;
+					if (xType === 'time') {
+						targetX = new Date(pointInGrid[0]);
+						for (const obj of data) {
+							if (!series || obj[series] === pointSeriesName) {
+								const diff = Math.abs(obj[x] - targetX);
+								if (diff < minDifference) {
+									minDifference = diff;
+									closestDateObject = obj;
+								}
+							}
 						}
 					}
 					return (window.location = closestDateObject[link]);

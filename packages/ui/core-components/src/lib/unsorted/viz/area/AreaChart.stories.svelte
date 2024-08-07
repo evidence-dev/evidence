@@ -158,21 +158,20 @@
 	import { Story } from '@storybook/addon-svelte-csf';
 
 	import AreaChart from './AreaChart.svelte';
-
 	import { fakerSeries } from '$lib/faker-data-queries';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	const planeData = Query.create(
 		`
-SELECT f.departure_date, SUM(f.fare) AS total_fare, CONCAT('https://www.google.com/search?q=', ANY_VALUE(f.plane)) as plane_url, f.plane
+SELECT date_trunc('day',f.departure_date) as departure_date2, cast(date_trunc('day',f.departure_date) as varchar) as departure_date, SUM(f.fare) AS total_fare, CONCAT('https://www.google.com/search?q=', ANY_VALUE(f.plane)) as plane_url, f.plane
 FROM (
     SELECT DISTINCT plane
     FROM flights
     LIMIT 2
 ) p
 JOIN flights f ON p.plane = f.plane
-GROUP BY f.departure_date, f.plane
-LIMIT 200`,
+GROUP BY departure_date, f.plane
+LIMIT 10`,
 		query
 	);
 </script>
@@ -191,8 +190,9 @@ LIMIT 200`,
 >
 	<AreaChart
 		{...args}
-		data={fakerSeries['numeric_series'][args.xHasGaps][args.yHasNulls][args.seriesAlwaysExists]
-			.store}
+		data={fakerSeries['numeric_series'][args.xHasGaps][args.yHasNulls][
+			args.seriesAlwaysExists
+		].store.where('x > 0')}
 	/>
 </Story>
 
@@ -209,6 +209,7 @@ LIMIT 200`,
 	let:args
 >
 	<AreaChart data={planeData} {...args} />
+	{console.log([...planeData])}
 </Story>
 <Story
 	name="With steps, fmt and labels"
@@ -224,6 +225,7 @@ LIMIT 200`,
 	let:args
 >
 	<AreaChart data={planeData} {...args} />
+	{console.log(planeData)}
 </Story>
 
 <Story
