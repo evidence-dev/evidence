@@ -29,3 +29,6 @@ packages/evidence/scripts/svelte.config.js
 **/node_modules
 **/**/node_modules
 packages/ui/icons/src
+
+# Don't lint playwright reports
+**/playwright-report*

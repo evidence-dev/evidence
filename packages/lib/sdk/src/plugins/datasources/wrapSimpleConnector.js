@@ -28,6 +28,7 @@ export const wrapSimpleConnector = (mod, source) => {
 		 * @returns {AsyncGenerator<import('./types.js').QueryResultTable | EvidenceError>}
 		 */
 		const processDir = async function* (dir) {
+			console.error('wrapSimpleConnector processDir', { dir });
 			const sourceFiles = await fs.readdir(dir, { withFileTypes: true });
 			for (const sourceFile of sourceFiles) {
 				// Why is the dirent interface so unstable?
