@@ -17,7 +17,7 @@ select
 order_month, 
 sum(sales) as sales_usd0 
 from needful_things.orders 
-where ${inputs.multi_dimensions}
+where ${inputs.selected_dimensions}
 group by all 
 ```
 
