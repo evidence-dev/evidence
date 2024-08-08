@@ -1,5 +1,15 @@
+<script context="module">
+	/** @type {import("@storybook/svelte").Meta}*/
+	export const meta = {
+		title: 'Atoms/inputs/ButtonGroup',
+		component: ButtonGroup,
+		argTypes: {},
+		args: { title: 'Group of buttons', name: 'buttonGroup' }
+	};
+</script>
+
 <script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
+	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import ButtonGroup from './ButtonGroup.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
@@ -10,13 +20,6 @@
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
-
-<Meta
-	title="Atoms/inputs/ButtonGroup"
-	component={ButtonGroup}
-	argTypes={{}}
-	args={{ title: 'Group of buttons', name: 'buttonGroup' }}
-/>
 
 <Template let:args>
 	<div class="h-64">
