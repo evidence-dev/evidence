@@ -22,7 +22,9 @@
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
 
-	const data = Query.create('select plane, airline from flights', query);
+	const data = Query.create('select * from flights limit 500', query);
+
+	const nullComboData = Query.create('select * from flights limit 1000', query);
 
 	const delay = (ms) => {
 		return new Promise((resolve) => setTimeout(resolve, ms));
@@ -267,4 +269,27 @@
 			{ disableCache: true }
 		)}
 	/>
+</Story>
+
+<Story
+	name="Null Row Column Combination"
+	play={async ({ canvasElement }) => {
+		await data.fetch();
+		const screen = within(canvasElement);
+
+		const plane = await screen.findByText('Boeing 717');
+		await userEvent.click(plane);
+
+		await delay(500);
+
+		const plane2 = await screen.findByText('Antonov An-12');
+		await userEvent.click(plane2);
+
+		await delay(500);
+
+		const airline = await screen.findByText('Azur Air');
+		await userEvent.click(airline);
+	}}
+>
+	<DimensionGrid data={nullComboData} multiple />
 </Story>

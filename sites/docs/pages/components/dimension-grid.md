@@ -21,9 +21,10 @@ where ${inputs.selected_dimensions}
 group by all 
 ```
 
+<DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions /> 
+
 <LineChart data={monthly_sales} handleMissing=zero/> 
 
-<DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions /> 
 
 
 
@@ -69,9 +70,9 @@ from needful_things.orders
 where ${inputs.multi_dimensions}
 group by all 
 ```
-<LineChart data={monthly_sales_multi} y=sales_usd0/> 
-
 <DimensionGrid data={orders} metric='sum(sales)' name=multi_dimensions multiple/>
+
+<LineChart data={monthly_sales_multi} y=sales_usd0/> 
 
 ````html
 <DimensionGrid 
