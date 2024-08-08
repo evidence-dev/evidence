@@ -15,8 +15,9 @@ select state, category, item, channel, sales from needful_things.orders
 
 select 
 order_month, 
-sum(sales)filter(${inputs.selected_dimensions}) as sales_usd0 
+sum(sales) as sales_usd0 
 from needful_things.orders 
+where ${inputs.multi_dimensions}
 group by all 
 ```
 
@@ -63,13 +64,12 @@ Using the multiple prop, Dimension grid can filter by multiple rows in the same 
 
 select 
 order_month, 
-sum(sales) filter (
-    ${inputs.multi_dimensions}
-) as sales_usd0 
+sum(sales) as sales_usd0 
 from needful_things.orders 
+where ${inputs.multi_dimensions}
 group by all 
 ```
-<LineChart data={monthly_sales_multi} handleMissing=zero/> 
+<LineChart data={monthly_sales_multi} y=sales_usd0/> 
 
 <DimensionGrid data={orders} metric='sum(sales)' name=multi_dimensions multiple/>
 
@@ -85,8 +85,9 @@ group by all
 ```monthly_sales_multi
 select 
 order_month, 
-sum(sales)filter(${inputs.multi_dimensions}) as sales_usd0 
-from needful_things.orders 
+sum(sales) as sales_usd0 
+from needful_things.orders
+where ${inputs.multi_dimensions} 
 group by all 
 ```
 ````

@@ -22,8 +22,8 @@
 	/>
 	<div
 		class={cn(
-			'bg-blue-50 group-hover:bg-blue-200 absolute inset-y-0 left-0 z-[-10] transition duration-100',
-			value.includes('NaN') ? 'bg-gray-100' : isSelected ? 'bg-blue-200' : ''
+			'bg-blue-50 group-hover:bg-blue-100 absolute inset-y-0 left-0 z-[-10] transition duration-100',
+			value.includes('NaN') ? 'bg-gray-200' : isSelected ? 'bg-blue-200' : ''
 		)}
 		style={value.includes('NaN') ? 'width: 100%' : 'width:' + row.percentOfTop * 100 + '%'}
 	/>
@@ -41,5 +41,5 @@
 	>
 		{row.dimensionValue ?? 'Missing'}
 	</span>
-	<span class="tabular-nums">{value.includes('NaN') ? 'Missing' : value}</span>
+	<span class="tabular-nums">{@html value.includes('NaN') ? '-&nbsp;' : value}</span>
 </div>
