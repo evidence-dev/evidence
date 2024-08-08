@@ -93,6 +93,8 @@
 		}
 	}
 
+	// // container height
+	// $: heightRem = 1.2 * Math.max(limit, $results.length);
 	// container minheight
 	$: minRem = 1.2 * Math.max(limit);
 </script>
@@ -117,7 +119,7 @@
 		</p>
 		{#if loaded?.length > 0}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
-			<div class="transition-all" style={`min-height:${minRem}rem`}>
+			<div class="transition-all" style={`min-height:${minRem}rem;`}>
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
