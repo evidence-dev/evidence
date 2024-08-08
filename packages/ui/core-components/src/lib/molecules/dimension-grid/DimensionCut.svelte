@@ -93,6 +93,8 @@
 		}
 	}
 
+	// // container height
+	// $: heightRem = 1.2 * Math.max(limit, $results.length);
 	// container minheight
 	$: minRem = 1.2 * Math.max(limit);
 </script>
@@ -117,14 +119,14 @@
 		</p>
 		{#if loaded?.length > 0}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
-			<div class="transition-all" style={`min-height:${minRem}rem`}>
+			<div class="transition-all" style={`min-height:${minRem}rem;`}>
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
-						transition:slide|local={{ duration: 200 }}
+						transition:slide|local={{ duration: 300 }}
 						on:click={updateSelected(row)}
 						on:keydown={updateSelected(row)}
-						animate:flip={{ delay: 200, duration: 200 }}
+						animate:flip={{ delay: 300, duration: 200 }}
 						role="button"
 						tabindex="-1"
 					>
