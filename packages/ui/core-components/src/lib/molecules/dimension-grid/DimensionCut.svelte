@@ -11,6 +11,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import QueryLoad from '../../atoms/query-load/QueryLoad.svelte';
+	import { slide } from 'svelte/transition';
 
 	/** @type {import("@evidence-dev/sdk/usql").DescribeResultRow} */
 	export let dimension;
@@ -92,8 +93,8 @@
 		}
 	}
 
-	// container height
-	$: heightRem = 1.2 * Math.max(Number(limit), $results.length);
+	// container minheight
+	$: minRem = 1.2 * Math.max(limit);
 </script>
 
 <!-- {dimensionCutQuery} -->
@@ -116,13 +117,14 @@
 		</p>
 		{#if loaded?.length > 0}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
-			<div class="transition-all" style={`height:${heightRem}rem`}>
+			<div class="transition-all" style={`min-height:${minRem}rem`}>
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
+						transition:slide|local={{ duration: 200 }}
 						on:click={updateSelected(row)}
 						on:keydown={updateSelected(row)}
-						animate:flip={{ duration: 200 }}
+						animate:flip={{ delay: 200, duration: 200 }}
 						role="button"
 						tabindex="-1"
 					>

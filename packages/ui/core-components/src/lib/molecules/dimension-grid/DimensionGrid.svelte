@@ -12,12 +12,24 @@
 	export let metric = 'count(*)';
 	/** @type {string} */
 	export let metricLabel = undefined;
-	/** @type {number} */
+	/** @type {number | string} */
 	export let limit = 10;
 	/** @type {string} */
 	export let name;
 	/** @type {boolean} */
 	export let multiple = false;
+
+	const handleLimitNum = () => {
+		try {
+			limit = typeof limit === 'string' ? parseInt(limit) : limit;
+		} catch (e) {
+			console.error('Limit must be a integer', e);
+		}
+	};
+
+	handleLimitNum();
+
+	$: handleLimitNum(limit);
 </script>
 
 <QueryLoad {data} let:loaded>

@@ -51,7 +51,7 @@
 </Story>
 
 <Story name="Limit 15">
-	<DimensionGrid limit="15" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid limit={15} data={fakerSeries.airlines.flights.store} />
 </Story>
 
 <Story name="Limit 0">
@@ -224,38 +224,29 @@
 		await data.fetch();
 		const screen = within(canvasElement);
 
-		const airline = await screen.findByText('China Eastern Airlines');
-		await userEvent.click(airline);
-
-		await delay(500);
-
-		const airline2 = await screen.findByText('Japan Airlines');
-		await userEvent.click(airline2);
-
-		await delay(500);
-
-		const plane = await screen.findByText('Boeing 757');
+		const plane = await screen.findByText('Boeing 717');
 		await userEvent.click(plane);
 
 		await delay(500);
 
-		const plane2 = await screen.findByText('Boeing 767');
+		const plane2 = await screen.findByText('McDonnell Douglas MD80');
 		await userEvent.click(plane2);
 
 		await delay(500);
 
-		const airline3 = await screen.findByText('Egyptair');
-		await userEvent.click(airline3);
-
-		await delay(500);
-
-		const airline4 = await screen.findByText('American Airlines');
-		await userEvent.click(airline4);
-
-		await delay(500);
-
-		const plane3 = await screen.findByText('Airbus A330-200');
+		const plane3 = await screen.findByText('Canadair Regional Jet 1000');
 		await userEvent.click(plane3);
+
+		await delay(500);
+		const airline = await screen.findByText('LOT Polish Airlines');
+		await userEvent.click(airline);
+
+		await delay(500);
+
+		const airline2 = await screen.findByText('Alitalia');
+		await userEvent.click(airline2);
+
+		await delay(500);
 	}}
 >
 	<DimensionGrid {data} multiple />
