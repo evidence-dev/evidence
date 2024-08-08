@@ -64,10 +64,17 @@
 </script>
 
 <dialog class="w-[90vw] rounded-lg fixed" use:popup={open}>
-	<button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+	<button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
 		><Icon class="w-6 h-6" src={X} /></button
 	>
 	<div class="py-2 px-6">
 		<slot />
 	</div>
 </dialog>
+
+<style lang="postcss">
+	/* your styles go here */
+	dialog::backdrop {
+		@apply backdrop-blur-sm;
+	}
+</style>
