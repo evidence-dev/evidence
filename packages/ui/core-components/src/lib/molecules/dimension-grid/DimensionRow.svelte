@@ -25,7 +25,12 @@
 			'bg-blue-50 group-hover:bg-blue-100 absolute inset-y-0 left-0 z-[-10]',
 			value.includes('NaN') ? 'bg-gray-200' : isSelected ? 'bg-blue-200' : ''
 		)}
-		style={value.includes('NaN') ? 'width: 100%;' : 'width:' + row.percentOfTop * 100 + '%;' + 'transition: width 300ms 300ms, background-color 200ms 0ms; '}
+		style={value.includes('NaN')
+			? 'width: 100%;'
+			: 'width:' +
+				row.percentOfTop * 100 +
+				'%;' +
+				'transition: width 300ms 300ms, background-color 200ms 0ms; '}
 	/>
 
 	<span
