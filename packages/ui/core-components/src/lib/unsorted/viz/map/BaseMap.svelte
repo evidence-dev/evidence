@@ -42,6 +42,9 @@
 	const evidenceMap = new EvidenceMap();
 	setContext(mapContextKey, evidenceMap);
 
+	const allGeoJsonLoaded = evidenceMap.allGeoJsonLoaded;
+	const mapError = evidenceMap.error;
+
 	// Lifecycle hooks:
 	onMount(async () => {
 		if (browser) {
@@ -57,12 +60,10 @@
 			}
 		}
 	});
-
-	const allGeoJsonLoaded = evidenceMap.allGeoJsonLoaded;
 </script>
 
-{#if error}
-	<ErrorChart {error} chartType="Map" />
+{#if error || $mapError}
+	<ErrorChart error={error || $mapError} chartType="Map" />
 {:else}
 	<div class="relative break-inside-avoid">
 		{#if title}
