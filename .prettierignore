@@ -26,6 +26,7 @@ yarn.lock
 **/sites/docs/pages/**/*
 **/sites/test-env/pages/**/*
 **/static/data/*
+**/static/geo-json/*
 
 **/node_modules
 **/**/node_modules

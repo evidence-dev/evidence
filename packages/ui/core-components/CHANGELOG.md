@@ -1,5 +1,26 @@
 # @evidence-dev/core-components
 
+## 4.7.4
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- 6ff0e92b8: Adds option to disable downloads for data and/or images from charts
+- Updated dependencies [32035eeaa]
+  - @evidence-dev/tailwind@2.1.2
+  - @evidence-dev/component-utilities@3.2.8
+
+## 4.7.3
+
+### Patch Changes
+
+- f8e76c7d9: changed tabs inactive border styling
+- 8782d9e95: added boxplot stories
+- 5922269dc: Allows using total labels without series labels
+- 4ae4427ea: Updated Value component's props for conditional color rendering
+- 318196074: Fixed char by char search, search by filteredCols, fixed out of bounds pagination
+  - @evidence-dev/component-utilities@3.2.7
+
 ## 4.7.2
 
 ### Patch Changes

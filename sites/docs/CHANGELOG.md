@@ -1,5 +1,35 @@
 # evidence-docs
 
+## 0.0.22
+
+### Patch Changes
+
+- Updated dependencies [32035eeaa]
+- Updated dependencies [6ff0e92b8]
+- Updated dependencies [dc29b7fd0]
+  - @evidence-dev/evidence@39.1.3
+  - @evidence-dev/sdk@1.3.8
+  - @evidence-dev/core-components@4.7.4
+  - @evidence-dev/faker-datasource@2.1.4
+  - @evidence-dev/tailwind@2.1.2
+  - @evidence-dev/component-utilities@3.2.8
+
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [f8e76c7d9]
+- Updated dependencies [8782d9e95]
+- Updated dependencies [5922269dc]
+- Updated dependencies [fbdfe2dd6]
+- Updated dependencies [4ae4427ea]
+- Updated dependencies [318196074]
+  - @evidence-dev/sdk@1.3.7
+  - @evidence-dev/evidence@39.1.2
+  - @evidence-dev/core-components@4.7.3
+  - @evidence-dev/component-utilities@3.2.7
+
 ## 0.0.20
 
 ### Patch Changes

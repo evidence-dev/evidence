@@ -34,6 +34,14 @@
 			seriesLabels: {
 				type: 'boolean',
 				control: { type: 'boolean' }
+			},
+			downloadableData: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			downloadableImage: {
+				control: 'boolean',
+				options: [true, false]
 			}
 		},
 		args: {

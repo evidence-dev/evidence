@@ -385,6 +385,21 @@ order by state asc, item asc
     options={['canvas', 'svg']}
     defaultValue="canvas"
 />
+<PropListing
+    name="downloadableData"
+    description="Whether to show the download button to allow users to download the data"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name="downloadableImage"
+    description="Whether to show the button to allow users to save the chart as an image"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+
 
 ### Custom Echarts Options
 
