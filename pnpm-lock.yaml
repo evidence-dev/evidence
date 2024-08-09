@@ -955,8 +955,8 @@ importers:
         specifier: ^6.18.1
         version: 6.21.0(typescript@5.5.4)
       '@uwdata/mosaic-sql':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.10.0
+        version: 0.10.0
       '@vitest/coverage-v8':
         specifier: ^1.2.0
         version: 1.6.0(vitest@1.6.0)
@@ -8933,12 +8933,17 @@ packages:
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
+  /@uwdata/mosaic-sql@0.10.0:
+    resolution: {integrity: sha512-tPsgrHO8zTwLFMBR+BiG4fskK9RSbH+nXS9ju8433NDq3qicAq4Z46CnYpCs0vWIR7AUAxMvncqP6YPbiQhOug==}
+    dev: false
+
   /@uwdata/mosaic-sql@0.3.5:
     resolution: {integrity: sha512-/xdasEcxBzBG1O9WyhnsFnbf/GXjKSbl4lcpg3Cawrl3m6EuA9mKm0WStxAlEBRj1CscJbOHi355e1g7bv/zGg==}
     dev: false
 
   /@uwdata/mosaic-sql@0.4.0:
     resolution: {integrity: sha512-QpjG6jrKJ4bH0eud4h719IaCgUOCYX6acyd5/HalFbDdjGHmFIPfcm8SYEnzvg+Jxz1jBfuH/2tpgOHahOK8xA==}
+    dev: true
 
   /@vitest/coverage-v8@1.6.0(vitest@1.6.0):
     resolution: {integrity: sha512-KvapcbMY/8GYIG0rlwwOKCVNRc0OL20rrhFkg/CHNzncV03TE2XWvO5w9uZYoxNiMEBacAJt3unSOiZ7svePew==}
