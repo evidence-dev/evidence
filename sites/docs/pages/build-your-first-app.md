@@ -1,8 +1,8 @@
 ---
 sidebar_position: 4
 hide_table_of_contents: false
-title: Build your first dashboard
-description: A 10 minute guide to building your first dashboard in Evidence.
+title: Build Your First App
+description: A 10 minute guide to building your first Evidence app.
 ---
 <style>
 :root {
@@ -10,23 +10,11 @@ description: A 10 minute guide to building your first dashboard in Evidence.
   }
 
 .alert-copy {
-   top: 3.5rem;
-    margin-bottom: 1rem;
-    border-radius: 0.25rem;
-    --tw-bg-opacity: 1;
-    background-color: rgb(249 250 251 / var(--tw-bg-opacity));
-    padding: 0.5rem;
-    --tw-text-opacity: 1;
-    color: rgb(31 41 55 / var(--tw-text-opacity));
-}
-
-.tab-bottom-padding {
-   margin-bottom: 2rem;
+   @apply p-2 mb-4 rounded text-gray-800 bg-gray-50 top-14;
 }
 
 .tut-img, img.markdown {
-   border: 1px solid var(--lightest-gray);
-   border-radius: 0.25rem;
+   @apply border border-gray-200 rounded;
 }
 
 </style>
@@ -55,7 +43,6 @@ If you are familiar with running a server at `localhost`, and writing pages in M
 
 Evidence can be started from VSCode, or from the Command Line. Both will work for this tutorial. If you're unsure, start with VSCode:
 
-<div class="tab-bottom-padding">
 <Tabs>
    <Tab label="VSCode">
 
@@ -67,15 +54,18 @@ Evidence can be started from VSCode, or from the Command Line. Both will work fo
 
       From the root of your project directory: 
       
-      `npm run dev`
+```bash
+npm run dev
+```
       
    </Tab>
 </Tabs>
-</div>
+
+<br>
 
 If you chose a different setup during [Install Evidence](/install-evidence/#other-options), use the command that matches your setup.
 
-Your browser should open automatically. If it doesn't, open your browser and navigate to `localhost:3000` in the address bar. You should see your Evidence project:
+Your browser should open automatically. If it doesn't, open your browser and navigate to `localhost:3000` in the address bar. You should see your Evidence app:
 
 ![Evidence landing page](/img/getting-started/evidence_landing.png)
 
@@ -408,7 +398,7 @@ That's it! You now know the basics of setting up data sources, writing queries, 
 ## Next steps
 
 - Explore other components: [All Components](/components/all-components/)
-- Learn how to deploy your Evidence project: [Deployment](/deployment/overview/)
+- Learn how to deploy your Evidence app: [Deployment](/deployment/overview/)
 - Learn more about writing and organizing Markdown queries: [SQL Queries](/core-concepts/queries/)
 
 ### Help and support
