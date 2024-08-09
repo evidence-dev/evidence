@@ -83,7 +83,11 @@ export const dropdownOptionStore = (opts = {}) => {
 		// We don't apply anything with defaults
 		defaults.clear();
 	}
-	let selectFirst = !config.multiselect && !config.noDefault && config.defaultValues.length === 0;
+	let selectFirst =
+		!config.multiselect &&
+		!config.noDefault &&
+		config.defaultValues.length === 0 &&
+		!config.initialOptions.some((opt) => opt.selected);
 	let selectAll = config.multiselect && config.selectAllByDefault && !config.initialOptions?.length;
 
 	let destroyed = false;
