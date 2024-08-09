@@ -130,8 +130,6 @@
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
 						animate:flip={{ duration: 300 }}
-						out:slide|local={{ duration: 300 }}
-						in:scale|local={{ duration: 300 }}
 						on:click={updateSelected(row)}
 						on:keydown={updateSelected(row)}
 						role="button"
