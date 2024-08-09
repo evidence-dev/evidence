@@ -66,11 +66,13 @@
 
 <dialog
 	use:popup={open}
-	class="w-[90vw] rounded-lg fixed border shadow-lg {open ? 'slideIn' : 'slideOut'}"
+	class="w-[90vw] rounded-lg fixed border shadow-lg overflow-y-hidden {open
+		? 'slideIn'
+		: 'slideOut'}"
 >
 	<button
-		class="absolute top-4 right-[18.5px] text-gray-900 hover:bg-gray-100 rounded-lg p-1 transition-all duration-500"
-		><Icon class="w-6 h-6" src={X} /></button
+		class="absolute top-4 right-[18.5px] text-gray-900 hover:bg-gray-100 rounded-lg p-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
+		><Icon class="w-6 h-6 " src={X} /></button
 	>
 	<div class="py-2 px-6 {!search ? 'pt-6' : ''}">
 		<slot />
@@ -89,17 +91,20 @@
 
 	@keyframes slideInFromBottom {
 		0% {
-			transform: translateY(40%);
+			transform: translateY(70%);
 			opacity: 0;
+		}
+		90% {
+			opacity: 0.3;
 		}
 		100% {
 			transform: translateY(0%);
-			opacity: 1;
+			opacity: 0.95;
 		}
 	}
 
 	.slideIn {
-		animation: slideInFromBottom 0.7s ease-in-out;
+		animation: slideInFromBottom 0.3s ease-in-out;
 	}
 
 	@keyframes slideOutToBottom {
@@ -114,6 +119,6 @@
 	}
 
 	.slideOut {
-		animation: slideOutToBottom 0.4s ease-in-out;
+		animation: slideOutToBottom 0.3s ease-in-out;
 	}
 </style>
