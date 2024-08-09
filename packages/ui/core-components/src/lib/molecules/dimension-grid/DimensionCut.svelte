@@ -93,10 +93,17 @@
 		}
 	}
 
-	// // container height
-	// $: heightRem = 1.2 * Math.max(limit, $results.length);
 	// container minheight
 	$: minRem = 1.2 * Math.max(limit);
+
+	//find missing values
+	/** @type {string[]} */
+	let missingValues = [];
+	$: if (Array.isArray(selectedValue)) {
+		missingValues = selectedValue.filter(
+			(v) => ![...results].map((d) => d.dimensionValue).includes(v)
+		);
+	}
 </script>
 
 <!-- {dimensionCutQuery} -->
@@ -117,7 +124,7 @@
 		>
 			{$results.error}
 		</p>
-		{#if loaded?.length > 0}
+		{#if loaded?.length > 0 || (Array.isArray(selectedValue) && selectedValue.length > 0)}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
 			<div class="transition-all" style={`min-height:${minRem}rem;`}>
 				{#each loaded as row (row.dimensionValue)}
@@ -143,13 +150,7 @@
 					</div>
 				{/each}
 				<!-- if selectedValues is an array, and if a value in selected values is not in loaded, render a <p>Missing Value</p> -->
-				{#if Array.isArray(selectedValue) && selectedValue.some((v) => !loaded
-								.map((d) => d.dimensionValue)
-								.includes(v))}
-					<!-- create an array of all missing values -->
-					{@const missingValues = selectedValue.filter(
-						(v) => !loaded.map((d) => d.dimensionValue).includes(v)
-					)}
+				{#if missingValues.length > 0}
 					{#each missingValues as missingValue (missingValue)}
 						<div
 							class={cn('flex transition duration-100 group cursor-pointer')}

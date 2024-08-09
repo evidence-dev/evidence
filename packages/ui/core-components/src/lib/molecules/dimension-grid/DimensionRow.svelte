@@ -46,5 +46,5 @@
 	>
 		{row.dimensionValue ?? 'Missing'}
 	</span>
-	<span class="tabular-nums">{@html value.includes('NaN') ? '-&nbsp;' : value}</span>
+	<span class="tabular-nums">{@html Number.isNaN(parseInt(value)) ? '-&nbsp;' : value}</span>
 </div>
