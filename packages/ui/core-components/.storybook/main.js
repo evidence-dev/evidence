@@ -7,7 +7,8 @@ const config = {
 		'@storybook/addon-links',
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
-		'@storybook/addon-svelte-csf'
+		'@storybook/addon-svelte-csf',
+		'@chromatic-com/storybook'
 	],
 	core: {
 		builder: '@storybook/builder-vite'
