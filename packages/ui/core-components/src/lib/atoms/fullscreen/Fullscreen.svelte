@@ -7,6 +7,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 
 	export let open = false;
+	export let search = false;
 
 	/** @type {import("svelte/action").Action<HTMLDialogElement, boolean>}*/
 	function popup(node, isOpen) {
@@ -65,13 +66,13 @@
 
 <dialog
 	use:popup={open}
-	class="w-[90vw] rounded-lg fixed border shadow-lg {open ? 'slideIn backdropFadeIn' : 'slideOut'}"
+	class="w-[90vw] rounded-lg fixed border shadow-lg {open ? 'slideIn' : 'slideOut'}"
 >
 	<button
 		class="absolute top-4 right-[18.5px] text-gray-900 hover:bg-gray-100 rounded-lg p-1 transition-all duration-500"
 		><Icon class="w-6 h-6" src={X} /></button
 	>
-	<div class="py-2 px-6">
+	<div class="py-2 px-6 {!search ? 'pt-6' : ''}">
 		<slot />
 	</div>
 </dialog>
