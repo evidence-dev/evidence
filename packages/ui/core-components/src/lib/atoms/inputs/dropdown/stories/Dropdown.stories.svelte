@@ -134,30 +134,26 @@
 	<Dropdown defaultValue={[1]} name="test1" {data} value="value" label="label" />
 </Story>
 <Story name="With a non-static default value">
+	{@const data = Query.create(`select 1 as value`, query)}
+	<Dropdown defaultValue={1} name="your-dropdown" {data} value="value" />
+</Story>
+<Story name="Using Dropdowns that interact with eachother's queries">
+	<DependentDropdowns />
+</Story>
+
+<Story name="Using query with null value">
 	{@const data = Query.create(
 		`
-	-- Select each day of the last 7 days using duckdb
-
-	SELECT 	strftime(generate_series, '%Y-%m-%d') as value 
-	from generate_series(
-		DATE_TRUNC('day', current_date - interval 7 days),
-		DATE_TRUNC('day', current_date),
-		interval 1 day
-	)
-	order by 1 desc
+		select 'abc' as option
+		union all
+		select null as option
+		union all
+		select 'ghi' as option
 	`,
 		query
 	)}
 
-	<Dropdown
-		defaultValue={[new Date(Date.now() - 86400000).toISOString().split('T')[0]]}
-		name="your-dropdown"
-		{data}
-		value="value"
-	/>
-</Story>
-<Story name="Using Dropdowns that interact with eachother's queries">
-	<DependentDropdowns />
+	<Dropdown {data} name="test" value="option" />
 </Story>
 
 <Story name="Using non-query options">

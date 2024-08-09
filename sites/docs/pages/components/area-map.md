@@ -6,7 +6,7 @@ sidebar_position: 1
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -40,7 +40,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -97,15 +97,14 @@ group by state
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
     height=250
     tooltip={[
         {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'zip_code', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
     ]}
 />
 
@@ -120,8 +119,7 @@ group by state
     height=250
     tooltip={[
         {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'zip_code', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
     ]}
 />
 
@@ -131,7 +129,7 @@ group by state
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -168,7 +166,7 @@ group by state
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -198,7 +196,7 @@ group by state
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -226,7 +224,7 @@ Pass in a `link` column to enable navigation on click of the point. These can be
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -267,7 +265,7 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd

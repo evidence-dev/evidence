@@ -144,17 +144,17 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
     x=day
     y=sales
 />
-
-### Customizing Singluar Preset Ranges
+````
+### Customizing Single Preset Ranges
 
 <DateRange presetRanges={'Last 7 Days'}/>
 
-````markdown
+```markdown
 <DateRange
     name=name_of_date_range
     presetRanges={'Last 7 Days'}
 />
-````
+```
 
 ### Customizing Multiple Preset Ranges
 
@@ -215,7 +215,7 @@ Title to display in the Date Range component
 </PropListing>
 <PropListing 
     name="presetRanges"
-    options= "string | array of values e.g. {['Last 7 Days', 'Last 6 Months']}"
+    options= "string | array of values e.g. {`{['Last 7 Days', 'Last 30 Days']}`}"
     default=undefined
 >
 

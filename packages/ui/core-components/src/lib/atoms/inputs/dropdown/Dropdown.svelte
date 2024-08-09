@@ -6,7 +6,7 @@
 	import VirtualList from './Virtual.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import { getContext, onMount, setContext, tick } from 'svelte';
+	import { getContext, onMount, setContext } from 'svelte';
 	import { page } from '$app/stores';
 	import DropdownOption from './helpers/DropdownOption.svelte';
 	import DropdownOptionDisplay from './helpers/DropdownOptionDisplay.svelte';
@@ -18,8 +18,8 @@
 	import Separator from '$lib/atoms/shadcn/separator/separator.svelte';
 	import Badge from '$lib/atoms/shadcn/badge/badge.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
-	import debounce from 'lodash.debounce';
-	import { duckdbSerialize, resolveMaybePromise } from '@evidence-dev/sdk/usql';
+	import { debounce } from 'perfect-debounce';
+	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import { DropdownContext } from './constants.js';
 	import QueryLoad from '../../query-load/QueryLoad.svelte';
@@ -115,22 +115,24 @@
 		)
 	);
 	onMount(() =>
-		inputs.subscribe((i) => {
-			const providedValues = Array.isArray(i[name]?.rawValues)
-				? i[name]?.rawValues
-				: [i[name]?.rawValues];
-			const knownValues = $selectedOptions;
+		inputs.subscribe(
+			debounce((i) => {
+				const providedValues = Array.isArray(i[name]?.rawValues)
+					? i[name]?.rawValues
+					: [i[name]?.rawValues];
+				const knownValues = $selectedOptions;
 
-			if (
-				providedValues.every(Boolean) &&
-				providedValues.length !== knownValues.length &&
-				JSON.stringify(providedValues) !== JSON.stringify(knownValues)
-			) {
-				// External change, we need to react to this
-				// Be VERY careful with this; it can lead to an infinite loop
-				providedValues.forEach(select);
-			}
-		})
+				if (
+					providedValues.every(Boolean) &&
+					providedValues.length !== knownValues.length &&
+					JSON.stringify(providedValues) !== JSON.stringify(knownValues)
+				) {
+					// External change, we need to react to this
+					// Be VERY careful with this; it can lead to an infinite loop
+					providedValues.forEach(select);
+				}
+			}, 10)
+		)
 	);
 
 	let open = false;
@@ -228,58 +230,56 @@
 	/**
 	 * Resets the defaults whenever parameters change
 	 */
-	const evalDefaults = () => {
-		resolveMaybePromise(
-			() => {
-				if ($selectedOptions.length) {
-					const presentValues = $selectedOptions.filter((x) =>
-						$options.some((o) => o.value === x.value && o.label === x.label)
-					);
-					if (
-						presentValues.length !== $selectedOptions.length &&
-						JSON.stringify(presentValues) !== JSON.stringify($selectedOptions)
-					) {
-						// Clear the selection and reselect the needed values
-						// We don't need to do diffs, this rolls up into 1 store action
-						deselectAll();
-						presentValues.forEach((v) => select(v));
-						return; // Action was taken
-					}
-					if (presentValues.length) return; // no need to take action
-				}
+	const evalDefaults = async () => {
+		try {
+			if (query) await query.fetch();
+			await state.flushed;
 
-				if (selectAllByDefault && multiple) {
-					selectAllOptions();
-					return;
-				}
-
-				if (noDefault) {
-					deselectAll();
-					return;
-				} else if (
-					typeof defaultValue !== 'undefined' &&
-					defaultValue !== null &&
-					defaultValue.length
+			if ($selectedOptions.length) {
+				const presentValues = $selectedOptions.filter((x) =>
+					$options.some((o) => o.value === x.value && o.label === x.label)
+				);
+				if (
+					presentValues.length !== $selectedOptions.length &&
+					JSON.stringify(presentValues) !== JSON.stringify($selectedOptions)
 				) {
-					// hard-coded default
-					const _def = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
-					if (_def.length) {
-						$options.filter((x) => _def.some((d) => x.value === d)).forEach((x) => select(x));
-						return;
-					}
-				} else if (!multiple && $options.length) {
-					// Default Behavior: set to the first value
-					select($options[0]);
+					// Clear the selection and reselect the needed values
+					// We don't need to do diffs, this rolls up into 1 store action
+					deselectAll();
+					presentValues.forEach((v) => select(v));
+					return; // Action was taken
 				}
-
-				return;
-			},
-			// Fetch the query, then wait for DOM updates to flush (this ensures that the options store is up to date)
-			() => (query ? query.fetch().then(() => tick()) : tick()),
-			(err) => {
-				console.error(`Error while updating Dropdown Query: ${err.message}`);
+				if (presentValues.length) return; // no need to take action
 			}
-		);
+
+			if (selectAllByDefault && multiple) {
+				selectAllOptions();
+				return;
+			}
+
+			if (noDefault) {
+				deselectAll();
+				return;
+			} else if (
+				typeof defaultValue !== 'undefined' &&
+				defaultValue !== null &&
+				defaultValue.length
+			) {
+				// hard-coded default
+				const _def = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
+				if (_def.length) {
+					$options.filter((x) => _def.some((d) => x.value === d)).forEach((x) => select(x));
+					return;
+				}
+			} else if (!multiple && $options.length) {
+				// Default Behavior: set to the first value
+				select($options[0]);
+			}
+
+			return;
+		} catch (err) {
+			console.error(`Error while updating Dropdown Query: ${err.message}`);
+		}
 	};
 
 	const DISPLAYED_OPTIONS = 5;

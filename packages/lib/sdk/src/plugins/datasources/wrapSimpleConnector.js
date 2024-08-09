@@ -33,7 +33,7 @@ export const wrapSimpleConnector = (mod, source) => {
 				// Why is the dirent interface so unstable?
 				// This behaves differently depending on which minor version of 18 / 20 you are using
 				const dirPath =
-					'parentPath' in sourceFile ? sourceFile.parentPath + '' : sourceFile.path ?? dir;
+					'parentPath' in sourceFile ? sourceFile.parentPath + '' : (sourceFile.path ?? dir);
 				if (sourceFile.name === 'connection.yaml' || sourceFile.name === 'connection.options.yaml')
 					continue;
 				if (sourceFile.isDirectory()) {
@@ -69,7 +69,7 @@ export const wrapSimpleConnector = (mod, source) => {
 						...(await runner(
 							utils.subSourceVariables(sourceFileContent),
 							sourceFilePath,
-							1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
+							source.buildOptions.batchSize ?? 1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
 						))
 					};
 				} catch (e) {

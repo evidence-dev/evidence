@@ -75,7 +75,7 @@ fsExtra.outputFileSync(
     {
         plugins: [sveltekit(), evidenceVitePlugin(), sourceQueryHmr()],
         optimizeDeps: {
-            include: ['echarts-stat', 'echarts', 
+            include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
 				// We need these to prevent HMR from doing a full page reload
 				...(process.env.EVIDENCE_DISABLE_INCLUDE ? [] : [
 					'@evidence-dev/core-components',
@@ -84,8 +84,8 @@ fsExtra.outputFileSync(
 					'@evidence-dev/component-utilities/globalContexts',
 					'@evidence-dev/component-utilities/buildQuery',
 					'@evidence-dev/component-utilities/profile',
+					'@evidence-dev/sdk/usql',
 					'debounce', 
-					'@evidence-dev/query-store',
 					'@duckdb/duckdb-wasm',
 					'apache-arrow'
 				])
@@ -94,7 +94,7 @@ fsExtra.outputFileSync(
             exclude: ['svelte-icons', '@evidence-dev/universal-sql']
         },
         ssr: {
-            external: ['@evidence-dev/telemetry', 'blueimp-md5', '@evidence-dev/plugin-connector']
+            external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/plugin-connector']
         },
         server: {
             fs: {

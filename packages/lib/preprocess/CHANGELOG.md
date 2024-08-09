@@ -1,5 +1,24 @@
 # @evidence-dev/preprocess
 
+## 5.1.5
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+
+## 5.1.4
+
+### Patch Changes
+
+- e50e7ed58: Pre-render column information using DESCRIBE query
+
+## 5.1.3
+
+### Patch Changes
+
+- d6b25b02c: Fix source query triggering HMR on the page
+- 6cdedceb0: Remove db-orchestrator
+
 ## 5.1.2
 
 ### Patch Changes

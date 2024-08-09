@@ -9,21 +9,34 @@ const LEGACY_PROFILES_PATH = './.profile.json';
 
 /**
  * @typedef {'usageStatsDisabled' |
- * 			 'db-plugin-unvailable' |
- * 			 'db-connection-error' |
- * 			 'db-connection-success' |
- * 			 'source-connector-not-found' |
- * 			 'db-error' |
- * 			 'db-query'|
- * 			 'cache-query' |
- * 			 'dev-server-start' |
- * 			 'build-start' |
- * 			 'build-strict-start' |
- * 			 'build-sources-start' |
- * 			 'preview-server-start'
- * 	} TelemetryEventName
+ *           'db-plugin-unvailable' |
+ *           'db-connection-error' |
+ *           'db-connection-success' |
+ *           'source-connector-not-found' |
+ *           'db-error' |
+ *           'db-query'|
+ *           'cache-query' |
+ *           'dev-server-start' |
+ *           'build-start' |
+ *           'build-strict-start' |
+ *           'build-sources-start' |
+ *           'preview-server-start'
+ * } TelemetryEventName
  */
+
+/**
+ * @typedef {Object} Traits
+ * @property {Date} projectCreated
+ */
+
+/**
+ * @typedef {Object} Profile
+ * @property {string} anonymousId
+ * @property {Traits} traits
+ */
+
 const initializeProfile = async () => {
+	/** @type {Profile} */
 	const projectProfile = {
 		anonymousId: secure.v4(),
 		traits: {
@@ -40,16 +53,27 @@ const initializeProfile = async () => {
 
 const getProfile = async () => {
 	if (!pathExistsSync(PROFILES_PATH) && !maybeMigrateProfile()) {
-		const profile = await initializeProfile();
-		return profile;
+		// Profile file doesn't exist and migration wasn't needed, initialize it
+		return await initializeProfile();
 	} else {
-		let profile = readJSONSync(PROFILES_PATH);
+		try {
+			/** @type {Profile | null} */
+			let profile = readJSONSync(PROFILES_PATH, { throws: false });
 
-		if (profile.anonymousId === 'b958769d-6b88-43f3-978a-b970a146ffd2') {
-			// This anon ID was incorrectly committed to the template project, replace with a fresh ID going forward
-			profile = await initializeProfile();
+			if (
+				!profile ||
+				!profile.anonymousId ||
+				profile.anonymousId === 'b958769d-6b88-43f3-978a-b970a146ffd2'
+			) {
+				profile = await initializeProfile();
+			}
+
+			return profile;
+		} catch (error) {
+			console.error('Error in getProfile:', error instanceof Error ? error.message : error);
+			// Initialize a new profile in case of errors
+			return await initializeProfile();
 		}
-		return profile;
 	}
 };
 
@@ -71,11 +95,11 @@ const logEvent = async (
 	queryName = undefined
 ) => {
 	try {
-		let usageStats = settings
-			? settings.send_anonymous_usage_stats ?? 'yes'
-			: process.env['SEND_ANONYMOUS_USAGE_STATS'] ??
+		const usageStats = settings
+			? (settings.send_anonymous_usage_stats ?? 'yes')
+			: (process.env['SEND_ANONYMOUS_USAGE_STATS'] ??
 				process.env['send_anonymous_usage_stats'] ??
-				'yes';
+				'yes');
 		let repo;
 		let database;
 		let demoDb;
@@ -110,7 +134,7 @@ const logEvent = async (
 
 		if (usageStats === 'yes') {
 			const projectProfile = await getProfile();
-			const analytics = new Analytics({ writeKey: wK });
+			const analytics = new Analytics({ writeKey: wK, flushAt: 1 });
 			const payload = {
 				anonymousId: projectProfile.anonymousId,
 				event: eventName,
@@ -137,7 +161,7 @@ const logEvent = async (
 };
 
 /**
- * Logs an event emiited from source queries
+ * Logs an event emitted from source queries
  * @param {TelemetryEventName} eventName
  * @param {string | undefined} [databaseName]
  * @param {string | undefined} [sourceName]
@@ -163,7 +187,7 @@ function loadSettings() {
 }
 
 /**
- * Checks for existance of legacy profile and then moves it to the new location
+ * Checks for existence of legacy profile and then moves it to the new location
  * @returns {boolean} true if profile was migrated
  */
 function maybeMigrateProfile() {

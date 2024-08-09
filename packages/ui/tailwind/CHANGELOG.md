@@ -1,5 +1,17 @@
 # @evidence-dev/tailwind
 
+## 2.1.2
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+
+## 2.1.1
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+
 ## 2.1.0
 
 ### Minor Changes

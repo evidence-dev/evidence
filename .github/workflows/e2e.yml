@@ -1,0 +1,89 @@
+name: E2E Tests
+
+on:
+  pull_request:
+    branches: [main, next]
+
+jobs:
+  find-e2e-test-projects:
+    name: Find E2E Test Projects
+    runs-on: ubuntu-latest
+    outputs:
+      e2e-test-projects: ${{ steps.e2e-test-projects.outputs.e2e-test-projects }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: e2e-test-projects
+        run: echo "e2e-test-projects=$(find e2e -maxdepth 1 -type d -printf "%f\n" | jq --raw-input --slurp --compact-output 'split("\n")[1:-1]')" >> ${GITHUB_OUTPUT}
+
+  run-tests:
+    needs:
+      - find-e2e-test-projects
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJson(needs.find-e2e-test-projects.outputs.e2e-test-projects) }}
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        node-version: [18, 20]
+
+        # When not on main, exclude non-latest node version and macOS/Windows
+        isMain:
+          - ${{ github.base_ref == 'main' }}
+        exclude:
+          - isMain: false
+            node-version: 18
+          - isMain: false
+            os: macOS-latest
+          - isMain: false
+            os: windows-latest
+
+    name: e2e/${{ matrix.project }}/${{ matrix.os }}/node-${{ matrix.node-version}}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Set OS environment variable
+        run: echo "__E2E_WORKFLOW_OS__=${{ matrix.os }}" >> $GITHUB_ENV
+
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Action Setup (pnpm)
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright and browsers
+        run: pnpm playwright install --with-deps
+
+      - name: Run sources
+        working-directory: ./e2e/${{ matrix.project }}
+        run: pnpm run sources
+
+      - name: Run dev mode tests
+        working-directory: ./e2e/${{ matrix.project }}
+        run: pnpm run test:dev
+
+      - name: Build
+        working-directory: ./e2e/${{ matrix.project }}
+        run: pnpm run build
+
+      - name: Run preview mode tests
+        working-directory: ./e2e/${{ matrix.project }}
+        run: pnpm run test:preview
+
+      - name: Upload Playwright reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report__e2e_${{ matrix.project }}_${{ matrix.os }}_node-${{ matrix.node-version }}
+          path: e2e/${{ matrix.project }}/playwright-report
