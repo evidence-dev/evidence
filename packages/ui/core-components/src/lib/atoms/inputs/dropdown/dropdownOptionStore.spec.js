@@ -11,35 +11,37 @@ describe('dropdownOptionStore', () => {
 		vi.useRealTimers();
 	});
 
-	describe("destruction", () => {
+	describe('destruction', () => {
 		it('should not add options after destruction', async () => {
-			const {addOptions, destroy, options} = dropdownOptionStore();
-			destroy()
-			addOptions({value: 1, label: 'test'})
+			const { addOptions, destroy, options } = dropdownOptionStore();
+			destroy();
+			addOptions({ value: 1, label: 'test' });
 			await vi.advanceTimersByTimeAsync(100);
 			expect(get(options)).toHaveLength(0);
-		})
+		});
 		it('should not remove options after destruction', async () => {
-			const {addOptions, removeOptions, destroy, options} = dropdownOptionStore();
-			const opt = {value: 1, label: 'test'}
-			addOptions(opt)
+			const { addOptions, removeOptions, destroy, options } = dropdownOptionStore();
+			const opt = { value: 1, label: 'test' };
+			addOptions(opt);
 			await vi.advanceTimersByTimeAsync(100);
-			destroy()
-			removeOptions(opt)
+			destroy();
+			removeOptions(opt);
 			await vi.advanceTimersByTimeAsync(100);
 			expect(get(options)).toHaveLength(1);
-		})
+		});
 		it('should not select options after destruction', async () => {
-			const {addOptions,toggleSelected, destroy, options} = dropdownOptionStore({noDefault: true});
-			const opt = {value: 1, label: 'test'}
-			addOptions(opt)
+			const { addOptions, toggleSelected, destroy, options } = dropdownOptionStore({
+				noDefault: true
+			});
+			const opt = { value: 1, label: 'test' };
+			addOptions(opt);
 			await vi.advanceTimersByTimeAsync(100);
-			destroy()
-			toggleSelected(opt)
+			destroy();
+			toggleSelected(opt);
 			await vi.advanceTimersByTimeAsync(100);
 			expect(get(options)[0].selected).toBe(false);
-		})
-	})
+		});
+	});
 	// TODO: Undefined Options
 	describe('initialization', () => {
 		describe('select all by default', () => {
@@ -156,8 +158,7 @@ describe('dropdownOptionStore', () => {
 				expect(get(options)[0].label).toBe('should be selected');
 				expect(get(options)[0].selected).toBe(true);
 				expect(get(options)[1].selected).toBe(false);
-
-			})
+			});
 		});
 		describe('default selections', () => {
 			it('should select the first option by default for single-selects', async () => {

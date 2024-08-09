@@ -117,7 +117,7 @@
 		if (JSON.stringify(newValue) !== JSON.stringify($inputs[name])) {
 			$inputs[name] = newValue;
 		}
-	}
+	};
 
 	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
 	$: if ($selectedOptions && hasHadSelection) {
