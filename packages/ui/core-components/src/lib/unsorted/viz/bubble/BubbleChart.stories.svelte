@@ -112,6 +112,14 @@
 				control: 'select',
 				options: ['canvas', 'svg']
 			},
+			downloadableData: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			downloadableImage: {
+				control: 'boolean',
+				options: [true, false]
+			},
 			echartsOptions: {
 				control: 'object'
 			},

@@ -20,7 +20,7 @@ The PDF reflects the current state of the page - for example if queries are show
 
 ## CSV
 
-Data can be exported as CSV files, using the "Download data" option in the bottom right of a component.
+Data can be exported as CSV files, using the "Download Data" option in the bottom right of a component.
 
 To see the download option, hover over the component. The following components support CSV downloads:
 

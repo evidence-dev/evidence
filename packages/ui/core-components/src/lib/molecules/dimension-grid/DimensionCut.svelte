@@ -104,6 +104,15 @@
 			(v) => ![...results].map((d) => d.dimensionValue).includes(v)
 		);
 	}
+
+	//find missing values
+	/** @type {string[]} */
+	let missingValues = [];
+	$: if (Array.isArray(selectedValue)) {
+		missingValues = selectedValue.filter(
+			(v) => ![...results].map((d) => d.dimensionValue).includes(v)
+		);
+	}
 </script>
 
 <!-- {dimensionCutQuery} -->
@@ -125,8 +134,9 @@
 			{$results.error}
 		</p>
 		{#if loaded?.length > 0 || (Array.isArray(selectedValue) && selectedValue.length > 0)}
+		{#if loaded?.length > 0 || (Array.isArray(selectedValue) && selectedValue.length > 0)}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
-			<div class="transition-all" style={`min-height:${minRem}rem;`}>
+			<div class="transition-all" style={`min-height:${minRem}rem`}>
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
