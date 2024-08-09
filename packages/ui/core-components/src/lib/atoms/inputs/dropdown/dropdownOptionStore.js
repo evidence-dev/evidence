@@ -1,3 +1,4 @@
+// @ts-check
 import { derived, get, readonly, writable } from 'svelte/store';
 import { batchUp } from '@evidence-dev/sdk/utils';
 import merge from 'lodash/merge';
@@ -5,10 +6,7 @@ import { z } from 'zod';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable<T> */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable<T> */
-
-/**
- * @typedef {z.infer<typeof DropdownOptionSchema>} DropdownOption
- */
+/** @typedef {ReturnType<typeof batchUp<DropdownOption[] | DropdownOption>>} DropdownOptionBatchUp */
 
 const DropdownOptionSchema = z.object({
 	label: z.union([z.string(), z.number()]).optional().nullable(),
@@ -20,7 +18,10 @@ const DropdownOptionSchema = z.object({
 });
 
 /**
- *
+ * @typedef {z.infer<typeof DropdownOptionSchema>} DropdownOption
+ */
+
+/**
  * @param {unknown} v
  * @returns {v is DropdownOption}
  */
@@ -36,7 +37,7 @@ const isDropdownOption = (v) => DropdownOptionSchema.safeParse(v).success;
  * @typedef {Object} DropdownOptionStoreOpts
  * @property {boolean} [multiselect=false]
  * @property {DropdownOption[]} [initialOptions] This should be pulled from $inputs[name].rawValues
- * @property {((string | number)[])} defaultValues
+ * @property {((string | number)[])} [defaultValues]
  * @property {boolean} [noDefault=false] Does not select the first value by default
  * @property {boolean} [selectAllByDefault=false]
  */
@@ -56,14 +57,18 @@ export const dropdownOptionStore = (opts = {}) => {
 	const config = merge({}, defaultOpts, opts);
 
 	/** @type {Writable<DropdownOption[]>} */
-	const options = writable(hygiene(config.initialOptions));
+	const options = writable(hygiene(config.initialOptions ?? []));
 
+	/**
+	 * @param {DropdownOption[]} $options
+	 * @returns {DropdownOption[]}
+	 */
 	const getSelected = ($options) => $options.filter((option) => option.selected);
 	/** @type {Readable<DropdownOption[]>} */
 	const selectedOptions = derived(
 		options,
 		($value) => getSelected($value),
-		getSelected(config.initialOptions)
+		getSelected(config.initialOptions ?? [])
 	);
 
 	let sortingPaused = false;
@@ -76,68 +81,68 @@ export const dropdownOptionStore = (opts = {}) => {
 	const defaults = new Set(config.defaultValues);
 	if (!config.multiselect && defaults.size > 1) {
 		defaults.clear();
-		defaults.add(config.defaultValues[0]);
+		if (config.defaultValues?.length) defaults.add(config.defaultValues[0]);
 		console.debug('Single-select dropdowns only accept one default value.');
 	}
-	if (config.initialOptions.length > 0) {
+	if ((config.initialOptions?.length ?? 0) > 0) {
 		// We don't apply anything with defaults
 		defaults.clear();
 	}
 	let selectFirst =
 		!config.multiselect &&
 		!config.noDefault &&
-		config.defaultValues.length === 0 &&
-		!config.initialOptions.some((opt) => opt.selected);
+		config.defaultValues?.length === 0 &&
+		!config.initialOptions?.some((opt) => opt.selected);
 	let selectAll = config.multiselect && config.selectAllByDefault && !config.initialOptions?.length;
 
 	let destroyed = false;
 	return {
-		/**
-		 * @param {...DropdownOption} option
-		 */
-		addOptions: batchUp(
-			/**
-			 * @param  {...(DropdownOption[] | DropdownOption)} newOptions
-			 */
-			(...newOptions) => {
-				if (destroyed) return;
-				const opts = newOptions.flat();
-				options.update(($options) => {
-					opts.forEach((option) => {
-						if (!isDropdownOption(option)) {
-							return;
-						}
+		addOptions: /** @type {DropdownOptionBatchUp} */ (
+			batchUp(
+				/**
+				 * @param  {...(DropdownOption[] | DropdownOption)} newOptions
+				 */
+				(...newOptions) => {
+					if (destroyed) return;
+					const opts = newOptions.flat();
+					options.update(($options) => {
+						opts.forEach((option) => {
+							if (!isDropdownOption(option)) {
+								return;
+							}
 
-						if (selectFirst) {
-							option.selected = true;
-							selectFirst = false;
-						}
+							if (selectFirst) {
+								option.selected = true;
+								selectFirst = false;
+							}
 
-						// Apply defaults
-						if (defaults.has(option.value)) {
-							option.selected = true;
-							defaults.delete(option.value);
-						}
+							// Apply defaults
+							if (option.value && defaults.has(option.value)) {
+								option.selected = true;
+								defaults.delete(option.value);
+							}
 
-						// Apply defaults for option
-						if (!('__auto' in option)) option.__auto = false;
-						if (!('selected' in option)) option.selected = false;
-						if (!('idx' in option)) option.idx = -1; // non-auto options float to the top
-						const exists = $options.find((other) => optEq(other, option));
-						if (selectAll) option.selected = true;
+							// Apply defaults for option
+							if (!('__auto' in option)) option.__auto = false;
+							if (!('selected' in option)) option.selected = false;
+							if (!('idx' in option)) option.idx = -1; // non-auto options float to the top
+							const exists = $options.find((other) => optEq(other, option));
+							if (selectAll) option.selected = true;
+							if (exists && exists.__removeOnDeselect) exists.__removeOnDeselect = false;
 
-						if (!exists) $options.push(option);
+							if (!exists) $options.push(option);
+						});
+						return $options;
 					});
-					return $options;
-				});
-				selectAll = false;
-			},
-			100
+					selectAll = false;
+				},
+				100
+			)
 		),
 		/**
 		 * @param  {...DropdownOption} removeOptions
 		 */
-		removeOptions: batchUp(
+		removeOptions: /** @type {DropdownOptionBatchUp} */ (batchUp(
 			/** @param {...(DropdownOption[] | DropdownOption)} removeOptions */
 			(...removeOptions) => {
 				if (destroyed) return;
@@ -154,13 +159,13 @@ export const dropdownOptionStore = (opts = {}) => {
 				});
 			},
 			100
-		),
+		)),
 		/**
 		 * @param  {...DropdownOption} toggleOptions
 		 * @returns {void}
 		 */
-		toggleSelected: batchUp(
-			/** @param {...(DropdownOption[] | DropdownOption)} removeOptions */
+		toggleSelected: /** @type {DropdownOptionBatchUp} */ (batchUp(
+			/** @param {...(DropdownOption[] | DropdownOption)} toggleOptions */
 			(...toggleOptions) => {
 				if (destroyed) return;
 				const toToggle = toggleOptions.flat();
@@ -171,6 +176,7 @@ export const dropdownOptionStore = (opts = {}) => {
 							if (toToggle.find((x) => optEq(x, v))) {
 								v.selected = !v.selected;
 							}
+							console.log({ v });
 							a.push(v);
 							return a;
 						}, /** @type {DropdownOption[]} */ ([]));
@@ -181,20 +187,19 @@ export const dropdownOptionStore = (opts = {}) => {
 						const toSelect = toToggle.at(-1);
 
 						const output = $options.reduce((a, v) => {
-							if (optEq(v, toSelect)) {
+							if (toSelect && optEq(v, toSelect)) {
 								v.selected = true;
 							}
 
 							a.push(v);
 							return a;
 						}, /** @type {DropdownOption[]} */ ([]));
-
 						return output;
 					}
 				});
 			},
 			100
-		),
+		)),
 		selectAll: () => {
 			if (destroyed) return;
 			options.update((o) => o.map((o) => ({ ...o, selected: true })));
@@ -222,6 +227,12 @@ export const dropdownOptionStore = (opts = {}) => {
 	};
 };
 
+/**
+ * 
+ * @param {DropdownOption[]} $options 
+ * @param {boolean} [skipSort=false] 
+ * @returns 
+ */
 const hygiene = ($options, skipSort = false) => {
 	// Process __removeOnDeselect
 	$options = $options.filter((o) => !(o.__removeOnDeselect && !o.selected));
@@ -251,7 +262,7 @@ const hygiene = ($options, skipSort = false) => {
 
 		// Sort by index
 		if (a.idx !== b.idx) {
-			return a.idx - b.idx;
+			return (a.idx ?? 0) - (b.idx ?? 0);
 		}
 
 		// Sort by label
@@ -264,11 +275,18 @@ const hygiene = ($options, skipSort = false) => {
 			return a.label - b.label;
 		}
 		// Compare strings
-		const labelDiff = a.label.toString().localeCompare(b.label.toString());
-		if (labelDiff !== 0) return labelDiff;
-
+		if (typeof a.label !== "undefined" && a.label !== null && typeof b.label !== "undefined" && b.label !== null) {
+			const labelDiff = a.label.toString().localeCompare(b.label.toString());
+			if (labelDiff !== 0) return labelDiff;
+		}
+		
 		// If labels are the same, sort by value
-		return a.value.toString().localeCompare(b.value.toString());
+		if (typeof a.value !== "undefined" && a.value !== null && typeof b.value !== "undefined" && b.value !== null) {
+			const valueDiff = a.value.toString().localeCompare(b.value.toString());
+			if (valueDiff !== 0) return valueDiff;
+		}
+		
+		return 0
 	});
 
 	return $options;
