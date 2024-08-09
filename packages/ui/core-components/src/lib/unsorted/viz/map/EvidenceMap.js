@@ -1,5 +1,5 @@
 import { sharedPromise } from '@evidence-dev/sdk/utils';
-import debounce from 'lodash.debounce';
+import { debounce } from 'perfect-debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';

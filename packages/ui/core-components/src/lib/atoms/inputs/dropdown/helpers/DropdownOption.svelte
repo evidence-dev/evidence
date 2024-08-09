@@ -1,5 +1,7 @@
 <script context="module">
 	export const evidenceInclude = true;
+
+	let manualIdx = 0;
 </script>
 
 <script>
@@ -14,6 +16,10 @@
 	 * For internal use only
 	 */
 	export let __auto = false;
+
+	if (!__auto) {
+		idx = manualIdx++;
+	}
 
 	/** @type {import("../constants.js").EvidenceDropdownContext} */
 	const dropdownContext = getContext(DropdownContext);

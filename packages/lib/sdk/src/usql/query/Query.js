@@ -711,7 +711,6 @@ DESCRIBE ${this.text.trim()}
 	};
 
 	/**
-	 *
 	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
 	 * @param {QueryValue<any>} [initialQuery]
@@ -1195,10 +1194,14 @@ DESCRIBE ${this.text.trim()}
 	/**
 	 * @param {string} searchTerm
 	 * @param {string | string[]} searchCol
-	 * @param {number} searchThreshold
+	 * @param {number | undefined} [searchThreshold]
 	 * @returns {QueryValue<RowType & {similarity: number}>}
 	 */
-	search = (searchTerm, searchCol, searchThreshold = 0.5) => {
+	search = (searchTerm, searchCol, searchThreshold) => {
+		if (typeof searchThreshold === 'undefined' || searchThreshold < 0 || searchThreshold > 1) {
+			// By default, increase threshold as more characters are added
+			searchThreshold = 1 - 1 / searchTerm.length;
+		}
 		/** @type {import('../../types/duckdb-wellknown.js').DescribeResultRow[]} */
 		const colsWithSimilarity = [
 			...this.#columns,
