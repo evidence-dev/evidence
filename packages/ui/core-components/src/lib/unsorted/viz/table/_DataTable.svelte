@@ -438,7 +438,7 @@
 		<!-- header and last row are 22.5+22.5 = 45px, middle rows are 23 -->
 		{@const ROW_HEIGHT = 23}
 		{@const Y_AXIS_PADDING = 45 + 234}
-		<div class="pl-8 pt-4">
+		<div class="pt-4">
 			<svelte:self
 				{...$$props}
 				rows={1 + Math.round((innerHeight - Y_AXIS_PADDING) / ROW_HEIGHT)}

@@ -11,9 +11,7 @@
 	/** @type {import("svelte/action").Action<HTMLDialogElement, boolean>}*/
 	function popup(node, isOpen) {
 		if (isOpen) {
-			const scrollY = window.scrollY;
 			node.showModal();
-			window.scrollTo(0, scrollY);
 		} else {
 			node.close();
 		}
@@ -45,12 +43,14 @@
 		return {
 			update(isOpen) {
 				if (isOpen) {
-					const scrollY = window.scrollY;
 					node.showModal();
-					window.scrollTo(0, scrollY);
 					document.body.style.overflow = 'hidden';
 				} else {
-					node.close();
+					node.addEventListener('animationend', () => {
+						if (!open) {
+							node.close();
+						}
+					});
 					document.body.style.overflow = '';
 				}
 			},
@@ -63,8 +63,12 @@
 	}
 </script>
 
-<dialog class="w-[90vw] rounded-lg fixed" use:popup={open}>
-	<button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+<dialog
+	use:popup={open}
+	class="w-[90vw] rounded-lg fixed border shadow-lg {open ? 'slideIn backdropFadeIn' : 'slideOut'}"
+>
+	<button
+		class="absolute top-4 right-[18.5px] text-gray-900 hover:bg-gray-100 rounded-lg p-1 transition-all duration-500"
 		><Icon class="w-6 h-6" src={X} /></button
 	>
 	<div class="py-2 px-6">
@@ -75,6 +79,40 @@
 <style lang="postcss">
 	/* your styles go here */
 	dialog::backdrop {
-		@apply backdrop-blur-sm;
+		@apply backdrop-blur-sm bg-white/80;
+	}
+
+	.slideOut::backdrop {
+		all: unset;
+	}
+
+	@keyframes slideInFromBottom {
+		0% {
+			transform: translateY(40%);
+			opacity: 0;
+		}
+		100% {
+			transform: translateY(0%);
+			opacity: 1;
+		}
+	}
+
+	.slideIn {
+		animation: slideInFromBottom 0.7s ease-in-out;
+	}
+
+	@keyframes slideOutToBottom {
+		0% {
+			transform: translateY(0%);
+			opacity: 1;
+		}
+		100% {
+			transform: translateY(40%);
+			opacity: 0;
+		}
+	}
+
+	.slideOut {
+		animation: slideOutToBottom 0.4s ease-in-out;
 	}
 </style>
