@@ -11,7 +11,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import QueryLoad from '../../atoms/query-load/QueryLoad.svelte';
-	import { slide } from 'svelte/transition';
+	import { slide, scale } from 'svelte/transition';
 
 	/** @type {import("@evidence-dev/sdk/usql").DescribeResultRow} */
 	export let dimension;
@@ -130,10 +130,11 @@
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
-						transition:slide|local={{ duration: 300 }}
+						animate:flip={{ duration: 300 }}
+						out:slide|local={{ duration: 300 }}
+						in:scale|local={{ duration: 300 }}
 						on:click={updateSelected(row)}
 						on:keydown={updateSelected(row)}
-						animate:flip={{ delay: 300, duration: 200 }}
 						role="button"
 						tabindex="-1"
 					>
