@@ -86,7 +86,10 @@
 	$: ({ hasQuery, query } = $results);
 
 	// Extract initial state
-	const initial = name in $inputs && 'rawValues' in $inputs[name] ? $inputs[name].rawValues : [];
+	const initial =
+		name in $inputs && 'rawValues' in $inputs[name] && Array.isArray($inputs[name].rawValues)
+			? $inputs[name].rawValues
+			: [];
 
 	const state = dropdownOptionStore({
 		multiselect: multiple,
@@ -110,30 +113,32 @@
 	} = state;
 	onDestroy(destroyStore);
 
+	const set = (newValue) => {
+		if (JSON.stringify(newValue) !== JSON.stringify($inputs[name])) {
+			$inputs[name] = newValue;
+		}
+	}
+
 	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
 	$: if ($selectedOptions && hasHadSelection) {
 		const values = $selectedOptions;
-		console.log({
-			$selectedOptions,
-			hasHadSelection
-		});
 		if (multiple) {
-			$inputs[name] = {
+			set({
 				label: values.map((x) => x.label).join(', '),
 				value: values.length
 					? `(${values.map((x) => duckdbSerialize(x.value))})`
 					: `(select null where 0)`,
 				rawValues: values
-			};
+			});
 		} else {
 			if (!values.length) {
-				$inputs[name] = { label: '', value: null, rawValues: [] };
+				set({ label: '', value: null, rawValues: [] });
 			} else if (values.length) {
-				$inputs[name] = {
+				set({
 					label: values[0].label,
 					value: duckdbSerialize(values[0].value, { serializeStrings: false }),
 					rawValues: values
-				};
+				});
 			}
 		}
 	}
