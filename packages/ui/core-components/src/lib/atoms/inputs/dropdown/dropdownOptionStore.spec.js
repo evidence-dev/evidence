@@ -141,6 +141,23 @@ describe('dropdownOptionStore', () => {
 				await vi.advanceTimersByTimeAsync(100);
 				expect(get(options)[0].value).toBe(0);
 			});
+			it('should not make a default selection if the initial options include a selected option', async () => {
+				const { addOptions, options } = dropdownOptionStore({
+					initialOptions: [
+						{
+							value: 1,
+							label: 'should be selected',
+							selected: true
+						}
+					]
+				});
+				addOptions({ value: 0, label: 'test' });
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options)[0].label).toBe('should be selected');
+				expect(get(options)[0].selected).toBe(true);
+				expect(get(options)[1].selected).toBe(false);
+
+			})
 		});
 		describe('default selections', () => {
 			it('should select the first option by default for single-selects', async () => {
