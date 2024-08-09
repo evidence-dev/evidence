@@ -7,10 +7,15 @@ import * as chokidar from 'chokidar';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
-import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 
 import { loadEnv } from 'vite';
+
+const increaseNodeMemoryLimit = () => {
+	// Don't override the memory limit if it's already set
+	if (process.env.NODE_OPTIONS?.includes('--max-old-space-size')) return;
+	process.env.NODE_OPTIONS = `${process.env.NODE_OPTIONS || ''} --max-old-space-size=4096`;
+};
 
 const loadEnvFile = () => {
 	const envFile = loadEnv('', '.', ['EVIDENCE_']);
@@ -158,11 +163,18 @@ const strictMode = function () {
 const buildHelper = function (command, args) {
 	const watchers = runFileWatcher(watchPatterns);
 	const flatArgs = flattenArguments(args);
+
 	// Run svelte kit build in the hidden directory
 	const child = spawn(command, flatArgs, {
 		shell: true,
 		cwd: '.evidence/template',
-		stdio: 'inherit'
+		stdio: 'inherit',
+		env: {
+			...process.env,
+			// used for source query HMR
+			EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
+			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
+		}
 	});
 	// Copy the outputs to the root of the project upon successful exit
 	child.on('exit', function (code) {
@@ -187,6 +199,7 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -222,7 +235,13 @@ ${chalk.bold('[!] Unable to load source manifest')}
 			shell: true,
 			detached: false,
 			cwd: '.evidence/template',
-			stdio: 'inherit'
+			stdio: 'inherit',
+			env: {
+				...process.env,
+				// used for source query HMR
+				EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
+				EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
+			}
 		});
 
 		child.on('exit', function () {
@@ -236,6 +255,7 @@ prog
 	.option('--include-values', 'Includes Environment Variable Values, this will show secrets!')
 	.describe('Prints out Evidence variables from the environment and .env file')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		const { 'include-values': includeValues } = args;
 		loadEnvFile();
 		const evidenceVars = Object.fromEntries(
@@ -253,6 +273,7 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -269,6 +290,7 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs and fails on error')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -293,8 +315,7 @@ prog
 	.example('npx evidence sources --sources needful_things --queries orders,reviews')
 	.example('npx evidence sources --queries needful_things.orders,needful_things.reviews')
 	.example('npx evidence sources --sources needful_things,social_media')
-	.action(async (opts) => {
-		if (opts.debug) process.env.VITE_EVIDENCE_DEBUG = true;
+	.action(async () => {
 		if (process.argv.some((arg) => arg.includes('build:sources'))) {
 			console.log(
 				chalk.bold.red(
@@ -307,51 +328,27 @@ prog
 				)
 			);
 		}
-
+		if (!('EVIDENCE_DATA_DIR' in process.env)) {
+			process.env.EVIDENCE_DATA_DIR = './.evidence/template/static/data';
+		}
+		if (!('EVIDENCE_DATA_URL_PREFIX' in process.env)) {
+			process.env.EVIDENCE_DATA_URL_PREFIX = 'static/data';
+		}
 		loadEnvFile();
-		if (!opts.debug)
-			process.on('uncaughtException', (e) => {
-				console.error(e.message);
-				process.exit(1);
-			});
-		const sources = opts.sources?.split(',') ?? null;
-		const queries = opts.queries?.split(',') ?? null;
 
-		const isExampleProject = Boolean(process.env.__EXAMPLE_PROJECT);
-
-		if (!isExampleProject) {
-			const templatePath = path.join('.evidence', 'template');
-			await fs.mkdir(templatePath, { recursive: true });
-			process.chdir(templatePath);
-		}
-
-		const dataDir = path.join('static', 'data');
-		const metaDir = path.join('.evidence-queries');
-
-		if (opts.debug) {
-			console.log('Building sources in', {
-				dataDir,
-				metaDir,
-				cwd: process.cwd(),
-				resolved: {
-					dataDir: path.resolve(dataDir),
-					metaDir: path.resolve(metaDir)
-				}
-			});
-		}
-
+		// The data directory is defined at import time (because we aren't using getters, and it is set once)
+		// So we need to import it here to give the opportunity to override it above
+		const cli = await import('@evidence-dev/sdk/legacy-compat').then((m) => m.cli);
 		logQueryEvent('build-sources-start');
-		await updateDatasourceOutputs(path.join('static', 'data'), '.evidence-queries', {
-			sources: sources ? new Set(sources) : sources,
-			queries: queries ? new Set(queries) : queries,
-			only_changed: opts.changed
-		});
+		await cli(...process.argv);
+		return;
 	});
 
 prog
 	.command('preview')
 	.describe('preview the production build')
 	.action((args) => {
+		increaseNodeMemoryLimit();
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -378,6 +375,15 @@ prog
 		child.on('exit', function () {
 			child.kill();
 		});
+	});
+
+prog
+	.command('upgrade')
+	.describe('upgrade evidence to the latest version')
+	.action(async () => {
+		const cli = await import('@evidence-dev/sdk/legacy-compat').then((m) => m.cli);
+		await cli(...process.argv);
+		return;
 	});
 
 prog.parse(process.argv);

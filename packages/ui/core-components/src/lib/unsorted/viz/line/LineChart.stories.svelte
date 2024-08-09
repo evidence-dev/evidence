@@ -1,6 +1,8 @@
 <script>
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
-	import { genSeries } from '@evidence-dev/component-utilities/tests/getCompletedData.fixture';
+
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 
 	import LineChart from './LineChart.svelte';
 	import Chart from '../core/Chart.svelte';
@@ -29,19 +31,18 @@
 	component={LineChart}
 	argTypes={{
 		title: { control: 'text' },
-		series: { control: 'text' }
+		series: { control: 'text' },
+		downloadableData: {
+			control: 'boolean',
+			options: [true, false]
+		},
+		downloadableImage: {
+			control: 'boolean',
+			options: [true, false]
+		}
 	}}
 	args={{
-		data: genSeries({
-			xHasGaps: false,
-			yHasNulls: false,
-			seriesAlwaysExists: true,
-			maxSeriesLen: 10,
-			maxSeriesCount: 2,
-			xType: 'number'
-		}).data,
-		x: 'time',
-		y: 'value'
+		data: Query.create('select * from series_demo_source.numeric_series', query)
 	}}
 />
 
@@ -49,7 +50,7 @@
 	<LineChart {...args} />
 </Template>
 
-<Story name="Default" />
+<Story name="Default" args={{ x: 'x', y: 'y', series: 'series' }} />
 
 <Story
 	name="X Axis Unsorted"
@@ -60,7 +61,9 @@
 			{ time: 4, value: 0 },
 			{ time: 1, value: 1 },
 			{ time: 3, value: 10 }
-		]
+		],
+		x: 'time',
+		y: 'value'
 	}}
 />
 

@@ -129,7 +129,6 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	}
 
 	const mode = filename !== ':memory:' ? 'READ_ONLY' : 'READ_WRITE';
-
 	const db = await Database.create(filename, {
 		access_mode: mode,
 		custom_user_agent: 'evidence-dev'
@@ -143,7 +142,6 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 				encoding: 'utf-8'
 			});
 			await conn.exec(initScript);
-			console.log(`Ran Initialize`, initScript);
 		}
 	}
 

@@ -1,19 +1,19 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "5.1.2",
+	"version": "5.1.5",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",
 	"engines": {
-		"node": ">=16"
+		"node": ">=18"
 	},
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
-		"build": "parcel build",
+		"build": "parcel build --no-cache",
 		"watch": "parcel watch",
 		"dev": "parcel watch",
-		"prepublish": "parcel build"
+		"prepublish": "parcel build --no-cache"
 	},
 	"dependencies": {
 		"blueimp-md5": "^2.19.0",

@@ -1,8 +1,8 @@
 import path from 'path';
-import { findDirectory } from '../../lib/pkg-types.helpers.js';
 import fs from 'fs/promises';
 import chalk from 'chalk';
 import { loadSourceConfig } from './loadSourceConfig.js';
+import { sourcesDirectory } from '../../lib/projectPaths.js';
 
 /**
  *
@@ -23,10 +23,9 @@ const loadSource = async (sourcePath) => {
  * @returns {Promise<Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>>}
  */
 export const loadSources = async () => {
-	const sourceDir = await findDirectory('sources');
 	const sourceDirs = await fs
-		.readdir(sourceDir)
-		.then((dirs) => dirs.map((dir) => path.join(sourceDir, dir)));
+		.readdir(sourcesDirectory)
+		.then((dirs) => dirs.map((dir) => path.join(sourcesDirectory, dir)));
 
 	return /** @type {Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>}*/ (
 		await Promise.all(

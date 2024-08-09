@@ -141,7 +141,7 @@ const buildRow = async (
 		const col = schema[colName];
 		if ('type' in col) {
 			switch (col.type) {
-				case 'fk':
+				case 'fk': {
 					const targetTablePath = col.target?.tablePath;
 					if (!targetTablePath) {
 						throw new Error(
@@ -160,6 +160,7 @@ const buildRow = async (
 
 					output[colName] = targetRow[targetField];
 					break;
+				}
 				case 'id':
 					output[colName] = rowNum;
 					break;

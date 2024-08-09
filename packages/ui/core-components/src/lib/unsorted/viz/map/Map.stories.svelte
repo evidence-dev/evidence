@@ -1,6 +1,6 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
-	export const meta = { title: 'Charts/Map', decorators: [() => WithScopedInputStore] };
+	export const meta = { title: 'Charts/Map' };
 </script>
 
 <script>
@@ -14,14 +14,38 @@
 	import Areas from './components/Areas.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 
-	const data = Query.create(`SELECT * from locations order by point_name asc limit 20`, query);
-	const la_zip_sales = Query.create(`select * from la_zip_sales where zip_code <> 90704`, query);
-	const la_locations = Query.create(`select * from la_locations`, query);
+	/** @type {typeof query} */
+	const slowQuery = async (...args) => {
+		await new Promise((resolve) => setTimeout(resolve, 5_000));
+		return query(...args);
+	};
+
+	const data = Query.create(
+		`SELECT * from locations order by point_name asc limit 20 order by 1`,
+		query
+	);
+
+	const la_zip_sales = Query.create(
+		`select * from la_zip_sales where zip_code <> 90704 order by 1`,
+		query
+	);
+
+	const slow_la_zip_sales = Query.create(
+		`select * from la_zip_sales where zip_code <> 90704 order by 1 limit 100`,
+		slowQuery
+	);
+
+	const la_locations = Query.create(`select * from la_locations order by 1`, query);
+
+	const slow_la_locations = Query.create(
+		`select * from la_locations order by 1 limit 100`,
+		slowQuery
+	);
 </script>
 
-<Story name="Basic Usage">
+<!-- Exlcuded from chromatic, map layers don't reliably load in the same order -->
+<Story name="Basic Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<BaseMap title="My Map" height="300">
 		<Points
 			data={la_locations}
@@ -62,7 +86,7 @@
 		/>
 		<Areas
 			data={la_zip_sales}
-			geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json"
+			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
 			areaCol="zip_code"
 			name="area"
 			value="sales"
@@ -76,7 +100,7 @@
 
 	<AreaMap
 		data={la_zip_sales}
-		geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json"
+		geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
 		value="sales"
 		geoId="ZCTA5CE10"
 		areaCol="zip_code"
@@ -85,6 +109,26 @@
 	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" />
 </Story>
 
-<Story name="Point Map">
+<Story name="Area Map" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_code" />
+</Story>
+
+<Story name="Area Map - Loading" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<AreaMap data={slow_la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_code" />
+</Story>
+
+<Story name="Bubble Map" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" />
+</Story>
+
+<Story name="Bubble Map - Loading" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<BubbleMap data={slow_la_locations} lat="lat" long="long" size="sales" />
+</Story>
+
+<Story name="Points Map" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap data={la_locations} lat="lat" long="long" />
+</Story>
+
+<Story name="Points Map - Loading" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<PointMap data={slow_la_locations} lat="lat" long="long" />
 </Story>

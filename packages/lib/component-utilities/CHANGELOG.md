@@ -1,5 +1,67 @@
 # @evidence-dev/component-utilities
 
+## 3.2.8
+
+### Patch Changes
+
+- Updated dependencies [32035eeaa]
+  - @evidence-dev/sdk@1.3.8
+
+## 3.2.7
+
+### Patch Changes
+
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [fbdfe2dd6]
+  - @evidence-dev/sdk@1.3.7
+
+## 3.2.6
+
+### Patch Changes
+
+- Updated dependencies [3571b0b3a]
+  - @evidence-dev/sdk@1.3.6
+
+## 3.2.5
+
+### Patch Changes
+
+- Updated dependencies [08818477d]
+- Updated dependencies [db8326efa]
+  - @evidence-dev/sdk@1.3.5
+
+## 3.2.4
+
+### Patch Changes
+
+- Updated dependencies [20af8e6b6]
+- Updated dependencies [55bc6a52b]
+- Updated dependencies [e8a5d9964]
+  - @evidence-dev/sdk@1.3.4
+
+## 3.2.3
+
+### Patch Changes
+
+- Updated dependencies [244c795be]
+  - @evidence-dev/sdk@1.3.3
+
+## 3.2.2
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [f15071659]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [93a838ca2]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [3daa83ffc]
+- Updated dependencies [6cdedceb0]
+  - @evidence-dev/sdk@1.3.2
+
 ## 3.2.1
 
 ### Patch Changes

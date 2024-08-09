@@ -16,10 +16,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
-
-	if (Object.keys(duckdbQueries).length > 0) {
-		const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
-		const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError);
+	
+	const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
+	const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError);
+	if (validIds.length > 0) {
 
 		// prerendered queries: stuff without ${}
 		// reactive queries: stuff with ${}
@@ -58,7 +58,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				// Give initial states for these variables
 				/** @type {boolean} */
 				let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				/** @type {string]} */
+				/** @type {string} */
 				let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 
 
@@ -69,6 +69,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							${id}InitialStates.initialError = data.${id}
 						} else {
 							${id}InitialStates.initialData = data.${id}
+						}
+						if (data.${id}__DESCRIBE) {
+							${id}InitialStates.knownColumns = data.${id}__DESCRIBE
 						}
 					}
 				} else {
@@ -92,8 +95,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				$: __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
 
 				const __${id}Factory = Query.createReactive(
-					{ callback: $v => ${id} = $v, execFn: queryFunc },
-					{ id: '${id}', initialData: ${id}InitialStates.initialData, initialError: ${id}InitialStates.initialError }
+					{ callback: v => {
+						${id} = v
+					}, execFn: queryFunc },
+					{ id: '${id}', ...${id}InitialStates }
 				)
 
 				// Assign a value for the initial run-through
@@ -221,9 +226,13 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		if (import.meta?.hot) {
             if (typeof import.meta.hot.data.hmrHasRun === 'undefined') import.meta.hot.data.hmrHasRun = false
-	        import.meta.hot.on("vite:beforeUpdate", () => {
-				import.meta.hot.data.hmrHasRun = true
-				Query.emptyCache() // All bets are off
+
+			import.meta.hot.on("evidence:reset-queries", async (payload) => {
+				await $page.data.__db.updateParquetURLs(JSON.stringify(payload.latestManifest), true);
+				Query.emptyCache()
+				${validIds.map(id =>
+					`__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });`
+				).join('\n')}
 			})
 	    }
 		

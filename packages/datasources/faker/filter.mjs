@@ -22,7 +22,7 @@ export const filter = (rows, filters) => {
 	let outputRows = rows;
 	for (const filter of filters) {
 		switch (filter.type) {
-			case 'unique':
+			case 'unique': {
 				// O(n) unique function
 				/** @type {Record<string, boolean>} */
 				const uniq = {};
@@ -43,6 +43,7 @@ export const filter = (rows, filters) => {
 				outputRows = distinct;
 
 				break;
+			}
 			case 'ne':
 				outputRows = outputRows.filter((row) => {
 					// Map filter fields to their values in this row

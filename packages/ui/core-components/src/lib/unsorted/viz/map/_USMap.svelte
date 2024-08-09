@@ -134,6 +134,8 @@
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 	export let renderer = undefined;
+	export let downloadableData = undefined;
+	export let downloadableImage = undefined;
 
 	export let connectGroup = undefined;
 
@@ -335,6 +337,8 @@
 		{seriesOptions}
 		{printEchartsConfig}
 		{renderer}
+		{downloadableData}
+		{downloadableImage}
 		{connectGroup}
 	/>
 

@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import { EvidenceError } from '../../lib/EvidenceError.js';
 import path from 'path';
 import { readFileSync, statSync } from 'fs';
+import chalk from 'chalk';
+
 /**
  * @param {import("./Datasources.js").Datasource} mod
  * @param {import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}} source
@@ -16,45 +18,74 @@ export const wrapSimpleConnector = (mod, source) => {
 	/**
 	 * @type {import('./types.js').ProcessSourceFn}
 	 */
-	return async function* () {
+	return async function* (...args) {
+		const [, , utils] = args;
 		const runner = await mod.getRunner(source.options, source.dir);
 		// TODO: Use fsproxy instead of fs
 		/**
 		 *
 		 * @param {string} dir
-		 * @returns {AsyncGenerator<import('./types.js').QueryResultTable>}
+		 * @returns {AsyncGenerator<import('./types.js').QueryResultTable | EvidenceError>}
 		 */
 		const processDir = async function* (dir) {
 			const sourceFiles = await fs.readdir(dir, { withFileTypes: true });
 			for (const sourceFile of sourceFiles) {
+				// Why is the dirent interface so unstable?
+				// This behaves differently depending on which minor version of 18 / 20 you are using
+				const dirPath =
+					'parentPath' in sourceFile ? sourceFile.parentPath + '' : (sourceFile.path ?? dir);
 				if (sourceFile.name === 'connection.yaml' || sourceFile.name === 'connection.options.yaml')
 					continue;
 				if (sourceFile.isDirectory()) {
-					yield* processDir(path.join(source.dir, sourceFile.name));
+					yield* processDir(path.join(dirPath, sourceFile.name));
 					continue;
 				}
 
 				if (!sourceFile.isFile()) continue;
-				const sourceFilePath = path.join(source.dir, sourceFile.name);
+
+				const sourceFilePath = path.join(dirPath, sourceFile.name);
+				const sourceFileName = sourceFile.name.split('.').at(0) ?? '';
+
 				const stat = statSync(sourceFilePath);
 				let sourceFileContent;
-				if (stat.size > 1024 * 1024 * 128 /* 128 Megabytes */) {
-					console.warn('Will not load files larger than 128 Megabytes');
+				if (stat.size > 1024 * 1024 * 32 /* 32 Megabytes */) {
+					console.debug(chalk.dim('Will not eagerly load files larger than 32 Megabytes.'));
 					sourceFileContent = '';
 				} else {
 					sourceFileContent = readFileSync(sourceFilePath, 'utf-8');
 				}
 
-				yield {
-					name: /** @type {string} */ (sourceFile.name.split('.').at(0)),
-					content: sourceFileContent,
-					columnTypes: [],
-					...(await runner(
-						sourceFileContent,
-						sourceFilePath,
-						1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
-					))
-				};
+				// Check if it should be skipped, and return an empty result (this is handled above)
+				if (!utils.shouldRun(sourceFileName, sourceFileContent)) {
+					yield utils.escape(sourceFileName, sourceFileContent);
+					continue;
+				}
+
+				try {
+					yield {
+						name: /** @type {string} */ (sourceFileName),
+						content: sourceFileContent,
+						columnTypes: [],
+						...(await runner(
+							utils.subSourceVariables(sourceFileContent),
+							sourceFilePath,
+							source.buildOptions.batchSize ?? 1000 * 1000 // TODO: BatchSize configurable? Perhaps per-source plugin or per connection
+						))
+					};
+				} catch (e) {
+					let message = 'Unknown Error';
+					if (e instanceof Error) message = e.message;
+					if (e instanceof EvidenceError) {
+						e.metadata.tableName = sourceFileName;
+						yield e;
+					}
+					yield new EvidenceError(
+						message,
+						[sourceFileName ?? ''],
+						{ cause: e },
+						{ tableName: sourceFileName }
+					);
+				}
 			}
 		};
 

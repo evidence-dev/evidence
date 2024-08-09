@@ -64,7 +64,11 @@ export default (node, option) => {
 		if (seriesOptions) {
 			const reference_index = config.series.reduce(
 				(acc, { evidenceSeriesType }, reference_index) => {
-					if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+					if (
+						evidenceSeriesType === 'reference_line' ||
+						evidenceSeriesType === 'reference_area' ||
+						evidenceSeriesType === 'reference_point'
+					) {
 						acc.push(reference_index);
 					}
 					return acc;

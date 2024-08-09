@@ -43,7 +43,7 @@ See the pages for [Area Map](/components/area-map), [Point Map](/components/poin
   <Areas 
     data={la_zip_sales}
     areaCol=zip_code
-    geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json"
+    geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -128,7 +128,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -146,7 +146,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -165,7 +165,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -185,7 +185,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -199,6 +199,48 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     />
 </BaseMap>
 ```
+
+## Map Resources
+
+```sql all_geojson_urls
+select * exclude(properties)
+from geojson_urls
+order by scale, category, file
+```
+
+```sql useful_geojson_urls
+select * 
+from ${all_geojson_urls}
+where category in ('political_countries', 'political_states')
+or file ilike 'populated_places%'
+order by scale desc, category, file
+```
+
+Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com/) project, and hosted by [GeoJSON.xyz](https://geojson.xyz/).
+
+### Country, State, and City Locations
+
+<DataTable data={useful_geojson_urls} rows=100>
+    <Column id=file/>
+    <Column id=category/>
+    <Column id=scale/>
+    <Column id=summary/>
+    <Column id=size fmt='0.0,," MB"'/>
+    <Column id=url contentType=link title=URL/>
+</DataTable>
+
+<Details title="All GeoJSON Files">
+
+<DataTable data={all_geojson_urls} rows=all compact>
+    <Column id=file/>
+    <Column id=category/>
+    <Column id=scale/>
+    <Column id=summary/>
+    <Column id=size fmt='0.0,," MB"'/>
+    <Column id=url contentType=link title=URL/>
+</DataTable>
+
+</Details>
 
 
 ## Base Map Options
@@ -263,7 +305,11 @@ name="geoJsonUrl"
 required
 options="URL"
 >
-Path to source geoJSON data from - can be a URL or a file in your project. If the file is in your project, store it in a static folder in the root of your project.
+
+Path to source geoJSON data from - can be a URL (see [Map Resources](#map-resources)) or a file in your project. 
+
+If the file is in your project, store it in a `static` folder in the root of your project, and reference it as `geoJsonUrl="/your_file.geojson"`
+
 </PropListing>
 
 <PropListing
@@ -277,9 +323,9 @@ Column in the data that specifies the area each row belongs to.
 <PropListing
 name="geoId"
 required
-options="geoJSON field name"
+options="geoJSON property name"
 >
-Column in the GeoJSON that uniquely identifies each feature.
+Property in the GeoJSON that uniquely identifies each feature.
 </PropListing>
 
 <PropListing

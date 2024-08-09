@@ -13,6 +13,7 @@ import {
 import { sharedPromise } from '../../lib/sharedPromise.js';
 import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
+import { VITE_EVENTS } from '../../build-dev/vite/constants.js';
 import { sterilizeQuery } from './sterilizeQuery.js';
 
 /**
@@ -343,6 +344,7 @@ ${this.text.trim()}
 
 				this.#dataQueryTime = after - before;
 
+				this.#fetchLength();
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
@@ -365,9 +367,7 @@ ${this.text.trim()}
 		return resolved;
 	};
 	fetch = async () => {
-		return Promise.allSettled([this.#fetchColumns(), this.#fetchData(), this.#fetchLength()]).then(
-			() => this.value
-		);
+		return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -758,8 +758,6 @@ DESCRIBE ${this.text.trim()}
 							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined })
 						);
 
-				if (newQuery.hash === activeQuery.hash) return; // no-op
-
 				const fetched = newQuery.fetch();
 				let dataMaybePromise = fetched;
 				if (fetched instanceof Promise) {
@@ -827,7 +825,7 @@ DESCRIBE ${this.text.trim()}
 		Query.#devModeBootstrapped = true;
 		// We need to do some dev mode pipeing
 		import.meta.hot.data.hmr = false;
-		import.meta.hot.on('vite:beforeUpdate', () => {
+		import.meta.hot.on(VITE_EVENTS.RESET_QUERIES, () => {
 			if (import.meta.hot) import.meta.hot.data.hmr = true;
 			Query.emptyCache();
 		});
@@ -893,7 +891,6 @@ DESCRIBE ${this.text.trim()}
 			);
 
 		Query.#constructing = true;
-		console.log(opts.id);
 		const output = new Query(query, executeQuery, opts);
 		Query.#globalEmit('queryCreated', {
 			raw: output,
@@ -1085,6 +1082,7 @@ DESCRIBE ${this.text.trim()}
 			if (!Array.isArray(knownColumns))
 				throw new Error(`Expected knownColumns to be an array`, { cause: knownColumns });
 			this.#columns = knownColumns;
+			this.#sharedColumnsPromise.resolve(this);
 		} else {
 			resolveMaybePromise(
 				() => {
@@ -1233,9 +1231,9 @@ DESCRIBE ${this.text.trim()}
 				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
 				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
 				const exactSubMatch =
-					// escapedSearchTerm.length >= 4
-					taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`;
-				// : taggedSql`0`;
+					escapedSearchTerm.length >= 1
+						? taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`
+						: taggedSql`0`;
 				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
 			})
 			.join(',');

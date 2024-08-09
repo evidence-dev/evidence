@@ -1,4 +1,5 @@
-import { commands, env, window, workspace, Uri } from 'vscode';
+import { commands, window, workspace, Uri } from 'vscode';
+import * as path from 'path';
 
 import { Commands } from './commands';
 import { getWorkspaceFolder } from '../config';
@@ -8,7 +9,7 @@ import { getAppPageUri, isServerRunning, startServer } from './server';
 /**
  * Evidence app setting file location to configure data sources.
  */
-const settingsFilePath = '.evidence/template/evidence.settings.json';
+const settingsFilePath = path.join('.evidence', 'template', 'evidence.settings.json');
 
 /**
  * Evidence app settings page to configure data source(s).

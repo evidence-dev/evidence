@@ -415,7 +415,13 @@ queries:
 />
 <PropListing
     name=stackTotalLabel
-    description="Whether to show a total at the top of stacked bar chart"
+    description="If using labels, whether to show a total at the top of stacked bar chart"
+    options={['true', 'false']}
+    defaultValue=true
+/>
+<PropListing
+    name=seriesLabels
+    description="If using labels, whether to show series labels"
     options={['true', 'false']}
     defaultValue=true
 />
@@ -644,6 +650,20 @@ queries:
     description="Which chart renderer type (canvas or SVG) to use. See ECharts' <a href='https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/' class=markdown>documentation on renderers</a>."
     options={['canvas', 'svg']}
     defaultValue=canvas
+/>
+<PropListing
+    name="downloadableData"
+    description="Whether to show the download button to allow users to download the data"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name="downloadableImage"
+    description="Whether to show the button to allow users to save the chart as an image"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
 />
 
 ### Custom Echarts Options

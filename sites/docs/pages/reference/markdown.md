@@ -157,83 +157,53 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 
 <PropListing
     name="title"
->
-
-Changes the name of the tab, adds a header to your page, and changes the title displayed in the sidebar
-
-</PropListing>
+    description="Changes the name of the tab, the title displayed in the sidebar, adds a header to your page, and changes the breadcrumb for the page."
+/>
 <PropListing
     name="hide_title"
->
-
-If true, the title will not show as a header on the page
-
-</PropListing>
+    description="If true, the title will not show as a header on the page"
+/>
 <PropListing
     name="description"
->
-
-Is used for search engines
-
-</PropListing>
+    description="Is used for search engines"
+/>
 <PropListing
     name="og"
->
-
-Changes how your link shows up when shared on things like Slack, Facebook, Twitter, Discord, etc
-
-</PropListing>
+    description="Changes how your link shows up when shared on things like Slack, Facebook, Twitter, Discord, etc"
+/>
 <PropListing
     name="og.title"
->
-
-Changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vice versa)
-
-</PropListing>
+    description="Changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vice versa)"
+/>
 <PropListing
     name="og.description"
->
-
-Changes the body of the embed
-
-</PropListing>
+    description="Changes the body of the embed"
+/>
 <PropListing
     name="og.image"
->
-
-Will appear in the embed if specified, but it is not required.
-
-</PropListing>
+    description="Will appear in the embed if specified, but it is not required."
+/>
 <PropListing
     name="queries"
->
-
-References SQL queries stored in the /queries directory.
-
-</PropListing>
+    description="References SQL queries stored in the /queries directory."
+/>
 <PropListing
     name="sidebar"
-    type=string
+    description="Changes the visibility of the sidebar. 'show' results in a responsive sidebar, 'hide' results in a sidebar accessible via hamburger button and 'never' hides both - the sidebar and the hamburger button."
     options={['show', 'hide', 'never']}
->
-
-Changes the visibility of the sidebar. 'show' results in a responsive sidebar, 'hide' results in a sidebar accessible via hamburger button and 'never' hides both - the sidebar and the hamburger button.
-
-</PropListing>
+/>
 <PropListing
     name="sidebar_position"
->
-
-Changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar.
-
-</PropListing>
+    description="Changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar."
+/>
 <PropListing
     name="sidebar_link"
->
-
-When set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link.
-
-</PropListing>
+    description="When set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link."
+/>
+<PropListing
+    name="breadcrumb"
+    description="Specify a query that returns a breadcrumb column. The query can use $&#123params&#125 to reference the URL parameters for the page."
+/>
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
 

@@ -1,5 +1,148 @@
 # @evidence-dev/evidence
 
+## 39.1.3
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- dc29b7fd0: Increase node memory limit to 4GB
+- Updated dependencies [32035eeaa]
+- Updated dependencies [3572fcfd7]
+- Updated dependencies [907efee29]
+  - @evidence-dev/plugin-connector@2.1.7
+  - @evidence-dev/preprocess@5.1.5
+  - @evidence-dev/sdk@1.3.8
+  - @evidence-dev/telemetry@2.1.2
+
+## 39.1.2
+
+### Patch Changes
+
+- e50e7ed58: Pre-render column information using DESCRIBE query
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [fbdfe2dd6]
+  - @evidence-dev/preprocess@5.1.4
+  - @evidence-dev/sdk@1.3.7
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 39.1.1
+
+### Patch Changes
+
+- Updated dependencies [3571b0b3a]
+  - @evidence-dev/sdk@1.3.6
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 39.1.0
+
+### Minor Changes
+
+- 804949397: frontmatter title option sets breadcrumb
+- 7cb558c32: allow for dynamic breadcrumbs via frontmatter
+
+### Patch Changes
+
+- db8326efa: Re-added entry detection to evidencemeta, fixes SPA mode
+- 3b2e06a0b: Remove unnecessary core-component and component-utilities peer dependencies.
+- Updated dependencies [08818477d]
+- Updated dependencies [db8326efa]
+  - @evidence-dev/sdk@1.3.5
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 39.0.2
+
+### Patch Changes
+
+- Updated dependencies [a2f9bfb7a]
+  - @evidence-dev/core-components@4.6.2
+
+## 39.0.1
+
+### Patch Changes
+
+- Updated dependencies [a5b141dec]
+- Updated dependencies [c3b86ef5f]
+- Updated dependencies [c392866a0]
+- Updated dependencies [6754944ca]
+- Updated dependencies [e6aa2021d]
+- Updated dependencies [6d2a194e6]
+  - @evidence-dev/core-components@4.6.1
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 39.0.0
+
+### Patch Changes
+
+- Updated dependencies [0b4ae10c5]
+- Updated dependencies [dbc4116e3]
+- Updated dependencies [42ca6d4ce]
+  - @evidence-dev/core-components@4.6.0
+
+## 38.1.3
+
+### Patch Changes
+
+- 90668a4c6: Remove sdk from deps
+
+## 38.1.2
+
+### Patch Changes
+
+- 6e184f95e: Fixed optimizeDeps firing on dev server start. Removed dead package
+- 69bd76b47: Fix HMR
+- Updated dependencies [cb3f17c9e]
+- Updated dependencies [1009026e8]
+- Updated dependencies [20af8e6b6]
+- Updated dependencies [3a1e1d664]
+- Updated dependencies [55bc6a52b]
+- Updated dependencies [e8a5d9964]
+  - @evidence-dev/core-components@4.5.4
+  - @evidence-dev/sdk@1.3.4
+  - @evidence-dev/component-utilities@3.2.4
+  - @evidence-dev/plugin-connector@2.1.5
+
+## 38.1.1
+
+### Patch Changes
+
+- Updated dependencies [244c795be]
+  - @evidence-dev/sdk@1.3.3
+  - @evidence-dev/component-utilities@3.2.3
+  - @evidence-dev/core-components@4.5.3
+  - @evidence-dev/plugin-connector@2.1.5
+
+## 38.1.0
+
+### Minor Changes
+
+- a08542924: Switch to using sdk for datasources instead of plugin connector
+
+### Patch Changes
+
+- 6cdedceb0: Remove db-orchestrator
+- 38c669d2e: Fixed Custom Formatting
+- Updated dependencies [b84ef07ac]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [0bb7718a2]
+- Updated dependencies [c14bc0a66]
+- Updated dependencies [f15071659]
+- Updated dependencies [d6b25b02c]
+- Updated dependencies [93a838ca2]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [3daa83ffc]
+- Updated dependencies [6cdedceb0]
+- Updated dependencies [df9159f2b]
+- Updated dependencies [9982970fd]
+  - @evidence-dev/sdk@1.3.2
+  - @evidence-dev/universal-sql@2.1.3
+  - @evidence-dev/core-components@4.5.2
+  - @evidence-dev/preprocess@5.1.3
+  - @evidence-dev/component-utilities@3.2.2
+  - @evidence-dev/plugin-connector@2.1.5
+  - @evidence-dev/query-store@2.1.5
+  - @evidence-dev/telemetry@2.1.1
+  - @evidence-dev/tailwind@2.1.1
+
 ## 38.0.1
 
 ### Patch Changes
