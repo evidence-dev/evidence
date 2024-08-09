@@ -9,7 +9,7 @@
 	import TableOfContents from './tableofcontents/TableOfContents.svelte';
 	import ErrorOverlay from './ErrorOverlay.svelte';
 	import { browser } from '$app/environment';
-
+	import DevTools from '../../devtools/DevTools.svelte';
 	// Remove splash screen from app.html
 	if (browser) {
 		const splash = document.getElementById('__evidence_project_splash');
@@ -94,7 +94,7 @@
 <slot />
 
 <ToastWrapper />
-
+<DevTools>
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<ErrorOverlay />
 	{#if !hideHeader}
@@ -168,3 +168,4 @@
 {#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}
 	<QueryStatus />
 {/if}
+</DevTools>
