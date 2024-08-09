@@ -14,15 +14,11 @@
 	import { fakerSeries } from '$lib/faker-data-queries.js';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { userEvent, within } from '@storybook/test';
 
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
+	const data = Query.create('select * from flights', query);
 
-	const data = Query.create('select plane, airline from flights', query);
+	const dataPlay = Query.create('select plane, airline from flights', query);
 
 	const nullComboData = Query.create('select * from flights limit 1000', query);
 
@@ -116,22 +112,6 @@
 	/>
 </Story>
 
-<Story name="Allow multiple dimensions within same column">
-	<DimensionGrid data={fakerSeries.airlines.flights.store} name="multipleSelect" multiple />
-</Story>
-
-<Story name="string query with spaces">
-	<DimensionGrid
-		data={Query.create(
-			`SELECT "fare" as "fare price", "airline" as "Airline Name" from flights limit 10`,
-			query,
-			{
-				disableCache: true
-			}
-		)}
-	/>
-</Story>
-
 <Story
 	name="Filtering in one column"
 	play={async ({ canvasElement }) => {
@@ -143,7 +123,7 @@
 		await userEvent.click(row);
 	}}
 >
-	<DimensionGrid {data} />
+	<DimensionGrid data={dataPlay} />
 </Story>
 
 <Story
@@ -159,7 +139,7 @@
 		await userEvent.click(plane);
 	}}
 >
-	<DimensionGrid {data} />
+	<DimensionGrid data={dataPlay} />
 </Story>
 <Story
 	name="Selecting Multiple Values in single column"
@@ -169,11 +149,12 @@
 
 		const airline = await screen.findByText('China Eastern Airlines');
 		await userEvent.click(airline);
+		await delay(750);
 		const airline2 = await screen.findByText('Japan Airlines');
 		await userEvent.click(airline2);
 	}}
 >
-	<DimensionGrid {data} multiple />
+	<DimensionGrid data={dataPlay} multiple />
 </Story>
 <Story
 	name="Selecting Multiple Values in Multiple Columns"
@@ -193,7 +174,7 @@
 		await userEvent.click(plane2);
 	}}
 >
-	<DimensionGrid {data} multiple />
+	<DimensionGrid data={dataPlay} multiple />
 </Story>
 <Story
 	name="Deselecting Multiple Values in Multiple Columns"
@@ -212,7 +193,7 @@
 		await userEvent.click(plane);
 	}}
 >
-	<DimensionGrid {data} multiple />
+	<DimensionGrid data={dataPlay} multiple />
 </Story>
 
 <Story
