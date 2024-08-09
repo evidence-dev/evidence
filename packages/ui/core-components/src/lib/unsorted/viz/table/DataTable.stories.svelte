@@ -54,3 +54,25 @@
 	{@const data = Query.create(`SELECT * from blog_posts`, query)}
 	<DataTable {data} title="Blog Posts" search />
 </Story>
+
+<Story name="Full screen no scroll to top">
+	{@const data = Query.create(`SELECT * from flights LIMIT 100`, query)}
+	<h1>Top of Page</h1>
+	<div
+		style="height: 70vh; border: 1px solid black; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+	>
+		<h2>When clicked on fullscreen should not scroll to top</h2>
+	</div>
+	<DataTable {data} title="Blog Posts" search />
+	<div
+		style="height: 30vh; border: 1px solid black; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+	>
+		<h2>Click Full Screen</h2>
+	</div>
+	<DataTable {data} title="Blog Posts" search />
+	<div
+		style="height: 30vh; border: 1px solid black; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+	>
+		<h2>Bottom of page</h2>
+	</div>
+</Story>
