@@ -11,7 +11,7 @@ const Cursor = require('pg-cursor');
 /**
  * Some types that are not defined in the PG library
  */
-const pgBuiltInTypeExtentions = {
+const pgBuiltInTypeExtensions = {
 	UUID: 2950,
 	NAME: 19,
 	JSONPATH: 4072,
@@ -53,7 +53,7 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 		case pg.types.builtins.CHAR:
 		case pg.types.builtins.JSON:
 		case pg.types.builtins.XML:
-		case pgBuiltInTypeExtentions.NAME:
+		case pgBuiltInTypeExtensions.NAME:
 			return EvidenceType.STRING;
 		case pg.types.builtins.DATE:
 		case pg.types.builtins.TIME:

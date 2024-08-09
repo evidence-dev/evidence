@@ -158,7 +158,7 @@
 
 ### Patch Changes
 
-- 064a5c96: Add optional title slot to Accordian Items
+- 064a5c96: Add optional title slot to Accordion Items
 - 54546362: Adjust DownloadData component for general use
 - 9dd69149: Fix auto-casing on tooltip titles
 - ac0df6ca: Fix Prism imports in CodeBlock
@@ -204,7 +204,7 @@
 
 ### Patch Changes
 
-- 064a5c96e: Add optional title slot to Accordian Items
+- 064a5c96e: Add optional title slot to Accordion Items
 - 9dd691497: Fix auto-casing on tooltip titles
 
 ## 4.2.1-features-b.0
@@ -431,7 +431,7 @@
 ### Patch Changes
 
 - 023cd946: Fix table search when sorting
-- 15a6eeab: Replace accordian with shadcn implementation, support inlined markdown
+- 15a6eeab: Replace accordion with shadcn implementation, support inlined markdown
 - 31903452: Fix heatmap y axis
 - 33e46d1c: Add FlowChart component
 - 2d0c00b9: Removes headless-ui dependency, replaces kebab menu with shadcn implementation
@@ -517,7 +517,7 @@
 
 - 3e3b3940: Add Grid component
 - f7903b86: Update downloaded filenames
-- cd9c80b2: Moved chart helper contexts from core-components to component utilites so they are accessible to 3rd party plugins
+- cd9c80b2: Moved chart helper contexts from core-components to component utilities so they are accessible to 3rd party plugins
 - 3427433c: Output less verbose errors for charts
 - a6de89de: Adds option to include total rows in DataTables
 - 2181ed9c: Fixes and upgrades for DataTable
@@ -613,7 +613,7 @@
   QueryStore now accepts initialError when SSR query fails
 
   SSR / QueryStore now swallow errors unless build:strict is enabled
-  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+  (e.g. the error propagates to the UI where the user can more easily find it in dev mode / regular builds)
 
 - 1235f278: Wrap most viz components in a QueryLoad to externalize interaction with QueryStore loading state
   Update Table of Contents when a header value changes
@@ -624,7 +624,7 @@
 - b4de6d55: Hint and Button styling updates
 - 4d5735a2: UX and design updates to source configuration
 - d1265559: Ensure QueryViewer SQL not open by default
-- 0a60b724: Remove reduntant QueryStatus notifications
+- 0a60b724: Remove redundant QueryStatus notifications
 - 77d09b54: BigValue handles missing data better
 - be6cd88a: Wrap maps, tweak how data is passed
 - bf4a112a: Update package.json to use new datasource field
@@ -652,7 +652,7 @@
 - 1c478a62: ReferenceArea now re-adds itself to the series when needed
 - df9737fc: Adjust loading state condition again
 - 7d298d28: Makes most "truthy" props reactive.
-  Due to the wrapping, it seems that the type gets caught as a string somewhere along the line (likely becase the query finishes running)
+  Due to the wrapping, it seems that the type gets caught as a string somewhere along the line (likely because the query finishes running)
   This causes it to revert to truthy.
 - 75fa47a3: styling for dropdown
 - 64921385: QueryStatus now checks that on/off are functions on import.meta.hot
@@ -663,7 +663,7 @@
 - e9a63c71: Add loading states to DataTable and Chart
 - 64d1405b: Loading state is now respected by Value and BigValue
 - 0e3eec13: Updated Toast notifications with more types and default options
-- 7a5225be: QueryStore more aggresively loads metadata; and ignore 0-length initial data
+- 7a5225be: QueryStore more aggressively loads metadata; and ignore 0-length initial data
 - c8968ea3: Settings UI now creates a connector when testing, if it doesn't already exist. It also won't lock up in more cases
 - 120d22e9: Update docs link for sources
 - 2371c8f1: Chart now keeps a copy of the querystore, even if data is clobbered. Waits for props and data to become available
@@ -736,7 +736,7 @@
 
 - 741885bf: Fix Source Query HMR
 - 7d298d28: Makes most "truthy" props reactive.
-  Due to the wrapping, it seems that the type gets caught as a string somewhere along the line (likely becase the query finishes running)
+  Due to the wrapping, it seems that the type gets caught as a string somewhere along the line (likely because the query finishes running)
   This causes it to revert to truthy.
 
 ## 2.0.0-usql.44
@@ -871,7 +871,7 @@
 
 ### Patch Changes
 
-- 7a5225be: QueryStore more aggresively loads metadata; and ignore 0-length initial data
+- 7a5225be: QueryStore more aggressively loads metadata; and ignore 0-length initial data
 - Updated dependencies [5d280997]
 - Updated dependencies [7a5225be]
   - @evidence-dev/component-utilities@2.0.0-usql.21
@@ -900,7 +900,7 @@
 ### Patch Changes
 
 - 91034294: More QueryViewer tweaks
-- 0a60b724: Remove reduntant QueryStatus notifications
+- 0a60b724: Remove redundant QueryStatus notifications
 - aea3be1a: Source HMR toasts are now persistent until dismissed
 - bbcd070e: Better error feedback for source names
 - Updated dependencies [4ac6a688]
@@ -991,7 +991,7 @@
   QueryStore now accepts initialError when SSR query fails
 
   SSR / QueryStore now swallow errors unless build:strict is enabled
-  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+  (e.g. the error propagates to the UI where the user can more easily find it in dev mode / regular builds)
 
 - 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
 - 0e3eec13: Re-arranged environment variable UI

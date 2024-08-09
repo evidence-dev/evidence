@@ -79,7 +79,7 @@ Format to use for x column ([see available formats](/core-concepts/formatting))
 </PropListing>
 <PropListing 
     name="fillColor"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 >
 
 Color to override default series color
@@ -96,7 +96,7 @@ Color to override default series color
 </PropListing>
 <PropListing 
     name="colorPalette"
-    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    options="array of color strings (CSS name | hexadecimal | RGB | HSL)"
     defaultValue="built-in color palette"
 >
 

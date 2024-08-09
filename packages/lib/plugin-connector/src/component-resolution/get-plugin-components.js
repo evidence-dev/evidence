@@ -29,7 +29,7 @@ export async function getPluginComponents(cfg, discoveries) {
 				if (acc.has(override)) {
 					console.error(
 						chalk.red(
-							`[!] ${override} is overriden more than once. Please ensure that a component is overriden only once.`
+							`[!] ${override} is overridden more than once. Please ensure that a component is overridden only once.`
 						)
 					);
 					throw new Error('Invalid evidence.plugins.yaml');
@@ -97,7 +97,7 @@ export async function getPluginComponents(cfg, discoveries) {
 							)
 						);
 					} else {
-						componentObj.overriden = {
+						componentObj.overridden = {
 							package: acc[componentOutputName].package
 						};
 					}

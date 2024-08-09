@@ -157,10 +157,10 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 			if (!removedOptions.length) return;
 			options.update(($options) => {
 				$options = $options.filter((option) => {
-					const optionIsTargetted = removedOptions.some((removedOption) =>
+					const optionIsTargeted = removedOptions.some((removedOption) =>
 						optEq(option, removedOption)
 					);
-					if (!optionIsTargetted) return true;
+					if (!optionIsTargeted) return true;
 					if (option.selected && !option.ignoreSelected) return true;
 					return false;
 				});

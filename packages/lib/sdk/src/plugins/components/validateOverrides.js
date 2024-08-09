@@ -22,7 +22,7 @@ export const validateOverrides = (plugins) => {
 
 	if (Object.keys(duplicates).length) {
 		throw new EvidenceError(
-			'Invalid component plugin configuration; some components are overriden more than once',
+			'Invalid component plugin configuration; some components are overridden more than once',
 			...Object.entries(duplicates).map(([k, v]) => `${k}: Overridden by ${v.join(', ')}`)
 		);
 	}

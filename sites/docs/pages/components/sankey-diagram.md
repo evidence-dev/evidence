@@ -5,7 +5,7 @@ sidebar_position: 1
 
 The SankeyDiagram component accepts a query and displays a flow from one set of values to another.
 
-To display a flow with multiple levels, like these examples, see [Mutli-level](#multi-level) below.
+To display a flow with multiple levels, like these examples, see [Multi-level](#multi-level) below.
 
 ```sql simple_sankey
 select 'products' as source, 'profits' as target, 100 as amount, 0.67 as percent
@@ -590,7 +590,7 @@ The node width of rectangle in the diagram.
 </PropListing>
 <PropListing
     name="outlineColor"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
     defaultValue="transparent"
 >
 
@@ -608,7 +608,7 @@ Border Width. It should be a natural number.
 </PropListing>
 <PropListing
     name="colorPalette"
-    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    options="array of color strings (CSS name | hexadecimal | RGB | HSL)"
     defaultValue="built-in color palette"
 >
 

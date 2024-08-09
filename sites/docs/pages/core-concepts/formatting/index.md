@@ -279,7 +279,7 @@ The syntax is:
 
 ### Example
 
-In the below example, we return a value from a calculation. In this situtation we cannot use the `Value` component, which only accepts a single row. Instead we use the `Format` function to format the result.
+In the below example, we return a value from a calculation. In this situation we cannot use the `Value` component, which only accepts a single row. Instead we use the `Format` function to format the result.
 
 
 ````markdown

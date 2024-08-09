@@ -3350,7 +3350,7 @@
 		{
 			"type": "Feature",
 			"id": "38",
-			"properties": { "name": "North Dakota", "abbrev": "ND" },
+			"properties": { "name": "North Dakota", "abbrev": "AND" },
 			"geometry": {
 				"type": "Polygon",
 				"coordinates": [

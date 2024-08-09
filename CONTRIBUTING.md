@@ -99,10 +99,10 @@ pnpm i
 
 ### Running the Test Suite locally.
 
-The automated test suite should run upon PR creation via Github actions.
+The automated test suite should run upon PR creation via GitHub actions.
 You can also run the tests locally via `pnpm test`.
 
-**Note that for the DB tests, enviroment variables are needed for the test to run.**
+**Note that for the DB tests, environment variables are needed for the test to run.**
 
 Under each DB package, you can add a `.env` file with the credentials needed for each DB type. Take a look at the `index.cjs` file for the variables required for each DB driver.
 

@@ -387,14 +387,14 @@ If you provide `[x, y]` and `[x2, y2]`, coordinates must fall within the chart's
 <PropListing
     name=color
     description="Color to override default line and label colors"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 
 <!-- Line-related props -->
 <PropListing
     name=lineColor
     description="Color to override default line color. If used, takes precedence over `color`"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=lineType
@@ -446,7 +446,7 @@ If you provide `[x, y]` and `[x2, y2]`, coordinates must fall within the chart's
 <PropListing
     name=labelColor
     description="Color to override default label color. If used, takes precedence over `color`"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=labelBackground
@@ -472,7 +472,7 @@ If you provide `[x, y]` and `[x2, y2]`, coordinates must fall within the chart's
 <PropListing
     name=labelBorderColor
     description="The color of the border around the label background"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=labelBorderType
@@ -573,7 +573,7 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 ```
 
 #### Continuous Axis Bar Charts
-On a continous x-axis (dates or numbers), the reference area will start and stop at the exact point on the x-axis. This means it will appear in the middle of whichever bar is at that point. If you would prefer to see the area cover the full bar, there are 2 ways to achieve this:
+On a continuous x-axis (dates or numbers), the reference area will start and stop at the exact point on the x-axis. This means it will appear in the middle of whichever bar is at that point. If you would prefer to see the area cover the full bar, there are 2 ways to achieve this:
 1. Add a buffer on either side of the range you want to highlight (e.g., instead of ending the area at `2020-07-01`, end it at `2020-07-15`)
 2. Change your x-axis to categorical data (using `xType=category`). If using a date axis, you may also want to retain the axis label formatting for dates - to achieve this, you can use the `xFmt` prop (e.g., `xFmt=mmm`)
 
@@ -717,14 +717,14 @@ A reference area can be produced by defining values inline or by supplying a dat
 <PropListing
     name=color
     description="Color to override default area and label colors"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 
 <!-- Area-related props -->
 <PropListing
     name=areaColor
     description="Color to override default area color. If used, takes precedence over `color`"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=opacity
@@ -740,7 +740,7 @@ A reference area can be produced by defining values inline or by supplying a dat
 <PropListing
     name=borderColor
     description="Color to override default border color"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=borderType
@@ -764,17 +764,17 @@ A reference area can be produced by defining values inline or by supplying a dat
 <PropListing
     name=labelColor
     description="Color to override default label color. If used, takes precedence over `color`"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=labelColor
     description="Color to override default label color. If used, takes precedence over `color`"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=labelBackgroundColor
     description="The color of the background behind the label"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=labelPadding
@@ -794,7 +794,7 @@ A reference area can be produced by defining values inline or by supplying a dat
 <PropListing
     name=labelBorderColor
     description="The color of the border around the label background"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 />
 <PropListing
     name=labelBorderType
@@ -1016,13 +1016,13 @@ where sales_diff < -2000
     <PropListing
         name=color
         description="Color to override default line and label colors"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
         defaultValue=grey
     />
     <PropListing
         name=labelColor
         description="Color to override default label color. If used, takes precedence over `color`"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
     />
     <PropListing
         name=labelWidth
@@ -1044,7 +1044,7 @@ where sales_diff < -2000
     <PropListing
         name=labelBackgroundColor
         description="The color of the background behind the label"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
         defaultValue="hsla(360, 100%, 100%, 0.7)"
     />
     <PropListing
@@ -1060,7 +1060,7 @@ where sales_diff < -2000
     <PropListing
         name=labelBorderColor
         description="The color of the border around the label background"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
     />
     <PropListing
         name=labelBorderType
@@ -1098,7 +1098,7 @@ where sales_diff < -2000
     <PropListing
         name=symbolColor
         description="Color to override default symbol color. If used, takes precedence over `color`"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
     />
     <PropListing
         name=symbolSize
@@ -1119,7 +1119,7 @@ where sales_diff < -2000
     <PropListing
         name=symbolBorderColor
         description="The color of the border around the symbol"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
     />
     <PropListing
         name=preserveWhitespace
@@ -1320,13 +1320,13 @@ where sales_diff < -2000
     <PropListing
         name=color
         description="Color to override default line and label colors"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
         defaultValue=grey
     />
     <PropListing
         name=labelColor
         description="Color to override default label color. If used, takes precedence over `color`"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
     />
     <PropListing
         name=labelWidth
@@ -1348,7 +1348,7 @@ where sales_diff < -2000
     <PropListing
         name=labelBackgroundColor
         description="The color of the background behind the label"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
         defaultValue="hsla(360, 100%, 100%, 0.7)"
     />
     <PropListing
@@ -1364,7 +1364,7 @@ where sales_diff < -2000
     <PropListing
         name=labelBorderColor
         description="The color of the border around the label background"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
     />
     <PropListing
         name=labelBorderType
@@ -1402,7 +1402,7 @@ where sales_diff < -2000
     <PropListing
         name=symbolColor
         description="Color to override default symbol color. If used, takes precedence over `color`"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
     />
     <PropListing
         name=symbolSize
@@ -1423,7 +1423,7 @@ where sales_diff < -2000
     <PropListing
         name=symbolBorderColor
         description="The color of the border around the symbol"
-        options="CSS name | hexademical | RGB | HSL"
+        options="CSS name | hexadecimal | RGB | HSL"
     />
     <PropListing
         name=preserveWhitespace

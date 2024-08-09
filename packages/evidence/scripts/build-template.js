@@ -130,7 +130,7 @@ Thank you for checking out Evidence.
 
 - [Docs](https://docs.evidence.dev/)
 - [Project Home Page](https://www.evidence.dev)
-- [Github](https://github.com/evidence-dev/evidence)
+- [GitHub](https://github.com/evidence-dev/evidence)
 
 `
 );

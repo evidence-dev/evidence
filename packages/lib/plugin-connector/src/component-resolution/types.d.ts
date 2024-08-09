@@ -11,7 +11,7 @@ declare interface PluginComponent {
 	/**
 	 * If this component is overridden, contains related metadata
 	 */
-	overriden?: PluginComponent;
+	overridden?: PluginComponent;
 }
 /**
  * Map of component names to their metadata

@@ -191,7 +191,7 @@
 - 7c8a9f9d: Tweak source building to increase max possible result set
 - 741885bf: Fix Source Query HMR
 - 2d85508a: Handle sources that haven't been generated more effectively
-- 5828c375: Enviroment variables use \__ instead of _ to delimit option properties
+- 5828c375: Environment variables use \__ instead of _ to delimit option properties
 - 1ed3fe07: Handle missing manifest more effectively
 - cd57ba69: Add new interface for datasources for fine-grained control of output
 - 9da3812e: - QueryStatus only notifies once now
@@ -458,7 +458,7 @@
 
 ### Patch Changes
 
-- 5828c375: Enviroment variables use \__ instead of _ to delimit option properties
+- 5828c375: Environment variables use \__ instead of _ to delimit option properties
 - cad09993: improve source refresh experience
 - 64d1405b: Loading state is now respected by Value and BigValue
 

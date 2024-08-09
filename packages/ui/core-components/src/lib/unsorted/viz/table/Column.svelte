@@ -110,7 +110,7 @@
 	// Formats defined in another column:
 	export let fmtColumn = undefined;
 
-	// Neagtive value font color:
+	// Negative value font color:
 	export let redNegatives = false;
 	$: redNegatives = redNegatives === 'true' || redNegatives === true;
 

@@ -316,7 +316,7 @@ or file ilike 'populated_places%'
 order by scale desc, category, file
 ```
 
-Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com/) project, and hosted by [GeoJSON.xyz](https://geojson.xyz/).
+Below are a selection of publicly available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com/) project, and hosted by [GeoJSON.xyz](https://geojson.xyz/).
 
 ### Country, State, and City Locations
 
@@ -455,7 +455,7 @@ Width of the border around each area.
 <PropListing
 name="borderColor"
 options="CSS color value"
-defaultVallue="white"
+defaultValue="white"
 >
 Color of the border around each area.
 </PropListing>
@@ -488,7 +488,7 @@ When area is selected: Width of the border around each area.
 <PropListing
 name="selectedBorderColor"
 options="CSS color value"
-defaultVallue="white"
+defaultValue="white"
 >
 When area is selected: Color of the border around each area.
 </PropListing>

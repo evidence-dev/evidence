@@ -105,7 +105,7 @@ Text to display when an empty dataset is received - only applies when `emptySet`
 
 <PropListing
     name="color"
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
 >
 
 Color to use for the visualization. For area sparklines, choose the color for the line and the area color will be automatically appplied in a lighter shade.
@@ -169,7 +169,7 @@ Width of sparkline in pixels
     defaultValue="true"
 >
 
-Turn on or off tooltip behaviour on hover. If off, chart will be a staticly rendered SVG (better for page performance). If on, you will be able to see dates/values when hovering over the sparkline
+Turn on or off tooltip behaviour on hover. If off, chart will be a statically rendered SVG (better for page performance). If on, you will be able to see dates/values when hovering over the sparkline
 
 </PropListing>
 <PropListing

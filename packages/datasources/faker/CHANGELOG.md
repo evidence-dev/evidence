@@ -69,7 +69,7 @@
 
 ### Patch Changes
 
-- 14269dbc: Add seed option for reproducable results
+- 14269dbc: Add seed option for reproducible results
 - bf4a112a: Update package.json to use new datasource field
 - 26ad2d2c: Faker no longer holds an internal cache between source runes
 - cd57ba69: Add new interface for datasources for fine-grained control of output
@@ -82,7 +82,7 @@
 
 ### Patch Changes
 
-- 14269dbc: Add seed option for reproducable results
+- 14269dbc: Add seed option for reproducible results
 
 ## 2.0.0-usql.6
 

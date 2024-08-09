@@ -105,13 +105,13 @@ You can access the VS Code shortcut commands from the command palette (`Cmd/Ctrl
 | `updateDependencies`  | Update to Latest Version   | Update all Evidence app NodeJS libraries to the latest version.                                     | `npm install @evidence-dev/evidence@latest @evidence-dev/core-components@latest` |
 | `clearCache`          | Clear Cache                | Clear Evidence application data and queries cache.                                                  |
 | `viewSettings`        | VS Code Extension Settings | View Evidence extension settings in the built-in VS Code Settings editor.                           |
-| `copyProject`         | Copy Existing Project      | Provide a URL of a Github repo to pull from                                                         |
+| `copyProject`         | Copy Existing Project      | Provide a URL of a GitHub repo to pull from                                                         |
 
 ## Deployment
 
 You can self-host or deploy on Evidence Cloud, with a public project or behind user authentication.
 
-Evidence projects utlize a scheduled build process, which runs the queries in your project and builds all of your pages. The output of this process is a pre-built, self-contained static web application.
+Evidence projects utilize a scheduled build process, which runs the queries in your project and builds all of your pages. The output of this process is a pre-built, self-contained static web application.
 
 This results in near instant page loads for your users and means that they are not hitting your data warehouse by interacting with their reports.
 
@@ -139,7 +139,7 @@ Note that after editing some settings you may need to close and reopen VS Code f
 | `evidence.defaultPort`        | Default Port         | number     | `3000`                                                  | Default Evidence app dev server port.                                                                                                                                                                                                                 |
 | `evidence.autoStart`          | Auto Start           | boolean    | `false`                                                 | Automatically start Evidence app dev server when opening a project.                                                                                                                                                                                   |
 | `evidence.slashCommands`      | Slash Commands       | boolean    | `true`                                                  | Enabled slash commands - get component suggestions when typing `/`                                                                                                                                                                                    |
-| `evidence.templateProjectUrl` | Template Project Url | Url string | [`/template`](https://github.com/evidence-dev/template) | Evidence `template` project GitHub Url or local `file://` path to the project template folder to use when creating new Evidence projects. Defaults to the Evidence template Github repository [`/template`](https://github.com/evidence-dev/template) |
+| `evidence.templateProjectUrl` | Template Project Url | Url string | [`/template`](https://github.com/evidence-dev/template) | Evidence `template` project GitHub Url or local `file://` path to the project template folder to use when creating new Evidence projects. Defaults to the Evidence template GitHub repository [`/template`](https://github.com/evidence-dev/template) |
 
 You can request new Evidence extension settings to enhance this extension user experience in VS Code by submitting a [feature request](https://github.com/evidence-dev/evidence/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=) or [pull request](https://github.com/evidence-dev/evidence/pulls).
 
@@ -167,7 +167,7 @@ The following Evidence project workspace `/.vscode/settings.json` example sets d
 
 ## Contribute to this extension
 
-If you would like to contribute to this VS Code extension, we welcome PRs and issues in the [Github repo](https://github.com/evidence-dev/evidence).
+If you would like to contribute to this VS Code extension, we welcome PRs and issues in the [GitHub repo](https://github.com/evidence-dev/evidence).
 
 ## Support
 

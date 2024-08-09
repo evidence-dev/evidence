@@ -19,7 +19,7 @@ const iconKeys = /** @type {[string, ...string[]]} */ ([
 	e.g.
 
 	// ...load package
-	const validPluginPackage = PluginPackageSchema.parse(packageContnt)
+	const validPluginPackage = PluginPackageSchema.parse(packageContent)
 	// We now know that it is a valid plugin; but we can further narrow to what kind
 
 	if (isLayoutPlugin(validPluginPackage)) {

@@ -117,7 +117,7 @@ These shouldn't flicker
 
 ## Most popular hashtags over the last {inputs.time_range.label}
 
-### Based on occurance in posts
+### Based on occurrence in posts
 
 <LineChart
 data={most_posted_tags}

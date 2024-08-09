@@ -236,14 +236,14 @@ queries:
     name="fillColor"
     description="Color to override default series color. Only accepts a single color."
     required=false
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
     defaultValue="-"
 />
 <PropListing
     name="lineColor"
     description="Color to override default line color. Only accepts a single color."
     required=false
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
     defaultValue="-"
 />
 <PropListing
@@ -264,7 +264,7 @@ queries:
     name="colorPalette"
     description="Array of custom colours to use for the chart E.g., ['#cf0d06','#eb5752','#e88a87'] Note that the array must be surrounded by curly braces."
     required=false
-    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    options="array of color strings (CSS name | hexadecimal | RGB | HSL)"
     defaultValue="built-in color palette"
 />
 <PropListing
@@ -302,7 +302,7 @@ queries:
     name="labelColor"
     description="Font color of value labels"
     required=false
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
     defaultValue="Automatic based on color contrast of background"
 />
 <PropListing

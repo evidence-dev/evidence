@@ -69,7 +69,7 @@ import { sterilizeQuery } from './sterilizeQuery.js';
  */
 export class Query {
 	////////////////////////////
-	/// < State Primatives > ///
+	/// < State Primitives > ///
 	////////////////////////////
 	#hasInitialData = false;
 
@@ -194,7 +194,7 @@ export class Query {
 	}
 
 	//////////////////////////////
-	/// </ State Primatives /> ///
+	/// </ State Primitives /> ///
 	//////////////////////////////
 
 	//////////////////////////

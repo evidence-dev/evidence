@@ -32,7 +32,7 @@ export class Datasources {
 		overrides?.forEach((override) => {
 			if (Object.keys(this.#overrides).includes(override))
 				throw new EvidenceError(
-					`${override} has already been overriden by ${this.#bySource[override]}`
+					`${override} has already been overridden by ${this.#bySource[override]}`
 				);
 			this.#overrides[override] = pack.name;
 			this.#bySource[override] = [pack, source];
@@ -41,7 +41,7 @@ export class Datasources {
 		pack.evidence.datasources.flat().forEach((sourceName) => {
 			if (this.#overrides[sourceName] && this.#overrides[sourceName] !== pack.name) {
 				console.debug(
-					`Ignoring source type "${sourceName}" from ${pack.name}, already overriden by ${this.#overrides[sourceName]}`
+					`Ignoring source type "${sourceName}" from ${pack.name}, already overridden by ${this.#overrides[sourceName]}`
 				);
 			}
 			this.#bySource[sourceName] = [pack, source];

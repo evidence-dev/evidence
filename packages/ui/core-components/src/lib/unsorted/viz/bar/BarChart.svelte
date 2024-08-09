@@ -52,7 +52,7 @@
 
 	onMount(() => {
 		xEvidenceType = data?.[0]?._evidenceColumnTypes?.find(
-			(ect) => ect.name?.toLowerCase() === x?.toLowerCase()
+			(etc) => etc.name?.toLowerCase() === x?.toLowerCase()
 		)?.evidenceType;
 	});
 

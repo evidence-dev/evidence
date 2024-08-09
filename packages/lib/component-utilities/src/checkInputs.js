@@ -55,7 +55,7 @@ export default function checkInputs(data, reqCols, optCols) {
 
 		// Get list of all columns in dataset
 		if (Query.isQuery(data)) {
-			// we want to handle cases where the columns have not yet been fetched, but the data is avialable
+			// we want to handle cases where the columns have not yet been fetched, but the data is available
 			// this is most likely to happen during pre-rendering, because column metadata is not yet included
 			// in the prerendering process
 			if (!data.columnsLoaded && data.dataLoaded) {

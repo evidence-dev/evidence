@@ -8,7 +8,7 @@ Evidence requires Node.js 18 or 20, and NPM 7 or above.
 
 Check your versions with `node -v` and `npm -v`
 
-**Note:** if you are installing NodeJS for the first time, be sure to install the Long term suppport (LTS) version 
+**Note:** if you are installing NodeJS for the first time, be sure to install the Long term support (LTS) version 
 
 <LinkButton url="https://nodejs.org/en/download">Download Node.js + NPM (LTS version)</LinkButton>
 

@@ -17,7 +17,7 @@ export const isValidPackage = async (path) => {
 		if (e instanceof Error && /** @type{NodeJS.ErrnoException} */ (e).code !== 'ENOENT') {
 			console.warn(
 				chalk.yellow(
-					`[!] An error occured while loading ${chalk.bold(
+					`[!] An error occurred while loading ${chalk.bold(
 						`"${path.split('node_modules/')[1]}"`
 					)}: ${e}.`
 				)

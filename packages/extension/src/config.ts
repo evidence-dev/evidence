@@ -41,7 +41,7 @@ export function getConfig<T>(settingName: string, defaultValue?: T) {
  * @see https://github.com/evidence-dev/evidence-vscode/issues/67
  */
 export function updateProjectContext() {
-	// set Evidence has project context valule flag
+	// set Evidence has project context value flag
 	// for enabledment of commands that require an open Evidence project
 	commands.executeCommand(Commands.SetContext, Context.HasEvidenceProject, true);
 

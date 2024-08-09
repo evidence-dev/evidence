@@ -87,7 +87,7 @@ if (process.env.NODE_ENV === 'development') {
 						true
 					);
 				} catch (error) {
-					console.error(`Error occured while reloading source: ${error}`);
+					console.error(`Error occurred while reloading source: ${error}`);
 
 					if (process.env.VITE_EVIDENCE_DEBUG && error instanceof Error) console.debug(error.stack);
 					build_watcher.emit('update', path, {}, error, 'Failed!', 'error');

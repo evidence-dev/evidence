@@ -11,7 +11,7 @@ customization/
 *.sqlite
 *.sqlite-journal
 
-# Ignore playright artifacts
+# Ignore playwright artifacts
 **/test-results/**
 **/playwright-report/**
 **/playwright/.cache/**

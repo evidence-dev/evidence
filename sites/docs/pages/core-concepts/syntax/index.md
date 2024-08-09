@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Evidence reports are written in **Evidence-flavored Markdown** - an extension of markdown that includes SQL queries, data viz components, and programmatic features.
 
-If you're not familiar with markdown, it's a simple text-based syntax - you've used markdown if you've written comments in Github or typed a message in Slack.
+If you're not familiar with markdown, it's a simple text-based syntax - you've used markdown if you've written comments in GitHub or typed a message in Slack.
 
 ## Markdown
 

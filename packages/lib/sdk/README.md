@@ -123,7 +123,7 @@ SELECT * FROM my_first_table
 	{#each $myFirstQuery as row (row.id)}
 		Row ID: {row.id}
 	{:else}
-		No resuls available
+		No results available
 	{/each}
 {/if}
 ```
@@ -167,7 +167,7 @@ SELECT * FROM my_first_table
 	{#each $myFirstQuery as row (row.id)}
 		Row ID: {row.id}
 	{:else}
-		No resuls available
+		No results available
 	{/each}
 {/if}
 ```

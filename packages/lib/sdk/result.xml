@@ -11,11 +11,11 @@
         </testcase>
         <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; overrides &gt; should always return the override package" time="0.001">
             <system-out>
-Ignoring source type &quot;ddb&quot; from test-package-2, already overriden by test-package
+Ignoring source type &quot;ddb&quot; from test-package-2, already overridden by test-package
 
             </system-out>
         </testcase>
-        <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; overrides &gt; should throw if a source is overriden twice" time="0">
+        <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; overrides &gt; should throw if a source is overridden twice" time="0">
         </testcase>
     </testsuite>
     <testsuite name="src/plugins/datasources/loadSourceConfig.spec.js" timestamp="2024-01-15T16:58:56.841Z" hostname="brian-work" tests="13" failures="0" errors="0" skipped="0" time="0.065">

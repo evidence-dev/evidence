@@ -33,13 +33,13 @@ export const copyFile = async (rootDir, rootTargetDir, page) => {
 	const { relativePath } = await getTargets(rootDir, rootTargetDir, page);
 	const p = path.parse(path.join(rootTargetDir, relativePath));
 	const filename = page.name.split('.')[0]; // rip off the filename
-	const extention = page.name.split('.').slice(1).join('.'); // rip off the filename
+	const extension = page.name.split('.').slice(1).join('.'); // rip off the filename
 	const from = path.join(page.path, page.name);
 	let to;
 	if (page.name === '+layout.svelte') {
 		to = path.join(p.dir, page.name);
 	} else if (page.name.split('.')[0] === 'index') {
-		to = path.join(p.dir, `+page.${extention}`);
+		to = path.join(p.dir, `+page.${extension}`);
 	} else {
 		// needs a dir
 		// same as relative, excludes file extension
@@ -48,7 +48,7 @@ export const copyFile = async (rootDir, rootTargetDir, page) => {
 			path.relative(path.resolve(projectRoot, 'pages'), path.resolve(page.path, filename))
 		);
 		await fs.mkdir(dirname, { recursive: true });
-		to = path.join(dirname, `+page.${extention}`);
+		to = path.join(dirname, `+page.${extension}`);
 	}
 	await fs.cp(from, to);
 	console.debug(chalk.dim(`Copied ${from} -> ${to}`));

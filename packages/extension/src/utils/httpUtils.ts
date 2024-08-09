@@ -30,7 +30,7 @@ export async function isPortFree(port: number) {
  *
  * @param port Starting port number, set to the default value to start from 3000.
  *
- * @returns Available port number or the next port nubmer to try.
+ * @returns Available port number or the next port number to try.
  */
 export async function tryPort(port = 3000): Promise<number> {
 	if (await isPortFree(port)) {
@@ -52,7 +52,7 @@ export function ping(url: string) {
 		const useHttps = url.indexOf('https') === 0;
 		const request = useHttps ? https.request : http.request;
 
-		// log requsted page Url in the Evidence output channel view for troubleshooting
+		// log requested page Url in the Evidence output channel view for troubleshooting
 		const outputChannel = getOutputChannel();
 		outputChannel.appendLine(`Pinging page: ${url}`);
 

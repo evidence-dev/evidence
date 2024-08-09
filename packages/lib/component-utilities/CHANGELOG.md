@@ -251,7 +251,7 @@
 ### Patch Changes
 
 - f7903b86: Update downloaded filenames
-- cd9c80b2: Moved chart helper contexts from core-components to component utilites so they are accessible to 3rd party plugins
+- cd9c80b2: Moved chart helper contexts from core-components to component utilities so they are accessible to 3rd party plugins
 - fa0faf8c: Fix treatment of nulls in getCompletedData helper function
 - a6de89de: Adds option to include total rows in DataTables
   - @evidence-dev/query-store@2.0.2

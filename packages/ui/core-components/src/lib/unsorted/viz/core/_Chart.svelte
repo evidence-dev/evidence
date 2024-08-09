@@ -213,7 +213,7 @@
 
 	let horizAxisTitle;
 
-	// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate):
+	// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accommodate):
 	let maxBars;
 	let barCount;
 	let heightMultiplier;
@@ -878,7 +878,7 @@
 				legendTop + legendHeight + topAxisTitleSize * hasTopAxisTitle + chartAreaPaddingTop;
 			chartBottom = hasBottomAxisTitle * bottomAxisTitleSize + chartAreaPaddingBottom;
 
-			// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate)
+			// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accommodate)
 			// Small bars are allowed on normal bar chart (e.g., time series bar chart)
 			maxBars = 8;
 			heightMultiplier = 1;

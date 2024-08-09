@@ -133,7 +133,7 @@ select * from (
 <PropListing
     name=outlineColor
     description="Border color. Only accepts a single color."
-    options="CSS name | hexademical | RGB | HSL"
+    options="CSS name | hexadecimal | RGB | HSL"
     defaultValue="transparent"
 />
 <PropListing
@@ -169,7 +169,7 @@ select * from (
 <PropListing
     name=colorPalette
     description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
-    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    options="array of color strings (CSS name | hexadecimal | RGB | HSL)"
     defaultValue="built-in color palette"
 />
 
