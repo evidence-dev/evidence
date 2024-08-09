@@ -6,7 +6,7 @@
 
 <script>
 	import { dropdownOptionStore } from './dropdownOptionStore.js';
-	import { getContext, setContext, tick } from 'svelte';
+	import { getContext, onDestroy, setContext, tick } from 'svelte';
 	import { DropdownContext } from './constants.js';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import DropdownOption from './helpers/DropdownOption.svelte';
@@ -105,8 +105,10 @@
 		toggleSelected,
 		pauseSorting,
 		resumeSorting,
-		forceSort
+		forceSort,
+		destroy: destroyStore
 	} = state;
+	onDestroy(destroyStore);
 
 	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
 	$: if ($selectedOptions && hasHadSelection) {

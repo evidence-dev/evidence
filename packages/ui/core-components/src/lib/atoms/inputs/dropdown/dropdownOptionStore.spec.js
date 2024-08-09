@@ -11,6 +11,35 @@ describe('dropdownOptionStore', () => {
 		vi.useRealTimers();
 	});
 
+	describe("destruction", () => {
+		it('should not add options after destruction', async () => {
+			const {addOptions, destroy, options} = dropdownOptionStore();
+			destroy()
+			addOptions({value: 1, label: 'test'})
+			await vi.advanceTimersByTimeAsync(100);
+			expect(get(options)).toHaveLength(0);
+		})
+		it('should not remove options after destruction', async () => {
+			const {addOptions, removeOptions, destroy, options} = dropdownOptionStore();
+			const opt = {value: 1, label: 'test'}
+			addOptions(opt)
+			await vi.advanceTimersByTimeAsync(100);
+			destroy()
+			removeOptions(opt)
+			await vi.advanceTimersByTimeAsync(100);
+			expect(get(options)).toHaveLength(1);
+		})
+		it('should not select options after destruction', async () => {
+			const {addOptions,toggleSelected, destroy, options} = dropdownOptionStore({noDefault: true});
+			const opt = {value: 1, label: 'test'}
+			addOptions(opt)
+			await vi.advanceTimersByTimeAsync(100);
+			destroy()
+			toggleSelected(opt)
+			await vi.advanceTimersByTimeAsync(100);
+			expect(get(options)[0].selected).toBe(false);
+		})
+	})
 	// TODO: Undefined Options
 	describe('initialization', () => {
 		describe('select all by default', () => {

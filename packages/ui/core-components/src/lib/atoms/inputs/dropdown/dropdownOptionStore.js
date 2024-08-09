@@ -86,6 +86,7 @@ export const dropdownOptionStore = (opts = {}) => {
 	let selectFirst = !config.multiselect && !config.noDefault && config.defaultValues.length === 0;
 	let selectAll = config.multiselect && config.selectAllByDefault && !config.initialOptions?.length;
 
+	let destroyed = false;
 	return {
 		/**
 		 * @param {...DropdownOption} option
@@ -95,6 +96,7 @@ export const dropdownOptionStore = (opts = {}) => {
 			 * @param  {...(DropdownOption[] | DropdownOption)} newOptions
 			 */
 			(...newOptions) => {
+				if (destroyed) return;
 				const opts = newOptions.flat();
 				options.update(($options) => {
 					opts.forEach((option) => {
@@ -134,6 +136,7 @@ export const dropdownOptionStore = (opts = {}) => {
 		removeOptions: batchUp(
 			/** @param {...(DropdownOption[] | DropdownOption)} removeOptions */
 			(...removeOptions) => {
+				if (destroyed) return;
 				const opts = removeOptions.flat();
 				options.update(($options) => {
 					return $options.reduce((a, v) => {
@@ -155,6 +158,7 @@ export const dropdownOptionStore = (opts = {}) => {
 		toggleSelected: batchUp(
 			/** @param {...(DropdownOption[] | DropdownOption)} removeOptions */
 			(...toggleOptions) => {
+				if (destroyed) return;
 				const toToggle = toggleOptions.flat();
 				options.update(($options) => {
 					if (config.multiselect) {
@@ -187,20 +191,30 @@ export const dropdownOptionStore = (opts = {}) => {
 			},
 			100
 		),
-		selectAll: () => options.update((o) => o.map((o) => ({ ...o, selected: true }))),
-		deselectAll: () => options.update((o) => o.map((o) => ({ ...o, selected: false }))),
+		selectAll: () => {
+			if (destroyed) return;
+			options.update((o) => o.map((o) => ({ ...o, selected: true })));
+		},
+		deselectAll: () => {
+			if (destroyed) return;
+			options.update((o) => o.map((o) => ({ ...o, selected: false })));
+		},
 		options: readonly(options),
 		selectedOptions,
 		pauseSorting: () => {
+			if (destroyed) return;
 			sortingPaused = true;
 		},
 		resumeSorting: () => {
+			if (destroyed) return;
 			sortingPaused = false;
 			options.set(hygiene(get(options)));
 		},
 		forceSort: () => {
+			if (destroyed) return;
 			options.set(hygiene(get(options)));
-		}
+		},
+		destroy: () => (destroyed = true)
 	};
 };
 
