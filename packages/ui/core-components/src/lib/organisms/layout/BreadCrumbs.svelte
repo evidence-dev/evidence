@@ -3,7 +3,6 @@
 		if (href === '/') return fileTree;
 		const pathArray = href.split('/').slice(1);
 		let node = fileTree;
-		console.log(node);
 		for (let path of pathArray) {
 			if (!node.children[path]) {
 				node = Object.values(node.children).find((child) => child.isTemplated);
@@ -56,7 +55,6 @@
 	export let fileTree;
 
 	$: crumbs = buildCrumbs($page.url.pathname.split('/').slice(1), fileTree);
-	$: console.log(crumbs);
 </script>
 
 <div class="flex items-start mt-0 whitespace-nowrap overflow-auto">
