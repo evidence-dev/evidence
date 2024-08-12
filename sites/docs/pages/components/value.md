@@ -215,6 +215,7 @@ Adds aggregation to query, column name required.
 <PropListing name="link">
 
 Used to navigate to other pages. Can be a full external link like `https://google.com` or an internal link like `/sales/avg-sales`
+</PropListing>
 <PropListing
         name=color
         options="CSS name | hexademical | RGB | HSL"
