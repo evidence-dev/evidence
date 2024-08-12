@@ -11,48 +11,46 @@
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
 
-	import { fakerSeries } from '$lib/faker-data-queries.js';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+
+	const data = Query.create(`select * from flights`, query);
 </script>
 
 <Story name="Basic Usage">
-	<DimensionGrid data={fakerSeries.airlines.flights.store} name="BasicUsage" />
+	<DimensionGrid {data} name="BasicUsage" />
 </Story>
 
 <Story name="Named as an Input">
-	<DimensionGrid name="dimensiongrid" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid name="dimensiongrid" {data} />
 </Story>
 
 <Story name="Labelled Metric">
-	<DimensionGrid data={fakerSeries.airlines.flights.store} metricLabel="Flights" />
+	<DimensionGrid {data} metricLabel="Flights" />
 </Story>
 
 <Story name="Labelled Metric with Long Label">
-	<DimensionGrid
-		data={fakerSeries.airlines.flights.store}
-		metricLabel="A very long metric label that I cooked up for this purpose"
-	/>
+	<DimensionGrid {data} metricLabel="A very long metric label that I cooked up for this purpose" />
 </Story>
 
 <Story name="Limit 15">
-	<DimensionGrid limit="15" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid limit="15" {data} />
 </Story>
 
 <Story name="Limit 0">
-	<DimensionGrid limit="0" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid limit="0" {data} />
 </Story>
 
 <Story name="Custom metric">
-	<DimensionGrid metric="sum(fare) + 308" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid metric="sum(fare) + 308" {data} />
 </Story>
 
 <Story name="Negative Values">
-	<DimensionGrid metric="count(*) -5000" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid metric="count(*) -5000" {data} />
 </Story>
 
 <Story name="Null Metric Values">
-	<DimensionGrid metric="sum(fare)/0" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid metric="sum(fare)/0" {data} />
 </Story>
 
 <Story name="Null Dimension Values">
@@ -66,7 +64,7 @@
 </Story>
 
 <Story name="Invalid Metric">
-	<DimensionGrid metric="specialsum(fare)" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid metric="specialsum(fare)" {data} />
 </Story>
 
 <Story name="No Data Prop">

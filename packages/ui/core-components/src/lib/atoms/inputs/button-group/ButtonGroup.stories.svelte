@@ -15,10 +15,14 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { fakerSeries } from '$lib/faker-data-queries.js';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+
 	// From layout.js
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
+
+	const data = Query.create(`select * from hashtags`, query);
 </script>
 
 <Template let:args>
@@ -75,7 +79,7 @@
 	name="Query-Based Entries - Existing Store"
 	let:args
 	args={{
-		data: fakerSeries.social_media.hashtags.store,
+		data,
 		value: 'id',
 		label: 'tag'
 	}}
@@ -110,7 +114,7 @@
 	name="Mixed Entries - Existing Store"
 	let:args
 	args={{
-		data: fakerSeries.social_media.hashtags.store,
+		data,
 		value: 'id',
 		label: 'tag'
 	}}
