@@ -3,6 +3,7 @@
 		if (href === '/') return fileTree;
 		const pathArray = href.split('/').slice(1);
 		let node = fileTree;
+		console.log(node);
 		for (let path of pathArray) {
 			if (!node.children[path]) {
 				node = Object.values(node.children).find((child) => child.isTemplated);
@@ -30,11 +31,17 @@
 		}
 
 		for (const path of crumbs) {
-			const node = searchFileTree(path.href, fileTree);
-			if (!node || !node.isPage) {
-				path.href = null;
+			if (path.href === '/') {
+				// Special case for Home page
+				path.href = '/';
+				path.title = 'Home';
 			} else {
-				path.title = node.title ?? path.title;
+				const node = searchFileTree(path.href, fileTree);
+				if (!node || !node.isPage) {
+					path.href = null;
+				} else {
+					path.title = node.title ?? path.title;
+				}
 			}
 		}
 
@@ -49,6 +56,7 @@
 	export let fileTree;
 
 	$: crumbs = buildCrumbs($page.url.pathname.split('/').slice(1), fileTree);
+	$: console.log(crumbs);
 </script>
 
 <div class="flex items-start mt-0 whitespace-nowrap overflow-auto">
