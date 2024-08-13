@@ -6,12 +6,10 @@
 
 <script>
 	import { dropdownOptionStore } from './dropdownOptionStore.js';
-	import { getContext, onDestroy, setContext, tick } from 'svelte';
+	import { getContext, onDestroy, setContext } from 'svelte';
 	import { DropdownContext } from './constants.js';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import DropdownOption from './helpers/DropdownOption.svelte';
-	import QueryLoad from '../../query-load/QueryLoad.svelte';
-	import { Query } from '@evidence-dev/sdk/usql';
 	import { page } from '$app/stores';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
@@ -111,9 +109,10 @@
 		forceSort,
 		destroy: destroyStore
 	} = state;
+
 	onDestroy(destroyStore);
 
-	const set = (newValue) => {
+	const updateInputStore = (newValue) => {
 		if (JSON.stringify(newValue) !== JSON.stringify($inputs[name])) {
 			$inputs[name] = newValue;
 		}
@@ -123,7 +122,7 @@
 	$: if ($selectedOptions && hasHadSelection) {
 		const values = $selectedOptions;
 		if (multiple) {
-			set({
+			updateInputStore({
 				label: values.map((x) => x.label).join(', '),
 				value: values.length
 					? `(${values.map((x) => duckdbSerialize(x.value))})`
@@ -132,9 +131,9 @@
 			});
 		} else {
 			if (!values.length) {
-				set({ label: '', value: null, rawValues: [] });
+				updateInputStore({ label: '', value: null, rawValues: [] });
 			} else if (values.length) {
-				set({
+				updateInputStore({
 					label: values[0].label,
 					value: duckdbSerialize(values[0].value, { serializeStrings: false }),
 					rawValues: values
@@ -161,42 +160,43 @@
 	let search = '';
 
 	let searchIdx = 0;
+	let finalQuery;
 
-	$: finalQuery = Query.isQuery(data) ? data : $query;
 	const updateQuery = debounce(async () => {
 		searchIdx++;
 		if (search && hasQuery) {
 			const targetIdx = searchIdx;
 			const searchQuery = query.search(search, 'label');
-			await searchQuery.fetch();
-			if (targetIdx === searchIdx) {
-				finalQuery = searchQuery;
+			if (searchQuery.hash !== finalQuery?.hash) {
+				await searchQuery.fetch();
+				if (targetIdx === searchIdx) {
+					finalQuery = searchQuery;
+					forceSort();
+				}
+				// await tick();
 			}
-			await tick();
 		} else {
 			finalQuery = query ?? data;
 		}
-		forceSort();
 	}, 100);
-	$: search, updateQuery();
+	$: search, data, query, updateQuery();
 
 	$: open ? pauseSorting() : resumeSorting();
-	const toKey = (queryOpt) => queryOpt[value]?.toString() + queryOpt[label]?.toString();
+
+	let opts = [];
+	$: if ($finalQuery?.ready) opts = $finalQuery;
 </script>
 
 <slot />
 
-<QueryLoad data={$finalQuery} let:loaded>
-	<div slot="skeleton"></div>
-	{#each loaded ?? [] as queryOpt (isNaN(toKey(queryOpt)) ? Math.random().toString() : toKey(queryOpt))}
-		<DropdownOption
-			value={queryOpt[value] ?? queryOpt.value}
-			valueLabel={queryOpt[label] ?? queryOpt.label}
-			idx={getIdx(queryOpt)}
-			__auto
-		/>
-	{/each}
-</QueryLoad>
+{#each opts as option (`${option.label?.toString()} ${option.value?.toString()}`)}
+	<DropdownOption
+		value={option[value] ?? option.value}
+		valueLabel={option[label] ?? option.label}
+		idx={getIdx(option)}
+		__auto
+	/>
+{/each}
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">

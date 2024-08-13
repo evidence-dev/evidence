@@ -676,33 +676,33 @@ describe('dropdownOptionStore', () => {
 			).toHaveLength(1);
 		});
 		it('should not remove options that were selected, removed, re-added, then unselected', async () => {
-			const store = dropdownOptionStore({...baseOptions, multiselect: true});
+			const store = dropdownOptionStore({ ...baseOptions, multiselect: true });
 			const opts = [
 				{ label: '1', value: 1 },
 				{ label: '2', value: 2 }
 			];
 			store.addOptions(...opts);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({opts: get(store.options)})
+			console.log({ opts: get(store.options) });
 			store.toggleSelected(opts[0]);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({opts: get(store.options)})
-			
+			console.log({ opts: get(store.options) });
+
 			store.removeOptions(opts[0]);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({opts: get(store.options)})
-			
+			console.log({ opts: get(store.options) });
+
 			store.addOptions(opts[0]);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({opts: get(store.options)})
-			
+			console.log({ opts: get(store.options) });
+
 			store.toggleSelected(opts[0]);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({opts: get(store.options)})
-			
+			console.log({ opts: get(store.options) });
+
 			expect(get(store.options), 'Option should not have been removed').toHaveLength(2);
 			expect(get(store.options)[0].selected, 'Option should still be selected').toBe(false);
-		})
+		});
 	});
 	describe('multi-select', () => {
 		const baseOptions = {

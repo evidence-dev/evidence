@@ -142,64 +142,68 @@ export const dropdownOptionStore = (opts = {}) => {
 		/**
 		 * @param  {...DropdownOption} removeOptions
 		 */
-		removeOptions: /** @type {DropdownOptionBatchUp} */ (batchUp(
-			/** @param {...(DropdownOption[] | DropdownOption)} removeOptions */
-			(...removeOptions) => {
-				if (destroyed) return;
-				const opts = removeOptions.flat();
-				options.update(($options) => {
-					return $options.reduce((a, v) => {
-						if (opts.find((x) => optEq(x, v))) {
-							if (v.selected) v.__removeOnDeselect = true;
-							else return a;
-						}
-						a.push(v);
-						return a;
-					}, /** @type {DropdownOption[]} */ ([]));
-				});
-			},
-			100
-		)),
+		removeOptions: /** @type {DropdownOptionBatchUp} */ (
+			batchUp(
+				/** @param {...(DropdownOption[] | DropdownOption)} removeOptions */
+				(...removeOptions) => {
+					if (destroyed) return;
+					const opts = removeOptions.flat();
+					options.update(($options) => {
+						return $options.reduce((a, v) => {
+							if (opts.find((x) => optEq(x, v))) {
+								if (v.selected) v.__removeOnDeselect = true;
+								else return a;
+							}
+							a.push(v);
+							return a;
+						}, /** @type {DropdownOption[]} */ ([]));
+					});
+				},
+				100
+			)
+		),
 		/**
 		 * @param  {...DropdownOption} toggleOptions
 		 * @returns {void}
 		 */
-		toggleSelected: /** @type {DropdownOptionBatchUp} */ (batchUp(
-			/** @param {...(DropdownOption[] | DropdownOption)} toggleOptions */
-			(...toggleOptions) => {
-				if (destroyed) return;
-				const toToggle = toggleOptions.flat();
-				options.update(($options) => {
-					if (config.multiselect) {
-						// For multi-select, toggle each option
-						return $options.reduce((a, v) => {
-							if (toToggle.find((x) => optEq(x, v))) {
-								v.selected = !v.selected;
-							}
-							console.log({ v });
-							a.push(v);
-							return a;
-						}, /** @type {DropdownOption[]} */ ([]));
-					} else {
-						// For single-select, deselect everything and select only the last option
-						$options.forEach((o) => (o.selected = false));
+		toggleSelected: /** @type {DropdownOptionBatchUp} */ (
+			batchUp(
+				/** @param {...(DropdownOption[] | DropdownOption)} toggleOptions */
+				(...toggleOptions) => {
+					if (destroyed) return;
+					const toToggle = toggleOptions.flat();
+					options.update(($options) => {
+						if (config.multiselect) {
+							// For multi-select, toggle each option
+							return $options.reduce((a, v) => {
+								if (toToggle.find((x) => optEq(x, v))) {
+									v.selected = !v.selected;
+								}
 
-						const toSelect = toToggle.at(-1);
+								a.push(v);
+								return a;
+							}, /** @type {DropdownOption[]} */ ([]));
+						} else {
+							// For single-select, deselect everything and select only the last option
+							$options.forEach((o) => (o.selected = false));
 
-						const output = $options.reduce((a, v) => {
-							if (toSelect && optEq(v, toSelect)) {
-								v.selected = true;
-							}
+							const toSelect = toToggle.at(-1);
 
-							a.push(v);
-							return a;
-						}, /** @type {DropdownOption[]} */ ([]));
-						return output;
-					}
-				});
-			},
-			100
-		)),
+							const output = $options.reduce((a, v) => {
+								if (toSelect && optEq(v, toSelect)) {
+									v.selected = true;
+								}
+
+								a.push(v);
+								return a;
+							}, /** @type {DropdownOption[]} */ ([]));
+							return output;
+						}
+					});
+				},
+				100
+			)
+		),
 		selectAll: () => {
 			if (destroyed) return;
 			options.update((o) => o.map((o) => ({ ...o, selected: true })));
@@ -228,10 +232,10 @@ export const dropdownOptionStore = (opts = {}) => {
 };
 
 /**
- * 
- * @param {DropdownOption[]} $options 
- * @param {boolean} [skipSort=false] 
- * @returns 
+ *
+ * @param {DropdownOption[]} $options
+ * @param {boolean} [skipSort=false]
+ * @returns
  */
 const hygiene = ($options, skipSort = false) => {
 	// Process __removeOnDeselect
@@ -275,18 +279,28 @@ const hygiene = ($options, skipSort = false) => {
 			return a.label - b.label;
 		}
 		// Compare strings
-		if (typeof a.label !== "undefined" && a.label !== null && typeof b.label !== "undefined" && b.label !== null) {
+		if (
+			typeof a.label !== 'undefined' &&
+			a.label !== null &&
+			typeof b.label !== 'undefined' &&
+			b.label !== null
+		) {
 			const labelDiff = a.label.toString().localeCompare(b.label.toString());
 			if (labelDiff !== 0) return labelDiff;
 		}
-		
+
 		// If labels are the same, sort by value
-		if (typeof a.value !== "undefined" && a.value !== null && typeof b.value !== "undefined" && b.value !== null) {
+		if (
+			typeof a.value !== 'undefined' &&
+			a.value !== null &&
+			typeof b.value !== 'undefined' &&
+			b.value !== null
+		) {
 			const valueDiff = a.value.toString().localeCompare(b.value.toString());
 			if (valueDiff !== 0) return valueDiff;
 		}
-		
-		return 0
+
+		return 0;
 	});
 
 	return $options;
