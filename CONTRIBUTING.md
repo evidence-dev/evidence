@@ -32,13 +32,11 @@ Open issues for bugs, docs improvements or errors.
 
 If your problem relates to sensitive or private information, please don't post any of your data in an issue. We suggest creating a small test dataset that can reproduce the problem without revealing any private info, and posting that data in the issue. If that's not possible, please reach out to support@evidence.dev.
 
-
 ## Request a Feature
 
 To request a feature, a new data source, or ask for help, create a GitHub discussion.
 
 [Create a discussion here](https://github.com/evidence-dev/evidence/discussions/new/choose)
-
 
 ## Contribute Code
 
