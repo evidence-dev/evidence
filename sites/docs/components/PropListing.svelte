@@ -8,7 +8,6 @@
 	export let defaultValue = '';
 	export let type = '';
 	let copyStatus = {};
-
 	async function copyToClipboard(text, option) {
 		try {
 			await navigator.clipboard.writeText(text);
@@ -20,14 +19,19 @@
 	}
 </script>
 
-<section class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4">
+<section
+	class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4 scroll-mt-[3.5rem]"
+	id="props-{name}"
+>
 	<div class="min-w-48 flex justify-between mr-4">
 		<div class="font-mono">
-			<span
-				class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-all"
-			>
-				{name}
-			</span>
+			<a href="#props-{name}">
+				<span
+					class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-all transiiton-all duration-150"
+				>
+					{name}
+				</span>
+			</a>
 		</div>
 		{#if required}
 			<span class="text-red-500 uppercase tracking-wide">Required</span>
