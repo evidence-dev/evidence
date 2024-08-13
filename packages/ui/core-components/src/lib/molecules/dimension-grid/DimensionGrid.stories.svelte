@@ -126,7 +126,6 @@
 		const screen = within(canvasElement);
 
 		const row = await screen.findByText('Virgin Atlantic Airways');
-
 		await userEvent.click(row);
 	}}
 >
@@ -156,7 +155,7 @@
 
 		const airline = await screen.findByText('Virgin Atlantic Airways');
 		await userEvent.click(airline);
-		await delay(750);
+
 		const airline2 = await screen.findByText('Finnair');
 		await userEvent.click(airline2);
 	}}
@@ -168,15 +167,16 @@
 	play={async ({ canvasElement }) => {
 		await data.fetch();
 		const screen = within(canvasElement);
+
 		const airline = await screen.findByText('Virgin Atlantic Airways');
 		await userEvent.click(airline);
-		await delay(750);
+
 		const plane = await screen.findByText('Boeing 717');
 		await userEvent.click(plane);
-		await delay(750);
+
 		const airline2 = await screen.findByText('Korean Air');
 		await userEvent.click(airline2);
-		await delay(750);
+
 		const plane2 = await screen.findByText('Airbus A320');
 		await userEvent.click(plane2);
 	}}
@@ -191,12 +191,12 @@
 
 		const airline = await screen.findByText('Virgin Atlantic Airways');
 		await userEvent.click(airline);
-		await delay(750);
+
 		await userEvent.click(airline);
 
 		const plane = await screen.findByText('Boeing 787');
 		await userEvent.click(plane);
-		await delay(750);
+
 		await userEvent.click(plane);
 	}}
 >
@@ -212,12 +212,8 @@
 		const plane = await screen.findByText('Boeing 727');
 		await userEvent.click(plane);
 
-		await delay(500);
-
 		const plane2 = await screen.findByText('Airbus A320');
 		await userEvent.click(plane2);
-
-		await delay(500);
 
 		const airline = await screen.findByText('Flydubai');
 		await userEvent.click(airline);
