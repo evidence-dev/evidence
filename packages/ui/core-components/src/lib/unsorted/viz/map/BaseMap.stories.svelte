@@ -31,43 +31,6 @@
 
 <Story name="Basic Usage">
 	<BaseMap title="My Map" height="300">
-		<Points
-			data={la_locations}
-			lat="lat"
-			long="long"
-			value="sales"
-			tooltip={[{ title: 'Sales, LTM' }]}
-			colorPalette={['white', 'green']}
-			size="20"
-			opacity="0.7"
-			borderWidth="0"
-		/>
-		<Bubbles
-			name="test"
-			{data}
-			lat="lat"
-			long="long"
-			pointName="point_name"
-			value="sales"
-			size="sales"
-			tooltipType="hover"
-			opacity="0.6"
-			colorPalette={['red', 'navy', 'purple']}
-		/>
-		<Points
-			name="test"
-			{data}
-			lat="lat"
-			long="long"
-			color="orange"
-			pointSize="8"
-			pointScaleCol="sales"
-			value="sales"
-			valueFmt="eur"
-			tooltip={[{ id: 'sales', title: 'My Sales' }]}
-			colorPalette={['lightblue', 'navy', 'purple']}
-			tooltipType="click"
-		/>
 		<Areas
 			data={la_zip_sales}
 			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
@@ -79,6 +42,18 @@
 			tooltipType="hover"
 			opacity="1"
 		/>
-		<Points data={la_locations} lat="lat" long="long" color="orange" />
+
+		<Bubbles
+			data={la_locations}
+			lat="lat"
+			long="long"
+			pointName="point_name"
+			value="sales"
+			size="sales"
+			tooltipType="hover"
+			opacity="0.6"
+		/>
+
+		<Points data={la_locations} lat="lat" long="long" color="red" />
 	</BaseMap>
 </Story>
