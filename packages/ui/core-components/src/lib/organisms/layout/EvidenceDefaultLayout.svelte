@@ -89,6 +89,12 @@
 	$: if (!['show', 'hide', 'never'].includes(sidebarFrontMatter)) {
 		sidebarFrontMatter = undefined;
 	}
+
+	if ('serviceWorker' in navigator) {
+		addEventListener('load', () => {
+			navigator.serviceWorker.register('/service-worker.js');
+		});
+	}
 </script>
 
 <slot />
