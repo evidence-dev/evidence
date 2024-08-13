@@ -13,8 +13,17 @@
 
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import { userEvent, within } from '@storybook/test';
 
-	const data = Query.create(`select * from flights`, query);
+	const data = Query.create('select * from flights', query);
+
+	const dataPlay = Query.create('select plane, airline from flights', query);
+
+	const nullComboData = Query.create('select * from flights limit 1000', query);
+
+	const delay = (ms) => {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	};
 </script>
 
 <Story name="Basic Usage">
@@ -99,14 +108,120 @@
 	/>
 </Story>
 
-<Story name="string query with spaces">
+<Story name="Null Metric Values Multiple">
 	<DimensionGrid
+		multiple
 		data={Query.create(
-			`SELECT "fare" as "fare price", "airline" as "Airline Name" from flights limit 10`,
+			"SELECT case when fare > 500 then 'Big Fare!!' else null end as nullable_string_column, * FROM series_demo_source.flights",
 			query,
-			{
-				disableCache: true
-			}
+			{ disableCache: true }
 		)}
 	/>
+</Story>
+
+<Story
+	name="Filtering in one column"
+	play={async ({ canvasElement }) => {
+		await data.fetch();
+		const screen = within(canvasElement);
+
+		const row = await screen.findByText('Virgin Atlantic Airways');
+
+		await userEvent.click(row);
+	}}
+>
+	<DimensionGrid data={dataPlay} />
+</Story>
+
+<Story
+	name="Filtering in multiple columns"
+	play={async ({ canvasElement }) => {
+		await data.fetch();
+		const screen = within(canvasElement);
+
+		const airline = await screen.findByText('Virgin Atlantic Airways');
+		await userEvent.click(airline);
+
+		const plane = await screen.findByText('Boeing 787');
+		await userEvent.click(plane);
+	}}
+>
+	<DimensionGrid data={dataPlay} />
+</Story>
+<Story
+	name="Selecting Multiple Values in single column"
+	play={async ({ canvasElement }) => {
+		await data.fetch();
+		const screen = within(canvasElement);
+
+		const airline = await screen.findByText('Virgin Atlantic Airways');
+		await userEvent.click(airline);
+		await delay(750);
+		const airline2 = await screen.findByText('Finnair');
+		await userEvent.click(airline2);
+	}}
+>
+	<DimensionGrid data={dataPlay} multiple />
+</Story>
+<Story
+	name="Selecting Multiple Values in Multiple Columns"
+	play={async ({ canvasElement }) => {
+		await data.fetch();
+		const screen = within(canvasElement);
+		const airline = await screen.findByText('Virgin Atlantic Airways');
+		await userEvent.click(airline);
+		await delay(750);
+		const plane = await screen.findByText('Boeing 717');
+		await userEvent.click(plane);
+		await delay(750);
+		const airline2 = await screen.findByText('Korean Air');
+		await userEvent.click(airline2);
+		await delay(750);
+		const plane2 = await screen.findByText('Airbus A320');
+		await userEvent.click(plane2);
+	}}
+>
+	<DimensionGrid data={dataPlay} multiple />
+</Story>
+<Story
+	name="Deselecting Multiple Values in Multiple Columns"
+	play={async ({ canvasElement }) => {
+		await data.fetch();
+		const screen = within(canvasElement);
+
+		const airline = await screen.findByText('Virgin Atlantic Airways');
+		await userEvent.click(airline);
+		await delay(750);
+		await userEvent.click(airline);
+
+		const plane = await screen.findByText('Boeing 787');
+		await userEvent.click(plane);
+		await delay(750);
+		await userEvent.click(plane);
+	}}
+>
+	<DimensionGrid data={dataPlay} multiple />
+</Story>
+
+<Story
+	name="Null Row Column Combination"
+	play={async ({ canvasElement }) => {
+		await data.fetch();
+		const screen = within(canvasElement);
+
+		const plane = await screen.findByText('Boeing 727');
+		await userEvent.click(plane);
+
+		await delay(500);
+
+		const plane2 = await screen.findByText('Airbus A320');
+		await userEvent.click(plane2);
+
+		await delay(500);
+
+		const airline = await screen.findByText('Flydubai');
+		await userEvent.click(airline);
+	}}
+>
+	<DimensionGrid data={nullComboData} multiple />
 </Story>
