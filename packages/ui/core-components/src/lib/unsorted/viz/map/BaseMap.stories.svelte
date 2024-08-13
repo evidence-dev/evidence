@@ -16,11 +16,6 @@
 	import Bubbles from './components/Bubbles.svelte';
 	import Areas from './components/Areas.svelte';
 
-	const data = Query.create(
-		`SELECT * from locations order by point_name asc limit 20 order by 1`,
-		query
-	);
-
 	const la_zip_sales = Query.create(
 		`select * from la_zip_sales where zip_code <> 90704 order by 1`,
 		query

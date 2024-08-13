@@ -20,10 +20,6 @@
 	const dataPlay = Query.create('select plane, airline from flights', query);
 
 	const nullComboData = Query.create('select * from flights limit 1000', query);
-
-	const delay = (ms) => {
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	};
 </script>
 
 <Story name="Basic Usage">
