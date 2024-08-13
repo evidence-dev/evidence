@@ -16,6 +16,8 @@
 	export let limit = 10;
 	/** @type {string} */
 	export let name;
+	/** @type {boolean} */
+	export let multiple = false;
 
 	$: dimensions = data?.columns?.filter((col) => col.column_type === 'VARCHAR');
 	let selectedDimensions = writable([]);
@@ -46,7 +48,7 @@
 {:else}
 	<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
 		{#each dimensions as dimension}
-			<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} />
+			<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} {multiple} />
 		{/each}
 	</div>
 {/if}

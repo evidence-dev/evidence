@@ -955,8 +955,8 @@ importers:
         specifier: ^6.18.1
         version: 6.21.0(typescript@5.5.4)
       '@uwdata/mosaic-sql':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.10.0
+        version: 0.10.0
       '@vitest/coverage-v8':
         specifier: ^1.2.0
         version: 1.6.0(vitest@1.6.0)
@@ -1296,7 +1296,7 @@ importers:
         version: 2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.10)
       '@sveltejs/package':
         specifier: ^2.3.1
-        version: 2.3.2(svelte@4.2.12)(typescript@5.4.2)
+        version: 2.3.3(svelte@4.2.12)(typescript@5.4.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: 3.0.2
         version: 3.0.2(svelte@4.2.12)(vite@5.2.10)
@@ -1912,9 +1912,9 @@ packages:
       '@aws-sdk/xml-builder': 3.609.0
       '@smithy/config-resolver': 3.0.5
       '@smithy/core': 2.3.2
-      '@smithy/eventstream-serde-browser': 3.0.5
+      '@smithy/eventstream-serde-browser': 3.0.6
       '@smithy/eventstream-serde-config-resolver': 3.0.3
-      '@smithy/eventstream-serde-node': 3.0.4
+      '@smithy/eventstream-serde-node': 3.0.5
       '@smithy/fetch-http-handler': 3.2.4
       '@smithy/hash-blob-browser': 3.1.2
       '@smithy/hash-node': 3.0.3
@@ -4383,7 +4383,7 @@ packages:
       proxy-agent: 6.4.0
       thrift: 0.16.0
       uuid: 9.0.1
-      winston: 3.13.1
+      winston: 3.14.1
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -5370,7 +5370,7 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
       '@types/node': 20.14.14
-      '@types/yargs': 17.0.32
+      '@types/yargs': 17.0.33
       chalk: 4.1.0
     dev: true
 
@@ -5382,7 +5382,7 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
       '@types/node': 20.14.14
-      '@types/yargs': 17.0.32
+      '@types/yargs': 17.0.33
       chalk: 4.1.0
     dev: true
 
@@ -5431,8 +5431,8 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /@jsonjoy.com/json-pack@1.0.4(tslib@2.6.3):
-    resolution: {integrity: sha512-aOcSN4MeAtFROysrbqG137b7gaDDSmVrl5mpo6sT/w+kcXpWnzhMjmY/Fh/sDx26NBxyIE7MB1seqLeCAzy9Sg==}
+  /@jsonjoy.com/json-pack@1.1.0(tslib@2.6.3):
+    resolution: {integrity: sha512-zlQONA+msXPPwHWZMKFVS78ewFczIll5lXiVPwFPCZUsrOKdxc2AvxU1HoNBmMRhqDZUR9HkC3UOm+6pME6Xsg==}
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
@@ -5604,10 +5604,10 @@ packages:
       svelte: 4.2.12
     dev: false
 
-  /@microsoft/1ds-core-js@4.3.0(tslib@2.6.3):
-    resolution: {integrity: sha512-0aP0ko4j0E2HfMNG1TdctGxcX74c4nQMMMV2JyaBYRRlbg1qYSVCUTZO4Ap6Qf65cBjJUCoIzgDMXNSquANwDA==}
+  /@microsoft/1ds-core-js@4.3.1(tslib@2.6.3):
+    resolution: {integrity: sha512-oFRRsfXACWf6Z4ZufSfwA+sAqE/hJDHCZ1wOLz5RIrBD4tg0P0dVAuNuqMHI3ZvvDxZOKPF1qfbzz1bsmv12AA==}
     dependencies:
-      '@microsoft/applicationinsights-core-js': 3.3.0(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.3.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-async': 0.5.2
@@ -5616,10 +5616,10 @@ packages:
       - tslib
     dev: false
 
-  /@microsoft/1ds-post-js@4.3.0(tslib@2.6.3):
-    resolution: {integrity: sha512-a1AflEuB313mfRiNNqkoVYDi4zxnG57zR8KotudtVoov6hiByBIS0KSuf3oE5/woDHWi9ZJjiCDvFwNqNH0YYw==}
+  /@microsoft/1ds-post-js@4.3.1(tslib@2.6.3):
+    resolution: {integrity: sha512-xug4tCK4Fj2ha+8I9gBXiSE6Ogui8S7Qi9pENTDsG4Hk6oyjIApv8uE+rbn4gzC2CtUwA1p9k/DnHF5iPBGY3g==}
     dependencies:
-      '@microsoft/1ds-core-js': 4.3.0(tslib@2.6.3)
+      '@microsoft/1ds-core-js': 4.3.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-async': 0.5.2
@@ -5628,13 +5628,13 @@ packages:
       - tslib
     dev: false
 
-  /@microsoft/applicationinsights-channel-js@3.3.0(tslib@2.6.3):
-    resolution: {integrity: sha512-xlxcfwgFgvHoY/STVgtRoUSvAKOMNbe4CIBeY8zTHsjE9x3/kY9R9kpRkTBectuD7xVm1/FmzrzqaxcJO7R/sw==}
+  /@microsoft/applicationinsights-channel-js@3.3.1(tslib@2.6.3):
+    resolution: {integrity: sha512-j2+qxOyG2ezMFQdTs597mskYMLo/+2oQtw0GTbnyvN1brQHKRE9Avu/gNxyZGtC+AjXXUOKbxuhFFvuK2YcvCg==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-common': 3.3.0(tslib@2.6.3)
-      '@microsoft/applicationinsights-core-js': 3.3.0(tslib@2.6.3)
+      '@microsoft/applicationinsights-common': 3.3.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.3.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-async': 0.5.2
@@ -5642,20 +5642,20 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@microsoft/applicationinsights-common@3.3.0(tslib@2.6.3):
-    resolution: {integrity: sha512-5t6WtL9wCQUA06sioaTenz5qWgrCk7QRm99pDuP+vyjcAiT6//f+Qn1K9KXtEX5WfEMHx3vBIDGLl6ppnF1YAQ==}
+  /@microsoft/applicationinsights-common@3.3.1(tslib@2.6.3):
+    resolution: {integrity: sha512-5cniYigDAMGXdmPQeSg/oAXe7eeQkaMQgdxdjCsdB+/j+dOR+Z30vziiY7mkwMvtHvlcoPoiIfUpSu1FNGXEhg==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-core-js': 3.3.0(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.3.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-utils': 0.11.3
       tslib: 2.6.3
     dev: false
 
-  /@microsoft/applicationinsights-core-js@3.3.0(tslib@2.6.3):
-    resolution: {integrity: sha512-so0fFTqgZMjClH+MsiRYGspo5fpgwHEUYNMjyzpf9rjrY7FaUH8kkWzrQ3V0Cs4axZwf+WuIndtDOAws7aBmGQ==}
+  /@microsoft/applicationinsights-core-js@3.3.1(tslib@2.6.3):
+    resolution: {integrity: sha512-6mef2NmyQF1B/zvB8BLZlo0B6gAOfFhE5+2l7SqLVdeftWOZILZj7/oqXLECTQ+P3WcthMVWjXtOe8MpGz255g==}
     peerDependencies:
       tslib: '*'
     dependencies:
@@ -5672,14 +5672,14 @@ packages:
       '@nevware21/ts-utils': 0.11.3
     dev: false
 
-  /@microsoft/applicationinsights-web-basic@3.3.0(tslib@2.6.3):
-    resolution: {integrity: sha512-8+QcrgensCK44XuHMkW+zQXYchM6/f5gg0go/REVj5DpbE03L3jXNajSlBIALH8MzhGgcyPDlGmIt2OYztUMNQ==}
+  /@microsoft/applicationinsights-web-basic@3.3.1(tslib@2.6.3):
+    resolution: {integrity: sha512-4fNVUW4XMYn5aZRXnM0kcKWmqWVzYnO7n4oH2o7ExLYf+Nr3ute2SBYkvlxDRYnr/mSvnWmEfg/siO+zgCK+AA==}
     peerDependencies:
       tslib: '*'
     dependencies:
-      '@microsoft/applicationinsights-channel-js': 3.3.0(tslib@2.6.3)
-      '@microsoft/applicationinsights-common': 3.3.0(tslib@2.6.3)
-      '@microsoft/applicationinsights-core-js': 3.3.0(tslib@2.6.3)
+      '@microsoft/applicationinsights-channel-js': 3.3.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-common': 3.3.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-core-js': 3.3.1(tslib@2.6.3)
       '@microsoft/applicationinsights-shims': 3.0.1
       '@microsoft/dynamicproto-js': 2.0.3
       '@nevware21/ts-async': 0.5.2
@@ -6988,11 +6988,11 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@smithy/eventstream-serde-browser@3.0.5:
-    resolution: {integrity: sha512-dEyiUYL/ekDfk+2Ra4GxV+xNnFoCmk1nuIXg+fMChFTrM2uI/1r9AdiTYzPqgb72yIv/NtAj6C3dG//1wwgakQ==}
+  /@smithy/eventstream-serde-browser@3.0.6:
+    resolution: {integrity: sha512-2hM54UWQUOrki4BtsUI1WzmD13/SeaqT/AB3EUJKbcver/WgKNaiJ5y5F5XXuVe6UekffVzuUDrBZVAA3AWRpQ==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      '@smithy/eventstream-serde-universal': 3.0.4
+      '@smithy/eventstream-serde-universal': 3.0.5
       '@smithy/types': 3.3.0
       tslib: 2.6.3
     dev: false
@@ -7005,17 +7005,17 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@smithy/eventstream-serde-node@3.0.4:
-    resolution: {integrity: sha512-mjlG0OzGAYuUpdUpflfb9zyLrBGgmQmrobNT8b42ZTsGv/J03+t24uhhtVEKG/b2jFtPIHF74Bq+VUtbzEKOKg==}
+  /@smithy/eventstream-serde-node@3.0.5:
+    resolution: {integrity: sha512-+upXvnHNyZP095s11jF5dhGw/Ihzqwl5G+/KtMnoQOpdfC3B5HYCcDVG9EmgkhJMXJlM64PyN5gjJl0uXFQehQ==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      '@smithy/eventstream-serde-universal': 3.0.4
+      '@smithy/eventstream-serde-universal': 3.0.5
       '@smithy/types': 3.3.0
       tslib: 2.6.3
     dev: false
 
-  /@smithy/eventstream-serde-universal@3.0.4:
-    resolution: {integrity: sha512-Od9dv8zh3PgOD7Vj4T3HSuox16n0VG8jJIM2gvKASL6aCtcS8CfHZDWe1Ik3ZXW6xBouU+45Q5wgoliWDZiJ0A==}
+  /@smithy/eventstream-serde-universal@3.0.5:
+    resolution: {integrity: sha512-5u/nXbyoh1s4QxrvNre9V6vfyoLWuiVvvd5TlZjGThIikc3G+uNiG9uOTCWweSRjv1asdDIWK7nOmN7le4RYHQ==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@smithy/eventstream-codec': 3.1.2
@@ -7981,8 +7981,8 @@ packages:
       - typescript
     dev: true
 
-  /@sveltejs/package@2.3.2(svelte@4.2.12)(typescript@5.4.2):
-    resolution: {integrity: sha512-6M8/Te7iXRG7SiH92wugqfyoJpuepjn78L433LnXicUeMso9M/N4vdL9DPK3MfTkVVY4klhNRptVqme3p4oZWA==}
+  /@sveltejs/package@2.3.3(svelte@4.2.12)(typescript@5.4.2):
+    resolution: {integrity: sha512-YGohTTDpF4zHtVlBkNukeSmVrlSZgx4Va4t80rr3Hg1gMoskRxkDreT0YJkGQYz6s6hXdTfBIbD501vndbNstA==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     peerDependencies:
@@ -8714,8 +8714,8 @@ packages:
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
     dev: true
 
-  /@types/yargs@17.0.32:
-    resolution: {integrity: sha512-xQ67Yc/laOG5uMfX/093MRlGGCIBzZMarVa+gfNKJxWAIgykYpVGkBdbqEzGDDfCrVUj6Hiff4mTZ5BA6TmAog==}
+  /@types/yargs@17.0.33:
+    resolution: {integrity: sha512-WpxBCKWPLr4xSsHgz511rFJAM+wS28w2zEO1QDNY5zM/S8ok70NNfztH0xwhqKyaK0OHCbN98LDAZuy1ctxDkA==}
     dependencies:
       '@types/yargs-parser': 21.0.3
     dev: true
@@ -8933,12 +8933,17 @@ packages:
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
+  /@uwdata/mosaic-sql@0.10.0:
+    resolution: {integrity: sha512-tPsgrHO8zTwLFMBR+BiG4fskK9RSbH+nXS9ju8433NDq3qicAq4Z46CnYpCs0vWIR7AUAxMvncqP6YPbiQhOug==}
+    dev: false
+
   /@uwdata/mosaic-sql@0.3.5:
     resolution: {integrity: sha512-/xdasEcxBzBG1O9WyhnsFnbf/GXjKSbl4lcpg3Cawrl3m6EuA9mKm0WStxAlEBRj1CscJbOHi355e1g7bv/zGg==}
     dev: false
 
   /@uwdata/mosaic-sql@0.4.0:
     resolution: {integrity: sha512-QpjG6jrKJ4bH0eud4h719IaCgUOCYX6acyd5/HalFbDdjGHmFIPfcm8SYEnzvg+Jxz1jBfuH/2tpgOHahOK8xA==}
+    dev: true
 
   /@vitest/coverage-v8@1.6.0(vitest@1.6.0):
     resolution: {integrity: sha512-KvapcbMY/8GYIG0rlwwOKCVNRc0OL20rrhFkg/CHNzncV03TE2XWvO5w9uZYoxNiMEBacAJt3unSOiZ7svePew==}
@@ -9034,9 +9039,9 @@ packages:
     resolution: {integrity: sha512-qWK2GNw+b69QRYpjuNM9g3JKToMICoNIdc0rQMtvb4gIG9vKKCZCVCz+ZOx6XM/YlfWAyuPiyxcjIY0xyF+Djg==}
     engines: {vscode: ^1.75.0}
     dependencies:
-      '@microsoft/1ds-core-js': 4.3.0(tslib@2.6.3)
-      '@microsoft/1ds-post-js': 4.3.0(tslib@2.6.3)
-      '@microsoft/applicationinsights-web-basic': 3.3.0(tslib@2.6.3)
+      '@microsoft/1ds-core-js': 4.3.1(tslib@2.6.3)
+      '@microsoft/1ds-post-js': 4.3.1(tslib@2.6.3)
+      '@microsoft/applicationinsights-web-basic': 3.3.1(tslib@2.6.3)
     transitivePeerDependencies:
       - tslib
     dev: false
@@ -10831,16 +10836,16 @@ packages:
       stream-transform: 2.1.3
     dev: true
 
-  /cytoscape-cose-bilkent@4.1.0(cytoscape@3.30.1):
+  /cytoscape-cose-bilkent@4.1.0(cytoscape@3.30.2):
     resolution: {integrity: sha512-wgQlVIUJF13Quxiv5e1gstZ08rnZj2XaLHGoFMYXz7SkNfCDOOteKBE6SYRfA9WxxI/iBc3ajfDoc6hb/MRAHQ==}
     peerDependencies:
       cytoscape: ^3.2.0
     dependencies:
       cose-base: 1.0.3
-      cytoscape: 3.30.1
+      cytoscape: 3.30.2
 
-  /cytoscape@3.30.1:
-    resolution: {integrity: sha512-TRJc3HbBPkHd50u9YfJh2FxD1lDLZ+JXnJoyBn5LkncoeuT7fapO/Hq/Ed8TdFclaKshzInge2i30bg7VKeoPQ==}
+  /cytoscape@3.30.2:
+    resolution: {integrity: sha512-oICxQsjW8uSaRmn4UK/jkczKOqTrVqt5/1WL0POiJUT2EKNc9STM4hYFHv917yu55aTBMFNRzymlJhVAiWPCxw==}
     engines: {node: '>=0.10'}
 
   /d3-array@2.12.1:
@@ -12611,8 +12616,8 @@ packages:
     dependencies:
       is-callable: 1.2.7
 
-  /foreground-child@3.2.1:
-    resolution: {integrity: sha512-PXUUyLqrR2XCWICfv6ukppP96sdFwWbNEnfEMt7jNsISjMsvaLNinAHNDYyvkyU+SZG2BTSbT5NjG+vZslfGTA==}
+  /foreground-child@3.3.0:
+    resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
     engines: {node: '>=14'}
     dependencies:
       cross-spawn: 7.0.3
@@ -12968,7 +12973,7 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
     dependencies:
-      foreground-child: 3.2.1
+      foreground-child: 3.3.0
       jackspeak: 3.4.3
       minimatch: 9.0.5
       minipass: 7.1.2
@@ -12980,7 +12985,7 @@ packages:
     engines: {node: 20 || >=22}
     hasBin: true
     dependencies:
-      foreground-child: 3.2.1
+      foreground-child: 3.3.0
       jackspeak: 4.0.1
       minimatch: 10.0.1
       minipass: 7.1.2
@@ -15392,7 +15397,7 @@ packages:
     resolution: {integrity: sha512-LZcMTBAgqUUKNXZagcZxvXXfgF1bHX7Y7nQ0QyEiNbRJgE29GhgPd8Yna1VQcLlPiHt/5RFJMWYN9Uv/VPNvjQ==}
     engines: {node: '>= 4.0.0'}
     dependencies:
-      '@jsonjoy.com/json-pack': 1.0.4(tslib@2.6.3)
+      '@jsonjoy.com/json-pack': 1.1.0(tslib@2.6.3)
       '@jsonjoy.com/util': 1.3.0(tslib@2.6.3)
       tree-dump: 1.0.2(tslib@2.6.3)
       tslib: 2.6.3
@@ -15442,8 +15447,8 @@ packages:
       '@braintree/sanitize-url': 6.0.4
       '@types/d3-scale': 4.0.8
       '@types/d3-scale-chromatic': 3.0.3
-      cytoscape: 3.30.1
-      cytoscape-cose-bilkent: 4.1.0(cytoscape@3.30.1)
+      cytoscape: 3.30.2
+      cytoscape-cose-bilkent: 4.1.0(cytoscape@3.30.2)
       d3: 7.9.0
       d3-sankey: 0.12.3
       dagre-d3-es: 7.0.10
@@ -17347,7 +17352,6 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
-
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
     dev: false
 
@@ -18167,7 +18171,7 @@ packages:
       string-similarity: 4.0.4
       tmp: 0.2.3
       uuid: 8.3.2
-      winston: 3.13.1
+      winston: 3.14.1
     transitivePeerDependencies:
       - asn1.js
       - aws-crt
@@ -19060,12 +19064,12 @@ packages:
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
-      terser: 5.31.3
+      terser: 5.31.5
       webpack: 5.93.0(webpack-cli@4.10.0)
     dev: true
 
-  /terser@5.31.3:
-    resolution: {integrity: sha512-pAfYn3NIZLyZpa83ZKigvj6Rn9c/vd5KfYGX7cN1mnzqgDcxWvrU5ZtAfIKhEXz9nRecw4z3LXkjaq96/qZqAA==}
+  /terser@5.31.5:
+    resolution: {integrity: sha512-YPmas0L0rE1UyLL/llTWA0SiDOqIcAQYLeUj7cJYzXHlRTAnMSg9pPe4VJ5PlKvTrPQsdVFuiRiwyeNlYgwh2Q==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
@@ -20426,8 +20430,8 @@ packages:
       triple-beam: 1.4.1
     dev: false
 
-  /winston@3.13.1:
-    resolution: {integrity: sha512-SvZit7VFNvXRzbqGHsv5KSmgbEYR5EiQfDAL9gxYkRqa934Hnk++zze0wANKtMHcy/gI4W/3xmSDwlhf865WGw==}
+  /winston@3.14.1:
+    resolution: {integrity: sha512-CJi4Il/msz8HkdDfXOMu+r5Au/oyEjFiOZzbX2d23hRLY0narGjqfE5lFlrT5hfYJhPtM8b85/GNFsxIML/RVA==}
     engines: {node: '>= 12.0.0'}
     dependencies:
       '@colors/colors': 1.6.0
