@@ -3,3 +3,9 @@ contact_links:
   - name: Evidence Community
     url: https://slack.evidence.dev
     about: Get support on Slack
+  - name: Feature Request
+    url: https://github.com/evidence-dev/evidence/discussions/new?category=ideas
+    about: Share ideas for new features
+  - name: Data Source Request
+    url: https://github.com/evidence-dev/evidence/discussions/new?category=data-source-request
+    about: Request a new data source
