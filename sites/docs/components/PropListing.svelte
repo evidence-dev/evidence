@@ -1,5 +1,29 @@
+<script context="module">
+	import { writable } from 'svelte/store';
+
+	const names = new Set();
+
+	function createWindowHashStore() {
+		const windowHash = writable(window.location.hash);
+
+		const hashChangeHandler = () => {
+			windowHash.set(window.location.hash);
+		};
+
+		window.addEventListener('hashchange', hashChangeHandler);
+
+		return {
+			subscribe: windowHash.subscribe,
+			destroy: () => window.removeEventListener('hashchange', hashChangeHandler)
+		};
+	}
+
+	const windowHashStore = createWindowHashStore();
+</script>
+
 <script>
 	import { HoverCard } from '@evidence-dev/core-components';
+	import { onDestroy } from 'svelte';
 	export let name = '';
 	export let description = '';
 	export let required = false;
@@ -7,6 +31,8 @@
 	export let options = [];
 	export let defaultValue = '';
 	export let type = '';
+	let idName = name;
+
 	let copyStatus = {};
 	async function copyToClipboard(text, option) {
 		try {
@@ -17,17 +43,38 @@
 			}, 2000);
 		} catch (err) {}
 	}
+
+	let counter = 0;
+	const updateIdName = () => {
+		idName = name.replace(/[^a-zA-Z0-9]/g, '-');
+		while (names.has(idName)) {
+			counter++;
+			idName = counter === 1 ? `${idName}-copy` : `${idName}-copy-${counter}`;
+		}
+		names.add(idName);
+		counter = 0;
+	};
+
+	onDestroy(() => {
+		names.delete(idName);
+		windowHashStore.destroy();
+	});
+
+	updateIdName();
 </script>
 
 <section
-	class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4 scroll-mt-[3.5rem]"
-	id="props-{name}"
+	class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4 scroll-mt-[3.5rem] transition-colors duration-300 {$windowHashStore ===
+	`#props-${idName}`
+		? 'bg-blue-50 border-blue-400 border-t'
+		: ''}"
+	id="props-{idName}"
 >
 	<div class="min-w-48 flex justify-between mr-4">
 		<div class="font-mono">
-			<a href="#props-{name}">
+			<a href="#props-{idName}">
 				<span
-					class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-all transiiton-all duration-150"
+					class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-all"
 				>
 					{name}
 				</span>
