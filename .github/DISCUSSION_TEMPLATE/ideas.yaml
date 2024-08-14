@@ -1,6 +1,5 @@
-name: "Feature idea"
+name: "Ideas"
 description: Suggest an idea for Evidence 
-title: "[Feature]: "
 body:
   - type: textarea
     id: description
