@@ -425,6 +425,7 @@ export class EvidenceMap {
 				map.delete(url);
 				return map;
 			});
+			return { features: [] };
 		}
 	}
 }
