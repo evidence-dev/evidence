@@ -9,6 +9,7 @@
 	import TableOfContents from './tableofcontents/TableOfContents.svelte';
 	import ErrorOverlay from './ErrorOverlay.svelte';
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 
 	// Remove splash screen from app.html
 	if (browser) {
@@ -90,11 +91,12 @@
 		sidebarFrontMatter = undefined;
 	}
 
-	if ('serviceWorker' in navigator) {
+	onMount(() => {
+		if (!('serviceWorker' in navigator)) return;
 		addEventListener('load', () => {
 			navigator.serviceWorker.register('/service-worker.js');
 		});
-	}
+	});
 </script>
 
 <slot />
