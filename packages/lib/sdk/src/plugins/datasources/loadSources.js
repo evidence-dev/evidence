@@ -23,9 +23,6 @@ const loadSource = async (sourcePath) => {
  * @returns {Promise<Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>>}
  */
 export const loadSources = async () => {
-	console.error('loadSources', { sourcesDirectory });
-	// const sourceDir = await findDirectory('sources');
-
 	const sourceDirs = await fs
 		.readdir(sourcesDirectory)
 		.then((dirs) => dirs.map((dir) => path.join(sourcesDirectory, dir)));

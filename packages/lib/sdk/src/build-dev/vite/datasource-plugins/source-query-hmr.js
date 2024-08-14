@@ -85,7 +85,6 @@ export const sourceQueryHmr = () => {
 		name: 'evidence:source-query-hmr',
 		buildStart: function () {
 			if (this.meta.watchMode) {
-				console.error({ sourcesDirectory });
 				this.addWatchFile(sourcesDirectory);
 			}
 		},
