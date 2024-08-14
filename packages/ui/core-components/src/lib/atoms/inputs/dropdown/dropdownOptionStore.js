@@ -104,7 +104,7 @@ export const dropdownOptionStore = (opts = {}) => {
 				 */
 				(...newOptions) => {
 					if (destroyed) return;
-					const opts = newOptions.flat();
+					const opts = hygiene(newOptions.flat());
 					options.update(($options) => {
 						opts.forEach((option) => {
 							if (!isDropdownOption(option)) {
