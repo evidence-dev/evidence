@@ -398,7 +398,6 @@ export class EvidenceMap {
 	/** @type {Writable<Map<string, any | null>>} */
 	#geoJsonData = writable(new Map());
 
-	// allGeoJsonLoaded = writable(false);
 	allGeoJsonLoaded = derived(this.#geoJsonData, ($geoJsonData) => {
 		return Array.from($geoJsonData.values()).every(Boolean);
 	});
@@ -422,7 +421,10 @@ export class EvidenceMap {
 			return data;
 		} catch (e) {
 			this.#error.set(`Failed to load GeoJSON at URL '${url}': ${e.message}`);
-			this.#geoJsonData.update((map) => map.delete(url));
+			this.#geoJsonData.update((map) => {
+				map.delete(url);
+				return map;
+			});
 		}
 	}
 }
