@@ -141,7 +141,7 @@ Note that after editing some settings you may need to close and reopen VS Code f
 | `evidence.slashCommands`      | Slash Commands       | boolean    | `true`                                                  | Enabled slash commands - get component suggestions when typing `/`                                                                                                                                                                                    |
 | `evidence.templateProjectUrl` | Template Project Url | Url string | [`/template`](https://github.com/evidence-dev/template) | Evidence `template` project GitHub Url or local `file://` path to the project template folder to use when creating new Evidence projects. Defaults to the Evidence template Github repository [`/template`](https://github.com/evidence-dev/template) |
 
-You can request new Evidence extension settings to enhance this extension user experience in VS Code by submitting a [feature request](https://github.com/evidence-dev/evidence/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=) or [pull request](https://github.com/evidence-dev/evidence/pulls).
+You can request new Evidence extension settings to enhance this extension user experience in VS Code by submitting a [feature request in Discussions](https://github.com/evidence-dev/evidence/discussions/new?category=ideas) or [pull request](https://github.com/evidence-dev/evidence/pulls).
 
 ### VS Code Settings JSON
 

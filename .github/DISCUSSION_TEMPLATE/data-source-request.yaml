@@ -1,10 +1,8 @@
-name: 'Connector request'
+name: 'Data Source Request'
 description: 'Suggest a database or other data source you would like to connect to Evidence'
-title: '[Connector]: '
-labels: connectors
 body:
   - type: textarea
-    id: use-csae
+    id: use-case
     attributes:
       label: What do you use this database for?
       description: Is this your primary analytics data warehouse? Do you use it for a specific type or a specific source of data?
