@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
-import { writable, derived, readonly } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -45,9 +45,6 @@ export class EvidenceMap {
 	/** Tracks whether the initial view has been set based on data bounds. */
 	#initialViewSet = false;
 
-	/** @type {Writable<string | undefined>} */
-	#error = writable();
-
 	constructor() {
 		this.#lastClickedMarker = null;
 		this.#markerStyles = new Map();
@@ -67,11 +64,6 @@ export class EvidenceMap {
 	 */
 	get mapEl() {
 		return this.#mapEl;
-	}
-
-	/** @type {Readable<string | undefined>} */
-	get error() {
-		return readonly(this.#error);
 	}
 
 	/**
@@ -405,6 +397,7 @@ export class EvidenceMap {
 	/**
 	 * @param {string} url
 	 * @returns {Promise<any>} GeoJSON data
+	 * @throws An error if loading the GeoJSON fails
 	 */
 	async loadGeoJson(url) {
 		const cached = EvidenceMap.#geoJsonCache.get(url);
@@ -420,12 +413,11 @@ export class EvidenceMap {
 			this.#geoJsonData.update((map) => map.set(url, data));
 			return data;
 		} catch (e) {
-			this.#error.set(`Failed to load GeoJSON at URL '${url}': ${e.message}`);
 			this.#geoJsonData.update((map) => {
 				map.delete(url);
 				return map;
 			});
-			return { features: [] };
+			throw new Error(`Failed to load GeoJSON at URL '${url}'`, { cause: e });
 		}
 	}
 }

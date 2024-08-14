@@ -179,16 +179,22 @@
 	 * @returns {Promise<object[]>} The filtered GeoJSON features.
 	 */
 	async function processAreas() {
-		const geoJsonData = await map.loadGeoJson(geoJsonUrl);
-		const areaSet = new Set(data.map((d) => d[areaCol].toString())); // Ensure string format
-		const filteredGeoJson = geoJsonData.features.filter((geo) =>
-			areaSet.has(geo.properties[geoId])
-		); // Filter GeoJSON data
-
-		return filteredGeoJson;
+		const urlToLoad = geoJsonUrl;
+		try {
+			const geoJsonData = await map.loadGeoJson(urlToLoad);
+			if (geoJsonUrl !== urlToLoad) return;
+			const areaSet = new Set(data.map((d) => d[areaCol].toString())); // Ensure string format
+			geoJson = geoJsonData.features.filter((geo) => areaSet.has(geo.properties[geoId])); // Filter GeoJSON data
+		} catch (e) {
+			if (geoJsonUrl !== urlToLoad) return;
+			error = e;
+			geoJson = [];
+		}
 	}
 
-	let values, colorScale, filteredGeoJson;
+	let values;
+	let colorScale;
+	let geoJson = [];
 
 	/**
 	 * Initialize the component.
@@ -205,7 +211,7 @@
 			.scale(colorPalette)
 			.domain([min ?? Math.min(...values), max ?? Math.max(...values)]);
 
-		filteredGeoJson = await processAreas();
+		await processAreas();
 
 		if (name && $data.length > 0) {
 			setInputDefault($data[0], name);
@@ -255,11 +261,23 @@
 		});
 		setInputDefault(item, name);
 	}
+
+	/** @type {Error | undefined} */
+	let error;
+
+	// Re-load areas when related props change
+	$: geoJsonUrl,
+		data,
+		areaCol,
+		(async () => {
+			await data.fetch();
+			await processAreas();
+		})();
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
 {#await Promise.all([map.initPromise, init(), data.fetch()]) then}
-	{#each filteredGeoJson as feature}
+	{#each geoJson as feature (feature.properties[geoId])}
 		{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
 		<MapArea
 			{map}
