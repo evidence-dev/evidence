@@ -180,16 +180,11 @@
 	 */
 	async function processAreas() {
 		const urlToLoad = geoJsonUrl;
-		try {
-			const geoJsonData = await map.loadGeoJson(urlToLoad);
-			if (geoJsonUrl !== urlToLoad) return;
-			const areaSet = new Set(data.map((d) => d[areaCol].toString())); // Ensure string format
-			geoJson = geoJsonData.features.filter((geo) => areaSet.has(geo.properties[geoId])); // Filter GeoJSON data
-		} catch (e) {
-			if (geoJsonUrl !== urlToLoad) return;
-			error = e;
-			geoJson = [];
-		}
+		const geoJsonData = await map.loadGeoJson(urlToLoad);
+		if (!geoJsonData) return;
+		if (geoJsonUrl !== urlToLoad) return;
+		const areaSet = new Set(data.map((d) => d[areaCol].toString())); // Ensure string format
+		geoJson = geoJsonData?.features.filter((geo) => areaSet.has(geo.properties[geoId])); // Filter GeoJSON data
 	}
 
 	let values;
@@ -261,9 +256,6 @@
 		});
 		setInputDefault(item, name);
 	}
-
-	/** @type {Error | undefined} */
-	let error;
 
 	// Re-load areas when related props change
 	$: geoJsonUrl,

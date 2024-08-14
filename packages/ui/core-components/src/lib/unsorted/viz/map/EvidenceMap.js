@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
-import { writable, derived } from 'svelte/store';
+import { writable, derived, readonly } from 'svelte/store';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -390,34 +390,45 @@ export class EvidenceMap {
 	/** @type {Writable<Map<string, any | null>>} */
 	#geoJsonData = writable(new Map());
 
+	get geoJsonData() {
+		return readonly(this.#geoJsonData);
+	}
+
 	allGeoJsonLoaded = derived(this.#geoJsonData, ($geoJsonData) => {
 		return Array.from($geoJsonData.values()).every(Boolean);
 	});
 
 	/**
 	 * @param {string} url
-	 * @returns {Promise<any>} GeoJSON data
-	 * @throws An error if loading the GeoJSON fails
+	 * @returns {Promise<any | undefined>} GeoJSON data
 	 */
 	async loadGeoJson(url) {
 		const cached = EvidenceMap.#geoJsonCache.get(url);
 		if (cached) return cached;
 
-		const promise = fetch(url).then((r) => r.json());
+		const promise = fetch(url)
+			.then((r) => r.json())
+			.catch((e) => {
+				this.#geoJsonData.update((map) => {
+					map.delete(url);
+					return map;
+				});
+				console.error(`Failed to load GeoJSON at URL '${url}': ${e}`);
+			});
 		EvidenceMap.#geoJsonCache.set(url, promise);
 
-		try {
-			// Set null to indicate we are loading data for this URL
-			this.#geoJsonData.update((map) => map.set(url, null));
-			const data = await promise;
-			this.#geoJsonData.update((map) => map.set(url, data));
-			return data;
-		} catch (e) {
-			this.#geoJsonData.update((map) => {
+		// Set null to indicate we are loading data for this URL
+		this.#geoJsonData.update((map) => map.set(url, null));
+		const data = await promise;
+		this.#geoJsonData.update((map) => {
+			if (data) {
+				map.set(url, data);
+			} else {
 				map.delete(url);
-				return map;
-			});
-			throw new Error(`Failed to load GeoJSON at URL '${url}'`, { cause: e });
-		}
+			}
+			return map;
+		});
+
+		return data;
 	}
 }
