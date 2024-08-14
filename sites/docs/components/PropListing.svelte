@@ -1,29 +1,13 @@
 <script context="module">
 	import { writable } from 'svelte/store';
-
 	const names = new Set();
 
-	function createWindowHashStore() {
-		const windowHash = writable(window.location.hash);
-
-		const hashChangeHandler = () => {
-			windowHash.set(window.location.hash);
-		};
-
-		window.addEventListener('hashchange', hashChangeHandler);
-
-		return {
-			subscribe: windowHash.subscribe,
-			destroy: () => window.removeEventListener('hashchange', hashChangeHandler)
-		};
-	}
-
-	const windowHashStore = createWindowHashStore();
+	let hashLocation = writable('');
 </script>
 
 <script>
 	import { HoverCard } from '@evidence-dev/core-components';
-	import { onDestroy } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	export let name = '';
 	export let description = '';
 	export let required = false;
@@ -31,9 +15,28 @@
 	export let options = [];
 	export let defaultValue = '';
 	export let type = '';
-	let idName = name;
 
+	let idName = name;
 	let copyStatus = {};
+
+	onMount(() => {
+		// Safe to use window inside onMount
+		const updateHash = () => {
+			hashLocation.set(window.location.hash);
+		};
+
+		// Set initial value
+		updateHash();
+
+		// Listen for hash changes
+		window.addEventListener('hashchange', updateHash);
+
+		// Clean up when the component is destroyed
+		return () => {
+			window.removeEventListener('hashchange', updateHash);
+		};
+	});
+
 	async function copyToClipboard(text, option) {
 		try {
 			await navigator.clipboard.writeText(text);
@@ -57,14 +60,13 @@
 
 	onDestroy(() => {
 		names.delete(idName);
-		windowHashStore.destroy();
 	});
 
 	updateIdName();
 </script>
 
 <section
-	class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4 scroll-mt-[3.5rem] transition-colors duration-300 {$windowHashStore ===
+	class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4 scroll-mt-[3.5rem] transition-colors duration-300 {$hashLocation ===
 	`#props-${idName}`
 		? 'bg-blue-50 border-blue-400 border-t'
 		: ''}"
