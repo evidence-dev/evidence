@@ -118,7 +118,7 @@ export class ReferenceAreaStore {
 				for (let i = 0; i < data.length; i++) {
 					seriesData.push([
 						{
-							name: label ? (data[i][label] ?? label) : undefined,
+							name: label ? data[i][label] ?? label : undefined,
 							xAxis: xMin ? data[i][xMin] : undefined,
 							yAxis: yMin ? data[i][yMin] : undefined
 						},
