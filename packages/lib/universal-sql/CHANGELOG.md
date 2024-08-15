@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.1.4
+
+### Patch Changes
+
+- 8c2982505: Update vitest to latest
+
 ## 2.1.3
 
 ### Patch Changes

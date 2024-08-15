@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 39.1.4
+
+### Patch Changes
+
+- 2527838c4: Fix TProtocolException when loading Parquet files on Windows
+- Updated dependencies [8c2982505]
+- Updated dependencies [8c2982505]
+  - @evidence-dev/plugin-connector@2.1.8
+  - @evidence-dev/preprocess@5.1.6
+  - @evidence-dev/universal-sql@2.1.4
+  - @evidence-dev/sdk@1.3.9
+
 ## 39.1.3
 
 ### Patch Changes

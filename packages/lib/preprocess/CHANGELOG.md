@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 5.1.6
+
+### Patch Changes
+
+- 8c2982505: Update vitest to latest
+
 ## 5.1.5
 
 ### Patch Changes
