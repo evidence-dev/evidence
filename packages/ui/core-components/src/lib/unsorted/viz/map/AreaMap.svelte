@@ -26,10 +26,7 @@
 	}
 
 	/** @type {string} */
-	export let geoJsonUrl = undefined;
-	if (!geoJsonUrl) {
-		error = `geoJsonUrl is required. This is the path to your geoJSON file. If using a local geoJSON file, place it in the static directory and reference it as geoJsonUrl='/yourFileName.json'`;
-	}
+	export let geoJsonUrl = 'https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json';
 
 	/** @type {string|undefined} */
 	export let geoId = undefined;
