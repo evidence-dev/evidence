@@ -1,5 +1,25 @@
 # @evidence-dev/core-components
 
+## 4.7.5
+
+### Patch Changes
+
+- 06bb5f369: Add skeleton loading state for Area Map, Bubble Map, and Point Map
+- 8c2982505: - Switch to perfect-debounce instead of lodash.debounce
+  - Remove all lodash.library in favor of better supported lodash/library
+- 99410c144: feat: AreaMap and Areas react to geoJsonUrl changes
+- 67a94f6f9: Fixed Home Breadcrumbs href
+- 8c2982505: Rewrite Dropdown + DropdownOptionStore
+- 050707ba9: Dropdown has role "combobox" not "combo-box"
+- 8c2982505: Update vitest to latest
+- 2a2d0d914: removed scroll to top and fixed esc close for fullscreen mode
+- 4033c0b6e: Smooth zoom feature for maps
+- 2527838c4: Fix TProtocolException when loading Parquet files on Windows
+- c0c44330b: Added multiple selections to Dimension Grid
+- 4b0c088fd: Removes max height from codeblocks
+- Updated dependencies [8c2982505]
+  - @evidence-dev/component-utilities@3.2.9
+
 ## 4.7.4
 
 ### Patch Changes

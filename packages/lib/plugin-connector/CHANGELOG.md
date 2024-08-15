@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.8
+
+### Patch Changes
+
+- 8c2982505: Update vitest to latest
+- Updated dependencies [8c2982505]
+  - @evidence-dev/universal-sql@2.1.4
+
 ## 2.1.7
 
 ### Patch Changes
