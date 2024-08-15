@@ -78,20 +78,25 @@ export const dropdownOptionStore = (opts = {}) => {
 		options.set(hygiene(result, sortingPaused));
 	};
 
-	const defaults = new Set(config.defaultValues);
+	const defaultValues = Array.isArray(config.defaultValues)
+		? config.defaultValues
+		: [config.defaultValues];
+
+	const defaults = new Set(defaultValues);
 	if (!config.multiselect && defaults.size > 1) {
 		defaults.clear();
-		if (config.defaultValues?.length) defaults.add(config.defaultValues[0]);
+		if (defaultValues?.length) defaults.add(defaultValues[0]);
 		console.debug('Single-select dropdowns only accept one default value.');
 	}
 	if ((config.initialOptions?.length ?? 0) > 0) {
 		// We don't apply anything with defaults
 		defaults.clear();
 	}
+
 	let selectFirst =
 		!config.multiselect &&
 		!config.noDefault &&
-		config.defaultValues?.length === 0 &&
+		defaultValues?.length === 0 &&
 		!config.initialOptions?.some((opt) => opt.selected);
 	let selectAll = config.multiselect && config.selectAllByDefault && !config.initialOptions?.length;
 
@@ -117,7 +122,7 @@ export const dropdownOptionStore = (opts = {}) => {
 							}
 
 							// Apply defaults
-							if (option.value && defaults.has(option.value)) {
+							if (option.value !== null && defaults.has(option.value)) {
 								option.selected = true;
 								defaults.delete(option.value);
 							}
