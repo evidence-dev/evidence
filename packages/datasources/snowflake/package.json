@@ -27,6 +27,11 @@
 		],
 		"icon": "Snowflake"
 	},
+	"overrides": {
+		"axios": {
+			"version": "^1.7.4"
+		}
+	},
 	"keywords": [
 		"evidence",
 		"evidence-datasource",
