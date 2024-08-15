@@ -26,6 +26,7 @@
 
 	const searchDropdown = async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 		let dropdown = await canvas.getByRole('combobox');
 		await userEvent.click(dropdown);
 		await userEvent.keyboard('Alliance');
