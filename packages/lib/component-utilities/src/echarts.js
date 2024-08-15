@@ -24,7 +24,7 @@ export default (node, option) => {
 	registerTheme('evidence-light', evidenceThemeLight);
 
 	const chart = init(node, 'evidence-light', {
-		renderer: useSvg ? 'svg' : (option.renderer ?? 'canvas')
+		renderer: useSvg ? 'svg' : option.renderer ?? 'canvas'
 	});
 
 	// If connectGroup supplied, connect chart to other charts matching that connectGroup
