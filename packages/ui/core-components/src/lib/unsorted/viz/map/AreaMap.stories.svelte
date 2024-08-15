@@ -7,11 +7,17 @@
 </script>
 
 <script>
+	import { getContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import { Dropdown, DropdownOption } from '../../../atoms/inputs/dropdown/index.js';
 
 	import AreaMap from './AreaMap.svelte';
+	import { screen, userEvent, within } from '@storybook/test';
+
+	const inputStore = getContext(INPUTS_CONTEXT_KEY);
 
 	/** @type {typeof query} */
 	const slowQuery = async (...args) => {
@@ -36,4 +42,42 @@
 
 <Story name="Loading" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<AreaMap data={slow_la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_code" />
+</Story>
+
+<Story
+	name="Dynamic geoJsonUrl"
+	play={async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const dropdown = await canvas.findByRole('combobox');
+		await userEvent.click(dropdown);
+		const option = await screen.findByText('Pennsylvania');
+		await userEvent.click(option);
+	}}
+>
+	{@const sales_by_zip = Query.create(
+		`
+			SELECT '11368' as zip_code, 1000 as sales UNION ALL
+			SELECT '10025', 2000 UNION ALL
+			SELECT '15001', 3000 UNION ALL
+			SELECT '15003', 4000 UNION ALL
+			SELECT '08327', 5000 UNION ALL
+			SELECT '08055', 6000
+		`,
+		query
+	)}
+
+	<Dropdown name="state" title="State" defaultValue="new_york">
+		<DropdownOption value="new_york" valueLabel="New York" />
+		<DropdownOption value="pennsylvania" valueLabel="Pennsylvania" />
+		<DropdownOption value="new_jersey" valueLabel="New Jersey" />
+	</Dropdown>
+
+	<AreaMap
+		data={sales_by_zip}
+		geoJsonUrl="https://cybersyn-streamlit.s3.amazonaws.com/{$inputStore.state
+			.value}_zipcode_boundaries.geojson"
+		geoId="zip_code"
+		areaCol="zip_code"
+		value="sales"
+	/>
 </Story>
