@@ -328,7 +328,7 @@
 					<Button
 						builders={[builder]}
 						variant="outline"
-						role="combo-box"
+						role="combobox"
 						size="sm"
 						class="min-w-5 h-8 border"
 					>
