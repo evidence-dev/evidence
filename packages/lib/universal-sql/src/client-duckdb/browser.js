@@ -147,7 +147,7 @@ export async function query(sql) {
 	// After this point, the database has been initialized
 	if (!db) await initDB();
 	// We need to wait for tables to be available
-	await withTimeout(tablesPromise);
+	await withTimeout(tablesPromise, 60_000);
 
 	// Now we can safely execute our query
 	const res = await connection.query(sql).then(arrowTableToJSON);
