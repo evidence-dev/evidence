@@ -1,5 +1,3 @@
-name: 'Data Source Request'
-description: 'Suggest a database or other data source you would like to connect to Evidence'
 body:
   - type: textarea
     id: use-case
