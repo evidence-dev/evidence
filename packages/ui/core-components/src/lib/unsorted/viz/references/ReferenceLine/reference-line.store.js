@@ -127,7 +127,7 @@ export class ReferenceLineStore {
 						const _y1 = data[i][y];
 						const _x2 = data[i][x2 || x];
 						const _y2 = data[i][y2 || y];
-						const name = label ? data[i][label] ?? label : undefined;
+						const name = label ? (data[i][label] ?? label) : undefined;
 						seriesData.push([
 							{ coord: [_x1, _y1], name, ...symbolStartConfig },
 							{ coord: [_x2, _y2] }
@@ -143,7 +143,7 @@ export class ReferenceLineStore {
 				if (typeof data !== 'undefined' && data[Symbol.iterator]) {
 					for (let i = 0; i < data.length; i++) {
 						const _x = data[i][x];
-						const name = label ? data[i][label] ?? label : undefined;
+						const name = label ? (data[i][label] ?? label) : undefined;
 						seriesData.push({ xAxis: _x, name, ...symbolStartConfig });
 					}
 				} else {
@@ -154,7 +154,7 @@ export class ReferenceLineStore {
 				if (typeof data !== 'undefined' && data[Symbol.iterator]) {
 					for (let i = 0; i < data.length; i++) {
 						const _y = data[i][y];
-						const name = label ? data[i][label] ?? label : undefined;
+						const name = label ? (data[i][label] ?? label) : undefined;
 						seriesData.push({ yAxis: _y, name, ...symbolStartConfig });
 					}
 				} else {

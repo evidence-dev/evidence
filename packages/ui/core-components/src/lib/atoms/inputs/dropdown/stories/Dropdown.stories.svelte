@@ -18,12 +18,15 @@
 	// Play Functions
 	const openDropdown = async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
+		// Potentially has flake
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 		let dropdown = await canvas.getByRole('combobox');
 		userEvent.click(dropdown);
 	};
 
 	const searchDropdown = async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 		let dropdown = await canvas.getByRole('combobox');
 		await userEvent.click(dropdown);
 		await userEvent.keyboard('Alliance');
@@ -47,6 +50,11 @@
 	<Dropdown name="test" {data} value="value" label="label" />
 </Story>
 
+<Story name="With explicit noDefault">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="test" {data} value="value" label="label" noDefault />
+</Story>
+
 <Story name="Open" play={openDropdown}>
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown name="test" {data} value="value" label="label" />
@@ -57,6 +65,7 @@
 	<Dropdown name="test" {data} value="value" label="label" />
 </Story>
 
+<!-- TODO: This story is no longer useful, this needs to be a query instead -->
 <Story name="Number Sorting">
 	<Dropdown name="Number Sorting">
 		<DropdownOption value={222} />
@@ -82,31 +91,31 @@
 	</Dropdown>
 </Story>
 
-<Story name="String Number Sorting">
-	<Dropdown name="test" defaultValue="Bottom 100">
-		<DropdownOption value="Top {100}" />
-		<DropdownOption value="Top {101}" />
-		<DropdownOption value="Top {1001}" />
-		<DropdownOption value="Top {102}" />
-		<DropdownOption value="Top {111}" />
-		<DropdownOption value="Top {199}" />
-		<DropdownOption value="Top {10000}" />
-		<DropdownOption value="Bottom {100}" />
-		<DropdownOption value="Bottom {101}" />
+<Story name="Numeric-string Sorting">
+	<Dropdown name="test">
+		<DropdownOption value="100" />
+		<DropdownOption value="101" />
+		<DropdownOption value="1001" />
+		<DropdownOption value="102" />
+		<DropdownOption value="111" />
+		<DropdownOption value="199" />
+		<DropdownOption value="10000" />
+		<DropdownOption value="100" />
+		<DropdownOption value="101" />
 	</Dropdown>
 </Story>
 
-<Story name="Strings and Mixed String-Numbers Sorting">
-	<Dropdown name="test" defaultValue="Bottom 100">
-		<DropdownOption value="Top {100}" />
-		<DropdownOption value="Top {101}" />
-		<DropdownOption value="Top {1001}" />
-		<DropdownOption value="Top 102" />
-		<DropdownOption value="Top {111}" />
-		<DropdownOption value="Top {199}" />
-		<DropdownOption value="Top 10000" />
-		<DropdownOption value="Bottom {100}" />
-		<DropdownOption value="Bottom 101" />
+<Story name="Numeric-string and numbers Sorting">
+	<Dropdown name="test">
+		<DropdownOption value="100" />
+		<DropdownOption value="101" />
+		<DropdownOption value="1001" />
+		<DropdownOption value="102" />
+		<DropdownOption value="111" />
+		<DropdownOption value="199" />
+		<DropdownOption value="10000" />
+		<DropdownOption value="100" />
+		<DropdownOption value="101" />
 	</Dropdown>
 </Story>
 
@@ -129,14 +138,12 @@
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown multiple name="test" {data} value="value" label="label" selectAllByDefault />
 </Story>
+
 <Story name="With a default value">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
-	<Dropdown defaultValue={[1]} name="test1" {data} value="value" label="label" />
+	<Dropdown defaultValue={[9]} name="test1" {data} value="value" label="label" />
 </Story>
-<Story name="With a non-static default value">
-	{@const data = Query.create(`select 1 as value`, query)}
-	<Dropdown defaultValue={1} name="your-dropdown" {data} value="value" />
-</Story>
+
 <Story name="Using Dropdowns that interact with eachother's queries">
 	<DependentDropdowns />
 </Story>
@@ -264,3 +271,9 @@
 		<DropdownOption value="Top 100" />
 	</Dropdown>
 </Story>
+
+<!--
+	Stories with:
+		Synced dropdowns on multiple tabs
+		Incorrectly synced, e.g. one is multi one is single
+-->

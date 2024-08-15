@@ -11,7 +11,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@faker-js/faker": "^8.0.2",
-		"vitest": "^0.34.1"
+		"vitest": "^2.0.5"
 	},
 	"scripts": {
 		"test": "vitest --run",
