@@ -7,11 +7,11 @@
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
-		"build": "tsc --noEmit -p tsconfig.json && parcel build",
-		"build:debug": "parcel build --no-optimize",
+		"build": "tsc --noEmit -p tsconfig.json && parcel build --no-cache",
+		"build:debug": "parcel build --no-optimize --no-cache",
 		"watch": "parcel watch",
 		"check": "tsc --noEmit -p tsconfig.json",
-		"prepublish": "tsc --noEmit -p tsconfig.json && parcel build"
+		"prepublish": "tsc --noEmit -p tsconfig.json && parcel build --no-cache"
 	},
 	"keywords": [],
 	"author": "",
@@ -49,7 +49,7 @@
 		"parcel": "2.12.0",
 		"rollup": "^4.13.0",
 		"typescript": "5.4.2",
-		"vitest": "^0.34.1"
+		"vitest": "^2.0.5"
 	},
 	"targets": {
 		"types": false,

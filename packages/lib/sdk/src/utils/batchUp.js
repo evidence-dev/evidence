@@ -2,7 +2,7 @@ import { debounce } from 'perfect-debounce';
 
 /**
  * @template Input
- * @param {(inputs: Input[]) => unknown} fn
+ * @param {((inputs: Input[]) => unknown) | ((...i: (Input[] | Input)[]) => unknown)} fn
  * @param {number} [timeout=200]
  * @returns {(i: Input) => unknown}
  */

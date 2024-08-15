@@ -10,10 +10,10 @@
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
-		"build": "parcel build",
+		"build": "parcel build --no-cache",
 		"watch": "parcel watch",
 		"dev": "parcel watch",
-		"prepublish": "parcel build"
+		"prepublish": "parcel build --no-cache"
 	},
 	"dependencies": {
 		"blueimp-md5": "^2.19.0",
@@ -37,7 +37,7 @@
 		"mock-fs": "^5.2.0",
 		"parcel": "^2.8.3",
 		"typescript": "5.4.2",
-		"vitest": "^0.34.2"
+		"vitest": "^2.0.5"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",

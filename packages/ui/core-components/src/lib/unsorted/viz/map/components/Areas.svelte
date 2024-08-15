@@ -174,45 +174,28 @@
 		interactive: true
 	};
 
-	let geoJsonData;
-	// let error = undefined;
-
-	/**
-	 * Load the GeoJSON data from the URL.
-	 * @returns {Promise<void>}
-	 */
-	async function loadGeoJson() {
-		try {
-			const response = await fetch(geoJsonUrl);
-			geoJsonData = await response.json();
-		} catch (e) {
-			console.error('Failed to load GeoJSON:', e);
-			// error = e.toString();
-		}
-	}
-
 	/**
 	 * Process the areas and filter the GeoJSON data.
-	 * @returns {object[]} The filtered GeoJSON features.
+	 * @returns {Promise<object[]>} The filtered GeoJSON features.
 	 */
-	function processAreas() {
+	async function processAreas() {
+		const urlToLoad = geoJsonUrl;
+		const geoJsonData = await map.loadGeoJson(urlToLoad);
 		if (!geoJsonData) return;
+		if (geoJsonUrl !== urlToLoad) return;
 		const areaSet = new Set(data.map((d) => d[areaCol].toString())); // Ensure string format
-		const filteredGeoJson = geoJsonData.features.filter((geo) =>
-			areaSet.has(geo.properties[geoId])
-		); // Filter GeoJSON data
-
-		return filteredGeoJson;
+		geoJson = geoJsonData?.features.filter((geo) => areaSet.has(geo.properties[geoId])); // Filter GeoJSON data
 	}
 
-	let values, colorScale, filteredGeoJson;
+	let values;
+	let colorScale;
+	let geoJson = [];
 
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
-		await loadGeoJson();
 		await data.fetch();
 
 		checkInputs(data, [areaCol]);
@@ -223,7 +206,7 @@
 			.scale(colorPalette)
 			.domain([min ?? Math.min(...values), max ?? Math.max(...values)]);
 
-		filteredGeoJson = processAreas();
+		await processAreas();
 
 		if (name && $data.length > 0) {
 			setInputDefault($data[0], name);
@@ -273,11 +256,20 @@
 		});
 		setInputDefault(item, name);
 	}
+
+	// Re-load areas when related props change
+	$: geoJsonUrl,
+		data,
+		areaCol,
+		(async () => {
+			await data.fetch();
+			await processAreas();
+		})();
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
 {#await Promise.all([map.initPromise, init(), data.fetch()]) then}
-	{#each filteredGeoJson as feature}
+	{#each geoJson as feature (feature.properties[geoId])}
 		{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
 		<MapArea
 			{map}

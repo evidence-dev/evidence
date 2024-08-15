@@ -70,7 +70,7 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import CalendarHeatmap from './_CalendarHeatmap.svelte';
+	import CalendarHeatmap from './CalendarHeatmap.svelte';
 
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);

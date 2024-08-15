@@ -116,7 +116,19 @@
 
 	const inputStore = getContext(INPUTS_CONTEXT_KEY);
 
-	const data = Query.create(`select * FROM numeric_series WHERE series='pink'`, query);
+	const data = Query.create(
+		`
+		select *
+		from numeric_series
+		where series in (
+			select series
+			from numeric_series
+			order by series asc
+			limit 1
+		)
+		`,
+		query
+	);
 </script>
 
 <Story name="Hardcoded: x" argTypes={{ x: { control: 'number' } }} args={{ x: 50 }} let:args>

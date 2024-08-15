@@ -1,7 +1,12 @@
 import { sharedPromise } from '@evidence-dev/sdk/utils';
-import debounce from 'lodash.debounce';
+import { debounce } from 'perfect-debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+import { initSmoothZoom } from './LeafletSmoothZoom';
+import { writable, derived, readonly } from 'svelte/store';
+
+/** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
+/** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
 
 /** @type {import('leaflet') | undefined} */
 let Leaflet;
@@ -79,7 +84,11 @@ export class EvidenceMap {
 		if (!Leaflet) {
 			this.#sharedPromise.start();
 			Leaflet = await import('leaflet')
-				.then((m) => m.default)
+				.then((m) => {
+					const Leaflet = m.default;
+					initSmoothZoom(Leaflet); // Initialize smooth zoom after importing Leaflet
+					return Leaflet;
+				})
 				.catch((e) => {
 					this.#sharedPromise.reject(e);
 				});
@@ -94,10 +103,14 @@ export class EvidenceMap {
 		}
 
 		this.#mapEl = mapEl;
-		this.#map = Leaflet.map(this.#mapEl, { zoomControl: false, zoomSnap: 0.25 }).setView(
-			startingCoords,
-			startingZoom ?? 1
-		);
+
+		this.#map = Leaflet.map(this.#mapEl, {
+			zoomControl: false,
+			scrollWheelZoom: false, // disable original zoom function
+			smoothWheelZoom: true, // enable smooth zoom
+			smoothSensitivity: 5 // zoom speed. default is 1
+		}).setView(startingCoords, startingZoom ?? 5);
+
 		if (userDefinedView) {
 			this.#initialViewSet = true; // Mark initial view as set
 		}
@@ -369,5 +382,53 @@ export class EvidenceMap {
 		}
 
 		return newUrl;
+	}
+
+	/** @type {Map<string, Promise<any>>} */
+	static #geoJsonCache = new Map();
+
+	/** @type {Writable<Map<string, any | null>>} */
+	#geoJsonData = writable(new Map());
+
+	get geoJsonData() {
+		return readonly(this.#geoJsonData);
+	}
+
+	allGeoJsonLoaded = derived(this.#geoJsonData, ($geoJsonData) => {
+		return Array.from($geoJsonData.values()).every(Boolean);
+	});
+
+	/**
+	 * @param {string} url
+	 * @returns {Promise<any | undefined>} GeoJSON data
+	 */
+	async loadGeoJson(url) {
+		const cached = EvidenceMap.#geoJsonCache.get(url);
+		if (cached) return cached;
+
+		const promise = fetch(url)
+			.then((r) => r.json())
+			.catch((e) => {
+				this.#geoJsonData.update((map) => {
+					map.delete(url);
+					return map;
+				});
+				console.error(`Failed to load GeoJSON at URL '${url}': ${e}`);
+			});
+		EvidenceMap.#geoJsonCache.set(url, promise);
+
+		// Set null to indicate we are loading data for this URL
+		this.#geoJsonData.update((map) => map.set(url, null));
+		const data = await promise;
+		this.#geoJsonData.update((map) => {
+			if (data) {
+				map.set(url, data);
+			} else {
+				map.delete(url);
+			}
+			return map;
+		});
+
+		return data;
 	}
 }

@@ -9,6 +9,7 @@
 	import 'leaflet/dist/leaflet.css';
 	import { EvidenceMap } from './EvidenceMap.js';
 	import { mapContextKey } from './constants.js';
+	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 
 	let mapElement;
 
@@ -41,6 +42,8 @@
 	const evidenceMap = new EvidenceMap();
 	setContext(mapContextKey, evidenceMap);
 
+	const allGeoJsonLoaded = evidenceMap.allGeoJsonLoaded;
+
 	// Lifecycle hooks:
 	onMount(async () => {
 		if (browser) {
@@ -61,7 +64,7 @@
 {#if error}
 	<ErrorChart {error} chartType="Map" />
 {:else}
-	<div class="my-5 break-inside-avoid">
+	<div class="relative break-inside-avoid">
 		{#if title}
 			<h4 class="markdown mb-2">{title}</h4>
 		{/if}
@@ -72,6 +75,15 @@
 		>
 			<slot></slot>
 		</div>
+
+		{#if !$allGeoJsonLoaded}
+			<div
+				class="absolute left-0 right-0 bottom-0 w-full *:m-0 bg-white"
+				style="height: {height}px"
+			>
+				<Skeleton />
+			</div>
+		{/if}
 	</div>
 {/if}
 
