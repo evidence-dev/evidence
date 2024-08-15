@@ -86,11 +86,11 @@
 		: ''}"
 	id="props-{idName}"
 >
-	<div class="min-w-48 flex justify-between mr-4">
+	<div class="min-w-48 flex justify-between mr-4 ml-3.5">
 		<div class="font-mono">
 			<a href="#props-{idName}">
 				<span
-					class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-all"
+					class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-none"
 				>
 					{name}
 				</span>
@@ -100,7 +100,7 @@
 			<span class="text-red-500 uppercase tracking-wide">Required</span>
 		{/if}
 	</div>
-	<div>
+	<div class="ml-3.5 lg:ml-0">
 		<div id="markdown-slot"><slot>{description}</slot></div>
 		{#if Array.isArray(options) && options.length > 0}
 			<div class="mt-1 select-none flex">
