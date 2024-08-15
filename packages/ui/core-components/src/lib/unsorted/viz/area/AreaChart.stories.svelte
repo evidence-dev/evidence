@@ -158,6 +158,11 @@
 				control: 'boolean',
 				options: [true, false]
 			}
+		},
+		parameters: {
+			chromatic: {
+				diffThreshold: 1
+			}
 		}
 	};
 </script>
