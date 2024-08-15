@@ -98,7 +98,8 @@
 		"build:preprocess": "pnpm --filter ./packages/lib/preprocess build",
 		"build:plugin-connector": "pnpm --filter ./packages/lib/plugin-connector build",
 		"build:tailwind": "pnpm --filter ./packages/ui/tailwind build",
-		"sources:core-components": "pnpm --filter ./packages/ui/core-components sources"
+		"sources:core-components": "pnpm --filter ./packages/ui/core-components sources",
+		"clean": "./.clean.sh"
 	},
 	"pnpm": {
 		"overrides": {
