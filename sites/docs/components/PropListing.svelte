@@ -3,7 +3,6 @@
 	const names = new Set();
 
 	let hashLocation = writable('');
-	let noEventListener = true;
 	let cleanUp = null;
 
 	function setupHashListener() {
@@ -11,11 +10,11 @@
 			function updateHash() {
 				hashLocation.set(window.location.hash);
 			}
-			window.addEventListener('hashchange', updateHash, console.log('added'));
+			window.addEventListener('hashchange', updateHash);
 
 			// Return a cleanup function
 			return () => {
-				window.removeEventListener('hashchange', updateHash, console.log('removed'));
+				window.removeEventListener('hashchange', updateHash);
 			};
 		}
 		return null;
