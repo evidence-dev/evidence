@@ -3,6 +3,23 @@
 	const names = new Set();
 
 	let hashLocation = writable('');
+	let noEventListener = true;
+	let cleanUp = null;
+
+	function setupHashListener() {
+		if (typeof window !== 'undefined') {
+			function updateHash() {
+				hashLocation.set(window.location.hash);
+			}
+			window.addEventListener('hashchange', updateHash, console.log('added'));
+
+			// Return a cleanup function
+			return () => {
+				window.removeEventListener('hashchange', updateHash, console.log('removed'));
+			};
+		}
+		return null;
+	}
 </script>
 
 <script>
@@ -20,20 +37,18 @@
 	let copyStatus = {};
 
 	onMount(() => {
-		// Safe to use window inside onMount
-		const updateHash = () => {
-			hashLocation.set(window.location.hash);
-		};
+		if (!cleanUp) {
+			cleanUp = setupHashListener();
+		}
+		// Set initial hash value
+		hashLocation.set(window.location.hash);
 
-		// Set initial value
-		updateHash();
-
-		// Listen for hash changes
-		window.addEventListener('hashchange', updateHash);
-
-		// Clean up when the component is destroyed
+		// Clean up on component destroy
 		return () => {
-			window.removeEventListener('hashchange', updateHash);
+			if (cleanUp) {
+				cleanUp();
+				cleanUp = null;
+			}
 		};
 	});
 
@@ -52,14 +67,14 @@
 		idName = name.replace(/[^a-zA-Z0-9]/g, '-');
 		while (names.has(idName)) {
 			counter++;
-			idName = counter === 1 ? `${idName}-copy` : `${idName}-copy-${counter}`;
+			idName = counter > 1 ? `${name}-copy-${counter}` : `${name}-copy`;
 		}
 		names.add(idName);
-		counter = 0;
 	};
 
 	onDestroy(() => {
 		names.delete(idName);
+		counter = 0;
 	});
 
 	updateIdName();
