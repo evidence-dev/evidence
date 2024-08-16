@@ -437,7 +437,8 @@
 	<Fullscreen bind:open={fullscreen} {search}>
 		<!-- header and last row are 22.5+22.5 = 45px, middle rows are 23 -->
 		{@const ROW_HEIGHT = 23}
-		{@const Y_AXIS_PADDING = 45 + 234}
+		<!-- Add additional padding for search bar + 24px-->
+		{@const Y_AXIS_PADDING = search ? 69 + 234 : 45 + 234}
 		<div class="pt-4">
 			<svelte:self
 				{...$$props}
