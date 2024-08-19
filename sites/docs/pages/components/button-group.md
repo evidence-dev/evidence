@@ -269,7 +269,7 @@ Selected: {inputs.button_tabs_hardcoded_options}
 />
 <PropListing 
     name="display"
-    description="Displays tabs with button logic and functionality"
+    description="Displays tabs with button functionality"
     options="tabs"
 />
 
