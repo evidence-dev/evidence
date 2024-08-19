@@ -435,10 +435,14 @@
 
 {#if !isFullPage && innerHeight !== undefined}
 	<Fullscreen bind:open={fullscreen} {search}>
-		<!-- header and last row are 22.5+22.5 = 45px, middle rows are 23 -->
-		{@const ROW_HEIGHT = 23}
+		<!-- header and last row are 22.5+22.5 = 45px, middle rows are 23, when compact middle rows are 17.5 -->
+		{@const ROW_HEIGHT = compact ? 17.5 : 23}
+		{@const HEADER_LAST_ROW_HEIGHT = 45}
 		<!-- Add additional padding for search bar + 24px-->
-		{@const Y_AXIS_PADDING = search ? 69 + 234 : 45 + 234}
+		{@const SEARCHBAR_HEIGHT = 24}
+		{@const Y_AXIS_PADDING = search
+			? SEARCHBAR_HEIGHT + HEADER_LAST_ROW_HEIGHT + 234
+			: HEADER_LAST_ROW_HEIGHT + 234}
 		<div class="pt-4">
 			<svelte:self
 				{...$$props}
