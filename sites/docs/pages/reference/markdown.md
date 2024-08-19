@@ -202,7 +202,7 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 />
 <PropListing
     name="breadcrumb"
-    description="Specify a query that returns a breadcrumb column. The query can use $&#123params&#125 to reference the URL parameters for the page."
+    description="Specify a query that returns a column named breadcrumb. The query can use $&#123params.my_param&#125 to reference the URL parameters for the page. E.g. `breadcrumb: "select customer_name as breadcrumb where customer_id=${params.customer_id}"`
 />
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
