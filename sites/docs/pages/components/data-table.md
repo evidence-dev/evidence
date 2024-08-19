@@ -92,10 +92,10 @@ This example includes a `custom_format` column, which contains a different curre
 ### Search
 
 ```svelte
-<DataTable data={orders_summary} search=true compact=true/>
+<DataTable data={orders_summary} search=true/>
 ```
 
-<DataTable data={orders_summary} search=true compact=true/>
+<DataTable data={orders_summary} search=true/>
 
 ### Deltas
 
