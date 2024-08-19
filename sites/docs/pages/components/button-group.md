@@ -267,6 +267,11 @@ Selected: {inputs.button_tabs_hardcoded_options}
     description="SQL where fragment to filter options by (e.g., where sales > 40000)"
     options="SQL where clause"
 />
+<PropListing 
+    name="display"
+    description="Displays tabs with button logic and funcitonality"
+    options="tabs"
+/>
 
 # ButtonGroupItem
 
