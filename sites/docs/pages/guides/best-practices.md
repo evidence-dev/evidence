@@ -1,6 +1,6 @@
 ---
 title: Best Practices
-sidebar_position: 2
+sidebar_position: 3
 description: Tips for building performant data apps with Evidence
 ---
 
