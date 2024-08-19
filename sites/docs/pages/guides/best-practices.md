@@ -33,7 +33,7 @@ It's best to only source the data you need.
 <br>
 <Alert status=info>
 
-**Best Practice:** Sort your source queries. Prioritze columns that appear in `where` clauses in your markdown queries.
+**Best Practice:** Sort your source queries. Prioritize columns that appear in `where` clauses in your markdown queries.
 
 </Alert>
 
@@ -76,7 +76,7 @@ select * from products
     <DropdownOption value="products"/>
 </Dropdown>
 
-{#if category == "categories"}
+{#if inputs.chart_picker.value == "categories"}
 
     <BarChart data={categories}/>
 
