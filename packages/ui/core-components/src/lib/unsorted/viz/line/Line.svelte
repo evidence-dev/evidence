@@ -133,6 +133,7 @@
 
 	$: baseConfig = {
 		type: 'line',
+		triggerLineEvent: true,
 		label: {
 			show: labels,
 			formatter: function (params) {

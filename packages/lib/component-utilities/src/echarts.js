@@ -117,6 +117,10 @@ export default (node, option) => {
 		dispatch('click', params);
 	});
 
+	chart.on('mouseover', function (params) {
+		dispatch('mouseover', params);
+	});
+
 	// Resize logic:
 	const containerElement = document.getElementById('evidence-main-article');
 	// watching parent element is necessary for charts within `Fullscreen` components

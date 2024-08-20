@@ -162,6 +162,9 @@
 
 	export let connectGroup = undefined; // string represent name of group for connected charts. Charts with same connectGroup will have connected interactions
 
+	//filter tolltipdata
+	export let filterTooltipData = true;
+
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -238,6 +241,23 @@
 	let columnSummaryArray;
 	let dateCols;
 
+	//Tooltip Data Store
+	$: tooltipData = [];
+
+	const getTooltipData = (params) => {
+		if (tooltipData.length === 0) {
+			return (tooltipData = params);
+		}
+	};
+	//get series data from hover
+	let currentSeriesHover = undefined;
+	const getCurrentSeriesHover = (params) => {
+		currentSeriesHover !== params.seriesIndex
+			? (currentSeriesHover = params.seriesIndex)
+			: (currentSeriesHover = currentSeriesHover);
+	};
+
+	// ---------------------------------------------------------------------------------------
 	$: {
 		try {
 			error = undefined;
@@ -934,6 +954,9 @@
 					trigger: 'axis',
 					// formatter function is overridden in ScatterPlot, BubbleChart, and Histogram
 					formatter: function (params) {
+						//allow tooltip to show tooltip data
+						getTooltipData(params);
+						console.log(params);
 						let output;
 						let xVal;
 						let yVal;
@@ -944,7 +967,7 @@
 							output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(
 								xVal,
 								xFormat
-							)}</span>`;
+							)} </span>`;
 							for (let i = params.length - 1; i >= 0; i--) {
 								if (params[i].seriesName !== 'stackTotal') {
 									yVal = params[i].value[swapXY ? 0 : 1];
@@ -1030,6 +1053,7 @@
 			};
 
 			config.update(() => {
+				console.log(chartConfig);
 				return chartConfig;
 			});
 		} catch (e) {
@@ -1070,6 +1094,15 @@
 			{downloadableImage}
 			{connectGroup}
 			{seriesColors}
+			on:click={({ detail }) => {
+				config.update(() => {
+					console.log(chartConfig);
+					return chartConfig;
+				});
+			}}
+			on:mouseover={({ detail }) => {
+				getCurrentSeriesHover(detail);
+			}}
 		/>
 	{/if}
 {:else}
