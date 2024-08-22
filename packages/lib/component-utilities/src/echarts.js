@@ -21,7 +21,8 @@ export default (node, option) => {
 			// ios breaks w/ canvas if the canvas is too large
 		) && node.clientWidth * 3 * node.clientHeight * 3 > 16777215;
 
-	registerTheme('evidence', evidenceThemeDark);
+	const isDarkMode = document.documentElement.style.colorScheme === 'dark';
+	registerTheme('evidence', isDarkMode ? evidenceThemeDark : evidenceThemeLight);
 
 	const chart = init(node, 'evidence', {
 		renderer: useSvg ? 'svg' : (option.renderer ?? 'canvas')
