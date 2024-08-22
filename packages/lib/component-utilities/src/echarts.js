@@ -1,5 +1,5 @@
 import { registerTheme, init, connect } from 'echarts';
-import { evidenceThemeLight } from './echartsThemes';
+import { evidenceThemeLight, evidenceThemeDark } from './echartsThemes';
 import debounce from 'debounce';
 
 /**
@@ -21,9 +21,9 @@ export default (node, option) => {
 			// ios breaks w/ canvas if the canvas is too large
 		) && node.clientWidth * 3 * node.clientHeight * 3 > 16777215;
 
-	registerTheme('evidence-light', evidenceThemeLight);
+	registerTheme('evidence', evidenceThemeDark);
 
-	const chart = init(node, 'evidence-light', {
+	const chart = init(node, 'evidence', {
 		renderer: useSvg ? 'svg' : (option.renderer ?? 'canvas')
 	});
 
