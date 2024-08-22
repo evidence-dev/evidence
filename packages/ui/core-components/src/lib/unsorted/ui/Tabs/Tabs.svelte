@@ -9,7 +9,7 @@
 	const classes = {
 		notActive:
 			'border-border text-muted-foreground border-b-2 bg-muted hover:text-foreground hover:bg-secondary hover:border-b-primary',
-		active: 'text-foreground border-b-2 border-primary bg-background'
+		active: 'text-foreground border-b-2 border-primary bg-secondary'
 	};
 
 	/**
