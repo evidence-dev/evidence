@@ -15,7 +15,7 @@
 <AccordionPrimitive.Header {level} class="flex">
 	<AccordionPrimitive.Trigger
 		class={cn(
-			'flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 focus:outline-none focus:ring ring-muted rounded',
+			'flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 focus:outline-none focus:ring ring-muted rounded text-foreground bg-background',
 			className
 		)}
 		{...$$restProps}
