@@ -102,7 +102,7 @@
 			>
 				<SelectPrimitive.Trigger
 					aria-label="Select month"
-					class="text-sm pr-1 pl-2 py-1 rounded-tl rounded-bl border-r border-background transition-colors duration-200 group-hover:bg-accent group-hover:border-border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+					class="text-sm pr-1 pl-2 py-1 rounded-tl rounded-bl border-r border-background transition-colors duration-200 group-hover:bg-accent group-hover:border-border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:border-gray-700 dark:group-hover:bg-gray-700 dark:group-hover:border-gray-600"
 				>
 					<Select.Value placeholder="Select month" />
 				</SelectPrimitive.Trigger>
@@ -125,7 +125,7 @@
 			>
 				<SelectPrimitive.Trigger
 					aria-label="Select year"
-					class="pr-2 pl-1 py-1 rounded-tr rounded-br text-sm group-hover:bg-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+					class="pr-2 pl-1 py-1 rounded-tr rounded-br text-sm group-hover:bg-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:group-hover:bg-gray-700"
 				>
 					<Select.Value placeholder="Select year" />
 				</SelectPrimitive.Trigger>
