@@ -899,7 +899,7 @@
 	}
 
 	button:enabled > .page-icon:hover {
-		color: var(--blue-800);
+		color: var(--primary);
 	}
 
 	*:focus {
