@@ -88,6 +88,10 @@
 		scrollbar-color: theme('colors.gray.200') transparent;
 	}
 
+	.dark .pretty-scrollbar {
+		scrollbar-color: theme('colors.gray.700') transparent;
+	}
+
 	.pretty-scrollbar::-webkit-scrollbar {
 		height: 0.75rem;
 		width: 6px;
@@ -104,6 +108,10 @@
 
 	.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
 		background-color: theme('colors.gray.200');
+	}
+
+	.dark .pretty-scrollbar:hover::-webkit-scrollbar-thumb {
+		background-color: theme('colors.gray.700');
 	}
 
 	/* remove user agent styles for select */
