@@ -45,7 +45,7 @@ export const evidenceThemeLight = {
 		containLabel: true
 	},
 	color: chartColours,
-	backgroundColor: 'rgba(255, 255, 255, 0)',
+	backgroundColor: 'transparent',
 	title: {
 		padding: 0,
 		itemGap: 7,
@@ -453,7 +453,7 @@ export const evidenceThemeDark = {
 		containLabel: true
 	},
 	color: chartColours,
-	backgroundColor: 'rgba(26, 26, 26, 1)',
+	backgroundColor: 'transparent',
 	title: {
 		padding: 0,
 		itemGap: 8,
