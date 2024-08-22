@@ -125,12 +125,12 @@
 	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
 
 	export let headerColor = undefined;
-	export let headerFontColor = 'var(--grey-900)';
+	export let headerFontColor = undefined;
 
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
 
-	export let backgroundColor = 'white';
+	export let backgroundColor = 'transparent';
 
 	export let compact = undefined;
 
