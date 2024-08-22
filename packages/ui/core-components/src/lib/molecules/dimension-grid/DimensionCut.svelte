@@ -106,7 +106,9 @@
 
 <!-- {dimensionCutQuery} -->
 
-<div class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-foreground pr-4 pb-4 overflow-clip">
+<div
+	class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-foreground pr-4 pb-4 overflow-clip"
+>
 	<div class="capitalize border-b border-border flex justify-between items-baseline">
 		<span class="truncate w-2/3">
 			{formatTitle(dimension.column_name)}
@@ -170,7 +172,9 @@
 				{/if}
 			</div>
 		{:else}
-			<p class="text-xs text-muted-foreground p-2 my-2 w-full border border-dashed rounded">No Records</p>
+			<p class="text-xs text-muted-foreground p-2 my-2 w-full border border-dashed rounded">
+				No Records
+			</p>
 		{/if}
 	</QueryLoad>
 </div>
