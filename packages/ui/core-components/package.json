@@ -60,6 +60,7 @@
 		"leaflet": "^1.9.4",
 		"lodash": "^4.17.21",
 		"mermaid": "^10.9.1",
+		"mode-watcher": "^0.3.0",
 		"nanoid": "^5.0.4",
 		"perfect-debounce": "^1.0.0",
 		"prismjs": "1.29.0",
