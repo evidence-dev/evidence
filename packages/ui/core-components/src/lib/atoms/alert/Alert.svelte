@@ -22,16 +22,16 @@
 		@apply p-2 mb-4 rounded text-foreground bg-muted top-14;
 
 		&.info {
-			@apply text-blue-800 dark:text-blue-100 bg-blue-100 dark:bg-blue-900;
+			@apply text-blue-800 dark:text-blue-100 bg-blue-100 dark:bg-blue-500/10 dark:border-blue-800 dark:border;
 		}
 		&.danger {
-			@apply text-destructive bg-destructive/10 dark:text-red-100 dark:bg-red-900;
+			@apply text-destructive bg-destructive/10 dark:text-red-100 dark:bg-red-500/10 dark:border-red-800 dark:border;
 		}
 		&.success {
 			@apply text-green-800 dark:text-green-100 bg-green-100 dark:bg-green-500/10 dark:border-green-800 dark:border;
 		}
 		&.warning {
-			@apply text-yellow-800 dark:text-yellow-100 bg-yellow-100 dark:bg-yellow-900;
+			@apply text-yellow-800 dark:text-yellow-100 bg-yellow-100 dark:bg-yellow-500/10 dark:border-yellow-800 dark:border;
 		}
 
 		& :global(p) {
