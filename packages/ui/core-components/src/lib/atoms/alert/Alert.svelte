@@ -28,7 +28,7 @@
 			@apply text-destructive bg-destructive/10 dark:text-red-100 dark:bg-red-900;
 		}
 		&.success {
-			@apply text-green-800 dark:text-green-100 bg-green-100 dark:bg-green-900;
+			@apply text-green-800 dark:text-green-100 bg-green-100 dark:bg-green-500/10 dark:border-green-800 dark:border;
 		}
 		&.warning {
 			@apply text-yellow-800 dark:text-yellow-100 bg-yellow-100 dark:bg-yellow-900;
