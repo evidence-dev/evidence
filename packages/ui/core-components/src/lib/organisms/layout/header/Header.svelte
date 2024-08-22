@@ -16,6 +16,7 @@
 	export let maxWidth = undefined;
 	export let hideSidebar = undefined;
 	export let sidebarFrontMatter = undefined;
+	export let experimentalDarkMode = undefined;
 
 	export let algolia = undefined;
 
@@ -110,7 +111,9 @@
 					<KebabMenu />
 				{/if}
 			</div>
+			{#if experimentalDarkMode}
 			<DrarkModeToggle />
+			{/if}
 		</div>
 	</div>
 </header>

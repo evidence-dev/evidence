@@ -49,6 +49,9 @@
 	export let hideHeader = false;
 	/** @type {boolean} */
 	export let hideTOC = false;
+	/** @type {boolean} */
+	export let experimentalDarkMode = false;
+	
 
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
@@ -119,6 +122,7 @@
 			{xProfile}
 			{algolia}
 			{sidebarFrontMatter}
+			{experimentalDarkMode}
 		/>
 	{/if}
 	<div
