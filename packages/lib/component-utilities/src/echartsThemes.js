@@ -18,7 +18,7 @@ const light_subtitleColor = uiColours.grey700;
 // Dark Mode Theme
 const dark_axisBaselineColor = uiColours.grey700;
 const dark_axisTickColor = uiColours.grey600;
-const dark_axisLabelColor = uiColours.grey400;
+const dark_axisLabelColor = uiColours.grey200;
 const dark_gridlineColor = uiColours.grey800;
 const dark_axisTitleBackgroundColor = '#1a1a1a';
 const dark_legendTextColor = uiColours.grey300;
@@ -633,7 +633,8 @@ export const evidenceThemeDark = {
 		},
 		axisLabel: {
 			show: true,
-			color: dark_axisLabelColor
+			color: dark_axisLabelColor,
+			fontSize: 12
 		},
 		splitLine: {
 			show: false,
@@ -664,7 +665,8 @@ export const evidenceThemeDark = {
 		},
 		axisLabel: {
 			show: true,
-			color: dark_axisLabelColor
+			color: dark_axisLabelColor,
+			fontSize: 12
 		},
 		splitLine: {
 			show: true,
@@ -699,7 +701,8 @@ export const evidenceThemeDark = {
 		},
 		axisLabel: {
 			show: true,
-			color: dark_axisLabelColor
+			color: dark_axisLabelColor,
+			fontSize: 12
 		},
 		splitLine: {
 			show: true,
