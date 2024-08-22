@@ -21,3 +21,4 @@ export * from './QueryViewerSupport';
 export * from './Tabs';
 export * from './TelemetryOptOut';
 export * from './VersionControl';
+export * from './DisplayMode';
