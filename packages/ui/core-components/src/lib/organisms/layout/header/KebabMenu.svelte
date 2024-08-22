@@ -13,14 +13,6 @@
 		setTimeout(() => window.print(), 0);
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
-	// Get the root element
-	// let r = document.querySelector(':root');
-
-	// // Create a function for setting a variable value
-	// function myFunction_set() {
-	// 	// Set the value of variable --blue to another value (in this case "lightblue")
-	// 	r.style.setProperty('--background', 'lightblue');
-	// }
 </script>
 
 <DropdownMenu.Root>
