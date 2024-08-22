@@ -104,10 +104,10 @@
 	{#if error}
 		<BigValueError chartType="Big Value" error={error.message} />
 	{:else}
-		<p class="text-sm text-gray-700">{title}</p>
-		<div class="relative text-xl font-medium text-gray-700 my-0.5">
+		<p class="text-sm text-muted-foreground dark:text-muted-foreground">{title}</p>
+		<div class="relative text-xl font-medium text-foreground dark:text-foreground my-0.5">
 			{#if link}
-				<a class="hover:bg-gray-100" href={link}>
+				<a class="hover:bg-secondary dark:hover:bg-secondary" href={link}>
 					<Value {data} column={value} {fmt} />
 				</a>
 			{:else}
@@ -145,9 +145,9 @@
 					/>
 				</p>
 			{:else}
-				<p class="text-xs font-sans text-gray-500 pt-[0.5px]">
+				<p class="text-xs font-sans text-muted-foreground dark:text-muted-foreground pt-[0.5px]">
 					{#if link}
-						<a class="hover:bg-gray-100" href={link}>
+						<a class="hover:bg-secondary dark:hover:bg-secondary" href={link}>
 							<Value {data} column={comparison} fmt={comparisonFmt} />
 						</a>
 					{:else}
