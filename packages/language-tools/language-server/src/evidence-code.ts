@@ -1,6 +1,7 @@
 import { CodeMapping, VirtualCode } from '@volar/language-core';
 import { IScriptSnapshot } from 'typescript';
 import { parse as parseSvelte } from 'svelte/compiler';
+import { Ast, TemplateNode } from 'svelte/types/compiler/interfaces';
 
 export class EvidenceCode implements VirtualCode {
 	id = 'root';
@@ -12,6 +13,8 @@ export class EvidenceCode implements VirtualCode {
 	mappings: CodeMapping[] = [];
 
 	snapshot: IScriptSnapshot;
+
+	private svelteAst: Ast | undefined;
 
 	constructor(snapshot: IScriptSnapshot) {
 		this.mappings = [
@@ -39,57 +42,69 @@ export class EvidenceCode implements VirtualCode {
 	}
 
 	onSnapshotUpdated() {
-		this.embeddedCodes = EvidenceCode.getEmbeddedCodes(this.snapshot);
+		this.embeddedCodes = this.getEmbeddedCodes(this.snapshot);
 	}
 
-	static getEmbeddedCodes(snapshot: IScriptSnapshot): VirtualCode[] {
+	getEmbeddedCodes(snapshot: IScriptSnapshot): VirtualCode[] {
 		const snapshotContent = snapshot.getText(0, snapshot.getLength());
-		const svelteAst = parseSvelte(snapshotContent);
-		const svelteComponents = svelteAst.html.children?.filter(
-			(node) => node.type === 'InlineComponent'
-		);
 
-		const embeddedSvelteCodes = svelteComponents?.map((component, index) => ({
-			id: `svelte-${index}`,
-			languageId: 'svelte',
-			snapshot: {
-				getText: (start: number, end: number) =>
-					snapshotContent.substring(component.start + start, component.start + end),
-				getLength: () => component.end - component.start,
-				getChangeRange: () => undefined
-			},
-			mappings: [
-				{
-					sourceOffsets: [component.start],
-					generatedOffsets: [0],
-					lengths: [component.end - component.start],
-					data: {
-						completion: true,
-						format: true,
-						navigation: true,
-						semantic: true,
-						structure: true,
-						verification: true
+		try {
+			this.svelteAst = parseSvelte(snapshotContent);
+		} catch (e) {
+			console.debug('Failed to parse snapshot as Svelte', { e, snapshot });
+		}
+
+		const embeddedCodes: VirtualCode[] = [];
+
+		let svelteComponents: TemplateNode[] = [];
+		if (this.svelteAst) {
+			svelteComponents =
+				this.svelteAst.html.children?.filter((node) => node.type === 'InlineComponent') ?? [];
+
+			const embeddedSvelteCodes = svelteComponents.map((component, index) => ({
+				id: `svelte-${index}`,
+				languageId: 'svelte',
+				snapshot: {
+					getText: (start: number, end: number) =>
+						snapshotContent.substring(component.start + start, component.start + end),
+					getLength: () => component.end - component.start,
+					getChangeRange: () => undefined
+				},
+				mappings: [
+					{
+						sourceOffsets: [component.start],
+						generatedOffsets: [0],
+						lengths: [component.end - component.start],
+						data: {
+							completion: true,
+							format: true,
+							navigation: true,
+							semantic: true,
+							structure: true,
+							verification: true
+						}
 					}
-				}
-			]
-		}));
+				]
+			}));
+
+			if (embeddedSvelteCodes) {
+				embeddedCodes.push(...embeddedSvelteCodes);
+			}
+		}
 
 		const markdownIntervals: [number, number][] = [];
 
-		if (svelteComponents) {
-			let prevEnd = 0;
-			for (const component of svelteComponents) {
-				const start = component.start;
-				const end = component.end;
-				if (start > prevEnd) {
-					markdownIntervals.push([prevEnd, start]);
-				}
-				prevEnd = end;
+		let prevEnd = 0;
+		for (const component of svelteComponents) {
+			const start = component.start;
+			const end = component.end;
+			if (start > prevEnd) {
+				markdownIntervals.push([prevEnd, start]);
 			}
-			if (prevEnd < snapshotContent.length) {
-				markdownIntervals.push([prevEnd, snapshotContent.length]);
-			}
+			prevEnd = end;
+		}
+		if (prevEnd < snapshotContent.length) {
+			markdownIntervals.push([prevEnd, snapshotContent.length]);
 		}
 
 		const markdownEmbeddedCodes = markdownIntervals.map(([start, end], index) => ({
@@ -118,6 +133,8 @@ export class EvidenceCode implements VirtualCode {
 			]
 		}));
 
-		return [...(embeddedSvelteCodes ?? []), ...(markdownEmbeddedCodes ?? [])];
+		embeddedCodes.push(...markdownEmbeddedCodes);
+
+		return embeddedCodes;
 	}
 }

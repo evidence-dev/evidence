@@ -6,9 +6,12 @@
 SELECT * FROM my_table
 ```
 
+<Grid />
+
 <Grid cols={2}>
     <BigValue>abc</BigValue>
     <BigValue>
         bing bong
     </BigValue>
 </Grid>
+

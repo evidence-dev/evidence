@@ -7,6 +7,7 @@ export const svelte: LanguageServicePlugin = {
 	name: 'svelte',
 	// Svelte LS capabilities: https://github.com/sveltejs/language-tools/blob/master/packages/language-server/src/server.ts#L215
 	capabilities: {
+		documentHighlightProvider: true,
 		hoverProvider: true,
 		completionProvider: {
 			resolveProvider: true,
@@ -52,6 +53,10 @@ export const svelte: LanguageServicePlugin = {
 			provideHover(textDocument, position) {
 				const document = new Document(textDocument.uri, textDocument.getText());
 				return svelte.doHover(document, position);
+			},
+			provideDocumentHighlights(document, position, token) {
+				console.log('provideDocumentHighlights', { document, position, token });
+				return [];
 			}
 		};
 	}
