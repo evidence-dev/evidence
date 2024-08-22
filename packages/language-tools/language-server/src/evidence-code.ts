@@ -75,6 +75,49 @@ export class EvidenceCode implements VirtualCode {
 			]
 		}));
 
-		return [...(embeddedSvelteCodes ?? [])];
+		const markdownIntervals: [number, number][] = [];
+
+		if (svelteComponents) {
+			let prevEnd = 0;
+			for (const component of svelteComponents) {
+				const start = component.start;
+				const end = component.end;
+				if (start > prevEnd) {
+					markdownIntervals.push([prevEnd, start]);
+				}
+				prevEnd = end;
+			}
+			if (prevEnd < snapshotContent.length) {
+				markdownIntervals.push([prevEnd, snapshotContent.length]);
+			}
+		}
+
+		const markdownEmbeddedCodes = markdownIntervals.map(([start, end], index) => ({
+			id: `markdown-${index}`,
+			languageId: 'markdown',
+			snapshot: {
+				getText: (relStart: number, relEnd: number) =>
+					snapshotContent.substring(start + relStart, start + relEnd),
+				getLength: () => end - start,
+				getChangeRange: () => undefined
+			},
+			mappings: [
+				{
+					sourceOffsets: [start],
+					generatedOffsets: [0],
+					lengths: [end - start],
+					data: {
+						completion: true,
+						format: true,
+						navigation: true,
+						semantic: true,
+						structure: true,
+						verification: true
+					}
+				}
+			]
+		}));
+
+		return [...(embeddedSvelteCodes ?? []), ...(markdownEmbeddedCodes ?? [])];
 	}
 }

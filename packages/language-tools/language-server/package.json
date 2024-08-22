@@ -18,6 +18,7 @@
     "svelte-language-server": "^0.16.14",
     "volar-service-css": "^0.0.61",
     "volar-service-html": "^0.0.61",
+    "volar-service-markdown": "^0.0.61",
     "vscode-html-languageservice": "^5.3.0",
     "vscode-uri": "^3.0.8"
   },
