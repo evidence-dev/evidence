@@ -58,7 +58,7 @@
 	}
 
 	.index {
-		color: var(--grey-300);
+		color: var(--muted-foreground);
 		text-align: left;
 		max-width: -moz-min-content;
 		max-width: min-content;

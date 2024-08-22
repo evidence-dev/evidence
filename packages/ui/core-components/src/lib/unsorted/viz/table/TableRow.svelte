@@ -209,7 +209,7 @@
 
 <style>
 	.row-lines {
-		border-bottom: thin solid var(--grey-200);
+		@apply border-b border-muted-foreground;
 	}
 
 	.shaded-row {
