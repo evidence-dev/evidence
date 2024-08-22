@@ -31,7 +31,7 @@
 </script>
 
 {#if headers && headers.length > 1}
-	<span class="block text-xs sticky top-0 mb-2 text-gray-950 bg-white shadow-white font-medium">
+	<span class="block text-xs sticky top-0 mb-2 text-foreground bg-background shadow-background font-medium">
 		On this page
 	</span>
 	{#each headers as header}
@@ -43,22 +43,22 @@
 
 <style>
 	a {
-		@apply block text-gray-600 text-xs transition-all duration-200 py-1;
+		@apply block text-muted-foreground text-xs transition-all duration-200 py-1;
 	}
 
 	a:hover {
-		@apply underline;
+		@apply underline text-foreground;
 	}
 
 	a.h2 {
-		@apply pl-0 text-gray-500;
+		@apply pl-0;
 	}
 
 	a.h3 {
-		@apply pl-4 text-gray-500;
+		@apply pl-4;
 	}
 
 	a.h1 {
-		@apply mt-3 font-semibold block bg-white shadow shadow-white;
+		@apply mt-3 font-semibold block bg-background shadow shadow-background;
 	}
 </style>
