@@ -10,22 +10,33 @@ queries:
 Invoked by setting the `experimentalDarkMode` prop on a project's layout. 
 
 
-## CSS Variables
+## CSS Tokens 
 
-1. Background, foreground, muted foreground etc. 
-1. Can be invoked in _both_ tailwind classes and in css variables 
+* Background, foreground, muted foreground etc. 
+* Can be invoked in _both_ tailwind classes and in css variables 
 
 ## Mode Watcher 
 
-1. Store which gives the current mode
-1. Switch in the layout 
-
+* Store which gives the current mode
+* Dark: operator in tw 
+* Switch in the layout 
 
 ## Echarts dark theme 
 
-1. Detects the mode of the page, and toggles between themes in the main echarts action 
+* Detects the mode of the page, and toggles between themes in the main echarts action 
 
+# Help needed / more to do 
 
+* Toggling the echarts theme without needing to refresh 
+* User's entering colours into props pose a problem 
+* Prism theme 
+* Prevent print in dark 
+* Dropped reference lines 
+* Calendar heatmap empty state 
+* data table pagination Shifting on hover 
+* Refactor atoms/button 
+* Improve styling on atoms/tabs 
+* Users should be able to provide a light and dark mode wordmark 
 ---- 
 
 
@@ -92,22 +103,103 @@ group by all
 />
 
 
-```sql la_zip_sales
-select *, 'https://www.google.com/search?q=' || zip_code as link_col from la_zip_sales
-where zip_code <> 90704
+```sql la_locations
+select *, 'https://www.google.com/search?q=' || point_name as link_col from la_locations
 ```
 
+```sql orders_by_category
+select order_month, count(1) as orders from needful_things.orders
+group by all
+```
 
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
+<Grid cols=2>
+    <LineChart data={orders_by_category} x=order_month y=orders/>
+    <BarChart data={orders_by_category} x=order_month y=orders fillColor=#00b4e0/>
+    <ScatterPlot data={orders_by_category} x=order_month y=orders fillColor=#015c08/>
+    <AreaChart data={orders_by_category} x=order_month y=orders fillColor=#b8645e lineColor=#b8645e/>
+</Grid>
+
+
+<BubbleMap 
+    data={la_locations} 
+    lat=lat 
+    long=long 
+    size=sales 
+    sizeFmt=eur
+    value=sales 
+    valueFmt=eur
+    pointName=point_name 
 />
 
+
+<DataTable data={orders}> 
+    <Column id=state title="Sales State"/> 
+	<Column id=item/> 
+	<Column id=category/> 
+	<Column id=sales fmt=usd/> 
+	<Column id=channel/> 
+</DataTable>
+
+# More stuff
+
+<Alert>
+This is a default alert
+</Alert>
+
+<Alert status="info">
+This is a informational alert
+</Alert>
+
+<Alert status="success">
+This is a successful alert
+</Alert>
+
+<Alert status="warning">
+This is a warning alert
+</Alert>
+
+<Alert status="danger">
+This is a dangerous alert
+</Alert>
+
+
+<ButtonGroup name=hardcoded_options>
+    <ButtonGroupItem valueLabel="Option One" value="1" />
+    <ButtonGroupItem valueLabel="Option Two" value="2" />
+    <ButtonGroupItem valueLabel="Option Three" value="3" />
+</ButtonGroup>
+
+
+<BigLink href='/components/big-link/'>My Big Link</BigLink>
+
+
+# User-provided classes, referencing the tokens 
+
+<Accordion class="rounded-xl bg-muted px-4 mt-4">
+  <AccordionItem title="Item 1" class="border-none">
+    <p>Content 1</p>
+  </AccordionItem>
+  <AccordionItem title="Item 2" class="border-none">
+    <p>Content 2</p>
+  </AccordionItem>
+  <AccordionItem title="Item 3" class="border-none">
+    <p>Content 3</p>
+  </AccordionItem>
+</Accordion>
+
+```markdown 
+<Accordion class="rounded-xl bg-muted px-4 mt-4">
+  <AccordionItem title="Item 1" class="border-none">
+    <p>Content 1</p>
+  </AccordionItem>
+  <AccordionItem title="Item 2" class="border-none">
+    <p>Content 2</p>
+  </AccordionItem>
+  <AccordionItem title="Item 3" class="border-none">
+    <p>Content 3</p>
+  </AccordionItem>
+</Accordion>
+```
 
 
 # Markdown 

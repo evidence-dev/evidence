@@ -18,7 +18,7 @@ const light_subtitleColor = uiColours.grey700;
 // Dark Mode Theme
 const dark_axisBaselineColor = uiColours.grey700;
 const dark_axisTickColor = uiColours.grey600;
-const dark_axisLabelColor = uiColours.grey200;
+const dark_axisLabelColor = uiColours.grey100;
 const dark_gridlineColor = uiColours.grey900;
 const dark_axisTitleBackgroundColor = '#1a1a1a';
 const dark_legendTextColor = uiColours.grey300;
