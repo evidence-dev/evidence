@@ -13,6 +13,21 @@ export class EvidenceCode implements VirtualCode {
 	snapshot: IScriptSnapshot;
 
 	constructor(snapshot: IScriptSnapshot) {
+		this.mappings = [
+			{
+				sourceOffsets: [0],
+				generatedOffsets: [0],
+				lengths: [snapshot.getLength()],
+				data: {
+					completion: true,
+					format: true,
+					navigation: true,
+					semantic: true,
+					structure: true,
+					verification: true
+				}
+			}
+		];
 		this.snapshot = snapshot;
 		this.onSnapshotUpdated();
 	}
@@ -23,6 +38,31 @@ export class EvidenceCode implements VirtualCode {
 	}
 
 	onSnapshotUpdated() {
-		// Do something with the snapshot
+		this.embeddedCodes = EvidenceCode.getEmbeddedCodes(this.snapshot);
+	}
+
+	static getEmbeddedCodes(snapshot: IScriptSnapshot): VirtualCode[] {
+		return [
+			{
+				id: 'something',
+				languageId: 'svelte',
+				mappings: [
+					{
+						sourceOffsets: [0],
+						generatedOffsets: [0],
+						lengths: [snapshot.getLength()],
+						data: {
+							completion: true,
+							format: true,
+							navigation: true,
+							semantic: true,
+							structure: true,
+							verification: true
+						}
+					}
+				],
+				snapshot
+			}
+		];
 	}
 }

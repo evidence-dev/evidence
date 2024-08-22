@@ -14,6 +14,7 @@
     "@volar/language-core": "^2.4.0",
     "@volar/language-server": "^2.4.0",
     "@volar/language-service": "^2.4.0",
+    "svelte-language-server": "^0.16.14",
     "volar-service-css": "^0.0.61",
     "volar-service-html": "^0.0.61",
     "vscode-html-languageservice": "^5.3.0",

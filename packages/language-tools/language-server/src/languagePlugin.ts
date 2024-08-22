@@ -11,14 +11,14 @@ export const evidenceLanguagePlugin = {
 			return 'evidence';
 		}
 	},
-	createVirtualCode(uri, languageId, snapshot) {
-		console.log('createVirtualCode', { uri, languageId, snapshot });
+	createVirtualCode(_uri, languageId, snapshot) {
+		// console.log('createVirtualCode', { uri, languageId, snapshot });
 		if (languageId === 'evidence') {
 			return new EvidenceCode(snapshot);
 		}
 	},
-	updateVirtualCode(uri, languageCode, snapshot) {
-		console.log('createVirtualCode', { uri, languageCode, snapshot });
+	updateVirtualCode(_uri, languageCode, snapshot) {
+		// console.log('createVirtualCode', { uri, languageCode, snapshot });
 		languageCode.update(snapshot);
 		return languageCode;
 	}

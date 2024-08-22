@@ -1,7 +1,6 @@
 import { evidenceLanguagePlugin } from './languagePlugin';
-import { create as createHtmlService } from 'volar-service-html';
-import { create as createCssService } from 'volar-service-css';
 import { createServer, createConnection, createSimpleProject } from '@volar/language-server/node';
+import { svelte } from './svelte-service';
 
 const connection = createConnection();
 const server = createServer(connection);
@@ -9,10 +8,7 @@ const server = createServer(connection);
 connection.listen();
 
 connection.onInitialize((params) => {
-	return server.initialize(params, createSimpleProject([evidenceLanguagePlugin]), [
-		createHtmlService(),
-		createCssService()
-	]);
+	return server.initialize(params, createSimpleProject([evidenceLanguagePlugin]), [svelte]);
 });
 
 connection.onInitialized(server.initialized);
