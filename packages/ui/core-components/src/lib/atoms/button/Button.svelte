@@ -74,58 +74,31 @@
 </button>
 
 <style lang="postcss">
-	/* 
-		Colors are handled here because of the amount of permutations between outlined, variant, and disabled states
-
-		There is probably room to clean this up; but right now it works
-	*/
 	button {
-		&.variant-info {
-			--100: theme(colors.blue.100);
-			--400: theme(colors.blue.400);
-			--500: theme(colors.blue.500);
-			--600: theme(colors.blue.600);
-			--700: theme(colors.blue.700);
-			--800: theme(colors.blue.800);
-			--900: theme(colors.blue.900);
-		}
-		&.variant-warn {
-			--100: theme(colors.yellow.100);
-			--400: theme(colors.yellow.400);
-			--500: theme(colors.yellow.500);
-			--600: theme(colors.yellow.600);
-			--700: theme(colors.yellow.700);
-			--800: theme(colors.yellow.800);
-			--900: theme(colors.yellow.900);
-		}
-		&.variant-success {
-			--100: theme(colors.green.100);
-			--400: theme(colors.green.400);
-			--500: theme(colors.green.500);
-			--600: theme(colors.green.600);
-			--700: theme(colors.green.700);
-			--800: theme(colors.green.800);
-			--900: theme(colors.green.900);
-		}
-		&.variant-error {
-			--100: theme(colors.red.100);
-			--400: theme(colors.red.400);
-			--500: theme(colors.red.500);
-			--600: theme(colors.red.600);
-			--700: theme(colors.red.700);
-			--800: theme(colors.red.800);
-			--900: theme(colors.red.900);
-		}
-
 		@apply disabled:cursor-default enabled:cursor-pointer;
 
+		&.variant-info {
+			@apply text-blue-800 dark:text-blue-100 bg-blue-100 dark:bg-blue-500/10 border-blue-800 dark:border-blue-800;
+		}
+		&.variant-warn {
+			@apply text-yellow-800 dark:text-yellow-100 bg-yellow-100 dark:bg-yellow-500/10 border-yellow-800 dark:border-yellow-800;
+		}
+		&.variant-success {
+			@apply text-green-800 dark:text-green-100 bg-green-100 dark:bg-green-500/10 border-green-800 dark:border-green-800;
+		}
+		&.variant-error {
+			@apply text-destructive bg-destructive/10 dark:text-red-100 dark:bg-red-500/10 border-red-800 dark:border-red-800;
+		}
+
 		&.outlined {
-			@apply border border-[var(--700)] text-[var(--700)] enabled:hover:bg-[var(--100)] enabled:hover:text-[var(--800)] enabled:hover:border-[var(--800)] enabled:active:text-[var(--900)] enabled:active:border-[var(--900)]
-					disabled:border-[var(--400)] disabled:text-[var(--400)];
+			@apply bg-transparent border enabled:hover:bg-opacity-20 enabled:active:bg-opacity-30
+				disabled:border-opacity-40 disabled:text-opacity-40;
 		}
 
 		&:not(.outlined) {
-			@apply bg-[var(--600)] text-white enabled:hover:bg-[var(--700)] enabled:active:bg-[var(--800)] border border-transparent disabled:bg-[var(--400)];
+			@apply text-white border-transparent
+				enabled:hover:bg-opacity-90 enabled:active:bg-opacity-100
+				disabled:bg-opacity-40 disabled:text-opacity-40;
 		}
 	}
 </style>
