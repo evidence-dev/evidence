@@ -25,9 +25,9 @@
 		// Today
 		'[&[data-today]:not([data-selected])]:border [&[data-today]:not([data-selected])]:border-dashed [&[data-today]:not([data-selected])]:text-foreground',
 		// Selection Start
-		'data-[selection-start]:bg-primary data-[selection-start]:text-primary-foreground data-[selection-start]:hover:bg-primary data-[selection-start]:hover:text-primary-foreground data-[selection-start]:focus:bg-primary data-[selection-start]:focus:text-primary-foreground',
+		'data-[selection-start]:bg-black data-[selection-start]:text-white data-[selection-start]:hover:bg-black data-[selection-start]:hover:text-white data-[selection-start]:focus:bg-black data-[selection-start]:focus:text-white',
 		// Selection End
-		'data-[selection-end]:bg-primary data-[selection-end]:text-primary-foreground data-[selection-end]:hover:bg-primary data-[selection-end]:hover:text-primary-foreground data-[selection-end]:focus:bg-primary data-[selection-end]:focus:text-primary-foreground',
+		'data-[selection-end]:bg-black data-[selection-end]:text-white data-[selection-end]:hover:bg-black data-[selection-end]:hover:text-white data-[selection-end]:focus:bg-black data-[selection-end]:focus:text-white',
 		// Outside months
 		'data-[outside-month]:pointer-events-none data-[outside-month]:text-muted-foreground data-[outside-month]:opacity-50 [&[data-outside-month][data-selected]]:bg-muted/50 [&[data-outside-month][data-selected]]:text-muted-foreground [&[data-outside-month][data-selected]]:opacity-30',
 		// Disabled
