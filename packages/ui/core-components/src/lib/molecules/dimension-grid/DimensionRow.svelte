@@ -22,7 +22,7 @@
 	/>
 	<div
 		class={cn(
-			'bg-blue-50 dark:bg-blue-400/10 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 absolute inset-y-0 left-0 z-[-10]',
+			'bg-blue-50 dark:bg-blue-900/30 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 absolute inset-y-0 left-0 z-[-10]',
 			value.includes('NaN') ? 'bg-gray-200 dark:bg-gray-700' : isSelected ? 'bg-blue-200 dark:bg-blue-800/50' : ''
 		)}
 		style={value.includes('NaN')
