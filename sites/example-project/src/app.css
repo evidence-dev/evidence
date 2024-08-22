@@ -79,7 +79,7 @@
 	}
 
 	body {
-		@apply select-none bg-background;
+		@apply select-none bg-background  text-foreground;
 	}
 
 	/* osx style scrollbars */
