@@ -9,7 +9,7 @@
 </script>
 
 <RangeCalendarPrimitive.HeadCell
-	class={cn('w-8 rounded-md text-[0.8rem] font-normal text-gray-500', className)}
+	class={cn('w-8 rounded-md text-[0.8rem] font-normal text-muted-foreground', className)}
 	{...$$restProps}
 >
 	<slot />
