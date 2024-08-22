@@ -6,6 +6,7 @@
 	import Logo from '../Logo.svelte';
 	import AlgoliaDocSearch from './AlgoliaDocSearch.svelte';
 	import KebabMenu from './KebabMenu.svelte';
+	import DrarkModeToggle from './DarkModeToggle.svelte';
 
 	export let mobileSidebarOpen = undefined;
 	export let title = undefined;
@@ -109,6 +110,7 @@
 					<KebabMenu />
 				{/if}
 			</div>
+			<DrarkModeToggle />
 		</div>
 	</div>
 </header>
