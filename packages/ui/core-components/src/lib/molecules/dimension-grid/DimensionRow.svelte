@@ -14,7 +14,7 @@
 	<!-- Bar -->
 	<div
 		class={cn(
-			'group-hover:bg-blue-100 bg-white absolute inset-y-0 left-0 z-[-10] transition-colors duration-200 w-full',
+			'group-hover:bg-blue-100 bg-background absolute inset-y-0 left-0 z-[-10] transition-colors duration-200 w-full',
 			{
 				'bg-gray-100': isSelected
 			}
@@ -22,7 +22,7 @@
 	/>
 	<div
 		class={cn(
-			'bg-blue-50 group-hover:bg-blue-100 absolute inset-y-0 left-0 z-[-10]',
+			'bg-blue-50 dark:bg-blue-400/10 group-hover:bg-blue-100 absolute inset-y-0 left-0 z-[-10]',
 			value.includes('NaN') ? 'bg-gray-200' : isSelected ? 'bg-blue-200' : ''
 		)}
 		style={value.includes('NaN')
@@ -35,12 +35,12 @@
 
 	<span
 		class={cn(
-			'truncate text-gray-900 transition-colors duration-200',
+			'truncate text-foreground transition-colors duration-200',
 			{
 				'font-medium': isSelected
 			},
 			{
-				'text-gray-800': row.dimensionValue === null
+				'text-muted': row.dimensionValue === null
 			}
 		)}
 	>
