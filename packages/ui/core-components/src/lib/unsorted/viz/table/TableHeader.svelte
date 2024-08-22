@@ -44,7 +44,7 @@
 					{#if column.colGroup && column.isNewGroup}
 						<th
 							colspan={column.span}
-							class="pt-1 align-bottom text-gray-900 {compact ? 'px-[1px]' : 'px-[2px]'}"
+							class="pt-1 align-bottom text-foreground {compact ? 'px-[1px]' : 'px-[2px]'}"
 						>
 							<!-- Group header with dynamic colspan -->
 							<div class=" border-b-[1px] border-b-gray-600 whitespace-normal pb-[2px]">
@@ -62,7 +62,7 @@
 		{/if}
 	{/if}
 
-	<tr class="border-b border-gray-600">
+	<tr class="border-b border-border">
 		{#if rowNumbers}
 			<th
 				class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
@@ -76,7 +76,7 @@
 						? 'text-xs py-[1px] px-[4px]'
 						: 'py-[2px] px-[8px]'}"
 					style:text-align={column.align}
-					style:color={headerFontColor}
+					style:color={headerFontColor || 'var(--foreground)'}
 					style:background-color={headerColor}
 					style:cursor={sortable ? 'pointer' : 'auto'}
 					style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
