@@ -89,7 +89,7 @@
 	<RangeCalendar.Header>
 		<RangeCalendar.PrevButton />
 		<RangeCalendar.Heading
-			class="flex items-center justify-between font-normal text-gray-700 group"
+			class="flex items-center justify-between font-normal text-foreground group"
 		>
 			<Select.Root
 				selected={defaultMonth}

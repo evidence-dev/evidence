@@ -248,7 +248,7 @@
 				</span>
 			</Button>
 		</Popover.Trigger>
-		<Popover.Content class="w-auto select-none p-0 bg-popover text-popover-foreground" align="start">
+		<Popover.Content class="w-auto select-none p-0 bg-background text-foreground" align="start">
 			<RangeCalendar
 				bind:selectedDateRange
 				bind:placeholder
@@ -272,7 +272,7 @@
 		bind:selected={selectedPreset}
 		disabled={!loaded}
 	>
-		<Select.Trigger class="h-8 w-40 rounded-l-none px-3 text-xs font-medium bg-popover text-popover-foreground" sameWidth>
+		<Select.Trigger class="h-8 w-40 rounded-l-none px-3 text-xs font-medium bg-background text-foreground" sameWidth>
 			{#if selectedPreset}
 				{selectedPreset.label}
 			{:else}
@@ -285,7 +285,7 @@
 				<p>No Valid Presets</p>
 			</Select.Content>
 		{:else}
-			<Select.Content class="bg-popover text-popover-foreground">
+			<Select.Content class="bg-background text-foreground">
 				{#each presets.filter((d) => d.group === 'Days') as preset}
 					<Select.Item value={preset.range} label={preset.label} class="text-xs hover:bg-accent hover:text-accent-foreground"
 						>{preset.label}</Select.Item

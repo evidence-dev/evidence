@@ -13,11 +13,25 @@
 		setTimeout(() => window.print(), 0);
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
+	// Get the root element
+	// let r = document.querySelector(':root');
+
+	// // Create a function for setting a variable value
+	// function myFunction_set() {
+	// 	// Set the value of variable --blue to another value (in this case "lightblue")
+	// 	r.style.setProperty('--background', 'lightblue');
+	// }
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="ghost" size="sm" class="px-1 text-foreground" id="layout-kebab">
+		<Button
+			builders={[builder]}
+			variant="ghost"
+			size="sm"
+			class="px-1 text-foreground"
+			id="layout-kebab"
+		>
 			<Icon src={Dots} class="h-6 w-6" />
 		</Button>
 	</DropdownMenu.Trigger>
@@ -41,11 +55,18 @@
 			<DropdownMenu.Group>
 				<DropdownMenu.Item href="/settings" el="a" class="text-foreground hover:bg-muted">
 					Settings
-					<DropdownMenu.Shortcut><Icon src={Settings} class="w-4 h-4 text-muted-foreground" /></DropdownMenu.Shortcut>
+					<DropdownMenu.Shortcut
+						><Icon src={Settings} class="w-4 h-4 text-muted-foreground" /></DropdownMenu.Shortcut
+					>
 				</DropdownMenu.Item>
 				<DropdownMenu.Item href="/settings/#deploy" el="a" class="text-foreground hover:bg-muted">
 					Deploy
-					<DropdownMenu.Shortcut><Icon src={_3dCubeSphere} class="h-4 w-4 text-muted-foreground" /></DropdownMenu.Shortcut>
+					<DropdownMenu.Shortcut
+						><Icon
+							src={_3dCubeSphere}
+							class="h-4 w-4 text-muted-foreground"
+						/></DropdownMenu.Shortcut
+					>
 				</DropdownMenu.Item>
 				<DropdownMenu.Item href="/explore/schema" el="a" class="text-foreground hover:bg-muted">
 					Schema Viewer
@@ -59,9 +80,17 @@
 						<Icon src={Prompt} class="h-4 w-4 text-muted-foreground" />
 					</DropdownMenu.Shortcut>
 				</DropdownMenu.Item>
-				<DropdownMenu.Item href="https://docs.evidence.dev" target="_blank" rel="noreferrer" el="a" class="text-foreground hover:bg-muted">
+				<DropdownMenu.Item
+					href="https://docs.evidence.dev"
+					target="_blank"
+					rel="noreferrer"
+					el="a"
+					class="text-foreground hover:bg-muted"
+				>
 					Documentation
-					<DropdownMenu.Shortcut><Icon src={Link} class="h-4 w-4 text-muted-foreground" /></DropdownMenu.Shortcut>
+					<DropdownMenu.Shortcut
+						><Icon src={Link} class="h-4 w-4 text-muted-foreground" /></DropdownMenu.Shortcut
+					>
 				</DropdownMenu.Item>
 			</DropdownMenu.Group>
 		{/if}

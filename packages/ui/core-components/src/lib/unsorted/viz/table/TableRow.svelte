@@ -209,7 +209,7 @@
 
 <style>
 	.row-lines {
-		@apply border-b border-muted-foreground;
+		@apply border-b border-muted;
 	}
 
 	.shaded-row {
@@ -225,7 +225,6 @@
 	}
 
 	.row-link:hover {
-		--tw-bg-opacity: 1;
-		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
+		@apply bg-muted;
 	}
 </style>
