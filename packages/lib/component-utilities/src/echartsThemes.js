@@ -767,7 +767,7 @@ export const evidenceThemeDark = {
 			color: dark_legendTextColor
 		},
 		inactiveColor: dark_legendInactiveColor,
-		icon: 'roundRect',
+		icon: 'circle',
 		pageIcons: {
 			horizontal: [
 				'path://M 17 3 h 2 c 0.386 0 0.738 0.223 0.904 0.572 s 0.115 0.762 -0.13 1.062 L 11.292 15 l 8.482 10.367 c 0.245 0.299 0.295 0.712 0.13 1.062 S 19.386 27 19 27 h -2 c -0.3 0 -0.584 -0.135 -0.774 -0.367 l -9 -11 c -0.301 -0.369 -0.301 -0.898 0 -1.267 l 9 -11 C 16.416 3.135 16.7 3 17 3 Z',
