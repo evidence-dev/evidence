@@ -16,20 +16,20 @@ const light_titleColor = uiColours.grey800;
 const light_subtitleColor = uiColours.grey700;
 
 // Dark Mode Theme
-const dark_axisBaselineColor = "red";
-const dark_axisTickColor = uiColours.grey500;
-const dark_axisLabelColor = uiColours.grey500;
-const dark_gridlineColor = uiColours.grey900;
-const dark_axisTitleBackgroundColor = '#212121';
-const dark_legendTextColor = uiColours.grey500;
-const dark_legendPageIconColor = uiColours.grey500;
-const dark_legendPageIconInactiveColor = uiColours.grey900;
-const dark_legendPageTextColor = uiColours.grey600;
-const dark_legendInactiveColor = uiColours.grey800;
-const dark_tooltipBorderColor = uiColours.grey600;
-const dark_tooltipBackgroundColor = uiColours.grey900;
-const dark_tooltipTextColor = uiColours.grey200;
-const dark_titleColor = uiColours.grey400;
+const dark_axisBaselineColor = uiColours.grey700;
+const dark_axisTickColor = uiColours.grey600;
+const dark_axisLabelColor = uiColours.grey400;
+const dark_gridlineColor = uiColours.grey800;
+const dark_axisTitleBackgroundColor = '#1a1a1a';
+const dark_legendTextColor = uiColours.grey300;
+const dark_legendPageIconColor = uiColours.grey400;
+const dark_legendPageIconInactiveColor = uiColours.grey700;
+const dark_legendPageTextColor = uiColours.grey400;
+const dark_legendInactiveColor = uiColours.grey700;
+const dark_tooltipBorderColor = uiColours.grey700;
+const dark_tooltipBackgroundColor = '#1a1a1a';
+const dark_tooltipTextColor = uiColours.grey300;
+const dark_titleColor = uiColours.grey200;
 const dark_subtitleColor = uiColours.grey400;
 
 export const evidenceThemeLight = {
@@ -441,66 +441,67 @@ export const evidenceThemeLight = {
 };
 
 export const evidenceThemeDark = {
-	darkMode: true, // if true, echarts will automatically update the font colour to work better on dark background
+	darkMode: true,
 	textStyle: {
-		fontFamily: 'sans-serif'
+		fontFamily: 'Inter, sans-serif'
 	},
 	grid: {
-		left: '0%',
+		left: '3%',
 		right: '4%',
-		bottom: '0%',
+		bottom: '3%',
 		top: '15%',
 		containLabel: true
 	},
 	color: chartColours,
-	backgroundColor: 'rgba(255, 255, 255, 0)',
+	backgroundColor: 'rgba(26, 26, 26, 1)',
 	title: {
 		padding: 0,
-		itemGap: 7,
+		itemGap: 8,
 		textStyle: {
-			fontSize: 14,
+			fontSize: 16,
+			fontWeight: 500,
 			color: dark_titleColor
 		},
 		subtextStyle: {
-			fontSize: 13,
+			fontSize: 14,
 			color: dark_subtitleColor,
 			overflow: 'break'
 		},
-		top: '0%'
+		top: '2%'
 	},
 	line: {
 		itemStyle: {
-			borderWidth: 0
+			borderWidth: 1
 		},
 		lineStyle: {
 			width: 2,
 			join: 'round'
 		},
-		symbolSize: 0,
-		symbol: 'circle',
+		symbolSize: 6,
+		symbol: 'emptyCircle',
 		smooth: false
 	},
 	radar: {
 		itemStyle: {
-			borderWidth: 0
+			borderWidth: 1
 		},
 		lineStyle: {
 			width: 2
 		},
-		symbolSize: 0,
-		symbol: 'circle',
+		symbolSize: 6,
+		symbol: 'emptyCircle',
 		smooth: false
 	},
 	bar: {
 		itemStyle: {
-			barBorderWidth: 1,
-			barBorderColor: '#cccccc'
+			barBorderWidth: 0,
+			barBorderRadius: 2
 		}
 	},
 	pie: {
 		itemStyle: {
-			borderWidth: 0,
-			borderColor: '#cccccc'
+			borderWidth: 1,
+			borderColor: 'rgba(26, 26, 26, 1)'
 		}
 	},
 	scatter: {
@@ -759,16 +760,15 @@ export const evidenceThemeDark = {
 	},
 	legend: {
 		textStyle: {
-			padding: [0, 0, 0, -7],
+			padding: [0, 0, 0, -5],
 			color: dark_legendTextColor
 		},
 		inactiveColor: dark_legendInactiveColor,
-		// "padding": [15,0,0,0],
-		icon: 'circle',
+		icon: 'roundRect',
 		pageIcons: {
 			horizontal: [
-				'M 17 3 h 2 c 0.386 0 0.738 0.223 0.904 0.572 s 0.115 0.762 -0.13 1.062 L 11.292 15 l 8.482 10.367 c 0.245 0.299 0.295 0.712 0.13 1.062 S 19.386 27 19 27 h -2 c -0.3 0 -0.584 -0.135 -0.774 -0.367 l -9 -11 c -0.301 -0.369 -0.301 -0.898 0 -1.267 l 9 -11 C 16.416 3.135 16.7 3 17 3 Z',
-				'M 12 27 h -2 c -0.386 0 -0.738 -0.223 -0.904 -0.572 s -0.115 -0.762 0.13 -1.062 L 17.708 15 L 9.226 4.633 c -0.245 -0.299 -0.295 -0.712 -0.13 -1.062 S 9.614 3 10 3 h 2 c 0.3 0 0.584 0.135 0.774 0.367 l 9 11 c 0.301 0.369 0.301 0.898 0 1.267 l -9 11 C 12.584 26.865 12.3 27 12 27 Z'
+				'path://M 17 3 h 2 c 0.386 0 0.738 0.223 0.904 0.572 s 0.115 0.762 -0.13 1.062 L 11.292 15 l 8.482 10.367 c 0.245 0.299 0.295 0.712 0.13 1.062 S 19.386 27 19 27 h -2 c -0.3 0 -0.584 -0.135 -0.774 -0.367 l -9 -11 c -0.301 -0.369 -0.301 -0.898 0 -1.267 l 9 -11 C 16.416 3.135 16.7 3 17 3 Z',
+				'path://M 12 27 h -2 c -0.386 0 -0.738 -0.223 -0.904 -0.572 s -0.115 -0.762 0.13 -1.062 L 17.708 15 L 9.226 4.633 c -0.245 -0.299 -0.295 -0.712 -0.13 -1.062 S 9.614 3 10 3 h 2 c 0.3 0 0.584 0.135 0.774 0.367 l 9 11 c 0.301 0.369 0.301 0.898 0 1.267 l -9 11 C 12.584 26.865 12.3 27 12 27 Z'
 			]
 		},
 		pageIconColor: dark_legendPageIconColor,
@@ -777,17 +777,17 @@ export const evidenceThemeDark = {
 		pageTextStyle: {
 			color: dark_legendPageTextColor
 		},
-		pageButtonItemGap: -2,
+		pageButtonItemGap: 0,
 		animationDurationUpdate: 300
 	},
 	tooltip: {
 		axisPointer: {
 			lineStyle: {
-				color: '#cccccc',
+				color: dark_axisTickColor,
 				width: 1
 			},
 			crossStyle: {
-				color: '#cccccc',
+				color: dark_axisTickColor,
 				width: 1
 			}
 		},
@@ -797,10 +797,10 @@ export const evidenceThemeDark = {
 		backgroundColor: dark_tooltipBackgroundColor,
 		textStyle: {
 			color: dark_tooltipTextColor,
-			fontSize: 12,
+			fontSize: 14,
 			fontWeight: 400
 		},
-		padding: 6
+		padding: [8, 10]
 	},
 	timeline: {
 		lineStyle: {
