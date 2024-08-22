@@ -51,23 +51,23 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="inline-flex w-fit max-w-full flex-col mt-2 mb-4 ml-0 mr-2">
 		{#if title}
-			<span class="text-gray-900 text-sm block mb-1">{title}</span>
+			<span class="text-foreground text-sm block mb-1">{title}</span>
 		{/if}
-		<div class="inline-flex rounded-md shadow-sm overflow-auto border no-scrollbar" role="group">
+		<div class="inline-flex rounded-md shadow-sm overflow-auto border border-border no-scrollbar" role="group">
 			{#if preset}
 				{#if presets[preset]}
 					{#each presets[preset] as { value, valueLabel }}
 						<ButtonGroupItem {value} {valueLabel} />
 					{/each}
 				{:else}
-					<span class="text-red-500 font-bold text-sm">{preset} is not a valid preset</span>
+					<span class="text-destructive font-bold text-sm">{preset} is not a valid preset</span>
 				{/if}
 			{:else}
 				<slot />
 				{#if hasQuery}
 					<QueryLoad data={query} let:loaded>
 						<svelte:fragment slot="skeleton">
-							<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-gray-200" />
+							<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-muted" />
 						</svelte:fragment>
 						<svelte:fragment>
 							{#each loaded as { label, value }}
