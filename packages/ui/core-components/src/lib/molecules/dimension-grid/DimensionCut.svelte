@@ -106,8 +106,8 @@
 
 <!-- {dimensionCutQuery} -->
 
-<div class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-gray-700 pr-4 pb-4 overflow-clip">
-	<div class="capitalize border-b flex justify-between items-baseline">
+<div class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-foreground pr-4 pb-4 overflow-clip">
+	<div class="capitalize border-b border-border flex justify-between items-baseline">
 		<span class="truncate w-2/3">
 			{formatTitle(dimension.column_name)}
 		</span>
@@ -118,7 +118,7 @@
 	<QueryLoad data={results} let:loaded>
 		<p
 			slot="error"
-			class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
+			class="my-2 font-mono text-destructive text-xs bg-destructive/10 border-destructive/20 p-4 overflow-auto rounded border"
 		>
 			{$results.error}
 		</p>
@@ -170,7 +170,7 @@
 				{/if}
 			</div>
 		{:else}
-			<p class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded">No Records</p>
+			<p class="text-xs text-muted-foreground p-2 my-2 w-full border border-dashed rounded">No Records</p>
 		{/if}
 	</QueryLoad>
 </div>
