@@ -456,18 +456,17 @@ export const evidenceThemeDark = {
 	backgroundColor: 'transparent',
 	title: {
 		padding: 0,
-		itemGap: 8,
+		itemGap: 7,
 		textStyle: {
-			fontSize: 16,
-			fontWeight: 500,
+			fontSize: 14,
 			color: dark_titleColor
 		},
 		subtextStyle: {
-			fontSize: 14,
+			fontSize: 13,
 			color: dark_subtitleColor,
 			overflow: 'break'
 		},
-		top: '2%'
+		top: '0%'
 	},
 	line: {
 		itemStyle: {
@@ -633,8 +632,7 @@ export const evidenceThemeDark = {
 		},
 		axisLabel: {
 			show: true,
-			color: dark_axisLabelColor,
-			fontSize: 12
+			color: dark_axisLabelColor
 		},
 		splitLine: {
 			show: false,
@@ -665,8 +663,7 @@ export const evidenceThemeDark = {
 		},
 		axisLabel: {
 			show: true,
-			color: dark_axisLabelColor,
-			fontSize: 12
+			color: dark_axisLabelColor
 		},
 		splitLine: {
 			show: true,
@@ -701,8 +698,7 @@ export const evidenceThemeDark = {
 		},
 		axisLabel: {
 			show: true,
-			color: dark_axisLabelColor,
-			fontSize: 12
+			color: dark_axisLabelColor
 		},
 		splitLine: {
 			show: true,
@@ -800,10 +796,10 @@ export const evidenceThemeDark = {
 		backgroundColor: dark_tooltipBackgroundColor,
 		textStyle: {
 			color: dark_tooltipTextColor,
-			fontSize: 14,
+			fontSize: 12,
 			fontWeight: 400
 		},
-		padding: [8, 10]
+		padding: 6
 	},
 	timeline: {
 		lineStyle: {
