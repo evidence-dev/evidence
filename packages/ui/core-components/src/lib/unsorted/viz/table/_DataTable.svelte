@@ -748,6 +748,11 @@
 		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
 	}
 
+	:global(.dark) {
+		--scrollbar-color: rgba(255, 255, 255, 0.2);
+		--scrollbar-active-color: rgba(255, 255, 255, 0.4);
+	}
+
 	.scrollbox::-webkit-scrollbar {
 		height: var(--scrollbar-size);
 		width: var(--scrollbar-size);
@@ -786,7 +791,7 @@
 
 	.page-changer {
 		padding: 0;
-		color: var(--grey-400);
+		color: var(--muted-foreground);
 		height: 1.1em;
 		width: 1.1em;
 	}
@@ -798,7 +803,7 @@
 		justify-content: flex-end;
 		height: 2em;
 		font-family: var(--ui-font-family);
-		color: var(--grey-500);
+		color: var(--muted-foreground);
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		user-select: none;
@@ -824,13 +829,13 @@
 	}
 
 	.page-changer.hovering {
-		color: var(--blue-600);
+		color: var(--primary);
 		transition: color 200ms;
 	}
 
 	.page-changer:disabled {
 		cursor: auto;
-		color: var(--grey-300);
+		color: var(--muted);
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		user-select: none;
@@ -850,7 +855,8 @@
 		border: 1px solid transparent;
 		border-radius: 4px;
 		font-size: 12px;
-		color: var(--grey-500);
+		color: var(--muted-foreground);
+		background-color: var(--background);
 	}
 
 	.table-footer {
@@ -877,19 +883,19 @@
 	}
 
 	.page-input.hovering {
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--border);
 	}
 
 	.page-input.error {
-		border: 1px solid var(--red-600);
+		border: 1px solid var(--destructive);
 	}
 
 	.page-input::-moz-placeholder {
-		color: var(--grey-500);
+		color: var(--muted-foreground);
 	}
 
 	.page-input::placeholder {
-		color: var(--grey-500);
+		color: var(--muted-foreground);
 	}
 
 	button:enabled > .page-icon:hover {
@@ -902,29 +908,29 @@
 
 	::-moz-placeholder {
 		/* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: var(--grey-400);
+		color: var(--muted-foreground);
 		opacity: 1; /* Firefox */
 	}
 
 	::placeholder {
 		/* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: var(--grey-400);
+		color: var(--muted-foreground);
 		opacity: 1; /* Firefox */
 	}
 
 	:-ms-input-placeholder {
 		/* Internet Explorer 10-11 */
-		color: var(--grey-400);
+		color: var(--muted-foreground);
 	}
 
 	::-ms-input-placeholder {
 		/* Microsoft Edge */
-		color: var(--grey-400);
+		color: var(--muted-foreground);
 	}
 
 	.noresults {
 		display: none;
-		color: var(--grey-400);
+		color: var(--muted-foreground);
 		text-align: center;
 		margin-top: 5px;
 	}
