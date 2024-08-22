@@ -84,7 +84,7 @@ sidebar_position: 1
 
 Use the `class` options to override the styles on the accordion. 
 
-<Accordion class="rounded-xl bg-gray-50 px-4 mt-4">
+<Accordion class="rounded-xl bg-muted px-4 mt-4">
   <AccordionItem title="Item 1" class="border-none">
     <p>Content 1</p>
   </AccordionItem>
@@ -97,7 +97,7 @@ Use the `class` options to override the styles on the accordion.
 </Accordion>
 
 ```markdown 
-<Accordion class="rounded-xl bg-gray-50 px-4 mt-4">
+<Accordion class="rounded-xl bg-muted px-4 mt-4">
   <AccordionItem title="Item 1" class="border-none">
     <p>Content 1</p>
   </AccordionItem>

@@ -79,7 +79,8 @@
 			{/if}
 		</button>
 	{/if}
-	<pre class="overflow-auto pretty-scrollbar"><code class="language-{language} text-sm text-foreground"
+	<pre class="overflow-auto pretty-scrollbar"><code
+			class="language-{language} text-sm text-foreground"
 			>{#if source}{source}{:else}<slot />{/if}</code
 		></pre>
 </div>
