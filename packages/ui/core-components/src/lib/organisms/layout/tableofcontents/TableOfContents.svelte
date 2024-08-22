@@ -8,7 +8,7 @@
 <aside class="hidden lg:block w-48">
 	{#if !$navigating && $page.data.isUserPage}
 		<div
-			class="fixed w-48 top-20 bottom-20 pl-4 px-3 overflow-auto pretty-scrollbar"
+			class="fixed w-48 top-20 bottom-20 pl-4 px-3 overflow-auto pretty-scrollbar bg-background text-foreground"
 			class:top-8={hideHeader}
 		>
 			<ContentsList />
