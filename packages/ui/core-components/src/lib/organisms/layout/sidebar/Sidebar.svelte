@@ -68,7 +68,7 @@
 
 {#if mobileSidebarOpen}
 	<div
-		class="fixed inset-0 bg-white/80 z-50 backdrop-blur-sm"
+		class="fixed inset-0 bg-background/80 z-50 backdrop-blur-sm"
 		transition:fade|local={{ duration: 100 }}
 		on:click={() => (mobileSidebarOpen = false)}
 		on:keypress={() => (mobileSidebarOpen = false)}
@@ -76,13 +76,13 @@
 		tabindex="-1"
 	/>
 	<div
-		class="bg-white border-r border-gray-300 shadow-lg fixed inset-0 z-50 flex sm:w-72 h-screen w-screen flex-col overflow-hidden select-none"
+		class="bg-background border-r border-border shadow-lg fixed inset-0 z-50 flex sm:w-72 h-screen w-screen flex-col overflow-hidden select-none"
 		in:fly|local={{ x: -50, duration: 300 }}
 		out:fly|local={{ x: -100, duration: 200 }}
 	>
-		<div class=" pb-4 text-gray-700">
+		<div class="pb-4 text-foreground">
 			<div class="py-3 px-8 mb-3 flex items-start justify-between">
-				<a href="/" class="block mt-1 text-sm font-bold text-gray-800">
+				<a href="/" class="block mt-1 text-sm font-bold text-foreground">
 					<Logo {logo} {title} />
 				</a>
 				<span
@@ -93,7 +93,7 @@
 				>
 					<button
 						type="button"
-						class="text-gray-900 hover:bg-gray-100 rounded-lg p-1 transition-all duration-500"
+						class="text-foreground hover:bg-muted rounded-lg p-1 transition-all duration-500"
 						on:click={() => {
 							mobileSidebarOpen = false;
 						}}
@@ -119,7 +119,7 @@
 			>
 				<div class="flex flex-col pb-6">
 					<a
-						class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
+						class="sticky top-0 bg-background shadow shadow-background text-foreground font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 						href="/"
 					>
 						Home
@@ -130,9 +130,9 @@
 							<a
 								class="group inline-block py-1 capitalize transition-colors duration-100"
 								href={file.href}
-								class:text-blue-600={active}
-								class:hover:text-gray-950={active}
-								class:hover:text-blue-600={active}
+								class:text-primary={active}
+								class:hover:text-foreground={active}
+								class:hover:text-primary={active}
 							>
 								{file.frontMatter?.title ?? file.label}
 								{#if file.frontMatter?.sidebar_badge}
@@ -149,7 +149,7 @@
 						<div class="flex flex-col pb-6">
 							{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 								<a
-									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
+									class="sticky top-0 bg-background shadow shadow-background text-foreground font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 									href={file.href}
 								>
 									{file.frontMatter?.title ?? file.label}
@@ -161,7 +161,7 @@
 								</a>
 							{:else}
 								<span
-									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
+									class="sticky top-0 bg-background shadow shadow-background text-foreground font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 									href={file.href}
 								>
 									{file.frontMatter?.title ?? file.label}
@@ -179,9 +179,9 @@
 									<a
 										class="group inline-block py-1 capitalize transition-colors duration-100"
 										href={file.href}
-										class:text-blue-600={active}
-										class:hover:text-gray-950={!active}
-										class:hover:text-blue-600={active}
+										class:text-primary={active}
+										class:hover:text-foreground={!active}
+										class:hover:text-primary={active}
 									>
 										{file.frontMatter?.title ?? file.label}
 										{#if file.frontMatter?.sidebar_badge}
@@ -204,12 +204,12 @@
 <aside class="w-48 flex-none {sidebarFrontMatter === 'hide' ? 'hidden' : 'hidden md:flex'}">
 	{#if !mobileSidebarOpen}
 		<div
-			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500 pretty-scrollbar"
+			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-muted-foreground pretty-scrollbar"
 			class:top-8={hideHeader}
 		>
 			<div class="flex flex-col pb-6">
 				<a
-					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize hover:underline"
+					class="sticky top-0 bg-background shadow shadow-background text-foreground font-semibold pb-1 mb-1 group inline-block capitalize hover:underline"
 					href="/"
 				>
 					Home
@@ -220,9 +220,9 @@
 						<a
 							class="group inline-block py-1 capitalize transition-all duration-100"
 							href={file.href}
-							class:text-blue-600={active}
-							class:hover:text-gray-950={!active}
-							class:hover:text-blue-600={active}
+							class:text-primary={active}
+							class:hover:text-foreground={!active}
+							class:hover:text-primary={active}
 						>
 							{file.frontMatter?.title ?? file.label}
 							{#if file.frontMatter?.sidebar_badge}
@@ -239,7 +239,7 @@
 					<div class="flex flex-col pb-6">
 						{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 							<a
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize hover:underline"
+								class="sticky top-0 bg-background shadow shadow-background text-foreground font-semibold pb-1 mb-1 group block capitalize hover:underline"
 								href={file.href}
 							>
 								{file.frontMatter?.title ?? file.label}
@@ -251,7 +251,7 @@
 							</a>
 						{:else}
 							<span
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize"
+								class="sticky top-0 bg-background shadow shadow-background text-foreground font-semibold pb-1 mb-1 group inline-block capitalize"
 								href={file.href}
 							>
 								{file.frontMatter?.title ?? file.label}
@@ -267,9 +267,9 @@
 								{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 								<a
 									href={file.href}
-									class:text-blue-600={active}
-									class:hover:text-blue-600={active}
-									class:hover:text-gray-950={!active}
+									class:text-primary={active}
+									class:hover:text-primary={active}
+									class:hover:text-foreground={!active}
 									class="group inline-block py-1 capitalize transition-all duration-100"
 								>
 									{file.frontMatter?.title ?? file.label}
@@ -290,7 +290,7 @@
 		<div class="fixed bottom-0 text-xs py-2">
 			<a
 				href="https://www.evidence.dev"
-				class="bg-gradient-to-r inline-block text-gray-950 antialiased font-medium"
+				class="bg-gradient-to-r inline-block text-foreground antialiased font-medium"
 			>
 				Built with Evidence</a
 			>
