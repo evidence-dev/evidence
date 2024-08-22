@@ -26,12 +26,16 @@
 
 	// Determine if the initial view is user-defined
 	const userDefinedView = startingLat || startingLong;
-
+	
 	/** @type {number} */
 	export let height = 300; // height in pixels
-
+	
+	if (browser) {
+		const isDarkMode = document.documentElement.style.colorScheme === 'dark';
+	}
+	
 	/** @type {string} */
-	export let basemap = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+	export let basemap = `https://{s}.basemaps.cartocdn.com/${isDarkMode ? 'light' : 'dark'}_all/{z}/{x}/{y}{r}.png`;
 
 	/** @type {string|undefined} */
 	export let title = undefined;
