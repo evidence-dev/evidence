@@ -5,3 +5,10 @@
 ```sql my_query
 SELECT * FROM my_table
 ```
+
+<Grid cols={2}>
+    <BigValue>abc</BigValue>
+    <BigValue>
+        bing bong
+    </BigValue>
+</Grid>
