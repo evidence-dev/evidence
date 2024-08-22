@@ -1,0 +1,35 @@
+{
+    "name": "@evidence-dev/vscode-evidence",
+    "version": "0.0.0",
+    "license": "MIT",
+    "main": "dist/src/extension.js",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w"
+    },
+    "displayName": "Evidence Language Tools",
+    "description": "Language tools for Evidence",
+    "engines": {
+        "vscode": "^1.92.0"
+    },
+    "activationEvents": [
+        "onLanguage:evidence"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "evidence",
+                "extensions": [
+                    ".md"
+                ]
+            }
+        ]
+    },
+    "dependencies": {
+        "@evidence-dev/language-server": "workspace:*",
+        "@types/vscode": "^1.52.0",
+        "@volar/language-server": "^2.4.0",
+        "@volar/vscode": "^2.4.0",
+        "vscode-languageclient": "^9.0.1"
+    }
+}

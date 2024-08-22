@@ -1,0 +1,12 @@
+{
+    "name": "language-tools",
+    "private": true,
+    "version": "0.0.0",
+    "scripts": {
+        "build": "tsc -b",
+        "watch": "tsc -b -w"
+    },
+    "devDependencies": {
+        "typescript": "^5.5.4"
+    }
+}

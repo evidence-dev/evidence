@@ -1,0 +1,20 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch Evidence Language Server",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceRoot}/packages/language-tools/vscode-evidence",
+				"--folder-uri=${workspaceRoot}/packages/language-tools/sample"
+			],
+			"outFiles": ["${workspaceRoot}/packages/language-tools/vscode-evidence/dist/*.js"],
+			"preLaunchTask": {
+				"type": "npm",
+				"script": "watch:language-tools"
+			}
+		}
+	]
+}

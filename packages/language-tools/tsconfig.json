@@ -1,0 +1,9 @@
+{
+	"references": [
+		{ "path": "./language-server/tsconfig.json" },
+		{ "path": "./vscode-evidence/tsconfig.json" }
+	],
+	"files": [],
+	"include": [],
+	"exclude": ["**/node_modules"]
+}
