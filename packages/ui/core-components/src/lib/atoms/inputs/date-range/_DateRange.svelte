@@ -207,7 +207,7 @@
 				size="sm"
 				class={cn(
 					'flex justify-start rounded-r-none border-r-0 text-left font-normal',
-					!selectedDateRange && 'text-gray-400'
+					!selectedDateRange && 'text-muted-foreground'
 				)}
 				builders={[builder]}
 				disabled={!loaded}
@@ -248,7 +248,7 @@
 				</span>
 			</Button>
 		</Popover.Trigger>
-		<Popover.Content class="w-auto select-none p-0" align="start">
+		<Popover.Content class="w-auto select-none p-0 bg-popover text-popover-foreground" align="start">
 			<RangeCalendar
 				bind:selectedDateRange
 				bind:placeholder
@@ -272,7 +272,7 @@
 		bind:selected={selectedPreset}
 		disabled={!loaded}
 	>
-		<Select.Trigger class="h-8 w-40 rounded-l-none px-3 text-xs font-medium" sameWidth>
+		<Select.Trigger class="h-8 w-40 rounded-l-none px-3 text-xs font-medium bg-popover text-popover-foreground" sameWidth>
 			{#if selectedPreset}
 				{selectedPreset.label}
 			{:else}
@@ -285,9 +285,9 @@
 				<p>No Valid Presets</p>
 			</Select.Content>
 		{:else}
-			<Select.Content>
+			<Select.Content class="bg-popover text-popover-foreground">
 				{#each presets.filter((d) => d.group === 'Days') as preset}
-					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+					<Select.Item value={preset.range} label={preset.label} class="text-xs hover:bg-accent hover:text-accent-foreground"
 						>{preset.label}</Select.Item
 					>
 				{/each}
