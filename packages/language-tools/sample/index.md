@@ -15,4 +15,3 @@ SELECT * FROM my_table
     </BigValue>
 </Grid>
 
-<LineChart />

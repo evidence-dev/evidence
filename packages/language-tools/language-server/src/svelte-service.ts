@@ -59,7 +59,17 @@ export const svelte: LanguageServicePlugin = {
 			): Promise<CompletionList | null> {
 				console.log('provideCompletionItems', context.triggerCharacter);
 				if (context.triggerCharacter === '<') {
-					const componentNames = ['LineChart', 'BarChart', 'Grid', 'ReferencePoint'];
+					const componentNames = [
+						'Accordion',
+						'Alert',
+						'AreaChart',
+						'AreaMap',
+						'BarChart',
+						'BaseMap',
+						'BigLink',
+						'BigValue',
+						'BoxPlot'
+					];
 					return {
 						isIncomplete: false,
 						items: componentNames.map<CompletionItem>((name) => ({
@@ -67,7 +77,14 @@ export const svelte: LanguageServicePlugin = {
 							insertText: `${name} $0/>`,
 							insertTextFormat: 2, // snippet
 							kind: 7, // class icon
-							documentation: 'Component docs here'
+							documentation: `The BaseMap component provides a flexible and extensible way to create maps with multiple layers. This component serves as the foundation for AreaMap, PointMap, and BubbleMap.
+
+Within BaseMap, you can add layers using the following components:
+
+- <Areas />
+- <Points />
+- <Bubbles />
+`
 						}))
 					};
 				}
