@@ -16,7 +16,7 @@ import {
 } from './Options.js';
 import { encodeBase64Deep } from '../../../../lib/b64Deep.js';
 import { dataDirectory, metaDirectory } from '../../../../lib/projectPaths.js';
-import { evalSources } from '../../evalSources.js';
+import { evalSources } from '../../eval/index.js';
 import { updateManifest } from '../../updateManifest.js';
 
 /**

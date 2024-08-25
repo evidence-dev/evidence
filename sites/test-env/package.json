@@ -23,6 +23,7 @@
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/motherduck": "workspace:^",
 		"@evidence-dev/mssql": "workspace:^",
+		"@evidence-dev/pipelines": "file:evidence-dev-pipelines-0.0.1-dev.0.tgz",
 		"@evidence-dev/postgres": "workspace:*",
 		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",

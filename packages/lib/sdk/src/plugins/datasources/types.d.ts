@@ -51,3 +51,7 @@ export type SourceFilters = {
 	queries: Set<string> | null;
 	only_changed: boolean;
 };
+
+export type DatasourceSpec = import('./schemas/datasource.schema.js').DatasourceSpecFile & {
+	dir: string;
+};

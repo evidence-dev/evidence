@@ -27,3 +27,5 @@ export const pagesDirectory =
 	'EVIDENCE_PAGES_DIR' in process.env && process.env.EVIDENCE_PAGES_DIR
 		? path.resolve(process.env.EVIDENCE_PAGES_DIR)
 		: path.resolve(projectRoot, 'pages');
+
+export const pipelinesDirectory = path.resolve(projectRoot, 'pipelines');

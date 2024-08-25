@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { dataDirectory, metaDirectory } from '../../../lib/projectPaths.js';
-import { evalSources } from '../evalSources.js';
+import { evalSources } from '../eval/index.js';
 import { updateManifest } from '../updateManifest.js';
 
 /** @type { import("@brianmd/citty").CommandDef } */

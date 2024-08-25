@@ -6,7 +6,7 @@ import merge from 'lodash.merge';
 
 /**
  * hashes[source][query] = contentHash
- * @type {Record<string, Record<string, string>>}
+ * @type {{ [source: string]: { [query: string]: string}}}
  */
 const knownQueryHashes = {};
 

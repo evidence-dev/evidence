@@ -1,5 +1,5 @@
 import path from 'path';
-import { evalSources } from '../../../plugins/datasources/evalSources.js';
+import { evalSources } from '../../../plugins/datasources/eval/index.js';
 import { dataDirectory, metaDirectory, sourcesDirectory } from '../../../lib/projectPaths.js';
 import { updateManifest } from '../../../plugins/datasources/updateManifest.js';
 import { ProcessingQueue } from '../../../lib/processing-queue.js';

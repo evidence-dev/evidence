@@ -1,6 +1,14 @@
 import { z } from 'zod';
 
 /** @typedef {z.infer<typeof DatasourceSpecFileSchema>} DatasourceSpecFile */
+/** @typedef {z.infer<typeof DatasourceSpecPipelineSchema>} DatasourceSpecPipeline */
+
+export const DatasourceSpecPipelineSchema = z.object({
+	name: z.string().optional(),
+	source: z.string(),
+	destination: z.string().optional(),
+	steps: z.array(z.string())
+});
 
 export const DatasourceSpecFileSchema = z.object({
 	type: z.string(),
@@ -15,5 +23,6 @@ export const DatasourceSpecFileSchema = z.object({
 				.default(1000 * 1000)
 		})
 		.optional()
-		.default({})
+		.default({}),
+	pipelines: z.array(DatasourceSpecPipelineSchema).optional().default([])
 });

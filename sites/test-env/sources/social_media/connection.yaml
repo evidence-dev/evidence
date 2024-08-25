@@ -3,3 +3,26 @@ type: faker
 
 
 options: {}
+
+
+pipelines:
+  - name: Converts all text in comments to uppercase
+    source: comments
+    destination: upper_comments
+    steps:
+      - uppercaseStrings
+  
+  - name: Converts all columns to text, then uppercases them
+    source: comments
+    destination: all_upper_comments
+    steps:
+      - convertColumnsToStrings
+      - uppercaseStrings
+
+  - name: Uppercases all text columns, then converts all columns to text
+    source: comments
+    destination: some_upper_comments
+    steps:
+      - uppercaseStrings
+      - convertColumnsToStrings
+    

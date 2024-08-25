@@ -4,8 +4,9 @@ import chalk from 'chalk';
 import { loadSourceConfig } from './loadSourceConfig.js';
 import { sourcesDirectory } from '../../lib/projectPaths.js';
 
+/** @typedef {import("./types.js").DatasourceSpec} DatasourceSpec */
+
 /**
- *
  * @param {string} sourcePath
  */
 const loadSource = async (sourcePath) => {
@@ -18,16 +19,15 @@ const loadSource = async (sourcePath) => {
 	}
 	return loadSourceConfig(sourcePath);
 };
-
 /**
- * @returns {Promise<Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>>}
+ * @returns {Promise<Array<DatasourceSpec>>}
  */
 export const loadSources = async () => {
 	const sourceDirs = await fs
 		.readdir(sourcesDirectory)
 		.then((dirs) => dirs.map((dir) => path.join(sourcesDirectory, dir)));
 
-	return /** @type {Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>}*/ (
+	return /** @type {Array<DatasourceSpec>}*/ (
 		await Promise.all(
 			sourceDirs.map(async (dir) => ({
 				dir,
