@@ -175,7 +175,9 @@ limit 50`,
 	}}
 	let:args
 >
-	<BoxPlot {...args} data={flightData} />
+	<QueryLoad data={flightData} let:loaded>
+		<BoxPlot {...args} data={loaded} />
+	</QueryLoad>
 </Story>
 <Story
 	name="colored BoxPlots"
@@ -189,7 +191,9 @@ limit 50`,
 	}}
 	let:args
 >
-	<BoxPlot {...args} data={flightData} />
+	<QueryLoad data={flightData} let:loaded>
+		<BoxPlot {...args} data={loaded} />
+	</QueryLoad>
 </Story>
 <Story
 	name="whiskers"
@@ -204,7 +208,9 @@ limit 50`,
 	}}
 	let:args
 >
-	<BoxPlot {...args} data={flightData} />
+	<QueryLoad data={flightData} let:loaded>
+		<BoxPlot {...args} data={loaded} />
+	</QueryLoad>
 </Story>
 <Story
 	name="empty set"

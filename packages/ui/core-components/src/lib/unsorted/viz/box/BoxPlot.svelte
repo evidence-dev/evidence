@@ -82,13 +82,11 @@
 
 	updateBoxPlotData();
 	$: if (data.length > 0) {
-		console.log(data.length);
 		updateBoxPlotData();
 	} else {
 		(async () => {
 			if (Query.isQuery(data)) await data.fetch();
 		})();
-		console.log([...data]);
 	}
 </script>
 
