@@ -81,11 +81,9 @@
 	};
 
 	updateBoxPlotData();
-	$: data,
-		(async () => {
-			if (Query.isQuery(data)) await data.fetch();
-			updateBoxPlotData();
-		})();
+	$: if (data.length > 0) {
+		updateBoxPlotData();
+	}
 </script>
 
 <Chart
