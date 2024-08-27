@@ -122,6 +122,7 @@
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
 	const flightData = Query.create(
@@ -157,7 +158,9 @@ limit 50`,
 	}}
 	let:args
 >
-	<BoxPlot {...args} data={flightData} />
+	<QueryLoad data={flightData} let:loaded>
+		<BoxPlot {...args} data={loaded} />
+	</QueryLoad>
 </Story>
 
 <Story
