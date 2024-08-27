@@ -1,7 +1,11 @@
+
 <script>
+    import { setContext } from 'svelte';
 	export let showModal; // boolean
 
 	let dialog; // HTMLDialogElement
+
+    setContext('displayModal-showModal', showModal);
 
 	$: if (dialog && showModal) dialog.showModal();
 </script>
@@ -10,7 +14,11 @@
 <dialog
 	bind:this={dialog}
 	on:close={() => (showModal = false)}
-	on:click|self={() => dialog.close()}
+    on:click|self={() => {
+        setTimeout(() => {
+          dialog.close();
+        }, 500); // wait for 500ms, which is the duration of the animation
+      }}
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div class='relative' on:click|stopPropagation>
@@ -35,18 +43,19 @@
 		padding: 1em;
 	}
 	dialog[open] {
-		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+		animation: zoom 0.5s ease-in-out;
 	}
 	@keyframes zoom {
-		from {
-			transform: scale(0.95);
-		}
-		to {
-			transform: scale(1);
-		}
+        from {
+            transform: translateX(-20%) scale(0.95)
+        }
+        to {
+            transform: translateX(0) scale(1)
+        }
+
 	}
 	dialog[open]::backdrop {
-		animation: fade 0.2s ease-out;
+		animation: fade 1.5s ease-out;
 	}
 	@keyframes fade {
 		from {
@@ -55,6 +64,19 @@
 		to {
 			opacity: 1;
 		}
+	}
+
+    dialog:not([open]) {
+		animation: exit 0.5s ease-in-out;
+	}
+	@keyframes exit {
+        from {
+            transform: translateX(0%) scale(0.95); opacity: 1;
+        }
+        to {
+            transform: translateX(-20) scale(1); opacity: 0;
+        }
+
 	}
 	button {
 		display: block;

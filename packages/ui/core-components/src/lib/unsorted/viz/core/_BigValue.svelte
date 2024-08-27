@@ -6,6 +6,7 @@
 	import Sparkline from './Sparkline.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import Delta from './Delta.svelte';
+	import { getContext } from 'svelte';
 	export let data;
 	export let value = null;
 	export let comparison = null;
@@ -42,6 +43,10 @@
 
 	/** @type {string | null}*/
 	export let link = null;
+
+	export let displayMode
+
+	let showModal = getContext('displayMode-showModal')
 
 	let error = undefined;
 	$: try {
@@ -95,7 +100,7 @@
 </script>
 
 <div
-	class="inline-block font-sans pt-2 pb-3 pr-3 pl-0 mr-3 items-center align-top"
+	class="inline-block font-sans pt-2 pb-3 pr-3 pl-0 mr-3 items-center align-top {displayMode ? 'text-center mt-12' : ''}"
 	style={`
         min-width: ${minWidth};
         max-width: ${maxWidth};
@@ -104,8 +109,8 @@
 	{#if error}
 		<BigValueError chartType="Big Value" error={error.message} />
 	{:else}
-		<p class="text-sm text-gray-700">{title}</p>
-		<div class="relative text-xl font-medium text-gray-700 my-0.5">
+		<p class="{showModal ? 'text-3xl' : 'text-sm'} text-gray-700">{title}</p>
+		<div class="relative {showModal ? 'text-9xl' : displayMode ? 'text-3xl ' : 'text-xl'} font-medium text-gray-700 my-0.5">
 			{#if link}
 				<a class="hover:bg-gray-100" href={link}>
 					<Value {data} column={value} {fmt} />

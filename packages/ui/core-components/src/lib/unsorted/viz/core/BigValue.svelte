@@ -9,6 +9,9 @@
 	import EmptyChart from './EmptyChart.svelte';
 	import BigValueError from './BigValueError.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
+	export let displayMode
+	
+	console.log('displayMode', displayMode)
 
 	export let data;
 

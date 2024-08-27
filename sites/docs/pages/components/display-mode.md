@@ -62,6 +62,7 @@ group by category
             <DisplayComponents>
                 <DataTable data={orders_summary} />
                 <LineChart 
+                    title={inputs.selected_button}
                     data={orders_summary}
                     x=month
                     y=sales_usd0k 
@@ -70,6 +71,7 @@ group by category
                 <BigValue 
                     data={total_sales} 
                     value=total_sales
+                    displayMode=true
                 />
                 <LineChart 
                     data={orders_summary_all}
@@ -82,15 +84,58 @@ group by category
             </Tab>
             <Tab label="Second Tab">
             <DisplayComponents>
-                <BigValue 
-                    data={total_sales} 
-                    value=total_sales
-                />
                 <LineChart 
                     data={orders_summary}
                     x=month
                     y=sales_usd0k 
                     yAxisTitle="Sales per Month"
+                />
+                <BigValue 
+                    data={total_sales} 
+                    value=total_sales
+                    displayMode=true
+                />
+             </DisplayComponents>
+            </Tab>
+        </Tabs>
+</DisplayMode >
+
+
+<DisplayMode >
+<Tabs>
+    <Tab label="First Tab">
+    <DisplayInputs>
+        <Checkbox
+            title="Hide Months 0" 
+            name=hide_months_0 
+        />
+        <Slider
+        title="Months" 
+        name=months
+        defaultValue=18
+        />
+        <ButtonGroup             
+        name=selected_button
+        value=category>
+            <ButtonGroupItem valueLabel="Sinister Toys" value="Sinister Toys" default/>
+            <ButtonGroupItem valueLabel="Odd Equipment" value="Odd Equipment" />
+            <ButtonGroupItem valueLabel="Mysterious Apparel" value="Mysterious Apparel" />
+            <ButtonGroupItem valueLabel="Cursed Sporting Goods" value="Cursed Sporting Goods" />
+        </ButtonGroup>
+    </DisplayInputs>
+            <DisplayComponents>
+                <DataTable data={orders_summary} />
+                <LineChart 
+                    title={inputs.selected_button}
+                    data={orders_summary}
+                    x=month
+                    y=sales_usd0k 
+                    yAxisTitle="Sales per Month"
+                />
+                <BigValue 
+                    data={total_sales} 
+                    value=total_sales
+                    displayMode=true
                 />
                 <LineChart 
                     data={orders_summary_all}
@@ -99,8 +144,43 @@ group by category
                     yAxisTitle="Sales per Month"
                     series=category
                 />
-                <DataTable data={orders_summary} />
+             </DisplayComponents>
+            </Tab>
+            <Tab label="Second Tab">
+            <DisplayInputs>
+                <ButtonGroup             
+                name=selected_button
+                value=category>
+                    <ButtonGroupItem valueLabel="Sinister Toys" value="Sinister Toys" default/>
+                    <ButtonGroupItem valueLabel="Odd Equipment" value="Odd Equipment" />
+                    <ButtonGroupItem valueLabel="Mysterious Apparel" value="Mysterious Apparel" />
+                    <ButtonGroupItem valueLabel="Cursed Sporting Goods" value="Cursed Sporting Goods" />
+                </ButtonGroup>
+            </DisplayInputs>    
+            <DisplayComponents>
+                <LineChart 
+                    data={orders_summary}
+                    x=month
+                    y=sales_usd0k 
+                    yAxisTitle="Sales per Month"
+                />
+                <BigValue 
+                    data={total_sales} 
+                    value=total_sales
+                    display=true
+                />
              </DisplayComponents>
             </Tab>
         </Tabs>
+</DisplayMode >
+
+<DisplayMode >
+    <DisplayComponents>
+                        <LineChart 
+                    data={orders_summary}
+                    x=month
+                    y=sales_usd0k 
+                    yAxisTitle="Sales per Month"
+                />
+    </DisplayComponents>
 </DisplayMode >

@@ -6,6 +6,6 @@
     import Grid from "$lib/atoms/grid/Grid.svelte";
 </script>
 
-<Grid cols={2}>
+<Grid cols={2} class="text-center">
     <slot />
 </Grid>
