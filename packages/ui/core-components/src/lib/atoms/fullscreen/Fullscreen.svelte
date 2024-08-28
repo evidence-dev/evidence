@@ -66,9 +66,7 @@
 
 <dialog
 	use:popup={open}
-	class="w-[90vw] rounded-lg fixed border shadow-lg overflow-y-hidden {open
-		? 'slideIn'
-		: 'slideOut'}"
+	class="w-[90vw] rounded-lg fixed border shadow-lg {open ? 'slideIn' : 'slideOut'}"
 >
 	<button
 		class="absolute top-4 right-[18.5px] text-gray-900 hover:bg-gray-100 rounded-lg p-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
