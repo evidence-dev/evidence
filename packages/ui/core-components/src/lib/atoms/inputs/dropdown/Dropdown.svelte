@@ -63,8 +63,6 @@
 	 */
 	export let selectAllByDefault = false;
 
-	console.log(selectAllByDefault, 'selectAllByDefault');
-
 	// Input Query Props
 	export let value = 'value',
 		/** @type {string | import("@evidence-dev/sdk/usql").QueryValue }*/
