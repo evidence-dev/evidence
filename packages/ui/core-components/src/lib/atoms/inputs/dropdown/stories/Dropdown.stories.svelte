@@ -136,6 +136,12 @@
 
 <Story name="Select all by default">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<h1>False</h1>
+	<Dropdown multiple name="test" {data} value="value" label="label" selectAllByDefault={'false'} />
+	<Dropdown multiple name="test" {data} value="value" label="label" selectAllByDefault={false} />
+	<h1>True</h1>
+	<Dropdown multiple name="test" {data} value="value" label="label" selectAllByDefault={'true'} />
+	<Dropdown multiple name="test" {data} value="value" label="label" selectAllByDefault={true} />
 	<Dropdown multiple name="test" {data} value="value" label="label" selectAllByDefault />
 </Story>
 
