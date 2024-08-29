@@ -81,12 +81,11 @@
 	};
 
 	updateBoxPlotData();
-	$: if (data.length > 0) {
-		updateBoxPlotData();
-	} else {
+	$: if (data) {
 		(async () => {
 			if (Query.isQuery(data)) await data.fetch();
 		})();
+		updateBoxPlotData();
 	}
 </script>
 
