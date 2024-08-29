@@ -24,6 +24,7 @@
 <script>
 	import { HoverCard } from '@evidence-dev/core-components';
 	import { onMount, onDestroy } from 'svelte';
+	import { nameGenerator } from './nameGenerator.js';
 	export let name = '';
 	export let description = '';
 	export let required = false;
@@ -61,22 +62,12 @@
 		} catch (err) {}
 	}
 
-	let counter = 0;
-	const updateIdName = () => {
-		idName = name.replace(/[^a-zA-Z0-9]/g, '-');
-		while (names.has(idName)) {
-			counter++;
-			idName = counter > 1 ? `${name}-${counter}` : `${name}`;
-		}
-		names.add(idName);
-	};
-
 	onDestroy(() => {
 		names.delete(idName);
 		counter = 0;
 	});
 
-	updateIdName();
+	nameGenerator(name, idName, names);
 </script>
 
 <section
