@@ -170,7 +170,7 @@
 					let output;
 					if (showPercent) {
 						const initialValue = data[0][valueCol];
-						const percentOfInitial = ((params.value / initialValue) * 100).toFixed(1); // one decimal place by default
+						const percentOfInitial = ((params.value / initialValue) * 100).toFixed(2);
 						output = `${formatValue(params.value, valueColFormat)} (${percentOfInitial}%)`;
 					} else {
 						output = formatValue(params.value, valueColFormat);
