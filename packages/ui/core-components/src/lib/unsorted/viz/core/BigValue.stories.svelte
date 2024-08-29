@@ -28,7 +28,6 @@
 </script>
 
 <script>
-
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
@@ -46,7 +45,6 @@
 <Story name="Basic" args={{ title: 'Basic Big Value', fmt: 'usd0', emptySet: 'pass' }} let:args>
 	<BigValue {...args} {data} value="total" />
 </Story>
-
 
 <Story name="Data as Array" let:args>
 	{#each data2 as my_row}
