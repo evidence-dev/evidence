@@ -1,5 +1,13 @@
 # @evidence-dev/sdk
 
+## 1.3.9
+
+### Patch Changes
+
+- 8c2982505: Modify default search threshold behavior for Query
+- Updated dependencies [8c2982505]
+  - @evidence-dev/universal-sql@2.1.4
+
 ## 1.3.8
 
 ### Patch Changes
