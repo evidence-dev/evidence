@@ -32,8 +32,6 @@
 	export let options = [];
 	export let defaultValue = '';
 	export let type = '';
-
-	let idName = name;
 	let copyStatus = {};
 
 	onMount(() => {
@@ -62,12 +60,11 @@
 		} catch (err) {}
 	}
 
+	let idName = nameGenerator(name, names);
+
 	onDestroy(() => {
 		names.delete(idName);
-		counter = 0;
 	});
-
-	nameGenerator(name, idName, names);
 </script>
 
 <section
