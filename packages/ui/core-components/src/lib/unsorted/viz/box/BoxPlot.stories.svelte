@@ -158,9 +158,8 @@ limit 50`,
 	}}
 	let:args
 >
-	<QueryLoad data={flightData} let:loaded>
-		<BoxPlot {...args} data={loaded} />
-	</QueryLoad>
+	<!-- {console.log([...flightData])} -->
+	<BoxPlot {...args} data={flightData} />
 </Story>
 
 <Story

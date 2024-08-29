@@ -84,8 +84,8 @@
 	$: if (data) {
 		(async () => {
 			if (Query.isQuery(data)) await data.fetch();
+			updateBoxPlotData();
 		})();
-		updateBoxPlotData();
 	}
 </script>
 
