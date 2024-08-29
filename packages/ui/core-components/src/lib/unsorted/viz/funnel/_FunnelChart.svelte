@@ -169,7 +169,9 @@
 				formatter: function (params) {
 					let output;
 					if (showPercent) {
-						output = `${formatValue(params.value, valueColFormat)} (${params.percent}%)`;
+						const initialValue = data[0][valueCol];
+						const percentOfInitial = ((params.value / initialValue) * 100).toFixed(1); // one decimal place by default
+						output = `${formatValue(params.value, valueColFormat)} (${percentOfInitial}%)`;
 					} else {
 						output = formatValue(params.value, valueColFormat);
 					}
