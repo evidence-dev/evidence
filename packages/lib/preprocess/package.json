@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "5.1.5",
+	"version": "5.1.6",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",
@@ -37,7 +37,7 @@
 		"mock-fs": "^5.2.0",
 		"parcel": "^2.8.3",
 		"typescript": "5.4.2",
-		"vitest": "^0.34.2"
+		"vitest": "^2.0.5"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",

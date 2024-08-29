@@ -1,22 +1,29 @@
+<script context="module">
+	/** @type {import("@storybook/svelte").Meta}*/
+	export const meta = {
+		title: 'Atoms/inputs/ButtonGroup',
+		component: ButtonGroup,
+		argTypes: {},
+		args: { title: 'Group of buttons', name: 'buttonGroup' }
+	};
+</script>
+
 <script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
+	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import ButtonGroup from './ButtonGroup.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { fakerSeries } from '$lib/faker-data-queries.js';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+
 	// From layout.js
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
-</script>
 
-<Meta
-	title="Atoms/inputs/ButtonGroup"
-	component={ButtonGroup}
-	argTypes={{}}
-	args={{ title: 'Group of buttons', name: 'buttonGroup' }}
-/>
+	const data = Query.create(`select * from hashtags`, query);
+</script>
 
 <Template let:args>
 	<div class="h-64">
@@ -72,7 +79,7 @@
 	name="Query-Based Entries - Existing Store"
 	let:args
 	args={{
-		data: fakerSeries.social_media.hashtags.store,
+		data,
 		value: 'id',
 		label: 'tag'
 	}}
@@ -107,7 +114,7 @@
 	name="Mixed Entries - Existing Store"
 	let:args
 	args={{
-		data: fakerSeries.social_media.hashtags.store,
+		data,
 		value: 'id',
 		label: 'tag'
 	}}
@@ -125,6 +132,42 @@
 <Story name="Preset - Date Agg" let:args>
 	<div class="mb-8">
 		<ButtonGroup {...args} preset="dates" />
+	</div>
+
+	Current Value: {$inputStore[args.name]}
+</Story>
+
+<Story name="Button Group Styled as Tabs" let:args>
+	<div class="mb-8">
+		<ButtonGroup
+			{...args}
+			preset="dates"
+			title="Default Button Style"
+			name="defaultStyle"
+			color="red"
+		/>
+	</div>
+	Current Value: {$inputStore['defaultStyle']}
+	<div class="mb-8 mt-4">
+		<ButtonGroup
+			{...args}
+			preset="dates"
+			display="tabs"
+			title="Buttons Styled as Tabs"
+			name="tabsStyle"
+		/>
+	</div>
+	Current Value: {$inputStore['tabsStyle']}
+</Story>
+
+<Story name="Hard Coded Entries with Tab Stylings" let:args>
+	<div class="mb-8">
+		<ButtonGroup {...args} display="tabs">
+			<ButtonGroupItem valueLabel="Option 1" value={1} />
+			<ButtonGroupItem valueLabel="Option 2" value={2} />
+			<ButtonGroupItem valueLabel="Option 3" value={3} />
+			<ButtonGroupItem valueLabel="Option 4" value={4} />
+		</ButtonGroup>
 	</div>
 
 	Current Value: {$inputStore[args.name]}
