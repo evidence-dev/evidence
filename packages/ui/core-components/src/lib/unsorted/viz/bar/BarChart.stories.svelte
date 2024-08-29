@@ -43,88 +43,33 @@
 				control: 'boolean',
 				options: [true, false]
 			}
-		},
-		args: {
-			xHasGaps: false,
-			yHasNulls: false,
-			seriesAlwaysExists: true
 		}
 	};
 </script>
 
 <script>
-	import { Template, Story } from '@storybook/addon-svelte-csf';
+	import { Story } from '@storybook/addon-svelte-csf';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 
 	import BarChart from './BarChart.svelte';
-
-	import { fakerSeries } from '$lib/faker-data-queries';
 </script>
 
-<Template let:args>
-	<BarChart
-		{...args}
-		x="x"
-		y="y"
-		series="series"
-		data={fakerSeries['numeric_series'][args.xHasGaps][args.yHasNulls][args.seriesAlwaysExists]
-			.store}
-	/>
-</Template>
+<Story name="Base" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<BarChart {data} {...args} />
+</Story>
 
-<Story name="Base" />
-<Story name="Labels" args={{ labels: true }} />
-<Story name="Total Labels Only" args={{ labels: true, seriesLabels: false }} />
-
-<!-- 
-<Story name="Query" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric", query), x: "x", y: "y", series: "series"}} />
-<Story name="Query (X Gaps)" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric_gaps", query), x: "x", y: "y", series: "series"}} />
-<Story name="Query (Missing Series)" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric_series", query), x: "x", y: "y", series: "series"}} />
+<Story name="Labels" args={{ x: 'x', y: 'y', series: 'series', labels: true }} let:args>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<BarChart {data} {...args} />
+</Story>
 
 <Story
-	name="Crowded (Explicit X Type)"
-	args={{
-		xType: 'category',
-		data: genSeries({
-			...defaultGenSeriesOpts,
-			minSeriesLen: 15,
-			maxSeriesLen: 15,
-			minSeriesCount: 4
-		}).data
-	}}
-/>
-
-<Story
-	name="Crowded (Explicit X Type) (Horizontal)"
-	args={{
-		xType: 'category',
-		swapXY: true,
-		data: genSeries({
-			...defaultGenSeriesOpts,
-			minSeriesLen: 15,
-			maxSeriesLen: 15,
-			minSeriesCount: 4
-		}).data
-	}}
-/>
-
-	This story doesn't work because our series mocking currently doesn't include evidenceColumnTypes
-	<Story
-	name="Crowded (Implicit X Type)"
-	args={{
-		data: genSeries({
-			...defaultGenSeriesOpts,
-			minSeriesLen: 15,
-			maxSeriesLen: 15,
-			minSeriesCount: 4
-		}).data
-	}}
-/> 
-
-<Story
-	name="MultiSeries with Missing Entries"
-	args={{
-		type: 'stacked',
-		data: MissingYCase.data,
-		...MissingYCase.keys
-	}}
-/> -->
+	name="Total Labels Only"
+	args={{ x: 'x', y: 'y', series: 'series', labels: true, seriesLabels: false }}
+	let:args
+>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<BarChart {data} {...args} />
+</Story>

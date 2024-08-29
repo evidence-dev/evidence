@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.1.5
+
+### Patch Changes
+
+- 888bd8e50: Use a freshly seeded faker instance for each table
+
 ## 2.1.4
 
 ### Patch Changes

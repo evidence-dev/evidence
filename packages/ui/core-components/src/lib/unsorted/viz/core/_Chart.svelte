@@ -1004,7 +1004,7 @@
 						type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
 					},
 					extraCssText:
-						'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
+						'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1; font-feature-settings: "cv02", "tnum";',
 					order: 'valueDesc'
 				},
 				legend: {

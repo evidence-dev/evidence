@@ -1,5 +1,13 @@
 # @evidence-dev/component-utilities
 
+## 3.2.9
+
+### Patch Changes
+
+- 8c2982505: Update vitest to latest
+- Updated dependencies [8c2982505]
+  - @evidence-dev/sdk@1.3.9
+
 ## 3.2.8
 
 ### Patch Changes

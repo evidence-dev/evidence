@@ -1,14 +1,17 @@
-<script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
-	import BigValue from './BigValue.svelte';
+<script context="module">
+	/** @type {import("@storybook/svelte").Meta}*/
+	export const meta = {
+		title: 'Viz/BigValue',
+		component: BigValue,
+		argTypes: {},
+		args: { data: { loading: true }, value: 'someCol' }
+	};
 </script>
 
-<Meta
-	title="Viz/BigValue"
-	component={BigValue}
-	argTypes={{}}
-	args={{ data: { loading: true }, value: 'someCol' }}
-/>
+<script>
+	import { Template, Story } from '@storybook/addon-svelte-csf';
+	import BigValue from './BigValue.svelte';
+</script>
 
 <Template let:args>
 	<div class="h-64">

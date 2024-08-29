@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "2.1.7",
+	"version": "2.1.8",
 	"description": "",
 	"type": "module",
 	"bin": "./dist/debugger/cli.js",
@@ -49,7 +49,7 @@
 		"parcel": "2.12.0",
 		"rollup": "^4.13.0",
 		"typescript": "5.4.2",
-		"vitest": "^0.34.1"
+		"vitest": "^2.0.5"
 	},
 	"targets": {
 		"types": false,
