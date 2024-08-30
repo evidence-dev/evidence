@@ -177,50 +177,6 @@ group by all
 <DataTable data={filtered_query} emptySet=pass emptyMessage="No category selected"/>
 ````
 
-### Style Buttons as Tabs
-
-<ButtonGroup 
-    data={categories} 
-    name=buttons_as_tabs
-    value=category
-    display=tabs
-/>
-
-Selected: {inputs.buttons_as_tabs}
-
-```markdown
-<ButtonGroup 
-    data={categories} 
-    name=buttons_as_tabs 
-    value=category
-    display=tabs
-/>
-
-Selected: {inputs.buttons_as_tabs}
-```
-
-### Style Buttons as Tabs: With Hardcoded Options
-
-<ButtonGroup name=button_tabs_hardcoded_options display=tabs>
-    <ButtonGroupItem valueLabel="Option One" value="1" />
-    <ButtonGroupItem valueLabel="Option Two" value="2" />
-    <ButtonGroupItem valueLabel="Option Three" value="3" />
-</ButtonGroup>
-
-Selected: {inputs.button_tabs_hardcoded_options}
-
-
-````markdown
-<ButtonGroup name=button_tabs_hardcoded_options display=tabs>
-    <ButtonGroupItem valueLabel="Option One" value="1" />
-    <ButtonGroupItem valueLabel="Option Two" value="2" />
-    <ButtonGroupItem valueLabel="Option Three" value="3" />
-</ButtonGroup>
-
-Selected: {inputs.button_tabs_hardcoded_options}
-````
-
-
 # ButtonGroup
 
 ## Options
@@ -266,11 +222,6 @@ Selected: {inputs.button_tabs_hardcoded_options}
     name="where"
     description="SQL where fragment to filter options by (e.g., where sales > 40000)"
     options="SQL where clause"
-/>
-<PropListing 
-    name="display"
-    description="Displays tabs with button functionality"
-    options="tabs"
 />
 
 # ButtonGroupItem

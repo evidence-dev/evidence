@@ -16,6 +16,8 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import Tab from './Tab.svelte';
 	import TextInput from '../../../atoms/inputs/text/TextInput.svelte';
+	import { within, userEvent } from '@storybook/testing-library';
+	import { expect } from '@storybook/jest';
 
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
@@ -50,5 +52,31 @@
 				{tag}
 			</Tab>
 		{/each}
+	</Tabs>
+</Story>
+
+<Story
+	name="Click on a second tab"
+	play={async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		// Wait for the component to render
+		await new Promise((resolve) => setTimeout(resolve, 100));
+
+		// Find the second tab by its id
+		const secondTab = canvas.getByRole('button', { name: 'Tab 2' });
+
+		// Click on the second tab
+		await userEvent.click(secondTab);
+
+		// Check if the second tab's content is visible
+		const secondTabContent = canvas.getByText('Tab 2 content');
+		expect(secondTabContent).toBeVisible();
+	}}
+>
+	<Tabs>
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
 	</Tabs>
 </Story>
