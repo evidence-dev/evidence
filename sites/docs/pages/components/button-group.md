@@ -77,6 +77,24 @@ Selected: {inputs.category_selector}
     data={categories}
     name=selected_button
     value=category
+    defaultValue="Sinister Toys"
+/>
+
+Selected: {inputs.selected_button}
+
+````markdown
+<ButtonGroup
+    data={categories}
+    name=selected_button
+    value=category
+    defaultValue="Sinister Toys"
+/>
+````
+
+<ButtonGroup
+    data={categories}
+    name=selected_button
+    value=category
 >
     <ButtonGroupItem valueLabel="All Categories" value="%" default />
 </ButtonGroup>
@@ -255,6 +273,11 @@ Selected: {inputs.button_tabs_hardcoded_options}
     name="title"
     description="Title to display above the button group"
     options="string"
+/>
+<PropListing 
+    name="defaultValue"
+    description="Sets initial active button and current value"
+    options="String (e.g Sinister Toys)"
 />
 <PropListing 
     name="order"

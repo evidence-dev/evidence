@@ -25,6 +25,8 @@
 	// for Tabs styling
 	export let display;
 
+	export let defaultValue;
+
 	setContext('button-display', display);
 
 	export let color = 'hsla(207, 65%, 39%, 1)';
@@ -71,7 +73,7 @@
 			{#if preset}
 				{#if presets[preset]}
 					{#each presets[preset] as { value, valueLabel }}
-						<ButtonGroupItem {value} {valueLabel} {color} {display} />
+						<ButtonGroupItem {value} {valueLabel} {color} {display} {defaultValue} />
 					{/each}
 				{:else}
 					<span class="text-red-500 font-bold text-sm">{preset} is not a valid preset</span>
@@ -85,7 +87,7 @@
 						</svelte:fragment>
 						<svelte:fragment>
 							{#each loaded as { label, value }}
-								<ButtonGroupItem {value} valueLabel={label} {color} {display} />
+								<ButtonGroupItem {value} valueLabel={label} {color} {display} {defaultValue} />
 							{/each}
 						</svelte:fragment>
 					</QueryLoad>
