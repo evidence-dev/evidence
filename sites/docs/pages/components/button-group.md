@@ -73,6 +73,26 @@ Selected: {inputs.category_selector}
 
 ### With a Default Value
 
+Default Value can be set using the desired button's Value
+
+<ButtonGroup
+    data={categories}
+    name=selected_button
+    value=category
+    defaultValue="Sinister Toys"
+/>
+
+````markdown
+<ButtonGroup
+    data={categories}
+    name=selected_button
+    value=category
+    defaultValue="Sinister Toys"
+/>
+````
+
+
+
 <ButtonGroup
     data={categories}
     name=selected_button
@@ -255,6 +275,11 @@ Selected: {inputs.button_tabs_hardcoded_options}
     name="title"
     description="Title to display above the button group"
     options="string"
+/>
+<PropListing 
+    name="defaultValue"
+    description="sets the inital value and active button group item"
+    options="String (e.g `Sinister Toys`, `Odd Equipment`)"
 />
 <PropListing 
     name="order"

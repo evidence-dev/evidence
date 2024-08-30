@@ -14,6 +14,9 @@
 
 	let display = getContext('button-display');
 
+	/** @type {string} */
+	export let defaultValue;
+
 	const { update, value: currentValue } = getButtonGroupContext();
 
 	/** @type {boolean} */
@@ -21,6 +24,10 @@
 	export { _default as default };
 
 	if (_default) {
+		update({ valueLabel, value });
+	}
+
+	if (defaultValue && defaultValue.toLocaleLowerCase() === value.toLocaleLowerCase()) {
 		update({ valueLabel, value });
 	}
 </script>
