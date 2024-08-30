@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 1.1.1
+
+### Patch Changes
+
+- bf04c39ef: Patches CVE
+
 ## 1.1.0
 
 ### Minor Changes

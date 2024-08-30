@@ -105,7 +105,19 @@
 
 	import ReferenceArea from './ReferenceArea.svelte';
 
-	const data = Query.create(`select * FROM numeric_series WHERE series='pink'`, query);
+	const data = Query.create(
+		`
+		select *
+		from numeric_series
+		where series in (
+			select series
+			from numeric_series
+			order by series asc
+			limit 1
+		)
+		`,
+		query
+	);
 </script>
 
 <Story

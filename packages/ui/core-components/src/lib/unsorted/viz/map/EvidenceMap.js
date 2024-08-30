@@ -1,5 +1,5 @@
 import { sharedPromise } from '@evidence-dev/sdk/utils';
-import debounce from 'lodash.debounce';
+import { debounce } from 'perfect-debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
@@ -45,9 +45,6 @@ export class EvidenceMap {
 	/** Tracks whether the initial view has been set based on data bounds. */
 	#initialViewSet = false;
 
-	/** @type {Writable<string | undefined>} */
-	#error = writable();
-
 	constructor() {
 		this.#lastClickedMarker = null;
 		this.#markerStyles = new Map();
@@ -67,11 +64,6 @@ export class EvidenceMap {
 	 */
 	get mapEl() {
 		return this.#mapEl;
-	}
-
-	/** @type {Readable<string | undefined>} */
-	get error() {
-		return readonly(this.#error);
 	}
 
 	/**
@@ -398,31 +390,45 @@ export class EvidenceMap {
 	/** @type {Writable<Map<string, any | null>>} */
 	#geoJsonData = writable(new Map());
 
-	// allGeoJsonLoaded = writable(false);
+	get geoJsonData() {
+		return readonly(this.#geoJsonData);
+	}
+
 	allGeoJsonLoaded = derived(this.#geoJsonData, ($geoJsonData) => {
 		return Array.from($geoJsonData.values()).every(Boolean);
 	});
 
 	/**
 	 * @param {string} url
-	 * @returns {Promise<any>} GeoJSON data
+	 * @returns {Promise<any | undefined>} GeoJSON data
 	 */
 	async loadGeoJson(url) {
 		const cached = EvidenceMap.#geoJsonCache.get(url);
 		if (cached) return cached;
 
-		const promise = fetch(url).then((r) => r.json());
+		const promise = fetch(url)
+			.then((r) => r.json())
+			.catch((e) => {
+				this.#geoJsonData.update((map) => {
+					map.delete(url);
+					return map;
+				});
+				console.error(`Failed to load GeoJSON at URL '${url}': ${e}`);
+			});
 		EvidenceMap.#geoJsonCache.set(url, promise);
 
-		try {
-			// Set null to indicate we are loading data for this URL
-			this.#geoJsonData.update((map) => map.set(url, null));
-			const data = await promise;
-			this.#geoJsonData.update((map) => map.set(url, data));
-			return data;
-		} catch (e) {
-			this.#error.set(`Failed to load GeoJSON at URL '${url}': ${e.message}`);
-			this.#geoJsonData.update((map) => map.delete(url));
-		}
+		// Set null to indicate we are loading data for this URL
+		this.#geoJsonData.update((map) => map.set(url, null));
+		const data = await promise;
+		this.#geoJsonData.update((map) => {
+			if (data) {
+				map.set(url, data);
+			} else {
+				map.delete(url);
+			}
+			return map;
+		});
+
+		return data;
 	}
 }

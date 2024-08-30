@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/component-utilities",
-	"version": "3.2.8",
+	"version": "3.2.9",
 	"description": "",
 	"main": "index.js",
 	"exports": {
@@ -11,7 +11,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@faker-js/faker": "^8.0.2",
-		"vitest": "^0.34.1"
+		"vitest": "^2.0.5"
 	},
 	"scripts": {
 		"test": "vitest --run",

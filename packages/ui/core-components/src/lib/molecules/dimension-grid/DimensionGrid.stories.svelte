@@ -11,7 +11,6 @@
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
 
-	import { fakerSeries } from '$lib/faker-data-queries.js';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { userEvent, within } from '@storybook/test';
@@ -21,10 +20,6 @@
 	const dataPlay = Query.create('select plane, airline from flights', query);
 
 	const nullComboData = Query.create('select * from flights limit 1000', query);
-
-	const delay = (ms) => {
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	};
 </script>
 
 <Story name="Basic Usage">
@@ -32,38 +27,35 @@
 </Story>
 
 <Story name="Named as an Input">
-	<DimensionGrid name="dimensiongrid" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid name="dimensiongrid" {data} />
 </Story>
 
 <Story name="Labelled Metric">
-	<DimensionGrid data={fakerSeries.airlines.flights.store} metricLabel="Flights" />
+	<DimensionGrid {data} metricLabel="Flights" />
 </Story>
 
 <Story name="Labelled Metric with Long Label">
-	<DimensionGrid
-		data={fakerSeries.airlines.flights.store}
-		metricLabel="A very long metric label that I cooked up for this purpose"
-	/>
+	<DimensionGrid {data} metricLabel="A very long metric label that I cooked up for this purpose" />
 </Story>
 
 <Story name="Limit 15">
-	<DimensionGrid limit={15} data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid limit="15" {data} />
 </Story>
 
 <Story name="Limit 0">
-	<DimensionGrid limit="0" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid limit="0" {data} />
 </Story>
 
 <Story name="Custom metric">
-	<DimensionGrid metric="sum(fare) + 308" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid metric="sum(fare) + 308" {data} />
 </Story>
 
 <Story name="Negative Values">
-	<DimensionGrid metric="count(*) -5000" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid metric="count(*) -5000" {data} />
 </Story>
 
 <Story name="Null Metric Values">
-	<DimensionGrid metric="sum(fare)/0" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid metric="sum(fare)/0" {data} />
 </Story>
 
 <Story name="Null Dimension Values">
@@ -77,7 +69,7 @@
 </Story>
 
 <Story name="Invalid Metric">
-	<DimensionGrid metric="specialsum(fare)" data={fakerSeries.airlines.flights.store} />
+	<DimensionGrid metric="specialsum(fare)" {data} />
 </Story>
 
 <Story name="No Data Prop">
@@ -112,14 +104,24 @@
 	/>
 </Story>
 
+<Story name="Null Metric Values Multiple">
+	<DimensionGrid
+		multiple
+		data={Query.create(
+			"SELECT case when fare > 500 then 'Big Fare!!' else null end as nullable_string_column, * FROM series_demo_source.flights",
+			query,
+			{ disableCache: true }
+		)}
+	/>
+</Story>
+
 <Story
 	name="Filtering in one column"
 	play={async ({ canvasElement }) => {
 		await data.fetch();
 		const screen = within(canvasElement);
 
-		const row = await screen.findByText('China Eastern Airlines');
-
+		const row = await screen.findByText('Virgin Atlantic Airways');
 		await userEvent.click(row);
 	}}
 >
@@ -132,7 +134,7 @@
 		await data.fetch();
 		const screen = within(canvasElement);
 
-		const airline = await screen.findByText('China Eastern Airlines');
+		const airline = await screen.findByText('Virgin Atlantic Airways');
 		await userEvent.click(airline);
 
 		const plane = await screen.findByText('Boeing 787');
@@ -147,10 +149,10 @@
 		await data.fetch();
 		const screen = within(canvasElement);
 
-		const airline = await screen.findByText('China Eastern Airlines');
+		const airline = await screen.findByText('Virgin Atlantic Airways');
 		await userEvent.click(airline);
-		await delay(750);
-		const airline2 = await screen.findByText('Japan Airlines');
+
+		const airline2 = await screen.findByText('Finnair');
 		await userEvent.click(airline2);
 	}}
 >
@@ -161,16 +163,17 @@
 	play={async ({ canvasElement }) => {
 		await data.fetch();
 		const screen = within(canvasElement);
-		const airline = await screen.findByText('China Eastern Airlines');
+
+		const airline = await screen.findByText('Virgin Atlantic Airways');
 		await userEvent.click(airline);
-		await delay(750);
-		const plane = await screen.findByText('Boeing 787');
+
+		const plane = await screen.findByText('Boeing 717');
 		await userEvent.click(plane);
-		await delay(750);
-		const airline2 = await screen.findByText('Air India');
+
+		const airline2 = await screen.findByText('Korean Air');
 		await userEvent.click(airline2);
-		await delay(750);
-		const plane2 = await screen.findByText('Airbus A380');
+
+		const plane2 = await screen.findByText('Airbus A320');
 		await userEvent.click(plane2);
 	}}
 >
@@ -182,59 +185,18 @@
 		await data.fetch();
 		const screen = within(canvasElement);
 
-		const airline = await screen.findByText('China Eastern Airlines');
-		await userEvent.click(airline);
-		await delay(750);
+		const airline = await screen.findByText('Virgin Atlantic Airways');
 		await userEvent.click(airline);
 
-		const plane = await screen.findByText('Boeing 757');
+		await userEvent.click(airline);
+
+		const plane = await screen.findByText('Boeing 787');
 		await userEvent.click(plane);
-		await delay(750);
+
 		await userEvent.click(plane);
 	}}
 >
 	<DimensionGrid data={dataPlay} multiple />
-</Story>
-
-<Story
-	name="Heights adjust with many options selected"
-	play={async ({ canvasElement }) => {
-		await data.fetch();
-		const screen = within(canvasElement);
-		const plane = await screen.findByText('Boeing 717');
-		await userEvent.click(plane);
-		await delay(500);
-		const plane2 = await screen.findByText('McDonnell Douglas MD80');
-		await userEvent.click(plane2);
-		await delay(500);
-		const plane3 = await screen.findByText('Canadair Regional Jet 1000');
-		await userEvent.click(plane3);
-		await delay(500);
-		const airline = await screen.findByText('LOT Polish Airlines');
-		await userEvent.click(airline);
-		await delay(500);
-		const airline2 = await screen.findByText('Alitalia');
-		await userEvent.click(airline2);
-		await delay(500);
-	}}
->
-	<DimensionGrid
-		data={Query.create(`SELECT * from flights limit 500`, query, {
-			disableCache: true
-		})}
-		multiple
-	/>
-</Story>
-
-<Story name="Null Metric Values Multiple">
-	<DimensionGrid
-		multiple
-		data={Query.create(
-			"SELECT case when fare > 500 then 'Big Fare!!' else null end as nullable_string_column, * FROM series_demo_source.flights",
-			query,
-			{ disableCache: true }
-		)}
-	/>
 </Story>
 
 <Story
@@ -243,17 +205,13 @@
 		await data.fetch();
 		const screen = within(canvasElement);
 
-		const plane = await screen.findByText('Boeing 717');
+		const plane = await screen.findByText('Boeing 727');
 		await userEvent.click(plane);
 
-		await delay(500);
-
-		const plane2 = await screen.findByText('Antonov An-12');
+		const plane2 = await screen.findByText('Airbus A320');
 		await userEvent.click(plane2);
 
-		await delay(500);
-
-		const airline = await screen.findByText('Azur Air');
+		const airline = await screen.findByText('Flydubai');
 		await userEvent.click(airline);
 	}}
 >

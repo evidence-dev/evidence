@@ -120,9 +120,7 @@ const filterBySelect = (selectedValue, colName) => {
 			// cannot have duplicate keys, (dimensionValue = column name string) and (dimensionName = column name variable)
 		}
 	} else if (typeof selectedValue === 'string') {
-		return `${colName} = '${selectedValue?.replaceAll("'", "''")}' and ${
-			colName
-		} not in (select dimensionValue from topN)`;
+		return `${colName} = '${selectedValue?.replaceAll("'", "''")}' and ${colName} not in (select dimensionValue from topN)`;
 	} else {
 		return 'false';
 	}
