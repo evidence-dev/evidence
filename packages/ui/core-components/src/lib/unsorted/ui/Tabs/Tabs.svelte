@@ -62,9 +62,12 @@
 		const url = new URL(window.location.href);
 		const urlActive = url.searchParams.get(id);
 		if (urlActive) {
-			$context.activeId = urlActive;
-		} else {
-			$context.activeId = $context.tabs[0]?.id;
+			//search for urlActive in $context.activeId, if not found, set it to the first tab
+			if (!$context.tabs.find((t) => t.id === urlActive)) {
+				$context.activeId = $context.tabs[0]?.id;
+			} else {
+				$context.activeId = urlActive;
+			}
 		}
 	});
 
