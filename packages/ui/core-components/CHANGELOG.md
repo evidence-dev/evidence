@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 4.7.7
+
+### Patch Changes
+
+- 2e0115932: Funnel chart's showPercent param should calculate based upon initial value, not total
+- 5daf7675e: Reverts tab styling for Buttongroup, which broke Tabs
+
 ## 4.7.6
 
 ### Patch Changes
