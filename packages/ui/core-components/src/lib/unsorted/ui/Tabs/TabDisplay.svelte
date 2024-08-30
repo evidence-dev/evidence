@@ -5,12 +5,6 @@
 	export let label;
 	export let activeId;
 
-	const dispatch = createEventDispatcher();
-
-	function handleClick(id) {
-		dispatch('click', { id: id });
-	}
-
 	const classes = {
 		notActive:
 			'border-gray-100 text-gray-600 border-b-2 bg-gray-50 border-b-gray-200 hover:text-gray-800 hover:bg-gray-200 hover:border-b-gray-400',
@@ -53,7 +47,7 @@
 <button
 	style:--bgColor={bgColor}
 	style:--borderColor={borderColor}
-	on:click={handleClick(id)}
+	on:click
 	class="mt-2 p-2 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition ease-in duration-200 active:bg-gray-100 {activeId ===
 	id
 		? classes.active
