@@ -139,13 +139,7 @@
 
 <Story name="Button Group Styled as Tabs" let:args>
 	<div class="mb-8">
-		<ButtonGroup
-			{...args}
-			preset="dates"
-			title="Default Button Style"
-			name="defaultStyle"
-			color="red"
-		/>
+		<ButtonGroup {...args} preset="dates" title="Default Button Style" name="defaultStyle" />
 	</div>
 	Current Value: {$inputStore['defaultStyle']}
 	<div class="mb-8 mt-4">
