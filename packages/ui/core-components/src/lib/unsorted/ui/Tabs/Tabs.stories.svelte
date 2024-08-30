@@ -55,13 +55,13 @@
 	</Tabs>
 </Story>
 
-<Story 
+<Story
 	name="Click on a second tab"
 	play={async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
 		// Wait for the component to render
-		await new Promise(resolve => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		// Find the second tab by its id
 		const secondTab = canvas.getByRole('button', { name: 'Tab 2' });
