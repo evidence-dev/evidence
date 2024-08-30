@@ -59,6 +59,28 @@ sidebar_position: 1
 </Tabs>
 ```
 
+### id
+
+<Tabs id>
+    <Tab label="Red Tabs">
+        Click Second Tab and notice the the url updates!
+    </Tab>
+    <Tab label="Second Tab">
+        Refresh the page and the tab you selected persists!
+    </Tab>
+</Tabs>
+
+```markdown
+<Tabs id>
+    <Tab label="Red Tabs">
+        Click Second Tab and notice the the url updates!
+    </Tab>
+    <Tab label="Second Tab">
+        Refresh the page and the tab you selected persists!
+    </Tab>
+</Tabs>
+```
+
 # Tabs
 
 ## Options

@@ -52,3 +52,16 @@
 		{/each}
 	</Tabs>
 </Story>
+
+<Story name="Tabs w/ id">
+	<Tabs>
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
+	</Tabs>
+	<Tabs id>
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
+	</Tabs>
+</Story>
