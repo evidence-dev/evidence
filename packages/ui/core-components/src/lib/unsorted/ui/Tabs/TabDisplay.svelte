@@ -3,13 +3,6 @@
 	export let id;
 	export let label;
 	export let activeId;
-	// import { createEventDispatcher } from 'svelte';
-
-	// const dispatch = createEventDispatcher();
-
-	// function handleClick(id) {
-	// 	dispatch('click', { id: id });
-	// }
 
 	const classes = {
 		notActive:
