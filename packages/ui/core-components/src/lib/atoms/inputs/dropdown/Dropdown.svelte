@@ -26,6 +26,7 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import VirtualList from './Virtual.svelte';
 	import { debounce } from 'perfect-debounce';
+	import { toBoolean } from '../../../utils.js';
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
 	/////
@@ -94,7 +95,7 @@
 		defaultValues: Array.isArray(defaultValue) ? defaultValue : [defaultValue],
 		initialOptions: initial,
 		noDefault,
-		selectAllByDefault
+		selectAllByDefault: toBoolean(selectAllByDefault)
 	});
 	const {
 		addOptions,
