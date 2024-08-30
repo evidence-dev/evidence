@@ -37,8 +37,9 @@
 
 	setContext('TABS_STORE', context);
 
-	const handleTabClick = (event) => {
-		$context.activeId = event.detail.id;
+	const handleTabClick = (id) => {
+		console.log('handleTabClick', id);
+		$context.activeId = id;
 	};
 </script>
 
@@ -50,7 +51,7 @@
 				label={tab.label}
 				{color}
 				activeId={$context.activeId}
-				on:click={handleTabClick}
+				on:click={handleTabClick(tab.id)}
 			>
 				<slot />
 			</TabDisplay>
