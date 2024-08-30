@@ -1,5 +1,4 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
 	export let color = 'hsla(207, 65%, 39%, 1)';
 	export let id;
 	export let label;
