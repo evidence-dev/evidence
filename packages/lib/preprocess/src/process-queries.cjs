@@ -70,8 +70,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						} else {
 							${id}InitialStates.initialData = data.${id}
 						}
-						if (data.${id}__DESCRIBE) {
-							${id}InitialStates.knownColumns = data.${id}__DESCRIBE
+						if (data.${id}_columns) {
+							${id}InitialStates.knownColumns = data.${id}_columns
 						}
 					}
 				} else {
