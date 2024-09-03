@@ -232,9 +232,8 @@
 		toasts.add({
 			status: 'warning',
 			title: 'Search Failed',
-			description: 'Please use a query instead.',
-			timeout: 5000
-		});
+			message: 'Please use a query instead.'
+		}, 5000);
 	}
 
 	// ---------------------------------------------------------------------------------------
