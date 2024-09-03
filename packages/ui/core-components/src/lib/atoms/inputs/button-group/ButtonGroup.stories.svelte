@@ -194,7 +194,7 @@
 
 <Story name="Button Group Error States" let:args>
 	<div class="mb-8 mt-4">
-		<ButtonGroup {...args} preset="datesw" title="Buttons Preset Error" name="tabsStyle" />
+		<ButtonGroup {...args} preset="date" title="Buttons Preset Error" name="tabsStyle" />
 	</div>
 	<div class="mb-8 mt-4">
 		<ButtonGroup
@@ -208,8 +208,8 @@
 	<div class="mb-8 mt-4">
 		<ButtonGroup
 			{...args}
-			preset={['dates']}
-			display={['buttons']}
+			preset={['dates string in array']}
+			display={['buttons string in array']}
 			title="Buttons non-string Error"
 			name="tabsStyle"
 		/>

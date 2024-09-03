@@ -65,7 +65,7 @@
 		error = '';
 		if (preset) {
 			if (typeof preset !== 'string') {
-				error += '<p>Invalid type: preset must be a string.</p>';
+				error += `<p>Invalid type: preset must be a string. preset is type ${typeof preset}</p>`;
 			}
 			if (preset && !Object.keys(presets).includes(preset)) {
 				error += `<p>Invalid preset: ${preset}. Expected one of the following presets: ${Object.keys(presets).join(', ')}</p>`;
@@ -73,7 +73,7 @@
 		}
 		if (display) {
 			if (typeof display !== 'string') {
-				error += '<p>Invalid type: display must be a string.</p>';
+				error += `<p>Invalid type: display must be a string. display is type ${typeof display}</p>`;
 			}
 			if (!['tabs', 'buttons'].includes(display)) {
 				error += `<p>Invalid display: ${display}. Expected 'tabs' or 'buttons'</p>`;
