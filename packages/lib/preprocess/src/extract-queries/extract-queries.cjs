@@ -5,15 +5,16 @@ const fs = require('fs');
 const getPrismLangs = require('../utils/get-prism-langs.cjs');
 const { parseFrontmatter } = require('../frontmatter/parse-frontmatter.cjs');
 const chalk = require('chalk');
-/** @typedef {{id: string, compileError: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
+/** @typedef {{ id: string, compileError?: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean }} Query */
 
+/** @type {Record<string, boolean>} */
 const warnedExternalQueries = {};
 
 /**
  *
  * @param {string} externalQuery
  * @param {string} id
- * @returns {Query}
+ * @returns {Query | undefined}
  */
 const readFileToQuery = (externalQuery, id) => {
 	try {
@@ -27,12 +28,16 @@ const readFileToQuery = (externalQuery, id) => {
 		};
 	} catch {
 		console.warn(`Failed to load sql file ${externalQuery}`);
+		return undefined;
 	}
 };
 
 // Unified parser step to ignore indented code blocks.
 // Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
 // Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
+/**
+ * @this {import('unified').Processor}
+ */
 const ignoreIndentedCode = function () {
 	const Parser = this.Parser;
 	const block_tokenizers = Parser.prototype.blockTokenizers;
@@ -73,10 +78,7 @@ const extractExternalQueries = (content, filename) => {
 		return true;
 	};
 
-	/**
-	 * @type Query[]
-	 */
-	return frontmatter.queries
+	return /** @type {string[]} */ (frontmatter.queries)
 		.map((externalQuery) => {
 			if (typeof externalQuery === 'string') {
 				if (!validateExternalQuery(externalQuery)) return false;
@@ -97,7 +99,7 @@ const extractExternalQueries = (content, filename) => {
 				return readFileToQuery(value, usedKey);
 			}
 		})
-		.filter(Boolean); // filter out queries that returned false;
+		.filter((x) => !!x); // filter out queries that returned false;
 };
 
 /**
@@ -105,11 +107,12 @@ const extractExternalQueries = (content, filename) => {
  * @returns {Query[]}
  */
 const extractInlineQueries = (content) => {
+	/** @type {Query[]} */
 	let queries = [];
 	let tree = unified().use(remarkParse).use(ignoreIndentedCode).parse(content);
 	const prismLangs = getPrismLangs();
 
-	visit(tree, 'code', function (node) {
+	visit(tree, 'code', function (/** @type {import("mdast").Code} */ node) {
 		let id = node.lang ?? 'untitled';
 		if (id.toLowerCase() === 'sql' && node.meta) {
 			id = node.meta;
@@ -135,13 +138,15 @@ const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
 const circularRefErrorMsg = 'Compiler error: circular reference';
 
 /**
- * @param {string} filename
+ * @param {string} content
  * @returns {Query[]}
  */
 const extractQueries = (content) => {
+	/** @type {Query[]} */
 	const queries = [];
 
-	queries.push(...extractExternalQueries(content));
+	// todo: second parameter is filename but we don't have that here?
+	queries.push(...extractExternalQueries(content, ''));
 	queries.push(...extractInlineQueries(content));
 
 	// Handle query chaining:
@@ -180,6 +185,10 @@ const extractQueries = (content) => {
 							throw new Error(circularRefErrorMsg);
 						} else {
 							const referencedQuery = queries.find((d) => d.id === referencedQueryID);
+							if (!referencedQuery) {
+								// should be unreachable
+								throw new Error(`Referenced query not found. (Referenced ${referencedQueryID})`);
+							}
 							if (!query.inline && referencedQuery.inline) {
 								throw new Error(
 									`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`
@@ -189,7 +198,7 @@ const extractQueries = (content) => {
 							query.compiledQueryString = query.compiledQueryString.replace(reference, queryString);
 							query.compiled = true;
 						}
-					} catch (_e) {
+					} catch (/** @type {any} */ _e) {
 						// if error is unknown use default circular ref. error
 						const e =
 							_e.message === undefined || _e.message === null ? Error(circularRefErrorMsg) : _e;

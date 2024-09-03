@@ -38,6 +38,7 @@ describe.skip('injectPartials', () => {
 
 	it('should throw an error when the input is non-string type', () => {
 		const original = 12345;
+		// @ts-expect-error
 		expect(() => injectPartials(original)).toThrow(TypeError);
 	});
 });

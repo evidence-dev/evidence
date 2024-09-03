@@ -14,7 +14,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
-	
+
 	const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
 	const validIds = Object.keys(duckdbQueries).filter(
 		(query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError
@@ -37,9 +37,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			.filter((q) => q.compileError)
 			.map(
 				(q) =>
-					`const ${q.id} = Query.create(\`${q.compiledQueryString.replaceAll('$', '\\$')}\`, undefined, { id: "${q.id}", initialError: new Error(\`${q.compileError.replaceAll('$', '\\$')}\`)})`
+					`const ${q.id} = Query.create(\`${q.compiledQueryString.replaceAll('$', '\\$')}\`, undefined, { id: "${q.id}", initialError: new Error(\`${/** @type {string} */ (q.compileError).replaceAll('$', '\\$')}\`)})`
 			);
-		
+
 		const queryStoreDeclarations = validIds.map((id) => {
 			return `
 				// Update external queries
@@ -271,13 +271,13 @@ const processQueries = (componentDevelopmentMode) => {
 	const dynamicQueries = {};
 	return {
 		markup({ content, filename }) {
-			if (filename.endsWith('.md')) {
+			if (filename?.endsWith('.md')) {
 				let fileQueries = extractQueries(content);
 
 				dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
 					acc[q.id] = q;
 					return acc;
-				}, {});
+				}, /** @type {typeof dynamicQueries[string]} */ ({}));
 
 				const externalQueryViews =
 					'\n\n\n' +
@@ -306,7 +306,7 @@ const processQueries = (componentDevelopmentMode) => {
 			}
 		},
 		script({ content, filename, attributes }) {
-			if (filename.endsWith('.md')) {
+			if (filename?.endsWith('.md')) {
 				if (attributes.context !== 'module') {
 					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
 
