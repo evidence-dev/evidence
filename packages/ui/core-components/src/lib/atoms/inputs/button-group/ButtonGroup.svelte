@@ -8,6 +8,7 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { getContext, setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
@@ -63,65 +64,71 @@
 
 	function validateConfiguration(preset, display) {
 		error = '';
-		if (preset) {
-			if (typeof preset !== 'string') {
-				error += `<p>Invalid type: preset must be a string. preset is type ${typeof preset}</p>`;
+		const checks = [
+			{ value: preset, type: 'string', options: Object.keys(presets), name: 'preset' },
+			{ value: display, type: 'string', options: ['tabs', 'buttons'], name: 'display' }
+		];
+
+		checks.forEach((check) => {
+			if (check.value) {
+				if (typeof check.value !== check.type) {
+					appendError(
+						`Invalid type: ${check.name} must be a ${check.type}. ${check.name} is type ${typeof check.value}`
+					);
+				}
+				if (!check.options.includes(check.value)) {
+					appendError(
+						`Invalid ${check.name}: ${check.value}. Expected one of the following: ${check.options.join(', ')}`
+					);
+				}
 			}
-			if (preset && !Object.keys(presets).includes(preset)) {
-				error += `<p>Invalid preset: ${preset}. Expected one of the following presets: ${Object.keys(presets).join(', ')}</p>`;
-			}
-		}
-		if (display) {
-			if (typeof display !== 'string') {
-				error += `<p>Invalid type: display must be a string. display is type ${typeof display}</p>`;
-			}
-			if (!['tabs', 'buttons'].includes(display)) {
-				error += `<p>Invalid display: ${display}. Expected 'tabs' or 'buttons'</p>`;
-			}
+		});
+
+		function appendError(message) {
+			if (error) error += ', ';
+			error += message;
 		}
 	}
 
 	validateConfiguration(preset, display);
 </script>
 
-<HiddenInPrint enabled={hideDuringPrint}>
-	<div
-		class={display === 'tabs' ? '' : 'inline-flex w-fit max-w-full flex-col mt-2 mb-4 ml-0 mr-2'}
-	>
-		{#if title}
-			<span class="text-gray-900 text-sm block mb-1">{title}</span>
-		{/if}
+{#if error}
+	<ErrorChart chartType={'Button Group'} {error} />
+{:else}
+	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
-			class={display === 'tabs'
-				? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-				: 'inline-flex rounded-md shadow-sm overflow-auto border no-scrollbar'}
-			role="group"
+			class={display === 'tabs' ? '' : 'inline-flex w-fit max-w-full flex-col mt-2 mb-4 ml-0 mr-2'}
 		>
-			{#if preset}
-				{#if error === ''}
+			{#if title}
+				<span class="text-gray-900 text-sm block mb-1">{title}</span>
+			{/if}
+			<div
+				class={display === 'tabs'
+					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
+					: 'inline-flex rounded-md shadow-sm overflow-auto border no-scrollbar'}
+				role="group"
+			>
+				{#if preset}
 					{#each presets[preset] as { value, valueLabel }}
 						<ButtonGroupItem {value} {valueLabel} {color} {display} {defaultValue} />
 					{/each}
 				{:else}
-					<span class="text-red-500 font-bold text-sm">{@html error}</span>
+					<slot {display} />
+					{#if hasQuery}
+						<QueryLoad data={query} let:loaded>
+							<svelte:fragment slot="skeleton">
+								<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-gray-200" />
+							</svelte:fragment>
+							<svelte:fragment>
+								{#each loaded as { label, value }}
+									<ButtonGroupItem {value} valueLabel={label} {color} {display} {defaultValue} />
+								{/each}
+							</svelte:fragment>
+						</QueryLoad>
+					{/if}
 				{/if}
-			{:else}
-				<slot {display} />
-				{#if hasQuery && error === ''}
-					<QueryLoad data={query} let:loaded>
-						<svelte:fragment slot="skeleton">
-							<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-gray-200" />
-						</svelte:fragment>
-						<svelte:fragment>
-							{#each loaded as { label, value }}
-								<ButtonGroupItem {value} valueLabel={label} {color} {display} {defaultValue} />
-							{/each}
-						</svelte:fragment>
-					</QueryLoad>
-				{:else}
-					<span class="text-red-500 font-bold text-sm">{@html error}</span>
-				{/if}
-			{/if}
+			</div>
 		</div>
-	</div>
-</HiddenInPrint>
+	</HiddenInPrint>
+{/if}
