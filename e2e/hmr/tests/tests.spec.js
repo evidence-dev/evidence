@@ -71,3 +71,17 @@ test.describe('sources', () => {
 		await expect(page.getByText('Loaded 100 orders')).toBeVisible();
 	});
 });
+
+test.describe('error handling', () => {
+	test('reserved word in query name', async ({ page }) => {
+		await page.goto('/error-handling/reserved-word-query-name/');
+
+		await waitForDevModeToLoad(page);
+
+		editFile('pages/error-handling/reserved-word-query-name.md', (content) =>
+			content.replace('my_query', 'new')
+		);
+
+		await expect(page.getByText('"new" cannot be used as a query name')).toBeVisible();
+	});
+});

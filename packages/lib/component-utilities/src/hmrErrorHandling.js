@@ -107,6 +107,14 @@ export function handleUnexpectedTokens(err) {
 			return 'Unexpected {if - did you mean {#if or {/if ?';
 		} else if (err.frame?.includes('{}')) {
 			return 'Found empty curly braces {} - ensure all curly braces contain code';
+		} else {
+			console.log(`'${err.frame}'`);
+			const word = RESERVED_WORDS.find((word) => err.frame?.includes(`queryID = "${word}"`));
+			console.log({ word });
+			const queryNameUsesReservedWord = Boolean(word);
+			if (queryNameUsesReservedWord) {
+				return `"${word}" cannot be used as a query name, as it is a reserved keyword. Please choose another name for your query.`;
+			}
 		}
 	} else if (err.message.includes('Expected if, each or await')) {
 		return 'Expected if or each after {#';
@@ -125,3 +133,55 @@ export function handleExpectedWhitespace(err) {
 	}
 	return null; // No match found
 }
+
+/** From https://www.w3schools.com/js/js_reserved.asp */
+const RESERVED_WORDS = [
+	'arguments',
+	'await',
+	'break',
+	'case',
+	'catch',
+	'class',
+	'const',
+	'continue',
+	'debugger',
+	'default',
+	'delete',
+	'do',
+	'else',
+	'enum',
+	'eval',
+	'export',
+	'extends',
+	'false',
+	'finally',
+	'for',
+	'function',
+	'if',
+	'implements',
+	'import',
+	'in',
+	'instanceof',
+	'interface',
+	'let',
+	'new',
+	'null',
+	'package',
+	'private',
+	'protected',
+	'public',
+	'return',
+	'static',
+	'super',
+	'switch',
+	'this',
+	'throw',
+	'true',
+	'try',
+	'typeof',
+	'var',
+	'void',
+	'while',
+	'with',
+	'yield'
+];
