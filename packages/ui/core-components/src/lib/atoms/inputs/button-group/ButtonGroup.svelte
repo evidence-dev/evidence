@@ -23,9 +23,11 @@
 	export let preset = undefined;
 
 	// for Tabs styling
-	export let display;
+	/** @type {'tabs' | 'buttons'} */
+	export let display = 'buttons';
 
-	export let defaultValue;
+	/** @type {string | undefined} */
+	export let defaultValue = undefined;
 
 	setContext('button-display', display);
 
@@ -55,6 +57,31 @@
 	$: update({ value, data, label, order, where });
 
 	$: ({ hasQuery, query } = $results);
+
+	/** @type {string} */
+	let error = '';
+
+	function validateConfiguration(preset, display) {
+		error = '';
+		if (preset) {
+			if (typeof preset !== 'string') {
+				error += '<p>Invalid type: preset must be a string.</p>';
+			}
+			if (preset && !Object.keys(presets).includes(preset)) {
+				error += `<p>Invalid preset: ${preset}. Expected one of the following presets: ${Object.keys(presets).join(', ')}</p>`;
+			}
+		}
+		if (display) {
+			if (typeof display !== 'string') {
+				error += '<p>Invalid type: display must be a string.</p>';
+			}
+			if (!['tabs', 'buttons'].includes(display)) {
+				error += `<p>Invalid display: ${display}. Expected 'tabs' or 'buttons'</p>`;
+			}
+		}
+	}
+
+	validateConfiguration(preset, display);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
@@ -71,16 +98,16 @@
 			role="group"
 		>
 			{#if preset}
-				{#if presets[preset]}
+				{#if error === ''}
 					{#each presets[preset] as { value, valueLabel }}
 						<ButtonGroupItem {value} {valueLabel} {color} {display} {defaultValue} />
 					{/each}
 				{:else}
-					<span class="text-red-500 font-bold text-sm">{preset} is not a valid preset</span>
+					<span class="text-red-500 font-bold text-sm">{@html error}</span>
 				{/if}
 			{:else}
 				<slot {display} />
-				{#if hasQuery}
+				{#if hasQuery && error === ''}
 					<QueryLoad data={query} let:loaded>
 						<svelte:fragment slot="skeleton">
 							<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-gray-200" />
@@ -91,6 +118,8 @@
 							{/each}
 						</svelte:fragment>
 					</QueryLoad>
+				{:else}
+					<span class="text-red-500 font-bold text-sm">{@html error}</span>
 				{/if}
 			{/if}
 		</div>

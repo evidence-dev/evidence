@@ -39,7 +39,7 @@
 		on:click={() => update({ valueLabel, value })}
 		activeId={$currentValue?.value}
 	/>
-{:else}
+{:else if display === 'buttons'}
 	<button
 		type="button"
 		class=" flex-none py-1 font-medium h-8 px-3 text-xs truncate

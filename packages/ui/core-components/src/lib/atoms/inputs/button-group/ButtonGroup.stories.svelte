@@ -191,3 +191,27 @@
 
 	Current Value: {$inputStore['tabsStyle2']}
 </Story>
+
+<Story name="Button Group Error States" let:args>
+	<div class="mb-8 mt-4">
+		<ButtonGroup {...args} preset="datesw" title="Buttons Preset Error" name="tabsStyle" />
+	</div>
+	<div class="mb-8 mt-4">
+		<ButtonGroup
+			{...args}
+			preset="dates"
+			display="tab"
+			title="Buttons Display Error"
+			name="tabsStyle"
+		/>
+	</div>
+	<div class="mb-8 mt-4">
+		<ButtonGroup
+			{...args}
+			preset={['dates']}
+			display={['buttons']}
+			title="Buttons non-string Error"
+			name="tabsStyle"
+		/>
+	</div>
+</Story>
