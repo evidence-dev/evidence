@@ -33,11 +33,17 @@
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^7.6.0",
+		"@types/blueimp-md5": "^2.18.2",
 		"@types/mock-fs": "^4.13.1",
+		"@types/prismjs": "^1.26.4",
 		"mock-fs": "^5.2.0",
 		"parcel": "^2.8.3",
 		"typescript": "5.4.2",
 		"vitest": "^2.0.5"
+	},
+	"peerDependencies": {
+		"@types/hast": "^2.0.0",
+		"@types/mdast": "^3.0.0"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",
