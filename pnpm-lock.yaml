@@ -346,7 +346,7 @@ importers:
         version: 11.2.0
       google-auth-library:
         specifier: ^9.6.3
-        version: 9.14.0
+        version: 9.14.1
     devDependencies:
       dotenv:
         specifier: ^16.0.1
@@ -13386,8 +13386,8 @@ packages:
       - supports-color
     dev: false
 
-  /google-auth-library@9.14.0:
-    resolution: {integrity: sha512-Y/eq+RWVs55Io/anIsm24sDS8X79Tq948zVLGaa7+KlJYYqaGwp1YI37w48nzrNi12RgnzMrQD4NzdmCowT90g==}
+  /google-auth-library@9.14.1:
+    resolution: {integrity: sha512-Rj+PMjoNFGFTmtItH7gHfbHpGVSb3vmnGK3nwNBqxQF9NoBpttSZI/rc0WiM63ma2uGDQtYEkMHkK9U6937NiA==}
     engines: {node: '>=14'}
     dependencies:
       base64-js: 1.5.1
