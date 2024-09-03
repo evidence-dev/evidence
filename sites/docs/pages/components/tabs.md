@@ -59,9 +59,9 @@ sidebar_position: 1
 </Tabs>
 ```
 
-### id
+### ID
 
-<Tabs id>
+<Tabs id="first tab set">
     <Tab label="First Id tab">
         Click Second id Tab and notice the the url updates!
     </Tab>
@@ -70,8 +70,9 @@ sidebar_position: 1
     </Tab>
 </Tabs>
 
+
 ```markdown
-<Tabs id>
+<Tabs id="first tab set">
     <Tab label="First Id tab">
         Click Second id Tab and notice the the url updates!
     </Tab>
@@ -87,6 +88,7 @@ sidebar_position: 1
 
 <PropListing
     name="id"
+    options="string"
 >
 
 Unique Id for this set of tabs. When set, the selected tab is included in the URL so it can be shared.

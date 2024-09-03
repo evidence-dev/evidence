@@ -68,6 +68,8 @@
 			} else {
 				$context.activeId = urlActive;
 			}
+		} else {
+			$context.activeId = $context.tabs[0]?.id;
 		}
 	});
 
