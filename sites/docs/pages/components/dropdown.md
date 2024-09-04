@@ -296,7 +296,7 @@ Select and return all values in the dropdown list, requires "multiple" prop.
     name="order"
     description="Column to sort options by, with optional ordering keyword"
     options="column name [ asc | desc ]"
-    defaultValue="ascending based on dropdown value (or label, if specified)"
+    defaultValue="Ascending based on dropdown value (or label, if specified)"
 />
 <PropListing 
     name="where"
