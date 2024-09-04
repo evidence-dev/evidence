@@ -11,21 +11,30 @@
 	export let color = 'hsla(207, 65%, 39%, 1)';
 
 	/** @type {import('./index.d.ts').TabsContext} */
-	const context = writable({ tabs: [], active: null });
+	const context = writable({ tabs: [], activeId: null });
 
 	onMount(() => {
 		const url = new URL(window.location.href);
 		const urlActive = url.searchParams.get(id);
 		if (urlActive) {
-			$context.active = urlActive;
+			//search for urlActive in $context.activeId, if not found, set it to the first tab
+			if (!$context.tabs.find((t) => t.id === urlActive)) {
+				$context.activeId = $context.tabs[0]?.id;
+			} else {
+				$context.activeId = urlActive;
+			}
+		} else {
+			$context.activeId = $context.tabs[0]?.id;
 		}
 	});
 
-	$: if (!$context.activeId && $context.tabs.length) {
+	// Select the first tab by default
+	$: if (!$context.activeId && $context.tabs.length && !id) {
 		$context.activeId = $context.tabs[0].id;
 	}
 
-	$: if (!$context.tabs.find((t) => t.id === $context.activeId)) {
+	// Select the first tab when the active tab no longer exists
+	$: if (!$context.tabs.find((t) => t.id === $context.activeId) && !id) {
 		$context.activeId = $context.tabs[0]?.id;
 	}
 
