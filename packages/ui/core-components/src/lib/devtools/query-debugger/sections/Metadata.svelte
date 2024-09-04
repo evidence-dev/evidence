@@ -1,6 +1,7 @@
 <script>
-	import { ContentBox } from '../../content-box/index.js';
-	import { Hint } from '../../hint/index.js';
+	import { ContentBox } from '../../../atoms/content-box/index.js';
+	import { Hint } from '../../../atoms/hint/index.js';
+	import LineNumbered from '../utils/LineNumbered.svelte';
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let query;
 </script>
@@ -26,12 +27,12 @@
 		<span />
 
 		<span class="font-bold">
-			<Hint maxWidth="md">
+			<Hint maxWidth="md" direction="left">
 				<span class="font-bold mr-2" slot="handle">Execution Score</span>
 				<span class="font-mono text-xs">[my-query].score</span>
 			</Hint>
 
-			<Hint>
+			<Hint direction="left">
 				Score is a rough estimate of the overall cost of running a Query, take it with a grain of
 				salt. Lower is better!
 			</Hint>
@@ -54,10 +55,16 @@
 		<span>{query.ready}</span>
 		<span />
 
-		<Hint maxWidth="md">
-			<span class="font-bold" slot="handle">Error</span>
-			<span class="font-mono text-xs">[my-query].error?.message</span>
-		</Hint>
-		<span>{query.error ? query.error.message : 'No Error'}</span>
+		<div class=" {query.error ? 'col-span-8 flex flex-col gap-2' : 'contents'}">
+			<Hint maxWidth="md" direction={query.error ? 'right' : 'left'}>
+				<p class="font-bold" slot="handle">Error</p>
+				<p class="font-mono text-xs">[my-query].error?.message</p>
+			</Hint>
+			{#if query.error}
+				<LineNumbered text={query.error.message} />
+			{:else}
+				<span>No Error</span>
+			{/if}
+		</div>
 	</div>
 </ContentBox>

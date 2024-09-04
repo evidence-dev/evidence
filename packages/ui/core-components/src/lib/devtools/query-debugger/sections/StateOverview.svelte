@@ -1,6 +1,6 @@
 <script>
-	import { ContentBox } from '../../content-box/index.js';
-	import { Hint } from '../../hint/index.js';
+	import { ContentBox } from '../../../atoms/content-box/index.js';
+	import { Hint } from '../../../atoms/hint/index.js';
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let query;
 </script>
@@ -10,9 +10,9 @@
 	<!-- 
 	This is a silly hack to make the grid space itself out nicely without putting the label/value pairs very far from each other
 	 -->
-	```<div
+	<div
 		class="grid grid-cols-[auto,auto,1fr,auto,auto,1fr,auto,auto] items-center gap-x-2 gap-y-4 w-fit"
-	>```
+	>
 		<Hint maxWidth="md">
 			<span class="font-bold" slot="handle">Data Loading</span>
 			<span class="font-mono text-xs">[my-query].dataLoading</span>

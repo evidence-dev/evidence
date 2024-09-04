@@ -1,6 +1,7 @@
 <script>
-	import { ContentBox } from '../../content-box/index.js';
-	import { Hint } from '../../hint/index.js';
+	import { ContentBox } from '../../../atoms/content-box/index.js';
+	import { Hint } from '../../../atoms/hint/index.js';
+	import LineNumbered from '../utils/LineNumbered.svelte';
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let query;
 </script>
@@ -15,7 +16,7 @@
 			</span>
 		</Hint>
 		<p class="italic text-sm">This is the query that was input by the user</p>
-		<pre class="overflow-x-auto text-xs bg-gray-300 px-2 py-1 overfloz">{query.originalText}</pre>
+		<LineNumbered text={query.originalText} />
 
 		<Hint>
 			<span class="font-bold" slot="handle">Executed</span>
@@ -26,6 +27,6 @@
 		<p class="italic text-sm">
 			This is the query that was executed after Query did transformations
 		</p>
-		<pre class="overflow-x-auto text-xs bg-gray-300 px-2 py-1">{query.text}</pre>
+		<LineNumbered text={query.text} />
 	</div>
 </ContentBox>
