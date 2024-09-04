@@ -59,24 +59,24 @@ sidebar_position: 1
 </Tabs>
 ```
 
-### ID
+### Persist Selected Tab to URL
 
-<Tabs id="first tab set">
-    <Tab label="First Id tab">
+<Tabs id="example-tab">
+    <Tab label="One">
         Click Second id Tab and notice the the url updates!
     </Tab>
-    <Tab label="Second Id tab">
+    <Tab label="Two">
         Refresh the page and the tab you selected persists!
     </Tab>
 </Tabs>
 
 
 ```markdown
-<Tabs id="first tab set">
-    <Tab label="First Id tab">
+<Tabs id="example-tab">
+    <Tab label="One">
         Click Second id Tab and notice the the url updates!
     </Tab>
-    <Tab label="Second Id tab">
+    <Tab label="Two">
         Refresh the page and the tab you selected persists!
     </Tab>
 </Tabs>
