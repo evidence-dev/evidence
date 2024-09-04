@@ -53,6 +53,7 @@ import { sterilizeQuery } from './sterilizeQuery.js';
  * @property {undefined} inFlightQueryStart
  * @property {undefined} inFlightQueryEnd
  * @property {import('../types.js').QueryDebugPayload} queryCreated
+ * @property {undefined} cacheCleared
  */
 /** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
@@ -238,7 +239,8 @@ export class Query {
 	static #globalHandlerMap = {
 		inFlightQueryStart: new Set(),
 		inFlightQueryEnd: new Set(),
-		queryCreated: new Set()
+		queryCreated: new Set(),
+		cacheCleared: new Set()
 	};
 	/**
 	 * @template {keyof QueryGlobalEvents} Event
@@ -664,6 +666,7 @@ DESCRIBE ${this.text.trim()}
 
 	static emptyCache = () => {
 		this.#cache.clear();
+		this.#globalEmit('cacheCleared', undefined);
 	};
 
 	static get cacheSize() {
