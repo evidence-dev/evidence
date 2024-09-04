@@ -75,17 +75,17 @@ Selected: {inputs.category_selector}
 
 <ButtonGroup
     data={categories}
-    name=selected_button
+    name=selected_button1
     value=category
     defaultValue="Sinister Toys"
 />
 
-Selected: {inputs.selected_button}
+Selected: {inputs.selected_button1}
 
 ````markdown
 <ButtonGroup
     data={categories}
-    name=selected_button
+    name=selected_button1
     value=category
     defaultValue="Sinister Toys"
 />
@@ -93,18 +93,18 @@ Selected: {inputs.selected_button}
 
 <ButtonGroup
     data={categories}
-    name=selected_button
+    name=selected_button2
     value=category
 >
     <ButtonGroupItem valueLabel="All Categories" value="%" default />
 </ButtonGroup>
 
-Selected: {inputs.selected_button}
+Selected: {inputs.selected_button2}
 
 ````markdown
 <ButtonGroup
-    data={categories} 
-    name=selected_button
+    data={categories}
+    name=selected_button2
     value=category
 >
     <ButtonGroupItem valueLabel="All Categories" value="%" default />
@@ -293,7 +293,8 @@ Selected: {inputs.button_tabs_hardcoded_options}
 <PropListing 
     name="display"
     description="Displays tabs with button functionality"
-    options="tabs"
+    options={['tabs', 'buttons']}
+    defaultValue="buttons"
 />
 
 # ButtonGroupItem
