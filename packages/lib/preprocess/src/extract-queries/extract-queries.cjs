@@ -46,7 +46,7 @@ const ignoreIndentedCode = function () {
 
 /**
  * @param {string} content File content
- * @param {string} filename File name
+ * @param {string} [filename] File name
  * @returns {Query[]}
  */
 const extractExternalQueries = (content, filename) => {
@@ -54,7 +54,11 @@ const extractExternalQueries = (content, filename) => {
 	if (!frontmatter) return [];
 	if (!frontmatter.queries) return [];
 	if (!Array.isArray(frontmatter.queries)) {
-		console.warn(`Malformed frontmatter found in ${filename}. Unable to extract external queries.`);
+		if (filename) {
+			console.warn(`Malformed frontmatter found in ${filename}. Unable to extract external queries.`);
+		} else {
+			console.warn('Malformed frontmatter found. Unable to extract external queries.');
+		}
 		return [];
 	}
 	/** @type {unknown[]} */
@@ -71,7 +75,7 @@ const extractExternalQueries = (content, filename) => {
 				warnedExternalQueries[externalQuery] = true;
 				console.warn(
 					chalk.bold.red(`! ${externalQuery}`) +
-						chalk.gray(' does not appear to be a .sql file, and will not be loaded')
+					chalk.gray(' does not appear to be a .sql file, and will not be loaded')
 				);
 			}
 			return false;
@@ -147,7 +151,7 @@ const extractQueries = (content) => {
 	const queries = [];
 
 	// todo: second parameter is filename but we don't have that here?
-	queries.push(...extractExternalQueries(content, ''));
+	queries.push(...extractExternalQueries(content));
 	queries.push(...extractInlineQueries(content));
 
 	// Handle query chaining:
