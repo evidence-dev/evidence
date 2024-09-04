@@ -77,7 +77,7 @@ Selected: {inputs.category_selector}
     data={categories}
     name=selected_button1
     value=category
-    defaultValue="Sinister Toys"
+    defaultValue="Cursed Sporting Goods"
 />
 
 Selected: {inputs.selected_button1}
@@ -87,31 +87,9 @@ Selected: {inputs.selected_button1}
     data={categories}
     name=selected_button1
     value=category
-    defaultValue="Sinister Toys"
+    defaultValue="Cursed Sporting Goods"
 />
 ````
-
-<ButtonGroup
-    data={categories}
-    name=selected_button2
-    value=category
->
-    <ButtonGroupItem valueLabel="All Categories" value="%" default />
-</ButtonGroup>
-
-Selected: {inputs.selected_button2}
-
-````markdown
-<ButtonGroup
-    data={categories}
-    name=selected_button2
-    value=category
->
-    <ButtonGroupItem valueLabel="All Categories" value="%" default />
-</ButtonGroup>
-````
-
-Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${inputs.name_of_button_group}'` to return all values.
 
 
 ### With Hardcoded Options
@@ -134,6 +112,31 @@ Selected: {inputs.hardcoded_options}
 
 Selected: {inputs.hardcoded_options}
 ````
+
+
+### With Hardcoded Options and Default Value
+
+<ButtonGroup name=hardcoded_options_default>
+    <ButtonGroupItem valueLabel="Option One" value="1" />
+    <ButtonGroupItem valueLabel="Option Two" value="2" default />
+    <ButtonGroupItem valueLabel="Option Three" value="3" />
+</ButtonGroup>
+
+Selected: {inputs.hardcoded_options_default}
+
+
+````markdown
+<ButtonGroup name=hardcoded_options_default>
+    <ButtonGroupItem valueLabel="Option One" value="1" />
+    <ButtonGroupItem valueLabel="Option Two" value="2" default />
+    <ButtonGroupItem valueLabel="Option Three" value="3" />
+</ButtonGroup>
+
+Selected: {inputs.hardcoded_options_default}
+````
+
+
+
 
 ### Alternative Labels
 
@@ -277,7 +280,7 @@ Selected: {inputs.button_tabs_hardcoded_options}
 <PropListing 
     name="defaultValue"
     description="Sets initial active button and current value"
-    options="String (e.g Sinister Toys)"
+    options="value from button group, e.g. 'Cursed Sporting Goods'"
 />
 <PropListing 
     name="order"
@@ -313,6 +316,12 @@ The ButtonGroupItem component can be used to manually add options to a button gr
     description="Label to display for the option in the dropdown"
     options="string"
     defaultValue="Uses value"
+/>
+<PropListing 
+    name="default"
+    description="Sets the option as the default"
+    options={["true", "false"]}
+    defaultValue="false"
 />
 <PropListing 
     name="hideDuringPrint"
