@@ -1,8 +1,21 @@
+import {
+	Query as QueryBuilder,
+	sql as taggedSql,
+	literal,
+	desc
+} from '@evidence-dev/sdk/query-builder';
+
 // SQL query to get a long dimensional table
 // dimension | dimensionName | metric | filteredMetric - (metric filtered by the whereClause)
 // optionally includes an "Others" row and a "Grand Total" row, each which respect the whereClause
 
 // Where clause that optionally excludes any reference to the excluded dimension
+/** @typedef {import("./types.js").SelectedDimension} SelectedDimension */
+/**
+ * @param {selectedDimension} selectedDimensions
+ * @param {string} [excludeDimension]
+ * @returns {string}
+ */
 export const getWhereClause = function (selectedDimensions, excludeDimension) {
 	let whereClause = 'true';
 	if (excludeDimension) {
@@ -11,15 +24,31 @@ export const getWhereClause = function (selectedDimensions, excludeDimension) {
 	if (selectedDimensions?.length > 0) {
 		whereClause = selectedDimensions
 			.map((d) => {
-				if (d.value === null) {
-					return `${d.dimension} is null`;
-				} else {
-					return `${d.dimension} = '${d.value.replaceAll("'", "''")}'`;
-				}
+				const values = Array.isArray(d.value) ? d.value : [d.value];
+
+				const { validValues, hasNull } = values.reduce(
+					(a, v) => {
+						if (v === null) {
+							a.hasNull = true;
+						} else {
+							a.validValues.add(`'${v.toString().replaceAll(`'`, `''`)}'`);
+						}
+						return a;
+					},
+					{ validValues: new Set(), hasNull: false }
+				);
+				// "dimension" in ('value', 'from', 'set')
+				const valueExpr = validValues.size
+					? `"${d.dimension}" in ( ${[...validValues].join(',')} )`
+					: '';
+				// "dimension" is null
+				const nullExpr = hasNull ? `"${d.dimension}" is null` : '';
+
+				return `( ${[valueExpr, nullExpr].filter(Boolean).join(' OR ')} )`;
 			})
 			.join(' and ');
 	}
-	return whereClause;
+	return `( ${whereClause} )`;
 };
 
 export const getDimensionCutQuery = function (
@@ -34,50 +63,65 @@ export const getDimensionCutQuery = function (
 	selectedDimensions,
 	selectedValue
 ) {
-	let query = `
-    with topN as (
-        select 
-            '${dimension.column_name}' as dimensionName, 
-            ${dimension.column_name} as dimensionValue, 
-            'mainList' as case, 
-            ${metric} 
-                -- filter(${getWhereClause(selectedDimensions, dimension.column_name)}) 
-                as metric
-        from (${data.originalText}) 
-        where ${getWhereClause(selectedDimensions, dimension.column_name)}
-        group by 1,2 
-        order by 4 desc 
-        limit ${limit}
-    ), 
-    selectedRow as (
-        select 
-            '${dimension.column_name}' as dimensionName, 
-            ${dimension.column_name} as dimensionValue, 
-            'selectedValue' as case, 
-            ${metric} as metric
-        from (${data.originalText}) 
-        where 
-        ${getWhereClause(selectedDimensions, dimension.column_name)} and 
-        ${
-					selectedValue
-						? `${dimension.column_name} = '${selectedValue?.replaceAll("'", "''")}' and ${
-								dimension.column_name
-							} not in (select dimensionValue from topN)`
-						: 'false'
-				}  
-        group by 1,2 
-    ),
-    final as ( 
-        select * from topN
-        union  all 
-        select * from selectedRow
-    )
-    
-    select 
-    *, 
-    metric / max(metric) over() as percentOfTop 
-    from final 
+	const topN = new QueryBuilder();
+	topN
+		.select({
+			dimensionName: literal(dimension.column_name),
+			dimensionValue: taggedSql`${dimension.column_name}`,
+			metric: taggedSql`${metric}`,
+			case: literal('mainList')
+		})
+		.from(taggedSql`(${data.originalText})`)
+		.where(taggedSql`${getWhereClause(selectedDimensions, dimension.column_name)}`)
+		.$groupby('dimensionName', 'dimensionValue')
+		.orderby(desc('metric'))
+		.limit(limit);
 
-`;
-	return query;
+	const selectedRow = new QueryBuilder();
+	selectedRow
+		.select({
+			dimensionName: literal(dimension.column_name),
+			dimensionValue: taggedSql`${dimension.column_name}`,
+			metric: taggedSql`${metric}`,
+			case: literal('selectedValue')
+		})
+		.from(taggedSql`(${data.originalText})`)
+		.where(taggedSql`${getWhereClause(selectedDimensions, dimension.column_name)}`)
+		.where(taggedSql`${filterBySelect(selectedValue, dimension.column_name)}`)
+		.$groupby('dimensionName', 'dimensionValue');
+
+	const final = QueryBuilder.with({ topN, selectedRow })
+		.select('*')
+		.select({
+			percentOfTop: taggedSql`metric / max(metric) over ()`
+		})
+		.from(taggedSql`(SELECT * FROM "topN" UNION ALL SELECT * FROM "selectedRow")`);
+	return final.toString();
+};
+
+/**
+ * @param {string | string[] | undefined} selectedValue
+ * @param {string} colName
+ * @returns {string}
+ */
+const filterBySelect = (selectedValue, colName) => {
+	if (Array.isArray(selectedValue)) {
+		if (selectedValue.length === 0) {
+			return 'false';
+		} else {
+			const selectedConditions = selectedValue
+				.map((v) => `${colName} = '${v?.replaceAll("'", "''")}'`)
+				.join(' or ');
+
+			return `(${selectedConditions}) and ${colName} not in (select dimensionValue from topN)`;
+			// selectedValue.map((v) => `${colName} = '${v?.replaceAll("'", "''")}'`).join(' or ') +
+			// `and ${colName} not in (select dimensionValue from topN)`
+			// need to adjust line 95
+			// cannot have duplicate keys, (dimensionValue = column name string) and (dimensionName = column name variable)
+		}
+	} else if (typeof selectedValue === 'string') {
+		return `${colName} = '${selectedValue?.replaceAll("'", "''")}' and ${colName} not in (select dimensionValue from topN)`;
+	} else {
+		return 'false';
+	}
 };

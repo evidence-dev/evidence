@@ -43,6 +43,7 @@ export const config = {
 	webServer: {
 		command: process.env.DEV ? 'pnpm dev' : 'pnpm preview',
 		port: 3000,
-		reuseExistingServer: !process.env.CI
+		reuseExistingServer: !process.env.CI,
+		timeout: 120_000
 	}
 };

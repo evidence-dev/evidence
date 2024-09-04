@@ -1,5 +1,15 @@
+<script context="module">
+	/** @type {import("@storybook/svelte").Meta}*/
+	export const meta = {
+		title: 'Atoms/inputs/TextInput',
+		component: TextInput,
+		argTypes: {},
+		args: { title: 'Search Enabled Text Input', name: 'textInput' }
+	};
+</script>
+
 <script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
+	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import TextInput from './TextInput.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { setContext } from 'svelte';
@@ -8,13 +18,6 @@
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
-
-<Meta
-	title="Atoms/inputs/TextInput"
-	component={TextInput}
-	argTypes={{}}
-	args={{ title: 'Search Enabled Text Input', name: 'textInput' }}
-/>
 
 <Template let:args>
 	<div class="h-64">

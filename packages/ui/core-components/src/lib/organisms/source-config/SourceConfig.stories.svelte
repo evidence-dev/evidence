@@ -1,6 +1,4 @@
-<script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
-	import SourceConfig from './SourceConfig.svelte';
+<script context="module">
 	import { postgresOptions } from './fake-options.js';
 
 	let sources = [
@@ -19,13 +17,19 @@
 			options: postgresOptions
 		}
 	};
+
+	/** @type {import("@storybook/svelte").Meta}*/
+	export const meta = {
+		title: 'Organisms/SourceConfig',
+		component: SourceConfig,
+		args: { sources, availableSourcePlugins }
+	};
 </script>
 
-<Meta
-	title="Organisms/SourceConfig"
-	component={SourceConfig}
-	args={{ sources, availableSourcePlugins }}
-/>
+<script>
+	import { Template, Story } from '@storybook/addon-svelte-csf';
+	import SourceConfig from './SourceConfig.svelte';
+</script>
 
 <Template let:args>
 	<SourceConfig {...args} />

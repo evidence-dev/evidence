@@ -9,6 +9,8 @@ import { FakerTableSchema } from './schemas/index.mjs';
 import { cleanZodErrors } from './lib.mjs';
 import { genNumericSeries } from './series/numeric.series.mjs';
 
+/** @typedef {() => Faker} FakerFactory */
+
 /** @param {number} x */
 function sigmoid(x) {
 	return 1 / (1 + Math.exp(-x));
@@ -202,19 +204,20 @@ const tableMap = new Map();
 const relations = new Map();
 
 /**
- *
  * @param {string} directory
- * @param {Faker} faker
- * @param {Faker} biasedFaker
- * @returns
+ * @param {FakerFactory} getFaker
+ * @param {FakerFactory} getBiasedFaker
  */
 const generateTable =
-	(directory, faker, biasedFaker) =>
+	(directory, getFaker, getBiasedFaker) =>
 	/**
 	 * @param {string} content
 	 * @param {string} filepath
 	 */
 	async (content, filepath) => {
+		const faker = getFaker();
+		const biasedFaker = getBiasedFaker();
+
 		if (!filepath.endsWith('yaml')) return null;
 		/** @type {(v: any) => void} */
 		let res = () => {},
@@ -301,7 +304,7 @@ const generateTable =
 						// Ensure that all dependency tables are generated
 						if (!tableMap.has(fkt)) {
 							const content = await fs.readFile(fkt).then((r) => r.toString());
-							await generateTable(directory, faker, biasedFaker)(content, fkt);
+							await generateTable(directory, getFaker, getBiasedFaker)(content, fkt);
 						}
 					}
 
@@ -372,24 +375,33 @@ export const getRunner = (options, directory) => {
 	else if (typeof options.seed === 'number') seed = options.seed;
 	else seed = undefined;
 
-	const biasedFaker = new Faker({
-		randomizer: randomBiasedNumber(Math.random(), 1),
-		locale: locale
-	});
+	/** @type {FakerFactory} */
+	const getFaker = () => {
+		const f = new Faker({
+			locale: locale
+		});
+		f.seed(seed);
+		return f;
+	};
 
-	const faker = new Faker({
-		locale: locale
-	});
-
-	faker.seed(seed);
-	biasedFaker.seed(seed);
+	/** @type {FakerFactory} */
+	const getBiasedFaker = () => {
+		const f = new Faker({
+			randomizer: randomBiasedNumber(Math.random(), 1),
+			locale: locale
+		});
+		f.seed(seed);
+		return f;
+	};
 
 	console.warn(
 		chalk.bold.dim.yellow(
 			'  You are using the faker-datasource, this is not recommended for production use.\n'
 		)
 	);
-	return generateTable(directory, faker, biasedFaker);
+
+	// We pass factory functions here to ensure that each table is generated with a freshly seeded faker instance
+	return generateTable(directory, getFaker, getBiasedFaker);
 };
 
 export const testConnection = () => Promise.resolve(true);

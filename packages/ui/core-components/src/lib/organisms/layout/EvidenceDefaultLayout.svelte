@@ -10,6 +10,8 @@
 	import ErrorOverlay from './ErrorOverlay.svelte';
 	import { browser } from '$app/environment';
 	import DevTools from '../../devtools/DevTools.svelte';
+	import { onMount } from 'svelte';
+
 	// Remove splash screen from app.html
 	if (browser) {
 		const splash = document.getElementById('__evidence_project_splash');
@@ -89,6 +91,13 @@
 	$: if (!['show', 'hide', 'never'].includes(sidebarFrontMatter)) {
 		sidebarFrontMatter = undefined;
 	}
+
+	onMount(() => {
+		if (!('serviceWorker' in navigator)) return;
+		addEventListener('load', () => {
+			navigator.serviceWorker.register('/service-worker.js');
+		});
+	});
 </script>
 
 <slot />

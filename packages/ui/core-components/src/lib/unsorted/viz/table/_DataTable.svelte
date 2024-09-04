@@ -434,11 +434,18 @@
 <svelte:window bind:innerHeight />
 
 {#if !isFullPage && innerHeight !== undefined}
-	<Fullscreen bind:open={fullscreen}>
-		<!-- header and last row are 22.5+22.5 = 45px, middle rows are 23 -->
-		{@const ROW_HEIGHT = 23}
-		{@const Y_AXIS_PADDING = 45 + 234}
-		<div class="pl-8 pt-4">
+	<Fullscreen bind:open={fullscreen} {search}>
+		<!-- when compact middle rows are 17.5, middle rows are 23 -->
+		{@const ROW_HEIGHT = compact ? 17.5 : 23}
+		<!-- header and last row are 22.5+22.5 = 45px -->
+		{@const HEADER_LAST_ROW_HEIGHT = 45}
+		<!-- Add additional padding for search bar + 24px-->
+		{@const SEARCHBAR_HEIGHT = 24}
+		<!-- Calculation of total padding -->
+		{@const Y_AXIS_PADDING = search
+			? SEARCHBAR_HEIGHT + HEADER_LAST_ROW_HEIGHT + 234
+			: HEADER_LAST_ROW_HEIGHT + 234}
+		<div class="pt-4">
 			<svelte:self
 				{...$$props}
 				rows={1 + Math.round((innerHeight - Y_AXIS_PADDING) / ROW_HEIGHT)}
