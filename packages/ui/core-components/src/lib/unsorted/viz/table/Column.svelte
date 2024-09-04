@@ -10,10 +10,9 @@
 
 	let error;
 
-	export let id;
+	const identifier = Symbol();
 
-	// Simple check of column name in dataset. Should be replaced with robust error handling in the future:
-	$: checkColumnName();
+	export let id;
 
 	/**
 	 * Check column name and handle error if doesn't exist
@@ -115,6 +114,7 @@
 	$: redNegatives = redNegatives === 'true' || redNegatives === true;
 
 	$: options = {
+		identifier,
 		id,
 		title,
 		align,
@@ -155,8 +155,11 @@
 	 * @returns {void}
 	 */
 	const updateProps = () => {
+		// Simple check of column name in dataset. Should be replaced with robust error handling in the future:
+		checkColumnName();
+
 		props.update((d) => {
-			const matchingIndex = d.columns.findIndex((c) => c.id === id);
+			const matchingIndex = d.columns.findIndex((c) => c.identifier === identifier);
 			if (matchingIndex === -1) {
 				d.columns.push(options);
 			} else {
