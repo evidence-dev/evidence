@@ -157,7 +157,6 @@ limit 50`,
 	}}
 	let:args
 >
-	<!-- {console.log([...flightData])} -->
 	<BoxPlot {...args} data={flightData} />
 </Story>
 
