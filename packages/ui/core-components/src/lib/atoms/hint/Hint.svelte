@@ -13,6 +13,9 @@
 	/** @type {"sm" | "md" | "lg"}*/
 	export let maxWidth = undefined;
 
+	/** @type {"right" | "left"} */
+	export let direction = 'right';
+
 	let visible = false;
 
 	const showMessage = () => (visible = true);
@@ -34,7 +37,9 @@
 	{#if visible}
 		<span
 			transition:fade
-			class="text-sm text-white bg-gray-900/90 rounded py-1 px-2 absolute -top-[5%] left-[115%] z-50 min-w-min w-max"
+			class="text-sm text-white bg-gray-900/90 rounded py-1 px-2 absolute -top-[5%] z-50 min-w-min w-max"
+			class:left-[115%]={direction === 'right'}
+			class:right-[115%]={direction === 'left'}
 			class:max-w-sm={maxWidth === 'sm'}
 			class:max-w-md={maxWidth === 'md'}
 			class:max-w-lg={maxWidth === 'lg'}
