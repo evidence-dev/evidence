@@ -59,12 +59,36 @@ sidebar_position: 1
 </Tabs>
 ```
 
+### Persist Selected Tab to URL
+
+<Tabs id="example-tab">
+    <Tab label="One">
+        Click Second id Tab and notice the the url updates!
+    </Tab>
+    <Tab label="Two">
+        Refresh the page and the tab you selected persists!
+    </Tab>
+</Tabs>
+
+
+```markdown
+<Tabs id="example-tab">
+    <Tab label="One">
+        Click Second id Tab and notice the the url updates!
+    </Tab>
+    <Tab label="Two">
+        Refresh the page and the tab you selected persists!
+    </Tab>
+</Tabs>
+```
+
 # Tabs
 
 ## Options
 
 <PropListing
     name="id"
+    options="string"
 >
 
 Unique Id for this set of tabs. When set, the selected tab is included in the URL so it can be shared.
