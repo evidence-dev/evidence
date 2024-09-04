@@ -55,7 +55,9 @@ const extractExternalQueries = (content, filename) => {
 	if (!frontmatter.queries) return [];
 	if (!Array.isArray(frontmatter.queries)) {
 		if (filename) {
-			console.warn(`Malformed frontmatter found in ${filename}. Unable to extract external queries.`);
+			console.warn(
+				`Malformed frontmatter found in ${filename}. Unable to extract external queries.`
+			);
 		} else {
 			console.warn('Malformed frontmatter found. Unable to extract external queries.');
 		}
@@ -75,7 +77,7 @@ const extractExternalQueries = (content, filename) => {
 				warnedExternalQueries[externalQuery] = true;
 				console.warn(
 					chalk.bold.red(`! ${externalQuery}`) +
-					chalk.gray(' does not appear to be a .sql file, and will not be loaded')
+						chalk.gray(' does not appear to be a .sql file, and will not be loaded')
 				);
 			}
 			return false;
