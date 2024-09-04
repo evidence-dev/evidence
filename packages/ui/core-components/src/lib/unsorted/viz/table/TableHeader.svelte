@@ -70,7 +70,7 @@
 			/>
 		{/if}
 		{#if $props.columns.length > 0}
-			{#each $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
+			{#each [...$props.columns].sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
 				<th
 					class="{safeExtractColumn(column, columnSummary).type} {compact
 						? 'text-xs py-[1px] px-[4px]'

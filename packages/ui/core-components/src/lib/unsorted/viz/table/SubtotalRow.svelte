@@ -26,7 +26,7 @@
 	style:background-color={rowColor}
 	style:color={fontColor}
 >
-	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
+	{#each $props.columns.length > 0 ? [...$props.columns].sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
 				.filter((d) => d.show === true)
 				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
 		{@const useCol = safeExtractColumn(column, columnSummary)}

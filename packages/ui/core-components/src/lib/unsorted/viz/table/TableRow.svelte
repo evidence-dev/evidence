@@ -53,7 +53,7 @@
 		{/if}
 
 		{#if $props.columns.length > 0}
-			{#each $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, k}
+			{#each [...$props.columns].sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, k}
 				{@const useCol = safeExtractColumn(column, columnSummary)}
 				{@const scaleCol = column.scaleColumn
 					? columnSummary.find((d) => d.id === column.scaleColumn)
