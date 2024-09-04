@@ -131,19 +131,6 @@ export const load = async ({ fetch, route, params, url }) => {
 			})();
 		}
 
-		// Pre-render columns
-		try {
-			// Since we're running in node here (not the browser), this function is synchronous and doesn't need to be awaited
-			usqlQuery(`DESCRIBE ${sql}`, {
-				route_hash: routeHash,
-				additional_hash: paramsHash,
-				query_name: `${query_name}__DESCRIBE`,
-				prerendering: building
-			});
-		} catch (e) {
-			console.debug('Failed to pre-render columns', e instanceof Error ? e.message : e);
-		}
-
 		return callback(
 			usqlQuery(sql, {
 				route_hash: routeHash,
