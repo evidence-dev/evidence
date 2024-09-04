@@ -92,7 +92,6 @@
 
 	validateConfiguration(preset, display);
 </script>
-
 {#if error}
 	<ErrorChart chartType={'Button Group'} {error} />
 {:else}
