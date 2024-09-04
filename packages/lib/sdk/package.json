@@ -25,6 +25,12 @@
 			"require": null,
 			"types": "./src/utils/index.d.ts"
 		},
+		"./utils/svelte": {
+			"default": "./src/utils/svelte/index.js",
+			"import": "./src/utils/svelte/index.js",
+			"require": null,
+			"types": "./src/utils/svelte/index.d.ts"
+		},
 		"./legacy-compat": {
 			"default": "./src/legacy-compat.js",
 			"import": "./src/legacy-compat.js",
@@ -121,6 +127,13 @@
 	},
 	"peerDependencies": {
 		"@evidence-dev/universal-sql": "workspace:*",
-		"perfect-debounce": "^1.0.0"
+		"nanoid": "^5.0.4",
+		"perfect-debounce": "^1.0.0",
+		"svelte": "^4.2.12"
+	},
+	"peerDependenciesMeta": {
+		"svelte": {
+			"optional": true
+		}
 	}
 }

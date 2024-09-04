@@ -143,7 +143,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
 
-		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';		
+		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';		
+		import { setInputContext } from '@evidence-dev/sdk/utils/svelte';
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
@@ -158,7 +159,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		*/''}
 		let inputs_store = writable(inputs);
 		
-		setContext(INPUTS_CONTEXT_KEY, inputs_store);
+		setInputContext(inputs_store);
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
         $: pageHasQueries.set(Object.keys(data).length > 0);
