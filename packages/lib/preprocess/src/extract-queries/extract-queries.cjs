@@ -57,6 +57,8 @@ const extractExternalQueries = (content, filename) => {
 		console.warn(`Malformed frontmatter found in ${filename}. Unable to extract external queries.`);
 		return [];
 	}
+	/** @type {unknown[]} */
+	const queries = frontmatter.queries;
 
 	/**
 	 *
@@ -69,7 +71,7 @@ const extractExternalQueries = (content, filename) => {
 				warnedExternalQueries[externalQuery] = true;
 				console.warn(
 					chalk.bold.red(`! ${externalQuery}`) +
-						chalk.gray(' does not appear to be a .sql file, and will not be loaded')
+					chalk.gray(' does not appear to be a .sql file, and will not be loaded')
 				);
 			}
 			return false;
@@ -78,27 +80,25 @@ const extractExternalQueries = (content, filename) => {
 		return true;
 	};
 
-	return /** @type {string[]} */ (frontmatter.queries)
-		.map((externalQuery) => {
-			if (typeof externalQuery === 'string') {
-				if (!validateExternalQuery(externalQuery)) return false;
-				const id = externalQuery.split('.sql')[0].replace('/', '_').replace('\\', '_');
-				return readFileToQuery(externalQuery, id);
-			} else if (typeof externalQuery === 'object') {
-				const usedKey = Object.keys(externalQuery)?.[0] ?? '';
+	return queries.map((externalQuery) => {
+		if (typeof externalQuery === 'string') {
+			if (!validateExternalQuery(externalQuery)) return false;
+			const id = externalQuery.split('.sql')[0].replace('/', '_').replace('\\', '_');
+			return readFileToQuery(externalQuery, id);
+		} else if (externalQuery && typeof externalQuery === 'object') {
+			const [usedKey, value] = Object.entries(externalQuery)[0] ?? ['', undefined];
 
-				const value = externalQuery[usedKey];
-				// Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
-				if (Object.keys(externalQuery).length > 1) {
-					console.warn(
-						`ExternalQuery object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${value} will be imported.`
-					);
-				}
-
-				if (!validateExternalQuery(value)) return false;
-				return readFileToQuery(value, usedKey);
+			// Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
+			if (Object.keys(externalQuery).length > 1) {
+				console.warn(
+					`ExternalQuery object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${value} will be imported.`
+				);
 			}
-		})
+
+			if (!validateExternalQuery(value)) return false;
+			return readFileToQuery(value, usedKey);
+		}
+	})
 		.filter((x) => !!x); // filter out queries that returned false;
 };
 
