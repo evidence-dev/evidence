@@ -23,9 +23,15 @@ const loadSource = async (sourcePath) => {
  * @returns {Promise<Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>>}
  */
 export const loadSources = async () => {
-	const sourceDirs = await fs
-		.readdir(sourcesDirectory)
-		.then((dirs) => dirs.map((dir) => path.join(sourcesDirectory, dir)));
+	/** @type {string[]} */
+	let sourceDirs = [];
+	try {
+		sourceDirs = await fs
+			.readdir(sourcesDirectory)
+			.then((dirs) => dirs.map((dir) => path.join(sourcesDirectory, dir)));
+	} catch (e) {
+		console.debug(chalk.dim.yellow('\nNo sources directory found, no sources to run'));
+	}
 
 	return /** @type {Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>}*/ (
 		await Promise.all(
