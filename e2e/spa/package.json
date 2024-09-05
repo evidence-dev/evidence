@@ -7,7 +7,7 @@
     "dev": "evidence dev --open /",
     "sources": "evidence sources",
     "preview": "VITE_EVIDENCE_SPA=true evidence preview",
-    "test:preview": "cross-env playwright test",
+    "test:preview": "playwright test",
     "test:dev": "echo e2e/spa has no dev mode tests"
   },
   "engines": {
