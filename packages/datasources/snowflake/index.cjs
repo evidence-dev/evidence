@@ -357,7 +357,6 @@ module.exports.options = {
 				private_key: {
 					title: 'Private Key',
 					type: 'multiline',
-					rows: 10,
 					secret: true,
 					required: true
 				},
