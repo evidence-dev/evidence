@@ -1,14 +1,32 @@
 <script>
+	import p from 'prismjs';
+	import 'prismjs/components/prism-sql';
+
+	export let lang;
 	export let text;
+
+	let highlighted = lang ? p.highlight(text, p.languages[lang], lang) : text;
+	$: highlighted = lang ? p.highlight(text, p.languages[lang], lang) : text;
 </script>
 
 <div class="w-full">
-	{#each text.split('\n') as line, i}
-		<div
-			class="grid grid-cols-[auto,1fr] text-[0.7rem] font-mono bg-gray-200 odd:bg-gray-300 w-full"
-		>
-			<span class="text-white bg-black/70 pr-1.5 pl-1">{i + 1}</span>
-			<pre class="pl-2 whitespace-pre-wrap hover:bg-black/30 pr-4">{line}</pre>
-		</div>
-	{/each}
+	<div class="grid grid-cols-[auto,1fr] text-[0.7rem] font-mono w-full">
+		{#each highlighted.split('\n') as line, i}
+			<div class="group contents">
+				<span
+					class="
+			bg-gray-400
+			group-odd:bg-gray-500
+			group-hover:bg-gray-600
+			text-white pr-1.5 pl-1
+			select-none">{i + 1}</span
+				>
+				<pre
+					class="
+				group-hover:bg-gray-300
+				bg-gray-100 group-odd:bg-gray-200
+				pl-2 whitespace-pre-wrap pr-4">{@html line}</pre>
+			</div>
+		{/each}
+	</div>
 </div>

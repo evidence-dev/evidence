@@ -11,7 +11,6 @@
 	import { browser } from '$app/environment';
 	import DevTools from '../../devtools/DevTools.svelte';
 	import { onMount } from 'svelte';
-
 	// Remove splash screen from app.html
 	if (browser) {
 		const splash = document.getElementById('__evidence_project_splash');

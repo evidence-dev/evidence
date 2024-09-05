@@ -55,8 +55,14 @@
 		<span>{query.ready}</span>
 		<span />
 
-		<div class=" {query.error ? 'col-span-8 flex flex-col gap-2' : 'contents'}">
-			<Hint maxWidth="md" direction={query.error ? 'right' : 'left'}>
+		<Hint maxWidth="md" direction="left">
+			<span class="font-bold" slot="handle">Waiting for Input</span>
+			<span class="font-mono text-xs">[my-query].opts.noResolve</span>
+		</Hint>
+		<span>{query.opts.noResolve}</span>
+
+		<div class="col-span-8 {query.error ? 'flex flex-col gap-2' : 'contents'}">
+			<Hint maxWidth="md" direction="right">
 				<p class="font-bold" slot="handle">Error</p>
 				<p class="font-mono text-xs">[my-query].error?.message</p>
 			</Hint>

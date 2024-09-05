@@ -16,7 +16,7 @@
 			</span>
 		</Hint>
 		<p class="italic text-sm">This is the query that was input by the user</p>
-		<LineNumbered text={query.originalText} />
+		<LineNumbered text={query.originalText} lang="sql" />
 
 		<Hint>
 			<span class="font-bold" slot="handle">Executed</span>
@@ -27,6 +27,6 @@
 		<p class="italic text-sm">
 			This is the query that was executed after Query did transformations
 		</p>
-		<LineNumbered text={query.text} />
+		<LineNumbered text={query.text} lang="sql" />
 	</div>
 </ContentBox>

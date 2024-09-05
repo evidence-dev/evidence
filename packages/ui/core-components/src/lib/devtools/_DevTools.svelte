@@ -7,7 +7,14 @@
 	import QueryDebugger, { queries, resetQueries } from './query-debugger/QueryDebugger.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { onMount } from 'svelte';
-	let open = false;
+	import InputState from './input-debug/InputState.svelte';
+	import InputHistory from './input-debug/InputHistory.svelte';
+	import { isDebug } from '@evidence-dev/sdk/utils';
+	import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { writable } from 'svelte/store';
+	ensureInputContext(writable({}));
+
+	let open = true;
 
 	let selectedQuery;
 	afterNavigate(() => {
@@ -20,12 +27,11 @@
 		 * @param {KeyboardEvent} e
 		 */
 		const keybind = (e) => {
-			console.log(e);
 			if (e.key === 'Escape') {
 				open = false;
 				e.stopPropagation();
 			}
-			if (e.key === 'e' && e.shiftKey && (e.altKey || e.metaKey)) {
+			if (e.key === 'e' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
 				open = true;
 				e.stopPropagation();
 			}
@@ -33,6 +39,15 @@
 		window.addEventListener('keydown', keybind);
 		return () => window.removeEventListener('keydown', keybind);
 	});
+
+	import { readonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { History } from '@evidence-dev/sdk/utils';
+
+	const inputs = readonlyInputContext();
+
+	/** @type {History}*/
+	const inputHistory = new History();
+	$: inputHistory.push($inputs);
 </script>
 
 {#if open}
@@ -65,17 +80,22 @@
 						</button>
 					{/each}
 				</section>
-				<ul></ul>
 
 				{#if Query.isQuery(selectedQuery)}
 					<QueryDebugger query={selectedQuery} on:close={() => (selectedQuery = null)} />
 				{/if}
 			</AccordionItem>
+			<AccordionItem title="Inspect Inputs" compact>
+				<InputState history={inputHistory} />
+			</AccordionItem>
+			<AccordionItem title="View Input History" compact>
+				<InputHistory history={inputHistory} />
+			</AccordionItem>
 		</Accordion>
 	</div>
 {/if}
 
-{#if import.meta.env.VITE_PUBLIC_EVIDENCE_DEBUG}
+{#if isDebug()}
 	<button
 		transition:scale={{ axis: 'x' }}
 		class="fixed right-4 top-16 rounded-full bg-blue-400 w-8 h-8 flex items-center justify-center hover:bg-blue-300 z-0"
