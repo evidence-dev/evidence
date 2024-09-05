@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
-
+import { enableDebug } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
 
 const increaseNodeMemoryLimit = () => {
@@ -201,7 +201,7 @@ prog
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
-			process.env.VITE_EVIDENCE_DEBUG = true;
+			enableDebug();
 			delete args.debug;
 		}
 
@@ -275,7 +275,7 @@ prog
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
-			process.env.VITE_EVIDENCE_DEBUG = true;
+			enableDebug();
 			delete args.debug;
 		}
 		loadEnvFile();
@@ -292,7 +292,7 @@ prog
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
-			process.env.VITE_EVIDENCE_DEBUG = true;
+			enableDebug();
 			delete args.debug;
 		}
 		loadEnvFile();
@@ -350,7 +350,7 @@ prog
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
-			process.env.VITE_EVIDENCE_DEBUG = true;
+			enableDebug();
 			delete args.debug;
 		}
 		loadEnvFile();
