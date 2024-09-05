@@ -222,6 +222,8 @@
 			minValue = Math.min(...values);
 			maxValue = Math.max(...values);
 
+			//bucket legend
+			//conditonal
 			colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
 
 			if (sizeCol) {

@@ -9,6 +9,7 @@
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import { each } from 'svelte/internal';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -52,6 +53,9 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
+	/** @type {[string]|undefined} */
+	export let colorPalette = undefined;
+
 	const chartType = 'Point Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -62,7 +66,14 @@
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Points data={loaded} {lat} {long} {...$$restProps} />
-	</BaseMap>
+	<div class="relative">
+		<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
+			<Points data={loaded} {lat} {long} {colorPalette} {...$$restProps} />
+		</BaseMap>
+		<div class="absolute top-0 left-0">
+			{#each colorPalette as color}
+				<div>{color}</div>
+			{/each}
+		</div>
+	</div>
 </QueryLoad>
