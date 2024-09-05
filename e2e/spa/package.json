@@ -2,11 +2,11 @@
   "name": "e2e-spa",
   "version": "0.0.1",
   "scripts": {
-    "build": "evidence build",
-    "build:strict": "evidence build:strict",
+    "build": "VITE_EVIDENCE_SPA=true evidence build",
+    "build:strict": "VITE_EVIDENCE_SPA=true evidence build:strict",
     "dev": "evidence dev --open /",
     "sources": "evidence sources",
-    "preview": "evidence preview",
+    "preview": "VITE_EVIDENCE_SPA=true evidence preview",
     "test:preview": "cross-env playwright test",
     "test:dev": "cross-env DEV=true playwright test"
   },
