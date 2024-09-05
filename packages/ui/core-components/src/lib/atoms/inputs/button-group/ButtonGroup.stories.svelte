@@ -136,3 +136,82 @@
 
 	Current Value: {$inputStore[args.name]}
 </Story>
+
+<Story name="Button Group Styled as Tabs" let:args>
+	<div class="mb-8">
+		<ButtonGroup {...args} preset="dates" title="Default Button Style" name="defaultStyle" />
+	</div>
+	Current Value: {$inputStore['defaultStyle']}
+	<div class="mb-8 mt-4">
+		<ButtonGroup
+			{...args}
+			preset="dates"
+			display="tabs"
+			title="Buttons Styled as Tabs"
+			name="tabsStyle"
+		/>
+	</div>
+	Current Value: {$inputStore['tabsStyle']}
+</Story>
+
+<Story name="Hard Coded Entries with Tab Stylings" let:args>
+	<div class="mb-8">
+		<ButtonGroup {...args} display="tabs">
+			<ButtonGroupItem valueLabel="Option 1" value={1} />
+			<ButtonGroupItem valueLabel="Option 2" value={2} />
+			<ButtonGroupItem valueLabel="Option 3" value={3} />
+			<ButtonGroupItem valueLabel="Option 4" value={4} />
+		</ButtonGroup>
+	</div>
+
+	Current Value: {$inputStore[args.name]}
+</Story>
+
+<Story name="Button Group Styled as Tabs + DefaultValue" let:args>
+	<div class="mb-8 mt-4">
+		<ButtonGroup
+			{...args}
+			preset="dates"
+			display="tabs"
+			title="Buttons Styled as Tabs"
+			name="tabsStyle"
+			defaultValue="1 month"
+		/>
+	</div>
+	Current Value: {$inputStore['tabsStyle']}
+
+	<div class="mb-8">
+		<ButtonGroup {...args} display="tabs" name="tabsStyle2">
+			<ButtonGroupItem valueLabel="Option 1" value={1} default />
+			<ButtonGroupItem valueLabel="Option 2" value={2} />
+			<ButtonGroupItem valueLabel="Option 3" value={3} />
+			<ButtonGroupItem valueLabel="Option 4" value={4} />
+		</ButtonGroup>
+	</div>
+
+	Current Value: {$inputStore['tabsStyle2']}
+</Story>
+
+<Story name="Button Group Error States" let:args>
+	<div class="mb-8 mt-4">
+		<ButtonGroup {...args} preset="date" title="Buttons Preset Error" name="tabsStyle" />
+	</div>
+	<div class="mb-8 mt-4">
+		<ButtonGroup
+			{...args}
+			preset="dates"
+			display="tab"
+			title="Buttons Display Error"
+			name="tabsStyle"
+		/>
+	</div>
+	<div class="mb-8 mt-4">
+		<ButtonGroup
+			{...args}
+			preset={['dates string in array']}
+			display={['buttons string in array']}
+			title="Buttons non-string Error"
+			name="tabsStyle"
+		/>
+	</div>
+</Story>

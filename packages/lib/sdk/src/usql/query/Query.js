@@ -1065,6 +1065,8 @@ DESCRIBE ${this.text.trim()}
 		if (knownColumns) {
 			if (!Array.isArray(knownColumns))
 				throw new Error(`Expected knownColumns to be an array`, { cause: knownColumns });
+
+			this.#debug('known columns', 'Created with known columns', knownColumns);
 			this.#columns = knownColumns;
 			this.#sharedColumnsPromise.resolve(this);
 		} else {

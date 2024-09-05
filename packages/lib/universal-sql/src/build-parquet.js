@@ -167,6 +167,8 @@ export async function buildMultipartParquet(
 
 	await query(copy);
 
+	await fs.chmod(outputFilepath, 0o644);
+
 	const { size } = await fs.stat(outputFilepath);
 	if (size > 100 * 1024 * 1024) {
 		console.warn(
