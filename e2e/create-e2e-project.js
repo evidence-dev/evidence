@@ -131,6 +131,10 @@ const run = async (name, options) => {
 		await writeFile(`${name}/tests/tests.spec.js`, defaultTestFile);
 		spinner.stopAndPersist({ symbol: '✔ ', text: 'Created test file' });
 
+		spinner.start('Formatting files...');
+		await spawnAsync(`pnpm format`, { cwd: '..' });
+		spinner.stopAndPersist({ symbol: '✔ ', text: 'Formatted files' });
+
 		console.log(chalk.green(`\nE2E Test Project '${name}' created successfully!`));
 		console.log(chalk.dim(`Use test:dev and test:preview to run your tests`));
 	} catch (e) {
