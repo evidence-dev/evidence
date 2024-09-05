@@ -268,7 +268,7 @@ describe('dropdownOptionStore', () => {
 				pauseSorting();
 				addOptions(...opts);
 				await vi.advanceTimersByTimeAsync(100);
-				expect(get(options)).toStrictEqual(opts);
+				expect(get(options)).toStrictEqual(opts.reverse());
 			});
 			it('should sort when resumed', async () => {
 				const { addOptions, options, pauseSorting, resumeSorting } = dropdownOptionStore({

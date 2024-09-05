@@ -11,8 +11,6 @@
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import TextInput from './TextInput.svelte';
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
 	// From layout.js
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputStore = getInputContext();

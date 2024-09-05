@@ -3,7 +3,6 @@
 	import Accordion from '../atoms/accordion/Accordion.svelte';
 	import AccordionItem from '../atoms/accordion/AccordionItem.svelte';
 
-	
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputStore = getInputContext();
 
