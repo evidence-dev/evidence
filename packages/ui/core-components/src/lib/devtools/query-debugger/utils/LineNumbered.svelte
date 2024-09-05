@@ -1,12 +1,19 @@
 <script>
-	import p from 'prismjs';
-	import 'prismjs/components/prism-sql';
+	/* global Prism */
 
+	import { onMount } from 'svelte';
+	import { loadPrismComponents } from '../../../unsorted/ui/prismLoader.js';
 	export let lang;
 	export let text;
 
-	let highlighted = lang ? p.highlight(text, p.languages[lang], lang) : text;
-	$: highlighted = lang ? p.highlight(text, p.languages[lang], lang) : text;
+	let highlight = () => '';
+	onMount(async () => {
+		const Prism = await loadPrismComponents();
+		highlight = Prism.highlight.bind(Prism);
+	});
+
+	let highlighted = lang ? highlight(text, Prism.languages[lang], lang) : text;
+	$: highlighted = lang ? highlight(text, Prism.languages[lang], lang) : text;
 </script>
 
 <div class="w-full">

@@ -10,8 +10,6 @@ export const enableDebug = () => {
 	process.env.EVIDENCE_DEBUG = 'true';
 	process.env.VITE_EVIDENCE_DEBUG = 'true';
 	process.env.VITE_PUBLIC_EVIDENCE_DEBUG = 'true';
-
-	console.log('Enabling debug');
 };
 
 export const isDebug = () => {
