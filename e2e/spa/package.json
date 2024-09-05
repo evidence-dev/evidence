@@ -1,13 +1,13 @@
 {
   "name": "e2e-spa",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
-    "build": "VITE_EVIDENCE_SPA=true evidence build",
-    "build:strict": "VITE_EVIDENCE_SPA=true evidence build:strict",
+    "build": "cross-env VITE_EVIDENCE_SPA=true evidence build",
+    "build:strict": "cross-env VITE_EVIDENCE_SPA=true evidence build:strict",
     "dev": "evidence dev --open /",
     "sources": "evidence sources",
-    "preview": "VITE_EVIDENCE_SPA=true evidence preview",
-    "test:preview": "cross-env playwright test",
+    "preview": "cross-env VITE_EVIDENCE_SPA=true evidence preview",
+    "test:preview": "playwright test",
     "test:dev": "echo e2e/spa has no dev mode tests"
   },
   "engines": {

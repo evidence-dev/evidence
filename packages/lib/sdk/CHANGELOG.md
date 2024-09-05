@@ -1,5 +1,13 @@
 # @evidence-dev/sdk
 
+## 1.3.10
+
+### Patch Changes
+
+- f7253ad4b: Fix noisy "Failed to pre-render columns" log during build
+- Updated dependencies [c0e1799e2]
+  - @evidence-dev/universal-sql@2.1.5
+
 ## 1.3.9
 
 ### Patch Changes

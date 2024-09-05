@@ -30,7 +30,7 @@ test('has title', async ({ page }) => {
 
 const testScripts = {
 	test: undefined,
-	'test:preview': 'cross-env playwright test',
+	'test:preview': 'playwright test',
 	'test:dev': 'cross-env DEV=true playwright test'
 };
 

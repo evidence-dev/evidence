@@ -1,5 +1,15 @@
 # @evidence-dev/core-components
 
+## 4.7.8
+
+### Patch Changes
+
+- 33dee6b35: fixed boxplot duplicates
+- d6d64147d: selected tabs with id prop selection persist on refresh/link shared
+- f34ddbae9: added default values for queries in button groups
+- Updated dependencies [221e4261b]
+  - @evidence-dev/component-utilities@3.2.10
+
 ## 4.7.7
 
 ### Patch Changes
