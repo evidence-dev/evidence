@@ -1093,14 +1093,41 @@
 			{connectGroup}
 			{seriesColors}
 			on:dblclick={(params) => {
-				if (!link) return;
-				//This may need tweaking to handle future charts, consideration, change bubble from scatter to bubble name in params
-				//Bubble date, value and size property at index 0,1,2 so link gets pushed into index 3
-				if (params.detail.dimensionNames[3] !== undefined) {
-					window.location = params.detail.data[3];
-				} else {
-					//otherwise all other charts thusfar links are at index 2
-					window.location = params.detail.data[2];
+				let pointInPixel = [params.detail.event.offsetX, params.detail.event.offsetY];
+				let pointInGrid = params.detail.convertFromPixel('grid', pointInPixel);
+				let pointSeriesName = params.detail.seriesName;
+				let closestDateObject = null;
+				let minDifference = Infinity;
+				let targetX = pointInGrid[0];
+
+				if (link) {
+					// check if point containing link data has been clicked
+					// Future Changes: Ensure that columns applied in getSeriesConfig are in same order as expected
+					if (params.detail.data) {
+						return (window.location = params.detail.data[3] ?? params.detail.data[2]);
+					}
+
+					// if area has been click, handle xType searches
+					if (xType === 'category' || xType === 'value') {
+						closestDateObject = data.find(
+							(obj) => obj[series] === pointSeriesName && obj[x] === xDistinct[targetX]
+						);
+						return (window.location = closestDateObject[link]);
+					}
+
+					if (xType === 'time') {
+						targetX = new Date(pointInGrid[0]);
+						for (const obj of data) {
+							if (!series || obj[series] === pointSeriesName) {
+								const diff = Math.abs(obj[x] - targetX);
+								if (diff < minDifference) {
+									minDifference = diff;
+									closestDateObject = obj;
+								}
+							}
+						}
+					}
+					return (window.location = closestDateObject[link]);
 				}
 			}}
 			on:click={(/** @type {CustomEvent<import("echarts").ElementEvent>} */ event) => {
