@@ -13,9 +13,10 @@ Evidence supports two rendering modes:
 ```sql rendering_modes
 select 'Content Rendering' as rendering_mode, 'Pre-rendered at build time' as static_site_generation, 'Rendered on the client side' as single_page_app, 1 as row_number union all
 select 'Page Generation', 'Each page generated ahead of time', 'Only one HTML file generated', 2 union all
-select 'Built Output', 'All pages have corresponding HTML files', 'Pages rendered using JavaScript', 3 union all
-select 'Build Duration', 'Slower as builds all pages', 'Faster as only one page is built', 4 union all
-select 'Performance', 'Faster initial page loads', 'Faster interactions after initial load', 5
+select 'Built Output', 'All pages have corresponding HTML files', 'Pages rendered on the fly using JavaScript', 3 union all
+select 'Build Duration', 'Slower due to building all pages', 'Fast as only one page is built', 4 union all
+select 'Performance', 'Fast page loads', 'Slower page loads', 5 union all
+select 'SEO', 'Rich SEO for all pages', 'Generic SEO for your whole app', 6
 order by row_number
 ```
 
@@ -40,10 +41,11 @@ SPA rendering mode is disabled by default.
 
 To enable SPA rendering mode:
 
-1. Update the build command in `package.json`:
+1. Update the build and preview scripts in `package.json`:
 
 ```json
-"build": "VITE_EVIDENCE_SPA=true evidence build"
+"build": "VITE_EVIDENCE_SPA=true evidence build",
+"preview": "VITE_EVIDENCE_SPA=true evidence preview",
 ```
 
 2. Add svelte adapter-static as a dev dependency:
@@ -59,22 +61,11 @@ import adapter from '@sveltejs/adapter-static';
 
 /** @type {import("@sveltejs/kit").Config} */
 export default {
-    preprocess: [],
-    compilerOptions: {
-        dev: true
-    },
     kit: {
         adapter: adapter({
             fallback: 'index.html'
         })
     },
-    vite: {
-        server: {
-            watch: {
-            usePolling: true
-            }
-        }
-    }
 };
 ```
 
