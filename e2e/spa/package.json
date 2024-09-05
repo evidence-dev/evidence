@@ -8,7 +8,7 @@
     "sources": "evidence sources",
     "preview": "VITE_EVIDENCE_SPA=true evidence preview",
     "test:preview": "cross-env playwright test",
-    "test:dev": "cross-env DEV=true playwright test"
+    "test:dev": "echo e2e/spa has no dev mode tests"
   },
   "engines": {
     "npm": ">=7.0.0",
