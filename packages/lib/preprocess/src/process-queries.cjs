@@ -3,8 +3,6 @@ const { extractQueries } = require('./extract-queries/extract-queries.cjs');
 const { highlighter } = require('./utils/highlighter.cjs');
 const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
-// prettier obliterates the formatting of queryDeclarations
-// prettier-ignore
 /**
  *
  * @param {string} filename
@@ -16,23 +14,32 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
-	
-	const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
-	const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError);
-	if (validIds.length > 0) {
 
+	const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
+	const validIds = Object.keys(duckdbQueries).filter(
+		(query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError
+	);
+	if (validIds.length > 0) {
 		// prerendered queries: stuff without ${}
 		// reactive queries: stuff with ${}
 		const IS_REACTIVE_QUERY = /\${.*?}/s;
-		const reactiveIds = validIds.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
+		const reactiveIds = validIds.filter((id) =>
+			IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString)
+		);
 
 		// input queries: reactive with ${inputs...} in it
 		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
-		const input_ids = reactiveIds.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id].compiledQueryString));
+		const input_ids = reactiveIds.filter((id) =>
+			IS_INPUT_QUERY.test(duckdbQueries[id].compiledQueryString)
+		);
 
-		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = Query.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, { id: "${q.id}", initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
+		const errQueries = Object.values(duckdbQueries)
+			.filter((q) => q.compileError)
+			.map(
+				(q) =>
+					`const ${q.id} = Query.create(\`${q.compiledQueryString.replaceAll('$', '\\$')}\`, undefined, { id: "${q.id}", initialError: new Error(\`${/** @type {string} */ (q.compileError).replaceAll('$', '\\$')}\`)})`
+			);
 
-		
 		const queryStoreDeclarations = validIds.map((id) => {
 			return `
 				// Update external queries
@@ -70,8 +77,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						} else {
 							${id}InitialStates.initialData = data.${id}
 						}
-						if (data.${id}__DESCRIBE) {
-							${id}InitialStates.knownColumns = data.${id}__DESCRIBE
+						if (data.${id}_columns) {
+							${id}InitialStates.knownColumns = data.${id}_columns
 						}
 					}
 				} else {
@@ -119,15 +126,19 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		const input_query_stores = `
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
-				${input_ids.map((id) => `
+				${input_ids
+					.map(
+						(id) => `
 				__${id}Factory(\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`, { noResolve: hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\` });
-				`).join('\n')}
+				`
+					)
+					.join('\n')}
 			}));
 		}
 		`;
 
 		queryDeclarations += `
-		${errQueries.join("\n")}
+		${errQueries.join('\n')}
 		${queryStoreDeclarations.join('\n')}
 		${input_query_stores}
 		
@@ -153,10 +164,12 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         $routeHash = '${routeH}';
 
-		${/* 
+		${
+			/* 
 			do not switch to $: inputs = $inputs_store
 			reactive statements do not rerun during SSR 
-		*/''}
+			*/ ''
+		}
 		let inputs_store = ensureInputContext(writable(inputs));
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
@@ -229,9 +242,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			import.meta.hot.on("evidence:reset-queries", async (payload) => {
 				await $page.data.__db.updateParquetURLs(JSON.stringify(payload.latestManifest), true);
 				Query.emptyCache()
-				${validIds.map(id =>
-					`__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });`
-				).join('\n')}
+				${validIds
+					.map((id) => `__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });`)
+					.join('\n')}
 			})
 	    }
 		
@@ -257,13 +270,13 @@ const processQueries = (componentDevelopmentMode) => {
 	const dynamicQueries = {};
 	return {
 		markup({ content, filename }) {
-			if (filename.endsWith('.md')) {
+			if (filename?.endsWith('.md')) {
 				let fileQueries = extractQueries(content);
 
 				dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
 					acc[q.id] = q;
 					return acc;
-				}, {});
+				}, /** @type {typeof dynamicQueries[string]} */ ({}));
 
 				const externalQueryViews =
 					'\n\n\n' +
@@ -292,7 +305,7 @@ const processQueries = (componentDevelopmentMode) => {
 			}
 		},
 		script({ content, filename, attributes }) {
-			if (filename.endsWith('.md')) {
+			if (filename?.endsWith('.md')) {
 				if (attributes.context !== 'module') {
 					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
 

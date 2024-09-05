@@ -228,6 +228,15 @@ importers:
       '@playwright/test':
         specifier: ^1.45.3
         version: 1.46.1
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
+      ora:
+        specifier: ^8.1.0
+        version: 8.1.0
+      sade:
+        specifier: ^1.8.1
+        version: 1.8.1
 
   e2e/basic:
     dependencies:
@@ -329,6 +338,58 @@ importers:
       '@types/node':
         specifier: ^20.14.12
         version: 20.16.4
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+
+  e2e/spa:
+    dependencies:
+      '@evidence-dev/bigquery':
+        specifier: workspace:*
+        version: link:../../packages/datasources/bigquery
+      '@evidence-dev/core-components':
+        specifier: workspace:*
+        version: link:../../packages/ui/core-components
+      '@evidence-dev/csv':
+        specifier: workspace:*
+        version: link:../../packages/datasources/csv
+      '@evidence-dev/databricks':
+        specifier: workspace:*
+        version: link:../../packages/datasources/databricks
+      '@evidence-dev/duckdb':
+        specifier: workspace:*
+        version: link:../../packages/datasources/duckdb
+      '@evidence-dev/evidence':
+        specifier: workspace:*
+        version: link:../../packages/evidence
+      '@evidence-dev/motherduck':
+        specifier: workspace:*
+        version: link:../../packages/datasources/motherduck
+      '@evidence-dev/mssql':
+        specifier: workspace:*
+        version: link:../../packages/datasources/mssql
+      '@evidence-dev/mysql':
+        specifier: workspace:*
+        version: link:../../packages/datasources/mysql
+      '@evidence-dev/postgres':
+        specifier: workspace:*
+        version: link:../../packages/datasources/postgres
+      '@evidence-dev/snowflake':
+        specifier: workspace:*
+        version: link:../../packages/datasources/snowflake
+      '@evidence-dev/sqlite':
+        specifier: workspace:*
+        version: link:../../packages/datasources/sqlite
+      '@evidence-dev/trino':
+        specifier: workspace:*
+        version: link:../../packages/datasources/trino
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.45.3
+        version: 1.46.1
+      '@types/node':
+        specifier: ^22.5.4
+        version: 22.5.4
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -848,6 +909,12 @@ importers:
 
   packages/lib/preprocess:
     dependencies:
+      '@types/hast':
+        specifier: ^2.0.0
+        version: 2.3.10
+      '@types/mdast':
+        specifier: ^3.0.0
+        version: 3.0.15
       blueimp-md5:
         specifier: ^2.19.0
         version: 2.19.0
@@ -894,9 +961,15 @@ importers:
       '@faker-js/faker':
         specifier: ^7.6.0
         version: 7.6.0
+      '@types/blueimp-md5':
+        specifier: ^2.18.2
+        version: 2.18.2
       '@types/mock-fs':
         specifier: ^4.13.1
         version: 4.13.4
+      '@types/prismjs':
+        specifier: ^1.26.4
+        version: 1.26.4
       mock-fs:
         specifier: ^5.2.0
         version: 5.2.0
@@ -6162,7 +6235,7 @@ packages:
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
       '@parcel/graph': 3.2.0
       '@parcel/logger': 2.12.0
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/profiler': 2.12.0
       '@parcel/rust': 2.12.0
@@ -6337,14 +6410,14 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
-      '@swc/core': 1.7.23(@swc/helpers@0.5.13)
+      '@swc/core': 1.7.23
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
       - '@swc/helpers'
     dev: true
 
-  /@parcel/package-manager@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13):
+  /@parcel/package-manager@2.12.0(@parcel/core@2.12.0):
     resolution: {integrity: sha512-0nvAezcjPx9FT+hIL+LS1jb0aohwLZXct7jAh7i0MLMtehOi0z1Sau+QpgMlA9rfEZZ1LIeFdnZZwqSy7Ccspw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -6358,7 +6431,7 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
-      '@swc/core': 1.7.23(@swc/helpers@0.5.13)
+      '@swc/core': 1.7.23
       semver: 7.6.3
     transitivePeerDependencies:
       - '@swc/helpers'
@@ -6440,7 +6513,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-wasm@2.12.0(@parcel/core@2.12.0):
@@ -6460,17 +6532,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
-    dev: true
-
-  /@parcel/plugin@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13):
-    resolution: {integrity: sha512-nc/uRA8DiMoe4neBbzV6kDndh/58a4wQuGKw5oEoIwBCHUvE2W8ZFSu7ollSXUGRzfacTt4NdY8TwS73ScWZ+g==}
-    engines: {node: '>= 12.0.0'}
-    dependencies:
-      '@parcel/types': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13)
-    transitivePeerDependencies:
-      - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/profiler@2.12.0:
@@ -6673,7 +6734,7 @@ packages:
     dependencies:
       '@parcel/core': 2.12.0
       '@parcel/diagnostic': 2.12.0
-      '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13)
+      '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/rust': 2.12.0
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
@@ -6783,7 +6844,6 @@ packages:
       typescript: 5.4.2
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/ts-utils@2.12.0(typescript@5.4.2):
@@ -6802,22 +6862,7 @@ packages:
       '@parcel/cache': 2.12.0(@parcel/core@2.12.0)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13)
-      '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
-      utility-types: 3.11.0
-    transitivePeerDependencies:
-      - '@parcel/core'
-      - '@swc/helpers'
-    dev: true
-
-  /@parcel/types@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13):
-    resolution: {integrity: sha512-8zAFiYNCwNTQcglIObyNwKfRYQK5ELlL13GuBOrSMxueUiI5ylgsGbTS1N7J3dAGZixHO8KhHGv5a71FILn9rQ==}
-    dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/diagnostic': 2.12.0
-      '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/source-map': 2.1.1
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
       utility-types: 3.11.0
@@ -6984,6 +7029,8 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@pkgjs/parseargs@0.11.0:
@@ -8424,7 +8471,7 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core@1.7.23(@swc/helpers@0.5.13):
+  /@swc/core@1.7.23:
     resolution: {integrity: sha512-VDNkpDvDlreGh2E3tlDj8B3piiuLhhQA/7rIVZpiLUvG1YpucAa6N7iDXA7Gc/+Hah8spaCg/qvEaBkCmcIYCQ==}
     engines: {node: '>=10'}
     requiresBuild: true
@@ -8435,7 +8482,6 @@ packages:
         optional: true
     dependencies:
       '@swc/counter': 0.1.3
-      '@swc/helpers': 0.5.13
       '@swc/types': 0.1.12
     optionalDependencies:
       '@swc/core-darwin-arm64': 1.7.23
@@ -8903,6 +8949,12 @@ packages:
   /@types/node@20.3.0:
     resolution: {integrity: sha512-cumHmIAf6On83X7yP+LrsEyUOf/YlociZelmpRYaGFydoaPdxdt80MAbu6vWerQT2COCp2nPvHdsbD7tHn/YlQ==}
 
+  /@types/node@22.5.4:
+    resolution: {integrity: sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==}
+    dependencies:
+      undici-types: 6.19.8
+    dev: true
+
   /@types/normalize-package-data@2.4.4:
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
     dev: true
@@ -8920,6 +8972,10 @@ packages:
 
   /@types/prettier@2.7.3:
     resolution: {integrity: sha512-+68kP9yzs4LMp7VNh8gdzMSPZFL44MLGqiHWvttYJe+6qnuVr4Ek9wSBQoveqY/r+LwjCcU29kNVkidwim+kYA==}
+    dev: true
+
+  /@types/prismjs@1.26.4:
+    resolution: {integrity: sha512-rlAnzkW2sZOjbqZ743IHUhFcvzaGbqijwOu8QZnZCjfQzBqFE3s4lOTJEsxikImav9uzz/42I+O7YUs1mWgMlg==}
     dev: true
 
   /@types/prop-types@15.7.12:
@@ -9748,6 +9804,7 @@ packages:
   /aggregate-error@3.1.0:
     resolution: {integrity: sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==}
     engines: {node: '>=8'}
+    requiresBuild: true
     dependencies:
       clean-stack: 2.2.0
       indent-string: 4.0.0
@@ -10743,6 +10800,7 @@ packages:
   /clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: false
 
   /cli-cursor@3.1.0:
@@ -10762,7 +10820,6 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       restore-cursor: 5.1.0
-    dev: false
 
   /cli-progress@3.12.0:
     resolution: {integrity: sha512-tRkV3HJ1ASwm19THiiLIXLO7Im7wlTuKnvkYaTkyoAPefqjNg7W7DHKUlGRxy9vxDvbyCYQkQozvptuMkGCg8A==}
@@ -12057,6 +12114,7 @@ packages:
 
   /err-code@2.0.3:
     resolution: {integrity: sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==}
+    requiresBuild: true
     dev: false
 
   /error-ex@1.3.2:
@@ -13237,7 +13295,6 @@ packages:
   /get-east-asian-width@1.2.0:
     resolution: {integrity: sha512-2nk+7SIVb14QrgXFHcm84tD4bKQz0RxPuMT8Ag5KPOq7J5fEmAg0UbXdTOSHqNuHSU28k55qnceesxXRZGzKWA==}
     engines: {node: '>=18'}
-    dev: false
 
   /get-func-name@2.0.2:
     resolution: {integrity: sha512-8vXOvuE167CtIc3OyItco7N/dpRtBbYOsPsXCz7X/PMnlGjYjSGuZJgM1Y7mmew7BKf9BqvLX2tnOVy1BBUsxQ==}
@@ -13845,6 +13902,7 @@ packages:
 
   /humanize-ms@1.2.1:
     resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
+    requiresBuild: true
     dependencies:
       ms: 2.1.3
     dev: false
@@ -14245,7 +14303,6 @@ packages:
   /is-unicode-supported@2.0.0:
     resolution: {integrity: sha512-FRdAyx5lusK1iHG0TWpVtk9+1i+GjrzRffhDg4ovQ7mcidMQ6mj+MhKPmvh7Xwyv5gIS06ns49CA7Sqg7lC22Q==}
     engines: {node: '>=18'}
-    dev: false
 
   /is-weakmap@2.0.2:
     resolution: {integrity: sha512-K5pXYOm9wqY1RgjpL3YTkF39tni1XajUIkawTLUo9EZEVUFga5gSQJF8nNS7ZwJQ02y+1YCNYcMh+HIf1ZqE+w==}
@@ -15491,7 +15548,6 @@ packages:
     dependencies:
       chalk: 5.3.0
       is-unicode-supported: 1.3.0
-    dev: false
 
   /log-update@5.0.1:
     resolution: {integrity: sha512-5UtUDQ/6edw4ofyljDNcOVJQ4c7OjDro4h3y8e1GQL5iYElYclVHJ3zeWchylvMaKnDbDilC8irOVyexnA/Slw==}
@@ -16040,7 +16096,6 @@ packages:
   /mimic-function@5.0.1:
     resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
     engines: {node: '>=18'}
-    dev: false
 
   /mimic-response@3.1.0:
     resolution: {integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==}
@@ -16748,7 +16803,6 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       mimic-function: 5.0.1
-    dev: false
 
   /open@7.4.2:
     resolution: {integrity: sha512-MVHddDVweXZF3awtlAS+6pgKLlm/JgxZ90+/NBurBoQctVOOB/zDdVjcyPzQ+0laDGbsWgrRkflI65sQeOgT9Q==}
@@ -16849,7 +16903,6 @@ packages:
       stdin-discarder: 0.2.2
       string-width: 7.2.0
       strip-ansi: 7.1.0
-    dev: false
 
   /ordered-binary@1.5.1:
     resolution: {integrity: sha512-5VyHfHY3cd0iza71JepYG50My+YUbrFtGoUz2ooEydPyPM7Aai/JW098juLr+RG6+rDJuzNNTsEQu2DZa1A41A==}
@@ -16991,7 +17044,7 @@ packages:
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
       '@parcel/logger': 2.12.0
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.13)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-cli': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-dev-server': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-tracer': 2.12.0(@parcel/core@2.12.0)
@@ -18135,7 +18188,6 @@ packages:
     dependencies:
       onetime: 7.0.0
       signal-exit: 4.1.0
-    dev: false
 
   /retry-request@5.0.2:
     resolution: {integrity: sha512-wfI3pk7EE80lCIXprqh7ym48IHYdwmAAzESdbU8Q9l7pnRCk9LEhpbOTNKjz6FARLm/Bl5m+4F0ABxOkYUujSQ==}
@@ -18150,6 +18202,7 @@ packages:
   /retry@0.12.0:
     resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
     engines: {node: '>= 4'}
+    requiresBuild: true
     dev: false
 
   /retry@0.13.1:
@@ -18791,7 +18844,6 @@ packages:
   /stdin-discarder@0.2.2:
     resolution: {integrity: sha512-UhDfHmA92YAlNnCfhmq0VeNL5bDbiZGg7sZ2IvPsXubGkiNa9EC+tUTsjBRsYUAz87btI6/1wf4XoVvQ3uRnmQ==}
     engines: {node: '>=18'}
-    dev: false
 
   /stop-iteration-iterator@1.0.0:
     resolution: {integrity: sha512-iCGQj+0l0HOdZ2AEeBADlsRC+vsnDsZsbdSiH1yNSjcfKM7fdpCMfqAL/dwF5BLiw/XhRft/Wax6zQbhq2BcjQ==}
@@ -18907,7 +18959,6 @@ packages:
       emoji-regex: 10.4.0
       get-east-asian-width: 1.2.0
       strip-ansi: 7.1.0
-    dev: false
 
   /string.prototype.padend@3.1.6:
     resolution: {integrity: sha512-XZpspuSB7vJWhvJc9DLSlrXl1mcA2BdoY5jjnS135ydXqLoqhs96JjDtCkjJEQHvfqZIp9hBuBMgI589peyx9Q==}
