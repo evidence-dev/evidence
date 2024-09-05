@@ -356,7 +356,8 @@ module.exports.options = {
 			snowflake_jwt: {
 				private_key: {
 					title: 'Private Key',
-					type: 'string',
+					type: 'multiline',
+					rows: 10,
 					secret: true,
 					required: true
 				},
