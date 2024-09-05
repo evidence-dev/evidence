@@ -1,5 +1,13 @@
 # @evidence-dev/component-utilities
 
+## 3.2.10
+
+### Patch Changes
+
+- 221e4261b: Add hmr error handling for reserved words query names
+- Updated dependencies [f7253ad4b]
+  - @evidence-dev/sdk@1.3.10
+
 ## 3.2.9
 
 ### Patch Changes

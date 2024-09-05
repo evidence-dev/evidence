@@ -1,5 +1,12 @@
 # @evidence-dev/preprocess
 
+## 5.1.7
+
+### Patch Changes
+
+- b84f22fce: properly typecheck .cjs/.js files in preprocess
+- f7253ad4b: Fix noisy "Failed to pre-render columns" log during build
+
 ## 5.1.6
 
 ### Patch Changes
