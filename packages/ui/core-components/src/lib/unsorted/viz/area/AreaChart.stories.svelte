@@ -209,7 +209,6 @@ LIMIT 10`,
 	let:args
 >
 	<AreaChart data={planeData} {...args} />
-	{console.log([...planeData])}
 </Story>
 <Story
 	name="With steps, fmt and labels"
@@ -225,7 +224,6 @@ LIMIT 10`,
 	let:args
 >
 	<AreaChart data={planeData} {...args} />
-	{console.log(planeData)}
 </Story>
 
 <Story
