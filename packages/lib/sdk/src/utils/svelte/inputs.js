@@ -1,7 +1,10 @@
 import { getAllContexts, getContext, setContext } from 'svelte';
-import { writable } from 'svelte/store';
+import { get, readable, readonly, writable } from 'svelte/store';
 
 export const InputStoreKey = Symbol('InputStore');
+
+/** @template T; @typedef {import("svelte/store").Readable<T>} Readable */
+/** @template T; @typedef {import("svelte/store").Writable<T>} Writable */
 
 /**
  * @typedef {Object} InputValue
@@ -10,23 +13,70 @@ export const InputStoreKey = Symbol('InputStore');
  */
 
 /**
- * @param {import("svelte/store").Writable<any>} c
- * @returns
+ * @param {unknown} v
+ * @returns {v is Readable<any>}
  */
-export const setInputContext = (c) => {
-	setContext(InputStoreKey, c);
+const isReadable = (v) => {
+	if (typeof v !== 'object') return false;
+	if (v === null) return false;
+	return 'subscribe' in v;
+};
+/**
+ * @param {unknown} v
+ * @returns {v is Writable<any>}
+ */
+const isWritable = (v) => {
+	if (!isReadable(v)) return false;
+	return 'set' in v && 'update' in v;
 };
 
 /**
- * @returns {import("svelte/store").Writable<any>}
+ * @param {Writable<any>} c
+ * @returns {Writable<any>}
+ */
+export const ensureInputContext = (c) => {
+	if (!isWritable(c)) {
+		console.error({ InputStoreValue: c });
+		throw new Error('InputStore must be a writable store');
+	}
+	if (!getAllContexts().has(InputStoreKey)) {
+		setContext(InputStoreKey, c);
+		return c;
+	} else {
+		const existingValue = getContext(InputStoreKey);
+		existingValue.set(get(c));
+		return existingValue;
+	}
+};
+
+/**
+ * @returns {Writable<any>}
  * @deprecated use 'getInputSetter' whenever possible
  */
 export const getInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
-		console.warn('InputStoreKey not found in context. Did you forget to call setInputContext?');
+		console.warn('InputStoreKey not found in context. Did you forget to call ensureInputContext?');
 		return writable({});
 	}
 	return getContext(InputStoreKey);
+};
+
+/**
+ *
+ * @returns {import("svelte/store").Readable<any>}
+ */
+export const readonlyInputContext = () => {
+	if (!getAllContexts().has(InputStoreKey)) {
+		console.warn('InputStoreKey not found in context. Did you forget to call ensureInputContext?');
+		return readable({});
+	}
+
+	const value = getContext(InputStoreKey);
+	if (isReadable(value)) {
+		return readonly(value);
+	} else {
+		throw new Error(`InputStoreKey is not a readable store: ${value}`);
+	}
 };
 
 /**
@@ -51,14 +101,12 @@ export const getInputSetter = (inputKey, toggle, defaultSqlFragment) => {
 	 */
 	return (value, label, sqlFragment, additional) => {
 		inputs.update(($inputs) => {
-			
 			let target = $inputs;
-			let finalKey = inputPath.at(-1);
+			let finalKey = inputPath.at(-1) ?? '';
 			for (const p of inputPath.slice(0, -1)) {
 				target = target[p];
 			}
 			if (!value && !label) {
-				console.log("Unset")
 				target[finalKey] = {
 					toString() {
 						return defaultSqlFragment;
