@@ -12,7 +12,7 @@ In production, Evidence is a [static site generator](https://www.netlify.com/blo
 
 You can host your Evidence project using Evidence Cloud, cloud services like Netlify or Vercel, or your own infrastructure. Evidence does not currently support Github Pages, there is more information on [GitHub](https://github.com/evidence-dev/evidence/issues/603).
 
-You can also configure Evidence as a [Single Page App (SPA)](/deployment/rendering-modes). This means that Evidence will not pre-build all the pages in your application. This can be useful if you have a very large number of pages (c.1000+) causing long build times.
+You can also configure Evidence as a [Single Page App (SPA)](/deployment/rendering-modes). In SPA mode Evidence will not pre-build all the pages in your application. This can be preferrable if your app has many pages (>1,000) causing long build times.
 
 ## Evidence Cloud
 
