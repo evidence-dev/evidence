@@ -44,11 +44,7 @@
 	>
 		{#if rowNumbers && groupType !== 'section'}
 			<TableCell class={'index w-[2%]'} {compact}>
-				{#if i === 0}
-					{(index + i + 1).toLocaleString()}
-				{:else}
-					{(index + i + 1).toLocaleString()}
-				{/if}
+				{(index + i + 1).toLocaleString()}
 			</TableCell>
 		{/if}
 
