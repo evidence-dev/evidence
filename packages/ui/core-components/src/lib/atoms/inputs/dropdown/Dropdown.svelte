@@ -122,10 +122,6 @@
 
 	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
 	$: if ($selectedOptions && hasHadSelection) {
-		// console.log(label, opts.length, $selectedOptions);
-		// console.log($options);
-		// values should be $selectedOptions that are currently available in the opts array
-
 		if ($selectedOptions.length > opts.length) {
 			updateSelectedOptions(opts);
 		}
