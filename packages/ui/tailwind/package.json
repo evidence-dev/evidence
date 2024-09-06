@@ -5,25 +5,20 @@
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
-	"devDependencies": {
-		"parcel": "^2.8.3",
-		"typescript": "5.4.2"
-	},
 	"dependencies": {
 		"tailwindcss": "^3.3.1"
 	},
-	"scripts": {
-		"build": "parcel build --no-cache"
-	},
 	"exports": {
 		".": {
-			"import": "./dist/index.mjs",
-			"require": "./dist/index.cjs"
+			"import": "./index.js",
+			"require": "./index.js"
 		},
 		"./fonts.css": "./fonts.css",
 		"./fonts/*": "./fonts/*"
 	},
-	"main": "dist/index.cjs",
-	"module": "dist/index.mjs",
-	"source": "index.js"
+	"main": "index.js",
+	"source": "index.js",
+	"devDependencies": {
+		"typescript": "^5.5.4"
+	}
 }
