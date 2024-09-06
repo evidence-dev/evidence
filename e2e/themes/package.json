@@ -4,7 +4,7 @@
   "scripts": {
     "build": "evidence build",
     "build:strict": "evidence build:strict",
-    "dev": "evidence dev --open /",
+    "dev": "evidence dev",
     "sources": "evidence sources",
     "preview": "evidence preview",
     "test:preview": "playwright test",
