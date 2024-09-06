@@ -6,7 +6,8 @@
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
-		"tailwindcss": "^3.3.1"
+		"tailwindcss": "^3.3.1",
+		"tw-colors": "^3.3.2"
 	},
 	"exports": {
 		".": {

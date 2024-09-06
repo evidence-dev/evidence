@@ -1,3 +1,5 @@
+import { createThemes } from 'tw-colors';
+
 export const colors = {
 	color: {
 		1: '#923d59',
@@ -29,7 +31,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 export const config = {
 	theme: {
 		extend: {
-			colors: colors,
+			colors,
 			fontFamily: {
 				sans: [
 					`Inter, ${defaultTheme.fontFamily.sans}`,
@@ -58,8 +60,18 @@ export const config = {
 				'lower-alpha': 'lower-alpha',
 				'lower-roman': 'lower-roman'
 			}
-		},
-		plugins: []
-	}
+		}
+	},
+	plugins: [
+		createThemes({
+			myTheme1: {
+				mySemanticColor: '#abcdef'
+			},
+			myTheme2: {
+				mySemanticColor: '#fedcba'
+			}
+		})
+	]
 };
+
 export default config;
