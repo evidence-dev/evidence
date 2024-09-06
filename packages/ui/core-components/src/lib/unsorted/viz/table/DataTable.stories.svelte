@@ -66,14 +66,17 @@
 </Story>
 
 <Story name="Reactive columns">
-	{@const data = Query.create(`SELECT '7 days' as cohort, 'stuff' as metadata, 100 as a, 200 as b`, query)}
+	{@const data = Query.create(
+		`SELECT '7 days' as cohort, 'stuff' as metadata, 100 as a, 200 as b`,
+		query
+	)}
 
 	<ButtonGroup name="dimension">
 		<ButtonGroupItem value="a" valueLabel="a" />
 		<ButtonGroupItem value="b" valueLabel="b" />
 	</ButtonGroup>
-	
-	<DataTable data={data}>
+
+	<DataTable {data}>
 		<Column id="cohort" title="Week" />
 		<Column id={$inputStore.dimension} />
 		<Column id="metadata" title="Metadata" />
