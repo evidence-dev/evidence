@@ -1,5 +1,5 @@
 ```datum
-SELECT '7 days' as cohort, 100 as a, 200 as b
+SELECT '7 days' as cohort, 'stuff' as metadata, 100 as a, 200 as b
 ```
 
 <ButtonGroup name="dimension">
@@ -10,4 +10,5 @@ SELECT '7 days' as cohort, 100 as a, 200 as b
 <DataTable data={datum}>
 	<Column id="cohort" title="Week" />
 	<Column id={inputs.dimension} />
+	<Column id="metadata" title="Metadata" />
 </DataTable>

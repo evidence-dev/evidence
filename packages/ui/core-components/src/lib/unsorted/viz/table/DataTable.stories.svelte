@@ -4,12 +4,22 @@
 	import Column from './Column.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import ButtonGroup from '../../../atoms/inputs/button-group/ButtonGroup.svelte';
+	import ButtonGroupItem from '../../../atoms/inputs/button-group/ButtonGroupItem.svelte';
+	import { writable } from 'svelte/store';
+	import { setContext } from 'svelte';
+	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Viz/Datatable',
 		component: DataTable
 	};
+</script>
+
+<script>
+	const inputStore = writable({});
+	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
 
 <Story name="Simple Case">
@@ -53,6 +63,21 @@
 <Story name="With Search (Long Columns)">
 	{@const data = Query.create(`SELECT * from blog_posts`, query)}
 	<DataTable {data} title="Blog Posts" search />
+</Story>
+
+<Story name="Reactive columns">
+	{@const data = Query.create(`SELECT '7 days' as cohort, 'stuff' as metadata, 100 as a, 200 as b`, query)}
+
+	<ButtonGroup name="dimension">
+		<ButtonGroupItem value="a" valueLabel="a" />
+		<ButtonGroupItem value="b" valueLabel="b" />
+	</ButtonGroup>
+	
+	<DataTable data={data}>
+		<Column id="cohort" title="Week" />
+		<Column id={$inputStore.dimension} />
+		<Column id="metadata" title="Metadata" />
+	</DataTable>
 </Story>
 
 <Story name="Full screen no scroll to top">
