@@ -4,7 +4,6 @@
 	import formatDate from 'date-fns/format';
 	import { readable } from 'svelte/store';
 
-	// TODO: rewrite this to be a little more accurate
 	/** @type {import("@evidence-dev/sdk").Diff} */
 	export let diffData = {
 		added: {},

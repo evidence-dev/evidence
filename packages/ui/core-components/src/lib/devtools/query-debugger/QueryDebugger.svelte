@@ -7,10 +7,6 @@
 	import { readonly, writable } from 'svelte/store';
 	import { batchUp } from '@evidence-dev/sdk/utils';
 
-	// TODO: is this needed?
-	// /** @type {import("@evidence-dev/sdk/usql").QueryDebugValue['proxied'][]} */
-	// const ssrQueries = [];
-
 	/**
 	 * @type {Writable<Map<string,QueryValue>>}
 	 */
@@ -56,19 +52,6 @@
 	import Portal from '../../unsorted/ui/Portal.svelte';
 	import Columns from './sections/Columns.svelte';
 	import Verbose from './sections/Verbose.svelte';
-	// export let scopedOnly = false;
-
-	// /** @type {import("svelte/store").Readable< import("@evidence-dev/sdk/usql").QueryDebugValue['proxied'][] >}*/
-	// let allQueries = derived([], (v) => v);
-
-	// /** @param {import("@evidence-dev/sdk/usql").QueryDebugValue} query */
-	// const trackQueries = (query) => {
-	// 	// TODO: Handle narrow containers
-	// 	let included = [...get(allQueries), query.proxied];
-	// 	if (!scopedOnly) included = [...ssrQueries, ...included];
-
-	// 	allQueries = derived(Array.from(new Set(included)), (v) => v);
-	// };
 
 	export let query;
 	// @ts-expect-error globalThis isn't defined
