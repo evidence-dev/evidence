@@ -14,7 +14,7 @@
 	import { writable } from 'svelte/store';
 	ensureInputContext(writable({}));
 
-	let open = true;
+	let open = false;
 
 	let selectedQuery;
 	afterNavigate(() => {
