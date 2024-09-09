@@ -10,7 +10,6 @@
 		<div class="flex flex-col gap-2 col-span-2">
 			<span class="font-bold">Options</span>
 			<span>
-				<!-- TODO: Make sure we don't render in initialData completely -->
 				<pre class="text-xs font-mono pl-4">{JSON.stringify(
 						{ ...query.opts, initialData: undefined },
 						null,
