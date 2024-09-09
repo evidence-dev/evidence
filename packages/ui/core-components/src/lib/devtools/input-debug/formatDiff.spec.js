@@ -78,9 +78,9 @@ describe('formatDiff', () => {
 		expect(output).toEqual([
 			{ content: '{', type: 'unchanged' },
 			{ content: '  "a": 1,', type: 'unchanged' },
-			{ content: '  "b": {', type: 'updated' },
+			{ content: '  "b": {', type: 'unchanged' },
 			{ content: '    "c": 3', type: 'updated' },
-			{ content: '  }', type: 'updated' },
+			{ content: '  }', type: 'unchanged' },
 			{ content: '}', type: 'unchanged' }
 		]);
 	});
