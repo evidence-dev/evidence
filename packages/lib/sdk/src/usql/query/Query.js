@@ -52,7 +52,8 @@ import { sterilizeQuery } from './sterilizeQuery.js';
  * @typedef {Object} QueryGlobalEvents
  * @property {undefined} inFlightQueryStart
  * @property {undefined} inFlightQueryEnd
- * @property {{raw: Query<any>, proxied: QueryValue<any>}} queryCreated
+ * @property {import('../types.js').QueryDebugPayload} queryCreated
+ * @property {undefined} cacheCleared
  */
 /** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
@@ -238,7 +239,8 @@ export class Query {
 	static #globalHandlerMap = {
 		inFlightQueryStart: new Set(),
 		inFlightQueryEnd: new Set(),
-		queryCreated: new Set()
+		queryCreated: new Set(),
+		cacheCleared: new Set()
 	};
 	/**
 	 * @template {keyof QueryGlobalEvents} Event
@@ -664,6 +666,7 @@ DESCRIBE ${this.text.trim()}
 
 	static emptyCache = () => {
 		this.#cache.clear();
+		this.#globalEmit('cacheCleared', undefined);
 	};
 
 	static get cacheSize() {
@@ -891,7 +894,10 @@ DESCRIBE ${this.text.trim()}
 
 		Query.#constructing = true;
 		const output = new Query(query, executeQuery, opts);
-		Query.#globalEmit('queryCreated', { raw: output, proxied: output.value });
+		Query.#globalEmit('queryCreated', {
+			raw: output,
+			proxied: output.value
+		});
 		if (!opts.disableCache) {
 			Query.#addToCache(output);
 			Query.#cacheCleanup();
@@ -977,6 +983,13 @@ DESCRIBE ${this.text.trim()}
 	/** @type {import('../types.js').QueryOpts} */
 	opts;
 
+	/** @type {string | undefined} */
+	#createdStack;
+
+	get createdStack() {
+		return this.#createdStack;
+	}
+
 	// TODO: Score (this should be done in another file)
 	// TODO: When dealing with builder functions, add a `select` or similar
 	/**
@@ -986,6 +999,11 @@ DESCRIBE ${this.text.trim()}
 	 * @deprecated Use {@link Query.create} instead
 	 */
 	constructor(query, executeQuery, opts = {}) {
+		this.#createdStack = new Error().stack
+			?.split('\n')
+			.slice(2)
+			.map((line) => line.slice('    at '.length))
+			.join('\n');
 		const {
 			id,
 			initialData = undefined,

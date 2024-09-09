@@ -683,22 +683,18 @@ describe('dropdownOptionStore', () => {
 			];
 			store.addOptions(...opts);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({ opts: get(store.options) });
+
 			store.toggleSelected(opts[0]);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({ opts: get(store.options) });
 
 			store.removeOptions(opts[0]);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({ opts: get(store.options) });
 
 			store.addOptions(opts[0]);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({ opts: get(store.options) });
 
 			store.toggleSelected(opts[0]);
 			await vi.advanceTimersByTimeAsync(100);
-			console.log({ opts: get(store.options) });
 
 			expect(get(store.options), 'Option should not have been removed').toHaveLength(2);
 			expect(get(store.options)[0].selected, 'Option should still be selected').toBe(false);

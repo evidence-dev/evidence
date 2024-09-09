@@ -101,11 +101,10 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 	import BarChart from '$lib/unsorted/viz/bar/BarChart.svelte';
 	import { Slider } from '$lib/atoms/inputs/slider';
@@ -114,7 +113,7 @@
 
 	import ReferenceLine from './ReferenceLine.svelte';
 
-	const inputStore = getContext(INPUTS_CONTEXT_KEY);
+	const inputStore = getInputContext();
 
 	const data = Query.create(
 		`
