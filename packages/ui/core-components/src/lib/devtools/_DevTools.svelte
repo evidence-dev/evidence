@@ -40,10 +40,10 @@
 		return () => window.removeEventListener('keydown', keybind);
 	});
 
-	import { readonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { History } from '@evidence-dev/sdk/utils';
 
-	const inputs = readonlyInputContext();
+	const inputs = getReadonlyInputContext();
 
 	/** @type {History}*/
 	const inputHistory = new History();

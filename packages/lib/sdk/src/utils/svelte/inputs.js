@@ -65,7 +65,7 @@ export const getInputContext = () => {
  *
  * @returns {import("svelte/store").Readable<any>}
  */
-export const readonlyInputContext = () => {
+export const getReadonlyInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
 		console.warn('InputStoreKey not found in context. Did you forget to call ensureInputContext?');
 		return readable({});
