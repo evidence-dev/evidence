@@ -1524,6 +1524,9 @@ importers:
       '@evidence-dev/sdk':
         specifier: workspace:^
         version: link:../../lib/sdk
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       tailwindcss:
         specifier: ^3.3.1
         version: 3.4.10
