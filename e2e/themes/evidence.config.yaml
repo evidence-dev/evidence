@@ -1,0 +1,6 @@
+themes:
+  myTheme1:
+    mySemanticColor: "#abcdef"
+  myTheme2:
+    mySemanticColor: "#fedcba"
+  

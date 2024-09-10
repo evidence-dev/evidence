@@ -1,4 +1,5 @@
 import { createThemes } from 'tw-colors';
+import { loadThemes } from './themes/loadThemes';
 
 const defaultTheme = require('tailwindcss/defaultTheme');
 
@@ -36,16 +37,7 @@ export const config = {
 			}
 		}
 	},
-	plugins: [
-		createThemes({
-			myTheme1: {
-				mySemanticColor: '#abcdef'
-			},
-			myTheme2: {
-				mySemanticColor: '#fedcba'
-			}
-		})
-	]
+	plugins: [createThemes(loadThemes())]
 };
 
 export default config;
