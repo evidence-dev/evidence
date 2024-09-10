@@ -9,22 +9,18 @@
   - [SDK Interface Packages](#sdk-interface-packages)
 - [Glossary](#glossary)
 
-
 ## Outline
 
 ### Goals:
+
 This document outlines the eventual structure for the Evidence monorepo we would like to reach.
 It is outlined with the following goals:
 
 - Clear definition of what functionality should live where
-
 - Good separation of concerns
-
 - Environment and Framework agnosticity
-
 - Ensure modularity to increase flexibility and encourage community contributions
   - Evidence should dogfood all modularity to ensure a good DX for 3rd party developers
-
 - Define the difference between [Evidence the "product"](#evidence-the-product) vs [Evidence the "framework"](#evidence-the-framework)
 
 ### Dependency Chart
@@ -53,7 +49,7 @@ graph LR
     cli("⌨️ cli")
     vscode("🆚 vscode")
 
-  
+
   subgraph core["🧠 Core Evidence Functionality"]
     vite
     usql
@@ -75,13 +71,13 @@ graph LR
     direction TB
     cli
     vscode
-  end  
+  end
 
   lang-svelte --> sdk
   lang-svelte --> vite
-  
+
   linkStyle 0,1 stroke:coral,stroke-width:2px;
-  
+
   application-shell --> ui-svelte
   application-shell --> lang-svelte
   application-shell --> tailwind
@@ -103,12 +99,12 @@ graph LR
 
   sdk --> usql
   linkStyle 12 stroke:cyan,stroke-width:2px;
-  
+
   sdk-client --> sdk
   vite --> sdk
-  
-note["📝 Packages not shown: 
-logging, telemetry 
+
+note["📝 Packages not shown:
+logging, telemetry
 (used by most packages)"]
 
     cli ~~~ vscode
@@ -129,9 +125,11 @@ Provides the only open source driver for Universal SQL, using DuckDB WASM to del
 This functionality was previously provided by `@evidence-dev/universal-sql`
 
 ##### Does:
+
 - Provide standard functions for getting query columns and row counts
 
 ##### Does Not:
+
 - Interact with DuckDB Native
 - Cache to or from the filesystem
 - Create `.parquet` files as part of the source evaluation process
@@ -147,6 +145,7 @@ Allows Evidence to collect anonymous information about product usage
 - Provide a simple, clear way to opt out of telemetry
 
 ##### Does Not:
+
 - Impact performance
 - Record any PII or sensitive information
 
@@ -155,68 +154,79 @@ Allows Evidence to collect anonymous information about product usage
 Responsible for providing a Vite plugin for converting a Vite app into an [Evidence App](#evidence-application)
 
 ##### Does:
+
 - Source HMR, Query File HMR, etc
 - Caching, implicit API at `/_evidence`
 
 ##### Does Not:
-- Copy files from a [Project](#evidence-project) to an [Application Shell](#application-shell)
 
+- Copy files from a [Project](#evidence-project) to an [Application Shell](#application-shell)
 
 #### `@evidence-dev/sdk`
 
 Responsible for encapsulating all Evidence framework logic, contains the needed interfaces to create an [Evidence Appliction](#evidence-application).
 
 ##### Does:
+
 - Implement stores using Svelte's store contract (without referencing Svelte directly)
   - Consider using a tool like [nanostores](https://github.com/nanostores/nanostores)
 - Provides everything needed to turn a Vite project into an [Evidence Application](#evidence-application)
   - This does not include framework-specific ergonomics such as those in [@evidence-dev/lang-svelte](#evidence-devlang-svelte)
 
 ##### Does Not:
+
 - Depend on Svelte, React, or any specific framework
 
 ##### Exports:
 
 ###### `@evidence-dev/sdk/config`
+
 - Utilities for reading and writing `evidence.config.yaml` according to a passed-in Zod Schema
 
 ###### `@evidence-dev/sdk/lib`
+
 - Library code used across environments
 - `EvidenceError`, `isDebug`, `fillMissingData`, `setTrackProxy`, etc.
 
 ###### `@evidence-dev/sdk/lib/datasources`
+
 - Library code to ease the creation of datasource plugins
 - Previously `@evidence-dev/db-commons`
 
 ###### `@evidence-dev/sdk/plugins/components`
+
 - Utilities for loading [Component Plugins](#component-plugin)
 
 ###### `@evidence-dev/sdk/plugins/datasources`
+
 - Utilities for loading [Datasource Plugins](#datasource-plugin)
 - Utilities for evaluating [Datasources](#datasources)
 
 ###### `@evidence-dev/sdk/plugins/app-shells`
+
 - Exposes functions for setting up the [Application Shell](#application-shell) and copying the [Project](#evidence-project) into it
 
 ###### `@evidence-dev/sdk/usql`
+
 - Library code for interacting with USQL
 - `Query`, `Metric`, etc.
 
 ###### `@evidence-dev/sdk/logging`
+
 - Provide functions for error, warn, log, and debug
 - Provide hooks to integrate logs into Evidence UIs (e.g. a log panel in VS Code)
   - These hooks should have a standard interface for the contents of the logs
 - Wrap / re-use an existing, tested logging framework to minimize first-party code
   - e.g. `winston` or `pino` should be used under the hood
 
-
 #### `@evidence-dev/lang-svelte`
 
-Responsible for providing a smooth interface between the [Evidence SDK](#evidence-devsdk) and Svelte. 
+Responsible for providing a smooth interface between the [Evidence SDK](#evidence-devsdk) and Svelte.
 
 This functionality was previously provided by `@evidence-dev/component-utilities`, `@evidence-dev/preprocessor` and `@evidence-dev/sdk/utils/svelte`
 
 ##### Does:
+
 - Provide a preprocessor to transform Evidence Markdown files to Svelte files
   - Extracts & Bootstraps Queries
   - Injects [Component Plugins](#component-plugin)
@@ -225,6 +235,7 @@ This functionality was previously provided by `@evidence-dev/component-utilities
   - Includes making SSR in an [Application Shell (plugin)](#application-shell-plugin) or [Evidence App](#evidence-application) trivial
 
 ##### Does Not:
+
 - Copy files from an [Evidence Project](#evidence-project) to an [Application Shell](#application-shell)
 
 ### UI Packages
@@ -249,11 +260,10 @@ This functionality was previously provided by `@evidence-dev/core-components` an
 - Apply echarts theme + styling (incl. user overrides)
 
 ##### Does Not:
+
 - Depend on Svelte, React or any other framework
 - Validate data (e.g. column existence)
 - Summarize data
-
-
 
 #### `@evidence-dev/ui-svelte`
 
@@ -263,21 +273,24 @@ Responsible for providing Visualization and UI Components for building
 This functionality was previously provided by `@evidence-dev/core-components` and `@evidence-dev/component-utilities`
 
 ##### Does:
+
 - Provide the components needed to build a quality, comprehensive data application
 
 ##### Does Not:
-- Provide the building blocks for Application shells
 
+- Provide the building blocks for Application shells
 
 #### `@evidence-dev/icons`
 
 Responsible for supplementing existing icon libraries with Evidence-specific icons
 
 ##### Does:
+
 - Provide icon sources using the [steeze-ui](https://github.com/steeze-ui/icons) format
 - Support themeing
 
 ##### Does Not:
+
 - Depend on Svelte, React or any other framework
 
 #### `@evidence-dev/tailwind`
@@ -285,9 +298,9 @@ Responsible for supplementing existing icon libraries with Evidence-specific ico
 Responsible for providing a consistent tailwind design language for all things Evidence
 
 ##### Does:
+
 - Expose a tailwind preset
 - Load and apply [Evidence themes](#evidence-theme)
-
 
 ### SDK Interface Packages
 
@@ -298,6 +311,7 @@ Responsible for managing [Evidence Projects](#evidence-project) and [Datasources
 This functionality was previously provided by `@evidence-dev/evidence`
 
 ##### Does:
+
 - Provides terminal-based wizards for SDK workflows
 
 #### `create-evidence`
@@ -305,11 +319,12 @@ This functionality was previously provided by `@evidence-dev/evidence`
 Responsible for enabling `npm create evidence`
 
 ##### Does:
+
 - Wrap the [cli](#evidence-devcli)
 
 ##### Does Not:
-- Implement any functionality
 
+- Implement any functionality
 
 #### `@evidence-dev/vscode`
 
@@ -318,6 +333,7 @@ Responsible for managing [Evidence Projects](#evidence-project) and [Datasources
 This functionality was previously provided by `evidence-vscode`
 
 ##### Does:
+
 - Provides wizards for SDK workflows in VS Code
 
 ---
@@ -337,7 +353,7 @@ This functionality was previously provided by `evidence-vscode`
 - Drop-in reactive data layer for any Vite-based application
 - Used by front-end developers via [sdk](#evidence-devsdk)
 
-#### Evidence Project 
+#### Evidence Project
 
 - Uses the [CLI](#evidence-devcli) or [VS Code Extension](#evidence-devvscode) to bootstrap, configure, develop, and deploy.
 - Contains known directories (e.g. `pages`, `sources`, etc.), and is copied into an [Application Shell](#application-shell) to create the final site.
@@ -350,7 +366,7 @@ This functionality was previously provided by `evidence-vscode`
 #### Application Shell
 
 - The result of copying the content of an [Evidence Project](#evidence-project) into an [Application Shell Plugin](#application-shell-plugin).
-- This will be a "final" project, that can be built into a deployable artifact. 
+- This will be a "final" project, that can be built into a deployable artifact.
 - Application shells are hidden from the user (in the `.evidence` directory)
 
 #### Datasources
@@ -365,7 +381,7 @@ This functionality was previously provided by `evidence-vscode`
 
 #### Component Plugin
 
-- A standalone Javascript package that contains components for [Authors](#authors) to use in their projects.  
+- A standalone Javascript package that contains components for [Authors](#authors) to use in their projects.
 - The components specified in this package are implicitly loaded and do not need to be specified on each page.
 
 #### Datasource Plugin
@@ -375,7 +391,7 @@ This functionality was previously provided by `evidence-vscode`
 #### Application Shell Plugin
 
 - Provides a shell application (in any framework) that creates
-a destination for the files in an [Evidence Project](#evidence-project). 
+  a destination for the files in an [Evidence Project](#evidence-project).
 - It is implicitly also an [Evidence App](#evidence-application).
 
 ### Types of Users
