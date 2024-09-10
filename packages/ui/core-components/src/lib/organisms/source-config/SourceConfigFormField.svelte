@@ -140,7 +140,9 @@
 
 <div class="w-full">
 	<label
-		class="flex justify-between w-full items-start {spec.type !== 'multiline' ? 'h-11' : 'h-auto'}"
+		class="flex justify-between w-full items-start"
+		class:h-11={spec.type !== "multiline"}
+		class:h-auto={spec.type === "multiline"}
 	>
 		<div class="mr-2 inline-flex flex-col gap-1">
 			<p class="flex items-center gap-1">
