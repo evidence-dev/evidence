@@ -21,7 +21,6 @@ It is outlined with the following goals:
 - Environment and Framework agnosticity
 - Ensure modularity to increase flexibility and encourage community contributions
   - Evidence should dogfood all modularity to ensure a good DX for 3rd party developers
-- Define the difference between [Evidence the "product"](#evidence-the-product) vs [Evidence the "framework"](#evidence-the-framework)
 
 ### Dependency Chart
 
@@ -114,7 +113,7 @@ logging, telemetry
 
 ## Packages
 
-This is not a comprehensive list of all packages in the monorepo - it does not include any datasources. These will all exist in `./packages/datasources`, and do not have any bearing on the structure of the [Evidence framework](#evidence-the-framework)
+This is not a comprehensive list of all packages in the monorepo - it does not include any datasources. These will all exist in `./packages/datasources`, and do not have any bearing on the structure of the project
 
 ### Library Packages
 
@@ -342,13 +341,13 @@ This functionality was previously provided by `evidence-vscode`
 
 ### Evidence Terms
 
-#### Evidence the "Product"
+#### Evidence
 
 - BI as Code tool using Markdown + SQL to build fast, reactive reports and apps
 - Used by the Modern Data Professional
-- An [Application Shell](#application-shell) built with the [Evidence Framework](#evidence-the-framework)
+- An [Application Shell](#application-shell) built with the [Evidence Framework](#headless-evidence)
 
-#### Evidence the "Framework"
+#### Headless Evidence
 
 - Drop-in reactive data layer for any Vite-based application
 - Used by front-end developers via [sdk](#evidence-devsdk)
@@ -361,7 +360,7 @@ This functionality was previously provided by `evidence-vscode`
 
 #### Evidence Application
 
-- Any web project that introduced the [SDK](#evidence-devsdk) and [Datasources](#datasource-plugin) to create a drop-in data layer.
+- Any web project that introduced the [SDK](#evidence-devsdk) and [Datasources](#datasource-plugin) to leverage [Headless Evidence](#headless-evidence).
 
 #### Application Shell
 
@@ -393,6 +392,7 @@ This functionality was previously provided by `evidence-vscode`
 - Provides a shell application (in any framework) that creates
   a destination for the files in an [Evidence Project](#evidence-project).
 - It is implicitly also an [Evidence App](#evidence-application).
+- Includes an initial project state
 
 ### Types of Users
 
