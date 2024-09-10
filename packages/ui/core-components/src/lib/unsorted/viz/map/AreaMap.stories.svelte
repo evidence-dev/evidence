@@ -7,17 +7,16 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { Dropdown, DropdownOption } from '../../../atoms/inputs/dropdown/index.js';
 
 	import AreaMap from './AreaMap.svelte';
 	import { screen, userEvent, within } from '@storybook/test';
 
-	const inputStore = getContext(INPUTS_CONTEXT_KEY);
+	const inputStore = getInputContext();
 
 	/** @type {typeof query} */
 	const slowQuery = async (...args) => {

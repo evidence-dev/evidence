@@ -5,8 +5,8 @@
 <script>
 	import { presets, setButtonGroupContext } from './lib.js';
 	import { writable, readonly } from 'svelte/store';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { getContext, setContext } from 'svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
@@ -23,6 +23,7 @@
 	/** @type {keyof typeof presets | undefined} */
 	export let preset = undefined;
 
+	const inputs = getInputContext();
 	// for Tabs styling
 	/** @type {'tabs' | 'buttons'} */
 	export let display = 'buttons';
@@ -34,10 +35,9 @@
 
 	export let color = 'hsla(207, 65%, 39%, 1)';
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
-
 	const valueStore = writable(null);
 
+	// TODO: Use getInputSetter instead
 	setButtonGroupContext((v) => {
 		$valueStore = v;
 		// the assignment to $inputs is necessary to trigger the change on SSR

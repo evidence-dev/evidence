@@ -10,6 +10,12 @@
 	/** @type {import('@steeze-ui/svelte-icon').IconSource} */
 	export let icon = InfoCircle;
 
+	/** @type {"sm" | "md" | "lg"}*/
+	export let maxWidth = undefined;
+
+	/** @type {"right" | "left"} */
+	export let direction = 'right';
+
 	let visible = false;
 
 	const showMessage = () => (visible = true);
@@ -21,31 +27,25 @@
 	on:blur={hideMessage}
 	on:mouseenter={showMessage}
 	on:mouseleave={hideMessage}
-	class="additional-info-icon"
+	class="inline-block align-middle leading-4 cursor-help relative w-fit"
 	role="tooltip"
 >
-	<Icon src={icon} class="w-5 h-5" />
+	<slot name="handle">
+		<Icon src={icon} class="w-5 h-5 text-gray-600" />
+	</slot>
 
 	{#if visible}
-		<span transition:fade class="info-msg">
+		<span
+			transition:fade
+			class="text-sm text-white bg-gray-900/90 rounded py-1 px-2 absolute -top-[5%] z-50 min-w-min w-max"
+			class:left-[115%]={direction === 'right'}
+			class:right-[115%]={direction === 'left'}
+			class:max-w-sm={maxWidth === 'sm'}
+			class:max-w-md={maxWidth === 'md'}
+			class:max-w-lg={maxWidth === 'lg'}
+			class:max-w-[200px]={maxWidth !== 'sm' && maxWidth !== 'md' && maxWidth !== 'lg'}
+		>
 			<slot />
 		</span>
 	{/if}
 </span>
-
-<style scoped lang="postcss">
-	span.additional-info-icon {
-		width: 18px;
-		color: var(--grey-600);
-		display: inline-block;
-		vertical-align: middle;
-		line-height: 1em;
-		cursor: help;
-		position: relative;
-		text-transform: none;
-	}
-
-	.info-msg {
-		@apply text-sm text-white bg-gray-900/90 rounded py-1 px-2 absolute -top-[5%] left-[115%] z-50 min-w-[200px] max-w-sm;
-	}
-</style>
