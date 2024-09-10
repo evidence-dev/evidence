@@ -1,5 +1,15 @@
 # Evidence Monorepo Structure Goals
 
+- [Outline](#outline)
+  - [Goals](#goals)
+  - [Dependency Chart](#dependency-chart)
+- [Packages](#packages)
+  - [Library Packages](#library-packages)
+  - [UI Packages](#ui-packages)
+  - [SDK Interface Packages](#sdk-interface-packages)
+- [Glossary](#glossary)
+
+
 ## Outline
 
 ### Goals:
