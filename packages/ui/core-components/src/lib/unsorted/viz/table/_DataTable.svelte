@@ -146,6 +146,14 @@
 		return { ...d, priorityColumns };
 	});
 
+	$: finalColumnOrder = getFinalColumnOrder(
+		$props.columns.map((d) => d.id),
+		$props.priorityColumns
+	);
+	$: orderedColumns = [...$props.columns].sort(
+		(a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)
+	);
+
 	$: try {
 		error = undefined;
 
@@ -211,14 +219,10 @@
 
 	$: if (searchFactory) {
 		if (searchValue) {
-			let searchCol =
-				$props.columns.length > 0
-					? $props.columns.map((c) => c.id)
-					: data.columns.map((c) => c.column_name);
 			searchFactory(
 				data.search(
 					searchValue,
-					searchCol,
+					$props.columns.map((c) => c.id),
 					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
 				),
 				data.opts
@@ -373,14 +377,10 @@
 		});
 	}
 
-	let tableData;
-	$: tableData =
-		$props.columns.length > 0
-			? dataSubset(
+	$: tableData = dataSubset(
 					data,
 					$props.columns.map((d) => d.id)
-				)
-			: data;
+	);
 
 	// ---------------------------------------------------------------------------------------
 	// GROUPED DATA
@@ -462,7 +462,12 @@
 {/if}
 
 {#if error === undefined}
-	<slot />
+	<slot>
+		<!-- default to every column with no customization -->
+		{#each columnSummary as column}
+			<Column id={column.id} />
+		{/each}
+	</slot>
 
 	{#if link}
 		<InvisibleLinks {data} {link} />
@@ -491,10 +496,7 @@
 					{rowNumbers}
 					{headerColor}
 					{headerFontColor}
-					finalColumnOrder={getFinalColumnOrder(
-						$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-						$props.priorityColumns
-					)}
+					{orderedColumns}
 					{columnSummary}
 					{compact}
 					{sortable}
@@ -525,12 +527,7 @@
 									{rowNumbers}
 									{subtotals}
 									{compact}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
+									{orderedColumns}
 								/>
 								{#if groupToggleStates[groupName]}
 									<TableRow
@@ -545,12 +542,7 @@
 										{columnSummary}
 										grouped={true}
 										groupColumn={groupBy}
-										finalColumnOrder={getFinalColumnOrder(
-											$props.columns.length > 0
-												? $props.columns.map((d) => d.id)
-												: Object.keys(data[0]),
-											$props.priorityColumns
-										)}
+										{orderedColumns}
 									/>
 								{/if}
 							{:else if groupType === 'section'}
@@ -568,12 +560,7 @@
 									{columnSummary}
 									grouped={true}
 									{groupNamePosition}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
+									{orderedColumns}
 								/>
 								{#if subtotals}
 									<SubtotalRow
@@ -585,12 +572,7 @@
 										{groupType}
 										{groupBy}
 										{compact}
-										finalColumnOrder={getFinalColumnOrder(
-											$props.columns.length > 0
-												? $props.columns.map((d) => d.id)
-												: Object.keys(data[0]),
-											$props.priorityColumns
-										)}
+										{orderedColumns}
 									/>
 								{/if}
 							{/if}
@@ -605,10 +587,7 @@
 							{compact}
 							{index}
 							{columnSummary}
-							finalColumnOrder={getFinalColumnOrder(
-								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-								$props.priorityColumns
-							)}
+							{orderedColumns}
 						/>
 					{/if}
 
@@ -621,10 +600,7 @@
 							fontColor={totalFontColor}
 							{groupType}
 							{compact}
-							finalColumnOrder={getFinalColumnOrder(
-								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-								$props.priorityColumns
-							)}
+							{orderedColumns}
 						/>
 					{/if}
 				</QueryLoad>
