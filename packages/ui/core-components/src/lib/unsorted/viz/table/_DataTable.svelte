@@ -275,9 +275,9 @@
 
 		if (groupBy) {
 			// sort within grouped data
-			Object.keys(groupedData).forEach((groupName) => {
+			for (const groupName of Object.keys(groupedData)) {
 				groupedData[groupName] = groupedData[groupName].sort(sort);
-			});
+			}
 		}
 	};
 
@@ -371,15 +371,17 @@
 
 	function dataSubset(data, selectedCols) {
 		return data.map((obj) => {
-			var toReturn = {}; //object that would give each desired key for each part in arr
-			selectedCols.forEach((key) => (toReturn[key] = obj[key])); //placing wanted keys in toReturn
-			return toReturn;
+			const ret = {};
+			for (const key of selectedCols) {
+				ret[key] = obj[key];
+			}
+			return ret;
 		});
 	}
 
 	$: tableData = dataSubset(
-					data,
-					$props.columns.map((d) => d.id)
+		data,
+		$props.columns.map((d) => d.id)
 	);
 
 	// ---------------------------------------------------------------------------------------
@@ -403,29 +405,26 @@
 		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
 			acc[groupName] = {}; // Initialize groupRow object for this group
 
-			// Get a list of columns to aggregate from $props.columns
-			const columnsToAggregate = $props.columns.length > 0 ? $props.columns : columnSummary;
-
-			columnsToAggregate.forEach((columnDef) => {
-				const column = columnDef.id;
-				const colType = columnSummary.find((d) => d.id === column)?.type;
-				const totalAgg = columnDef.totalAgg;
-				const weightCol = columnDef.weightCol;
+			for (const col of $props.columns) {
+				const id = col.id;
+				const colType = columnSummary.find((d) => d.id === id)?.type;
+				const totalAgg = col.totalAgg;
+				const weightCol = col.weightCol;
 				const rows = groupedData[groupName];
-				acc[groupName][column] = aggregateColumn(rows, column, totalAgg, colType, weightCol);
-			});
+				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
+			}
 
 			return acc;
 		}, {});
 
 		// Update groupToggleStates only for new groups
 		const existingGroups = Object.keys(groupToggleStates);
-		Object.keys(groupedData).forEach((groupName) => {
+		for (const groupName of Object.keys(groupedData)) {
 			if (!existingGroups.includes(groupName)) {
 				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
 			}
 			// Existing states are untouched
-		});
+		}
 	}
 
 	let fullscreen = false;
