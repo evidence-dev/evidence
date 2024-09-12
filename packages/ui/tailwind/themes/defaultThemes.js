@@ -2,10 +2,10 @@
 
 /** @type {Themes}*/
 export const defaultThemes = {
-	myTheme1: {
+	light: {
 		mySemanticColor: 'red'
 	},
-	myTheme2: {
+	dark: {
 		mySemanticColor: 'pink'
 	}
 };

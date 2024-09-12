@@ -1,3 +1,5 @@
 themes:
-  myTheme1:
-    mySemanticColor: 123
+  light:
+    mySemanticColor: orange
+  dark:
+    mySemanticColor: purple
