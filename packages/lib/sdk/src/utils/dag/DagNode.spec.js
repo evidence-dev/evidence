@@ -1,15 +1,15 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { ActiveNode, Node, PassiveNode, nodesToMermaid } from './node.js';
+import { ActiveDagNode, DagNode, PassiveDagNode, nodesToMermaid } from './DagNode.js';
 const noop = () => {};
 
 describe('Node', () => {
 	it('should be a function', () => {
-		expect(typeof Node).toBe('function');
+		expect(typeof DagNode).toBe('function');
 	});
 
 	it('should be dirty and clean', async () => {
-		const node = new ActiveNode('name', noop);
+		const node = new ActiveDagNode('name', noop);
 		expect(node.dirty).toBe(false);
 		node.markDirty();
 		expect(node.dirty).toBe(true);
@@ -18,16 +18,16 @@ describe('Node', () => {
 	});
 
 	it('should not allow circular dependencies', () => {
-		const parent = new Node('parent');
-		const child = new Node('child');
+		const parent = new DagNode('parent');
+		const child = new DagNode('child');
 
 		child.registerDependency(parent);
 		expect(() => parent.registerDependency(child)).toThrow();
 	});
 	it('should not allow deep circular dependencies', () => {
-		const parent = new Node('parent');
-		const middle = new Node('middle');
-		const child = new Node('child');
+		const parent = new DagNode('parent');
+		const middle = new DagNode('middle');
+		const child = new DagNode('child');
 
 		middle.registerDependency(parent);
 		child.registerDependency(middle);
@@ -35,8 +35,8 @@ describe('Node', () => {
 	});
 
 	it('should pass dirty to children', () => {
-		const parent = new ActiveNode('parent', noop);
-		const child = new ActiveNode('child', noop);
+		const parent = new ActiveDagNode('parent', noop);
+		const child = new ActiveDagNode('child', noop);
 
 		child.registerDependency(parent);
 
@@ -44,82 +44,77 @@ describe('Node', () => {
 		expect(child.dirty).toBe(true);
 	});
 
-    // TODO: Test marking active nodes dirty
-
-	it('should handle this fugly case', async () => {
+	it('should flush and run exec functions at most once', async () => {
 		const exec = vi.fn();
 
-        vi.useFakeTimers()
+		const root = new ActiveDagNode('root', () => exec('root'));
+		const mid = new ActiveDagNode('mid', () => exec('mid'));
+		const child = new ActiveDagNode('child', () => exec('child'));
 
-		const queryOne = new ActiveNode('queryOne', exec);
-		
-        const slowExec = vi.fn(async () => {
-            await new Promise(res => setTimeout(res, 1000));
-        })
-        const queryTwo = new ActiveNode('queryTwo', slowExec);
-		
-        const queryThree = new ActiveNode('queryThree', exec);
-		const queryFour = new ActiveNode('queryFour', exec);
+		child.registerDependency(mid);
+		child.registerDependency(root);
+		mid.registerDependency(root);
 
-		const inputOne = new PassiveNode('inputOne');
-		const inputTwo = new PassiveNode('inputTwo');
-		const inputThree = new PassiveNode('inputThree');
+		root.markChildrenDirty();
+		expect(child.dirty).toBe(true);
+		expect(mid.dirty).toBe(true);
 
-		inputOne.registerDependency(queryOne);
-		inputTwo.registerDependency(queryOne);
+		await root.flush();
+        console.log(exec.mock.calls)
 
-		queryTwo.registerDependency(inputOne);
-		queryTwo.registerDependency(inputThree);
-
-        inputTwo.registerDependency(queryTwo);
-
-        queryThree.registerDependency(inputTwo);
-        queryThree.registerDependency(inputThree);
-
-        queryFour.registerDependency(inputOne);
-        queryFour.registerDependency(inputTwo);
-        queryFour.registerDependency(inputThree);
-
-        expect(() => inputThree.registerDependency(queryFour)).toThrow();
-
-        inputThree.markChildrenDirty();
-        await inputThree.flush()
-        await vi.advanceTimersByTimeAsync(500)
-        
-        expect(slowExec).toHaveBeenCalledTimes(1)
-        expect(exec).toHaveBeenCalledTimes(2)
-        await inputThree.flush()
-        
-
-
-		console.log(
-			Array.from(
-				new Set(
-					`
-graph TD
-${nodesToMermaid([inputOne, inputTwo, inputThree, queryOne, queryTwo, queryThree, queryFour])}
-`.split('\n')
-				)
-			).join('\n')
-		);
-
-        vi.useRealTimers()
+		expect(exec).toHaveBeenCalledTimes(2);
+		expect(exec).toHaveBeenNthCalledWith(1, 'mid');
+		expect(exec).toHaveBeenNthCalledWith(2, 'child');
 	});
 
+	it('should handle duplicate runs', async () => {
+		const exec = vi.fn();
+
+		const root = new ActiveDagNode('root', () => exec('root'));
+		const mid = new ActiveDagNode('mid', async () => {
+            await new Promise((res) => setTimeout(res, 1000));
+			exec('mid');
+		});
+		const child = new ActiveDagNode('child', () => exec('child'));
+
+		// Register dependencies
+		child.registerDependency(mid);
+		child.registerDependency(root);
+		mid.registerDependency(root);
+
+        vi.useFakeTimers()
+		// Name these functions so we can see what's going on
+		const updateRoot = () => {
+			console.log('<-- updateRoot -->');
+
+			return root.flush();
+		};
+
+		const firstUpdate = updateRoot();
+        await vi.advanceTimersByTimeAsync(500);
+        
+        const secondUpdate = updateRoot();
+        await vi.advanceTimersByTimeAsync(1000);
+
+		expect(exec).toHaveBeenCalledTimes(3);
+		expect(exec).toHaveBeenNthCalledWith(1, 'mid');
+		expect(exec).toHaveBeenNthCalledWith(2, 'mid');
+		expect(exec).toHaveBeenNthCalledWith(3, 'child');
+	});
+
+	// TODO: Test marking active nodes dirty
+    // TODO: Clean up epoch behavior - the thought is there but it needs refining
+
 	it('should track dependencies', async () => {
-		const execOrder = [];
+		
 
-		const statesExec = vi.fn(() => execOrder.push('states'));
-		const statesQuery = new ActiveNode('states', statesExec);
+		const exec = vi.fn();
+		const statesQuery = new ActiveDagNode('states', () => exec('states'));
+		const localesQuery = new ActiveDagNode('locales', () => exec('locales'));
+		const ordersQuery = new ActiveDagNode('orders', () => exec('orders'));
 
-		const localesExec = vi.fn(() => execOrder.push('locales'));
-		const localesQuery = new ActiveNode('locales', localesExec);
-
-		const ordersExec = vi.fn(() => execOrder.push('orders'));
-		const ordersQuery = new ActiveNode('orders', ordersExec);
-
-		const selectedState = new PassiveNode('selectedState');
-		const selectedLocale = new PassiveNode('selectedLocale');
+		const selectedState = new PassiveDagNode('selectedState');
+		const selectedLocale = new PassiveDagNode('selectedLocale');
 
 		selectedState.registerDependency(statesQuery);
 		selectedLocale.registerDependency(localesQuery);
@@ -134,9 +129,12 @@ ${nodesToMermaid([inputOne, inputTwo, inputThree, queryOne, queryTwo, queryThree
 
 		await selectedState.flush();
 
-		expect(statesExec).not.toHaveBeenCalled();
-		expect(localesExec).toHaveBeenCalledOnce();
-		expect(ordersExec).toHaveBeenCalledOnce();
-		expect(execOrder).toEqual(['locales', 'orders']);
+        console.log(exec.mock.calls)
+		expect(exec).toHaveBeenCalledTimes(2);
+        expect(exec).toHaveBeenNthCalledWith(1, 'locales');
+        expect(exec).toHaveBeenNthCalledWith(2, 'orders');
+		// expect(localesExec).toHaveBeenCalledOnce();
+		// expect(ordersExec).toHaveBeenCalledOnce();
+		// expect(execOrder).toEqual(['locales', 'orders']);
 	});
 });

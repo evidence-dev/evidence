@@ -2,7 +2,7 @@
 
 /**
  * @template T
- * @typedef {import('../../usql/types.js').MaybePromise<T>}  MaybePromise
+ * @typedef {import('../../usql/types.js').MaybePromise<T>} MaybePromise
  */
 
 /**
@@ -60,7 +60,6 @@ export class DagNode {
 	};
 
 	async flush() {
-		console.log(`${this.name} | Flush`);
 		for (const child of this.children) {
 			if (child instanceof ActiveDagNode) {
 				await child.tidy();
@@ -90,8 +89,13 @@ export class ActiveDagNode extends DagNode {
 	exec;
 
 	tidy = async () => {
-		const canExec = [...this.parents].every((parent) => !parent.dirty);
-		if (canExec && this.exec) this.exec();
+		const canExec = [...this.parents].every((parent) => !parent.dirty) && this.dirty;
+		if (canExec) {
+			if (this.exec) {
+				await this.exec();
+			}
+			this.#dirty = false;
+		}
 	};
 
 	/**
@@ -118,8 +122,8 @@ export class ActiveDagNode extends DagNode {
 	};
 
 	flush = async () => {
+		if (this.dirty) await this.tidy();
 		await super.flush();
-		this.#dirty = false;
 	};
 
 	get mermaidName() {
@@ -144,12 +148,13 @@ export class PassiveDagNode extends DagNode {
 
 const noop = () => {};
 
-
 /**
- * 
- * @param {DagNode[]} nodes 
+ *
+ * @param {DagNode[]} nodes
  * @returns {string}
  */
 export function nodesToMermaid(nodes) {
-    return nodes.map((node) => node.toMermaid()).join('\n');
+	const lines = nodes.flatMap((node) => node.toMermaid().trim().split('\n'));
+	const distinctLines = new Set(lines);
+	return `graph TD\n\t${Array.from(distinctLines).join('\n\t')}`;
 }
