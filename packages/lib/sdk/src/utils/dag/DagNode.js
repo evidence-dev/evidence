@@ -1,5 +1,7 @@
 // TODO: Move instanceof to duck typing
 
+import { nanoid } from 'nanoid';
+
 /**
  * @template T
  * @typedef {import('../../usql/types.js').MaybePromise<T>} MaybePromise
@@ -50,23 +52,39 @@ export class DagNode {
 		return true;
 	};
 
-	markChildrenDirty = () => {
+	/**
+	 *
+	 * @param {Symbol} epochId
+	 */
+	markChildrenDirty = (epochId) => {
 		this.children.forEach((child) => {
 			if (child instanceof ActiveDagNode) {
-				child.markDirty();
+				child.markDirty(epochId);
 			}
-			child.markChildrenDirty();
+			child.markChildrenDirty(epochId);
 		});
 	};
 
-	async flush() {
+    /** 
+     * @param {Symbol} epochId 
+     * @deprecated "Use trigger instead"
+     */
+	async flush(epochId) {
 		for (const child of this.children) {
 			if (child instanceof ActiveDagNode) {
-				await child.tidy();
+				await child.tidy(epochId);
 			}
 
-			await child.flush();
+			await child.flush(epochId);
 		}
+	}
+
+	async trigger() {
+		// Use symbol so that we only get referential equality
+		const epochId = Symbol(nanoid());
+
+		this.markChildrenDirty(epochId);
+		await this.flush(epochId);
 	}
 
 	get mermaidName() {
@@ -88,8 +106,14 @@ export class ActiveDagNode extends DagNode {
 	/** @type {ExecFn} */
 	exec;
 
-	tidy = async () => {
-		const canExec = [...this.parents].every((parent) => !parent.dirty) && this.dirty;
+	/**
+	 *
+	 * @param {Symbol} epochId
+	 */
+	tidy = async (epochId) => {
+        const parentsClean = [...this.parents].every((parent) => !parent.dirty);
+        const correctEpoch = this.#epochId === epochId;
+		const canExec =  parentsClean && correctEpoch && this.dirty;
 		if (canExec) {
 			if (this.exec) {
 				await this.exec();
@@ -114,16 +138,25 @@ export class ActiveDagNode extends DagNode {
 		return this.#dirty;
 	}
 
-	markDirty = () => {
+	/** @type {Symbol | undefined} */
+	#epochId = undefined;
+
+	/**
+	 * @param {Symbol} epochId
+	 */
+	markDirty = (epochId) => {
+		// This is now dirtied by the epoch
+		this.#epochId = epochId;
 		this.#dirty = true;
 		this.children.forEach((child) => {
-			child.markChildrenDirty();
+			child.markChildrenDirty(epochId);
 		});
 	};
 
-	flush = async () => {
-		if (this.dirty) await this.tidy();
-		await super.flush();
+    /** @param {Symbol} epochId */
+	flush = async (epochId) => {
+		if (this.dirty) await this.tidy(epochId);
+		await super.flush(epochId);
 	};
 
 	get mermaidName() {
