@@ -85,17 +85,15 @@ describe('DagNode', () => {
 			const selectedLocale = new PassiveDagNode('selectedLocale');
 
 			selectedState.registerDependency(statesQuery);
+
 			selectedLocale.registerDependency(localesQuery);
+
 			localesQuery.registerDependency(selectedState);
+
 			ordersQuery.registerDependency(selectedLocale);
 			ordersQuery.registerDependency(selectedState);
 
-			selectedState.markChildrenDirty(); // user made a selection
-			expect(selectedLocale.dirty).toBe(true);
-			expect(localesQuery.dirty).toBe(true);
-			expect(ordersQuery.dirty).toBe(true);
-
-			await selectedState.flush();
+			await selectedState.trigger();
 
 			expect(exec).toHaveBeenCalledTimes(2);
 			expect(exec).toHaveBeenNthCalledWith(1, 'locales');

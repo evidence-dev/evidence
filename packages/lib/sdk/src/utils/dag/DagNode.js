@@ -53,7 +53,6 @@ export class DagNode {
 	};
 
 	/**
-	 *
 	 * @param {Symbol} epochId
 	 */
 	markChildrenDirty = (epochId) => {
@@ -65,10 +64,11 @@ export class DagNode {
 		});
 	};
 
-    /** 
-     * @param {Symbol} epochId 
-     * @deprecated "Use trigger instead"
-     */
+	/**
+	 * @param {Symbol} epochId
+	 * @deprecated "Use trigger instead"
+	 * @ignore
+	 */
 	async flush(epochId) {
 		for (const child of this.children) {
 			if (child instanceof ActiveDagNode) {
@@ -111,9 +111,9 @@ export class ActiveDagNode extends DagNode {
 	 * @param {Symbol} epochId
 	 */
 	tidy = async (epochId) => {
-        const parentsClean = [...this.parents].every((parent) => !parent.dirty);
-        const correctEpoch = this.#epochId === epochId;
-		const canExec =  parentsClean && correctEpoch && this.dirty;
+		const parentsClean = [...this.parents].every((parent) => !parent.dirty);
+		const correctEpoch = this.#epochId === epochId;
+		const canExec = parentsClean && correctEpoch && this.dirty;
 		if (canExec) {
 			if (this.exec) {
 				await this.exec();
@@ -153,7 +153,7 @@ export class ActiveDagNode extends DagNode {
 		});
 	};
 
-    /** @param {Symbol} epochId */
+	/** @param {Symbol} epochId */
 	flush = async (epochId) => {
 		if (this.dirty) await this.tidy(epochId);
 		await super.flush(epochId);
