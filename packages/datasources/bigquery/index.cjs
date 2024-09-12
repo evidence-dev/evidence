@@ -12,7 +12,6 @@ const {
 	TypeFidelity,
 	asyncIterableToBatchedAsyncGenerator
 } = require('@evidence-dev/db-commons');
-const { title } = require('node:process');
 
 /**
  * Standardizes a row from a BigQuery query
