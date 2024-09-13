@@ -1,5 +1,22 @@
 # e2e-spa
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [bb0576d5b]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/core-components@4.8.0
+  - @evidence-dev/evidence@39.1.6
+  - @evidence-dev/snowflake@1.1.2
+  - @evidence-dev/bigquery@2.0.8
+
 ## 0.0.2
 
 ### Patch Changes

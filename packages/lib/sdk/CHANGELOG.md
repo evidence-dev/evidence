@@ -1,5 +1,20 @@
 # @evidence-dev/sdk
 
+## 1.4.0
+
+### Minor Changes
+
+- 999fffa38: Change input store interactions
+
+### Patch Changes
+
+- 999fffa38: Add diff utilities for tracking object store histories
+- 999fffa38: Improve sdk debug behavior for better consistency
+- 1e5e5f1da: Dont throw error if sources directory doesn't exist when running sources
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+- 999fffa38: Add more static events to Query
+
 ## 1.3.10
 
 ### Patch Changes
