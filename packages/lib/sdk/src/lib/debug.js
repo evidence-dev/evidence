@@ -28,3 +28,6 @@ export const disableDebug = () => {
 	delete process.env.EVIDENCE_DEBUG;
 	delete process.env.VITE_PUBLIC_EVIDENCE_DEBUG;
 };
+
+// Sync debug state (e.g. if any of the env vars are set, assume we are in debug mode)
+if (isDebug()) enableDebug();

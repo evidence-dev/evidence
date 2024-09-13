@@ -15,6 +15,8 @@ import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
 import { VITE_EVENTS } from '../../build-dev/vite/constants.js';
 import { sterilizeQuery } from './sterilizeQuery.js';
+import { ActiveDagNode } from '../../utils/dag/DagNode.js';
+import zip from 'lodash/zip.js';
 
 /**
  * @typedef {import("../types.js").QueryResultRow} QueryResultRow
@@ -55,11 +57,10 @@ import { sterilizeQuery } from './sterilizeQuery.js';
  * @property {import('../types.js').QueryDebugPayload} queryCreated
  * @property {undefined} cacheCleared
  */
-/** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
-/**
- * @typedef {import('../types.js').EventEmitter<QueryEvents>} QueryEventEmitter
- */
+/** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
+/** @typedef {import('../types.js').EventEmitter<QueryEvents>} QueryEventEmitter */
+/** @typedef {import('../../utils/dag/types.js').WithDag} WithDag */
 
 /**
  * @class
@@ -67,6 +68,7 @@ import { sterilizeQuery } from './sterilizeQuery.js';
  * @implements {Query<RowType>}
  * @implements {Readable<QueryValue<RowType>>}
  * @implements {QueryEventEmitter}
+ * @implements {WithDag}
  */
 export class Query {
 	////////////////////////////
@@ -715,6 +717,120 @@ DESCRIBE ${this.text.trim()}
 
 	/**
 	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
+	 * @param {import('../types.js').QueryOpts<any>} [initialOptions]
+	 */
+	static withDag = (reactiveOpts, initialOptions = {}) => {
+		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
+
+		/** @type {QueryValue<any>} */
+		let activeQuery;
+		/** @type {number} */
+		let changeIdx = 0;
+		// TODO: Should we override this, or should we merge this?
+		let currentOpts = { ...initialOptions };
+
+		const dagNode = new ActiveDagNode(`Query | ${currentOpts.id ?? 'Unknown'}`, async (epochId) => {
+			// console.trace("Execution", epochId, currentOpts.id);
+			activeQuery.publish("DagNode Execution");
+			const currentGen = ++changeIdx;
+			const hasUnsetInput = _args.some((arg) => {
+				if ('isSet' in arg) return !arg.isSet;
+				if (Query.isQuery(arg)) return arg.opts.noResolve;
+				return false;
+			});
+			const nextQuery = Query.create(currentText(), execFn, {
+				...currentOpts,
+				dagNode,
+				noResolve: hasUnsetInput
+			});
+			
+			const fetched = nextQuery.fetch();
+			await new Promise((r) => setTimeout(r, 500));
+
+			if (fetched instanceof Promise) {
+				Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), fetched]).then(() => {
+					if (currentGen === changeIdx) {
+						callback(nextQuery);
+						activeQuery = nextQuery;
+					}
+				});
+			} else {
+				if (currentGen === changeIdx) {
+					callback(nextQuery);
+					activeQuery = nextQuery;
+				}
+			}
+			if (hasUnsetInput) {
+				console.log("Unset Input");
+				return false;
+			} else {
+				return true;
+			}
+		});
+
+		/** @type {TemplateStringsArray} */
+		let _strs;
+
+		/** @type {any[]} */
+		let _args;
+
+		const currentText = () =>
+			zip(
+				_strs,
+				_args.map((a) => {
+					if (Query.isQuery(a)) return a.text;
+					if (typeof a !== 'object') return a?.toString();
+					return a.toString();
+				})
+			)
+				.flat()
+				.join('')
+				.trim();
+
+		return {
+			/**
+			 *
+			 * @param {TemplateStringsArray} strs
+			 * @param  {...any} args
+			 */
+			update: (strs, ...args) => {
+				_strs = strs;
+				_args = args;
+				dagNode.deregisterDependencies();
+				args.forEach((arg) => {
+					if (arg?.__dag) dagNode.registerDependency(arg.__dag);
+				});
+				const hasUnsetInput = args.some((arg) => {
+					if ('isSet' in arg) return !arg.isSet;
+					if (Query.isQuery(arg)) return arg.opts.noResolve;
+					return false;
+				});
+				/** @type {CallableFunction | undefined} */
+				let unsub;
+				if (!activeQuery) {
+					activeQuery = Query.create(currentText(), execFn, {
+						...currentOpts,
+						dagNode,
+						noResolve: hasUnsetInput
+					});
+					unsub?.()
+					unsub = activeQuery.subscribe(v => callback(activeQuery))
+					callback(activeQuery);
+				}
+				dagNode.trigger(true);
+			},
+			/** @param {import('../types.js').QueryOpts<any>} opts */
+			updateOptions: (opts) => {
+				currentOpts = { ...currentOpts, ...opts };
+			},
+			get __dag() {
+				return dagNode;
+			}
+		};
+	};
+
+	/**
+	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
 	 * @param {QueryValue<any>} [initialQuery]
 	 */
@@ -1011,6 +1127,7 @@ DESCRIBE ${this.text.trim()}
 			initialError = undefined
 		} = opts;
 		this.opts = opts;
+		this.__dag = opts.dagNode;
 		this.#executeQuery = executeQuery;
 
 		if (typeof query !== 'string' && !(query instanceof QueryBuilder)) {
@@ -1359,6 +1476,9 @@ DESCRIBE ${this.text.trim()}
 	////////////////////////////////////
 	/// </ QueryBuilder Interface /> ///
 	////////////////////////////////////
+
+	/** @type {ActiveDagNode | undefined} */
+	__dag;
 }
 
 /**
