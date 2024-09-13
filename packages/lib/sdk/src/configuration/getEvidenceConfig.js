@@ -20,9 +20,6 @@ export const getEvidenceConfig = async () => {
 	} catch (e) {
 		if (e instanceof Error && e.message.startsWith('Cannot find matching evidence.config.yaml')) {
 			return await getEvidenceConfigLegacy();
-			// throw new EvidenceError(
-			// 	'Could not find an evidence.config.yaml file, if this is an Evidence project, please create that file'
-			// );
 		}
 		throw new EvidenceError('Unknown Error while loading Evidence Configuration', [], { cause: e });
 	}

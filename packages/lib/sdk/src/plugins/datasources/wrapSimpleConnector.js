@@ -33,6 +33,7 @@ export const wrapSimpleConnector = (mod, source) => {
 				// Why is the dirent interface so unstable?
 				// This behaves differently depending on which minor version of 18 / 20 you are using
 				const dirPath =
+					// @ts-expect-error
 					'parentPath' in sourceFile ? sourceFile.parentPath + '' : (sourceFile.path ?? dir);
 				if (sourceFile.name === 'connection.yaml' || sourceFile.name === 'connection.options.yaml')
 					continue;

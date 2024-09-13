@@ -5,20 +5,24 @@
 <script>
 	import { X } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 	export let open = false;
 	export let title = '';
 	export let buttonText = '';
 	export let innerText = '';
 	const isOpen = () => {
 		open = !open;
+		if (!open) dispatch('close');
 	};
 </script>
 
 <button
 	on:click={() => isOpen()}
 	class="font-ui font-normal text-base no-underline border my-2 rounded-lg py-2 px-3 inline-block transition hover:ease-in hover:border-blue-200 hover:bg-blue-100 hover:no-underline hover:text-gray-800 focus:text-gray-900 focus:border-blue-200"
-	>{buttonText}</button
 >
+	{buttonText}
+</button>
 {#if open}
 	<div class="modal z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center lg:p-0">
 		<div class="fixed inset-0 bg-gray-900 opacity-50" />
