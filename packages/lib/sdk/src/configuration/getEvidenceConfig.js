@@ -30,7 +30,11 @@ export const getEvidenceConfig = (
 		const result = yaml.parse(configFileContent.replaceAll(/($|\s)(@.+):/g, '$1"$2":'));
 		return schema.parse(result);
 	} catch (e) {
-		if (e instanceof Error && e.message.startsWith('Cannot find matching evidence.config.yaml')) {
+		if (
+			e instanceof Error &&
+			(e.message.startsWith('Cannot find matching evidence.config.yaml') ||
+				e.message.includes('no such file or directory'))
+		) {
 			return getEvidenceConfigLegacy();
 		}
 
@@ -41,6 +45,7 @@ export const getEvidenceConfig = (
 			console.error(`${chalk.red(`Invalid evidence.config.yaml file:`)}\n${errors}`);
 		}
 
+		console.log(e);
 		throw new EvidenceError('Unknown Error while loading Evidence Configuration', [], { cause: e });
 	}
 };
