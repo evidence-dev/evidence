@@ -7,7 +7,7 @@ const {
 	REFERENTIAL,
 	CIRCULAR,
 	SELF_REFERENTIAL,
-	HAS_SPECIAL_STRING_PROTOTYPE_REPLACE_SEQUENCE,
+	HAS_SPECIAL_STRING_PROTOTYPE_REPLACE_SEQUENCE
 } = require('./extract-queries.fixture.cjs');
 
 describe('extractQueries', () => {
@@ -61,7 +61,7 @@ describe('extractQueries', () => {
 
 		expect(queries.length).toBe(2);
 		expect(queries[0].id).toBe('myquery');
-		expect(queries[0].inputQueryString).toBe("SELECT * FROM ${read_string}");
+		expect(queries[0].inputQueryString).toBe('SELECT * FROM ${read_string}');
 		expect(queries[0].compiledQueryString).toBe("SELECT * FROM (SELECT 'evi.+e$' as str)");
 		expect(queries[1].id).toBe('read_string');
 		expect(queries[1].inputQueryString).toBe("SELECT 'evi.+e$' as str");
