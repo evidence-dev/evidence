@@ -1,5 +1,11 @@
 # e2e-spa
 
+## 0.0.4
+
+### Patch Changes
+
+- @evidence-dev/evidence@39.1.7
+
 ## 0.0.3
 
 ### Patch Changes

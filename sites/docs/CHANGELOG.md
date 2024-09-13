@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 0.0.28
+
+### Patch Changes
+
+- @evidence-dev/evidence@39.1.7
+
 ## 0.0.27
 
 ### Patch Changes
