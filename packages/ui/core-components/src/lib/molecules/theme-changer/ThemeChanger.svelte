@@ -2,29 +2,44 @@
 	// @ts-check
 
 	import { RadioGroup } from 'bits-ui';
-	import { Sun, Moon, DeviceDesktop } from '@steeze-ui/tabler-icons';
+	import { Sun, Moon } from '@steeze-ui/tabler-icons';
 	import { writable } from 'svelte/store';
 	import ThemeChangerOption from './ThemeChangerOption.svelte';
+	import { createSystemThemeStore } from './system-theme-store.js';
 
 	/** @template T @typedef {import("svelte/store").Writable<T>} Writable */
 
-	// TODO should we call it auto or system?
-	/** @type {Writable<'system' | 'light' | 'dark'>}*/
-	const theme = writable('system');
+	/** @type {'system' | 'light' | 'dark'} */
+	let selected = 'system';
 
-	/** @type {ThemeChangerOption | undefined} */
-	let system;
-	/** @type {ThemeChangerOption | undefined} */
-	let light;
-	/** @type {ThemeChangerOption | undefined} */
-	let dark;
+	const systemTheme = createSystemThemeStore();
 
-	$: element = $theme === 'system' ? system : $theme === 'light' ? light : dark;
+	/** @type {Writable<'light' | 'dark'>}*/
+	const theme = writable('light');
+
+	$: {
+		if (selected === 'system') {
+			$theme = $systemTheme;
+		} else {
+			$theme = selected;
+		}
+	}
+
+	// TODO the width isn't correct shortly after mount on System - maybe due to icon shifting?
+	/** @type {ThemeChangerOption | undefined} */
+	let systemElement;
+	/** @type {ThemeChangerOption | undefined} */
+	let lightElement;
+	/** @type {ThemeChangerOption | undefined} */
+	let darkElement;
+
+	$: element =
+		selected === 'system' ? systemElement : selected === 'light' ? lightElement : darkElement;
 </script>
 
 <RadioGroup.Root
 	class="relative w-fit h-fit flex flex-row gap-2 items-center bg-gray-100 shadow-inner p-1 rounded-lg text-sm"
-	bind:value={$theme}
+	bind:value={selected}
 >
 	<div
 		style="width: {element?.width()}px; height: {element?.height()}px; top: {element?.top()}px; left: {element?.left()}px; transition: all 0.15s ease; box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 0px inset"
@@ -32,24 +47,24 @@
 	/>
 
 	<ThemeChangerOption
-		bind:this={system}
+		bind:this={systemElement}
 		name="system"
 		label="System"
-		icon={DeviceDesktop}
-		selected={$theme === 'system'}
+		icon={$systemTheme === 'light' ? Sun : Moon}
+		selected={selected === 'system'}
 	/>
 	<ThemeChangerOption
-		bind:this={light}
+		bind:this={lightElement}
 		name="light"
 		label="Light"
 		icon={Sun}
-		selected={$theme === 'light'}
+		selected={selected === 'light'}
 	/>
 	<ThemeChangerOption
-		bind:this={dark}
+		bind:this={darkElement}
 		name="dark"
 		label="Dark"
 		icon={Moon}
-		selected={$theme === 'dark'}
+		selected={selected === 'dark'}
 	/>
 </RadioGroup.Root>

@@ -35,6 +35,6 @@
 	<RadioGroup.Item id={name} value={name} class="absolute" />
 	<Label.Root for={name} class="flex flex-row gap-2 items-center cursor-pointer">
 		{label}
-		<Icon src={icon} class="w-4 h-4" />
+		<Icon src={icon} class="w-4 h-4" theme={selected ? 'filled' : 'outline'} />
 	</Label.Root>
 </div>
