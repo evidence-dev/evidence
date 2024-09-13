@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 3.5.23
+
+### Patch Changes
+
+- Updated dependencies [4c1e5330c]
+  - @evidence-dev/preprocess@5.2.0
+
 ## 3.5.22
 
 ### Patch Changes
