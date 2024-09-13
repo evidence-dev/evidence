@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 2.0.8
+
+### Patch Changes
+
+- bb0576d5b: Added the ability to specify BigQuery Region in the connection setting.
+
 ## 2.0.7
 
 ### Patch Changes

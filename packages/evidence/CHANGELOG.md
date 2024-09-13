@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 39.1.6
+
+### Patch Changes
+
+- 999fffa38: Improve sdk debug behavior for better consistency
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/sdk@1.4.0
+  - @evidence-dev/plugin-connector@2.1.10
+
 ## 39.1.5
 
 ### Patch Changes

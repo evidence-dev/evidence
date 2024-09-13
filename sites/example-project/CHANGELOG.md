@@ -1,5 +1,27 @@
 # @evidence-dev/components
 
+## 3.5.22
+
+### Patch Changes
+
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+- Updated dependencies [bb0576d5b]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/core-components@4.8.0
+  - @evidence-dev/sdk@1.4.0
+  - @evidence-dev/snowflake@1.1.2
+  - @evidence-dev/plugin-connector@2.1.10
+  - @evidence-dev/bigquery@2.0.8
+  - @evidence-dev/component-utilities@3.2.11
+
 ## 3.5.21
 
 ### Patch Changes
