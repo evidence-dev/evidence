@@ -1,5 +1,6 @@
-```
-SELECT * FROM table
+```sql some_query
+SELECT * FROM orders
+LIMIT 0
 ```
 
 ```something
