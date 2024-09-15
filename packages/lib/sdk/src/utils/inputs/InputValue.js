@@ -1,4 +1,3 @@
-import { PassiveDagNode } from '../dag/DagNode.js';
 import { serializeTokens } from './constants.js';
 
 /** @typedef {import('../dag/types.js').WithDag} WithDag */
@@ -19,10 +18,10 @@ function inputValueProxy(self) {
 			return self[prop];
 		},
 		set(target, prop, value) {
-			let didTransform = false;
+			// let didTransform = false;
 			if (!(value instanceof InputValue)) {
 				target[prop] = new InputValue(value, self.input);
-				didTransform = true;
+				// didTransform = true;
 			} else {
 				target[prop] = value;
 			}
@@ -38,14 +37,14 @@ export class InputValue {
 	#innerValue;
 	input;
 
-	/** @type {PassiveDagNode} */
+	/** @type {import("../dag/DagNode.js").PassiveDagNode} */
 	get __dag() {
 		return this.input.__dag;
 	}
 
-    get isSet() {
-        return this.#innerValue !== undefined && this.#innerValue !== null;
-    }
+	get isSet() {
+		return this.#innerValue !== undefined && this.#innerValue !== null;
+	}
 
 	/**
 	 * @param {unknown} value

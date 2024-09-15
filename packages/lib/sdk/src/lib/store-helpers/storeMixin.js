@@ -5,7 +5,7 @@
 export const storeMixin = () => {
 	const subscribers = new Set();
 
-    /** @type {T | undefined} */
+	/** @type {T | undefined} */
 	let currentValue = undefined;
 	return {
 		subscribe: (fn) => {

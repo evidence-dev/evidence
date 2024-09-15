@@ -51,7 +51,6 @@ export type QueryOpts<RowType extends QueryResultRow = QueryResultRow> = {
 	 **/
 	noResolve?: boolean;
 
-
 	dagNode?: ActiveDagNode;
 };
 

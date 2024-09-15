@@ -1,12 +1,15 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { ActiveDagNode, DagNode, PassiveDagNode, nodesToMermaid } from './DagNode.js';
+import { ActiveDagNode, DagNode, PassiveDagNode } from './DagNode.js';
 const noop = () => true;
 
 describe('DagNode', () => {
+	afterEach(() => {
+		vi.useRealTimers();
+	});
 	describe('Dirty nodes', () => {
 		it('should be dirty and clean', async () => {
-			const epoch = Symbol('')
+			const epoch = Symbol('');
 			const node = new ActiveDagNode('name', noop);
 			expect(node.dirty).toBe(false);
 			node.markDirty(epoch);
@@ -39,21 +42,53 @@ describe('DagNode', () => {
 			mid.registerDependency(root);
 
 			await root.trigger();
-			
+
 			expect(exec).toHaveBeenCalledTimes(2);
 			expect(exec).toHaveBeenNthCalledWith(1, 'mid');
 			expect(exec).toHaveBeenNthCalledWith(2, 'child');
 		});
 
-		it('should execute each node as little as possible, at most once per trigger when triggered multiple times', async () => {
+		it('should debounce execution', async () => {
+			// This test handles extremely rapid user interactions
+			// E.g. a slider being dragged
+			vi.useFakeTimers();
 			const exec = vi.fn(() => true);
 
+			const input = new PassiveDagNode('input', () => exec('input'));
 			const root = new ActiveDagNode('root', () => exec('root'));
-			const mid = new ActiveDagNode('mid', async () => {
+
+			root.registerDependency(input);
+
+			const promises = [];
+			promises.push(input.trigger());
+			promises.push(input.trigger());
+			promises.push(input.trigger());
+			promises.push(input.trigger());
+			promises.push(input.trigger());
+			promises.push(input.trigger());
+			promises.push(input.trigger());
+			await vi.advanceTimersByTimeAsync(200);
+			await Promise.all(promises);
+			promises.length = 0;
+			promises.push(input.trigger());
+			promises.push(input.trigger());
+			await vi.advanceTimersByTimeAsync(200);
+			await Promise.all(promises);
+
+			expect(exec).toHaveBeenCalledTimes(1);
+			expect(exec).toHaveBeenNthCalledWith(1, 'root');
+		});
+
+		it.only('should execute each node as little as possible, at most once per trigger when triggered multiple times', async () => {
+			// This test handles long-running queries, not rapid user interactions
+			const exec = vi.fn(() => 'Some truth');
+
+			const root = new ActiveDagNode('root', () => exec('root'));
+			const mid = new ActiveDagNode('mid', async (id) => {
 				await new Promise((res) => setTimeout(res, 1000));
-				return exec('mid');
+				return exec('mid', id);
 			});
-			const child = new ActiveDagNode('child', () => exec('child'));
+			const child = new ActiveDagNode('child', (id) => exec('child', id));
 
 			// Register dependencies
 			child.registerDependency(mid);
@@ -62,16 +97,17 @@ describe('DagNode', () => {
 
 			vi.useFakeTimers();
 
-			root.trigger();
+			const settled = [];
+			settled.push(root.trigger());
 			await vi.advanceTimersByTimeAsync(500);
-
-			root.trigger();
+			settled.push(root.trigger());
 			await vi.advanceTimersByTimeAsync(2000);
 
+			const [first, second] = await Promise.all(settled);
 			expect(exec).toHaveBeenCalledTimes(3);
-			expect(exec).toHaveBeenNthCalledWith(1, 'mid');
-			expect(exec).toHaveBeenNthCalledWith(2, 'mid');
-			expect(exec).toHaveBeenNthCalledWith(3, 'child');
+			expect(exec).toHaveBeenNthCalledWith(1, 'mid', first);
+			expect(exec).toHaveBeenNthCalledWith(2, 'mid', second);
+			expect(exec).toHaveBeenNthCalledWith(3, 'child', second);
 
 			vi.useRealTimers();
 		});

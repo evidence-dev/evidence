@@ -3,6 +3,8 @@
 
 import { nanoid } from 'nanoid';
 import { storeMixin } from '../../lib/store-helpers/storeMixin.js';
+
+import { debounce } from 'perfect-debounce';
 /**
  * @template T
  * @typedef {import('../../usql/types.js').MaybePromise<T>} MaybePromise
@@ -64,6 +66,19 @@ export class DagNode {
 			// TODO: Print the chain?
 			throw new Error('Detected Circular Dependency');
 		}
+
+		// Names should be unique, if we have the same name duplicated but are failing
+		// referential equality, then something is screwy (probably hmr)
+		const existingParent = [...this.parents.values()].find((d) => d.name === dep.name);
+		if (existingParent) {
+			this.parents.delete(existingParent);
+			existingParent.children.delete(this);
+		}
+
+		const imposter = [...dep.children].find((d) => d.name === this.name);
+		if (imposter) {
+			dep.children.delete(imposter);
+		}
 		this.parents.add(dep);
 		dep.children.add(this);
 		return true;
@@ -78,9 +93,7 @@ export class DagNode {
 	 */
 	markChildrenDirty = (epochId) => {
 		this.children.forEach((child) => {
-			if (child instanceof ActiveDagNode) {
-				child.markDirty(epochId);
-			}
+			child.markDirty(epochId);
 			child.markChildrenDirty(epochId);
 		});
 	};
@@ -97,33 +110,38 @@ export class DagNode {
 	 * @ignore
 	 */
 	async flush(epochId) {
-		console.log('flush', epochId, this.name);
 		this.#latestEpochId = epochId;
 		for (const child of this.children) {
-			if (child instanceof ActiveDagNode) {
-				await child.tidy(epochId);
-			}
-
+			await child.tidy(epochId);
 			await child.flush(epochId);
 		}
 		this.storeMixin.publish(this);
 	}
 
-	async trigger(includeSelf = false) {
-		// Use symbol so that we only get referential equality
-		const epochId = Symbol(nanoid(3));
+	trigger = debounce(
+		(includeSelf = false) => {
+			// Use symbol so that we only get referential equality
+			const epochId = Symbol(nanoid(3));
 
-		if (includeSelf) {
-			if (this instanceof ActiveDagNode) {
+			const flush = () => {
+				this.markChildrenDirty(epochId);
+				this.flush(epochId).then(() => {
+					this.storeMixin.publish(this);
+				});
+			};
+			if (includeSelf) {
 				this.markDirty(epochId);
-				await this.tidy(epochId);
+				this.tidy(epochId).then(() => {
+					flush();
+				});
+			} else {
+				flush();
 			}
-		}
-
-		this.markChildrenDirty(epochId);
-		await this.flush(epochId);
-		this.storeMixin.publish(this);
-	}
+			return epochId;
+		},
+		100,
+		{ leading: false, trailing: true }
+	);
 
 	get mermaidName() {
 		return this.name;
@@ -151,34 +169,48 @@ export class DagNode {
 		if (this.parents.size === 0) return false;
 		return [...this.parents].some((parent) => parent.hasAncestor(node));
 	}
+
+	/**
+	 * @param {Symbol} epochId
+	 */
+	tidy = async (epochId) => {
+		epochId; // has to be "used" to placate ESLint
+		this.storeMixin.publish(this);
+	};
+
+	/** @type {(epochId: Symbol) => void} */
+	markDirty = noop;
 }
 // ??
 export class ActiveDagNode extends DagNode {
 	/** @type {ExecFn} */
 	exec;
 
-	/**
-	 *
-	 * @param {Symbol} epochId
-	 */
-	tidy = async (epochId) => {
-		const parentsClean = [...this.parents].every((parent) => !parent.dirty);
+	tidy =
+		/**
+		 * @param {Symbol} epochId
+		 */
+		async (epochId) => {
+			const parentsClean = [...this.parents].every((parent) => !parent.dirty);
 
-		const canExec = parentsClean && this.#epochId === epochId && this.dirty;
+			const canExec = parentsClean && this.#epochId === epochId && this.dirty;
 
-		if (canExec) {
-			if (!this.exec) {
-				this.#dirty = false;
-			} else {
-				const result = await this.exec(epochId);
-				if (result && this.#epochId === epochId) {
-					// success
+			if (canExec) {
+				if (!this.exec) {
 					this.#dirty = false;
+				} else {
+					const result = await this.exec(epochId);
+
+					this.prevTidyPromise = result;
+
+					if (result && this.#epochId === epochId) {
+						// success
+						this.#dirty = false;
+					}
 				}
 			}
-		}
-		this.storeMixin.publish(this);
-	};
+			this.storeMixin.publish(this);
+		};
 
 	/**
 	 * @param {string} name
@@ -187,6 +219,8 @@ export class ActiveDagNode extends DagNode {
 	 */
 	constructor(name, exec, container) {
 		super(name, container);
+		// this.exec = debounce(exec, 0);
+
 		this.exec = exec;
 	}
 
@@ -214,7 +248,9 @@ export class ActiveDagNode extends DagNode {
 		this.storeMixin.publish(this);
 	};
 
-	/** @param {Symbol} epochId */
+	/**
+	 * @param {Symbol} epochId
+	 */
 	flush = async (epochId) => {
 		if (this.dirty) await this.tidy(epochId);
 		await super.flush(epochId);
@@ -227,19 +263,19 @@ export class ActiveDagNode extends DagNode {
 
 // TODO:
 export class BlockingDagNode extends DagNode {
-	// immutable guardrail
-	get tidy() {
-		return noop;
-	}
-
 	#dirty = false;
 	get dirty() {
 		return this.#dirty;
 	}
+
+	markDirty = () => {
+		this.#dirty = true;
+	};
 	unblock = () => {
 		if (this.dirty) {
 			this.#dirty = false;
-			this.trigger();
+			this.storeMixin.publish(this);
+			return this.trigger();
 		}
 	};
 
@@ -249,10 +285,6 @@ export class BlockingDagNode extends DagNode {
 }
 
 export class PassiveDagNode extends DagNode {
-	// immutable guardrail
-	get tidy() {
-		return noop;
-	}
 	/** @type {boolean} */
 	get dirty() {
 		return [...this.parents].some((parent) => parent.dirty);

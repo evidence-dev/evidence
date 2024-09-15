@@ -729,9 +729,8 @@ DESCRIBE ${this.text.trim()}
 		// TODO: Should we override this, or should we merge this?
 		let currentOpts = { ...initialOptions };
 
-		const dagNode = new ActiveDagNode(`Query | ${currentOpts.id ?? 'Unknown'}`, async (epochId) => {
-			// console.trace("Execution", epochId, currentOpts.id);
-			activeQuery.publish("DagNode Execution");
+		const dagNode = new ActiveDagNode(`Query | ${currentOpts.id ?? 'Unknown'}`, async () => {
+			activeQuery.publish('DagNode Execution');
 			const currentGen = ++changeIdx;
 			const hasUnsetInput = _args.some((arg) => {
 				if ('isSet' in arg) return !arg.isSet;
@@ -743,7 +742,7 @@ DESCRIBE ${this.text.trim()}
 				dagNode,
 				noResolve: hasUnsetInput
 			});
-			
+
 			const fetched = nextQuery.fetch();
 			await new Promise((r) => setTimeout(r, 500));
 
@@ -761,7 +760,6 @@ DESCRIBE ${this.text.trim()}
 				}
 			}
 			if (hasUnsetInput) {
-				console.log("Unset Input");
 				return false;
 			} else {
 				return true;
@@ -813,8 +811,8 @@ DESCRIBE ${this.text.trim()}
 						dagNode,
 						noResolve: hasUnsetInput
 					});
-					unsub?.()
-					unsub = activeQuery.subscribe(v => callback(activeQuery))
+					unsub?.();
+					unsub = activeQuery.subscribe(() => callback(activeQuery));
 					callback(activeQuery);
 				}
 				dagNode.trigger(true);
