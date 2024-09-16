@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 3.2.12
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+  - @evidence-dev/sdk@1.4.1
+
 ## 3.2.11
 
 ### Patch Changes
