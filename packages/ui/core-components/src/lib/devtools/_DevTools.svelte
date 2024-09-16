@@ -31,7 +31,7 @@
 				open = false;
 				e.stopPropagation();
 			}
-			if (e.key === 'e' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+			if (e.key.toLowerCase() === 'e' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
 				open = true;
 				e.stopPropagation();
 			}
