@@ -30,4 +30,4 @@ export const disableDebug = () => {
 };
 
 // Sync debug state (e.g. if any of the env vars are set, assume we are in debug mode)
-if (isDebug()) enableDebug();
+if (isDebug() && typeof process !== 'undefined') enableDebug();
