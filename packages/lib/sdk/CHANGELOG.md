@@ -1,5 +1,11 @@
 # @evidence-dev/sdk
 
+## 1.4.1
+
+### Patch Changes
+
+- 057558028: Fix an issue caused by QueryDebugger keeping queries in memory
+
 ## 1.4.0
 
 ### Minor Changes
