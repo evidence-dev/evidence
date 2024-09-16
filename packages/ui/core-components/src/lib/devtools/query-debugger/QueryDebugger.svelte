@@ -6,40 +6,44 @@
 	 */
 	import { readonly, writable } from 'svelte/store';
 	import { batchUp } from '@evidence-dev/sdk/utils';
+	import { dev } from '$app/environment';
 
 	/**
 	 * @type {Writable<Map<string,QueryValue>>}
 	 */
 	const allQueries = writable(new Map());
 
-	export const resetQueries = () =>
+	export const resetQueries = () => {
+		if (!dev) return;
 		allQueries.update((v) => {
 			v.clear();
 			return v;
 		});
+	};
 
 	export const queries = readonly(allQueries);
 
-	const listener = batchUp((insertedQueries) => {
-		// TODO: Include a trace of where the query was created
-		// TODO: this becomes a set, need to unique it
-		// TODO: Should this empty itself on HMR?
-		allQueries.update((v) => {
-			insertedQueries.forEach((q) => {
-				if (typeof q === 'object') {
-					v.set(q.proxied.hash, q.proxied);
-				}
+	if (dev) {
+		const listener = batchUp((insertedQueries) => {
+			// TODO: Include a trace of where the query was created
+			// TODO: this becomes a set, need to unique it
+			// TODO: Should this empty itself on HMR?
+			allQueries.update((v) => {
+				insertedQueries.forEach((q) => {
+					if (typeof q === 'object') {
+						v.set(q.proxied.hash, q.proxied);
+					}
+				});
+				return v;
 			});
-			return v;
 		});
-	});
+		Query.addEventListener('queryCreated', listener);
 
-	Query.addEventListener('queryCreated', listener);
-
-	Query.addEventListener('cacheCleared', () => {
-		console.log('Resetting queries because the cache got wiped');
-		resetQueries();
-	});
+		Query.addEventListener('cacheCleared', () => {
+			if (!dev) return;
+			resetQueries();
+		});
+	}
 </script>
 
 <script>

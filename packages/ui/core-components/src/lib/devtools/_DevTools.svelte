@@ -12,6 +12,9 @@
 	import { isDebug } from '@evidence-dev/sdk/utils';
 	import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { writable } from 'svelte/store';
+	import { getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { History } from '@evidence-dev/sdk/utils';
+
 	ensureInputContext(writable({}));
 
 	let open = false;
@@ -31,7 +34,7 @@
 				open = false;
 				e.stopPropagation();
 			}
-			if (e.key === 'e' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+			if (e.key.toLowerCase() === 'e' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
 				open = true;
 				e.stopPropagation();
 			}
@@ -39,9 +42,6 @@
 		window.addEventListener('keydown', keybind);
 		return () => window.removeEventListener('keydown', keybind);
 	});
-
-	import { getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { History } from '@evidence-dev/sdk/utils';
 
 	const inputs = getReadonlyInputContext();
 
