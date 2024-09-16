@@ -1,5 +1,16 @@
 # @evidence-dev/components
 
+## 3.5.24
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+- Updated dependencies [b87d90971]
+  - @evidence-dev/sdk@1.4.1
+  - @evidence-dev/core-components@4.8.1
+  - @evidence-dev/component-utilities@3.2.12
+  - @evidence-dev/plugin-connector@2.1.10
+
 ## 3.5.23
 
 ### Patch Changes

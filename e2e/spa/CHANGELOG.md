@@ -1,5 +1,13 @@
 # e2e-spa
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [b87d90971]
+  - @evidence-dev/core-components@4.8.1
+  - @evidence-dev/evidence@39.1.8
+
 ## 0.0.4
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 4.8.1
+
+### Patch Changes
+
+- b87d90971: Fix dev tools keybind on windows
+  - @evidence-dev/component-utilities@3.2.12
+
 ## 4.8.0
 
 ### Minor Changes
