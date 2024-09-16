@@ -1,6 +1,6 @@
 /**
  * @template T
- * @returns {{subscribe: (fn: (value: T | undefined) => unknown) => () => unknown, publish: (value: T) => unknown}}
+ * @returns {{subscribe: (fn: (value: T | undefined) => unknown) => () => unknown, publish: (value: T) => unknown, update: (fn: (value: T | undefined) => T) => void}}
  */
 export const storeMixin = () => {
 	const subscribers = new Set();
@@ -17,6 +17,10 @@ export const storeMixin = () => {
 		publish: (value) => {
 			currentValue = value;
 			subscribers.forEach((fn) => fn(value));
+		},
+		update: (fn) => {
+			currentValue = fn(currentValue);
+			subscribers.forEach((fn) => fn(currentValue));
 		}
 	};
 };

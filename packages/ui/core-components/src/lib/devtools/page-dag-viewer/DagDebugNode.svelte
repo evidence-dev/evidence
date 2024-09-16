@@ -13,7 +13,6 @@
 	const { graph, selectEpoch, selectedEpoch, selectAncestor, selectedAncestor } =
 		getContext('graphContext');
 	$: graphNode = $graph.node(nodeId);
-	$: console.log({ $graph, graphNode });
 
 	$: isSelectedEpoch = $selectedEpoch ? $selectedEpoch === $dagNode?.latestEpochId : true;
 	$: isSelectedAncestor = $selectedAncestor ? $dagNode?.hasAncestor($selectedAncestor) : true;
@@ -55,6 +54,16 @@
 					class:bg-yellow-300={$selectedAncestor && isSelectedAncestor}
 				>
 					Highlight Dependencies
+				</button>
+				<button
+					on:click={() => {
+						//@ts-expect-error
+						globalThis.debugDagNode = $dagNode;
+					}}
+					class="text-sm font-normal px-1 py-1/2 border border-black rounded"
+					class:bg-yellow-300={$selectedAncestor && isSelectedAncestor}
+				>
+					Set on window
 				</button>
 				{#if $dagNode instanceof BlockingDagNode}
 					<button

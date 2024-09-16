@@ -37,7 +37,7 @@
 	Query.addEventListener('queryCreated', listener);
 
 	Query.addEventListener('cacheCleared', () => {
-		console.log('Resetting queries because the cache got wiped');
+		console.debug('Emptying Devtool tracked Queries because Query cache was cleared');
 		resetQueries();
 	});
 </script>

@@ -172,7 +172,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			reactive statements do not rerun during SSR 
 			*/ ''
 		}
-		let inputs_store = ensureInputContext(writable(inputs));
+		let inputs_store = ensureInputContext();
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
         $: pageHasQueries.set(Object.keys(data).length > 0);

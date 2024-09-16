@@ -1,6 +1,7 @@
 import { getAllContexts, getContext, setContext } from 'svelte';
 import { get, readable, readonly, writable } from 'svelte/store';
 import { Input } from '../inputs/Input.js';
+import { InputStore } from '../inputs/InputStore.js';
 
 export const InputStoreKey = Symbol('InputStore');
 
@@ -32,32 +33,26 @@ const isWritable = (v) => {
 };
 
 /**
- * @param {Writable<any>} c
- * @returns {Writable<any>}
+ * @returns {InputStore}
  */
-export const ensureInputContext = (c) => {
-	if (!isWritable(c)) {
-		console.error({ InputStoreValue: c });
-		throw new Error('InputStore must be a writable store');
-	}
+export const ensureInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
-		setContext(InputStoreKey, c);
-		return c;
+		const newValue = new InputStore();
+		setContext(InputStoreKey, newValue);
+		return newValue.proxy;
 	} else {
 		const existingValue = getContext(InputStoreKey);
-		existingValue.set(get(c));
-		return existingValue;
+		return existingValue.proxy;
 	}
 };
 
 /**
- * @returns {Writable<any>}
+ * @returns {InputStore}
  * @deprecated use 'getInputSetter' whenever possible
  */
 export const getInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
-		console.warn('InputStoreKey not found in context. Did you forget to call ensureInputContext?');
-		return writable({});
+		throw new Error('InputStoreKey not found in context. Did you forget to call ensureInputContext?');
 	}
 	return getContext(InputStoreKey);
 };
@@ -135,35 +130,5 @@ export const getInputSetter = (inputKey, toggle, defaultSqlFragment) => {
 
 			return $inputs;
 		});
-	};
-};
-
-/**
- * @param {string} name
- * @param {(i: Input) => string} [toSql]
- * @returns {import("./types.js").InputManager}
- */
-export const useInput = (name, toSql = (v) => v.value?.toString()) => {
-	const input = new Input(name, toSql);
-
-	const inputStore = getInputContext();
-	inputStore.update(($inputStore) => {
-		$inputStore[name] = input;
-		return $inputStore;
-	});
-	console.log({ inputStore });
-
-	// TODO: Interact with the input store
-
-	return {
-		__input: input,
-		/** 
-		 * @param {any} value
-		 * 
-		 */
-		update: (value) => {
-			input.value = value;
-			input.update();
-		}
 	};
 };
