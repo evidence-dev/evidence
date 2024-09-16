@@ -12,6 +12,7 @@
 	import { isDebug } from '@evidence-dev/sdk/utils';
 	import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { writable } from 'svelte/store';
+	import DagDebugGraph from './page-dag-viewer/DagDebugGraph.svelte';
 	ensureInputContext(writable({}));
 
 	let open = false;
@@ -90,6 +91,9 @@
 			</AccordionItem>
 			<AccordionItem title="View Input History" compact>
 				<InputHistory history={inputHistory} />
+			</AccordionItem>
+			<AccordionItem title="Page Dependency Graph" compact>
+				<DagDebugGraph rootNodes={Array.from($queries.values())} />
 			</AccordionItem>
 		</Accordion>
 	</div>

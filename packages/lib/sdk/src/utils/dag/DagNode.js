@@ -66,6 +66,10 @@ export class DagNode {
 			// TODO: Print the chain?
 			throw new Error('Detected Circular Dependency');
 		}
+		if (typeof dep !== 'object') {
+			console.debug(`DagNode: Ignoring ${dep} as it is not an object`);
+			return;
+		}
 
 		// Names should be unique, if we have the same name duplicated but are failing
 		// referential equality, then something is screwy (probably hmr)
@@ -75,7 +79,7 @@ export class DagNode {
 			existingParent.children.delete(this);
 		}
 
-		const imposter = [...dep.children].find((d) => d.name === this.name);
+		const imposter = [...(dep?.children ?? [])].find((d) => d.name === this.name);
 		if (imposter) {
 			dep.children.delete(imposter);
 		}
@@ -180,6 +184,22 @@ export class DagNode {
 
 	/** @type {(epochId: Symbol) => void} */
 	markDirty = noop;
+
+	/** @param {unknown} container */
+	updateContainer = (container) => {
+		this.#container = container;
+	};
+
+	['🦆'] = '__EvidenceDagNode__';
+
+	/**
+	 * @param {unknown} v
+	 * @returns {v is DagNode}
+	 */
+	static isDagNode(v) {
+		if (!v || typeof v !== 'object') return false;
+		return '🦆' in v && v['🦆'] === '__EvidenceDagNode__';
+	}
 }
 // ??
 export class ActiveDagNode extends DagNode {

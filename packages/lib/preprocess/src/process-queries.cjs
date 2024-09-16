@@ -42,80 +42,83 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		const queryStoreDeclarations = validIds.map((id) => {
 			return `
-				// Update external queries
-				if (import.meta?.hot) {
-					import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
-						let errors = []
-						if (!queryId) errors.push("Malformed event: Missing queryId")
-						if (!content) errors.push("Malformed event: Missing content")
-						if (errors.length) {
-							console.warn("Failed to update query on serverside change!", errors.join("\\n"))
-							return
-						}
+	// Update external queries
+	if (import.meta?.hot) {
+		import.meta.hot.on('evidence:queryChange', ({ queryId, content }) => {
+			let errors = [];
+			if (!queryId) errors.push('Malformed event: Missing queryId');
+			if (!content) errors.push('Malformed event: Missing content');
+			if (errors.length) {
+				console.warn('Failed to update query on serverside change!', errors.join('\\n'));
+				return;
+			}
 
-						if (queryId === "${id}") {
-							__${id}Text = content
-						}
-						
-					})
-				}
+			if (queryId === '${id}') {
+				__${id}Text = content;
+			}
+		});
+	}
 
-				let ${id}InitialStates = { initialData: undefined, initialError: undefined }
-				
-				// Give initial states for these variables
-				/** @type {boolean} */
-				let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				/** @type {string} */
-				let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
+	/**
+	 * @type {{initialData: any | any[] | undefined, initialError: Error | undefined, knownColumns: any | undefined}}
+	 */
+	let ${id}InitialStates = {
+		initialData: undefined,
+		initialError: undefined,
+		knownColumns: undefined
+	};
 
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+	let ${id};
+	const __${id}Manager = Query.withDag(
+		{
+			callback: (v) => (${id} = v),
+			execFn: queryFunc
+		},
+		{
+			...${id}InitialStates,
+            id: '${id}'
+		}
+	);
 
-				if (browser) {
-					// Data came from SSR
-					if (data.${id}) {
-						if (data.${id} instanceof Error) {
-							${id}InitialStates.initialError = data.${id}
-						} else {
-							${id}InitialStates.initialData = data.${id}
-						}
-						if (data.${id}_columns) {
-							${id}InitialStates.knownColumns = data.${id}_columns
-						}
-					}
-				} else {
-					// On server
-					try {
-						if (!__${id}HasUnresolved)
-							${id}InitialStates.initialData = profile(__db.query, __${id}Text, { query_name: '${id}' })
-					} catch (e) {
-						console.error(e)
-						if (import.meta.env.VITE_BUILD_STRICT) throw e;
-						${id}InitialStates.initialError = e
-					}
-				}
-				
-				
-				/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
-				let ${id};
+	__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+	$: __${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
 
-				$: __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				$: __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
-				$: __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+	let __${id}Text = ${id}?.originalText ?? '';
+	$: __${id}Text = ${id}?.originalText ?? '';
 
-				const __${id}Factory = Query.createReactive(
-					{ callback: v => {
-						${id} = v
-					}, execFn: queryFunc },
-					{ id: '${id}', ...${id}InitialStates }
-				)
+	// Give initial states for these variables
+	/** @type {boolean} */
+	let __${id}HasUnresolved = __${id}Manager.hasUnset;
+	$: __${id}HasUnresolved = __${id}Manager.hasUnset;
 
-				// Assign a value for the initial run-through
-				// This is split because chicken / egg
-				__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
-
-				// Add queries to global scope inside symbols to ease debugging
-				globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }
-				
-				
+	if (browser) {
+		// Data came from SSR
+		if (data.${id}) {
+			if (data.${id} instanceof Error) {
+				${id}InitialStates.initialError = data.${id};
+			} else {
+				${id}InitialStates.initialData = data.${id};
+			}
+			if (data.${id}_columns) {
+				${id}InitialStates.knownColumns = data.${id}_columns;
+			}
+		}
+	} else {
+		// On server
+		try {
+			if (!__${id}HasUnresolved)
+				// @ts-expect-error
+				${id}InitialStates.initialData = query(__${id}Text, {
+					query_name: '${id}'
+				});
+		} catch (e) {
+			console.error(e);
+			if (import.meta.env.VITE_BUILD_STRICT) throw e;
+			if (!(e instanceof Error)) ${id}InitialStates.initialError = new Error(e?.toString());
+			else ${id}InitialStates.initialError = e;
+		}
+	}
 			`;
 		});
 

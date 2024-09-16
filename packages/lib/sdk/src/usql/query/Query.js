@@ -733,6 +733,7 @@ DESCRIBE ${this.text.trim()}
 			activeQuery.publish('DagNode Execution');
 			const currentGen = ++changeIdx;
 			const hasUnsetInput = _args.some((arg) => {
+				if (typeof arg !== 'object') return false;
 				if ('isSet' in arg) return !arg.isSet;
 				if (Query.isQuery(arg)) return arg.opts.noResolve;
 				return false;
@@ -799,6 +800,7 @@ DESCRIBE ${this.text.trim()}
 					if (arg?.__dag) dagNode.registerDependency(arg.__dag);
 				});
 				const hasUnsetInput = args.some((arg) => {
+					if (typeof arg !== 'object') return false;
 					if ('isSet' in arg) return !arg.isSet;
 					if (Query.isQuery(arg)) return arg.opts.noResolve;
 					return false;
@@ -815,6 +817,7 @@ DESCRIBE ${this.text.trim()}
 					unsub = activeQuery.subscribe(() => callback(activeQuery));
 					callback(activeQuery);
 				}
+				dagNode.updateContainer(activeQuery);
 				dagNode.trigger(true);
 			},
 			/** @param {import('../types.js').QueryOpts<any>} opts */
@@ -823,6 +826,9 @@ DESCRIBE ${this.text.trim()}
 			},
 			get __dag() {
 				return dagNode;
+			},
+			get hasUnset() {
+				return [...dagNode.parents].some((p) => p.dirty); // We just block on any dirty parent
 			}
 		};
 	};

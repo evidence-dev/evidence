@@ -74,4 +74,14 @@ export class Input {
 	toString = () => {
 		return this.sqlSnippet;
 	};
+
+	/**
+	 *
+	 * @param {unknown} v
+	 * @returns {v is Input}
+	 */
+	static isInput(v) {
+		console.log({ v });
+		return true;
+	}
 }
