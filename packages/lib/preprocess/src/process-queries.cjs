@@ -131,9 +131,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids
 					.map(
-						(id) => `
-				__${id}Factory(\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`, { noResolve: hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\` });
-				`
+						(id) =>
+							`__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\``
 					)
 					.join('\n')}
 			}));
@@ -246,7 +245,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				await $page.data.__db.updateParquetURLs(JSON.stringify(payload.latestManifest), true);
 				Query.emptyCache()
 				${validIds
-					.map((id) => `__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });`)
+					.map(
+						(id) =>
+							`__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\``
+					)
 					.join('\n')}
 			})
 	    }
