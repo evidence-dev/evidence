@@ -143,7 +143,7 @@ export class DagNode {
 			}
 			return epochId;
 		},
-		100,
+		25,
 		{ leading: false, trailing: true }
 	);
 
@@ -287,6 +287,10 @@ export class BlockingDagNode extends DagNode {
 	get dirty() {
 		return this.#dirty;
 	}
+
+	tidy = async () => {
+		await this.unblock();
+	};
 
 	markDirty = () => {
 		this.#dirty = true;

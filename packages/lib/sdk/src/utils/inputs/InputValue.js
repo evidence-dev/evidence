@@ -10,21 +10,27 @@ function inputValueProxy(self) {
 		get(target, prop) {
 			if (serializeTokens.includes(prop)) return self.toString.bind(self);
 			if (prop === Symbol.toStringTag) return 'InputValue';
-
+			if (prop === 'toJSON') {
+				return self.toString.bind(self);
+			}
 			if (!(prop in self)) {
 				self[prop] = new InputValue(undefined, self.input);
 			}
-
+			console.log({
+				prop,
+				value: self[prop]
+			});
 			return self[prop];
 		},
 		set(target, prop, value) {
-			// let didTransform = false;
 			if (!(value instanceof InputValue)) {
 				target[prop] = new InputValue(value, self.input);
-				// didTransform = true;
 			} else {
 				target[prop] = value;
 			}
+
+			self.input.modified = true;
+			target.__dag.trigger();
 			return true;
 		}
 	});

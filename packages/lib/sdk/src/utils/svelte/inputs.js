@@ -1,5 +1,6 @@
 import { getAllContexts, getContext, setContext } from 'svelte';
 import { get, readable, readonly, writable } from 'svelte/store';
+import { Input } from '../inputs/Input.js';
 
 export const InputStoreKey = Symbol('InputStore');
 
@@ -134,5 +135,35 @@ export const getInputSetter = (inputKey, toggle, defaultSqlFragment) => {
 
 			return $inputs;
 		});
+	};
+};
+
+/**
+ * @param {string} name
+ * @param {(i: Input) => string} [toSql]
+ * @returns {import("./types.js").InputManager}
+ */
+export const useInput = (name, toSql = (v) => v.value?.toString()) => {
+	const input = new Input(name, toSql);
+
+	const inputStore = getInputContext();
+	inputStore.update(($inputStore) => {
+		$inputStore[name] = input;
+		return $inputStore;
+	});
+	console.log({ inputStore });
+
+	// TODO: Interact with the input store
+
+	return {
+		__input: input,
+		/** 
+		 * @param {any} value
+		 * 
+		 */
+		update: (value) => {
+			input.value = value;
+			input.update();
+		}
 	};
 };

@@ -4,7 +4,7 @@ import { BlockingDagNode } from '../dag/DagNode.js';
 
 /** @typedef {import('../dag/types.js').WithDag} WithDag */
 
-const reservedProps = ['__dag', '__sqlSnippet', 'sqlSnippet', 'isSet'];
+const reservedProps = ['__dag', '__sqlSnippet', 'sqlSnippet', 'isSet', 'modified'];
 
 /**
  * @param {Input & Record<string | symbol,any>} self
@@ -28,7 +28,9 @@ function inputProxy(self) {
 				target[prop] = value;
 			}
 
-			target.__dag.trigger();
+			if (!reservedProps.includes(prop.toString())) {
+				target.__dag.trigger();
+			}
 			return true;
 		}
 	});
@@ -46,15 +48,9 @@ export class Input {
 	/** @type {((self: Input) => string) | undefined} */
 	#snippetFactory;
 
-	/** @type {string} */
-	set sqlSnippet(v) {
-		this.__sqlSnippet = v;
-	}
 	get sqlSnippet() {
-		return this.__sqlSnippet ?? this.#snippetFactory?.(this) ?? '';
+		return this.#snippetFactory?.(this) ?? '';
 	}
-	/** @type {string | undefined} */
-	__sqlSnippet;
 
 	modified = false;
 	get isSet() {
@@ -62,7 +58,7 @@ export class Input {
 	}
 
 	/**
-	 * @param {string} name }
+	 * @param {string} name
 	 * @param {(self: Input) => string} [sqlSnippetFactory]
 	 */
 	constructor(name, sqlSnippetFactory) {
@@ -83,5 +79,9 @@ export class Input {
 	static isInput(v) {
 		console.log({ v });
 		return true;
+	}
+
+	update() {
+		this.__dag.trigger();
 	}
 }
