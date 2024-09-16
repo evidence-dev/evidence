@@ -123,14 +123,14 @@
 		"@types/node": "^20.11.0",
 		"@typescript-eslint/typescript-estree": "^6.18.1",
 		"memfs": "^4.6.0",
-		"svelte": "^4.2.12",
+		"svelte": "^4.2.19",
 		"typescript": "^5.3.3"
 	},
 	"peerDependencies": {
 		"@evidence-dev/universal-sql": "workspace:*",
 		"nanoid": "^5.0.4",
 		"perfect-debounce": "^1.0.0",
-		"svelte": "^4.2.12"
+		"svelte": "^4.2.19"
 	},
 	"peerDependenciesMeta": {
 		"svelte": {
