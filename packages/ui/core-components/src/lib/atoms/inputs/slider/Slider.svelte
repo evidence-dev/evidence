@@ -3,8 +3,8 @@
 </script>
 
 <script>
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	const inputs = getInputContext();
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
+
 	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import {
@@ -72,7 +72,10 @@
 	/** @type {string | undefined} */
 	export let fmt = undefined;
 
-	$: $inputs[name] = value;
+	const input = useInput(name, { debouncePeriod: 200 });
+
+	input.update(defaultValue);
+	$: input.update(value[0]);
 
 	/** @type {string} */
 	export let size = '';
@@ -97,8 +100,12 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`relative ${sizeClass} mb-10 select-none`}>
 		<p class="pb-2 truncate text-xs">
-			{title} :
-			<span class="text-xs">{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span>
+			{#if title}
+				{title} :
+			{/if}
+			<span class="text-xs" class:text-gray-500={value[0] != $input}
+				>{fmt ? formatValue(value[0], format_object) : value[0]}</span
+			>
 		</p>
 		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 		{#if showMaxMin}
