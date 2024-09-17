@@ -1,7 +1,7 @@
 // @ts-check
 
 import { getContext, setContext } from 'svelte';
-import { derived, readable } from 'svelte/store';
+import { derived, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
@@ -39,7 +39,7 @@ const createSystemThemeStore = () => {
 /**
  * @typedef ThemeStores
  * @prop {Readable<'light' | 'dark'>} systemTheme
- * @prop {Writable<'system' | 'light' | 'dark'>} selectedTheme
+ * @prop {Readable<'system' | 'light' | 'dark'>} selectedTheme
  * @prop {Readable<'light' | 'dark'>} theme
  * @prop {() => void} cycleTheme
  */
@@ -69,9 +69,13 @@ const createThemeStores = () => {
 		});
 	};
 
+	theme.subscribe((theme) => {
+		document.documentElement.setAttribute('data-theme', theme);
+	});
+
 	return {
 		systemTheme,
-		selectedTheme,
+		selectedTheme: readonly(selectedTheme),
 		theme,
 		cycleTheme
 	};
