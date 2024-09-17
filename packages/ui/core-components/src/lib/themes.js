@@ -1,3 +1,5 @@
+// @ts-check
+
 import { getContext, setContext } from 'svelte';
 import { derived, readable } from 'svelte/store';
 import { browser } from '$app/environment';
@@ -7,9 +9,9 @@ import { localStorageStore } from '@evidence-dev/component-utilities/stores';
 
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
-	const store = readable('light', (set) => {
+	const store = readable(/** @type {'light' | 'dark'} */ ('light'), (set) => {
 		if (browser && window.matchMedia) {
-			/** @param {MediaQueryList} e */
+			/** @param {MediaQueryList | MediaQueryListEvent} e */
 			const onPrefersDarkColorSchemeChange = (e) => {
 				set(e.matches ? 'dark' : 'light');
 			};
@@ -39,6 +41,7 @@ const createSystemThemeStore = () => {
  * @prop {Readable<'light' | 'dark'>} systemTheme
  * @prop {Writable<'system' | 'light' | 'dark'>} selectedTheme
  * @prop {Readable<'light' | 'dark'>} theme
+ * @prop {() => void} cycleTheme
  */
 
 /** @returns {ThemeStores} */
@@ -52,10 +55,25 @@ const createThemeStores = () => {
 		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
 	});
 
+	const cycleTheme = () => {
+		selectedTheme.update((current) => {
+			switch (current) {
+				case 'system':
+					return 'light';
+				case 'light':
+					return 'dark';
+				case 'dark':
+				default:
+					return 'system';
+			}
+		});
+	};
+
 	return {
 		systemTheme,
 		selectedTheme,
-		theme
+		theme,
+		cycleTheme
 	};
 };
 

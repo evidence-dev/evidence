@@ -11,7 +11,7 @@
 	import { browser } from '$app/environment';
 	import DevTools from '../../devtools/DevTools.svelte';
 	import { onMount } from 'svelte';
-	import { ensureThemeStores } from '../../molecules/theme-changer';
+	import { ensureThemeStores } from '../../themes.js';
 
 	// Remove splash screen from app.html
 	if (browser) {

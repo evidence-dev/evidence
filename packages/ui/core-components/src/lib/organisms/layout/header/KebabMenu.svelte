@@ -2,8 +2,18 @@
 	import { Button } from '../../../atoms/shadcn/button';
 	import * as DropdownMenu from '../../../atoms/shadcn/dropdown-menu';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Settings, _3dCubeSphere, Link, Dots, Table, Prompt } from '@steeze-ui/tabler-icons';
+	import {
+		Settings,
+		_3dCubeSphere,
+		Link,
+		Dots,
+		Table,
+		Prompt,
+		Sun,
+		Moon
+	} from '@steeze-ui/tabler-icons';
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
+	import { ensureThemeStores } from '../../../themes.js';
 	import { dev } from '$app/environment';
 
 	const beforeprint = new Event('export-beforeprint');
@@ -13,6 +23,11 @@
 		setTimeout(() => window.print(), 0);
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
+
+	const { selectedTheme, theme, cycleTheme } = ensureThemeStores();
+	$: themeLabel =
+		$selectedTheme === 'system' ? 'System' : $selectedTheme === 'light' ? 'Light' : 'Dark';
+	$: themeIcon = $theme === 'light' ? Sun : Moon;
 </script>
 
 <DropdownMenu.Root>
@@ -21,18 +36,31 @@
 			<Icon src={Dots} class="h-6 w-6" />
 		</Button>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content class=" w-44 text-xs">
+	<DropdownMenu.Content class="w-52 text-xs">
 		<DropdownMenu.Group>
 			<DropdownMenu.Item on:click={print}>
 				Print PDF
 				<DropdownMenu.Shortcut>⌘P</DropdownMenu.Shortcut>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
-				on:click={() => {
+				on:click={(e) => {
+					e.preventDefault();
 					showQueries.update((val) => !val);
 				}}
 			>
 				{$showQueries ? 'Hide ' : 'Show '} Queries
+			</DropdownMenu.Item>
+			<DropdownMenu.Item
+				on:click={(e) => {
+					e.preventDefault();
+					cycleTheme();
+				}}
+			>
+				Appearance
+				<DropdownMenu.Shortcut class="tracking-normal flex flex-row">
+					{themeLabel}
+					<Icon src={themeIcon} class="h-4 w-4 ml-1" />
+				</DropdownMenu.Shortcut>
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 		{#if dev}

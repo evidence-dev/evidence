@@ -6,7 +6,6 @@
 	import Logo from '../Logo.svelte';
 	import AlgoliaDocSearch from './AlgoliaDocSearch.svelte';
 	import KebabMenu from './KebabMenu.svelte';
-	import ThemeMenu from './ThemeMenu.svelte';
 
 	export let mobileSidebarOpen = undefined;
 	export let title = undefined;
@@ -105,7 +104,6 @@
 					</a>
 				{/if}
 			</div>
-			<ThemeMenu />
 			<div class="relative">
 				{#if dev || !neverShowQueries}
 					<KebabMenu />
