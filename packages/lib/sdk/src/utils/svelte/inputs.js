@@ -23,14 +23,6 @@ const isReadable = (v) => {
 	if (v === null) return false;
 	return 'subscribe' in v;
 };
-/**
- * @param {unknown} v
- * @returns {v is Writable<any>}
- */
-const isWritable = (v) => {
-	if (!isReadable(v)) return false;
-	return 'set' in v && 'update' in v;
-};
 
 /**
  * @returns {InputStore}
@@ -49,7 +41,7 @@ export const ensureInputContext = () => {
 
 /**
  * @returns {InputStore}
- * @deprecated use 'getInputSetter' whenever possible
+ * @deprecated This should not appear when this branch is merged
  */
 export const getInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {

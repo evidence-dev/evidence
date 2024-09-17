@@ -22,6 +22,7 @@ export class History {
 		const organize = (o) => {
 			let tmp = Object.entries(o);
 			tmp = tmp.sort((a, b) => a[0].localeCompare(b[0]));
+			// @ts-ignore
 			tmp = Object.fromEntries(tmp);
 			return JSON.parse(JSON.stringify(tmp));
 		};
@@ -29,6 +30,13 @@ export class History {
 		const pre = organize(this.#prev);
 		const post = organize(value);
 		const diff = detailedDiff(pre, post);
+		if (
+			Object.keys(diff.added).length === 0 &&
+			Object.keys(diff.deleted).length === 0 &&
+			Object.keys(diff.updated).length === 0
+		)
+			// empty diff
+			return;
 		this.#history.push({
 			...diff,
 			before: pre,

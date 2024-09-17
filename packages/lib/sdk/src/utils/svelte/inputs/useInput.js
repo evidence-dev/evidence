@@ -1,6 +1,7 @@
 import { debounce } from 'perfect-debounce';
 import { EvidenceError } from '../../../lib/EvidenceError.js';
 import { getInputContext } from '../inputs.js';
+import { storeMixin } from '../../../lib/store-helpers/storeMixin.js';
 
 /**
  * @param {string} name
@@ -39,15 +40,17 @@ export const useInput = (name, options, initialState) => {
 		if (label) input.label = label;
 		else input.label = value;
 		Object.assign(input, additional);
-		// input.update();
+		publish(input);
 	};
+
+	const { subscribe, publish } = storeMixin();
 
 	return {
 		__input: input,
 		/**
 		 * @param {any} value
-		 *
 		 */
-		update: options?.debouncePeriod ? debounce(updateFn, options.debouncePeriod) : updateFn
+		update: options?.debouncePeriod ? debounce(updateFn, options.debouncePeriod) : updateFn,
+		subscribe
 	};
 };

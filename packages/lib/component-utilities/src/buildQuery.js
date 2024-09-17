@@ -1,6 +1,7 @@
 import { setContext, getContext } from 'svelte';
 import { Query as QueryBuilder, sql } from '@uwdata/mosaic-sql';
 import { Query, resolveMaybePromise } from '@evidence-dev/sdk/usql';
+import { ActiveDagNode } from '@evidence-dev/sdk/utils';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
 import { derived, writable } from 'svelte/store';
 
@@ -32,22 +33,30 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  * @param {QueryProps} queryProps
  * @param {string} id
  * @param {Array<Record<string,unknown>>} initialData
+ * @param {import("@evidence-dev/sdk/utils/svelte").InputManager} [inputManager]
  * @example export let value, data, label, order, where;
  *  $: queryProps = {value, data, label, order, where}
  *	const {results, update} = buildReactiveInputQuery(queryProps, `id`, $page.data.data[`id`])
  *	$: update({value, data, label, order, where})
  *	$: ({hasQuery, query} = $results)
  */
-export const buildReactiveInputQuery = (queryProps, id, initialData) => {
-	const internal = writable(buildInputQuery(queryProps, id, initialData));
+export const buildReactiveInputQuery = (queryProps, id, initialData, inputManager) => {
+	const dag = new ActiveDagNode(`Input--${id}`, () => {
+		return true;
+	});
+	if (inputManager) {
+		inputManager.__input.__dag.registerDependency(dag);
+	}
+	const internal = writable(buildInputQuery(queryProps, id, initialData, dag));
 
 	let currentQuery;
 	return {
 		results: derived(internal, (v) => v),
 		update: async (queryProps) => {
-			const { hasQuery, query } = buildInputQuery(queryProps, id);
+			const { hasQuery, query } = buildInputQuery(queryProps, id, undefined, dag);
 			if (!hasQuery) {
 				internal.set({ hasQuery: false });
+				dag.updateContainer(undefined);
 			} else {
 				// We can run .fetch() with wreckless abandon because if the query
 				// has already been fetched (e.g. hasn't changed), then this
@@ -56,6 +65,7 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 					if (query.hash !== currentQuery?.hash) {
 						currentQuery = query;
 						internal.set({ hasQuery, query });
+						dag.updateContainer(query);
 					}
 				}, query.fetch());
 			}
@@ -66,10 +76,16 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 /**
  * @param {QueryProps} opts
  * @param {string} id
+ * @param {import("@evidence-dev/sdk/utils").DagNode} [dagNode]
  * @returns { { hasQuery: false } | { hasQuery: true, query: Query } }
  * @deprecated Prefer buildReactiveInputQuery
  */
-export const buildInputQuery = ({ value, label, select, data, where, order }, id, initialData) => {
+export const buildInputQuery = (
+	{ value, label, select, data, where, order },
+	id,
+	initialData,
+	dagNode
+) => {
 	if (!data || !(value || select)) return { hasQuery: false };
 
 	let parentHasNoResolve = false;
@@ -110,7 +126,10 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 		});
 	}
 
-	const newQuery = buildQuery(q.toString(), id, initialData, { noResolve: parentHasNoResolve });
+	const newQuery = buildQuery(q.toString(), id, initialData, {
+		noResolve: parentHasNoResolve,
+		dagNode
+	});
 	// Don't make the component author bother with this, just provide the data
 	newQuery.fetch();
 	return {

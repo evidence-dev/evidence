@@ -1,5 +1,6 @@
 import { BlockingDagNode } from '../dag/DagNode.js';
 import {
+	InternalState,
 	PrimitiveValue,
 	RecursiveProxyPrimitive
 } from '../recursive-proxy/RecursiveProxyPrimitive.js';
@@ -54,8 +55,6 @@ export class Input extends RecursiveProxyPrimitive {
 					post: () => {
 						flagChildSet();
 						this.__dag.trigger();
-						// TODO: This needs to be the actual value
-						// this.setValue(this.toString());
 					},
 					inheritPost: true
 				}
@@ -88,7 +87,6 @@ export class Input extends RecursiveProxyPrimitive {
 		const innerValue = this[PrimitiveValue];
 
 		if (this.hasValue) {
-			console.log(this.#sqlFragmentFactory);
 			if (this.#sqlFragmentFactory) {
 				const value = this.#sqlFragmentFactory(this);
 				if (value !== null) return value;
@@ -102,7 +100,7 @@ export class Input extends RecursiveProxyPrimitive {
 		if (this.hasValue) {
 			return this[PrimitiveValue];
 		} else {
-			return this;
+			return this[InternalState];
 		}
 	};
 	['🦆'] = '__EvidenceInput__';

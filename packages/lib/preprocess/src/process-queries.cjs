@@ -81,10 +81,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		}
 	);
 
-	console.log(\`Static Update ${id}\`)
 	__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
 	$: {
-		console.log(\`Reactive Update ${id}\`)
 		__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
 	}
 

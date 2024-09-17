@@ -743,39 +743,46 @@ DESCRIBE ${this.text.trim()}
 				return false;
 			});
 
-		const dagNode = new ActiveDagNode(`Query | ${currentOpts.id ?? 'Unknown'}`, async () => {
-			activeQuery.publish('DagNode Execution');
-			const currentGen = ++changeIdx;
-			const nextQuery = Query.create(currentText(), execFn, {
-				...currentOpts,
-				dagNode,
-				noResolve: hasUnsetInput()
-			});
+		const dagNode = new ActiveDagNode(
+			`Query | ${currentOpts.id ?? 'Unknown'}`,
+			async (_, defer) => {
+				activeQuery.publish('DagNode Execution');
+				const currentGen = ++changeIdx;
+				const nextQuery = Query.create(currentText(), execFn, {
+					...currentOpts,
+					dagNode,
+					noResolve: hasUnsetInput()
+				});
 
-			const fetched = nextQuery.fetch();
-			await new Promise((r) => setTimeout(r, 500));
+				const fetched = nextQuery.fetch();
+				// Artificial Delay
+				// TODO: Make this a setting in the dev panel
+				// await new Promise((r) => setTimeout(r, 500));
 
-			if (fetched instanceof Promise) {
-				await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), fetched]).then(
-					() => {
-						if (currentGen === changeIdx) {
-							callback(nextQuery);
-							activeQuery = nextQuery;
+				if (fetched instanceof Promise) {
+					await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), fetched]).then(
+						() => {
+							if (currentGen === changeIdx) {
+								defer(() => callback(nextQuery));
+								// callback(nextQuery);
+								activeQuery = nextQuery;
+							}
 						}
+					);
+				} else {
+					if (currentGen === changeIdx) {
+						defer(() => callback(nextQuery));
+						// callback(nextQuery);
+						activeQuery = nextQuery;
 					}
-				);
-			} else {
-				if (currentGen === changeIdx) {
-					callback(nextQuery);
-					activeQuery = nextQuery;
+				}
+				if (hasUnsetInput()) {
+					return false;
+				} else {
+					return true;
 				}
 			}
-			if (hasUnsetInput()) {
-				return false;
-			} else {
-				return true;
-			}
-		});
+		);
 
 		/** @type {TemplateStringsArray} */
 		let _strs;
@@ -1154,7 +1161,6 @@ DESCRIBE ${this.text.trim()}
 			initialError = undefined
 		} = opts;
 		this.opts = opts;
-		this.__dag = opts.dagNode;
 		this.#executeQuery = executeQuery;
 
 		if (typeof query !== 'string' && !(query instanceof QueryBuilder)) {
@@ -1173,6 +1179,18 @@ DESCRIBE ${this.text.trim()}
 		this.#hash = hashQuery(this.#originalText);
 		this.#id = id ?? this.#hash;
 		this.#opts = opts;
+
+		this.__dag =
+			opts.dagNode ??
+			new ActiveDagNode(
+				this.id,
+				async () => {
+					await this.fetch();
+					if (this.#__error) return false;
+					return true;
+				},
+				this
+			);
 
 		if (query && typeof query !== 'string') this.#query = query;
 		else if (query) {
@@ -1507,7 +1525,7 @@ DESCRIBE ${this.text.trim()}
 	/// </ QueryBuilder Interface /> ///
 	////////////////////////////////////
 
-	/** @type {ActiveDagNode | undefined} */
+	/** @type {ActiveDagNode} */
 	__dag;
 }
 

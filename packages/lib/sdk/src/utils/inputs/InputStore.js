@@ -69,6 +69,10 @@ export class InputStore {
 		return this.#proxied;
 	}
 
+	toJSON = () => {
+		return Object.fromEntries(Object.entries(this).filter(([, v]) => Input.isInput(v)));
+	};
+
 	/**
 	 *
 	 * @param {string | symbol} name

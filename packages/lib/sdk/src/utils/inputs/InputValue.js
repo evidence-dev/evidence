@@ -1,4 +1,5 @@
 import {
+	InternalState,
 	PrimitiveValue,
 	RecursiveProxyPrimitive
 } from '../recursive-proxy/RecursiveProxyPrimitive.js';
@@ -68,10 +69,6 @@ import { Input } from './Input.js';
 // 	}
 
 export class InputValue extends RecursiveProxyPrimitive {
-	get isSet() {
-		return this.hasValue;
-	}
-
 	get __dag() {
 		let p = this.parent;
 		while (p instanceof InputValue) {
@@ -89,6 +86,13 @@ export class InputValue extends RecursiveProxyPrimitive {
 			return innerValue?.toString() ?? '';
 		} else {
 			return Input.DefaultValueText;
+		}
+	};
+	toJSON = () => {
+		if (this.hasValue) {
+			return this[PrimitiveValue];
+		} else {
+			return this[InternalState];
 		}
 	};
 

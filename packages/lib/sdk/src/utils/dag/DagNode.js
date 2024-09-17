@@ -151,6 +151,7 @@ export class DagNode {
 				fn();
 			});
 		});
+
 		return epochId;
 	};
 

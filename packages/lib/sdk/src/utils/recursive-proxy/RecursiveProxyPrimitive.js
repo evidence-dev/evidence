@@ -2,6 +2,7 @@
 
 import { EvidenceError } from '../../lib/EvidenceError.js';
 export const PrimitiveValue = Symbol('PrimitiveValue');
+export const InternalState = Symbol('InternalState');
 /**
  * The RecursiveProxyPrimative is used to create classes that can be infinitely addressed.
  *
@@ -152,6 +153,9 @@ export class RecursiveProxyPrimitive {
 
 	get [PrimitiveValue]() {
 		return this.#value;
+	}
+	get [InternalState]() {
+		return this.#internalState;
 	}
 
 	/** @param {RecursiveProxyPrimitive} s */
