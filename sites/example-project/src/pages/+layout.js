@@ -9,7 +9,6 @@ import {
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
-import { setTrackProxy } from '@evidence-dev/sdk/usql';
 import md5 from 'blueimp-md5';
 
 export const ssr = !dev;
@@ -168,10 +167,6 @@ export const load = async ({ fetch, route, params, url }) => {
 				await profile(setParquetURLs, renderedFiles);
 			}
 		},
-		inputs: setTrackProxy({
-			label: '',
-			value: '(SELECT NULL WHERE 0 /* An Input has not been set */)'
-		}),
 		data,
 		customFormattingSettings,
 		isUserPage,

@@ -62,7 +62,7 @@
 			<Icon src={open ? X : Bug} class="w-4 h-4" />
 		</button>
 
-		<header class="text-xl font-bold mb-4">Evidence Dev Tools</header>
+		<header class="text-xl font-bold mb-4">Dev Tools</header>
 
 		<Accordion>
 			<AccordionItem title="Inspect Queries" compact>

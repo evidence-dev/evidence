@@ -1,5 +1,6 @@
 <script>
-	import { BlockingDagNode } from '@evidence-dev/sdk/utils';
+	/* global globalThis */
+	import { BlockingDagNode, PassiveDagNode } from '@evidence-dev/sdk/utils';
 	import { getContext } from 'svelte';
 	import { Anchor, Node } from 'svelvet';
 
@@ -57,11 +58,9 @@
 				</button>
 				<button
 					on:click={() => {
-						//@ts-expect-error
 						globalThis.debugDagNode = $dagNode;
 					}}
 					class="text-sm font-normal px-1 py-1/2 border border-black rounded"
-					class:bg-yellow-300={$selectedAncestor && isSelectedAncestor}
 				>
 					Set on window
 				</button>
@@ -72,6 +71,14 @@
 						disabled={!$dagNode.dirty}
 					>
 						Unblock
+					</button>
+				{/if}
+				{#if $dagNode instanceof PassiveDagNode}
+					<button
+						on:click={() => $dagNode.trigger()}
+						class="text-sm font-normal px-1 py-1/2 border border-black rounded"
+					>
+						Trigger
 					</button>
 				{/if}
 			</div>

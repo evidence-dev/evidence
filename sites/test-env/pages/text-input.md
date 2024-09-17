@@ -6,20 +6,20 @@
 <TextInput name=search_input/>
 
 Input: {inputs.search_input}  
-Input is set: {!inputs.search_input[Unset]}
+Input is set: {!inputs.search_input.isSet}
 
 ## Text Input with default
 <TextInput name=search_input_with_default defaultValue="Hello World" />
 
 Input: {inputs.search_input_with_default}  
-Input is set: {!inputs.search_input_with_default[Unset]}
+Input is set: {!inputs.search_input_with_default.isSet}
 
 ## Text Input with Title
 
 <TextInput name=another_search_input title="Search"/>
 
 Input: {inputs.another_search_input}  
-Input is set: {!inputs.another_search_input[Unset]}
+Input is set: {!inputs.another_search_input.isSet}
 
 
 ## Text Input with Custom Placeholder
@@ -27,7 +27,7 @@ Input is set: {!inputs.another_search_input[Unset]}
 <TextInput name=another_search title="Freetext Search" placeholder="Start typing"/>
 
 Input: {inputs.another_search}  
-Input is set: {!inputs.another_search[Unset]}
+Input is set: {!inputs.another_search}
 
 ## Text Input with Default Value
 
@@ -35,7 +35,7 @@ Input is set: {!inputs.another_search[Unset]}
 
 Input: {inputs.yet_another_search}
 
-Search Value: {inputs.yet_another_search.search?.('column_name')}
+Search Value: {inputs.yet_another_search}
 
 <!-- TODO: Fix this which breaks when you pass input into a query
 

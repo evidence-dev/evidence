@@ -1,3 +1,4 @@
+/* global globalThis */
 import { nanoid } from 'nanoid';
 import { isDebug } from '../../lib/debug.js';
 import {
@@ -17,6 +18,7 @@ import { VITE_EVENTS } from '../../build-dev/vite/constants.js';
 import { sterilizeQuery } from './sterilizeQuery.js';
 import { ActiveDagNode } from '../../utils/dag/DagNode.js';
 import zip from 'lodash/zip.js';
+import debounce from 'lodash/debounce.js';
 
 /**
  * @typedef {import("../types.js").QueryResultRow} QueryResultRow
@@ -729,38 +731,46 @@ DESCRIBE ${this.text.trim()}
 		// TODO: Should we override this, or should we merge this?
 		let currentOpts = { ...initialOptions };
 
+		const hasUnsetInput = () =>
+			_args.some((arg) => {
+				if (typeof arg !== 'object') return false;
+				if ('hasValue' in arg) {
+					return !arg.hasValue;
+				}
+				if (Query.isQuery(arg)) {
+					return arg.opts.noResolve;
+				}
+				return false;
+			});
+
 		const dagNode = new ActiveDagNode(`Query | ${currentOpts.id ?? 'Unknown'}`, async () => {
 			activeQuery.publish('DagNode Execution');
 			const currentGen = ++changeIdx;
-			const hasUnsetInput = _args.some((arg) => {
-				if (typeof arg !== 'object') return false;
-				if ('isSet' in arg) return !arg.isSet;
-				if (Query.isQuery(arg)) return arg.opts.noResolve;
-				return false;
-			});
 			const nextQuery = Query.create(currentText(), execFn, {
 				...currentOpts,
 				dagNode,
-				noResolve: hasUnsetInput
+				noResolve: hasUnsetInput()
 			});
 
 			const fetched = nextQuery.fetch();
 			await new Promise((r) => setTimeout(r, 500));
 
 			if (fetched instanceof Promise) {
-				Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), fetched]).then(() => {
-					if (currentGen === changeIdx) {
-						callback(nextQuery);
-						activeQuery = nextQuery;
+				await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), fetched]).then(
+					() => {
+						if (currentGen === changeIdx) {
+							callback(nextQuery);
+							activeQuery = nextQuery;
+						}
 					}
-				});
+				);
 			} else {
 				if (currentGen === changeIdx) {
 					callback(nextQuery);
 					activeQuery = nextQuery;
 				}
 			}
-			if (hasUnsetInput) {
+			if (hasUnsetInput()) {
 				return false;
 			} else {
 				return true;
@@ -787,39 +797,52 @@ DESCRIBE ${this.text.trim()}
 				.trim();
 
 		return {
-			/**
-			 *
-			 * @param {TemplateStringsArray} strs
-			 * @param  {...any} args
-			 */
-			update: (strs, ...args) => {
-				_strs = strs;
-				_args = args;
-				dagNode.deregisterDependencies();
-				args.forEach((arg) => {
-					if (arg?.__dag) dagNode.registerDependency(arg.__dag);
-				});
-				const hasUnsetInput = args.some((arg) => {
-					if (typeof arg !== 'object') return false;
-					if ('isSet' in arg) return !arg.isSet;
-					if (Query.isQuery(arg)) return arg.opts.noResolve;
-					return false;
-				});
-				/** @type {CallableFunction | undefined} */
-				let unsub;
-				if (!activeQuery) {
-					activeQuery = Query.create(currentText(), execFn, {
-						...currentOpts,
-						dagNode,
-						noResolve: hasUnsetInput
+			update: debounce(
+				/**
+				 *
+				 * @param {TemplateStringsArray} strs
+				 * @param  {...any} args
+				 */
+				(strs, ...args) => {
+					if (
+						args.every((a, i) => {
+							const out = a === _args?.[i];
+							return out;
+						}) &&
+						strs.every((s, i) => {
+							const out = s === _strs?.[i];
+							return out;
+						})
+					) {
+						return;
+					}
+					_strs = strs;
+					_args = args;
+
+					dagNode.deregisterDependencies();
+					args.forEach((arg) => {
+						if (arg?.__dag) {
+							dagNode.registerDependency(arg.__dag);
+						}
 					});
-					unsub?.();
-					unsub = activeQuery.subscribe(() => callback(activeQuery));
-					callback(activeQuery);
-				}
-				dagNode.updateContainer(activeQuery);
-				dagNode.trigger(true);
-			},
+					/** @type {CallableFunction | undefined} */
+					let unsub;
+					if (!activeQuery) {
+						activeQuery = Query.create(currentText(), execFn, {
+							...currentOpts,
+							dagNode,
+							noResolve: hasUnsetInput()
+						});
+						unsub?.();
+						unsub = activeQuery.subscribe(() => callback(activeQuery));
+						callback(activeQuery);
+					}
+					dagNode.updateContainer(activeQuery);
+					dagNode.trigger(true);
+				},
+				100,
+				{ leading: true, trailing: true }
+			),
 			/** @param {import('../types.js').QueryOpts<any>} opts */
 			updateOptions: (opts) => {
 				currentOpts = { ...currentOpts, ...opts };
@@ -1231,6 +1254,9 @@ DESCRIBE ${this.text.trim()}
 		if (opts.autoScore) {
 			this.#calculateScore();
 		}
+
+		// @ts-expect-error
+		if (isDebug()) globalThis[Symbol.for(this.id)] = this;
 	}
 
 	////////////////////////////////////
@@ -1255,7 +1281,7 @@ DESCRIBE ${this.text.trim()}
 	 */
 	publish = (/** @type {string} */ source) => {
 		if (this.#publishIdx++ > 100000) throw new Error('Query published too many times.');
-		this.#debug('publish', `Publishing triggered by ${source}`, this);
+		this.#debug(`publish (${source})`, `Publishing triggered by ${source}`, this);
 		this.#subscribers.forEach((fn) => fn(this.#value));
 	};
 	//////////////////////////////////////

@@ -41,45 +41,16 @@ describe('DagNode', () => {
 			child.registerDependency(root);
 			mid.registerDependency(root);
 
-			await root.trigger();
+			vi.useFakeTimers();
+			root.trigger();
+			await vi.advanceTimersToNextTimerAsync();
 
 			expect(exec).toHaveBeenCalledTimes(2);
 			expect(exec).toHaveBeenNthCalledWith(1, 'mid');
 			expect(exec).toHaveBeenNthCalledWith(2, 'child');
 		});
 
-		it('should debounce execution', async () => {
-			// This test handles extremely rapid user interactions
-			// E.g. a slider being dragged
-			vi.useFakeTimers();
-			const exec = vi.fn(() => true);
-
-			const input = new PassiveDagNode('input', () => exec('input'));
-			const root = new ActiveDagNode('root', () => exec('root'));
-
-			root.registerDependency(input);
-
-			const promises = [];
-			promises.push(input.trigger());
-			promises.push(input.trigger());
-			promises.push(input.trigger());
-			promises.push(input.trigger());
-			promises.push(input.trigger());
-			promises.push(input.trigger());
-			promises.push(input.trigger());
-			await vi.advanceTimersByTimeAsync(200);
-			await Promise.all(promises);
-			promises.length = 0;
-			promises.push(input.trigger());
-			promises.push(input.trigger());
-			await vi.advanceTimersByTimeAsync(200);
-			await Promise.all(promises);
-
-			expect(exec).toHaveBeenCalledTimes(1);
-			expect(exec).toHaveBeenNthCalledWith(1, 'root');
-		});
-
-		it.only('should execute each node as little as possible, at most once per trigger when triggered multiple times', async () => {
+		it('should execute each node as little as possible, at most once per trigger when triggered multiple times', async () => {
 			// This test handles long-running queries, not rapid user interactions
 			const exec = vi.fn(() => 'Some truth');
 
@@ -130,7 +101,9 @@ describe('DagNode', () => {
 			ordersQuery.registerDependency(selectedLocale);
 			ordersQuery.registerDependency(selectedState);
 
-			await selectedState.trigger();
+			vi.useFakeTimers();
+			selectedState.trigger();
+			await vi.advanceTimersToNextTimerAsync();
 
 			expect(exec).toHaveBeenCalledTimes(2);
 			expect(exec).toHaveBeenNthCalledWith(1, 'locales');
@@ -154,6 +127,44 @@ describe('DagNode', () => {
 			middle.registerDependency(parent);
 			child.registerDependency(middle);
 			expect(() => parent.registerDependency(child)).toThrow();
+		});
+	});
+
+	describe('Deferal', () => {
+		it('should call registered deferrals when execution completes', async () => {
+			const fn = vi.fn();
+			const dagNode = new ActiveDagNode('test', (_, register) => {
+				register(fn);
+				return true;
+			});
+			vi.useFakeTimers();
+
+			dagNode.trigger(true);
+			await vi.advanceTimersToNextTimerAsync();
+			expect(fn).toHaveBeenCalledTimes(1);
+		});
+		it('should call registered deferrals when execution of other nodes completes', async () => {
+			const fn = vi.fn();
+
+			const dagNode = new ActiveDagNode('test', (_, register) => {
+				register(() => fn('deferred'));
+				fn('non-deferred (parent)');
+				return true;
+			});
+			const childNode = new ActiveDagNode('child', () => {
+				console.log('Executing child');
+				fn('non-deferred (child)');
+				return true;
+			});
+			vi.useFakeTimers();
+			childNode.registerDependency(dagNode);
+			dagNode.trigger(true);
+			await vi.advanceTimersToNextTimerAsync();
+			console.log(fn.mock.calls);
+			expect(fn).toHaveBeenCalledTimes(3);
+			expect(fn).toHaveBeenNthCalledWith(1, 'non-deferred (parent)');
+			expect(fn).toHaveBeenNthCalledWith(2, 'non-deferred (child)');
+			expect(fn).toHaveBeenNthCalledWith(3, 'deferred');
 		});
 	});
 });

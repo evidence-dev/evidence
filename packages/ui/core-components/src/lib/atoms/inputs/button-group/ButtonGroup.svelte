@@ -41,6 +41,7 @@
 	setButtonGroupContext((v) => {
 		$valueStore = v;
 		// the assignment to $inputs is necessary to trigger the change on SSR
+		console.log("I'm assigning?");
 		$inputs[name] = v?.value ?? null;
 	}, readonly(valueStore));
 

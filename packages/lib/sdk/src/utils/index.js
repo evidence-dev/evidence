@@ -5,3 +5,5 @@ export * from '../lib/history/index.js';
 export * from '../lib/debug.js';
 export * from './dag/DagNode.js';
 export * from './inputs/Input.js';
+export * from './inputs/InputValue.js';
+export * from './inputs/InputStore.js';

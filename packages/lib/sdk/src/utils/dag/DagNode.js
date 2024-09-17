@@ -4,14 +4,17 @@
 import { nanoid } from 'nanoid';
 import { storeMixin } from '../../lib/store-helpers/storeMixin.js';
 
-import { debounce } from 'perfect-debounce';
 /**
  * @template T
  * @typedef {import('../../usql/types.js').MaybePromise<T>} MaybePromise
  */
 
 /**
- * @typedef {(epochId: Symbol) => MaybePromise<boolean>} ExecFn
+ * @typedef {(fn: () => void) => void} DeferralCallback
+ */
+
+/**
+ * @typedef {(epochId: Symbol, defer: DeferralCallback) => MaybePromise<boolean>} ExecFn
  */
 
 export class DagNode {
@@ -24,7 +27,7 @@ export class DagNode {
 
 	/** @type {boolean} */
 	get dirty() {
-		throw new Error('abstract lol');
+		throw new Error('Dirty must be implemented in a subclass');
 	}
 
 	/** @type {string} */
@@ -110,42 +113,46 @@ export class DagNode {
 
 	/**
 	 * @param {Symbol} epochId
+	 * @param {DeferralCallback} deferCallback
 	 * @deprecated "Use trigger instead"
 	 * @ignore
 	 */
-	async flush(epochId) {
+	async flush(epochId, deferCallback) {
 		this.#latestEpochId = epochId;
 		for (const child of this.children) {
-			await child.tidy(epochId);
-			await child.flush(epochId);
+			await child.tidy(epochId, deferCallback);
+			await child.flush(epochId, deferCallback);
 		}
 		this.storeMixin.publish(this);
 	}
 
-	trigger = debounce(
-		(includeSelf = false) => {
-			// Use symbol so that we only get referential equality
-			const epochId = Symbol(nanoid(3));
+	trigger = (includeSelf = false) => {
+		// Use symbol so that we only get referential equality
+		const epochId = Symbol(nanoid(3));
+		/** @type {Set<Parameters<DeferralCallback>[0]>} */
+		const deferrals = new Set();
+		const deferCallback = (/** @type {Parameters<DeferralCallback>[0]} */ fn) => {
+			if (typeof fn !== 'function') throw new Error('Cannot defer non-function');
+			deferrals.add(fn);
+		};
 
-			const flush = () => {
-				this.markChildrenDirty(epochId);
-				this.flush(epochId).then(() => {
-					this.storeMixin.publish(this);
-				});
-			};
+		const flush = async () => {
 			if (includeSelf) {
 				this.markDirty(epochId);
-				this.tidy(epochId).then(() => {
-					flush();
-				});
-			} else {
-				flush();
+				await this.tidy(epochId, deferCallback);
 			}
-			return epochId;
-		},
-		25,
-		{ leading: false, trailing: true }
-	);
+			this.markChildrenDirty(epochId);
+			await this.flush(epochId, deferCallback);
+			this.storeMixin.publish(this);
+		};
+
+		flush().then(() => {
+			deferrals.forEach((fn) => {
+				fn();
+			});
+		});
+		return epochId;
+	};
 
 	get mermaidName() {
 		return this.name;
@@ -175,10 +182,9 @@ export class DagNode {
 	}
 
 	/**
-	 * @param {Symbol} epochId
+	 * @type {(epochId: Symbol, defer: DeferralCallback) => Promise<void>} epochId
 	 */
-	tidy = async (epochId) => {
-		epochId; // has to be "used" to placate ESLint
+	tidy = async () => {
 		this.storeMixin.publish(this);
 	};
 
@@ -209,8 +215,9 @@ export class ActiveDagNode extends DagNode {
 	tidy =
 		/**
 		 * @param {Symbol} epochId
+		 * @param {DeferralCallback} defer
 		 */
-		async (epochId) => {
+		async (epochId, defer) => {
 			const parentsClean = [...this.parents].every((parent) => !parent.dirty);
 
 			const canExec = parentsClean && this.#epochId === epochId && this.dirty;
@@ -219,7 +226,7 @@ export class ActiveDagNode extends DagNode {
 				if (!this.exec) {
 					this.#dirty = false;
 				} else {
-					const result = await this.exec(epochId);
+					const result = await this.exec(epochId, defer);
 
 					this.prevTidyPromise = result;
 
@@ -239,7 +246,6 @@ export class ActiveDagNode extends DagNode {
 	 */
 	constructor(name, exec, container) {
 		super(name, container);
-		// this.exec = debounce(exec, 0);
 
 		this.exec = exec;
 	}
@@ -270,10 +276,11 @@ export class ActiveDagNode extends DagNode {
 
 	/**
 	 * @param {Symbol} epochId
+	 * @param {DeferralCallback} defer
 	 */
-	flush = async (epochId) => {
-		if (this.dirty) await this.tidy(epochId);
-		await super.flush(epochId);
+	flush = async (epochId, defer) => {
+		if (this.dirty) await this.tidy(epochId, defer);
+		await super.flush(epochId, defer);
 	};
 
 	get mermaidName() {

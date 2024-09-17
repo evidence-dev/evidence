@@ -1,5 +1,5 @@
 import { getAllContexts, getContext, setContext } from 'svelte';
-import { get, readable, readonly, writable } from 'svelte/store';
+import { readable, readonly } from 'svelte/store';
 import { Input } from '../inputs/Input.js';
 import { InputStore } from '../inputs/InputStore.js';
 
@@ -38,6 +38,7 @@ const isWritable = (v) => {
 export const ensureInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
 		const newValue = new InputStore();
+		Input.DefaultValueText = '(SELECT 0 WHERE NULL /* Unset Input Value */)';
 		setContext(InputStoreKey, newValue);
 		return newValue.proxy;
 	} else {
@@ -52,7 +53,9 @@ export const ensureInputContext = () => {
  */
 export const getInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
-		throw new Error('InputStoreKey not found in context. Did you forget to call ensureInputContext?');
+		throw new Error(
+			'InputStoreKey not found in context. Did you forget to call ensureInputContext?'
+		);
 	}
 	return getContext(InputStoreKey);
 };

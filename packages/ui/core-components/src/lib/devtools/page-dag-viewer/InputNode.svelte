@@ -6,8 +6,8 @@
 
 <DagDebugNode dagNode={input.__dag} nodeClass="bg-green-100" title="Input">
 	<svelte:fragment slot="info">
-		<dt>Is Set</dt>
-		<dd class="ml-4 font-bold">{input.isSet}</dd>
+		<dt>Has Value</dt>
+		<dd class="ml-4 font-bold">{input.hasValue}</dd>
 		<dt>ID</dt>
 		<dd class="ml-4 font-bold">{input.__dag.name}</dd>
 	</svelte:fragment>

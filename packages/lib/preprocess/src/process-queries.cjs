@@ -81,8 +81,12 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		}
 	);
 
+	console.log(\`Static Update ${id}\`)
 	__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-	$: __${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+	$: {
+		console.log(\`Reactive Update ${id}\`)
+		__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+	}
 
 	let __${id}Text = ${id}?.originalText ?? '';
 	$: __${id}Text = ${id}?.originalText ?? '';
@@ -161,7 +165,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
-        let { data = {}, customFormattingSettings, __db, inputs } = props;
+        let { data = {}, customFormattingSettings, __db } = props;
         $: ({ data = {}, customFormattingSettings, __db } = props);
 
         $routeHash = '${routeH}';
@@ -172,6 +176,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			reactive statements do not rerun during SSR 
 			*/ ''
 		}
+		let inputs;
 		let inputs_store = ensureInputContext();
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 

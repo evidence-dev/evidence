@@ -1,69 +1,103 @@
-import { serializeTokens } from './constants.js';
+import {
+	PrimitiveValue,
+	RecursiveProxyPrimitive
+} from '../recursive-proxy/RecursiveProxyPrimitive.js';
+import { Input } from './Input.js';
+// export class InputValue {
+// 	/** @type {any} */
+// 	get value() {
+// 		return this.#innerState.value;
+// 	}
 
-/** @typedef {import('../dag/types.js').WithDag} WithDag */
+// 	/** @type {any} */
+// 	#innerState = {};
 
-/**
- * @param {InputValue & Record<string | symbol,any>} self
- */
-function inputValueProxy(self) {
-	return new Proxy(self, {
-		get(target, prop) {
-			if (serializeTokens.includes(prop)) return self.toString.bind(self);
-			if (prop === Symbol.toStringTag) return 'InputValue';
-			if (prop === 'toJSON') {
-				return self.toString.bind(self);
-			}
-			if (!(prop in self)) {
-				self[prop] = new InputValue(undefined, self.input);
-			}
-			console.log({
-				prop,
-				value: self[prop]
-			});
-			return self[prop];
-		},
-		set(target, prop, value) {
-			if (!(value instanceof InputValue)) {
-				target[prop] = new InputValue(value, self.input);
-			} else {
-				target[prop] = value;
-			}
+// 	constructor() {
+// 		/**
+// 		 * @param {string | symbol | number} v
+// 		 * @returns {v is keyof InputValue}
+// 		 */
+// 		const isKey = (v) => v in this;
 
-			self.input.modified = true;
-			target.__dag.trigger();
-			return true;
-		}
-	});
-}
+// 		const proxy = new Proxy(this, {
+// 			get: (_, prop) => {
+// 				if (isKey(prop)) {
+// 					return this[prop];
+// 				} else {
+// 					switch (prop) {
+// 						case Symbol.toPrimitive:
+// 						case 'toString':
+// 							return () => this.value;
+// 						case 'toJSON':
+// 							return () => JSON.stringify(this.value);
 
-/**
- * @implements {WithDag}
- */
-export class InputValue {
-	#innerValue;
-	input;
+// 						default:
+// 							const newValue = new InputValue();
+// 							this.#innerState[prop] = newValue;
+// 							return newValue;
+// 					}
+// 				}
+// 			},
+// 			set: (_, prop, value) => {
+// 				console.log({
+// 					prop,
+// 					value
+// 				});
+// 				if (isKey(prop)) {
+// 					this[prop] = value;
+// 					return true;
+// 				}
+// 				if (InputValue.isInputValue(value)) {
+// 					this.#innerState[prop] = value;
+// 					return true;
+// 				}
+// 				console.log('FOO');
+// 				const newValue = new InputValue();
+// 				newValue.value = value;
+// 				this.#innerState[prop] = newValue;
 
-	/** @type {import("../dag/DagNode.js").PassiveDagNode} */
-	get __dag() {
-		return this.input.__dag;
-	}
+// 				return true;
+// 			}
+// 		});
 
+// 		return proxy;
+// 	}
+
+// 	toString() {
+// 		return 'InputValue';
+// 	}
+
+export class InputValue extends RecursiveProxyPrimitive {
 	get isSet() {
-		return this.#innerValue !== undefined && this.#innerValue !== null;
+		return this.hasValue;
 	}
 
-	/**
-	 * @param {unknown} value
-	 * @param {import("./Input.js").Input} input
-	 */
-	constructor(value, input) {
-		this.#innerValue = value;
-		this.input = input;
-
-		return inputValueProxy(this);
+	get __dag() {
+		let p = this.parent;
+		while (p instanceof InputValue) {
+			p = p.parent;
+		}
+		if (p && '__dag' in p) return p.__dag;
+		return null;
 	}
+
+	['🦆'] = '__EvidenceInputValue__';
 
 	toString = () => {
-		return `${this.#innerValue}`;
+		const innerValue = this[PrimitiveValue];
+		if (this.hasValue) {
+			return innerValue?.toString() ?? '';
+		} else {
+			return Input.DefaultValueText;
+		}
 	};
+
+	/**
+	 * @param {unknown} v
+	 * @returns {v is InputValue}
+	 */
+	static isInputValue(v) {
+		if (!v || typeof v !== 'object') return false;
+		return '🦆' in v && v['🦆'] === '__EvidenceInputValue__';
+	}
 }
