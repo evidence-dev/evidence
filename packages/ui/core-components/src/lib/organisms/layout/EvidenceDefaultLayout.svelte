@@ -100,9 +100,8 @@
 		});
 	});
 
-	// TODO where should this go?
-	const { theme } = ensureThemeStores();
-	$: console.log('Theme changed: ', $theme);
+	// TODO where should this go? How do we get project splash to be rendered with the proper theme?
+	ensureThemeStores();
 </script>
 
 <slot />
