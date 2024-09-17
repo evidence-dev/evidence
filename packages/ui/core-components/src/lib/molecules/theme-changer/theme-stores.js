@@ -1,6 +1,7 @@
 import { getContext, setContext } from 'svelte';
-import { derived, writable, readable } from 'svelte/store';
+import { derived, readable } from 'svelte/store';
 import { browser } from '$app/environment';
+import { localStorageStore } from '@evidence-dev/component-utilities/stores';
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
 
@@ -45,7 +46,7 @@ const createThemeStores = () => {
 	const systemTheme = createSystemThemeStore();
 
 	/** @type {Writable<'system' | 'light' | 'dark'>} */
-	const selectedTheme = writable('system');
+	const selectedTheme = localStorageStore('evidence-theme', 'system');
 
 	const theme = derived([systemTheme, selectedTheme], ([$systemTheme, $selectedTheme]) => {
 		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
