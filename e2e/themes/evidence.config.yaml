@@ -1,8 +1,8 @@
 themes:
   light:
-    mySemanticColor: orange
+    mySemanticColor: "#ff0000"
   dark:
-    mySemanticColor: purple
+    mySemanticColor: "#00ff00"
 
 plugins:
   components:
