@@ -45,15 +45,6 @@ const config = {
 	],
 	onwarn: errorHandler,
 	kit: {
-		prerender: {
-			handleHttpError: (e) => {
-				console.error(
-					'==========================================================\nhandleHttpError',
-					e
-				);
-				throw e;
-			}
-		},
 		adapter: adapter({
 			strict: false
 		}),
