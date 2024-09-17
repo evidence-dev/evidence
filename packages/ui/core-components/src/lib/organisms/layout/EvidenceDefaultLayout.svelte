@@ -11,6 +11,8 @@
 	import { browser } from '$app/environment';
 	import DevTools from '../../devtools/DevTools.svelte';
 	import { onMount } from 'svelte';
+	import { ensureThemeStores } from '../../molecules/theme-changer';
+
 	// Remove splash screen from app.html
 	if (browser) {
 		const splash = document.getElementById('__evidence_project_splash');
@@ -97,6 +99,10 @@
 			navigator.serviceWorker.register('/service-worker.js');
 		});
 	});
+
+	// TODO where should this go?
+	const { theme } = ensureThemeStores();
+	$: console.log('Theme changed: ', $theme);
 </script>
 
 <slot />
