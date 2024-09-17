@@ -13,7 +13,8 @@
 		</Button>
 	</DropdownMenu.Trigger>
 
-	<DropdownMenu.Content>
+	<DropdownMenu.Content class="text-sm py-1.5 px-2">
+		<div class="mb-1.5">Theme</div>
 		<ThemeChanger />
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
