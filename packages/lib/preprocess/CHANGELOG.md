@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 5.2.0
+
+### Minor Changes
+
+- 4c1e5330c: Switch to new input paradigm
+
 ## 5.1.7
 
 ### Patch Changes
