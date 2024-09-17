@@ -14,4 +14,7 @@ const transformError = (e) => {
 };
 
 /** @type {import("@sveltejs/kit").HandleClientError } */
-export const handleError = (e) => transformError(e.error);
+export const handleError = (e) => {
+	console.error('===========================\nclient handleError', e);
+	transformError(e.error);
+};

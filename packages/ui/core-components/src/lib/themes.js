@@ -70,7 +70,9 @@ const createThemeStores = () => {
 	};
 
 	theme.subscribe((theme) => {
-		document.documentElement.setAttribute('data-theme', theme);
+		if (typeof document !== 'undefined') {
+			document.documentElement.setAttribute('data-theme', theme);
+		}
 	});
 
 	return {
