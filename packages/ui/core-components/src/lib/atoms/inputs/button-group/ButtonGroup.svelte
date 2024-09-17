@@ -5,7 +5,7 @@
 <script>
 	import { presets, setButtonGroupContext } from './lib.js';
 	import { writable, readonly } from 'svelte/store';
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
@@ -23,7 +23,6 @@
 	/** @type {keyof typeof presets | undefined} */
 	export let preset = undefined;
 
-	const inputs = getInputContext();
 	// for Tabs styling
 	/** @type {'tabs' | 'buttons'} */
 	export let display = 'buttons';
@@ -37,27 +36,32 @@
 
 	const valueStore = writable(null);
 
-	// TODO: Use getInputSetter instead
 	setButtonGroupContext((v) => {
 		$valueStore = v;
-		// the assignment to $inputs is necessary to trigger the change on SSR
-		console.log("I'm assigning?");
-		$inputs[name] = v?.value ?? null;
+
+		// $inputs[name] = v?.value ?? null;
+		input.update(v?.value ?? null);
 	}, readonly(valueStore));
 
 	/////
 	// Query-Related Things
 	/////
+	const input = useInput(name);
 
 	export let value, data, label, order, where;
 
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`ButtonGroup-${name}`,
-		$page?.data?.data[`ButtonGroup-${name}`]
+		$page?.data?.data[`ButtonGroup-${name}`],
+		input
 	);
 	$: update({ value, data, label, order, where });
 
+	/** @type {import('@evidence-dev/sdk/usql').QueryValue}*/
+	let query;
+	/** @type {boolean} */
+	let hasQuery;
 	$: ({ hasQuery, query } = $results);
 
 	/** @type {string} */
