@@ -13,7 +13,7 @@
 		Moon
 	} from '@steeze-ui/tabler-icons';
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
-	import { ensureThemeStores } from '../../../themes.js';
+	import { ensureThemeStores, themesFeatureEnabled } from '../../../themes.js';
 	import { dev } from '$app/environment';
 
 	const beforeprint = new Event('export-beforeprint');
@@ -32,7 +32,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="ghost" size="sm" class="px-1" id="layout-kebab">
+		<Button builders={[builder]} variant="ghost" size="sm" class="px-1" aria-label="Menu">
 			<Icon src={Dots} class="h-6 w-6" />
 		</Button>
 	</DropdownMenu.Trigger>
@@ -50,18 +50,20 @@
 			>
 				{$showQueries ? 'Hide ' : 'Show '} Queries
 			</DropdownMenu.Item>
-			<DropdownMenu.Item
-				on:click={(e) => {
-					e.preventDefault();
-					cycleTheme();
-				}}
-			>
-				Appearance
-				<DropdownMenu.Shortcut class="tracking-normal flex flex-row">
-					{themeLabel}
-					<Icon src={themeIcon} class="h-4 w-4 ml-1" />
-				</DropdownMenu.Shortcut>
-			</DropdownMenu.Item>
+			{#if themesFeatureEnabled}
+				<DropdownMenu.Item
+					on:click={(e) => {
+						e.preventDefault();
+						cycleTheme();
+					}}
+				>
+					Appearance
+					<DropdownMenu.Shortcut class="tracking-normal flex flex-row">
+						{themeLabel}
+						<Icon src={themeIcon} class="h-4 w-4 ml-1" />
+					</DropdownMenu.Shortcut>
+				</DropdownMenu.Item>
+			{/if}
 		</DropdownMenu.Group>
 		{#if dev}
 			<DropdownMenu.Separator />
