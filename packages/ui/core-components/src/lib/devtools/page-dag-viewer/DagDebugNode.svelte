@@ -19,17 +19,23 @@
 	$: isSelectedAncestor = $selectedAncestor ? $dagNode?.hasAncestor($selectedAncestor) : true;
 </script>
 
-{#if graphNode}
-	<Node id={nodeId} dynamic editable={false} position={{ x: graphNode.x, y: graphNode.y }}>
+{#if graphNode && !dagNode.hidden}
+	<Node
+		id={nodeId}
+		dynamic
+		editable={false}
+		position={{ x: graphNode.x, y: graphNode.y }}
+		dimensions={{ height: graphNode.height, width: graphNode.width }}
+	>
 		<section
-			class="p-2 {nodeClass} border border-4"
+			class="p-2 {nodeClass} border-4 h-full w-full flex flex-col"
 			class:opacity-50={!isSelectedEpoch || !isSelectedAncestor}
 			class:border-red-500={$dagNode?.dirty}
 		>
 			<header class="text-lg font-bold">{title}</header>
 			<dl class="mb-2">
 				<slot name="info">
-					<dt>ID</dt>
+					<dt>Name</dt>
 					<dd class="ml-4 font-bold">{nodeId}</dd>
 				</slot>
 				<dt>Dirty</dt>
@@ -41,7 +47,7 @@
 					{$dagNode?.latestEpochId?.description}
 				</dd>
 			</dl>
-			<div class="flex flex-col gap-1">
+			<div class="flex flex-col gap-1 flex-1 justify-end">
 				<button
 					on:click={() => selectEpoch($dagNode?.latestEpochId)}
 					class="text-sm font-normal px-1 py-1/2 border border-black rounded"
@@ -85,22 +91,26 @@
 		</section>
 
 		{#each $dagNode?.parents ?? [] as parent (parent.mermaidId)}
-			<Anchor
-				locked
-				dynamic
-				id="input-{parent.mermaidId}"
-				connections={[[parent.mermaidId, 'output-' + nodeId]]}
-				input
-			/>
+			{#if !parent.hidden}
+				<Anchor
+					locked
+					dynamic
+					id="input-{parent.mermaidId}"
+					connections={[[parent.mermaidId, 'output-' + nodeId]]}
+					input
+				/>
+			{/if}
 		{/each}
 		{#each $dagNode?.children ?? [] as child (child.mermaidId)}
-			<Anchor
-				locked
-				dynamic
-				id="output-{child.mermaidId}"
-				connections={[[nodeId, 'input-' + child.mermaidId]]}
-				output
-			/>
+			{#if !child.hidden}
+				<Anchor
+					locked
+					dynamic
+					id="output-{child.mermaidId}"
+					connections={[[nodeId, 'input-' + child.mermaidId]]}
+					output
+				/>
+			{/if}
 		{/each}
 	</Node>
 {/if}

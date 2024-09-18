@@ -9,7 +9,7 @@ export const buildLayout = (allNodes) => {
 
 	dagreGraph.setGraph({
 		nodesep: 200,
-		ranksep: 200,
+		ranksep: 400,
 		rankdir: 'TB',
 		acyclicer: 'greedy',
 		ranker: 'tight-tree',
@@ -19,7 +19,7 @@ export const buildLayout = (allNodes) => {
 	dagreGraph.setDefaultEdgeLabel(() => ({}));
 
 	allNodes.forEach((n) => {
-		dagreGraph.setNode(n.mermaidId ?? 'default', { width: 200, height: 100 });
+		dagreGraph.setNode(n.mermaidId ?? 'default', { width: 300, height: 350 });
 	});
 
 	allNodes.forEach((n) => {

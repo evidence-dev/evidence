@@ -20,6 +20,7 @@
 			const recursive = (n) => {
 				if (discovered.has(n)) return;
 				if (!DagNode.isDagNode(n)) return;
+				if (n.hidden) return;
 				discovered.add(n);
 				n.children.forEach((child) => recursive(child));
 				n.parents.forEach((parent) => recursive(parent));
@@ -35,8 +36,6 @@
 	};
 	let allNodes = [...reduceNodes(rootNodes)];
 	$: allNodes = [...reduceNodes(rootNodes)];
-
-	$: console.log({ allNodes });
 
 	/** @type {import("svelte/store").Writable<undefined | Symbol>}*/
 	const selectedEpoch = writable(undefined);
@@ -72,7 +71,14 @@
 </script>
 
 {#if allNodes.length}
-	<Svelvet editable={false} height={1080} fitView endStyles={['arrow', null]} controls={false}>
+	<Svelvet
+		editable={false}
+		height={1080}
+		fitView
+		endStyles={['arrow', null]}
+		controls={false}
+		edgeStyle="step"
+	>
 		<Background gridWidth={40} dotSize={3} slot="background" />
 		<Controls slot="controls">
 			<!-- Contains display information -->
@@ -80,13 +86,15 @@
 				Selected Epoch: {$selectedEpoch?.description ?? 'None'}
 			</div>
 		</Controls>
-		{#each allNodes as node}
+		{#each allNodes as node (node.name)}
 			{#if Query.isQuery(node.container)}
-				<QueryNode query={node.container} />
+				<QueryNode query={node.container} dagNode={node} />
 			{:else if Input.isInput(node.container)}
 				<InputNode input={node.container} />
 			{:else if InputStore.isInputStore(node.container)}
 				<DagDebugNode title={node.name} dagNode={node} nodeClass="bg-gray-100" />
+			{:else if typeof node.container === 'undefined' || node.container === null}
+				<DagDebugNode title="No-Op Node" dagNode={node} nodeClass="bg-gray-100" />
 			{:else}
 				<Node title="Unknown DAG Node" editable={false}>
 					<div class="bg-yellow-100 p-4 rounded">

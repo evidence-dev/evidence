@@ -6,20 +6,20 @@
 <TextInput name=search_input/>
 
 Input: {inputs.search_input}  
-Input is set: {!inputs.search_input.isSet}
+Input is set: {!inputs.search_input.hasValue}
 
 ## Text Input with default
 <TextInput name=search_input_with_default defaultValue="Hello World" />
 
 Input: {inputs.search_input_with_default}  
-Input is set: {!inputs.search_input_with_default.isSet}
+Input is set: {!inputs.search_input_with_default.hasValue}
 
 ## Text Input with Title
 
 <TextInput name=another_search_input title="Search"/>
 
 Input: {inputs.another_search_input}  
-Input is set: {!inputs.another_search_input.isSet}
+Input is set: {!inputs.another_search_input.hasValue}
 
 
 ## Text Input with Custom Placeholder

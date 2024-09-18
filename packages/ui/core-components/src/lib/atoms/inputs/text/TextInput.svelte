@@ -34,7 +34,6 @@
 			debouncePeriod: 200,
 			sqlFragmentFactory: (input) => `'${input.value}'`
 		},
-
 		{ value: defaultValue, label: defaultValue }
 	);
 

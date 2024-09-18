@@ -72,9 +72,8 @@
 	/** @type {string | undefined} */
 	export let fmt = undefined;
 
-	const input = useInput(name, { debouncePeriod: 200 });
+	const input = useInput(name, { debouncePeriod: 200 }, { value: defaultValue });
 
-	input.update(defaultValue);
 	$: input.update(value[0]);
 
 	/** @type {string} */
@@ -84,7 +83,7 @@
 		const sizeMap = {
 			medium: 'w-64',
 			large: 'w-96',
-			//Full size width requires calc to compensate for shifted range span in sliderShadcn
+			// Full size width requires calc to compensate for shifted range span in sliderShadcn
 			full: 'w-[calc(100%-0.6rem)]'
 		};
 		return sizeMap[size.toLowerCase()] || 'w-40';
@@ -103,9 +102,7 @@
 			{#if title}
 				{title} :
 			{/if}
-			<span class="text-xs" class:text-gray-500={value[0] != $input}
-				>{fmt ? formatValue(value[0], format_object) : value[0]}</span
-			>
+			<span class="text-xs">{fmt ? formatValue(value[0], format_object) : value[0]}</span>
 		</p>
 		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 		{#if showMaxMin}

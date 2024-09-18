@@ -18,6 +18,11 @@ import { storeMixin } from '../../lib/store-helpers/storeMixin.js';
  */
 
 export class DagNode {
+	#id = nanoid(4);
+	get id() {
+		return this.#id;
+	}
+
 	/**
 	 * @protected
 	 * @type {ReturnType<typeof storeMixin<DagNode>>}
@@ -52,6 +57,16 @@ export class DagNode {
 	parents = new Set();
 	/** @type {Set<DagNode>} */
 	children = new Set();
+
+	#hidden = false;
+	set hidden(value) {
+		this.#hidden = value;
+		this.storeMixin.publish(this);
+	}
+
+	get hidden() {
+		return this.#hidden;
+	}
 
 	/** @type {Set<DagNode>} */
 	get #allDeps() {
@@ -88,11 +103,14 @@ export class DagNode {
 		}
 		this.parents.add(dep);
 		dep.children.add(this);
+		this.storeMixin.publish(this);
 		return true;
 	};
 
 	deregisterDependencies = () => {
+		this.parents.forEach((parent) => parent.children.delete(this));
 		this.parents.clear();
+		this.storeMixin.publish(this);
 	};
 
 	/**
@@ -164,10 +182,12 @@ export class DagNode {
 
 	/** @returns {string} */
 	toMermaid() {
-		const childLines = Array.from(this.children).flatMap((child) => [
-			...child.toMermaid().split('\n'),
-			`${this.mermaidId} --> ${child.mermaidId}`
-		]);
+		const childLines = Array.from(this.children)
+			.filter((n) => n.name !== 'InputStore')
+			.flatMap((child) => [
+				...child.toMermaid().split('\n'),
+				`${this.mermaidId} --> ${child.mermaidId}`
+			]);
 
 		return Array.from(new Set([this.mermaidName, ...childLines])).join('\n');
 	}
@@ -335,7 +355,8 @@ const noop = () => {};
  * @returns {string}
  */
 export function nodesToMermaid(nodes) {
-	const lines = nodes.flatMap((node) => node.toMermaid().trim().split('\n'));
+	const targetNodes = nodes.filter((node) => node.name !== 'InputStore');
+	const lines = targetNodes.flatMap((node) => node.toMermaid().trim().split('\n'));
 	const distinctLines = new Set(lines);
 	return `graph TD\n\t${Array.from(distinctLines).join('\n\t')}`;
 }

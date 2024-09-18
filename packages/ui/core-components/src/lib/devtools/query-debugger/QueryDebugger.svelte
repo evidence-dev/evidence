@@ -12,13 +12,25 @@
 	 */
 	const allQueries = writable(new Map());
 
-	export const resetQueries = () =>
+	/**
+	 * @type {Writable<Map<string,QueryValue>>}
+	 */
+	const mostRecentQueries = writable(new Map());
+
+	export const resetQueries = () => {
 		allQueries.update((v) => {
 			v.clear();
 			return v;
 		});
 
+		mostRecentQueries.update((v) => {
+			v.clear();
+			return v;
+		});
+	};
+
 	export const queries = readonly(allQueries);
+	export const currentQueries = readonly(mostRecentQueries);
 
 	const listener = batchUp((insertedQueries) => {
 		// TODO: Include a trace of where the query was created
@@ -28,6 +40,15 @@
 			insertedQueries.forEach((q) => {
 				if (typeof q === 'object') {
 					v.set(q.proxied.hash, q.proxied);
+				}
+			});
+			return v;
+		});
+
+		mostRecentQueries.update((v) => {
+			insertedQueries.forEach((q) => {
+				if (typeof q === 'object') {
+					v.set(q.proxied.id, q.proxied);
 				}
 			});
 			return v;

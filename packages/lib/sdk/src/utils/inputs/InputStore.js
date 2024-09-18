@@ -43,6 +43,7 @@ export class InputStore {
 			this
 		);
 		this.__dag = rootDagNode;
+		this.__dag.hidden = true;
 
 		this.#proxied = new Proxy(this, {
 			/**

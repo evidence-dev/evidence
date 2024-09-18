@@ -41,13 +41,17 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  *	$: ({hasQuery, query} = $results)
  */
 export const buildReactiveInputQuery = (queryProps, id, initialData, inputManager) => {
-	const dag = new ActiveDagNode(`Input--${id}`, () => {
-		return true;
-	});
+	const dag =
+		queryProps.data?.__dag ??
+		new ActiveDagNode(`Input--${id}`, () => {
+			return true;
+		});
+	// TODO: This needs to ensure that there is a container?
 	if (inputManager) {
 		inputManager.__input.__dag.registerDependency(dag);
 	}
 	const internal = writable(buildInputQuery(queryProps, id, initialData, dag));
+	internal.subscribe((v) => dag.updateContainer(v))();
 
 	let currentQuery;
 	return {
