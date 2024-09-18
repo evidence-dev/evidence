@@ -13,5 +13,5 @@ test('has hidden sidebar', async ({ page }) => {
 	await page.goto('/');
 	await waitForDevModeToLoad(page);
 
-	expect(page.getByText('Open sidebar')).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Open sidebar' })).toBeVisible();
 });
