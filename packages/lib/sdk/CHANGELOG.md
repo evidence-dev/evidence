@@ -1,5 +1,34 @@
 # @evidence-dev/sdk
 
+## 1.4.1
+
+### Patch Changes
+
+- 057558028: Fix an issue caused by QueryDebugger keeping queries in memory
+
+## 1.4.0
+
+### Minor Changes
+
+- 999fffa38: Change input store interactions
+
+### Patch Changes
+
+- 999fffa38: Add diff utilities for tracking object store histories
+- 999fffa38: Improve sdk debug behavior for better consistency
+- 1e5e5f1da: Dont throw error if sources directory doesn't exist when running sources
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+- 999fffa38: Add more static events to Query
+
+## 1.3.10
+
+### Patch Changes
+
+- f7253ad4b: Fix noisy "Failed to pre-render columns" log during build
+- Updated dependencies [c0e1799e2]
+  - @evidence-dev/universal-sql@2.1.5
+
 ## 1.3.9
 
 ### Patch Changes

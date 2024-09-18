@@ -1,5 +1,48 @@
 # @evidence-dev/evidence
 
+## 39.1.8
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+  - @evidence-dev/sdk@1.4.1
+  - @evidence-dev/plugin-connector@2.1.10
+
+## 39.1.7
+
+### Patch Changes
+
+- Updated dependencies [4c1e5330c]
+  - @evidence-dev/preprocess@5.2.0
+
+## 39.1.6
+
+### Patch Changes
+
+- 999fffa38: Improve sdk debug behavior for better consistency
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/sdk@1.4.0
+  - @evidence-dev/plugin-connector@2.1.10
+
+## 39.1.5
+
+### Patch Changes
+
+- 190a99590: preview command uses VITE_EVIDENCE_SPA environment variable to serve build in SPA mode
+- f7253ad4b: Fix noisy "Failed to pre-render columns" log during build
+- Updated dependencies [b84f22fce]
+- Updated dependencies [c0e1799e2]
+- Updated dependencies [f7253ad4b]
+  - @evidence-dev/preprocess@5.1.7
+  - @evidence-dev/universal-sql@2.1.5
+  - @evidence-dev/sdk@1.3.10
+  - @evidence-dev/plugin-connector@2.1.9
+
 ## 39.1.4
 
 ### Patch Changes
