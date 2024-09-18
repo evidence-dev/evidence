@@ -14,13 +14,19 @@
 	export let rootNodes = [];
 
 	const reduceNodes = (nodes) => {
-		return nodes.reduce((a, v) => {
+		// This is done as a 2 step process because we want to traverse
+		// hidden nodes, but then we want to filter them out so they don't
+		// appear in the final rendering.
+
+		// The original use-case here is Inputs that are on the page, but aren't
+		// directly used in any queries - relevant because there are scenarios where
+		// the DAG isn't able to track yet
+		const nodeSet = nodes.reduce((a, v) => {
 			const discovered = new Set();
 			/** @param {import("@evidence-dev/sdk/utils").DagNode} n*/
 			const recursive = (n) => {
 				if (discovered.has(n)) return;
 				if (!DagNode.isDagNode(n)) return;
-				if (n.hidden) return;
 				discovered.add(n);
 				n.children.forEach((child) => recursive(child));
 				n.parents.forEach((parent) => recursive(parent));
@@ -33,6 +39,7 @@
 
 			return a;
 		}, new Set());
+		return Array.from(nodeSet).filter((a) => !a.hidden);
 	};
 	let allNodes = [...reduceNodes(rootNodes)];
 	$: allNodes = [...reduceNodes(rootNodes)];
@@ -77,7 +84,7 @@
 		fitView
 		endStyles={['arrow', null]}
 		controls={false}
-		edgeStyle="step"
+		edgeStyle="straight"
 	>
 		<Background gridWidth={40} dotSize={3} slot="background" />
 		<Controls slot="controls">
