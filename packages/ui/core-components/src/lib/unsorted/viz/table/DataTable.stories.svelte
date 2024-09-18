@@ -6,9 +6,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import ButtonGroup from '../../../atoms/inputs/button-group/ButtonGroup.svelte';
 	import ButtonGroupItem from '../../../atoms/inputs/button-group/ButtonGroupItem.svelte';
-	import { writable } from 'svelte/store';
-	import { setContext } from 'svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
@@ -18,8 +16,7 @@
 </script>
 
 <script>
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
+	const inputStore = getInputContext();
 </script>
 
 <Story name="Simple Case">
