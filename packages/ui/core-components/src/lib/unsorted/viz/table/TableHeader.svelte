@@ -43,6 +43,7 @@
 				{#each columnsWithGroupSpan as column}
 					{#if column.colGroup && column.isNewGroup}
 						<th
+							role="columnheader"
 							colspan={column.span}
 							class="pt-1 align-bottom text-gray-900 {compact ? 'px-[1px]' : 'px-[2px]'}"
 						>
@@ -65,6 +66,7 @@
 	<tr class="border-b border-gray-600">
 		{#if rowNumbers}
 			<th
+				role="columnheader"
 				class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 				style:background-color={headerColor}
 			/>
@@ -72,6 +74,7 @@
 		{#if $props.columns.length > 0}
 			{#each [...$props.columns].sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
 				<th
+					role="columnheader"
 					class="{safeExtractColumn(column, columnSummary).type} {compact
 						? 'text-xs py-[1px] px-[4px]'
 						: 'py-[2px] px-[8px]'}"
@@ -98,6 +101,7 @@
 				.filter((d) => d.show === true)
 				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
 				<th
+					role="columnheader"
 					class="{column.type} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 					style:color={headerFontColor}
 					style:background-color={headerColor}
