@@ -74,7 +74,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					// todo: combine _data + _columns + _length?
 					if (data.${id}_data) {
 						// vvv is this still used/possible?
-						if (data.${id} instanceof Error) {
+						if (data.${id}_data instanceof Error) {
 							${id}InitialStates.initialError = data.${id}_data
 						} else {
 							${id}InitialStates.initialData = data.${id}_data
