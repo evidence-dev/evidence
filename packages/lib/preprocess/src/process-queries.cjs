@@ -71,35 +71,34 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 				if (browser) {
 					// Data came from SSR
-					if (data.${id}) {
+					// todo: combine _data + _columns + _length?
+					if (data.${id}_data) {
+						// vvv is this still used/possible?
 						if (data.${id} instanceof Error) {
-							${id}InitialStates.initialError = data.${id}
+							${id}InitialStates.initialError = data.${id}_data
 						} else {
-							${id}InitialStates.initialData = data.${id}
+							${id}InitialStates.initialData = data.${id}_data
 						}
 						if (data.${id}_columns) {
 							${id}InitialStates.knownColumns = data.${id}_columns
 						}
 					}
-				} else {
-					// On server
-					try {
-						if (!__${id}HasUnresolved)
-							${id}InitialStates.initialData = profile(__db.query, __${id}Text, { query_name: '${id}' })
-					} catch (e) {
-						console.error(e)
-						if (import.meta.env.VITE_BUILD_STRICT) throw e;
-						${id}InitialStates.initialError = e
-					}
 				}
-				
-				
+
 				/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 				let ${id};
 
 				$: __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
 				$: __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
-				$: __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+
+				// keep initial state around until after the query has resolved once
+				let __${id}InitialFactory = false;
+				$: if (__${id}HasUnresolved || !__${id}InitialFactory) {
+					__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates });
+					if (!__${id}HasUnresolved) __${id}InitialFactory = true;
+				} else {
+					__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
+				}
 
 				const __${id}Factory = Query.createReactive(
 					{ callback: v => {
@@ -110,7 +109,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 				// Assign a value for the initial run-through
 				// This is split because chicken / egg
-				__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+				__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates })
 
 				// Add queries to global scope inside symbols to ease debugging
 				globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }

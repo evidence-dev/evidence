@@ -757,7 +757,8 @@ DESCRIBE ${this.text.trim()}
 					: createFn(
 							nextQuery,
 							execFn,
-							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined })
+							// clear initialData and initialError on opts, but allow for newOpts to provide them
+							Object.assign({}, opts, { initialData: undefined, initialError: undefined }, newOpts)
 						);
 
 				const fetched = newQuery.fetch();
