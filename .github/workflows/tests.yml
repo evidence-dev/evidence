@@ -6,7 +6,7 @@ on:
 jobs:
   Tests-sources:
     runs-on: ${{ matrix.os }}
-    if: ${{ github.triggering_actor == 'archiewood' || github.triggering_actor == 'mcrascal' || github.triggering_actor == 'ud3sh' || github.triggering_actor == 'hughess' || github.triggering_actor == 'winterhart' || github.triggering_actor == 'itsmebriand' || github.triggering_actor == 'kwongz' || github.triggering_actor == 'zachstence'}}
+    if: ${{ github.triggering_actor == 'archiewood' || github.triggering_actor == 'mcrascal' || github.triggering_actor == 'ud3sh' || github.triggering_actor == 'hughess' || github.triggering_actor == 'winterhart' || github.triggering_actor == 'itsmebriand' || github.triggering_actor == 'kwongz' || github.triggering_actor == 'zachstence' || github.triggering_actor == 'csjh'}}
     timeout-minutes: 20
 
     # Conditional Strategy logic from https://github.com/orgs/community/discussions/26253#discussioncomment-3250989

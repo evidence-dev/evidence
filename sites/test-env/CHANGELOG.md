@@ -1,5 +1,57 @@
 # evidence-test-environment
 
+## 3.0.57
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+- Updated dependencies [b87d90971]
+  - @evidence-dev/sdk@1.4.1
+  - @evidence-dev/core-components@4.8.1
+  - @evidence-dev/evidence@39.1.8
+  - @evidence-dev/component-utilities@3.2.12
+
+## 3.0.56
+
+### Patch Changes
+
+- @evidence-dev/evidence@39.1.7
+
+## 3.0.55
+
+### Patch Changes
+
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/core-components@4.8.0
+  - @evidence-dev/sdk@1.4.0
+  - @evidence-dev/evidence@39.1.6
+  - @evidence-dev/snowflake@1.1.2
+  - @evidence-dev/component-utilities@3.2.11
+
+## 3.0.54
+
+### Patch Changes
+
+- Updated dependencies [33dee6b35]
+- Updated dependencies [190a99590]
+- Updated dependencies [f7253ad4b]
+- Updated dependencies [221e4261b]
+- Updated dependencies [d6d64147d]
+- Updated dependencies [f34ddbae9]
+  - @evidence-dev/core-components@4.7.8
+  - @evidence-dev/evidence@39.1.5
+  - @evidence-dev/sdk@1.3.10
+  - @evidence-dev/component-utilities@3.2.10
+
 ## 3.0.53
 
 ### Patch Changes
