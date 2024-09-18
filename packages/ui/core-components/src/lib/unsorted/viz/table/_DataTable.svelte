@@ -229,12 +229,14 @@
 	}
 
 	$: if (search && !Query.isQuery(data)) {
-		toasts.add({
-			status: 'warning',
-			title: 'Search Failed',
-			description: 'Please use a query instead.',
-			timeout: 5000
-		});
+		toasts.add(
+			{
+				status: 'warning',
+				title: 'Search Failed',
+				message: 'Please use a query instead.'
+			},
+			5000
+		);
 	}
 
 	// ---------------------------------------------------------------------------------------

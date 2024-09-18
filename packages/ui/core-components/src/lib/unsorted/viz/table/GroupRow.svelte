@@ -37,7 +37,7 @@
 	on:keypress={(e) => e.key === 'Enter' && toggleGroup()}
 	style:background-color={rowColor}
 >
-	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
+	{#each $props.columns.length > 0 ? [...$props.columns].sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
 				.filter((d) => d.show === true)
 				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, j}
 		{@const useCol = safeExtractColumn(column, columnSummary)}
