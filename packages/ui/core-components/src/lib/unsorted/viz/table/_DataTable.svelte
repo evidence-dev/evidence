@@ -146,6 +146,14 @@
 		return { ...d, priorityColumns };
 	});
 
+	$: finalColumnOrder = getFinalColumnOrder(
+		$props.columns.map((d) => d.id),
+		$props.priorityColumns
+	);
+	$: orderedColumns = [...$props.columns].sort(
+		(a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)
+	);
+
 	$: try {
 		error = undefined;
 
@@ -211,14 +219,10 @@
 
 	$: if (searchFactory) {
 		if (searchValue) {
-			let searchCol =
-				$props.columns.length > 0
-					? $props.columns.map((c) => c.id)
-					: data.columns.map((c) => c.column_name);
 			searchFactory(
 				data.search(
 					searchValue,
-					searchCol,
+					$props.columns.map((c) => c.id),
 					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
 				),
 				data.opts
@@ -271,9 +275,9 @@
 
 		if (groupBy) {
 			// sort within grouped data
-			Object.keys(groupedData).forEach((groupName) => {
+			for (const groupName of Object.keys(groupedData)) {
 				groupedData[groupName] = groupedData[groupName].sort(sort);
-			});
+			}
 		}
 	};
 
@@ -367,20 +371,18 @@
 
 	function dataSubset(data, selectedCols) {
 		return data.map((obj) => {
-			var toReturn = {}; //object that would give each desired key for each part in arr
-			selectedCols.forEach((key) => (toReturn[key] = obj[key])); //placing wanted keys in toReturn
-			return toReturn;
+			const ret = {};
+			for (const key of selectedCols) {
+				ret[key] = obj[key];
+			}
+			return ret;
 		});
 	}
 
-	let tableData;
-	$: tableData =
-		$props.columns.length > 0
-			? dataSubset(
-					data,
-					$props.columns.map((d) => d.id)
-				)
-			: data;
+	$: tableData = dataSubset(
+		data,
+		$props.columns.map((d) => d.id)
+	);
 
 	// ---------------------------------------------------------------------------------------
 	// GROUPED DATA
@@ -403,29 +405,26 @@
 		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
 			acc[groupName] = {}; // Initialize groupRow object for this group
 
-			// Get a list of columns to aggregate from $props.columns
-			const columnsToAggregate = $props.columns.length > 0 ? $props.columns : columnSummary;
-
-			columnsToAggregate.forEach((columnDef) => {
-				const column = columnDef.id;
-				const colType = columnSummary.find((d) => d.id === column)?.type;
-				const totalAgg = columnDef.totalAgg;
-				const weightCol = columnDef.weightCol;
+			for (const col of $props.columns) {
+				const id = col.id;
+				const colType = columnSummary.find((d) => d.id === id)?.type;
+				const totalAgg = col.totalAgg;
+				const weightCol = col.weightCol;
 				const rows = groupedData[groupName];
-				acc[groupName][column] = aggregateColumn(rows, column, totalAgg, colType, weightCol);
-			});
+				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
+			}
 
 			return acc;
 		}, {});
 
 		// Update groupToggleStates only for new groups
 		const existingGroups = Object.keys(groupToggleStates);
-		Object.keys(groupedData).forEach((groupName) => {
+		for (const groupName of Object.keys(groupedData)) {
 			if (!existingGroups.includes(groupName)) {
 				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
 			}
 			// Existing states are untouched
-		});
+		}
 	}
 
 	let fullscreen = false;
@@ -462,7 +461,12 @@
 {/if}
 
 {#if error === undefined}
-	<slot />
+	<slot>
+		<!-- default to every column with no customization -->
+		{#each columnSummary as column}
+			<Column id={column.id} />
+		{/each}
+	</slot>
 
 	{#if link}
 		<InvisibleLinks {data} {link} />
@@ -491,10 +495,7 @@
 					{rowNumbers}
 					{headerColor}
 					{headerFontColor}
-					finalColumnOrder={getFinalColumnOrder(
-						$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-						$props.priorityColumns
-					)}
+					{orderedColumns}
 					{columnSummary}
 					{compact}
 					{sortable}
@@ -525,12 +526,7 @@
 									{rowNumbers}
 									{subtotals}
 									{compact}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
+									{orderedColumns}
 								/>
 								{#if groupToggleStates[groupName]}
 									<TableRow
@@ -545,12 +541,7 @@
 										{columnSummary}
 										grouped={true}
 										groupColumn={groupBy}
-										finalColumnOrder={getFinalColumnOrder(
-											$props.columns.length > 0
-												? $props.columns.map((d) => d.id)
-												: Object.keys(data[0]),
-											$props.priorityColumns
-										)}
+										{orderedColumns}
 									/>
 								{/if}
 							{:else if groupType === 'section'}
@@ -568,12 +559,7 @@
 									{columnSummary}
 									grouped={true}
 									{groupNamePosition}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
+									{orderedColumns}
 								/>
 								{#if subtotals}
 									<SubtotalRow
@@ -585,12 +571,7 @@
 										{groupType}
 										{groupBy}
 										{compact}
-										finalColumnOrder={getFinalColumnOrder(
-											$props.columns.length > 0
-												? $props.columns.map((d) => d.id)
-												: Object.keys(data[0]),
-											$props.priorityColumns
-										)}
+										{orderedColumns}
 									/>
 								{/if}
 							{/if}
@@ -605,10 +586,7 @@
 							{compact}
 							{index}
 							{columnSummary}
-							finalColumnOrder={getFinalColumnOrder(
-								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-								$props.priorityColumns
-							)}
+							{orderedColumns}
 						/>
 					{/if}
 
@@ -621,10 +599,7 @@
 							fontColor={totalFontColor}
 							{groupType}
 							{compact}
-							finalColumnOrder={getFinalColumnOrder(
-								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-								$props.priorityColumns
-							)}
+							{orderedColumns}
 						/>
 					{/if}
 				</QueryLoad>
