@@ -6,8 +6,7 @@
 	import Button from '../../shadcn/button/button.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { toBoolean } from '../../../utils.js';
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	const inputs = getInputContext();
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
 
 	/////
 	// Component Things
@@ -25,13 +24,16 @@
 
 	export let defaultValue = false;
 
-	$: $inputs[name] = toBoolean(defaultValue);
+	const input = useInput(name, {}, { value: toBoolean(defaultValue) });
+
+	let value = toBoolean(defaultValue);
+	$: input.update(toBoolean(value));
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<Button
 		type="button"
-		on:click={() => ($inputs[name] = !$inputs[name])}
+		on:click={() => (value = !value)}
 		variant="outline"
 		size="sm"
 		class="min-w-40 inline-flex justify-between gap-4 items-center w-full max-w-fit mb-2"
@@ -42,7 +44,7 @@
 		<div>
 			<input
 				type="checkbox"
-				bind:checked={$inputs[name]}
+				bind:checked={value}
 				class="focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-gray-400 shadow-sm accent-gray-700"
 			/>
 		</div>

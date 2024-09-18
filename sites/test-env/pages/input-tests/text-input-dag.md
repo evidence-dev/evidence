@@ -50,3 +50,8 @@ CROSS JOIN
 ```sql queryName
 SELECT ${inputs.slideyBoy} 
 ```
+
+
+<Checkbox name="Check" title="MyCheckBox"/>
+
+{inputs.Check}
