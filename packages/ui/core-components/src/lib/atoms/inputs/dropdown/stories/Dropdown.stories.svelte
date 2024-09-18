@@ -12,7 +12,6 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import DropdownOption from '../helpers/DropdownOption.svelte';
 	import DependentDropdowns from './DependentDropdowns.story.svelte';
-	import DataTable from '../../../../unsorted/viz/table/DataTable.svelte';
 	import DropdownCharts from './DropdownCharts.story.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { getContext } from 'svelte';
@@ -362,8 +361,6 @@ WHERE upper(store_type) IN ${$inputStore.selected_store_segmentation.value}`,
 		multiple="true"
 		selectAllByDefault="true"
 	/>
-	<DataTable data={store_segmentation} />
-	<DataTable data={available_chains} />
 </Story>
 
 <!--
