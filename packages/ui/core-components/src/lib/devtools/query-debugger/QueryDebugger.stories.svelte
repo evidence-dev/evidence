@@ -14,7 +14,14 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { userEvent, within } from '@storybook/test';
 
-	let selectedQuery;
+	const mockQuery = new Proxy(Query.create(`SELECT 1, 2, 3 from my_table order by 1 asc`, query), {
+		get: (target, prop) => {
+			if (prop === 'id') return 'mockQueryId';
+			return target[prop];
+		}
+	});
+
+	let selectedQuery = undefined;
 </script>
 
 <!-- TODO Prism syntax highlighting doesn't work in this story because we aren't loading prismtheme.css -->
@@ -27,9 +34,7 @@
 		await userEvent.click(button);
 	}}
 >
-	{@const data = Query.create(`SELECT 1, 2, 3 from my_table order by 1 asc`, query)}
-
-	<button on:click={() => (selectedQuery = data)}>Open</button>
+	<button on:click={() => (selectedQuery = mockQuery)}>Open</button>
 
 	<QueryDebugger query={selectedQuery} on:close={() => (selectedQuery = undefined)}>
 		<SqlConsole />
