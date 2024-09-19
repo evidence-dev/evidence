@@ -4,11 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Bug, X } from '@steeze-ui/tabler-icons';
 	import { Accordion, AccordionItem } from '../atoms/accordion/index.js';
-	import QueryDebugger, {
-		queries,
-		currentQueries,
-		resetQueries
-	} from './query-debugger/QueryDebugger.svelte';
+	import QueryDebugger from './query-debugger/QueryDebugger.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { onMount } from 'svelte';
 	import InputState from './input-debug/InputState.svelte';
@@ -16,6 +12,8 @@
 	import { isDebug } from '@evidence-dev/sdk/utils';
 	import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import DagDebugGraph from './page-dag-viewer/DagDebugGraph.svelte';
+	import { AllQueries } from './AllQueries.store.js';
+	import { ActiveQueries } from './ActiveQueries.store.js';
 
 	import { getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { History } from '@evidence-dev/sdk/utils';
@@ -26,7 +24,8 @@
 	let selectedQuery;
 	afterNavigate(() => {
 		// Whenever we change pages, we can release the queries
-		resetQueries();
+		AllQueries.reset();
+		ActiveQueries.reset();
 	});
 
 	onMount(() => {
@@ -71,7 +70,7 @@
 		<Accordion>
 			<AccordionItem title="Inspect Queries" compact>
 				<section class="">
-					{#each $queries.entries() as [id, query] (id)}
+					{#each $AllQueries.entries() as [id, query] (id)}
 						<button
 							class="flex justify-between w-full odd:bg-black/10 hover:bg-black/20"
 							class:odd:bg-red-300={query.error}
@@ -96,7 +95,7 @@
 				<InputHistory history={inputHistory} />
 			</AccordionItem>
 			<AccordionItem title="Page Dependency Graph" compact>
-				<DagDebugGraph rootNodes={[inputStore, ...Array.from($currentQueries.values())]} />
+				<DagDebugGraph rootNodes={[inputStore, ...Array.from($ActiveQueries.values())]} />
 			</AccordionItem>
 		</Accordion>
 	</div>
