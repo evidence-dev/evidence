@@ -71,7 +71,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 				if (browser) {
 					// Data came from SSR
-					// todo: combine _data + _columns + _length?
 					if (data.${id}_data) {
 						// vvv is this still used/possible?
 						if (data.${id}_data instanceof Error) {
