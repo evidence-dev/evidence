@@ -589,16 +589,16 @@ describe('Query', () => {
 			expect(q.lengthLoaded).toBe(true);
 			expect(q.length).toBe(0);
 		});
-		it('should not execute the query, and ignore initial data if noResolve is set', () => {
+		it('should not execute the query and use initial data, even if noResolve is set', () => {
 			const sp = sharedPromise();
 			expectedData = sp.promise;
 			const initialData = [];
 			initialData._evidenceColumnTypes = [{ name: 'x' }];
 			const q = getMockQuery('SELECT 1', { initialData, noResolve: true });
 
-			expect(q.dataLoading).toBe(true);
-			expect(q.lengthLoading).toBe(true);
-			expect(q.columnsLoading).toBe(true);
+			expect(q.dataLoading).toBe(false);
+			expect(q.lengthLoading).toBe(false);
+			expect(q.columnsLoading).toBe(false);
 		});
 	});
 
