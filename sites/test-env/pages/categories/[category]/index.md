@@ -1,9 +1,18 @@
+<script>
+	function toTitleCase(str) {
+		return str.replace(
+			/\w\S*/g,
+			text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+		);
+	}
+</script>
+
 ```dates
 SELECT DISTINCT(order_month) FROM orders
 ```
 
 ```items
-SELECT * FROM orders WHERE category = '${params.category}' AND order_month BETWEEN '${inputs.range.start}'::DATE AND '${inputs.range.end}'::DATE - INTERVAL 7 DAY
+SELECT * FROM orders WHERE category = '${toTitleCase(params.category)}' AND order_month BETWEEN '${inputs.range.start}'::DATE AND '${inputs.range.end}'::DATE - INTERVAL 7 DAY
 limit 1000
 ```
 
@@ -24,7 +33,7 @@ General Overview:
 SELECT category FROM needful_things.orders
 ```
 
-<Dropdown name="category" data={categories} value="category" defaultValue={params.category} />
+<Dropdown name="category" data={categories} value="category" defaultValue={toTitleCase(params.category)} />
 
 ```selected_category
 SELECT SUM(sales) as sales, datetrunc('day', order_datetime) as date FROM needful_things.orders WHERE category = '${inputs.category.value}' GROUP BY ALL
