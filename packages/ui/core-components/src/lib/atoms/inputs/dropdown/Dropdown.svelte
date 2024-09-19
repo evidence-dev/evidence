@@ -121,6 +121,8 @@
 		}
 	};
 
+	let opts = [];
+
 	let hasHadSelection = $selectedOptions.length > 0;
 	onDestroy(
 		selectedOptions.subscribe(($selectedOptions) => {
@@ -196,7 +198,6 @@
 
 	$: open ? pauseSorting() : resumeSorting();
 
-	let opts = [];
 	$: if ($finalQuery?.ready) opts = $finalQuery;
 </script>
 
