@@ -12,7 +12,7 @@
 	import { page } from '$app/stores';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
 
 	import * as Command from '$lib/atoms/shadcn/command';
 	import DropdownOptionDisplay from './helpers/DropdownOptionDisplay.svelte';
@@ -27,7 +27,6 @@
 	import VirtualList from './Virtual.svelte';
 	import { debounce } from 'perfect-debounce';
 	import { toBoolean } from '../../../utils.js';
-	const inputs = getInputContext();
 
 	/////
 	// Component Things
@@ -84,11 +83,29 @@
 	$: if (query) query.fetch();
 	$: ({ hasQuery, query } = $results);
 
+	const input = useInput(name, {
+		sqlFragmentFactory: (input) => {
+			/** @type {import("@evidence-dev/sdk/utils").InputValue} */
+			const rawValues = input.get('rawValues');
+			if (multiple) {
+				return `
+						IN (${input
+							.get('rawValues')
+							.map((d) => duckdbSerialize(d.value))
+							.join(', ')})
+					`.trim();
+			} else {
+				return duckdbSerialize(input.rawValues[0].value);
+			}
+		}
+	});
+
 	// Extract initial state
-	const initial =
-		name in $inputs && 'rawValues' in $inputs[name] && Array.isArray($inputs[name].rawValues)
-			? $inputs[name].rawValues
-			: [];
+	// const initial =
+	// 	name in $inputs && 'rawValues' in $inputs[name] && Array.isArray($inputs[name].rawValues)
+	// 		? $inputs[name].rawValues
+	// 		: [];
+	const initial = [];
 
 	const state = dropdownOptionStore({
 		multiselect: multiple,
@@ -114,9 +131,10 @@
 	onDestroy(destroyStore);
 
 	const updateInputStore = (newValue) => {
-		if (JSON.stringify(newValue) !== JSON.stringify($inputs[name])) {
-			$inputs[name] = newValue;
-		}
+		console.log({ newValue });
+		input.update(input.UseSqlFactory, newValue.label, {
+			rawValues: newValue.rawValues
+		});
 	};
 
 	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
