@@ -5,7 +5,9 @@
 		component: BaseMap,
 		parameters: {
 			chromatic: {
-				diffThreshold: 0.2
+				diffThreshold: 0.2,
+				// Disabled until https://github.com/evidence-dev/evidence/issues/2560 is resolved
+				chromatic: { disableSnapshot: true }
 			}
 		}
 	};
