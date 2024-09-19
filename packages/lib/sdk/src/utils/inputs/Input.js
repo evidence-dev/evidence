@@ -102,7 +102,7 @@ export class Input extends RecursiveProxyPrimitive {
 		}
 	};
 	toJSON = () => {
-		if (this.hasValue) {
+		if (this.hasValue && !this.nestedValueSet) {
 			return this[PrimitiveValue];
 		} else {
 			return Object.fromEntries(
@@ -111,13 +111,24 @@ export class Input extends RecursiveProxyPrimitive {
 		}
 	};
 
-	// 🚩 is this an appropriate usage?
 	/** @param {keyof Input} prop */
 	get = (prop) => {
 		if (!(prop in this[InternalState])) return undefined;
 		const v = this[InternalState][prop];
 		if (!InputValue.isInputValue(v)) return null;
 		return v[PrimitiveValue];
+	};
+
+	/**
+	 *
+	 * @param {string | symbol} prop
+	 * @returns {prop is keyof Input}
+	 */
+	has = (prop) => {
+		if (!(prop in this[InternalState])) return false;
+		const v = this[InternalState][prop];
+		if (!InputValue.isInputValue(v)) return false;
+		return v.hasValue;
 	};
 
 	['🦆'] = '__EvidenceInput__';

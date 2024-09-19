@@ -50,7 +50,7 @@
 		{ value: defaultValue }
 	);
 	if (input.__input.hasValue) {
-		if (input.__input.get('start') && input.__input.get('end'))
+		if (input.__input.has('start') && input.__input.has('end'))
 			selectedDateRange = {
 				start: parseDate(input.__input.get('start')),
 				end: parseDate(input.__input.get('end'))
@@ -109,7 +109,7 @@
 		const formattedEnd = dateToYYYYMMDD(
 			selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date()
 		);
-		input.update(input.SqlFlag, `${formattedStart} - ${formattedEnd}`, {
+		input.update(input.UseSqlFactory, `${formattedStart} - ${formattedEnd}`, {
 			start: formattedStart,
 			end: formattedEnd
 		});

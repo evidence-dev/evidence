@@ -4,7 +4,7 @@ import { getInputContext } from '../inputs.js';
 import { storeMixin } from '../../../lib/store-helpers/storeMixin.js';
 import { PrimitiveValue } from '../../recursive-proxy/RecursiveProxyPrimitive.js';
 
-export const SqlFlag = Symbol('SqlFlag');
+export const UseSqlFactory = Symbol('UseSqlFactory');
 
 /**
  * @param {string} name
@@ -40,14 +40,16 @@ export const useInput = (name, options, initialState) => {
 	 * @param {any} [additional]
 	 */
 	const updateFn = (value, label, additional) => {
-		if (value === SqlFlag) {
+		Object.assign(input, additional);
+		if (label) input.label = label;
+		if (value === UseSqlFactory) {
 			value = options?.sqlFragmentFactory(input) ?? value;
 		}
 		input.setValue(value);
 		input.value = value;
-		if (label) input.label = label;
-		else input.label = value;
-		Object.assign(input, additional);
+
+		if (!label) input.label = value;
+
 		publish(input[PrimitiveValue]);
 	};
 
@@ -61,7 +63,6 @@ export const useInput = (name, options, initialState) => {
 		 */
 		update: options?.debouncePeriod ? debounce(updateFn, options.debouncePeriod) : updateFn,
 		subscribe,
-		// 🚩 This feels a little off.
-		SqlFlag: SqlFlag
+		UseSqlFactory: UseSqlFactory
 	};
 };
