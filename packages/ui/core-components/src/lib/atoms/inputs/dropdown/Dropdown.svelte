@@ -75,7 +75,7 @@
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`Dropdown-${name}`,
-		$page?.data?.data[`id`]
+		$page.data.data[`Dropdown-${name}_data`]
 	);
 	$: update({ value, data, label, order, where });
 

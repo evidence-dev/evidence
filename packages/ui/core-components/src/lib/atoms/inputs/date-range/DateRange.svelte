@@ -47,7 +47,7 @@
 			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
 			exec,
 			{
-				initialData: $page.data.data[`DateRange-${name}`],
+				initialData: $page.data.data[`DateRange-${name}_data`],
 				disableCache: true,
 				noResolve: false,
 				id: `DateRange-${name}`
