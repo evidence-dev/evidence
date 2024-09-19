@@ -13,10 +13,9 @@
 	import DropdownOption from '../helpers/DropdownOption.svelte';
 	import DependentDropdowns from './DependentDropdowns.story.svelte';
 	import DropdownCharts from './DropdownCharts.story.svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { getContext } from 'svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
-	const inputStore = getContext(INPUTS_CONTEXT_KEY);
+	const inputStore = getInputContext();
 
 	// Play Functions
 	const openDropdown = async ({ canvasElement }) => {
