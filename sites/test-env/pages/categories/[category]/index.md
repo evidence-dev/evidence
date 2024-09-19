@@ -18,3 +18,17 @@ Sales from {inputs.range.start} to {inputs.range.end} in the category {params.ca
 General Overview:
 
 <DataTable data={items} />
+
+
+```categories
+SELECT category FROM needful_things.orders
+```
+
+<Dropdown name="category" data={categories} value="category" defaultValue={params.category} />
+
+```selected_category
+SELECT SUM(sales) as sales, datetrunc('day', order_datetime) as date FROM needful_things.orders WHERE category = '${inputs.category.value}' GROUP BY ALL
+```
+
+<BarChart data={selected_category} x="date" y="sales" />
+

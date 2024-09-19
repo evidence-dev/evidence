@@ -75,7 +75,7 @@
 					: dateToYYYYMMDD(new Date());
 
 	$: if ((query && $query.dataLoaded) || !query) {
-			$inputs[name] = { start: startString, end: endString };
+		$inputs[name] = { start: startString, end: endString };
 	}
 
 	let selectedDateRange;

@@ -190,7 +190,7 @@
 		}
 	};
 
-	const updateQuery = browser? debounce(_updateQuery, 100) : _updateQuery;
+	const updateQuery = browser ? debounce(_updateQuery, 100) : _updateQuery;
 	$: search, data, query, updateQuery();
 
 	$: open ? pauseSorting() : resumeSorting();
