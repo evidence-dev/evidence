@@ -155,6 +155,7 @@ export class ReferencePointStore {
 				evidenceSeriesType: 'reference_point',
 				id: this.#id,
 				type: 'line',
+				z: 9999,
 				animation: false,
 				silent: true,
 				markPoint: {
