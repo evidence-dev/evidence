@@ -10,6 +10,9 @@ const preview = {
 				color: /(background|color)$/i,
 				date: /Date$/
 			}
+		},
+		chromatic: {
+			delay: 3000
 		}
 	},
 	argTypes: {
