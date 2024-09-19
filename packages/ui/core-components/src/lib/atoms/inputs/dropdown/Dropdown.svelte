@@ -13,6 +13,7 @@
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { resolveMaybePromise } from '@evidence-dev/sdk/usql';
 
 	import * as Command from '$lib/atoms/shadcn/command';
 	import DropdownOptionDisplay from './helpers/DropdownOptionDisplay.svelte';
@@ -27,6 +28,7 @@
 	import VirtualList from './Virtual.svelte';
 	import { debounce } from 'perfect-debounce';
 	import { toBoolean } from '../../../utils.js';
+	import { browser } from '$app/environment';
 	const inputs = getInputContext();
 
 	/////
@@ -169,23 +171,26 @@
 	let searchIdx = 0;
 	let finalQuery;
 
-	const updateQuery = debounce(async () => {
+	const _updateQuery = () => {
 		searchIdx++;
 		if (search && hasQuery) {
 			const targetIdx = searchIdx;
 			const searchQuery = query.search(search, 'label');
 			if (searchQuery.hash !== finalQuery?.hash) {
-				await searchQuery.fetch();
-				if (targetIdx === searchIdx) {
-					finalQuery = searchQuery;
-					forceSort();
-				}
+				resolveMaybePromise(() => {
+					if (targetIdx === searchIdx) {
+						finalQuery = searchQuery;
+						forceSort();
+					}
+				}, searchQuery.fetch());
 				// await tick();
 			}
 		} else {
 			finalQuery = query ?? data;
 		}
-	}, 100);
+	};
+
+	const updateQuery = browser? debounce(_updateQuery, 100) : _updateQuery;
 	$: search, data, query, updateQuery();
 
 	$: open ? pauseSorting() : resumeSorting();
