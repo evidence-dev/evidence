@@ -233,7 +233,6 @@ describe('Query', () => {
 			await query.fetch();
 			const after = performance.now();
 
-			console.log(`Took ${(after - before).toFixed(2)}`);
 			expect(query.length).toBe(1000 * 1000);
 			expect(after - before).toBeLessThan(250);
 		});
@@ -392,7 +391,6 @@ describe('Query', () => {
 						execFn: mockRunner,
 						callback: (v) => {
 							currentValue = v;
-							console.log(v.id, v.dataLoaded);
 							updateTracker();
 						}
 					},
@@ -765,7 +763,7 @@ describe('Query', () => {
 			const lengthSharedPromise = sharedPromise();
 			expectedLength = lengthSharedPromise.promise;
 			const q = getMockQuery('SELECT 5', { id: 'I SEE YOU' });
-			const subscriber = vi.fn(console.log);
+			const subscriber = vi.fn();
 			let i = 0;
 
 			subscriber.mockImplementationOnce((v) => {
