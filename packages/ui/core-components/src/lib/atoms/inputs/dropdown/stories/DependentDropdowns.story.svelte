@@ -3,8 +3,6 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Dropdown from '../Dropdown.svelte';
 	import DropdownOption from '../helpers/DropdownOption.svelte';
-	import { getContext } from 'svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { browser } from '$app/environment';
 
 	const slowQuery = (...args) => {
@@ -14,7 +12,8 @@
 		return query(...args);
 	};
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputs = getInputContext();
 	const baseQuery = Query.create(
 		`SELECT id as value, tag as label from hashtags ORDER BY 1`,
 		slowQuery,

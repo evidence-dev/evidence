@@ -6,13 +6,13 @@
 
 <script>
 	import { dropdownOptionStore } from './dropdownOptionStore.js';
-	import { getContext, onDestroy, setContext } from 'svelte';
+	import { onDestroy, setContext } from 'svelte';
 	import { DropdownContext } from './constants.js';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import DropdownOption from './helpers/DropdownOption.svelte';
 	import { page } from '$app/stores';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 
 	import * as Command from '$lib/atoms/shadcn/command';
 	import DropdownOptionDisplay from './helpers/DropdownOptionDisplay.svelte';
@@ -27,7 +27,7 @@
 	import VirtualList from './Virtual.svelte';
 	import { debounce } from 'perfect-debounce';
 	import { toBoolean } from '../../../utils.js';
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	const inputs = getInputContext();
 
 	/////
 	// Component Things

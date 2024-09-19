@@ -12,7 +12,6 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import DropdownOption from '../helpers/DropdownOption.svelte';
 	import DependentDropdowns from './DependentDropdowns.story.svelte';
-
 	import DropdownCharts from './DropdownCharts.story.svelte';
 
 	// Play Functions

@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.1.5
+
+### Patch Changes
+
+- c0e1799e2: Set 644 permissions when writing parquet files
+
 ## 2.1.4
 
 ### Patch Changes

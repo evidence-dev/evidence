@@ -1,5 +1,6 @@
 ---
 title: Welcome to Evidence
+sidebar: hide
 ---
 
 <Details title='How to edit this page'>

@@ -50,7 +50,8 @@ const getCredentials = (database = {}) => {
 
 	if (authentication_method === 'gcloud-cli') {
 		return {
-			projectId: database.project_id
+			projectId: database.project_id,
+			location: database.location
 		};
 	} else if (authentication_method === 'oauth') {
 		const access_token = database.token;
@@ -59,12 +60,14 @@ const getCredentials = (database = {}) => {
 
 		return {
 			authClient: oauth,
-			projectId: database.project_id
+			projectId: database.project_id,
+			location: database.location
 		};
 	} else {
 		/* service-account */
 		return {
 			projectId: database.project_id,
+			location: database.location,
 			credentials: {
 				client_email: database.client_email,
 				private_key: database.private_key?.replace(/\\n/g, '\n').trim()
@@ -237,6 +240,13 @@ module.exports.options = {
 		required: true,
 		references: '$.keyfile.project_id',
 		forceReference: false
+	},
+	location: {
+		title: 'Location (Region)',
+		type: 'string',
+		secret: false,
+		required: false,
+		default: 'US'
 	},
 	authenticator: {
 		title: 'Authentication Method',

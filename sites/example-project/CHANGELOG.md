@@ -1,5 +1,72 @@
 # @evidence-dev/components
 
+## 3.5.24
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+- Updated dependencies [b87d90971]
+  - @evidence-dev/sdk@1.4.1
+  - @evidence-dev/core-components@4.8.1
+  - @evidence-dev/component-utilities@3.2.12
+  - @evidence-dev/plugin-connector@2.1.10
+
+## 3.5.23
+
+### Patch Changes
+
+- Updated dependencies [4c1e5330c]
+  - @evidence-dev/preprocess@5.2.0
+
+## 3.5.22
+
+### Patch Changes
+
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+- Updated dependencies [bb0576d5b]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/core-components@4.8.0
+  - @evidence-dev/sdk@1.4.0
+  - @evidence-dev/snowflake@1.1.2
+  - @evidence-dev/plugin-connector@2.1.10
+  - @evidence-dev/bigquery@2.0.8
+  - @evidence-dev/component-utilities@3.2.11
+
+## 3.5.21
+
+### Patch Changes
+
+- 210415e2e: Added scroll-to for prop sections in docs
+- Updated dependencies [b84f22fce]
+- Updated dependencies [c0e1799e2]
+- Updated dependencies [33dee6b35]
+- Updated dependencies [f7253ad4b]
+- Updated dependencies [221e4261b]
+- Updated dependencies [d6d64147d]
+- Updated dependencies [f34ddbae9]
+  - @evidence-dev/preprocess@5.1.7
+  - @evidence-dev/universal-sql@2.1.5
+  - @evidence-dev/core-components@4.7.8
+  - @evidence-dev/sdk@1.3.10
+  - @evidence-dev/component-utilities@3.2.10
+  - @evidence-dev/plugin-connector@2.1.9
+
+## 3.5.20
+
+### Patch Changes
+
+- Updated dependencies [2e0115932]
+- Updated dependencies [5daf7675e]
+  - @evidence-dev/core-components@4.7.7
+
 ## 3.5.19
 
 ### Patch Changes

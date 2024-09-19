@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "3.5.19",
+	"version": "3.5.24",
 	"scripts": {
 		"dev": "cross-env EVIDENCE_PAGES_DIR=./src/pages EVIDENCE_DATA_DIR=./static/data EVIDENCE_DATA_URL_PREFIX=static/data vite dev --port 3000",
 		"build": "cross-env EVIDENCE_PAGES_DIR=./src/pages NODE_OPTIONS=--max-old-space-size=8192 vite build",
@@ -48,7 +48,7 @@
 		"prismjs": "1.29.0",
 		"remark-parse": "8.0.2",
 		"ssf": "^0.11.2",
-		"svelte": "4.2.12",
+		"svelte": "4.2.19",
 		"svelte-icons": "2.1.0",
 		"typescript": "5.4.2",
 		"unified": "9.1.0",

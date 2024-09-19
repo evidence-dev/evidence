@@ -8,7 +8,7 @@
 		"dev": "evidence dev --open /",
 		"sources": "evidence sources",
 		"preview": "evidence preview",
-		"test:preview": "cross-env playwright test",
+		"test:preview": "playwright test",
 		"test:dev": "cross-env DEV=true playwright test"
 	},
 	"engines": {

@@ -11,6 +11,8 @@
 	/** @type {string | boolean | number | Date} */
 	export let value;
 	export let color = 'hsla(207, 65%, 39%, 1)';
+	/** @type {string} */
+	export let defaultValue;
 
 	let display = getContext('button-display');
 
@@ -23,6 +25,10 @@
 	if (_default) {
 		update({ valueLabel, value });
 	}
+
+	if (defaultValue === value) {
+		update({ valueLabel, value });
+	}
 </script>
 
 {#if display === 'tabs'}
@@ -33,7 +39,7 @@
 		on:click={() => update({ valueLabel, value })}
 		activeId={$currentValue?.value}
 	/>
-{:else}
+{:else if display === 'buttons'}
 	<button
 		type="button"
 		class=" flex-none py-1 font-medium h-8 px-3 text-xs truncate
