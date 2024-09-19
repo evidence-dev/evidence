@@ -21,7 +21,7 @@ General Overview:
 
 
 ```categories
-SELECT lower(category) FROM needful_things.orders
+SELECT lower(category) as category FROM needful_things.orders
 ```
 
 <Dropdown name="category" data={categories} value="category" defaultValue={params.category} />

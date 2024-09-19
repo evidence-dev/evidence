@@ -1,5 +1,5 @@
 ```categories
-SELECT DISTINCT(lower(category)) FROM orders
+SELECT DISTINCT(lower(category)) as category FROM orders
 ```
 
 <ul>
