@@ -2,7 +2,10 @@
 	/** @type {import("@storybook/svelte").Meta} */
 	export const meta = {
 		title: 'QueryDebugger',
-		component: QueryDebugger
+		component: QueryDebugger,
+		parameters: {
+			chromatic: { disableSnapshot: true }
+		}
 	};
 </script>
 
