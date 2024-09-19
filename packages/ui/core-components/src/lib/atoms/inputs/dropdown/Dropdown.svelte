@@ -119,29 +119,35 @@
 		}
 	};
 
-	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
-	$: if ($selectedOptions && hasHadSelection) {
-		const values = $selectedOptions;
-		if (multiple) {
-			updateInputStore({
-				label: values.map((x) => x.label).join(', '),
-				value: values.length
-					? `(${values.map((x) => duckdbSerialize(x.value))})`
-					: `(select null where 0)`,
-				rawValues: values
-			});
-		} else {
-			if (!values.length) {
-				updateInputStore({ label: '', value: null, rawValues: [] });
-			} else if (values.length) {
-				updateInputStore({
-					label: values[0].label,
-					value: duckdbSerialize(values[0].value, { serializeStrings: false }),
-					rawValues: values
-				});
+	let hasHadSelection = $selectedOptions.length > 0;
+	onDestroy(
+		selectedOptions.subscribe(($selectedOptions) => {
+			hasHadSelection ||= $selectedOptions.length > 0;
+
+			if ($selectedOptions && hasHadSelection) {
+				const values = $selectedOptions;
+				if (multiple) {
+					updateInputStore({
+						label: values.map((x) => x.label).join(', '),
+						value: values.length
+							? `(${values.map((x) => duckdbSerialize(x.value))})`
+							: `(select null where 0)`,
+						rawValues: values
+					});
+				} else {
+					if (!values.length) {
+						updateInputStore({ label: '', value: null, rawValues: [] });
+					} else if (values.length) {
+						updateInputStore({
+							label: values[0].label,
+							value: duckdbSerialize(values[0].value, { serializeStrings: false }),
+							rawValues: values
+						});
+					}
+				}
 			}
-		}
-	}
+		})
+	);
 
 	setContext(DropdownContext, {
 		registerOption: (targetOption) => {
