@@ -349,6 +349,11 @@
 		"body": ["<Grid cols=2>\n\t${1:Grid Content}\n</Grid>\n\n"],
 		"description": "Insert Grid"
 	},
+	"Group": {
+		"prefix": "/Group",
+		"body": ["<Group>\n\t${1:Group Content}\n</Group>\n\n"],
+		"description": "Insert Group to combine items in a Grid cell"
+	},
 	"LineBreak": {
 		"prefix": "/LineBreak",
 		"body": "<LineBreak lines=1/>\n\n",
