@@ -110,7 +110,8 @@
 		pauseSorting,
 		resumeSorting,
 		forceSort,
-		destroy: destroyStore
+		destroy: destroyStore,
+		updateSelectedOptions
 	} = state;
 
 	onDestroy(destroyStore);
@@ -127,6 +128,9 @@
 			hasHadSelection ||= $selectedOptions.length > 0;
 
 			if ($selectedOptions && hasHadSelection) {
+				if ($selectedOptions.length > opts.length) {
+					updateSelectedOptions(opts);
+				}
 				const values = $selectedOptions;
 				if (multiple) {
 					updateInputStore({

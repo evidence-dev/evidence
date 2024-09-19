@@ -235,7 +235,12 @@ export const dropdownOptionStore = (opts = {}) => {
 			if (destroyed) return;
 			options.set(hygiene(get(options)));
 		},
-		destroy: () => (destroyed = true)
+		destroy: () => (destroyed = true),
+		updateSelectedOptions: (/** @type {import("@evidence-dev/sdk/usql").QueryValue} */ data) => {
+			options.update((o) =>
+				o.map((o) => ({ ...o, selected: data.some((x) => x.value === o.value) }))
+			);
+		}
 	};
 };
 
