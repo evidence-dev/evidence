@@ -28,7 +28,7 @@
 	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
-	import { debounce } from 'perfect-debounce';
+	import { browserDebounce } from '@evidence-dev/sdk/utils';
 
 	// Set up props store
 	let props = writable({});
@@ -201,7 +201,7 @@
 	/** @type {ReturnValue<typeof Query["createReactive"]>}*/
 	let searchFactory;
 	$: if (Query.isQuery(data) && search) {
-		searchFactory = debounce(
+		searchFactory = browserDebounce(
 			Query.createReactive(
 				{
 					loadGracePeriod: 1000,

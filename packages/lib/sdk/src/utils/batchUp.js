@@ -1,4 +1,4 @@
-import { debounce } from 'perfect-debounce';
+import { browserDebounce } from './browserDebounce.js';
 
 /**
  * @template Input
@@ -10,13 +10,11 @@ export const batchUp = (fn, timeout = 200) => {
 	/** @type {Input[]} */
 	const collected = [];
 
-	const execute = () => {
+	// todo: possibly algorithmic nightmare at high n on server?
+	const finalize = browserDebounce(() => {
 		fn([...collected]); // clone collected array before resetting it
 		collected.length = 0;
-	};
-
-	// todo: possibly algorithmic nightmare at high n on server?
-	const finalize = typeof window === 'undefined' ? execute : debounce(execute, timeout);
+	}, timeout);
 
 	return (...i) => {
 		collected.push(...i);

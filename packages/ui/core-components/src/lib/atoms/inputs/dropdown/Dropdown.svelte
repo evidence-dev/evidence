@@ -26,9 +26,8 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import VirtualList from './Virtual.svelte';
-	import { debounce } from 'perfect-debounce';
 	import { toBoolean } from '../../../utils.js';
-	import { browser } from '$app/environment';
+	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	const inputs = getInputContext();
 
 	/////
@@ -175,7 +174,7 @@
 	let searchIdx = 0;
 	let finalQuery;
 
-	const _updateQuery = () => {
+	const updateQuery = browserDebounce(() => {
 		searchIdx++;
 		if (search && hasQuery) {
 			const targetIdx = searchIdx;
@@ -192,9 +191,7 @@
 		} else {
 			finalQuery = query ?? data;
 		}
-	};
-
-	const updateQuery = browser ? debounce(_updateQuery, 100) : _updateQuery;
+	}, 100);
 	$: search, data, query, updateQuery();
 
 	$: open ? pauseSorting() : resumeSorting();
