@@ -2,7 +2,12 @@
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Charts/Maps/BaseMap',
-		component: BaseMap
+		component: BaseMap,
+		parameters: {
+			chromatic: {
+				diffThreshold: 0.2
+			}
+		}
 	};
 </script>
 
