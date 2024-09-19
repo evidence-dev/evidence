@@ -14,7 +14,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { userEvent, within } from '@storybook/test';
 
-	const mockQuery = new Proxy(Query.create(`SELECT 1, 2, 3 from my_table order by 1 asc`, query), {
+	const mockQuery = new Proxy(Query.create(`SELECT 1`, query), {
 		get: (target, prop) => {
 			if (prop === 'id') return 'mockQueryId';
 			return target[prop];
