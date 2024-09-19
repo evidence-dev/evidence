@@ -87,7 +87,7 @@ export class InputStore {
 				value.updateOptions({ ...options, publish: undefined, root: this });
 				return value;
 			} else {
-				console.error(`${name} is not an Input`);
+				console.error(`${name} is not an Input`, { value });
 				return null;
 			}
 		} else {

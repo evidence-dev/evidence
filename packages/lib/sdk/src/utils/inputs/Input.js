@@ -43,7 +43,6 @@ export class Input extends RecursiveProxyPrimitive {
 	initialized = false;
 
 	/**
-	 *
 	 * @param {string} name
 	 * @param {InputOpts} [opts]
 	 */
@@ -89,7 +88,6 @@ export class Input extends RecursiveProxyPrimitive {
 	}
 
 	toString = () => {
-		console.log(this.hasValue, this.#sqlFragmentFactory);
 		if (this.hasValue) {
 			if (this.#sqlFragmentFactory) {
 				const value = this.#sqlFragmentFactory(this);
@@ -100,35 +98,6 @@ export class Input extends RecursiveProxyPrimitive {
 		} else {
 			return Input.DefaultValueText;
 		}
-	};
-	toJSON = () => {
-		if (this.hasValue && !this.nestedValueSet) {
-			return this[PrimitiveValue];
-		} else {
-			return Object.fromEntries(
-				Object.entries(this[InternalState]).filter(([, v]) => InputValue.isInputValue(v))
-			);
-		}
-	};
-
-	/** @param {keyof Input} prop */
-	get = (prop) => {
-		if (!(prop in this[InternalState])) return undefined;
-		const v = this[InternalState][prop];
-		if (!InputValue.isInputValue(v)) return null;
-		return v[PrimitiveValue];
-	};
-
-	/**
-	 *
-	 * @param {string | symbol} prop
-	 * @returns {prop is keyof Input}
-	 */
-	has = (prop) => {
-		if (!(prop in this[InternalState])) return false;
-		const v = this[InternalState][prop];
-		if (!InputValue.isInputValue(v)) return false;
-		return v.hasValue;
 	};
 
 	['🦆'] = '__EvidenceInput__';

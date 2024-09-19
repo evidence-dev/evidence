@@ -28,7 +28,7 @@ export class RecursiveProxyPrimitive {
 		return this.constructor.ChildConstructor ?? this.constructor;
 	}
 
-	/** @type {any} */
+	/** @type {any | any[]} */
 	#internalState = {};
 
 	/** @type {this} */
@@ -125,6 +125,9 @@ export class RecursiveProxyPrimitive {
 				if (typeof value === 'object') {
 					if (!(value instanceof this.ChildConstructor)) {
 						// Recursively create more values
+						if (Array.isArray(value)) {
+							childValue.convertToArray();
+						}
 						for (const [k, v] of Object.entries(value)) {
 							childValue[k] = v;
 						}
@@ -157,6 +160,12 @@ export class RecursiveProxyPrimitive {
 		this.#value = value;
 	};
 
+	convertToArray = () => {
+		const previousState = this.#internalState;
+		this.#internalState = [];
+		Object.assign(this.#internalState, previousState);
+	};
+
 	get [PrimitiveValue]() {
 		return this.#value;
 	}
@@ -173,12 +182,51 @@ export class RecursiveProxyPrimitive {
 		return String(this.#value);
 	};
 
+	toJSON = () => {
+		if (this.hasValue && !Object.keys(this.#internalState).length) {
+			return this.#value;
+		} else {
+			let out;
+			if (Array.isArray(this.#internalState)) {
+				out = this.#internalState
+					.filter((v) => v instanceof this.ChildConstructor)
+					.map((v) => v.toJSON());
+			} else {
+				out = Object.fromEntries(
+					Object.entries(this.#internalState)
+						.filter(([, v]) => v instanceof this.ChildConstructor)
+						.map(([k, v]) => [k, v.toJSON()])
+				);
+			}
+			return out;
+		}
+	};
+
 	get hasValue() {
 		return this.#hasValue;
 	}
 
 	/** @type {() => string | boolean | number | symbol | undefined | Date | null} */
 	[Symbol.toPrimitive] = () => {
+		if (this.hasValue) return this.#value;
 		return this.toString();
+	};
+
+	/** @param {string | symbol | number} prop */
+	get = (prop) => {
+		if (!(prop in this.#internalState)) return undefined;
+		const v = this.#internalState[prop];
+		if (!(v instanceof this.ChildConstructor)) return null;
+		return v.toJSON();
+	};
+
+	/**
+	 * @param {string | symbol | number} prop
+	 */
+	has = (prop) => {
+		if (!(prop in this.#internalState)) return false;
+		const v = this.#internalState[prop];
+		if (!(v instanceof this.ChildConstructor)) return false;
+		return v.hasValue;
 	};
 }

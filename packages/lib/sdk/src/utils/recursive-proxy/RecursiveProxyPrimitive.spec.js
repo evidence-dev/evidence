@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
-import { RecursiveProxyPrimitive, PrimitiveValue } from './RecursiveProxyPrimitive.js';
+import {
+	RecursiveProxyPrimitive,
+	PrimitiveValue,
+	InternalState
+} from './RecursiveProxyPrimitive.js';
 import { customAlphabet } from 'nanoid';
 describe('RecursiveProxyPrimitive', () => {
 	class BasicSubclass extends RecursiveProxyPrimitive {
@@ -125,8 +129,66 @@ describe('RecursiveProxyPrimitive', () => {
 		it('should work properly with arrays', () => {
 			const myInputValue = new BasicSubclass();
 			myInputValue.nested = [1, 2, 3];
+			expect(myInputValue.nested[0]).toBeInstanceOf(BasicSubclass);
+			expect(
+				Array.isArray(myInputValue.nested[InternalState]),
+				'Internal State is an Array'
+			).toBeTruthy();
+		});
+		it('should work properly with arrays when created with Object.assign', () => {
+			const myInputValue = new BasicSubclass();
+
+			console.log(myInputValue.get("nested"))
+			Object.assign(myInputValue, { nested: [1, 2, 3] });
+			expect(myInputValue.nested[0]).toBeInstanceOf(BasicSubclass);
+			expect(
+				Array.isArray(myInputValue.get("nested")),
+				'Internal State is an Array'
+			).toBeTruthy();
+		});
+		it('should retain state after being converted to an array', () => {
+			const myInputValue = new BasicSubclass();
+
+			myInputValue.nested.x = 2
+			myInputValue.nested = [1];
+			
+			expect(myInputValue.nested[0]).toBeInstanceOf(BasicSubclass);
+			expect(myInputValue.nested.x).toBeInstanceOf(BasicSubclass);
+			expect(
+				Array.isArray(myInputValue.get("nested")),
+				'Internal State is an Array'
+			).toBeTruthy();
+			expect(
+				myInputValue.nested.x[PrimitiveValue]
+			).toBe(2);
+			expect(
+				myInputValue.nested[0][PrimitiveValue]
+			).toBe(1);
 		});
 	});
+
+	it.only('should ignore own value when converting to JSON if child values are present', () => {
+		const myInputValue = new BasicSubclass();
+
+		// Without any nested values
+		myInputValue.x.setValue(1);
+		expect(myInputValue.x.toJSON()).toBe(1)
+
+		// With nested values, own value is not included in toJSON output
+		myInputValue.x.y.setValue(5);
+		expect(myInputValue.x.toJSON()).toEqual({ y: 5 })
+	})
+	it.only('should always stringify own value when using toString', () => {
+		const myInputValue = new BasicSubclass();
+
+		// Without any nested values
+		myInputValue.x.setValue(1);
+		expect(myInputValue.x.toString()).toBe("1")
+
+		// Result should remain the same with nested values
+		myInputValue.x.y.setValue(5);
+		expect(myInputValue.x.toString()).toBe("1")
+	})
 
 	describe('dynamic construction', () => {
 		it('should create children using a given constructor', () => {
