@@ -33,7 +33,7 @@ export class InputStore {
 	constructor() {
 		const rootDagNode = new ActiveDagNode(
 			'InputStore',
-			(epochId, defer) => {
+			(_, defer) => {
 				defer(() => {
 					this.#storeMixin.publish(this.#proxied);
 				});
@@ -80,7 +80,7 @@ export class InputStore {
 	 * @param {Omit<import('./Input.js').InputOpts, 'root' | 'publish'>} [options]
 	 * @returns {Input | null}
 	 */
-	ensureInput(name, options) {
+	ensureInput = (name, options) => {
 		if (this.isOwnKey(name)) {
 			const value = this[name];
 			if (Input.isInput(value)) {
@@ -91,7 +91,6 @@ export class InputStore {
 				return null;
 			}
 		} else {
-			console.log('Creating new', name);
 			// make a new one
 			const newInput = new Input(name.toString(), {
 				...options,
@@ -102,7 +101,7 @@ export class InputStore {
 			this[name] = newInput;
 			return newInput;
 		}
-	}
+	};
 
 	['🦆'] = '__EvidenceInputStore__';
 

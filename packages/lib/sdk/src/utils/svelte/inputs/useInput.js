@@ -2,6 +2,9 @@ import { debounce } from 'perfect-debounce';
 import { EvidenceError } from '../../../lib/EvidenceError.js';
 import { getInputContext } from '../inputs.js';
 import { storeMixin } from '../../../lib/store-helpers/storeMixin.js';
+import { PrimitiveValue } from '../../recursive-proxy/RecursiveProxyPrimitive.js';
+
+export const SqlFlag = Symbol('SqlFlag');
 
 /**
  * @param {string} name
@@ -17,33 +20,39 @@ export const useInput = (name, options, initialState) => {
 		// TODO: Better error message
 		throw new EvidenceError('Failed to create input');
 	}
-	input.setValue(initialState?.value);
-	delete initialState?.value;
-	Object.assign(input, { ...initialState });
-	input.label = initialState?.label ?? input.value;
 
-	// const input = new Input(name, { blocking: false, root: inputStore });
+	if (!input.initialized) {
+		input.initialized = true;
+		input.setValue(initialState?.value);
+		delete initialState?.value;
+		Object.assign(input, { ...initialState });
+		input.label = initialState?.label ?? input.value;
+	}
+
 	inputStore.update(($inputStore) => {
 		$inputStore[name] = input;
 		return $inputStore;
 	});
 
-	// TODO: Interact with the input store
 	/**
 	 * @param {any} value
 	 * @param {string} [label]
 	 * @param {any} [additional]
 	 */
 	const updateFn = (value, label, additional) => {
+		if (value === SqlFlag) {
+			value = options?.sqlFragmentFactory(input) ?? value;
+		}
 		input.setValue(value);
 		input.value = value;
 		if (label) input.label = label;
 		else input.label = value;
 		Object.assign(input, additional);
-		publish(input);
+		publish(input[PrimitiveValue]);
 	};
 
 	const { subscribe, publish } = storeMixin();
+	publish(input[PrimitiveValue]);
 
 	return {
 		__input: input,
@@ -51,6 +60,8 @@ export const useInput = (name, options, initialState) => {
 		 * @param {any} value
 		 */
 		update: options?.debouncePeriod ? debounce(updateFn, options.debouncePeriod) : updateFn,
-		subscribe
+		subscribe,
+		// 🚩 This feels a little off.
+		SqlFlag: SqlFlag
 	};
 };

@@ -24,10 +24,14 @@
 
 	export let defaultValue = false;
 
-	const input = useInput(name, {}, { value: toBoolean(defaultValue) });
+	const input = useInput(name, {
+		sqlSnippetFactory: (myInput) => {
+			return `CASE WHEN ${myInput} THEN TRUE ELSE FALSE END`;
+		}
+	});
 
-	let value = toBoolean(defaultValue);
-	$: input.update(toBoolean(value));
+	let value = toBoolean($input ?? defaultValue);
+	$: input.update(value);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>

@@ -65,14 +65,13 @@
 
 	/** @type {number} */
 	export let defaultValue = 0;
+	const input = useInput(name, { debouncePeriod: 200 }, { value: defaultValue });
 
 	/** @type {[number]} */
-	let value = [defaultValue];
+	let value = [$input ?? defaultValue];
 
 	/** @type {string | undefined} */
 	export let fmt = undefined;
-
-	const input = useInput(name, { debouncePeriod: 200 }, { value: defaultValue });
 
 	$: input.update(value[0]);
 

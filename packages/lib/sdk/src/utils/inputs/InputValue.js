@@ -78,8 +78,6 @@ export class InputValue extends RecursiveProxyPrimitive {
 		return null;
 	}
 
-	['🦆'] = '__EvidenceInputValue__';
-
 	toString = () => {
 		const innerValue = this[PrimitiveValue];
 		if (this.hasValue) {
@@ -92,9 +90,17 @@ export class InputValue extends RecursiveProxyPrimitive {
 		if (this.hasValue) {
 			return this[PrimitiveValue];
 		} else {
-			return this[InternalState];
+			return Object.fromEntries(
+				Object.entries(this[InternalState]).filter(([, v]) => InputValue.isInputValue(v))
+			);
 		}
 	};
+	[Symbol.toPrimitive] = () => {
+		if (this.hasValue) return this[PrimitiveValue];
+		return this.toString();
+	};
+
+	['🦆'] = '__EvidenceInputValue__';
 
 	/**
 	 * @param {unknown} v

@@ -38,8 +38,6 @@
 
 	setButtonGroupContext((v) => {
 		$valueStore = v;
-
-		// $inputs[name] = v?.value ?? null;
 		input.update(v?.value ?? null);
 	}, readonly(valueStore));
 
@@ -47,6 +45,9 @@
 	// Query-Related Things
 	/////
 	const input = useInput(name);
+	if ($input !== undefined) {
+		$valueStore = { value: $input, valueLabel: input.__input.get('label') };
+	}
 
 	export let value, data, label, order, where;
 

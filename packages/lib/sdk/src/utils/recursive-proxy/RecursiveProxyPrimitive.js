@@ -95,11 +95,11 @@ export class RecursiveProxyPrimitive {
 
 		this.#proxy = new Proxy(this, {
 			get: (_, prop) => {
-				if (prop.toString().startsWith('#')) {
-					return undefined;
-				}
 				if (hasKey(prop)) {
 					return this[prop];
+				}
+				if (prop.toString().startsWith('#')) {
+					return undefined;
 				}
 				if (!(prop in this.#internalState)) {
 					this.#internalState[prop] = buildChild();
@@ -123,9 +123,11 @@ export class RecursiveProxyPrimitive {
 				}
 
 				if (typeof value === 'object') {
-					// Recursively create more values
-					for (const [k, v] of Object.entries(value)) {
-						childValue[k] = v;
+					if (!(value instanceof this.ChildConstructor)) {
+						// Recursively create more values
+						for (const [k, v] of Object.entries(value)) {
+							childValue[k] = v;
+						}
 					}
 				} else {
 					childValue.setValue(value);
@@ -143,11 +145,15 @@ export class RecursiveProxyPrimitive {
 	/** @type {string | symbol | number | boolean | Date | undefined | null} */
 	#value;
 
+	#hasValue = false;
+
 	/** @param {string | symbol | number | boolean | Date | undefined | null} value */
 	setValue = (value) => {
 		if (typeof value === 'object' && !(value instanceof Date)) {
 			throw new EvidenceError(`Value must be a primitive, found ${JSON.stringify(value)}`);
 		}
+		this.#hasValue = true;
+
 		this.#value = value;
 	};
 
@@ -168,9 +174,10 @@ export class RecursiveProxyPrimitive {
 	};
 
 	get hasValue() {
-		return typeof this.#value !== 'undefined';
+		return this.#hasValue;
 	}
 
+	/** @type {() => string | boolean | number | symbol | undefined | Date | null} */
 	[Symbol.toPrimitive] = () => {
 		return this.toString();
 	};

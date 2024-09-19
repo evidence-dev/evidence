@@ -756,7 +756,7 @@ DESCRIBE ${this.text.trim()}
 
 				const fetched = nextQuery.fetch();
 				// Artificial Delay
-				// TODO: Make this a setting in the dev panel
+				// TODO: Make this a setting in the dev
 				// await new Promise((r) => setTimeout(r, 500));
 
 				if (fetched instanceof Promise) {

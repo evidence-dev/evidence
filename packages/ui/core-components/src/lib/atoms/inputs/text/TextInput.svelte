@@ -43,8 +43,8 @@
 		let label = value;
 		input.update(_value, label);
 	}
-
-	let value = defaultValue;
+	// Get the value from the previously set input, if it exists
+	let value = $input ?? defaultValue;
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>

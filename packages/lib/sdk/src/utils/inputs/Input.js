@@ -35,10 +35,12 @@ export class Input extends RecursiveProxyPrimitive {
 	name;
 
 	/** @type {((input: Input) => string | null) | null} */
-	#sqlFragmentFactory;
+	#sqlFragmentFactory = null;
 
 	/** @type {boolean} */
 	nestedValueSet = false;
+
+	initialized = false;
 
 	/**
 	 *
@@ -52,8 +54,11 @@ export class Input extends RecursiveProxyPrimitive {
 		super({
 			hooks: {
 				set: {
-					post: () => {
-						flagChildSet();
+					post: (prop) => {
+						if (prop !== 'label') {
+							// Label is special, because it is not considered a value
+							flagChildSet();
+						}
 						this.__dag.trigger();
 					},
 					inheritPost: true
@@ -66,7 +71,7 @@ export class Input extends RecursiveProxyPrimitive {
 		this.__dag = new BlockingDagNode(name, this);
 
 		if (root) {
-			// TODO: is this a good pattern?
+			// 🚩 is this a good pattern?
 			root.__dag.registerDependency(this.__dag);
 			this.#root = root;
 		}
@@ -84,14 +89,14 @@ export class Input extends RecursiveProxyPrimitive {
 	}
 
 	toString = () => {
-		const innerValue = this[PrimitiveValue];
-
+		console.log(this.hasValue, this.#sqlFragmentFactory);
 		if (this.hasValue) {
 			if (this.#sqlFragmentFactory) {
 				const value = this.#sqlFragmentFactory(this);
 				if (value !== null) return value;
 			}
-			return innerValue?.toString() ?? '';
+
+			return this[PrimitiveValue]?.toString() ?? '';
 		} else {
 			return Input.DefaultValueText;
 		}
@@ -100,9 +105,21 @@ export class Input extends RecursiveProxyPrimitive {
 		if (this.hasValue) {
 			return this[PrimitiveValue];
 		} else {
-			return this[InternalState];
+			return Object.fromEntries(
+				Object.entries(this[InternalState]).filter(([, v]) => InputValue.isInputValue(v))
+			);
 		}
 	};
+
+	// 🚩 is this an appropriate usage?
+	/** @param {keyof Input} prop */
+	get = (prop) => {
+		if (!(prop in this[InternalState])) return undefined;
+		const v = this[InternalState][prop];
+		if (!InputValue.isInputValue(v)) return null;
+		return v[PrimitiveValue];
+	};
+
 	['🦆'] = '__EvidenceInput__';
 
 	/**
@@ -114,105 +131,3 @@ export class Input extends RecursiveProxyPrimitive {
 		return '🦆' in v && v['🦆'] === '__EvidenceInput__';
 	}
 }
-// export class Input {
-
-// 	/**
-// 	 *
-// 	 * @param {string} name
-// 	 * @param {InputOpts} [opts]
-// 	 */
-// 	constructor(name, { blocking = false, root = null } = {}) {
-// 		this.name = name;
-// 		if (blocking) {
-// 			this.__dag = new BlockingDagNode(name, this);
-// 		} else {
-// 			this.__dag = new PassiveDagNode(name, this);
-// 		}
-// 		if (root) {
-// 			// TODO: is this a good pattern?
-// 			root.__dag.registerDependency(this.__dag);
-// 			this.#root = root;
-// 		}
-
-// 		/**
-// 		 * @param {string | symbol | number} v
-// 		 * @returns {v is keyof Input}
-// 		 */
-// 		const isKey = (v) => v in this;
-
-// 		/**
-// 		 * @param {Input} _
-// 		 * @param {keyof Input | string | symbol} prop
-// 		 */
-// 		this.#proxied = new Proxy(this, {
-// 			get: (_, prop) => {
-// 				if (isKey(prop)) {
-// 					return this[prop];
-// 				}
-// 				if (prop in this.#innerState) {
-// 					console.log('Hello?');
-// 					return this.#innerState[prop];
-// 				}
-// 				switch (prop) {
-// 					case Symbol.toPrimitive:
-// 						return () => this.value;
-// 					case 'toString':
-// 						return () => this.value;
-// 					case 'toJSON':
-// 						return () => JSON.stringify(this.value);
-// 					default:
-// 						const newValue = new InputValue();
-// 						console.log(`Creating new value at ${prop.toString()} in ${this.name}`);
-// 						this.#innerState[prop] = newValue;
-// 						return newValue;
-// 				}
-// 			},
-// 			set: (_, prop, value) => {
-// 				if (prop.toString().startsWith('#') || ['🦆', '__dag'].includes(prop.toString())) {
-// 					console.warn(`Attempted to set read-only property ${prop.toString()}`);
-// 					return true;
-// 				}
-// 				if (InputValue.isInputValue(value)) {
-// 					this.#innerState[prop] = value;
-// 					return true;
-// 				}
-// 				const wrappedValue = new InputValue();
-// 				wrappedValue.value = value;
-// 				this.#innerState[prop] = wrappedValue;
-// 				console.log('I set #innerState!', this.#innerState);
-
-// 				// These need to be InputValue
-// 				return true;
-// 			}
-// 		});
-// 		return this.#proxied;
-// 	}
-
-// 	get value() {
-// 		return this.#innerState.value ?? Input.DefaultValueText;
-// 	}
-
-// 	/** @type {string} */
-// 	get label() {
-// 		return this.#innerState.label ?? Input.DefaultLabelText;
-// 	}
-
-// 	update() {
-// 		this.__dag.trigger().then(() => {});
-// 	}
-
-// 	toString() {
-// 		return this.value;
-// 	}
-
-// 	['🦆'] = '__EvidenceInput__';
-
-// 	/**
-// 	 * @param {unknown} v
-// 	 * @returns {v is Input}
-// 	 */
-// 	static isInput(v) {
-// 		if (!v || typeof v !== 'object') return false;
-// 		return '🦆' in v && v['🦆'] === '__EvidenceInput__';
-// 	}
-// }

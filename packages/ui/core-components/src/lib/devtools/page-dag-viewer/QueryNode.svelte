@@ -10,7 +10,7 @@
     Parent (output) -> (input) Child 
 -->
 {#if query.__dag}
-	<DagDebugNode {dagNode} nodeClass="bg-blue-100" title="Query">
+	<DagDebugNode {dagNode} nodeClass="bg-yellow-100" title="Query">
 		<svelte:fragment slot="info">
 			<dt>Name</dt>
 			<dd class="ml-4 font-bold">{dagNode.name.replace('Query |', '')}</dd>

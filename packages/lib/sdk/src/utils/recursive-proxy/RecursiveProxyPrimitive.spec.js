@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 import { RecursiveProxyPrimitive, PrimitiveValue } from './RecursiveProxyPrimitive.js';
-
+import { customAlphabet } from 'nanoid';
 describe('RecursiveProxyPrimitive', () => {
-	class BasicSubclass extends RecursiveProxyPrimitive {}
+	class BasicSubclass extends RecursiveProxyPrimitive {
+		uuid = customAlphabet('abcd', 4)();
+	}
 	it('should behave as an absract class', () => {
 		expect(() => new RecursiveProxyPrimitive()).toThrow();
 	});
@@ -32,6 +34,28 @@ describe('RecursiveProxyPrimitive', () => {
 			expect(myInputValue.hasValue).toBe(false);
 			myInputValue.setValue('Primitive Value');
 			expect(myInputValue.hasValue).toBe(true);
+		});
+		it('should allow falsey values', () => {
+			const myInputValue = new BasicSubclass();
+			myInputValue.setValue(false);
+			expect(myInputValue.hasValue).toBe(true);
+			expect(myInputValue[PrimitiveValue]).toBe(false);
+		});
+		it('should allow nested falsey values', () => {
+			const myInputValue = new BasicSubclass();
+			myInputValue.someProp = false;
+			expect(myInputValue.someProp.hasValue).toBe(true);
+			expect(myInputValue.someProp[PrimitiveValue]).toBe(false);
+		});
+		it('should allow assignment of one value to another', () => {
+			const myInputValue = new BasicSubclass();
+			myInputValue.a = undefined;
+			myInputValue.b = myInputValue.a;
+			myInputValue.b = 'Hi!';
+			myInputValue.a = 'Hi!';
+
+			expect(myInputValue.a[PrimitiveValue]).toBe('Hi!');
+			expect(myInputValue.b[PrimitiveValue]).toBe('Hi!');
 		});
 		// it('should know if it has a nested value', () => {
 		// 	const myInputValue = new BasicSubclass();
@@ -97,6 +121,10 @@ describe('RecursiveProxyPrimitive', () => {
 			Object.assign(myInputValue.nested, { a: 1 });
 			expect(myInputValue.nested.a).toBeInstanceOf(BasicSubclass);
 			expect(myInputValue.nested.a[PrimitiveValue]).toBe(1);
+		});
+		it('should work properly with arrays', () => {
+			const myInputValue = new BasicSubclass();
+			myInputValue.nested = [1, 2, 3];
 		});
 	});
 
