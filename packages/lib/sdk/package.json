@@ -54,6 +54,12 @@
 			"import": "./src/query-builder.js",
 			"require": null,
 			"types": "./src/query-builder.js"
+		},
+		"./config": {
+			"default": "./src/configuration/index.js",
+			"import": "./src/configuration/index.js",
+			"require": null,
+			"types": "./src/configuration/index.js"
 		}
 	},
 	"scripts": {
