@@ -1,4 +1,4 @@
 datasources:
-  @evidence-dev/faker-datasource: {}
+  '@evidence-dev/faker-datasource': {}
 
 components: {}
