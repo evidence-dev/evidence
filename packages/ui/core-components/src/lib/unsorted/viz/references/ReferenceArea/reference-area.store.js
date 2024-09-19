@@ -179,7 +179,7 @@ export class ReferenceAreaStore {
 						position: LABEL_POSITIONS[labelPosition],
 						color: labelColor,
 						padding: config.labelPadding,
-						backgroundColor: config.labelBackgroundColor,
+						backgroundColor: 'red',
 						borderColor: config.labelBorderColor,
 						borderWidth: config.labelBorderWidth,
 						borderRadius: config.labelBorderRadius,

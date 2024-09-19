@@ -167,7 +167,7 @@ export class ReferencePointStore {
 						position: labelPosition,
 						color: labelColor,
 						opacity: 1,
-						backgroundColor: config.labelBackgroundColor,
+						backgroundColor: 'red',
 						borderColor: config.labelBorderColor,
 						borderWidth: config.labelBorderWidth,
 						borderRadius: config.labelBorderRadius,
