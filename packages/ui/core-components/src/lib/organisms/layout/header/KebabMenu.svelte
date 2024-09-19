@@ -58,8 +58,8 @@
 					}}
 				>
 					Appearance
-					<DropdownMenu.Shortcut class="tracking-normal flex flex-row">
-						{themeLabel}
+					<DropdownMenu.Shortcut class="tracking-normal flex flex-row items-center">
+						<span class="text-xs leading-none">{themeLabel}</span>
 						<Icon src={themeIcon} class="h-4 w-4 ml-1" />
 					</DropdownMenu.Shortcut>
 				</DropdownMenu.Item>
