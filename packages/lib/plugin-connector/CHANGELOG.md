@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.11
+
+### Patch Changes
+
+- c8315da2e: Update svelte to resolve security vulnerability
+- Updated dependencies [bad1038c1]
+  - @evidence-dev/telemetry@2.1.3
+
 ## 2.1.10
 
 ### Patch Changes
