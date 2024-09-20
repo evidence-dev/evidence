@@ -157,8 +157,6 @@ export class ReferenceAreaStore {
 				evidenceSeriesType: 'reference_area',
 				id: this.#id,
 				type: get(this.#propsStore).chartType === 'Bar Chart' ? 'bar' : 'line',
-				z: 9999,
-				zlevel: 9999,
 				stack: barSeries?.stack,
 				animation: false,
 				silent: true,

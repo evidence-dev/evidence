@@ -170,8 +170,6 @@ export class ReferenceLineStore {
 				evidenceSeriesType: 'reference_line',
 				id: this.#id,
 				type: 'line',
-				z: 9999,
-				zlevel: 9999,
 				animation: false,
 				silent: true,
 				markLine: {
