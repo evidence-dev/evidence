@@ -1,6 +1,7 @@
 import { registerTheme, init, connect } from 'echarts';
 import { evidenceThemeLight } from './echartsThemes';
 import debounce from 'debounce';
+import * as chartWindowDebug from './chartWindowDebug';
 
 /**
  * @typedef {import("echarts").EChartsOption & {
@@ -26,6 +27,8 @@ export default (node, option) => {
 	const chart = init(node, 'evidence-light', {
 		renderer: useSvg ? 'svg' : (option.renderer ?? 'canvas')
 	});
+
+	chartWindowDebug.set(chart.id, chart);
 
 	// If connectGroup supplied, connect chart to other charts matching that connectGroup
 	if (option.connectGroup) {
@@ -208,6 +211,8 @@ export default (node, option) => {
 				window.removeEventListener('resize', onWindowResize);
 			}
 			chart.dispose();
+
+			chartWindowDebug.unset(chart.id);
 		}
 	};
 };

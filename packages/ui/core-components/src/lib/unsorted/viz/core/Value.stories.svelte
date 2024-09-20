@@ -82,7 +82,7 @@
 	</div>
 </Story>
 <Story name="Data as Array">
-	{#each forEachData as my_row}
+	{#each $forEachData as my_row}
 		{my_row.series}
 		<div>
 			<p>Y Total:</p>

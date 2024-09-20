@@ -33,7 +33,7 @@ schema:
     item: between
     options:
       - from: 2023-06-01
-      - to: 2024-06-01
+        to: 2024-06-01
   regulator: 
     category: location 
     item: country 
