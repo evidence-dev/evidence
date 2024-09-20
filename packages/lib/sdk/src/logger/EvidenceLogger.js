@@ -28,10 +28,12 @@ export class EvidenceLogger {
 			}),
 
 			levels: EvidenceLogger.EvidenceLogLevels,
-			transports: [new winston.transports.Console({
-                stderrLevels: ['fatal', 'error'],
-                consoleWarnLevels: ['warn'],
-            })]
+			transports: [
+				new winston.transports.Console({
+					stderrLevels: ['fatal', 'error'],
+					consoleWarnLevels: ['warn']
+				})
+			]
 		});
 		this.#logger.level = 'debug';
 	}
@@ -40,11 +42,15 @@ export class EvidenceLogger {
 	 * @param {string} message
 	 * @param {string[]} [detail]
 	 * @param {Record<string, any>} [meta]
+	 * @param {Record<string, any>} [debugMeta]
 	 */
-	die(message, detail, meta) {
+	die(message, detail, meta, debugMeta) {
 		this.fatal(
 			`${chalk.bold.redBright(message)}\n${chalk.dim(` | ${detail ? detail.join('\n | ') : ''}`)}`,
-			meta
+			{
+				...meta,
+				...(isDebug() ? debugMeta : {})
+			}
 		);
 		if (typeof process !== 'undefined') process.exit(1);
 	}
