@@ -1,5 +1,5 @@
 <script>
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import DimensionCut from './DimensionCut.svelte';
@@ -21,9 +21,17 @@
 	$: dimensions = data?.columns?.filter((col) => col.column_type === 'VARCHAR');
 	let selectedDimensions = writable([]);
 	setContext('selected-dimensions', selectedDimensions);
+	const input = useInput(name, {
+		sqlFragmentFactory: (i) => {
+			console.log(i.get('value'));
+			return i.get('value');
+		}
+	});
+	input.update(getWhereClause($selectedDimensions));
+	$: input.update(getWhereClause($selectedDimensions));
 
-	const inputs = getInputContext();
-	$: $inputs[name] = getWhereClause($selectedDimensions);
+	// const inputs = getInputContext();
+	// $: $inputs[name] = getWhereClause($selectedDimensions);
 </script>
 
 {#if data === undefined}
