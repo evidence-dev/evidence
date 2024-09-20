@@ -85,7 +85,7 @@
 
 	const updateInputStore = (newValue) => {
 		const inputValue = multiple
-			? `(${newValue.rawValues.map((v) => v.value).join(',')})`
+			? `(${newValue.rawValues.map((v) => duckdbSerialize(v.value)).join(', ')})`
 			: newValue.value;
 		input.update(inputValue, newValue.label, {
 			rawValues: newValue.rawValues

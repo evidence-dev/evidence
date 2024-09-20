@@ -51,15 +51,15 @@ export function escapeInputObjects() {
 					([start, end]) => start <= match.index && match.index <= end
 				);
 				if (inScript) {
-					console.debug(
-						'Identified input reference in script tag',
-						match[0],
-						match.index,
-						inScript
-					);
+					// console.debug(
+					// 	'Identified input reference in script tag',
+					// 	match[0],
+					// 	match.index,
+					// 	inScript
+					// );
 					continue;
 				}
-				console.debug('Identified input reference in markdown', match[0], match.index);
+				// console.debug('Identified input reference in markdown', match[0], match.index);
 
 				const before = output.slice(0, match.index + offset);
 				const after = output.slice(match.index + offset + match[0].length);
