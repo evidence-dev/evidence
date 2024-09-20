@@ -26,7 +26,7 @@ export const handleError = (e) => {
 				`Message: ${e.error?.message ?? 'Unknown'}`,
 				`Error Type: ${e.status === 404 ? 'Missing Page' : 'Build Error'}`
 			],
-			{ e }
+			{ e, location: "Server" }
 		);
 	}
 	return transformError(e.error);

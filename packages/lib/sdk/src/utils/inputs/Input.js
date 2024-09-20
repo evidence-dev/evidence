@@ -70,7 +70,7 @@ export class Input extends RecursiveProxyPrimitive {
 						if (this.__dag) {
 							this.__dag.trigger();
 						} else {
-							console.trace('Found input with no DAG', this);
+							console.trace('Found input with no DAG', this.name, this.toJSON());
 						}
 					},
 					inheritPost: true
