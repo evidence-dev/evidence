@@ -83,37 +83,39 @@
 	$: if (query) query.fetch();
 	$: ({ hasQuery, query } = $results);
 
-	const input = useInput(name, {
-		sqlFragmentFactory: (input) => {
-			/** @type {import("@evidence-dev/sdk/utils").InputValue} */
-			const rawValues = input.get('rawValues');
-			if (multiple) {
-				return `
-						IN (${input
-							.get('rawValues')
-							.map((d) => duckdbSerialize(d.value))
-							.join(', ')})
-					`.trim();
-			} else {
-				return duckdbSerialize(input.rawValues[0].value);
+	const updateInputStore = (newValue) => {
+		const inputValue = multiple
+			? `(${newValue.rawValues.map((v) => v.value).join(',')})`
+			: newValue.value;
+		input.update(inputValue, newValue.label, {
+			rawValues: newValue.rawValues
+		});
+	};
+
+	const input = useInput(
+		name,
+		{
+			sqlFragmentFactory: () => {
+				return `/* Use \${inputs.${name}.value} to reference the value of your dropdown */`;
 			}
+		},
+		{
+			rawValues: Array.isArray(defaultValue) ? defaultValue : [defaultValue]
 		}
-	});
+	);
 
 	// Extract initial state
-	// const initial =
-	// 	name in $inputs && 'rawValues' in $inputs[name] && Array.isArray($inputs[name].rawValues)
-	// 		? $inputs[name].rawValues
-	// 		: [];
-	const initial = [];
+	const inputRawValues = input.__input.get('rawValues');
+	const initial = Array.isArray(inputRawValues) ? inputRawValues : [];
 
 	const state = dropdownOptionStore({
 		multiselect: multiple,
-		defaultValues: Array.isArray(defaultValue) ? defaultValue : [defaultValue],
+		defaultValues: input.__input.get('rawValues'),
 		initialOptions: initial,
 		noDefault,
 		selectAllByDefault: toBoolean(selectAllByDefault)
 	});
+
 	const {
 		addOptions,
 		removeOptions,
@@ -129,13 +131,6 @@
 	} = state;
 
 	onDestroy(destroyStore);
-
-	const updateInputStore = (newValue) => {
-		console.log({ newValue });
-		input.update(input.UseSqlFactory, newValue.label, {
-			rawValues: newValue.rawValues
-		});
-	};
 
 	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
 	$: if ($selectedOptions && hasHadSelection) {
@@ -192,7 +187,6 @@
 					finalQuery = searchQuery;
 					forceSort();
 				}
-				// await tick();
 			}
 		} else {
 			finalQuery = query ?? data;
