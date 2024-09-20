@@ -57,17 +57,12 @@ export function getPromise() {
 	return { resolve, reject, promise };
 }
 
-/**
- * @template T
- * @param {Promise<T>} p
- * @param {number} [ms]
- */
-export function withTimeout(p, ms = 5000) {
+export function withTimeout(p) {
 	return Promise.race([
 		p,
 		new Promise((_, rej) =>
 			// If the database isn't initialized after 5 seconds, throw an error
-			setTimeout(() => rej(new Error('Timeout while initializing database')), ms)
+			setTimeout(() => rej(new Error('Timeout while initializing database')), 5000)
 		)
 	]);
 }
