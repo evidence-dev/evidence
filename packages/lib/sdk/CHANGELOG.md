@@ -1,5 +1,18 @@
 # @evidence-dev/sdk
 
+## 1.4.2
+
+### Patch Changes
+
+- 952abbd16: Add config export
+  getEvidenceConfig is no longer asynchronous
+  getEvidenceConfig supports passing a custom schema
+  Created unnestZodError util
+- c8315da2e: Update svelte to resolve security vulnerability
+- 06313c848: fix prerendered arrow files not loading
+- Updated dependencies [bad1038c1]
+  - @evidence-dev/telemetry@2.1.3
+
 ## 1.4.1
 
 ### Patch Changes

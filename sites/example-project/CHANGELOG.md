@@ -1,5 +1,26 @@
 # @evidence-dev/components
 
+## 3.5.25
+
+### Patch Changes
+
+- Updated dependencies [952abbd16]
+- Updated dependencies [952abbd16]
+- Updated dependencies [eec16e59d]
+- Updated dependencies [57c118c16]
+- Updated dependencies [952abbd16]
+- Updated dependencies [0a0695588]
+- Updated dependencies [c8315da2e]
+- Updated dependencies [06313c848]
+- Updated dependencies [bad1038c1]
+  - @evidence-dev/tailwind@2.1.3
+  - @evidence-dev/sdk@1.4.2
+  - @evidence-dev/core-components@4.8.2
+  - @evidence-dev/preprocess@5.2.1
+  - @evidence-dev/component-utilities@3.2.13
+  - @evidence-dev/plugin-connector@2.1.11
+  - @evidence-dev/telemetry@2.1.3
+
 ## 3.5.24
 
 ### Patch Changes
