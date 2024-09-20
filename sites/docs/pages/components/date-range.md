@@ -147,7 +147,7 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
 ````
 ### Customizing Single Preset Ranges
 
-<DateRange presetRanges={'Last 7 Days'}/>
+<DateRange name=customizing_single_preset_ranges presetRanges={'Last 7 Days'}/>
 
 ```markdown
 <DateRange
@@ -158,7 +158,7 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
 
 ### Customizing Multiple Preset Ranges
 
-<DateRange presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}/>
+<DateRange name=customizing_multiple_preset_ranges presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}/>
 
 ````markdown
 <DateRange
@@ -168,7 +168,7 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
 ````
 ### Default Value for Preset Ranges
 
-<DateRange defaultValue={'Last 7 Days'}/>
+<DateRange name=default_value_for_preset_ranges defaultValue={'Last 7 Days'}/>
 
 ````markdown
 <DateRange
