@@ -135,8 +135,6 @@
 
 	let opts = [];
 
-	let opts = [];
-
 	let hasHadSelection = $selectedOptions.length > 0;
 	onDestroy(
 		selectedOptions.subscribe(($selectedOptions) => {
