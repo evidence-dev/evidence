@@ -1,3 +1,5 @@
+/** @typedef {import('prismjs')} Prism */
+
 export const loadPrismComponents = async () => {
 	const Prism = (await import('prismjs')).default;
 	await import('prismjs/components/prism-bash');

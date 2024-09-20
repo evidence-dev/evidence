@@ -16,22 +16,25 @@
 
 	// Play Functions
 	const openDropdown = async ({ canvasElement }) => {
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
 		const canvas = within(canvasElement);
-		// Potentially has flake
-		await new Promise((resolve) => setTimeout(resolve, 1000));
 		let dropdown = await canvas.getByRole('combobox');
 		userEvent.click(dropdown);
 	};
 
 	const searchDropdown = async ({ canvasElement }) => {
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
 		const canvas = within(canvasElement);
-		await new Promise((resolve) => setTimeout(resolve, 1000));
 		let dropdown = await canvas.getByRole('combobox');
 		await userEvent.click(dropdown);
 		await userEvent.keyboard('Alliance');
 	};
 
 	const multiSelectSelectAll = async ({ canvasElement }) => {
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
 		const canvas = within(canvasElement);
 		let dropdown = await waitFor(() => canvas.getByRole('combobox'));
 		await userEvent.click(dropdown, { delay: 100 });
