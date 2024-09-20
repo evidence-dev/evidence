@@ -98,9 +98,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		// Data came from SSR
 		if (data.${id}) {
 			if (data.${id} instanceof Error) {
-				${id}InitialStates.initialError = data.${id};
+				${id}InitialStates.initialError = data.${id}_data;
 			} else {
-				${id}InitialStates.initialData = data.${id};
+				${id}InitialStates.initialData = data.${id}_data;
 			}
 			if (data.${id}_columns) {
 				${id}InitialStates.knownColumns = data.${id}_columns;
@@ -111,9 +111,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		try {
 			if (!__${id}HasUnresolved)
 				// @ts-expect-error
-				${id}InitialStates.initialData = queryFunc(__${id}Text, {
-					query_name: '${id}'
-				});
+				${id}InitialStates.initialData = queryFunc(__${id}Text, {query_name: '${id}'});
 		} catch (e) {
 			console.error(e);
 			if (import.meta.env.VITE_BUILD_STRICT) throw e;

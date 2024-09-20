@@ -47,7 +47,7 @@
 </Story>
 
 <Story name="Data as Array" let:args>
-	{#each data2 as my_row}
+	{#each $data2 as my_row}
 		<BigValue {...args} data={my_row} value="total_y" />
 	{/each}
 </Story>

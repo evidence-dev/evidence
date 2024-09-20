@@ -76,7 +76,6 @@ export class Query {
 	////////////////////////////
 	/// < State Primatives > ///
 	////////////////////////////
-	#hasInitialData = false;
 
 	/** @type {QueryValue<RowType>} */
 	#value;
@@ -907,7 +906,8 @@ DESCRIBE ${this.text.trim()}
 					: createFn(
 							nextQuery,
 							execFn,
-							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined })
+							// clear initialData and initialError on opts, but allow for newOpts to provide them
+							Object.assign({}, opts, { initialData: undefined, initialError: undefined }, newOpts)
 						);
 
 				const fetched = newQuery.fetch();
@@ -1215,14 +1215,8 @@ DESCRIBE ${this.text.trim()}
 			return;
 		}
 
-		if (opts.noResolve) {
-			this.#sharedDataPromise.start();
-			this.#sharedLengthPromise.start();
-			this.#sharedColumnsPromise.start();
-			return this;
-		} else if (initialData) {
+		if (initialData) {
 			this.#debug('initial data', 'Created with initial data', initialData);
-			this.#hasInitialData = true;
 
 			resolveMaybePromise(
 				(d) => {
@@ -1240,6 +1234,11 @@ DESCRIBE ${this.text.trim()}
 					this.#error = e;
 				}
 			);
+		} else if (opts.noResolve) {
+			this.#sharedDataPromise.start();
+			this.#sharedLengthPromise.start();
+			this.#sharedColumnsPromise.start();
+			return this;
 		}
 
 		if (knownColumns) {

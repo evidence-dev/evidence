@@ -15,20 +15,10 @@
 	import TextInput from '../../../atoms/inputs/text/TextInput.svelte';
 	import { within, userEvent } from '@storybook/testing-library';
 	import { expect } from '@storybook/jest';
-
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	const inputStore = getInputContext();
+	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte';
 
-	$: data = Query.create(
-		`
-      SELECT tag
-      FROM hashtags
-      ORDER BY tag
-      ${$inputStore.offset?.toString() ? `OFFSET ${$inputStore.offset.toString()}` : ``}
-      LIMIT 3
-    `,
-		query
-	);
+	const inputStore = getInputContext();
 </script>
 
 <Story name="Basic Usage">
@@ -40,15 +30,27 @@
 </Story>
 
 <Story name="Generated from a query">
+	{@const data = Query.create(
+		`
+      SELECT tag
+      FROM hashtags
+      ORDER BY tag
+      ${$inputStore.offset?.toString() ? `OFFSET ${$inputStore.offset.toString()}` : ``}
+      LIMIT 3
+    `,
+		query
+	)}
 	<TextInput name="offset" title="Offset" />
 
 	<Tabs>
-		{#each $data as row}
-			{@const tag = row.tag}
-			<Tab label={tag}>
-				{tag}
-			</Tab>
-		{/each}
+		<QueryLoad {data} let:loaded>
+			{#each loaded as row}
+				{@const tag = row.tag}
+				<Tab label={tag}>
+					{tag}
+				</Tab>
+			{/each}
+		</QueryLoad>
 	</Tabs>
 </Story>
 

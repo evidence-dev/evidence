@@ -1,0 +1,59 @@
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>
+	// Add font families to load here with the desired FVDs
+	// https://github.com/typekit/webfontloader?tab=readme-ov-file#custom
+	const families = ['Inter:n1,n2,n3,n4,n5,n6,n7,n8,n9,i1,i2,i3,i4,i5,i6,i7,i8,i9'];
+
+	const createManualPromise = () => {
+		let resolve, reject;
+		const promise = new Promise((res, rej) => {
+			resolve = res;
+			reject = rej;
+		});
+		return { promise, resolve, reject };
+	};
+
+	/**
+	 *	{
+	 * 		[fontFamilyName: string]: {
+	 *			fvds: {
+	 *				[fvd: string]: ManualPromise
+	 *			}
+	 * 			loaded: ManualPromise
+	 *		}
+	 *	}
+	 */
+	window.__WebFontLoadingStatus__ = families.reduce((acc, family) => {
+		const [fontFamilyName, fvdString] = family.split(':');
+		const fvds = fvdString.split(',').reduce((acc, fvd) => {
+			acc[fvd] = createManualPromise();
+			return acc;
+		}, {});
+		const loaded = Promise.all(Object.values(fvds).map((fvd) => fvd.promise));
+		acc[fontFamilyName] = { fvds, loaded };
+		return acc;
+	}, {});
+
+	console.debug(`[WebFont] Loading fonts: ${families.join(' ; ')}`);
+
+	WebFont.load({
+		custom: { families },
+		fontloading: (fontFamilyName, fvd) => {
+			console.debug('[WebFont fontloading]', fontFamilyName, fvd);
+		},
+		fontactive: (fontFamilyName, fvd) => {
+			console.debug('[WebFont fontactive]', fontFamilyName, fvd);
+			window.__WebFontLoadingStatus__[fontFamilyName].fvds[fvd].resolve();
+		},
+		fontinactive: (fontFamilyName, fvd) => {
+			console.debug('[WebFont fontinactive]', fontFamilyName, fvd);
+			window.__WebFontLoadingStatus__[fontFamilyName].fvds[fvd].reject();
+		}
+	});
+
+	Object.entries(window.__WebFontLoadingStatus__).map(([fontFamilyName, { loaded }]) => {
+		loaded.then(() => {
+			console.debug(`[WebFont] ${fontFamilyName} fully loaded`);
+		});
+	});
+</script>
