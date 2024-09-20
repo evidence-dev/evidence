@@ -185,7 +185,7 @@ export class ReferenceLineStore {
 						show: true,
 						position: labelPosition,
 						color: labelColor,
-						backgroundColor: 'red',
+						backgroundColor: config.labelBackgroundColor,
 						borderColor: config.labelBorderColor,
 						borderWidth: config.labelBorderWidth,
 						borderRadius: config.labelBorderRadius,

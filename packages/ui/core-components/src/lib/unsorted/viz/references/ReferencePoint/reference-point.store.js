@@ -155,8 +155,6 @@ export class ReferencePointStore {
 				evidenceSeriesType: 'reference_point',
 				id: this.#id,
 				type: 'line',
-				z: 9999,
-				zlevel: 9999,
 				animation: false,
 				silent: true,
 				markPoint: {
@@ -167,7 +165,7 @@ export class ReferencePointStore {
 						position: labelPosition,
 						color: labelColor,
 						opacity: 1,
-						backgroundColor: 'red',
+						backgroundColor: config.labelBackgroundColor,
 						borderColor: config.labelBorderColor,
 						borderWidth: config.labelBorderWidth,
 						borderRadius: config.labelBorderRadius,
