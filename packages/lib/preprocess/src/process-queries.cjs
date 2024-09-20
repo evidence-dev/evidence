@@ -111,7 +111,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		try {
 			if (!__${id}HasUnresolved)
 				// @ts-expect-error
-				${id}InitialStates.initialData = query(__${id}Text, {
+				${id}InitialStates.initialData = queryFunc(__${id}Text, {
 					query_name: '${id}'
 				});
 		} catch (e) {
