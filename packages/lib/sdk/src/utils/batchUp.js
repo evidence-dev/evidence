@@ -10,7 +10,6 @@ export const batchUp = (fn, timeout = 200) => {
 	/** @type {Input[]} */
 	const collected = [];
 
-	// todo: possibly algorithmic nightmare at high n on server?
 	const finalize = browserDebounce(() => {
 		fn([...collected]); // clone collected array before resetting it
 		collected.length = 0;
