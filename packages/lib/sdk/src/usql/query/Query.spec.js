@@ -578,9 +578,8 @@ describe('Query', () => {
 
 	describe('Query initial state handling', () => {
 		it('should not execute any queries if provided with initial state', () => {
-			const initialData = [];
 			const q = getMockQuery('SELECT 1', {
-				initialData,
+				initialData: [],
 				knownColumns: [{ column_name: 'x', column_type: 'VARCHAR', nullable: true }]
 			});
 
