@@ -14,10 +14,7 @@ export const enableDebug = () => {
 
 export const isDebug = () => {
 	if (typeof process !== 'undefined')
-		return Boolean(
-			process.env.EVIDENCE_DEBUG ||
-				process.env.VITE_PUBLIC_EVIDENCE_DEBUG
-		);
+		return Boolean(process.env.EVIDENCE_DEBUG || process.env.VITE_PUBLIC_EVIDENCE_DEBUG);
 	if (typeof import.meta.env !== 'undefined')
 		return (
 			Boolean(import.meta.env.EVIDENCE_DEBUG) || Boolean(import.meta.env.VITE_PUBLIC_EVIDENCE_DEBUG)

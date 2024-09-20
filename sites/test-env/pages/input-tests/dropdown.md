@@ -15,7 +15,7 @@
 <th class="px-2">Label</th>
 </tr>
 <tr>
-<td class="px-2">{inputs.myDropdown}</td>
+<td class="px-2">{inputs.myDropdown}</td>        
 <td class="px-2">{inputs.myDropdown.value}</td>
 <td class="px-2">{inputs.myDropdown.label}</td>
 </tr>
