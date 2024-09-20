@@ -10,12 +10,11 @@
 	import InputState from './input-debug/InputState.svelte';
 	import InputHistory from './input-debug/InputHistory.svelte';
 	import { isDebug } from '@evidence-dev/sdk/utils';
-	import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { ensureInputContext, getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import DagDebugGraph from './page-dag-viewer/DagDebugGraph.svelte';
 	import { AllQueries } from './AllQueries.store.js';
 	import { ActiveQueries } from './ActiveQueries.store.js';
 
-	import { getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { History } from '@evidence-dev/sdk/utils';
 	const inputStore = ensureInputContext();
 
@@ -37,7 +36,7 @@
 				open = false;
 				e.stopPropagation();
 			}
-			if (e.key === 'e' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+			if (e.key.toLowerCase() === 'e' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
 				open = true;
 				e.stopPropagation();
 			}

@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Add compact prop to accordion
+Add Group component for Grids

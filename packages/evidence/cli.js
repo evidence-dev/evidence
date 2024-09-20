@@ -18,7 +18,7 @@ const increaseNodeMemoryLimit = () => {
 };
 
 const loadEnvFile = () => {
-	const envFile = loadEnv('', '.', ['EVIDENCE_']);
+	const envFile = loadEnv('', '.', ['EVIDENCE_', 'VITE_']);
 	Object.assign(process.env, envFile);
 };
 
@@ -204,6 +204,8 @@ prog
 			enableDebug();
 			delete args.debug;
 		}
+
+		loadEnvFile();
 
 		const manifestExists = fs.lstatSync(
 			path.join('.evidence', 'template', 'static', 'data', 'manifest.json'),

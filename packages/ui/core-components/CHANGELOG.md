@@ -1,5 +1,28 @@
 # @evidence-dev/core-components
 
+## 4.8.1
+
+### Patch Changes
+
+- b87d90971: Fix dev tools keybind on windows
+  - @evidence-dev/component-utilities@3.2.12
+
+## 4.8.0
+
+### Minor Changes
+
+- 999fffa38: Change input store interactions
+
+### Patch Changes
+
+- 999fffa38: Modal emits an event when closed now
+- 999fffa38: Pull prop listing into a component for reusabilitiy
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+- 999fffa38: Add compact prop to accordion
+- 999fffa38: Add maxWidth and direction props to hints
+  - @evidence-dev/component-utilities@3.2.11
+
 ## 4.7.8
 
 ### Patch Changes

@@ -226,26 +226,6 @@
 	--monospace-font-family: theme(fontFamily.mono);
 	--ui-font-family: theme(fontFamily.sans);
 	--ui-font-family-compact: theme(fontFamily.sans);
-	--color1: theme(colors.color.1);
-	--color2: theme(colors.color.2);
-	--color3: theme(colors.color.3);
-	--color4: theme(colors.color.4);
-	--color5: theme(colors.color.5);
-	--color6: theme(colors.color.6);
-	--color7: theme(colors.color.7);
-	--color8: theme(colors.color.8);
-	--color9: theme(colors.color.9);
-	--color10: theme(colors.color.10);
-	--color11: theme(colors.color.11);
-	--color12: theme(colors.color.12);
-	--color13: theme(colors.color.13);
-	--color14: theme(colors.color.14);
-	--color15: theme(colors.color.15);
-	--color16: theme(colors.color.16);
-	--color17: theme(colors.color.17);
-	--color18: theme(colors.color.18);
-	--color19: theme(colors.color.19);
-	--color20: theme(colors.color.20);
 
 	/* Colour System */
 	--blue-50: theme(colors.blue.50);

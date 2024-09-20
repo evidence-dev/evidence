@@ -1,5 +1,41 @@
 # evidence-docs
 
+## 0.0.29
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+- Updated dependencies [b87d90971]
+  - @evidence-dev/sdk@1.4.1
+  - @evidence-dev/core-components@4.8.1
+  - @evidence-dev/evidence@39.1.8
+  - @evidence-dev/component-utilities@3.2.12
+
+## 0.0.28
+
+### Patch Changes
+
+- @evidence-dev/evidence@39.1.7
+
+## 0.0.27
+
+### Patch Changes
+
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/core-components@4.8.0
+  - @evidence-dev/sdk@1.4.0
+  - @evidence-dev/evidence@39.1.6
+  - @evidence-dev/component-utilities@3.2.11
+
 ## 0.0.26
 
 ### Patch Changes

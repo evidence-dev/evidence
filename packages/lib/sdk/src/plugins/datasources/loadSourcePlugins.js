@@ -10,7 +10,7 @@ import path from 'path';
  * @returns {Promise<Datasources>}
  */
 export const loadSourcePlugins = async () => {
-	const { plugins } = await getEvidenceConfig();
+	const { plugins } = getEvidenceConfig();
 
 	const datasources = new Datasources();
 	for (const [name, spec] of Object.entries(plugins.datasources ?? {})) {

@@ -19,13 +19,14 @@ export class History {
 	 * @param {T} value
 	 */
 	push(value) {
+		/** @param {Object} o */
 		const organize = (o) => {
 			if (Array.isArray(o)) return JSON.parse(JSON.stringify(o)); // no sorting
-			let tmp = Object.entries(o);
-			tmp = tmp.sort((a, b) => a[0].localeCompare(b[0]));
+			let entries = Object.entries(o);
+			entries.sort((a, b) => a[0].localeCompare(b[0]));
 			// @ts-ignore
-			tmp = Object.fromEntries(tmp);
-			return JSON.parse(JSON.stringify(tmp));
+			const newObject = Object.fromEntries(tmp);
+			return JSON.parse(JSON.stringify(newObject));
 		};
 
 		const pre = organize(this.#prev);

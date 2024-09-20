@@ -10,10 +10,9 @@
 
 	let error;
 
-	export let id;
+	const identifier = Symbol();
 
-	// Simple check of column name in dataset. Should be replaced with robust error handling in the future:
-	$: checkColumnName();
+	export let id;
 
 	/**
 	 * Check column name and handle error if doesn't exist
@@ -115,38 +114,39 @@
 	$: redNegatives = redNegatives === 'true' || redNegatives === true;
 
 	$: options = {
-		id: id,
-		title: title,
-		align: align,
-		wrap: wrap,
-		wrapTitle: wrapTitle,
-		contentType: contentType,
-		height: height,
-		width: width,
-		alt: alt,
-		openInNewTab: openInNewTab,
-		linkLabel: linkLabel,
-		fmt: fmt,
-		fmtColumn: fmtColumn,
-		totalAgg: totalAgg,
-		totalFmt: totalFmt,
-		subtotalFmt: subtotalFmt,
-		weightCol: weightCol,
-		downIsGood: downIsGood,
-		deltaSymbol: deltaSymbol,
-		chip: chip,
-		neutralMin: neutralMin,
-		neutralMax: neutralMax,
-		showValue: showValue,
-		colorMax: colorMax,
-		colorMin: colorMin,
-		scaleColor: scaleColor,
-		scaleColumn: scaleColumn,
-		colGroup: colGroup,
-		colorMid: colorMid,
-		colorBreakpoints: colorBreakpoints,
-		colorPalette: colorPalette,
-		redNegatives: redNegatives
+		identifier,
+		id,
+		title,
+		align,
+		wrap,
+		wrapTitle,
+		contentType,
+		height,
+		width,
+		alt,
+		openInNewTab,
+		linkLabel,
+		fmt,
+		fmtColumn,
+		totalAgg,
+		totalFmt,
+		subtotalFmt,
+		weightCol,
+		downIsGood,
+		deltaSymbol,
+		chip,
+		neutralMin,
+		neutralMax,
+		showValue,
+		colorMax,
+		colorMin,
+		scaleColor,
+		scaleColumn,
+		colGroup,
+		colorMid,
+		colorBreakpoints,
+		colorPalette,
+		redNegatives
 	};
 
 	/**
@@ -155,8 +155,11 @@
 	 * @returns {void}
 	 */
 	const updateProps = () => {
+		// Simple check of column name in dataset. Should be replaced with robust error handling in the future:
+		checkColumnName();
+
 		props.update((d) => {
-			const matchingIndex = d.columns.findIndex((c) => c.id === id);
+			const matchingIndex = d.columns.findIndex((c) => c.identifier === identifier);
 			if (matchingIndex === -1) {
 				d.columns.push(options);
 			} else {

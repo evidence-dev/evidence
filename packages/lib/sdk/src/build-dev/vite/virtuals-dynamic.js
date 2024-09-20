@@ -6,7 +6,7 @@ export const BUILD_ID = import.meta.env.MODE === "development" ? "DEV" : "${nano
 export const BUILD_DATE = new Date(${new Date().getTime()});
 `;
 
-export const config = async () => {
-	const cfg = await getEvidenceConfig();
+export const config = () => {
+	const cfg = getEvidenceConfig();
 	return `export default ${JSON.stringify(cfg)}`;
 };
