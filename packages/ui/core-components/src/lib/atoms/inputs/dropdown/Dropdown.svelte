@@ -198,7 +198,7 @@
 
 	$: open ? pauseSorting() : resumeSorting();
 
-	$: if ($finalQuery?.dataReady) opts = $finalQuery;
+	$: if ($finalQuery?.dataLoaded) opts = $finalQuery;
 </script>
 
 <slot />
