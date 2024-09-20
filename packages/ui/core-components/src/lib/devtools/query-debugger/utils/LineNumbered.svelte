@@ -11,7 +11,6 @@
 	let Prism;
 	onMount(async () => {
 		Prism = await loadPrismComponents();
-		console.log('onMount', { Prism });
 		highlight = Prism.highlight.bind(Prism);
 	});
 
