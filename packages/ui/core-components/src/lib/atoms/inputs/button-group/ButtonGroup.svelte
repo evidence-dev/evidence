@@ -53,7 +53,7 @@
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`ButtonGroup-${name}`,
-		$page?.data?.data[`ButtonGroup-${name}`]
+		$page?.data?.data[`ButtonGroup-${name}_data`]
 	);
 	$: update({ value, data, label, order, where });
 

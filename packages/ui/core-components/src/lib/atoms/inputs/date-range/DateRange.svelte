@@ -47,7 +47,7 @@
 			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
 			exec,
 			{
-				initialData: $page.data.data[`DateRange-${name}`],
+				initialData: $page?.data?.data[`DateRange-${name}_data`],
 				disableCache: true,
 				noResolve: false,
 				id: `DateRange-${name}`
@@ -74,10 +74,8 @@
 					? dateToYYYYMMDD($query?.[0].end)
 					: dateToYYYYMMDD(new Date());
 
-	$: {
-		if ((query && $query.loaded) || !query) {
-			$inputs[name] = { start: startString, end: endString };
-		}
+	$: if ((query && $query.dataLoaded) || !query) {
+		$inputs[name] = { start: startString, end: endString };
 	}
 
 	let selectedDateRange;
