@@ -16,7 +16,10 @@ const transformError = (e) => {
 };
 
 /** @type {import("@sveltejs/kit").HandleClientError } */
-export const handleError = (e) => transformError(e.error);
+export const handleError = (e) => {
+	console.error(`Uncaught error while server responding`, e);
+	return transformError(e.error);
+};
 
 /** @type {import('@sveltejs/kit').Handle} */
 export function handle({ event, resolve }) {

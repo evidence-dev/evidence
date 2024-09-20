@@ -4,12 +4,20 @@
 	import Column from './Column.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import ButtonGroup from '../../../atoms/inputs/button-group/ButtonGroup.svelte';
+	import ButtonGroupItem from '../../../atoms/inputs/button-group/ButtonGroupItem.svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { expect, userEvent, within } from '@storybook/test';
 
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Viz/Datatable',
 		component: DataTable
 	};
+</script>
+
+<script>
+	const inputStore = getInputContext();
 </script>
 
 <Story name="Simple Case">
@@ -53,6 +61,40 @@
 <Story name="With Search (Long Columns)">
 	{@const data = Query.create(`SELECT * from blog_posts`, query)}
 	<DataTable {data} title="Blog Posts" search />
+</Story>
+
+<Story
+	name="Reactive columns"
+	play={async ({ canvasElement }) => {
+		const screen = within(canvasElement);
+
+		expect(await screen.findByRole('columnheader', { name: 'Column A' })).toBeInTheDocument();
+		expect(await screen.findByRole('cell', { name: 'Value A' })).toBeInTheDocument();
+
+		await userEvent.click(await screen.findByRole('button', { name: 'Column B' }));
+		expect(await screen.findByRole('columnheader', { name: 'Column B' })).toBeInTheDocument();
+		expect(await screen.findByRole('cell', { name: 'Value B' })).toBeInTheDocument();
+
+		await userEvent.click(await screen.findByRole('button', { name: 'Column A' }));
+		expect(await screen.findByRole('columnheader', { name: 'Column A' })).toBeInTheDocument();
+		expect(await screen.findByRole('cell', { name: 'Value A' })).toBeInTheDocument();
+	}}
+>
+	{@const data = Query.create(
+		`SELECT '7 days' as cohort, 'stuff' as metadata, 'Value A' as "Column A", 'Value B' as "Column B"`,
+		query
+	)}
+
+	<ButtonGroup name="dimension">
+		<ButtonGroupItem value="Column A" valueLabel="Column A" default />
+		<ButtonGroupItem value="Column B" valueLabel="Column B" />
+	</ButtonGroup>
+
+	<DataTable {data} rowNumbers>
+		<Column id="cohort" title="Week" />
+		<Column id={$inputStore.dimension} />
+		<Column id="metadata" title="Metadata" />
+	</DataTable>
 </Story>
 
 <Story name="Full screen no scroll to top">

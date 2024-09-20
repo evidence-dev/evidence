@@ -1,19 +1,21 @@
 <script>
-	/* global Prism */
-
 	import { onMount } from 'svelte';
 	import { loadPrismComponents } from '../../../unsorted/ui/prismLoader.js';
+
 	export let lang;
 	export let text;
 
 	let highlight = () => '';
+
+	/** @type {import('../../../unsorted/ui/prismLoader.js').Prism} */
+	let Prism;
 	onMount(async () => {
-		const Prism = await loadPrismComponents();
+		Prism = await loadPrismComponents();
 		highlight = Prism.highlight.bind(Prism);
 	});
 
-	let highlighted = lang ? highlight(text, Prism.languages[lang], lang) : text;
-	$: highlighted = lang ? highlight(text, Prism.languages[lang], lang) : text;
+	let highlighted = lang ? highlight(text, Prism?.languages[lang], lang) : text;
+	$: highlighted = lang ? highlight(text, Prism?.languages[lang], lang) : text;
 </script>
 
 <div class="w-full">

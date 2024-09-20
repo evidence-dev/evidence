@@ -30,7 +30,7 @@ function upgradePackages() {
 	);
 }
 
-/** @type {Promise<import("@brianmd/citty").CommandDef>} */
+/** @type {import("@brianmd/citty").CommandDef} */
 export const upgrade = evidenceProjectOnlyNotice('upgrade', {
 	meta: {
 		name: 'upgrade',
