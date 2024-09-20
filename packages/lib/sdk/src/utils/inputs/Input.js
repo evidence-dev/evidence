@@ -67,7 +67,11 @@ export class Input extends RecursiveProxyPrimitive {
 						} else if (!childValue.hasValue) {
 							childValue.setValue(Input.DefaultLabelText);
 						}
-						this.__dag.trigger();
+						if (this.__dag) {
+							this.__dag.trigger();
+						} else {
+							console.trace('Found input with no DAG', this);
+						}
 					},
 					inheritPost: true
 				}
