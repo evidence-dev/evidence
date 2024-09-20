@@ -10,7 +10,6 @@ export const set = (key, value) => {
 	if (!browser) return;
 	if (!window[s]) window[s] = {};
 	window[s][key] = value;
-	console.log(window[s]);
 };
 
 /**
