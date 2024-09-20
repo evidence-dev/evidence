@@ -1,5 +1,4 @@
 import { isDebug } from '../lib/debug.js';
-import chalk from 'chalk';
 
 /**
  * @typedef {Object} LogDriver
@@ -18,94 +17,94 @@ export class EvidenceLogger {
 
 	/** @type {LogDriver} */
 	#logger;
+
+    /** @type {EvidenceLogger.EvidenceLogLevels[keyof EvidenceLogger.EvidenceLogLevels]} */
+    logLevel = 3;
 	constructor() {
 		if (typeof process !== 'undefined') {
-			/** @type {Parameters<LogDriver['log']>[]} */
-			const queue = [];
-			this.#logger = {
-				log: (...args) => queue.push(args)
-			};
+			// /** @type {Parameters<LogDriver['log']>[]} */
+			// const queue = [];
+			// this.#logger = {
+			// 	log: (...args) => queue.push(args)
+			// };
 
-			import('winston').then((winston) => {
-				this.#logger = winston.createLogger({
-					level: isDebug() ? 'debug' : 'info',
-					format: winston.format.cli({
-						levels: EvidenceLogger.EvidenceLogLevels,
-						colors: {
-							fatal: 'red',
-							error: 'red',
-							warn: 'yellow',
-							info: 'green',
-							debug: 'blue',
-							verbose: 'gray'
-						}
-					}),
+			// import(/* @vite-ignore */ 'winston').then((winston) => {
+			// 	this.#logger = winston.createLogger({
+			// 		level: isDebug() ? 'debug' : 'info',
+			// 		format: winston.format.cli({
+			// 			levels: EvidenceLogger.EvidenceLogLevels,
+			// 			colors: {
+			// 				fatal: 'red',
+			// 				error: 'red',
+			// 				warn: 'yellow',
+			// 				info: 'green',
+			// 				debug: 'blue',
+			// 				verbose: 'gray'
+			// 			}
+			// 		}),
 
-					levels: EvidenceLogger.EvidenceLogLevels,
-					transports: [
-						new winston.transports.Console({
-							stderrLevels: ['fatal', 'error'],
-							consoleWarnLevels: ['warn']
-						})
-					]
-				});
+			// 		levels: EvidenceLogger.EvidenceLogLevels,
+			// 		transports: [
+			// 			new winston.transports.Console({
+			// 				stderrLevels: ['fatal', 'error'],
+			// 				consoleWarnLevels: ['warn']
+			// 			})
+			// 		]
+			// 	});
 
-				queue.forEach((queued) => this.#logger.log(...queued));
-			});
+			// 	queue.forEach((queued) => this.#logger.log(...queued));
+			// });
 		} else {
-			this.#logger = {
-				/**
-				 *
-				 * @param {keyof typeof EvidenceLogger.EvidenceLogLevels} level
-				 * @param {string} message
-				 * @param {Record<string, any>} meta
-				 */
-				log: (level, message, meta) => {
-					/** @type {any[]} */
-					const args = [message];
-					if (meta) args.push(meta);
-					switch (level) {
-						case 'fatal':
-						case 'error':
-							console.error(
-								`%c[${level.toUpperCase()}]: `,
-								'color: red; font-weight: bold',
-								...args
-							);
-							break;
-						case 'warn':
-							console.warn(
-								`%c[${level.toUpperCase()}]: `,
-								'color: yellow; font-weight: bold',
-								...args
-							);
-							break;
-						default:
-						case 'info':
-							console.info(
-								`%c[${level.toUpperCase()}]: `,
-								'color: green; font-weight: bold',
-								...args
-							);
-							break;
-						case 'debug':
-							console.debug(
-								`%c[${level.toUpperCase()}]: `,
-								'color: blue; font-weight: bold',
-								...args
-							);
-							break;
-						case 'verbose':
-							console.debug(
-								`%c[${level.toUpperCase()}]: `,
-								'color: gray; font-weight: bold',
-								...args
-							);
-							break;
-					}
-				}
-			};
-		}
+        }
+
+        this.#logger = {
+            /**
+             *
+             * @param {keyof typeof EvidenceLogger.EvidenceLogLevels} level
+             * @param {string} message
+             * @param {Record<string, any>} meta
+             */
+            log: (level, message, meta) => {
+                /** @type {any[]} */
+                const args = [message];
+                if (meta) args.push(meta);
+                if (EvidenceLogger.EvidenceLogLevels[level] > this.logLevel) return
+                switch (level) {
+                    case 'fatal':
+                    case 'error':
+                        console.error(
+                            `[${level.toUpperCase()}]: `,
+                            ...args
+                        );
+                        break;
+                    case 'warn':
+                        console.warn(
+                            `[${level.toUpperCase()}]: `,
+                            ...args
+                        );
+                        break;
+                    default:
+                    case 'info':
+                        console.info(
+                            `[${level.toUpperCase()}]: `,
+                            ...args
+                        );
+                        break;
+                    case 'debug':
+                        console.debug(
+                            `[${level.toUpperCase()}]: `,
+                            ...args
+                        );
+                        break;
+                    case 'verbose':
+                        console.debug(
+                            `[${level.toUpperCase()}]: `,
+                            ...args
+                        );
+                        break;
+                }
+            }
+        };
 	}
 
 	/**
@@ -116,7 +115,7 @@ export class EvidenceLogger {
 	 */
 	die(message, detail, meta, debugMeta) {
 		this.fatal(
-			`${chalk.bold.redBright(message)}\n${chalk.dim(` | ${detail ? detail.join('\n | ') : ''}`)}`,
+            `${message}\n${detail ? detail.join('\n') : ''}`,
 			{
 				...meta,
 				...(isDebug() ? debugMeta : {})
@@ -132,9 +131,6 @@ export class EvidenceLogger {
 	 */
 	#log = (level) => (message, meta) => {
 		let out = message;
-		if (isDebug() && typeof process !== 'undefined') {
-			out += '\n' + chalk.dim(` | ${JSON.stringify(meta)}`);
-		}
 		this.#logger.log(level, out, meta);
 	};
 

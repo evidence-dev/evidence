@@ -1060,12 +1060,13 @@ DESCRIBE ${this.text.trim()}
 	///////////////////////
 	/**
 	 * @param {string} label
+	 * @param {string} message
 	 * @param  {...any} args
 	 */
-	static #debugStatic = (label, ...args) => {
+	static #debugStatic = (label, message, ...args) => {
 		const prefix = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
-		const message = args.map((arg) => (typeof arg === 'function' ? arg() : `${arg}`)).join('\n | ');
-		log.debug(`${prefix}\n | ${message}`);
+		log.debug(`${prefix}\n | ${message}`, args);
+
 	};
 
 	/**
