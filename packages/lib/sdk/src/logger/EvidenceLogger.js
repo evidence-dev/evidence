@@ -56,42 +56,46 @@ export class EvidenceLogger {
 	}
 
 	/**
-	 * @param {string} message
-	 * @param {Record<string, any>} [meta]
+	 *
+	 * @param {keyof typeof EvidenceLogger.EvidenceLogLevels} level
+	 * @returns {(message: string, meta?: Record<string, any>) => void}
 	 */
-	fatal(message, meta) {
-		this.#logger.log('fatal', message, meta);
-	}
+	#log = (level) => (message, meta) => {
+		let out = message;
+		if (isDebug()) {
+            console.log("including metadata")
+			out += '\n' + chalk.dim(` | ${JSON.stringify(meta)}`);
+		}
+		this.#logger.log(level, out);
+	};
 
 	/**
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	error(message, meta) {
-		this.#logger.log('error', message, meta);
-	}
+	fatal = this.#log('fatal')
 
 	/**
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	warn(message, meta) {
-		this.#logger.log('warn', message, meta);
-	}
+	error = this.#log('error')
 
 	/**
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	info(message, meta) {
-		this.#logger.log('info', message, meta);
-	}
+	warn = this.#log('warn')
 
 	/**
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	debug(message, meta) {
-		this.#logger.log('debug', message, meta);
-	}
+	info = this.#log('info')
+
+	/**
+	 * @param {string} message
+	 * @param {Record<string, any>} [meta]
+	 */
+	debug = this.#log('debug')
 }
