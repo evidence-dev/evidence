@@ -577,25 +577,22 @@ describe('Query', () => {
 	});
 
 	describe('Query initial state handling', () => {
-		it('should not execute the query if provided with initial data', () => {
-			const sp = sharedPromise();
-			expectedData = sp.promise;
+		it('should not execute any queries if provided with initial state', () => {
 			const initialData = [];
-			initialData._evidenceColumnTypes = [{ name: 'x' }];
-			const q = getMockQuery('SELECT 1', { initialData });
+			const q = getMockQuery('SELECT 1', {
+				initialData,
+				knownColumns: [{ column_name: 'x', column_type: 'VARCHAR', nullable: true }]
+			});
 
+			expect(mockRunner).not.toHaveBeenCalled();
 			expect(q.dataLoaded).toBe(true);
-			sp.resolve([{ x: 1 }]);
 			expect(q.lengthLoaded).toBe(true);
 			expect(q.length).toBe(0);
 		});
-		it('should not execute the query and use initial data, even if noResolve is set', () => {
-			const sp = sharedPromise();
-			expectedData = sp.promise;
-			const initialData = [];
-			initialData._evidenceColumnTypes = [{ name: 'x' }];
-			const q = getMockQuery('SELECT 1', { initialData, noResolve: true });
+		it('should not execute any queries if initialData provided and noResolve=true', () => {
+			const q = getMockQuery('SELECT 1', { initialData: [], noResolve: true });
 
+			expect(mockRunner).not.toHaveBeenCalled();
 			expect(q.dataLoading).toBe(false);
 			expect(q.lengthLoading).toBe(false);
 			expect(q.columnsLoading).toBe(false);
