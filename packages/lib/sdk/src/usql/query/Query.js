@@ -1066,7 +1066,6 @@ DESCRIBE ${this.text.trim()}
 	static #debugStatic = (label, message, ...args) => {
 		const prefix = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
 		log.debug(`${prefix}\n | ${message}`, args);
-
 	};
 
 	/**

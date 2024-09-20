@@ -59,7 +59,7 @@ export class Input extends RecursiveProxyPrimitive {
 				},
 				set: {
 					valueSet: () => {
-						this.__dag.trigger();
+						this.__dag?.trigger();
 					},
 					inheritValueSet: true,
 					post: (prop, childValue) => {
@@ -69,7 +69,7 @@ export class Input extends RecursiveProxyPrimitive {
 						} else if (!childValue.hasValue) {
 							childValue.setValue(Input.DefaultLabelText);
 						}
-						this.__dag.trigger();
+						this.__dag?.trigger();
 					},
 					inheritPost: true
 				}
@@ -116,3 +116,10 @@ export class Input extends RecursiveProxyPrimitive {
 		return '🦆' in v && v['🦆'] === '__EvidenceInput__';
 	}
 }
+
+// See the note in InputValue.js
+Object.defineProperties(Input.prototype, {
+	__dag: { writable: true },
+	nestedValueSet: { writable: true },
+	updateOptions: { writable: true }
+});

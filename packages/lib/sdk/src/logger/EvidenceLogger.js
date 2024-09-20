@@ -18,93 +18,43 @@ export class EvidenceLogger {
 	/** @type {LogDriver} */
 	#logger;
 
-    /** @type {EvidenceLogger.EvidenceLogLevels[keyof EvidenceLogger.EvidenceLogLevels]} */
-    logLevel = 3;
+	/** @type {EvidenceLogger.EvidenceLogLevels[keyof EvidenceLogger.EvidenceLogLevels]} */
+	logLevel = 3;
 	constructor() {
-		if (typeof process !== 'undefined') {
-			// /** @type {Parameters<LogDriver['log']>[]} */
-			// const queue = [];
-			// this.#logger = {
-			// 	log: (...args) => queue.push(args)
-			// };
-
-			// import(/* @vite-ignore */ 'winston').then((winston) => {
-			// 	this.#logger = winston.createLogger({
-			// 		level: isDebug() ? 'debug' : 'info',
-			// 		format: winston.format.cli({
-			// 			levels: EvidenceLogger.EvidenceLogLevels,
-			// 			colors: {
-			// 				fatal: 'red',
-			// 				error: 'red',
-			// 				warn: 'yellow',
-			// 				info: 'green',
-			// 				debug: 'blue',
-			// 				verbose: 'gray'
-			// 			}
-			// 		}),
-
-			// 		levels: EvidenceLogger.EvidenceLogLevels,
-			// 		transports: [
-			// 			new winston.transports.Console({
-			// 				stderrLevels: ['fatal', 'error'],
-			// 				consoleWarnLevels: ['warn']
-			// 			})
-			// 		]
-			// 	});
-
-			// 	queue.forEach((queued) => this.#logger.log(...queued));
-			// });
-		} else {
-        }
-
-        this.#logger = {
-            /**
-             *
-             * @param {keyof typeof EvidenceLogger.EvidenceLogLevels} level
-             * @param {string} message
-             * @param {Record<string, any>} meta
-             */
-            log: (level, message, meta) => {
-                /** @type {any[]} */
-                const args = [message];
-                if (meta) args.push(meta);
-                if (EvidenceLogger.EvidenceLogLevels[level] > this.logLevel) return
-                switch (level) {
-                    case 'fatal':
-                    case 'error':
-                        console.error(
-                            `[${level.toUpperCase()}]: `,
-                            ...args
-                        );
-                        break;
-                    case 'warn':
-                        console.warn(
-                            `[${level.toUpperCase()}]: `,
-                            ...args
-                        );
-                        break;
-                    default:
-                    case 'info':
-                        console.info(
-                            `[${level.toUpperCase()}]: `,
-                            ...args
-                        );
-                        break;
-                    case 'debug':
-                        console.debug(
-                            `[${level.toUpperCase()}]: `,
-                            ...args
-                        );
-                        break;
-                    case 'verbose':
-                        console.debug(
-                            `[${level.toUpperCase()}]: `,
-                            ...args
-                        );
-                        break;
-                }
-            }
-        };
+		// TODO: Add winston, pino, or a similar library (?)
+		this.#logger = {
+			/**
+			 *
+			 * @param {keyof typeof EvidenceLogger.EvidenceLogLevels} level
+			 * @param {string} message
+			 * @param {Record<string, any>} meta
+			 */
+			log: (level, message, meta) => {
+				/** @type {any[]} */
+				const args = [message];
+				if (meta) args.push(meta);
+				if (EvidenceLogger.EvidenceLogLevels[level] > this.logLevel) return;
+				switch (level) {
+					case 'fatal':
+					case 'error':
+						console.error(`[${level.toUpperCase()}]: `, ...args);
+						break;
+					case 'warn':
+						console.warn(`[${level.toUpperCase()}]: `, ...args);
+						break;
+					default:
+					case 'info':
+						console.info(`[${level.toUpperCase()}]: `, ...args);
+						break;
+					case 'debug':
+						console.debug(`[${level.toUpperCase()}]: `, ...args);
+						break;
+					case 'verbose':
+						console.debug(`[${level.toUpperCase()}]: `, ...args);
+						break;
+				}
+			}
+		};
 	}
 
 	/**
@@ -114,13 +64,10 @@ export class EvidenceLogger {
 	 * @param {Record<string, any>} [debugMeta]
 	 */
 	die(message, detail, meta, debugMeta) {
-		this.fatal(
-            `${message}\n${detail ? detail.join('\n') : ''}`,
-			{
-				...meta,
-				...(isDebug() ? debugMeta : {})
-			}
-		);
+		this.fatal(`${message}\n${detail ? detail.join('\n') : ''}`, {
+			...meta,
+			...(isDebug() ? debugMeta : {})
+		});
 		if (typeof process !== 'undefined') process.exit(1);
 	}
 

@@ -38,7 +38,12 @@ export class InputValue extends RecursiveProxyPrimitive {
 
 	By assigning these properties to the prototypes directly, then the `hasKey` function in RecursiveProxyPrimitive
 	will properly detect them, and treat them as class properties properly.
-	
+
 */
-InputValue.prototype['🦆'] = '__EvidenceInputValue__'
-InputValue.prototype.defaultStringify = ''
+// InputValue.prototype['🦆'] = '__EvidenceInputValue__'
+// InputValue.prototype.defaultStringify = ''
+
+Object.defineProperties(InputValue.prototype, {
+	['🦆']: { writable: true },
+	defaultStringify: { writable: true }
+});
