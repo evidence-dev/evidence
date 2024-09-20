@@ -16,6 +16,14 @@ export type RecursiveProxyPrimitiveHooks = {
 	};
 	set?: {
 		/**
+		 * Called when a primitive value is being set (e.g. setValue instead of prop = value)
+		 * @param value 
+		 * @param this 
+		 * @returns 
+		 */
+		valueSet?: (value: any, this: RecursiveProxyPrimitive) => void;
+		inheritValueSet?: boolean;
+		/**
 		 * Called before setting a property
 		 * @param property Modified Property
 		 * @param value Value being set

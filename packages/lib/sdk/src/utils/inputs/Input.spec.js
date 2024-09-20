@@ -26,6 +26,13 @@ describe('Input & InputValue', () => {
 			input.x = 1;
 			expect(input.__dag.trigger).toHaveBeenCalledTimes(1);
 		});
+		it.only('should trigger the dag node when a value is set', () => {
+			const input = new Input('MockInput');
+			vi.spyOn(input.__dag, 'trigger');
+			input.setValue(5);
+			expect(input.__dag.trigger).toHaveBeenCalledTimes(1);
+			expect(input.toString()).toEqual("5")
+		});
 
 		it('should trigger the dag node when a deep property is set', () => {
 			const input = new Input('MockInput');

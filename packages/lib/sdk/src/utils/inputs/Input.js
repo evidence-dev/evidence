@@ -60,6 +60,10 @@ export class Input extends RecursiveProxyPrimitive {
 					}
 				},
 				set: {
+					valueSet: () => {
+						this.__dag.trigger()
+					},
+					inheritValueSet: true,
 					post: (prop, childValue) => {
 						if (prop !== 'label') {
 							// Label is special, because it is not considered a value
@@ -67,6 +71,7 @@ export class Input extends RecursiveProxyPrimitive {
 						} else if (!childValue.hasValue) {
 							childValue.setValue(Input.DefaultLabelText);
 						}
+						this.__dag.trigger();
 					},
 					inheritPost: true
 				}
