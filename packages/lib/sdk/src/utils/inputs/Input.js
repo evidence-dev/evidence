@@ -1,9 +1,5 @@
 import { BlockingDagNode } from '../dag/DagNode.js';
-import {
-	InternalState,
-	PrimitiveValue,
-	RecursiveProxyPrimitive
-} from '../recursive-proxy/RecursiveProxyPrimitive.js';
+import { RecursiveProxyPrimitive } from '../recursive-proxy/RecursiveProxyPrimitive.js';
 import { InputValue } from './InputValue.js';
 
 /** @typedef {import("../dag/DagNode.js").DagNode} DagNode */
@@ -52,11 +48,24 @@ export class Input extends RecursiveProxyPrimitive {
 		};
 		super({
 			hooks: {
+				get: {
+					created: (prop, childValue) => {
+						// Ensure that even if a label hasn't been set on the store - we still treat it correctly
+						if (prop === 'label' && InputValue.isInputValue(childValue)) {
+							childValue.defaultStringify = Input.DefaultLabelText;
+							if (!childValue.hasValue) {
+								childValue.setValue(Input.DefaultLabelText);
+							}
+						}
+					}
+				},
 				set: {
-					post: (prop) => {
+					post: (prop, childValue) => {
 						if (prop !== 'label') {
 							// Label is special, because it is not considered a value
 							flagChildSet();
+						} else if (!childValue.hasValue) {
+							childValue.setValue(Input.DefaultLabelText);
 						}
 						this.__dag.trigger();
 					},
@@ -88,16 +97,9 @@ export class Input extends RecursiveProxyPrimitive {
 	}
 
 	toString = () => {
-		if (this.hasValue) {
-			if (this.#sqlFragmentFactory) {
-				const value = this.#sqlFragmentFactory(this);
-				if (value !== null) return value;
-			}
-
-			return this[PrimitiveValue]?.toString() ?? '';
-		} else {
-			return Input.DefaultValueText;
-		}
+		if (this.#sqlFragmentFactory) return this.#sqlFragmentFactory(this);
+		if (!this.hasValue) return Input.DefaultValueText;
+		return super.toString();
 	};
 
 	['🦆'] = '__EvidenceInput__';

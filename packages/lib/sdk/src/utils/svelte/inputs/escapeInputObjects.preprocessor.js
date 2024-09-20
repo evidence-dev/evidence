@@ -8,7 +8,7 @@ export function escapeInputObjects() {
 		script({ content, filename, attributes }) {
 			if (!filename?.endsWith('.md')) return;
 			if (attributes.context) return;
-			content += 'import {PrimitiveValue} from "@evidence-dev/sdk/utils"';
+			content += 'import {MarkdownEscape} from "@evidence-dev/sdk/utils"';
 			return { code: content };
 		},
 		markup({ content, filename }) {
@@ -17,7 +17,7 @@ export function escapeInputObjects() {
                     Detect all references to inputs.[...]
                     Filter out references that appear in queries, or appear in the script tag
 					Also filter out references that appear in element attributes
-                    Append '[PrimitiveValue]' to inputs that appear directly in the markdown
+                    Append '[MarkdownEscape]' to inputs that appear directly in the markdown
 
 
                 Notes:
@@ -45,7 +45,7 @@ export function escapeInputObjects() {
 
 			let output = content;
 			let offset = 0;
-			const appendString = '[PrimitiveValue]';
+			const appendString = '[MarkdownEscape]';
 			for (const match of inputRefs ?? []) {
 				const inScript = scriptRanges.find(
 					([start, end]) => start <= match.index && match.index <= end

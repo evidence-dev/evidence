@@ -1,8 +1,4 @@
-import {
-	InternalState,
-	PrimitiveValue,
-	RecursiveProxyPrimitive
-} from '../recursive-proxy/RecursiveProxyPrimitive.js';
+import { RecursiveProxyPrimitive } from '../recursive-proxy/RecursiveProxyPrimitive.js';
 import { Input } from './Input.js';
 
 export class InputValue extends RecursiveProxyPrimitive {
@@ -15,14 +11,7 @@ export class InputValue extends RecursiveProxyPrimitive {
 		return null;
 	}
 
-	toString = () => {
-		const innerValue = this[PrimitiveValue];
-		if (this.hasValue) {
-			return innerValue?.toString() ?? '';
-		} else {
-			return Input.DefaultValueText;
-		}
-	};
+	defaultStringify = Input.DefaultValueText;
 
 	['🦆'] = '__EvidenceInputValue__';
 

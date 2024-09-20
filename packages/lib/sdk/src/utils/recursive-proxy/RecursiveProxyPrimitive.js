@@ -3,6 +3,13 @@
 import { EvidenceError } from '../../lib/EvidenceError.js';
 export const PrimitiveValue = Symbol('PrimitiveValue');
 export const InternalState = Symbol('InternalState');
+export const MarkdownEscape = Symbol('MarkdownEscape');
+
+/** @typedef {Symbol} Empty */
+const Empty = Symbol();
+
+const InternalJsonCall = Symbol();
+
 /**
  * The RecursiveProxyPrimative is used to create classes that can be infinitely addressed.
  *
@@ -95,6 +102,14 @@ export class RecursiveProxyPrimitive {
 
 		this.#proxy = new Proxy(this, {
 			get: (_, prop) => {
+				if (prop === Empty)
+					return () => {
+						if (Array.isArray(this.#internalState)) {
+							this.#internalState = [];
+						} else {
+							this.#internalState = {};
+						}
+					};
 				if (hasKey(prop)) {
 					return this[prop];
 				}
@@ -103,6 +118,7 @@ export class RecursiveProxyPrimitive {
 				}
 				if (!(prop in this.#internalState)) {
 					this.#internalState[prop] = buildChild();
+					this.#hooks?.get?.created?.(prop, this.#internalState[prop], this);
 				}
 
 				return this.#internalState[prop];
@@ -123,11 +139,13 @@ export class RecursiveProxyPrimitive {
 				}
 
 				if (typeof value === 'object') {
+					childValue[Empty]();
 					if (!(value instanceof this.ChildConstructor)) {
 						// Recursively create more values
 						if (Array.isArray(value)) {
 							childValue.convertToArray();
 						}
+
 						for (const [k, v] of Object.entries(value)) {
 							childValue[k] = v;
 						}
@@ -169,6 +187,12 @@ export class RecursiveProxyPrimitive {
 	get [PrimitiveValue]() {
 		return this.#value;
 	}
+	get [MarkdownEscape]() {
+		if (typeof this.#value !== 'string' && typeof this.#value !== 'undefined') {
+			return this.#value;
+		}
+		return this.toString();
+	}
 	get [InternalState]() {
 		return this.#internalState;
 	}
@@ -178,39 +202,70 @@ export class RecursiveProxyPrimitive {
 		return s.#value;
 	};
 
-	toString = () => {
-		return String(this.#value);
-	};
+	toString() {
+		/** @type {any | any[]} */
+		const internalState = Reflect.get(this, InternalState);
+		/** @type {any} */
+		const primitiveValue = Reflect.get(this, PrimitiveValue);
 
-	toJSON = () => {
-		if (this.hasValue && !Object.keys(this.#internalState).length) {
-			return this.#value;
+		if (Object.keys(internalState).length) {
+			const v = this.toJSON(InternalJsonCall);
+
+			if (v === '') return '';
+			return JSON.stringify(v);
+		} else if (this.hasValue) {
+			// Operate on the primitive
+			return primitiveValue?.toString();
 		} else {
+			return '';
+		}
+	}
+
+	toJSON(/** @type {string | symbol} */ key) {
+		/** @type {any | any[]} */
+		const internalState = Reflect.get(this, InternalState);
+		const primitiveValue = Reflect.get(this, PrimitiveValue);
+		if (this.hasValue && !Object.keys(internalState).length) {
+			return primitiveValue;
+		} else {
+			if (!Object.keys(internalState).length && !Array.isArray(internalState)) {
+				if (key === InternalJsonCall) {
+					return '';
+				} else {
+					return internalState;
+				}
+			}
 			let out;
-			if (Array.isArray(this.#internalState)) {
-				out = this.#internalState
-					.filter((v) => v instanceof this.ChildConstructor)
-					.map((v) => v.toJSON());
+			if (Array.isArray(internalState)) {
+				out = internalState
+					.filter((/** @type {any} */ v) => v instanceof this.ChildConstructor)
+					.map(/** @returns {any} */ (/** @type {RecursiveProxyPrimitive} */ v) => v.toJSON());
 			} else {
 				out = Object.fromEntries(
-					Object.entries(this.#internalState)
+					Object.entries(internalState)
 						.filter(([, v]) => v instanceof this.ChildConstructor)
 						.map(([k, v]) => [k, v.toJSON()])
 				);
 			}
+
 			return out;
 		}
-	};
+	}
 
 	get hasValue() {
 		return this.#hasValue;
 	}
 
-	/** @type {() => string | boolean | number | symbol | undefined | Date | null} */
-	[Symbol.toPrimitive] = () => {
-		if (this.hasValue) return this.#value;
-		return this.toString();
-	};
+	/** @type {(hint: string) => string | boolean | number | symbol | undefined | Date | null} */
+	[Symbol.toPrimitive](hint) {
+		if (hint === 'string' || hint === 'default') {
+			return this.toString();
+		} else {
+			// @ts-expect-error I don't understand this error, and we are playing fast and loose with
+			// the types here anyways
+			return Reflect.get(this, PrimitiveValue);
+		}
+	}
 
 	/** @param {string | symbol | number} prop */
 	get = (prop) => {

@@ -30,7 +30,7 @@ const isReadable = (v) => {
 export const ensureInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
 		const newValue = new InputStore();
-		Input.DefaultValueText = '(SELECT 0 WHERE NULL /* Unset Input Value */)';
+		Input.DefaultValueText = '(SELECT 0 WHERE NULL /* Unset or Unknown Input Value */)';
 		setContext(InputStoreKey, newValue);
 		return newValue.proxy;
 	} else {

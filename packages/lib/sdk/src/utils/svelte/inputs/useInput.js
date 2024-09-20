@@ -23,10 +23,15 @@ export const useInput = (name, options, initialState) => {
 
 	if (!input.initialized) {
 		input.initialized = true;
-		input.setValue(initialState?.value);
+		if (typeof initialState?.value !== 'undefined') {
+			input.setValue(initialState?.value);
+		}
 		delete initialState?.value;
 		Object.assign(input, { ...initialState });
-		input.label = initialState?.label ?? input.value;
+
+		if (typeof initialState?.label !== 'undefined' || typeof initialState?.value !== 'undefined') {
+			input.label = initialState?.label ?? input.value;
+		}
 	}
 
 	inputStore.update(($inputStore) => {
@@ -41,14 +46,14 @@ export const useInput = (name, options, initialState) => {
 	 */
 	const updateFn = (value, label, additional) => {
 		Object.assign(input, additional);
-		if (label) input.label = label;
+		if (typeof label !== 'undefined') input.label = label;
 		if (value === UseSqlFactory) {
 			value = options?.sqlFragmentFactory(input) ?? value;
 		}
 		input.setValue(value);
 		input.value = value;
 
-		if (!label) input.label = value;
+		if (typeof label === 'undefined') input.label = value;
 
 		publish(input[PrimitiveValue]);
 	};

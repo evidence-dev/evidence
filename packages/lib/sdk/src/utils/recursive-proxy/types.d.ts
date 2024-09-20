@@ -1,5 +1,19 @@
 import type { RecursiveProxyPrimitive } from './RecursiveProxyPrimitive.js';
 export type RecursiveProxyPrimitiveHooks = {
+	get?: {
+		/**
+		 * 🚩 Tests for this
+		 * Called when a new child is being created
+		 * @param key Key the child is being set to
+		 * @param childValue
+		 * @returns {any | undefined} When undefined, the value will not be modified, otherwise the value is changed to the returned value
+		 */
+		created?: (
+			key: string | symbol | number,
+			childValue: RecursiveProxyPrimitive,
+			this: RecursiveProxyPrimitive
+		) => any | undefined;
+	};
 	set?: {
 		/**
 		 * Called before setting a property
