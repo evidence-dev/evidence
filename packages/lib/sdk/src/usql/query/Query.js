@@ -17,6 +17,7 @@ import { getQueryScore } from './queryScore.js';
 import { VITE_EVENTS } from '../../build-dev/vite/constants.js';
 import { sterilizeQuery } from './sterilizeQuery.js';
 import { ActiveDagNode } from '../../utils/dag/DagNode.js';
+import { log } from '../../logger/index.js';
 import zip from 'lodash/zip.js';
 import debounce from 'lodash/debounce.js';
 
@@ -172,7 +173,7 @@ export class Query {
 	 */
 	set #error(v) {
 		if (!v) return;
-		console.error(`${this.id} | Error in Query!`, v?.message);
+		log.error(`${this.id} | Error in Query! ${v?.message}`);
 		this.#emit('error', v);
 		this.#__error = v;
 	}
@@ -303,7 +304,7 @@ export class Query {
 					}
 				})
 				.catch((e) => {
-					console.error(`${this.id} | Failed to calculate Query score ${e}`);
+					log.error(`${this.id} | Failed to calculate Query score ${e}`);
 				});
 		}
 	};
@@ -331,7 +332,7 @@ export class Query {
 ${this.text.trim()}
         `.trim() + '\n';
 
-		this.#debugStyled('data query text', '\n' + dataQuery, 'font-family: monospace;');
+		this.#debug('data query', dataQuery);
 
 		// gotta love jsdoc sometimes
 		const typedRunner = /** @type {import('../types.js').Runner<RowType>} */ (this.#executeQuery);
@@ -446,7 +447,7 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 			/** @type {import('../types.js').Runner<{rowCount: number}>} */
 			(this.#executeQuery);
 
-		this.#debugStyled('length query text', '\n' + lengthQuery, 'font-family: monospace;');
+		this.#debug('length query text', '\n' + lengthQuery);
 		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			/** @returns {MaybePromise<Query<RowType>>} */
@@ -504,7 +505,7 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 DESCRIBE ${this.text.trim()}
         `.trim() + '\n';
 
-		this.#debugStyled('columns query text', '\n' + metaQuery, 'font-family: monospace;');
+		this.#debug('columns query text', '\n' + metaQuery);
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
@@ -685,11 +686,10 @@ DESCRIBE ${this.text.trim()}
 			added: Date.now()
 		});
 
-		if (isDebug())
-			console.debug(`Added to cache: ${q.hash}`, {
-				cacheSize: this.#cache.size,
-				cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
-			});
+		log.verbose(`Added to cache: ${q.hash}`, {
+			cacheSize: this.#cache.size,
+			cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
+		});
 	};
 
 	/**
@@ -931,7 +931,7 @@ DESCRIBE ${this.text.trim()}
 					},
 					dataMaybePromise,
 					(e) => {
-						console.warn(`Error while attempting to update reactive query: ${e.message}`);
+						log.warn(`Error while attempting to update reactive query: ${e.message}`);
 						throw e;
 					}
 				);
@@ -952,7 +952,7 @@ DESCRIBE ${this.text.trim()}
 					() => {},
 					waitFor(queryText, newOpts),
 					(e) => {
-						console.warn(`Error while attempting to update reactive query: ${e.message}`);
+						log.warn(`Error while attempting to update reactive query: ${e.message}`);
 					}
 				);
 				return;
@@ -1058,48 +1058,25 @@ DESCRIBE ${this.text.trim()}
 	///////////////////////
 	/// </ Factories /> ///
 	///////////////////////
+	/**
+	 * @param {string} label
+	 * @param  {...any} args
+	 */
+	static #debugStatic = (label, ...args) => {
+		const prefix = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
+		const message = args.map((arg) => (typeof arg === 'function' ? arg() : `${arg}`)).join('\n | ');
+		log.debug(`${prefix}\n | ${message}`);
+	};
 
-	static #debugStatic = isDebug()
-		? (/** @type { string } */ label, /** @type {Parameters<typeof console.debug>} */ ...args) => {
-				const groupName = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
-				console.groupCollapsed(groupName);
-				for (const arg of args) {
-					if (typeof arg === 'function') console.debug(arg());
-					else console.debug(arg);
-				}
-				console.groupEnd();
-			}
-		: () => {};
-	static #debugStyledStatic = isDebug()
-		? (/** @type {string} */ label, /** @type {string} */ text, /** @type {string} */ style) => {
-				const groupName = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
-				console.groupCollapsed(groupName);
-				console.debug(`%c${text}`, style);
-				console.groupEnd();
-			}
-		: () => {};
-
-	#debug = isDebug()
-		? (/** @type {string} */ label, /** @type {Parameters<typeof console.debug>} */ ...args) => {
-				const groupName = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
-				console.groupCollapsed(groupName);
-				for (const arg of args) {
-					if (typeof arg === 'function') console.debug(arg());
-					else console.debug(arg);
-				}
-				console.groupEnd();
-			}
-		: () => {};
-
-	#debugStyled = isDebug()
-		? (/** @type {string} */ label, /** @type {string} */ text, /** @type {string} */ style) => {
-				const groupName = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
-				console.groupCollapsed(groupName);
-				console.debug(`%c${text}`, style);
-				console.groupEnd();
-			}
-		: () => {};
-
+	/**
+	 * @param {string} label
+	 * @param {string} message
+	 * @param  {...any} args
+	 */
+	#debug = (label, message, ...args) => {
+		const prefix = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
+		log.debug(`${prefix}\n | ${message}`, args);
+	};
 	static #constructing = false;
 
 	/** @type {string} */
@@ -1164,12 +1141,12 @@ DESCRIBE ${this.text.trim()}
 		this.#executeQuery = executeQuery;
 
 		if (typeof query !== 'string' && !(query instanceof QueryBuilder)) {
-			console.warn(`Query ${id} has no query text`);
+			log.warn(`Query ${id} has no query text`);
 			opts.noResolve = true;
 		}
 
 		if (!Query.#constructing) {
-			console.warn(
+			log.warn(
 				'Directly using new Query() is not a recommended use-case. Please use Query.create()'
 			);
 		}
