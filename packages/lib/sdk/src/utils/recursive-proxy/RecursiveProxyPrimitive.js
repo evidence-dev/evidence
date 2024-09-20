@@ -8,9 +8,6 @@ export const MarkdownEscape = Symbol('MarkdownEscape');
 /** @typedef {Symbol} Empty */
 const Empty = Symbol();
 
-/** @typedef {Symbol} Initialize */
-const Initialize = Symbol();
-
 const InternalJsonCall = Symbol();
 
 /**
@@ -67,27 +64,6 @@ export class RecursiveProxyPrimitive {
 		if (!parent) return;
 		this.#parent = parent;
 	};
-
-	/**
-		This behavior is required because of when the proxy takes effect.
-
-		For some subclass:
-
-		class SomeSubClass extends RecursiveProxyPrimative {
-			x = 5
-		}
-
-		When the child is created, it will set x to 5, which flows through the proxy.
-		Without the initialize, an infinite recursion occurs
-	* @type {boolean}
-	*/
-	#isInitialized = false;
-	get [Initialize]() {
-		return this.#isInitialized;
-	}
-	set [Initialize](v) {
-		this.#isInitialized = true;
-	}
 
 	/**
 	 * @param {import("./types.js").RecursiveProxyPrimitiveOptions} [options]
@@ -158,11 +134,6 @@ export class RecursiveProxyPrimitive {
 				}
 				let childValue = this.#internalState[prop];
 				if (!(prop in this.#internalState)) {
-					if (!this[Initialize]) {
-						// @ts-ignore
-						this[prop] = value;
-						return true;
-					}
 					childValue = buildChild();
 					this.#internalState[prop] = childValue;
 				}
@@ -188,8 +159,7 @@ export class RecursiveProxyPrimitive {
 				return true;
 			}
 		});
-		
-		this[Initialize] = true;
+
 		return this.#proxy;
 	}
 

@@ -36,8 +36,6 @@ export class Input extends RecursiveProxyPrimitive {
 	/** @type {boolean} */
 	nestedValueSet = false;
 
-	initialized = false;
-
 	/**
 	 * @param {string} name
 	 * @param {InputOpts} [opts]
@@ -61,7 +59,7 @@ export class Input extends RecursiveProxyPrimitive {
 				},
 				set: {
 					valueSet: () => {
-						this.__dag.trigger()
+						this.__dag.trigger();
 					},
 					inheritValueSet: true,
 					post: (prop, childValue) => {
@@ -87,7 +85,6 @@ export class Input extends RecursiveProxyPrimitive {
 			root.__dag.registerDependency(this.__dag);
 			this.#root = root;
 		}
-		return this.proxy;
 	}
 
 	/** @param {InputOpts} opts */
@@ -106,7 +103,9 @@ export class Input extends RecursiveProxyPrimitive {
 		return super.toString();
 	};
 
-	['🦆'] = '__EvidenceInput__';
+	get ['🦆']() {
+		return '__EvidenceInput__';
+	}
 
 	/**
 	 * @param {unknown} v
