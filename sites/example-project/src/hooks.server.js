@@ -27,7 +27,7 @@ export const handleError = (e) => {
 				`Error Type: ${e.status === 404 ? 'Missing Page' : 'Build Error'}`
 			],
 			{ e }
-		)
+		);
 	}
 	return transformError(e.error);
 };

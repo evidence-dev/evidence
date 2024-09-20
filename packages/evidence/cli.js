@@ -10,7 +10,6 @@ import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 import { enableDebug } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
-
 const increaseNodeMemoryLimit = () => {
 	// Don't override the memory limit if it's already set
 	if (process.env.NODE_OPTIONS?.includes('--max-old-space-size')) return;

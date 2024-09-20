@@ -63,7 +63,7 @@ export class EvidenceLogger {
 	#log = (level) => (message, meta) => {
 		let out = message;
 		if (isDebug()) {
-            console.log("including metadata")
+			console.log('including metadata');
 			out += '\n' + chalk.dim(` | ${JSON.stringify(meta)}`);
 		}
 		this.#logger.log(level, out);
@@ -73,29 +73,29 @@ export class EvidenceLogger {
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	fatal = this.#log('fatal')
+	fatal = this.#log('fatal');
 
 	/**
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	error = this.#log('error')
+	error = this.#log('error');
 
 	/**
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	warn = this.#log('warn')
+	warn = this.#log('warn');
 
 	/**
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	info = this.#log('info')
+	info = this.#log('info');
 
 	/**
 	 * @param {string} message
 	 * @param {Record<string, any>} [meta]
 	 */
-	debug = this.#log('debug')
+	debug = this.#log('debug');
 }
