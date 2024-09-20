@@ -14,9 +14,10 @@ export class EvidenceLogger {
 	/** @type {winston.Logger} */
 	#logger;
 	constructor() {
-		this.#logger = winston.createLogger({
-			level: isDebug() ? 'debug' : 'info',
-			format: winston.format.cli({
+		/** @type {winston.Logform.Format} */
+		let format;
+		if (typeof process !== 'undefined') {
+			format = winston.format.cli({
 				levels: EvidenceLogger.EvidenceLogLevels,
 				colors: {
 					fatal: 'red',
@@ -25,7 +26,14 @@ export class EvidenceLogger {
 					info: 'green',
 					debug: 'blue'
 				}
-			}),
+			});
+		} else {
+			format = winston.format.combine(winston.format.padLevels(), winston.format.uncolorize());
+		}
+
+		this.#logger = winston.createLogger({
+			level: isDebug() ? 'debug' : 'info',
+			format,
 
 			levels: EvidenceLogger.EvidenceLogLevels,
 			transports: [
