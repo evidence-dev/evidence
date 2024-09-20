@@ -25,7 +25,7 @@ export class History {
 			let entries = Object.entries(o);
 			entries.sort((a, b) => a[0].localeCompare(b[0]));
 			// @ts-ignore
-			const newObject = Object.fromEntries(tmp);
+			const newObject = Object.fromEntries(entries);
 			return JSON.parse(JSON.stringify(newObject));
 		};
 
