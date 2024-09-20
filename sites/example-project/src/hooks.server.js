@@ -1,4 +1,5 @@
-import { dev } from '$app/environment';
+import { dev, building } from '$app/environment';
+import { log } from '@evidence-dev/sdk/logger';
 
 /** @param {Error | unknown} e  */
 const transformError = (e) => {
@@ -15,8 +16,20 @@ const transformError = (e) => {
 	}
 };
 
-/** @type {import("@sveltejs/kit").HandleClientError } */
-export const handleError = (e) => transformError(e.error);
+/** @type {import("@sveltejs/kit").HandleServerError } */
+export const handleError = (e) => {
+	if (building) {
+		log.die(
+			`Evidence encountered an error while building your project:`,
+			[
+				`Page: ${e.event.route.id}`,
+				`Message: ${e.error?.message ?? 'Unknown'}`,
+				`Error Type: ${e.status === 404 ? 'Missing Page' : 'Build Error'}`
+			]
+		)
+	}
+	return transformError(e.error);
+};
 
 /** @type {import('@sveltejs/kit').Handle} */
 export function handle({ event, resolve }) {
