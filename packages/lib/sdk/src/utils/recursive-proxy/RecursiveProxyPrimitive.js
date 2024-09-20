@@ -99,6 +99,8 @@ export class RecursiveProxyPrimitive {
 		const hasKey = (key) => {
 			return key in this;
 		};
+		// Account for this key so that `hasKey` passes
+		this['🦆'] = undefined;
 
 		this.#proxy = new Proxy(this, {
 			get: (_, prop) => {
