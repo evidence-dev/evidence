@@ -9,7 +9,7 @@
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import { each } from 'svelte/internal';
+	import Legend from './components/Legend.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -55,6 +55,11 @@
 
 	/** @type {[string]|undefined} */
 	export let colorPalette = undefined;
+	/** @type {string} */
+	export let legendPosition = 'topLeft';
+
+	/** @type {boolean} */
+	export let showLegend = false;
 
 	const chartType = 'Point Map';
 
@@ -68,12 +73,8 @@
 
 	<div class="relative">
 		<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-			<Points data={loaded} {lat} {long} {colorPalette} {...$$restProps} />
+			<Points data={loaded} {lat} {long} {colorPalette} {showLegend} {...$$restProps} />
+			<Legend {legendPosition} {showLegend} />
 		</BaseMap>
-		<div class="absolute top-0 left-0">
-			{#each colorPalette as color}
-				<div>{color}</div>
-			{/each}
-		</div>
 	</div>
 </QueryLoad>

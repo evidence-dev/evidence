@@ -35,6 +35,8 @@
 	export let sizeFmt = undefined;
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
+	/** @type {string|undefined} */
+	export let showLegend = undefined;
 	if (size) {
 		// if size was user-supplied
 		size = Number(size);
@@ -208,8 +210,37 @@
 		return Math.sqrt((newPoint / maxData) * maxSizeSq);
 	}
 
-	let values, minValue, maxValue, colorScale, sizeExtents, maxData, maxSizeSq;
+	let values,
+		minValue,
+		maxValue,
+		colorScale,
+		sizeExtents,
+		maxData,
+		maxSizeSq,
+		colorCategory = colorPalette;
 
+	let backupColors = [
+		'red',
+		'blue',
+		'green',
+		'purple',
+		'orange',
+		'yellow',
+		'pink',
+		'brown',
+		'teal',
+		'cyan',
+		'black',
+		'magenta',
+		'navy',
+		'olive',
+		'lavender',
+		'crimson',
+		'peach',
+		'charcoal',
+		'turquoise',
+		'beige'
+	];
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
@@ -219,12 +250,37 @@
 			await data.fetch();
 			checkInputs(data, [lat, long]);
 			values = $data.map((d) => d[value]);
-			minValue = Math.min(...values);
-			maxValue = Math.max(...values);
 
-			//bucket legend
-			//conditonal
-			colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+			if (Array.isArray(values) && values.every((item) => typeof item === 'string')) {
+				let uniqueValues = new Set(values);
+				values = [...uniqueValues];
+
+				let i = 0;
+
+				while (colorCategory.length < values.length) {
+					if (!backupColors[i]) {
+						throw new Error('No more backup colors available.');
+					}
+
+					// Check if the color is not already in colorCategory
+					if (!colorCategory.includes(chroma(backupColors[i]).hex())) {
+						colorCategory.push(chroma(backupColors[i]).hex());
+						i++;
+					} else {
+						i++;
+					}
+				}
+			} else {
+				minValue = Math.min(...values);
+				maxValue = Math.max(...values);
+				//bucket legend
+				//conditonal
+				colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+			}
+
+			if (showLegend) {
+				map.buildLegend(colorCategory, values, minValue, maxValue);
+			}
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -289,7 +345,15 @@
 		<Point
 			{map}
 			options={{
-				fillColor: color ?? (value ? colorScale(item[value]).hex() : uiColours.blue700), // Fill color of the circle
+				// kw note:
+				//need to clean this logic
+				fillColor:
+					color ??
+					(value
+						? typeof item[value] === 'string' && item[value]
+							? colorCategory[values.indexOf(item[value])]
+							: colorScale(item[value])
+						: uiColours.blue700), // Fill color of the circle
 				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
 				fillOpacity: opacity,
 				opacity: opacity,

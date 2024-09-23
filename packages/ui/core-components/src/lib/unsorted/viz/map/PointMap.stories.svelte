@@ -25,11 +25,14 @@
 		`SELECT 
   *, 
   CASE 
-    WHEN id BETWEEN 0 AND 9 THEN 1
-    WHEN id BETWEEN 10 AND 19 THEN 2
-    WHEN id BETWEEN 20 AND 29 THEN 3
-    WHEN id BETWEEN 30 AND 39 THEN 4
-  END AS legend_id
+    WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
+    WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
+    WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
+    WHEN id BETWEEN 15 AND 19 THEN 'Shops'
+    WHEN id BETWEEN 20 AND 24 THEN 'Bars'
+    WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+    WHEN id BETWEEN 30 AND 34 THEN 'Banks'
+  END AS Category
 FROM la_locations`,
 		query
 	);
@@ -51,15 +54,18 @@ FROM la_locations`,
 <Story name="legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<DataTable data={grouped_locations} />
 	<PointMap
+		showLegend={true}
+		legendPosition="bottomLeft"
 		data={grouped_locations}
 		lat="lat"
 		long="long"
-		value="legend_id"
-		colorPalette={['green', 'blue', 'red', 'yellow']}
+		value="Category"
+		colorPalette={['#243c5a', '#ff5733', '#005733']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
 			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
 		]}
 	/>
+	<div class="h-32"></div>
 </Story>

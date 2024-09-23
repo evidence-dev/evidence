@@ -33,6 +33,9 @@ export class EvidenceMap {
 	/** @type {HTMLDivElement | undefined} */
 	#mapEl;
 
+	/** @type {import('svelte/store').Writable<object>} */
+	#legendData = writable({});
+
 	/** Handles the promises associated with the initialization of the map component. */
 	#sharedPromise = sharedPromise();
 
@@ -430,5 +433,20 @@ export class EvidenceMap {
 		});
 
 		return data;
+	}
+
+	//handle legend data
+
+	buildLegend(colorPalette, arrayOfStringValues, minValue, maxValue) {
+		this.#legendData.update((legendData) => {
+			legendData.colorPalette = colorPalette;
+			legendData.arrayOfStringValues = arrayOfStringValues;
+			legendData.minValue = minValue;
+			legendData.maxValue = maxValue;
+			return legendData;
+		});
+	}
+	get legendData() {
+		return readonly(this.#legendData);
 	}
 }
