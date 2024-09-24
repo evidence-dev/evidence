@@ -55,9 +55,9 @@
 
 	/** @type {[string]|undefined} */
 	export let colorPalette = undefined;
+
 	/** @type {string} */
 	export let legendPosition = 'topLeft';
-
 	/** @type {string | undefined} */
 	export let legendType = undefined;
 	/** @type {string} */

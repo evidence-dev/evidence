@@ -47,7 +47,7 @@
 	>
 	{#if !hideLegend}
 		<div
-			class="absolute {positions[legendPosition] ?? 'top-3 left-[-9px]'} z-[501]"
+			class="absolute {positions[legendPosition] ?? 'top-3 left-[-9px]'} z-[500]"
 			on:wheel={(e) => e.stopPropagation()}
 		>
 			<div
@@ -71,7 +71,7 @@
 								style="background: {colorPalette
 									? `linear-gradient(to right, ${colorPalette.join(', ')})`
 									: 'white'}"
-								class="relative h-2 w-full mb-2"
+								class="relative h-2 w-full mb-3"
 							>
 								<span class="absolute text-[10px] left-0 top-2 block">{minValue}</span>
 								<span class="absolute text-[10px] right-0 top-2 block">{maxValue}</span>
