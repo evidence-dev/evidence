@@ -10,8 +10,6 @@
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import DataTable from '../../viz/table/DataTable.svelte';
-
 	import PointMap from './PointMap.svelte';
 
 	/** @type {typeof query} */
@@ -23,17 +21,47 @@
 	const la_locations = Query.create(`select * from la_locations order by 1`, query);
 	const grouped_locations = Query.create(
 		`SELECT 
-  *, 
-  CASE 
-    WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
-    WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
-    WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
-    WHEN id BETWEEN 15 AND 19 THEN 'Shops'
-    WHEN id BETWEEN 20 AND 24 THEN 'Bars'
-    WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
-    WHEN id BETWEEN 30 AND 34 THEN 'Banks'
-  END AS Category
-FROM la_locations`,
+		*, 
+		CASE 
+			WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
+			WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
+			WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
+			WHEN id BETWEEN 15 AND 19 THEN 'Shops'
+			WHEN id BETWEEN 20 AND 24 THEN 'Bars'
+			WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+			WHEN id BETWEEN 30 AND 34 THEN 'Banks'
+		END AS Category
+	FROM la_locations`,
+		query
+	);
+	const null_grouped_locations = Query.create(
+		`SELECT 
+		*, 
+		CASE 
+			WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
+			WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
+			WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
+			WHEN id BETWEEN 15 AND 19 THEN 'Shops'
+			WHEN id BETWEEN 20 AND 24 THEN 'Bars'
+			WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+			END AS Category
+	FROM la_locations`,
+		query
+	);
+
+	const cybersan_grouped_locations = Query.create(
+		`SELECT 
+		*, 
+		CASE 
+			WHEN id BETWEEN 0 AND 4 THEN 1
+			WHEN id BETWEEN 5 AND 9 THEN 2
+			WHEN id BETWEEN 10 AND 14 THEN 3
+			WHEN id BETWEEN 15 AND 19 THEN 4
+			WHEN id BETWEEN 20 AND 24 THEN 5
+			WHEN id BETWEEN 25 AND 29 THEN 6
+			WHEN id BETWEEN 26 AND 34 THEN 7
+			END AS legendID
+	FROM la_locations`,
 		query
 	);
 
@@ -51,16 +79,76 @@ FROM la_locations`,
 	<PointMap data={slow_la_locations} lat="lat" long="long" />
 </Story>
 
-<Story name="legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
-	<DataTable data={grouped_locations} />
+<Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
-		showLegend={true}
+		legendType="category"
 		legendPosition="bottomLeft"
 		data={grouped_locations}
 		lat="lat"
 		long="long"
 		value="Category"
-		colorPalette={['#243c5a', '#ff5733', '#005733']}
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<PointMap
+		data={grouped_locations}
+		legendType="scalar"
+		lat="lat"
+		long="long"
+		value="sales"
+		colorPalette={['red', 'blue', 'green']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+		]}
+	/>
+	<div class="h-32"></div>
+</Story>
+
+<Story name="Legend Usage w/ null values" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<PointMap
+		legendType="category"
+		legendPosition="bottomLeft"
+		data={null_grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<PointMap
+		data={grouped_locations}
+		legendType="scalar"
+		lat="lat"
+		long="long"
+		value="sales"
+		colorPalette={['red', 'blue', 'green']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+		]}
+	/>
+</Story>
+
+<Story name="Cybersan point maps" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<PointMap
+		data={cybersan_grouped_locations}
+		lat="lat"
+		long="long"
+		value="legendID"
+		colorPalette={['red', 'green', 'blue', 'orange', 'yellow', 'brown', 'purple']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },

@@ -225,6 +225,7 @@ where point_name = '${inputs.my_point_map.point_name}' OR '${inputs.my_point_map
 ```
 
 #### Filtered Data
+
 <DataTable data={filtered_locations}>  	
     <Column id=id/> 	
     <Column id=point_name/> 	
@@ -233,36 +234,93 @@ where point_name = '${inputs.my_point_map.point_name}' OR '${inputs.my_point_map
     <Column id=sales fmt=usd/> 	
 </DataTable>
 
-#### Legend
-```grouped_locations2
+### Legends
+
+```grouped_locations
 SELECT 
   *, 
   CASE 
-		WHEN id BETWEEN 0 AND 4 THEN 1
-		WHEN id BETWEEN 5 AND 9 THEN 2
-		WHEN id BETWEEN 10 AND 14 THEN 3
-		WHEN id BETWEEN 15 AND 19 THEN 4
-		WHEN id BETWEEN 20 AND 24 THEN 5
-		WHEN id BETWEEN 25 AND 29 THEN 6
-		WHEN id BETWEEN 30 AND 34 THEN 7
-  END AS legend_id
+    WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
+    WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
+    WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
+    WHEN id BETWEEN 15 AND 19 THEN 'Shops'
+    WHEN id BETWEEN 20 AND 24 THEN 'Bars'
+    WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+    WHEN id BETWEEN 30 AND 34 THEN 'Banks'
+  END AS Category
 FROM la_locations
 ```	
-  
-  <PointMap
-		showLegend={true}
-        legendPosition="bottomLeft"
-		data={grouped_locations2}
-		lat="lat"
-		long="long"
-		value="legend_id"
-		colorPalette={['green', 'blue', 'red',]}
-		tooltipType="hover"
+#### Categorical Legend
+
+	<PointMap
+		legendType=category
+		legendPosition=bottomLeft
+        legendTitle=Legend
+		data={grouped_locations}
+		lat=lat
+		long=long
+		value=Category
+        colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+		tooltipType=hover
 		tooltip={[
 			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
 			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
 		]}
 	/>
+
+```svelte
+	<PointMap
+		legendType=category
+		legendPosition=bottomLeft
+        legendTitle=Legend
+		data={grouped_locations}
+		lat=lat
+		long=long
+		value=Category
+        colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+		tooltipType=hover
+		tooltip={[
+			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+		]}
+	/>
+```
+
+#### Scalar Legend
+
+<PointMap
+    legendType=scalar
+    legendPosition=bottomLeft
+    legendTitle="Scalar Legend"
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    colorPalette={['#dc0101', '#01dc08']}
+    tooltipType=hover
+    tooltip={[
+        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+    ]}
+/>
+
+```svelte
+<PointMap
+    legendType=scalar
+    legendPosition=bottomLeft
+    legendTitle="Scalar Legend"
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    colorPalette={['#dc0101', '#01dc08']}
+    tooltipType=hover
+    tooltip={[
+        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+    ]}
+/>
+```
 
 ## Options
 
@@ -319,6 +377,30 @@ options="number"
 Maximum value to use for the color scale.
 </PropListing>
 
+### Legend
+
+<PropListing
+name="legendType"
+options={['category', 'scalar']}
+>
+Appends a categorical or scalar legend to the map
+</PropListing>
+
+<PropListing
+name="legendPosition"
+options={['bottomLeft', 'topLeft','bottomRight', 'topRight']}
+defaultValue='bottomLeft'
+>
+Determines the legend's position on the map, with options provided
+</PropListing>
+
+<PropListing
+name="legendTitle"
+options=string
+defaultValue='Legend'
+>
+Specifies the title for the legend
+</PropListing>
 ### Interactivity
 
 <PropListing
