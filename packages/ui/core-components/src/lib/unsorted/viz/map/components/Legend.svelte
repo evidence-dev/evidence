@@ -46,7 +46,10 @@
 		on:dblclick={(e) => e.stopPropagation()}>{hideLegend ? 'Show' : 'Hide'} Legend</button
 	>
 	{#if !hideLegend}
-		<div class="absolute {positions[legendPosition] ?? 'top-3 left-[-9px]'} z-[500]">
+		<div
+			class="absolute {positions[legendPosition] ?? 'top-3 left-[-9px]'} z-[501]"
+			on:wheel={(e) => e.stopPropagation()}
+		>
 			<div
 				class="m-6 text-xs border border-gray-300 bg-gray-100 min-w-32 pt-2 pb-2"
 				transition:fly={{
@@ -61,26 +64,28 @@
 					on:click={() => (hideLegend = !hideLegend)}
 					class="block font-bold text-center w-full">{legendTitle}</button
 				>
-				{#if legendType === 'scalar'}
-					<div class="flex flex-wrap w-full mt-2 pr-2 pl-2">
-						<span
-							style="background: {colorPalette
-								? `linear-gradient(to right, ${colorPalette.join(', ')})`
-								: 'white'}"
-							class="relative h-2 w-full mb-2"
-						>
-							<span class="absolute text-[10px] left-0 top-2 block">{minValue}</span>
-							<span class="absolute text-[10px] right-0 top-2 block">{maxValue}</span>
-						</span>
-					</div>
-				{:else if legendType === 'category'}
-					{#each colorPalette as color, i}
-						<div class="w-full pr-2 pl-2">
-							<span class="inline-block h-2 w-2 rounded-full" style="background-color: {color}" />
-							- {values[i] ? values[i] : `No value`}
+				<div class="overflow-y-auto max-h-52">
+					{#if legendType === 'scalar'}
+						<div class="flex flex-wrap w-full mt-2 pr-2 pl-2">
+							<span
+								style="background: {colorPalette
+									? `linear-gradient(to right, ${colorPalette.join(', ')})`
+									: 'white'}"
+								class="relative h-2 w-full mb-2"
+							>
+								<span class="absolute text-[10px] left-0 top-2 block">{minValue}</span>
+								<span class="absolute text-[10px] right-0 top-2 block">{maxValue}</span>
+							</span>
 						</div>
-					{/each}
-				{/if}
+					{:else if legendType === 'category'}
+						{#each colorPalette as color, i}
+							<div class="w-full pr-2 pl-2">
+								<span class="inline-block h-2 w-2 rounded-full" style="background-color: {color}" />
+								- {values[i] ? values[i] : `No value`}
+							</div>
+						{/each}
+					{/if}
+				</div>
 			</div>
 		</div>
 	{/if}

@@ -52,15 +52,21 @@
 	const cybersan_grouped_locations = Query.create(
 		`SELECT 
 		*, 
-		CASE 
-			WHEN id BETWEEN 0 AND 4 THEN 1
-			WHEN id BETWEEN 5 AND 9 THEN 2
-			WHEN id BETWEEN 10 AND 14 THEN 3
-			WHEN id BETWEEN 15 AND 19 THEN 4
-			WHEN id BETWEEN 20 AND 24 THEN 5
-			WHEN id BETWEEN 25 AND 29 THEN 6
-			WHEN id BETWEEN 26 AND 34 THEN 7
-			END AS legendID
+	CASE 
+    WHEN id BETWEEN 0 AND 2 THEN 1
+    WHEN id BETWEEN 3 AND 5 THEN 2
+    WHEN id BETWEEN 6 AND 8 THEN 3
+    WHEN id BETWEEN 9 AND 11 THEN 4
+    WHEN id BETWEEN 12 AND 14 THEN 5
+    WHEN id BETWEEN 15 AND 17 THEN 6
+    WHEN id BETWEEN 18 AND 20 THEN 7
+    WHEN id BETWEEN 21 AND 23 THEN 8
+    WHEN id BETWEEN 24 AND 26 THEN 9
+    WHEN id BETWEEN 27 AND 29 THEN 10
+    WHEN id BETWEEN 30 AND 32 THEN 11
+    WHEN id BETWEEN 33 AND 34 THEN 12
+    ELSE 13 
+		END AS legendID
 	FROM la_locations`,
 		query
 	);
@@ -145,9 +151,10 @@
 <Story name="Cybersan point maps" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
 		data={cybersan_grouped_locations}
+		legendType="category"
 		lat="lat"
 		long="long"
-		value="legendID"
+		value="sales"
 		colorPalette={['red', 'green', 'blue', 'orange', 'yellow', 'brown', 'purple']}
 		tooltipType="hover"
 		tooltip={[

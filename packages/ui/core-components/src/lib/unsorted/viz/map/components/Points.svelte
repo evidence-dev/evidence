@@ -213,6 +213,7 @@
 
 	let values, minValue, maxValue, colorScale, sizeExtents, maxData, maxSizeSq;
 
+	/** @type {[string]} */
 	let backupColors = [
 		'red',
 		'blue',
@@ -230,8 +231,46 @@
 		'lavender',
 		'crimson',
 		'turquoise',
-		'beige'
+		'beige',
+		'aqua',
+		'coral',
+		'gold',
+		'silver',
+		'indigo',
+		'violet',
+		'khaki',
+		'plum',
+		'salmon',
+		'sienna',
+		'chartreuse',
+		'lavenderblush',
+		'lightblue',
+		'lightcoral',
+		'lightgreen',
+		'lightpink',
+		'lightyellow',
+		'darkred',
+		'darkgreen',
+		'darkblue',
+		'darkviolet',
+		'darkorange',
+		'darkcyan',
+		'fuchsia',
+		'gainsboro',
+		'honeydew',
+		'hotpink',
+		'lightgray',
+		'lightseagreen',
+		'lightsalmon',
+		'lightsteelblue',
+		'mediumvioletred',
+		'mediumseagreen',
+		'peachpuff',
+		'powderblue',
+		'seashell',
+		'thistle'
 	];
+
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
