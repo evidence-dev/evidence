@@ -369,10 +369,14 @@ ${this.text.trim()}
 	};
 	fetch = () => {
 		const cols = this.#fetchColumns();
-		if (cols instanceof Promise) {
+		if (
+			cols instanceof Promise &&
+			!this.opts.noResolve /* noResolve will always return a promise, even when fetch is synchronous */
+		) {
 			return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
 		}
 		this.#fetchData();
+		return this.value;
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -765,11 +769,7 @@ DESCRIBE ${this.text.trim()}
 
 				const fetched = newQuery.fetch();
 				let dataMaybePromise = fetched;
-				if (typeof window === 'undefined') {
-					// noResolve will cause dataMaybePromise to always be a promise
-					// When running during SSR this will break, and force the query to always wait.
-					dataMaybePromise = undefined;
-				} else if (fetched instanceof Promise) {
+				if (fetched instanceof Promise) {
 					dataMaybePromise = Promise.race([
 						new Promise((r) => setTimeout(r, loadGracePeriod)),
 						newQuery.fetch()
