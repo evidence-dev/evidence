@@ -1,6 +1,6 @@
-import { debounce } from 'perfect-debounce';
+// import { debounce } from 'perfect-debounce';
 
-/** @type {typeof debounce} */
+/** @type {typeof import("perfect-debounce").debounce}*/
 export function browserDebounce(
 	fn
 	// wait, options
