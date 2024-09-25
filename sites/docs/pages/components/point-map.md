@@ -325,6 +325,7 @@ FROM la_locations
 ## Options
 
 ### Points
+
 <PropListing
 name="data"
 required
