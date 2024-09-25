@@ -11,6 +11,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import QueryLoad from '../../atoms/query-load/QueryLoad.svelte';
+	import { resolveMaybePromise } from '@evidence-dev/sdk/usql';
 
 	/** @type {import("@evidence-dev/sdk/usql").DescribeResultRow} */
 	export let dimension;
@@ -83,9 +84,9 @@
 	$: {
 		const updatedResults = buildQuery(dimensionCutQuery);
 		if (!updatedResults.loaded) {
-			updatedResults.fetch().then(() => {
+			resolveMaybePromise(() => {
 				results = updatedResults;
-			});
+			}, updatedResults.fetch());
 		} else {
 			results = updatedResults;
 		}
