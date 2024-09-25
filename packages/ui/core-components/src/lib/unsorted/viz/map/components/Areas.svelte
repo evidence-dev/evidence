@@ -310,20 +310,6 @@
 		if (name && $data.length > 0) {
 			setInputDefault($data[0], name);
 		}
-
-		function handleColor(item, value) {
-			if (!value) return uiColours.blue700;
-
-			if (!item[value]) return colorPalette[values.indexOf(item[value])] ?? colorScale(item[value]);
-
-			if (item[value]) {
-				if (typeof item[value] === 'string') {
-					return colorPalette[values.indexOf(item[value])];
-				} else {
-					return colorScale(item[value]);
-				}
-			}
-		}
 	}
 
 	/**

@@ -13,8 +13,6 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { Dropdown, DropdownOption } from '../../../atoms/inputs/dropdown/index.js';
-	import DataTable from '../../viz/table/DataTable.svelte';
-
 	import AreaMap from './AreaMap.svelte';
 	import { screen, userEvent, within } from '@storybook/test';
 
@@ -103,7 +101,6 @@ ORDER BY 1;
 </Story>
 
 <Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
-	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_code" />
 	<AreaMap
 		legendType="category"
 		legendPosition="bottomLeft"
