@@ -48,6 +48,7 @@ fsExtra.outputFileSync(
 	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
 	import { createLogger } from 'vite';
 	import { sourceQueryHmr } from '@evidence-dev/sdk/vite';
+	import { isDebug } from '@evidence-dev/sdk/utils';
 
 	const logger = createLogger();
 	const loggerWarn = logger.warn;
@@ -106,8 +107,9 @@ fsExtra.outputFileSync(
 			}
         },
 		build: {
-			minify: false,
-			target: 'esnext',
+			// 🚩 Triple check this
+			minify: isDebug() ? false : true,
+			target: isDebug() ? 'esnext' : undefined,
 			rollupOptions: {
 				external: [/^@evidence-dev\\/tailwind\\/fonts\\//],
 				onwarn(warning, warn) {
