@@ -127,10 +127,7 @@
 		selectedOptions.subscribe(($selectedOptions) => {
 			hasHadSelection ||= $selectedOptions.length > 0;
 
-	$: if ($selectedOptions && hasHadSelection && opts.length > 0) {
-		if ($selectedOptions.length > opts.length) {
-			updateSelectedOptions(opts);
-		}
+			if ($selectedOptions && hasHadSelection) {
 				const values = $selectedOptions;
 				if (multiple) {
 					updateInputStore({
