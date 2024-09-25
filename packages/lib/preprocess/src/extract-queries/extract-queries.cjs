@@ -202,7 +202,12 @@ const extractQueries = (content) => {
 								);
 							}
 							const queryString = `(${referencedQuery.compiledQueryString})`;
-							query.compiledQueryString = query.compiledQueryString.replace(reference, queryString);
+							query.compiledQueryString = query.compiledQueryString.replace(
+								reference,
+								// this actually replaces each $ with $$
+								// this is to avoid [this behaviour](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement)
+								queryString.replaceAll('$', '$$$$')
+							);
 							query.compiled = true;
 						}
 					} catch (/** @type {any} */ _e) {

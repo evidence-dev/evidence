@@ -12,7 +12,7 @@ const preview = {
 			}
 		},
 		chromatic: {
-			diffThreshold: 0.28
+			delay: 3000
 		}
 	},
 	argTypes: {

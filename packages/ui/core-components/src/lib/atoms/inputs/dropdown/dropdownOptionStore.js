@@ -109,7 +109,10 @@ export const dropdownOptionStore = (opts = {}) => {
 				 */
 				(...newOptions) => {
 					if (destroyed) return;
-					const opts = hygiene(newOptions.flat());
+					const opts = hygiene(
+						newOptions.flat().filter((o) => typeof o === 'object' && o !== null),
+						sortingPaused
+					);
 					options.update(($options) => {
 						opts.forEach((option) => {
 							if (!isDropdownOption(option)) {
@@ -232,12 +235,7 @@ export const dropdownOptionStore = (opts = {}) => {
 			if (destroyed) return;
 			options.set(hygiene(get(options)));
 		},
-		destroy: () => (destroyed = true),
-		updateSelectedOptions: (/** @type {import("@evidence-dev/sdk/usql").QueryValue} */ data) => {
-			options.update((o) =>
-				o.map((o) => ({ ...o, selected: data.some((x) => x.value === o.value) }))
-			);
-		}
+		destroy: () => (destroyed = true)
 	};
 };
 

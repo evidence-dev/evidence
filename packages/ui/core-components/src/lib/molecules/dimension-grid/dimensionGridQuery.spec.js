@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { getDimensionCutQuery, getWhereClause } from './dimensionGridQuery.js';
 
 describe('dimensionGridQuery', () => {
-	describe.only('getDimensionCutQuery', () => {
+	describe('getDimensionCutQuery', () => {
 		it('should let me run it', () => {
 			getDimensionCutQuery(
 				{

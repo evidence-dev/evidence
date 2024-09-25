@@ -20,12 +20,22 @@ const loadSource = async (sourcePath) => {
 };
 
 /**
+ * @param {import('ora').Ora} [spinner]
  * @returns {Promise<Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>>}
  */
-export const loadSources = async () => {
-	const sourceDirs = await fs
-		.readdir(sourcesDirectory)
-		.then((dirs) => dirs.map((dir) => path.join(sourcesDirectory, dir)));
+export const loadSources = async (spinner) => {
+	/** @type {string[]} */
+	let sourceDirs = [];
+	try {
+		sourceDirs = await fs
+			.readdir(sourcesDirectory)
+			.then((dirs) => dirs.map((dir) => path.join(sourcesDirectory, dir)));
+	} catch (e) {
+		spinner?.stopAndPersist({
+			symbol: '⚠',
+			text: chalk.yellow('No sources directory found, no sources to run')
+		});
+	}
 
 	return /** @type {Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>}*/ (
 		await Promise.all(

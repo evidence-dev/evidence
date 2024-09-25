@@ -40,6 +40,7 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  */
 export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 	const internal = writable(buildInputQuery(queryProps, id, initialData));
+
 	let currentQuery;
 	return {
 		results: derived(internal, (v) => v),

@@ -5,7 +5,7 @@ import { projectRoot } from '../../lib/projectRoot.js';
 import { copyToLayout } from '../../plugins/layouts/copyToLayout.js';
 import { build as viteBuild } from 'vite';
 
-/** @type {Promise<import("@brianmd/citty").CommandDef>} */
+/** @type {import("@brianmd/citty").CommandDef} */
 export const build = evidenceProjectOnlyNotice('build', {
 	meta: {
 		name: 'build',

@@ -1,5 +1,45 @@
 # @evidence-dev/core-components
 
+## 4.8.2
+
+### Patch Changes
+
+- eec16e59d: Add Group component for Grids
+- 57c118c16: fixes reactive DataTable columns
+- 952abbd16: DropdownMenuItem has cursor-pointer
+  Create theme stores to manage theme
+  Add appearance toggle to KebabMenu (hidden behind VITE_EVIDENCE_THEMES=true)
+  Show/Hide queries and Appearance in KebabMenu dont close menu when clicked
+- c8315da2e: Update svelte to resolve security vulnerability
+- 06313c848: fix prerendered arrow files not loading
+- Updated dependencies [952abbd16]
+- Updated dependencies [c8315da2e]
+  - @evidence-dev/tailwind@2.1.3
+  - @evidence-dev/component-utilities@3.2.13
+
+## 4.8.1
+
+### Patch Changes
+
+- b87d90971: Fix dev tools keybind on windows
+  - @evidence-dev/component-utilities@3.2.12
+
+## 4.8.0
+
+### Minor Changes
+
+- 999fffa38: Change input store interactions
+
+### Patch Changes
+
+- 999fffa38: Modal emits an event when closed now
+- 999fffa38: Pull prop listing into a component for reusabilitiy
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+- 999fffa38: Add compact prop to accordion
+- 999fffa38: Add maxWidth and direction props to hints
+  - @evidence-dev/component-utilities@3.2.11
+
 ## 4.7.8
 
 ### Patch Changes

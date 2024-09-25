@@ -6,13 +6,14 @@
 
 <script>
 	import { dropdownOptionStore } from './dropdownOptionStore.js';
-	import { getContext, onDestroy, setContext } from 'svelte';
+	import { onDestroy, setContext } from 'svelte';
 	import { DropdownContext } from './constants.js';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import DropdownOption from './helpers/DropdownOption.svelte';
 	import { page } from '$app/stores';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { resolveMaybePromise } from '@evidence-dev/sdk/usql';
 
 	import * as Command from '$lib/atoms/shadcn/command';
 	import DropdownOptionDisplay from './helpers/DropdownOptionDisplay.svelte';
@@ -25,9 +26,9 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import VirtualList from './Virtual.svelte';
-	import { debounce } from 'perfect-debounce';
 	import { toBoolean } from '../../../utils.js';
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import { browserDebounce } from '@evidence-dev/sdk/utils';
+	const inputs = getInputContext();
 
 	/////
 	// Component Things
@@ -75,7 +76,7 @@
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`Dropdown-${name}`,
-		$page?.data?.data[`id`]
+		$page?.data?.data[`Dropdown-${name}_data`]
 	);
 	$: update({ value, data, label, order, where });
 
@@ -108,8 +109,7 @@
 		pauseSorting,
 		resumeSorting,
 		forceSort,
-		destroy: destroyStore,
-		updateSelectedOptions
+		destroy: destroyStore
 	} = state;
 
 	onDestroy(destroyStore);
@@ -120,32 +120,40 @@
 		}
 	};
 
-	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
+	let opts = [];
+
+	let hasHadSelection = $selectedOptions.length > 0;
+	onDestroy(
+		selectedOptions.subscribe(($selectedOptions) => {
+			hasHadSelection ||= $selectedOptions.length > 0;
+
 	$: if ($selectedOptions && hasHadSelection && opts.length > 0) {
 		if ($selectedOptions.length > opts.length) {
 			updateSelectedOptions(opts);
 		}
-		const values = $selectedOptions;
-		if (multiple) {
-			updateInputStore({
-				label: values.map((x) => x.label).join(', '),
-				value: values.length
-					? `(${values.map((x) => duckdbSerialize(x.value))})`
-					: `(select null where 0)`,
-				rawValues: values
-			});
-		} else {
-			if (!values.length) {
-				updateInputStore({ label: '', value: null, rawValues: [] });
-			} else if (values.length) {
-				updateInputStore({
-					label: values[0].label,
-					value: duckdbSerialize(values[0].value, { serializeStrings: false }),
-					rawValues: values
-				});
+				const values = $selectedOptions;
+				if (multiple) {
+					updateInputStore({
+						label: values.map((x) => x.label).join(', '),
+						value: values.length
+							? `(${values.map((x) => duckdbSerialize(x.value))})`
+							: `(select null where 0)`,
+						rawValues: values
+					});
+				} else {
+					if (!values.length) {
+						updateInputStore({ label: '', value: null, rawValues: [] });
+					} else if (values.length) {
+						updateInputStore({
+							label: values[0].label,
+							value: duckdbSerialize(values[0].value, { serializeStrings: false }),
+							rawValues: values
+						});
+					}
+				}
 			}
-		}
-	}
+		})
+	);
 
 	setContext(DropdownContext, {
 		registerOption: (targetOption) => {
@@ -167,17 +175,18 @@
 	let searchIdx = 0;
 	let finalQuery;
 
-	const updateQuery = debounce(async () => {
+	const updateQuery = browserDebounce(() => {
 		searchIdx++;
 		if (search && hasQuery) {
 			const targetIdx = searchIdx;
 			const searchQuery = query.search(search, 'label');
 			if (searchQuery.hash !== finalQuery?.hash) {
-				await searchQuery.fetch();
-				if (targetIdx === searchIdx) {
-					finalQuery = searchQuery;
-					forceSort();
-				}
+				resolveMaybePromise(() => {
+					if (targetIdx === searchIdx) {
+						finalQuery = searchQuery;
+						forceSort();
+					}
+				}, searchQuery.fetch());
 				// await tick();
 			}
 		} else {
@@ -188,8 +197,7 @@
 
 	$: open ? pauseSorting() : resumeSorting();
 
-	let opts = [];
-	$: if ($finalQuery?.ready) opts = $finalQuery;
+	$: if ($finalQuery?.dataLoaded) opts = $finalQuery;
 </script>
 
 <slot />
