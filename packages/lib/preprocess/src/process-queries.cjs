@@ -42,79 +42,81 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		const queryStoreDeclarations = validIds.map((id) => {
 			return `
-				// Update external queries
-				if (import.meta?.hot) {
-					import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
-						let errors = []
-						if (!queryId) errors.push("Malformed event: Missing queryId")
-						if (!content) errors.push("Malformed event: Missing content")
-						if (errors.length) {
-							console.warn("Failed to update query on serverside change!", errors.join("\\n"))
-							return
-						}
+                // Update external queries
+                if (import.meta?.hot) {
+                    import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
+                        let errors = []
+                        if (!queryId) errors.push("Malformed event: Missing queryId")
+                        if (!content) errors.push("Malformed event: Missing content")
+                        if (errors.length) {
+                            console.warn("Failed to update query on serverside change!", errors.join("\\n"))
+                            return
+                        }
 
-						if (queryId === "${id}") {
-							__${id}Text = content
-						}
-						
-					})
-				}
+                        if (queryId === "${id}") {
+                            __${id}Text = content
+                        }
+                        
+                    })
+                }
 
-				let ${id}InitialStates = { initialData: undefined, initialError: undefined }
-				
-				// Give initial states for these variables
-				/** @type {boolean} */
-				let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				/** @type {string} */
-				let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
+                let ${id}InitialStates = { initialData: undefined, initialError: undefined }
+                
+                // Give initial states for these variables
+                /** @type {boolean} */
+                let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+                /** @type {string} */
+                let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 
 
-				if (browser) {
-					// Data came from SSR
-					if (data.${id}_data) {
-						// vvv is this still used/possible?
-						if (data.${id}_data instanceof Error) {
-							${id}InitialStates.initialError = data.${id}_data
-						} else {
-							${id}InitialStates.initialData = data.${id}_data
-						}
-						if (data.${id}_columns) {
-							${id}InitialStates.knownColumns = data.${id}_columns
-						}
-					}
-				}
+                if (browser) {
+                    // Data came from SSR
+                    if (data.${id}_data) {
+                        // vvv is this still used/possible?
+                        if (data.${id}_data instanceof Error) {
+                            ${id}InitialStates.initialError = data.${id}_data
+                        } else {
+                            ${id}InitialStates.initialData = data.${id}_data
+                        }
+                        if (data.${id}_columns) {
+                            ${id}InitialStates.knownColumns = data.${id}_columns
+                        }
+                    }
+                }
 
-				/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
-				let ${id};
+                /** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+                let ${id};
 
-				$: __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				$: __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
+                $: __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+                $: __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 
-				// keep initial state around until after the query has resolved once
-				let __${id}InitialFactory = false;
-				$: if (__${id}HasUnresolved || !__${id}InitialFactory) {
-					__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates });
-					if (!__${id}HasUnresolved) __${id}InitialFactory = true;
-				} else {
-					__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
-				}
+                // keep initial state around until after the query has resolved once
+                let __${id}InitialFactory = false;
+                $: if (__${id}HasUnresolved || !__${id}InitialFactory) {    
+                    if (!__${id}HasUnresolved) {
+                        __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates });
+                        __${id}InitialFactory = true;
+                    }
+                } else {
+                    __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
+                }
 
-				const __${id}Factory = Query.createReactive(
-					{ callback: v => {
-						${id} = v
-					}, execFn: queryFunc },
-					{ id: '${id}', ...${id}InitialStates }
-				)
+                const __${id}Factory = Query.createReactive(
+                    { callback: v => {
+                        ${id} = v
+                    }, execFn: queryFunc },
+                    { id: '${id}', ...${id}InitialStates }
+                )
 
-				// Assign a value for the initial run-through
-				// This is split because chicken / egg
-				__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates })
+                // Assign a value for the initial run-through
+                // This is split because chicken / egg
+                __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates })
 
-				// Add queries to global scope inside symbols to ease debugging
-				globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }
-				
-				
-			`;
+                // Add queries to global scope inside symbols to ease debugging
+                globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }
+                
+                
+            `;
 		});
 
 		/* 
@@ -127,7 +129,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				${input_ids
 					.map(
 						(id) => `
-				__${id}Factory(\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`, { noResolve: hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\` });
+						__${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+						__${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+						__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
 				`
 					)
 					.join('\n')}
@@ -181,7 +185,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		import { browser, dev } from "$app/environment";
 		import { profile } from '@evidence-dev/component-utilities/profile';
-		import debounce from 'debounce';
 		import { Query, hasUnsetValues } from '@evidence-dev/sdk/usql';
 		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 

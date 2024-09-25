@@ -367,8 +367,17 @@ ${this.text.trim()}
 		);
 		return resolved;
 	};
-	fetch = async () => {
-		return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
+	fetch = () => {
+		const cols = this.#fetchColumns();
+		if (
+			cols instanceof Promise &&
+			/* noResolve will always return a promise, even when fetch is synchronous */
+			!this.opts.noResolve
+		) {
+			return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
+		}
+		this.#fetchData();
+		return this.value;
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -681,11 +690,10 @@ DESCRIBE ${this.text.trim()}
 			added: Date.now()
 		});
 
-		if (isDebug())
-			console.debug(`Added to cache: ${q.hash}`, {
-				cacheSize: this.#cache.size,
-				cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
-			});
+		Query.#debugStatic('cache', `Added to cache: ${q.hash}`, {
+			cacheSize: this.#cache.size,
+			cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
+		});
 	};
 
 	/**
@@ -1053,6 +1061,7 @@ DESCRIBE ${this.text.trim()}
 			return;
 		}
 
+		// TODO: Does this make sense?
 		if (initialData) {
 			this.#debug('initial data', 'Created with initial data', initialData);
 

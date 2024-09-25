@@ -1,3 +1,4 @@
+import { isDebug } from '@evidence-dev/sdk/utils';
 import { dev } from '$app/environment';
 
 /** @param {Error | unknown} e  */
@@ -17,7 +18,9 @@ const transformError = (e) => {
 
 /** @type {import("@sveltejs/kit").HandleClientError } */
 export const handleError = (e) => {
-	console.error(`Uncaught error while server responding`, e);
+	if (isDebug()) {
+		console.error(`Uncaught error while server responding`, e);
+	}
 	return transformError(e.error);
 };
 
