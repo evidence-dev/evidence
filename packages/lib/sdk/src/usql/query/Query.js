@@ -371,7 +371,8 @@ ${this.text.trim()}
 		const cols = this.#fetchColumns();
 		if (
 			cols instanceof Promise &&
-			!this.opts.noResolve /* noResolve will always return a promise, even when fetch is synchronous */
+			/* noResolve will always return a promise, even when fetch is synchronous */
+			!this.opts.noResolve
 		) {
 			return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
 		}
