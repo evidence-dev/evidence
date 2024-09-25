@@ -64,7 +64,7 @@
 					on:click={() => (hideLegend = !hideLegend)}
 					class="block font-bold text-center w-full">{legendTitle}</button
 				>
-				<div class="overflow-y-auto max-h-52">
+				<div class="overflow-y-auto max-h-52 min-h-8">
 					{#if legendType === 'scalar'}
 						<div class="flex flex-wrap w-full mt-2 pr-2 pl-2">
 							<span

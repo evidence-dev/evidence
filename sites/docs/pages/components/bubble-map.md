@@ -279,6 +279,98 @@ where point_name = '${inputs.my_point_map.point_name}' OR '${inputs.my_point_map
     <Column id=sales fmt=usd/> 	
 </DataTable>
 
+### Legends
+
+```grouped_locations
+SELECT 
+  *, 
+  CASE 
+    WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
+    WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
+    WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
+    WHEN id BETWEEN 15 AND 19 THEN 'Shops'
+    WHEN id BETWEEN 20 AND 24 THEN 'Bars'
+    WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+    WHEN id BETWEEN 30 AND 34 THEN 'Banks'
+  END AS Category
+FROM la_locations
+```	
+#### Categorical Legend
+
+	<BubbleMap
+		legendType=category
+		legendPosition=bottomLeft
+        legendTitle=Legend
+		data={grouped_locations}
+		lat=lat
+		long=long
+		value=Category
+        size=sales
+        colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+		tooltipType=hover
+		tooltip={[
+			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+		]}
+	/>
+
+```svelte
+<BubbleMap
+    legendType=category
+    legendPosition=bottomLeft
+    legendTitle=Legend
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    size=sales
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+    tooltipType=hover
+    tooltip={[
+        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+    ]}
+/>
+```
+
+#### Scalar Legend
+
+<BubbleMap
+    legendType=scalar
+    legendPosition=bottomLeft
+    legendTitle="Scalar Legend"
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    size=sales
+    colorPalette={['#dc0101', '#01dc08']}
+    tooltipType=hover
+    tooltip={[
+        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+    ]}
+/>
+
+```svelte
+<BubbleMap
+    legendType=scalar
+    legendPosition=bottomLeft
+    legendTitle="Scalar Legend"
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    size=sales
+    colorPalette={['#dc0101', '#01dc08']}
+    tooltipType=hover
+    tooltip={[
+        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+    ]}
+/>
+```
+
 ## Options
 
 ### Bubbles
@@ -373,6 +465,31 @@ options="number"
 defaultValue="max of value column"
 >
 Maximum value to use for the color scale.
+</PropListing>
+
+### Legend
+
+<PropListing
+name="legendType"
+options={['category', 'scalar']}
+>
+Appends a categorical or scalar legend to the map
+</PropListing>
+
+<PropListing
+name="legendPosition"
+options={['bottomLeft', 'topLeft','bottomRight', 'topRight']}
+defaultValue='bottomLeft'
+>
+Determines the legend's position on the map, with options provided
+</PropListing>
+
+<PropListing
+name="legendTitle"
+options=string
+defaultValue='Legend'
+>
+Specifies the title for the legend
 </PropListing>
 
 ### Interactivity

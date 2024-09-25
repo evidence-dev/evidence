@@ -13,6 +13,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { Dropdown, DropdownOption } from '../../../atoms/inputs/dropdown/index.js';
+	import DataTable from '../../viz/table/DataTable.svelte';
 
 	import AreaMap from './AreaMap.svelte';
 	import { screen, userEvent, within } from '@storybook/test';
@@ -33,6 +34,25 @@
 	const slow_la_zip_sales = Query.create(
 		`select * from la_zip_sales where zip_code <> 90704 order by 1 limit 100`,
 		slowQuery
+	);
+
+	const grouped_locations = Query.create(
+		`SELECT 
+    *, 
+    CASE 
+        WHEN id BETWEEN 0 AND 500 THEN 'Hotels'
+        WHEN id BETWEEN 501 AND 1000 THEN 'Restaurants'
+        WHEN id BETWEEN 1001 AND 1500 THEN 'Golf Courses'
+        WHEN id BETWEEN 1501 AND 2000 THEN 'Shops'
+        WHEN id BETWEEN 2001 AND 2500 THEN 'Bars'
+        WHEN id BETWEEN 2501 AND 3000 THEN 'Entertainment'
+        WHEN id BETWEEN 3001 AND 4000 THEN 'Banks'
+    END AS Category
+FROM la_zip_sales
+WHERE zip_code <> 90704
+ORDER BY 1;
+`,
+		query
 	);
 </script>
 
@@ -80,4 +100,32 @@
 		areaCol="zip_code"
 		value="sales"
 	/>
+</Story>
+
+<Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_code" />
+	<AreaMap
+		legendType="category"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		geoId="ZCTA5CE10"
+		areaCol="zip_code"
+		colorPalette={['orange', 'yellow', 'brown']}
+	/>
+	<div class="h-32"></div>
+	<AreaMap
+		legendType="scalar"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		geoId="ZCTA5CE10"
+		areaCol="zip_code"
+		colorPalette={['red', 'yellow', 'green']}
+	/>
+	<div class="h-32"></div>
 </Story>

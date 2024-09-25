@@ -40,6 +40,8 @@
 
 	/** @type {string | undefined} */
 	export let name = undefined;
+	/** @type {string | undefined} */
+	export let legendType = undefined;
 
 	/**
 	 * Callback function for the area click event.
@@ -190,6 +192,66 @@
 	let values;
 	let colorScale;
 	let geoJson = [];
+	let minValue;
+	let maxValue;
+
+	/** @type {[string]} */
+	let backupColors = [
+		'red',
+		'blue',
+		'green',
+		'purple',
+		'orange',
+		'pink',
+		'brown',
+		'teal',
+		'cyan',
+		'black',
+		'magenta',
+		'navy',
+		'olive',
+		'lavender',
+		'crimson',
+		'turquoise',
+		'beige',
+		'aqua',
+		'coral',
+		'gold',
+		'silver',
+		'indigo',
+		'violet',
+		'khaki',
+		'plum',
+		'salmon',
+		'sienna',
+		'chartreuse',
+		'lavenderblush',
+		'lightblue',
+		'lightcoral',
+		'lightgreen',
+		'lightpink',
+		'lightyellow',
+		'darkred',
+		'darkgreen',
+		'darkblue',
+		'darkviolet',
+		'darkorange',
+		'darkcyan',
+		'fuchsia',
+		'gainsboro',
+		'honeydew',
+		'hotpink',
+		'lightgray',
+		'lightseagreen',
+		'lightsalmon',
+		'lightsteelblue',
+		'mediumvioletred',
+		'mediumseagreen',
+		'peachpuff',
+		'powderblue',
+		'seashell',
+		'thistle'
+	];
 
 	/**
 	 * Initialize the component.
@@ -202,14 +264,65 @@
 
 		values = $data.map((d) => d[value]);
 
-		colorScale = chroma
-			.scale(colorPalette)
-			.domain([min ?? Math.min(...values), max ?? Math.max(...values)]);
+		//new
+		colorPalette = colorPalette.map((item) => chroma(item).hex());
+
+		if (legendType === 'category') {
+			let uniqueValues = new Set(values);
+			values = [...uniqueValues];
+			let i = 0;
+
+			while (colorPalette.length < values.length) {
+				if (!backupColors[i]) {
+					throw new Error('No more backup colors available.');
+				}
+
+				// Check if the color is not already in colorCategory
+				if (!colorPalette.includes(chroma(backupColors[i]).hex())) {
+					colorPalette.push(chroma(backupColors[i]).hex());
+					i++;
+				} else {
+					i++;
+				}
+			}
+		} else if (legendType === 'scalar') {
+			values.forEach((value) => {
+				if (typeof value !== 'number' && value !== null) {
+					throw new Error('Scalar legend requires numeric values or null.');
+				}
+				if (typeof value === 'number' && isNaN(value)) {
+					throw new Error('Scalar legend requires valid numeric values.');
+				}
+			});
+		}
+		minValue = Math.min(...values);
+		maxValue = Math.max(...values);
+		//bucket legend
+		//conditonal
+		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+
+		if (legendType) {
+			map.buildLegend(colorPalette, values, minValue, maxValue);
+		}
 
 		await processAreas();
 
 		if (name && $data.length > 0) {
 			setInputDefault($data[0], name);
+		}
+
+		function handleColor(item, value) {
+			if (!value) return uiColours.blue700;
+
+			if (!item[value]) return colorPalette[values.indexOf(item[value])] ?? colorScale(item[value]);
+
+			if (item[value]) {
+				if (typeof item[value] === 'string') {
+					return colorPalette[values.indexOf(item[value])];
+				} else {
+					return colorScale(item[value]);
+				}
+			}
 		}
 	}
 
@@ -265,6 +378,20 @@
 			await data.fetch();
 			await processAreas();
 		})();
+
+	function handleColor(item, value) {
+		if (!value) return uiColours.blue700;
+
+		if (!item[value]) return colorPalette[values.indexOf(item[value])] ?? colorScale(item[value]);
+
+		if (item[value]) {
+			if (typeof item[value] === 'string') {
+				return colorPalette[values.indexOf(item[value])];
+			} else {
+				return colorScale(item[value]);
+			}
+		}
+	}
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -277,7 +404,7 @@
 			{item}
 			{name}
 			areaOptions={{
-				fillColor: color ?? colorScale(item[value]).hex(),
+				fillColor: color ?? handleColor(item, value) ?? colorScale(item[value]).hex(),
 				fillOpacity: opacity,
 				opacity: opacity,
 				weight: borderWidth,
