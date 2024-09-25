@@ -14,9 +14,6 @@
 	$: if (Query.isQuery(data)) {
 		data.fetch(); // Somebody wants this to load. Without this the query builder features don't work
 		unsub();
-		console.log({
-			data, _data
-		})
 		unsub = data.subscribe((v) => {
 			_data = v;
 		});
