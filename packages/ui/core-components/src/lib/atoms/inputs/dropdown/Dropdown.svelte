@@ -121,7 +121,7 @@
 	};
 
 	$: hasHadSelection = hasHadSelection || $selectedOptions.length > 0;
-	$: if ($selectedOptions && hasHadSelection) {
+	$: if ($selectedOptions && hasHadSelection && opts.length > 0) {
 		if ($selectedOptions.length > opts.length) {
 			updateSelectedOptions(opts);
 		}
