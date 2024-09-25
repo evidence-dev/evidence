@@ -367,8 +367,12 @@ ${this.text.trim()}
 		);
 		return resolved;
 	};
-	fetch = async () => {
-		return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
+	fetch = () => {
+		const cols = this.#fetchColumns();
+		if (cols instanceof Promise) {
+			return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
+		}
+		this.#fetchData();
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -681,11 +685,10 @@ DESCRIBE ${this.text.trim()}
 			added: Date.now()
 		});
 
-		if (isDebug())
-			console.debug(`Added to cache: ${q.hash}`, {
-				cacheSize: this.#cache.size,
-				cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
-			});
+		Query.#debugStatic('cache', `Added to cache: ${q.hash}`, {
+			cacheSize: this.#cache.size,
+			cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
+		});
 	};
 
 	/**
@@ -762,7 +765,11 @@ DESCRIBE ${this.text.trim()}
 
 				const fetched = newQuery.fetch();
 				let dataMaybePromise = fetched;
-				if (fetched instanceof Promise) {
+				if (typeof window === 'undefined') {
+					// noResolve will cause dataMaybePromise to always be a promise
+					// When running during SSR this will break, and force the query to always wait.
+					dataMaybePromise = undefined;
+				} else if (fetched instanceof Promise) {
 					dataMaybePromise = Promise.race([
 						new Promise((r) => setTimeout(r, loadGracePeriod)),
 						newQuery.fetch()
@@ -1053,6 +1060,7 @@ DESCRIBE ${this.text.trim()}
 			return;
 		}
 
+		// TODO: Does this make sense?
 		if (initialData) {
 			this.#debug('initial data', 'Created with initial data', initialData);
 

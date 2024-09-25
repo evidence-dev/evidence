@@ -106,6 +106,8 @@ fsExtra.outputFileSync(
 			}
         },
 		build: {
+			minify: false,
+			target: 'esnext',
 			rollupOptions: {
 				external: [/^@evidence-dev\\/tailwind\\/fonts\\//],
 				onwarn(warning, warn) {

@@ -92,16 +92,18 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 				// keep initial state around until after the query has resolved once
 				let __${id}InitialFactory = false;
-				$: if (__${id}HasUnresolved || !__${id}InitialFactory) {
-					__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates });
-					if (!__${id}HasUnresolved) __${id}InitialFactory = true;
+				$: if (__${id}HasUnresolved || !__${id}InitialFactory) {	
+					if (!__${id}HasUnresolved) {
+						__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates });
+						__${id}InitialFactory = true;
+					}
 				} else {
 					__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
 				}
 
 				const __${id}Factory = Query.createReactive(
 					{ callback: v => {
-						${id} = v
+												${id} = v
 					}, execFn: queryFunc },
 					{ id: '${id}', ...${id}InitialStates }
 				)
@@ -127,7 +129,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				${input_ids
 					.map(
 						(id) => `
-				__${id}Factory(\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`, { noResolve: hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\` });
+						__${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+						__${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+						__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
 				`
 					)
 					.join('\n')}
@@ -181,7 +185,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		import { browser, dev } from "$app/environment";
 		import { profile } from '@evidence-dev/component-utilities/profile';
-		import debounce from 'debounce';
 		import { Query, hasUnsetValues } from '@evidence-dev/sdk/usql';
 		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 
