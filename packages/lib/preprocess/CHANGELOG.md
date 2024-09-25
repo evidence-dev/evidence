@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 5.2.2
+
+### Patch Changes
+
+- 71a20080c: Reactivity improvements
+
 ## 5.2.1
 
 ### Patch Changes
