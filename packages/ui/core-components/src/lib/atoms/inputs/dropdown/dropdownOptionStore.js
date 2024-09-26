@@ -142,7 +142,10 @@ export const dropdownOptionStore = (opts = {}) => {
 						});
 						return $options;
 					});
-					selectAll = false;
+					setTimeout(() => {
+						// defer to end of event loop
+						selectAll = false;
+					}, 0);
 				},
 				100
 			)
