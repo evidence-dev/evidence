@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.8.4
+
+### Patch Changes
+
+- 024e93b02: Defer selectAll=false to ensure that all options are available before the behavior is turned off
+
 ## 4.8.3
 
 ### Patch Changes
