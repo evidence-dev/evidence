@@ -13,6 +13,8 @@
 	import DropdownOption from '../helpers/DropdownOption.svelte';
 	import DependentDropdowns from './DependentDropdowns.story.svelte';
 	import DropdownCharts from './DropdownCharts.story.svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputStore = getInputContext();
 
 	// Play Functions
 	const openDropdown = async ({ canvasElement }) => {
@@ -80,7 +82,7 @@
 </Story>
 
 <Story name="Alphabetic Sorting">
-	<Dropdown name="test" defaultValue="Bottom 100">
+	<Dropdown name="test">
 		<DropdownOption value="Fig" />
 		<DropdownOption value="Honeydew" />
 		<DropdownOption value="Apple" />
@@ -278,6 +280,87 @@
 		<DropdownOption value="All" />
 		<DropdownOption value="Top 100" />
 	</Dropdown>
+</Story>
+
+<Story name="Dependent dropdowns">
+	{@const store_segmentation = Query.create(
+		`WITH stores_data AS (
+    SELECT 'Olé' AS parent_store, 'KAN' AS store_type
+    UNION ALL
+    SELECT 'La Sirena', 'KAN'
+    UNION ALL
+    SELECT 'Supermercado', 'EXP' 
+    UNION ALL
+    SELECT 'MiniMarket', 'EXP'
+    UNION ALL
+    SELECT 'CornerShop', 'LOC'
+    UNION ALL
+    SELECT 'QuickBuy', 'LOC'
+    UNION ALL
+    SELECT 'BigBox', 'Cash and Carry'
+    UNION ALL
+    SELECT 'WholesaleMart', 'Cash and Carry'
+    UNION ALL
+    SELECT 'StoreOne', 'OTRAS'
+    UNION ALL
+    SELECT 'StoreTwo', 'OTRAS'
+    UNION ALL
+    SELECT 'ShopA', 'SMI'
+    UNION ALL
+    SELECT 'ShopB', 'SMI'
+)
+SELECT DISTINCT store_type
+FROM stores_data`,
+		query
+	)}
+	{@const available_chains = Query.create(
+		`WITH stores_data AS (
+    SELECT 'Olé' AS parent_store, 'KAN' AS store_type
+    UNION ALL
+    SELECT 'La Sirena', 'KAN'
+    UNION ALL
+    SELECT 'Supermercado', 'EXP' 
+    UNION ALL
+    SELECT 'MiniMarket', 'EXP'
+    UNION ALL
+    SELECT 'CornerShop', 'LOC'
+    UNION ALL
+    SELECT 'QuickBuy', 'LOC'
+    UNION ALL
+    SELECT 'BigBox', 'Cash and Carry'
+    UNION ALL
+    SELECT 'WholesaleMart', 'Cash and Carry'
+    UNION ALL
+    SELECT 'StoreOne', 'OTRAS'
+    UNION ALL
+    SELECT 'StoreTwo', 'OTRAS'
+    UNION ALL
+    SELECT 'ShopA', 'SMI'
+    UNION ALL
+    SELECT 'ShopB', 'SMI'
+)
+
+SELECT DISTINCT parent_store
+FROM stores_data
+WHERE upper(store_type) IN ${$inputStore.selected_store_segmentation.value}`,
+		query
+	)}
+
+	<Dropdown
+		name="selected_store_segmentation"
+		data={store_segmentation}
+		value="store_type"
+		title="Store Type"
+		multiple
+	/>
+
+	<Dropdown
+		name="selected_chain_by_product"
+		data={available_chains}
+		value="parent_store"
+		title="Store Chain"
+		multiple
+	/>
 </Story>
 
 <!--
