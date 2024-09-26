@@ -1,5 +1,13 @@
 # @evidence-dev/tailwind
 
+## 2.1.4
+
+### Patch Changes
+
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+
 ## 2.1.3
 
 ### Patch Changes

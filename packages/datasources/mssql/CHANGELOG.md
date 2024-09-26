@@ -1,5 +1,11 @@
 # @evidence-dev/mssql
 
+## 1.0.10
+
+### Patch Changes
+
+- 9bbf152d5: Remove icon
+
 ## 1.0.9
 
 ### Patch Changes

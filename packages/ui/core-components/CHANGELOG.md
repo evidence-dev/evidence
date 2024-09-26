@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 4.8.3
+
+### Patch Changes
+
+- e0abcc56d: Add yellow tint to queries with unresolved inputs in the devtools
+- 0feacbbe5: ySet is now reactive, enabling better support for dynamic y columns
+  - @evidence-dev/component-utilities@3.2.14
+  - @evidence-dev/tailwind@2.1.4
+
 ## 4.8.2
 
 ### Patch Changes

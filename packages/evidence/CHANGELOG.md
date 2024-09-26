@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 39.1.10
+
+### Patch Changes
+
+- 71a20080c: When using --debug to build a project, the results are not transpiled or minified
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [71a20080c]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+  - @evidence-dev/preprocess@5.2.2
+  - @evidence-dev/plugin-connector@2.1.11
+
 ## 39.1.9
 
 ### Patch Changes
