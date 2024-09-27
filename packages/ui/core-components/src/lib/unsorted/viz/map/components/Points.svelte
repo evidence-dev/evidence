@@ -213,7 +213,7 @@
 
 	let values, minValue, maxValue, colorScale, sizeExtents, maxData, maxSizeSq;
 
-	/** @type {[string]} */
+	/** @type {string[]} */
 	let backupColors = [
 		'red',
 		'blue',
