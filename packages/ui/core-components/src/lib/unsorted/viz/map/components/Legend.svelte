@@ -81,7 +81,7 @@
 						{#each colorPalette as color, i}
 							<div class="w-full pr-2 pl-2">
 								<span class="inline-block h-2 w-2 rounded-full" style="background-color: {color}" />
-								- {values[i] || "No value"}
+								- {values[i] || 'No value'}
 							</div>
 						{/each}
 					</div>

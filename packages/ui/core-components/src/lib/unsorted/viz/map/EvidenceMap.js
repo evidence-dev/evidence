@@ -4,9 +4,71 @@ import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
+import chroma from 'chroma-js';
+import { uiColours } from '@evidence-dev/component-utilities/colours';
+
+
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
+
+/** @type {string[]} */
+let backupColors = [
+	'red',
+	'blue',
+	'green',
+	'purple',
+	'orange',
+	'pink',
+	'brown',
+	'teal',
+	'cyan',
+	'black',
+	'magenta',
+	'navy',
+	'olive',
+	'lavender',
+	'crimson',
+	'turquoise',
+	'beige',
+	'aqua',
+	'coral',
+	'gold',
+	'silver',
+	'indigo',
+	'violet',
+	'khaki',
+	'plum',
+	'salmon',
+	'sienna',
+	'chartreuse',
+	'lavenderblush',
+	'lightblue',
+	'lightcoral',
+	'lightgreen',
+	'lightpink',
+	'lightyellow',
+	'darkred',
+	'darkgreen',
+	'darkblue',
+	'darkviolet',
+	'darkorange',
+	'darkcyan',
+	'fuchsia',
+	'gainsboro',
+	'honeydew',
+	'hotpink',
+	'lightgray',
+	'lightseagreen',
+	'lightsalmon',
+	'lightsteelblue',
+	'mediumvioletred',
+	'mediumseagreen',
+	'peachpuff',
+	'powderblue',
+	'seashell',
+	'thistle'
+];
 
 /** @type {import('leaflet') | undefined} */
 let Leaflet;
@@ -33,8 +95,9 @@ export class EvidenceMap {
 	/** @type {HTMLDivElement | undefined} */
 	#mapEl;
 
-	/** @type {import('svelte/store').Writable<object>} */
+	/** @type {import('svelte/store').Writable<{ values: string[], colorPalette: string[], minValue: number, maxValue: number }>} */
 	#legendData = writable({});
+
 
 	/** Handles the promises associated with the initialization of the map component. */
 	#sharedPromise = sharedPromise();
@@ -433,6 +496,56 @@ export class EvidenceMap {
 		});
 
 		return data;
+	}
+
+	handleLegendValues(colorPalette, values, legendType) {
+		//determine legend style
+		colorPalette = colorPalette.map((item) => chroma(item).hex());
+		console.log(colorPalette)
+		if (legendType === 'category') {
+			let uniqueValues = new Set(values);
+			values = [...uniqueValues];
+			let i = 0;
+
+			while (colorPalette.length < values.length) {
+				if (!backupColors[i]) {
+					throw new Error('No more backup colors available.');
+				}
+
+				// Check if the color is not already in colorCategory
+				if (!colorPalette.includes(chroma(backupColors[i]).hex())) {
+					colorPalette.push(chroma(backupColors[i]).hex());
+					i++;
+				} else {
+					i++;
+				}
+			}
+		} else if (legendType === 'scalar') {
+			values.forEach((value) => {
+				if (typeof value !== 'number' && value !== null) {
+					throw new Error('Scalar legend requires numeric values or null.');
+				}
+				if (typeof value === 'number' && isNaN(value)) {
+					throw new Error('Scalar legend requires valid numeric values.');
+				}
+			});
+		}
+		console.log(colorPalette)
+		return values
+	}
+
+	handleFillColor(item, value, values, colorPalette, colorScale) {
+		if (!value) return uiColours.blue700;
+
+		if (!item[value]) return colorPalette[values.indexOf(item[value])] ?? colorScale(item[value]);
+
+		if (item[value]) {
+			if (typeof item[value] === 'string') {
+				return colorPalette[values.indexOf(item[value])];
+			} else {
+				return colorScale(item[value]);
+			}
+		}
 	}
 
 	//handle legend data

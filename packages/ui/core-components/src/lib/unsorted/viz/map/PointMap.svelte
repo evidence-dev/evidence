@@ -53,10 +53,10 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
-	/** @type {[string]|undefined} */
+	/** @type {string[]|undefined} */
 	export let colorPalette = undefined;
 
-	/** @type {string} */
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
 	export let legendPosition = 'topLeft';
 	/** @type {string | undefined} */
 	export let legendType = undefined;

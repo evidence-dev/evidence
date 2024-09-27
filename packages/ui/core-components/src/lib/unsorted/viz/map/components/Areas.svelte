@@ -365,19 +365,7 @@
 			await processAreas();
 		})();
 
-	function handleColor(item, value) {
-		if (!value) return uiColours.blue700;
-
-		if (!item[value]) return colorPalette[values.indexOf(item[value])] ?? colorScale(item[value]);
-
-		if (item[value]) {
-			if (typeof item[value] === 'string') {
-				return colorPalette[values.indexOf(item[value])];
-			} else {
-				return colorScale(item[value]);
-			}
-		}
-	}
+	const handleFillColor = map.handleFillColor
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -390,7 +378,7 @@
 			{item}
 			{name}
 			areaOptions={{
-				fillColor: color ?? handleColor(item, value) ?? colorScale(item[value]).hex(),
+				fillColor: color ?? handleFillColor(item, value, values, colorPalette, colorScale) ?? colorScale(item[value]).hex(),
 				fillOpacity: opacity,
 				opacity: opacity,
 				weight: borderWidth,
