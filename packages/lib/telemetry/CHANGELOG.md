@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 2.1.3
+
+### Patch Changes
+
+- bad1038c1: Override dset version to resolve security vulnerability
+
 ## 2.1.2
 
 ### Patch Changes

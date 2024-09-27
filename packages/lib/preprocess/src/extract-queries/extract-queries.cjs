@@ -5,15 +5,16 @@ const fs = require('fs');
 const getPrismLangs = require('../utils/get-prism-langs.cjs');
 const { parseFrontmatter } = require('../frontmatter/parse-frontmatter.cjs');
 const chalk = require('chalk');
-/** @typedef {{id: string, compileError: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
+/** @typedef {{ id: string, compileError?: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean }} Query */
 
+/** @type {Record<string, boolean>} */
 const warnedExternalQueries = {};
 
 /**
  *
  * @param {string} externalQuery
  * @param {string} id
- * @returns {Query}
+ * @returns {Query | undefined}
  */
 const readFileToQuery = (externalQuery, id) => {
 	try {
@@ -27,12 +28,16 @@ const readFileToQuery = (externalQuery, id) => {
 		};
 	} catch {
 		console.warn(`Failed to load sql file ${externalQuery}`);
+		return undefined;
 	}
 };
 
 // Unified parser step to ignore indented code blocks.
 // Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
 // Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
+/**
+ * @this {import('unified').Processor}
+ */
 const ignoreIndentedCode = function () {
 	const Parser = this.Parser;
 	const block_tokenizers = Parser.prototype.blockTokenizers;
@@ -41,7 +46,7 @@ const ignoreIndentedCode = function () {
 
 /**
  * @param {string} content File content
- * @param {string} filename File name
+ * @param {string} [filename] File name
  * @returns {Query[]}
  */
 const extractExternalQueries = (content, filename) => {
@@ -49,9 +54,17 @@ const extractExternalQueries = (content, filename) => {
 	if (!frontmatter) return [];
 	if (!frontmatter.queries) return [];
 	if (!Array.isArray(frontmatter.queries)) {
-		console.warn(`Malformed frontmatter found in ${filename}. Unable to extract external queries.`);
+		if (filename) {
+			console.warn(
+				`Malformed frontmatter found in ${filename}. Unable to extract external queries.`
+			);
+		} else {
+			console.warn('Malformed frontmatter found. Unable to extract external queries.');
+		}
 		return [];
 	}
+	/** @type {unknown[]} */
+	const queries = frontmatter.queries;
 
 	/**
 	 *
@@ -73,19 +86,15 @@ const extractExternalQueries = (content, filename) => {
 		return true;
 	};
 
-	/**
-	 * @type Query[]
-	 */
-	return frontmatter.queries
+	return queries
 		.map((externalQuery) => {
 			if (typeof externalQuery === 'string') {
 				if (!validateExternalQuery(externalQuery)) return false;
 				const id = externalQuery.split('.sql')[0].replace('/', '_').replace('\\', '_');
 				return readFileToQuery(externalQuery, id);
-			} else if (typeof externalQuery === 'object') {
-				const usedKey = Object.keys(externalQuery)?.[0] ?? '';
+			} else if (externalQuery && typeof externalQuery === 'object') {
+				const [usedKey, value] = Object.entries(externalQuery)[0] ?? ['', undefined];
 
-				const value = externalQuery[usedKey];
 				// Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
 				if (Object.keys(externalQuery).length > 1) {
 					console.warn(
@@ -97,7 +106,7 @@ const extractExternalQueries = (content, filename) => {
 				return readFileToQuery(value, usedKey);
 			}
 		})
-		.filter(Boolean); // filter out queries that returned false;
+		.filter((x) => !!x); // filter out queries that returned false;
 };
 
 /**
@@ -105,11 +114,12 @@ const extractExternalQueries = (content, filename) => {
  * @returns {Query[]}
  */
 const extractInlineQueries = (content) => {
+	/** @type {Query[]} */
 	let queries = [];
 	let tree = unified().use(remarkParse).use(ignoreIndentedCode).parse(content);
 	const prismLangs = getPrismLangs();
 
-	visit(tree, 'code', function (node) {
+	visit(tree, 'code', function (/** @type {import("mdast").Code} */ node) {
 		let id = node.lang ?? 'untitled';
 		if (id.toLowerCase() === 'sql' && node.meta) {
 			id = node.meta;
@@ -135,12 +145,14 @@ const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
 const circularRefErrorMsg = 'Compiler error: circular reference';
 
 /**
- * @param {string} filename
+ * @param {string} content
  * @returns {Query[]}
  */
 const extractQueries = (content) => {
+	/** @type {Query[]} */
 	const queries = [];
 
+	// todo: second parameter is filename but we don't have that here?
 	queries.push(...extractExternalQueries(content));
 	queries.push(...extractInlineQueries(content));
 
@@ -180,16 +192,25 @@ const extractQueries = (content) => {
 							throw new Error(circularRefErrorMsg);
 						} else {
 							const referencedQuery = queries.find((d) => d.id === referencedQueryID);
+							if (!referencedQuery) {
+								// should be unreachable
+								throw new Error(`Referenced query not found. (Referenced ${referencedQueryID})`);
+							}
 							if (!query.inline && referencedQuery.inline) {
 								throw new Error(
 									`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`
 								);
 							}
 							const queryString = `(${referencedQuery.compiledQueryString})`;
-							query.compiledQueryString = query.compiledQueryString.replace(reference, queryString);
+							query.compiledQueryString = query.compiledQueryString.replace(
+								reference,
+								// this actually replaces each $ with $$
+								// this is to avoid [this behaviour](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement)
+								queryString.replaceAll('$', '$$$$')
+							);
 							query.compiled = true;
 						}
-					} catch (_e) {
+					} catch (/** @type {any} */ _e) {
 						// if error is unknown use default circular ref. error
 						const e =
 							_e.message === undefined || _e.message === null ? Error(circularRefErrorMsg) : _e;

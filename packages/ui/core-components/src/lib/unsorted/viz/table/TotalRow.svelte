@@ -6,9 +6,6 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import TableCell from './TableCell.svelte';
 	import Delta from '../core/Delta.svelte';
-	import { getContext } from 'svelte';
-	import { propKey } from '@evidence-dev/component-utilities/chartContext';
-	const props = getContext(propKey);
 
 	export let data = undefined;
 	export let rowNumbers = undefined;
@@ -16,7 +13,7 @@
 	export let rowColor = undefined;
 	export let fontColor = undefined;
 	export let groupType = undefined;
-	export let finalColumnOrder = undefined;
+	export let orderedColumns = undefined;
 	export let compact = undefined;
 </script>
 
@@ -25,9 +22,7 @@
 		<TableCell class={'index w-[2%]'} {compact} topBorder="border-t border-gray-600" />
 	{/if}
 
-	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
-				.filter((d) => d.show === true)
-				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
+	{#each orderedColumns as column}
 		{@const colColumnSummary = safeExtractColumn(column, columnSummary)}
 		{@const format = column.totalFmt
 			? getFormatObjectFromString(column.totalFmt)

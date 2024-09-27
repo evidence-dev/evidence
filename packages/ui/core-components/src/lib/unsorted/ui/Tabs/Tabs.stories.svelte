@@ -8,30 +8,17 @@
 </script>
 
 <script>
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { Story } from '@storybook/addon-svelte-csf';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import Tab from './Tab.svelte';
 	import TextInput from '../../../atoms/inputs/text/TextInput.svelte';
 	import { within, userEvent } from '@storybook/testing-library';
 	import { expect } from '@storybook/jest';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte';
 
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
-
-	$: data = Query.create(
-		`
-      SELECT tag
-      FROM hashtags
-      ORDER BY tag
-      ${$inputStore.offset?.toString() ? `OFFSET ${$inputStore.offset.toString()}` : ``}
-      LIMIT 3
-    `,
-		query
-	);
+	const inputStore = getInputContext();
 </script>
 
 <Story name="Basic Usage">
@@ -43,15 +30,27 @@
 </Story>
 
 <Story name="Generated from a query">
+	{@const data = Query.create(
+		`
+      SELECT tag
+      FROM hashtags
+      ORDER BY tag
+      ${$inputStore.offset?.toString() ? `OFFSET ${$inputStore.offset.toString()}` : ``}
+      LIMIT 3
+    `,
+		query
+	)}
 	<TextInput name="offset" title="Offset" />
 
 	<Tabs>
-		{#each $data as row}
-			{@const tag = row.tag}
-			<Tab label={tag}>
-				{tag}
-			</Tab>
-		{/each}
+		<QueryLoad {data} let:loaded>
+			{#each loaded as row}
+				{@const tag = row.tag}
+				<Tab label={tag}>
+					{tag}
+				</Tab>
+			{/each}
+		</QueryLoad>
 	</Tabs>
 </Story>
 

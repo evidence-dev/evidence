@@ -16,7 +16,8 @@
 
 	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;
