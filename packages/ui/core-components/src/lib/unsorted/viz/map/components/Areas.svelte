@@ -6,7 +6,6 @@
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import chroma from 'chroma-js';
 	import MapArea from './MapArea.svelte';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import ErrorChart from '../../core/ErrorChart.svelte';
@@ -192,118 +191,23 @@
 	let values;
 	let colorScale;
 	let geoJson = [];
-	let minValue;
-	let maxValue;
-
-	/** @type {[string]} */
-	let backupColors = [
-		'red',
-		'blue',
-		'green',
-		'purple',
-		'orange',
-		'pink',
-		'brown',
-		'teal',
-		'cyan',
-		'black',
-		'magenta',
-		'navy',
-		'olive',
-		'lavender',
-		'crimson',
-		'turquoise',
-		'beige',
-		'aqua',
-		'coral',
-		'gold',
-		'silver',
-		'indigo',
-		'violet',
-		'khaki',
-		'plum',
-		'salmon',
-		'sienna',
-		'chartreuse',
-		'lavenderblush',
-		'lightblue',
-		'lightcoral',
-		'lightgreen',
-		'lightpink',
-		'lightyellow',
-		'darkred',
-		'darkgreen',
-		'darkblue',
-		'darkviolet',
-		'darkorange',
-		'darkcyan',
-		'fuchsia',
-		'gainsboro',
-		'honeydew',
-		'hotpink',
-		'lightgray',
-		'lightseagreen',
-		'lightsalmon',
-		'lightsteelblue',
-		'mediumvioletred',
-		'mediumseagreen',
-		'peachpuff',
-		'powderblue',
-		'seashell',
-		'thistle'
-	];
 
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
+		let initDataOptions = {
+			corordinates: [areaCol],
+			value,
+			checkInputs,
+			min,
+			max,
+			colorPalette,
+			legendType
+		};
 		await data.fetch();
-
-		checkInputs(data, [areaCol]);
-
-		values = $data.map((d) => d[value]);
-
-		//new
-		colorPalette = colorPalette.map((item) => chroma(item).hex());
-
-		if (legendType === 'category') {
-			let uniqueValues = new Set(values);
-			values = [...uniqueValues];
-			let i = 0;
-
-			while (colorPalette.length < values.length) {
-				if (!backupColors[i]) {
-					throw new Error('No more backup colors available.');
-				}
-
-				// Check if the color is not already in colorCategory
-				if (!colorPalette.includes(chroma(backupColors[i]).hex())) {
-					colorPalette.push(chroma(backupColors[i]).hex());
-					i++;
-				} else {
-					i++;
-				}
-			}
-		} else if (legendType === 'scalar') {
-			values.forEach((value) => {
-				if (typeof value !== 'number' && value !== null) {
-					throw new Error('Scalar legend requires numeric values or null.');
-				}
-				if (typeof value === 'number' && isNaN(value)) {
-					throw new Error('Scalar legend requires valid numeric values.');
-				}
-			});
-		}
-		minValue = Math.min(...values);
-		maxValue = Math.max(...values);
-		//bucket legend
-		//conditonal
-		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
-
-		if (legendType) {
-			map.buildLegend(colorPalette, values, minValue, maxValue);
-		}
+		({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
 
 		await processAreas();
 
@@ -364,8 +268,6 @@
 			await data.fetch();
 			await processAreas();
 		})();
-
-	const handleFillColor = map.handleFillColor
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -378,7 +280,10 @@
 			{item}
 			{name}
 			areaOptions={{
-				fillColor: color ?? handleFillColor(item, value, values, colorPalette, colorScale) ?? colorScale(item[value]).hex(),
+				fillColor:
+					color ??
+					map.handleFillColor(item, value, values, colorPalette, colorScale) ??
+					colorScale(item[value]).hex(),
 				fillOpacity: opacity,
 				opacity: opacity,
 				weight: borderWidth,

@@ -7,8 +7,6 @@ import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
 import { uiColours } from '@evidence-dev/component-utilities/colours';
 
-
-
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
 
@@ -96,8 +94,12 @@ export class EvidenceMap {
 	#mapEl;
 
 	/** @type {import('svelte/store').Writable<{ values: string[], colorPalette: string[], minValue: number, maxValue: number }>} */
-	#legendData = writable({});
-
+	#legendData = writable({
+		values: [],
+		colorPalette: [],
+		minValue: 0,
+		maxValue: 0
+	});
 
 	/** Handles the promises associated with the initialization of the map component. */
 	#sharedPromise = sharedPromise();
@@ -528,14 +530,11 @@ export class EvidenceMap {
 				}
 			});
 		}
-		console.log(colorPalette)
-		return values
+		return values;
 	}
 
 	handleFillColor(item, value, values, colorPalette, colorScale) {
 		if (!value) return uiColours.blue700;
-
-		if (!item[value]) return colorPalette[values.indexOf(item[value])] ?? colorScale(item[value]);
 
 		if (item[value]) {
 			if (typeof item[value] === 'string') {
@@ -549,15 +548,35 @@ export class EvidenceMap {
 	//handle legend data
 
 	buildLegend(colorPalette, arrayOfStringValues, minValue, maxValue) {
-		this.#legendData.update((legendData) => {
-			legendData.colorPalette = colorPalette;
-			legendData.arrayOfStringValues = arrayOfStringValues;
-			legendData.minValue = minValue;
-			legendData.maxValue = maxValue;
-			return legendData;
-		});
+		this.#legendData.update((legendData) => ({
+			...legendData, // Keep existing data
+			colorPalette,
+			values: arrayOfStringValues, // Make sure to update this property
+			minValue,
+			maxValue
+		}));
 	}
-	get legendData() {
+
+	get getLegendData() {
 		return readonly(this.#legendData);
+	}
+
+	async initializeData(
+		data,
+		{ corordinates, value, checkInputs, min, max, colorPalette, legendType }
+	) {
+		await data.fetch();
+		checkInputs(data, corordinates);
+		let values = data.map((d) => d[value]);
+		let minValue = Math.min(...values);
+		let maxValue = Math.max(...values);
+		let colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+		colorPalette = colorPalette.map((item) => chroma(item).hex());
+		if (legendType) {
+			values = this.handleLegendValues(colorPalette, values, legendType);
+			this.buildLegend(colorPalette, values, minValue, maxValue);
+		}
+		// Return the values, minValue, and maxValue for sharing with other functions
+		return { values, minValue, maxValue, colorScale, colorPalette };
 	}
 }

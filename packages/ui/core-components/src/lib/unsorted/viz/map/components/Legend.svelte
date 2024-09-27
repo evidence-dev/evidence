@@ -29,14 +29,20 @@
 	/** @type {string | undefined} */
 	let flyDirection = legendPosition === 'topLeft' || legendPosition === 'bottomLeft' ? -150 : 150;
 
-	// assuming map is initialized here
 	const map = getContext(mapContextKey);
-	map.legendData.subscribe((data) => {
-		values = data.arrayOfStringValues;
-		colorPalette = data.colorPalette;
-		minValue = data.minValue;
-		maxValue = data.maxValue;
-	});
+	let legendData;
+
+	$: legendData = map.getLegendData;
+	console.log(map.getLegendData);
+
+	$: {
+		if ($legendData) {
+			values = $legendData.values;
+			colorPalette = $legendData.colorPalette;
+			minValue = $legendData.minValue;
+			maxValue = $legendData.maxValue;
+		}
+	}
 </script>
 
 {#if legendType && values}

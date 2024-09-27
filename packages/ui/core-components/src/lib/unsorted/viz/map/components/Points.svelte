@@ -6,12 +6,10 @@
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import chroma from 'chroma-js';
 	import Point from './Point.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -211,86 +209,24 @@
 		return Math.sqrt((newPoint / maxData) * maxSizeSq);
 	}
 
-	let values, minValue, maxValue, colorScale, sizeExtents, maxData, maxSizeSq;
-
-	// /** @type {string[]} */
-	// let backupColors = [
-	// 	'red',
-	// 	'blue',
-	// 	'green',
-	// 	'purple',
-	// 	'orange',
-	// 	'pink',
-	// 	'brown',
-	// 	'teal',
-	// 	'cyan',
-	// 	'black',
-	// 	'magenta',
-	// 	'navy',
-	// 	'olive',
-	// 	'lavender',
-	// 	'crimson',
-	// 	'turquoise',
-	// 	'beige',
-	// 	'aqua',
-	// 	'coral',
-	// 	'gold',
-	// 	'silver',
-	// 	'indigo',
-	// 	'violet',
-	// 	'khaki',
-	// 	'plum',
-	// 	'salmon',
-	// 	'sienna',
-	// 	'chartreuse',
-	// 	'lavenderblush',
-	// 	'lightblue',
-	// 	'lightcoral',
-	// 	'lightgreen',
-	// 	'lightpink',
-	// 	'lightyellow',
-	// 	'darkred',
-	// 	'darkgreen',
-	// 	'darkblue',
-	// 	'darkviolet',
-	// 	'darkorange',
-	// 	'darkcyan',
-	// 	'fuchsia',
-	// 	'gainsboro',
-	// 	'honeydew',
-	// 	'hotpink',
-	// 	'lightgray',
-	// 	'lightseagreen',
-	// 	'lightsalmon',
-	// 	'lightsteelblue',
-	// 	'mediumvioletred',
-	// 	'mediumseagreen',
-	// 	'peachpuff',
-	// 	'powderblue',
-	// 	'seashell',
-	// 	'thistle'
-	// ];
+	let values, colorScale, sizeExtents, maxData, maxSizeSq;
 
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
+		let initDataOptions = {
+			corordinates: [lat, long],
+			value,
+			checkInputs,
+			min,
+			max,
+			colorPalette,
+			legendType
+		};
 		if (data) {
-			await data.fetch();
-			checkInputs(data, [lat, long]);
-			values = $data.map((d) => d[value]);
-			minValue = Math.min(...values);
-			maxValue = Math.max(...values);
-			colorPalette = colorPalette.map((item) => chroma(item).hex());
-			console.log(colorPalette)
-			//bucket legend
-			//conditonal
-			colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
-			if (legendType) {
-				values = map.handleLegendValues(colorPalette, values, legendType)
-				map.buildLegend(colorPalette, values, minValue, maxValue);
-			}
+			({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -347,8 +283,6 @@
 		});
 		setInputDefault(item, name);
 	}
-
-	const handleFillColor = map.handleFillColor
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -359,7 +293,7 @@
 			options={{
 				// kw note:
 				//need to clean this logic
-				fillColor: color ?? handleFillColor(item, value, values, colorPalette, colorScale) ?? colorScale(item[value]).hex(), // Color of the circle
+				fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
 				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
 				fillOpacity: opacity,
 				opacity: opacity,
