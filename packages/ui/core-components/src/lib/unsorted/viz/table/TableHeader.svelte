@@ -10,7 +10,7 @@
 	export let sortable = undefined;
 	export let sort = undefined;
 	export let formatColumnTitles = undefined;
-	export let sortBy = undefined;
+	export let sortObj = undefined;
 	export let wrapTitles = undefined;
 	export let compact = undefined;
 </script>
@@ -87,8 +87,8 @@
 					: formatColumnTitles
 						? safeExtractColumn(column, columnSummary).title
 						: safeExtractColumn(column, columnSummary).id}
-				{#if sortBy.col === column.id}
-					<SortIcon ascending={sortBy.ascending} />
+				{#if sortObj.col === column.id}
+					<SortIcon ascending={sortObj.ascending} />
 				{/if}
 			</th>
 		{/each}

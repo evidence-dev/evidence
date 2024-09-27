@@ -22,7 +22,12 @@
 
 <Story name="Simple Case">
 	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
-	<DataTable {data} />
+	<DataTable {data}/>
+</Story>
+
+<Story name="With Sort">
+	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
+	<DataTable {data} sortBy=fare/>
 </Story>
 
 <Story name="With Search">
@@ -50,11 +55,35 @@
 		`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`,
 		query
 	)}
-	<DataTable {data} title="Flights" search groupBy="regulator">
+	<DataTable {data} title="Flights" search groupBy="regulator" sortBy=regulator sortAsc=true groupsOpen=false>
 		<Column id="id" title="ID" />
 		<Column id="airline" title="Airline" />
 		<Column id="departure_airport" title="Departure Airport" />
 		<Column id="arrival_airport" title="Arrival Airport" />
+	</DataTable>
+</Story>
+
+<Story name="With Group Sorting">
+	{@const data = Query.create(
+		`SELECT 
+			'd' as category, 'xd' as item, 2000 as sales
+			union all
+			select 'd','yd',400
+			union all
+			select 'd','zd',4000
+			union all
+			select 'b','xb',5000			
+			union all
+			select 'b','yb',1			
+			union all
+			select 'b','zb',3
+		`,
+		query
+	)}
+	<DataTable {data} groupBy=category sortBy=sales subtotals=true>
+		<Column id=category/>
+		<Column id=item/>
+		<Column id=sales fmt=usd/>
 	</DataTable>
 </Story>
 

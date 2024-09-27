@@ -43,6 +43,12 @@
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
 
+	// Sort props
+	export let sortBy = undefined;
+	export let sortAsc = false;
+	$: sortAsc = sortAsc === 'true' || sortAsc === true;
+	let initialSortApplied = false;
+
 	export let groupBy = undefined;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
@@ -247,18 +253,20 @@
 	// SORTING
 	// ---------------------------------------------------------------------------------------
 
-	let sortBy = { col: null, ascending: null };
+	let sortObj = sortBy
+		? { col: sortBy, ascending: sortAsc }
+		: { col: null, ascending: null };
 
 	$: sort = (column) => {
-		if (sortBy.col == column) {
-			sortBy.ascending = !sortBy.ascending;
+		if (sortObj.col == column) {
+			sortObj.ascending = !sortObj.ascending;
 		} else {
-			sortBy.col = column;
-			sortBy.ascending = true;
+			sortObj.col = column;
+			sortObj.ascending = sortAsc;
 		}
 
 		// Modifier to sorting function for ascending or descending
-		const sortModifier = sortBy.ascending ? 1 : -1;
+		const sortModifier = sortObj.ascending ? 1 : -1;
 
 		const forceTopOfAscending = (val) =>
 			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
@@ -282,12 +290,12 @@
 	};
 
 	let sortedGroupNames;
-	$: if (groupBy && sortBy.col) {
+	$: if (groupBy && sortObj.col) {
 		// Sorting groups based on aggregated values or group names
 		sortedGroupNames = Object.entries(groupRowData)
 			.sort((a, b) => {
-				const valA = a[1][sortBy.col],
-					valB = b[1][sortBy.col];
+				const valA = a[1][sortObj.col],
+					valB = b[1][sortObj.col];
 				// Use the existing sort logic but apply it to groupRowData's values
 				if (
 					(valA === undefined || valA === null || isNaN(valA)) &&
@@ -295,7 +303,7 @@
 					valB !== null &&
 					!isNaN(valB)
 				) {
-					return -1 * (sortBy.ascending ? 1 : -1);
+					return -1 * (sortObj.ascending ? 1 : -1);
 				}
 				if (
 					(valB === undefined || valB === null || isNaN(valB)) &&
@@ -303,12 +311,12 @@
 					valA !== null &&
 					!isNaN(valA)
 				) {
-					return 1 * (sortBy.ascending ? 1 : -1);
+					return 1 * (sortObj.ascending ? 1 : -1);
 				}
 				if (valA < valB) {
-					return -1 * (sortBy.ascending ? 1 : -1);
+					return -1 * (sortObj.ascending ? 1 : -1);
 				} else if (valA > valB) {
-					return 1 * (sortBy.ascending ? 1 : -1);
+					return 1 * (sortObj.ascending ? 1 : -1);
 				}
 				return 0;
 			})
@@ -318,8 +326,13 @@
 		sortedGroupNames = Object.keys(groupedData).sort();
 	}
 
+	$: if (!initialSortApplied && sortBy) {
+		sort(sortBy); // Automatically sort by the column specified in `sortBy` on load
+		initialSortApplied = true; // Set flag so column click sorting still functions after page load
+	}
+
 	// Reset sort condition when data object is changed
-	$: data, (sortBy = { col: null, ascending: null });
+	$: data, (sortObj = { col: null, ascending: null });
 
 	// ---------------------------------------------------------------------------------------
 	// PAGINATION
@@ -501,7 +514,7 @@
 					{sortable}
 					{sort}
 					{formatColumnTitles}
-					{sortBy}
+					{sortObj}
 					{wrapTitles}
 				/>
 
