@@ -253,9 +253,7 @@
 	// SORTING
 	// ---------------------------------------------------------------------------------------
 
-	let sortObj = sortBy
-		? { col: sortBy, ascending: sortAsc }
-		: { col: null, ascending: null };
+	let sortObj = sortBy ? { col: sortBy, ascending: sortAsc } : { col: null, ascending: null };
 
 	$: sort = (column) => {
 		if (sortObj.col == column) {
