@@ -282,6 +282,8 @@
 			values = $data.map((d) => d[value]);
 			minValue = Math.min(...values);
 			maxValue = Math.max(...values);
+			colorPalette = colorPalette.map((item) => chroma(item).hex());
+			console.log(colorPalette)
 			//bucket legend
 			//conditonal
 			colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);

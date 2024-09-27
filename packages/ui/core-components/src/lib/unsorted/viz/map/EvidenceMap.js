@@ -500,8 +500,6 @@ export class EvidenceMap {
 
 	handleLegendValues(colorPalette, values, legendType) {
 		//determine legend style
-		colorPalette = colorPalette.map((item) => chroma(item).hex());
-		console.log(colorPalette)
 		if (legendType === 'category') {
 			let uniqueValues = new Set(values);
 			values = [...uniqueValues];
