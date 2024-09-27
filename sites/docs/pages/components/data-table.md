@@ -1032,6 +1032,24 @@ Enable sort for each column - click the column title to sort
 
 </PropListing>
 <PropListing
+    name=sortBy
+    options='column name'
+    defaultValue=true
+>
+
+Column to sort by on initial page load
+
+</PropListing>
+<PropListing
+    name=sortAsc
+    options={['true', 'false']}
+    defaultValue=false
+>
+
+Set sort direction for initial page load
+
+</PropListing>
+<PropListing
     name=search
     options={['true', 'false']}
     defaultValue=false
