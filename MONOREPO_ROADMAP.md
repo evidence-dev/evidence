@@ -122,7 +122,8 @@ This is not a comprehensive list of all packages in the monorepo - it does not i
 Provides the only open source driver for Universal SQL, using DuckDB WASM to deliver a fast query layer for NodeJS + Browser environments.
 
 ##### Implementation Notes:
- - `initDB` and `setParquetURLs` should be collapsed into a single function - right now if you don't set the parquet URLs then the database "fails" to initialize in an unclear way
+
+- `initDB` and `setParquetURLs` should be collapsed into a single function - right now if you don't set the parquet URLs then the database "fails" to initialize in an unclear way
 
 This functionality was previously provided by `@evidence-dev/universal-sql`
 
