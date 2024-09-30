@@ -10,7 +10,7 @@ if (dev) {
 		batchUp((insertedQueries) => {
 			allQueries.update(($allQueries) => {
 				for (const query of insertedQueries) {
-					if (Query.isQuery(query)) $allQueries.set(query.hash, query);
+					if (Query.isQuery(query.proxied)) $allQueries.set(query.proxied.hash, query.proxied);
 				}
 				return $allQueries;
 			});

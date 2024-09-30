@@ -10,7 +10,7 @@ if (dev) {
 		batchUp((insertedQueries) => {
 			activeQueries.update(($activeQueries) => {
 				for (const query of insertedQueries) {
-					if (Query.isQuery(query)) $activeQueries.set(query.id, query);
+					if (Query.isQuery(query.proxied)) $activeQueries.set(query.proxied.id, query.proxied);
 				}
 				return $activeQueries;
 			});
