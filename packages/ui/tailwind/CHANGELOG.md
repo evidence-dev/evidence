@@ -1,5 +1,24 @@
 # @evidence-dev/tailwind
 
+## 2.1.4
+
+### Patch Changes
+
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+
+## 2.1.3
+
+### Patch Changes
+
+- 952abbd16: Removed build step
+  Theme support
+- Updated dependencies [952abbd16]
+- Updated dependencies [c8315da2e]
+- Updated dependencies [06313c848]
+  - @evidence-dev/sdk@1.4.2
+
 ## 2.1.2
 
 ### Patch Changes

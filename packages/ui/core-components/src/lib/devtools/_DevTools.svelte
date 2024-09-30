@@ -75,6 +75,9 @@
 							class:odd:bg-red-300={query.error}
 							class:bg-red-400={query.error}
 							class:hover:bg-red-500={query.error}
+							class:odd:bg-yellow-300={query.opts?.noResolve}
+							class:bg-yellow-400={query.opts?.noResolve}
+							class:hover:bg-yellow-500={query.opts?.noResolve}
 							on:click={() => (selectedQuery = query)}
 						>
 							<p class="w-full text-left truncate">{query.id}</p>

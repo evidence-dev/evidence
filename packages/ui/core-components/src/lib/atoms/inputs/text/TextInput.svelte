@@ -21,8 +21,8 @@
 	/** @type {string} */
 	export let placeholder = 'Type to search';
 
-	/** @type {string} */
-	export let defaultValue = '';
+	/** @type {string | undefined} */
+	export let defaultValue = undefined;
 
 	/** @type {boolean} */
 	export let unsafe = false;

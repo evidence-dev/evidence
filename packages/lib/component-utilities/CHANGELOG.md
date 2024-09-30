@@ -1,5 +1,23 @@
 # @evidence-dev/component-utilities
 
+## 3.2.14
+
+### Patch Changes
+
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+
+## 3.2.13
+
+### Patch Changes
+
+- c8315da2e: Update svelte to resolve security vulnerability
+- Updated dependencies [952abbd16]
+- Updated dependencies [c8315da2e]
+- Updated dependencies [06313c848]
+  - @evidence-dev/sdk@1.4.2
+
 ## 3.2.12
 
 ### Patch Changes

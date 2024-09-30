@@ -372,8 +372,17 @@ ${this.text.trim()}
 		);
 		return resolved;
 	};
-	fetch = async () => {
-		return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
+	fetch = () => {
+		const cols = this.#fetchColumns();
+		if (
+			cols instanceof Promise &&
+			/* noResolve will always return a promise, even when fetch is synchronous */
+			!this.opts.noResolve
+		) {
+			return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
+		}
+		this.#fetchData();
+		return this.value;
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -1060,12 +1069,13 @@ DESCRIBE ${this.text.trim()}
 	///////////////////////
 	/**
 	 * @param {string} label
-	 * @param {string} message
+	 * @param {string | any} [message]
 	 * @param  {...any} args
 	 */
 	static #debugStatic = (label, message, ...args) => {
 		const prefix = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
-		log.debug(`${prefix}\n | ${message}`, args);
+		if (typeof message === 'string') log.debug(`${prefix}\n | ${message}`, args);
+		else log.debug(`${prefix}\n | `, [message, ...args]);
 	};
 
 	/**
@@ -1192,6 +1202,7 @@ DESCRIBE ${this.text.trim()}
 			return;
 		}
 
+		// TODO: Does this make sense?
 		if (initialData) {
 			this.#debug('initial data', 'Created with initial data', initialData);
 

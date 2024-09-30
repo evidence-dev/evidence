@@ -94,6 +94,17 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	let __${id}HasUnresolved = __${id}Manager.hasUnset;
 	$: __${id}HasUnresolved = __${id}Manager.hasUnset;
 
+	// keep initial state around until after the query has resolved once
+	// let __${id}InitialFactory = false;
+	// $: if (__${id}HasUnresolved || !__${id}InitialFactory) {
+	// 	if (!__${id}HasUnresolved) {
+	// 		__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates });
+	// 		__${id}InitialFactory = true;
+	// 	}
+	// } else {
+	// 	__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
+	// }
+
 	if (browser) {
 		// Data came from SSR
 		if (data.${id}) {
@@ -105,18 +116,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			if (data.${id}_columns) {
 				${id}InitialStates.knownColumns = data.${id}_columns;
 			}
-		}
-	} else {
-		// On server
-		try {
-			if (!__${id}HasUnresolved)
-				// @ts-expect-error
-				${id}InitialStates.initialData = queryFunc(__${id}Text, {query_name: '${id}'});
-		} catch (e) {
-			console.error(e);
-			if (import.meta.env.VITE_BUILD_STRICT) throw e;
-			if (!(e instanceof Error)) ${id}InitialStates.initialError = new Error(e?.toString());
-			else ${id}InitialStates.initialError = e;
 		}
 	}
 			`;
@@ -186,7 +185,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		import { browser, dev } from "$app/environment";
 		import { profile } from '@evidence-dev/component-utilities/profile';
-		import debounce from 'debounce';
 		import { Query, hasUnsetValues } from '@evidence-dev/sdk/usql';
 		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 

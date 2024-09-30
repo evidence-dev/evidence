@@ -102,7 +102,6 @@ export const load = async ({ fetch, route, params, url }) => {
 
 	/** @type {App.PageData["data"]} */
 	let data = {};
-	const { inputs = {} } = dummy_pages.get(url.pathname) ?? {};
 
 	const is_dummy_page = dummy_pages.has(url.pathname);
 	if ((dev || building) && !browser && !is_dummy_page) {

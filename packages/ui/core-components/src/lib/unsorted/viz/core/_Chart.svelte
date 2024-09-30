@@ -56,9 +56,10 @@
 	// then we throw if the fallback column is now missing.
 
 	// This is a hack to get around the above
-	const ySet = y ? true : false;
+	// Reactively updated below to prevent circular reactivity
+	let ySet = y ? true : false;
 	// const y2Set = y2 ? true : false;
-	const xSet = x ? true : false;
+	let xSet = x ? true : false;
 
 	export let swapXY = false; // Flipped axis chart
 	$: if (swapXY === 'true' || swapXY === true) {
@@ -247,6 +248,8 @@
 			inputCols = [];
 			optCols = [];
 			uColName = [];
+			ySet = y ? true : false;
+			xSet = x ? true : false;
 
 			checkInputs(data); // check that dataset exists
 

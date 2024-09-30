@@ -1,5 +1,19 @@
 # @evidence-dev/preprocess
 
+## 5.2.2
+
+### Patch Changes
+
+- 71a20080c: Reactivity improvements
+
+## 5.2.1
+
+### Patch Changes
+
+- 0a0695588: fix query compilation for queries that include String.prototype.replace special strings
+- c8315da2e: Update svelte to resolve security vulnerability
+- 06313c848: fix prerendered arrow files not loading
+
 ## 5.2.0
 
 ### Minor Changes
