@@ -13,8 +13,8 @@
 
 ### Goals:
 
-This document outlines the eventual structure for the Evidence monorepo we would like to reach.
-It is outlined with the following goals:
+This document outlines the target structure for the Evidence monorepo.
+The target structure has the following goals:
 
 - Clear definition of what functionality should live where
 - Good separation of concerns
@@ -121,6 +121,9 @@ This is not a comprehensive list of all packages in the monorepo - it does not i
 
 Provides the only open source driver for Universal SQL, using DuckDB WASM to deliver a fast query layer for NodeJS + Browser environments.
 
+##### Implementation Notes:
+ - `initDB` and `setParquetURLs` should be collapsed into a single function - right now if you don't set the parquet URLs then the database "fails" to initialize in an unclear way
+
 This functionality was previously provided by `@evidence-dev/universal-sql`
 
 ##### Does:
@@ -210,7 +213,7 @@ Responsible for encapsulating all Evidence framework logic, contains the needed 
 - Library code for interacting with USQL
 - `Query`, `Metric`, etc.
 
-###### `@evidence-dev/sdk/logging`
+###### `@evidence-dev/sdk/logger`
 
 - Provide functions for error, warn, log, and debug
 - Provide hooks to integrate logs into Evidence UIs (e.g. a log panel in VS Code)
