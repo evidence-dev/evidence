@@ -1340,11 +1340,18 @@ DESCRIBE ${this.text.trim()}
 	/// < QueryBuilder Interface > ///
 	//////////////////////////////////
 	/** @param {string} filterStatement */
-	where = (filterStatement) =>
-		Query.create(this.#query.clone().where(taggedSql`${filterStatement}`), this.#executeQuery, {
-			knownColumns: this.#columns,
-			noResolve: this.#opts.noResolve
-		});
+	where = (filterStatement) => {
+		const output = Query.create(
+			this.#query.clone().where(taggedSql`${filterStatement}`),
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				noResolve: this.#opts.noResolve
+			}
+		);
+		output.__dag.registerDependency(this.__dag);
+		return output;
+	};
 
 	/**
 	 * Attaches an `ordinal` column to the query based on some window statement
@@ -1357,10 +1364,12 @@ DESCRIBE ${this.text.trim()}
 		newQ.select({
 			ordinal: taggedSql`row_number() over (${windowStatement})`
 		});
-		return Query.create(newQ, this.#executeQuery, {
+		const output = Query.create(newQ, this.#executeQuery, {
 			...this.#inheritableOpts,
 			knownColumns: this.#columns
 		});
+		output.__dag.registerDependency(this.__dag);
+		return output;
 	};
 
 	/**
@@ -1416,31 +1425,45 @@ DESCRIBE ${this.text.trim()}
 				...this.#inheritableOpts
 			}
 		);
+		output.__dag.registerDependency(this.__dag);
 		return output;
 	};
 
 	/** @param {number} limit */
-	limit = (limit) =>
-		Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
+	limit = (limit) => {
+		const output = Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
+		output.__dag.registerDependency(this.__dag);
+		return output;
+	};
 
 	/** @param {number} offset */
-	offset = (offset) =>
-		Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
+	offset = (offset) => {
+		const output = Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
+		output.__dag.registerDependency(this.__dag);
+		return output;
+	};
 	/**
 	 * @param {number} offset
 	 * @param {number} limit
 	 */
-	paginate = (offset, limit) =>
-		Query.create(this.#query.clone().offset(offset).limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
-		});
+	paginate = (offset, limit) => {
+		const output = Query.create(
+			this.#query.clone().offset(offset).limit(limit),
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				...this.#inheritableOpts
+			}
+		);
+		output.__dag.registerDependency(this.__dag);
+		return output;
+	};
 
 	/**
 	 * @param {string[]} columns
@@ -1452,10 +1475,13 @@ DESCRIBE ${this.text.trim()}
 		if (withRowCount) query.select({ rows: qCount('*') });
 		query.$groupby(columns);
 
-		return Query.create(query, this.#executeQuery, {
+		const output = Query.create(query, this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
+		output.__dag.registerDependency(this.__dag);
+
+		return output;
 	};
 
 	/**
