@@ -24,6 +24,24 @@ group by all
 </Grid>
 ```
 
+## Group Component
+
+To include multiple items inside one grid cell, use the `Group` component to wrap the items you want to include in that cell.
+
+For example:
+
+```html
+<Grid cols=2>
+   <LineChart/>
+   <Group>
+      Some text
+      <BarChart/>
+   </Group>
+</Grid>
+```
+
+This will stack "some text" above the bar chart, rather than giving it it's own cell.
+
 ## Options
 
 <PropListing

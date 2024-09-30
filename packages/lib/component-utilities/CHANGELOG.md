@@ -1,5 +1,50 @@
 # @evidence-dev/component-utilities
 
+## 3.2.14
+
+### Patch Changes
+
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+
+## 3.2.13
+
+### Patch Changes
+
+- c8315da2e: Update svelte to resolve security vulnerability
+- Updated dependencies [952abbd16]
+- Updated dependencies [c8315da2e]
+- Updated dependencies [06313c848]
+  - @evidence-dev/sdk@1.4.2
+
+## 3.2.12
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+  - @evidence-dev/sdk@1.4.1
+
+## 3.2.11
+
+### Patch Changes
+
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/sdk@1.4.0
+
+## 3.2.10
+
+### Patch Changes
+
+- 221e4261b: Add hmr error handling for reserved words query names
+- Updated dependencies [f7253ad4b]
+  - @evidence-dev/sdk@1.3.10
+
 ## 3.2.9
 
 ### Patch Changes

@@ -3,10 +3,9 @@
 </script>
 
 <script>
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { getContext } from 'svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputs = getInputContext();
 
 	/////
 	// Component Things
@@ -24,30 +23,38 @@
 	/** @type {string} */
 	export let placeholder = 'Type to search';
 
-	/** @type {string} */
-	export let defaultValue = '';
+	/** @type {string | undefined} */
+	export let defaultValue = undefined;
 
 	/** @type {boolean} */
 	export let unsafe = false;
 	$: unsafe = unsafe === true || unsafe === 'true';
 
 	let touched = false;
+
+	const setInputStore = () => {
+		let sqlString = value;
+		if (!unsafe) sqlString = sqlString.replaceAll("'", "''");
+		$inputs[name] = {
+			toString() {
+				return sqlString;
+			},
+			sql: `'${sqlString}'`,
+			search: (col) => `damerau_levenshtein(${col}, '${sqlString}')`
+		};
+	};
+
 	$: {
 		if (value) touched = true;
 		if (touched) {
-			let sqlString = value;
-			if (!unsafe) sqlString = sqlString.replaceAll("'", "''");
-			$inputs[name] = {
-				toString() {
-					return sqlString;
-				},
-				sql: `'${sqlString}'`,
-				search: (col) => `damerau_levenshtein(${col}, '${sqlString}')`
-			};
+			setInputStore();
 		}
 	}
 
 	let value = defaultValue;
+	if (typeof defaultValue !== 'undefined') {
+		setInputStore();
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>

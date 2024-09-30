@@ -4,7 +4,7 @@ const getPrismLangs = require('./get-prism-langs.cjs');
  *
  * @param {string} code
  * @param {string} lang
- * @param {string | undefined} meta
+ * @param {string} [meta]
  * @returns
  */
 function highlighter(code, lang, meta) {
