@@ -65,6 +65,24 @@ export class RecursiveProxyPrimitive {
 		this.#parent = parent;
 	};
 
+	/** @type {Set<string | symbol>} */
+	#ignoredKeys = new Set();
+
+	/**
+	 * @param {string | symbol} key
+	 * @returns {key is keyof typeof this}
+	 */
+	#checkIgnoredKey = (key) => {
+		return this.#ignoredKeys.has(key);
+	};
+
+	/**
+	 * @param {string|symbol} key
+	 */
+	ignoreKey = (key) => {
+		this.#ignoredKeys.add(key);
+	};
+
 	/**
 	 * @param {import("./types.js").RecursiveProxyPrimitiveOptions} [options]
 	 * @returns
@@ -110,7 +128,7 @@ export class RecursiveProxyPrimitive {
 							this.#internalState = {};
 						}
 					};
-				if (hasKey(prop)) {
+				if (hasKey(prop) || this.#checkIgnoredKey(prop)) {
 					return this[prop];
 				}
 				if (prop.toString().startsWith('#')) {
@@ -124,7 +142,9 @@ export class RecursiveProxyPrimitive {
 				return this.#internalState[prop];
 			},
 			set: (_, prop, value) => {
-				if (hasKey(prop) && !(this[prop] instanceof this.ChildConstructor)) {
+				const isOwnValue = hasKey(prop) && !(this[prop] instanceof this.ChildConstructor);
+				const isIgnored = this.#checkIgnoredKey(prop);
+				if (isOwnValue || isIgnored) {
 					this[prop] = value;
 					return true;
 				}
