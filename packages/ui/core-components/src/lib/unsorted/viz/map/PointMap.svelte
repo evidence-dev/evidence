@@ -60,8 +60,8 @@
 	export let legendPosition = 'topLeft';
 	/** @type {string | undefined} */
 	export let legendType = undefined;
-	/** @type {string} */
-	export let legendTitle = 'Legend';
+	/** @type {string | undefined} */
+	export let legendFmt = undefined;
 
 	const chartType = 'Point Map';
 
@@ -76,7 +76,7 @@
 	<div class="relative">
 		<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
 			<Points data={loaded} {lat} {long} {colorPalette} {legendType} {...$$restProps} />
-			<Legend {legendPosition} {legendType} {legendTitle} />
+			<Legend {legendPosition} {legendType} {legendFmt} />
 		</BaseMap>
 	</div>
 </QueryLoad>

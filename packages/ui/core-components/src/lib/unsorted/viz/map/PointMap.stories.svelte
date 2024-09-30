@@ -96,13 +96,14 @@
 		colorPalette={['orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
-			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
 		]}
 	/>
 	<div class="h-32"></div>
 	<PointMap
 		data={grouped_locations}
+		legendFmt="usd"
 		legendType="scalar"
 		lat="lat"
 		long="long"
