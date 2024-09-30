@@ -107,6 +107,13 @@ export class DagNode {
 		return true;
 	};
 
+	/** @param {DagNode} dep */
+	deregisterDependency = (dep) => {
+		this.parents.delete(dep);
+		dep.children.delete(this);
+		this.storeMixin.publish(this);
+	};
+
 	deregisterDependencies = () => {
 		this.parents.forEach((parent) => parent.children.delete(this));
 		this.parents.clear();
