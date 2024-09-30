@@ -98,20 +98,24 @@
 		{
 			sqlFragmentFactory: () => {
 				return `/* Use \${inputs.${name}.value} to reference the value of your dropdown */`;
-			}
+			},
+			dataSource: data
 		},
 		{
-			rawValues: Array.isArray(defaultValue) ? defaultValue : [defaultValue]
+			rawValues: []
 		}
 	);
 
+	$: input.updateDatasource(query);
+
+	const defaultStrings = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
 	// Extract initial state
 	const inputRawValues = input.__input.get('rawValues');
-	const initial = Array.isArray(inputRawValues) ? inputRawValues : [];
+	const initial = Array.isArray(inputRawValues) ? inputRawValues : []; // it is assumed that these are value / label / selected pairs
 
 	const state = dropdownOptionStore({
 		multiselect: multiple,
-		defaultValues: input.__input.get('rawValues'),
+		defaultValues: defaultStrings,
 		initialOptions: initial,
 		noDefault,
 		selectAllByDefault: toBoolean(selectAllByDefault)

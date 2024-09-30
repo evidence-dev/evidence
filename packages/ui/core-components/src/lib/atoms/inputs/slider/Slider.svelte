@@ -65,7 +65,11 @@
 
 	/** @type {number} */
 	export let defaultValue = 0;
-	const input = useInput(name, { debouncePeriod: 200 }, { value: defaultValue });
+	const input = useInput(
+		name,
+		{ debouncePeriod: 200, sqlFragmentFactory: (myInput) => `${myInput.value}` },
+		{ value: defaultValue }
+	);
 
 	/** @type {[number]} */
 	let value = [$input ?? defaultValue];

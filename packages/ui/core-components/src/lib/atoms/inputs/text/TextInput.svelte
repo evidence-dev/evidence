@@ -38,7 +38,7 @@
 	);
 
 	$: {
-		let _value = value;
+		let _value = value ?? '';
 		if (!unsafe) _value = _value.replaceAll("'", "''");
 		let label = value;
 		input.update(_value, label);
