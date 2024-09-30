@@ -8,7 +8,7 @@ SELECT distinct category from orders;
 SELECT DISTINCT 
     zipcode
 FROM orders
-WHERE category = '${inputs.selectedCategory}'
+WHERE category = '${inputs.selectedCategory.value}'
 ```
 
 
