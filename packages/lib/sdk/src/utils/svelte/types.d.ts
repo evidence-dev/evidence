@@ -1,4 +1,5 @@
 import type { Input } from '../inputs/Input.js';
+import type { WithDag } from '../dag/types.d.ts';
 
 type UseSqlFactory = Symbol;
 
@@ -11,4 +12,6 @@ export type InputManager = {
 	 * explicitly passed in.
 	 */
 	UseSqlFactory: UseSqlFactory;
+
+	updateDatasource: (data: WithDag) => void;
 };

@@ -3,6 +3,7 @@ import { EvidenceError } from '../../../lib/EvidenceError.js';
 import { getInputContext } from '../inputs.js';
 import { storeMixin } from '../../../lib/store-helpers/storeMixin.js';
 import { PrimitiveValue } from '../../recursive-proxy/RecursiveProxyPrimitive.js';
+import { DagNode } from '../../dag/DagNode.js';
 
 export const UseSqlFactory = Symbol('UseSqlFactory');
 
@@ -20,9 +21,11 @@ export const useInput = (name, options, initialState) => {
 		// TODO: Better error message
 		throw new EvidenceError('Failed to create input');
 	}
+	input.ignoreKey('initialized');
 
 	if (!input.initialized) {
 		input.initialized = true;
+
 		if (typeof initialState?.value !== 'undefined') {
 			input.setValue(initialState?.value);
 		}
@@ -58,6 +61,11 @@ export const useInput = (name, options, initialState) => {
 		publish(input[PrimitiveValue]);
 	};
 
+	let source = options?.dataSource;
+	if (source && DagNode.isDagNode(source?.__dag)) {
+		input.__dag.registerDependency(source.__dag);
+	}
+
 	const { subscribe, publish } = storeMixin();
 	publish(input[PrimitiveValue]);
 
@@ -68,6 +76,12 @@ export const useInput = (name, options, initialState) => {
 		 */
 		update: options?.debouncePeriod ? debounce(updateFn, options.debouncePeriod) : updateFn,
 		subscribe,
-		UseSqlFactory: UseSqlFactory
+		UseSqlFactory: UseSqlFactory,
+		/** @param {import("../../dag/types.js").WithDag} data */
+		updateDatasource: (data) => {
+			if (source) input.__dag.deregisterDependency(source.__dag);
+			source = data;
+			input.__dag?.registerDependency(source.__dag);
+		}
 	};
 };
