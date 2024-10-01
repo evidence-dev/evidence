@@ -25,9 +25,6 @@ export async function buildMultipartParquet(
 	outputFilename,
 	batchSize = 1000000
 ) {
-	let batchNum = 0;
-	const outputSubpath = outputFilename.split('.parquet')[0];
-	let tmpFilenames = [];
 	let rowCount = 0;
 
 	const db = await Database.create(':memory:');
@@ -36,20 +33,15 @@ export async function buildMultipartParquet(
 
 	const flush = async (results) => {
 		const IPC = jsToIPC(results, columns);
+
 		await db.register_buffer('data', [IPC], true);
-
-		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
-		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
-		// look into COPY (FROM '/tmp/place.parquet' UNION ALL (select 10)) TO '/tmp/place.parquet';
-		await db.all(
-			`COPY data TO '${tempFilename.replaceAll("'", "''")}' (FORMAT 'PARQUET', CODEC 'uncompressed')`
-		);
-
+		await db.all(`
+			CREATE TABLE IF NOT EXISTS accum AS SELECT * FROM data LIMIT 0;
+			INSERT INTO accum SELECT * FROM data;
+		`);
 		await db.unregister_buffer('data');
 
-		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
-		batchNum++;
 	};
 
 	if (typeof data === 'function') data = data();
@@ -75,19 +67,14 @@ export async function buildMultipartParquet(
 			// If the array is longer than the batch size; it gets chunked
 			for (const batch of chunk(results, batchSize)) {
 				await flush(batch);
-				}
 			}
 		}
+	}
 
 	const outputFilepath = path.join(outDir, outputFilename);
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
-	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
-
-	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
-	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
-
-	await db.all(copy);
+	await db.all(`COPY accum TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`);
 
 	await fs.chmod(outputFilepath, 0o644);
 
@@ -122,10 +109,6 @@ export async function buildMultipartParquet(
 				)}mb uncompressed. This may cause client-side performance issues.`
 			)
 		);
-	}
-
-	for (const tmpFile of tmpFilenames) {
-		await fs.rm(tmpFile, { force: true });
 	}
 	await db.close();
 	return rowCount;
