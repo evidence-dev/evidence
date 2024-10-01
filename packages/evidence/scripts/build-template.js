@@ -121,6 +121,9 @@ fsExtra.outputFileSync(
 					if (warning.code === 'EVAL') return;
 					warn(warning);
 				}
+			},
+			dynamicImportVars: {
+				exclude: devtoolsOnlyDeps
 			}
 		},
 		customLogger: logger
