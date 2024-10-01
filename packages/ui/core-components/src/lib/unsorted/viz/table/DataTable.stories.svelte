@@ -152,7 +152,8 @@
 	{@const data = Query.create(
 		`
 		SELECT 'Internal' as type, '?bingbong=true' as link UNION ALL
-		SELECT 'External' as type, 'https://example.com' as link
+		SELECT 'External' as type, 'https://example.com' as link UNION ALL
+		SELECT 'No link' as type, null as link
 		`,
 		query
 	)}

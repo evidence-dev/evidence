@@ -55,7 +55,7 @@
 {#each displayedData as row, i}
 	<tr
 		class:shaded-row={rowShading && i % 2 === 1}
-		class:row-link={link != undefined}
+		class:row-link={link && row[link]}
 		on:mouseover={() => preloadLink(row)}
 		on:focus={() => preloadLink(row)}
 		on:click={() => navigateToLink(row)}
