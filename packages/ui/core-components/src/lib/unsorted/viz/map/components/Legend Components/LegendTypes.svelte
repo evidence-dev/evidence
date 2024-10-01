@@ -17,15 +17,16 @@
 </script>
 
 <div
-	class="pl-2 pr-2 pb-2"
+	class="w-full"
 	transition:slide={{
 		duration: 300,
 		delay: 50,
+		axis: legendType === 'scalar' ? 'x' : 'y',
 		easing: cubicInOut
 	}}
 >
 	{#if legendType === 'scalar'}
-		<div class="flex">
+		<div class="flex w-48 mr-2">
 			<span
 				style="background: {colorPalette
 					? `linear-gradient(to right, ${colorPalette.join(', ')})`
@@ -41,10 +42,13 @@
 			</span>
 		</div>
 	{:else if legendType === 'category'}
-		<div class="overflow-y-auto max-h-52">
+		<div class="overflow-y-auto max-h-60 mb-1 ml-2 pr-2 max-w-40">
 			{#each colorPalette as color, i}
 				<div class="flex items-center">
-					<span class="inline-block h-2 rounded-full min-w-2" style="background-color: {color}" />
+					<span
+						class="inline-block h-2 rounded-full min-w-2 ml-[3px]"
+						style="background-color: {color}"
+					/>
 					<span class="inline-block ml-2 truncate">{values[i] || 'No value'} </span>
 				</div>
 			{/each}

@@ -2,11 +2,14 @@
 	/** @type {boolean} */
 	export let hideLegend = false;
 	export let handleLegendClick;
+
+	/** @type {string | undefined} */
+	export let legendType = undefined;
 </script>
 
-<div class="pl-2 pr-2 pb-2">
+<div class="h-full">
 	<button
-		class="flex items-center"
+		class="flex items-center {legendType === 'scalar' ? 'h-10 px-[2.9px]' : 'w-40 h-5 ml-2'}"
 		on:click={handleLegendClick}
 		on:dblclick={(e) => e.stopPropagation()}
 	>
@@ -26,6 +29,5 @@
 		>
 			<polyline points="15 18 9 12 15 6" />
 		</svg>
-		<span class="text-xs">{hideLegend ? 'Show Legend' : 'Hide Legend'}</span>
 	</button>
 </div>

@@ -53,9 +53,14 @@
 		class="absolute {positions[legendPosition] ?? 'top-3 left-[-9px]'} z-[500]"
 		on:wheel={(e) => e.stopPropagation()}
 	>
-		<div class="m-6 border border-gray-300 bg-gray-100 pt-2 overflow-hidden w-28 legend-font">
+		<div
+			class="m-6 border border-gray-300 bg-gray-100 overflow-hidden legend-font w-fit max-w-96 items-center {legendType ===
+			'scalar'
+				? 'flex'
+				: ''}"
+		>
 			<!-- button container -->
-			<LegendIcons {hideLegend} {handleLegendClick} />
+			<LegendIcons {hideLegend} {handleLegendClick} {legendType} />
 			{#if !hideLegend}
 				<!-- legend container -->
 				<LegendTypes {legendType} {values} {colorPalette} {minValue} {maxValue} {legendFmt} />

@@ -43,7 +43,7 @@
 			WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
 			WHEN id BETWEEN 15 AND 19 THEN 'Shops'
 			WHEN id BETWEEN 20 AND 24 THEN 'Bars'
-			WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+			WHEN id BETWEEN 25 AND 29 THEN 'Entertainment And Nightlife'
 			END AS Category
 	FROM la_locations`,
 		query
@@ -183,6 +183,7 @@
 <Story name="Cybersan point maps" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
 		data={cybersan_grouped_locations}
+		legendPosition="topLeft"
 		legendType="category"
 		lat="lat"
 		long="long"
