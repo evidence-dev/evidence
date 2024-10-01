@@ -5,11 +5,14 @@
 
 	/** @type {string | undefined} */
 	export let legendType = undefined;
+	/** @type {number} */
+	export let setWidth = 0;
 </script>
 
 <div class="h-full">
 	<button
-		class="flex items-center {legendType === 'scalar' ? 'h-10 px-[2.9px]' : 'w-40 h-5 ml-2'}"
+		style={legendType === 'category' ? `width: ${setWidth}px;` : ''}
+		class="flex items-center {legendType === 'scalar' ? 'h-10 px-[2.9px]' : `h-5 ml-2`}"
 		on:click={handleLegendClick}
 		on:dblclick={(e) => e.stopPropagation()}
 	>
