@@ -10,20 +10,6 @@ const path = require('path');
 const fs = require('fs/promises');
 
 /**
- * Converts BigInt values to Numbers in an object.
- * @param {Record<string, unknown>} obj - The input object with potential BigInt values.
- * @returns {Record<string, unknown>} - The object with BigInt values converted to Numbers.
- */
-function standardizeRow(obj) {
-	for (const key in obj) {
-		if (typeof obj[key] === 'bigint') {
-			obj[key] = Number(obj[key]);
-		}
-	}
-	return obj;
-}
-
-/**
  *
  * @param {unknown} data
  * @returns {EvidenceType | undefined}
@@ -160,7 +146,6 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 		mapResultsToEvidenceColumnTypes:
 			column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
-		standardizeRow,
 		closeConnection: () => db.close()
 	});
 	if (column_types != null) {
