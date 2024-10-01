@@ -1,6 +1,4 @@
 <script>
-	import { slide } from 'svelte/transition';
-	import { cubicInOut } from 'svelte/easing';
 	import { fmt } from '@evidence-dev/component-utilities/formatting';
 	/** @type {string | undefined} */
 	export let legendType = undefined;
@@ -14,19 +12,12 @@
 	export let maxValue;
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
+	export let hideLegend = false;
 </script>
 
-<div
-	class="w-full"
-	transition:slide={{
-		duration: 300,
-		delay: 50,
-		axis: legendType === 'scalar' ? 'x' : 'y',
-		easing: cubicInOut
-	}}
->
-	{#if legendType === 'scalar'}
-		<div class="flex w-48 mr-2">
+{#if legendType === 'scalar'}
+	<div class="{hideLegend ? 'w-0' : 'w-48'} transition-all duration-300 ease-in-out">
+		<div class="flex w-48 mr-2 pr-2">
 			<span
 				style="background: {colorPalette
 					? `linear-gradient(to right, ${colorPalette.join(', ')})`
@@ -41,17 +32,21 @@
 				>
 			</span>
 		</div>
-	{:else if legendType === 'category'}
-		<div class="overflow-y-auto max-h-60 mb-1 ml-2 pr-2 max-w-40">
-			{#each colorPalette as color, i}
-				<div class="flex items-center">
-					<span
-						class="inline-block h-2 rounded-full min-w-2 ml-[3px]"
-						style="background-color: {color}"
-					/>
-					<span class="inline-block ml-2 truncate">{values[i] || 'No value'} </span>
-				</div>
-			{/each}
-		</div>
-	{/if}
-</div>
+	</div>
+{:else if legendType === 'category'}
+	<div
+		class="overflow-y-auto max-h-60 ml-2 pr-2 max-w-40 min-w-24 {hideLegend
+			? 'max-h-0'
+			: 'max-h-60'} transition-[max-height] duration-300 ease-in-out"
+	>
+		{#each colorPalette as color, i}
+			<div class="flex items-center">
+				<span
+					class="inline-block h-2 rounded-full min-w-2 ml-[3px]"
+					style="background-color: {color}"
+				/>
+				<span class="inline-block ml-2 truncate">{values[i] || 'No value'} </span>
+			</div>
+		{/each}
+	</div>
+{/if}
