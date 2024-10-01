@@ -7,12 +7,21 @@
 	import ButtonGroup from '../../../atoms/inputs/button-group/ButtonGroup.svelte';
 	import ButtonGroupItem from '../../../atoms/inputs/button-group/ButtonGroupItem.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { expect, userEvent, within } from '@storybook/test';
+	import { expect, userEvent, within, fn } from '@storybook/test';
+
+	const mockGoto = fn();
 
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Viz/Datatable',
-		component: DataTable
+		component: DataTable,
+		parameters: {
+			sveltekit_experimental: {
+				navigation: {
+					goto: mockGoto
+				}
+			}
+		}
 	};
 </script>
 
@@ -117,4 +126,35 @@
 	>
 		<h2>Bottom of page</h2>
 	</div>
+</Story>
+
+<Story
+	name="Row links"
+	parameters={{
+		chromatic: {
+			// Since we navigate to example.com we need to disable snapshots
+			disableSnapshot: true
+		}
+	}}
+	play={async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		// This matches the devtools too, so we have to use index 1
+		const internals = await canvas.findAllByText('?bingbong=true', { exact: true });
+		const internal = internals[1];
+		await userEvent.click(internal);
+		expect(mockGoto).toHaveBeenCalledTimes(1);
+		expect(mockGoto).toHaveBeenCalledWith('?bingbong=true');
+
+		// TODO testing the external link is tricky because it navigates away from the storybook
+	}}
+>
+	{@const data = Query.create(
+		`
+		SELECT 'Internal' as type, '?bingbong=true' as link UNION ALL
+		SELECT 'External' as type, 'https://example.com' as link
+		`,
+		query
+	)}
+	<DataTable {data} link="link" />
 </Story>
