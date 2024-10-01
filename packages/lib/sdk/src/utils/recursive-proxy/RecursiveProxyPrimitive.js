@@ -210,8 +210,16 @@ export class RecursiveProxyPrimitive {
 		return this.#value;
 	}
 	get [MarkdownEscape]() {
+		if (typeof this.#value === 'undefined') {
+			return Boolean(
+				Object.keys(this.#internalState).length
+			)
+		}
 		if (typeof this.#value !== 'string' && typeof this.#value !== 'undefined') {
 			return this.#value;
+		}
+		if (typeof this.#value === 'string') {
+			return this.#value
 		}
 		return this.toString();
 	}

@@ -2,7 +2,8 @@ import { describe, expect, it, vi } from 'vitest';
 import {
 	RecursiveProxyPrimitive,
 	PrimitiveValue,
-	InternalState
+	InternalState,
+	MarkdownEscape
 } from './RecursiveProxyPrimitive.js';
 import { customAlphabet } from 'nanoid';
 
@@ -78,6 +79,45 @@ describe('RecursiveProxyPrimitive', () => {
 				myInputValue.setValue('Primitive Value');
 				expect(myInputValue.toString()).toBe('Primitive Value');
 			});
+		});
+
+		describe('Markdown Escape', () => {
+			it('should be falsy when it has no value and no children', () => {
+				const myInputValue = new BasicSubclass();
+				expect(myInputValue[MarkdownEscape]).toBeFalsy();
+			});
+			it('should be truthy when it has a value and no children', () => {
+				const myInputValue = new BasicSubclass();
+				myInputValue.setValue('Primitive Value');
+				expect(myInputValue[MarkdownEscape]).toBeTruthy();
+			});
+			it('should be truthy when it has no value and children', () => {
+				const myInputValue = new BasicSubclass();
+				myInputValue.x = 1;
+				expect(myInputValue[MarkdownEscape]).toBeTruthy();
+			});
+			it('should be truthy when it has both value and children', () => {
+				const myInputValue = new BasicSubclass();
+				myInputValue.setValue('Primitive Value');
+				myInputValue.x = 1;
+				expect(myInputValue[MarkdownEscape]).toBeTruthy();
+			});
+
+			it('should retain its type (numeric)', () => {
+				const myInputValue = new BasicSubclass();
+				myInputValue.setValue(1);
+				expect(myInputValue[MarkdownEscape]).toBe(1);
+			})
+			it('should retain its type (boolean)', () => {
+				const myInputValue = new BasicSubclass();
+				myInputValue.setValue(false);
+				expect(myInputValue[MarkdownEscape]).toBe(false);
+			})
+			it('should retain its type (Date)', () => {
+				const myInputValue = new BasicSubclass();
+				myInputValue.setValue(new Date());
+				expect(myInputValue[MarkdownEscape]).toBeInstanceOf(Date);
+			})
 		});
 	});
 
