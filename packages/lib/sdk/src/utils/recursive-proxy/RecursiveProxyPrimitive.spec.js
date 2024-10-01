@@ -107,17 +107,17 @@ describe('RecursiveProxyPrimitive', () => {
 				const myInputValue = new BasicSubclass();
 				myInputValue.setValue(1);
 				expect(myInputValue[MarkdownEscape]).toBe(1);
-			})
+			});
 			it('should retain its type (boolean)', () => {
 				const myInputValue = new BasicSubclass();
 				myInputValue.setValue(false);
 				expect(myInputValue[MarkdownEscape]).toBe(false);
-			})
+			});
 			it('should retain its type (Date)', () => {
 				const myInputValue = new BasicSubclass();
 				myInputValue.setValue(new Date());
 				expect(myInputValue[MarkdownEscape]).toBeInstanceOf(Date);
-			})
+			});
 		});
 	});
 

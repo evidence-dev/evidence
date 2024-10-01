@@ -35,7 +35,6 @@ export function escapeInputObjects() {
 			/** @type {Array<import("estree").Identifier | import("estree").Literal>} */
 			let identifiers = [];
 			let escapeHatch = false;
-			let inAttribute = false;
 
 			let output = content;
 			/** @type {{position: number, text: string}[]} */
@@ -52,10 +51,9 @@ export function escapeInputObjects() {
 					}
 					// @ts-expect-error Svelte doesn't agree with estree
 					if (node.type === 'Attribute') {
-						inAttribute = true;
-
 						// @ts-expect-error Svelte doesn't agree with estree
 						if (node.value.length === 1) {
+							// this means that we aren't dealing with string interpolation - and thus want to leave it alone
 							escapeHatch = true;
 						}
 					}
@@ -77,7 +75,12 @@ export function escapeInputObjects() {
 							identifiers.length = 0;
 							return;
 						}
-						if (!identifiers.length || !('name' in identifiers[0]) || identifiers[0].name !== 'inputs' || identifiers.length === 1) {
+						if (
+							!identifiers.length ||
+							!('name' in identifiers[0]) ||
+							identifiers[0].name !== 'inputs' ||
+							identifiers.length === 1
+						) {
 							identifiers.length = 0;
 							return;
 						}

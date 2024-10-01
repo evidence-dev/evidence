@@ -5,7 +5,7 @@
 </script>
 
 {#if dev}
-	{#await import(/* @vite-ignore */ "./_DevTools.svelte")}
+	{#await import(/* @vite-ignore */ './_DevTools.svelte')}
 		<slot />
 	{:then DevTools}
 		<svelte:component this={DevTools}>

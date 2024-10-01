@@ -211,15 +211,13 @@ export class RecursiveProxyPrimitive {
 	}
 	get [MarkdownEscape]() {
 		if (typeof this.#value === 'undefined') {
-			return Boolean(
-				Object.keys(this.#internalState).length
-			)
+			return Boolean(Object.keys(this.#internalState).length);
 		}
 		if (typeof this.#value !== 'string' && typeof this.#value !== 'undefined') {
 			return this.#value;
 		}
 		if (typeof this.#value === 'string') {
-			return this.#value
+			return this.#value;
 		}
 		return this.toString();
 	}
