@@ -94,9 +94,10 @@ function writeFloat64Array(accumulator, arr, name) {
 	const nulls = new Uint8Array(arr.length / 8);
 	const values = new Float64Array(arr.length);
 	for (let i = 0; i < arr.length; i++) {
-		if (arr[i][name] != null) {
+		const el = arr[i][name];
+		if (el != null) {
 			setBit(nulls, i, 1);
-			values[i] = Number(arr[i][name]);
+			values[i] = Number(el);
 		} else {
 			nullCount++;
 			values[i] = 0;
@@ -116,9 +117,10 @@ function writeBoolArray(accumulator, arr, name) {
 	// adapted from `packBools` in apache-arrow/util/bit.js
 	const bytes = new Uint8Array(((arr.length / 8) + 7) & ~7);
 	for (let i = 0; i < arr.length; i++) {
-		if (arr[i][name] != null) {
+		const el = arr[i][name];
+		if (el != null) {
 			setBit(nulls, i, 1);
-			if (arr[i][name]) bytes[i / 8] |= 1 << (i % 8);
+			if (el) bytes[i / 8] |= 1 << (i % 8);
 		} else {
 			nullCount++;
 		}
@@ -130,26 +132,53 @@ function writeBoolArray(accumulator, arr, name) {
 	addBuffer.call(accumulator, bytes);
 }
 
+const encoder = new TextEncoder();
+function serializeString(str, dest, ptr) {
+	const len = str.length;
+
+	// stolen from [wasm-bindgen](https://github.com/rustwasm/wasm-bindgen/blob/cf186acf48c4b0649934d19ba1aa18282bd2ec44/crates/cli/tests/reference/string-arg.js#L46)
+	let length = 0;
+	for (; length < len; length++) {
+		const code = str.charCodeAt(length);
+		if (code > 0x7f) break;
+		dest[ptr + length] = code;
+	}
+
+	if (length !== len) {
+		if (length !== 0) {
+			str = str.slice(length);
+		}
+
+		length += encoder.encodeInto(str, dest.subarray(ptr + length)).written;
+	}
+
+	return length;
+}
+
 function writeUtf8Array(accumulator, arr, name) {
 	let nullCount = 0;
 	const nulls = new Uint8Array(arr.length / 8);
 
 	let byteLength = 0;
 	const valueOffsets = new Uint32Array(arr.length + 1);
+	let values = new Uint8Array(1);
 	for (let i = 0; i < arr.length; i++) {
-		if (arr[i][name] != null) {
+		const str = arr[i][name]?.toString();
+		if (str != null) {
 			setBit(nulls, i, 1);
-			valueOffsets[i + 1] = byteLength += Buffer.byteLength(arr[i][name].toString(), 'utf-8');
+
+			let size = values.length;
+			while (size < byteLength + str.length * 3) size *= 2;
+			if (size !== values.length) {
+				// when we're at a newer version of node this can use Uint8Array.prototype.transfer
+				const newValues = new Uint8Array(size);
+				newValues.set(values);
+				values = newValues;
+			}
+			valueOffsets[i + 1] = byteLength += serializeString(str, values, byteLength);
 		} else {
 			nullCount++;
 			valueOffsets[i + 1] = byteLength;
-		}
-	}
-
-	const values = Buffer.alloc(byteLength);
-	for (let i = 0, offset = 0; i < arr.length; i++) {
-		if (arr[i][name] != null) {
-			offset += values.write(arr[i][name].toString(), offset, 'utf-8');
 		}
 	}
 
@@ -157,7 +186,7 @@ function writeUtf8Array(accumulator, arr, name) {
 
 	addBuffer.call(accumulator, nulls);
 	addBuffer.call(accumulator, valueOffsets);
-	addBuffer.call(accumulator, values);
+	addBuffer.call(accumulator, values.subarray(0, byteLength));
 }
 
 function writeTimestampArray(accumulator, arr, name) {
@@ -165,13 +194,14 @@ function writeTimestampArray(accumulator, arr, name) {
 	const nulls = new Uint8Array(arr.length);
 	const values = new Int32Array(arr.length * 2);
 	for (let i = 0; i < arr.length; i++) {
-		if (arr[i][name] != null) {
+		const el = arr[i][name];
+		if (el != null) {
 			setBit(nulls, i, 1);
 
 			// logic from `setEpochMsToMillisecondsLong`
-			const epochMs = arr[i][name].valueOf();
+			const epochMs = el.valueOf();
 			values[2 * i] = Math.trunc(epochMs % 4294967296);
-    		values[2 * i + 1] = Math.trunc(epochMs / 4294967296);
+			values[2 * i + 1] = Math.trunc(epochMs / 4294967296);
 		} else {
 			nullCount++;
 			values[2 * i] = 0;
