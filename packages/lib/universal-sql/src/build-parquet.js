@@ -1,61 +1,11 @@
-import {
-	tableFromArrays,
-	tableToIPC,
-	vectorFromArray,
-	Float64,
-	Utf8,
-	Bool,
-	TimestampMillisecond
-} from 'apache-arrow';
-import {
-	Compression,
-	writeParquet,
-	WriterPropertiesBuilder,
-	Table
-} from 'parquet-wasm/node/arrow1.js';
 import fs from 'fs/promises';
 import path from 'path';
-// using node-async.js makes CLI command hang - why??
-import { emptyDbFs, initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
-
-/**
- * @param {{name: string, evidenceType: string}} column
- * @param {any[]} rawValues
- * @returns {import("apache-arrow").Vector}
- */
-function convertArrayToVector(column, rawValues) {
-	switch (column.evidenceType) {
-		case 'number':
-			return vectorFromArray(rawValues, new Float64());
-		case 'string':
-			return vectorFromArray(rawValues, new Utf8());
-		case 'date':
-			// TODO: What gives with timezones
-			return vectorFromArray(rawValues, new TimestampMillisecond());
-		case 'boolean':
-			if (!rawValues.some((v) => v !== null)) {
-				// All null bool columns error out, so we have to do this
-				// https://github.com/evidence-dev/evidence/issues/1504
-				console.warn(
-					chalk.yellow(
-						`\nWarning: Column "${column.name}" (type Bool) contains only null values so it has been cast to Float64`
-					)
-				);
-				return vectorFromArray(rawValues, new Float64());
-			}
-			return vectorFromArray(rawValues, new Bool());
-		default:
-			throw new Error(
-				'Unrecognized EvidenceType: ' +
-					column.evidenceType +
-					'\n This is likely an error in a datasource connector.'
-			);
-	}
-}
+import { Database } from 'duckdb-async';
+import { jsToIPC } from './jsToIPC.js';
 
 /**
  * @template T
@@ -80,34 +30,22 @@ export async function buildMultipartParquet(
 	let tmpFilenames = [];
 	let rowCount = 0;
 
+	const db = await Database.create(':memory:');
+	await db.all('INSTALL arrow');
+	await db.all('LOAD arrow');
+
 	const flush = async (results) => {
-		// Convert JS Objects -> Arrow
-		const vectorized = Object.fromEntries(
-			columns.map((c) => [
-				c.name,
-				convertArrayToVector(
-					c,
-					results.map((i) => i[c.name] ?? null)
-				)
-			])
-		);
-		const table = tableFromArrays(vectorized);
-		for (const field of table.schema.fields) {
-			field.nullable = true;
-		}
-
-		// Converts the arrow table to a buffer
-		const IPC = tableToIPC(table, 'stream');
-
-		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
-		// Converts the arrow buffer to a parquet buffer
-		// This can be slow; it includes the compression step
-
-		const parquetBuffer = writeParquet(Table.fromIPCStream(IPC), writerProperties);
+		const IPC = jsToIPC(results, columns);
+		await db.register_buffer('data', [IPC], true);
 
 		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
 		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
-		await fs.writeFile(tempFilename, parquetBuffer);
+		// look into COPY (FROM '/tmp/place.parquet' UNION ALL (select 10)) TO '/tmp/place.parquet';
+		await db.all(
+			`COPY data TO '${tempFilename.replaceAll("'", "''")}' (FORMAT 'PARQUET', CODEC 'uncompressed')`
+		);
+
+		await db.unregister_buffer('data');
 
 		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
@@ -155,8 +93,6 @@ export async function buildMultipartParquet(
 
 	if (!tmpFilenames.length) return 0;
 
-	await initDB();
-
 	const outputFilepath = path.join(outDir, outputFilename);
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
@@ -165,7 +101,7 @@ export async function buildMultipartParquet(
 	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
-	await query(copy);
+	await db.all(copy);
 
 	await fs.chmod(outputFilepath, 0o644);
 
@@ -205,6 +141,6 @@ export async function buildMultipartParquet(
 	for (const tmpFile of tmpFilenames) {
 		await fs.rm(tmpFile, { force: true });
 	}
-	await emptyDbFs('*');
+	await db.close();
 	return rowCount;
 }

@@ -18,6 +18,7 @@
 		"apache-arrow": "^13.0.0",
 		"chalk": "^5.2.0",
 		"cli-progress": "^3.12.0",
+		"duckdb-async": "1.0.0",
 		"lodash.chunk": "^4.2.0",
 		"parquet-wasm": "0.5.0",
 		"web-worker": "^1.2.0"
