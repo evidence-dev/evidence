@@ -1,4 +1,4 @@
-export const InputRefRegex = /inputs\.(?:\.|[\w]|\s+\.|\s+\?\.)+/g;
+import { parse, walk } from 'svelte/compiler';
 
 /**
  * @returns {import("svelte/compiler").PreprocessorGroup}
@@ -28,44 +28,88 @@ export function escapeInputObjects() {
 
 			if (!filename?.endsWith('.md')) return;
 
-			const inputRefs = content.matchAll(InputRefRegex);
+			const ast = /** @type {import("estree").Node} */ (/** @type {unknown} */ (parse(content)));
 
-			const scriptStarts = Array.from(content.matchAll(/<script/g)) ?? [];
-			const scriptEnds = Array.from(content.matchAll(/<\/script/g)) ?? [];
-
-			/** @type {[number, number][]} */
-			const scriptRanges = [];
-			for (let i = 0; i < scriptStarts.length; i++) {
-				if (!scriptEnds[i]) {
-					console.debug('Found script tag without closing tag', i);
-					continue;
-				}
-				scriptRanges.push([scriptStarts[i].index, scriptEnds[i].index]);
-			}
+			/** @type {Array<import("estree").ChainExpression | import("estree").MemberExpression>} */
+			let expressionStack = [];
+			/** @type {Array<import("estree").Identifier | import("estree").Literal>} */
+			let identifiers = [];
+			let escapeHatch = false;
+			let inAttribute = false;
 
 			let output = content;
-			let offset = 0;
-			const appendString = '[MarkdownEscape]';
-			for (const match of inputRefs ?? []) {
-				const inScript = scriptRanges.find(
-					([start, end]) => start <= match.index && match.index <= end
-				);
-				if (inScript) {
-					// console.debug(
-					// 	'Identified input reference in script tag',
-					// 	match[0],
-					// 	match.index,
-					// 	inScript
-					// );
-					continue;
-				}
-				// console.debug('Identified input reference in markdown', match[0], match.index);
+			/** @type {{position: number, text: string}[]} */
+			let insertions = [];
 
-				const before = output.slice(0, match.index + offset);
-				const after = output.slice(match.index + offset + match[0].length);
-				output = before + `${match[0] + appendString}` + after;
-				offset += appendString.length;
+			walk(ast, {
+				enter(node) {
+					// @ts-expect-error Svelte doesn't agree with estree
+					if (node.type === 'Script') {
+						escapeHatch = true;
+					}
+					if (node.type === 'CallExpression') {
+						escapeHatch = true;
+					}
+					// @ts-expect-error Svelte doesn't agree with estree
+					if (node.type === 'Attribute') {
+						inAttribute = true;
+
+						// @ts-expect-error Svelte doesn't agree with estree
+						if (node.value.length === 1) {
+							escapeHatch = true;
+						}
+					}
+
+					if (node.type === 'ChainExpression' || node.type === 'MemberExpression') {
+						expressionStack.unshift(node);
+					}
+					if (node.type === 'Identifier' || node.type === 'Literal') {
+						identifiers.push(node);
+					}
+				},
+				leave(node) {
+					if (node.type === 'ChainExpression' || node.type === 'MemberExpression') {
+						expressionStack.shift();
+					}
+					if (expressionStack.length === 0) {
+						if (escapeHatch) {
+							escapeHatch = false;
+							identifiers.length = 0;
+							return;
+						}
+						if (!identifiers.length || !('name' in identifiers[0]) || identifiers[0].name !== 'inputs' || identifiers.length === 1) {
+							identifiers.length = 0;
+							return;
+						}
+
+						let targetLocation = Math.max(
+							...identifiers.map((id) => {
+								if ('end' in id) {
+									// @ts-expect-error Types are screwy here
+									return id.end + 1;
+								}
+								return -1;
+							})
+						);
+
+						insertions.push({ position: targetLocation, text: '[MarkdownEscape]' });
+
+						identifiers.length = 0;
+					}
+				}
+			});
+
+			// Sort insertions in reverse order of position
+			insertions.sort((a, b) => b.position - a.position);
+
+			// Apply insertions
+			for (const insertion of insertions) {
+				output =
+					output.slice(0, insertion.position - 1) +
+					insertion.text +
+					output.slice(insertion.position - 1);
 			}
+
 			return { code: output };
 		}
 	};
