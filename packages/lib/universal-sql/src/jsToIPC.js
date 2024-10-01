@@ -29,11 +29,6 @@ export function jsToIPC(data, columns) {
 
 function evidenceToArrowType(evidenceType) {
 	switch (evidenceType) {
-		// used types:
-		// - Float64 (visitFloat64 or visitFloat)
-		// - Utf8 (visitUtf8)
-		// - TimestampMillisecond (visitTimestampMillisecond or visitTimestamp)
-		// - Bool (visitBool)
 		case 'number':
 			return new Float64();
 		case 'string':
@@ -96,7 +91,7 @@ function setBit(bitmap, i, value) {
 
 function writeFloat64Array(accumulator, arr, name) {
 	let nullCount = 0;
-	const nulls = new Uint8Array(arr.length);
+	const nulls = new Uint8Array(arr.length / 8);
 	const values = new Float64Array(arr.length);
 	for (let i = 0; i < arr.length; i++) {
 		if (arr[i][name] != null) {
@@ -104,6 +99,7 @@ function writeFloat64Array(accumulator, arr, name) {
 			values[i] = Number(arr[i][name]);
 		} else {
 			nullCount++;
+			values[i] = 0;
 		}
 	}
 
@@ -116,37 +112,27 @@ function writeFloat64Array(accumulator, arr, name) {
 
 function writeBoolArray(accumulator, arr, name) {
 	let nullCount = 0;
-	const nulls = new Uint8Array(arr.length);
+	const nulls = new Uint8Array(arr.length / 8);
 	// adapted from `packBools` in apache-arrow/util/bit.js
-	const bytes = [];
-	let i = 0, bit = 0, byte = 0;
+	const bytes = new Uint8Array(((arr.length / 8) + 7) & ~7);
 	for (let i = 0; i < arr.length; i++) {
 		if (arr[i][name] != null) {
 			setBit(nulls, i, 1);
-			if (arr[i][name]) byte |= 1 << bit;
+			if (arr[i][name]) bytes[i / 8] |= 1 << (i % 8);
 		} else {
 			nullCount++;
 		}
-		if (++bit === 8) {
-			bytes[i++] = byte;
-			byte = bit = 0;
-		}
 	}
-	if (i === 0 || bit > 0) {
-		bytes[i++] = byte;
-	}
-	const values = new Uint8Array((bytes.length + 7) & ~7);
-	values.set(bytes);
 
 	accumulator.nodes.push(new FieldNode(arr.length, nullCount));
 
 	addBuffer.call(accumulator, nulls);
-	addBuffer.call(accumulator, values);
+	addBuffer.call(accumulator, bytes);
 }
 
 function writeUtf8Array(accumulator, arr, name) {
 	let nullCount = 0;
-	const nulls = new Uint8Array(arr.length);
+	const nulls = new Uint8Array(arr.length / 8);
 
 	let byteLength = 0;
 	const valueOffsets = new Uint32Array(arr.length + 1);
@@ -156,6 +142,7 @@ function writeUtf8Array(accumulator, arr, name) {
 			valueOffsets[i + 1] = byteLength += Buffer.byteLength(arr[i][name].toString(), 'utf-8');
 		} else {
 			nullCount++;
+			valueOffsets[i + 1] = byteLength;
 		}
 	}
 
@@ -187,6 +174,8 @@ function writeTimestampArray(accumulator, arr, name) {
     		values[2 * i + 1] = Math.trunc(epochMs / 4294967296);
 		} else {
 			nullCount++;
+			values[2 * i] = 0;
+			values[2 * i + 1] = 0;
 		}
 	}
 
