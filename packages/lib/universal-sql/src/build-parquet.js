@@ -62,36 +62,22 @@ export async function buildMultipartParquet(
 	if (isGeneratorObject(data)) {
 		let currentBatch = [];
 		for await (const results of data) {
-			currentBatch = currentBatch.concat(results);
+			for (const result of results) currentBatch.push(result);
 
 			if (currentBatch.length >= batchSize) {
 				await flush(currentBatch);
-				currentBatch = [];
+				currentBatch.length = 0;
 			}
 		}
 		if (currentBatch.length) await flush(currentBatch);
 	} else {
-		let currentBatch = [];
 		for (const results of data) {
 			// If the array is longer than the batch size; it gets chunked
 			for (const batch of chunk(results, batchSize)) {
-				// Iterate through the split up chunks
-				// Batch them and flush when needed
-
-				currentBatch = currentBatch.concat(batch);
-
-				if (currentBatch.length >= batchSize) {
-					// Time to flush
-					await flush(currentBatch);
-					currentBatch = [];
+				await flush(batch);
 				}
 			}
 		}
-		// Ensure nothing is left over
-		if (currentBatch.length) await flush(currentBatch);
-	}
-
-	if (!tmpFilenames.length) return 0;
 
 	const outputFilepath = path.join(outDir, outputFilename);
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
