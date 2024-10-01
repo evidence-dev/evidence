@@ -9,6 +9,8 @@
 	import TableCell from './TableCell.svelte';
 	import chroma from 'chroma-js';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ChevronRight } from '@steeze-ui/tabler-icons';
 
 	export let displayedData = undefined;
 	export let rowShading = undefined;
@@ -195,6 +197,13 @@
 				{/if}
 			</TableCell>
 		{/each}
+
+		{#if link && row[link]}
+			<TableCell {compact} width="16px">
+				<Icon src={ChevronRight} class="w-4 h-4" />
+				<a href={row[link]} class="sr-only">See more</a>
+			</TableCell>
+		{/if}
 	</tr>
 {/each}
 
