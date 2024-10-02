@@ -28,6 +28,10 @@ export function jsToIPC(data, columns) {
 	return writer.finish().toUint8Array(true);
 }
 
+/**
+ * @param {string} evidenceType 
+ * @returns {import("apache-arrow").DataType}
+ */
 function evidenceToArrowType(evidenceType) {
 	switch (evidenceType) {
 		case 'number':
@@ -42,14 +46,19 @@ function evidenceToArrowType(evidenceType) {
 		default:
 			throw new Error(
 				'Unrecognized EvidenceType: ' +
-					column.evidenceType +
-					'\n This is likely an error in a datasource connector.'
+				evidenceType +
+				'\n This is likely an error in a datasource connector.'
 			);
 	}
 }
 
 class JSStreamWriter extends RecordBatchStreamWriter {
+	/**
+	 * @param {Record<string, unknown>[]} arr 
+	 * @returns {this}
+	 */
 	_writeArray(arr) {
+		if (!this._schema) return this;
 		const { byteLength, nodes, bufferRegions, buffers } = JavascriptVisitor.assemble(
 			arr,
 			this._schema
@@ -66,6 +75,20 @@ class JSStreamWriter extends RecordBatchStreamWriter {
 }
 
 class JavascriptVisitor extends Visitor {
+	/** @type {number} */
+	_byteLength;
+	/** @type {FieldNode[]} */
+	_nodes;
+	/** @type {ArrayBufferView[]} */
+	_buffers;
+	/** @type {BufferRegion[]} */
+	_bufferRegions;
+
+	/**
+	 * @param {unknown[]} array 
+	 * @param {import("apache-arrow").Schema} schema 
+	 * @returns {JavascriptVisitor}
+	 */
 	static assemble(array, schema) {
 		const assembler = new JavascriptVisitor();
 		for (const { type, name } of schema.fields) {
@@ -80,6 +103,11 @@ class JavascriptVisitor extends Visitor {
 		this._buffers = [];
 		this._bufferRegions = [];
 	}
+	/**
+	 * @param {import("apache-arrow").DataType} _type 
+	 * @param {Record<string, unknown>[]} arr 
+	 * @param {string} name 
+	 */
 	visitFloat(_type, arr, name) {
 		let nullCount = 0;
 		const nulls = new Uint8Array(arr.length / 8);
@@ -101,6 +129,11 @@ class JavascriptVisitor extends Visitor {
 		addBuffer(this, nulls);
 		addBuffer(this, values);
 	}
+	/**
+	 * @param {import("apache-arrow").DataType} _type 
+	 * @param {Record<string, unknown>[]} arr 
+	 * @param {string} name 
+	 */
 	visitBool(_type, arr, name) {
 		let nullCount = 0;
 		const nulls = new Uint8Array(arr.length / 8);
@@ -121,6 +154,11 @@ class JavascriptVisitor extends Visitor {
 		addBuffer(this, nulls);
 		addBuffer(this, bytes);
 	}
+	/**
+	 * @param {import("apache-arrow").DataType} _type 
+	 * @param {Record<string, unknown>[]} arr 
+	 * @param {string} name 
+	 */
 	visitUtf8(_type, arr, name) {
 		let nullCount = 0;
 		const nulls = new Uint8Array(arr.length / 8);
@@ -154,6 +192,11 @@ class JavascriptVisitor extends Visitor {
 		addBuffer(this, valueOffsets);
 		addBuffer(this, values.subarray(0, byteLength));
 	}
+	/**
+	 * @param {import("apache-arrow").DataType} _type 
+	 * @param {Record<string, unknown>[]} arr 
+	 * @param {string} name 
+	 */
 	visitTimestamp(_type, arr, name) {
 		let nullCount = 0;
 		const nulls = new Uint8Array(arr.length);
@@ -164,7 +207,7 @@ class JavascriptVisitor extends Visitor {
 				setBit(nulls, i, 1);
 
 				// logic from `setEpochMsToMillisecondsLong`
-				const epochMs = el.valueOf();
+				const epochMs = Number(el.valueOf());
 				values[2 * i] = Math.trunc(epochMs % 4294967296);
 				values[2 * i + 1] = Math.trunc(epochMs / 4294967296);
 			} else {
@@ -193,14 +236,22 @@ class JavascriptVisitor extends Visitor {
 	}
 }
 
+/**
+ * @param {JavascriptVisitor} accumulator 
+ * @param {ArrayBufferView} values 
+ */
 function addBuffer(accumulator, values) {
 	const byteLength = (values.byteLength + 7) & ~7; // Round up to a multiple of 8
 	accumulator._buffers.push(values);
 	accumulator._bufferRegions.push(new BufferRegion(accumulator._byteLength, byteLength));
 	accumulator._byteLength += byteLength;
-	return accumulator;
 }
 
+/**
+ * @param {Uint8Array} bitmap 
+ * @param {number} i 
+ * @param {boolean | 1 | 0} value 
+ */
 function setBit(bitmap, i, value) {
 	const byte = i >>> 3;
 	const bit = 1 << i % 8;
@@ -209,7 +260,15 @@ function setBit(bitmap, i, value) {
 }
 
 const encoder = new TextEncoder();
+/**
+ * @param {string} str 
+ * @param {Uint8Array} dest 
+ * @param {number} ptr 
+ * @returns {number}
+ */
 function serializeString(str, dest, ptr) {
+	ptr |= 0;
+
 	const len = str.length;
 
 	// stolen from [wasm-bindgen](https://github.com/rustwasm/wasm-bindgen/blob/cf186acf48c4b0649934d19ba1aa18282bd2ec44/crates/cli/tests/reference/string-arg.js#L46)
