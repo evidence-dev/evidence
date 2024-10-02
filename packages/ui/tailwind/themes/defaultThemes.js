@@ -1,49 +1,38 @@
 /** @typedef {import('./schemas.js').Theme} Theme */
 
+const todo = {
+	primary: '#ffffff',
+	'primary-content': '#ffffff',
+	secondary: '#ffffff',
+	'secondary-content': '#ffffff',
+	accent: '#ffffff',
+	'accent-content': '#ffffff',
+	neutral: '#ffffff',
+	'neutral-content': '#ffffff',
+	info: '#ffffff',
+	'info-content': '#ffffff',
+	positive: '#ffffff',
+	'positive-content': '#ffffff',
+	negative: '#ffffff',
+	'negative-content': '#ffffff',
+	warning: '#ffffff',
+	'warning-content': '#ffffff'
+};
+
 /** @type {Record<'light' | 'dark', Theme>} */
 export const defaultThemes = {
 	light: {
-		primary: '#3b82f6',
-		'primary-content': '#ffffff',
-		secondary: '#f59e0b',
-		'secondary-content': '#ffffff',
-		accent: '#f472b6',
-		'accent-content': '#ffffff',
-		neutral: '#333',
-		'neutral-content': '#ffffff',
 		'base-100': '#ffffff',
-		'base-200': '#f9fafb',
-		'base-300': '#f4f5f7',
-		'base-content': '#1f2937',
-		info: '#2094f3',
-		'info-content': '#ffffff',
-		positive: '#00b74a',
-		'positive-content': '#ffffff',
-		negative: '#ff3d71',
-		'negative-content': '#ffffff',
-		warning: '#ffaa2c',
-		'warning-content': '#ffffff'
+		'base-200': '#f3f4f6',
+		'base-300': '#e5e7eb',
+		'base-content': '#030712',
+		...todo
 	},
 	dark: {
-		primary: '#3b82f6',
-		'primary-content': '#ffffff',
-		secondary: '#f59e0b',
-		'secondary-content': '#ffffff',
-		accent: '#f472b6',
-		'accent-content': '#ffffff',
-		neutral: '#d1d5db',
-		'neutral-content': '#ffffff',
-		'base-100': '#1f2937',
-		'base-200': '#233048',
+		'base-100': '#111827',
+		'base-200': '#1f2937',
 		'base-300': '#374151',
-		'base-content': '#ffffff',
-		info: '#2094f3',
-		'info-content': '#ffffff',
-		positive: '#00b74a',
-		'positive-content': '#ffffff',
-		negative: '#ff3d71',
-		'negative-content': '#ffffff',
-		warning: '#ffaa2c',
-		'warning-content': '#ffffff'
+		'base-content': '#f9fafb',
+		...todo
 	}
 };
