@@ -6,7 +6,8 @@ import {
 	Utf8,
 	TimestampMillisecond,
 	Bool,
-	Message
+	Message,
+	Visitor
 } from 'apache-arrow';
 import { RecordBatch, BufferRegion, FieldNode } from 'apache-arrow/ipc/metadata/message';
 
@@ -23,7 +24,7 @@ export function jsToIPC(data, columns) {
 
 	const writer = new JSStreamWriter();
 	writer.reset(undefined, schema);
-	writer._writeArray(data)
+	writer._writeArray(data);
 	return writer.finish().toUint8Array(true);
 }
 
@@ -41,95 +42,170 @@ function evidenceToArrowType(evidenceType) {
 		default:
 			throw new Error(
 				'Unrecognized EvidenceType: ' +
-				column.evidenceType +
-				'\n This is likely an error in a datasource connector.'
+					column.evidenceType +
+					'\n This is likely an error in a datasource connector.'
 			);
 	}
 }
 
 class JSStreamWriter extends RecordBatchStreamWriter {
 	_writeArray(arr) {
-		const accumulator = {
-			byteLength: 0,
-			nodes: [],
-			buffers: [],
-			bufferRegions: [],
-		};
-
-		for (const { name, type } of this._schema.fields) {
-			if (type instanceof Float64) writeFloat64Array(accumulator, arr, name);
-			else if (type instanceof Utf8) writeUtf8Array(accumulator, arr, name);
-			else if (type instanceof TimestampMillisecond) writeTimestampArray(accumulator, arr, name);
-			else if (type instanceof Bool) writeBoolArray(accumulator, arr, name);
-			else throw new Error(`Unsupported type: ${type}`);
-		}
-
-		const { byteLength, nodes, bufferRegions, buffers } = accumulator;
+		const { byteLength, nodes, bufferRegions, buffers } = JavascriptVisitor.assemble(
+			arr,
+			this._schema
+		);
 		const recordBatch = new RecordBatch(arr.length, nodes, bufferRegions);
 		const message = Message.from(recordBatch, byteLength);
-		return this
-			// ._writeDictionaries(batch)
-			._writeMessage(message)
-			._writeBodyBuffers(buffers);
+		return (
+			this
+				// ._writeDictionaries(batch)
+				._writeMessage(message)
+				._writeBodyBuffers(buffers)
+		);
 	}
 }
 
-function addBuffer(values) {
+class JavascriptVisitor extends Visitor {
+	static assemble(array, schema) {
+		const assembler = new JavascriptVisitor();
+		for (const { type, name } of schema.fields) {
+			assembler.visit(type, array, name);
+		}
+		return assembler;
+	}
+	constructor() {
+		super();
+		this._byteLength = 0;
+		this._nodes = [];
+		this._buffers = [];
+		this._bufferRegions = [];
+	}
+	visitFloat(_type, arr, name) {
+		let nullCount = 0;
+		const nulls = new Uint8Array(arr.length / 8);
+		const values = new Float64Array(arr.length);
+		for (let i = 0; i < arr.length; i++) {
+			const el = arr[i][name];
+			if (el != null) {
+				setBit(nulls, i, 1);
+				values[i] = Number(el);
+			} else {
+				nullCount++;
+				values[i] = 0;
+			}
+		}
+
+		// this comes from `VectorAssembler.visit` in apache-arrow/visitor/vectorassembler.mjs
+		this._nodes.push(new FieldNode(arr.length, nullCount));
+
+		addBuffer(this, nulls);
+		addBuffer(this, values);
+	}
+	visitBool(_type, arr, name) {
+		let nullCount = 0;
+		const nulls = new Uint8Array(arr.length / 8);
+		// adapted from `packBools` in apache-arrow/util/bit.js
+		const bytes = new Uint8Array((arr.length / 8 + 7) & ~7);
+		for (let i = 0; i < arr.length; i++) {
+			const el = arr[i][name];
+			if (el != null) {
+				setBit(nulls, i, 1);
+				if (el) bytes[i / 8] |= 1 << i % 8;
+			} else {
+				nullCount++;
+			}
+		}
+
+		this._nodes.push(new FieldNode(arr.length, nullCount));
+
+		addBuffer(this, nulls);
+		addBuffer(this, bytes);
+	}
+	visitUtf8(_type, arr, name) {
+		let nullCount = 0;
+		const nulls = new Uint8Array(arr.length / 8);
+
+		let byteLength = 0;
+		const valueOffsets = new Uint32Array(arr.length + 1);
+		let values = new Uint8Array(1);
+		for (let i = 0; i < arr.length; i++) {
+			const str = arr[i][name]?.toString();
+			if (str != null) {
+				setBit(nulls, i, 1);
+
+				let size = values.length;
+				while (size < byteLength + str.length * 3) size *= 2;
+				if (size !== values.length) {
+					// when we're at a newer version of node this can use Uint8Array.prototype.transfer
+					const newValues = new Uint8Array(size);
+					newValues.set(values);
+					values = newValues;
+				}
+				valueOffsets[i + 1] = byteLength += serializeString(str, values, byteLength);
+			} else {
+				nullCount++;
+				valueOffsets[i + 1] = byteLength;
+			}
+		}
+
+		this._nodes.push(new FieldNode(arr.length, nullCount));
+
+		addBuffer(this, nulls);
+		addBuffer(this, valueOffsets);
+		addBuffer(this, values.subarray(0, byteLength));
+	}
+	visitTimestamp(_type, arr, name) {
+		let nullCount = 0;
+		const nulls = new Uint8Array(arr.length);
+		const values = new Int32Array(arr.length * 2);
+		for (let i = 0; i < arr.length; i++) {
+			const el = arr[i][name];
+			if (el != null) {
+				setBit(nulls, i, 1);
+
+				// logic from `setEpochMsToMillisecondsLong`
+				const epochMs = el.valueOf();
+				values[2 * i] = Math.trunc(epochMs % 4294967296);
+				values[2 * i + 1] = Math.trunc(epochMs / 4294967296);
+			} else {
+				nullCount++;
+				values[2 * i] = 0;
+				values[2 * i + 1] = 0;
+			}
+		}
+
+		this._nodes.push(new FieldNode(arr.length, nullCount));
+
+		addBuffer(this, nulls);
+		addBuffer(this, values);
+	}
+	get byteLength() {
+		return this._byteLength;
+	}
+	get nodes() {
+		return this._nodes;
+	}
+	get bufferRegions() {
+		return this._bufferRegions;
+	}
+	get buffers() {
+		return this._buffers;
+	}
+}
+
+function addBuffer(accumulator, values) {
 	const byteLength = (values.byteLength + 7) & ~7; // Round up to a multiple of 8
-	this.buffers.push(values);
-	this.bufferRegions.push(new BufferRegion(this.byteLength, byteLength));
-	this.byteLength += byteLength;
-	return this;
+	accumulator._buffers.push(values);
+	accumulator._bufferRegions.push(new BufferRegion(accumulator._byteLength, byteLength));
+	accumulator._byteLength += byteLength;
+	return accumulator;
 }
 
 function setBit(bitmap, i, value) {
 	const byte = i >>> 3;
-	const bit = 1 << (i % 8);
+	const bit = 1 << i % 8;
 	if (value) bitmap[byte] |= bit;
 	else bitmap[byte] &= ~bit;
-}
-
-function writeFloat64Array(accumulator, arr, name) {
-	let nullCount = 0;
-	const nulls = new Uint8Array(arr.length / 8);
-	const values = new Float64Array(arr.length);
-	for (let i = 0; i < arr.length; i++) {
-		const el = arr[i][name];
-		if (el != null) {
-			setBit(nulls, i, 1);
-			values[i] = Number(el);
-		} else {
-			nullCount++;
-			values[i] = 0;
-		}
-	}
-
-	// this comes from `VectorAssembler.visit` in apache-arrow/visitor/vectorassembler.mjs
-	accumulator.nodes.push(new FieldNode(arr.length, nullCount));
-
-	addBuffer.call(accumulator, nulls);
-	addBuffer.call(accumulator, values);
-}
-
-function writeBoolArray(accumulator, arr, name) {
-	let nullCount = 0;
-	const nulls = new Uint8Array(arr.length / 8);
-	// adapted from `packBools` in apache-arrow/util/bit.js
-	const bytes = new Uint8Array(((arr.length / 8) + 7) & ~7);
-	for (let i = 0; i < arr.length; i++) {
-		const el = arr[i][name];
-		if (el != null) {
-			setBit(nulls, i, 1);
-			if (el) bytes[i / 8] |= 1 << (i % 8);
-		} else {
-			nullCount++;
-		}
-	}
-
-	accumulator.nodes.push(new FieldNode(arr.length, nullCount));
-
-	addBuffer.call(accumulator, nulls);
-	addBuffer.call(accumulator, bytes);
 }
 
 const encoder = new TextEncoder();
@@ -153,64 +229,4 @@ function serializeString(str, dest, ptr) {
 	}
 
 	return length;
-}
-
-function writeUtf8Array(accumulator, arr, name) {
-	let nullCount = 0;
-	const nulls = new Uint8Array(arr.length / 8);
-
-	let byteLength = 0;
-	const valueOffsets = new Uint32Array(arr.length + 1);
-	let values = new Uint8Array(1);
-	for (let i = 0; i < arr.length; i++) {
-		const str = arr[i][name]?.toString();
-		if (str != null) {
-			setBit(nulls, i, 1);
-
-			let size = values.length;
-			while (size < byteLength + str.length * 3) size *= 2;
-			if (size !== values.length) {
-				// when we're at a newer version of node this can use Uint8Array.prototype.transfer
-				const newValues = new Uint8Array(size);
-				newValues.set(values);
-				values = newValues;
-			}
-			valueOffsets[i + 1] = byteLength += serializeString(str, values, byteLength);
-		} else {
-			nullCount++;
-			valueOffsets[i + 1] = byteLength;
-		}
-	}
-
-	accumulator.nodes.push(new FieldNode(arr.length, nullCount));
-
-	addBuffer.call(accumulator, nulls);
-	addBuffer.call(accumulator, valueOffsets);
-	addBuffer.call(accumulator, values.subarray(0, byteLength));
-}
-
-function writeTimestampArray(accumulator, arr, name) {
-	let nullCount = 0;
-	const nulls = new Uint8Array(arr.length);
-	const values = new Int32Array(arr.length * 2);
-	for (let i = 0; i < arr.length; i++) {
-		const el = arr[i][name];
-		if (el != null) {
-			setBit(nulls, i, 1);
-
-			// logic from `setEpochMsToMillisecondsLong`
-			const epochMs = el.valueOf();
-			values[2 * i] = Math.trunc(epochMs % 4294967296);
-			values[2 * i + 1] = Math.trunc(epochMs / 4294967296);
-		} else {
-			nullCount++;
-			values[2 * i] = 0;
-			values[2 * i + 1] = 0;
-		}
-	}
-
-	accumulator.nodes.push(new FieldNode(arr.length, nullCount));
-
-	addBuffer.call(accumulator, nulls);
-	addBuffer.call(accumulator, values);
 }
