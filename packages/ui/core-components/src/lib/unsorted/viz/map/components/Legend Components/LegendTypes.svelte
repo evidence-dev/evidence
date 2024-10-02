@@ -16,7 +16,7 @@
 </script>
 
 {#if legendType === 'scalar'}
-	<div class="{hideLegend ? 'w-0' : 'w-48'} transition-all duration-300 ease-in-out">
+	<div class="{hideLegend ? 'w-0' : 'w-48'} transition-width duration-300 ease-in-out">
 		<div class="flex w-48 mr-2 pr-2">
 			<span
 				style="background: {colorPalette
@@ -35,7 +35,7 @@
 	</div>
 {:else if legendType === 'category'}
 	<div
-		class="overflow-y-auto max-h-60 ml-2 pr-2 max-w-40 min-w-24 {hideLegend
+		class="overflow-y-auto ml-2 pr-2 max-w-40 min-w-24 {hideLegend
 			? 'max-h-0'
 			: 'max-h-60'} transition-[max-height] duration-300 ease-in-out"
 	>

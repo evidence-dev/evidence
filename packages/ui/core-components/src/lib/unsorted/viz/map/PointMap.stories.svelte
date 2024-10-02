@@ -197,3 +197,127 @@
 	/>
 	<div class="h-32"></div>
 </Story>
+<Story name="Legend Usage Category" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<PointMap
+		legendType="category"
+		legendPosition="topRight"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<PointMap
+		legendType="category"
+		legendPosition="topLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<PointMap
+		legendType="category"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<PointMap
+		legendType="category"
+		legendPosition="bottomRight"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
+		]}
+	/>
+	<div class="h-32"></div>
+</Story>
+<Story name="Legend Usage Scalar" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<PointMap
+		legendType="scalar"
+		legendPosition="topRight"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<PointMap
+		legendType="scalar"
+		legendPosition="topLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<PointMap
+		legendType="scalar"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<PointMap
+		legendType="scalar"
+		legendPosition="bottomRight"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		colorPalette={['orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false },
+			{ id: 'sales', fmt: 'usd' }
+		]}
+	/>
+	<div class="h-32"></div>
+</Story>

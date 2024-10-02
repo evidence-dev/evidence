@@ -27,6 +27,8 @@
 	let maxValue;
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
+	/** @type {'left' | 'right' | 'bottom' | 'top'} */
+	let direction = 'bottom';
 
 	const map = getContext(mapContextKey);
 	let legendData;
@@ -45,6 +47,14 @@
 	const handleLegendClick = () => {
 		hideLegend = !hideLegend;
 	};
+
+	if (legendType === 'scalar') {
+		direction = legendPosition.includes('Left') ? 'left' : 'right';
+	} else if (legendType === 'category') {
+		direction = legendPosition.includes('bottom') ? 'bottom' : 'top';
+	}
+
+	console.log(direction, legendPosition);
 </script>
 
 {#if legendType && values}
@@ -62,8 +72,10 @@
 				: ''}"
 		>
 			<!-- button container -->
-			<LegendIcons {hideLegend} {handleLegendClick} {legendType} />
-			<!-- legend container -->
+			{#if direction === 'top' || direction === 'left'}
+				<LegendIcons {hideLegend} {handleLegendClick} {legendType} {direction} />
+				<!-- legend container -->
+			{/if}
 			<LegendTypes
 				{legendType}
 				{values}
@@ -73,6 +85,9 @@
 				{legendFmt}
 				{hideLegend}
 			/>
+			{#if direction === 'bottom' || direction === 'right'}
+				<LegendIcons {hideLegend} {handleLegendClick} {legendType} {direction} />
+			{/if}
 		</div>
 	</div>
 {/if}

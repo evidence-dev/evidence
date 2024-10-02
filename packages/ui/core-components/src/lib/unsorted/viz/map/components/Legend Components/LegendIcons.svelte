@@ -5,7 +5,15 @@
 
 	/** @type {string | undefined} */
 	export let legendType = undefined;
-	/** @type {number} */
+	/** @type {'left' | 'right' | 'bottom' | 'top'} */
+	export let direction = 'bottom';
+
+	const chevronDirections = {
+		top: { show: 'rotate-[270deg]', hide: 'rotate-90' },
+		bottom: { show: 'rotate-90', hide: 'rotate-[270deg]' },
+		left: { show: 'rotate-0', hide: 'rotate-180' },
+		right: { show: 'rotate-180', hide: 'rotate-0' }
+	};
 </script>
 
 <button
@@ -24,8 +32,8 @@
 		stroke-linecap="round"
 		stroke-linejoin="round"
 		class="transform transition-transform duration-300 ease-in-out text-left {hideLegend
-			? 'rotate-0'
-			: 'rotate-90'}"
+			? chevronDirections[direction].hide
+			: chevronDirections[direction].show}"
 	>
 		<polyline points="15 18 9 12 15 6" />
 	</svg>
