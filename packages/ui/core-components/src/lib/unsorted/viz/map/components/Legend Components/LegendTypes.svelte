@@ -13,11 +13,22 @@
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
 	export let hideLegend = false;
+	export let direction = 'bottom';
+	let isOverflowAuto = true;
+
+	// handles growing width effect for hide/show categorical transitions
+function handleTransitionEnd() {
+  if (legendType === 'category' && !hideLegend) {
+	isOverflowAuto = true;
+  }
+}
+$: if (legendType !== 'category' || hideLegend) {
+  isOverflowAuto = false; 
+}
 </script>
 
 {#if legendType === 'scalar'}
-	<div class="{hideLegend ? 'w-0' : 'w-48'} transition-width duration-300 ease-in-out">
-		<div class="flex w-48 mr-2 pr-2">
+		<div class="flex w-48 {hideLegend ? 'max-w-0' : 'max-w-48'} transition-[max-width] duration-300 ease-in-out overflow-hidden {hideLegend ? '' : direction === 'left' ? 'mr-2' : 'ml-2'}">
 			<span
 				style="background: {colorPalette
 					? `linear-gradient(to right, ${colorPalette.join(', ')})`
@@ -32,12 +43,13 @@
 				>
 			</span>
 		</div>
-	</div>
 {:else if legendType === 'category'}
-	<div
-		class="overflow-y-auto ml-2 pr-2 max-w-40 min-w-24 {hideLegend
-			? 'max-h-0'
-			: 'max-h-60'} transition-[max-height] duration-300 ease-in-out"
+	<div 
+	class="ml-2 pr-2 max-w-40 min-w-24 transition-[max-height] duration-300 ease-in-out 
+	{hideLegend ? 'max-h-0 overflow-y-hidden' : 'max-h-60'} 
+	{hideLegend ? '' : direction === 'top' ? 'pb-2' : 'pt-2'}"
+	class:overflow-y-auto={isOverflowAuto}
+	on:transitionend={handleTransitionEnd}
 	>
 		{#each colorPalette as color, i}
 			<div class="flex items-center">

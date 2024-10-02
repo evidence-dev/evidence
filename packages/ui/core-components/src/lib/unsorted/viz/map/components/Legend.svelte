@@ -53,8 +53,6 @@
 	} else if (legendType === 'category') {
 		direction = legendPosition.includes('bottom') ? 'bottom' : 'top';
 	}
-
-	console.log(direction, legendPosition);
 </script>
 
 {#if legendType && values}
@@ -77,6 +75,7 @@
 				<!-- legend container -->
 			{/if}
 			<LegendTypes
+				{direction}
 				{legendType}
 				{values}
 				{colorPalette}

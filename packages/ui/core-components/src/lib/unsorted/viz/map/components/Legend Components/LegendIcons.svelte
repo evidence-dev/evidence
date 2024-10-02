@@ -17,7 +17,7 @@
 </script>
 
 <button
-	class="items-center {legendType === 'scalar' ? 'h-10 px-[2.9px]' : `h-5 pl-2 pt-0.5 w-full`}"
+	class="flex items-center {legendType === 'scalar' ? 'h-10 px-[2.9px]' : `h-5 pl-2 w-full`}"
 	on:click={handleLegendClick}
 	on:dblclick={(e) => e.stopPropagation()}
 >
