@@ -253,7 +253,7 @@ FROM la_locations
 #### Categorical Legend
 
 	<PointMap
-		legendType=category
+		legendType=categorical
 		legendPosition=bottomLeft
         legendTitle=Legend
 		data={grouped_locations}
@@ -270,7 +270,7 @@ FROM la_locations
 
 ```svelte
 	<PointMap
-		legendType=category
+		legendType=categorical
 		legendPosition=bottomLeft
         legendTitle=Legend
 		data={grouped_locations}
