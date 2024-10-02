@@ -140,7 +140,7 @@
 		const canvas = within(canvasElement);
 
 		// This matches the devtools too, so we have to use index 1
-		const internals = await canvas.findAllByText('?bingbong=true', { exact: true });
+		const internals = await canvas.findAllByText('Internal', { exact: true });
 		const internal = internals[1];
 		await userEvent.click(internal);
 		expect(mockGoto).toHaveBeenCalledTimes(1);
