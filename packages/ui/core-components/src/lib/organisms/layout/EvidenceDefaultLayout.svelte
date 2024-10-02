@@ -182,3 +182,12 @@
 		<QueryStatus />
 	{/if}
 </DevTools>
+
+<style lang="postcss">
+	:global(*) {
+		@apply text-base-content;
+	}
+	:global(body) {
+		@apply bg-base-100;
+	}
+</style>
