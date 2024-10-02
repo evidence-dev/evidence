@@ -2,7 +2,7 @@
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { X, Menu2 } from '@steeze-ui/tabler-icons';
-	import { Github as GithubLogo, Slack as SlackLogo } from '@steeze-ui/simple-icons';
+	import { Github as GithubLogo, Slack as SlackLogo, X as XLogo } from '@steeze-ui/simple-icons';
 	import Logo from '../Logo.svelte';
 	import AlgoliaDocSearch from './AlgoliaDocSearch.svelte';
 	import KebabMenu from './KebabMenu.svelte';
@@ -25,7 +25,7 @@
 </script>
 
 <header
-	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-gray-200 bg-white/90 backdrop-blur print:hidden
+	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-base-200 bg-base-100/90 backdrop-blur print:hidden
   {sidebarFrontMatter === 'hide' ? 'md:pl-8' : ''}"
 >
 	<div
@@ -34,14 +34,14 @@
 		style="max-width:{maxWidth}px;"
 	>
 		{#if hideSidebar || sidebarFrontMatter === 'never'}
-			<a href="/" class="block text-sm font-bold text-gray-800">
+			<a href="/" class="block text-sm font-bold text-base-content">
 				<Logo {logo} {title} />
 			</a>
 		{:else}
 			<div class="flex gap-x-4 items-center">
 				<button
 					type="button"
-					class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 transition-all duration-500
+					class="text-base-content hover:bg-base-200 rounded-lg p-1 transition-all duration-500
           {sidebarFrontMatter === 'hide' ? 'block' : 'md:hidden'}"
 					on:click={() => {
 						mobileSidebarOpen = !mobileSidebarOpen;
@@ -55,7 +55,7 @@
 						<Icon class="w-5 h-5" src={Menu2} />
 					{/if}
 				</button>
-				<a href="/" class="text-sm font-bold text-gray-800 hidden md:block">
+				<a href="/" class="text-sm font-bold text-base-content hidden md:block">
 					<Logo {logo} {title} />
 				</a>
 			</div>
@@ -68,39 +68,31 @@
 				{#if githubRepo}
 					<a
 						href={githubRepo}
-						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
+						class="hover:bg-base-200 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
 					>
-						<Icon src={GithubLogo} class="w-4 h-4 text-gray-900 " />
+						<Icon src={GithubLogo} class="w-4 h-4 text-base-content" />
 					</a>
 				{/if}
 				{#if xProfile}
 					<a
 						href={xProfile}
-						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
+						class="hover:bg-base-200 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
 					>
-						<svg
-							role="img"
-							viewBox="0 0 24 24"
-							xmlns="http://www.w3.org/2000/svg"
-							class="w-4 h-4 text-gray-900"
-							><path
-								d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
-							/>
-						</svg>
+						<Icon src={XLogo} class="w-4 h-4 text-base-content" />
 					</a>
 				{/if}
 				{#if slackCommunity}
 					<a
 						href={slackCommunity}
-						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
+						class="hover:bg-base-200 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
 					>
-						<Icon src={SlackLogo} class="w-4 h-4 text-gray-900 " />
+						<Icon src={SlackLogo} class="w-4 h-4 text-base-content " />
 					</a>
 				{/if}
 			</div>
