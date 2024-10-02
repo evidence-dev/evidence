@@ -130,12 +130,6 @@
 
 <Story
 	name="Row links"
-	parameters={{
-		chromatic: {
-			// Since we navigate to example.com we need to disable snapshots
-			disableSnapshot: true
-		}
-	}}
 	play={async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
@@ -158,4 +152,30 @@
 		query
 	)}
 	<DataTable {data} link="link" />
+</Story>
+
+<Story
+	name="Row links with showLinkCol"
+	play={async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		// This matches the devtools too, so we have to use index 1
+		const internals = await canvas.findAllByText('Internal', { exact: true });
+		const internal = internals[1];
+		await userEvent.click(internal);
+		expect(mockGoto).toHaveBeenCalledTimes(1);
+		expect(mockGoto).toHaveBeenCalledWith('?bingbong=true');
+
+		// TODO testing the external link is tricky because it navigates away from the storybook
+	}}
+>
+	{@const data = Query.create(
+		`
+		SELECT 'Internal' as type, '?bingbong=true' as link UNION ALL
+		SELECT 'External' as type, 'https://example.com' as link UNION ALL
+		SELECT 'No link' as type, null as link
+		`,
+		query
+	)}
+	<DataTable {data} link="link" showLinkCol />
 </Story>
