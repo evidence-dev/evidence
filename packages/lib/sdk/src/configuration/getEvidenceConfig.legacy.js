@@ -11,7 +11,8 @@ export const getEvidenceConfigLegacy = () => {
 		const filepath = path.join(projectRoot, 'evidence.plugins.yaml');
 		fileContents = fs.readFileSync(filepath, 'utf-8');
 	} catch (e) {
-		throw new EvidenceError('Could not find an evidence.plugins.yaml file.');
+		console.error('Could not find an evidence.plugins.yaml file.');
+		return { plugins: {} };
 	}
 
 	const result = yaml.parse(fileContents.replaceAll(/($|\s)(@.+):/g, '$1"$2":'));
