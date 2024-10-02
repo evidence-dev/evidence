@@ -53,7 +53,7 @@
 
 	if (legendType === 'scalar') {
 		direction = legendPosition.includes('Left') ? 'left' : 'right';
-	} else if (legendType === 'categorical ') {
+	} else if (legendType === 'categorical') {
 		direction = legendPosition.includes('bottom') ? 'up' : 'down';
 	}
 </script>

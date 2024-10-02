@@ -1,16 +1,17 @@
 <script>
 	/** @type {boolean} */
 	export let hideLegend = false;
+	/** @type {() => void} */
 	export let handleLegendClick;
 
-	/** @type {string | undefined} */
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
-	/** @type {'left' | 'right' | 'bottom' | 'top'} */
-	export let direction = 'bottom';
+	/** @type {'left' | 'right' | 'down' | 'up'} */
+	export let direction = 'down';
 
 	const chevronDirections = {
-		top: { show: 'rotate-[270deg]', hide: 'rotate-90' },
-		bottom: { show: 'rotate-90', hide: 'rotate-[270deg]' },
+		up: { show: 'rotate-[270deg]', hide: 'rotate-90' },
+		down: { show: 'rotate-90', hide: 'rotate-[270deg]' },
 		left: { show: 'rotate-0', hide: 'rotate-180' },
 		right: { show: 'rotate-180', hide: 'rotate-0' }
 	};
@@ -20,6 +21,7 @@
 	class="flex items-center {legendType === 'scalar' ? 'h-10 px-[2.9px]' : `h-5 pl-2 w-full`}"
 	on:click={handleLegendClick}
 	on:dblclick={(e) => e.stopPropagation()}
+	aria-label="Toggle Legend"
 >
 	<svg
 		xmlns="http://www.w3.org/2000/svg"

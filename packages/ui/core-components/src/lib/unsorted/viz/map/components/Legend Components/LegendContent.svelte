@@ -1,6 +1,6 @@
 <script>
 	import { fmt } from '@evidence-dev/component-utilities/formatting';
-	/** @type {string | undefined} */
+	/** @type {"categorical" | "scalar" | undefined} */
 	export let legendType = undefined;
 	/** @type {[any] | undefined} */
 	export let values;
@@ -13,16 +13,17 @@
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
 	export let hideLegend = false;
-	export let direction = 'bottom';
+	/** @type {'left' | 'right' | 'up' | 'down'} */
+	export let direction = 'up';
 	let isOverflowAuto = true;
 
 	// handles growing width effect for hide/show categorical transitions
 	function handleTransitionEnd() {
-		if (legendType === 'category' && !hideLegend) {
+		if (legendType === 'categorical' && !hideLegend) {
 			isOverflowAuto = true;
 		}
 	}
-	$: if (legendType !== 'category' || hideLegend) {
+	$: if (legendType !== 'categorical' || hideLegend) {
 		isOverflowAuto = false;
 	}
 </script>
@@ -51,11 +52,11 @@
 			>
 		</span>
 	</div>
-{:else if legendType === 'category'}
+{:else if legendType === 'categorical'}
 	<div
 		class="ml-2 pr-2 max-w-40 min-w-24 transition-[max-height] duration-300 ease-in-out
 	{hideLegend ? 'max-h-0 overflow-y-hidden' : 'max-h-60'} 
-	{hideLegend ? '' : direction === 'top' ? 'pb-2' : 'pt-2'}"
+	{hideLegend ? '' : direction === 'down' ? 'pb-2' : 'pt-2'}"
 		class:overflow-y-auto={isOverflowAuto}
 		on:transitionend={handleTransitionEnd}
 	>
