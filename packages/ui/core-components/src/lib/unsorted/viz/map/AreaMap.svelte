@@ -62,7 +62,7 @@
 
 	/** @type {string} */
 	export let legendPosition = 'topLeft';
-	/** @type {string | undefined} */
+	/** @type {'category' | 'scalar' | undefined} */
 	export let legendType = undefined;
 	/** @type {string} */
 	export let legendTitle = 'Legend';
