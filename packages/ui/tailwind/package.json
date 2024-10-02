@@ -22,7 +22,9 @@
 	},
 	"main": "index.js",
 	"source": "index.js",
+	"type": "module",
 	"devDependencies": {
+		"@types/lodash": "^4.17.9",
 		"typescript": "^5.5.4"
 	}
 }

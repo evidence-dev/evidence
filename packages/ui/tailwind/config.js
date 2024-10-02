@@ -1,9 +1,9 @@
 import { createThemes } from 'tw-colors';
-import { loadThemes } from './themes/loadThemes';
+import { loadThemes } from './themes/loadThemes.js';
 
-const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultTheme = require('tailwindcss/defaultTheme.js');
 
-/** @type {import('tailwindcss').Config} */
+/** @type {Partial<import('tailwindcss').Config>} */
 export const config = {
 	theme: {
 		extend: {
