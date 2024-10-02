@@ -29,7 +29,7 @@ export function jsToIPC(data, columns) {
 }
 
 /**
- * @param {string} evidenceType 
+ * @param {string} evidenceType
  * @returns {import("apache-arrow").DataType}
  */
 function evidenceToArrowType(evidenceType) {
@@ -46,15 +46,15 @@ function evidenceToArrowType(evidenceType) {
 		default:
 			throw new Error(
 				'Unrecognized EvidenceType: ' +
-				evidenceType +
-				'\n This is likely an error in a datasource connector.'
+					evidenceType +
+					'\n This is likely an error in a datasource connector.'
 			);
 	}
 }
 
 class JSStreamWriter extends RecordBatchStreamWriter {
 	/**
-	 * @param {Record<string, unknown>[]} arr 
+	 * @param {Record<string, unknown>[]} arr
 	 * @returns {this}
 	 */
 	_writeArray(arr) {
@@ -85,8 +85,8 @@ class JavascriptVisitor extends Visitor {
 	_bufferRegions;
 
 	/**
-	 * @param {unknown[]} array 
-	 * @param {import("apache-arrow").Schema} schema 
+	 * @param {unknown[]} array
+	 * @param {import("apache-arrow").Schema} schema
 	 * @returns {JavascriptVisitor}
 	 */
 	static assemble(array, schema) {
@@ -104,9 +104,9 @@ class JavascriptVisitor extends Visitor {
 		this._bufferRegions = [];
 	}
 	/**
-	 * @param {import("apache-arrow").DataType} _type 
-	 * @param {Record<string, unknown>[]} arr 
-	 * @param {string} name 
+	 * @param {import("apache-arrow").DataType} _type
+	 * @param {Record<string, unknown>[]} arr
+	 * @param {string} name
 	 */
 	visitFloat(_type, arr, name) {
 		let nullCount = 0;
@@ -130,9 +130,9 @@ class JavascriptVisitor extends Visitor {
 		addBuffer(this, values);
 	}
 	/**
-	 * @param {import("apache-arrow").DataType} _type 
-	 * @param {Record<string, unknown>[]} arr 
-	 * @param {string} name 
+	 * @param {import("apache-arrow").DataType} _type
+	 * @param {Record<string, unknown>[]} arr
+	 * @param {string} name
 	 */
 	visitBool(_type, arr, name) {
 		let nullCount = 0;
@@ -155,9 +155,9 @@ class JavascriptVisitor extends Visitor {
 		addBuffer(this, bytes);
 	}
 	/**
-	 * @param {import("apache-arrow").DataType} _type 
-	 * @param {Record<string, unknown>[]} arr 
-	 * @param {string} name 
+	 * @param {import("apache-arrow").DataType} _type
+	 * @param {Record<string, unknown>[]} arr
+	 * @param {string} name
 	 */
 	visitUtf8(_type, arr, name) {
 		let nullCount = 0;
@@ -193,9 +193,9 @@ class JavascriptVisitor extends Visitor {
 		addBuffer(this, values.subarray(0, byteLength));
 	}
 	/**
-	 * @param {import("apache-arrow").DataType} _type 
-	 * @param {Record<string, unknown>[]} arr 
-	 * @param {string} name 
+	 * @param {import("apache-arrow").DataType} _type
+	 * @param {Record<string, unknown>[]} arr
+	 * @param {string} name
 	 */
 	visitTimestamp(_type, arr, name) {
 		let nullCount = 0;
@@ -237,8 +237,8 @@ class JavascriptVisitor extends Visitor {
 }
 
 /**
- * @param {JavascriptVisitor} accumulator 
- * @param {ArrayBufferView} values 
+ * @param {JavascriptVisitor} accumulator
+ * @param {ArrayBufferView} values
  */
 function addBuffer(accumulator, values) {
 	const byteLength = (values.byteLength + 7) & ~7; // Round up to a multiple of 8
@@ -248,9 +248,9 @@ function addBuffer(accumulator, values) {
 }
 
 /**
- * @param {Uint8Array} bitmap 
- * @param {number} i 
- * @param {boolean | 1 | 0} value 
+ * @param {Uint8Array} bitmap
+ * @param {number} i
+ * @param {boolean | 1 | 0} value
  */
 function setBit(bitmap, i, value) {
 	const byte = i >>> 3;
@@ -261,9 +261,9 @@ function setBit(bitmap, i, value) {
 
 const encoder = new TextEncoder();
 /**
- * @param {string} str 
- * @param {Uint8Array} dest 
- * @param {number} ptr 
+ * @param {string} str
+ * @param {Uint8Array} dest
+ * @param {number} ptr
  * @returns {number}
  */
 function serializeString(str, dest, ptr) {
