@@ -503,6 +503,7 @@
 					{formatColumnTitles}
 					{sortBy}
 					{wrapTitles}
+					{link}
 				/>
 
 				<QueryLoad data={filteredData}>
