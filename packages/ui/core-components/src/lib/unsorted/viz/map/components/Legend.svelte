@@ -5,10 +5,13 @@
 <script>
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
-	import LegendIcons from './Legend Components/LegendIcons.svelte';
-	import LegendTypes from './Legend Components/LegendTypes.svelte';
-	export let legendType = undefined;
+	import LegendToggle from './Legend Components/LegendToggle.svelte';
+	import LegendContent from './Legend Components/LegendContent.svelte';
+
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
 	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
 	const positions = {
 		topLeft: 'top-[-10px] left-[-9px]',
 		topRight: 'top-[-10px] right-[-9px]',
@@ -27,13 +30,13 @@
 	let maxValue;
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
-	/** @type {'left' | 'right' | 'bottom' | 'top'} */
-	let direction = 'bottom';
+	/** @type {'left' | 'right' | 'up' | 'down'} */
+	let direction = 'up';
 
 	const map = getContext(mapContextKey);
 	let legendData;
 
-	$: legendData = map.getLegendData;
+	$: legendData = map.legendData;
 
 	$: {
 		if ($legendData) {
@@ -50,8 +53,8 @@
 
 	if (legendType === 'scalar') {
 		direction = legendPosition.includes('Left') ? 'left' : 'right';
-	} else if (legendType === 'category') {
-		direction = legendPosition.includes('bottom') ? 'bottom' : 'top';
+	} else if (legendType === 'categorical ') {
+		direction = legendPosition.includes('bottom') ? 'up' : 'down';
 	}
 </script>
 
@@ -70,11 +73,11 @@
 				: ''}"
 		>
 			<!-- button container -->
-			{#if direction === 'top' || direction === 'left'}
-				<LegendIcons {hideLegend} {handleLegendClick} {legendType} {direction} />
+			{#if direction === 'down' || direction === 'left'}
+				<LegendToggle {hideLegend} {handleLegendClick} {legendType} {direction} />
 				<!-- legend container -->
 			{/if}
-			<LegendTypes
+			<LegendContent
 				{direction}
 				{legendType}
 				{values}
@@ -84,8 +87,8 @@
 				{legendFmt}
 				{hideLegend}
 			/>
-			{#if direction === 'bottom' || direction === 'right'}
-				<LegendIcons {hideLegend} {handleLegendClick} {legendType} {direction} />
+			{#if direction === 'up' || direction === 'right'}
+				<LegendToggle {hideLegend} {handleLegendClick} {legendType} {direction} />
 			{/if}
 		</div>
 	</div>

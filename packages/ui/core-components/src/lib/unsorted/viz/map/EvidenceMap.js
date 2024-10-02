@@ -502,7 +502,7 @@ export class EvidenceMap {
 
 	handleLegendValues(colorPalette, values, legendType) {
 		//determine legend style
-		if (legendType === 'category') {
+		if (legendType === 'categorical') {
 			let uniqueValues = new Set(values);
 			values = [...uniqueValues];
 			let i = 0;
@@ -557,7 +557,7 @@ export class EvidenceMap {
 		}));
 	}
 
-	get getLegendData() {
+	get legendData() {
 		return readonly(this.#legendData);
 	}
 

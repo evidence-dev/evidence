@@ -33,7 +33,7 @@
 	export let sizeFmt = undefined;
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
-	/** @type {string|undefined} */
+	/** @type { 'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
 
 	if (size) {

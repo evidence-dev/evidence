@@ -87,7 +87,7 @@
 
 <Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="bottomLeft"
 		data={grouped_locations}
 		lat="lat"
@@ -120,7 +120,7 @@
 
 <Story name="Legend Usage No Color Palette" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="bottomLeft"
 		data={grouped_locations}
 		lat="lat"
@@ -151,7 +151,7 @@
 
 <Story name="Legend Usage w/ null values" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="bottomLeft"
 		data={null_grouped_locations}
 		lat="lat"
@@ -184,7 +184,7 @@
 	<PointMap
 		data={cybersan_grouped_locations}
 		legendPosition="topLeft"
-		legendType="category"
+		legendType="categorical"
 		lat="lat"
 		long="long"
 		value="sales"
@@ -199,7 +199,7 @@
 </Story>
 <Story name="Legend Usage Category" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="topRight"
 		data={grouped_locations}
 		lat="lat"
@@ -214,7 +214,7 @@
 	/>
 	<div class="h-32"></div>
 	<PointMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="topLeft"
 		data={grouped_locations}
 		lat="lat"
@@ -229,7 +229,7 @@
 	/>
 	<div class="h-32"></div>
 	<PointMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="bottomLeft"
 		data={grouped_locations}
 		lat="lat"
@@ -244,7 +244,7 @@
 	/>
 	<div class="h-32"></div>
 	<PointMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="bottomRight"
 		data={grouped_locations}
 		lat="lat"

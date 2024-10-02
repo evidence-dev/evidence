@@ -60,9 +60,9 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
-	/** @type {'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'} */
-	export let legendPosition = 'topLeft';
-	/** @type {'category' | 'scalar' | undefined} */
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
 	/** @type {string} */
 	export let legendTitle = 'Legend';

@@ -9,7 +9,7 @@
 	export let size = undefined; // column containing size data
 	/** @type {number} */
 	export let opacity = 0.8;
-	/** @type {string | undefined} */
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
 </script>
 

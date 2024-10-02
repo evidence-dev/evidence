@@ -38,7 +38,7 @@
 
 	/** @type {string | undefined} */
 	export let name = undefined;
-	/** @type {string | undefined} */
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
 
 	/**

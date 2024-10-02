@@ -53,7 +53,7 @@
 
 <Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<BubbleMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="bottomLeft"
 		data={grouped_locations}
 		lat="lat"
