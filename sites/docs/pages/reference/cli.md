@@ -77,11 +77,11 @@ Evidence will read in environment variables from a `.env` file in the root of yo
 
 Environment variables to be used in source queries should be prefixed with `EVIDENCE_VAR__` (note the double underscore). They can be used in source queries with `${EVIDENCE_VAR__variable_name}`.
 
-```
+```bash
 EVIDENCE_VAR__customer_name="Acme Corporation"
 ```
 
-```
+```bash
 select *
 from orders
 where customer_name = '${customer_name}'
@@ -99,18 +99,18 @@ VITE_customer_attribute=premium
 ```
 
 `index.md`
-```html
-<script>
+```svelte
+&lt;script&gt;
   const customer_attribute = import.meta.env.VITE_customer_attribute;
-</script>
+&lt;/script&gt;
 
 {#if customer_attribute === 'premium'}
 
-premium
+Premium content
 
 {:else if customer_attribute === 'free'}
 
-free
+Free content
 
 {/if}
 ```
