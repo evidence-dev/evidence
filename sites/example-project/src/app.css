@@ -168,7 +168,7 @@
 	}
 
 	code.markdown {
-		@apply font-mono text-[0.875em] bg-gray-50 border rounded px-1 select-all py-0.5;
+		@apply font-mono text-[0.875em] bg-base-200 border border-base-300 rounded px-1 select-all py-0.5;
 	}
 
 	form code {
