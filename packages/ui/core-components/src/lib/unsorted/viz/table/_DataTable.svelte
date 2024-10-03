@@ -44,9 +44,18 @@
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
 
 	// Sort props
-	export let sortBy = undefined;
-	export let sortAsc = false;
-	$: sortAsc = sortAsc === 'true' || sortAsc === true;
+	export let sort = undefined;
+	let sortBy = undefined;
+	let sortAsc = undefined;
+	$: if (sort) {
+		const [column, direction] = sort.split(' ');
+		sortBy = column;
+		sortAsc = direction === 'asc' ? true : false; // Default to descending if no direction is provided
+	}
+
+	// export let sortBy = undefined;
+	// export let sortAsc = false;
+	// $: sortAsc = sortAsc === 'true' || sortAsc === true;
 	let initialSortApplied = false;
 
 	export let groupBy = undefined;
@@ -255,7 +264,7 @@
 
 	let sortObj = sortBy ? { col: sortBy, ascending: sortAsc } : { col: null, ascending: null };
 
-	$: sort = (column) => {
+	$: sortFunc = (column) => {
 		if (sortObj.col == column) {
 			sortObj.ascending = !sortObj.ascending;
 		} else {
@@ -269,20 +278,21 @@
 		const forceTopOfAscending = (val) =>
 			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
 
-		const sort = (a, b) =>
+		const comparator = (a, b) =>
 			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
 				? -1 * sortModifier
 				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
 					  a[column] > b[column]
 					? 1 * sortModifier
 					: 0;
-		data.sort(sort);
-		filteredData = filteredData.sort(sort);
+
+		data.sort(comparator);
+		filteredData = filteredData.sort(comparator);
 
 		if (groupBy) {
-			// sort within grouped data
+			// Sort within grouped data
 			for (const groupName of Object.keys(groupedData)) {
-				groupedData[groupName] = groupedData[groupName].sort(sort);
+				groupedData[groupName] = groupedData[groupName].sort(comparator);
 			}
 		}
 	};
@@ -298,7 +308,6 @@
 				if (
 					(valA === undefined || valA === null || isNaN(valA)) &&
 					valB !== undefined &&
-					valB !== null &&
 					!isNaN(valB)
 				) {
 					return -1 * (sortObj.ascending ? 1 : -1);
@@ -306,7 +315,6 @@
 				if (
 					(valB === undefined || valB === null || isNaN(valB)) &&
 					valA !== undefined &&
-					valA !== null &&
 					!isNaN(valA)
 				) {
 					return 1 * (sortObj.ascending ? 1 : -1);
@@ -325,7 +333,7 @@
 	}
 
 	$: if (!initialSortApplied && sortBy) {
-		sort(sortBy); // Automatically sort by the column specified in `sortBy` on load
+		sortFunc(sortBy); // Automatically sort by the column specified in `sortBy` on load
 		initialSortApplied = true; // Set flag so column click sorting still functions after page load
 	}
 
@@ -510,7 +518,7 @@
 					{columnSummary}
 					{compact}
 					{sortable}
-					{sort}
+					{sortFunc}
 					{formatColumnTitles}
 					{sortObj}
 					{wrapTitles}

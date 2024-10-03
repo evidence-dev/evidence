@@ -8,7 +8,7 @@
 	export let orderedColumns = undefined;
 	export let columnSummary = undefined;
 	export let sortable = undefined;
-	export let sort = undefined;
+	export let sortFunc = undefined;
 	export let formatColumnTitles = undefined;
 	export let sortObj = undefined;
 	export let wrapTitles = undefined;
@@ -79,7 +79,7 @@
 				style:background-color={headerColor}
 				style:cursor={sortable ? 'pointer' : 'auto'}
 				style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
-				on:click={sortable ? sort(column.id) : ''}
+				on:click={sortable ? sortFunc(column.id) : ''}
 				style:vertical-align="bottom"
 			>
 				{column.title
