@@ -176,11 +176,23 @@
 	}
 
 	blockquote.markdown {
-		@apply border-l-4 border-gray-300 pl-3 my-8;
+		@apply bg-base-200 border-l-4 border-base-content/70 pl-3 my-8 py-2;
+	}
+
+	blockquote.markdown > blockquote.markdown {
+		@apply m-0;
+	}
+
+	blockquote.markdown > :first-child {
+		@apply mt-0;
+	}
+
+	blockquote.markdown > :last-child {
+		@apply mb-0;
 	}
 
 	blockquote.markdown * {
-		@apply text-gray-500;
+		@apply text-base-content/70;
 	}
 	/* Ensure size and color are maintained for bold, italic, strikethrough */
 	strong.markdown {
