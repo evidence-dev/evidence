@@ -164,7 +164,7 @@
 	}
 
 	hr.markdown {
-		@apply h-px my-8 max-w-xl mx-auto bg-gray-200 border-0;
+		@apply h-px my-8 max-w-xl mx-auto bg-base-300 border-0;
 	}
 
 	code.markdown {
