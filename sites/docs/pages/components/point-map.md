@@ -255,7 +255,6 @@ FROM la_locations
 	<PointMap
 		legendType=categorical
 		legendPosition=bottomLeft
-        legendTitle=Legend
 		data={grouped_locations}
 		lat=lat
 		long=long
@@ -269,21 +268,20 @@ FROM la_locations
 	/>
 
 ```svelte
-	<PointMap
-		legendType=categorical
-		legendPosition=bottomLeft
-        legendTitle=Legend
-		data={grouped_locations}
-		lat=lat
-		long=long
-		value=Category
-        colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-		tooltipType=hover
-		tooltip={[
-			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
-		]}
-	/>
+<PointMap
+    legendType=categorical
+    legendPosition=bottomLeft
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+    tooltipType=hover
+    tooltip={[
+        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+    ]}
+/>
 ```
 
 #### Scalar Legend
@@ -291,7 +289,6 @@ FROM la_locations
 <PointMap
     legendType=scalar
     legendPosition=bottomLeft
-    legendTitle="Scalar Legend"
     data={grouped_locations}
     lat=lat
     long=long
@@ -308,7 +305,6 @@ FROM la_locations
 <PointMap
     legendType=scalar
     legendPosition=bottomLeft
-    legendTitle="Scalar Legend"
     data={grouped_locations}
     lat=lat
     long=long
@@ -382,7 +378,7 @@ Maximum value to use for the color scale.
 
 <PropListing
 name="legendType"
-options={['category', 'scalar']}
+options={['categorical', 'scalar']}
 >
 Appends a categorical or scalar legend to the map
 </PropListing>
@@ -395,13 +391,6 @@ defaultValue='bottomLeft'
 Determines the legend's position on the map, with options provided
 </PropListing>
 
-<PropListing
-name="legendTitle"
-options=string
-defaultValue='Legend'
->
-Specifies the title for the legend
-</PropListing>
 ### Interactivity
 
 <PropListing

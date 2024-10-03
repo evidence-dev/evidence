@@ -499,7 +499,7 @@ Maximum value to use for the color scale.
 
 <PropListing
 name="legendType"
-options={['category', 'scalar']}
+options={['categorical', 'scalar']}
 >
 Appends a categorical or scalar legend to the map
 </PropListing>
@@ -510,14 +510,6 @@ options={['bottomLeft', 'topLeft','bottomRight', 'topRight']}
 defaultValue='bottomLeft'
 >
 Determines the legend's position on the map, with options provided
-</PropListing>
-
-<PropListing
-name="legendTitle"
-options=string
-defaultValue='Legend'
->
-Specifies the title for the legend
 </PropListing>
 
 ### Interactivity
