@@ -37,7 +37,8 @@ export const config = {
 			}
 		}
 	},
-	plugins: [createThemes(loadThemes())]
+	plugins: [createThemes(loadThemes())],
+	darkMode: ['selector', '[data-theme="dark"]']
 };
 
 export default config;
