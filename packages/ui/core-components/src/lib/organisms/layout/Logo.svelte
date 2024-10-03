@@ -1,5 +1,7 @@
 <script>
-	import defaultLogo from './wordmark-gray-800.png';
+	import evidenceLogoWhite from './wordmark-white.png';
+	import evidenceLogoBlack from './wordmark-black.png';
+
 	export let logo;
 	export let title;
 </script>
@@ -9,5 +11,6 @@
 {:else if title}
 	{title}
 {:else}
-	<img src={defaultLogo} alt="evidence" class="h-5 aspect-auto" href="/" />
+	<img src={evidenceLogoBlack} alt="evidence" class="h-5 aspect-auto block dark:hidden" href="/" />
+	<img src={evidenceLogoWhite} alt="evidence" class="h-5 aspect-auto hidden dark:block" href="/" />
 {/if}
