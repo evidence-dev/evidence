@@ -13,6 +13,9 @@
 	export let sortBy = undefined;
 	export let wrapTitles = undefined;
 	export let compact = undefined;
+
+	/** @type {string | undefined} */
+	export let link = undefined;
 </script>
 
 <thead>
@@ -92,6 +95,13 @@
 				{/if}
 			</th>
 		{/each}
+
+		<!-- Extra column for Chevron icons -->
+		{#if link}
+			<th role="columnheader">
+				<span class="sr-only">Links</span>
+			</th>
+		{/if}
 	</tr>
 </thead>
 
