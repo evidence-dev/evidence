@@ -1,3 +1,5 @@
+import colors from 'tailwindcss/colors.js';
+
 /** @typedef {import('./schemas.js').Theme} Theme */
 
 const todo = {
@@ -22,17 +24,17 @@ const todo = {
 /** @type {Record<'light' | 'dark', Theme>} */
 export const defaultThemes = {
 	light: {
-		'base-100': '#ffffff',
-		'base-200': '#f3f4f6',
-		'base-300': '#e5e7eb',
-		'base-content': '#030712',
+		'base-100': colors.white,
+		'base-200': colors.gray[100],
+		'base-300': colors.gray[200],
+		'base-content': colors.gray[950],
 		...todo
 	},
 	dark: {
-		'base-100': '#111827',
-		'base-200': '#1f2937',
-		'base-300': '#374151',
-		'base-content': '#f9fafb',
+		'base-100': colors.gray[900],
+		'base-200': colors.gray[800],
+		'base-300': colors.gray[700],
+		'base-content': colors.gray[50],
 		...todo
 	}
 };
