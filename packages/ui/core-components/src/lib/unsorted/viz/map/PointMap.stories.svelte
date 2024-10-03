@@ -93,7 +93,7 @@
 		lat="lat"
 		long="long"
 		value="Category"
-		colorPalette={['red', 'green', 'blue', 'purple']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -149,7 +149,10 @@
 	<div class="h-32"></div>
 </Story>
 
-<Story name="Legend Usage w/ null values" parameters={{ chromatic: { disableSnapshot: true } }}>
+<Story
+	name="Legend Usage w/ null values in query"
+	parameters={{ chromatic: { disableSnapshot: true } }}
+>
 	<PointMap
 		legendType="categorical"
 		legendPosition="bottomLeft"
@@ -157,21 +160,7 @@
 		lat="lat"
 		long="long"
 		value="Category"
-		colorPalette={['orange', 'yellow', 'brown']}
-		tooltipType="hover"
-		tooltip={[
-			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
-		]}
-	/>
-	<div class="h-32"></div>
-	<PointMap
-		data={grouped_locations}
-		legendType="scalar"
-		lat="lat"
-		long="long"
-		value="sales"
-		colorPalette={['red', 'blue', 'green']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
@@ -196,7 +185,7 @@
 	/>
 	<div class="h-32"></div>
 </Story>
-<Story name="Legend Usage Category" parameters={{ chromatic: { disableSnapshot: true } }}>
+<Story name="Legend Positioning Category" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
 		legendType="categorical"
 		legendPosition="topRight"
@@ -204,7 +193,7 @@
 		lat="lat"
 		long="long"
 		value="Category"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -219,7 +208,7 @@
 		lat="lat"
 		long="long"
 		value="Category"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -234,7 +223,7 @@
 		lat="lat"
 		long="long"
 		value="Category"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -249,7 +238,7 @@
 		lat="lat"
 		long="long"
 		value="Category"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -258,7 +247,7 @@
 	/>
 	<div class="h-32"></div>
 </Story>
-<Story name="Legend Usage Scalar" parameters={{ chromatic: { disableSnapshot: true } }}>
+<Story name="Legend Positioning Scalar" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
 		legendType="scalar"
 		legendPosition="topRight"
@@ -266,7 +255,7 @@
 		lat="lat"
 		long="long"
 		value="sales"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -281,7 +270,7 @@
 		lat="lat"
 		long="long"
 		value="sales"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -296,7 +285,7 @@
 		lat="lat"
 		long="long"
 		value="sales"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -311,7 +300,7 @@
 		lat="lat"
 		long="long"
 		value="sales"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },

@@ -449,15 +449,10 @@ export class EvidenceMap {
 			values = [...uniqueValues];
 			let i = 0;
 
-			if (!colorPalette) {
-				console.log('do this');
-			} else {
-				console.log('do that');
-				while (colorPalette.length < values.length) {
-					if (i >= colorPalette.length) i = 0;
-					colorPalette.push(colorPalette[i]);
-					i++;
-				}
+			while (colorPalette.length < values.length) {
+				if (i >= colorPalette.length) i = 0;
+				colorPalette.push(colorPalette[i]);
+				i++;
 			}
 		} else if (legendType === 'scalar') {
 			values.forEach((value) => {

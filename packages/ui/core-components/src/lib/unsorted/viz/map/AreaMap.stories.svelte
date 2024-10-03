@@ -109,7 +109,7 @@ ORDER BY 1;
 		value="Category"
 		geoId="ZCTA5CE10"
 		areaCol="zip_code"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 	/>
 	<div class="h-32"></div>
 	<AreaMap
@@ -146,7 +146,6 @@ ORDER BY 1;
 		value="sales"
 		geoId="ZCTA5CE10"
 		areaCol="zip_code"
-		colorPalette={['red', 'yellow', 'green']}
 	/>
 	<div class="h-32"></div>
 </Story>

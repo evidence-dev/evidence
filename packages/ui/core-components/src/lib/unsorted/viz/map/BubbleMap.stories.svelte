@@ -60,7 +60,7 @@
 		long="long"
 		value="Category"
 		size="sales"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
