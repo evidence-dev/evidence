@@ -135,6 +135,13 @@ To display data in a table, use a [Data Table](/components/data-table) instead.
 > > And can be nested
 ```
 
+> This is a blockquote
+>
+> It can span multiple lines
+>
+> > And can be nested
+
+
 ## Frontmatter
 
 <Alert status=warning>
