@@ -142,6 +142,18 @@ To display data in a table, use a [Data Table](/components/data-table) instead.
 > > And can be nested
 
 
+## Horizontal Rule
+
+```markdown
+Below is a horizontal rule
+
+---
+```
+
+Below is a horizontal rule
+
+---
+
 ## Frontmatter
 
 <Alert status=warning>
