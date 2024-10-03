@@ -1,10 +1,17 @@
+import {
+	Compression,
+	writeParquet,
+	WriterPropertiesBuilder,
+	Table
+} from 'parquet-wasm/node/arrow1.js';
 import fs from 'fs/promises';
 import path from 'path';
+// using node-async.js makes CLI command hang - why??
+import { emptyDbFs, initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
-import { Database } from 'duckdb-async';
 import { jsToIPC } from './jsToIPC.js';
 
 /**
@@ -25,23 +32,27 @@ export async function buildMultipartParquet(
 	outputFilename,
 	batchSize = 1000000
 ) {
+	let batchNum = 0;
+	const outputSubpath = outputFilename.split('.parquet')[0];
+	let tmpFilenames = [];
 	let rowCount = 0;
-
-	const db = await Database.create(':memory:');
-	await db.all('INSTALL arrow');
-	await db.all('LOAD arrow');
 
 	const flush = async (results) => {
 		const IPC = jsToIPC(results, columns);
 
-		await db.register_buffer('data', [IPC], true);
-		await db.all(`
-			CREATE TABLE IF NOT EXISTS accum AS SELECT * FROM data LIMIT 0;
-			INSERT INTO accum SELECT * FROM data;
-		`);
-		await db.unregister_buffer('data');
+		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
+		// Converts the arrow buffer to a parquet buffer
+		// This can be slow; it includes the compression step
 
+		const parquetBuffer = writeParquet(Table.fromIPCStream(IPC), writerProperties);
+
+		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
+		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
+		await fs.writeFile(tempFilename, parquetBuffer);
+
+		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
+		batchNum++;
 	};
 
 	if (typeof data === 'function') data = data();
@@ -71,10 +82,19 @@ export async function buildMultipartParquet(
 		}
 	}
 
+	if (!tmpFilenames.length) return 0;
+
+	await initDB();
+
 	const outputFilepath = path.join(outDir, outputFilename);
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
-	await db.all(`COPY accum TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`);
+	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
+
+	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
+	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
+
+	await query(copy);
 
 	await fs.chmod(outputFilepath, 0o644);
 
@@ -110,6 +130,10 @@ export async function buildMultipartParquet(
 			)
 		);
 	}
-	await db.close();
+
+	for (const tmpFile of tmpFilenames) {
+		await fs.rm(tmpFile, { force: true });
+	}
+	await emptyDbFs('*');
 	return rowCount;
 }
