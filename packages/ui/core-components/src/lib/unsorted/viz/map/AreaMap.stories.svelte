@@ -101,7 +101,7 @@ ORDER BY 1;
 
 <Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<AreaMap
-		legendType="category"
+		legendType="categorical"
 		legendPosition="bottomLeft"
 		data={grouped_locations}
 		lat="lat"

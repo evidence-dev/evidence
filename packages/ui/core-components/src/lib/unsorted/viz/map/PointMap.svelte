@@ -57,8 +57,8 @@
 	export let colorPalette = undefined;
 
 	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
-	export let legendPosition = 'topLeft';
-	/** @type {string | undefined} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;

@@ -298,7 +298,7 @@ FROM la_locations
 #### Categorical Legend
 
 	<BubbleMap
-		legendType=category
+		legendType="categorical"
 		legendPosition=bottomLeft
         legendTitle=Legend
 		data={grouped_locations}
@@ -316,7 +316,7 @@ FROM la_locations
 
 ```svelte
 <BubbleMap
-    legendType=category
+    legendType="categorical"
     legendPosition=bottomLeft
     legendTitle=Legend
     data={grouped_locations}

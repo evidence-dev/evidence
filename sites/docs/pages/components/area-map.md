@@ -364,27 +364,27 @@ ORDER BY 1;
 #### Categorical Legend
 
 	<AreaMap
-		legendType="category"
-		legendPosition="bottomLeft"
+		legendType=categorical
+		legendPosition=bottomLeft
 		data={grouped_locations}
-		lat="lat"
-		long="long"
-		value="Category"
-		geoId="ZCTA5CE10"
-		areaCol="zip_code"
+		lat=lat
+		long=long
+		value=Category
+		geoId=ZCTA5CE10
+		areaCol=zip_code
 		colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 	/>
 
  ```svelte
 <AreaMap
-    legendType="category"
-    legendPosition="bottomLeft"
+    legendType=categorical
+    legendPosition=bottomLeft
     data={grouped_locations}
-    lat="lat"
-    long="long"
-    value="Category"
-    geoId="ZCTA5CE10"
-    areaCol="zip_code"
+    lat=lat
+    long=long
+    value=Category
+    geoId=ZCTA5CE10
+    areaCol=zip_code
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
@@ -392,27 +392,27 @@ ORDER BY 1;
 #### Scalar Legend
 
      <AreaMap
-        legendType="scalar"
-        legendPosition="bottomLeft"
+        legendType=scalar
+        legendPosition=bottomLeft
         data={grouped_locations}
-        lat="lat"
-        long="long"
-        value="sales"
-        geoId="ZCTA5CE10"
-        areaCol="zip_code"
+        lat=lat
+        long=long
+        value=sales
+        geoId=ZCTA5CE10
+        areaCol=zip_code
         colorPalette={['#dc0101', '#01dc08']}
     />
 
 ```svelte
 <AreaMap
-    legendType="scalar"
-    legendPosition="bottomLeft"
+    legendType=scalar
+    legendPosition=bottomLeft
     data={grouped_locations}
-    lat="lat"
-    long="long"
-    value="sales"
-    geoId="ZCTA5CE10"
-    areaCol="zip_code"
+    lat=lat
+    long=long
+    value=sales
+    geoId=ZCTA5CE10
+    areaCol=zip_code
     colorPalette={['#dc0101', '#01dc08']}
 />
 ```
