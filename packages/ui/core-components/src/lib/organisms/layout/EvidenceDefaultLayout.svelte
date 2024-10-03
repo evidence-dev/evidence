@@ -108,7 +108,7 @@
 
 <ToastWrapper />
 <DevTools>
-	<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
+	<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased">
 		<ErrorOverlay />
 		{#if !hideHeader}
 			<Header
@@ -184,10 +184,7 @@
 </DevTools>
 
 <style lang="postcss">
-	:global(*) {
-		@apply text-base-content;
-	}
 	:global(body) {
-		@apply bg-base-100;
+		@apply bg-base-100 text-base-content;
 	}
 </style>

@@ -195,7 +195,7 @@
 <aside class="w-48 flex-none {sidebarFrontMatter === 'hide' ? 'hidden' : 'hidden md:flex'}">
 	{#if !mobileSidebarOpen}
 		<div
-			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500 pretty-scrollbar"
+			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm pretty-scrollbar"
 			class:top-8={hideHeader}
 		>
 			<div class="flex flex-col pb-6">
