@@ -19,7 +19,7 @@
 
 <style lang="postcss">
 	.alert {
-		@apply p-2 mb-4 rounded bg-neutral/30 dark:bg-neutral/70 text-neutral-content top-14;
+		@apply p-2 mb-4 rounded bg-neutral/30 dark:bg-neutral/50 text-neutral-content top-14;
 
 		&.info {
 			@apply bg-info/30 dark:bg-info/70 text-info-content;
