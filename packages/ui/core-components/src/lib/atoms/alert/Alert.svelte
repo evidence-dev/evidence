@@ -19,19 +19,19 @@
 
 <style lang="postcss">
 	.alert {
-		@apply p-2 mb-4 rounded text-gray-800 bg-gray-50 top-14;
+		@apply p-2 mb-4 rounded bg-neutral text-neutral-content top-14;
 
 		&.info {
-			@apply text-blue-800 bg-blue-50;
+			@apply bg-info text-info-content;
 		}
 		&.danger {
-			@apply text-red-800 bg-red-50;
+			@apply bg-negative text-negative-content;
 		}
 		&.success {
-			@apply text-green-800 bg-green-50;
+			@apply bg-positive text-positive-content;
 		}
 		&.warning {
-			@apply text-yellow-800 bg-yellow-50;
+			@apply bg-warning text-warning-content;
 		}
 
 		& :global(p) {
