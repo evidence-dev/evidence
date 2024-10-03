@@ -15,9 +15,9 @@ const todo = {
 export const defaultThemes = {
 	light: {
 		'base-100': colors.white,
-		'base-200': colors.gray[100],
-		'base-300': colors.gray[200],
-		'base-content': colors.gray[950],
+		'base-200': colors.zinc[100],
+		'base-300': colors.zinc[200],
+		'base-content': colors.zinc[900],
 		neutral: colors.neutral[100],
 		'neutral-content': colors.neutral[800],
 		info: colors.sky[100],
@@ -32,10 +32,10 @@ export const defaultThemes = {
 		...todo
 	},
 	dark: {
-		'base-100': colors.gray[900],
-		'base-200': colors.gray[800],
-		'base-300': colors.gray[700],
-		'base-content': colors.gray[50],
+		'base-100': colors.zinc[900],
+		'base-200': colors.zinc[800],
+		'base-300': colors.zinc[700],
+		'base-content': colors.zinc[100],
 		neutral: colors.neutral[800],
 		'neutral-content': colors.neutral[100],
 		info: colors.sky[800],
