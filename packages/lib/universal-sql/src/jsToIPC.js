@@ -110,7 +110,7 @@ class JavascriptVisitor extends Visitor {
 	 */
 	visitFloat(_type, arr, name) {
 		let nullCount = 0;
-		const nulls = new Uint8Array(arr.length / 8);
+		const nulls = new Uint8Array((arr.length + 7) / 8);
 		const values = new Float64Array(arr.length);
 		for (let i = 0; i < arr.length; i++) {
 			const el = arr[i][name];
@@ -136,9 +136,9 @@ class JavascriptVisitor extends Visitor {
 	 */
 	visitBool(_type, arr, name) {
 		let nullCount = 0;
-		const nulls = new Uint8Array(arr.length / 8);
+		const nulls = new Uint8Array((arr.length + 7) / 8);
 		// adapted from `packBools` in apache-arrow/util/bit.js
-		const bytes = new Uint8Array((arr.length / 8 + 7) & ~7);
+		const bytes = new Uint8Array(((arr.length + 7) / 8 + 7) & ~7);
 		for (let i = 0; i < arr.length; i++) {
 			const el = arr[i][name];
 			if (el != null) {
@@ -161,7 +161,7 @@ class JavascriptVisitor extends Visitor {
 	 */
 	visitUtf8(_type, arr, name) {
 		let nullCount = 0;
-		const nulls = new Uint8Array(arr.length / 8);
+		const nulls = new Uint8Array((arr.length + 7) / 8);
 
 		let byteLength = 0;
 		const valueOffsets = new Uint32Array(arr.length + 1);
@@ -199,7 +199,7 @@ class JavascriptVisitor extends Visitor {
 	 */
 	visitTimestamp(_type, arr, name) {
 		let nullCount = 0;
-		const nulls = new Uint8Array(arr.length);
+		const nulls = new Uint8Array((arr.length + 7) / 8);
 		const values = new Int32Array(arr.length * 2);
 		for (let i = 0; i < arr.length; i++) {
 			const el = arr[i][name];
