@@ -11,6 +11,7 @@
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ChevronRight } from '@steeze-ui/tabler-icons';
+	import Sparkline from '../core/_Sparkline.svelte';
 
 	export let displayedData = undefined;
 	export let rowShading = undefined;
@@ -190,6 +191,27 @@
 						neutralMax={column.neutralMax}
 						chip={column.chip}
 					/>
+				{:else if column.contentType === 'bar' && row[column.id] !== undefined}
+					<div style="width: 100%; background-color: #f0f0f0; position: relative;">
+						<div
+							style="width: {(row[column.id] / column_max) *
+								100}%; height: 100%; background-color: #3498db; padding-right: 5px; padding-left: 5px;"
+						>
+							{formatValue(row[column.id], column_format, useCol.columnUnitSummary)}
+						</div>
+					</div>
+					<!-- <div style="background-color: red; max-width: '{row[column.id] / column_max * 100}%'">{row[column.id]}</div> -->
+				{:else if column.contentType === 'sparkline' && row[column.id] !== undefined}
+					<div>
+						<Sparkline
+							data={[...row[column.id]]}
+							dateCol={column.sparklineDateCol}
+							valueCol={column.sparklineValueCol}
+							type={column.sparklineType}
+							interactive="true"
+							color={column.sparklineColor}
+						/>
+					</div>
 				{:else if column.contentType === 'html' && row[column.id] !== undefined}
 					{@html row[column.id]}
 				{:else}

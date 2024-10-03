@@ -47,3 +47,40 @@ group by all
 	<Column id=orders/> 
 	<Column id=aov fmt=usd2 contentType=colorscale scaleColor={['#b52626','#FFFFFF','#2e9939']}/> 
  </DataTable>
+
+## Sparkline
+
+ ```sql cats
+WITH daily_sales AS (
+    SELECT 
+        category,
+        DATE_TRUNC('month', order_datetime) AS date,
+        SUM(sales) AS daily_sales
+    FROM 
+        needful_things.orders
+    GROUP BY 
+        category, DATE_TRUNC('month', order_datetime)
+)
+SELECT 
+    category,
+    ARRAY_AGG({'date': date, 'sales': daily_sales}) AS sales
+FROM 
+    daily_sales
+GROUP BY 
+    category;
+```
+
+<DataTable data={cats}>
+    <Column id=category/>
+    <Column id=sales contentType=sparkline sparklineDateCol=date sparklineValueCol=sales sparklineType=area/>
+</DataTable>
+
+## Bar Viz
+
+<DataTable data={summary}>
+  <Column id=category/>
+  <Column id=sales contentType=bar fmt=usd align=left/>
+  <Column id=orders/>
+  <Column id=aov contentType=colorscale fmt=usd/>
+</DataTable>
+

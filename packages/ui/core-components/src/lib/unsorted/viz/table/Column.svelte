@@ -103,6 +103,12 @@
 	export let chip = false;
 	$: chip = chip === 'true' || chip === true;
 
+	// Sparkline:
+	export let sparklineType = 'line'; // line, area, or bar
+	export let sparklineColor = undefined;
+	export let sparklineDateCol = undefined;
+	export let sparklineValueCol = undefined;
+
 	// Column Groups:
 	export let colGroup = undefined;
 
@@ -146,7 +152,11 @@
 		colorMid,
 		colorBreakpoints,
 		colorPalette,
-		redNegatives
+		redNegatives,
+		sparklineType,
+		sparklineColor,
+		sparklineDateCol,
+		sparklineValueCol
 	};
 
 	/**
