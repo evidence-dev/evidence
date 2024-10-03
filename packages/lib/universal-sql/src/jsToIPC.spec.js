@@ -89,7 +89,7 @@ describe('buildMultipartParquet', () => {
 	});
 
 	it('should serialize needful things', async () => {
-		const db = await Database.create('../../../needful_things.duckdb');
+		const db = await Database.create('../../../needful_things.duckdb', OPEN_READONLY);
 		const data = await db.all('SELECT *, (rowid % 59) == 0 as booly FROM orders limit 1');
 		const schema = [
 			{ name: 'id', evidenceType: 'number' },
@@ -132,6 +132,8 @@ describe('buildMultipartParquet', () => {
 		];
 
 		ensure_consistency(data, schema);
+
+		await db.close();
 	});
 
 	it('should serialize very nully needful things', async () => {
@@ -197,6 +199,8 @@ describe('buildMultipartParquet', () => {
 		];
 
 		ensure_consistency(data, schema);
+
+		await db.close();
 	});
 
 	it('should serialize full nulls', async () => {
