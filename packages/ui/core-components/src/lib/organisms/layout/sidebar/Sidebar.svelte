@@ -121,9 +121,10 @@
 						{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 							{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 							<a
-								class="group inline-block py-1 capitalize transition-colors duration-100"
+								class="group inline-block py-1 capitalize transition-colors duration-100 {active
+									? 'text-blue-600'
+									: 'text-base-content/70 hover:text-base-content'}"
 								href={file.href}
-								class:text-blue-600={active}
 							>
 								{file.frontMatter?.title ?? file.label}
 								{#if file.frontMatter?.sidebar_badge}
@@ -168,11 +169,10 @@
 									{@const active =
 										$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 									<a
-										class="group inline-block py-1 capitalize transition-colors duration-100"
+										class="group inline-block py-1 capitalize transition-colors duration-100 {active
+											? 'text-blue-600'
+											: 'text-base-content/70 hover:text-base-content'}"
 										href={file.href}
-										class:text-blue-600={active}
-										class:hover={!active}
-										class:hover:text-blue-600={active}
 									>
 										{file.frontMatter?.title ?? file.label}
 										{#if file.frontMatter?.sidebar_badge}
@@ -209,11 +209,10 @@
 					{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 						{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 						<a
-							class="group inline-block py-1 capitalize transition-all duration-100"
+							class="group inline-block py-1 capitalize transition-all duration-100 {active
+								? 'text-blue-600'
+								: 'text-base-content/70 hover:text-base-content'}"
 							href={file.href}
-							class:text-blue-600={active}
-							class:hover={!active}
-							class:hover:text-blue-600={active}
 						>
 							{file.frontMatter?.title ?? file.label}
 							{#if file.frontMatter?.sidebar_badge}
@@ -258,10 +257,9 @@
 								{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 								<a
 									href={file.href}
-									class:text-blue-600={active}
-									class:hover:text-blue-600={active}
-									class:hover={!active}
-									class="group inline-block py-1 capitalize transition-all duration-100"
+									class="group inline-block py-1 capitalize transition-all duration-100 {active
+										? 'text-blue-600'
+										: 'text-base-content/70 hover:text-base-content'}"
 								>
 									{file.frontMatter?.title ?? file.label}
 									{#if file.frontMatter?.sidebar_badge}
