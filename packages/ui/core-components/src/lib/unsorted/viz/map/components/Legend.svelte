@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
