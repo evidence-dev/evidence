@@ -60,13 +60,13 @@
 		class:overflow-y-auto={isOverflowAuto}
 		on:transitionend={handleTransitionEnd}
 	>
-		{#each colorPalette as color, i}
+		{#each values as value, i}
 			<div class="flex items-center">
 				<span
 					class="inline-block h-2 rounded-full min-w-2 ml-[3px]"
-					style="background-color: {color}"
+					style="background-color: {colorPalette[i]};"
 				/>
-				<span class="inline-block ml-2 truncate">{values[i] || 'No value'} </span>
+				<span class="inline-block ml-2 truncate">{value || 'No value'} </span>
 			</div>
 		{/each}
 	</div>

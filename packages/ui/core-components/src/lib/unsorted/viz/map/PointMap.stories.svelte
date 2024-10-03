@@ -93,7 +93,7 @@
 		lat="lat"
 		long="long"
 		value="Category"
-		colorPalette={['orange', 'yellow', 'brown']}
+		colorPalette={['red', 'green', 'blue', 'purple']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false },
@@ -108,7 +108,7 @@
 		lat="lat"
 		long="long"
 		value="sales"
-		colorPalette={['red', 'blue', 'green']}
+		colorPalette={['red', 'yellow']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
@@ -188,7 +188,6 @@
 		lat="lat"
 		long="long"
 		value="sales"
-		colorPalette={['red', 'green', 'blue', 'orange', 'yellow', 'brown', 'purple']}
 		tooltipType="hover"
 		tooltip={[
 			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },

@@ -10,64 +10,6 @@ import { uiColours } from '@evidence-dev/component-utilities/colours';
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
 
-/** @type {string[]} */
-let backupColors = [
-	'red',
-	'blue',
-	'green',
-	'purple',
-	'orange',
-	'pink',
-	'brown',
-	'teal',
-	'cyan',
-	'black',
-	'magenta',
-	'navy',
-	'olive',
-	'lavender',
-	'crimson',
-	'turquoise',
-	'beige',
-	'aqua',
-	'coral',
-	'gold',
-	'silver',
-	'indigo',
-	'violet',
-	'khaki',
-	'plum',
-	'salmon',
-	'sienna',
-	'chartreuse',
-	'lavenderblush',
-	'lightblue',
-	'lightcoral',
-	'lightgreen',
-	'lightpink',
-	'lightyellow',
-	'darkred',
-	'darkgreen',
-	'darkblue',
-	'darkviolet',
-	'darkorange',
-	'darkcyan',
-	'fuchsia',
-	'gainsboro',
-	'honeydew',
-	'hotpink',
-	'lightgray',
-	'lightseagreen',
-	'lightsalmon',
-	'lightsteelblue',
-	'mediumvioletred',
-	'mediumseagreen',
-	'peachpuff',
-	'powderblue',
-	'seashell',
-	'thistle'
-];
-
 /** @type {import('leaflet') | undefined} */
 let Leaflet;
 
@@ -507,16 +449,13 @@ export class EvidenceMap {
 			values = [...uniqueValues];
 			let i = 0;
 
-			while (colorPalette.length < values.length) {
-				if (!backupColors[i]) {
-					throw new Error('No more backup colors available.');
-				}
-
-				// Check if the color is not already in colorCategory
-				if (!colorPalette.includes(chroma(backupColors[i]).hex())) {
-					colorPalette.push(chroma(backupColors[i]).hex());
-					i++;
-				} else {
+			if (!colorPalette) {
+				console.log('do this');
+			} else {
+				console.log('do that');
+				while (colorPalette.length < values.length) {
+					if (i >= colorPalette.length) i = 0;
+					colorPalette.push(colorPalette[i]);
 					i++;
 				}
 			}

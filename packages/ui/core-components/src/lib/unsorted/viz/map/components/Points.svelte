@@ -9,6 +9,7 @@
 	import Point from './Point.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
+	import { mapColours } from '@evidence-dev/component-utilities/colours';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -89,7 +90,7 @@
 	/** @type {string|undefined} */
 	export let color = undefined;
 	/** @type {string[]} */
-	export let colorPalette = ['lightblue', 'darkblue'];
+	export let colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;

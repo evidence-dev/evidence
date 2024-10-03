@@ -7,7 +7,7 @@
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import MapArea from './MapArea.svelte';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { uiColours, mapColours } from '@evidence-dev/component-utilities/colours';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
@@ -68,7 +68,7 @@
 	/** @type {string} */
 	export let borderColor = uiColours.grey300;
 	/** @type {string[]} */
-	export let colorPalette = [uiColours.blue200, uiColours.blue999];
+	export let colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;

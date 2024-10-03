@@ -125,3 +125,28 @@ ORDER BY 1;
 	/>
 	<div class="h-32"></div>
 </Story>
+<Story name="Legend Usage no color palette" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<AreaMap
+		legendType="categorical"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		geoId="ZCTA5CE10"
+		areaCol="zip_code"
+	/>
+	<div class="h-32"></div>
+	<AreaMap
+		legendType="scalar"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		geoId="ZCTA5CE10"
+		areaCol="zip_code"
+		colorPalette={['red', 'yellow', 'green']}
+	/>
+	<div class="h-32"></div>
+</Story>
