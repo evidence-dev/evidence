@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { Database } from 'duckdb-async';
+import { Database, OPEN_READONLY } from 'duckdb-async';
 import { tableFromIPC } from 'apache-arrow';
 import { jsToIPC } from './jsToIPC.js';
 
@@ -135,7 +135,7 @@ describe('buildMultipartParquet', () => {
 	});
 
 	it('should serialize very nully needful things', async () => {
-		const db = await Database.create('../../../needful_things.duckdb');
+		const db = await Database.create('../../../needful_things.duckdb', OPEN_READONLY);
 		const data = await db.all(`
 			SELECT
 			IF(0 == (rowid % 2), id, NULL) as id,
