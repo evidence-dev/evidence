@@ -25,6 +25,22 @@
 		`select * from la_locations order by 1 limit 100`,
 		slowQuery
 	);
+
+	const grouped_locations = Query.create(
+		`SELECT 
+		*, 
+		CASE 
+			WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
+			WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
+			WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
+			WHEN id BETWEEN 15 AND 19 THEN 'Shops'
+			WHEN id BETWEEN 20 AND 24 THEN 'Bars'
+			WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+			WHEN id BETWEEN 30 AND 34 THEN 'Banks'
+		END AS Category
+	FROM la_locations`,
+		query
+	);
 </script>
 
 <Story name="Basic Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
@@ -33,4 +49,38 @@
 
 <Story name="Loading" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<BubbleMap data={slow_la_locations} lat="lat" long="long" size="sales" />
+</Story>
+
+<Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<BubbleMap
+		legendType="categorical"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		size="sales"
+		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+		]}
+	/>
+	<div class="h-32"></div>
+	<BubbleMap
+		data={grouped_locations}
+		legendType="scalar"
+		lat="lat"
+		long="long"
+		value="sales"
+		size="sales"
+		colorPalette={['red', 'blue', 'green']}
+		tooltipType="hover"
+		tooltip={[
+			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
+			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
+		]}
+	/>
+	<div class="h-32"></div>
 </Story>
