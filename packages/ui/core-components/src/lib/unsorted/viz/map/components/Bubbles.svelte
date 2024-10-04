@@ -15,5 +15,4 @@
 	export let legendType = undefined;
 </script>
 
-<Points sizeCol={size} {opacity} {pointStyle} {...$$restProps} />
-
+<Points sizeCol={size} {opacity} {pointStyle} {legendType} {...$$restProps} />
