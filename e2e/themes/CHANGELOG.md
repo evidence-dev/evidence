@@ -1,5 +1,16 @@
 # e2e-themes
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [1cc64f83f]
+- Updated dependencies [101d58f09]
+- Updated dependencies [0e740d056]
+  - @evidence-dev/core-components@4.8.5
+  - @evidence-dev/snowflake@1.2.0
+  - @evidence-dev/evidence@39.1.10
+
 ## 0.0.4
 
 ### Patch Changes
