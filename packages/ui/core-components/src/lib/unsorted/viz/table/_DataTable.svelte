@@ -50,12 +50,8 @@
 	$: if (sort) {
 		const [column, direction] = sort.split(' ');
 		sortBy = column;
-		sortAsc = direction === 'asc' ? true : false; // Default to descending if no direction is provided
+		sortAsc = direction === 'desc' ? false : true; // Default to ascending if no direction is provided
 	}
-
-	// export let sortBy = undefined;
-	// export let sortAsc = false;
-	// $: sortAsc = sortAsc === 'true' || sortAsc === true;
 	let initialSortApplied = false;
 
 	export let groupBy = undefined;
