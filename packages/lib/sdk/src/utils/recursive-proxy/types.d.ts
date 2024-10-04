@@ -13,6 +13,13 @@ export type RecursiveProxyPrimitiveHooks = {
 			childValue: RecursiveProxyPrimitive,
 			this: RecursiveProxyPrimitive
 		) => any | undefined;
+		/**
+		 *
+		 * @param key Key that is being accessed
+		 * @param this Object that is being accessed on
+		 * @returns {any | undefined} When undefined, the regular behavior continues, when a value is provided it will be returned
+		 */
+		intercept?: (key: string | symbol | number, this: RecursiveProxyPrimitive) => any | undefined;
 	};
 	set?: {
 		/**

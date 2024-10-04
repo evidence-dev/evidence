@@ -2,7 +2,8 @@ import evidencePreprocess from '@evidence-dev/preprocess';
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
 import { evidencePlugins } from '@evidence-dev/plugin-connector';
-import { escapeInputObjects } from '@evidence-dev/sdk/utils/svelte';
+import { Preprocessors } from '@evidence-dev/sdk/svelte';
+
 import fs from 'fs';
 import path from 'path';
 
@@ -40,7 +41,7 @@ const config = {
 	preprocess: [
 		...evidencePreprocess(true),
 		evidencePlugins(),
-		escapeInputObjects(),
+		Preprocessors.escapeInputObjects(),
 		preprocess({
 			postcss: true
 		})

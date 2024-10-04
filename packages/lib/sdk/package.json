@@ -43,6 +43,12 @@
 			"types": "./types/build-dev/vite/plugins.js",
 			"require": null
 		},
+		"./svelte": {
+			"default": "./src/build-dev/svelte/index.js",
+			"import": "./src/build-dev/svelte/index.js",
+			"types": "./types/build-dev/svelte/index.js",
+			"require": null
+		},
 		"./meta": {
 			"default": "./src/meta.js",
 			"import": "./src/meta.js",

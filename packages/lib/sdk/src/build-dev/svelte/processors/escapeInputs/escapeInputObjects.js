@@ -51,8 +51,9 @@ export function escapeInputObjects() {
 					}
 					// @ts-expect-error Svelte doesn't agree with estree
 					if (node.type === 'Attribute') {
+						// console.log(node.value[0])
 						// @ts-expect-error Svelte doesn't agree with estree
-						if (node.value.length === 1) {
+						if (node.value[0]?.expression?.type === 'MemberExpression') {
 							// this means that we aren't dealing with string interpolation - and thus want to leave it alone
 							escapeHatch = true;
 						}

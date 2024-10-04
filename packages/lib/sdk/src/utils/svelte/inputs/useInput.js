@@ -72,16 +72,16 @@ export const useInput = (name, options, initialState) => {
 	return {
 		__input: input,
 		/**
-		 * @param {any} value
+		 * @param {any} values
 		 */
 		update: options?.debouncePeriod ? debounce(updateFn, options.debouncePeriod) : updateFn,
 		subscribe,
 		UseSqlFactory: UseSqlFactory,
-		/** @param {import("../../dag/types.js").WithDag} data */
+		/** @param {import("../../dag/types.js").WithDag} [data] */
 		updateDatasource: (data) => {
 			if (source) input.__dag.deregisterDependency(source.__dag);
 			source = data;
-			input.__dag?.registerDependency(source.__dag);
+			if (source) input.__dag.registerDependency(source.__dag);
 		}
 	};
 };

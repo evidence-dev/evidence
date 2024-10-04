@@ -1,3 +1,5 @@
+/* global BigInt */
+
 /** @typedef {{ new (): RecursiveProxyPrimitive & Record<string, any>}} SomeConstructor */
 
 import { EvidenceError } from '../../lib/EvidenceError.js';
@@ -134,7 +136,40 @@ export class RecursiveProxyPrimitive {
 				if (prop.toString().startsWith('#')) {
 					return undefined;
 				}
+
+				// 🚩 This prevents undefined from being a valid return value from intercept, might need to get smarter here
+				const interceptedResult = this.#hooks?.get?.intercept?.(prop, this);
+				if (typeof interceptedResult !== 'undefined') return interceptedResult;
+
+				/**
+				 * @param {string | symbol} prop
+				 * @param {any} [proto]
+				 */
+				const extractFromProto = (prop, proto) => {
+					if (prop in proto) {
+						const v = proto[prop];
+						if (typeof v === 'function') return v.bind(this.#value);
+						return v;
+					}
+					return null;
+				};
+
+				/** @type {Record<string, any>} */
+				const protoMap = {
+					string: String.prototype,
+					symbol: Symbol.prototype,
+					number: Number.prototype,
+					bigint: BigInt.prototype,
+					boolean: Boolean.prototype,
+					object: Date.prototype
+				};
+
 				if (!(prop in this.#internalState)) {
+					if ((typeof this.#value) in protoMap) {
+						const protoValue = extractFromProto(prop, protoMap[typeof this.#value]);
+						if (protoValue) return protoValue;
+					}
+
 					this.#internalState[prop] = buildChild();
 					this.#hooks?.get?.created?.(prop, this.#internalState[prop], this);
 				}
@@ -209,6 +244,7 @@ export class RecursiveProxyPrimitive {
 	get [PrimitiveValue]() {
 		return this.#value;
 	}
+
 	get [MarkdownEscape]() {
 		if (typeof this.#value === 'undefined') {
 			return Boolean(Object.keys(this.#internalState).length);

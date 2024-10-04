@@ -45,7 +45,7 @@
 	// Query-Related Things
 	/////
 	const input = useInput(name, {
-		sqlSnippetFactory: () => input.get('value')
+		sqlSnippetFactory: () => input.get('value') ?? ''
 	});
 	if ($input !== undefined) {
 		$valueStore = { value: $input, valueLabel: input.__input.get('label') };

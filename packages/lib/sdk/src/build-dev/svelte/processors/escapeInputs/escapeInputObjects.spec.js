@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { escapeInputObjects } from './escapeInputObjects.preprocessor.js';
+import { escapeInputObjects } from './escapeInputObjects.js';
 
 const testStr = (str) => escapeInputObjects().markup({ content: str, filename: '+page.md' }).code;
 const subStr = '[MarkdownEscape]';
@@ -43,9 +43,12 @@ describe('escapeInputObjects', () => {
 		);
 	});
 	it('should do an insertion on <Component attr={inputs.something + 5} />', () => {
-		expect(testStr('<Component attr={inputs.something + 5}" />')).toBe(
-			`<Component attr={inputs.something${subStr} + 5}" />`
+		expect(testStr('<Component attr={inputs.something + 5} />')).toBe(
+			`<Component attr={inputs.something${subStr} + 5} />`
 		);
+	});
+	it('should do nothing on <Component attr />', () => {
+		expect(testStr('<Component attr />')).toBe(`<Component attr />`);
 	});
 	it('should do an insertion on { inputs.something }', () => {
 		expect(testStr('{ inputs.something }')).toBe(`{ inputs.something${subStr} }`);
@@ -54,6 +57,9 @@ describe('escapeInputObjects', () => {
 		expect(testStr('{ inputs.something ? true : false }')).toBe(
 			`{ inputs.something${subStr} ? true : false }`
 		);
+	});
+	it('should (?) do an insertion on {inputs.something.toLowerCase()}', () => {
+		expect(testStr('{inputs.something.toLowerCase()}')).toBe(`{inputs.something.toLowerCase()}`);
 	});
 	it('should do an insertion on the first occurence of inputs in { inputs.something ? inputs.something.toLowerCase() : false }', () => {
 		expect(testStr('{ inputs.something ? inputs.something.toLowerCase() : false }')).toBe(

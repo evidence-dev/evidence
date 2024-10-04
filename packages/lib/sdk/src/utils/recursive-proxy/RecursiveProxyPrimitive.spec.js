@@ -119,6 +119,15 @@ describe('RecursiveProxyPrimitive', () => {
 				expect(myInputValue[MarkdownEscape]).toBeInstanceOf(Date);
 			});
 		});
+
+		describe('Prototype Passthrough', () => {
+			it('should be lowercasable', () => {
+				const myInputValue = new BasicSubclass();
+				myInputValue.setValue('Primitive Value');
+				expect(myInputValue.toString()).toBe('Primitive Value');
+				expect(myInputValue.toLowerCase()).toBe('primitive value');
+			});
+		});
 	});
 
 	describe('Recursive Access', () => {

@@ -1,6 +1,7 @@
 import { Input } from './Input.js';
 import { InputValue } from './InputValue.js';
 import { DagNode } from '../dag/DagNode.js';
+import { MarkdownEscape } from '../recursive-proxy/RecursiveProxyPrimitive.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('Input & InputValue', () => {
@@ -29,6 +30,23 @@ describe('Input & InputValue', () => {
 	});
 
 	describe('String Conversion', () => {
+		it('should default to the sqlFragmentFactory when markdown escaping', () => {
+			const input = new Input('MockInput', { sqlFragmentFactory: () => 'boo!' });
+			expect(input[MarkdownEscape]).toBe('boo!');
+			expect(input.toString()).toBeTypeOf('string');
+		});
+		it('should allow access to string prototype functions', () => {
+			const input = new Input('MockInput');
+			expect(input.toUpperCase).toBeDefined();
+			expect(input.toUpperCase).toBeTypeOf('function');
+			input.setValue('Hi');
+			expect(input.toUpperCase()).toBe('HI');
+		});
+		it('should apply string prototype functions based on its toString', () => {
+			const input = new Input('MockInput', { sqlFragmentFactory: () => 'boo!' });
+			expect(input.toUpperCase()).toBe('BOO!');
+		});
+
 		it('should never return undefined for a label', () => {
 			const input = new Input('MockInput');
 			expect(input.label).toBeDefined();
@@ -112,6 +130,28 @@ describe('Input & InputValue', () => {
 			expect(input.hasValue).toBe(false);
 			input.x.y = 1;
 			expect(input.hasValue).toBe(true);
+		});
+	});
+
+	describe('Markdown Escapes', () => {
+		it('should be falsey when there is no fragment factory and no value', () => {
+			const input = new Input('MockInput');
+			expect(input[MarkdownEscape]).toBeFalsy();
+		});
+		it('should be truthy when there is a fragment factory and no value', () => {
+			const input = new Input('MockInput', { sqlFragmentFactory: () => 'boo!' });
+			expect(input[MarkdownEscape]).toBeTruthy();
+		});
+		it('should be truthy when there is no fragment factory and a value', () => {
+			const input = new Input('MockInput');
+			input.setValue(5);
+			expect(input[MarkdownEscape]).toBeTruthy();
+		});
+		it('should retain primitive types', () => {
+			const input = new Input('MockInput');
+			input.setValue(5);
+			expect(input[MarkdownEscape]).toBe(5);
+			expect(input[MarkdownEscape]).toBeTypeOf('number');
 		});
 	});
 });

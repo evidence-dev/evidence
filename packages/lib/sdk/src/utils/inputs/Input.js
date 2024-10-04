@@ -1,6 +1,11 @@
 import { BlockingDagNode } from '../dag/DagNode.js';
-import { RecursiveProxyPrimitive } from '../recursive-proxy/RecursiveProxyPrimitive.js';
+import {
+	MarkdownEscape,
+	RecursiveProxyPrimitive
+} from '../recursive-proxy/RecursiveProxyPrimitive.js';
 import { InputValue } from './InputValue.js';
+
+const SqlFragmentFactory = Symbol();
 
 /** @typedef {import("../dag/DagNode.js").DagNode} DagNode */
 /** @typedef {import("../dag/types.js").WithDag} WithDag */
@@ -55,6 +60,10 @@ export class Input extends RecursiveProxyPrimitive {
 								childValue.setValue(Input.DefaultLabelText);
 							}
 						}
+					},
+					intercept: (prop) => {
+						// @ts-expect-error
+						if (prop in String.prototype) return String.prototype[prop].bind(this.toString());
 					}
 				},
 				set: {
@@ -95,6 +104,15 @@ export class Input extends RecursiveProxyPrimitive {
 
 	get hasValue() {
 		return super.hasValue || this.nestedValueSet;
+	}
+
+	[SqlFragmentFactory] = () => {
+		return this.#sqlFragmentFactory;
+	};
+
+	get [MarkdownEscape]() {
+		if (this[SqlFragmentFactory]()) return this[SqlFragmentFactory]()?.(this);
+		return super[MarkdownEscape];
 	}
 
 	toString = () => {
