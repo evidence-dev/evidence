@@ -9,6 +9,8 @@
 	export let size = undefined; // column containing size data
 	/** @type {number} */
 	export let opacity = 0.8;
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
 </script>
 
-<Points sizeCol={size} {opacity} {...$$restProps} />
+<Points sizeCol={size} {opacity} {legendType} {...$$restProps} />
