@@ -4,7 +4,6 @@ on:
   push:
   pull_request_target:
 
-
 jobs:
   chromatic:
     runs-on: ubuntu-latest
