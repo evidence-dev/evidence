@@ -426,5 +426,12 @@ module.exports.options = {
 				}
 			}
 		}
+	},
+	resultPrefetch: {
+		title: 'Number of Prefetched Batches',
+		type: 'number',
+		secret: false,
+		required: false,
+		default: 2
 	}
 };
