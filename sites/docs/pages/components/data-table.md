@@ -1037,7 +1037,7 @@ Enable sort for each column - click the column title to sort
     defaultValue="-"
 >
 
-Column to sort by on initial page load
+Column to sort by on initial page load. Sort direction is asc if unspecified. Can only sort by one column using this prop. If you need multi-column sort, use the order by clause in your sql in combination with this prop.
 
 </PropListing>
 <PropListing
