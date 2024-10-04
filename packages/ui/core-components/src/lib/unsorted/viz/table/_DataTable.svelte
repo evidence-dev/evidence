@@ -47,9 +47,11 @@
 	export let sort = undefined;
 	let sortBy = undefined;
 	let sortAsc = undefined;
+	let sortDirection = undefined;
 	$: if (sort) {
 		const [column, direction] = sort.split(' ');
 		sortBy = column;
+		sortDirection = direction;
 		sortAsc = direction === 'desc' ? false : true; // Default to ascending if no direction is provided
 	}
 	let initialSortApplied = false;
@@ -173,6 +175,17 @@
 
 		// GET COLUMN SUMMARY
 		columnSummary = getColumnSummary(data, 'array');
+
+		// Check if sort column is in table
+		if(sortBy){
+			if(!columnSummary.map(d => d.id).includes(sortBy)){
+				throw Error(sortBy + ' is not a column in the dataset. sort should contain one column name and optionally a direction (asc or desc). E.g., sort=my_column or sort="my_column desc"')
+			}
+
+			if(sortDirection && !['asc', 'desc'].includes(sortDirection)){
+				throw Error(sortDirection + ' is not a valid sort direction. Please use asc or desc')
+			}
+		}
 
 		// PROCESS DATES
 		// Filter for columns with type of "date"
