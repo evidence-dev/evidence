@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 4.8.5
+
+### Patch Changes
+
+- 1cc64f83f: Table rows with links preload data on hover
+  Table rows with links have a chevron icon on the right side
+  Table rows dont have link styling if the link value is falsey
+- 101d58f09: Implemented categorical and scalar map legends
+
 ## 4.8.4
 
 ### Patch Changes
