@@ -1,6 +1,9 @@
 name: 'Chromatic'
 
-on: push
+on:
+  push:
+  pull_request_target:
+
 
 jobs:
   chromatic:
