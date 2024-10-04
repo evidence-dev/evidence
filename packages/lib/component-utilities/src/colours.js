@@ -65,3 +65,16 @@ export const chartColours = [
 	'#e3e4e5',
 	'#f3f3f3'
 ];
+
+export const mapColours = [
+	'hsla(207, 65%, 39%, 1)', // Navy
+	'hsla(195, 49%, 51%, 1)', // Teal
+	'hsla(207, 69%, 79%, 1)', // Light Blue
+	'hsla(202, 28%, 65%, 1)', // Grey
+	'hsla(179, 37%, 65%, 1)', // Light Green
+	'hsla(40, 30%, 75%, 1)', // Tan
+	'hsla(38, 89%, 62%, 1)', // Yellow
+	'hsla(342, 40%, 40%, 1)', // Maroon
+	'hsla(207, 86%, 70%, 1)', // Blue
+	'hsla(160, 40%, 46%, 1)' // Green
+];
