@@ -1,5 +1,12 @@
 # e2e-themes
 
+## 0.0.6
+
+### Patch Changes
+
+- @evidence-dev/evidence@39.1.10
+- @evidence-dev/core-components@4.8.6
+
 ## 0.0.5
 
 ### Patch Changes
