@@ -1,4 +1,5 @@
 <script>
+	import { goto, preloadData } from '$app/navigation';
 	import { safeExtractColumn } from './datatable.js';
 	import Delta from '../core/Delta.svelte';
 	import {
@@ -8,6 +9,8 @@
 	import TableCell from './TableCell.svelte';
 	import chroma from 'chroma-js';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ChevronRight } from '@steeze-ui/tabler-icons';
 
 	export let displayedData = undefined;
 	export let rowShading = undefined;
@@ -24,18 +27,38 @@
 	export let orderedColumns = undefined;
 	export let compact = undefined;
 
-	function handleRowClick(url) {
-		if (link) {
+	const isUrlExternal = (url) =>
+		new URL(url, window.location.origin).origin !== window.location.origin;
+
+	const preloadLink = async (row) => {
+		if (!link || !row[link]) return;
+		const url = row[link];
+
+		if (isUrlExternal(url)) return;
+
+		await preloadData(url);
+	};
+
+	const navigateToLink = async (row) => {
+		if (!link || !row[link]) return;
+		const url = row[link];
+
+		if (isUrlExternal(url)) {
 			window.location = url;
+			return;
 		}
-	}
+
+		await goto(row[link]);
+	};
 </script>
 
 {#each displayedData as row, i}
 	<tr
 		class:shaded-row={rowShading && i % 2 === 1}
-		class:row-link={link != undefined}
-		on:click={() => handleRowClick(row[link])}
+		class:row-link={link && row[link]}
+		on:mouseover={() => preloadLink(row)}
+		on:focus={() => preloadLink(row)}
+		on:click={() => navigateToLink(row)}
 		class:row-lines={rowLines}
 	>
 		{#if rowNumbers && groupType !== 'section'}
@@ -174,6 +197,13 @@
 				{/if}
 			</TableCell>
 		{/each}
+
+		{#if link && row[link]}
+			<TableCell {compact} width="16px">
+				<Icon src={ChevronRight} class="w-4 h-4" />
+				<a href={row[link]} class="sr-only">See more</a>
+			</TableCell>
+		{/if}
 	</tr>
 {/each}
 

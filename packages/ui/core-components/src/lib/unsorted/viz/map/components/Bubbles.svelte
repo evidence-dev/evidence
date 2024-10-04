@@ -11,6 +11,9 @@
 	export let opacity = 0.8;
 	/** @type {'bubble' | 'points' }*/
 	export let pointStyle = 'bubbles';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
 </script>
 
 <Points sizeCol={size} {opacity} {pointStyle} {...$$restProps} />
+

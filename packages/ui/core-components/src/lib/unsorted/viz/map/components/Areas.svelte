@@ -6,9 +6,8 @@
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import chroma from 'chroma-js';
 	import MapArea from './MapArea.svelte';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { uiColours, mapColours } from '@evidence-dev/component-utilities/colours';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
@@ -39,6 +38,8 @@
 
 	/** @type {string | undefined} */
 	export let name = undefined;
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
 
 	/**
 	 * Callback function for the area click event.
@@ -67,7 +68,7 @@
 	/** @type {string} */
 	export let borderColor = uiColours.grey300;
 	/** @type {string[]} */
-	export let colorPalette = [uiColours.blue200, uiColours.blue999];
+	export let colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;
@@ -195,15 +196,17 @@
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
+		let initDataOptions = {
+			corordinates: [areaCol],
+			value,
+			checkInputs,
+			min,
+			max,
+			colorPalette,
+			legendType
+		};
 		await data.fetch();
-
-		checkInputs(data, [areaCol]);
-
-		values = $data.map((d) => d[value]);
-
-		colorScale = chroma
-			.scale(colorPalette)
-			.domain([min ?? Math.min(...values), max ?? Math.max(...values)]);
+		({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
 
 		await processAreas();
 
@@ -276,7 +279,10 @@
 			{item}
 			{name}
 			areaOptions={{
-				fillColor: color ?? colorScale(item[value]).hex(),
+				fillColor:
+					color ??
+					map.handleFillColor(item, value, values, colorPalette, colorScale) ??
+					colorScale(item[value]).hex(),
 				fillOpacity: opacity,
 				opacity: opacity,
 				weight: borderWidth,

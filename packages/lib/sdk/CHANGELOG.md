@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 1.4.3
+
+### Patch Changes
+
+- e0abcc56d: Avoid sharedPromise returned from fetch functions when running on the server
+- e0abcc56d: Allow query to run fetch synchronously for SSR
+
 ## 1.4.2
 
 ### Patch Changes

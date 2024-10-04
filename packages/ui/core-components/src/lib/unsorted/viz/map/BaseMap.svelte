@@ -119,7 +119,8 @@
 		display: none;
 	}
 
-	div :global(.leaflet-tooltip) {
+	div :global(.leaflet-tooltip),
+	div :global(.legend-font) {
 		font-family: 'Inter', sans-serif;
 	}
 

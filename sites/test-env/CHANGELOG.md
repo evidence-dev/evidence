@@ -1,5 +1,22 @@
 # evidence-test-environment
 
+## 3.0.59
+
+### Patch Changes
+
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [9bbf152d5]
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [71a20080c]
+- Updated dependencies [0feacbbe5]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+  - @evidence-dev/mssql@1.0.10
+  - @evidence-dev/core-components@4.8.3
+  - @evidence-dev/evidence@39.1.10
+  - @evidence-dev/component-utilities@3.2.14
+  - @evidence-dev/tailwind@2.1.4
+
 ## 3.0.58
 
 ### Patch Changes
