@@ -51,11 +51,11 @@ group by all
 ## Sparkline
 
  ```sql cats
-WITH daily_sales AS (
+WITH monthly_sales AS (
     SELECT 
         category,
         DATE_TRUNC('month', order_datetime) AS date,
-        SUM(sales) AS daily_sales
+        SUM(sales) AS monthly_sales
     FROM 
         needful_things.orders
     GROUP BY 
@@ -63,16 +63,19 @@ WITH daily_sales AS (
 )
 SELECT 
     category,
-    ARRAY_AGG({'date': date, 'sales': daily_sales}) AS sales
+    sum(monthly_sales) as total_sales,
+    ARRAY_AGG({'date': date, 'sales': monthly_sales}) AS sales
 FROM 
-    daily_sales
+    monthly_sales
 GROUP BY 
-    category;
+    category
+order by total_sales desc
 ```
 
 <DataTable data={cats}>
     <Column id=category/>
-    <Column id=sales contentType=sparkline sparklineDateCol=date sparklineValueCol=sales sparklineType=area/>
+    <Column id=total_sales fmt=usd contentType=bar />
+    <Column id=sales contentType=sparkarea sparkDateCol=date sparkValueCol=sales align=center sparkYScale=false/>
 </DataTable>
 
 ## Bar Viz
