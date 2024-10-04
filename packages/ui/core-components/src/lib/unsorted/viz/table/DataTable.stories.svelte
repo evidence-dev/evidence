@@ -53,9 +53,9 @@
 	)}
 	<DataTable {data}>
 		<Column id="category" />
-		<Column id="value" contentType="bar" fmt="usd"  hideLabels=false/>
-		<Column id="value" contentType="bar" fmt="usd"  hideLabels=false barColor=lightgreen/>
-		<Column id="value" contentType="bar" fmt="usd"  hideLabels=false barColor=pink/>
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" />
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" barColor="lightgreen" />
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" barColor="pink" />
 	</DataTable>
 </Story>
 
@@ -80,9 +80,30 @@
 	)}
 	<DataTable {data}>
 		<Column id="category" />
-		<Column id="sparkline" title="Sparkline" contentType="sparkline" sparkDateCol=date sparkValueCol=value sparkColor="green" t />
-		<Column id="sparkline" title="Sparkbar" contentType="sparkbar" sparkDateCol=date sparkValueCol=value sparkColor="navy"/>
-		<Column id="sparkline" title="Sparkarea" contentType="sparkarea" sparkDateCol=date sparkValueCol=value  />
+		<Column
+			id="sparkline"
+			title="Sparkline"
+			contentType="sparkline"
+			sparkDateCol="date"
+			sparkValueCol="value"
+			sparkColor="green"
+			t
+		/>
+		<Column
+			id="sparkline"
+			title="Sparkbar"
+			contentType="sparkbar"
+			sparkDateCol="date"
+			sparkValueCol="value"
+			sparkColor="navy"
+		/>
+		<Column
+			id="sparkline"
+			title="Sparkarea"
+			contentType="sparkarea"
+			sparkDateCol="date"
+			sparkValueCol="value"
+		/>
 	</DataTable>
 </Story>
 

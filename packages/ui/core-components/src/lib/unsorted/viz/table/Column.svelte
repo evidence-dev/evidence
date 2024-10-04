@@ -36,8 +36,8 @@
 
 	export let title = undefined;
 	export let align = undefined;
-	if(contentType === 'bar' && align == undefined){
-		align = 'left'
+	if (contentType === 'bar' && align == undefined) {
+		align = 'left';
 	}
 	if (align === 'centre') {
 		align = 'center';
@@ -119,7 +119,6 @@
 	export let barColor = '#8ad3ed';
 	export let negativeBarColor = '#e74c3c';
 	export let backgroundColor = 'white';
-	export let labelPosition = undefined;
 	export let hideLabels = false;
 	$: hideLabels = hideLabels === 'true' || hideLabels === true;
 
@@ -177,7 +176,7 @@
 		negativeBarColor,
 		backgroundColor,
 		hideLabels
-	};	
+	};
 
 	/**
 	 * Ensures that column props (e.g. title) are reflected in the table's state.
