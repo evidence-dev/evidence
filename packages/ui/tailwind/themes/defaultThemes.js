@@ -3,8 +3,6 @@ import colors from 'tailwindcss/colors.js';
 /** @typedef {import('./schemas.js').Theme} Theme */
 
 const todo = {
-	primary: '#ffffff',
-	'primary-content': '#ffffff',
 	secondary: '#ffffff',
 	'secondary-content': '#ffffff',
 	accent: '#ffffff',
@@ -14,6 +12,8 @@ const todo = {
 /** @type {Record<'light' | 'dark', Theme>} */
 export const defaultThemes = {
 	light: {
+		primary: colors.blue[500],
+		'primary-content': colors.blue[950],
 		'base-100': colors.white,
 		'base-200': colors.zinc[100],
 		'base-300': colors.zinc[200],
@@ -32,6 +32,8 @@ export const defaultThemes = {
 		...todo
 	},
 	dark: {
+		primary: colors.blue[400],
+		'primary-content': colors.blue[50],
 		'base-100': colors.zinc[900],
 		'base-200': colors.zinc[800],
 		'base-300': colors.zinc[700],
