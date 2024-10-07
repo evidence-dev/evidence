@@ -15,12 +15,23 @@ This page can be found in your project at `/pages/index.md`. Make a change to th
   group by category
 ```
 
+<span data-testid="category-count">{categories.length}</span>
+<span data-testid="category-0">{JSON.stringify(categories[0])}</span>
+
 <Dropdown data={categories} name=category value=category>
     <DropdownOption value="%" valueLabel="All Categories"/>
 </Dropdown>
 
+<Dropdown data={categories} name=category2 value=category />
+
 <Dropdown name=year>
     <DropdownOption value=% valueLabel="All Years"/>
+    <DropdownOption value=2019/>
+    <DropdownOption value=2020/>
+    <DropdownOption value=2021/>
+</Dropdown>
+
+<Dropdown name=year2>
     <DropdownOption value=2019/>
     <DropdownOption value=2020/>
     <DropdownOption value=2021/>

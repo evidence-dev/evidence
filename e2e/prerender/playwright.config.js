@@ -5,7 +5,7 @@ import { config } from '../playwright-config';
 export default {
 	...defineConfig(config),
 	webServer: {
-		command: 'pnpm sources && pnpm build && pnpm preview',
+		command: 'pnpm sources --changed && pnpm build && pnpm preview',
 		port: 3000,
 		reuseExistingServer: true,
 		timeout: 240_000
