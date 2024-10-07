@@ -43,7 +43,7 @@
 			<input
 				type="checkbox"
 				bind:checked={$inputs[name]}
-				class="focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-gray-400 shadow-sm accent-gray-700"
+				class="focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-base-300 shadow-sm shadow-base-100 accent-base-content"
 			/>
 		</div>
 	</Button>
