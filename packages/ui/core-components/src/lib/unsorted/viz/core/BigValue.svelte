@@ -62,7 +62,7 @@
 		slot="skeleton"
 		let:loaded
 	>
-		<p class="text-sm text-gray-700">{$$props.title ?? ' '}</p>
+		<p class="text-sm">{$$props.title ?? ' '}</p>
 		<Value column={$$props.value} fmt={$$props.fmt} data={loaded} />
 	</div>
 
