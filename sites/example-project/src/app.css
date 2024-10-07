@@ -15,7 +15,7 @@
 	/* osx style scrollbars */
 	.pretty-scrollbar {
 		scrollbar-width: thin;
-		scrollbar-color: theme('colors.gray.200') transparent;
+		scrollbar-color: theme('colors.base-300') transparent;
 	}
 
 	.pretty-scrollbar::-webkit-scrollbar {
@@ -33,7 +33,7 @@
 	}
 
 	.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
-		background-color: theme('colors.gray.200');
+		background-color: theme('colors.base-200');
 	}
 
 	/* hidden scrollbar */
