@@ -1,5 +1,24 @@
 # evidence-test-environment
 
+## 3.0.61
+
+### Patch Changes
+
+- Updated dependencies [1cc64f83f]
+- Updated dependencies [101d58f09]
+- Updated dependencies [0e740d056]
+  - @evidence-dev/core-components@4.8.5
+  - @evidence-dev/snowflake@1.2.0
+  - @evidence-dev/evidence@39.1.10
+
+## 3.0.60
+
+### Patch Changes
+
+- Updated dependencies [024e93b02]
+  - @evidence-dev/core-components@4.8.4
+  - @evidence-dev/evidence@39.1.10
+
 ## 3.0.59
 
 ### Patch Changes

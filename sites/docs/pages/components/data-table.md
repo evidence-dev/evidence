@@ -597,12 +597,7 @@ To apply styling to most HTML tags, you should add the `class=markdown` attribut
 This example includes a column `country_url` which contains a country name as a search term in Google (e.g., `https://google.ca/search?q=canada`)
 
 ```svelte
-<DataTable data={countries} search=true link=country_url>
-	<Column id=country />
-	<Column id=country_id align=center />
-	<Column id=category />
-	<Column id=value_usd />
-</DataTable>
+<DataTable data={countries} search=true link=country_url showLinkCol/>
 ```
 
 Click on a row to navigate using the row link:

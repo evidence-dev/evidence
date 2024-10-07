@@ -342,6 +342,81 @@ Below are a selection of publically available GeoJSON files that may be useful f
 
 </Details>
 
+### Legends
+
+
+```sql grouped_locations
+SELECT 
+    *, 
+    CASE 
+        WHEN id BETWEEN 0 AND 500 THEN 'Hotels'
+        WHEN id BETWEEN 501 AND 1000 THEN 'Restaurants'
+        WHEN id BETWEEN 1001 AND 1500 THEN 'Golf Courses'
+        WHEN id BETWEEN 1501 AND 2000 THEN 'Shops'
+        WHEN id BETWEEN 2001 AND 2500 THEN 'Bars'
+        WHEN id BETWEEN 2501 AND 3000 THEN 'Entertainment'
+        WHEN id BETWEEN 3001 AND 4000 THEN 'Banks'
+    END AS Category
+FROM la_zip_sales
+WHERE zip_code <> 90704
+ORDER BY 1;
+```
+#### Categorical Legend
+
+	<AreaMap
+		legendType=categorical
+		legendPosition=bottomLeft
+		data={grouped_locations}
+		lat=lat
+		long=long
+		value=Category
+		geoId=ZCTA5CE10
+		areaCol=zip_code
+		colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+	/>
+
+ ```svelte
+<AreaMap
+    legendType=categorical
+    legendPosition=bottomLeft
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+/>
+```
+
+#### Scalar Legend
+
+     <AreaMap
+        legendType=scalar
+        legendPosition=bottomLeft
+        data={grouped_locations}
+        lat=lat
+        long=long
+        value=sales
+        geoId=ZCTA5CE10
+        areaCol=zip_code
+        colorPalette={['#dc0101', '#01dc08']}
+    />
+
+```svelte
+<AreaMap
+    legendType=scalar
+    legendPosition=bottomLeft
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+    colorPalette={['#dc0101', '#01dc08']}
+/>
+```
+
 ## Options
 
 ### Areas
@@ -418,6 +493,23 @@ options="number"
 defaultValue="max of value column"
 >
 Maximum value to use for the color scale.
+</PropListing>
+
+### Legend
+
+<PropListing
+name="legendType"
+options={['categorical', 'scalar']}
+>
+Appends a categorical or scalar legend to the map
+</PropListing>
+
+<PropListing
+name="legendPosition"
+options={['bottomLeft', 'topLeft','bottomRight', 'topRight']}
+defaultValue='bottomLeft'
+>
+Determines the legend's position on the map, with options provided
 </PropListing>
 
 ### Interactivity
