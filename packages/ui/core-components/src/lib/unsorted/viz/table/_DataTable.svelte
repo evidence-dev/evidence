@@ -125,12 +125,12 @@
 	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
 
 	export let headerColor = undefined;
-	export let headerFontColor = 'var(--grey-900)';
+	export let headerFontColor = undefined;
 
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
 
-	export let backgroundColor = 'white';
+	export let backgroundColor = undefined;
 
 	export let compact = undefined;
 
@@ -492,7 +492,7 @@
 			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
 		{/if}
 
-		<div class="scrollbox" style:background-color={backgroundColor}>
+		<div class="scrollbox pretty-scrollbar" style:background-color={backgroundColor}>
 			<table>
 				<TableHeader
 					{rowNumbers}
@@ -715,7 +715,7 @@
 	<ErrorChart {error} chartType="Data Table" />
 {/if}
 
-<style>
+<style lang="postcss">
 	.table-container {
 		font-size: 9.5pt;
 	}
@@ -723,46 +723,7 @@
 	.scrollbox {
 		width: 100%;
 		overflow-x: auto;
-		/* border-bottom: 1px solid var(--grey-200);    */
 		scrollbar-width: thin;
-		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
-	}
-
-	:root {
-		--scrollbar-track-color: transparent;
-		--scrollbar-color: rgba(0, 0, 0, 0.2);
-		--scrollbar-active-color: rgba(0, 0, 0, 0.4);
-		--scrollbar-size: 0.75rem;
-		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
-	}
-
-	.scrollbox::-webkit-scrollbar {
-		height: var(--scrollbar-size);
-		width: var(--scrollbar-size);
-	}
-
-	.scrollbox::-webkit-scrollbar-track {
-		background-color: var(--scrollbar-track-color);
-	}
-
-	.scrollbox::-webkit-scrollbar-thumb {
-		background-color: var(--scrollbar-color);
-		border-radius: 7px;
-		background-clip: padding-box;
-	}
-
-	.scrollbox::-webkit-scrollbar-thumb:hover {
-		background-color: var(--scrollbar-active-color);
-	}
-
-	.scrollbox::-webkit-scrollbar-thumb:vertical {
-		min-height: var(--scrollbar-minlength);
-		border: 3px solid transparent;
-	}
-
-	.scrollbox::-webkit-scrollbar-thumb:horizontal {
-		min-width: var(--scrollbar-minlength);
-		border: 3px solid transparent;
 	}
 
 	table {
@@ -774,19 +735,18 @@
 
 	.page-changer {
 		padding: 0;
-		color: var(--grey-400);
 		height: 1.1em;
 		width: 1.1em;
 	}
 
 	.pagination {
+		@apply text-base-content/50;
 		font-size: 12px;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
 		height: 2em;
 		font-family: var(--ui-font-family);
-		color: var(--grey-500);
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		user-select: none;
@@ -812,13 +772,13 @@
 	}
 
 	.page-changer.hovering {
-		color: var(--blue-600);
+		color: theme('colors.primary');
 		transition: color 200ms;
 	}
 
 	.page-changer:disabled {
+		@apply text-base-content/30;
 		cursor: auto;
-		color: var(--grey-300);
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		user-select: none;
@@ -831,6 +791,7 @@
 	}
 
 	.page-input {
+		@apply bg-base-200;
 		box-sizing: content-box;
 		text-align: center;
 		padding: 0.25em 0.5em;
@@ -881,7 +842,7 @@
 	}
 
 	button:enabled > .page-icon:hover {
-		color: var(--blue-800);
+		filter: brightness(0.8);
 	}
 
 	*:focus {

@@ -28,7 +28,7 @@
 
 <tr
 	on:click={toggleGroup}
-	class="cursor-pointer hover:bg-gray-100 w-full border-t-[1px] border-gray-200"
+	class="cursor-pointer hover:bg-base-200 w-full border-t-[1px] border-base-200"
 	role="button"
 	tabindex="0"
 	on:keypress={(e) => e.key === 'Enter' && toggleGroup()}
