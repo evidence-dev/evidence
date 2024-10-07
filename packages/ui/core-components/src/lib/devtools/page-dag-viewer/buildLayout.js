@@ -1,11 +1,11 @@
-import dagre from '@dagrejs/dagre';
+import {graphlib, layout} from '@dagrejs/dagre';
 
 /**
  * @param {import("@evidence-dev/sdk/utils").DagNode[]} allNodes
  * @returns {dagre.graphlib.Graph}
  */
 export const buildLayout = (allNodes) => {
-	const dagreGraph = new dagre.graphlib.Graph();
+	const dagreGraph = new graphlib.Graph();
 
 	dagreGraph.setGraph({
 		nodesep: 200,
@@ -28,7 +28,7 @@ export const buildLayout = (allNodes) => {
 		});
 	});
 	dagreGraph.graph();
-	dagre.layout(dagreGraph);
+	layout(dagreGraph);
 
 	return dagreGraph;
 };

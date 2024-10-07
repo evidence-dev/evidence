@@ -85,10 +85,7 @@
 	$: ({ hasQuery, query } = $results);
 
 	const updateInputStore = (newValue) => {
-		const inputValue = multiple
-			? `(${newValue.rawValues.map((v) => duckdbSerialize(v.value)).join(', ')})`
-			: newValue.value;
-		input.update(inputValue, newValue.label, {
+		input.update(newValue.value, newValue.label, {
 			rawValues: newValue.rawValues
 		});
 	};
