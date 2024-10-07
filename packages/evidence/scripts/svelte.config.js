@@ -33,11 +33,26 @@ function errorHandler(warning) {
 	}
 }
 
+async function loadConfiguration(file) {
+	if (!process.cwd().includes('.evidence')) return;
+	const rootDir = process.cwd().split('.evidence')[0];
+	const rootDirContents = fs.readdirSync(rootDir);
+
+	if (!rootDirContents.includes(file)) return;
+
+	const configFileLocation = path.join(rootDir, file);
+	const configURL = new URL(`file:///${configFileLocation}`).href;
+	return await import(configURL).then((r) => r.default);
+}
+
+/** @type {Array<[import('unified').Plugin, import('unified').Settings] | import('unified').Plugin> | undefined} */
+const remarkConfig = await loadConfiguration('remark.config.js');
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [
-		...evidencePreprocess(true),
+		...evidencePreprocess(true, remarkConfig),
 		evidencePlugins(),
 		preprocess({
 			postcss: true
@@ -56,16 +71,11 @@ const config = {
 };
 
 async function loadUserConfiguration() {
-	if (!process.cwd().includes('.evidence')) return;
-	const rootDir = process.cwd().split('.evidence')[0];
-	const rootDirContents = fs.readdirSync(rootDir);
-
-	if (!rootDirContents.includes('svelte.config.js')) return;
-
-	const configFileLocation = path.join(rootDir, 'svelte.config.js');
-	const configURL = new URL(`file:///${configFileLocation}`).href;
 	/** @type {import("@sveltejs/kit").Config} */
-	const userConfig = await import(configURL).then((r) => r.default);
+	let userConfig = await loadConfiguration('svelte.config.js');
+	if (!userConfig) {
+		userConfig = {};
+	}
 
 	if ('preprocess' in userConfig) {
 		if ('preprocess' in config) {

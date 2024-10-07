@@ -9,7 +9,7 @@ const injectPartials = require('./src/partials/inject-partials.cjs');
 const rehypeSlug = require('rehype-slug');
 const rehypeAutolinkHeadings = require('rehype-autolink-headings');
 
-module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
+module.exports = function evidencePreprocess(componentDevelopmentMode = false, remarkPlugins = []) {
 	return [
 		injectPartials,
 		addScriptTags,
@@ -25,6 +25,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 			highlight: {
 				highlighter
 			},
+			remarkPlugins: remarkPlugins,
 			rehypePlugins: [
 				[
 					addClasses,

@@ -19,7 +19,8 @@ const templatePaths = [
 	'src/pages/explore',
 	'src/pages/api/',
 	'tailwind.config.cjs',
-	'postcss.config.cjs'
+	'postcss.config.cjs',
+	'remark.config.js'
 ];
 const ignorePaths = ['static/data'];
 

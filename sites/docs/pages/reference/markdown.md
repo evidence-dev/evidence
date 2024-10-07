@@ -241,3 +241,30 @@ This is some content in the partial.
 Evidence supports re-using chunks of Evidence markdown using Partials.
 
 Partials are placed in the `./partials` folder, and can be referenced in your project with `&#123;@partial "path/to/partial.md"&#125;` (do not include the `/partial` folder in the path).
+
+# Remark Plugins
+
+Beyond the above described support for Markdown, syntax can be further customized by [Remark](https://remark.js.org/) plugins.
+
+To enable plugins, install the relevant dependencies and add configuration in 'remark.config.js' in the root of the evidence project.
+
+For example,
+
+```shell
+npm install remark-github --save-dev
+```
+
+```js title=remark.config.js
+import remarkGithub, {defaultBuildUrl} from 'remark-github';
+
+export default [
+  [
+    remarkGithub,
+    {
+      buildUrl(values) {
+        return values.type === 'mention' ? false : defaultBuildUrl(values)
+      }
+    }
+  ]
+]
+```
