@@ -72,3 +72,45 @@ N.B. Environment variables are **case sensitive**, so you should preserve the ca
 ### .env Files
 
 Evidence will read in environment variables from a `.env` file in the root of your project. This is useful for local development.
+
+### Environment Variables in Source Queries
+
+Environment variables to be used in source queries should be prefixed with `EVIDENCE_VAR__` (note the double underscore). They can be used in source queries with `${EVIDENCE_VAR__variable_name}`.
+
+```bash
+EVIDENCE_VAR__customer_name="Acme Corporation"
+```
+
+```bash
+select *
+from orders
+where customer_name = '${customer_name}'
+```
+
+The quotes would be omitted if the variable was not a string.
+
+### Environment Variables in Pages
+
+Environment variables to be used in pages should be prefixed with `VITE_`. They can be accessed with `import.meta.env.VITE_variable_name`.
+
+`.env`
+```bash
+VITE_customer_attribute=premium
+```
+
+`index.md`
+```svelte
+&lt;script&gt;
+  const customer_attribute = import.meta.env.VITE_customer_attribute;
+&lt;/script&gt;
+
+{#if customer_attribute === 'premium'}
+
+Premium content
+
+{:else if customer_attribute === 'free'}
+
+Free content
+
+{/if}
+```
