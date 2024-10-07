@@ -1,4 +1,9 @@
-import { RecursiveProxyPrimitive } from '../recursive-proxy/RecursiveProxyPrimitive.js';
+import {
+	InternalState,
+	MarkdownEscape,
+	PrimitiveValue,
+	RecursiveProxyPrimitive
+} from '../recursive-proxy/RecursiveProxyPrimitive.js';
 import { Input } from './Input.js';
 
 export class InputValue extends RecursiveProxyPrimitive {
@@ -13,7 +18,21 @@ export class InputValue extends RecursiveProxyPrimitive {
 
 	defaultStringify = Input.DefaultValueText;
 
-	['🦆'] = '__EvidenceInputValue__';
+	['🦆'] = '__EvidenceInputValue__'
+
+	get [MarkdownEscape]() {
+		if (typeof this[PrimitiveValue] === 'undefined') {
+			return Boolean(Object.keys(this[InternalState]).length);
+		}
+		if (typeof this[PrimitiveValue] !== 'string' && typeof this[PrimitiveValue] !== 'undefined') {
+			return this[PrimitiveValue];
+		}
+		if (typeof this[PrimitiveValue] === 'string') {
+			return this[PrimitiveValue];
+		}
+
+		return this.toString();
+	}
 
 	/**
 	 * @param {unknown} v

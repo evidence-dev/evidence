@@ -176,6 +176,13 @@ export class RecursiveProxyPrimitive {
 
 				return this.#internalState[prop];
 			},
+			/**
+			 *
+			 * @param {unknown} _
+			 * @param {string | symbol} prop
+			 * @param {any} value
+			 * @returns
+			 */
 			set: (_, prop, value) => {
 				const isOwnValue = hasKey(prop) && !(this[prop] instanceof this.ChildConstructor);
 				const isIgnored = this.#checkIgnoredKey(prop);
@@ -245,18 +252,6 @@ export class RecursiveProxyPrimitive {
 		return this.#value;
 	}
 
-	get [MarkdownEscape]() {
-		if (typeof this.#value === 'undefined') {
-			return Boolean(Object.keys(this.#internalState).length);
-		}
-		if (typeof this.#value !== 'string' && typeof this.#value !== 'undefined') {
-			return this.#value;
-		}
-		if (typeof this.#value === 'string') {
-			return this.#value;
-		}
-		return this.toString();
-	}
 	get [InternalState]() {
 		return this.#internalState;
 	}
@@ -325,8 +320,9 @@ export class RecursiveProxyPrimitive {
 		if (hint === 'string' || hint === 'default') {
 			return this.toString();
 		} else {
-			// @ts-expect-error I don't understand this error, and we are playing fast and loose with
+			// I don't understand this error, and we are playing fast and loose with
 			// the types here anyways
+			// @ts-expect-error See above, formatting me
 			return Reflect.get(this, PrimitiveValue);
 		}
 	}

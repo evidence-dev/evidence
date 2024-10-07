@@ -1,6 +1,8 @@
 import { BlockingDagNode } from '../dag/DagNode.js';
 import {
+	InternalState,
 	MarkdownEscape,
+	PrimitiveValue,
 	RecursiveProxyPrimitive
 } from '../recursive-proxy/RecursiveProxyPrimitive.js';
 import { InputValue } from './InputValue.js';
@@ -20,14 +22,19 @@ const SqlFragmentFactory = Symbol();
 /**
  * @implements {WithDag}
  */
-export class Input extends RecursiveProxyPrimitive {
+export class Input extends InputValue {
 	static DefaultValueText = '';
 	static DefaultLabelText = '';
 
 	static __ChildConstructor = InputValue;
 
 	/** @type {BlockingDagNode} */
-	__dag;
+	get __dag() {
+		return this.dag;
+	}
+
+	/** @type {BlockingDagNode} */
+	dag;
 
 	/** @type {import('./InputStore.js').InputStore | null} */
 	#root = null;
@@ -87,7 +94,7 @@ export class Input extends RecursiveProxyPrimitive {
 		this.#sqlFragmentFactory = sqlFragmentFactory ?? null;
 
 		this.name = name;
-		this.__dag = new BlockingDagNode(name, this);
+		this.dag = new BlockingDagNode(name, this);
 
 		if (root) {
 			// 🚩 is this a good pattern?
@@ -112,6 +119,7 @@ export class Input extends RecursiveProxyPrimitive {
 
 	get [MarkdownEscape]() {
 		if (this[SqlFragmentFactory]()) return this[SqlFragmentFactory]()?.(this);
+
 		return super[MarkdownEscape];
 	}
 
@@ -121,9 +129,7 @@ export class Input extends RecursiveProxyPrimitive {
 		return super.toString();
 	};
 
-	get ['🦆']() {
-		return '__EvidenceInput__';
-	}
+	['🦆'] = '__EvidenceInput__';
 
 	/**
 	 * @param {unknown} v
@@ -137,7 +143,7 @@ export class Input extends RecursiveProxyPrimitive {
 
 // See the note in InputValue.js
 Object.defineProperties(Input.prototype, {
-	__dag: { writable: true },
+	// __dag: { writable: true },
 	nestedValueSet: { writable: true },
 	updateOptions: { writable: true }
 });

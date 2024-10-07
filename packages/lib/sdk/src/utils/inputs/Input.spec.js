@@ -12,6 +12,7 @@ describe('Input & InputValue', () => {
 	describe('Initialization', () => {
 		it('should be created with a dag node', () => {
 			const input = new Input('MockInput');
+			console.log(">>", input.__dag)
 			expect(DagNode.isDagNode(input.__dag)).toBe(true);
 		});
 		it('should be initialized with defaultStringify set properly', () => {
@@ -51,6 +52,7 @@ describe('Input & InputValue', () => {
 			const input = new Input('MockInput');
 			expect(input.label).toBeDefined();
 			expect(input.label).toBeInstanceOf(InputValue);
+			console.log(input.get("label"))
 			expect(input.get('label')).toBe(Input.DefaultLabelText);
 		});
 
@@ -147,11 +149,52 @@ describe('Input & InputValue', () => {
 			input.setValue(5);
 			expect(input[MarkdownEscape]).toBeTruthy();
 		});
-		it('should retain primitive types', () => {
+		it('should be falsy when it has no value and no children', () => {
+			const myInputValue = new Input('MockInput');
+			expect(myInputValue[MarkdownEscape]).toBeFalsy();
+		});
+		it('should be truthy when it has a value and no children', () => {
+			const myInputValue = new Input('MockInput');
+			myInputValue.setValue('Primitive Value');
+			expect(myInputValue[MarkdownEscape]).toBeTruthy();
+		});
+		it('should be truthy when it has no value and children', () => {
+			const myInputValue = new Input('MockInput');
+			myInputValue.x = 1;
+			expect(myInputValue[MarkdownEscape]).toBeTruthy();
+		});
+		it('should be truthy when it has both value and children', () => {
+			const myInputValue = new Input('MockInput');
+			myInputValue.setValue('Primitive Value');
+			myInputValue.x = 1;
+			expect(myInputValue[MarkdownEscape]).toBeTruthy();
+		});
+
+		it('should retain its type (numeric)', () => {
+			const myInputValue = new Input('MockInput');
+			myInputValue.setValue(1);
+			expect(myInputValue[MarkdownEscape]).toBe(1);
+		});
+		it('should retain its type (boolean)', () => {
+			const myInputValue = new Input('MockInput');
+			myInputValue.setValue(false);
+			expect(myInputValue[MarkdownEscape]).toBe(false);
+		});
+		it('should retain its type (Date)', () => {
+			const myInputValue = new Input('MockInput');
+			myInputValue.setValue(new Date());
+			expect(myInputValue[MarkdownEscape]).toBeInstanceOf(Date);
+		});
+
+		it('should ternary correctly (truthy)', () => {
 			const input = new Input('MockInput');
-			input.setValue(5);
-			expect(input[MarkdownEscape]).toBe(5);
-			expect(input[MarkdownEscape]).toBeTypeOf('number');
+			Input.DefaultValueText = 'bling';
+			expect(`${input.value[MarkdownEscape] ? 'foo' : 'bar'}`).toBe('bar');
+			expect(`${input.value[MarkdownEscape]}`).toBe(Input.DefaultValueText);
+			input.value = true;
+			expect(`${input.value[MarkdownEscape] ? 'foo' : 'bar'}`).toBe('foo');
+			input.value = false;
+			expect(`${input.value[MarkdownEscape] ? 'foo' : 'bar'}`).toBe('bar');
 		});
 	});
 });
