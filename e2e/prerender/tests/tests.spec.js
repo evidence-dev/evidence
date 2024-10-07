@@ -98,3 +98,21 @@ test('DataTable with page query should be loaded (right before duckdb loads)', a
 						/
 						15 10 of 144 records    `);
 });
+
+test('charts should render once each', async ({ page }) => {
+	await page.goto('/');
+	await waitForWasm(page.context());
+
+	expect(
+		await page.evaluate(async () => {
+			const charts = window[Symbol.for('__evidence-chart-window-debug__')] ?? {};
+
+			// wait for all charts to render
+			while (Object.values(charts).some((chart) => chart.__renderCount === 0)) {
+				await new Promise((res) => setTimeout(res, 100));
+			}
+
+			return !Object.values(charts).some((chart) => chart.__renderCount !== 1);
+		})
+	).toBeTruthy();
+});
