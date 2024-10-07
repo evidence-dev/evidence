@@ -2,6 +2,35 @@
 title: Welcome to Evidence
 ---
 
+<script>
+	import { buildQuery } from "@evidence-dev/component-utilities/buildQuery";
+
+	const nonssr_query = buildQuery("SELECT category, COUNT(*) as count FROM needful_things.orders GROUP BY category", "nonssr");
+	const ssr_query = buildQuery("SELECT category, COUNT(*) * 2 as count FROM needful_things.orders GROUP BY category", "ssr", data.ssr_data, { knownColumns: data.ssr_columns });
+</script>
+
+{#if !$nonssr_query.loading}
+
+<span data-testid="loaded-1">{JSON.stringify($nonssr_query)}</span>
+
+{:else}
+
+<span data-testid="loading-1">Loading...</span>
+
+{/if}
+
+{#if !$ssr_query.loading}
+
+<span data-testid="loaded-2">{JSON.stringify($ssr_query)}</span>
+
+{:else}
+
+<span data-testid="loading-2">Loading...</span>
+
+{/if}
+
+<DataTable data={ssr_query} />
+
 <Details title='How to edit this page'>
 
 This page can be found in your project at `/pages/index.md`. Make a change to the markdown file and save it to see the change take effect in your browser.
@@ -48,6 +77,8 @@ This page can be found in your project at `/pages/index.md`. Make a change to th
   group by all
   order by sales_usd desc
 ```
+
+<DataTable data={orders_by_category} />
 
 <BarChart
     data={orders_by_category}
