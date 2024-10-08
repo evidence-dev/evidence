@@ -1,5 +1,5 @@
 import { createThemes } from 'tw-colors';
-import { loadThemes } from './themes/loadThemes.js';
+import { themes } from './themes/index.js';
 
 const defaultTheme = require('tailwindcss/defaultTheme.js');
 
@@ -37,7 +37,7 @@ export const config = {
 			}
 		}
 	},
-	plugins: [createThemes(loadThemes())],
+	plugins: [createThemes(themes)],
 	darkMode: ['selector', '[data-theme="dark"]']
 };
 
