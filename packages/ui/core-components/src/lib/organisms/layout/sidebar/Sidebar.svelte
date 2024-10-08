@@ -53,7 +53,6 @@
 	let firstLevelFiles = fileTree?.children;
 
 	export let mobileSidebarOpen = false;
-	$: console.log({ mobileSidebarOpen });
 
 	// prevent scrolling of the underlying when the mobile sidebar is open
 	afterUpdate(() => {
