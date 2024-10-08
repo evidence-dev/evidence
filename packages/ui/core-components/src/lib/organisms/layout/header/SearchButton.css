@@ -10,6 +10,7 @@
 .DocSearch-Button-Keys {
 	@apply sm:flex gap-0.5 bg-base-200/40 border-base-300/50 border rounded px-1 py-0.5 text-xs hidden;
 }
-.DocSearch-Button-Key, .DocSearch-Control-Key-Icon {
+.DocSearch-Button-Key,
+.DocSearch-Control-Key-Icon {
 	@apply text-base-content/80 *:text-base-content/80;
 }
