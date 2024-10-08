@@ -7,7 +7,21 @@ title: Welcome to Evidence
 
 	const nonssr_query = buildQuery("SELECT category, COUNT(*) as count FROM needful_things.orders GROUP BY category", "nonssr");
 	const ssr_query = buildQuery("SELECT category, COUNT(*) * 2 as count FROM needful_things.orders GROUP BY category", "ssr", data.ssr_data, { knownColumns: data.ssr_columns });
+
+	// replicate chart double loading
+	let chart_data = sales_month;
+	setTimeout(() => {
+		chart_data = sales_month;
+	}, 1400);
 </script>
+
+```sql sales_month
+select date_trunc('month', order_datetime) as x, sum(sales) as y
+from needful_things.orders
+group by x
+```
+
+<BarChart data={chart_data} title="Sales by Month" x=x y=y />
 
 {#if !$nonssr_query.loading}
 

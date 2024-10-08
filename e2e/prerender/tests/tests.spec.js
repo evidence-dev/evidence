@@ -99,9 +99,12 @@ test('DataTable with page query should be loaded (right before duckdb loads)', a
 						15 10 of 144 records    `);
 });
 
-test('charts should render once each', async ({ page }) => {
+test('charts should render once', async ({ page }) => {
 	await page.goto('/');
 	await waitForWasm(page.context());
+
+	// first BarChart imitates a chart that double loads, second is normal
+	const expected = [3, 1];
 
 	expect(
 		await page.evaluate(async () => {
@@ -112,7 +115,7 @@ test('charts should render once each', async ({ page }) => {
 				await new Promise((res) => setTimeout(res, 100));
 			}
 
-			return !Object.values(charts).some((chart) => chart.__renderCount !== 1);
+			return Object.values(charts).map((chart) => chart.__renderCount);
 		})
-	).toBeTruthy();
+	).toEqual(expected);
 });
