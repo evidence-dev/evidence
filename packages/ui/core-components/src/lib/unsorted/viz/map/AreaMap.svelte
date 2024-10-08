@@ -83,7 +83,16 @@
 	</div>
 
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Areas data={loaded} {geoJsonUrl} {geoId} {areaCol} {legendType} {...$$restProps} />
-		<Legend {legendPosition} {legendType} {legendFmt} />
+		<Areas
+			data={loaded}
+			{geoJsonUrl}
+			{geoId}
+			{areaCol}
+			{legendPosition}
+			{legendType}
+			{legendFmt}
+			{...$$restProps}
+		/>
+		<!-- <Legend {legendPosition} {legendType} {legendFmt} /> -->
 	</BaseMap>
 </QueryLoad>

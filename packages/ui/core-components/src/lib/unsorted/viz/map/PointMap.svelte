@@ -9,7 +9,6 @@
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import Legend from './components/Legend.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -75,8 +74,16 @@
 
 	<div class="relative">
 		<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-			<Points data={loaded} {lat} {long} {colorPalette} {legendType} {...$$restProps} />
-			<Legend {legendPosition} {legendType} {legendFmt} />
+			<Points
+				data={loaded}
+				{lat}
+				{long}
+				{colorPalette}
+				{legendPosition}
+				{legendType}
+				{legendFmt}
+				{...$$restProps}
+			/>
 		</BaseMap>
 	</div>
 </QueryLoad>

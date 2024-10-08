@@ -10,6 +10,7 @@
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
 	import { mapColours } from '@evidence-dev/component-utilities/colours';
+	import Legend from './Legend.svelte';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -34,8 +35,15 @@
 	export let sizeFmt = undefined;
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
-	/** @type { 'categorical' | 'scalar' | undefined} */
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+	/** @type {string | undefined} */
+	export let legendFmt = undefined;
+
+	/** @type {number | undefined} */
+	let legendId = map.genereateLegendId();
 
 	if (size) {
 		// if size was user-supplied
@@ -224,7 +232,8 @@
 			min,
 			max,
 			colorPalette,
-			legendType
+			legendType,
+			legendId
 		};
 		if (data) {
 			({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
@@ -332,6 +341,7 @@
 			{showTooltip}
 		/>
 	{/each}
+	<Legend {legendPosition} {legendType} {legendFmt} {legendId} />
 {:catch e}
 	<ErrorChart error={e} chartType="Point Map" />
 {/await}

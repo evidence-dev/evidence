@@ -29,17 +29,19 @@
 	/** @type {'left' | 'right' | 'up' | 'down'} */
 	let direction = 'up';
 
+	/** @type {number} */
+	export let legendId;
+
 	const map = getContext(mapContextKey);
-	let legendData;
 
 	$: legendData = map.legendData;
-
 	$: {
 		if ($legendData) {
-			values = $legendData.values;
-			colorPalette = $legendData.colorPalette;
-			minValue = $legendData.minValue;
-			maxValue = $legendData.maxValue;
+			let data = $legendData.find((d) => d.legendId === legendId);
+			values = data.values;
+			colorPalette = data.colorPalette;
+			minValue = data.minValue;
+			maxValue = data.maxValue;
 		}
 	}
 
@@ -82,6 +84,7 @@
 				{maxValue}
 				{legendFmt}
 				{hideLegend}
+				{legendData}
 			/>
 			{#if direction === 'up' || direction === 'right'}
 				<LegendToggle {hideLegend} {handleLegendClick} {legendType} {direction} />

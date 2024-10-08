@@ -35,13 +35,12 @@ export class EvidenceMap {
 	/** @type {HTMLDivElement | undefined} */
 	#mapEl;
 
-	/** @type {import('svelte/store').Writable<{ values: string[], colorPalette: string[], minValue: number, maxValue: number }>} */
-	#legendData = writable({
-		values: [],
-		colorPalette: [],
-		minValue: 0,
-		maxValue: 0
-	});
+	/**
+	 * @type {import('svelte/store').Writable<
+	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number }[]
+	 * >}
+	 */
+	#legendData = writable([]);
 
 	/** Handles the promises associated with the initialization of the map component. */
 	#sharedPromise = sharedPromise();
@@ -481,14 +480,17 @@ export class EvidenceMap {
 
 	//handle legend data
 
-	buildLegend(colorPalette, arrayOfStringValues, minValue, maxValue) {
-		this.#legendData.update((legendData) => ({
-			...legendData, // Keep existing data
-			colorPalette,
-			values: arrayOfStringValues, // Make sure to update this property
-			minValue,
-			maxValue
-		}));
+	buildLegend(colorPalette, arrayOfStringValues, minValue, maxValue, legendId) {
+		this.#legendData.update((legendData) => [
+			...legendData, // Spread the current legendData (assuming it's an array)
+			{
+				colorPalette,
+				values: arrayOfStringValues,
+				minValue,
+				maxValue,
+				legendId
+			}
+		]);
 	}
 
 	get legendData() {
@@ -497,7 +499,7 @@ export class EvidenceMap {
 
 	async initializeData(
 		data,
-		{ corordinates, value, checkInputs, min, max, colorPalette, legendType }
+		{ corordinates, value, checkInputs, min, max, colorPalette, legendType, legendId }
 	) {
 		await data.fetch();
 		checkInputs(data, corordinates);
@@ -508,9 +510,16 @@ export class EvidenceMap {
 		colorPalette = colorPalette.map((item) => chroma(item).hex());
 		if (legendType) {
 			values = this.handleLegendValues(colorPalette, values, legendType);
-			this.buildLegend(colorPalette, values, minValue, maxValue);
+			this.buildLegend(colorPalette, values, minValue, maxValue, legendId);
 		}
 		// Return the values, minValue, and maxValue for sharing with other functions
 		return { values, minValue, maxValue, colorScale, colorPalette };
+	}
+
+	/** @type {number} */
+	#legendCounter = 0;
+
+	genereateLegendId() {
+		return `legend-${this.#legendCounter++}`;
 	}
 }

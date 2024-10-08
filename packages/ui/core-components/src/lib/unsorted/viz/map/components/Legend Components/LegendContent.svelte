@@ -16,6 +16,9 @@
 	/** @type {'left' | 'right' | 'up' | 'down'} */
 	export let direction = 'up';
 	let isOverflowAuto = true;
+	// need to type
+	export let legendData;
+	console.log($legendData);
 
 	// handles growing width effect for hide/show categorical transitions
 	function handleTransitionEnd() {
@@ -31,8 +34,8 @@
 {#if legendType === 'scalar'}
 	<div
 		class="flex w-48 {hideLegend
-			? 'max-w-0'
-			: 'max-w-48'} transition-[max-width] duration-300 ease-in-out overflow-hidden {hideLegend
+			? 'max-w-0 m-0 opacity-25'
+			: 'max-w-48'} transition-[max-width, margin, opacity] duration-[375ms] ease-in-out overflow-hidden {hideLegend
 			? ''
 			: direction === 'left'
 				? 'mr-2'
@@ -54,8 +57,8 @@
 	</div>
 {:else if legendType === 'categorical'}
 	<div
-		class="ml-2 pr-2 max-w-40 min-w-24 transition-[max-height] duration-300 ease-in-out
-	{hideLegend ? 'max-h-0 overflow-y-hidden' : 'max-h-60'} 
+		class="ml-2 pr-2 max-w-40 min-w-24 transition-[max-height, padding, opacity] duration-[375ms] ease-in-out
+	{hideLegend ? 'max-h-0 overflow-y-hidden opacity-25' : 'max-h-60'} 
 	{hideLegend ? '' : direction === 'down' ? 'pb-2' : 'pt-2'}"
 		class:overflow-y-auto={isOverflowAuto}
 		on:transitionend={handleTransitionEnd}

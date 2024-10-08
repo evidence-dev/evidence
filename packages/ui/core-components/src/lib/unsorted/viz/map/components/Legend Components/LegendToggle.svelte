@@ -33,7 +33,7 @@
 		stroke-width="2"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		class="transform transition-transform duration-300 ease-in-out text-left {hideLegend
+		class="transform transition-all duration-[400ms] ease-in-out text-left {hideLegend
 			? chevronDirections[direction].hide
 			: chevronDirections[direction].show}"
 	>
