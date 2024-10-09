@@ -25,3 +25,12 @@
 <slot />
 
 <DebugBar />
+
+<style lang="postcss">
+	:global(body) {
+		@apply bg-base-100;
+	}
+	:global(*) {
+		@apply text-base-content;
+	}
+</style>

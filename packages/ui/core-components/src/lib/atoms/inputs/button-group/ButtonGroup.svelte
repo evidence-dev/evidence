@@ -101,12 +101,12 @@
 			class={display === 'tabs' ? '' : 'inline-flex w-fit max-w-full flex-col mt-2 mb-4 ml-0 mr-2'}
 		>
 			{#if title}
-				<span class="text-gray-900 text-sm block mb-1">{title}</span>
+				<span class="text-sm block mb-1">{title}</span>
 			{/if}
 			<div
 				class={display === 'tabs'
 					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-					: 'inline-flex rounded-md shadow-sm overflow-auto border no-scrollbar'}
+					: 'inline-flex rounded-md shadow-sm shadow-base-100 overflow-auto border border-base-300 no-scrollbar'}
 				role="group"
 			>
 				{#if preset}
@@ -118,7 +118,7 @@
 					{#if hasQuery}
 						<QueryLoad data={query} let:loaded>
 							<svelte:fragment slot="skeleton">
-								<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-gray-200" />
+								<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-base-300" />
 							</svelte:fragment>
 							<svelte:fragment>
 								{#each loaded as { label, value }}

@@ -15,7 +15,7 @@
 <AccordionPrimitive.Header {level} class="flex">
 	<AccordionPrimitive.Trigger
 		class={cn(
-			'flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 focus:outline-none focus:ring ring-gray-100 rounded',
+			'flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 focus:outline-none focus:ring ring-base-200 rounded',
 			className
 		)}
 		{...$$restProps}
@@ -24,7 +24,7 @@
 		<slot />
 		<Icon
 			src={ChevronDown}
-			class="h-4 w-4 shrink-0 text-gray-500 transition-transform duration-200"
+			class="h-4 w-4 shrink-0 text-base-300 transition-transform duration-200"
 		/>
 	</AccordionPrimitive.Trigger>
 </AccordionPrimitive.Header>

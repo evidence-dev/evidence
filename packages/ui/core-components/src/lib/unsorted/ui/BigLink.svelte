@@ -14,9 +14,9 @@
 	</div>
 </a>
 
-<style>
+<style lang="postcss">
 	div {
-		border: 1px solid var(--grey-200);
+		@apply border border-base-300 hover:shadow-md shadow-base-100;
 		border-radius: 6px;
 		padding: 0.3em 0.6em;
 		font-family: var(--ui-font-family);
@@ -35,11 +35,5 @@
 	a:hover {
 		text-decoration: none;
 		color: var(--blue-700);
-	}
-
-	div:hover {
-		border: 1px solid var(--grey-300);
-		transition: all 400ms;
-		box-shadow: 0 5px 5px 2px hsl(0deg 0% 97%);
 	}
 </style>
