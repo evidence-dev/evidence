@@ -95,7 +95,7 @@ You can access the VS Code shortcut commands from the command palette (`Cmd/Ctrl
 
 | VS Code Command       | Title                      | Description                                                                                     | CLI Command                                                                      |
 | --------------------- | -------------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `newProject`          | New Evidence App           | Create new Evidence app in the open workspace, or the selected folder in VS Code File Explorer. | `npx degit evidence-dev/template my-project`<br>`cd my_project`                  |
+| `newProject`          | New App           | Create new Evidence app in the open workspace, or the selected folder in VS Code File Explorer. | `npx degit evidence-dev/template my-app`<br>`cd my-app`                  |
 | `installDependencies` | Install Dependencies       | Install Evidence app NodeJS modules.                                                            | `npm install`                                                                    |
 | `runSources`          | Run Sources                | Run all source queries                                                                          | `npm run sources`                                                                |
 | `startServer`         | Start Dev Server           | Start Evidence app dev server.                                                                  | `npm run dev`                                                                    |
