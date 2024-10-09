@@ -4,10 +4,8 @@ import { config } from '../playwright-config';
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 export default {
 	...defineConfig(config),
-	webServer: {
-		command: 'pnpm sources --changed && pnpm build && pnpm preview',
-		port: 3000,
-		reuseExistingServer: true,
-		timeout: 240_000
+	use: {
+		...config.use,
+		serviceWorkers: 'block'
 	}
 };

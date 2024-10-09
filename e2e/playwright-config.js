@@ -17,8 +17,7 @@ export const config = {
 	use: {
 		colorScheme: 'dark',
 		trace: 'retain-on-failure',
-		video: 'retain-on-failure',
-		serviceWorkers: 'block'
+		video: 'retain-on-failure'
 	},
 
 	projects: [
