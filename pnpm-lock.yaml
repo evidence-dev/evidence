@@ -1452,7 +1452,7 @@ importers:
         version: 10.4.20(postcss@8.4.47)
       chromatic:
         specifier: ^11.4.0
-        version: 11.12.4
+        version: 11.12.5
       eslint:
         specifier: 8.45.0
         version: 8.45.0
@@ -3560,7 +3560,7 @@ packages:
     resolution: {integrity: sha512-vYQ+TcfktEE3GHnLZXHCzXF/sN9dw+KivH8a5cmPyd9YtQs7fZtHrEgsIjWpYycXiweKMo1Lm1RZsjxk8DH3rA==}
     engines: {node: '>=16.0.0', yarn: '>=1.22.18'}
     dependencies:
-      chromatic: 11.12.4
+      chromatic: 11.12.5
       filesize: 10.1.6
       jsonfile: 6.1.0
       react-confetti: 6.1.0(react@17.0.2)
@@ -9898,8 +9898,8 @@ packages:
   /chroma-js@2.6.0:
     resolution: {integrity: sha512-BLHvCB9s8Z1EV4ethr6xnkl/P2YRFOGqfgvuMG/MyCbZPrTA+NeiByY6XvgF0zP4/2deU2CXnWyMa3zu1LqQ3A==}
 
-  /chromatic@11.12.4:
-    resolution: {integrity: sha512-cHEp9cx4C9nGg5ICqx5gOs9VTAnELrY/NJah8GBXCIJ2vftn1vmScVmiwyZi1jSBQ9MRz+nwOErfiQkVYBXtOw==}
+  /chromatic@11.12.5:
+    resolution: {integrity: sha512-5z+BXQy3TMyXIzCdCDO9Psc8aMs9kIrCFHhMgYbwA6dTXxAL0oUjHZbICn5h4Ay/fM9cZQPaCH9T7a3myPA8Sw==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
