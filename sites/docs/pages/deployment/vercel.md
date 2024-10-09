@@ -2,7 +2,7 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
-description: Deploy a public project to Vercel for free or a password-protected project with the pro plan.
+description: Deploy a public app to Vercel for free or a password-protected app with the pro plan.
 ---
 
 
@@ -14,15 +14,15 @@ Note that because of missing dependencies, Vercel cannot be used with DuckDB sou
 
 </Alert>
 
-Vercel lets you host a public version of your project for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month.
+Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month.
 
 ## Deploy to Vercel
 
-1. Run your project in development mode
+1. Run your app in development mode
 1. Visit the [settings page](http://localhost:3000/settings)
 1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
 
-## Optional: Set a site-wide password for your project (Requires Paid Plan)
+## Optional: Set a site-wide password for your app (Requires Paid Plan)
 
 Follow the directions provided by Vercel to set up a password for your site:
 https://vercel.com/blog/protecting-deployments
@@ -38,9 +38,9 @@ If you want your site to update on a specific schedule, you can use GitHub Actio
 
 - In your GitHub repo, go to Settings > Secrets > Actions and click **New repository secret** and create a secret, `VERCEL_DEPLOY_HOOK`, with the URL from step 1.
 
-3. Add a schedule file to your project
+3. Add a schedule file to your app
 
-- Create a new directory in your project called `.github`
+- Create a new directory in your app directory root called `.github`
 - Within that directory, create another called `workflows`
 - Add a new file in `.github/workflows` called `main.yml`
 
