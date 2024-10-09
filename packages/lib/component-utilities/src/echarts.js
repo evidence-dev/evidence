@@ -11,7 +11,7 @@ import * as chartWindowDebug from './chartWindowDebug';
  * } ActionParams
  */
 
-const ANIMATION_DURATION = navigator.webdriver ? 0 : 500;
+const ANIMATION_DURATION = 500;
 
 /** @type {import("svelte/action").Action<HTMLElement, ActionParams>} */
 export default (node, option) => {
@@ -121,7 +121,7 @@ export default (node, option) => {
 	});
 
 	chart.__renderCount = 0;
-	chart.on('finished', () => {
+	chart.on('rendered', () => {
 		chart.__renderCount++;
 	});
 

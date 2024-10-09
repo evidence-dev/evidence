@@ -94,19 +94,28 @@ test('charts should render once', async ({ page }) => {
 	await page.goto('/');
 	await waitForWasm(page);
 
-	// first BarChart imitates a chart that double loads, second is normal
-	const expected = [3, 1];
+	const expected = {
+		length: 2,
+		diff: 1
+	};
 
 	expect(
 		await page.evaluate(async () => {
 			const charts = window[Symbol.for('__evidence-chart-window-debug__')] ?? {};
 
-			// wait for all charts to render
-			while (Object.values(charts).some((chart) => chart.__renderCount === 0)) {
+			let previous = [];
+			// wait for all charts to settle
+			while (
+				JSON.stringify(previous) !==
+				JSON.stringify((previous = Object.values(charts).map((chart) => chart.__renderCount)))
+			) {
 				await new Promise((res) => setTimeout(res, 100));
 			}
 
-			return Object.values(charts).map((chart) => chart.__renderCount);
+			return {
+				length: previous.length,
+				diff: previous[0] - previous[1]
+			};
 		})
 	).toEqual(expected);
 });
