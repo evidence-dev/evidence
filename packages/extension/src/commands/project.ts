@@ -74,7 +74,7 @@ export async function createNewProject(projectFolder?: Uri, projectUrl?: string)
 	// check if the selected folder is empty
 	if (projectFiles.length > 0) {
 		// prompt to select an empty new project folder
-		window.showErrorMessage('Selected folder must be empty to create a new Evidence project.', {
+		window.showErrorMessage('Selected folder must be empty to create a new Evidence app.', {
 			modal: true
 		});
 
@@ -89,8 +89,8 @@ export async function createNewProject(projectFolder?: Uri, projectUrl?: string)
 	// display creating new Evidence project status in the output channel
 	const outputChannel: OutputChannel = getOutputChannel();
 	outputChannel.show();
-	outputChannel.appendLine('\nCreating new project ...');
-	outputChannel.appendLine(`- New Project Folder: ${projectFolderPath}`);
+	outputChannel.appendLine('\nCreating new app ...');
+	outputChannel.appendLine(`- New App Folder: ${projectFolderPath}`);
 
 	// use new evidence template project Url setting
 	// @see https://github.com/evidence-dev/evidence-vscode/issues/62
@@ -117,26 +117,26 @@ export async function createNewProject(projectFolder?: Uri, projectUrl?: string)
 		} else {
 			// template folder specified in evidence.templateProjectUrl settings doesn't exist
 			showInvalidTemplateProjectUrlErrorMessage(projectTemplateUrl);
-			outputChannel.appendLine(`✗ Invalid Template Project Folder: ${projectTemplateUrl}`);
+			outputChannel.appendLine(`✗ Invalid Template App Folder: ${projectTemplateUrl}`);
 		}
 	} else if (projectTemplateUrl === templateProjectUrlSetting) {
 		// get built-in /template folder Uri from extension context
 		const templateFolder: Uri = getExtensionFileUri(extensionTemplateProjectFolderName);
 
 		if (await folderExists(templateFolder)) {
-			outputChannel.appendLine(`- Template Project Folder: ${templateFolder.fsPath}`);
+			outputChannel.appendLine(`- Template App Folder: ${templateFolder.fsPath}`);
 
 			// create new Evidence project folder from the built-in /template
 			createProjectFolder(templateFolder, projectFolder);
 		} else {
 			// invalid built-in /template folder path
 			showInvalidTemplateProjectUrlErrorMessage(templateFolder.fsPath);
-			outputChannel.appendLine(`✗ Invalid Template Project Folder: ${templateFolder.fsPath}`);
+			outputChannel.appendLine(`✗ Invalid Template App Folder: ${templateFolder.fsPath}`);
 		}
 	} else {
 		// invalid template project Uri scheme
 		showInvalidTemplateProjectUrlErrorMessage(projectTemplateUrl);
-		outputChannel.appendLine(`✗ Invalid Template Project Folder: ${projectTemplateUrl}`);
+		outputChannel.appendLine(`✗ Invalid Template App Folder: ${projectTemplateUrl}`);
 	}
 	telemetryService?.sendEvent('createNewProjectComplete');
 }
@@ -281,7 +281,7 @@ export async function migrateProjectToUSQL() {
 			window.withProgress(
 				{
 					location: ProgressLocation.Notification,
-					title: 'Migrating your project to USQL',
+					title: 'Migrating your app to USQL',
 					cancellable: true
 				},
 				async (progress) => {
@@ -293,7 +293,7 @@ export async function migrateProjectToUSQL() {
 						const timeoutId = setTimeout(() => {
 							window
 								.showInformationMessage(
-									"This step shouldn't take this long unless you have a very large project. " +
+									"This step shouldn't take this long unless you have a very large app. " +
 										'Consider restarting the command. Reach out on Slack if you continue to have issues',
 									'Reach out on Slack'
 								)
@@ -304,10 +304,10 @@ export async function migrateProjectToUSQL() {
 								});
 						}, 300000); // 5 minutes
 
-						progress.report({ message: 'Moving files to legacy project...' });
+						progress.report({ message: 'Moving files to legacy  app...' });
 						await moveFilesToLegacyProject(workspaceRoot, legacyProjectPath);
 
-						progress.report({ message: 'Scaffolding USQL project...' });
+						progress.report({ message: 'Scaffolding USQL app...' });
 						await runDegitCommand(workspaceRoot);
 						await emptySpecificFolders(workspaceRoot, ['sources', 'components']);
 
@@ -322,7 +322,7 @@ export async function migrateProjectToUSQL() {
 							dataSourceFolderName
 						);
 
-						progress.report({ message: 'Copying folders from legacy project...' });
+						progress.report({ message: 'Copying folders from legacy app...' });
 						await copyFoldersFromLegacyProject(
 							legacyProjectPath,
 							workspaceRoot,
@@ -340,10 +340,10 @@ export async function migrateProjectToUSQL() {
 						window.showTextDocument(readmeUri, { preview: false });
 					} catch (err) {
 						if (err instanceof Error) {
-							window.showErrorMessage('Error during project migration: ' + err.message);
+							window.showErrorMessage('Error during app migration: ' + err.message);
 						} else {
 							// Handle the case where the error is not an Error instance
-							window.showErrorMessage('An unknown error occurred during project migration.');
+							window.showErrorMessage('An unknown error occurred during app migration.');
 						}
 					}
 				}

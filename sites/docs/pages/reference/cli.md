@@ -10,7 +10,7 @@ description: Commands to start, install, develop, and build Evidence projects fr
 ## Commands
 
 ```sql commands
-select '<code>npx degit evidence-dev/template my-project</code>' as "CLI", '<code>Evidence: New Evidence Project</code>' as "VS Code", 'Create a new project from the template' as "Description", 0 as row_num UNION ALL
+select '<code>npx degit evidence-dev/template my-project</code>' as "CLI", '<code>Evidence: New App</code>' as "VS Code", 'Create a new project from the template' as "Description", 0 as row_num UNION ALL
 select '<code>npm run sources</code>' as "CLI", '<code>Evidence: Run Sources</code>' as "VS Code", 'Extract data from sources' as "Description", 1 as row_num UNION ALL
 select '<code>npm run dev</code>' as "CLI", '<code>Evidence: Start Server</code>' as "VS Code", 'Start the development server in the current directory' as "Description", 2 as row_num UNION ALL
 select '<code>npm run build</code>' as "CLI", '<code>Evidence: Build</code>' as "VS Code", 'Build the project for production' as "Description", 3 as row_num UNION ALL

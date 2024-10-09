@@ -90,17 +90,17 @@
 			},
 			{
 				"command": "evidence.newProject",
-				"title": "New Evidence Project",
+				"title": "New App",
 				"category": "Evidence"
 			},
 			{
 				"command": "evidence.copyProject",
-				"title": "Copy Existing Project",
+				"title": "Copy Existing App",
 				"category": "Evidence"
 			},
 			{
 				"command": "evidence.openSettings",
-				"title": "Open Project Settings File",
+				"title": "Open Settings File",
 				"category": "Evidence",
 				"enablement": "evidence.hasProject"
 			},
@@ -124,7 +124,7 @@
 			},
 			{
 				"command": "evidence.migrateProjectToUSQL",
-				"title": "Migrate Project to USQL",
+				"title": "Migrate App to USQL",
 				"category": "Evidence",
 				"enablement": "evidence.hasProject"
 			},
@@ -322,7 +322,7 @@
 				"evidence.autoStart": {
 					"type": "boolean",
 					"default": false,
-					"description": "Autostart Evidence server when VS Code opens Evidence project workspace."
+					"description": "Autostart Evidence server when VS Code opens Evidence workspace."
 				},
 				"evidence.defaultPort": {
 					"type": "number",
@@ -332,7 +332,7 @@
 				"evidence.templateProjectUrl": {
 					"type": "string",
 					"default": "https://github.com/evidence-dev/template",
-					"description": "Evidence template project GitHub URL or local file:// path to the project template folder to use when creating new Evidence projects. Defaults to the built-in Evidence extension /template project."
+					"description": "Evidence template app GitHub URL or local file:// path to the app template folder to use when creating new Evidence apps. Defaults to the built-in Evidence extension /template app."
 				},
 				"evidence.previewType": {
 					"type": "string",
@@ -476,8 +476,8 @@
 				"steps": [
 					{
 						"id": "createProject",
-						"title": "1. Create Project",
-						"description": "Click to create a new Evidence project.\n[$(plus) Create Project](command:evidence.newProject)",
+						"title": "1. Create App",
+						"description": "Click to create a new Evidence app.\n[$(plus) Create App](command:evidence.newProject)",
 						"media": {
 							"markdown": "media/new_project.md"
 						},

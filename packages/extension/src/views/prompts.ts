@@ -39,13 +39,13 @@ export async function showRestartPrompt() {
  * @returns The selected folder Uri, or undefined.
  */
 export async function showSelectFolderDialog(): Promise<Uri[] | undefined> {
-	// show open dialog to select an empty folder for a new Evidence project
+	// show open dialog to select an empty folder for a new Evidence app
 	return await window.showOpenDialog({
-		title: 'New Evidence Project Folder',
+		title: 'New Evidence App',
 		canSelectFiles: false,
 		canSelectFolders: true,
 		canSelectMany: false,
-		openLabel: 'Create project in this folder'
+		openLabel: 'Create app in this folder'
 	});
 }
 
@@ -59,7 +59,7 @@ export async function showSelectFolderDialog(): Promise<Uri[] | undefined> {
 export async function showOpenFolder(projectFolder: Uri) {
 	// display Open Folder notification message
 	window
-		.showInformationMessage(`Evidence project created in: ${projectFolder.fsPath}`, 'Open Folder')
+		.showInformationMessage(`Evidence app created in: ${projectFolder.fsPath}`, 'Open Folder')
 		.then((selection: string | undefined) => {
 			if (selection === 'Open Folder') {
 				// open created project folder in a new VS Code window
@@ -89,5 +89,5 @@ export async function openNewProjectFolder(projectFolder: Uri) {
  */
 export function showInvalidTemplateProjectUrlErrorMessage(templateUrl: string) {
 	// show invalid template project Url message
-	window.showErrorMessage(`Invalid Evidence project template Url: ${templateUrl}`, 'OK');
+	window.showErrorMessage(`Invalid Evidence app template Url: ${templateUrl}`, 'OK');
 }

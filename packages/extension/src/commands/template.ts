@@ -26,7 +26,7 @@ const tiged = require('tiged');
 /**
  * Open new project workspace prompt button title.
  */
-const openNewProjectWorkspace = 'Open New Project Workspace';
+const openNewProjectWorkspace = 'Open New Workspace';
 
 /**
  * GitHub Url base for all the template github projects.
@@ -71,7 +71,7 @@ export async function createProjectFromTemplate() {
 
 	if (!workspace.workspaceFolders) {
 		window.showInformationMessage(
-			'Open new empty project folder to create new Evidence project from a template.'
+			'Open new empty folder to create new Evidence app from a template.'
 		);
 		return;
 	}
@@ -93,7 +93,7 @@ async function projectHasFiles(): Promise<boolean> {
 	if (files.length > 0) {
 		const newProjectNotification = window.showInformationMessage(
 			`Use new Workspace with an empty folder \
-      to create new Evidence project from a template.`,
+      to create new Evidence app from a template.`,
 			{
 				title: openNewProjectWorkspace,
 				isCloseAffordance: true
@@ -137,13 +137,13 @@ export async function cloneTemplateRepository(
 	await window.withProgress(
 		{
 			location: ProgressLocation.Notification,
-			title: 'Create Project',
+			title: 'Create App',
 			cancellable: false
 		},
 		async (progress, token) => {
 			// listen for cancellation
 			token.onCancellationRequested(() => {
-				outputChannel.appendLine('Canceled cloning template project.');
+				outputChannel.appendLine('Canceled cloning template app.');
 			});
 
 			let increment = 0;
@@ -191,11 +191,11 @@ export async function cloneTemplateRepository(
 				.then(async () => {
 					// display project creation progress in Evidence Output view
 					outputChannel.appendLine(
-						`✔ Finished creating Evidence project from ${templateRepositoryUrl}`
+						`✔ Finished creating Evidence app from ${templateRepositoryUrl}`
 					);
 					progress.report({
 						increment: 100,
-						message: 'Finished cloning template project.'
+						message: 'Finished cloning template app.'
 					});
 
 					// degit.json does not seem to be respected by tiged in this case
@@ -214,7 +214,7 @@ export async function cloneTemplateRepository(
 
 					progress.report({
 						increment: 100,
-						message: 'Finished creating Evidence project.'
+						message: 'Finished creating Evidence app.'
 					});
 
 					// get open workspace folder

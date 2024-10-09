@@ -56,7 +56,7 @@ Evidence is a node.js application that runs in your terminal. It can be installe
 The easiest way to get started with Evidence is to use the VSCode Extension.
 
 1. Download Evidence from the VSCode Marketplace
-2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project`
+2. Open the Command Palette (F1) and enter `Evidence: New App`
 3. Click `Start Evidence` in the bottom status bar
 
 <LinkButton href="https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode">Download VSCode Extension</LinkButton>
