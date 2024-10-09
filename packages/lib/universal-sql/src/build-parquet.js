@@ -1,13 +1,4 @@
 import {
-	tableFromArrays,
-	tableToIPC,
-	vectorFromArray,
-	Float64,
-	Utf8,
-	Bool,
-	TimestampMillisecond
-} from 'apache-arrow';
-import {
 	Compression,
 	writeParquet,
 	WriterPropertiesBuilder,
@@ -21,41 +12,7 @@ import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
-
-/**
- * @param {{name: string, evidenceType: string}} column
- * @param {any[]} rawValues
- * @returns {import("apache-arrow").Vector}
- */
-function convertArrayToVector(column, rawValues) {
-	switch (column.evidenceType) {
-		case 'number':
-			return vectorFromArray(rawValues, new Float64());
-		case 'string':
-			return vectorFromArray(rawValues, new Utf8());
-		case 'date':
-			// TODO: What gives with timezones
-			return vectorFromArray(rawValues, new TimestampMillisecond());
-		case 'boolean':
-			if (!rawValues.some((v) => v !== null)) {
-				// All null bool columns error out, so we have to do this
-				// https://github.com/evidence-dev/evidence/issues/1504
-				console.warn(
-					chalk.yellow(
-						`\nWarning: Column "${column.name}" (type Bool) contains only null values so it has been cast to Float64`
-					)
-				);
-				return vectorFromArray(rawValues, new Float64());
-			}
-			return vectorFromArray(rawValues, new Bool());
-		default:
-			throw new Error(
-				'Unrecognized EvidenceType: ' +
-					column.evidenceType +
-					'\n This is likely an error in a datasource connector.'
-			);
-	}
-}
+import { jsToIPC } from './jsToIPC.js';
 
 /**
  * @template T
@@ -81,23 +38,7 @@ export async function buildMultipartParquet(
 	let rowCount = 0;
 
 	const flush = async (results) => {
-		// Convert JS Objects -> Arrow
-		const vectorized = Object.fromEntries(
-			columns.map((c) => [
-				c.name,
-				convertArrayToVector(
-					c,
-					results.map((i) => i[c.name] ?? null)
-				)
-			])
-		);
-		const table = tableFromArrays(vectorized);
-		for (const field of table.schema.fields) {
-			field.nullable = true;
-		}
-
-		// Converts the arrow table to a buffer
-		const IPC = tableToIPC(table, 'stream');
+		const IPC = jsToIPC(results, columns);
 
 		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
 		// Converts the arrow buffer to a parquet buffer
@@ -124,33 +65,21 @@ export async function buildMultipartParquet(
 	if (isGeneratorObject(data)) {
 		let currentBatch = [];
 		for await (const results of data) {
-			currentBatch = currentBatch.concat(results);
+			for (const result of results) currentBatch.push(result);
 
 			if (currentBatch.length >= batchSize) {
 				await flush(currentBatch);
-				currentBatch = [];
+				currentBatch.length = 0;
 			}
 		}
 		if (currentBatch.length) await flush(currentBatch);
 	} else {
-		let currentBatch = [];
 		for (const results of data) {
 			// If the array is longer than the batch size; it gets chunked
 			for (const batch of chunk(results, batchSize)) {
-				// Iterate through the split up chunks
-				// Batch them and flush when needed
-
-				currentBatch = currentBatch.concat(batch);
-
-				if (currentBatch.length >= batchSize) {
-					// Time to flush
-					await flush(currentBatch);
-					currentBatch = [];
-				}
+				await flush(batch);
 			}
 		}
-		// Ensure nothing is left over
-		if (currentBatch.length) await flush(currentBatch);
 	}
 
 	if (!tmpFilenames.length) return 0;
