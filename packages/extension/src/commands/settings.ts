@@ -44,7 +44,7 @@ export async function viewAppSettings() {
 export function openSettingsFile() {
 	if (!workspace.workspaceFolders) {
 		window.showErrorMessage(
-			'This command is only available when you have an Evidence project workspace open.'
+			'This command is only available when you have an Evidence workspace open.'
 		);
 	} else {
 		const settingsFileUri: Uri = Uri.joinPath(getWorkspaceFolder()!.uri, settingsFilePath);

@@ -14,7 +14,7 @@ The easiest way to get started with Evidence is to use the [VSCode Extension](vs
 ## VSCode Extension
 
 1. Install Evidence from the VSCode Marketplace
-2. Open the Command Palette (`Ctrl/Cmd + Shift + P`) and enter `Evidence: New Evidence Project`
+2. Open the Command Palette (`Ctrl/Cmd + Shift + P`) and enter `Evidence: New App`
 3. Click `Start Evidence` in the bottom status bar
    - This will install required dependencies and start the Evidence server
    - You should see a browser window open automatically with your app preview

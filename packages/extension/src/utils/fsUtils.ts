@@ -33,8 +33,8 @@ export async function copyFolder(templateFolder: Uri, destinationFolder: Uri): P
 	// display folder copy progress in the output channel
 	const outputChannel: OutputChannel = getOutputChannel();
 	outputChannel.show();
-	outputChannel.appendLine('\nCreating project from template ...');
-	outputChannel.appendLine(`- Template Project: ${templateFolder.fsPath}\n`);
+	outputChannel.appendLine('\nCreating app from template ...');
+	outputChannel.appendLine(`- Template App: ${templateFolder.fsPath}\n`);
 
 	try {
 		// get open workspace folder
@@ -45,7 +45,7 @@ export async function copyFolder(templateFolder: Uri, destinationFolder: Uri): P
 			const filesCopied = await copyFiles(templateFolder, workspaceFolder.uri);
 			if (filesCopied) {
 				outputChannel.appendLine(
-					`✔ New project created successfully in the open workspace folder: ${workspaceFolder.name}`
+					`✔ New app created successfully in the open workspace folder: ${workspaceFolder.name}`
 				);
 				return true;
 			}
@@ -53,11 +53,11 @@ export async function copyFolder(templateFolder: Uri, destinationFolder: Uri): P
 		} else {
 			// copy template folder to the destination folder with overwrite option
 			await workspace.fs.copy(templateFolder, destinationFolder, { overwrite: true });
-			outputChannel.appendLine(`✔ New project created successfully.`);
+			outputChannel.appendLine(`✔ New app created successfully.`);
 			return true;
 		}
 	} catch (error) {
-		outputChannel.appendLine('✗ Error copying template project:');
+		outputChannel.appendLine('✗ Error copying template app:');
 		outputChannel.appendLine(` ${error}`);
 		return false;
 	}

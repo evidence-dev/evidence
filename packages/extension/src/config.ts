@@ -35,7 +35,7 @@ export function getConfig<T>(settingName: string, defaultValue?: T) {
 
 /**
  * Updates Evidence project context values to show
- * the available Evidence project commands in Command Palette,
+ * the available Evidence commands in Command Palette,
  * and determine standard markdown documents Preview webview to use.
  *
  * @see https://github.com/evidence-dev/evidence-vscode/issues/67
