@@ -51,12 +51,12 @@
 
 	const chipStyles = {
 		positive: downIsGood
-			? 'bg-negative/5 border border-negative/20'
-			: 'bg-positive/5 border border-positive/20',
+			? 'bg-negative/10 border border-negative/20'
+			: 'bg-positive/10 border border-positive/20',
 		negative: downIsGood
-			? 'bg-positive/5 border border-positive/20'
-			: 'bg-negative/5 border border-negative/20',
-		neutral: 'bg-neutral/5 border border-neutral/20'
+			? 'bg-positive/10 border border-positive/20'
+			: 'bg-negative/10 border border-negative/20',
+		neutral: 'bg-neutral/10 border border-neutral/20'
 	};
 
 	let error;
