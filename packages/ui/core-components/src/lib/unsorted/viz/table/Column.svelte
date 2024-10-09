@@ -31,8 +31,14 @@
 		}
 	}
 
+	// COLUMN CONTENT TYPES:
+	export let contentType = undefined;
+
 	export let title = undefined;
 	export let align = undefined;
+	if (contentType === 'bar' && align == undefined) {
+		align = 'left';
+	}
 	if (align === 'centre') {
 		align = 'center';
 	}
@@ -41,9 +47,6 @@
 
 	export let wrapTitle = false;
 	$: wrapTitle = wrapTitle === 'true' || wrapTitle === true;
-
-	// COLUMN CONTENT TYPES:
-	export let contentType = undefined;
 
 	// Images:
 	export let height = undefined;
@@ -103,6 +106,22 @@
 	export let chip = false;
 	$: chip = chip === 'true' || chip === true;
 
+	// Sparkline:
+	export let sparkWidth = undefined;
+	export let sparkHeight = undefined;
+	export let sparkColor = undefined;
+	export let sparkDateCol = undefined;
+	export let sparkValueCol = undefined;
+	export let sparkYScale = false;
+	$: sparkYScale = sparkYScale === 'true' || sparkYScale === true;
+
+	// Bar Viz:
+	export let barColor = '#8ad3ed';
+	export let negativeBarColor = '#e74c3c';
+	export let backgroundColor = 'white';
+	export let hideLabels = false;
+	$: hideLabels = hideLabels === 'true' || hideLabels === true;
+
 	// Column Groups:
 	export let colGroup = undefined;
 
@@ -146,7 +165,17 @@
 		colorMid,
 		colorBreakpoints,
 		colorPalette,
-		redNegatives
+		redNegatives,
+		sparkWidth,
+		sparkHeight,
+		sparkColor,
+		sparkDateCol,
+		sparkValueCol,
+		sparkYScale,
+		barColor,
+		negativeBarColor,
+		backgroundColor,
+		hideLabels
 	};
 
 	/**

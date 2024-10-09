@@ -34,6 +34,79 @@
 	<DataTable {data} />
 </Story>
 
+<Story name="Bar Viz">
+	{@const data = Query.create(
+		`
+	SELECT 'a' as category, 100 as value
+	union all
+	SELECT 'a' as category, 80 as value
+	union all
+	SELECT 'a' as category, 70 as value
+	union all
+	SELECT 'b' as category, 30 as value
+	union all
+	SELECT 'b' as category, 24 as value
+	union all
+	SELECT 'b' as category, 12 as value
+	`,
+		query
+	)}
+	<DataTable {data}>
+		<Column id="category" />
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" />
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" barColor="lightgreen" />
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" barColor="pink" />
+	</DataTable>
+</Story>
+
+<Story name="Sparkline">
+	{@const data = Query.create(
+		`
+	select category, array_agg({'date': date, 'value': value}) as sparkline from (
+	SELECT 'Grocery' as category, '2024-01-01'::date as date, 100 as value
+	union all
+	SELECT 'Grocery' as category, '2024-01-02'::date as date, 80 as value
+	union all
+	SELECT 'Grocery' as category, '2024-01-03'::date as date, 70 as value
+	union all
+	SELECT 'Retail' as category, '2024-01-01'::date as date, 30 as value
+	union all
+	SELECT 'Retail' as category, '2024-01-02'::date as date, 24 as value
+	union all
+	SELECT 'Retail' as category, '2024-01-03'::date as date, 12 as value
+	) group by all
+	`,
+		query
+	)}
+	<DataTable {data}>
+		<Column id="category" />
+		<Column
+			id="sparkline"
+			title="Sparkline"
+			contentType="sparkline"
+			sparkDateCol="date"
+			sparkValueCol="value"
+			sparkColor="green"
+			t
+		/>
+		<Column
+			id="sparkline"
+			title="Sparkbar"
+			contentType="sparkbar"
+			sparkDateCol="date"
+			sparkValueCol="value"
+			sparkColor="navy"
+		/>
+		<Column
+			id="sparkline"
+			title="Sparkarea"
+			contentType="sparkarea"
+			sparkDateCol="date"
+			sparkValueCol="value"
+		/>
+	</DataTable>
+</Story>
+
 <Story name="With Search">
 	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
 	<DataTable {data} title="Flights" search>
