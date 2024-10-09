@@ -47,7 +47,7 @@ You can install the Evidence extension from the [VS Code Marketplace](https://ma
 To get started with Evidence using VS Code locally, follow these steps:
 
 1. Open the command palette in VS Code (Cmd/Ctrl + Shift + P)
-2. Search for and click `New Evidence App`
+2. Search for and click `New App`
 3. Select an **empty** folder to create your Evidence app within<br><br>
    ![Evidence App Start](docs/images/evidence-new-project.gif)
 
