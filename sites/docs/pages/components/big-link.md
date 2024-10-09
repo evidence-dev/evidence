@@ -16,5 +16,5 @@ sidebar_position: 1
 
 <PropListing name="href" required options='string'>
 
-Renders a link that, when clicked, navigates to the specified URL. It can accept either a full external link (e.g. `https://google.com`) or link to another page within your evidence project (e.g. `/sales/performance`).
+Renders a link that, when clicked, navigates to the specified URL. It can accept either a full external link (e.g. `https://google.com`) or link to another page within your evidence app (e.g. `/sales/performance`).
 </PropListing>

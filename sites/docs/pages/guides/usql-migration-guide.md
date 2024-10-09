@@ -1,7 +1,7 @@
 ---
 title: Universal SQL Migration Guide
 sidebar_position: 3
-description: Migrate your < v24 Evidence project to Universal SQL (v24+)
+description: Migrate your < v24 Evidence app to Universal SQL (v24+)
 ---
 
 Universal SQL is Evidence's latest release, and fundamentally changes how Evidence queries data in order to bring support for three big new features:
@@ -9,11 +9,11 @@ Universal SQL is Evidence's latest release, and fundamentally changes how Eviden
 2. **Inputs and Filters:** Use input components to dynamically update your queries and charts based on user input. Filter data using parameterized queries rather than Javascript filter syntax
 3. **Adapter Plugins:** Create your own adapter to enable connecting to any data source
 
-This is a big release and contains several breaking changes. This guide will help you migrate your existing projects to USQL.
+This is a big release and contains several breaking changes. This guide will help you migrate your existing apps to USQL.
 
 The following sections explain what is changing in Evidence with Universal SQL. To jump straight to the migration steps, [click here](#migration-steps).
 
-## Do I need to migrate my project?
+## Do I need to migrate my app?
 - If your `@evidence-dev/evidence` package version is `&lt; v24` then it has not yet been migrated, and we encourage you to do so as soon as is practical
 - `v23` will continue to be supported for now (sunset date TBC) and will receive critical bugfixes during this period
 - If you're unsure what you need to do, or if you need help, [reach out to us on Slack](https://slack.evidence.dev) in the `#migration` channel
@@ -31,14 +31,14 @@ The following sections explain what is changing in Evidence with Universal SQL. 
 - Once your sources are loaded, they can be queried using DuckDB SQL syntax, either directly on your markdown page, or by writing a `.sql` file in your `queries` directory and referencing it in the frontmatter of your markdown file
 - These DuckDB SQL queries run in your browser and can be changed on the fly by interactive user input (e.g., filters, dropdowns) using parameterized queries (e.g., `where customer_id = '${inputs.customer}'`)
 
-## Change to Project Structure
-To support multiple data sources, USQL introduces a new `sources` directory, which contains one folder per data source. Each data source folder includes connection configuration files (defined in YAML, but configurable via the settings UI of your project in your browser).
+## Change to App Structure
+To support multiple data sources, USQL introduces a new `sources` directory, which contains one folder per data source. Each data source folder includes connection configuration files (defined in YAML, but configurable via the settings UI of your app in your browser).
 
-If you already have a `sources` directory in your project (e.g., for `.sql` files or `.csv` files), it will need to be renamed to `queries`. This functions in the same way as before, but the `.sql` files use DuckDB SQL syntax and the queries run in the browser rather than during the build step.
+If you already have a `sources` directory in your app directory (e.g., for `.sql` files or `.csv` files), it will need to be renamed to `queries`. This functions in the same way as before, but the `.sql` files use DuckDB SQL syntax and the queries run in the browser rather than during the build step.
 
 Queries in your markdown files will use DuckDB SQL syntax and will also run in the browser.
 
-#### Pre-USQL Basic Project Structure
+#### Pre-USQL Basic App Structure
 ```bash
 +-- .evidence
 +-- pages/
@@ -48,7 +48,7 @@ Queries in your markdown files will use DuckDB SQL syntax and will also run in t
 |   `-- another_query.sql
 ```
 
-#### USQL Basic Project Structure
+#### USQL Basic App Structure
 ```bash
 +-- .evidence
 +-- pages/
@@ -71,12 +71,12 @@ Optional folders for `components`, `static`, and `partials` still work as they d
 
 **Recommendations**
 
-We recommend creating a backup of your project before starting the migration.
+We recommend creating a backup of your app files before starting the migration.
 
 </Alert>
 
-- Use new template project scaffold
-- Migrate queries to new project folder structure
+- Use new template app scaffold
+- Migrate queries to new app folder structure
 - Update on-page queries to use DuckDB syntax
 - (Suggested) Refactor `.filter()` statements to take advantage of SQL-based filtering
 - (If necessary) Update deprecated syntax
@@ -106,11 +106,11 @@ Issues and errors in the migration command can be related to npm or NodeJS versi
 </Alert>
 
 1. Ensure you have the Evidence VS Code extension version `1.4.1` or higher installed
-2. Open the Evidence project you want to migrate. If your project is within a monorepo, for this migration open only the Evidence project folder as the "workspace" in VS Code - otherwise the migration command will not be able to run
+2. Open the Evidence app directory you want to migrate. If your app directory is within a monorepo, for this migration open only the Evidence app directory as the "workspace" in VS Code - otherwise the migration command will not be able to run
 3. Open the command palette (`Cmd`/`Ctrl` + `Shift` + `P`)
 4. Type `Evidence: Migrate Project to USQL` and select that command
-5. Follow the prompts in VS Code. You will be asked to provide a name for your data source. This will appear as a folder within the `sources` directory in your project (e.g., you could use `needful_things` if using the Evidence demo database)
-6. The command should run quickly - no more than a few minutes. If it's taking longer, try cancelling and starting again or [reach out on Slack in the #migration channel for assistance](https://slack.evidence.dev). When the command has finished running, you will have a migrated project. 
+5. Follow the prompts in VS Code. You will be asked to provide a name for your data source. This will appear as a folder within the `sources` directory in your app root (e.g., you could use `needful_things` if using the Evidence demo database)
+6. The command should run quickly - no more than a few minutes. If it's taking longer, try cancelling and starting again or [reach out on Slack in the #migration channel for assistance](https://slack.evidence.dev). When the command has finished running, you will have a migrated app. 
 7. Click `Start Evidence` to run the server, or use the commands below:
     ```shell
     npm install
@@ -123,7 +123,7 @@ Issues and errors in the migration command can be related to npm or NodeJS versi
 8. Configure your data source in the Settings menu
     - In your browser, click the 3-dot menu at the top right of the page and click Settings
     - In the Data Sources section, click to add a new connection
-    - Select the data source type your project uses and provide the name you set when going through the VS Code prompts earlier (e.g., `needful_things` to continue the example from above)
+    - Select the data source type your app uses and provide the name you set when going through the VS Code prompts earlier (e.g., `needful_things` to continue the example from above)
     - Click to test your connection
     - Click to confirm the changes
 9. Navigate back to the home page in your browser and refresh the page
@@ -131,30 +131,30 @@ Issues and errors in the migration command can be related to npm or NodeJS versi
 
 
 ### Completing the Migration Steps Manually
-The easiest way to migrate your project is to create a project using the latest version of the template, and copy over your markdown pages and queries. These steps will guide you through doing that in the same project folder so that you can track the changes in version control.
+The easiest way to migrate your app is to create a app using the latest version of the template, and copy over your markdown pages and queries. These steps will guide you through doing that in the same app directory so that you can track the changes in version control.
 
-1. In your Evidence project directory, create a new folder called `_legacy_project`
-2. Copy all of the files from your existing project into the `_legacy_project` folder - this will serve as a backup, and you will need to reference these in the following steps to copy content back into your project
+1. In your Evidence app directory, create a new folder called `_legacy_project`
+2. Copy all of the files from your existing app into the `_legacy_project` folder - this will serve as a backup, and you will need to reference these in the following steps to copy content back into your app
 3. Create another folder called `temporary`
-4. Scaffold a new project into this `temporary` folder using the latest version of the template
+4. Scaffold a new app into this `temporary` folder using the latest version of the template
     - CLI: `npx degit evidence-dev/template temporary`
     - This step is required because `degit` only works in an empty folder
-    - After this step, you should have a new evidence project in your `temporary` directory
-5. Move all of the files from this `temporary` folder into the root of your project. Then delete the `temporary` folder
-    - Now you should have a `_legacy_project` folder and a new Evidence project in the same workspace
+    - After this step, you should have a new evidence app in your `temporary` directory
+5. Move all of the files from this `temporary` folder into the root of your app. Then delete the `temporary` folder
+    - Now you should have a `_legacy_project` folder and a new Evidence app in the same workspace
 6. Set up your new `sources` directory
     - In the new `sources` folder, delete any demo data folders so that the folder is empty - you won't need any of those
     - Create a new folder in your `sources/` directory, with a name for your existing data source (e.g., `sources/my-data-source/`)
-7. Copy files from `_legacy_project` into your new project. Make sure to **copy** rather than **move** the files. If the folder already exists in the new project, replace the contents with the contents from `_legacy_project`:
-    - Folders to copy from `_legacy_project` to your new project
+7. Copy files from `_legacy_project` into your new app. Make sure to **copy** rather than **move** the files. If the folder already exists in the new app, replace the contents with the contents from `_legacy_project`:
+    - Folders to copy from `_legacy_project` to your new app
         - `pages/` -> `pages/`
         - `components/` -> `components/`
         - `partials/` -> `partials/`
         - `static/` -> `static/`
     - `sources` folder
-        - If `_legacy_project` has a `sources` directory, copy the contents of that folder into the `sources/my-data-source` folder in your new project
+        - If `_legacy_project` has a `sources` directory, copy the contents of that folder into the `sources/my-data-source` folder in your new app
     - Files in the root of `_legacy_project`
-        - Any data files in the root of your old project should be copied into your `sources/my-data-source` folder. This includes files with these extensions:
+        - Any data files in the root of your old app should be copied into your `sources/my-data-source` folder. This includes files with these extensions:
             - `.duckdb`
             - `.db`
             - `.sqlite`
@@ -162,7 +162,7 @@ The easiest way to migrate your project is to create a project using the latest 
             - `.csv`
             - `.parquet`
 6. Set up your `queries` directory
-    - If a `queries` directory does not exist in your new project, create that folder now (in the root of your project)
+    - If a `queries` directory does not exist in your new app, create that folder now (in the root of your app)
     - If you don't have any `.sql` files in your `sources/my-data-source` directory, you can move to the next step and leave the `queries` folder empty
     - For each `.sql` file in your `sources/my-data-source` directory, create a file in `queries` with the same name (e.g., `sources/my-data-source/my-query.sql` --> `queries/my-query.sql`)
     - Write this query into each `.sql` file you created in `queries`: `select * from [my-data-source].[my-query]`
@@ -189,7 +189,7 @@ The easiest way to migrate your project is to create a project using the latest 
 11. Configure your data source in the Settings menu
     - Click the 3-dot menu at the top right of the page and click Settings
     - In the Data Sources section, click to add a new connection
-    - Select the data source type your project uses and provide a name for your data source. This will appear as a folder within the `sources` directory in your project (e.g., you could use `needful_things` if using the Evidence demo database)
+    - Select the data source type your app uses and provide a name for your data source. This will appear as a folder within the `sources` directory in your app (e.g., you could use `needful_things` if using the Evidence demo database)
     - Click to test your connection
     - Click to confirm the changes
 12. Navigate back to the home page in your browser and refresh the page
@@ -198,23 +198,23 @@ The easiest way to migrate your project is to create a project using the latest 
 ## Deployment Changes
 
 ### Evidence Cloud
-1. Copy environment variables for your project from your local dev environment (Settings page > Deployment)
+1. Copy environment variables for your app from your local dev environment (Settings page > Deployment)
     ![env vars](/img/settings-vars.png)
 
-2. Update the environment variables for your Evidence Cloud project by pasting the environment variables from Step 1
+2. Update the environment variables for your Evidence Cloud app by pasting the environment variables from Step 1
     ![cloud vars](/img/cloud-settings-edit.png)
 
-3. Click to redeploy your project
+3. Click to redeploy your app
 
 
 ### Self-Hosting
 You will need to update 2 things in your deployment setup to complete the migration to USQL:
 1. Update your environment variables
     - See links in the Resources section for Netlify and Vercel docs
-    - Find the new environment variables in your project's settings menu in your browser (click 3-dot menu at top right > Settings) - then scroll down to Deployment and select your deployment provider
+    - Find the new environment variables in your app's settings menu in your browser (click 3-dot menu at top right > Settings) - then scroll down to Deployment and select your deployment provider
     - Copy your variables and change them in the configuration for your deployment provider
 2. Update the build command
-    - USQL introduces the new `run sources` step to load data into your project from your data sources
+    - USQL introduces the new `run sources` step to load data into your app from your data sources
     - Replace the build command in your deployment provider to `npm run sources && npm run build:strict`
     - See Netlify and Vercel docs in the Resources section
 
@@ -268,17 +268,17 @@ This means that any query chains included in `sources` will need to be replaced 
 If you use the VS Code migration command, chained queries found on markdown pages are left on the page rather than being moved to the `sources` directory like other queries. This is because we assume that most chained queries are simple enough for the syntax of your source database to match with the DuckDB syntax they will need to move to. In some cases, the syntax will not line up and you will need to make an adjustment.
 
 ### Evidence Plugins
-If your project includes an Evidence plugin (e.g., [Evidence Labs](https://labs.evidence.dev)):
+If your app includes an Evidence plugin (e.g., [Evidence Labs](https://labs.evidence.dev)):
 1. Find the `evidence.plugins.yaml` file in your `_legacy_project` folder and copy the line(s) containing the plugin(s) you're using
-2. Paste those lines into the `evidence.plugins.yaml` file in your new project
-3. Install the plugin(s) in your project. E.g.,:
+2. Paste those lines into the `evidence.plugins.yaml` file in your new app
+3. Install the plugin(s) in your app. E.g.,:
 ```shell
 npm install --save @evidence-dev/labs
 ```
 
 ### External Package Dependencies
 
-If your project includes external packages installed via npm, you will need to reinstall those packages so that they are reflected in your `package.json`
+If your app includes external packages installed via npm, you will need to reinstall those packages so that they are reflected in your `package.json`
 
 ```bash
 npm install <package-name>

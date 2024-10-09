@@ -54,7 +54,7 @@ To enable SPA rendering mode:
 npm install --save-dev @sveltejs/adapter-static
 ```
 
-3. Add a `svelte.config.js` file to the root of your project containing the following:
+3. Add a `svelte.config.js` file to the root of your app directory containing the following:
 
 ```javascript
 import adapter from '@sveltejs/adapter-static';

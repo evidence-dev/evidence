@@ -42,7 +42,7 @@ Evidence can be started from VSCode, or from the Command Line. Both will work fo
    </Tab>
    <Tab label="Command Line">
 
-      From the root of your project directory: 
+      From the root of your app directory: 
       
 ```bash
 npm run dev
