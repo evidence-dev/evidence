@@ -32,8 +32,12 @@ test('queries on page prerender (right before duckdb loads)', async ({ page }) =
 test('dropdown options prerender', async ({ page }) => {
 	await page.goto('/');
 
-	await expect(page.getByRole('combobox', { exact: true, name: 'Category' })).toHaveText('All Categories');
-	await expect(page.getByRole('combobox', { exact: true, name: 'Category2' })).toHaveText('Sinister Toys');
+	await expect(page.getByRole('combobox', { exact: true, name: 'Category' })).toHaveText(
+		'All Categories'
+	);
+	await expect(page.getByRole('combobox', { exact: true, name: 'Category2' })).toHaveText(
+		'Sinister Toys'
+	);
 	await expect(page.getByRole('combobox', { exact: true, name: 'Year' })).toHaveText('All Years');
 	await expect(page.getByRole('combobox', { exact: true, name: 'Year2' })).toHaveText('2019');
 });
@@ -42,8 +46,12 @@ test('dropdown options prerender (right before duckdb loads)', async ({ page }) 
 	await page.goto('/');
 	await waitForWasm(page);
 
-	await expect(page.getByRole('combobox', { exact: true, name: 'Category' })).toHaveText('All Categories');
-	await expect(page.getByRole('combobox', { exact: true, name: 'Category2' })).toHaveText('Sinister Toys');
+	await expect(page.getByRole('combobox', { exact: true, name: 'Category' })).toHaveText(
+		'All Categories'
+	);
+	await expect(page.getByRole('combobox', { exact: true, name: 'Category2' })).toHaveText(
+		'Sinister Toys'
+	);
 	await expect(page.getByRole('combobox', { exact: true, name: 'Year' })).toHaveText('All Years');
 	await expect(page.getByRole('combobox', { exact: true, name: 'Year2' })).toHaveText('2019');
 });
