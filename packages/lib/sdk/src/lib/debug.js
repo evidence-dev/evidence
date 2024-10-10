@@ -14,11 +14,7 @@ export const enableDebug = () => {
 
 export const isDebug = () => {
 	if (typeof process !== 'undefined')
-		return Boolean(
-			process.env.EVIDENCE_DEBUG ||
-				process.env.VITE_PUBLIC_EVIDENCE_DEBUG ||
-				(process.env.NODE_ENV === 'test' && !process.env.EVIDENCE_DISABLE_TEST_DEBUG)
-		);
+		return Boolean(process.env.EVIDENCE_DEBUG || process.env.VITE_PUBLIC_EVIDENCE_DEBUG);
 	if (typeof import.meta.env !== 'undefined')
 		return (
 			Boolean(import.meta.env.EVIDENCE_DEBUG) || Boolean(import.meta.env.VITE_PUBLIC_EVIDENCE_DEBUG)
@@ -28,3 +24,6 @@ export const disableDebug = () => {
 	delete process.env.EVIDENCE_DEBUG;
 	delete process.env.VITE_PUBLIC_EVIDENCE_DEBUG;
 };
+
+// Sync debug state (e.g. if any of the env vars are set, assume we are in debug mode)
+if (isDebug() && typeof process !== 'undefined') enableDebug();

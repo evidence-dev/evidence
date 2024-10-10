@@ -1,14 +1,13 @@
 <script>
 	import { dev } from '$app/environment';
-	import DevTools from './_DevTools.svelte';
-
-	// This wrapper is used to prevent devtools from escaping dev mode
 </script>
 
 {#if dev}
-	<DevTools>
-		<slot />
-	</DevTools>
+	{#await import('./_DevTools.svelte') then DevTools}
+		<svelte:component this={DevTools.default}>
+			<slot />
+		</svelte:component>
+	{/await}
 {:else}
 	<slot />
 {/if}

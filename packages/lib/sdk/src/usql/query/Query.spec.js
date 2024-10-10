@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Query } from './Query';
 import { sharedPromise } from '../../lib/sharedPromise';
+import { BlockingDagNode } from '../../utils/dag/DagNode.js';
 
 const tick = (timeout = 0) => new Promise((r) => setTimeout(r, timeout));
 
@@ -48,6 +49,7 @@ describe('Query', () => {
 		testQueryIndex = 0;
 		testIdx++;
 		Query.emptyCache();
+		Query.resetInFlightQueries();
 	});
 
 	describe('Cache Busting', () => {
@@ -231,7 +233,6 @@ describe('Query', () => {
 			await query.fetch();
 			const after = performance.now();
 
-			console.log(`Took ${(after - before).toFixed(2)}`);
 			expect(query.length).toBe(1000 * 1000);
 			expect(after - before).toBeLessThan(250);
 		});
@@ -253,6 +254,27 @@ describe('Query', () => {
 			const errored = getMockQuery(null);
 
 			expect(errored.error.message.startsWith('Refusing to create Query')).toBe(true);
+		});
+
+		describe('Dag Tracking', () => {
+			it('should be created with a dag node', () => {
+				/** @type {import ('./Query.js').QueryValue} */
+				let value;
+				const query = Query.withDag({ execFn: mockRunner, callback: (v) => (value = v) });
+				query.update``;
+				expect(query.__dag).toBeDefined();
+				expect(value.__dag).toBeDefined();
+			});
+			it('should be aware of WithDag dependencies', () => {
+				/** @type {import ('./Query.js').QueryValue} */
+				let value;
+				const query = Query.withDag({ execFn: mockRunner, callback: (v) => (value = v) });
+				const trackedValue = {
+					__dag: new BlockingDagNode()
+				};
+				query.update`${trackedValue}`;
+				expect(value.__dag.parents).toContain(trackedValue.__dag);
+			});
 		});
 
 		describe('Reactive Variant', () => {
@@ -369,7 +391,6 @@ describe('Query', () => {
 						execFn: mockRunner,
 						callback: (v) => {
 							currentValue = v;
-							console.log(v.id, v.dataLoaded);
 							updateTracker();
 						}
 					},
@@ -491,9 +512,6 @@ describe('Query', () => {
 	});
 
 	describe('Global Loading State', () => {
-		beforeEach(() => {
-			Query.resetInFlightQueries();
-		});
 		it('should report that no queries are loading when no queries have been created', () => {
 			expect(Query.queriesInFlight).toBe(false);
 		});
@@ -741,7 +759,7 @@ describe('Query', () => {
 			const lengthSharedPromise = sharedPromise();
 			expectedLength = lengthSharedPromise.promise;
 			const q = getMockQuery('SELECT 5', { id: 'I SEE YOU' });
-			const subscriber = vi.fn(console.log);
+			const subscriber = vi.fn();
 			let i = 0;
 
 			subscriber.mockImplementationOnce((v) => {

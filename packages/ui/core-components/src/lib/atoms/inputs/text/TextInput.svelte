@@ -4,9 +4,7 @@
 
 <script>
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	const inputs = getInputContext();
-
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
 	/////
 	// Component Things
 	/////
@@ -30,31 +28,23 @@
 	export let unsafe = false;
 	$: unsafe = unsafe === true || unsafe === 'true';
 
-	let touched = false;
-
-	const setInputStore = () => {
-		let sqlString = value;
-		if (!unsafe) sqlString = sqlString.replaceAll("'", "''");
-		$inputs[name] = {
-			toString() {
-				return sqlString;
-			},
-			sql: `'${sqlString}'`,
-			search: (col) => `damerau_levenshtein(${col}, '${sqlString}')`
-		};
-	};
+	const input = useInput(
+		name,
+		{
+			debouncePeriod: 200,
+			sqlFragmentFactory: (input) => `'${input.value}'`
+		},
+		{ value: defaultValue, label: defaultValue }
+	);
 
 	$: {
-		if (value) touched = true;
-		if (touched) {
-			setInputStore();
-		}
+		let _value = value ?? '';
+		if (!unsafe) _value = _value.replaceAll("'", "''");
+		let label = value;
+		input.update(_value, label);
 	}
-
-	let value = defaultValue;
-	if (typeof defaultValue !== 'undefined') {
-		setInputStore();
-	}
+	// Get the value from the previously set input, if it exists
+	let value = $input ?? defaultValue;
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>

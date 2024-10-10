@@ -4,25 +4,27 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Bug, X } from '@steeze-ui/tabler-icons';
 	import { Accordion, AccordionItem } from '../atoms/accordion/index.js';
-	import QueryDebugger, { queries, resetQueries } from './query-debugger/QueryDebugger.svelte';
+	import QueryDebugger from './query-debugger/QueryDebugger.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { onMount } from 'svelte';
 	import InputState from './input-debug/InputState.svelte';
 	import InputHistory from './input-debug/InputHistory.svelte';
 	import { isDebug } from '@evidence-dev/sdk/utils';
-	import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { writable } from 'svelte/store';
-	import { getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { History } from '@evidence-dev/sdk/utils';
+	import { ensureInputContext, getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import DagDebugGraph from './page-dag-viewer/DagDebugGraph.svelte';
+	import { AllQueries } from './AllQueries.store.js';
+	import { ActiveQueries } from './ActiveQueries.store.js';
 
-	ensureInputContext(writable({}));
+	import { History } from '@evidence-dev/sdk/utils';
+	const inputStore = ensureInputContext();
 
 	let open = false;
 
 	let selectedQuery;
 	afterNavigate(() => {
 		// Whenever we change pages, we can release the queries
-		resetQueries();
+		AllQueries.reset();
+		ActiveQueries.reset();
 	});
 
 	onMount(() => {
@@ -52,7 +54,7 @@
 
 {#if open}
 	<div
-		class="h-[calc(100vh-3rem)] w-96 bg-gray-200 fixed overflow-auto right-0 top-12 px-4 py-4 z-10"
+		class="h-[calc(100vh-3rem)] w-96 bg-gray-200 fixed overflow-auto right-0 top-12 px-4 py-4 z-20"
 		transition:fly={{ x: 384, duration: 250, delay: 0 }}
 	>
 		<button
@@ -62,12 +64,12 @@
 			<Icon src={open ? X : Bug} class="w-4 h-4" />
 		</button>
 
-		<header class="text-xl font-bold mb-4">Evidence Dev Tools</header>
+		<header class="text-xl font-bold mb-4">Dev Tools</header>
 
 		<Accordion>
 			<AccordionItem title="Inspect Queries" compact>
 				<section class="">
-					{#each $queries.entries() as [id, query] (id)}
+					{#each $AllQueries.entries() as [id, query] (id)}
 						<button
 							class="flex justify-between w-full odd:bg-black/10 hover:bg-black/20"
 							class:odd:bg-red-300={query.error}
@@ -93,6 +95,9 @@
 			</AccordionItem>
 			<AccordionItem title="View Input History" compact>
 				<InputHistory history={inputHistory} />
+			</AccordionItem>
+			<AccordionItem title="Page Dependency Graph" compact>
+				<DagDebugGraph rootNodes={[inputStore, ...Array.from($ActiveQueries.values())]} />
 			</AccordionItem>
 		</Accordion>
 	</div>

@@ -10,24 +10,15 @@ describe('formatDiff', () => {
 	it('should be a function', () => {
 		expect(typeof formatDiff).toBe('function');
 	});
-	it('should output an empty diff on 2 lines', () => {
-		history.push({});
-		history.push({});
 
-		const output = formatDiff(history.generations[1]);
-		expect(output).toEqual([
-			{ content: '{', type: 'unchanged' },
-			{ content: '}', type: 'unchanged' }
-		]);
-	});
 	it('should output while retaining JSON indenting', () => {
 		history.push({ a: 1 });
 		history.push({ a: 1 });
 
-		const output = formatDiff(history.generations[1]);
+		const output = formatDiff(history.generations[0]);
 		expect(output).toEqual([
 			{ content: '{', type: 'unchanged' },
-			{ content: '  "a": 1', type: 'unchanged' },
+			{ content: '  "a": 1', type: 'added' },
 			{ content: '}', type: 'unchanged' }
 		]);
 	});
@@ -82,6 +73,45 @@ describe('formatDiff', () => {
 			{ content: '    "c": 3', type: 'updated' },
 			{ content: '  }', type: 'unchanged' },
 			{ content: '}', type: 'unchanged' }
+		]);
+	});
+
+	it('should not clobber arrays (root value)', () => {
+		history.push([]);
+
+		const output = formatDiff(history.generations[0]);
+		expect(output).toEqual([
+			{ content: '{', type: 'deleted' },
+			{ content: '[', type: 'added' },
+			{ content: '}', type: 'deleted' },
+			{ content: ']', type: 'added' }
+		]);
+	});
+	it('should not clobber arrays (child value)', () => {
+		history.push({ myArray: [] });
+
+		const output = formatDiff(history.generations[0]);
+		expect(output).toEqual([
+			{ content: '{', type: 'unchanged' },
+			{ content: '  "myArray": [', type: 'added' },
+			{ content: '  ]', type: 'added' },
+			{ content: '}', type: 'unchanged' }
+		]);
+	});
+
+	it('should not add keys to arrays', () => {
+		history.push([]);
+		history.push([1]);
+		history.push([1, { x: 1 }]);
+
+		const output = formatDiff(history.generations[2]);
+		expect(output).toEqual([
+			{ content: '[', type: 'unchanged' },
+			{ content: '  1,', type: 'unchanged' },
+			{ content: '  {', type: 'added' },
+			{ content: '    "x": 1', type: 'added' },
+			{ content: '  }', type: 'added' },
+			{ content: ']', type: 'unchanged' }
 		]);
 	});
 });

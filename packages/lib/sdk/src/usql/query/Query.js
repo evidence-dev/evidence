@@ -1,3 +1,4 @@
+/* global globalThis */
 import { nanoid } from 'nanoid';
 import { isDebug } from '../../lib/debug.js';
 import {
@@ -15,6 +16,10 @@ import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
 import { VITE_EVENTS } from '../../build-dev/vite/constants.js';
 import { sterilizeQuery } from './sterilizeQuery.js';
+import { ActiveDagNode } from '../../utils/dag/DagNode.js';
+import { log } from '../../logger/index.js';
+import zip from 'lodash/zip.js';
+import debounce from 'lodash/debounce.js';
 
 /**
  * @typedef {import("../types.js").QueryResultRow} QueryResultRow
@@ -55,11 +60,10 @@ import { sterilizeQuery } from './sterilizeQuery.js';
  * @property {import('../types.js').QueryDebugPayload} queryCreated
  * @property {undefined} cacheCleared
  */
-/** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
-/**
- * @typedef {import('../types.js').EventEmitter<QueryEvents>} QueryEventEmitter
- */
+/** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
+/** @typedef {import('../types.js').EventEmitter<QueryEvents>} QueryEventEmitter */
+/** @typedef {import('../../utils/dag/types.js').WithDag} WithDag */
 
 /**
  * @class
@@ -67,6 +71,7 @@ import { sterilizeQuery } from './sterilizeQuery.js';
  * @implements {Query<RowType>}
  * @implements {Readable<QueryValue<RowType>>}
  * @implements {QueryEventEmitter}
+ * @implements {WithDag}
  */
 export class Query {
 	////////////////////////////
@@ -168,7 +173,7 @@ export class Query {
 	 */
 	set #error(v) {
 		if (!v) return;
-		console.error(`${this.id} | Error in Query!`, v?.message);
+		log.error(`${this.id} | Error in Query! ${v?.message}`);
 		this.#emit('error', v);
 		this.#__error = v;
 	}
@@ -299,7 +304,7 @@ export class Query {
 					}
 				})
 				.catch((e) => {
-					console.error(`${this.id} | Failed to calculate Query score ${e}`);
+					log.error(`${this.id} | Failed to calculate Query score ${e}`);
 				});
 		}
 	};
@@ -327,7 +332,7 @@ export class Query {
 ${this.text.trim()}
         `.trim() + '\n';
 
-		this.#debugStyled('data query text', '\n' + dataQuery, 'font-family: monospace;');
+		this.#debug('data query', dataQuery);
 
 		// gotta love jsdoc sometimes
 		const typedRunner = /** @type {import('../types.js').Runner<RowType>} */ (this.#executeQuery);
@@ -451,7 +456,7 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 			/** @type {import('../types.js').Runner<{rowCount: number}>} */
 			(this.#executeQuery);
 
-		this.#debugStyled('length query text', '\n' + lengthQuery, 'font-family: monospace;');
+		this.#debug('length query text', '\n' + lengthQuery);
 		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			/** @returns {MaybePromise<Query<RowType>>} */
@@ -509,7 +514,7 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 DESCRIBE ${this.text.trim()}
         `.trim() + '\n';
 
-		this.#debugStyled('columns query text', '\n' + metaQuery, 'font-family: monospace;');
+		this.#debug('columns query text', '\n' + metaQuery);
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
@@ -690,7 +695,7 @@ DESCRIBE ${this.text.trim()}
 			added: Date.now()
 		});
 
-		Query.#debugStatic('cache', `Added to cache: ${q.hash}`, {
+		log.verbose(`Added to cache: ${q.hash}`, {
 			cacheSize: this.#cache.size,
 			cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
 		});
@@ -718,6 +723,152 @@ DESCRIBE ${this.text.trim()}
 			this.#cache.delete(oldest.query.hash);
 			sumScore -= oldest.query.score;
 		}
+	};
+
+	/**
+	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
+	 * @param {import('../types.js').QueryOpts<any>} [initialOptions]
+	 */
+	static withDag = (reactiveOpts, initialOptions = {}) => {
+		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
+
+		/** @type {QueryValue<any>} */
+		let activeQuery;
+		/** @type {number} */
+		let changeIdx = 0;
+		// TODO: Should we override this, or should we merge this?
+		let currentOpts = { ...initialOptions };
+
+		const hasUnsetInput = () =>
+			_args.some((arg) => {
+				if (typeof arg !== 'object') return false;
+				if ('hasValue' in arg) {
+					return !arg.hasValue;
+				}
+				if (Query.isQuery(arg)) {
+					return arg.opts.noResolve;
+				}
+				return false;
+			});
+
+		const dagNode = new ActiveDagNode(
+			`Query | ${currentOpts.id ?? 'Unknown'}`,
+			async (_, defer) => {
+				activeQuery.publish('DagNode Execution');
+				const currentGen = ++changeIdx;
+				const nextQuery = Query.create(currentText(), execFn, {
+					...currentOpts,
+					dagNode,
+					noResolve: hasUnsetInput()
+				});
+
+				const fetched = nextQuery.fetch();
+				// Artificial Delay
+				// TODO: Make this a setting in the dev
+				// await new Promise((r) => setTimeout(r, 500));
+
+				if (fetched instanceof Promise) {
+					await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), fetched]).then(
+						() => {
+							if (currentGen === changeIdx) {
+								defer(() => callback(nextQuery));
+								// callback(nextQuery);
+								activeQuery = nextQuery;
+							}
+						}
+					);
+				} else {
+					if (currentGen === changeIdx) {
+						defer(() => callback(nextQuery));
+						// callback(nextQuery);
+						activeQuery = nextQuery;
+					}
+				}
+				if (hasUnsetInput()) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		);
+
+		/** @type {TemplateStringsArray} */
+		let _strs;
+
+		/** @type {any[]} */
+		let _args;
+
+		const currentText = () =>
+			zip(
+				_strs,
+				_args.map((a) => {
+					if (Query.isQuery(a)) return a.text;
+					if (typeof a !== 'object') return a?.toString();
+					return a.toString();
+				})
+			)
+				.flat()
+				.join('')
+				.trim();
+
+		return {
+			update: debounce(
+				/**
+				 *
+				 * @param {TemplateStringsArray} strs
+				 * @param  {...any} args
+				 */
+				(strs, ...args) => {
+					if (
+						args.every((a, i) => {
+							const out = a === _args?.[i];
+							return out;
+						}) &&
+						strs.every((s, i) => {
+							const out = s === _strs?.[i];
+							return out;
+						})
+					) {
+						return;
+					}
+					_strs = strs;
+					_args = args;
+
+					dagNode.deregisterDependencies();
+					args.forEach((arg) => {
+						if (arg?.__dag) {
+							dagNode.registerDependency(arg.__dag);
+						}
+					});
+					/** @type {CallableFunction | undefined} */
+					let unsub;
+					if (!activeQuery) {
+						activeQuery = Query.create(currentText(), execFn, {
+							...currentOpts,
+							dagNode,
+							noResolve: hasUnsetInput()
+						});
+						unsub?.();
+						unsub = activeQuery.subscribe(() => callback(activeQuery));
+						callback(activeQuery);
+					}
+					dagNode.updateContainer(activeQuery);
+					dagNode.trigger(true);
+				},
+				100,
+				{ leading: true, trailing: true }
+			),
+			/** @param {import('../types.js').QueryOpts<any>} opts */
+			updateOptions: (opts) => {
+				currentOpts = { ...currentOpts, ...opts };
+			},
+			get __dag() {
+				return dagNode;
+			},
+			get hasUnset() {
+				return [...dagNode.parents].some((p) => p.dirty); // We just block on any dirty parent
+			}
+		};
 	};
 
 	/**
@@ -789,7 +940,7 @@ DESCRIBE ${this.text.trim()}
 					},
 					dataMaybePromise,
 					(e) => {
-						console.warn(`Error while attempting to update reactive query: ${e.message}`);
+						log.warn(`Error while attempting to update reactive query: ${e.message}`);
 						throw e;
 					}
 				);
@@ -810,7 +961,7 @@ DESCRIBE ${this.text.trim()}
 					() => {},
 					waitFor(queryText, newOpts),
 					(e) => {
-						console.warn(`Error while attempting to update reactive query: ${e.message}`);
+						log.warn(`Error while attempting to update reactive query: ${e.message}`);
 					}
 				);
 				return;
@@ -916,48 +1067,26 @@ DESCRIBE ${this.text.trim()}
 	///////////////////////
 	/// </ Factories /> ///
 	///////////////////////
+	/**
+	 * @param {string} label
+	 * @param {string | any} [message]
+	 * @param  {...any} args
+	 */
+	static #debugStatic = (label, message, ...args) => {
+		const prefix = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
+		if (typeof message === 'string') log.debug(`${prefix}\n | ${message}`, args);
+		else log.debug(`${prefix}\n | `, [message, ...args]);
+	};
 
-	static #debugStatic = isDebug()
-		? (/** @type { string } */ label, /** @type {Parameters<typeof console.debug>} */ ...args) => {
-				const groupName = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
-				console.groupCollapsed(groupName);
-				for (const arg of args) {
-					if (typeof arg === 'function') console.debug(arg());
-					else console.debug(arg);
-				}
-				console.groupEnd();
-			}
-		: () => {};
-	static #debugStyledStatic = isDebug()
-		? (/** @type {string} */ label, /** @type {string} */ text, /** @type {string} */ style) => {
-				const groupName = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
-				console.groupCollapsed(groupName);
-				console.debug(`%c${text}`, style);
-				console.groupEnd();
-			}
-		: () => {};
-
-	#debug = isDebug()
-		? (/** @type {string} */ label, /** @type {Parameters<typeof console.debug>} */ ...args) => {
-				const groupName = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
-				console.groupCollapsed(groupName);
-				for (const arg of args) {
-					if (typeof arg === 'function') console.debug(arg());
-					else console.debug(arg);
-				}
-				console.groupEnd();
-			}
-		: () => {};
-
-	#debugStyled = isDebug()
-		? (/** @type {string} */ label, /** @type {string} */ text, /** @type {string} */ style) => {
-				const groupName = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
-				console.groupCollapsed(groupName);
-				console.debug(`%c${text}`, style);
-				console.groupEnd();
-			}
-		: () => {};
-
+	/**
+	 * @param {string} label
+	 * @param {string} message
+	 * @param  {...any} args
+	 */
+	#debug = (label, message, ...args) => {
+		const prefix = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
+		log.debug(`${prefix}\n | ${message}`, args);
+	};
 	static #constructing = false;
 
 	/** @type {string} */
@@ -1022,12 +1151,12 @@ DESCRIBE ${this.text.trim()}
 		this.#executeQuery = executeQuery;
 
 		if (typeof query !== 'string' && !(query instanceof QueryBuilder)) {
-			console.warn(`Query ${id} has no query text`);
+			log.warn(`Query ${id} has no query text`);
 			opts.noResolve = true;
 		}
 
 		if (!Query.#constructing) {
-			console.warn(
+			log.warn(
 				'Directly using new Query() is not a recommended use-case. Please use Query.create()'
 			);
 		}
@@ -1037,6 +1166,18 @@ DESCRIBE ${this.text.trim()}
 		this.#hash = hashQuery(this.#originalText);
 		this.#id = id ?? this.#hash;
 		this.#opts = opts;
+
+		this.__dag =
+			opts.dagNode ??
+			new ActiveDagNode(
+				this.id,
+				async () => {
+					await this.fetch();
+					if (this.#__error) return false;
+					return true;
+				},
+				this
+			);
 
 		if (query && typeof query !== 'string') this.#query = query;
 		else if (query) {
@@ -1118,6 +1259,9 @@ DESCRIBE ${this.text.trim()}
 		if (opts.autoScore) {
 			this.#calculateScore();
 		}
+
+		// @ts-expect-error
+		if (isDebug()) globalThis[Symbol.for(this.id)] = this;
 	}
 
 	////////////////////////////////////
@@ -1142,7 +1286,7 @@ DESCRIBE ${this.text.trim()}
 	 */
 	publish = (/** @type {string} */ source) => {
 		if (this.#publishIdx++ > 100000) throw new Error('Query published too many times.');
-		this.#debug('publish', `Publishing triggered by ${source}`, this);
+		this.#debug(`publish (${source})`, `Publishing triggered by ${source}`, this);
 		this.#subscribers.forEach((fn) => fn(this.#value));
 	};
 	//////////////////////////////////////
@@ -1196,11 +1340,18 @@ DESCRIBE ${this.text.trim()}
 	/// < QueryBuilder Interface > ///
 	//////////////////////////////////
 	/** @param {string} filterStatement */
-	where = (filterStatement) =>
-		Query.create(this.#query.clone().where(taggedSql`${filterStatement}`), this.#executeQuery, {
-			knownColumns: this.#columns,
-			noResolve: this.#opts.noResolve
-		});
+	where = (filterStatement) => {
+		const output = Query.create(
+			this.#query.clone().where(taggedSql`${filterStatement}`),
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				noResolve: this.#opts.noResolve
+			}
+		);
+		output.__dag.registerDependency(this.__dag);
+		return output;
+	};
 
 	/**
 	 * Attaches an `ordinal` column to the query based on some window statement
@@ -1213,10 +1364,12 @@ DESCRIBE ${this.text.trim()}
 		newQ.select({
 			ordinal: taggedSql`row_number() over (${windowStatement})`
 		});
-		return Query.create(newQ, this.#executeQuery, {
+		const output = Query.create(newQ, this.#executeQuery, {
 			...this.#inheritableOpts,
 			knownColumns: this.#columns
 		});
+		output.__dag.registerDependency(this.__dag);
+		return output;
 	};
 
 	/**
@@ -1272,31 +1425,45 @@ DESCRIBE ${this.text.trim()}
 				...this.#inheritableOpts
 			}
 		);
+		output.__dag.registerDependency(this.__dag);
 		return output;
 	};
 
 	/** @param {number} limit */
-	limit = (limit) =>
-		Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
+	limit = (limit) => {
+		const output = Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
+		output.__dag.registerDependency(this.__dag);
+		return output;
+	};
 
 	/** @param {number} offset */
-	offset = (offset) =>
-		Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
+	offset = (offset) => {
+		const output = Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
+		output.__dag.registerDependency(this.__dag);
+		return output;
+	};
 	/**
 	 * @param {number} offset
 	 * @param {number} limit
 	 */
-	paginate = (offset, limit) =>
-		Query.create(this.#query.clone().offset(offset).limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
-		});
+	paginate = (offset, limit) => {
+		const output = Query.create(
+			this.#query.clone().offset(offset).limit(limit),
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				...this.#inheritableOpts
+			}
+		);
+		output.__dag.registerDependency(this.__dag);
+		return output;
+	};
 
 	/**
 	 * @param {string[]} columns
@@ -1308,10 +1475,13 @@ DESCRIBE ${this.text.trim()}
 		if (withRowCount) query.select({ rows: qCount('*') });
 		query.$groupby(columns);
 
-		return Query.create(query, this.#executeQuery, {
+		const output = Query.create(query, this.#executeQuery, {
 			knownColumns: this.#columns,
 			...this.#inheritableOpts
 		});
+		output.__dag.registerDependency(this.__dag);
+
+		return output;
 	};
 
 	/**
@@ -1367,6 +1537,9 @@ DESCRIBE ${this.text.trim()}
 	////////////////////////////////////
 	/// </ QueryBuilder Interface /> ///
 	////////////////////////////////////
+
+	/** @type {ActiveDagNode} */
+	__dag;
 }
 
 /**

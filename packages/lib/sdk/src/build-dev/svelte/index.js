@@ -38,3 +38,5 @@ export const svelte = (opts = {}) => {
 	// @ts-expect-error Typescript is upset about this for some reason
 	return seqPreprocessor(processors);
 };
+
+export * as Preprocessors from './processors/index.js';

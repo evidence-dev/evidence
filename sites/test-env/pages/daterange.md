@@ -2,7 +2,7 @@
 
 ## Manual min/max dates
 
-<DateRange start="2022-01-02" end="2023-05-07" />
+<DateRange name="basic_range" start="2022-01-02" end="2023-05-07" />
 
 ## Universal SQL min/max dates
 
@@ -17,7 +17,7 @@ select * from orders where order_datetime between '${inputs.order_range.start}' 
 limit 1000
 ```
 
-<DataTable data={range_of_orders} />
+<DataTable name="basic_range_2" data={range_of_orders} />
 
 ## With string table
 
@@ -28,4 +28,4 @@ select * from orders where order_datetime between '${inputs.order_range_2.start}
 limit 1000
 ```
 
-<DataTable data={range_of_orders_2} />
+<DataTable name="basic_range_3" data={range_of_orders_2} />

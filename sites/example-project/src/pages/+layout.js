@@ -9,7 +9,6 @@ import {
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
-import { setTrackProxy } from '@evidence-dev/sdk/usql';
 import md5 from 'blueimp-md5';
 
 export const ssr = !dev;
@@ -104,13 +103,7 @@ export const load = async ({ fetch, route, params, url }) => {
 	/** @type {App.PageData["data"]} */
 	let data = {};
 
-	const {
-		inputs = setTrackProxy({
-			label: '',
-			value: '(SELECT NULL WHERE 0 /* An Input has not been set */)'
-		}) /* Create a proxy by default */
-	} = dummy_pages.get(url.pathname) ?? {};
-
+	const inputs = {};
 	const is_dummy_page = dummy_pages.has(url.pathname);
 	if ((dev || building) && !browser && !is_dummy_page) {
 		dummy_pages.set(url.pathname, { inputs });
@@ -174,7 +167,6 @@ export const load = async ({ fetch, route, params, url }) => {
 				await profile(setParquetURLs, renderedFiles);
 			}
 		},
-		inputs,
 		data,
 		customFormattingSettings,
 		isUserPage,

@@ -196,6 +196,7 @@
 		selectedDateRange = { start, end };
 	}
 
+	// TODO: This is causing the input to be un-hydrateable
 	$: updateDateRange(calendarStart, calendarEnd);
 </script>
 

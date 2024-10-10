@@ -12,7 +12,7 @@
 	import { page } from '$app/stores';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
 	import { resolveMaybePromise } from '@evidence-dev/sdk/usql';
 
 	import * as Command from '$lib/atoms/shadcn/command';
@@ -28,7 +28,6 @@
 	import VirtualList from './Virtual.svelte';
 	import { toBoolean } from '../../../utils.js';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
-	const inputs = getInputContext();
 
 	/////
 	// Component Things
@@ -85,19 +84,40 @@
 	$: if (query) query.fetch();
 	$: ({ hasQuery, query } = $results);
 
+	const updateInputStore = (newValue) => {
+		input.update(newValue.value, newValue.label, {
+			rawValues: newValue.rawValues
+		});
+	};
+
+	const input = useInput(
+		name,
+		{
+			sqlFragmentFactory: () => {
+				return `/* Use \${inputs.${name}.value} to reference the value of your dropdown */`;
+			},
+			dataSource: data
+		},
+		{
+			rawValues: []
+		}
+	);
+
+	$: input.updateDatasource(query);
+
+	const defaultStrings = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
 	// Extract initial state
-	const initial =
-		name in $inputs && 'rawValues' in $inputs[name] && Array.isArray($inputs[name].rawValues)
-			? $inputs[name].rawValues
-			: [];
+	const inputRawValues = input.__input.rawValues;
+	const initial = Array.isArray(inputRawValues) ? inputRawValues : []; // it is assumed that these are value / label / selected pairs
 
 	const state = dropdownOptionStore({
 		multiselect: multiple,
-		defaultValues: Array.isArray(defaultValue) ? defaultValue : [defaultValue],
+		defaultValues: defaultStrings,
 		initialOptions: initial,
 		noDefault,
 		selectAllByDefault: toBoolean(selectAllByDefault)
 	});
+
 	const {
 		addOptions,
 		removeOptions,
@@ -113,12 +133,6 @@
 	} = state;
 
 	onDestroy(destroyStore);
-
-	const updateInputStore = (newValue) => {
-		if (JSON.stringify(newValue) !== JSON.stringify($inputs[name])) {
-			$inputs[name] = newValue;
-		}
-	};
 
 	let opts = [];
 
@@ -184,7 +198,6 @@
 						forceSort();
 					}
 				}, searchQuery.fetch());
-				// await tick();
 			}
 		} else {
 			finalQuery = query ?? data;

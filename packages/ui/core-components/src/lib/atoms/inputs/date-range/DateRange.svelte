@@ -11,13 +11,13 @@
 	import { page } from '$app/stores';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
+	import { parseDate } from '@internationalized/date';
 
 	function dateToYYYYMMDD(date) {
 		return date.toISOString().split('T')[0];
 	}
 
-	const inputs = getInputContext();
 	/** @type {string} */
 	export let name;
 	/** @type {string | undefined} */
@@ -38,6 +38,24 @@
 	export let presetRanges;
 	/** @type {string | undefined} */
 	export let defaultValue;
+
+	let selectedDateRange;
+	const input = useInput(
+		name,
+		{
+			sqlFragmentFactory: (input) => {
+				return `BETWEEEN DATE('${input.start}') AND DATE('${input.end}')`;
+			}
+		},
+		{ value: defaultValue }
+	);
+	if (input.__input.hasValue) {
+		if (input.__input.has('start') && input.__input.has('end'))
+			selectedDateRange = {
+				start: parseDate(input.__input.start),
+				end: parseDate(input.__input.end)
+			};
+	}
 
 	const exec = getQueryFunction();
 	let query;
@@ -65,6 +83,7 @@
 				: $query?.[0].start instanceof Date
 					? dateToYYYYMMDD($query?.[0].start)
 					: dateToYYYYMMDD(new Date(0));
+
 	$: endString =
 		typeof end === 'string' && YYYYMMDD.test(end)
 			? end
@@ -74,16 +93,26 @@
 					? dateToYYYYMMDD($query?.[0].end)
 					: dateToYYYYMMDD(new Date());
 
-	$: if ((query && $query.dataLoaded) || !query) {
-		$inputs[name] = { start: startString, end: endString };
+	$: {
+		if ((query && $query.dataLoaded) || !query) {
+			input.update(`${startString} - ${endString}`, `${startString} - ${endString}`, {
+				start: startString,
+				end: endString
+			});
+		}
 	}
 
-	let selectedDateRange;
 	$: if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
-		$inputs[name] = {
-			start: dateToYYYYMMDD(selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-			end: dateToYYYYMMDD(selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date())
-		};
+		const formattedStart = dateToYYYYMMDD(
+			selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)
+		);
+		const formattedEnd = dateToYYYYMMDD(
+			selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date()
+		);
+		input.update(input.UseSqlFactory, `${formattedStart} - ${formattedEnd}`, {
+			start: formattedStart,
+			end: formattedEnd
+		});
 	}
 </script>
 
