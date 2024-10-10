@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.8.7
+
+### Patch Changes
+
+- 163ff7a33: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+
 ## 4.8.6
 
 ### Patch Changes
