@@ -41,7 +41,6 @@ const config = {
 	preprocess: [
 		...evidencePreprocess(true),
 		evidencePlugins(),
-		Preprocessors.escapeInputObjects(),
 		preprocess({
 			postcss: true
 		})

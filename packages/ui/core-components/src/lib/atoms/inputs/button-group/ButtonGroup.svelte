@@ -45,10 +45,10 @@
 	// Query-Related Things
 	/////
 	const input = useInput(name, {
-		sqlSnippetFactory: () => input.get('value') ?? ''
+		sqlSnippetFactory: () => input.value ?? ''
 	});
 	if ($input !== undefined) {
-		$valueStore = { value: $input, valueLabel: input.__input.get('label') };
+		$valueStore = { value: $input, valueLabel: input.__input.label };
 	}
 
 	export let value, data, label, order, where;

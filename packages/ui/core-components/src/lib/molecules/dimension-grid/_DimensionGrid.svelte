@@ -23,8 +23,7 @@
 	setContext('selected-dimensions', selectedDimensions);
 	const input = useInput(name, {
 		sqlFragmentFactory: (i) => {
-			console.log(i.get('value'));
-			return i.get('value');
+			return i.value;
 		}
 	});
 	input.update(getWhereClause($selectedDimensions));

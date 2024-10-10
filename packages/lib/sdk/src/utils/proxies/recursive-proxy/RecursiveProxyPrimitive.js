@@ -53,11 +53,15 @@ export const MakeDeeplyAccessible = (root, factory, options) => {
 
 	const result = new Proxy(root, {
 		ownKeys(target) {
+			// TODO: This doesn't seem to be working for some reason
 			return [...Object.keys(target), ...Object.keys(Array.isArray(state) ? {} : state)];
+		},
+		has(target, prop) {
+			return isRootKey(prop) || prop in state;
 		},
 		get(target, prop) {
 			if (isRootKey(prop)) {
-				const overrideResult = options?.propertyOverrides?.(prop, result);
+				const overrideResult = options?.propertyOverrides?.bind(result)(prop);
 				if (overrideResult !== undefined) return overrideResult;
 				return target[prop];
 			}
@@ -69,7 +73,7 @@ export const MakeDeeplyAccessible = (root, factory, options) => {
 			if (prop in state) return state[prop];
 			if (prop in Object.getPrototypeOf(state)) return state[prop];
 
-			const overrideResult = options?.propertyOverrides?.(prop, result);
+			const overrideResult = options?.propertyOverrides?.bind(result)(prop);
 			if (overrideResult !== undefined) return overrideResult;
 
 			const newValue = factory(prop, typedResult);
@@ -87,7 +91,6 @@ export const MakeDeeplyAccessible = (root, factory, options) => {
 					state[prop] = value; // noop
 				} else {
 					if (Array.isArray(value)) {
-						// console.log({value, prop, state})
 						state[prop] = MakeDeeplyAccessible([], factory);
 					} else {
 						state[prop] = factory(prop, typedResult);

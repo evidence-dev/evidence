@@ -55,8 +55,7 @@ describe('setTrackProxy', () => {
 		// expect(v.a.b.c ? 'true' : 'false').toBe('false');
 		v.a.b.c = '';
 		expect(v.a.b.c ? 'true' : 'false').toBe('false');
-		
-	})
+	});
 
 	it('should let you retrieve arbitrarily deep values', () => {
 		// v is a bare object (e.g. nothing set on it)

@@ -1,4 +1,4 @@
-import {graphlib, layout} from '@dagrejs/dagre';
+import { graphlib, layout } from '@dagrejs/dagre';
 
 /**
  * @param {import("@evidence-dev/sdk/utils").DagNode[]} allNodes

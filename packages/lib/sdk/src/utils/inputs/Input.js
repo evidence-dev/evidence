@@ -48,9 +48,6 @@ export class Input extends InputValue {
 	 * @param {InputOpts} [opts]
 	 */
 	constructor(name, { root = null, sqlFragmentFactory } = {}) {
-		const flagChildSet = () => {
-			this.nestedValueSet = true;
-		};
 		super();
 		// super({
 		// 	hooks: {
@@ -98,13 +95,36 @@ export class Input extends InputValue {
 			this.#root = root;
 		}
 
-		return MakeDeeplyAccessible(this, InputValue.create, {
-			propertyOverrides: (key) => {
-				if (key in String.prototype) {
-					return String.prototype[key].bind("fc");
+		/**
+		 * @template T
+		 * @param {WithDag & T} obj
+		 **/
+		const dagTriggerOnModify = (obj) =>
+			new Proxy(obj, {
+				set: (target, prop, value) => {
+					this.__dag?.trigger();
+					return Reflect.set(target, prop, value);
+				}
+			});
+
+		this.proxy = MakeDeeplyAccessible(this, () => dagTriggerOnModify(InputValue.create()), {
+			/** @this {Input & import('./InputValue.js').DeeplyAccessible & Record<string, any>} */
+			propertyOverrides(key) {
+				if (key === 'label') {
+					if ('label' in this) return this.label;
+					else return Input.DefaultLabelText;
+				}
+				if (key === 'value') {
+					if ('value' in this) return this.value;
+					else return Input.DefaultValueText;
+				}
+				if (key in String.prototype && !(key in this)) {
+					//@ts-expect-error Typescript really doesn't play nicely with `in`
+					return String.prototype[key].bind(this.toString());
 				}
 			}
 		});
+		return dagTriggerOnModify(this.proxy);
 	}
 
 	/** @param {InputOpts} opts */
@@ -114,7 +134,7 @@ export class Input extends InputValue {
 	};
 
 	get hasValue() {
-		return super.hasValue || this.nestedValueSet;
+		return 'value' in this.proxy || this.nestedValueSet;
 	}
 
 	[SqlFragmentFactory] = () => {
@@ -122,14 +142,12 @@ export class Input extends InputValue {
 	};
 
 	toString = () => {
-		if (this.#sqlFragmentFactory) return this.#sqlFragmentFactory(this);
-		if (!this.hasValue) return Input.DefaultValueText;
-		return super.toString();
+		if (this.#sqlFragmentFactory) return this.#sqlFragmentFactory(this.proxy);
+		return JSON.stringify(this.proxy);
 	};
 	[Symbol.toPrimitive] = () => {
-		if (this.#sqlFragmentFactory) return this.#sqlFragmentFactory(this);
-		if (!this.hasValue) return Input.DefaultValueText;
-		return super[Symbol.toPrimitive]();
+		if (this.#sqlFragmentFactory) return this.#sqlFragmentFactory(this.proxy);
+		return this.toString();
 	};
 
 	['🦆'] = '__EvidenceInput__';

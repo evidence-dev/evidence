@@ -7,5 +7,5 @@ export * from './dag/DagNode.js';
 export { Input } from './inputs/Input.js';
 export { InputValue } from './inputs/InputValue.js';
 export { InputStore } from './inputs/InputStore.js';
-export * from './recursive-proxy/RecursiveProxyPrimitive.js';
+// export * from './recursive-proxy/RecursiveProxyPrimitive.js';
 export * from './browserDebounce.js';

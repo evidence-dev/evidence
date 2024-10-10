@@ -107,7 +107,7 @@
 
 	const defaultStrings = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
 	// Extract initial state
-	const inputRawValues = input.__input.get('rawValues');
+	const inputRawValues = input.__input.rawValues;
 	const initial = Array.isArray(inputRawValues) ? inputRawValues : []; // it is assumed that these are value / label / selected pairs
 
 	const state = dropdownOptionStore({

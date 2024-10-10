@@ -3,8 +3,7 @@
 </script>
 
 {#if dev}
-	{#await import('./_DevTools.svelte')}
-	{:then DevTools}
+	{#await import('./_DevTools.svelte') then DevTools}
 		<svelte:component this={DevTools.default}>
 			<slot />
 		</svelte:component>

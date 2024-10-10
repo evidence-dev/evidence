@@ -44,7 +44,7 @@
 		name,
 		{
 			sqlFragmentFactory: (input) => {
-				return `BETWEEEN DATE('${input.get('start')}') AND DATE('${input.get('end')}')`;
+				return `BETWEEEN DATE('${input.start}') AND DATE('${input.end}')`;
 			}
 		},
 		{ value: defaultValue }
@@ -52,8 +52,8 @@
 	if (input.__input.hasValue) {
 		if (input.__input.has('start') && input.__input.has('end'))
 			selectedDateRange = {
-				start: parseDate(input.__input.get('start')),
-				end: parseDate(input.__input.get('end'))
+				start: parseDate(input.__input.start),
+				end: parseDate(input.__input.end)
 			};
 	}
 
