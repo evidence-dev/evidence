@@ -41,7 +41,7 @@ Formatting does not apply to the date axis of a chart. For example, if you set `
 #### Reusable Formats
 For a more reusable approach, you can use [SQL format tags](#sql-format-tags), which let you define formats within your SQL. This guarantees that your columns will be formatted in the same way wherever they are used in Evidence.
 
-You can also create your own [custom formats](#custom-formats), which are format codes you can reuse across your project.
+You can also create your own [custom formats](#custom-formats), which are format codes you can reuse across your app.
 
 #### Formatting Directly in Markdown
 If you need to format values outside of components, [the format function](#format-function) can be used directly. For example, when using [expressions](/core-concepts/syntax#expressions) it is not possible to use component props or format tags.

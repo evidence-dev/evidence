@@ -609,9 +609,9 @@ Click on a row to navigate using the row link:
 	<Column id=value_usd />
 </DataTable>
 
-#### Link to Pages in Your Project
+#### Link to Pages in Your App
 
-In this example, the SQL query contains a column with links to parameterized pages in the project. Below is an example of the SQL that could be used to generate such links:
+In this example, the SQL query contains a column with links to parameterized pages in the app. Below is an example of the SQL that could be used to generate such links:
 
 ```sql
 select

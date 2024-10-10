@@ -15,7 +15,7 @@ Evidence combines the best of modern web frameworks with the best parts of BI:
 - **Code-driven workflows:** Use your IDE, version control, and CI/CD tools
 - **First-class text support:** Add context, explanation and insight to your reports
 - **Programmatic features:** Use loops, conditionals, and templated pages to generate content from data
-- **High performance:** Evidence projects build into fast and reliable web application
+- **High performance:** Evidence apps build into fast and reliable web application
 - **Lightweight setup:** Install locally and start building reports in just a few minutes
 
 To get started, [install Evidence](/install-evidence).

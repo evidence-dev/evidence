@@ -22,7 +22,7 @@ The easiest way to get started with Evidence is to use the [VSCode Extension](vs
 4. Make changes to a markdown file and **save the file** to see the updates in your browser window
 
 
-The template project running in your browser contains a tutorial on how to use Evidence.
+The template app running in your browser contains a tutorial on how to use Evidence.
 
 <LinkButton url="https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode">Install VSCode Extension</LinkButton>
 
@@ -38,8 +38,8 @@ If you run into any issues, [reach out in Slack.](https://slack.evidence.dev)
 <Tab value="standalone" label="Command Line" default>
 
 ```shell
-npx degit evidence-dev/template my-project
-cd my-project
+npx degit evidence-dev/template my-app
+cd my-app
 npm install
 npm run sources
 npm run dev
@@ -86,4 +86,4 @@ See [system requirements page](/guides/system-requirements).
 
 ## Updating Evidence
 
-See [updating your project](/guides/updating-your-project).
+See [updating your app](/guides/updating-your-app).
