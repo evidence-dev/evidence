@@ -5,10 +5,6 @@ const {
 	exhaustStream
 } = require('@evidence-dev/db-commons');
 const snowflake = require('snowflake-sdk');
-
-// This is to suppress the annoying OCSP warnings. See https://github.com/snowflakedb/snowflake-connector-nodejs/issues/932.
-snowflake.configure({ insecureConnect: true });
-
 const crypto = require('crypto');
 
 /**
