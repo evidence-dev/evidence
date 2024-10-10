@@ -18,9 +18,9 @@
 </script>
 
 <button
-	class="{legendType === 'scalar'
-		? 'h-10 px-[2.9px]'
-		: ` w-full flex justify-center items-center`} z-[1]"
+	class="flex z-[1] py-[5px] items-center {legendType === 'scalar' && direction === 'left'
+		? 'flex-row-reverse'
+		: 'flex-row'}"
 	on:click={handleLegendToggle}
 	on:dblclick={(e) => e.stopPropagation()}
 	aria-label="Toggle Legend"
@@ -41,4 +41,8 @@
 	>
 		<polyline points="15 18 9 12 15 6" />
 	</svg>
+	<div class="flex {legendType === 'scalar' ? 'flex-col' : 'flex-row'}">
+		<span class=" text-[10px] w-[30px]">{hideLegend ? 'Show' : 'Hide'}</span>
+		<span class=" text-[10px]">Legend</span>
+	</div>
 </button>

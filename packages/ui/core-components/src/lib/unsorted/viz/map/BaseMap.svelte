@@ -85,7 +85,7 @@
 		>
 			<slot></slot>
 			{#if $legendData}
-				<Legend {legendData} {legendPosition} />
+				<Legend {legendData} {legendPosition} {height} />
 			{/if}
 		</div>
 

@@ -77,18 +77,16 @@
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {legendPosition}>
 		<Bubbles
 			data={loaded}
 			{lat}
 			{long}
 			{size}
 			{colorPalette}
-			{legendPosition}
 			{legendType}
 			{legendFmt}
 			{...$$restProps}
 		/>
-		<!-- <Legend {legendPosition} {legendType} {legendFmt} /> -->
 	</BaseMap>
 </QueryLoad>

@@ -50,13 +50,10 @@
 		`SELECT 
     *, 
     CASE 
-        WHEN id BETWEEN 0 AND 500 THEN 'Hotels'
-        WHEN id BETWEEN 501 AND 1000 THEN 'Restaurants'
-        WHEN id BETWEEN 1001 AND 1500 THEN 'Golf Courses'
-        WHEN id BETWEEN 1501 AND 2000 THEN 'Shops'
-        WHEN id BETWEEN 2001 AND 2500 THEN 'Bars'
-        WHEN id BETWEEN 2501 AND 3000 THEN 'Entertainment and Stuff'
-        WHEN id BETWEEN 3001 AND 4000 THEN 'Banks'
+WHEN id BETWEEN 0 AND 1500 THEN 'Residential Areas'
+WHEN id BETWEEN 1501 AND 3000 THEN 'Commercial Zones'
+WHEN id BETWEEN 3001 AND 4500 THEN 'Parks and Recreation'
+
     END AS Category
 FROM la_zip_sales
 WHERE zip_code <> 90704
@@ -229,6 +226,15 @@ ORDER BY 1;
 			legendType="scalar"
 			value="sales"
 			legendFmt="usd"
+		/>
+		<Bubbles
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			value="Category"
+			size="sales"
+			opacity="0.6"
+			legendType="categorical"
 		/>
 		<Bubbles
 			data={grouped_locations}

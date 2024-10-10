@@ -14,8 +14,9 @@
 
 	export let legendData;
 	export let legendPosition = 'bottomLeft';
-
-	let categoricalLegendData = derived(legendData, ($legendData) =>
+	/** @type {number}*/
+	export let height = 300;
+	export let categoricalLegendData = derived(legendData, ($legendData) =>
 		$legendData.filter((legend) => legend.legendType === 'categorical')
 	);
 
@@ -27,8 +28,6 @@
 		$categoricalLegendData.length > 1 ||
 		$scalarLegendData.length > 1 ||
 		($scalarLegendData.length > 0 && $categoricalLegendData.length > 0);
-
-	console.log(multiLegend, legendPosition);
 
 	let hideLegend = false;
 
@@ -44,28 +43,25 @@
 		}
 	};
 
-	const constHandleMultiLegendChevronPosition = () => {
+	const constHandleLegendButtonPosition = () => {
 		let cssStyle = '';
 
-		if (multiLegend) {
-			if (legendPosition.includes('bottom')) {
-				cssStyle += 'flex-col';
-			} else {
-				cssStyle += 'flex-col-reverse';
-			}
-
-			if (legendPosition.includes('Right')) {
-				cssStyle += ' ' + 'items-end';
-			}
-			console.log(cssStyle, legendPosition);
-			return cssStyle;
+		if (legendPosition.includes('bottom')) {
+			cssStyle += 'flex-col';
+		} else {
+			cssStyle += 'flex-col-reverse';
 		}
+
+		if (legendPosition.includes('Right')) {
+			cssStyle += ' ' + 'items-end';
+		}
+		return cssStyle;
 	};
 </script>
 
 {#if $legendData.length > 0}
 	<div
-		class="absolute z-[401] m-6 flex {constHandleMultiLegendChevronPosition()} 
+		class="absolute z-[401] m-6 flex max-w-96 flex {constHandleLegendButtonPosition()} 
     {positions[legendPosition] ?? 'top-3 left-[-9px]'}"
 		on:wheel={(e) => e.stopPropagation()}
 		on:dblclick={(e) => e.stopPropagation()}
@@ -75,12 +71,12 @@
 			<div class="flex">
 				{#each $categoricalLegendData as legend}
 					<div
-						class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden legend-font w-fit max-w-96 items-center flex {multiLegend &&
-						hideLegend
+						class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden legend-font w-fit flex transition-[border] ease-in-out ease-in-out duration-[350ms] {hideLegend
 							? 'border-y-0'
 							: 'border-y-[1px]'}"
 					>
 						<CategoricalLegend
+							{height}
 							{legend}
 							{handleLegendToggle}
 							{hideLegend}
@@ -94,10 +90,11 @@
 		{#if $scalarLegendData.length > 0}
 			{#each $scalarLegendData as legend}
 				<div
-					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden legend-font w-full max-w-96 items-center flex transition-[border] duration-[350ms] ease-in-out {multiLegend &&
-					hideLegend
-						? 'border-y-0'
-						: 'border-y-[1px]'}"
+					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden legend-font w-full items-center flex transition-[border] duration-[350ms] ease-in-out {handleChevronDirection(
+						legend.legendType
+					) === 'right'
+						? 'flex-row-reverse'
+						: 'flex-row'} {hideLegend ? 'border-y-0' : 'border-y-[1px]'}"
 				>
 					<ScalarLegend
 						{legend}
@@ -110,8 +107,10 @@
 			{/each}
 		{/if}
 
-		{#if multiLegend}
-			<div class="w-[25px] border border-gray-300 bg-gray-100 margin-auto h-5 flex items-center">
+		{#if true}
+			<div
+				class="border border-gray-300 bg-gray-100 margin-auto justify-center items-center pl-[2px] pr-[3.5px] w-[88.5px]"
+			>
 				<LegendToggle legendType="categorical" {handleLegendToggle} {hideLegend} {multiLegend} />
 			</div>
 		{/if}

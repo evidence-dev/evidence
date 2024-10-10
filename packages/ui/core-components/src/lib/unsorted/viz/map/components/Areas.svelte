@@ -42,6 +42,7 @@
 	export let legendType = undefined;
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
+	export let chartType = 'Area Map';
 
 	/**
 	 * Callback function for the area click event.
@@ -206,7 +207,8 @@
 			max,
 			colorPalette,
 			legendType,
-			legendFmt
+			legendFmt,
+			chartType
 		};
 		await data.fetch();
 		({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));

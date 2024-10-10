@@ -500,9 +500,8 @@ export class EvidenceMap {
 		minValue,
 		maxValue,
 		legendType,
-		legendId,
-		legendPosition,
-		legendFmt
+		legendFmt,
+		chartType
 	) {
 		this.#legendData.update((legendData) => [
 			...legendData, // Spread the current legendData (assuming it's an array)
@@ -511,10 +510,9 @@ export class EvidenceMap {
 				values: arrayOfStringValues,
 				minValue,
 				maxValue,
-				legendId,
 				legendType,
-				legendPosition,
-				legendFmt
+				legendFmt,
+				chartType
 			}
 		]);
 	}
@@ -525,18 +523,7 @@ export class EvidenceMap {
 
 	async initializeData(
 		data,
-		{
-			corordinates,
-			value,
-			checkInputs,
-			min,
-			max,
-			colorPalette,
-			legendId,
-			legendType,
-			legendPosition,
-			legendFmt
-		}
+		{ corordinates, value, checkInputs, min, max, colorPalette, legendType, legendFmt, chartType }
 	) {
 		await data.fetch();
 		checkInputs(data, corordinates);
@@ -547,16 +534,7 @@ export class EvidenceMap {
 		colorPalette = colorPalette.map((item) => chroma(item).hex());
 		if (legendType) {
 			values = this.handleLegendValues(colorPalette, values, legendType);
-			this.buildLegend(
-				colorPalette,
-				values,
-				minValue,
-				maxValue,
-				legendType,
-				legendId,
-				legendPosition,
-				legendFmt
-			);
+			this.buildLegend(colorPalette, values, minValue, maxValue, legendType, legendFmt, chartType);
 		}
 		// Return the values, minValue, and maxValue for sharing with other functions
 		return { values, colorScale, colorPalette };
