@@ -95,9 +95,34 @@
 
 	onMount(() => {
 		if (!('serviceWorker' in navigator)) return;
-		addEventListener('load', () => {
-			navigator.serviceWorker.register('/service-worker.js');
-		});
+
+		const serviceWorkerUrl = new URL('/service-worker.js', window.location.origin).toString();
+
+		const registerServiceWorker = () => {
+			addEventListener('load', () => {
+				navigator.serviceWorker.register(serviceWorkerUrl);
+			});
+		};
+
+		const unregisterServiceWorker = async () => {
+			const registrations = await navigator.serviceWorker.getRegistrations();
+			const toUnregister = registrations.find(
+				(registration) => registration.active?.scriptURL === serviceWorkerUrl
+			);
+			if (toUnregister) {
+				await toUnregister.unregister();
+			}
+		};
+
+		if (import.meta.env.VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER === 'true') {
+			console.debug(
+				'Detected VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER=true, unregistering service worker'
+			);
+			unregisterServiceWorker();
+		} else {
+			console.debug('Registering windows cache service worker');
+			registerServiceWorker();
+		}
 	});
 
 	// TODO where should this go? How do we get project splash to be rendered with the proper theme?
