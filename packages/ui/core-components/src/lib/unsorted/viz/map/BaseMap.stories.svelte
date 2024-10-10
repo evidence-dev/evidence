@@ -59,3 +59,9 @@
 		<Points data={la_locations} lat="lat" long="long" color="red" />
 	</BaseMap>
 </Story>
+<Story name="Multiple Points">
+	<BaseMap title="My Map" height="300">
+		<Points data={la_locations} lat="lat" long="long" color="red" />
+		<Points data={la_locations} lat="lat" long="long" color="blue" />
+	</BaseMap>
+</Story>

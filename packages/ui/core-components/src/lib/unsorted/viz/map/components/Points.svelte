@@ -212,6 +212,9 @@
 
 	let values, colorScale, sizeExtents, maxData, maxSizeSq;
 
+	/** @type {'bubble' | 'points' }*/
+	export let pointStyle = 'points';
+
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
@@ -300,7 +303,8 @@
 				opacity: opacity,
 				weight: borderWidth,
 				color: borderColor,
-				className: `outline-none ${pointClass}`
+				className: `outline-none ${pointClass}`,
+				markerType: pointStyle
 			}}
 			selectedOptions={{
 				fillColor: selectedColor,

@@ -151,6 +151,7 @@ export class EvidenceMap {
 		this.#bounds = Leaflet.latLngBounds(); // Reset bounds to recalculate
 
 		this.#map.eachLayer((layer) => {
+			console.log(layer);
 			if (
 				layer instanceof Leaflet.Marker ||
 				layer instanceof Leaflet.CircleMarker ||
@@ -264,7 +265,12 @@ export class EvidenceMap {
 		link
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
-		const marker = Leaflet.circleMarker(coords, circleOptions).addTo(this.#map);
+		const marker = Leaflet.circleMarker(coords, circleOptions);
+		// handle layering
+		marker.addTo(this.#map);
+		if (circleOptions.markerType === 'bubbles') {
+			marker.bringToBack();
+		}
 		this.updateMarkerStyle(marker, circleOptions); // Initial style setting and storage
 
 		marker.on('click', () => {
