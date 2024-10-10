@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 3.2.15
+
+### Patch Changes
+
+- 2b5d759f1: Add map colors
+
 ## 3.2.14
 
 ### Patch Changes

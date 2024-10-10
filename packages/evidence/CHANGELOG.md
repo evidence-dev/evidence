@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 39.1.11
+
+### Patch Changes
+
+- f3a352dbe: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+
 ## 39.1.10
 
 ### Patch Changes
