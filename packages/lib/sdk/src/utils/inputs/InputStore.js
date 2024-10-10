@@ -1,8 +1,28 @@
 import { storeMixin } from '../../lib/store-helpers/storeMixin.js';
 import { ActiveDagNode } from '../dag/DagNode.js';
+import { AccessTrack } from '../proxies/access-track/AccessTrack.js';
+import { MakeDeeplyAccessible } from '../proxies/recursive-proxy/RecursiveProxyPrimitive.js';
 import { Input } from './Input.js';
 
 /** @typedef {import("../dag/types.js").WithDag} WithDag */
+
+export class InputStore2 {
+	/**
+	 * @returns {InputStore2 & import("../proxies/access-track/AccessTrack.js").AccessTracked & Record<string, any>}
+	 */
+	static create = () => {
+		return /** @type {InputStore2 & import("../proxies/access-track/AccessTrack.js").AccessTracked} */ (
+			new InputStore2()
+		);
+	};
+
+	/**
+	 * @protected
+	 */
+	constructor() {
+		return MakeDeeplyAccessible(AccessTrack(this), InputStore2.create);
+	}
+}
 
 /**
  * @implements {WithDag}

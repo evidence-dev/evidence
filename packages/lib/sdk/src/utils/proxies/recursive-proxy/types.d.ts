@@ -20,6 +20,7 @@ export type RecursiveProxyPrimitiveHooks = {
 		 * @returns {any | undefined} When undefined, the regular behavior continues, when a value is provided it will be returned
 		 */
 		intercept?: (key: string | symbol | number, this: RecursiveProxyPrimitive) => any | undefined;
+		accessed?: (key: Array<string | symbol | number>, this: RecursiveProxyPrimitive) => void;
 	};
 	set?: {
 		/**

@@ -54,10 +54,7 @@ fsExtra.outputFileSync(
 	const loggerWarn = logger.warn;
   const loggerOnce = logger.warnOnce
   
-	const devtoolsOnlyDeps = [
-		'@dagrejs/dagre',
-		'svelvet'
-	]
+	const devtoolsOnlyDeps = []
 
   /**
    * @see https://github.com/evidence-dev/evidence/issues/1876

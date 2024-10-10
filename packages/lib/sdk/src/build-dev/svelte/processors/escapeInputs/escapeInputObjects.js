@@ -8,7 +8,7 @@ export function escapeInputObjects() {
 		script({ content, filename, attributes }) {
 			if (!filename?.endsWith('.md')) return;
 			if (attributes.context) return;
-			content += 'import {MarkdownEscape} from "@evidence-dev/sdk/utils"';
+			content += 'import {ToMarkdown} from "@evidence-dev/sdk/utils"';
 			return { code: content };
 		},
 		markup({ content, filename }) {
@@ -17,7 +17,7 @@ export function escapeInputObjects() {
                     Detect all references to inputs.[...]
                     Filter out references that appear in queries, or appear in the script tag
 					Also filter out references that appear in element attributes
-                    Append '[MarkdownEscape]' to inputs that appear directly in the markdown
+                    Append '[ToMarkdown]' to inputs that appear directly in the markdown
 
 
                 Notes:
@@ -96,7 +96,7 @@ export function escapeInputObjects() {
 							})
 						);
 
-						insertions.push({ position: targetLocation, text: '[MarkdownEscape]' });
+						insertions.push({ position: targetLocation, text: '[ToMarkdown]' });
 
 						identifiers.length = 0;
 					}

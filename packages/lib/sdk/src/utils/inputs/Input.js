@@ -1,10 +1,5 @@
 import { BlockingDagNode } from '../dag/DagNode.js';
-import {
-	InternalState,
-	MarkdownEscape,
-	PrimitiveValue,
-	RecursiveProxyPrimitive
-} from '../recursive-proxy/RecursiveProxyPrimitive.js';
+import { MakeDeeplyAccessible } from '../proxies/recursive-proxy/RecursiveProxyPrimitive.js';
 import { InputValue } from './InputValue.js';
 
 const SqlFragmentFactory = Symbol();
@@ -56,41 +51,42 @@ export class Input extends InputValue {
 		const flagChildSet = () => {
 			this.nestedValueSet = true;
 		};
-		super({
-			hooks: {
-				get: {
-					created: (prop, childValue) => {
-						// Ensure that even if a label hasn't been set on the store - we still treat it correctly
-						if (prop === 'label' && InputValue.isInputValue(childValue)) {
-							childValue.defaultStringify = Input.DefaultLabelText;
-							if (!childValue.hasValue) {
-								childValue.setValue(Input.DefaultLabelText);
-							}
-						}
-					},
-					intercept: (prop) => {
-						// @ts-expect-error
-						if (prop in String.prototype) return String.prototype[prop].bind(this.toString());
-					}
-				},
-				set: {
-					valueSet: () => {
-						this.__dag?.trigger();
-					},
-					inheritValueSet: true,
-					post: (prop, childValue) => {
-						if (prop !== 'label') {
-							// Label is special, because it is not considered a value
-							flagChildSet();
-						} else if (!childValue.hasValue) {
-							childValue.setValue(Input.DefaultLabelText);
-						}
-						this.__dag?.trigger();
-					},
-					inheritPost: true
-				}
-			}
-		});
+		super();
+		// super({
+		// 	hooks: {
+		// 		get: {
+		// 			created: (prop, childValue) => {
+		// 				// Ensure that even if a label hasn't been set on the store - we still treat it correctly
+		// 				if (prop === 'label' && InputValue.isInputValue(childValue)) {
+		// 					childValue.defaultStringify = Input.DefaultLabelText;
+		// 					if (!childValue.hasValue) {
+		// 						childValue.setValue(Input.DefaultLabelText);
+		// 					}
+		// 				}
+		// 			},
+		// 			intercept: (prop) => {
+		// 				// @ts-expect-error
+		//
+		// 			}
+		// 		},
+		// 		set: {
+		// 			valueSet: () => {
+		// 				this.__dag?.trigger();
+		// 			},
+		// 			inheritValueSet: true,
+		// 			post: (prop, childValue) => {
+		// 				if (prop !== 'label') {
+		// 					// Label is special, because it is not considered a value
+		// 					flagChildSet();
+		// 				} else if (!childValue.hasValue) {
+		// 					childValue.setValue(Input.DefaultLabelText);
+		// 				}
+		// 				this.__dag?.trigger();
+		// 			},
+		// 			inheritPost: true
+		// 		}
+		// 	}
+		// });
 		this.#sqlFragmentFactory = sqlFragmentFactory ?? null;
 
 		this.name = name;
@@ -101,6 +97,14 @@ export class Input extends InputValue {
 			root.__dag.registerDependency(this.__dag);
 			this.#root = root;
 		}
+
+		return MakeDeeplyAccessible(this, InputValue.create, {
+			propertyOverrides: (key) => {
+				if (key in String.prototype) {
+					return String.prototype[key].bind("fc");
+				}
+			}
+		});
 	}
 
 	/** @param {InputOpts} opts */
@@ -117,16 +121,15 @@ export class Input extends InputValue {
 		return this.#sqlFragmentFactory;
 	};
 
-	get [MarkdownEscape]() {
-		if (this[SqlFragmentFactory]()) return this[SqlFragmentFactory]()?.(this);
-
-		return super[MarkdownEscape];
-	}
-
 	toString = () => {
 		if (this.#sqlFragmentFactory) return this.#sqlFragmentFactory(this);
 		if (!this.hasValue) return Input.DefaultValueText;
 		return super.toString();
+	};
+	[Symbol.toPrimitive] = () => {
+		if (this.#sqlFragmentFactory) return this.#sqlFragmentFactory(this);
+		if (!this.hasValue) return Input.DefaultValueText;
+		return super[Symbol.toPrimitive]();
 	};
 
 	['🦆'] = '__EvidenceInput__';

@@ -1,7 +1,6 @@
 import { Input } from './Input.js';
-import { InputValue } from './InputValue.js';
+import { InputValue, ToMarkdown } from './InputValue.js';
 import { DagNode } from '../dag/DagNode.js';
-import { MarkdownEscape } from '../recursive-proxy/RecursiveProxyPrimitive.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('Input & InputValue', () => {
@@ -12,7 +11,6 @@ describe('Input & InputValue', () => {
 	describe('Initialization', () => {
 		it('should be created with a dag node', () => {
 			const input = new Input('MockInput');
-			console.log(">>", input.__dag)
 			expect(DagNode.isDagNode(input.__dag)).toBe(true);
 		});
 		it('should be initialized with defaultStringify set properly', () => {
@@ -33,14 +31,19 @@ describe('Input & InputValue', () => {
 	describe('String Conversion', () => {
 		it('should default to the sqlFragmentFactory when markdown escaping', () => {
 			const input = new Input('MockInput', { sqlFragmentFactory: () => 'boo!' });
-			expect(input[MarkdownEscape]).toBe('boo!');
+			expect(`${input}`).toBe('boo!');
 			expect(input.toString()).toBeTypeOf('string');
 		});
-		it('should allow access to string prototype functions', () => {
-			const input = new Input('MockInput');
+		it.only('should allow access to string prototype functions', () => {
+			const input = new Input('MockInput', { sqlFragmentFactory: (s) => {
+				console.log("|", s.innerValue)
+				return s.innerValue
+			} });
 			expect(input.toUpperCase).toBeDefined();
 			expect(input.toUpperCase).toBeTypeOf('function');
-			input.setValue('Hi');
+			input.innerValue = "Hi";
+			console.log("<<<", input.innerValue)
+			console.log(">>>>", input.toString())
 			expect(input.toUpperCase()).toBe('HI');
 		});
 		it('should apply string prototype functions based on its toString', () => {
@@ -138,63 +141,62 @@ describe('Input & InputValue', () => {
 	describe('Markdown Escapes', () => {
 		it('should be falsey when there is no fragment factory and no value', () => {
 			const input = new Input('MockInput');
-			expect(input[MarkdownEscape]).toBeFalsy();
+			expect(input).toBeFalsy();
 		});
 		it('should be truthy when there is a fragment factory and no value', () => {
 			const input = new Input('MockInput', { sqlFragmentFactory: () => 'boo!' });
-			expect(input[MarkdownEscape]).toBeTruthy();
+			expect(input).toBeTruthy();
 		});
 		it('should be truthy when there is no fragment factory and a value', () => {
 			const input = new Input('MockInput');
 			input.setValue(5);
-			expect(input[MarkdownEscape]).toBeTruthy();
+			expect(input).toBeTruthy();
 		});
 		it('should be falsy when it has no value and no children', () => {
 			const myInputValue = new Input('MockInput');
-			expect(myInputValue[MarkdownEscape]).toBeFalsy();
+			expect(myInputValue).toBeFalsy();
 		});
 		it('should be truthy when it has a value and no children', () => {
 			const myInputValue = new Input('MockInput');
 			myInputValue.setValue('Primitive Value');
-			expect(myInputValue[MarkdownEscape]).toBeTruthy();
+			expect(myInputValue).toBeTruthy();
 		});
 		it('should be truthy when it has no value and children', () => {
 			const myInputValue = new Input('MockInput');
 			myInputValue.x = 1;
-			expect(myInputValue[MarkdownEscape]).toBeTruthy();
+			expect(myInputValue).toBeTruthy();
 		});
 		it('should be truthy when it has both value and children', () => {
 			const myInputValue = new Input('MockInput');
 			myInputValue.setValue('Primitive Value');
 			myInputValue.x = 1;
-			expect(myInputValue[MarkdownEscape]).toBeTruthy();
+			expect(myInputValue).toBeTruthy();
 		});
 
 		it('should retain its type (numeric)', () => {
 			const myInputValue = new Input('MockInput');
 			myInputValue.setValue(1);
-			expect(myInputValue[MarkdownEscape]).toBe(1);
+			expect(myInputValue).toBe(1);
 		});
 		it('should retain its type (boolean)', () => {
 			const myInputValue = new Input('MockInput');
 			myInputValue.setValue(false);
-			expect(myInputValue[MarkdownEscape]).toBe(false);
+			expect(myInputValue).toBe(false);
 		});
 		it('should retain its type (Date)', () => {
 			const myInputValue = new Input('MockInput');
 			myInputValue.setValue(new Date());
-			expect(myInputValue[MarkdownEscape]).toBeInstanceOf(Date);
+			expect(myInputValue).toBeInstanceOf(Date);
 		});
 
-		it('should ternary correctly (truthy)', () => {
+		it('should ternary correctly', () => {
 			const input = new Input('MockInput');
-			Input.DefaultValueText = 'bling';
-			expect(`${input.value[MarkdownEscape] ? 'foo' : 'bar'}`).toBe('bar');
-			expect(`${input.value[MarkdownEscape]}`).toBe(Input.DefaultValueText);
+			Input.DefaultValueText = '(SELECT NULL WHERE 0 /* Oopsie! */)';
+			expect(`${input.value}`).toBe(Input.DefaultValueText);
 			input.value = true;
-			expect(`${input.value[MarkdownEscape] ? 'foo' : 'bar'}`).toBe('foo');
+			expect(`${input.value ? 'foo' : 'bar'}`).toBe('foo');
 			input.value = false;
-			expect(`${input.value[MarkdownEscape] ? 'foo' : 'bar'}`).toBe('bar');
+			expect(`${input.value ? 'foo' : 'bar'}`).toBe('bar');
 		});
 	});
 });

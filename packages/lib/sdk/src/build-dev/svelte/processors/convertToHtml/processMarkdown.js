@@ -10,7 +10,6 @@ import * as mdx from 'mdsvex';
 const highlighter =
 	(filename) =>
 	/**
-	 *
 	 * @param {string} code
 	 * @param {string} [lang]
 	 * @param {string} [meta]

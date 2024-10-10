@@ -1,15 +1,26 @@
-import {
-	InternalState,
-	MarkdownEscape,
-	PrimitiveValue,
-	RecursiveProxyPrimitive
-} from '../recursive-proxy/RecursiveProxyPrimitive.js';
+import { MakeDeeplyAccessible } from '../proxies/recursive-proxy/RecursiveProxyPrimitive.js';
 import { Input } from './Input.js';
+export const ToMarkdown = Symbol('ToMarkdown');
+/** @typedef {import("../proxies/recursive-proxy/RecursiveProxyPrimitive.js").DeeplyAccessible} DeeplyAccessible */
 
-export class InputValue extends RecursiveProxyPrimitive {
+export class InputValue {
+	/**
+	 * @returns {InputValue & DeeplyAccessible}
+	 */
+	static create() {
+		const output = MakeDeeplyAccessible(new InputValue(), InputValue.create);
+		return /** @type {InputValue & DeeplyAccessible} */ (output);
+	}
+
+	/**
+	 * @protected
+	 */
+	constructor() {}
+
+	/** @this {InputValue & DeeplyAccessible} */
 	get __dag() {
 		let p = this.parent;
-		while (p instanceof InputValue) {
+		while (InputValue.isInputValue(p)) {
 			p = p.parent;
 		}
 		if (p && '__dag' in p) return p.__dag;
@@ -18,25 +29,11 @@ export class InputValue extends RecursiveProxyPrimitive {
 
 	defaultStringify = Input.DefaultValueText;
 
-	['🦆'] = '__EvidenceInputValue__'
-
-	get [MarkdownEscape]() {
-		if (typeof this[PrimitiveValue] === 'undefined') {
-			return Boolean(Object.keys(this[InternalState]).length);
-		}
-		if (typeof this[PrimitiveValue] !== 'string' && typeof this[PrimitiveValue] !== 'undefined') {
-			return this[PrimitiveValue];
-		}
-		if (typeof this[PrimitiveValue] === 'string') {
-			return this[PrimitiveValue];
-		}
-
-		return this.toString();
-	}
+	['🦆'] = '__EvidenceInputValue__';
 
 	/**
 	 * @param {unknown} v
-	 * @returns {v is InputValue}
+	 * @returns {v is InputValue & DeeplyAccessible}
 	 */
 	static isInputValue(v) {
 		if (!v || typeof v !== 'object') return false;
@@ -45,7 +42,6 @@ export class InputValue extends RecursiveProxyPrimitive {
 }
 
 /*
-
 	This is a somewhat unfortunate hack that is needed to appease node 18
 
 	For some reason, it handles the setting of a value on the class differently than node 20
@@ -59,9 +55,6 @@ export class InputValue extends RecursiveProxyPrimitive {
 	will properly detect them, and treat them as class properties properly.
 
 */
-// InputValue.prototype['🦆'] = '__EvidenceInputValue__'
-// InputValue.prototype.defaultStringify = ''
-
 Object.defineProperties(InputValue.prototype, {
 	['🦆']: { writable: true },
 	defaultStringify: { writable: true }

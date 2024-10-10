@@ -2,15 +2,111 @@
 
 /** @typedef {{ new (): RecursiveProxyPrimitive & Record<string, any>}} SomeConstructor */
 
-import { EvidenceError } from '../../lib/EvidenceError.js';
+import { EvidenceError } from '../../../lib/EvidenceError.js';
 export const PrimitiveValue = Symbol('PrimitiveValue');
 export const InternalState = Symbol('InternalState');
-export const MarkdownEscape = Symbol('MarkdownEscape');
 
 /** @typedef {Symbol} Empty */
 const Empty = Symbol();
 
 const InternalJsonCall = Symbol();
+
+/**
+ * @typedef {string | number | boolean | BigInt | symbol | null | Date} Primitive
+ */
+
+/**
+ * @typedef {Object} DeeplyAccessible
+ * @property {boolean} Unset
+ * @property {any} [parent]
+ */
+
+const IsDeeplyAccessibleProxy = Symbol('IsDeeplyAccessibleProxy');
+
+/**
+ * @typedef {Object} MakeDeeplyAccessibleOptions
+ * @property {any} [parent]
+ * @property {(key: string | symbol) => any} [propertyOverrides]
+ */
+
+/**
+ * @template {{}} T
+ * @template {{}} ChildType
+ * @template {(prop: string | symbol, parent: T & DeeplyAccessible) => ChildType | Primitive} ChildFactory
+ * @param {T} root
+ * @param {ChildFactory} factory
+ * @param {MakeDeeplyAccessibleOptions} [options]
+ *
+ * @returns {T & DeeplyAccessible & Record<string | symbol, any>}
+ */
+export const MakeDeeplyAccessible = (root, factory, options) => {
+	const rootProtoKeys = Object.keys(Object.getPrototypeOf(root));
+
+	/**
+	 * @param {string | symbol} p g
+	 * @returns {p is keyof typeof root}
+	 */
+	const isRootKey = (p) => p in root || rootProtoKeys.includes(p.toString());
+
+	/** @type {Record<number | string | symbol, any>} */
+	const state = Array.isArray(root) ? root : {};
+
+	const result = new Proxy(root, {
+		ownKeys(target) {
+			return [...Object.keys(target), ...Object.keys(Array.isArray(state) ? {} : state)];
+		},
+		get(target, prop) {
+			if (isRootKey(prop)) {
+				const overrideResult = options?.propertyOverrides?.(prop, result);
+				if (overrideResult !== undefined) return overrideResult;
+				return target[prop];
+			}
+			if (prop === 'Unset') return true;
+			if (prop === 'toJSON') return () => state;
+			if (prop === 'toString') return root.toString.bind(root);
+			if (prop === Symbol.toPrimitive) return () => state.toString();
+			if (prop === IsDeeplyAccessibleProxy) return true;
+			if (prop in state) return state[prop];
+			if (prop in Object.getPrototypeOf(state)) return state[prop];
+
+			const overrideResult = options?.propertyOverrides?.(prop, result);
+			if (overrideResult !== undefined) return overrideResult;
+
+			const newValue = factory(prop, typedResult);
+			state[prop] = newValue;
+			return newValue;
+		},
+		set(target, prop, value) {
+			if (isRootKey(prop)) {
+				// no-op on keys that are already present in the root object
+				target[prop] = value;
+				return true;
+			}
+			if (typeof value === 'object' && !(value instanceof Date)) {
+				if (value[IsDeeplyAccessibleProxy]) {
+					state[prop] = value; // noop
+				} else {
+					if (Array.isArray(value)) {
+						// console.log({value, prop, state})
+						state[prop] = MakeDeeplyAccessible([], factory);
+					} else {
+						state[prop] = factory(prop, typedResult);
+					}
+					for (const [k, v] of Object.entries(value)) {
+						// If v is an object, that will be handled by the child proxy, not this one
+						state[prop][k] = v;
+					}
+				}
+			} else {
+				state[prop] = value;
+			}
+			return true;
+		}
+	});
+	const typedResult = /** @type {T & DeeplyAccessible} */ (result);
+
+	return typedResult;
+};
 
 /**
  * The RecursiveProxyPrimative is used to create classes that can be infinitely addressed.
@@ -96,6 +192,10 @@ export class RecursiveProxyPrimitive {
 			);
 		}
 		if (options.hooks) this.updateHooks(options.hooks);
+		/**
+		 *
+		 * @returns
+		 */
 		const buildChild = () => {
 			const out = new this.ChildConstructor();
 			/** @type {import("./types.js").RecursiveProxyPrimitiveHooks} */
@@ -137,6 +237,7 @@ export class RecursiveProxyPrimitive {
 					return undefined;
 				}
 
+				this.#hooks?.get?.accessed?.(prop, this);
 				// 🚩 This prevents undefined from being a valid return value from intercept, might need to get smarter here
 				const interceptedResult = this.#hooks?.get?.intercept?.(prop, this);
 				if (typeof interceptedResult !== 'undefined') return interceptedResult;
