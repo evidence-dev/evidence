@@ -10,7 +10,6 @@
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
-	import Legend from './components/Legend.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;

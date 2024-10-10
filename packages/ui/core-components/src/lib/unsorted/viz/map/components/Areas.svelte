@@ -10,7 +10,6 @@
 	import { uiColours, mapColours } from '@evidence-dev/component-utilities/colours';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import Legend from './Legend.svelte';
 	const inputs = getInputContext();
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
