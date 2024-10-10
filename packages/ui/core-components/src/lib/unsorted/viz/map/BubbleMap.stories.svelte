@@ -84,3 +84,45 @@
 	/>
 	<div class="h-32"></div>
 </Story>
+<Story name="Legend Usage 4 corners" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<BubbleMap
+		legendType="categorical"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		size="sales"
+	/>
+	<div class="h-32"></div>
+	<BubbleMap
+		data={grouped_locations}
+		legendType="scalar"
+		lat="lat"
+		long="long"
+		value="sales"
+		size="sales"
+		legendPosition="topLeft"
+	/>
+	<div class="h-32"></div>
+	<BubbleMap
+		legendType="categorical"
+		legendPosition="bottomRight"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		size="sales"
+	/>
+	<div class="h-32"></div>
+	<BubbleMap
+		data={grouped_locations}
+		legendType="scalar"
+		lat="lat"
+		long="long"
+		value="sales"
+		size="sales"
+		legendPosition="topRight"
+	/>
+	<div class="h-32"></div>
+</Story>

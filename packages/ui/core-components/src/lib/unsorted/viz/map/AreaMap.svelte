@@ -82,14 +82,13 @@
 		<Skeleton />
 	</div>
 
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {legendType}>
 		<Areas
 			data={loaded}
 			{geoJsonUrl}
 			{geoId}
 			{areaCol}
 			{legendPosition}
-			{legendType}
 			{legendFmt}
 			{...$$restProps}
 		/>

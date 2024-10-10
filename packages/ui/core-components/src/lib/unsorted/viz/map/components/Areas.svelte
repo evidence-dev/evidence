@@ -39,14 +39,10 @@
 
 	/** @type {string | undefined} */
 	export let name = undefined;
-	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
-	export let legendPosition = 'bottomLeft';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
-	/** @type {number | undefined} */
-	let legendId = map.genereateLegendId();
 
 	/**
 	 * Callback function for the area click event.
@@ -211,7 +207,7 @@
 			max,
 			colorPalette,
 			legendType,
-			legendId
+			legendFmt
 		};
 		await data.fetch();
 		({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
@@ -325,7 +321,6 @@
 			{link}
 		/>
 	{/each}
-	<Legend {legendPosition} {legendType} {legendFmt} {legendId} />
 {:catch e}
 	<ErrorChart error={e} chartType="Area Map" />
 {/await}

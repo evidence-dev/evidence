@@ -73,17 +73,16 @@
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
 	<div class="relative">
-		<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-			<Points
-				data={loaded}
-				{lat}
-				{long}
-				{colorPalette}
-				{legendPosition}
-				{legendType}
-				{legendFmt}
-				{...$$restProps}
-			/>
+		<BaseMap
+			{startingLat}
+			{startingLong}
+			{startingZoom}
+			{height}
+			{basemap}
+			{title}
+			{legendPosition}
+		>
+			<Points data={loaded} {lat} {long} {colorPalette} {legendType} {legendFmt} {...$$restProps} />
 		</BaseMap>
 	</div>
 </QueryLoad>

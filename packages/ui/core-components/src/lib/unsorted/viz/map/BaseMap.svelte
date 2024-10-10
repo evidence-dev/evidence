@@ -10,6 +10,7 @@
 	import { EvidenceMap } from './EvidenceMap.js';
 	import { mapContextKey } from './constants.js';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
+	import Legend from './components/Legend.svelte';
 
 	let mapElement;
 
@@ -44,6 +45,15 @@
 
 	const allGeoJsonLoaded = evidenceMap.allGeoJsonLoaded;
 
+	let legendData = evidenceMap.legendData;
+
+	//Question: Do i need to specify, if i default legend position to 'bottomLeft' in other areas it gets used?
+	export let legendPosition = 'bottomLeft';
+
+	$: if (legendPosition) {
+		evidenceMap.updateLegendPosition(legendPosition);
+	}
+
 	// Lifecycle hooks:
 	onMount(async () => {
 		if (browser) {
@@ -74,6 +84,9 @@
 			bind:this={mapElement}
 		>
 			<slot></slot>
+			{#if $legendData}
+				<Legend {legendData} {legendPosition} />
+			{/if}
 		</div>
 
 		{#if !$allGeoJsonLoaded}

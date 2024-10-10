@@ -35,13 +35,6 @@ export class EvidenceMap {
 	/** @type {HTMLDivElement | undefined} */
 	#mapEl;
 
-	/**
-	 * @type {import('svelte/store').Writable<
-	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number }[]
-	 * >}
-	 */
-	#legendData = writable([]);
-
 	/** Handles the promises associated with the initialization of the map component. */
 	#sharedPromise = sharedPromise();
 
@@ -479,8 +472,38 @@ export class EvidenceMap {
 	}
 
 	//handle legend data
+	/**
+	 * @type {import('svelte/store').Writable<"bottomLeft"|"topLeft"|"topRight"|"bottomRight">}
+	 */
+	#legendPosition = writable('bottomLeft');
 
-	buildLegend(colorPalette, arrayOfStringValues, minValue, maxValue, legendId) {
+	updateLegendPosition(position) {
+		this.#legendPosition.set(position); // use set to update the value
+	}
+
+	get legendPosition() {
+		let value;
+		this.#legendPosition.subscribe((val) => (value = val))(); // immediately unsubscribe
+		return value;
+	}
+	/**
+	 *
+	 * @type {import('svelte/store').Writable<
+	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number }[]
+	 * >}
+	 */
+	#legendData = writable([]);
+
+	buildLegend(
+		colorPalette,
+		arrayOfStringValues,
+		minValue,
+		maxValue,
+		legendType,
+		legendId,
+		legendPosition,
+		legendFmt
+	) {
 		this.#legendData.update((legendData) => [
 			...legendData, // Spread the current legendData (assuming it's an array)
 			{
@@ -488,7 +511,10 @@ export class EvidenceMap {
 				values: arrayOfStringValues,
 				minValue,
 				maxValue,
-				legendId
+				legendId,
+				legendType,
+				legendPosition,
+				legendFmt
 			}
 		]);
 	}
@@ -499,7 +525,18 @@ export class EvidenceMap {
 
 	async initializeData(
 		data,
-		{ corordinates, value, checkInputs, min, max, colorPalette, legendType, legendId }
+		{
+			corordinates,
+			value,
+			checkInputs,
+			min,
+			max,
+			colorPalette,
+			legendId,
+			legendType,
+			legendPosition,
+			legendFmt
+		}
 	) {
 		await data.fetch();
 		checkInputs(data, corordinates);
@@ -510,16 +547,18 @@ export class EvidenceMap {
 		colorPalette = colorPalette.map((item) => chroma(item).hex());
 		if (legendType) {
 			values = this.handleLegendValues(colorPalette, values, legendType);
-			this.buildLegend(colorPalette, values, minValue, maxValue, legendId);
+			this.buildLegend(
+				colorPalette,
+				values,
+				minValue,
+				maxValue,
+				legendType,
+				legendId,
+				legendPosition,
+				legendFmt
+			);
 		}
 		// Return the values, minValue, and maxValue for sharing with other functions
-		return { values, minValue, maxValue, colorScale, colorPalette };
-	}
-
-	/** @type {number} */
-	#legendCounter = 0;
-
-	genereateLegendId() {
-		return `legend-${this.#legendCounter++}`;
+		return { values, colorScale, colorPalette };
 	}
 }

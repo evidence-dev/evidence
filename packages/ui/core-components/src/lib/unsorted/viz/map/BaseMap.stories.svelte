@@ -55,7 +55,7 @@
         WHEN id BETWEEN 1001 AND 1500 THEN 'Golf Courses'
         WHEN id BETWEEN 1501 AND 2000 THEN 'Shops'
         WHEN id BETWEEN 2001 AND 2500 THEN 'Bars'
-        WHEN id BETWEEN 2501 AND 3000 THEN 'Entertainment'
+        WHEN id BETWEEN 2501 AND 3000 THEN 'Entertainment and Stuff'
         WHEN id BETWEEN 3001 AND 4000 THEN 'Banks'
     END AS Category
 FROM la_zip_sales
@@ -97,7 +97,14 @@ ORDER BY 1;
 
 <Story name="Multiple Base maps with legends">
 	<BaseMap title="Point Map Scalar" height="300">
-		<Points data={grouped_locations} lat="lat" long="long" legendType="scalar" value="sales" />
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendPosition="topLeft"
+		/>
 	</BaseMap>
 	<BaseMap title="Point Map Categorical" height="300">
 		<Points
@@ -106,6 +113,7 @@ ORDER BY 1;
 			long="long"
 			legendType="categorical"
 			value="Category"
+			legendPosition="topLeft"
 		/>
 	</BaseMap>
 	<BaseMap title="Bubble Map Scalar" height="300">
@@ -117,6 +125,7 @@ ORDER BY 1;
 			size="sales"
 			opacity="0.6"
 			legendType="scalar"
+			legendPosition="topLeft"
 		/>
 	</BaseMap>
 	<BaseMap title="Bubble Map Categorical" height="300">
@@ -128,6 +137,7 @@ ORDER BY 1;
 			size="sales"
 			opacity="0.6"
 			legendType="categorical"
+			legendPosition="topLeft"
 		/>
 	</BaseMap>
 	<BaseMap title="Area Map Scalar" height="300">
@@ -142,6 +152,7 @@ ORDER BY 1;
 			tooltipType="hover"
 			opacity="1"
 			legendType="scalar"
+			legendPosition="topLeft"
 		/>
 	</BaseMap>
 	<BaseMap title="Area Map Categorical" height="300">
@@ -156,11 +167,175 @@ ORDER BY 1;
 			tooltipType="hover"
 			opacity="1"
 			legendType="categorical"
+			legendPosition="topLeft"
 		/>
 	</BaseMap>
 	<div class="h-32"></div>
 </Story>
 <Story name="Single Base maps with Scalar legends">
+	<BaseMap title="Scalar Legends" height="300">
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendFmt="usd"
+		/>
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendFmt="usd"
+		/>
+		<Bubbles
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			value="Category"
+			size="sales"
+			opacity="0.6"
+			legendType="categorical"
+		/>
+		<Areas
+			data={grouped_locations_area}
+			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
+			areaCol="zip_code"
+			name="area"
+			value="Category"
+			geoId="ZCTA5CE10"
+			valueFmt="usd"
+			tooltipType="hover"
+			opacity="1"
+			legendType="categorical"
+			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+		/>
+	</BaseMap>
+	<BaseMap title="Scalar Legends" height="300" legendPosition="topLeft">
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendFmt="usd"
+		/>
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendFmt="usd"
+		/>
+		<Bubbles
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			value="Category"
+			size="sales"
+			opacity="0.6"
+			legendType="categorical"
+		/>
+		<Areas
+			data={grouped_locations_area}
+			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
+			areaCol="zip_code"
+			name="area"
+			value="Category"
+			geoId="ZCTA5CE10"
+			valueFmt="usd"
+			tooltipType="hover"
+			opacity="1"
+			legendType="categorical"
+			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+		/>
+	</BaseMap>
+	<BaseMap title="Scalar Legends" height="300" legendPosition="topRight">
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendFmt="usd"
+		/>
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendFmt="usd"
+		/>
+		<Bubbles
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			value="Category"
+			size="sales"
+			opacity="0.6"
+			legendType="categorical"
+		/>
+		<Areas
+			data={grouped_locations_area}
+			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
+			areaCol="zip_code"
+			name="area"
+			value="Category"
+			geoId="ZCTA5CE10"
+			valueFmt="usd"
+			tooltipType="hover"
+			opacity="1"
+			legendType="categorical"
+			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+		/>
+	</BaseMap>
+	<BaseMap title="Scalar Legends" height="300" legendPosition="bottomRight">
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendFmt="usd"
+		/>
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="scalar"
+			value="sales"
+			legendFmt="usd"
+		/>
+		<Bubbles
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			value="Category"
+			size="sales"
+			opacity="0.6"
+			legendType="categorical"
+		/>
+		<Areas
+			data={grouped_locations_area}
+			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
+			areaCol="zip_code"
+			name="area"
+			value="Category"
+			geoId="ZCTA5CE10"
+			valueFmt="usd"
+			tooltipType="hover"
+			opacity="1"
+			legendType="categorical"
+			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+		/>
+	</BaseMap>
+	<div class="h-32"></div>
+</Story>
+<Story name="multi map configurations">
 	<BaseMap title="Scalar Legends" height="300">
 		<Points
 			data={grouped_locations}
@@ -178,7 +353,17 @@ ORDER BY 1;
 			size="sales"
 			opacity="0.6"
 			legendType="categorical"
-			legendPosition="topLeft"
+		/>
+	</BaseMap>
+	<BaseMap title="Scalar Legends" height="300">
+		<Bubbles
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			value="Category"
+			size="sales"
+			opacity="0.6"
+			legendType="categorical"
 		/>
 		<Areas
 			data={grouped_locations_area}
@@ -191,7 +376,6 @@ ORDER BY 1;
 			tooltipType="hover"
 			opacity="1"
 			legendType="categorical"
-			legendPosition="topRight"
 			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 		/>
 	</BaseMap>
