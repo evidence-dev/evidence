@@ -177,13 +177,16 @@
 		columnSummary = getColumnSummary(data, 'array');
 
 		// Check if sort column is in table
-		if(sortBy){
-			if(!columnSummary.map(d => d.id).includes(sortBy)){
-				throw Error(sortBy + ' is not a column in the dataset. sort should contain one column name and optionally a direction (asc or desc). E.g., sort=my_column or sort="my_column desc"')
+		if (sortBy) {
+			if (!columnSummary.map((d) => d.id).includes(sortBy)) {
+				throw Error(
+					sortBy +
+						' is not a column in the dataset. sort should contain one column name and optionally a direction (asc or desc). E.g., sort=my_column or sort="my_column desc"'
+				);
 			}
 
-			if(sortDirection && !['asc', 'desc'].includes(sortDirection)){
-				throw Error(sortDirection + ' is not a valid sort direction. Please use asc or desc')
+			if (sortDirection && !['asc', 'desc'].includes(sortDirection)) {
+				throw Error(sortDirection + ' is not a valid sort direction. Please use asc or desc');
 			}
 		}
 
