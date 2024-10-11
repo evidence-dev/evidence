@@ -26,7 +26,10 @@
 	{align}
 	{sideOffset}
 	{...$$restProps}
-	class={cn('z-50 w-72 rounded-md border border-base-300 p-4 shadow-md outline-none', className)}
+	class={cn(
+		'z-50 w-72 rounded-md border border-base-300 p-4 shadow-md outline-none bg-base-100',
+		className
+	)}
 >
 	<slot />
 </PopoverPrimitive.Content>
