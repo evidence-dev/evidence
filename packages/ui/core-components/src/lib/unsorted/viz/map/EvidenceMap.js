@@ -3,9 +3,10 @@ import { debounce } from 'perfect-debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
-import { writable, derived, readonly } from 'svelte/store';
+import { writable, derived, readonly, get } from 'svelte/store';
 import chroma from 'chroma-js';
 import { uiColours } from '@evidence-dev/component-utilities/colours';
+import { mapColours } from '@evidence-dev/component-utilities/colours';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -449,10 +450,10 @@ export class EvidenceMap {
 		} else if (legendType === 'scalar') {
 			values.forEach((value) => {
 				if (typeof value !== 'number' && value !== null) {
-					throw new Error('Scalar legend requires numeric values or null.');
+					console.error('Scalar legend requires numeric values or null.');
 				}
 				if (typeof value === 'number' && isNaN(value)) {
-					throw new Error('Scalar legend requires valid numeric values.');
+					console.error('Scalar legend requires valid numeric values.');
 				}
 			});
 		}
@@ -489,7 +490,7 @@ export class EvidenceMap {
 	/**
 	 *
 	 * @type {import('svelte/store').Writable<
-	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number }[]
+	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number, legendType: string, legendFmt: string, chartType: string, legendId: string, value: string, noLegend: boolean }[]
 	 * >}
 	 */
 	#legendData = writable([]);
@@ -503,7 +504,8 @@ export class EvidenceMap {
 		legendFmt,
 		chartType,
 		legendId,
-		value
+		value,
+		noLegend
 	) {
 		this.#legendData.update((legendData) =>
 			legendData.some((legend) => legend.legendId === legendId)
@@ -518,7 +520,8 @@ export class EvidenceMap {
 									legendType,
 									legendFmt,
 									chartType,
-									value
+									value,
+									noLegend
 								}
 							: legend
 					)
@@ -533,7 +536,8 @@ export class EvidenceMap {
 							legendFmt,
 							chartType,
 							legendId,
-							value
+							value,
+							noLegend
 						}
 					]
 		);
@@ -555,7 +559,8 @@ export class EvidenceMap {
 			legendType,
 			legendFmt,
 			chartType,
-			legendId
+			legendId,
+			noLegend
 		}
 	) {
 		await data.fetch();
@@ -563,9 +568,19 @@ export class EvidenceMap {
 		let values = data.map((d) => d[value]);
 		let minValue = Math.min(...values);
 		let maxValue = Math.max(...values);
-		let colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
-		colorPalette = colorPalette.map((item) => chroma(item).hex());
-		if (legendType) {
+		let colorScale;
+
+		if (!legendType) {
+			typeof values[0] === 'number' ? (legendType = 'scalar') : (legendType = 'categorical');
+		}
+
+		if (legendType && !colorPalette) {
+			colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+			colorPalette = colorPalette.map((item) => chroma(item).hex());
+		}
+		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+
+		if (!noLegend) {
 			values = this.handleLegendValues(colorPalette, values, legendType);
 			this.buildLegend(
 				colorPalette,
@@ -576,10 +591,11 @@ export class EvidenceMap {
 				legendFmt,
 				chartType,
 				legendId,
-				value
+				value,
+				noLegend
 			);
 		}
 		// Return the values, minValue, and maxValue for sharing with other functions
-		return { values, colorScale, colorPalette };
+		return { values, colorPalette, legendType, colorScale };
 	}
 }

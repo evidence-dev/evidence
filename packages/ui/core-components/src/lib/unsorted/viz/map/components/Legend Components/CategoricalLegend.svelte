@@ -14,7 +14,7 @@
 	 */
 	export let capitalize;
 
-	let legendTitle = capitalize(legend.value);
+	let legendTitle = capitalize(legend.value) || 'No value';
 </script>
 
 <div class="flex {!multiLegend && direction === 'up' ? 'flex-col-reverse' : 'flex-col'}">

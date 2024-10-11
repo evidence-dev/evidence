@@ -62,6 +62,9 @@
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
 
+	/** @type {boolean} */
+	export let noLegend = false;
+
 	const chartType = 'Point Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -91,6 +94,7 @@
 				{legendFmt}
 				{chartType}
 				{...$$restProps}
+				{noLegend}
 			/>
 		</BaseMap>
 	</div>

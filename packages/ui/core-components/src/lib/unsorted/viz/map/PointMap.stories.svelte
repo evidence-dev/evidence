@@ -78,7 +78,14 @@
 </script>
 
 <Story name="Basic Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
-	<PointMap data={la_locations} lat="lat" long="long" />
+	<PointMap
+		title="default legend w/ value"
+		data={la_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+	/>
+	<PointMap title="no legend" data={la_locations} lat="lat" long="long" value="sales" noLegend />
 </Story>
 
 <Story name="Loading" parameters={{ chromatic: { disableSnapshot: true } }}>
@@ -86,35 +93,9 @@
 </Story>
 
 <Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
-	<PointMap
-		legendType="categorical"
-		legendPosition="bottomLeft"
-		data={grouped_locations}
-		lat="lat"
-		long="long"
-		value="Category"
-		colorPalette={['red', 'green', 'blue', 'purple', 'orange', 'yellow', 'brown']}
-		tooltipType="hover"
-		tooltip={[
-			{ id: 'point_name', showColumnName: false },
-			{ id: 'sales', fmt: 'usd' }
-		]}
-	/>
+	<PointMap data={grouped_locations} lat="lat" long="long" value="Category" />
 	<div class="h-32"></div>
-	<PointMap
-		data={grouped_locations}
-		legendFmt="usd"
-		legendType="scalar"
-		lat="lat"
-		long="long"
-		value="sales"
-		colorPalette={['red', 'yellow']}
-		tooltipType="hover"
-		tooltip={[
-			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
-		]}
-	/>
+	<PointMap data={grouped_locations} legendFmt="usd" lat="lat" long="long" value="sales" />
 	<div class="h-32"></div>
 </Story>
 

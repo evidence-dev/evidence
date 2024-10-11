@@ -9,7 +9,6 @@
 	import Point from './Point.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
-	import { mapColours } from '@evidence-dev/component-utilities/colours';
 	import { nanoid } from 'nanoid';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
@@ -41,6 +40,9 @@
 	export let legendFmt = undefined;
 	/** @type {'Point Map' | 'Bubble Map'} */
 	export let chartType = 'Point Map';
+
+	/** @type {boolean} */
+	export let noLegend = false;
 
 	if (size) {
 		// if size was user-supplied
@@ -94,8 +96,8 @@
 	export let borderColor = 'white';
 	/** @type {string|undefined} */
 	export let color = undefined;
-	/** @type {string[]} */
-	export let colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+	/** @type {string[] | undefined} */
+	export let colorPalette = undefined;
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;
@@ -224,21 +226,24 @@
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
-		let initDataOptions = {
-			corordinates: [lat, long],
-			value,
-			checkInputs,
-			min,
-			max,
-			colorPalette,
-			legendType,
-			legendFmt,
-			chartType,
-			legendId
-		};
-
 		if (data) {
-			({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
+			let initDataOptions = {
+				corordinates: [lat, long],
+				value,
+				checkInputs,
+				min,
+				max,
+				colorPalette,
+				legendType,
+				legendFmt,
+				chartType,
+				legendId,
+				noLegend
+			};
+			({ values, colorPalette, legendType, colorScale } = await map.initializeData(
+				data,
+				initDataOptions
+			));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -304,8 +309,6 @@
 			<Point
 				{map}
 				options={{
-					// kw note:
-					//need to clean this logic
 					fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
 					radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
 					fillOpacity: opacity,
