@@ -117,12 +117,9 @@
 		</span>
 	</div>
 	<QueryLoad data={results} let:loaded>
-		<p
-			slot="error"
-			class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
-		>
+		<Alert slot="error" status="danger">
 			{$results.error}
-		</p>
+		</Alert>
 		{#if loaded?.length > 0 || (Array.isArray(selectedValue) && selectedValue.length > 0)}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
 			<div class="transition-all" style={`min-height:${minRem}rem;`}>
