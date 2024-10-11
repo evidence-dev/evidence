@@ -501,20 +501,42 @@ export class EvidenceMap {
 		maxValue,
 		legendType,
 		legendFmt,
-		chartType
+		chartType,
+		legendId,
+		value
 	) {
-		this.#legendData.update((legendData) => [
-			...legendData, // Spread the current legendData (assuming it's an array)
-			{
-				colorPalette,
-				values: arrayOfStringValues,
-				minValue,
-				maxValue,
-				legendType,
-				legendFmt,
-				chartType
-			}
-		]);
+		this.#legendData.update((legendData) =>
+			legendData.some((legend) => legend.legendId === legendId)
+				? legendData.map((legend) =>
+						legend.legendId === legendId
+							? {
+									...legend,
+									colorPalette,
+									values: arrayOfStringValues,
+									minValue,
+									maxValue,
+									legendType,
+									legendFmt,
+									chartType,
+									value
+								}
+							: legend
+					)
+				: [
+						...legendData,
+						{
+							colorPalette,
+							values: arrayOfStringValues,
+							minValue,
+							maxValue,
+							legendType,
+							legendFmt,
+							chartType,
+							legendId,
+							value
+						}
+					]
+		);
 	}
 
 	get legendData() {
@@ -523,7 +545,18 @@ export class EvidenceMap {
 
 	async initializeData(
 		data,
-		{ corordinates, value, checkInputs, min, max, colorPalette, legendType, legendFmt, chartType }
+		{
+			corordinates,
+			value,
+			checkInputs,
+			min,
+			max,
+			colorPalette,
+			legendType,
+			legendFmt,
+			chartType,
+			legendId
+		}
 	) {
 		await data.fetch();
 		checkInputs(data, corordinates);
@@ -534,7 +567,17 @@ export class EvidenceMap {
 		colorPalette = colorPalette.map((item) => chroma(item).hex());
 		if (legendType) {
 			values = this.handleLegendValues(colorPalette, values, legendType);
-			this.buildLegend(colorPalette, values, minValue, maxValue, legendType, legendFmt, chartType);
+			this.buildLegend(
+				colorPalette,
+				values,
+				minValue,
+				maxValue,
+				legendType,
+				legendFmt,
+				chartType,
+				legendId,
+				value
+			);
 		}
 		// Return the values, minValue, and maxValue for sharing with other functions
 		return { values, colorScale, colorPalette };

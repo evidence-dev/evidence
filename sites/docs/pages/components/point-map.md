@@ -304,7 +304,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=sales
     legendType=scalar
-    legendPosition=bottomLeft
     legendFmt=usd
 />
 

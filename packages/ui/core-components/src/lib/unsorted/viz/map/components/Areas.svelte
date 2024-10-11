@@ -9,6 +9,8 @@
 	import MapArea from './MapArea.svelte';
 	import { uiColours, mapColours } from '@evidence-dev/component-utilities/colours';
 	import ErrorChart from '../../core/ErrorChart.svelte';
+	import { nanoid } from 'nanoid';
+
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
 
@@ -193,6 +195,7 @@
 	let values;
 	let colorScale;
 	let geoJson = [];
+	let legendId = nanoid();
 
 	/**
 	 * Initialize the component.
@@ -208,7 +211,8 @@
 			colorPalette,
 			legendType,
 			legendFmt,
-			chartType
+			chartType,
+			legendId
 		};
 		await data.fetch();
 		({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
@@ -275,53 +279,55 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#await Promise.all([map.initPromise, init(), data.fetch()]) then}
-	{#each geoJson as feature (feature.properties[geoId])}
-		{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
-		<MapArea
-			{map}
-			{feature}
-			{item}
-			{name}
-			areaOptions={{
-				fillColor:
-					color ??
-					map.handleFillColor(item, value, values, colorPalette, colorScale) ??
-					colorScale(item[value]).hex(),
-				fillOpacity: opacity,
-				opacity: opacity,
-				weight: borderWidth,
-				color: borderColor,
-				className: `outline-none ${areaClass}`
-			}}
-			selectedAreaOptions={{
-				fillColor: selectedColor,
-				fillOpacity: selectedOpacity,
-				opacity: selectedOpacity,
-				weight: selectedBorderWidth,
-				color: selectedBorderColor,
-				className: `outline-none ${selectedAreaClass}`
-			}}
-			onclick={() => {
-				onclick(item);
-			}}
-			setInput={() => {
-				if (name) {
-					updateInput(item, name);
-				}
-			}}
-			unsetInput={() => {
-				if (name) {
-					unsetInput(item, name);
-				}
-			}}
-			{tooltip}
-			{tooltipOptions}
-			{tooltipType}
-			{showTooltip}
-			{link}
-		/>
-	{/each}
-{:catch e}
-	<ErrorChart error={e} chartType="Area Map" />
+{#await Promise.all([map.initPromise, data.fetch()]) then}
+	{#await init() then}
+		{#each geoJson as feature (feature.properties[geoId])}
+			{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
+			<MapArea
+				{map}
+				{feature}
+				{item}
+				{name}
+				areaOptions={{
+					fillColor:
+						color ??
+						map.handleFillColor(item, value, values, colorPalette, colorScale) ??
+						colorScale(item[value]).hex(),
+					fillOpacity: opacity,
+					opacity: opacity,
+					weight: borderWidth,
+					color: borderColor,
+					className: `outline-none ${areaClass}`
+				}}
+				selectedAreaOptions={{
+					fillColor: selectedColor,
+					fillOpacity: selectedOpacity,
+					opacity: selectedOpacity,
+					weight: selectedBorderWidth,
+					color: selectedBorderColor,
+					className: `outline-none ${selectedAreaClass}`
+				}}
+				onclick={() => {
+					onclick(item);
+				}}
+				setInput={() => {
+					if (name) {
+						updateInput(item, name);
+					}
+				}}
+				unsetInput={() => {
+					if (name) {
+						unsetInput(item, name);
+					}
+				}}
+				{tooltip}
+				{tooltipOptions}
+				{tooltipType}
+				{showTooltip}
+				{link}
+			/>
+		{/each}
+	{:catch e}
+		<ErrorChart error={e} chartType="Area Map" />
+	{/await}
 {/await}

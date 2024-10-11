@@ -2,7 +2,6 @@
 	import CategoricalLegend from './Legend Components/CategoricalLegend.svelte';
 	import ScalarLegend from './Legend Components/ScalarLegend.svelte';
 	import LegendToggle from './Legend Components/LegendToggle.svelte';
-
 	import { derived } from 'svelte/store';
 
 	const positions = {
@@ -57,23 +56,28 @@
 		}
 		return cssStyle;
 	};
+
+	function capitalize(str) {
+		if (!str) return str;
+		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+	}
 </script>
 
 {#if $legendData.length > 0}
 	<div
-		class="absolute z-[401] m-6 flex max-w-96 flex {constHandleLegendButtonPosition()} 
+		class="absolute z-[401] m-4 flex max-w-42 flex legend-font {constHandleLegendButtonPosition()} 
     {positions[legendPosition] ?? 'top-3 left-[-9px]'}"
 		on:wheel={(e) => e.stopPropagation()}
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
 		{#if $categoricalLegendData.length > 0}
-			<div class="flex">
+			<div class="flex flex-wrap">
 				{#each $categoricalLegendData as legend}
 					<div
-						class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden legend-font w-fit flex transition-[border] ease-in-out ease-in-out duration-[350ms] {hideLegend
-							? 'border-y-0'
-							: 'border-y-[1px]'}"
+						class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-1 {multiLegend
+							? 'w-1/2 max-w-42'
+							: ''} {hideLegend ? 'border-y-0 py-0' : 'border-y-[1px] py-1'}"
 					>
 						<CategoricalLegend
 							{height}
@@ -82,6 +86,7 @@
 							{hideLegend}
 							{multiLegend}
 							direction={handleChevronDirection(legend.legendType)}
+							{capitalize}
 						/>
 					</div>
 				{/each}
@@ -90,11 +95,11 @@
 		{#if $scalarLegendData.length > 0}
 			{#each $scalarLegendData as legend}
 				<div
-					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden legend-font w-full items-center flex transition-[border] duration-[350ms] ease-in-out {handleChevronDirection(
+					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden w-full items-center flex transition-[border, padding] duration-[350ms] ease-in-out px-1 {handleChevronDirection(
 						legend.legendType
 					) === 'right'
 						? 'flex-row-reverse'
-						: 'flex-row'} {hideLegend ? 'border-y-0' : 'border-y-[1px]'}"
+						: 'flex-row'} {hideLegend ? 'border-y-0 py-0' : 'border-y-[1px] py-1'}"
 				>
 					<ScalarLegend
 						{legend}
@@ -102,6 +107,7 @@
 						{hideLegend}
 						{multiLegend}
 						direction={handleChevronDirection(legend.legendType)}
+						{capitalize}
 					/>
 				</div>
 			{/each}

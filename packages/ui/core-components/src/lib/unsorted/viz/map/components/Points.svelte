@@ -10,6 +10,7 @@
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
 	import { mapColours } from '@evidence-dev/component-utilities/colours';
+	import { nanoid } from 'nanoid';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -38,6 +39,8 @@
 	export let legendType = undefined;
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
+	/** @type {'Point Map' | 'Bubble Map'} */
+	export let chartType = 'Point Map';
 
 	if (size) {
 		// if size was user-supplied
@@ -214,6 +217,8 @@
 
 	let values, colorScale, sizeExtents, maxData, maxSizeSq;
 
+	const legendId = nanoid();
+
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
@@ -227,8 +232,11 @@
 			max,
 			colorPalette,
 			legendType,
-			legendFmt
+			legendFmt,
+			chartType,
+			legendId
 		};
+
 		if (data) {
 			({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
 
@@ -290,51 +298,53 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#await Promise.all([map.initPromise, data.fetch(), init()]) then}
-	{#each $data as item}
-		<Point
-			{map}
-			options={{
-				// kw note:
-				//need to clean this logic
-				fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
-				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
-				fillOpacity: opacity,
-				opacity: opacity,
-				weight: borderWidth,
-				color: borderColor,
-				className: `outline-none ${pointClass}`
-			}}
-			selectedOptions={{
-				fillColor: selectedColor,
-				fillOpacity: selectedOpacity,
-				opacity: selectedOpacity,
-				weight: selectedBorderWidth,
-				color: selectedBorderColor,
-				className: `outline-none ${selectedPointClass}`
-			}}
-			coords={[item[lat], item[long]]}
-			onclick={() => {
-				onclick(item);
-			}}
-			setInput={() => {
-				if (name) {
-					updateInput(item, name);
-				}
-			}}
-			unsetInput={() => {
-				if (name) {
-					unsetInput(item, name);
-				}
-			}}
-			{tooltip}
-			{tooltipOptions}
-			{tooltipType}
-			{item}
-			{link}
-			{showTooltip}
-		/>
-	{/each}
-{:catch e}
-	<ErrorChart error={e} chartType="Point Map" />
+{#await Promise.all([map.initPromise, data.fetch()]) then}
+	{#await init() then}
+		{#each $data as item}
+			<Point
+				{map}
+				options={{
+					// kw note:
+					//need to clean this logic
+					fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
+					radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
+					fillOpacity: opacity,
+					opacity: opacity,
+					weight: borderWidth,
+					color: borderColor,
+					className: `outline-none ${pointClass}`
+				}}
+				selectedOptions={{
+					fillColor: selectedColor,
+					fillOpacity: selectedOpacity,
+					opacity: selectedOpacity,
+					weight: selectedBorderWidth,
+					color: selectedBorderColor,
+					className: `outline-none ${selectedPointClass}`
+				}}
+				coords={[item[lat], item[long]]}
+				onclick={() => {
+					onclick(item);
+				}}
+				setInput={() => {
+					if (name) {
+						updateInput(item, name);
+					}
+				}}
+				unsetInput={() => {
+					if (name) {
+						unsetInput(item, name);
+					}
+				}}
+				{tooltip}
+				{tooltipOptions}
+				{tooltipType}
+				{item}
+				{link}
+				{showTooltip}
+			/>
+		{/each}
+	{:catch e}
+		<ErrorChart error={e} {chartType} />
+	{/await}
 {/await}

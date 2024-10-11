@@ -7,21 +7,28 @@
 	export let hideLegend = false;
 	/** @type {boolean} */
 	export let multiLegend = false;
+	/**
+	 * @type {function(string): string}
+	 */
+	export let capitalize;
 
-	let hideLegendStyle = `max-h-[0px] opacity-0 py-0`;
+	let hideLegendStyle = `max-h-[0px] opacity-0`;
 
-	let showLegendStyle = `max-h-[300px] py-1 min-w-56`;
+	let showLegendStyle = `max-h-[300px]`;
+
+	let legendTitle = capitalize(legend.value);
 </script>
 
 <div
-	class="flex {hideLegend
+	class="flex flex-col mx-[3px] {hideLegend
 		? hideLegendStyle
-		: showLegendStyle} px-1 transition-all duration-[350ms] ease-in-out w-full"
+		: showLegendStyle} min-w-52 transition-all duration-[350ms] ease-in-out w-full"
 >
+	<div class="flex flex-wrap flex-col">
+		<p>{legendTitle}</p>
+	</div>
 	<div
-		class="flex flex-col justify-center overflow-hidden h-8 mx-[3px] {multiLegend
-			? 'w-full'
-			: 'w-[250px]'}"
+		class="flex flex-col justify-center overflow-hidden h-8 {multiLegend ? 'w-full' : 'w-[250px]'}"
 	>
 		<span
 			style="background: {legend.colorPalette

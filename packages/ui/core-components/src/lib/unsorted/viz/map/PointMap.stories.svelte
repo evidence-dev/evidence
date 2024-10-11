@@ -126,25 +126,15 @@
 		lat="lat"
 		long="long"
 		value="Category"
-		tooltipType="hover"
-		tooltip={[
-			{ id: 'point_name', showColumnName: false },
-			{ id: 'sales', fmt: 'usd' }
-		]}
 	/>
 	<div class="h-32"></div>
 	<PointMap
 		data={grouped_locations}
-		legendFmt="usd"
-		legendType="scalar"
 		lat="lat"
 		long="long"
 		value="sales"
-		tooltipType="hover"
-		tooltip={[
-			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
-		]}
+		legendType="scalar"
+		legendFmt="usd"
 	/>
 	<div class="h-32"></div>
 </Story>

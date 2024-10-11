@@ -11,6 +11,7 @@
 	export let opacity = 0.8;
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+	export let colorPalette = undefined;
 </script>
 
-<Points sizeCol={size} {opacity} {legendType} {...$$restProps} />
+<Points sizeCol={size} {opacity} {legendType} {colorPalette} {...$$restProps} />

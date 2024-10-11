@@ -82,7 +82,16 @@
 			{title}
 			{legendPosition}
 		>
-			<Points data={loaded} {lat} {long} {colorPalette} {legendType} {legendFmt} {...$$restProps} />
+			<Points
+				data={loaded}
+				{lat}
+				{long}
+				{colorPalette}
+				{legendType}
+				{legendFmt}
+				{chartType}
+				{...$$restProps}
+			/>
 		</BaseMap>
 	</div>
 </QueryLoad>

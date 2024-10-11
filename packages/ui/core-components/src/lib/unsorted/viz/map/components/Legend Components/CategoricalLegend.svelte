@@ -1,5 +1,5 @@
 <script>
-	/** @type {{ colorPalette: string[]; values: string[]; legendType: 'categorical' }} */
+	/** @type {{ colorPalette: string[]; values: string[]; legendType: 'categorical', value: string }} */
 	export let legend;
 	/** @type {boolean} */
 	export let hideLegend = false;
@@ -9,30 +9,34 @@
 	export let direction = 'down';
 	/** @type {number}*/
 	export let height = 300;
+	/**
+	 * @type {function(string): string}
+	 */
+	export let capitalize;
 
-	let categoryLegendHeight = `max-h-[${height - 50}px]`;
+	let legendTitle = capitalize(legend.value);
 </script>
 
-<div
-	class="flex flex-wrap flex-start {!multiLegend && direction === 'up'
-		? 'flex-col-reverse'
-		: 'flex-col'}"
->
+<div class="flex {!multiLegend && direction === 'up' ? 'flex-col-reverse' : 'flex-col'}">
 	<div
-		class="flex {hideLegend
-			? 'max-h-[0px] opacity-0 py-0'
-			: `${categoryLegendHeight} py-1 overflow-y-auto`} px-1 transition-[max-height, opacity, padding] duration-[350ms] ease-in-out w-full min-w-[86.5px]"
+		style={`max-height: ${hideLegend ? '0px' : `${height - 50}px`};`}
+		class="flex flex-col{hideLegend
+			? ' opacity-0'
+			: ` overflow-y-auto`}  transition-[opacity, max-height] duration-[350ms] ease-in-out w-full min-w-[86.5px]"
 	>
+		<div class="flex flex-wrap flex-col">
+			<p>{legendTitle}</p>
+		</div>
 		<div class="text-xs pr-1 w-full">
 			{#each legend.values as value, i}
 				<div class="flex items-center">
 					<span
 						class="inline-block h-[8px] {legend.chartType === 'Area Map'
 							? ''
-							: 'rounded-full'} w-[10px] ml-[3px] mr-3"
+							: 'rounded-full'} w-[8px]"
 						style="background-color: {legend.colorPalette[i]};"
 					/>
-					<span class="inline-block w-full">{value || 'No value'} </span>
+					<span class="inline-block ml-2">{value || 'No value'} </span>
 				</div>
 			{/each}
 		</div>

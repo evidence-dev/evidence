@@ -45,6 +45,17 @@
 	FROM la_locations`,
 		query
 	);
+	const grouped_locations_bubbles = Query.create(
+		`SELECT 
+		*, 
+		CASE 
+			WHEN sales BETWEEN 0 AND 70000 THEN 'Low'
+			WHEN sales BETWEEN 70001 AND 100000 THEN 'Medium'
+			WHEN sales BETWEEN 100001 AND 1000000 THEN 'High'
+		END AS population
+	FROM la_locations`,
+		query
+	);
 
 	const grouped_locations_area = Query.create(
 		`SELECT 
@@ -169,178 +180,43 @@ ORDER BY 1;
 	</BaseMap>
 	<div class="h-32"></div>
 </Story>
+
 <Story name="Single Base maps with Scalar legends">
 	<BaseMap title="Scalar Legends" height="300">
-		<Points
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			legendType="scalar"
-			value="sales"
-			legendFmt="usd"
-		/>
-		<Points
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			legendType="scalar"
-			value="sales"
-			legendFmt="usd"
-		/>
 		<Bubbles
-			data={grouped_locations}
+			data={grouped_locations_bubbles}
 			lat="lat"
 			long="long"
-			value="Category"
+			value="population"
 			size="sales"
 			opacity="0.6"
 			legendType="categorical"
+			colorPalette={['#C65D47', '#A97D5D', '#5BAF7A']}
+		/>
+		<Points
+			data={grouped_locations}
+			lat="lat"
+			long="long"
+			legendType="categorical"
+			value="Category"
+			legendFmt="usd"
 		/>
 		<Areas
 			data={grouped_locations_area}
 			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
 			areaCol="zip_code"
 			name="area"
-			value="Category"
+			value="sales"
 			geoId="ZCTA5CE10"
 			valueFmt="usd"
 			tooltipType="hover"
 			opacity="1"
-			legendType="categorical"
-			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-		/>
-	</BaseMap>
-	<BaseMap title="Scalar Legends" height="300" legendPosition="topLeft">
-		<Points
-			data={grouped_locations}
-			lat="lat"
-			long="long"
 			legendType="scalar"
-			value="sales"
-			legendFmt="usd"
-		/>
-		<Points
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			legendType="scalar"
-			value="sales"
-			legendFmt="usd"
-		/>
-		<Bubbles
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			value="Category"
-			size="sales"
-			opacity="0.6"
-			legendType="categorical"
-		/>
-		<Bubbles
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			value="Category"
-			size="sales"
-			opacity="0.6"
-			legendType="categorical"
-		/>
-		<Areas
-			data={grouped_locations_area}
-			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
-			areaCol="zip_code"
-			name="area"
-			value="Category"
-			geoId="ZCTA5CE10"
-			valueFmt="usd"
-			tooltipType="hover"
-			opacity="1"
-			legendType="categorical"
-			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-		/>
-	</BaseMap>
-	<BaseMap title="Scalar Legends" height="300" legendPosition="topRight">
-		<Points
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			legendType="scalar"
-			value="sales"
-			legendFmt="usd"
-		/>
-		<Points
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			legendType="scalar"
-			value="sales"
-			legendFmt="usd"
-		/>
-		<Bubbles
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			value="Category"
-			size="sales"
-			opacity="0.6"
-			legendType="categorical"
-		/>
-		<Areas
-			data={grouped_locations_area}
-			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
-			areaCol="zip_code"
-			name="area"
-			value="Category"
-			geoId="ZCTA5CE10"
-			valueFmt="usd"
-			tooltipType="hover"
-			opacity="1"
-			legendType="categorical"
-			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-		/>
-	</BaseMap>
-	<BaseMap title="Scalar Legends" height="300" legendPosition="bottomRight">
-		<Points
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			legendType="scalar"
-			value="sales"
-			legendFmt="usd"
-		/>
-		<Points
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			legendType="scalar"
-			value="sales"
-			legendFmt="usd"
-		/>
-		<Bubbles
-			data={grouped_locations}
-			lat="lat"
-			long="long"
-			value="Category"
-			size="sales"
-			opacity="0.6"
-			legendType="categorical"
-		/>
-		<Areas
-			data={grouped_locations_area}
-			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
-			areaCol="zip_code"
-			name="area"
-			value="Category"
-			geoId="ZCTA5CE10"
-			valueFmt="usd"
-			tooltipType="hover"
-			opacity="1"
-			legendType="categorical"
-			colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 		/>
 	</BaseMap>
 	<div class="h-32"></div>
 </Story>
+
 <Story name="multi map configurations">
 	<BaseMap title="Scalar Legends" height="300">
 		<Points
