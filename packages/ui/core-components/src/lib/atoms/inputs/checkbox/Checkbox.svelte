@@ -39,12 +39,10 @@
 		<p class="truncate font-medium">
 			{title}
 		</p>
-		<div>
-			<input
-				type="checkbox"
-				bind:checked={$inputs[name]}
-				class="focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-base-300 shadow-sm shadow-base-100 accent-base-content"
-			/>
-		</div>
+		<input
+			type="checkbox"
+			bind:checked={$inputs[name]}
+			class="[&:not(:checked)]:appearance-none cursor-pointer border border-base-content/50 rounded-sm focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-base-300 shadow-sm accent-base-content"
+		/>
 	</Button>
 </HiddenInPrint>

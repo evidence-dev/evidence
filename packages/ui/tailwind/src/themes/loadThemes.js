@@ -4,9 +4,16 @@ import { getEvidenceConfig } from '@evidence-dev/sdk/config';
 import { ThemesConfigFileSchema } from './schemas.js';
 import { defaultThemes } from './defaultThemes.js';
 
-/** @returns {import('./schemas.js').Themes} */
+/** @typedef {import('./schemas.js').Themes} Themes */
+
+/** @returns {Themes} */
 export const loadThemes = () => {
-	const { themes: themesFromConfig } = getEvidenceConfig(ThemesConfigFileSchema);
+	let themesFromConfig = {};
+	try {
+		themesFromConfig = getEvidenceConfig(ThemesConfigFileSchema).themes;
+	} catch {
+		// Do nothing
+	}
 	const themes = defaultsDeep(themesFromConfig, defaultThemes);
 	return themes;
 };
