@@ -1,5 +1,4 @@
 <script>
-	// @ts-check
 	import DimensionRow from './DimensionRow.svelte';
 
 	import { getContext } from 'svelte';
@@ -12,6 +11,7 @@
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import QueryLoad from '../../atoms/query-load/QueryLoad.svelte';
 	import { resolveMaybePromise } from '@evidence-dev/sdk/usql';
+	import Alert from '../../atoms/alert/Alert.svelte';
 
 	/** @type {import("@evidence-dev/sdk/usql").DescribeResultRow} */
 	export let dimension;
@@ -107,7 +107,7 @@
 
 <!-- {dimensionCutQuery} -->
 
-<div class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-gray-700 pr-4 pb-4 overflow-clip">
+<div class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased pr-4 pb-4 overflow-clip">
 	<div class="capitalize border-b flex justify-between items-baseline">
 		<span class="truncate w-2/3">
 			{formatTitle(dimension.column_name)}
@@ -168,7 +168,9 @@
 				{/if}
 			</div>
 		{:else}
-			<p class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded">No Records</p>
+			<p class="text-xs text-base-content/50 p-2 my-2 w-full border border-dashed rounded">
+				No Records
+			</p>
 		{/if}
 	</QueryLoad>
 </div>
