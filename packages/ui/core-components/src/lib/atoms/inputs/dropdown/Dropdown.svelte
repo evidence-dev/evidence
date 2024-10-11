@@ -229,7 +229,7 @@
 						variant="outline"
 						role="combobox"
 						size="sm"
-						class="min-w-5 h-8 border"
+						class="min-w-5 h-8 border border-base-300"
 					>
 						{#if title && !multiple}
 							{title}
@@ -309,12 +309,12 @@
 							</Command.Group>
 							{#if multiple}
 								{#if !disableSelectAll}
-									<div class="-mx-1 h-px bg-gray-200" />
+									<div class="-mx-1 h-px bg-base-300" />
 									<Command.Item class="justify-center text-center" onSelect={selectAll}>
 										Select all
 									</Command.Item>
 								{/if}
-								<div class="-mx-1 h-px bg-gray-200" />
+								<div class="-mx-1 h-px bg-base-300" />
 								<Command.Item
 									disabled={$selectedOptions.length === 0}
 									class="justify-center text-center"

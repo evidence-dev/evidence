@@ -37,8 +37,8 @@
 	{#if multiple}
 		<div
 			class={cn(
-				'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-gray-900',
-				active ? 'bg-gray-900 text-gray-50' : 'opacity-50 [&_svg]:invisible'
+				'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-base-content',
+				active ? 'bg-base-content text-base-100' : 'opacity-50 [&_svg]:invisible'
 			)}
 		>
 			<Icon src={Check} class={cn('h-4 w-4')} />

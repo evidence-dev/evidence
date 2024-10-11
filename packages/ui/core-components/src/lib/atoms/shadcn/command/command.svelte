@@ -12,10 +12,7 @@
 </script>
 
 <CommandPrimitive.Root
-	class={cn(
-		'flex h-full w-full flex-col overflow-hidden rounded-md bg-white text-gray-900',
-		className
-	)}
+	class={cn('flex h-full w-full flex-col overflow-hidden rounded-md bg-base-100', className)}
 	bind:value
 	{...$$restProps}
 >
