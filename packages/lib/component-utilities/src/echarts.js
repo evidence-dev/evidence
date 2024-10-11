@@ -199,11 +199,11 @@ export default (node, option) => {
 
 	onWindowResize();
 
-	globalThis[Symbol.for('chart renders')] ??= 0;
-	globalThis[Symbol.for('chart renders')]++;
+	window[Symbol.for('chart renders')] ??= 0;
+	window[Symbol.for('chart renders')]++;
 	return {
 		update(option) {
-			globalThis[Symbol.for('chart renders')]++;
+			window[Symbol.for('chart renders')]++;
 			updateChart(option);
 		},
 		destroy() {
