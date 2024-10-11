@@ -9,9 +9,8 @@ title: Welcome to Evidence
 	const ssr_query = buildQuery("SELECT category, COUNT(*) * 2 as count FROM needful_things.orders GROUP BY category", "ssr", data.ssr_data, { knownColumns: data.ssr_columns });
 
 	// replicate chart double loading
-	let chart_data = sales_month;
 	setTimeout(() => {
-		chart_data = sales_month;
+		sales_month = sales_month;
 	}, 1400);
 </script>
 
@@ -21,7 +20,7 @@ from needful_things.orders
 group by x
 ```
 
-<BarChart data={chart_data} title="Sales by Month" x=x y=y />
+<BarChart data={sales_month} title="Sales by Month" x=x y=y />
 
 {#if !$nonssr_query.loading}
 
@@ -96,7 +95,6 @@ This page can be found in your project at `/pages/index.md`. Make a change to th
 
 <BarChart
     data={orders_by_category}
-    title="Sales by Month, {inputs.category.label}"
     x=month
     y=sales_usd
     series=category

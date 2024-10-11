@@ -102,28 +102,16 @@ test('charts should render once', async ({ page }) => {
 	await page.goto('/');
 	await waitForWasm(page);
 
-	const expected = {
-		length: 2,
-		diff: 1
-	};
+	const received = await page.evaluate(async () => {
+		await new Promise((resolve) => setTimeout(resolve, 3000));
 
-	expect(
-		await page.evaluate(async () => {
-			const charts = window[Symbol.for('__evidence-chart-window-debug__')] ?? {};
+		return globalThis[Symbol.for("chart renders")];
+	});
 
-			let previous = [];
-			// wait for all charts to settle
-			while (
-				JSON.stringify(previous) !==
-				JSON.stringify((previous = Object.values(charts).map((chart) => chart.__renderCount)))
-			) {
-				await new Promise((res) => setTimeout(res, 100));
-			}
+	// 3 renders is what is expected (creation -> update -> (deletion) -> creation)
+	// double loading makes 4 renders, adding another delete/create in
+	// TODO: why is 3 renders expected
+	const expected = 7;
 
-			return {
-				length: previous.length,
-				diff: previous[0] - previous[1]
-			};
-		})
-	).toEqual(expected);
+	expect(received).toEqual(expected);
 });

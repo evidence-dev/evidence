@@ -120,11 +120,6 @@ export default (node, option) => {
 		dispatch('click', params);
 	});
 
-	chart.__renderCount = 0;
-	chart.on('rendered', () => {
-		chart.__renderCount++;
-	});
-
 	// Resize logic:
 	const containerElement = document.getElementById('evidence-main-article');
 	// watching parent element is necessary for charts within `Fullscreen` components
@@ -204,8 +199,11 @@ export default (node, option) => {
 
 	onWindowResize();
 
+	globalThis[Symbol.for('chart renders')] ??= 0;
+	globalThis[Symbol.for('chart renders')]++;
 	return {
 		update(option) {
+			globalThis[Symbol.for('chart renders')]++;
 			updateChart(option);
 		},
 		destroy() {
