@@ -48,13 +48,14 @@
 	let sortBy = undefined;
 	let sortAsc = undefined;
 	let sortDirection = undefined;
+	let sortObj = {};
 	$: if (sort) {
 		const [column, direction] = sort.split(' ');
 		sortBy = column;
 		sortDirection = direction;
 		sortAsc = direction === 'desc' ? false : true; // Default to ascending if no direction is provided
+		sortObj = sortBy ? { col: sortBy, ascending: sortAsc } : { col: null, ascending: null };
 	}
-	let initialSortApplied = false;
 
 	export let groupBy = undefined;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
@@ -274,15 +275,21 @@
 	// SORTING
 	// ---------------------------------------------------------------------------------------
 
-	let sortObj = sortBy ? { col: sortBy, ascending: sortAsc } : { col: null, ascending: null };
-
-	$: sortFunc = (column) => {
+	$: sortClick = (column) => {
 		if (sortObj.col == column) {
+			// If the clicked column is the same as inital sort column, switch the sort direction
 			sortObj.ascending = !sortObj.ascending;
 		} else {
+			// If the clicked column is different from initial sort column, change the sort column and sort ascending
 			sortObj.col = column;
-			sortObj.ascending = sortAsc;
+			sortObj.ascending = true;
 		}
+
+		sortFunc(sortObj)
+	}
+
+	$: sortFunc = (sortObj) => {
+		const column = sortObj.col;
 
 		// Modifier to sorting function for ascending or descending
 		const sortModifier = sortObj.ascending ? 1 : -1;
@@ -344,13 +351,10 @@
 		sortedGroupNames = Object.keys(groupedData).sort();
 	}
 
-	$: if (!initialSortApplied && sortBy) {
-		sortFunc(sortBy); // Automatically sort by the column specified in `sortBy` on load
-		initialSortApplied = true; // Set flag so column click sorting still functions after page load
+	// Re-run sort on data change (useful for input changes)
+	$: if (data && sort) {
+		sortFunc(sortObj);
 	}
-
-	// Reset sort condition when data object is changed
-	$: data, (sortObj = { col: null, ascending: null });
 
 	// ---------------------------------------------------------------------------------------
 	// PAGINATION
@@ -530,7 +534,7 @@
 					{columnSummary}
 					{compact}
 					{sortable}
-					{sortFunc}
+					{sortClick}
 					{formatColumnTitles}
 					{sortObj}
 					{wrapTitles}

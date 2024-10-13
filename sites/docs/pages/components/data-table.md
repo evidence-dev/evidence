@@ -97,6 +97,24 @@ This example includes a `custom_format` column, which contains a different curre
 
 <DataTable data={orders_summary} search=true/>
 
+### Sort
+
+```svelte
+<DataTable data={orders_summary} sort="sales desc">
+    <Column id=category/> 
+    <Column id=item/> 
+    <Column id=sales fmt=usd/> 
+</DataTable>
+```
+
+<DataTable data={orders_summary} sort="sales desc">
+    <Column id=category/> 
+    <Column id=item/> 
+    <Column id=sales fmt=usd/> 
+</DataTable>
+
+
+
 ### Deltas
 
 ```sql country_summary
