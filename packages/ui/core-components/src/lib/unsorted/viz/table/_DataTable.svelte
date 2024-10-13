@@ -285,8 +285,8 @@
 			sortObj.ascending = true;
 		}
 
-		sortFunc(sortObj)
-	}
+		sortFunc(sortObj);
+	};
 
 	$: sortFunc = (sortObj) => {
 		const column = sortObj.col;

@@ -27,7 +27,7 @@
 
 <Story name="With Sort">
 	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
-	<DataTable {data} sort="fare desc"/>
+	<DataTable {data} sort="fare desc" />
 </Story>
 
 <Story name="With Search">
@@ -55,13 +55,7 @@
 		`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`,
 		query
 	)}
-	<DataTable
-		{data}
-		title="Flights"
-		search
-		groupBy="regulator"
-		groupsOpen="false"
-	>
+	<DataTable {data} title="Flights" search groupBy="regulator" groupsOpen="false">
 		<Column id="id" title="ID" />
 		<Column id="airline" title="Airline" />
 		<Column id="departure_airport" title="Departure Airport" />

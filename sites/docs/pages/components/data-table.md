@@ -9,6 +9,7 @@ sidebar_position: 1
 
 ```orders_summary
 select * from needful_things.orders
+order by id
 limit 100
 ```
 
@@ -113,7 +114,11 @@ This example includes a `custom_format` column, which contains a different curre
     <Column id=sales fmt=usd/> 
 </DataTable>
 
-
+<DataTable data={orders_summary} sort="sales asc">
+    <Column id=category/> 
+    <Column id=item/> 
+    <Column id=sales fmt=usd/> 
+</DataTable>
 
 ### Deltas
 
