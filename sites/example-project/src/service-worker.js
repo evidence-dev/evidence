@@ -17,7 +17,7 @@ sw.addEventListener('activate', () => {
 	}
 });
 
-sw.addEventListener('fetch', async (event) => {
+sw.addEventListener('fetch', (event) => {
 	if (disabled) return;
 	if (!event.request.url.endsWith('.parquet')) return;
 
