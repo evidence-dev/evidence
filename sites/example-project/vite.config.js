@@ -1,9 +1,10 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { sourceQueryHmr } from '@evidence-dev/sdk/vite';
+import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-	plugins: [sveltekit(), sourceQueryHmr()],
+	plugins: [sveltekit(), sourceQueryHmr(), evidenceThemes()],
 	optimizeDeps: {
 		include: ['echarts-stat', 'echarts'],
 		exclude: ['svelte-icons']
