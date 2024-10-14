@@ -3,9 +3,6 @@
 	import '../app.css';
 	import { EvidenceDefaultLayout } from '@evidence-dev/core-components';
 	export let data;
-
-	import themes from 'virtual:evidence-themes';
-	console.log({ themes });
 </script>
 
 <EvidenceDefaultLayout {data}>

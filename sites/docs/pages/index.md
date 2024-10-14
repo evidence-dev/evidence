@@ -7,6 +7,11 @@ og:
   image: /img/how-it-works.png
 ---
 
+<script>
+  import themes from 'virtual:evidence-themes';
+	console.log({ themes });
+</script>
+
 # What is Evidence?
 
 Evidence is an open source framework for building data products with SQL - things like reports, decision-support tools, and embedded dashboards. It's a code-driven alternative to drag-and-drop BI tools.
