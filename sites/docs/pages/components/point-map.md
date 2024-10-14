@@ -252,69 +252,97 @@ FROM la_locations
 ```	
 #### Categorical Legend
 
-	<PointMap
-		legendType=categorical
-		legendPosition=bottomLeft
-		data={grouped_locations}
-		lat=lat
-		long=long
-		value=Category
-        colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-		tooltipType=hover
-		tooltip={[
-			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
-		]}
-	/>
-
-```svelte
 <PointMap
-    legendType=categorical
-    legendPosition=bottomLeft
     data={grouped_locations}
     lat=lat
     long=long
     value=Category
+    legendType=categorical
+    legendPosition=bottomLeft
+/>
+
+```svelte
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    legendType=categorical
+    legendPosition=bottomLeft
+/>
+```
+
+#### Custom Colors
+Set custom legend colors using the `colorPalette` prop to match the number of categories; excess categorical options will default to standard colors.
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    legendType=categorical
+    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-    tooltipType=hover
-    tooltip={[
-        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
-    ]}
+/>
+
+```svelte
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    legendType=categorical
+    legendPosition=bottomLeft
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
 
 #### Scalar Legend
 
 <PointMap
-    legendType=scalar
-    legendPosition=bottomLeft
     data={grouped_locations}
     lat=lat
     long=long
     value=sales
-    colorPalette={['#dc0101', '#01dc08']}
-    tooltipType=hover
-    tooltip={[
-        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
-    ]}
+    legendType=scalar
+    legendPosition=bottomLeft
+    legendFmt=usd
 />
 
 ```svelte
 <PointMap
-    legendType=scalar
-    legendPosition=bottomLeft
     data={grouped_locations}
     lat=lat
     long=long
     value=sales
-    colorPalette={['#dc0101', '#01dc08']}
-    tooltipType=hover
-    tooltip={[
-        { id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
-        { id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
-    ]}
+    legendType=scalar
+    legendPosition=bottomLeft
+    legendFmt=usd
+/>
+```
+
+#### Custom Colors
+Define scalar legend colors using the `colorPalette` prop, allowing specified colors to create a gradient based on the range of values.
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    legendType=scalar
+    legendPosition=bottomLeft
+    legendFmt=usd
+    colorPalette={['#C65D47', '#4A8EBA']}
+/>
+
+```svelte
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    legendType=scalar
+    legendPosition=bottomLeft
+    legendFmt=usd
+    colorPalette={['#C65D47', '#4A8EBA']}
 />
 ```
 
