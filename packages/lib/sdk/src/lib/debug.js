@@ -5,7 +5,10 @@ import chalk from 'chalk';
 /** @type {Set<() => unknown>} */
 const enableFns = new Set();
 /** @param {() => unknown} fn */
-export const onEnableDebug = (fn) => enableFns.add(fn);
+export const onEnableDebug = (fn) => {
+	if (isDebug()) fn();
+	else enableFns.add(fn);
+};
 
 export const enableDebug = () => {
 	if (typeof process === 'undefined') {
