@@ -8,10 +8,17 @@
 	export let legendType = undefined;
 	/** @type {'left' | 'right' | 'down' | 'up'} */
 	export let direction = 'down';
+
+	const chevronDirections = {
+		up: { show: 'rotate-[270deg]', hide: 'rotate-90' },
+		down: { show: 'rotate-90', hide: 'rotate-[270deg]' },
+		left: { show: 'rotate-0', hide: 'rotate-180' },
+		right: { show: 'rotate-180', hide: 'rotate-0' }
+	};
 </script>
 
 <button
-	class="flex z-[1] items-center {legendType === 'scalar' && direction === 'left'
+	class="flex z-[1] items-center p-1 {legendType === 'scalar' && direction === 'left'
 		? 'flex-row-reverse'
 		: 'flex-row'}"
 	on:click={handleLegendToggle}
@@ -20,41 +27,21 @@
 >
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		width="24"
-		height="24"
-		viewBox="0 0 24 24"
+		width="12"
+		height="12"
+		viewBox="6 6 12 12"
 		fill="none"
 		stroke="currentColor"
 		stroke-width="1.5"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		class={`transition-transform duration-300 ease-in-out ${hideLegend ? 'rotate-90' : ''}`}
+		class="transform transition-transform duration-300 ease-in-out text-left {hideLegend
+			? chevronDirections[direction].hide
+			: chevronDirections[direction].show}"
 	>
-		{#if hideLegend}
-			<!-- Diagonal line 1 -->
-			<line x1="6" y1="6" x2="18" y2="18" />
-			<!-- Diagonal line 2 -->
-			<line x1="6" y1="18" x2="18" y2="6" />
-		{:else}
-			<!-- Row 1: Circle and Bar -->
-			<circle cx="5.5" cy="7" r="1" />
-			<rect x="8" y="6.5" width="11" height="1" rx="0.5" ry="0.5" />
-
-			<!-- Row 2: Circle and Bar -->
-			<circle cx="5.5" cy="12" r="1" />
-			<rect
-				x="8"
-				y="11.5"
-				width="11"
-				height="1"
-				rx="0.5"
-				ry="0.5"
-				class={`transition-opacity duration-200 ease-in-out ${hideLegend ? 'opacity-0' : 'opacity-100'}`}
-			/>
-
-			<!-- Row 3: Circle and Bar -->
-			<circle cx="5.5" cy="17" r="1" />
-			<rect x="8" y="16.5" width="11" height="1" rx="0.5" ry="0.5" />
-		{/if}
+		<polyline points="14 17 10 12 14 7" />
 	</svg>
+	<span class="sr-only">
+		{hideLegend ? 'Show Legend' : 'Hide Legend'}
+	</span>
 </button>
