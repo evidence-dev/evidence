@@ -75,7 +75,7 @@
 			<div class="flex flex-wrap">
 				{#each $categoricalLegendData as legend}
 					<div
-						class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-1 {multiLegend
+						class="border-x-[1px] border-gray-300 bg-gray-100 flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-1 {multiLegend
 							? 'w-1/2 max-w-42'
 							: ''} {hideLegend ? 'border-y-0 py-0' : 'border-y-[1px] py-1'}"
 					>
@@ -114,9 +114,7 @@
 		{/if}
 
 		{#if true}
-			<div
-				class="border border-gray-300 bg-gray-100 margin-auto justify-center items-center pl-[2px] pr-[3.5px] w-[88.5px]"
-			>
+			<div class="border border-gray-300 bg-gray-100 flex justify-center w-fit">
 				<LegendToggle legendType="categorical" {handleLegendToggle} {hideLegend} {multiLegend} />
 			</div>
 		{/if}
