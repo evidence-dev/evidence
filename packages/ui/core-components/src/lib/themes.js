@@ -1,14 +1,13 @@
 // @ts-check
 
-import themes from 'virtual:evidence-themes';
-console.log(themes.light.primary);
-
 import { getContext, setContext } from 'svelte';
 import { derived, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
+import themes from 'virtual:evidence-themes';
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
+/** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
 
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
@@ -41,9 +40,11 @@ const createSystemThemeStore = () => {
 
 /**
  * @typedef ThemeStores
+ * TODO could use some help naming activeTheme / theme
  * @prop {Readable<'light' | 'dark'>} systemTheme
  * @prop {Readable<'system' | 'light' | 'dark'>} selectedTheme
- * @prop {Readable<'light' | 'dark'>} theme
+ * @prop {Readable<'light' | 'dark'>} activeTheme
+ * @prop {Readable<Theme>} theme
  * @prop {() => void} cycleTheme
  */
 
@@ -54,9 +55,11 @@ const createThemeStores = () => {
 	/** @type {Writable<'system' | 'light' | 'dark'>} */
 	const selectedTheme = localStorageStore('evidence-theme', 'system');
 
-	const theme = derived([systemTheme, selectedTheme], ([$systemTheme, $selectedTheme]) => {
+	const activeTheme = derived([systemTheme, selectedTheme], ([$systemTheme, $selectedTheme]) => {
 		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
 	});
+
+	const theme = derived(activeTheme, ($activeTheme) => themes[$activeTheme]);
 
 	const cycleTheme = () => {
 		selectedTheme.update((current) => {
@@ -72,7 +75,7 @@ const createThemeStores = () => {
 		});
 	};
 
-	theme.subscribe((theme) => {
+	activeTheme.subscribe((theme) => {
 		if (typeof document !== 'undefined') {
 			document.documentElement.setAttribute('data-theme', theme);
 		}
@@ -81,6 +84,7 @@ const createThemeStores = () => {
 	return {
 		systemTheme,
 		selectedTheme: readonly(selectedTheme),
+		activeTheme,
 		theme,
 		cycleTheme
 	};

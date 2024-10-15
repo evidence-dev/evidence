@@ -24,10 +24,10 @@
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
 
-	const { selectedTheme, theme, cycleTheme } = ensureThemeStores();
+	const { selectedTheme, activeTheme, cycleTheme } = ensureThemeStores();
 	$: themeLabel =
 		$selectedTheme === 'system' ? 'System' : $selectedTheme === 'light' ? 'Light' : 'Dark';
-	$: themeIcon = $theme === 'light' ? Sun : Moon;
+	$: themeIcon = $activeTheme === 'light' ? Sun : Moon;
 </script>
 
 <DropdownMenu.Root>
