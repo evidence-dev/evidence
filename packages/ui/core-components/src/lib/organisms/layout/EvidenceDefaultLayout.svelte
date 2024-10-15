@@ -95,9 +95,15 @@
 
 	onMount(() => {
 		if (!('serviceWorker' in navigator)) return;
-		addEventListener('load', () => {
+
+		const registerServiceWorker = () => {
 			navigator.serviceWorker.register('/service-worker.js');
-		});
+		};
+
+		window.addEventListener('load', registerServiceWorker);
+		return () => {
+			window.removeEventListener('load', registerServiceWorker);
+		};
 	});
 
 	// TODO where should this go? How do we get project splash to be rendered with the proper theme?

@@ -64,8 +64,8 @@
 	export let legendPosition = 'bottomLeft';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
-	/** @type {string} */
-	export let legendTitle = 'Legend';
+	/** @type {string | undefined} */
+	export let legendFmt = undefined;
 
 	const chartType = 'Area Map';
 
@@ -84,6 +84,6 @@
 
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
 		<Areas data={loaded} {geoJsonUrl} {geoId} {areaCol} {legendType} {...$$restProps} />
-		<Legend {legendPosition} {legendType} {legendTitle} />
+		<Legend {legendPosition} {legendType} {legendFmt} />
 	</BaseMap>
 </QueryLoad>
