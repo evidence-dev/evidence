@@ -42,8 +42,6 @@
 	export let name = undefined;
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
-	/** @type {string | undefined} */
-	export let legendFmt = undefined;
 	export let chartType = 'Area Map';
 
 	/** @type {boolean} */
@@ -213,7 +211,7 @@
 			max,
 			colorPalette,
 			legendType,
-			legendFmt,
+			valueFmt,
 			chartType,
 			legendId,
 			legend

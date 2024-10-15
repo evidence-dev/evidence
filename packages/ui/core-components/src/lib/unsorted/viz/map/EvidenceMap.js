@@ -490,7 +490,7 @@ export class EvidenceMap {
 	/**
 	 *
 	 * @type {import('svelte/store').Writable<
-	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number, legendType: string, legendFmt: string, chartType: string, legendId: string, value: string, legend: boolean }[]
+	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number, legendType: string, valueFmt: string, chartType: string, legendId: string, value: string, legend: boolean }[]
 	 * >}
 	 */
 	#legendData = writable([]);
@@ -501,7 +501,7 @@ export class EvidenceMap {
 		minValue,
 		maxValue,
 		legendType,
-		legendFmt,
+		valueFmt,
 		chartType,
 		legendId,
 		value,
@@ -518,7 +518,7 @@ export class EvidenceMap {
 									minValue,
 									maxValue,
 									legendType,
-									legendFmt,
+									valueFmt,
 									chartType,
 									value,
 									legend
@@ -533,7 +533,7 @@ export class EvidenceMap {
 							minValue,
 							maxValue,
 							legendType,
-							legendFmt,
+							valueFmt,
 							chartType,
 							legendId,
 							value,
@@ -557,7 +557,7 @@ export class EvidenceMap {
 			max,
 			colorPalette,
 			legendType,
-			legendFmt,
+			valueFmt,
 			chartType,
 			legendId,
 			legend
@@ -588,7 +588,7 @@ export class EvidenceMap {
 				minValue,
 				maxValue,
 				legendType,
-				legendFmt,
+				valueFmt,
 				chartType,
 				legendId,
 				value,

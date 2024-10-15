@@ -36,8 +36,6 @@
 	export let size = undefined; // point size
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
-	/** @type {string | undefined} */
-	export let legendFmt = undefined;
 	/** @type {'Point Map' | 'Bubble Map'} */
 	export let chartType = 'Point Map';
 
@@ -235,7 +233,7 @@
 				max,
 				colorPalette,
 				legendType,
-				legendFmt,
+				valueFmt,
 				chartType,
 				legendId,
 				legend

@@ -39,10 +39,10 @@
 		</span>
 		<div class="flex justify-between">
 			<span class="text-[10px] inline-block"
-				>{legend.legendFmt ? fmt(legend.minValue, legend.legendFmt) : legend.minValue}</span
+				>{legend.valueFmt ? fmt(legend.minValue, legend.valueFmt) : legend.minValue}</span
 			>
 			<span class="text-[10px] inline-block"
-				>{legend.legendFmt ? fmt(legend.maxValue, legend.legendFmt) : legend.maxValue}</span
+				>{legend.valueFmt ? fmt(legend.maxValue, legend.valueFmt) : legend.maxValue}</span
 			>
 		</div>
 	</div>

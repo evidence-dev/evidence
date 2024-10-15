@@ -20,6 +20,8 @@
 		$legendData.filter((legend) => legend.legendType === 'categorical')
 	);
 
+	$: console.log($scalarLegendData);
+
 	let scalarLegendData = derived(legendData, ($legendData) =>
 		$legendData.filter((legend) => legend.legendType === 'scalar')
 	);

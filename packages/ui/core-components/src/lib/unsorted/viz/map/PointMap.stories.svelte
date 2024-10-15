@@ -102,7 +102,7 @@
 <Story name="Legend Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap data={grouped_locations} lat="lat" long="long" value="Category" />
 	<div class="h-32"></div>
-	<PointMap data={grouped_locations} legendFmt="usd" lat="lat" long="long" value="sales" />
+	<PointMap data={grouped_locations} valueFmt="usd" lat="lat" long="long" value="sales" />
 	<div class="h-32"></div>
 </Story>
 
@@ -122,7 +122,7 @@
 		long="long"
 		value="sales"
 		legendType="scalar"
-		legendFmt="usd"
+		valueFmt="usd"
 	/>
 	<div class="h-32"></div>
 </Story>
