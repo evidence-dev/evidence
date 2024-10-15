@@ -8,9 +8,9 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import TableCell from './TableCell.svelte';
 	import chroma from 'chroma-js';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ChevronRight } from '@steeze-ui/tabler-icons';
+	import { ensureThemeStores } from '../../../themes.js';
 
 	export let displayedData = undefined;
 	export let rowShading = undefined;
@@ -50,6 +50,8 @@
 
 		await goto(row[link]);
 	};
+
+	const { theme } = ensureThemeStores();
 </script>
 
 {#each displayedData as row, i}
@@ -85,7 +87,7 @@
 				column.colorBreakpoints ??
 				(column.colorMid ? [column_min, column.colorMid, column_max] : [column_min, column_max])}
 			{@const color_scale = column.colorPalette
-				? chroma.scale(column.colorPalette).domain(color_domain).nodata('white')
+				? chroma.scale(column.colorPalette).domain(color_domain).nodata($theme['base-100'])
 				: ''}
 			{@const cell_color =
 				column.contentType === 'colorscale' && is_nonzero && column.colorPalette
@@ -95,13 +97,13 @@
 					: ''}
 			{@const font_color = column.redNegatives
 				? row[column.id] < 0
-					? 'rgb(220 38 38)'
+					? $theme.negative
 					: ''
 				: column.contentType === 'colorscale' && is_nonzero && column.colorPalette
-					? chroma.contrast(cell_color, uiColours.grey999) <
-						chroma.contrast(cell_color, 'white') + 0.5
-						? 'white'
-						: uiColours.grey999
+					? chroma.contrast(cell_color, $theme['base-content']) <
+						chroma.contrast(cell_color, $theme['base-100']) + 0.5
+						? $theme['base-100']
+						: $theme['base-content']
 					: ''}
 			{@const bottom_border =
 				i !== displayedData.length - 1 &&
