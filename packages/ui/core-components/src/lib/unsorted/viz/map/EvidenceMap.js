@@ -151,7 +151,6 @@ export class EvidenceMap {
 		this.#bounds = Leaflet.latLngBounds(); // Reset bounds to recalculate
 
 		this.#map.eachLayer((layer) => {
-			console.log(layer);
 			if (
 				layer instanceof Leaflet.Marker ||
 				layer instanceof Leaflet.CircleMarker ||
@@ -240,6 +239,10 @@ export class EvidenceMap {
 		return geoJsonLayer;
 	}
 
+	#bubbleLayer;
+
+	#pointsLayer;
+
 	/**
 	 * Adds a circle marker to the map.
 	 * @param {object} item - The data item associated with the marker.
@@ -265,12 +268,24 @@ export class EvidenceMap {
 		link
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
-		const marker = Leaflet.circleMarker(coords, circleOptions);
-		// handle layering
-		marker.addTo(this.#map);
-		if (circleOptions.markerType === 'bubbles') {
-			marker.bringToBack();
+
+		//other panes start at z-index 400
+		if (!this.#map.getPane(circleOptions.pane)) {
+			this.#map.createPane(circleOptions.pane);
+			if (circleOptions.pane === 'bubbles' && circleOptions.z === undefined) {
+				this.#map.getPane('bubbles').style.zIndex = 400; // Lower zIndex for bubbles
+			} else if (circleOptions.pane === 'points' && circleOptions.z === undefined) {
+				this.#map.getPane('points').style.zIndex = 401; // Higher zIndex for points
+			} else if (circleOptions.z !== undefined) {
+				this.#map.getPane(circleOptions.pane).style.zIndex = 400 + circleOptions.z;
+			}
 		}
+
+		// Create the marker with the appropriate pane
+		const marker = Leaflet.circleMarker(coords, circleOptions);
+
+		marker.addTo(this.#map);
+
 		this.updateMarkerStyle(marker, circleOptions); // Initial style setting and storage
 
 		marker.on('click', () => {

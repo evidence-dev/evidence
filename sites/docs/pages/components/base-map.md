@@ -390,6 +390,21 @@ options="column name"
 Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
 </PropListing>
 
+<PropListing
+    name="paneType"
+    options="text"
+>
+    Specifies the type of pane where the points will be rendered.
+</PropListing>
+
+<PropListing
+    name="z"
+    options="number"
+>
+    Represents the z-index value for the pane, controlling its stacking order relative to other panes (higher values are on top, e.g., z=2 is above z=1).
+</PropListing>
+
+
 ### Bubbles
 Use the `<Bubbles/>` component to add an area layer
 
@@ -459,6 +474,20 @@ name="pointName"
 options="column name"
 >
 Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
+</PropListing>
+
+<PropListing
+    name="paneType"
+    options="text"
+>
+    Specifies the type of pane where the bubbles will be rendered.
+</PropListing>
+
+<PropListing
+    name="z"
+    options="number"
+>
+    Represents the z-index value for the pane, controlling its stacking order relative to other panes (higher values are on top, e.g., z=2 is above z=1).
 </PropListing>
 
 ### Common Layer Options

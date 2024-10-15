@@ -287,6 +287,12 @@
 		});
 		setInputDefault(item, name);
 	}
+
+	/** @type {'points' | 'bubbles' | 'string'}*/
+	export let paneType = pointStyle;
+
+	/** @type {number | undefined} */
+	export let z = undefined;
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -304,7 +310,9 @@
 				weight: borderWidth,
 				color: borderColor,
 				className: `outline-none ${pointClass}`,
-				markerType: pointStyle
+				markerType: pointStyle,
+				pane: paneType,
+				z: z
 			}}
 			selectedOptions={{
 				fillColor: selectedColor,

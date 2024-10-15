@@ -61,7 +61,7 @@
 </Story>
 <Story name="Multiple Points">
 	<BaseMap title="My Map" height="300">
-		<Points data={la_locations} lat="lat" long="long" color="red" />
-		<Points data={la_locations} lat="lat" long="long" color="blue" />
+		<Points data={la_locations} lat="lat" long="long" color="red" paneType="red Points" z="1" />
+		<Points data={la_locations} lat="lat" long="long" color="blue" paneType="blue Points" z="2" />
 	</BaseMap>
 </Story>
