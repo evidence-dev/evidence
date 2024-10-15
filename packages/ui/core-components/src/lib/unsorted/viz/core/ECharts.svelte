@@ -12,6 +12,7 @@
 	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte';
+	import { ensureThemeStores } from '../../../themes.js';
 
 	export let config = undefined;
 
@@ -39,6 +40,8 @@
 	let copying = false;
 	let printing = false;
 	let hovering = false;
+
+	const { activeTheme } = ensureThemeStores();
 </script>
 
 <svelte:window
@@ -84,7 +87,8 @@
 					dispatch,
 					renderer,
 					connectGroup,
-					seriesColors
+					seriesColors,
+					theme: $activeTheme
 				}}
 			/>
 		{/if}
