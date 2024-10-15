@@ -725,261 +725,6 @@ DESCRIBE ${this.text.trim()}
 		}
 	};
 
-	/**
-	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
-	 * @param {import('../types.js').QueryOpts<any>} [initialOptions]
-	 */
-	static withDag = (reactiveOpts, initialOptions = {}) => {
-		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
-
-		/** @type {QueryValue<any>} */
-		let activeQuery;
-		/** @type {number} */
-		let changeIdx = 0;
-		// TODO: Should we override this, or should we merge this?
-		let currentOpts = { ...initialOptions };
-
-		const hasUnsetInput = () =>
-			_args.some((arg) => {
-				if (typeof arg !== 'object') return false;
-				if ('hasValue' in arg) {
-					return !arg.hasValue;
-				}
-				if (Query.isQuery(arg)) {
-					return arg.opts.noResolve;
-				}
-				return false;
-			});
-
-		const dagNode = new ActiveDagNode(
-			`Query | ${currentOpts.id ?? 'Unknown'}`,
-			async (_, defer) => {
-				activeQuery.publish('DagNode Execution');
-				const currentGen = ++changeIdx;
-				const nextQuery = Query.create(currentText(), execFn, {
-					...currentOpts,
-					dagNode,
-					noResolve: hasUnsetInput()
-				});
-
-				const fetched = nextQuery.fetch();
-				// Artificial Delay
-				// TODO: Make this a setting in the dev
-				// await new Promise((r) => setTimeout(r, 500));
-
-				if (fetched instanceof Promise) {
-					await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), fetched]).then(
-						() => {
-							if (currentGen === changeIdx) {
-								defer(() => callback(nextQuery));
-								// callback(nextQuery);
-								activeQuery = nextQuery;
-							}
-						}
-					);
-				} else {
-					if (currentGen === changeIdx) {
-						defer(() => callback(nextQuery));
-						// callback(nextQuery);
-						activeQuery = nextQuery;
-					}
-				}
-				if (hasUnsetInput()) {
-					return false;
-				} else {
-					return true;
-				}
-			}
-		);
-
-		/** @type {TemplateStringsArray} */
-		let _strs;
-
-		/** @type {any[]} */
-		let _args;
-
-		const currentText = () =>
-			zip(
-				_strs,
-				_args.map((a) => {
-					if (Query.isQuery(a)) return a.text;
-					if (typeof a !== 'object') return a?.toString();
-					return a.toString();
-				})
-			)
-				.flat()
-				.join('')
-				.trim();
-
-		return {
-			update: debounce(
-				/**
-				 *
-				 * @param {TemplateStringsArray} strs
-				 * @param  {...any} args
-				 */
-				(strs, ...args) => {
-					if (
-						args.every((a, i) => {
-							const out = a === _args?.[i];
-							return out;
-						}) &&
-						strs.every((s, i) => {
-							const out = s === _strs?.[i];
-							return out;
-						})
-					) {
-						return;
-					}
-					_strs = strs;
-					_args = args;
-
-					dagNode.deregisterDependencies();
-					args.forEach((arg) => {
-						if (arg?.__dag) {
-							dagNode.registerDependency(arg.__dag);
-						}
-					});
-					/** @type {CallableFunction | undefined} */
-					let unsub;
-					if (!activeQuery) {
-						activeQuery = Query.create(currentText(), execFn, {
-							...currentOpts,
-							dagNode,
-							noResolve: hasUnsetInput()
-						});
-						unsub?.();
-						unsub = activeQuery.subscribe(() => callback(activeQuery));
-						callback(activeQuery);
-					}
-					dagNode.updateContainer(activeQuery);
-					dagNode.trigger(true);
-				},
-				100,
-				{ leading: true, trailing: true }
-			),
-			/** @param {import('../types.js').QueryOpts<any>} opts */
-			updateOptions: (opts) => {
-				currentOpts = { ...currentOpts, ...opts };
-			},
-			get __dag() {
-				return dagNode;
-			},
-			get hasUnset() {
-				return [...dagNode.parents].some((p) => p.dirty); // We just block on any dirty parent
-			}
-		};
-	};
-
-	/**
-	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
-	 * @param {import('../types.js').QueryOpts<any>} [opts]
-	 * @param {QueryValue<any>} [initialQuery]
-	 */
-	static createReactive = (reactiveOpts, opts, initialQuery) => {
-		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
-
-		/** @type {import('../types.js').CreateQuery<any>} */
-		const createFn = Query.create;
-		/** @type {QueryValue<any> | undefined} */
-		let activeQuery = initialQuery;
-
-		let changeIdx = 0;
-		/** @type {() => unknown} */
-		let unsub;
-		const waitFor =
-			/**
-			 * @param {string | Query} nextQuery
-			 * @param {import('../types.js').QueryOpts<any>} [newOpts]
-			 * @returns {Promise<void> | void}
-			 */
-			(nextQuery, newOpts) => {
-				if (!activeQuery) throw new Error();
-				changeIdx += 1;
-				const targetChangeIdx = changeIdx;
-				Query.#debugStatic(
-					`${activeQuery.id} (${hashQuery(nextQuery)}) | Reactive Updating`,
-					nextQuery,
-					{
-						changeIdx,
-						targetChangeIdx,
-						hash: hashQuery(nextQuery)
-					},
-					{
-						initialOpts: opts,
-						newOpts: newOpts
-					}
-				);
-				const newQuery = Query.isQuery(nextQuery)
-					? nextQuery
-					: createFn(
-							nextQuery,
-							execFn,
-							// clear initialData and initialError on opts, but allow for newOpts to provide them
-							Object.assign({}, opts, { initialData: undefined, initialError: undefined }, newOpts)
-						);
-
-				const fetched = newQuery.fetch();
-				let dataMaybePromise = fetched;
-				if (fetched instanceof Promise) {
-					dataMaybePromise = Promise.race([
-						new Promise((r) => setTimeout(r, loadGracePeriod)),
-						newQuery.fetch()
-					]);
-				}
-
-				resolveMaybePromise(
-					() => {
-						if (changeIdx !== targetChangeIdx) {
-							Query.#debugStatic(`changeIdx does not match, results are discarded`);
-							return;
-						}
-						unsub?.();
-						activeQuery = newQuery.value;
-						unsub = activeQuery.subscribe(callback);
-					},
-					dataMaybePromise,
-					(e) => {
-						log.warn(`Error while attempting to update reactive query: ${e.message}`);
-						throw e;
-					}
-				);
-			};
-
-		function removeInitialState() {
-			opts = { ...opts, initialData: undefined, initialError: undefined };
-		}
-
-		/**
-		 * @param {string} queryText
-		 * @param {import('../types.js').QueryOpts<any>} [newOpts]
-		 * @returns {void}
-		 */
-		return (queryText, newOpts) => {
-			if (activeQuery) {
-				resolveMaybePromise(
-					() => {},
-					waitFor(queryText, newOpts),
-					(e) => {
-						log.warn(`Error while attempting to update reactive query: ${e.message}`);
-					}
-				);
-				return;
-			}
-
-			if (import.meta.hot?.data?.hmr) removeInitialState();
-			activeQuery = createFn(queryText, execFn, Object.assign({}, opts, newOpts));
-
-			const fetched = activeQuery.fetch();
-			resolveMaybePromise(removeInitialState, fetched);
-
-			// We don't want to use this after the initial creation!
-			unsub = activeQuery.subscribe(callback);
-			callback(activeQuery);
-			return;
-		};
-	};
-
 	static #devModeBootstrapped = false;
 	static #devModeBootstraps = () => {
 		if (!import.meta.hot || Query.#devModeBootstrapped) return;
@@ -993,10 +738,94 @@ DESCRIBE ${this.text.trim()}
 	};
 
 	/**
+	 *
+	 * @param {string} id
+	 * @param {import('../types.js').Runner<any>} execFn
+	 * @param {import('../types.js').QueryReactivityOpts} opts
+	 */
+	static create = (id, execFn, opts) => {
+		const { dagManager, callback, initialQuery } = opts;
+		/** @type {import('../types.js').CreateQuery<any>} */
+		const createFn = Query.#factory;
+
+		let changeIdx = 0;
+		/** @type {QueryValue<any> | undefined} */
+		let activeQuery = undefined;
+		/** @type {()=> string} */
+		let textFn;
+
+		const hasUnsetInput = () => false;
+
+		const unpackDeps = () => {
+			const gather = dagManager.track();
+			console.log(`<< ${textFn()} >>`);
+			const deps = gather();
+			const dags = dagManager.resultToDagNode(deps.map((d) => d.toString()));
+
+			dagNode.deregisterDependencies(); // TODO: Do we really want to just deregister?
+			Object.values(dags).forEach((dep) => {
+				if (dep) dagNode.registerDependency(dep);
+			});
+		};
+
+		const dagNode = new ActiveDagNode(
+			`Query | ${id}`,
+			(epochId, defer) => {
+				activeQuery?.publish(`Dag Epoch ${epochId.description}`);
+				const targetChangeIdx = ++changeIdx;
+				console.log(`>> ${textFn()} <<`);
+				console.log([...dagNode.parents.values()][0].container)
+				// console.log(dagManager.dagMap.get("hello"))
+				const nextQuery = Query.#factory(textFn(), () => [], { id, dagNode });
+				Query.#debugStatic(
+					`Dag Update for "${id}" triggered in ${epochId.description} (${changeIdx})`
+				);
+				const fetch = nextQuery.fetch();
+
+				if (fetch instanceof Promise) {
+					// Async Query Mode
+					// We want to wait until everybody is ready before we update the query
+					// TODO: Do we want to make this a racing promise to prevent everything from hanging
+					// on one large query?
+				} else {
+					callback(nextQuery);
+					activeQuery = nextQuery;
+					// Sync Query Mode
+				}
+
+				if (hasUnsetInput()) {
+					return false;
+				} else {
+					return true;
+				}
+			},
+			activeQuery
+		);
+
+		if (initialQuery) {
+			if (typeof initialQuery === 'function') {
+				// TODO: Unpack
+				textFn = initialQuery;
+				unpackDeps();
+			} else {
+				activeQuery = initialQuery;
+			}
+			dagNode.trigger();
+		}
+
+		/** @param {() => string} _textFn */
+		return (_textFn) => {
+			textFn = _textFn;
+			unpackDeps();
+			dagNode.trigger(true);
+		};
+	};
+
+	/**
 	 * @template {QueryResultRow} [RowType=QueryResultRow]
 	 * @type {import("../types.js").CreateQuery<RowType>}
 	 */
-	static create = (query, executeQuery, optsOrId, maybeOpts) => {
+	static #factory = (query, executeQuery, optsOrId, maybeOpts) => {
 		if (import.meta.hot) {
 			Query.#devModeBootstraps();
 		}

@@ -1,33 +1,87 @@
 import { storeMixin } from '../../lib/store-helpers/storeMixin.js';
-import { ActiveDagNode } from '../dag/DagNode.js';
+import { ActiveDagNode, BlockingDagNode, DagNode } from '../dag/DagNode.js';
 import { AccessTrack } from '../proxies/access-track/AccessTrack.js';
 import { MakeDeeplyAccessible } from '../proxies/recursive-proxy/RecursiveProxyPrimitive.js';
 import { Input } from './Input.js';
 
 /** @typedef {import("../dag/types.js").WithDag} WithDag */
+/** @typedef {import("../dag/types.js").DagManager} DagManager */
+/** @typedef {import("../dag/DagNode.js").DagNode} DagNode */
 
-export class InputStore2 {
+/**
+ * @implements {DagManager}
+ */
+export class InputStore {
+	#storeMixin = storeMixin();
+	subscribe = this.#storeMixin.subscribe.bind(this.#storeMixin);
+	update = this.#storeMixin.update.bind(this.#storeMixin);
+	// This is handled by the proxy
+	/** @type {() => () => string[]} */
+	track = () => {throw new Error()}
+
+	/** @type {import("../dag/DagNode.js").ActiveDagNode} */
+	__dag;
+
 	/**
-	 * @returns {InputStore2 & import("../proxies/access-track/AccessTrack.js").AccessTracked & Record<string, any>}
+	 * @returns {InputStore & import("../proxies/access-track/AccessTrack.js").AccessTracked & Record<string, any>}
 	 */
 	static create = () => {
-		return /** @type {InputStore2 & import("../proxies/access-track/AccessTrack.js").AccessTracked} */ (
-			new InputStore2()
+		return /** @type {InputStore & import("../proxies/access-track/AccessTrack.js").AccessTracked} */ (
+			new InputStore()
 		);
+	};
+
+	/** @type {Map<string, DagNode>} */
+	dagMap = new Map();
+
+	/**
+	 *
+	 * @param {string[]} result
+	 * @returns {Record<string, DagNode | null>}
+	 */
+	resultToDagNode = (result) => {
+		return result.reduce((/** @type {Record<string, DagNode | null>} */ a, v) => {
+			a[v] = this.dagMap.get(v) ?? null;
+			return a;
+		}, {});
 	};
 
 	/**
 	 * @protected
 	 */
 	constructor() {
-		return MakeDeeplyAccessible(AccessTrack(this), InputStore2.create);
+		const rootDagNode = new ActiveDagNode(
+			'InputStore',
+			(_, defer) => {
+				defer(() => {
+					this.#storeMixin.publish(proxy);
+				});
+
+				return true;
+			},
+			this
+		);
+
+		this.__dag = rootDagNode;
+
+		const proxy = MakeDeeplyAccessible(AccessTrack(this), (prop) => {
+			const existingDagNode = this.dagMap.get(prop.toString());
+
+			const out = new Input(prop.toString(), {
+				root: this,
+				existingDagNode: existingDagNode instanceof BlockingDagNode ? existingDagNode : undefined
+			});
+			this.dagMap.set(prop.toString(), out.__dag);
+			return out;
+		});
+		return proxy;
 	}
 }
 
 /**
  * @implements {WithDag}
  */
-export class InputStore {
+export class __InputStore {
 	#storeMixin = storeMixin();
 	subscribe = this.#storeMixin.subscribe.bind(this.#storeMixin);
 	update = this.#storeMixin.update.bind(this.#storeMixin);

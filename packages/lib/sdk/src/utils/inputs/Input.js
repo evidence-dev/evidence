@@ -11,6 +11,7 @@ const SqlFragmentFactory = Symbol();
  * @typedef {Object} InputOpts
  * @property {import('./InputStore.js').InputStore | null} [root]
  * @property {(input: Input) => string | null} [sqlFragmentFactory]
+ * @property {BlockingDagNode} [existingDagNode]
  * @property {() => unknown} [publish]
  */
 
@@ -47,7 +48,7 @@ export class Input extends InputValue {
 	 * @param {string} name
 	 * @param {InputOpts} [opts]
 	 */
-	constructor(name, { root = null, sqlFragmentFactory } = {}) {
+	constructor(name, { root = null, sqlFragmentFactory, existingDagNode } = {}) {
 		super();
 		// super({
 		// 	hooks: {
@@ -87,7 +88,7 @@ export class Input extends InputValue {
 		this.#sqlFragmentFactory = sqlFragmentFactory ?? null;
 
 		this.name = name;
-		this.dag = new BlockingDagNode(name, this);
+		this.dag = existingDagNode ?? new BlockingDagNode(name, this);
 
 		if (root) {
 			// 🚩 is this a good pattern?

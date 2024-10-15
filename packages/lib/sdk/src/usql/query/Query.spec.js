@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Query } from './Query';
 import { sharedPromise } from '../../lib/sharedPromise';
 import { BlockingDagNode } from '../../utils/dag/DagNode.js';
-
+import { AccessTrack } from '../../utils/proxies/access-track/AccessTrack.js';
+import { InputStore } from '../../utils/inputs/InputStore.js';
 const tick = (timeout = 0) => new Promise((r) => setTimeout(r, timeout));
 
 /** @type {import('../types').MaybePromise<[{rowCount: number}]>} */
@@ -27,18 +28,59 @@ const mockRunner = vi.fn((q) => {
 let testQueryIndex = 0;
 let testIdx = 0;
 
-/**
- * @param {string} s
- * @param {import('../types').QueryOpts} opts
- * @returns
- */
-const getMockQuery = (s, opts) => {
-	return Query.create(s, mockRunner, {
-		id: `q-${testQueryIndex++}-${testIdx}`,
-		disableCache: true,
-		...opts
+describe('newQuery', () => {
+	let inputs;
+	beforeEach(() => {
+		inputs = new InputStore();
 	});
-};
+	/**
+	 * @param {string} s
+	 * @param {import('../types').QueryOpts} opts
+	 * @returns
+	 */
+	const getMockQuery = (s, opts) => {
+		return Query.create(s, mockRunner, {
+			id: `q-${testQueryIndex++}-${testIdx}`,
+			disableCache: true,
+			dagManager: inputs,
+			...opts
+		});
+	};
+	it('should have a create function', () => expect(Query.create).toBeTypeOf('function'));
+	it('should return a function', () => expect(getMockQuery()).toBeTypeOf('function'));
+	it("should execute it's callback when the text is updated", () => {
+		const callback = vi.fn();
+		const q = getMockQuery('MyQuery', { callback });
+		q(() => `${inputs.hello}`);
+		expect(callback).toHaveBeenCalledOnce();
+	});
+	it("should keep track of it's dependencies when they exist in the provided text", () => {
+		/** @type {import("./Query.js").QueryValue<any>} */
+		let v;
+		const q = getMockQuery('MyQuery', { callback: (vv) => (v = vv) });
+		q(() => `${inputs.hello}`);
+		expect(v.__dag.parents.size).toBe(1);
+	});
+	it.only("should properly update the query text when it's dependencies change", () => {
+		/** @type {import("./Query.js").QueryValue<any>} */
+		let v;
+		const q = getMockQuery('MyQuery', {
+			callback: (vv) => {
+				v = vv;
+				console.log("Callback executed", vv.originalText)
+			}
+		});
+		inputs.hello.value = '5';
+		q(() => `${inputs.hello.value}`);
+		expect(v.__dag.parents.size).toBe(1);
+		expect(v.originalText).toBe('5');
+
+		console.log(">> Pre Set")
+		inputs.hello.value = 'new';
+		console.log("<< Post Set")
+		expect(v.originalText).toBe('new');
+	});
+});
 
 describe('Query', () => {
 	beforeEach(() => {

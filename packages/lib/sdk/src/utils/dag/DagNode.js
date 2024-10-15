@@ -3,6 +3,10 @@
 
 import { nanoid } from 'nanoid';
 import { storeMixin } from '../../lib/store-helpers/storeMixin.js';
+import {
+	resolveMaybePromise,
+	resolveMaybePromises
+} from '../../usql/utilities/resolveMaybePromise.js';
 
 /**
  * @template T
@@ -48,6 +52,7 @@ export class DagNode {
 	 * @param {unknown} [container]
 	 */
 	constructor(name, container) {
+		console.log("<< Constructed DagNode >>", name)
 		this.name = name;
 		this.#container = container;
 		this.storeMixin.publish(this);
@@ -143,12 +148,17 @@ export class DagNode {
 	 * @deprecated "Use trigger instead"
 	 * @ignore
 	 */
-	async flush(epochId, deferCallback) {
+	flush(epochId, deferCallback) {
 		this.#latestEpochId = epochId;
-		for (const child of this.children) {
-			await child.tidy(epochId, deferCallback);
-			await child.flush(epochId, deferCallback);
-		}
+		resolveMaybePromises(
+			() => this.storeMixin.publish(this),
+			Array.from(this.children).map((child) => child.flush(epochId, deferCallback))
+		);
+		// for (const child of this.children) {
+		// 	// 🚩 is this the behavior that we want?
+		// 	// await child.tidy(epochId, deferCallback);
+		// 	await child.flush(epochId, deferCallback);
+		// }
 		this.storeMixin.publish(this);
 	}
 
@@ -162,21 +172,24 @@ export class DagNode {
 			deferrals.add(fn);
 		};
 
-		const flush = async () => {
+		const flush = () => {
 			if (includeSelf) {
 				this.markDirty(epochId);
-				await this.tidy(epochId, deferCallback);
 			}
 			this.markChildrenDirty(epochId);
-			await this.flush(epochId, deferCallback);
-			this.storeMixin.publish(this);
+			resolveMaybePromise(
+				() => {
+					this.storeMixin.publish(this);
+				},
+				this.flush(epochId, deferCallback)
+			);
 		};
 
-		flush().then(() => {
+		resolveMaybePromise(() => {
 			deferrals.forEach((fn) => {
 				fn();
 			});
-		});
+		}, flush());
 
 		return epochId;
 	};
@@ -211,9 +224,9 @@ export class DagNode {
 	}
 
 	/**
-	 * @type {(epochId: Symbol, defer: DeferralCallback) => Promise<void>} epochId
+	 * @type {(epochId: Symbol, defer: DeferralCallback) => void}
 	 */
-	tidy = async () => {
+	tidy = () => {
 		this.storeMixin.publish(this);
 	};
 
@@ -246,7 +259,7 @@ export class ActiveDagNode extends DagNode {
 		 * @param {Symbol} epochId
 		 * @param {DeferralCallback} defer
 		 */
-		async (epochId, defer) => {
+		(epochId, defer) => {
 			const parentsClean = [...this.parents].every((parent) => !parent.dirty);
 
 			const canExec = parentsClean && this.#epochId === epochId && this.dirty;
@@ -255,14 +268,17 @@ export class ActiveDagNode extends DagNode {
 				if (!this.exec) {
 					this.#dirty = false;
 				} else {
-					const result = await this.exec(epochId, defer);
+					resolveMaybePromise(
+						(result) => {
+							this.prevTidyPromise = result;
 
-					this.prevTidyPromise = result;
-
-					if (result && this.#epochId === epochId) {
-						// success
-						this.#dirty = false;
-					}
+							if (result && this.#epochId === epochId) {
+								// success
+								this.#dirty = false;
+							}
+						},
+						this.exec(epochId, defer)
+					);
 				}
 			}
 			this.storeMixin.publish(this);
@@ -307,9 +323,13 @@ export class ActiveDagNode extends DagNode {
 	 * @param {Symbol} epochId
 	 * @param {DeferralCallback} defer
 	 */
-	flush = async (epochId, defer) => {
-		if (this.dirty) await this.tidy(epochId, defer);
-		await super.flush(epochId, defer);
+	flush = (epochId, defer) => {
+		return resolveMaybePromise(
+			() => {
+				super.flush(epochId, defer);
+			},
+			this.tidy(epochId, defer)
+		);
 	};
 
 	get mermaidName() {
@@ -324,10 +344,7 @@ export class BlockingDagNode extends DagNode {
 		return this.#dirty;
 	}
 
-	tidy = async () => {
-		await this.unblock();
-	};
-
+	tidy = () => this.unblock();
 	markDirty = () => {
 		this.#dirty = true;
 	};
