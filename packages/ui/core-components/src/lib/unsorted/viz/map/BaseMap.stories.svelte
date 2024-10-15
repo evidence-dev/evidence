@@ -99,7 +99,7 @@ ORDER BY 1;
 			opacity="0.6"
 		/>
 
-		<Points data={la_locations} lat="lat" long="long" color="red" />
+		<Points data={la_locations} lat="lat" long="long" color="red" value="sales" />
 	</BaseMap>
 </Story>
 

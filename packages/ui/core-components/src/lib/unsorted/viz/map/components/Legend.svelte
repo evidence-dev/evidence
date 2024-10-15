@@ -2,6 +2,7 @@
 	import CategoricalLegend from './Legend Components/CategoricalLegend.svelte';
 	import ScalarLegend from './Legend Components/ScalarLegend.svelte';
 	import LegendToggle from './Legend Components/LegendToggle.svelte';
+
 	import { derived } from 'svelte/store';
 
 	const positions = {
@@ -75,7 +76,7 @@
 			<div class="flex flex-wrap">
 				{#each $categoricalLegendData as legend}
 					<div
-						class="border-x-[1px] border-gray-300 bg-gray-100 flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-1 {multiLegend
+						class="border-x-[1px] border-gray-300 bg-gray-100 flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-1.5 {multiLegend
 							? 'w-1/2 max-w-42'
 							: ''} {hideLegend ? 'border-y-0 py-0' : 'border-y-[1px] py-1'}"
 					>
@@ -95,7 +96,7 @@
 		{#if $scalarLegendData.length > 0}
 			{#each $scalarLegendData as legend}
 				<div
-					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden w-full items-center flex transition-[border, padding] duration-[350ms] ease-in-out px-1 {handleChevronDirection(
+					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden w-full items-center flex transition-[border, padding] duration-[350ms] ease-in-out px-1.5 {handleChevronDirection(
 						legend.legendType
 					) === 'right'
 						? 'flex-row-reverse'

@@ -20,7 +20,7 @@
 </script>
 
 <div
-	class="flex flex-col mx-[3px] {hideLegend
+	class="flex flex-col {hideLegend
 		? hideLegendStyle
 		: showLegendStyle} min-w-52 transition-all duration-[350ms] ease-in-out w-full"
 >

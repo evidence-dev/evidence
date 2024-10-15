@@ -3,7 +3,7 @@ import { debounce } from 'perfect-debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
-import { writable, derived, readonly, get } from 'svelte/store';
+import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
 import { uiColours } from '@evidence-dev/component-utilities/colours';
 import { mapColours } from '@evidence-dev/component-utilities/colours';
@@ -490,7 +490,7 @@ export class EvidenceMap {
 	/**
 	 *
 	 * @type {import('svelte/store').Writable<
-	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number, legendType: string, legendFmt: string, chartType: string, legendId: string, value: string, noLegend: boolean }[]
+	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number, legendType: string, legendFmt: string, chartType: string, legendId: string, value: string, legend: boolean }[]
 	 * >}
 	 */
 	#legendData = writable([]);
@@ -505,12 +505,12 @@ export class EvidenceMap {
 		chartType,
 		legendId,
 		value,
-		noLegend
+		legend
 	) {
 		this.#legendData.update((legendData) =>
-			legendData.some((legend) => legend.legendId === legendId)
-				? legendData.map((legend) =>
-						legend.legendId === legendId
+			legendData.some((data) => data.legendId === legendId)
+				? legendData.map((data) =>
+						data.legendId === legendId
 							? {
 									...legend,
 									colorPalette,
@@ -521,9 +521,9 @@ export class EvidenceMap {
 									legendFmt,
 									chartType,
 									value,
-									noLegend
+									legend
 								}
-							: legend
+							: data
 					)
 				: [
 						...legendData,
@@ -537,7 +537,7 @@ export class EvidenceMap {
 							chartType,
 							legendId,
 							value,
-							noLegend
+							legend
 						}
 					]
 		);
@@ -560,7 +560,7 @@ export class EvidenceMap {
 			legendFmt,
 			chartType,
 			legendId,
-			noLegend
+			legend
 		}
 	) {
 		await data.fetch();
@@ -580,7 +580,7 @@ export class EvidenceMap {
 		}
 		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
 
-		if (!noLegend) {
+		if (legend && value) {
 			values = this.handleLegendValues(colorPalette, values, legendType);
 			this.buildLegend(
 				colorPalette,
@@ -592,7 +592,7 @@ export class EvidenceMap {
 				chartType,
 				legendId,
 				value,
-				noLegend
+				legend
 			);
 		}
 		// Return the values, minValue, and maxValue for sharing with other functions

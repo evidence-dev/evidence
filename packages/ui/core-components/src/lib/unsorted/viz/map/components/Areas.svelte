@@ -46,6 +46,9 @@
 	export let legendFmt = undefined;
 	export let chartType = 'Area Map';
 
+	/** @type {boolean} */
+	export let legend = true;
+
 	/**
 	 * Callback function for the area click event.
 	 * @type {(item: any) => void}
@@ -212,10 +215,14 @@
 			legendType,
 			legendFmt,
 			chartType,
-			legendId
+			legendId,
+			legend
 		};
 		await data.fetch();
-		({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
+		({ values, colorPalette, legendType, colorScale } = await map.initializeData(
+			data,
+			initDataOptions
+		));
 
 		await processAreas();
 

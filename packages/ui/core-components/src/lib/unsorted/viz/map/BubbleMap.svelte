@@ -66,6 +66,8 @@
 	export let legendFmt = undefined;
 	/** @type {string[]|undefined} */
 	export let colorPalette = undefined;
+	/** @type {boolean} */
+	export let legend = true;
 
 	const chartType = 'Bubble Map';
 
@@ -86,6 +88,7 @@
 			{colorPalette}
 			{legendType}
 			{legendFmt}
+			{legend}
 			{...$$restProps}
 		/>
 	</BaseMap>

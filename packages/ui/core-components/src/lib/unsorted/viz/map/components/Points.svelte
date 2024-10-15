@@ -42,7 +42,7 @@
 	export let chartType = 'Point Map';
 
 	/** @type {boolean} */
-	export let noLegend = false;
+	export let legend = true;
 
 	if (size) {
 		// if size was user-supplied
@@ -238,7 +238,7 @@
 				legendFmt,
 				chartType,
 				legendId,
-				noLegend
+				legend
 			};
 			({ values, colorPalette, legendType, colorScale } = await map.initializeData(
 				data,

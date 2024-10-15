@@ -65,6 +65,8 @@
 	export let legendType = undefined;
 	/** @type {string | undefined} */
 	export let legendFmt = undefined;
+	/** @type {boolean} */
+	export let legend = true;
 
 	const chartType = 'Area Map';
 
@@ -90,6 +92,7 @@
 			{legendFmt}
 			{legendType}
 			{chartType}
+			{legend}
 			{...$$restProps}
 		/>
 	</BaseMap>

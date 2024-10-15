@@ -63,7 +63,7 @@
 	export let legendFmt = undefined;
 
 	/** @type {boolean} */
-	export let noLegend = false;
+	export let legend = true;
 
 	const chartType = 'Point Map';
 
@@ -94,7 +94,7 @@
 				{legendFmt}
 				{chartType}
 				{...$$restProps}
-				{noLegend}
+				{legend}
 			/>
 		</BaseMap>
 	</div>

@@ -85,7 +85,14 @@
 		long="long"
 		value="sales"
 	/>
-	<PointMap title="no legend" data={la_locations} lat="lat" long="long" value="sales" noLegend />
+	<PointMap
+		title="no legend"
+		data={la_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		legend={false}
+	/>
 </Story>
 
 <Story name="Loading" parameters={{ chromatic: { disableSnapshot: true } }}>
