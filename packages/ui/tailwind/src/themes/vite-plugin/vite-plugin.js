@@ -2,11 +2,11 @@ import { loadThemes } from '../loadThemes.js';
 
 /** @returns {import('vite').Plugin} */
 export const evidenceThemes = () => {
-	const virtualModuleId = 'virtual:evidence-themes';
+	const virtualModuleId = '$evidence/themes';
 	const resolvedVirtualModuleId = `\0${virtualModuleId}`;
 
 	return {
-		name: 'evidence-themes',
+		name: 'evidence:themes',
 		/** @param {string} id */
 		resolveId: (id) => {
 			if (id === virtualModuleId) {
