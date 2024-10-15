@@ -19,7 +19,7 @@ export class EvidenceLogger {
 	#logger;
 
 	/** @type {EvidenceLogger.EvidenceLogLevels[keyof EvidenceLogger.EvidenceLogLevels]} */
-	logLevel = 3;
+	logLevel = 4;
 	constructor() {
 		// TODO: Add winston, pino, or a similar library (?)
 		this.#logger = {
@@ -116,4 +116,52 @@ export class EvidenceLogger {
 	 * @param {Record<string, any>} [meta]
 	 */
 	verbose = this.#log('verbose');
+
+	/** @type {string[]} */
+	#measureStack = [];
+
+	/**
+	 * @param {string} topic
+	 * @returns
+	 */
+	measure = (topic) => {
+		// Start
+		const before = performance.now();
+		/** @type {Record<string, number>} */
+		const metrics = {};
+		/** @type {Record<string, any>} */
+		const meta = {};
+
+		this.#measureStack.push(topic);
+
+		return {
+			/**
+			 * @param {string} key
+			 * @param {number} value
+			 */
+			metric: (key, value) => {
+				if (typeof value !== 'number') throw new Error('Metric values must be numeric');
+				metrics[key] = value;
+			},
+			/**
+			 * @param {string} key
+			 * @param {any} value
+			 */
+			meta: (key, value) => {
+				meta[key] = value;
+			},
+			done: () => {
+				const after = performance.now();
+				const duration = after - before;
+
+				this.#measureStack.pop();
+				this.#log('debug')(`Measure: ${topic}`, {
+					duration,
+					meta,
+					metrics,
+					parents: this.#measureStack
+				});
+			}
+		};
+	};
 }
