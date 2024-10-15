@@ -1,5 +1,8 @@
 // @ts-check
 
+import themes from 'virtual:evidence-themes';
+console.log(themes.light.primary);
+
 import { getContext, setContext } from 'svelte';
 import { derived, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';

@@ -1,7 +1,7 @@
-import { loadThemes } from './themes/loadThemes.js';
+import { loadThemes } from '../loadThemes.js';
 
+/** @returns {import('vite').Plugin} */
 export const evidenceThemes = () => {
-	console.log('executing evidenceThemes');
 	const virtualModuleId = 'virtual:evidence-themes';
 	const resolvedVirtualModuleId = `\0${virtualModuleId}`;
 
