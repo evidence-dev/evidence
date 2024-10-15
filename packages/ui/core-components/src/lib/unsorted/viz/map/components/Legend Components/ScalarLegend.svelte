@@ -22,19 +22,17 @@
 <div
 	class="flex flex-col {hideLegend
 		? hideLegendStyle
-		: showLegendStyle} min-w-52 transition-all duration-[350ms] ease-in-out w-full"
+		: showLegendStyle} transition-all duration-[350ms] ease-in-out w-full"
 >
 	<div class="flex flex-wrap flex-col">
 		<p>{legendTitle}</p>
 	</div>
-	<div
-		class="flex flex-col justify-center overflow-hidden h-8 {multiLegend ? 'w-full' : 'w-[250px]'}"
-	>
+	<div class="flex flex-col justify-center overflow-hidden h-8 w-full">
 		<span
 			style="background: {legend.colorPalette
 				? `linear-gradient(to right, ${legend.colorPalette.join(', ')})`
 				: 'white'}"
-			class="relative h-2"
+			class="relative h-2 min-w-56"
 		>
 		</span>
 		<div class="flex justify-between">

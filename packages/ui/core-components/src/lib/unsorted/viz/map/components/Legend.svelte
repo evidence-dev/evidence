@@ -68,7 +68,7 @@
 
 {#if $legendData.length > 0}
 	<div
-		class="absolute z-[401] m-4 flex max-w-42 flex legend-font {constHandleLegendButtonPosition()} 
+		class="absolute z-[401] m-4 flex max-w-56 flex legend-font {constHandleLegendButtonPosition()} 
     {positions[legendPosition] ?? 'top-3 left-[-9px]'}"
 		on:wheel={(e) => e.stopPropagation()}
 		on:dblclick={(e) => e.stopPropagation()}
@@ -78,7 +78,7 @@
 			<div class="flex flex-wrap">
 				{#each $categoricalLegendData as legend}
 					<div
-						class="border-x-[1px] border-gray-300 bg-gray-100 flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-1.5 {multiLegend
+						class="border-x-[1px] border-gray-300 bg-gray-100 flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-2 {multiLegend
 							? 'w-1/2 max-w-42'
 							: ''} {hideLegend ? 'border-y-0 py-0' : 'border-y-[1px] py-1'}"
 					>
@@ -98,7 +98,7 @@
 		{#if $scalarLegendData.length > 0}
 			{#each $scalarLegendData as legend}
 				<div
-					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden w-full items-center flex transition-[border, padding] duration-[350ms] ease-in-out px-1.5 {handleChevronDirection(
+					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {handleChevronDirection(
 						legend.legendType
 					) === 'right'
 						? 'flex-row-reverse'
@@ -115,11 +115,8 @@
 				</div>
 			{/each}
 		{/if}
-
-		{#if true}
-			<div class="border border-gray-300 bg-gray-100 flex justify-center w-fit">
-				<LegendToggle legendType="categorical" {handleLegendToggle} {hideLegend} {multiLegend} />
-			</div>
-		{/if}
+		<div class="border border-gray-300 bg-gray-100 flex justify-center w-fit">
+			<LegendToggle legendType="categorical" {handleLegendToggle} {hideLegend} {multiLegend} />
+		</div>
 	</div>
 {/if}
