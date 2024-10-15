@@ -6,6 +6,7 @@ import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
 import { uiColours } from '@evidence-dev/component-utilities/colours';
+import { toNumber } from '../../../utils.js';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -239,10 +240,6 @@ export class EvidenceMap {
 		return geoJsonLayer;
 	}
 
-	#bubbleLayer;
-
-	#pointsLayer;
-
 	/**
 	 * Adds a circle marker to the map.
 	 * @param {object} item - The data item associated with the marker.
@@ -277,7 +274,11 @@ export class EvidenceMap {
 			} else if (circleOptions.pane === 'points' && circleOptions.z === undefined) {
 				this.#map.getPane('points').style.zIndex = 401; // Higher zIndex for points
 			} else if (circleOptions.z !== undefined) {
-				this.#map.getPane(circleOptions.pane).style.zIndex = 400 + circleOptions.z;
+				if (toNumber(circleOptions.z)) {
+					this.#map.getPane(circleOptions.pane).style.zIndex = 400 + toNumber(circleOptions.z);
+				} else {
+					this.#map.getPane(circleOptions.pane).style.zIndex = 400;
+				}
 			}
 		}
 
