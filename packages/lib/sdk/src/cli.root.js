@@ -6,7 +6,7 @@ import { enableDebug } from './lib/debug.js';
 import { datasourcesCli } from './plugins/datasources/cli/index.js';
 import { pluginsCli } from './plugins/cli/index.js';
 import { defineCommand } from '@brianmd/citty';
-import { writeFile } from 'node:fs/promises';
+import { writeFile, mkdir } from 'node:fs/promises';
 
 // This is split into it's own file so that we can import it elsewhere without running the CLI twice
 
@@ -61,10 +61,16 @@ export const rootCli = defineCommand({
 
 			const cleanup = this.cleanup;
 			this.cleanup = async (_ctx) => {
+				const { resolve, dirname } = await import("node:path");
+
+				const path = resolve(`./.evidence/template/profiles/${ctx.args._.join('-')}.cpuprofile`);
+				await mkdir(dirname(path), { recursive: true });
 				const { profile } = await session.post('Profiler.stop');
-				await writeFile(`${ctx.args._.join('-')}.cpuprofile`, JSON.stringify(profile));
+				await writeFile(path, JSON.stringify(profile));
+
 				await session.post('Profiler.disable');
 				session.disconnect();
+
 				await cleanup?.(_ctx);
 			};
 		}
