@@ -22,6 +22,9 @@ import chunk from 'lodash.chunk';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
 
+const isDebug = () => process.env.DEBUG === 'true';
+const log = (...args) => console.log(...args);
+
 /**
  * @param {{name: string, evidenceType: string}} column
  * @param {any[]} rawValues
@@ -51,8 +54,8 @@ function convertArrayToVector(column, rawValues) {
 		default:
 			throw new Error(
 				'Unrecognized EvidenceType: ' +
-					column.evidenceType +
-					'\n This is likely an error in a datasource connector.'
+				column.evidenceType +
+				'\n This is likely an error in a datasource connector.'
 			);
 	}
 }
@@ -122,30 +125,27 @@ export async function buildMultipartParquet(
 
 	// Handle generators
 	if (isGeneratorObject(data)) {
-		let currentBatch = [];
+		const currentBatch = [];
 		for await (const results of data) {
-			currentBatch = currentBatch.concat(results);
+			for (const result of results) currentBatch.push(result);
 
 			if (currentBatch.length >= batchSize) {
 				await flush(currentBatch);
-				currentBatch = [];
+				currentBatch.length = 0;
 			}
 		}
 		if (currentBatch.length) await flush(currentBatch);
 	} else {
-		let currentBatch = [];
+		const currentBatch = [];
 		for (const results of data) {
 			// If the array is longer than the batch size; it gets chunked
 			for (const batch of chunk(results, batchSize)) {
-				// Iterate through the split up chunks
-				// Batch them and flush when needed
-
-				currentBatch = currentBatch.concat(batch);
+				for (const result of batch) currentBatch.push(result);
 
 				if (currentBatch.length >= batchSize) {
 					// Time to flush
 					await flush(currentBatch);
-					currentBatch = [];
+					currentBatch.length = 0;
 				}
 			}
 		}
