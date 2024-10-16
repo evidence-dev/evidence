@@ -511,8 +511,9 @@ export const evidenceThemeDark = {
 	},
 	boxplot: {
 		itemStyle: {
-			borderWidth: 0,
-			borderColor: '#cccccc'
+			borderWidth: 1.5,
+			borderColor: '#cccccc',
+			color: '#0a0a0a'
 		}
 	},
 	parallel: {
