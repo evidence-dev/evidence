@@ -5,8 +5,6 @@
 	export let legend;
 	/** @type {boolean} */
 	export let hideLegend = false;
-	/** @type {boolean} */
-	export let multiLegend = false;
 	/**
 	 * @type {function(string): string}
 	 */

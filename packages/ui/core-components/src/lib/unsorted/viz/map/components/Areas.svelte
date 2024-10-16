@@ -217,10 +217,12 @@
 			legend
 		};
 		await data.fetch();
-		({ values, colorPalette, legendType, colorScale } = await map.initializeData(
-			data,
-			initDataOptions
-		));
+		if (!color) {
+			({ values, colorPalette, legendType, colorScale } = await map.initializeData(
+				data,
+				initDataOptions
+			));
+		}
 
 		await processAreas();
 

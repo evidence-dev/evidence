@@ -556,11 +556,11 @@ Maximum value to use for the color scale.
 ### Legend
 
 <PropListing
-    name="legend"
-    description="Turns legend on or off"
-    required=false
-    options={["true", "false"]}
-    defaultValue="true"
+name="legend"
+description="Turns legend on or off"
+required=false
+options={["true", "false"]}
+defaultValue="true"
 />
 <PropListing
 name="legendType"
