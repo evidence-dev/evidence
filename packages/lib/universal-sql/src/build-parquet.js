@@ -20,8 +20,8 @@ import { emptyDbFs, initDB, query } from './client-duckdb/node.js';
 import chunk from 'lodash.chunk';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
-import { log } from "@evidence-dev/sdk/logger";
-import { isDebug } from "@evidence-dev/sdk/utils";
+import { log } from '@evidence-dev/sdk/logger';
+import { isDebug } from '@evidence-dev/sdk/utils';
 
 /**
  * @param {{name: string, evidenceType: string}} column
@@ -52,8 +52,8 @@ function convertArrayToVector(column, rawValues) {
 		default:
 			throw new Error(
 				'Unrecognized EvidenceType: ' +
-				column.evidenceType +
-				'\n This is likely an error in a datasource connector.'
+					column.evidenceType +
+					'\n This is likely an error in a datasource connector.'
 			);
 	}
 }
@@ -153,7 +153,7 @@ export async function buildMultipartParquet(
 
 	let meta, done;
 	if (isDebug()) {
-		log.debug("Reading rows from a generator object");
+		log.debug('Reading rows from a generator object');
 		({ meta, done } = log.measure('buildMultipartParquet'));
 		meta('batch number', batchNum);
 	}

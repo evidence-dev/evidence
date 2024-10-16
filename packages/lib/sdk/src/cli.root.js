@@ -61,7 +61,7 @@ export const rootCli = defineCommand({
 
 			const cleanup = this.cleanup;
 			this.cleanup = async (_ctx) => {
-				const { resolve, dirname } = await import("node:path");
+				const { resolve, dirname } = await import('node:path');
 
 				const path = resolve(`./.evidence/template/profiles/${ctx.args._.join('-')}.cpuprofile`);
 				await mkdir(dirname(path), { recursive: true });
