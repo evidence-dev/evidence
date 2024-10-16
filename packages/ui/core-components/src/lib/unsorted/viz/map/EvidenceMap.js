@@ -128,7 +128,8 @@ export class EvidenceMap {
 		const processedBasemap = this.processBasemapUrl(basemap);
 		Leaflet.tileLayer(processedBasemap, {
 			subdomains: 'abcd',
-			maxZoom: 20
+			maxZoom: 20,
+			className: '__evidence-leaflet-tile-layer__'
 		}).addTo(this.#map);
 		this.#map.removeControl(this.#map.attributionControl);
 
