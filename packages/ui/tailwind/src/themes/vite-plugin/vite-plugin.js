@@ -7,13 +7,11 @@ export const evidenceThemes = () => {
 
 	return {
 		name: 'evidence:themes',
-		/** @param {string} id */
 		resolveId: (id) => {
 			if (id === virtualModuleId) {
 				return resolvedVirtualModuleId;
 			}
 		},
-		/** @param {string} id */
 		load: async (id) => {
 			if (id === resolvedVirtualModuleId) {
 				const themes = await loadThemes();
