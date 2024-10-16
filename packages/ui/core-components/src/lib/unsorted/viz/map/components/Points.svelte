@@ -227,10 +227,14 @@
 			min,
 			max,
 			colorPalette,
-			legendType
+			legendType,
+			paneType
 		};
 		if (data) {
-			({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
+			({ values, colorScale, colorPalette, paneType } = await map.initializeData(
+				data,
+				initDataOptions
+			));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -288,8 +292,8 @@
 		setInputDefault(item, name);
 	}
 
-	/** @type {'points' | 'bubbles' | 'string'}*/
-	export let paneType = pointStyle;
+	/** @type {string}*/
+	let paneType = map.checkPanes(pointStyle);
 
 	/** @type {number | undefined} */
 	export let z = undefined;

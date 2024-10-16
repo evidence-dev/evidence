@@ -44,7 +44,6 @@
 			tooltipType="hover"
 			opacity="1"
 		/>
-
 		<Bubbles
 			data={la_locations}
 			lat="lat"
@@ -61,7 +60,37 @@
 </Story>
 <Story name="Multiple Points">
 	<BaseMap title="My Map" height="300">
-		<Points data={la_locations} lat="lat" long="long" color="red" paneType="red Points" z="1" />
-		<Points data={la_locations} lat="lat" long="long" color="blue" paneType="blue Points" z="2" />
+		<Points data={la_locations} lat="lat" long="long" color="red" />
+		<Points data={la_locations} lat="lat" long="long" color="purple" />
+		<Points data={la_locations} lat="lat" long="long" color="blue" />
+		<Points data={la_locations} lat="lat" long="long" color="green" />
+	</BaseMap>
+</Story>
+<Story name="multiple bubbles and points">
+	<BaseMap title="My Map" height="300">
+		<Bubbles
+			data={la_locations}
+			lat="lat"
+			long="long"
+			pointName="point_name"
+			value="sales"
+			size="sales"
+			tooltipType="hover"
+			opacity="0.6"
+			color="blue"
+		/>
+		<Bubbles
+			data={la_locations}
+			lat="lat"
+			long="long"
+			pointName="point_name"
+			value="sales"
+			size="sales"
+			tooltipType="hover"
+			opacity="0.6"
+			color="green"
+		/>
+		<Points data={la_locations} lat="lat" long="long" color="red" />
+		<Points data={la_locations} lat="lat" long="long" color="purple" />
 	</BaseMap>
 </Story>

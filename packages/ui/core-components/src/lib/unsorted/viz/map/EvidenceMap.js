@@ -269,10 +269,11 @@ export class EvidenceMap {
 		//other panes start at z-index 400
 		if (!this.#map.getPane(circleOptions.pane)) {
 			this.#map.createPane(circleOptions.pane);
-			if (circleOptions.pane === 'bubbles' && circleOptions.z === undefined) {
-				this.#map.getPane('bubbles').style.zIndex = 400; // Lower zIndex for bubbles
-			} else if (circleOptions.pane === 'points' && circleOptions.z === undefined) {
-				this.#map.getPane('points').style.zIndex = 401; // Higher zIndex for points
+
+			if (circleOptions.pane.includes('bubbles') && circleOptions.z === undefined) {
+				this.#map.getPane(circleOptions.pane).style.zIndex = 400; // Lower zIndex for bubbles
+			} else if (circleOptions.pane.includes('points') && circleOptions.z === undefined) {
+				this.#map.getPane(circleOptions.pane).style.zIndex = 401; // Higher zIndex for points
 			} else if (circleOptions.z !== undefined) {
 				if (toNumber(circleOptions.z)) {
 					this.#map.getPane(circleOptions.pane).style.zIndex = 400 + toNumber(circleOptions.z);
@@ -519,7 +520,7 @@ export class EvidenceMap {
 
 	async initializeData(
 		data,
-		{ corordinates, value, checkInputs, min, max, colorPalette, legendType }
+		{ corordinates, value, checkInputs, min, max, colorPalette, legendType, paneType }
 	) {
 		await data.fetch();
 		checkInputs(data, corordinates);
@@ -532,7 +533,26 @@ export class EvidenceMap {
 			values = this.handleLegendValues(colorPalette, values, legendType);
 			this.buildLegend(colorPalette, values, minValue, maxValue);
 		}
+
 		// Return the values, minValue, and maxValue for sharing with other functions
-		return { values, minValue, maxValue, colorScale, colorPalette };
+		return { values, minValue, maxValue, colorScale, colorPalette, paneType };
+	}
+
+	/**@type {[string]} */
+	#paneArray = [];
+
+	checkPanes(paneType) {
+		let newPaneType = paneType;
+		let suffix = 1;
+
+		// Continue appending "-suffix" until a unique paneType is found
+		while (this.#paneArray.includes(newPaneType)) {
+			newPaneType = `${paneType}-${suffix}`;
+			suffix += 1;
+		}
+
+		// Add the unique paneType to the array
+		this.#paneArray.push(newPaneType);
+		return newPaneType;
 	}
 }
