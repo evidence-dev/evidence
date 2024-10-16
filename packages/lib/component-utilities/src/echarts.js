@@ -17,7 +17,6 @@ const ANIMATION_DURATION = 500;
 /** @param {HTMLElement} node */
 /** @param {Options} options */
 const echartsAction = (node, options) => {
-	console.log('use:echarts', options.theme);
 	// https://github.com/evidence-dev/evidence/issues/1323
 	const useSvg =
 		['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
