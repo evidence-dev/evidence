@@ -1,6 +1,6 @@
 ---
-'@evidence-dev/sdk': minor
-'@evidence-dev/universal-sql': minor
+'@evidence-dev/sdk': patch
+'@evidence-dev/universal-sql': patch
 ---
 
 add --profile flag to sdk-handled cli commands, add debugging profiling and logs to build-parquet
