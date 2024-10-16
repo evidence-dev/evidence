@@ -6,15 +6,31 @@ export const COLORS =
 	 * @satisfies {Record<import('../types.js').PresetColor, { areaColor: string; labelColor: string; borderColor: string }>}
 	 */
 	({
-		red: { areaColor: '#fceeed', labelColor: '#b04646', borderColor: '#b04646' },
-		green: { areaColor: '#e6f5e6', labelColor: '#65a665', borderColor: '#65a665' },
-		yellow: { areaColor: '#fff9e0', labelColor: '#edb131', borderColor: '#edb131' },
-		grey: {
-			areaColor: 'hsl(217, 33%, 97%)',
-			labelColor: 'hsl(212, 10%, 53%)',
-			borderColor: 'hsl(212, 10%, 53%)'
+		red: {
+			areaColor: 'hsla(4, 71.43%, 80%, 0.2)',
+			labelColor: 'hsl(4, 50%, 53%)',
+			borderColor: 'hsl(4, 50%, 53%)'
 		},
-		blue: { areaColor: '#EDF6FD', labelColor: '#51a2e0', borderColor: '#51a2e0' }
+		green: {
+			areaColor: 'hsla(120, 42.86%, 75%, 0.27)',
+			labelColor: 'hsl(120, 30%, 53%)',
+			borderColor: 'hsl(120, 30%, 53%)'
+		},
+		yellow: {
+			areaColor: 'hsla(48.39, 100%, 80%, 0.25)',
+			labelColor: 'hsl(48.39, 90%, 45%)',
+			borderColor: 'hsl(48.39, 90%, 45%)'
+		},
+		grey: {
+			areaColor: 'hsla(216, 33.33%, 97%, 0.2)',
+			labelColor: 'hsl(216, 10%, 53%)',
+			borderColor: 'hsl(216, 10%, 53%)'
+		},
+		blue: {
+			areaColor: 'hsla(206.25, 80%, 80%, 0.2)',
+			labelColor: 'hsl(206.25, 50%, 60%)',
+			borderColor: 'hsl(206.25, 50%, 60%)'
+		}
 	});
 
 export const LABEL_POSITIONS =
