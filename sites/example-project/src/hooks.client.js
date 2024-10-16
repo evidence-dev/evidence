@@ -1,3 +1,5 @@
+import { building } from '$app/environment';
+import { log } from '@evidence-dev/sdk/logger';
 /** @param {Error | unknown} e  */
 const transformError = (e) => {
 	if (!(e instanceof Error)) {
@@ -15,6 +17,16 @@ const transformError = (e) => {
 
 /** @type {import("@sveltejs/kit").HandleClientError } */
 export const handleError = (e) => {
-	console.error(`Error in client-side routing`, e);
+	if (building) {
+		log.die(
+			`Evidence encountered an error while building your project:`,
+			[
+				`Page: ${e.event.route.id}`,
+				`Message: ${e.error?.message ?? 'Unknown'}`,
+				`Error Type: ${e.status === 404 ? 'Missing Page' : 'Build Error'}`
+			],
+			{ e, location: 'Client' }
+		);
+	}
 	return transformError(e.error);
 };

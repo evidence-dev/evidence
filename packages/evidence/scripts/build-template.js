@@ -54,6 +54,8 @@ fsExtra.outputFileSync(
 	const loggerWarn = logger.warn;
   const loggerOnce = logger.warnOnce
   
+	const devtoolsOnlyDeps = []
+
   /**
    * @see https://github.com/evidence-dev/evidence/issues/1876
    * Ignore the duckdb-wasm sourcemap warning
@@ -93,10 +95,10 @@ fsExtra.outputFileSync(
 				])
 				
 			],
-            exclude: ['svelte-icons', '@evidence-dev/universal-sql']
+            exclude: ['svelte-icons', '@evidence-dev/universal-sql', ...devtoolsOnlyDeps]
         },
         ssr: {
-            external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/plugin-connector']
+            external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/plugin-connector', ...devtoolsOnlyDeps]
         },
         server: {
             fs: {
@@ -111,11 +113,14 @@ fsExtra.outputFileSync(
 			minify: isDebug() ? false : true,
 			target: isDebug() ? 'esnext' : undefined,
 			rollupOptions: {
-				external: [/^@evidence-dev\\/tailwind\\/fonts\\//],
+				external: [/^@evidence-dev\\/tailwind\\/fonts\\//, ...devtoolsOnlyDeps],
 				onwarn(warning, warn) {
 					if (warning.code === 'EVAL') return;
 					warn(warning);
 				}
+			},
+			dynamicImportVars: {
+				exclude: devtoolsOnlyDeps
 			}
 		},
 		customLogger: logger

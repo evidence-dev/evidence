@@ -3,6 +3,8 @@ import type { Query as QueryBuilder } from '@uwdata/mosaic-sql';
 // It should not be used as anything other than a .d.ts file
 import type { DescribeResultRow } from '../types/duckdb-wellknown.d.ts';
 import type { ChainableSharedPromise, Query, QueryValue } from './query/Query.js';
+import { ActiveDagNode } from '../utils/dag/DagNode.js';
+import { DagManager } from '../utils/dag/types.js';
 
 export type EventHandler<
 	Events extends Record<string, any> = {},
@@ -49,12 +51,16 @@ export type QueryOpts<RowType extends QueryResultRow = QueryResultRow> = {
 	 * When true, this prevents the query from ever fetching or presenting data.
 	 **/
 	noResolve?: boolean;
+
+	dagNode?: ActiveDagNode;
 };
 
 export type QueryReactivityOpts<T extends QueryResultRow = QueryResultRow> = {
 	loadGracePeriod?: number;
-	callback: (v: QueryValue<T>) => void;
+	callback: (v: QueryValue<T>) => unknown;
+	dagManager: DagManager;
 	execFn: Runner<T>;
+	initialQuery?: QueryValue<any> | (() => string);
 };
 
 export interface CreateQuery<RowType extends QueryResultRow = QueryResultRow> {

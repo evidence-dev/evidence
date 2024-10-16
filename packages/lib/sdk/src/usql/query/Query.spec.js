@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Query } from './Query';
 import { sharedPromise } from '../../lib/sharedPromise';
-
+import { BlockingDagNode } from '../../utils/dag/DagNode.js';
+import { AccessTrack } from '../../utils/proxies/access-track/AccessTrack.js';
+import { InputStore } from '../../utils/inputs/InputStore.js';
 const tick = (timeout = 0) => new Promise((r) => setTimeout(r, timeout));
 
 /** @type {import('../types').MaybePromise<[{rowCount: number}]>} */
@@ -26,18 +28,59 @@ const mockRunner = vi.fn((q) => {
 let testQueryIndex = 0;
 let testIdx = 0;
 
-/**
- * @param {string} s
- * @param {import('../types').QueryOpts} opts
- * @returns
- */
-const getMockQuery = (s, opts) => {
-	return Query.create(s, mockRunner, {
-		id: `q-${testQueryIndex++}-${testIdx}`,
-		disableCache: true,
-		...opts
+describe('newQuery', () => {
+	let inputs;
+	beforeEach(() => {
+		inputs = new InputStore();
 	});
-};
+	/**
+	 * @param {string} s
+	 * @param {import('../types').QueryOpts} opts
+	 * @returns
+	 */
+	const getMockQuery = (s, opts) => {
+		return Query.create(s, mockRunner, {
+			id: `q-${testQueryIndex++}-${testIdx}`,
+			disableCache: true,
+			dagManager: inputs,
+			...opts
+		});
+	};
+	it('should have a create function', () => expect(Query.create).toBeTypeOf('function'));
+	it('should return a function', () => expect(getMockQuery()).toBeTypeOf('function'));
+	it("should execute it's callback when the text is updated", () => {
+		const callback = vi.fn();
+		const q = getMockQuery('MyQuery', { callback });
+		q(() => `${inputs.hello}`);
+		expect(callback).toHaveBeenCalledOnce();
+	});
+	it("should keep track of it's dependencies when they exist in the provided text", () => {
+		/** @type {import("./Query.js").QueryValue<any>} */
+		let v;
+		const q = getMockQuery('MyQuery', { callback: (vv) => (v = vv) });
+		q(() => `${inputs.hello}`);
+		expect(v.__dag.parents.size).toBe(1);
+	});
+	it.only("should properly update the query text when it's dependencies change", () => {
+		/** @type {import("./Query.js").QueryValue<any>} */
+		let v;
+		const q = getMockQuery('MyQuery', {
+			callback: (vv) => {
+				v = vv;
+				console.log("Callback executed", vv.originalText)
+			}
+		});
+		inputs.hello.value = '5';
+		q(() => `${inputs.hello.value}`);
+		expect(v.__dag.parents.size).toBe(1);
+		expect(v.originalText).toBe('5');
+
+		console.log(">> Pre Set")
+		inputs.hello.value = 'new';
+		console.log("<< Post Set")
+		expect(v.originalText).toBe('new');
+	});
+});
 
 describe('Query', () => {
 	beforeEach(() => {
@@ -48,6 +91,7 @@ describe('Query', () => {
 		testQueryIndex = 0;
 		testIdx++;
 		Query.emptyCache();
+		Query.resetInFlightQueries();
 	});
 
 	describe('Cache Busting', () => {
@@ -231,7 +275,6 @@ describe('Query', () => {
 			await query.fetch();
 			const after = performance.now();
 
-			console.log(`Took ${(after - before).toFixed(2)}`);
 			expect(query.length).toBe(1000 * 1000);
 			expect(after - before).toBeLessThan(250);
 		});
@@ -253,6 +296,27 @@ describe('Query', () => {
 			const errored = getMockQuery(null);
 
 			expect(errored.error.message.startsWith('Refusing to create Query')).toBe(true);
+		});
+
+		describe('Dag Tracking', () => {
+			it('should be created with a dag node', () => {
+				/** @type {import ('./Query.js').QueryValue} */
+				let value;
+				const query = Query.withDag({ execFn: mockRunner, callback: (v) => (value = v) });
+				query.update``;
+				expect(query.__dag).toBeDefined();
+				expect(value.__dag).toBeDefined();
+			});
+			it('should be aware of WithDag dependencies', () => {
+				/** @type {import ('./Query.js').QueryValue} */
+				let value;
+				const query = Query.withDag({ execFn: mockRunner, callback: (v) => (value = v) });
+				const trackedValue = {
+					__dag: new BlockingDagNode()
+				};
+				query.update`${trackedValue}`;
+				expect(value.__dag.parents).toContain(trackedValue.__dag);
+			});
 		});
 
 		describe('Reactive Variant', () => {
@@ -369,7 +433,6 @@ describe('Query', () => {
 						execFn: mockRunner,
 						callback: (v) => {
 							currentValue = v;
-							console.log(v.id, v.dataLoaded);
 							updateTracker();
 						}
 					},
@@ -491,9 +554,6 @@ describe('Query', () => {
 	});
 
 	describe('Global Loading State', () => {
-		beforeEach(() => {
-			Query.resetInFlightQueries();
-		});
 		it('should report that no queries are loading when no queries have been created', () => {
 			expect(Query.queriesInFlight).toBe(false);
 		});
@@ -741,7 +801,7 @@ describe('Query', () => {
 			const lengthSharedPromise = sharedPromise();
 			expectedLength = lengthSharedPromise.promise;
 			const q = getMockQuery('SELECT 5', { id: 'I SEE YOU' });
-			const subscriber = vi.fn(console.log);
+			const subscriber = vi.fn();
 			let i = 0;
 
 			subscriber.mockImplementationOnce((v) => {

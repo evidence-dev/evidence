@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { ManifestSchema } from './schemas/manifest.schema.js';
-import merge from 'lodash.merge';
+import merge from 'lodash/merge.js';
 import chalk from 'chalk';
 
 /**

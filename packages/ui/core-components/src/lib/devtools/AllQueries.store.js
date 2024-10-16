@@ -1,0 +1,27 @@
+import { dev } from '$app/environment';
+import { writable } from 'svelte/store';
+import { batchUp } from '@evidence-dev/sdk/utils';
+import { Query } from '@evidence-dev/sdk/usql';
+const allQueries = writable(new Map());
+
+if (dev) {
+	Query.addEventListener(
+		'queryCreated',
+		batchUp((insertedQueries) => {
+			allQueries.update(($allQueries) => {
+				for (const query of insertedQueries) {
+					if (Query.isQuery(query.proxied)) $allQueries.set(query.proxied.hash, query.proxied);
+				}
+				return $allQueries;
+			});
+		})
+	);
+
+	// Cache was cleared so we can reasonably assume that all queries are no longer active
+	// 🚩 Is this actually a true assumption?
+	Query.addEventListener('cacheCleared', () => allQueries.set(new Map()));
+}
+export const AllQueries = {
+	subscribe: allQueries.subscribe.bind(allQueries),
+	reset: () => allQueries.set(new Map())
+};

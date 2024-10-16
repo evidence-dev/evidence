@@ -3,8 +3,8 @@
 </script>
 
 <script>
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	const inputs = getInputContext();
+	import { useInput } from '@evidence-dev/sdk/utils/svelte';
+
 	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import {
@@ -65,14 +65,19 @@
 
 	/** @type {number} */
 	export let defaultValue = 0;
+	const input = useInput(
+		name,
+		{ debouncePeriod: 200, sqlFragmentFactory: (myInput) => `${myInput.value}` },
+		{ value: defaultValue }
+	);
 
 	/** @type {[number]} */
-	let value = [defaultValue];
+	let value = [$input ?? defaultValue];
 
 	/** @type {string | undefined} */
 	export let fmt = undefined;
 
-	$: $inputs[name] = value;
+	$: input.update(value[0]);
 
 	/** @type {string} */
 	export let size = '';
@@ -81,7 +86,7 @@
 		const sizeMap = {
 			medium: 'w-64',
 			large: 'w-96',
-			//Full size width requires calc to compensate for shifted range span in sliderShadcn
+			// Full size width requires calc to compensate for shifted range span in sliderShadcn
 			full: 'w-[calc(100%-0.6rem)]'
 		};
 		return sizeMap[size.toLowerCase()] || 'w-40';
@@ -97,8 +102,10 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`relative ${sizeClass} mb-10 select-none`}>
 		<p class="pb-2 truncate text-xs">
-			{title} :
-			<span class="text-xs">{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span>
+			{#if title}
+				{title} :
+			{/if}
+			<span class="text-xs">{fmt ? formatValue(value[0], format_object) : value[0]}</span>
 		</p>
 		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 		{#if showMaxMin}

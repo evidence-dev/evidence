@@ -21,8 +21,10 @@ export class History {
 	push(value) {
 		/** @param {Object} o */
 		const organize = (o) => {
+			if (Array.isArray(o)) return JSON.parse(JSON.stringify(o)); // no sorting
 			let entries = Object.entries(o);
 			entries.sort((a, b) => a[0].localeCompare(b[0]));
+			// @ts-ignore
 			const newObject = Object.fromEntries(entries);
 			return JSON.parse(JSON.stringify(newObject));
 		};
@@ -30,6 +32,22 @@ export class History {
 		const pre = organize(this.#prev);
 		const post = organize(value);
 		const diff = detailedDiff(pre, post);
+		if (
+			Object.keys(diff.added).length === 0 &&
+			Object.keys(diff.deleted).length === 0 &&
+			Object.keys(diff.updated).length === 0
+		) {
+			if (Array.isArray(pre) !== Array.isArray(post)) {
+				this.#prev = post;
+				this.#history.push({
+					...diff,
+					before: pre,
+					after: post,
+					asof: new Date()
+				});
+			}
+			return;
+		}
 		this.#history.push({
 			...diff,
 			before: pre,

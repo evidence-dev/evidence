@@ -1,5 +1,5 @@
-import { isDebug } from '@evidence-dev/sdk/utils';
-import { dev } from '$app/environment';
+import { dev, building } from '$app/environment';
+import { log } from '@evidence-dev/sdk/logger';
 
 /** @param {Error | unknown} e  */
 const transformError = (e) => {
@@ -16,10 +16,18 @@ const transformError = (e) => {
 	}
 };
 
-/** @type {import("@sveltejs/kit").HandleClientError } */
+/** @type {import("@sveltejs/kit").HandleServerError } */
 export const handleError = (e) => {
-	if (isDebug()) {
-		console.error(`Uncaught error while server responding`, e);
+	if (building) {
+		log.die(
+			`Evidence encountered an error while building your project:`,
+			[
+				`Page: ${e.event.route.id}`,
+				`Message: ${e.error?.message ?? 'Unknown'}`,
+				`Error Type: ${e.status === 404 ? 'Missing Page' : 'Build Error'}`
+			],
+			{ e, location: 'Server' }
+		);
 	}
 	return transformError(e.error);
 };

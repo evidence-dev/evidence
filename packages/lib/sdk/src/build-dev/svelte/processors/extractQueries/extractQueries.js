@@ -13,7 +13,7 @@ export const extractQueries = {
 		// const body = dom.window.document.documentElement.querySelector('body');
 		// if (!body) throw new Error('Body is undefined');
 		// dom.window.document.head.querySelectorAll('script').forEach((el) => body.prepend(el));
-		let r = content;
+		const r = content;
 
 		codeElements.forEach((el) => {
 			if (el.getAttribute('evidence-query-name') && !el.getAttribute('lang'))

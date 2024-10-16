@@ -1,5 +1,7 @@
 import { getAllContexts, getContext, setContext } from 'svelte';
-import { get, readable, readonly, writable } from 'svelte/store';
+import { readable, readonly } from 'svelte/store';
+import { Input } from '../inputs/Input.js';
+import { InputStore } from '../inputs/InputStore.js';
 
 export const InputStoreKey = Symbol('InputStore');
 
@@ -21,42 +23,31 @@ const isReadable = (v) => {
 	if (v === null) return false;
 	return 'subscribe' in v;
 };
-/**
- * @param {unknown} v
- * @returns {v is Writable<any>}
- */
-const isWritable = (v) => {
-	if (!isReadable(v)) return false;
-	return 'set' in v && 'update' in v;
-};
 
 /**
- * @param {Writable<any>} c
- * @returns {Writable<any>}
+ * @returns {InputStore}
  */
-export const ensureInputContext = (c) => {
-	if (!isWritable(c)) {
-		console.error({ InputStoreValue: c });
-		throw new Error('InputStore must be a writable store');
-	}
+export const ensureInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
-		setContext(InputStoreKey, c);
-		return c;
+		const newValue = new InputStore();
+		Input.DefaultValueText = '(SELECT 0 WHERE NULL /* Unset or Unknown Input Value */)';
+		setContext(InputStoreKey, newValue);
+		return newValue.proxy;
 	} else {
 		const existingValue = getContext(InputStoreKey);
-		existingValue.set(get(c));
-		return existingValue;
+		return existingValue.proxy;
 	}
 };
 
 /**
- * @returns {Writable<any>}
- * @deprecated use 'getInputSetter' whenever possible
+ * @returns {InputStore}
+ * @deprecated This should not appear when this branch is merged
  */
 export const getInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
-		console.warn('InputStoreKey not found in context. Did you forget to call ensureInputContext?');
-		return writable({});
+		throw new Error(
+			'InputStoreKey not found in context. Did you forget to call ensureInputContext?'
+		);
 	}
 	return getContext(InputStoreKey);
 };
