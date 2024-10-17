@@ -270,17 +270,25 @@ export class EvidenceMap {
 		if (!this.#map.getPane(circleOptions.pane)) {
 			this.#map.createPane(circleOptions.pane);
 
-			if (circleOptions.pane.includes('bubbles') && circleOptions.z === undefined) {
-				this.#map.getPane(circleOptions.pane).style.zIndex = 400; // Lower zIndex for bubbles
-			} else if (circleOptions.pane.includes('points') && circleOptions.z === undefined) {
-				this.#map.getPane(circleOptions.pane).style.zIndex = 401; // Higher zIndex for points
-			} else if (circleOptions.z !== undefined) {
-				if (toNumber(circleOptions.z)) {
-					this.#map.getPane(circleOptions.pane).style.zIndex = 400 + toNumber(circleOptions.z);
-				} else {
-					this.#map.getPane(circleOptions.pane).style.zIndex = 400;
+			console.log(this.#paneArray, circleOptions.pane);
+
+			this.#paneArray.forEach((pane, index) => {
+				if (pane === circleOptions.pane) {
+					this.#map.getPane(pane).style.zIndex = 400 + index;
 				}
-			}
+			});
+
+			// if (circleOptions.pane.includes('bubbles') && circleOptions.z === undefined) {
+			// 	this.#map.getPane(circleOptions.pane).style.zIndex = 400; // Lower zIndex for bubbles
+			// } else if (circleOptions.pane.includes('points') && circleOptions.z === undefined) {
+			// 	this.#map.getPane(circleOptions.pane).style.zIndex = 401; // Higher zIndex for points
+			// } else if (circleOptions.z !== undefined) {
+			// 	if (toNumber(circleOptions.z)) {
+			// 		this.#map.getPane(circleOptions.pane).style.zIndex = 400 + toNumber(circleOptions.z);
+			// 	} else {
+			// 		this.#map.getPane(circleOptions.pane).style.zIndex = 400;
+			// 	}
+			// }
 		}
 
 		// Create the marker with the appropriate pane
