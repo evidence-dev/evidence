@@ -8,7 +8,7 @@
 
 <a
 	href={url}
-	class="font-ui font-normal text-base no-underline border my-5 rounded-lg py-2 px-3 inline-block transition hover:ease-in hover:border-blue-200 hover:bg-blue-100 hover:no-underline hover:text-gray-800 focus:text-gray-900 focus:border-blue-200"
+	class="font-ui font-normal text-base no-underline border border-info/20 bg-info/10 my-5 rounded-lg py-2 px-3 inline-block transition hover:ease-in hover:border-info hover:bg-info/20 hover:no-underline focus:border-info"
 >
 	<div>
 		<span>
