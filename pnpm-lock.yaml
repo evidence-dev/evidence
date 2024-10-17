@@ -1490,6 +1490,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: 3.0.2
         version: 3.0.2(svelte@4.2.19)(vite@5.4.6)
+      '@types/chroma-js':
+        specifier: ^2.4.4
+        version: 2.4.4
       '@types/lodash.debounce':
         specifier: ^4.0.9
         version: 4.0.9
@@ -7910,6 +7913,10 @@ packages:
     dependencies:
       '@types/connect': 3.4.38
       '@types/node': 22.7.6
+
+  /@types/chroma-js@2.4.4:
+    resolution: {integrity: sha512-/DTccpHTaKomqussrn+ciEvfW4k6NAHzNzs/sts1TCqg333qNxOhy8TNIoQCmbGG3Tl8KdEhkGAssb1n3mTXiQ==}
+    dev: true
 
   /@types/cli-progress@3.11.6:
     resolution: {integrity: sha512-cE3+jb9WRlu+uOSAugewNpITJDt1VF8dHOopPO4IABFc3SXYL5WE/+PTz/FCdZRRfIujiWW3n3aMbv1eIGVRWA==}

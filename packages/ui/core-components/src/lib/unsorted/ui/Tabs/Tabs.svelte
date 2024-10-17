@@ -8,7 +8,7 @@
 	import TabDisplay from './TabDisplay.svelte';
 
 	export let id;
-	export let color = 'hsla(207, 65%, 39%, 1)';
+	export let color = undefined;
 
 	/** @type {import('./index.d.ts').TabsContext} */
 	const context = writable({ tabs: [], activeId: null });

@@ -312,6 +312,10 @@
 	--yellow-999: theme(colors.yellow.950);
 }
 
+[data-theme='dark'] .__evidence-leaflet-tile-layer__ {
+	filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
 @media print {
 	html {
 		-webkit-print-color-adjust: exact;

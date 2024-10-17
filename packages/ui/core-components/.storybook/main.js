@@ -1,4 +1,5 @@
 import { mergeConfig } from 'vite';
+import { evidenceThemes } from '@evidence-dev/tailwind';
 
 /** @type { import('@storybook/sveltekit').StorybookConfig } */
 const config = {
@@ -15,6 +16,7 @@ const config = {
 	},
 	async viteFinal(config) {
 		return mergeConfig(config, {
+			plugins: [evidenceThemes()],
 			server: {
 				fs: {
 					strict: false

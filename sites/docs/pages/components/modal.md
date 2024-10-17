@@ -3,7 +3,7 @@ title: Modal
 sidebar_position: 1
 ---
 
-<Modal title="Title" buttonText='Open Modal' open> 
+<Modal title="Title" buttonText='Open Modal'> 
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 

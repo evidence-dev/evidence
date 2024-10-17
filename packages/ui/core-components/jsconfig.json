@@ -8,6 +8,7 @@
 		"sourceMap": true,
 		"moduleResolution": "NodeNext",
 		"strict": true,
-		"module": "NodeNext"
+		"module": "NodeNext",
+		"types": ["@evidence-dev/tailwind"]
 	}
 }

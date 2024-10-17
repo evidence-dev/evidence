@@ -24,10 +24,10 @@
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
 
-	const { selectedTheme, theme, cycleTheme } = ensureThemeStores();
+	const { selectedMode, activeMode, cycleMode } = ensureThemeStores();
 	$: themeLabel =
-		$selectedTheme === 'system' ? 'System' : $selectedTheme === 'light' ? 'Light' : 'Dark';
-	$: themeIcon = $theme === 'light' ? Sun : Moon;
+		$selectedMode === 'system' ? 'System' : $selectedMode === 'light' ? 'Light' : 'Dark';
+	$: themeIcon = $activeMode === 'light' ? Sun : Moon;
 </script>
 
 <DropdownMenu.Root>
@@ -54,7 +54,7 @@
 				<DropdownMenu.Item
 					on:click={(e) => {
 						e.preventDefault();
-						cycleTheme();
+						cycleMode();
 					}}
 				>
 					Appearance

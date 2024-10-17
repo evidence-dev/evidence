@@ -10,6 +10,7 @@
 	import { showQueries, localStorageStore } from '@evidence-dev/component-utilities/stores';
 	import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
 	import { page } from '$app/stores';
+	import { ensureThemeStores } from '../../themes.js';
 
 	export let queryID;
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -55,6 +56,8 @@
 			showCompilerToggle = query.compiled && query.compileError === undefined;
 		}
 	}
+
+	const { theme } = ensureThemeStores();
 </script>
 
 <div class="over-container" in:blur|local>
@@ -95,7 +98,7 @@
 				{#if error}
 					{error.message}
 				{:else if rowCount}
-					<ChevronToggle toggled={$showResults} color="#3488e9" />
+					<ChevronToggle toggled={$showResults} color={$theme['info']} />
 					{rowCount.toLocaleString()}
 					{rowCount > 1 ? 'records' : 'record'} with {colCount.toLocaleString()}
 					{colCount > 1 ? 'properties' : 'property'}
