@@ -207,13 +207,13 @@
 	</tr>
 {/each}
 
-<style>
+<style lang="postcss">
 	.row-lines {
-		border-bottom: thin solid var(--grey-200);
+		@apply border-b border-base-300;
 	}
 
 	.shaded-row {
-		background-color: var(--grey-50);
+		@apply bg-base-200;
 	}
 
 	*:focus {
@@ -225,7 +225,6 @@
 	}
 
 	.row-link:hover {
-		--tw-bg-opacity: 1;
-		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
+		@apply bg-base-200;
 	}
 </style>

@@ -128,7 +128,7 @@
 		display: inline;
 		position: relative;
 		cursor: help;
-		color: blue;
+		color: var(--neutral);
 	}
 
 	.placeholder .error-msg {
@@ -142,10 +142,10 @@
 		padding-right: 5px;
 		padding-top: 2px;
 		padding-bottom: 1px;
-		color: white;
 		font-size: 0.8em;
-		background-color: var(--grey-900);
-		opacity: 0.85;
+		color: var(--base-content);
+		background-color: var(--base-200);
+		border: 1px solid var(--base-300);
 		border-radius: 6px;
 		z-index: 1;
 		word-wrap: break-word;

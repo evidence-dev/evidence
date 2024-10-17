@@ -27,11 +27,11 @@
 
 <Story name="Basic Usage" let:args>
 	<Grid {...args}>
-		<div class="h-16 bg-gray-500" />
-		<div class="h-16 bg-gray-500" />
-		<div class="h-16 bg-gray-500" />
-		<div class="h-16 bg-gray-500" />
-		<div class="h-16 bg-gray-500" />
-		<div class="h-16 bg-gray-500" />
+		<div class="h-16 bg-base-300" />
+		<div class="h-16 bg-base-300" />
+		<div class="h-16 bg-base-300" />
+		<div class="h-16 bg-base-300" />
+		<div class="h-16 bg-base-300" />
+		<div class="h-16 bg-base-300" />
 	</Grid>
 </Story>

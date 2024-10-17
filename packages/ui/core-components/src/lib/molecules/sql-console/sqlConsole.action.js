@@ -1,7 +1,7 @@
 import { PostgreSQL, sql } from '@codemirror/lang-sql';
 import { EditorView } from 'codemirror';
 
-import { espresso } from 'thememirror';
+import { espresso, boysAndGirls } from 'thememirror';
 
 import {
 	closeBrackets,
@@ -38,6 +38,7 @@ import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
  * @property {(update: ViewUpdate) => void} onChange
  * @property {Command} onSubmit
  * @property {boolean} [disabled = false]
+ * @property {'light' | 'dark'} theme
  */
 
 /**
@@ -170,7 +171,9 @@ export const sqlConsole = (
 
 	/** @type {() => void} */
 	let removeClickListener;
-	function bootstrap(/** @type {SqlConsoleArgs} */ { initialState, schema, onChange, onSubmit }) {
+	function bootstrap(
+		/** @type {SqlConsoleArgs} */ { initialState, schema, onChange, onSubmit, theme }
+	) {
 		if (view) view.destroy();
 		if (removeClickListener) removeClickListener();
 		view = new EditorView({
@@ -250,6 +253,7 @@ export const sqlConsole = (
 						}
 					}
 				]),
+				theme === 'light' ? espresso : boysAndGirls,
 				...defaultSettings,
 				sql({
 					...schema,
@@ -278,7 +282,6 @@ export const sqlConsole = (
 };
 
 const defaultSettings = [
-	espresso,
 	// highlightSpecialChars(),
 	history(),
 	drawSelection(),

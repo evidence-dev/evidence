@@ -19,7 +19,7 @@
 	{transitionConfig}
 	{sideOffset}
 	class={cn(
-		'z-50 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md bg-white focus:outline-none antialiased text-gray-800 print:hidden',
+		'z-50 min-w-[8rem] rounded-md border border-base-200 bg-popover p-1 shadow-md bg-base-100 focus:outline-none antialiased text-base-conetnt print:hidden',
 		className
 	)}
 	{...$$restProps}

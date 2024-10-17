@@ -20,13 +20,13 @@
 	$: sourcePlugin = availableSourcePlugins?.[source.type];
 </script>
 
-<div class="contents text-xs odd:bg-gray-200">
+<div class="contents text-xs">
 	{#if simpleIcons[sourcePlugin?.package.package.evidence.icon]}
 		<Icon src={simpleIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
 	{:else if evidenceIcons[sourcePlugin?.package.package.evidence.icon]}
 		<Icon src={evidenceIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
 	{:else if !sourcePlugin}
-		<Icon src={ExclamationCircle} class="w-6 h-6 text-red-500" />
+		<Icon src={ExclamationCircle} class="w-6 h-6 text-negative" />
 	{:else}
 		<Icon src={Database} class="w-6 h-6" />
 	{/if}
@@ -36,7 +36,7 @@
 			{source.type}
 		</p>
 		{#if !sourcePlugin}
-			<p class="text-red-500 font-bold">
+			<p class="text-negative font-bold">
 				No connector for {source.type} is available
 			</p>
 			<Hint
