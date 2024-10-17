@@ -343,6 +343,58 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
 
+  e2e/prerender:
+    dependencies:
+      '@evidence-dev/bigquery':
+        specifier: workspace:*
+        version: link:../../packages/datasources/bigquery
+      '@evidence-dev/core-components':
+        specifier: workspace:*
+        version: link:../../packages/ui/core-components
+      '@evidence-dev/csv':
+        specifier: workspace:*
+        version: link:../../packages/datasources/csv
+      '@evidence-dev/databricks':
+        specifier: workspace:*
+        version: link:../../packages/datasources/databricks
+      '@evidence-dev/duckdb':
+        specifier: workspace:*
+        version: link:../../packages/datasources/duckdb
+      '@evidence-dev/evidence':
+        specifier: workspace:*
+        version: link:../../packages/evidence
+      '@evidence-dev/motherduck':
+        specifier: workspace:*
+        version: link:../../packages/datasources/motherduck
+      '@evidence-dev/mssql':
+        specifier: workspace:*
+        version: link:../../packages/datasources/mssql
+      '@evidence-dev/mysql':
+        specifier: workspace:*
+        version: link:../../packages/datasources/mysql
+      '@evidence-dev/postgres':
+        specifier: workspace:*
+        version: link:../../packages/datasources/postgres
+      '@evidence-dev/snowflake':
+        specifier: workspace:*
+        version: link:../../packages/datasources/snowflake
+      '@evidence-dev/sqlite':
+        specifier: workspace:*
+        version: link:../../packages/datasources/sqlite
+      '@evidence-dev/trino':
+        specifier: workspace:*
+        version: link:../../packages/datasources/trino
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.45.3
+        version: 1.48.1
+      '@types/node':
+        specifier: ^22.7.4
+        version: 22.7.6
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+
   e2e/spa:
     dependencies:
       '@evidence-dev/bigquery':
@@ -2073,8 +2125,8 @@ packages:
       tslib: 2.8.0
     dev: false
 
-  /@aws-sdk/client-s3@3.673.0:
-    resolution: {integrity: sha512-GREQlgG13Jveu9I+4pH2wfxHnl8TN0geVdUO8vOh6VbudmtfdC8hXUuMiTMX7VZ6c4zyOFStzBwysUv0Ze7kFg==}
+  /@aws-sdk/client-s3@3.674.0:
+    resolution: {integrity: sha512-/pbAGFXUFqhZPrb4vACYdJzAc/lX/MPW1sxRoiX46BVjvpT7QkYwRjlzuifskLyDf2TjkGNsXu+F6AgPGCXFUg==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@aws-crypto/sha1-browser': 5.2.0
@@ -2091,11 +2143,11 @@ packages:
       '@aws-sdk/middleware-location-constraint': 3.667.0
       '@aws-sdk/middleware-logger': 3.667.0
       '@aws-sdk/middleware-recursion-detection': 3.667.0
-      '@aws-sdk/middleware-sdk-s3': 3.669.0
+      '@aws-sdk/middleware-sdk-s3': 3.674.0
       '@aws-sdk/middleware-ssec': 3.667.0
       '@aws-sdk/middleware-user-agent': 3.669.0
       '@aws-sdk/region-config-resolver': 3.667.0
-      '@aws-sdk/signature-v4-multi-region': 3.669.0
+      '@aws-sdk/signature-v4-multi-region': 3.674.0
       '@aws-sdk/types': 3.667.0
       '@aws-sdk/util-endpoints': 3.667.0
       '@aws-sdk/util-user-agent-browser': 3.670.0
@@ -2494,8 +2546,8 @@ packages:
       tslib: 2.8.0
     dev: false
 
-  /@aws-sdk/middleware-sdk-s3@3.669.0:
-    resolution: {integrity: sha512-b2QUQ7DcIcVCUFhvmFEDI90BemvQhO0ntIajllLqQSy88PSNdLDCVx5mIzfxaaK/1tdY/UsEDRRm1kMQHJDQpg==}
+  /@aws-sdk/middleware-sdk-s3@3.674.0:
+    resolution: {integrity: sha512-IvXnWrKy4mO+I44kLYHd6Wlw+FdB4sg1jvHCmnZo1KNaAFIA3x1iXgOaZynKoBdEmol3xfr2uDbeXUQvIwoIgg==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@aws-sdk/core': 3.667.0
@@ -2548,11 +2600,11 @@ packages:
       tslib: 2.8.0
     dev: false
 
-  /@aws-sdk/signature-v4-multi-region@3.669.0:
-    resolution: {integrity: sha512-TVwlWAxfBHnFjnfTBQWUhzVJzjwVhkq1+KR0JZV7JrfqeyBOdZjAaV9ie3VNY9HUouecq1fDuKaSwe4JiWQsHg==}
+  /@aws-sdk/signature-v4-multi-region@3.674.0:
+    resolution: {integrity: sha512-VMQWbtcbg4FV/fILrODADV21pPg9AghuEzQlW2kH0hCtacvBwFl7eBxIiCBLLtkNple+CVPJvyBcqOZdBkEv/w==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      '@aws-sdk/middleware-sdk-s3': 3.669.0
+      '@aws-sdk/middleware-sdk-s3': 3.674.0
       '@aws-sdk/types': 3.667.0
       '@smithy/protocol-http': 4.1.4
       '@smithy/signature-v4': 4.2.0
@@ -2636,13 +2688,6 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       '@smithy/types': 3.5.0
-      tslib: 2.8.0
-    dev: false
-
-  /@azure/abort-controller@1.1.0:
-    resolution: {integrity: sha512-TrRLIoSQVzfAJX9H1JeFjzAoDGcoK1IYX1UImfceTZpsyYfWr09Ss1aHW1y5TrrR3iq6RZLBwJ3E24uwPhwahw==}
-    engines: {node: '>=12.0.0'}
-    dependencies:
       tslib: 2.8.0
     dev: false
 
@@ -2744,11 +2789,11 @@ packages:
       tslib: 2.8.0
     dev: false
 
-  /@azure/identity@4.4.1:
-    resolution: {integrity: sha512-DwnG4cKFEM7S3T+9u05NstXU/HN0dk45kPOinUyNKsn5VWwpXd9sbPKEg6kgJzGbm1lMuhx9o31PVbCtM5sfBA==}
+  /@azure/identity@4.5.0:
+    resolution: {integrity: sha512-EknvVmtBuSIic47xkOqyNabAme0RYTw52BTMz8eBgU1ysTyMrD1uOoM+JdS0J/4Yfp98IBT3osqq3BfwSaNaGQ==}
     engines: {node: '>=18.0.0'}
     dependencies:
-      '@azure/abort-controller': 1.1.0
+      '@azure/abort-controller': 2.1.2
       '@azure/core-auth': 1.9.0
       '@azure/core-client': 1.9.2
       '@azure/core-rest-pipeline': 1.17.0
@@ -4620,7 +4665,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       chalk: 4.1.0
       jest-message-util: 28.1.3
       jest-util: 28.1.3
@@ -4641,14 +4686,14 @@ packages:
       '@jest/test-result': 28.1.3
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       ansi-escapes: 4.3.2
       chalk: 4.1.0
       ci-info: 3.9.0
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 28.1.3
-      jest-config: 28.1.3(@types/node@20.16.12)
+      jest-config: 28.1.3(@types/node@22.7.6)
       jest-haste-map: 28.1.3
       jest-message-util: 28.1.3
       jest-regex-util: 28.0.2
@@ -4676,7 +4721,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       jest-mock: 28.1.3
     dev: true
 
@@ -4686,7 +4731,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       jest-mock: 29.7.0
     dev: true
 
@@ -4730,7 +4775,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@sinonjs/fake-timers': 9.1.2
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       jest-message-util: 28.1.3
       jest-mock: 28.1.3
       jest-util: 28.1.3
@@ -4742,7 +4787,7 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -4786,7 +4831,7 @@ packages:
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
       '@jridgewell/trace-mapping': 0.3.25
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       chalk: 4.1.0
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -4903,7 +4948,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       '@types/yargs': 16.0.9
       chalk: 4.1.0
     dev: true
@@ -4915,7 +4960,7 @@ packages:
       '@jest/schemas': 28.1.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       '@types/yargs': 17.0.33
       chalk: 4.1.0
     dev: true
@@ -4927,7 +4972,7 @@ packages:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       '@types/yargs': 17.0.33
       chalk: 4.1.0
     dev: true
@@ -5373,6 +5418,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/cache@2.12.0(@parcel/core@2.12.0):
@@ -5386,6 +5432,8 @@ packages:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/codeframe@2.12.0:
@@ -5402,6 +5450,7 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/config-default@2.12.0(@parcel/core@2.12.0)(postcss@8.4.47)(typescript@5.4.2):
@@ -5546,6 +5595,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/node-resolver-core@3.3.0(@parcel/core@2.12.0):
@@ -5576,6 +5626,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/optimizer-htmlnano@2.12.0(@parcel/core@2.12.0)(postcss@8.4.47)(typescript@5.4.2):
@@ -5589,6 +5640,7 @@ packages:
       svgo: 2.8.0
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
       - cssnano
       - postcss
       - purgecss
@@ -5611,6 +5663,8 @@ packages:
       '@parcel/rust': 2.12.0
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/optimizer-svgo@2.12.0(@parcel/core@2.12.0):
@@ -5623,6 +5677,7 @@ packages:
       svgo: 2.8.0
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/optimizer-swc@2.12.0(@parcel/core@2.12.0):
@@ -5672,6 +5727,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-html@2.12.0(@parcel/core@2.12.0):
@@ -5685,6 +5741,7 @@ packages:
       posthtml: 0.16.6
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-js@2.12.0(@parcel/core@2.12.0):
@@ -5701,6 +5758,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-raw@2.12.0(@parcel/core@2.12.0):
@@ -5710,6 +5768,7 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-svg@2.12.0(@parcel/core@2.12.0):
@@ -5722,6 +5781,7 @@ packages:
       posthtml: 0.16.6
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-ts@2.12.0(@parcel/core@2.12.0):
@@ -5740,6 +5800,7 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/plugin@2.12.0(@parcel/core@2.12.0):
@@ -5781,6 +5842,7 @@ packages:
       '@parcel/utils': 2.12.0
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/reporter-tracer@2.12.0(@parcel/core@2.12.0):
@@ -5803,6 +5865,7 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/runtime-browser-hmr@2.12.0(@parcel/core@2.12.0):
@@ -5813,6 +5876,7 @@ packages:
       '@parcel/utils': 2.12.0
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/runtime-js@2.12.0(@parcel/core@2.12.0):
@@ -5825,6 +5889,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/runtime-react-refresh@2.12.0(@parcel/core@2.12.0):
@@ -5837,6 +5902,7 @@ packages:
       react-refresh: 0.9.0
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/runtime-service-worker@2.12.0(@parcel/core@2.12.0):
@@ -5848,6 +5914,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/rust@2.12.0:
@@ -5876,6 +5943,7 @@ packages:
       semver: 7.6.3
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-css@2.12.0(@parcel/core@2.12.0):
@@ -5891,6 +5959,7 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-html@2.12.0(@parcel/core@2.12.0):
@@ -5908,6 +5977,7 @@ packages:
       srcset: 4.0.0
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-image@2.12.0(@parcel/core@2.12.0):
@@ -5921,6 +5991,8 @@ packages:
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
       nullthrows: 1.1.1
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-inline-string@2.12.0(@parcel/core@2.12.0):
@@ -5960,6 +6032,7 @@ packages:
       json5: 2.2.3
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-postcss@2.12.0(@parcel/core@2.12.0):
@@ -5976,6 +6049,7 @@ packages:
       semver: 7.6.3
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-posthtml@2.12.0(@parcel/core@2.12.0):
@@ -5991,6 +6065,7 @@ packages:
       semver: 7.6.3
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-raw@2.12.0(@parcel/core@2.12.0):
@@ -6000,6 +6075,7 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-react-refresh-wrap@2.12.0(@parcel/core@2.12.0):
@@ -6011,6 +6087,7 @@ packages:
       react-refresh: 0.9.0
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-svg@2.12.0(@parcel/core@2.12.0):
@@ -6027,6 +6104,7 @@ packages:
       semver: 7.6.3
     transitivePeerDependencies:
       - '@parcel/core'
+      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-typescript-types@2.12.0(@parcel/core@2.12.0)(typescript@5.4.2):
@@ -7831,7 +7909,7 @@ packages:
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
 
   /@types/cli-progress@3.11.6:
     resolution: {integrity: sha512-cE3+jb9WRlu+uOSAugewNpITJDt1VF8dHOopPO4IABFc3SXYL5WE/+PTz/FCdZRRfIujiWW3n3aMbv1eIGVRWA==}
@@ -7848,7 +7926,7 @@ packages:
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
 
   /@types/cookie@0.6.0:
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -7872,7 +7950,7 @@ packages:
   /@types/esm@3.2.2:
     resolution: {integrity: sha512-l3IQQD2sChjNiQVNf28qq+sY9Sjvz7HrcOO3g4ZeSaiQRXQccBaR6cpqXPpzJ3QYCt6UF7+4ugabMRsQTPV+Eg==}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
     dev: true
 
   /@types/estree@1.0.6:
@@ -7881,7 +7959,7 @@ packages:
   /@types/express-serve-static-core@4.19.6:
     resolution: {integrity: sha512-N4LZ2xG7DatVqhCZzOGb1Yi5lMbXSZcmdLDe9EzSndPV2HpWYWzRbaerl2n27irrm94EPpprqa8KpskPT085+A==}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       '@types/qs': 6.9.16
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -7919,7 +7997,7 @@ packages:
   /@types/graceful-fs@4.1.9:
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
     dev: true
 
   /@types/hast@2.3.10:
@@ -7985,7 +8063,7 @@ packages:
   /@types/jsonfile@6.1.4:
     resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
     dev: true
 
   /@types/leaflet@1.9.12:
@@ -8094,7 +8172,6 @@ packages:
     resolution: {integrity: sha512-/d7Rnj0/ExXDMcioS78/kf1lMzYk4BZV8MZGTBKzTGZ6/406ukkbYlIsZmMPhcR5KlkunDHQLrtAVmSq7r+mSw==}
     dependencies:
       undici-types: 6.19.8
-    dev: true
 
   /@types/normalize-package-data@2.4.4:
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -8140,7 +8217,7 @@ packages:
   /@types/readable-stream@4.0.15:
     resolution: {integrity: sha512-oAZ3kw+kJFkEqyh7xORZOku1YAKvsFTogRY8kVl4vHpEKiDkfnSA/My8haRE7fvmix5Zyy+1pwzOi7yycGLBJw==}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       safe-buffer: 5.1.2
     dev: false
 
@@ -8160,13 +8237,13 @@ packages:
     resolution: {integrity: sha512-x2EM6TJOybec7c52BX0ZspPodMsQUd5L6PRwOunVyVUhXiBSKf3AezDL8Dgvgt5o0UfKNfuA0eMLr2wLT4AiBA==}
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
 
   /@types/serve-static@1.15.7:
     resolution: {integrity: sha512-W8Ym+h8nhuRwaKPaDw34QUkwsGi6Rc4yYqvKFo5rm2FUEhCFbzVWrxXUxuKK8TASjWsysJY0nsmNCGhCOIsrOw==}
     dependencies:
       '@types/http-errors': 2.0.4
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       '@types/send': 0.17.4
 
   /@types/snowflake-sdk@1.6.24:
@@ -8183,7 +8260,7 @@ packages:
   /@types/tedious@4.0.14:
     resolution: {integrity: sha512-KHPsfX/FoVbUGbyYvk1q9MMQHLPeRZhRJZdO45Q4YjvFkv4hMNghCWTvy7rdKessBsmtz4euWCWAB6/tVpI1Iw==}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
     dev: true
 
   /@types/tough-cookie@4.0.5:
@@ -8734,7 +8811,7 @@ packages:
     engines: {node: '>= 16'}
     hasBin: true
     dependencies:
-      '@azure/identity': 4.4.1
+      '@azure/identity': 4.5.0
       '@vscode/vsce-sign': 2.0.4
       azure-devops-node-api: 12.5.0
       chalk: 2.4.2
@@ -9591,7 +9668,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001669
-      electron-to-chromium: 1.5.40
+      electron-to-chromium: 1.5.41
       node-releases: 2.0.18
       update-browserslist-db: 1.1.1(browserslist@4.24.0)
 
@@ -11162,8 +11239,8 @@ packages:
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  /electron-to-chromium@1.5.40:
-    resolution: {integrity: sha512-LYm78o6if4zTasnYclgQzxEcgMoIcybWOhkATWepN95uwVVWV0/IW10v+2sIeHE+bIYWipLneTftVyQm45UY7g==}
+  /electron-to-chromium@1.5.41:
+    resolution: {integrity: sha512-dfdv/2xNjX0P8Vzme4cfzHqnPm5xsZXwsolTYr0eyW18IUmNyG08vL+fttvinTfhKfIKdRoqkDIC9e9iWQCNYQ==}
 
   /elkjs@0.9.3:
     resolution: {integrity: sha512-f/ZeWvW/BCXbhGEf1Ujp29EASo/lk1FDnETgNKwJrsVvGZhUWCZyg3xLJjAsxfOmt8KjswHmI5EwCQcPMpOYhQ==}
@@ -13559,7 +13636,7 @@ packages:
       '@jest/expect': 28.1.3
       '@jest/test-result': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       chalk: 4.1.0
       co: 4.6.0
       dedent: 0.7.0
@@ -13595,7 +13672,7 @@ packages:
       exit: 0.1.2
       graceful-fs: 4.2.11
       import-local: 3.2.0
-      jest-config: 28.1.3(@types/node@20.16.12)
+      jest-config: 28.1.3(@types/node@22.7.6)
       jest-util: 28.1.3
       jest-validate: 28.1.3
       prompts: 2.4.2
@@ -13606,7 +13683,7 @@ packages:
       - ts-node
     dev: true
 
-  /jest-config@28.1.3(@types/node@20.16.12):
+  /jest-config@28.1.3(@types/node@22.7.6):
     resolution: {integrity: sha512-MG3INjByJ0J4AsNBm7T3hsuxKQqFIiRo/AUqb1q9LRKI5UU6Aar9JHbr9Ivn1TVwfUD9KirRoM/T6u8XlcQPHQ==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     peerDependencies:
@@ -13621,7 +13698,7 @@ packages:
       '@babel/core': 7.25.8
       '@jest/test-sequencer': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       babel-jest: 28.1.3(@babel/core@7.25.8)
       chalk: 4.1.0
       ci-info: 3.9.0
@@ -13690,7 +13767,7 @@ packages:
       '@jest/environment': 28.1.3
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       jest-mock: 28.1.3
       jest-util: 28.1.3
     dev: true
@@ -13711,7 +13788,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -13730,7 +13807,7 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -13806,7 +13883,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
     dev: true
 
   /jest-mock@28.1.3:
@@ -13814,7 +13891,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
     dev: true
 
   /jest-mock@29.7.0:
@@ -13822,7 +13899,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       jest-util: 29.7.0
     dev: true
 
@@ -13882,7 +13959,7 @@ packages:
       '@jest/test-result': 28.1.3
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       chalk: 4.1.0
       emittery: 0.10.2
       graceful-fs: 4.2.11
@@ -13996,7 +14073,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       chalk: 4.1.0
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -14008,7 +14085,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       chalk: 4.1.0
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -14033,7 +14110,7 @@ packages:
     dependencies:
       '@jest/test-result': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       ansi-escapes: 4.3.2
       chalk: 4.1.0
       emittery: 0.10.2
@@ -14045,7 +14122,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -14054,7 +14131,7 @@ packages:
     resolution: {integrity: sha512-CqRA220YV/6jCo8VWvAt1KKx6eek1VIHMPeLEbpcfSfkEeWyBNppynM/o6q+Wmw+sOhos2ml34wZbSX3G13//g==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -14063,7 +14140,7 @@ packages:
     resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -17563,7 +17640,7 @@ packages:
   /snowflake-sdk@1.9.0(asn1.js@5.4.1):
     resolution: {integrity: sha512-RtFRV2KC+ebQk/kOUg8WV42LnAu9puoan2wMXykgrAj1u4sGP/GgQyQhsAfLGwXWzn+J9JAwij07h3+6HYBmFw==}
     dependencies:
-      '@aws-sdk/client-s3': 3.673.0
+      '@aws-sdk/client-s3': 3.674.0
       '@azure/storage-blob': 12.25.0
       '@google-cloud/storage': 6.12.0
       '@techteamer/ocsp': 1.0.0
@@ -18428,10 +18505,10 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       '@azure/core-auth': 1.9.0
-      '@azure/identity': 4.4.1
+      '@azure/identity': 4.5.0
       '@azure/keyvault-keys': 4.9.0
       '@js-joda/core': 5.6.3
-      '@types/node': 20.16.12
+      '@types/node': 22.7.6
       bl: 6.0.16
       iconv-lite: 0.6.3
       js-md4: 0.3.2

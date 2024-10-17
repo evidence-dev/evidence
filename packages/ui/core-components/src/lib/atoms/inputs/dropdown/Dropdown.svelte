@@ -230,6 +230,7 @@
 						role="combobox"
 						size="sm"
 						class="min-w-5 h-8 border border-base-300"
+						aria-label={title ?? formatTitle(name)}
 					>
 						{#if title && !multiple}
 							{title}
