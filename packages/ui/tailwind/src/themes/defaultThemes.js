@@ -2,18 +2,15 @@ import colors from 'tailwindcss/colors.js';
 
 /** @typedef {import('./schemas.js').Theme} Theme */
 
-const todo = {
-	secondary: '#ffffff',
-	'secondary-content': '#ffffff',
-	accent: '#ffffff',
-	'accent-content': '#ffffff'
-};
-
 /** @type {Record<'light' | 'dark', Theme>} */
 export const defaultThemes = {
 	light: {
-		primary: colors.blue[500],
-		'primary-content': colors.blue[950],
+		primary: colors.blue[600],
+		'primary-content': colors.blue[50],
+		secondary: colors.slate[600],
+		'secondary-content': colors.slate[50],
+		accent: colors.orange[700],
+		'accent-content': colors.orange[50],
 		'base-100': colors.white,
 		'base-200': colors.zinc[100],
 		'base-300': colors.zinc[200],
@@ -27,13 +24,15 @@ export const defaultThemes = {
 		warning: colors.yellow[600],
 		'warning-content': colors.zinc[50],
 		negative: colors.red[700],
-		'negative-content': colors.zinc[50],
-
-		...todo
+		'negative-content': colors.zinc[50]
 	},
 	dark: {
 		primary: colors.blue[400],
-		'primary-content': colors.blue[50],
+		'primary-content': colors.blue[950],
+		secondary: colors.slate[400],
+		'secondary-content': colors.slate[950],
+		accent: colors.orange[300],
+		'accent-content': colors.orange[950],
 		'base-100': colors.zinc[900],
 		'base-200': colors.zinc[800],
 		'base-300': colors.zinc[700],
@@ -47,8 +46,6 @@ export const defaultThemes = {
 		warning: colors.amber[400],
 		'warning-content': colors.zinc[950],
 		negative: colors.red[400],
-		'negative-content': colors.zinc[950],
-
-		...todo
+		'negative-content': colors.zinc[950]
 	}
 };
