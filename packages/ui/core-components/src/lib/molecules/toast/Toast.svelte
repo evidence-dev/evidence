@@ -32,18 +32,18 @@
 
 <style lang="postcss">
 	.error {
-		@apply border-red-200 bg-red-50 text-red-800;
+		@apply border-negative/50 bg-negative/10 text-negative;
 	}
 
 	.warning {
-		@apply border-yellow-200 bg-yellow-50 text-yellow-800;
+		@apply border-warning/50 bg-warning/10 text-warning;
 	}
 
 	.success {
-		@apply border-green-200 bg-green-50 text-green-800;
+		@apply border-positive/50 bg-positive/10 text-positive;
 	}
 
 	.info {
-		@apply border-gray-200 bg-white text-gray-800;
+		@apply border-neutral/50 bg-neutral/10 text-neutral;
 	}
 </style>
