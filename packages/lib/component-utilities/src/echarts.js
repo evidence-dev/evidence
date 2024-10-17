@@ -27,9 +27,15 @@ const echartsAction = (node, options) => {
 	registerTheme('light', evidenceThemeLight);
 	registerTheme('dark', evidenceThemeDark);
 
-	let chart = init(node, options.theme, {
-		renderer: useSvg ? 'svg' : (options.renderer ?? 'canvas')
-	});
+	let chart;
+
+	const initChart = () => {
+		chart = init(node, options.theme, {
+			renderer: useSvg ? 'svg' : (options.renderer ?? 'canvas')
+		});
+	};
+
+	initChart();
 
 	chartWindowDebug.set(chart.id, chart);
 
@@ -183,9 +189,7 @@ const echartsAction = (node, options) => {
 	const updateChart = (newOptions) => {
 		if (newOptions.theme !== options.theme) {
 			chart.dispose();
-			chart = init(node, newOptions.theme, {
-				renderer: useSvg ? 'svg' : (newOptions.renderer ?? 'canvas')
-			});
+			initChart();
 		}
 
 		options = newOptions;
