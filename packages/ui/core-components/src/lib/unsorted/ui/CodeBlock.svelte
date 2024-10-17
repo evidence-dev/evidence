@@ -73,7 +73,7 @@
 			}}
 		>
 			{#if copied}
-				<Success color="var(--green-500)" />
+				<Success />
 			{:else}
 				<Copy />
 			{/if}
