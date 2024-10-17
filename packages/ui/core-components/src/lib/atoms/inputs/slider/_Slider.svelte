@@ -14,7 +14,6 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { QueryLoad } from '../../../atoms/query-load';
 	import EmptyChart from './EmptyChart.svelte';
-	import Slider from './_Slider.svelte';
 
 	/////
 	// Component Things
@@ -96,35 +95,22 @@
 	let format_object;
 	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
-
-	//Query integration//
-
-	export let data;
-
-	let chartType = 'Slider';
-
-	const initialHash = Query.isQuery(data) ? data.hash : undefined;
-	let isInitial = data?.hash === initialHash;
-	$: isInitial = data?.hash === initialHash;
-
-	/** @type {"pass" | "warn" | "error"}*/
-	export let emptySet = undefined;
-
-	/** @type {string}*/
-	export let emptyMessage = undefined;
-
-	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
-
-	//Query integration//
 </script>
 
-<!-- Pass all the props through-->
-<QueryLoad {data} let:loaded>
-	<span slot="empty">
-		{#if !spreadProps.placeholder}
-			<EmptyChart {emptyMessage} {emptySet} {chartType} {isInitial} />
+<HiddenInPrint enabled={hideDuringPrint}>
+	<div class={`relative ${sizeClass} mb-10 select-none`}>
+		<p class="pb-2 truncate text-xs">
+			{title} :
+			<span class="text-xs">{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span>
+		</p>
+		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
+		{#if showMaxMin}
+			<span class="absolute left-0 text-xs pt-1 -z-10"
+				>{fmt ? formatValue(min, format_object) : min}</span
+			>
+			<span class="absolute -right-2.5 text-xs pt-1 -z-10"
+				>{fmt ? formatValue(max, format_object) : max}</span
+			>
 		{/if}
-	</span>
-	<span slot="skeleton" class="text-gray-500">Loading...</span>
-	<Slider {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} />
-</QueryLoad>
+	</div>
+</HiddenInPrint>
