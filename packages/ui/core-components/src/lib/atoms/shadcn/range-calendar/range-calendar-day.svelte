@@ -29,11 +29,11 @@
 		// Selection End
 		'data-[selection-end]:bg-base-content data-[selection-end]:text-base-100 data-[selection-end]:hover:bg-base-content data-[selection-end]:hover:text-base-100 data-[selection-end]:focus:bg-base-content data-[selection-end]:focus:text-base-100',
 		// Outside months
-		'data-[outside-month]:pointer-events-none data-[outside-month]:text-base-content/50 data-[outside-month]:opacity-50 [&[data-outside-month][data-selected]]:bg-gray-100/50 [&[data-outside-month][data-selected]]:text-base-content/50 [&[data-outside-month][data-selected]]:opacity-30',
+		'data-[outside-month]:pointer-events-none data-[outside-month]:text-base-content/50 data-[outside-month]:opacity-50 [&[data-outside-month][data-selected]]:bg-base-200/50 [&[data-outside-month][data-selected]]:text-base-content/50 [&[data-outside-month][data-selected]]:opacity-30',
 		// Disabled
 		'data-[disabled]:text-base-content/50 data-[disabled]:opacity-50',
 		// Unavailable
-		'data-[unavailable]:text-red-50 data-[unavailable]:line-through',
+		'data-[unavailable]:text-negative/20 data-[unavailable]:line-through',
 		className
 	)}
 	{...$$restProps}
