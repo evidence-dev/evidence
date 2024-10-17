@@ -45,16 +45,6 @@
 		{/if}
 	</div>
 	<div class="flex justify-end">
-		<!-- This doesn't work, not sure why. Nice to have but not required 
-		{#if source.sourceDirectory}
-			<button
-				class="flex gap-2 mr-1 text-blue-600 border text-xs px-2 py-1 border-blue-600 font-bold rounded hover:text-blue-700 hover:border-blue-700 transition h-min"
-			>
-				<a href="vscode://{source.sourceDirectory}"> Show in VS Code </a>
-			</button>
-		{/if}
-		-->
-
 		<Button size="md" icon={Pencil} disabled={!sourcePlugin} on:click={() => (open = !open)}>
 			Edit
 		</Button>
