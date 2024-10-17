@@ -67,12 +67,12 @@ _Italic_ text is wrapped in single asterisks
 ```markdown
 ![An online image](https://i.imgur.com/xyI27iZ.gif)
 
-![An image stored in the project's static folder](/my-image.png)
+![An image stored in the app's static folder](/my-image.png)
 ```
 
 #### Storing Images and Static Files
 
-Evidence looks for images in the `/static` folder in the root of your project. Create it if it doesn't exist.
+Evidence looks for images in the `/static` folder in the root of your app. Create it if it doesn't exist.
 
 ```
 +-- pages/
@@ -240,4 +240,4 @@ This is some content in the partial.
 
 Evidence supports re-using chunks of Evidence markdown using Partials.
 
-Partials are placed in the `./partials` folder, and can be referenced in your project with `&#123;@partial "path/to/partial.md"&#125;` (do not include the `/partial` folder in the path).
+Partials are placed in the `./partials` folder, and can be referenced in your app with `&#123;@partial "path/to/partial.md"&#125;` (do not include the `/partial` folder in the path).
