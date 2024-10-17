@@ -15,9 +15,10 @@ Creates a Slider input with default min, max and step values
 
 ````markdown
 <Slider
-    title="Months" 
-    name=months
+    title="Sales" 
+    name=sales
     defaultValue=18
+    fmt="usd0"
 />
 ````
 
