@@ -133,20 +133,12 @@
 			];
 		}
 		if ($activeMode === 'dark') {
-			console.log(
-				'before',
-				colorArray.map((color) => chroma(color).css())
-			);
 			colorArray = colorArray.map((color) =>
 				chroma(color)
 					.set('hsl.l', 1 - chroma(color).hsl()[2])
 					.saturate(1)
 					.brighten(0.5)
 					.css()
-			);
-			console.log(
-				'after',
-				colorArray.map((color) => chroma(color).css())
 			);
 		}
 	}
