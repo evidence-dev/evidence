@@ -1,5 +1,15 @@
 # e2e-themes
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [a94ca734d]
+- Updated dependencies [426ccd4d4]
+- Updated dependencies [ddc18a271]
+  - @evidence-dev/core-components@4.8.8
+  - @evidence-dev/evidence@39.1.12
+
 ## 0.0.8
 
 ### Patch Changes
