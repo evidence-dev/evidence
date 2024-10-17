@@ -121,7 +121,7 @@
 							{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 							<a
 								class="group inline-block py-1 capitalize transition-colors duration-100 {active
-									? 'text-blue-600'
+									? 'text-primary'
 									: 'text-base-content/70 hover:text-base-content'}"
 								href={file.href}
 							>
@@ -169,7 +169,7 @@
 										$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 									<a
 										class="group inline-block py-1 capitalize transition-colors duration-100 {active
-											? 'text-blue-600'
+											? 'text-primary'
 											: 'text-base-content/70 hover:text-base-content'}"
 										href={file.href}
 									>
@@ -209,7 +209,7 @@
 						{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 						<a
 							class="group inline-block py-1 capitalize transition-all duration-100 {active
-								? 'text-blue-600'
+								? 'text-primary'
 								: 'text-base-content/70 hover:text-base-content'}"
 							href={file.href}
 						>
@@ -257,7 +257,7 @@
 								<a
 									href={file.href}
 									class="group inline-block py-1 capitalize transition-all duration-100 {active
-										? 'text-blue-600'
+										? 'text-primary'
 										: 'text-base-content/70 hover:text-base-content'}"
 								>
 									{file.frontMatter?.title ?? file.label}
