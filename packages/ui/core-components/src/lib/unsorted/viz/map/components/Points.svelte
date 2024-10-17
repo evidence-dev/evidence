@@ -9,7 +9,7 @@
 	import Point from './Point.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
-	import { mapColours } from '@evidence-dev/component-utilities/colours';
+	import { nanoid } from 'nanoid';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -34,8 +34,13 @@
 	export let sizeFmt = undefined;
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
-	/** @type { 'categorical' | 'scalar' | undefined} */
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+	/** @type {'Point Map' | 'Bubble Map'} */
+	export let chartType = 'Point Map';
+
+	/** @type {boolean} */
+	export let legend = true;
 
 	if (size) {
 		// if size was user-supplied
@@ -89,8 +94,8 @@
 	export let borderColor = 'white';
 	/** @type {string|undefined} */
 	export let color = undefined;
-	/** @type {string[]} */
-	export let colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+	/** @type {string[] | undefined} */
+	export let colorPalette = undefined;
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;
@@ -212,22 +217,31 @@
 
 	let values, colorScale, sizeExtents, maxData, maxSizeSq;
 
+	const legendId = nanoid();
+
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
-		let initDataOptions = {
-			corordinates: [lat, long],
-			value,
-			checkInputs,
-			min,
-			max,
-			colorPalette,
-			legendType
-		};
 		if (data) {
-			({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
+			let initDataOptions = {
+				corordinates: [lat, long],
+				value,
+				checkInputs,
+				min,
+				max,
+				colorPalette,
+				legendType,
+				valueFmt,
+				chartType,
+				legendId,
+				legend
+			};
+			({ values, colorPalette, legendType, colorScale } = await map.initializeData(
+				data,
+				initDataOptions
+			));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -287,51 +301,51 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#await Promise.all([map.initPromise, data.fetch(), init()]) then}
-	{#each $data as item}
-		<Point
-			{map}
-			options={{
-				// kw note:
-				//need to clean this logic
-				fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
-				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
-				fillOpacity: opacity,
-				opacity: opacity,
-				weight: borderWidth,
-				color: borderColor,
-				className: `outline-none ${pointClass}`
-			}}
-			selectedOptions={{
-				fillColor: selectedColor,
-				fillOpacity: selectedOpacity,
-				opacity: selectedOpacity,
-				weight: selectedBorderWidth,
-				color: selectedBorderColor,
-				className: `outline-none ${selectedPointClass}`
-			}}
-			coords={[item[lat], item[long]]}
-			onclick={() => {
-				onclick(item);
-			}}
-			setInput={() => {
-				if (name) {
-					updateInput(item, name);
-				}
-			}}
-			unsetInput={() => {
-				if (name) {
-					unsetInput(item, name);
-				}
-			}}
-			{tooltip}
-			{tooltipOptions}
-			{tooltipType}
-			{item}
-			{link}
-			{showTooltip}
-		/>
-	{/each}
-{:catch e}
-	<ErrorChart error={e} chartType="Point Map" />
+{#await Promise.all([map.initPromise, data.fetch()]) then}
+	{#await init() then}
+		{#each $data as item}
+			<Point
+				{map}
+				options={{
+					fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
+					radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
+					fillOpacity: opacity,
+					opacity: opacity,
+					weight: borderWidth,
+					color: borderColor,
+					className: `outline-none ${pointClass}`
+				}}
+				selectedOptions={{
+					fillColor: selectedColor,
+					fillOpacity: selectedOpacity,
+					opacity: selectedOpacity,
+					weight: selectedBorderWidth,
+					color: selectedBorderColor,
+					className: `outline-none ${selectedPointClass}`
+				}}
+				coords={[item[lat], item[long]]}
+				onclick={() => {
+					onclick(item);
+				}}
+				setInput={() => {
+					if (name) {
+						updateInput(item, name);
+					}
+				}}
+				unsetInput={() => {
+					if (name) {
+						unsetInput(item, name);
+					}
+				}}
+				{tooltip}
+				{tooltipOptions}
+				{tooltipType}
+				{item}
+				{link}
+				{showTooltip}
+			/>
+		{/each}
+	{:catch e}
+		<ErrorChart error={e} {chartType} />
+	{/await}
 {/await}

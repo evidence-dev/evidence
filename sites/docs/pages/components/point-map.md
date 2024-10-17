@@ -304,7 +304,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=sales
     legendType=scalar
-    legendPosition=bottomLeft
     legendFmt=usd
 />
 
@@ -404,6 +403,13 @@ Maximum value to use for the color scale.
 
 ### Legend
 
+<PropListing
+    name="legend"
+    description="Turns legend on or off"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
 <PropListing
 name="legendType"
 options={['categorical', 'scalar']}

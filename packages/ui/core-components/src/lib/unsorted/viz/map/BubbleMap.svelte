@@ -9,7 +9,6 @@
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import Legend from './components/Legend.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -63,8 +62,10 @@
 	export let legendPosition = 'bottomLeft';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
-	/** @type {string | undefined} */
-	export let legendFmt = undefined;
+	/** @type {string[]|undefined} */
+	export let colorPalette = undefined;
+	/** @type {boolean} */
+	export let legend = true;
 
 	const chartType = 'Bubble Map';
 
@@ -76,8 +77,16 @@
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Bubbles data={loaded} {lat} {long} {size} {legendType} {...$$restProps} />
-		<Legend {legendPosition} {legendType} {legendFmt} />
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {legendPosition}>
+		<Bubbles
+			data={loaded}
+			{lat}
+			{long}
+			{size}
+			{colorPalette}
+			{legendType}
+			{legend}
+			{...$$restProps}
+		/>
 	</BaseMap>
 </QueryLoad>
