@@ -61,7 +61,7 @@
 
 <style>
 	button :global(svg) {
-		stroke: var(--grey-400);
+		stroke: var(--base-content);
 		margin-top: auto;
 		margin-bottom: auto;
 		transition: stroke 200ms;
@@ -72,7 +72,8 @@
 		cursor: pointer;
 		font-family: var(--ui-font-family);
 		font-size: 1em;
-		color: var(--grey-400);
+		color: var(--base-content);
+		opacity: 0.5;
 		justify-items: flex-end;
 		align-items: baseline;
 		background-color: transparent;
@@ -80,7 +81,7 @@
 		padding: 0;
 		margin: 0 5px;
 		gap: 3px;
-		transition: color 200ms;
+		transition: all 200ms;
 		-moz-user-select: none;
 		-webkit-user-select: none;
 		-o-user-select: none;
@@ -88,13 +89,14 @@
 	}
 
 	button:hover {
-		color: var(--blue-600);
-		transition: color 200ms;
+		opacity: 1;
+		color: var(--primary);
+		transition: all 200ms;
 	}
 
 	button:hover :global(svg) {
-		stroke: var(--blue-600);
-		transition: stroke 200ms;
+		stroke: var(--primary);
+		transition: all 200ms;
 	}
 
 	@media (max-width: 600px) {

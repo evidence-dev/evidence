@@ -116,7 +116,7 @@
 	}
 
 	.index {
-		color: var(--grey-300);
+		@apply text-base-content/50;
 		text-align: left;
 		max-width: -moz-min-content;
 		max-width: min-content;

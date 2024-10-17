@@ -62,7 +62,7 @@
 	</footer>
 </form>
 
-<style>
+<style lang="postcss">
 	h3 {
 		@apply uppercase text-sm leading-loose mt-6 mb-1;
 	}
@@ -80,18 +80,17 @@
 		appearance: none;
 		padding: 0.35em;
 		width: 100%;
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
 		font-family: var(--ui-font-family);
-		color: var(--grey-800);
+		background: var(--base-200);
 		margin: 0.5em 0 0 0;
 		transition: all 400ms;
 		cursor: pointer;
 	}
 
 	select:hover {
-		border: 1px solid var(--grey-300);
+		@apply shadow-md border-base-content;
 		transition: all 400ms;
-		box-shadow: 0 5px 5px 2px hsl(0deg 0% 97%);
 	}
 
 	select:focus {
@@ -103,9 +102,9 @@
 	}
 	.deploy-settings-box {
 		margin-top: 2em;
-		border-top: 1px solid var(--grey-200);
-		border-left: 1px solid var(--grey-200);
-		border-right: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
+		border-left: 1px solid var(--base-300);
+		border-right: 1px solid var(--base-300);
 		border-radius: 5px 5px 0 0;
 		font-size: 14px;
 		font-family: var(--ui-font-family);
@@ -113,7 +112,7 @@
 	}
 
 	.panel {
-		border-top: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
 		padding: 0em 1em 1em 1em;
 	}
 
@@ -122,9 +121,9 @@
 	}
 
 	footer {
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
 		border-radius: 0 0 5px 5px;
-		background-color: var(--grey-100);
+		background-color: var(--base-200);
 		padding: 1em;
 		display: flex;
 		font-size: 14px;
@@ -133,11 +132,6 @@
 	}
 
 	.docs-link {
-		color: var(--blue-600);
-		text-decoration: none;
-	}
-
-	.docs-link:hover {
-		color: var(--blue-800);
+		@apply text-primary hover:brightness-110 active:brightness-90 transition;
 	}
 </style>

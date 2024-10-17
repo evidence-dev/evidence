@@ -72,14 +72,14 @@
 	}
 
 	input {
+		background: var(--base-200);
 		box-sizing: border-box;
 		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--grey-300);
+		border: 1px solid var(--base-300);
 		padding: 0.25em 0.25em 0.25em 0.25em;
 		margin-left: auto;
 		width: 65%;
 		padding: 0.35em;
-		color: var(--grey-999);
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		vertical-align: middle;

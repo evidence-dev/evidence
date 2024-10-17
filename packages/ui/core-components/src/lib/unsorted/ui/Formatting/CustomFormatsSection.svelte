@@ -136,12 +136,12 @@
 	input {
 		box-sizing: border-box;
 		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--grey-300);
+		border: 1px solid var(--base-300);
+		background: var(--base-200);
 		padding: 0.25em 0.25em 0.25em 0.25em;
 		margin-left: auto;
 		width: 62%;
 		padding: 0.35em;
-		color: var(--grey-999);
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		vertical-align: middle;
@@ -158,7 +158,6 @@
 		text-transform: uppercase;
 		font-weight: normal;
 		font-size: 14px;
-		color: var(--grey-800);
 	}
 	button {
 		padding: 0.4em 0.5em;
@@ -173,11 +172,11 @@
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
+		background: var(--base-200);
 		border-radius: 4px 4px 4px 4px;
 		font-size: 16px;
 		font-family: var(--ui-font-family);
-		color: var(--grey-800);
 		transition: all 400ms;
 		cursor: pointer;
 		/* copied */
@@ -189,9 +188,9 @@
 		font-size: 14px;
 	}
 	select:hover {
-		border: 1px solid var(--grey-300);
+		@apply shadow-md;
+		border: 1px solid var(--base-content);
 		transition: all 400ms;
-		box-shadow: 0 5px 5px 2px hsl(0deg 0% 97%);
 	}
 	select:focus {
 		outline: none;
@@ -199,7 +198,6 @@
 
 	div.input-item {
 		font-family: var(--ui-font-family);
-		color: var(--grey-999);
 		font-size: 16px;
 		margin-top: 1.1em;
 		display: flex;
@@ -213,26 +211,23 @@
 		padding-top: 0.5em;
 	}
 	.error {
-		color: var(--red-600);
+		color: var(--negative);
 	}
 
 	#submitCustomFormatButton {
-		background-color: var(--blue-600);
-		color: white;
+		background-color: var(--primary);
+		color: var(--primary-content);
 		font-weight: bold;
 		border-radius: 4px;
-		border: 1px solid var(--blue-700);
 		padding: 0.4em 1.1em;
 		transition-property: background, color;
 		transition-duration: 350ms;
 	}
 
 	#submitCustomFormatButton:active {
-		background-color: var(--blue-800);
-		color: white;
+		filter: brightness(1.15);
 		font-weight: bold;
 		border-radius: 4px;
-		border: 1px solid var(--blue-900);
 		padding: 0.4em 1.1em;
 		transition-property: background, color;
 		transition-duration: 350ms;
@@ -240,9 +235,8 @@
 
 	#submitCustomFormatButton:disabled,
 	button[disabled] {
-		border: 1px solid var(--grey-400);
-		background-color: var(--grey-100);
-		color: var(--grey-600);
+		background-color: var(--neutral);
+		color: var(--neutral-content);
 		cursor: not-allowed;
 		transition-property: background, color;
 		transition-duration: 350ms;

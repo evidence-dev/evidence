@@ -40,9 +40,8 @@
 
 	button {
 		font-size: 14px;
-		background-color: var(--grey-100);
+		background-color: var(--base-200);
 		border-radius: 4px;
-		color: var(--gray-999);
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
@@ -50,7 +49,6 @@
 		margin: 0;
 		padding: 0.5em 0.5em;
 		cursor: pointer;
-		/* border: 1px solid var(--grey-200); */
 	}
 
 	.collapsibleContents {

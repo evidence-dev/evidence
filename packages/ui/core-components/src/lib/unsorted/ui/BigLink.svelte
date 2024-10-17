@@ -29,11 +29,11 @@
 
 	a {
 		text-decoration: none;
-		color: var(--blue-600);
+		color: var(--primary);
 	}
 
 	a:hover {
 		text-decoration: none;
-		color: var(--blue-700);
+		filter: brightness(80%);
 	}
 </style>

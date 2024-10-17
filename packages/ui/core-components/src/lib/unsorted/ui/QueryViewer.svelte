@@ -126,9 +126,9 @@
 	}
 
 	.code-container {
-		background-color: var(--grey-50);
-		border-left: 1px solid var(--grey-200);
-		border-right: 1px solid var(--grey-200);
+		background-color: var(--base-200);
+		border-left: 1px solid var(--base-300);
+		border-right: 1px solid var(--base-300);
 		overflow-x: auto;
 		overflow-y: hidden;
 		padding-top: 0;
@@ -171,10 +171,10 @@
 	.status-bar {
 		margin-top: 0px;
 		margin-bottom: 0px;
-		background-color: var(--grey-50);
-		border-left: 1px solid var(--grey-200);
-		border-right: 1px solid var(--grey-200);
-		border-bottom: 1px solid var(--grey-200);
+		background-color: var(--base-200);
+		border-left: 1px solid var(--base-300);
+		border-right: 1px solid var(--base-300);
+		border-bottom: 1px solid var(--base-300);
 		overflow-x: auto;
 		overflow-y: hidden;
 		scrollbar-width: thin;
@@ -208,24 +208,20 @@
 	.closed {
 		border-bottom-left-radius: 6px;
 		border-bottom-right-radius: 6px;
-		transition: 400ms;
-		transition-delay: 400ms;
-		/* 400ms is the default duration for the slide */
 	}
 
 	.open {
 		border-bottom-left-radius: 0px;
 		border-bottom-right-radius: 0px;
-		transition: 400ms;
 	}
 
 	.status-bar.success {
-		color: var(--blue-500);
+		color: var(--info);
 		cursor: pointer;
 	}
 
 	.status-bar.error {
-		color: var(--red-600);
+		color: var(--negative);
 		-webkit-user-select: all;
 		-moz-user-select: all;
 		user-select: all;
@@ -241,17 +237,17 @@
 		white-space: nowrap;
 		text-align: left;
 		width: 100%;
-		background-color: var(--grey-50);
+		background-color: var(--base-200);
 		border: none;
-		border-left: 1px solid var(--grey-200);
-		border-right: 1px solid var(--grey-200);
+		border-left: 1px solid var(--base-300);
+		border-right: 1px solid var(--base-300);
 		margin-bottom: 0px;
 		cursor: pointer;
 		padding: 5px;
 	}
 
 	button.title {
-		border-top: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
 		border-top-left-radius: 6px;
 		border-top-right-radius: 6px;
 	}
@@ -263,7 +259,7 @@
 	}
 
 	.container-a {
-		background-color: var(--grey-50);
+		background-color: var(--base-200);
 		border-top-left-radius: 6px;
 		border-top-right-radius: 6px;
 		box-sizing: border-box;
