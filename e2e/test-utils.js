@@ -7,3 +7,14 @@ export const waitForDevModeToLoad = async (page) => {
 
 	await expect(page.getByTestId('#__evidence_project_splash')).not.toBeVisible();
 };
+
+/** @param {import("@playwright/test").Page} page */
+export function waitForWasm(page) {
+	const context = page.context();
+	return new Promise((res) => {
+		context.route(/duckdb-eh\..*?\.wasm$/, async (route) => {
+			await route.abort();
+			res(undefined);
+		});
+	});
+}

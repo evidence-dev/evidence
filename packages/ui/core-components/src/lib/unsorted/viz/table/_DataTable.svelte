@@ -479,6 +479,7 @@
 	{/each}
 
 	<div
+		data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
 		role="none"
 		class="table-container"
 		transition:slide|local
