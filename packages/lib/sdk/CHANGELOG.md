@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 1.4.4
+
+### Patch Changes
+
+- a91b26fb3: Remove console.debug statement
+- cbb8b16f4: Added logger export
+
 ## 1.4.3
 
 ### Patch Changes
