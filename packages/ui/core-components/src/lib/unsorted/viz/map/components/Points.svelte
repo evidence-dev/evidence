@@ -212,6 +212,9 @@
 
 	let values, colorScale, sizeExtents, maxData, maxSizeSq;
 
+	/** @type {'bubble' | 'points' }*/
+	export let pointStyle = 'points';
+
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
@@ -224,10 +227,14 @@
 			min,
 			max,
 			colorPalette,
-			legendType
+			legendType,
+			paneType
 		};
 		if (data) {
-			({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
+			({ values, colorScale, colorPalette, paneType } = await map.initializeData(
+				data,
+				initDataOptions
+			));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -284,6 +291,12 @@
 		});
 		setInputDefault(item, name);
 	}
+
+	/** @type {string}*/
+	let paneType = map.checkPanes(pointStyle);
+
+	/** @type {number | undefined} */
+	export let z = undefined;
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -300,7 +313,10 @@
 				opacity: opacity,
 				weight: borderWidth,
 				color: borderColor,
-				className: `outline-none ${pointClass}`
+				className: `outline-none ${pointClass}`,
+				markerType: pointStyle,
+				pane: paneType,
+				z: z
 			}}
 			selectedOptions={{
 				fillColor: selectedColor,

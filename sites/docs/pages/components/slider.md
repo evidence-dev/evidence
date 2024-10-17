@@ -7,16 +7,18 @@ Creates a Slider input with default min, max and step values
 
 
 <Slider
-    title="Months" 
-    name=months
+    title="Sales" 
+    name=sales
     defaultValue=18
+    fmt="usd0"
 />
 
 ````markdown
 <Slider
-    title="Months" 
-    name=months
+    title="Sales" 
+    name=sales
     defaultValue=18
+    fmt="usd0"
 />
 ````
 
@@ -72,6 +74,17 @@ The default size of the slider can be altered with the size property using; medi
     size=medium
 />
 
+````markdown
+<Slider
+    title="Months Medium" 
+    name=monthsMedium
+    defaultValue=4
+    min=0
+    max=36
+    size=medium
+/>
+````
+
 <Slider
     title="Months Large" 
     name=monthsLarge
@@ -80,6 +93,17 @@ The default size of the slider can be altered with the size property using; medi
     max=36
     size=large
 />
+
+````markdown
+<Slider
+    title="Months Large" 
+    name=monthsLarge
+    defaultValue=18
+    min=0
+    max=36
+    size=large
+/>
+````
 <Slider
     title="Months Full" 
     name=monthsFull
@@ -162,6 +186,11 @@ Hides or shows min and max value markers on slider.
 
 Sets the length of the slider. Options are "medium", large" or "full". A empty string of any other strings will not result in default size.
 </PropListing>
+<PropListing
+    name="fmt"
+    description="Sets format for the value (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    options="Excel-style format | built-in format | custom format"
+/>
 
 
 
