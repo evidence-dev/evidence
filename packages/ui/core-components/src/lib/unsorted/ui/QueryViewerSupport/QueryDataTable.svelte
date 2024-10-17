@@ -165,9 +165,9 @@
 	div.pagination {
 		padding: 0px 5px;
 		align-content: center;
-		border-bottom: 1px solid var(--grey-200);
+		border-bottom: 1px solid var(--base-200);
 		height: 1.25em;
-		background-color: white;
+		background-color: var(--base-100);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -175,45 +175,38 @@
 	}
 
 	.slider {
+		@apply bg-info/30 hover:bg-info/40 transition-colors;
 		-webkit-appearance: none;
 		width: 75%;
 		height: 10px;
 		margin: 0 0;
-		background: var(--blue-100);
 		outline: none;
-		opacity: 0.7;
-		-webkit-transition: 0.2s;
-		transition: opacity 0.2s;
 		border-radius: 10px;
 		display: inline-block;
 		cursor: pointer;
 	}
 
-	.slider:hover {
-		opacity: 1;
-	}
-
 	.slider::-webkit-slider-thumb {
+		@apply bg-info;
 		-webkit-appearance: none;
 		appearance: none;
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
 		cursor: pointer;
 		border-radius: 10px;
 	}
 
 	.slider::-moz-range-thumb {
+		@apply bg-info;
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
 		cursor: pointer;
 	}
 
 	.slider::-moz-range-thumb {
+		@apply bg-info;
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
 		cursor: pointer;
 	}
 
@@ -227,8 +220,8 @@
 	.scrollbox {
 		width: 100%;
 		overflow-x: auto;
-		border-bottom: 1px solid var(--grey-200);
-		background-color: white;
+		border-bottom: 1px solid var(--base-300);
+		background-color: var(--base-100);
 	}
 
 	.results-pane :global(.download-button) {
@@ -281,21 +274,21 @@
 	}
 
 	.null {
-		color: var(--grey-300);
+		@apply text-base-content/70;
 	}
 
 	.index {
-		color: var(--grey-300);
+		@apply text-base-content/50;
 		text-align: left;
 		max-width: min-content;
 	}
 
 	th.type-indicator {
-		@apply text-gray-400 font-normal;
+		@apply text-base-content/50 font-normal;
 	}
 
 	tr.type-indicator {
-		border-bottom: 1px solid var(--grey-100);
+		border-bottom: 1px solid var(--base-300);
 	}
 
 	.footer {
