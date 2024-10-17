@@ -2,14 +2,10 @@
 	export const evidenceInclude = true;
 </script>
 
-<script>
-	export let color = 'green';
-</script>
-
 <svg
-	class="copyButtonSuccessIcon"
+	class="copyButtonSuccessIcon text-positive"
+	fill="currentColor"
 	viewBox="0 0 24 24"
-	fill={color}
 	width="100%"
 	height="100%"
 	preserveAspectRatio="xMidYMid meet"
