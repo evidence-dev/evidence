@@ -9,13 +9,13 @@ import * as chartWindowDebug from './chartWindowDebug';
  * 		showAllXAxisLabels?: boolean;
  *    theme: 'light' | 'dark';
  * 	}
- * } Options
+ * } EChartsActionOptions
  */
 
 const ANIMATION_DURATION = 500;
 
 /** @param {HTMLElement} node */
-/** @param {Options} options */
+/** @param {EChartsActionOptions} options */
 const echartsAction = (node, options) => {
 	// https://github.com/evidence-dev/evidence/issues/1323
 	const useSvg =
@@ -179,7 +179,7 @@ const echartsAction = (node, options) => {
 		}
 	};
 
-	/** @param {Options} newOptions */
+	/** @param {EChartsActionOptions} newOptions */
 	const updateChart = (newOptions) => {
 		if (newOptions.theme !== options.theme) {
 			chart.dispose();
@@ -211,7 +211,7 @@ const echartsAction = (node, options) => {
 	onWindowResize();
 
 	return {
-		/** @param {Options} options */
+		/** @param {EChartsActionOptions} options */
 		update(options) {
 			updateChart(options);
 		},
