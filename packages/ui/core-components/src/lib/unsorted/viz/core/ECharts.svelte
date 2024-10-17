@@ -41,7 +41,7 @@
 	let printing = false;
 	let hovering = false;
 
-	const { activeTheme } = ensureThemeStores();
+	const { activeMode } = ensureThemeStores();
 </script>
 
 <svelte:window
@@ -88,7 +88,7 @@
 					renderer,
 					connectGroup,
 					seriesColors,
-					theme: $activeTheme
+					theme: $activeMode
 				}}
 			/>
 		{/if}

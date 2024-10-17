@@ -41,29 +41,28 @@ const createSystemThemeStore = () => {
 
 /**
  * @typedef ThemeStores
- * TODO could use some help naming activeTheme / theme
- * @prop {Readable<'light' | 'dark'>} systemTheme
- * @prop {Readable<'system' | 'light' | 'dark'>} selectedTheme
- * @prop {Readable<'light' | 'dark'>} activeTheme
+ * @prop {Readable<'light' | 'dark'>} systemMode
+ * @prop {Readable<'system' | 'light' | 'dark'>} selectedMode
+ * @prop {Readable<'light' | 'dark'>} activeMode
  * @prop {Readable<Theme>} theme
- * @prop {() => void} cycleTheme
+ * @prop {() => void} cycleMode
  */
 
 /** @returns {ThemeStores} */
 const createThemeStores = () => {
-	const systemTheme = createSystemThemeStore();
+	const systemMode = createSystemThemeStore();
 
 	/** @type {Writable<'system' | 'light' | 'dark'>} */
-	const selectedTheme = localStorageStore('evidence-theme', 'system');
+	const selectedMode = localStorageStore('evidence-theme', 'system');
 
-	const activeTheme = derived([systemTheme, selectedTheme], ([$systemTheme, $selectedTheme]) => {
+	const activeMode = derived([systemMode, selectedMode], ([$systemTheme, $selectedTheme]) => {
 		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
 	});
 
-	const theme = derived(activeTheme, ($activeTheme) => themes[$activeTheme]);
+	const theme = derived(activeMode, ($activeTheme) => themes[$activeTheme]);
 
-	const cycleTheme = () => {
-		selectedTheme.update((current) => {
+	const cycleMode = () => {
+		selectedMode.update((current) => {
 			switch (current) {
 				case 'system':
 					return 'light';
@@ -76,18 +75,18 @@ const createThemeStores = () => {
 		});
 	};
 
-	activeTheme.subscribe((theme) => {
+	activeMode.subscribe((theme) => {
 		if (typeof document !== 'undefined') {
 			document.documentElement.setAttribute('data-theme', theme);
 		}
 	});
 
 	return {
-		systemTheme,
-		selectedTheme: readonly(selectedTheme),
-		activeTheme,
+		systemMode,
+		selectedMode: readonly(selectedMode),
+		activeMode,
 		theme,
-		cycleTheme
+		cycleMode
 	};
 };
 

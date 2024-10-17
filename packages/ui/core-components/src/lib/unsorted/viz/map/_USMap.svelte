@@ -17,7 +17,7 @@
 	import { ensureThemeStores } from '../../../themes.js';
 	import chroma from 'chroma-js';
 
-	const { activeTheme, theme } = ensureThemeStores();
+	const { activeMode, theme } = ensureThemeStores();
 
 	export let data = undefined;
 	export let queryID = undefined;
@@ -132,7 +132,7 @@
 				'#084081'
 			];
 		}
-		if ($activeTheme === 'dark') {
+		if ($activeMode === 'dark') {
 			console.log(
 				'before',
 				colorArray.map((color) => chroma(color).css())
