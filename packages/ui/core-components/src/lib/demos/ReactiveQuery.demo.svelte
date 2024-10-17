@@ -14,7 +14,7 @@
 
 <label>
 	Demo Input
-	<input class="bg-gray-300" type="number" bind:value={v} />
+	<input class="bg-base-300" type="number" bind:value={v} />
 </label>
 
 <pre>
