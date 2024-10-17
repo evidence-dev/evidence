@@ -135,7 +135,7 @@
                             ${formatTitle(
 															size,
 															sizeFormat
-														)} <span style='font-weight: 400; color:var(--grey-400);'> (size)</span>: <span style='float:right; margin-left: 15px;'>${formatValue(
+														)} <span style='font-weight: 400;'> (size)</span>: <span style='float:right; margin-left: 15px;'>${formatValue(
 															params.value[2],
 															sizeFormat
 														)}</span>`;
@@ -160,7 +160,7 @@
                             ${formatTitle(
 															size,
 															sizeFormat
-														)} <span style='font-weight: 400; color:var(--grey-400);'> (size)</span>: <span style='float:right; margin-left: 15px;'>${formatValue(
+														)} <span style='font-weight: 400;'> (size)</span>: <span style='float:right; margin-left: 15px;'>${formatValue(
 															params.value[2],
 															sizeFormat
 														)}</span>`;
@@ -188,7 +188,7 @@
                             <span style='font-weight: 400;'>${formatTitle(
 															size,
 															sizeFormat
-														)} <span style='font-weight: 400; color:var(--grey-400);'> (size)</span>:</span> <span style='float:right; margin-left: 15px;'>${formatValue(
+														)} <span style='font-weight: 400;'> (size)</span>:</span> <span style='float:right; margin-left: 15px;'>${formatValue(
 															params.value[2],
 															sizeFormat
 														)}</span>`;
@@ -210,7 +210,7 @@
                             <span style='font-weight: 600;'>${formatTitle(
 															size,
 															sizeFormat
-														)} <span style='font-weight: 400; color:var(--grey-400);'> (size)</span>:</span> <span style='float:right; margin-left: 15px;'>${formatValue(
+														)} <span style='font-weight: 400;'> (size)</span>:</span> <span style='float:right; margin-left: 15px;'>${formatValue(
 															params.value[2],
 															sizeFormat
 														)}</span>`;
