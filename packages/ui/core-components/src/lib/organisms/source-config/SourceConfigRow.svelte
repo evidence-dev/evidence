@@ -20,13 +20,13 @@
 	$: sourcePlugin = availableSourcePlugins?.[source.type];
 </script>
 
-<div class="contents text-xs odd:bg-gray-200">
+<div class="contents text-xs">
 	{#if simpleIcons[sourcePlugin?.package.package.evidence.icon]}
 		<Icon src={simpleIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
 	{:else if evidenceIcons[sourcePlugin?.package.package.evidence.icon]}
 		<Icon src={evidenceIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
 	{:else if !sourcePlugin}
-		<Icon src={ExclamationCircle} class="w-6 h-6 text-red-500" />
+		<Icon src={ExclamationCircle} class="w-6 h-6 text-negative" />
 	{:else}
 		<Icon src={Database} class="w-6 h-6" />
 	{/if}
@@ -36,7 +36,7 @@
 			{source.type}
 		</p>
 		{#if !sourcePlugin}
-			<p class="text-red-500 font-bold">
+			<p class="text-negative font-bold">
 				No connector for {source.type} is available
 			</p>
 			<Hint
@@ -45,16 +45,6 @@
 		{/if}
 	</div>
 	<div class="flex justify-end">
-		<!-- This doesn't work, not sure why. Nice to have but not required 
-		{#if source.sourceDirectory}
-			<button
-				class="flex gap-2 mr-1 text-blue-600 border text-xs px-2 py-1 border-blue-600 font-bold rounded hover:text-blue-700 hover:border-blue-700 transition h-min"
-			>
-				<a href="vscode://{source.sourceDirectory}"> Show in VS Code </a>
-			</button>
-		{/if}
-		-->
-
 		<Button size="md" icon={Pencil} disabled={!sourcePlugin} on:click={() => (open = !open)}>
 			Edit
 		</Button>

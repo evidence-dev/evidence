@@ -7,6 +7,8 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"moduleResolution": "NodeNext",
-		"strict": true
+		"strict": true,
+		"module": "NodeNext",
+		"types": ["@evidence-dev/tailwind"]
 	}
 }

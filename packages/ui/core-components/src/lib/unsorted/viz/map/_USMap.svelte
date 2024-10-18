@@ -9,12 +9,15 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import {
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
+	import { ensureThemeStores } from '../../../themes.js';
+	import chroma from 'chroma-js';
+
+	const { activeMode, theme } = ensureThemeStores();
 
 	export let data = undefined;
 	export let queryID = undefined;
@@ -79,54 +82,65 @@
 	let colorArray;
 	$: if (colorPalette) {
 		colorArray = [...colorPalette];
-	} else if (colorScale === 'green') {
-		colorArray = [
-			'#f7fcfd',
-			'#e5f5f9',
-			'#ccece6',
-			'#99d8c9',
-			'#66c2a4',
-			'#41ae76',
-			'#238b45',
-			'#006d2c',
-			'#00441b'
-		];
-	} else if (colorScale === 'blue') {
-		colorArray = [
-			'#f7fbff',
-			'#deebf7',
-			'#c6dbef',
-			'#9ecae1',
-			'#6baed6',
-			'#4292c6',
-			'#2171b5',
-			'#08519c',
-			'#08306b'
-		];
-	} else if (colorScale === 'red') {
-		colorArray = [
-			'#fff5f0',
-			'#fee0d2',
-			'#fcbba1',
-			'#fc9272',
-			'#fb6a4a',
-			'#ef3b2c',
-			'#cb181d',
-			'#a50f15',
-			'#67000d'
-		];
-	} else if (colorScale === 'bluegreen') {
-		colorArray = [
-			'#f7fcf0',
-			'#e0f3db',
-			'#ccebc5',
-			'#a8ddb5',
-			'#7bccc4',
-			'#4eb3d3',
-			'#2b8cbe',
-			'#0868ac',
-			'#084081'
-		];
+	} else {
+		if (colorScale === 'green') {
+			colorArray = [
+				'#f7fcfd',
+				'#e5f5f9',
+				'#ccece6',
+				'#99d8c9',
+				'#66c2a4',
+				'#41ae76',
+				'#238b45',
+				'#006d2c',
+				'#00441b'
+			];
+		} else if (colorScale === 'blue') {
+			colorArray = [
+				'#f7fbff',
+				'#deebf7',
+				'#c6dbef',
+				'#9ecae1',
+				'#6baed6',
+				'#4292c6',
+				'#2171b5',
+				'#08519c',
+				'#08306b'
+			];
+		} else if (colorScale === 'red') {
+			colorArray = [
+				'#fff5f0',
+				'#fee0d2',
+				'#fcbba1',
+				'#fc9272',
+				'#fb6a4a',
+				'#ef3b2c',
+				'#cb181d',
+				'#a50f15',
+				'#67000d'
+			];
+		} else if (colorScale === 'bluegreen') {
+			colorArray = [
+				'#f7fcf0',
+				'#e0f3db',
+				'#ccebc5',
+				'#a8ddb5',
+				'#7bccc4',
+				'#4eb3d3',
+				'#2b8cbe',
+				'#0868ac',
+				'#084081'
+			];
+		}
+		if ($activeMode === 'dark') {
+			colorArray = colorArray.map((color) =>
+				chroma(color)
+					.set('hsl.l', 1 - chroma(color).hsl()[2])
+					.saturate(1)
+					.brighten(0.5)
+					.css()
+			);
+		}
 	}
 
 	export let echartsOptions = undefined;
@@ -204,11 +218,11 @@
 				itemGap: 7,
 				textStyle: {
 					fontSize: 14,
-					color: uiColours.grey800
+					color: $theme['base-content']
 				},
 				subtextStyle: {
 					fontSize: 13,
-					color: uiColours.grey700,
+					color: chroma($theme['base-content']).alpha(0.8).css(),
 					overflow: 'break'
 				},
 				top: '0%'
@@ -240,12 +254,12 @@
 				padding: 6,
 				borderRadius: 4,
 				borderWidth: 1,
-				borderColor: uiColours.grey400,
-				backgroundColor: 'white',
+				borderColor: $theme['base-300'],
+				backgroundColor: $theme['base-100'],
 				extraCssText:
 					'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 				textStyle: {
-					color: uiColours.grey900,
+					color: $theme['base-content'],
 					fontSize: 12,
 					fontWeight: 400
 				},
@@ -263,13 +277,13 @@
 				orient: 'horizontal',
 				top: (title ? 25 : 0) + (subtitle ? 20 : 0),
 				handleStyle: {
-					borderColor: uiColours.grey200
+					borderColor: $theme['neutral']
 				},
 				inRange: {
 					color: colorArray
 				},
 				outOfRange: {
-					color: uiColours.grey100
+					color: $theme['base-300']
 				},
 				calculable: filter,
 				text: filter
@@ -291,25 +305,25 @@
 					map: 'US',
 					nameProperty: nameProperty,
 					itemStyle: {
-						borderColor: uiColours.grey400,
-						areaColor: uiColours.grey100
+						borderColor: $theme['neutral'],
+						areaColor: $theme['base-200']
 					},
 					emphasis: {
 						itemStyle: {
-							areaColor: uiColours.grey200
+							areaColor: $theme['base-200']
 						},
 						label: {
 							show: true,
-							color: uiColours.grey900
+							color: $theme['base-content']
 						}
 					},
 					select: {
 						disabled: false,
 						itemStyle: {
-							areaColor: uiColours.grey200
+							areaColor: $theme['base-300']
 						},
 						label: {
-							color: uiColours.grey900
+							color: $theme['base-content']
 						}
 					},
 					data: mapData

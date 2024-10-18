@@ -13,7 +13,7 @@
 		Moon
 	} from '@steeze-ui/tabler-icons';
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
-	import { ensureThemeStores, themesFeatureEnabled } from '../../../themes.js';
+	import { ensureThemeStores } from '../../../themes.js';
 	import { dev } from '$app/environment';
 
 	const beforeprint = new Event('export-beforeprint');
@@ -24,10 +24,10 @@
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
 
-	const { selectedTheme, theme, cycleTheme } = ensureThemeStores();
+	const { selectedMode, activeMode, cycleMode } = ensureThemeStores();
 	$: themeLabel =
-		$selectedTheme === 'system' ? 'System' : $selectedTheme === 'light' ? 'Light' : 'Dark';
-	$: themeIcon = $theme === 'light' ? Sun : Moon;
+		$selectedMode === 'system' ? 'System' : $selectedMode === 'light' ? 'Light' : 'Dark';
+	$: themeIcon = $activeMode === 'light' ? Sun : Moon;
 </script>
 
 <DropdownMenu.Root>
@@ -50,20 +50,18 @@
 			>
 				{$showQueries ? 'Hide ' : 'Show '} Queries
 			</DropdownMenu.Item>
-			{#if themesFeatureEnabled}
-				<DropdownMenu.Item
-					on:click={(e) => {
-						e.preventDefault();
-						cycleTheme();
-					}}
-				>
-					Appearance
-					<DropdownMenu.Shortcut class="tracking-normal flex flex-row items-center">
-						<span class="text-xs leading-none">{themeLabel}</span>
-						<Icon src={themeIcon} class="h-4 w-4 ml-1" />
-					</DropdownMenu.Shortcut>
-				</DropdownMenu.Item>
-			{/if}
+			<DropdownMenu.Item
+				on:click={(e) => {
+					e.preventDefault();
+					cycleMode();
+				}}
+			>
+				Appearance
+				<DropdownMenu.Shortcut class="tracking-normal flex flex-row items-center">
+					<span class="text-xs leading-none">{themeLabel}</span>
+					<Icon src={themeIcon} class="h-4 w-4 ml-1" />
+				</DropdownMenu.Shortcut>
+			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 		{#if dev}
 			<DropdownMenu.Separator />

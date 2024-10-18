@@ -42,13 +42,10 @@
 {:else if display === 'buttons'}
 	<button
 		type="button"
-		class=" flex-none py-1 font-medium h-8 px-3 text-xs truncate
-		border-r last:border-none
-		hover:bg-gray-100 focus:z-10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400
-		{$currentValue?.value === value
-			? 'z-10 border-gray-200 bg-gray-100 text-blue-700'
-			: 'z-0 bg-white text-gray-900 border-gray-200'}
-                                "
+		class="flex-none py-1 font-medium h-8 px-3 text-xs truncate
+		border-r last:border-none border-base-300
+		hover:bg-base-200 focus:z-10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-300
+		{$currentValue?.value === value ? 'z-10 bg-base-200 text-primary' : 'z-0 bg-base-100'}"
 		on:click={() => update({ valueLabel, value })}
 	>
 		{valueLabel}

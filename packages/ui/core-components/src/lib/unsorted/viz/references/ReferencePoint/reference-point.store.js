@@ -93,9 +93,11 @@ export class ReferencePointStore {
 			// Use preset colors
 			labelColor = labelColor ?? color;
 			symbolColor = symbolColor ?? color;
-			if (isPresetColor(color)) {
-				if (!labelColor) labelColor = COLORS[color].labelColor;
-				if (!symbolColor) symbolColor = COLORS[color].symbolColor;
+			if (isPresetColor(labelColor)) {
+				labelColor = COLORS[labelColor].labelColor;
+			}
+			if (isPresetColor(symbolColor)) {
+				symbolColor = COLORS[symbolColor].symbolColor;
 			}
 
 			// Default labelBorderWidth and labelBorderColor if only one is given

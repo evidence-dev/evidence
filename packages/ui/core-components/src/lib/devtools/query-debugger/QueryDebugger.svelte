@@ -85,7 +85,7 @@
 
 <Portal target={document.body}>
 	{#if query}
-		<div class="bg-gray-100 w-screen h-screen overflow-y-auto fixed top-12 left-0 select-text z-50">
+		<div class="bg-base-100 w-screen h-screen overflow-y-auto fixed top-12 left-0 select-text z-50">
 			<header class="flex justify-between px-8">
 				<div class="pt-4">
 					<h2 class="font-bold text-xl">Query Inspector</h2>

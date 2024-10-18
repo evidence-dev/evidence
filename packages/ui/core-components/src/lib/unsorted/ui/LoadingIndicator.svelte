@@ -41,7 +41,7 @@
 		left: 0;
 		top: 0;
 		height: 100%;
-		background-image: -webkit-linear-gradient(315deg, var(--blue-600) 0%, var(--green-600) 75%);
+		background-image: -webkit-linear-gradient(315deg, var(--info) 0%, var(--positive) 75%);
 		transition: width 0.4s;
 	}
 	.fade {
