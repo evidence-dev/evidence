@@ -63,7 +63,7 @@
 		role="group"
 	>
 		<div
-			class="m-6 border border-gray-300 bg-gray-100 overflow-hidden legend-font w-fit max-w-96 items-center {legendType ===
+			class="m-6 border border-base-300 bg-base-100 overflow-hidden legend-font w-fit max-w-96 items-center {legendType ===
 			'scalar'
 				? 'flex'
 				: ''}"
