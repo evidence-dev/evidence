@@ -47,7 +47,7 @@
 
 	let legendData = evidenceMap.legendData;
 
-	//Question: Do i need to specify, if i default legend position to 'bottomLeft' in other areas it gets used?
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
 	export let legendPosition = 'bottomLeft';
 
 	$: if (legendPosition) {

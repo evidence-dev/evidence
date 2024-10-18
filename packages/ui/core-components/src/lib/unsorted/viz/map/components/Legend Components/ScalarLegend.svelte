@@ -22,7 +22,7 @@
 		? hideLegendStyle
 		: showLegendStyle} transition-all duration-[350ms] ease-in-out w-full"
 >
-	<div class="flex flex-wrap flex-col">
+	<div class="flex flex-wrap flex-col font-semibold">
 		<p>{legendTitle}</p>
 	</div>
 	<div class="flex flex-col justify-center overflow-hidden h-8 w-full">
