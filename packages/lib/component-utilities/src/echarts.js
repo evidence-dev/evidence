@@ -217,15 +217,9 @@ const echartsAction = (node, options) => {
 	window[Symbol.for('chart renders')] ??= 0;
 	window[Symbol.for('chart renders')]++;
 	return {
-<<<<<<< HEAD
-		/** @param {EChartsActionOptions} options */
 		update(options) {
-			updateChart(options);
-=======
-		update(option) {
 			window[Symbol.for('chart renders')]++;
-			updateChart(option);
->>>>>>> feat/2499-theming
+			updateChart(options);
 		},
 		destroy() {
 			if (resizeObserver) {
