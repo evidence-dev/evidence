@@ -19,7 +19,7 @@
 
 <tr class="font-semibold" style:background-color={rowColor} style:color={fontColor}>
 	{#if rowNumbers && groupType !== 'section'}
-		<TableCell class={'index w-[2%]'} {compact} topBorder="border-t border-gray-600" />
+		<TableCell class={'index w-[2%]'} {compact} topBorder="border-t border-base-300" />
 	{/if}
 
 	{#each orderedColumns as column}

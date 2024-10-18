@@ -148,7 +148,7 @@
 						<a
 							href={row[column.id]}
 							target={column.openInNewTab ? '_blank' : ''}
-							class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+							class="text-primary hover:brightness-110 transition-colors duration-200"
 						>
 							{#if column.linkLabel != undefined}
 								<!-- if the linklabel is a column name, display that column -->
