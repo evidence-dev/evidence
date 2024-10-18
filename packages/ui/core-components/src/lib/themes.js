@@ -101,5 +101,3 @@ export const ensureThemeStores = () => {
 	}
 	return stores;
 };
-
-export const themesFeatureEnabled = import.meta.env.VITE_EVIDENCE_THEMES === 'true';
