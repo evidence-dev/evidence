@@ -25,7 +25,7 @@
 <div class="flex w-full {!multiLegend && direction === 'up' ? 'flex-col-reverse' : 'flex-col'}">
 	<div
 		style={`max-height: ${hideLegend ? '0px' : `${height - 50}px`};`}
-		class="scrollbox flex flex-col transition-[opacity, max-height, overflow-y] duration-[350ms] ease-in-out w-full {overflowOn
+		class="scrollbox flex flex-col transition-[opacity, max-height, overflow-y] duration-[350ms] ease-in-out w-full min-w-24 ${overflowOn
 			? 'overflow-y-auto'
 			: 'overflow-hidden'} {hideLegend ? 'opacity-0' : ``}"
 	>
