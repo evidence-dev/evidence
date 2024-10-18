@@ -22,17 +22,17 @@
 	let overflowOn = overflowHeight > height - 50;
 </script>
 
-<div class="flex {!multiLegend && direction === 'up' ? 'flex-col-reverse' : 'flex-col'}">
+<div class="flex w-full {!multiLegend && direction === 'up' ? 'flex-col-reverse' : 'flex-col'}">
 	<div
 		style={`max-height: ${hideLegend ? '0px' : `${height - 50}px`};`}
-		class="scrollbox flex flex-col transition-[opacity, max-height, overflow-y] duration-[350ms] ease-in-out {overflowOn
+		class="scrollbox flex flex-col transition-[opacity, max-height, overflow-y] duration-[350ms] ease-in-out w-full {overflowOn
 			? 'overflow-y-auto'
 			: 'overflow-hidden'} {hideLegend ? 'opacity-0' : ``}"
 	>
 		<div class="flex flex-wrap flex-col font-semibold">
 			<p>{legendTitle}</p>
 		</div>
-		<div class="text-xs pr-1">
+		<div class="text-xs pr-1 w-full">
 			{#each legend.values as value, i}
 				<div class="flex items-center">
 					<span
@@ -41,9 +41,9 @@
 							: 'rounded-full'} w-[8px]"
 						style="background-color: {legend.colorPalette[i]};"
 					/>
-					<span class="inline-block ml-2" title={value}
-						>{value || 'No value'} extra padding to truncate asdawdawdawdawdawdawd</span
-					>
+					<span class="inline-block ml-2 truncate max-w-[calc(100%-16px)]" title={value}
+						>{value || 'No value'}
+					</span>
 				</div>
 			{/each}
 		</div>
