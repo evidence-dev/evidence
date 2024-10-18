@@ -7,6 +7,7 @@
 <script>
 	// @ts-check
 	import ReferencePoint from './ReferencePoint.svelte';
+	import { ensureThemeStores } from '../../../../themes.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -53,11 +54,8 @@
 	 */
 	export let labelPosition = 'top';
 
-	/**
-	 * @type {string}
-	 * @default "white"
-	 */
-	export let labelBackgroundColor = 'white';
+	/** @type {string | undefined} */
+	export let labelBackgroundColor = undefined;
 
 	/**
 	 * @type {number | string | undefined}
@@ -71,11 +69,8 @@
 	 */
 	export let labelBorderRadius = 4;
 
-	/**
-	 * @type {string | undefined}
-	 * @default "gray"
-	 */
-	export let labelBorderColor = 'rgb(154, 165, 177)';
+	/** @type {string | undefined} */
+	export let labelBorderColor = undefined;
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -121,6 +116,8 @@
 	 * @default false
 	 */
 	export let preserveWhitespace = false;
+
+	const { theme } = ensureThemeStores();
 </script>
 
 <ReferencePoint
@@ -136,10 +133,10 @@
 	{labelWidth}
 	{labelPadding}
 	{labelPosition}
-	{labelBackgroundColor}
+	labelBackgroundColor={labelBackgroundColor ?? $theme['base-100']}
 	{labelBorderWidth}
 	{labelBorderRadius}
-	{labelBorderColor}
+	labelBorderColor={labelBorderColor ?? $theme['base-300']}
 	{labelBorderType}
 	{fontSize}
 	{align}

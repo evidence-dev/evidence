@@ -12,6 +12,8 @@
 	import { getConfigContext, getPropContext } from '@evidence-dev/component-utilities/chartContext';
 	import { ReferenceLineStore } from './reference-line.store.js';
 	import { toBoolean, toNumber } from '../../../../utils.js';
+	import { ensureThemeStores } from '../../../../themes.js';
+	import chroma from 'chroma-js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined}*/
 	export let emptySet = undefined;
@@ -103,11 +105,8 @@
 	 */
 	export let labelPosition = 'aboveEnd';
 
-	/**
-	 * @type {string}
-	 * @default "hsla(360, 100%, 100%, 0.7)"
-	 */
-	export let labelBackgroundColor = 'hsla(360, 100%, 100%, 0.7)';
+	/** @type {string | undefined} */
+	export let labelBackgroundColor = undefined;
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -165,6 +164,8 @@
 	const config = getConfigContext();
 	const store = new ReferenceLineStore(props, config);
 
+	const { theme } = ensureThemeStores();
+
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,
 		store.setConfig({
@@ -185,7 +186,7 @@
 			labelColor,
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
-			labelBackgroundColor,
+			labelBackgroundColor: labelBackgroundColor ?? chroma($theme['base-100']).alpha(0.8).css(),
 			labelBorderColor,
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),

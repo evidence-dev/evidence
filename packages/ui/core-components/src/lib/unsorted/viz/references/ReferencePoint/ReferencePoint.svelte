@@ -13,6 +13,8 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { ReferencePointStore } from './reference-point.store.js';
 	import { toNumber } from '../../../../utils.js';
+	import { ensureThemeStores } from '../../../../themes.js';
+	import chroma from 'chroma-js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -56,11 +58,8 @@
 	 */
 	export let labelPosition = 'top';
 
-	/**
-	 * @type {string}
-	 * @default "hsla(360, 100%, 100%, 0.7)"
-	 */
-	export let labelBackgroundColor = 'hsla(360, 100%, 100%, 0.7)';
+	/** @type {string | undefined} */
+	export let labelBackgroundColor = undefined;
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -141,6 +140,8 @@
 	const config = getConfigContext();
 	const store = new ReferencePointStore(props, config);
 
+	const { theme } = ensureThemeStores();
+
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,
 		store.setConfig({
@@ -159,7 +160,7 @@
 			labelWidth: labelWidth === 'fit' ? undefined : toNumber(labelWidth),
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
-			labelBackgroundColor,
+			labelBackgroundColor: labelBackgroundColor ?? chroma($theme['base-100']).alpha(0.8).css(),
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),
 			labelBorderColor,

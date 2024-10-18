@@ -96,6 +96,7 @@
 		"@sveltejs/kit": "2.5.4",
 		"@sveltejs/package": "^2.3.1",
 		"@sveltejs/vite-plugin-svelte": "3.0.2",
+		"@types/chroma-js": "^2.4.4",
 		"@types/lodash.debounce": "^4.0.9",
 		"@types/mermaid": "^9.2.0",
 		"@vitest/coverage-v8": "^2.0.5",

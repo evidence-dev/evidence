@@ -1,4 +1,5 @@
 import { loadThemes } from './loadThemes.js';
+export * from './vite-plugin/index.js';
 
 export const themes = loadThemes();
 

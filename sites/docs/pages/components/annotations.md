@@ -591,28 +591,28 @@ On a continous x-axis (dates or numbers), the reference area will start and stop
 ### Labels
 
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topLeft labelPosition=topLeft/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=top labelPosition=top/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topRight labelPosition=topRight/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=left labelPosition=left/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=center labelPosition=center/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=right labelPosition=right/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomLeft labelPosition=bottomLeft/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottom labelPosition=bottom/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomRight labelPosition=bottomRight/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topLeft labelPosition=topLeft areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=top labelPosition=top areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topRight labelPosition=topRight areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=left labelPosition=left areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=center labelPosition=center areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=right labelPosition=right areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomLeft labelPosition=bottomLeft areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottom labelPosition=bottom areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomRight labelPosition=bottomRight areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
 </LineChart>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topLeft labelPosition=topLeft/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=top labelPosition=top/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topRight labelPosition=topRight/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=left labelPosition=left/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=center labelPosition=center/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=right labelPosition=right/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomLeft labelPosition=bottomLeft/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottom labelPosition=bottom/>
-    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomRight labelPosition=bottomRight/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topLeft labelPosition=topLeft areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=top labelPosition=top areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topRight labelPosition=topRight areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=left labelPosition=left areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=center labelPosition=center areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=right labelPosition=right areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomLeft labelPosition=bottomLeft areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottom labelPosition=bottom areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomRight labelPosition=bottomRight areaColor="hsla(206.25, 80%, 80%, 0.01)"/>
 </LineChart>
 ```
 

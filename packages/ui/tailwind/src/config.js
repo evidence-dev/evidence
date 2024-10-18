@@ -1,7 +1,6 @@
+import defaultTheme from 'tailwindcss/defaultTheme.js';
 import { createThemes } from 'tw-colors';
 import { themes } from './themes/index.js';
-
-const defaultTheme = require('tailwindcss/defaultTheme.js');
 
 /** @type {Partial<import('tailwindcss').Config>} */
 export const config = {

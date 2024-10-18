@@ -4,8 +4,11 @@ import { getContext, setContext } from 'svelte';
 import { derived, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
+import themes from '$evidence/themes';
+
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
+/** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
 
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
@@ -38,25 +41,28 @@ const createSystemThemeStore = () => {
 
 /**
  * @typedef ThemeStores
- * @prop {Readable<'light' | 'dark'>} systemTheme
- * @prop {Readable<'system' | 'light' | 'dark'>} selectedTheme
- * @prop {Readable<'light' | 'dark'>} theme
- * @prop {() => void} cycleTheme
+ * @prop {Readable<'light' | 'dark'>} systemMode
+ * @prop {Readable<'system' | 'light' | 'dark'>} selectedMode
+ * @prop {Readable<'light' | 'dark'>} activeMode
+ * @prop {Readable<Theme>} theme
+ * @prop {() => void} cycleMode
  */
 
 /** @returns {ThemeStores} */
 const createThemeStores = () => {
-	const systemTheme = createSystemThemeStore();
+	const systemMode = createSystemThemeStore();
 
 	/** @type {Writable<'system' | 'light' | 'dark'>} */
-	const selectedTheme = localStorageStore('evidence-theme', 'system');
+	const selectedMode = localStorageStore('evidence-theme', 'system');
 
-	const theme = derived([systemTheme, selectedTheme], ([$systemTheme, $selectedTheme]) => {
+	const activeMode = derived([systemMode, selectedMode], ([$systemTheme, $selectedTheme]) => {
 		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
 	});
 
-	const cycleTheme = () => {
-		selectedTheme.update((current) => {
+	const theme = derived(activeMode, ($activeTheme) => themes[$activeTheme]);
+
+	const cycleMode = () => {
+		selectedMode.update((current) => {
 			switch (current) {
 				case 'system':
 					return 'light';
@@ -69,17 +75,18 @@ const createThemeStores = () => {
 		});
 	};
 
-	theme.subscribe((theme) => {
+	activeMode.subscribe((theme) => {
 		if (typeof document !== 'undefined') {
 			document.documentElement.setAttribute('data-theme', theme);
 		}
 	});
 
 	return {
-		systemTheme,
-		selectedTheme: readonly(selectedTheme),
+		systemMode,
+		selectedMode: readonly(selectedMode),
+		activeMode,
 		theme,
-		cycleTheme
+		cycleMode
 	};
 };
 

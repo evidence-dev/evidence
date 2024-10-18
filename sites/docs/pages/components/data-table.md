@@ -321,7 +321,7 @@ limit 5
 
 #### Custom Colors
 
-When you pass a custom color to `scaleColor`, Evidence will create a color palette for you, starting at white and ending at the color you provided. See examples further down the page to see how to specify a custom color palette with multiple colors.
+When you pass a custom color to `scaleColor`, Evidence will create a color palette for you, starting at white (or black, depending on the selected theme) and ending at the color you provided. See examples further down the page to see how to specify a custom color palette with multiple colors.
 
 ```svelte
 <DataTable data={orders_by_category} rowNumbers=true>
@@ -833,7 +833,7 @@ limit 25
 #### With Configured Columns
 
 ```svelte
-<DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
+<DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor="rgba(255, 240, 204, 0.5)"> 
  	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
 	<Column id=category totalAgg=Total/> 
 	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
@@ -843,7 +843,7 @@ limit 25
 </DataTable>
 ```
 
-<DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
+<DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor="rgba(255, 240, 204, 0.5)"> 
  	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
 	<Column id=category totalAgg=Total/> 
 	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
@@ -881,7 +881,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 ```
 
 ```svelte
-<DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor=#f2f2f2>
+<DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor="rgba(189, 189, 189, 0.5)">
   <Column id=continent totalAgg="Total" totalFmt='# "Unique continents"'/>
   <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
   <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
@@ -895,7 +895,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 </DataTable>
 ```
 
-<DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor=#f2f2f2>
+<DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor="rgba(189, 189, 189, 0.5)">
   <Column id=continent totalAgg="Total" totalFmt='# "Unique continents"'/>
   <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
   <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
