@@ -94,7 +94,7 @@ fsExtra.outputFileSync(
 				])
 				
 			],
-            exclude: ['svelte-icons', '@evidence-dev/universal-sql']
+            exclude: ['svelte-icons', '@evidence-dev/universal-sql', '$evidence/themes']
         },
         ssr: {
             external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/plugin-connector']
