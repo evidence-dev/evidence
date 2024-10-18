@@ -294,9 +294,6 @@
 
 	/** @type {string}*/
 	let paneType = map.checkPanes(pointStyle);
-
-	/** @type {number | undefined} */
-	export let z = undefined;
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -315,8 +312,7 @@
 				color: borderColor,
 				className: `outline-none ${pointClass}`,
 				markerType: pointStyle,
-				pane: paneType,
-				z: z
+				pane: paneType
 			}}
 			selectedOptions={{
 				fillColor: selectedColor,

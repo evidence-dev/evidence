@@ -6,7 +6,6 @@ import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
 import { uiColours } from '@evidence-dev/component-utilities/colours';
-import { toNumber } from '../../../utils.js';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
