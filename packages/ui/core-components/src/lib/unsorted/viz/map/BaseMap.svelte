@@ -59,8 +59,6 @@
 			}
 		}
 	});
-
-	$: console.log(mapElement);
 </script>
 
 {#if error}
