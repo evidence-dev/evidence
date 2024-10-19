@@ -35,14 +35,6 @@
 		hideLegend = !hideLegend;
 	};
 
-	const handleChevronDirection = (legendType) => {
-		if (legendType === 'scalar') {
-			return legendPosition.includes('Left') ? 'left' : 'right';
-		} else if (legendType === 'categorical') {
-			return legendPosition.includes('bottom') ? 'up' : 'down';
-		}
-	};
-
 	const constHandleLegendButtonPosition = () => {
 		let cssStyle = '';
 
@@ -86,7 +78,6 @@
 							{handleLegendToggle}
 							{hideLegend}
 							{multiLegend}
-							direction={handleChevronDirection(legend.legendType)}
 							{capitalize}
 						/>
 					</div>
@@ -96,25 +87,16 @@
 		{#if $scalarLegendData.length > 0}
 			{#each $scalarLegendData as legend}
 				<div
-					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {handleChevronDirection(
-						legend.legendType
-					) === 'right'
-						? 'flex-row-reverse'
-						: 'flex-row'} {hideLegend ? 'border-y-0 py-0' : 'border-y-[1px] py-1'}"
+					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
+						? 'border-y-0 py-0'
+						: 'border-y-[1px] py-1'}"
 				>
-					<ScalarLegend
-						{legend}
-						{handleLegendToggle}
-						{hideLegend}
-						{multiLegend}
-						direction={handleChevronDirection(legend.legendType)}
-						{capitalize}
-					/>
+					<ScalarLegend {legend} {handleLegendToggle} {hideLegend} {multiLegend} {capitalize} />
 				</div>
 			{/each}
 		{/if}
 		<div class="border border-gray-300 bg-gray-100 flex justify-center w-fit">
-			<LegendToggle legendType="categorical" {handleLegendToggle} {hideLegend} {multiLegend} />
+			<LegendToggle {handleLegendToggle} {hideLegend} {multiLegend} {legendPosition} />
 		</div>
 	</div>
 {/if}

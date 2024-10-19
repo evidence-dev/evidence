@@ -4,23 +4,24 @@
 	/** @type {() => void} */
 	export let handleLegendToggle;
 
-	/** @type {'categorical' | 'scalar' | undefined} */
-	export let legendType = undefined;
-	/** @type {'left' | 'right' | 'down' | 'up'} */
-	export let direction = 'down';
+	export let legendPosition = 'bottomLeft';
+
+	let direction = 'down';
+
+	if (legendPosition.includes('top')) {
+		direction = 'up';
+	} else if (legendPosition.includes('bottom')) {
+		direction = 'down';
+	}
 
 	const chevronDirections = {
-		up: { show: 'rotate-[270deg]', hide: 'rotate-90' },
-		down: { show: 'rotate-90', hide: 'rotate-[270deg]' },
-		left: { show: 'rotate-0', hide: 'rotate-180' },
-		right: { show: 'rotate-180', hide: 'rotate-0' }
+		down: { show: 'rotate-[270deg]', hide: 'rotate-90' },
+		up: { show: 'rotate-90', hide: 'rotate-[270deg]' }
 	};
 </script>
 
 <button
-	class="flex z-[1] items-center p-1 {legendType === 'scalar' && direction === 'left'
-		? 'flex-row-reverse'
-		: 'flex-row'}"
+	class="flex z-[1] items-center p-1"
 	on:click={handleLegendToggle}
 	on:dblclick={(e) => e.stopPropagation()}
 	aria-label="Toggle Legend"
