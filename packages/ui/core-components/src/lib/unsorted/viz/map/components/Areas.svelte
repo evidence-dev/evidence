@@ -74,8 +74,7 @@
 	/** @type {string} */
 	export let borderColor = uiColours.grey300;
 	/** @type {string[]} */
-	export let colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
-
+	export let colorPalette = undefined;
 	/** @type {number|undefined} */
 	export let opacity = undefined;
 	if (opacity) {

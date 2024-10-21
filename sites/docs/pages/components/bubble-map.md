@@ -304,8 +304,6 @@ FROM la_locations
     long=long
     value=Category
     size=sales
-    legendType=categorical
-    legendPosition=bottomLeft
 />
 
 ```svelte
@@ -315,8 +313,6 @@ FROM la_locations
     long=long
     value=Category
     size=sales
-    legendType=categorical
-    legendPosition=bottomLeft
 />
 ```
 
@@ -328,8 +324,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=Category
     size=sales
-    legendType=categorical
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 
@@ -340,8 +334,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=Category
     size=sales
-    legendType=categorical
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
@@ -354,9 +346,7 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=sales
     size=sales
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
 />
 
 ```svelte
@@ -366,9 +356,7 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=sales
     size=sales
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
 />
 ```
 
@@ -380,10 +368,8 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     long=long
     value=sales
     size=sales
-    legendType=scalar
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#4A8EBA']}
-    legendFmt=usd
+    valueFmt=usd
 />
 
 ```svelte
@@ -393,10 +379,8 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     long=long
     value=sales
     size=sales
-    legendType=scalar
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#4A8EBA']}
-    legendFmt=usd
+    valueFmt=usd
 />
 ```
 

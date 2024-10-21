@@ -257,8 +257,6 @@ FROM la_locations
     lat=lat
     long=long
     value=Category
-    legendType=categorical
-    legendPosition=bottomLeft
 />
 
 ```svelte
@@ -267,8 +265,6 @@ FROM la_locations
     lat=lat
     long=long
     value=Category
-    legendType=categorical
-    legendPosition=bottomLeft
 />
 ```
 
@@ -279,8 +275,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     lat=lat
     long=long
     value=Category
-    legendType=categorical
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 
@@ -290,8 +284,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     lat=lat
     long=long
     value=Category
-    legendType=categorical
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
@@ -303,8 +295,7 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     lat=lat
     long=long
     value=sales
-    legendType=scalar
-    legendFmt=usd
+    valueFmt=usd
 />
 
 ```svelte
@@ -313,9 +304,7 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     lat=lat
     long=long
     value=sales
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
 />
 ```
 
@@ -326,9 +315,7 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     lat=lat
     long=long
     value=sales
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
     colorPalette={['#C65D47', '#4A8EBA']}
 />
 
@@ -338,9 +325,7 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     lat=lat
     long=long
     value=sales
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
     colorPalette={['#C65D47', '#4A8EBA']}
 />
 ```
