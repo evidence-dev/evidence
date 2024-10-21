@@ -76,8 +76,5 @@ export const setTrackProxy = (
 export const hasUnsetValues = (strings, ...args) => {
 	const unsetValues = args.filter((arg) => arg?.[Unset]);
 	if (unsetValues.length === 0) return false;
-	console.debug(
-		`✨ UnsetValues detected: ${unsetValues.map((v) => v?.[GetOwnPath] ?? v?.[GetOwnKey]).join(', ')}`
-	);
 	return true;
 };

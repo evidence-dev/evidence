@@ -1,5 +1,22 @@
 # @evidence-dev/evidence
 
+## 39.1.12
+
+### Patch Changes
+
+- 426ccd4d4: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+- ddc18a271: Windows cache service worker isnt asynchronous
+- Updated dependencies [a91b26fb3]
+- Updated dependencies [cbb8b16f4]
+  - @evidence-dev/sdk@1.4.4
+  - @evidence-dev/plugin-connector@2.1.11
+
+## 39.1.11
+
+### Patch Changes
+
+- f3a352dbe: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+
 ## 39.1.10
 
 ### Patch Changes

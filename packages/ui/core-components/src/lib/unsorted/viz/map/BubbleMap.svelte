@@ -63,8 +63,8 @@
 	export let legendPosition = 'bottomLeft';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
-	/** @type {string} */
-	export let legendTitle = 'Legend';
+	/** @type {string | undefined} */
+	export let legendFmt = undefined;
 
 	const chartType = 'Bubble Map';
 
@@ -78,6 +78,6 @@
 
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
 		<Bubbles data={loaded} {lat} {long} {size} {legendType} {...$$restProps} />
-		<Legend {legendPosition} {legendType} {legendTitle} />
+		<Legend {legendPosition} {legendType} {legendFmt} />
 	</BaseMap>
 </QueryLoad>
