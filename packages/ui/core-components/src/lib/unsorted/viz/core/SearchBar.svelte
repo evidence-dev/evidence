@@ -17,7 +17,7 @@
 		type="text"
 		{placeholder}
 		bind:value
-		on:keyup={() => searchFunction(value)}
+		on:input={() => searchFunction(value)}
 	/>
 	<div class="search-icon">
 		<Icon src={Search} class="pl-0.5" />
