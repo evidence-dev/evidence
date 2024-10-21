@@ -9,18 +9,20 @@ import themes from '$evidence/themes';
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
 /** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
-
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
-	const store = readable(/** @type {'light' | 'dark'} */ ('light'), (set) => {
+	const initialValue =
+		browser && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+			? 'dark'
+			: 'light';
+
+	/** @type {Readable<'light' | 'dark'>} */
+	const store = readable(initialValue, (set) => {
 		if (browser && window.matchMedia) {
 			/** @param {MediaQueryList | MediaQueryListEvent} e */
 			const onPrefersDarkColorSchemeChange = (e) => {
 				set(e.matches ? 'dark' : 'light');
 			};
-
-			// Initialize the store with the current value
-			onPrefersDarkColorSchemeChange(window.matchMedia('(prefers-color-scheme: dark)'));
 
 			// Listen for changes to the system color scheme and update the store
 			window
