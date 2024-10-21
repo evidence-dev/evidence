@@ -533,19 +533,4 @@ export class EvidenceMap {
 
 	/**@type {[string]} */
 	#paneArray = [];
-
-	checkPanes(paneType) {
-		let newPaneType = paneType;
-		let suffix = 1;
-
-		// Continue appending "-suffix" until a unique paneType is found
-		while (this.#paneArray.includes(newPaneType)) {
-			newPaneType = `${paneType}-${suffix}`;
-			suffix += 1;
-		}
-
-		// Add the unique paneType to the array
-		this.#paneArray.push(newPaneType);
-		return newPaneType;
-	}
 }
