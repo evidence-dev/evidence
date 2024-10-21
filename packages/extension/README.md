@@ -107,7 +107,6 @@ You can access the VS Code shortcut commands from the command palette (`Cmd/Ctrl
 | `viewSettings`        | VS Code Extension Settings | View Evidence extension settings in the built-in VS Code Settings editor.                           |
 | `copyProject`         | Copy Existing Project      | Provide a URL of a Github repo to pull from                                                         |
 
-
 ## Settings
 
 Create [User or Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_creating-user-and-workspace-settings) to change default Evidence VS Code extension Settings.
