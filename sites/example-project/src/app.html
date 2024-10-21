@@ -8,6 +8,15 @@
 		<!-- 180×180 -->
 		<link rel="manifest" href="/manifest.webmanifest" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script>
+      try {
+				/** @type {'light' | 'dark' | 'system'} */
+				const savedTheme = localStorage.getItem("evidence-theme") ?? 'system'
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+				const theme = savedTheme === 'system' ? (prefersDark ? 'dark' : 'light') : savedTheme
+        document.documentElement.setAttribute("data-theme", theme)
+      } catch (e) {}
+    </script>
 		%sveltekit.head%
 	</head>
 	<body>
