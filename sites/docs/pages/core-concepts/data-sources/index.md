@@ -386,7 +386,7 @@ The section below applies to both CSV and Parquet files.
 
 #### How to Query a CSV File
 
-Evidence looks for CSV files stored in a `sources/[your_csv_source_name]/` folder in the root of your Evidence app. You can query them using this syntax:
+Evidence looks for CSV files stored in a `sources/[your_csv_source_name]/` folder in the root of your Evidence project. You can query them using this syntax:
 
 ```sql
 select * from your_csv_source_name.csv_file_name
