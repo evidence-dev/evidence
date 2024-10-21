@@ -47,3 +47,24 @@ group by all
 	<Column id=orders/> 
 	<Column id=aov fmt=usd2 contentType=colorscale scaleColor={['#b52626','#FFFFFF','#2e9939']}/> 
  </DataTable>
+
+## Conditional Columns
+
+<Dropdown name="display_column">
+	<DropdownOption value="sales">Sales</DropdownOption>
+	<DropdownOption value="orders">Orders</DropdownOption>
+	<DropdownOption value="aov">AOV</DropdownOption>
+</Dropdown>
+
+{inputs.display_column.value}
+
+<DataTable data={summary}>
+	<Column id="category" />
+	{#if inputs.display_column.value === 'sales'}
+		<Column id=sales fmt=usd0k contentType=colorscale scaleColor={['#304a8a','#e8efff']}/>
+	{:else if inputs.display_column.value === 'orders'}
+		<Column id=orders/>
+	{:else}
+		<Column id=aov fmt=usd2 contentType=colorscale scaleColor={['#b52626','#FFFFFF','#2e9939']}/>
+	{/if}
+</DataTable>
