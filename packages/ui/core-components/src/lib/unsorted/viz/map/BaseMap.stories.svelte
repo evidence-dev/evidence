@@ -261,26 +261,17 @@ ORDER BY 1;
 		/>
 	</BaseMap>
 </Story>
-<Story name="Multiple Points">
+<Story name="Multiple Points - Green on Top">
 	<BaseMap title="My Map" height="300">
 		<Points data={la_locations} lat="lat" long="long" color="purple" />
 		<Points data={la_locations} lat="lat" long="long" color="blue" />
 		<Points data={la_locations} lat="lat" long="long" color="red" />
-		<Bubbles
-			data={la_locations}
-			lat="lat"
-			long="long"
-			pointName="point_name"
-			value="sales"
-			size="sales"
-			tooltipType="hover"
-			opacity="0.6"
-		/>
 		<Points data={la_locations} lat="lat" long="long" color="green" />
 	</BaseMap>
 </Story>
 <Story name="bubbles on top of points">
 	<BaseMap title="My Map" height="300">
+		<Points data={la_locations} lat="lat" long="long" color="purple" z="1" />
 		<Bubbles
 			data={la_locations}
 			lat="lat"
@@ -293,6 +284,5 @@ ORDER BY 1;
 			color="blue"
 			z="2"
 		/>
-		<Points data={la_locations} lat="lat" long="long" color="purple" z="1" />
 	</BaseMap>
 </Story>
