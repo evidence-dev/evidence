@@ -96,7 +96,7 @@ If you have built custom components that you would like other Evidence users to 
 ## Utility Functions
 Evidence provides a collection of helpful utility functions to use within custom components, for things like error handling, data manipulation, and value formatting.
 
-To use these in your app, you must import them explicitly in the script tag portion of your component. The import line for each utlity function is included for reference below:
+To use these utilities, you must import them explicitly in the script tag portion of your component. The import line for each utlity function is included for reference below:
 
 ### Error Handling
 
