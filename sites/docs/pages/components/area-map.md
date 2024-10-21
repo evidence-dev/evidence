@@ -325,8 +325,6 @@ ORDER BY 1;
     value=Category
     geoId=ZCTA5CE10
     areaCol=zip_code
-    legendType=categorical
-    legendPosition=bottomLeft
 />
 
  ```svelte
@@ -337,8 +335,6 @@ ORDER BY 1;
     value=Category
     geoId=ZCTA5CE10
     areaCol=zip_code
-    legendType=categorical
-    legendPosition=bottomLeft
 />
 ```
 
@@ -351,8 +347,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     value=Category
     geoId=ZCTA5CE10
     areaCol=zip_code
-    legendType=categorical
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 
@@ -364,8 +358,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     value=Category
     geoId=ZCTA5CE10
     areaCol=zip_code
-    legendType=categorical
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
@@ -379,9 +371,7 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     value=sales
     geoId=ZCTA5CE10
     areaCol=zip_code
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
 />
 
 ```svelte
@@ -392,9 +382,7 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     value=sales
     geoId=ZCTA5CE10
     areaCol=zip_code
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
 />
 ```
 
@@ -408,10 +396,8 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     value=sales
     geoId=ZCTA5CE10
     areaCol=zip_code
-    legendType=scalar
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#4A8EBA']}
-    legendFmt=usd
+    valueFmt=usd
 />
 
 ```svelte
@@ -422,10 +408,8 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     value=sales
     geoId=ZCTA5CE10
     areaCol=zip_code
-    legendType=scalar
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#4A8EBA']}
-    legendFmt=usd
+    valueFmt=usd
 />
 ```
 
@@ -555,6 +539,13 @@ Maximum value to use for the color scale.
 
 ### Legend
 
+<PropListing
+name="legend"
+description="Turns legend on or off"
+required=false
+options={["true", "false"]}
+defaultValue="true"
+/>
 <PropListing
 name="legendType"
 options={['categorical', 'scalar']}

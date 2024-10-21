@@ -9,7 +9,6 @@
 	import Point from './Point.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
-	import { mapColours } from '@evidence-dev/component-utilities/colours';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -35,8 +34,13 @@
 	export let sizeFmt = undefined;
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
-	/** @type { 'categorical' | 'scalar' | undefined} */
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+	/** @type {'Point Map' | 'Bubble Map'} */
+	export let chartType = 'Point Map';
+
+	/** @type {boolean} */
+	export let legend = true;
 
 	if (size) {
 		// if size was user-supplied
@@ -90,8 +94,8 @@
 	export let borderColor = 'white';
 	/** @type {string|undefined} */
 	export let color = undefined;
-	/** @type {string[]} */
-	export let colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+	/** @type {string[] | undefined} */
+	export let colorPalette = undefined;
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;
@@ -216,26 +220,28 @@
 	/** @type {'bubble' | 'points' }*/
 	export let pointStyle = 'points';
 
+	const legendId = nanoid();
+
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
-		let initDataOptions = {
-			corordinates: [lat, long],
-			value,
-			checkInputs,
-			min,
-			max,
-			colorPalette,
-			legendType,
-			paneType
-		};
 		if (data) {
-			({ values, colorScale, colorPalette, paneType } = await map.initializeData(
-				data,
-				initDataOptions
-			));
+			let initDataOptions = {
+				corordinates: [lat, long],
+				value,
+				checkInputs,
+				min,
+				max,
+				colorPalette,
+				legendType,
+				valueFmt,
+				chartType,
+				legendId,
+				legend
+			};
+			({ values, colorPalette, colorScale } = await map.initializeData(data, initDataOptions));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
