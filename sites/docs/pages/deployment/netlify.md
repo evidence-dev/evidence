@@ -7,7 +7,7 @@ description: Deploy your app to Netlify, which offers free hosting for public ap
 
 <Alert status=warning>
 
-All URLs on Netlify are converted to lowercase. This can cause issues if you're using `{params.my_param}` to filter data in your app. It's recommended to use lowercase any time you're using a URL parameter to filter data, like this:
+All URLs on Netlify are converted to lowercase. This can cause issues if you're using `{params.my_param}` to filter data in your markdown. It's recommended to use lowercase any time you're using a URL parameter to filter data, like this:
 
 ```sql
 SELECT * FROM source_name.my_table 
@@ -24,7 +24,7 @@ Netlify lets you host a public version of your app for free, or you can create a
 1. Visit the [settings page](http://localhost:3000/settings)
 1. Open the deployment panel, and select 'netlify', then follow the provided instructions
 
-## Optional: Set a site-wide password for your site (Requires Paid Plan)
+## Optional: Set a site-wide password for your app (Requires Paid Plan)
 
 Follow the directions provided by Netlify to set up a password for your site:
 https://docs.netlify.com/visitor-access/password-protection/

@@ -131,7 +131,7 @@ Issues and errors in the migration command can be related to npm or NodeJS versi
 
 
 ### Completing the Migration Steps Manually
-The easiest way to migrate your app is to create a app using the latest version of the template, and copy over your markdown pages and queries. These steps will guide you through doing that in the same app directory so that you can track the changes in version control.
+The easiest way to migrate your app is to create a app using the latest version of the template, and copy over your markdown pages and queries. These steps will guide you through doing that in the same project so that you can track the changes in version control.
 
 1. In your Evidence app directory, create a new folder called `_legacy_project`
 2. Copy all of the files from your existing app into the `_legacy_project` folder - this will serve as a backup, and you will need to reference these in the following steps to copy content back into your app
@@ -189,7 +189,7 @@ The easiest way to migrate your app is to create a app using the latest version 
 11. Configure your data source in the Settings menu
     - Click the 3-dot menu at the top right of the page and click Settings
     - In the Data Sources section, click to add a new connection
-    - Select the data source type your app uses and provide a name for your data source. This will appear as a folder within the `sources` directory in your app (e.g., you could use `needful_things` if using the Evidence demo database)
+    - Select the data source type your app uses and provide a name for your data source. This will appear as a folder within the `sources` directory in your project (e.g., you could use `needful_things` if using the Evidence demo database)
     - Click to test your connection
     - Click to confirm the changes
 12. Navigate back to the home page in your browser and refresh the page

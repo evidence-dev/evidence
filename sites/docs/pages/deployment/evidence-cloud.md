@@ -125,7 +125,7 @@ Most builds will be completed in under 2 minutes, and you can track progress in 
 
 <Details title="When can I expect build failures?">
 
-Evidence will not deploy sites with errors to prevent users from seeing broken reports. Usually, this is caused by an error with your app code.  Enter `npm run build` in your editor to test if the build succeeds locally. If you are still having issues, reach out on [Slack](https://slack.evidence.dev).
+Evidence will not deploy sites with errors to prevent users from seeing broken reports. Usually, this is caused by an error with your code.  Enter `npm run build` in your editor to test if the build succeeds locally. If you are still having issues, reach out on [Slack](https://slack.evidence.dev).
 
 </Details>
 

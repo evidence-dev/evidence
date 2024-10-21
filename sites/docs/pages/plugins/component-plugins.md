@@ -9,7 +9,7 @@ Evidence includes a plugin system which can be used to add components and data s
 
 All Evidence apps include the Evidence `core-components` plugin by default. `core-components` has everything you need to build most use cases. 
 
-Component plugins are Svelte component packages which include one or more additional components which you can use in your app. Once you have installed and registered a component plugin, the included components will be available to use in your markdown files. 
+Component plugins are Svelte component packages which include one or more additional components which you can use in your markdown. Once you have installed and registered a component plugin, the included components will be available to use in your markdown files. 
 
 To use a plugin, you need to **install** and **register** it in your app.
 

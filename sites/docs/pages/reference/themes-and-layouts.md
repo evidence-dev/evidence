@@ -42,7 +42,7 @@ App title that will replace the Evidence Logo.
     defaultValue=""
 >
 
-Link to an image which will replace the Evidence logo. This will also override any app title in the header. If the image is in your app's static directory, the link should be relative to the static directory.
+Link to an image which will replace the Evidence logo. This will also override any app title in the header. If the image is in your project's static directory, the link should be relative to the static directory.
 
 </PropListing>
 <PropListing
@@ -190,7 +190,7 @@ This is the default text style, which is used when you write text in a markdown 
 
 ## Base Styles
 
-Include an `app.css` file in your app root directory to customize the base styles of your app.
+Include an `app.css` file in your project root directory to customize the base styles of your app.
 
 _The recommended approach is to copy and edit the default css file from `[my-app]/.evidence/template/src/app.css`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/app.css)._
 

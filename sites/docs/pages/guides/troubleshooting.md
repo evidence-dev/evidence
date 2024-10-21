@@ -41,7 +41,7 @@ On Windows, the initial installation can take up to a few minutes. If it has bee
 
 ### Data is not available for querying
 Ensure that you've done the following:
-- Add `.sql` files to your `sources/my-source` directory to define which data to bring into your Evidence app (does not apply to the CSV connector, which does not require `.sql` files)
+- Add `.sql` files to your `sources/my-source` directory to define which data to bring into Evidence (does not apply to the CSV connector, which does not require `.sql` files)
 - Run `npm run sources` to load the data
 
 To check whether your data has been successfully loaded into your app, go to the `/explore/schema` page to see which data is in your app.
