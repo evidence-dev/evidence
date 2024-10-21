@@ -56,8 +56,6 @@ group by all
 	<DropdownOption value="aov">AOV</DropdownOption>
 </Dropdown>
 
-{inputs.display_column.value}
-
 <DataTable data={summary}>
 	<Column id="category" />
 	{#if inputs.display_column.value === 'sales'}

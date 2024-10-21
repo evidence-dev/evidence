@@ -8,6 +8,8 @@
 	import ButtonGroupItem from '../../../atoms/inputs/button-group/ButtonGroupItem.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { expect, userEvent, within, fn } from '@storybook/test';
+	import Dropdown from '$lib/atoms/inputs/dropdown/Dropdown.svelte';
+	import DropdownOption from '$lib/atoms/inputs/dropdown/helpers/DropdownOption.svelte';
 
 	const mockGoto = fn();
 
@@ -178,4 +180,28 @@
 		query
 	)}
 	<DataTable {data} link="link" showLinkCol />
+</Story>
+
+<Story name="Conditional Columns">
+	{@const data = Query.create(
+		`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`,
+		query
+	)}
+
+	<Dropdown name="display_column">
+		<DropdownOption value="airline">Airline</DropdownOption>
+		<DropdownOption value="departure">Departure Airport</DropdownOption>
+		<DropdownOption value="arrival">Arrival Airport</DropdownOption>
+	</Dropdown>
+
+	<DataTable {data} title="Flights">
+		<Column id="id" title="ID" />
+		{#if $inputStore.display_column.value === 'airline'}
+			<Column id="airline" title="Airline" />
+		{:else if $inputStore.display_column.value === 'departure'}
+			<Column id="departure_airport" title="Departure Airport" />
+		{:else}
+			<Column id="arrival_airport" title="Arrival Airport" />
+		{/if}
+	</DataTable>
 </Story>
