@@ -1,5 +1,33 @@
 # @evidence-dev/core-components
 
+## 4.8.7
+
+### Patch Changes
+
+- 163ff7a33: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+
+## 4.8.6
+
+### Patch Changes
+
+- Updated dependencies [2b5d759f1]
+  - @evidence-dev/component-utilities@3.2.15
+
+## 4.8.5
+
+### Patch Changes
+
+- 1cc64f83f: Table rows with links preload data on hover
+  Table rows with links have a chevron icon on the right side
+  Table rows dont have link styling if the link value is falsey
+- 101d58f09: Implemented categorical and scalar map legends
+
+## 4.8.4
+
+### Patch Changes
+
+- 024e93b02: Defer selectAll=false to ensure that all options are available before the behavior is turned off
+
 ## 4.8.3
 
 ### Patch Changes

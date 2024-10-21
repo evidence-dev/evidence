@@ -1,5 +1,39 @@
 # @evidence-dev/components
 
+## 3.5.30
+
+### Patch Changes
+
+- 163ff7a33: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+- Updated dependencies [163ff7a33]
+  - @evidence-dev/core-components@4.8.7
+
+## 3.5.29
+
+### Patch Changes
+
+- Updated dependencies [2b5d759f1]
+  - @evidence-dev/component-utilities@3.2.15
+  - @evidence-dev/plugin-connector@2.1.11
+  - @evidence-dev/core-components@4.8.6
+
+## 3.5.28
+
+### Patch Changes
+
+- Updated dependencies [1cc64f83f]
+- Updated dependencies [101d58f09]
+- Updated dependencies [0e740d056]
+  - @evidence-dev/core-components@4.8.5
+  - @evidence-dev/snowflake@1.2.0
+
+## 3.5.27
+
+### Patch Changes
+
+- Updated dependencies [024e93b02]
+  - @evidence-dev/core-components@4.8.4
+
 ## 3.5.26
 
 ### Patch Changes
