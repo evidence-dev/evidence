@@ -240,4 +240,4 @@ This is some content in the partial.
 
 Evidence supports re-using chunks of Evidence markdown using Partials.
 
-Partials are placed in the `./partials` folder, and can be referenced in your project with `&#123;@partial "path/to/partial.md"&#125;` (do not include the `/partial` folder in the path).
+Partials are placed in the `./partials` folder, and can be referenced in your markdown with `&#123;@partial "path/to/partial.md"&#125;` (do not include the `/partial` folder in the path).
