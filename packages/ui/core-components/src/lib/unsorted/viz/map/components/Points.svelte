@@ -17,6 +17,7 @@
 	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { nanoid } from 'nanoid';
 	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -212,6 +213,9 @@
 
 	let values, colorScale, sizeExtents, maxData, maxSizeSq;
 
+	/** @type {'bubble' | 'points' }*/
+	export let pointStyle = 'points';
+
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
@@ -224,10 +228,14 @@
 			min,
 			max,
 			colorPalette,
-			legendType
+			legendType,
+			paneType
 		};
 		if (data) {
-			({ values, colorScale, colorPalette } = await map.initializeData(data, initDataOptions));
+			({ values, colorScale, colorPalette, paneType } = await map.initializeData(
+				data,
+				initDataOptions
+			));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -284,6 +292,9 @@
 		});
 		setInputDefault(item, name);
 	}
+
+	/** @type {string}*/
+	let paneType = map.registerPane(nanoid());
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -300,7 +311,9 @@
 				opacity: opacity,
 				weight: borderWidth,
 				color: borderColor,
-				className: `outline-none ${pointClass}`
+				className: `outline-none ${pointClass}`,
+				markerType: pointStyle,
+				pane: paneType
 			}}
 			selectedOptions={{
 				fillColor: selectedColor,
