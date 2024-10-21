@@ -271,7 +271,7 @@ ORDER BY 1;
 </Story>
 <Story name="bubbles on top of points">
 	<BaseMap title="My Map" height="300">
-		<Points data={la_locations} lat="lat" long="long" color="purple" z="1" />
+		<Points data={la_locations} lat="lat" long="long" color="purple" z="1" value="sales" />
 		<Bubbles
 			data={la_locations}
 			lat="lat"

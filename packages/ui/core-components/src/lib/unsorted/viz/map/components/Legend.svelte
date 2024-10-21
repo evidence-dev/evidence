@@ -54,23 +54,33 @@
 		if (!str) return str;
 		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 	}
+
+	const containerStyles = {
+    bottomLeft: 'rounded-t rounded-br',
+    bottomRight: 'rounded-t rounded-bl',
+    topLeft: 'rounded-b rounded-tr z-[405]',
+    topRight: 'rounded-b rounded-tl z-[405]'
+  };
+
+
 </script>
 
 {#if $legendData.length > 0}
 	<div
-		class="absolute z-[401] m-4 flex max-w-60 flex legend-font {constHandleLegendButtonPosition()} 
+		class="absolute z-[401] m-4 flex max-w-60 flex legend-font  {constHandleLegendButtonPosition()} 
     {positions[legendPosition] ?? 'top-3 left-[-9px]'}"
 		on:wheel={(e) => e.stopPropagation()}
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
+	<div class="shadow bg-white/90 backdrop-blur {containerStyles[legendPosition]}">
 		{#if $categoricalLegendData.length > 0}
 			<div class="flex flex-wrap hover:cursor-default">
 				{#each $categoricalLegendData as legend}
 					<div
-						class="border-x-[1px] border-gray-300 bg-gray-100 flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-2 truncate {multiLegend
+						class=" flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-2 truncate {multiLegend
 							? 'w-1/2'
-							: 'max-w-48'} {hideLegend ? 'border-y-0 py-0' : 'border-y-[1px] py-1'}"
+							: 'max-w-48'} {hideLegend ? ' py-0' : ' py-1'}"
 					>
 						<CategoricalLegend
 							{height}
@@ -87,16 +97,23 @@
 		{#if $scalarLegendData.length > 0}
 			{#each $scalarLegendData as legend}
 				<div
-					class="border-x-[1px] border-gray-300 bg-gray-100 overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
-						? 'border-y-0 py-0'
-						: 'border-y-[1px] py-1'}"
+					class=" border-t first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
+						? 'py-0 border-none'
+						: 'py-1'}"
 				>
 					<ScalarLegend {legend} {handleLegendToggle} {hideLegend} {multiLegend} {capitalize} />
 				</div>
 			{/each}
 		{/if}
-		<div class="border border-gray-300 bg-gray-100 flex justify-center w-fit">
+	</div>
+	<div 
+		class="bg-white/90 backdrop-blur shadow flex justify-center w-fit transition-[border-radius] ease-in-out" 
+		class:rounded="{hideLegend}" 
+		class:delay-[225ms]="{hideLegend}" 
+		class:rounded-b="{!hideLegend && legendPosition.includes('bottom')}" 
+		class:rounded-t="{!hideLegend && !legendPosition.includes('bottom')}"
+		>
 			<LegendToggle {handleLegendToggle} {hideLegend} {multiLegend} {legendPosition} />
-		</div>
+	</div>
 	</div>
 {/if}

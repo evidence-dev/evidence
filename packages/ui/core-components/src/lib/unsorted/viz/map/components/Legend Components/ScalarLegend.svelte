@@ -1,7 +1,7 @@
 <script>
 	import { fmt } from '@evidence-dev/component-utilities/formatting';
 
-	/** @type {{ colorPalette: string[]; values: string[]; legendType: 'scalar' }} */
+	/** @type {{ colorPalette: string[]; values: string[]; legendType: 'scalar', value: string }} */
 	export let legend;
 	/** @type {boolean} */
 	export let hideLegend = false;
@@ -20,7 +20,7 @@
 <div
 	class="flex flex-col {hideLegend
 		? hideLegendStyle
-		: showLegendStyle} transition-all duration-[350ms] ease-in-out w-full"
+		: showLegendStyle} transition-[opacity, max-height, overflow-y] duration-[350ms] ease-in-out w-full"
 >
 	<div class="flex flex-wrap flex-col font-semibold">
 		<p>{legendTitle}</p>

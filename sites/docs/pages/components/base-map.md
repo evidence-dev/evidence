@@ -57,7 +57,6 @@ See the pages for [Area Map](/components/area-map), [Point Map](/components/poin
     value=sales
     valueFmt=usd
     pointName=point_name
-    colorPalette={['yellow','orange','red','darkred']}
     opacity=0.5
   />
 </BaseMap>

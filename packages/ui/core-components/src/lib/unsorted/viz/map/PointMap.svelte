@@ -59,8 +59,6 @@
 	export let legendPosition = 'bottomLeft';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
-	/** @type {string | undefined} */
-	export let legendFmt = undefined;
 
 	/** @type {boolean} */
 	export let legend = true;
@@ -91,7 +89,6 @@
 				{long}
 				{colorPalette}
 				{legendType}
-				{legendFmt}
 				{chartType}
 				{...$$restProps}
 				{legend}
