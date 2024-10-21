@@ -294,7 +294,7 @@
 	}
 
 	/** @type {string}*/
-	let paneType = nanoid();
+	let paneType = map.registerPane(nanoid());
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->

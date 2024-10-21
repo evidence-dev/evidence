@@ -533,4 +533,11 @@ export class EvidenceMap {
 
 	/**@type {[string]} */
 	#paneArray = [];
+
+	registerPane(paneId) {
+		// Add the unique paneType to the array
+		this.#paneArray.push(paneId);
+
+		return paneId;
+	}
 }
