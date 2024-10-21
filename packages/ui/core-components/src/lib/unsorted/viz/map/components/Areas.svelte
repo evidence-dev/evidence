@@ -7,7 +7,7 @@
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import MapArea from './MapArea.svelte';
-	import { uiColours, mapColours } from '@evidence-dev/component-utilities/colours';
+	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { nanoid } from 'nanoid';
 

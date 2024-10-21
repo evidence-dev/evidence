@@ -47,6 +47,8 @@
 
 	let legendData = evidenceMap.legendData;
 
+	$: console.log($legendData);
+
 	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
 	export let legendPosition = 'bottomLeft';
 

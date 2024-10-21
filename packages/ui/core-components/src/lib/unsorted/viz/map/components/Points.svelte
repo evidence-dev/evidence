@@ -220,7 +220,8 @@
 	/** @type {'bubble' | 'points' }*/
 	export let pointStyle = 'points';
 
-	const legendId = nanoid();
+	/** @type {string}*/
+	let legendId = map.registerPane(nanoid());
 
 	/**
 	 * Initialize the component.
@@ -298,9 +299,6 @@
 		});
 		setInputDefault(item, name);
 	}
-
-	/** @type {string}*/
-	let paneType = map.registerPane(nanoid());
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -319,7 +317,7 @@
 				color: borderColor,
 				className: `outline-none ${pointClass}`,
 				markerType: pointStyle,
-				pane: paneType
+				pane: legendId
 			}}
 			selectedOptions={{
 				fillColor: selectedColor,

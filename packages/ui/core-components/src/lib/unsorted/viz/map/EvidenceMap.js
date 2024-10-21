@@ -523,40 +523,34 @@ export class EvidenceMap {
 		value,
 		legend
 	) {
-		this.#legendData.update((legendData) =>
-			legendData.some((data) => data.legendId === legendId)
-				? legendData.map((data) =>
-						data.legendId === legendId
-							? {
-									...legend,
-									colorPalette,
-									values: arrayOfStringValues,
-									minValue,
-									maxValue,
-									legendType,
-									valueFmt,
-									chartType,
-									value,
-									legend
-								}
-							: data
-					)
-				: [
-						...legendData,
-						{
-							colorPalette,
-							values: arrayOfStringValues,
-							minValue,
-							maxValue,
-							legendType,
-							valueFmt,
-							chartType,
-							legendId,
-							value,
-							legend
-						}
-					]
-		);
+		const createLegendObject = () => ({
+			colorPalette,
+			values: arrayOfStringValues,
+			minValue,
+			maxValue,
+			legendType,
+			valueFmt,
+			chartType,
+			legendId,
+			value,
+			legend
+		});
+
+		this.#legendData.update((legendData) => {
+			const existingIndex = legendData.findIndex((data) => data.legendId === legendId);
+
+			if (existingIndex !== -1) {
+				// Update existing legend
+				return legendData.map((data, index) =>
+					index === existingIndex ? { ...legend, ...createLegendObject() } : data
+				);
+			} else if (legendId !== undefined) {
+				// Add new legend if legendId is defined
+				return [...legendData, createLegendObject()];
+			}
+			// If legendId is undefined, return the original array
+			return legendData;
+		});
 	}
 
 	get legendData() {
@@ -620,7 +614,7 @@ export class EvidenceMap {
 	#paneArray = [];
 
 	registerPane(paneId) {
-		// Add the unique paneType to the array
+		// Add the unique legendId to the array
 		this.#paneArray.push(paneId);
 
 		return paneId;
