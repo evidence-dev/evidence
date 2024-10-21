@@ -22,7 +22,7 @@ There are three typical ways that data teams separate their data environments:
 
 ## Setting up Evidence to use different environments
 
-You can configure both your dev and prod environments using [environment variables](/reference/cli#environment-variables). Using `.env` files at the project root is supported.
+You can configure both your dev and prod environments using [environment variables](/reference/cli#environment-variables). Using `.env` files at the app directory root is supported.
 
 ### Dev environment
 
@@ -30,7 +30,7 @@ Add your dev database credentials for your dev environment via the **settings pa
 
 ### Prod environment
 
-Add your prod database credentials as environment variables. The specific instructions depend on how you are deploying Evidence. Instructions can be be found in the deployment section of the settings page of your local project.
+Add your prod database credentials as environment variables. The specific instructions depend on how you are deploying Evidence. Instructions can be be found in the deployment section of the settings page of your local app.
 
 <Alert status=info>
 

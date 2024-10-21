@@ -492,9 +492,9 @@ required
 options="URL"
 >
 
-Path to source geoJSON data from - can be a URL (see [Map Resources](#map-resources)) or a file in your project. 
+Path to source geoJSON data from - can be a URL (see [Map Resources](#map-resources)) or a file in your app's `static` directory. 
 
-If the file is in your project, store it in a `static` folder in the root of your project, and reference it as `geoJsonUrl="/your_file.geojson"`
+If the file is in your `static` directory in the root of your app, reference it as `geoJsonUrl="/your_file.geojson"`
 
 </PropListing>
 
