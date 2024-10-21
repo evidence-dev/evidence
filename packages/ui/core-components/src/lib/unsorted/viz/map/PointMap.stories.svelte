@@ -49,7 +49,7 @@
 		query
 	);
 
-	const cybersan_grouped_locations = Query.create(
+	const number_category_grouped_locations = Query.create(
 		`SELECT 
 		*, 
 	CASE 
@@ -147,9 +147,9 @@
 	/>
 </Story>
 
-<Story name="Cybersan point maps" parameters={{ chromatic: { disableSnapshot: true } }}>
+<Story name="number_category point maps" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<PointMap
-		data={cybersan_grouped_locations}
+		data={number_category_grouped_locations}
 		legendPosition="topLeft"
 		legendType="categorical"
 		lat="lat"
