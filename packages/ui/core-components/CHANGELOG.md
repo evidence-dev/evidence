@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 4.8.8
+
+### Patch Changes
+
+- a94ca734d: add \_\_renderCount hidden property on charts plus testids and aria-labels for accessibility/test targets
+- Updated dependencies [a94ca734d]
+  - @evidence-dev/component-utilities@3.2.16
+  - @evidence-dev/tailwind@2.1.5
+
 ## 4.8.7
 
 ### Patch Changes

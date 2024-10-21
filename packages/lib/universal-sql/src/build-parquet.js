@@ -17,10 +17,10 @@ import fs from 'fs/promises';
 import path from 'path';
 // using node-async.js makes CLI command hang - why??
 import { emptyDbFs, initDB, query } from './client-duckdb/node.js';
-import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
+import { log } from '@evidence-dev/sdk/logger';
 
 /**
  * @param {{name: string, evidenceType: string}} column
@@ -75,12 +75,20 @@ export async function buildMultipartParquet(
 	outputFilename,
 	batchSize = 1000000
 ) {
+	log.debug(`Building parquet file ${outputFilename}`);
+	let { meta: fn_meta, done: fn_done } = log.measure('buildMultipartParquet');
+	fn_meta('output filename', outputFilename);
+
 	let batchNum = 0;
 	const outputSubpath = outputFilename.split('.parquet')[0];
 	let tmpFilenames = [];
 	let rowCount = 0;
 
 	const flush = async (results) => {
+		log.debug(`Flushing batch ${batchNum} with ${results.length} rows`);
+		let { meta, done } = log.measure('flush');
+		meta('batch number', batchNum);
+
 		// Convert JS Objects -> Arrow
 		const vectorized = Object.fromEntries(
 			columns.map((c) => [
@@ -111,6 +119,10 @@ export async function buildMultipartParquet(
 
 		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
+
+		done();
+		log.debug(`Flushed batch ${batchNum} with ${results.length} rows`);
+
 		batchNum++;
 	};
 
@@ -119,39 +131,39 @@ export async function buildMultipartParquet(
 	// Data is an array, but not a nested one
 	// We expect a set of result sets;
 	if (Array.isArray(data) && !Array.isArray(data[0])) data = [data];
-
-	// Handle generators
-	if (isGeneratorObject(data)) {
-		let currentBatch = [];
-		for await (const results of data) {
-			currentBatch = currentBatch.concat(results);
-
-			if (currentBatch.length >= batchSize) {
-				await flush(currentBatch);
-				currentBatch = [];
-			}
-		}
-		if (currentBatch.length) await flush(currentBatch);
-	} else {
-		let currentBatch = [];
-		for (const results of data) {
-			// If the array is longer than the batch size; it gets chunked
-			for (const batch of chunk(results, batchSize)) {
-				// Iterate through the split up chunks
-				// Batch them and flush when needed
-
-				currentBatch = currentBatch.concat(batch);
-
-				if (currentBatch.length >= batchSize) {
-					// Time to flush
-					await flush(currentBatch);
-					currentBatch = [];
+	if (Array.isArray(data)) {
+		const arrays = data;
+		data = (function* () {
+			for (const results of arrays) {
+				for (const batch of chunk(results, batchSize)) {
+					yield batch;
 				}
 			}
-		}
-		// Ensure nothing is left over
-		if (currentBatch.length) await flush(currentBatch);
+		})();
 	}
+
+	log.debug('Reading rows from a generator object');
+	let { meta, done } = log.measure('buildMultipartParquet');
+	meta('batch number', batchNum);
+
+	const currentBatch = [];
+	for await (const results of data) {
+		for (const result of results) currentBatch.push(result);
+
+		if (currentBatch.length >= batchSize) {
+			done();
+			log.debug(`Flushing batch ${batchNum} with ${currentBatch.length} rows`);
+			await flush(currentBatch);
+			currentBatch.length = 0;
+			({ meta, done } = log.measure('buildMultipartParquet'));
+			meta('batch number', batchNum);
+		}
+	}
+
+	done();
+	log.debug(`Flushing batch ${batchNum} with ${currentBatch.length} rows`);
+
+	if (currentBatch.length) await flush(currentBatch);
 
 	if (!tmpFilenames.length) return 0;
 
@@ -206,5 +218,8 @@ export async function buildMultipartParquet(
 		await fs.rm(tmpFile, { force: true });
 	}
 	await emptyDbFs('*');
+
+	fn_done();
+
 	return rowCount;
 }

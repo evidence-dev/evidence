@@ -17,6 +17,7 @@
 	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { nanoid } from 'nanoid';
 	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -217,6 +218,9 @@
 
 	let values, colorScale, sizeExtents, maxData, maxSizeSq;
 
+	/** @type {'bubble' | 'points' }*/
+	export let pointStyle = 'points';
+
 	const legendId = nanoid();
 
 	/**
@@ -298,54 +302,59 @@
 		});
 		setInputDefault(item, name);
 	}
+
+	/** @type {string}*/
+	let paneType = map.registerPane(nanoid());
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#await Promise.all([map.initPromise, data.fetch()]) then}
-	{#await init() then}
-		{#each $data as item}
-			<Point
-				{map}
-				options={{
-					fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
-					radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
-					fillOpacity: opacity,
-					opacity: opacity,
-					weight: borderWidth,
-					color: borderColor,
-					className: `outline-none ${pointClass}`
-				}}
-				selectedOptions={{
-					fillColor: selectedColor,
-					fillOpacity: selectedOpacity,
-					opacity: selectedOpacity,
-					weight: selectedBorderWidth,
-					color: selectedBorderColor,
-					className: `outline-none ${selectedPointClass}`
-				}}
-				coords={[item[lat], item[long]]}
-				onclick={() => {
-					onclick(item);
-				}}
-				setInput={() => {
-					if (name) {
-						updateInput(item, name);
-					}
-				}}
-				unsetInput={() => {
-					if (name) {
-						unsetInput(item, name);
-					}
-				}}
-				{tooltip}
-				{tooltipOptions}
-				{tooltipType}
-				{item}
-				{link}
-				{showTooltip}
-			/>
-		{/each}
-	{:catch e}
-		<ErrorChart error={e} {chartType} />
-	{/await}
+{#await Promise.all([map.initPromise, data.fetch(), init()]) then}
+	{#each $data as item}
+		<Point
+			{map}
+			options={{
+				// kw note:
+				//need to clean this logic
+				fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
+				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
+				fillOpacity: opacity,
+				opacity: opacity,
+				weight: borderWidth,
+				color: borderColor,
+				className: `outline-none ${pointClass}`,
+				markerType: pointStyle,
+				pane: paneType
+			}}
+			selectedOptions={{
+				fillColor: selectedColor,
+				fillOpacity: selectedOpacity,
+				opacity: selectedOpacity,
+				weight: selectedBorderWidth,
+				color: selectedBorderColor,
+				className: `outline-none ${selectedPointClass}`
+			}}
+			coords={[item[lat], item[long]]}
+			onclick={() => {
+				onclick(item);
+			}}
+			setInput={() => {
+				if (name) {
+					updateInput(item, name);
+				}
+			}}
+			unsetInput={() => {
+				if (name) {
+					unsetInput(item, name);
+				}
+			}}
+			{tooltip}
+			{tooltipOptions}
+			{tooltipType}
+			{item}
+			{link}
+			{showTooltip}
+		/>
+	{/each}
+{:catch e}
+	<ErrorChart error={e} chartType="Point Map" />
 {/await}

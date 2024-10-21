@@ -257,7 +257,23 @@ export class EvidenceMap {
 		link
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
-		const marker = Leaflet.circleMarker(coords, circleOptions).addTo(this.#map);
+
+		//other panes start at z-index 400
+		if (!this.#map.getPane(circleOptions.pane)) {
+			this.#map.createPane(circleOptions.pane);
+
+			this.#paneArray.forEach((pane, index) => {
+				if (pane === circleOptions.pane) {
+					this.#map.getPane(pane).style.zIndex = 400 + index;
+				}
+			});
+		}
+
+		// Create the marker with the appropriate pane
+		const marker = Leaflet.circleMarker(coords, circleOptions);
+
+		marker.addTo(this.#map);
+
 		this.updateMarkerStyle(marker, circleOptions); // Initial style setting and storage
 
 		marker.on('click', () => {
@@ -595,7 +611,18 @@ export class EvidenceMap {
 				legend
 			);
 		}
+
 		// Return the values, minValue, and maxValue for sharing with other functions
-		return { values, colorPalette, legendType, colorScale };
+		return { values, minValue, maxValue, colorScale, colorPalette, paneType };
+	}
+
+	/**@type {[string]} */
+	#paneArray = [];
+
+	registerPane(paneId) {
+		// Add the unique paneType to the array
+		this.#paneArray.push(paneId);
+
+		return paneId;
 	}
 }
