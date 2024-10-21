@@ -18,4 +18,12 @@
 	export let legend = true;
 </script>
 
-<Points sizeCol={size} {opacity} {legendType} {colorPalette} {legend} {...$$restProps} />
+<Points
+	sizeCol={size}
+	{opacity}
+	{legendType}
+	{colorPalette}
+	{legend}
+	{pointStyle}
+	{...$$restProps}
+/>

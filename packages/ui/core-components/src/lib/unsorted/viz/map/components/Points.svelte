@@ -9,7 +9,6 @@
 	import Point from './Point.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
-	import { nanoid } from 'nanoid';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -242,10 +241,7 @@
 				legendId,
 				legend
 			};
-			({ values, colorPalette, legendType, colorScale } = await map.initializeData(
-				data,
-				initDataOptions
-			));
+			({ values, colorPalette, colorScale } = await map.initializeData(data, initDataOptions));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);

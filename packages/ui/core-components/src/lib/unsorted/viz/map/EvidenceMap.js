@@ -613,7 +613,7 @@ export class EvidenceMap {
 		}
 
 		// Return the values, minValue, and maxValue for sharing with other functions
-		return { values, minValue, maxValue, colorScale, colorPalette, paneType };
+		return { values, colorPalette, colorScale };
 	}
 
 	/**@type {[string]} */
