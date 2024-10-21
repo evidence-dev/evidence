@@ -20,7 +20,7 @@
 <div
 	class="flex flex-col {hideLegend
 		? hideLegendStyle
-		: showLegendStyle} transition-[opacity, max-height, overflow-y] duration-[35000ms] ease-in-out w-full"
+		: showLegendStyle} transition-[opacity, max-height, overflow-y] duration-[350ms] ease-in-out w-full"
 >
 	<div class="flex flex-wrap flex-col font-semibold">
 		<span>{legendTitle}</span>
