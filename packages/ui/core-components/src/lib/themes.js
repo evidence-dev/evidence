@@ -53,7 +53,10 @@ const createThemeStores = () => {
 	const systemMode = createSystemThemeStore();
 
 	/** @type {Writable<'system' | 'light' | 'dark'>} */
-	const selectedMode = localStorageStore('evidence-theme', 'system');
+	const selectedMode = localStorageStore('evidence-theme', 'system', {
+		serialize: (value) => value,
+		deserialize: (raw) => (['system', 'light', 'dark'].includes(raw) ? raw : 'system')
+	});
 
 	const activeMode = derived([systemMode, selectedMode], ([$systemTheme, $selectedTheme]) => {
 		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
