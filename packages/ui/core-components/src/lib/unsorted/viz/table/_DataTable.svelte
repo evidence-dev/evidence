@@ -305,14 +305,19 @@
 					? 1 * sortModifier
 					: 0;
 
-		data.sort(comparator);
-		filteredData = filteredData.sort(comparator);
+		// data.sort(comparator);
+		const sortedFilteredData = [...filteredData].sort(comparator);
+
+		filteredData = sortedFilteredData;
 
 		if (groupBy) {
-			// Sort within grouped data
+			const sortedGroupedData = {};
+
 			for (const groupName of Object.keys(groupedData)) {
-				groupedData[groupName] = groupedData[groupName].sort(comparator);
+				sortedGroupedData[groupName] = [...groupedData[groupName]].sort(comparator);
 			}
+
+			groupedData = sortedGroupedData;
 		}
 	};
 
