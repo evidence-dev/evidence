@@ -34,7 +34,7 @@ export const defaultThemes = {
 		'secondary-content': colors.slate[950],
 		accent: colors.orange[300],
 		'accent-content': colors.orange[950],
-		'base-100': colors.zinc[900],
+		'base-100': colors.zinc[950],
 		'base-200': colors.zinc[800],
 		'base-300': colors.zinc[700],
 		'base-content': colors.zinc[100],
