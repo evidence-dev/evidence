@@ -10,6 +10,7 @@
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
+	import Legend from './components/Legend.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -59,6 +60,13 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
+	/** @type {string | undefined} */
+	export let legendFmt = undefined;
+
 	const chartType = 'Area Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -75,6 +83,7 @@
 	</div>
 
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Areas data={loaded} {geoJsonUrl} {geoId} {areaCol} {...$$restProps} />
+		<Areas data={loaded} {geoJsonUrl} {geoId} {areaCol} {legendType} {...$$restProps} />
+		<Legend {legendPosition} {legendType} {legendFmt} />
 	</BaseMap>
 </QueryLoad>

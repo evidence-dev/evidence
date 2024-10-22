@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 1.2.0
+
+### Minor Changes
+
+- 0e740d056: add resultPrefetch option to snowflake connector
+
 ## 1.1.2
 
 ### Patch Changes

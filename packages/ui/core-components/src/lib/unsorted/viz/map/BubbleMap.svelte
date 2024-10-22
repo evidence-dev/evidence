@@ -9,6 +9,7 @@
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import Legend from './components/Legend.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -58,6 +59,13 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
+	/** @type {string | undefined} */
+	export let legendFmt = undefined;
+
 	const chartType = 'Bubble Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -69,6 +77,7 @@
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Bubbles data={loaded} {lat} {long} {size} {...$$restProps} />
+		<Bubbles data={loaded} {lat} {long} {size} {legendType} {...$$restProps} />
+		<Legend {legendPosition} {legendType} {legendFmt} />
 	</BaseMap>
 </QueryLoad>

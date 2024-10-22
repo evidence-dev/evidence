@@ -4,6 +4,8 @@ import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
+import chroma from 'chroma-js';
+import { uiColours } from '@evidence-dev/component-utilities/colours';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -32,6 +34,14 @@ export class EvidenceMap {
 
 	/** @type {HTMLDivElement | undefined} */
 	#mapEl;
+
+	/** @type {import('svelte/store').Writable<{ values: string[], colorPalette: string[], minValue: number, maxValue: number }>} */
+	#legendData = writable({
+		values: [],
+		colorPalette: [],
+		minValue: 0,
+		maxValue: 0
+	});
 
 	/** Handles the promises associated with the initialization of the map component. */
 	#sharedPromise = sharedPromise();
@@ -254,7 +264,23 @@ export class EvidenceMap {
 		link
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
-		const marker = Leaflet.circleMarker(coords, circleOptions).addTo(this.#map);
+
+		//other panes start at z-index 400
+		if (!this.#map.getPane(circleOptions.pane)) {
+			this.#map.createPane(circleOptions.pane);
+
+			this.#paneArray.forEach((pane, index) => {
+				if (pane === circleOptions.pane) {
+					this.#map.getPane(pane).style.zIndex = 400 + index;
+				}
+			});
+		}
+
+		// Create the marker with the appropriate pane
+		const marker = Leaflet.circleMarker(coords, circleOptions);
+
+		marker.addTo(this.#map);
+
 		this.updateMarkerStyle(marker, circleOptions); // Initial style setting and storage
 
 		marker.on('click', () => {
@@ -430,5 +456,88 @@ export class EvidenceMap {
 		});
 
 		return data;
+	}
+
+	handleLegendValues(colorPalette, values, legendType) {
+		//determine legend style
+		if (legendType === 'categorical') {
+			let uniqueValues = new Set(values);
+			values = [...uniqueValues];
+			let i = 0;
+
+			while (colorPalette.length < values.length) {
+				if (i >= colorPalette.length) i = 0;
+				colorPalette.push(colorPalette[i]);
+				i++;
+			}
+		} else if (legendType === 'scalar') {
+			values.forEach((value) => {
+				if (typeof value !== 'number' && value !== null) {
+					throw new Error('Scalar legend requires numeric values or null.');
+				}
+				if (typeof value === 'number' && isNaN(value)) {
+					throw new Error('Scalar legend requires valid numeric values.');
+				}
+			});
+		}
+		return values;
+	}
+
+	handleFillColor(item, value, values, colorPalette, colorScale) {
+		if (!value) return uiColours.blue700;
+
+		if (item[value]) {
+			if (typeof item[value] === 'string') {
+				return colorPalette[values.indexOf(item[value])];
+			} else {
+				return colorScale(item[value]);
+			}
+		}
+	}
+
+	//handle legend data
+
+	buildLegend(colorPalette, arrayOfStringValues, minValue, maxValue) {
+		this.#legendData.update((legendData) => ({
+			...legendData, // Keep existing data
+			colorPalette,
+			values: arrayOfStringValues, // Make sure to update this property
+			minValue,
+			maxValue
+		}));
+	}
+
+	get legendData() {
+		return readonly(this.#legendData);
+	}
+
+	async initializeData(
+		data,
+		{ corordinates, value, checkInputs, min, max, colorPalette, legendType, paneType }
+	) {
+		await data.fetch();
+		checkInputs(data, corordinates);
+		let values = data.map((d) => d[value]);
+		let minValue = Math.min(...values);
+		let maxValue = Math.max(...values);
+		let colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+		colorPalette = colorPalette.map((item) => chroma(item).hex());
+		if (legendType) {
+			values = this.handleLegendValues(colorPalette, values, legendType);
+			this.buildLegend(colorPalette, values, minValue, maxValue);
+		}
+
+		// Return the values, minValue, and maxValue for sharing with other functions
+		return { values, minValue, maxValue, colorScale, colorPalette, paneType };
+	}
+
+	/**@type {[string]} */
+	#paneArray = [];
+
+	registerPane(paneId) {
+		// Add the unique paneType to the array
+		this.#paneArray.push(paneId);
+
+		return paneId;
 	}
 }

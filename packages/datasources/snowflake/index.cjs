@@ -152,6 +152,7 @@ const getCredentials = (database = {}) => {
 	const warehouse = database.warehouse;
 	const role = database.role;
 	const schema = database.schema;
+	const resultPrefetch = database.resultPrefetch ?? 2;
 
 	// https://docs.snowflake.com/en/developer-guide/node-js/nodejs-driver-connect#label-nodejs-proxy-connection
 	const proxyOptions = database.proxy
@@ -171,6 +172,7 @@ const getCredentials = (database = {}) => {
 		warehouse,
 		role,
 		schema,
+		resultPrefetch,
 		...proxyOptions
 	};
 
@@ -424,5 +426,12 @@ module.exports.options = {
 				}
 			}
 		}
+	},
+	resultPrefetch: {
+		title: 'Number of Prefetched Batches',
+		type: 'number',
+		secret: false,
+		required: false,
+		default: 2
 	}
 };

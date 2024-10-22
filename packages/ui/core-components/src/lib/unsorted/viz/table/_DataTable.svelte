@@ -202,8 +202,11 @@
 		}
 
 		// Hide link column if columns have not been explicitly selected:
-		for (let i = 0; i < columnSummary.length; i++) {
-			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
+		if (link) {
+			const linkColIndex = columnSummary.findIndex((d) => d.id === link);
+			if (linkColIndex !== -1 && !showLinkCol) {
+				columnSummary.splice(linkColIndex, 1);
+			}
 		}
 	} catch (e) {
 		error = e.message;
@@ -516,6 +519,7 @@
 	{/each}
 
 	<div
+		data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
 		role="none"
 		class="table-container"
 		transition:slide|local
@@ -543,6 +547,7 @@
 					{formatColumnTitles}
 					{sortObj}
 					{wrapTitles}
+					{link}
 				/>
 
 				<QueryLoad data={filteredData}>

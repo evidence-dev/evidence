@@ -343,6 +343,58 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
 
+  e2e/prerender:
+    dependencies:
+      '@evidence-dev/bigquery':
+        specifier: workspace:*
+        version: link:../../packages/datasources/bigquery
+      '@evidence-dev/core-components':
+        specifier: workspace:*
+        version: link:../../packages/ui/core-components
+      '@evidence-dev/csv':
+        specifier: workspace:*
+        version: link:../../packages/datasources/csv
+      '@evidence-dev/databricks':
+        specifier: workspace:*
+        version: link:../../packages/datasources/databricks
+      '@evidence-dev/duckdb':
+        specifier: workspace:*
+        version: link:../../packages/datasources/duckdb
+      '@evidence-dev/evidence':
+        specifier: workspace:*
+        version: link:../../packages/evidence
+      '@evidence-dev/motherduck':
+        specifier: workspace:*
+        version: link:../../packages/datasources/motherduck
+      '@evidence-dev/mssql':
+        specifier: workspace:*
+        version: link:../../packages/datasources/mssql
+      '@evidence-dev/mysql':
+        specifier: workspace:*
+        version: link:../../packages/datasources/mysql
+      '@evidence-dev/postgres':
+        specifier: workspace:*
+        version: link:../../packages/datasources/postgres
+      '@evidence-dev/snowflake':
+        specifier: workspace:*
+        version: link:../../packages/datasources/snowflake
+      '@evidence-dev/sqlite':
+        specifier: workspace:*
+        version: link:../../packages/datasources/sqlite
+      '@evidence-dev/trino':
+        specifier: workspace:*
+        version: link:../../packages/datasources/trino
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.45.3
+        version: 1.48.0
+      '@types/node':
+        specifier: ^22.7.4
+        version: 22.7.5
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+
   e2e/spa:
     dependencies:
       '@evidence-dev/bigquery':
@@ -1205,6 +1257,9 @@ importers:
       '@duckdb/duckdb-wasm':
         specifier: 1.28.0
         version: 1.28.0
+      '@evidence-dev/sdk':
+        specifier: workspace:*
+        version: link:../sdk
       apache-arrow:
         specifier: ^13.0.0
         version: 13.0.0
@@ -8970,6 +9025,7 @@ packages:
   /aggregate-error@3.1.0:
     resolution: {integrity: sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==}
     engines: {node: '>=8'}
+    requiresBuild: true
     dependencies:
       clean-stack: 2.2.0
       indent-string: 4.0.0
@@ -9945,6 +10001,7 @@ packages:
   /clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: false
 
   /cli-cursor@4.0.0:
@@ -11261,6 +11318,7 @@ packages:
 
   /err-code@2.0.3:
     resolution: {integrity: sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==}
+    requiresBuild: true
     dev: false
 
   /error-ex@1.3.2:
@@ -13007,6 +13065,7 @@ packages:
 
   /humanize-ms@1.2.1:
     resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
+    requiresBuild: true
     dependencies:
       ms: 2.1.3
     dev: false
@@ -17178,6 +17237,7 @@ packages:
   /retry@0.12.0:
     resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
     engines: {node: '>= 4'}
+    requiresBuild: true
     dev: false
 
   /retry@0.13.1:
