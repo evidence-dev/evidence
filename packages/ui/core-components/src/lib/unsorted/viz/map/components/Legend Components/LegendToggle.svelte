@@ -21,22 +21,23 @@
 </script>
 
 <button
-	class="flex z-[1] items-center p-1"
+	class="flex z-[1] items-center px-[8px] py-[1.5px]"
 	on:click={handleLegendToggle}
 	on:dblclick={(e) => e.stopPropagation()}
 	aria-label="Toggle Legend"
 >
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		width="12"
-		height="12"
+		width="8
+		"
+		height="8"
 		viewBox="6 6 12 12"
 		fill="none"
-		stroke="currentColor"
-		stroke-width="1.5"
+		stroke="#374151"
+		stroke-width="1"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		class="transform transition-transform duration-300 ease-in-out text-left {hideLegend
+		class="transform transition-transform duration-300 ease-in-out text-left gray-500 {hideLegend
 			? chevronDirections[direction].hide
 			: chevronDirections[direction].show}"
 	>
