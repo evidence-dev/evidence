@@ -19,11 +19,11 @@ export const defaultThemes = {
 		'neutral-content': colors.zinc[50],
 		info: colors.sky[600],
 		'info-content': colors.zinc[50],
-		positive: colors.green[700],
+		positive: colors.green[600],
 		'positive-content': colors.zinc[50],
-		warning: colors.yellow[600],
+		warning: colors.yellow[500],
 		'warning-content': colors.zinc[50],
-		negative: colors.red[700],
+		negative: colors.red[600],
 		'negative-content': colors.zinc[50]
 	},
 	dark: {
