@@ -40,7 +40,7 @@
 				'font-medium': isSelected
 			},
 			{
-				'text-base-content/80': row.dimensionValue === null
+				'text-base-content-muted': row.dimensionValue === null
 			}
 		)}
 	>

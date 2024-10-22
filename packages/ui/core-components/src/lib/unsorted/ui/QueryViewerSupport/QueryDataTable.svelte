@@ -274,17 +274,17 @@
 	}
 
 	.null {
-		@apply text-base-content/70;
+		@apply text-base-content-muted;
 	}
 
 	.index {
-		@apply text-base-content/50;
+		@apply text-base-content-muted;
 		text-align: left;
 		max-width: min-content;
 	}
 
 	th.type-indicator {
-		@apply text-base-content/50 font-normal;
+		@apply text-base-content-muted font-normal;
 	}
 
 	tr.type-indicator {

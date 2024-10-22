@@ -33,6 +33,6 @@
 			<EmptyChart {emptyMessage} {emptySet} {chartType} {isInitial} />
 		{/if}
 	</span>
-	<p slot="skeleton" class="text-base-content/50">Loading...</p>
+	<p slot="skeleton" class="text-base-content-muted">Loading...</p>
 	<Delta {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} />
 </QueryLoad>

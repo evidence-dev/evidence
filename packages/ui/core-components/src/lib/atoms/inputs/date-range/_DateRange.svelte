@@ -207,7 +207,7 @@
 				size="sm"
 				class={cn(
 					'flex justify-start rounded-r-none border-r-0 text-left font-normal',
-					!selectedDateRange && 'text-base-content/50'
+					!selectedDateRange && 'text-base-content-muted'
 				)}
 				builders={[builder]}
 				disabled={!loaded}
@@ -279,7 +279,7 @@
 			{#if selectedPreset}
 				{selectedPreset.label}
 			{:else}
-				<span class="hidden sm:inline text-base-content/50"> Select a Range </span>
+				<span class="hidden sm:inline text-base-content-muted"> Select a Range </span>
 				<span class="sm:hidden"> Range </span>
 			{/if}
 		</Select.Trigger>

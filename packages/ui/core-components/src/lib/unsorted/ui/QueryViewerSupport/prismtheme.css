@@ -164,7 +164,7 @@ pre[class*='language-'] {
 .token.punctuation {
 	/* color: #a3c7d9; */
 	/* color: #39adb5; */
-	@apply text-base-content/50;
+	@apply text-base-content-muted;
 }
 
 .token.regex {

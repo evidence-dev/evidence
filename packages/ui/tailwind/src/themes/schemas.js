@@ -13,6 +13,7 @@ const ThemeSchema = z.object({
 	'base-200': z.string(),
 	'base-300': z.string(),
 	'base-content': z.string(),
+	'base-content-muted': z.string(),
 	info: z.string(),
 	'info-content': z.string(),
 	positive: z.string(),

@@ -59,7 +59,7 @@
 	}
 
 	.index {
-		@apply text-base-content/50;
+		@apply text-base-content-muted;
 		text-align: left;
 		max-width: -moz-min-content;
 		max-width: min-content;

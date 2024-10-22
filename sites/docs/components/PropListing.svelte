@@ -92,7 +92,7 @@
 		<div id="markdown-slot"><slot>{description}</slot></div>
 		{#if Array.isArray(options) && options.length > 0}
 			<div class="mt-1 select-none flex">
-				<span class="text-sm text-base-content/70 mr-2">Options:</span>
+				<span class="text-sm text-base-content-muted mr-2">Options:</span>
 				<div class="flex flex-wrap gap-1">
 					{#each options as option}
 						<HoverCard>
@@ -117,19 +117,19 @@
 			</div>
 		{:else if typeof options === 'string' && options.length > 0}
 			<dl class="flex select-none mt-1">
-				<dt class="text-sm text-base-content/70 mr-2">Options:</dt>
+				<dt class="text-sm text-base-content-muted mr-2">Options:</dt>
 				<dd class="ml-2 text-sm">{options}</dd>
 			</dl>
 		{/if}
 		{#if defaultValue && defaultValue !== '-'}
 			<dl class="flex select-none mt-1">
-				<dt class="text-sm text-base-content/70 mr-2">Default:</dt>
+				<dt class="text-sm text-base-content-muted mr-2">Default:</dt>
 				<dd class="ml-2 text-sm">{defaultValue}</dd>
 			</dl>
 		{/if}
 		{#if Array.isArray(type) && type.length > 0}
 			<div class="flex select-none mt-1">
-				<span class="text-sm text-base-content/70 mr-2">Type:</span>
+				<span class="text-sm text-base-content-muted mr-2">Type:</span>
 				<div class="flex flex-wrap gap-1">
 					{#each type as t}
 						<span
@@ -141,7 +141,7 @@
 			</div>
 		{:else if typeof type === 'string' && type.length > 0}
 			<dl class="flex select-none mt-1">
-				<dt class="text-sm text-base-content/70 mr-2">Type:</dt>
+				<dt class="text-sm text-base-content-muted mr-2">Type:</dt>
 				<dd
 					class="bg-info/10 text-info rounded-full min-w-3 px-3 flex justify-center transition-colors duration-200"
 				>

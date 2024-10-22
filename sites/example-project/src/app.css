@@ -176,7 +176,7 @@
 	}
 
 	blockquote.markdown {
-		@apply bg-base-200 border-l-4 border-base-content/70 pl-3 my-8 py-2;
+		@apply bg-base-200 border-l-4 border-base-content-muted pl-3 my-8 py-2;
 	}
 
 	blockquote.markdown > blockquote.markdown {
@@ -192,7 +192,7 @@
 	}
 
 	blockquote.markdown * {
-		@apply text-base-content/70;
+		@apply text-base-content-muted;
 	}
 	/* Ensure size and color are maintained for bold, italic, strikethrough */
 	strong.markdown {
@@ -244,6 +244,7 @@
 	--base-200: theme(colors.base-200);
 	--base-300: theme(colors.base-300);
 	--base-content: theme(colors.base-content);
+	--base-content-muted: theme(colors.base-content-muted);
 	--info: theme(colors.info);
 	--info-content: theme(colors.info-content);
 	--positive: theme(colors.positive);

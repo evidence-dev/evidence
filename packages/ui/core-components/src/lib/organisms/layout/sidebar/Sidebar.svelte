@@ -122,7 +122,7 @@
 							<a
 								class="group inline-block py-1 capitalize transition-colors duration-100 {active
 									? 'text-primary'
-									: 'text-base-content/70 hover:text-base-content'}"
+									: 'text-base-content-muted hover:text-base-content'}"
 								href={file.href}
 							>
 								{file.frontMatter?.title ?? file.label}
@@ -170,7 +170,7 @@
 									<a
 										class="group inline-block py-1 capitalize transition-colors duration-100 {active
 											? 'text-primary'
-											: 'text-base-content/70 hover:text-base-content'}"
+											: 'text-base-content-muted hover:text-base-content'}"
 										href={file.href}
 									>
 										{file.frontMatter?.title ?? file.label}
@@ -210,7 +210,7 @@
 						<a
 							class="group inline-block py-1 capitalize transition-all duration-100 {active
 								? 'text-primary'
-								: 'text-base-content/70 hover:text-base-content'}"
+								: 'text-base-content-muted hover:text-base-content'}"
 							href={file.href}
 						>
 							{file.frontMatter?.title ?? file.label}
@@ -258,7 +258,7 @@
 									href={file.href}
 									class="group inline-block py-1 capitalize transition-all duration-100 {active
 										? 'text-primary'
-										: 'text-base-content/70 hover:text-base-content'}"
+										: 'text-base-content-muted hover:text-base-content'}"
 								>
 									{file.frontMatter?.title ?? file.label}
 									{#if file.frontMatter?.sidebar_badge}

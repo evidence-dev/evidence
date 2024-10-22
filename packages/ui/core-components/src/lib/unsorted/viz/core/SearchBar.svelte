@@ -69,7 +69,7 @@
 	}
 
 	input.search-bar::placeholder {
-		@apply text-base-content/50;
+		@apply text-base-content-muted;
 	}
 
 	*:focus {

@@ -55,10 +55,10 @@
 	}
 
 	a.h2 {
-		@apply pl-0 text-base-content/80;
+		@apply pl-0 text-base-content-muted;
 	}
 
 	a.h3 {
-		@apply pl-4 text-base-content/80;
+		@apply pl-4 text-base-content-muted;
 	}
 </style>

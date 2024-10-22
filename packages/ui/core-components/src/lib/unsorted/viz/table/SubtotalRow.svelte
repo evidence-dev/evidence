@@ -19,7 +19,7 @@
 </script>
 
 <tr
-	class="w-full border-b border-base-content/60 bg-base-200"
+	class="w-full border-b border-base-content-muted bg-base-200"
 	style:background-color={rowColor}
 	style:color={fontColor}
 >

@@ -8,6 +8,8 @@ queries:
 - categories_by_channel.sql
 ---
 
+<BarChart data={[]} emptySet="pass" />
+
 <BarChart 
     data={orders_by_category_2021}
     x=month

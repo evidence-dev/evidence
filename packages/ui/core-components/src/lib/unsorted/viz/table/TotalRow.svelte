@@ -37,7 +37,7 @@
 			height={column.height}
 			width={column.width}
 			wrap={column.wrap}
-			topBorder="border-t border-base-content/60"
+			topBorder="border-t border-base-content-muted"
 		>
 			{#if ['sum', 'mean', 'weightedMean', 'median', 'min', 'max', 'count', 'countDistinct'].includes(totalAgg)}
 				{#if column.contentType === 'delta'}

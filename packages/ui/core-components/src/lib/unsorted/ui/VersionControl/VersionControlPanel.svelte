@@ -147,7 +147,7 @@
 	}
 
 	.repo-location {
-		@apply text-base-content/50;
+		@apply text-base-content-muted;
 		font-size: 0.8rem;
 		text-decoration: unset;
 	}
