@@ -12,7 +12,6 @@ import { toasts } from '@evidence-dev/component-utilities/stores';
 import { setTrackProxy } from '@evidence-dev/sdk/usql';
 import md5 from 'blueimp-md5';
 
-export const ssr = !dev;
 export const prerender = import.meta.env.VITE_EVIDENCE_SPA !== 'true';
 export const trailingSlash = 'always';
 
