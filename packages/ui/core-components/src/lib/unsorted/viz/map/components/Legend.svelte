@@ -56,10 +56,10 @@
 	}
 
 	const containerStyles = {
-		bottomLeft: 'rounded-t rounded-br ',
-		bottomRight: 'rounded-t rounded-bl ',
-		topLeft: 'rounded-b rounded-tr z-[405]',
-		topRight: 'rounded-b rounded-tl z-[405]'
+		bottomLeft: 'rounded-t rounded-br shadow-bottom-right',
+		bottomRight: 'rounded-t rounded-bl shadow-bottom-left',
+		topLeft: 'rounded-b rounded-tr z-[405] shadow-bottom',
+		topRight: 'rounded-b rounded-tl z-[405] shadow-bottom'
 	};
 </script>
 
@@ -71,7 +71,7 @@
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
-		<div class="shadow-bottom bg-white/90 backdrop-blur {containerStyles[legendPosition]}">
+		<div class="bg-white/90 backdrop-blur {containerStyles[legendPosition]}">
 			{#if $categoricalLegendData.length > 0}
 				<div class="flex flex-wrap hover:cursor-default">
 					{#each $categoricalLegendData as legend}
@@ -125,4 +125,14 @@
 	.shadow-bottom {
 		box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.1);
 	}
+
+	 /* Bottom-Right shadow */
+	 .shadow-bottom-right {
+    box-shadow: 3px 3px 5px 0 rgb(0 0 0 / 0.1), 2px 2px 4px -1px rgb(0 0 0 / 0.1);
+  }
+
+  /* Bottom-Left shadow */
+  .shadow-bottom-left {
+    box-shadow: -3px 3px 5px 0 rgb(0 0 0 / 0.1), -2px 2px 4px -1px rgb(0 0 0 / 0.1);
+  }
 </style>
