@@ -17,6 +17,10 @@
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import Slider from './Slider.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+
+	const data = Query.create(`SELECT * from flights limit 100`, query);
 </script>
 
 <Template let:args>
@@ -111,5 +115,15 @@
 		step: 1,
 		showMaxMin: true,
 		fmt: '932'
+	}}
+/>
+<Story
+	name="With data"
+	args={{
+		name: 'With data',
+		title: 'With data',
+		step: 1,
+		showMaxMin: true,
+		data: data
 	}}
 />

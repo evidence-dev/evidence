@@ -3,101 +3,12 @@
 </script>
 
 <script>
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	const inputs = getInputContext();
-	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
-	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
-	import {
-		formatValue,
-		getFormatObjectFromString
-	} from '@evidence-dev/component-utilities/formatting';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { QueryLoad } from '../../../atoms/query-load';
-	import EmptyChart from './EmptyChart.svelte';
+	import EmptyChart from '$lib/unsorted/viz/core/EmptyChart.svelte';
 	import Slider from './_Slider.svelte';
 
-	/////
-	// Component Things
-	/////
-
-	/** @type {string} */
-	export let title;
-
-	/** @type {string} */
-	export let name;
-
-	/** @type {number|undefined} */
-	export let min = 0;
-
-	if (min) {
-		// if min was user-supplied
-		min = Number(min);
-		if (isNaN(min)) {
-			// input must be a number
-			throw Error('min must be a number');
-		}
-	} else {
-		min = 0;
-	}
-
-	/** @type {number} */
-	export let max = 100;
-
-	if (max) {
-		// if min was user-supplied
-		max = Number(max);
-		if (isNaN(max)) {
-			// input must be a number
-			throw Error('max must be a number');
-		} else if (max < min) {
-			throw Error('max cannot be less than min');
-		}
-	} else {
-		max = 100;
-	}
-
-	/** @type {number} */
-	export let step;
-
-	/** @type {boolean} */
-	export let showMaxMin = true;
-	$: showMaxMin = showMaxMin === 'true' || showMaxMin === true;
-
-	/** @type {boolean} */
-	export let hideDuringPrint = true;
-	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
-
-	/** @type {number} */
-	export let defaultValue = 0;
-
-	/** @type {[number]} */
-	let value = [defaultValue];
-
-	/** @type {string | undefined} */
-	export let fmt = undefined;
-
-	$: $inputs[name] = value;
-
-	/** @type {string} */
-	export let size = '';
-
-	const renderSize = (size) => {
-		const sizeMap = {
-			medium: 'w-64',
-			large: 'w-96',
-			//Full size width requires calc to compensate for shifted range span in sliderShadcn
-			full: 'w-[calc(100%-0.6rem)]'
-		};
-		return sizeMap[size.toLowerCase()] || 'w-40';
-	};
-
-	$: sizeClass = renderSize(size);
-
-	let format_object;
-	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
-	else format_object = undefined;
-
-	//Query integration//
+	// //Query integration//
 
 	export let data;
 
@@ -115,7 +26,7 @@
 
 	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
 
-	//Query integration//
+	// //Query integration//
 </script>
 
 <!-- Pass all the props through-->

@@ -11,9 +11,6 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
-	import { Query } from '@evidence-dev/sdk/usql';
-	import { QueryLoad } from '../../../atoms/query-load';
-	import EmptyChart from './EmptyChart.svelte';
 
 	/////
 	// Component Things
@@ -95,6 +92,14 @@
 	let format_object;
 	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
+
+	// Query data integration
+	export let data = null;
+	$: if (data) {
+		console.log(data);
+	}
+
+	// Query data integration
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
