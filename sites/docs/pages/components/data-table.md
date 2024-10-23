@@ -114,12 +114,6 @@ This example includes a `custom_format` column, which contains a different curre
     <Column id=sales fmt=usd/> 
 </DataTable>
 
-<DataTable data={orders_summary} sort="sales asc">
-    <Column id=category/> 
-    <Column id=item/> 
-    <Column id=sales fmt=usd/> 
-</DataTable>
-
 ### Deltas
 
 ```sql country_summary
