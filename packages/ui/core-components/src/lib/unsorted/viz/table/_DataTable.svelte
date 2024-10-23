@@ -369,7 +369,7 @@
 	const currentPage = writable(1);
 
 	$: $currentPage = Math.ceil(($index + rows) / rows);
-	$: currentPageElWidth = `${(currentPage ?? 1).toString().length}ch`;
+	$: currentPageElWidth = `${($currentPage ?? 1).toString().length}ch`;
 
 	/** @param {number} pageNumber */
 	function goToPage(pageNumber) {
