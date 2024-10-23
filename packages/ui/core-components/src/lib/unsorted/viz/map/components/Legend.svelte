@@ -9,7 +9,7 @@
 		topLeft: 'top-[-9px] left-[-9px]',
 		topRight: 'top-[-9px] right-[-9px]',
 		bottomLeft: 'bottom-[-9px] left-[-9px]',
-		bottomRight: 'bottom-[-9px] right-[-9px]'
+		bottomRight: 'bottom-[-9px] right-[-9px] '
 	};
 
 	export let legendData;
@@ -105,11 +105,12 @@
 			{/if}
 		</div>
 		<div
-			class="bg-white/90 backdrop-blur flex justify-center w-fit transition-[border-radius] ease-in-out {legendPosition.includes(
+			class="bg-white/90 backdrop-blur flex justify-center w-fit transition-[border-radius] ease-in-out 
+			{legendPosition.includes(
 				'bottom'
 			)
-				? 'shadow-bottom'
-				: ''}"
+				? 'shadow-bottom translate-y-[-1px]'
+				: 'translate-y-[1px]'}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}
 			class:rounded-b={!hideLegend && legendPosition.includes('bottom')}
