@@ -65,13 +65,13 @@
 
 {#if $legendData.length > 0}
 	<div
-		class=" absolute z-[401] m-4 flex max-w-60 flex legend-font {constHandleLegendButtonPosition()} 
+		class="absolute z-[401] m-4 flex max-w-60 flex legend-font {constHandleLegendButtonPosition()} 
     {positions[legendPosition] ?? 'top-3 left-[-9px]'}"
 		on:wheel={(e) => e.stopPropagation()}
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
-		<div class="bg-white {containerStyles[legendPosition]}">
+		<div class="bg-white background-blur {containerStyles[legendPosition]}">
 			{#if $categoricalLegendData.length > 0}
 				<div class="flex flex-wrap hover:cursor-default">
 					{#each $categoricalLegendData as legend}
@@ -105,8 +105,8 @@
 			{/if}
 		</div>
 		<div
-			class="bg-white  flex justify-center w-fit transition-[border-radius] ease-in-out
-			{legendPosition.includes('bottom') ? '' : ''}"
+			class="bg-white background-blur flex justify-center w-fit transition-[border-radius] ease-in-out
+			{legendPosition.includes('bottom') ? 'shadow-bottom' : ''}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}
 			class:rounded-b={!hideLegend && legendPosition.includes('bottom')}
