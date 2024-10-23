@@ -56,8 +56,8 @@
 	}
 
 	const containerStyles = {
-		bottomLeft: 'rounded-t rounded-br',
-		bottomRight: 'rounded-t rounded-bl',
+		bottomLeft: 'rounded-t rounded-br ',
+		bottomRight: 'rounded-t rounded-bl ',
 		topLeft: 'rounded-b rounded-tr z-[405]',
 		topRight: 'rounded-b rounded-tl z-[405]'
 	};
@@ -65,13 +65,13 @@
 
 {#if $legendData.length > 0}
 	<div
-		class="absolute z-[401] m-4 flex max-w-60 flex legend-font {constHandleLegendButtonPosition()} 
+		class=" absolute z-[401] m-4 flex max-w-60 flex legend-font {constHandleLegendButtonPosition()} 
     {positions[legendPosition] ?? 'top-3 left-[-9px]'}"
 		on:wheel={(e) => e.stopPropagation()}
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
-		<div class="shadow bg-white/90 backdrop-blur {containerStyles[legendPosition]}">
+		<div class="shadow-bottom bg-white/90 backdrop-blur {containerStyles[legendPosition]}">
 			{#if $categoricalLegendData.length > 0}
 				<div class="flex flex-wrap hover:cursor-default">
 					{#each $categoricalLegendData as legend}
@@ -95,7 +95,7 @@
 			{#if $scalarLegendData.length > 0}
 				{#each $scalarLegendData as legend}
 					<div
-						class=" border-t first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
+						class="border-t first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
 							? 'py-0 border-none'
 							: 'py-1'}"
 					>
@@ -105,7 +105,7 @@
 			{/if}
 		</div>
 		<div
-			class="bg-white/90 backdrop-blur shadow flex justify-center w-fit transition-[border-radius] ease-in-out"
+			class="bg-white/90 backdrop-blur flex justify-center w-fit transition-[border-radius] ease-in-out {legendPosition.includes('bottom') ? 'shadow-bottom' : ""}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}
 			class:rounded-b={!hideLegend && legendPosition.includes('bottom')}
@@ -115,3 +115,11 @@
 		</div>
 	</div>
 {/if}
+
+<style>
+  /* custom shadow for legend toggle */
+	.shadow-bottom {
+	  box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.1);
+	}
+  
+  </style>
