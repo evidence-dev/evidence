@@ -105,7 +105,11 @@
 			{/if}
 		</div>
 		<div
-			class="bg-white/90 backdrop-blur flex justify-center w-fit transition-[border-radius] ease-in-out {legendPosition.includes('bottom') ? 'shadow-bottom' : ""}"
+			class="bg-white/90 backdrop-blur flex justify-center w-fit transition-[border-radius] ease-in-out {legendPosition.includes(
+				'bottom'
+			)
+				? 'shadow-bottom'
+				: ''}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}
 			class:rounded-b={!hideLegend && legendPosition.includes('bottom')}
@@ -117,9 +121,8 @@
 {/if}
 
 <style>
-  /* custom shadow for legend toggle */
+	/* custom shadow for legend toggle */
 	.shadow-bottom {
-	  box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.1);
 	}
-  
-  </style>
+</style>
