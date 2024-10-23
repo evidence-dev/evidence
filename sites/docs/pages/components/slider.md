@@ -192,16 +192,6 @@ Sets the length of the slider. Options are "medium", large" or "full". A empty s
     options="Excel-style format | built-in format | custom format"
 />
 
-<Slider
-    title="Sales" 
-    name=sales
-    defaultValue='18'
-    fmt="usd0"
-    steps='2'
-    max='20'
-    min='0'
-/>
-
 
 
 
