@@ -126,13 +126,17 @@
 		box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.1);
 	}
 
-	 /* Bottom-Right shadow */
-	 .shadow-bottom-right {
-    box-shadow: 3px 3px 5px 0 rgb(0 0 0 / 0.1), 2px 2px 4px -1px rgb(0 0 0 / 0.1);
-  }
+	/* Bottom-Right shadow */
+	.shadow-bottom-right {
+		box-shadow:
+			3px 3px 5px 0 rgb(0 0 0 / 0.1),
+			2px 2px 4px -1px rgb(0 0 0 / 0.1);
+	}
 
-  /* Bottom-Left shadow */
-  .shadow-bottom-left {
-    box-shadow: -3px 3px 5px 0 rgb(0 0 0 / 0.1), -2px 2px 4px -1px rgb(0 0 0 / 0.1);
-  }
+	/* Bottom-Left shadow */
+	.shadow-bottom-left {
+		box-shadow:
+			-3px 3px 5px 0 rgb(0 0 0 / 0.1),
+			-2px 2px 4px -1px rgb(0 0 0 / 0.1);
+	}
 </style>
