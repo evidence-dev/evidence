@@ -56,10 +56,10 @@
 	}
 
 	const containerStyles = {
-		bottomLeft: 'rounded-t rounded-br',
-		bottomRight: 'rounded-t rounded-bl ',
-		topLeft: 'rounded-b rounded-tr z-[405] ',
-		topRight: 'rounded-b rounded-tl z-[405] '
+		bottomLeft: 'rounded-t rounded-br shadow-bottom-right',
+		bottomRight: 'rounded-t rounded-bl shadow-bottom-left',
+		topLeft: 'rounded-b rounded-tr z-[405] shadow-bottom',
+		topRight: 'rounded-b rounded-tl z-[405] shadow-bottom'
 	};
 </script>
 
@@ -71,7 +71,7 @@
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
-		<div class="bg-white/90 backdrop-blur {containerStyles[legendPosition]}">
+		<div class="bg-white {containerStyles[legendPosition]}">
 			{#if $categoricalLegendData.length > 0}
 				<div class="flex flex-wrap hover:cursor-default">
 					{#each $categoricalLegendData as legend}
@@ -105,7 +105,7 @@
 			{/if}
 		</div>
 		<div
-			class="bg-white/90 flex justify-center w-fit transition-[border-radius] ease-in-out
+			class="bg-white  flex justify-center w-fit transition-[border-radius] ease-in-out
 			{legendPosition.includes('bottom') ? '' : ''}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}
