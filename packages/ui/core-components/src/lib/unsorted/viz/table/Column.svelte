@@ -11,7 +11,6 @@
 	let error;
 
 	const identifier = Symbol();
-
 	export let id;
 
 	/**

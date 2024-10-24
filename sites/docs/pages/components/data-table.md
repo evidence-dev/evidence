@@ -9,6 +9,7 @@ sidebar_position: 1
 
 ```orders_summary
 select * from needful_things.orders
+order by id
 limit 100
 ```
 
@@ -96,6 +97,22 @@ This example includes a `custom_format` column, which contains a different curre
 ```
 
 <DataTable data={orders_summary} search=true/>
+
+### Sort
+
+```svelte
+<DataTable data={orders_summary} sort="sales desc">
+    <Column id=category/> 
+    <Column id=item/> 
+    <Column id=sales fmt=usd/> 
+</DataTable>
+```
+
+<DataTable data={orders_summary} sort="sales desc">
+    <Column id=category/> 
+    <Column id=item/> 
+    <Column id=sales fmt=usd/> 
+</DataTable>
 
 ### Deltas
 
@@ -1110,6 +1127,15 @@ Background color of the table
 >
 
 Enable sort for each column - click the column title to sort
+
+</PropListing>
+<PropListing
+    name=sort
+    options='column name + asc/desc'
+    defaultValue="-"
+>
+
+Column to sort by on initial page load. Sort direction is asc if unspecified. Can only sort by one column using this prop. If you need multi-column sort, use the order by clause in your sql in combination with this prop.
 
 </PropListing>
 <PropListing
