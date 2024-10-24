@@ -29,6 +29,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
+	import { aggregateStores } from './datatable.store.js';
 
 	// Data, pagination, and row index numbers
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -120,13 +121,14 @@
 	export let compact = undefined;
 
 	// Set up props store
-	const props = writable({ data, columns: [], priorityColumns: [groupBy] });
+	/** @type {import("svelte/store").Writable<import("./datatable.store.js").DataTableProps>} */
+	const props = writable({ data, columns: [], priorityColumns: groupBy ? [groupBy] : [] });
 	setContext(propKey, props);
 
 	// ---------------------------------------------------------------------------------------
 	// Add props to store to let child components access them
 	// ---------------------------------------------------------------------------------------
-	$props = { ...$props, data, columns: [], priorityColumns: [groupBy] };
+	$props = { ...$props, data, columns: [], priorityColumns: groupBy ? [groupBy] : [] };
 
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP
@@ -145,8 +147,8 @@
 		)
 	);
 
-	$: console.log({$props})
-	$: console.log({$orderedColumns});
+	$: console.log({ $props });
+	$: console.log({ $orderedColumns });
 
 	function getErrorStore() {
 		/** @type {import("svelte/store").Writable<string | undefined>} */
@@ -276,86 +278,19 @@
 	// GROUPED DATA
 	// ---------------------------------------------------------------------------------------
 
-	const groupedData = derived([], () =>
-		data.reduce((acc, row) => {
-			const groupName = row[groupBy];
-			acc[groupName] ??= [];
-			acc[groupName].push(row);
-			return acc;
-		}, /** @type {Record<string, unknown>[]} */ ({}))
-	);
+	const { groupedData, groupToggleStates, sortedGroupNames, update } = groupBy
+		? aggregateStores({
+				data,
+				groupBy,
+				groupsOpen,
+				columnSummary,
+				props,
+				sortBy
+			})
+		: { update() {} };
 
-	// After groupedData is populated, calculate aggregations for groupRowData
-	const groupRowData = derived([groupedData, columnSummary], ([$groupedData, $columnSummary]) =>
-		Object.keys($groupedData).reduce((acc, groupName) => {
-			acc[groupName] = {}; // Initialize groupRow object for this group
-
-			for (const col of $props.columns) {
-				const id = col.id;
-				const colType = $columnSummary.find((d) => d.id === id)?.type;
-				const totalAgg = col.totalAgg;
-				const weightCol = col.weightCol;
-				const rows = $groupedData[groupName];
-				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
-			}
-
-			return acc;
-		}, {})
-	);
-
-	const groupToggleStates = derived([groupedData], ([$groupedData]) => {
-		/** @type {Record<string, boolean>} */
-		const previousToggleStates = $groupToggleStates ?? {};
-		const existingGroups = Object.keys(previousToggleStates);
-		for (const groupName of Object.keys($groupedData)) {
-			if (!existingGroups.includes(groupName)) {
-				previousToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
-			}
-			// Existing states are untouched
-		}
-		return previousToggleStates;
-	});
-
-	const sortedGroupNames = derived(
-		[groupRowData, sortBy, groupedData],
-		([$groupRowData, $sortBy, $groupedData]) => {
-			if (groupBy && $sortBy.col) {
-				// Sorting groups based on aggregated values or group names
-				return Object.entries($groupRowData)
-					.sort((a, b) => {
-						const valA = a[1][$sortBy.col],
-							valB = b[1][$sortBy.col];
-						// Use the existing sort logic but apply it to groupRowData's values
-						if (
-							(valA === undefined || valA === null || isNaN(valA)) &&
-							valB !== undefined &&
-							valB !== null &&
-							!isNaN(valB)
-						) {
-							return -1 * ($sortBy.ascending ? 1 : -1);
-						}
-						if (
-							(valB === undefined || valB === null || isNaN(valB)) &&
-							valA !== undefined &&
-							valA !== null &&
-							!isNaN(valA)
-						) {
-							return 1 * ($sortBy.ascending ? 1 : -1);
-						}
-						if (valA < valB) {
-							return -1 * ($sortBy.ascending ? 1 : -1);
-						} else if (valA > valB) {
-							return 1 * ($sortBy.ascending ? 1 : -1);
-						}
-						return 0;
-					})
-					.map((entry) => entry[0]); // Extract sorted group names
-			} else {
-				// Default to alphabetical order of group names or another criterion when not sorting by a specific column
-				return Object.keys($groupedData).sort();
-			}
-		}
-	);
+	// todo: should you be able to add a groupBy if you didn't have one initially?
+	$: if (groupBy) update({ data, groupBy, groupsOpen });
 
 	// Reset sort condition when data object is changed
 	$: data, ($sortBy = { col: null, ascending: null });
