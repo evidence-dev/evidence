@@ -37,6 +37,10 @@ You should generally only use the SPA rendering mode if one of the following is 
 
 ## Enabling SPA Mode
 
+<Alert status=warning>
+    Note: To deploy an SPA mode app on Evidence Cloud, you currently need to deploy on a private site, using the Cloud Execution Engine.
+</Alert>
+
 SPA rendering mode is disabled by default.
 
 To enable SPA rendering mode:
