@@ -8,7 +8,8 @@
 	export let label;
 	export let activeId;
 
-	const bgColor = chroma(color).alpha(0.1).css();
+	const bgColor = chroma(color).alpha(0.05).css();
+	const borderColor = chroma(color).alpha(0.5).css();
 
 	const classes = {
 		notActive: 'border-base-300 border-b-2 bg-base-200/25 border-b hover:bg-base-200',
@@ -18,7 +19,7 @@
 
 <button
 	style:--bgColor={bgColor}
-	style:--borderColor={color}
+	style:--borderColor={borderColor}
 	on:click
 	class="mt-2 p-2 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition ease-in active:bg-base-300 {activeId ===
 	id
