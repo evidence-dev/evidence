@@ -9,7 +9,6 @@
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import { QueryLoad } from '../../../atoms/query-load';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import Legend from './components/Legend.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -60,8 +59,9 @@
 	export let legendPosition = 'bottomLeft';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
-	/** @type {string | undefined} */
-	export let legendFmt = undefined;
+
+	/** @type {boolean} */
+	export let legend = true;
 
 	const chartType = 'Point Map';
 
@@ -74,9 +74,25 @@
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
 	<div class="relative">
-		<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-			<Points data={loaded} {lat} {long} {colorPalette} {legendType} {...$$restProps} />
-			<Legend {legendPosition} {legendType} {legendFmt} />
+		<BaseMap
+			{startingLat}
+			{startingLong}
+			{startingZoom}
+			{height}
+			{basemap}
+			{title}
+			{legendPosition}
+		>
+			<Points
+				data={loaded}
+				{lat}
+				{long}
+				{colorPalette}
+				{legendType}
+				{chartType}
+				{...$$restProps}
+				{legend}
+			/>
 		</BaseMap>
 	</div>
 </QueryLoad>

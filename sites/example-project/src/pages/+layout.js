@@ -31,16 +31,18 @@ const loadDB = async () => {
 	await profile(initDB);
 
 	if (Object.keys(renderedFiles ?? {}).length === 0) {
-		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
-		toasts.add(
-			{
-				id: 'MissingManifest',
-				status: 'warning',
-				title: 'Missing Manifest',
-				message: 'Without a manifest file, no data is available'
-			},
-			10000
-		);
+		console.warn(`No sources found, execute "npm run sources" to generate`.trim());
+		if (dev) {
+			toasts.add(
+				{
+					id: 'MissingManifest',
+					status: 'warning',
+					title: 'No Sources Found',
+					message: 'Configure and run sources to include data in your project.'
+				},
+				10000
+			);
+		}
 	} else {
 		await profile(setParquetURLs, renderedFiles);
 		await profile(updateSearchPath, Object.keys(renderedFiles));

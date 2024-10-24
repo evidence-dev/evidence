@@ -2,12 +2,12 @@
 sidebar_position: 2
 hide_table_of_contents: false
 title: Data Source Plugins
-description: Source plugins enable you to add new data source types to your project. 
+description: Source plugins enable you to add new data source types to your app. 
 ---
 
-Evidence includes a plugin system which can be used to add components and data sources to your project. 
+Evidence includes a plugin system which can be used to add components and data sources to your app. 
 
-Source plugins enable you to add new data source types to your project. Once you have installed and registered a source plugin, you will be able to configure any associated connection settings in the settings UI.  
+Source plugins enable you to add new data source types to your app. Once you have installed and registered a source plugin, you will be able to configure any associated connection settings in the settings UI.  
 
 To use a plugin, you need to **install** and **register** it in your project.
 

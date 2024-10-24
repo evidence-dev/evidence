@@ -2,14 +2,14 @@
 sidebar_position: 1
 hide_table_of_contents: false
 title: Component Plugins
-description: Evidence includes a plugin system which can be used to add components and data sources to your project.
+description: Evidence includes a plugin system which can be used to add components and data sources to your app.
 ---
 
-Evidence includes a plugin system which can be used to add components and data sources to your project. 
+Evidence includes a plugin system which can be used to add components and data sources to your app. 
 
 All Evidence projects include the Evidence `core-components` plugin by default. `core-components` has everything you need to build most use cases. 
 
-Component plugins are Svelte component packages which include one or more additional components which you can use in your project. Once you have installed and registered a component plugin, the included components will be available to use in your markdown files. 
+Component plugins are Svelte component packages which include one or more additional components which you can use in your markdown. Once you have installed and registered a component plugin, the included components will be available to use in your markdown files. 
 
 To use a plugin, you need to **install** and **register** it in your project.
 
@@ -34,8 +34,7 @@ components:
 
 If a plugin provides a component that you want to reference with another name, you can set up `aliases` when registering the component. 
 
-In this example, the `@acme/charting` plugin provides some component `LongNameForAChart`. After setting up `aliases`, it will be 
-made available in the Evidence project as `AcmeChart`
+In this example, the `@acme/charting` plugin provides some component `LongNameForAChart`. After setting up `aliases`, it will be made available in the Evidence markdown as `AcmeChart`
 
 ```yaml
 components:

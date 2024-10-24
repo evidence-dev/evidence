@@ -154,7 +154,7 @@ Allows Evidence to collect anonymous information about product usage
 
 #### `@evidence-dev/vite`
 
-Responsible for providing a Vite plugin for converting a Vite app into an [Evidence App](#evidence-application)
+Responsible for providing a Vite plugin for converting a Vite app into an [Evidence App](#evidence-app)
 
 ##### Does:
 
@@ -167,13 +167,13 @@ Responsible for providing a Vite plugin for converting a Vite app into an [Evide
 
 #### `@evidence-dev/sdk`
 
-Responsible for encapsulating all Evidence framework logic, contains the needed interfaces to create an [Evidence Appliction](#evidence-application).
+Responsible for encapsulating all Evidence framework logic, contains the needed interfaces to create an [Evidence App](#evidence-app).
 
 ##### Does:
 
 - Implement stores using Svelte's store contract (without referencing Svelte directly)
   - Consider using a tool like [nanostores](https://github.com/nanostores/nanostores)
-- Provides everything needed to turn a Vite project into an [Evidence Application](#evidence-application)
+- Provides everything needed to turn a Vite project into an [Evidence App](#evidence-app)
   - This does not include framework-specific ergonomics such as those in [@evidence-dev/lang-svelte](#evidence-devlang-svelte)
 
 ##### Does Not:
@@ -235,7 +235,7 @@ This functionality was previously provided by `@evidence-dev/component-utilities
   - Injects [Component Plugins](#component-plugin)
   - Initializes [USQL](#evidence-devusql-duckdb)
 - Provide an interface to ease the use of [sdk](#evidence-devsdk) functionality in Svelte (e.g. using Svelte's context or lifecycle functions)
-  - Includes making SSR in an [Application Shell (plugin)](#application-shell-plugin) or [Evidence App](#evidence-application) trivial
+  - Includes making SSR in an [Application Shell (plugin)](#application-shell-plugin) or [Evidence App](#evidence-app) trivial
 
 ##### Does Not:
 
@@ -271,7 +271,7 @@ This functionality was previously provided by `@evidence-dev/core-components` an
 #### `@evidence-dev/ui-svelte`
 
 Responsible for providing Visualization and UI Components for building
-[Evidence Apps](#evidence-application) and [Evidence Projects](#evidence-project)
+[Evidence Apps](#evidence-app)
 
 This functionality was previously provided by `@evidence-dev/core-components` and `@evidence-dev/component-utilities`
 
@@ -362,9 +362,9 @@ This functionality was previously provided by `evidence-vscode`
 - Contains known directories (e.g. `pages`, `sources`, etc.), and is copied into an [Application Shell](#application-shell) to create the final site.
 - Used to abstract away the complexity of modern web development to make it accessible for data professionals.
 
-#### Evidence Application
+#### Evidence App
 
-- Any web project that introduced the [SDK](#evidence-devsdk) and [Datasources](#datasource-plugin) to leverage [Headless Evidence](#headless-evidence).
+- The browser based rendering of an [Evidence Project](#evidence-project), either locally in development, or deployed online.
 
 #### Application Shell
 
@@ -384,7 +384,7 @@ This functionality was previously provided by `evidence-vscode`
 
 #### Component Plugin
 
-- A standalone Javascript package that contains components for [Authors](#authors) to use in their projects.
+- A standalone Javascript package that contains components for [Authors](#authors) to use in their apps.
 - The components specified in this package are implicitly loaded and do not need to be specified on each page.
 
 #### Datasource Plugin
@@ -395,19 +395,18 @@ This functionality was previously provided by `evidence-vscode`
 
 - Provides a shell application (in any framework) that creates
   a destination for the files in an [Evidence Project](#evidence-project).
-- It is implicitly also an [Evidence App](#evidence-application).
 - Includes an initial project state
 
 ### Types of Users
 
 #### Developers
 
-- A user that is writing plugins, components, or customizing an application shell (i.e. writing Javascript)
+- Creates plugins, components, or customizes an application shell (i.e. writing Javascript)
 
 #### Authors
 
-- A user that is writing [Evidence Projects](#evidence-project) without directly interfacing with the [SDK](#evidence-devsdk)
+- Creates and maintains [Evidence Projects](#evidence-project) without directly interfacing with the [SDK](#evidence-devsdk)
 
 #### Viewers
 
-- A user that is reading a completed, built Evidence project
+- Reads a completed, built [Evidence App](#evidence-app)

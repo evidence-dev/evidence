@@ -2,12 +2,12 @@
 sidebar_position: 3
 hide_table_of_contents: false
 title: Netlify
-description: Deploy your project to Netlify, which offers free hosting for public projects and password-protected hosting for paid plans.
+description: Deploy your app to Netlify, which offers free hosting for public apps and password-protected hosting for paid plans.
 ---
 
 <Alert status=warning>
 
-All URLs on Netlify are converted to lowercase. This can cause issues if you're using `{params.my_param}` to filter data in your project. It's recommended to use lowercase any time you're using a URL parameter to filter data, like this:
+All URLs on Netlify are converted to lowercase. This can cause issues if you're using `{params.my_param}` to filter data in your markdown. It's recommended to use lowercase any time you're using a URL parameter to filter data, like this:
 
 ```sql
 SELECT * FROM source_name.my_table 
@@ -16,15 +16,15 @@ WHERE LOWER(my_column) = LOWER('${params.my_param}')
 
 </Alert>
 
-Netlify lets you host a public version of your project for free, or you can create and host a password-protected version with Netlify's $15/month plan.
+Netlify lets you host a public version of your app for free, or you can create and host a password-protected version with Netlify's $15/month plan.
 
 ## Deploy to Netlify
 
-1. Run your project in development mode
+1. Run your app in development mode
 1. Visit the [settings page](http://localhost:3000/settings)
 1. Open the deployment panel, and select 'netlify', then follow the provided instructions
 
-## Optional: Set a site-wide password for your project (Requires Paid Plan)
+## Optional: Set a site-wide password for your app (Requires Paid Plan)
 
 Follow the directions provided by Netlify to set up a password for your site:
 https://docs.netlify.com/visitor-access/password-protection/

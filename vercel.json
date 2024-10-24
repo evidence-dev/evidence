@@ -35,6 +35,16 @@
 			"source": "/plugins/creating-a-plugin",
 			"destination": "/plugins/create-component-plugin/",
 			"permanent": true
+		},
+		{
+			"source": "/guides/updating-your-project/",
+			"destination": "/guides/updating-your-app/",
+			"permanent": true
+		},
+		{
+			"source": "/guides/updating-your-project",
+			"destination": "/guides/updating-your-app/",
+			"permanent": true
 		}
 	]
 }
