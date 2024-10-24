@@ -40,7 +40,7 @@ import { aggregateColumn } from "./datatable.js";
  */
 
 /**
- * @typedef {Object} DataTableProps
+ * @typedef {Object} DataTablePropStore
  * @property {Record<string, unknown>[]} data
  * @property {ColumnConfig[]} columns
  * @property {string[]} priorityColumns
@@ -55,7 +55,7 @@ import { aggregateColumn } from "./datatable.js";
 
 /** @typedef {Object} StoresDependents
  * @property {import("svelte/store").Readable<(import("@evidence-dev/component-utilities/getColumnSummary").ColumnSummary & { id: string })[]>} columnSummary
- * @property {import("svelte/store").Readable<DataTableProps>} props
+ * @property {import("svelte/store").Readable<DataTablePropStore>} props
  * @property {import("svelte/store").Readable<{ col: string | null; ascending: boolean | null; }>} sortBy
  */
 

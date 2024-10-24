@@ -14,7 +14,7 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
-	import { aggregateColumn, getFinalColumnOrder } from './datatable.js';
+	import { getFinalColumnOrder } from './datatable.js';
 	import TableRow from './TableRow.svelte';
 	import TotalRow from './TotalRow.svelte';
 	import SubtotalRow from './SubtotalRow.svelte';
@@ -35,93 +35,118 @@
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;
 	export let queryID = undefined;
+	/** @type {string | number} */
 	export let rows = 10; // number of rows to show
+	rows = Number.parseInt(rows);
 	$: rows = Number.parseInt(rows);
 
+	/** @type {boolean | string} */
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
 
+	/** @type {string | undefined} */
 	export let groupBy = undefined;
+	/** @type {boolean | string} */
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
+	/** @type {'accordion' | 'section'} */
 	export let groupType = 'accordion'; // accordion | section
+	/** @type {string | undefined} */
 	export let accordionRowColor = undefined;
+	/** @type {'middle' | 'top' | 'bottom'} */
 	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 
 	if (groupType === 'section') {
 		rowNumbers = false; // turn off row numbers
 	}
 
+	/** @type {boolean | string} */
 	export let subtotals = false;
 	$: subtotals = subtotals === 'true' || subtotals === true;
 
+	/** @type {string | undefined} */
 	export let subtotalRowColor = undefined;
+	/** @type {string | undefined} */
 	export let subtotalFontColor = undefined;
 
+	/** @param {CustomEvent} param0 */
 	function handleToggle({ detail }) {
+		if (!$groupToggleStates) return;
 		const { groupName } = detail;
 		$groupToggleStates[groupName] = !$groupToggleStates[groupName];
 	}
 
 	$: paginated = data.length > rows && !groupBy;
 
-	let hovering = false;
-
-	let marginTop = '1.5em';
-	let marginBottom = '1em';
-	let paddingBottom = '0em';
-
+	/** @type {boolean | string} */
 	export let generateMarkdown = false;
 	$: generateMarkdown = generateMarkdown === 'true' || generateMarkdown === true;
 
 	// Table features
+	/** @type {boolean | string} */
 	export let search = false;
 	$: search = search === 'true' || search === true;
 
+	/** @type {boolean | string} */
 	export let sortable = true;
 	$: sortable = sortable === 'true' || sortable === true;
 
+	/** @type {boolean | string} */
 	export let downloadable = true;
 	$: downloadable = downloadable === 'true' || downloadable === true;
 
+	/** @type {boolean | string} */
 	export let totalRow = false;
 	$: totalRow = totalRow === 'true' || totalRow === true;
 
+	/** @type {string | undefined} */
 	export let totalRowColor = undefined;
+	/** @type {string | undefined} */
 	export let totalFontColor = undefined;
 
+	/** @type {boolean} */
 	export let isFullPage = false;
 
 	// Row Links:
+	/** @type {string | undefined} */
 	export let link = undefined;
 
+	/** @type {boolean | string} */
 	export let showLinkCol = false; // hides link column when columns have not been explicitly selected
 	$: showLinkCol = showLinkCol === 'true' || showLinkCol === true;
 
 	// ---------------------------------------------------------------------------------------
 	// STYLING
 	// ---------------------------------------------------------------------------------------
+	/** @type {boolean | string} */
 	export let rowShading = false;
 	$: rowShading = rowShading === 'true' || rowShading === true;
 
+	/** @type {boolean | string} */
 	export let rowLines = true;
 	$: rowLines = rowLines === 'true' || rowLines === true;
 
+	/** @type {boolean | string} */
 	export let wrapTitles = false;
 	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
 
+	/** @type {string | undefined} */
 	export let headerColor = undefined;
 	export let headerFontColor = 'var(--grey-900)';
 
+	/** @type {boolean | string} */
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
 
+	/** @type {string} */
 	export let backgroundColor = 'white';
 
-	export let compact = undefined;
+	/** @type {boolean | string} */
+	export let compact = false;
+	$: compact = compact === 'true' || compact === true;
 
 	// Set up props store
-	/** @type {import("svelte/store").Writable<import("./datatable.store.js").DataTableProps>} */
+	/** @type {import("svelte/store").Writable<import("./datatable.store.js").DataTablePropStore>} */
 	const props = writable({ data, columns: [], priorityColumns: groupBy ? [groupBy] : [] });
 	setContext(propKey, props);
 
@@ -146,9 +171,6 @@
 			(a, b) => $finalColumnOrder.indexOf(a.id) - $finalColumnOrder.indexOf(b.id)
 		)
 	);
-
-	$: console.log({ $props });
-	$: console.log({ $orderedColumns });
 
 	function getErrorStore() {
 		/** @type {import("svelte/store").Writable<string | undefined>} */
@@ -252,9 +274,11 @@
 		// Modifier to sorting function for ascending or descending
 		const sortModifier = $sortBy.ascending ? 1 : -1;
 
+		/** @param {unknown} val */
 		const forceTopOfAscending = (val) =>
 			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
 
+		/** @param {Record<string, unknown>} a @param {Record<string, unknown>} b */
 		const sort = (a, b) =>
 			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
 				? -1 * sortModifier
@@ -266,7 +290,7 @@
 		data.sort(sort);
 		$filteredData = $filteredData.sort(sort);
 
-		if (groupBy) {
+		if (groupBy && $groupedData) {
 			// sort within grouped data
 			for (const groupName of Object.keys($groupedData)) {
 				$groupedData[groupName] = $groupedData[groupName].sort(sort);
@@ -338,9 +362,10 @@
 	// DATA FOR EXPORT
 	// ---------------------------------------------------------------------------------------
 
+	/** @param {Record<string, unknown>[]} data @param {string[]} selectedCols */
 	function dataSubset(data, selectedCols) {
 		return data.map((obj) => {
-			const ret = {};
+			const ret = /** @type {Record<string, unknown>} */ ({});
 			for (const key of selectedCols) {
 				ret[key] = obj[key];
 			}
@@ -358,6 +383,7 @@
 	let fullscreen = false;
 	/** @type {number} */
 	let innerHeight;
+	let hovering = false;
 </script>
 
 <svelte:window bind:innerHeight />
@@ -408,9 +434,6 @@
 		role="none"
 		class="table-container"
 		transition:slide|local
-		style:margin-top={marginTop}
-		style:margin-bottom={marginBottom}
-		style:padding-bottom={paddingBottom}
 		on:mouseenter={() => (hovering = true)}
 		on:mouseleave={() => (hovering = false)}
 	>
@@ -461,7 +484,7 @@
 							</td>
 						</tr>
 					</svelte:fragment>
-					{#if groupBy && $groupedData && searchValue === ''}
+					{#if groupBy && $groupToggleStates && $sortedGroupNames && $groupedData && searchValue === ''}
 						{#each $sortedGroupNames as groupName}
 							{#if groupType === 'accordion'}
 								<GroupRow
@@ -662,6 +685,9 @@
 <style>
 	.table-container {
 		font-size: 9.5pt;
+		margin-top: 1.5em;
+		margin-bottom: 1em;
+		padding-bottom: 0em;
 	}
 
 	.scrollbox {
