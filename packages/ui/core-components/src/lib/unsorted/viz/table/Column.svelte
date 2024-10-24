@@ -5,6 +5,7 @@
 <script>
 	import { getContext } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
+	import { ensureThemeStores } from '../../../themes.js';
 
 	let props = getContext(propKey);
 
@@ -75,19 +76,21 @@
 	export let scaleColor = 'green'; // name of predefined color palette, custom color, array of custom colors
 	export let scaleColumn = undefined;
 
-	let colorList = {
-		green: ['white', 'hsla(129, 33%, 57%,1)'],
-		red: ['white', 'hsla(0, 56%, 56%,1)'],
-		blue: ['white', 'hsla(198, 56%, 56%,1)']
+	const { theme } = ensureThemeStores();
+
+	const scaleColorMap = {
+		green: 'hsla(129, 33%, 57%,1)',
+		red: 'hsla(0, 56%, 56%,1)',
+		blue: 'hsla(198, 56%, 56%,1)'
 	};
 
 	let colorPalette;
-	if (scaleColor instanceof Array) {
-		colorPalette = scaleColor;
-	} else {
-		colorPalette = colorList[scaleColor];
-		if (colorPalette == undefined) {
-			colorPalette = ['white', scaleColor];
+	$: {
+		if (scaleColor instanceof Array) {
+			colorPalette = scaleColor;
+		} else {
+			const color = scaleColorMap[scaleColor] ?? scaleColor;
+			colorPalette = [$theme['base-100'], color];
 		}
 	}
 

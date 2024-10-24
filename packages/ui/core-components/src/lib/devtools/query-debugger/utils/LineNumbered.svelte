@@ -24,17 +24,18 @@
 			<div class="group contents">
 				<span
 					class="
-			bg-gray-400
-			group-odd:bg-gray-500
-			group-hover:bg-gray-600
-			text-white pr-1.5 pl-1
+			bg-base-300/40
+			group-odd:bg-base-300/80
+			group-hover:bg-base-300
+			text-base-content pr-1.5 pl-1
 			select-none">{i + 1}</span
 				>
 				<pre
 					class="
-				group-hover:bg-gray-300
-				bg-gray-100 group-odd:bg-gray-200
-				pl-2 whitespace-pre-wrap pr-4">{@html line}</pre>
+			bg-base-300/20
+			group-odd:bg-base-300/60
+			group-hover:bg-base-300
+			pl-2 whitespace-pre-wrap pr-4">{@html line}</pre>
 			</div>
 		{/each}
 	</div>

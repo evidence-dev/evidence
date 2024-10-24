@@ -10,7 +10,7 @@
 	export let groupName = undefined;
 	export let currentGroupData = undefined;
 	export let columnSummary = undefined;
-	export let rowColor = 'var(--grey-100)';
+	export let rowColor = undefined;
 	export let groupBy = undefined;
 	export let groupType = undefined;
 	export let fontColor = undefined;
@@ -19,7 +19,7 @@
 </script>
 
 <tr
-	class=" w-full border-b-gray-400 border-b-[1px]"
+	class="w-full border-b border-base-content-muted bg-base-200"
 	style:background-color={rowColor}
 	style:color={fontColor}
 >
@@ -34,11 +34,7 @@
 				? getFormatObjectFromString(column.totalFmt)
 				: column_format}
 		{@const useFormat = format?.valueType === 'date' ? '' : format}
-		<TableCell
-			class="{useCol.type} font-medium border-t-[1px] border-t-gray-300"
-			{compact}
-			align={column.align}
-		>
+		<TableCell class="{useCol.type} font-medium" {compact} align={column.align}>
 			{#if column.id !== groupBy}
 				{#if column.contentType === 'delta'}
 					<Delta

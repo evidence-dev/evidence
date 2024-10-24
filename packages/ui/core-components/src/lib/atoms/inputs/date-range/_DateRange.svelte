@@ -207,7 +207,7 @@
 				size="sm"
 				class={cn(
 					'flex justify-start rounded-r-none border-r-0 text-left font-normal',
-					!selectedDateRange && 'text-gray-400'
+					!selectedDateRange && 'text-base-content-muted'
 				)}
 				builders={[builder]}
 				disabled={!loaded}
@@ -272,11 +272,14 @@
 		bind:selected={selectedPreset}
 		disabled={!loaded}
 	>
-		<Select.Trigger class="h-8 w-40 rounded-l-none px-3 text-xs font-medium" sameWidth>
+		<Select.Trigger
+			class="h-8 w-40 rounded-l-none px-3 text-xs font-medium hover:bg-base-200 transition-colors"
+			sameWidth
+		>
 			{#if selectedPreset}
 				{selectedPreset.label}
 			{:else}
-				<span class="hidden sm:inline"> Select a Range </span>
+				<span class="hidden sm:inline text-base-content-muted"> Select a Range </span>
 				<span class="sm:hidden"> Range </span>
 			{/if}
 		</Select.Trigger>

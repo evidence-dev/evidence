@@ -37,9 +37,6 @@
 	export let maxWidth = 'none';
 	export let minWidth = '18%';
 
-	let positive = true;
-	let comparisonColor = 'var(--grey-700)';
-
 	/** @type {string | null}*/
 	export let link = null;
 
@@ -70,14 +67,6 @@
 				comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null);
 		}
 
-		if (data && comparison) {
-			positive = data[0][comparison] >= 0;
-			comparisonColor =
-				(positive && !downIsGood) || (!positive && downIsGood)
-					? 'var(--green-700)'
-					: 'var(--red-700)';
-		}
-
 		if (sparkline) {
 			checkInputs(data, [sparkline]);
 			if (columnSummary.find((d) => d.id === sparkline)?.type !== 'date') {
@@ -104,10 +93,10 @@
 	{#if error}
 		<BigValueError chartType="Big Value" error={error.message} />
 	{:else}
-		<p class="text-sm text-gray-700">{title}</p>
-		<div class="relative text-xl font-medium text-gray-700 my-0.5">
+		<p class="text-sm">{title}</p>
+		<div class="relative text-xl font-medium my-0.5">
 			{#if link}
-				<a class="hover:bg-gray-100" href={link}>
+				<a class="hover:bg-base-200" href={link}>
 					<Value {data} column={value} {fmt} />
 				</a>
 			{:else}
@@ -131,7 +120,7 @@
 		</div>
 		{#if comparison}
 			{#if comparisonDelta}
-				<p class="text-xs font-sans" style={`color:${comparisonColor}`}>
+				<p class="text-xs font-sans">
 					<Delta
 						{data}
 						column={comparison}
@@ -145,9 +134,9 @@
 					/>
 				</p>
 			{:else}
-				<p class="text-xs font-sans text-gray-500 pt-[0.5px]">
+				<p class="text-xs font-sans /60 pt-[0.5px]">
 					{#if link}
-						<a class="hover:bg-gray-100" href={link}>
+						<a class="hover:bg-base-200" href={link}>
 							<Value {data} column={comparison} fmt={comparisonFmt} />
 						</a>
 					{:else}

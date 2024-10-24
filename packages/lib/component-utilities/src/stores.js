@@ -71,15 +71,21 @@ const getStoreVal = (store) => {
 	return v;
 };
 
+/** @template T @typedef {{ serialize: (value: T) => string; deserialize: (raw: string) => T }} SerializeAndDeserialize */
+
 /**
  * Implementation of a writable store that also saves it's values to localStorage
  * @template T
  * @param {string} key localStorage key
  * @param {T} init
+ * @param {SerializeAndDeserialize<T>} [serializeAndDeserialize]
  * @returns {Writable<T>}
  */
-export const localStorageStore = (key, init) => {
-	const store = writable(browser ? (JSON.parse(localStorage.getItem(key)) ?? init) : init);
+export const localStorageStore = (key, init, serializeAndDeserialize) => {
+	const serialize = serializeAndDeserialize?.serialize ?? JSON.stringify;
+	const deserialize = serializeAndDeserialize?.deserialize ?? JSON.parse;
+
+	const store = writable(browser ? (deserialize(localStorage.getItem(key)) ?? init) : init);
 	const { subscribe, set } = store;
 
 	/** @type {(v: T) => void} */
@@ -88,7 +94,7 @@ export const localStorageStore = (key, init) => {
 			if (typeof v === 'undefined' || v === null) {
 				localStorage.removeItem(key);
 			} else {
-				localStorage.setItem(key, JSON.stringify(v));
+				localStorage.setItem(key, serialize(v));
 			}
 		}
 	};

@@ -8,4 +8,4 @@
 	export { className as class };
 </script>
 
-<CommandPrimitive.Separator class={cn('-mx-1 h-px bg-gray-200', className)} {...$$restProps} />
+<CommandPrimitive.Separator class={cn('-mx-1 h-px bg-base-300', className)} {...$$restProps} />

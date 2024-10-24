@@ -12,6 +12,7 @@
 	import { nanoid } from 'nanoid';
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { ensureThemeStores } from '../../../../themes.js';
 	const inputs = getInputContext();
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
@@ -111,10 +112,12 @@
 		selectedBorderWidth = 0.75;
 	}
 
-	/** @type {string|undefined} */
-	export let selectedColor = '#d42a2a';
+	const { theme } = ensureThemeStores();
+
 	/** @type {string} */
-	export let selectedBorderColor = '#ab1818';
+	export let selectedColor = $theme['accent'];
+	/** @type {string} */
+	export let selectedBorderColor = $theme['accent-content'];
 
 	/** @type {number|undefined} */
 	export let selectedOpacity = undefined;

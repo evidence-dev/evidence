@@ -19,23 +19,26 @@
 
 <style lang="postcss">
 	.alert {
-		@apply p-2 mb-4 rounded text-gray-800 bg-gray-50 top-14;
+		@apply border px-3 py-2 mb-4 rounded border-neutral/50 bg-neutral/10;
 
 		&.info {
-			@apply text-blue-800 bg-blue-50;
+			@apply border-info/50 bg-info/10;
 		}
 		&.danger {
-			@apply text-red-800 bg-red-50;
+			@apply border-negative/50 bg-negative/10;
 		}
 		&.success {
-			@apply text-green-800 bg-green-50;
+			@apply border-positive/50 bg-positive/10;
 		}
 		&.warning {
-			@apply text-yellow-800 bg-yellow-50;
+			@apply border-warning/50 bg-warning/10;
 		}
 
-		& :global(p) {
+		& :global(.markdown:last-child) {
 			@apply mb-0;
+		}
+		& :global(.markdown:first-child) {
+			@apply mt-0;
 		}
 	}
 </style>

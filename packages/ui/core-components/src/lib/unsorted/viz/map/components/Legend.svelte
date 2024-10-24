@@ -105,7 +105,7 @@
 			{/if}
 		</div>
 		<div
-			class="bg-white background-blur flex justify-center w-fit transition-[border-radius] ease-in-out
+			class="bg-base-100 background-blur flex justify-center w-fit transition-[border-radius] ease-in-out
 			{legendPosition.includes('bottom') ? 'shadow-bottom' : ''}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}

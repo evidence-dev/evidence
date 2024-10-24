@@ -4,20 +4,25 @@ import { getContext, setContext } from 'svelte';
 import { derived, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
+import themes from '$evidence/themes';
+
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
-
+/** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
-	const store = readable(/** @type {'light' | 'dark'} */ ('light'), (set) => {
+	const initialValue =
+		browser && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+			? 'dark'
+			: 'light';
+
+	/** @type {Readable<'light' | 'dark'>} */
+	const store = readable(initialValue, (set) => {
 		if (browser && window.matchMedia) {
 			/** @param {MediaQueryList | MediaQueryListEvent} e */
 			const onPrefersDarkColorSchemeChange = (e) => {
 				set(e.matches ? 'dark' : 'light');
 			};
-
-			// Initialize the store with the current value
-			onPrefersDarkColorSchemeChange(window.matchMedia('(prefers-color-scheme: dark)'));
 
 			// Listen for changes to the system color scheme and update the store
 			window
@@ -38,25 +43,31 @@ const createSystemThemeStore = () => {
 
 /**
  * @typedef ThemeStores
- * @prop {Readable<'light' | 'dark'>} systemTheme
- * @prop {Readable<'system' | 'light' | 'dark'>} selectedTheme
- * @prop {Readable<'light' | 'dark'>} theme
- * @prop {() => void} cycleTheme
+ * @prop {Readable<'light' | 'dark'>} systemMode
+ * @prop {Readable<'system' | 'light' | 'dark'>} selectedMode
+ * @prop {Readable<'light' | 'dark'>} activeMode
+ * @prop {Readable<Theme>} theme
+ * @prop {() => void} cycleMode
  */
 
 /** @returns {ThemeStores} */
 const createThemeStores = () => {
-	const systemTheme = createSystemThemeStore();
+	const systemMode = createSystemThemeStore();
 
 	/** @type {Writable<'system' | 'light' | 'dark'>} */
-	const selectedTheme = localStorageStore('evidence-theme', 'system');
+	const selectedMode = localStorageStore('evidence-theme', 'system', {
+		serialize: (value) => value,
+		deserialize: (raw) => (['system', 'light', 'dark'].includes(raw) ? raw : 'system')
+	});
 
-	const theme = derived([systemTheme, selectedTheme], ([$systemTheme, $selectedTheme]) => {
+	const activeMode = derived([systemMode, selectedMode], ([$systemTheme, $selectedTheme]) => {
 		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
 	});
 
-	const cycleTheme = () => {
-		selectedTheme.update((current) => {
+	const theme = derived(activeMode, ($activeTheme) => themes[$activeTheme]);
+
+	const cycleMode = () => {
+		selectedMode.update((current) => {
 			switch (current) {
 				case 'system':
 					return 'light';
@@ -69,17 +80,18 @@ const createThemeStores = () => {
 		});
 	};
 
-	theme.subscribe((theme) => {
+	activeMode.subscribe((theme) => {
 		if (typeof document !== 'undefined') {
 			document.documentElement.setAttribute('data-theme', theme);
 		}
 	});
 
 	return {
-		systemTheme,
-		selectedTheme: readonly(selectedTheme),
+		systemMode,
+		selectedMode: readonly(selectedMode),
+		activeMode,
 		theme,
-		cycleTheme
+		cycleMode
 	};
 };
 
@@ -94,5 +106,3 @@ export const ensureThemeStores = () => {
 	}
 	return stores;
 };
-
-export const themesFeatureEnabled = import.meta.env.VITE_EVIDENCE_THEMES === 'true';

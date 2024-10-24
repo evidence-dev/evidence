@@ -17,63 +17,66 @@ select 0.366 as positive, -0.366 as negative
 
 ### Value Types
 
+#### Positive & Negative
+
+<Delta data={growth} column=positive fmt=pct1 />
+
+<Delta data={growth} column=negative fmt=pct1 />
+
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 />
 ```
 
-#### Positive
+#### Neutral
+<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
 
-<Delta data={growth} column=positive fmt=pct1 />
-
-#### Negative 
-
-<Delta data={growth} column=negative fmt=pct1 />
-
-#### Neutral*
-*Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 neutralMin=-0.4 neutralMax=0.4 />
 ```
-<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
+
+*Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props*
 
 ### Chips
 
-```html
+#### Positive & Negative
+
+<Delta data={growth} column=positive fmt=pct1 chip=true />
+
+<Delta data={growth} column=negative fmt=pct1 chip=true />
+
+```markdown
 <Delta data={sales} column=growth fmt=pct1 chip=true />
 ```
 
-#### Positive
+#### Neutral
 
-<Delta data={growth} column=positive fmt=pct1 chip=true/>
+<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4 chip=true />
 
-#### Negative 
-
-<Delta data={growth} column=negative fmt=pct1 chip=true/>
-
-#### Neutral*
-*Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 chip=true neutralMin=-0.4 neutralMax=0.4 />
 ```
-<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4 chip=true/>
+
+Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
 
 ### Symbol Position
 
 #### Symbol on Left
 
+<Delta data={growth} column=positive fmt=pct1 symbolPosition=left/>
+
 ```html
 <Delta data={sales} column=growth fmt=pct1 symbolPosition=left/>
 ```
 
-<Delta data={growth} column=positive fmt=pct1 symbolPosition=left/>
 
 #### Symbol on Left in Chip
+
+<Delta data={growth} column=negative fmt=pct1 chip=true symbolPosition=left/>
 
 ```html
 <Delta data={sales} column=growth fmt=pct1 chip=true symbolPosition=left/>
 ```
 
-<Delta data={growth} column=negative fmt=pct1 symbolPosition=left/>
 
 ## Options
 <PropListing
