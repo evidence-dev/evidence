@@ -95,13 +95,7 @@
 			sparkY="value"
 			sparkColor="navy"
 		/>
-		<Column
-			id="sparkline"
-			title="Sparkarea"
-			contentType="sparkarea"
-			sparkX="date"
-			sparkY="value"
-		/>
+		<Column id="sparkline" title="Sparkarea" contentType="sparkarea" sparkX="date" sparkY="value" />
 	</DataTable>
 </Story>
 

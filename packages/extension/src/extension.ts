@@ -379,8 +379,8 @@ const duckdbFunctions = [
 	},
 	{
 		name: 'ARRAY_AGG',
-		detail: 'ARRAY_AGG({\'col1\': column1, \`col2`: column2})',
-		snippet: 'ARRAY_AGG({\'${1:col1}\': ${2:column1}, \`${3:col2}`: ${4:column2}})',
+		detail: "ARRAY_AGG({'col1': column1, `col2`: column2})",
+		snippet: "ARRAY_AGG({'${1:col1}': ${2:column1}, `${3:col2}`: ${4:column2}})",
 		documentation: 'Create an array within a table cell'
 	},
 	{
