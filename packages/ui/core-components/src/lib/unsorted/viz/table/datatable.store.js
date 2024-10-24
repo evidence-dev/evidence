@@ -47,13 +47,14 @@ import { aggregateColumn } from "./datatable.js";
  */
 
 /**
- * @typedef {Object} NonStoreDependents
+ * @typedef {Object} NonStoreAggDependents
  * @property {Record<string, unknown>[]} data
  * @property {string} groupBy
  * @property {boolean} groupsOpen
  */
 
-/** @typedef {Object} StoresDependents
+/**
+ * @typedef {Object} StoreAggDependents
  * @property {import("svelte/store").Readable<(import("@evidence-dev/component-utilities/getColumnSummary").ColumnSummary & { id: string })[]>} columnSummary
  * @property {import("svelte/store").Readable<DataTablePropStore>} props
  * @property {import("svelte/store").Readable<{ col: string | null; ascending: boolean | null; }>} sortBy
@@ -62,7 +63,7 @@ import { aggregateColumn } from "./datatable.js";
 /** @typedef {Record<string, Record<string, unknown>[]>} GroupedData */
 
 /**
- * @param {StoresDependents & NonStoreDependents} param0 
+ * @param {StoreAggDependents & NonStoreAggDependents} param0 
  */
 export function aggregateStores({ columnSummary, props, sortBy, data: _data, groupBy: _groupBy, groupsOpen: _groupsOpen }) {
 	const data = writable(_data);
@@ -151,7 +152,7 @@ export function aggregateStores({ columnSummary, props, sortBy, data: _data, gro
 	);
 
 	return {
-		/** @param {NonStoreDependents} param0 */
+		/** @param {NonStoreAggDependents} param0 */
 		update: ({ data: _data, groupBy: _groupBy, groupsOpen: _groupsOpen }) => {
 			data.set(_data);
 			groupBy.set(_groupBy);
