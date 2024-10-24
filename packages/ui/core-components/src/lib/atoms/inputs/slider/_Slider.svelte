@@ -138,10 +138,6 @@
 					value = [data[0][defaultValue]];
 				}
 				initialized = true;
-			} else {
-				throw Error(
-					'No data provided. If you referenced a query result, check that the name is correct.'
-				);
 			}
 		} catch (e) {
 			error = e.message;
