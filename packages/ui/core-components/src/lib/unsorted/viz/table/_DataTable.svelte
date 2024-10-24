@@ -304,7 +304,6 @@
 					? 1 * sortModifier
 					: 0;
 
-		// data.sort(comparator);
 		const sortedFilteredData = [...filteredData].sort(comparator);
 
 		filteredData = sortedFilteredData;
