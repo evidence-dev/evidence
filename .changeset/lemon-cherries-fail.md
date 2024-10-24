@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Add sortBy to DataTable
+Add sort prop to DataTable
