@@ -29,7 +29,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
-	import { aggregateStores } from './datatable.store.js';
+	import { aggregateStores, tableStateStores } from './datatable.store.js';
 
 	// Data, pagination, and row index numbers
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -37,8 +37,8 @@
 	export let queryID = undefined;
 	/** @type {string | number} */
 	export let rows = 10; // number of rows to show
-	rows = Number.parseInt(rows);
-	$: rows = Number.parseInt(rows);
+	rows = typeof rows === 'string' ? Number.parseInt(rows) : rows;
+	$: rows = typeof rows === 'string' ? Number.parseInt(rows) : rows;
 
 	/** @type {boolean | string} */
 	export let rowNumbers = false;
@@ -159,24 +159,12 @@
 	// DATA SETUP
 	// ---------------------------------------------------------------------------------------
 
-	const finalColumnOrder = derived([props], ([$props]) =>
-		getFinalColumnOrder(
-			$props.columns.map((d) => d.id),
-			$props.priorityColumns
-		)
-	);
-
-	const orderedColumns = derived([props, finalColumnOrder], ([$props, $finalColumnOrder]) =>
-		[...$props.columns].sort(
-			(a, b) => $finalColumnOrder.indexOf(a.id) - $finalColumnOrder.indexOf(b.id)
-		)
-	);
-
 	function getErrorStore() {
 		/** @type {import("svelte/store").Writable<string | undefined>} */
 		const error = writable(undefined);
 
-		/** @template T
+		/**
+		 * @template T
 		 * @param {() => T} fn
 		 * @returns {T | undefined} */
 		function wrapError(fn) {
@@ -201,42 +189,11 @@
 
 	$: wrapError(() => checkInputs(data));
 
-	const columnSummary = derived([data], ([$data]) => {
-		const summary = wrapError(() => getColumnSummary($data, 'array'));
-		if (!summary) return [];
-
-		for (let i = 0; i < summary.length; i++) {
-			summary[i].show = showLinkCol === false && summary[i].id === link ? false : true;
-		}
-		if (link) {
-			const linkColIndex = summary.findIndex((d) => d.id === link);
-			if (linkColIndex !== -1 && !showLinkCol) {
-				summary.splice(linkColIndex, 1);
-			}
-		}
-
-		const dateCols = summary.filter(
-			(d) => d.type === 'date' && !($data[0]?.[d.id] instanceof Date)
-		);
-		for (const col of dateCols) {
-			data = convertColumnToDate(data, col.id);
-		}
-
-		return summary;
-	});
-
-	const index = writable(0);
-	/** @type {import("svelte/store").Writable<number | null>} */
-	const inputPage = writable(null);
-	$: inputPageElWidth = `${($inputPage ?? 1).toString().length}ch`;
-
 	// ---------------------------------------------------------------------------------------
 	// SEARCH
 	// ---------------------------------------------------------------------------------------
 	let searchValue = '';
-	const filteredData = writable(data);
-	$: $filteredData = data;
-	let showNoResults = false;
+	const showNoResults = false;
 
 	/** @type {ReturnType<typeof Query["createReactive"]> | undefined}*/
 	const searchFactory =
@@ -254,13 +211,6 @@
 					200
 				)
 			: undefined;
-
-	// ---------------------------------------------------------------------------------------
-	// SORTING
-	// ---------------------------------------------------------------------------------------
-
-	/** @type {import("svelte/store").Writable<{ col: string | null; ascending: boolean | null; }>} */
-	const sortBy = writable({ col: null, ascending: null });
 
 	/** @param {string} column */
 	function sort(column) {
@@ -298,6 +248,37 @@
 		}
 	}
 
+	/** @type {import("svelte/store").Writable<{ col: null | string, ascending: null | boolean }>} */
+	const sortBy = writable({ col: null, ascending: null });
+
+	// Reset sort condition when data object is changed
+	$: data, ($sortBy = { col: null, ascending: null });
+
+	const {
+		index,
+		inputPage,
+		inputPageElWidth,
+		currentPage,
+		currentPageElWidth,
+		displayedData,
+		pageCount,
+		tableData,
+		columnSummary,
+		orderedColumns,
+		totalRows,
+		filteredData,
+		update: updateTableStores
+	} = tableStateStores({
+		wrapError,
+		data,
+		rows,
+		link,
+		showLinkCol,
+		props
+	});
+
+	$: updateTableStores({ data, rows, link, showLinkCol });
+
 	// ---------------------------------------------------------------------------------------
 	// GROUPED DATA
 	// ---------------------------------------------------------------------------------------
@@ -316,36 +297,19 @@
 	// todo: should you be able to add a groupBy if you didn't have one initially?
 	$: if (groupBy) update({ data, groupBy, groupsOpen });
 
-	// Reset sort condition when data object is changed
-	$: data, ($sortBy = { col: null, ascending: null });
-
 	// ---------------------------------------------------------------------------------------
 	// PAGINATION
 	// ---------------------------------------------------------------------------------------
 
-	const totalRows = derived([filteredData], ([$filteredData]) => $filteredData.length);
-
-	const currentPage = writable(1);
-
-	$: $currentPage = Math.ceil(($index + rows) / rows);
-	$: currentPageElWidth = `${($currentPage ?? 1).toString().length}ch`;
-
 	/** @param {number} pageNumber */
 	function goToPage(pageNumber) {
-		$index = pageNumber * rows;
-		const max = $index + rows;
-		$currentPage = Math.ceil(max / rows);
+		$index = pageNumber * +rows;
+		const max = $index + +rows;
+		$currentPage = Math.ceil(max / +rows);
 		if ($inputPage) {
-			$inputPage = Math.ceil(max / rows);
+			$inputPage = Math.ceil(max / +rows);
 		}
 	}
-
-	$: displayedData = derived([filteredData, index], ([$filteredData, $index]) =>
-		$filteredData.slice($index, $index + rows)
-	);
-	$: pageCount = derived([filteredData], ([$filteredData]) =>
-		Math.ceil($filteredData.length / rows)
-	);
 
 	$: if (paginated) {
 		if ($pageCount < $currentPage) {
@@ -357,28 +321,6 @@
 		$currentPage = 1;
 		$displayedData = $filteredData;
 	}
-
-	// ---------------------------------------------------------------------------------------
-	// DATA FOR EXPORT
-	// ---------------------------------------------------------------------------------------
-
-	/** @param {Record<string, unknown>[]} data @param {string[]} selectedCols */
-	function dataSubset(data, selectedCols) {
-		return data.map((obj) => {
-			const ret = /** @type {Record<string, unknown>} */ ({});
-			for (const key of selectedCols) {
-				ret[key] = obj[key];
-			}
-			return ret;
-		});
-	}
-
-	$: tableData = derived([props], ([$props]) =>
-		dataSubset(
-			data,
-			$props.columns.map((d) => d.id)
-		)
-	);
 
 	let fullscreen = false;
 	/** @type {number} */
@@ -508,7 +450,7 @@
 										{rowNumbers}
 										{rowLines}
 										{compact}
-										{index}
+										index={$index}
 										columnSummary={$columnSummary}
 										grouped={true}
 										groupColumn={groupBy}
@@ -526,7 +468,7 @@
 									{rowNumbers}
 									{rowLines}
 									{compact}
-									{index}
+									index={$index}
 									columnSummary={$columnSummary}
 									grouped={true}
 									{groupNamePosition}
@@ -555,7 +497,7 @@
 							{rowNumbers}
 							{rowLines}
 							{compact}
-							{index}
+							index={$index}
 							columnSummary={$columnSummary}
 							orderedColumns={$orderedColumns}
 						/>
@@ -610,7 +552,7 @@
 							class="page-input"
 							class:hovering
 							class:error={($inputPage ?? -1) > $pageCount}
-							style="width: {$inputPage ? inputPageElWidth : currentPageElWidth};"
+							style="width: {$inputPage ? $inputPageElWidth : $currentPageElWidth};"
 							type="number"
 							bind:value={$inputPage}
 							on:keyup={() => goToPage(($inputPage ?? 1) - 1)}

@@ -1,9 +1,19 @@
 // @ts-check
 
-import { derived, writable } from "svelte/store";
-import { aggregateColumn } from "./datatable.js";
+import { derived, writable } from 'svelte/store';
+import { aggregateColumn, getFinalColumnOrder } from './datatable.js';
+import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 
-/** @typedef {Object} ColumnConfig
+/** @typedef {<T>(fn: () => T) => T | undefined} WrapError */
+
+/**
+ * @typedef {Object} ErrorWrapper
+ * @property {WrapError} wrapError
+ */
+
+/**
+ * @typedef {Object} ColumnConfig
  * @property {symbol} identifier
  * @property {string} id
  * @property {string} [title]
@@ -63,37 +73,50 @@ import { aggregateColumn } from "./datatable.js";
 /** @typedef {Record<string, Record<string, unknown>[]>} GroupedData */
 
 /**
- * @param {StoreAggDependents & NonStoreAggDependents} param0 
+ * @param {StoreAggDependents & NonStoreAggDependents} param0
  */
-export function aggregateStores({ columnSummary, props, sortBy, data: _data, groupBy: _groupBy, groupsOpen: _groupsOpen }) {
+export function aggregateStores({
+	columnSummary,
+	props,
+	sortBy,
+	data: _data,
+	groupBy: _groupBy,
+	groupsOpen: _groupsOpen
+}) {
 	const data = writable(_data);
 	const groupBy = writable(_groupBy);
 	const groupsOpen = writable(_groupsOpen);
 
-	const groupedData = derived([data, groupBy], ([$data, $groupBy]) =>
-		/** @type {GroupedData} */($data.reduce((acc, row) => {
-		const groupName = /** @type {string} */ (row[$groupBy]);
-		acc[groupName] ??= [];
-		acc[groupName].push(row);
-		return acc;
-	}, {}))
+	const groupedData = derived(
+		[data, groupBy],
+		([$data, $groupBy]) =>
+			/** @type {GroupedData} */ (
+				$data.reduce((acc, row) => {
+					const groupName = /** @type {string} */ (row[$groupBy]);
+					acc[groupName] ??= [];
+					acc[groupName].push(row);
+					return acc;
+				}, {})
+			)
 	);
 
-	const groupRowData = derived([groupedData, columnSummary, props], ([$groupedData, $columnSummary, $props]) =>
-		Object.keys($groupedData).reduce((acc, groupName) => {
-			acc[groupName] = {}; // Initialize groupRow object for this group
+	const groupRowData = derived(
+		[groupedData, columnSummary, props],
+		([$groupedData, $columnSummary, $props]) =>
+			Object.keys($groupedData).reduce((acc, groupName) => {
+				acc[groupName] = {}; // Initialize groupRow object for this group
 
-			for (const col of $props.columns) {
-				const id = col.id;
-				const colType = $columnSummary.find((d) => d.id === id)?.type ?? "string";
-				const totalAgg = col.totalAgg;
-				const weightCol = col.weightCol;
-				const rows = $groupedData[groupName];
-				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
-			}
+				for (const col of $props.columns) {
+					const id = col.id;
+					const colType = $columnSummary.find((d) => d.id === id)?.type ?? 'string';
+					const totalAgg = col.totalAgg;
+					const weightCol = col.weightCol;
+					const rows = $groupedData[groupName];
+					acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
+				}
 
-			return acc;
-		}, /** @type {Record<string, Record<string, string | number>>} */({}))
+				return acc;
+			}, /** @type {Record<string, Record<string, string | number>>} */ ({}))
 	);
 
 	/** @type {Record<string, boolean>} */
@@ -161,6 +184,142 @@ export function aggregateStores({ columnSummary, props, sortBy, data: _data, gro
 		groupedData,
 		groupRowData,
 		groupToggleStates,
-		sortedGroupNames,
+		sortedGroupNames
+	};
+}
+
+/** @param {Record<string, unknown>[]} data @param {string[]} selectedCols */
+function dataSubset(data, selectedCols) {
+	return data.map((obj) => {
+		const ret = /** @type {Record<string, unknown>} */ ({});
+		for (const key of selectedCols) {
+			ret[key] = obj[key];
+		}
+		return ret;
+	});
+}
+
+/**
+ * @typedef {Object} NonStoreTableDependents
+ * @property {Record<string, unknown>[]} data
+ * @property {number} rows
+ * @property {string} [link]
+ * @property {boolean} [showLinkCol]
+ */
+
+/**
+ * @typedef {Object} StoreTableDependents
+ * @property {import("svelte/store").Readable<DataTablePropStore>} props
+ */
+
+/** @param {ErrorWrapper & StoreTableDependents & NonStoreTableDependents} param0 */
+export function tableStateStores({
+	wrapError,
+	data: _data,
+	rows: _rows,
+	link: _link,
+	showLinkCol: _showLinkCol,
+	props
+}) {
+	const data = writable(_data);
+	const rows = writable(_rows);
+	/** @type {import("svelte/store").Writable<string | undefined>} */
+	const link = writable(_link);
+	/** @type {import("svelte/store").Writable<boolean | undefined>} */
+	const showLinkCol = writable(_showLinkCol);
+
+	const columnSummary = derived([data, link, showLinkCol], ([$data, $link, $showLinkCol]) => {
+		const summary = wrapError(() => getColumnSummary($data, 'array'));
+		if (!summary) return [];
+
+		for (let i = 0; i < summary.length; i++) {
+			summary[i].show = $showLinkCol === false && summary[i].id === $link ? false : true;
+		}
+		if (link) {
+			const linkColIndex = summary.findIndex((d) => d.id === $link);
+			if (linkColIndex !== -1 && !$showLinkCol) {
+				summary.splice(linkColIndex, 1);
+			}
+		}
+
+		const dateCols = summary.filter(
+			(d) => d.type === 'date' && !($data[0]?.[d.id] instanceof Date)
+		);
+		for (const col of dateCols) {
+			$data = convertColumnToDate($data, col.id);
+		}
+		// todo: is this needed?
+		data.set($data);
+
+		return summary;
+	});
+
+	const finalColumnOrder = derived([props], ([$props]) =>
+		getFinalColumnOrder(
+			$props.columns.map((d) => d.id),
+			$props.priorityColumns
+		)
+	);
+
+	const orderedColumns = derived([props, finalColumnOrder], ([$props, $finalColumnOrder]) =>
+		[...$props.columns].sort(
+			(a, b) => $finalColumnOrder.indexOf(a.id) - $finalColumnOrder.indexOf(b.id)
+		)
+	);
+
+	const index = writable(0);
+
+	/** @type {import("svelte/store").Writable<number | null>} */
+	const inputPage = writable(null);
+	const inputPageElWidth = derived(
+		[inputPage],
+		([$inputPage]) => `${($inputPage ?? 1).toString().length}ch`
+	);
+
+	const filteredData = writable(_data);
+	const totalRows = derived([filteredData], ([$filteredData]) => $filteredData.length);
+
+	const currentPage = derived([index, rows], ([$index, $rows]) =>
+		Math.ceil(($index + $rows) / $rows)
+	);
+	const currentPageElWidth = derived(
+		[currentPage],
+		([$currentPage]) => `${($currentPage ?? 1).toString().length}ch`
+	);
+
+	const displayedData = derived([filteredData, index, rows], ([$filteredData, $index, $rows]) =>
+		$filteredData.slice($index, $index + $rows)
+	);
+	const pageCount = derived([filteredData, rows], ([$filteredData, $rows]) =>
+		Math.ceil($filteredData.length / $rows)
+	);
+
+	const tableData = derived([data, props], ([$data, $props]) =>
+		dataSubset(
+			$data,
+			$props.columns.map((d) => d.id)
+		)
+	);
+
+	return {
+		/** @param {NonStoreTableDependents} param0 */
+		update({ data: _data, rows: _rows, link: _link, showLinkCol: _showLinkCol }) {
+			data.set(_data);
+			rows.set(_rows);
+			link.set(_link);
+			showLinkCol.set(_showLinkCol);
+		},
+		index,
+		inputPage,
+		inputPageElWidth,
+		currentPage,
+		currentPageElWidth,
+		displayedData,
+		pageCount,
+		tableData,
+		columnSummary,
+		orderedColumns,
+		totalRows,
+		filteredData
 	};
 }
