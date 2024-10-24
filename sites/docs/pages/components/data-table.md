@@ -224,17 +224,17 @@ order by total_sales desc
 ```svelte
 <DataTable data={categories}>
     <Column id=category/>
-    <Column id=sales title="Orders" contentType=sparkline sparkDateCol=date sparkValueCol=sales />
-    <Column id=sales title="Sales" contentType=sparkarea sparkDateCol=date sparkValueCol=sales sparkColor=#53768a/>
-    <Column id=sales title="AOV" contentType=sparkbar sparkDateCol=date sparkValueCol=sales sparkColor=#97ba99/>
+    <Column id=sales title="Orders" contentType=sparkline sparkX=date sparkY=sales />
+    <Column id=sales title="Sales" contentType=sparkarea sparkX=date sparkY=sales sparkColor=#53768a/>
+    <Column id=sales title="AOV" contentType=sparkbar sparkX=date sparkY=sales sparkColor=#97ba99/>
 </DataTable>
 ```
 
 <DataTable data={categories}>
     <Column id=category/>
-    <Column id=sales title="Orders" contentType=sparkline sparkDateCol=date sparkValueCol=sales />
-    <Column id=sales title="Sales" contentType=sparkarea sparkDateCol=date sparkValueCol=sales sparkColor=#53768a/>
-    <Column id=sales title="AOV" contentType=sparkbar sparkDateCol=date sparkValueCol=sales sparkColor=#97ba99/>
+    <Column id=sales title="Orders" contentType=sparkline sparkX=date sparkY=sales />
+    <Column id=sales title="Sales" contentType=sparkarea sparkX=date sparkY=sales sparkColor=#53768a/>
+    <Column id=sales title="AOV" contentType=sparkbar sparkX=date sparkY=sales sparkColor=#97ba99/>
 </DataTable>
 
 
@@ -1525,20 +1525,20 @@ Whether to display the delta as a 'chip', with a background color and border.
 `contentType=sparkbar`
 
 <PropListing
-    name=sparkDateCol
+    name=sparkX
     options="column from array cell"
 >
 
-Column within an array cell to use as the date for the spark viz. Arrays can be created inside a query using the `array_agg()` function from DuckDB
+Column within an array cell to use as the x-axis for the spark viz. Arrays can be created inside a query using the `array_agg()` function from DuckDB
 
 </PropListing>
 
 <PropListing
-    name=sparkValueCol
+    name=sparkY
     options="column from array cell"
 >
 
-Column within an array cell to use as the value for the spark viz. Arrays can be created inside a query using the `array_agg()` function from DuckDB
+Column within an array cell to use as the y-axis for the spark viz. Arrays can be created inside a query using the `array_agg()` function from DuckDB
 
 </PropListing>
 

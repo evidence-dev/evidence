@@ -83,24 +83,24 @@
 			id="sparkline"
 			title="Sparkline"
 			contentType="sparkline"
-			sparkDateCol="date"
-			sparkValueCol="value"
+			sparkX="date"
+			sparkY="value"
 			sparkColor="green"
 		/>
 		<Column
 			id="sparkline"
 			title="Sparkbar"
 			contentType="sparkbar"
-			sparkDateCol="date"
-			sparkValueCol="value"
+			sparkX="date"
+			sparkY="value"
 			sparkColor="navy"
 		/>
 		<Column
 			id="sparkline"
 			title="Sparkarea"
 			contentType="sparkarea"
-			sparkDateCol="date"
-			sparkValueCol="value"
+			sparkX="date"
+			sparkY="value"
 		/>
 	</DataTable>
 </Story>

@@ -107,8 +107,8 @@
 	export let sparkWidth = undefined;
 	export let sparkHeight = undefined;
 	export let sparkColor = undefined;
-	export let sparkDateCol = undefined;
-	export let sparkValueCol = undefined;
+	export let sparkX = undefined;
+	export let sparkY = undefined;
 	export let sparkYScale = false;
 	$: sparkYScale = sparkYScale === 'true' || sparkYScale === true;
 
@@ -166,8 +166,8 @@
 		sparkWidth,
 		sparkHeight,
 		sparkColor,
-		sparkDateCol,
-		sparkValueCol,
+		sparkX,
+		sparkY,
 		sparkYScale,
 		barColor,
 		negativeBarColor,

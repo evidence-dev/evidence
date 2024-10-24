@@ -259,8 +259,8 @@
 						<Sparkline
 							type="line"
 							data={[...row[column.id]]}
-							dateCol={column.sparkDateCol}
-							valueCol={column.sparkValueCol}
+							dateCol={column.sparkX}
+							valueCol={column.sparkY}
 							interactive="false"
 							color={column.sparkColor}
 							yScale={column.sparkYScale}
@@ -273,8 +273,8 @@
 						<Sparkline
 							type="bar"
 							data={[...row[column.id]]}
-							dateCol={column.sparkDateCol}
-							valueCol={column.sparkValueCol}
+							dateCol={column.sparkX}
+							valueCol={column.sparkY}
 							interactive="false"
 							color={column.sparkColor}
 							yScale={column.sparkYScale}
@@ -289,8 +289,8 @@
 						<Sparkline
 							type="area"
 							data={[...row[column.id]]}
-							dateCol={column.sparkDateCol}
-							valueCol={column.sparkValueCol}
+							dateCol={column.sparkX}
+							valueCol={column.sparkY}
 							interactive="false"
 							color={column.sparkColor}
 							yScale={column.sparkYScale}
