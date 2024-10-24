@@ -52,6 +52,17 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
+	/** @type {string[]|undefined} */
+	export let colorPalette = undefined;
+
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
+
+	/** @type {boolean} */
+	export let legend = true;
+
 	const chartType = 'Point Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -62,7 +73,26 @@
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Points data={loaded} {lat} {long} {...$$restProps} />
-	</BaseMap>
+	<div class="relative">
+		<BaseMap
+			{startingLat}
+			{startingLong}
+			{startingZoom}
+			{height}
+			{basemap}
+			{title}
+			{legendPosition}
+		>
+			<Points
+				data={loaded}
+				{lat}
+				{long}
+				{colorPalette}
+				{legendType}
+				{chartType}
+				{...$$restProps}
+				{legend}
+			/>
+		</BaseMap>
+	</div>
 </QueryLoad>

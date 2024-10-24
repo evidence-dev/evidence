@@ -38,14 +38,15 @@ select *, 'https://www.google.com/search?q=' || point_name as link_col from la_l
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
+<BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name value=sales basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
 
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
 ```svelte
 <BubbleMap 
     data={la_locations} 
-    lat=lat long=long 
+    lat=lat 
+    long=long 
     value=sales 
     valueFmt=usd 
     pointName=point_name 
@@ -279,6 +280,110 @@ where point_name = '${inputs.my_point_map.point_name}' OR '${inputs.my_point_map
     <Column id=sales fmt=usd/> 	
 </DataTable>
 
+### Legends
+
+```grouped_locations
+SELECT 
+  *, 
+  CASE 
+    WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
+    WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
+    WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
+    WHEN id BETWEEN 15 AND 19 THEN 'Shops'
+    WHEN id BETWEEN 20 AND 24 THEN 'Bars'
+    WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+    WHEN id BETWEEN 30 AND 34 THEN 'Banks'
+  END AS Category
+FROM la_locations
+```	
+#### Categorical Legend
+
+<BubbleMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    size=sales
+/>
+
+```svelte
+<BubbleMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    size=sales
+/>
+```
+
+#### Custom Colors
+Set custom legend colors using the `colorPalette` prop to match the number of categories; excess categorical options will default to standard colors.
+<BubbleMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    size=sales
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+/>
+
+```svelte
+<BubbleMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    size=sales
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+/>
+```
+
+#### Scalar Legend
+
+<BubbleMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    size=sales
+    valueFmt=usd
+/>
+
+```svelte
+<BubbleMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    size=sales
+    valueFmt=usd
+/>
+```
+
+#### Custom Colors
+Define scalar legend colors using the `colorPalette` prop, allowing specified colors to create a gradient based on the range of values.
+<BubbleMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    size=sales
+    colorPalette={['#C65D47', '#4A8EBA']}
+    valueFmt=usd
+/>
+
+```svelte
+<BubbleMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    size=sales
+    colorPalette={['#C65D47', '#4A8EBA']}
+    valueFmt=usd
+/>
+```
+
 ## Options
 
 ### Bubbles
@@ -373,6 +478,30 @@ options="number"
 defaultValue="max of value column"
 >
 Maximum value to use for the color scale.
+</PropListing>
+
+### Legend
+
+<PropListing
+    name="legend"
+    description="Turns legend on or off"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+name="legendType"
+options={['categorical', 'scalar']}
+>
+Appends a categorical or scalar legend to the map
+</PropListing>
+
+<PropListing
+name="legendPosition"
+options={['bottomLeft', 'topLeft','bottomRight', 'topRight']}
+defaultValue='bottomLeft'
+>
+Determines the legend's position on the map, with options provided
 </PropListing>
 
 ### Interactivity

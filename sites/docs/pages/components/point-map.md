@@ -225,6 +225,7 @@ where point_name = '${inputs.my_point_map.point_name}' OR '${inputs.my_point_map
 ```
 
 #### Filtered Data
+
 <DataTable data={filtered_locations}>  	
     <Column id=id/> 	
     <Column id=point_name/> 	
@@ -233,9 +234,106 @@ where point_name = '${inputs.my_point_map.point_name}' OR '${inputs.my_point_map
     <Column id=sales fmt=usd/> 	
 </DataTable>
 
+### Legends
+
+```grouped_locations
+SELECT 
+  *, 
+  CASE 
+    WHEN id BETWEEN 0 AND 4 THEN 'Hotels'
+    WHEN id BETWEEN 5 AND 9 THEN 'Restaurants'
+    WHEN id BETWEEN 10 AND 14 THEN 'Golf Courses'
+    WHEN id BETWEEN 15 AND 19 THEN 'Shops'
+    WHEN id BETWEEN 20 AND 24 THEN 'Bars'
+    WHEN id BETWEEN 25 AND 29 THEN 'Entertainment'
+    WHEN id BETWEEN 30 AND 34 THEN 'Banks'
+  END AS Category
+FROM la_locations
+```	
+#### Categorical Legend
+
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+/>
+
+```svelte
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+/>
+```
+
+#### Custom Colors
+Set custom legend colors using the `colorPalette` prop to match the number of categories; excess categorical options will default to standard colors.
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+/>
+
+```svelte
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+/>
+```
+
+#### Scalar Legend
+
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    valueFmt=usd
+/>
+
+```svelte
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    valueFmt=usd
+/>
+```
+
+#### Custom Colors
+Define scalar legend colors using the `colorPalette` prop, allowing specified colors to create a gradient based on the range of values.
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    valueFmt=usd
+    colorPalette={['#C65D47', '#4A8EBA']}
+/>
+
+```svelte
+<PointMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    valueFmt=usd
+    colorPalette={['#C65D47', '#4A8EBA']}
+/>
+```
+
 ## Options
 
 ### Points
+
 <PropListing
 name="data"
 required
@@ -286,6 +384,30 @@ name="max"
 options="number"
 >
 Maximum value to use for the color scale.
+</PropListing>
+
+### Legend
+
+<PropListing
+    name="legend"
+    description="Turns legend on or off"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+name="legendType"
+options={['categorical', 'scalar']}
+>
+Appends a categorical or scalar legend to the map
+</PropListing>
+
+<PropListing
+name="legendPosition"
+options={['bottomLeft', 'topLeft','bottomRight', 'topRight']}
+defaultValue='bottomLeft'
+>
+Determines the legend's position on the map, with options provided
 </PropListing>
 
 ### Interactivity

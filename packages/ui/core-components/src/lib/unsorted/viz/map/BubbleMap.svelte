@@ -58,6 +58,15 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
+	/** @type {string[]|undefined} */
+	export let colorPalette = undefined;
+	/** @type {boolean} */
+	export let legend = true;
+
 	const chartType = 'Bubble Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -68,7 +77,16 @@
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Bubbles data={loaded} {lat} {long} {size} {...$$restProps} />
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {legendPosition}>
+		<Bubbles
+			data={loaded}
+			{lat}
+			{long}
+			{size}
+			{colorPalette}
+			{legendType}
+			{legend}
+			{...$$restProps}
+		/>
 	</BaseMap>
 </QueryLoad>
