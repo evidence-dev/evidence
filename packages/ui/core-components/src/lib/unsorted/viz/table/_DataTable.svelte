@@ -557,7 +557,7 @@
 							bind:value={$inputPage}
 							on:keyup={() => goToPage(($inputPage ?? 1) - 1)}
 							on:change={() => goToPage(($inputPage ?? 1) - 1)}
-							placeholder={$currentPage}
+							placeholder={String($currentPage)}
 						/>
 						/
 						<span class="page-count ml-1">{$pageCount.toLocaleString()}</span>

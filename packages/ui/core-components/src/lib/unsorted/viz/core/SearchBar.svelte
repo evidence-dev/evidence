@@ -7,7 +7,8 @@
 	import { Search } from '@steeze-ui/tabler-icons';
 
 	export let placeholder = 'Search';
-	export let value;
+	export let value = '';
+	/** @type {(value: string) => void} */
 	export let searchFunction;
 </script>
 
