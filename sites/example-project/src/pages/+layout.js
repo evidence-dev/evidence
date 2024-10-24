@@ -31,7 +31,7 @@ const loadDB = async () => {
 	await profile(initDB);
 
 	if (Object.keys(renderedFiles ?? {}).length === 0) {
-		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
+		console.warn(`No sources found, execute "npm run sources" to generate`.trim());
 		if (dev) {
 			toasts.add(
 				{
