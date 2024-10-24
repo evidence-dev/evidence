@@ -66,7 +66,7 @@
 
 <dialog
 	use:popup={open}
-	class="w-[90vw] rounded-lg fixed border border-base-300 shadow-lg bg-base-100 {open
+	class="w-[90vw] rounded-lg fixed border border-base-300 text-base-content shadow-lg bg-base-100 {open
 		? 'slideIn'
 		: 'slideOut'}"
 >
