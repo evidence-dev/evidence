@@ -6,7 +6,6 @@
 	import { X } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { createEventDispatcher } from 'svelte';
-	import Button from '../../atoms/button/Button.svelte';
 	const dispatch = createEventDispatcher();
 	export let open = false;
 	export let title = '';
@@ -18,9 +17,12 @@
 	};
 </script>
 
-<Button on:click={() => isOpen()} variant="info" outline>
+<button
+	on:click={() => isOpen()}
+	class="font-ui font-normal text-base no-underline border border-info/20 bg-info/10 my-5 rounded-lg py-2 px-3 inline-block transition hover:ease-in hover:border-info hover:bg-info/20 hover:no-underline focus:border-info"
+>
 	{buttonText}
-</Button>
+</button>
 {#if open}
 	<div class="modal z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center lg:p-0">
 		<div class="fixed inset-0 bg-base-100/70" />
