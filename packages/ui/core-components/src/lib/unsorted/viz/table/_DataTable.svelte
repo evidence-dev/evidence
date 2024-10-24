@@ -275,7 +275,7 @@
 	// ---------------------------------------------------------------------------------------
 
 	$: sortClick = (column) => {
-		if (sortObj.col == column) {
+		if (sortObj.col === column) {
 			// If the clicked column is the same as inital sort column, switch the sort direction
 			sortObj.ascending = !sortObj.ascending;
 		} else {
