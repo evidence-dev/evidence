@@ -189,6 +189,7 @@ const echartsAction = (node, options) => {
 	const updateChart = (newOptions) => {
 		if (newOptions.theme !== options.theme) {
 			chart.dispose();
+			options = newOptions;
 			initChart();
 		}
 
