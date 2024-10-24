@@ -116,8 +116,8 @@
 	$: sparkYScale = sparkYScale === 'true' || sparkYScale === true;
 
 	// Bar Viz:
-	export let barColor = '#8ad3ed';
-	export let negativeBarColor = '#e74c3c';
+	export let barColor = 'hsla(207, 69%, 79%, 1)';
+	export let negativeBarColor = 'rgb(252 165 165)';
 	export let backgroundColor = 'white';
 	export let hideLabels = false;
 	$: hideLabels = hideLabels === 'true' || hideLabels === true;

@@ -37,25 +37,23 @@
 <Story name="Bar Viz">
 	{@const data = Query.create(
 		`
-	SELECT 'a' as category, 100 as value
+	SELECT 'a' as category, 10000 as value
 	union all
-	SELECT 'a' as category, 80 as value
+	SELECT 'a' as category, 8000 as value
 	union all
-	SELECT 'a' as category, 70 as value
+	SELECT 'a' as category, -7000 as value
 	union all
-	SELECT 'b' as category, 30 as value
+	SELECT 'b' as category, 3000 as value
 	union all
-	SELECT 'b' as category, 24 as value
+	SELECT 'b' as category, 2400 as value
 	union all
-	SELECT 'b' as category, 12 as value
+	SELECT 'b' as category, 1200 as value
 	`,
 		query
 	)}
 	<DataTable {data}>
 		<Column id="category" />
-		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" />
-		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" barColor="lightgreen" />
-		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" barColor="pink" />
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" align=left/>
 	</DataTable>
 </Story>
 

@@ -235,8 +235,18 @@
 						<!-- Display label -->
 						<div
 							class:invisible={column.hideLabels}
-							style="position: relative; z-index: 2; padding-left: 4px; padding-right: 4px; text-align: {column.align ??
-								'left'}; width: 100%;"
+							style="
+								position: relative; 
+								z-index: 2; 
+								padding-left: 5px; 
+								padding-right: 4px; 
+								text-align: {column.align ??
+								'left'};
+								width: 100%;
+								left: {column_min <
+								0
+									? (Math.abs(column_min) / (Math.abs(column_min) + column_max)) * 100 + '%'
+									: '0'};"
 						>
 							{formatValue(row[column.id], column_format, useCol.columnUnitSummary)}
 						</div>
