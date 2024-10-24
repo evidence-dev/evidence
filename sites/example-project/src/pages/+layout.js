@@ -38,7 +38,7 @@ const loadDB = async () => {
 					id: 'MissingManifest',
 					status: 'warning',
 					title: 'No Sources Found',
-					message: 'Without a manifest file, no data is available'
+					message: 'Configure and run sources to include data in your project.'
 				},
 				10000
 			);
