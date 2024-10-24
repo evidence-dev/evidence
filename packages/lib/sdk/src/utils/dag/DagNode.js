@@ -52,7 +52,6 @@ export class DagNode {
 	 * @param {unknown} [container]
 	 */
 	constructor(name, container) {
-		console.log("<< Constructed DagNode >>", name)
 		this.name = name;
 		this.#container = container;
 		this.storeMixin.publish(this);

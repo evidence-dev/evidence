@@ -316,14 +316,15 @@ export class Query {
 	/** @returns {MaybePromise<Query<RowType>>} */
 	#fetchData = () => {
 		if (this.#sharedDataPromise.state !== 'init') {
-			return this.#sharedDataPromise.promise;
+			return this.#sharedDataPromise.value ?? this.#sharedDataPromise.promise;
 		}
 		if (this.#error) {
 			this.#debug('data error', 'Refusing to execute data query, store has an error state');
-			return this.#sharedDataPromise.promise;
+			return this.#sharedDataPromise.value ?? this.#sharedDataPromise.promise;
 		}
 		if (this.#sharedDataPromise.state !== 'init' || this.opts.noResolve)
-			return this.#sharedDataPromise.promise;
+			return this.#sharedDataPromise.value ?? this.#sharedDataPromise.promise;
+
 		this.#sharedDataPromise.start();
 
 		const dataQuery =
@@ -340,6 +341,7 @@ ${this.text.trim()}
 		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
+				console.log(this.originalText, result, this.#value)
 				this.#data = result;
 				const after = performance.now();
 
@@ -373,9 +375,17 @@ ${this.text.trim()}
 		return resolved;
 	};
 	fetch = () => {
+		const data = this.#fetchData();
 		const cols = this.#fetchColumns();
+
 		if (
-			cols instanceof Promise &&
+			this.#sharedDataPromise.state === 'resolved' &&
+			this.#sharedColumnsPromise.state === 'resolved' &&
+			this.#sharedLengthPromise.state === 'resolved'
+		)
+			return this.value;
+		if (
+			(cols instanceof Promise || data instanceof Promise) &&
 			/* noResolve will always return a promise, even when fetch is synchronous */
 			!this.opts.noResolve
 		) {
@@ -429,7 +439,7 @@ ${this.text.trim()}
 			this.#length = this.#data.length;
 			// Done
 			this.#sharedLengthPromise.resolve(this);
-			return this.#sharedLengthPromise.promise;
+			return this.#sharedLengthPromise.value ?? this.#sharedLengthPromise.promise;
 		}
 		if (this.#error) {
 			this.#debug(
@@ -441,7 +451,7 @@ ${this.text.trim()}
 			return this.#sharedLengthPromise.value ?? this.#sharedLengthPromise.promise;
 		}
 		if (this.#sharedLengthPromise.state !== 'init' || this.opts.noResolve)
-			return this.#sharedLengthPromise.promise;
+			return this.#sharedLengthPromise.value ?? this.#sharedLengthPromise.promise;
 
 		this.#sharedLengthPromise.start();
 
@@ -498,13 +508,15 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 				'Refusing to execute columns query, store has an error state',
 				this.#error
 			);
+
 			// Return the value or the promise if not resolved
 			return this.#sharedColumnsPromise.value ?? this.#sharedColumnsPromise.promise;
 		}
 
 		// Store is in some started state
-		if (this.#sharedColumnsPromise.state !== 'init' || this.opts.noResolve)
-			return this.#sharedColumnsPromise.promise;
+		if (this.#sharedColumnsPromise.state !== 'init' || this.opts.noResolve) {
+			return this.#sharedColumnsPromise.value ?? this.#sharedColumnsPromise.promise;
+		}
 		// Indicate that work has started on this promise
 		this.#sharedColumnsPromise.start();
 
@@ -741,10 +753,11 @@ DESCRIBE ${this.text.trim()}
 	 *
 	 * @param {string} id
 	 * @param {import('../types.js').Runner<any>} execFn
-	 * @param {import('../types.js').QueryReactivityOpts} opts
+	 * @param {import('../types.js').QueryReactivityOpts} reactiveOpts
+	 * @param {Omit<import("../types.js").QueryOpts<any>, "id">} opts
 	 */
-	static create = (id, execFn, opts) => {
-		const { dagManager, callback, initialQuery } = opts;
+	static create = (id, execFn, reactiveOpts, opts) => {
+		const { dagManager, callback, initialQuery } = reactiveOpts;
 		/** @type {import('../types.js').CreateQuery<any>} */
 		const createFn = Query.#factory;
 
@@ -758,7 +771,7 @@ DESCRIBE ${this.text.trim()}
 
 		const unpackDeps = () => {
 			const gather = dagManager.track();
-			console.log(`<< ${textFn()} >>`);
+			textFn();
 			const deps = gather();
 			const dags = dagManager.resultToDagNode(deps.map((d) => d.toString()));
 
@@ -773,24 +786,35 @@ DESCRIBE ${this.text.trim()}
 			(epochId, defer) => {
 				activeQuery?.publish(`Dag Epoch ${epochId.description}`);
 				const targetChangeIdx = ++changeIdx;
-				console.log(`>> ${textFn()} <<`);
-				console.log([...dagNode.parents.values()][0].container)
-				// console.log(dagManager.dagMap.get("hello"))
-				const nextQuery = Query.#factory(textFn(), () => [], { id, dagNode });
+
+				const nextQuery = createFn(textFn(), execFn, { ...opts, id, dagNode });
 				Query.#debugStatic(
 					`Dag Update for "${id}" triggered in ${epochId.description} (${changeIdx})`
 				);
-				const fetch = nextQuery.fetch();
 
+				if (!activeQuery) {
+					// This is the first query, so we want to set it immediately even if it is a promise
+					activeQuery = nextQuery;
+					callback(nextQuery);
+					return;
+				}
+				const fetch = nextQuery.fetch();
 				if (fetch instanceof Promise) {
 					// Async Query Mode
 					// We want to wait until everybody is ready before we update the query
-					// TODO: Do we want to make this a racing promise to prevent everything from hanging
-					// on one large query?
+					Promise.race([
+						fetch,
+						new Promise((resolve) => {
+							setTimeout(resolve, 500);
+						})
+					]).then(() => {
+						if (changeIdx !== targetChangeIdx) return;
+						activeQuery = nextQuery;
+						callback(nextQuery);
+					});
 				} else {
-					callback(nextQuery);
 					activeQuery = nextQuery;
-					// Sync Query Mode
+					callback(nextQuery);
 				}
 
 				if (hasUnsetInput()) {

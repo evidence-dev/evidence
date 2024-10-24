@@ -28,6 +28,7 @@ export const AccessTrack = (root, name) => {
 			return () => {
 				const result = Array.from(keys);
 				keys.clear();
+				listening = false;
 				return result;
 			};
 		}
@@ -35,7 +36,7 @@ export const AccessTrack = (root, name) => {
 
 	const result = new Proxy(root, {
 		ownKeys(target) {
-			return [...Object.keys(target), ...Object.keys(mergeObj)];
+			return Array.from(new Set([...Object.keys(target), ...Object.keys(mergeObj)]));
 		},
 		getOwnPropertyDescriptor(target, prop) {
 			if (prop in mergeObj) {

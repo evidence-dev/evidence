@@ -103,8 +103,9 @@ export class Input extends InputValue {
 		const dagTriggerOnModify = (obj) =>
 			new Proxy(obj, {
 				set: (target, prop, value) => {
-					this.__dag?.trigger();
-					return Reflect.set(target, prop, value);
+					const result = Reflect.set(target, prop, value);
+					if (result) this.__dag?.trigger();
+					return result;
 				}
 			});
 

@@ -17,7 +17,9 @@ export class InputStore {
 	update = this.#storeMixin.update.bind(this.#storeMixin);
 	// This is handled by the proxy
 	/** @type {() => () => string[]} */
-	track = () => {throw new Error()}
+	track = () => {
+		throw new Error();
+	};
 
 	/** @type {import("../dag/DagNode.js").ActiveDagNode} */
 	__dag;
