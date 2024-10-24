@@ -32,15 +32,17 @@ const loadDB = async () => {
 
 	if (Object.keys(renderedFiles ?? {}).length === 0) {
 		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
-		toasts.add(
-			{
-				id: 'MissingManifest',
-				status: 'warning',
-				title: 'Missing Manifest',
-				message: 'Without a manifest file, no data is available'
-			},
-			10000
-		);
+		if (dev) {
+			toasts.add(
+				{
+					id: 'MissingManifest',
+					status: 'warning',
+					title: 'Missing Manifest',
+					message: 'Without a manifest file, no data is available'
+				},
+				10000
+			);
+		}
 	} else {
 		await profile(setParquetURLs, renderedFiles);
 		await profile(updateSearchPath, Object.keys(renderedFiles));
