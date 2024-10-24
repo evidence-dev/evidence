@@ -56,10 +56,10 @@
 	}
 
 	const containerStyles = {
-		bottomLeft: 'rounded-t rounded-br',
-		bottomRight: 'rounded-t rounded-bl',
-		topLeft: 'rounded-b rounded-tr',
-		topRight: 'rounded-b rounded-tl '
+		bottomLeft: 'rounded-t rounded-br shadow-bottom-right',
+		bottomRight: 'rounded-t rounded-bl shadow-bottom-left',
+		topLeft: 'rounded-b rounded-tr z-[405] shadow-bottom',
+		topRight: 'rounded-b rounded-tl z-[405] shadow-bottom'
 	};
 </script>
 
@@ -71,7 +71,7 @@
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
-		<div class="bg-white {containerStyles[legendPosition]}">
+		<div class="bg-white background-blur {containerStyles[legendPosition]}">
 			{#if $categoricalLegendData.length > 0}
 				<div class="flex flex-wrap hover:cursor-default">
 					{#each $categoricalLegendData as legend}
@@ -105,8 +105,8 @@
 			{/if}
 		</div>
 		<div
-			class="bg-white flex justify-center w-fit transition-[border-radius] ease-in-out
-			{legendPosition.includes('bottom') ? 'translate-y-[-0.1px]' : 'translate-y-[0.1px]'}"
+			class="bg-white background-blur flex justify-center w-fit transition-[border-radius] ease-in-out
+			{legendPosition.includes('bottom') ? 'shadow-bottom' : ''}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}
 			class:rounded-b={!hideLegend && legendPosition.includes('bottom')}
@@ -120,16 +120,20 @@
 <style>
 	/* custom shadow for legend toggle */
 	.shadow-bottom {
-		box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 3px 3px 0px rgba(0, 0, 0, 0.1);
 	}
 
 	/* Bottom-Right shadow */
 	.shadow-bottom-right {
-		box-shadow: 3px 3px 5px 0 rgb(0 0 0 / 0.1);
+		box-shadow:
+			3px 3px 5px 0 rgb(0 0 0 / 0.1),
+			2px 2px 4px -1px rgb(0 0 0 / 0.1);
 	}
 
 	/* Bottom-Left shadow */
 	.shadow-bottom-left {
-		box-shadow: -3px 3px 5px 0 rgb(0 0 0 / 0.1);
+		box-shadow:
+			-3px 3px 5px 0 rgb(0 0 0 / 0.1),
+			-2px 2px 4px -1px rgb(0 0 0 / 0.1);
 	}
 </style>
