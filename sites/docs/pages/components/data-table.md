@@ -173,6 +173,92 @@ select date '2020-05-26' as date, 100 as value_usd, 0.011 as yoy, 'Zimbabwe' as 
 </DataTable>
 
 
+### Sparklines
+
+Sparklines require an array inside a cell of your table. You can create an array using the `array_agg()` function in DuckDB syntax. Below is an example query using this function, and the resulting DataTable.
+
+<CodeBlock language=sql source={`WITH monthly_sales AS (
+    SELECT 
+        category,
+        DATE_TRUNC('month', order_datetime) AS date,
+        SUM(sales) AS monthly_sales
+    FROM 
+        needful_things.orders
+    GROUP BY 
+        category, DATE_TRUNC('month', order_datetime)
+)
+SELECT 
+    category,
+    sum(monthly_sales) as total_sales,
+    ARRAY_AGG({'date': date, 'sales': monthly_sales}) AS sales
+FROM 
+    monthly_sales
+GROUP BY 
+    category
+order by total_sales desc`}
+/>
+
+
+```sql categories
+WITH monthly_sales AS (
+    SELECT 
+        category,
+        DATE_TRUNC('month', order_datetime) AS date,
+        SUM(sales) AS monthly_sales
+    FROM 
+        needful_things.orders
+    GROUP BY 
+        category, DATE_TRUNC('month', order_datetime)
+)
+SELECT 
+    category,
+    sum(monthly_sales) as total_sales,
+    ARRAY_AGG({'date': date, 'sales': monthly_sales}) AS sales
+FROM 
+    monthly_sales
+GROUP BY 
+    category
+order by total_sales desc
+```
+
+```svelte
+<DataTable data={categories}>
+    <Column id=category/>
+    <Column id=sales title="Orders" contentType=sparkline sparkX=date sparkY=sales />
+    <Column id=sales title="Sales" contentType=sparkarea sparkX=date sparkY=sales sparkColor=#53768a/>
+    <Column id=sales title="AOV" contentType=sparkbar sparkX=date sparkY=sales sparkColor=#97ba99/>
+</DataTable>
+```
+
+<DataTable data={categories}>
+    <Column id=category/>
+    <Column id=sales title="Orders" contentType=sparkline sparkX=date sparkY=sales />
+    <Column id=sales title="Sales" contentType=sparkarea sparkX=date sparkY=sales sparkColor=#53768a/>
+    <Column id=sales title="AOV" contentType=sparkbar sparkX=date sparkY=sales sparkColor=#97ba99/>
+</DataTable>
+
+
+### Bar Chart Column
+
+```svelte
+<DataTable data={country_summary}>
+	<Column id=country />
+	<Column id=category align=center/>
+	<Column id=value_usd title="Sales" contentType=bar/>
+  	<Column id=value_usd title="Sales" contentType=bar barColor=#aecfaf/>
+  	<Column id=value_usd title="Sales" contentType=bar barColor=#ffe08a backgroundColor=#ebebeb/>
+</DataTable>
+```
+
+<DataTable data={country_summary}>
+	<Column id=country />
+	<Column id=category align=center/>
+	<Column id=value_usd title="Sales" contentType=bar/>
+  	<Column id=value_usd title="Sales" contentType=bar barColor=#aecfaf/>
+  	<Column id=value_usd title="Sales" contentType=bar barColor=#ffe08a backgroundColor=#ebebeb/>
+</DataTable>
+
+
 ### Total Row
 
 Default total aggregation is `sum`
@@ -1428,6 +1514,112 @@ End of the range for 'neutral' values, which appear in grey font with a dash ins
 >
 
 Whether to display the delta as a 'chip', with a background color and border.
+
+</PropListing>
+
+
+### Sparklines
+
+`contentType=sparkline`
+`contentType=sparkarea`
+`contentType=sparkbar`
+
+<PropListing
+    name=sparkX
+    options="column from array cell"
+>
+
+Column within an array cell to use as the x-axis for the spark viz. Arrays can be created inside a query using the `array_agg()` function from DuckDB
+
+</PropListing>
+
+<PropListing
+    name=sparkY
+    options="column from array cell"
+>
+
+Column within an array cell to use as the y-axis for the spark viz. Arrays can be created inside a query using the `array_agg()` function from DuckDB
+
+</PropListing>
+
+<PropListing
+    name=sparkYScale
+    options={['true', 'false']}
+    defaultValue="false"
+>
+
+Whether to truncate the y-axis
+
+</PropListing>
+
+<PropListing
+    name=sparkHeight
+    options="number"
+    defaultValue=18
+>
+
+Height of the spark viz. Making the viz taller will increase the height of the full table row
+
+</PropListing>
+
+<PropListing
+    name=sparkWidth
+    options="number"
+    defaultValue=90
+>
+
+Width of the spark viz
+
+</PropListing>
+
+<PropListing
+    name=sparkColor
+    options={[ 'Hex color code', 'css color name']}
+>
+
+Color of the spark viz
+
+</PropListing>
+
+### Bar Chart Column
+
+`contentType=bar`
+
+<PropListing
+    name=barColor
+    options={[ 'Hex color code', 'css color name']}
+>
+
+Color of the bars. Affects positive bars only. See `negativeBarColor` to change color of negative bars
+
+</PropListing>
+
+<PropListing
+    name=negativeBarColor
+    options={[ 'Hex color code', 'css color name']}
+>
+
+Color of negative bars
+
+</PropListing>
+
+<PropListing
+    name=hideLabels
+    options={['true', 'false']}
+    defaultValue="false"
+>
+
+Whether to hide the data labels on the bars
+
+</PropListing>
+
+<PropListing
+    name=backgroundColor
+    options={[ 'Hex color code', 'css color name']}
+    defaultValue="transparent"
+>
+
+Background color for bar chart
 
 </PropListing>
 
