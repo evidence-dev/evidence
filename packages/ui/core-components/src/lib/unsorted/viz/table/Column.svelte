@@ -78,19 +78,19 @@
 
 	const { theme } = ensureThemeStores();
 
-	let colorList = {
-		green: [$theme['base-100'], 'hsla(129, 33%, 57%,1)'],
-		red: [$theme['base-100'], 'hsla(0, 56%, 56%,1)'],
-		blue: [$theme['base-100'], 'hsla(198, 56%, 56%,1)']
+	const scaleColorMap = {
+		green: 'hsla(129, 33%, 57%,1)',
+		red: 'hsla(0, 56%, 56%,1)',
+		blue: 'hsla(198, 56%, 56%,1)'
 	};
 
 	let colorPalette;
-	if (scaleColor instanceof Array) {
-		colorPalette = scaleColor;
-	} else {
-		colorPalette = colorList[scaleColor];
-		if (colorPalette == undefined) {
-			colorPalette = [$theme['base-100'], scaleColor];
+	$: {
+		if (scaleColor instanceof Array) {
+			colorPalette = scaleColor;
+		} else {
+			const color = scaleColorMap[scaleColor] ?? scaleColor;
+			colorPalette = [$theme['base-100'], color];
 		}
 	}
 
