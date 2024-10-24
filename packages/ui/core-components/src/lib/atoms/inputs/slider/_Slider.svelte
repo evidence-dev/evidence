@@ -11,6 +11,7 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
+	import { toNumber } from '$lib/utils.js';
 
 	/////
 	// Component Things
@@ -63,11 +64,17 @@
 	export let hideDuringPrint = true;
 	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
 
-	/** @type {number} */
+	/** @type {number | string} */
 	export let defaultValue = 0;
 
 	/** @type {[number]} */
-	let value = [defaultValue];
+	let value = [0];
+
+	if (typeof defaultValue === 'number') {
+		value = [defaultValue];
+	} else if (toNumber(defaultValue)) {
+		value = [toNumber(defaultValue)];
+	}
 
 	/** @type {string | undefined} */
 	export let fmt = undefined;
@@ -90,13 +97,60 @@
 	$: sizeClass = renderSize(size);
 
 	let format_object;
-	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
+	if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
 
 	// Query data integration
 	export let data = null;
-	$: if (data) {
-		console.log(data);
+
+	let error;
+
+	let strictBuild;
+
+	export let maxColumn = undefined;
+	export let minColumn = undefined;
+
+	let initialized = false;
+
+	if (!initialized) {
+		try {
+			error = undefined;
+			if (data) {
+				if (typeof data == 'string') {
+					throw Error(`Received: data=${data}, expected: data={${data}}`);
+				}
+
+				if (!Array.isArray(data)) {
+					// Accept bare objects
+					data = [data];
+				}
+
+				if (maxColumn && data[0]?.[maxColumn]) {
+					max = data[0][maxColumn];
+				}
+
+				if (minColumn && data[0]?.[minColumn]) {
+					min = data[0][minColumn];
+				}
+
+				// Only set value on initial mount
+				if (typeof defaultValue === 'string' && data[0]?.[defaultValue]) {
+					value = [data[0][defaultValue]];
+				}
+				initialized = true;
+			} else {
+				throw Error(
+					'No data provided. If you referenced a query result, check that the name is correct.'
+				);
+			}
+		} catch (e) {
+			error = e.message;
+			const setTextRed = '\x1b[31m%s\x1b[0m';
+			console.error(setTextRed, `Error in Value: ${error}`);
+			if (strictBuild) {
+				throw error;
+			}
+		}
 	}
 
 	// Query data integration

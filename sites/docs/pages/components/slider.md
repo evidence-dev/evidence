@@ -156,10 +156,23 @@ Sets the minimum value on the slider. Negative Values accepted.
     options=number
     defaultValue=100
 >
-
 Sets the maximum value on the slider. This value must be larger than the min.
-
 </PropListing>
+<PropListing
+    name="data"
+    description="Query name, wrapped in curly braces"
+    options="query name"
+/>
+<PropListing
+    name="maxColumn"
+    description="Takes the first value of a column and assigns it to the max value"
+    options="string - column name"
+/>
+<PropListing
+    name="minColumn"
+    description="Takes the first value of a column and assigns it to the min value"
+    options="string - column name"
+/>
 <PropListing 
     name="step"
     options=number
