@@ -64,7 +64,7 @@
 		{/if}
 		<input
 			bind:value
-			class="font-medium border border-base-300 bg-base-100 p-1 mt-2 pr-5 h-8 rounded-md px-3 sm:text-xs flex flex-row items-center max-w-fit bg-transparent cursor-text bg-right bg-no-repeat focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-content shadow-sm text-base"
+			class="font-medium border border-base-300 bg-base-100 p-1 mt-2 pr-5 h-8 rounded-md px-3 sm:text-xs flex flex-row items-center max-w-fit bg-transparent cursor-text bg-right bg-no-repeat focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-content-muted shadow-sm text-base"
 			{placeholder}
 		/>
 	</div>
