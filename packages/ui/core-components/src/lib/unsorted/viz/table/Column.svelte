@@ -10,7 +10,7 @@
 
 	let error;
 
-	export let identifier = Symbol();
+	let identifier = Symbol();
 	export let id;
 
 	/**
@@ -80,7 +80,7 @@
 		blue: ['white', 'hsla(198, 56%, 56%,1)']
 	};
 
-	export let colorPalette;
+	let colorPalette;
 	if (scaleColor instanceof Array) {
 		colorPalette = scaleColor;
 	} else {
