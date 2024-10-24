@@ -71,42 +71,42 @@
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
-		<div class="bg-white {containerStyles[legendPosition]}">
-			{#if $categoricalLegendData.length > 0}
-				<div class="flex flex-wrap hover:cursor-default">
-					{#each $categoricalLegendData as legend}
-						<div
-							class="border-l first:border-none flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-2 truncate {multiLegend
-								? 'w-1/2'
-								: 'max-w-48'} {hideLegend ? ' py-0' : ' py-1'}"
-						>
-							<CategoricalLegend
-								{height}
-								{legend}
-								{handleLegendToggle}
-								{hideLegend}
-								{multiLegend}
-								{capitalize}
-							/>
-						</div>
-					{/each}
-				</div>
-			{/if}
-			{#if $scalarLegendData.length > 0}
-				{#each $scalarLegendData as legend}
+		<!-- <div class="bg-white {containerStyles[legendPosition]}"> -->
+		{#if $categoricalLegendData.length > 0}
+			<div class="flex flex-wrap hover:cursor-default">
+				{#each $categoricalLegendData as legend}
 					<div
-						class="border-t first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
-							? 'py-0 border-none'
-							: 'py-1'}"
+						class="bg-white border-l first:border-none flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-2 truncate {multiLegend
+							? 'w-1/2'
+							: 'max-w-48'} {hideLegend ? ' py-0' : ' py-1'}"
 					>
-						<ScalarLegend {legend} {handleLegendToggle} {hideLegend} {multiLegend} {capitalize} />
+						<CategoricalLegend
+							{height}
+							{legend}
+							{handleLegendToggle}
+							{hideLegend}
+							{multiLegend}
+							{capitalize}
+						/>
 					</div>
 				{/each}
-			{/if}
-		</div>
+			</div>
+		{/if}
+		{#if $scalarLegendData.length > 0}
+			{#each $scalarLegendData as legend}
+				<div
+					class="bg-white border-t first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
+						? 'py-0 border-none'
+						: 'py-1'}"
+				>
+					<ScalarLegend {legend} {handleLegendToggle} {hideLegend} {multiLegend} {capitalize} />
+				</div>
+			{/each}
+		{/if}
+		<!-- </div> -->
 		<div
 			class="bg-white flex justify-center w-fit transition-[border-radius] ease-in-out
-			{legendPosition.includes('bottom') ? '' : ''}"
+			{legendPosition.includes('bottom') ? ' ' : ''}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}
 			class:rounded-b={!hideLegend && legendPosition.includes('bottom')}
@@ -125,9 +125,7 @@
 
 	/* Bottom-Right shadow */
 	.shadow-bottom-right {
-		box-shadow:
-			3px 3px 5px 0 rgb(0 0 0 / 0.1),
-			2px 2px 4px -1px rgb(0 0 0 / 0.1);
+		box-shadow: 3px 3px 5px 0 rgb(0 0 0 / 0.1);
 	}
 
 	/* Bottom-Left shadow */
