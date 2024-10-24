@@ -238,15 +238,15 @@
 							style="
 								position: relative; 
 								z-index: 2; 
-								padding-left: 5px; 
+								padding-left: 4px; 
 								padding-right: 4px; 
-								text-align: {column.align ??
-								'left'};
-								width: 100%;
-								left: {column_min <
-								0
-									? (Math.abs(column_min) / (Math.abs(column_min) + column_max)) * 100 + '%'
-									: '0'};"
+								text-align: {column.align ?? 'left'};
+								width: {(Math.abs(column_max) /
+								((column_min < 0 ? Math.abs(column_min) : 0) + Math.abs(column_max))) *
+								100}%;
+								left: {column_min < 0 && column_max >= 0
+								? (Math.abs(column_min) / (Math.abs(column_min) + column_max)) * 100 + '%'
+								: '0'};"
 						>
 							{formatValue(row[column.id], column_format, useCol.columnUnitSummary)}
 						</div>
@@ -254,7 +254,8 @@
 
 					<!-- <div style="background-color: red; max-width: '{row[column.id] / column_max * 100}%'">{row[column.id]}</div> -->
 				{:else if column.contentType === 'sparkline' && row[column.id] !== undefined}
-					<div class="pt-1">
+					{@const alignment = column.align ?? 'center'}
+					<div class="items-{alignment} justify-{alignment} flex">
 						<Sparkline
 							type="line"
 							data={[...row[column.id]]}
@@ -263,12 +264,12 @@
 							interactive="false"
 							color={column.sparkColor}
 							yScale={column.sparkYScale}
-							height={column.sparkHeight}
-							width={column.sparkWidth}
+							height={column.sparkHeight ?? 19}
+							width={column.sparkWidth ?? 90}
 						/>
 					</div>
 				{:else if column.contentType === 'sparkbar' && row[column.id] !== undefined}
-					<div class="pt-1">
+					<div class="items-center justify-center flex">
 						<Sparkline
 							type="bar"
 							data={[...row[column.id]]}
@@ -277,12 +278,14 @@
 							interactive="false"
 							color={column.sparkColor}
 							yScale={column.sparkYScale}
-							height={column.sparkHeight}
-							width={column.sparkWidth}
+							height={column.sparkHeight ?? 19}
+							width={column.sparkWidth ?? 90}
 						/>
 					</div>
 				{:else if column.contentType === 'sparkarea' && row[column.id] !== undefined}
-					<div class="pt-1">
+					{@const alignment =
+						column.align === 'right' ? 'end' : column.align === 'left' ? 'start' : 'center'}
+					<div class="items-center justify-{alignment} flex">
 						<Sparkline
 							type="area"
 							data={[...row[column.id]]}
@@ -291,8 +294,8 @@
 							interactive="false"
 							color={column.sparkColor}
 							yScale={column.sparkYScale}
-							height={column.sparkHeight}
-							width={column.sparkWidth}
+							height={column.sparkHeight ?? 20}
+							width={column.sparkWidth ?? 80}
 						/>
 					</div>
 				{:else if column.contentType === 'html' && row[column.id] !== undefined}

@@ -36,9 +36,6 @@
 
 	export let title = undefined;
 	export let align = undefined;
-	if (contentType === 'bar' && align == undefined) {
-		align = 'left';
-	}
 	if (align === 'centre') {
 		align = 'center';
 	}
@@ -118,7 +115,7 @@
 	// Bar Viz:
 	export let barColor = 'hsla(207, 69%, 79%, 1)';
 	export let negativeBarColor = 'rgb(252 165 165)';
-	export let backgroundColor = 'white';
+	export let backgroundColor = 'transparent';
 	export let hideLabels = false;
 	$: hideLabels = hideLabels === 'true' || hideLabels === true;
 

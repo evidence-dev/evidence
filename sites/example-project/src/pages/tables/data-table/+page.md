@@ -74,8 +74,11 @@ order by total_sales desc
 
 <DataTable data={cats}>
     <Column id=category/>
-    <Column id=total_sales fmt=usd contentType=bar />
-    <Column id=sales contentType=sparkarea sparkDateCol=date sparkValueCol=sales align=center sparkYScale=false/>
+    <Column id=total_sales fmt=usd contentType=bar align=left/>
+    <Column id=sales contentType=sparkarea sparkDateCol=date sparkValueCol=sales sparkYScale=false sparkColor=red/>
+    <Column id=sales contentType=sparkbar sparkDateCol=date sparkValueCol=sales sparkYScale=false />
+    <Column id=sales contentType=sparkline sparkDateCol=date sparkValueCol=sales sparkYScale=false />
+    <Column id=sales contentType=sparkbar sparkDateCol=date sparkValueCol=sales sparkYScale=false />
 </DataTable>
 
 ## Bar Viz

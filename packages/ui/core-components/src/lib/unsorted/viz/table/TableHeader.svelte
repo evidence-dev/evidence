@@ -77,7 +77,10 @@
 				class="{safeExtractColumn(column, columnSummary).type} {compact
 					? 'text-xs py-[1px] px-[4px]'
 					: 'py-[2px] px-[8px]'}"
-				style:text-align={column.align}
+				style:text-align={column.align ??
+					(['sparkline', 'sparkbar', 'sparkarea', 'bar'].includes(column.contentType)
+						? 'center'
+						: undefined)}
 				style:color={headerFontColor}
 				style:background-color={headerColor}
 				style:cursor={sortable ? 'pointer' : 'auto'}

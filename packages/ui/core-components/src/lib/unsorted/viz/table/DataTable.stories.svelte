@@ -37,23 +37,24 @@
 <Story name="Bar Viz">
 	{@const data = Query.create(
 		`
-	SELECT 'a' as category, 10000 as value
+	SELECT 'a' as category, 10000 as value, 1598 as orders
 	union all
-	SELECT 'a' as category, 8000 as value
+	SELECT 'a' as category, 8000 as value, 5613 as orders
 	union all
-	SELECT 'a' as category, -7000 as value
+	SELECT 'a' as category, -7000 as value, 4151 as orders
 	union all
-	SELECT 'b' as category, 3000 as value
+	SELECT 'b' as category, 3000 as value, 4569 as orders
 	union all
-	SELECT 'b' as category, 2400 as value
+	SELECT 'b' as category, 2400 as value, 1523 as orders
 	union all
-	SELECT 'b' as category, 1200 as value
+	SELECT 'b' as category, 1200 as value, 1838 as orders
 	`,
 		query
 	)}
 	<DataTable {data}>
 		<Column id="category" />
-		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" align=left/>
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" />
+		<Column id="orders" contentType="bar" hideLabels="false" align="left" />
 	</DataTable>
 </Story>
 
@@ -61,17 +62,17 @@
 	{@const data = Query.create(
 		`
 	select category, array_agg({'date': date, 'value': value}) as sparkline from (
-	SELECT 'Grocery' as category, '2024-01-01'::date as date, 100 as value
+	SELECT 'Grocery' as category, '2024-01-01'::date as date, 100 as value, 284 as orders
 	union all
-	SELECT 'Grocery' as category, '2024-01-02'::date as date, 80 as value
+	SELECT 'Grocery' as category, '2024-01-02'::date as date, 80 as value, 648 as orders
 	union all
-	SELECT 'Grocery' as category, '2024-01-03'::date as date, 70 as value
+	SELECT 'Grocery' as category, '2024-01-03'::date as date, 70 as value, 442 as orders
 	union all
-	SELECT 'Retail' as category, '2024-01-01'::date as date, 30 as value
+	SELECT 'Retail' as category, '2024-01-01'::date as date, 30 as value, 483 as orders
 	union all
-	SELECT 'Retail' as category, '2024-01-02'::date as date, 24 as value
+	SELECT 'Retail' as category, '2024-01-02'::date as date, 24 as value, 112 as orders
 	union all
-	SELECT 'Retail' as category, '2024-01-03'::date as date, 12 as value
+	SELECT 'Retail' as category, '2024-01-03'::date as date, 12 as value, 648 as orders
 	) group by all
 	`,
 		query
@@ -85,7 +86,6 @@
 			sparkDateCol="date"
 			sparkValueCol="value"
 			sparkColor="green"
-			t
 		/>
 		<Column
 			id="sparkline"
