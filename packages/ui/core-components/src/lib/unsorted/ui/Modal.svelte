@@ -19,7 +19,7 @@
 
 <button
 	on:click={() => isOpen()}
-	class="font-ui font-normal text-base no-underline border border-info/20 bg-info/10 my-5 rounded-lg py-2 px-3 inline-block transition hover:ease-in hover:border-info hover:bg-info/20 hover:no-underline focus:border-info"
+	class="font-ui font-normal text-base no-underline border border-info/20 bg-info/10 my-5 rounded-lg py-2 px-3 inline-block transition hover:ease-in hover:border-info/50 hover:bg-info/20 hover:no-underline focus:border-info"
 >
 	{buttonText}
 </button>
