@@ -80,7 +80,7 @@
 	<div
 		bind:this={tab}
 		style="height: {tabContentHeight};"
-		class="transition-height overflow-hidden ease-in-out duration-300 {}"
+		class="transition-height overflow-hidden ease-in-out duration-300"
 	>
 		{#if activeTab === 'preview'}
 			<div class="my-5">

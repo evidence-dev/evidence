@@ -5,8 +5,6 @@ sidebar_position: 1
 
 Creates a Slider input with default min, max and step values
 
-
-
 <DocTab>
     <div slot="preview">
         <Slider
@@ -75,9 +73,7 @@ showMaxMin property can hide the Max and Min values with false, by default showM
 ````
 </DocTab>
 
-
 The default size of the slider can be altered with the size property using; medium, large or full
-
 
 <DocTab>
     <div slot="preview">
@@ -150,7 +146,6 @@ The default size of the slider can be altered with the size property using; medi
 />
 ````
 </DocTab>
-
 
 
 # Slider
