@@ -1,5 +1,13 @@
 # @evidence-dev/universal-sql
 
+## 2.1.6
+
+### Patch Changes
+
+- b2126ac1a: add --profile flag to sdk-handled cli commands, add debugging profiling and logs to build-parquet
+- Updated dependencies [b2126ac1a]
+  - @evidence-dev/sdk@1.4.5
+
 ## 2.1.5
 
 ### Patch Changes
