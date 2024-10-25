@@ -12,7 +12,7 @@ import { unnestZodError } from '../lib/unnest-zod-error.js';
 /** @typedef {import("zod").AnyZodObject} AnyZodObject */
 
 /**
- * @template {AnyZodObject} [Schema=EvidenceConfigSchema]
+ * @template {z.ZodSchema} [Schema=EvidenceConfigSchema]
  * @param {Schema} [schema]
  * @returns {import("zod").infer<Schema>}
  */
