@@ -395,6 +395,14 @@ group by all
     options="object with series names and assigned colors"
 />
 <PropListing
+    name="seriesOrder"
+    description="Apply a specific order to the series in a multi-series chart."
+    required=false
+    options="Array of series names in the order they should be used in the chart seriesOrder={`{['series one', 'series two']}`}"
+    defaultValue="default order implied by the data"
+/>
+
+<PropListing
     name=labels
     description="Show value labels"
     options={["true", "false"]}

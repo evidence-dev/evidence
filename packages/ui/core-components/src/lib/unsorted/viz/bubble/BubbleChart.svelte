@@ -64,6 +64,7 @@
 	export let downloadableData = undefined;
 	export let downloadableImage = undefined;
 	export let seriesColors = undefined;
+	export let seriesOrder = undefined;
 
 	export let connectGroup = undefined;
 </script>
@@ -111,6 +112,7 @@
 	{downloadableImage}
 	{connectGroup}
 	{seriesColors}
+	{seriesOrder}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
 	<slot />

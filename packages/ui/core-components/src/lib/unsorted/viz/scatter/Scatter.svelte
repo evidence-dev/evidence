@@ -29,6 +29,7 @@
 
 	export let useTooltip = false; // if true, will override the default 'axis'-based echarts tooltip. true only for scatter-only charts
 	export let tooltipTitle;
+	export let seriesOrder = undefined;
 	let multiSeries;
 	let tooltipOutput;
 
@@ -194,6 +195,7 @@
 		name,
 		xMismatch,
 		columnSummary,
+		seriesOrder,
 		undefined,
 		tooltipTitle
 	);

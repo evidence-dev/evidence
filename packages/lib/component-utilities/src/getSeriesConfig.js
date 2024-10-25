@@ -10,6 +10,7 @@ export default function getSeriesConfig(
 	name,
 	xMismatch, // this checks for scenarios where xType is string and xDataType is number. When this is the case, we need to inject strings into the x axis, or else it will cause echarts to think there are duplicate x-axis values (e.g., "4" and 4)
 	columnSummary,
+	seriesOrder,
 	size = undefined,
 	tooltipTitle = undefined,
 	y2 = undefined
@@ -218,5 +219,7 @@ export default function getSeriesConfig(
 		seriesConfig.push(tempConfig);
 	}
 
-	return seriesConfig;
+	return seriesConfig.toSorted((a, b) =>
+		seriesOrder ? seriesOrder.indexOf(a.name) - seriesOrder.indexOf(b.name) : 0
+	);
 }
