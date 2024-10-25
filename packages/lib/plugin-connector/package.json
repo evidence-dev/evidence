@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "2.1.11",
+	"version": "2.1.12",
 	"description": "",
 	"type": "module",
 	"bin": "./dist/debugger/cli.js",

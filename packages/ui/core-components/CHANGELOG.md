@@ -1,5 +1,17 @@
 # @evidence-dev/core-components
 
+## 4.8.9
+
+### Patch Changes
+
+- cc086aa50: Add sort prop to DataTable
+- c44853b3f: fixed bubbles + points layering issue
+- eec98520a: Add sparkline and bar viz to DataTable
+- 76dda50ae: Fixes layering issue and allows for layering control of bubbles and points
+- 795f53653: Improved Map Legends, added multi-legends in basemap
+  - @evidence-dev/component-utilities@3.2.17
+  - @evidence-dev/tailwind@2.1.6
+
 ## 4.8.8
 
 ### Patch Changes
