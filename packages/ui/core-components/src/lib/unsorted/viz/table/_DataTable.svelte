@@ -171,9 +171,10 @@
 			try {
 				return fn();
 			} catch (e) {
-				error.set(e.message);
+				const err = e instanceof Error ? e : new Error('Unknown Error', { cause: e });
+				error.set(err.message);
 				if (strictBuild) {
-					throw error;
+					throw err;
 				}
 			}
 		}
