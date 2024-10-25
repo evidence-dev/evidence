@@ -2,7 +2,7 @@
 sidebar_position: 1
 title: CLI
 hide_title: true
-description: Commands to start, install, develop, and build Evidence projects from the command line.
+description: Commands to start, install, develop, and build Evidence apps from the command line.
 ---
 
 # CLI Reference
@@ -13,7 +13,7 @@ description: Commands to start, install, develop, and build Evidence projects fr
 select '<code>npx degit evidence-dev/template my-project</code>' as "CLI", '<code>Evidence: New Evidence Project</code>' as "VS Code", 'Create a new project from the template' as "Description", 0 as row_num UNION ALL
 select '<code>npm run sources</code>' as "CLI", '<code>Evidence: Run Sources</code>' as "VS Code", 'Extract data from sources' as "Description", 1 as row_num UNION ALL
 select '<code>npm run dev</code>' as "CLI", '<code>Evidence: Start Server</code>' as "VS Code", 'Start the development server in the current directory' as "Description", 2 as row_num UNION ALL
-select '<code>npm run build</code>' as "CLI", '<code>Evidence: Build</code>' as "VS Code", 'Build the project for production' as "Description", 3 as row_num UNION ALL
+select '<code>npm run build</code>' as "CLI", '<code>Evidence: Build</code>' as "VS Code", 'Build the app for production' as "Description", 3 as row_num UNION ALL
 select '<code>npm run build:strict</code>' as "CLI", '<code>Evidence: Built Strict</code>' as "VS Code", 'Build, but fails on query or component errors' as "Description", 4 as row_num UNION ALL
 select '<code>npm run preview</code>' as "CLI", 'N/A' as "VS Code", 'Preview the built site' as "Description", 5 as row_num UNION ALL
 select '<code>Ctrl / Cmd</code> + <code>C</code>' as "CLI", '<code>Evidence: Stop Server</code>' as "VS Code", 'Stop the dev server (when running)' as "Description", 6 as row_num UNION ALL

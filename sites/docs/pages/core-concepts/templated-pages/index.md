@@ -13,7 +13,7 @@ Templated pages allow you to use a single markdown file as a template for many p
 
 In example 1 above, www.example.com/customers/acme would display information for Acme, while www.example.com/customers/contoso would display information for Contoso.
 
-A useful reference can be found in the [Needful Things example project](https://github.com/evidence-dev/demo/tree/main/pages/operations/pick_lists).
+A useful reference can be found in the [Needful Things example app](https://github.com/evidence-dev/demo/tree/main/pages/operations/pick_lists).
 
 
 ## Quickstart: VS Code Extension
@@ -85,7 +85,7 @@ Adding this to a `<Value/>` component:
 
 So far, we've created the template for a set of pages, but haven't specified what specific pages to create, or to put it another way, what values we want the parameter to take.
 
-For a page to be built, there must be links to it somewhere in your project.
+For a page to be built, there must be links to it somewhere in your app.
 
 Whilst you could add markdown style links for each parameter value, it is easier to programmatically generate them. Two easy options are:
 

@@ -5,7 +5,7 @@ title: Custom Components
 
 Custom components allow you to extend the functionality of Evidence, as well as to make your code more reusable.
 
-In Evidence, you can build your own components and use them anywhere in your project. This is made possible through Svelte, the JavaScript framework Evidence is built on. These components can include the charts used for visualization, custom components created completely from scratch, or adaptations of existing UI components such as the header, sidebar, menu, etc.
+In Evidence, you can build your own components and use them anywhere in your app. This is made possible through Svelte, the JavaScript framework Evidence is built on. These components can include the charts used for visualization, custom components created completely from scratch, or adaptations of existing UI components such as the header, sidebar, menu, etc.
 
 [Evidence Labs](https://labs.evidence.dev) contains several good examples of custom components.
 
@@ -68,7 +68,7 @@ select 'UK' as country, 300 as sales_usd
 
 <p>
 	Here is a BarChart in a Component, with some accompanying text. Components stored in the
-	/components/ folder will be included in your project.
+	/components/ folder will be included in your app.
 </p>
 
 <BarChart data={myData} />
@@ -91,12 +91,12 @@ In the custom component:
 1. **Import any [Evidence components](https://github.com/evidence-dev/evidence/tree/main/sites/example-project/src/components)** you want to use in the custom component
 
 ## Optional: Publishing Your Components as a Plugin
-If you have built custom components that you would like other Evidence users to be able to use in their projects, you can publish them as an Evidence plugin. See the [Plugin section](/plugins/create-component-plugin/) for more details.
+If you have built custom components that you would like other Evidence users to be able to use in their apps, you can publish them as an Evidence plugin. See the [Plugin section](/plugins/create-component-plugin/) for more details.
 
 ## Utility Functions
 Evidence provides a collection of helpful utility functions to use within custom components, for things like error handling, data manipulation, and value formatting.
 
-To use these in your project, you must import them explicitly in the script tag portion of your component. The import line for each utlity function is included for reference below:
+To use these utilities, you must import them explicitly in the script tag portion of your component. The import line for each utlity function is included for reference below:
 
 ### Error Handling
 
