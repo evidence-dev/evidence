@@ -19,7 +19,7 @@ select '<code>npm view @evidence-dev/evidence version</code>' as "Command", 'Che
 select '<code>node -v</code>' as "Command", 'Check NodeJS version' as "Description"
 ```
 
-Run these commands in your terminal to see which versions your project is using
+Run these commands in your terminal to see which versions your app is using
 
 <DataTable data={commands} formatColumnTitles=false>
     <Column id="Description" wrap/>
@@ -31,20 +31,20 @@ Run these commands in your terminal to see which versions your project is using
 ## Installation
 
 ### Not able to run `npm install`
-This is often related to the version of NodeJS your project is using. See [system requirements](/guides/system-requirements) for more information
+This is often related to the version of NodeJS your app is using. See [system requirements](/guides/system-requirements) for more information
 
 ### Installation taking a long time
-On Windows, the initial installation can take up to a few minutes. If it has been longer than 10 minutes and your project hasn't started, [reach out in the Slack community for help](https://slack.evidence.dev)
+On Windows, the initial installation can take up to a few minutes. If it has been longer than 10 minutes and your app hasn't started, [reach out in the Slack community for help](https://slack.evidence.dev)
 
 
 ## Data Sources
 
 ### Data is not available for querying
 Ensure that you've done the following:
-- Add `.sql` files to your `sources/my-source` directory to define which data to bring into your Evidence project (does not apply to the CSV connector, which does not require `.sql` files)
+- Add `.sql` files to your `sources/my-source` directory to define which data to bring into Evidence (does not apply to the CSV connector, which does not require `.sql` files)
 - Run `npm run sources` to load the data
 
-To check whether your data has been successfully loaded into your project, go to the `/explore/schema` page to see which data is in your app.
+To check whether your data has been successfully loaded into your app, go to the `/explore/schema` page to see which data is in your app.
 
 ### Failure in `npm run sources` 
 If you're having problems loading data with `npm run sources`, try using `npm run sources -- --debug` to display additional logs
@@ -60,7 +60,7 @@ To open your browser console:
 This is helpful information to provide when asking questions in slack or creating issues on Github.
 
 ## Deployment
-If you have issues when building or deploying your project, try running `npm run build` locally to see if the behaviour is the same as in your deployment environment.
+If you have issues when building or deploying your app, try running `npm run build` locally to see if the behaviour is the same as in your deployment environment.
 
 If the build works locally, but not in your deployment environment, check that the NodeJS version used in your deployment environment fits within the [system requirements](/guides/system-requirements).
 
@@ -68,6 +68,3 @@ If the build works locally, but not in your deployment environment, check that t
 # Known Issues
 
 See [our open Github issues](https://github.com/evidence-dev/evidence/issues) for a full list of known issues
-
-## Windows Cache Issue (TProtocolException Error)
-See [this Github Issue](https://github.com/evidence-dev/evidence/issues/1693) for description, status, and workarounds

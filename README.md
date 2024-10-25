@@ -40,7 +40,7 @@ See docs for [other install options](https://docs.evidence.dev/getting-started/i
 
 # Publish
 
-- [Evidence Cloud](https://evidence.dev/cloud) is the easiest way to securely host your project. It's free to get started.
+- [Evidence Cloud](https://evidence.dev/cloud) is the easiest way to securely host your app. It's free to get started.
 - [Self-hosted](https://docs.evidence.dev/deployment/overview) options include Netlify, Vercel, your own infra, and other static site hosting platforms.
 
 # Join the Evidence Community

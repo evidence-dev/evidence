@@ -126,6 +126,13 @@ export class EvidenceLogger {
 	 * @returns
 	 */
 	measure = (topic) => {
+		if (!isDebug()) {
+			return {
+				meta: () => {},
+				done: () => {}
+			};
+		}
+
 		// Start
 		const before = performance.now();
 		/** @type {Record<string, any>} */

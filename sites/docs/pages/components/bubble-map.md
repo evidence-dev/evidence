@@ -38,14 +38,15 @@ select *, 'https://www.google.com/search?q=' || point_name as link_col from la_l
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
+<BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name value=sales basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
 
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
 ```svelte
 <BubbleMap 
     data={la_locations} 
-    lat=lat long=long 
+    lat=lat 
+    long=long 
     value=sales 
     valueFmt=usd 
     pointName=point_name 
@@ -303,8 +304,6 @@ FROM la_locations
     long=long
     value=Category
     size=sales
-    legendType=categorical
-    legendPosition=bottomLeft
 />
 
 ```svelte
@@ -314,8 +313,6 @@ FROM la_locations
     long=long
     value=Category
     size=sales
-    legendType=categorical
-    legendPosition=bottomLeft
 />
 ```
 
@@ -327,8 +324,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=Category
     size=sales
-    legendType=categorical
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 
@@ -339,8 +334,6 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=Category
     size=sales
-    legendType=categorical
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
@@ -353,9 +346,7 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=sales
     size=sales
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
 />
 
 ```svelte
@@ -365,9 +356,7 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     long=long
     value=sales
     size=sales
-    legendType=scalar
-    legendPosition=bottomLeft
-    legendFmt=usd
+    valueFmt=usd
 />
 ```
 
@@ -379,10 +368,8 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     long=long
     value=sales
     size=sales
-    legendType=scalar
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#4A8EBA']}
-    legendFmt=usd
+    valueFmt=usd
 />
 
 ```svelte
@@ -392,10 +379,8 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     long=long
     value=sales
     size=sales
-    legendType=scalar
-    legendPosition=bottomLeft
     colorPalette={['#C65D47', '#4A8EBA']}
-    legendFmt=usd
+    valueFmt=usd
 />
 ```
 
@@ -497,6 +482,13 @@ Maximum value to use for the color scale.
 
 ### Legend
 
+<PropListing
+    name="legend"
+    description="Turns legend on or off"
+    required=false
+    options={["true", "false"]}
+    defaultValue="true"
+/>
 <PropListing
 name="legendType"
 options={['categorical', 'scalar']}
