@@ -113,3 +113,13 @@
 		fmt: '932'
 	}}
 />
+<Story
+	name="handle string values"
+	args={{
+		defaultValue: '18',
+		fmt: 'usd0',
+		steps: '2',
+		max: '20',
+		min: '0'
+	}}
+/>
