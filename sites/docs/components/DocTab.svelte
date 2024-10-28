@@ -47,7 +47,7 @@
 	<div class="flex relative w-fit">
 		{#each tabs as tab, index}
 			<button
-				class="p-1 cursor-pointer transition-colors duration-300 text-xs font-semibold ease-in-out capitalize {activeTab ===
+				class="p-1 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize font-mono {activeTab ===
 				tab
 					? 'text-black'
 					: 'text-gray-600'}"
@@ -66,16 +66,16 @@
 	<div bind:this={tabContent} class="overflow-hidden">
 		{#if activeTab === 'preview'}
 			<div
-				in:fly={{ y: -100, duration: 300, delay: 300 }}
-				out:fly={{ y: -100, duration: 300 }}
-				class="transition-height ease-in-out duration-300 my-5"
+				in:fly={{ y: -10, duration: 300, delay: 300 }}
+				out:fly={{ y: -10, duration: 300 }}
+				class="transition-height ease-in-out duration-300"
 			>
 				<slot name="preview" />
 			</div>
 		{:else}
 			<div
-				in:fly={{ y: -100, duration: 300, delay: 300 }}
-				out:fly={{ y: -100, duration: 300 }}
+				in:fly={{ y: -10, duration: 300, delay: 300 }}
+				out:fly={{ y: -10, duration: 300 }}
 				class="transition-height ease-in-out duration-300"
 			>
 				<slot />

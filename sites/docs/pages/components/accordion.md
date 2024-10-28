@@ -28,28 +28,29 @@ sidebar_position: 1
     </Accordion>
   </div>
 
-```markdown
-<Accordion>
-  <AccordionItem title="Item 1">
+  ```markdown 
+  <Accordion>
+    <AccordionItem title="Item 1">
 
-    This is the first item's accordion body.
+      This is the first item's accordion body.
 
-    You can use **markdown** here too!
-    Make sure to include an empty line after the component if you want to use markdown.
+      You can use **markdown** here too!
 
-  </AccordionItem>
-  <AccordionItem title="Item 2">
+      Make sure to include an empty line after the component if you want to use markdown.
 
-    This is the second item's accordion body with <b>bold text</b>.
+    </AccordionItem>
+    <AccordionItem title="Item 2">
 
-  </AccordionItem>
-  <AccordionItem title="Item 3">
+      This is the second item's accordion body with <b>bold text</b>.
 
-    This is the third item's accordion body.
+    </AccordionItem>
+    <AccordionItem title="Item 3">
 
-  </AccordionItem>
-</Accordion>
-```
+      This is the third item's accordion body.
+
+    </AccordionItem>
+  </Accordion>
+  ``` 
 </DocTab>
 
 ## Examples 

@@ -16,15 +16,18 @@ Evidence currently offers 4 types of annotations, which can be defined inline or
 - [`ReferencePoint`](#reference-point): highlight specific points on a chart (e.g. anomalies, points of interest)
 - [`Callout`](#callout): draw attention to data (e.g. data trend explanation)
 
-<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <ReferenceLine y=7500 label="Reference Line" hideValue labelPosition="aboveStart" color=green/>
-    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label="Reference Area" color=yellow/>
-    <ReferencePoint x="2019-07-01" y=6590 label="Reference Point" labelPosition=bottom color=red/>
-    <Callout x="2021-05-01" y=11012 labelPosition=bottom labelWidth=fit>
-        Callout
-        Data trending up here
-    </Callout>
-</LineChart>
+<DocTab>
+    <div slot='preview'>
+        <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+            <ReferenceLine y=7500 label="Reference Line" hideValue labelPosition="aboveStart" color=green/>
+            <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label="Reference Area" color=yellow/>
+            <ReferencePoint x="2019-07-01" y=6590 label="Reference Point" labelPosition=bottom color=red/>
+            <Callout x="2021-05-01" y=11012 labelPosition=bottom labelWidth=fit>
+                Callout
+                Data trending up here
+            </Callout>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
@@ -37,6 +40,7 @@ Evidence currently offers 4 types of annotations, which can be defined inline or
     </Callout>
 </LineChart>
 ```
+</DocTab>
 
 # Reference Line 
 
@@ -50,35 +54,45 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 
 ### Y-axis Defined Inline
 
-<LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
-    <ReferenceLine y=9000 label="Target"/>
-</LineChart>
+<DocTab>
+    <div slot='preview'>
+        <LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
+            <ReferenceLine y=9000 label="Target"/>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
     <ReferenceLine y=9000 label="Target"/>
 </LineChart>
 ```
+</DocTab>
 
 ### X-axis Defined Inline
 
-<LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
-    <ReferenceLine x='2019-09-18' label="Launch" hideValue=true/>
-</LineChart>
+<DocTab>
+    <div slot='preview'>
+        <LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
+            <ReferenceLine x='2019-09-18' label="Launch" hideValue=true/>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
     <ReferenceLine x='2019-09-18' label="Launch" hideValue=true/>
 </LineChart>
 ```
+</DocTab>
 
 ### Y-axis Multiple Lines
 
-<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-    <ReferenceLine y=9000 label="Target" labelPosition=belowEnd/>
-    <ReferenceLine y=10500 label="Forecast"/>
-</LineChart>
-
+<DocTab>
+    <div slot='preview'>
+        <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+            <ReferenceLine y=9000 label="Target" labelPosition=belowEnd/>
+            <ReferenceLine y=10500 label="Forecast"/>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
@@ -86,6 +100,7 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
     <ReferenceLine y=10500 label="Forecast"/>
 </LineChart>
 ```
+</DocTab>
 
 ### X-axis from Data
 
@@ -95,28 +110,35 @@ select '2020-07-14'::date, '2020-09-14'::date, 'Campaign 2' union all
 select '2021-04-14'::date, '2021-06-14'::date, 'Campaign 3'
 ```
 
-<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-    <ReferenceLine data={multiple_dates} x=start_date label=campaign_name hideValue/>
-</LineChart>
-
+<DocTab>
+    <div slot='preview'>
+        <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+            <ReferenceLine data={multiple_dates} x=start_date label=campaign_name hideValue/>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
     <ReferenceLine data={multiple_dates} x=start_date label=campaign_name hideValue/>
 </LineChart>
 ```
+</DocTab>
 
 ### Sloped Line Inline
 
-<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-    <ReferenceLine x='2019-01-01' y=6500 x2='2021-12-01' y2=12000 label="Growth Trend" labelPosition=belowEnd/>
-</LineChart>
+<DocTab>
+    <div slot='preview'>
+        <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+            <ReferenceLine x='2019-01-01' y=6500 x2='2021-12-01' y2=12000 label="Growth Trend" labelPosition=belowEnd/>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
     <ReferenceLine x='2019-01-01' y=6500 x2='2021-12-01' y2=12000 label="Growth Trend" labelPosition=belowEnd/>
 </LineChart>
 ```
+</DocTab>
 
 ### Linear Regression from Data
 
@@ -149,9 +171,12 @@ FROM coeffs, ${orders_by_state}
 GROUP BY slope, intercept, r_squared
 ```
 
-<ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0 xFmt=usd>
-    <ReferenceLine data={regression} x=x y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
-</ScatterPlot>
+<DocTab>
+    <div slot='preview'>
+        <ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0 xFmt=usd>
+            <ReferenceLine data={regression} x=x y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
+        </ScatterPlot>
+    </div>
 
 
 <Tabs>
@@ -204,34 +229,39 @@ GROUP BY slope, intercept, r_squared
 </Tab>
 
 </Tabs>
-
+</DocTab>
 
 
 ### Custom Styling
 
-<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-    <ReferenceLine y=11000 color=red hideValue=true lineWidth=3 lineType=solid/>
-</LineChart>
-
+<DocTab>
+    <div slot='preview'> 
+        <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+            <ReferenceLine y=11000 color=red hideValue=true lineWidth=3 lineType=solid/>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
     <ReferenceLine y=110000 color=red hideValue=true lineWidth=3 lineType=solid/>
 </LineChart>
 ```
+</DocTab>
+
 
 ### Label Positions
 
-<LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
-    <ReferenceLine y=4000 label=aboveStart labelPosition=aboveStart hideValue/>
-    <ReferenceLine y=4000 label=aboveCenter labelPosition=aboveCenter hideValue/>
-    <ReferenceLine y=4000 label=aboveEnd labelPosition=aboveEnd hideValue/>
-    <ReferenceLine y=4000 label=belowStart labelPosition=belowStart hideValue/>
-    <ReferenceLine y=4000 label=belowCenter labelPosition=belowCenter hideValue/>
-    <ReferenceLine y=4000 label=belowEnd labelPosition=belowEnd hideValue/>
-</LineChart>
-
-
+<DocTab>
+    <div slot='preview'>
+        <LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
+            <ReferenceLine y=4000 label=aboveStart labelPosition=aboveStart hideValue/>
+            <ReferenceLine y=4000 label=aboveCenter labelPosition=aboveCenter hideValue/>
+            <ReferenceLine y=4000 label=aboveEnd labelPosition=aboveEnd hideValue/>
+            <ReferenceLine y=4000 label=belowStart labelPosition=belowStart hideValue/>
+            <ReferenceLine y=4000 label=belowCenter labelPosition=belowCenter hideValue/>
+            <ReferenceLine y=4000 label=belowEnd labelPosition=belowEnd hideValue/>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
@@ -243,18 +273,21 @@ GROUP BY slope, intercept, r_squared
     <ReferenceLine y=4000 label=belowEnd labelPosition=belowEnd hideValue/>
 </LineChart>
 ```
+</DocTab>
 
 ### Colours
 
-<LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
-    <ReferenceLine y=1500 color=red label=red/>
-    <ReferenceLine y=3500 color=yellow label=yellow/>
-    <ReferenceLine y=5500 color=green label=green/>
-    <ReferenceLine y=7500 color=blue label=blue/>
-    <ReferenceLine y=9500 color=grey label=grey/>
-    <ReferenceLine y=11500 color=#63178f label=custom/>
-</LineChart>
-
+<DocTab>
+    <div slot='preview'>
+        <LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
+            <ReferenceLine y=1500 color=red label=red/>
+            <ReferenceLine y=3500 color=yellow label=yellow/>
+            <ReferenceLine y=5500 color=green label=green/>
+            <ReferenceLine y=7500 color=blue label=blue/>
+            <ReferenceLine y=9500 color=grey label=grey/>
+            <ReferenceLine y=11500 color=#63178f label=custom/>
+        </LineChart>
+    </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
@@ -266,6 +299,7 @@ GROUP BY slope, intercept, r_squared
     <ReferenceLine y=11500 color=#63178f label=custom/>
 </LineChart>
 ```
+</DocTab>
 
 ## Options
 A reference line can be produced by defining values inline or by supplying a dataset, and the required props are different for each of those cases.
