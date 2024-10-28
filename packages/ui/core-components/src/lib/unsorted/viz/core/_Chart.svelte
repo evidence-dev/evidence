@@ -1053,28 +1053,24 @@
 
 {#if !error}
 	<slot />
-	{#if !$config.series.length}
-		<EmptyChart emptySet="pass" />
-	{:else}
-		<ECharts
-			config={$config}
-			{height}
-			{width}
-			{data}
-			{queryID}
-			evidenceChartTitle={title}
-			{showAllXAxisLabels}
-			{swapXY}
-			{echartsOptions}
-			{seriesOptions}
-			{printEchartsConfig}
-			{renderer}
-			{downloadableData}
-			{downloadableImage}
-			{connectGroup}
-			{seriesColors}
-		/>
-	{/if}
+	<ECharts
+		config={$config}
+		{height}
+		{width}
+		{data}
+		{queryID}
+		evidenceChartTitle={title}
+		{showAllXAxisLabels}
+		{swapXY}
+		{echartsOptions}
+		{seriesOptions}
+		{printEchartsConfig}
+		{renderer}
+		{downloadableData}
+		{downloadableImage}
+		{connectGroup}
+		{seriesColors}
+	/>
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}
