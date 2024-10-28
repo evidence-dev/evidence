@@ -6,11 +6,14 @@ queries:
 - orders_by_category_2021.sql
 ---
 
-<AreaChart 
-    data={orders_by_month}
-    x=month
-    y=sales
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaChart 
+            data={orders_by_month}
+            x=month
+            y=sales
+        />
+    </div>
 
 ```markdown
 <AreaChart 
@@ -19,16 +22,20 @@ queries:
     y=sales
 />
 ```
+</DocTab>
 
 ## Examples
 
 ### Area
 
-<AreaChart 
-    data={orders_by_month}
-    x=month
-    y=sales
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaChart 
+            data={orders_by_month}
+            x=month
+            y=sales
+        />
+    </div>
 
 ```markdown
 <AreaChart 
@@ -37,16 +44,21 @@ queries:
     y=sales
 />
 ```
+</DocTab>
+
 
 
 ### Stacked
 
-<AreaChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    series=category
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaChart 
+            data={orders_by_category_2021}
+            x=month
+            y=sales
+            series=category
+        />
+    </div>
 
 ```markdown
 <AreaChart 
@@ -56,16 +68,21 @@ queries:
     series=category
 />
 ```
+</DocTab>
+
 
 ### 100% Stacked
 
-<AreaChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    series=category
-    type=stacked100
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaChart 
+            data={orders_by_category_2021}
+            x=month
+            y=sales
+            series=category
+            type=stacked100
+        />
+    </div>
 
 ```markdown
 <AreaChart 
@@ -76,16 +93,21 @@ queries:
     type=stacked100
 />
 ```
+</DocTab>
+
 
 ### Stepped Line
 
-<AreaChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    series=category
-    step=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaChart 
+            data={orders_by_category_2021}
+            x=month
+            y=sales
+            series=category
+            step=true
+        />
+    </div>
 
 ```markdown
 <AreaChart 
@@ -96,15 +118,20 @@ queries:
     step=true
 />
 ```
+</DocTab>
+
 
 ### Y-Axis Formatting
 
-<AreaChart 
-    data={orders_by_month}
-    x=month
-    y=sales
-    yFmt=usd0
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaChart 
+            data={orders_by_month}
+            x=month
+            y=sales
+            yFmt=usd0
+        />
+    </div>
 
 ```markdown
 <AreaChart 
@@ -114,16 +141,21 @@ queries:
     yFmt=usd0
 />
 ```
+</DocTab>
+
 
 ### Labels
 
-<AreaChart 
-    data={orders_by_month}
-    x=month
-    y=sales
-    labels=true
-    labelFmt=usd1k
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaChart 
+            data={orders_by_month}
+            x=month
+            y=sales
+            labels=true
+            labelFmt=usd1k
+        />
+    </div>
 
 ```markdown
 <AreaChart 
@@ -134,6 +166,8 @@ queries:
     labelFmt=usd0k
 />
 ```
+</DocTab>
+
 
 ## Options
 

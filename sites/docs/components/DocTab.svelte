@@ -68,7 +68,7 @@
 			<div
 				in:fly={{ y: -10, duration: 300, delay: 300 }}
 				out:fly={{ y: -10, duration: 300 }}
-				class="transition-height ease-in-out duration-300"
+				class="transition-height ease-in-out duration-300 my-5"
 			>
 				<slot name="preview" />
 			</div>
