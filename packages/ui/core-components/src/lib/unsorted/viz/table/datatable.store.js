@@ -248,8 +248,6 @@ export function tableStateStores({
 		for (const col of dateCols) {
 			$data = convertColumnToDate($data, col.id);
 		}
-		// todo: is this needed?
-		data.set($data);
 
 		return summary;
 	});

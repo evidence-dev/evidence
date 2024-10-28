@@ -305,10 +305,8 @@
 	/** @param {number} pageNumber */
 	function goToPage(pageNumber) {
 		$index = pageNumber * +rows;
-		const max = $index + +rows;
-		$currentPage = Math.ceil(max / +rows);
 		if ($inputPage) {
-			$inputPage = Math.ceil(max / +rows);
+			$inputPage = $currentPage;
 		}
 	}
 
@@ -318,9 +316,6 @@
 		} else if ($currentPage < 1) {
 			goToPage(0);
 		}
-	} else {
-		$currentPage = 1;
-		$displayedData = $filteredData;
 	}
 
 	let fullscreen = false;
