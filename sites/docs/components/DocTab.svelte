@@ -1,24 +1,20 @@
 <script>
-	import { afterUpdate, onMount, onDestroy } from 'svelte';
-	import { toCapitilize } from '../../../packages/ui/core-components/src/lib/utils.js';
+	import { onMount, onDestroy } from 'svelte';
+	import { fly } from 'svelte/transition';
 
 	let activeTab = 'preview';
 	let activeBorderStyles = {};
-	let tabContentHeight = '0px';
 
 	const tabs = ['preview', 'code'];
 	let tabButtons = [];
-	let tab;
 	let tabButton;
+	let tabContent;
 	let resizeObserver;
-
-	let componentHeight = 0;
-	let codeHeight = 0;
+	let resizeHeightObserver;
 
 	function setTab(tab, index) {
 		activeTab = tab;
 		updateActiveBorder(index);
-		updateTabContentHeight();
 	}
 
 	function updateActiveBorder(index) {
@@ -29,27 +25,17 @@
 		};
 	}
 
-	function updateTabContentHeight() {
-		tabContentHeight = activeTab === 'preview' ? `${componentHeight}px` : `${codeHeight}px`;
-	}
-
 	onMount(() => {
-		componentHeight = tab.scrollHeight;
-		updateTabContentHeight();
-
 		resizeObserver = new ResizeObserver(() => {
 			const index = tabs.indexOf(activeTab);
 			if (index !== -1) updateActiveBorder(index);
 		});
 
 		tabButtons.forEach((button) => resizeObserver.observe(button));
-	});
 
-	afterUpdate(() => {
-		const index = tabs.indexOf(activeTab);
-		updateActiveBorder(index);
-		codeHeight = tab.scrollHeight;
-		updateTabContentHeight();
+		resizeHeightObserver = new ResizeObserver(() => {
+			console.log(tabContent.scrollHeight);
+		});
 	});
 
 	onDestroy(() => {
@@ -57,18 +43,18 @@
 	});
 </script>
 
-<div class="doc-tab">
+<div class="doc-tab mt-5">
 	<div class="flex relative w-fit">
 		{#each tabs as tab, index}
 			<button
-				class="p-1 cursor-pointer transition-colors duration-300 text-xs font-semibold ease-in-out {activeTab ===
+				class="p-1 cursor-pointer transition-colors duration-300 text-xs font-semibold ease-in-out capitalize {activeTab ===
 				tab
 					? 'text-black'
 					: 'text-gray-600'}"
 				on:click={() => setTab(tab, index)}
 				bind:this={tabButtons[index]}
 			>
-				{toCapitilize(tab)}
+				{tab}
 			</button>
 		{/each}
 		<div
@@ -77,17 +63,23 @@
 		></div>
 	</div>
 
-	<div
-		bind:this={tab}
-		style="height: {tabContentHeight};"
-		class="transition-height overflow-hidden ease-in-out duration-300"
-	>
+	<div bind:this={tabContent} class="overflow-hidden">
 		{#if activeTab === 'preview'}
-			<div class="my-5">
+			<div
+				in:fly={{ y: -100, duration: 300, delay: 300 }}
+				out:fly={{ y: -100, duration: 300 }}
+				class="transition-height ease-in-out duration-300 my-5"
+			>
 				<slot name="preview" />
 			</div>
 		{:else}
-			<slot />
+			<div
+				in:fly={{ y: -100, duration: 300, delay: 300 }}
+				out:fly={{ y: -100, duration: 300 }}
+				class="transition-height ease-in-out duration-300"
+			>
+				<slot />
+			</div>
 		{/if}
 	</div>
 </div>
