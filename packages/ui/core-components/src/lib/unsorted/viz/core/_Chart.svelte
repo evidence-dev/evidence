@@ -26,7 +26,6 @@
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
-	import EmptyChart from './EmptyChart.svelte';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
