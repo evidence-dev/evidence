@@ -57,11 +57,14 @@
 				{tab}
 			</button>
 		{/each}
+
+		<!-- Active tab border indicator -->
 		<div
 			style="width: {activeBorderStyles.width}; transform: {activeBorderStyles.transform};"
 			class="absolute bottom-0 left-0 h-[2px] bg-black transition-[width, transform] duration-300 ease-in-out"
 		></div>
 	</div>
+	<div class="border-b border-gray-300 w-full"></div>
 
 	<div bind:this={tabContent} class="overflow-hidden">
 		{#if activeTab === 'preview'}
