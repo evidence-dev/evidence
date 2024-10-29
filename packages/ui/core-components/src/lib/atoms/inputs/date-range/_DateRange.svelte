@@ -46,7 +46,7 @@
 			label: 'Last 7 Days',
 			group: 'Days',
 			range: {
-				start: calendarEnd.subtract({ days: 7 }),
+				start: calendarEnd.subtract({ days: 6 }),
 				end: calendarEnd
 			}
 		},
@@ -54,7 +54,7 @@
 			label: 'Last 30 Days',
 			group: 'Days',
 			range: {
-				start: calendarEnd.subtract({ days: 30 }),
+				start: calendarEnd.subtract({ days: 29 }),
 				end: calendarEnd
 			}
 		},
@@ -62,7 +62,7 @@
 			label: 'Last 90 Days',
 			group: 'Days',
 			range: {
-				start: calendarEnd.subtract({ days: 90 }),
+				start: calendarEnd.subtract({ days: 89 }),
 				end: calendarEnd
 			}
 		},
