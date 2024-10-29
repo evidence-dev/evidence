@@ -89,7 +89,7 @@
 			colorPalette = scaleColor;
 		} else {
 			const color = scaleColorMap[scaleColor] ?? scaleColor;
-			colorPalette = [$theme['base-100'], color];
+			colorPalette = [$theme.colors['base-100'], color];
 		}
 	}
 

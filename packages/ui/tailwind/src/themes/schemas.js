@@ -1,44 +1,58 @@
 import z from 'zod';
 
-const ThemeSchema = z.object({
-	primary: z.string(),
-	'primary-content': z.string(),
-	secondary: z.string(),
-	'secondary-content': z.string(),
-	accent: z.string(),
-	'accent-content': z.string(),
-	neutral: z.string(),
-	'neutral-content': z.string(),
-	'base-100': z.string(),
-	'base-200': z.string(),
-	'base-300': z.string(),
-	'base-content': z.string(),
-	'base-content-muted': z.string(),
-	info: z.string(),
-	'info-content': z.string(),
-	positive: z.string(),
-	'positive-content': z.string(),
-	negative: z.string(),
-	'negative-content': z.string(),
-	warning: z.string(),
-	'warning-content': z.string()
+import { fromEntries } from './fromEntries.js';
+
+/**
+ * @template {z.ZodObject<any>} S
+ * @param {S} schema
+ */
+const DefaultEmptyObject = (schema) =>
+	schema.nullish().transform((value) => /** @type {Partial<z.infer<S>>} */ (value ?? {}));
+
+export const ThemeColorSchema = z.object({
+	light: z.string(),
+	dark: z.string()
 });
-/** @typedef {z.infer<typeof ThemeSchema>} Theme */
 
-/** @typedef {Record<'light' | 'dark', Theme>} Themes */
-
-const ThemeConfigSchema = ThemeSchema.partial();
-/** @typedef {z.infer<typeof ThemeConfigSchema>} ThemeConfig */
-
-const ThemesConfigSchema = z.object({
-	light: ThemeConfigSchema.nullish().transform((value) => value ?? /** @type {ThemeConfig} */ ({})),
-	dark: ThemeConfigSchema.nullish().transform((value) => value ?? /** @type {ThemeConfig} */ ({}))
-});
-/** @typedef {z.infer<typeof ThemesConfigSchema>} ThemesConfig */
+export const BUILTIN_COLOR_TOKENS = /** @type {const} */ ([
+	'primary',
+	'primary-content',
+	'secondary',
+	'secondary-content',
+	'accent',
+	'accent-content',
+	'neutral',
+	'neutral-content',
+	'base-100',
+	'base-200',
+	'base-300',
+	'base-content',
+	'base-content-muted',
+	'info',
+	'info-content',
+	'positive',
+	'positive-content',
+	'negative',
+	'negative-content',
+	'warning',
+	'warning-content'
+]);
 
 export const ThemesConfigFileSchema = z.object({
-	themes: ThemesConfigSchema.nullish().transform(
-		(value) => value ?? /** @type {ThemesConfig} */ ({})
+	themes: DefaultEmptyObject(
+		z.object({
+			colors: DefaultEmptyObject(
+				z
+					.object(
+						fromEntries(
+							BUILTIN_COLOR_TOKENS.map(
+								(color) => /** @type {const} */ ([color, ThemeColorSchema.partial()])
+							)
+						)
+					)
+					.partial()
+					.catchall(ThemeColorSchema)
+			)
+		})
 	)
 });
-/** @typedef {z.infer<typeof ThemesConfigFileSchema>} ThemesConfigFile */

@@ -88,7 +88,7 @@
 				column.colorBreakpoints ??
 				(column.colorMid ? [column_min, column.colorMid, column_max] : [column_min, column_max])}
 			{@const color_scale = column.colorPalette
-				? chroma.scale(column.colorPalette).domain(color_domain).nodata($theme['base-100'])
+				? chroma.scale(column.colorPalette).domain(color_domain).nodata($theme.colors['base-100'])
 				: ''}
 			{@const cell_color =
 				column.contentType === 'colorscale' && is_nonzero && column.colorPalette
@@ -98,13 +98,13 @@
 					: ''}
 			{@const font_color = column.redNegatives
 				? row[column.id] < 0
-					? $theme.negative
+					? $theme.colors.negative
 					: ''
 				: column.contentType === 'colorscale' && is_nonzero && column.colorPalette
-					? chroma.contrast(cell_color, $theme['base-content']) <
-						chroma.contrast(cell_color, $theme['base-100']) + 0.5
-						? $theme['base-100']
-						: $theme['base-content']
+					? chroma.contrast(cell_color, $theme.colors['base-content']) <
+						chroma.contrast(cell_color, $theme.colors['base-100']) + 0.5
+						? $theme.colors['base-100']
+						: $theme.colors['base-content']
 					: ''}
 			{@const bottom_border =
 				i !== displayedData.length - 1 &&

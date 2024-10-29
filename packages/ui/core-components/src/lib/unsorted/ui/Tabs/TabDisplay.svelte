@@ -3,7 +3,7 @@
 	import { ensureThemeStores } from '../../../themes.js';
 	const { theme } = ensureThemeStores();
 
-	export let color = $theme.primary;
+	export let color = $theme.colors.primary;
 	export let id;
 	export let label;
 	export let activeId;

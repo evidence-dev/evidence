@@ -1,4 +1,5 @@
-import { loadThemes } from '../loadThemes.js';
+import { loadThemesConfig } from '../loadThemesConfig.js';
+import { buildThemes } from '../buildThemes.js';
 
 /** @returns {import('vite').Plugin} */
 export const evidenceThemes = () => {
@@ -14,8 +15,14 @@ export const evidenceThemes = () => {
 		},
 		load: async (id) => {
 			if (id === resolvedVirtualModuleId) {
-				const themes = await loadThemes();
-				return `export default ${JSON.stringify(themes)}`;
+				const themesConfig = await loadThemesConfig();
+				const themes = buildThemes(themesConfig);
+				// /** @satisfies {import('@evidence-dev/tailwind').ThemesConfig} */
+				// /** @satisfies {import('@evidence-dev/tailwind').Themes}
+				return `
+					export const themesConfig = ${JSON.stringify(themesConfig)};
+					export const themes = ${JSON.stringify(themes)};
+				`;
 			}
 		}
 	};

@@ -4,7 +4,7 @@ import { getContext, setContext } from 'svelte';
 import { derived, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
-import themes from '$evidence/themes';
+import { themes } from '$evidence/themes';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */

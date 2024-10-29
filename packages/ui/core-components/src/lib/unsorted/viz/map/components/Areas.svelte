@@ -115,9 +115,9 @@
 	const { theme } = ensureThemeStores();
 
 	/** @type {string} */
-	export let selectedColor = $theme['accent'];
+	export let selectedColor = $theme.colors['accent'];
 	/** @type {string} */
-	export let selectedBorderColor = $theme['accent-content'];
+	export let selectedBorderColor = $theme.colors['accent-content'];
 
 	/** @type {number|undefined} */
 	export let selectedOpacity = undefined;

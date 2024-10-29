@@ -9,6 +9,7 @@
 		"moduleResolution": "NodeNext",
 		"strict": true,
 		"module": "NodeNext",
+		// "types": ["../tailwind/src/themes/vite-plugin/evidence-themes.d.ts"]
 		"types": ["@evidence-dev/tailwind"]
 	}
 }

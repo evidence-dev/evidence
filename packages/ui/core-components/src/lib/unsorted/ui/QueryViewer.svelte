@@ -98,7 +98,7 @@
 				{#if error}
 					{error.message}
 				{:else if rowCount}
-					<ChevronToggle toggled={$showResults} color={$theme['info']} />
+					<ChevronToggle toggled={$showResults} color={$theme.colors['info']} />
 					{rowCount.toLocaleString()}
 					{rowCount > 1 ? 'records' : 'record'} with {colCount.toLocaleString()}
 					{colCount > 1 ? 'properties' : 'property'}

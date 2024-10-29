@@ -133,10 +133,10 @@
 	{labelWidth}
 	{labelPadding}
 	{labelPosition}
-	labelBackgroundColor={labelBackgroundColor ?? $theme['base-100']}
+	labelBackgroundColor={labelBackgroundColor ?? $theme.colors['base-100']}
 	{labelBorderWidth}
 	{labelBorderRadius}
-	labelBorderColor={labelBorderColor ?? $theme['base-300']}
+	labelBorderColor={labelBorderColor ?? $theme.colors['base-300']}
 	{labelBorderType}
 	{fontSize}
 	{align}

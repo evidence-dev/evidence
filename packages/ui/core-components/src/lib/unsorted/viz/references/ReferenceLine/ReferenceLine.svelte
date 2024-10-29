@@ -186,7 +186,8 @@
 			labelColor,
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
-			labelBackgroundColor: labelBackgroundColor ?? chroma($theme['base-100']).alpha(0.8).css(),
+			labelBackgroundColor:
+				labelBackgroundColor ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
 			labelBorderColor,
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),

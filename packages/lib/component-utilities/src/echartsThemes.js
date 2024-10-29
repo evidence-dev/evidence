@@ -1,21 +1,21 @@
 import { chartColours } from './colours';
-import themes from '$evidence/themes';
+import { themes } from '$evidence/themes';
 
 /** @param {'light' | 'dark'} mode */
 const createTheme = (mode) => {
-	const axisBaselineColor = themes[mode]['base-content-muted'];
-	const axisTickColor = themes[mode]['base-content-muted'];
-	const axisLabelColor = themes[mode]['base-content-muted'];
-	const gridlineColor = themes[mode]['base-300'];
-	const axisTitleBackgroundColor = themes[mode]['base-100'];
-	const legendTextColor = themes[mode]['base-content-muted'];
-	const legendPageIconColor = themes[mode]['base-content-muted'];
-	const legendPageTextColor = themes[mode]['base-content-muted'];
-	const tooltipBorderColor = themes[mode]['base-300'];
-	const tooltipBackgroundColor = themes[mode]['base-100'];
-	const tooltipTextColor = themes[mode]['base-content'];
-	const titleColor = themes[mode]['base-content'];
-	const subtitleColor = themes[mode]['base-content-muted'];
+	const axisBaselineColor = themes[mode].colors['base-content-muted'];
+	const axisTickColor = themes[mode].colors['base-content-muted'];
+	const axisLabelColor = themes[mode].colors['base-content-muted'];
+	const gridlineColor = themes[mode].colors['base-300'];
+	const axisTitleBackgroundColor = themes[mode].colors['base-100'];
+	const legendTextColor = themes[mode].colors['base-content-muted'];
+	const legendPageIconColor = themes[mode].colors['base-content-muted'];
+	const legendPageTextColor = themes[mode].colors['base-content-muted'];
+	const tooltipBorderColor = themes[mode].colors['base-300'];
+	const tooltipBackgroundColor = themes[mode].colors['base-100'];
+	const tooltipTextColor = themes[mode].colors['base-content'];
+	const titleColor = themes[mode].colors['base-content'];
+	const subtitleColor = themes[mode].colors['base-content-muted'];
 
 	return {
 		darkMode: mode === 'dark', // if true, echarts will automatically update the font colour to work better on dark background

@@ -218,11 +218,11 @@
 				itemGap: 7,
 				textStyle: {
 					fontSize: 14,
-					color: $theme['base-content']
+					color: $theme.colors['base-content']
 				},
 				subtextStyle: {
 					fontSize: 13,
-					color: chroma($theme['base-content']).alpha(0.8).css(),
+					color: chroma($theme.colors['base-content']).alpha(0.8).css(),
 					overflow: 'break'
 				},
 				top: '0%'
@@ -254,12 +254,12 @@
 				padding: 6,
 				borderRadius: 4,
 				borderWidth: 1,
-				borderColor: $theme['base-300'],
-				backgroundColor: $theme['base-100'],
+				borderColor: $theme.colors['base-300'],
+				backgroundColor: $theme.colors['base-100'],
 				extraCssText:
 					'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 				textStyle: {
-					color: $theme['base-content'],
+					color: $theme.colors['base-content'],
 					fontSize: 12,
 					fontWeight: 400
 				},
@@ -277,13 +277,13 @@
 				orient: 'horizontal',
 				top: (title ? 25 : 0) + (subtitle ? 20 : 0),
 				handleStyle: {
-					borderColor: $theme['neutral']
+					borderColor: $theme.colors['neutral']
 				},
 				inRange: {
 					color: colorArray
 				},
 				outOfRange: {
-					color: $theme['base-300']
+					color: $theme.colors['base-300']
 				},
 				calculable: filter,
 				text: filter
@@ -305,25 +305,25 @@
 					map: 'US',
 					nameProperty: nameProperty,
 					itemStyle: {
-						borderColor: $theme['neutral'],
-						areaColor: $theme['base-200']
+						borderColor: $theme.colors['neutral'],
+						areaColor: $theme.colors['base-200']
 					},
 					emphasis: {
 						itemStyle: {
-							areaColor: $theme['base-200']
+							areaColor: $theme.colors['base-200']
 						},
 						label: {
 							show: true,
-							color: $theme['base-content']
+							color: $theme.colors['base-content']
 						}
 					},
 					select: {
 						disabled: false,
 						itemStyle: {
-							areaColor: $theme['base-300']
+							areaColor: $theme.colors['base-300']
 						},
 						label: {
-							color: $theme['base-content']
+							color: $theme.colors['base-content']
 						}
 					},
 					data: mapData
