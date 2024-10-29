@@ -1,6 +1,6 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
-	import { fly } from 'svelte/transition';
+	import { onMount, onDestroy, afterUpdate } from 'svelte';
+	import { slide } from 'svelte/transition';
 
 	let activeTab = 'preview';
 	let activeBorderStyles = {};
@@ -43,11 +43,11 @@
 	});
 </script>
 
-<div class="doc-tab mt-5">
+<div class="doc-tab mt-2">
 	<div class="flex relative w-fit">
 		{#each tabs as tab, index}
 			<button
-				class="p-1 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize font-mono {activeTab ===
+				class="p-1 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize font-mono tracking-wide {activeTab ===
 				tab
 					? 'text-black'
 					: 'text-gray-600'}"
@@ -66,21 +66,16 @@
 	</div>
 	<div class="border-b border-gray-300 w-full"></div>
 
-	<div bind:this={tabContent} class="overflow-hidden">
+	<div class="overflow-hidden grid">
 		{#if activeTab === 'preview'}
 			<div
-				in:fly={{ y: -10, duration: 300, delay: 300 }}
-				out:fly={{ y: -10, duration: 300 }}
-				class="transition-height ease-in-out duration-300 my-5"
+				transition:slide={{ duration: 300 }}
+				class="my-5 border-gray-300 border p-3 shadow rounded backdrop-blur-sm bg-gray-50/10"
 			>
 				<slot name="preview" />
 			</div>
 		{:else}
-			<div
-				in:fly={{ y: -10, duration: 300, delay: 300 }}
-				out:fly={{ y: -10, duration: 300 }}
-				class="transition-height ease-in-out duration-300"
-			>
+			<div transition:slide={{ duration: 300 }} class="overflow-auto shadow">
 				<slot />
 			</div>
 		{/if}
