@@ -1,7 +1,9 @@
 //@ts-check
 /**
  * @typedef {Object} AccessTracked
- * @property {()=>()=>Array<string|symbol>} track
+ * @property {()=>void} listen
+ * @property {()=>Array<string|symbol>} unlisten
+ * @property {(keys: Array<string|symbol>)=>Array<unknown>} gather
  */
 
 /**
@@ -14,23 +16,33 @@
 export const AccessTrack = (root, name) => {
 	/** @type {boolean} */
 	let listening = false;
-	let keys = new Set();
+	let listenKeys = new Set();
 
 	/**
 	 * @type {AccessTracked}
 	 */
 	const mergeObj = {
-		track: () => {
+		listen: () => {
 			if (listening) {
 				throw new Error(`${name ?? 'AccessTracked'} listen is already listening`);
 			}
 			listening = true;
-			return () => {
-				const result = Array.from(keys);
-				keys.clear();
-				listening = false;
-				return result;
-			};
+		},
+		unlisten: () => {
+			Object.keys(mergeObj).forEach((k) => listenKeys.delete(k));
+			const result = Array.from(listenKeys);
+			listenKeys.clear();
+			listening = false;
+			return result;
+		},
+		gather: (keys) => {
+			/** @type {Array<unknown>} */
+			const out = [];
+			for (const key of keys) {
+				if (key in mergeObj) continue;
+				out.push(root[key]);
+			}
+			return out;
 		}
 	};
 
@@ -45,12 +57,12 @@ export const AccessTrack = (root, name) => {
 			return Object.getOwnPropertyDescriptor(target, prop);
 		},
 		has(target, prop) {
-			if (listening) keys.add(prop);
+			if (listening) listenKeys.add(prop);
 			return prop in target || prop in mergeObj;
 		},
 		get(target, prop) {
 			if (prop in mergeObj) return mergeObj[prop];
-			if (listening) keys.add(prop);
+			if (listening) listenKeys.add(prop);
 			//@ts-expect-error Flexible proxy stuff is weird
 			return target[prop];
 		}

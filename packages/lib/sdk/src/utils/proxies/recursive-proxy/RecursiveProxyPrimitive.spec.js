@@ -1,10 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import {
-	RecursiveProxyPrimitive,
-	PrimitiveValue,
-	InternalState,
-	MakeDeeplyAccessible
-} from './RecursiveProxyPrimitive.js';
+import { RecursiveProxyPrimitive, MakeDeeplyAccessible } from './RecursiveProxyPrimitive.js';
 import { customAlphabet } from 'nanoid';
 
 describe('RecursiveProxyPrimitive', () => {

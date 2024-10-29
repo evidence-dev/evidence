@@ -10,7 +10,7 @@ describe('AccessTrack', () => {
 	describe.each([
 		{ type: 'class', factory: () => new DemoClass() },
 		{ type: 'object', factory: () => AccessTrack({}) }
-	])('Applied to a $type', ({ type, factory }) => {
+	])('Applied to a $type', ({ factory }) => {
 		it("should add `track` to the object's reported keys", () => {
 			const t = factory();
 			expect('track' in t).toBeTruthy();
@@ -30,7 +30,7 @@ describe('AccessTrack', () => {
 
 			const gather = t.track();
 			t.someValue = 'someThing';
-			const x = `${t.someValue}`;
+			`${t.someValue}`;
 			const results = gather();
 			expect(results).toEqual(['someValue']);
 		});
@@ -39,7 +39,7 @@ describe('AccessTrack', () => {
 
 			const gather = t.track();
 			t.someValue = { someThing: 'someThing' };
-			const x = `${t.someValue.someThing}`;
+			`${t.someValue.someThing}`;
 			const results = gather();
 			expect(results).toEqual(['someValue']);
 		});
@@ -49,7 +49,7 @@ describe('AccessTrack', () => {
 			const gather = t.track();
 			t.someOtherValue = 'someThing';
 			t.someValue = { someThing: 'someThing' };
-			const x = `${t.someOtherValue} ${t.someValue.someThing}`;
+			`${t.someOtherValue} ${t.someValue.someThing}`;
 			const results = gather();
 			expect(results).toEqual(['someOtherValue', 'someValue']);
 		});
@@ -58,7 +58,7 @@ describe('AccessTrack', () => {
 
 			const gather = t.track();
 			t.someValue = { someThing: 'someThing' };
-			const x = `${t.someValue} ${t.someValue.someThing}`;
+			`${t.someValue} ${t.someValue.someThing}`;
 			const results = gather();
 			expect(results).toEqual(['someValue']);
 		});
@@ -68,7 +68,7 @@ describe('AccessTrack', () => {
 			const gather = t.track();
 			t.someOtherValue = 'someThing';
 			t.someValue = 'someThing';
-			const x = `${t.someValue}`;
+			`${t.someValue}`;
 			const results = gather();
 			expect(results).toEqual(['someValue']);
 		});

@@ -1,5 +1,5 @@
 import { Input } from './Input.js';
-import { InputValue, ToMarkdown } from './InputValue.js';
+import { InputValue } from './InputValue.js';
 import { DagNode } from '../dag/DagNode.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 

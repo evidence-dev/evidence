@@ -1,5 +1,5 @@
 import { storeMixin } from '../../lib/store-helpers/storeMixin.js';
-import { ActiveDagNode, BlockingDagNode, DagNode } from '../dag/DagNode.js';
+import { ActiveDagNode, BlockingDagNode } from '../dag/DagNode.js';
 import { AccessTrack } from '../proxies/access-track/AccessTrack.js';
 import { MakeDeeplyAccessible } from '../proxies/recursive-proxy/RecursiveProxyPrimitive.js';
 import { Input } from './Input.js';
@@ -12,9 +12,22 @@ import { Input } from './Input.js';
  * @implements {DagManager}
  */
 export class InputStore {
+	listen = () => {
+		throw new Error('Should be picked up by proxy');
+	};
+	unlisten = () => {
+		throw new Error('Should be picked up by proxy');
+	};
+	gather = () => {
+		throw new Error('Should be picked up by proxy');
+	};
+
+
+
 	#storeMixin = storeMixin();
 	subscribe = this.#storeMixin.subscribe.bind(this.#storeMixin);
 	update = this.#storeMixin.update.bind(this.#storeMixin);
+
 	// This is handled by the proxy
 	/** @type {() => () => string[]} */
 	track = () => {
@@ -37,7 +50,6 @@ export class InputStore {
 	dagMap = new Map();
 
 	/**
-	 *
 	 * @param {string[]} result
 	 * @returns {Record<string, DagNode | null>}
 	 */
@@ -77,6 +89,17 @@ export class InputStore {
 			return out;
 		});
 		return proxy;
+	}
+
+	['🦆'] = '__EvidenceInputStore__';
+
+	/**
+	 * @param {unknown} v
+	 * @returns {v is InputStore}
+	 */
+	static isInputStore(v) {
+		if (!v || typeof v !== 'object') return false;
+		return '🦆' in v && v['🦆'] === '__EvidenceInputStore__';
 	}
 }
 
