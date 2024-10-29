@@ -47,10 +47,10 @@
 	<div class="flex relative w-fit">
 		{#each tabs as tab, index}
 			<button
-				class="p-1 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize font-mono tracking-wide {activeTab ===
+				class="p-1 px-2 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize tracking-wide {activeTab ===
 				tab
 					? 'text-black'
-					: 'text-gray-600'}"
+					: 'text-gray-500'}"
 				on:click={() => setTab(tab, index)}
 				bind:this={tabButtons[index]}
 			>
@@ -70,12 +70,12 @@
 		{#if activeTab === 'preview'}
 			<div
 				transition:slide={{ duration: 300 }}
-				class="my-5 border-gray-300 border p-3 shadow rounded backdrop-blur-sm bg-gray-50/10 overflow-x-auto"
+				class="my-5 border-gray-200 border p-5 rounded backdrop-blur-sm bg-gray-50/10 overflow-x-auto"
 			>
 				<slot name="preview" />
 			</div>
 		{:else}
-			<div transition:slide={{ duration: 300 }} class="overflow-auto shadow">
+			<div transition:slide={{ duration: 300 }} class="overflow-auto">
 				<slot />
 			</div>
 		{/if}
