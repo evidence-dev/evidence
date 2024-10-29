@@ -303,6 +303,10 @@ The `trustServerCertificate` option indicates whether the channel will be encryp
 
 The `encrypt` option indicates whether SQL Server uses SSL encryption for all data sent between the client and server if the server has a certificate installed. Necessary for Azure databases.
 
+#### Connection Timeout
+
+The `connection_timeout` option indicates the time, in milliseconds, that a query can run before it is terminated. It defaults to 15000 ms.
+
 ### MySQL
 
 #### SSL

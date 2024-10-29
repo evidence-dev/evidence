@@ -88,12 +88,14 @@ const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 	try {
 		const trust_server_certificate = database.trust_server_certificate ?? 'false';
 		const encrypt = database.encrypt ?? 'true';
+		const connection_timeout = database.connection_timeout ?? 15000;
 		const credentials = {
 			user: database.user,
 			server: database.server,
 			database: database.database,
 			password: database.password,
 			port: parseInt(database.port ?? 1433),
+			connectionTimeout: parseInt(connection_timeout ?? 15000),
 			options: {
 				trustServerCertificate:
 					trust_server_certificate === 'true' || trust_server_certificate === true,
@@ -144,6 +146,7 @@ module.exports = runQuery;
  * @property {`${number}`} port
  * @property {`${boolean}`} trust_server_certificate
  * @property {`${boolean}`} encrypt
+ * @property {`${number}`} connection_timeout
  */
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<MsSQLOptions>} */
@@ -207,5 +210,12 @@ module.exports.options = {
 		type: 'boolean',
 		default: false,
 		description: 'Should be true when using azure'
+	},
+	connection_timeout: {
+		title: 'Connection Timeout',
+		secret: false,
+		type: 'number',
+		required: false,
+		description: 'Connection timeout in ms'
 	}
 };
