@@ -27,7 +27,7 @@
 ## Remount Behvaior
 <Checkbox name="toggleRange" title="Toggle Date Range" />
 
-{#if inputs.toggleRange}
+{#if inputs.toggleRange.value}
     <DateRange name="myRange2"/>
 
     🚩 This behavior is broken because DateRange does not support hydration

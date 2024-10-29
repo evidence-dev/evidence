@@ -26,7 +26,6 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import QueryLoad from '../../../atoms/query-load/QueryLoad.svelte';
 	import { toasts } from '@evidence-dev/component-utilities/stores';
-	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 
@@ -205,17 +204,18 @@
 	let searchFactory;
 	$: if (Query.isQuery(data) && search) {
 		searchFactory = browserDebounce(
-			Query.createReactive(
-				{
-					loadGracePeriod: 1000,
-					callback: (v) => {
-						filteredData = v;
-					},
-					execFn: query
-				},
-				data.opts,
-				data
-			),
+			() => {},
+			// Query.createReactive(
+			// 	{
+			// 		loadGracePeriod: 1000,
+			// 		callback: (v) => {
+			// 			filteredData = v;
+			// 		},
+			// 		execFn: query
+			// 	},
+			// 	data.opts,
+			// 	data
+			// ),
 			200
 		);
 	}

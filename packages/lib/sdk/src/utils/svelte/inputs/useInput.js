@@ -15,7 +15,11 @@ export const UseSqlFactory = Symbol('UseSqlFactory');
 export const useInput = (name, options, initialState) => {
 	const inputStore = getInputContext();
 	/** @type {import("../../inputs/Input.js").Input & Record<string, any> | null} */
-	const input = inputStore.ensureInput(name, { sqlFragmentFactory: options?.sqlFragmentFactory });
+	const input = inputStore[name];
+	input.updateOptions({
+		sqlFragmentFactory: options?.sqlFragmentFactory ?? ((v) => v.value.toString())
+	});
+
 	if (!input) {
 		// TODO: Better error message
 		throw new EvidenceError('Failed to create input');

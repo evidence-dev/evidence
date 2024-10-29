@@ -1,9 +1,16 @@
 // @ts-check
 import { InputStore } from './InputStore.js';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 describe('InputStore', () => {
 	it('should be an object', () => {
 		expect(InputStore.isInputStore(InputStore.create())).toBe(true);
+	});
+
+	it('should publish itself before it is first modified', () => {
+		const store = InputStore.create();
+		const sub = vi.fn();
+		store.subscribe(sub)();
+		expect(sub).not.toHaveBeenCalledWith(undefined);
 	});
 
 	describe('Dependency Tracking', () => {

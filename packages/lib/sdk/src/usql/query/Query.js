@@ -16,10 +16,9 @@ import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
 import { VITE_EVENTS } from '../../build-dev/vite/constants.js';
 import { sterilizeQuery } from './sterilizeQuery.js';
-import { ActiveDagNode } from '../../utils/dag/DagNode.js';
+import { ActiveDagNode, DagNode } from '../../utils/dag/DagNode.js';
 import { log } from '../../logger/index.js';
-import zip from 'lodash/zip.js';
-import debounce from 'lodash/debounce.js';
+import { collapseTemplateArrays } from '../../lib/collapseTemplateArrays.js';
 
 /**
  * @typedef {import("../types.js").QueryResultRow} QueryResultRow
@@ -341,7 +340,6 @@ ${this.text.trim()}
 		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
-				console.log(this.originalText, result, this.#value)
 				this.#data = result;
 				const after = performance.now();
 
@@ -657,8 +655,35 @@ DESCRIBE ${this.text.trim()}
 
 					const field = target[/** @type {keyof typeof target} */ (prop)];
 
-					if (typeof field === 'function') return field.bind(target);
-					else return field;
+					if (typeof field === 'function') {
+						if (Query.ProxyQueryBuilderTriggers.includes(/** @type {string} */ (prop.toString()))) {
+							this.#dagManager.listen();
+							const self = this; /* 🤢 */
+
+							const result = /** @this {unknown} */ function (/** @type {any[]} */ ...args) {
+								if (!Query.isQuery(this))
+									throw new Error(
+										'Cannot use a query builder function when destructured. (e.g. it must be myQuery.where`` instead of where``?)'
+									);
+
+								const result = field.bind(target)(...args);
+								if (Query.isQuery(result)) {
+									const deps = self.#getNewDeps(...args);
+									for (const dep of deps) {
+										if (!dep) continue;
+										result.__dag.registerDependency(dep);
+									}
+								} else {
+									log.warn('Query builder function did not return a query');
+								}
+
+								self.#dagManager.unlisten();
+								return result;
+							};
+							return result;
+						}
+						return field.bind(target);
+					} else return field;
 				}
 			})
 		);
@@ -749,8 +774,8 @@ DESCRIBE ${this.text.trim()}
 		});
 	};
 
+	static #queryIdx = 0;
 	/**
-	 *
 	 * @param {string} id
 	 * @param {import('../types.js').Runner<any>} execFn
 	 * @param {import('../types.js').QueryReactivityOpts} reactiveOpts
@@ -758,8 +783,6 @@ DESCRIBE ${this.text.trim()}
 	 */
 	static create = (id, execFn, reactiveOpts, opts) => {
 		const { dagManager, callback, initialQuery } = reactiveOpts;
-		/** @type {import('../types.js').CreateQuery<any>} */
-		const createFn = Query.#factory;
 
 		let changeIdx = 0;
 		/** @type {QueryValue<any> | undefined} */
@@ -770,9 +793,9 @@ DESCRIBE ${this.text.trim()}
 		const hasUnsetInput = () => false;
 
 		const unpackDeps = () => {
-			const gather = dagManager.track();
+			dagManager.listen();
 			textFn();
-			const deps = gather();
+			const deps = dagManager.unlisten();
 			const dags = dagManager.resultToDagNode(deps.map((d) => d.toString()));
 
 			dagNode.deregisterDependencies(); // TODO: Do we really want to just deregister?
@@ -782,12 +805,12 @@ DESCRIBE ${this.text.trim()}
 		};
 
 		const dagNode = new ActiveDagNode(
-			`Query | ${id}`,
-			(epochId, defer) => {
+			`Query | ${id} (${Query.#queryIdx++})`,
+			(epochId) => {
 				activeQuery?.publish(`Dag Epoch ${epochId.description}`);
 				const targetChangeIdx = ++changeIdx;
 
-				const nextQuery = createFn(textFn(), execFn, { ...opts, id, dagNode });
+				const nextQuery = Query.#factory(textFn(), execFn, { ...opts, id, dagNode }, dagManager);
 				Query.#debugStatic(
 					`Dag Update for "${id}" triggered in ${epochId.description} (${changeIdx})`
 				);
@@ -795,8 +818,9 @@ DESCRIBE ${this.text.trim()}
 				if (!activeQuery) {
 					// This is the first query, so we want to set it immediately even if it is a promise
 					activeQuery = nextQuery;
+					dagNode.updateContainer(nextQuery);
 					callback(nextQuery);
-					return;
+					return false;
 				}
 				const fetch = nextQuery.fetch();
 				if (fetch instanceof Promise) {
@@ -808,12 +832,14 @@ DESCRIBE ${this.text.trim()}
 							setTimeout(resolve, 500);
 						})
 					]).then(() => {
-						if (changeIdx !== targetChangeIdx) return;
+						if (changeIdx !== targetChangeIdx) return false;
 						activeQuery = nextQuery;
+						dagNode.updateContainer(nextQuery);
 						callback(nextQuery);
 					});
 				} else {
 					activeQuery = nextQuery;
+					dagNode.updateContainer(nextQuery);
 					callback(nextQuery);
 				}
 
@@ -834,7 +860,7 @@ DESCRIBE ${this.text.trim()}
 			} else {
 				activeQuery = initialQuery;
 			}
-			dagNode.trigger();
+			dagNode.trigger(true);
 		}
 
 		/** @param {() => string} _textFn */
@@ -847,29 +873,19 @@ DESCRIBE ${this.text.trim()}
 
 	/**
 	 * @template {QueryResultRow} [RowType=QueryResultRow]
-	 * @type {import("../types.js").CreateQuery<RowType>}
+	 * @param {QueryBuilder | string} query
+	 * @param {import('../types.js').Runner} executeQuery
+	 * @param {import('../types.js').QueryOpts<RowType>} opts
+	 * @param {import('../../utils/dag/types.js').DagManager} dagManager
 	 */
-	static #factory = (query, executeQuery, optsOrId, maybeOpts) => {
+	static #factory = (query, executeQuery, opts, dagManager) => {
 		if (import.meta.hot) {
 			Query.#devModeBootstraps();
 		}
 
 		const queryHash = hashQuery(query);
-		/** @type {import('../types.js').QueryOpts<RowType>} */
-		let opts;
-		if (typeof optsOrId === 'string') {
-			opts = {
-				...maybeOpts,
-				id: optsOrId
-			};
-		} else if (optsOrId) {
-			opts = optsOrId;
-			if (!opts.id) opts.id = queryHash + '-' + Math.random().toString(36).substring(0, 4);
-		} else {
-			opts = {
-				id: queryHash + '-' + Math.random().toString(36).substring(0, 4)
-			};
-		}
+		if (!opts.id) opts.id = queryHash + '-' + Math.random().toString(36).substring(0, 4);
+
 		if (!('autoScore' in opts)) {
 			opts.autoScore = true;
 		}
@@ -905,7 +921,7 @@ DESCRIBE ${this.text.trim()}
 			);
 
 		Query.#constructing = true;
-		const output = new Query(query, executeQuery, opts);
+		const output = new Query(query, executeQuery, opts, dagManager);
 		Query.#globalEmit('queryCreated', {
 			raw: output,
 			proxied: output.value
@@ -976,6 +992,9 @@ DESCRIBE ${this.text.trim()}
 	/** @type {string | undefined} */
 	#createdStack;
 
+	/** @type {import('../../utils/dag/types.js').DagManager} */
+	#dagManager;
+
 	get createdStack() {
 		return this.#createdStack;
 	}
@@ -986,14 +1005,17 @@ DESCRIBE ${this.text.trim()}
 	 * @param {QueryBuilder | string} query
 	 * @param {import('../types.js').Runner} executeQuery
 	 * @param {import("../types.js").QueryOpts<RowType>} opts
+	 * @param {import('../../utils/dag/types.js').DagManager} dagManager
 	 * @deprecated Use {@link Query.create} instead
 	 */
-	constructor(query, executeQuery, opts = {}) {
+	constructor(query, executeQuery, opts = {}, dagManager) {
 		this.#createdStack = new Error().stack
 			?.split('\n')
 			.slice(2)
 			.map((line) => line.slice('    at '.length))
 			.join('\n');
+
+		this.#dagManager = dagManager;
 		const {
 			id,
 			initialData = undefined,
@@ -1185,6 +1207,10 @@ DESCRIBE ${this.text.trim()}
 	addEventListener = this.on;
 	removeEventListener = this.off;
 
+	[Symbol.toPrimitive]() {
+		return this.originalText;
+	}
+
 	/////////////////////////////////////////
 	/// </ EventEmitter Implementation /> ///
 	/////////////////////////////////////////
@@ -1192,36 +1218,78 @@ DESCRIBE ${this.text.trim()}
 	//////////////////////////////////
 	/// < QueryBuilder Interface > ///
 	//////////////////////////////////
-	/** @param {string} filterStatement */
-	where = (filterStatement) => {
-		const output = Query.create(
+
+	// List of functions that are auto-decorated with dag instrumentation
+	/**
+	 * @type {Array<keyof Query>}
+	 */
+	static get ProxyQueryBuilderTriggers() {
+		return ['where', 'withOrdinal'];
+	}
+
+	/**
+	 *
+	 * @param {...any} args
+	 * @returns {Array<import('../../utils/dag/DagNode.js').DagNode>}
+	 */
+	#getNewDeps = (...args) => {
+		const inlineDagArgs = args
+			.filter((a) => {
+				if (typeof a !== 'object') return false;
+				if ('__dag' in a && DagNode.isDagNode(a.__dag)) return true;
+			})
+			.map((a) => a.__dag);
+		const dagDeps = Object.values(
+			this.#dagManager.resultToDagNode(this.#dagManager.unlisten().map((d) => d.toString()))
+		).filter(Boolean);
+
+		/** @type {Array<import('../../utils/dag/DagNode.js').DagNode>} */
+		const out = [this.__dag];
+		inlineDagArgs.forEach((d) => out.push(d));
+		dagDeps.forEach((d) => d && out.push(d));
+		return out;
+	};
+
+	/**
+	 * @param {TemplateStringsArray} strs
+	 * @param  {...unknown} args
+	 */
+	where = (strs, ...args) => {
+		const filterStatement = collapseTemplateArrays(strs, args);
+		const output = Query.#factory(
 			this.#query.clone().where(taggedSql`${filterStatement}`),
 			this.#executeQuery,
 			{
 				knownColumns: this.#columns,
 				noResolve: this.#opts.noResolve
-			}
+			},
+			this.#dagManager
 		);
-		output.__dag.registerDependency(this.__dag);
 		return output;
 	};
 
 	/**
 	 * Attaches an `ordinal` column to the query based on some window statement
-	 * @example myQuery.withOrdinal('partition by a order by b')
-	 * @param {string} windowStatement
+	 * @example myQuery.withOrdinal`partition by a order by b`
+	 * @param {TemplateStringsArray} strs
+	 * @param  {...unknown} args
 	 * @returns
 	 */
-	withOrdinal = (windowStatement) => {
+	withOrdinal = (strs, ...args) => {
 		const newQ = this.#query.clone();
 		newQ.select({
-			ordinal: taggedSql`row_number() over (${windowStatement})`
+			ordinal: taggedSql`row_number() over (${collapseTemplateArrays(strs, args)})`
 		});
-		const output = Query.create(newQ, this.#executeQuery, {
-			...this.#inheritableOpts,
-			knownColumns: this.#columns
-		});
-		output.__dag.registerDependency(this.__dag);
+
+		const output = Query.#factory(
+			newQ,
+			this.#executeQuery,
+			{
+				...this.#inheritableOpts,
+				knownColumns: this.#columns
+			},
+			this.#dagManager
+		);
 		return output;
 	};
 
@@ -1242,9 +1310,6 @@ DESCRIBE ${this.text.trim()}
 			{ column_name: 'similarity', column_type: 'INTEGER', nullable: 'NO' }
 		];
 
-		/** @type {import('../types.js').CreateQuery<any>} */
-		const typedCreateFn = Query.create;
-
 		const escapedSearchTerm = searchTerm.replaceAll("'", "''");
 
 		const cols = Array.isArray(searchCol) ? searchCol : [searchCol];
@@ -1261,7 +1326,7 @@ DESCRIBE ${this.text.trim()}
 			.join(',');
 
 		/** @type {QueryValue<RowType & {similarity: number}>} */
-		const output = typedCreateFn(
+		const output = Query.#factory(
 			this.#query
 				.clone()
 				.$select(
@@ -1276,29 +1341,38 @@ DESCRIBE ${this.text.trim()}
 			{
 				knownColumns: colsWithSimilarity,
 				...this.#inheritableOpts
-			}
+			},
+			this.#dagManager
 		);
-		output.__dag.registerDependency(this.__dag);
 		return output;
 	};
 
 	/** @param {number} limit */
 	limit = (limit) => {
-		const output = Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
-		});
-		output.__dag.registerDependency(this.__dag);
+		const output = Query.#factory(
+			this.#query.clone().limit(limit),
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				...this.#inheritableOpts
+			},
+			this.#dagManager
+		);
 		return output;
 	};
 
 	/** @param {number} offset */
 	offset = (offset) => {
-		const output = Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
-		});
-		output.__dag.registerDependency(this.__dag);
+		const output = Query.#factory(
+			this.#query.clone().offset(offset),
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				...this.#inheritableOpts
+			},
+			this.#dagManager
+		);
+
 		return output;
 	};
 	/**
@@ -1306,15 +1380,15 @@ DESCRIBE ${this.text.trim()}
 	 * @param {number} limit
 	 */
 	paginate = (offset, limit) => {
-		const output = Query.create(
+		const output = Query.#factory(
 			this.#query.clone().offset(offset).limit(limit),
 			this.#executeQuery,
 			{
 				knownColumns: this.#columns,
 				...this.#inheritableOpts
-			}
+			},
+			this.#dagManager
 		);
-		output.__dag.registerDependency(this.__dag);
 		return output;
 	};
 
@@ -1328,11 +1402,15 @@ DESCRIBE ${this.text.trim()}
 		if (withRowCount) query.select({ rows: qCount('*') });
 		query.$groupby(columns);
 
-		const output = Query.create(query, this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
-		});
-		output.__dag.registerDependency(this.__dag);
+		const output = Query.#factory(
+			query,
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				...this.#inheritableOpts
+			},
+			this.#dagManager
+		);
 
 		return output;
 	};
@@ -1381,10 +1459,15 @@ DESCRIBE ${this.text.trim()}
 				});
 			}
 		}
-		return Query.create(query, this.#executeQuery, {
-			knownColumns: this.#columns,
-			...this.#inheritableOpts
-		});
+		return Query.#factory(
+			query,
+			this.#executeQuery,
+			{
+				knownColumns: this.#columns,
+				...this.#inheritableOpts
+			},
+			this.#dagManager
+		);
 	};
 
 	////////////////////////////////////

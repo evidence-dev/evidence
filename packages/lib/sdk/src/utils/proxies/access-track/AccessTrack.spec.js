@@ -11,65 +11,65 @@ describe('AccessTrack', () => {
 		{ type: 'class', factory: () => new DemoClass() },
 		{ type: 'object', factory: () => AccessTrack({}) }
 	])('Applied to a $type', ({ factory }) => {
-		it("should add `track` to the object's reported keys", () => {
+		it("should add `listen` to the object's reported keys", () => {
 			const t = factory();
-			expect('track' in t).toBeTruthy();
-			expect(Object.keys(t)).includes('track');
+			expect('listen' in t).toBeTruthy();
+			expect(Object.keys(t)).includes('listen');
 		});
 		it('should be an object', () => {
 			const value = factory();
 			expect(value).toBeInstanceOf(Object);
 		});
-		it('should have a track method', () => {
+		it('should have a listen method', () => {
 			const value = factory();
-			expect(value.track).toBeInstanceOf(Function);
+			expect(value.listen).toBeInstanceOf(Function);
 		});
 
 		it('should track direct children', () => {
 			const t = factory();
 
-			const gather = t.track();
+			t.listen();
 			t.someValue = 'someThing';
 			`${t.someValue}`;
-			const results = gather();
+			const results = t.unlisten();
 			expect(results).toEqual(['someValue']);
 		});
 		it('should track nested children', () => {
 			const t = factory();
 
-			const gather = t.track();
+			t.listen();
 			t.someValue = { someThing: 'someThing' };
 			`${t.someValue.someThing}`;
-			const results = gather();
+			const results = t.unlisten();
 			expect(results).toEqual(['someValue']);
 		});
 		it('should track multiple children', () => {
 			const t = factory();
 
-			const gather = t.track();
+			t.listen();
 			t.someOtherValue = 'someThing';
 			t.someValue = { someThing: 'someThing' };
 			`${t.someOtherValue} ${t.someValue.someThing}`;
-			const results = gather();
+			const results = t.unlisten();
 			expect(results).toEqual(['someOtherValue', 'someValue']);
 		});
 		it('should ignore duplicates', () => {
 			const t = factory();
 
-			const gather = t.track();
+			t.listen();
 			t.someValue = { someThing: 'someThing' };
 			`${t.someValue} ${t.someValue.someThing}`;
-			const results = gather();
+			const results = t.unlisten();
 			expect(results).toEqual(['someValue']);
 		});
 		it('should ignore properties that exist but are not used', () => {
 			const t = factory();
 
-			const gather = t.track();
+			t.listen();
 			t.someOtherValue = 'someThing';
 			t.someValue = 'someThing';
 			`${t.someValue}`;
-			const results = gather();
+			const results = t.unlisten();
 			expect(results).toEqual(['someValue']);
 		});
 	});

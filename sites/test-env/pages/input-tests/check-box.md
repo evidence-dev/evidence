@@ -1,4 +1,4 @@
-# Date Range DAG Test
+# Checkbox DAG Test
 
 ## Basic Usage
 <Checkbox name="myCheckbox" title="My Checkbox"/>
@@ -18,9 +18,9 @@
 
 
 ## Remount Behvaior
-<Checkbox name="toggleRange" title="Toggle Date Range" />
+<Checkbox name="toggleRange" title="Toggle Checkbox" />
 
-{#if inputs.toggleRange}
+{#if inputs.toggleRange.value}
     <Checkbox name="myCheckbox2" title="My Checkbox 2"/>
 
 {/if}

@@ -1,4 +1,4 @@
-# Date Range DAG Test
+# Button Group DAG Test
 
 ## Basic Usage
 <ButtonGroup name="myButtonGroup">
@@ -22,9 +22,9 @@
 
 
 ## Remount Behvaior
-<Checkbox name="toggleRange" title="Toggle Date Range" />
+<Checkbox name="toggleRange" title="Toggle Button Group" />
 
-{#if inputs.toggleRange}
+{#if inputs.toggleRange.value}
     <ButtonGroup name="myButtonGroup2">
     <ButtonGroupItem value={1} valueLabel="One"/>
     <ButtonGroupItem value={2} valueLabel="Two"/>

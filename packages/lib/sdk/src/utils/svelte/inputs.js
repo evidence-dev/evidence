@@ -29,18 +29,19 @@ const isReadable = (v) => {
  */
 export const ensureInputContext = () => {
 	if (!getAllContexts().has(InputStoreKey)) {
-		const newValue = new InputStore();
+		const newValue = InputStore.create();
 		Input.DefaultValueText = '(SELECT 0 WHERE NULL /* Unset or Unknown Input Value */)';
 		setContext(InputStoreKey, newValue);
-		return newValue.proxy;
+		return newValue;
 	} else {
 		const existingValue = getContext(InputStoreKey);
-		return existingValue.proxy;
+		console.log(existingValue);
+		return existingValue;
 	}
 };
 
 /**
- * @returns {InputStore}
+ * @returns {InputStore & Record<string, Input>}
  * @deprecated This should not appear when this branch is merged
  */
 export const getInputContext = () => {

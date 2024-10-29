@@ -46,7 +46,7 @@
 ## Remount Behvaior
 <Checkbox name="toggleRange" title="Toggle Date Range" />
 
-{#if inputs.toggleRange}
+{#if inputs.toggleRange.value}
     <Dropdown name="myDropdown2" multiple>
     <DropdownOption value={1} valueLabel="One"/>
     <DropdownOption value={2} valueLabel="Two"/>

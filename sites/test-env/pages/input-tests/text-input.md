@@ -20,7 +20,7 @@
 ## Remount Behvaior
 <Checkbox name="toggleRange" title="Toggle Date Range" />
 
-{#if inputs.toggleRange}
+{#if inputs.toggleRange.value}
     <TextInput name="myText2"/>
 
 {/if}

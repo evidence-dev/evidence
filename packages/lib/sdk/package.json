@@ -79,7 +79,6 @@
 		"check:types": "tsc -p tsconfig.json --noEmit",
 		"check": "tsc -p tsconfig.json --noEmit && eslint src",
 		"build:types": "npm run check && tsc -p tsconfig.json --emitDeclarationOnly",
-		"build": "npm run check && tsc -p tsconfig.json --emitDeclarationOnly",
 		"format": "prettier src -w",
 		"lint": "eslint src --fix",
 		"cli": "node ./src/cli.js"

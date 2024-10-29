@@ -22,8 +22,6 @@ export class InputStore {
 		throw new Error('Should be picked up by proxy');
 	};
 
-
-
 	#storeMixin = storeMixin();
 	subscribe = this.#storeMixin.subscribe.bind(this.#storeMixin);
 	update = this.#storeMixin.update.bind(this.#storeMixin);
@@ -88,6 +86,7 @@ export class InputStore {
 			this.dagMap.set(prop.toString(), out.__dag);
 			return out;
 		});
+		this.#storeMixin.publish(proxy);
 		return proxy;
 	}
 

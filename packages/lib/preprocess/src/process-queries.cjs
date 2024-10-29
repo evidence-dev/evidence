@@ -37,7 +37,13 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			.filter((q) => q.compileError)
 			.map(
 				(q) =>
-					`const ${q.id} = Query.create(\`${q.compiledQueryString.replaceAll('$', '\\$')}\`, undefined, { id: "${q.id}", initialError: new Error(\`${/** @type {string} */ (q.compileError).replaceAll('$', '\\$')}\`)})`
+					`
+				let ${q.id}
+				Query.create(
+					"${q.id}",
+					{ dagManager: inputs_store, callback: (v) => ${q.id} = v },
+					{ initialError: new Error(\`${/** @type {string} */ (q.compileError).replaceAll('$', '\\$')}\`) }
+				)`
 			);
 
 		const queryStoreDeclarations = validIds.map((id) => {
@@ -70,20 +76,21 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	let ${id};
-	const __${id}Manager = Query.withDag(
+	const __${id}Update = Query.create(
+		"${id}",
+		queryFunc,
 		{
 			callback: (v) => (${id} = v),
-			execFn: queryFunc
+			dagManager: inputs_store,
 		},
 		{
-			...${id}InitialStates,
-            id: '${id}'
+			...${id}InitialStates
 		}
 	);
 
-	__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+	__${id}Update(() => \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`);
 	$: {
-		__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+		__${id}Update(() => \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`);
 	}
 
 	let __${id}Text = ${id}?.originalText ?? '';
@@ -91,8 +98,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 	// Give initial states for these variables
 	/** @type {boolean} */
-	let __${id}HasUnresolved = __${id}Manager.hasUnset;
-	$: __${id}HasUnresolved = __${id}Manager.hasUnset;
+	// let __${id}HasUnresolved = __${id}Manager.hasUnset;
+	// $: __${id}HasUnresolved = __${id}Manager.hasUnset;
 
 	// keep initial state around until after the query has resolved once
 	// let __${id}InitialFactory = false;
@@ -131,7 +138,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				${input_ids
 					.map(
 						(id) =>
-							`__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\``
+							`__${id}Update(() => \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`)`
 					)
 					.join('\n')}
 			}));
@@ -173,6 +180,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		}
 		let inputs;
 		let inputs_store = ensureInputContext();
+		setInputStore(inputs_store);
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
         $: pageHasQueries.set(Object.keys(data).length > 0);
@@ -186,7 +194,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		import { browser, dev } from "$app/environment";
 		import { profile } from '@evidence-dev/component-utilities/profile';
 		import { Query, hasUnsetValues } from '@evidence-dev/sdk/usql';
-		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
+		import { setQueryFunction, setInputStore } from '@evidence-dev/component-utilities/buildQuery';
 
 		if (!browser) {
 			onDestroy(() => Query.emptyCache());
@@ -246,7 +254,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				${validIds
 					.map(
 						(id) =>
-							`__${id}Manager.update\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\``
+							`__${id}Update(() => \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`)`
 					)
 					.join('\n')}
 			})

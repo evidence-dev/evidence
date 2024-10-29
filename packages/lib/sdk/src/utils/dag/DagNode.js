@@ -1,4 +1,3 @@
-// TODO: Move instanceof to duck typing
 // TODO: We should track nodes that were changed during an epoch
 
 import { nanoid } from 'nanoid';

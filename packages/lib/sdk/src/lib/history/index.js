@@ -22,6 +22,7 @@ export class History {
 		/** @param {Object} o */
 		const organize = (o) => {
 			if (Array.isArray(o)) return JSON.parse(JSON.stringify(o)); // no sorting
+			if (!o) return {};
 			let entries = Object.entries(o);
 			entries.sort((a, b) => a[0].localeCompare(b[0]));
 			// @ts-ignore

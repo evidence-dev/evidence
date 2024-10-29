@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Query } from './Query';
 import { sharedPromise } from '../../lib/sharedPromise';
-import { BlockingDagNode } from '../../utils/dag/DagNode.js';
 import { InputStore } from '../../utils/inputs/InputStore.js';
 const tick = (timeout = 0) => new Promise((r) => setTimeout(r, timeout));
 
@@ -929,10 +928,9 @@ describe('Query', () => {
 	describe('Metadata', () => {
 		describe('Columns', () => {
 			it('should be fetched when creating a store', () => {
-				let q;
 				getMockQuery(
 					{
-						callback: (v) => (q = v),
+						callback: () => {},
 						loadGracePeriod: 0
 					},
 					{}
@@ -940,10 +938,9 @@ describe('Query', () => {
 				expect(mockRunner).toHaveBeenCalledTimes(2); // once for length, once for meta
 			});
 			it('should not be fetched when creating a store with knownColumns', () => {
-				let q;
 				getMockQuery(
 					{
-						callback: (v) => (q = v),
+						callback: () => {},
 						loadGracePeriod: 0
 					},
 					{ knownColumns: [] }
@@ -1063,8 +1060,15 @@ describe('Query', () => {
 	describe('QueryBuilder interface', () => {
 		it("should pass known columns when the derived query doesn't have different selects", () => {
 			expectedColumns = [];
-			const initial = getMockQuery('SELECT 1');
-			const filtered = initial.where('1 = 1');
+			let initial;
+			getMockQuery(
+				{
+					callback: (v) => (initial = v),
+					loadGracePeriod: 0
+				},
+				{}
+			)(() => 'SELECT 1');
+			const filtered = initial.where`1 = 1`;
 			expect(filtered.columns).toEqual(expectedColumns);
 			expect(filtered.columns).toEqual(initial.columns); // referential equality
 			/*
@@ -1074,33 +1078,194 @@ describe('Query', () => {
 			expect(mockRunner).toHaveBeenCalledTimes(3);
 		});
 		it('should inherit noResolve from the parent query', () => {
-			let initial = getMockQuery('SELECT 1', { noResolve: true });
-			let filtered = initial.where('1 = 1');
+			let initial;
+			getMockQuery(
+				{
+					callback: (v) => (initial = v),
+					loadGracePeriod: 0
+				},
+				{ noResolve: true }
+			)(() => 'SELECT 1');
+			let filtered = initial.where`1 = 1'`;
 			expect(filtered.opts.noResolve).toBe(true);
 
-			initial = getMockQuery('SELECT 1', { noResolve: false });
-			filtered = initial.where('1 = 1');
+			getMockQuery(
+				{
+					callback: (v) => (initial = v),
+					loadGracePeriod: 0
+				},
+				{ noResolve: false }
+			)(() => 'SELECT 1');
+			filtered = initial.where`1 = 1`;
 			expect(filtered.opts.noResolve).toBe(false);
+		});
+
+		describe('.where', () => {
+			it('should create a new query', () => {
+				let q;
+				getMockQuery(
+					{
+						callback: (v) => (q = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT 1');
+				const filtered = q.where`1 = 1`;
+				expect(filtered).not.toBe(q);
+				expect(filtered.originalText.includes('WHERE 1 = 1')).toBe(true);
+			});
+			it('should depend on the parent query', () => {
+				let q;
+				getMockQuery(
+					{
+						callback: (v) => (q = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT 1');
+				const filtered = q.where`1 = 1`;
+				expect(filtered.__dag.parents.has(q.__dag)).toBe(true);
+			});
+			it('should track any new dependencies that were detected', () => {
+				let q1;
+				let q2;
+				getMockQuery(
+					{
+						callback: (v) => (q1 = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT 1');
+
+				getMockQuery(
+					{
+						callback: (v) => (q2 = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT "magic-horseshoes"');
+				inputs.x.value = '/* Magic Comment */';
+				const filtered = q1.where`1 IN (${q2}) OR 5 IN ${inputs.x.value}`;
+				expect(filtered.__dag.parents.has(q1.__dag)).toBe(true);
+				expect(filtered.__dag.parents.has(q2.__dag)).toBe(true);
+				expect(filtered.__dag.parents.has(inputs.x.__dag)).toBe(true);
+				expect(filtered.originalText.includes(`SELECT "magic-horseshoes"`)).toBe(true);
+				expect(filtered.originalText.includes(`/* Magic Comment */`)).toBe(true);
+			});
+
+			it('should not let you call .where when the function is detached from the query', () => {
+				let q;
+				getMockQuery(
+					{
+						callback: (v) => (q = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT 1');
+				const { where } = q;
+				expect(() => where`1=1`).toThrow();
+			});
+
+			it('should not update the child query when the variable changes', () => {
+				let q;
+				getMockQuery(
+					{
+						callback: (v) => (q = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'select 1');
+
+				/*
+					We don't have a lot of control here
+					Queries are immutable - one SQL statement = one Query object, so we can't
+					update filtered in place.
+
+					We have to rely on the framework for reactivity here until a different solution
+					can address this
+				*/
+
+				inputs.x.value = '/* Magic Comment */';
+				const filtered = q.where`${inputs.x.value}`;
+				expect(filtered.originalText.includes(`/* Magic Comment */`)).toBe(true);
+
+				inputs.x.value = '/* Magic Comment 2 */';
+				expect(filtered.originalText.includes(`/* Magic Comment 2 */`)).toBe(false);
+			});
+		});
+		describe('.withOrdinal', () => {
+			it('should add an ordinal column', () => {
+				let q;
+				getMockQuery(
+					{
+						callback: (v) => (q = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT 1');
+				const filtered = q.withOrdinal``;
+				expect(filtered.originalText).toContain('AS "ordinal"');
+			});
+			it('should depend on the parent query', () => {
+				let q;
+				getMockQuery(
+					{
+						callback: (v) => (q = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT 1');
+				const filtered = q.withOrdinal``;
+				expect(filtered.__dag.parents.has(q.__dag)).toBe(true);
+			});
+			it('should track input dependencies', () => {
+				let q;
+				getMockQuery(
+					{
+						callback: (v) => (q = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT 1');
+				inputs.x.value = 5;
+				const filtered = q.withOrdinal`${inputs.x.value}`;
+				expect(filtered.__dag.parents.has(q.__dag)).toBe(true);
+				expect(filtered.__dag.parents.has(inputs.x.__dag)).toBe(true);
+			});
 		});
 	});
 
 	describe('EventEmitter interface', () => {
 		it('should emit dataReady when done fetching data', async () => {
-			const q = getMockQuery('SELECT 5');
+			let q;
+			getMockQuery(
+				{
+					callback: (v) => (q = v),
+					loadGracePeriod: 0
+				},
+				{}
+			)(() => 'SELECT 1');
 			const sub = vi.fn();
 			q.on('dataReady', sub);
 			await q.fetch();
 			expect(sub).toHaveBeenCalledWith(undefined, 'dataReady');
 		});
 		it('should respect .off', async () => {
-			const q = getMockQuery('SELECT 5');
+			let q;
+			getMockQuery(
+				{
+					callback: (v) => (q = v),
+					loadGracePeriod: 0
+				},
+				{}
+			)(() => 'SELECT 1');
 			const sub = vi.fn();
 			q.on('dataReady', sub);
 			q.off('dataReady', sub);
 			await q.fetch();
 			expect(sub).not.toHaveBeenCalled();
 		});
-		it.skip('should emit an error event when a query fails', async () => {
+		it('should emit an error event when a query fails', async () => {
 			const innerError = new Error('Hello World');
 
 			expectedColumns = Promise.reject(innerError);
@@ -1108,6 +1273,15 @@ describe('Query', () => {
 			const sub = vi.fn().mockImplementation((v) => (output = v));
 			try {
 				// const q = getMockQuery('SELECT a broken value', { initialQuery });
+				let q;
+				getMockQuery(
+					{
+						callback: (v) => (q = v),
+						loadGracePeriod: 0
+					},
+					{}
+				)(() => 'SELECT 1');
+				console.log(q);
 
 				q.on('error', sub);
 			} catch {

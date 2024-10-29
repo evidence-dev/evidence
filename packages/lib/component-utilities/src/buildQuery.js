@@ -19,6 +19,11 @@ export const setQueryFunction = (queryFn) => {
 
 export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
 
+let inputStore = {};
+export const setInputStore = (_inputStore) => {
+	inputStore = _inputStore;
+};
+
 /**
  * @typedef QueryProps
  * @property {string} [value] Column to be used as value when selected
@@ -144,7 +149,7 @@ export const buildInputQuery = (
 
 /**
  *
- * @param {string} queryString
+ * @param {() => string | string} queryString
  * @param {string} id
  * @param {any[]} initialData
  * @param {Omit<import('@evidence-dev/sdk/usql').QueryOpts, 'initialData'>} [opts]
@@ -152,5 +157,16 @@ export const buildInputQuery = (
  * @returns {Query}
  */
 export const buildQuery = (queryString, id, initialData, opts) => {
-	return Query.create(queryString, queryFunction, id, { ...opts, initialData });
+	let q;
+	Query.create(
+		id,
+		queryFunction,
+		{
+			callback: (v) => (q = v),
+			dagManager: inputStore
+		},
+		{ ...opts, initialData }
+	)(typeof queryString === 'function' ? queryString : () => queryString);
+
+	return q;
 };

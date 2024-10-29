@@ -63,25 +63,6 @@ export type QueryReactivityOpts<T extends QueryResultRow = QueryResultRow> = {
 	initialQuery?: QueryValue<any> | (() => string);
 };
 
-export interface CreateQuery<RowType extends QueryResultRow = QueryResultRow> {
-	(
-		query: QueryBuilder | string,
-		executeQuery: Runner,
-		opts: QueryOpts<RowType>,
-		_?: never
-	): QueryValue<RowType>;
-
-	/**
-	 * @deprecated id has been moved to the options argument
-	 */
-	(
-		query: QueryBuilder | string,
-		executeQuery: Runner,
-		id?: string,
-		opts?: Omit<QueryOpts<RowType>, 'id'>
-	): QueryValue<RowType>;
-}
-
 export type LengthResultRow = { rowCount: number };
 
 export type MaybeAliasedCol = string | { col: string; as: string };

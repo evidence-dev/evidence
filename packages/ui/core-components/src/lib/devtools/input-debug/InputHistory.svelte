@@ -2,6 +2,7 @@
 	import Diff from './Diff.svelte';
 	/** @type {import ("@evidence-dev/sdk/utils").History}*/
 	export let history;
+	$: console.log($history);
 </script>
 
 {#each $history.reverse() as input}
