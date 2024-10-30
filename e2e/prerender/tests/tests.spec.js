@@ -105,7 +105,7 @@ test('charts should render once', async ({ page }) => {
 	const received = await page.evaluate(async () => {
 		await new Promise((resolve) => setTimeout(resolve, 3000));
 
-		return window[Symbol.for('chart renders')];	
+		return window[Symbol.for('chart renders')];
 	});
 
 	// 4 renders is what is expected (creation -> update x3)
