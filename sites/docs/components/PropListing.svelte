@@ -74,7 +74,7 @@
 		: ''}"
 	id="props-{idName}"
 >
-	<div class="min-w-48 flex justify-between mr-4 ml-3.5">
+	<div class="min-w-48 flex justify-between mr-4">
 		<div class="font-mono">
 			<a href="#props-{idName}">
 				<span
@@ -88,7 +88,7 @@
 			<span class="text-red-500 uppercase tracking-wide">Required</span>
 		{/if}
 	</div>
-	<div class="ml-3.5 xl:ml-0">
+	<div>
 		<div id="markdown-slot"><slot>{@html description}</slot></div>
 		{#if Array.isArray(options) && options.length > 0}
 			<div class="mt-1 select-none flex">
