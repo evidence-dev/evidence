@@ -174,7 +174,7 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
         <DateRange presetRanges={'Last 7 Days'}/>
     </div>
 
-```markdown
+```svelte
 <DateRange
     name=name_of_date_range
     presetRanges={'Last 7 Days'}
@@ -189,7 +189,7 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
         <DateRange presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}/>
     </div>
 
-````markdown
+````svelte
 <DateRange
     name=name_of_date_range
     presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}
@@ -204,7 +204,7 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
         <DateRange defaultValue={'Last 7 Days'}/>
     </div>
 
-````markdown
+````svelte
 <DateRange
     name=name_of_date_range
     defaultValue={'Last 7 Days'}

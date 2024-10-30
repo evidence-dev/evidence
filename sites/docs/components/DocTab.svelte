@@ -47,7 +47,7 @@
 	<div class="flex relative w-fit">
 		{#each tabs as tab, index}
 			<button
-				class="p-1 px-2 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize tracking-wide {activeTab ===
+				class="p-1 px-2 cursor-pointer transition-colors duration-300 text-xs font-semibold ease-in-out capitalize tracking-wide {activeTab ===
 				tab
 					? 'text-black'
 					: 'text-gray-500'}"
@@ -66,12 +66,9 @@
 	</div>
 	<div class="border-b border-gray-300 w-full"></div>
 
-	<div class="overflow-hidden grid">
+	<div class="overflow-hidden grid center">
 		{#if activeTab === 'preview'}
-			<div
-				transition:slide={{ duration: 300 }}
-				class="my-5 border-gray-200 border p-5 rounded backdrop-blur-sm bg-gray-50/10 overflow-x-auto shadow"
-			>
+			<div transition:slide={{ duration: 300 }} class="my-5 overflow-x-auto">
 				<slot name="preview" />
 			</div>
 		{:else}

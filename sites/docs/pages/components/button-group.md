@@ -36,7 +36,6 @@ Selected: {inputs.category_picker}
 ```
 </DocTab>
 
-
 ### With a Title
 
 <DocTab>
@@ -84,6 +83,8 @@ Selected: {inputs.category_selector}
     value=category
     defaultValue="Cursed Sporting Goods"
 />
+
+Selected: {inputs.selected_button1}
 ````
 </DocTab>
 
@@ -161,7 +162,6 @@ Selected: {inputs.alternative_labels_selector}
 ````
 </DocTab>
 
-
 ### Filtering a Query
 
 ```sql filtered_query
@@ -179,6 +179,7 @@ group by all
             name=category_button_group
             value=category
         />
+
         <DataTable data={filtered_query} emptySet=pass emptyMessage="No category selected"/>
     </div>
 
@@ -189,18 +190,9 @@ group by all
     value=category
 />
 
-```sql filtered_query
-select 
-    category, item, sum(sales) as total_sales
-from needful_things.orders
-where category like '${inputs.category_button_group}'
-group by all
-```
-
 <DataTable data={filtered_query} emptySet=pass emptyMessage="No category selected"/>
 ````
 </DocTab>
-
 
 ### Style Buttons as Tabs
 
