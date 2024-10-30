@@ -113,6 +113,11 @@
 </Story>
 
 <Story name="Null Metric Values Multiple">
+	<DimensionGrid metric="sum(fare)/0" {data} />
+</Story>
+
+
+<Story name="Null Dimension Values Multiple">
 	<DimensionGrid
 		multiple
 		data={Query.create(
