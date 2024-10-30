@@ -11,31 +11,44 @@ order by sales desc
 
 The Download Data component allows you to place a link on your page to download a specified dataset to CSV.
 
-<DownloadData data={categories}/>
+<DocTab>
+    <div slot='preview'>
+        <DownloadData data={categories}/>
+    </div>
 
 ```svelte
 <DownloadData data={categories}/>
 ```
+</DocTab>
 
 ## Examples
 
 ### Custom Text
 <LineBreak/>
 
-<DownloadData data={categories} text="Click Here"/>
+<DocTab>
+    <div slot='preview'>
+        <DownloadData data={categories} text="Click Here"/>
+    </div>
 
 ```svelte
 <DownloadData data={categories} text="Click Here"/>
 ```
+</DocTab>
+
 
 ### Custom Query ID
 <LineBreak/>
 
-<DownloadData data={categories} queryID=my_file/>
+<DocTab>
+    <div slot='preview'>
+        <DownloadData data={categories} queryID=my_file/>
+    </div>
 
 ```svelte
 <DownloadData data={categories} queryID=my_file/>
 ```
+</DocTab>
 
 ## Options
 

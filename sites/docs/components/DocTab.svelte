@@ -70,7 +70,7 @@
 		{#if activeTab === 'preview'}
 			<div
 				transition:slide={{ duration: 300 }}
-				class="my-5 border-gray-200 border p-5 rounded backdrop-blur-sm bg-gray-50/10 overflow-x-auto"
+				class="my-5 border-gray-200 border p-5 rounded backdrop-blur-sm bg-gray-50/10 overflow-x-auto shadow"
 			>
 				<slot name="preview" />
 			</div>
