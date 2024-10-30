@@ -3,7 +3,10 @@ title: Point Map
 sidebar_position: 1
 ---
 
-<PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200/>
+<DocTab>
+    <div slot='preview'>
+        <PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200/>
+    </div>
 
 ```html
 <PointMap 
@@ -16,6 +19,8 @@ sidebar_position: 1
     height=200
 />
 ```
+</DocTab>
+
 
 ```sql la_locations
 select *, 'https://www.google.com/search?q=' || point_name as link_col from la_locations
@@ -27,8 +32,11 @@ select *, 'https://www.google.com/search?q=' || point_name as link_col from la_l
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200 basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
-
+<DocTab>
+    <div slot='preview'>
+        <PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200 basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
+    </div>
+<br>
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
 ```svelte
@@ -42,24 +50,29 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     basemap={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}`}
 />
 ```
+</DocTab>
 
 ### Custom Tooltip
 
 #### `tooltipType=hover`
-<PointMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    value=sales 
-    valueFmt=usd 
-    pointName=point_name 
-    height=200
-    tooltipType=hover
-    tooltip={[
-        {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
-    ]}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <PointMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            value=sales 
+            valueFmt=usd 
+            pointName=point_name 
+            height=200
+            tooltipType=hover
+            tooltip={[
+                {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
+                {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
+            ]}
+        />
+    </div>
 
 ```svelte
 <PointMap 
@@ -77,23 +90,29 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     ]}
 />
 ```
+</DocTab>
+
 
 #### With clickable link and `tooltipType=click`
-<PointMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    value=sales 
-    valueFmt=usd 
-    pointName=point_name 
-    height=200
-    tooltipType=click
-    tooltip={[
-        {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
-    ]}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <PointMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            value=sales 
+            valueFmt=usd 
+            pointName=point_name 
+            height=200
+            tooltipType=click
+            tooltip={[
+                {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
+                {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
+                {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+            ]}
+        />
+    </div>
 
 ```svelte
 <PointMap 
@@ -112,19 +131,23 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     ]}
 />
 ```
+</DocTab>
 
 ### Custom Color Palette
 
-<PointMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    value=sales 
-    valueFmt=usd 
-    pointName=point_name 
-    height=200
-    colorPalette={['yellow','orange','red','darkred']}
-/>
+<DocTab>
+    <div slot='preview'>
+    <PointMap 
+        data={la_locations} 
+        lat=lat 
+        long=long 
+        value=sales 
+        valueFmt=usd 
+        pointName=point_name 
+        height=200
+        colorPalette={['yellow','orange','red','darkred']}
+    />   
+    </div>
 
 ```svelte
 <PointMap 
@@ -138,20 +161,24 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     colorPalette={['yellow','orange','red','darkred']}
 />
 ```
+</DocTab>
 
 ### Custom Styling
 
-<PointMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    pointName=point_name 
-    height=200
-    color=#128c2b
-    size=10
-    opacity=0.6
-    borderWidth=0
-/>
+<DocTab>
+    <div slot='preview'>
+        <PointMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            pointName=point_name 
+            height=200
+            color=#128c2b
+            size=10
+            opacity=0.6
+            borderWidth=0
+        />
+    </div>
 
 ```svelte
 <PointMap 
@@ -166,17 +193,21 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     borderWidth=0
 />
 ```
+</DocTab>
 
 ### Link Drilldown
 Pass in a `link` column to enable navigation on click of the point. These can be absolute or relative URLs
 
-<PointMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    link=link_col 
-    height=200
-/>
+<DocTab>
+    <div slot='preview'>
+        <PointMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            link=link_col 
+            height=200
+        />      
+    </div>
 
 ```svelte
 <PointMap 
@@ -187,10 +218,22 @@ Pass in a `link` column to enable navigation on click of the point. These can be
     height=200
 />
 ```
+</DocTab>
 
 ### Use Map as Input
 Use the `name` prop to set an input name for the map - when a point is clicked, it will set the input value to that row of data
 
+<DocTab>
+    <div slot='preview'>
+        <PointMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            name=my_point_map 
+            height=200
+        />
+    </div>
+
 ```svelte
 <PointMap 
     data={la_locations} 
@@ -200,14 +243,8 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
     height=200
 />
 ```
+</DocTab>
 
-<PointMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    name=my_point_map 
-    height=200
-/>
 
 *Click a point on the map to see the input value get updated:*
 
@@ -252,12 +289,15 @@ FROM la_locations
 ```	
 #### Categorical Legend
 
-<PointMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=Category
-/>
+<DocTab>
+    <div slot='preview'>
+        <PointMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=Category
+        />
+    </div>
 
 ```svelte
 <PointMap
@@ -267,16 +307,21 @@ FROM la_locations
     value=Category
 />
 ```
+</DocTab>
 
 #### Custom Colors
 Set custom legend colors using the `colorPalette` prop to match the number of categories; excess categorical options will default to standard colors.
-<PointMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=Category
-    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <PointMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=Category
+            colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+        />
+    </div>
 
 ```svelte
 <PointMap
@@ -287,16 +332,20 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
+</DocTab>
 
 #### Scalar Legend
 
-<PointMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=sales
-    valueFmt=usd
-/>
+<DocTab>
+    <div slot='preview'>
+        <PointMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=sales
+            valueFmt=usd
+        />
+    </div>
 
 ```svelte
 <PointMap
@@ -307,17 +356,22 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     valueFmt=usd
 />
 ```
+</DocTab>
 
 #### Custom Colors
 Define scalar legend colors using the `colorPalette` prop, allowing specified colors to create a gradient based on the range of values.
-<PointMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=sales
-    valueFmt=usd
-    colorPalette={['#C65D47', '#4A8EBA']}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <PointMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=sales
+            valueFmt=usd
+            colorPalette={['#C65D47', '#4A8EBA']}
+        />
+    </div>
 
 ```svelte
 <PointMap
@@ -329,6 +383,7 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     colorPalette={['#C65D47', '#4A8EBA']}
 />
 ```
+</DocTab>
 
 ## Options
 
