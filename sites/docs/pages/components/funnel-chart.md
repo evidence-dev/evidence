@@ -17,11 +17,14 @@ select * from (
 ) order by stage_id asc
 ```
 
-<FunnelChart 
-    data={funnel_data} 
-    nameCol=stage
-    valueCol=customers
-/>
+<DocTab>
+    <div slot='preview'>
+        <FunnelChart 
+            data={funnel_data} 
+            nameCol=stage
+            valueCol=customers
+        />
+    </div>
 
 ```markdown
 <FunnelChart 
@@ -30,17 +33,21 @@ select * from (
     valueCol=customers
 />
 ```
+</DocTab>
 
 ## Examples
 
 ### Ascending
 
-<FunnelChart 
-    data={funnel_data} 
-    nameCol=stage
-    valueCol=customers
-    funnelSort=ascending
-/>
+<DocTab>
+    <div slot='preview'>
+        <FunnelChart 
+            data={funnel_data} 
+            nameCol=stage
+            valueCol=customers
+            funnelSort=ascending
+        />
+    </div>
 
 ```markdown
 <FunnelChart 
@@ -50,15 +57,19 @@ select * from (
     funnelSort=ascending
 />
 ```
+</DocTab>
 
 ### Alignment
 
-<FunnelChart 
-    data={funnel_data} 
-    nameCol=stage
-    valueCol=customers
-    funnelAlign=left
-/>
+<DocTab>
+    <div slot='preview'>
+        <FunnelChart 
+            data={funnel_data} 
+            nameCol=stage
+            valueCol=customers
+            funnelAlign=left
+        />
+    </div>
 
 ```markdown
 <FunnelChart 
@@ -68,15 +79,19 @@ select * from (
     funnelAlign=left
 />
 ```
+</DocTab>
 
 ### Show Percent Label
 
-<FunnelChart 
-    data={funnel_data} 
-    nameCol=stage
-    valueCol=customers
-    showPercent=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <FunnelChart 
+            data={funnel_data} 
+            nameCol=stage
+            valueCol=customers
+            showPercent=true
+        />
+    </div>
 
 ```markdown
 <FunnelChart 
@@ -86,7 +101,7 @@ select * from (
     showPercent=true
 />
 ```
-
+</DocTab>
 
 ## Options
 

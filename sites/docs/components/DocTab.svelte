@@ -43,7 +43,7 @@
 	});
 </script>
 
-<div class="doc-tab mt-2">
+<div class="doc-tab mt-2 overflow-hidden">
 	<div class="flex relative w-fit">
 		{#each tabs as tab, index}
 			<button
@@ -68,7 +68,7 @@
 
 	<div class="overflow-hidden grid center">
 		{#if activeTab === 'preview'}
-			<div transition:slide={{ duration: 300 }} class="my-5 overflow-x-auto">
+			<div transition:slide={{ duration: 300 }} class="my-5 overflow-hidden">
 				<slot name="preview" />
 			</div>
 		{:else}
