@@ -7,11 +7,15 @@ title: Delta
 select 0.366 as positive, -0.366 as negative
 ```
 
-<Delta data={growth} column=positive fmt=pct1 />
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=positive fmt=pct1 />
+    </div>
 
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 />
 ```
+</DocTab>
 
 ## Examples
 
@@ -23,18 +27,40 @@ select 0.366 as positive, -0.366 as negative
 
 #### Positive
 
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=positive fmt=pct1/>
+    </div>
+
+```markdown
 <Delta data={growth} column=positive fmt=pct1 />
+```
+</DocTab>
 
 #### Negative 
 
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=negative fmt=pct1 />
+    </div>
+
+```markdown
 <Delta data={growth} column=negative fmt=pct1 />
+```
+</DocTab>
 
 #### Neutral*
 *Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
+
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
+    </div>
+
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 neutralMin=-0.4 neutralMax=0.4 />
 ```
-<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
+</DocTab>
 
 ### Chips
 
@@ -44,36 +70,67 @@ select 0.366 as positive, -0.366 as negative
 
 #### Positive
 
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=positive fmt=pct1 chip=true/>
+    </div>
+
+````markdown
 <Delta data={growth} column=positive fmt=pct1 chip=true/>
+````
+</DocTab>
 
 #### Negative 
 
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=negative fmt=pct1 chip=true/>
+    </div>
+
+````markdown
 <Delta data={growth} column=negative fmt=pct1 chip=true/>
+````
+</DocTab>
 
 #### Neutral*
 *Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
+
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4 chip=true/>
+    </div>
+
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 chip=true neutralMin=-0.4 neutralMax=0.4 />
 ```
-<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4 chip=true/>
+</DocTab>
 
 ### Symbol Position
 
 #### Symbol on Left
 
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=positive fmt=pct1 symbolPosition=left/>
+    </div>
+
+
 ```html
 <Delta data={sales} column=growth fmt=pct1 symbolPosition=left/>
 ```
-
-<Delta data={growth} column=positive fmt=pct1 symbolPosition=left/>
+</DocTab>
 
 #### Symbol on Left in Chip
+
+<DocTab>
+    <div slot='preview'>
+        <Delta data={growth} column=negative fmt=pct1 symbolPosition=left/>
+    </div>
 
 ```html
 <Delta data={sales} column=growth fmt=pct1 chip=true symbolPosition=left/>
 ```
-
-<Delta data={growth} column=negative fmt=pct1 symbolPosition=left/>
+</DocTab>
 
 ## Options
 <PropListing

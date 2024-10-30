@@ -7,6 +7,26 @@ The details component allows you to add a collapsible section to your markdown. 
 
 ## Default state
 
+<DocTab>
+    <div slot='preview'>
+        <Details title="Definitions">
+            
+            Definition of metrics in Solutions Targets
+
+            ### Time to Proposal
+
+            Average number of days it takes to create a proposal for a customer
+
+            *Calculation:*
+            Sum of the number of days it took to create each proposal, divided by the number of proposals created
+
+            *Source:*
+            Hubspot
+
+        </Details>
+    </div>
+
+````markdown
 <Details title="Definitions">
     
     Definition of metrics in Solutions Targets
@@ -22,24 +42,29 @@ The details component allows you to add a collapsible section to your markdown. 
     Hubspot
 
 </Details>
+````
+</DocTab>
 
 ## Expanded state
 
-<Details title="Definitions" open=true>
-    
-    Definition of metrics in Solutions Targets
+<DocTab>
+    <div slot='preview'>
+        <Details title="Definitions" open=true>
+            
+            Definition of metrics in Solutions Targets
 
-    ### Time to Proposal
+            ### Time to Proposal
 
-    Average number of days it takes to create a proposal for a customer
+            Average number of days it takes to create a proposal for a customer
 
-    *Calculation:*
-    Sum of the number of days it took to create each proposal, divided by the number of proposals created
+            *Calculation:*
+            Sum of the number of days it took to create each proposal, divided by the number of proposals created
 
-    *Source:*
-    Hubspot
+            *Source:*
+            Hubspot
 
-</Details>
+        </Details>
+    </div>
 
 ```markdown
 <Details title="Definitions">
@@ -58,6 +83,7 @@ The details component allows you to add a collapsible section to your markdown. 
 
 </Details>
 ```
+</DocTab>
 
 ## Options
 
