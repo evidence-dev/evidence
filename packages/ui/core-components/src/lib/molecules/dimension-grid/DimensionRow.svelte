@@ -28,7 +28,7 @@
 				'bg-gray-200': row.metric === undefined
 			},
 			{
-				// null can occur naturally, allow selection state to show through 
+				// null can occur naturally, allow selection state to show through
 				'bg-transparent': row.metric === null
 			},
 			{

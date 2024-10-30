@@ -63,7 +63,7 @@
 </Story>
 
 <Story name="Null Metric Values, Custom Format">
-	<DimensionGrid metric="sum(fare)/0" {data} fmt='usd' />
+	<DimensionGrid metric="sum(fare)/0" {data} fmt="usd" />
 </Story>
 
 <Story name="Null Dimension Values">
@@ -115,7 +115,6 @@
 <Story name="Null Metric Values Multiple">
 	<DimensionGrid metric="sum(fare)/0" {data} />
 </Story>
-
 
 <Story name="Null Dimension Values Multiple">
 	<DimensionGrid
@@ -231,7 +230,6 @@
 	<DimensionGrid data={nullComboData} multiple />
 </Story>
 
-
 <Story
 	name="Null Row Column Combination, Custom Format"
 	play={async ({ canvasElement }) => {
@@ -248,5 +246,5 @@
 		await userEvent.click(airline);
 	}}
 >
-	<DimensionGrid data={nullComboData} multiple fmt=usd/>
+	<DimensionGrid data={nullComboData} multiple fmt="usd" />
 </Story>

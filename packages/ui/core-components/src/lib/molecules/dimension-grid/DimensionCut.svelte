@@ -143,7 +143,11 @@
 						<DimensionRow
 							{row}
 							{selectedValue}
-							formattedValue={formatValue(row.metric, fmtObject, columnSummary[0].columnUnitSummary)}
+							formattedValue={formatValue(
+								row.metric,
+								fmtObject,
+								columnSummary[0].columnUnitSummary
+							)}
 						/>
 					</div>
 				{/each}
@@ -161,7 +165,11 @@
 							<DimensionRow
 								row={{ dimensionValue: missingValue }}
 								{selectedValue}
-								formattedValue={formatValue(missingValue, fmtObject, columnSummary[0].columnUnitSummary)}
+								formattedValue={formatValue(
+									missingValue,
+									fmtObject,
+									columnSummary[0].columnUnitSummary
+								)}
 							/>
 						</div>
 					{/each}
