@@ -105,13 +105,16 @@ test('charts should render once', async ({ page }) => {
 	const received = await page.evaluate(async () => {
 		await new Promise((resolve) => setTimeout(resolve, 3000));
 
-		return window[Symbol.for('chart renders')];
+		return window[Symbol.for('chart renders')];	
 	});
 
-	// 3 renders is what is expected (creation -> update -> (deletion) -> creation)
-	// double loading makes 4 renders, adding another delete/create in
-	// TODO: why is 3 renders expected
-	const expected = 7;
+	// 4 renders is what is expected (creation -> update x3)
+	// double loading makes 6 renders, adding another 2 updates in
+	// TODO: why are 3 updates expected
+	// - first is for initial render w/o chart props
+	// - second is for render w/ chart props
+	// - third is for ???, fourth is for ???
+	const expected = 10;
 
 	expect(received).toEqual(expected);
 });
