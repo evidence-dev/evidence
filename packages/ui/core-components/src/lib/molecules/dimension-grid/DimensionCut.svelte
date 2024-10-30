@@ -9,7 +9,10 @@
 	import { getDimensionCutQuery } from './dimensionGridQuery.js';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import QueryLoad from '../../atoms/query-load/QueryLoad.svelte';
 	import { resolveMaybePromise } from '@evidence-dev/sdk/usql';
 
@@ -19,6 +22,7 @@
 	export let metric;
 	export let metricLabel;
 	export let limit;
+	export let fmt = undefined;
 
 	if (dimension.column_name.includes(' ')) {
 		dimension.column_name = `"${dimension.column_name}"`;
@@ -125,6 +129,7 @@
 		</p>
 		{#if loaded?.length > 0 || (Array.isArray(selectedValue) && selectedValue.length > 0)}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
+			{@const fmtObject = fmt ? getFormatObjectFromString(fmt, 'number') : columnSummary[0].format}
 			<div class="transition-all" style={`min-height:${minRem}rem;`}>
 				{#each loaded as row (row.dimensionValue)}
 					<div
@@ -138,11 +143,7 @@
 						<DimensionRow
 							{row}
 							{selectedValue}
-							value={formatValue(
-								row.metric,
-								columnSummary[0].format,
-								columnSummary[0].columnUnitSummary
-							)}
+							value={formatValue(row.metric, fmtObject, columnSummary[0].columnUnitSummary)}
 						/>
 					</div>
 				{/each}
