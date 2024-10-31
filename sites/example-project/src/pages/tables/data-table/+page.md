@@ -48,7 +48,7 @@ group by all
 	<Column id=aov fmt=usd2 contentType=colorscale scaleColor={['#b52626','#FFFFFF','#2e9939']}/> 
  </DataTable>
 
- ## Conditional Columns
+## Conditional Columns
 
 <Dropdown name="display_column">
 	<DropdownOption value="sales">Sales</DropdownOption>

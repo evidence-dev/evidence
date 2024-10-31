@@ -8,8 +8,6 @@
 	import ButtonGroupItem from '../../../atoms/inputs/button-group/ButtonGroupItem.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { expect, userEvent, within, fn } from '@storybook/test';
-	import Dropdown from '$lib/atoms/inputs/dropdown/Dropdown.svelte';
-	import DropdownOption from '$lib/atoms/inputs/dropdown/helpers/DropdownOption.svelte';
 
 	const mockGoto = fn();
 
