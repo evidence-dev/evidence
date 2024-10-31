@@ -34,7 +34,8 @@ test.describe('pages', () => {
 		await expect(page.getByText('Index')).toBeVisible();
 
 		createFile('pages/new-page.md', 'This is a new page');
-		await waitForHMR(page);
+		// file deletions trigger full reload
+		// await waitForHMR(page);
 
 		await expect(page.getByRole('link', { name: 'New Page' })).toBeVisible();
 		await page.goto('/new-page');
