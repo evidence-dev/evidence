@@ -6,7 +6,7 @@ class DemoClass {
 		return AccessTrack(this);
 	}
 }
-describe('AccessTrack', () => {
+describe.only('AccessTrack', () => {
 	describe.each([
 		{ type: 'class', factory: () => new DemoClass() },
 		{ type: 'object', factory: () => AccessTrack({}) }
@@ -28,48 +28,48 @@ describe('AccessTrack', () => {
 		it('should track direct children', () => {
 			const t = factory();
 
-			t.listen();
+			const tx = t.listen();
 			t.someValue = 'someThing';
 			`${t.someValue}`;
-			const results = t.unlisten();
+			const results = t.unlisten(tx);
 			expect(results).toEqual(['someValue']);
 		});
 		it('should track nested children', () => {
 			const t = factory();
 
-			t.listen();
+			const tx = t.listen();
 			t.someValue = { someThing: 'someThing' };
 			`${t.someValue.someThing}`;
-			const results = t.unlisten();
+			const results = t.unlisten(tx);
 			expect(results).toEqual(['someValue']);
 		});
 		it('should track multiple children', () => {
 			const t = factory();
 
-			t.listen();
+			const tx = t.listen();
 			t.someOtherValue = 'someThing';
 			t.someValue = { someThing: 'someThing' };
 			`${t.someOtherValue} ${t.someValue.someThing}`;
-			const results = t.unlisten();
+			const results = t.unlisten(tx);
 			expect(results).toEqual(['someOtherValue', 'someValue']);
 		});
 		it('should ignore duplicates', () => {
 			const t = factory();
 
-			t.listen();
+			const tx = t.listen();
 			t.someValue = { someThing: 'someThing' };
 			`${t.someValue} ${t.someValue.someThing}`;
-			const results = t.unlisten();
+			const results = t.unlisten(tx);
 			expect(results).toEqual(['someValue']);
 		});
 		it('should ignore properties that exist but are not used', () => {
 			const t = factory();
 
-			t.listen();
+			const tx = t.listen();
 			t.someOtherValue = 'someThing';
 			t.someValue = 'someThing';
 			`${t.someValue}`;
-			const results = t.unlisten();
+			const results = t.unlisten(tx);
 			expect(results).toEqual(['someValue']);
 		});
 	});

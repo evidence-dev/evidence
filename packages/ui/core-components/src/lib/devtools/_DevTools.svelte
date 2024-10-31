@@ -10,7 +10,7 @@
 	import InputState from './input-debug/InputState.svelte';
 	import InputHistory from './input-debug/InputHistory.svelte';
 	import { isDebug } from '@evidence-dev/sdk/utils';
-	import { ensureInputContext, getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import DagDebugGraph from './page-dag-viewer/DagDebugGraph.svelte';
 	import { AllQueries } from './AllQueries.store.js';
 	import { ActiveQueries } from './ActiveQueries.store.js';
@@ -45,11 +45,12 @@
 		return () => window.removeEventListener('keydown', keybind);
 	});
 
-	const inputs = getReadonlyInputContext();
 
 	/** @type {History}*/
 	const inputHistory = new History();
-	$: inputHistory.push($inputs);
+	$: {
+		inputHistory.push($inputStore);
+	}
 </script>
 
 {#if open}
@@ -91,10 +92,10 @@
 				{/if}
 			</AccordionItem>
 			<AccordionItem title="Inspect Inputs" compact>
-				<InputState history={inputHistory} />
+				<InputState />
 			</AccordionItem>
 			<AccordionItem title="View Input History" compact>
-				<InputHistory history={inputHistory} />
+				<InputHistory history={$inputHistory} />
 			</AccordionItem>
 			<AccordionItem title="Page Dependency Graph" compact>
 				<DagDebugGraph rootNodes={[inputStore, ...Array.from($ActiveQueries.values())]} />

@@ -47,6 +47,7 @@ export class History {
 					asof: new Date()
 				});
 			}
+			this.publish();
 			return;
 		}
 		this.#history.push({

@@ -160,10 +160,10 @@ export const buildQuery = (queryString, id, initialData, opts) => {
 	let q;
 	Query.create(
 		id,
-		queryFunction,
 		{
 			callback: (v) => (q = v),
-			dagManager: inputStore
+			dagManager: inputStore,
+			execFn: queryFunction
 		},
 		{ ...opts, initialData }
 	)(typeof queryString === 'function' ? queryString : () => queryString);

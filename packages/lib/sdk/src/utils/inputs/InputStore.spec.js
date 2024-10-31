@@ -16,19 +16,18 @@ describe('InputStore', () => {
 	describe('Dependency Tracking', () => {
 		it('should track dependencies', () => {
 			const store = InputStore.create();
-			store.myInput = 5;
-			store.listen();
-			`${store.myInput}`;
-			const result = store.unlisten();
-
+			store.myInput.value = 5;
+			const tx = store.listen();
+			expect(`${store.myInput.value}`).toEqual('5');
+			const result = store.unlisten(tx);
 			expect(result).toEqual(['myInput']);
 		});
 		it('should track dependencies, while returning the results', () => {
 			const store = InputStore.create();
 			store.myInput = 5;
-			store.listen();
+			const tx = store.listen();
 			expect(store.myInput).toBe(5);
-			const result = store.unlisten();
+			const result = store.unlisten(tx);
 
 			expect(result).toEqual(['myInput']);
 			expect(store.myInput).toBe(5);

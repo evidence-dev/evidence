@@ -49,10 +49,10 @@ afterEach(() => {
 const getMockQuery = (reactiveOpts, opts) => {
 	return Query.create(
 		`q-${testQueryIndex++}-${testIdx}`,
-		mockRunner,
 		{
 			callback: () => {},
 			dagManager: inputs,
+			execFn: mockRunner,
 			...reactiveOpts
 		},
 		{

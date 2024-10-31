@@ -41,7 +41,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				let ${q.id}
 				Query.create(
 					"${q.id}",
-					{ dagManager: inputs_store, callback: (v) => ${q.id} = v },
+					{ dagManager: inputs_store, callback: (v) => ${q.id} = v, execFn: queryFunc },
 					{ initialError: new Error(\`${/** @type {string} */ (q.compileError).replaceAll('$', '\\$')}\`) }
 				)`
 			);
@@ -78,10 +78,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	let ${id};
 	const __${id}Update = Query.create(
 		"${id}",
-		queryFunc,
 		{
 			callback: (v) => (${id} = v),
 			dagManager: inputs_store,
+			execFn: queryFunc
 		},
 		{
 			...${id}InitialStates
@@ -180,7 +180,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		}
 		let inputs;
 		let inputs_store = ensureInputContext();
-		setInputStore(inputs_store);
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
         $: pageHasQueries.set(Object.keys(data).length > 0);
@@ -194,14 +193,17 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		import { browser, dev } from "$app/environment";
 		import { profile } from '@evidence-dev/component-utilities/profile';
 		import { Query, hasUnsetValues } from '@evidence-dev/sdk/usql';
-		import { setQueryFunction, setInputStore } from '@evidence-dev/component-utilities/buildQuery';
+		import { setQueryFunction, setInputStore } from '@evidence-dev/sdk/utils/svelte';
 
 		if (!browser) {
 			onDestroy(() => Query.emptyCache());
 		}
 
 		const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
+
+
 		setQueryFunction(queryFunc);
+		setInputStore(inputs_store);
 
 		const scoreNotifier = !dev? () => {} : (info) => {
 			toasts.add({

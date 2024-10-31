@@ -7,7 +7,8 @@
 	import { writable, readonly } from 'svelte/store';
 	import { useInput } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
-	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
+	// import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import { useInputQuery } from '@evidence-dev/sdk/utils/svelte';
 	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
@@ -53,13 +54,20 @@
 
 	export let value, data, label, order, where;
 
-	const { results, update } = buildReactiveInputQuery(
-		{ value, data, label, order, where },
+	// const { results, update } = buildReactiveInputQuery(
+	// 	{ value, data, label, order, where },
+	// 	`ButtonGroup-${name}`,
+	// 	$page?.data?.data[`ButtonGroup-${name}_data`],
+	// 	input
+	// );
+	const inputQueryManager = useInputQuery(
 		`ButtonGroup-${name}`,
-		$page?.data?.data[`ButtonGroup-${name}_data`],
-		input
+		$page?.data?.data[`ButtonGroup-${name}_data`]
 	);
-	$: update({ value, data, label, order, where });
+	const { results } = inputQueryManager;
+
+	inputQueryManager.update({ value, data, label, order, where });
+	$: inputQueryManager.update({ value, data, label, order, where });
 
 	/** @type {import('@evidence-dev/sdk/usql').QueryValue}*/
 	let query;

@@ -172,6 +172,7 @@ export class Query {
 	 */
 	set #error(v) {
 		if (!v) return;
+		debugger;
 		log.error(`${this.id} | Error in Query! ${v?.message}`);
 		this.#emit('error', v);
 		this.#__error = v;
@@ -656,8 +657,9 @@ DESCRIBE ${this.text.trim()}
 					const field = target[/** @type {keyof typeof target} */ (prop)];
 
 					if (typeof field === 'function') {
-						if (Query.ProxyQueryBuilderTriggers.includes(/** @type {string} */ (prop.toString()))) {
-							this.#dagManager.listen();
+						const _prop = /** @type {keyof Query<QueryResultRow>} */ (prop.toString());
+						if (Query.ProxyQueryBuilderTriggers.includes(_prop)) {
+							const tx = this.#dagManager.listen();
 							const self = this; /* 🤢 */
 
 							const result = /** @this {unknown} */ function (/** @type {any[]} */ ...args) {
@@ -668,7 +670,7 @@ DESCRIBE ${this.text.trim()}
 
 								const result = field.bind(target)(...args);
 								if (Query.isQuery(result)) {
-									const deps = self.#getNewDeps(...args);
+									const deps = self.#getNewDeps(tx, ...args);
 									for (const dep of deps) {
 										if (!dep) continue;
 										result.__dag.registerDependency(dep);
@@ -677,7 +679,7 @@ DESCRIBE ${this.text.trim()}
 									log.warn('Query builder function did not return a query');
 								}
 
-								self.#dagManager.unlisten();
+								self.#dagManager.unlisten(tx);
 								return result;
 							};
 							return result;
@@ -777,12 +779,11 @@ DESCRIBE ${this.text.trim()}
 	static #queryIdx = 0;
 	/**
 	 * @param {string} id
-	 * @param {import('../types.js').Runner<any>} execFn
 	 * @param {import('../types.js').QueryReactivityOpts} reactiveOpts
 	 * @param {Omit<import("../types.js").QueryOpts<any>, "id">} opts
 	 */
-	static create = (id, execFn, reactiveOpts, opts) => {
-		const { dagManager, callback, initialQuery } = reactiveOpts;
+	static create = (id, reactiveOpts, opts) => {
+		const { dagManager, callback, initialQuery, execFn } = reactiveOpts;
 
 		let changeIdx = 0;
 		/** @type {QueryValue<any> | undefined} */
@@ -793,9 +794,9 @@ DESCRIBE ${this.text.trim()}
 		const hasUnsetInput = () => false;
 
 		const unpackDeps = () => {
-			dagManager.listen();
+			const tx = dagManager.listen();
 			textFn();
-			const deps = dagManager.unlisten();
+			const deps = dagManager.unlisten(tx);
 			const dags = dagManager.resultToDagNode(deps.map((d) => d.toString()));
 
 			dagNode.deregisterDependencies(); // TODO: Do we really want to just deregister?
@@ -1229,10 +1230,11 @@ DESCRIBE ${this.text.trim()}
 
 	/**
 	 *
+	 * @param {string} tx
 	 * @param {...any} args
 	 * @returns {Array<import('../../utils/dag/DagNode.js').DagNode>}
 	 */
-	#getNewDeps = (...args) => {
+	#getNewDeps = (tx, ...args) => {
 		const inlineDagArgs = args
 			.filter((a) => {
 				if (typeof a !== 'object') return false;
@@ -1240,7 +1242,7 @@ DESCRIBE ${this.text.trim()}
 			})
 			.map((a) => a.__dag);
 		const dagDeps = Object.values(
-			this.#dagManager.resultToDagNode(this.#dagManager.unlisten().map((d) => d.toString()))
+			this.#dagManager.resultToDagNode(this.#dagManager.unlisten(tx, true).map((d) => d.toString()))
 		).filter(Boolean);
 
 		/** @type {Array<import('../../utils/dag/DagNode.js').DagNode>} */

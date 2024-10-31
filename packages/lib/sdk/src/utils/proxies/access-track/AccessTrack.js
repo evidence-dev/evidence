@@ -1,8 +1,9 @@
+import { nanoid } from 'nanoid';
 //@ts-check
 /**
  * @typedef {Object} AccessTracked
- * @property {()=>void} listen
- * @property {()=>Array<string|symbol>} unlisten
+ * @property {()=>string} listen
+ * @property {(tx: string, persist?: boolean)=>Array<string|symbol>} unlisten
  * @property {(keys: Array<string|symbol>)=>Array<unknown>} gather
  */
 
@@ -18,21 +19,24 @@ export const AccessTrack = (root, name) => {
 	let listening = false;
 	let listenKeys = new Set();
 
+	/** @type {Map<string, Set<string | symbol>>} */
+	const listenMap = new Map();
+
 	/**
 	 * @type {AccessTracked}
 	 */
 	const mergeObj = {
 		listen: () => {
-			if (listening) {
-				throw new Error(`${name ?? 'AccessTracked'} listen is already listening`);
-			}
-			listening = true;
+			const tx = nanoid();
+			listenMap.set(tx, new Set());
+			return tx;
 		},
-		unlisten: () => {
-			Object.keys(mergeObj).forEach((k) => listenKeys.delete(k));
-			const result = Array.from(listenKeys);
-			listenKeys.clear();
-			listening = false;
+		unlisten: (/** @type {string} */ tx, /** @type {boolean} */ persist = false) => {
+			const targetSet = listenMap.get(tx);
+			if (!targetSet) throw new Error('No tx found with id ' + tx);
+			Object.keys(mergeObj).forEach((k) => targetSet.delete(k));
+			if (!persist) listenMap.delete(tx);
+			const result = Array.from(targetSet);
 			return result;
 		},
 		gather: (keys) => {
@@ -48,7 +52,8 @@ export const AccessTrack = (root, name) => {
 
 	const result = new Proxy(root, {
 		ownKeys(target) {
-			return Array.from(new Set([...Object.keys(target), ...Object.keys(mergeObj)]));
+			const result = Array.from(new Set([...Object.keys(target), ...Object.keys(mergeObj)]));
+			return result;
 		},
 		getOwnPropertyDescriptor(target, prop) {
 			if (prop in mergeObj) {
@@ -62,7 +67,9 @@ export const AccessTrack = (root, name) => {
 		},
 		get(target, prop) {
 			if (prop in mergeObj) return mergeObj[prop];
-			if (listening) listenKeys.add(prop);
+			for (const map of listenMap.values()) {
+				map.add(prop);
+			}
 			//@ts-expect-error Flexible proxy stuff is weird
 			return target[prop];
 		}

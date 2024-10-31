@@ -54,7 +54,13 @@ export const MakeDeeplyAccessible = (root, factory, options) => {
 	const result = new Proxy(root, {
 		ownKeys(target) {
 			// TODO: This doesn't seem to be working for some reason
-			return [...Object.keys(target), ...Object.keys(Array.isArray(state) ? {} : state)];
+			const result = Array.from(
+				new Set([
+					...Object.keys(target),
+					...Object.keys(Array.isArray(state) ? Object.keys([]) : state)
+				])
+			);
+			return result;
 		},
 		has(target, prop) {
 			return isRootKey(prop) || prop in state;
@@ -70,6 +76,7 @@ export const MakeDeeplyAccessible = (root, factory, options) => {
 			if (prop === 'toString') return root.toString.bind(root);
 			if (prop === Symbol.toPrimitive) return () => state.toString();
 			if (prop === IsDeeplyAccessibleProxy) return true;
+			if (prop === InternalState) return state;
 			if (prop in state) return state[prop];
 			if (prop in Object.getPrototypeOf(state)) return state[prop];
 
