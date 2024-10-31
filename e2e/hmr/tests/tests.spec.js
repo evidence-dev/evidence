@@ -3,9 +3,10 @@ import { test, expect } from '@playwright/test';
 import { createFile, deleteFile, editFile, restoreChangedFiles } from './fs-utils';
 import { waitForDevModeToLoad } from '../../test-utils';
 
+/** @param {import("@playwright/test").Page} page */
 const waitForHMR = async (page) => {
 	await page.waitForEvent('console', (message) => {
-		return message.text() === '[vite] connected.';
+		return message.text().startsWith('[vite] hot updated');
 	});
 };
 
