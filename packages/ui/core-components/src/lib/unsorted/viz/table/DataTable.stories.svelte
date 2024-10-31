@@ -36,6 +36,76 @@
 	<DataTable {data} />
 </Story>
 
+<Story name="With Sort">
+	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
+	<DataTable {data} sort="fare desc" />
+</Story>
+
+<Story name="Bar Viz">
+	{@const data = Query.create(
+		`
+	SELECT 'a' as category, 10000 as value, 1598 as orders
+	union all
+	SELECT 'a' as category, 8000 as value, 5613 as orders
+	union all
+	SELECT 'a' as category, -7000 as value, 4151 as orders
+	union all
+	SELECT 'b' as category, 3000 as value, 4569 as orders
+	union all
+	SELECT 'b' as category, 2400 as value, 1523 as orders
+	union all
+	SELECT 'b' as category, 1200 as value, 1838 as orders
+	`,
+		query
+	)}
+	<DataTable {data}>
+		<Column id="category" />
+		<Column id="value" contentType="bar" fmt="usd" hideLabels="false" />
+		<Column id="orders" contentType="bar" hideLabels="false" align="left" />
+	</DataTable>
+</Story>
+
+<Story name="Sparkline">
+	{@const data = Query.create(
+		`
+	select category, array_agg({'date': date, 'value': value}) as sparkline from (
+	SELECT 'Grocery' as category, '2024-01-01'::date as date, 100 as value, 284 as orders
+	union all
+	SELECT 'Grocery' as category, '2024-01-02'::date as date, 80 as value, 648 as orders
+	union all
+	SELECT 'Grocery' as category, '2024-01-03'::date as date, 70 as value, 442 as orders
+	union all
+	SELECT 'Retail' as category, '2024-01-01'::date as date, 30 as value, 483 as orders
+	union all
+	SELECT 'Retail' as category, '2024-01-02'::date as date, 24 as value, 112 as orders
+	union all
+	SELECT 'Retail' as category, '2024-01-03'::date as date, 12 as value, 648 as orders
+	) group by all
+	`,
+		query
+	)}
+	<DataTable {data}>
+		<Column id="category" />
+		<Column
+			id="sparkline"
+			title="Sparkline"
+			contentType="sparkline"
+			sparkX="date"
+			sparkY="value"
+			sparkColor="green"
+		/>
+		<Column
+			id="sparkline"
+			title="Sparkbar"
+			contentType="sparkbar"
+			sparkX="date"
+			sparkY="value"
+			sparkColor="navy"
+		/>
+		<Column id="sparkline" title="Sparkarea" contentType="sparkarea" sparkX="date" sparkY="value" />
+	</DataTable>
+</Story>
+
 <Story name="With Search">
 	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
 	<DataTable {data} title="Flights" search>
@@ -61,11 +131,35 @@
 		`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`,
 		query
 	)}
-	<DataTable {data} title="Flights" search groupBy="regulator">
+	<DataTable {data} title="Flights" search groupBy="regulator" groupsOpen="false">
 		<Column id="id" title="ID" />
 		<Column id="airline" title="Airline" />
 		<Column id="departure_airport" title="Departure Airport" />
 		<Column id="arrival_airport" title="Arrival Airport" />
+	</DataTable>
+</Story>
+
+<Story name="With Group Sorting">
+	{@const data = Query.create(
+		`SELECT 
+			'd' as category, 'xd' as item, 2000 as sales
+			union all
+			select 'd','yd',400
+			union all
+			select 'd','zd',4000
+			union all
+			select 'b','xb',5000			
+			union all
+			select 'b','yb',1			
+			union all
+			select 'b','zb',3
+		`,
+		query
+	)}
+	<DataTable {data} groupBy="category" sort="sales desc" subtotals="true">
+		<Column id="category" />
+		<Column id="item" />
+		<Column id="sales" fmt="usd" />
 	</DataTable>
 </Story>
 

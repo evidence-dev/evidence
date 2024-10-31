@@ -30,7 +30,7 @@ More information about the architecture design can be found in [this article](ht
 
 To connect your local development environment to a database:
 
-1. Run your evidence project with `npm run dev`
+1. Run your evidence app with `npm run dev`
 1. Navigate to [localhost:3000/settings](http://localhost:3000/settings)
 1. Select your data source, name it, and enter required credentials
 1. (If required) Open the `connections.yaml` file inside `/sources/[source_name]` and add any additional configuration options
@@ -198,7 +198,7 @@ gcloud auth application-default print-access-token
 ```
 > *Note: This token will expire after 1 hour.*
 
-Now you can copy the access token and use it in your Evidence project.
+Now you can copy the access token and use it in your Evidence app.
 
 
 ### Snowflake
@@ -303,6 +303,10 @@ The `trustServerCertificate` option indicates whether the channel will be encryp
 
 The `encrypt` option indicates whether SQL Server uses SSL encryption for all data sent between the client and server if the server has a certificate installed. Necessary for Azure databases.
 
+#### Connection Timeout
+
+The `connection_timeout` option indicates the time, in milliseconds, that a query can run before it is terminated. It defaults to 15000 ms.
+
 ### MySQL
 
 #### SSL
@@ -353,7 +357,7 @@ To create a service account, see the [BigQuery instructions](#bigquery).
 
 1. Create a service account, and download the JSON key file
 2. Give the service account access to your Google Sheet by sharing the sheet with the service account's email address.
-4. Add the JSON key file to your Evidence project via the [Settings page](localhost:3000/settings)
+4. Add the JSON key file to your Evidence app via the [Settings page](localhost:3000/settings)
 5. In the connections.yaml file, add the sheet id (which can be found in the URL of the Google Sheet, after `https://docs.google.com/spreadsheets/d/`).
 
 ```yaml
@@ -378,7 +382,7 @@ Where `[your_tab_name]` is the name of the tab in your Google Sheet, with spaces
 
 In Evidence, you can query local CSV files directly in SQL.
 
-Get started by selecting the `CSV` connector on the Settings page in your project, naming it and then clicking "confirm changes". 
+Get started by selecting the `CSV` connector on the Settings page in your app, naming it and then clicking "confirm changes". 
 
 Then copy any CSV files you want to query into `sources/[your_csv_source_name]/`. Your source names and csv files can only contain letters, numbers and underscores eg `/my_source/my_csv_2024.csv`
 

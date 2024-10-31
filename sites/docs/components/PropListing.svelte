@@ -68,13 +68,13 @@
 </script>
 
 <section
-	class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4 scroll-mt-[3.5rem] transition-colors duration-300 {$hashLocation ===
+	class="pt-4 pb-2 border-b text-sm flex flex-col xl:flex-row gap-4 scroll-mt-[3.5rem] transition-colors duration-300 {$hashLocation ===
 	`#props-${idName}`
 		? 'bg-blue-50 border-blue-400 border-t'
 		: ''}"
 	id="props-{idName}"
 >
-	<div class="min-w-48 flex justify-between mr-4 ml-3.5">
+	<div class="min-w-48 flex justify-between mr-4">
 		<div class="font-mono">
 			<a href="#props-{idName}">
 				<span
@@ -88,8 +88,8 @@
 			<span class="text-red-500 uppercase tracking-wide">Required</span>
 		{/if}
 	</div>
-	<div class="ml-3.5 lg:ml-0">
-		<div id="markdown-slot"><slot>{description}</slot></div>
+	<div>
+		<div id="markdown-slot"><slot>{@html description}</slot></div>
 		{#if Array.isArray(options) && options.length > 0}
 			<div class="mt-1 select-none flex">
 				<span class="text-sm text-gray-400 mr-2">Options:</span>

@@ -16,6 +16,11 @@
 		"body": ["<LineChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert Line Chart"
 	},
+	"Last Refreshed": {
+		"prefix": "/LastRefreshed",
+		"body": ["<LastRefreshed/>\n\n"],
+		"description": "Insert Last Refreshed"
+	},
 	"Line Chart with Annotations": {
 		"prefix": "/LineChartWithAnnotations",
 		"body": [
@@ -153,6 +158,16 @@
 		"prefix": "/ReferenceLine",
 		"body": ["<ReferenceLine ${1|x,y|}=${2:value} label=${3:Label} />"],
 		"description": "[Must be used within a chart] Insert Reference Line"
+	},
+	"Reference Point": {
+		"prefix": "/ReferencePoint",
+		"body": ["<ReferencePoint x=${1:value} y=${2:value} label=${3:Label} />"],
+		"description": "[Must be used within a chart] Insert Reference Point"
+	},
+	"Callout": {
+		"prefix": "/Callout",
+		"body": ["<Callout x=${1:value} y=${2:value} label=${3:Label} />"],
+		"description": "[Must be used within a chart] Insert Callout"
 	},
 	"US Map": {
 		"prefix": "/USMap",

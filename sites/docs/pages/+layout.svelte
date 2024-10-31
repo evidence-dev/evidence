@@ -2,6 +2,7 @@
 	import '@evidence-dev/tailwind/fonts.css';
 	import '../app.css';
 	import { EvidenceDefaultLayout } from '@evidence-dev/core-components';
+	import EditInGitHub from '../components/EditInGitHub.svelte';
 	export let data;
 </script>
 
@@ -23,3 +24,5 @@
 >
 	<slot slot="content" />
 </EvidenceDefaultLayout>
+
+<EditInGitHub />
