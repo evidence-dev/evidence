@@ -182,23 +182,57 @@
 	<DataTable {data} link="link" showLinkCol />
 </Story>
 
-<Story name="Conditional Columns">
+<Story
+	name="Conditional Columns"
+	play={async ({ canvasElement }) => {
+		const screen = within(canvasElement);
+
+		expect(await screen.findByRole('columnheader', { name: 'Airline' })).toBeInTheDocument();
+		expect(await screen.findByRole('cell', { name: 'Virgin Australia' })).toBeInTheDocument();
+
+		await userEvent.click(await screen.findByRole('button', { name: 'Departure Airport' }));
+		expect(
+			await screen.findByRole('columnheader', { name: 'Departure Airport' })
+		).toBeInTheDocument();
+		expect(
+			await screen.findByRole('cell', { name: 'Soekarno-Hatta International Airport' })
+		).toBeInTheDocument();
+		expect(screen.queryByRole('columnheader', { name: 'Airline' })).toBeNull();
+		expect(screen.queryByRole('cell', { name: 'Virgin Australia' })).toBeNull();
+
+		await userEvent.click(await screen.findByRole('button', { name: 'Arrival Airport' }));
+		expect(
+			await screen.findByRole('columnheader', { name: 'Arrival Airport' })
+		).toBeInTheDocument();
+		expect(
+			await screen.findByRole('cell', { name: 'Bole International Airport' })
+		).toBeInTheDocument();
+		expect(screen.queryByRole('columnheader', { name: 'Airline' })).toBeNull();
+		expect(screen.queryByRole('cell', { name: 'Virgin Australia' })).toBeNull();
+		expect(screen.queryByRole('columnheader', { name: 'Departure Airport' })).toBeNull();
+		expect(screen.queryByRole('cell', { name: 'Soekarno-Hatta International Airport' })).toBeNull();
+
+		await userEvent.click(await screen.findByRole('button', { name: 'Airline' }));
+		expect(await screen.findByRole('columnheader', { name: 'Airline' })).toBeInTheDocument();
+		expect(await screen.findByRole('cell', { name: 'Virgin Australia' })).toBeInTheDocument();
+	}}
+>
 	{@const data = Query.create(
-		`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`,
+		`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') order by id limit 50`,
 		query
 	)}
 
-	<Dropdown name="display_column">
-		<DropdownOption value="airline">Airline</DropdownOption>
-		<DropdownOption value="departure">Departure Airport</DropdownOption>
-		<DropdownOption value="arrival">Arrival Airport</DropdownOption>
-	</Dropdown>
+	<ButtonGroup name="display_column">
+		<ButtonGroupItem value="airline" valueLabel="Airline" default />
+		<ButtonGroupItem value="departure" valueLabel="Departure Airport" />
+		<ButtonGroupItem value="arrival" valueLabel="Arrival Airport" />
+	</ButtonGroup>
 
 	<DataTable {data} title="Flights">
 		<Column id="id" title="ID" />
-		{#if $inputStore.display_column.value === 'airline'}
+		{#if $inputStore.display_column === 'airline'}
 			<Column id="airline" title="Airline" />
-		{:else if $inputStore.display_column.value === 'departure'}
+		{:else if $inputStore.display_column === 'departure'}
 			<Column id="departure_airport" title="Departure Airport" />
 		{:else}
 			<Column id="arrival_airport" title="Arrival Airport" />
