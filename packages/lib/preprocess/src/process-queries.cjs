@@ -3,8 +3,6 @@ const { extractQueries } = require('./extract-queries/extract-queries.cjs');
 const { highlighter } = require('./utils/highlighter.cjs');
 const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
-// prettier obliterates the formatting of queryDeclarations
-// prettier-ignore
 /**
  *
  * @param {string} filename
@@ -16,100 +14,109 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
-	
-	const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
-	const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError);
-	if (validIds.length > 0) {
 
+	const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
+	const validIds = Object.keys(duckdbQueries).filter(
+		(query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError
+	);
+	if (validIds.length > 0) {
 		// prerendered queries: stuff without ${}
 		// reactive queries: stuff with ${}
 		const IS_REACTIVE_QUERY = /\${.*?}/s;
-		const reactiveIds = validIds.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
+		const reactiveIds = validIds.filter((id) =>
+			IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString)
+		);
 
 		// input queries: reactive with ${inputs...} in it
 		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
-		const input_ids = reactiveIds.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id].compiledQueryString));
+		const input_ids = reactiveIds.filter((id) =>
+			IS_INPUT_QUERY.test(duckdbQueries[id].compiledQueryString)
+		);
 
-		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = Query.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, { id: "${q.id}", initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
+		const errQueries = Object.values(duckdbQueries)
+			.filter((q) => q.compileError)
+			.map(
+				(q) =>
+					`const ${q.id} = Query.create(\`${q.compiledQueryString.replaceAll('$', '\\$')}\`, undefined, { id: "${q.id}", initialError: new Error(\`${/** @type {string} */ (q.compileError).replaceAll('$', '\\$')}\`)})`
+			);
 
-		
 		const queryStoreDeclarations = validIds.map((id) => {
 			return `
-				// Update external queries
-				if (import.meta?.hot) {
-					import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
-						let errors = []
-						if (!queryId) errors.push("Malformed event: Missing queryId")
-						if (!content) errors.push("Malformed event: Missing content")
-						if (errors.length) {
-							console.warn("Failed to update query on serverside change!", errors.join("\\n"))
-							return
-						}
+                // Update external queries
+                if (import.meta?.hot) {
+                    import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
+                        let errors = []
+                        if (!queryId) errors.push("Malformed event: Missing queryId")
+                        if (!content) errors.push("Malformed event: Missing content")
+                        if (errors.length) {
+                            console.warn("Failed to update query on serverside change!", errors.join("\\n"))
+                            return
+                        }
 
-						if (queryId === "${id}") {
-							__${id}Text = content
-						}
-						
-					})
-				}
+                        if (queryId === "${id}") {
+                            __${id}Text = content
+                        }
+                        
+                    })
+                }
 
-				let ${id}InitialStates = { initialData: undefined, initialError: undefined }
-				
-				// Give initial states for these variables
-				/** @type {boolean} */
-				let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				/** @type {string} */
-				let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
+                let ${id}InitialStates = { initialData: undefined, initialError: undefined }
+                
+                // Give initial states for these variables
+                /** @type {boolean} */
+                let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+                /** @type {string} */
+                let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 
 
-				if (browser) {
-					// Data came from SSR
-					if (data.${id}) {
-						if (data.${id} instanceof Error) {
-							${id}InitialStates.initialError = data.${id}
-						} else {
-							${id}InitialStates.initialData = data.${id}
-						}
-						if (data.${id}__DESCRIBE) {
-							${id}InitialStates.knownColumns = data.${id}__DESCRIBE
-						}
-					}
-				} else {
-					// On server
-					try {
-						if (!__${id}HasUnresolved)
-							${id}InitialStates.initialData = profile(__db.query, __${id}Text, { query_name: '${id}' })
-					} catch (e) {
-						console.error(e)
-						if (import.meta.env.VITE_BUILD_STRICT) throw e;
-						${id}InitialStates.initialError = e
-					}
-				}
-				
-				
-				/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
-				let ${id};
+                if (browser) {
+                    // Data came from SSR
+                    if (data.${id}_data) {
+                        // vvv is this still used/possible?
+                        if (data.${id}_data instanceof Error) {
+                            ${id}InitialStates.initialError = data.${id}_data
+                        } else {
+                            ${id}InitialStates.initialData = data.${id}_data
+                        }
+                        if (data.${id}_columns) {
+                            ${id}InitialStates.knownColumns = data.${id}_columns
+                        }
+                    }
+                }
 
-				$: __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				$: __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
-				$: __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+                /** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+                let ${id};
 
-				const __${id}Factory = Query.createReactive(
-					{ callback: v => {
-						${id} = v
-					}, execFn: queryFunc },
-					{ id: '${id}', ...${id}InitialStates }
-				)
+                $: __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+                $: __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 
-				// Assign a value for the initial run-through
-				// This is split because chicken / egg
-				__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+                // keep initial state around until after the query has resolved once
+                let __${id}InitialFactory = false;
+                $: if (__${id}HasUnresolved || !__${id}InitialFactory) {    
+                    if (!__${id}HasUnresolved) {
+                        __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates });
+                        __${id}InitialFactory = true;
+                    }
+                } else {
+                    __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
+                }
 
-				// Add queries to global scope inside symbols to ease debugging
-				globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }
-				
-				
-			`;
+                const __${id}Factory = Query.createReactive(
+                    { callback: v => {
+                        ${id} = v
+                    }, execFn: queryFunc },
+                    { id: '${id}', ...${id}InitialStates }
+                )
+
+                // Assign a value for the initial run-through
+                // This is split because chicken / egg
+                __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved, ...${id}InitialStates })
+
+                // Add queries to global scope inside symbols to ease debugging
+                globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }
+                
+                
+            `;
 		});
 
 		/* 
@@ -119,15 +126,21 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		const input_query_stores = `
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
-				${input_ids.map((id) => `
-				__${id}Factory(\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`, { noResolve: hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\` });
-				`).join('\n')}
+				${input_ids
+					.map(
+						(id) => `
+						__${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+						__${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+						__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });
+				`
+					)
+					.join('\n')}
 			}));
 		}
 		`;
 
 		queryDeclarations += `
-		${errQueries.join("\n")}
+		${errQueries.join('\n')}
 		${queryStoreDeclarations.join('\n')}
 		${input_query_stores}
 		
@@ -143,7 +156,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
 
-		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';		
+		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';		
+		import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
@@ -152,13 +166,13 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         $routeHash = '${routeH}';
 
-		${/* 
+		${
+			/* 
 			do not switch to $: inputs = $inputs_store
 			reactive statements do not rerun during SSR 
-		*/''}
-		let inputs_store = writable(inputs);
-		
-		setContext(INPUTS_CONTEXT_KEY, inputs_store);
+			*/ ''
+		}
+		let inputs_store = ensureInputContext(writable(inputs));
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
         $: pageHasQueries.set(Object.keys(data).length > 0);
@@ -171,7 +185,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		import { browser, dev } from "$app/environment";
 		import { profile } from '@evidence-dev/component-utilities/profile';
-		import debounce from 'debounce';
 		import { Query, hasUnsetValues } from '@evidence-dev/sdk/usql';
 		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 
@@ -230,9 +243,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			import.meta.hot.on("evidence:reset-queries", async (payload) => {
 				await $page.data.__db.updateParquetURLs(JSON.stringify(payload.latestManifest), true);
 				Query.emptyCache()
-				${validIds.map(id =>
-					`__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });`
-				).join('\n')}
+				${validIds
+					.map((id) => `__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved });`)
+					.join('\n')}
 			})
 	    }
 		
@@ -258,13 +271,13 @@ const processQueries = (componentDevelopmentMode) => {
 	const dynamicQueries = {};
 	return {
 		markup({ content, filename }) {
-			if (filename.endsWith('.md')) {
+			if (filename?.endsWith('.md')) {
 				let fileQueries = extractQueries(content);
 
 				dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
 					acc[q.id] = q;
 					return acc;
-				}, {});
+				}, /** @type {typeof dynamicQueries[string]} */ ({}));
 
 				const externalQueryViews =
 					'\n\n\n' +
@@ -293,7 +306,7 @@ const processQueries = (componentDevelopmentMode) => {
 			}
 		},
 		script({ content, filename, attributes }) {
-			if (filename.endsWith('.md')) {
+			if (filename?.endsWith('.md')) {
 				if (attributes.context !== 'module') {
 					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
 

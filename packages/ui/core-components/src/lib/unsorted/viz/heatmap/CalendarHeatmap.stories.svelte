@@ -64,16 +64,10 @@
 </script>
 
 <script>
-	import { writable } from 'svelte/store';
-	import { setContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import CalendarHeatmap from './_CalendarHeatmap.svelte';
-
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
+	import CalendarHeatmap from './CalendarHeatmap.svelte';
 </script>
 
 <Story name="Basic date and value" let:args>

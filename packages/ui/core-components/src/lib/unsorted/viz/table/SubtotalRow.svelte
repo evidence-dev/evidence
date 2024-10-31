@@ -6,9 +6,6 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import TableCell from './TableCell.svelte';
-	import { getContext } from 'svelte';
-	import { propKey } from '@evidence-dev/component-utilities/chartContext';
-	const props = getContext(propKey);
 
 	export let groupName = undefined;
 	export let currentGroupData = undefined;
@@ -17,7 +14,7 @@
 	export let groupBy = undefined;
 	export let groupType = undefined;
 	export let fontColor = undefined;
-	export let finalColumnOrder = undefined;
+	export let orderedColumns = undefined;
 	export let compact = undefined;
 </script>
 
@@ -26,9 +23,7 @@
 	style:background-color={rowColor}
 	style:color={fontColor}
 >
-	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
-				.filter((d) => d.show === true)
-				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
+	{#each orderedColumns as column}
 		{@const useCol = safeExtractColumn(column, columnSummary)}
 		{@const column_format = column.fmt
 			? getFormatObjectFromString(column.fmt, useCol.format?.valueType)

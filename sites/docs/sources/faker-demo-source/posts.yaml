@@ -12,7 +12,7 @@ schema:
     item: paragraph
   created_at:
     category: date
-    item: recent
-    withBias: true
+    item: between
     options:
-      - days: 90
+      - from: 2023-06-01
+        to: 2024-06-01

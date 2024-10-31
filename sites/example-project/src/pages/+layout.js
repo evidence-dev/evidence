@@ -31,16 +31,18 @@ const loadDB = async () => {
 	await profile(initDB);
 
 	if (Object.keys(renderedFiles ?? {}).length === 0) {
-		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
-		toasts.add(
-			{
-				id: 'MissingManifest',
-				status: 'warning',
-				title: 'Missing Manifest',
-				message: 'Without a manifest file, no data is available'
-			},
-			10000
-		);
+		console.warn(`No sources found, execute "npm run sources" to generate`.trim());
+		if (dev) {
+			toasts.add(
+				{
+					id: 'MissingManifest',
+					status: 'warning',
+					title: 'No Sources Found',
+					message: 'Configure and run sources to include data in your project.'
+				},
+				10000
+			);
+		}
 	} else {
 		await profile(setParquetURLs, renderedFiles);
 		await profile(updateSearchPath, Object.keys(renderedFiles));
@@ -103,7 +105,13 @@ export const load = async ({ fetch, route, params, url }) => {
 
 	/** @type {App.PageData["data"]} */
 	let data = {};
-	const { inputs = {} } = dummy_pages.get(url.pathname) ?? {};
+
+	const {
+		inputs = setTrackProxy({
+			label: '',
+			value: '(SELECT NULL WHERE 0 /* An Input has not been set */)'
+		}) /* Create a proxy by default */
+	} = dummy_pages.get(url.pathname) ?? {};
 
 	const is_dummy_page = dummy_pages.has(url.pathname);
 	if ((dev || building) && !browser && !is_dummy_page) {
@@ -129,19 +137,6 @@ export const load = async ({ fetch, route, params, url }) => {
 				const result = await usqlQuery(sql);
 				return callback(result);
 			})();
-		}
-
-		// Pre-render columns
-		try {
-			// Since we're running in node here (not the browser), this function is synchronous and doesn't need to be awaited
-			usqlQuery(`DESCRIBE ${sql}`, {
-				route_hash: routeHash,
-				additional_hash: paramsHash,
-				query_name: `${query_name}__DESCRIBE`,
-				prerendering: building
-			});
-		} catch (e) {
-			console.debug('Failed to pre-render columns', e instanceof Error ? e.message : e);
 		}
 
 		return callback(
@@ -181,10 +176,7 @@ export const load = async ({ fetch, route, params, url }) => {
 				await profile(setParquetURLs, renderedFiles);
 			}
 		},
-		inputs: setTrackProxy({
-			label: '',
-			value: '(SELECT NULL WHERE 0 /* An Input has not been set */)'
-		}),
+		inputs,
 		data,
 		customFormattingSettings,
 		isUserPage,

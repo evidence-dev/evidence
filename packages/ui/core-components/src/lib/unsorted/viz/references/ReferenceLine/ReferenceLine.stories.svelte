@@ -101,11 +101,10 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 	import BarChart from '$lib/unsorted/viz/bar/BarChart.svelte';
 	import { Slider } from '$lib/atoms/inputs/slider';
@@ -114,9 +113,21 @@
 
 	import ReferenceLine from './ReferenceLine.svelte';
 
-	const inputStore = getContext(INPUTS_CONTEXT_KEY);
+	const inputStore = getInputContext();
 
-	const data = Query.create(`select * FROM numeric_series WHERE series='pink'`, query);
+	const data = Query.create(
+		`
+		select *
+		from numeric_series
+		where series in (
+			select series
+			from numeric_series
+			order by series asc
+			limit 1
+		)
+		`,
+		query
+	);
 </script>
 
 <Story name="Hardcoded: x" argTypes={{ x: { control: 'number' } }} args={{ x: 50 }} let:args>

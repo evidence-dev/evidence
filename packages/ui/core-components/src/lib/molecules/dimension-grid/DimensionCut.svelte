@@ -1,4 +1,5 @@
 <script>
+	// @ts-check
 	import DimensionRow from './DimensionRow.svelte';
 
 	import { getContext } from 'svelte';
@@ -10,6 +11,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import QueryLoad from '../../atoms/query-load/QueryLoad.svelte';
+	import { resolveMaybePromise } from '@evidence-dev/sdk/usql';
 
 	/** @type {import("@evidence-dev/sdk/usql").DescribeResultRow} */
 	export let dimension;
@@ -23,35 +25,43 @@
 	}
 
 	// Selected Value
+	/** @type {import("svelte/store").Writable<{dimension: string, value: string | string[] | undefined}[]>}*/
 	let selectedDimensions = getContext('selected-dimensions');
-	let selectedValue;
+	//multiple
+	export let multiple = false;
+	/** @type {string | string[] | undefined}*/
+	let selectedValue = multiple ? [] : undefined;
 
-	$: if (selectedValue !== undefined) {
-		selectedDimensions.update((v) => {
-			let newV = v.filter((d) => d.dimension !== dimension.column_name);
-			newV.push({ dimension: dimension.column_name, value: selectedValue });
-			return newV;
-		});
-	} else {
-		selectedDimensions.update((v) => {
-			return v.filter((d) => d.dimension !== dimension.column_name);
-		});
+	$: {
+		if (
+			selectedValue === undefined ||
+			(Array.isArray(selectedValue) && selectedValue.length === 0)
+		) {
+			selectedDimensions.update((v) => {
+				return v.filter((d) => d.dimension !== dimension.column_name);
+			});
+		} else {
+			selectedDimensions.update((v) => {
+				let newV = v.filter((d) => d.dimension !== dimension.column_name);
+				newV.push({ dimension: dimension.column_name, value: selectedValue });
+				return newV;
+			});
+		}
 	}
-	const updateSelected = (row) => {
-		selectedValue === row.dimensionValue
-			? (selectedValue = undefined)
-			: (selectedValue = row.dimensionValue);
-	};
 
-	// Dimension Cut Query
-	let dimensionCutQuery = getDimensionCutQuery(
-		data,
-		dimension,
-		metric,
-		limit,
-		$selectedDimensions,
-		selectedValue
-	);
+	const updateSelected = (row) => {
+		if (Array.isArray(selectedValue)) {
+			if (selectedValue.includes(row.dimensionValue)) {
+				selectedValue = selectedValue.filter((v) => v !== row.dimensionValue);
+			} else {
+				selectedValue = [...selectedValue, row.dimensionValue];
+			}
+		} else {
+			selectedValue === row.dimensionValue
+				? (selectedValue = undefined)
+				: (selectedValue = row.dimensionValue);
+		}
+	};
 
 	$: dimensionCutQuery = getDimensionCutQuery(
 		data,
@@ -62,25 +72,37 @@
 		selectedValue
 	);
 
-	let results = buildQuery(dimensionCutQuery, `dimension-cut-${dimension.column_name}`);
+	let results;
+	/** @type {boolean} */
+	let queryRun = false;
 
-	results.fetch();
+	$: if (!queryRun && dimensionCutQuery) {
+		results = buildQuery(dimensionCutQuery, `dimension-cut-${dimension.column_name}`);
+		queryRun = true;
+	}
 
 	$: {
 		const updatedResults = buildQuery(dimensionCutQuery);
 		if (!updatedResults.loaded) {
-			updatedResults.fetch().then(() => {
+			resolveMaybePromise(() => {
 				results = updatedResults;
-			});
+			}, updatedResults.fetch());
 		} else {
 			results = updatedResults;
 		}
 	}
 
-	// container height
-	// there can never be more than limit + 1 records.
-	// We don't want height to move down when we filter to fewer records
-	let heightRem = 1.2 * (Number(limit) + 1);
+	// container minheight
+	$: minRem = 1.2 * Math.max(limit);
+
+	//find missing values
+	/** @type {string[]} */
+	let missingValues = [];
+	$: if (Array.isArray(selectedValue)) {
+		missingValues = selectedValue.filter(
+			(v) => ![...results].map((d) => d.dimensionValue).includes(v)
+		);
+	}
 </script>
 
 <!-- {dimensionCutQuery} -->
@@ -101,15 +123,15 @@
 		>
 			{$results.error}
 		</p>
-		{#if loaded?.length > 0}
+		{#if loaded?.length > 0 || (Array.isArray(selectedValue) && selectedValue.length > 0)}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
-			<div style={`height:${heightRem}rem`}>
+			<div class="transition-all" style={`min-height:${minRem}rem;`}>
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
+						animate:flip={{ duration: 300 }}
 						on:click={updateSelected(row)}
 						on:keydown={updateSelected(row)}
-						animate:flip={{ duration: 100 }}
 						role="button"
 						tabindex="-1"
 					>
@@ -124,6 +146,29 @@
 						/>
 					</div>
 				{/each}
+				<!-- if selectedValues is an array, and if a value in selected values is not in loaded, render a <p>Missing Value</p> -->
+				{#if missingValues.length > 0}
+					{#each missingValues as missingValue (missingValue)}
+						<div
+							class={cn('flex transition duration-100 group cursor-pointer')}
+							on:click={updateSelected({ dimensionValue: missingValue })}
+							on:keydown={updateSelected({ dimensionValue: missingValue })}
+							animate:flip={{ duration: 200 }}
+							role="button"
+							tabindex="-1"
+						>
+							<DimensionRow
+								row={{ dimensionValue: missingValue }}
+								{selectedValue}
+								value={formatValue(
+									missingValue,
+									columnSummary[0].format,
+									columnSummary[0].columnUnitSummary
+								)}
+							/>
+						</div>
+					{/each}
+				{/if}
 			</div>
 		{:else}
 			<p class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded">No Records</p>

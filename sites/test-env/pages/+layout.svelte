@@ -6,5 +6,7 @@
 </script>
 
 <EvidenceDefaultLayout {data} title="Evidence Test Environment">
-	<slot slot="content" />
+	<svelte:fragment slot="content">
+		<slot/>
+	</svelte:fragment>
 </EvidenceDefaultLayout>

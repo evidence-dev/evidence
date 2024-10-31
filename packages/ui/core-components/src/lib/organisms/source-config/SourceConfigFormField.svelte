@@ -139,7 +139,11 @@
 </script>
 
 <div class="w-full">
-	<label class="flex justify-between w-full h-11 items-start">
+	<label
+		class="flex justify-between w-full items-start"
+		class:h-11={spec.type !== 'multiline'}
+		class:h-auto={spec.type === 'multiline'}
+	>
 		<div class="mr-2 inline-flex flex-col gap-1">
 			<p class="flex items-center gap-1">
 				{#if spec.description}
@@ -168,6 +172,14 @@
 					bind:value={fieldValue}
 				/>
 			{/if}
+		{:else if spec.type === 'multiline'}
+			<textarea
+				disabled={fieldDisabled}
+				required={spec.required}
+				bind:value={fieldValue}
+				rows="5"
+				class="w-full p-2 mb-3.5"
+			></textarea>
 		{:else if spec.type === 'boolean'}
 			<input
 				class="!w-5"
@@ -213,7 +225,8 @@
 
 <style>
 	input,
-	select {
+	select,
+	textarea {
 		@apply rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm;
 	}
 </style>

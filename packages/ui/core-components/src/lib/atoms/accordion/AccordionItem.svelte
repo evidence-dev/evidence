@@ -5,6 +5,7 @@
 <script>
 	import * as BaseAccordion from '../shadcn/accordion';
 	export let title = '';
+	export let compact = false;
 
 	let className = undefined;
 	export { className as class };
@@ -12,7 +13,7 @@
 
 {#key title}
 	<BaseAccordion.Item value={title} class={className}>
-		<BaseAccordion.Trigger>
+		<BaseAccordion.Trigger class={compact ? 'py-0' : ''}>
 			<slot name="title">
 				{title}
 			</slot>

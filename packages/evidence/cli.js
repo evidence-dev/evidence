@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
-
+import { enableDebug } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
 
 const increaseNodeMemoryLimit = () => {
@@ -18,7 +18,7 @@ const increaseNodeMemoryLimit = () => {
 };
 
 const loadEnvFile = () => {
-	const envFile = loadEnv('', '.', ['EVIDENCE_']);
+	const envFile = loadEnv('', '.', ['EVIDENCE_', 'VITE_']);
 	Object.assign(process.env, envFile);
 };
 
@@ -201,9 +201,11 @@ prog
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
-			process.env.VITE_EVIDENCE_DEBUG = true;
+			enableDebug();
 			delete args.debug;
 		}
+
+		loadEnvFile();
 
 		const manifestExists = fs.lstatSync(
 			path.join('.evidence', 'template', 'static', 'data', 'manifest.json'),
@@ -275,7 +277,7 @@ prog
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
-			process.env.VITE_EVIDENCE_DEBUG = true;
+			enableDebug();
 			delete args.debug;
 		}
 		loadEnvFile();
@@ -292,7 +294,7 @@ prog
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
-			process.env.VITE_EVIDENCE_DEBUG = true;
+			enableDebug();
 			delete args.debug;
 		}
 		loadEnvFile();
@@ -350,7 +352,7 @@ prog
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
-			process.env.VITE_EVIDENCE_DEBUG = true;
+			enableDebug();
 			delete args.debug;
 		}
 		loadEnvFile();
@@ -365,8 +367,13 @@ prog
 		const flatArgs = flattenArguments(args);
 
 		logQueryEvent('preview-server-start', undefined, undefined, undefined, true);
-		// We will likely need to modify this for SPA mode previews
-		const child = spawn('npx serve build', flatArgs, {
+
+		let command = 'npx serve build';
+		if (process.env.VITE_EVIDENCE_SPA === 'true') {
+			command += ' -s';
+		}
+
+		const child = spawn(command, flatArgs, {
 			shell: true,
 			detached: false,
 			stdio: 'inherit'

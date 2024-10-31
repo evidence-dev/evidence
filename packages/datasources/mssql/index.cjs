@@ -86,71 +86,44 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 const buildConfig = function (database) {
 	const trust_server_certificate = database.trust_server_certificate ?? 'false';
 	const encrypt = database.encrypt ?? 'true';
+	const connection_timeout = database.connection_timeout ?? 15000;
 
-	port = parseInt(database.port ?? 1433);
-	authentication = { type: database.authenticationType };
-	options = {
-		trustServerCertificate:
-			trust_server_certificate === 'true' || trust_server_certificate === true,
-		encrypt: encrypt === 'true' || encrypt === true
+	const credentials = {
+		user: database.user,
+		server: database.server,
+		database: database.database,
+		password: database.password,
+		port: parseInt(database.port ?? 1433),
+		connectionTimeout: parseInt(connection_timeout),
+		options: {
+			trustServerCertificate:
+				trust_server_certificate === 'true' || trust_server_certificate === true,
+			encrypt: encrypt === 'true' || encrypt === true
+		}
 	};
 
 	if (database.authenticationType === 'default') {
-		return {
-			user: database.user,
-			password: database.password,
-			server: database.server,
-			database: database.database,
-			authentication: authentication,
-			port: port,
-			options: options
-		};
+		return credentials;
 	} else if (database.authenticationType === 'azure-active-directory-default') {
-		return {
-			server: database.server,
-			database: database.database,
-			authentication: authentication,
-			port: port,
-			options: options
-		};
+		return credentials;
 	} else if (database.authenticationType === 'azure-active-directory-access-token') {
-		authentication.options = { token: database.attoken };
-		return {
-			server: database.server,
-			database: database.database,
-			authentication: authentication,
-			port: port,
-			options: options
-		};
+		credentials.options.token = database.attoken;
+		return credentials;
 	} else if (database.authenticationType === 'azure-active-directory-password') {
-		authentication.options = {
+		credentials.options = {
 			userName: database.pwuname,
 			password: database.pwpword,
 			clientId: database.pwclientid,
 			tenantId: database.pwtenantid
 		};
-
-		return {
-			server: database.server,
-			database: database.database,
-			authentication: authentication,
-			port: port,
-			options: options
-		};
+		return credentials;
 	} else if (database.authenticationType === 'azure-active-directory-service-principal-secret') {
-		authentication.options = {
+		credentials.options = {
 			clientId: database.spclientid,
 			clientSecret: database.spclientsecret,
 			tenantId: database.sptenantid
 		};
-
-		return {
-			server: database.server,
-			database: database.database,
-			authentication: authentication,
-			port: port,
-			options: options
-		};
+		return credentials;
 	}
 };
 
@@ -201,6 +174,7 @@ module.exports = runQuery;
  * @property {`${number}`} port
  * @property {`${boolean}`} trust_server_certificate
  * @property {`${boolean}`} encrypt
+ * @property {`${number}`} connection_timeout
  */
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<MsSQLOptions>} */
@@ -364,5 +338,12 @@ module.exports.options = {
 		type: 'boolean',
 		default: false,
 		description: 'Should be true when using azure'
+	},
+	connection_timeout: {
+		title: 'Connection Timeout',
+		secret: false,
+		type: 'number',
+		required: false,
+		description: 'Connection timeout in ms'
 	}
 };

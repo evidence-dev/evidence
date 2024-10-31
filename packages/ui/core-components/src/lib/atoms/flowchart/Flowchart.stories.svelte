@@ -1,9 +1,15 @@
-<script>
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
-	import Flowchart from './Flowchart.svelte';
+<script context="module">
+	/** @type {import("@storybook/svelte").Meta}*/
+	export const meta = {
+		title: 'Viz/Diagrams/Flowchart',
+		component: Flowchart
+	};
 </script>
 
-<Meta title="Viz/Diagrams/Flowchart" component={Flowchart} />
+<script>
+	import { Story } from '@storybook/addon-svelte-csf';
+	import Flowchart from './Flowchart.svelte';
+</script>
 
 <Story name="Basic Usage">
 	This uses the slot, because the chart source does not contain invalid svelte characters

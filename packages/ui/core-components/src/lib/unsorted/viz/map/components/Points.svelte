@@ -6,19 +6,18 @@
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import chroma from 'chroma-js';
 	import Point from './Point.svelte';
 	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
 
 	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { nanoid } from 'nanoid';
+	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;
@@ -35,6 +34,14 @@
 	export let sizeFmt = undefined;
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
+	/** @type {'Point Map' | 'Bubble Map'} */
+	export let chartType = 'Point Map';
+
+	/** @type {boolean} */
+	export let legend = true;
+
 	if (size) {
 		// if size was user-supplied
 		size = Number(size);
@@ -87,8 +94,8 @@
 	export let borderColor = 'white';
 	/** @type {string|undefined} */
 	export let color = undefined;
-	/** @type {string[]} */
-	export let colorPalette = ['lightblue', 'darkblue'];
+	/** @type {string[] | undefined} */
+	export let colorPalette = undefined;
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;
@@ -208,7 +215,13 @@
 		return Math.sqrt((newPoint / maxData) * maxSizeSq);
 	}
 
-	let values, minValue, maxValue, colorScale, sizeExtents, maxData, maxSizeSq;
+	let values, colorScale, sizeExtents, maxData, maxSizeSq;
+
+	/** @type {'bubble' | 'points' }*/
+	export let pointStyle = 'points';
+
+	/** @type {string}*/
+	let legendId = map.registerPane(nanoid());
 
 	/**
 	 * Initialize the component.
@@ -216,13 +229,20 @@
 	 */
 	async function init() {
 		if (data) {
-			await data.fetch();
-			checkInputs(data, [lat, long]);
-			values = $data.map((d) => d[value]);
-			minValue = Math.min(...values);
-			maxValue = Math.max(...values);
-
-			colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+			let initDataOptions = {
+				corordinates: [lat, long],
+				value,
+				checkInputs,
+				min,
+				max,
+				colorPalette,
+				legendType,
+				valueFmt,
+				chartType,
+				legendId,
+				legend
+			};
+			({ values, colorPalette, colorScale } = await map.initializeData(data, initDataOptions));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -287,13 +307,17 @@
 		<Point
 			{map}
 			options={{
-				fillColor: color ?? (value ? colorScale(item[value]).hex() : uiColours.blue700), // Fill color of the circle
+				// kw note:
+				//need to clean this logic
+				fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
 				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
 				fillOpacity: opacity,
 				opacity: opacity,
 				weight: borderWidth,
 				color: borderColor,
-				className: `outline-none ${pointClass}`
+				className: `outline-none ${pointClass}`,
+				markerType: pointStyle,
+				pane: legendId
 			}}
 			selectedOptions={{
 				fillColor: selectedColor,

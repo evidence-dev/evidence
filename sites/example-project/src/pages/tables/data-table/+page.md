@@ -47,3 +47,46 @@ group by all
 	<Column id=orders/> 
 	<Column id=aov fmt=usd2 contentType=colorscale scaleColor={['#b52626','#FFFFFF','#2e9939']}/> 
  </DataTable>
+
+## Sparkline
+
+ ```sql cats
+WITH monthly_sales AS (
+    SELECT 
+        category,
+        DATE_TRUNC('month', order_datetime) AS date,
+        SUM(sales) AS monthly_sales
+    FROM 
+        needful_things.orders
+    GROUP BY 
+        category, DATE_TRUNC('month', order_datetime)
+)
+SELECT 
+    category,
+    sum(monthly_sales) as total_sales,
+    ARRAY_AGG({'date': date, 'sales': monthly_sales}) AS sales
+FROM 
+    monthly_sales
+GROUP BY 
+    category
+order by total_sales desc
+```
+
+<DataTable data={cats}>
+    <Column id=category/>
+    <Column id=total_sales fmt=usd contentType=bar align=left/>
+    <Column id=sales contentType=sparkarea sparkX=date sparkY=sales sparkYScale=false sparkColor=red/>
+    <Column id=sales contentType=sparkbar sparkX=date sparkY=sales sparkYScale=false />
+    <Column id=sales contentType=sparkline sparkX=date sparkY=sales sparkYScale=false />
+    <Column id=sales contentType=sparkbar sparkX=date sparkY=sales sparkYScale=false />
+</DataTable>
+
+## Bar Viz
+
+<DataTable data={summary}>
+  <Column id=category/>
+  <Column id=sales contentType=bar fmt=usd align=left/>
+  <Column id=orders/>
+  <Column id=aov contentType=colorscale fmt=usd/>
+</DataTable>
+

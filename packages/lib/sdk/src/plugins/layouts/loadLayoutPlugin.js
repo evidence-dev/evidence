@@ -8,7 +8,7 @@ import { isLayoutPlugin } from '../schemas/plugin-package.schema.js';
  * @returns {Promise<null | import("../schemas/plugin-package.schema.js").LayoutPackage & {dir: string}>}
  */
 export const loadLayoutPlugin = async () => {
-	const { layout } = await getEvidenceConfig();
+	const { layout } = getEvidenceConfig();
 
 	if (!layout) return null;
 	const pack = await loadPluginPackage(layout);

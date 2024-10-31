@@ -51,7 +51,8 @@
 		hoverAnimation: false,
 		emphasis: {
 			disabled: true
-		}
+		},
+		__id: id
 	};
 
 	// $: outlierConfig = {
@@ -60,7 +61,10 @@
 	// 	data: outlierData
 	// }
 
+	const id = Math.random().toString();
+
 	$: config.update((d) => {
+		d.series = d.series.filter((s) => s.__id !== id);
 		d.series.push(boxConfig);
 		// d.series.push(outlierConfig);
 		return d;

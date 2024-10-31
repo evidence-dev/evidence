@@ -43,7 +43,7 @@ See the pages for [Area Map](/components/area-map), [Point Map](/components/poin
   <Areas 
     data={la_zip_sales}
     areaCol=zip_code
-    geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json"
+    geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -57,7 +57,6 @@ See the pages for [Area Map](/components/area-map), [Point Map](/components/poin
     value=sales
     valueFmt=usd
     pointName=point_name
-    colorPalette={['yellow','orange','red','darkred']}
     opacity=0.5
   />
 </BaseMap>
@@ -128,7 +127,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -146,7 +145,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -165,7 +164,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -185,7 +184,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     <Areas 
         data={la_zip_sales} 
         areaCol=zip_code
-        geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
         geoId=ZCTA5CE10
         value=sales
         valueFmt=usd
@@ -306,9 +305,9 @@ required
 options="URL"
 >
 
-Path to source geoJSON data from - can be a URL (see [Map Resources](#map-resources)) or a file in your project. 
+Path to source geoJSON data from - can be a URL (see [Map Resources](#map-resources)) or a file in your project.
 
-If the file is in your project, store it in a `static` folder in the root of your project, and reference it as `geoJsonUrl="/your_file.geojson"`
+If the file is in your `static` directory in the root of your project, reference it as `geoJsonUrl="/your_file.geojson"`
 
 </PropListing>
 
@@ -390,6 +389,7 @@ options="column name"
 Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
 </PropListing>
 
+
 ### Bubbles
 Use the `<Bubbles/>` component to add an area layer
 
@@ -459,6 +459,20 @@ name="pointName"
 options="column name"
 >
 Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
+</PropListing>
+
+<PropListing
+    name="paneType"
+    options="text"
+>
+    Specifies the type of pane where the bubbles will be rendered.
+</PropListing>
+
+<PropListing
+    name="z"
+    options="number"
+>
+    Represents the z-index value for the pane, controlling its stacking order relative to other panes (higher values are on top, e.g., z=2 is above z=1).
 </PropListing>
 
 ### Common Layer Options

@@ -18,6 +18,7 @@
 	let unsub = () => {};
 
 	let _data;
+
 	onDestroy(unsub);
 </script>
 
@@ -46,21 +47,3 @@
 {:else}
 	<slot loaded={_data} />
 {/if}
-
-<!-- {:else if !_data || (!_data?.dataLoaded && !_data.error)}
-	
-	<slot name="skeleton">
-		<div class="w-full h-64">
-			<Skeleton />
-		</div>
-	</slot>
-{:else if _data.error && $$slots.error}
-	
-	<slot name="error" loaded={_data} />
-{:else if isEmptyDataset(_data) && !_data.error && $$slots.empty}
-	
-	<slot name="empty" loaded={_data} />
-{:else}
-	
-	<slot loaded={_data} />
-{/if} -->

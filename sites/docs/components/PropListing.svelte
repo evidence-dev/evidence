@@ -1,5 +1,30 @@
+<script context="module">
+	import { writable } from 'svelte/store';
+	const names = new Set();
+
+	let hashLocation = writable('');
+	let cleanUp = null;
+
+	function setupHashListener() {
+		if (typeof window !== 'undefined') {
+			function updateHash() {
+				hashLocation.set(window.location.hash);
+			}
+			window.addEventListener('hashchange', updateHash);
+
+			// Return a cleanup function
+			return () => {
+				window.removeEventListener('hashchange', updateHash);
+			};
+		}
+		return null;
+	}
+</script>
+
 <script>
 	import { HoverCard } from '@evidence-dev/core-components';
+	import { onMount, onDestroy } from 'svelte';
+	import { nameGenerator } from './nameGenerator.js';
 	export let name = '';
 	export let description = '';
 	export let required = false;
@@ -8,6 +33,22 @@
 	export let defaultValue = '';
 	export let type = '';
 	let copyStatus = {};
+
+	onMount(() => {
+		if (!cleanUp) {
+			cleanUp = setupHashListener();
+		}
+		// Set initial hash value
+		hashLocation.set(window.location.hash);
+
+		// Clean up on component destroy
+		return () => {
+			if (cleanUp) {
+				cleanUp();
+				cleanUp = null;
+			}
+		};
+	});
 
 	async function copyToClipboard(text, option) {
 		try {
@@ -18,23 +59,37 @@
 			}, 2000);
 		} catch (err) {}
 	}
+
+	let idName = nameGenerator(name, names);
+
+	onDestroy(() => {
+		names.delete(idName);
+	});
 </script>
 
-<section class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4">
+<section
+	class="pt-4 pb-2 border-b text-sm flex flex-col xl:flex-row gap-4 scroll-mt-[3.5rem] transition-colors duration-300 {$hashLocation ===
+	`#props-${idName}`
+		? 'bg-blue-50 border-blue-400 border-t'
+		: ''}"
+	id="props-{idName}"
+>
 	<div class="min-w-48 flex justify-between mr-4">
 		<div class="font-mono">
-			<span
-				class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-all"
-			>
-				{name}
-			</span>
+			<a href="#props-{idName}">
+				<span
+					class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-none"
+				>
+					{name}
+				</span>
+			</a>
 		</div>
 		{#if required}
 			<span class="text-red-500 uppercase tracking-wide">Required</span>
 		{/if}
 	</div>
 	<div>
-		<div id="markdown-slot"><slot>{description}</slot></div>
+		<div id="markdown-slot"><slot>{@html description}</slot></div>
 		{#if Array.isArray(options) && options.length > 0}
 			<div class="mt-1 select-none flex">
 				<span class="text-sm text-gray-400 mr-2">Options:</span>

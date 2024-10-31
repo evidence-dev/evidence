@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 hide_table_of_contents: false
 title: Environments
 ---
@@ -30,7 +30,7 @@ Add your dev database credentials for your dev environment via the **settings pa
 
 ### Prod environment
 
-Add your prod database credentials as environment variables. The specific instructions depend on how you are deploying Evidence. Instructions can be be found in the deployment section of the settings page of your local project.
+Add your prod database credentials as environment variables. The specific instructions depend on how you are deploying Evidence. Instructions can be be found in the deployment section of the settings page of your app running locally.
 
 <Alert status=info>
 

@@ -28,7 +28,7 @@
 	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
-	import { debounce } from 'perfect-debounce';
+	import { browserDebounce } from '@evidence-dev/sdk/utils';
 
 	// Set up props store
 	let props = writable({});
@@ -42,6 +42,20 @@
 
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
+
+	// Sort props
+	export let sort = undefined;
+	let sortBy = undefined;
+	let sortAsc = undefined;
+	let sortDirection = undefined;
+	let sortObj = {};
+	$: if (sort) {
+		const [column, direction] = sort.split(' ');
+		sortBy = column;
+		sortDirection = direction;
+		sortAsc = direction === 'desc' ? false : true; // Default to ascending if no direction is provided
+		sortObj = sortBy ? { col: sortBy, ascending: sortAsc } : { col: null, ascending: null };
+	}
 
 	export let groupBy = undefined;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
@@ -146,6 +160,14 @@
 		return { ...d, priorityColumns };
 	});
 
+	$: finalColumnOrder = getFinalColumnOrder(
+		$props.columns.map((d) => d.id),
+		$props.priorityColumns
+	);
+	$: orderedColumns = [...$props.columns].sort(
+		(a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)
+	);
+
 	$: try {
 		error = undefined;
 
@@ -154,6 +176,18 @@
 
 		// GET COLUMN SUMMARY
 		columnSummary = getColumnSummary(data, 'array');
+
+		// Check if sort column is in table
+		if (sortBy) {
+			if (!columnSummary.map((d) => d.id).includes(sortBy)) {
+				throw Error(
+					`${sortBy} is not a column in the dataset. sort should contain one column name and optionally a direction (asc or desc). E.g., sort=my_column or sort="my_column desc"`
+				);
+			}
+			if (sortDirection && !['asc', 'desc'].includes(sortDirection)) {
+				throw Error(`${sortDirection} is not a valid sort direction. Please use asc or desc`);
+			}
+		}
 
 		// PROCESS DATES
 		// Filter for columns with type of "date"
@@ -166,8 +200,11 @@
 		}
 
 		// Hide link column if columns have not been explicitly selected:
-		for (let i = 0; i < columnSummary.length; i++) {
-			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
+		if (link) {
+			const linkColIndex = columnSummary.findIndex((d) => d.id === link);
+			if (linkColIndex !== -1 && !showLinkCol) {
+				columnSummary.splice(linkColIndex, 1);
+			}
 		}
 	} catch (e) {
 		error = e.message;
@@ -193,7 +230,7 @@
 	/** @type {ReturnValue<typeof Query["createReactive"]>}*/
 	let searchFactory;
 	$: if (Query.isQuery(data) && search) {
-		searchFactory = debounce(
+		searchFactory = browserDebounce(
 			Query.createReactive(
 				{
 					loadGracePeriod: 1000,
@@ -211,14 +248,10 @@
 
 	$: if (searchFactory) {
 		if (searchValue) {
-			let searchCol =
-				$props.columns.length > 0
-					? $props.columns.map((c) => c.id)
-					: data.columns.map((c) => c.column_name);
 			searchFactory(
 				data.search(
 					searchValue,
-					searchCol,
+					$props.columns.map((c) => c.id),
 					searchValue.length === 1 ? 0.5 : searchValue.length >= 6 ? 0.9 : 0.8
 				),
 				data.opts
@@ -229,80 +262,91 @@
 	}
 
 	$: if (search && !Query.isQuery(data)) {
-		toasts.add({
-			status: 'warning',
-			title: 'Search Failed',
-			description: 'Please use a query instead.',
-			timeout: 5000
-		});
+		toasts.add(
+			{
+				status: 'warning',
+				title: 'Search Failed',
+				message: 'Please use a query instead.'
+			},
+			5000
+		);
 	}
 
 	// ---------------------------------------------------------------------------------------
 	// SORTING
 	// ---------------------------------------------------------------------------------------
 
-	let sortBy = { col: null, ascending: null };
-
-	$: sort = (column) => {
-		if (sortBy.col == column) {
-			sortBy.ascending = !sortBy.ascending;
+	$: sortClick = (column) => {
+		if (sortObj.col === column) {
+			// If the clicked column is the same as inital sort column, switch the sort direction
+			sortObj.ascending = !sortObj.ascending;
 		} else {
-			sortBy.col = column;
-			sortBy.ascending = true;
+			// If the clicked column is different from initial sort column, change the sort column and sort ascending
+			sortObj.col = column;
+			sortObj.ascending = true;
 		}
 
+		sortFunc(sortObj);
+	};
+
+	$: sortFunc = (sortObj) => {
+		const column = sortObj.col;
+
 		// Modifier to sorting function for ascending or descending
-		const sortModifier = sortBy.ascending ? 1 : -1;
+		const sortModifier = sortObj.ascending ? 1 : -1;
 
 		const forceTopOfAscending = (val) =>
 			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
 
-		const sort = (a, b) =>
+		const comparator = (a, b) =>
 			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
 				? -1 * sortModifier
 				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
 					  a[column] > b[column]
 					? 1 * sortModifier
 					: 0;
-		data.sort(sort);
-		filteredData = filteredData.sort(sort);
+
+		const sortedFilteredData = [...filteredData].sort(comparator);
+
+		filteredData = sortedFilteredData;
 
 		if (groupBy) {
-			// sort within grouped data
-			Object.keys(groupedData).forEach((groupName) => {
-				groupedData[groupName] = groupedData[groupName].sort(sort);
-			});
+			const sortedGroupedData = {};
+
+			for (const groupName of Object.keys(groupedData)) {
+				sortedGroupedData[groupName] = [...groupedData[groupName]].sort(comparator);
+			}
+
+			groupedData = sortedGroupedData;
 		}
 	};
 
 	let sortedGroupNames;
-	$: if (groupBy && sortBy.col) {
+	$: if (groupBy && sortObj.col) {
 		// Sorting groups based on aggregated values or group names
 		sortedGroupNames = Object.entries(groupRowData)
 			.sort((a, b) => {
-				const valA = a[1][sortBy.col],
-					valB = b[1][sortBy.col];
+				const valA = a[1][sortObj.col],
+					valB = b[1][sortObj.col];
 				// Use the existing sort logic but apply it to groupRowData's values
 				if (
 					(valA === undefined || valA === null || isNaN(valA)) &&
 					valB !== undefined &&
-					valB !== null &&
 					!isNaN(valB)
 				) {
-					return -1 * (sortBy.ascending ? 1 : -1);
+					return -1 * (sortObj.ascending ? 1 : -1);
 				}
 				if (
 					(valB === undefined || valB === null || isNaN(valB)) &&
 					valA !== undefined &&
-					valA !== null &&
 					!isNaN(valA)
 				) {
-					return 1 * (sortBy.ascending ? 1 : -1);
+					return 1 * (sortObj.ascending ? 1 : -1);
 				}
 				if (valA < valB) {
-					return -1 * (sortBy.ascending ? 1 : -1);
+					return -1 * (sortObj.ascending ? 1 : -1);
 				} else if (valA > valB) {
-					return 1 * (sortBy.ascending ? 1 : -1);
+					return 1 * (sortObj.ascending ? 1 : -1);
 				}
 				return 0;
 			})
@@ -312,8 +356,10 @@
 		sortedGroupNames = Object.keys(groupedData).sort();
 	}
 
-	// Reset sort condition when data object is changed
-	$: data, (sortBy = { col: null, ascending: null });
+	// Re-run sort on data change (useful for input changes)
+	$: if (data && sort) {
+		sortFunc(sortObj);
+	}
 
 	// ---------------------------------------------------------------------------------------
 	// PAGINATION
@@ -365,20 +411,18 @@
 
 	function dataSubset(data, selectedCols) {
 		return data.map((obj) => {
-			var toReturn = {}; //object that would give each desired key for each part in arr
-			selectedCols.forEach((key) => (toReturn[key] = obj[key])); //placing wanted keys in toReturn
-			return toReturn;
+			const ret = {};
+			for (const key of selectedCols) {
+				ret[key] = obj[key];
+			}
+			return ret;
 		});
 	}
 
-	let tableData;
-	$: tableData =
-		$props.columns.length > 0
-			? dataSubset(
-					data,
-					$props.columns.map((d) => d.id)
-				)
-			: data;
+	$: tableData = dataSubset(
+		data,
+		$props.columns.map((d) => d.id)
+	);
 
 	// ---------------------------------------------------------------------------------------
 	// GROUPED DATA
@@ -401,29 +445,26 @@
 		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
 			acc[groupName] = {}; // Initialize groupRow object for this group
 
-			// Get a list of columns to aggregate from $props.columns
-			const columnsToAggregate = $props.columns.length > 0 ? $props.columns : columnSummary;
-
-			columnsToAggregate.forEach((columnDef) => {
-				const column = columnDef.id;
-				const colType = columnSummary.find((d) => d.id === column)?.type;
-				const totalAgg = columnDef.totalAgg;
-				const weightCol = columnDef.weightCol;
+			for (const col of $props.columns) {
+				const id = col.id;
+				const colType = columnSummary.find((d) => d.id === id)?.type;
+				const totalAgg = col.totalAgg;
+				const weightCol = col.weightCol;
 				const rows = groupedData[groupName];
-				acc[groupName][column] = aggregateColumn(rows, column, totalAgg, colType, weightCol);
-			});
+				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
+			}
 
 			return acc;
 		}, {});
 
 		// Update groupToggleStates only for new groups
 		const existingGroups = Object.keys(groupToggleStates);
-		Object.keys(groupedData).forEach((groupName) => {
+		for (const groupName of Object.keys(groupedData)) {
 			if (!existingGroups.includes(groupName)) {
 				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
 			}
 			// Existing states are untouched
-		});
+		}
 	}
 
 	let fullscreen = false;
@@ -434,11 +475,18 @@
 <svelte:window bind:innerHeight />
 
 {#if !isFullPage && innerHeight !== undefined}
-	<Fullscreen bind:open={fullscreen}>
-		<!-- header and last row are 22.5+22.5 = 45px, middle rows are 23 -->
-		{@const ROW_HEIGHT = 23}
-		{@const Y_AXIS_PADDING = 45 + 234}
-		<div class="pl-8 pt-4">
+	<Fullscreen bind:open={fullscreen} {search}>
+		<!-- when compact middle rows are 17.5, middle rows are 23 -->
+		{@const ROW_HEIGHT = compact ? 17.5 : 23}
+		<!-- header and last row are 22.5+22.5 = 45px -->
+		{@const HEADER_LAST_ROW_HEIGHT = 45}
+		<!-- Add additional padding for search bar + 24px-->
+		{@const SEARCHBAR_HEIGHT = 24}
+		<!-- Calculation of total padding -->
+		{@const Y_AXIS_PADDING = search
+			? SEARCHBAR_HEIGHT + HEADER_LAST_ROW_HEIGHT + 234
+			: HEADER_LAST_ROW_HEIGHT + 234}
+		<div class="pt-4">
 			<svelte:self
 				{...$$props}
 				rows={1 + Math.round((innerHeight - Y_AXIS_PADDING) / ROW_HEIGHT)}
@@ -453,7 +501,12 @@
 {/if}
 
 {#if error === undefined}
-	<slot />
+	<slot>
+		<!-- default to every column with no customization -->
+		{#each columnSummary as column}
+			<Column id={column.id} />
+		{/each}
+	</slot>
 
 	{#if link}
 		<InvisibleLinks {data} {link} />
@@ -463,6 +516,7 @@
 	{/each}
 
 	<div
+		data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
 		role="none"
 		class="table-container"
 		transition:slide|local
@@ -482,17 +536,15 @@
 					{rowNumbers}
 					{headerColor}
 					{headerFontColor}
-					finalColumnOrder={getFinalColumnOrder(
-						$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-						$props.priorityColumns
-					)}
+					{orderedColumns}
 					{columnSummary}
 					{compact}
 					{sortable}
-					{sort}
+					{sortClick}
 					{formatColumnTitles}
-					{sortBy}
+					{sortObj}
 					{wrapTitles}
+					{link}
 				/>
 
 				<QueryLoad data={filteredData}>
@@ -516,12 +568,7 @@
 									{rowNumbers}
 									{subtotals}
 									{compact}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
+									{orderedColumns}
 								/>
 								{#if groupToggleStates[groupName]}
 									<TableRow
@@ -536,12 +583,7 @@
 										{columnSummary}
 										grouped={true}
 										groupColumn={groupBy}
-										finalColumnOrder={getFinalColumnOrder(
-											$props.columns.length > 0
-												? $props.columns.map((d) => d.id)
-												: Object.keys(data[0]),
-											$props.priorityColumns
-										)}
+										{orderedColumns}
 									/>
 								{/if}
 							{:else if groupType === 'section'}
@@ -559,12 +601,7 @@
 									{columnSummary}
 									grouped={true}
 									{groupNamePosition}
-									finalColumnOrder={getFinalColumnOrder(
-										$props.columns.length > 0
-											? $props.columns.map((d) => d.id)
-											: Object.keys(data[0]),
-										$props.priorityColumns
-									)}
+									{orderedColumns}
 								/>
 								{#if subtotals}
 									<SubtotalRow
@@ -576,12 +613,7 @@
 										{groupType}
 										{groupBy}
 										{compact}
-										finalColumnOrder={getFinalColumnOrder(
-											$props.columns.length > 0
-												? $props.columns.map((d) => d.id)
-												: Object.keys(data[0]),
-											$props.priorityColumns
-										)}
+										{orderedColumns}
 									/>
 								{/if}
 							{/if}
@@ -596,10 +628,7 @@
 							{compact}
 							{index}
 							{columnSummary}
-							finalColumnOrder={getFinalColumnOrder(
-								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-								$props.priorityColumns
-							)}
+							{orderedColumns}
 						/>
 					{/if}
 
@@ -612,10 +641,7 @@
 							fontColor={totalFontColor}
 							{groupType}
 							{compact}
-							finalColumnOrder={getFinalColumnOrder(
-								$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
-								$props.priorityColumns
-							)}
+							{orderedColumns}
 						/>
 					{/if}
 				</QueryLoad>

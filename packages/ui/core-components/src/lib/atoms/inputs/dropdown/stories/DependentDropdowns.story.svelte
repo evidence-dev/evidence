@@ -3,9 +3,6 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Dropdown from '../Dropdown.svelte';
 	import DropdownOption from '../helpers/DropdownOption.svelte';
-	import QueryLoad from '../../../query-load/QueryLoad.svelte';
-	import { getContext } from 'svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { browser } from '$app/environment';
 
 	const slowQuery = (...args) => {
@@ -15,7 +12,8 @@
 		return query(...args);
 	};
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputs = getInputContext();
 	const baseQuery = Query.create(
 		`SELECT id as value, tag as label from hashtags ORDER BY 1`,
 		slowQuery,
@@ -41,9 +39,13 @@
 	});
 </script>
 
-<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
-<QueryLoad let:loaded data={depQuery}>
-	<Dropdown name="user" data={loaded} value="value" label="label" multiple selectAllByDefault>
-		<DropdownOption value="All" />
-	</Dropdown>
-</QueryLoad>
+<div class="grid grid-cols-2 gap-8">
+	<div>
+		<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
+	</div>
+	<div>
+		<Dropdown name="user" data={depQuery} value="value" label="label" multiple selectAllByDefault>
+			<DropdownOption value="All" />
+		</Dropdown>
+	</div>
+</div>

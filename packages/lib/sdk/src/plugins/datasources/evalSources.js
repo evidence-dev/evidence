@@ -29,14 +29,16 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 	// Setup work
 	const [sourcePlugins, sources] = await Promise.all([
 		loadSourcePlugins(),
-		loadSources(),
+		loadSources(pluginLoader),
 		loadCache(metaPath)
 	]).catch((e) => {
 		pluginLoader.fail();
 		throw e;
 	});
 
-	pluginLoader.succeed();
+	if (sources.length) {
+		pluginLoader.succeed();
+	}
 
 	/** @type {import('./types.js').Manifest} */
 	const outputManifest = { renderedFiles: {}, locatedFiles: {}, locatedSchemas: [] };

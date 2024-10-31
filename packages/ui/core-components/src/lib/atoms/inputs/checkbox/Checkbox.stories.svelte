@@ -13,11 +13,8 @@
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
 	import Checkbox from './Checkbox.svelte';
-	import { writable } from 'svelte/store';
-	import { setContext } from 'svelte';
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	const inputStore = writable({});
-	setContext(INPUTS_CONTEXT_KEY, inputStore);
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputStore = getInputContext();
 </script>
 
 <Story name="Base" let:args>

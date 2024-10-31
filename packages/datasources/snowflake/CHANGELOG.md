@@ -1,5 +1,24 @@
 # @evidence-dev/snowflake
 
+## 1.2.0
+
+### Minor Changes
+
+- 0e740d056: add resultPrefetch option to snowflake connector
+
+## 1.1.2
+
+### Patch Changes
+
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+
+## 1.1.1
+
+### Patch Changes
+
+- bf04c39ef: Patches CVE
+
 ## 1.1.0
 
 ### Minor Changes

@@ -8,7 +8,6 @@ export default function getStackPercentages(data, groupCol, valueCol) {
 			groupBy(groupCol, mutateWithSummary({ xTotal: sum(valueCol) })),
 			mutate({ percentOfX: rate(valueCol, 'xTotal') }),
 			rename({
-				[valueCol]: valueCol + '_raw',
 				percentOfX: valueCol + '_pct'
 			})
 		);
@@ -34,7 +33,6 @@ export default function getStackPercentages(data, groupCol, valueCol) {
 				pctData,
 				mutate({ percentOfX: rate(valueCol[i], 'xTotal') }),
 				rename({
-					[valueCol[i]]: valueCol[i] + '_raw',
 					percentOfX: valueCol[i] + '_pct'
 				})
 			);

@@ -5,6 +5,7 @@
 <script>
 	import Chart from '../core/Chart.svelte';
 	import Box from './Box.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import generateBoxPlotData from '@evidence-dev/component-utilities/generateBoxPlotData';
 
 	export let data = undefined;
@@ -64,17 +65,28 @@
 		}
 	}
 
-	$: boxPlotData = generateBoxPlotData(
-		data,
-		min,
-		intervalBottom,
-		midpoint,
-		intervalTop,
-		max,
-		name,
-		color,
-		confidenceInterval
-	);
+	let boxPlotData;
+	const updateBoxPlotData = () => {
+		boxPlotData = generateBoxPlotData(
+			data,
+			min,
+			intervalBottom,
+			midpoint,
+			intervalTop,
+			max,
+			name,
+			color,
+			confidenceInterval
+		);
+	};
+
+	updateBoxPlotData();
+	$: if (data) {
+		(async () => {
+			if (Query.isQuery(data)) await data.fetch();
+			updateBoxPlotData();
+		})();
+	}
 </script>
 
 <Chart

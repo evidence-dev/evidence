@@ -1,5 +1,44 @@
 # @evidence-dev/preprocess
 
+## 5.2.2
+
+### Patch Changes
+
+- 71a20080c: Reactivity improvements
+
+## 5.2.1
+
+### Patch Changes
+
+- 0a0695588: fix query compilation for queries that include String.prototype.replace special strings
+- c8315da2e: Update svelte to resolve security vulnerability
+- 06313c848: fix prerendered arrow files not loading
+
+## 5.2.0
+
+### Minor Changes
+
+- 4c1e5330c: Switch to new input paradigm
+
+## 5.1.7
+
+### Patch Changes
+
+- b84f22fce: properly typecheck .cjs/.js files in preprocess
+- f7253ad4b: Fix noisy "Failed to pre-render columns" log during build
+
+## 5.1.6
+
+### Patch Changes
+
+- 8c2982505: Update vitest to latest
+
+## 5.1.5
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+
 ## 5.1.4
 
 ### Patch Changes

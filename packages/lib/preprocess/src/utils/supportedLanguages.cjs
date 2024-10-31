@@ -1,6 +1,5 @@
 module.exports = {
 	// Case insensitive
-	// If you are changing this, update the inlined version in api/status/[...route]/extractQueries.server.js
 	supportedLangs: [
 		'JavaScript',
 		'HTML',

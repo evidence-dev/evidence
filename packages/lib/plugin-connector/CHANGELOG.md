@@ -1,5 +1,44 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.11
+
+### Patch Changes
+
+- c8315da2e: Update svelte to resolve security vulnerability
+- Updated dependencies [bad1038c1]
+  - @evidence-dev/telemetry@2.1.3
+
+## 2.1.10
+
+### Patch Changes
+
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+
+## 2.1.9
+
+### Patch Changes
+
+- Updated dependencies [c0e1799e2]
+  - @evidence-dev/universal-sql@2.1.5
+
+## 2.1.8
+
+### Patch Changes
+
+- 8c2982505: Update vitest to latest
+- Updated dependencies [8c2982505]
+  - @evidence-dev/universal-sql@2.1.4
+
+## 2.1.7
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- Updated dependencies [3572fcfd7]
+- Updated dependencies [907efee29]
+  - @evidence-dev/telemetry@2.1.2
+
 ## 2.1.6
 
 ### Patch Changes

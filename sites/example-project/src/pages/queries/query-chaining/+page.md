@@ -66,3 +66,11 @@ select
     n_days / 365 as approx_years
 from working_reference}
 ```
+
+```sql string_with_$
+SELECT 'evi.+e$' as funky
+```
+
+```sql interpolated_string_with_$
+SELECT * FROM ${string_with_$}
+```

@@ -6,7 +6,7 @@ sidebar_position: 1
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -40,7 +40,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -97,7 +97,7 @@ group by state
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -129,7 +129,7 @@ group by state
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -166,7 +166,7 @@ group by state
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -196,7 +196,7 @@ group by state
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -224,7 +224,7 @@ Pass in a `link` column to enable navigation on click of the point. These can be
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -265,7 +265,7 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
-    geoJsonUrl='https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json'
+    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
     geoId=ZCTA5CE10
     value=sales
     valueFmt=usd
@@ -297,8 +297,125 @@ where zip_code = ${inputs.my_area_map.zip_code} OR ${inputs.my_area_map.zip_code
     <Column id=sales fmt=usd/> 	
 </DataTable>
 
+### Legends
+
+
+```sql grouped_locations
+SELECT 
+    *, 
+    CASE 
+        WHEN id BETWEEN 0 AND 500 THEN 'Hotels'
+        WHEN id BETWEEN 501 AND 1000 THEN 'Restaurants'
+        WHEN id BETWEEN 1001 AND 1500 THEN 'Golf Courses'
+        WHEN id BETWEEN 1501 AND 2000 THEN 'Shops'
+        WHEN id BETWEEN 2001 AND 2500 THEN 'Bars'
+        WHEN id BETWEEN 2501 AND 3000 THEN 'Entertainment'
+        WHEN id BETWEEN 3001 AND 4000 THEN 'Banks'
+    END AS Category
+FROM la_zip_sales
+WHERE zip_code <> 90704
+ORDER BY 1;
+```
+#### Categorical Legend
+
+<AreaMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+/>
+
+ ```svelte
+<AreaMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+/>
+```
+
+#### Custom Colors
+Set custom legend colors using the `colorPalette` prop to match the number of categories; excess categorical options will default to standard colors.
+<AreaMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+/>
+
+ ```svelte
+<AreaMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=Category
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+/>
+```
+
+#### Scalar Legend
+
+<AreaMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+    valueFmt=usd
+/>
+
+```svelte
+<AreaMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+    valueFmt=usd
+/>
+```
+
+#### Custom Colors
+Define scalar legend colors using the `colorPalette` prop, allowing specified colors to create a gradient based on the range of values.
+
+<AreaMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+    colorPalette={['#C65D47', '#4A8EBA']}
+    valueFmt=usd
+/>
+
+```svelte
+<AreaMap
+    data={grouped_locations}
+    lat=lat
+    long=long
+    value=sales
+    geoId=ZCTA5CE10
+    areaCol=zip_code
+    colorPalette={['#C65D47', '#4A8EBA']}
+    valueFmt=usd
+/>
+```
+
 ## Required GeoJSON Data Structure
 The GeoJSON data you pass to the map must be a feature collection. [See here for an example](https://gist.github.com/sgillies/1233327#file-geojson-spec-1-0-L50)
+
 
 ## Map Resources
 
@@ -361,7 +478,7 @@ options="URL"
 
 Path to source geoJSON data from - can be a URL (see [Map Resources](#map-resources)) or a file in your project. 
 
-If the file is in your project, store it in a `static` folder in the root of your project, and reference it as `geoJsonUrl="/your_file.geojson"`
+If the file is in your `static` directory in the root of your project, reference it as `geoJsonUrl="/your_file.geojson"`
 
 </PropListing>
 
@@ -418,6 +535,30 @@ options="number"
 defaultValue="max of value column"
 >
 Maximum value to use for the color scale.
+</PropListing>
+
+### Legend
+
+<PropListing
+name="legend"
+description="Turns legend on or off"
+required=false
+options={["true", "false"]}
+defaultValue="true"
+/>
+<PropListing
+name="legendType"
+options={['categorical', 'scalar']}
+>
+Appends a categorical or scalar legend to the map
+</PropListing>
+
+<PropListing
+name="legendPosition"
+options={['bottomLeft', 'topLeft','bottomRight', 'topRight']}
+defaultValue='bottomLeft'
+>
+Determines the legend's position on the map, with options provided
 </PropListing>
 
 ### Interactivity

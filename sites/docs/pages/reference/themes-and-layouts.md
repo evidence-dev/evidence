@@ -2,10 +2,10 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Themes and Layouts
-description: Evidence supports customizing the look and feel of your project using CSS, and by overwriting or modifying the default layout.
+description: Evidence supports customizing the look and feel of your app using CSS, and by overwriting or modifying the default layout.
 ---
 
-Evidence supports customizing the look and feel of your project using CSS, and by overwriting or modifying the default layout.
+Evidence supports customizing the look and feel of your app using CSS, and by overwriting or modifying the default layout.
 
 ## Custom Layout 
 
@@ -33,7 +33,7 @@ The `EvidenceDefaultLayout` component accepts the following properties for commo
     defaultValue=""
 >
 
-Project title that will replace the Evidence Logo.
+App title that will replace the Evidence Logo.
 
 </PropListing>
 <PropListing
@@ -42,7 +42,7 @@ Project title that will replace the Evidence Logo.
     defaultValue=""
 >
 
-Link to an image which will replace the Evidence logo. This will also override any project title in the header. If the image is in your project's static directory, the link should be relative to the static directory.
+Link to an image which will replace the Evidence logo. This will also override any app title in the header. If the image is in your project's static directory, the link should be relative to the static directory.
 
 </PropListing>
 <PropListing
@@ -51,7 +51,7 @@ Link to an image which will replace the Evidence logo. This will also override a
     defaultValue=false
 >
 
-Removes the option to show queries when the project is deployed. Has no effect in development.
+Removes the option to show queries when the app is deployed. Has no effect in development.
 
 </PropListing>
 <PropListing
@@ -60,7 +60,7 @@ Removes the option to show queries when the project is deployed. Has no effect i
     defaultValue=""
 >
 
-Sets the width of the project in pixels. The default layout is about 1,280 px wide.
+Sets the width of the app content in pixels. The default layout is about 1,280 px wide.
 
 </PropListing>
 <PropListing
@@ -69,7 +69,7 @@ Sets the width of the project in pixels. The default layout is about 1,280 px wi
     defaultValue=false
 >
 
-Sets the width of the project to full
+Sets the width of the app content to full
 
 </PropListing>
 <PropListing
@@ -190,13 +190,13 @@ This is the default text style, which is used when you write text in a markdown 
 
 ## Base Styles
 
-Include an `app.css` file in your project root directory to customize the base styles of your project.
+Include an `app.css` file in your project root directory to customize the base styles of your app.
 
 _The recommended approach is to copy and edit the default css file from `[my-project]/.evidence/template/src/app.css`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/app.css)._
 
 ### What can be customized with app.css?
 
-You can customize the default styles (font, size, color etc) of most HTML elements, by adjusting the default css for the project, e.g.
+You can customize the default styles (font, size, color etc) of most HTML elements, by adjusting the default css for the app, e.g.
 
 - Headers
 - Body text

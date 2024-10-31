@@ -93,7 +93,7 @@
 				>
 					<button
 						type="button"
-						class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 transition-all duration-500"
+						class="text-gray-900 hover:bg-gray-100 rounded-lg p-1 transition-all duration-500"
 						on:click={() => {
 							mobileSidebarOpen = false;
 						}}

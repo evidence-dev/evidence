@@ -10,6 +10,7 @@ node_modules
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml
 package-lock.json
+package.json
 yarn.lock
 
 
@@ -26,6 +27,7 @@ yarn.lock
 **/sites/docs/pages/**/*
 **/sites/test-env/pages/**/*
 **/static/data/*
+**/static/geo-json/*
 
 **/node_modules
 **/**/node_modules

@@ -70,7 +70,7 @@
 			}
 		}
 
-		update(target);
+		update({ target });
 		return {
 			update,
 			destroy
@@ -86,6 +86,6 @@
 	export let target = 'body';
 </script>
 
-<div use:portal={target} hidden>
+<div use:portal={{ target }} hidden>
 	<slot />
 </div>

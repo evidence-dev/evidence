@@ -1,7 +1,6 @@
 <script>
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-
-	import { setContext, getContext } from 'svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import DimensionCut from './DimensionCut.svelte';
 	import { getWhereClause } from './dimensionGridQuery.js';
@@ -16,12 +15,14 @@
 	export let limit = 10;
 	/** @type {string} */
 	export let name;
+	/** @type {boolean} */
+	export let multiple = false;
 
 	$: dimensions = data?.columns?.filter((col) => col.column_type === 'VARCHAR');
 	let selectedDimensions = writable([]);
 	setContext('selected-dimensions', selectedDimensions);
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	const inputs = getInputContext();
 	$: $inputs[name] = getWhereClause($selectedDimensions);
 </script>
 
@@ -46,7 +47,7 @@
 {:else}
 	<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
 		{#each dimensions as dimension}
-			<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} />
+			<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} {multiple} />
 		{/each}
 	</div>
 {/if}

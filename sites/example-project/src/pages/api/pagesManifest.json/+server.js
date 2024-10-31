@@ -54,7 +54,7 @@ export function _buildPageManifest(pages) {
 }
 
 // Import pages and create an object structure corresponding to the file structure
-const pages = import.meta.glob('/src/pages/*/**/+page.md', {
+const pages = import.meta.glob('/src/pages/**/+page.md', {
 	import: 'default',
 	query: 'raw',
 	eager: true

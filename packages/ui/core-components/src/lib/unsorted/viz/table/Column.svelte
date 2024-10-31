@@ -10,10 +10,8 @@
 
 	let error;
 
+	const identifier = Symbol();
 	export let id;
-
-	// Simple check of column name in dataset. Should be replaced with robust error handling in the future:
-	$: checkColumnName();
 
 	/**
 	 * Check column name and handle error if doesn't exist
@@ -32,6 +30,9 @@
 		}
 	}
 
+	// COLUMN CONTENT TYPES:
+	export let contentType = undefined;
+
 	export let title = undefined;
 	export let align = undefined;
 	if (align === 'centre') {
@@ -42,9 +43,6 @@
 
 	export let wrapTitle = false;
 	$: wrapTitle = wrapTitle === 'true' || wrapTitle === true;
-
-	// COLUMN CONTENT TYPES:
-	export let contentType = undefined;
 
 	// Images:
 	export let height = undefined;
@@ -104,6 +102,22 @@
 	export let chip = false;
 	$: chip = chip === 'true' || chip === true;
 
+	// Sparkline:
+	export let sparkWidth = undefined;
+	export let sparkHeight = undefined;
+	export let sparkColor = undefined;
+	export let sparkX = undefined;
+	export let sparkY = undefined;
+	export let sparkYScale = false;
+	$: sparkYScale = sparkYScale === 'true' || sparkYScale === true;
+
+	// Bar Viz:
+	export let barColor = 'hsla(207, 69%, 79%, 1)';
+	export let negativeBarColor = 'rgb(252 165 165)';
+	export let backgroundColor = 'transparent';
+	export let hideLabels = false;
+	$: hideLabels = hideLabels === 'true' || hideLabels === true;
+
 	// Column Groups:
 	export let colGroup = undefined;
 
@@ -115,38 +129,49 @@
 	$: redNegatives = redNegatives === 'true' || redNegatives === true;
 
 	$: options = {
-		id: id,
-		title: title,
-		align: align,
-		wrap: wrap,
-		wrapTitle: wrapTitle,
-		contentType: contentType,
-		height: height,
-		width: width,
-		alt: alt,
-		openInNewTab: openInNewTab,
-		linkLabel: linkLabel,
-		fmt: fmt,
-		fmtColumn: fmtColumn,
-		totalAgg: totalAgg,
-		totalFmt: totalFmt,
-		subtotalFmt: subtotalFmt,
-		weightCol: weightCol,
-		downIsGood: downIsGood,
-		deltaSymbol: deltaSymbol,
-		chip: chip,
-		neutralMin: neutralMin,
-		neutralMax: neutralMax,
-		showValue: showValue,
-		colorMax: colorMax,
-		colorMin: colorMin,
-		scaleColor: scaleColor,
-		scaleColumn: scaleColumn,
-		colGroup: colGroup,
-		colorMid: colorMid,
-		colorBreakpoints: colorBreakpoints,
-		colorPalette: colorPalette,
-		redNegatives: redNegatives
+		identifier,
+		id,
+		title,
+		align,
+		wrap,
+		wrapTitle,
+		contentType,
+		height,
+		width,
+		alt,
+		openInNewTab,
+		linkLabel,
+		fmt,
+		fmtColumn,
+		totalAgg,
+		totalFmt,
+		subtotalFmt,
+		weightCol,
+		downIsGood,
+		deltaSymbol,
+		chip,
+		neutralMin,
+		neutralMax,
+		showValue,
+		colorMax,
+		colorMin,
+		scaleColor,
+		scaleColumn,
+		colGroup,
+		colorMid,
+		colorBreakpoints,
+		colorPalette,
+		redNegatives,
+		sparkWidth,
+		sparkHeight,
+		sparkColor,
+		sparkX,
+		sparkY,
+		sparkYScale,
+		barColor,
+		negativeBarColor,
+		backgroundColor,
+		hideLabels
 	};
 
 	/**
@@ -155,8 +180,11 @@
 	 * @returns {void}
 	 */
 	const updateProps = () => {
+		// Simple check of column name in dataset. Should be replaced with robust error handling in the future:
+		checkColumnName();
+
 		props.update((d) => {
-			const matchingIndex = d.columns.findIndex((c) => c.id === id);
+			const matchingIndex = d.columns.findIndex((c) => c.identifier === identifier);
 			if (matchingIndex === -1) {
 				d.columns.push(options);
 			} else {

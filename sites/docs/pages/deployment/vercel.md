@@ -2,7 +2,7 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
-description: Deploy a public project to Vercel for free or a password-protected project with the pro plan.
+description: Deploy a public app to Vercel for free or a password-protected app with the pro plan.
 ---
 
 
@@ -14,15 +14,15 @@ Note that because of missing dependencies, Vercel cannot be used with DuckDB sou
 
 </Alert>
 
-Vercel lets you host a public version of your project for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month.
+Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month.
 
 ## Deploy to Vercel
 
-1. Run your project in development mode
+1. Run your app in development mode
 1. Visit the [settings page](http://localhost:3000/settings)
 1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
 
-## Optional: Set a site-wide password for your project (Requires Paid Plan)
+## Optional: Set a site-wide password for your app (Requires Paid Plan)
 
 Follow the directions provided by Vercel to set up a password for your site:
 https://vercel.com/blog/protecting-deployments

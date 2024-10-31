@@ -1,6 +1,9 @@
 export const Unset = Symbol('Unset');
 export const IsSetTracked = Symbol('IsSetTracked');
 const GetModKeys = Symbol('GetModKeys');
+const GetOwnKey = Symbol('GetOwnKey');
+const GetOwnPath = Symbol('GetOwnPath');
+const GetParent = Symbol('GetParent');
 
 export const setTrackProxy = (
 	/** @type {Record<string|number|symbol,string>} */ defaultStringMap = {},
@@ -21,6 +24,19 @@ export const setTrackProxy = (
 					return !parent?.[GetModKeys].includes(ownKey);
 				case GetModKeys:
 					return modifiedKeys;
+				case GetOwnKey:
+					return ownKey;
+				case GetParent:
+					return parent;
+				case GetOwnPath: {
+					const path = [ownKey];
+					let tmpParent = parent;
+					while (tmpParent !== undefined) {
+						path.unshift(tmpParent[GetOwnKey]);
+						tmpParent = tmpParent[GetParent];
+					}
+					return path.join('.');
+				}
 				case IsSetTracked:
 					return true;
 				case 'toJSON':
@@ -58,5 +74,7 @@ export const setTrackProxy = (
  * @returns {boolean}
  */
 export const hasUnsetValues = (strings, ...args) => {
-	return args.some((arg) => arg?.[Unset]);
+	const unsetValues = args.filter((arg) => arg?.[Unset]);
+	if (unsetValues.length === 0) return false;
+	return true;
 };

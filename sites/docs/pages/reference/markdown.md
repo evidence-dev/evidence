@@ -162,6 +162,7 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 <PropListing
     name="hide_title"
     description="If true, the title will not show as a header on the page"
+    options={['true', 'false']}
 />
 <PropListing
     name="description"
@@ -195,15 +196,23 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 <PropListing
     name="sidebar_position"
     description="Changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar."
+    options="positive integer"
 />
 <PropListing
     name="sidebar_link"
     description="When set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link."
+    options={['true', 'false']}
 />
 <PropListing
     name="breadcrumb"
-    description="Specify a query that returns a breadcrumb column. The query can use $&#123params&#125 to reference the URL parameters for the page."
-/>
+>
+
+Specify a query that returns a column named breadcrumb. The query can use `$&#123params.my_param&#125` to reference the URL parameters for the page. 
+
+E.g.
+`breadcrumb: &quot;select customer_name as breadcrumb from customers_table where customer_id = $&#123params.customer_id&#125&quot;`
+
+</PropListing>
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
 
@@ -231,4 +240,4 @@ This is some content in the partial.
 
 Evidence supports re-using chunks of Evidence markdown using Partials.
 
-Partials are placed in the `./partials` folder, and can be referenced in your project with `&#123;@partial "path/to/partial.md"&#125;` (do not include the `/partial` folder in the path).
+Partials are placed in the `./partials` folder, and can be referenced in your markdown with `&#123;@partial "path/to/partial.md"&#125;` (do not include the `/partial` folder in the path).

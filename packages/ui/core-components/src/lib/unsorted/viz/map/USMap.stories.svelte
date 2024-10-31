@@ -20,9 +20,20 @@
 	import USMap from './USMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+
+	/** @type {typeof query} */
+	const slowQuery = async (...args) => {
+		await new Promise((resolve) => setTimeout(resolve, 3_000));
+		return query(...args);
+	};
 </script>
 
 <Story name="Basic Usage" let:args>
 	{@const data = Query.create(`SELECT * from state_sales`, query)}
+	<USMap {data} {...args} state="state" value="sales" />
+</Story>
+
+<Story name="Loading" let:args>
+	{@const data = Query.create(`SELECT * from state_sales`, slowQuery)}
 	<USMap {data} {...args} state="state" value="sales" />
 </Story>

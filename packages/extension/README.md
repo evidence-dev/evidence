@@ -8,7 +8,7 @@
 
 This extension provides language support, Evidence project and dev server shortcut commands, and autocomplete for Evidence Markdown files.
 
-![Evidence Side-by-Side](/docs/images/evidence-sidebyside.gif)
+![Evidence Side-by-Side](docs/images/evidence-sidebyside.gif)
 
 ## Features
 
@@ -40,7 +40,7 @@ This extension also depends on [Svelte for VS Code](https://marketplace.visualst
 
 You can install the Evidence extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode), or by searching for `Evidence` in the VS Code Extensions tab.
 
-![Evidence Extension Installation](/docs/images/evidence-extension-install.png)
+![Evidence Extension Installation](docs/images/evidence-extension-install.png)
 
 ## Getting Started
 
@@ -49,21 +49,21 @@ To get started with Evidence using VS Code locally, follow these steps:
 1. Open the command palette in VS Code (Cmd/Ctrl + Shift + P)
 2. Search for and click `New Evidence Project`
 3. Select an **empty** folder to create your Evidence project within<br><br>
-   ![Evidence Project Start](/docs/images/evidence-new-project.gif)
+   ![Evidence Project Start](docs/images/evidence-new-project.gif)
 
 4. Click the `Start Evidence` button to install all required dependencies and start the dev server, or use the commands detailed below in the `Commands` section<br><br>
-   ![Evidence Server Start](/docs/images/evidence-server-start.gif)
+   ![Evidence Server Start](docs/images/evidence-server-start.gif)
    <br><br> **Note:** The initial installation and server start can take up to 2 minutes depending on your computer. If you have issues with the startup time, you can use Codespaces (see next section).<br><br>
    At the end of this step, your browser will automatically open to your app preview, which will appear at `localhost:3000`
 
 5. We recommend putting VS Code and your browser side-by-side, like in the screenshot below. This will give you immediate development feedback on your app every time you save a markdown file.<br><br>
-   ![Evidence Side-by-Side](/docs/images/evidence-sidebyside.gif)
+   ![Evidence Side-by-Side](docs/images/evidence-sidebyside.gif)
 
 6. Make changes to your markdown files and save the file to see the changes reflected in your app preview
 
 7. Try the "slash commands" included with the extension by typing `/` - you will see a list of available viz and UI components from our library. Select a component to insert by hitting `Tab` or clicking on the component.<br><br>
    Once the component code has been inserted, you can hit `Tab` again to move through the inputs for a component and fill them in.<br><br>
-   ![Evidence Slash](/docs/images/evidence-slash.gif)
+   ![Evidence Slash](docs/images/evidence-slash.gif)
 
 ## Running Evidence in GitHub Codespaces
 
@@ -73,15 +73,15 @@ You can use the Evidence VS Code extension with [GitHub Codespaces](https://gith
 2. The Evidence extension will be installed automatically
 3. Click the `Start Evidence` button to install all required dependencies and start the dev server, or use the commands detailed below in the `Commands` section
 4. You will get a popup saying `Your application running on port 3000 is available`. Click to open in browser<br><br>
-   ![Running Evidence in GitHub Codespaces](/docs/images/evidence-codespaces-server-start.png)
+   ![Running Evidence in GitHub Codespaces](docs/images/evidence-codespaces-server-start.png)
 
 5. Make changes to your markdown files and **save the file** to see the changes reflected in your app preview
 
 6. After making changes to your project, click the `Source Control` icon in the left panel and commit your changes<br><br>
-   ![Make a change in Codespaces](/docs/images/codespaces-make-change.png)
+   ![Make a change in Codespaces](docs/images/codespaces-make-change.png)
 
 7. Click `Publish Branch` - this will prompt you to create a private or public repo for your Evidence project<br><br>
-   ![Publish repo in Codespaces](/docs/images/codespaces-publish-repo.png)
+   ![Publish repo in Codespaces](docs/images/codespaces-publish-repo.png)
 
 8. From here, you can continue to develop your project in Codespaces, or you can choose to clone your repo locally and work from there
 
@@ -91,7 +91,7 @@ The Evidence extension provides a number of custom VS Code shortcut commands for
 
 You can access the VS Code shortcut commands from the command palette (`Cmd/Ctrl+Shift+P`) by typing `Evidence` in the command search box:
 
-![Evidence Extension Commands](/docs/images/evidence-commands.png)
+![Evidence Extension Commands](docs/images/evidence-commands.png)
 
 | VS Code Command       | Title                      | Description                                                                                         | CLI Command                                                                      |
 | --------------------- | -------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
@@ -107,27 +107,13 @@ You can access the VS Code shortcut commands from the command palette (`Cmd/Ctrl
 | `viewSettings`        | VS Code Extension Settings | View Evidence extension settings in the built-in VS Code Settings editor.                           |
 | `copyProject`         | Copy Existing Project      | Provide a URL of a Github repo to pull from                                                         |
 
-## Deployment
-
-You can self-host or deploy on Evidence Cloud, with a public project or behind user authentication.
-
-Evidence projects utlize a scheduled build process, which runs the queries in your project and builds all of your pages. The output of this process is a pre-built, self-contained static web application.
-
-This results in near instant page loads for your users and means that they are not hitting your data warehouse by interacting with their reports.
-
-Despite this static output, you can still deliver fully interactive and exporable data products through our most recent release for [Universal SQL](https://evidence.dev/universal-sql)
-
-[Sign up for Evidence Cloud here](https://evidence.dev/cloud)
-
-[Learn more about deployment here](https://docs.evidence.dev/deployment/overview)
-
 ## Settings
 
 Create [User or Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_creating-user-and-workspace-settings) to change default Evidence VS Code extension Settings.
 
 Open Evidence extension Settings in VS Code by using the `Evidence: VS Code Extension Settings` command, or navigating to `File -> Preferences -> Settings` (`cmd/ctrl+,`) and searching for `Evidence` in the Settings search box.
 
-![Evidence Extension Settings](/docs/images/evidence-extension-settings.png)
+![Evidence Extension Settings](docs/images/evidence-extension-settings.png)
 
 ### Available Settings
 
@@ -141,7 +127,7 @@ Note that after editing some settings you may need to close and reopen VS Code f
 | `evidence.slashCommands`      | Slash Commands       | boolean    | `true`                                                  | Enabled slash commands - get component suggestions when typing `/`                                                                                                                                                                                    |
 | `evidence.templateProjectUrl` | Template Project Url | Url string | [`/template`](https://github.com/evidence-dev/template) | Evidence `template` project GitHub Url or local `file://` path to the project template folder to use when creating new Evidence projects. Defaults to the Evidence template Github repository [`/template`](https://github.com/evidence-dev/template) |
 
-You can request new Evidence extension settings to enhance this extension user experience in VS Code by submitting a [feature request](https://github.com/evidence-dev/evidence/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=) or [pull request](https://github.com/evidence-dev/evidence/pulls).
+You can request new Evidence extension settings to enhance this extension user experience in VS Code by submitting a [feature request in Discussions](https://github.com/evidence-dev/evidence/discussions/new?category=ideas) or [pull request](https://github.com/evidence-dev/evidence/pulls).
 
 ### VS Code Settings JSON
 

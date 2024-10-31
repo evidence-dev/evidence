@@ -17,16 +17,16 @@ export const deprecationNotice = (cmdName) => ({
  * @param {string} cmdName
  * @param {import("@brianmd/citty").CommandDef} cmd
  * @param {boolean} [requiresLayout = false]
- * @returns {Promise<import("@brianmd/citty").CommandDef>}
+ * @returns {import("@brianmd/citty").CommandDef}
  */
-export const evidenceProjectOnlyNotice = async (cmdName, cmd, requiresLayout) => {
+export const evidenceProjectOnlyNotice = (cmdName, cmd, requiresLayout) => {
 	return {
 		...cmd,
-		async run(...args) {
+		run(...args) {
 			/** @type {boolean} */
 			let isEvidenceProject = false;
 
-			const config = await getEvidenceConfig();
+			const config = getEvidenceConfig();
 			if (config) isEvidenceProject = true;
 			if (config && requiresLayout && !config.layout) isEvidenceProject = false;
 

@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { batchUp } from './batchUp.js';
 
@@ -14,25 +18,35 @@ describe('batchUp', () => {
 		vi.advanceTimersByTime(201);
 		expect(callback).toHaveBeenCalledTimes(0);
 	});
-	it('should debounce the callback', () => {
-		const callback = vi.fn();
-		const fn = batchUp(callback);
-		fn();
-		vi.advanceTimersByTime(199);
-		expect(callback).not.toHaveBeenCalled();
-		fn();
-		vi.advanceTimersByTime(200);
-		expect(callback).toHaveBeenCalledTimes(1);
-	});
-	it('should pass any provided arguments to the callback', () => {
-		const callback = vi.fn();
-		const fn = batchUp(callback);
-		fn(1);
-		fn(2);
-		fn(3);
-		vi.advanceTimersByTime(200);
-		expect(callback).toHaveBeenCalledWith([1, 2, 3]);
-	});
+	it(
+		'should debounce the callback',
+		() => {
+			// Currently skipped because debounce has been disabled
+			const callback = vi.fn();
+			const fn = batchUp(callback);
+			fn();
+			vi.advanceTimersByTime(199);
+			expect(callback).not.toHaveBeenCalled();
+			fn();
+			vi.advanceTimersByTime(200);
+			expect(callback).toHaveBeenCalledTimes(1);
+		},
+		{ skip: true }
+	);
+	it(
+		'should pass any provided arguments to the callback',
+		() => {
+			// Currently skipped because debounce has been disabled
+			const callback = vi.fn();
+			const fn = batchUp(callback);
+			fn(1);
+			fn(2);
+			fn(3);
+			vi.advanceTimersByTime(200);
+			expect(callback).toHaveBeenCalledWith([1, 2, 3]);
+		},
+		{ skip: true }
+	);
 
 	it('should be reusable', async () => {
 		const callback = vi.fn();

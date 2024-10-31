@@ -2,7 +2,7 @@
 sidebar_position: 1
 title: CLI
 hide_title: true
-description: Commands to start, install, develop, and build Evidence projects from the command line.
+description: Commands to start, install, develop, and build Evidence apps from the command line.
 ---
 
 # CLI Reference
@@ -13,7 +13,7 @@ description: Commands to start, install, develop, and build Evidence projects fr
 select '<code>npx degit evidence-dev/template my-project</code>' as "CLI", '<code>Evidence: New Evidence Project</code>' as "VS Code", 'Create a new project from the template' as "Description", 0 as row_num UNION ALL
 select '<code>npm run sources</code>' as "CLI", '<code>Evidence: Run Sources</code>' as "VS Code", 'Extract data from sources' as "Description", 1 as row_num UNION ALL
 select '<code>npm run dev</code>' as "CLI", '<code>Evidence: Start Server</code>' as "VS Code", 'Start the development server in the current directory' as "Description", 2 as row_num UNION ALL
-select '<code>npm run build</code>' as "CLI", '<code>Evidence: Build</code>' as "VS Code", 'Build the project for production' as "Description", 3 as row_num UNION ALL
+select '<code>npm run build</code>' as "CLI", '<code>Evidence: Build</code>' as "VS Code", 'Build the app for production' as "Description", 3 as row_num UNION ALL
 select '<code>npm run build:strict</code>' as "CLI", '<code>Evidence: Built Strict</code>' as "VS Code", 'Build, but fails on query or component errors' as "Description", 4 as row_num UNION ALL
 select '<code>npm run preview</code>' as "CLI", 'N/A' as "VS Code", 'Preview the built site' as "Description", 5 as row_num UNION ALL
 select '<code>Ctrl / Cmd</code> + <code>C</code>' as "CLI", '<code>Evidence: Stop Server</code>' as "VS Code", 'Stop the dev server (when running)' as "Description", 6 as row_num UNION ALL
@@ -72,3 +72,45 @@ N.B. Environment variables are **case sensitive**, so you should preserve the ca
 ### .env Files
 
 Evidence will read in environment variables from a `.env` file in the root of your project. This is useful for local development.
+
+### Environment Variables in Source Queries
+
+Environment variables to be used in source queries should be prefixed with `EVIDENCE_VAR__` (note the double underscore). They can be used in source queries with `${EVIDENCE_VAR__variable_name}`.
+
+```bash
+EVIDENCE_VAR__customer_name="Acme Corporation"
+```
+
+```bash
+select *
+from orders
+where customer_name = '${customer_name}'
+```
+
+The quotes would be omitted if the variable was not a string.
+
+### Environment Variables in Pages
+
+Environment variables to be used in pages should be prefixed with `VITE_`. They can be accessed with `import.meta.env.VITE_variable_name`.
+
+`.env`
+```bash
+VITE_customer_attribute=premium
+```
+
+`index.md`
+```svelte
+&lt;script&gt;
+  const customer_attribute = import.meta.env.VITE_customer_attribute;
+&lt;/script&gt;
+
+{#if customer_attribute === 'premium'}
+
+Premium content
+
+{:else if customer_attribute === 'free'}
+
+Free content
+
+{/if}
+```

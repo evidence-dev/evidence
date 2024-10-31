@@ -1,5 +1,146 @@
 # @evidence-dev/core-components
 
+## 4.8.8
+
+### Patch Changes
+
+- a94ca734d: add \_\_renderCount hidden property on charts plus testids and aria-labels for accessibility/test targets
+- Updated dependencies [a94ca734d]
+  - @evidence-dev/component-utilities@3.2.16
+  - @evidence-dev/tailwind@2.1.5
+
+## 4.8.7
+
+### Patch Changes
+
+- 163ff7a33: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+
+## 4.8.6
+
+### Patch Changes
+
+- Updated dependencies [2b5d759f1]
+  - @evidence-dev/component-utilities@3.2.15
+
+## 4.8.5
+
+### Patch Changes
+
+- 1cc64f83f: Table rows with links preload data on hover
+  Table rows with links have a chevron icon on the right side
+  Table rows dont have link styling if the link value is falsey
+- 101d58f09: Implemented categorical and scalar map legends
+
+## 4.8.4
+
+### Patch Changes
+
+- 024e93b02: Defer selectAll=false to ensure that all options are available before the behavior is turned off
+
+## 4.8.3
+
+### Patch Changes
+
+- e0abcc56d: Add yellow tint to queries with unresolved inputs in the devtools
+- 0feacbbe5: ySet is now reactive, enabling better support for dynamic y columns
+  - @evidence-dev/component-utilities@3.2.14
+  - @evidence-dev/tailwind@2.1.4
+
+## 4.8.2
+
+### Patch Changes
+
+- eec16e59d: Add Group component for Grids
+- 57c118c16: fixes reactive DataTable columns
+- 952abbd16: DropdownMenuItem has cursor-pointer
+  Create theme stores to manage theme
+  Add appearance toggle to KebabMenu (hidden behind VITE_EVIDENCE_THEMES=true)
+  Show/Hide queries and Appearance in KebabMenu dont close menu when clicked
+- c8315da2e: Update svelte to resolve security vulnerability
+- 06313c848: fix prerendered arrow files not loading
+- Updated dependencies [952abbd16]
+- Updated dependencies [c8315da2e]
+  - @evidence-dev/tailwind@2.1.3
+  - @evidence-dev/component-utilities@3.2.13
+
+## 4.8.1
+
+### Patch Changes
+
+- b87d90971: Fix dev tools keybind on windows
+  - @evidence-dev/component-utilities@3.2.12
+
+## 4.8.0
+
+### Minor Changes
+
+- 999fffa38: Change input store interactions
+
+### Patch Changes
+
+- 999fffa38: Modal emits an event when closed now
+- 999fffa38: Pull prop listing into a component for reusabilitiy
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+- 999fffa38: Add compact prop to accordion
+- 999fffa38: Add maxWidth and direction props to hints
+  - @evidence-dev/component-utilities@3.2.11
+
+## 4.7.8
+
+### Patch Changes
+
+- 33dee6b35: fixed boxplot duplicates
+- d6d64147d: selected tabs with id prop selection persist on refresh/link shared
+- f34ddbae9: added default values for queries in button groups
+- Updated dependencies [221e4261b]
+  - @evidence-dev/component-utilities@3.2.10
+
+## 4.7.7
+
+### Patch Changes
+
+- 2e0115932: Funnel chart's showPercent param should calculate based upon initial value, not total
+- 5daf7675e: Reverts tab styling for Buttongroup, which broke Tabs
+
+## 4.7.6
+
+### Patch Changes
+
+- fa621ad18: Added DataTable Fullscreen y-scroll, added Fullscreen height calc to include search bar height
+- 9ea566854: SelectAllByDefault conditionally checks for strings + booleans
+- 57be334fe: Added button groups with tab styles prop
+
+## 4.7.5
+
+### Patch Changes
+
+- 06bb5f369: Add skeleton loading state for Area Map, Bubble Map, and Point Map
+- 8c2982505: - Switch to perfect-debounce instead of lodash.debounce
+  - Remove all lodash.library in favor of better supported lodash/library
+- 99410c144: feat: AreaMap and Areas react to geoJsonUrl changes
+- 67a94f6f9: Fixed Home Breadcrumbs href
+- 8c2982505: Rewrite Dropdown + DropdownOptionStore
+- 050707ba9: Dropdown has role "combobox" not "combo-box"
+- 8c2982505: Update vitest to latest
+- 2a2d0d914: removed scroll to top and fixed esc close for fullscreen mode
+- 4033c0b6e: Smooth zoom feature for maps
+- 2527838c4: Fix TProtocolException when loading Parquet files on Windows
+- c0c44330b: Added multiple selections to Dimension Grid
+- 4b0c088fd: Removes max height from codeblocks
+- Updated dependencies [8c2982505]
+  - @evidence-dev/component-utilities@3.2.9
+
+## 4.7.4
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- 6ff0e92b8: Adds option to disable downloads for data and/or images from charts
+- Updated dependencies [32035eeaa]
+  - @evidence-dev/tailwind@2.1.2
+  - @evidence-dev/component-utilities@3.2.8
+
 ## 4.7.3
 
 ### Patch Changes

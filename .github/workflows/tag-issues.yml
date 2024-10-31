@@ -1,0 +1,32 @@
+name: Tag Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  tag_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Apply customer request labels
+        run: |
+          USER="${{ github.event.issue.user.login }}"
+          PRIORITY_USERS=$(echo "${{ secrets.PRIORITY_SUPPORT_USERS }}" | cut -d ',' -f1 | tr '\n' ' ')
+          IS_PRIORITY_USER="false"
+          for PRIORITY_USER in $PRIORITY_USERS; do
+            if [[ "$USER" == "$PRIORITY_USER" ]]; then
+              IS_PRIORITY_USER="true"
+              curl -X POST \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels \
+                -d '{"labels":["customer request"]}'
+              break
+            fi
+          done
+          echo "Is priority user: $IS_PRIORITY_USER"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

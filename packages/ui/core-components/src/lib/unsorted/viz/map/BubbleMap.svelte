@@ -6,6 +6,15 @@
 	import Bubbles from './components/Bubbles.svelte';
 	import BaseMap from './BaseMap.svelte';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import EmptyChart from '../core/EmptyChart.svelte';
+	import { QueryLoad } from '../../../atoms/query-load';
+	import { Query } from '@evidence-dev/sdk/usql';
+
+	/** @type {'pass' | 'warn' | 'error' | undefined} */
+	export let emptySet = undefined;
+
+	/** @type {string | undefined} */
+	export let emptyMessage = undefined;
 
 	let error;
 
@@ -48,12 +57,36 @@
 
 	/** @type {string|undefined} */
 	export let title = undefined;
+
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
+	/** @type {string[]|undefined} */
+	export let colorPalette = undefined;
+	/** @type {boolean} */
+	export let legend = true;
+
+	const chartType = 'Bubble Map';
+
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
+	$: isInitial = data?.hash === initialHash;
 </script>
 
-{#if error}
-	<ErrorChart {error} chartType="Bubble Map" />
-{:else}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Bubbles {data} {lat} {long} {size} {...$$restProps} />
+<QueryLoad {data} let:loaded>
+	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
+	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
+
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {legendPosition}>
+		<Bubbles
+			data={loaded}
+			{lat}
+			{long}
+			{size}
+			{colorPalette}
+			{legendType}
+			{legend}
+			{...$$restProps}
+		/>
 	</BaseMap>
-{/if}
+</QueryLoad>

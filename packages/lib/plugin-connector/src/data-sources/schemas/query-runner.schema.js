@@ -134,7 +134,7 @@ export const DatasourceConnectorFactorySchema = z
 /**
  * @typedef {Object} IDatasourceOptionSpecSchema
  * @property {string} title
- * @property {'string' | 'number' | 'boolean' | 'select' | 'file'} type
+ * @property {'string' | 'multiline' | 'number' | 'boolean' | 'select' | 'file'} type
  * @property {boolean} [secret]
  * @property {boolean} [shown]
  * @property {string} [description]
@@ -151,7 +151,7 @@ export const DatasourceOptionSpecSchema = z.record(
 	z.string(),
 	z.object({
 		title: z.string(),
-		type: z.enum(['string', 'number', 'boolean', 'select', 'file']),
+		type: z.enum(['string', 'multiline', 'number', 'boolean', 'select', 'file']),
 		secret: z.boolean().default(false),
 		shown: z.boolean().optional(),
 		/**

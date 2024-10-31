@@ -4,7 +4,7 @@ import { z } from 'zod';
 /**
  * @typedef {Object} IDatasourceOptionSpecSchema
  * @property {string} title
- * @property {'string' | 'number' | 'boolean' | 'select' | 'file'} type
+ * @property {'string' | 'multiline' | 'number' | 'boolean' | 'select' | 'file'} type
  * @property {boolean} [secret]
  * @property {boolean} [shown]
  * @property {string} [description]
@@ -23,7 +23,7 @@ export const DatasourceOptionSpecSchema = z.record(
 	z.string(),
 	z.object({
 		title: z.string({ description: 'Title of the option (UI)' }),
-		type: z.enum(['string', 'number', 'boolean', 'select', 'file'], {
+		type: z.enum(['string', 'multiline', 'number', 'boolean', 'select', 'file'], {
 			description: 'Control type to show'
 		}),
 		secret: z.boolean({ description: 'If true, will not be source controlled' }).default(false),

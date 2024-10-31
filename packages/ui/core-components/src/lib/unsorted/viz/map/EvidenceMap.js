@@ -1,7 +1,15 @@
 import { sharedPromise } from '@evidence-dev/sdk/utils';
-import debounce from 'lodash.debounce';
+import { debounce } from 'perfect-debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+import { initSmoothZoom } from './LeafletSmoothZoom';
+import { writable, derived, readonly } from 'svelte/store';
+import chroma from 'chroma-js';
+import { uiColours } from '@evidence-dev/component-utilities/colours';
+import { mapColours } from '@evidence-dev/component-utilities/colours';
+
+/** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
+/** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
 
 /** @type {import('leaflet') | undefined} */
 let Leaflet;
@@ -79,7 +87,11 @@ export class EvidenceMap {
 		if (!Leaflet) {
 			this.#sharedPromise.start();
 			Leaflet = await import('leaflet')
-				.then((m) => m.default)
+				.then((m) => {
+					const Leaflet = m.default;
+					initSmoothZoom(Leaflet); // Initialize smooth zoom after importing Leaflet
+					return Leaflet;
+				})
 				.catch((e) => {
 					this.#sharedPromise.reject(e);
 				});
@@ -94,10 +106,14 @@ export class EvidenceMap {
 		}
 
 		this.#mapEl = mapEl;
-		this.#map = Leaflet.map(this.#mapEl, { zoomControl: false, zoomSnap: 0.25 }).setView(
-			startingCoords,
-			startingZoom ?? 1
-		);
+
+		this.#map = Leaflet.map(this.#mapEl, {
+			zoomControl: false,
+			scrollWheelZoom: false, // disable original zoom function
+			smoothWheelZoom: true, // enable smooth zoom
+			smoothSensitivity: 5 // zoom speed. default is 1
+		}).setView(startingCoords, startingZoom ?? 5);
+
 		if (userDefinedView) {
 			this.#initialViewSet = true; // Mark initial view as set
 		}
@@ -241,7 +257,23 @@ export class EvidenceMap {
 		link
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
-		const marker = Leaflet.circleMarker(coords, circleOptions).addTo(this.#map);
+
+		//other panes start at z-index 400
+		if (!this.#map.getPane(circleOptions.pane)) {
+			this.#map.createPane(circleOptions.pane);
+
+			this.#paneArray.forEach((pane, index) => {
+				if (pane === circleOptions.pane) {
+					this.#map.getPane(pane).style.zIndex = 400 + index;
+				}
+			});
+		}
+
+		// Create the marker with the appropriate pane
+		const marker = Leaflet.circleMarker(coords, circleOptions);
+
+		marker.addTo(this.#map);
+
 		this.updateMarkerStyle(marker, circleOptions); // Initial style setting and storage
 
 		marker.on('click', () => {
@@ -369,5 +401,222 @@ export class EvidenceMap {
 		}
 
 		return newUrl;
+	}
+
+	/** @type {Map<string, Promise<any>>} */
+	static #geoJsonCache = new Map();
+
+	/** @type {Writable<Map<string, any | null>>} */
+	#geoJsonData = writable(new Map());
+
+	get geoJsonData() {
+		return readonly(this.#geoJsonData);
+	}
+
+	allGeoJsonLoaded = derived(this.#geoJsonData, ($geoJsonData) => {
+		return Array.from($geoJsonData.values()).every(Boolean);
+	});
+
+	/**
+	 * @param {string} url
+	 * @returns {Promise<any | undefined>} GeoJSON data
+	 */
+	async loadGeoJson(url) {
+		const cached = EvidenceMap.#geoJsonCache.get(url);
+		if (cached) return cached;
+
+		const promise = fetch(url)
+			.then((r) => r.json())
+			.catch((e) => {
+				this.#geoJsonData.update((map) => {
+					map.delete(url);
+					return map;
+				});
+				console.error(`Failed to load GeoJSON at URL '${url}': ${e}`);
+			});
+		EvidenceMap.#geoJsonCache.set(url, promise);
+
+		// Set null to indicate we are loading data for this URL
+		this.#geoJsonData.update((map) => map.set(url, null));
+		const data = await promise;
+		this.#geoJsonData.update((map) => {
+			if (data) {
+				map.set(url, data);
+			} else {
+				map.delete(url);
+			}
+			return map;
+		});
+
+		return data;
+	}
+
+	handleLegendValues(colorPalette, values, legendType) {
+		//determine legend style
+		if (legendType === 'categorical') {
+			let uniqueValues = new Set(values);
+			values = [...uniqueValues];
+			let i = 0;
+
+			while (colorPalette.length < values.length) {
+				if (i >= colorPalette.length) i = 0;
+				colorPalette.push(colorPalette[i]);
+				i++;
+			}
+		} else if (legendType === 'scalar') {
+			values.forEach((value) => {
+				if (typeof value !== 'number' && value !== null) {
+					console.error('Scalar legend requires numeric values or null.');
+				}
+				if (typeof value === 'number' && isNaN(value)) {
+					console.error('Scalar legend requires valid numeric values.');
+				}
+			});
+		}
+		return values;
+	}
+
+	handleFillColor(item, value, values, colorPalette, colorScale) {
+		if (!value) return uiColours.blue700;
+
+		if (item[value]) {
+			if (typeof item[value] === 'string') {
+				return colorPalette[values.indexOf(item[value])];
+			} else {
+				return colorScale(item[value]);
+			}
+		}
+	}
+
+	//handle legend data
+	/**
+	 * @type {import('svelte/store').Writable<"bottomLeft"|"topLeft"|"topRight"|"bottomRight">}
+	 */
+	#legendPosition = writable('bottomLeft');
+
+	updateLegendPosition(position) {
+		this.#legendPosition.set(position); // use set to update the value
+	}
+
+	get legendPosition() {
+		let value;
+		this.#legendPosition.subscribe((val) => (value = val))(); // immediately unsubscribe
+		return value;
+	}
+	/**
+	 *
+	 * @type {import('svelte/store').Writable<
+	 * { values: string[], colorPalette: string[], minValue: number, maxValue: number, legendType: string, valueFmt: string, chartType: string, legendId: string, value: string, legend: boolean }[]
+	 * >}
+	 */
+	#legendData = writable([]);
+
+	buildLegend(
+		colorPalette,
+		arrayOfStringValues,
+		minValue,
+		maxValue,
+		legendType,
+		valueFmt,
+		chartType,
+		legendId,
+		value,
+		legend
+	) {
+		const createLegendObject = () => ({
+			colorPalette,
+			values: arrayOfStringValues,
+			minValue,
+			maxValue,
+			legendType,
+			valueFmt,
+			chartType,
+			legendId,
+			value,
+			legend
+		});
+
+		this.#legendData.update((legendData) => {
+			const existingIndex = legendData.findIndex((data) => data.legendId === legendId);
+
+			if (existingIndex !== -1) {
+				// Update existing legend
+				return legendData.map((data, index) =>
+					index === existingIndex ? { ...legend, ...createLegendObject() } : data
+				);
+			} else if (legendId !== undefined) {
+				// Add new legend if legendId is defined
+				return [...legendData, createLegendObject()];
+			}
+			// If legendId is undefined, return the original array
+			return legendData;
+		});
+	}
+
+	get legendData() {
+		return readonly(this.#legendData);
+	}
+
+	async initializeData(
+		data,
+		{
+			corordinates,
+			value,
+			checkInputs,
+			min,
+			max,
+			colorPalette,
+			legendType,
+			valueFmt,
+			chartType,
+			legendId,
+			legend
+		}
+	) {
+		await data.fetch();
+		checkInputs(data, corordinates);
+		let values = data.map((d) => d[value]);
+		let minValue = Math.min(...values);
+		let maxValue = Math.max(...values);
+		let colorScale;
+
+		if (!legendType) {
+			typeof values[0] === 'number' ? (legendType = 'scalar') : (legendType = 'categorical');
+		}
+
+		if (legendType && !colorPalette) {
+			colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+			colorPalette = colorPalette.map((item) => chroma(item).hex());
+		}
+		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+
+		if (legend && value) {
+			values = this.handleLegendValues(colorPalette, values, legendType);
+			this.buildLegend(
+				colorPalette,
+				values,
+				minValue,
+				maxValue,
+				legendType,
+				valueFmt,
+				chartType,
+				legendId,
+				value,
+				legend
+			);
+		}
+
+		// Return the values, minValue, and maxValue for sharing with other functions
+		return { values, colorPalette, colorScale };
+	}
+
+	/**@type {[string]} */
+	#paneArray = [];
+
+	registerPane(paneId) {
+		// Add the unique legendId to the array
+		this.#paneArray.push(paneId);
+
+		return paneId;
 	}
 }

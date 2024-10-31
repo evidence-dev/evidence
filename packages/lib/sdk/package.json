@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "1.3.7",
+	"version": "1.4.4",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js"
@@ -23,7 +23,13 @@
 			"default": "./src/utils/index.js",
 			"import": "./src/utils/index.js",
 			"require": null,
-			"types": "./src/utils/index.d.ts"
+			"types": "./src/utils/index.js"
+		},
+		"./utils/svelte": {
+			"default": "./src/utils/svelte/index.js",
+			"import": "./src/utils/svelte/index.js",
+			"require": null,
+			"types": "./src/utils/svelte/index.d.ts"
 		},
 		"./legacy-compat": {
 			"default": "./src/legacy-compat.js",
@@ -42,6 +48,24 @@
 			"import": "./src/meta.js",
 			"require": null,
 			"types": "./src/meta.js"
+		},
+		"./query-builder": {
+			"default": "./src/query-builder.js",
+			"import": "./src/query-builder.js",
+			"require": null,
+			"types": "./src/query-builder.js"
+		},
+		"./config": {
+			"default": "./src/configuration/index.js",
+			"import": "./src/configuration/index.js",
+			"require": null,
+			"types": "./src/configuration/index.js"
+		},
+		"./logger": {
+			"default": "./src/logger/index.js",
+			"import": "./src/logger/index.js",
+			"require": null,
+			"types": "./src/logger/index.js"
 		}
 	},
 	"scripts": {
@@ -73,10 +97,11 @@
 		"@types/lodash.merge": "^4.6.9",
 		"@types/node": "^20.11.0",
 		"@typescript-eslint/typescript-estree": "^6.18.1",
-		"@uwdata/mosaic-sql": "^0.4.0",
+		"@uwdata/mosaic-sql": "^0.10.0",
 		"@vitest/coverage-v8": "^1.2.0",
 		"chalk": "^5.3.0",
 		"chokidar": "^3.5.3",
+		"deep-object-diff": "^1.1.9",
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.35.1",
@@ -96,7 +121,7 @@
 		"recast": "^0.23.4",
 		"svelte-sequential-preprocessor": "^2.0.1",
 		"sveltekit-autoimport": "^1.7.1",
-		"vite": "5.2.10",
+		"vite": "5.4.6",
 		"vitest": "^1.1.3",
 		"yaml": "^2.3.4",
 		"zod": "^3.22.4"
@@ -110,11 +135,18 @@
 		"@types/node": "^20.11.0",
 		"@typescript-eslint/typescript-estree": "^6.18.1",
 		"memfs": "^4.6.0",
-		"svelte": "^4.2.12",
+		"svelte": "^4.2.19",
 		"typescript": "^5.3.3"
 	},
 	"peerDependencies": {
 		"@evidence-dev/universal-sql": "workspace:*",
-		"perfect-debounce": "^1.0.0"
+		"nanoid": "^5.0.4",
+		"perfect-debounce": "^1.0.0",
+		"svelte": "^4.2.19"
+	},
+	"peerDependenciesMeta": {
+		"svelte": {
+			"optional": true
+		}
 	}
 }

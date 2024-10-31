@@ -14,7 +14,7 @@ schema:
 
     created_at:
         category: date
-        item: recent
-        withBias: true
+        item: between
         options:
-            - days: 90 # Past Year
+            - from: 2023-06-01
+              to: 2024-06-01

@@ -1,5 +1,78 @@
 # @evidence-dev/sdk
 
+## 1.4.4
+
+### Patch Changes
+
+- a91b26fb3: Remove console.debug statement
+- cbb8b16f4: Added logger export
+
+## 1.4.3
+
+### Patch Changes
+
+- e0abcc56d: Avoid sharedPromise returned from fetch functions when running on the server
+- e0abcc56d: Allow query to run fetch synchronously for SSR
+
+## 1.4.2
+
+### Patch Changes
+
+- 952abbd16: Add config export
+  getEvidenceConfig is no longer asynchronous
+  getEvidenceConfig supports passing a custom schema
+  Created unnestZodError util
+- c8315da2e: Update svelte to resolve security vulnerability
+- 06313c848: fix prerendered arrow files not loading
+- Updated dependencies [bad1038c1]
+  - @evidence-dev/telemetry@2.1.3
+
+## 1.4.1
+
+### Patch Changes
+
+- 057558028: Fix an issue caused by QueryDebugger keeping queries in memory
+
+## 1.4.0
+
+### Minor Changes
+
+- 999fffa38: Change input store interactions
+
+### Patch Changes
+
+- 999fffa38: Add diff utilities for tracking object store histories
+- 999fffa38: Improve sdk debug behavior for better consistency
+- 1e5e5f1da: Dont throw error if sources directory doesn't exist when running sources
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+- 999fffa38: Add more static events to Query
+
+## 1.3.10
+
+### Patch Changes
+
+- f7253ad4b: Fix noisy "Failed to pre-render columns" log during build
+- Updated dependencies [c0e1799e2]
+  - @evidence-dev/universal-sql@2.1.5
+
+## 1.3.9
+
+### Patch Changes
+
+- 8c2982505: Modify default search threshold behavior for Query
+- Updated dependencies [8c2982505]
+  - @evidence-dev/universal-sql@2.1.4
+
+## 1.3.8
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- Updated dependencies [3572fcfd7]
+- Updated dependencies [907efee29]
+  - @evidence-dev/telemetry@2.1.2
+
 ## 1.3.7
 
 ### Patch Changes

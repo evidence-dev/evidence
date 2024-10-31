@@ -2,6 +2,7 @@ declare module '@uwdata/mosaic-sql' {
 	type BuilderFunction = <T extends any[] = unknown[]>(...args: T) => Query;
 
 	class Query {
+		distinct: BuilderFunction;
 		from: BuilderFunction;
 		select: BuilderFunction;
 		$select: BuilderFunction;

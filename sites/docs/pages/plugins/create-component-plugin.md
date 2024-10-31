@@ -1,6 +1,6 @@
 ---
 title: Create Component Plugin
-description: You can create a component plugin to publish your own custom components for use across multiple Evidence projects.
+description: You can create a component plugin to publish your own custom components for use across multiple Evidence apps.
 sidebar_position: 3
 ---
 
@@ -22,7 +22,7 @@ The easiest way to get started is from the example component library [**on GitHu
 
 ## Component Exporting
 
-Plugins must "export" their components to make them available to your Evidence project.
+Plugins must "export" their components to make them available to your Evidence apps.
 
 There are 2 ways to set up component exporting in your plugin:
 1. [Module Exports](#module-exports) (recommended)

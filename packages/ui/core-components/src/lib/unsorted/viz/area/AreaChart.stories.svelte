@@ -167,7 +167,6 @@
 
 	import AreaChart from './AreaChart.svelte';
 
-	import { fakerSeries } from '$lib/faker-data-queries';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	const planeData = Query.create(
@@ -185,23 +184,24 @@ LIMIT 200`,
 	);
 </script>
 
-<Story
-	name="Base"
-	args={{
-		x: 'x',
-		y: 'y',
-		series: 'series',
-		xHasGaps: false,
-		yHasNulls: false,
-		seriesAlwaysExists: true
-	}}
-	let:args
->
-	<AreaChart
-		{...args}
-		data={fakerSeries['numeric_series'][args.xHasGaps][args.yHasNulls][args.seriesAlwaysExists]
-			.store}
-	/>
+<Story name="Base" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<AreaChart {data} {...args} />
+</Story>
+
+<Story name="With gaps in X" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series_xgaps`, query)}
+	<AreaChart {data} {...args} />
+</Story>
+
+<Story name="With nulls in Y" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series_ynulls`, query)}
+	<AreaChart {data} {...args} />
+</Story>
+
+<Story name="With gaps in series" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series_seriesgaps`, query)}
+	<AreaChart {data} {...args} />
 </Story>
 
 <Story

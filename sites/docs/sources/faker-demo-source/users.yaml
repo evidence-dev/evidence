@@ -13,9 +13,10 @@ schema:
     item: email
   created_at:
     category: date
-    item: recent
+    item: between
     options:
-      - days: 365
+      - from: 2023-06-01
+        to: 2024-06-01
   gender:
     category: helpers
     item: arrayElement

@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.3
+
+### Patch Changes
+
+- bad1038c1: Override dset version to resolve security vulnerability
+
 ## 1.5.1
 
 ### Patch Changes

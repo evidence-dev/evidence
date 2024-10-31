@@ -3,7 +3,7 @@
  */
 const addScriptTags = {
 	markup({ content, filename }) {
-		if (filename.endsWith('.md')) {
+		if (filename?.endsWith('.md')) {
 			if (!content.match(/\<script(.*)\>/)) {
 				const result =
 					content + '\n\n<script context="module"> </script>\n\n<script> </script>\n\n';
