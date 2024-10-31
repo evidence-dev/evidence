@@ -1,6 +1,6 @@
 import preprocess from '@evidence-dev/preprocess';
 import { error } from '@sveltejs/kit';
-import fs from "fs";
+import fs from 'fs';
 
 /**
  * @typedef {Object} PageManifestNode
