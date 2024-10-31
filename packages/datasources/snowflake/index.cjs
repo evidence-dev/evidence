@@ -389,7 +389,7 @@ module.exports.options = {
 			externalbrowser: {
 				clientStoreTemporaryCredential: {
 					title: 'Cache SSO token',
-					type: 'boolean',
+					type: 'boolean'
 				}
 			}
 		}
