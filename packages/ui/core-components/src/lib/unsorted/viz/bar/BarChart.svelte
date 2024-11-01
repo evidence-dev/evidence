@@ -113,7 +113,7 @@
 	export let downloadableData = undefined;
 	export let downloadableImage = undefined;
 	export let seriesColors = undefined;
-
+	export let seriesOrder = undefined;
 	export let connectGroup = undefined;
 </script>
 
@@ -191,6 +191,7 @@
 		{seriesLabels}
 		{showAllLabels}
 		{y2SeriesType}
+		{seriesOrder}
 	/>
 	<slot />
 </Chart>
