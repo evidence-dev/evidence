@@ -63,17 +63,12 @@ export async function GET() {
 	try {
 		const pages = {};
 
-		const pagesDir = fs.readdirSync('src/pages', { withFileTypes: true });
+		const pagesDir = fs.readdirSync('src/pages', { withFileTypes: true, recursive: true });
 		for (const dirent of pagesDir) {
-			if (dirent.isDirectory()) {
-				const pageDir = fs.readdirSync(`src/pages/${dirent.name}`, { withFileTypes: true });
-				for (const pageDirent of pageDir) {
-					if (pageDirent.isFile() && pageDirent.name.endsWith('.md')) {
-						const path = `src/pages/${dirent.name}/${pageDirent.name}`;
-						const content = fs.readFileSync(path, 'utf-8');
-						pages['/' + path] = content;
-					}
-				}
+			if (dirent.isFile() && dirent.name.endsWith('.md')) {
+				const path = `${dirent.parentPath}/${dirent.name}`;
+				const content = fs.readFileSync(path, 'utf-8');
+				pages[`/${path}`] = content;
 			}
 		}
 
