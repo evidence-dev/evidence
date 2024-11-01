@@ -1,5 +1,20 @@
 # e2e-spa
 
+## 0.0.15
+
+### Patch Changes
+
+- Updated dependencies [bcd56f5bd]
+- Updated dependencies [e5aa2ccf2]
+- Updated dependencies [8e8f43d3e]
+- Updated dependencies [e3b920690]
+- Updated dependencies [b9b51a0b2]
+- Updated dependencies [2d89e4624]
+- Updated dependencies [2ad93ef1d]
+  - @evidence-dev/mssql@1.1.0
+  - @evidence-dev/core-components@4.8.10
+  - @evidence-dev/evidence@39.1.13
+
 ## 0.0.14
 
 ### Patch Changes

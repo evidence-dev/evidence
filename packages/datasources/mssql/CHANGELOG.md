@@ -1,5 +1,15 @@
 # @evidence-dev/mssql
 
+## 1.1.0
+
+### Minor Changes
+
+- bcd56f5bd: Add alternatives authentication methods
+
+### Patch Changes
+
+- 2d89e4624: Add connectionTimeout option to mssql connector
+
 ## 1.0.10
 
 ### Patch Changes
