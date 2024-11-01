@@ -54,6 +54,9 @@
 			seriesColors: {
 				control: 'object'
 			},
+			seriesOrder: {
+				control: 'array'
+			},
 			yLog: {
 				control: 'boolean'
 			},
@@ -172,4 +175,19 @@
 >
 	{@const emptyData = []}
 	<BubbleChart data={emptyData} {...args} />
+</Story>
+
+<Story
+	name="With series color and order"
+	args={{
+		series: 'plane',
+		x: 'fare',
+		y: 'total_fare',
+		size: 'total_sales',
+		seriesColors: { 'Embraer 190': 'red', 'Tupolev Tu-204': 'green' },
+		seriesOrder: ['Tupolev Tu-204', 'Embraer 190']
+	}}
+	let:args
+>
+	<BubbleChart {data} {...args} />
 </Story>
