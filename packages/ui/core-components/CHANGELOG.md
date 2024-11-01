@@ -1,5 +1,27 @@
 # @evidence-dev/core-components
 
+## 4.8.10
+
+### Patch Changes
+
+- e5aa2ccf2: Remove Flowchart component and mermaid dependency
+- 8e8f43d3e: Add a fmt option to dimension grid
+- e3b920690: Modified Last x Days selectors in the DateRange component so they select x days instead of x + 1 days
+- b9b51a0b2: fix transition animation in charts
+- 2ad93ef1d: Prevent CLS when highlighting codeblocks
+
+## 4.8.9
+
+### Patch Changes
+
+- cc086aa50: Add sort prop to DataTable
+- c44853b3f: fixed bubbles + points layering issue
+- eec98520a: Add sparkline and bar viz to DataTable
+- 76dda50ae: Fixes layering issue and allows for layering control of bubbles and points
+- 795f53653: Improved Map Legends, added multi-legends in basemap
+  - @evidence-dev/component-utilities@3.2.17
+  - @evidence-dev/tailwind@2.1.6
+
 ## 4.8.8
 
 ### Patch Changes
