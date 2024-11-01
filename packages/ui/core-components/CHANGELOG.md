@@ -1,5 +1,15 @@
 # @evidence-dev/core-components
 
+## 4.8.10
+
+### Patch Changes
+
+- e5aa2ccf2: Remove Flowchart component and mermaid dependency
+- 8e8f43d3e: Add a fmt option to dimension grid
+- e3b920690: Modified Last x Days selectors in the DateRange component so they select x days instead of x + 1 days
+- b9b51a0b2: fix transition animation in charts
+- 2ad93ef1d: Prevent CLS when highlighting codeblocks
+
 ## 4.8.9
 
 ### Patch Changes
