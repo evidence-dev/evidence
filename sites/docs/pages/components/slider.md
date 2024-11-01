@@ -14,7 +14,6 @@ Creates a Slider input with default min, max and step values
             fmt="usd0"
         />
     </div>
-<div class='contents md-preview'>
 
 ````markdown
 <Slider
@@ -24,7 +23,6 @@ Creates a Slider input with default min, max and step values
     fmt="usd0"
 />
 ````
-</div>
 </DocTab>
 
 Min and Max values can be defined, the step property and define the incremental value of the slider
@@ -219,11 +217,6 @@ Sets the length of the slider. Options are "medium", large" or "full". A empty s
     options="Excel-style format | built-in format | custom format"
 />
 
-<style>
-  .md-preview :global(*) {
-    color: var(--green-500) !important;
-  }
-</style>
 
 
 

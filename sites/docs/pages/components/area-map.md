@@ -54,6 +54,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
             basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}
         />
     </div>
+<br>
 
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 

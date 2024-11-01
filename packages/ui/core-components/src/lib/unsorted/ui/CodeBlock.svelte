@@ -29,20 +29,22 @@
 		}
 	}
 
-	onMount(async () => {
-		const Prism = await loadPrismComponents();
-		if (typeof Prism !== 'undefined') {
-			await tick();
-			const codeElements = document.querySelectorAll(
-				`pre code${language ? `.language-${language}` : ''}`
-			);
-			codeElements.forEach((codeElement) => {
-				Prism.highlightElement(codeElement, false);
-			});
-		} else {
-			console.error('Prism is not defined on mount');
-		}
-	});
+	// is this code block necessary? seems to be repeating the reactive statement, and works without it
+
+	// onMount(async () => {
+	// 	const Prism = await loadPrismComponents();
+	// 	if (typeof Prism !== 'undefined') {
+	// 		await tick();
+	// 		const codeElements = document.querySelectorAll(
+	// 			`pre code${language ? `.language-${language}` : ''}`
+	// 		);
+	// 		codeElements.forEach((codeElement) => {
+	// 			Prism.highlightElement(codeElement, false);
+	// 		});
+	// 	} else {
+	// 		console.error('Prism is not defined on mount');
+	// 	}
+	// });
 
 	$: if (browser) {
 		tick().then(async () => {
@@ -79,7 +81,7 @@
 			{/if}
 		</button>
 	{/if}
-	<pre class="overflow-auto pretty-scrollbar"><code class="language-{language} text-sm"
+	<pre class="overflow-auto pretty-scrollbar my-[0.5em]"><code class="language-{language} text-sm"
 			>{#if source}{source}{:else}<slot />{/if}</code
 		></pre>
 </div>
