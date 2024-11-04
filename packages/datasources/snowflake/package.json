@@ -14,7 +14,7 @@
 		"fs-extra": "^11.2.0",
 		"node-fetch": "^3.3.1",
 		"open": "^9.1.0",
-		"snowflake-sdk": "1.9.0"
+		"snowflake-sdk": "1.14.0"
 	},
 	"devDependencies": {
 		"@types/snowflake-sdk": "^1.6.13",
