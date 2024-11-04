@@ -96,7 +96,7 @@ const buildConfig = function (database) {
 		password: database.password,
 		port: parseInt(database.port ?? 1433),
 		connectionTimeout: parseInt(connection_timeout),
-		reqyestTimeout: parseInt(request_timeout),
+		requestTimeout: parseInt(request_timeout),
 		options: {
 			trustServerCertificate:
 				trust_server_certificate === 'true' || trust_server_certificate === true,
