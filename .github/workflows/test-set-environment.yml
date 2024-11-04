@@ -4,10 +4,10 @@ on:
   pull_request:
 
 jobs:
-  action-approval:
-    uses: ./.github/workflows/action-approval.yml
+  external-pr-action-approval:
+    uses: ./.github/workflows/external-pr-action-approval.yml
   my-job:
-    needs: action-approval
+    needs: external-pr-action-approval
     runs-on: ubuntu-latest
     steps:
       - run: echo "My job ran"
