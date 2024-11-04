@@ -196,8 +196,10 @@ const getCredentials = (database = {}) => {
 			authenticator
 		};
 	} else if (authenticator === 'externalbrowser') {
+		const clientStoreTemporaryCredential = database.clientStoreTemporaryCredential ?? false;
 		return {
 			...baseOptions,
+			clientStoreTemporaryCredential,
 			authenticator
 		};
 	} else if (authenticator === 'okta') {
@@ -267,6 +269,7 @@ module.exports = runQuery;
 /**
  * @typedef {Object} SnowflakeBrowserOptions
  * @property {'externalbrowser'} authenticator
+ * @property {boolean} clientStoreTemporaryCredential
  */
 
 /**
@@ -381,6 +384,12 @@ module.exports.options = {
 					type: 'string',
 					secret: true,
 					required: true
+				}
+			},
+			externalbrowser: {
+				clientStoreTemporaryCredential: {
+					title: 'Cache SSO token',
+					type: 'boolean'
 				}
 			}
 		}
