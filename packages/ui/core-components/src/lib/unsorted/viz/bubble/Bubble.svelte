@@ -34,6 +34,7 @@
 
 	export let useTooltip = false;
 	export let tooltipTitle;
+	export let seriesOrder = undefined;
 
 	let multiSeries;
 	let tooltipOutput;
@@ -246,6 +247,7 @@
 		name,
 		xMismatch,
 		columnSummary,
+		seriesOrder,
 		size,
 		tooltipTitle
 	);

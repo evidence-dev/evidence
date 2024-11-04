@@ -1,8 +1,8 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
-		title: 'Charts/BubbleChart',
-		component: BubbleChart,
+		title: 'Charts/ScatterPlot',
+		component: ScatterPlot,
 		argTypes: {
 			series: {
 				control: 'string'
@@ -26,15 +26,9 @@
 			yFmt: {
 				control: 'text'
 			},
-			sizeFmt: {
-				control: 'text'
-			},
 			shape: {
 				control: 'select',
 				options: ['circle', 'emptyCircle', 'rect', 'triangle', 'diamond']
-			},
-			scaleTo: {
-				control: 'number'
 			},
 			opacity: {
 				control: 'number'
@@ -145,11 +139,11 @@
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import BubbleChart from './BubbleChart.svelte';
+	import ScatterPlot from './ScatterPlot.svelte';
 </script>
 
 <Story name="Base" args={{ x: 'fare', y: 'total_fare', size: 'total_sales' }} let:args>
-	<BubbleChart {data} {...args} />
+	<ScatterPlot {data} {...args} />
 </Story>
 
 <Story
@@ -157,10 +151,10 @@
 	args={{ series: 'plane', x: 'fare', y: 'total_fare', size: 'total_sales' }}
 	let:args
 >
-	<BubbleChart {data} {...args} />
+	<ScatterPlot {data} {...args} />
 </Story>
 <Story name="Sort" args={{ sort: false, x: 'fare', y: 'total_fare', size: 'total_sales' }} let:args>
-	<BubbleChart {data} {...args} />
+	<ScatterPlot {data} {...args} />
 </Story>
 <Story
 	name="Empty Set"
@@ -174,7 +168,7 @@
 	let:args
 >
 	{@const emptyData = []}
-	<BubbleChart data={emptyData} {...args} />
+	<ScatterPlot data={emptyData} {...args} />
 </Story>
 
 <Story
@@ -189,5 +183,5 @@
 	}}
 	let:args
 >
-	<BubbleChart {data} {...args} />
+	<ScatterPlot {data} {...args} />
 </Story>
