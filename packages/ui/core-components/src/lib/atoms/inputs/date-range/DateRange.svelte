@@ -48,6 +48,7 @@
 			exec,
 			{
 				initialData: $page?.data?.data[`DateRange-${name}_data`],
+				knownColumns: $page?.data?.data[`DateRange-${name}_columns`],
 				disableCache: true,
 				noResolve: false,
 				id: `DateRange-${name}`
