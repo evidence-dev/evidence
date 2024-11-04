@@ -1,5 +1,8 @@
 name: 'Test set-environment'
 
+on:
+  pull_request_target:
+
 jobs:
   test-set-environment:
     uses: ./.github/workflows/set-environment.yml
