@@ -4,7 +4,7 @@ on:
 jobs:
   set-environment:
     # github.event_name == 'pull_request_target' &&
-    environment: ${{ github.event.pull_request.head.repo.full_name != github.repository && 'pr-from-fork' || 'none' }}
+    environment: ${{ github.event.pull_request.head.repo.full_name != github.repository && 'not-pr-from-fork' || 'pr-from-fork' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Environment set"
