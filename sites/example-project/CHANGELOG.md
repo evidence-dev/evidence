@@ -1,5 +1,36 @@
 # @evidence-dev/components
 
+## 3.5.33
+
+### Patch Changes
+
+- Updated dependencies [bcd56f5bd]
+- Updated dependencies [e5aa2ccf2]
+- Updated dependencies [8e8f43d3e]
+- Updated dependencies [e3b920690]
+- Updated dependencies [b9b51a0b2]
+- Updated dependencies [2d89e4624]
+- Updated dependencies [2ad93ef1d]
+  - @evidence-dev/mssql@1.1.0
+  - @evidence-dev/core-components@4.8.10
+
+## 3.5.32
+
+### Patch Changes
+
+- Updated dependencies [cc086aa50]
+- Updated dependencies [b2126ac1a]
+- Updated dependencies [c44853b3f]
+- Updated dependencies [eec98520a]
+- Updated dependencies [76dda50ae]
+- Updated dependencies [795f53653]
+  - @evidence-dev/core-components@4.8.9
+  - @evidence-dev/sdk@1.4.5
+  - @evidence-dev/universal-sql@2.1.6
+  - @evidence-dev/component-utilities@3.2.17
+  - @evidence-dev/tailwind@2.1.6
+  - @evidence-dev/plugin-connector@2.1.12
+
 ## 3.5.31
 
 ### Patch Changes

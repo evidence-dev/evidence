@@ -1,7 +1,7 @@
 <script>
 	import { cn } from '$lib/utils';
 	export let row;
-	export let value;
+	export let formattedValue;
 	/** @type {string | string[] | undefined}*/
 	export let selectedValue;
 
@@ -22,15 +22,25 @@
 	/>
 	<div
 		class={cn(
-			'bg-primary/10 dark:bg-primary/20 group-hover:bg-transparent absolute inset-y-0 left-0 z-[-10]',
-			value.includes('NaN') ? 'bg-base-300' : isSelected ? 'bg-primary/30 dark:bg-primary/40' : ''
+			'bg-primary/10 group-hover:bg-primary/20 absolute inset-y-0 left-0 z-[-10]',
+			{
+				// undefined occurs in multi-selects where the user has selected mutually exclusive options (see null row column combination story)
+				'bg-base-300': row.metric === undefined
+			},
+			{
+				// null can occur naturally, allow selection state to show through
+				'bg-transparent': row.metric === null
+			},
+			{
+				'bg-primary/30 dark:bg-primary/40': row.metric && isSelected
+			}
 		)}
-		style={value.includes('NaN')
-			? 'width: 100%;'
-			: 'width:' +
+		style={row.metric
+			? 'width:' +
 				row.percentOfTop * 100 +
 				'%;' +
-				'transition: width 300ms 300ms, background-color 200ms 0ms; '}
+				'transition: width 300ms 300ms, background-color 200ms 0ms; '
+			: 'width: 100%;'}
 	/>
 
 	<span
@@ -46,5 +56,11 @@
 	>
 		{row.dimensionValue ?? 'Missing'}
 	</span>
-	<span class="tabular-nums">{@html Number.isNaN(parseInt(value)) ? '-&nbsp;' : value}</span>
+	<span class="tabular-nums">
+		{#if row.metric}
+			{formattedValue}
+		{:else}
+			-&nbsp;
+		{/if}
+	</span>
 </div>

@@ -129,6 +129,15 @@ Name of the dimension grid, used to reference the selected value elsewhere as `{
 Label for the metric
 
 </PropListing>
+<PropListing
+    name="fmt"
+    options="Excel-style format | built-in format | custom format"
+>
+
+Sets format for the value [(see available formats)](/core-concepts/formatting) 
+
+</PropListing> 
+
 <PropListing 
     name="limit"
     options="number"
