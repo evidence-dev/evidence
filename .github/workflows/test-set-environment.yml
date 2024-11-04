@@ -1,7 +1,7 @@
 name: 'Test set-environment'
 
 on:
-  pull_request_target:
+  pull_request:
 
 jobs:
   test-set-environment:
