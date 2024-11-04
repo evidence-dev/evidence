@@ -87,6 +87,7 @@ const buildConfig = function (database) {
 	const trust_server_certificate = database.trust_server_certificate ?? 'false';
 	const encrypt = database.encrypt ?? 'true';
 	const connection_timeout = database.connection_timeout ?? 15000;
+	const request_timeout = database.request_timeout ?? 15000;
 
 	const credentials = {
 		user: database.user,
@@ -95,6 +96,7 @@ const buildConfig = function (database) {
 		password: database.password,
 		port: parseInt(database.port ?? 1433),
 		connectionTimeout: parseInt(connection_timeout),
+		reqyestTimeout: parseInt(request_timeout),
 		options: {
 			trustServerCertificate:
 				trust_server_certificate === 'true' || trust_server_certificate === true,
@@ -345,5 +347,12 @@ module.exports.options = {
 		type: 'number',
 		required: false,
 		description: 'Connection timeout in ms'
+	},
+	request_timeout: {
+		title: 'Request Timeout',
+		secret: false,
+		type: 'number',
+		required: false,
+		description: 'Request timeout in ms'
 	}
 };
