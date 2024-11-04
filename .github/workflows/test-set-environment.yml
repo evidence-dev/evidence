@@ -4,9 +4,10 @@ on:
   pull_request:
 
 jobs:
-  test-set-environment:
+  set-environment:
     uses: ./.github/workflows/set-environment.yml
   some-job:
+    needs: set-environment
     runs-on: ubuntu-latest
     steps:
       - run: echo "blah"
