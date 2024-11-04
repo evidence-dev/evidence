@@ -1,0 +1,9 @@
+name: 'Test set-environment'
+
+jobs:
+  test-set-environment:
+    uses: ./.github/workflows/set-environment.yml
+  some-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "blah"

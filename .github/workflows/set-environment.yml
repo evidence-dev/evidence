@@ -1,0 +1,11 @@
+on:
+  workflow_call:
+
+jobs:
+  set-environment:
+    env:
+      ENVIRONMENT: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'pr-from-fork' || 'none' }}
+    environment: ${{ env.ENVIRONMENT }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Environment set as '${{ env.ENVIRONMENT }}'"
