@@ -50,12 +50,20 @@
 	<DimensionGrid metric="sum(fare) + 308" {data} />
 </Story>
 
+<Story name="Custom Format">
+	<DimensionGrid {data} fmt="eur" />
+</Story>
+
 <Story name="Negative Values">
 	<DimensionGrid metric="count(*) -5000" {data} />
 </Story>
 
 <Story name="Null Metric Values">
 	<DimensionGrid metric="sum(fare)/0" {data} />
+</Story>
+
+<Story name="Null Metric Values, Custom Format">
+	<DimensionGrid metric="sum(fare)/0" {data} fmt="usd" />
 </Story>
 
 <Story name="Null Dimension Values">
@@ -105,6 +113,10 @@
 </Story>
 
 <Story name="Null Metric Values Multiple">
+	<DimensionGrid metric="sum(fare)/0" {data} />
+</Story>
+
+<Story name="Null Dimension Values Multiple">
 	<DimensionGrid
 		multiple
 		data={Query.create(
@@ -216,4 +228,23 @@
 	}}
 >
 	<DimensionGrid data={nullComboData} multiple />
+</Story>
+
+<Story
+	name="Null Row Column Combination, Custom Format"
+	play={async ({ canvasElement }) => {
+		await data.fetch();
+		const screen = within(canvasElement);
+
+		const plane = await screen.findByText('Boeing 727');
+		await userEvent.click(plane);
+
+		const plane2 = await screen.findByText('Airbus A320');
+		await userEvent.click(plane2);
+
+		const airline = await screen.findByText('Flydubai');
+		await userEvent.click(airline);
+	}}
+>
+	<DimensionGrid data={nullComboData} multiple fmt="usd" />
 </Story>
