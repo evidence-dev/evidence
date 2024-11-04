@@ -1,13 +1,13 @@
-name: 'Test set-environment'
+name: 'My Workflow'
 
 on:
   pull_request:
 
 jobs:
-  set-environment:
-    uses: ./.github/workflows/set-environment.yml
-  some-job:
-    needs: set-environment
+  action-approval:
+    uses: ./.github/workflows/action-approval.yml
+  my-job:
+    needs: action-approval
     runs-on: ubuntu-latest
     steps:
-      - run: echo "blah"
+      - run: echo "My job ran"
