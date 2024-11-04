@@ -5,6 +5,10 @@ on:
 
 jobs:
   Tests-sources:
+    runs-on: ${{ matrix.os }}
+    needs: ./.github/workflows/external-pr-action-approval.yml
+    timeout-minutes: 20
+
     # Conditional Strategy logic from https://github.com/orgs/community/discussions/26253#discussioncomment-3250989
     strategy:
       fail-fast: false
@@ -20,10 +24,6 @@ jobs:
             node-version: 18
           - isMain: false
             os: macOS-latest
-
-    needs: ./.github/workflows/external-pr-action-approval.yml
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
 
     steps:
       - run: git config --global core.autocrlf false
