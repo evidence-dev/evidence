@@ -64,7 +64,7 @@
 	export let stackTotalLabel = true;
 	$: stackTotalLabel = stackTotalLabel === 'true' || stackTotalLabel === true;
 	export let showAllLabels = false;
-
+	export let seriesOrder = undefined;
 	let barMaxWidth = 60;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
@@ -207,6 +207,7 @@
 		name,
 		xMismatch,
 		columnSummary,
+		seriesOrder,
 		undefined,
 		undefined,
 		y2

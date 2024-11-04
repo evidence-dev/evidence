@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 39.1.13
+
+### Patch Changes
+
+- cbe4c1d2f: Hide manifest toast in prod
+- Updated dependencies [b2126ac1a]
+  - @evidence-dev/sdk@1.4.5
+  - @evidence-dev/universal-sql@2.1.6
+  - @evidence-dev/plugin-connector@2.1.12
+
 ## 39.1.12
 
 ### Patch Changes

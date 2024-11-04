@@ -16,6 +16,9 @@
 			downloadableImage: {
 				control: 'boolean',
 				options: [true, false]
+			},
+			seriesOrder: {
+				control: 'array'
 			}
 		},
 		args: {
@@ -84,3 +87,8 @@
 
 	<LineChart x="x" y="y" series="series" data={[]} legend sort={false} />
 </Story>
+
+<Story
+	name="With seriesOrder"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+/>
