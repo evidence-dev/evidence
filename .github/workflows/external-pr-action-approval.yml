@@ -5,7 +5,7 @@ jobs:
   external-pr-action-approval:
     name: 'External PR Action Approval'
     # github.event_name == 'pull_request_target' &&
-    environment: ${{ github.event.pull_request.head.repo.full_name != github.repository && 'blah' || 'Approval required to run action on external PR' }}
+    environment: ${{ github.event.pull_request.head.repo.full_name != github.repository && '' || 'Approval required to run action on external PR' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Environment set, waiting for approval if required"
