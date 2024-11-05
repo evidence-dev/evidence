@@ -1,4 +1,7 @@
 <script>
+	import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
+
 	let activeTab = 'preview';
 	let activeBorderStyles = {};
 	let tabContent;
@@ -19,6 +22,25 @@
 			transform: `translateX(${tabButton.offsetLeft}px)`
 		};
 	}
+
+	onMount(() => {
+		savedPreviewComponent = previewContent;
+		console.log('savedPreviewComponent', savedPreviewComponent)
+	})
+
+	//handle rendering
+	let previewContent
+	let savedPreviewComponent 
+
+	let isContentUpdated = false;
+
+	const handleOutro = () => {
+		if (!isContentUpdated) {
+			// savedPreviewComponent = previewContent;
+			isContentUpdated = true;
+		}
+	};
+
 </script>
 
 <div class="doc-tab mt-2 overflow-hidden">
@@ -43,44 +65,31 @@
 	</div>
 	<div class="border-b border-gray-300 w-full"></div>
 
-	<div class="overflow-hidden grid center" bind:this={tabContent}>
+	<div class="overflow-hidden grid center">
+		{#if activeTab === 'preview'}
 		<div
-			class:slide-out={activeTab === 'code'}
-			class:slide-in={activeTab === 'preview'}
-			class="mt-2 mb-3 overflow-hidden"
-		>
+			transition:slide={{
+				duration: 300
+			}}
+			bind:this={previewContent}
+			on:outroend={handleOutro}
+			class="mt-2 mb-3 overflow-hidden"		>
+		{#if !isContentUpdated}
 			<slot name="preview" />
+		{:else}
+			<svelte:component this={savedPreviewComponent} />
+		{/if}
 		</div>
+		{:else}
 		<div
-			class:slide-out={activeTab === 'preview'}
-			class:slide-in={activeTab === 'code'}
+			transition:slide={{
+				duration: 300
+			}}
 			class="mt-5 mb-3 overflow-auto md-preview"
 		>
 			<slot />
 		</div>
+		{/if}
 	</div>
 </div>
 
-<style>
-	.md-preview :global(*) {
-		margin: 0px;
-	}
-
-	.slide-in {
-		transform: translateY(0);
-		opacity: 1;
-		transition:
-			transform 0.3s ease,
-			opacity 0.2s ease;
-	}
-
-	.slide-out {
-		transform: translateY(-30%);
-		position: absolute;
-		opacity: 0;
-		visibility: hidden;
-		transition:
-			transform 0.3s ease,
-			opacity 0.2s ease;
-	}
-</style>
