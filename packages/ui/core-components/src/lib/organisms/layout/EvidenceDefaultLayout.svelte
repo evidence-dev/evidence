@@ -45,7 +45,7 @@
 	/** @type {string}*/
 	export let maxWidth = undefined;
 	/** @type {string}*/
-	export let homePageName = "Home";
+	export let homePageName = 'Home';
 	/** @type {boolean} */
 	export let hideBreadcrumbs = false;
 	/** @type {boolean} */
