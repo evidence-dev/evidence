@@ -4,10 +4,7 @@
 
 <script>
 	import Bubbles from './components/Bubbles.svelte';
-	import BaseMap from './BaseMap.svelte';
-	import ErrorChart from '../core/ErrorChart.svelte';
-	import EmptyChart from '../core/EmptyChart.svelte';
-	import { QueryLoad } from '../../../atoms/query-load';
+	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
@@ -73,24 +70,21 @@
 	$: isInitial = data?.hash === initialHash;
 </script>
 
-{#if title}
-	<h4 class="markdown mb-2">{title}</h4>
-{/if}
-
-<QueryLoad {data} let:loaded>
-	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
-
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {legendPosition}>
-		<Bubbles
-			data={loaded}
-			{lat}
-			{long}
-			{size}
-			{colorPalette}
-			{legendType}
-			{legend}
-			{...$$restProps}
-		/>
-	</BaseMap>
-</QueryLoad>
+<BaseMap
+	let:data
+	{data}
+	{startingLat}
+	{startingLong}
+	{startingZoom}
+	{height}
+	{basemap}
+	{title}
+	{legendPosition}
+	{isInitial}
+	{chartType}
+	{emptySet}
+	{emptyMessage}
+	{error}
+>
+	<Bubbles {data} {lat} {long} {size} {colorPalette} {legendType} {legend} {...$$restProps} />
+</BaseMap>
