@@ -1,7 +1,7 @@
 // @ts-check
 import { describe, it, expect } from 'vitest';
 import { buildThemes } from './buildThemes.js';
-/** @typedef {import('tw-colors').TwcConfig} TwcConfig */
+/** @typedef {import('./types.js').Themes} Themes */
 /** @typedef {import('./types.js').ThemesConfig} ThemesConfig */
 
 describe('buildThemes', () => {
@@ -9,6 +9,8 @@ describe('buildThemes', () => {
 		/** @type {ThemesConfig} */
 		const themesConfig = {
 			themes: {
+				defaultAppearance: 'light',
+				appearanceSwitcher: true,
 				colors: {
 					primary: {
 						light: 'primary_light',
@@ -94,13 +96,20 @@ describe('buildThemes', () => {
 						light: 'warning-content_light',
 						dark: 'warning-content_dark'
 					}
-				}
+				},
+				colorPalettes: {
+					default: {
+						light: ['default_light_1', 'default_light_2', 'default_light_3'],
+						dark: ['default_dark_1', 'default_dark_2', 'default_dark_3']
+					}
+				},
+				colorScales: {}
 			}
 		};
 
 		const actual = buildThemes(themesConfig);
 
-		/** @type {TwcConfig} */
+		/** @type {Themes} */
 		const expected = {
 			light: {
 				colors: {
@@ -125,7 +134,11 @@ describe('buildThemes', () => {
 					'negative-content': 'negative-content_light',
 					warning: 'warning_light',
 					'warning-content': 'warning-content_light'
-				}
+				},
+				colorPalettes: {
+					default: ['default_light_1', 'default_light_2', 'default_light_3']
+				},
+				colorScales: {}
 			},
 			dark: {
 				colors: {
@@ -150,7 +163,11 @@ describe('buildThemes', () => {
 					'negative-content': 'negative-content_dark',
 					warning: 'warning_dark',
 					'warning-content': 'warning-content_dark'
-				}
+				},
+				colorPalettes: {
+					default: ['default_dark_1', 'default_dark_2', 'default_dark_3']
+				},
+				colorScales: {}
 			}
 		};
 

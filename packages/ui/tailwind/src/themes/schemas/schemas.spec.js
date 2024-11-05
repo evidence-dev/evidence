@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { ThemesConfigFileSchema } from './schemas.js';
+import { ThemesConfigFileSchema } from './config.js';
 
 describe('ThemesConfigFileSchema', () => {
 	it('should parse themes=null to themes={}', () => {
