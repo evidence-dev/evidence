@@ -44,7 +44,8 @@
 	export let slackCommunity = undefined;
 	/** @type {string}*/
 	export let maxWidth = undefined;
-
+	/** @type {string}*/
+	export let homePageName = "Home";
 	/** @type {boolean} */
 	export let hideBreadcrumbs = false;
 	/** @type {boolean} */
@@ -144,6 +145,7 @@
 						bind:mobileSidebarOpen
 						{title}
 						{logo}
+						{homePageName}
 						{builtWithEvidence}
 						{hideHeader}
 						{sidebarFrontMatter}
