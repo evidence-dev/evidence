@@ -8,6 +8,8 @@
 	import ButtonGroupItem from '../../../atoms/inputs/button-group/ButtonGroupItem.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { expect, userEvent, within, fn } from '@storybook/test';
+	import Dropdown from '$lib/atoms/inputs/dropdown/Dropdown.svelte';
+	import PointMap from '../map/PointMap.svelte';
 
 	const mockGoto = fn();
 
@@ -330,4 +332,14 @@
 			<Column id="arrival_airport" title="Arrival Airport" />
 		{/if}
 	</DataTable>
+</Story>
+
+<Story name="error chart test">
+	{@const data2 = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="test" {data2} value="value" label="label" />
+	{@const data = Query.create(`SELECT * from flight LIMIT 1000`, query)}
+	<DataTable {data} />
+	<Dropdown name="test" {data2} value="value" label="label" />
+	{@const la_locations = Query.create(`select * from la_locations order by 1`, query)}
+	<PointMap data={la_locations} lat="lat" long="longasdas" value="sales" legend={false} />
 </Story>
