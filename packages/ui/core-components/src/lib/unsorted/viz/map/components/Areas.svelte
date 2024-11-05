@@ -9,9 +9,6 @@
 	import MapArea from './MapArea.svelte';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { nanoid } from 'nanoid';
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
-
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
 

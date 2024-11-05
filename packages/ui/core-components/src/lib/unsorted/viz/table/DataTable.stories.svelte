@@ -12,7 +12,6 @@
 	import PointMap from '../map/PointMap.svelte';
 	import AreaMap from '../map/AreaMap.svelte';
 	import BaseMap from '../map/BaseMap.svelte';
-	import Point from '../map/components/Point.svelte';
 	import Points from '../map/components/Points.svelte';
 
 	const mockGoto = fn();
