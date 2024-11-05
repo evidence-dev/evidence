@@ -8,8 +8,9 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import MapArea from './MapArea.svelte';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
-	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { nanoid } from 'nanoid';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
@@ -334,6 +335,6 @@
 			/>
 		{/each}
 	{:catch e}
-		<ErrorChart error={e} chartType="Area Map" />
+		{map.handleInternalError(e)}
 	{/await}
 {/await}

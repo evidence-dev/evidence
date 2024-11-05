@@ -54,6 +54,15 @@
 		evidenceMap.updateLegendPosition(legendPosition);
 	}
 
+
+	let internalError = evidenceMap.internalError;
+
+	$: console.log($internalError);
+
+	$: if ($internalError !== undefined) {
+		error = $internalError;
+	}
+
 	// Lifecycle hooks:
 	onMount(async () => {
 		if (browser) {
@@ -83,7 +92,9 @@
 			style="height: {height}px;"
 			bind:this={mapElement}
 		>
-			<slot></slot>
+		<div on:dispatcherror={(e) => (error = e.detail)}>
+			<slot />
+		  </div>
 			{#if $legendData}
 				<Legend {legendData} {legendPosition} {height} />
 			{/if}

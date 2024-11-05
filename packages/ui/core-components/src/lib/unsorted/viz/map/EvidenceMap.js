@@ -619,4 +619,16 @@ export class EvidenceMap {
 
 		return paneId;
 	}
+
+	handleInternalError (internalError) {
+		if (internalError) {
+			this.#internalError.set(internalError);		}
+	}
+
+	/**@type {import('svelte/store').Writable<string | undefined>} */
+	#internalError = writable(undefined);
+
+	get internalError() {
+		return readonly(this.#internalError);
+	}
 }

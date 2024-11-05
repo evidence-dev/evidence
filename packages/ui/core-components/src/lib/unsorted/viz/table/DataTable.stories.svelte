@@ -10,6 +10,10 @@
 	import { expect, userEvent, within, fn } from '@storybook/test';
 	import Dropdown from '$lib/atoms/inputs/dropdown/Dropdown.svelte';
 	import PointMap from '../map/PointMap.svelte';
+	import  AreaMap  from '../map/AreaMap.svelte';
+	import BaseMap from "../map/BaseMap.svelte";
+	import Point from "../map/components/Point.svelte";
+	import Points from "../map/components/Points.svelte";
 
 	const mockGoto = fn();
 
@@ -341,5 +345,22 @@
 	<DataTable {data} />
 	<Dropdown name="test" {data2} value="value" label="label" />
 	{@const la_locations = Query.create(`select * from la_locations order by 1`, query)}
-	<PointMap data={la_locations} lat="lat" long="longasdas" value="sales" legend={false} />
+	<PointMap data={la_locations} lat="lat" long="longg" value="sales" legend={false} />
+	<Dropdown name="test" {data2} value="value" label="label" />
+	<BaseMap>
+		<Points
+			data={la_locations}
+			lat="lat"
+			long="longg"
+			value="sales"
+			legend={false}
+			tooltipType="hover"
+		/>
+	</BaseMap>
+	<Dropdown name="test" {data2} value="value" label="label" />
+	{@const la_zip_sales = Query.create(
+		`select * from la_zip_sales where zip_code <> 90704 order by 1`,
+		query
+	)}
+	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_codesadasdasds" />
 </Story>

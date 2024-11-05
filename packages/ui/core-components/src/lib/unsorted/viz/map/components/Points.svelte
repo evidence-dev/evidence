@@ -7,8 +7,9 @@
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import Point from './Point.svelte';
-	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -350,5 +351,5 @@
 		/>
 	{/each}
 {:catch e}
-	<ErrorChart error={e} chartType="Point Map" />
+	{map.handleInternalError(e)}
 {/await}

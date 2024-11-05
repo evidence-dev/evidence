@@ -8,14 +8,6 @@
 	export let chartType;
 	export let minHeight = '150';
 
-	let zIndex = 0;
-
-	console.log(chartType);
-
-	if (chartType.includes('Map')) {
-		zIndex = 500;
-	}
-
 	const DevMissingCredentialsError = 'SQL Error: Missing datasource connection.';
 	const ProdMissingCredentialsError =
 		'SQL Error: Missing database connection; set the EVIDENCE_DATABASE environment variable.';
@@ -23,7 +15,7 @@
 
 <div
 	width="100%"
-	class="grid grid-rows-auto box-content grid-cols-1 justify-center bg-red-50 text-grey-700 font-ui font-normal rounded border border-red-200 min-h-[{minHeight}px] py-5 px-8 my-5 print:break-inside-avoid relative z-[{zIndex}]"
+	class="grid grid-rows-auto box-content grid-cols-1 justify-center bg-red-50 text-grey-700 font-ui font-normal rounded border border-red-200 min-h-[{minHeight}px] py-5 px-8 my-5 print:break-inside-avoid relative"
 >
 	<div class="m-auto w-full">
 		<div class="font-bold text-center text-lg">
