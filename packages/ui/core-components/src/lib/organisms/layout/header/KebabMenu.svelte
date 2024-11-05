@@ -24,7 +24,7 @@
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
 
-	const { selectedMode, activeMode, cycleMode } = ensureThemeStores();
+	const { selectedMode, activeMode, cycleMode, themesConfig } = ensureThemeStores();
 	$: themeLabel =
 		$selectedMode === 'system' ? 'System' : $selectedMode === 'light' ? 'Light' : 'Dark';
 	$: themeIcon = $activeMode === 'light' ? Sun : Moon;
@@ -50,18 +50,20 @@
 			>
 				{$showQueries ? 'Hide ' : 'Show '} Queries
 			</DropdownMenu.Item>
-			<DropdownMenu.Item
-				on:click={(e) => {
-					e.preventDefault();
-					cycleMode();
-				}}
-			>
-				Appearance
-				<DropdownMenu.Shortcut class="tracking-normal flex flex-row items-center">
-					<span class="text-xs leading-none">{themeLabel}</span>
-					<Icon src={themeIcon} class="h-4 w-4 ml-1" />
-				</DropdownMenu.Shortcut>
-			</DropdownMenu.Item>
+			{#if themesConfig.themes.appearanceSwitcher}
+				<DropdownMenu.Item
+					on:click={(e) => {
+						e.preventDefault();
+						cycleMode();
+					}}
+				>
+					Appearance
+					<DropdownMenu.Shortcut class="tracking-normal flex flex-row items-center">
+						<span class="text-xs leading-none">{themeLabel}</span>
+						<Icon src={themeIcon} class="h-4 w-4 ml-1" />
+					</DropdownMenu.Shortcut>
+				</DropdownMenu.Item>
+			{/if}
 		</DropdownMenu.Group>
 		{#if dev}
 			<DropdownMenu.Separator />

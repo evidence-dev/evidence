@@ -41,6 +41,10 @@ export const BUILTIN_COLOR_TOKENS = /** @type {const} */ ([
 export const ThemesConfigFileSchema = z.object({
 	themes: DefaultEmptyObject(
 		z.object({
+			defaultAppearance: z
+				.union([z.literal('light'), z.literal('dark'), z.literal('system')])
+				.default('light'),
+			appearanceSwitcher: z.boolean().default(false),
 			colors: DefaultEmptyObject(
 				z
 					.object(

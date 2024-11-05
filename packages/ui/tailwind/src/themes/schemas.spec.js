@@ -21,12 +21,12 @@ describe('ThemesConfigFileSchema', () => {
 	describe('colors', () => {
 		it('should parse themes.colors=null to themes.colors={}', () => {
 			const result = ThemesConfigFileSchema.parse({ themes: { colors: null } });
-			expect(result).toEqual({ themes: { colors: {} } });
+			expect(result.themes.colors).toEqual({});
 		});
 
 		it('should parse themes.colors=undefined to themes.colors={}', () => {
 			const result = ThemesConfigFileSchema.parse({ themes: { colors: undefined } });
-			expect(result).toEqual({ themes: { colors: {} } });
+			expect(result.themes.colors).toEqual({});
 		});
 
 		it('should allow themes.colors={}', () => {
