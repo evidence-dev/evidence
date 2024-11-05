@@ -44,7 +44,7 @@
 	export let startingZoom = undefined;
 
 	/** @type {number} */
-	export let height = undefined; // height in pixels
+	export let height = 300; // height in pixels
 
 	/** @type {string} */
 	export let basemap = undefined;
@@ -68,6 +68,10 @@
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 	$: isInitial = data?.hash === initialHash;
 </script>
+
+{#if title}
+	<h4 class="markdown mb-2">{title}</h4>
+{/if}
 
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
