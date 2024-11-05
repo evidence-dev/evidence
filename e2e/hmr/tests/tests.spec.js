@@ -3,9 +3,10 @@ import { test, expect } from '@playwright/test';
 import { createFile, deleteFile, editFile, restoreChangedFiles } from './fs-utils';
 import { waitForDevModeToLoad } from '../../test-utils';
 
+/** @param {import("@playwright/test").Page} page */
 const waitForHMR = async (page) => {
 	await page.waitForEvent('console', (message) => {
-		return message.text() === '[vite] connected.';
+		return message.text().startsWith('[vite] hot updated');
 	});
 };
 
@@ -33,7 +34,7 @@ test.describe('pages', () => {
 		await expect(page.getByText('Index')).toBeVisible();
 
 		createFile('pages/new-page.md', 'This is a new page');
-		await waitForHMR(page);
+		// file deletions trigger full reload, so we don't waitForHMR() here
 
 		await expect(page.getByRole('link', { name: 'New Page' })).toBeVisible();
 		await page.goto('/new-page');

@@ -58,6 +58,9 @@
 			seriesColors: {
 				control: 'object'
 			},
+			seriesOrder: {
+				control: 'array'
+			},
 			labels: {
 				control: 'boolean'
 			},
@@ -263,4 +266,13 @@ LIMIT 200`,
 	let:args
 >
 	<AreaChart data={planeData} {...args} />
+</Story>
+
+<Story
+	name="With seriesOrder"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+	let:args
+>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<AreaChart {data} {...args} />
 </Story>

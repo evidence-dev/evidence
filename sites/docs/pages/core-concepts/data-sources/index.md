@@ -305,7 +305,11 @@ The `encrypt` option indicates whether SQL Server uses SSL encryption for all da
 
 #### Connection Timeout
 
-The `connection_timeout` option indicates the time, in milliseconds, that a query can run before it is terminated. It defaults to 15000 ms.
+The `connection_timeout` option indicates the connection timeout limit, in milliseconds. It defaults to 15000 ms.
+
+#### Request Timeout
+
+The `request_timeout` option indicates the time, in milliseconds, that a query can run before it is terminated. It defaults to 15000 ms.
 
 ### MySQL
 
