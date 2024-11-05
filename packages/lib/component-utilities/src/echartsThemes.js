@@ -1,4 +1,3 @@
-import { chartColours } from './colours';
 import { themes } from '$evidence/themes';
 
 /** @param {'light' | 'dark'} mode */
@@ -29,7 +28,7 @@ const createTheme = (mode) => {
 			top: '15%',
 			containLabel: true
 		},
-		color: chartColours,
+		color: themes[mode].colorPalettes.default,
 		title: {
 			padding: 0,
 			itemGap: 7,

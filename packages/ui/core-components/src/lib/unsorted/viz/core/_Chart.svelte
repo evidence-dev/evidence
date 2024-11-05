@@ -25,7 +25,10 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
+	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { ensureThemeStores } from '../../../themes.js';
+
+	const { theme } = ensureThemeStores();
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -139,7 +142,9 @@
 	export let sizeFmt = undefined;
 
 	// Color palette:
-	export let colorPalette = undefined;
+	let userColorPalette;
+	export { userColorPalette as colorPalette };
+	$: colorPalette = userColorPalette ?? $theme.colorPalettes.default;
 
 	// Legend:
 	export let legend = undefined;
@@ -743,9 +748,7 @@
 						},
 						color: y2
 							? yAxisColor === 'true'
-								? colorPalette
-									? colorPalette[0]
-									: chartColours[0]
+								? colorPalette[0]
 								: yAxisColor !== 'false'
 									? yAxisColor
 									: undefined
@@ -759,9 +762,7 @@
 						padding: [0, 5, 0, 0],
 						color: y2
 							? yAxisColor === 'true'
-								? colorPalette
-									? colorPalette[0]
-									: chartColours[0]
+								? colorPalette[0]
 								: yAxisColor !== 'false'
 									? yAxisColor
 									: undefined
@@ -798,9 +799,7 @@
 						},
 						color:
 							y2AxisColor === 'true'
-								? colorPalette
-									? colorPalette[ySeriesCount]
-									: chartColours[ySeriesCount]
+								? colorPalette[ySeriesCount]
 								: y2AxisColor !== 'false'
 									? y2AxisColor
 									: undefined
@@ -813,9 +812,7 @@
 						padding: [0, 0, 0, 5],
 						color:
 							y2AxisColor === 'true'
-								? colorPalette
-									? colorPalette[ySeriesCount]
-									: chartColours[ySeriesCount]
+								? colorPalette[ySeriesCount]
 								: y2AxisColor !== 'false'
 									? y2AxisColor
 									: undefined

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { fromEntries } from './utils.js';
 
-export const BUILTIN_COLOR_PALETTES = /** @type {const} */ ([]);
+export const BUILTIN_COLOR_PALETTES = /** @type {const} */ (['default']);
 
 export const ThemeColorPaletteSchema = z.object({
 	light: z.array(z.string()),
