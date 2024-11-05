@@ -1,3 +1,38 @@
 themes:
   defaultAppearance: system
   appearanceSwitcher: true
+
+plugins:
+  components:
+    # This loads all of evidence's core charts and UI components
+    # You probably don't want to edit this dependency unless you know what you are doing
+    "@evidence-dev/core-components": {}
+
+    # Loading a plugin:
+    # your-component-plugin: {}
+    #
+    # Adding aliases:
+    # your-component-plugin:
+    #   aliases:
+    #     SomeLongComponent: Alias
+    #
+    # Adding overrides:
+    # your-component-plugin:
+    #   aliases:
+    #     SomeLongChartComponent: BarChart
+    #   overrides:
+    #     - BarChart
+    #
+    # Adding normal Svelte component library:
+    # your-svelte-component-library:
+    #   provides:
+    #     - SomeComponent
+    #     - SomeOtherComponent
+    #
+    # For more info: https://docs.evidence.dev/plugins/using-plugins/
+  datasources:
+    # You can add additional datasources here by adding npm packages. 
+    # Make to also add them to `package.json`.
+    "@evidence-dev/csv": { }
+    "@evidence-dev/duckdb": { }
+    "@evidence-dev/faker-datasource": { }
