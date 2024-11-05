@@ -4,16 +4,6 @@ title: Data Sources
 description: Connect a data source in order to run queries.
 ---
 
-<Alert status=info>
-
-**Recent changes to data sources in Evidence**
-
-A recent Evidence release (Universal SQL, v24+) contains breaking changes for data source setup.
-
-If you recently updated your Evidence version and are having issues setting up data sources, consult the [migration guide](/guides/usql-migration-guide)
-
-</Alert>
-
 ## Overview of Data Sources
 
 Evidence extracts all data sources into a common storage format (called Parquet) to enable querying across multiple data sources using SQL.
@@ -379,8 +369,6 @@ select * from [your_source_name].[your_workbook_name]_[your_tab_name]
 ```
   
 Where `[your_tab_name]` is the name of the tab in your Google Sheet, with spaces replaced by underscores.
-
-
 
 ### CSV files
 
