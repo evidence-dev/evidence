@@ -73,31 +73,30 @@
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<!-- move dispatch error outside of points to render error outisde leafletmaps -->
 	{#if !error}
-	<div class="relative">
-		<BaseMap
-			{startingLat}
-			{startingLong}
-			{startingZoom}
-			{height}
-			{basemap}
-			{title}
-			{legendPosition}
-		>
-			<Points
-				data={loaded}
-				{lat}
-				{long}
-				{colorPalette}
-				{legendType}
-				{chartType}
-				{...$$restProps}
-				{legend}
-				on:error={(e) => error = e.detail}
-			/>
-		</BaseMap>
-	</div>
+		<div class="relative">
+			<BaseMap
+				{startingLat}
+				{startingLong}
+				{startingZoom}
+				{height}
+				{basemap}
+				{title}
+				{legendPosition}
+			>
+				<Points
+					data={loaded}
+					{lat}
+					{long}
+					{colorPalette}
+					{legendType}
+					{chartType}
+					{...$$restProps}
+					{legend}
+					on:error={(e) => (error = e.detail)}
+				/>
+			</BaseMap>
+		</div>
 	{:else}
-	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
+		<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 	{/if}
 </QueryLoad>
-

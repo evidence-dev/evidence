@@ -81,20 +81,28 @@
 	</div>
 	<!-- move dispatch error outside of areas to render error outisde leafletmaps -->
 	{#if !error}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {legendPosition}>
-		<Areas
-			data={loaded}
-			{geoJsonUrl}
-			{geoId}
-			{areaCol}
-			{legendType}
-			{chartType}
-			{legend}
-			{...$$restProps}
-			on:error={(e) => error = e.detail}
-		/>
-	</BaseMap>
+		<BaseMap
+			{startingLat}
+			{startingLong}
+			{startingZoom}
+			{height}
+			{basemap}
+			{title}
+			{legendPosition}
+		>
+			<Areas
+				data={loaded}
+				{geoJsonUrl}
+				{geoId}
+				{areaCol}
+				{legendType}
+				{chartType}
+				{legend}
+				{...$$restProps}
+				on:error={(e) => (error = e.detail)}
+			/>
+		</BaseMap>
 	{:else}
-	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
+		<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 	{/if}
 </QueryLoad>

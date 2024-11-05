@@ -10,10 +10,10 @@
 	import { expect, userEvent, within, fn } from '@storybook/test';
 	import Dropdown from '$lib/atoms/inputs/dropdown/Dropdown.svelte';
 	import PointMap from '../map/PointMap.svelte';
-	import  AreaMap  from '../map/AreaMap.svelte';
-	import BaseMap from "../map/BaseMap.svelte";
-	import Point from "../map/components/Point.svelte";
-	import Points from "../map/components/Points.svelte";
+	import AreaMap from '../map/AreaMap.svelte';
+	import BaseMap from '../map/BaseMap.svelte';
+	import Point from '../map/components/Point.svelte';
+	import Points from '../map/components/Points.svelte';
 
 	const mockGoto = fn();
 

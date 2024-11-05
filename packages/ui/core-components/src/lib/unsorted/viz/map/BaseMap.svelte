@@ -54,7 +54,6 @@
 		evidenceMap.updateLegendPosition(legendPosition);
 	}
 
-
 	let internalError = evidenceMap.internalError;
 
 	$: console.log($internalError);
@@ -92,9 +91,9 @@
 			style="height: {height}px;"
 			bind:this={mapElement}
 		>
-		<div on:dispatcherror={(e) => (error = e.detail)}>
-			<slot />
-		  </div>
+			<div on:dispatcherror={(e) => (error = e.detail)}>
+				<slot />
+			</div>
 			{#if $legendData}
 				<Legend {legendData} {legendPosition} {height} />
 			{/if}
