@@ -117,7 +117,7 @@ This example includes a `custom_format` column, which contains a different curre
 ### Deltas
 
 ```sql country_summary
-select date '2020-04-30' as date, 87 as value_usd, 0.0234 as yoy, 'Austria' as country, 'B' as category, 100384 as country_id, 'AT' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/AT.png' as flag, 'https://www.google.ca/search?q=austria' as country_url
+select date '2020-04-30' as date, -10 as value_usd, 0.0234 as yoy, 'Austria' as country, 'B' as category, 100384 as country_id, 'AT' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/AT.png' as flag, 'https://www.google.ca/search?q=austria' as country_url
 union all
 select date '2020-05-01' as date, 95 as value_usd, 0.0534 as yoy, 'Australia' as country, 'C' as category, 104942 as country_id, 'AU' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/AU.png' as flag, 'https://www.google.ca/search?q=australia' as country_url
 union all
@@ -273,6 +273,26 @@ order by total_sales desc
 	<Column id=value_usd title="Sales" contentType=bar/>
   	<Column id=value_usd title="Sales" contentType=bar barColor=#aecfaf/>
   	<Column id=value_usd title="Sales" contentType=bar barColor=#ffe08a backgroundColor=#ebebeb/>
+</DataTable>
+
+### Bar Chart Column - Right Aligned
+
+```svelte
+<DataTable data={country_summary}>
+	<Column id=country />
+	<Column id=category align=center/>
+	<Column id=value_usd title="Sales" contentType=bar align=right />
+  	<Column id=value_usd title="Sales" contentType=bar barColor=#aecfaf align=right />
+  	<Column id=value_usd title="Sales" contentType=bar barColor=#ffe08a backgroundColor=#ebebeb align=right/>
+</DataTable>
+```
+
+<DataTable data={country_summary}>
+	<Column id=country />
+	<Column id=category align=center/>
+	<Column id=value_usd title="Sales" contentType=bar align=right/>
+  	<Column id=value_usd title="Sales" contentType=bar barColor=#aecfaf align=right/>
+  	<Column id=value_usd title="Sales" contentType=bar barColor=#ffe08a backgroundColor=#ebebeb align=right/>
 </DataTable>
 
 

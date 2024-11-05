@@ -212,7 +212,8 @@
 									style="width: {Math.min(
 										Math.abs((row[column.id] / total_width) * 100),
 										100
-									)}%; background-color: {column.negativeBarColor}; height: 100%; position: absolute; right: {(1 -
+									)}%; background-color: {column.negativeBarColor}; height: 100%; position: absolute; 
+									{column.align === 'right' ? 'left' : 'right'}: {(1 -
 										Math.abs(column_min) / (Math.abs(column_min) + column_max)) *
 										100}%;"
 								></div>
@@ -225,11 +226,11 @@
 								style="width: {Math.min(
 									(row[column.id] / total_width) * 100,
 									100
-								)}%; background-color: {column.barColor}; height: 100%; position: absolute; left: {column_min <
-								0
+								)}%; background-color: {column.barColor}; height: 100%; position: absolute; 
+								{column.align === 'right' ? 'right' : 'left'}: {column_min < 0
 									? (Math.abs(column_min) / (Math.abs(column_min) + column_max)) * 100 + '%'
 									: '0'};"
-							></div>
+								></div>
 						{/if}
 
 						<!-- Display label -->
@@ -244,15 +245,13 @@
 								width: {(Math.abs(column_max) /
 								((column_min < 0 ? Math.abs(column_min) : 0) + Math.abs(column_max))) *
 								100}%;
-								left: {column_min < 0 && column_max >= 0
+								{column.align === 'right' ? 'right' : 'left'}: {column_min < 0 && column_max >= 0
 								? (Math.abs(column_min) / (Math.abs(column_min) + column_max)) * 100 + '%'
 								: '0'};"
 						>
 							{formatValue(row[column.id], column_format, useCol.columnUnitSummary)}
 						</div>
 					</div>
-
-					<!-- <div style="background-color: red; max-width: '{row[column.id] / column_max * 100}%'">{row[column.id]}</div> -->
 				{:else if column.contentType === 'sparkline' && row[column.id] !== undefined}
 					{@const alignment = column.align ?? 'center'}
 					<div class="items-{alignment} justify-{alignment} flex">
