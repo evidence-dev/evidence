@@ -41,6 +41,8 @@
 	/** @type {string} */
 	export let xProfile = undefined;
 	/** @type {string} */
+	export let blueskyProfile = undefined;
+	/** @type {string} */
 	export let slackCommunity = undefined;
 	/** @type {string}*/
 	export let maxWidth = undefined;
@@ -129,6 +131,7 @@
 				{githubRepo}
 				{slackCommunity}
 				{xProfile}
+				{blueskyProfile}
 				{algolia}
 				{sidebarFrontMatter}
 			/>
