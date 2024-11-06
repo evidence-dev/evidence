@@ -74,36 +74,31 @@
 
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-
+	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
 	<!-- Override default skeleton to match height of map -->
 	<div slot="skeleton" class="w-full" style="height: {height}px">
 		<Skeleton />
 	</div>
-	<!-- move dispatch error outside of areas to render error outisde leafletmaps -->
-	{#if !error}
-		<BaseMap
-			{startingLat}
-			{startingLong}
-			{startingZoom}
-			{height}
-			{basemap}
-			{title}
-			{legendPosition}
+	<BaseMap
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{legendPosition}
+		{chartType}
+	>
+		<Areas
+			data={loaded}
+			{geoJsonUrl}
+			{geoId}
+			{areaCol}
+			{legendType}
 			{chartType}
-		>
-			<Areas
-				data={loaded}
-				{geoJsonUrl}
-				{geoId}
-				{areaCol}
-				{legendType}
-				{chartType}
-				{legend}
-				{...$$restProps}
-				on:error={(e) => (error = e.detail)}
-			/>
-		</BaseMap>
-	{:else}
-		<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
-	{/if}
+			{legend}
+			{...$$restProps}
+			on:error={(e) => (error = e.detail)}
+		/>
+	</BaseMap>
 </QueryLoad>
