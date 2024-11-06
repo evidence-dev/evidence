@@ -15,6 +15,7 @@
 	githubRepo="https://github.com/evidence-dev/evidence"
 	slackCommunity="https://slack.evidence.dev"
 	xProfile="https://twitter.com/evidence_dev"
+	blueskyProfile="https://bsky.app/profile/evidence.dev"
 	builtWithEvidence
 	algolia={{
 		apiKey: '45d995e97069b6fbee526a93a6c84af8',

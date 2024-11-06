@@ -32,7 +32,7 @@
 	export let height = 300; // height in pixels
 
 	/** @type {string} */
-	export let basemap = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+	export let basemap = undefined;
 
 	/** @type {string|undefined} */
 	export let title = undefined;
@@ -72,7 +72,13 @@
 				const initCoords =
 					(startingLat ?? false) ? [startingLat, startingLong] : [defaultLat, defaultLong];
 
-				await evidenceMap.init(mapElement, basemap, initCoords, startingZoom, userDefinedView);
+				await evidenceMap.init(
+					mapElement,
+					basemap ?? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+					initCoords,
+					startingZoom,
+					userDefinedView
+				);
 				return () => evidenceMap.cleanup();
 			} catch (e) {
 				error = e.message;
