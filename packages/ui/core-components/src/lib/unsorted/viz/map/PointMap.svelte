@@ -82,6 +82,7 @@
 				{basemap}
 				{title}
 				{legendPosition}
+				{chartType}
 			>
 				<Points
 					data={loaded}

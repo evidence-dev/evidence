@@ -89,6 +89,7 @@
 			{basemap}
 			{title}
 			{legendPosition}
+			{chartType}
 		>
 			<Areas
 				data={loaded}

@@ -62,6 +62,9 @@
 		error = $internalError;
 	}
 
+	/** @type {'Point Map'|'Area Map'|'Bubble Map'|'Map'} */
+	export let chartType = 'Map';
+
 	// Lifecycle hooks:
 	onMount(async () => {
 		if (browser) {
@@ -80,7 +83,7 @@
 </script>
 
 {#if error}
-	<ErrorChart {error} chartType="Map" />
+	<ErrorChart {error} {chartType} />
 {:else}
 	<div class="relative break-inside-avoid">
 		{#if title}
