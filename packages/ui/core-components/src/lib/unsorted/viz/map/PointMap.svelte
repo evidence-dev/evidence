@@ -82,5 +82,16 @@
 	{emptyMessage}
 	{error}
 >
-	<Points {data} {lat} {long} {colorPalette} {legendType} {chartType} {...$$restProps} {legend} />
+	<!-- move dispatch error outside of points to render error outside leafletmaps -->
+	<Points
+		{data}
+		{lat}
+		{long}
+		{colorPalette}
+		{legendType}
+		{chartType}
+		{...$$restProps}
+		{legend}
+		on:error={(e) => (error = e.detail)}
+	/>
 </BaseMap>

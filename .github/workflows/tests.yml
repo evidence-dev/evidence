@@ -4,9 +4,11 @@ on:
   pull_request_target:
 
 jobs:
+  external-pr-action-approval:
+    uses: ./.github/workflows/external-pr-action-approval.yml
   Tests-sources:
     runs-on: ${{ matrix.os }}
-    if: ${{ github.triggering_actor == 'archiewood' || github.triggering_actor == 'mcrascal' || github.triggering_actor == 'ud3sh' || github.triggering_actor == 'hughess' || github.triggering_actor == 'winterhart' || github.triggering_actor == 'itsmebriand' || github.triggering_actor == 'kwongz' || github.triggering_actor == 'zachstence' || github.triggering_actor == 'csjh'}}
+    needs: external-pr-action-approval
     timeout-minutes: 20
 
     # Conditional Strategy logic from https://github.com/orgs/community/discussions/26253#discussioncomment-3250989

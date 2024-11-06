@@ -78,11 +78,21 @@
 	{basemap}
 	{title}
 	{legendPosition}
-	{isInitial}
 	{chartType}
+	{isInitial}
 	{emptySet}
 	{emptyMessage}
 	{error}
 >
-	<Areas {data} {geoJsonUrl} {geoId} {areaCol} {legendType} {chartType} {legend} {...$$restProps} />
+	<Areas
+		{data}
+		{geoJsonUrl}
+		{geoId}
+		{areaCol}
+		{legendType}
+		{chartType}
+		{legend}
+		{...$$restProps}
+		on:error={(e) => (error = e.detail)}
+	/>
 </BaseMap>
