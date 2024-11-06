@@ -1,14 +1,17 @@
 <script>
-	import { onMount } from 'svelte';
-	import { slide } from 'svelte/transition';
+	import { onMount, afterUpdate } from 'svelte';
 
 	let activeTab = 'preview';
 	let activeBorderStyles = {};
-	let tabContent;
 
 	const tabs = ['preview', 'code'];
 	let tabButtons = [];
 	let tabButton;
+	let tabContent;
+
+	onMount(() => {
+		updateActiveBorder(0);
+	});
 
 	function setTab(tab, index) {
 		activeTab = tab;
@@ -22,25 +25,6 @@
 			transform: `translateX(${tabButton.offsetLeft}px)`
 		};
 	}
-
-	onMount(() => {
-		savedPreviewComponent = previewContent;
-		console.log('savedPreviewComponent', savedPreviewComponent)
-	})
-
-	//handle rendering
-	let previewContent
-	let savedPreviewComponent 
-
-	let isContentUpdated = false;
-
-	const handleOutro = () => {
-		if (!isContentUpdated) {
-			// savedPreviewComponent = previewContent;
-			isContentUpdated = true;
-		}
-	};
-
 </script>
 
 <div class="doc-tab mt-2 overflow-hidden">
@@ -65,31 +49,42 @@
 	</div>
 	<div class="border-b border-gray-300 w-full"></div>
 
-	<div class="overflow-hidden grid center">
-		{#if activeTab === 'preview'}
+	<div class="overflow-hidden grid transition-[height]" bind:this={tabContent}>
 		<div
-			transition:slide={{
-				duration: 300
-			}}
-			bind:this={previewContent}
-			on:outroend={handleOutro}
-			class="mt-2 mb-3 overflow-hidden"		>
-		{#if !isContentUpdated}
+			class="mt-2 mb-3 overflow-hidden col-start-1 col-end-2 row-start-1 row-end-2 transition-[max-height] ease-in-out duration-3000"
+			class:invisible={activeTab !== 'preview'}
+			class:slide-in={activeTab === 'preview'}
+			class:slide-out={activeTab !== 'preview'}
+		>
 			<slot name="preview" />
-		{:else}
-			<svelte:component this={savedPreviewComponent} />
-		{/if}
 		</div>
-		{:else}
 		<div
-			transition:slide={{
-				duration: 300
-			}}
-			class="mt-5 mb-3 overflow-auto md-preview"
+			class="mb-3 overflow-auto md-preview col-start-1 col-end-2 row-start-1 row-end-2 transition-[max-height] ease-in-out duration-3000"
+			class:invisible={activeTab !== 'code'}
+			class:slide-in={activeTab === 'code'}
+			class:slide-out={activeTab !== 'code'}
 		>
 			<slot />
 		</div>
-		{/if}
 	</div>
 </div>
 
+<style>
+	.slide-out {
+		opacity: 0;
+		height: 0;
+		overflow: hidden;
+		transform: translateY(-70%);
+		transition:
+			opacity 0.3s ease,
+			transform 0.3s ease;
+	}
+
+	.slide-in {
+		opacity: 1;
+		transform: translateY(0);
+		transition:
+			opacity 0.3s ease,
+			transform 0.3s ease; /* 0.2s delay for transform */
+	}
+</style>
