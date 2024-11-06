@@ -6,12 +6,12 @@
 		"evidence-sdk": "./src/cli.js"
 	},
 	"exports": {
-		"./ambient": {
+		".": {
 			"default": null,
 			"import": null,
 			"node": null,
 			"require": null,
-			"types": "./src/types/virtuals.d.ts"
+			"types": "./src/types.d.ts"
 		},
 		"./usql": {
 			"default": "./src/usql/index.js",
