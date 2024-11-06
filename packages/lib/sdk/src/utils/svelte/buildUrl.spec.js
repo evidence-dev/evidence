@@ -33,4 +33,8 @@ describe('buildUrl', () => {
         basePath = 'base';
         expect(buildUrl('/test')).toBe('/base/test');
     })
+    it('should pass through undefined', () => {
+        basePath = '/base';
+        expect(buildUrl(undefined)).toBe(undefined);
+    })
 });
