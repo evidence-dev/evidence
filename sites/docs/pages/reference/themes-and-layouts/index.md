@@ -46,6 +46,15 @@ Link to an image which will replace the Evidence logo. This will also override a
 
 </PropListing>
 <PropListing
+    name="homePageName"
+    options="Any string"
+    defaultValue=Home
+>
+
+Name of the home page in the sidebar.
+
+</PropListing>
+<PropListing
     name="neverShowQueries"
     options={['true', 'false']}
     defaultValue=false
