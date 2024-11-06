@@ -35,6 +35,9 @@
 	export let basemap = undefined;
 
 	/** @type {string|undefined} */
+	export let title = undefined;
+
+	/** @type {string|undefined} */
 	let error = undefined;
 
 	const evidenceMap = new EvidenceMap();
@@ -78,6 +81,9 @@
 	<ErrorChart {error} chartType="Map" />
 {:else}
 	<div class="relative break-inside-avoid">
+		{#if title}
+			<h4 class="markdown mb-2">{title}</h4>
+		{/if}
 		<div
 			class="z-0 rounded-md focus:outline-none"
 			style="height: {height}px;"
