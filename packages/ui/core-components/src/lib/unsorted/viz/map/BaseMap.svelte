@@ -54,6 +54,17 @@
 		evidenceMap.updateLegendPosition(legendPosition);
 	}
 
+	let internalError = evidenceMap.internalError;
+
+	$: console.log($internalError);
+
+	$: if ($internalError !== undefined) {
+		error = $internalError;
+	}
+
+	/** @type {'Point Map'|'Area Map'|'Bubble Map'|'Map'} */
+	export let chartType = 'Map';
+
 	// Lifecycle hooks:
 	onMount(async () => {
 		if (browser) {
@@ -72,7 +83,7 @@
 </script>
 
 {#if error}
-	<ErrorChart {error} chartType="Map" />
+	<ErrorChart {error} {chartType} />
 {:else}
 	<div class="relative break-inside-avoid">
 		{#if title}
@@ -83,7 +94,9 @@
 			style="height: {height}px;"
 			bind:this={mapElement}
 		>
-			<slot></slot>
+			<div on:dispatcherror={(e) => (error = e.detail)}>
+				<slot />
+			</div>
 			{#if $legendData}
 				<Legend {legendData} {legendPosition} {height} />
 			{/if}

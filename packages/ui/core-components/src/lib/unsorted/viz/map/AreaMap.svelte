@@ -75,13 +75,20 @@
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
-
 	<!-- Override default skeleton to match height of map -->
 	<div slot="skeleton" class="w-full" style="height: {height}px">
 		<Skeleton />
 	</div>
-
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title} {legendPosition}>
+	<BaseMap
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{legendPosition}
+		{chartType}
+	>
 		<Areas
 			data={loaded}
 			{geoJsonUrl}
@@ -91,6 +98,7 @@
 			{chartType}
 			{legend}
 			{...$$restProps}
+			on:error={(e) => (error = e.detail)}
 		/>
 	</BaseMap>
 </QueryLoad>
