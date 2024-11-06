@@ -14,6 +14,7 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { ensureThemeStores } from '../../../themes.js';
 
 	export let data;
 	export let queryID;
@@ -45,7 +46,18 @@
 
 	let height = '400px';
 	let gridHeight;
-	export let colorPalette = undefined;
+
+	const { theme } = ensureThemeStores();
+
+	let userColorPalette = undefined;
+	export { userColorPalette as colorPalette };
+	if (userColorPalette) {
+		console.warn('[CalendarHeatmap] colorPalette is deprecated, please use colorScale instead');
+	}
+	let userColorScale = undefined;
+	export { userColorScale as colorScale };
+	let colorScale = userColorScale ?? userColorPalette ?? $theme.colorScales.default;
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -282,7 +294,7 @@
 					borderColor: uiColours.grey200
 				},
 				inRange: {
-					color: colorPalette ?? ['rgb(254,234,159)', 'rgb(218,66,41)']
+					color: colorScale
 				},
 				text: filter
 					? undefined

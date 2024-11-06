@@ -17,6 +17,7 @@
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import getSortedDistinctValues from '@evidence-dev/component-utilities/getSortedDistinctValues';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
+	import { ensureThemeStores } from '../../../themes.js';
 
 	export let data;
 	export let queryID;
@@ -57,7 +58,16 @@
 	export let filter = false;
 	$: filter = filter === 'true' || filter === true;
 
-	export let colorPalette = undefined;
+	const { theme } = ensureThemeStores();
+
+	let userColorPalette = undefined;
+	export { userColorPalette as colorPalette };
+	if (userColorPalette) {
+		console.warn('[Heatmap] colorPalette is deprecated, please use colorScale instead');
+	}
+	let userColorScale = undefined;
+	export { userColorScale as colorScale };
+	let colorScale = userColorScale ?? userColorPalette ?? $theme.colorScales.default;
 
 	export let min = undefined;
 	export let max = undefined;
@@ -274,7 +284,7 @@
 					borderColor: uiColours.grey200
 				},
 				inRange: {
-					color: colorPalette ?? ['rgb(254,234,159)', 'rgb(218,66,41)']
+					color: colorScale
 				},
 				text: filter
 					? undefined
