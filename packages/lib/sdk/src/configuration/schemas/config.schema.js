@@ -3,5 +3,8 @@ import { PluginConfigSchema } from '../../plugins/schemas/plugin-config.schema.j
 
 export const EvidenceConfigSchema = z.object({
 	layout: z.string().or(z.literal(false).default(false)).optional(),
-	plugins: PluginConfigSchema
+	plugins: PluginConfigSchema,
+	deployment: z.object({
+		basePath: z.string().optional()
+	})
 });
