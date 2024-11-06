@@ -119,7 +119,7 @@ This example includes a `custom_format` column, which contains a different curre
 ```sql country_summary
 select date '2020-04-30' as date, -10 as value_usd, 0.0234 as yoy, 'Austria' as country, 'B' as category, 100384 as country_id, 'AT' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/AT.png' as flag, 'https://www.google.ca/search?q=austria' as country_url
 union all
-select date '2020-05-01' as date, 95 as value_usd, 0.0534 as yoy, 'Australia' as country, 'C' as category, 104942 as country_id, 'AU' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/AU.png' as flag, 'https://www.google.ca/search?q=australia' as country_url
+select date '2020-05-01' as date, -95 as value_usd, 0.0534 as yoy, 'Australia' as country, 'C' as category, 104942 as country_id, 'AU' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/AU.png' as flag, 'https://www.google.ca/search?q=australia' as country_url
 union all
 select date '2020-05-02' as date, 163 as value_usd, 0.0264 as yoy, 'Brazil' as country, 'A' as category, 100842 as country_id, 'BR' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/BR.png' as flag, 'https://www.google.ca/search?q=brazil' as country_url
 union all
