@@ -3,6 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { X, Menu2 } from '@steeze-ui/tabler-icons';
 	import { Github as GithubLogo, Slack as SlackLogo } from '@steeze-ui/simple-icons';
+	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
 	import Logo from '../Logo.svelte';
 	import AlgoliaDocSearch from './AlgoliaDocSearch.svelte';
 	import KebabMenu from './KebabMenu.svelte';
@@ -34,7 +35,7 @@
 		style="max-width:{maxWidth}px;"
 	>
 		{#if hideSidebar || sidebarFrontMatter === 'never'}
-			<a href="/" class="block text-sm font-bold text-gray-800">
+			<a href={buildUrl("/")} class="block text-sm font-bold text-gray-800">
 				<Logo {logo} {title} />
 			</a>
 		{:else}
@@ -55,7 +56,7 @@
 						<Icon class="w-5 h-5" src={Menu2} />
 					{/if}
 				</button>
-				<a href="/" class="text-sm font-bold text-gray-800 hidden md:block">
+				<a href={buildUrl("/")} class="text-sm font-bold text-gray-800 hidden md:block">
 					<Logo {logo} {title} />
 				</a>
 			</div>
@@ -67,7 +68,7 @@
 			<div class="flex gap-2 items-center">
 				{#if githubRepo}
 					<a
-						href={githubRepo}
+						href={buildUrl(githubRepo)}
 						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
@@ -77,7 +78,7 @@
 				{/if}
 				{#if xProfile}
 					<a
-						href={xProfile}
+						href={buildUrl(xProfile)}
 						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
@@ -95,7 +96,7 @@
 				{/if}
 				{#if slackCommunity}
 					<a
-						href={slackCommunity}
+						href={buildUrl(slackCommunity)}
 						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"

@@ -52,6 +52,7 @@
 	import { page } from '$app/stores';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ChevronRight } from '@steeze-ui/tabler-icons';
+	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
 	export let fileTree;
 
 	$: crumbs = buildCrumbs($page.url.pathname.split('/').slice(1), fileTree);
@@ -63,12 +64,12 @@
 			{#if i > 0}
 				<Icon src={ChevronRight} size="12px" theme="solid" />
 				{#if crumb.href}
-					<a href={crumb.href} class="hover:underline">{crumb.title}</a>
+					<a href={buildUrl(crumb.href)} class="hover:underline">{crumb.title}</a>
 				{:else}
 					<span class=" cursor-default">{crumb.title}</span>
 				{/if}
 			{:else}
-				<a href={crumb.href} class="hover:underline">
+				<a href={buildUrl(crumb.href)} class="hover:underline">
 					{crumb.title}
 				</a>
 			{/if}

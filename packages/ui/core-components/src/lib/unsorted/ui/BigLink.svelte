@@ -3,10 +3,11 @@
 </script>
 
 <script>
+	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
 	export let href;
 </script>
 
-<a {href}>
+<a href={buildUrl(href)}>
 	<div>
 		<span>
 			<slot />

@@ -16,7 +16,6 @@
 
 <svelte:element
 	this={href ? 'a' : 'span'}
-	{href}
 	class={cn(badgeVariants({ variant, className }))}
 	{...$$restProps}
 >
