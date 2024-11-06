@@ -29,6 +29,7 @@
 	"type": "module",
 	"devDependencies": {
 		"@types/lodash": "^4.17.9",
+		"postcss": "^8.4.47",
 		"ts-essentials": "^10.0.2",
 		"typescript": "^5.5.4",
 		"vitest": "^2.1.3"
