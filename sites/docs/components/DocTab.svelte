@@ -1,5 +1,6 @@
 <script>
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
+	// import Pedistal from './Pedistal.svelte';
 
 	let activeTab = 'preview';
 	let activeBorderStyles = {};
@@ -7,7 +8,6 @@
 	const tabs = ['preview', 'code'];
 	let tabButtons = [];
 	let tabButton;
-	let tabContent;
 
 	onMount(() => {
 		updateActiveBorder(0);
@@ -49,7 +49,16 @@
 	</div>
 	<div class="border-b border-gray-300 w-full"></div>
 
-	<div class="overflow-hidden grid transition-[height]" bind:this={tabContent}>
+	<!-- <div>
+		<Pedistal visible={activeTab === 'preview'}>
+			<slot name="preview" />
+		</Pedistal>
+		<Pedistal visible={activeTab === 'code'}>
+			<slot  />
+		</Pedistal>
+	</div> -->
+
+	<div class="overflow-hidden grid">
 		<div
 			class="mt-2 mb-3 overflow-hidden col-start-1 col-end-2 row-start-1 row-end-2 transition-[max-height] ease-in-out duration-3000"
 			class:invisible={activeTab !== 'preview'}

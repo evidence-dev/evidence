@@ -10,9 +10,6 @@
 	/** @type {HTMLDivElement}*/
 	let stash;
 
-	//
-	export let id = undefined;
-
 	export let visible = false;
 
 	onMount(() => {
@@ -20,27 +17,30 @@
 			self.appendChild(slotContainer);
 		}
 	});
+
+	$: console.log(visible);
 </script>
 
 {#if visible}
 	<div
-		class="col-start-1 col-end-2 row-start-1 row-end-2"
-		transition:transition={{ duration: 3000 }}
+		transition:transition={{ duration: 300 }}
 		bind:this={self}
 		on:introstart={() => {
-			console.log(`Slot Container ${id} -> Pedistal`);
+			console.log('Slot Container -> Pedistal');
 			self.appendChild(slotContainer);
 		}}
-		on:outrostart={() => {
-			console.log(`Slot Container ${id} -> Stash`);
+		on:outroend={() => {
+			console.log('Slot Container -> Stash');
 			stash.appendChild(slotContainer);
 		}}
 	>
-		<slot />
 		<!-- Empty Div-->
 	</div>
 {/if}
+
 <div bind:this={stash} class="hidden">
 	<!-- Use the contents class to avoid any rendering impact -->
-	<div bind:this={slotContainer} class="content" id="1"></div>
+	<div bind:this={slotContainer} class="contents" id="1">
+		<slot />
+	</div>
 </div>
