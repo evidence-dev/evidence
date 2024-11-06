@@ -152,6 +152,13 @@ Link to an X (Twitter) profile which will appear in the header using the X Logo
 
 </PropListing>
 <PropListing
+    name="blueskyProfile"
+    defaultValue='https://bsky.app/profile/evidence.dev'
+>
+
+Link to a Bluesky profile which will appear in the header using the Bluesky Logo
+</PropListing>
+<PropListing
     name="slackCommunity"
     defaultValue='https://slack.evidence.dev'
 >
