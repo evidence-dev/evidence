@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
+	import { getContext, onDestroy } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 
 	let props = getContext(propKey);
@@ -11,7 +11,6 @@
 	let error;
 
 	const identifier = Symbol();
-
 	export let id;
 
 	/**
@@ -199,4 +198,11 @@
 		});
 	};
 	$: options, updateProps();
+
+	onDestroy(() => {
+		props.update((d) => {
+			d.columns = d.columns.filter((c) => c.identifier !== identifier);
+			return d;
+		});
+	});
 </script>

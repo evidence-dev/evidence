@@ -237,6 +237,15 @@ Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88
 Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax `seriesColors={{"Canada": "red", "US": "blue"}}`
 
 </PropListing>
+<PropListing
+    name="seriesOrder"
+    options="Array of series names in the order they should be used in the chart seriesOrder={`{['series one', 'series two']}`}"
+    defaultValue="default order implied by the data"
+>
+
+Apply a specific order to the series in a multi-series chart.
+
+</PropListing>
 
 ### Axes
 

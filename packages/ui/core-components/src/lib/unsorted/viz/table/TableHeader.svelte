@@ -8,9 +8,9 @@
 	export let orderedColumns = undefined;
 	export let columnSummary = undefined;
 	export let sortable = undefined;
-	export let sort = undefined;
+	export let sortClick = undefined;
 	export let formatColumnTitles = undefined;
-	export let sortBy = undefined;
+	export let sortObj = undefined;
 	export let wrapTitles = undefined;
 	export let compact = undefined;
 
@@ -85,7 +85,7 @@
 				style:background-color={headerColor}
 				style:cursor={sortable ? 'pointer' : 'auto'}
 				style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
-				on:click={sortable ? sort(column.id) : ''}
+				on:click={sortable ? sortClick(column.id) : ''}
 				style:vertical-align="bottom"
 			>
 				{column.title
@@ -93,8 +93,8 @@
 					: formatColumnTitles
 						? safeExtractColumn(column, columnSummary).title
 						: safeExtractColumn(column, columnSummary).id}
-				{#if sortBy.col === column.id}
-					<SortIcon ascending={sortBy.ascending} />
+				{#if sortObj.col === column.id}
+					<SortIcon ascending={sortObj.ascending} />
 				{/if}
 			</th>
 		{/each}

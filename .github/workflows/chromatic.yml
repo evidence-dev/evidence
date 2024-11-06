@@ -1,16 +1,19 @@
 name: 'Chromatic'
 
 on:
-  push:
   pull_request_target:
 
 jobs:
+  external-pr-action-approval:
+    uses: ./.github/workflows/external-pr-action-approval.yml
   chromatic:
+    needs: external-pr-action-approval
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - uses: pnpm/action-setup@v4.0.0
         with:

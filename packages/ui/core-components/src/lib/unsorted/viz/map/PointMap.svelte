@@ -72,7 +72,7 @@
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
-
+	<!-- move dispatch error outside of points to render error outisde leafletmaps -->
 	<div class="relative">
 		<BaseMap
 			{startingLat}
@@ -82,6 +82,7 @@
 			{basemap}
 			{title}
 			{legendPosition}
+			{chartType}
 		>
 			<Points
 				data={loaded}
@@ -92,6 +93,7 @@
 				{chartType}
 				{...$$restProps}
 				{legend}
+				on:error={(e) => (error = e.detail)}
 			/>
 		</BaseMap>
 	</div>

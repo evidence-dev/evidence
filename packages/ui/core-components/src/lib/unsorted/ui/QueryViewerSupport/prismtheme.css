@@ -28,13 +28,11 @@ pre[class*='language-'] {
 :not(pre) > code[class*='language-'] {
 	white-space: normal;
 	border-radius: 0.2em;
-	padding: 0.1em;
 }
 
 pre[class*='language-'] {
 	overflow: auto;
 	position: relative;
-	margin: 0.5em 0;
 }
 
 .language-css > code,

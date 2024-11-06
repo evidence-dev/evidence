@@ -64,7 +64,7 @@
 	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
 
 	/** @type {number} */
-	export let defaultValue = 0;
+	export let defaultValue = min;
 
 	/** @type {[number]} */
 	let value = [defaultValue];
