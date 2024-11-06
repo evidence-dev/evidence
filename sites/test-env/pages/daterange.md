@@ -2,15 +2,13 @@
 
 ## Manual min/max dates
 
-<DocTab>
-    <div slot='preview'>
-      <DateRange start="2022-01-02" end="2023-05-07" />
-    </div>
+<DateRange start="2022-01-02" end="2023-05-07" />
+
 
 ````markdown
 <DateRange start="2022-01-02" end="2023-05-07" />
 ````
-</DocTab>
+
 
 ## Universal SQL min/max dates
 
@@ -18,15 +16,14 @@
 select * from orders limit 1000
 ```
 
-<DocTab>
-    <div slot='preview'>
-      <DateRange data={orders} dates="order_datetime" name="order_range" />
-    </div>
+
+<DateRange data={orders} dates="order_datetime" name="order_range" />
+
 
 ````markdown
 <DateRange data={orders} dates="order_datetime" name="order_range" />
 ````
-</DocTab>
+
 
 ```range_of_orders
 select * from orders where order_datetime between '${inputs.order_range.start}' and '${inputs.order_range.end}'
