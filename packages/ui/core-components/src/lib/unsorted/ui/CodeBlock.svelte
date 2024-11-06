@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { onMount, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import { browser } from '$app/environment';
 	import { loadPrismComponents } from './prismLoader.js'; // Needed to avoid issues with loading Prism and prism languages out of order
 
