@@ -23,14 +23,14 @@
 	/** @type {string} */
 	export let name;
 
-	/** @type {number|undefined} */
+	/** @type {number} */
 	export let min = 0;
 
 	/** @type {number} */
 	export let max = 100;
 
 	/** @type {number} */
-	export let step = undefined;
+	export let step = 1;
 
 	/** @type {boolean} */
 	export let showMaxMin = true;
@@ -72,23 +72,12 @@
 
 	if (min !== undefined) {
 		min = validateNumber(min, 'min');
-		if (min !== undefined && max !== undefined) {
-			checkMinMax(min, max);
-		}
 	}
-
 	if (max !== undefined) {
 		max = validateNumber(max, 'max');
-		if (max !== undefined && min !== undefined) {
-			checkMinMax(min, max);
-		}
 	}
-
-	if (step !== undefined) {
-		step = validateNumber(step, 'step');
-		if (step !== undefined && step <= 0) {
-			console.error('step must be greater than 0');
-		}
+	if (max !== undefined && min !== undefined) {
+		checkMinMax(min, max);
 	}
 
 	$: if (defaultValue !== undefined) {
