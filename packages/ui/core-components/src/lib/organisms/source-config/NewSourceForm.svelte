@@ -1,13 +1,19 @@
 <script>
+	// @ts-check
+
+	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
+
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
-	import { Button } from '../../atoms/button';
+	import { Button } from '../../atoms/button/index.js';
 
 	import { DeviceFloppy } from '@evidence-dev/component-utilities/icons';
 	import SourceNameField, { validateName } from './atoms/SourceNameField.svelte';
 
 	export let availablePackages;
 	export let ghost = false;
+
+	/** @type {Pick<DatasourceSpec, 'name' | 'type'>[]} */
 	export let existingSources = [];
 
 	let newSourceType = '';

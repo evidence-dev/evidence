@@ -1,5 +1,7 @@
 <script>
-	/** @type {import("./$types").PageLoadData} */
+	// @ts-check
+
+	/** @type {import("./$types").PageData} */
 	export let data;
 	let { settings, customFormattingSettings, datasourceSettings, plugins } = data;
 	$: ({ settings, customFormattingSettings, datasourceSettings, plugins } = data);
@@ -20,7 +22,7 @@
 		<VersionControlPanel {settings} />
 		<SourceConfig availableSourcePlugins={plugins} sources={datasourceSettings} />
 		<DeploySettingsPanel {settings} {datasourceSettings} />
-		<FormattingSettingsPanel {settings} {customFormattingSettings} />
+		<FormattingSettingsPanel {customFormattingSettings} />
 		<TelemetrySettingsPanel {settings} />
 	</div>
 	<br />

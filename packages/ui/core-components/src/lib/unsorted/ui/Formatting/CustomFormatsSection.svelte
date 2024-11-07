@@ -3,19 +3,30 @@
 </script>
 
 <script>
+	// @ts-check
+
 	import CustomFormatGrid from './CustomFormatGrid.svelte';
 	import CollapsibleTableSection from './CollapsibleTableSection.svelte';
 	import ssf from 'ssf';
-	export let builtInFormats = {};
+
+	/** @type {{ formatTag: string }[]} */
+	export let builtInFormats = [];
+
+	/** @type {{ customFormats?: { formatTag: string }[] }}*/
 	export let customFormattingSettings = {};
 
 	const valueTypeOptions = ['number', 'date'];
 
-	let formatTag;
-	let formatCode;
-	let valueType;
+	let formatTag = '';
+
+	let formatCode = '';
+
+	/** @type {'number' | 'date'} */
+	let valueType = 'number';
+
 	let newFormatValidationErrors = '';
 
+	/** @param {{ formatTag: string }} format */
 	async function deleteCustomFormat(format) {
 		const submitted = await fetch('/api/customFormattingSettings.json', {
 			method: 'DELETE',
@@ -51,8 +62,8 @@
 	}
 
 	function resetNewCustomFormat() {
-		formatTag = undefined;
-		formatCode = undefined;
+		formatTag = '';
+		formatCode = '';
 		valueType = 'number';
 		newFormatValidationErrors = '';
 	}
@@ -64,6 +75,7 @@
 				`"${formatTag}" is not a valid format name. The format name should always start with a letter and only contain letters and numbers.`
 			);
 		}
+		/** @type {number | Date} */
 		let testValue = 10;
 		let testResult;
 		let ssfError;

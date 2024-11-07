@@ -1,6 +1,12 @@
 <script>
+	// @ts-check
+
 	import VariableCopy from './VariableCopy.svelte';
+
+	/** @type {{ gitRepo?: string }} */
 	export let settings;
+
+	/** @type {unknown[]} */
 	export let datasourceSettings;
 </script>
 

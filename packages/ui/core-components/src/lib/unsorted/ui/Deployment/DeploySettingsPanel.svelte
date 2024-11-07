@@ -3,8 +3,10 @@
 </script>
 
 <script>
-	export let settings;
-	export let datasourceSettings;
+	// @ts-check
+
+	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
+
 	import EvidenceDeploy from './EvidenceDeploy.svelte';
 	import NetlifyDeploy from './NetlifyDeploy.svelte';
 	import VercelDeploy from './VercelDeploy.svelte';
@@ -12,11 +14,20 @@
 	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import { slide } from 'svelte/transition';
 
+	/** @type {{ gitRepo?: string }}*/
+	export let settings;
+
+	/** @type {DatasourceSpec[]} */
+	export let datasourceSettings;
+
+	/** @typedef {typeof import('svelte').SvelteComponent<{ settings?: { gitRepo?: string }; datasourceSettings?: unknown }>} FormComponent */
+
+	/** @type {{ id: string; name: string; FormComponent: FormComponent }[]} */
 	let deploymentOptions = [
-		{ id: 'evidence', name: 'Evidence Cloud', formComponent: EvidenceDeploy },
-		{ id: 'netlify', name: 'Netlify', formComponent: NetlifyDeploy },
-		{ id: 'vercel', name: 'Vercel', formComponent: VercelDeploy },
-		{ id: 'other', name: 'Self-host (other)', formComponent: OtherDeploy }
+		{ id: 'evidence', name: 'Evidence Cloud', FormComponent: EvidenceDeploy },
+		{ id: 'netlify', name: 'Netlify', FormComponent: NetlifyDeploy },
+		{ id: 'vercel', name: 'Vercel', FormComponent: VercelDeploy },
+		{ id: 'other', name: 'Self-host (other)', FormComponent: OtherDeploy }
 	];
 
 	let selectedDeployment = deploymentOptions[0];
@@ -44,9 +55,9 @@
 				{/each}
 			</select>
 		</div>
-		{#if selectedDeployment.formComponent}
+		{#if selectedDeployment.FormComponent}
 			<div class="panel" transition:slide|local>
-				<svelte:component this={selectedDeployment.formComponent} {settings} {datasourceSettings} />
+				<svelte:component this={selectedDeployment.FormComponent} {settings} {datasourceSettings} />
 			</div>
 		{/if}
 	</div>

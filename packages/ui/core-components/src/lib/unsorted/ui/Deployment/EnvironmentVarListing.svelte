@@ -3,6 +3,8 @@
 </script>
 
 <script>
+	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
+
 	import { Accordion, AccordionItem } from '$lib/atoms/accordion';
 	import VariableCopy from './VariableCopy.svelte';
 
@@ -10,7 +12,7 @@
 	import { Button } from '$lib/atoms/button';
 	import { Clipboard } from '@evidence-dev/component-utilities/icons';
 
-	/** @type {Array<{ environmentVariables: Record<string,string>}>} */
+	/** @type {DatasourceSpec[]} */
 	export let datasourceSettings;
 
 	let credentials = {};
