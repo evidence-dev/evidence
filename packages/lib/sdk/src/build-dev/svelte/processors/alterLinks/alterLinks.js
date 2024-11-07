@@ -1,4 +1,4 @@
-import { buildUrl } from '../../../../utils/svelte/buildUrl.js';
+import { addBasePath } from '../../../../utils/svelte/addBasePath.js';
 import { getEvidenceConfig } from '@evidence-dev/sdk/config';
 
 /** @type {import("@evidence-dev/sdk/config").EvidenceConfig} */
@@ -18,7 +18,7 @@ export const alterLinks = {
 			const originalContent = match[0];
 			const href = match[1];
 			if (href) {
-				const newHref = buildUrl(href.toString(), cfg);
+				const newHref = addBasePath(href.toString(), cfg);
 				r = r.replace(originalContent, originalContent.replace(href, newHref));
 			}
 		}

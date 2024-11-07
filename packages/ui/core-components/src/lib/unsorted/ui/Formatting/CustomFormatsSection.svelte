@@ -5,7 +5,7 @@
 <script>
 	import CustomFormatGrid from './CustomFormatGrid.svelte';
 	import CollapsibleTableSection from './CollapsibleTableSection.svelte';
-	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import ssf from 'ssf';
 	export let builtInFormats = {};
 	export let customFormattingSettings = {};
@@ -18,7 +18,7 @@
 	let newFormatValidationErrors = '';
 
 	async function deleteCustomFormat(format) {
-		const submitted = await fetch(buildUrl('/api/customFormattingSettings.json'), {
+		const submitted = await fetch(addBasePath('/api/customFormattingSettings.json'), {
 			method: 'DELETE',
 			body: JSON.stringify({
 				formatTag: format.formatTag
@@ -35,7 +35,7 @@
 		if (validationErrors && validationErrors.length > 0) {
 			newFormatValidationErrors = validationErrors.join('<br/>');
 		} else {
-			const submitted = await fetch(buildUrl('/api/customFormattingSettings.json'), {
+			const submitted = await fetch(addBasePath('/api/customFormattingSettings.json'), {
 				method: 'POST',
 				body: JSON.stringify({
 					newCustomFormat: { formatTag, formatCode, valueType }

@@ -2,7 +2,7 @@
 	import { Button } from '../../../atoms/shadcn/button';
 	import * as DropdownMenu from '../../../atoms/shadcn/dropdown-menu';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import {
 		Settings,
 		_3dCubeSphere,
@@ -69,29 +69,29 @@
 		{#if dev}
 			<DropdownMenu.Separator />
 			<DropdownMenu.Group>
-				<DropdownMenu.Item href={buildUrl('/settings')} el="a">
+				<DropdownMenu.Item href={addBasePath('/settings')} el="a">
 					Settings
 					<DropdownMenu.Shortcut><Icon src={Settings} class="w-4 h-4" /></DropdownMenu.Shortcut>
 				</DropdownMenu.Item>
-				<DropdownMenu.Item href={buildUrl('/settings/#deploy')} el="a">
+				<DropdownMenu.Item href={addBasePath('/settings/#deploy')} el="a">
 					Deploy
 					<DropdownMenu.Shortcut><Icon src={_3dCubeSphere} class="h-4 w-4" /></DropdownMenu.Shortcut
 					>
 				</DropdownMenu.Item>
-				<DropdownMenu.Item href={buildUrl('/explore/schema')} el="a">
+				<DropdownMenu.Item href={addBasePath('/explore/schema')} el="a">
 					Schema Viewer
 					<DropdownMenu.Shortcut>
 						<Icon src={Table} class="h-4 w-4" />
 					</DropdownMenu.Shortcut>
 				</DropdownMenu.Item>
-				<DropdownMenu.Item href={buildUrl('/explore/console')} el="a">
+				<DropdownMenu.Item href={addBasePath('/explore/console')} el="a">
 					SQL Console
 					<DropdownMenu.Shortcut>
 						<Icon src={Prompt} class="h-4 w-4" />
 					</DropdownMenu.Shortcut>
 				</DropdownMenu.Item>
 				<DropdownMenu.Item
-					href={buildUrl('https://docs.evidence.dev')}
+					href={addBasePath('https://docs.evidence.dev')}
 					target="_blank"
 					rel="noreferrer"
 					el="a"

@@ -4,13 +4,13 @@
 
 <script>
 	import CollapsibleTableSection from '../Formatting/CollapsibleTableSection.svelte';
-	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let settings;
 	let usageStats = (settings.send_anonymous_usage_stats ?? 'yes') === 'yes';
 
 	async function save() {
 		settings.send_anonymous_usage_stats = usageStats ? 'yes' : 'no';
-		await fetch(buildUrl('/api/settings.json'), {
+		await fetch(addBasePath('/api/settings.json'), {
 			method: 'POST',
 			body: JSON.stringify({
 				settings

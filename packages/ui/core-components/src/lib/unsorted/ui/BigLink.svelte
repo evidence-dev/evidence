@@ -3,11 +3,11 @@
 </script>
 
 <script>
-	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let href;
 </script>
 
-<a href={buildUrl(href)}>
+<a href={addBasePath(href)}>
 	<div>
 		<span>
 			<slot />

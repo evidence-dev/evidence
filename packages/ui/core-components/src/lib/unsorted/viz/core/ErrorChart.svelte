@@ -4,7 +4,7 @@
 
 <script>
 	import { dev } from '$app/environment';
-	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let error;
 	export let chartType;
 	export let minHeight = '150';
@@ -25,7 +25,7 @@
 		<div class="text-center [word-wrap:break-work] text-xs">
 			{error}
 			{#if dev && error === DevMissingCredentialsError}
-				<br /><a class="credentials-link" href={buildUrl('/settings')}>
+				<br /><a class="credentials-link" href={addBasePath('/settings')}>
 					Add&nbsp;credentials&nbsp;&rarr;</a
 				>
 			{:else if !dev && error === ProdMissingCredentialsError}

@@ -3,13 +3,13 @@
  * Ignores undefined, and absolute URLs
  * @param {string} path
  * @param {import("../../configuration/schemas/config.schema.js").EvidenceConfig} config
- * @example buildUrl('http://localhost:3000/test') // 'http://localhost:3000/test'
- * @example buildUrl('/test') // '/base/test'
- * @example buildUrl(undefined) // undefined
+ * @example addBasePath('http://localhost:3000/test') // 'http://localhost:3000/test'
+ * @example addBasePath('/test') // '/base/test'
+ * @example addBasePath(undefined) // undefined
  *
  * @returns
  */
-export const buildUrl = (path, config) => {
+export const addBasePath = (path, config) => {
 	if (path === undefined) return path;
 	if (path.startsWith('http')) return path;
 	if (path.startsWith('#')) return path; // ignore hash links
@@ -23,6 +23,9 @@ export const buildUrl = (path, config) => {
 			basePath = basePath.slice(0, -1);
 		}
 		if (path.startsWith(basePath)) return path;
+		if (!path.startsWith('/')) {
+			path = `/${path}`;
+		}
 		return `${basePath}${path}`;
 	} else {
 		return path;
