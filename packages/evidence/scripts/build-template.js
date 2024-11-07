@@ -47,7 +47,7 @@ fsExtra.outputFileSync(
 	`import { sveltekit } from "@sveltejs/kit/vite"
 	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
 	import { createLogger } from 'vite';
-	import { sourceQueryHmr, configVirtual } from '@evidence-dev/sdk/vite';
+	import { sourceQueryHmr, configVirtual } from '@evidence-dev/sdk/build/vite';
 	import { isDebug } from '@evidence-dev/sdk/utils';
 
 	const logger = createLogger();
@@ -75,7 +75,7 @@ fsExtra.outputFileSync(
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [sveltekit(), evidenceVitePlugin(), sourceQueryHmr(), configVirtual()],
+        plugins: [sveltekit(), configVirtual(), evidenceVitePlugin(), sourceQueryHmr()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
 				// We need these to prevent HMR from doing a full page reload
@@ -93,7 +93,7 @@ fsExtra.outputFileSync(
 				])
 				
 			],
-            exclude: ['svelte-icons', '@evidence-dev/universal-sql']
+            exclude: ['svelte-icons', '@evidence-dev/universal-sql', '$evidence/config']
         },
         ssr: {
             external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/plugin-connector']

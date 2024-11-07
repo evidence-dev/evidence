@@ -211,7 +211,7 @@
 			<div class="flex flex-col pb-6">
 				<a
 					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize hover:underline"
-					href={buildUrl("/")}
+					href={buildUrl('/')}
 				>
 					Home
 				</a>

@@ -66,7 +66,7 @@ export async function GET() {
 		const pagesDir = fs.readdirSync('src/pages', { withFileTypes: true, recursive: true });
 		for (const dirent of pagesDir) {
 			if (dirent.isFile() && dirent.name.endsWith('.md')) {
-				const path = `${dirent.parentPath}/${dirent.name}`;
+				const path = `${'parentPath' in dirent ? dirent.parentPath : dirent.path}/${dirent.name}`;
 				const content = fs.readFileSync(path, 'utf-8');
 				pages[`/${path}`] = content;
 			}

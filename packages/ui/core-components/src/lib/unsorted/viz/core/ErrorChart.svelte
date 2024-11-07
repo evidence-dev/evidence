@@ -25,7 +25,9 @@
 		<div class="text-center [word-wrap:break-work] text-xs">
 			{error}
 			{#if dev && error === DevMissingCredentialsError}
-				<br /><a class="credentials-link" href={buildUrl("/settings")}> Add&nbsp;credentials&nbsp;&rarr;</a>
+				<br /><a class="credentials-link" href={buildUrl('/settings')}>
+					Add&nbsp;credentials&nbsp;&rarr;</a
+				>
 			{:else if !dev && error === ProdMissingCredentialsError}
 				<br /><a
 					class="credentials-link"

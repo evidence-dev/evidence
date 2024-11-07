@@ -6,9 +6,9 @@
 </script>
 
 {#if logo}
-	<img src={logo} alt="logo" class="h-5 aspect-auto" href={buildUrl("/")} />
+	<img src={logo} alt="logo" class="h-5 aspect-auto" href={buildUrl('/')} />
 {:else if title}
 	{title}
 {:else}
-	<img src={defaultLogo} alt="evidence" class="h-5 aspect-auto" href={buildUrl("/")} />
+	<img src={defaultLogo} alt="evidence" class="h-5 aspect-auto" href={buildUrl('/')} />
 {/if}

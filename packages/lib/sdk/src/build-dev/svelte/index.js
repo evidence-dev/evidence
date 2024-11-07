@@ -10,7 +10,7 @@ import { obfuscateCode } from './processors/obfuscateCode/obfuscateCode.js';
 import { transformQueries } from './processors/transformQueries/transformQueries.js';
 import { highlight } from './processors/highlight/highlight.js';
 import { injectComponents } from './processors/injectComponents/injectComponents.js';
-
+import { alterLinks } from './processors/alterLinks/alterLinks.js';
 /**
  * @typedef {Object} EvidencePreprocessOptions
  * @property {boolean} [escapeCode = true] If false, disables the b64 escaping of codeblock content
@@ -34,7 +34,21 @@ export const svelte = (opts = {}) => {
 	processors.push(injectQueries);
 	processors.push(initUniversalSql);
 	processors.push(injectComponents());
+	processors.push(alterLinks);
 
 	// @ts-expect-error Typescript is upset about this for some reason
 	return seqPreprocessor(processors);
+};
+
+export {
+	addScriptTags,
+	convertToHtml,
+	extractQueries,
+	highlight,
+	injectHighlightStyles,
+	injectQueries,
+	initUniversalSql,
+	injectComponents,
+	transformQueries,
+	alterLinks
 };

@@ -2,9 +2,11 @@ import evidencePreprocess from '@evidence-dev/preprocess';
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
 import { evidencePlugins } from '@evidence-dev/plugin-connector';
+import { alterLinks } from '@evidence-dev/sdk/build/svelte';
 import fs from 'fs';
 import path from 'path';
-
+import { getEvidenceConfig } from '@evidence-dev/sdk/config';
+const evidenceConfig = getEvidenceConfig();
 /**
  * @param {Object} a
  * @param {Object} b
@@ -41,7 +43,8 @@ const config = {
 		evidencePlugins(),
 		preprocess({
 			postcss: true
-		})
+		}),
+		alterLinks
 	],
 	onwarn: errorHandler,
 	kit: {
@@ -51,6 +54,9 @@ const config = {
 		files: {
 			routes: 'src/pages',
 			lib: 'src/components'
+		},
+		paths: {
+			base: evidenceConfig.deployment.basePath
 		}
 	}
 };

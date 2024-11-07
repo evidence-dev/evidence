@@ -35,7 +35,7 @@
 		style="max-width:{maxWidth}px;"
 	>
 		{#if hideSidebar || sidebarFrontMatter === 'never'}
-			<a href={buildUrl("/")} class="block text-sm font-bold text-gray-800">
+			<a href={buildUrl('/')} class="block text-sm font-bold text-gray-800">
 				<Logo {logo} {title} />
 			</a>
 		{:else}
@@ -56,7 +56,7 @@
 						<Icon class="w-5 h-5" src={Menu2} />
 					{/if}
 				</button>
-				<a href={buildUrl("/")} class="text-sm font-bold text-gray-800 hidden md:block">
+				<a href={buildUrl('/')} class="text-sm font-bold text-gray-800 hidden md:block">
 					<Logo {logo} {title} />
 				</a>
 			</div>

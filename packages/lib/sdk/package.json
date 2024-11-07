@@ -31,17 +31,23 @@
 			"require": null,
 			"types": "./src/utils/svelte/index.d.ts"
 		},
+		"./build/svelte": {
+			"default": "./src/build-dev/svelte/index.js",
+			"import": "./src/build-dev/svelte/index.js",
+			"require": null,
+			"types": "./src/build-dev/svelte/index.d.ts"
+		},
+		"./build/vite": {
+			"default": "./src/build-dev/vite/plugins.js",
+			"import": "./src/build-dev/vite/plugins.js",
+			"types": "./types/build-dev/vite/plugins.js",
+			"require": null
+		},
 		"./legacy-compat": {
 			"default": "./src/legacy-compat.js",
 			"import": "./src/legacy-compat.js",
 			"require": null,
 			"types": "./src/legacy-compat.d.ts"
-		},
-		"./vite": {
-			"default": "./src/build-dev/vite/plugins.js",
-			"import": "./src/build-dev/vite/plugins.js",
-			"types": "./types/build-dev/vite/plugins.js",
-			"require": null
 		},
 		"./meta": {
 			"default": "./src/meta.js",

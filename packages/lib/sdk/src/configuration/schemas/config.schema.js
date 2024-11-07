@@ -8,3 +8,5 @@ export const EvidenceConfigSchema = z.object({
 		basePath: z.string().optional()
 	})
 });
+
+/** @typedef {z.infer<typeof EvidenceConfigSchema>} EvidenceConfig */

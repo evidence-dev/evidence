@@ -16,8 +16,10 @@ export const getEvidenceConfigLegacy = () => {
 
 	const result = yaml.parse(fileContents.replaceAll(/($|\s)(@.+):/g, '$1"$2":'));
 
-	const { success, data } = EvidenceConfigSchema.safeParse({ plugins: result });
-
+	const { success, data } = EvidenceConfigSchema.safeParse({
+		plugins: result,
+		deployment: { basePath: '' }
+	});
 	if (!success) throw new EvidenceError('Invalid evidence.plugins.yaml file detected');
 	return data;
 };
