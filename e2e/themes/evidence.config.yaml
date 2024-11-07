@@ -3,6 +3,9 @@ themes:
     primary:
       light: "#ff0000"
       dark: "#00ff00"
+    myCustomColor:
+      light: "#abcdef"
+      dark: "#fedcba"
 
 plugins:
   components:

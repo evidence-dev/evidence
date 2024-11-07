@@ -232,28 +232,6 @@
 	--ui-font-family: theme(fontFamily.sans);
 	--ui-font-family-compact: theme(fontFamily.sans);
 
-	--primary: theme(colors.primary);
-	--primary-content: theme(colors.primary-content);
-	--secondary: theme(colors.secondary);
-	--secondary-content: theme(colors.secondary-content);
-	--accent: theme(colors.accent);
-	--accent-content: theme(colors.accent-content);
-	--neutral: theme(colors.neutral);
-	--neutral-content: theme(colors.neutral-content);
-	--base-100: theme(colors.base-100);
-	--base-200: theme(colors.base-200);
-	--base-300: theme(colors.base-300);
-	--base-content: theme(colors.base-content);
-	--base-content-muted: theme(colors.base-content-muted);
-	--info: theme(colors.info);
-	--info-content: theme(colors.info-content);
-	--positive: theme(colors.positive);
-	--positive-content: theme(colors.positive-content);
-	--negative: theme(colors.negative);
-	--negative-content: theme(colors.negative-content);
-	--warning: theme(colors.warning);
-	--warning-content: theme(colors.warning-content);
-
 	/* Colour System */
 	--blue-50: theme(colors.blue.50);
 	--blue-100: theme(colors.blue.100);

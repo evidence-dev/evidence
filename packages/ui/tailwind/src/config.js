@@ -3,6 +3,7 @@ import { createThemes as createTwcThemes } from 'tw-colors';
 
 import { loadThemesConfig } from './themes/index.js';
 import { buildThemes } from './themes/buildThemes.js';
+import { createVarsForColors } from './themes/createVarsForColors/createVarsForColors.js';
 
 const themesConfig = loadThemesConfig();
 const themes = buildThemes(themesConfig);
@@ -44,7 +45,7 @@ export const config = {
 			}
 		}
 	},
-	plugins: [createTwcThemes(twcConfig)],
+	plugins: [createTwcThemes(twcConfig), createVarsForColors(themes)],
 	darkMode: ['selector', '[data-theme="dark"]']
 };
 
