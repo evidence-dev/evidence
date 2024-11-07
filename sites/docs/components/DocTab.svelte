@@ -1,6 +1,5 @@
 <script>
 	import { onMount } from 'svelte';
-	// import Pedistal from './Pedistal.svelte';
 
 	let activeTab = 'preview';
 	let activeBorderStyles = {};
@@ -49,21 +48,13 @@
 	</div>
 	<div class="border-b border-gray-300 w-full"></div>
 
-	<!-- <div>
-		<Pedistal visible={activeTab === 'preview'}>
-			<slot name="preview" />
-		</Pedistal>
-		<Pedistal visible={activeTab === 'code'}>
-			<slot  />
-		</Pedistal>
-	</div> -->
-
 	<div class="overflow-hidden grid">
 		<div
 			class="mt-2 mb-3 overflow-hidden col-start-1 col-end-2 row-start-1 row-end-2 transition-[max-height] ease-in-out duration-3000"
 			class:invisible={activeTab !== 'preview'}
 			class:slide-in={activeTab === 'preview'}
-			class:slide-out={activeTab !== 'preview'}
+			class:slide-out={activeTab !== 'preview' && activeTab === 'code'}
+			class:slide-out-right={activeTab !== 'preview' && activeTab !== 'code'}
 		>
 			<slot name="preview" />
 		</div>
@@ -71,7 +62,8 @@
 			class="overflow-auto md-preview col-start-1 col-end-2 row-start-1 row-end-2 transition-[max-height] ease-in-out duration-3000"
 			class:invisible={activeTab !== 'code'}
 			class:slide-in={activeTab === 'code'}
-			class:slide-out={activeTab !== 'code'}
+			class:slide-out-right={activeTab !== 'code' && activeTab === 'preview'}
+			class:slide-out={activeTab !== 'code' && activeTab !== 'preview'}
 		>
 			<slot />
 		</div>
@@ -84,18 +76,29 @@
 		opacity: 0;
 		height: 0;
 		overflow: hidden;
-		transform: translateY(-70%);
+		transform: translateX(-100%);
 		transition:
-			opacity 0.3s ease,
-			transform 0.3s ease;
+			opacity 0.5s ease,
+			transform 0.5s ease;
 	}
 
 	.slide-in {
 		opacity: 1;
-		transform: translateY(0);
+		transform: translateX(0);
 		transition:
-			opacity 0.3s ease,
-			transform 0.3s ease; /* 0.2s delay for transform */
+			opacity 0.5s ease,
+			transform 0.5s ease;
+	}
+
+	.slide-out-right {
+		margin: 0;
+		opacity: 0;
+		height: 0;
+		overflow: hidden;
+		transform: translateX(100%);
+		transition:
+			opacity 0.5s ease,
+			transform 0.5s ease;
 	}
 
 	/* Style only the codeblocks in the md-preview */
