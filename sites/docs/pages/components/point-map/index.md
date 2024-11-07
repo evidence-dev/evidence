@@ -29,6 +29,8 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 
 <PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200 basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
 
+<p class="text-xs">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</p>
+
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
 ```svelte
