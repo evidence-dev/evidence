@@ -9,6 +9,7 @@ Evidence is a very flexible and open-ended tool that allows you to build almost 
 1. [Only source the data you need](#1-only-source-the-data-you-need)
 2. [Sort your source queries](#2-sort-your-source-queries)
 3. [Change props, not components](#3-change-props-not-components)
+4. [Avoid large markdown queries](#4-avoid-large-markdown-queries)
 
 ## Source Performance
 
@@ -110,4 +111,13 @@ select * from products
 />
 ````
 
+### 4. Avoid large markdown queries
+
+<Alert status=warning>
+
+**Best Practice:** Do not load return more than ~100,000 rows from queries on your page. Aggregate data in your markdown queries or source queries if needed.
+
+</Alert>
+
+Browsers have limited memory, and large datasets can cause slowdowns, increased rendering times and crashes. It's unlikely that you are attempting to visualize 100,000 datapoints on a webpage (an average desktop display only has ~1M pixels) so you can aggregate the data in your markdown queries, or even in you source queries.
 
