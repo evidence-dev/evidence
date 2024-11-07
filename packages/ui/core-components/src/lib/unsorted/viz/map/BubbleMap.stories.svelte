@@ -44,7 +44,7 @@
 </script>
 
 <Story name="Basic Usage" parameters={{ chromatic: { disableSnapshot: true } }}>
-	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" />
+	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" value="sales" />
 </Story>
 
 <Story name="Loading" parameters={{ chromatic: { disableSnapshot: true } }}>
@@ -81,6 +81,48 @@
 			{ id: 'point_name', showColumnName: false, valueClass: 'text-lg font-semibold' },
 			{ id: 'sales', fmt: 'usd', fieldClass: 'text-[grey]', valueClass: 'text-[green]' }
 		]}
+	/>
+	<div class="h-32"></div>
+</Story>
+<Story name="Legend Usage 4 corners" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<BubbleMap
+		legendType="categorical"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		size="sales"
+	/>
+	<div class="h-32"></div>
+	<BubbleMap
+		data={grouped_locations}
+		legendType="scalar"
+		lat="lat"
+		long="long"
+		value="sales"
+		size="sales"
+		legendPosition="topLeft"
+	/>
+	<div class="h-32"></div>
+	<BubbleMap
+		legendType="categorical"
+		legendPosition="bottomRight"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		size="sales"
+	/>
+	<div class="h-32"></div>
+	<BubbleMap
+		data={grouped_locations}
+		legendType="scalar"
+		lat="lat"
+		long="long"
+		value="sales"
+		size="sales"
+		legendPosition="topRight"
 	/>
 	<div class="h-32"></div>
 </Story>

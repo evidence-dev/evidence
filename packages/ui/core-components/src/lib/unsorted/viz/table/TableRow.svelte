@@ -11,6 +11,7 @@
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ChevronRight } from '@steeze-ui/tabler-icons';
+	import Sparkline from '../core/_Sparkline.svelte';
 
 	export let displayedData = undefined;
 	export let rowShading = undefined;
@@ -190,6 +191,113 @@
 						neutralMax={column.neutralMax}
 						chip={column.chip}
 					/>
+				{:else if column.contentType === 'bar' && row[column.id] !== undefined}
+					{@const total_width =
+						column_min >= 0
+							? column_max
+							: column_max < 0
+								? column_min
+								: Math.abs(column_min) + column_max}
+					<div
+						style="width: 100%; background-color: {column.backgroundColor}; position: relative; height: 100%; display: flex; align-items: center; overflow: hidden;"
+					>
+						<!-- Conditionally render axis line and negative space if any row has negative values -->
+						{#if column_min < 0}
+							<!-- Axis line in the center -->
+							<!-- <div style="width: 0.5px;background-color: #000; position: absolute; left: {column_min < 0 ? (Math.abs(column_min) / (Math.abs(column_min) + column_max)) * 100 : 0}%; top: 0; height: 100%; z-index: 1;"></div> -->
+
+							<!-- Negative bar (if value is negative) -->
+							{#if row[column.id] < 0}
+								<div
+									style="width: {Math.min(
+										Math.abs((row[column.id] / total_width) * 100),
+										100
+									)}%; background-color: {column.negativeBarColor}; height: 100%; position: absolute; right: {(1 -
+										Math.abs(column_min) / (Math.abs(column_min) + column_max)) *
+										100}%;"
+								></div>
+							{/if}
+						{/if}
+
+						<!-- Positive bar (if value is positive or zero) -->
+						{#if row[column.id] >= 0}
+							<div
+								style="width: {Math.min(
+									(row[column.id] / total_width) * 100,
+									100
+								)}%; background-color: {column.barColor}; height: 100%; position: absolute; left: {column_min <
+								0
+									? (Math.abs(column_min) / (Math.abs(column_min) + column_max)) * 100 + '%'
+									: '0'};"
+							></div>
+						{/if}
+
+						<!-- Display label -->
+						<div
+							class:invisible={column.hideLabels}
+							style="
+								position: relative; 
+								z-index: 2; 
+								padding-left: 4px; 
+								padding-right: 4px; 
+								text-align: {column.align ?? 'left'};
+								width: {(Math.abs(column_max) /
+								((column_min < 0 ? Math.abs(column_min) : 0) + Math.abs(column_max))) *
+								100}%;
+								left: {column_min < 0 && column_max >= 0
+								? (Math.abs(column_min) / (Math.abs(column_min) + column_max)) * 100 + '%'
+								: '0'};"
+						>
+							{formatValue(row[column.id], column_format, useCol.columnUnitSummary)}
+						</div>
+					</div>
+
+					<!-- <div style="background-color: red; max-width: '{row[column.id] / column_max * 100}%'">{row[column.id]}</div> -->
+				{:else if column.contentType === 'sparkline' && row[column.id] !== undefined}
+					{@const alignment = column.align ?? 'center'}
+					<div class="items-{alignment} justify-{alignment} flex">
+						<Sparkline
+							type="line"
+							data={[...row[column.id]]}
+							dateCol={column.sparkX}
+							valueCol={column.sparkY}
+							interactive="false"
+							color={column.sparkColor}
+							yScale={column.sparkYScale}
+							height={column.sparkHeight ?? 19}
+							width={column.sparkWidth ?? 90}
+						/>
+					</div>
+				{:else if column.contentType === 'sparkbar' && row[column.id] !== undefined}
+					<div class="items-center justify-center flex">
+						<Sparkline
+							type="bar"
+							data={[...row[column.id]]}
+							dateCol={column.sparkX}
+							valueCol={column.sparkY}
+							interactive="false"
+							color={column.sparkColor}
+							yScale={column.sparkYScale}
+							height={column.sparkHeight ?? 19}
+							width={column.sparkWidth ?? 90}
+						/>
+					</div>
+				{:else if column.contentType === 'sparkarea' && row[column.id] !== undefined}
+					{@const alignment =
+						column.align === 'right' ? 'end' : column.align === 'left' ? 'start' : 'center'}
+					<div class="items-center justify-{alignment} flex">
+						<Sparkline
+							type="area"
+							data={[...row[column.id]]}
+							dateCol={column.sparkX}
+							valueCol={column.sparkY}
+							interactive="false"
+							color={column.sparkColor}
+							yScale={column.sparkYScale}
+							height={column.sparkHeight ?? 20}
+							width={column.sparkWidth ?? 80}
+						/>
+					</div>
 				{:else if column.contentType === 'html' && row[column.id] !== undefined}
 					{@html row[column.id]}
 				{:else}

@@ -42,6 +42,9 @@
 			downloadableImage: {
 				control: 'boolean',
 				options: [true, false]
+			},
+			seriesOrder: {
+				control: 'array'
 			}
 		}
 	};
@@ -68,6 +71,15 @@
 <Story
 	name="Total Labels Only"
 	args={{ x: 'x', y: 'y', series: 'series', labels: true, seriesLabels: false }}
+	let:args
+>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<BarChart {data} {...args} />
+</Story>
+
+<Story
+	name="With seriesOrder"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
 	let:args
 >
 	{@const data = Query.create(`select * from numeric_series`, query)}

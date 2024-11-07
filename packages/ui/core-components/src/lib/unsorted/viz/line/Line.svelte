@@ -75,6 +75,7 @@
 	 * @type {'start' | 'middle' | 'end' }
 	 */
 	export let stepPosition = 'end';
+	export let seriesOrder = undefined;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
@@ -189,6 +190,7 @@
 		name,
 		xMismatch,
 		columnSummary,
+		seriesOrder,
 		undefined,
 		undefined,
 		y2

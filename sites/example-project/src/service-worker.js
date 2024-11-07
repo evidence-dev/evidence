@@ -7,7 +7,18 @@
 
 const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (self));
 
-sw.addEventListener('fetch', async (event) => {
+const disabled = import.meta.env.VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER === 'true';
+
+sw.addEventListener('activate', () => {
+	if (disabled) {
+		console.debug(
+			'Detected VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER. Service Worker disabled.'
+		);
+	}
+});
+
+sw.addEventListener('fetch', (event) => {
+	if (disabled) return;
 	if (!event.request.url.endsWith('.parquet')) return;
 
 	const userAgent = event.request.headers.get('User-Agent');

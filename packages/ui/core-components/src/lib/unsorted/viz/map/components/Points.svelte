@@ -7,9 +7,7 @@
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import Point from './Point.svelte';
-	import ErrorChart from '../../core/ErrorChart.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
-	import { mapColours } from '@evidence-dev/component-utilities/colours';
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -17,6 +15,7 @@
 	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { nanoid } from 'nanoid';
 	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -34,8 +33,13 @@
 	export let sizeFmt = undefined;
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
-	/** @type { 'categorical' | 'scalar' | undefined} */
+	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+	/** @type {'Point Map' | 'Bubble Map'} */
+	export let chartType = 'Point Map';
+
+	/** @type {boolean} */
+	export let legend = true;
 
 	if (size) {
 		// if size was user-supplied
@@ -89,8 +93,8 @@
 	export let borderColor = 'white';
 	/** @type {string|undefined} */
 	export let color = undefined;
-	/** @type {string[]} */
-	export let colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+	/** @type {string[] | undefined} */
+	export let colorPalette = undefined;
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;
@@ -215,26 +219,29 @@
 	/** @type {'bubble' | 'points' }*/
 	export let pointStyle = 'points';
 
+	/** @type {string}*/
+	let legendId = map.registerPane(nanoid());
+
 	/**
 	 * Initialize the component.
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
-		let initDataOptions = {
-			corordinates: [lat, long],
-			value,
-			checkInputs,
-			min,
-			max,
-			colorPalette,
-			legendType,
-			paneType
-		};
 		if (data) {
-			({ values, colorScale, colorPalette, paneType } = await map.initializeData(
-				data,
-				initDataOptions
-			));
+			let initDataOptions = {
+				corordinates: [lat, long],
+				value,
+				checkInputs,
+				min,
+				max,
+				colorPalette,
+				legendType,
+				valueFmt,
+				chartType,
+				legendId,
+				legend
+			};
+			({ values, colorPalette, colorScale } = await map.initializeData(data, initDataOptions));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -291,12 +298,6 @@
 		});
 		setInputDefault(item, name);
 	}
-
-	/** @type {string}*/
-	let paneType = map.checkPanes(pointStyle);
-
-	/** @type {number | undefined} */
-	export let z = undefined;
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
@@ -315,8 +316,7 @@
 				color: borderColor,
 				className: `outline-none ${pointClass}`,
 				markerType: pointStyle,
-				pane: paneType,
-				z: z
+				pane: legendId
 			}}
 			selectedOptions={{
 				fillColor: selectedColor,
@@ -349,5 +349,5 @@
 		/>
 	{/each}
 {:catch e}
-	<ErrorChart error={e} chartType="Point Map" />
+	{map.handleInternalError(e)}
 {/await}

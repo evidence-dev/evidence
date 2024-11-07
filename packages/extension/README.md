@@ -107,20 +107,6 @@ You can access the VS Code shortcut commands from the command palette (`Cmd/Ctrl
 | `viewSettings`        | VS Code Extension Settings | View Evidence extension settings in the built-in VS Code Settings editor.                           |
 | `copyProject`         | Copy Existing Project      | Provide a URL of a Github repo to pull from                                                         |
 
-## Deployment
-
-You can self-host or deploy on Evidence Cloud, with a public project or behind user authentication.
-
-Evidence projects utlize a scheduled build process, which runs the queries in your project and builds all of your pages. The output of this process is a pre-built, self-contained static web application.
-
-This results in near instant page loads for your users and means that they are not hitting your data warehouse by interacting with their reports.
-
-Despite this static output, you can still deliver fully interactive and exporable data products through our most recent release for [Universal SQL](https://evidence.dev/universal-sql)
-
-[Sign up for Evidence Cloud here](https://evidence.dev/cloud)
-
-[Learn more about deployment here](https://docs.evidence.dev/deployment/overview)
-
 ## Settings
 
 Create [User or Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_creating-user-and-workspace-settings) to change default Evidence VS Code extension Settings.

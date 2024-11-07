@@ -41,10 +41,13 @@
 	/** @type {string} */
 	export let xProfile = undefined;
 	/** @type {string} */
+	export let blueskyProfile = undefined;
+	/** @type {string} */
 	export let slackCommunity = undefined;
 	/** @type {string}*/
 	export let maxWidth = undefined;
-
+	/** @type {string}*/
+	export let homePageName = 'Home';
 	/** @type {boolean} */
 	export let hideBreadcrumbs = false;
 	/** @type {boolean} */
@@ -95,9 +98,15 @@
 
 	onMount(() => {
 		if (!('serviceWorker' in navigator)) return;
-		addEventListener('load', () => {
+
+		const registerServiceWorker = () => {
 			navigator.serviceWorker.register('/service-worker.js');
-		});
+		};
+
+		window.addEventListener('load', registerServiceWorker);
+		return () => {
+			window.removeEventListener('load', registerServiceWorker);
+		};
 	});
 
 	// TODO where should this go? How do we get project splash to be rendered with the proper theme?
@@ -122,6 +131,7 @@
 				{githubRepo}
 				{slackCommunity}
 				{xProfile}
+				{blueskyProfile}
 				{algolia}
 				{sidebarFrontMatter}
 			/>
@@ -138,6 +148,7 @@
 						bind:mobileSidebarOpen
 						{title}
 						{logo}
+						{homePageName}
 						{builtWithEvidence}
 						{hideHeader}
 						{sidebarFrontMatter}

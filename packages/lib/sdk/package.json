@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "1.4.3",
+	"version": "1.4.5",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js"
@@ -60,6 +60,12 @@
 			"import": "./src/configuration/index.js",
 			"require": null,
 			"types": "./src/configuration/index.js"
+		},
+		"./logger": {
+			"default": "./src/logger/index.js",
+			"import": "./src/logger/index.js",
+			"require": null,
+			"types": "./src/logger/index.js"
 		}
 	},
 	"scripts": {

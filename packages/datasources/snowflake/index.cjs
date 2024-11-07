@@ -152,6 +152,7 @@ const getCredentials = (database = {}) => {
 	const warehouse = database.warehouse;
 	const role = database.role;
 	const schema = database.schema;
+	const resultPrefetch = database.resultPrefetch ?? 2;
 
 	// https://docs.snowflake.com/en/developer-guide/node-js/nodejs-driver-connect#label-nodejs-proxy-connection
 	const proxyOptions = database.proxy
@@ -171,6 +172,7 @@ const getCredentials = (database = {}) => {
 		warehouse,
 		role,
 		schema,
+		resultPrefetch,
 		...proxyOptions
 	};
 
@@ -194,8 +196,10 @@ const getCredentials = (database = {}) => {
 			authenticator
 		};
 	} else if (authenticator === 'externalbrowser') {
+		const clientStoreTemporaryCredential = database.clientStoreTemporaryCredential ?? false;
 		return {
 			...baseOptions,
+			clientStoreTemporaryCredential,
 			authenticator
 		};
 	} else if (authenticator === 'okta') {
@@ -265,6 +269,7 @@ module.exports = runQuery;
 /**
  * @typedef {Object} SnowflakeBrowserOptions
  * @property {'externalbrowser'} authenticator
+ * @property {boolean} clientStoreTemporaryCredential
  */
 
 /**
@@ -380,6 +385,12 @@ module.exports.options = {
 					secret: true,
 					required: true
 				}
+			},
+			externalbrowser: {
+				clientStoreTemporaryCredential: {
+					title: 'Cache SSO token',
+					type: 'boolean'
+				}
 			}
 		}
 	},
@@ -424,5 +435,12 @@ module.exports.options = {
 				}
 			}
 		}
+	},
+	resultPrefetch: {
+		title: 'Number of Prefetched Batches',
+		type: 'number',
+		secret: false,
+		required: false,
+		default: 2
 	}
 };

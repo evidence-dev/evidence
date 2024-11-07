@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "4.8.3",
+	"version": "4.8.10",
 	"evidence": {
 		"components": true
 	},
@@ -60,7 +60,6 @@
 		"export-to-csv": "0.2.1",
 		"leaflet": "^1.9.4",
 		"lodash": "^4.17.21",
-		"mermaid": "^10.9.1",
 		"nanoid": "^5.0.4",
 		"perfect-debounce": "^1.0.0",
 		"prismjs": "1.29.0",
@@ -96,7 +95,6 @@
 		"@sveltejs/package": "^2.3.1",
 		"@sveltejs/vite-plugin-svelte": "3.0.2",
 		"@types/lodash.debounce": "^4.0.9",
-		"@types/mermaid": "^9.2.0",
 		"@vitest/coverage-v8": "^2.0.5",
 		"autoprefixer": "^10.4.19",
 		"chromatic": "^11.4.0",

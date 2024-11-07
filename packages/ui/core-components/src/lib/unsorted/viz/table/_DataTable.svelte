@@ -43,6 +43,20 @@
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
 
+	// Sort props
+	export let sort = undefined;
+	let sortBy = undefined;
+	let sortAsc = undefined;
+	let sortDirection = undefined;
+	let sortObj = {};
+	$: if (sort) {
+		const [column, direction] = sort.split(' ');
+		sortBy = column;
+		sortDirection = direction;
+		sortAsc = direction === 'desc' ? false : true; // Default to ascending if no direction is provided
+		sortObj = sortBy ? { col: sortBy, ascending: sortAsc } : { col: null, ascending: null };
+	}
+
 	export let groupBy = undefined;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
@@ -163,6 +177,18 @@
 		// GET COLUMN SUMMARY
 		columnSummary = getColumnSummary(data, 'array');
 
+		// Check if sort column is in table
+		if (sortBy) {
+			if (!columnSummary.map((d) => d.id).includes(sortBy)) {
+				throw Error(
+					`${sortBy} is not a column in the dataset. sort should contain one column name and optionally a direction (asc or desc). E.g., sort=my_column or sort="my_column desc"`
+				);
+			}
+			if (sortDirection && !['asc', 'desc'].includes(sortDirection)) {
+				throw Error(`${sortDirection} is not a valid sort direction. Please use asc or desc`);
+			}
+		}
+
 		// PROCESS DATES
 		// Filter for columns with type of "date"
 		const dateCols = columnSummary
@@ -250,68 +276,77 @@
 	// SORTING
 	// ---------------------------------------------------------------------------------------
 
-	let sortBy = { col: null, ascending: null };
-
-	$: sort = (column) => {
-		if (sortBy.col == column) {
-			sortBy.ascending = !sortBy.ascending;
+	$: sortClick = (column) => {
+		if (sortObj.col === column) {
+			// If the clicked column is the same as inital sort column, switch the sort direction
+			sortObj.ascending = !sortObj.ascending;
 		} else {
-			sortBy.col = column;
-			sortBy.ascending = true;
+			// If the clicked column is different from initial sort column, change the sort column and sort ascending
+			sortObj.col = column;
+			sortObj.ascending = true;
 		}
 
+		sortFunc(sortObj);
+	};
+
+	$: sortFunc = (sortObj) => {
+		const column = sortObj.col;
+
 		// Modifier to sorting function for ascending or descending
-		const sortModifier = sortBy.ascending ? 1 : -1;
+		const sortModifier = sortObj.ascending ? 1 : -1;
 
 		const forceTopOfAscending = (val) =>
 			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
 
-		const sort = (a, b) =>
+		const comparator = (a, b) =>
 			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
 				? -1 * sortModifier
 				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
 					  a[column] > b[column]
 					? 1 * sortModifier
 					: 0;
-		data.sort(sort);
-		filteredData = filteredData.sort(sort);
+
+		const sortedFilteredData = [...filteredData].sort(comparator);
+
+		filteredData = sortedFilteredData;
 
 		if (groupBy) {
-			// sort within grouped data
+			const sortedGroupedData = {};
+
 			for (const groupName of Object.keys(groupedData)) {
-				groupedData[groupName] = groupedData[groupName].sort(sort);
+				sortedGroupedData[groupName] = [...groupedData[groupName]].sort(comparator);
 			}
+
+			groupedData = sortedGroupedData;
 		}
 	};
 
 	let sortedGroupNames;
-	$: if (groupBy && sortBy.col) {
+	$: if (groupBy && sortObj.col) {
 		// Sorting groups based on aggregated values or group names
 		sortedGroupNames = Object.entries(groupRowData)
 			.sort((a, b) => {
-				const valA = a[1][sortBy.col],
-					valB = b[1][sortBy.col];
+				const valA = a[1][sortObj.col],
+					valB = b[1][sortObj.col];
 				// Use the existing sort logic but apply it to groupRowData's values
 				if (
 					(valA === undefined || valA === null || isNaN(valA)) &&
 					valB !== undefined &&
-					valB !== null &&
 					!isNaN(valB)
 				) {
-					return -1 * (sortBy.ascending ? 1 : -1);
+					return -1 * (sortObj.ascending ? 1 : -1);
 				}
 				if (
 					(valB === undefined || valB === null || isNaN(valB)) &&
 					valA !== undefined &&
-					valA !== null &&
 					!isNaN(valA)
 				) {
-					return 1 * (sortBy.ascending ? 1 : -1);
+					return 1 * (sortObj.ascending ? 1 : -1);
 				}
 				if (valA < valB) {
-					return -1 * (sortBy.ascending ? 1 : -1);
+					return -1 * (sortObj.ascending ? 1 : -1);
 				} else if (valA > valB) {
-					return 1 * (sortBy.ascending ? 1 : -1);
+					return 1 * (sortObj.ascending ? 1 : -1);
 				}
 				return 0;
 			})
@@ -321,8 +356,10 @@
 		sortedGroupNames = Object.keys(groupedData).sort();
 	}
 
-	// Reset sort condition when data object is changed
-	$: data, (sortBy = { col: null, ascending: null });
+	// Re-run sort on data change (useful for input changes)
+	$: if (data && sort) {
+		sortFunc(sortObj);
+	}
 
 	// ---------------------------------------------------------------------------------------
 	// PAGINATION
@@ -479,6 +516,7 @@
 	{/each}
 
 	<div
+		data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
 		role="none"
 		class="table-container"
 		transition:slide|local
@@ -502,9 +540,9 @@
 					{columnSummary}
 					{compact}
 					{sortable}
-					{sort}
+					{sortClick}
 					{formatColumnTitles}
-					{sortBy}
+					{sortObj}
 					{wrapTitles}
 					{link}
 				/>

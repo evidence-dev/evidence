@@ -1,5 +1,27 @@
 # @evidence-dev/component-utilities
 
+## 3.2.17
+
+### Patch Changes
+
+- Updated dependencies [b2126ac1a]
+  - @evidence-dev/sdk@1.4.5
+
+## 3.2.16
+
+### Patch Changes
+
+- a94ca734d: add \_\_renderCount hidden property on charts plus testids and aria-labels for accessibility/test targets
+- Updated dependencies [a91b26fb3]
+- Updated dependencies [cbb8b16f4]
+  - @evidence-dev/sdk@1.4.4
+
+## 3.2.15
+
+### Patch Changes
+
+- 2b5d759f1: Add map colors
+
 ## 3.2.14
 
 ### Patch Changes

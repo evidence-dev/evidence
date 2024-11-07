@@ -13,6 +13,17 @@
 	export let pointStyle = 'bubbles';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+	export let colorPalette = undefined;
+	/** @type {boolean} */
+	export let legend = true;
 </script>
 
-<Points sizeCol={size} {opacity} {pointStyle} {legendType} {...$$restProps} />
+<Points
+	sizeCol={size}
+	{opacity}
+	{legendType}
+	{colorPalette}
+	{legend}
+	{pointStyle}
+	{...$$restProps}
+/>

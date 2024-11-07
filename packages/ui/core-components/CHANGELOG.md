@@ -1,5 +1,64 @@
 # @evidence-dev/core-components
 
+## 4.8.10
+
+### Patch Changes
+
+- e5aa2ccf2: Remove Flowchart component and mermaid dependency
+- 8e8f43d3e: Add a fmt option to dimension grid
+- e3b920690: Modified Last x Days selectors in the DateRange component so they select x days instead of x + 1 days
+- b9b51a0b2: fix transition animation in charts
+- 2ad93ef1d: Prevent CLS when highlighting codeblocks
+
+## 4.8.9
+
+### Patch Changes
+
+- cc086aa50: Add sort prop to DataTable
+- c44853b3f: fixed bubbles + points layering issue
+- eec98520a: Add sparkline and bar viz to DataTable
+- 76dda50ae: Fixes layering issue and allows for layering control of bubbles and points
+- 795f53653: Improved Map Legends, added multi-legends in basemap
+  - @evidence-dev/component-utilities@3.2.17
+  - @evidence-dev/tailwind@2.1.6
+
+## 4.8.8
+
+### Patch Changes
+
+- a94ca734d: add \_\_renderCount hidden property on charts plus testids and aria-labels for accessibility/test targets
+- Updated dependencies [a94ca734d]
+  - @evidence-dev/component-utilities@3.2.16
+  - @evidence-dev/tailwind@2.1.5
+
+## 4.8.7
+
+### Patch Changes
+
+- 163ff7a33: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+
+## 4.8.6
+
+### Patch Changes
+
+- Updated dependencies [2b5d759f1]
+  - @evidence-dev/component-utilities@3.2.15
+
+## 4.8.5
+
+### Patch Changes
+
+- 1cc64f83f: Table rows with links preload data on hover
+  Table rows with links have a chevron icon on the right side
+  Table rows dont have link styling if the link value is falsey
+- 101d58f09: Implemented categorical and scalar map legends
+
+## 4.8.4
+
+### Patch Changes
+
+- 024e93b02: Defer selectAll=false to ensure that all options are available before the behavior is turned off
+
 ## 4.8.3
 
 ### Patch Changes

@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
+	import { getContext, onDestroy } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 
 	let props = getContext(propKey);
@@ -11,7 +11,6 @@
 	let error;
 
 	const identifier = Symbol();
-
 	export let id;
 
 	/**
@@ -31,6 +30,9 @@
 		}
 	}
 
+	// COLUMN CONTENT TYPES:
+	export let contentType = undefined;
+
 	export let title = undefined;
 	export let align = undefined;
 	if (align === 'centre') {
@@ -41,9 +43,6 @@
 
 	export let wrapTitle = false;
 	$: wrapTitle = wrapTitle === 'true' || wrapTitle === true;
-
-	// COLUMN CONTENT TYPES:
-	export let contentType = undefined;
 
 	// Images:
 	export let height = undefined;
@@ -103,6 +102,22 @@
 	export let chip = false;
 	$: chip = chip === 'true' || chip === true;
 
+	// Sparkline:
+	export let sparkWidth = undefined;
+	export let sparkHeight = undefined;
+	export let sparkColor = undefined;
+	export let sparkX = undefined;
+	export let sparkY = undefined;
+	export let sparkYScale = false;
+	$: sparkYScale = sparkYScale === 'true' || sparkYScale === true;
+
+	// Bar Viz:
+	export let barColor = 'hsla(207, 69%, 79%, 1)';
+	export let negativeBarColor = 'rgb(252 165 165)';
+	export let backgroundColor = 'transparent';
+	export let hideLabels = false;
+	$: hideLabels = hideLabels === 'true' || hideLabels === true;
+
 	// Column Groups:
 	export let colGroup = undefined;
 
@@ -146,7 +161,17 @@
 		colorMid,
 		colorBreakpoints,
 		colorPalette,
-		redNegatives
+		redNegatives,
+		sparkWidth,
+		sparkHeight,
+		sparkColor,
+		sparkX,
+		sparkY,
+		sparkYScale,
+		barColor,
+		negativeBarColor,
+		backgroundColor,
+		hideLabels
 	};
 
 	/**
@@ -173,4 +198,11 @@
 		});
 	};
 	$: options, updateProps();
+
+	onDestroy(() => {
+		props.update((d) => {
+			d.columns = d.columns.filter((c) => c.identifier !== identifier);
+			return d;
+		});
+	});
 </script>
