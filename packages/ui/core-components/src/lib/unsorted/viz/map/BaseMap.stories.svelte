@@ -290,7 +290,7 @@ ORDER BY 1;
 		title="My Map"
 		height="300"
 		basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}
-		attribution="&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors"
+		attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
 	>
 		<Areas
 			data={la_zip_sales}
