@@ -105,19 +105,7 @@ export const defaultThemesConfig = {
 					'hsla(38, 89%, 62%, 1)', // Yellow
 					'hsla(342, 40%, 40%, 1)', // Maroon
 					'hsla(207, 86%, 70%, 1)', // Blue
-					'hsla(160, 40%, 46%, 1)', // Green
-					// TODO should we get rid of these gray scale colors?
-					// Grey Scale
-					'#71777d',
-					'#7e848a',
-					'#8c9196',
-					'#9a9fa3',
-					'#a8acb0',
-					'#b7babd',
-					'#c5c8ca',
-					'#d4d6d7',
-					'#e3e4e5',
-					'#f3f3f3'
+					'hsla(160, 40%, 46%, 1)' // Green
 				],
 				dark: [
 					'hsla(207, 85%, 65%, 1)', // Navy -> Bright Blue
@@ -129,19 +117,7 @@ export const defaultThemesConfig = {
 					'hsla(38, 99%, 72%, 1)', // Yellow -> Vibrant Yellow
 					'hsla(342, 60%, 65%, 1)', // Maroon -> Bright Pink
 					'hsla(207, 96%, 80%, 1)', // Blue -> Vivid Sky Blue
-					'hsla(160, 60%, 56%, 1)', // Green -> Bright Mint
-					// TODO should we get rid of these gray scale colors?
-					// Grey Scale
-					'#f3f3f3',
-					'#e3e4e5',
-					'#d4d6d7',
-					'#c5c8ca',
-					'#b7babd',
-					'#a8acb0',
-					'#9a9fa3',
-					'#8c9196',
-					'#7e848a',
-					'#71777d'
+					'hsla(160, 60%, 56%, 1)' // Green -> Bright Mint
 				]
 			}
 		},
