@@ -7,10 +7,10 @@
 	export let settings;
 
 	/** @type {unknown[]} */
-	export let datasourceSettings;
+	export let sources;
 </script>
 
-{#if !datasourceSettings.length}
+{#if !sources.length}
 	<p>You'll need to connect to at least one datasource before deploying to Vercel.</p>
 {:else if !settings.gitRepo}
 	<p>You'll need to set up a git repo before deploying to Vercel.</p>

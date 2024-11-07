@@ -13,12 +13,12 @@
 	import { Clipboard } from '@evidence-dev/component-utilities/icons';
 
 	/** @type {DatasourceSpec[]} */
-	export let datasourceSettings;
+	export let sources;
 
 	let credentials = {};
 
 	function copyVars() {
-		const vars = datasourceSettings.reduce((a, v) => {
+		const vars = sources.reduce((a, v) => {
 			return [
 				a,
 				Object.entries(v.environmentVariables)
@@ -66,7 +66,7 @@
 			<div class="titles">
 				<span class="title">Key</span><span class="title">Value</span>
 			</div>
-			{#each datasourceSettings as datasource}
+			{#each sources as datasource}
 				{#each Object.entries(datasource.environmentVariables) as [key, value]}
 					<div class="environment-variable">
 						<div class="var-name">

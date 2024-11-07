@@ -18,10 +18,9 @@
 	export let settings;
 
 	/** @type {DatasourceSpec[]} */
-	export let datasourceSettings;
+	export let sources;
 
-	/** @typedef {typeof import('svelte').SvelteComponent<{ settings?: { gitRepo?: string }; datasourceSettings?: unknown }>} FormComponent */
-
+	/** @typedef {typeof import('svelte').SvelteComponent<{ settings?: { gitRepo?: string }; sources?: unknown }>} FormComponent */
 	/** @type {{ id: string; name: string; FormComponent: FormComponent }[]} */
 	let deploymentOptions = [
 		{ id: 'evidence', name: 'Evidence Cloud', FormComponent: EvidenceDeploy },
@@ -43,7 +42,7 @@
 			</p>
 			<h3>Environment Variables</h3>
 			<div>
-				<EnvironmentVarListing {datasourceSettings} />
+				<EnvironmentVarListing {sources} />
 			</div>
 
 			<h3>Deployment Environment</h3>
@@ -57,7 +56,7 @@
 		</div>
 		{#if selectedDeployment.FormComponent}
 			<div class="panel" transition:slide|local>
-				<svelte:component this={selectedDeployment.FormComponent} {settings} {datasourceSettings} />
+				<svelte:component this={selectedDeployment.FormComponent} {settings} {sources} />
 			</div>
 		{/if}
 	</div>

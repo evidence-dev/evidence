@@ -1,13 +1,12 @@
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 import { logQueryEvent } from '@evidence-dev/telemetry';
+import { loadSources } from '@evidence-dev/sdk/plugins';
 
 export const load = async () => {
 	if (dev) {
-		const { getDatasourceOptions, getDatasourcePlugins } = await import(
-			'@evidence-dev/plugin-connector'
-		);
-		const datasourceSettings = await getDatasourceOptions();
+		const { getDatasourcePlugins } = await import('@evidence-dev/plugin-connector');
+		const sources = await loadSources();
 
 		const datasourcePlugins = await getDatasourcePlugins();
 
@@ -24,7 +23,7 @@ export const load = async () => {
 		);
 
 		return {
-			datasourceSettings: datasourceSettings.map((sp) => ({ ...sp, queries: [] })), // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
+			sources,
 			plugins: serializedPlugins
 		};
 	}
