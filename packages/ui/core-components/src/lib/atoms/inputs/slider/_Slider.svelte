@@ -151,7 +151,6 @@
 			}
 		}
 	}
-
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
