@@ -100,7 +100,6 @@
 	if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
 
-	// Query data integration
 	export let data = null;
 
 	let error;
@@ -153,7 +152,6 @@
 		}
 	}
 
-	// Query data integration
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
