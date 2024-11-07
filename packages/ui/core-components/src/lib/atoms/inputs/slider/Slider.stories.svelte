@@ -22,9 +22,12 @@
 
 	// const data = Query.create(`SELECT *, MAX(fare) as max_fare from flights limit 10`, query);
 	const data = Query.create(
-		`SELECT *, (SELECT MAX(fare) FROM flights) as max_fare, (SELECT MIN(fare) FROM flights) as min_fare
-FROM flights 
-LIMIT 10`,
+		`SELECT 
+    CAST(fare AS INT) AS fare,
+    CAST((SELECT MAX(fare) FROM flights) AS INT) AS max_fare,
+    CAST((SELECT MIN(fare) FROM flights) AS INT) AS min_fare
+  FROM flights 
+  LIMIT 10`,
 		query
 	);
 </script>
@@ -117,12 +120,12 @@ LIMIT 10`,
 	args={{
 		name: 'With data',
 		title: 'With data',
-		step: 1,
+		step: 10,
 		showMaxMin: true,
 		data: data,
 		defaultValue: 'max_fare',
 		maxColumn: 'max_fare',
-		minColumn: 'min_fare',
+		size: 'large',
 		fmt: 'usd'
 	}}
 />
