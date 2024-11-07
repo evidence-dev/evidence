@@ -62,6 +62,9 @@
 	/** @type {boolean} */
 	export let legend = true;
 
+	/** @type {string|undefined} */
+	export let attribution = undefined;
+
 	const chartType = 'Area Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -83,6 +86,7 @@
 	{emptySet}
 	{emptyMessage}
 	{error}
+	{attribution}
 >
 	<Areas
 		{data}
