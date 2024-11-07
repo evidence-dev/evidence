@@ -1,30 +1,21 @@
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 import { logQueryEvent } from '@evidence-dev/telemetry';
-import { loadSources } from '@evidence-dev/sdk/plugins';
+import { loadSources, loadSourcePlugins } from '@evidence-dev/sdk/plugins';
 
 export const load = async () => {
 	if (dev) {
-		const { getDatasourcePlugins } = await import('@evidence-dev/plugin-connector');
 		const sources = await loadSources();
+		const datasources = await loadSourcePlugins();
 
-		const datasourcePlugins = await getDatasourcePlugins();
-
-		const serializedPlugins = Object.fromEntries(
-			Object.entries(datasourcePlugins).map(([k, v]) => [
-				k,
-				{
-					...v,
-					factory: undefined,
-					testConnection: undefined,
-					processSource: undefined
-				}
-			])
-		);
+		const plugins = Object.entries(datasources.bySource).reduce((acc, [name, [pack]]) => {
+			acc[name] = { package: { package: pack } };
+			return acc;
+		}, {});
 
 		return {
 			sources,
-			plugins: serializedPlugins
+			plugins
 		};
 	}
 	return {};
