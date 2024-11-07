@@ -24,6 +24,7 @@ export const load = async () => {
 /** @type {import("@sveltejs/kit").Actions} */
 export const actions = {
 	updateSource: async (e) => {
+		// editSourceConfig, refactor to use logic without prompts
 		const formData = Object.fromEntries(await e.request.formData());
 		const source = formData.source ? JSON.parse(formData.source) : null;
 
@@ -57,6 +58,7 @@ export const actions = {
 		}
 	},
 	testSource: async (e) => {
+		// loadSourcePlugins().getByPackageName('')[1].testConnection
 		const formData = Object.fromEntries(await e.request.formData());
 		if (!formData?.source) {
 			return fail(400, { message: "Missing required field 'source'" });
