@@ -284,3 +284,36 @@ ORDER BY 1;
 		/>
 	</BaseMap>
 </Story>
+
+<Story name="With Attribution">
+	<BaseMap
+		title="My Map"
+		height="300"
+		basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}
+		attribution="&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors"
+	>
+		<Areas
+			data={la_zip_sales}
+			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
+			areaCol="zip_code"
+			name="area"
+			value="sales"
+			geoId="ZCTA5CE10"
+			valueFmt="usd"
+			tooltipType="hover"
+			opacity="1"
+		/>
+		<Bubbles
+			data={la_locations}
+			lat="lat"
+			long="long"
+			pointName="point_name"
+			value="sales"
+			size="sales"
+			tooltipType="hover"
+			opacity="0.6"
+		/>
+
+		<Points data={la_locations} lat="lat" long="long" color="red" value="sales" />
+	</BaseMap>
+</Story>

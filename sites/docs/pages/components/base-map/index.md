@@ -90,7 +90,7 @@ See the pages for [Area Map](/components/area-map), [Point Map](/components/poin
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<BaseMap basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}>
+<BaseMap basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'>
     <Points 
         data={la_locations}
         lat=lat
@@ -105,7 +105,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 </BaseMap>
 
 ```svelte
-<BaseMap basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}>
+<BaseMap basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'>
     <Points 
         data={la_locations}
         lat=lat
@@ -249,6 +249,13 @@ name="basemap"
 options="URL"
 >
 URL template for the basemap tiles.
+</PropListing>
+
+<PropListing
+name="attribution"
+options="text"
+>
+Attribution text for the basemap. E.g. `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`
 </PropListing>
 
 <PropListing
