@@ -229,9 +229,10 @@
 
 	/**
 	 * Initialize the component.
+	 * @param {import('@evidence-dev/tailwind').Theme} theme
 	 * @returns {Promise<void>}
 	 */
-	async function init() {
+	async function init(theme) {
 		if (data) {
 			let initDataOptions = {
 				corordinates: [lat, long],
@@ -244,7 +245,8 @@
 				valueFmt,
 				chartType,
 				legendId,
-				legend
+				legend,
+				theme
 			};
 			({ values, colorPalette, colorScale } = await map.initializeData(data, initDataOptions));
 
@@ -306,7 +308,7 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#await Promise.all([map.initPromise, data.fetch(), init()]) then}
+{#await Promise.all([map.initPromise, data.fetch(), init($theme)]) then}
 	{#each $data as item}
 		<Point
 			{map}

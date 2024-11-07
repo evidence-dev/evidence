@@ -6,7 +6,6 @@ import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
 import { uiColours } from '@evidence-dev/component-utilities/colours';
-import { mapColours } from '@evidence-dev/component-utilities/colours';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -558,6 +557,10 @@ export class EvidenceMap {
 		return readonly(this.#legendData);
 	}
 
+	/**
+	 * @param {unknown} data
+	 * @param {{ theme: import('@evidence-dev/tailwind').Theme }} opts
+	 */
 	async initializeData(
 		data,
 		{
@@ -571,7 +574,8 @@ export class EvidenceMap {
 			valueFmt,
 			chartType,
 			legendId,
-			legend
+			legend,
+			theme
 		}
 	) {
 		await data.fetch();
@@ -586,7 +590,8 @@ export class EvidenceMap {
 		}
 
 		if (legendType && !colorPalette) {
-			colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+			colorPalette =
+				legendType === 'categorical' ? theme.colorPalettes.default : theme.colorScales.default;
 			colorPalette = colorPalette.map((item) => chroma(item).hex());
 		}
 		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);

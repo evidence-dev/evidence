@@ -6,7 +6,6 @@
 	import { ECharts } from '@evidence-dev/core-components';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 
-	import { chartColours } from '@evidence-dev/component-utilities/colours';
 	import {
 		formatValue,
 		getFormatObjectFromString
@@ -15,6 +14,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { ErrorChart } from '@evidence-dev/core-components';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import { ensureThemeStores } from '../../../themes.js';
 
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
@@ -55,7 +55,8 @@
 	let names = [];
 	let links;
 
-	let combinedPalette = [...(colorPalette ?? []), ...chartColours];
+	const { theme } = ensureThemeStores();
+	let combinedPalette = [...(colorPalette ?? []), ...$theme.colorPalettes.default];
 
 	// error handling
 	let error;

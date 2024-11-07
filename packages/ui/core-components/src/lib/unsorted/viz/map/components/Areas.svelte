@@ -202,9 +202,10 @@
 
 	/**
 	 * Initialize the component.
+	 * @param {import('@evidence-dev/tailwind').Theme} theme
 	 * @returns {Promise<void>}
 	 */
-	async function init() {
+	async function init(theme) {
 		let initDataOptions = {
 			corordinates: [areaCol],
 			value,
@@ -216,7 +217,8 @@
 			valueFmt,
 			chartType,
 			legendId,
-			legend
+			legend,
+			theme
 		};
 		await data.fetch();
 		if (!color) {
@@ -289,7 +291,7 @@
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
 {#await Promise.all([map.initPromise, data.fetch()]) then}
-	{#await init() then}
+	{#await init($theme) then}
 		{#each geoJson as feature (feature.properties[geoId])}
 			{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
 			<MapArea

@@ -1,6 +1,6 @@
 import colors from 'tailwindcss/colors.js';
 
-/** @typedef {import('./types.js').ThemesConfig} ThemesConfig */
+/** @typedef {import('./schemas/types.js').ThemesConfig} ThemesConfig */
 
 /** @type {ThemesConfig} */
 export const defaultThemesConfig = {
@@ -91,6 +91,40 @@ export const defaultThemesConfig = {
 			'negative-content': {
 				light: colors.zinc[50],
 				dark: colors.zinc[950]
+			}
+		},
+		colorPalettes: {
+			default: {
+				light: [
+					'hsla(207, 65%, 39%, 1)', // Navy
+					'hsla(195, 49%, 51%, 1)', // Teal
+					'hsla(207, 69%, 79%, 1)', // Light Blue
+					'hsla(202, 28%, 65%, 1)', // Grey
+					'hsla(179, 37%, 65%, 1)', // Light Green
+					'hsla(40, 30%, 75%, 1)', // Tan
+					'hsla(38, 89%, 62%, 1)', // Yellow
+					'hsla(342, 40%, 40%, 1)', // Maroon
+					'hsla(207, 86%, 70%, 1)', // Blue
+					'hsla(160, 40%, 46%, 1)' // Green
+				],
+				dark: [
+					'hsla(207, 85%, 65%, 1)', // Navy -> Bright Blue
+					'hsla(195, 69%, 61%, 1)', // Teal -> Brighter Teal
+					'hsla(207, 89%, 89%, 1)', // Light Blue -> Nearly White Blue
+					'hsla(202, 38%, 75%, 1)', // Grey -> Lighter Grey
+					'hsla(179, 57%, 75%, 1)', // Light Green -> Brighter Mint
+					'hsla(40, 50%, 85%, 1)', // Tan -> Pale Gold
+					'hsla(38, 99%, 72%, 1)', // Yellow -> Vibrant Yellow
+					'hsla(342, 60%, 65%, 1)', // Maroon -> Bright Pink
+					'hsla(207, 96%, 80%, 1)', // Blue -> Vivid Sky Blue
+					'hsla(160, 60%, 56%, 1)' // Green -> Bright Mint
+				]
+			}
+		},
+		colorScales: {
+			default: {
+				light: ['lightblue', 'darkblue'],
+				dark: ['lightblue', 'darkblue']
 			}
 		}
 	}

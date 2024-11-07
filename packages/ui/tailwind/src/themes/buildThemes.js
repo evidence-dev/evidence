@@ -1,14 +1,19 @@
 /**
- * @param {import('./types.js').ThemesConfig} themesConfig
- * @returns {import('./types.js').Themes}
+ * @param {import('./schemas/types.js').ThemesConfig} themesConfig
+ * @returns {import('./schemas/types.js').Themes}
  */
 export const buildThemes = (themesConfig) =>
-	Object.entries(themesConfig.themes.colors).reduce(
-		(acc, [name, values]) => {
-			if (!values) return acc;
-			acc.light.colors[name] = values.light;
-			acc.dark.colors[name] = values.dark;
+	/** @type {const} */ (['colors', 'colorPalettes', 'colorScales']).reduce(
+		(acc, key) => {
+			Object.entries(themesConfig.themes[key]).forEach(([name, values]) => {
+				if (!values) return;
+				acc.light[key][name] = values.light;
+				acc.dark[key][name] = values.dark;
+			});
 			return acc;
 		},
-		/** @type {import('./types.js').Themes} */ ({ light: { colors: {} }, dark: { colors: {} } })
+		/** @type {import('./schemas/types.js').Themes} */ ({
+			light: { colors: {}, colorPalettes: {}, colorScales: {} },
+			dark: { colors: {}, colorPalettes: {}, colorScales: {} }
+		})
 	);
