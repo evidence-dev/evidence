@@ -68,7 +68,7 @@
 			<slot name="preview" />
 		</div>
 		<div
-			class="mb-3 overflow-auto md-preview col-start-1 col-end-2 row-start-1 row-end-2 transition-[max-height] ease-in-out duration-3000"
+			class="overflow-auto md-preview col-start-1 col-end-2 row-start-1 row-end-2 transition-[max-height] ease-in-out duration-3000"
 			class:invisible={activeTab !== 'code'}
 			class:slide-in={activeTab === 'code'}
 			class:slide-out={activeTab !== 'code'}
@@ -80,6 +80,7 @@
 
 <style>
 	.slide-out {
+		margin: 0;
 		opacity: 0;
 		height: 0;
 		overflow: hidden;
@@ -95,5 +96,11 @@
 		transition:
 			opacity 0.3s ease,
 			transform 0.3s ease; /* 0.2s delay for transform */
+	}
+
+	/* Style only the codeblocks in the md-preview */
+	:global(.md-preview > div:first-of-type) {
+		margin-top: 0.5rem !important;
+		margin-bottom: 0.75rem !important;
 	}
 </style>
