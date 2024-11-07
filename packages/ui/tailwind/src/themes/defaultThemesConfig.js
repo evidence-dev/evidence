@@ -5,6 +5,8 @@ import colors from 'tailwindcss/colors.js';
 /** @type {ThemesConfig} */
 export const defaultThemesConfig = {
 	themes: {
+		defaultAppearance: 'light',
+		appearanceSwitcher: false,
 		colors: {
 			primary: {
 				light: colors.blue[600],

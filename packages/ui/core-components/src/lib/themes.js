@@ -4,11 +4,13 @@ import { getContext, setContext } from 'svelte';
 import { derived, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
-import { themes } from '$evidence/themes';
+import { themes, themesConfig } from '$evidence/themes';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
 /** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
+/** @typedef {import('@evidence-dev/tailwind').ThemesConfig} ThemesConfig */
+
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
 	const initialValue =
@@ -47,6 +49,7 @@ const createSystemThemeStore = () => {
  * @prop {Readable<'system' | 'light' | 'dark'>} selectedMode
  * @prop {Readable<'light' | 'dark'>} activeMode
  * @prop {Readable<Theme>} theme
+ * @prop {ThemesConfig} themesConfig
  * @prop {() => void} cycleMode
  */
 
@@ -55,9 +58,12 @@ const createThemeStores = () => {
 	const systemMode = createSystemThemeStore();
 
 	/** @type {Writable<'system' | 'light' | 'dark'>} */
-	const selectedMode = localStorageStore('evidence-theme', 'system', {
+	const selectedMode = localStorageStore('evidence-theme', themesConfig.themes.defaultAppearance, {
 		serialize: (value) => value,
-		deserialize: (raw) => (['system', 'light', 'dark'].includes(raw) ? raw : 'system')
+		deserialize: (raw) =>
+			['system', 'light', 'dark'].includes(raw)
+				? /** @type {'light' | 'dark' | 'system'} */ (raw)
+				: themesConfig.themes.defaultAppearance
 	});
 
 	const activeMode = derived([systemMode, selectedMode], ([$systemTheme, $selectedTheme]) => {
@@ -91,6 +97,7 @@ const createThemeStores = () => {
 		selectedMode: readonly(selectedMode),
 		activeMode,
 		theme,
+		themesConfig,
 		cycleMode
 	};
 };
