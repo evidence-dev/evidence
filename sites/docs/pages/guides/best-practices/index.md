@@ -115,7 +115,7 @@ select * from products
 
 <Alert status=warning>
 
-**Best Practice:** Do not load return more than ~100,000 rows from queries on your page. Aggregate data in your markdown queries or source queries if needed.
+**Best Practice:** Do not return more than ~100,000 rows from queries on your page. Aggregate data in your markdown queries or source queries if needed.
 
 </Alert>
 
