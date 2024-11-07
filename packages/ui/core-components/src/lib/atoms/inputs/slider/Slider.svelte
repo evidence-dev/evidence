@@ -8,8 +8,6 @@
 	import EmptyChart from '$lib/unsorted/viz/core/EmptyChart.svelte';
 	import Slider from './_Slider.svelte';
 
-	// //Query integration//
-
 	export let data;
 
 	let chartType = 'Slider';
@@ -25,8 +23,6 @@
 	export let emptyMessage = undefined;
 
 	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
-
-	// //Query integration//
 </script>
 
 <!-- Pass all the props through-->
