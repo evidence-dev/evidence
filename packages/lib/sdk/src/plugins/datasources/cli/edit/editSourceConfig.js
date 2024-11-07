@@ -163,7 +163,7 @@ const transformOptionsToSelectList = (options, prefix) => {
 };
 
 /**
- * @param {import("../../schemas/datasource.schema.js").DatasourceSpecFile & { dir: string }} source
+ * @param {import("../../schemas/datasource.schema.js").DatasourceSpec & { dir: string }} source
  * @param {import("../../Datasources.js").Datasource} plugin
  */
 export const editSourceConfig = async (source, plugin) => {
