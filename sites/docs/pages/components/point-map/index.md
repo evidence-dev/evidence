@@ -570,7 +570,7 @@ URL template for the basemap tiles.
 name="attribution"
 options="text"
 >
-Attribution text to display on the map (e.g., "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors").
+Attribution text to display on the map (e.g., "© OpenStreetMap contributors").
 </PropListing>
 
 
