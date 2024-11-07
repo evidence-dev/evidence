@@ -2,8 +2,13 @@
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { X, Menu2 } from '@steeze-ui/tabler-icons';
-	import { Github as GithubLogo, Slack as SlackLogo } from '@steeze-ui/simple-icons';
 	import { buildUrl } from '@evidence-dev/sdk/utils/svelte';
+	import {
+		Github as GithubLogo,
+		Slack as SlackLogo,
+		Bluesky as BlueskyLogo,
+		X as XLogo
+	} from '@steeze-ui/simple-icons';
 	import Logo from '../Logo.svelte';
 	import AlgoliaDocSearch from './AlgoliaDocSearch.svelte';
 	import KebabMenu from './KebabMenu.svelte';
@@ -22,6 +27,7 @@
 	// Social links
 	export let githubRepo = undefined;
 	export let xProfile = undefined;
+	export let blueskyProfile = undefined;
 	export let slackCommunity = undefined;
 </script>
 
@@ -83,15 +89,17 @@
 						target="_blank"
 						rel="noreferrer"
 					>
-						<svg
-							role="img"
-							viewBox="0 0 24 24"
-							xmlns="http://www.w3.org/2000/svg"
-							class="w-4 h-4 text-gray-900"
-							><path
-								d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
-							/>
-						</svg>
+						<Icon src={XLogo} class="w-4 h-4 text-gray-900 " />
+					</a>
+				{/if}
+				{#if blueskyProfile}
+					<a
+						href={blueskyProfile}
+						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
+						target="_blank"
+						rel="noreferrer"
+					>
+						<Icon src={BlueskyLogo} fill="currentColor" class="w-4 h-4 text-gray-900 " />
 					</a>
 				{/if}
 				{#if slackCommunity}

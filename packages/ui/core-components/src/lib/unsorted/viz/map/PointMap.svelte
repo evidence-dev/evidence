@@ -4,10 +4,7 @@
 
 <script>
 	import Points from './components/Points.svelte';
-	import BaseMap from './BaseMap.svelte';
-	import ErrorChart from '../core/ErrorChart.svelte';
-	import EmptyChart from '../core/EmptyChart.svelte';
-	import { QueryLoad } from '../../../atoms/query-load';
+	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
@@ -44,7 +41,7 @@
 	export let startingZoom = undefined;
 
 	/** @type {number} */
-	export let height = undefined; // height in pixels
+	export let height = 300; // height in pixels
 
 	/** @type {string} */
 	export let basemap = undefined;
@@ -69,30 +66,32 @@
 	$: isInitial = data?.hash === initialHash;
 </script>
 
-<QueryLoad {data} let:loaded>
-	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-	<ErrorChart let:loaded slot="error" {chartType} error={error ?? loaded.error.message} />
-
-	<div class="relative">
-		<BaseMap
-			{startingLat}
-			{startingLong}
-			{startingZoom}
-			{height}
-			{basemap}
-			{title}
-			{legendPosition}
-		>
-			<Points
-				data={loaded}
-				{lat}
-				{long}
-				{colorPalette}
-				{legendType}
-				{chartType}
-				{...$$restProps}
-				{legend}
-			/>
-		</BaseMap>
-	</div>
-</QueryLoad>
+<BaseMap
+	let:data
+	{data}
+	{startingLat}
+	{startingLong}
+	{startingZoom}
+	{height}
+	{basemap}
+	{title}
+	{legendPosition}
+	{isInitial}
+	{chartType}
+	{emptySet}
+	{emptyMessage}
+	{error}
+>
+	<!-- move dispatch error outside of points to render error outside leafletmaps -->
+	<Points
+		{data}
+		{lat}
+		{long}
+		{colorPalette}
+		{legendType}
+		{chartType}
+		{...$$restProps}
+		{legend}
+		on:error={(e) => (error = e.detail)}
+	/>
+</BaseMap>
