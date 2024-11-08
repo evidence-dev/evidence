@@ -1,5 +1,23 @@
 # @evidence-dev/core-components
 
+## 4.8.11
+
+### Patch Changes
+
+- 6ecef713f: Fixed Error Chart layering, updated Maps errorchart handling
+- 7a414e88e: fix daterange flickering, slider default
+- ddf5da4d0: fix map loading state layout shift
+- 320c39941: fixed string handling for slider prop values
+- 475c42432: Adds attribution prop to maps and documents how to use it.
+- 7f70975e5: Add bluesky logo to options for header
+- c17626b1c: Allows customization of the name of the Home page in the sidebar
+- 667b7167e: Slider accepts dynamic default and max min values from data
+- 58403f1db: delete columns from prop listing when they're destroyed
+- 4e240652b: Add seriesOrder parameter to allow users to specify a specific order the series are displayed in (fixes #2663)
+- Updated dependencies [4e240652b]
+  - @evidence-dev/component-utilities@3.2.18
+  - @evidence-dev/tailwind@2.1.7
+
 ## 4.8.10
 
 ### Patch Changes

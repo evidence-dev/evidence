@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.13
+
+### Patch Changes
+
+- @evidence-dev/universal-sql@2.1.7
+
 ## 2.1.12
 
 ### Patch Changes
