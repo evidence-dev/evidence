@@ -48,6 +48,7 @@
 	</div>
 	<div class="border-b border-gray-300 w-full"></div>
 
+	<!-- Preview and code tabs -->
 	<div class="overflow-hidden">
 		<div
 			class="overflow-hidden {activeTab !== 'preview' ? 'h-[0px]' : 'mb-3 mt-2'}"
@@ -65,6 +66,7 @@
 </div>
 
 <style>
+	/* Styles codeblocks inside doctabs */
 	:global(.md-preview > div:first-of-type) {
 		margin: 0;
 	}
