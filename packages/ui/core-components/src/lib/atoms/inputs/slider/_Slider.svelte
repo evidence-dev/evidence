@@ -41,7 +41,7 @@
 	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
 
 	/** @type {number} */
-	export let defaultValue = min;
+	export let defaultValue = 0;
 
 	/** @type {[number]} */
 	let value = [defaultValue];
@@ -54,6 +54,8 @@
 
 	/** @type {string} */
 	let format_object;
+
+	export let data = null;
 
 	function validateNumber(value, name) {
 		value = toNumber(value);
@@ -80,7 +82,7 @@
 		checkMinMax(min, max);
 	}
 
-	$: if (defaultValue !== undefined) {
+	$: if (defaultValue !== undefined && !data) {
 		defaultValue = validateNumber(defaultValue, 'defaultValue');
 		if (defaultValue !== undefined) {
 			if (defaultValue < min) {
@@ -107,8 +109,6 @@
 
 	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
-
-	export let data = null;
 
 	let error;
 

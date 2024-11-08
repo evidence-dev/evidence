@@ -123,6 +123,38 @@ The default size of the slider can be altered with the size property using; medi
 />
 ````
 
+````sql flight_data
+		SELECT
+	  CAST(fare AS INT) AS fare,
+	  CAST((SELECT MAX(fare) FROM flights) AS INT) AS max_fare,
+	FROM flights
+	LIMIT 100
+````
+
+## Specifying Dynamic Columns
+
+Supply data with specified column names for minColumn, maxColumn, and/or defaultValue. The first row’s value in each of these columns will determine the minimum, maximum, or default value, respectively.
+
+<Slider
+    title='data slider'
+    size=large
+    step=100
+    data={flight_data}
+    maxColumn=max_fare
+    defaultValue=max_fare
+/>
+
+````markdown
+<Slider
+    title='data slider'
+    size=large
+    step=100
+    data={flight_data}
+    maxColumn=max_fare
+    defaultValue=max_fare
+/>
+````
+
 # Slider
 
 ## Options
@@ -178,9 +210,7 @@ Sets the maximum value on the slider. This value must be larger than the min.
     options=number
     defaultValue=1
 >
-
 Defines the incremental value of the slider
-
 </PropListing>
 <PropListing 
     name="showMinMax"
