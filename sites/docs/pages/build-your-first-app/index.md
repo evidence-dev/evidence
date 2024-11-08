@@ -8,15 +8,15 @@ description: A 10 minute guide to building your first Evidence app.
 
 This is a guided tutorial to help you build your first Evidence app. If you'd prefer to learn how Evidence works, start with the [Syntax](/core-concepts/syntax/).
 
-<Alert> 
+<Alert>
 
-   **By the end of this 10 minute guide, you will be able to:** 
-  
-  - Create and edit a page in Evidence 
-  - Write a query on demo data 
-  - Create a table 
-  - Create a chart 
-  - Connect a new CSV data source 
+   **By the end of this 10 minute guide, you will be able to:**
+
+  - Create and edit a page in Evidence
+  - Write a query on demo data
+  - Create a table
+  - Create a chart
+  - Connect a new CSV data source
 
 </Alert>
 
@@ -42,12 +42,12 @@ Evidence can be started from VSCode, or from the Command Line. Both will work fo
    </Tab>
    <Tab label="Command Line">
 
-      From the root of your project directory: 
-      
+      From the root of your project directory:
+
 ```bash
 npm run dev
 ```
-      
+
    </Tab>
 </Tabs>
 
@@ -79,7 +79,7 @@ Refresh Evidence in your browser. You should see your new page in the sidebar:
 ![New page in Evidence](/img/getting-started/new_page.png)
 
 ### 3. Write Markdown
-Make some more changes to the page. You'll see them reflected "live" in the browser, immediately after saving. There is no need to restart the server. 
+Make some more changes to the page. You'll see them reflected "live" in the browser, immediately after saving. There is no need to restart the server.
 
 This is called **hot reloading** (HMR), and it allows you to see your changes in real-time as you are building your page.
 
@@ -99,7 +99,7 @@ This is some *italic* and **bold** text.
 
 This is a [link](https://evidence.dev).
 
-This is an image inserted using Markdown: 
+This is an image inserted using Markdown:
 ![alt text](https://evidence.dev/brand-assets/wordmark-black.png)
 
 This is an image inserted using HTML:
@@ -146,11 +146,11 @@ There is no `connection.options.yaml` file in this case, as the duckdb data sour
 ### 5. Set up a source query
 Add a new `.sql` file to the `sources/needful_things` directory. Name it `my_query.sql`, or a name of your choice.
 
-Perhaps you're only interested in the categories of your orders for now. In this file, write a query to select just the `category` column from the `orders` table:
+In this file, write a query to select all columns from the `orders` table:
 
 **my_query.sql**
 ```sql
-select category from orders
+select * from orders
 ```
 
 Save the file. Later, you'll be able to refer to this data source as `needful_things.my_query`.
@@ -194,11 +194,13 @@ Clean up everything from your page, and add the following to create a Markdown q
 select * from needful_things.my_query
 ```
 ````
-Refresh, and you'll see a grey box that looks like this, which you can click (_try below_) to see the SQL and the results:
+Refresh, and you'll see a grey box that looks like this:
 
-```my_query_summary
-select * from needful_things.orders
-```
+![Add new source](/img/getting-started/my_query_summary_grey_box.png)
+
+<Alert status=info>
+If you don't see the box, click the 3-dot menu at the top right of the page and select Show Queries. You can hide or show queries on any Evidence-generated page, including this one.
+</Alert>
 
 
 
@@ -255,11 +257,11 @@ Let's say we want to pull the 100 most recent orders, in order to send these cus
 
 ````markdown
 ```my_query_summary_top100
-select 
-   order_datetime, 
-   first_name, 
-   last_name, 
-   email 
+select
+   order_datetime,
+   first_name,
+   last_name,
+   email
 from needful_things.my_query
 order by order_datetime desc
 limit 100
@@ -269,11 +271,11 @@ limit 100
 Now refresh, and notice that your table has changed to show only the most recent 100 orders, with only the table columns you specified:
 
 ```my_query_summary_top100
-select 
-   order_datetime, 
-   first_name, 
-   last_name, 
-   email 
+select
+   order_datetime,
+   first_name,
+   last_name,
+   email
 from needful_things.orders
 order by order_datetime desc
 limit 100
@@ -292,7 +294,7 @@ You can further select or rename the columns that appear in your table by specif
    <Column id=first_name />
    <Column id=email />
 </DataTable>
-```  
+```
 This will display:
 
 <DataTable data={my_query_summary_top100}>
@@ -317,9 +319,9 @@ select order_month, count(*) as orders from needful_things.my_query
 group by order_month order by order_month desc
 limit 12
 ```
-<BarChart 
-    data={orders_by_month} 
-    x=order_month 
+<BarChart
+    data={orders_by_month}
+    x=order_month
     y=orders
 	xFmt="mmm yyyy"
 	xAxisTitle="Month"
@@ -333,9 +335,9 @@ select order_month, count(*) as orders from needful_things.orders
 group by order_month order by order_month desc
 limit 12
 ```
-<BarChart 
-    data={orders_by_month} 
-    x=order_month 
+<BarChart
+    data={orders_by_month}
+    x=order_month
     y=orders
 	xFmt="mmm yyyy"
 	xAxisTitle="Month"
@@ -387,9 +389,9 @@ group by State order by ev_station_count desc
 And you should see:
 
 ```ev_map
-select 
-   State, 
-   count(*) AS ev_station_count 
+select
+   State,
+   count(*) AS ev_station_count
 from ev_stations.us_alt_fuel_stations
 where State not in ('CA')
 group by State order by ev_station_count desc
