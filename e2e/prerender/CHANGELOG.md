@@ -1,5 +1,29 @@
 # e2e-prerender
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [6ecef713f]
+- Updated dependencies [330bb5336]
+- Updated dependencies [7a414e88e]
+- Updated dependencies [ddf5da4d0]
+- Updated dependencies [320c39941]
+- Updated dependencies [8778bcfc3]
+- Updated dependencies [011a08be7]
+- Updated dependencies [475c42432]
+- Updated dependencies [32690c270]
+- Updated dependencies [7f70975e5]
+- Updated dependencies [c17626b1c]
+- Updated dependencies [667b7167e]
+- Updated dependencies [58403f1db]
+- Updated dependencies [4e240652b]
+- Updated dependencies [7c21833c7]
+  - @evidence-dev/core-components@4.8.11
+  - @evidence-dev/mssql@1.1.1
+  - @evidence-dev/evidence@39.1.14
+  - @evidence-dev/snowflake@1.2.1
+
 ## 0.0.4
 
 ### Patch Changes

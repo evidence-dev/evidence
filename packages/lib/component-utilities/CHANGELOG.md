@@ -1,5 +1,13 @@
 # @evidence-dev/component-utilities
 
+## 3.2.18
+
+### Patch Changes
+
+- 4e240652b: Add seriesOrder parameter to allow users to specify a specific order the series are displayed in (fixes #2663)
+- Updated dependencies [c82ba1516]
+  - @evidence-dev/sdk@1.4.6
+
 ## 3.2.17
 
 ### Patch Changes
