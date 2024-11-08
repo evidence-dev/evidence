@@ -206,37 +206,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}, 5000);
 		};
 
-		
-		let inflightQueryTimeout
-		const onInflightQueriesStart = () => {
-			if (!inflightQueryTimeout) inflightQueryTimeout = setTimeout(() => {
-				toasts.add({
-					id: 'LoadingToast',
-					title: '',
-					message: 'Loading...',
-					status: 'info'
-				}, 0); // timeout of 0 means forever
-			}, 3000)
-		}
-		const onInflightQueriesEnd = () => {
-			if (inflightQueryTimeout) {
-				clearTimeout(inflightQueryTimeout)
-				inflightQueryTimeout = null
-			}
-			else toasts.dismiss('LoadingToast')
-		}
-		onMount(() => {
-			Query.addEventListener('inFlightQueryStart', onInflightQueriesStart)
-			Query.addEventListener('inFlightQueryEnd', onInflightQueriesEnd)
-			if (Query.QueriesLoading) {
-				onInflightQueriesStart()
-			}
-			return () => {
-				Query.removeEventListener('inFlightQueryStart', onInflightQueriesStart)
-				Query.removeEventListener('inFlightQueryEnd', onInflightQueriesEnd)
-			}
-		})
-
 		if (import.meta?.hot) {
             if (typeof import.meta.hot.data.hmrHasRun === 'undefined') import.meta.hot.data.hmrHasRun = false
 
