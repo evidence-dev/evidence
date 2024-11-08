@@ -64,6 +64,9 @@
 	/** @type {boolean} */
 	export let legend = true;
 
+	/** @type {string|undefined} */
+	export let attribution = undefined;
+
 	const chartType = 'Bubble Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -85,6 +88,7 @@
 	{emptySet}
 	{emptyMessage}
 	{error}
+	{attribution}
 >
 	<Bubbles {data} {lat} {long} {size} {colorPalette} {legendType} {legend} {...$$restProps} />
 </BaseMap>

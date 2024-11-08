@@ -60,6 +60,9 @@
 	/** @type {boolean} */
 	export let legend = true;
 
+	/** @type {string|undefined} */
+	export let attribution = undefined;
+
 	const chartType = 'Point Map';
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
@@ -81,6 +84,7 @@
 	{emptySet}
 	{emptyMessage}
 	{error}
+	{attribution}
 >
 	<!-- move dispatch error outside of points to render error outside leafletmaps -->
 	<Points
