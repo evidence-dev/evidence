@@ -40,6 +40,9 @@
 	/** @type {string|undefined} */
 	let error = undefined;
 
+	/** @type {string|undefined} */
+	export let attribution = undefined;
+
 	const evidenceMap = new EvidenceMap();
 	setContext(mapContextKey, evidenceMap);
 
@@ -77,7 +80,8 @@
 					basemap ?? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
 					initCoords,
 					startingZoom,
-					userDefinedView
+					userDefinedView,
+					attribution
 				);
 				return () => evidenceMap.cleanup();
 			} catch (e) {

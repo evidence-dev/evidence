@@ -7,6 +7,7 @@
 	const inputs = getInputContext();
 	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import { toNumber } from '$lib/utils.js';
 	import {
 		formatValue,
 		getFormatObjectFromString
@@ -22,38 +23,14 @@
 	/** @type {string} */
 	export let name;
 
-	/** @type {number|undefined} */
+	/** @type {number} */
 	export let min = 0;
-
-	if (min) {
-		// if min was user-supplied
-		min = Number(min);
-		if (isNaN(min)) {
-			// input must be a number
-			throw Error('min must be a number');
-		}
-	} else {
-		min = 0;
-	}
 
 	/** @type {number} */
 	export let max = 100;
 
-	if (max) {
-		// if min was user-supplied
-		max = Number(max);
-		if (isNaN(max)) {
-			// input must be a number
-			throw Error('max must be a number');
-		} else if (max < min) {
-			throw Error('max cannot be less than min');
-		}
-	} else {
-		max = 100;
-	}
-
 	/** @type {number} */
-	export let step;
+	export let step = 1;
 
 	/** @type {boolean} */
 	export let showMaxMin = true;
@@ -72,10 +49,49 @@
 	/** @type {string | undefined} */
 	export let fmt = undefined;
 
-	$: $inputs[name] = value;
-
 	/** @type {string} */
 	export let size = '';
+
+	/** @type {string} */
+	let format_object;
+
+	function validateNumber(value, name) {
+		value = toNumber(value);
+		if (isNaN(value)) {
+			console.error(`${name} must be a number`);
+			return undefined;
+		}
+		return value;
+	}
+
+	function checkMinMax(min, max) {
+		if (min > max) {
+			console.error('min cannot be greater than max');
+		}
+	}
+
+	if (min !== undefined) {
+		min = validateNumber(min, 'min');
+	}
+	if (max !== undefined) {
+		max = validateNumber(max, 'max');
+	}
+	if (max !== undefined && min !== undefined) {
+		checkMinMax(min, max);
+	}
+
+	$: if (defaultValue !== undefined) {
+		defaultValue = validateNumber(defaultValue, 'defaultValue');
+		if (defaultValue !== undefined) {
+			if (defaultValue < min) {
+				console.error('defaultValue cannot be less than min');
+			} else if (defaultValue > max) {
+				console.error('defaultValue cannot be greater than max');
+			}
+		}
+	}
+
+	$: $inputs[name] = value;
 
 	const renderSize = (size) => {
 		const sizeMap = {
@@ -89,7 +105,6 @@
 
 	$: sizeClass = renderSize(size);
 
-	let format_object;
 	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
 </script>
