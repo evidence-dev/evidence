@@ -52,6 +52,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
             height=250
             borderColor=#303030
             basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
     </div>
 <br>
@@ -774,6 +775,13 @@ name="basemap"
 options="URL"
 >
 URL template for the basemap tiles.
+</PropListing>
+
+<PropListing
+name="attribution"
+options="text"
+>
+Attribution text to display on the map (e.g., "© OpenStreetMap contributors").
 </PropListing>
 
 <PropListing
