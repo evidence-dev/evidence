@@ -64,7 +64,6 @@ export async function GET() {
 	try {
 		const pages = {};
 
-		// for some reason `readDirSync` returns different results (on windows)??
 		const pagesDir = await fs.readdir('src/pages', { withFileTypes: true, recursive: true });
 		for (const dirent of pagesDir) {
 			if (dirent.isFile() && dirent.name.endsWith('.md')) {
