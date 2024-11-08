@@ -30,7 +30,7 @@
 	<div class="flex relative w-fit">
 		{#each tabs as tab, index}
 			<button
-				class="p-1 px-2 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize tracking-wide hover:bg-gray-100 focus-visible:ring-1 focus-visible:ring-gray-100 {activeTab ===
+				class="p-1 px-2 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize tracking-wide focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-md hover:pointer {activeTab ===
 				tab
 					? 'text-black'
 					: 'text-gray-500'}"
@@ -49,9 +49,9 @@
 	<div class="border-b border-gray-300 w-full"></div>
 
 	<!-- Preview and code tabs -->
-	<div class="overflow-hidden">
+	<div>
 		<div
-			class="overflow-hidden {activeTab !== 'preview' ? 'h-[0px]' : 'mb-3 mt-2'}"
+			class={activeTab !== 'preview' ? 'h-[0px]' : 'mb-3 mt-2'}
 			class:invisible={activeTab !== 'preview'}
 		>
 			<slot name="preview" />
