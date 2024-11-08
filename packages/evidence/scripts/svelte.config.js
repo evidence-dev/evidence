@@ -57,6 +57,9 @@ const config = {
 		},
 		paths: {
 			base: evidenceConfig.deployment.basePath
+		},
+		serviceWorker: {
+			register: false
 		}
 	}
 };
