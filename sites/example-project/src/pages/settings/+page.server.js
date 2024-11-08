@@ -1,15 +1,21 @@
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 import { logQueryEvent } from '@evidence-dev/telemetry';
-import { loadSources, loadSourcePlugins } from '@evidence-dev/sdk/plugins';
+import {
+	loadSources,
+	loadSourcePlugins,
+	DatasourceSpecFileSchema,
+	Options,
+	writeSourceConfig
+} from '@evidence-dev/sdk/plugins';
 
 export const load = async () => {
 	if (dev) {
 		const sources = await loadSources();
 		const datasources = await loadSourcePlugins();
 
-		const plugins = Object.entries(datasources.bySource).reduce((acc, [name, [pack]]) => {
-			acc[name] = { package: { package: pack } };
+		const plugins = Object.entries(datasources.bySource).reduce((acc, [name, v]) => {
+			acc[name] = { package: { package: v[0] }, options: v[1].options };
 			return acc;
 		}, {});
 
@@ -32,8 +38,7 @@ export const actions = {
 			return fail(400, { message: "Missing required field 'source'" });
 		}
 
-		const { updateDatasourceOptions, getDatasourcePlugins, DatasourceSpecFileSchema } =
-			await import('@evidence-dev/plugin-connector');
+		// const { updateDatasourceOptions } = await import('@evidence-dev/plugin-connector');
 
 		// TODO: Should this actually be handled inside the plugin connector (probably)
 		// TODO: Should renaming a connector move it?
@@ -44,14 +49,16 @@ export const actions = {
 			return fail(400, r.error.format());
 		}
 
-		const datasourcePlugins = await getDatasourcePlugins();
+		const datasourcePlugins = await loadSourcePlugins();
+		const [, pluginSpec] = datasourcePlugins.getBySource(r.data.type);
+		const opts = Options(pluginSpec.options, r.data.options);
+		// Possible holdovers from the loading process
+		delete source.environmentVariables;
+		delete source.initialName;
 
 		try {
 			return {
-				updatedSource: await updateDatasourceOptions(source, datasourcePlugins).then((r) => ({
-					...r,
-					queries: []
-				})) // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
+				updatedSource: await writeSourceConfig(opts, source)
 			};
 		} catch (e) {
 			return fail(500, e.message);

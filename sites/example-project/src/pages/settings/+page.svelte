@@ -6,6 +6,8 @@
 	let { settings, customFormattingSettings, sources, plugins } = data;
 	$: ({ settings, customFormattingSettings, sources, plugins } = data);
 
+	console.log({ settings, sources, plugins });
+
 	import { dev } from '$app/environment';
 
 	import {
