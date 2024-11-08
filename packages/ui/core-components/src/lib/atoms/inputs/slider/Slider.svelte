@@ -3,111 +3,35 @@
 </script>
 
 <script>
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	const inputs = getInputContext();
-	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
-	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
-	import {
-		formatValue,
-		getFormatObjectFromString
-	} from '@evidence-dev/component-utilities/formatting';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { QueryLoad } from '../../../atoms/query-load';
+	import EmptyChart from '$lib/unsorted/viz/core/EmptyChart.svelte';
+	import Slider from './_Slider.svelte';
 
-	/////
-	// Component Things
-	/////
+	export let data;
 
-	/** @type {string} */
-	export let title;
+	let chartType = 'Slider';
 
-	/** @type {string} */
-	export let name;
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
+	let isInitial = data?.hash === initialHash;
+	$: isInitial = data?.hash === initialHash;
 
-	/** @type {number|undefined} */
-	export let min = 0;
+	/** @type {"pass" | "warn" | "error"}*/
+	export let emptySet = undefined;
 
-	if (min) {
-		// if min was user-supplied
-		min = Number(min);
-		if (isNaN(min)) {
-			// input must be a number
-			throw Error('min must be a number');
-		}
-	} else {
-		min = 0;
-	}
+	/** @type {string}*/
+	export let emptyMessage = undefined;
 
-	/** @type {number} */
-	export let max = 100;
-
-	if (max) {
-		// if min was user-supplied
-		max = Number(max);
-		if (isNaN(max)) {
-			// input must be a number
-			throw Error('max must be a number');
-		} else if (max < min) {
-			throw Error('max cannot be less than min');
-		}
-	} else {
-		max = 100;
-	}
-
-	/** @type {number} */
-	export let step;
-
-	/** @type {boolean} */
-	export let showMaxMin = true;
-	$: showMaxMin = showMaxMin === 'true' || showMaxMin === true;
-
-	/** @type {boolean} */
-	export let hideDuringPrint = true;
-	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
-
-	/** @type {number} */
-	export let defaultValue = 0;
-
-	/** @type {[number]} */
-	let value = [defaultValue];
-
-	/** @type {string | undefined} */
-	export let fmt = undefined;
-
-	$: $inputs[name] = value;
-
-	/** @type {string} */
-	export let size = '';
-
-	const renderSize = (size) => {
-		const sizeMap = {
-			medium: 'w-64',
-			large: 'w-96',
-			//Full size width requires calc to compensate for shifted range span in sliderShadcn
-			full: 'w-[calc(100%-0.6rem)]'
-		};
-		return sizeMap[size.toLowerCase()] || 'w-40';
-	};
-
-	$: sizeClass = renderSize(size);
-
-	let format_object;
-	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
-	else format_object = undefined;
+	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
 </script>
 
-<HiddenInPrint enabled={hideDuringPrint}>
-	<div class={`relative ${sizeClass} mb-10 select-none`}>
-		<p class="pb-2 truncate text-xs">
-			{title} :
-			<span class="text-xs">{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span>
-		</p>
-		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
-		{#if showMaxMin}
-			<span class="absolute left-0 text-xs pt-1 -z-10"
-				>{fmt ? formatValue(min, format_object) : min}</span
-			>
-			<span class="absolute -right-2.5 text-xs pt-1 -z-10"
-				>{fmt ? formatValue(max, format_object) : max}</span
-			>
+<!-- Pass all the props through-->
+<QueryLoad {data} let:loaded>
+	<span slot="empty">
+		{#if !spreadProps.placeholder}
+			<EmptyChart {emptyMessage} {emptySet} {chartType} {isInitial} />
 		{/if}
-	</div>
-</HiddenInPrint>
+	</span>
+	<span slot="skeleton" class="text-gray-500">Loading...</span>
+	<Slider {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} />
+</QueryLoad>

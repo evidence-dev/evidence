@@ -10,6 +10,7 @@
 	export let fileTree = undefined;
 	export let title = undefined;
 	export let logo = undefined;
+	export let homePageName = undefined;
 	export let builtWithEvidence = undefined;
 	export let hideHeader = false;
 	export let sidebarFrontMatter = undefined;
@@ -122,7 +123,7 @@
 						class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 						href="/"
 					>
-						Home
+						{homePageName}
 					</a>
 					{#each firstLevelFiles as file}
 						{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
@@ -212,7 +213,7 @@
 					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize hover:underline"
 					href="/"
 				>
-					Home
+					{homePageName}
 				</a>
 				{#each firstLevelFiles as file}
 					{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}

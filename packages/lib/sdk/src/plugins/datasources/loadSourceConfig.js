@@ -36,7 +36,7 @@ export const loadConnectionOptions = async (sourceDir) => {
 export const loadConnectionEnvironment = async (sourceName) => {
 	/** @type {any} */
 	const out = {};
-	const keyRegex = /^EVIDENCE_SOURCE__([a-zA-Z0-1_]+)$/;
+	const keyRegex = /^EVIDENCE_SOURCE__([a-zA-Z0-9_]+)$/;
 	for (const [key, value] of Object.entries(process.env)) {
 		const parts = keyRegex.exec(key);
 		if (!parts) continue;

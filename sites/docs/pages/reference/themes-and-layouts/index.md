@@ -46,6 +46,15 @@ Link to an image which will replace the Evidence logo. This will also override a
 
 </PropListing>
 <PropListing
+    name="homePageName"
+    options="Any string"
+    defaultValue=Home
+>
+
+Name of the home page in the sidebar.
+
+</PropListing>
+<PropListing
     name="neverShowQueries"
     options={['true', 'false']}
     defaultValue=false
@@ -141,6 +150,13 @@ Link to a Github Repo which will appear in the header using the Github Logo
 
 Link to an X (Twitter) profile which will appear in the header using the X Logo
 
+</PropListing>
+<PropListing
+    name="blueskyProfile"
+    defaultValue='https://bsky.app/profile/evidence.dev'
+>
+
+Link to a Bluesky profile which will appear in the header using the Bluesky Logo
 </PropListing>
 <PropListing
     name="slackCommunity"

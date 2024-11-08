@@ -32,13 +32,16 @@
 	export let height = 300; // height in pixels
 
 	/** @type {string} */
-	export let basemap = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+	export let basemap = undefined;
 
 	/** @type {string|undefined} */
 	export let title = undefined;
 
 	/** @type {string|undefined} */
 	let error = undefined;
+
+	/** @type {string|undefined} */
+	export let attribution = undefined;
 
 	const evidenceMap = new EvidenceMap();
 	setContext(mapContextKey, evidenceMap);
@@ -54,6 +57,17 @@
 		evidenceMap.updateLegendPosition(legendPosition);
 	}
 
+	let internalError = evidenceMap.internalError;
+
+	$: console.log($internalError);
+
+	$: if ($internalError !== undefined) {
+		error = $internalError;
+	}
+
+	/** @type {'Point Map'|'Area Map'|'Bubble Map'|'Map'} */
+	export let chartType = 'Map';
+
 	// Lifecycle hooks:
 	onMount(async () => {
 		if (browser) {
@@ -61,7 +75,14 @@
 				const initCoords =
 					(startingLat ?? false) ? [startingLat, startingLong] : [defaultLat, defaultLong];
 
-				await evidenceMap.init(mapElement, basemap, initCoords, startingZoom, userDefinedView);
+				await evidenceMap.init(
+					mapElement,
+					basemap ?? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+					initCoords,
+					startingZoom,
+					userDefinedView,
+					attribution
+				);
 				return () => evidenceMap.cleanup();
 			} catch (e) {
 				error = e.message;
@@ -72,7 +93,7 @@
 </script>
 
 {#if error}
-	<ErrorChart {error} chartType="Map" />
+	<ErrorChart {error} {chartType} />
 {:else}
 	<div class="relative break-inside-avoid">
 		{#if title}
@@ -83,7 +104,9 @@
 			style="height: {height}px;"
 			bind:this={mapElement}
 		>
-			<slot></slot>
+			<div on:dispatcherror={(e) => (error = e.detail)}>
+				<slot />
+			</div>
 			{#if $legendData}
 				<Legend {legendData} {legendPosition} {height} />
 			{/if}

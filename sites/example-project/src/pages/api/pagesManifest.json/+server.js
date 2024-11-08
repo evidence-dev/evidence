@@ -1,5 +1,7 @@
 import preprocess from '@evidence-dev/preprocess';
 import { error } from '@sveltejs/kit';
+import fs from 'fs/promises';
+import path from 'path';
 
 /**
  * @typedef {Object} PageManifestNode
@@ -53,13 +55,6 @@ export function _buildPageManifest(pages) {
 	return fileTree;
 }
 
-// Import pages and create an object structure corresponding to the file structure
-const pages = import.meta.glob('/src/pages/**/+page.md', {
-	import: 'default',
-	query: 'raw',
-	eager: true
-});
-
 export const prerender = true;
 
 /**
@@ -67,10 +62,23 @@ export const prerender = true;
  */
 export async function GET() {
 	try {
+		const pages = {};
+
+		const pagesDir = await fs.readdir('src/pages', { withFileTypes: true, recursive: true });
+		for (const dirent of pagesDir) {
+			if (dirent.isFile() && dirent.name.endsWith('.md')) {
+				const relative_path = path.join(dirent.parentPath ?? dirent.path, dirent.name);
+				const content = await fs.readFile(relative_path, 'utf-8');
+				// regularize for windows
+				pages[new URL(`file:///${relative_path}`).pathname] = content;
+			}
+		}
+
 		const fileTree = _buildPageManifest(pages);
 
 		return new Response(JSON.stringify(fileTree));
-	} catch {
+	} catch (e) {
+		console.log('Failed to build pages manifest with error: ', e);
 		throw error(500, 'Failed to build pages manifest.');
 	}
 }

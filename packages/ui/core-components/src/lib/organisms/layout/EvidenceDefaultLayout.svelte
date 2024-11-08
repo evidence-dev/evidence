@@ -41,10 +41,13 @@
 	/** @type {string} */
 	export let xProfile = undefined;
 	/** @type {string} */
+	export let blueskyProfile = undefined;
+	/** @type {string} */
 	export let slackCommunity = undefined;
 	/** @type {string}*/
 	export let maxWidth = undefined;
-
+	/** @type {string}*/
+	export let homePageName = 'Home';
 	/** @type {boolean} */
 	export let hideBreadcrumbs = false;
 	/** @type {boolean} */
@@ -128,6 +131,7 @@
 				{githubRepo}
 				{slackCommunity}
 				{xProfile}
+				{blueskyProfile}
 				{algolia}
 				{sidebarFrontMatter}
 			/>
@@ -144,6 +148,7 @@
 						bind:mobileSidebarOpen
 						{title}
 						{logo}
+						{homePageName}
 						{builtWithEvidence}
 						{hideHeader}
 						{sidebarFrontMatter}

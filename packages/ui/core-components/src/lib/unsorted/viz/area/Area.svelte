@@ -64,7 +64,7 @@
 		labelFormat = getFormatObjectFromString(labelFmt);
 	}
 	export let showAllLabels = false;
-
+	export let seriesOrder = undefined;
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
@@ -155,7 +155,8 @@
 		baseConfig,
 		name,
 		xMismatch,
-		columnSummary
+		columnSummary,
+		seriesOrder
 	);
 
 	$: config.update((d) => {
