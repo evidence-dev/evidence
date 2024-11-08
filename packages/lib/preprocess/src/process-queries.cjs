@@ -205,17 +205,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				status: 'warning'
 			}, 5000);
 		};
-		onMount(() => {
-			Query.addEventListener('inFlightQueryStart', onInflightQueriesStart)
-			Query.addEventListener('inFlightQueryEnd', onInflightQueriesEnd)
-			if (Query.QueriesLoading) {
-				onInflightQueriesStart()
-			}
-			return () => {
-				Query.removeEventListener('inFlightQueryStart', onInflightQueriesStart)
-				Query.removeEventListener('inFlightQueryEnd', onInflightQueriesEnd)
-			}
-		})
 
 		if (import.meta?.hot) {
             if (typeof import.meta.hot.data.hmrHasRun === 'undefined') import.meta.hot.data.hmrHasRun = false
