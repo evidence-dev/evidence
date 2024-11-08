@@ -1,5 +1,5 @@
 <script>
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let activeTab = 'preview';
 	let activeBorderStyles = {};
@@ -24,30 +24,13 @@
 			transform: `translateX(${tabButton.offsetLeft}px)`
 		};
 	}
-
-	let previewHeight = undefined;
-	let codeHeight = undefined;
-	let previewDiv;
-	let codeBlockDiv;
-
-	onMount(() => {
-		if (!previewHeight) {
-			previewHeight = previewDiv.offsetHeight;
-			console.log(previewHeight);
-		}
-
-		if (!codeHeight) {
-			codeHeight = codeBlockDiv.offsetHeight;
-			console.log(codeHeight);
-		}
-	});
 </script>
 
-<div class="doc-tab mt-2 overflow-hidden">
+<div class="doc-tab mt-2">
 	<div class="flex relative w-fit">
 		{#each tabs as tab, index}
 			<button
-				class="p-1 px-2 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize tracking-wide {activeTab ===
+				class="p-1 px-2 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize tracking-wide hover:bg-gray-100 focus-visible:ring-1 focus-visible:ring-gray-100 {activeTab ===
 				tab
 					? 'text-black'
 					: 'text-gray-500'}"
@@ -67,14 +50,12 @@
 
 	<div class="overflow-hidden">
 		<div
-			bind:this={previewDiv}
 			class="overflow-hidden {activeTab !== 'preview' ? 'h-[0px]' : 'mb-3 mt-2'}"
 			class:invisible={activeTab !== 'preview'}
 		>
 			<slot name="preview" />
 		</div>
 		<div
-			bind:this={codeBlockDiv}
 			class="overflow-auto md-preview {activeTab !== 'code' ? 'h-[0px]' : 'mt-2'}"
 			class:invisible={activeTab !== 'code'}
 		>
