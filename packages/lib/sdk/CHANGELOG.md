@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 1.4.6
+
+### Patch Changes
+
+- c82ba1516: Support digits 2-9 in source names
+  - @evidence-dev/universal-sql@2.1.7
+
 ## 1.4.5
 
 ### Patch Changes
