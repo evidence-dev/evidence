@@ -1,5 +1,5 @@
+import { getEvidenceConfig } from '../../../../configuration/getEvidenceConfig.js';
 import { addBasePath } from '../../../../utils/svelte/addBasePath.js';
-import { getEvidenceConfig } from '@evidence-dev/sdk/config';
 
 /** @type {import("@evidence-dev/sdk/config").EvidenceConfig} */
 let cfg;
