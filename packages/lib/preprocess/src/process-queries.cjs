@@ -4,6 +4,26 @@ const { highlighter } = require('./utils/highlighter.cjs');
 const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
 /**
+ * If you need an import in the template strings below, it must be added here to prevent a poor user experience when running a template
+ * @type {{ import: string; from: string }[]}
+ */
+const injectedEvidenceImports = [
+	{
+		import: '{ pageHasQueries, routeHash, toasts }',
+		from: '@evidence-dev/component-utilities/stores'
+	},
+	{ import: '{ fmt }', from: '@evidence-dev/component-utilities/formatting' },
+	{
+		import: '{ CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY }',
+		from: '@evidence-dev/component-utilities/globalContexts'
+	},
+	{ import: '{ ensureInputContext }', from: '@evidence-dev/sdk/utils/svelte' },
+	{ import: '{ profile }', from: '@evidence-dev/component-utilities/profile' },
+	{ import: '{ Query, hasUnsetValues }', from: '@evidence-dev/sdk/usql' },
+	{ import: '{ setQueryFunction }', from: '@evidence-dev/component-utilities/buildQuery' }
+];
+
+/**
  *
  * @param {string} filename
  * @param {boolean} componentDevelopmentMode
@@ -149,15 +169,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 	let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries, routeHash, toasts } from '@evidence-dev/component-utilities/stores';
         import { setContext, getContext, beforeUpdate, onDestroy, onMount } from 'svelte';
 		import { writable, get } from 'svelte/store';
         
         // Functions
-        import { fmt } from '@evidence-dev/component-utilities/formatting';
 
-		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';		
-		import { ensureInputContext } from '@evidence-dev/sdk/utils/svelte';
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
@@ -184,9 +200,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         });
 
 		import { browser, dev } from "$app/environment";
-		import { profile } from '@evidence-dev/component-utilities/profile';
-		import { Query, hasUnsetValues } from '@evidence-dev/sdk/usql';
-		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 
 		if (!browser) {
 			onDestroy(() => Query.emptyCache());
@@ -227,7 +240,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         ${queryDeclarations}
     `;
 
-	return defaultProps;
+	return `
+		${injectedEvidenceImports.map((i) => `import ${i.import} from '${i.from}';`).join('\n')}
+		${defaultProps}
+	`;
 };
 
 /**
@@ -287,4 +303,4 @@ const processQueries = (componentDevelopmentMode) => {
 		}
 	};
 };
-module.exports = processQueries;
+module.exports = { processQueries, injectedEvidenceImports };
