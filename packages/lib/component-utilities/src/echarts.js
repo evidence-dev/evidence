@@ -136,7 +136,6 @@ export default (node, option) => {
 	let resizeObserver;
 	if (window.ResizeObserver && containerElement) {
 		resizeObserver = new ResizeObserver(onWindowResize);
-		resizeObserver.observe(containerElement);
 		resizeObserver.observe(parentElement);
 	} else {
 		window.addEventListener('resize', onWindowResize);
