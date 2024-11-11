@@ -3,6 +3,9 @@ name: Changesets
 on:
   pull_request:
     branches: [main, next]
+    paths:
+      - 'packages/**'
+      - 'sites/example-project/**'
 
 jobs:
   check-changeset:
@@ -11,18 +14,18 @@ jobs:
     if: github.event.pull_request.draft == false
 
     steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-          with:
-            ref: ${{ github.event.pull_request.head.sha }}
-            fetch-depth: 0
-        - uses: pnpm/action-setup@v4.0.0
-          with:
-            version: 8.6.9
-        - uses: actions/setup-node@v4
-          with: 
-            node-version: 20
-            cache: pnpm
-        - run: pnpm install --frozen-lockfile
-        - run: pnpm changeset status --since=origin/next
-          id: changeset-status
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4.0.0
+        with:
+          version: 8.6.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm changeset status --since=origin/next
+        id: changeset-status
