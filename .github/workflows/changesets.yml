@@ -1,0 +1,30 @@
+name: Changesets
+
+on:
+  pull_request:
+    branches: [main, next]
+
+jobs:
+  check-changeset:
+    name: Check Changeset
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for changeset
+        run: npx changeset status --since=origin/main
+        id: changeset-status
