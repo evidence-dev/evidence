@@ -4,8 +4,8 @@ const { highlighter } = require('./utils/highlighter.cjs');
 const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
 /**
- * If you need an import in the template strings below, it must be added here to prevent a poor user experience when running a template
- * @type {{ import: string; from: string }[]}
+ * If you need an @evidence-dev import in the template strings below, it must be added here to prevent a poor user experience when running a template
+ * @type {{ import: string; from: `@evidence-dev/${string}` }[]}
  */
 const injectedEvidenceImports = [
 	{
