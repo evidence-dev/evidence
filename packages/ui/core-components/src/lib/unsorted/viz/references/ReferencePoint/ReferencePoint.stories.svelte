@@ -165,9 +165,7 @@
 	)}
 	<QueryLoad {data}>
 		<LineChart x="x" y="y" {data}>
-			<QueryLoad data={referencePointData}>
-				<ReferencePoint {...args} data={referencePointData} />
-			</QueryLoad>
+			<ReferencePoint {...args} data={referencePointData} />
 		</LineChart>
 	</QueryLoad>
 </Story>

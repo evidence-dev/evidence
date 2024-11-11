@@ -217,9 +217,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceLineData}>
-			<ReferenceLine data={referenceLineData} x="x" label="label" />
-		</QueryLoad>
+		<ReferenceLine data={referenceLineData} x="x" label="label" />
 	</LineChart>
 </Story>
 
@@ -237,9 +235,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceLineData}>
-			<ReferenceLine data={referenceLineData} x="x" label="label" {...args} />
-		</QueryLoad>
+		<ReferenceLine data={referenceLineData} x="x" label="label" {...args} />
 	</LineChart>
 </Story>
 
@@ -253,9 +249,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceLineData}>
-			<ReferenceLine data={referenceLineData} y="y" label="label" />
-		</QueryLoad>
+		<ReferenceLine data={referenceLineData} y="y" label="label" />
 	</LineChart>
 </Story>
 
@@ -273,9 +267,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceLineData}>
-			<ReferenceLine data={referenceLineData} y="y" label="label" {...args} />
-		</QueryLoad>
+		<ReferenceLine data={referenceLineData} y="y" label="label" {...args} />
 	</LineChart>
 </Story>
 
@@ -290,9 +282,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceLineData}>
-			<ReferenceLine data={referenceLineData} x="x" y="y" x2="x2" y2="y2" label="label" />
-		</QueryLoad>
+		<ReferenceLine data={referenceLineData} x="x" y="y" x2="x2" y2="y2" label="label" />
 	</LineChart>
 </Story>
 
@@ -307,9 +297,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceLineData}>
-			<ReferenceLine data={referenceLineData} x="x" y="y" x2="x2" y2="y2" label="label" {...args} />
-		</QueryLoad>
+		<ReferenceLine data={referenceLineData} x="x" y="y" x2="x2" y2="y2" label="label" {...args} />
 	</LineChart>
 </Story>
 
@@ -398,8 +386,6 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceLineData}>
-			<ReferenceLine data={referenceLineData} x="non-existent-column" label="label" />
-		</QueryLoad>
+		<ReferenceLine data={referenceLineData} x="non-existent-column" label="label" />
 	</LineChart>
 </Story>

@@ -36,6 +36,7 @@
 			`Warning in ${chartType}: Dataset is empty - query ran successfully, but no data was returned from the database`
 		);
 	}
+	console.log(`Empty Chart: ${chartType} - ${emptySet} - ${emptyMessage}`);
 </script>
 
 {#if ['warn', 'pass'].includes(emptySet) || !isInitial}
