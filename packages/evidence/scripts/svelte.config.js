@@ -49,6 +49,7 @@ const config = {
 	onwarn: errorHandler,
 	kit: {
 		adapter: adapter({
+			pages: process.env.EVIDENCE_BUILD_DIR ?? './build',
 			strict: false
 		}),
 		files: {
@@ -56,7 +57,8 @@ const config = {
 			lib: 'src/components'
 		},
 		paths: {
-			base: evidenceConfig.deployment.basePath
+			base: evidenceConfig.deployment.basePath,
+			relative: false
 		},
 		serviceWorker: {
 			register: false

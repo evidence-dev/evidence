@@ -8,7 +8,7 @@ const basePath = config.deployment.basePath;
 
 test.describe('<head />', () => {
 	test('<link rel="icon" /> href should start with basePath', async ({ page }) => {
-		await page.goto('/');
+		await page.goto(basePath);
 		await waitForDevModeToLoad(page);
 
 		const links = await page.locator('link[rel="icon"]').all();
@@ -37,7 +37,7 @@ test.describe('<head />', () => {
 
 	// This test will fail until we can use the basePath in the <link rel="manifest" /> tag
 	test.skip('manifest.webmanifest icons.src should start with basePath', async ({ page }) => {
-		await page.goto('/');
+		await page.goto(basePath);
 		await waitForDevModeToLoad(page);
 
 		const manifestLink = await page.locator('link[rel="manifest"]');

@@ -2,8 +2,8 @@
   "name": "e2e-base-path",
   "version": "0.0.1",
   "scripts": {
-    "build": "evidence build",
-    "build:strict": "evidence build:strict",
+    "build": "cross-env EVIDENCE_BUILD_DIR=./build/my-base-path evidence build",
+    "build:strict": "cross-env EVIDENCE_BUILD_DIR=./build/my-base-path evidence build:strict",
     "dev": "evidence dev --open /",
     "sources": "evidence sources",
     "preview": "evidence preview",
