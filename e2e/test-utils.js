@@ -1,5 +1,7 @@
+/** @typedef {import('@playwright/test').Page} Page */
 import { expect } from '@playwright/test';
 
+/** @param {Page} page */
 export const waitForDevModeToLoad = async (page) => {
 	if (!process.env.DEV) return;
 
@@ -8,7 +10,7 @@ export const waitForDevModeToLoad = async (page) => {
 	await expect(page.getByTestId('#__evidence_project_splash')).not.toBeVisible();
 };
 
-/** @param {import("@playwright/test").Page} page */
+/** @param {Page} page */
 export function waitForWasm(page) {
 	const context = page.context();
 	return new Promise((res) => {

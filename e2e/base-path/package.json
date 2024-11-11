@@ -40,6 +40,7 @@
   "devDependencies": {
     "@playwright/test": "^1.45.3",
     "@types/node": "^22.9.0",
+    "@types/web-app-manifest": "^1.0.8",
     "cross-env": "^7.0.3"
   }
 }
