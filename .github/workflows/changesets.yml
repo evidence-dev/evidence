@@ -24,5 +24,5 @@ jobs:
             node-version: 20
             cache: pnpm
         - run: pnpm install --frozen-lockfile
-        - run: pnpm changeset status
+        - run: pnpm changeset status --since=origin/next
           id: changeset-status
