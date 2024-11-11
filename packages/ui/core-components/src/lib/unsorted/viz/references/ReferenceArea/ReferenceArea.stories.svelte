@@ -311,14 +311,66 @@
     `,
 		query
 	)}
-	<LineChart x="x" y="y" {data}>
-		<ReferenceArea
-			data={referenceAreaDataLongLoad}
-			xMin="xMin"
-			xMax="xMax"
-			yMin="yMin"
-			yMax="yMax"
-			label="label"
-		/>
-	</LineChart>
+	<div class="grid grid-cols-4 gap-8">
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+	</div>
 </Story>
