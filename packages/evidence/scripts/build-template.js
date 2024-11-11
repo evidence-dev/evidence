@@ -19,6 +19,7 @@ const templatePaths = [
 	'src/pages/settings/',
 	'src/pages/explore',
 	'src/pages/api/',
+	'src/pages/manifest.webmanifest/+server.js',
 	'tailwind.config.cjs',
 	'postcss.config.cjs'
 ];
