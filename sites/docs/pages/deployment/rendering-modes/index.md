@@ -73,7 +73,7 @@ export default {
 };
 ```
 
-4. When selfhosting a SPA it is important to redirect all URL's to the index.html. For example in NGINX in your server block you would put something like this:
+4. If self-hosting an SPA it is important to redirect all URLs to index.html. For example in an NGINX server block you would put:
 ```
 root /path/to/your/project/build/;
 
