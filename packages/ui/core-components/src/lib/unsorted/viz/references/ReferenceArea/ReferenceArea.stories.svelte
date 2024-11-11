@@ -302,7 +302,7 @@
 	</LineChart>
 </Story>
 
-<Story name="referenceAreaDataLongLoad">
+<Story name="multiple charts w/ annotations, grid">
 	{@const referenceAreaDataLongLoad = Query.create(
 		`
       select 30 as xMin, 40 as xMax, 100 as yMin, 150 as yMax, 'Area 1' as label union all
