@@ -101,7 +101,6 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 	import BarChart from '../../bar/BarChart.svelte';
-	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	import ReferenceArea from './ReferenceArea.svelte';
 
@@ -190,9 +189,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceAreaData}>
-			<ReferenceArea data={referenceAreaData} xMin="xMin" xMax="xMax" label="label" />
-		</QueryLoad>
+		<ReferenceArea data={referenceAreaData} xMin="xMin" xMax="xMax" label="label" />
 	</LineChart>
 </Story>
 
@@ -206,9 +203,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceAreaData}>
-			<ReferenceArea data={referenceAreaData} yMin="yMin" yMax="yMax" label="label" />
-		</QueryLoad>
+		<ReferenceArea data={referenceAreaData} yMin="yMin" yMax="yMax" label="label" />
 	</LineChart>
 </Story>
 
@@ -222,16 +217,14 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceAreaData}>
-			<ReferenceArea
-				data={referenceAreaData}
-				xMin="xMin"
-				xMax="xMax"
-				yMin="yMin"
-				yMax="yMax"
-				label="label"
-			/>
-		</QueryLoad>
+		<ReferenceArea
+			data={referenceAreaData}
+			xMin="xMin"
+			xMax="xMax"
+			yMin="yMin"
+			yMax="yMax"
+			label="label"
+		/>
 	</LineChart>
 </Story>
 
@@ -305,13 +298,27 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceAreaData}>
-			<ReferenceArea
-				data={referenceAreaData}
-				xMin="xMin"
-				xMax="non-existent-column"
-				label="label"
-			/>
-		</QueryLoad>
+		<ReferenceArea data={referenceAreaData} xMin="xMin" xMax="non-existent-column" label="label" />
+	</LineChart>
+</Story>
+
+<Story name="referenceAreaDataLongLoad">
+	{@const referenceAreaDataLongLoad = Query.create(
+		`
+      select 30 as xMin, 40 as xMax, 100 as yMin, 150 as yMax, 'Area 1' as label union all
+      select 50, 60, 850, 1000, 'Area 2' union all
+      select 70, 80, 200, 400, 'Area 3'
+    `,
+		query
+	)}
+	<LineChart x="x" y="y" {data}>
+		<ReferenceArea
+			data={referenceAreaDataLongLoad}
+			xMin="xMin"
+			xMax="xMax"
+			yMin="yMin"
+			yMax="yMax"
+			label="label"
+		/>
 	</LineChart>
 </Story>

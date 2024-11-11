@@ -183,5 +183,7 @@
 	<QueryLoad {data}>
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 		<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+		<!-- requires content, or will defer to default skeleton -->
+		<div slot="skeleton"></div>
 	</QueryLoad>
 {/if}
