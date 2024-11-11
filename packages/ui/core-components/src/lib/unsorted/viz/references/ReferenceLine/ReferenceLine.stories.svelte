@@ -109,7 +109,6 @@
 	import BarChart from '$lib/unsorted/viz/bar/BarChart.svelte';
 	import { Slider } from '$lib/atoms/inputs/slider';
 	import { userEvent, within } from '@storybook/test';
-	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
 
 	import ReferenceLine from './ReferenceLine.svelte';
 
