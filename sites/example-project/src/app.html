@@ -2,6 +2,18 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
+
+		<link rel="icon" href="%sveltekit.assets%/favicon.ico" sizes="32x32" />
+		<link rel="icon" href="%sveltekit.assets%/icon.svg" type="image/svg+xml" />
+
+		<!--
+			sveltekit.assets only works on link[rel="icon"], so it isn't useful here
+			This means that using config.deployment.basePath will break these two items
+			https://github.com/sveltejs/kit/issues/10317
+		 -->
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/manifest.webmanifest" />
+
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%sveltekit.head%
 	</head>
