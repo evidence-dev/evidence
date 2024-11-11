@@ -11,22 +11,18 @@ jobs:
     if: github.event.pull_request.draft == false
 
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - uses: pnpm/action-setup@v4.0.0
-        with:
-          version: 8.6.9
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Check for changeset
-        run: npx changeset status --since=origin/main
-        id: changeset-status
+        - name: Checkout code
+          uses: actions/checkout@v4
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}
+            fetch-depth: 0
+        - uses: pnpm/action-setup@v4.0.0
+          with:
+            version: 8.6.9
+        - uses: actions/setup-node@v4
+          with: 
+            node-version: 20
+            cache: pnpm
+        - run: pnpm install --frozen-lockfile
+        - run: pnpm changeset status
+          id: changeset-status
