@@ -28,27 +28,42 @@ jobs:
             os: macOS-latest
 
     steps:
-      - run: git config --global core.autocrlf false
-
-      # TODO: Should we instead pin the versions we are using for our os?
-      - run: pip install setuptools
-
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0  # Fetch all history for checking changes
 
-      - uses: pnpm/action-setup@v4.0.0
+      - name: Check for docs-only changes
+        id: check_changes
+        run: |
+          # Check if there are any changes outside of sites/docs
+          CHANGES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -v "^sites/docs/" || true)
+          if [ -z "$CHANGES" ]; then
+            echo "has_code_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_code_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - if: steps.check_changes.outputs.has_code_changes == 'true'
+        run: git config --global core.autocrlf false && pip install setuptools
+
+      - if: steps.check_changes.outputs.has_code_changes == 'true'
+        uses: pnpm/action-setup@v4.0.0
         with:
           version: 8.6.9
 
-      - uses: actions/setup-node@v4
+      - if: steps.check_changes.outputs.has_code_changes == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      - if: steps.check_changes.outputs.has_code_changes == 'true'
+        run: pnpm install --frozen-lockfile
 
-      - run: pnpm test
+      - name: Run tests
+        if: steps.check_changes.outputs.has_code_changes == 'true'
+        run: pnpm test
         env:
           SEND_ANONYMOUS_USAGE_STATS: ${{ secrets.SEND_ANONYMOUS_USAGE_STATS }}
 
@@ -71,7 +86,13 @@ jobs:
 
           DUCKDB_FILENAME: ':memory:'
 
+      - name: Docs-only change - Skip sources tests
+        if: steps.check_changes.outputs.has_code_changes != 'true'
+        run: |
+          echo "This PR only contains documentation changes - skipping sources tests"
+          exit 0
+
       - name: Test the CLI via test-env for merges to main
-        if: ${{ github.base_ref == 'main' }}
+        if: ${{ github.base_ref == 'main' && steps.check_changes.outputs.has_code_changes == 'true' }}
         run: |
           pnpm run sources:test-env && pnpm run build:test-env
