@@ -44,7 +44,6 @@
 	<slot name="error" loaded={_data} />
 {:else if !_data.length && !_data.error && $$slots.empty}
 	<slot name="empty" loaded={_data} />
-	{console.log('empty')}
 {:else}
 	<slot loaded={_data} />
 {/if}
