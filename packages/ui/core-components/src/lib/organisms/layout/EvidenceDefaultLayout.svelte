@@ -101,7 +101,7 @@
 		if (!('serviceWorker' in navigator)) return;
 
 		const registration = await navigator.serviceWorker.register(
-			addBasePath('/fix-tprotocol-service-worker'),
+			addBasePath('/fix-tprotocol-service-worker.js'),
 			{
 				scope: addBasePath('/'),
 				type: dev ? 'module' : 'classic'

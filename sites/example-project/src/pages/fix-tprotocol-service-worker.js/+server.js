@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 
-/** @type {import('./$types').RequestHandler} */
+/** @type {import('@sveltejs/kit').RequestHandler} */
 export const GET = ({ url }) => {
-	if (url.pathname.endsWith('fix-tprotocol-service-worker')) {
+	console.log('fix-tprotocol-service-worker GET', url.pathname);
+	if (url.pathname.endsWith('fix-tprotocol-service-worker.js')) {
 		const swPath = path.join(process.cwd(), 'src', 'fix-tprotocol-service-worker.js');
 		let content = fs.readFileSync(swPath, 'utf-8');
 

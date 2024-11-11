@@ -10,7 +10,7 @@ const templatePaths = [
 	'src/hooks.client.js',
 	'src/hooks.server.js',
 	'src/global.d.ts',
-	'src/pages/fix-tprotocol-service-worker/+server.js',
+	'src/pages/fix-tprotocol-service-worker.js/+server.js',
 	'src/fix-tprotocol-service-worker.js',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
