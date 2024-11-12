@@ -1,3 +1,5 @@
+const ignoredStarts = ['http', '#', 'mailto'];
+
 /**
  * Adjusts a path to include the configured base path
  * Ignores undefined, and absolute URLs
@@ -11,8 +13,7 @@
  */
 export const addBasePath = (path, config) => {
 	if (path === undefined) return path;
-	if (path.startsWith('http')) return path;
-	if (path.startsWith('#')) return path; // ignore hash links
+	if (ignoredStarts.some((start) => path.startsWith(start))) return path;
 
 	let basePath = config.deployment.basePath;
 	if (basePath) {

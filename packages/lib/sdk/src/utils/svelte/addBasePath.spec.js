@@ -39,14 +39,12 @@ describe('addBasePath', () => {
 		basePath = '/base';
 		expect(addBasePath('/base/test', config)).toBe('/base/test');
 	});
-	it('should leave links untouched when in dev mode', () => {
-		const prevDev = import.meta.env.DEV;
-		const prevMode = import.meta.env.MODE;
-		import.meta.env.DEV = false;
-		import.meta.env.MODE = 'build';
+	it('should not modify hash links', () => {
 		basePath = '/base';
-		expect(addBasePath('/test', config)).toBe('/base/test');
-		import.meta.env.DEV = prevDev;
-		import.meta.env.MODE = prevMode;
+		expect(addBasePath('#test', config)).toBe('#test');
+	});
+	it('should not modify mailto links', () => {
+		basePath = '/base';
+		expect(addBasePath('mailto:user@evidence.dev', config)).toBe('mailto:user@evidence.dev');
 	});
 });
