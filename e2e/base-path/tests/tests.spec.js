@@ -68,35 +68,44 @@ test.describe('Page', () => {
 		const pageASidebarLink = await page.getByRole('link', { name: 'Page A' });
 		await pageASidebarLink.click();
 		await expect(page.getByText('This is Page A', { exact: true })).toBeVisible();
-		let path = new URL(page.url()).pathname;
-		expect(path).toBe(`${basePath}/page-a/`);
+		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
 
 		const sidebar = pageASidebarLink.locator('..');
 
 		const homeSidebarLink = await sidebar.getByRole('link', { name: 'Home' });
 		await homeSidebarLink.click();
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
-		path = new URL(page.url()).pathname;
-		expect(path).toBe(`${basePath}/`);
+		expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 
 		const pageBSidebarLink = await page.getByRole('link', { name: 'Page B' });
 		await pageBSidebarLink.click();
 		await expect(page.getByText('This is Page B', { exact: true })).toBeVisible();
-		path = new URL(page.url()).pathname;
-		expect(path).toBe(`${basePath}/page-b/`);
+		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
 
 		const logoLink = await page.getByAltText('Home');
 		await logoLink.click();
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
-		path = new URL(page.url()).pathname;
-		expect(path).toBe(`${basePath}/`);
+		expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
+	});
+	test('breadcrumbs should use base path', async ({ page }) => {
+		await page.goto(`${basePath}/nested/page-c`);
+		await waitForDevModeToLoad(page);
+
+		const nestedCrumb = await page.getByRole('link', { name: 'Nested' });
+		await nestedCrumb.click();
+		await expect(page.getByText('This is a nested page')).toBeVisible();
+		await expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/`);
+
+		const breadcrumbs = nestedCrumb.locator('..');
+
+		await breadcrumbs.getByRole('link', { name: 'Home' }).click();
+		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
+		await expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 	});
 });
 
 /*
 To test
-- Page
-	- Breadcrumbs
 - Components
   - Table row links
 	- BigValue
