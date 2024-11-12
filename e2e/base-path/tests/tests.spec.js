@@ -122,12 +122,21 @@ test.describe('Components', () => {
 		await expect(page.getByText('This is Page C')).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/page-c/`);
 	});
+
+	test('BigValue link should use base path', async ({ page }) => {
+		await page.goto(`${basePath}/big-value-link`);
+		await waitForDevModeToLoad(page);
+
+		const bigValueLink = await page.getByRole('link', { name: '123' });
+		await bigValueLink.click();
+		await expect(page.getByText('This is Page B')).toBeVisible();
+		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
+	});
 });
 
 /*
 To test
 - Components
-	- BigValue
 	- LinkButton
 	- BigLink
 */
