@@ -16,6 +16,8 @@
 
 	/** @type {string | undefined} */
 	export let link = undefined;
+
+	$: console.log(orderedColumns);
 </script>
 
 <thead>
@@ -84,18 +86,26 @@
 				style:color={headerFontColor}
 				style:background-color={headerColor}
 				style:cursor={sortable ? 'pointer' : 'auto'}
-				style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
 				on:click={sortable ? sortClick(column.id) : ''}
 				style:vertical-align="bottom"
+				style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
 			>
-				{column.title
-					? column.title
-					: formatColumnTitles
-						? safeExtractColumn(column, columnSummary).title
-						: safeExtractColumn(column, columnSummary).id}
-				{#if sortObj.col === column.id}
-					<SortIcon ascending={sortObj.ascending} />
-				{/if}
+				<span class="flex items-end">
+					<div>
+						{column.title
+							? column.title
+							: formatColumnTitles
+								? safeExtractColumn(column, columnSummary).title
+								: safeExtractColumn(column, columnSummary).id}
+					</div>
+					<div class="ml-[3px]">
+						{#if sortObj.col === column.id}
+							<SortIcon ascending={sortObj.ascending} />
+						{:else}
+							<span class="pr-[12px] invisible"></span>
+						{/if}
+					</div>
+				</span>
 			</th>
 		{/each}
 
