@@ -8,6 +8,11 @@
 	import ButtonGroupItem from '../../../atoms/inputs/button-group/ButtonGroupItem.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { expect, userEvent, within, fn } from '@storybook/test';
+	import Dropdown from '$lib/atoms/inputs/dropdown/Dropdown.svelte';
+	import PointMap from '../map/PointMap.svelte';
+	import AreaMap from '../map/AreaMap.svelte';
+	import BaseMap from '../map/BaseMap.svelte';
+	import Points from '../map/components/Points.svelte';
 
 	const mockGoto = fn();
 
@@ -330,4 +335,34 @@
 			<Column id="arrival_airport" title="Arrival Airport" />
 		{/if}
 	</DataTable>
+</Story>
+
+<Story name="error chart test">
+	{@const data2 = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="test" {data2} value="value" label="label" />
+	{@const data = Query.create(`SELECT * from flightsERROR LIMIT 1000`, query)}
+	<DataTable {data} />
+	<Dropdown name="test" {data2} value="value" label="label" />
+	{@const la_locations = Query.create(`select * from la_locations order by 1`, query)}
+	<h3>PointMap Error</h3>
+	<PointMap data={la_locations} lat="lat" long="longERROR" value="sales" legend={false} />
+	<Dropdown name="test" {data2} value="value" label="label" />
+	<h3>BaseMap Error</h3>
+	<BaseMap>
+		<Points
+			data={la_locations}
+			lat="lat"
+			long="longERROR"
+			value="sales"
+			legend={false}
+			tooltipType="hover"
+		/>
+	</BaseMap>
+	<Dropdown name="test" {data2} value="value" label="label" />
+	{@const la_zip_sales = Query.create(
+		`select * from la_zip_sales where zip_code <> 90704 order by 1`,
+		query
+	)}
+	<h3>AreaMap Error</h3>
+	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_codeERROR" />
 </Story>

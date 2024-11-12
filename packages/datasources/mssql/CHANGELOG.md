@@ -1,5 +1,11 @@
 # @evidence-dev/mssql
 
+## 1.1.1
+
+### Patch Changes
+
+- 330bb5336: Add requestTimeout to mssql connector
+
 ## 1.1.0
 
 ### Minor Changes
