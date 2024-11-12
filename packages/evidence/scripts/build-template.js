@@ -82,7 +82,7 @@ fsExtra.outputFileSync(
         optimizeDeps: {
             include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
 				// We need these to prevent HMR from doing a full page reload
-				...(isDebug() ? [] : [
+				...(process.env.EVIDENCE_DISABLE_INCLUDE ? [] : [
 					'@evidence-dev/core-components',
 					...preprocess.injectedEvidenceImports.map(i => i.from),
 					'debounce', 
