@@ -4,6 +4,7 @@ import { getContext, setContext } from 'svelte';
 import { derived, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
+import { isBuiltinColor, isBuiltinColorPalette } from '@evidence-dev/tailwind';
 import { themes, themesConfig } from '$evidence/themes';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
@@ -112,4 +113,40 @@ export const ensureThemeStores = () => {
 		setContext(THEME_STORES_CONTEXT_KEY, stores);
 	}
 	return stores;
+};
+
+/**
+ * @param {string} color
+ * @param {Theme} theme
+ * @returns {string | undefined}
+ */
+export const resolveColor = (color, theme) => {
+	if (isBuiltinColor(color)) {
+		return theme.colors[color];
+	}
+	return color;
+};
+
+/**
+ * @param {string} color
+ * @param {Theme} theme
+ * @returns {string[] | undefined}
+ */
+export const resolveColorPalette = (color, theme) => {
+	if (isBuiltinColorPalette(color)) {
+		return theme.colorPalettes[color];
+	}
+	return undefined;
+};
+
+/**
+ * @param {string} color
+ * @param {Theme} theme
+ * @returns {string[] | undefined}
+ */
+export const resolveColorScale = (color, theme) => {
+	if (isBuiltinColorPalette(color)) {
+		return theme.colorScales[color];
+	}
+	return undefined;
 };
