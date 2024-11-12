@@ -27,19 +27,21 @@ select *, 'https://www.google.com/search?q=' || point_name as link_col from la_l
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200 basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
+<PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200 basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'/>
 
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
 ```svelte
 <PointMap 
     data={la_locations} 
-    lat=lat long=long 
+    lat=lat 
+    long=long 
     value=sales 
     valueFmt=usd 
     pointName=point_name 
     height=200 
     basemap={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}`}
+    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 />
 ```
 
@@ -563,6 +565,14 @@ options="URL"
 >
 URL template for the basemap tiles.
 </PropListing>
+
+<PropListing
+name="attribution"
+options="text"
+>
+Attribution text to display on the map (e.g., "© OpenStreetMap contributors").
+</PropListing>
+
 
 <PropListing
 name="title"

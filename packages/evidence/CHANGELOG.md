@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 39.1.14
+
+### Patch Changes
+
+- 8778bcfc3: fix hmr, rip import.meta.glob out of pagesManifest
+- 011a08be7: Remove loading toasts
+- 32690c270: Add @evidence-dev/sdk/utils/svelte to Vite optimizeDeps.include
+- Updated dependencies [c82ba1516]
+  - @evidence-dev/sdk@1.4.6
+  - @evidence-dev/universal-sql@2.1.7
+  - @evidence-dev/plugin-connector@2.1.13
+
 ## 39.1.13
 
 ### Patch Changes

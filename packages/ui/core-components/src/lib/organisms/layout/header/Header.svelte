@@ -2,7 +2,12 @@
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { X, Menu2 } from '@steeze-ui/tabler-icons';
-	import { Github as GithubLogo, Slack as SlackLogo, X as XLogo } from '@steeze-ui/simple-icons';
+	import {
+		Github as GithubLogo,
+		Slack as SlackLogo,
+		Bluesky as BlueskyLogo,
+		X as XLogo
+	} from '@steeze-ui/simple-icons';
 	import Logo from '../Logo.svelte';
 	import AlgoliaDocSearch from './AlgoliaDocSearch.svelte';
 	import KebabMenu from './KebabMenu.svelte';
@@ -21,6 +26,7 @@
 	// Social links
 	export let githubRepo = undefined;
 	export let xProfile = undefined;
+	export let blueskyProfile = undefined;
 	export let slackCommunity = undefined;
 </script>
 
@@ -83,6 +89,16 @@
 						rel="noreferrer"
 					>
 						<Icon src={XLogo} class="w-4 h-4 text-base-content" />
+					</a>
+				{/if}
+				{#if blueskyProfile}
+					<a
+						href={blueskyProfile}
+						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
+						target="_blank"
+						rel="noreferrer"
+					>
+						<Icon src={BlueskyLogo} fill="currentColor" class="w-4 h-4 text-base-content " />
 					</a>
 				{/if}
 				{#if slackCommunity}
