@@ -2,7 +2,7 @@ import evidencePreprocess from '@evidence-dev/preprocess';
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
 import { evidencePlugins } from '@evidence-dev/plugin-connector';
-import { alterLinks } from '@evidence-dev/sdk/build/svelte';
+import { addBasePathToHrefAndSrc } from '@evidence-dev/sdk/build/svelte';
 import fs from 'fs';
 import path from 'path';
 import { getEvidenceConfig } from '@evidence-dev/sdk/config';
@@ -44,7 +44,7 @@ const config = {
 		preprocess({
 			postcss: true
 		}),
-		alterLinks
+		addBasePathToHrefAndSrc
 	],
 	onwarn: errorHandler,
 	kit: {

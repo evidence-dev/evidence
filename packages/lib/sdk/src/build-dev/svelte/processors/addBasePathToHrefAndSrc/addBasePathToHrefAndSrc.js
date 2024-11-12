@@ -5,7 +5,7 @@ import { addBasePath } from '../../../../utils/svelte/addBasePath.js';
 let cfg;
 
 /** @type {import("svelte/types/compiler/preprocess").PreprocessorGroup} */
-export const alterLinks = {
+export const addBasePathToHrefAndSrc = {
 	markup: ({ content, filename }) => {
 		if (!filename?.endsWith('+page.md')) return;
 		if (!cfg) {
