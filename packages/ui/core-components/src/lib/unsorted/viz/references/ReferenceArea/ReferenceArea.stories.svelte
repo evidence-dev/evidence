@@ -103,10 +103,9 @@
 	import BarChart from '../../bar/BarChart.svelte';
 	import ReferenceArea from './ReferenceArea.svelte';
 	import Dropdown from '../../../../../lib/atoms/inputs/dropdown/Dropdown.svelte';
-	import DropdownOptions from '../../../../../lib/atoms/inputs/dropdown/helpers/DropdownOption.svelte';
+	import DropdownOption from '../../../../../lib/atoms/inputs/dropdown/helpers/DropdownOption.svelte';
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import DropdownOption from '../../../../../lib/atoms/inputs/dropdown/helpers/DropdownOption.svelte';
 	// From layout.js
 	const inputStore = getInputContext();
 
@@ -234,22 +233,13 @@
 	</LineChart>
 </Story>
 
-<Story name="Dynamic Data: x w/ dropdown">
-	{@const referenceAreaData = Query.create(
-		`
-      select 30 as xMin, 40 as xMax, 'Area 1' as label union all
-      select 50, 60, 'Area 2' union all
-      select 70, 80, 'Area 3'
-    `,
-		query
-	)}
-	<Dropdown name=category1 >
+<Story name="x w/ dropdown">
+	<Dropdown name="category1">
 		<DropdownOption value="30" />
 		<DropdownOption value="50" />
 	</Dropdown>
-	{$inputStore.category1.value} 
 	<LineChart x="x" y="y" {data}>
-		<ReferenceArea data={referenceAreaData} xMin=xMin xMax=xMax label="label" />
+		<ReferenceArea xMin="10" xMax={$inputStore.category1.value} label="label" />
 	</LineChart>
 </Story>
 
