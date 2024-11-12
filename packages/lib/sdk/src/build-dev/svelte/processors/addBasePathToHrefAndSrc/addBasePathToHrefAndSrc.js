@@ -13,7 +13,7 @@ export const addBasePathToHrefAndSrc = {
 		}
 		let r = content;
 
-		const regex = /(href|src)="([^"]*)"/g;
+		const regex = /(href|src)=['"]?([^'">= ]*)['"]?/g;
 		const matches = content.matchAll(regex);
 		for (const match of matches) {
 			const originalContent = match[0];

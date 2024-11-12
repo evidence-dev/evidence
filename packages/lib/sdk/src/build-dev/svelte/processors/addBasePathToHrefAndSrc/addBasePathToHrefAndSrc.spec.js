@@ -58,4 +58,25 @@ describe('addBasePathToHrefAndSrc', () => {
 			'<a href="https://example.com/test">test</a><a href="/base/test">test</a><img src="https://example.com/test">test</img><img src="/base/test">test</img>'
 		);
 	});
+	it('should work on paths in single quotes', () => {
+		basePath = '/base';
+		const content = "<a href='/test'>test</a><img src='/test'>test</img>";
+		expect(addBasePathToHrefAndSrc.markup({ content, filename: '+page.md' }).code).toBe(
+			"<a href='/base/test'>test</a><img src='/base/test'>test</img>"
+		);
+	});
+	it('should work on paths in double quotes', () => {
+		basePath = '/base';
+		const content = '<a href="/test">test</a><img src="/test">test</img>';
+		expect(addBasePathToHrefAndSrc.markup({ content, filename: '+page.md' }).code).toBe(
+			'<a href="/base/test">test</a><img src="/base/test">test</img>'
+		);
+	});
+	it('should work on paths with no quotes', () => {
+		basePath = '/base';
+		const content = '<a href=/test>test</a><img src=/test>test</img>';
+		expect(addBasePathToHrefAndSrc.markup({ content, filename: '+page.md' }).code).toBe(
+			'<a href=/base/test>test</a><img src=/base/test>test</img>'
+		);
+	});
 });
