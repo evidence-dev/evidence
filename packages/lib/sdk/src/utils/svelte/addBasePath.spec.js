@@ -61,4 +61,8 @@ describe('addBasePath', () => {
 		basePath = '/base';
 		expect(addBasePath(href, config)).toBe(href);
 	});
+	it('should add base path to relative path with colon in it', () => {
+		basePath = '/base';
+		expect(addBasePath('/test:123', config)).toBe('/base/test:123');
+	});
 });
