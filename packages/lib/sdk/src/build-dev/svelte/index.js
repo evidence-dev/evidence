@@ -50,5 +50,5 @@ export {
 	initUniversalSql,
 	injectComponents,
 	transformQueries,
-	alterLinks
+	alterLinks as alterLinks
 };

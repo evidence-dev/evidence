@@ -12,14 +12,15 @@ export const alterLinks = {
 			cfg = getEvidenceConfig();
 		}
 		let r = content;
-		const hrefRegex = /href="([^"]*)"/g;
-		const matches = content.matchAll(hrefRegex);
+
+		const regex = /(href|src)="([^"]*)"/g;
+		const matches = content.matchAll(regex);
 		for (const match of matches) {
 			const originalContent = match[0];
-			const href = match[1];
-			if (href) {
-				const newHref = addBasePath(href.toString(), cfg);
-				r = r.replace(originalContent, originalContent.replace(href, newHref));
+			const path = match[2];
+			if (path) {
+				const newPath = addBasePath(path, cfg);
+				r = r.replace(originalContent, originalContent.replace(path, newPath));
 			}
 		}
 

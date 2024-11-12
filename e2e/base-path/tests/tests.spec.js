@@ -136,6 +136,13 @@ test.describe('Page', () => {
 	});
 });
 
+test.describe('Images', () => {
+	test('<img /> and []() should use base path', async ({ page }) => {
+		await page.goto(`${basePath}/images`);
+		await waitForPageToLoad(page);
+	});
+});
+
 test.describe('Components', () => {
 	test('Table row links should use base path', async ({ page }) => {
 		await page.goto(`${basePath}/table-row-links`);
