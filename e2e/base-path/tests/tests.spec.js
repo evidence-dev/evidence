@@ -59,6 +59,25 @@ test.describe('<head />', () => {
 			})
 		);
 	});
+
+	test('og:image should start with basePath', async ({ page }) => {
+		await page.goto(`${basePath}/og-image`);
+		await waitForPageToLoad(page);
+
+		const ogImage = await page.locator('meta[property="og:image"]');
+		await expect(ogImage, {
+			message: 'Expected og-image.md to have an og:image meta tag'
+		}).toHaveCount(1);
+
+		const ogImageContent = await ogImage.getAttribute('content');
+		await expect(ogImageContent, {
+			message: 'Expected og:image content to exist'
+		}).not.toBeNull();
+
+		await expect(ogImageContent?.startsWith(basePath), {
+			message: `Expected og:image content '${ogImageContent}' to start with base path '${basePath}'`
+		}).toBeTruthy();
+	});
 });
 
 test.describe('Page', () => {
