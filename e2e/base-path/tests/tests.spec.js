@@ -249,4 +249,16 @@ test.describe('Components', () => {
 		await expect(page.getByText('This is Page C')).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/page-c/`);
 	});
+
+	test('addBasePath should work in custom components', async ({ page }) => {
+		await page.goto(`${basePath}/using-custom-component`);
+		await waitForPageToLoad(page);
+
+		const pageBLink = await page.getByRole('link', { name: 'Go to page b' });
+		await pageBLink.click();
+		await waitForPageToLoad(page);
+
+		await expect(page.getByText('This is Page B')).toBeVisible();
+		await expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
+	});
 });
