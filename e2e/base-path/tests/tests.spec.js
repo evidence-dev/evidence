@@ -69,21 +69,29 @@ test.describe('Page', () => {
 
 		const pageASidebarLink = await sidebar.getByRole('link', { name: 'Page A' });
 		await pageASidebarLink.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('This is Page A', { exact: true })).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
 
 		const homeSidebarLink = await sidebar.getByRole('link', { name: 'Home' });
 		await homeSidebarLink.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 
 		const pageBSidebarLink = await sidebar.getByRole('link', { name: 'Page B' });
 		await pageBSidebarLink.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('This is Page B', { exact: true })).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
 
 		const logoLink = await page.getByAltText('Home');
 		await logoLink.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 	});
@@ -93,12 +101,16 @@ test.describe('Page', () => {
 
 		const nestedCrumb = await page.getByRole('link', { name: 'Nested' });
 		await nestedCrumb.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('This is a nested page')).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/`);
 
 		const breadcrumbs = nestedCrumb.locator('..');
 
 		await breadcrumbs.getByRole('link', { name: 'Home' }).click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 	});
@@ -111,6 +123,8 @@ test.describe('Components', () => {
 
 		const pageALink = await page.getByRole('cell', { name: '/page-a' });
 		await pageALink.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('This is Page A')).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
 
@@ -119,6 +133,8 @@ test.describe('Components', () => {
 
 		const pageCLink = await page.getByRole('cell', { name: '/nested/page-c' });
 		await pageCLink.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('This is Page C')).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/page-c/`);
 	});
@@ -129,6 +145,8 @@ test.describe('Components', () => {
 
 		const bigValueLink = await page.getByRole('link', { name: '123' });
 		await bigValueLink.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('This is Page B')).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
 	});
@@ -139,6 +157,8 @@ test.describe('Components', () => {
 
 		const linkButton = await page.getByRole('link', { name: 'Go to page a' });
 		await linkButton.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('This is Page A')).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
 	});
@@ -149,6 +169,8 @@ test.describe('Components', () => {
 
 		const bigLink = await page.getByRole('link', { name: 'Go to page c' });
 		await bigLink.click();
+		await waitForDevModeToLoad(page);
+
 		await expect(page.getByText('This is Page C')).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/page-c/`);
 	});
