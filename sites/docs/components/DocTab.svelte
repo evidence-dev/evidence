@@ -20,25 +20,29 @@
 
 <div class="doc-tab mt-2">
 	<div class="flex justify-end">
-		{#each tabs as tab, index}
-			<button
-				class="relative p-1 transition-colors duration-300 text-sm font-medium ease-in-out capitalize tracking-wide focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-md hover:text-gray-950 {activeTab ===
-				tab
-					? 'text-gray-950'
-					: 'text-gray-500'}"
-				on:click={() => setTab(tab, index)}
-				bind:this={tabButtons[index]}
-			>
-				{tab}
-				{#if activeTab === tab}
-					<div
-						class="absolute -bottom-px left-0 right-0 h-[2px] rounded-full bg-gray-950"
-						in:send={{ key: 'trigger' }}
-						out:receive={{ key: 'trigger' }}
-					/>
-				{/if}
-			</button>
-		{/each}
+		<div class="flex gap-1 bg-gray-100 rounded-md p-1">
+			{#each tabs as tab, index}
+				<div class="relative">
+					<button
+						class="relative z-10 py-1 px-2 transition-colors duration-300 text-xs font-medium ease-in-out capitalize tracking-wide focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-md hover:text-gray-950 {activeTab ===
+						tab
+							? 'text-gray-950'
+							: 'text-gray-500'}"
+						on:click={() => setTab(tab, index)}
+						bind:this={tabButtons[index]}
+					>
+						{tab}
+					</button>
+					{#if activeTab === tab}
+						<div
+							class="absolute bottom-0 left-0 w-full h-full rounded border bg-white shadow-sm "
+							in:send={{ key: 'trigger' }}
+							out:receive={{ key: 'trigger' }}
+						/>
+					{/if}
+				</div>
+			{/each}
+		</div>
 	</div>
 
 	<!-- Preview and code tabs -->
