@@ -1554,7 +1554,7 @@ importers:
         version: 10.4.20(postcss@8.4.49)
       chromatic:
         specifier: ^11.4.0
-        version: 11.18.0
+        version: 11.18.1
       eslint:
         specifier: 8.45.0
         version: 8.45.0
@@ -1894,7 +1894,7 @@ packages:
     engines: {node: '>=12.17'}
     dependencies:
       lodash: 4.17.21
-      typical: 7.2.0
+      typical: 7.3.0
 
   /@adobe/css-tools@4.4.0:
     resolution: {integrity: sha512-Ff9+ksdQQB3rMncgqDK78uLznstjyfIf2Arnh22pW8kBpLs6rpKDwgnZT46hin5Hl1WzazzK64DOrhSwYpS7bQ==}
@@ -3623,7 +3623,7 @@ packages:
     resolution: {integrity: sha512-vYQ+TcfktEE3GHnLZXHCzXF/sN9dw+KivH8a5cmPyd9YtQs7fZtHrEgsIjWpYycXiweKMo1Lm1RZsjxk8DH3rA==}
     engines: {node: '>=16.0.0', yarn: '>=1.22.18'}
     dependencies:
-      chromatic: 11.18.0
+      chromatic: 11.18.1
       filesize: 10.1.6
       jsonfile: 6.1.0
       react-confetti: 6.1.0(react@17.0.2)
@@ -9928,8 +9928,8 @@ packages:
   /chroma-js@2.6.0:
     resolution: {integrity: sha512-BLHvCB9s8Z1EV4ethr6xnkl/P2YRFOGqfgvuMG/MyCbZPrTA+NeiByY6XvgF0zP4/2deU2CXnWyMa3zu1LqQ3A==}
 
-  /chromatic@11.18.0:
-    resolution: {integrity: sha512-3o9Frn1oIS1hFLsJxVH9yVJ1O7+TCYoyL7OZzUorL/DCYduhXr5LDSBfpUsp7EdCPb64ufkbyFzSRNbt/xy9kg==}
+  /chromatic@11.18.1:
+    resolution: {integrity: sha512-hkNT9vA6K9+PnE/khhZYBnRCOm8NonaQDs7RZ8YHFo7/lh1b/x/uFMkTjWjaj/mkM6QOR/evu5VcZMtcaauSlw==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -10174,7 +10174,7 @@ packages:
       array-back: 6.2.2
       chalk-template: 0.4.0
       table-layout: 3.0.2
-      typical: 7.2.0
+      typical: 7.3.0
 
   /commander@11.1.0:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
@@ -13028,8 +13028,8 @@ packages:
     resolution: {integrity: sha512-Ks/IoX00TtClbGQr4TWXemAnktAQvYB7HzcCxDGqEZU6oCmb2INHuOoKxbtR+HFkmYWBKv/dOZtGRiAjDhj92g==}
     dev: false
 
-  /is-reference@3.0.2:
-    resolution: {integrity: sha512-v3rht/LgVcsdZa3O2Nqs+NMowLOxeOm7Ay9+/ARQ2F+qEoANRcqrjAZKGN0v8ymUetZGgkp26LTnGT7H0Qo9Pg==}
+  /is-reference@3.0.3:
+    resolution: {integrity: sha512-ixkJoqQvAP88E6wLydLGGqCJsrFUnqoH6HnaczB8XmDH1oaWU+xxdptvikTgaEhtZ53Ky6YXiBuUI2WXLMCwjw==}
     dependencies:
       '@types/estree': 1.0.6
 
@@ -14204,7 +14204,7 @@ packages:
     resolution: {integrity: sha512-ok6z3qlYyCDS4ZEU27HaU6x/xZa9Whf8jD4ptH5UZTQYZVYeb9bnZ3ojVhiJNLiXK1Hfc0GNbLXcmZ5plLDDBg==}
     engines: {node: '>=14'}
     dependencies:
-      mlly: 1.7.2
+      mlly: 1.7.3
       pkg-types: 1.2.1
 
   /locate-character@3.0.0:
@@ -14788,8 +14788,8 @@ packages:
     hasBin: true
     dev: false
 
-  /mlly@1.7.2:
-    resolution: {integrity: sha512-tN3dvVHYVz4DhSXinXIk7u9syPYaJvio118uomkovAtWBT+RdbP6Lfh/5Lvo519YMmwBafwlh20IPTXIStscpA==}
+  /mlly@1.7.3:
+    resolution: {integrity: sha512-xUsx5n/mN0uQf4V548PKQ+YShA4/IW0KI1dZhrNrPCLG+xizETbHTkOa1f8/xut9JRPp8kQuMnz0oqwkTiLo/A==}
     dependencies:
       acorn: 8.14.0
       pathe: 1.1.2
@@ -15708,7 +15708,7 @@ packages:
     dependencies:
       '@types/estree': 1.0.6
       estree-walker: 3.0.3
-      is-reference: 3.0.2
+      is-reference: 3.0.3
 
   /pg-cloudflare@1.1.1:
     resolution: {integrity: sha512-xWPagP/4B6BgFO+EKz3JONXv3YDgvkbVrGw2mTo3D6tVDQRh1e7cqVGvyR3BE+eQgAvx1XhW/iEASj4/jCWl3Q==}
@@ -15838,7 +15838,7 @@ packages:
     resolution: {integrity: sha512-sQoqa8alT3nHjGuTjuKgOnvjo4cljkufdtLMnO2LBP/wRwuDlo1tkaEdMxCRhyGRPacv/ztlZgDPm2b7FAmEvw==}
     dependencies:
       confbox: 0.1.8
-      mlly: 1.7.2
+      mlly: 1.7.3
       pathe: 1.1.2
 
   /playwright-core@1.48.2:
@@ -17710,7 +17710,7 @@ packages:
       code-red: 1.0.4
       css-tree: 2.3.1
       estree-walker: 3.0.3
-      is-reference: 3.0.2
+      is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.12
       periscopic: 3.1.0
@@ -17768,7 +17768,7 @@ packages:
       command-line-args: 5.2.1
       command-line-usage: 7.0.1
       stream-read-all: 3.0.1
-      typical: 7.2.0
+      typical: 7.3.0
       wordwrapjs: 5.1.0
 
   /tailwind-merge@1.14.0:
@@ -18420,8 +18420,8 @@ packages:
     resolution: {integrity: sha512-VAH4IvQ7BDFYglMd7BPRDfLgxZZX4O4TFcRDA6EN5X7erNJJq+McIEp8np9aVtxrCJ6qx4GTYVfOWNjcqwZgRw==}
     engines: {node: '>=8'}
 
-  /typical@7.2.0:
-    resolution: {integrity: sha512-W1+HdVRUl8fS3MZ9ogD51GOb46xMmhAZzR0WPw5jcgIZQJVvkddYzAl4YTU6g5w33Y1iRQLdIi2/1jhi2RNL0g==}
+  /typical@7.3.0:
+    resolution: {integrity: sha512-ya4mg/30vm+DOWfBg4YK3j2WD6TWtRkCbasOJr40CseYENzCUby/7rIvXA99JGsQHeNxLbnXdyLLxKSv3tauFw==}
     engines: {node: '>=12.17'}
 
   /uc.micro@1.0.6:
