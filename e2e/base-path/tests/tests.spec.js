@@ -60,14 +60,42 @@ test.describe('<head />', () => {
 	});
 });
 
+test.describe('Page', () => {
+	test('sidebar and logo links should use base path', async ({ page }) => {
+		await page.goto(basePath);
+		await waitForDevModeToLoad(page);
+
+		const pageASidebarLink = await page.getByRole('link', { name: 'Page A' });
+		await pageASidebarLink.click();
+		await expect(page.getByText('This is Page A', { exact: true })).toBeVisible();
+		let path = new URL(page.url()).pathname;
+		expect(path).toBe(`${basePath}/page-a/`);
+
+		const sidebar = pageASidebarLink.locator('..');
+
+		const homeSidebarLink = await sidebar.getByRole('link', { name: 'Home' });
+		await homeSidebarLink.click();
+		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
+		path = new URL(page.url()).pathname;
+		expect(path).toBe(`${basePath}/`);
+
+		const pageBSidebarLink = await page.getByRole('link', { name: 'Page B' });
+		await pageBSidebarLink.click();
+		await expect(page.getByText('This is Page B', { exact: true })).toBeVisible();
+		path = new URL(page.url()).pathname;
+		expect(path).toBe(`${basePath}/page-b/`);
+
+		const logoLink = await page.getByAltText('Home');
+		await logoLink.click();
+		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
+		path = new URL(page.url()).pathname;
+		expect(path).toBe(`${basePath}/`);
+	});
+});
+
 /*
 To test
-- InvisibleLinks
 - Page
-  - Settings page
-	- Sidebar links
-	- Kebab menu
-	- Logo
 	- Breadcrumbs
 - Components
   - Table row links

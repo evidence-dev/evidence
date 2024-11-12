@@ -6,9 +6,9 @@
 </script>
 
 {#if logo}
-	<img src={logo} alt="logo" class="h-5 aspect-auto" href={addBasePath('/')} />
+	<img src={logo} alt="Home" class="h-5 aspect-auto" href={addBasePath('/')} />
 {:else if title}
 	{title}
 {:else}
-	<img src={defaultLogo} alt="evidence" class="h-5 aspect-auto" href={addBasePath('/')} />
+	<img src={defaultLogo} alt="Home" class="h-5 aspect-auto" href={addBasePath('/')} />
 {/if}
