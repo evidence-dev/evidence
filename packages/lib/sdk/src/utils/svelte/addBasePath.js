@@ -1,4 +1,4 @@
-const ignoredStarts = ['http', '#', 'mailto'];
+const ignoredStarts = ['http', '#', 'mailto:', 'vscode:'];
 
 /**
  * Adjusts a path to include the configured base path

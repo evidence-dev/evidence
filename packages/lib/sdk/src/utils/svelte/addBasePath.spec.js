@@ -47,4 +47,10 @@ describe('addBasePath', () => {
 		basePath = '/base';
 		expect(addBasePath('mailto:user@evidence.dev', config)).toBe('mailto:user@evidence.dev');
 	});
+	it('should not modify vscode links', () => {
+		basePath = '/base';
+		expect(addBasePath('vscode:extension/Evidence.evidence-vscode', config)).toBe(
+			'vscode:extension/Evidence.evidence-vscode'
+		);
+	});
 });
