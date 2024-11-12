@@ -132,11 +132,20 @@ test.describe('Components', () => {
 		await expect(page.getByText('This is Page B')).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
 	});
+
+	test('LinkButton should use base path', async ({ page }) => {
+		await page.goto(`${basePath}/link-button`);
+		await waitForDevModeToLoad(page);
+
+		const linkButton = await page.getByRole('link', { name: 'Go to page a' });
+		await linkButton.click();
+		await expect(page.getByText('This is Page A')).toBeVisible();
+		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
+	});
 });
 
 /*
 To test
 - Components
-	- LinkButton
 	- BigLink
 */
