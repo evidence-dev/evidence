@@ -43,14 +43,22 @@ describe('addBasePath', () => {
 		basePath = '/base';
 		expect(addBasePath('#test', config)).toBe('#test');
 	});
-	it('should not modify mailto links', () => {
+	it.each([
+		'http://example.com',
+		'https://example.com',
+		'ftp://example.com/file.txt',
+		'mailto:someone@example.com',
+		'tel:+1234567890',
+		'file:///C:/path/to/file',
+		'data:text/plain;base64,aGVsbG8gd29ybGQ=',
+		'javascript:alert("Hello")',
+		'blob:hajsfklayhslfjkahslfkahjslkf',
+		'sms:+1234567890',
+		'vscode:extension/Evidence.evidence-vscode',
+		'someprotocol:',
+		'someotherprotocol://'
+	])('should not modify urls with a protocol (%s)', (href) => {
 		basePath = '/base';
-		expect(addBasePath('mailto:user@evidence.dev', config)).toBe('mailto:user@evidence.dev');
-	});
-	it('should not modify vscode links', () => {
-		basePath = '/base';
-		expect(addBasePath('vscode:extension/Evidence.evidence-vscode', config)).toBe(
-			'vscode:extension/Evidence.evidence-vscode'
-		);
+		expect(addBasePath(href, config)).toBe(href);
 	});
 });
