@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 1.2.1
+
+### Patch Changes
+
+- 7c21833c7: Add Authentication Token caching to Snowflake connector
+
 ## 1.2.0
 
 ### Minor Changes

@@ -81,9 +81,10 @@ export class EvidenceMap {
 	 * @param {import('leaflet').LatLngExpression} [startingCoords] - The starting coordinates for the map.
 	 * @param {number} [startingZoom] - The starting zoom level for the map.
 	 * @param {boolean} [userDefinedView=false]
+	 * @param {string} [attribution] - The attribution text to display on the map.
 	 * @returns {Promise<void>}
 	 */
-	async init(mapEl, basemap, startingCoords, startingZoom, userDefinedView = false) {
+	async init(mapEl, basemap, startingCoords, startingZoom, userDefinedView = false, attribution) {
 		if (!Leaflet) {
 			this.#sharedPromise.start();
 			Leaflet = await import('leaflet')
@@ -121,9 +122,13 @@ export class EvidenceMap {
 		const processedBasemap = this.processBasemapUrl(basemap);
 		Leaflet.tileLayer(processedBasemap, {
 			subdomains: 'abcd',
-			maxZoom: 20
+			maxZoom: 20,
+			attribution: attribution
 		}).addTo(this.#map);
-		this.#map.removeControl(this.#map.attributionControl);
+
+		if (!attribution) {
+			this.#map.removeControl(this.#map.attributionControl);
+		}
 
 		this.#bounds = Leaflet.latLngBounds();
 
@@ -618,5 +623,18 @@ export class EvidenceMap {
 		this.#paneArray.push(paneId);
 
 		return paneId;
+	}
+
+	handleInternalError(internalError) {
+		if (internalError) {
+			this.#internalError.set(internalError);
+		}
+	}
+
+	/**@type {import('svelte/store').Writable<string | undefined>} */
+	#internalError = writable(undefined);
+
+	get internalError() {
+		return readonly(this.#internalError);
 	}
 }

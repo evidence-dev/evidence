@@ -1,6 +1,7 @@
 import preprocess from '@evidence-dev/preprocess';
 import { error } from '@sveltejs/kit';
-import fs from 'fs';
+import fs from 'fs/promises';
+import path from 'path';
 
 /**
  * @typedef {Object} PageManifestNode
@@ -63,12 +64,13 @@ export async function GET() {
 	try {
 		const pages = {};
 
-		const pagesDir = fs.readdirSync('src/pages', { withFileTypes: true, recursive: true });
+		const pagesDir = await fs.readdir('src/pages', { withFileTypes: true, recursive: true });
 		for (const dirent of pagesDir) {
 			if (dirent.isFile() && dirent.name.endsWith('.md')) {
-				const path = `${dirent.parentPath}/${dirent.name}`;
-				const content = fs.readFileSync(path, 'utf-8');
-				pages[`/${path}`] = content;
+				const relative_path = path.join(dirent.parentPath ?? dirent.path, dirent.name);
+				const content = await fs.readFile(relative_path, 'utf-8');
+				// regularize for windows
+				pages[new URL(`file:///${relative_path}`).pathname] = content;
 			}
 		}
 
