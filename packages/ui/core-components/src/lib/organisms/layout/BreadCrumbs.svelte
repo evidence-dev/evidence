@@ -1,4 +1,6 @@
 <script context="module">
+	import { config } from '$evidence/config';
+
 	export function searchFileTree(href, fileTree) {
 		if (href === '/') return fileTree;
 		const pathArray = href.split('/').slice(1);
@@ -17,7 +19,7 @@
 	export function buildCrumbs(pathArray, fileTree) {
 		const crumbs = [{ href: '/', title: 'Home' }];
 		pathArray.forEach((path, i) => {
-			if (path != '') {
+			if (path != '' && `/${path}` !== config.deployment.basePath) {
 				crumbs.push({
 					href: '/' + pathArray.slice(0, i + 1).join('/'),
 					title: decodeURIComponent(path.replace(/_/g, ' ').replace(/-/g, ' '))

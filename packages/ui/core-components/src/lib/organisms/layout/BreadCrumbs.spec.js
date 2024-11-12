@@ -1,6 +1,18 @@
-import { describe, it } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import { buildCrumbs } from './BreadCrumbs.svelte';
 import { expect } from 'vitest';
+
+/** @type {string | undefined} */
+let basePath = undefined;
+vi.mock('$evidence/config', () => ({
+	config: {
+		deployment: {
+			get basePath() {
+				return basePath;
+			}
+		}
+	}
+}));
 
 function toPathArray(url) {
 	return new URL(url).pathname.split('/').slice(1);
@@ -176,6 +188,41 @@ describe('BreadCrumbs', () => {
 			{ title: 'Home', href: '/' },
 			{ title: 'chart examples', href: null },
 			{ title: 'bar chart', href: '/chart-examples/bar-chart' }
+		]);
+	});
+
+	it('should not include a breadcrumb for basePath', () => {
+		basePath = '/my-base-path';
+
+		const crumbs = buildCrumbs(toPathArray('https://example.com/my-base-path/page-a'), {
+			label: 'Home',
+			href: '/',
+			children: {
+				'page-b': {
+					label: 'page b',
+					href: '/page-b',
+					children: {},
+					isTemplated: false,
+					isPage: true
+				},
+				'page-a': {
+					label: 'page a',
+					href: '/page-a',
+					children: {},
+					isTemplated: false,
+					isPage: true
+				}
+			},
+			frontMatter: {
+				title: 'Welcome to Evidence'
+			},
+			isTemplated: false,
+			isPage: true
+		});
+
+		expect(crumbs).toEqual([
+			{ title: 'Home', href: '/' },
+			{ title: 'page a', href: null }
 		]);
 	});
 });
