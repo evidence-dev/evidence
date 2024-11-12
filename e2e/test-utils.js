@@ -2,9 +2,7 @@
 import { expect } from '@playwright/test';
 
 /** @param {Page} page */
-export const waitForDevModeToLoad = async (page) => {
-	if (!process.env.DEV) return;
-
+export const waitForPageToLoad = async (page) => {
 	await Promise.all([page.waitForTimeout(100), page.waitForLoadState('networkidle')]);
 
 	await expect(page.getByTestId('#__evidence_project_splash')).not.toBeVisible();

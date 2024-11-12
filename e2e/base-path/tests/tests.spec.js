@@ -1,7 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 import { getEvidenceConfig } from '@evidence-dev/sdk/config';
-import { waitForDevModeToLoad } from '../../test-utils';
+import { waitForPageToLoad } from '../../test-utils';
 
 const config = getEvidenceConfig();
 const basePath = config.deployment.basePath;
@@ -9,7 +9,7 @@ const basePath = config.deployment.basePath;
 test.describe('<head />', () => {
 	test('<link rel="icon" /> href should start with basePath', async ({ page }) => {
 		await page.goto(basePath);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const links = await page.locator('link[rel="icon"]').all();
 		await expect(links).not.toHaveLength(0);
@@ -37,7 +37,7 @@ test.describe('<head />', () => {
 
 	test('manifest.webmanifest icons.src should start with basePath', async ({ page }) => {
 		await page.goto(basePath);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const manifestLink = await page.locator('link[rel="manifest"]');
 		await expect(manifestLink, {
@@ -65,45 +65,45 @@ test.describe('<head />', () => {
 test.describe('Page', () => {
 	test('sidebar and logo links should use base path', async ({ page }) => {
 		await page.goto(basePath);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const sidebar = await page.locator('aside').first();
 
 		const pageASidebarLink = await sidebar.getByRole('link', { name: 'Page A' });
 		await pageASidebarLink.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This is Page A', { exact: true })).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
 
 		const homeSidebarLink = await sidebar.getByRole('link', { name: 'Home' });
 		await homeSidebarLink.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 
 		const pageBSidebarLink = await sidebar.getByRole('link', { name: 'Page B' });
 		await pageBSidebarLink.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This is Page B', { exact: true })).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
 
 		const logoLink = await page.getByAltText('Home');
 		await logoLink.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 	});
 	test('breadcrumbs should use base path', async ({ page }) => {
 		await page.goto(`${basePath}/nested/page-c`);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const nestedCrumb = await page.getByRole('link', { name: 'Nested' });
 		await nestedCrumb.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This is a nested page')).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/`);
@@ -111,7 +111,7 @@ test.describe('Page', () => {
 		const breadcrumbs = nestedCrumb.locator('..');
 
 		await breadcrumbs.getByRole('link', { name: 'Home' }).click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
@@ -121,21 +121,21 @@ test.describe('Page', () => {
 test.describe('Components', () => {
 	test('Table row links should use base path', async ({ page }) => {
 		await page.goto(`${basePath}/table-row-links`);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const pageALink = await page.getByRole('cell', { name: '/page-a' });
 		await pageALink.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This is Page A')).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
 
 		await page.goto(`${basePath}/table-row-links`);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const pageCLink = await page.getByRole('cell', { name: '/nested/page-c' });
 		await pageCLink.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This is Page C')).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/page-c/`);
@@ -143,11 +143,11 @@ test.describe('Components', () => {
 
 	test('BigValue link should use base path', async ({ page }) => {
 		await page.goto(`${basePath}/big-value-link`);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const bigValueLink = await page.getByRole('link', { name: '123' });
 		await bigValueLink.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This is Page B')).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
@@ -155,11 +155,11 @@ test.describe('Components', () => {
 
 	test('LinkButton should use base path', async ({ page }) => {
 		await page.goto(`${basePath}/link-button`);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const linkButton = await page.getByRole('link', { name: 'Go to page a' });
 		await linkButton.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This is Page A')).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
@@ -167,11 +167,11 @@ test.describe('Components', () => {
 
 	test('BigLink should use base path', async ({ page }) => {
 		await page.goto(`${basePath}/big-link`);
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		const bigLink = await page.getByRole('link', { name: 'Go to page c' });
 		await bigLink.click();
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This is Page C')).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/page-c/`);
