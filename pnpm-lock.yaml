@@ -2824,7 +2824,7 @@ packages:
       '@azure/core-util': 1.11.0
       '@azure/logger': 1.1.4
       '@azure/msal-browser': 3.27.0
-      '@azure/msal-node': 2.16.0
+      '@azure/msal-node': 2.16.1
       events: 3.3.0
       jws: 4.0.0
       open: 8.4.2
@@ -2889,8 +2889,8 @@ packages:
     engines: {node: '>=0.8.0'}
     dev: false
 
-  /@azure/msal-node@2.16.0:
-    resolution: {integrity: sha512-oww0oJTOOvPKTVXqVyxfcFVjExQKYEkKR5KM0cTG3jnzt6u/MRMx8XaK49L/bxV35r9sCHQFjNlEShad9qGSYA==}
+  /@azure/msal-node@2.16.1:
+    resolution: {integrity: sha512-1NEFpTmMMT2A7RnZuvRl/hUmJU+GLPjh+ShyIqPktG2PvSd2yvPnzGd/BxIBAAvJG5nr9lH4oYcQXepDbaE7fg==}
     engines: {node: '>=16'}
     dependencies:
       '@azure/msal-common': 14.16.0

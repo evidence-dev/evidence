@@ -47,10 +47,9 @@ test.describe('<head />', () => {
 		const manifestHref = await manifestLink.getAttribute('href');
 		await expect(manifestHref).not.toBeNull();
 
+		const manifestUrl = new URL(/** @type {string} */ (manifestHref), new URL(page.url()));
 		/** @type {import('web-app-manifest').WebAppManifest} */
-		const manifest = await page
-			.goto(/** @type {string} */ (manifestHref))
-			.then((res) => res?.json());
+		const manifest = await fetch(manifestUrl).then((res) => res?.json());
 
 		await Promise.all(
 			(manifest.icons ?? []).map(async (icon) => {
