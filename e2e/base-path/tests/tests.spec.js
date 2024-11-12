@@ -104,10 +104,29 @@ test.describe('Page', () => {
 	});
 });
 
+test.describe('Components', () => {
+	test('Table row links should use base path', async ({ page }) => {
+		await page.goto(`${basePath}/table-row-links`);
+		await waitForDevModeToLoad(page);
+
+		const pageALink = await page.getByRole('cell', { name: '/page-a' });
+		await pageALink.click();
+		await expect(page.getByText('This is Page A')).toBeVisible();
+		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
+
+		await page.goto(`${basePath}/table-row-links`);
+		await waitForDevModeToLoad(page);
+
+		const pageCLink = await page.getByRole('cell', { name: '/nested/page-c' });
+		await pageCLink.click();
+		await expect(page.getByText('This is Page C')).toBeVisible();
+		expect(new URL(page.url()).pathname).toBe(`${basePath}/nested/page-c/`);
+	});
+});
+
 /*
 To test
 - Components
-  - Table row links
 	- BigValue
 	- LinkButton
 	- BigLink
