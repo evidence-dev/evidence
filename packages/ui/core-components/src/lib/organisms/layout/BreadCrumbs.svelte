@@ -3,7 +3,7 @@
 
 	export function searchFileTree(href, fileTree) {
 		if (href === '/') return fileTree;
-		const pathArray = href.split('/').slice(1);
+		const pathArray = href.replace(config.deployment.basePath, '').split('/').slice(1);
 		let node = fileTree;
 		for (let path of pathArray) {
 			if (!node.children[path]) {
@@ -34,7 +34,7 @@
 		for (const path of crumbs) {
 			if (path.href === '/') {
 				// Special case for Home page
-				path.href = '/';
+				path.href = addBasePath('/');
 				path.title = 'Home';
 			} else {
 				const node = searchFileTree(path.href, fileTree);

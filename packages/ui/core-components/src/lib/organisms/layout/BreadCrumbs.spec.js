@@ -221,8 +221,8 @@ describe('BreadCrumbs', () => {
 		});
 
 		expect(crumbs).toEqual([
-			{ title: 'Home', href: '/' },
-			{ title: 'page a', href: null }
+			{ title: 'Home', href: '/my-base-path/' },
+			{ title: 'page a', href: '/my-base-path/page-a' }
 		]);
 	});
 });
