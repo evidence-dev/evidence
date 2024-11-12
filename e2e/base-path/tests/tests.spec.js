@@ -35,8 +35,7 @@ test.describe('<head />', () => {
 		);
 	});
 
-	// This test will fail until we can use the basePath in the <link rel="manifest" /> tag
-	test.skip('manifest.webmanifest icons.src should start with basePath', async ({ page }) => {
+	test('manifest.webmanifest icons.src should start with basePath', async ({ page }) => {
 		await page.goto(basePath);
 		await waitForDevModeToLoad(page);
 
