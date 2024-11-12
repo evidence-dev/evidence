@@ -65,19 +65,19 @@ test.describe('Page', () => {
 		await page.goto(basePath);
 		await waitForDevModeToLoad(page);
 
-		const pageASidebarLink = await page.getByRole('link', { name: 'Page A' });
+		const sidebar = await page.locator('aside').first();
+
+		const pageASidebarLink = await sidebar.getByRole('link', { name: 'Page A' });
 		await pageASidebarLink.click();
 		await expect(page.getByText('This is Page A', { exact: true })).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-a/`);
-
-		const sidebar = pageASidebarLink.locator('..');
 
 		const homeSidebarLink = await sidebar.getByRole('link', { name: 'Home' });
 		await homeSidebarLink.click();
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 
-		const pageBSidebarLink = await page.getByRole('link', { name: 'Page B' });
+		const pageBSidebarLink = await sidebar.getByRole('link', { name: 'Page B' });
 		await pageBSidebarLink.click();
 		await expect(page.getByText('This is Page B', { exact: true })).toBeVisible();
 		expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
