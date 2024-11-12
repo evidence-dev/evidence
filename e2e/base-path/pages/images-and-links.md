@@ -11,7 +11,9 @@
 # Links
 
 ## Using <a/>
+
 <a href="/page-a">Go to page a</a>
 
 ## Using markdown []()
+
 [Go to page a](/page-a)
