@@ -134,6 +134,61 @@ test.describe('Page', () => {
 		await expect(page.getByText('Welcome to Evidence', { exact: true })).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/`);
 	});
+
+	test('<img /> and ![]() should use base path', async ({ page }) => {
+		await page.goto(`${basePath}/images-and-links`);
+		await waitForPageToLoad(page);
+
+		const images = await page.getByRole('img', { name: 'Twitter Card' }).all();
+		await expect(images).not.toHaveLength(0);
+
+		await Promise.all(
+			images.map(async (image) => {
+				const src = await image.getAttribute('src');
+				await expect(src, { message: `Expected src for ${image} to exist` }).not.toBeNull();
+
+				let path = src;
+				if (src?.startsWith('http')) {
+					try {
+						path = new URL(src).pathname;
+					} catch (e) {
+						await expect(e, { message: `Expected src '${src}' to be a valid URL` }).toBeNull();
+					}
+				}
+
+				await expect(path?.startsWith(basePath), {
+					message: `Expected <img /> path '${path}' to start with base path '${basePath}'`
+				}).toBeTruthy();
+			})
+		);
+	});
+	test('<a /> and []() should use base path', async ({ page }) => {
+		await page.goto(`${basePath}/images-and-links`);
+		await waitForPageToLoad(page);
+
+		const links = await page.getByRole('link', { name: 'Go to page a' }).all();
+		await expect(links).not.toHaveLength(0);
+
+		await Promise.all(
+			links.map(async (link) => {
+				const href = await link.getAttribute('href');
+				await expect(href, { message: `Expected href for ${link} to exist` }).not.toBeNull();
+
+				let path = href;
+				if (href?.startsWith('http')) {
+					try {
+						path = new URL(href).pathname;
+					} catch (e) {
+						await expect(e, { message: `Expected href '${href}' to be a valid URL` }).toBeNull();
+					}
+				}
+
+				await expect(path?.startsWith(basePath), {
+					message: `Expected path '${path}' to start with base path '${basePath}'`
+				}).toBeTruthy();
+			})
+		);
+	});
 });
 
 test.describe('Components', () => {
