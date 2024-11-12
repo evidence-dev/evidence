@@ -101,8 +101,13 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 	import BarChart from '../../bar/BarChart.svelte';
-
 	import ReferenceArea from './ReferenceArea.svelte';
+	import Dropdown from '../../../../../lib/atoms/inputs/dropdown/Dropdown.svelte';
+	import DropdownOption from '../../../../../lib/atoms/inputs/dropdown/helpers/DropdownOption.svelte';
+
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	// From layout.js
+	const inputStore = getInputContext();
 
 	const data = Query.create(
 		`
@@ -225,6 +230,32 @@
 			yMax="yMax"
 			label="label"
 		/>
+	</LineChart>
+</Story>
+
+<Story name="Dynamic Data: x w/ dropdown">
+	{@const referenceAreaData = Query.create(
+		`
+      select 30 as xMin, 40 as xMax, 'Area 1' as label union all
+      select 50, 60, 'Area 2' union all
+      select 70, 80, 'Area 3'
+    `,
+		query
+	)}
+	{@const referenceAreaData2 = Query.create(
+		`
+      select 10 as xMin, 15 as xMax, 'Area 4' as label union all
+      select 20, 25, 'Area 5' union all
+      select 30, 35, 'Area 6'
+    `,
+		query
+	)}
+		<Dropdown name=category1>
+			<DropdownOption value="referenceAreaData">referenceAreaData</DropdownOption>
+			<DropdownOption value="referenceAreaData2">referenceAreaData2</DropdownOption>
+		</Dropdown>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceArea data={$inputStore['category1']} xMin="xMin" xMax="xMax" label="label" />
 	</LineChart>
 </Story>
 
