@@ -11,10 +11,10 @@ describe('DeploymentConfigSchema', () => {
 			console.log({ error });
 			expect(success).toBeTruthy();
 		});
-		it('should default to /', () => {
+		it('should default to empty string', () => {
 			const config = {};
 			const { data } = DeploymentConfigSchema.safeParse(config);
-			expect(data.basePath).toBe('/');
+			expect(data.basePath).toBe('');
 		});
 		it('should not allow protocol', () => {
 			const config = {
