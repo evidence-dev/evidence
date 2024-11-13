@@ -52,7 +52,7 @@ fsExtra.outputFileSync(
 	import { sourceQueryHmr, configVirtual } from '@evidence-dev/sdk/build/vite';
 	import { isDebug } from '@evidence-dev/sdk/utils';
 	import preprocess from '@evidence-dev/preprocess';
-	import { evidenceThemes } from '@evidence-dev/tailwind';
+	import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
 
 	const logger = createLogger();
 	const loggerWarn = logger.warn;

@@ -1,2 +1,1 @@
-export * from './themes/index.js';
-export * from './config.js';
+export * from './schemas/type-guards.js';

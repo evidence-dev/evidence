@@ -1,6 +1,6 @@
 import plugin from 'tailwindcss/plugin.js';
 
-/** @param {import('../types.js').Themes} themes */
+/** @param {import('../../schemas/types.js').Themes} themes */
 export const createVarsForColors = (themes) =>
 	plugin((creator) => {
 		const { addUtilities } = creator;

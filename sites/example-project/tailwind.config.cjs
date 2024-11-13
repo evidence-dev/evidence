@@ -1,4 +1,4 @@
-const evidenceTailwind = require('@evidence-dev/tailwind').config;
+const evidenceTailwind = require('@evidence-dev/tailwind/config').config;
 const { loadConfig } = require('@evidence-dev/plugin-connector/load-config');
 
 const fs = require('fs');

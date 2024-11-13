@@ -1,6 +1,6 @@
 import colors from 'tailwindcss/colors.js';
 
-/** @typedef {import('./schemas/types.js').ThemesConfig} ThemesConfig */
+/** @typedef {import('../schemas/types.js').ThemesConfig} ThemesConfig */
 
 /** @type {ThemesConfig} */
 export const defaultThemesConfig = {

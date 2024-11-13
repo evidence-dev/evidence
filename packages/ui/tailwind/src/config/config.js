@@ -1,9 +1,9 @@
 import defaultTheme from 'tailwindcss/defaultTheme.js';
 import { createThemes as createTwcThemes } from 'tw-colors';
 
-import { loadThemesConfig } from './themes/index.js';
-import { buildThemes } from './themes/buildThemes.js';
-import { createVarsForColors } from './themes/createVarsForColors/createVarsForColors.js';
+import { loadThemesConfig } from './loadThemesConfig.js';
+import { buildThemes } from '../themes/buildThemes.js';
+import { createVarsForColors } from './createVarsForColors/index.js';
 
 const themesConfig = loadThemesConfig();
 const themes = buildThemes(themesConfig);

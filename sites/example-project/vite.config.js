@@ -1,6 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { sourceQueryHmr } from '@evidence-dev/sdk/build/vite';
-import { evidenceThemes } from '@evidence-dev/tailwind';
+import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
 
 /** @type {import('vite').UserConfig} */
 const config = {

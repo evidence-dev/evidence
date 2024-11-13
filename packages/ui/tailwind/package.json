@@ -6,7 +6,8 @@
 	"author": "",
 	"license": "MIT",
 	"scripts": {
-		"test": "vitest"
+		"test": "vitest",
+		"check": "tsc --noEmit -p tsconfig.json"
 	},
 	"dependencies": {
 		"@evidence-dev/sdk": "workspace:^",
@@ -16,6 +17,16 @@
 		"zod": "^3.23.8"
 	},
 	"exports": {
+		"./config": {
+			"import": "./src/config/config.js",
+			"require": "./src/config/config.js",
+			"types": "./src/config/config.js"
+		},
+		"./vite-plugin": {
+			"import": "./src/vite-plugin/vite-plugin.js",
+			"require": "./src/vite-plugin/vite-plugin.js",
+			"types": "./src/vite-plugin/vite-plugin.js"
+		},
 		".": {
 			"import": "./src/index.js",
 			"require": "./src/index.js",
