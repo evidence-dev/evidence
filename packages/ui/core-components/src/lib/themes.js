@@ -146,35 +146,35 @@ export class ThemeStores {
 
 	/**
 	 * @param {string} color
-	 * @returns {string | undefined}
+	 * @returns {Readable<string | undefined>}
 	 */
 	resolveColor = (color) => {
 		if (isBuiltinColor(color)) {
-			return get(this.#theme).colors[color];
+			return derived(this.#theme, ($theme) => $theme.colors[color]);
 		}
-		return color;
+		return readable(color);
 	};
 
 	/**
 	 * @param {string} color
-	 * @returns {string[] | undefined}
+	 * @returns {Readable<string[] | undefined>}
 	 */
 	resolveColorPalette = (color) => {
 		if (isBuiltinColorPalette(color)) {
-			return get(this.#theme).colorPalettes[color];
+			return derived(this.#theme, ($theme) => $theme.colorPalettes[color]);
 		}
-		return undefined;
+		return readable(undefined);
 	};
 
 	/**
 	 * @param {string} color
-	 * @returns {string[] | undefined}
+	 * @returns {Readable<string[] | undefined>}
 	 */
 	resolveColorScale = (color) => {
 		if (isBuiltinColorPalette(color)) {
-			return get(this.#theme).colorScales[color];
+			return derived(this.#theme, ($theme) => $theme.colorScales[color]);
 		}
-		return undefined;
+		return readable(undefined);
 	};
 }
 
