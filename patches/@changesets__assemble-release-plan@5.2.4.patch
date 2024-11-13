@@ -1,0 +1,13 @@
+diff --git a/dist/assemble-release-plan.cjs.dev.js b/dist/assemble-release-plan.cjs.dev.js
+index e1376ca756d69816f8c79637ee7b45161f092167..2a0341d8a2815579eb7a2640fcf435174647d037 100644
+--- a/dist/assemble-release-plan.cjs.dev.js
++++ b/dist/assemble-release-plan.cjs.dev.js
+@@ -436,7 +436,7 @@ function applyLinks(releases, packagesByName, linked) {
+ 
+ function getPreVersion(version) {
+   let parsed = semverParse__default['default'](version);
+-  let preVersion = parsed.prerelease[1] === undefined ? -1 : parsed.prerelease[1];
++  let preVersion = parsed?.prerelease[1] === undefined ? -1 : parsed.prerelease[1];
+ 
+   if (typeof preVersion !== "number") {
+     throw new errors.InternalError("preVersion is not a number");
