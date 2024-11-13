@@ -20,14 +20,14 @@
 
 <div class="doc-tab mt-2">
 	<div class="flex justify-end">
-		<div class="flex gap-1 bg-gray-100 rounded-md p-1">
+		<div class="flex gap-1 bg-gray-100 rounded-md p-1 shadow-inner">
 			{#each tabs as tab, index}
 				<div class="relative">
 					<button
 						class="relative z-10 py-1 px-2 transition-colors duration-300 text-xs font-medium ease-in-out capitalize tracking-wide focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-md hover:text-gray-950 {activeTab ===
 						tab
 							? 'text-gray-950'
-							: 'text-gray-500'}"
+							: 'text-gray-600'}"
 						on:click={() => setTab(tab, index)}
 						bind:this={tabButtons[index]}
 					>
@@ -35,7 +35,7 @@
 					</button>
 					{#if activeTab === tab}
 						<div
-							class="absolute bottom-0 left-0 w-full h-full rounded border bg-white shadow-sm "
+							class="absolute bottom-0 left-0 w-full h-full rounded border bg-white shadow-sm z-0"
 							in:send={{ key: 'trigger' }}
 							out:receive={{ key: 'trigger' }}
 						/>
