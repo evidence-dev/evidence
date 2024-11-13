@@ -13,12 +13,15 @@ select category, order_month as month, sum(sales) as sales_usd0k, count(1) as or
 group by all
 ```
 
-<Sparkline 
-    data={orders_by_month}
-    dateCol=month
-    valueCol=sales_usd0k 
-    color=navy
-/>
+<DocTab>
+  <div slot='preview'>
+    <Sparkline 
+        data={orders_by_month}
+        dateCol=month
+        valueCol=sales_usd0k 
+        color=navy
+    />
+  </div>
 
 ```markdown
 <Sparkline 
@@ -27,20 +30,26 @@ group by all
     valueCol=sales 
 />
 ```
+</DocTab>
 
 ## Examples
 
 ### Connected Sparkline
 
-<Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=bar  valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
-<Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=area color=maroon valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
-<Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=line color=purple valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
+<DocTab>
+  <div slot='preview'>
+    <Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=bar  valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
+    <Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=area color=maroon valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
+    <Sparkline data={orders_by_month} dateCol=month valueCol=sales_usd0k type=line color=purple valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
+  </div>
 
 ```html
 <Sparkline data={sales_by_date} dateCol=date valueCol=sales type=bar  valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
 <Sparkline data={sales_by_date} dateCol=date valueCol=sales type=area color=maroon valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
 <Sparkline data={sales_by_date} dateCol=date valueCol=sales type=line color=purple valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
 ```
+</DocTab>
+
 
 ## Options
 

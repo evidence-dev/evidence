@@ -3,28 +3,51 @@ title: Histogram
 sidebar_position: 1
 ---
 
-![histogram](/img/exg-histogram-nt.svg)
+```sql orders
+select * from needful_things.orders limit 1000
+```
+```sql orders_week
+select * from needful_things.orders limit 10000
+```
+
+<DocTab>
+    <div slot='preview'>
+        <Histogram
+        data={orders}
+        x=sales
+        />
+    </div>
 
 ```markdown
 <Histogram
-    data={query_name} 
-    x=column_x 
+    data={orders}
+    x=sales
 />
 ```
+</DocTab>
+
 
 ## Examples
 
 ### Histogram
 
-![histogram](/img/exg-histogram-nt.svg)
+<DocTab>
+    <div slot='preview'>
+        <Histogram
+        data={orders_week}
+        x=sales
+        xAxisTitle="Weekly Sales"
+        />
+    </div>
 
 ```markdown
-<Histogram 
-    data={complaints_by_day_dept} 
-    x=complaints 
-    xAxisTitle="Daily Calls"
+<Histogram
+    data={orders_week}
+    x=sales
+    xAxisTitle="Weekly Sales"
 />
 ```
+</DocTab>
 
 ## Options
 
