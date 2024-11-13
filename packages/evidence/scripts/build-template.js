@@ -10,7 +10,8 @@ const templatePaths = [
 	'src/hooks.client.js',
 	'src/hooks.server.js',
 	'src/global.d.ts',
-	'src/service-worker.js',
+	'src/pages/fix-tprotocol-service-worker.js/+server.js',
+	'src/fix-tprotocol-service-worker.js',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
 	'src/pages/+layout.js',
@@ -18,6 +19,7 @@ const templatePaths = [
 	'src/pages/settings/',
 	'src/pages/explore',
 	'src/pages/api/',
+	'src/pages/manifest.webmanifest/+server.js',
 	'tailwind.config.cjs',
 	'postcss.config.cjs'
 ];
@@ -47,7 +49,7 @@ fsExtra.outputFileSync(
 	`import { sveltekit } from "@sveltejs/kit/vite"
 	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
 	import { createLogger } from 'vite';
-	import { sourceQueryHmr } from '@evidence-dev/sdk/vite';
+	import { sourceQueryHmr, configVirtual } from '@evidence-dev/sdk/build/vite';
 	import { isDebug } from '@evidence-dev/sdk/utils';
 	import preprocess from '@evidence-dev/preprocess';
 
@@ -76,7 +78,7 @@ fsExtra.outputFileSync(
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [sveltekit(), evidenceVitePlugin(), sourceQueryHmr()],
+        plugins: [sveltekit(), configVirtual(), evidenceVitePlugin(), sourceQueryHmr()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
 				// We need these to prevent HMR from doing a full page reload
@@ -89,7 +91,7 @@ fsExtra.outputFileSync(
 				])
 				
 			],
-            exclude: ['svelte-icons', '@evidence-dev/universal-sql']
+            exclude: ['svelte-icons', '@evidence-dev/universal-sql', '$evidence/config']
         },
         ssr: {
             external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/plugin-connector']
