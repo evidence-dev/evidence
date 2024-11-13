@@ -29,23 +29,6 @@
 		}
 	}
 
-	// is this code block necessary? seems to be repeating the reactive statement, and works without it
-
-	// onMount(async () => {
-	// 	const Prism = await loadPrismComponents();
-	// 	if (typeof Prism !== 'undefined') {
-	// 		await tick();
-	// 		const codeElements = document.querySelectorAll(
-	// 			`pre code${language ? `.language-${language}` : ''}`
-	// 		);
-	// 		codeElements.forEach((codeElement) => {
-	// 			Prism.highlightElement(codeElement, false);
-	// 		});
-	// 	} else {
-	// 		console.error('Prism is not defined on mount');
-	// 	}
-	// });
-
 	$: if (browser) {
 		tick().then(async () => {
 			const Prism = await loadPrismComponents();
