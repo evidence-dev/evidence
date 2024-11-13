@@ -1,0 +1,45 @@
+name: Prerelease to Test Next
+
+on:
+  push:
+    branches:
+      - next-test
+
+jobs:
+  release-next:
+    if: github.repository == 'evidence-dev/evidence'
+    name: Prerelease to Test Next
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - uses: pnpm/action-setup@v4.0.0
+        with:
+          version: 8.6.9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      # Optional build step if necessary for your prerelease
+      # - run: pnpm build
+
+      - name: Enter Prerelease Mode for Next
+        run: npx changeset pre enter next
+
+      - name: Create Version (No Publish)
+        id: changesets
+        run: |
+          npx changeset version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "New prerelease version: $NEW_VERSION"
+
+      - name: Exit Prerelease Mode
+        if: success()
+        run: npx changeset pre exit
