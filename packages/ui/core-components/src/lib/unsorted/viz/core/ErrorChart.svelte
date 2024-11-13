@@ -4,6 +4,7 @@
 
 <script>
 	import { dev } from '$app/environment';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let error;
 	export let chartType;
 	export let minHeight = '150';
@@ -26,7 +27,7 @@
 			{#if dev && error === DevMissingCredentialsError}
 				<br /><a
 					class="text-primary hover:brightness-110 active:brightness-90 transition"
-					href="/settings"
+					href={addBasePath('/settings')}
 				>
 					Add&nbsp;credentials&nbsp;&rarr;</a
 				>

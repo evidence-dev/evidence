@@ -12,6 +12,7 @@
 	import DevTools from '../../devtools/DevTools.svelte';
 	import { onMount } from 'svelte';
 	import { ensureThemeStores } from '../../themes.js';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 	// Remove splash screen from app.html
 	if (browser) {
@@ -96,17 +97,17 @@
 		sidebarFrontMatter = undefined;
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		if (!('serviceWorker' in navigator)) return;
 
-		const registerServiceWorker = () => {
-			navigator.serviceWorker.register('/service-worker.js');
-		};
-
-		window.addEventListener('load', registerServiceWorker);
-		return () => {
-			window.removeEventListener('load', registerServiceWorker);
-		};
+		const registration = await navigator.serviceWorker.register(
+			addBasePath('/fix-tprotocol-service-worker.js'),
+			{
+				scope: addBasePath('/'),
+				type: dev ? 'module' : 'classic'
+			}
+		);
+		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
 	// TODO where should this go? How do we get project splash to be rendered with the proper theme?

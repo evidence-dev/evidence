@@ -5,25 +5,30 @@ sidebar_position: 1
 
 Creates a Slider input with default min, max and step values
 
-
-<Slider
-    title="Sales" 
-    name=sales
-    defaultValue=18
-    fmt="usd0"
-/>
+<DocTab>
+    <div slot="preview">
+        <Slider
+            title="sales" 
+            name=sales
+            defaultValue=50
+            fmt="usd0"
+        />
+    </div>
 
 ````markdown
 <Slider
-    title="Sales" 
+    title="sales" 
     name=sales
-    defaultValue=18
+    defaultValue=50
     fmt="usd0"
 />
 ````
+</DocTab>
 
 Min and Max values can be defined, the step property and define the incremental value of the slider
 
+<DocTab>
+    <div slot="preview">
 <Slider
     title="Months" 
     name=monthsWithSteps
@@ -31,7 +36,7 @@ Min and Max values can be defined, the step property and define the incremental 
     max=36
     step=12
 />
-
+    </div>
 
 ````markdown
 <Slider
@@ -42,9 +47,12 @@ Min and Max values can be defined, the step property and define the incremental 
     step=12
 />
 ````
+</DocTab>
 
 showMaxMin property can hide the Max and Min values with false, by default showMaxMin is true
 
+<DocTab>
+ <div slot="preview">
 <Slider
     title="Months" 
     name=monthsWithoutMinMax
@@ -52,6 +60,7 @@ showMaxMin property can hide the Max and Min values with false, by default showM
     max=36
     showMaxMin=false
 />
+ </div>
 
 ````markdown
 <Slider
@@ -62,9 +71,12 @@ showMaxMin property can hide the Max and Min values with false, by default showM
     showMaxMin=false
 />
 ````
+</DocTab>
 
 The default size of the slider can be altered with the size property using; medium, large or full
 
+<DocTab>
+    <div slot="preview">
 <Slider
     title="Months Medium" 
     name=monthsMedium
@@ -73,6 +85,7 @@ The default size of the slider can be altered with the size property using; medi
     max=36
     size=medium
 />
+    </div>
 
 ````markdown
 <Slider
@@ -84,7 +97,11 @@ The default size of the slider can be altered with the size property using; medi
     size=medium
 />
 ````
+</DocTab>
 
+
+<DocTab>
+    <div slot="preview">
 <Slider
     title="Months Large" 
     name=monthsLarge
@@ -93,6 +110,7 @@ The default size of the slider can be altered with the size property using; medi
     max=36
     size=large
 />
+    </div>
 
 ````markdown
 <Slider
@@ -104,6 +122,10 @@ The default size of the slider can be altered with the size property using; medi
     size=large
 />
 ````
+</DocTab>
+
+<DocTab>
+    <div slot="preview">
 <Slider
     title="Months Full" 
     name=monthsFull
@@ -112,6 +134,7 @@ The default size of the slider can be altered with the size property using; medi
     max=36
     size=full
 />
+    </div>
 
 ````markdown
 <Slider
@@ -122,6 +145,8 @@ The default size of the slider can be altered with the size property using; medi
     size=full
 />
 ````
+</DocTab>
+
 
 ````sql flight_data
 		SELECT
@@ -234,8 +259,6 @@ Sets the length of the slider. Options are "medium", large" or "full". A empty s
     description="Sets format for the value (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options="Excel-style format | built-in format | custom format"
 />
-
-
 
 
 

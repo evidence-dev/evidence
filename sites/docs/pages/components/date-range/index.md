@@ -9,13 +9,16 @@ Creates a date picker that can be used to filter a query.
 
 To see how to filter a query using an input component, see [Filters](/core-concepts/filters).
 
-<DateRange
-    name=date_range_name
-    data={orders_by_day}
-    dates=day
-/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange
+            name=date_range_name
+            data={orders_by_day}
+            dates=day
+        />
 
-From {inputs.date_range_name.start} to {inputs.date_range_name.end}
+        From {inputs.date_range_name.start} to {inputs.date_range_name.end}
+    </div>
 
 ````markdown
 <DateRange
@@ -26,18 +29,22 @@ From {inputs.date_range_name.start} to {inputs.date_range_name.end}
 
 From {inputs.date_range_name.start} to {inputs.date_range_name.end}
 ````
+</DocTab>
 
 ## Examples
 
 ### Using Date Range from a Query
 
-<DateRange
-    name=date_range_from_query
-    data={orders_by_day}
-    dates=day
-/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange
+            name=date_range_from_query
+            data={orders_by_day}
+            dates=day
+        />
 
-From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
+        From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
+    </div>
 
 ````markdown
 <DateRange
@@ -48,14 +55,18 @@ From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
 
 From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
 ````
+</DocTab>
 
 ### Manually Specifying a Range
 
-<DateRange
-    name=manual_date_range
-    start=2019-01-01
-    end=2019-12-31
-/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange
+            name=manual_date_range
+            start=2019-01-01
+            end=2019-12-31
+        />
+    </div>
 
 ```markdown
 <DateRange
@@ -64,16 +75,19 @@ From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
     end=2019-12-31
 />
 ```
-
+</DocTab>
 
 ### With a Title
 
-<DateRange
-    name=date_range_with_title
-    data={orders_by_day}
-    dates=day
-    title="Select a Date Range"
-/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange
+            name=date_range_with_title
+            data={orders_by_day}
+            dates=day
+            title="Select a Date Range"
+        />
+    </div>
 
 ```markdown
 <DateRange
@@ -83,15 +97,19 @@ From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
     title="Select a Date Range"
 />
 ```
+</DocTab>
 
 ### Visible During Print / Export
 
-<DateRange
-    name=date_range_visible_during_print
-    data={orders_by_day}
-    dates=day
-    hideDuringPrint={false}
-/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange
+            name=date_range_visible_during_print
+            data={orders_by_day}
+            dates=day
+            hideDuringPrint={false}
+        />
+    </div>
 
 ````markdown
 <DateRange
@@ -101,15 +119,10 @@ From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
     hideDuringPrint={false}
 />
 ````
+</DocTab>
 
 ### Filtering a Query
 
-<DateRange
-    name=range_filtering_a_query
-    data={orders_by_day}
-    dates=day
-/>
-
 ```sql filtered_query
 select 
     *
@@ -117,13 +130,20 @@ from ${orders_by_day}
 where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_filtering_a_query.end}'
 ```
 
-<LineChart
-    data={filtered_query}
-    x=day
-    y=sales
-/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange
+            name=range_filtering_a_query
+            data={orders_by_day}
+            dates=day
+        />
 
-
+        <LineChart
+            data={filtered_query}
+            x=day
+            y=sales
+        />
+    </div>
 
 ````markdown
 <DateRange
@@ -145,37 +165,52 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
     y=sales
 />
 ````
+</DocTab>
+
 ### Customizing Single Preset Ranges
 
-<DateRange presetRanges={'Last 7 Days'}/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange presetRanges={'Last 7 Days'}/>
+    </div>
 
-```markdown
+```svelte
 <DateRange
     name=name_of_date_range
     presetRanges={'Last 7 Days'}
 />
 ```
+</DocTab>
 
 ### Customizing Multiple Preset Ranges
 
-<DateRange presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}/>
+    </div>
 
-````markdown
+````svelte
 <DateRange
     name=name_of_date_range
     presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}
 />
 ````
+</DocTab>
+
 ### Default Value for Preset Ranges
 
-<DateRange defaultValue={'Last 7 Days'}/>
+<DocTab>
+    <div slot='preview'>
+        <DateRange defaultValue={'Last 7 Days'}/>
+    </div>
 
-````markdown
+````svelte
 <DateRange
     name=name_of_date_range
     defaultValue={'Last 7 Days'}
 />
 ````
+</DocTab>
 
 ## Options
 

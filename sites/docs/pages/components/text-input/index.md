@@ -7,87 +7,125 @@ Creates a text input that can be used to filter or search
 
 To see how to filter a query using a text input, see [Filters](/core-concepts/filters).
 
-<TextInput
-    name=text_input_name
-    title="Search"
-/>
+<DocTab>
+  <div slot='preview'>
+    <TextInput
+        name=text_input_name
+        title="Search"
+    />
 
-Selected: {inputs.text_input_name}
+    Selected: {inputs.text_input_name}
+  </div>
 
 ````markdown
 <TextInput
     name=name_of_input
     title="Search"
 />
+
+Selected: {inputs.text_input_name}
 ````
+</DocTab>
 
 ## Examples
 
 ### Basic Text Input
 
+<DocTab>
+  <div slot='preview'>
+    <TextInput
+        name=name_of_input
+    />
+
+    Selected: {inputs.name_of_input}
+  </div>
+
+````markdown
 <TextInput
     name=name_of_input
 />
 
 Selected: {inputs.name_of_input}
+````
+</DocTab>
+
+
+
+### With Title
+
+<DocTab>
+  <div slot='preview'>
+    <TextInput
+        name=text_input2
+        title="Search"
+    />
+
+    Selected: {inputs.text_input2}
+  </div>
 
 ````markdown
 <TextInput
     name=name_of_input
-/>
-````
-
-### With Title
-
-<TextInput
-    name=text_input2
     title="Search"
 />
 
 Selected: {inputs.text_input2}
+````
+</DocTab>
+
+
+### With Placeholder
+
+<DocTab>
+  <div slot='preview'>
+    <TextInput
+        name=text_input3
+        title="Freetext Search"
+        placeholder="Start typing"
+    />
+
+    Selected: {inputs.text_input3}
+  </div>
+
 
 ````markdown
 <TextInput
     name=name_of_input
-    title="Search"
-/>
-````
-
-### With Placeholder
-
-<TextInput
-    name=text_input3
     title="Freetext Search"
     placeholder="Start typing"
 />
 
 Selected: {inputs.text_input3}
+````
+</DocTab>
+
+
+### With Default Text Prefilled
+
+<DocTab>
+  <div slot='preview'>
+    <TextInput
+        name=text_input4
+        title="Default Selected"
+        defaultValue="Sporting"
+    />
+
+    Selected: {inputs.text_input4}
+  </div>
+
 
 ````markdown
 <TextInput
     name=name_of_input
-    title="Freetext Search"
-    placeholder="Start typing"
-/>
-````
-
-### With Default Text Prefilled
-
-<TextInput
-    name=text_input4
     title="Default Selected"
     defaultValue="Sporting"
 />
 
 Selected: {inputs.text_input4}
-
-````markdown
-<TextInput
-    name=name_of_input
-    title="Default Selected"
-    defaultValue="Sporting"
-/>
 ````
+</DocTab>
+
+
 
 ### Fuzzy Finding (Searching)
 

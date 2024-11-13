@@ -3,21 +3,21 @@ title: Tabs
 sidebar_position: 1
 ---
 
+<DocTab>
+  <div slot='preview'>
+    <Tabs>
+        <Tab label="First Tab">
+            Content of the First Tab
 
-<Tabs>
-    <Tab label="First Tab">
-        Content of the First Tab
+            You can use **markdown** here too!
+        </Tab>
+        <Tab label="Second Tab">
+            Content of the Second Tab
 
-        You can use **markdown** here too!
-    </Tab>
-    <Tab label="Second Tab">
-        Content of the Second Tab
-
-        Here's a [link](https://www.google.com)
-    </Tab>
-</Tabs>
-
-
+            Here's a [link](https://www.google.com)
+        </Tab>
+    </Tabs>
+  </div>
 
 ```markdown
 <Tabs>
@@ -33,20 +33,26 @@ sidebar_position: 1
     </Tab>
 </Tabs>
 ```
+</DocTab>
+
+
+
 
 ## Examples
 
 ### Custom Color
 
-
-<Tabs color=#ff0000>
-    <Tab label="Red Tabs">
-        Content of the First Tab
-    </Tab>
-    <Tab label="Second Tab">
-        Content of the Second Tab
-    </Tab>
-</Tabs>
+<DocTab>
+  <div slot='preview'>
+    <Tabs color=#ff0000>
+        <Tab label="Red Tabs">
+            Content of the First Tab
+        </Tab>
+        <Tab label="Second Tab">
+            Content of the Second Tab
+        </Tab>
+    </Tabs>
+  </div>
 
 ```markdown
 <Tabs color=#ff0000>
@@ -58,18 +64,21 @@ sidebar_position: 1
     </Tab>
 </Tabs>
 ```
+</DocTab>
 
 ### Persist Selected Tab to URL
 
-<Tabs id="example-tab">
-    <Tab label="One">
-        Click Second id Tab and notice the the url updates!
-    </Tab>
-    <Tab label="Two">
-        Refresh the page and the tab you selected persists!
-    </Tab>
-</Tabs>
-
+<DocTab>
+  <div slot='preview'>
+    <Tabs id="example-tab">
+        <Tab label="One">
+            Click Second id Tab and notice the the url updates!
+        </Tab>
+        <Tab label="Two">
+            Refresh the page and the tab you selected persists!
+        </Tab>
+    </Tabs>
+  </div>
 
 ```markdown
 <Tabs id="example-tab">
@@ -81,6 +90,7 @@ sidebar_position: 1
     </Tab>
 </Tabs>
 ```
+</DocTab>
 
 # Tabs
 

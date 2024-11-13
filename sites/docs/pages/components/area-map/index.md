@@ -3,15 +3,18 @@ title: Area Map
 sidebar_position: 1
 ---
 
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={la_zip_sales} 
+            areaCol=zip_code
+            geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+            height=250
+        />
+    </div>
 
 ```svelte
 <AreaMap 
@@ -24,7 +27,7 @@ sidebar_position: 1
     height=250
 />
 ```
-
+</DocTab>
 
 ```sql la_zip_sales
 select *, 'https://www.google.com/search?q=' || zip_code as link_col from la_zip_sales
@@ -37,18 +40,22 @@ where zip_code <> 90704
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
-    borderColor=#303030
-    basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}
-    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={la_zip_sales} 
+            areaCol=zip_code
+            geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+            height=250
+            borderColor=#303030
+            basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+    </div>
+<br>
 
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
@@ -64,6 +71,8 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}
 />
 ```
+</DocTab>
+
 
 ### Using an Online GeoJSON
 
@@ -74,13 +83,16 @@ where state != 'Alaska' and state != 'Hawaii'
 group by state
 ```
 
-<AreaMap 
-    data={orders_by_state} 
-    areaCol=state
-    geoJsonUrl=https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson
-    geoId=name
-    value=orders
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={orders_by_state} 
+            areaCol=state
+            geoJsonUrl=https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson
+            geoId=name
+            value=orders
+        />
+    </div>
 
 ```svelte
 <AreaMap 
@@ -91,23 +103,29 @@ group by state
     value=orders
 />
 ```
+</DocTab>
+
 
 ### Custom Tooltip
 
 #### `tooltipType=hover`
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
-    tooltip={[
-        {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
-    ]}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={la_zip_sales} 
+            areaCol=zip_code
+            geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+            height=250
+            tooltip={[
+                {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
+                {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
+            ]}
+        />
+    </div>
 
 ```svelte
 <AreaMap 
@@ -123,26 +141,30 @@ group by state
         {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
     ]}
 />
-
 ```
+</DocTab>
+
 
 #### With clickable link and `tooltipType=click`
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
-    tooltipType=click
-    tooltip={[
-        {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
-    ]}
-/>
 
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={la_zip_sales} 
+            areaCol=zip_code
+            geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+            height=250
+            tooltipType=click
+            tooltip={[
+                {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
+                {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
+                {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+            ]}
+        />
+    </div>
 
 ```svelte
 <AreaMap 
@@ -161,21 +183,28 @@ group by state
     ]}
 />
 ```
+</DocTab>
+
+
 
 ### Custom Styling
 
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
-    color=#fff5d9
-    borderColor=#737373
-    borderWidth=0.5
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={la_zip_sales} 
+            areaCol=zip_code
+            geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+            height=250
+            color=#fff5d9
+            borderColor=#737373
+            borderWidth=0.5
+        />
+    </div>
 
 ```svelte
 <AreaMap 
@@ -191,19 +220,24 @@ group by state
     borderWidth=0.5
 />
 ```
+</DocTab>
+
 
 ### Custom Color Palette
 
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
-    colorPalette={['yellow','orange','red','darkred']}
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={la_zip_sales} 
+            areaCol=zip_code
+            geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+            height=250
+            colorPalette={['yellow','orange','red','darkred']}
+        />
+    </div>
 
 ```svelte
 <AreaMap 
@@ -217,21 +251,27 @@ group by state
     colorPalette={['yellow','orange','red','darkred']}
 />
 ```
+</DocTab>
+
 
 
 ### Link Drilldown
 Pass in a `link` column to enable navigation on click of the point. These can be absolute or relative URLs
 
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
-    link=link_col
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={la_zip_sales} 
+            areaCol=zip_code
+            geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+            height=250
+            link=link_col
+        />
+    </div>
 
 ```svelte
 <AreaMap 
@@ -245,11 +285,27 @@ Pass in a `link` column to enable navigation on click of the point. These can be
     link=link_col
 />
 ```
+</DocTab>
+
 
 
 ### Use Map as Input
 Use the `name` prop to set an input name for the map - when a point is clicked, it will set the input value to that row of data
 
+<DocTab>
+    <div slot='preview'>
+        <AreaMap 
+            data={la_zip_sales} 
+            areaCol=zip_code
+            geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+            height=250
+            name=my_area_map
+        />
+    </div>
+
 ```svelte
 <AreaMap 
     data={la_zip_sales} 
@@ -262,17 +318,8 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
     name=my_area_map
 />
 ```
+</DocTab>
 
-<AreaMap 
-    data={la_zip_sales} 
-    areaCol=zip_code
-    geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-    height=250
-    name=my_area_map
-/>
 
 
 *Click an area on the map to see the input value get updated:*
@@ -319,14 +366,17 @@ ORDER BY 1;
 ```
 #### Categorical Legend
 
-<AreaMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=Category
-    geoId=ZCTA5CE10
-    areaCol=zip_code
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=Category
+            geoId=ZCTA5CE10
+            areaCol=zip_code
+        />
+    </div>
 
  ```svelte
 <AreaMap
@@ -338,18 +388,24 @@ ORDER BY 1;
     areaCol=zip_code
 />
 ```
+</DocTab>
+
 
 #### Custom Colors
 Set custom legend colors using the `colorPalette` prop to match the number of categories; excess categorical options will default to standard colors.
-<AreaMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=Category
-    geoId=ZCTA5CE10
-    areaCol=zip_code
-    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <AreaMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=Category
+            geoId=ZCTA5CE10
+            areaCol=zip_code
+            colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+        />
+    </div>
 
  ```svelte
 <AreaMap
@@ -362,18 +418,23 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
+</DocTab>
+
 
 #### Scalar Legend
 
-<AreaMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=sales
-    geoId=ZCTA5CE10
-    areaCol=zip_code
-    valueFmt=usd
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=sales
+            geoId=ZCTA5CE10
+            areaCol=zip_code
+            valueFmt=usd
+        />
+    </div>
 
 ```svelte
 <AreaMap
@@ -386,20 +447,25 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     valueFmt=usd
 />
 ```
+</DocTab>
+
 
 #### Custom Colors
 Define scalar legend colors using the `colorPalette` prop, allowing specified colors to create a gradient based on the range of values.
 
-<AreaMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=sales
-    geoId=ZCTA5CE10
-    areaCol=zip_code
-    colorPalette={['#C65D47', '#4A8EBA']}
-    valueFmt=usd
-/>
+<DocTab>
+    <div slot='preview'>
+        <AreaMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=sales
+            geoId=ZCTA5CE10
+            areaCol=zip_code
+            colorPalette={['#C65D47', '#4A8EBA']}
+            valueFmt=usd
+        />
+    </div>
 
 ```svelte
 <AreaMap
@@ -413,6 +479,8 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     valueFmt=usd
 />
 ```
+</DocTab>
+
 
 ## Required GeoJSON Data Structure
 The GeoJSON data you pass to the map must be a feature collection. [See here for an example](https://gist.github.com/sgillies/1233327#file-geojson-spec-1-0-L50)

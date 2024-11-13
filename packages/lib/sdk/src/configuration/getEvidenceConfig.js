@@ -10,6 +10,7 @@ import z from 'zod';
 import { unnestZodError } from '../lib/unnest-zod-error.js';
 
 /** @typedef {import("zod").AnyZodObject} AnyZodObject */
+/** @typedef {z.infer<typeof EvidenceConfigSchema>} EvidenceConfig */
 
 /**
  * @template {z.ZodSchema} [Schema=EvidenceConfigSchema]
@@ -22,12 +23,19 @@ export const getEvidenceConfig = (
 	// Technically, this function could be misused by passing a template type
 	// that doesn't match the default parameter, but that shouldn't happen
 	// with normal usage (especially since we're using JS, not TS directly)
-	schema = /** @type {Schema} */ (/** @type {unknown} */ (EvidenceConfigSchema))
+	schema = /** @type {Schema} */ (/** @type {unknown} */ (EvidenceConfigSchema)),
+	mergeLegacy = true
 ) => {
 	try {
 		const configFilePath = path.join(projectRoot, 'evidence.config.yaml');
 		const configFileContent = fs.readFileSync(configFilePath, 'utf-8');
 		const result = yaml.parse(configFileContent.replaceAll(/($|\s)(@.+):/g, '$1"$2":'));
+
+		if (mergeLegacy) {
+			const legacyConfig = getEvidenceConfigLegacy();
+			return schema.parse({ ...legacyConfig, ...result });
+		}
+
 		return schema.parse(result);
 	} catch (e) {
 		if (
@@ -43,9 +51,10 @@ export const getEvidenceConfig = (
 				.map(([path, error]) => `  ${chalk.gray(path)}: ${chalk.redBright(error)}`)
 				.join('\n');
 			console.error(`${chalk.red(`Invalid evidence.config.yaml file:`)}\n${errors}`);
+		} else {
+			console.log(e);
 		}
 
-		console.log(e);
 		throw new EvidenceError('Unknown Error while loading Evidence Configuration', [], { cause: e });
 	}
 };

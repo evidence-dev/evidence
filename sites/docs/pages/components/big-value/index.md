@@ -7,16 +7,17 @@ queries:
 
 Big Value displays a large value, and can be configured to include a comparison and a sparkline.
 
-
-<BigValue 
-  data={orders_with_comparisons} 
-  value=num_orders
-  sparkline=month
-  comparison=order_growth
-  comparisonFmt=pct1
-  comparisonTitle="vs. Last Month"
-/>
-
+<DocTab>
+    <div slot='preview'>
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=num_orders
+        sparkline=month
+        comparison=order_growth
+        comparisonFmt=pct1
+        comparisonTitle="vs. Last Month"
+      />
+    </div>
 
 ```markdown
 <BigValue 
@@ -28,15 +29,19 @@ Big Value displays a large value, and can be configured to include a comparison 
   comparisonTitle="vs. Last Month"
 />
 ```
+</DocTab>
 
 ## Examples
 
 ### Default
 
-<BigValue 
-  data={orders_with_comparisons} 
-  value=num_orders
-/>
+<DocTab>
+    <div slot='preview'>
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=num_orders
+      />
+    </div>
 
 ```markdown
 <BigValue 
@@ -44,16 +49,20 @@ Big Value displays a large value, and can be configured to include a comparison 
   value=num_orders
 />
 ```
+</DocTab>
 
 ### Comparisons
 
-<BigValue 
-  data={orders_with_comparisons} 
-  value=num_orders
-  comparison=order_growth
-  comparisonFmt=pct1
-  comparisonTitle="MoM"
-/>
+<DocTab>
+    <div slot='preview'>
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=num_orders
+        comparison=order_growth
+        comparisonFmt=pct1
+        comparisonTitle="MoM"
+      />
+    </div>
 
 ```markdown
 <BigValue 
@@ -64,37 +73,40 @@ Big Value displays a large value, and can be configured to include a comparison 
   comparisonTitle="MoM"
 />
 ```
-
+</DocTab>
 
 ### Multiple cards
 
 Multiple cards will align themselves into a row.
 
-<BigValue 
-  data={orders_with_comparisons} 
-  value=sales
-  fmt=usd0
-  comparison=sales_growth
-  comparisonFmt=pct1
-  comparisonTitle="MoM"
-/>
-<BigValue 
-  data={orders_with_comparisons} 
-  value=num_orders
-  title="Orders"
-  comparison=order_growth
-  comparisonFmt=pct1
-  comparisonTitle="MoM"
-/>
-<BigValue 
-  data={orders_with_comparisons} 
-  value=aov
-  title="Average Order Value"
-  fmt=usd2
-  comparison=aov_growth
-  comparisonFmt=pct1
-  comparisonTitle="MoM"
-/>
+<DocTab>
+    <div slot='preview'>
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=sales
+        fmt=usd0
+        comparison=sales_growth
+        comparisonFmt=pct1
+        comparisonTitle="MoM"
+      />
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=num_orders
+        title="Orders"
+        comparison=order_growth
+        comparisonFmt=pct1
+        comparisonTitle="MoM"
+      />
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=aov
+        title="Average Order Value"
+        fmt=usd2
+        comparison=aov_growth
+        comparisonFmt=pct1
+        comparisonTitle="MoM"
+      />
+    </div>
 
 ```markdown
 <BigValue 
@@ -123,19 +135,24 @@ Multiple cards will align themselves into a row.
   comparisonTitle="MoM"
 />
 ```
+</DocTab>
+
 ### Linking to other pages
 
 The link property makes the Value component clickable, allowing navigation to other pages.
 
-<BigValue 
-  data={orders_with_comparisons} 
-  value=num_orders
-  sparkline=month
-  comparison=order_growth
-  comparisonFmt=pct1
-  comparisonTitle="vs. Last Month"
-  link='/components/big-value/'
-/>
+<DocTab>
+    <div slot='preview'>
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=num_orders
+        sparkline=month
+        comparison=order_growth
+        comparisonFmt=pct1
+        comparisonTitle="vs. Last Month"
+        link='/components/big-value/'
+      />
+    </div>
 
 ```html
 <BigValue 
@@ -148,17 +165,20 @@ The link property makes the Value component clickable, allowing navigation to ot
   link='/components/big-value/'
 />
 ```
+</DocTab>
 
 ### Non-Delta Comparisons
 
-<BigValue 
-  data={orders_with_comparisons} 
-  value=num_orders
-  comparison=prev_month_orders
-  comparisonTitle="Last Month"
-  comparisonDelta=false
-/>
-
+<DocTab>
+    <div slot='preview'>
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=num_orders
+        comparison=prev_month_orders
+        comparisonTitle="Last Month"
+        comparisonDelta=false
+      />
+    </div>
 
 ```html
 <BigValue 
@@ -169,14 +189,27 @@ The link property makes the Value component clickable, allowing navigation to ot
   comparisonDelta=false
 />
 ```
+</DocTab>
 
 ### Sparkline
 
+<DocTab>
+    <div slot='preview'>
+      <BigValue 
+        data={orders_with_comparisons} 
+        value=sales
+        sparkline=month
+      />
+    </div>
+
+```html
 <BigValue 
   data={orders_with_comparisons} 
   value=sales
   sparkline=month
 />
+```
+</DocTab>
 
 ## Options
 

@@ -7,9 +7,8 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"moduleResolution": "NodeNext",
-		"strict": true,
 		"module": "NodeNext",
-		// "types": ["../tailwind/src/themes/vite-plugin/evidence-themes.d.ts"]
-		"types": ["@evidence-dev/tailwind"]
+		"strict": true,
+		"types": ["@evidence-dev/sdk", "@evidence-dev/tailwind"]
 	}
 }

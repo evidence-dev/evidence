@@ -3,16 +3,19 @@ title: Bubble Map
 sidebar_position: 1
 ---
 
-<BubbleMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    size=sales 
-    sizeFmt=eur
-    value=sales 
-    valueFmt=eur
-    pointName=point_name 
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            size=sales 
+            sizeFmt=eur
+            value=sales 
+            valueFmt=eur
+            pointName=point_name 
+        />
+    </div>
 
 ```html
 <BubbleMap 
@@ -26,7 +29,7 @@ sidebar_position: 1
     pointName=point_name 
 />
 ```
-
+</DocTab>
 
 ```sql la_locations
 select *, 'https://www.google.com/search?q=' || point_name as link_col from la_locations
@@ -38,7 +41,10 @@ select *, 'https://www.google.com/search?q=' || point_name as link_col from la_l
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name value=sales basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name value=sales basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'/>
+    </div>
 
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
@@ -54,25 +60,31 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     basemap={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}`}
     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 ```
+</DocTab>
+
 
 ### Custom Tooltip
 
 #### `tooltipType=hover`
-<BubbleMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    size=sales 
-    sizeFmt=usd 
-    value=sales 
-    valueFmt=usd
-    pointName=point_name 
-    tooltipType=hover
-    tooltip={[
-        {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
-    ]}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            size=sales 
+            sizeFmt=usd 
+            value=sales 
+            valueFmt=usd
+            pointName=point_name 
+            tooltipType=hover
+            tooltip={[
+                {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
+                {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'}
+            ]}
+        />
+    </div>
 
 ```svelte
 <BubbleMap 
@@ -91,24 +103,30 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     ]}
 />
 ```
+</DocTab>
+
 
 #### With clickable link and `tooltipType=click`
-<BubbleMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    value=sales 
-    valueFmt=usd 
-    size=sales 
-    sizeFmt=usd 
-    pointName=point_name 
-    tooltipType=click
-    tooltip={[
-        {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
-        {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
-    ]}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            value=sales 
+            valueFmt=usd 
+            size=sales 
+            sizeFmt=usd 
+            pointName=point_name 
+            tooltipType=click
+            tooltip={[
+                {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
+                {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
+                {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+            ]}
+        />
+    </div>
 
 ```svelte
 <BubbleMap 
@@ -128,20 +146,25 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     ]}
 />
 ```
+</DocTab>
+
 
 ### Custom Color Palette
 
-<BubbleMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    value=sales 
-    valueFmt=usd 
-    size=sales 
-    sizeFmt=usd 
-    pointName=point_name 
-    colorPalette={['yellow','orange','red','darkred']}
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            value=sales 
+            valueFmt=usd 
+            size=sales 
+            sizeFmt=usd 
+            pointName=point_name 
+            colorPalette={['yellow','orange','red','darkred']}
+        />
+    </div>
 
 ```svelte
 <BubbleMap 
@@ -154,21 +177,26 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     colorPalette={['yellow','orange','red','darkred']}
 />
 ```
+</DocTab>
+
 
 ### Custom Styling
 
-<BubbleMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    size=sales 
-    sizeFmt=usd
-    pointName=point_name 
-    color=#128c2b
-    opacity=1
-    borderWidth=1
-    borderColor=black
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            size=sales 
+            sizeFmt=usd
+            pointName=point_name 
+            color=#128c2b
+            opacity=1
+            borderWidth=1
+            borderColor=black
+        />
+    </div>
 
 ```svelte
 <BubbleMap 
@@ -184,18 +212,22 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     borderColor=black
 />
 ```
+</DocTab>
 
 ### Max Bubble Size
 
-<BubbleMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    size=sales 
-    sizeFmt=usd
-    pointName=point_name 
-    maxSize=10
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            size=sales 
+            sizeFmt=usd
+            pointName=point_name 
+            maxSize=10
+        />
+    </div>
 
 ```svelte
 <BubbleMap 
@@ -208,18 +240,23 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     maxSize=10
 />
 ```
+</DocTab>
+
 
 ### Link Drilldown
 Pass in a `link` column to enable navigation on click of the point. These can be absolute or relative URLs
 
-<BubbleMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    size=sales 
-    sizeFmt=usd
-    link=link_col 
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            size=sales 
+            sizeFmt=usd
+            link=link_col 
+        />
+    </div>
 
 ```svelte
 <BubbleMap 
@@ -231,10 +268,24 @@ Pass in a `link` column to enable navigation on click of the point. These can be
     link=link_col 
 />
 ```
+</DocTab>
+
 
 ### Use Map as Input
 Use the `name` prop to set an input name for the map - when a point is clicked, it will set the input value to that row of data
 
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap 
+            data={la_locations} 
+            lat=lat 
+            long=long 
+            size=sales 
+            sizeFmt=usd
+            name=my_point_map 
+        />
+    </div>
+
 ```svelte
 <BubbleMap 
     data={la_locations} 
@@ -245,15 +296,7 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
     name=my_point_map 
 />
 ```
-
-<BubbleMap 
-    data={la_locations} 
-    lat=lat 
-    long=long 
-    size=sales 
-    sizeFmt=usd
-    name=my_point_map 
-/>
+</DocTab>
 
 *Click a point on the map to see the input value get updated:*
 
@@ -298,13 +341,16 @@ FROM la_locations
 ```	
 #### Categorical Legend
 
-<BubbleMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=Category
-    size=sales
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=Category
+            size=sales
+        />
+    </div>
 
 ```svelte
 <BubbleMap
@@ -315,17 +361,22 @@ FROM la_locations
     size=sales
 />
 ```
+</DocTab>
 
 #### Custom Colors
 Set custom legend colors using the `colorPalette` prop to match the number of categories; excess categorical options will default to standard colors.
-<BubbleMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=Category
-    size=sales
-    colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=Category
+            size=sales
+            colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
+        />
+    </div>
 
 ```svelte
 <BubbleMap
@@ -337,17 +388,21 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     colorPalette={['#C65D47', '#5BAF7A', '#4A8EBA', '#D35B85', '#E1C16D', '#6F5B9A', '#4E8D8D']}
 />
 ```
+</DocTab>
 
 #### Scalar Legend
 
-<BubbleMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=sales
-    size=sales
-    valueFmt=usd
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=sales
+            size=sales
+            valueFmt=usd
+        />
+    </div>
 
 ```svelte
 <BubbleMap
@@ -359,18 +414,23 @@ Set custom legend colors using the `colorPalette` prop to match the number of ca
     valueFmt=usd
 />
 ```
+</DocTab>
 
 #### Custom Colors
 Define scalar legend colors using the `colorPalette` prop, allowing specified colors to create a gradient based on the range of values.
-<BubbleMap
-    data={grouped_locations}
-    lat=lat
-    long=long
-    value=sales
-    size=sales
-    colorPalette={['#C65D47', '#4A8EBA']}
-    valueFmt=usd
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <BubbleMap
+            data={grouped_locations}
+            lat=lat
+            long=long
+            value=sales
+            size=sales
+            colorPalette={['#C65D47', '#4A8EBA']}
+            valueFmt=usd
+        />
+    </div>
 
 ```svelte
 <BubbleMap
@@ -383,6 +443,7 @@ Define scalar legend colors using the `colorPalette` prop, allowing specified co
     valueFmt=usd
 />
 ```
+</DocTab>
 
 ## Options
 

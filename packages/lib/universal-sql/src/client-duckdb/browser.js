@@ -6,6 +6,7 @@ import {
 	getPlatformFeatures,
 	VoidLogger
 } from '@duckdb/duckdb-wasm';
+import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 export { tableFromIPC } from 'apache-arrow';
 
@@ -124,7 +125,7 @@ export async function setParquetURLs(urls, append = false) {
 					await emptyDbFs(file_name);
 					await emptyDbFs(url);
 				}
-				await db.registerFileURL(file_name, path, DuckDBDataProtocol.HTTP, false);
+				await db.registerFileURL(file_name, addBasePath(path), DuckDBDataProtocol.HTTP, false);
 				await connection.query(
 					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
 				);

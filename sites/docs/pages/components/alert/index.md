@@ -3,6 +3,8 @@ title: Alert
 sidebar_position: 1
 ---
 
+<DocTab>
+    <div slot='preview'>
 <Alert>
 This is a default alert
 </Alert>
@@ -22,7 +24,7 @@ This is a warning alert
 <Alert status="danger">
 This is a dangerous alert
 </Alert>
-
+    </div>
 
 ```markdown
 <Alert>
@@ -45,6 +47,7 @@ This is a warning alert
 This is a dangerous alert
 </Alert>
 ```
+</DocTab>
 
 ## Options
 

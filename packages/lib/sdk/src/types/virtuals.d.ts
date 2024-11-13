@@ -1,16 +1,6 @@
 declare namespace Evidence {
 	interface ConfigLayoutOptions {}
 }
-declare module '$evidence/config' {
-	type schema = import('zod').infer<
-		typeof import('../configuration/schemas/config.schema.js').EvidenceConfigSchema
-	>;
-
-	const cfg: Exclude<schema, 'layout'> & {
-		layout: { name: string; options: Evidence.ConfigLayoutOptions };
-	};
-	export default cfg;
-}
 
 declare module '$evidence/build' {
 	export const BUILD_ID: string;
