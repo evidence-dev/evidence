@@ -23,7 +23,7 @@
 		: showLegendStyle} transition-[opacity, max-height, overflow-y] duration-[350ms] ease-in-out w-full"
 >
 	<div class="flex flex-wrap flex-col font-semibold">
-		<span class="text-[12px]">{legendTitle}</span>
+		<span>{legendTitle}</span>
 	</div>
 	<div class="flex flex-col justify-center overflow-hidden h-8 w-full">
 		<span
