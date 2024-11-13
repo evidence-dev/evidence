@@ -20,6 +20,11 @@
 
 	import '@evidence-dev/tailwind/fonts.css';
 	import '../../../../../../sites/example-project/src/app.css';
+	import { onMount } from 'svelte';
+	import { getThemeStores } from '../themes.js';
+
+	const { syncDataThemeAttribute } = getThemeStores();
+	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
 </script>
 
 <slot />

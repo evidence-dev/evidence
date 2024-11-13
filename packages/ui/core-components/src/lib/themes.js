@@ -100,13 +100,35 @@ export class ThemeStores {
 		);
 
 		this.#theme = derived(this.#activeAppearance, ($activeAppearance) => themes[$activeAppearance]);
+	}
 
-		this.#activeAppearance.subscribe((theme) => {
-			if (typeof document !== 'undefined') {
-				document.documentElement.setAttribute('data-theme', theme);
+	/** @param {HTMLElement} element */
+	syncDataThemeAttribute = (element) => {
+		// Sync activeAppearance -> html[data-theme]
+		const unsubscribe = this.#activeAppearance.subscribe(($activeAppearance) => {
+			const current = element.getAttribute('data-theme');
+			if (current !== $activeAppearance) {
+				element.setAttribute('data-theme', $activeAppearance);
 			}
 		});
-	}
+
+		// Sync html[data-theme] -> activeAppearance
+		const observer = new MutationObserver((mutations) => {
+			const html = /** @type {HTMLHtmlElement} */ (mutations[0].target);
+			const theme = html.getAttribute('data-theme');
+			if (!theme || !['light', 'dark'].includes(theme)) return;
+			const current = get(this.#activeAppearance);
+			if (theme !== current) {
+				this.#selectedAppearance.set(/** @type {'light' | 'dark'} */ (theme));
+			}
+		});
+		observer.observe(element, { attributeFilter: ['data-theme'] });
+
+		return () => {
+			unsubscribe();
+			observer.disconnect();
+		};
+	};
 
 	cycleAppearance = () => {
 		this.#selectedAppearance.update((current) => {

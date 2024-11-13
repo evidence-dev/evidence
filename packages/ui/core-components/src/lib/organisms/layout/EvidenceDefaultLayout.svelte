@@ -110,8 +110,8 @@
 		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
-	// TODO where should this go? How do we get project splash to be rendered with the proper theme?
-	getThemeStores();
+	const { syncDataThemeAttribute } = getThemeStores();
+	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
 </script>
 
 <slot />
