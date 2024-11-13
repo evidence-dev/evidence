@@ -37,8 +37,7 @@ jobs:
         id: changesets
         run: |
           npx changeset version
-          NEW_VERSION=$(node -p "require('./package.json').version")
-          echo "New prerelease version: $NEW_VERSION"
+          pnpm list --filter @evidence-dev/** --depth=-1 | grep @evidence | awk '{print $1}'
 
       - name: Exit Prerelease Mode
         if: success()
