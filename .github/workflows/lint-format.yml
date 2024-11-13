@@ -1,7 +1,7 @@
 name: Linting & Formatting
 
 on:
-  pull_request_target:
+  pull_request:
 
 jobs:
   lint:
@@ -13,8 +13,7 @@ jobs:
 
       - name: Checkout Repo
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4.0.0
         with:
