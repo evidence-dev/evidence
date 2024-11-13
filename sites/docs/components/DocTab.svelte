@@ -1,52 +1,49 @@
 <script>
-	import { onMount } from 'svelte';
+	import { cubicInOut } from 'svelte/easing';
+	import { crossfade } from 'svelte/transition';
 
 	let activeTab = 'preview';
-	let activeBorderStyles = {};
 
 	const tabs = ['preview', 'code'];
 	let tabButtons = [];
-	let tabButton;
-
-	onMount(() => {
-		updateActiveBorder(0);
-	});
 
 	function setTab(tab, index) {
 		activeTab = tab;
 		updateActiveBorder(index);
 	}
 
-	function updateActiveBorder(index) {
-		tabButton = tabButtons[index];
-		activeBorderStyles = {
-			width: `${tabButton.offsetWidth}px`,
-			transform: `translateX(${tabButton.offsetLeft}px)`
-		};
-	}
+	const [send, receive] = crossfade({
+		duration: 200,
+		easing: cubicInOut
+	});
 </script>
 
 <div class="doc-tab mt-2">
-	<div class="flex relative w-fit">
-		{#each tabs as tab, index}
-			<button
-				class="p-1 px-2 cursor-pointer transition-colors duration-300 text-sm font-semibold ease-in-out capitalize tracking-wide focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-md hover:pointer {activeTab ===
-				tab
-					? 'text-black'
-					: 'text-gray-500'}"
-				on:click={() => setTab(tab, index)}
-				bind:this={tabButtons[index]}
-			>
-				{tab}
-			</button>
-		{/each}
-		<!-- Active tab border indicator -->
-		<div
-			style="width: {activeBorderStyles.width}; transform: {activeBorderStyles.transform};"
-			class="absolute bottom-0 left-0 h-[2px] bg-black transition-[width, transform] duration-200 ease-in-out"
-		></div>
+	<div class="flex justify-end">
+		<div class="flex gap-1 bg-gray-100 rounded-md p-1 shadow-inner">
+			{#each tabs as tab, index}
+				<div class="relative">
+					<button
+						class="relative z-10 py-1 px-2 transition-colors duration-300 text-xs font-medium ease-in-out capitalize tracking-wide focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-md hover:text-gray-950 {activeTab ===
+						tab
+							? 'text-gray-950'
+							: 'text-gray-600'}"
+						on:click={() => setTab(tab, index)}
+						bind:this={tabButtons[index]}
+					>
+						{tab}
+					</button>
+					{#if activeTab === tab}
+						<div
+							class="absolute bottom-0 left-0 w-full h-full rounded border bg-white shadow-sm z-0"
+							in:send={{ key: 'trigger' }}
+							out:receive={{ key: 'trigger' }}
+						/>
+					{/if}
+				</div>
+			{/each}
+		</div>
 	</div>
-	<div class="border-b border-gray-300 w-full"></div>
 
 	<!-- Preview and code tabs -->
 	<div>
