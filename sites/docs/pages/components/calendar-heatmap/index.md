@@ -6,13 +6,16 @@ queries:
 - orders_by_day_2021.sql
 ---
 
-<CalendarHeatmap 
-    data={orders_by_day_2021}    
-    date=day
-    value=sales
-    title="Calendar Heatmap"
-    subtitle="Daily Sales"
-/>
+<DocTab>
+    <div slot='preview'>
+        <CalendarHeatmap 
+            data={orders_by_day_2021}    
+            date=day
+            value=sales
+            title="Calendar Heatmap"
+            subtitle="Daily Sales"
+        />
+    </div>
 
 ```markdown
 <CalendarHeatmap 
@@ -23,16 +26,22 @@ queries:
     subtitle="Daily Sales"
 />
 ```
+</DocTab>
+
+
 
 ## Examples
 
 ### Multi-Year
 
-<CalendarHeatmap 
-    data={orders_by_day}    
-    date=day
-    value=sales
-/>
+<DocTab>
+    <div slot='preview'>
+        <CalendarHeatmap 
+            data={orders_by_day}    
+            date=day
+            value=sales
+        />
+    </div>
 
 ```markdown
 <CalendarHeatmap 
@@ -41,15 +50,20 @@ queries:
     value=sales
 />
 ```
+</DocTab>
+
 
 ### Custom Color Palette
 
-<CalendarHeatmap
-    data={orders_by_day_2021}
-    date=day
-    value=sales
-    colorPalette={['navy', 'lightyellow', 'purple']}
-/>
+<DocTab>
+    <div slot='preview'>
+        <CalendarHeatmap
+            data={orders_by_day_2021}
+            date=day
+            value=sales
+            colorPalette={['navy', 'lightyellow', 'purple']}
+        />
+    </div>
 
 ```markdown
 <CalendarHeatmap
@@ -59,15 +73,20 @@ queries:
     colorPalette={['navy', 'lightyellow', 'purple']}
 />
 ```
+</DocTab>
+
 
 ### Without Year Label
 
-<CalendarHeatmap 
-    data={orders_by_day_2021}    
-    date=day
-    value=sales
-    yearLabel=false
-/>
+<DocTab>
+    <div slot='preview'>
+        <CalendarHeatmap 
+            data={orders_by_day_2021}    
+            date=day
+            value=sales
+            yearLabel=false
+        />
+    </div>
 
 ```markdown
 <CalendarHeatmap 
@@ -77,9 +96,7 @@ queries:
     yearLabel=false
 /> 
 ```
-
-
-
+</DocTab>
 
 ## Options
 

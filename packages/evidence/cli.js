@@ -180,7 +180,7 @@ const buildHelper = function (command, args) {
 	child.on('exit', function (code) {
 		if (code === 0) {
 			fs.copySync('./.evidence/template/build', './build');
-			console.log('Build complete --> /build ');
+			console.log(`Build complete --> ${process.env.EVIDENCE_BUILD_DIR ?? './build'} `);
 		} else {
 			console.error('Build failed');
 		}

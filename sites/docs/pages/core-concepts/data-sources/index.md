@@ -351,7 +351,7 @@ To create a service account, see the [BigQuery instructions](#bigquery).
 
 1. Create a service account, and download the JSON key file
 2. Give the service account access to your Google Sheet by sharing the sheet with the service account's email address.
-4. Add the JSON key file to your Evidence app via the [Settings page](localhost:3000/settings)
+4. Add the JSON key file to your Evidence app via the [Settings page](http://localhost:3000/settings)
 5. In the connections.yaml file, add the sheet id (which can be found in the URL of the Google Sheet, after `https://docs.google.com/spreadsheets/d/`).
 
 ```yaml

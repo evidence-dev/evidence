@@ -10,6 +10,7 @@ import {
 import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
 import { setTrackProxy } from '@evidence-dev/sdk/usql';
+import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 import md5 from 'blueimp-md5';
 
 export const ssr = !dev;
@@ -25,7 +26,7 @@ const loadDB = async () => {
 			await readFile('./static/data/manifest.json', 'utf-8').catch(() => '{}')
 		));
 	} else {
-		const res = await fetch('/data/manifest.json');
+		const res = await fetch(addBasePath('/data/manifest.json'));
 		if (res.ok) ({ renderedFiles } = await res.json());
 	}
 	await profile(initDB);
@@ -60,14 +61,14 @@ const database_initialization = profile(loadDB);
  */
 async function getPrerenderedQueries(routeHash, paramsHash, fetch) {
 	// get every query that's run in the component
-	const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
+	const res = await fetch(addBasePath(`/api/${routeHash}/${paramsHash}/all-queries.json`));
 	if (!res.ok) return {};
 
 	const sql_cache_with_hashed_query_strings = await res.json();
 
 	const resolved_entries = await Promise.all(
 		Object.entries(sql_cache_with_hashed_query_strings).map(async ([query_name, query_hash]) => {
-			const res = await fetch(`/api/prerendered_queries/${query_hash}.arrow`);
+			const res = await fetch(addBasePath(`/api/prerendered_queries/${query_hash}.arrow`));
 			if (!res.ok) return null;
 
 			const table = await tableFromIPC(res);
@@ -86,9 +87,9 @@ const dummy_pages = new Map();
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({ fetch, route, params, url }) => {
 	const [{ customFormattingSettings }, pagesManifest, evidencemeta] = await Promise.all([
-		fetch('/api/customFormattingSettings.json/GET.json').then((x) => x.json()),
-		fetch('/api/pagesManifest.json').then((x) => x.json()),
-		fetch(`/api/${route.id}/evidencemeta.json`)
+		fetch(addBasePath('/api/customFormattingSettings.json/GET.json')).then((x) => x.json()),
+		fetch(addBasePath('/api/pagesManifest.json')).then((x) => x.json()),
+		fetch(addBasePath(`/api/${route.id}/evidencemeta.json`))
 			.then((x) => x.json())
 			.catch(() => ({ queries: [] }))
 	]);

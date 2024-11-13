@@ -13,14 +13,31 @@ order by id
 limit 100
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders_summary}/>
+    </div>
+
 ```svelte
 <DataTable data={orders_summary}/>
 ```
+</DocTab>
 
-<DataTable data={orders_summary}/>
+
 
 ### Selecting Specific Columns
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders_summary}> 
+            <Column id=state title="Sales State"/> 
+            <Column id=item/> 
+            <Column id=category/> 
+            <Column id=sales fmt=usd/> 
+            <Column id=channel/> 
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={orders_summary}> 
     <Column id=state title="Sales State"/> 
@@ -30,19 +47,24 @@ limit 100
 	<Column id=channel/> 
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={orders_summary}> 
-    <Column id=state title="Sales State"/> 
-	<Column id=item/> 
-	<Column id=category/> 
-	<Column id=sales fmt=usd/> 
-	<Column id=channel/> 
-</DataTable>
+
 
 ### Custom Column Formatting
 
 You can use the `fmt` prop to format your columns using [built-in format names or Excel format codes](/core-concepts/formatting/)
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country />
+            <Column id=category />
+            <Column id=value_usd fmt=eur/>
+            <Column id=yoy title="Y/Y Growth" fmt=pct3/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={country_summary}>
 	<Column id=country />
@@ -51,13 +73,9 @@ You can use the `fmt` prop to format your columns using [built-in format names o
     <Column id=yoy title="Y/Y Growth" fmt=pct3/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-	<Column id=country />
-	<Column id=category />
-	<Column id=value_usd fmt=eur/>
-    <Column id=yoy title="Y/Y Growth" fmt=pct3/>
-</DataTable>
+
 
 #### Formatting Driven by Another Column
 
@@ -73,6 +91,16 @@ from ${country_summary}
 
 This example includes a `custom_format` column, which contains a different currency format code for many of the rows.
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary_fmts}>
+            <Column id=country />
+            <Column id=category />
+            <Column id=value_usd fmtColumn=custom_format/>
+            <Column id=yoy title="Y/Y Growth" fmt=pct1/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={country_summary_fmts}>
 	<Column id=country />
@@ -81,22 +109,19 @@ This example includes a `custom_format` column, which contains a different curre
     <Column id=yoy title="Y/Y Growth" fmt=pct3/>
 </DataTable>
 ```
-
-<DataTable data={country_summary_fmts}>
-	<Column id=country />
-	<Column id=category />
-	<Column id=value_usd fmtColumn=custom_format/>
-    <Column id=yoy title="Y/Y Growth" fmt=pct1/>
-</DataTable>
-
+</DocTab>
 
 ### Search
+
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders_summary} search=true/>
+    </div>
 
 ```svelte
 <DataTable data={orders_summary} search=true/>
 ```
-
-<DataTable data={orders_summary} search=true/>
+</DocTab>
 
 ### Sort
 
@@ -173,6 +198,16 @@ select date '2020-05-26' as date, 100 as value_usd, 0.011 as yoy, 'Zimbabwe' as 
 ```
 
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country />
+            <Column id=category />
+            <Column id=value_usd />
+            <Column id=yoy contentType=delta fmt=pct title="Y/Y Chg"/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={country_summary}>
 	<Column id=country />
@@ -181,13 +216,8 @@ select date '2020-05-26' as date, 100 as value_usd, 0.011 as yoy, 'Zimbabwe' as 
     <Column id=yoy contentType=delta fmt=pct title="Y/Y Chg"/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-	<Column id=country />
-	<Column id=category />
-	<Column id=value_usd />
-    <Column id=yoy contentType=delta fmt=pct title="Y/Y Chg"/>
-</DataTable>
 
 
 ### Sparklines
@@ -238,6 +268,16 @@ GROUP BY
 order by total_sales desc
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={categories}>
+            <Column id=category/>
+            <Column id=sales title="Orders" contentType=sparkline sparkX=date sparkY=sales />
+            <Column id=sales title="Sales" contentType=sparkarea sparkX=date sparkY=sales sparkColor=#53768a/>
+            <Column id=sales title="AOV" contentType=sparkbar sparkX=date sparkY=sales sparkColor=#97ba99/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={categories}>
     <Column id=category/>
@@ -246,17 +286,21 @@ order by total_sales desc
     <Column id=sales title="AOV" contentType=sparkbar sparkX=date sparkY=sales sparkColor=#97ba99/>
 </DataTable>
 ```
-
-<DataTable data={categories}>
-    <Column id=category/>
-    <Column id=sales title="Orders" contentType=sparkline sparkX=date sparkY=sales />
-    <Column id=sales title="Sales" contentType=sparkarea sparkX=date sparkY=sales sparkColor=#53768a/>
-    <Column id=sales title="AOV" contentType=sparkbar sparkX=date sparkY=sales sparkColor=#97ba99/>
-</DataTable>
-
+</DocTab>
 
 ### Bar Chart Column
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country />
+            <Column id=category align=center/>
+            <Column id=value_usd title="Sales" contentType=bar/>
+              <Column id=value_usd title="Sales" contentType=bar barColor=#aecfaf/>
+              <Column id=value_usd title="Sales" contentType=bar barColor=#ffe08a backgroundColor=#ebebeb/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={country_summary}>
 	<Column id=country />
@@ -266,20 +310,24 @@ order by total_sales desc
   	<Column id=value_usd title="Sales" contentType=bar barColor=#ffe08a backgroundColor=#ebebeb/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-	<Column id=country />
-	<Column id=category align=center/>
-	<Column id=value_usd title="Sales" contentType=bar/>
-  	<Column id=value_usd title="Sales" contentType=bar barColor=#aecfaf/>
-  	<Column id=value_usd title="Sales" contentType=bar barColor=#ffe08a backgroundColor=#ebebeb/>
-</DataTable>
 
 
 ### Total Row
 
 Default total aggregation is `sum`
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_example} totalRow=true rows=5>
+          <Column id=country/>
+          <Column id=gdp_usd/>
+          <Column id=gdp_growth fmt='pct2'/>
+          <Column id=population fmt='#,##0"M"'/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={country_example} totalRow=true rows=5>
   <Column id=country/>
@@ -288,14 +336,7 @@ Default total aggregation is `sum`
   <Column id=population fmt='#,##0"M"'/>
 </DataTable>
 ```
-
-<DataTable data={country_example} totalRow=true rows=5>
-  <Column id=country/>
-  <Column id=gdp_usd/>
-  <Column id=gdp_growth fmt='pct2'/>
-  <Column id=population fmt='#,##0"M"'/>
-</DataTable>
-
+</DocTab>
 
 #### Using Built-in Aggregation Functions
 
@@ -304,6 +345,16 @@ select * from ${countries}
 limit 5
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_example} totalRow=true rows=5>
+        <Column id=country/>
+        <Column id=gdp_usd totalAgg=sum/>
+        <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct2'/>
+        <Column id=population totalAgg=mean fmt='#,##0"M"'/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={country_example} totalRow=true rows=5>
   <Column id=country/>
@@ -312,30 +363,47 @@ limit 5
   <Column id=population totalAgg=mean fmt='#,##0"M"'/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_example} totalRow=true rows=5>
-  <Column id=country/>
-  <Column id=gdp_usd totalAgg=sum/>
-  <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct2'/>
-  <Column id=population totalAgg=mean fmt='#,##0"M"'/>
-</DataTable>
+
 
 #### Custom Aggregations Values
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_example} totalRow=true rows=5>
+          <Column id=country totalAgg="Just the USA"/>
+          <Column id=gdp_usd totalAgg={countries[0].gdp_usd} totalFmt=usd/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries} totalRow=true rows=5>
   <Column id=country totalAgg="Just the USA"/>
   <Column id=gdp_usd totalAgg={countries[0].gdp_usd} totalFmt=usd/>
 </DataTable>
 ```
-
-<DataTable data={country_example} totalRow=true rows=5>
-  <Column id=country totalAgg="Just the USA"/>
-  <Column id=gdp_usd totalAgg={countries[0].gdp_usd} totalFmt=usd/>
-</DataTable>
+</DocTab>
 
 #### Custom Total Formats
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_example} totalRow=true rows=5>
+          <Column id=country totalAgg="All Countries"/>
+          <Column id=continent totalAgg=countDistinct totalFmt='# "Unique continents"'/>
+          <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"'/>
+          <Column id=gdp_growth totalAgg=mean fmt='pct2' totalFmt='pct1'/>
+          <Column id=interest_rate totalAgg=mean fmt='pct2' totalFmt='pct1'/>
+          <Column id=inflation_rate totalAgg=mean fmt='pct2' totalFmt='pct1'/>
+          <Column id=jobless_rate totalAgg=mean fmt='pct0'/>
+          <Column id=gov_budget totalAgg=mean fmt='0.0"%"'/>
+          <Column id=debt_to_gdp totalAgg=mean fmt='0"%"'/>
+          <Column id=current_account totalAgg=mean fmt='0.0"%"'/>
+          <Column id=population totalAgg=sum fmt='#,##0"M"'/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries} totalRow=true rows=5>
   <Column id=country totalAgg="All Countries"/>
@@ -351,25 +419,23 @@ limit 5
   <Column id=population totalAgg=sum fmt='#,##0"M"'/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_example} totalRow=true rows=5>
-  <Column id=country totalAgg="All Countries"/>
-  <Column id=continent totalAgg=countDistinct totalFmt='# "Unique continents"'/>
-  <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"'/>
-  <Column id=gdp_growth totalAgg=mean fmt='pct2' totalFmt='pct1'/>
-  <Column id=interest_rate totalAgg=mean fmt='pct2' totalFmt='pct1'/>
-  <Column id=inflation_rate totalAgg=mean fmt='pct2' totalFmt='pct1'/>
-  <Column id=jobless_rate totalAgg=mean fmt='pct0'/>
-  <Column id=gov_budget totalAgg=mean fmt='0.0"%"'/>
-  <Column id=debt_to_gdp totalAgg=mean fmt='0"%"'/>
-  <Column id=current_account totalAgg=mean fmt='0.0"%"'/>
-  <Column id=population totalAgg=sum fmt='#,##0"M"'/>
-</DataTable>
 
 ### Conditional Formatting
 
 #### Default (`scaleColor=green`)
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country />
+            <Column id=country_id align=center/>
+            <Column id=category align=center/>
+            <Column id=value_usd contentType=colorscale/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries}>
     <Column id=country />
@@ -378,16 +444,21 @@ limit 5
     <Column id=value_usd contentType=colorscale/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-    <Column id=country />
-    <Column id=country_id align=center/>
-    <Column id=category align=center/>
-    <Column id=value_usd contentType=colorscale/>
-</DataTable>
 
 #### `scaleColor=red`
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country />
+            <Column id=country_id align=center/>
+            <Column id=category align=center/>
+            <Column id=value_usd contentType=colorscale scaleColor=red/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries}>
     <Column id=country />
@@ -396,16 +467,20 @@ limit 5
     <Column id=value_usd contentType=colorscale scaleColor=red/>
 </DataTable>
 ```
-
-<DataTable data={country_summary}>
-    <Column id=country />
-    <Column id=country_id align=center/>
-    <Column id=category align=center/>
-    <Column id=value_usd contentType=colorscale scaleColor=red/>
-</DataTable>
+</DocTab>
 
 #### `scaleColor=blue`
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country />
+            <Column id=country_id align=center/>
+            <Column id=category align=center/>
+            <Column id=value_usd contentType=colorscale scaleColor=blue/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries}>
     <Column id=country />
@@ -414,27 +489,12 @@ limit 5
     <Column id=value_usd contentType=colorscale scaleColor=blue/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-    <Column id=country />
-    <Column id=country_id align=center/>
-    <Column id=category align=center/>
-    <Column id=value_usd contentType=colorscale scaleColor=blue/>
-</DataTable>
 
 #### Custom Colors
 
 When you pass a custom color to `scaleColor`, Evidence will create a color palette for you, starting at white and ending at the color you provided. See examples further down the page to see how to specify a custom color palette with multiple colors.
-
-```svelte
-<DataTable data={orders_by_category} rowNumbers=true>
-  <Column id=month/>
-  <Column id=category/>
-  <Column id=sales_usd0k contentType=colorscale scaleColor=#a85ab8 align=center/>
-  <Column id=num_orders_num0 contentType=colorscale scaleColor=#e3af05 align=center/>
-  <Column id=aov_usd2 contentType=colorscale scaleColor=#c43957 align=center/>
-</DataTable>
-```
 
 ```orders_by_category
 select order_month as month, category, sum(sales) as sales_usd0k, count(1) as num_orders_num0,
@@ -443,6 +503,18 @@ from needful_things.orders
 group by all
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders_by_category} rowNumbers=true>
+          <Column id=month/>
+          <Column id=category/>
+          <Column id=sales_usd0k contentType=colorscale scaleColor=#a85ab8 align=center/>
+          <Column id=num_orders_num0 contentType=colorscale scaleColor=#e3af05 align=center/>
+          <Column id=aov_usd2 contentType=colorscale scaleColor=#c43957 align=center/>
+        </DataTable>
+    </div>
+
+```svelte
 <DataTable data={orders_by_category} rowNumbers=true>
   <Column id=month/>
   <Column id=category/>
@@ -450,6 +522,11 @@ group by all
   <Column id=num_orders_num0 contentType=colorscale scaleColor=#e3af05 align=center/>
   <Column id=aov_usd2 contentType=colorscale scaleColor=#c43957 align=center/>
 </DataTable>
+```
+</DocTab>
+
+
+
 
 ### Custom Color Palettes
 
@@ -478,46 +555,62 @@ union all
 
 #### Diverging Scale
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={numbers}>
+          <Column id=name/>
+          <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={numbers}>
   <Column id=name/>
   <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={numbers}>
-  <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
-</DataTable>
 
 #### Heatmap
+
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={numbers}>
+          <Column id=name/>
+          <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={numbers}>
   <Column id=name/>
   <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={numbers}>
-  <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
-</DataTable>
 
 
 #### Color Breakpoints
 Use `colorBreakpoints` or `colorMid`/`colorMin`/`colorMax` to control which values are assigned to which sections of the color scale
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={negatives} rows=all>
+          <Column id=name/>
+          <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={negatives} rows=all>
   <Column id=name/>
   <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={negatives} rows=all>
-  <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
-</DataTable>
 
 #### Create Scale from Another Column
 
@@ -546,6 +639,15 @@ union all
  order by number asc
  ```
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={numbers_othercol}>
+          <Column id=name/>
+          <Column id=scale_defining_number fontColor={['green','red']}/>
+          <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={numbers_othercol}>
   <Column id=name/>
@@ -553,12 +655,8 @@ union all
   <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={numbers_othercol}>
-  <Column id=name/>
-  <Column id=scale_defining_number fontColor={['green','red']}/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
-</DataTable>
 
 ### Red Negatives
 
@@ -585,17 +683,22 @@ select 'J', 4 as number,0
 order by number asc
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={negatives}>
+        <Column id=name/>
+        <Column id=number redNegatives=true/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={negatives}>
   <Column id=name/>
   <Column id=number redNegatives=true/>
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={negatives}>
-  <Column id=name/>
-  <Column id=number redNegatives=true/>
-</DataTable>
 
 
 ### Including Images
@@ -603,6 +706,17 @@ You can include images by indicating either an absolute path e.g. `https://www.e
 
 In this example, `flag` is either an absolute path or a relative path to the image.
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=flag contentType=image height=30px align=center />
+            <Column id=country />
+            <Column id=country_id align=center />
+            <Column id=category />
+            <Column id=value_usd />
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries}>
 	<Column id=flag contentType=image height=30px align=center />
@@ -612,19 +726,24 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 	<Column id=value_usd />
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-	<Column id=flag contentType=image height=30px align=center />
-	<Column id=country />
-	<Column id=country_id align=center />
-	<Column id=category />
-	<Column id=value_usd />
-</DataTable>
+
 
 ### Link Columns
 
 #### Link Column with Unique Labels
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country_url contentType=link linkLabel=country />
+            <Column id=country_id align=center />
+            <Column id=category />
+            <Column id=value_usd />
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries}>
 	<Column id=country_url contentType=link linkLabel=country />
@@ -633,16 +752,22 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 	<Column id=value_usd />
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-	<Column id=country_url contentType=link linkLabel=country />
-	<Column id=country_id align=center />
-	<Column id=category />
-	<Column id=value_usd />
-</DataTable>
 
 #### Link Column with Consistent String Label
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country />
+            <Column id=country_id align=center />
+            <Column id=category />
+            <Column id=value_usd />
+            <Column id=country_url contentType=link linkLabel="Details &rarr;" />
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries}>
 	<Column id=country />
@@ -652,14 +777,8 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 	<Column id=country_url contentType=link linkLabel="Details &rarr;" />
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-	<Column id=country />
-	<Column id=country_id align=center />
-	<Column id=category />
-	<Column id=value_usd />
-	<Column id=country_url contentType=link linkLabel="Details &rarr;" />
-</DataTable>
 
 ### HTML Content
 
@@ -672,6 +791,15 @@ select 'Inline <code class=markdown>Code</code></br> is supported', 4
 order by row_number
 ```
 
+<DocTab>
+    <div slot='preview'>
+
+
+        <DataTable data={html_in_table}>
+            <Column id="HTML in Table" contentType=html/>
+        </DataTable>
+    </div>
+
 ````markdown
 ```sql html_in_table
 select '<b>Bold</b> text' as "HTML in Table", 0 as row_number union all
@@ -682,14 +810,12 @@ select 'Inline <code class=markdown>Code</code></br> is supported', 4
 order by row_number
 ```
 
-<DataTable data={html_in_table}>
-    <Column id="HTML in Table" contentType=html/>
-</DataTable>
-````
 
 <DataTable data={html_in_table}>
     <Column id="HTML in Table" contentType=html/>
 </DataTable>
+````
+</DocTab>
 
 To apply styling to most HTML tags, you should add the `class=markdown` attribute to the tag in your column. This will apply the same styling as the markdown renderer.
 
@@ -699,10 +825,8 @@ To apply styling to most HTML tags, you should add the `class=markdown` attribut
 
 This example includes a column `country_url` which contains a country name as a search term in Google (e.g., `https://google.ca/search?q=canada`)
 
-```svelte
-<DataTable data={countries} search=true link=country_url showLinkCol/>
-```
-
+<DocTab>
+    <div slot='preview'>
 Click on a row to navigate using the row link:
 
 <DataTable data={country_summary} search=true link=country_url>
@@ -711,6 +835,13 @@ Click on a row to navigate using the row link:
 	<Column id=category />
 	<Column id=value_usd />
 </DataTable>
+    </div>
+
+```svelte
+<DataTable data={countries} search=true link=country_url showLinkCol/>
+```
+</DocTab>
+
 
 #### Link to Pages in Your App
 
@@ -739,30 +870,52 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 #### Row Shading + Row Lines
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={countries} rowShading=true />
+    </div>
+
 ```svelte
 <DataTable data={countries} rowShading=true />
 ```
-
-<DataTable data={countries} rowShading=true />
+</DocTab>
 
 #### Row Shading + No Row Lines
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={countries} rowShading=true rowLines=false />
+    </div>
+
 ```svelte
 <DataTable data={countries} rowShading=true rowLines=false />
 ```
-
-<DataTable data={countries} rowShading=true rowLines=false />
+</DocTab>
 
 #### No Lines or Shading
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={countries} rowLines=false />
+    </div>
+
 ```svelte
 <DataTable data={countries} rowLines=false />
 ```
-
-<DataTable data={countries} rowLines=false />
+</DocTab>
 
 ### Column Alignment
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country align=right />
+            <Column id=country_id align=center />
+            <Column id=category align=left />
+            <Column id=value_usd align=left />
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={country_summary}>
 	<Column id=country align=right />
@@ -771,16 +924,21 @@ By default, the link column of your table is hidden. If you would like it to be 
 	<Column id=value_usd align=left />
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-	<Column id=country align=right />
-	<Column id=country_id align=center />
-	<Column id=category align=left />
-	<Column id=value_usd align=left />
-</DataTable>
 
 ### Custom Column Titles
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country title="Country Name" />
+            <Column id=country_id align=center title="ID" />
+            <Column id=category align=center title="Product Category" />
+            <Column id=value_usd title="Sales in 2022" />
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={country_summary}>
 	<Column id=country title="Country Name" />
@@ -789,21 +947,20 @@ By default, the link column of your table is hidden. If you would like it to be 
 	<Column id=value_usd title="Sales in 2022" />
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={country_summary}>
-	<Column id=country title="Country Name" />
-	<Column id=country_id align=center title="ID" />
-	<Column id=category align=center title="Product Category" />
-	<Column id=value_usd title="Sales in 2022" />
-</DataTable>
 
 ### Raw Column Names
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary} formatColumnTitles=false />
+    </div>
+
 ```svelte
 <DataTable data={country_summary} formatColumnTitles=false />
 ```
-
-<DataTable data={country_summary} formatColumnTitles=false />
+</DocTab>
 
 ### Groups - Accordion
 
@@ -815,6 +972,18 @@ group by all
 limit 25
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders} groupBy=state>
+             <Column id=state/> 
+            <Column id=category totalAgg=""/> 
+            <Column id=item totalAgg=""/> 
+            <Column id=orders/> 
+            <Column id=sales fmt=usd/> 
+            <Column id=growth fmt=pct1/> 
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={orders} groupBy=state>
  	<Column id=state/> 
@@ -825,18 +994,23 @@ limit 25
 	<Column id=growth fmt=pct1/> 
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={orders} groupBy=state>
- 	<Column id=state/> 
-	<Column id=category totalAgg=""/> 
-	<Column id=item totalAgg=""/> 
-	<Column id=orders/> 
-	<Column id=sales fmt=usd/> 
-	<Column id=growth fmt=pct1/> 
-</DataTable>
 
 #### With Subtotals
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders} groupBy=state subtotals=true> 
+             <Column id=state/> 
+            <Column id=category totalAgg=""/> 
+            <Column id=item totalAgg=""/> 
+            <Column id=orders/> 
+            <Column id=sales fmt=usd/> 
+            <Column id=growth fmt=pct1/> 
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={orders} groupBy=state subtotals=true> 
  	<Column id=state/> 
@@ -847,18 +1021,23 @@ limit 25
 	<Column id=growth fmt=pct1/> 
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={orders} groupBy=state subtotals=true> 
- 	<Column id=state/> 
-	<Column id=category totalAgg=""/> 
-	<Column id=item totalAgg=""/> 
-	<Column id=orders/> 
-	<Column id=sales fmt=usd/> 
-	<Column id=growth fmt=pct1/> 
-</DataTable>
 
 #### Closed by Default
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders} groupBy=state subtotals=true totalRow=true groupsOpen=false> 
+             <Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
+            <Column id=category totalAgg=countDistinct totalFmt='[=1]0 "category";0 "categories"'/> 
+            <Column id=item  totalAgg=countDistinct totalFmt='[=1]0 "item";0 "items"'/> 
+            <Column id=orders/> 
+            <Column id=sales fmt=usd0k/> 
+            <Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={orders} groupBy=state subtotals=true totalRow=true groupsOpen=false> 
  	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
@@ -869,18 +1048,23 @@ limit 25
 	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={orders} groupBy=state subtotals=true totalRow=true groupsOpen=false> 
- 	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
-	<Column id=category totalAgg=countDistinct totalFmt='[=1]0 "category";0 "categories"'/> 
-	<Column id=item  totalAgg=countDistinct totalFmt='[=1]0 "item";0 "items"'/> 
-	<Column id=orders/> 
-	<Column id=sales fmt=usd0k/> 
-	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
-</DataTable>
 
 #### With Configured Columns
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders} groupBy=category subtotals=true totalRow=true> 
+             <Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
+            <Column id=category totalAgg=Total/> 
+            <Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+            <Column id=orders contentType=colorscale/> 
+            <Column id=sales fmt=usd0k/> 
+            <Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={orders} groupBy=category subtotals=true totalRow=true> 
  	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
@@ -891,28 +1075,38 @@ limit 25
 	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={orders} groupBy=category subtotals=true totalRow=true> 
- 	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
-	<Column id=category totalAgg=Total/> 
-	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
-	<Column id=orders contentType=colorscale/> 
-	<Column id=sales fmt=usd0k/> 
-	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
-</DataTable>
 
 ### Groups - Section
 
 #### Without subtotals
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders} groupBy=state groupType=section/>
+    </div>
+
 ```svelte
 <DataTable data={orders} groupBy=state groupType=section/>
 ```
+</DocTab>
 
-<DataTable data={orders} groupBy=state groupType=section/>
 
 #### With Subtotals
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders} groupBy=state subtotals=true groupType=section>
+             <Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
+            <Column id=category totalAgg=Total/> 
+            <Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+            <Column id=orders/> 
+            <Column id=sales fmt=usd1k/> 
+            <Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={orders} groupBy=state subtotals=true groupType=section>
  	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
@@ -923,18 +1117,23 @@ limit 25
 	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={orders} groupBy=state subtotals=true groupType=section>
- 	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
-	<Column id=category totalAgg=Total/> 
-	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
-	<Column id=orders/> 
-	<Column id=sales fmt=usd1k/> 
-	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
-</DataTable>
 
 #### With Configured Columns
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
+             <Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
+            <Column id=category totalAgg=Total/> 
+            <Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+            <Column id=orders contentType=colorscale/> 
+            <Column id=sales fmt=usd1k/> 
+            <Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
  	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
@@ -945,15 +1144,8 @@ limit 25
 	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
 </DataTable>
 ```
+</DocTab>
 
-<DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
- 	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
-	<Column id=category totalAgg=Total/> 
-	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
-	<Column id=orders contentType=colorscale/> 
-	<Column id=sales fmt=usd1k/> 
-	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
-</DataTable>
 
 ### Column Groups
 
@@ -983,6 +1175,22 @@ UNION ALL
 SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.27, -1.8, 213.32
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor=#f2f2f2>
+          <Column id=continent totalAgg="Total" totalFmt='# "Unique continents"'/>
+          <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
+          <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
+          <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' colGroup="GDP" contentType=delta/>
+          <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=red colGroup="Labour Market"/>
+          <Column id=population totalAgg=sum fmt='#,##0"M"' totalFmt='#,##0.0,"B"' colGroup="Labour Market"/>
+          <Column id=interest_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' wrapTitle=false colGroup="Other"/>
+          <Column id=inflation_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' colGroup="Other"/>
+          <Column id=gov_budget totalAgg=weightedMean weightCol=gdp_usd fmt='0.0"%"' contentType=delta colGroup="Other"/>
+          <Column id=current_account totalAgg=weightedMean weightCol=gdp_usd fmt='0.0"%"' colGroup="Other"/>
+        </DataTable>
+    </div>
+
 ```svelte
 <DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor=#f2f2f2>
   <Column id=continent totalAgg="Total" totalFmt='# "Unique continents"'/>
@@ -997,27 +1205,19 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
   <Column id=current_account totalAgg=weightedMean weightCol=gdp_usd fmt='0.0"%"' colGroup="Other"/>
 </DataTable>
 ```
-
-<DataTable data={countries} totalRow=true rows=5 groupBy=continent groupType=section totalRowColor=#f2f2f2>
-  <Column id=continent totalAgg="Total" totalFmt='# "Unique continents"'/>
-  <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
-  <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
-  <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' colGroup="GDP" contentType=delta/>
-  <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=red colGroup="Labour Market"/>
-  <Column id=population totalAgg=sum fmt='#,##0"M"' totalFmt='#,##0.0,"B"' colGroup="Labour Market"/>
-  <Column id=interest_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' wrapTitle=false colGroup="Other"/>
-  <Column id=inflation_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' colGroup="Other"/>
-  <Column id=gov_budget totalAgg=weightedMean weightCol=gdp_usd fmt='0.0"%"' contentType=delta colGroup="Other"/>
-  <Column id=current_account totalAgg=weightedMean weightCol=gdp_usd fmt='0.0"%"' colGroup="Other"/>
-</DataTable>
+</DocTab>
 
 ### Wrap Titles
+
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={countries} wrapTitles=true /> 
+    </div>
 
 ```svelte
 <DataTable data={countries} wrapTitles=true /> 
 ```
-
-<DataTable data={countries} wrapTitles=true /> 
+</DocTab>
 
 # DataTable
 

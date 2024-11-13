@@ -38,8 +38,8 @@ module.exports = `
   />
 {/if}
 {#if metadata.og?.image}
-  <meta property="og:image" content={metadata.og?.image} />
-  <meta name="twitter:image" content={metadata.og?.image} />
+  <meta property="og:image" content={addBasePath(metadata.og?.image)} />
+  <meta name="twitter:image" content={addBasePath(metadata.og?.image)} />
 {/if}
 {/if}
 </svelte:head>

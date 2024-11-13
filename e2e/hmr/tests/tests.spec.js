@@ -1,7 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 import { createFile, deleteFile, editFile, restoreChangedFiles } from './fs-utils';
-import { waitForDevModeToLoad } from '../../test-utils';
+import { waitForPageToLoad } from '../../test-utils';
 
 /** @param {import("@playwright/test").Page} page */
 const waitForHMR = async (page) => {
@@ -17,7 +17,7 @@ test.afterEach(() => {
 test.describe('pages', () => {
 	test('editing should HMR', async ({ page }) => {
 		await page.goto('/page');
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('This page has some text on it')).toBeVisible();
 
@@ -29,7 +29,7 @@ test.describe('pages', () => {
 
 	test('creating should add to the sidebar and allow navigation', async ({ page }) => {
 		await page.goto('/');
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('Index')).toBeVisible();
 
@@ -43,7 +43,7 @@ test.describe('pages', () => {
 
 	test('deleting should remove from the sidebar and prevent navigation', async ({ page }) => {
 		await page.goto('/');
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('Index')).toBeVisible();
 
@@ -59,7 +59,7 @@ test.describe('pages', () => {
 test.describe('sources', () => {
 	test('editing should HMR', async ({ page }) => {
 		await page.goto('/orders');
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		await expect(page.getByText('Loaded 10000 orders')).toBeVisible();
 
@@ -77,7 +77,7 @@ test.describe('error handling', () => {
 	test('reserved word in query name', async ({ page }) => {
 		await page.goto('/error-handling/reserved-word-query-name/');
 
-		await waitForDevModeToLoad(page);
+		await waitForPageToLoad(page);
 
 		editFile('pages/error-handling/reserved-word-query-name.md', (content) =>
 			content.replace('my_query', 'new')

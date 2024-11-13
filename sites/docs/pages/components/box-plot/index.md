@@ -5,15 +5,18 @@ queries:
 - sales_distribution_by_channel.sql
 ---
 
-<BoxPlot 
-    data={sales_distribution_by_channel}
-    title="Daily Sales Distribution by Channel"
-    name=channel
-    intervalBottom=first_quartile
-    midpoint=median
-    intervalTop=third_quartile
-    yFmt=usd0
-/>
+<DocTab>
+    <div slot='preview'>
+        <BoxPlot 
+            data={sales_distribution_by_channel}
+            title="Daily Sales Distribution by Channel"
+            name=channel
+            intervalBottom=first_quartile
+            midpoint=median
+            intervalTop=third_quartile
+            yFmt=usd0
+        />
+    </div>
 
 ```markdown
 <BoxPlot 
@@ -25,6 +28,8 @@ queries:
     yFmt=usd0
 />
 ```
+</DocTab>
+
 
 ## Data Structure
 The BoxPlot component requires pre-aggregated data, with one row per box you would like to display. There are 2 ways to pass in the values needed to construct the box:
@@ -69,14 +74,17 @@ from ${sales_distribution_by_channel}
 
 ### Basic Box Plot
 
-<BoxPlot 
-    data={sales_distribution_by_channel}
-    name=channel
-    intervalBottom=first_quartile
-    midpoint=median
-    intervalTop=third_quartile
-    yFmt=usd0
-/>
+<DocTab>
+    <div slot='preview'>
+        <BoxPlot 
+            data={sales_distribution_by_channel}
+            name=channel
+            intervalBottom=first_quartile
+            midpoint=median
+            intervalTop=third_quartile
+            yFmt=usd0
+        />
+    </div>
 
 ```markdown
 <BoxPlot 
@@ -88,18 +96,23 @@ from ${sales_distribution_by_channel}
     yFmt=usd0
 />
 ```
+</DocTab>
+
 
 ### Horizontal Box Plot
 
-<BoxPlot 
-    data={sales_distribution_by_channel}
-    name=channel
-    intervalBottom=first_quartile
-    midpoint=median
-    intervalTop=third_quartile
-    yFmt=usd0
-    swapXY=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <BoxPlot 
+            data={sales_distribution_by_channel}
+            name=channel
+            intervalBottom=first_quartile
+            midpoint=median
+            intervalTop=third_quartile
+            yFmt=usd0
+            swapXY=true
+        />
+    </div>
 
 ```markdown
 <BoxPlot 
@@ -112,21 +125,25 @@ from ${sales_distribution_by_channel}
     swapXY=true
 />
 ```
+</DocTab>
+
 
 ### Box Plot with Whiskers
 
-<BoxPlot 
-    data={sales_distribution_by_channel}
-    name=channel
-    min=min
-    intervalBottom=first_quartile
-    midpoint=median
-    intervalTop=third_quartile
-    max=max
-    yFmt=usd0
-    yMin=0
-/>
-
+<DocTab>
+    <div slot='preview'>
+        <BoxPlot 
+            data={sales_distribution_by_channel}
+            name=channel
+            min=min
+            intervalBottom=first_quartile
+            midpoint=median
+            intervalTop=third_quartile
+            max=max
+            yFmt=usd0
+            yMin=0
+        />
+    </div>
 
 ```markdown
 <BoxPlot 
@@ -140,18 +157,22 @@ from ${sales_distribution_by_channel}
     yFmt=usd0
 />
 ```
+</DocTab>
 
 ### Box Plot with Custom Colors
 
-<BoxPlot 
-    data={sales_distribution_by_channel}
-    name=channel
-    intervalBottom=first_quartile
-    midpoint=median
-    intervalTop=third_quartile
-    yFmt=usd0
-    color=color
-/>
+<DocTab>
+    <div slot='preview'>
+        <BoxPlot 
+            data={sales_distribution_by_channel}
+            name=channel
+            intervalBottom=first_quartile
+            midpoint=median
+            intervalTop=third_quartile
+            yFmt=usd0
+            color=color
+        />
+    </div>
 
 ```markdown
 <BoxPlot 
@@ -164,6 +185,7 @@ from ${sales_distribution_by_channel}
     color=color
 />
 ```
+</DocTab>
 
 ## Options
 
