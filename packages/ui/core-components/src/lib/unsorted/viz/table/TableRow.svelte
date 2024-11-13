@@ -11,6 +11,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ChevronRight } from '@steeze-ui/tabler-icons';
 	import Sparkline from '../core/_Sparkline.svelte';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import { ensureThemeStores } from '../../../themes.js';
 
 	export let displayedData = undefined;
@@ -45,11 +46,11 @@
 		const url = row[link];
 
 		if (isUrlExternal(url)) {
-			window.location = url;
+			window.location = addBasePath(url);
 			return;
 		}
 
-		await goto(row[link]);
+		await goto(addBasePath(row[link]));
 	};
 
 	const { theme } = ensureThemeStores();
@@ -147,7 +148,7 @@
 						-
 					{:else}
 						<a
-							href={row[column.id]}
+							href={addBasePath(row[column.id])}
 							target={column.openInNewTab ? '_blank' : ''}
 							class="text-primary hover:brightness-110 transition-colors duration-200"
 						>
@@ -311,7 +312,7 @@
 		{#if link && row[link]}
 			<TableCell {compact} width="16px">
 				<Icon src={ChevronRight} class="w-4 h-4" />
-				<a href={row[link]} class="sr-only">See more</a>
+				<a href={addBasePath(row[link])} class="sr-only">See more</a>
 			</TableCell>
 		{/if}
 	</tr>

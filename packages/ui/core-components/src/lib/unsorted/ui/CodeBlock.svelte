@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { onMount, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import { browser } from '$app/environment';
 	import { loadPrismComponents } from './prismLoader.js'; // Needed to avoid issues with loading Prism and prism languages out of order
 
@@ -28,21 +28,6 @@
 			/* ignore errors */
 		}
 	}
-
-	onMount(async () => {
-		const Prism = await loadPrismComponents();
-		if (typeof Prism !== 'undefined') {
-			await tick();
-			const codeElements = document.querySelectorAll(
-				`pre code${language ? `.language-${language}` : ''}`
-			);
-			codeElements.forEach((codeElement) => {
-				Prism.highlightElement(codeElement, false);
-			});
-		} else {
-			console.error('Prism is not defined on mount');
-		}
-	});
 
 	$: if (browser) {
 		tick().then(async () => {
@@ -79,7 +64,7 @@
 			{/if}
 		</button>
 	{/if}
-	<pre class="overflow-auto pretty-scrollbar"><code class="language-{language} text-sm"
+	<pre class="overflow-auto pretty-scrollbar my-[0.5em]"><code class="language-{language} text-sm"
 			>{#if source}{source}{:else}<slot />{/if}</code
 		></pre>
 </div>

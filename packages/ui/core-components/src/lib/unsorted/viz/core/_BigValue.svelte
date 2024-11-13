@@ -5,6 +5,7 @@
 	import BigValueError from './BigValueError.svelte';
 	import Sparkline from './Sparkline.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import Delta from './Delta.svelte';
 	export let data;
 	export let value = null;
@@ -96,7 +97,7 @@
 		<p class="text-sm">{title}</p>
 		<div class="relative text-xl font-medium my-0.5">
 			{#if link}
-				<a class="hover:bg-base-200" href={link}>
+				<a class="hover:bg-base-200" href={addBasePath(link)}>
 					<Value {data} column={value} {fmt} />
 				</a>
 			{:else}
@@ -136,7 +137,7 @@
 			{:else}
 				<p class="text-xs font-sans /60 pt-[0.5px]">
 					{#if link}
-						<a class="hover:bg-base-200" href={link}>
+						<a class="hover:bg-base-200" href={addBasePath(link)}>
 							<Value {data} column={comparison} fmt={comparisonFmt} />
 						</a>
 					{:else}

@@ -8,6 +8,7 @@
 	import Logo from '../Logo.svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { X } from '@steeze-ui/tabler-icons';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 	export let fileTree = undefined;
 	export let title = undefined;
@@ -85,7 +86,7 @@
 	>
 		<div class="flex flex-col h-full pb-4">
 			<div class="py-3 px-8 mb-3 flex items-start justify-between">
-				<a href="/" class="block mt-1 text-sm font-bold">
+				<a href={addBasePath('/')} class="block mt-1 text-sm font-bold">
 					<Logo {logo} {title} />
 				</a>
 				<span
@@ -113,7 +114,7 @@
 				<div class="flex flex-col pb-6">
 					<a
 						class="sticky top-0 bg-base-100 shadow shadow-base-100 text-base-content font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
-						href="/"
+						href={addBasePath('/')}
 					>
 						{homePageName}
 					</a>
@@ -124,7 +125,7 @@
 								class="group inline-block py-1 capitalize transition-colors duration-100 {active
 									? 'text-primary'
 									: 'text-base-content-muted hover:text-base-content'}"
-								href={file.href}
+								href={addBasePath(file.href)}
 							>
 								{file.frontMatter?.title ?? file.label}
 								{#if file.frontMatter?.sidebar_badge}
@@ -142,7 +143,7 @@
 							{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 								<a
 									class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
-									href={file.href}
+									href={addBasePath(file.href)}
 								>
 									{file.frontMatter?.title ?? file.label}
 									{#if file.frontMatter?.sidebar_badge}
@@ -154,7 +155,7 @@
 							{:else}
 								<span
 									class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
-									href={file.href}
+									href={addBasePath(file.href)}
 								>
 									{file.frontMatter?.title ?? file.label}
 									{#if file.frontMatter?.sidebar_badge}
@@ -172,7 +173,7 @@
 										class="group inline-block py-1 capitalize transition-colors duration-100 {active
 											? 'text-primary'
 											: 'text-base-content-muted hover:text-base-content'}"
-										href={file.href}
+										href={addBasePath(file.href)}
 									>
 										{file.frontMatter?.title ?? file.label}
 										{#if file.frontMatter?.sidebar_badge}
@@ -201,7 +202,7 @@
 			<div class="flex flex-col pb-6">
 				<a
 					class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group inline-block capitalize hover:underline"
-					href="/"
+					href={addBasePath('/')}
 				>
 					{homePageName}
 				</a>
@@ -212,7 +213,7 @@
 							class="group inline-block py-1 capitalize transition-all duration-100 {active
 								? 'text-primary'
 								: 'text-base-content-muted hover:text-base-content'}"
-							href={file.href}
+							href={addBasePath(file.href)}
 						>
 							{file.frontMatter?.title ?? file.label}
 							{#if file.frontMatter?.sidebar_badge}
@@ -230,7 +231,7 @@
 						{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 							<a
 								class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group block capitalize hover:underline"
-								href={file.href}
+								href={addBasePath(file.href)}
 							>
 								{file.frontMatter?.title ?? file.label}
 								{#if file.frontMatter?.sidebar_badge}
@@ -242,7 +243,7 @@
 						{:else}
 							<span
 								class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group inline-block capitalize"
-								href={file.href}
+								href={addBasePath(file.href)}
 							>
 								{file.frontMatter?.title ?? file.label}
 								{#if file.frontMatter?.sidebar_badge}
@@ -256,7 +257,7 @@
 							{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 								{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 								<a
-									href={file.href}
+									href={addBasePath(file.href)}
 									class="group inline-block py-1 capitalize transition-all duration-100 {active
 										? 'text-primary'
 										: 'text-base-content-muted hover:text-base-content'}"

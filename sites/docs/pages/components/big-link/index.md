@@ -3,14 +3,17 @@ title: Big Link
 sidebar_position: 1
 ---
 
-<BigLink href='/components/big-link/'>My Big Link</BigLink>
-
+<DocTab>
+    <div slot='preview'>
+      <BigLink href='/components/big-link/'>My Big Link</BigLink> 
+    </div>
 
 ```markdown
 <BigLink href='/components/big-link/'>
   My Big Link
 </BigLink>
 ```
+</DocTab>
 
 ## Options
 

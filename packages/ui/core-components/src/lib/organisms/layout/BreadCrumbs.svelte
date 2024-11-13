@@ -1,7 +1,9 @@
 <script context="module">
+	import { config } from '$evidence/config';
+
 	export function searchFileTree(href, fileTree) {
 		if (href === '/') return fileTree;
-		const pathArray = href.split('/').slice(1);
+		const pathArray = href.replace(config.deployment.basePath, '').split('/').slice(1);
 		let node = fileTree;
 		for (let path of pathArray) {
 			if (!node.children[path]) {
@@ -17,7 +19,7 @@
 	export function buildCrumbs(pathArray, fileTree) {
 		const crumbs = [{ href: '/', title: 'Home' }];
 		pathArray.forEach((path, i) => {
-			if (path != '') {
+			if (path != '' && `/${path}` !== config.deployment.basePath) {
 				crumbs.push({
 					href: '/' + pathArray.slice(0, i + 1).join('/'),
 					title: decodeURIComponent(path.replace(/_/g, ' ').replace(/-/g, ' '))
@@ -32,7 +34,7 @@
 		for (const path of crumbs) {
 			if (path.href === '/') {
 				// Special case for Home page
-				path.href = '/';
+				path.href = addBasePath('/');
 				path.title = 'Home';
 			} else {
 				const node = searchFileTree(path.href, fileTree);
@@ -52,6 +54,7 @@
 	import { page } from '$app/stores';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ChevronRight } from '@steeze-ui/tabler-icons';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let fileTree;
 
 	$: crumbs = buildCrumbs($page.url.pathname.split('/').slice(1), fileTree);
@@ -65,12 +68,12 @@
 			{#if i > 0}
 				<Icon src={ChevronRight} size="12px" theme="solid" />
 				{#if crumb.href}
-					<a href={crumb.href} class="hover:underline">{crumb.title}</a>
+					<a href={addBasePath(crumb.href)} class="hover:underline">{crumb.title}</a>
 				{:else}
 					<span class=" cursor-default">{crumb.title}</span>
 				{/if}
 			{:else}
-				<a href={crumb.href} class="hover:underline">
+				<a href={addBasePath(crumb.href)} class="hover:underline">
 					{crumb.title}
 				</a>
 			{/if}

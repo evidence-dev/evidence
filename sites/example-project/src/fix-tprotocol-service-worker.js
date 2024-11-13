@@ -7,7 +7,8 @@
 
 const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (self));
 
-const disabled = import.meta.env.VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER === 'true';
+// The following line is replaced when disabling the service worker using VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+const disabled = false;
 
 sw.addEventListener('activate', () => {
 	if (disabled) {

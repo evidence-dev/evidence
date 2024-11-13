@@ -11,7 +11,7 @@ select
     item,
     sum(sales) as sales,
 from needful_things.orders
-where category = '${inputs.category}'
+where category = '${inputs.category.value}'
 group by item
 order by sales desc
 ```
@@ -38,6 +38,19 @@ order by sales desc
     y=sales
     yFmt=usd0k
 />
+
+<Accordion>
+ 
+<AccordionItem title='Current vs Prev Week DAU'>
+<BarChart
+    data={noninterpolated_items}
+    x=item
+    y=sales
+    yFmt=usd0k
+/>
+</AccordionItem>
+
+</Accordion>
 
 <Dropdown 
     data={categories}

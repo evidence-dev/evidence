@@ -1,10 +1,10 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { switchAppearance, waitForDevModeToLoad } from '../../test-utils';
+import { switchAppearance, waitForPageToLoad } from '../../test-utils';
 
 test('should change colors based on theme', async ({ page }) => {
 	await page.goto('/');
-	await waitForDevModeToLoad(page);
+	await waitForPageToLoad(page);
 
 	const divPrimaryClass = await page.getByTestId('div-primary-class');
 	const divPrimaryVar = await page.getByTestId('div-primary-var');

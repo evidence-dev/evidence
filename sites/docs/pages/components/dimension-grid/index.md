@@ -21,15 +21,19 @@ where ${inputs.selected_dimensions}
 group by all 
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions /> 
+
+        <LineChart data={monthly_sales} handleMissing=zero/> 
+    </div>
+
+````markdown
 <DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions /> 
 
-<LineChart data={monthly_sales} handleMissing=zero/> 
-
-
-
-
-
-
+<LineChart data={monthly_sales} handleMissing=zero/>
+````
+</DocTab>
 
 ## Examples
 
@@ -70,9 +74,13 @@ from needful_things.orders
 where ${inputs.multi_dimensions}
 group by all 
 ```
-<DimensionGrid data={orders} metric='sum(sales)' name=multi_dimensions multiple/>
 
-<LineChart data={monthly_sales_multi} y=sales_usd0/> 
+<DocTab>
+    <div slot='preview'>
+    <DimensionGrid data={orders} metric='sum(sales)' name=multi_dimensions multiple/>
+
+    <LineChart data={monthly_sales_multi} y=sales_usd0/> 
+    </div>
 
 ````html
 <DimensionGrid 
@@ -81,6 +89,8 @@ group by all
     name=multi_dimensions 
     multiple
 />
+
+<LineChart data={monthly_sales_multi} y=sales_usd0/> 
 
 
 ```monthly_sales_multi
@@ -92,6 +102,10 @@ where ${inputs.multi_dimensions}
 group by all 
 ```
 ````
+</DocTab>
+
+
+
 
 ## Options
 
