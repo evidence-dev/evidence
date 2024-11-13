@@ -1,7 +1,7 @@
 // @ts-check
 
 import { getContext, setContext } from 'svelte';
-import { derived, readable, readonly } from 'svelte/store';
+import { derived, get, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
 import { isBuiltinColor, isBuiltinColorPalette } from '@evidence-dev/tailwind';
@@ -121,6 +121,39 @@ export class ThemeStores {
 			}
 		});
 	};
+
+	/**
+	 * @param {string} color
+	 * @returns {string | undefined}
+	 */
+	resolveColor = (color) => {
+		if (isBuiltinColor(color)) {
+			return get(this.#theme).colors[color];
+		}
+		return color;
+	};
+
+	/**
+	 * @param {string} color
+	 * @returns {string[] | undefined}
+	 */
+	resolveColorPalette = (color) => {
+		if (isBuiltinColorPalette(color)) {
+			return get(this.#theme).colorPalettes[color];
+		}
+		return undefined;
+	};
+
+	/**
+	 * @param {string} color
+	 * @returns {string[] | undefined}
+	 */
+	resolveColorScale = (color) => {
+		if (isBuiltinColorPalette(color)) {
+			return get(this.#theme).colorScales[color];
+		}
+		return undefined;
+	};
 }
 
 const THEME_STORES_CONTEXT_KEY = Symbol('__EvidenceThemeStores__');
@@ -133,40 +166,4 @@ export const getThemeStores = () => {
 		setContext(THEME_STORES_CONTEXT_KEY, stores);
 	}
 	return stores;
-};
-
-/**
- * @param {string} color
- * @param {Theme} theme
- * @returns {string | undefined}
- */
-export const resolveColor = (color, theme) => {
-	if (isBuiltinColor(color)) {
-		return theme.colors[color];
-	}
-	return color;
-};
-
-/**
- * @param {string} color
- * @param {Theme} theme
- * @returns {string[] | undefined}
- */
-export const resolveColorPalette = (color, theme) => {
-	if (isBuiltinColorPalette(color)) {
-		return theme.colorPalettes[color];
-	}
-	return undefined;
-};
-
-/**
- * @param {string} color
- * @param {Theme} theme
- * @returns {string[] | undefined}
- */
-export const resolveColorScale = (color, theme) => {
-	if (isBuiltinColorPalette(color)) {
-		return theme.colorScales[color];
-	}
-	return undefined;
 };
