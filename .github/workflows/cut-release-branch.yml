@@ -1,4 +1,4 @@
-name: "Cut Release Branch"
+name: 'Cut Release Branch'
 permissions:
   contents: write
   pull-requests: write
@@ -6,7 +6,7 @@ permissions:
 on:
   workflow_dispatch: # allow manual triggering
   schedule:
-    - cron: "55 14 * * 4" # trigger every Thursday at 14:55 UTC (9:55 EST)
+    - cron: '55 14 * * 4' # trigger every Thursday at 14:55 UTC (9:55 EST)
 
 jobs:
   cut-release-branch:
@@ -22,4 +22,4 @@ jobs:
         with:
           branch: ${{ steps.branch_name.outputs.branch_name }}
           base: main
-          title: "Release ${{ steps.branch_name.outputs.branch_name }}"
+          title: 'Release ${{ steps.branch_name.outputs.branch_name }}'
