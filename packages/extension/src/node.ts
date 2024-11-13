@@ -35,7 +35,7 @@ export function isSupportedNodeVersion(nodeVersion: string): boolean {
 	const minMajorVersion = 18;
 
 	// Maximum version of NodeJS required for Evidence:
-	const maxMajorVersion = 20;
+	const maxMajorVersion = 22;
 
 	// check node version
 	if (nodeVersion && nodeVersion.startsWith('v')) {
@@ -101,8 +101,8 @@ export async function promptToInstallNodeJsAndRestart(currentVersion: string | u
 
 	const downloadNodeNotification = await window.showErrorMessage(
 		currentVersion
-			? `Evidence requires NodeJS v18 or v20 - your NodeJS version is ${currentVersion}`
-			: `Evidence requires NodeJS v18 or v20`,
+			? `Evidence requires NodeJS v18, v20, or v22 - your NodeJS version is ${currentVersion}`
+			: `Evidence requires NodeJS v18, v20, or v22`,
 		{ title: downloadNodeJs }
 	);
 
