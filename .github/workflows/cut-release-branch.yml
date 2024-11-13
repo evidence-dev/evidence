@@ -1,4 +1,7 @@
 name: "Cut Release Branch"
+permissions:
+  contents: write
+  pull-requests: write
 
 on:
   workflow_dispatch: # allow manual triggering
@@ -9,11 +12,14 @@ jobs:
   cut-release-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Compute branch name
         id: branch_name
         run: echo "branch_name=release-$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
-      - run: |
+      - name: Create release branch
+        run: |
           git checkout -b ${{ steps.branch_name.outputs.branch_name }}
           git push -u origin ${{ steps.branch_name.outputs.branch_name }}
-      - run: gh pr --base main --head ${{ steps.branch_name.outputs.branch_name }}}} --title "Release ${{ steps.branch_name.outputs.branch_name }}"
+      - name: Create pull request
+        run: gh pr --base main --head ${{ steps.branch_name.outputs.branch_name }}}} --title "Release ${{ steps.branch_name.outputs.branch_name }}"
