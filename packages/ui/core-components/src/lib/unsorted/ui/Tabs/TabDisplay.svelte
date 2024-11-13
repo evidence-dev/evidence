@@ -1,15 +1,20 @@
 <script>
 	import chroma from 'chroma-js';
 	import { getThemeStores } from '../../../themes.js';
-	const { theme } = getThemeStores();
+
+	const { theme, resolveColor } = getThemeStores();
 
 	export let color = $theme.colors.primary;
+	$: colorStore = resolveColor(color);
+
 	export let id;
+
 	export let label;
+
 	export let activeId;
 
-	const bgColor = chroma(color).alpha(0.05).css();
-	const borderColor = chroma(color).alpha(0.5).css();
+	$: bgColor = chroma($colorStore).alpha(0.05).css();
+	$: borderColor = chroma($colorStore).alpha(0.5).css();
 
 	const classes = {
 		notActive: 'border-base-300 border-b-2 bg-base-200/25 border-b hover:bg-base-200',
