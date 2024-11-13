@@ -56,9 +56,9 @@ fsExtra.outputFileSync(
 
 	const logger = createLogger();
 	logger.error = (msg) => log.error(msg);
-	logger.warn = (msg) => {};
-	logger.info = (msg) => {};
-	logger.warnOnce = (msg) => {};
+	logger.warn = (msg) => log.debug(msg);
+	logger.info = (msg) => log.debug(msg);
+	logger.warnOnce = (msg) => log.debug(msg);
 
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
