@@ -5,7 +5,7 @@
 <script>
 	import { getContext, onDestroy } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
-	import { ensureThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes.js';
 
 	let props = getContext(propKey);
 
@@ -75,7 +75,7 @@
 	export let scaleColor = 'green'; // name of predefined color palette, custom color, array of custom colors
 	export let scaleColumn = undefined;
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 
 	const scaleColorMap = {
 		green: 'hsla(129, 33%, 57%,1)',

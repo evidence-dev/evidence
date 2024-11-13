@@ -15,7 +15,7 @@
 	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { ensureThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes.js';
 	import { nanoid } from 'nanoid';
 
 	const inputs = getInputContext();
@@ -133,7 +133,7 @@
 		selectedBorderWidth = 0.75;
 	}
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 
 	/** @type {string} */
 	export let selectedColor = $theme.colors['accent'];

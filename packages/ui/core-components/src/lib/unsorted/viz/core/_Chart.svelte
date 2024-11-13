@@ -26,9 +26,9 @@
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
-	import { ensureThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes.js';
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props

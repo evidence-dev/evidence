@@ -14,7 +14,7 @@
 		Moon
 	} from '@steeze-ui/tabler-icons';
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
-	import { ensureThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes.js';
 	import { dev } from '$app/environment';
 
 	const beforeprint = new Event('export-beforeprint');
@@ -25,10 +25,14 @@
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
 
-	const { selectedMode, activeMode, cycleMode, themesConfig } = ensureThemeStores();
+	const { selectedAppearance, activeAppearance, cycleAppearance, themesConfig } = getThemeStores();
 	$: themeLabel =
-		$selectedMode === 'system' ? 'System' : $selectedMode === 'light' ? 'Light' : 'Dark';
-	$: themeIcon = $activeMode === 'light' ? Sun : Moon;
+		$selectedAppearance === 'system'
+			? 'System'
+			: $selectedAppearance === 'light'
+				? 'Light'
+				: 'Dark';
+	$: themeIcon = $activeAppearance === 'light' ? Sun : Moon;
 </script>
 
 <DropdownMenu.Root>
@@ -55,7 +59,7 @@
 				<DropdownMenu.Item
 					on:click={(e) => {
 						e.preventDefault();
-						cycleMode();
+						cycleAppearance();
 					}}
 				>
 					Appearance

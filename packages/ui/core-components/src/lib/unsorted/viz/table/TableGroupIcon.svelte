@@ -1,11 +1,11 @@
 <script>
-	import { ensureThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes.js';
 
 	export let toggled = false;
 	export let color = undefined;
 	export let size = 10;
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 </script>
 
 <span aria-expanded={toggled} class="inline-flex">

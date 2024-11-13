@@ -1,7 +1,7 @@
 <script>
 	import chroma from 'chroma-js';
-	import { ensureThemeStores } from '../../../themes.js';
-	const { theme } = ensureThemeStores();
+	import { getThemeStores } from '../../../themes.js';
+	const { theme } = getThemeStores();
 
 	export let color = $theme.colors.primary;
 	export let id;

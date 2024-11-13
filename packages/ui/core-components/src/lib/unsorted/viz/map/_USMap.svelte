@@ -14,10 +14,10 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
-	import { ensureThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes.js';
 	import chroma from 'chroma-js';
 
-	const { activeMode, theme } = ensureThemeStores();
+	const { activeMode, theme } = getThemeStores();
 
 	export let data = undefined;
 	export let queryID = undefined;

@@ -13,7 +13,7 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { ReferencePointStore } from './reference-point.store.js';
 	import { toNumber } from '../../../../utils.js';
-	import { ensureThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes.js';
 	import chroma from 'chroma-js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
@@ -140,7 +140,7 @@
 	const config = getConfigContext();
 	const store = new ReferencePointStore(props, config);
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,

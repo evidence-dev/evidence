@@ -12,7 +12,7 @@
 	import { ChevronRight } from '@steeze-ui/tabler-icons';
 	import Sparkline from '../core/_Sparkline.svelte';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
-	import { ensureThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes.js';
 
 	export let displayedData = undefined;
 	export let rowShading = undefined;
@@ -53,7 +53,7 @@
 		await goto(addBasePath(row[link]));
 	};
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 </script>
 
 {#each displayedData as row, i}

@@ -12,7 +12,7 @@
 	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte';
-	import { ensureThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes.js';
 
 	export let config = undefined;
 
@@ -41,7 +41,7 @@
 	let printing = false;
 	let hovering = false;
 
-	const { activeMode } = ensureThemeStores();
+	const { activeMode } = getThemeStores();
 </script>
 
 <svelte:window

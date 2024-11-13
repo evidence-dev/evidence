@@ -44,37 +44,72 @@ const createSystemThemeStore = () => {
 	return store;
 };
 
-/**
- * @typedef ThemeStores
- * @prop {Readable<'light' | 'dark'>} systemMode
- * @prop {Readable<'system' | 'light' | 'dark'>} selectedMode
- * @prop {Readable<'light' | 'dark'>} activeMode
- * @prop {Readable<Theme>} theme
- * @prop {ThemesConfig} themesConfig
- * @prop {() => void} cycleMode
- */
+export class ThemeStores {
+	/** @type {Readable<'light' | 'dark'>} */
+	#systemTheme;
 
-/** @returns {ThemeStores} */
-const createThemeStores = () => {
-	const systemMode = createSystemThemeStore();
+	get systemTheme() {
+		return this.#systemTheme;
+	}
 
-	/** @type {Writable<'system' | 'light' | 'dark'>} */
-	const selectedMode = localStorageStore('evidence-theme', themesConfig.themes.defaultAppearance, {
-		serialize: (value) => value,
-		deserialize: (raw) =>
-			['system', 'light', 'dark'].includes(raw)
-				? /** @type {'light' | 'dark' | 'system'} */ (raw)
-				: themesConfig.themes.defaultAppearance
-	});
+	/** @type {Writable<'light' | 'dark' | 'system'>} */
+	#selectedAppearance;
 
-	const activeMode = derived([systemMode, selectedMode], ([$systemTheme, $selectedTheme]) => {
-		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
-	});
+	get selectedAppearance() {
+		return readonly(this.#selectedAppearance);
+	}
 
-	const theme = derived(activeMode, ($activeTheme) => themes[$activeTheme]);
+	/** @type {Readable<'light' | 'dark'>} */
+	#activeAppearance;
 
-	const cycleMode = () => {
-		selectedMode.update((current) => {
+	get activeAppearance() {
+		return this.#activeAppearance;
+	}
+
+	/** @type {Readable<Theme>} */
+	#theme;
+
+	get theme() {
+		return this.#theme;
+	}
+
+	get themesConfig() {
+		return themesConfig;
+	}
+
+	constructor() {
+		this.#systemTheme = createSystemThemeStore();
+
+		this.#selectedAppearance = localStorageStore(
+			'evidence-theme',
+			themesConfig.themes.defaultAppearance,
+			{
+				serialize: (value) => value,
+				deserialize: (raw) =>
+					['system', 'light', 'dark'].includes(raw)
+						? /** @type {'light' | 'dark' | 'system'} */ (raw)
+						: themesConfig.themes.defaultAppearance
+			}
+		);
+
+		this.#activeAppearance = derived(
+			[this.#systemTheme, this.#selectedAppearance],
+			([$systemTheme, $selectedAppearance]) => {
+				return $selectedAppearance === 'system' ? $systemTheme : $selectedAppearance;
+			}
+		);
+
+		this.#theme = derived(this.#activeAppearance, ($activeAppearance) => themes[$activeAppearance]);
+
+		this.#activeAppearance.subscribe((theme) => {
+			if (typeof document !== 'undefined') {
+				document.documentElement.setAttribute('data-theme', theme);
+			}
+		});
+	}
+
+	cycleAppearance = () => {
+		this.#selectedAppearance.update((current) => {
 			switch (current) {
 				case 'system':
 					return 'light';
@@ -86,30 +121,15 @@ const createThemeStores = () => {
 			}
 		});
 	};
-
-	activeMode.subscribe((theme) => {
-		if (typeof document !== 'undefined') {
-			document.documentElement.setAttribute('data-theme', theme);
-		}
-	});
-
-	return {
-		systemMode,
-		selectedMode: readonly(selectedMode),
-		activeMode,
-		theme,
-		themesConfig,
-		cycleMode
-	};
-};
+}
 
 const THEME_STORES_CONTEXT_KEY = Symbol('__EvidenceThemeStores__');
 
 /** @returns {ThemeStores} */
-export const ensureThemeStores = () => {
+export const getThemeStores = () => {
 	let stores = getContext(THEME_STORES_CONTEXT_KEY);
 	if (!stores) {
-		stores = createThemeStores();
+		stores = new ThemeStores();
 		setContext(THEME_STORES_CONTEXT_KEY, stores);
 	}
 	return stores;

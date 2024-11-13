@@ -10,7 +10,7 @@
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { nanoid } from 'nanoid';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { ensureThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes.js';
 	const inputs = getInputContext();
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
@@ -110,7 +110,7 @@
 		selectedBorderWidth = 0.75;
 	}
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 
 	/** @type {string} */
 	export let selectedColor = $theme.colors['accent'];

@@ -11,7 +11,7 @@
 	import { browser } from '$app/environment';
 	import DevTools from '../../devtools/DevTools.svelte';
 	import { onMount } from 'svelte';
-	import { ensureThemeStores } from '../../themes.js';
+	import { getThemeStores } from '../../themes.js';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 	// Remove splash screen from app.html
@@ -111,7 +111,7 @@
 	});
 
 	// TODO where should this go? How do we get project splash to be rendered with the proper theme?
-	ensureThemeStores();
+	getThemeStores();
 </script>
 
 <slot />
