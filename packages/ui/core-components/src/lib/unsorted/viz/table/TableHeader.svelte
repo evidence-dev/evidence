@@ -16,8 +16,6 @@
 
 	/** @type {string | undefined} */
 	export let link = undefined;
-
-	$: console.log(orderedColumns);
 </script>
 
 <thead>
@@ -38,7 +36,7 @@
 			<tr class="border-0" style:background-color={headerColor}>
 				{#if rowNumbers}
 					<th
-						class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+						class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px]'}"
 						style:background-color={headerColor}
 					/>
 				{/if}
@@ -78,7 +76,7 @@
 				role="columnheader"
 				class="{safeExtractColumn(column, columnSummary).type} {compact
 					? 'text-xs py-[1px] px-[4px]'
-					: 'py-[2px] px-[8px]'}"
+					: 'py-[2px]'}"
 				style:text-align={column.align ??
 					(['sparkline', 'sparkbar', 'sparkarea', 'bar'].includes(column.contentType)
 						? 'center'
@@ -90,22 +88,22 @@
 				style:vertical-align="bottom"
 				style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
 			>
-				<span class="flex items-end">
-					<div>
+				<div class={column.wrapTitle || wrapTitles ? 'flex items-end justify-between' : ''}>
+					<span class="inline-block">
 						{column.title
 							? column.title
 							: formatColumnTitles
 								? safeExtractColumn(column, columnSummary).title
 								: safeExtractColumn(column, columnSummary).id}
-					</div>
-					<div class="ml-[3px]">
+					</span>
+					<span class="inline-block mr-[4px] {column.wrapTitle || wrapTitles ? 'ml-[4px]' : ''}">
 						{#if sortObj.col === column.id}
 							<SortIcon ascending={sortObj.ascending} />
 						{:else}
-							<span class="pr-[12px] invisible"></span>
+							<span class="invisible"><SortIcon /></span>
 						{/if}
-					</div>
-				</span>
+					</span>
+				</div>
 			</th>
 		{/each}
 
