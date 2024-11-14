@@ -1,5 +1,13 @@
 # @evidence-dev/sdk
 
+## 1.4.7
+
+### Patch Changes
+
+- 00516897e: fix plugin resolution when hoisted by package managers
+- 1de1eca52: Add deployment.basePath config option
+  - @evidence-dev/universal-sql@2.1.8
+
 ## 1.4.6
 
 ### Patch Changes
