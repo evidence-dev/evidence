@@ -85,16 +85,15 @@
 						? 'center'
 						: undefined)}
 				style:color={headerFontColor}
-				style:background-color={headerColor}
-				style:cursor={sortable ? 'pointer' : 'auto'}
-				on:click={sortable ? sortClick(column.id) : ''}
-				style:vertical-align="bottom"
-				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 				style:background={sortObj.col === column.id
 					? sortObj.ascending
 						? gradientAsc
 						: gradientDesc
-					: ''}
+					: { headerColor }}
+				style:cursor={sortable ? 'pointer' : 'auto'}
+				on:click={sortable ? sortClick(column.id) : ''}
+				style:vertical-align="bottom"
+				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 			>
 				<div class="flex items-end justify-between">
 					<span class={wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}>
