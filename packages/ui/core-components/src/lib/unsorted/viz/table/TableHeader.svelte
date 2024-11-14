@@ -16,6 +16,9 @@
 
 	/** @type {string | undefined} */
 	export let link = undefined;
+
+	let gradientAsc = 'linear-gradient(to top, rgba(229, 231, 235, 1), rgba(229, 231, 235, 0))';
+	let gradientDesc = 'linear-gradient(to bottom, rgba(229, 231, 235, 1), rgba(229, 231, 235, 0))';
 </script>
 
 <thead>
@@ -76,7 +79,7 @@
 				role="columnheader"
 				class="{safeExtractColumn(column, columnSummary).type} {compact
 					? 'text-xs py-[1px] px-[4px]'
-					: 'py-[2px]'}"
+					: 'py-[2px] pl-[6px]'}"
 				style:text-align={column.align ??
 					(['sparkline', 'sparkbar', 'sparkarea', 'bar'].includes(column.contentType)
 						? 'center'
@@ -86,17 +89,19 @@
 				style:cursor={sortable ? 'pointer' : 'auto'}
 				on:click={sortable ? sortClick(column.id) : ''}
 				style:vertical-align="bottom"
-				style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
+				style:border-radius={sortObj.col === column.id ? '2px' : ''}
+				style:background={sortObj.col === column.id ? (sortObj.ascending ? gradientAsc : gradientDesc) : ''}
 			>
-				<div class={column.wrapTitle || wrapTitles ? 'flex items-end justify-between' : ''}>
-					<span class="inline-block">
+				<div
+					class="flex items-end justify-between">
+					<span class={wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}>
 						{column.title
 							? column.title
 							: formatColumnTitles
 								? safeExtractColumn(column, columnSummary).title
 								: safeExtractColumn(column, columnSummary).id}
 					</span>
-					<span class="inline-block mr-[4px] {column.wrapTitle || wrapTitles ? 'ml-[4px]' : ''}">
+					<span class="ml-[4px] {column.wrapTitle || wrapTitles ? 'ml-[2px]' : ''}">
 						{#if sortObj.col === column.id}
 							<SortIcon ascending={sortObj.ascending} />
 						{:else}
