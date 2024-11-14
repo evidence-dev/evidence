@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:*",
-		"duckdb-async": "1.0.0"
+		"duckdb-async": "1.1.3"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"
