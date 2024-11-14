@@ -90,10 +90,13 @@
 				on:click={sortable ? sortClick(column.id) : ''}
 				style:vertical-align="bottom"
 				style:border-radius={sortObj.col === column.id ? '2px' : ''}
-				style:background={sortObj.col === column.id ? (sortObj.ascending ? gradientAsc : gradientDesc) : ''}
+				style:background={sortObj.col === column.id
+					? sortObj.ascending
+						? gradientAsc
+						: gradientDesc
+					: ''}
 			>
-				<div
-					class="flex items-end justify-between">
+				<div class="flex items-end justify-between">
 					<span class={wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}>
 						{column.title
 							? column.title
