@@ -1,0 +1,25 @@
+name: 'Cut Release Branch'
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch: # allow manual triggering
+  schedule:
+    - cron: '55 14 * * 4' # trigger every Thursday at 14:55 UTC (9:55 EST)
+
+jobs:
+  cut-release-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compute branch name
+        id: branch_name
+        run: echo "branch_name=release-$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: ${{ steps.branch_name.outputs.branch_name }}
+          base: main
+          title: 'Release ${{ steps.branch_name.outputs.branch_name }}'
