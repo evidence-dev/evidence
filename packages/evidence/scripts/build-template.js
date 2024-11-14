@@ -128,6 +128,7 @@ fsExtra.outputFileSync(
 	} else {
 		config.logLevel = 'silent';
 		logger.error = (msg) => log.error(msg);
+		logger.info = logger.warn = logger.warnOnce = () => {};
 	}
 
     export default config`
