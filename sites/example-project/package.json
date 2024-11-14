@@ -38,7 +38,7 @@
 		"cross-env": "^7.0.3",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
-		"echarts": "5.4.3",
+		"echarts": "5.5.1",
 		"echarts-stat": "1.2.0",
 		"esm": "^3.2.25",
 		"export-to-csv": "0.2.1",
