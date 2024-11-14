@@ -1,5 +1,26 @@
 # e2e-themes
 
+## 0.0.15
+
+### Patch Changes
+
+- Updated dependencies [08923de11]
+- Updated dependencies [43502807b]
+- Updated dependencies [62afe741b]
+- Updated dependencies [670df3dee]
+  - @evidence-dev/evidence@39.1.17
+  - @evidence-dev/duckdb@1.0.12
+  - @evidence-dev/core-components@4.8.13
+  - @evidence-dev/csv@1.0.13
+  - @evidence-dev/motherduck@1.0.3
+
+## 0.0.14
+
+### Patch Changes
+
+- Updated dependencies [2c5fda586]
+  - @evidence-dev/evidence@39.1.16
+
 ## 0.0.13
 
 ### Patch Changes

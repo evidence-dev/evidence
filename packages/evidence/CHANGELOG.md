@@ -1,5 +1,22 @@
 # @evidence-dev/evidence
 
+## 39.1.17
+
+### Patch Changes
+
+- 08923de11: Support Node 22: bump echarts and vite
+- 670df3dee: Dont import injectedEvidenceImports in template vite config. Instead, just put the packages in as strings when building the template.
+- Updated dependencies [08923de11]
+  - @evidence-dev/plugin-connector@2.1.15
+  - @evidence-dev/sdk@1.4.8
+  - @evidence-dev/universal-sql@2.1.9
+
+## 39.1.16
+
+### Patch Changes
+
+- 2c5fda586: Export injectedEvidenceImports from preprocess
+
 ## 39.1.15
 
 ### Patch Changes

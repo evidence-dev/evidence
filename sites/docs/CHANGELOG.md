@@ -1,5 +1,28 @@
 # evidence-docs
 
+## 0.0.43
+
+### Patch Changes
+
+- Updated dependencies [08923de11]
+- Updated dependencies [43502807b]
+- Updated dependencies [62afe741b]
+- Updated dependencies [670df3dee]
+  - @evidence-dev/evidence@39.1.17
+  - @evidence-dev/sdk@1.4.8
+  - @evidence-dev/duckdb@1.0.12
+  - @evidence-dev/component-utilities@3.2.20
+  - @evidence-dev/core-components@4.8.13
+  - @evidence-dev/tailwind@2.1.9
+  - @evidence-dev/csv@1.0.13
+
+## 0.0.42
+
+### Patch Changes
+
+- Updated dependencies [2c5fda586]
+  - @evidence-dev/evidence@39.1.16
+
 ## 0.0.41
 
 ### Patch Changes

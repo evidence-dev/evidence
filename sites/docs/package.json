@@ -1,7 +1,7 @@
 {
 	"name": "my-evidence-project",
 	"private": true,
-	"version": "0.0.41",
+	"version": "0.0.43",
 	"scripts": {
 		"build": "evidence build",
 		"build:strict": "evidence build:strict",

@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 4.8.13
+
+### Patch Changes
+
+- 62afe741b: Node 22 support
+- Updated dependencies [62afe741b]
+  - @evidence-dev/component-utilities@3.2.20
+  - @evidence-dev/tailwind@2.1.9
+
 ## 4.8.12
 
 ### Patch Changes

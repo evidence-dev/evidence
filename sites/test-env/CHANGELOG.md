@@ -1,5 +1,29 @@
 # evidence-test-environment
 
+## 3.0.71
+
+### Patch Changes
+
+- Updated dependencies [08923de11]
+- Updated dependencies [43502807b]
+- Updated dependencies [62afe741b]
+- Updated dependencies [670df3dee]
+  - @evidence-dev/evidence@39.1.17
+  - @evidence-dev/sdk@1.4.8
+  - @evidence-dev/duckdb@1.0.12
+  - @evidence-dev/component-utilities@3.2.20
+  - @evidence-dev/core-components@4.8.13
+  - @evidence-dev/tailwind@2.1.9
+  - @evidence-dev/csv@1.0.13
+  - @evidence-dev/motherduck@1.0.3
+
+## 3.0.70
+
+### Patch Changes
+
+- Updated dependencies [2c5fda586]
+  - @evidence-dev/evidence@39.1.16
+
 ## 3.0.69
 
 ### Patch Changes
