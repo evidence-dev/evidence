@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "4.8.11",
+	"version": "4.8.12",
 	"evidence": {
 		"components": true
 	},
@@ -55,7 +55,7 @@
 		"cmdk-sv": "^0.0.12",
 		"codemirror": "^6.0.1",
 		"date-fns": "^3.6.0",
-		"echarts": "5.4.3",
+		"echarts": "5.5.1",
 		"echarts-stat": "1.2.0",
 		"export-to-csv": "0.2.1",
 		"leaflet": "^1.9.4",
@@ -117,7 +117,7 @@
 		"tailwindcss": "^3.4.3",
 		"tslib": "^2.6.2",
 		"typescript": "5.4.2",
-		"vite": "5.4.6",
+		"vite": "5.4.11",
 		"vitest": "^2.0.5"
 	},
 	"overrides": {

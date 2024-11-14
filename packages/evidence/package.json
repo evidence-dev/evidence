@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "39.1.14",
+	"version": "39.1.15",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -35,7 +35,7 @@
 		"@evidence-dev/tailwind": "workspace:*",
 		"@sveltejs/kit": "2.5.4",
 		"svelte": "4.2.19",
-		"vite": "5.4.6"
+		"vite": "5.4.11"
 	},
 	"dependencies": {
 		"@evidence-dev/plugin-connector": "workspace:*",
@@ -62,7 +62,7 @@
 		"tailwindcss": "^3.3.1",
 		"typescript": "5.4.2",
 		"unist-util-visit": "4.1.2",
-		"vite": "5.4.6"
+		"vite": "5.4.11"
 	},
 	"engines": {
 		"node": ">=18"

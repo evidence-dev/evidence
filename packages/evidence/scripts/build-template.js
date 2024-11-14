@@ -2,6 +2,8 @@
 import path from 'path';
 import fsExtra from 'fs-extra';
 import fs from 'fs';
+import preprocess from '@evidence-dev/preprocess';
+
 const templatePaths = [
 	'static/',
 	'sources/',
@@ -51,7 +53,6 @@ fsExtra.outputFileSync(
 	import { createLogger } from 'vite';
 	import { sourceQueryHmr, configVirtual } from '@evidence-dev/sdk/build/vite';
 	import { isDebug } from '@evidence-dev/sdk/utils';
-	import preprocess from '@evidence-dev/preprocess';
 	import { log } from "@evidence-dev/sdk/logger";
 
 	const logger = createLogger();
@@ -70,7 +71,8 @@ fsExtra.outputFileSync(
 				// We need these to prevent HMR from doing a full page reload
 				...(process.env.EVIDENCE_DISABLE_INCLUDE ? [] : [
 					'@evidence-dev/core-components',
-					...preprocess.injectedEvidenceImports.map(i => i.from),
+					// Evidence packages injected into process-queries
+					${preprocess.injectedEvidenceImports.map((i) => `'${i.from}'`).join(',')},
 					'debounce', 
 					'@duckdb/duckdb-wasm',
 					'apache-arrow'
