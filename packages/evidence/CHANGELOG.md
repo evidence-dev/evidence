@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 39.1.16
+
+### Patch Changes
+
+- 2c5fda586: Export injectedEvidenceImports from preprocess
+
 ## 39.1.15
 
 ### Patch Changes
