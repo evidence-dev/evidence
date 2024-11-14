@@ -56,10 +56,6 @@ fsExtra.outputFileSync(
 	import { log } from "@evidence-dev/sdk/logger";
 
 	const logger = createLogger();
-	logger.error = (msg) => log.error(msg);
-	logger.warn = (msg) => log.debug(msg);
-	logger.info = (msg) => log.debug(msg);
-	logger.warnOnce = (msg) => log.debug(msg);
 
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
@@ -104,9 +100,36 @@ fsExtra.outputFileSync(
 				}
 			}
 		},
-		customLogger: logger,
-		logLevel: 'silent'
+		customLogger: logger
     }
+
+	if (isDebug()) {
+		const loggerWarn = logger.warn;
+		const loggerOnce = logger.warnOnce
+
+		/**
+		 * @see https://github.com/evidence-dev/evidence/issues/1876
+		 * Ignore the duckdb-wasm sourcemap warning
+		 */
+		logger.warnOnce = (m, o) => {
+			if (m.match(/Sourcemap for ".+\\/node_modules\\/@duckdb\\/duckdb-wasm\\/dist\\/duckdb-browser-eh\\.worker\\.js" points to missing source files/)) return;
+			loggerOnce(m, o)
+		}
+
+		logger.warn = (msg, options) => {
+			// ignore fs/promises warning, used in +layout.js behind if (!browser) check
+			if (msg.includes('Module "fs/promises" has been externalized for browser compatibility')) return;
+
+			// ignore eval warning, used in duckdb-wasm
+			if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
+
+			loggerWarn(msg, options);
+		};
+	} else {
+		config.logLevel = 'silent';
+		logger.error = (msg) => log.error(msg);
+	}
+
     export default config`
 );
 
