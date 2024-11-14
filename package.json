@@ -67,7 +67,7 @@
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "5.4.6"
+		"vite": "5.4.11"
 	},
 	"scripts": {
 		"release": "run-s package:core-components build:tailwind build:evidence build:plugin-connector && pnpm changeset publish",
