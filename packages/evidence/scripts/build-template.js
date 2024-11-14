@@ -51,7 +51,7 @@ fsExtra.outputFileSync(
 	import { createLogger } from 'vite';
 	import { sourceQueryHmr, configVirtual } from '@evidence-dev/sdk/build/vite';
 	import { isDebug } from '@evidence-dev/sdk/utils';
-	import preprocess from '@evidence-dev/preprocess';
+	import { injectedEvidenceImports } from '@evidence-dev/evidence';
 
 	const logger = createLogger();
 	const loggerWarn = logger.warn;
@@ -84,7 +84,7 @@ fsExtra.outputFileSync(
 				// We need these to prevent HMR from doing a full page reload
 				...(process.env.EVIDENCE_DISABLE_INCLUDE ? [] : [
 					'@evidence-dev/core-components',
-					...preprocess.injectedEvidenceImports.map(i => i.from),
+					...injectedEvidenceImports.map(i => i.from),
 					'debounce', 
 					'@duckdb/duckdb-wasm',
 					'apache-arrow'
