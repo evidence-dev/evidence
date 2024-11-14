@@ -1,5 +1,12 @@
 # evidence-docs
 
+## 0.0.42
+
+### Patch Changes
+
+- Updated dependencies [2c5fda586]
+  - @evidence-dev/evidence@39.1.16
+
 ## 0.0.41
 
 ### Patch Changes
