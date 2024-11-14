@@ -17,6 +17,19 @@
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import Slider from './Slider.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+
+	// const data = Query.create(`SELECT *, MAX(fare) as max_fare from flights limit 10`, query);
+	const data = Query.create(
+		`SELECT
+	  CAST(fare AS INT) AS fare,
+	  CAST((SELECT MAX(fare) FROM flights) AS INT) AS max_fare,
+	  CAST((SELECT MIN(fare) FROM flights) AS INT) AS min_fare
+	FROM flights
+	LIMIT 10`,
+		query
+	);
 </script>
 
 <Template let:args>
@@ -42,18 +55,6 @@
 		step: 12,
 		showMaxMin: true,
 		size: 'medium'
-	}}
-/>
-<Story
-	name="large size"
-	args={{
-		name: 'Months',
-		title: 'Months Large',
-		min: 0,
-		max: 36,
-		step: 12,
-		showMaxMin: true,
-		size: 'large'
 	}}
 />
 
@@ -89,6 +90,7 @@
 		name: 'United State Dollar',
 		title: 'With USD Format',
 		step: 1,
+		max: 10000,
 		showMaxMin: true,
 		fmt: 'usd'
 	}}
@@ -111,6 +113,20 @@
 		step: 1,
 		showMaxMin: true,
 		fmt: '932'
+	}}
+/>
+<Story
+	name="With data"
+	args={{
+		name: 'With data',
+		title: 'With data',
+		step: 10,
+		showMaxMin: true,
+		data: data,
+		defaultValue: 'max_fare',
+		maxColumn: 'max_fare',
+		size: 'large',
+		fmt: 'usd'
 	}}
 />
 <Story
