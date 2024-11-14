@@ -1,5 +1,18 @@
 # @evidence-dev/evidence
 
+## 39.1.15
+
+### Patch Changes
+
+- 4d5e9c71e: Automatically add injected Evidence imports to Vite's `optimizeDeps.include`
+- Updated dependencies [00516897e]
+- Updated dependencies [4d5e9c71e]
+- Updated dependencies [1de1eca52]
+  - @evidence-dev/sdk@1.4.7
+  - @evidence-dev/preprocess@5.2.3
+  - @evidence-dev/universal-sql@2.1.8
+  - @evidence-dev/plugin-connector@2.1.14
+
 ## 39.1.14
 
 ### Patch Changes
