@@ -100,7 +100,7 @@
 						{#if sortObj.col === column.id}
 							<SortIcon ascending={sortObj.ascending} />
 						{:else}
-							<span class="invisible"><SortIcon /></span>
+							<span class="invisible"><SortIcon ascending={sortObj.ascending} /></span>
 						{/if}
 					</span>
 				</div>

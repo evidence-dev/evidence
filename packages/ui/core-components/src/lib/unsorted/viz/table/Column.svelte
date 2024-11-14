@@ -80,7 +80,7 @@
 		blue: ['white', 'hsla(198, 56%, 56%,1)']
 	};
 
-	let colorPalette;
+	export let colorPalette;
 	if (scaleColor instanceof Array) {
 		colorPalette = scaleColor;
 	} else {

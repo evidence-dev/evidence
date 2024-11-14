@@ -291,7 +291,6 @@
 
 	$: sortFunc = (sortObj) => {
 		const column = sortObj.col;
-
 		// Modifier to sorting function for ascending or descending
 		const sortModifier = sortObj.ascending ? 1 : -1;
 
@@ -309,15 +308,14 @@
 		const sortedFilteredData = [...filteredData].sort(comparator);
 
 		filteredData = sortedFilteredData;
+		console.log('sortedFilteredData', sortedFilteredData);
 
 		if (groupBy) {
 			const sortedGroupedData = {};
 			for (const groupName of Object.keys(groupedData)) {
 				sortedGroupedData[groupName] = [...groupedData[groupName]].sort(comparator);
 			}
-
-			groupedData = sortedGroupedData;
-		}
+			groupedData = sortedGroupedData;		}
 	};
 
 	let sortedGroupNames;
@@ -328,6 +326,8 @@
 				const valA = a[1][sortObj.col],
 					valB = b[1][sortObj.col];
 				// Use the existing sort logic but apply it to groupRowData's values
+
+				// Special case for groupby column
 				if (sortObj.col === groupBy && isNaN(groupBy)) {
 					return sortObj.ascending ? a[0].localeCompare(b[0]) : b[0].localeCompare(a[0]);
 				}
