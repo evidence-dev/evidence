@@ -942,8 +942,8 @@ importers:
         specifier: 1.4.7
         version: 1.4.7
       echarts:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.5.1
+        version: 5.5.1
       ssf:
         specifier: ^0.11.2
         version: 0.11.2
@@ -1432,8 +1432,8 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0
       echarts:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.5.1
+        version: 5.5.1
       echarts-stat:
         specifier: 1.2.0
         version: 1.2.0
@@ -1765,8 +1765,8 @@ importers:
         specifier: 1.4.7
         version: 1.4.7
       echarts:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.5.1
+        version: 5.5.1
       echarts-stat:
         specifier: 1.2.0
         version: 1.2.0
@@ -10903,6 +10903,14 @@ packages:
     dependencies:
       tslib: 2.3.0
       zrender: 5.4.4
+    dev: true
+
+  /echarts@5.5.1:
+    resolution: {integrity: sha512-Fce8upazaAXUVUVsjgV6mBnGuqgO+JNDlcgF79Dksy4+wgGpQB2lmYoO4TSweFg/mZITdpGHomw/cNBJZj1icA==}
+    dependencies:
+      tslib: 2.3.0
+      zrender: 5.6.0
+    dev: false
 
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -15562,6 +15570,9 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)(postcss@8.4.49)(typescript@5.4.2)
       '@parcel/core': 2.12.0
@@ -17187,6 +17198,9 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
+    peerDependenciesMeta:
+      node-gyp:
+        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
@@ -19548,6 +19562,13 @@ packages:
     resolution: {integrity: sha512-0VxCNJ7AGOMCWeHVyTrGzUgrK4asT4ml9PEkeGirAkKNYXYzoPJCLvmyfdoOXcjTHPs10OZVMfD1Rwg16AZyYw==}
     dependencies:
       tslib: 2.3.0
+    dev: true
+
+  /zrender@5.6.0:
+    resolution: {integrity: sha512-uzgraf4njmmHAbEUxMJ8Oxg+P3fT04O+9p7gY+wJRVxo8Ge+KmYv0WJev945EH4wFuc4OY2NLXz46FZrWS9xJg==}
+    dependencies:
+      tslib: 2.3.0
+    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
