@@ -1,5 +1,22 @@
 # evidence-test-environment
 
+## 3.0.69
+
+### Patch Changes
+
+- Updated dependencies [00516897e]
+- Updated dependencies [6938c07d0]
+- Updated dependencies [4d5e9c71e]
+- Updated dependencies [4ca8cb14a]
+- Updated dependencies [1de1eca52]
+- Updated dependencies [0c538ac70]
+- Updated dependencies [61342f41e]
+  - @evidence-dev/sdk@1.4.7
+  - @evidence-dev/core-components@4.8.12
+  - @evidence-dev/evidence@39.1.15
+  - @evidence-dev/component-utilities@3.2.19
+  - @evidence-dev/tailwind@2.1.8
+
 ## 3.0.68
 
 ### Patch Changes
