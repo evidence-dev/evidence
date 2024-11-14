@@ -101,9 +101,12 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import LineChart from '$lib/unsorted/viz/line/LineChart.svelte';
 	import BarChart from '../../bar/BarChart.svelte';
-	import QueryLoad from '../../../../atoms/query-load/QueryLoad.svelte';
-
 	import ReferenceArea from './ReferenceArea.svelte';
+	import Dropdown from '../../../../../lib/atoms/inputs/dropdown/Dropdown.svelte';
+	import DropdownOption from '../../../../../lib/atoms/inputs/dropdown/helpers/DropdownOption.svelte';
+	import { getReadonlyInputContext } from '@evidence-dev/sdk/utils/svelte';
+	// From layout.js
+	const inputStore = getReadonlyInputContext();
 
 	const data = Query.create(
 		`
@@ -190,9 +193,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceAreaData}>
-			<ReferenceArea data={referenceAreaData} xMin="xMin" xMax="xMax" label="label" />
-		</QueryLoad>
+		<ReferenceArea data={referenceAreaData} xMin="xMin" xMax="xMax" label="label" />
 	</LineChart>
 </Story>
 
@@ -206,9 +207,7 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceAreaData}>
-			<ReferenceArea data={referenceAreaData} yMin="yMin" yMax="yMax" label="label" />
-		</QueryLoad>
+		<ReferenceArea data={referenceAreaData} yMin="yMin" yMax="yMax" label="label" />
 	</LineChart>
 </Story>
 
@@ -222,16 +221,32 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceAreaData}>
-			<ReferenceArea
-				data={referenceAreaData}
-				xMin="xMin"
-				xMax="xMax"
-				yMin="yMin"
-				yMax="yMax"
-				label="label"
-			/>
-		</QueryLoad>
+		<ReferenceArea
+			data={referenceAreaData}
+			xMin="xMin"
+			xMax="xMax"
+			yMin="yMin"
+			yMax="yMax"
+			label="label"
+		/>
+	</LineChart>
+</Story>
+
+<Story name="dynamic data: x w/ dropdown">
+	{@const referenceAreaData = Query.create(
+		`
+      select 30 as xMin, ${$inputStore.category1.value} as xMax, 'Area 1' as label union all
+      select 50, 60, 'Area 2' union all
+      select 70, 80, 'Area 3'
+    `,
+		query
+	)}
+	<Dropdown name="category1">
+		<DropdownOption value="35" />
+		<DropdownOption value="45" />
+	</Dropdown>
+	<LineChart x="x" y="y" {data}>
+		<ReferenceArea data={referenceAreaData} xMin="xMin" xMax="xMax" label="label" />
 	</LineChart>
 </Story>
 
@@ -305,13 +320,79 @@
 		query
 	)}
 	<LineChart x="x" y="y" {data}>
-		<QueryLoad data={referenceAreaData}>
+		<ReferenceArea data={referenceAreaData} xMin="xMin" xMax="non-existent-column" label="label" />
+	</LineChart>
+</Story>
+
+<Story name="multiple charts w/ annotations, grid">
+	{@const referenceAreaDataLongLoad = Query.create(
+		`
+      select 30 as xMin, 40 as xMax, 100 as yMin, 150 as yMax, 'Area 1' as label union all
+      select 50, 60, 850, 1000, 'Area 2' union all
+      select 70, 80, 200, 400, 'Area 3'
+    `,
+		query
+	)}
+	<div class="grid grid-cols-4 gap-8">
+		<LineChart x="x" y="y" {data}>
 			<ReferenceArea
-				data={referenceAreaData}
+				data={referenceAreaDataLongLoad}
 				xMin="xMin"
-				xMax="non-existent-column"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
 				label="label"
 			/>
-		</QueryLoad>
-	</LineChart>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+		<LineChart x="x" y="y" {data}>
+			<ReferenceArea
+				data={referenceAreaDataLongLoad}
+				xMin="xMin"
+				xMax="xMax"
+				yMin="yMin"
+				yMax="yMax"
+				label="label"
+			/>
+		</LineChart>
+	</div>
 </Story>

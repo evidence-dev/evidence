@@ -5,14 +5,17 @@ queries:
 - price_vs_volume.sql
 ---
 
-<BubbleChart 
-    data={price_vs_volume}
-    x=price
-    y=number_of_units
-    xFmt=usd0
-    series=category
-    size=total_sales
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleChart 
+            data={price_vs_volume}
+            x=price
+            y=number_of_units
+            xFmt=usd0
+            series=category
+            size=total_sales
+        />
+    </div>
 
 ```markdown
 <BubbleChart 
@@ -24,17 +27,21 @@ queries:
     size=total_sales
 />
 ```
+</DocTab>
 
 ## Examples
 
 ### Default
 
-<BubbleChart 
-    data={price_vs_volume}
-    x=price
-    y=number_of_units
-    size=total_sales
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleChart 
+            data={price_vs_volume}
+            x=price
+            y=number_of_units
+            size=total_sales
+        />
+    </div>
 
 ```markdown
 <BubbleChart 
@@ -44,16 +51,21 @@ queries:
     size=total_sales
 />
 ```
+</DocTab>
+
 
 ### Multi-Series
 
-<BubbleChart 
-    data={price_vs_volume}
-    x=price
-    y=number_of_units
-    series=category
-    size=total_sales
-/>
+<DocTab>
+    <div slot='preview'>
+        <BubbleChart 
+            data={price_vs_volume}
+            x=price
+            y=number_of_units
+            series=category
+            size=total_sales
+        />
+    </div>
 
 ```markdown
 <BubbleChart 
@@ -64,6 +76,7 @@ queries:
     size=total_sales
 />
 ```
+</DocTab>
 
 ## Options
 
@@ -392,18 +405,21 @@ queries:
 
 Bubble charts can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
-<BubbleChart 
-    data={price_vs_volume}
-    x=price
-    xFmt=usd0
-    y=number_of_units
-    size=total_sales
->
-    <ReferenceLine
-        x=75
-        label="Consumer Limit"
-    />
-</BubbleChart>
+<DocTab>
+    <div slot='preview'>
+        <BubbleChart 
+            data={price_vs_volume}
+            x=price
+            xFmt=usd0
+            y=number_of_units
+            size=total_sales
+        >
+            <ReferenceLine
+                x=75
+                label="Consumer Limit"
+            />
+        </BubbleChart>
+    </div>
 
 ```markdown
 <BubbleChart 
@@ -419,3 +435,5 @@ Bubble charts can include [annotations](/components/annotations) using the `Refe
     />
 </BubbleChart>
 ```
+</DocTab>
+

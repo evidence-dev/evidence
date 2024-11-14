@@ -1,5 +1,6 @@
 {
 	"name": "my-evidence-project",
+	"private": true,
 	"version": "0.0.40",
 	"scripts": {
 		"build": "evidence build",

@@ -2,6 +2,7 @@
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { X, Menu2 } from '@steeze-ui/tabler-icons';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import {
 		Github as GithubLogo,
 		Slack as SlackLogo,
@@ -40,7 +41,7 @@
 		style="max-width:{maxWidth}px;"
 	>
 		{#if hideSidebar || sidebarFrontMatter === 'never'}
-			<a href="/" class="block text-sm font-bold text-gray-800">
+			<a href={addBasePath('/')} class="block text-sm font-bold text-gray-800">
 				<Logo {logo} {title} />
 			</a>
 		{:else}
@@ -61,7 +62,7 @@
 						<Icon class="w-5 h-5" src={Menu2} />
 					{/if}
 				</button>
-				<a href="/" class="text-sm font-bold text-gray-800 hidden md:block">
+				<a href={addBasePath('/')} class="text-sm font-bold text-gray-800 hidden md:block">
 					<Logo {logo} {title} />
 				</a>
 			</div>
@@ -73,7 +74,7 @@
 			<div class="flex gap-2 items-center">
 				{#if githubRepo}
 					<a
-						href={githubRepo}
+						href={addBasePath(githubRepo)}
 						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
@@ -83,7 +84,7 @@
 				{/if}
 				{#if xProfile}
 					<a
-						href={xProfile}
+						href={addBasePath(xProfile)}
 						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
@@ -103,7 +104,7 @@
 				{/if}
 				{#if slackCommunity}
 					<a
-						href={slackCommunity}
+						href={addBasePath(slackCommunity)}
 						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"

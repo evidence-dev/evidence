@@ -5,21 +5,29 @@ sidebar_position: 1
 
 Displays the last time the data was refreshed. This component is useful for showing users how up-to-date the data is.
 
-<LastRefreshed/>
+<DocTab>
+    <div slot='preview'>
+        <LastRefreshed/>
+    </div>
 
 ```markdown
 <LastRefreshed/>
 ```
+</DocTab>
 
 ## Examples
 
 ### Alternative Prefix
 
-<LastRefreshed prefix="Data last updated"/>
+<DocTab>
+    <div slot='preview'>
+        <LastRefreshed prefix="Data last updated"/>
+    </div>
 
 ```markdown
 <LastRefreshed prefix="Data last updated"/>
 ```
+</DocTab>
 
 ## Options
 

@@ -1,5 +1,6 @@
 <script>
 	import { building } from '$app/environment';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 	/** @type {Record<string, unknown>[]} */
 	export let data;
@@ -10,6 +11,6 @@
 <!-- we only care about links being crawled during build time -->
 {#if building}
 	{#each Array.from(new Set(data.map((row) => row[link]))) as href}
-		<a {href} class="hidden" aria-hidden="true">{''}</a>
+		<a href={addBasePath(href)} class="hidden" aria-hidden="true">{''}</a>
 	{/each}
 {/if}

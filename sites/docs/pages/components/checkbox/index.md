@@ -5,13 +5,13 @@ sidebar_position: 1
 
 Creates a checkbox with toggleable input. The Title and Name attributes can be defined, enabling the passing of true and false values. 
 
-
-<Checkbox
-    title="Hide Months 0" 
-    name=hide_months_0
-/>
-
-
+<DocTab>
+    <div slot='preview'>
+        <Checkbox
+            title="Hide Months 0" 
+            name=hide_months_0
+        />
+    </div>
 
 ````markdown
 <Checkbox
@@ -19,6 +19,7 @@ Creates a checkbox with toggleable input. The Title and Name attributes can be d
     name=hide_months_0 
 />
 ````
+</DocTab>
 
 ### Checkbox using Default Value
 
@@ -26,13 +27,16 @@ Defining the defaultValue property will set the initial checked value with true 
 
 <!-- <img src="/img/" alt="checkbox" width="300"/> -->
 
-<Checkbox
-    title="Title of checkbox" 
-    name=name_of_checkbox
-    defaultValue=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <Checkbox
+            title="Title of checkbox" 
+            name=name_of_checkbox
+            defaultValue=true
+        />
 
-Selected Value: {inputs.name_of_checkbox}
+        Selected Value: {inputs.name_of_checkbox}
+    </div>
 
 ```markdown
 <Checkbox
@@ -40,7 +44,13 @@ Selected Value: {inputs.name_of_checkbox}
     name=name_of_checkbox
     defaultValue=true
 />
+
+Selected Value: {inputs.name_of_checkbox}
 ```
+</DocTab>
+
+
+
 
 ```sql orders
 select 
@@ -53,16 +63,30 @@ WHERE  not ${inputs.exclude_low_value} -- When True, Do not evaluate the next co
     )
 ```
 
-<div>
-    <Checkbox
-        title="Exclude low values" 
-        name=exclude_low_value
-    />
-</div>
+<DocTab>
+    <div slot='preview'>
+        <div>
+            <Checkbox
+                title="Exclude low values" 
+                name=exclude_low_value
+            />
+        </div>
 
+        <BigValue fmt=num0 value=records_count data={orders}/>
+    </div>
 
+````markdown
+<Checkbox
+title="Exclude low values" 
+name=exclude_low_value
+/>
 
 <BigValue fmt=num0 value=records_count data={orders}/>
+````
+</DocTab>
+
+
+
 
 # Checkbox
 

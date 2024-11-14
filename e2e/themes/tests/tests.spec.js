@@ -1,10 +1,10 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { waitForDevModeToLoad } from '../../test-utils';
+import { waitForPageToLoad } from '../../test-utils';
 
 test('should change color based on theme', async ({ page }) => {
 	await page.goto('/');
-	await waitForDevModeToLoad(page);
+	await waitForPageToLoad(page);
 
 	const divWithBackground = await page.getByTestId('div-with-background');
 

@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import { PluginPackageSchema } from './schemas/plugin-package.schema.js';
 import fs from 'fs/promises';
+import { createRequire } from 'module';
 import path from 'path';
-import { projectRoot } from '../lib/projectRoot.js';
 
 /**
  *
@@ -10,8 +10,8 @@ import { projectRoot } from '../lib/projectRoot.js';
  * @returns {Promise<null | import("./schemas/plugin-package.schema.js").PluginPackage & {dir: string}>}
  */
 export const loadPluginPackage = async (name) => {
-	// We have to use this instead of read/resolve PackageJSON because these packages don't have an index file
-	const packagePath = path.join(projectRoot, 'node_modules', name, 'package.json');
+	const pluginPackageDirectory = path.dirname(createRequire(import.meta.url).resolve(name));
+	const packagePath = path.join(pluginPackageDirectory, 'package.json');
 
 	const packageContent = JSON.parse(await fs.readFile(packagePath, 'utf-8'));
 	const pack = PluginPackageSchema.safeParse(packageContent);
