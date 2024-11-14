@@ -1,5 +1,13 @@
 # @evidence-dev/component-utilities
 
+## 3.2.20
+
+### Patch Changes
+
+- 62afe741b: Node 22 support
+- Updated dependencies [08923de11]
+  - @evidence-dev/sdk@1.4.8
+
 ## 3.2.19
 
 ### Patch Changes

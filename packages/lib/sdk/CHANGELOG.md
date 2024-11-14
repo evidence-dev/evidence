@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 1.4.8
+
+### Patch Changes
+
+- 08923de11: Support Node 22: bump echarts and vite
+  - @evidence-dev/universal-sql@2.1.9
+
 ## 1.4.7
 
 ### Patch Changes
