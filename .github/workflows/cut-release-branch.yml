@@ -17,13 +17,14 @@ jobs:
       - name: Compute branch name
         id: branch_name
         run: echo "branch_name=release-$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
-      - name: Create branch
+      - name: Create release branch
         run: |
-          git checkout next
           git checkout -b ${{ steps.branch_name.outputs.branch_name }}
+          git push -u origin ${{ steps.branch_name.outputs.branch_name }}
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          branch: ${{ steps.branch_name.outputs.branch_name }}
-          base: main
-          title: 'Release ${{ steps.branch_name.outputs.branch_name }}'
+        run: |
+          gh pr create \
+            --base main \
+            --head ${{ steps.branch_name.outputs.branch_name }}}} \
+            --title "Release ${{ steps.branch_name.outputs.branch_name }}" \
+            --body "Opened automatically by [cut-release-branch](https://github.com/evidence-dev/evidence/actions/runs/${{ github.run_id }})"
