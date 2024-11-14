@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/duckdb",
-	"version": "1.0.11",
+	"version": "1.0.12",
 	"description": "DuckDB driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Josh Wills",
