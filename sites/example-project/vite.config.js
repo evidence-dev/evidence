@@ -1,5 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { sourceQueryHmr } from '@evidence-dev/sdk/vite';
+import { sourceQueryHmr } from '@evidence-dev/sdk/build/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {

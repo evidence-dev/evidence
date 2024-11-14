@@ -8,6 +8,7 @@
 		"sourceMap": true,
 		"moduleResolution": "NodeNext",
 		"module": "NodeNext",
-		"strict": true
+		"strict": true,
+		"types": ["@evidence-dev/sdk"]
 	}
 }

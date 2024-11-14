@@ -5,14 +5,16 @@ queries:
 - price_vs_volume.sql
 ---
 
-
-<ScatterPlot 
-    data={price_vs_volume}
-    x=price
-    y=number_of_units
-    xFmt=usd0
-    series=category
-/>
+<DocTab>
+  <div slot='preview'>
+    <ScatterPlot 
+        data={price_vs_volume}
+        x=price
+        y=number_of_units
+        xFmt=usd0
+        series=category
+    />
+  </div>
 
 ```markdown
 <ScatterPlot 
@@ -23,16 +25,20 @@ queries:
     series=category
 />
 ```
+</DocTab>
 
 ## Examples
 
 ### Default
 
-<ScatterPlot 
-    data={price_vs_volume}
-    x=price
-    y=number_of_units
-/>
+<DocTab>
+  <div slot='preview'>
+    <ScatterPlot 
+        data={price_vs_volume}
+        x=price
+        y=number_of_units
+    />
+  </div>
 
 ```markdown
 <ScatterPlot 
@@ -41,15 +47,19 @@ queries:
     y=number_of_units
 />
 ```
+</DocTab>
 
 ### Multi-Series
 
-<ScatterPlot 
-    data={price_vs_volume}
-    x=price
-    y=number_of_units
-    series=category
-/>
+<DocTab>
+  <div slot='preview'>
+        <ScatterPlot 
+            data={price_vs_volume}
+            x=price
+            y=number_of_units
+            series=category
+        />
+  </div>
 
 ```markdown
 <ScatterPlot 
@@ -59,6 +69,8 @@ queries:
     series=category
 />
 ```
+</DocTab>
+
 
 ## Options
 

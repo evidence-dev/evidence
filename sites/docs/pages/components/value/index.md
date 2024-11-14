@@ -70,38 +70,28 @@ SELECT
 FROM 
     needful_things.orders
 ```
+
+<DocTab>
+    <div slot='preview'>
+        <Value data={orders} column="sales" agg="avg" fmt="usd0" />
+    </div>
+
 ```markdown
 <Value data={orders} column="sales" agg="avg" fmt="usd0" />
 ```
-
-<div>
-    <Value data={orders} column="sales" agg="avg" fmt="usd0" />
-</div>
-
+</DocTab>
 
 ## Customize Color Values
 
-<div>
-    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="#85BB65" />
-</div>
+<DocTab>
+    <div slot='preview'>
+            <Value data={orders} column="sales" agg="avg" fmt="usd0" color="#85BB65" />
+    </div>
 
 ```markdown
 <Value data={orders} column="sales" agg="avg" fmt="usd0" color="#85BB65" />
 ```
-<div>
-    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="blue" />
-</div>
-
-```markdown
-<Value data={orders} column="sales" agg="avg" fmt="usd0" color="blue" />
-```
-<div>
-    <Value data={orders} column="sales" agg="avg" fmt="usd0" color="rgb(200,5,200)" />
-</div>
-
-```markdown
-<Value data={orders} column="sales" agg="avg" fmt="usd0" color="rgb(200,5,200)" />
-```
+</DocTab>
 
 ## Red Negative Values
 
@@ -114,13 +104,15 @@ FROM
 
 If the value is negative, the font color will automatically change to red, overriding any color specified by the color prop.
 
-<div>
-    <Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives="true" />
-</div>
+<DocTab>
+    <div slot='preview'>
+        <Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives="true" />
+    </div>
 
 ```markdown
 <Value data={NegativeSales} column="max_sales" agg="avg" fmt="usd0" redNegatives="true" />
 ```
+</DocTab>
 
 ## Options
 

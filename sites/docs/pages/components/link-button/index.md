@@ -3,15 +3,19 @@ title: Link Button
 sidebar_position: 1
 ---
 
-<LinkButton url='/components/link-button'>
-  My Link Button
-</LinkButton>
+<DocTab>
+    <div slot='preview'>
+      <LinkButton url='/components/link-button'>
+        My Link Button
+      </LinkButton>
+    </div>
 
 ```markdown
 <LinkButton url='/components/link-button'>
   My Link Button
 </LinkButton>
 ```
+</DocTab>
 
 ## Options
 

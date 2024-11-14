@@ -3,113 +3,123 @@ title: Accordion
 sidebar_position: 1
 ---
 
-<Accordion>
-  <AccordionItem title="Item 1">
+<DocTab>
+  <div slot='preview'>
+    <Accordion>
+      <AccordionItem title="Item 1">
 
-    This is the first item's accordion body.
+        This is the first item's accordion body.
 
-    You can use **markdown** here too!
+        You can use **markdown** here too!
 
-    Make sure to include an empty line after the component if you want to use markdown.
+        Make sure to include an empty line after the component if you want to use markdown.
 
-  </AccordionItem>
-  <AccordionItem title="Item 2">
+      </AccordionItem>
+      <AccordionItem title="Item 2">
 
-    This is the second item's accordion body with <b>bold text</b>.
+        This is the second item's accordion body with <b>bold text</b>.
 
-  </AccordionItem>
-  <AccordionItem title="Item 3">
+      </AccordionItem>
+      <AccordionItem title="Item 3">
 
-    This is the third item's accordion body.
+        This is the third item's accordion body.
 
-  </AccordionItem>
-</Accordion>
+      </AccordionItem>
+    </Accordion>
+  </div>
 
+  ```markdown 
+  <Accordion>
+    <AccordionItem title="Item 1">
 
-```markdown
-<Accordion>
-  <AccordionItem title="Item 1">
+      This is the first item's accordion body.
 
-    This is the first item's accordion body.
+      You can use **markdown** here too!
 
-    You can use **markdown** here too!
-    Make sure to include an empty line after the component if you want to use markdown.
+      Make sure to include an empty line after the component if you want to use markdown.
 
-  </AccordionItem>
-  <AccordionItem title="Item 2">
+    </AccordionItem>
+    <AccordionItem title="Item 2">
 
-    This is the second item's accordion body with <b>bold text</b>.
+      This is the second item's accordion body with <b>bold text</b>.
 
-  </AccordionItem>
-  <AccordionItem title="Item 3">
+    </AccordionItem>
+    <AccordionItem title="Item 3">
 
-    This is the third item's accordion body.
+      This is the third item's accordion body.
 
-  </AccordionItem>
-</Accordion>
-```
+    </AccordionItem>
+  </Accordion>
+  ``` 
+</DocTab>
 
 ## Examples 
 
 ### Single Accordion 
 
-<Accordion single>
-  <AccordionItem title="Item 1">
-    <p>Content 1</p>
-  </AccordionItem>
-  <AccordionItem title="Item 2">
-    <p>Content 2</p>
-  </AccordionItem>
-  <AccordionItem title="Item 3">
-    <p>Content 3</p>
-  </AccordionItem>
-</Accordion>
+<DocTab>
+  <div slot="preview">
+    <Accordion single>
+      <AccordionItem title="Item 1">
+        <p>Content 1</p>
+      </AccordionItem>
+      <AccordionItem title="Item 2">
+        <p>Content 2</p>
+      </AccordionItem>
+      <AccordionItem title="Item 3">
+        <p>Content 3</p>
+      </AccordionItem>
+    </Accordion>
+  </div>
 
-```markdown 
-<Accordion single>
-  <AccordionItem title="Item 1">
-    <p>Content 1</p>
-  </AccordionItem>
-  <AccordionItem title="Item 2">
-    <p>Content 2</p>
-  </AccordionItem>
-  <AccordionItem title="Item 3">
-    <p>Content 3</p>
-  </AccordionItem>
-</Accordion>
-
-```
+  ```markdown 
+  <Accordion single>
+    <AccordionItem title="Item 1">
+      <p>Content 1</p>
+    </AccordionItem>
+    <AccordionItem title="Item 2">
+      <p>Content 2</p>
+    </AccordionItem>
+    <AccordionItem title="Item 3">
+      <p>Content 3</p>
+    </AccordionItem>
+  </Accordion>
+  ```
+</DocTab>
 
 ### Overriding Styles 
 
 Use the `class` options to override the styles on the accordion. 
 
-<Accordion class="rounded-xl bg-gray-50 px-4 mt-4">
-  <AccordionItem title="Item 1" class="border-none">
-    <p>Content 1</p>
-  </AccordionItem>
-  <AccordionItem title="Item 2" class="border-none">
-    <p>Content 2</p>
-  </AccordionItem>
-  <AccordionItem title="Item 3" class="border-none">
-    <p>Content 3</p>
-  </AccordionItem>
-</Accordion>
+<DocTab>
+  <div slot='preview'>
+    <Accordion class="rounded-xl bg-gray-50 px-4 mt-4">
+      <AccordionItem title="Item 1" class="border-none">
+        <p>Content 1</p>
+      </AccordionItem>
+      <AccordionItem title="Item 2" class="border-none">
+        <p>Content 2</p>
+      </AccordionItem>
+      <AccordionItem title="Item 3" class="border-none">
+        <p>Content 3</p>
+      </AccordionItem>
+    </Accordion>
+  </div>
 
-```markdown 
-<Accordion class="rounded-xl bg-gray-50 px-4 mt-4">
-  <AccordionItem title="Item 1" class="border-none">
-    <p>Content 1</p>
-  </AccordionItem>
-  <AccordionItem title="Item 2" class="border-none">
-    <p>Content 2</p>
-  </AccordionItem>
-  <AccordionItem title="Item 3" class="border-none">
-    <p>Content 3</p>
-  </AccordionItem>
-</Accordion>
-
-```
+  ```markdown 
+  <Accordion class="rounded-xl bg-gray-50 px-4 mt-4">
+    <AccordionItem title="Item 1" class="border-none">
+      <p>Content 1</p>
+    </AccordionItem>
+    <AccordionItem title="Item 2" class="border-none">
+      <p>Content 2</p>
+    </AccordionItem>
+    <AccordionItem title="Item 3" class="border-none">
+      <p>Content 3</p>
+    </AccordionItem>
+  </Accordion>
+  ```
+</DocTab>
 
 ### Title Slot  
 
@@ -120,34 +130,37 @@ Pass components into the accordion title by using the slot `title`.
 select 0.366 as positive, -0.366 as negative
 
 ```
+<DocTab>
+  <div slot="preview">
+    <Accordion>
+      <AccordionItem title="Item 1">
+        <span slot='title'>Custom Title <Value chip data={growth} fmt=pct1 /></span>
+        Content 1 
+      </AccordionItem>
+      <AccordionItem title="Item 2">
+        <p>Content 2</p>
+      </AccordionItem>
+      <AccordionItem title="Item 3">
+        <p>Content 3</p>
+      </AccordionItem>
+    </Accordion>
+  </div>
 
-<Accordion>
-  <AccordionItem title="Item 1">
-    <span slot='title'>Custom Title <Value chip data={growth} fmt=pct1 /></span>
-    Content 1 
-  </AccordionItem>
-  <AccordionItem title="Item 2">
-    <p>Content 2</p>
-  </AccordionItem>
-  <AccordionItem title="Item 3">
-    <p>Content 3</p>
-  </AccordionItem>
-</Accordion>
-
-```markdown 
-<Accordion>
-  <AccordionItem title="Item 1">
-    <span slot='title'>Custom Title <Value data={growth} fmt=pct1 /></span>
-    Content 1 
-  </AccordionItem>
-  <AccordionItem title="Item 2">
-    <p>Content 2</p>
-  </AccordionItem>
-  <AccordionItem title="Item 3">
-    <p>Content 3</p>
-  </AccordionItem>
-</Accordion>
-```
+  ```markdown 
+  <Accordion>
+    <AccordionItem title="Item 1">
+      <span slot='title'>Custom Title <Value data={growth} fmt=pct1 /></span>
+      Content 1 
+    </AccordionItem>
+    <AccordionItem title="Item 2">
+      <p>Content 2</p>
+    </AccordionItem>
+    <AccordionItem title="Item 3">
+      <p>Content 3</p>
+    </AccordionItem>
+  </Accordion>
+  ```
+</DocTab>
 
 
 

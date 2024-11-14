@@ -120,8 +120,6 @@ export default (node, option) => {
 		dispatch('click', params);
 	});
 
-	// Resize logic:
-	const containerElement = document.getElementById('evidence-main-article');
 	// watching parent element is necessary for charts within `Fullscreen` components
 	const parentElement = node.parentElement;
 	const onWindowResize = debounce(() => {
@@ -134,9 +132,8 @@ export default (node, option) => {
 	}, 100);
 
 	let resizeObserver;
-	if (window.ResizeObserver && containerElement) {
+	if (window.ResizeObserver && parentElement) {
 		resizeObserver = new ResizeObserver(onWindowResize);
-		resizeObserver.observe(containerElement);
 		resizeObserver.observe(parentElement);
 	} else {
 		window.addEventListener('resize', onWindowResize);
@@ -208,7 +205,6 @@ export default (node, option) => {
 		},
 		destroy() {
 			if (resizeObserver) {
-				resizeObserver.unobserve(containerElement);
 				resizeObserver.unobserve(parentElement);
 			} else {
 				window.removeEventListener('resize', onWindowResize);
