@@ -85,25 +85,21 @@
 						? 'center'
 						: undefined)}
 				style:color={headerFontColor}
-				style:background={sortObj.col === column.id
-					? sortObj.ascending
-						? gradientAsc
-						: gradientDesc
-					: { headerColor }}
+				style:background={headerColor}
 				style:cursor={sortable ? 'pointer' : 'auto'}
 				on:click={sortable ? sortClick(column.id) : ''}
 				style:vertical-align="bottom"
 				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 			>
-				<div class="flex items-end justify-between">
-					<span class={wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}>
+				<div class="{wrapTitles || column.wrapTitle ? 'flex items-end' : ''}">
+					<span class="{wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}">
 						{column.title
 							? column.title
 							: formatColumnTitles
 								? safeExtractColumn(column, columnSummary).title
 								: safeExtractColumn(column, columnSummary).id}
 					</span>
-					<span class="ml-[4px] {column.wrapTitle || wrapTitles ? 'ml-[2px]' : ''}">
+					<span class="ml-[2px]">
 						{#if sortObj.col === column.id}
 							<SortIcon ascending={sortObj.ascending} />
 						{:else}
