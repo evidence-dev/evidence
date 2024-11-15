@@ -7,6 +7,10 @@
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import Delta from './Delta.svelte';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
+
 	export let data;
 	export let value = null;
 	export let comparison = null;
@@ -15,7 +19,10 @@
 
 	export let sparkline = null;
 	export let sparklineType = 'line'; // line, area, or bar
+
 	export let sparklineColor = undefined;
+	$: sparklineColorStore = resolveColor(sparklineColor);
+
 	export let sparklineValueFmt = undefined;
 	export let sparklineDateFmt = undefined;
 	export let sparklineYScale = false;
@@ -111,7 +118,7 @@
 					valueCol={value}
 					type={sparklineType}
 					interactive="true"
-					color={sparklineColor}
+					color={$sparklineColorStore}
 					valueFmt={fmt ?? sparklineValueFmt}
 					dateFmt={sparklineDateFmt}
 					yScale={sparklineYScale}
