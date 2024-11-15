@@ -149,30 +149,33 @@ export class ThemeStores {
 	 * @returns {Readable<string | undefined>}
 	 */
 	resolveColor = (color) => {
-		if (isBuiltinColor(color)) {
-			return derived(this.#theme, ($theme) => $theme.colors[color]);
+		const trimmed = color.trim();
+		if (isBuiltinColor(trimmed)) {
+			return derived(this.#theme, ($theme) => $theme.colors[trimmed]);
 		}
-		return readable(color);
+		return readable(trimmed);
 	};
 
 	/**
-	 * @param {string} color
+	 * @param {string} colorPalette
 	 * @returns {Readable<string[] | undefined>}
 	 */
-	resolveColorPalette = (color) => {
-		if (isBuiltinColorPalette(color)) {
-			return derived(this.#theme, ($theme) => $theme.colorPalettes[color]);
+	resolveColorPalette = (colorPalette) => {
+		const trimmed = colorPalette.trim();
+		if (isBuiltinColorPalette(trimmed)) {
+			return derived(this.#theme, ($theme) => $theme.colorPalettes[trimmed]);
 		}
 		return readable(undefined);
 	};
 
 	/**
-	 * @param {string} color
+	 * @param {string} colorScale
 	 * @returns {Readable<string[] | undefined>}
 	 */
-	resolveColorScale = (color) => {
-		if (isBuiltinColorPalette(color)) {
-			return derived(this.#theme, ($theme) => $theme.colorScales[color]);
+	resolveColorScale = (colorScale) => {
+		const trimmed = colorScale.trim();
+		if (isBuiltinColorPalette(trimmed)) {
+			return derived(this.#theme, ($theme) => $theme.colorScales[trimmed]);
 		}
 		return readable(undefined);
 	};
