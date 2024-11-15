@@ -11,7 +11,6 @@
 
 	export let color = 'base-content';
 	$: colorStore = resolveColor(color);
-	$: console.log({ $colorStore });
 
 	export let size = 10;
 </script>

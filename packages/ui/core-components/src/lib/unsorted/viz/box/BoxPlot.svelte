@@ -22,7 +22,6 @@
 
 	export let color = undefined;
 	$: colorStore = resolveColor(color);
-	$: console.log({ $colorStore });
 
 	export let series = undefined;
 	export let xType = undefined;
