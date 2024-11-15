@@ -37,7 +37,7 @@
 		"chroma-js": "^2.4.2",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
-		"echarts": "5.4.3",
+		"echarts": "5.5.1",
 		"echarts-stat": "1.2.0",
 		"eslint": "8.45.0",
 		"eslint-config-prettier": "^8.10.0",
@@ -66,7 +66,7 @@
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "5.4.6"
+		"vite": "5.4.11"
 	},
 	"scripts": {
 		"release": "run-s package:core-components build:tailwind build:evidence && pnpm changeset publish",

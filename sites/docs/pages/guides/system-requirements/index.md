@@ -4,13 +4,13 @@ sidebar_position: 5
 description: Evidence requires Node.js, NPM, and Git
 ---
 
-Evidence requires Node.js 18 or 20, and NPM 7 or above.   
+Evidence requires Node.js 18, 20 or 22, and NPM 7 or above.   
 
 Check your versions with `node -v` and `npm -v`
 
-**Note:** if you are installing NodeJS for the first time, be sure to install the v18 or v20 LTS version 
+**Note:** if you are installing NodeJS for the first time, be sure to install the LTS version.
 
-<LinkButton url="https://nodejs.org/en/download">Download Node.js + NPM (v18 or v20 LTS version)</LinkButton>
+<LinkButton url="https://nodejs.org/en/download">Download Node.js + NPM (LTS version)</LinkButton>
 
 ### Updating
 
