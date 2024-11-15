@@ -58,7 +58,7 @@
 	}
 
 	// Set up base config for this type of chart series:
-	let baseConfig = {
+	$: baseConfig = {
 		type: 'scatter',
 		label: {
 			show: false
