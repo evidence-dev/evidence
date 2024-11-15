@@ -79,7 +79,7 @@
 		return Math.sqrt((newPointSize / maxData) * maxSizeSq);
 	}
 
-	let baseConfig = {
+	$: baseConfig = {
 		type: 'scatter',
 		label: {
 			show: false
