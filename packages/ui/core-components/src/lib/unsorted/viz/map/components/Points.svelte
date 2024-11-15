@@ -18,6 +18,8 @@
 	import { getThemeStores } from '../../../../themes.js';
 	import { nanoid } from 'nanoid';
 
+	const { theme, resolveColor, resolveColorPalette } = getThemeStores();
+
 	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -93,10 +95,15 @@
 
 	/** @type {string} */
 	export let borderColor = 'white';
+	$: borderColorStore = resolveColor(borderColor);
+
 	/** @type {string|undefined} */
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
+
 	/** @type {string[] | undefined} */
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;
@@ -133,12 +140,13 @@
 		selectedBorderWidth = 0.75;
 	}
 
-	const { theme } = getThemeStores();
+	/** @type {string} */
+	export let selectedColor = 'accent';
+	$: selectedColorStore = resolveColor(selectedColor);
 
 	/** @type {string} */
-	export let selectedColor = $theme.colors['accent'];
-	/** @type {string} */
-	export let selectedBorderColor = $theme.colors['accent-content'];
+	export let selectedBorderColor = 'accent-content';
+	$: selectedBorderColorStore = resolveColor(selectedBorderColor);
 
 	/** @type {number|undefined} */
 	export let selectedOpacity = undefined;
@@ -218,7 +226,7 @@
 		return Math.sqrt((newPoint / maxData) * maxSizeSq);
 	}
 
-	let values, colorScale, sizeExtents, maxData, maxSizeSq;
+	let values, colorScale, sizeExtents, maxData, maxSizeSq, colorPaletteFinal;
 
 	/** @type {'bubble' | 'points' }*/
 	export let pointStyle = 'points';
@@ -239,7 +247,7 @@
 				checkInputs,
 				min,
 				max,
-				colorPalette,
+				colorPalette: $colorPaletteStore,
 				legendType,
 				valueFmt,
 				chartType,
@@ -247,7 +255,11 @@
 				legend,
 				theme
 			};
-			({ values, colorPalette, colorScale } = await map.initializeData(data, initDataOptions));
+			({
+				values,
+				colorPalette: colorPaletteFinal,
+				colorScale
+			} = await map.initializeData(data, initDataOptions));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -314,22 +326,23 @@
 			options={{
 				// kw note:
 				//need to clean this logic
-				fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
+				fillColor:
+					$colorStore ?? map.handleFillColor(item, value, values, colorPaletteFinal, colorScale),
 				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
 				fillOpacity: opacity,
 				opacity: opacity,
 				weight: borderWidth,
-				color: borderColor,
+				color: $borderColorStore,
 				className: `outline-none ${pointClass}`,
 				markerType: pointStyle,
 				pane: legendId
 			}}
 			selectedOptions={{
-				fillColor: selectedColor,
+				fillColor: $selectedColorStore,
 				fillOpacity: selectedOpacity,
 				opacity: selectedOpacity,
 				weight: selectedBorderWidth,
-				color: selectedBorderColor,
+				color: $selectedBorderColorStore,
 				className: `outline-none ${selectedPointClass}`
 			}}
 			coords={[item[lat], item[long]]}
