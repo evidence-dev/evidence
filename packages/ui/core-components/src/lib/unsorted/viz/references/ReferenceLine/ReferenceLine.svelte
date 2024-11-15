@@ -15,6 +15,8 @@
 	import { getThemeStores } from '../../../../themes.js';
 	import chroma from 'chroma-js';
 
+	const { resolveColor } = getThemeStores();
+
 	/** @type {'pass' | 'warn' | 'error' | undefined}*/
 	export let emptySet = undefined;
 
@@ -40,10 +42,11 @@
 	export let label = undefined;
 
 	/**
-	 * @type {import('../types.js').ReferenceColor}
+	 * @type {string}
 	 * @default "grey"
 	 */
 	export let color = 'grey';
+	$: colorStore = resolveColor(color);
 
 	/**
 	 * @type {'solid' | 'dotted' | 'dashed'}
@@ -51,8 +54,9 @@
 	 */
 	export let lineType = 'dashed';
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let lineColor = undefined;
+	$: lineColorStore = resolveColor(lineColor);
 
 	/**
 	 * @type {number | string}
@@ -90,8 +94,9 @@
 	/** @type {number | string | undefined} */
 	export let symbolEndSize = undefined;
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColorStore = resolveColor(labelColor);
 
 	/**
 	 * @type {number | string}
@@ -107,6 +112,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -119,6 +125,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -175,20 +182,20 @@
 			y2,
 			data,
 			label,
-			color,
+			color: $colorStore,
 			symbolStart: symbolStart ?? 'none',
 			symbolStartSize: toNumber(symbolStartSize),
 			symbolEnd: symbolEnd ?? symbol ?? 'none',
 			symbolEndSize: symbolEndSize ? toNumber(symbolEndSize) : toNumber(symbolSize),
 			lineType,
-			lineColor,
+			lineColor: $lineColorStore,
 			lineWidth: toNumber(lineWidth),
-			labelColor,
+			labelColor: $labelColorStore,
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
 			labelBackgroundColor:
-				labelBackgroundColor ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
-			labelBorderColor,
+				$labelBackgroundColorStore ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
+			labelBorderColor: $labelBorderColorStore,
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),
 			labelBorderType,

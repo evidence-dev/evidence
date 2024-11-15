@@ -16,6 +16,8 @@
 	import { getThemeStores } from '../../../../themes.js';
 	import chroma from 'chroma-js';
 
+	const { resolveColor } = getThemeStores();
+
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
 
@@ -32,16 +34,18 @@
 	export let data = undefined;
 
 	/**
-	 * @type {import('../types.js').ReferenceColor}
+	 * @type {string}
 	 * @default "grey"
 	 */
 	export let color = 'grey';
+	$: colorStore = resolveColor(color);
 
 	/** @type {string | undefined} */
 	export let label = undefined;
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColorStore = resolveColor(labelColor);
 
 	/**
 	 * @type {number | "fit" | string | undefined}
@@ -60,6 +64,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -69,6 +74,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -91,8 +97,9 @@
 	 */
 	export let symbol = 'circle';
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let symbolColor = undefined;
+	$: symbolColorStore = resolveColor(symbolColor);
 
 	/**
 	 * @type {number | string}
@@ -108,6 +115,7 @@
 
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
+	$: symbolBorderColorStore = resolveColor(symbolBorderColor);
 
 	/**
 	 * @type {boolean}
@@ -150,21 +158,21 @@
 			y,
 			label,
 			symbol,
-			color,
-			labelColor,
-			symbolColor,
+			color: $colorStore,
+			labelColor: $labelColorStore,
+			symbolColor: $symbolColorStore,
 			symbolSize: toNumber(symbolSize),
 			symbolOpacity: toNumber(symbolOpacity),
 			symbolBorderWidth: toNumber(symbolBorderWidth),
-			symbolBorderColor,
+			symbolBorderColor: $symbolBorderColorStore,
 			labelWidth: labelWidth === 'fit' ? undefined : toNumber(labelWidth),
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
 			labelBackgroundColor:
-				labelBackgroundColor ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
+				$labelBackgroundColorStore ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),
-			labelBorderColor,
+			labelBorderColor: $labelBorderColorStore,
 			labelBorderType,
 			fontSize: toNumber(fontSize),
 			align,

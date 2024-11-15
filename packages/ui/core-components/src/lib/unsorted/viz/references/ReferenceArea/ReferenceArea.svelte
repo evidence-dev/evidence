@@ -12,6 +12,9 @@
 	import { getConfigContext, getPropContext } from '@evidence-dev/component-utilities/chartContext';
 	import { ReferenceAreaStore } from './reference-area.store.js';
 	import { toBoolean, toNumber } from '../../../../utils.js';
+	import { getThemeStores } from '../../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	/** @type {'pass' | 'warn' | 'error' | undefined}*/
 	export let emptySet = undefined;
@@ -37,13 +40,15 @@
 	export let label = undefined;
 
 	/**
-	 * @type {import('../types.js').PresetColor}
+	 * @type {string}
 	 * @default "blue"
 	 */
 	export let color = 'blue';
+	$: colorStore = resolveColor(color);
 
-	/** @type {import('../types.js').PresetColor | undefined} */
+	/** @type {string | undefined} */
 	export let areaColor = undefined;
+	$: areaColorStore = resolveColor(areaColor);
 
 	/** @type {number | string} */
 	export let opacity = 1;
@@ -54,14 +59,16 @@
 	/** @type {'solid' | 'dotted' | 'dashed'} */
 	export let borderType = 'dashed';
 
-	/** @type {import('../types.js').PresetColor | undefined}*/
+	/** @type {string | undefined}*/
 	export let borderColor = undefined;
+	$: borderColorStore = resolveColor(borderColor);
 
 	/** @type {number | string | undefined} */
 	export let borderWidth = undefined;
 
-	/** @type {import('../types.js').PresetColor | undefined} */
+	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColorStore = resolveColor(labelColor);
 
 	/**
 	 * @type {number | string}
@@ -74,6 +81,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -83,6 +91,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -137,18 +146,18 @@
 			yMax,
 			data,
 			label,
-			color,
-			areaColor,
+			color: $colorStore,
+			areaColor: $areaColorStore,
 			opacity: toNumber(opacity),
 			border: toBoolean(border),
 			borderType,
-			borderColor,
+			borderColor: $borderColorStore,
 			borderWidth: toNumber(borderWidth),
-			labelColor,
+			labelColor: $labelColorStore,
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
-			labelBackgroundColor,
-			labelBorderColor,
+			labelBackgroundColor: $labelBackgroundColorStore,
+			labelBorderColor: $labelBorderColorStore,
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),
 			labelBorderType,

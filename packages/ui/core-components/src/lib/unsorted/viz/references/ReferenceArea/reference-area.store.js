@@ -2,10 +2,9 @@
 
 import { nanoid } from 'nanoid';
 import { get, writable } from 'svelte/store';
-import { COLORS } from './constants.js';
-import { isPresetColor } from '../types.js';
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 import { Query } from '@evidence-dev/sdk/usql';
+import chroma from 'chroma-js';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable */
@@ -92,19 +91,11 @@ export class ReferenceAreaStore {
 				borderWidth = 1;
 			}
 
-			// Use preset colors
 			labelColor = labelColor ?? color;
-			areaColor = areaColor ?? color;
+			areaColor = chroma(areaColor ?? color)
+				.alpha(0.05)
+				.css();
 			borderColor = borderColor ?? color;
-			if (isPresetColor(labelColor)) {
-				labelColor = COLORS[labelColor].labelColor;
-			}
-			if (isPresetColor(areaColor)) {
-				areaColor = COLORS[areaColor].areaColor;
-			}
-			if (isPresetColor(borderColor)) {
-				borderColor = COLORS[borderColor].borderColor;
-			}
 
 			/** @type {MarkAreaData} */
 			const seriesData = [];
