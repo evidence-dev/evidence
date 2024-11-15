@@ -29,7 +29,7 @@
 			"default": "./src/utils/svelte/index.js",
 			"import": "./src/utils/svelte/index.js",
 			"require": null,
-			"types": "./src/utils/svelte/index.d.ts"
+			"types": "./src/utils/svelte/index.s"
 		},
 		"./build/svelte": {
 			"default": "./src/build-dev/svelte/index.js",

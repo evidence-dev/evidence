@@ -1,8 +1,7 @@
 import evidencePreprocess from '@evidence-dev/preprocess';
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
-import { evidencePlugins } from '@evidence-dev/plugin-connector';
-import { addBasePathToHrefAndSrc } from '@evidence-dev/sdk/build/svelte';
+import { addBasePathToHrefAndSrc, injectComponents } from '@evidence-dev/sdk/build/svelte';
 import fs from 'fs';
 import path from 'path';
 import { getEvidenceConfig } from '@evidence-dev/sdk/config';
@@ -40,7 +39,7 @@ const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [
 		...evidencePreprocess(true),
-		evidencePlugins(),
+		injectComponents(),
 		preprocess({
 			postcss: true
 		}),
