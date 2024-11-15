@@ -17,7 +17,7 @@
 	import { getThemeStores } from '../../../themes.js';
 	import chroma from 'chroma-js';
 
-	const { activeMode, theme } = getThemeStores();
+	const { activeMode, theme, resolveColorPalette, resolveColorScale } = getThemeStores();
 
 	export let data = undefined;
 	export let queryID = undefined;
@@ -74,16 +74,17 @@
 		}
 	}
 
-	// color palettes
+	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
-	export let colorPalette = undefined; // custom color palette
+	export let colorScale = undefined;
+	$: colorScaleStore = resolveColorScale(colorScale);
 
-	export let colorScale = 'blue';
 	let colorArray;
-	$: if (colorPalette) {
-		colorArray = [...colorPalette];
+	$: if ($colorPaletteStore) {
+		colorArray = [...$colorPaletteStore];
 	} else {
-		if (colorScale === 'green') {
+		if ($colorScaleStore === 'green') {
 			colorArray = [
 				'#f7fcfd',
 				'#e5f5f9',
@@ -95,7 +96,7 @@
 				'#006d2c',
 				'#00441b'
 			];
-		} else if (colorScale === 'blue') {
+		} else if (typeof $colorScaleStore === 'undefined' || $colorScaleStore === 'blue') {
 			colorArray = [
 				'#f7fbff',
 				'#deebf7',
@@ -107,7 +108,7 @@
 				'#08519c',
 				'#08306b'
 			];
-		} else if (colorScale === 'red') {
+		} else if ($colorScaleStore === 'red') {
 			colorArray = [
 				'#fff5f0',
 				'#fee0d2',
@@ -119,7 +120,7 @@
 				'#a50f15',
 				'#67000d'
 			];
-		} else if (colorScale === 'bluegreen') {
+		} else if ($colorScaleStore === 'bluegreen') {
 			colorArray = [
 				'#f7fcf0',
 				'#e0f3db',
@@ -131,6 +132,8 @@
 				'#0868ac',
 				'#084081'
 			];
+		} else {
+			colorArray = $colorScaleStore;
 		}
 		if ($activeMode === 'dark') {
 			colorArray = colorArray.map((color) =>
