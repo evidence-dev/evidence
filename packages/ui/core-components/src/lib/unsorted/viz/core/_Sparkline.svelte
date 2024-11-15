@@ -6,6 +6,9 @@
 	import ValueError from './ValueError.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { getColumnFormats, getSparklineConfig, validateSize } from './sparkline.js';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	export let config = {};
 	export let width = 50; // Default width for the sparkline, adjust as needed
@@ -29,6 +32,7 @@
 	export let type = 'line'; // line, area, or bar
 
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
 
 	export let yScale = false; // scale the y axis to the data
 	$: yScale = yScale === 'true' || yScale === true;
@@ -110,7 +114,7 @@
 			sparklineData,
 			type,
 			seriesType,
-			color,
+			$colorStore,
 			yScale,
 			value_format_object,
 			date_format_object,
