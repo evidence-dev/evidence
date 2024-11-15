@@ -16,6 +16,8 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { getThemeStores } from '../../../themes.js';
 
+	const { resolveColor, resolveColorPalette } = getThemeStores();
+
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
 
@@ -25,7 +27,8 @@
 	let value_format_object;
 	let percent_format_object;
 
-	export let colorPalette = undefined;
+	export let colorPalette = 'default';
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	export let data = undefined;
 	export let sourceCol = 'source';
@@ -40,6 +43,8 @@
 	export let linkLabels = undefined; // value | percent | full | undefined (default)
 
 	export let outlineColor = undefined;
+	$: outlineColorStore = resolveColor(outlineColor);
+
 	export let outlineWidth = undefined;
 	export let nodeAlign = 'justify';
 	export let nodeGap = 10;
@@ -50,13 +55,11 @@
 	export let depthOverride; // object like: {'node name': 1, 'node name 2': 2} where number is depth level (0-based)
 
 	export let linkColor = 'grey'; // grey (default), source, target, gradient
+	$: linkColorStore = resolveColor(linkColor);
 
 	// Data Formatting
 	let names = [];
 	let links;
-
-	const { theme } = getThemeStores();
-	let combinedPalette = [...(colorPalette ?? []), ...$theme.colorPalettes.default];
 
 	// error handling
 	let error;
@@ -118,7 +121,7 @@
 		const nameData = [...new Set(names)].map((node, index) => ({
 			name: node,
 			itemStyle: {
-				color: combinedPalette[index % combinedPalette.length]
+				color: $colorPaletteStore?.[index % $colorPaletteStore?.length]
 			}
 		}));
 		links = data.map((link) => {
@@ -246,11 +249,11 @@
 				hideOverlap: true
 			},
 			itemStyle: {
-				borderColor: outlineColor,
+				borderColor: $outlineColorStore,
 				borderWidth: outlineWidth
 			},
 			lineStyle: {
-				color: linkColor
+				color: $linkColorStore
 			},
 			tooltip: {
 				formatter: function (params) {
