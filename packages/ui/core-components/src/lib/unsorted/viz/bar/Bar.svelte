@@ -19,6 +19,9 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
@@ -32,8 +35,13 @@
 	export let stackName = undefined;
 
 	export let fillColor = undefined;
+	$: fillColorStore = resolveColor(fillColor);
+
 	export let fillOpacity = undefined;
+
 	export let outlineColor = undefined;
+	$: outlineColorStore = resolveColor(outlineColor);
+
 	export let outlineWidth = undefined;
 
 	export let labels = false;
@@ -42,7 +50,10 @@
 	$: seriesLabels = seriesLabels === 'true' || seriesLabels === true;
 	export let labelSize = 11;
 	export let labelPosition = undefined;
+
 	export let labelColor = undefined;
+	$: labelColorStore = resolveColor(labelColor);
+
 	export let labelFmt = undefined;
 	let labelFormat;
 	if (labelFmt) {
@@ -180,7 +191,7 @@
 			},
 			position: labelPosition,
 			fontSize: labelSize,
-			color: labelColor
+			color: $labelColorStore
 		},
 		labelLayout: {
 			hideOverlap: showAllLabels ? false : true
@@ -190,9 +201,9 @@
 		},
 		barMaxWidth: barMaxWidth,
 		itemStyle: {
-			color: fillColor,
+			color: $fillColorStore,
 			opacity: fillOpacity,
-			borderColor: outlineColor,
+			borderColor: $outlineColorStore,
 			borderWidth: outlineWidth
 		}
 	};
