@@ -29,6 +29,9 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	// Set up props store
 	let props = writable({});
@@ -61,7 +64,10 @@
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
 	export let groupType = 'accordion'; // accordion | section
+
 	export let accordionRowColor = undefined;
+	$: accordionRowColorStore = resolveColor(accordionRowColor);
+
 	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 
 	if (groupType === 'section') {
@@ -72,7 +78,10 @@
 	$: subtotals = subtotals === 'true' || subtotals === true;
 
 	export let subtotalRowColor = undefined;
+	$: subtotalRowColorStore = resolveColor(subtotalRowColor);
+
 	export let subtotalFontColor = undefined;
+	$: subtotalFontColorStore = resolveColor(subtotalFontColor);
 
 	let groupToggleStates = {};
 
@@ -107,7 +116,10 @@
 	$: totalRow = totalRow === 'true' || totalRow === true;
 
 	export let totalRowColor = undefined;
+	$: totalRowColorStore = resolveColor(totalRowColor);
+
 	export let totalFontColor = undefined;
+	$: totalFontColorStore = resolveColor(totalFontColor);
 
 	export let isFullPage = false;
 
@@ -139,12 +151,16 @@
 	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
 
 	export let headerColor = undefined;
+	$: headerColorStore = resolveColor(headerColor);
+
 	export let headerFontColor = undefined;
+	$: headerFontColorStore = resolveColor(headerFontColor);
 
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
 
 	export let backgroundColor = undefined;
+	$: backgroundColorStore = resolveColor(backgroundColor);
 
 	export let compact = undefined;
 
@@ -530,12 +546,12 @@
 			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
 		{/if}
 
-		<div class="scrollbox pretty-scrollbar" style:background-color={backgroundColor}>
+		<div class="scrollbox pretty-scrollbar" style:background-color={$backgroundColorStore}>
 			<table>
 				<TableHeader
 					{rowNumbers}
-					{headerColor}
-					{headerFontColor}
+					headerColor={$headerColorStore}
+					headerFontColor={$headerFontColorStore}
 					{orderedColumns}
 					{columnSummary}
 					{compact}
@@ -564,7 +580,7 @@
 									toggled={groupToggleStates[groupName]}
 									on:toggle={handleToggle}
 									{columnSummary}
-									rowColor={accordionRowColor}
+									rowColor={$accordionRowColorStore}
 									{rowNumbers}
 									{subtotals}
 									{compact}
@@ -608,8 +624,8 @@
 										{groupName}
 										currentGroupData={groupedData[groupName]}
 										{columnSummary}
-										rowColor={subtotalRowColor}
-										fontColor={subtotalFontColor}
+										rowColor={$subtotalRowColorStore}
+										fontColor={$subtotalFontColorStore}
 										{groupType}
 										{groupBy}
 										{compact}
@@ -637,8 +653,8 @@
 							{data}
 							{rowNumbers}
 							{columnSummary}
-							rowColor={totalRowColor}
-							fontColor={totalFontColor}
+							rowColor={$totalRowColorStore}
+							fontColor={$totalFontColorStore}
 							{groupType}
 							{compact}
 							{orderedColumns}
