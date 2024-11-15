@@ -16,9 +16,6 @@
 
 	/** @type {string | undefined} */
 	export let link = undefined;
-
-	let gradientAsc = 'linear-gradient(to top, rgba(229, 231, 235, 1), rgba(229, 231, 235, 0))';
-	let gradientDesc = 'linear-gradient(to bottom, rgba(229, 231, 235, 1), rgba(229, 231, 235, 0))';
 </script>
 
 <thead>
@@ -91,8 +88,8 @@
 				style:vertical-align="bottom"
 				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 			>
-				<div class="{wrapTitles || column.wrapTitle ? 'flex items-end' : ''}">
-					<span class="{wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}">
+				<div class={wrapTitles || column.wrapTitle ? 'flex items-end' : ''}>
+					<span class={wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}>
 						{column.title
 							? column.title
 							: formatColumnTitles
