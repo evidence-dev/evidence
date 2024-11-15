@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 5.2.3
+
+### Patch Changes
+
+- 4d5e9c71e: Automatically add injected Evidence imports to Vite's `optimizeDeps.include`
+
 ## 5.2.2
 
 ### Patch Changes

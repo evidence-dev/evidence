@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.12
+
+### Patch Changes
+
+- 43502807b: Upgrade duckdb-async to 1.1.3
+
 ## 1.0.11
 
 ### Patch Changes
