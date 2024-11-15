@@ -145,10 +145,12 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {string} color
+	 * @param {unknown} color
 	 * @returns {Readable<string | undefined>}
 	 */
 	resolveColor = (color) => {
+		if (typeof color !== 'string') return readable(undefined);
+
 		const trimmed = color.trim();
 		if (isBuiltinColor(trimmed)) {
 			return derived(this.#theme, ($theme) => $theme.colors[trimmed]);
@@ -157,10 +159,12 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {string} colorPalette
+	 * @param {unknown} colorPalette
 	 * @returns {Readable<string[] | undefined>}
 	 */
 	resolveColorPalette = (colorPalette) => {
+		if (typeof colorPalette !== 'string') return readable(undefined);
+
 		const trimmed = colorPalette.trim();
 		if (isBuiltinColorPalette(trimmed)) {
 			return derived(this.#theme, ($theme) => $theme.colorPalettes[trimmed]);
@@ -169,10 +173,12 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {string} colorScale
+	 * @param {unknown} colorScale
 	 * @returns {Readable<string[] | undefined>}
 	 */
 	resolveColorScale = (colorScale) => {
+		if (typeof colorScale !== 'string') return readable(undefined);
+
 		const trimmed = colorScale.trim();
 		if (isBuiltinColorPalette(trimmed)) {
 			return derived(this.#theme, ($theme) => $theme.colorScales[trimmed]);
