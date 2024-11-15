@@ -30,6 +30,8 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig; // helper for custom chart development
+
+	// TODO how to use ThemeStores.resolve* here?
 	export let seriesColors = undefined;
 
 	export let connectGroup = undefined;
