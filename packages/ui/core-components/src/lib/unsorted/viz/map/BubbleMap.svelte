@@ -6,6 +6,9 @@
 	import Bubbles from './components/Bubbles.svelte';
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColorPalette } = getThemeStores();
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -59,8 +62,11 @@
 	export let legendPosition = 'bottomLeft';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+
 	/** @type {string[]|undefined} */
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	/** @type {boolean} */
 	export let legend = true;
 
@@ -90,5 +96,14 @@
 	{error}
 	{attribution}
 >
-	<Bubbles {data} {lat} {long} {size} {colorPalette} {legendType} {legend} {...$$restProps} />
+	<Bubbles
+		{data}
+		{lat}
+		{long}
+		{size}
+		colorPalette={$colorPaletteStore}
+		{legendType}
+		{legend}
+		{...$$restProps}
+	/>
 </BaseMap>
