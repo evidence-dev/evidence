@@ -94,7 +94,7 @@
 
 	export let sort = undefined;
 
-	export let colorPalette = undefined;
+	export let colorPalette = 'default';
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	export let labels = undefined;

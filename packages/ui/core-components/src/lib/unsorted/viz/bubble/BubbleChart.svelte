@@ -63,7 +63,7 @@
 
 	let useTooltip = true;
 
-	export let colorPalette = undefined;
+	export let colorPalette = 'default';
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	export let echartsOptions = undefined;
