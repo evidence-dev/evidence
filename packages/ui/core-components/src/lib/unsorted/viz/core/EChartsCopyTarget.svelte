@@ -13,6 +13,8 @@
 	export let printing = false;
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
+
+	// TODO how to use ThemeStores.resolve* here?
 	export let seriesColors = undefined;
 	export let isMap = false;
 	export let extraHeight = undefined;
