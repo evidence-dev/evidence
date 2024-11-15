@@ -6,6 +6,9 @@
 	import { getContext, onDestroy } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { getThemeStores } from '../../../themes.js';
+	import { readable } from 'svelte/store';
+
+	const { theme, resolveColor } = getThemeStores();
 
 	let props = getContext(propKey);
 
@@ -72,24 +75,19 @@
 	export let colorMin = undefined;
 	export let colorMid = undefined;
 	export let colorBreakpoints = undefined;
+
 	export let scaleColor = 'green'; // name of predefined color palette, custom color, array of custom colors
+	$: scaleColorStore =
+		typeof scaleColor === 'string' ? resolveColor(scaleColor) : readable(scaleColor);
+
 	export let scaleColumn = undefined;
-
-	const { theme } = getThemeStores();
-
-	const scaleColorMap = {
-		green: 'hsla(129, 33%, 57%,1)',
-		red: 'hsla(0, 56%, 56%,1)',
-		blue: 'hsla(198, 56%, 56%,1)'
-	};
 
 	let colorPalette;
 	$: {
-		if (scaleColor instanceof Array) {
-			colorPalette = scaleColor;
+		if ($scaleColorStore instanceof Array) {
+			colorPalette = $scaleColorStore;
 		} else {
-			const color = scaleColorMap[scaleColor] ?? scaleColor;
-			colorPalette = [$theme.colors['base-100'], color];
+			colorPalette = [$theme.colors['base-100'], $scaleColorStore];
 		}
 	}
 
@@ -116,8 +114,14 @@
 
 	// Bar Viz:
 	export let barColor = 'hsla(207, 69%, 79%, 1)';
+	$: barColorStore = resolveColor(barColor);
+
 	export let negativeBarColor = 'rgb(252 165 165)';
+	$: negativeBarColorStore = resolveColor(negativeBarColor);
+
 	export let backgroundColor = 'transparent';
+	$: backgroundColorStore = resolveColor(backgroundColor);
+
 	export let hideLabels = false;
 	$: hideLabels = hideLabels === 'true' || hideLabels === true;
 
@@ -158,7 +162,7 @@
 		showValue,
 		colorMax,
 		colorMin,
-		scaleColor,
+		scaleColor: $scaleColorStore,
 		scaleColumn,
 		colGroup,
 		colorMid,
@@ -171,9 +175,9 @@
 		sparkX,
 		sparkY,
 		sparkYScale,
-		barColor,
-		negativeBarColor,
-		backgroundColor,
+		barColor: $barColorStore,
+		negativeBarColor: $negativeBarColorStore,
+		backgroundColor: $backgroundColorStore,
 		hideLabels
 	};
 
