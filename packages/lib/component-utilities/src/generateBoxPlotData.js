@@ -34,7 +34,7 @@ export default function generateBoxPlotData(
 
 		boxData.names.push(data[i][name]);
 
-		boxData.colors.push(data[i][color]);
+		boxData.colors.push(data[i][color] ?? color);
 	}
 
 	return boxData;
