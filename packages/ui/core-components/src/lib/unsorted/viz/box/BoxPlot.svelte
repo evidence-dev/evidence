@@ -7,6 +7,9 @@
 	import Box from './Box.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import generateBoxPlotData from '@evidence-dev/component-utilities/generateBoxPlotData';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	export let data = undefined;
 	export let name = undefined;
@@ -16,7 +19,10 @@
 	export let midpoint = undefined;
 	export let max = undefined;
 	export let confidenceInterval = undefined;
+
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
+	$: console.log({ $colorStore });
 
 	export let series = undefined;
 	export let xType = undefined;
@@ -75,17 +81,20 @@
 			intervalTop,
 			max,
 			name,
-			color,
+			$colorStore,
 			confidenceInterval
 		);
 	};
 
 	updateBoxPlotData();
-	$: if (data) {
-		(async () => {
-			if (Query.isQuery(data)) await data.fetch();
-			updateBoxPlotData();
-		})();
+	$: {
+		$colorStore;
+		if (data) {
+			(async () => {
+				if (Query.isQuery(data)) await data.fetch();
+				updateBoxPlotData();
+			})();
+		}
 	}
 </script>
 
@@ -126,6 +135,6 @@
 	{connectGroup}
 	{seriesColors}
 >
-	<Box {boxPlotData} {color} {min} {max} />
+	<Box {boxPlotData} color={$colorStore} {max} />
 	<slot />
 </Chart>

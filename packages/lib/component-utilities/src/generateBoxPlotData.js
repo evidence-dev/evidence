@@ -34,6 +34,7 @@ export default function generateBoxPlotData(
 
 		boxData.names.push(data[i][name]);
 
+		// TODO how to use ThemeStores.resolve* here on data column?
 		boxData.colors.push(data[i][color] ?? color);
 	}
 

@@ -10,6 +10,9 @@
 
 	// import { prepareBoxplotData } from 'echarts/extension/dataTool';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
@@ -18,7 +21,10 @@
 	export let options = undefined;
 
 	export let boxPlotData;
+
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
+
 	export let min = undefined;
 	export let max = undefined;
 
@@ -41,7 +47,7 @@
 	$: boxConfig = {
 		type: 'boxplot',
 		data: boxPlotData.data,
-		colorBy: color ? 'data' : 'series',
+		colorBy: $colorStore ? 'data' : 'series',
 		itemStyle: {
 			// color: boxPlotData.colors,
 			opacity: 1
@@ -138,7 +144,7 @@
 					d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 				}
 				d.tooltip = { ...d.tooltip, ...chartOverrides.tooltip };
-				if (color) {
+				if ($colorStore) {
 					d.color = chartOverrides.color;
 				}
 				return d;
