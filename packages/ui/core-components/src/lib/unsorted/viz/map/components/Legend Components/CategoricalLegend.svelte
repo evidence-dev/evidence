@@ -52,7 +52,6 @@
 	.scrollbox {
 		width: 100%;
 		overflow-x: auto;
-		/* border-bottom: 1px solid var(--grey-200);    */
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 	}
