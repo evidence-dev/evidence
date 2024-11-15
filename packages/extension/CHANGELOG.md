@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.4
+
+### Patch Changes
+
+- 9ca3a61e0: support for Node v22
+
 ## 1.5.3
 
 ### Patch Changes

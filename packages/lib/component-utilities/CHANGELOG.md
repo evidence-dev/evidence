@@ -1,5 +1,22 @@
 # @evidence-dev/component-utilities
 
+## 3.2.20
+
+### Patch Changes
+
+- 62afe741b: Node 22 support
+- Updated dependencies [08923de11]
+  - @evidence-dev/sdk@1.4.8
+
+## 3.2.19
+
+### Patch Changes
+
+- 0c538ac70: remove observation of container element
+- Updated dependencies [00516897e]
+- Updated dependencies [1de1eca52]
+  - @evidence-dev/sdk@1.4.7
+
 ## 3.2.18
 
 ### Patch Changes
