@@ -14,6 +14,9 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColorPalette } = getThemeStores();
 
 	export let data;
 	export let queryID;
@@ -45,7 +48,11 @@
 
 	let height = '400px';
 	let gridHeight;
-	export let colorPalette = undefined;
+
+	// TODO this is more of a colorScale than a colorPalette. Should we rename?
+	export let colorPalette = ['rgb(254,234,159)', 'rgb(218,66,41)'];
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -282,7 +289,7 @@
 					borderColor: uiColours.grey200
 				},
 				inRange: {
-					color: colorPalette ?? ['rgb(254,234,159)', 'rgb(218,66,41)']
+					color: $colorPaletteStore
 				},
 				text: filter
 					? undefined
