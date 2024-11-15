@@ -3,8 +3,12 @@
 </script>
 
 <script>
+	import { getThemeStores } from '../../../themes.js';
+
 	import Chart from '../core/Chart.svelte';
 	import Bubble from './Bubble.svelte';
+
+	const { resolveColor, resolveColorPalette } = getThemeStores();
 
 	export let data = undefined;
 	export let x = undefined;
@@ -36,9 +40,16 @@
 	export let yMax = undefined;
 
 	export let shape = undefined;
+
 	export let fillColor = undefined;
+	$: fillColorStore = resolveColor(fillColor);
+	$: console.log({ $fillColorStore });
+
 	export let opacity = undefined; // opacity of both fill and outline (ECharts limitation)
+
 	export let outlineColor = undefined;
+	$: outlineColorStore = resolveColor(outlineColor);
+
 	export let outlineWidth = undefined;
 	export let scaleTo = undefined;
 	export let chartAreaHeight = undefined;
@@ -53,6 +64,8 @@
 	let useTooltip = true;
 
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -63,6 +76,7 @@
 	export let renderer = undefined;
 	export let downloadableData = undefined;
 	export let downloadableImage = undefined;
+	// TODO how to use ThemeStores.resolve* here?
 	export let seriesColors = undefined;
 	export let seriesOrder = undefined;
 
@@ -101,7 +115,7 @@
 	{bubble}
 	{sort}
 	{chartAreaHeight}
-	{colorPalette}
+	colorPalette={$colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -115,9 +129,9 @@
 >
 	<Bubble
 		{shape}
-		{fillColor}
+		fillColor={$fillColorStore}
 		{opacity}
-		{outlineColor}
+		outlineColor={$outlineColorStore}
 		{outlineWidth}
 		{scaleTo}
 		{useTooltip}
