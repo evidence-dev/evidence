@@ -1,6 +1,6 @@
 import { isValidPackage } from './is-valid-package';
 import { loadConfig } from './load-config';
-import findPluginDirectory from './find-plugin-directory.js';
+import { findPluginDirectory } from './find-plugin-directory.js';
 
 /**
  * Validates that the given package name exists and is a valid plugin package
