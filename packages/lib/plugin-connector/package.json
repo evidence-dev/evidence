@@ -79,7 +79,8 @@
 			"require": "./dist/index.cjs",
 			"types": "./types/index.d.ts"
 		},
-		"./load-config": "./dist/loadConfig/load-config.js"
+		"./load-config": "./dist/loadConfig/load-config.js",
+		"./find-plugin-directory": "./dist/plugin-discovery/find-plugin-directory.js"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",
