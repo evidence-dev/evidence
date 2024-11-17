@@ -74,7 +74,8 @@ export default {
 ```
 
 4. If self-hosting an SPA it is important to redirect all URLs to index.html. For example in an NGINX server block you would put:
-```
+
+```bash
 root /path/to/your/project/build/;
 
 location / {
