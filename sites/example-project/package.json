@@ -20,7 +20,6 @@
 		"@evidence-dev/duckdb": "workspace:*",
 		"@evidence-dev/mssql": "workspace:*",
 		"@evidence-dev/mysql": "workspace:*",
-		"@evidence-dev/plugin-connector": "workspace:*",
 		"@evidence-dev/postgres": "workspace:*",
 		"@evidence-dev/preprocess": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",

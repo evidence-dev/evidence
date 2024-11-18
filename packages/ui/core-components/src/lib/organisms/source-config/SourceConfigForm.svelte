@@ -1,18 +1,27 @@
 <script>
+	// @ts-check
+
+	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
+
 	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
 	import { DeviceFloppy, Plug } from '@evidence-dev/component-utilities/icons';
 
-	import { Button } from '../../atoms/button';
+	import { Button } from '../../atoms/button/index.js';
 	import SourceNameField, { validateName } from './atoms/SourceNameField.svelte';
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
 
 	export let sourcePlugin;
+
+	/** @type {Pick<DatasourceSpec, 'name' | 'type' | 'options'> & { initialName?: string }} */
 	export let source;
+
+	/** @type {(Pick<DatasourceSpec, 'name' | 'type' | 'options'> & { initialName?: string })[]} */
 	export let sources;
 
 	const dispatch = createEventDispatcher();
 
+	/** @type {boolean} */
 	let reveal;
 
 	// Track the name that the source got put in with. This lets us track renaming sources
@@ -28,6 +37,7 @@
 
 	let nameError = '';
 
+	/** @type {import('@sveltejs/kit').SubmitFunction} */
 	const callback = ({ action, cancel }) => {
 		configurationLoading = false;
 		validationLoading = false;
@@ -53,12 +63,19 @@
 				break;
 		}
 		return ({ result, action }) => {
-			if (result.status >= 300) {
+			if (result.type === 'failure') {
 				// Some system failure occurred
 				if (typeof result.data === 'string') configurationError = result.data;
-				else if (typeof result.data === 'object' && 'message' in result.data)
-					configurationError = result.data.message;
-				else configurationError = 'Error saving datasource.';
+				else if (typeof result.data === 'object' && 'message' in result.data) {
+					switch (action.search) {
+						case '?/updateSource':
+							configurationError = result.data.message;
+							break;
+						case '?/testSource':
+							validationError = result.data.message;
+							break;
+					}
+				} else configurationError = 'Error saving datasource.';
 
 				configurationLoading = false;
 				configurationOkay = false;
@@ -70,16 +87,16 @@
 			switch (action.search) {
 				case '?/updateSource':
 					// TODO: Where would configurationError come from?
-					Object.assign(source, result?.data?.updatedSource);
+					if (result.type === 'success') {
+						Object.assign(source, result.data?.updatedSource);
+					}
 					configurationLoading = false;
 					configurationOkay = true;
 					dispatch('sourceUpdated', source);
 					break;
 				case '?/testSource':
-					if (result.data?.success === true) {
+					if (result.type === 'success') {
 						validationError = '';
-					} else {
-						validationError = result.data?.message;
 					}
 					validationLoading = false;
 					validationOkay = true;

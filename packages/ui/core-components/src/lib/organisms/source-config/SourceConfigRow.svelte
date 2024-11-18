@@ -1,30 +1,55 @@
 <script>
+	// @ts-check
+
+	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
+	/** @typedef {{ package: { package: import('@evidence-dev/sdk/plugins').DatasourcePackage } }} DatasourcePlugin */
+
 	import { slide } from 'svelte/transition';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import * as simpleIcons from '@steeze-ui/simple-icons';
 	import * as evidenceIcons from '@evidence-dev/icons';
-	import { Button } from '../../atoms/button';
+	import { Button } from '../../atoms/button/index.js';
 
 	import { Database, ExclamationCircle, Pencil } from '@steeze-ui/tabler-icons';
 	import SourceConfigForm from './SourceConfigForm.svelte';
-	import { Hint } from '../../atoms/hint';
+	import { Hint } from '../../atoms/hint/index.js';
 
+	/** @type {Pick<DatasourceSpec, 'name' | 'type'>} */
 	export let source;
+
+	/** @type {Pick<DatasourceSpec, 'name' | 'type'>[]} */
 	export let sources;
+
+	/** @type {Record<string, DatasourcePlugin>} */
 	export let availableSourcePlugins;
+
 	export let startOpen = false;
 
 	let open = startOpen;
 
 	$: sourcePlugin = availableSourcePlugins?.[source.type];
+
+	$: iconName = sourcePlugin?.package.package.evidence.icon;
+
+	/**
+	 * @param {string | undefined} iconName
+	 * @returns {iconName is keyof typeof simpleIcons}
+	 */
+	const isSimpleIcon = (iconName) => typeof iconName !== 'undefined' && iconName in simpleIcons;
+
+	/**
+	 * @param {string | undefined} iconName
+	 * @returns {iconName is keyof typeof evidenceIcons}
+	 */
+	const isEvidenceIcon = (iconName) => typeof iconName !== 'undefined' && iconName in evidenceIcons;
 </script>
 
-<div class="contents text-xs">
-	{#if simpleIcons[sourcePlugin?.package.package.evidence.icon]}
-		<Icon src={simpleIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
-	{:else if evidenceIcons[sourcePlugin?.package.package.evidence.icon]}
-		<Icon src={evidenceIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
+<div class="contents text-xs odd:bg-base-300">
+	{#if isSimpleIcon(iconName)}
+		<Icon src={simpleIcons[iconName]} class="w-6 h-6" />
+	{:else if isEvidenceIcon(iconName)}
+		<Icon src={evidenceIcons[iconName]} class="w-6 h-6" />
 	{:else if !sourcePlugin}
 		<Icon src={ExclamationCircle} class="w-6 h-6 text-negative" />
 	{:else}
