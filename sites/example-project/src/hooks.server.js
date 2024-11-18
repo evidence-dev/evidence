@@ -18,9 +18,7 @@ const transformError = (e) => {
 
 /** @type {import("@sveltejs/kit").HandleClientError } */
 export const handleError = (e) => {
-	if (isDebug()) {
-		console.error(`Uncaught error while server responding`, e);
-	}
+	console.error(`Uncaught error while server responding`, e);
 	return transformError(e.error);
 };
 
