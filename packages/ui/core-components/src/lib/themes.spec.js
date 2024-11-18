@@ -14,14 +14,14 @@ vi.mock('$evidence/themes', () => ({
 	themes: {
 		light: {
 			colors: {
-				builtin: 'light_builtin',
-				custom: 'light_custom'
+				myColor1: 'light_myColor1',
+				myColor2: 'light_myColor2'
 			}
 		},
 		dark: {
 			colors: {
-				builtin: 'dark_builtin',
-				custom: 'dark_custom'
+				myColor1: 'dark_myColor1',
+				myColor2: 'dark_myColor2'
 			}
 		}
 	}
@@ -52,46 +52,46 @@ describe('ThemeStores', async () => {
 		});
 
 		it('should correctly resolve colors in theme', () => {
-			const store = resolveColor('builtin');
+			const store = resolveColor('myColor1');
 
 			setAppearance('light');
-			expect(get(store)).toBe(`light_builtin`);
+			expect(get(store)).toBe(`light_myColor1`);
 
 			setAppearance('dark');
-			expect(get(store)).toBe(`dark_builtin`);
+			expect(get(store)).toBe(`dark_myColor1`);
 		});
 
 		it('should correctly resolve each element of an array', () => {
-			const store = resolveColor(['builtin', '#abcdef', 'custom', undefined]);
+			const store = resolveColor(['myColor1', '#abcdef', 'myColor2', undefined]);
 
 			setAppearance('light');
-			expect(get(store)).toEqual(['light_builtin', '#abcdef', 'light_custom', undefined]);
+			expect(get(store)).toEqual(['light_myColor1', '#abcdef', 'light_myColor2', undefined]);
 
 			setAppearance('dark');
-			expect(get(store)).toEqual(['dark_builtin', '#abcdef', 'dark_custom', undefined]);
+			expect(get(store)).toEqual(['dark_myColor1', '#abcdef', 'dark_myColor2', undefined]);
 		});
 
 		it('should correctly resolve each value of an object', () => {
 			const store = resolveColor({
-				key1: 'builtin',
+				key1: 'myColor1',
 				key2: '#abcdef',
-				key3: 'custom',
+				key3: 'myColor2',
 				key4: undefined
 			});
 
 			setAppearance('light');
 			expect(get(store)).toEqual({
-				key1: 'light_builtin',
+				key1: 'light_myColor1',
 				key2: '#abcdef',
-				key3: 'light_custom',
+				key3: 'light_myColor2',
 				key4: undefined
 			});
 
 			setAppearance('dark');
 			expect(get(store)).toEqual({
-				key1: 'dark_builtin',
+				key1: 'dark_myColor1',
 				key2: '#abcdef',
-				key3: 'dark_custom',
+				key3: 'dark_myColor2',
 				key4: undefined
 			});
 		});
