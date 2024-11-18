@@ -14,6 +14,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import { getThemeStores } from '../../../themes.js';
 
+	const { activeMode, resolveColor } = getThemeStores();
+
 	export let config = undefined;
 
 	export let queryID = undefined;
@@ -31,8 +33,8 @@
 	export let seriesOptions = undefined;
 	export let printEchartsConfig; // helper for custom chart development
 
-	// TODO how to use ThemeStores.resolve* here?
 	export let seriesColors = undefined;
+	$: seriesColorsStore = resolveColor(seriesColors);
 
 	export let connectGroup = undefined;
 
@@ -42,8 +44,6 @@
 	let copying = false;
 	let printing = false;
 	let hovering = false;
-
-	const { activeMode } = getThemeStores();
 </script>
 
 <svelte:window
@@ -89,7 +89,7 @@
 					dispatch,
 					renderer,
 					connectGroup,
-					seriesColors,
+					seriesColors: $seriesColorsStore,
 					theme: $activeMode
 				}}
 			/>
@@ -104,7 +104,7 @@
 		{printing}
 		{echartsOptions}
 		{seriesOptions}
-		{seriesColors}
+		seriesColors={$seriesColorsStore}
 	/>
 
 	{#if downloadableData || downloadableImage}
@@ -176,7 +176,7 @@
 			...$$restProps,
 			echartsOptions,
 			seriesOptions,
-			seriesColors,
+			seriesColors: $seriesColorsStore,
 			queryID,
 			evidenceChartTitle
 		}}

@@ -5,6 +5,9 @@
 <script>
 	import { getContext } from 'svelte';
 	import eChartsCopy from '@evidence-dev/component-utilities/echartsCopy';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	export let config = undefined;
 	export let height = '291px';
@@ -14,8 +17,9 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 
-	// TODO how to use ThemeStores.resolve* here?
 	export let seriesColors = undefined;
+	$: seriesColorsStore = resolveColor(seriesColors);
+
 	export let isMap = false;
 	export let extraHeight = undefined;
 
@@ -52,7 +56,13 @@
           overflow: visible;
           break-inside: avoid;
       "
-		use:eChartsCopy={{ config, ratio: 2, echartsOptions, seriesOptions, seriesColors }}
+		use:eChartsCopy={{
+			config,
+			ratio: 2,
+			echartsOptions,
+			seriesOptions,
+			seriesColors: $seriesColorsStore
+		}}
 	/>
 {:else if printing}
 	{#if inGrid}
@@ -72,7 +82,7 @@
 				ratio: 4,
 				echartsOptions,
 				seriesOptions,
-				seriesColors,
+				seriesColors: $seriesColorsStore,
 				isMap,
 				extraHeight,
 				width: portraitWidth
@@ -94,7 +104,7 @@
 				ratio: 4,
 				echartsOptions,
 				seriesOptions,
-				seriesColors,
+				seriesColors: $seriesColorsStore,
 				isMap,
 				extraHeight,
 				width: landscapeWidth
@@ -117,7 +127,7 @@
 				ratio: 4,
 				echartsOptions,
 				seriesOptions,
-				seriesColors,
+				seriesColors: $seriesColorsStore,
 				isMap,
 				extraHeight,
 				width: 650
@@ -140,7 +150,7 @@
 				ratio: 4,
 				echartsOptions,
 				seriesOptions,
-				seriesColors,
+				seriesColors: $seriesColorsStore,
 				isMap,
 				extraHeight,
 				width: 841

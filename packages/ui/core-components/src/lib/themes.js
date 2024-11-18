@@ -4,7 +4,7 @@ import { getContext, setContext } from 'svelte';
 import { derived, get, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
-import { isBuiltinColor, isBuiltinColorPalette } from '@evidence-dev/tailwind';
+import { isBuiltinColorPalette } from '@evidence-dev/tailwind';
 import { themes, themesConfig } from '$evidence/themes';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
@@ -130,6 +130,11 @@ export class ThemeStores {
 		};
 	};
 
+	/** @param {'light' | 'dark' | 'system'} appearance */
+	setAppearance = (appearance) => {
+		this.#selectedAppearance.set(appearance);
+	};
+
 	cycleAppearance = () => {
 		this.#selectedAppearance.update((current) => {
 			switch (current) {
@@ -145,17 +150,42 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {unknown} color
-	 * @returns {Readable<string | undefined>}
+	 * @type {{
+	 * 		<T>(input: T[]): Readable<(string | T)[]>;
+	 * 		<T>(input: Record<string, T>): Readable<Record<string, string | T>>;
+	 * 		<T>(input: T): Readable<string | T>;
+	 * }}
 	 */
-	resolveColor = (color) => {
-		if (typeof color !== 'string') return readable(undefined);
-
-		const trimmed = color.trim();
-		if (isBuiltinColor(trimmed)) {
-			return derived(this.#theme, ($theme) => $theme.colors[trimmed]);
+	resolveColor = (input) => {
+		if (typeof input === 'string') {
+			const trimmed = input.trim();
+			const r = derived(this.#theme, ($theme) => $theme.colors[trimmed] ?? trimmed);
+			return /** @type {any} */ (r);
 		}
-		return readable(trimmed);
+
+		if (Array.isArray(input)) {
+			const r = derived(this.#theme, ($theme) =>
+				input.map((color) => {
+					if (typeof color !== 'string') return color;
+					return $theme.colors[color] ?? color;
+				})
+			);
+			return /** @type {any} */ (r);
+		}
+
+		if (input) {
+			return derived(this.#theme, ($theme) =>
+				Object.fromEntries(
+					Object.entries(input).map(([key, color]) => {
+						if (typeof color !== 'string') return [key, color];
+						return [key, $theme.colors[color] ?? color];
+					})
+				)
+			);
+		}
+
+		const r = readable(input);
+		return /** @type {any} */ (r);
 	};
 
 	/**
@@ -208,3 +238,8 @@ export const getThemeStores = () => {
 	}
 	return stores;
 };
+
+/**
+ * @template T
+ * @typedef {T | T[] | { [key: string]: T }} ValueOrArrayOrObject
+ */

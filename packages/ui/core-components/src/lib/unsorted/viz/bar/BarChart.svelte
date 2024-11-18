@@ -129,8 +129,9 @@
 	export let downloadableData = undefined;
 	export let downloadableImage = undefined;
 
-	// TODO how to use ThemeStores.resolve* here?
 	export let seriesColors = undefined;
+	$: seriesColorsStore = resolveColor(seriesColors);
+
 	export let seriesOrder = undefined;
 	export let connectGroup = undefined;
 </script>
@@ -190,7 +191,7 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	{seriesColors}
+	seriesColors={$seriesColorsStore}
 >
 	<Bar
 		{type}

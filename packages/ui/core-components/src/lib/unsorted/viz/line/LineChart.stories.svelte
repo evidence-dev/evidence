@@ -89,6 +89,12 @@
 </Story>
 
 <Story
-	name="With seriesOrder"
-	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+	name="With seriesOrder and seriesColors"
+	args={{
+		x: 'x',
+		y: 'y',
+		series: 'series',
+		seriesOrder: ['ivory', 'blue', 'violet', 'olive'],
+		seriesColors: { ivory: 'primary', blue: 'secondary', violet: 'accent', olive: 'negative' }
+	}}
 />
