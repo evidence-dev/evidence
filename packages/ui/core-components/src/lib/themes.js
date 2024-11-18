@@ -227,7 +227,20 @@ export const getThemeStores = () => {
 	return stores;
 };
 
+/** @typedef {[string, string]} StringTuple */
+
 /**
- * @template T
- * @typedef {T | T[] | { [key: string]: T }} ValueOrArrayOrObject
+ * @param {unknown} input
+ * @returns {input is StringTuple}
  */
+const isStringTuple = (input) =>
+	Array.isArray(input) &&
+	input.length === 2 &&
+	typeof input[0] === 'string' &&
+	typeof input[1] === 'string';
+
+/**
+ * @param {unknown} input
+ * @returns {input is StringTuple[]}
+ */
+const isArrayOfStringTuples = (input) => Array.isArray(input) && input.every(isStringTuple);
