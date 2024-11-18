@@ -1,4 +1,3 @@
-import { isDebug } from '@evidence-dev/sdk/utils';
 import { dev } from '$app/environment';
 
 /** @param {Error | unknown} e  */
