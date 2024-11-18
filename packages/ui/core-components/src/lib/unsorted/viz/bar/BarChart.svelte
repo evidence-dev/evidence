@@ -9,7 +9,7 @@
 	import Bar from './Bar.svelte';
 	import { onMount } from 'svelte';
 
-	const { resolveColor, resolveColorPalette } = getThemeStores();
+	const { resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
 	export let data = undefined;
 	export let x = undefined;
@@ -130,7 +130,7 @@
 	export let downloadableImage = undefined;
 
 	export let seriesColors = undefined;
-	$: seriesColorsStore = resolveColor(seriesColors);
+	$: seriesColorsStore = resolveColorsObject(seriesColors);
 
 	export let seriesOrder = undefined;
 	export let connectGroup = undefined;

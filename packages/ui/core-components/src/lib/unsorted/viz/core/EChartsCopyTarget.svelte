@@ -7,7 +7,7 @@
 	import eChartsCopy from '@evidence-dev/component-utilities/echartsCopy';
 	import { getThemeStores } from '../../../themes.js';
 
-	const { resolveColor } = getThemeStores();
+	const { resolveColorsObject } = getThemeStores();
 
 	export let config = undefined;
 	export let height = '291px';
@@ -18,7 +18,7 @@
 	export let seriesOptions = undefined;
 
 	export let seriesColors = undefined;
-	$: seriesColorsStore = resolveColor(seriesColors);
+	$: seriesColorsStore = resolveColorsObject(seriesColors);
 
 	export let isMap = false;
 	export let extraHeight = undefined;

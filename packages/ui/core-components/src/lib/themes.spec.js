@@ -28,7 +28,7 @@ vi.mock('$evidence/themes', () => ({
 }));
 
 describe('ThemeStores', async () => {
-	const { setAppearance, resolveColor } = new ThemeStores();
+	const { setAppearance, resolveColor, resolveColorsObject } = new ThemeStores();
 
 	describe('resolveColor', () => {
 		it('should leave undefined as-is', () => {
@@ -61,38 +61,30 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toBe(`dark_myColor1`);
 		});
 
-		it('should correctly resolve each element of an array', () => {
-			const store = resolveColor(['myColor1', '#abcdef', 'myColor2', undefined]);
+		describe('resolveColorsObject', () => {
+			it('should correctly resolve each value of an object', () => {
+				const store = resolveColorsObject({
+					key1: 'myColor1',
+					key2: '#abcdef',
+					key3: 'myColor2',
+					key4: undefined
+				});
 
-			setAppearance('light');
-			expect(get(store)).toEqual(['light_myColor1', '#abcdef', 'light_myColor2', undefined]);
+				setAppearance('light');
+				expect(get(store)).toEqual({
+					key1: 'light_myColor1',
+					key2: '#abcdef',
+					key3: 'light_myColor2',
+					key4: undefined
+				});
 
-			setAppearance('dark');
-			expect(get(store)).toEqual(['dark_myColor1', '#abcdef', 'dark_myColor2', undefined]);
-		});
-
-		it('should correctly resolve each value of an object', () => {
-			const store = resolveColor({
-				key1: 'myColor1',
-				key2: '#abcdef',
-				key3: 'myColor2',
-				key4: undefined
-			});
-
-			setAppearance('light');
-			expect(get(store)).toEqual({
-				key1: 'light_myColor1',
-				key2: '#abcdef',
-				key3: 'light_myColor2',
-				key4: undefined
-			});
-
-			setAppearance('dark');
-			expect(get(store)).toEqual({
-				key1: 'dark_myColor1',
-				key2: '#abcdef',
-				key3: 'dark_myColor2',
-				key4: undefined
+				setAppearance('dark');
+				expect(get(store)).toEqual({
+					key1: 'dark_myColor1',
+					key2: '#abcdef',
+					key3: 'dark_myColor2',
+					key4: undefined
+				});
 			});
 		});
 	});

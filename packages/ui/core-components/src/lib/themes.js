@@ -151,41 +151,31 @@ export class ThemeStores {
 
 	/**
 	 * @type {{
-	 * 		<T>(input: T[]): Readable<(string | T)[]>;
-	 * 		<T>(input: Record<string, T>): Readable<Record<string, string | T>>;
-	 * 		<T>(input: T): Readable<string | T>;
+	 *  <T>(input: T): Readable<string | T>;
+	 * 	<_>(input: string): Readable<string>;
 	 * }}
 	 */
 	resolveColor = (input) => {
-		if (typeof input === 'string') {
-			const trimmed = input.trim();
-			const r = derived(this.#theme, ($theme) => $theme.colors[trimmed] ?? trimmed);
-			return /** @type {any} */ (r);
-		}
+		if (typeof input !== 'string') return readable(input);
 
-		if (Array.isArray(input)) {
-			const r = derived(this.#theme, ($theme) =>
-				input.map((color) => {
-					if (typeof color !== 'string') return color;
-					return $theme.colors[color] ?? color;
+		const trimmed = input.trim();
+		return derived(this.#theme, ($theme) => $theme.colors[trimmed] ?? trimmed);
+	};
+
+	/**
+	 * @template T
+	 * @param {Record<string, T>} input
+	 * @returns {Readable<Record<string, (string | T)[]>>}
+	 */
+	resolveColorsObject = (input) => {
+		return derived(this.#theme, ($theme) =>
+			Object.fromEntries(
+				Object.entries(input).map(([key, color]) => {
+					if (typeof color !== 'string') return [key, color];
+					return [key, $theme.colors[color] ?? color];
 				})
-			);
-			return /** @type {any} */ (r);
-		}
-
-		if (input) {
-			return derived(this.#theme, ($theme) =>
-				Object.fromEntries(
-					Object.entries(input).map(([key, color]) => {
-						if (typeof color !== 'string') return [key, color];
-						return [key, $theme.colors[color] ?? color];
-					})
-				)
-			);
-		}
-
-		const r = readable(input);
-		return /** @type {any} */ (r);
+			)
+		);
 	};
 
 	/**
