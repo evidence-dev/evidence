@@ -70,6 +70,26 @@ describe('ThemeStores', async () => {
 			setAppearance('dark');
 			expect(get(store)).toBe(`dark_myColor2`);
 		});
+
+		it('should correctly resolve tuple of hex codes', () => {
+			const store = resolveColor(['#abcdef', '#fedcba']);
+
+			setAppearance('light');
+			expect(get(store)).toEqual('#abcdef');
+
+			setAppearance('dark');
+			expect(get(store)).toEqual('#fedcba');
+		});
+
+		it('should correctly resolve tuple of theme colors', () => {
+			const store = resolveColor(['myColor1', 'myColor2']);
+
+			setAppearance('light');
+			expect(get(store)).toEqual('light_myColor1');
+
+			setAppearance('dark');
+			expect(get(store)).toEqual('dark_myColor2');
+		});
 	});
 
 	describe('resolveColorsObject', () => {

@@ -150,14 +150,23 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @type {{
-	 *  <T>(input: T): Readable<string | T>;
-	 * 	<_>(input: string): Readable<string>;
-	 * }}
+	 * @param {unknown} input
+	 * @returns {Readable<string | undefined>}
 	 */
 	resolveColor = (input) => {
-		if (typeof input !== 'string') return readable(input);
-		return derived(this.#theme, ($theme) => $theme.colors[input.trim()] ?? input);
+		if (typeof input === 'string') {
+			return derived(this.#theme, ($theme) => $theme.colors[input.trim()] ?? input);
+		}
+
+		if (isStringTuple(input)) {
+			const [light, dark] = input;
+			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) => {
+				const color = $activeAppearance === 'light' ? light : dark;
+				return $theme.colors[color] ?? color;
+			});
+		}
+
+		return readable(undefined);
 	};
 
 	/**
