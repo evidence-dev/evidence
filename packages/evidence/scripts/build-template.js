@@ -53,27 +53,9 @@ fsExtra.outputFileSync(
 	import { createLogger } from 'vite';
 	import { sourceQueryHmr, configVirtual } from '@evidence-dev/sdk/build/vite';
 	import { isDebug } from '@evidence-dev/sdk/utils';
+	import { log } from "@evidence-dev/sdk/logger";
 
 	const logger = createLogger();
-	const loggerWarn = logger.warn;
-  const loggerOnce = logger.warnOnce
-  
-  /**
-   * @see https://github.com/evidence-dev/evidence/issues/1876
-   * Ignore the duckdb-wasm sourcemap warning
-   */
-  logger.warnOnce = (m, o) => {
-  if (m.match(/Sourcemap for ".+\\/node_modules\\/@duckdb\\/duckdb-wasm\\/dist\\/duckdb-browser-eh\\.worker\\.js" points to missing source files/)) return;
-  loggerOnce(m, o)
-}
-
-	logger.warn = (msg, options) => {
-		// ignore fs/promises warning, used in +layout.js behind if (!browser) check
-		if (msg.includes('Module "fs/promises" has been externalized for browser compatibility')) return;
-		// ignore eval warning, used in duckdb-wasm
-		if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
-		loggerWarn(msg, options);
-};
 
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
@@ -120,6 +102,35 @@ fsExtra.outputFileSync(
 		},
 		customLogger: logger
     }
+
+	if (isDebug()) {
+		const loggerWarn = logger.warn;
+		const loggerOnce = logger.warnOnce
+
+		/**
+		 * @see https://github.com/evidence-dev/evidence/issues/1876
+		 * Ignore the duckdb-wasm sourcemap warning
+		 */
+		logger.warnOnce = (m, o) => {
+			if (m.match(/Sourcemap for ".+\\/node_modules\\/@duckdb\\/duckdb-wasm\\/dist\\/duckdb-browser-eh\\.worker\\.js" points to missing source files/)) return;
+			loggerOnce(m, o)
+		}
+
+		logger.warn = (msg, options) => {
+			// ignore fs/promises warning, used in +layout.js behind if (!browser) check
+			if (msg.includes('Module "fs/promises" has been externalized for browser compatibility')) return;
+
+			// ignore eval warning, used in duckdb-wasm
+			if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
+
+			loggerWarn(msg, options);
+		};
+	} else {
+		config.logLevel = 'silent';
+		logger.error = (msg) => log.error(msg);
+		logger.info = logger.warn = logger.warnOnce = () => {};
+	}
+
     export default config`
 );
 
