@@ -61,18 +61,25 @@ export const prerender = true;
  * @type {import("@sveltejs/kit").RequestHandler}
  */
 export async function GET() {
-	try {
-		const pages = {};
+	const pages = {};
 
-		const pagesDir = await fs.readdir('src/pages', { withFileTypes: true, recursive: true });
-		for (const dirent of pagesDir) {
+	/** @param {string} dir */
+	async function recursiveReadDir(dir) {
+		const dirents = await fs.readdir(dir, { withFileTypes: true });
+		for (const dirent of dirents) {
 			if (dirent.isFile() && dirent.name.endsWith('.md')) {
-				const relative_path = path.join(dirent.parentPath ?? dirent.path, dirent.name);
+				const relative_path = path.join(dirent.parentPath ?? dirent.path ?? dir, dirent.name);
 				const content = await fs.readFile(relative_path, 'utf-8');
 				// regularize for windows
 				pages[new URL(`file:///${relative_path}`).pathname] = content;
+			} else if (dirent.isDirectory()) {
+				await recursiveReadDir(path.join(dir, dirent.name));
 			}
 		}
+	}
+
+	try {
+		recursiveReadDir(path.join('src', 'pages'));
 
 		const fileTree = _buildPageManifest(pages);
 
