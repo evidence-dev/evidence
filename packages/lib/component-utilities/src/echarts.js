@@ -207,7 +207,6 @@ const echartsAction = (node, options) => {
 				duration: ANIMATION_DURATION
 			}
 		});
-		console.log(chart.getOption());
 		updateLabelWidths();
 	};
 
