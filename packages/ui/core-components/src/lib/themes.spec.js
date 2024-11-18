@@ -131,6 +131,15 @@ describe('ThemeStores', async () => {
 	});
 
 	describe('resolveColorsObject', () => {
+		it('should leave undefined as is', () => {
+			const store = resolveColorsObject(undefined);
+
+			setAppearance('light');
+			expect(get(store)).toBe(undefined);
+
+			setAppearance('dark');
+			expect(get(store)).toBe(undefined);
+		});
 		it('should resolve each value of an object', () => {
 			const store = resolveColorsObject({
 				key1: 'myColor1',

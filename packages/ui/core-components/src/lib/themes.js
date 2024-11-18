@@ -170,10 +170,12 @@ export class ThemeStores {
 
 	/**
 	 * @template T
-	 * @param {Record<string, T>} input
-	 * @returns {Readable<Record<string, (string | T)[]>>}
+	 * @param {Record<string, T> | undefined} input
+	 * @returns {Readable<Record<string, (string | T)[]> | undefined>}
 	 */
 	resolveColorsObject = (input) => {
+		if (!input) return readable(undefined);
+
 		return derived(this.#theme, ($theme) =>
 			Object.fromEntries(
 				Object.entries(input).map(([key, color]) => {
