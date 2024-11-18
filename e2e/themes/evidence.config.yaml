@@ -1,4 +1,6 @@
 themes:
+  defaultAppearance: light
+  appearanceSwitcher: true
   colors:
     primary:
       light: "#ff0000"
