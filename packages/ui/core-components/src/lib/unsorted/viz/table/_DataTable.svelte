@@ -118,11 +118,13 @@
 	$: showLinkCol = showLinkCol === 'true' || showLinkCol === true;
 
 	let error = undefined;
+	let groupDataPopulated = false;
 
 	// ---------------------------------------------------------------------------------------
 	// Add props to store to let child components access them
 	// ---------------------------------------------------------------------------------------
 	props.update((d) => {
+		groupDataPopulated = false;
 		return { ...d, data, columns: [] };
 	});
 
@@ -305,17 +307,17 @@
 					? 1 * sortModifier
 					: 0;
 
-		const sortedFilteredData = [...filteredData].sort(comparator);
-
-		filteredData = sortedFilteredData;
-		console.log('sortedFilteredData', sortedFilteredData);
-
 		if (groupBy) {
 			const sortedGroupedData = {};
 			for (const groupName of Object.keys(groupedData)) {
 				sortedGroupedData[groupName] = [...groupedData[groupName]].sort(comparator);
 			}
-			groupedData = sortedGroupedData;		}
+			groupedData = sortedGroupedData;
+		} else {
+			const sortedFilteredData = [...filteredData].sort(comparator);
+
+			filteredData = sortedFilteredData;
+		}
 	};
 
 	let sortedGroupNames;
@@ -434,14 +436,17 @@
 	let groupRowData = [];
 
 	$: if (!error) {
-		groupedData = data.reduce((acc, row) => {
-			const groupName = row[groupBy];
-			if (!acc[groupName]) {
-				acc[groupName] = [];
-			}
-			acc[groupName].push(row);
-			return acc;
-		}, {});
+		if (groupBy && !groupDataPopulated) {
+			groupedData = data.reduce((acc, row) => {
+				const groupName = row[groupBy];
+				if (!acc[groupName]) {
+					acc[groupName] = [];
+				}
+				acc[groupName].push(row);
+				return acc;
+			}, {});
+			groupDataPopulated = true;
+		}
 
 		// After groupedData is populated, calculate aggregations for groupRowData
 		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
