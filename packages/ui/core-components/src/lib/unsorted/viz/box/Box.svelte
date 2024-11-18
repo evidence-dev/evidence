@@ -20,7 +20,9 @@
 	const seriesSet = series ? true : false; // Hack, see chart.svelte
 	export let options = undefined;
 
+	/** @type {import('@evidence-dev/component-utilities/generateBoxPlotData').BoxPlotData}*/
 	export let boxPlotData;
+	$: ({ colors } = boxPlotData);
 
 	export let color = undefined;
 	$: colorStore = resolveColor(color);
@@ -49,7 +51,6 @@
 		data: boxPlotData.data,
 		colorBy: $colorStore ? 'data' : 'series',
 		itemStyle: {
-			// color: boxPlotData.colors,
 			opacity: 1
 			// borderColor: 'inherit'
 		},
@@ -120,7 +121,7 @@
 				return output;
 			}
 		},
-		color: boxPlotData.colors
+		color: $colors
 	};
 
 	beforeUpdate(() => {

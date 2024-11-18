@@ -6,10 +6,10 @@
 	import Chart from '../core/Chart.svelte';
 	import Box from './Box.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import generateBoxPlotData from '@evidence-dev/component-utilities/generateBoxPlotData';
+	import { generateBoxPlotData } from '@evidence-dev/component-utilities/generateBoxPlotData';
 	import { getThemeStores } from '../../../themes.js';
 
-	const { resolveColor } = getThemeStores();
+	const { theme, resolveColor } = getThemeStores();
 
 	export let data = undefined;
 	export let name = undefined;
@@ -70,6 +70,7 @@
 		}
 	}
 
+	/** @type {{ colors: Readable<string[]> }}*/
 	let boxPlotData;
 	const updateBoxPlotData = () => {
 		boxPlotData = generateBoxPlotData(
@@ -81,12 +82,14 @@
 			max,
 			name,
 			$colorStore,
-			confidenceInterval
+			confidenceInterval,
+			resolveColor
 		);
 	};
 
 	updateBoxPlotData();
 	$: {
+		$theme;
 		$colorStore;
 		if (data) {
 			(async () => {

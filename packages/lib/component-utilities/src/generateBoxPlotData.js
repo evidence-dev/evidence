@@ -1,4 +1,29 @@
-export default function generateBoxPlotData(
+// @ts-check
+
+/** @template T @typedef {import('svelte/store').Readable<T>} Readable */
+
+/**
+ * @typedef {{
+ * 	data: unknown[][]
+ * 	names: string[]
+ * 	colors: Readable<(string | undefined)[]>
+ * }} BoxPlotData
+ */
+
+/**
+ * @param {unknown[]} data
+ * @param {string} min
+ * @param {string} minInterval
+ * @param {string} midpoint
+ * @param {string} maxInterval
+ * @param {string} max
+ * @param {string} name
+ * @param {string | undefined} color
+ * @param {string} confidenceInterval
+ * @param {(color: unknown[]) => Readable<(string | undefined)[]>} resolveColor
+ * @returns {BoxPlotData}
+ */
+export const generateBoxPlotData = (
 	data,
 	min = undefined,
 	minInterval,
@@ -7,8 +32,9 @@ export default function generateBoxPlotData(
 	max = undefined,
 	name,
 	color,
-	confidenceInterval = undefined
-) {
+	confidenceInterval = undefined,
+	resolveColor
+) => {
 	let boxData = {
 		data: [],
 		names: [],
@@ -34,9 +60,11 @@ export default function generateBoxPlotData(
 
 		boxData.names.push(data[i][name]);
 
-		// TODO how to use ThemeStores.resolve* here on data column?
 		boxData.colors.push(data[i][color] ?? color);
 	}
 
-	return boxData;
-}
+	return {
+		...boxData,
+		colors: resolveColor(boxData.colors)
+	};
+};
