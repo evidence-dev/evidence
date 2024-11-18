@@ -79,7 +79,7 @@ export async function GET() {
 	}
 
 	try {
-		recursiveReadDir(path.join('src', 'pages'));
+		await recursiveReadDir(path.join('src', 'pages'));
 
 		const fileTree = _buildPageManifest(pages);
 
