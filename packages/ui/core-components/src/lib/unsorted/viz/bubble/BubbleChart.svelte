@@ -43,7 +43,6 @@
 
 	export let fillColor = undefined;
 	$: fillColorStore = resolveColor(fillColor);
-	$: console.log({ $fillColorStore });
 
 	export let opacity = undefined; // opacity of both fill and outline (ECharts limitation)
 
