@@ -157,9 +157,7 @@ export class ThemeStores {
 	 */
 	resolveColor = (input) => {
 		if (typeof input !== 'string') return readable(input);
-
-		const trimmed = input.trim();
-		return derived(this.#theme, ($theme) => $theme.colors[trimmed] ?? trimmed);
+		return derived(this.#theme, ($theme) => $theme.colors[input.trim()] ?? input);
 	};
 
 	/**
@@ -172,7 +170,7 @@ export class ThemeStores {
 			Object.fromEntries(
 				Object.entries(input).map(([key, color]) => {
 					if (typeof color !== 'string') return [key, color];
-					return [key, $theme.colors[color] ?? color];
+					return [key, $theme.colors[color.trim()] ?? color];
 				})
 			)
 		);
