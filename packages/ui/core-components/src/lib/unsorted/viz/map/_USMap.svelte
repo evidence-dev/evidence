@@ -17,7 +17,7 @@
 	import { getThemeStores } from '../../../themes.js';
 	import chroma from 'chroma-js';
 
-	const { activeMode, theme, resolveColorPalette, resolveColorScale } = getThemeStores();
+	const { activeAppearance, theme, resolveColorPalette, resolveColorScale } = getThemeStores();
 
 	export let data = undefined;
 	export let queryID = undefined;
@@ -135,7 +135,7 @@
 		} else {
 			colorArray = $colorScaleStore;
 		}
-		if ($activeMode === 'dark') {
+		if ($activeAppearance === 'dark') {
 			colorArray = colorArray.map((color) =>
 				chroma(color)
 					.set('hsl.l', 1 - chroma(color).hsl()[2])

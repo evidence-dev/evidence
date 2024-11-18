@@ -14,7 +14,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { getThemeStores } from '../../../themes.js';
 
-	const { activeMode, resolveColor } = getThemeStores();
+	const { activeAppearance, resolveColor } = getThemeStores();
 
 	export let config = undefined;
 
@@ -90,7 +90,7 @@
 					renderer,
 					connectGroup,
 					seriesColors: $seriesColorsStore,
-					theme: $activeMode
+					theme: $activeAppearance
 				}}
 			/>
 		{/if}
