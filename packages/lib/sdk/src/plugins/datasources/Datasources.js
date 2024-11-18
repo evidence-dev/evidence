@@ -8,8 +8,16 @@ export class Datasources {
 	/** @type {Record<string, DatasourceTuple>} */
 	#byPackage = {};
 
+	get byPackage() {
+		return this.#byPackage;
+	}
+
 	/** @type {Record<string, DatasourceTuple>} */
 	#bySource = {};
+
+	get bySource() {
+		return this.#bySource;
+	}
 
 	/**
 	 * Forced map of source name to package name

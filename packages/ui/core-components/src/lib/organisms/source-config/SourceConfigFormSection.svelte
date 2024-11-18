@@ -1,7 +1,10 @@
 <script>
+	// @ts-check
+
 	import SourceConfigFormField from './SourceConfigFormField.svelte';
 
 	export let optionSpec;
+	/** @type {Record<string, unknown>} */
 	export let options = {};
 	export let disabled = false;
 	export let rootOptions = options;

@@ -53,10 +53,14 @@ const resolveChildOptions = (fieldSpec, prop, sourceOptions, opts) => {
  */
 
 /**
+ * @typedef {*} OptionsObj
+ */
+
+/**
  * @param {import('../../Datasources.js').Datasource["options"]} spec
  * @param {*} sourceOptions
  * @param {OptionsOpts} [opts]
- * @returns {*}
+ * @returns {OptionsObj}
  */
 export const Options = (spec, sourceOptions, opts) => {
 	return new Proxy(sourceOptions, {

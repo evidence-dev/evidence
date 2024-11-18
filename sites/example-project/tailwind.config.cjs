@@ -1,5 +1,5 @@
 const evidenceTailwind = require('@evidence-dev/tailwind/config').config;
-const { loadConfig } = require('@evidence-dev/plugin-connector/load-config');
+const evidenceConfig = require('@evidence-dev/sdk/config').getEvidenceConfig();
 
 const fs = require('fs');
 const path = require('path');
@@ -21,7 +21,7 @@ const config = {
 	content: {
 		relative: true,
 		get files() {
-			const pluginConfig = loadConfig(process.cwd().includes('.evidence') ? '../../' : './');
+			const pluginConfig = evidenceConfig.plugins;
 			const components = pluginConfig.components;
 			const componentPaths = Object.keys(components)
 				.map((pluginName) => [

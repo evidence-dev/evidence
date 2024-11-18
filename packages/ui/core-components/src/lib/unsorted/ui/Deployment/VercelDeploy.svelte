@@ -1,10 +1,16 @@
 <script>
+	// @ts-check
+
 	import VariableCopy from './VariableCopy.svelte';
+
+	/** @type {{ gitRepo?: string }} */
 	export let settings;
-	export let datasourceSettings;
+
+	/** @type {unknown[]} */
+	export let sources;
 </script>
 
-{#if !datasourceSettings.length}
+{#if !sources.length}
 	<p>You'll need to connect to at least one datasource before deploying to Vercel.</p>
 {:else if !settings.gitRepo}
 	<p>You'll need to set up a git repo before deploying to Vercel.</p>

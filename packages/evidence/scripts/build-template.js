@@ -49,38 +49,19 @@ fs.writeFileSync('./template/svelte.config.js', fs.readFileSync(configFileLocati
 fsExtra.outputFileSync(
 	'./template/vite.config.js',
 	`import { sveltekit } from "@sveltejs/kit/vite"
-	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
 	import { createLogger } from 'vite';
-	import { sourceQueryHmr, configVirtual } from '@evidence-dev/sdk/build/vite';
+	import { sourceQueryHmr, configVirtual, queryDirectoryHmr } from '@evidence-dev/sdk/build/vite';
 	import { isDebug } from '@evidence-dev/sdk/utils';
+	import { log } from "@evidence-dev/sdk/logger";
 	import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
 
 	const logger = createLogger();
-	const loggerWarn = logger.warn;
-  const loggerOnce = logger.warnOnce
-  
-  /**
-   * @see https://github.com/evidence-dev/evidence/issues/1876
-   * Ignore the duckdb-wasm sourcemap warning
-   */
-  logger.warnOnce = (m, o) => {
-  if (m.match(/Sourcemap for ".+\\/node_modules\\/@duckdb\\/duckdb-wasm\\/dist\\/duckdb-browser-eh\\.worker\\.js" points to missing source files/)) return;
-  loggerOnce(m, o)
-}
-
-	logger.warn = (msg, options) => {
-		// ignore fs/promises warning, used in +layout.js behind if (!browser) check
-		if (msg.includes('Module "fs/promises" has been externalized for browser compatibility')) return;
-		// ignore eval warning, used in duckdb-wasm
-		if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
-		loggerWarn(msg, options);
-};
 
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [sveltekit(), configVirtual(), evidenceVitePlugin(), sourceQueryHmr(), evidenceThemes()],
+        plugins: [sveltekit(), configVirtual(), queryDirectoryHmr, sourceQueryHmr(), , evidenceThemes()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
 				// We need these to prevent HMR from doing a full page reload
@@ -97,7 +78,7 @@ fsExtra.outputFileSync(
             exclude: ['svelte-icons', '@evidence-dev/universal-sql', '$evidence/config', '$evidence/themes']
         },
         ssr: {
-            external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/plugin-connector']
+            external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/sdk/plugins']
         },
         server: {
             fs: {
@@ -121,6 +102,35 @@ fsExtra.outputFileSync(
 		},
 		customLogger: logger
     }
+
+	if (isDebug()) {
+		const loggerWarn = logger.warn;
+		const loggerOnce = logger.warnOnce
+
+		/**
+		 * @see https://github.com/evidence-dev/evidence/issues/1876
+		 * Ignore the duckdb-wasm sourcemap warning
+		 */
+		logger.warnOnce = (m, o) => {
+			if (m.match(/Sourcemap for ".+\\/node_modules\\/@duckdb\\/duckdb-wasm\\/dist\\/duckdb-browser-eh\\.worker\\.js" points to missing source files/)) return;
+			loggerOnce(m, o)
+		}
+
+		logger.warn = (msg, options) => {
+			// ignore fs/promises warning, used in +layout.js behind if (!browser) check
+			if (msg.includes('Module "fs/promises" has been externalized for browser compatibility')) return;
+
+			// ignore eval warning, used in duckdb-wasm
+			if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
+
+			loggerWarn(msg, options);
+		};
+	} else {
+		config.logLevel = 'silent';
+		logger.error = (msg) => log.error(msg);
+		logger.info = logger.warn = logger.warnOnce = () => {};
+	}
+
     export default config`
 );
 
