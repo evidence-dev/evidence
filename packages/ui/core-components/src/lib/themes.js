@@ -4,7 +4,6 @@ import { getContext, setContext } from 'svelte';
 import { derived, get, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
-import { isBuiltinColorPalette } from '@evidence-dev/tailwind';
 import { themes, themesConfig } from '$evidence/themes';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
@@ -186,38 +185,54 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {unknown} colorPalette
+	 * @param {unknown} input
 	 * @returns {Readable<string[] | undefined>}
 	 */
-	resolveColorPalette = (colorPalette) => {
-		if (typeof colorPalette === 'string') {
-			const trimmed = colorPalette.trim();
-			if (isBuiltinColorPalette(trimmed)) {
-				return derived(this.#theme, ($theme) => $theme.colorPalettes[trimmed]);
-			}
+	resolveColorPalette = (input) => {
+		if (typeof input === 'string') {
+			return derived(this.#theme, ($theme) => $theme.colorPalettes[input.trim()]);
 		}
 
-		if (Array.isArray(colorPalette)) {
-			return readable(colorPalette);
+		if (isArrayOfStringTuples(input)) {
+			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) =>
+				input.map(([light, dark]) => {
+					const color = $activeAppearance === 'light' ? light : dark;
+					return $theme.colors[color.trim()] ?? color;
+				})
+			);
+		}
+
+		if (isArrayOfStrings(input)) {
+			return derived(this.#theme, ($theme) =>
+				input.map((color) => $theme.colors[color.trim()] ?? color)
+			);
 		}
 
 		return readable(undefined);
 	};
 
 	/**
-	 * @param {unknown} colorScale
+	 * @param {unknown} input
 	 * @returns {Readable<string[] | undefined>}
 	 */
-	resolveColorScale = (colorScale) => {
-		if (typeof colorScale === 'string') {
-			const trimmed = colorScale.trim();
-			if (isBuiltinColorPalette(trimmed)) {
-				return derived(this.#theme, ($theme) => $theme.colorScales[trimmed]);
-			}
+	resolveColorScale = (input) => {
+		if (typeof input === 'string') {
+			return derived(this.#theme, ($theme) => $theme.colorScales[input.trim()]);
 		}
 
-		if (Array.isArray(colorScale)) {
-			return readable(colorScale);
+		if (isArrayOfStringTuples(input)) {
+			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) =>
+				input.map(([light, dark]) => {
+					const color = $activeAppearance === 'light' ? light : dark;
+					return $theme.colors[color.trim()] ?? color;
+				})
+			);
+		}
+
+		if (isArrayOfStrings(input)) {
+			return derived(this.#theme, ($theme) =>
+				input.map((color) => $theme.colors[color.trim()] ?? color)
+			);
 		}
 
 		return readable(undefined);
@@ -253,3 +268,10 @@ const isStringTuple = (input) =>
  * @returns {input is StringTuple[]}
  */
 const isArrayOfStringTuples = (input) => Array.isArray(input) && input.every(isStringTuple);
+
+/**
+ * @param {unknown} input
+ * @returns {input is string[]}
+ */
+const isArrayOfStrings = (input) =>
+	Array.isArray(input) && input.every((item) => typeof item === 'string');
