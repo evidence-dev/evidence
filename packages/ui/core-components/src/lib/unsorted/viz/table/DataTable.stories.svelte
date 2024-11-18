@@ -165,35 +165,6 @@
 		<Column id="sales" fmt="usd" />
 	</DataTable>
 </Story>
-<Story name="With Group Sorting w/ reactive columns">
-	{@const data = Query.create(
-		`SELECT 
-			'd' as category, 'xd' as item, 2000 as sales, 300 as 'Column A', 700 as 'Column B'
-			union all
-			select 'd','yd',400,100,500
-			union all
-			select 'd','zd',4000,200,600
-			union all
-			select 'b','xb',5000,10,50			
-			union all
-			select 'b','yb',1,20,60			
-			union all
-			select 'b','zb',3,30,70
-		`,
-		query
-	)}
-	<ButtonGroup name="selector">
-		<ButtonGroupItem value="Column A" valueLabel="Column A" default />
-		<ButtonGroupItem value="Column B" valueLabel="Column B" />
-	</ButtonGroup>
-	<DataTable {data} groupBy="category" sort="sales desc" subtotals="true">
-		<Column id="category" />
-		<Column id="item" />
-		<Column id="sales" fmt="usd" />
-		<Column id={$inputStore.selector} />
-	</DataTable>
-</Story>
-
 <Story name="With Search (Long Columns)">
 	{@const data = Query.create(`SELECT * from blog_posts`, query)}
 	<DataTable {data} title="Blog Posts" search />
