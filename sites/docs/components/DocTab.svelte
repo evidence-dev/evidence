@@ -7,11 +7,6 @@
 	const tabs = ['preview', 'code'];
 	let tabButtons = [];
 
-	function setTab(tab, index) {
-		activeTab = tab;
-		updateActiveBorder(index);
-	}
-
 	const [send, receive] = crossfade({
 		duration: 200,
 		easing: cubicInOut
@@ -28,7 +23,7 @@
 						tab
 							? 'text-gray-950'
 							: 'text-gray-600'}"
-						on:click={() => setTab(tab, index)}
+						on:click={() => (activeTab = tab)}
 						bind:this={tabButtons[index]}
 					>
 						{tab}
