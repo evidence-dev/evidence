@@ -6,7 +6,7 @@ import chalk from 'chalk';
 
 /**
  * @param {import("./Datasources.js").Datasource} mod
- * @param {import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}} source
+ * @param {import('./schemas/datasource.schema.js').DatasourceSpec & {dir: string}} source
  * @returns {import('./types.js').ProcessSourceFn}
  */
 export const wrapSimpleConnector = (mod, source) => {
