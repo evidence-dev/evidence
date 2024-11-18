@@ -165,7 +165,8 @@ When using multi-select dropdowns, you need to use an alternative SQL expression
 
 `where column_name IN ${inputs.my_input.value}`
 
-- Note: The use of the IN operator
+Note: 
+- The use of the IN operator
 - No single quotes used around the `${}`
 
 <DocTab>
