@@ -1,19 +1,14 @@
 import z from 'zod';
 import { DeepRequired } from 'ts-essentials';
 
-import {
-	ThemesConfigFileSchema,
-	BUILTIN_COLORS,
-	BUILTIN_COLOR_PALETTES,
-	BUILTIN_COLOR_SCALES
-} from './index.js';
+import { BUILTIN_COLORS } from './colors.js';
+import { BUILTIN_COLOR_PALETTES } from './colorPalettes.js';
+import { BUILTIN_COLOR_SCALES } from './colorScales.js';
+import { ThemesConfigFileSchema } from './config.js';
 
-export type BuiltinColor = (typeof BUILTIN_COLORS)[number];
-export type BuiltinColorPalette = (typeof BUILTIN_COLOR_PALETTES)[number];
-export type BuiltinColorScale = (typeof BUILTIN_COLOR_SCALES)[number];
-
-export type ThemesConfigFile = z.infer<typeof ThemesConfigFileSchema>;
-export type ThemesConfig = DeepRequired<ThemesConfigFile>;
+type BuiltinColor = (typeof BUILTIN_COLORS)[number];
+type BuiltinColorPalette = (typeof BUILTIN_COLOR_PALETTES)[number];
+type BuiltinColorScale = (typeof BUILTIN_COLOR_SCALES)[number];
 
 export type Theme = {
 	colors: {
@@ -26,5 +21,8 @@ export type Theme = {
 		[builtinColorScale in BuiltinColorScale]: string[];
 	} & Record<string, string[]>;
 };
+
+export type ThemesConfigFile = z.infer<typeof ThemesConfigFileSchema>;
+export type ThemesConfig = DeepRequired<ThemesConfigFile>;
 
 export type Themes = Record<'light' | 'dark', Theme>;
