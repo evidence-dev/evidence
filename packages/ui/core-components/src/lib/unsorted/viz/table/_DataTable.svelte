@@ -470,11 +470,24 @@
 	let fullscreen = false;
 	/** @type {number} */
 	let innerHeight;
+
+	let synced = false;
+
+	$: {
+		/*
+		 A temporary solution to fix a synchronization issue with with these 2 pieces of state.
+		 There must be a better way to handle this but it is difficult to reason about the various state updates
+		 of this component due to the large number of props and reactive statements.
+		*/
+		let orderedColumnIds = orderedColumns.map((column) => column.id);
+		let columnSummaryIds = columnSummary.map((column) => column.id);
+		synced = orderedColumnIds.every((id) => columnSummaryIds.includes(id));
+	}
 </script>
 
 <svelte:window bind:innerHeight />
 
-{#if !isFullPage && innerHeight !== undefined}
+{#if !isFullPage && innerHeight !== undefined && synced}
 	<Fullscreen bind:open={fullscreen} {search}>
 		<!-- when compact middle rows are 17.5, middle rows are 23 -->
 		{@const ROW_HEIGHT = compact ? 17.5 : 23}
@@ -500,7 +513,7 @@
 	</Fullscreen>
 {/if}
 
-{#if error === undefined}
+{#if error === undefined && synced}
 	<slot>
 		<!-- default to every column with no customization -->
 		{#each columnSummary as column}
@@ -515,65 +528,84 @@
 		<InvisibleLinks {data} link={column.id} />
 	{/each}
 
-	<div
-		data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
-		role="none"
-		class="table-container"
-		transition:slide|local
-		style:margin-top={marginTop}
-		style:margin-bottom={marginBottom}
-		style:padding-bottom={paddingBottom}
-		on:mouseenter={() => (hovering = true)}
-		on:mouseleave={() => (hovering = false)}
-	>
-		{#if search}
-			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
-		{/if}
+	{#key columnSummary}
+		<div
+			data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
+			role="none"
+			class="table-container"
+			transition:slide|local
+			style:margin-top={marginTop}
+			style:margin-bottom={marginBottom}
+			style:padding-bottom={paddingBottom}
+			on:mouseenter={() => (hovering = true)}
+			on:mouseleave={() => (hovering = false)}
+		>
+			{#if search}
+				<SearchBar bind:value={searchValue} searchFunction={() => {}} />
+			{/if}
 
-		<div class="scrollbox" style:background-color={backgroundColor}>
-			<table>
-				<TableHeader
-					{rowNumbers}
-					{headerColor}
-					{headerFontColor}
-					{orderedColumns}
-					{columnSummary}
-					{compact}
-					{sortable}
-					{sortClick}
-					{formatColumnTitles}
-					{sortObj}
-					{wrapTitles}
-					{link}
-				/>
+			<div class="scrollbox" style:background-color={backgroundColor}>
+				<table>
+					<TableHeader
+						{rowNumbers}
+						{headerColor}
+						{headerFontColor}
+						{orderedColumns}
+						{columnSummary}
+						{compact}
+						{sortable}
+						{sortClick}
+						{formatColumnTitles}
+						{sortObj}
+						{wrapTitles}
+						{link}
+					/>
 
-				<QueryLoad data={filteredData}>
-					<svelte:fragment slot="skeleton">
-						<tr>
-							<td colspan={filteredData.columns.length} class="h-32">
-								<Skeleton />
-							</td>
-						</tr>
-					</svelte:fragment>
-					{#if groupBy && groupedData && searchValue === ''}
-						{#each sortedGroupNames as groupName}
-							{#if groupType === 'accordion'}
-								<GroupRow
-									{groupName}
-									currentGroupData={groupedData[groupName]}
-									toggled={groupToggleStates[groupName]}
-									on:toggle={handleToggle}
-									{columnSummary}
-									rowColor={accordionRowColor}
-									{rowNumbers}
-									{subtotals}
-									{compact}
-									{orderedColumns}
-								/>
-								{#if groupToggleStates[groupName]}
+					<QueryLoad data={filteredData}>
+						<svelte:fragment slot="skeleton">
+							<tr>
+								<td colspan={filteredData.columns.length} class="h-32">
+									<Skeleton />
+								</td>
+							</tr>
+						</svelte:fragment>
+						{#if groupBy && groupedData && searchValue === ''}
+							{#each sortedGroupNames as groupName}
+								{#if groupType === 'accordion'}
+									<GroupRow
+										{groupName}
+										currentGroupData={groupedData[groupName]}
+										toggled={groupToggleStates[groupName]}
+										on:toggle={handleToggle}
+										{columnSummary}
+										rowColor={accordionRowColor}
+										{rowNumbers}
+										{subtotals}
+										{compact}
+										{orderedColumns}
+									/>
+									{#if groupToggleStates[groupName]}
+										<TableRow
+											displayedData={groupedData[groupName]}
+											{groupType}
+											{rowShading}
+											{link}
+											{rowNumbers}
+											{rowLines}
+											{compact}
+											{index}
+											{columnSummary}
+											grouped={true}
+											groupColumn={groupBy}
+											{orderedColumns}
+										/>
+									{/if}
+								{:else if groupType === 'section'}
 									<TableRow
-										displayedData={groupedData[groupName]}
+										groupColumn={groupBy}
 										{groupType}
+										rowSpan={groupedData[groupName].length}
+										displayedData={groupedData[groupName]}
 										{rowShading}
 										{link}
 										{rowNumbers}
@@ -582,159 +614,142 @@
 										{index}
 										{columnSummary}
 										grouped={true}
-										groupColumn={groupBy}
+										{groupNamePosition}
 										{orderedColumns}
 									/>
+									{#if subtotals}
+										<SubtotalRow
+											{groupName}
+											currentGroupData={groupedData[groupName]}
+											{columnSummary}
+											rowColor={subtotalRowColor}
+											fontColor={subtotalFontColor}
+											{groupType}
+											{groupBy}
+											{compact}
+											{orderedColumns}
+										/>
+									{/if}
 								{/if}
-							{:else if groupType === 'section'}
-								<TableRow
-									groupColumn={groupBy}
-									{groupType}
-									rowSpan={groupedData[groupName].length}
-									displayedData={groupedData[groupName]}
-									{rowShading}
-									{link}
-									{rowNumbers}
-									{rowLines}
-									{compact}
-									{index}
-									{columnSummary}
-									grouped={true}
-									{groupNamePosition}
-									{orderedColumns}
-								/>
-								{#if subtotals}
-									<SubtotalRow
-										{groupName}
-										currentGroupData={groupedData[groupName]}
-										{columnSummary}
-										rowColor={subtotalRowColor}
-										fontColor={subtotalFontColor}
-										{groupType}
-										{groupBy}
-										{compact}
-										{orderedColumns}
-									/>
-								{/if}
-							{/if}
-						{/each}
-					{:else}
-						<TableRow
-							{displayedData}
-							{rowShading}
-							{link}
-							{rowNumbers}
-							{rowLines}
-							{compact}
-							{index}
-							{columnSummary}
-							{orderedColumns}
-						/>
-					{/if}
+							{/each}
+						{:else}
+							<TableRow
+								{displayedData}
+								{rowShading}
+								{link}
+								{rowNumbers}
+								{rowLines}
+								{compact}
+								{index}
+								{columnSummary}
+								{orderedColumns}
+							/>
+						{/if}
 
-					{#if totalRow && searchValue === ''}
-						<TotalRow
-							{data}
-							{rowNumbers}
-							{columnSummary}
-							rowColor={totalRowColor}
-							fontColor={totalFontColor}
-							{groupType}
-							{compact}
-							{orderedColumns}
-						/>
-					{/if}
-				</QueryLoad>
-			</table>
-		</div>
+						{#if totalRow && searchValue === ''}
+							<TotalRow
+								{data}
+								{rowNumbers}
+								{columnSummary}
+								rowColor={totalRowColor}
+								fontColor={totalFontColor}
+								{groupType}
+								{compact}
+								{orderedColumns}
+							/>
+						{/if}
+					</QueryLoad>
+				</table>
+			</div>
 
-		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
+			<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
 
-		{#if paginated && pageCount > 1}
-			<div class="pagination">
-				<div class="page-labels mr-auto">
-					<button
-						aria-label="first-page"
-						class="page-changer"
-						class:hovering
-						disabled={currentPage === 1}
-						on:click={() => goToPage(0)}
-					>
-						<div class="page-icon flex items-center">
-							<Icon src={ChevronsLeft} />
-						</div>
-					</button>
-					<button
-						aria-label="previous-page"
-						class="page-changer"
-						class:hovering
-						disabled={currentPage === 1}
-						on:click={() => goToPage(currentPage - 2)}
-					>
-						<div class="page-icon h-[0.83em] flex items-center">
-							<Icon src={ChevronLeft} class="h-[0.83em]" />
-						</div>
-					</button>
-					<span class="page-count">
-						Page
-						<input
-							class="page-input"
+			{#if paginated && pageCount > 1}
+				<div class="pagination">
+					<div class="page-labels mr-auto">
+						<button
+							aria-label="first-page"
+							class="page-changer"
 							class:hovering
-							class:error={inputPage > pageCount}
-							style="width: {inputPage ? inputPageElWidth : currentPageElWidth};"
-							type="number"
-							bind:value={inputPage}
-							on:keyup={() => goToPage((inputPage ?? 1) - 1)}
-							on:change={() => goToPage((inputPage ?? 1) - 1)}
-							placeholder={currentPage}
-						/>
-						/
-						<span class="page-count ml-1">{pageCount.toLocaleString()}</span>
-					</span>
-					<span class="print-page-count">
-						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records
-					</span>
-					<button
-						aria-label="next-page"
-						class="page-changer"
-						class:hovering
-						disabled={currentPage === pageCount}
-						on:click={() => goToPage(currentPage)}
-					>
-						<div class="page-icon h-[0.83em] flex items-center">
-							<Icon src={ChevronRight} class="h-[0.83em]" />
-						</div>
-					</button>
-					<button
-						aria-label="last-page"
-						class="page-changer"
-						class:hovering
-						disabled={currentPage === pageCount}
-						on:click={() => goToPage(pageCount - 1)}
-					>
-						<div class="page-icon flex items-center">
-							<Icon src={ChevronsRight} />
-						</div>
-					</button>
+							disabled={currentPage === 1}
+							on:click={() => goToPage(0)}
+						>
+							<div class="page-icon flex items-center">
+								<Icon src={ChevronsLeft} />
+							</div>
+						</button>
+						<button
+							aria-label="previous-page"
+							class="page-changer"
+							class:hovering
+							disabled={currentPage === 1}
+							on:click={() => goToPage(currentPage - 2)}
+						>
+							<div class="page-icon h-[0.83em] flex items-center">
+								<Icon src={ChevronLeft} class="h-[0.83em]" />
+							</div>
+						</button>
+						<span class="page-count">
+							Page
+							<input
+								class="page-input"
+								class:hovering
+								class:error={inputPage > pageCount}
+								style="width: {inputPage ? inputPageElWidth : currentPageElWidth};"
+								type="number"
+								bind:value={inputPage}
+								on:keyup={() => goToPage((inputPage ?? 1) - 1)}
+								on:change={() => goToPage((inputPage ?? 1) - 1)}
+								placeholder={currentPage}
+							/>
+							/
+							<span class="page-count ml-1">{pageCount.toLocaleString()}</span>
+						</span>
+						<span class="print-page-count">
+							{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records
+						</span>
+						<button
+							aria-label="next-page"
+							class="page-changer"
+							class:hovering
+							disabled={currentPage === pageCount}
+							on:click={() => goToPage(currentPage)}
+						>
+							<div class="page-icon h-[0.83em] flex items-center">
+								<Icon src={ChevronRight} class="h-[0.83em]" />
+							</div>
+						</button>
+						<button
+							aria-label="last-page"
+							class="page-changer"
+							class:hovering
+							disabled={currentPage === pageCount}
+							on:click={() => goToPage(pageCount - 1)}
+						>
+							<div class="page-icon flex items-center">
+								<Icon src={ChevronsRight} />
+							</div>
+						</button>
+					</div>
+					{#if downloadable}
+						<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
+					{/if}
+					{#if !isFullPage}
+						<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
+					{/if}
 				</div>
-				{#if downloadable}
-					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
-				{/if}
-				{#if !isFullPage}
-					<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
-				{/if}
-			</div>
-		{:else}
-			<div class="table-footer">
-				{#if downloadable}
-					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
-				{/if}
-				{#if !isFullPage}
-					<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
-				{/if}
-			</div>
-		{/if}
-	</div>
+			{:else}
+				<div class="table-footer">
+					{#if downloadable}
+						<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
+					{/if}
+					{#if !isFullPage}
+						<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
+					{/if}
+				</div>
+			{/if}
+		</div>
+	{/key}
 
 	{#if generateMarkdown}
 		{#if queryID}

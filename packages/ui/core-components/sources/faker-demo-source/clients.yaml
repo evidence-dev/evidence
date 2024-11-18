@@ -1,0 +1,7 @@
+rows: 20
+schema:
+  id:
+    type: id
+  client_name:
+    category: company
+    item: name

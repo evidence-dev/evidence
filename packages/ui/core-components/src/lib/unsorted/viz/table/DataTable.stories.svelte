@@ -32,6 +32,32 @@
 
 <script>
 	const inputStore = getInputContext();
+	let data;
+
+	$: year = $inputStore.year ?? 2024;
+
+	const reactiveQueryFactory = Query.createReactive({
+		callback: (result) => (data = result),
+		execFn: query
+	});
+	$: {
+		let q = `
+        WITH filtered AS (
+        SELECT CONCAT(CAST(CAST(year AS INT) AS VARCHAR), '-',
+        	LPAD(CAST(CAST(month AS INT) AS VARCHAR), 2, '0')) AS year_month,
+        	CAST(client_id AS INT)                             AS client_id,
+        	CAST(revenue AS INT)                               AS revenue
+        FROM monthly_revenues
+        WHERE year = ${year}
+        AND month <= 6
+        )
+				PIVOT filtered
+        		ON year_month
+            USING sum(revenue)
+        		group by client_id
+		`;
+		reactiveQueryFactory(q);
+	}
 </script>
 
 <Story name="Simple Case">
@@ -365,4 +391,13 @@
 	)}
 	<h3>AreaMap Error</h3>
 	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_codeERROR" />
+</Story>
+
+<Story name="Reactive Datatable">
+	<ButtonGroup name="year" title="Select year">
+		<ButtonGroupItem value="2022" valueLabel="2022" />
+		<ButtonGroupItem value="2023" valueLabel="2023" />
+		<ButtonGroupItem value="2024" valueLabel="2024" default />
+	</ButtonGroup>
+	<DataTable {data} totalRow={true} rows="50" />
 </Story>

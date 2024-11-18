@@ -1,0 +1,25 @@
+rows: 100
+schema:
+  client_id:
+    type: fk
+    withBias: true
+    target:
+      table: clients.yaml
+  year:
+    category: number
+    item: int
+    options:
+      - min: 2022
+        max: 2025
+  month:
+    category: number
+    item: int
+    options:
+      - min: 1
+        max: 12
+  revenue:
+    category: number
+    item: int
+    options:
+      - min: 1000
+        max: 10000
