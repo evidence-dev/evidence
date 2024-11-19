@@ -33,9 +33,6 @@
 
 <style lang="postcss">
 	:global(body) {
-		@apply bg-base-100;
-	}
-	:global(*) {
-		@apply text-base-content;
+		@apply bg-base-100 text-base-content;
 	}
 </style>
