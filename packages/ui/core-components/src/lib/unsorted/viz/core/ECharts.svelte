@@ -14,7 +14,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { getThemeStores } from '../../../themes.js';
 
-	const { activeAppearance, resolveColor } = getThemeStores();
+	const { activeAppearance, resolveColorsObject } = getThemeStores();
 
 	export let config = undefined;
 
@@ -34,7 +34,7 @@
 	export let printEchartsConfig; // helper for custom chart development
 
 	export let seriesColors = undefined;
-	$: seriesColorsStore = resolveColor(seriesColors);
+	$: seriesColorsStore = resolveColorsObject(seriesColors);
 
 	export let connectGroup = undefined;
 

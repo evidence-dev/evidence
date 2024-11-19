@@ -4,7 +4,6 @@ import { getContext, setContext } from 'svelte';
 import { derived, get, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
-import { isBuiltinColorPalette } from '@evidence-dev/tailwind';
 import { themes, themesConfig } from '$evidence/themes';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
@@ -150,77 +149,92 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @type {{
-	 * 		<T>(input: T[]): Readable<(string | T)[]>;
-	 * 		<T>(input: Record<string, T>): Readable<Record<string, string | T>>;
-	 * 		<T>(input: T): Readable<string | T>;
-	 * }}
+	 * @param {unknown} input
+	 * @returns {Readable<string | undefined>}
 	 */
 	resolveColor = (input) => {
 		if (typeof input === 'string') {
-			const trimmed = input.trim();
-			const r = derived(this.#theme, ($theme) => $theme.colors[trimmed] ?? trimmed);
-			return /** @type {any} */ (r);
+			return derived(this.#theme, ($theme) => $theme.colors[input.trim()] ?? input);
 		}
 
-		if (Array.isArray(input)) {
-			const r = derived(this.#theme, ($theme) =>
-				input.map((color) => {
-					if (typeof color !== 'string') return color;
-					return $theme.colors[color] ?? color;
-				})
-			);
-			return /** @type {any} */ (r);
-		}
-
-		if (input) {
-			return derived(this.#theme, ($theme) =>
-				Object.fromEntries(
-					Object.entries(input).map(([key, color]) => {
-						if (typeof color !== 'string') return [key, color];
-						return [key, $theme.colors[color] ?? color];
-					})
-				)
-			);
-		}
-
-		const r = readable(input);
-		return /** @type {any} */ (r);
-	};
-
-	/**
-	 * @param {unknown} colorPalette
-	 * @returns {Readable<string[] | undefined>}
-	 */
-	resolveColorPalette = (colorPalette) => {
-		if (typeof colorPalette === 'string') {
-			const trimmed = colorPalette.trim();
-			if (isBuiltinColorPalette(trimmed)) {
-				return derived(this.#theme, ($theme) => $theme.colorPalettes[trimmed]);
-			}
-		}
-
-		if (Array.isArray(colorPalette)) {
-			return readable(colorPalette);
+		if (isStringTuple(input)) {
+			const [light, dark] = input;
+			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) => {
+				const color = $activeAppearance === 'light' ? light : dark;
+				return $theme.colors[color] ?? color;
+			});
 		}
 
 		return readable(undefined);
 	};
 
 	/**
-	 * @param {unknown} colorScale
+	 * @template T
+	 * @param {Record<string, T> | undefined} input
+	 * @returns {Readable<Record<string, (string | T)[]> | undefined>}
+	 */
+	resolveColorsObject = (input) => {
+		if (!input) return readable(undefined);
+
+		return derived(this.#theme, ($theme) =>
+			Object.fromEntries(
+				Object.entries(input).map(([key, color]) => {
+					if (typeof color !== 'string') return [key, color];
+					return [key, $theme.colors[color.trim()] ?? color];
+				})
+			)
+		);
+	};
+
+	/**
+	 * @param {unknown} input
 	 * @returns {Readable<string[] | undefined>}
 	 */
-	resolveColorScale = (colorScale) => {
-		if (typeof colorScale === 'string') {
-			const trimmed = colorScale.trim();
-			if (isBuiltinColorPalette(trimmed)) {
-				return derived(this.#theme, ($theme) => $theme.colorScales[trimmed]);
-			}
+	resolveColorPalette = (input) => {
+		if (typeof input === 'string') {
+			return derived(this.#theme, ($theme) => $theme.colorPalettes[input.trim()]);
 		}
 
-		if (Array.isArray(colorScale)) {
-			return readable(colorScale);
+		if (isArrayOfStringTuples(input)) {
+			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) =>
+				input.map(([light, dark]) => {
+					const color = $activeAppearance === 'light' ? light : dark;
+					return $theme.colors[color.trim()] ?? color;
+				})
+			);
+		}
+
+		if (isArrayOfStrings(input)) {
+			return derived(this.#theme, ($theme) =>
+				input.map((color) => $theme.colors[color.trim()] ?? color)
+			);
+		}
+
+		return readable(undefined);
+	};
+
+	/**
+	 * @param {unknown} input
+	 * @returns {Readable<string[] | undefined>}
+	 */
+	resolveColorScale = (input) => {
+		if (typeof input === 'string') {
+			return derived(this.#theme, ($theme) => $theme.colorScales[input.trim()]);
+		}
+
+		if (isArrayOfStringTuples(input)) {
+			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) =>
+				input.map(([light, dark]) => {
+					const color = $activeAppearance === 'light' ? light : dark;
+					return $theme.colors[color.trim()] ?? color;
+				})
+			);
+		}
+
+		if (isArrayOfStrings(input)) {
+			return derived(this.#theme, ($theme) =>
+				input.map((color) => $theme.colors[color.trim()] ?? color)
+			);
 		}
 
 		return readable(undefined);
@@ -239,7 +253,27 @@ export const getThemeStores = () => {
 	return stores;
 };
 
+/** @typedef {[string, string]} StringTuple */
+
 /**
- * @template T
- * @typedef {T | T[] | { [key: string]: T }} ValueOrArrayOrObject
+ * @param {unknown} input
+ * @returns {input is StringTuple}
  */
+const isStringTuple = (input) =>
+	Array.isArray(input) &&
+	input.length === 2 &&
+	typeof input[0] === 'string' &&
+	typeof input[1] === 'string';
+
+/**
+ * @param {unknown} input
+ * @returns {input is StringTuple[]}
+ */
+const isArrayOfStringTuples = (input) => Array.isArray(input) && input.every(isStringTuple);
+
+/**
+ * @param {unknown} input
+ * @returns {input is string[]}
+ */
+const isArrayOfStrings = (input) =>
+	Array.isArray(input) && input.every((item) => typeof item === 'string');

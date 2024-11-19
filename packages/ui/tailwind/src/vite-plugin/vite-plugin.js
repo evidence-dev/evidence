@@ -17,8 +17,6 @@ export const evidenceThemes = () => {
 			if (id === resolvedVirtualModuleId) {
 				const themesConfig = await loadThemesConfig();
 				const themes = buildThemes(themesConfig);
-				// /** @satisfies {import('@evidence-dev/tailwind').ThemesConfig} */
-				// /** @satisfies {import('@evidence-dev/tailwind').Themes}
 				return `
 					export const themesConfig = ${JSON.stringify(themesConfig)};
 					export const themes = ${JSON.stringify(themes)};

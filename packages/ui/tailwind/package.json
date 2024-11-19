@@ -28,8 +28,6 @@
 			"types": "./src/vite-plugin/vite-plugin.js"
 		},
 		".": {
-			"import": "./src/index.js",
-			"require": "./src/index.js",
 			"types": "./src/types.d.ts"
 		},
 		"./fonts.css": "./src/fonts.css",

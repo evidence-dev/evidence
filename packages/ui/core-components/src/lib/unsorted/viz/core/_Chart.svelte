@@ -28,7 +28,7 @@
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { getThemeStores } from '../../../themes.js';
 
-	const { resolveColor, resolveColorPalette } = getThemeStores();
+	const { resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -157,7 +157,7 @@
 	export let seriesOptions = undefined; // additional ECharts config object that will be applied to every series in the config
 
 	export let seriesColors = undefined;
-	$: seriesColorsStore = resolveColor(seriesColors);
+	$: seriesColorsStore = resolveColorsObject(seriesColors);
 
 	export let stackType = undefined; // used in BarChart (stacked, grouped) and AreaChart (stacked)
 	export let stacked100 = false;
