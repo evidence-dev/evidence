@@ -19,7 +19,7 @@
 
 <style lang="postcss">
 	.alert {
-		@apply border px-3 py-2 mb-4 rounded border-neutral/50 bg-neutral/10;
+		@apply border px-3 py-2 mb-4 rounded border-base-content/50 bg-base-content/10;
 
 		&.info {
 			@apply border-info/50 bg-info/10;
