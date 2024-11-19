@@ -46,7 +46,7 @@
 	const textStyles = {
 		positive: downIsGood ? 'text-negative' : 'text-positive',
 		negative: downIsGood ? 'text-positive' : 'text-negative',
-		neutral: 'text-neutral'
+		neutral: 'text-base-content-muted'
 	};
 
 	const chipStyles = {
@@ -56,7 +56,7 @@
 		negative: downIsGood
 			? 'bg-positive/10 border border-positive/20'
 			: 'bg-negative/10 border border-negative/20',
-		neutral: 'bg-neutral/10 border border-neutral/20'
+		neutral: 'bg-base-200 border border-base-300'
 	};
 
 	let error;
