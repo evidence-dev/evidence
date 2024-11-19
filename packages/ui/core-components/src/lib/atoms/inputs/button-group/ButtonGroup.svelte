@@ -13,6 +13,7 @@
 	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
+	import { getThemeStores } from '../../../themes.js';
 	/** @type {string} */
 	export let name;
 	/** @type {string} */
@@ -33,7 +34,10 @@
 
 	setContext('button-display', display);
 
+	const { resolveColor } = getThemeStores();
+
 	export let color = 'hsla(207, 65%, 39%, 1)';
+	$: colorStore = resolveColor(color);
 
 	const valueStore = writable(null);
 
@@ -111,7 +115,7 @@
 			>
 				{#if preset}
 					{#each presets[preset] as { value, valueLabel }}
-						<ButtonGroupItem {value} {valueLabel} {color} {display} {defaultValue} />
+						<ButtonGroupItem {value} {valueLabel} color={$colorStore} {display} {defaultValue} />
 					{/each}
 				{:else}
 					<slot {display} />
@@ -122,7 +126,13 @@
 							</svelte:fragment>
 							<svelte:fragment>
 								{#each loaded as { label, value }}
-									<ButtonGroupItem {value} valueLabel={label} {color} {display} {defaultValue} />
+									<ButtonGroupItem
+										{value}
+										valueLabel={label}
+										color={$colorStore}
+										{display}
+										{defaultValue}
+									/>
 								{/each}
 							</svelte:fragment>
 						</QueryLoad>

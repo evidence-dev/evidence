@@ -10,8 +10,10 @@
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { nanoid } from 'nanoid';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { ensureThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes.js';
 	const inputs = getInputContext();
+
+	const { theme, resolveColor, resolveColorPalette } = getThemeStores();
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -70,10 +72,16 @@
 
 	/** @type {string|undefined} */
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
+
 	/** @type {string} */
 	export let borderColor = uiColours.grey300;
+	$: borderColorStore = resolveColor(borderColor);
+
 	/** @type {string[]} */
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	/** @type {number|undefined} */
 	export let opacity = undefined;
 	if (opacity) {
@@ -110,12 +118,13 @@
 		selectedBorderWidth = 0.75;
 	}
 
-	const { theme } = ensureThemeStores();
+	/** @type {string} */
+	export let selectedColor = 'accent';
+	$: selectedColorStore = resolveColor(selectedColor);
 
 	/** @type {string} */
-	export let selectedColor = $theme.colors['accent'];
-	/** @type {string} */
-	export let selectedBorderColor = $theme.colors['accent-content'];
+	export let selectedBorderColor = 'accent-content';
+	$: selectedBorderColorStore = resolveColor(selectedBorderColor);
 
 	/** @type {number|undefined} */
 	export let selectedOpacity = undefined;
@@ -197,6 +206,7 @@
 	let colorScale;
 	let geoJson = [];
 	let legendId = nanoid();
+	let colorPaletteFinal;
 
 	/**
 	 * Initialize the component.
@@ -210,7 +220,7 @@
 			checkInputs,
 			min,
 			max,
-			colorPalette,
+			colorPalette: $colorPaletteStore,
 			legendType,
 			valueFmt,
 			chartType,
@@ -219,11 +229,13 @@
 			theme
 		};
 		await data.fetch();
-		if (!color) {
-			({ values, colorPalette, legendType, colorScale } = await map.initializeData(
-				data,
-				initDataOptions
-			));
+		if (!$colorStore) {
+			({
+				values,
+				colorPalette: colorPaletteFinal,
+				legendType,
+				colorScale
+			} = await map.initializeData(data, initDataOptions));
 		}
 
 		await processAreas();
@@ -299,21 +311,21 @@
 				{name}
 				areaOptions={{
 					fillColor:
-						color ??
-						map.handleFillColor(item, value, values, colorPalette, colorScale) ??
+						$colorStore ??
+						map.handleFillColor(item, value, values, colorPaletteFinal, colorScale) ??
 						colorScale(item[value]).hex(),
 					fillOpacity: opacity,
 					opacity: opacity,
 					weight: borderWidth,
-					color: borderColor,
+					color: $borderColorStore,
 					className: `outline-none ${areaClass}`
 				}}
 				selectedAreaOptions={{
-					fillColor: selectedColor,
+					fillColor: $selectedColorStore,
 					fillOpacity: selectedOpacity,
 					opacity: selectedOpacity,
 					weight: selectedBorderWidth,
-					color: selectedBorderColor,
+					color: $selectedBorderColorStore,
 					className: `outline-none ${selectedAreaClass}`
 				}}
 				onclick={() => {

@@ -3,8 +3,6 @@
 import { get, writable } from 'svelte/store';
 import { nanoid } from 'nanoid';
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-import { isPresetColor } from '../types.js';
-import { COLORS } from './constants.js';
 import { Query } from '@evidence-dev/sdk/usql';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable */
@@ -93,12 +91,6 @@ export class ReferencePointStore {
 			// Use preset colors
 			labelColor = labelColor ?? color;
 			symbolColor = symbolColor ?? color;
-			if (isPresetColor(labelColor)) {
-				labelColor = COLORS[labelColor].labelColor;
-			}
-			if (isPresetColor(symbolColor)) {
-				symbolColor = COLORS[symbolColor].symbolColor;
-			}
 
 			// Default labelBorderWidth and labelBorderColor if only one is given
 			if (labelBorderColor && typeof labelBorderWidth === 'undefined') {

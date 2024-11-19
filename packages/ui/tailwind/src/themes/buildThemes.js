@@ -1,6 +1,6 @@
 /**
- * @param {import('./schemas/types.js').ThemesConfig} themesConfig
- * @returns {import('./schemas/types.js').Themes}
+ * @param {import('../schemas/types.js').ThemesConfig} themesConfig
+ * @returns {import('../schemas/types.js').Themes}
  */
 export const buildThemes = (themesConfig) =>
 	/** @type {const} */ (['colors', 'colorPalettes', 'colorScales']).reduce(
@@ -12,7 +12,7 @@ export const buildThemes = (themesConfig) =>
 			});
 			return acc;
 		},
-		/** @type {import('./schemas/types.js').Themes} */ ({
+		/** @type {import('../schemas/types.js').Themes} */ ({
 			light: { colors: {}, colorPalettes: {}, colorScales: {} },
 			dark: { colors: {}, colorPalettes: {}, colorScales: {} }
 		})

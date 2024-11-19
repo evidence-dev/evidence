@@ -11,7 +11,7 @@
 	import { browser } from '$app/environment';
 	import DevTools from '../../devtools/DevTools.svelte';
 	import { onMount } from 'svelte';
-	import { ensureThemeStores } from '../../themes.js';
+	import { getThemeStores } from '../../themes.js';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 	// Remove splash screen from app.html
@@ -110,8 +110,8 @@
 		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
-	// TODO where should this go? How do we get project splash to be rendered with the proper theme?
-	ensureThemeStores();
+	const { syncDataThemeAttribute } = getThemeStores();
+	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
 </script>
 
 <slot />

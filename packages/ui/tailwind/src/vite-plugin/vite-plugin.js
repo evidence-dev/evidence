@@ -1,5 +1,5 @@
-import { loadThemesConfig } from '../loadThemesConfig.js';
-import { buildThemes } from '../buildThemes.js';
+import { loadThemesConfig } from '../config/loadThemesConfig.js';
+import { buildThemes } from '../themes/buildThemes.js';
 
 /** @returns {import('vite').Plugin} */
 export const evidenceThemes = () => {

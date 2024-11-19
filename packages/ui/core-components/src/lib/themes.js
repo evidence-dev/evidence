@@ -1,9 +1,10 @@
 // @ts-check
 
 import { getContext, setContext } from 'svelte';
-import { derived, readable, readonly } from 'svelte/store';
+import { derived, get, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
+import { isBuiltinColorPalette } from '@evidence-dev/tailwind';
 import { themes, themesConfig } from '$evidence/themes';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
@@ -43,37 +44,99 @@ const createSystemThemeStore = () => {
 	return store;
 };
 
-/**
- * @typedef ThemeStores
- * @prop {Readable<'light' | 'dark'>} systemMode
- * @prop {Readable<'system' | 'light' | 'dark'>} selectedMode
- * @prop {Readable<'light' | 'dark'>} activeMode
- * @prop {Readable<Theme>} theme
- * @prop {ThemesConfig} themesConfig
- * @prop {() => void} cycleMode
- */
+export class ThemeStores {
+	/** @type {Readable<'light' | 'dark'>} */
+	#systemTheme;
 
-/** @returns {ThemeStores} */
-const createThemeStores = () => {
-	const systemMode = createSystemThemeStore();
+	get systemTheme() {
+		return this.#systemTheme;
+	}
 
-	/** @type {Writable<'system' | 'light' | 'dark'>} */
-	const selectedMode = localStorageStore('evidence-theme', themesConfig.themes.defaultAppearance, {
-		serialize: (value) => value,
-		deserialize: (raw) =>
-			['system', 'light', 'dark'].includes(raw)
-				? /** @type {'light' | 'dark' | 'system'} */ (raw)
-				: themesConfig.themes.defaultAppearance
-	});
+	/** @type {Writable<'light' | 'dark' | 'system'>} */
+	#selectedAppearance;
 
-	const activeMode = derived([systemMode, selectedMode], ([$systemTheme, $selectedTheme]) => {
-		return $selectedTheme === 'system' ? $systemTheme : $selectedTheme;
-	});
+	get selectedAppearance() {
+		return readonly(this.#selectedAppearance);
+	}
 
-	const theme = derived(activeMode, ($activeTheme) => themes[$activeTheme]);
+	/** @type {Readable<'light' | 'dark'>} */
+	#activeAppearance;
 
-	const cycleMode = () => {
-		selectedMode.update((current) => {
+	get activeAppearance() {
+		return this.#activeAppearance;
+	}
+
+	/** @type {Readable<Theme>} */
+	#theme;
+
+	get theme() {
+		return this.#theme;
+	}
+
+	get themesConfig() {
+		return themesConfig;
+	}
+
+	constructor() {
+		this.#systemTheme = createSystemThemeStore();
+
+		this.#selectedAppearance = localStorageStore(
+			'evidence-theme',
+			themesConfig.themes.defaultAppearance,
+			{
+				serialize: (value) => value,
+				deserialize: (raw) =>
+					['system', 'light', 'dark'].includes(raw)
+						? /** @type {'light' | 'dark' | 'system'} */ (raw)
+						: themesConfig.themes.defaultAppearance
+			}
+		);
+
+		this.#activeAppearance = derived(
+			[this.#systemTheme, this.#selectedAppearance],
+			([$systemTheme, $selectedAppearance]) => {
+				return $selectedAppearance === 'system' ? $systemTheme : $selectedAppearance;
+			}
+		);
+
+		this.#theme = derived(this.#activeAppearance, ($activeAppearance) => themes[$activeAppearance]);
+	}
+
+	/** @param {HTMLElement} element */
+	syncDataThemeAttribute = (element) => {
+		// Sync activeAppearance -> html[data-theme]
+		const unsubscribe = this.#activeAppearance.subscribe(($activeAppearance) => {
+			const current = element.getAttribute('data-theme');
+			if (current !== $activeAppearance) {
+				element.setAttribute('data-theme', $activeAppearance);
+			}
+		});
+
+		// Sync html[data-theme] -> activeAppearance
+		const observer = new MutationObserver((mutations) => {
+			const html = /** @type {HTMLHtmlElement} */ (mutations[0].target);
+			const theme = html.getAttribute('data-theme');
+			if (!theme || !['light', 'dark'].includes(theme)) return;
+			const current = get(this.#activeAppearance);
+			if (theme !== current) {
+				this.#selectedAppearance.set(/** @type {'light' | 'dark'} */ (theme));
+			}
+		});
+		observer.observe(element, { attributeFilter: ['data-theme'] });
+
+		return () => {
+			unsubscribe();
+			observer.disconnect();
+		};
+	};
+
+	/** @param {'light' | 'dark' | 'system'} appearance */
+	setAppearance = (appearance) => {
+		this.#selectedAppearance.set(appearance);
+	};
+
+	cycleAppearance = () => {
+		this.#selectedAppearance.update((current) => {
 			switch (current) {
 				case 'system':
 					return 'light';
@@ -86,30 +149,97 @@ const createThemeStores = () => {
 		});
 	};
 
-	activeMode.subscribe((theme) => {
-		if (typeof document !== 'undefined') {
-			document.documentElement.setAttribute('data-theme', theme);
+	/**
+	 * @type {{
+	 * 		<T>(input: T[]): Readable<(string | T)[]>;
+	 * 		<T>(input: Record<string, T>): Readable<Record<string, string | T>>;
+	 * 		<T>(input: T): Readable<string | T>;
+	 * }}
+	 */
+	resolveColor = (input) => {
+		if (typeof input === 'string') {
+			const trimmed = input.trim();
+			const r = derived(this.#theme, ($theme) => $theme.colors[trimmed] ?? trimmed);
+			return /** @type {any} */ (r);
 		}
-	});
 
-	return {
-		systemMode,
-		selectedMode: readonly(selectedMode),
-		activeMode,
-		theme,
-		themesConfig,
-		cycleMode
+		if (Array.isArray(input)) {
+			const r = derived(this.#theme, ($theme) =>
+				input.map((color) => {
+					if (typeof color !== 'string') return color;
+					return $theme.colors[color] ?? color;
+				})
+			);
+			return /** @type {any} */ (r);
+		}
+
+		if (input) {
+			return derived(this.#theme, ($theme) =>
+				Object.fromEntries(
+					Object.entries(input).map(([key, color]) => {
+						if (typeof color !== 'string') return [key, color];
+						return [key, $theme.colors[color] ?? color];
+					})
+				)
+			);
+		}
+
+		const r = readable(input);
+		return /** @type {any} */ (r);
 	};
-};
+
+	/**
+	 * @param {unknown} colorPalette
+	 * @returns {Readable<string[] | undefined>}
+	 */
+	resolveColorPalette = (colorPalette) => {
+		if (typeof colorPalette === 'string') {
+			const trimmed = colorPalette.trim();
+			if (isBuiltinColorPalette(trimmed)) {
+				return derived(this.#theme, ($theme) => $theme.colorPalettes[trimmed]);
+			}
+		}
+
+		if (Array.isArray(colorPalette)) {
+			return readable(colorPalette);
+		}
+
+		return readable(undefined);
+	};
+
+	/**
+	 * @param {unknown} colorScale
+	 * @returns {Readable<string[] | undefined>}
+	 */
+	resolveColorScale = (colorScale) => {
+		if (typeof colorScale === 'string') {
+			const trimmed = colorScale.trim();
+			if (isBuiltinColorPalette(trimmed)) {
+				return derived(this.#theme, ($theme) => $theme.colorScales[trimmed]);
+			}
+		}
+
+		if (Array.isArray(colorScale)) {
+			return readable(colorScale);
+		}
+
+		return readable(undefined);
+	};
+}
 
 const THEME_STORES_CONTEXT_KEY = Symbol('__EvidenceThemeStores__');
 
 /** @returns {ThemeStores} */
-export const ensureThemeStores = () => {
+export const getThemeStores = () => {
 	let stores = getContext(THEME_STORES_CONTEXT_KEY);
 	if (!stores) {
-		stores = createThemeStores();
+		stores = new ThemeStores();
 		setContext(THEME_STORES_CONTEXT_KEY, stores);
 	}
 	return stores;
 };
+
+/**
+ * @template T
+ * @typedef {T | T[] | { [key: string]: T }} ValueOrArrayOrObject
+ */

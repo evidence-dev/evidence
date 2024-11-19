@@ -10,7 +10,7 @@
 	import { showQueries, localStorageStore } from '@evidence-dev/component-utilities/stores';
 	import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
 	import { page } from '$app/stores';
-	import { ensureThemeStores } from '../../themes.js';
+	import { getThemeStores } from '../../themes.js';
 
 	export let queryID;
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -57,7 +57,7 @@
 		}
 	}
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 </script>
 
 <div class="over-container" in:blur|local>

@@ -8,6 +8,9 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ValueError from './ValueError.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	// Passing in value from dataset:
 	export let data = null;
@@ -35,16 +38,18 @@
 
 	// Value Styling Props:
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
+
 	let fontColor = '';
 	// Negative value font color:
 	export let redNegatives = false;
 	$: redNegatives = redNegatives === 'true' || redNegatives === true;
 
-	$: if (redNegatives || color) {
+	$: if (redNegatives || $colorStore) {
 		if (redNegatives && selected_value < 0) {
 			fontColor = 'rgb(220 38 38)';
-		} else if (color) {
-			fontColor = color;
+		} else if ($colorStore) {
+			fontColor = $colorStore;
 		}
 	}
 

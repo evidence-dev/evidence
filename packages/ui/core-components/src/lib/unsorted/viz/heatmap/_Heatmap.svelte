@@ -17,6 +17,9 @@
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import getSortedDistinctValues from '@evidence-dev/component-utilities/getSortedDistinctValues';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColorPalette } = getThemeStores();
 
 	export let data;
 	export let queryID;
@@ -57,7 +60,9 @@
 	export let filter = false;
 	$: filter = filter === 'true' || filter === true;
 
-	export let colorPalette = undefined;
+	// TODO this is more of a colorScale than a colorPalette. Should we rename?
+	export let colorPalette = ['rgb(254,234,159)', 'rgb(218,66,41)'];
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	export let min = undefined;
 	export let max = undefined;
@@ -274,7 +279,7 @@
 					borderColor: uiColours.grey200
 				},
 				inRange: {
-					color: colorPalette ?? ['rgb(254,234,159)', 'rgb(218,66,41)']
+					color: $colorPaletteStore
 				},
 				text: filter
 					? undefined

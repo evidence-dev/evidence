@@ -7,7 +7,7 @@
 <script>
 	// @ts-check
 	import ReferencePoint from './ReferencePoint.svelte';
-	import { ensureThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -117,7 +117,7 @@
 	 */
 	export let preserveWhitespace = false;
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 </script>
 
 <ReferencePoint

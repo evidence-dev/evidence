@@ -13,7 +13,7 @@
 
 	import { Eye, EyeOff, PlayerPlay } from '@evidence-dev/component-utilities/icons';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import { ensureThemeStores } from '../../themes.js';
+	import { getThemeStores } from '../../themes.js';
 
 	/** @type {boolean} */
 	export let hideErrors = false;
@@ -75,7 +75,7 @@
 		}
 	);
 
-	const { theme } = ensureThemeStores();
+	const { theme } = getThemeStores();
 </script>
 
 <h1 class="markdown">SQL Console</h1>

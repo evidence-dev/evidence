@@ -3,8 +3,12 @@
 </script>
 
 <script>
+	import { getThemeStores } from '../../../themes.js';
+
 	import Chart from '../core/Chart.svelte';
 	import Line from './Line.svelte';
+
+	const { resolveColor, resolveColorPalette } = getThemeStores();
 
 	export let data = undefined;
 	export let x = undefined;
@@ -53,6 +57,8 @@
 	export let y2Scale = undefined;
 
 	export let lineColor = undefined;
+	$: lineColorStore = resolveColor(lineColor);
+
 	export let lineType = undefined;
 	export let lineOpacity = undefined;
 	export let lineWidth = undefined;
@@ -69,19 +75,26 @@
 
 	export let sort = undefined;
 
-	export let colorPalette = undefined;
+	export let colorPalette = 'default';
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	export let labels = undefined;
 	export let labelSize = undefined;
 	export let labelPosition = undefined;
+
 	export let labelColor = undefined;
+	$: labelColorStore = resolveColor(labelColor);
+
 	export let labelFmt = undefined;
 	export let yLabelFmt = undefined;
 	export let y2LabelFmt = undefined;
 	export let showAllLabels = undefined;
 
 	export let yAxisColor = undefined;
+	$: yAxisColorStore = resolveColor(yAxisColor);
+
 	export let y2AxisColor = undefined;
+	$: y2AxisColorStore = resolveColor(y2AxisColor);
 
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
@@ -93,7 +106,10 @@
 	export let renderer = undefined;
 	export let downloadableData = undefined;
 	export let downloadableImage = undefined;
+
 	export let seriesColors = undefined;
+	$: seriesColorsStore = resolveColor(seriesColors);
+
 	export let seriesOrder = undefined;
 
 	export let connectGroup = undefined;
@@ -127,8 +143,8 @@
 	{xTickMarks}
 	{yTickMarks}
 	{y2TickMarks}
-	{yAxisColor}
-	{y2AxisColor}
+	yAxisColor={$yAxisColorStore}
+	y2AxisColor={$y2AxisColorStore}
 	{yMin}
 	{yMax}
 	{yScale}
@@ -140,7 +156,7 @@
 	chartType="Line Chart"
 	{sort}
 	{chartAreaHeight}
-	{colorPalette}
+	colorPalette={$colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -150,10 +166,10 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	{seriesColors}
+	seriesColors={$seriesColorsStore}
 >
 	<Line
-		{lineColor}
+		lineColor={$lineColorStore}
 		{lineWidth}
 		{lineOpacity}
 		{lineType}
@@ -166,7 +182,7 @@
 		{labels}
 		{labelSize}
 		{labelPosition}
-		{labelColor}
+		labelColor={$labelColorStore}
 		{labelFmt}
 		{yLabelFmt}
 		{y2LabelFmt}

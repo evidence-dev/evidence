@@ -1,5 +1,5 @@
 import { mergeConfig } from 'vite';
-import { evidenceThemes } from '@evidence-dev/tailwind';
+import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
 
 /** @type { import('@storybook/sveltekit').StorybookConfig } */
 const config = {

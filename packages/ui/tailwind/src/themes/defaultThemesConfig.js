@@ -1,6 +1,6 @@
 import colors from 'tailwindcss/colors.js';
 
-/** @typedef {import('./schemas/types.js').ThemesConfig} ThemesConfig */
+/** @typedef {import('../schemas/types.js').ThemesConfig} ThemesConfig */
 
 /** @type {ThemesConfig} */
 export const defaultThemesConfig = {
@@ -91,6 +91,26 @@ export const defaultThemesConfig = {
 			'negative-content': {
 				light: colors.zinc[50],
 				dark: colors.zinc[950]
+			},
+			red: {
+				light: colors.red[700],
+				dark: colors.red[300]
+			},
+			green: {
+				light: colors.green[700],
+				dark: colors.green[300]
+			},
+			yellow: {
+				light: colors.yellow[700],
+				dark: colors.yellow[300]
+			},
+			grey: {
+				light: colors.gray[700],
+				dark: colors.gray[300]
+			},
+			blue: {
+				light: colors.blue[700],
+				dark: colors.blue[300]
 			}
 		},
 		colorPalettes: {

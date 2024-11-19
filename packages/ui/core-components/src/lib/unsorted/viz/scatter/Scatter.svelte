@@ -12,6 +12,9 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
@@ -22,8 +25,12 @@
 
 	export let shape = 'circle';
 	export let fillColor = undefined;
+	$: fillColorStore = resolveColor(fillColor);
+
 	export let opacity = 0.7; // opacity of both fill and outline (ECharts limitation)
 	export let outlineColor = undefined;
+	$: outlineColorStore = resolveColor(outlineColor);
+
 	export let outlineWidth = undefined;
 	export let pointSize = 10;
 
@@ -58,7 +65,7 @@
 	}
 
 	// Set up base config for this type of chart series:
-	let baseConfig = {
+	$: baseConfig = {
 		type: 'scatter',
 		label: {
 			show: false
@@ -70,9 +77,9 @@
 		symbol: shape,
 		symbolSize: pointSize,
 		itemStyle: {
-			color: fillColor,
+			color: $fillColorStore,
 			opacity: opacity,
-			borderColor: outlineColor,
+			borderColor: $outlineColorStore,
 			borderWidth: outlineWidth
 		}
 	};

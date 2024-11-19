@@ -7,10 +7,18 @@
 	import { getContext } from 'svelte';
 	/** @type {string} */
 	import TabDisplay from '../../../unsorted/ui/Tabs/TabDisplay.svelte';
+	import { getThemeStores } from '../../../themes.js';
+
+	const { resolveColor } = getThemeStores();
+
 	export let valueLabel;
+
 	/** @type {string | boolean | number | Date} */
 	export let value;
+
 	export let color = 'hsla(207, 65%, 39%, 1)';
+	$: colorStore = resolveColor(color);
+
 	/** @type {string} */
 	export let defaultValue;
 
@@ -35,7 +43,7 @@
 	<TabDisplay
 		id={value}
 		label={valueLabel}
-		{color}
+		color={$colorStore}
 		on:click={() => update({ valueLabel, value })}
 		activeId={$currentValue?.value}
 	/>

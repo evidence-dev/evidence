@@ -88,7 +88,7 @@ pre[class*='language-'] {
 }
 
 .token.comment {
-	color: var(--blue-700);
+	color: #1d4ed8;
 }
 
 .token.constant {

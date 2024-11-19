@@ -3,7 +3,10 @@
 </script>
 
 <script>
+	import { getThemeStores } from '../../../../themes.js';
+
 	import Points from './Points.svelte';
+	const { resolveColorPalette } = getThemeStores();
 
 	/** @type {string|undefined} */
 	export let size = undefined; // column containing size data
@@ -13,7 +16,10 @@
 	export let pointStyle = 'bubbles';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	/** @type {boolean} */
 	export let legend = true;
 </script>
@@ -22,7 +28,7 @@
 	sizeCol={size}
 	{opacity}
 	{legendType}
-	{colorPalette}
+	colorPalette={$colorPaletteStore}
 	{legend}
 	{pointStyle}
 	{...$$restProps}
