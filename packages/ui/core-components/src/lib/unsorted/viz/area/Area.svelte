@@ -65,6 +65,8 @@
 	}
 	export let showAllLabels = false;
 	export let seriesOrder = undefined;
+	export let seriesFmt = undefined;
+
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
@@ -145,6 +147,20 @@
 		symbolSize: labels && !markers ? 0 : markerSize,
 		step: step ? stepPosition : false
 	};
+	// data,
+	// x,
+	// y,
+	// series,
+	// swapXY,
+	// baseConfig,
+	// name,
+	// xMismatch, // this checks for scenarios where xType is string and xDataType is number. When this is the case, we need to inject strings into the x axis, or else it will cause echarts to think there are duplicate x-axis values (e.g., "4" and 4)
+	// columnSummary,
+	// seriesOrder,
+	// size = undefined,
+	// tooltipTitle = undefined,
+	// y2 = undefined,
+	// seriesFmt = undefined
 
 	$: seriesConfig = getSeriesConfig(
 		data,
@@ -156,7 +172,11 @@
 		name,
 		xMismatch,
 		columnSummary,
-		seriesOrder
+		seriesOrder,
+		undefined, // size (not needed)
+		undefined, // tooltipTitle (not needed)
+		undefined, // y2 (not needed)
+		seriesFmt
 	);
 
 	$: config.update((d) => {
