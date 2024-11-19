@@ -150,9 +150,10 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {unknown} input
+	 * @template T
+	 * @param {T} input
 	 * @param {'light' | 'dark'} appearance
-	 * @returns {string | undefined}
+	 * @returns {string | T | undefined}
 	 */
 	static #resolveColor = (input, appearance) => {
 		if (typeof input === 'string') {
@@ -185,8 +186,9 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {unknown} input
-	 * @returns {Readable<string | undefined>}
+	 * @template T
+	 * @param {T} input
+	 * @returns {Readable<string | T | undefined>}
 	 */
 	resolveColor = (input) =>
 		derived(this.#activeAppearance, ($activeAppearance) =>
@@ -196,17 +198,17 @@ export class ThemeStores {
 	/**
 	 * @template T
 	 * @param {Record<string, T> | undefined} input
-	 * @returns {Readable<Record<string, (string | T)[]> | undefined>}
+	 * @returns {Readable<Record<string, (string | T | undefined)> | undefined>}
 	 */
 	resolveColorsObject = (input) => {
 		if (!input) return readable(undefined);
 
-		return derived(this.#theme, ($theme) =>
+		return derived(this.#activeAppearance, ($activeAppearance) =>
 			Object.fromEntries(
-				Object.entries(input).map(([key, color]) => {
-					if (typeof color !== 'string') return [key, color];
-					return [key, $theme.colors[color.trim()] ?? color];
-				})
+				Object.entries(input).map(([key, color]) => [
+					key,
+					ThemeStores.#resolveColor(color, $activeAppearance)
+				])
 			)
 		);
 	};

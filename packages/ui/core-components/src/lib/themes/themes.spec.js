@@ -162,7 +162,7 @@ describe('ThemeStores', async () => {
 	});
 
 	describe('resolveColorsObject', () => {
-		it('should leave undefined as is', () => {
+		it('should leave undefined as-is', () => {
 			const store = resolveColorsObject(undefined);
 
 			setAppearance('light');
@@ -171,47 +171,124 @@ describe('ThemeStores', async () => {
 			setAppearance('dark');
 			expect(get(store)).toBe(undefined);
 		});
-		it('should resolve each value of an object', () => {
-			const store = resolveColorsObject({
-				key1: 'myColor1',
-				key2: '#abcdef',
-				key3: 'myColor2',
-				key4: undefined
-			});
+
+		it('should convert single hex color to dark mode', () => {
+			const store = resolveColorsObject({ key1: '#abcdef' });
 
 			setAppearance('light');
-			expect(get(store)).toEqual({
-				key1: 'light_myColor1',
-				key2: '#abcdef',
-				key3: 'light_myColor2',
-				key4: undefined
-			});
+			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expect(get(store)).toEqual({
-				key1: 'dark_myColor1',
-				key2: '#abcdef',
-				key3: 'dark_myColor2',
-				key4: undefined
-			});
+			expect(get(store)).toEqual({ key1: '#176ab5' });
+		});
+
+		it('should convert light-only theme color to dark mode', () => {
+			const store = resolveColorsObject({ key1: 'lightOnly' });
+
+			setAppearance('light');
+			expect(get(store)).toEqual({ key1: '#abcdef' });
+
+			setAppearance('dark');
+			expect(get(store)).toEqual({ key1: '#176ab5' });
+		});
+
+		it('should resolve colors in theme', () => {
+			const store = resolveColorsObject({ key1: 'myColor1' });
+
+			setAppearance('light');
+			expect(get(store)).toEqual({ key1: 'light_myColor1' });
+
+			setAppearance('dark');
+			expect(get(store)).toEqual({ key1: 'dark_myColor1' });
 		});
 
 		it('should resolve colors in theme and ignore extraneous whitespace', () => {
+			const store = resolveColorsObject({ key1: '  myColor2  ' });
+
+			setAppearance('light');
+			expect(get(store)).toEqual({ key1: 'light_myColor2' });
+
+			setAppearance('dark');
+			expect(get(store)).toEqual({ key1: 'dark_myColor2' });
+		});
+
+		it('should resolve tuple of hex codes', () => {
+			const store = resolveColorsObject({ key1: ['#abcdef', '#fedcba'] });
+
+			setAppearance('light');
+			expect(get(store)).toEqual({ key1: '#abcdef' });
+
+			setAppearance('dark');
+			expect(get(store)).toEqual({ key1: '#fedcba' });
+		});
+
+		it('should resolve a tuple of just one hex code', () => {
+			const store = resolveColorsObject({ key1: ['#abcdef'] });
+
+			setAppearance('light');
+			expect(get(store)).toEqual({ key1: '#abcdef' });
+
+			setAppearance('dark');
+			expect(get(store)).toEqual({ key1: '#176ab5' });
+		});
+
+		it('should resolve tuple of theme colors', () => {
+			const store = resolveColorsObject({ key1: ['myColor1', 'myColor2'] });
+
+			setAppearance('light');
+			expect(get(store)).toEqual({ key1: 'light_myColor1' });
+
+			setAppearance('dark');
+			expect(get(store)).toEqual({ key1: 'dark_myColor2' });
+		});
+
+		it('should resolve a tuple of just one theme color', () => {
+			const store = resolveColorsObject({ key1: ['lightOnly'] });
+
+			setAppearance('light');
+			expect(get(store)).toEqual({ key1: '#abcdef' });
+
+			setAppearance('dark');
+			expect(get(store)).toEqual({ key1: '#176ab5' });
+		});
+
+		it('should resolve an object with multiple types of color values', () => {
 			const store = resolveColorsObject({
-				key1: '  myColor1  ',
-				key3: '  myColor2  '
+				key1: undefined,
+				key2: '#abcdef',
+				key3: 'lightOnly',
+				key4: 'myColor1',
+				key5: '  myColor2  ',
+				key6: ['#abcdef', '#fedcba'],
+				key7: ['#abcdef'],
+				key8: ['myColor1', 'myColor2'],
+				key9: ['lightOnly']
 			});
 
 			setAppearance('light');
 			expect(get(store)).toEqual({
-				key1: 'light_myColor1',
-				key3: 'light_myColor2'
+				key1: undefined,
+				key2: '#abcdef',
+				key3: '#abcdef',
+				key4: 'light_myColor1',
+				key5: 'light_myColor2',
+				key6: '#abcdef',
+				key7: '#abcdef',
+				key8: 'light_myColor1',
+				key9: '#abcdef'
 			});
 
 			setAppearance('dark');
 			expect(get(store)).toEqual({
-				key1: 'dark_myColor1',
-				key3: 'dark_myColor2'
+				key1: undefined,
+				key2: '#176ab5',
+				key3: '#176ab5',
+				key4: 'dark_myColor1',
+				key5: 'dark_myColor2',
+				key6: '#fedcba',
+				key7: '#176ab5',
+				key8: 'dark_myColor2',
+				key9: '#176ab5'
 			});
 		});
 	});
