@@ -43,7 +43,6 @@
 	<button
 		type="button"
 		class=" flex-none py-1 font-medium px-3 text-xs truncate
-		relative
 		border-r last:border-none  
 		hover:bg-gray-100 focus:z-10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400
 		transition-colors duration-200 
