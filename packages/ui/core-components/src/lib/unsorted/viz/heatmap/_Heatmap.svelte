@@ -13,13 +13,12 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import getSortedDistinctValues from '@evidence-dev/component-utilities/getSortedDistinctValues';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 	import { getThemeStores } from '../../../themes.js';
 
-	const { resolveColorPalette } = getThemeStores();
+	const { theme, resolveColorPalette } = getThemeStores();
 
 	export let data;
 	export let queryID;
@@ -255,12 +254,12 @@
 				padding: 6,
 				borderRadius: 4,
 				borderWidth: 1,
-				borderColor: uiColours.grey400,
-				backgroundColor: 'white',
+				borderColor: $theme.colors['base-300'],
+				backgroundColor: $theme.colors['base-100'],
 				extraCssText:
 					'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 				textStyle: {
-					color: uiColours.grey900,
+					color: $theme.colors['base-content'],
 					fontSize: 12,
 					fontWeight: 400
 				},
@@ -276,7 +275,7 @@
 				left: 'center',
 				bottom: '0%',
 				handleStyle: {
-					borderColor: uiColours.grey200
+					borderColor: $theme.colors['base-100']
 				},
 				inRange: {
 					color: $colorPaletteStore
@@ -307,7 +306,7 @@
 						hideOverlap: true
 					},
 					itemStyle: {
-						borderColor: uiColours.grey400,
+						borderColor: $theme.colors['base-300'],
 						borderWidth: borders ? 0.5 : 0
 					}
 				}
