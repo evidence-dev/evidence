@@ -21,7 +21,7 @@ const loadSource = async (sourcePath) => {
 
 /**
  * @param {import('ora').Ora} [spinner]
- * @returns {Promise<Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>>}
+ * @returns {Promise<Array<import('./schemas/datasource.schema.js').DatasourceSpec & {dir: string}>>}
  */
 export const loadSources = async (spinner) => {
 	/** @type {string[]} */
@@ -37,7 +37,7 @@ export const loadSources = async (spinner) => {
 		});
 	}
 
-	return /** @type {Array<import('./schemas/datasource.schema.js').DatasourceSpecFile & {dir: string}>}*/ (
+	return /** @type {Array<import('./schemas/datasource.schema.js').DatasourceSpec & {dir: string}>}*/ (
 		await Promise.all(
 			sourceDirs.map(async (dir) => ({
 				dir,
