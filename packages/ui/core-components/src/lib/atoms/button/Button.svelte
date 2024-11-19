@@ -2,8 +2,7 @@
 	export const evidenceInclude = true;
 
 	/** @typedef {"sm" | "md" | "base" | "lg"} ButtonSize */
-	// TODO support primary, secondary, accent
-	/** @typedef {"info" | "success" | "warn" | "error"} ButtonVariant */
+	/** @typedef {"primary" | "secondary" | "accent" | "info" | "success" | "warn" | "error"} ButtonVariant */
 	/** @typedef {"left" | "right"} ButtonIconPosition */
 	/** @typedef {boolean} ButtonOutline */
 
@@ -76,6 +75,36 @@
 
 <style lang="postcss">
 	button {
+		&.variant-primary {
+			--bg: theme(colors.primary);
+			--text: theme(colors.primary-content);
+			&.outlined {
+				--border: theme(colors.primary);
+				--text: theme(colors.primary);
+				--hover-bg: theme(colors.primary / 0.1);
+			}
+		}
+
+		&.variant-secondary {
+			--bg: theme(colors.secondary);
+			--text: theme(colors.secondary-content);
+			&.outlined {
+				--border: theme(colors.secondary);
+				--text: theme(colors.secondary);
+				--hover-bg: theme(colors.secondary / 0.1);
+			}
+		}
+
+		&.variant-accent {
+			--bg: theme(colors.accent);
+			--text: theme(colors.accent-content);
+			&.outlined {
+				--border: theme(colors.accent);
+				--text: theme(colors.accent);
+				--hover-bg: theme(colors.accent / 0.1);
+			}
+		}
+
 		&.variant-info {
 			--bg: theme(colors.info);
 			--text: theme(colors.info-content);
