@@ -5,7 +5,6 @@ import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
-import { uiColours } from '@evidence-dev/component-utilities/colours';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -481,8 +480,9 @@ export class EvidenceMap {
 		return values;
 	}
 
-	handleFillColor(item, value, values, colorPalette, colorScale) {
-		if (!value) return uiColours.blue700;
+	/** @param {import('@evidence-dev/tailwind').Theme} theme */
+	handleFillColor(item, value, values, colorPalette, colorScale, theme) {
+		if (!value) return theme.colors['primary'];
 
 		if (item[value]) {
 			if (typeof item[value] === 'string') {
