@@ -25,7 +25,7 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { theme, resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 

@@ -5,7 +5,7 @@
 <script>
 	import { getContext } from 'svelte';
 	import eChartsCopy from '@evidence-dev/component-utilities/echartsCopy';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColorsObject } = getThemeStores();
 

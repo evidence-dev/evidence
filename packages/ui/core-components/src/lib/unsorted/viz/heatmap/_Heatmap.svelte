@@ -16,7 +16,7 @@
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import getSortedDistinctValues from '@evidence-dev/component-utilities/getSortedDistinctValues';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { theme, resolveColorPalette } = getThemeStores();
 

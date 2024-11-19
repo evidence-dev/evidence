@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	import Chart from '../core/Chart.svelte';
 	import Line from './Line.svelte';

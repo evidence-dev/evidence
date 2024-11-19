@@ -14,7 +14,7 @@
 		Moon
 	} from '@steeze-ui/tabler-icons';
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 	import { dev } from '$app/environment';
 
 	const beforeprint = new Event('export-beforeprint');

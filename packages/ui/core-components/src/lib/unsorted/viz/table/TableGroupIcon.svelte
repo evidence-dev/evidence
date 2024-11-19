@@ -1,5 +1,5 @@
 <script>
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	export let toggled = false;
 	export let color = undefined;

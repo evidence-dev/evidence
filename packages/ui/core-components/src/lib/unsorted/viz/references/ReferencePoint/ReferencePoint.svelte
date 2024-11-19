@@ -13,7 +13,7 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { ReferencePointStore } from './reference-point.store.js';
 	import { toNumber } from '../../../../utils.js';
-	import { getThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes/themes.js';
 	import chroma from 'chroma-js';
 
 	const { resolveColor } = getThemeStores();

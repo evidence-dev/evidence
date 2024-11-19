@@ -13,7 +13,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { theme, resolveColorPalette } = getThemeStores();
 

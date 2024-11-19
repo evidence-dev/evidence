@@ -9,7 +9,7 @@
 	import MapArea from './MapArea.svelte';
 	import { nanoid } from 'nanoid';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { getThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes/themes.js';
 	const inputs = getInputContext();
 
 	const { theme, resolveColor, resolveColorPalette } = getThemeStores();

@@ -29,7 +29,7 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColor } = getThemeStores();
 

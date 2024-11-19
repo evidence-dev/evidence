@@ -14,7 +14,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 	import chroma from 'chroma-js';
 
 	const { activeAppearance, theme, resolveColorPalette, resolveColorScale } = getThemeStores();

@@ -13,7 +13,7 @@
 	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 	/** @type {string} */
 	export let name;
 	/** @type {string} */

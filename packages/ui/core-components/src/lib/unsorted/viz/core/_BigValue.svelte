@@ -7,7 +7,7 @@
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import Delta from './Delta.svelte';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColor } = getThemeStores();
 
