@@ -1,4 +1,5 @@
 import getDistinctValues from './getDistinctValues.js';
+import { fmt } from '@evidence-dev/component-utilities/formatting';
 
 export default function getSeriesConfig(
 	data,
@@ -13,7 +14,8 @@ export default function getSeriesConfig(
 	seriesOrder,
 	size = undefined,
 	tooltipTitle = undefined,
-	y2 = undefined
+	y2 = undefined,
+	seriesFmt = undefined
 ) {
 	function generateTempConfig(seriesData, seriesName, yAxisIndex, baseConfig) {
 		let tempConfig = {
@@ -221,6 +223,13 @@ export default function getSeriesConfig(
 
 	if (seriesOrder) {
 		seriesConfig.sort((a, b) => seriesOrder.indexOf(a.name) - seriesOrder.indexOf(b.name));
+	}
+
+	// format series config:
+	if (seriesFmt) {
+		seriesConfig.forEach((item) => {
+			item.name = fmt(item.name, seriesFmt);
+		});
 	}
 
 	return seriesConfig;
