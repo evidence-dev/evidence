@@ -50,7 +50,7 @@
 {:else if display === 'buttons'}
 	<button
 		type="button"
-		class="flex-none py-1 font-medium h-8 px-3 text-xs truncate
+		class="flex-none py-1 font-medium px-3 text-xs truncate
 		border-r last:border-none border-base-300
 		hover:bg-base-200 focus:z-10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-300
 		{$currentValue?.value === value ? 'z-10 bg-base-200 text-primary' : 'z-0 bg-base-100'}"

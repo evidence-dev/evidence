@@ -110,7 +110,7 @@
 			<div
 				class={display === 'tabs'
 					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-					: 'inline-flex rounded-md shadow-sm shadow-base-100 overflow-auto border border-base-300 no-scrollbar'}
+					: 'inline-flex rounded-md shadow-sm shadow-base-100 overflow-auto h-8 border border-base-300 no-scrollbar'}
 				role="group"
 			>
 				{#if preset}
