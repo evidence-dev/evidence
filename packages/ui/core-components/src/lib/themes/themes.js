@@ -5,6 +5,7 @@ import { derived, get, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
 import { themes, themesConfig } from '$evidence/themes';
+import { convertLightToDark } from './convertLightToDark.js';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
@@ -154,14 +155,31 @@ export class ThemeStores {
 	 */
 	resolveColor = (input) => {
 		if (typeof input === 'string') {
-			return derived(this.#theme, ($theme) => $theme.colors[input.trim()] ?? input);
+			return derived(this.#activeAppearance, ($activeAppearance) => {
+				const lightColor = themes.light.colors[input.trim()];
+				const darkColor = themes.dark.colors[input.trim()];
+
+				if ($activeAppearance === 'light') {
+					return lightColor ?? input;
+				}
+				if ($activeAppearance === 'dark') {
+					return darkColor ?? convertLightToDark(lightColor ?? input) ?? input;
+				}
+			});
 		}
 
 		if (isStringTuple(input)) {
 			const [light, dark] = input;
-			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) => {
-				const color = $activeAppearance === 'light' ? light : dark;
-				return $theme.colors[color] ?? color;
+			return derived(this.#activeAppearance, ($activeAppearance) => {
+				const lightColor = themes.light.colors[light.trim()];
+				const darkColor = dark ? (themes.dark.colors[dark?.trim()] ?? dark) : undefined;
+
+				if ($activeAppearance === 'light') {
+					return lightColor ?? light;
+				}
+				if ($activeAppearance === 'dark') {
+					return darkColor ?? convertLightToDark(lightColor ?? light) ?? dark;
+				}
 			});
 		}
 
@@ -253,7 +271,7 @@ export const getThemeStores = () => {
 	return stores;
 };
 
-/** @typedef {[string, string]} StringTuple */
+/** @typedef {[string] | [string, string]} StringTuple */
 
 /**
  * @param {unknown} input
@@ -261,9 +279,8 @@ export const getThemeStores = () => {
  */
 const isStringTuple = (input) =>
 	Array.isArray(input) &&
-	input.length === 2 &&
-	typeof input[0] === 'string' &&
-	typeof input[1] === 'string';
+	(input.length === 1 || input.length === 2) &&
+	input.every((item) => typeof item === 'string');
 
 /**
  * @param {unknown} input

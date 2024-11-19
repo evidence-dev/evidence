@@ -15,7 +15,8 @@ vi.mock('$evidence/themes', () => ({
 		light: {
 			colors: {
 				myColor1: 'light_myColor1',
-				myColor2: 'light_myColor2'
+				myColor2: 'light_myColor2',
+				lightOnly: '#abcdef'
 			},
 			colorPalettes: {
 				myColorPalette1: [
@@ -79,14 +80,24 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toBe(undefined);
 		});
 
-		it('should leave non-theme colors as-is', () => {
+		it('should convert single hex color to dark mode', () => {
 			const store = resolveColor('#abcdef');
 
 			setAppearance('light');
 			expect(get(store)).toBe('#abcdef');
 
 			setAppearance('dark');
+			expect(get(store)).toBe('#176ab5');
+		});
+
+		it('should convert light-only theme color to dark mode', () => {
+			const store = resolveColor('lightOnly');
+
+			setAppearance('light');
 			expect(get(store)).toBe('#abcdef');
+
+			setAppearance('dark');
+			expect(get(store)).toBe('#176ab5');
 		});
 
 		it('should resolve colors in theme', () => {
@@ -119,6 +130,16 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual('#fedcba');
 		});
 
+		it('should resolve a tuple of just one hex code', () => {
+			const store = resolveColor(['#abcdef']);
+
+			setAppearance('light');
+			expect(get(store)).toEqual('#abcdef');
+
+			setAppearance('dark');
+			expect(get(store)).toEqual('#176ab5');
+		});
+
 		it('should resolve tuple of theme colors', () => {
 			const store = resolveColor(['myColor1', 'myColor2']);
 
@@ -127,6 +148,16 @@ describe('ThemeStores', async () => {
 
 			setAppearance('dark');
 			expect(get(store)).toEqual('dark_myColor2');
+		});
+
+		it('should resolve a tuple of just one theme color', () => {
+			const store = resolveColor(['lightOnly']);
+
+			setAppearance('light');
+			expect(get(store)).toEqual('#abcdef');
+
+			setAppearance('dark');
+			expect(get(store)).toEqual('#176ab5');
 		});
 	});
 
