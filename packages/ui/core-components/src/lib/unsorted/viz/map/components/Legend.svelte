@@ -65,7 +65,7 @@
 
 {#if $legendData.length > 0}
 	<div
-		class="absolute z-[401] m-4 flex max-w-60 flex legend-font {constHandleLegendButtonPosition()} 
+		class="absolute z-[401] m-4 flex max-w-60 legend-font {constHandleLegendButtonPosition()} 
     {positions[legendPosition] ?? 'top-3 left-[-9px]'}"
 		on:wheel={(e) => e.stopPropagation()}
 		on:dblclick={(e) => e.stopPropagation()}
@@ -76,7 +76,7 @@
 				<div class="flex flex-wrap hover:cursor-default">
 					{#each $categoricalLegendData as legend}
 						<div
-							class="border-l first:border-none flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-2 truncate {multiLegend
+							class="border-l first:border-none flex transition-[border, padding] ease-in-out duration-[350ms] px-2 truncate {multiLegend
 								? 'w-1/2'
 								: 'max-w-48'} {hideLegend ? ' py-0' : ' py-1'}"
 						>
