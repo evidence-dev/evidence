@@ -327,7 +327,8 @@
 				// kw note:
 				//need to clean this logic
 				fillColor:
-					$colorStore ?? map.handleFillColor(item, value, values, colorPaletteFinal, colorScale),
+					$colorStore ??
+					map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme),
 				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
 				fillOpacity: opacity,
 				opacity: opacity,

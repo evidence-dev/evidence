@@ -20,8 +20,6 @@
 			select 1 as x, 0 as y, 200 as value
 			union all
 			select 0 as x, 1 as y, 300 as value
-			union all
-			select 1 as x, 1 as y, 400 as value
 		`,
 		query
 	);

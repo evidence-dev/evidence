@@ -25,10 +25,9 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { getThemeStores } from '../../../themes.js';
 
-	const { resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
+	const { theme, resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -913,7 +912,7 @@
 				style: {
 					text: horizAxisTitle,
 					textAlign: 'right',
-					fill: uiColours.grey500
+					fill: $theme.colors['base-content-muted']
 				},
 				cursor: 'auto',
 				// Positioning (if swapXY, top right; otherwise bottom right)

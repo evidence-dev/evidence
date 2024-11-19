@@ -8,7 +8,7 @@
 	import { getColumnFormats, getSparklineConfig, validateSize } from './sparkline.js';
 	import { getThemeStores } from '../../../themes.js';
 
-	const { resolveColor } = getThemeStores();
+	const { theme, resolveColor } = getThemeStores();
 
 	export let config = {};
 	export let width = 50; // Default width for the sparkline, adjust as needed
@@ -119,7 +119,8 @@
 			value_format_object,
 			date_format_object,
 			height,
-			tooltipBackgroundColor
+			tooltipBackgroundColor,
+			$theme
 		);
 
 		if (!browser) {

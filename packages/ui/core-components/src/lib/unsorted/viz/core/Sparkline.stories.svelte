@@ -17,5 +17,5 @@
 </script>
 
 <Story name="All" let:args>
-	<Sparkline {...args} {data} valueCol="fare" dateCol="departure_date" />
+	<Sparkline {...args} {data} valueCol="fare" dateCol="departure_date" type="area" />
 </Story>

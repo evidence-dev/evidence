@@ -7,7 +7,6 @@
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import MapArea from './MapArea.svelte';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { nanoid } from 'nanoid';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { getThemeStores } from '../../../../themes.js';
@@ -75,7 +74,7 @@
 	$: colorStore = resolveColor(color);
 
 	/** @type {string} */
-	export let borderColor = uiColours.grey300;
+	export let borderColor = 'base-300';
 	$: borderColorStore = resolveColor(borderColor);
 
 	/** @type {string[]} */
@@ -312,7 +311,7 @@
 				areaOptions={{
 					fillColor:
 						$colorStore ??
-						map.handleFillColor(item, value, values, colorPaletteFinal, colorScale) ??
+						map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme) ??
 						colorScale(item[value]).hex(),
 					fillOpacity: opacity,
 					opacity: opacity,
