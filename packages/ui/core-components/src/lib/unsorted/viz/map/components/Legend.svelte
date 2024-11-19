@@ -71,7 +71,7 @@
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
-		<div class="bg-white background-blur {containerStyles[legendPosition]}">
+		<div class="bg-base-100 background-blur {containerStyles[legendPosition]}">
 			{#if $categoricalLegendData.length > 0}
 				<div class="flex flex-wrap hover:cursor-default">
 					{#each $categoricalLegendData as legend}
@@ -95,7 +95,7 @@
 			{#if $scalarLegendData.length > 0}
 				{#each $scalarLegendData as legend}
 					<div
-						class="border-t first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
+						class="border-t border-base-300 first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
 							? 'py-0 border-none'
 							: 'py-1'}"
 					>
