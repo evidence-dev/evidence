@@ -214,26 +214,18 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {unknown} input
-	 * @returns {Readable<string[] | undefined>}
+	 * @template T
+	 * @param {T} input
+	 * @returns {Readable<string[] | (T[number])[] | undefined>}
 	 */
 	resolveColorPalette = (input) => {
 		if (typeof input === 'string') {
 			return derived(this.#theme, ($theme) => $theme.colorPalettes[input.trim()]);
 		}
 
-		if (isArrayOfStringTuples(input)) {
-			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) =>
-				input.map(([light, dark]) => {
-					const color = $activeAppearance === 'light' ? light : dark;
-					return $theme.colors[color.trim()] ?? color;
-				})
-			);
-		}
-
-		if (isArrayOfStrings(input)) {
-			return derived(this.#theme, ($theme) =>
-				input.map((color) => $theme.colors[color.trim()] ?? color)
+		if (Array.isArray(input)) {
+			return derived(this.#activeAppearance, ($activeAppearance) =>
+				input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance))
 			);
 		}
 
@@ -241,26 +233,18 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {unknown} input
-	 * @returns {Readable<string[] | undefined>}
+	 * @template T
+	 * @param {T} input
+	 * @returns {Readable<string[] | (T[number])[] | undefined>}
 	 */
 	resolveColorScale = (input) => {
 		if (typeof input === 'string') {
 			return derived(this.#theme, ($theme) => $theme.colorScales[input.trim()]);
 		}
 
-		if (isArrayOfStringTuples(input)) {
-			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) =>
-				input.map(([light, dark]) => {
-					const color = $activeAppearance === 'light' ? light : dark;
-					return $theme.colors[color.trim()] ?? color;
-				})
-			);
-		}
-
-		if (isArrayOfStrings(input)) {
-			return derived(this.#theme, ($theme) =>
-				input.map((color) => $theme.colors[color.trim()] ?? color)
+		if (Array.isArray(input)) {
+			return derived(this.#activeAppearance, ($activeAppearance) =>
+				input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance))
 			);
 		}
 
@@ -290,16 +274,3 @@ const isStringTuple = (input) =>
 	Array.isArray(input) &&
 	(input.length === 1 || input.length === 2) &&
 	input.every((item) => typeof item === 'string');
-
-/**
- * @param {unknown} input
- * @returns {input is StringTuple[]}
- */
-const isArrayOfStringTuples = (input) => Array.isArray(input) && input.every(isStringTuple);
-
-/**
- * @param {unknown} input
- * @returns {input is string[]}
- */
-const isArrayOfStrings = (input) =>
-	Array.isArray(input) && input.every((item) => typeof item === 'string');
