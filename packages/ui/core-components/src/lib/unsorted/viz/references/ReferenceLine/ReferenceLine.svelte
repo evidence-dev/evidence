@@ -12,7 +12,7 @@
 	import { getConfigContext, getPropContext } from '@evidence-dev/component-utilities/chartContext';
 	import { ReferenceLineStore } from './reference-line.store.js';
 	import { toBoolean, toNumber } from '../../../../utils.js';
-	import { getThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes/themes.js';
 	import chroma from 'chroma-js';
 
 	const { resolveColor } = getThemeStores();

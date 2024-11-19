@@ -1,6 +1,6 @@
 <script>
 	import chroma from 'chroma-js';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { theme, resolveColor } = getThemeStores();
 

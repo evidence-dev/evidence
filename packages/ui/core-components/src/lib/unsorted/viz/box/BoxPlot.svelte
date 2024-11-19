@@ -7,7 +7,7 @@
 	import Box from './Box.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { generateBoxPlotData } from '@evidence-dev/component-utilities/generateBoxPlotData';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { theme, resolveColor } = getThemeStores();
 

@@ -5,7 +5,7 @@
 <script>
 	import { getContext, onDestroy } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 	import { readable } from 'svelte/store';
 
 	const { theme, resolveColor } = getThemeStores();

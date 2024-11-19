@@ -13,7 +13,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from '../core/ErrorChart.svelte';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColor, resolveColorPalette } = getThemeStores();
 

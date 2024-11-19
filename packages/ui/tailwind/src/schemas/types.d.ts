@@ -13,13 +13,13 @@ type BuiltinColorScale = (typeof BUILTIN_COLOR_SCALES)[number];
 export type Theme = {
 	colors: {
 		[builtinColor in BuiltinColor]: string;
-	} & Record<string, string>;
+	} & Record<string, string | undefined>;
 	colorPalettes: {
 		[builtinColorPalette in BuiltinColorPalette]: string[];
-	} & Record<string, string[]>;
+	} & Record<string, string[] | undefined>;
 	colorScales: {
 		[builtinColorScale in BuiltinColorScale]: string[];
-	} & Record<string, string[]>;
+	} & Record<string, string[] | undefined>;
 };
 
 export type ThemesConfigFile = z.infer<typeof ThemesConfigFileSchema>;

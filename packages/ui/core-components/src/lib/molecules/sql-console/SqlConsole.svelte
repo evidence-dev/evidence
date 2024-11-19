@@ -13,7 +13,7 @@
 
 	import { Eye, EyeOff, PlayerPlay } from '@evidence-dev/component-utilities/icons';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import { getThemeStores } from '../../themes.js';
+	import { getThemeStores } from '../../themes/themes.js';
 
 	/** @type {boolean} */
 	export let hideErrors = false;

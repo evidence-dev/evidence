@@ -14,7 +14,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { ErrorChart } from '@evidence-dev/core-components';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColor, resolveColorPalette } = getThemeStores();
 

@@ -6,7 +6,7 @@
 	import ValueError from './ValueError.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { getColumnFormats, getSparklineConfig, validateSize } from './sparkline.js';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { theme, resolveColor } = getThemeStores();
 

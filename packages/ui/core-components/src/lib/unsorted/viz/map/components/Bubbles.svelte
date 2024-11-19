@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { getThemeStores } from '../../../../themes.js';
+	import { getThemeStores } from '../../../../themes/themes.js';
 
 	import Points from './Points.svelte';
 	const { resolveColorPalette } = getThemeStores();

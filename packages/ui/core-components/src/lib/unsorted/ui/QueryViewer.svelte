@@ -10,7 +10,7 @@
 	import { showQueries, localStorageStore } from '@evidence-dev/component-utilities/stores';
 	import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
 	import { page } from '$app/stores';
-	import { getThemeStores } from '../../themes.js';
+	import { getThemeStores } from '../../themes/themes.js';
 
 	export let queryID;
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */

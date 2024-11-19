@@ -7,7 +7,7 @@
 	import { getContext } from 'svelte';
 	/** @type {string} */
 	import TabDisplay from '../../../unsorted/ui/Tabs/TabDisplay.svelte';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColor } = getThemeStores();
 

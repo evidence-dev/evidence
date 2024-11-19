@@ -19,7 +19,7 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte

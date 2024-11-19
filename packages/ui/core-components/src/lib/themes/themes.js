@@ -5,6 +5,7 @@ import { derived, get, readable, readonly } from 'svelte/store';
 import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
 import { themes, themesConfig } from '$evidence/themes';
+import { convertLightToDark } from './convertLightToDark.js';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
@@ -149,20 +150,83 @@ export class ThemeStores {
 	};
 
 	/**
-	 * @param {unknown} input
-	 * @returns {Readable<string | undefined>}
+	 * @template T
+	 * @param {T} input
+	 * @param {'light' | 'dark'} appearance
+	 * @returns {string | T | undefined}
 	 */
-	resolveColor = (input) => {
+	static #resolveColor = (input, appearance) => {
 		if (typeof input === 'string') {
-			return derived(this.#theme, ($theme) => $theme.colors[input.trim()] ?? input);
+			const lightColor = themes.light.colors[input.trim()];
+			const darkColor = themes.dark.colors[input.trim()];
+
+			if (appearance === 'light') {
+				return lightColor ?? input;
+			}
+			if (appearance === 'dark') {
+				return darkColor ?? convertLightToDark(lightColor ?? input) ?? input;
+			}
 		}
 
 		if (isStringTuple(input)) {
 			const [light, dark] = input;
-			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) => {
-				const color = $activeAppearance === 'light' ? light : dark;
-				return $theme.colors[color] ?? color;
-			});
+
+			const lightColor = themes.light.colors[light.trim()];
+			const darkColor = dark ? (themes.dark.colors[dark?.trim()] ?? dark) : undefined;
+
+			if (appearance === 'light') {
+				return lightColor ?? light;
+			}
+			if (appearance === 'dark') {
+				return darkColor ?? convertLightToDark(lightColor ?? light) ?? dark;
+			}
+		}
+
+		return undefined;
+	};
+
+	/**
+	 * @template T
+	 * @param {T} input
+	 * @returns {Readable<string | T | undefined>}
+	 */
+	resolveColor = (input) =>
+		derived(this.#activeAppearance, ($activeAppearance) =>
+			ThemeStores.#resolveColor(input, $activeAppearance)
+		);
+
+	/**
+	 * @template T
+	 * @param {Record<string, T> | undefined} input
+	 * @returns {Readable<Record<string, (string | T | undefined)> | undefined>}
+	 */
+	resolveColorsObject = (input) => {
+		if (!input) return readable(undefined);
+
+		return derived(this.#activeAppearance, ($activeAppearance) =>
+			Object.fromEntries(
+				Object.entries(input).map(([key, color]) => [
+					key,
+					ThemeStores.#resolveColor(color, $activeAppearance)
+				])
+			)
+		);
+	};
+
+	/**
+	 * @template T
+	 * @param {T} input
+	 * @returns {Readable<string[] | (T[number])[] | undefined>}
+	 */
+	resolveColorPalette = (input) => {
+		if (typeof input === 'string') {
+			return derived(this.#theme, ($theme) => $theme.colorPalettes[input.trim()]);
+		}
+
+		if (Array.isArray(input)) {
+			return derived(this.#activeAppearance, ($activeAppearance) =>
+				input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance))
+			);
 		}
 
 		return readable(undefined);
@@ -170,70 +234,17 @@ export class ThemeStores {
 
 	/**
 	 * @template T
-	 * @param {Record<string, T> | undefined} input
-	 * @returns {Readable<Record<string, (string | T)[]> | undefined>}
-	 */
-	resolveColorsObject = (input) => {
-		if (!input) return readable(undefined);
-
-		return derived(this.#theme, ($theme) =>
-			Object.fromEntries(
-				Object.entries(input).map(([key, color]) => {
-					if (typeof color !== 'string') return [key, color];
-					return [key, $theme.colors[color.trim()] ?? color];
-				})
-			)
-		);
-	};
-
-	/**
-	 * @param {unknown} input
-	 * @returns {Readable<string[] | undefined>}
-	 */
-	resolveColorPalette = (input) => {
-		if (typeof input === 'string') {
-			return derived(this.#theme, ($theme) => $theme.colorPalettes[input.trim()]);
-		}
-
-		if (isArrayOfStringTuples(input)) {
-			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) =>
-				input.map(([light, dark]) => {
-					const color = $activeAppearance === 'light' ? light : dark;
-					return $theme.colors[color.trim()] ?? color;
-				})
-			);
-		}
-
-		if (isArrayOfStrings(input)) {
-			return derived(this.#theme, ($theme) =>
-				input.map((color) => $theme.colors[color.trim()] ?? color)
-			);
-		}
-
-		return readable(undefined);
-	};
-
-	/**
-	 * @param {unknown} input
-	 * @returns {Readable<string[] | undefined>}
+	 * @param {T} input
+	 * @returns {Readable<string[] | (T[number])[] | undefined>}
 	 */
 	resolveColorScale = (input) => {
 		if (typeof input === 'string') {
 			return derived(this.#theme, ($theme) => $theme.colorScales[input.trim()]);
 		}
 
-		if (isArrayOfStringTuples(input)) {
-			return derived([this.#activeAppearance, this.#theme], ([$activeAppearance, $theme]) =>
-				input.map(([light, dark]) => {
-					const color = $activeAppearance === 'light' ? light : dark;
-					return $theme.colors[color.trim()] ?? color;
-				})
-			);
-		}
-
-		if (isArrayOfStrings(input)) {
-			return derived(this.#theme, ($theme) =>
-				input.map((color) => $theme.colors[color.trim()] ?? color)
+		if (Array.isArray(input)) {
+			return derived(this.#activeAppearance, ($activeAppearance) =>
+				input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance))
 			);
 		}
 
@@ -253,7 +264,7 @@ export const getThemeStores = () => {
 	return stores;
 };
 
-/** @typedef {[string, string]} StringTuple */
+/** @typedef {[string] | [string, string]} StringTuple */
 
 /**
  * @param {unknown} input
@@ -261,19 +272,5 @@ export const getThemeStores = () => {
  */
 const isStringTuple = (input) =>
 	Array.isArray(input) &&
-	input.length === 2 &&
-	typeof input[0] === 'string' &&
-	typeof input[1] === 'string';
-
-/**
- * @param {unknown} input
- * @returns {input is StringTuple[]}
- */
-const isArrayOfStringTuples = (input) => Array.isArray(input) && input.every(isStringTuple);
-
-/**
- * @param {unknown} input
- * @returns {input is string[]}
- */
-const isArrayOfStrings = (input) =>
-	Array.isArray(input) && input.every((item) => typeof item === 'string');
+	(input.length === 1 || input.length === 2) &&
+	input.every((item) => typeof item === 'string');

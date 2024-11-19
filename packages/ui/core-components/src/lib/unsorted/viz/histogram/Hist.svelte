@@ -11,7 +11,7 @@
 	import ecStat from 'echarts-stat';
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColor } = getThemeStores();
 

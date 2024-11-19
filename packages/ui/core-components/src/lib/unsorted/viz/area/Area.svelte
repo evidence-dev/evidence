@@ -12,7 +12,7 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import replaceNulls from '@evidence-dev/component-utilities/replaceNulls';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
-	import { getThemeStores } from '../../../themes.js';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColor } = getThemeStores();
 
