@@ -151,40 +151,47 @@ export class ThemeStores {
 
 	/**
 	 * @param {unknown} input
-	 * @returns {Readable<string | undefined>}
+	 * @param {'light' | 'dark'} appearance
+	 * @returns {string | undefined}
 	 */
-	resolveColor = (input) => {
+	static #resolveColor = (input, appearance) => {
 		if (typeof input === 'string') {
-			return derived(this.#activeAppearance, ($activeAppearance) => {
-				const lightColor = themes.light.colors[input.trim()];
-				const darkColor = themes.dark.colors[input.trim()];
+			const lightColor = themes.light.colors[input.trim()];
+			const darkColor = themes.dark.colors[input.trim()];
 
-				if ($activeAppearance === 'light') {
-					return lightColor ?? input;
-				}
-				if ($activeAppearance === 'dark') {
-					return darkColor ?? convertLightToDark(lightColor ?? input) ?? input;
-				}
-			});
+			if (appearance === 'light') {
+				return lightColor ?? input;
+			}
+			if (appearance === 'dark') {
+				return darkColor ?? convertLightToDark(lightColor ?? input) ?? input;
+			}
 		}
 
 		if (isStringTuple(input)) {
 			const [light, dark] = input;
-			return derived(this.#activeAppearance, ($activeAppearance) => {
-				const lightColor = themes.light.colors[light.trim()];
-				const darkColor = dark ? (themes.dark.colors[dark?.trim()] ?? dark) : undefined;
 
-				if ($activeAppearance === 'light') {
-					return lightColor ?? light;
-				}
-				if ($activeAppearance === 'dark') {
-					return darkColor ?? convertLightToDark(lightColor ?? light) ?? dark;
-				}
-			});
+			const lightColor = themes.light.colors[light.trim()];
+			const darkColor = dark ? (themes.dark.colors[dark?.trim()] ?? dark) : undefined;
+
+			if (appearance === 'light') {
+				return lightColor ?? light;
+			}
+			if (appearance === 'dark') {
+				return darkColor ?? convertLightToDark(lightColor ?? light) ?? dark;
+			}
 		}
 
-		return readable(undefined);
+		return undefined;
 	};
+
+	/**
+	 * @param {unknown} input
+	 * @returns {Readable<string | undefined>}
+	 */
+	resolveColor = (input) =>
+		derived(this.#activeAppearance, ($activeAppearance) =>
+			ThemeStores.#resolveColor(input, $activeAppearance)
+		);
 
 	/**
 	 * @template T
