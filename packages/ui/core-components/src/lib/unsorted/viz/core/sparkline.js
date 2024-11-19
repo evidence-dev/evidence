@@ -142,13 +142,6 @@ export function getSparklineConfig(
 			splitLine: {
 				show: false
 			},
-			axisLine: {
-				show: true,
-				lineStyle: {
-					width: 0.75,
-					color: uiColours.grey500
-				}
-			},
 			axisTick: {
 				show: false
 			},
