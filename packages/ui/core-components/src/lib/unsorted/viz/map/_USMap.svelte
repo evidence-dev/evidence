@@ -280,7 +280,7 @@
 				orient: 'horizontal',
 				top: (title ? 25 : 0) + (subtitle ? 20 : 0),
 				handleStyle: {
-					borderColor: $theme.colors['neutral']
+					borderColor: $theme.colors['base-300']
 				},
 				inRange: {
 					color: colorArray
@@ -308,7 +308,7 @@
 					map: 'US',
 					nameProperty: nameProperty,
 					itemStyle: {
-						borderColor: $theme.colors['neutral'],
+						borderColor: $theme.colors['base-300'],
 						areaColor: $theme.colors['base-200']
 					},
 					emphasis: {
