@@ -12,7 +12,7 @@
 			<DataTable data={query} rowNumbers sortable={false} downloadable={false} isFullPage />
 		{:else}
 			<button
-				class="px-2 py-1 rounded bg-neutral text-neutral-content hover:brightness-110 transition"
+				class="px-2 py-1 rounded bg-primary text-primary-content hover:brightness-110 transition"
 				on:click={() => query.fetch()}
 			>
 				Fetch Data
