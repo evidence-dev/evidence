@@ -133,7 +133,7 @@
 		display: inline;
 		position: relative;
 		cursor: help;
-		color: var(--neutral);
+		color: var(--base-content-muted);
 	}
 
 	.placeholder .error-msg {
