@@ -52,14 +52,6 @@ export const defaultThemesConfig = {
 				light: colors.zinc[600],
 				dark: colors.zinc[400]
 			},
-			neutral: {
-				light: colors.neutral[500],
-				dark: colors.neutral[400]
-			},
-			'neutral-content': {
-				light: colors.zinc[50],
-				dark: colors.zinc[950]
-			},
 			info: {
 				light: colors.sky[600],
 				dark: colors.sky[400]

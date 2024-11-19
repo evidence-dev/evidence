@@ -36,14 +36,6 @@ describe('buildThemes', () => {
 						light: 'accent-content_light',
 						dark: 'accent-content_dark'
 					},
-					neutral: {
-						light: 'neutral_light',
-						dark: 'neutral_dark'
-					},
-					'neutral-content': {
-						light: 'neutral-content_light',
-						dark: 'neutral-content_dark'
-					},
 					'base-100': {
 						light: 'base-100_light',
 						dark: 'base-100_dark'
@@ -119,8 +111,6 @@ describe('buildThemes', () => {
 					'secondary-content': 'secondary-content_light',
 					accent: 'accent_light',
 					'accent-content': 'accent-content_light',
-					neutral: 'neutral_light',
-					'neutral-content': 'neutral-content_light',
 					'base-100': 'base-100_light',
 					'base-200': 'base-200_light',
 					'base-300': 'base-300_light',
@@ -148,8 +138,6 @@ describe('buildThemes', () => {
 					'secondary-content': 'secondary-content_dark',
 					accent: 'accent_dark',
 					'accent-content': 'accent-content_dark',
-					neutral: 'neutral_dark',
-					'neutral-content': 'neutral-content_dark',
 					'base-100': 'base-100_dark',
 					'base-200': 'base-200_dark',
 					'base-300': 'base-300_dark',

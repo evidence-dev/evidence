@@ -8,8 +8,6 @@ export const BUILTIN_COLORS = /** @type {const} */ ([
 	'secondary-content',
 	'accent',
 	'accent-content',
-	'neutral',
-	'neutral-content',
 	'base-100',
 	'base-200',
 	'base-300',
