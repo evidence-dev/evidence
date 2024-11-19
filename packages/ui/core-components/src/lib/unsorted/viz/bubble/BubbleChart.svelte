@@ -67,6 +67,7 @@
 	export let seriesOrder = undefined;
 
 	export let connectGroup = undefined;
+	export let seriesFmt = undefined;
 </script>
 
 <Chart
@@ -122,6 +123,7 @@
 		{scaleTo}
 		{useTooltip}
 		{seriesOrder}
+		{seriesFmt}
 	/>
 	<slot />
 </Chart>
