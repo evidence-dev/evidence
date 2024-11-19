@@ -248,8 +248,7 @@
 
 	#submitCustomFormatButton:disabled,
 	button[disabled] {
-		background-color: var(--neutral);
-		color: var(--neutral-content);
+		opacity: 0.5;
 		cursor: not-allowed;
 		transition-property: background, color;
 		transition-duration: 350ms;
