@@ -44,6 +44,6 @@
 	}
 
 	.info {
-		@apply border-neutral/50 bg-neutral/10 text-neutral;
+		@apply border-info/50 bg-info/10 text-info;
 	}
 </style>
