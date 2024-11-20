@@ -101,8 +101,8 @@ export async function promptToInstallNodeJsAndRestart(currentVersion: string | u
 
 	const downloadNodeNotification = await window.showErrorMessage(
 		currentVersion
-			? `Evidence requires NodeJS v18, v20, or v22 - your NodeJS version is ${currentVersion}`
-			: `Evidence requires NodeJS v18, v20, or v22`,
+			? `Evidence requires NodeJS above v18.13, v20, or v22 - your NodeJS version is ${currentVersion}`
+			: `Evidence requires NodeJS above v18.13, v20, or v22`,
 		{ title: downloadNodeJs }
 	);
 
