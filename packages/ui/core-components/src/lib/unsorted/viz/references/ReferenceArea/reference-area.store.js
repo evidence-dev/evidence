@@ -92,9 +92,7 @@ export class ReferenceAreaStore {
 			}
 
 			labelColor = labelColor ?? color;
-			areaColor = chroma(areaColor ?? color)
-				.alpha(0.05)
-				.css();
+			areaColor = areaColor ?? (color ? chroma(color).alpha(0.1).css() : undefined);
 			borderColor = borderColor ?? color;
 
 			/** @type {MarkAreaData} */
