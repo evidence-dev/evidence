@@ -34,7 +34,7 @@ select 2021 as year
 ```sql orders
 select category, order_datetime, sales from needful_things.orders
 where category = '${inputs.category.value}'
-and date_part('year', order_datetime) = '${inputs.year.value}'
+and cast(date_part('year', order_datetime) as varchar) = '${inputs.year.value}'
 ```
 
 <DataTable data={orders} />
