@@ -1244,11 +1244,11 @@ DESCRIBE ${this.text.trim()}
 		const cols = Array.isArray(searchCol) ? searchCol : [searchCol];
 		const statements = cols
 			.map((col) => {
-				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
-				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
+				const exactMatch = taggedSql`CASE WHEN lower(CAST("${col.trim()}" AS VARCHAR)) = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
+				const similarity = taggedSql`jaccard(lower(CAST("${col}" AS VARCHAR)), lower('${escapedSearchTerm}'))`;
 				const exactSubMatch =
 					escapedSearchTerm.length >= 1
-						? taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`
+						? taggedSql`CASE WHEN lower(CAST("${col.trim()}" AS VARCHAR)) LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`
 						: taggedSql`0`;
 				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
 			})
