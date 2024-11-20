@@ -12,7 +12,7 @@
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import { getThemeStores } from '../../../themes/themes.js';
 
-	const { resolveColor } = getThemeStores();
+	const { theme, resolveColor } = getThemeStores();
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
@@ -51,8 +51,9 @@
 		data: boxPlotData.data,
 		colorBy: $colorStore ? 'data' : 'series',
 		itemStyle: {
-			opacity: 1
-			// borderColor: 'inherit'
+			opacity: 1,
+			color: $theme.colors['base-200'],
+			borderColor: $colorStore ? undefined : $theme.colors['primary']
 		},
 		boxWidth: [7, 25],
 		hoverAnimation: false,
