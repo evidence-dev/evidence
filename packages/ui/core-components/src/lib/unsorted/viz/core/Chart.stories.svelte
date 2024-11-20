@@ -4,11 +4,6 @@
 		title: 'Charts/Chart',
 		component: Chart
 	};
-
-	const data = Query.create(
-		'SELECT plane, fare, SUM(fare) as total_sales, SUM(fare) as total_fare FROM flights WHERE plane IN (SELECT DISTINCT plane FROM flights LIMIT 2) GROUP BY plane, fare LIMIT 25',
-		query
-	);
 </script>
 
 <script>
