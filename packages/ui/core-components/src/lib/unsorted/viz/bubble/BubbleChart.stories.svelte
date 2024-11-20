@@ -198,12 +198,12 @@
 		series: 'series',
 		x: 'x',
 		y: 'y',
-		size: 'size',
+		size: 'size'
 	}}
 	let:args
 >
-{@const data = Query.create(
-	`SELECT 0.1 AS series, 1 AS x, 10 AS y, 100 AS size
+	{@const data = Query.create(
+		`SELECT 0.1 AS series, 1 AS x, 10 AS y, 100 AS size
 UNION
 SELECT 0.1 AS series, 2 AS x, 20 AS y, 200 AS size
 UNION
@@ -214,7 +214,7 @@ UNION
 SELECT 0.5 AS series, 2 AS x, 15 AS y, 150 AS size
 UNION
 SELECT 0.5 AS series, 3 AS x, 25 AS y, 250 AS size`,
-	query
-)}
+		query
+	)}
 	<BubbleChart seriesLabelFmt="pct" {data} {...args} />
 </Story>

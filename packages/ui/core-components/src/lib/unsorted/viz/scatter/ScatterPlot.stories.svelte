@@ -185,12 +185,9 @@
 >
 	<ScatterPlot {data} {...args} />
 </Story>
-<Story
-	name="With seriesLabelFmt"
-	let:args
->
-{@const data = Query.create(
-	`SELECT 0.1 AS series, 5000 AS advertising_spend, 25000 AS sales
+<Story name="With seriesLabelFmt" let:args>
+	{@const data = Query.create(
+		`SELECT 0.1 AS series, 5000 AS advertising_spend, 25000 AS sales
 UNION
 SELECT 0.1 AS series, 3000 AS advertising_spend, 18000 AS sales
 UNION
@@ -227,7 +224,14 @@ UNION
 SELECT 0.3 AS series, 13000 AS advertising_spend, 65000 AS sales;
 
 `,
-	query
-)}
-	<ScatterPlot {data} x=advertising_spend y=sales series=series seriesLabelFmt="pct" {...args} />
+		query
+	)}
+	<ScatterPlot
+		{data}
+		x="advertising_spend"
+		y="sales"
+		series="series"
+		seriesLabelFmt="pct"
+		{...args}
+	/>
 </Story>

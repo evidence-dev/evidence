@@ -66,7 +66,7 @@
 	export let seriesOrder = undefined;
 
 	export let connectGroup = undefined;
-		/** @type {string | undefined} */
+	/** @type {string | undefined} */
 	export let seriesLabelFmt = undefined;
 </script>
 
