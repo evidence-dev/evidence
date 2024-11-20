@@ -20,7 +20,7 @@ export const convertLightToDark = (lightColor) => {
 
 	// Adjust hue and saturation while targeting new luminance
 	return color
-		.set('hsl.l', targetLuminance)
-		.saturate(0.1) // Slightly increase saturation to compensate for dark background
+		.set('hsl.l', 0.75 * targetLuminance)
+		.saturate(0.2) // Slightly increase saturation to compensate for dark background
 		.hex();
 };
