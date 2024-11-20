@@ -114,7 +114,7 @@
 
 		{#if !$allGeoJsonLoaded}
 			<div
-				class="absolute left-0 right-0 bottom-0 w-full *:m-0 bg-white"
+				class="absolute left-0 right-0 bottom-0 w-full *:m-0 bg-base-100"
 				style="height: {height}px"
 			>
 				<Skeleton />
@@ -133,7 +133,7 @@
 	}
 
 	div :global(.leaflet-popup-content-wrapper) {
-		background-color: white;
+		background-color: var(--base-100);
 		box-shadow: 0 1px 3px rgb(0, 0, 0, 0.4);
 		border-radius: 4px;
 		font-family: 'Inter', sans-serif;
@@ -145,7 +145,7 @@
 	}
 
 	div :global(.leaflet-popup-tip) {
-		background-color: white;
+		background-color: var(--base-100);
 		display: none;
 	}
 
@@ -161,7 +161,7 @@
 	}
 
 	div :global(.leaflet-tooltip::before) {
-		background-color: white;
+		background-color: var(--base-100);
 		display: none;
 	}
 </style>
