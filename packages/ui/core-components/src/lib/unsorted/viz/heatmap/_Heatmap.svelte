@@ -18,7 +18,7 @@
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 	import { getThemeStores } from '../../../themes/themes.js';
 
-	const { theme, resolveColorPalette } = getThemeStores();
+	const { theme, resolveColorScale } = getThemeStores();
 
 	export let data;
 	export let queryID;
@@ -59,9 +59,10 @@
 	export let filter = false;
 	$: filter = filter === 'true' || filter === true;
 
-	// TODO this is more of a colorScale than a colorPalette. Should we rename?
-	export let colorPalette = ['rgb(254,234,159)', 'rgb(218,66,41)'];
-	$: colorPaletteStore = resolveColorPalette(colorPalette);
+	/** @deprecated Use `colorScale` instead */
+	export let colorPalette = undefined;
+	export let colorScale = undefined;
+	$: colorScaleStore = resolveColorScale(colorScale ?? colorPalette ?? 'heat');
 
 	export let min = undefined;
 	export let max = undefined;
@@ -278,7 +279,7 @@
 					borderColor: $theme.colors['base-100']
 				},
 				inRange: {
-					color: $colorPaletteStore
+					color: $colorScaleStore
 				},
 				text: filter
 					? undefined

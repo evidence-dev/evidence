@@ -61,7 +61,7 @@ queries:
             data={orders_by_day_2021}
             date=day
             value=sales
-            colorPalette={['navy', 'lightyellow', 'purple']}
+            colorPalette={['#86efac', '#0e7490']}
         />
     </div>
 
@@ -70,7 +70,7 @@ queries:
     data={orders_by_day_2021}
     date=day
     value=sales
-    colorPalette={['navy', 'lightyellow', 'purple']}
+    colorPalette={['#86efac', '#0e7490']}
 />
 ```
 </DocTab>
