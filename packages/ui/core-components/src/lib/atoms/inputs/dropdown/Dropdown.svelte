@@ -246,17 +246,17 @@
 						<Icon src={CaretSort} class="ml-2 h-4 w-4" />
 						{#if $selectedOptions.length > 0 && multiple}
 							<Separator orientation="vertical" class="mx-2 h-4" />
-							<Badge variant="secondary" class="rounded-sm px-1 font-normal sm:hidden">
+							<Badge variant="default" class="rounded-sm px-1 font-normal sm:hidden">
 								{$selectedOptions.length}
 							</Badge>
 							<div class="hidden space-x-1 sm:flex">
 								{#if $selectedOptions.length > 3}
-									<Badge variant="secondary" class="rounded-sm px-1 font-normal">
+									<Badge variant="default" class="rounded-sm px-1 font-normal">
 										{$selectedOptions.length} Selected
 									</Badge>
 								{:else}
 									{#each $selectedOptions as option}
-										<Badge variant="secondary" class="rounded-sm px-1 font-normal">
+										<Badge variant="default" class="rounded-sm px-1 font-normal">
 											{option.label}
 										</Badge>
 									{/each}
