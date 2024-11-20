@@ -17,7 +17,7 @@
 	import { getThemeStores } from '../../../themes/themes.js';
 	import chroma from 'chroma-js';
 
-	const { activeAppearance, theme, resolveColorPalette, resolveColorScale } = getThemeStores();
+	const { theme, resolveColorPalette, resolveColorScale } = getThemeStores();
 
 	export let data = undefined;
 	export let queryID = undefined;
@@ -74,77 +74,30 @@
 		}
 	}
 
+	/** @deprecated Use colorScale instead */
 	export let colorPalette = undefined;
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
-	export let colorScale = undefined;
-	$: colorScaleStore = resolveColorScale(colorScale);
+	const colorScales = {
+		blue: ['base-100', '#075985'],
+		green: ['base-100', '#166534'],
+		red: ['base-100', '#991b1b'],
+		bluegreen: [
+			'#f7fcf0',
+			'#e0f3db',
+			'#ccebc5',
+			'#a8ddb5',
+			'#7bccc4',
+			'#4eb3d3',
+			'#2b8cbe',
+			'#0868ac',
+			'#084081'
+		]
+	};
+	export let colorScale = 'blue';
+	$: colorScaleStore = resolveColorScale(colorScales[colorScale] ?? colorScale);
 
-	let colorArray;
-	$: if ($colorPaletteStore) {
-		colorArray = [...$colorPaletteStore];
-	} else {
-		if ($colorScaleStore === 'green') {
-			colorArray = [
-				'#f7fcfd',
-				'#e5f5f9',
-				'#ccece6',
-				'#99d8c9',
-				'#66c2a4',
-				'#41ae76',
-				'#238b45',
-				'#006d2c',
-				'#00441b'
-			];
-		} else if (typeof $colorScaleStore === 'undefined' || $colorScaleStore === 'blue') {
-			colorArray = [
-				'#f7fbff',
-				'#deebf7',
-				'#c6dbef',
-				'#9ecae1',
-				'#6baed6',
-				'#4292c6',
-				'#2171b5',
-				'#08519c',
-				'#08306b'
-			];
-		} else if ($colorScaleStore === 'red') {
-			colorArray = [
-				'#fff5f0',
-				'#fee0d2',
-				'#fcbba1',
-				'#fc9272',
-				'#fb6a4a',
-				'#ef3b2c',
-				'#cb181d',
-				'#a50f15',
-				'#67000d'
-			];
-		} else if ($colorScaleStore === 'bluegreen') {
-			colorArray = [
-				'#f7fcf0',
-				'#e0f3db',
-				'#ccebc5',
-				'#a8ddb5',
-				'#7bccc4',
-				'#4eb3d3',
-				'#2b8cbe',
-				'#0868ac',
-				'#084081'
-			];
-		} else {
-			colorArray = $colorScaleStore;
-		}
-		if ($activeAppearance === 'dark') {
-			colorArray = colorArray.map((color) =>
-				chroma(color)
-					.set('hsl.l', 1 - chroma(color).hsl()[2])
-					.saturate(1)
-					.brighten(0.5)
-					.css()
-			);
-		}
-	}
+	$: colorArray = $colorPaletteStore ?? $colorScaleStore;
 
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
