@@ -5,6 +5,14 @@ import { vi, describe, it, expect } from 'vitest';
 import { get } from 'svelte/store';
 import { ThemeStores } from './themes.js';
 
+vi.mock('./convertLightToDark.js', () => ({
+	/**
+	 * @param {string} lightColor
+	 * @returns {string}
+	 */
+	convertLightToDark: (lightColor) => `${lightColor}_dark`
+}));
+
 vi.mock('$evidence/themes', () => ({
 	themesConfig: {
 		themes: {
@@ -87,7 +95,7 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expect(get(store)).toEqual('#176ab5');
+			expect(get(store)).toEqual('#abcdef_dark');
 		});
 
 		it('should convert light-only theme color to dark mode', () => {
@@ -97,7 +105,7 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expect(get(store)).toEqual('#176ab5');
+			expect(get(store)).toEqual('#abcdef_dark');
 		});
 
 		it('should resolve colors in theme', () => {
@@ -137,7 +145,7 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expect(get(store)).toEqual('#176ab5');
+			expect(get(store)).toEqual('#abcdef_dark');
 		});
 
 		it('should resolve tuple of theme colors', () => {
@@ -157,7 +165,7 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expect(get(store)).toEqual('#176ab5');
+			expect(get(store)).toEqual('#abcdef_dark');
 		});
 	});
 
@@ -179,7 +187,7 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expect(get(store)).toEqual({ key1: '#176ab5' });
+			expect(get(store)).toEqual({ key1: '#abcdef_dark' });
 		});
 
 		it('should convert light-only theme color to dark mode', () => {
@@ -189,7 +197,7 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expect(get(store)).toEqual({ key1: '#176ab5' });
+			expect(get(store)).toEqual({ key1: '#abcdef_dark' });
 		});
 
 		it('should resolve colors in theme', () => {
@@ -229,7 +237,7 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expect(get(store)).toEqual({ key1: '#176ab5' });
+			expect(get(store)).toEqual({ key1: '#abcdef_dark' });
 		});
 
 		it('should resolve tuple of theme colors', () => {
@@ -249,7 +257,7 @@ describe('ThemeStores', async () => {
 			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expect(get(store)).toEqual({ key1: '#176ab5' });
+			expect(get(store)).toEqual({ key1: '#abcdef_dark' });
 		});
 
 		it('should resolve an object with multiple types of color values', () => {
@@ -281,14 +289,14 @@ describe('ThemeStores', async () => {
 			setAppearance('dark');
 			expect(get(store)).toEqual({
 				key1: undefined,
-				key2: '#176ab5',
-				key3: '#176ab5',
+				key2: '#abcdef_dark',
+				key3: '#abcdef_dark',
 				key4: 'dark_myColor1',
 				key5: 'dark_myColor2',
 				key6: '#fedcba',
-				key7: '#176ab5',
+				key7: '#abcdef_dark',
 				key8: 'dark_myColor2',
-				key9: '#176ab5'
+				key9: '#abcdef_dark'
 			});
 		});
 	});
@@ -360,7 +368,7 @@ describe('ThemeStores', async () => {
 				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expect(get(store)).toEqual(['#176ab5']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should convert light-only theme color to dark mode', () => {
@@ -370,7 +378,7 @@ describe('ThemeStores', async () => {
 				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expect(get(store)).toEqual(['#176ab5']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve colors in theme', () => {
@@ -410,7 +418,7 @@ describe('ThemeStores', async () => {
 				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expect(get(store)).toEqual(['#176ab5']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve tuple of theme colors', () => {
@@ -430,7 +438,7 @@ describe('ThemeStores', async () => {
 				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expect(get(store)).toEqual(['#176ab5']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve a palette with multiple types of color values', () => {
@@ -459,14 +467,14 @@ describe('ThemeStores', async () => {
 
 				setAppearance('dark');
 				expect(get(store)).toEqual([
-					'#176ab5',
-					'#176ab5',
+					'#abcdef_dark',
+					'#abcdef_dark',
 					'dark_myColor1',
 					'dark_myColor2',
 					'#fedcba',
-					'#176ab5',
+					'#abcdef_dark',
 					'dark_myColor2',
-					'#176ab5'
+					'#abcdef_dark'
 				]);
 			});
 		});
@@ -523,7 +531,7 @@ describe('ThemeStores', async () => {
 				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expect(get(store)).toEqual(['#176ab5']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should convert light-only theme color to dark mode', () => {
@@ -533,7 +541,7 @@ describe('ThemeStores', async () => {
 				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expect(get(store)).toEqual(['#176ab5']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve colors in theme', () => {
@@ -573,7 +581,7 @@ describe('ThemeStores', async () => {
 				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expect(get(store)).toEqual(['#176ab5']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve tuple of theme colors', () => {
@@ -593,7 +601,7 @@ describe('ThemeStores', async () => {
 				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expect(get(store)).toEqual(['#176ab5']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve a scale with multiple types of color values', () => {
@@ -622,14 +630,14 @@ describe('ThemeStores', async () => {
 
 				setAppearance('dark');
 				expect(get(store)).toEqual([
-					'#176ab5',
-					'#176ab5',
+					'#abcdef_dark',
+					'#abcdef_dark',
 					'dark_myColor1',
 					'dark_myColor2',
 					'#fedcba',
-					'#176ab5',
+					'#abcdef_dark',
 					'dark_myColor2',
-					'#176ab5'
+					'#abcdef_dark'
 				]);
 			});
 		});
