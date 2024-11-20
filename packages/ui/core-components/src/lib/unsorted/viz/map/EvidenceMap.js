@@ -5,6 +5,7 @@ import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
+import { browser } from '$app/environment';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -428,6 +429,8 @@ export class EvidenceMap {
 	async loadGeoJson(url) {
 		const cached = EvidenceMap.#geoJsonCache.get(url);
 		if (cached) return cached;
+
+		if (!browser) return;
 
 		const promise = fetch(url)
 			.then((r) => r.json())
