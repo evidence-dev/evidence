@@ -185,3 +185,49 @@
 >
 	<ScatterPlot {data} {...args} />
 </Story>
+<Story
+	name="With seriesFmt"
+	let:args
+>
+{@const data = Query.create(
+	`SELECT 0.1 AS series, 5000 AS advertising_spend, 25000 AS sales
+UNION
+SELECT 0.1 AS series, 3000 AS advertising_spend, 18000 AS sales
+UNION
+SELECT 0.1 AS series, 4000 AS advertising_spend, 22000 AS sales
+UNION
+SELECT 0.25 AS series, 9000 AS advertising_spend, 45000 AS sales
+UNION
+SELECT 0.3 AS series, 10000 AS advertising_spend, 50000 AS sales
+UNION
+SELECT 0.25 AS series, 7000 AS advertising_spend, 32000 AS sales
+UNION
+SELECT 0.1 AS series, 3500 AS advertising_spend, 21000 AS sales
+UNION
+SELECT 0.1 AS series, 4500 AS advertising_spend, 22000 AS sales
+UNION
+SELECT 0.3 AS series, 12000 AS advertising_spend, 60000 AS sales
+UNION
+SELECT 0.25 AS series, 9500 AS advertising_spend, 46000 AS sales
+UNION
+SELECT 0.1 AS series, 3200 AS advertising_spend, 15000 AS sales
+UNION
+SELECT 0.3 AS series, 11000 AS advertising_spend, 54000 AS sales
+UNION
+SELECT 0.25 AS series, 8000 AS advertising_spend, 41000 AS sales
+UNION
+SELECT 0.1 AS series, 4000 AS advertising_spend, 19000 AS sales
+UNION
+SELECT 0.3 AS series, 11500 AS advertising_spend, 55000 AS sales
+UNION
+SELECT 0.25 AS series, 8200 AS advertising_spend, 42000 AS sales
+UNION
+SELECT 0.1 AS series, 3800 AS advertising_spend, 19000 AS sales
+UNION
+SELECT 0.3 AS series, 13000 AS advertising_spend, 65000 AS sales;
+
+`,
+	query
+)}
+	<ScatterPlot {data} x=advertising_spend y=sales series=series seriesFmt="pct" {...args} />
+</Story>
