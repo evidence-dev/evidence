@@ -16,17 +16,17 @@ Query functions allow you to operate on query results with SQL-like syntax.
 
 **Warning** 
 
-Query functions are experimental and may change in the future.
+Query functions are experimental and may change in the future
 
 </Alert>
 
 The supported query functions are:
 
-- [``.where(`sqlStatement`)``](#where)
-- [`.groupBy([columns], withRowCount = true)`](#groupby)
-- [`.limit(limit)`](#limit)
-- [`.offset(offset)`](#offset)
-- [`.agg({aggObj})`](#agg)
+- [``.where()``](#where)
+- [`.groupBy()`](#groupby)
+- [`.limit()`](#limit)
+- [`.offset()`](#offset)
+- [`.agg()`](#agg)
 
 
 ## Where
