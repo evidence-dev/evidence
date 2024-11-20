@@ -59,8 +59,6 @@
 
 	let internalError = evidenceMap.internalError;
 
-	$: console.log($internalError);
-
 	$: if ($internalError !== undefined) {
 		error = $internalError;
 	}
