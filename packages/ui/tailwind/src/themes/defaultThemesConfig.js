@@ -85,24 +85,24 @@ export const defaultThemesConfig = {
 				dark: colors.zinc[950]
 			},
 			red: {
-				light: colors.red[700],
-				dark: colors.red[300]
+				light: colors.red[600],
+				dark: colors.red[400]
 			},
 			green: {
-				light: colors.green[700],
-				dark: colors.green[300]
+				light: colors.green[600],
+				dark: colors.green[400]
 			},
 			yellow: {
-				light: colors.yellow[700],
-				dark: colors.yellow[300]
+				light: '#edb131',
+				dark: colors.yellow[400]
 			},
 			grey: {
-				light: colors.gray[700],
-				dark: colors.gray[300]
+				light: colors.gray[600],
+				dark: colors.gray[400]
 			},
 			blue: {
-				light: colors.blue[700],
-				dark: colors.blue[300]
+				light: colors.blue[600],
+				dark: colors.blue[400]
 			}
 		},
 		colorPalettes: {
