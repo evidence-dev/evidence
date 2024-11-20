@@ -120,16 +120,16 @@ export const defaultThemesConfig = {
 					'hsla(160, 40%, 46%, 1)' // Green
 				],
 				dark: [
-					'hsla(207, 85%, 65%, 1)', // Navy -> Bright Blue
-					'hsla(195, 69%, 61%, 1)', // Teal -> Brighter Teal
-					'hsla(207, 89%, 89%, 1)', // Light Blue -> Nearly White Blue
-					'hsla(202, 38%, 75%, 1)', // Grey -> Lighter Grey
-					'hsla(179, 57%, 75%, 1)', // Light Green -> Brighter Mint
-					'hsla(40, 50%, 85%, 1)', // Tan -> Pale Gold
-					'hsla(38, 99%, 72%, 1)', // Yellow -> Vibrant Yellow
-					'hsla(342, 60%, 65%, 1)', // Maroon -> Bright Pink
-					'hsla(207, 96%, 80%, 1)', // Blue -> Vivid Sky Blue
-					'hsla(160, 60%, 56%, 1)' // Green -> Bright Mint
+					'hsla(207, 80%, 53%, 1)',
+					'hsla(180, 50%, 46%, 1)',
+					'hsla(207, 100%, 20%, 1)',
+					'hsla(199, 18%, 33%, 1)',
+					'hsla(178, 80%, 19%, 1)',
+					'hsla(40, 35%, 25%, 1)',
+					'hsla(36, 100%, 36%, 1)',
+					'hsla(341, 43%, 43%, 1)',
+					'hsla(207, 100%, 20%, 1)',
+					'hsla(162, 76%, 22%, 1)'
 				]
 			}
 		},
