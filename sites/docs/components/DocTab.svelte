@@ -15,7 +15,7 @@
 
 <div class="doc-tab mt-2">
 	<div class="flex justify-end">
-		<div class="flex gap-1 bg-base-200 rounded-md p-1 shadow-inner light:shadow-base-300">
+		<div class="flex gap-1 bg-base-200 rounded-md p-1">
 			{#each tabs as tab, index}
 				<div class="relative">
 					<button
