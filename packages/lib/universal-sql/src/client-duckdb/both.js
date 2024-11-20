@@ -40,7 +40,14 @@ export function arrowTableToJSON(table) {
 		}))
 	});
 
-	return arr;
+	const date_cols = arr._evidenceColumnTypes.filter((col) => col.evidenceType === 'date');
+
+	return arr.map((row) => {
+		for (const col of date_cols) {
+			row[col.name] = new Date(row[col.name]);
+		}
+		return row;
+	});
 }
 
 /**
