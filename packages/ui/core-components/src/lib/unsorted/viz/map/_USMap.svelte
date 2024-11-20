@@ -279,6 +279,9 @@
 				handleSize: '130%',
 				orient: 'horizontal',
 				top: (title ? 25 : 0) + (subtitle ? 20 : 0),
+				textStyle: {
+					color: $theme.colors['base-content-muted']
+				},
 				handleStyle: {
 					borderColor: $theme.colors['base-300']
 				},
