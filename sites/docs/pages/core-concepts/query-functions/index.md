@@ -1,7 +1,7 @@
 ---
-title: Dot Functions
+title: Query Functions
 sidebar_position: 11
-description: Dot functions allow you to operate on query results with SQL-like syntax.
+description: Query functions allow you to operate on query results with SQL-like syntax.
 ---
 
 ```sql orders
@@ -9,18 +9,18 @@ SELECT id, order_datetime, first_name, last_name, sales, category, item FROM ord
 ```
 
 
-Dot functions allow you to operate on query results with SQL-like syntax.
+Query functions allow you to operate on query results with SQL-like syntax.
 
 
 <Alert status="warning">
 
 **Warning** 
 
-Dot functions are experimental and may change in the future.
+Query functions are experimental and may change in the future.
 
 </Alert>
 
-The supported dot functions are:
+The supported query functions are:
 
 - [``.where(`sqlStatement`)``](#where)
 - [`.groupBy([columns], withRowCount = true)`](#groupby)
