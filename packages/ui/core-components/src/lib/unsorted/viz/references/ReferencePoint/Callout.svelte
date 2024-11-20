@@ -7,7 +7,6 @@
 <script>
 	// @ts-check
 	import ReferencePoint from './ReferencePoint.svelte';
-	import { getThemeStores } from '../../../../themes/themes.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -25,15 +24,15 @@
 	export let data = undefined;
 
 	/**
-	 * @type {import('../types.js').ReferenceColor}
-	 * @default "grey"
+	 * @type {string}
+	 * @default "base-content-muted"
 	 */
-	export let color = 'grey';
+	export let color = 'base-content-muted';
 
 	/** @type {string | undefined} */
 	export let label = undefined;
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let labelColor = undefined;
 
 	/**
@@ -46,7 +45,7 @@
 	 * @type {number | string | undefined}
 	 * @default 5
 	 */
-	export let labelPadding = 5;
+	export let labelPadding = 8;
 
 	/**
 	 * @type {import('./types.js').LabelPosition}
@@ -54,8 +53,8 @@
 	 */
 	export let labelPosition = 'top';
 
-	/** @type {string | undefined} */
-	export let labelBackgroundColor = undefined;
+	/** @type {string} */
+	export let labelBackgroundColor = 'base-100';
 
 	/**
 	 * @type {number | string | undefined}
@@ -70,7 +69,7 @@
 	export let labelBorderRadius = 4;
 
 	/** @type {string | undefined} */
-	export let labelBorderColor = undefined;
+	export let labelBorderColor = 'base-300';
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -93,7 +92,7 @@
 	 */
 	export let symbol = 'circle';
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let symbolColor = undefined;
 
 	/**
@@ -116,8 +115,6 @@
 	 * @default false
 	 */
 	export let preserveWhitespace = false;
-
-	const { theme } = getThemeStores();
 </script>
 
 <ReferencePoint
@@ -133,10 +130,10 @@
 	{labelWidth}
 	{labelPadding}
 	{labelPosition}
-	labelBackgroundColor={labelBackgroundColor ?? $theme.colors['base-100']}
+	{labelBackgroundColor}
 	{labelBorderWidth}
 	{labelBorderRadius}
-	labelBorderColor={labelBorderColor ?? $theme.colors['base-300']}
+	{labelBorderColor}
 	{labelBorderType}
 	{fontSize}
 	{align}
