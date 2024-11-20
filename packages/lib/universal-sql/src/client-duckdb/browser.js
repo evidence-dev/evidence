@@ -54,7 +54,7 @@ export async function initDB() {
 		const worker = new DUCKDB_CONFIG.mainWorker();
 
 		// use an intermediate variable to prevent db from being a not-ready database
-		const _db = new AsyncDuckDB(logger, worker);
+		const _db = (window[Symbol.for('duckdb instance')] = new AsyncDuckDB(logger, worker));
 		await _db.instantiate(DUCKDB_CONFIG.mainModule);
 		db = _db;
 
@@ -152,6 +152,8 @@ export async function query(sql) {
 
 	// Now we can safely execute our query
 	const res = await connection.query(sql).then(arrowTableToJSON);
+
+	console.log({ res });
 
 	return res;
 }
