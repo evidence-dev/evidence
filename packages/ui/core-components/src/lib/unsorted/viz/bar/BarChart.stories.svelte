@@ -86,7 +86,7 @@
 	<BarChart {data} {...args} />
 </Story>
 <Story
-	name="With seriesFmt"
+	name="With seriesLabelFmt"
 	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: [0.1, 0.5] }}
 	let:args
 >
@@ -104,5 +104,5 @@ UNION
 SELECT 0.5 AS series, 3 AS x, 25 AS y`,
 		query
 	)}
-	<BarChart {data} seriesFmt="pct" {...args} />
+	<BarChart {data} seriesLabelFmt="pct" {...args} />
 </Story>

@@ -77,7 +77,7 @@
 	export let stepPosition = 'end';
 	export let seriesOrder = undefined;
 	/** @type {string | undefined} */
-	export let seriesFmt = undefined;
+	export let seriesLabelFmt = undefined;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
@@ -196,7 +196,7 @@
 		undefined,
 		undefined,
 		y2,
-		seriesFmt
+		seriesLabelFmt
 	);
 
 	$: config.update((d) => {

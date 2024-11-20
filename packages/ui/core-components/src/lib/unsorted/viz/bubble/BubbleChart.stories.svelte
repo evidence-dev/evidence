@@ -193,7 +193,7 @@
 </Story>
 
 <Story
-	name="With seriesFmt"
+	name="With seriesLabelFmt"
 	args={{
 		series: 'series',
 		x: 'x',
@@ -216,5 +216,5 @@ UNION
 SELECT 0.5 AS series, 3 AS x, 25 AS y, 250 AS size`,
 	query
 )}
-	<BubbleChart seriesFmt="pct" {data} {...args} />
+	<BubbleChart seriesLabelFmt="pct" {data} {...args} />
 </Story>

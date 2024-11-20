@@ -31,7 +31,7 @@
 	export let tooltipTitle;
 	export let seriesOrder = undefined;
 	/** @type {string | undefined} */
-	export let seriesFmt = undefined;
+	export let seriesLabelFmt = undefined;
 	let multiSeries;
 	let tooltipOutput;
 
@@ -201,7 +201,7 @@
 		undefined,
 		tooltipTitle,
 		undefined,
-		seriesFmt
+		seriesLabelFmt
 	);
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);

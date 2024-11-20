@@ -65,7 +65,7 @@
 	}
 	export let showAllLabels = false;
 	export let seriesOrder = undefined;
-	export let seriesFmt = undefined;
+	export let seriesLabelFmt = undefined;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
@@ -160,7 +160,7 @@
 	// size = undefined,
 	// tooltipTitle = undefined,
 	// y2 = undefined,
-	// seriesFmt = undefined
+	// seriesLabelFmt = undefined
 
 	$: seriesConfig = getSeriesConfig(
 		data,
@@ -176,7 +176,7 @@
 		undefined, // size (not needed)
 		undefined, // tooltipTitle (not needed)
 		undefined, // y2 (not needed)
-		seriesFmt
+		seriesLabelFmt
 	);
 
 	$: config.update((d) => {

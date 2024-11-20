@@ -15,7 +15,7 @@ export default function getSeriesConfig(
 	size = undefined,
 	tooltipTitle = undefined,
 	y2 = undefined,
-	seriesFmt = undefined
+	seriesLabelFmt = undefined
 ) {
 	function generateTempConfig(seriesData, seriesName, yAxisIndex, baseConfig) {
 		let tempConfig = {
@@ -226,9 +226,9 @@ export default function getSeriesConfig(
 	}
 
 	// format series config:
-	if (seriesFmt) {
+	if (seriesLabelFmt) {
 		seriesConfig.forEach((item) => {
-			item.name = fmt(item.name, seriesFmt);
+			item.name = fmt(item.name, seriesLabelFmt);
 		});
 	}
 

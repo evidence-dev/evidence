@@ -37,8 +37,8 @@ SELECT 6 AS x, 50 AS growth, 130 AS size, 0.1 AS seriesA, 0.7 AS seriesB`
 		query
 	)}
 	<Chart {data} title="Growth vs Sales">
-		<Bar y="growth" series=seriesA seriesFmt="pct"/>
-		<Line y="size" series=seriesB 	seriesFmt="pct"/>
+		<Bar y="growth" series=seriesA seriesLabelFmt="pct"/>
+		<Line y="size" series=seriesB 	seriesLabelFmt="pct"/>
 	</Chart>
 </Story>
 
