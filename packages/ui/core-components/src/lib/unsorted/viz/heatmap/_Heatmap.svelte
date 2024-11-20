@@ -275,6 +275,9 @@
 				orient: 'horizontal',
 				left: 'center',
 				bottom: '0%',
+				textStyle: {
+					color: $theme.colors['base-content-muted']
+				},
 				handleStyle: {
 					borderColor: $theme.colors['base-100']
 				},
