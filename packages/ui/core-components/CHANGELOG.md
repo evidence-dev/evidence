@@ -1,5 +1,18 @@
 # @evidence-dev/core-components
 
+## 4.9.0
+
+### Minor Changes
+
+- b72e4a809: Remove plugin connector
+
+### Patch Changes
+
+- 58f537d79: Align the height of buttongroup to dropdown
+- 9c1ad71a1: fixed dataTable not displaying sorted data
+  - @evidence-dev/component-utilities@3.2.21
+  - @evidence-dev/tailwind@2.1.10
+
 ## 4.8.13
 
 ### Patch Changes
