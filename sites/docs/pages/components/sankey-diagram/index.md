@@ -43,8 +43,10 @@ union all
 select 'all_traffic' as source, '/about' as target, 75 as count
 ```
 
-<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
-
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
+  </div>
 
 ```svelte
 <SankeyDiagram 
@@ -54,10 +56,14 @@ select 'all_traffic' as source, '/about' as target, 75 as count
     valueCol= valueCol
 />
 ```
+</DocTab>
 
 ## Vertical
 
-<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count orient=vertical/>
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count orient=vertical/>
+  </div>
 
 ```svelte
 <SankeyDiagram 
@@ -68,8 +74,23 @@ select 'all_traffic' as source, '/about' as target, 75 as count
     orient=vertical
 />
 ```
+</DocTab>
 
 # Echarts Options String 
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count 
+    echartsOptions={{
+        title: {
+            text: "Custom Echarts Option",
+            textStyle: {
+              color: '#476fff'
+            }
+        }
+    }}
+    />
+  </div>
 
 ```svelte
 <SankeyDiagram 
@@ -88,19 +109,8 @@ select 'all_traffic' as source, '/about' as target, 75 as count
         }
     }}
 />
-
 ```
-
-<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count 
-    echartsOptions={{
-        title: {
-            text: "Custom Echarts Option",
-            textStyle: {
-              color: '#476fff'
-            }
-        }
-    }}
-/>
+</DocTab>
 
 # Node Depth Override
 
@@ -127,6 +137,20 @@ union all
 select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
 ```
 
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+        data={apple_income_statement} 
+        title="Apple Income Statement" 
+        subtitle="USD Billions" 
+        sourceCol=source 
+        targetCol=target 
+        valueCol=amount_usd 
+        depthOverride={{'services revenue': 1}}
+        nodeAlign=left
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
     data={apple_income_statement} 
@@ -139,23 +163,27 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
     nodeAlign=left
 />
 ```
+</DocTab>
 
-<SankeyDiagram 
-    data={apple_income_statement} 
-    title="Apple Income Statement" 
-    subtitle="USD Billions" 
-    sourceCol=source 
-    targetCol=target 
-    valueCol=amount_usd 
-    depthOverride={{'services revenue': 1}}
-    nodeAlign=left
-/>
 
 # Labels
 
 ## Node Labels
 
 ### `nodeLabels=name` (default)
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      nodeLabels=name
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -166,17 +194,25 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
   nodeLabels=name
 />
 ```
+</DocTab>
 
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  nodeLabels=name
-/>
 
 ### `nodeLabels=value`
+
+<DocTab>
+  <div slot='preview'>
+  <SankeyDiagram 
+    data={simple_sankey} 
+    sourceCol=source 
+    targetCol=target 
+    valueCol=amount 
+    percentCol=percent 
+    nodeLabels=value
+  />
+  
+The value labels can be formatted using the `valueFmt` option.
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -187,19 +223,25 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
   nodeLabels=value
 />
 ```
+</DocTab>
 
-The value labels can be formatted using the `valueFmt` option.
 
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  nodeLabels=value
-/>
 
 ### `nodeLabels=full`
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      nodeLabels=full
+      valueFmt=usd
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -211,21 +253,26 @@ The value labels can be formatted using the `valueFmt` option.
   valueFmt=usd
 />
 ```
-
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  nodeLabels=full
-  valueFmt=usd
-/>
+</DocTab>
 
 ## Link Labels
 
 ### `linkLabels=full` (default)
 Requires `percentCol` to show percentage beside value
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      valueFmt=usd
+      linkLabels=full
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -237,18 +284,24 @@ Requires `percentCol` to show percentage beside value
   linkLabels=full
 />
 ```
+</DocTab>
 
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  valueFmt=usd
-  linkLabels=full
-/>
 
 ### `linkLabels=value`
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      valueFmt=usd
+      linkLabels=value
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -260,18 +313,24 @@ Requires `percentCol` to show percentage beside value
   linkLabels=value
 />
 ```
+</DocTab>
 
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  valueFmt=usd
-  linkLabels=value
-/>
 
 ### `linkLabels=percent`
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      valueFmt=usd
+      linkLabels=percent
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -283,18 +342,23 @@ Requires `percentCol` to show percentage beside value
   linkLabels=percent
 />
 ```
-
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  valueFmt=usd
-  linkLabels=percent
-/>
+</DocTab>
 
 ## Custom Color Palette
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      linkColor=grey
+      colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -306,20 +370,26 @@ Requires `percentCol` to show percentage beside value
   colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
+</DocTab>
 
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  linkColor=grey
-  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
-/>
 
 ## Link Colors
 
 ### `linkColor=grey` (default)
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      linkColor=grey
+      colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -331,18 +401,24 @@ Requires `percentCol` to show percentage beside value
   colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
+</DocTab>
 
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  linkColor=grey
-  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
-/>
 
 ### `linkColor=source` 
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      linkColor=source
+      colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -354,18 +430,23 @@ Requires `percentCol` to show percentage beside value
   colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
-
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  linkColor=source
-  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
-/>
+</DocTab>
 
 ### `linkColor=target` 
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      linkColor=target
+      colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -377,18 +458,24 @@ Requires `percentCol` to show percentage beside value
   colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
+</DocTab>
 
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  linkColor=target
-  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
-/>
 
 ### `linkColor=gradient` 
+
+<DocTab>
+  <div slot='preview'>
+    <SankeyDiagram 
+      data={simple_sankey} 
+      sourceCol=source 
+      targetCol=target 
+      valueCol=amount 
+      percentCol=percent 
+      linkColor=gradient
+      colorPalette={['#6e0e08', '#3d8cc4', '#1b5218', '#ebb154']}
+    />
+  </div>
+
 ```svelte
 <SankeyDiagram 
   data={simple_sankey} 
@@ -400,16 +487,8 @@ Requires `percentCol` to show percentage beside value
   colorPalette={['#6e0e08', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
+</DocTab>
 
-<SankeyDiagram 
-  data={simple_sankey} 
-  sourceCol=source 
-  targetCol=target 
-  valueCol=amount 
-  percentCol=percent 
-  linkColor=gradient
-  colorPalette={['#6e0e08', '#3d8cc4', '#1b5218', '#ebb154']}
-/>
 
 ## Multi-level
 

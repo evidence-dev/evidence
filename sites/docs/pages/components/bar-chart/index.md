@@ -8,14 +8,16 @@ queries:
 - categories_by_channel.sql
 ---
 
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    series=category
-    title="Sales by Category"
-/>
-
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_category_2021}
+            x=month
+            y=sales
+            series=category
+            title="Sales by Category"
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -26,17 +28,20 @@ queries:
     title="Sales by Category"
 />
 ```
+</DocTab>
 
 ## Examples
 
 ### Default
 
-<BarChart 
-    data={orders_by_month}
-    x=month
-    y=sales
-/>
-
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_month}
+            x=month
+            y=sales
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -45,15 +50,19 @@ queries:
     y=sales
 />
 ```
+</DocTab>
 
 ### Stacked
 
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    series=category
-/>
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_category_2021}
+            x=month
+            y=sales
+            series=category
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -63,17 +72,22 @@ queries:
     series=category
 />
 ```
+</DocTab>
+
 
 ### 100% Stacked
 
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    yFmt=pct0
-    series=category
-    type=stacked100
-/>
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_category_2021}
+            x=month
+            y=sales
+            yFmt=pct0
+            series=category
+            type=stacked100
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -85,16 +99,21 @@ queries:
     type=stacked100
 />
 ```
+</DocTab>
+
 
 ### Grouped
 
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    series=category
-    type=grouped
-/>
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_category_2021}
+            x=month
+            y=sales
+            series=category
+            type=grouped
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -105,16 +124,20 @@ queries:
     type=grouped
 />
 ```
+</DocTab>
 
 ### Horizontal
 
-<BarChart 
-    data={orders_by_item_all_time}
-    x=item
-    y=sales 
-    swapXY=true
-    yFmt=usd0k
-/>
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_item_all_time}
+            x=item
+            y=sales 
+            swapXY=true
+            yFmt=usd0k
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -125,16 +148,20 @@ queries:
     yFmt=usd0k
 />
 ```
+</DocTab>
 
 ### Horizontal Stacked
 
-<BarChart 
-    data={categories_by_channel}
-    x=category
-    y=sales
-    series=channel
-    swapXY=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={categories_by_channel}
+            x=category
+            y=sales
+            series=channel
+            swapXY=true
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -145,17 +172,22 @@ queries:
     swapXY=true
 />
 ```
+</DocTab>
+
 
 ### Horizontal 100% Stacked
 
-<BarChart 
-    data={categories_by_channel}
-    x=category
-    y=sales
-    series=channel
-    type=stacked100
-    swapXY=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={categories_by_channel}
+            x=category
+            y=sales
+            series=channel
+            type=stacked100
+            swapXY=true
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -167,17 +199,22 @@ queries:
     swapXY=true
 />
 ```
+</DocTab>
+
 
 ### Horizontal Grouped
 
-<BarChart
-    data={categories_by_channel}
-    x=category
-    y=sales
-    series=channel
-    type=grouped
-    swapXY=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <BarChart
+            data={categories_by_channel}
+            x=category
+            y=sales
+            series=channel
+            type=grouped
+            swapXY=true
+        />
+    </div>
 
 ```markdown
 <BarChart
@@ -189,18 +226,22 @@ queries:
     swapXY=true
 />
 ```
+</DocTab>
+
 
 ### Value Labels
 
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    yFmt=usd1k
-    series=category
-    labels=true
-/>
-
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_category_2021}
+            x=month
+            y=sales
+            yFmt=usd1k
+            series=category
+            labels=true
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -212,22 +253,25 @@ queries:
     labels=true
 />
 ```
+</DocTab>
 
 ### Custom Color Palette
 
-<BarChart 
-    data={orders_by_category_2021}
-    x=month 
-    y=sales 
-    series=category 
-    colorPalette={[
-        '#cf0d06',
-        '#eb5752',
-        '#e88a87',
-        '#fcdad9',
-        ]}
-/>
-
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_category_2021}
+            x=month 
+            y=sales 
+            series=category 
+            colorPalette={[
+                '#cf0d06',
+                '#eb5752',
+                '#e88a87',
+                '#fcdad9',
+                ]}
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -243,16 +287,22 @@ queries:
         ]}
 />
 ```
+</DocTab>
 
-### Secondary / Duel y Axis
 
-<BarChart 
-    data={orders_by_month} 
-    x=month 
-    y=sales
-    yFmt=usd0k
-    y2=num_orders
-/>
+
+### Secondary / Dual y Axis
+
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_month} 
+            x=month 
+            y=sales
+            yFmt=usd0k
+            y2=num_orders
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -262,17 +312,22 @@ queries:
     y2=num_orders_num0
 />
 ```
+</DocTab>
 
-### Secondary / Duel Axis with Line
 
-<BarChart 
-    data={orders_by_month} 
-    x=month 
-    y=sales
-    yFmt=usd0k
-    y2=num_orders
-    y2SeriesType=line
-/>
+### Secondary / Dual Axis with Line
+
+<DocTab>
+    <div slot='preview'>
+        <BarChart 
+            data={orders_by_month} 
+            x=month 
+            y=sales
+            yFmt=usd0k
+            y2=num_orders
+            y2SeriesType=line
+        />
+    </div>
 
 ```markdown
 <BarChart 
@@ -284,6 +339,7 @@ queries:
     y2SeriesType=line
 />
 ```
+</DocTab>
 
 ## Options
 

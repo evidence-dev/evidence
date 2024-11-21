@@ -1,5 +1,25 @@
 # @evidence-dev/core-components
 
+## 4.8.13
+
+### Patch Changes
+
+- 62afe741b: Node 22 support
+- Updated dependencies [62afe741b]
+  - @evidence-dev/component-utilities@3.2.20
+  - @evidence-dev/tailwind@2.1.9
+
+## 4.8.12
+
+### Patch Changes
+
+- 6938c07d0: Added support for deployment.basePath
+- 4ca8cb14a: removed skeleton for annotation components, fixes double skeletons for annotation usage
+- 61342f41e: Updated core components for docTabs
+- Updated dependencies [0c538ac70]
+  - @evidence-dev/component-utilities@3.2.19
+  - @evidence-dev/tailwind@2.1.8
+
 ## 4.8.11
 
 ### Patch Changes

@@ -47,6 +47,36 @@ series: [
 
 If you wanted to add a custom border to the bars with `echartsOptions`, you would need to manually repeat for each series. E.g.,
 
+<DocTab>
+    <div slot='preview'>
+        <BarChart
+            data={country_sales}
+            x=year
+            y=sales
+            series=country
+            echartsOptions={{
+                    series: [
+                        {itemStyle: {
+                            borderWidth: 1,
+                            borderColor: 'red'
+                        }},
+                        {itemStyle: {
+                            borderWidth: 1,
+                            borderColor: 'red'
+                        }},
+                        {itemStyle: {
+                            borderWidth: 1,
+                            borderColor: 'red'
+                        }},
+                        {itemStyle: {
+                            borderWidth: 1,
+                            borderColor: 'red'
+                        }}
+                    ]
+                }}
+        />
+    </div>
+
 ```html
 <BarChart
     data={country_sales}
@@ -75,50 +105,10 @@ If you wanted to add a custom border to the bars with `echartsOptions`, you woul
     }}
 />
 ```
+</DocTab>
 
-<BarChart
-    data={country_sales}
-    x=year
-    y=sales
-    series=country
-    echartsOptions={{
-            series: [
-                {itemStyle: {
-                    borderWidth: 1,
-                    borderColor: 'red'
-                }},
-                {itemStyle: {
-                    borderWidth: 1,
-                    borderColor: 'red'
-                }},
-                {itemStyle: {
-                    borderWidth: 1,
-                    borderColor: 'red'
-                }},
-                {itemStyle: {
-                    borderWidth: 1,
-                    borderColor: 'red'
-                }}
-            ]
-        }}
-/>
 
 With `seriesOptions`, you can specify the changes once and have them applied to all series in the chart, like so:
-
-```html
-<BarChart
-    data={country_sales}
-    x=date
-    y=sales
-    series=country
-    seriesOptions={{
-        itemStyle: {
-            borderWidth: 1,
-            borderColor: 'red'
-        }
-    }}
-/>
-```
 
 ```country_sales
 select 'Canada' as country, 2020 as year, 100 as sales
@@ -138,9 +128,26 @@ union all
 select 'US' as country, 2023 as year, 450 as sales
 ```
 
+<DocTab>
+    <div slot='preview'>
+        <BarChart
+            data={country_sales}
+            x=year
+            y=sales
+            series=country
+            seriesOptions={{
+                itemStyle: {
+                    borderWidth: 1,
+                    borderColor: 'red'
+                }
+            }}
+        />
+    </div>
+
+```svelte
 <BarChart
     data={country_sales}
-    x=year
+    x=date
     y=sales
     series=country
     seriesOptions={{
@@ -150,6 +157,10 @@ select 'US' as country, 2023 as year, 450 as sales
         }
     }}
 />
+```
+</DocTab>
+
+
 
 ## Print ECharts Config
 
@@ -157,7 +168,7 @@ You can print the current eCharts config for a chart by adding `printEchartsConf
 
 This includes both any default Evidence config and any `echartsOptions` you have specified, and so can be useful for debugging.
 
-```markdown
+```svelte
 <BarChart
     data={query_name}
     x=column_x
@@ -172,8 +183,31 @@ This includes both any default Evidence config and any `echartsOptions` you have
 
 ### Customize the Legend Position
 
+<DocTab>
+    <div slot='preview'>
+        <BarChart
+            data={country_sales}
+            x=year
+            y=sales
+            series=country
+        echartsOptions={{
+            legend: {
+                right: 'right',
+                top: 'middle',
+                align: 'auto',
+                orient: 'vertical',
+                padding: 7,
+                borderColor: '#ccc',
+                borderWidth: 1,
+            },
+            grid: {
+                right: '120px'
+            }
+        }}
+        />
+    </div>
 
-```markdown
+```svelte
 echartsOptions={{
     legend: {
         right: 'right',
@@ -189,32 +223,34 @@ echartsOptions={{
     }
 }}
 ```
+</DocTab>
 
-<BarChart
-    data={country_sales}
-    x=year
-    y=sales
-    series=country
-echartsOptions={{
-    legend: {
-        right: 'right',
-        top: 'middle',
-        align: 'auto',
-        orient: 'vertical',
-        padding: 7,
-        borderColor: '#ccc',
-        borderWidth: 1,
-    },
-    grid: {
-        right: '120px'
-    }
-}}
-/>
 
 
 ### Add Data Zoom
 
-```markdown
+<DocTab>
+    <div slot='preview'>
+        <BarChart
+            data={country_sales}
+            x=year
+            y=sales
+            series=country
+        echartsOptions={{
+            dataZoom: [
+                {
+                    start: 0,
+                    end: 100,
+                },
+            ],
+            grid: {
+                bottom: '50px',
+            },
+        }}
+        />
+    </div>
+
+```svelte
 echartsOptions={{
     dataZoom: [
         {
@@ -227,29 +263,44 @@ echartsOptions={{
     },
 }}
 ```
-
-
-<BarChart
-    data={country_sales}
-    x=year
-    y=sales
-    series=country
-echartsOptions={{
-    dataZoom: [
-        {
-            start: 0,
-            end: 100,
-        },
-    ],
-    grid: {
-        bottom: '50px',
-    },
-}}
-/>
+</DocTab>
 
 ### Add Series Labels Next to Chart
 
-```markdown
+<DocTab>
+    <div slot='preview'>
+        <LineChart
+            data={country_sales}
+            x=year
+            y=sales
+            series=country
+            legend=false
+        echartsOptions={{
+            series: [
+            {
+                endLabel: {
+                    show: true,
+                    formatter: (params) => params.seriesName,
+                    offset: [0, 0], // [x, y] offset from the end of the line
+                }
+            },
+            {
+                endLabel: {
+                    show: true,
+                    formatter: (params) => params.seriesName,
+                    offset: [0, 0], // [x, y] offset from the end of the line
+                }
+            }
+            ],
+            grid: {
+                right: '50px',
+                top: '10px'
+            }
+        }}
+        />
+    </div>
+
+```svelte
 echartsOptions={{
     series: [
     {
@@ -273,41 +324,32 @@ echartsOptions={{
     }
 }}
 ```
-
-<LineChart
-    data={country_sales}
-    x=year
-    y=sales
-    series=country
-    legend=false
-echartsOptions={{
-    series: [
-    {
-        endLabel: {
-            show: true,
-            formatter: (params) => params.seriesName,
-            offset: [0, 0], // [x, y] offset from the end of the line
-        }
-    },
-    {
-        endLabel: {
-            show: true,
-            formatter: (params) => params.seriesName,
-            offset: [0, 0], // [x, y] offset from the end of the line
-        }
-    }
-    ],
-    grid: {
-        right: '50px',
-        top: '10px'
-    }
-}}
-/>
-
+</DocTab>
 
 ### Add Axis Pointer to Tooltip
 
-```markdown
+<DocTab>
+    <div slot='preview'>
+        <BarChart
+            data={country_sales}
+            x=year
+            y=sales
+            series=country
+            echartsOptions={{
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+        }}
+        />
+    </div>
+
+```svelte
 echartsOptions={{
     tooltip: {
         trigger: 'axis',
@@ -320,22 +362,5 @@ echartsOptions={{
     },
 }}
 ```
+</DocTab>
 
-
-<BarChart
-    data={country_sales}
-    x=year
-    y=sales
-    series=country
-    echartsOptions={{
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#6a7985'
-            }
-        }
-    },
-}}
-/>

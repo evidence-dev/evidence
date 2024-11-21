@@ -13,12 +13,15 @@ select category, order_month as month, sum(sales) as sales_usd0k, count(1) as or
 group by all
 ```
 
-<LineChart 
-    data={orders_by_month}
-    x=month
-    y=sales_usd0k 
-    yAxisTitle="Sales per Month"
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_month}
+            x=month
+            y=sales_usd0k 
+            yAxisTitle="Sales per Month"
+        />
+    </div>
 
 ```svelte
 <LineChart 
@@ -28,19 +31,23 @@ group by all
     yAxisTitle="Sales per Month"
 />
 ```
+</DocTab>
 
 ## Examples
 
 ### Line
 
-<LineChart 
-    data={orders_by_month}
-    x=month
-    y=sales_usd0k 
-    yAxisTitle="Sales per Month"
-    title="Monthly Sales"
-    subtitle="Includes all categories"
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_month}
+            x=month
+            y=sales_usd0k 
+            yAxisTitle="Sales per Month"
+            title="Monthly Sales"
+            subtitle="Includes all categories"
+        />
+    </div>
 
 ```svelte
 <LineChart 
@@ -52,16 +59,21 @@ group by all
     subtitle="Includes all categories"
 />
 ```
+</DocTab>
+
 
 ### Multi-Series Line
 
-<LineChart 
-    data={orders_by_category}
-    x=month
-    y=sales_usd0k 
-    yAxisTitle="Sales per Month"
-    series=category
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_category}
+            x=month
+            y=sales_usd0k 
+            yAxisTitle="Sales per Month"
+            series=category
+        />
+    </div>
 
 ```markdown
 <LineChart 
@@ -72,17 +84,22 @@ group by all
     series=category
 />
 ```
+</DocTab>
+
 
 ### Multi-Series Line with Steps
 
-<LineChart 
-    data={orders_by_category}
-    x=month
-    y=sales_usd0k 
-    yAxisTitle="Sales per Month"
-    series=category
-    step=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_category}
+            x=month
+            y=sales_usd0k 
+            yAxisTitle="Sales per Month"
+            series=category
+            step=true
+        />
+    </div>
 
 ```svelte
 <LineChart 
@@ -94,17 +111,21 @@ group by all
     step=true
 />
 ```
+</DocTab>
 
 ### Multiple y Columns
 
-<LineChart 
-    data={orders_by_month}
-    x=month
-    y={['sales_usd0k','orders']} 
-    yAxisTitle="Sales per Month"
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_month}
+            x=month
+            y={['sales_usd0k','orders']} 
+            yAxisTitle="Sales per Month"
+        />
+    </div>
 
-```markdown
+```svelte
 <LineChart 
     data={orders_by_month}
     x=month
@@ -112,16 +133,20 @@ group by all
     yAxisTitle="Sales per Month"
 />
 ```
+</DocTab>
 
 ### Secondary y Axis
 
-<LineChart 
-    data={orders_by_month}
-    x=month
-    y=sales_usd0k
-    y2=orders
-    yAxisTitle="Sales per Month"
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_month}
+            x=month
+            y=sales_usd0k
+            y2=orders
+            yAxisTitle="Sales per Month"
+        />
+    </div>
 
 ```markdown
 <LineChart 
@@ -132,17 +157,22 @@ group by all
     yAxisTitle="Sales per Month"
 />
 ```
+</DocTab>
+
 
 ### Secondary Axis with Bar
 
-<LineChart 
-    data={orders_by_month}
-    x=month
-    y=sales_usd0k
-    y2=orders
-    y2SeriesType=bar
-    yAxisTitle="Sales per Month"
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_month}
+            x=month
+            y=sales_usd0k
+            y2=orders
+            y2SeriesType=bar
+            yAxisTitle="Sales per Month"
+        />
+    </div>
 
 ```markdown
 <LineChart 
@@ -154,16 +184,20 @@ group by all
     yAxisTitle="Sales per Month"
 />
 ```
+</DocTab>
 
 ### Value Labels
 
-<LineChart 
-    data={orders_by_month}
-    x=month
-    y=sales_usd0k 
-    yAxisTitle="Sales per Month"
-    labels=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_month}
+            x=month
+            y=sales_usd0k 
+            yAxisTitle="Sales per Month"
+            labels=true
+        />
+    </div>
 
 ```markdown
 <LineChart 
@@ -174,25 +208,28 @@ group by all
     labels=true
 />
 ```
-
+</DocTab>
 
 ### Custom Color Palette
 
-<LineChart 
-    data={orders_by_category}
-    x=month
-    y=sales_usd0k 
-    yAxisTitle="Sales per Month"
-    series=category
-    colorPalette={
-        [
-        '#cf0d06',
-        '#eb5752',
-        '#e88a87',
-        '#fcdad9',
-        ]
-    }
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_category}
+            x=month
+            y=sales_usd0k 
+            yAxisTitle="Sales per Month"
+            series=category
+            colorPalette={
+                [
+                '#cf0d06',
+                '#eb5752',
+                '#e88a87',
+                '#fcdad9',
+                ]
+            }
+        />
+    </div>
 
 ```markdown
 <LineChart 
@@ -211,17 +248,21 @@ group by all
     }
 />
 ```
+</DocTab>
 
 ### Markers
 
 #### Default
 
-<LineChart 
-    data={orders_by_month}
-    x=month
-    y=sales_usd0k 
-    markers=true
-/>
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_month}
+            x=month
+            y=sales_usd0k 
+            markers=true
+        />
+    </div>
 
 ```svelte
 <LineChart 
@@ -231,15 +272,20 @@ group by all
     markers=true 
 />
 ```
+</DocTab>
 
 #### `markerShape=emptyCircle`
-<LineChart 
-    data={orders_by_month}
-    x=month
-    y=sales_usd0k 
-    markers=true
-    markerShape=emptyCircle
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <LineChart 
+            data={orders_by_month}
+            x=month
+            y=sales_usd0k 
+            markers=true
+            markerShape=emptyCircle
+        />
+    </div>
 
 ```svelte
 <LineChart 
@@ -250,7 +296,7 @@ group by all
     markerShape=emptyCircle
 />
 ```
-
+</DocTab>
 
 ## Options
 

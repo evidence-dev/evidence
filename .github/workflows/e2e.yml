@@ -25,7 +25,7 @@ jobs:
       matrix:
         project: ${{ fromJson(needs.find-e2e-test-projects.outputs.e2e-test-projects) }}
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        node-version: [18, 20]
+        node-version: [18.13.0, 20, 22]
 
         # When not on main, exclude non-latest node version and macOS/Windows
         isMain:
@@ -33,6 +33,8 @@ jobs:
         exclude:
           - isMain: false
             node-version: 18
+          - isMain: false
+            node-version: 20
           - isMain: false
             os: macOS-latest
           - isMain: false

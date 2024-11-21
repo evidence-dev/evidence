@@ -5,11 +5,14 @@ queries:
 - state_population.sql
 ---
 
-<USMap
-    data={state_population}
-    state=state_name
-    value=population
-/>
+<DocTab>
+    <div slot='preview'>
+        <USMap
+            data={state_population}
+            state=state_name
+            value=population
+        />
+    </div>
 
 ```html
 <USMap
@@ -18,6 +21,8 @@ queries:
     value=population
 />
 ```
+</DocTab>
+
 
 ## Examples
 
@@ -25,43 +30,106 @@ queries:
 
 `colorScale=blue`
 
+<DocTab>
+    <div slot='preview'>
+        <USMap
+            data={state_population}
+            state=state_name
+            value=population
+            colorScale=blue
+        />
+    </div>
+
+````html
 <USMap
     data={state_population}
     state=state_name
     value=population
     colorScale=blue
 />
+````
+</DocTab>
 
 `colorScale=green`
 
+<DocTab>
+    <div slot='preview'>
+        <USMap
+            data={state_population}
+            state=state_name
+            value=population
+            colorScale=green
+        />
+    </div>
+
+````html
 <USMap
     data={state_population}
     state=state_name
     value=population
     colorScale=green
 />
+````
+</DocTab>
 
 `colorScale=red`
 
+<DocTab>
+    <div slot='preview'>
+        <USMap
+            data={state_population}
+            state=state_name
+            value=population
+            colorScale=red
+        />
+    </div>
+
+````html
 <USMap
     data={state_population}
     state=state_name
     value=population
     colorScale=red
 />
+````
+</DocTab>
 
 `colorScale=bluegreen`
 
+<DocTab>
+    <div slot='preview'>
+        <USMap
+            data={state_population}
+            state=state_name
+            value=population
+            colorScale=bluegreen
+        />
+    </div>
+
+````html
 <USMap
     data={state_population}
     state=state_name
     value=population
     colorScale=bluegreen
 />
+````
+</DocTab>
 
 ### Custom Color Scale
 
-```html
+<DocTab>
+    <div slot='preview'>
+        <USMap
+            data={state_population}
+            state=state_name
+            value=population
+            colorPalette={['maroon','white','#1c0d80']}
+            legend=true
+        />
+    </div>
+
+```svelte
 <USMap
     data={state_population}
     state=state_name
@@ -70,19 +138,24 @@ queries:
     legend=true
 />
 ```
+</DocTab>
 
-<USMap
-    data={state_population}
-    state=state_name
-    value=population
-    colorPalette={['maroon','white','#1c0d80']}
-    legend=true
-/>
+
 
 ### Legend
 
 #### Default
 
+<DocTab>
+    <div slot='preview'>
+        <USMap
+            data={state_population}
+            state=state_name
+            value=population
+            legend=true
+        />
+    </div>
+
 ```html
 <USMap
     data={state_population}
@@ -91,28 +164,25 @@ queries:
     legend=true
 />
 ```
+</DocTab>
 
-<USMap
-    data={state_population}
-    state=state_name
-    value=population
-    legend=true
-/>
 
 
 #### With Filter
 
-```html
-<USMap
-    data={state_population}
-    state=state_name
-    value=population
-    colorPalette={['maroon','white','#1c0d80']}
-    legend=true
-    filter=true
-/>
-```
+<DocTab>
+    <div slot='preview'>
+        <USMap
+            data={state_population}
+            state=state_name
+            value=population
+            colorPalette={['maroon','white','#1c0d80']}
+            legend=true
+            filter=true
+        />
+    </div>
 
+````svelte
 <USMap
     data={state_population}
     state=state_name
@@ -121,8 +191,15 @@ queries:
     legend=true
     filter=true
 />
+````
+</DocTab>
 
 ### Links
+
+<DocTab>
+    <div slot='preview'>
+        <img src='/img/map-links.gif' style="width: 100%; height:500px"/>
+    </div>
 
 ```html
 <USMap
@@ -135,16 +212,20 @@ queries:
 	subtitle="{most_recent_month[0].month}"
 />
 ```
-
-<img src='/img/map-links.gif' width='500px'/>
+</DocTab>
 
 ### State Abbreviations
+
+<DocTab>
+    <div slot='preview'>
+        <USMap data={state_population} state=state_abbrev value=population abbreviations=true />
+    </div>
 
 ```html
 <USMap data={map_data} state=state_abbrev value=sales_usd abbreviations=true />
 ```
+</DocTab>
 
-<USMap data={state_population} state=state_abbrev value=population abbreviations=true />
 
 
 ## Options

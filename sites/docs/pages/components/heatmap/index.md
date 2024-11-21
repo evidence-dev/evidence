@@ -9,13 +9,16 @@ group by all
 order by category, day_num  
 ```
 
-<Heatmap 
-    data={orders} 
-    x=day 
-    y=category 
-    value=order_count 
-    valueFmt=usd 
-/>
+<DocTab>
+    <div slot='preview'>
+        <Heatmap 
+            data={orders} 
+            x=day 
+            y=category 
+            value=order_count 
+            valueFmt=usd 
+        />
+    </div>
 
 ```markdown
 <Heatmap 
@@ -26,6 +29,7 @@ order by category, day_num
     valueFmt=usd 
 />
 ```
+</DocTab>
 
 ## Data Structure
 
@@ -107,13 +111,16 @@ Heatmap currently only works with string columns. If you would like to use a dat
 
 ### Basic Heatmap
 
-<Heatmap 
-    data={orders} 
-    x=day 
-    y=category 
-    value=order_count 
-    valueFmt=usd 
-/>
+<DocTab>
+    <div slot='preview'>
+        <Heatmap 
+            data={orders} 
+            x=day 
+            y=category 
+            value=order_count 
+            valueFmt=usd 
+        />
+    </div>
 
 ```markdown
 <Heatmap 
@@ -124,17 +131,23 @@ Heatmap currently only works with string columns. If you would like to use a dat
     valueFmt=usd 
 />
 ```
+</DocTab>
+
 
 ### Custom Color Palette
 
-<Heatmap 
-    data={orders} 
-    x=day 
-    y=category 
-    value=order_count 
-    valueFmt=usd 
-    colorPalette={['white', 'green']}
-/>
+
+<DocTab>
+    <div slot='preview'>
+        <Heatmap 
+            data={orders} 
+            x=day 
+            y=category 
+            value=order_count 
+            valueFmt=usd 
+            colorPalette={['white', 'green']}
+        />
+    </div>
 
 ```svelte
 <Heatmap 
@@ -146,6 +159,7 @@ Heatmap currently only works with string columns. If you would like to use a dat
     colorPalette={['white', 'green']}
 />
 ```
+</DocTab>
 
 ### Rotated Labels
 
@@ -156,19 +170,22 @@ group by all
 order by state asc, item asc
 ```
 
-<Heatmap 
-    data={item_state} 
-    x=item 
-    y=state 
-    value=orders 
-    xLabelRotation=-45
-    colorPalette={['white', 'maroon']} 
-    title="Item Sales"
-    subtitle="By State"
-    rightPadding=40
-    cellHeight=25
-    nullsZero=false
-/>
+<DocTab>
+    <div slot='preview'>
+        <Heatmap 
+            data={item_state} 
+            x=item 
+            y=state 
+            value=orders 
+            xLabelRotation=-45
+            colorPalette={['white', 'maroon']} 
+            title="Item Sales"
+            subtitle="By State"
+            rightPadding=40
+            cellHeight=25
+            nullsZero=false
+        />
+    </div>
 
 ```svelte
 <Heatmap 
@@ -185,7 +202,7 @@ order by state asc, item asc
     nullsZero=false
 />
 ```
-
+</DocTab>
 
 ## Options
 

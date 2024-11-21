@@ -9,35 +9,21 @@ Creates a group of single-select buttons for quick filtering
 
 To see how to filter a query using a Button Group, see [Filters](/core-concepts/filters).
 
-<ButtonGroup 
-    data={categories} 
-    name=selected_category 
-    value=category
-/>
-
-Selected: {inputs.selected_category}
-
-```markdown
-<ButtonGroup 
-    data={categories} 
-    name=selected_category 
-    value=category
-/>
-
-Selected: {inputs.selected_category}
-```
 
 ## Examples
 
 ### Button Group using Options from a Query
 
-<ButtonGroup 
-    data={categories} 
-    name=category_picker 
-    value=category
-/>
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup 
+            data={categories} 
+            name=category_picker 
+            value=category
+        />
 
-Selected: {inputs.category_picker}
+        Selected: {inputs.category_picker}
+    </div>
 
 ```markdown
 <ButtonGroup 
@@ -48,17 +34,21 @@ Selected: {inputs.category_picker}
 
 Selected: {inputs.category_picker}
 ```
+</DocTab>
 
 ### With a Title
 
-<ButtonGroup 
-    data={categories} 
-    name=category_selector 
-    value=category
-    title="Select a Category"
-/>
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup 
+            data={categories} 
+            name=category_selector 
+            value=category
+            title="Select a Category"
+        />
 
-Selected: {inputs.category_selector}
+        Selected: {inputs.category_selector}
+    </div>
 
 ```markdown
 <ButtonGroup 
@@ -70,9 +60,23 @@ Selected: {inputs.category_selector}
 
 Selected: {inputs.category_selector}
 ```
+</DocTab>
 
 ### With a Default Value
 
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup
+            data={categories}
+            name=selected_button1
+            value=category
+            defaultValue="Cursed Sporting Goods"
+        />
+
+        Selected: {inputs.selected_button1}
+    </div>
+
+````markdown
 <ButtonGroup
     data={categories}
     name=selected_button1
@@ -81,27 +85,21 @@ Selected: {inputs.category_selector}
 />
 
 Selected: {inputs.selected_button1}
-
-````markdown
-<ButtonGroup
-    data={categories}
-    name=selected_button1
-    value=category
-    defaultValue="Cursed Sporting Goods"
-/>
 ````
-
+</DocTab>
 
 ### With Hardcoded Options
 
-<ButtonGroup name=hardcoded_options>
-    <ButtonGroupItem valueLabel="Option One" value="1" />
-    <ButtonGroupItem valueLabel="Option Two" value="2" />
-    <ButtonGroupItem valueLabel="Option Three" value="3" />
-</ButtonGroup>
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup name=hardcoded_options>
+            <ButtonGroupItem valueLabel="Option One" value="1" />
+            <ButtonGroupItem valueLabel="Option Two" value="2" />
+            <ButtonGroupItem valueLabel="Option Three" value="3" />
+        </ButtonGroup>
 
-Selected: {inputs.hardcoded_options}
-
+        Selected: {inputs.hardcoded_options}
+    </div>
 
 ````markdown
 <ButtonGroup name=hardcoded_options>
@@ -112,18 +110,20 @@ Selected: {inputs.hardcoded_options}
 
 Selected: {inputs.hardcoded_options}
 ````
-
+</DocTab>
 
 ### With Hardcoded Options and Default Value
 
-<ButtonGroup name=hardcoded_options_default>
-    <ButtonGroupItem valueLabel="Option One" value="1" />
-    <ButtonGroupItem valueLabel="Option Two" value="2" default />
-    <ButtonGroupItem valueLabel="Option Three" value="3" />
-</ButtonGroup>
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup name=hardcoded_options_default>
+            <ButtonGroupItem valueLabel="Option One" value="1" />
+            <ButtonGroupItem valueLabel="Option Two" value="2" default />
+            <ButtonGroupItem valueLabel="Option Three" value="3" />
+        </ButtonGroup>
 
-Selected: {inputs.hardcoded_options_default}
-
+        Selected: {inputs.hardcoded_options_default}
+    </div>
 
 ````markdown
 <ButtonGroup name=hardcoded_options_default>
@@ -134,21 +134,21 @@ Selected: {inputs.hardcoded_options_default}
 
 Selected: {inputs.hardcoded_options_default}
 ````
-
-
-
+</DocTab>
 
 ### Alternative Labels
 
-<ButtonGroup
-    data={categories} 
-    name=alternative_labels_selector
-    value=category
-    label=short_category
-/>
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup
+            data={categories} 
+            name=alternative_labels_selector
+            value=category
+            label=short_category
+        />
 
-Selected: {inputs.alternative_labels_selector}
-
+        Selected: {inputs.alternative_labels_selector}
+    </div>
 
 ````markdown
 <ButtonGroup
@@ -160,15 +160,10 @@ Selected: {inputs.alternative_labels_selector}
 
 Selected: {inputs.alternative_labels_selector}
 ````
+</DocTab>
 
 ### Filtering a Query
 
-<ButtonGroup
-    data={categories} 
-    name=category_button_group
-    value=category
-/>
-
 ```sql filtered_query
 select 
     category, item, sum(sales) as total_sales
@@ -177,8 +172,16 @@ where category like '${inputs.category_button_group}'
 group by all
 ```
 
-<DataTable data={filtered_query} emptySet=pass emptyMessage="No category selected"/>
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup
+            data={categories} 
+            name=category_button_group
+            value=category
+        />
 
+        <DataTable data={filtered_query} emptySet=pass emptyMessage="No category selected"/>
+    </div>
 
 ````markdown
 <ButtonGroup
@@ -187,27 +190,23 @@ group by all
     value=category
 />
 
-```sql filtered_query
-select 
-    category, item, sum(sales) as total_sales
-from needful_things.orders
-where category like '${inputs.category_button_group}'
-group by all
-```
-
 <DataTable data={filtered_query} emptySet=pass emptyMessage="No category selected"/>
 ````
+</DocTab>
 
 ### Style Buttons as Tabs
 
-<ButtonGroup 
-    data={categories} 
-    name=buttons_as_tabs
-    value=category
-    display=tabs
-/>
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup 
+            data={categories} 
+            name=buttons_as_tabs
+            value=category
+            display=tabs
+        />
 
-Selected: {inputs.buttons_as_tabs}
+        Selected: {inputs.buttons_as_tabs}
+    </div>
 
 ```markdown
 <ButtonGroup 
@@ -219,17 +218,20 @@ Selected: {inputs.buttons_as_tabs}
 
 Selected: {inputs.buttons_as_tabs}
 ```
+</DocTab>
 
 ### Style Buttons as Tabs: With Hardcoded Options
 
-<ButtonGroup name=button_tabs_hardcoded_options display=tabs>
-    <ButtonGroupItem valueLabel="Option One" value="1" />
-    <ButtonGroupItem valueLabel="Option Two" value="2" />
-    <ButtonGroupItem valueLabel="Option Three" value="3" />
-</ButtonGroup>
+<DocTab>
+    <div slot='preview'>
+        <ButtonGroup name=button_tabs_hardcoded_options display=tabs>
+            <ButtonGroupItem valueLabel="Option One" value="1" />
+            <ButtonGroupItem valueLabel="Option Two" value="2" />
+            <ButtonGroupItem valueLabel="Option Three" value="3" />
+        </ButtonGroup>
 
-Selected: {inputs.button_tabs_hardcoded_options}
-
+        Selected: {inputs.button_tabs_hardcoded_options}
+    </div>
 
 ````markdown
 <ButtonGroup name=button_tabs_hardcoded_options display=tabs>
@@ -240,7 +242,7 @@ Selected: {inputs.button_tabs_hardcoded_options}
 
 Selected: {inputs.button_tabs_hardcoded_options}
 ````
-
+</DocTab>
 
 # ButtonGroup
 

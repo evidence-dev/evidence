@@ -11,9 +11,12 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 select distinct category as category_name, upper(left(category, 3)) as abbrev from needful_things.orders
 ```
 
-<Dropdown data={categories} name=category1 value=category_name title="Select a Category" defaultValue="Sinister Toys"/>
+<DocTab>
+    <div slot='preview'>
+        <Dropdown data={categories} name=category1 value=category_name title="Select a Category" defaultValue="Sinister Toys"/>
 
-Selected: {inputs.category1.value}
+        Selected: {inputs.category1.value}
+    </div>
 
 ````markdown
 <Dropdown 
@@ -23,15 +26,21 @@ Selected: {inputs.category1.value}
     title="Select a Category" 
     defaultValue="Sinister Toys"
 />
+
+Selected: {inputs.category1.value}
 ````
+</DocTab>
 
 ## Examples
 
 ### Dropdown using Options from a Query
 
-<Dropdown data={categories} name=category2 value=category_name/>
-
-Selected: {inputs.category2.value}
+<DocTab>
+    <div slot='preview'>
+        <Dropdown data={categories} name=category2 value=category_name/>
+        
+        Selected: {inputs.category2.value}
+    </div>
 
 ````markdown
 <Dropdown 
@@ -41,11 +50,17 @@ Selected: {inputs.category2.value}
 />
 ````
 
+Selected: {inputs.category2.value}
+</DocTab>
+
 ### With a Title
 
-<Dropdown data={categories} name=category3 value=category_name title="Select a Category" defaultValue="Sinister Toys"/>
-
-Selected: {inputs.category3.value}
+<DocTab>
+    <div slot='preview'>
+        <Dropdown data={categories} name=category3 value=category_name title="Select a Category" defaultValue="Sinister Toys"/>
+        
+        Selected: {inputs.category3.value}
+    </div>
 
 ````markdown
 <Dropdown 
@@ -55,10 +70,29 @@ Selected: {inputs.category3.value}
     title="Select a Category" 
     defaultValue="Sinister Toys"
 />
+
+Selected: {inputs.category3.value}
 ````
+
+</DocTab>
 
 ### With a Default Value
 
+
+<DocTab>
+    <div slot='preview'>
+        <Dropdown
+            data={categories} 
+            name=category4
+            value=category_name
+            title="Select a Category"
+            defaultValue="Odd Equipment"
+        />
+
+        Selected: {inputs.category4.value}
+    </div>
+
+````markdown
 <Dropdown
     data={categories} 
     name=category4
@@ -68,19 +102,24 @@ Selected: {inputs.category3.value}
 />
 
 Selected: {inputs.category4.value}
-
-````markdown
-<Dropdown
-    data={categories} 
-    name=category4
-    value=category_name
-    title="Select a Category"
-    defaultValue="Odd Equipment"
-/>
 ````
+</DocTab>
+
 
 ### With Hardcoded Options
 
+<DocTab>
+    <div slot='preview'>
+        <Dropdown name=hardcoded>
+            <DropdownOption valueLabel="Option One" value="1" />
+            <DropdownOption valueLabel="Option Two" value="2" />
+            <DropdownOption valueLabel="Option Three" value="3" />
+        </Dropdown>
+        
+        Selected: {inputs.hardcoded.value}
+    </div>
+
+````markdown
 <Dropdown name=hardcoded>
     <DropdownOption valueLabel="Option One" value="1" />
     <DropdownOption valueLabel="Option Two" value="2" />
@@ -88,27 +127,24 @@ Selected: {inputs.category4.value}
 </Dropdown>
 
 Selected: {inputs.hardcoded.value}
-
-````markdown
-<Dropdown name=hardcoded>
-    <DropdownOption valueLabel="Option One" value="1" />
-    <DropdownOption valueLabel="Option Two" value="2" />
-    <DropdownOption valueLabel="Option Three" value="3" />
-</Dropdown>
 ````
+</DocTab>
 
 ### Alternative Labels
 
-<Dropdown
-    data={categories} 
-    name=category_abbrev
-    value=category_name
-    label=abbrev
-/>
-
-Selected: {inputs.category_abbrev.value}
-
 This example uses a column called `abbrev`, which contains an alternate label for each category
+
+<DocTab>
+    <div slot='preview'>
+        <Dropdown
+            data={categories} 
+            name=category_abbrev
+            value=category_name
+            label=abbrev
+        />
+
+        Selected: {inputs.category_abbrev.value}
+    </div>
 
 ````markdown
 <Dropdown
@@ -119,8 +155,33 @@ This example uses a column called `abbrev`, which contains an alternate label fo
 />
 ````
 
+Selected: {inputs.category_abbrev.value}
+</DocTab>
+
+
 ### Multi-Select
 
+When using multi-select dropdowns, you need to use an alternative SQL expression:
+
+`where column_name IN ${inputs.my_input.value}`
+
+Note: 
+- The use of the IN operator
+- No single quotes used around the `${}`
+
+<DocTab>
+    <div slot='preview'>
+        <Dropdown
+            data={categories} 
+            name=category_multi
+            value=category_name
+            multiple=true
+        />
+        
+        Selected: {inputs.category_multi.value}
+    </div>
+
+````markdown
 <Dropdown
     data={categories} 
     name=category_multi
@@ -129,15 +190,11 @@ This example uses a column called `abbrev`, which contains an alternate label fo
 />
 
 Selected: {inputs.category_multi.value}
-
-````markdown
-<Dropdown
-    data={categories} 
-    name=category_multi
-    value=category_name
-    multiple=true
-/>
 ````
+</DocTab>
+
+
+
 
 ### Filtering a Query
 
@@ -149,28 +206,42 @@ limit 100
 
 Starting with this table of orders:
 
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={order_history}/>
+    </div>
+
+````markdown
+```sql order_history
+select id, order_datetime, category, item, sales  from needful_things.orders
+limit 100
+```
+
 <DataTable data={order_history}/>
+````
+</DocTab>
 
 Use this input to filter the results:
-
-<Dropdown
-    data={categories} 
-    name=category
-    value=category_name
-    multiple=true
-    defaultValue={['Sinister Toys']}
-/>
 
 ```sql orders_filtered
 select * from ${order_history}
 where category in ${inputs.category.value}
 ```
 
-Filtered Row Count: {orders_filtered.length}
+<DocTab>
+    <div slot='preview'>
+        <Dropdown
+            data={categories} 
+            name=category
+            value=category_name
+            multiple=true
+            defaultValue={['Sinister Toys']}
+        />
 
-<DataTable data={orders_filtered}/>
+        Filtered Row Count: {orders_filtered.length}
 
-
+        <DataTable data={orders_filtered}/>
+    </div>
 
 ````markdown
 <Dropdown
@@ -184,19 +255,28 @@ select *
 from source_name.table
 where column_name like '${inputs.name_of_dropdown.value}'
 ```
+
+Filtered Row Count: {orders_filtered.length}
+
+<DataTable data={orders_filtered}/>
 ````
+</DocTab>
+
 
 ### Multiple defaultValues
 
-<Dropdown
-    data={categories} 
-    name=category_multi_default
-    value=category_name
-    multiple=true
-	defaultValue={['Sinister Toys', 'Mysterious Apparel']}
-/>
+<DocTab>
+    <div slot='preview'>
+        <Dropdown
+            data={categories} 
+            name=category_multi_default
+            value=category_name
+            multiple=true
+            defaultValue={['Sinister Toys', 'Mysterious Apparel']}
+        />
 
-Selected: {inputs.category_multi_default.value}
+        Selected: {inputs.category_multi_default.value}
+    </div>
 
 ````svelte
 <Dropdown
@@ -206,20 +286,28 @@ Selected: {inputs.category_multi_default.value}
     multiple=true
 	defaultValue={['Sinister Toys', 'Mysterious Apparel']}
 />
+
+Selected: {inputs.category_multi_default.value}
 ````
+</DocTab>
 
 ### Select all by Default Value with Multiple
 
-<Dropdown
-    data={categories} 
-    name=category_multi_selectAllByDefault
-    value=category_name
-    title="Select a Category"
-    multiple=true
-    selectAllByDefault=true
-/>
+Select and return all values in the dropdown list, requires "multiple" prop.
 
-Selected: {inputs.category_multi_selectAllByDefault.value}
+<DocTab>
+    <div slot='preview'>
+        <Dropdown
+            data={categories} 
+            name=category_multi_selectAllByDefault
+            value=category_name
+            title="Select a Category"
+            multiple=true
+            selectAllByDefault=true
+        />
+
+        Selected: {inputs.category_multi_selectAllByDefault.value}
+    </div>
 
 ````markdown
 <Dropdown
@@ -230,8 +318,10 @@ Selected: {inputs.category_multi_selectAllByDefault.value}
     multiple=true
     selectAllByDefault=true
 />
+
+Selected: {inputs.category_multi_selectAllByDefault.value}
 ````
-Select and return all values in the dropdown list, requires "multiple" prop.
+</DocTab>
 
 # Dropdown
 

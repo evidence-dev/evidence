@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "3.5.34",
+	"version": "3.5.36",
 	"scripts": {
 		"dev": "cross-env EVIDENCE_PAGES_DIR=./src/pages EVIDENCE_DATA_DIR=./static/data EVIDENCE_DATA_URL_PREFIX=static/data vite dev --port 3000",
 		"build": "cross-env EVIDENCE_PAGES_DIR=./src/pages NODE_OPTIONS=--max-old-space-size=8192 vite build",
@@ -20,7 +20,6 @@
 		"@evidence-dev/duckdb": "workspace:*",
 		"@evidence-dev/mssql": "workspace:*",
 		"@evidence-dev/mysql": "workspace:*",
-		"@evidence-dev/plugin-connector": "workspace:*",
 		"@evidence-dev/postgres": "workspace:*",
 		"@evidence-dev/preprocess": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
@@ -38,7 +37,7 @@
 		"cross-env": "^7.0.3",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
-		"echarts": "5.4.3",
+		"echarts": "5.5.1",
 		"echarts-stat": "1.2.0",
 		"esm": "^3.2.25",
 		"export-to-csv": "0.2.1",
@@ -63,7 +62,7 @@
 		"postcss-load-config": "^4.0.1",
 		"svelte-preprocess": "^5.1.3",
 		"tailwindcss": "^3.3.1",
-		"vite": "5.4.6",
+		"vite": "5.4.11",
 		"vitest": "^1.6.0"
 	}
 }

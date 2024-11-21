@@ -25,6 +25,10 @@ To create a JavaScript object in an Evidence markdown page, you need to add a `&
 
 ECharts requires the data object to have a specific format. For example in the treemap chart show below it expects the columns to be called “name” and “value”. The `test_data` query in the code below renames the fields from the original query so ECharts can use them.
 
+
+<DocTab>
+  <div slot='preview'>
+
 ```sql sales_by_country
 select 'Canada' as country, 100 as sales
 union all
@@ -40,38 +44,38 @@ select country as name, sales as value
 from ${sales_by_country}
 ```
 
-<ECharts config={
-    {
-      title: {
-        text: 'Treemap Example',
-        left: 'center'
-      },
-        tooltip: {
-            formatter: '{b}: {c}'
-        },
-      series: [
+    <ECharts config={
         {
-          type: 'treemap',
-          visibleMin: 300,
-          label: {
-            show: true,
-            formatter: '{b}'
+          title: {
+            text: 'Treemap Example',
+            left: 'center'
           },
-          itemStyle: {
-            borderColor: '#fff'
-          },
-          roam: false,
-          nodeClick: false,
-          data: [...test_data],
-          breadcrumb: {
-            show: false
+            tooltip: {
+                formatter: '{b}: {c}'
+            },
+          series: [
+            {
+              type: 'treemap',
+              visibleMin: 300,
+              label: {
+                show: true,
+                formatter: '{b}'
+              },
+              itemStyle: {
+                borderColor: '#fff'
+              },
+              roam: false,
+              nodeClick: false,
+              data: [...test_data],
+              breadcrumb: {
+                show: false
+              }
+            }
+          ]
           }
         }
-      ]
-      }
-    }
-/>
-
+    />
+  </div>
 
 ````markdown
 ```sql sales_by_country
@@ -122,6 +126,7 @@ from ${sales_by_country}
 />
 
 ````
+</DocTab>
 
 ### Funnel Chart
 
@@ -129,6 +134,9 @@ from ${sales_by_country}
 
 ECharts requires the data object to have a specific format. For example in the funnel chart show below it expects the columns to be called “name” and “value”. The `funnel_data` query in the code below renames the fields from the original query so ECharts can use them.
 
+<DocTab>
+    <div slot='preview'>
+
 ```sql funnel_stages
 select 'Emailed' as stage, 129 as count
 union all
@@ -144,20 +152,21 @@ select stage as name, count as value
 from ${funnel_stages}
 ```
 
-<ECharts config={
-        {
-            tooltip: {
-                formatter: '{b}: {c}'
-            },
-            series: [
-                {
-                type: 'funnel',
-                data: [...funnel_data],
-                }
-            ]
-        }
-    }
-/>
+      <ECharts config={
+              {
+                  tooltip: {
+                      formatter: '{b}: {c}'
+                  },
+                  series: [
+                      {
+                      type: 'funnel',
+                      data: [...funnel_data],
+                      }
+                  ]
+              }
+          }
+      />
+    </div>
 
 ````markdown
 ```sql funnel_stages
@@ -190,6 +199,9 @@ from ${funnel_stages}
     }
 />
 ````
+</DocTab>
+
+
 
 ### Pie Chart
 
@@ -197,6 +209,9 @@ from ${funnel_stages}
 
 ECharts requires the data object to have a specific format. For example in the pie chart show below it expects the columns to be called “name” and “value”. The `pie_data` query in the code below renames the fields from the original query so ECharts can use them.
 
+<DocTab>
+    <div slot='preview'>
+
 ```sql pie_query
 select 'Apple' as pie, 60 as count
 union all
@@ -212,21 +227,21 @@ select pie as name, count as value
 from ${pie_query}
 ```
 
-<ECharts config={
-    {
-        tooltip: {
-            formatter: '{b}: {c} ({d}%)'
-        },
-        series: [
-        {
-          type: 'pie',
-          data: [...pie_data],
-        }
-      ]
-      }
-    }
-/>
-
+      <ECharts config={
+          {
+              tooltip: {
+                  formatter: '{b}: {c} ({d}%)'
+              },
+              series: [
+              {
+                type: 'pie',
+                data: [...pie_data],
+              }
+            ]
+            }
+          }
+      />
+    </div>
 
 ````markdown
 ```sql pie_query
@@ -259,6 +274,10 @@ from ${pie_query}
     }
 />
 ````
+</DocTab>
+
+
+
 
 ### Donut Chart
 
@@ -266,6 +285,9 @@ from ${pie_query}
 
 ECharts requires the data object to have a specific format. For example in the donut chart show below it expects the columns to be called “name” and “value”. The `donut_data` query in the code below renames the fields from the original query so ECharts can use them.
 
+<DocTab>
+    <div slot='preview'>
+
 ```sql donut_query
 select 'Glazed' as donut, 213 as count
 union all
@@ -281,22 +303,22 @@ select donut as name, count as value
 from ${donut_query}
 ```
 
-<ECharts config={
-    {
-        tooltip: {
-            formatter: '{b}: {c} ({d}%)'
-        },
-      series: [
-        {
-          type: 'pie',
-          radius: ['40%', '70%'],
-          data: [...donut_data],
-        }
-      ]
-      }
-    }
-/>
-
+      <ECharts config={
+          {
+              tooltip: {
+                  formatter: '{b}: {c} ({d}%)'
+              },
+            series: [
+              {
+                type: 'pie',
+                radius: ['40%', '70%'],
+                data: [...donut_data],
+              }
+            ]
+            }
+          }
+      />
+    </div>
 
 ````markdown
 ```sql donut_query
@@ -330,6 +352,7 @@ from ${donut_query}
     }
 />
 ````
+</DocTab>
 
 ### Advanced Chart
 
@@ -487,9 +510,10 @@ let options = {
 };
 </script>
 
-<ECharts config={options}/>
-
-
+<DocTab>
+    <div slot='preview'>
+        <ECharts config={options}/>
+    </div>
 
 ```markdown
 &lt;script&gt;
@@ -646,3 +670,7 @@ let options = {
 
 <ECharts config={options}/>
 ```
+</DocTab>
+
+
+

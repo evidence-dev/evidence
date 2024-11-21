@@ -3,6 +3,8 @@
 </script>
 
 <script>
+	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
+
 	import { Accordion, AccordionItem } from '$lib/atoms/accordion';
 	import VariableCopy from './VariableCopy.svelte';
 
@@ -10,13 +12,13 @@
 	import { Button } from '$lib/atoms/button';
 	import { Clipboard } from '@evidence-dev/component-utilities/icons';
 
-	/** @type {Array<{ environmentVariables: Record<string,string>}>} */
-	export let datasourceSettings;
+	/** @type {DatasourceSpec[]} */
+	export let sources;
 
 	let credentials = {};
 
 	function copyVars() {
-		const vars = datasourceSettings.reduce((a, v) => {
+		const vars = sources.reduce((a, v) => {
 			return [
 				a,
 				Object.entries(v.environmentVariables)
@@ -64,7 +66,7 @@
 			<div class="titles">
 				<span class="title">Key</span><span class="title">Value</span>
 			</div>
-			{#each datasourceSettings as datasource}
+			{#each sources as datasource}
 				{#each Object.entries(datasource.environmentVariables) as [key, value]}
 					<div class="environment-variable">
 						<div class="var-name">

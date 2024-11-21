@@ -3,10 +3,13 @@ title: Base Map
 sidebar_position: 1
 ---
 
-<BaseMap>
-  <Areas data={la_zip_sales} geoId=ZCTA5CE10 areaCol=zip_code value=sales valueFmt=usd/>
-  <Points data={la_locations} lat=lat long=long color=#179917/>
-</BaseMap>
+<DocTab>
+    <div slot='preview'>
+        <BaseMap>
+        <Areas data={la_zip_sales} geoId=ZCTA5CE10 areaCol=zip_code value=sales valueFmt=usd/>
+        <Points data={la_locations} lat=lat long=long color=#179917/>
+        </BaseMap>
+    </div>
 
 ```html
 <BaseMap>
@@ -14,7 +17,7 @@ sidebar_position: 1
   <Points data={la_locations} lat=lat long=long color=#179917/>
 </BaseMap>
 ```
-
+</DocTab>
 
 ```sql la_zip_sales
 select *, 'https://www.google.com/search?q=' || zip_code as link_col from la_zip_sales
@@ -39,28 +42,30 @@ See the pages for [Area Map](/components/area-map), [Point Map](/components/poin
 
 ### Adding Multiple Layers
 
-<BaseMap>
-  <Areas 
-    data={la_zip_sales}
-    areaCol=zip_code
-    geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
-    geoId=ZCTA5CE10
-    value=sales
-    valueFmt=usd
-  />
-  <Bubbles 
-    data={la_locations}
-    lat=lat
-    long=long
-    size=sales
-    sizeFmt=usd
-    value=sales
-    valueFmt=usd
-    pointName=point_name
-    opacity=0.5
-  />
-</BaseMap>
-
+<DocTab>
+    <div slot='preview'>
+        <BaseMap>
+        <Areas 
+            data={la_zip_sales}
+            areaCol=zip_code
+            geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
+            geoId=ZCTA5CE10
+            value=sales
+            valueFmt=usd
+        />
+        <Bubbles 
+            data={la_locations}
+            lat=lat
+            long=long
+            size=sales
+            sizeFmt=usd
+            value=sales
+            valueFmt=usd
+            pointName=point_name
+            opacity=0.5
+        />
+        </BaseMap>
+    </div>
 
 ```svelte
 <BaseMap>
@@ -86,23 +91,29 @@ See the pages for [Area Map](/components/area-map), [Point Map](/components/poin
   />
 </BaseMap>
 ```
+</DocTab>
+
+
 
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<BaseMap basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'>
-    <Points 
-        data={la_locations}
-        lat=lat
-        long=long
-        value=sales
-        valueFmt=usd
-        pointName=point_name
-        color=violet
-        borderColor=black
-        borderWidth=2
-    />
-</BaseMap>
+<DocTab>
+    <div slot='preview'>
+        <BaseMap basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'>
+            <Points 
+                data={la_locations}
+                lat=lat
+                long=long
+                value=sales
+                valueFmt=usd
+                pointName=point_name
+                color=violet
+                borderColor=black
+                borderWidth=2
+            />
+        </BaseMap>
+    </div>
 
 ```svelte
 <BaseMap basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'>
@@ -119,26 +130,31 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     />
 </BaseMap>
 ```
+</DocTab>
 
 ### Custom Tooltip
 
 #### `tooltipType=hover`
-<BaseMap>
-    <Areas 
-        data={la_zip_sales} 
-        areaCol=zip_code
-        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-        geoId=ZCTA5CE10
-        value=sales
-        valueFmt=usd
-        height=250
-        tooltip={[
-            {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
-            {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-            {id: 'zip_code', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
-        ]}
-    />
-</BaseMap>
+
+<DocTab>
+    <div slot='preview'>
+        <BaseMap>
+            <Areas 
+                data={la_zip_sales} 
+                areaCol=zip_code
+                geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+                geoId=ZCTA5CE10
+                value=sales
+                valueFmt=usd
+                height=250
+                tooltip={[
+                    {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
+                    {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
+                    {id: 'zip_code', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+                ]}
+            />
+        </BaseMap>
+    </div>
 
 ```svelte
 <BaseMap>
@@ -158,26 +174,31 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     />
 </BaseMap>
 ```
+</DocTab>
+
 
 #### With clickable link and `tooltipType=click`
-<BaseMap>
-    <Areas 
-        data={la_zip_sales} 
-        areaCol=zip_code
-        geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
-        geoId=ZCTA5CE10
-        value=sales
-        valueFmt=usd
-        height=250
-        tooltipType=click
-        tooltip={[
-            {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
-            {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-            {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
-        ]}
-    />
-</BaseMap>
 
+<DocTab>
+    <div slot='preview'>
+        <BaseMap>
+            <Areas 
+                data={la_zip_sales} 
+                areaCol=zip_code
+                geoJsonUrl='/geo-json/ca_california_zip_codes_geo_1.min.json'
+                geoId=ZCTA5CE10
+                value=sales
+                valueFmt=usd
+                height=250
+                tooltipType=click
+                tooltip={[
+                    {id: 'zip_code', fmt: 'id', showColumnName: false, valueClass: 'text-xl font-semibold'},
+                    {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
+                    {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+                ]}
+            />
+        </BaseMap>
+    </div>
 
 ```svelte
 <BaseMap>
@@ -198,6 +219,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     />
 </BaseMap>
 ```
+</DocTab>
 
 ## Map Resources
 
