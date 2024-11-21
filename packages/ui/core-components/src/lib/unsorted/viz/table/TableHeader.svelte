@@ -88,7 +88,7 @@
 				style:vertical-align="bottom"
 				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 			>
-				<div class='{wrapTitles || column.wrapTitle ? 'flex items-end' : ''} tracking-[-1.5px]'>
+				<div class="{wrapTitles || column.wrapTitle ? 'flex items-end' : ''} tracking-[-1.5px]">
 					<span class="tracking-normal {wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}">
 						{column.title
 							? column.title
