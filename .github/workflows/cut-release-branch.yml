@@ -22,6 +22,8 @@ jobs:
           git checkout -b ${{ steps.branch_name.outputs.branch_name }}
           git push -u origin ${{ steps.branch_name.outputs.branch_name }}
       - name: Create pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr create \
             --base main \
