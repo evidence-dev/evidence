@@ -1,11 +1,15 @@
 <script>
-	export let customFormattingSettings;
+	// @ts-check
+
 	import { BUILT_IN_FORMATS } from '@evidence-dev/component-utilities/builtInFormats';
 	import BuiltInFormatGrid from './BuiltInFormatGrid.svelte';
 	import CustomFormatsSection from './CustomFormatsSection.svelte';
 	import CollapsibleTableSection from './CollapsibleTableSection.svelte';
 	import CurrencyFormatGrid from './CurrencyFormatGrid.svelte';
 	import Prism from '../QueryViewerSupport/Prismjs.svelte';
+
+	/** @type {{ customFormats?: { formatTag: string }[] }}*/
+	export let customFormattingSettings;
 
 	let exampleQuery = `select 
   growth as growth_pct, -- formatted as a percentage
@@ -33,12 +37,12 @@ from table`;
 			</p>
 			<p>In the Value component, you can use the <code>fmt</code> prop</p>
 			<div class="code-container p-2">
-				<Prism language="html" code={valueExample} />
+				<Prism code={valueExample} />
 			</div>
 			<br />
 			<p>In charts, you can use the <code>xFmt</code> and <code>yFmt</code> props</p>
 			<div class="code-container p-2">
-				<Prism language="jsx" code={componentExample} />
+				<Prism code={componentExample} />
 			</div>
 			<br />
 			<p>
@@ -46,7 +50,7 @@ from table`;
 				aliasing your column names and appending a format. For example:
 			</p>
 			<div class="code-container p-2">
-				<Prism language="sql" code={exampleQuery} />
+				<Prism code={exampleQuery} />
 			</div>
 			<p />
 		</div>

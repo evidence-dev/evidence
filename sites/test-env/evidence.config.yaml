@@ -1,2 +1,12 @@
-deployment:
-  basePath: "/myapp"
+plugins:
+  components:
+      @evidence-dev/core-components: { }
+  datasources:
+      @evidence-dev/duckdb: { }
+      @evidence-dev/faker-datasource: { }
+      @evidence-dev/csv: { }
+      @evidence-dev/postgres: { }
+      @evidence-dev/sqlite: { }
+      @evidence-dev/snowflake: { }
+      @evidence-dev/motherduck: { }
+      @evidence-dev/mssql: { }

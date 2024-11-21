@@ -38,7 +38,6 @@
 		"vite": "5.4.11"
 	},
 	"dependencies": {
-		"@evidence-dev/plugin-connector": "workspace:*",
 		"@evidence-dev/preprocess": "workspace:*",
 		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/telemetry": "workspace:*",

@@ -291,7 +291,7 @@ queries:
 
 
 
-### Secondary / Duel y Axis
+### Secondary / Dual y Axis
 
 <DocTab>
     <div slot='preview'>
@@ -315,7 +315,7 @@ queries:
 </DocTab>
 
 
-### Secondary / Duel Axis with Line
+### Secondary / Dual Axis with Line
 
 <DocTab>
     <div slot='preview'>
