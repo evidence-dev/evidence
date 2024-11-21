@@ -67,6 +67,8 @@ export async function initDB() {
 			}
 		});
 		connection = db.connect();
+		// revert breaking change
+		connection.query("SET ieee_floating_point_ops = false;");
 		resolveInit();
 	} catch (e) {
 		rejectInit(e);
