@@ -33,8 +33,9 @@
 <script>
 	const inputStore = getInputContext();
 	let data;
+	$inputStore.year =  2024
 
-	$: year = $inputStore.year ?? 2024;
+	$: year = $inputStore.year
 
 	const reactiveQueryFactory = Query.createReactive({
 		callback: (result) => (data = result),
@@ -392,7 +393,13 @@
 	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_codeERROR" />
 </Story>
 
-<Story name="Reactive Datatable">
+<Story name="Reactive Datatable"
+			 play={async ({ canvasElement }) => {
+		const screen = within(canvasElement);
+		expect(await screen.findByRole('columnheader', { name: '2024-01' })).toBeInTheDocument();
+		await userEvent.click(await screen.findByRole('button', { name: '2023' }));
+		expect(await screen.findByRole('columnheader', { name: '2023-01' })).toBeInTheDocument();
+	}}>
 	<ButtonGroup name="year" title="Select year">
 		<ButtonGroupItem value="2022" valueLabel="2022" />
 		<ButtonGroupItem value="2023" valueLabel="2023" />
