@@ -15,7 +15,6 @@
 		"@evidence-dev/motherduck": "link:packages/datasources/motherduck",
 		"@evidence-dev/mssql": "link:packages/datasources/mssql",
 		"@evidence-dev/mysql": "link:packages/datasources/mysql",
-		"@evidence-dev/plugin-connector": "link:packages/lib/plugin-connector",
 		"@evidence-dev/postgres": "link:packages/datasources/postgres",
 		"@evidence-dev/preprocess": "link:packages/lib/preprocess",
 		"@evidence-dev/redshift": "link:packages/datasources/redshift",
@@ -70,10 +69,10 @@
 		"vite": "5.4.11"
 	},
 	"scripts": {
-		"release": "run-s package:core-components build:tailwind build:evidence build:plugin-connector && pnpm changeset publish",
+		"release": "run-s package:core-components build:tailwind build:evidence && pnpm changeset publish",
 		"test": "pnpm -r test && pnpm -r test:unit",
 		"test:component-utilities:watch": "pnpm --filter ./packages/lib/component-utilities test:watch",
-		"postinstall": "run-s build:plugin-connector build:preprocess build:tailwind package:core-components build:evidence",
+		"postinstall": "run-s build:preprocess build:tailwind package:core-components build:evidence",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"sources:docs": "pnpm --filter ./sites/docs sources",
@@ -96,7 +95,6 @@
 		"package:evidence": "pnpm --filter ./packages/evidence package",
 		"build:evidence": "pnpm --filter ./packages/evidence build",
 		"build:preprocess": "pnpm --filter ./packages/lib/preprocess build",
-		"build:plugin-connector": "pnpm --filter ./packages/lib/plugin-connector build",
 		"build:tailwind": "pnpm --filter ./packages/ui/tailwind build",
 		"sources:core-components": "pnpm --filter ./packages/ui/core-components sources"
 	},

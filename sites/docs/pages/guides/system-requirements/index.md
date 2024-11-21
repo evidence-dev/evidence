@@ -4,7 +4,7 @@ sidebar_position: 5
 description: Evidence requires Node.js, NPM, and Git
 ---
 
-Evidence requires Node.js 18, 20 or 22, and NPM 7 or above.   
+Evidence requires Node.js ≥18.13, 20 or 22, and NPM 7 or above.   
 
 Check your versions with `node -v` and `npm -v`
 

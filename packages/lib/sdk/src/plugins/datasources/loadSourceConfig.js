@@ -61,7 +61,7 @@ export const loadConnectionEnvironment = async (sourceName) => {
 /**
  * @param {string} sourceDir
  * @deprecated Use loadSourceConfig
- * @returns {Promise<import('./schemas/datasource.schema.js').DatasourceSpecFile | false>}
+ * @returns {Promise<import('./schemas/datasource.schema.js').DatasourceSpec | false>}
  */
 export const loadConnection = async (sourceDir) => {
 	const connParamsRaw = await fs
@@ -104,7 +104,7 @@ export const loadConnection = async (sourceDir) => {
 
 /**
  * @param {string} sourceDir
- * @returns {Promise<import('./schemas/datasource.schema.js').DatasourceSpecFile | false>}
+ * @returns {Promise<import('./schemas/datasource.schema.js').DatasourceSpec | false>}
  */
 export const loadSourceConfig = async (sourceDir) => {
 	const connectionConfig = await loadConnection(sourceDir);

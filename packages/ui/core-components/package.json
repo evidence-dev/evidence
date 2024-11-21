@@ -74,7 +74,6 @@
 	"devDependencies": {
 		"@chromatic-com/storybook": "^1.6.1",
 		"@evidence-dev/faker-datasource": "workspace:*",
-		"@evidence-dev/plugin-connector": "workspace:*",
 		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@fakerjs/faker": "^3.0.0",
@@ -126,7 +125,8 @@
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"svelte": "./dist/index.js",
+			"default": "./dist/index.js"
 		}
 	},
 	"files": [
