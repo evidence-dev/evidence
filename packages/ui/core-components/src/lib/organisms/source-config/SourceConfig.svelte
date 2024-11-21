@@ -1,11 +1,15 @@
 <script>
+	// @ts-check
+
+	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
+	/** @typedef {{ package: { package: import('@evidence-dev/sdk/plugins').DatasourcePackage } }} DatasourcePlugin */
+
 	import NewSourceForm from './NewSourceForm.svelte';
 	import SourceConfigRow from './SourceConfigRow.svelte';
-
-	import { Button } from '../../atoms/button';
+	import { Button } from '../../atoms/button/index.js';
 	import { FolderPlus } from '@evidence-dev/component-utilities/icons';
 
-	// TODO: figure out types here
+	/** @type {Record<string, DatasourcePlugin>} */
 	export let availableSourcePlugins = {};
 
 	// Pivot to package name instead of db type
@@ -13,28 +17,31 @@
 		const p = v.package.package;
 		if (!a[p.name]) a[p.name] = v;
 		return a;
-	}, {});
+	}, /** @type {Record<string, DatasourcePlugin>} */ ({}));
 
+	/** @type {Pick<DatasourceSpec, 'name' | 'type' | 'options' | 'environmentVariables'>[]} */
 	export let sources = [];
 
 	let showNewSource = sources.length === 0;
 
+	/** @type {string} */
 	let lastAdded;
 
+	/** @param {import('svelte').ComponentEvents<NewSourceForm>['newSource']} e */
 	function addNewSource(e) {
 		const { newSourceType, newSourceName } = e.detail;
 		if (!newSourceType) return;
-		const target = availableSourcePlugins[newSourceType];
 		sources.push({
 			name: newSourceName,
 			type: newSourceType,
-			package: target.package.package.name,
-			options: {}
+			options: {},
+			environmentVariables: {}
 		});
 		lastAdded = newSourceName;
 		showNewSource = false;
 	}
 
+	/** @type {string[]} */
 	let duplicatePackageNames = [];
 	$: if (sources.length) {
 		const allNames = sources.reduce(
