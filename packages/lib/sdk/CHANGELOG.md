@@ -1,5 +1,15 @@
 # @evidence-dev/sdk
 
+## 1.5.0
+
+### Minor Changes
+
+- b72e4a809: Remove plugin connector
+
+### Patch Changes
+
+- @evidence-dev/universal-sql@2.1.10
+
 ## 1.4.8
 
 ### Patch Changes

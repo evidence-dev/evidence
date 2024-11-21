@@ -75,6 +75,8 @@
 	}
 	export let showAllLabels = false;
 	export let seriesOrder = undefined;
+	export let seriesLabelFmt = undefined;
+
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
@@ -166,7 +168,11 @@
 		name,
 		xMismatch,
 		columnSummary,
-		seriesOrder
+		seriesOrder,
+		undefined, // size (not needed)
+		undefined, // tooltipTitle (not needed)
+		undefined, // y2 (not needed)
+		seriesLabelFmt
 	);
 
 	$: config.update((d) => {

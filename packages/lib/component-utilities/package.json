@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/component-utilities",
-	"version": "3.2.20",
+	"version": "3.2.21",
 	"description": "",
 	"main": "index.js",
 	"exports": {

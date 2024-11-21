@@ -36,7 +36,7 @@
 			<tr class="border-0" style:background-color={headerColor}>
 				{#if rowNumbers}
 					<th
-						class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+						class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px]'}"
 						style:background-color={headerColor}
 					/>
 				{/if}
@@ -75,27 +75,39 @@
 			<th
 				role="columnheader"
 				class="{safeExtractColumn(column, columnSummary).type} {compact
-					? 'text-xs py-[1px] px-[4px]'
-					: 'py-[2px] px-[8px]'}"
+					? 'text-xs py-[1px] pl-[1px]'
+					: 'py-[2px] pl-[6px]'}"
 				style:text-align={column.align ??
 					(['sparkline', 'sparkbar', 'sparkarea', 'bar'].includes(column.contentType)
 						? 'center'
 						: undefined)}
 				style:color={headerFontColor}
-				style:background-color={headerColor}
+				style:background={headerColor}
 				style:cursor={sortable ? 'pointer' : 'auto'}
-				style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
 				on:click={sortable ? sortClick(column.id) : ''}
 				style:vertical-align="bottom"
+				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 			>
-				{column.title
-					? column.title
-					: formatColumnTitles
-						? safeExtractColumn(column, columnSummary).title
-						: safeExtractColumn(column, columnSummary).id}
-				{#if sortObj.col === column.id}
-					<SortIcon ascending={sortObj.ascending} />
-				{/if}
+				<div class="{wrapTitles || column.wrapTitle ? 'flex items-end' : ''} tracking-[-1.5px]">
+					<span class="tracking-normal {wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}">
+						{column.title
+							? column.title
+							: formatColumnTitles
+								? safeExtractColumn(column, columnSummary).title
+								: safeExtractColumn(column, columnSummary).id}
+					</span>
+					<span
+						class="tracking-normal {wrapTitles || column.wrapTitle ? 'ml-0.5' : ''} {compact
+							? 'mr-1'
+							: ''}"
+					>
+						{#if sortObj.col === column.id}
+							<SortIcon ascending={sortObj.ascending} />
+						{:else}
+							<span class="invisible"><SortIcon /></span>
+						{/if}
+					</span>
+				</div>
 			</th>
 		{/each}
 

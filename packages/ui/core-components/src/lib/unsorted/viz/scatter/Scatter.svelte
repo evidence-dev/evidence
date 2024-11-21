@@ -37,6 +37,8 @@
 	export let useTooltip = false; // if true, will override the default 'axis'-based echarts tooltip. true only for scatter-only charts
 	export let tooltipTitle;
 	export let seriesOrder = undefined;
+	/** @type {string | undefined} */
+	export let seriesLabelFmt = undefined;
 	let multiSeries;
 	let tooltipOutput;
 
@@ -204,7 +206,9 @@
 		columnSummary,
 		seriesOrder,
 		undefined,
-		tooltipTitle
+		tooltipTitle,
+		undefined,
+		seriesLabelFmt
 	);
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);

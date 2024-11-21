@@ -953,9 +953,9 @@
 									yVal = params[i].value[swapXY ? 0 : 1];
 									output =
 										output +
-										`<br> ${params[i].marker} ${
+										`<br> <span style='font-size: 11px;'>${params[i].marker} ${
 											params[i].seriesName
-										} <span style='float:right; margin-left: 10px;'>${formatValue(
+										}<span/><span style='float:right; margin-left: 10px; font-size: 12px;'>${formatValue(
 											yVal,
 											// Not sure if this will work. Need to check with multi series on both axes
 											// Check if echarts does the order in the same way - y first, then y2

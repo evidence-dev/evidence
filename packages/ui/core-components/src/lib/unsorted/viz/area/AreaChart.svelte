@@ -95,6 +95,7 @@
 	export let seriesOrder = undefined;
 
 	export let connectGroup = undefined;
+	export let seriesLabelFmt = undefined;
 </script>
 
 <Chart
@@ -159,6 +160,7 @@
 		{labelFmt}
 		{showAllLabels}
 		{seriesOrder}
+		{seriesLabelFmt}
 	/>
 	<slot />
 </Chart>

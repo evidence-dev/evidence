@@ -1177,7 +1177,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 
 <DocTab>
     <div slot='preview'>
-        <DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor="rgba(189, 189, 189, 0.5)">
+        <DataTable data={countries} totalRow=true rows=5 groupBy=continent groupType=section totalRowColor=#f2f2f2>
           <Column id=continent totalAgg="Total" totalFmt='# "Unique continents"'/>
           <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
           <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
@@ -1192,7 +1192,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
     </div>
 
 ```svelte
-<DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor="rgba(189, 189, 189, 0.5)">
+<DataTable data={countries} totalRow=true rows=5 groupBy=continent groupType=section totalRowColor=#f2f2f2>
   <Column id=continent totalAgg="Total" totalFmt='# "Unique continents"'/>
   <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
   <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
@@ -1206,7 +1206,6 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 </DataTable>
 ```
 </DocTab>
-
 
 ### Wrap Titles
 
