@@ -35,6 +35,7 @@
 	export let useTooltip = false;
 	export let tooltipTitle;
 	export let seriesOrder = undefined;
+	export let seriesLabelFmt = undefined;
 
 	let multiSeries;
 	let tooltipOutput;
@@ -249,7 +250,9 @@
 		columnSummary,
 		seriesOrder,
 		size,
-		tooltipTitle
+		tooltipTitle,
+		undefined, // y2 (not needed)
+		seriesLabelFmt
 	);
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
