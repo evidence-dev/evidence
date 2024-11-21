@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-fixed table header chevron layout shift
+Align the height of buttongroup to dropdown
