@@ -1,5 +1,20 @@
 # @evidence-dev/evidence
 
+## 39.2.0
+
+### Minor Changes
+
+- b72e4a809: Remove plugin connector
+- 4e469564d: disable all non-error vite logging
+
+### Patch Changes
+
+- 2decdfac0: build directory path manually when using fs.Dirent
+- e0fb953da: Always log server error
+- Updated dependencies [b72e4a809]
+  - @evidence-dev/sdk@1.5.0
+  - @evidence-dev/universal-sql@2.1.10
+
 ## 39.1.17
 
 ### Patch Changes
