@@ -75,7 +75,7 @@
 			<th
 				role="columnheader"
 				class="{safeExtractColumn(column, columnSummary).type} {compact
-					? 'text-xs py-[1px] px-[4px]'
+					? 'text-xs py-[1px] pl-[1px]'
 					: 'py-[2px] pl-[6px]'}"
 				style:text-align={column.align ??
 					(['sparkline', 'sparkbar', 'sparkarea', 'bar'].includes(column.contentType)
@@ -88,15 +88,15 @@
 				style:vertical-align="bottom"
 				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 			>
-				<div class={wrapTitles || column.wrapTitle ? 'flex items-end' : ''}>
-					<span class={wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}>
+				<div class='{wrapTitles || column.wrapTitle ? 'flex items-end' : 'tracking-[-1.5px]'}'>
+					<span class="tracking-normal {wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}">
 						{column.title
 							? column.title
 							: formatColumnTitles
 								? safeExtractColumn(column, columnSummary).title
 								: safeExtractColumn(column, columnSummary).id}
 					</span>
-					<span class="ml-[2px]">
+					<span class="tracking-normal {compact ? 'mr-1' : ''}">
 						{#if sortObj.col === column.id}
 							<SortIcon ascending={sortObj.ascending} />
 						{:else}

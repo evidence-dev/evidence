@@ -111,7 +111,7 @@
 
 <Story name="With Search">
 	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
-	<DataTable {data} title="Flights" search>
+	<DataTable {data} title="Flights" search compact>
 		<Column id="id" title="ID" />
 		<Column id="airline" title="Airline" />
 		<Column id="departure_airport" title="Departure Airport" />
