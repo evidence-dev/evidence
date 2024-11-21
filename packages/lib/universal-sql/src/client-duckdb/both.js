@@ -7,7 +7,7 @@ import { Type, Table } from 'apache-arrow';
  */
 function apacheToEvidenceType(type) {
 	switch (
-	type.typeId // maybe just replace with `typeof`
+		type.typeId // maybe just replace with `typeof`
 	) {
 		case Type.Date:
 			return 'date';
@@ -31,7 +31,8 @@ export function arrowTableToJSON(table_or_vec) {
 	if (table_or_vec == null) return [];
 	const arr = table_or_vec.toArray();
 
-	let date_cols = [], list_cols = [];
+	let date_cols = [],
+		list_cols = [];
 	if (table_or_vec instanceof Table) {
 		Object.defineProperty(arr, '_evidenceColumnTypes', {
 			enumerable: false,
@@ -45,8 +46,10 @@ export function arrowTableToJSON(table_or_vec) {
 		date_cols = table_or_vec.schema.fields.filter((field) => field.type.typeId === Type.Date);
 		list_cols = table_or_vec.schema.fields.filter((field) => field.type.typeId === Type.List);
 	} else {
-		date_cols = table_or_vec.type?.children?.filter((field) => field.type.typeId === Type.Date) ?? [];
-		list_cols = table_or_vec.type?.children?.filter((field) => field.type.typeId === Type.List) ?? [];
+		date_cols =
+			table_or_vec.type?.children?.filter((field) => field.type.typeId === Type.Date) ?? [];
+		list_cols =
+			table_or_vec.type?.children?.filter((field) => field.type.typeId === Type.List) ?? [];
 	}
 
 	for (const row of arr) {
