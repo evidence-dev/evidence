@@ -1,4 +1,4 @@
-import { Type } from 'apache-arrow';
+import { Type, Table } from 'apache-arrow';
 
 /**
  * Converts an Apache Arrow type to an Evidence type.
@@ -7,7 +7,7 @@ import { Type } from 'apache-arrow';
  */
 function apacheToEvidenceType(type) {
 	switch (
-		type.typeId // maybe just replace with `typeof`
+	type.typeId // maybe just replace with `typeof`
 	) {
 		case Type.Date:
 			return 'date';
@@ -24,30 +24,41 @@ function apacheToEvidenceType(type) {
 
 /**
  * Converts an Apache Arrow table to a Javascript array.
- * @param {import("apache-arrow").Table} table
+ * @param {import("apache-arrow").Table | import("apache-arrow").Vector} table_or_vec
  * @returns {any[]}
  */
-export function arrowTableToJSON(table) {
-	if (table == null) return [];
-	const arr = table.toArray();
+export function arrowTableToJSON(table_or_vec) {
+	if (table_or_vec == null) return [];
+	const arr = table_or_vec.toArray();
 
-	Object.defineProperty(arr, '_evidenceColumnTypes', {
-		enumerable: false,
-		value: table.schema.fields.map((field) => ({
-			name: field.name,
-			evidenceType: apacheToEvidenceType(field.type),
-			typeFidelity: 'precise'
-		}))
-	});
+	let date_cols = [], list_cols = [];
+	if (table_or_vec instanceof Table) {
+		Object.defineProperty(arr, '_evidenceColumnTypes', {
+			enumerable: false,
+			value: table_or_vec.schema.fields.map((field) => ({
+				name: field.name,
+				evidenceType: apacheToEvidenceType(field.type),
+				typeFidelity: 'precise'
+			}))
+		});
 
-	const date_cols = arr._evidenceColumnTypes.filter((col) => col.evidenceType === 'date');
+		date_cols = table_or_vec.schema.fields.filter((field) => field.type.typeId === Type.Date);
+		list_cols = table_or_vec.schema.fields.filter((field) => field.type.typeId === Type.List);
+	} else {
+		date_cols = table_or_vec.type?.children?.filter((field) => field.type.typeId === Type.Date) ?? [];
+		list_cols = table_or_vec.type?.children?.filter((field) => field.type.typeId === Type.List) ?? [];
+	}
 
-	return arr.map((row) => {
+	for (const row of arr) {
 		for (const col of date_cols) {
 			row[col.name] = new Date(row[col.name]);
 		}
-		return row;
-	});
+		for (const col of list_cols) {
+			row[col.name] = arrowTableToJSON(row[col.name]);
+		}
+	}
+
+	return arr;
 }
 
 /**
