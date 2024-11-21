@@ -96,7 +96,11 @@
 								? safeExtractColumn(column, columnSummary).title
 								: safeExtractColumn(column, columnSummary).id}
 					</span>
-					<span class="tracking-normal {compact ? 'mr-1' : ''}">
+					<span
+						class="tracking-normal {wrapTitles || column.wrapTitle ? 'ml-0.5' : ''} {compact
+							? 'mr-1'
+							: ''}"
+					>
 						{#if sortObj.col === column.id}
 							<SortIcon ascending={sortObj.ascending} />
 						{:else}
