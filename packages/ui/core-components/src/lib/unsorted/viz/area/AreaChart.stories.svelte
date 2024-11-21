@@ -183,6 +183,7 @@ FROM (
 ) p
 JOIN flights f ON p.plane = f.plane
 GROUP BY f.departure_date, f.plane
+ORDER BY f.departure_date
 LIMIT 200`,
 		query
 	);
