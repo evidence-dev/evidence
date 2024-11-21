@@ -427,6 +427,13 @@ queries:
     options="Excel-style format | built-in format name | custom format name"
 />
 <PropListing
+    name="seriesLabelFmt"
+    description="Format to use for series label (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    required=false
+    options="Excel-style format | built-in format name | custom format name"
+    defaultValue="-"
+/>
+<PropListing
     name=fillColor
     description="Color to override default series color. Only accepts a single color."
     options="CSS name | hexademical | RGB | HSL"
