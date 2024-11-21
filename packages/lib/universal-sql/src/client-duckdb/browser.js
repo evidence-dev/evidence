@@ -155,8 +155,6 @@ export async function query(sql) {
 	// Now we can safely execute our query
 	const res = await connection.query(sql).then(arrowTableToJSON);
 
-	console.log({ res });
-
 	return res;
 }
 
