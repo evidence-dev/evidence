@@ -14,7 +14,6 @@
 
 <Story name="All variants" let:args>
 	<Badge {...args} variant="default">Badge</Badge>
-	<Badge {...args} variant="secondary">Badge</Badge>
 	<Badge {...args} variant="destructive">Badge</Badge>
 	<Badge {...args} variant="outline">Badge</Badge>
 </Story>

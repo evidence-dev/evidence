@@ -20,14 +20,6 @@ describe('buildThemes', () => {
 						light: 'primary-content_light',
 						dark: 'primary-content_dark'
 					},
-					secondary: {
-						light: 'secondary_light',
-						dark: 'secondary_dark'
-					},
-					'secondary-content': {
-						light: 'secondary-content_light',
-						dark: 'secondary-content_dark'
-					},
 					accent: {
 						light: 'accent_light',
 						dark: 'accent_dark'
@@ -107,8 +99,6 @@ describe('buildThemes', () => {
 				colors: {
 					primary: 'primary_light',
 					'primary-content': 'primary-content_light',
-					secondary: 'secondary_light',
-					'secondary-content': 'secondary-content_light',
 					accent: 'accent_light',
 					'accent-content': 'accent-content_light',
 					'base-100': 'base-100_light',
@@ -134,8 +124,6 @@ describe('buildThemes', () => {
 				colors: {
 					primary: 'primary_dark',
 					'primary-content': 'primary-content_dark',
-					secondary: 'secondary_dark',
-					'secondary-content': 'secondary-content_dark',
 					accent: 'accent_dark',
 					'accent-content': 'accent-content_dark',
 					'base-100': 'base-100_dark',
