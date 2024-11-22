@@ -121,7 +121,7 @@
 		</span>
 	</div>
 	<QueryLoad data={results} let:loaded>
-		<Alert slot="error" status="danger">
+		<Alert slot="error" status="negative">
 			{$results.error}
 		</Alert>
 		{#if loaded?.length > 0 || (Array.isArray(selectedValue) && selectedValue.length > 0)}

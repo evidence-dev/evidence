@@ -30,13 +30,13 @@
 </script>
 
 {#if data === undefined}
-	<Alert status="danger">`data` is required</Alert>
+	<Alert status="negative">`data` is required</Alert>
 {:else if typeof data === 'string'}
-	<Alert status="danger">
+	<Alert status="negative">
 		`data` must reference a query. Received: data={data}. Try data={'{'}{data}{'}'}.
 	</Alert>
 {:else if data?.error}
-	<Alert status="danger">
+	<Alert status="negative">
 		{data.error}
 	</Alert>
 {:else}
