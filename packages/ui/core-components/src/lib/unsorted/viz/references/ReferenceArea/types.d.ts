@@ -49,6 +49,8 @@ export type ReferenceAreaConfig = {
 	align?: 'left' | 'center' | 'right';
 	bold?: boolean;
 	italic?: boolean;
+
+	activeAppearance?: 'light' | 'dark';
 };
 
 export type ReferenceAreaStoreValue = {

@@ -15,7 +15,7 @@
 	import { getThemeStores } from '../../../../themes/themes.js';
 	import { checkDeprecatedColor } from '../../../../deprecated-colors.js';
 
-	const { resolveColor } = getThemeStores();
+	const { activeAppearance, resolveColor } = getThemeStores();
 
 	/** @type {'pass' | 'warn' | 'error' | undefined}*/
 	export let emptySet = undefined;
@@ -175,7 +175,8 @@
 			fontSize: toNumber(fontSize),
 			align,
 			bold: toBoolean(bold),
-			italic: toBoolean(italic)
+			italic: toBoolean(italic),
+			activeAppearance: $activeAppearance
 		});
 </script>
 

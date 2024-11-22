@@ -62,7 +62,8 @@ export class ReferenceAreaStore {
 				labelPosition,
 				border,
 				borderWidth,
-				borderColor
+				borderColor,
+				activeAppearance
 			} = config;
 
 			if (Query.isQuery(data) && !data.dataLoaded) {
@@ -92,7 +93,13 @@ export class ReferenceAreaStore {
 			}
 
 			labelColor = labelColor ?? color;
-			areaColor = areaColor ?? (color ? chroma(color).alpha(0.1).css() : undefined);
+			areaColor =
+				areaColor ??
+				(color
+					? chroma(color)
+							.alpha(activeAppearance === 'dark' ? 0.15 : 0.1)
+							.css()
+					: undefined);
 			borderColor = borderColor ?? color;
 
 			/** @type {MarkAreaData} */
