@@ -29,7 +29,7 @@
 		navigator.clipboard.writeText(vars);
 		toasts.add({
 			title: '',
-			status: 'success',
+			status: 'positive',
 			message: 'Copied environment variables to clipboard'
 		});
 	}
