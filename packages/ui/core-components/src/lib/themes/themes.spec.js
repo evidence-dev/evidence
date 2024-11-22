@@ -22,9 +22,11 @@ vi.mock('$evidence/themes', () => ({
 	themes: {
 		light: {
 			colors: {
+				'base-100': 'light_base-100',
 				myColor1: 'light_myColor1',
 				myColor2: 'light_myColor2',
-				lightOnly: '#abcdef'
+				lightOnly: '#abcdef',
+				scaleWithSameNameAsColor: 'light_scaleWithSameNameAsColor'
 			},
 			colorPalettes: {
 				myColorPalette1: [
@@ -40,13 +42,19 @@ vi.mock('$evidence/themes', () => ({
 			},
 			colorScales: {
 				myColorScale1: ['light_myColorScale1_color1', 'light_myColorScale1_color2'],
-				myColorScale2: ['light_myColorScale2_color1', 'light_myColorScale2_color2']
+				myColorScale2: ['light_myColorScale2_color1', 'light_myColorScale2_color2'],
+				scaleWithSameNameAsColor: [
+					'light_scaleWithSameNameAsColor_color1',
+					'light_scaleWithSameNameAsColor_color2'
+				]
 			}
 		},
 		dark: {
 			colors: {
+				'base-100': 'dark_base-100',
 				myColor1: 'dark_myColor1',
-				myColor2: 'dark_myColor2'
+				myColor2: 'dark_myColor2',
+				scaleWithSameNameAsColor: 'dark_scaleWithSameNameAsColor'
 			},
 			colorPalettes: {
 				myColorPalette1: [
@@ -62,7 +70,11 @@ vi.mock('$evidence/themes', () => ({
 			},
 			colorScales: {
 				myColorScale1: ['dark_myColorScale1_color1', 'dark_myColorScale1_color2'],
-				myColorScale2: ['dark_myColorScale2_color1', 'dark_myColorScale2_color2']
+				myColorScale2: ['dark_myColorScale2_color1', 'dark_myColorScale2_color2'],
+				scaleWithSameNameAsColor: [
+					'dark_scaleWithSameNameAsColor_color1',
+					'dark_scaleWithSameNameAsColor_color2'
+				]
 			}
 		}
 	}
@@ -480,7 +492,7 @@ describe('ThemeStores', async () => {
 		});
 	});
 
-	describe('resolveColorScale', () => {
+	describe.only('resolveColorScale', () => {
 		describe('using scale name', () => {
 			it('should leave undefined as is', () => {
 				const store = resolveColorScale(undefined);
@@ -490,6 +502,22 @@ describe('ThemeStores', async () => {
 
 				setAppearance('dark');
 				expect(get(store)).toEqual(undefined);
+			});
+
+			it('should prefer scale name to color name', () => {
+				const store = resolveColorScale('scaleWithSameNameAsColor');
+
+				setAppearance('light');
+				expect(get(store)).toEqual([
+					'light_scaleWithSameNameAsColor_color1',
+					'light_scaleWithSameNameAsColor_color2'
+				]);
+
+				setAppearance('dark');
+				expect(get(store)).toEqual([
+					'dark_scaleWithSameNameAsColor_color1',
+					'dark_scaleWithSameNameAsColor_color2'
+				]);
 			});
 
 			it('should return undefined if color scale doesnt exist in theme', () => {
@@ -523,7 +551,29 @@ describe('ThemeStores', async () => {
 			});
 		});
 
-		describe('using hardcoded colors', () => {
+		describe('using single color', () => {
+			it('should create scale using color name and base-100', () => {
+				const store = resolveColorScale('myColor1');
+
+				setAppearance('light');
+				expect(get(store)).toEqual(['light_base-100', 'light_myColor1']);
+
+				setAppearance('dark');
+				expect(get(store)).toEqual(['dark_base-100', 'dark_myColor1']);
+			});
+
+			it('should create scale hex color and base-100', () => {
+				const store = resolveColorScale('#abcdef');
+
+				setAppearance('light');
+				expect(get(store)).toEqual(['light_base-100', '#abcdef']);
+
+				setAppearance('dark');
+				expect(get(store)).toEqual(['dark_base-100', '#abcdef']);
+			});
+		});
+
+		describe('using multiple colors', () => {
 			it('should convert single hex color to dark mode', () => {
 				const store = resolveColorScale(['#abcdef']);
 

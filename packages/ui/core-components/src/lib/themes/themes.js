@@ -6,6 +6,7 @@ import { browser } from '$app/environment';
 import { localStorageStore } from '@evidence-dev/component-utilities/stores';
 import { themes, themesConfig } from '$evidence/themes';
 import { convertLightToDark } from './convertLightToDark.js';
+import chroma from 'chroma-js';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
@@ -239,7 +240,19 @@ export class ThemeStores {
 	 */
 	resolveColorScale = (input) => {
 		if (typeof input === 'string') {
-			return derived(this.#theme, ($theme) => $theme.colorScales[input.trim()]);
+			return derived(this.#theme, ($theme) => {
+				const colorScale = $theme.colorScales[input.trim()];
+				if (colorScale) return colorScale;
+
+				const color = $theme.colors[input.trim()];
+				if (color) return [$theme.colors['base-100'], color];
+
+				if (chroma.valid(input)) {
+					return [$theme.colors['base-100'], input];
+				}
+
+				return undefined;
+			});
 		}
 
 		if (Array.isArray(input)) {

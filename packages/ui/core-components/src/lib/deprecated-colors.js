@@ -11,7 +11,8 @@ export const DEPRECATED_COLOR_MAP = /** @type {const} */ ({
 	blue: 'info',
 	green: 'positive',
 	yellow: 'warning',
-	red: 'negative'
+	red: 'negative',
+	bluegreen: 'positive'
 });
 
 /**

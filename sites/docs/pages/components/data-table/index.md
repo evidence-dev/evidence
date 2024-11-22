@@ -424,7 +424,7 @@ limit 5
 
 ### Conditional Formatting
 
-#### Default (`scaleColor=positive`)
+#### Default (`colorScale=positive`)
 
 <DocTab>
     <div slot='preview'>
@@ -447,7 +447,7 @@ limit 5
 </DocTab>
 
 
-#### `scaleColor=negative`
+#### `colorScale=negative`
 
 <DocTab>
     <div slot='preview'>
@@ -455,7 +455,7 @@ limit 5
             <Column id=country />
             <Column id=country_id align=center/>
             <Column id=category align=center/>
-            <Column id=value_usd contentType=colorscale scaleColor=negative/>
+            <Column id=value_usd contentType=colorscale colorScale=negative/>
         </DataTable>
     </div>
 
@@ -464,12 +464,12 @@ limit 5
     <Column id=country />
     <Column id=country_id align=center/>
     <Column id=category align=center/>
-    <Column id=value_usd contentType=colorscale scaleColor=negative/>
+    <Column id=value_usd contentType=colorscale colorScale=negative/>
 </DataTable>
 ```
 </DocTab>
 
-#### `scaleColor=info`
+#### `colorScale=info`
 
 <DocTab>
     <div slot='preview'>
@@ -477,7 +477,7 @@ limit 5
             <Column id=country />
             <Column id=country_id align=center/>
             <Column id=category align=center/>
-            <Column id=value_usd contentType=colorscale scaleColor=info/>
+            <Column id=value_usd contentType=colorscale colorScale=info/>
         </DataTable>
     </div>
 
@@ -486,7 +486,7 @@ limit 5
     <Column id=country />
     <Column id=country_id align=center/>
     <Column id=category align=center/>
-    <Column id=value_usd contentType=colorscale scaleColor=info/>
+    <Column id=value_usd contentType=colorscale colorScale=info/>
 </DataTable>
 ```
 </DocTab>
@@ -494,7 +494,7 @@ limit 5
 
 #### Custom Colors
 
-When you pass a custom color to `scaleColor`, Evidence will create a color palette for you, starting at white (or black, depending on the selected theme) and ending at the color you provided. See examples further down the page to see how to specify a custom color palette with multiple colors.
+When you pass a custom color to `colorScale`, Evidence will create a color palette for you, starting at white (or black, depending on the selected theme) and ending at the color you provided. See examples further down the page to see how to specify a custom color palette with multiple colors.
 
 ```orders_by_category
 select order_month as month, category, sum(sales) as sales_usd0k, count(1) as num_orders_num0,
@@ -508,9 +508,9 @@ group by all
         <DataTable data={orders_by_category} rowNumbers=true>
           <Column id=month/>
           <Column id=category/>
-          <Column id=sales_usd0k contentType=colorscale scaleColor=#a85ab8 align=center/>
-          <Column id=num_orders_num0 contentType=colorscale scaleColor=#e3af05 align=center/>
-          <Column id=aov_usd2 contentType=colorscale scaleColor=#c43957 align=center/>
+          <Column id=sales_usd0k contentType=colorscale colorScale=#a85ab8 align=center/>
+          <Column id=num_orders_num0 contentType=colorscale colorScale=#e3af05 align=center/>
+          <Column id=aov_usd2 contentType=colorscale colorScale=#c43957 align=center/>
         </DataTable>
     </div>
 
@@ -518,9 +518,9 @@ group by all
 <DataTable data={orders_by_category} rowNumbers=true>
   <Column id=month/>
   <Column id=category/>
-  <Column id=sales_usd0k contentType=colorscale scaleColor=#a85ab8 align=center/>
-  <Column id=num_orders_num0 contentType=colorscale scaleColor=#e3af05 align=center/>
-  <Column id=aov_usd2 contentType=colorscale scaleColor=#c43957 align=center/>
+  <Column id=sales_usd0k contentType=colorscale colorScale=#a85ab8 align=center/>
+  <Column id=num_orders_num0 contentType=colorscale colorScale=#e3af05 align=center/>
+  <Column id=aov_usd2 contentType=colorscale colorScale=#c43957 align=center/>
 </DataTable>
 ```
 </DocTab>
@@ -559,14 +559,14 @@ union all
     <div slot='preview'>
         <DataTable data={numbers}>
           <Column id=name/>
-          <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
+          <Column id=number contentType=colorscale colorScale={['#6db678','white','#ce5050']}/>
         </DataTable>
     </div>
 
 ```svelte
 <DataTable data={numbers}>
   <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
+  <Column id=number contentType=colorscale colorScale={['#6db678','white','#ce5050']}/>
 </DataTable>
 ```
 </DocTab>
@@ -578,14 +578,14 @@ union all
     <div slot='preview'>
         <DataTable data={numbers}>
           <Column id=name/>
-          <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
+          <Column id=number contentType=colorscale colorScale={['#6db678','#ebbb38','#ce5050']}/>
         </DataTable>
     </div>
 
 ```svelte
 <DataTable data={numbers}>
   <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
+  <Column id=number contentType=colorscale colorScale={['#6db678','#ebbb38','#ce5050']}/>
 </DataTable>
 ```
 </DocTab>
@@ -599,14 +599,14 @@ Use `colorBreakpoints` or `colorMid`/`colorMin`/`colorMax` to control which valu
     <div slot='preview'>
         <DataTable data={negatives} rows=all>
           <Column id=name/>
-          <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
+          <Column id=number contentType=colorscale colorScale={['#ce5050','white','#6db678']} colorMid=0/>
         </DataTable>
     </div>
 
 ```svelte
 <DataTable data={negatives} rows=all>
   <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
+  <Column id=number contentType=colorscale colorScale={['#ce5050','white','#6db678']} colorMid=0/>
 </DataTable>
 ```
 </DocTab>
@@ -644,7 +644,7 @@ union all
         <DataTable data={numbers_othercol}>
           <Column id=name/>
           <Column id=scale_defining_number fontColor={['green','red']}/>
-          <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
+          <Column id=number contentType=colorscale colorScale={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
         </DataTable>
     </div>
 
@@ -652,7 +652,7 @@ union all
 <DataTable data={numbers_othercol}>
   <Column id=name/>
   <Column id=scale_defining_number fontColor={['green','red']}/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
+  <Column id=number contentType=colorscale colorScale={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
 </DataTable>
 ```
 </DocTab>
@@ -1182,7 +1182,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
           <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
           <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
           <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' colGroup="GDP" contentType=delta/>
-          <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=negative colGroup="Labour Market"/>
+          <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale colorScale=negative colGroup="Labour Market"/>
           <Column id=population totalAgg=sum fmt='#,##0"M"' totalFmt='#,##0.0,"B"' colGroup="Labour Market"/>
           <Column id=interest_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' wrapTitle=false colGroup="Other"/>
           <Column id=inflation_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' colGroup="Other"/>
@@ -1197,7 +1197,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
   <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
   <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
   <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' colGroup="GDP" contentType=delta/>
-  <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=negative colGroup="Labour Market"/>
+  <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale colorScale=negative colGroup="Labour Market"/>
   <Column id=population totalAgg=sum fmt='#,##0"M"' totalFmt='#,##0.0,"B"' colGroup="Labour Market"/>
   <Column id=interest_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' wrapTitle=false colGroup="Other"/>
   <Column id=inflation_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' colGroup="Other"/>
@@ -1854,7 +1854,7 @@ Background color for bar chart
 `contentType=colorscale`
 
 <PropListing
-    name=scaleColor
+    name=colorScale
     defaultValue="green"
 >
 
@@ -1893,7 +1893,7 @@ Set a maximum for the scale. Any values above that maximum will appear in the hi
     options="array of numbers"
 >
 
-Array of numbers to use as breakpoints for each color in your color scale. Should line up with the colors you provide in `scaleColor`
+Array of numbers to use as breakpoints for each color in your color scale. Should line up with the colors you provide in `colorScale`
 
 </PropListing>
 

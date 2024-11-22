@@ -6,10 +6,9 @@
 	import { getContext, onDestroy } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { getThemeStores } from '../../../themes/themes.js';
-	import { readable } from 'svelte/store';
 	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
 
-	const { theme, resolveColor } = getThemeStores();
+	const { resolveColor, resolveColorScale } = getThemeStores();
 
 	let props = getContext(propKey);
 
@@ -77,21 +76,17 @@
 	export let colorMid = undefined;
 	export let colorBreakpoints = undefined;
 
-	export let scaleColor = 'positive';
-	$: scaleColor = checkDeprecatedColor('Column', 'scaleColor', scaleColor);
-	$: scaleColorStore =
-		typeof scaleColor === 'string' ? resolveColor(scaleColor) : readable(scaleColor);
+	/** @deprecated Use colorScale instead */
+	export let scaleColor = undefined;
+	$: if (scaleColor) {
+		console.warn('[Column] scaleColor is deprecated. Use colorScale instead.');
+	}
+	$: colorScale = checkDeprecatedColor('Column', 'colorScale', colorScale);
+
+	export let colorScale = 'positive';
+	$: colorScaleStore = resolveColorScale(colorScale ?? colorScale);
 
 	export let scaleColumn = undefined;
-
-	let colorPalette;
-	$: {
-		if ($scaleColorStore instanceof Array) {
-			colorPalette = $scaleColorStore;
-		} else {
-			colorPalette = [$theme.colors['base-100'], $scaleColorStore];
-		}
-	}
 
 	// Delta:
 	export let downIsGood = false;
@@ -164,12 +159,11 @@
 		showValue,
 		colorMax,
 		colorMin,
-		scaleColor: $scaleColorStore,
+		colorScale: $colorScaleStore,
 		scaleColumn,
 		colGroup,
 		colorMid,
 		colorBreakpoints,
-		colorPalette,
 		redNegatives,
 		sparkWidth,
 		sparkHeight,

@@ -70,13 +70,13 @@ order by number asc
 
 <DataTable data={numbers}>
   <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
+  <Column id=number contentType=colorscale colorScale={['#6db678','white','#ce5050']}/>
 </DataTable>
 
 
 <DataTable data={negatives} rows=all>
   <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']}
+  <Column id=number contentType=colorscale colorScale={['#ce5050','white','#6db678']}
   colorMid=0/>
 </DataTable>
 
@@ -84,13 +84,13 @@ order by number asc
 
 <DataTable data={numbers}>
   <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
+  <Column id=number contentType=colorscale colorScale={['#6db678','#ebbb38','#ce5050']}/>
 </DataTable>
 
 
 <DataTable data={numbers}>
   <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['#fff761','#5ba84c','#171566']}/>
+  <Column id=number contentType=colorscale colorScale={['#fff761','#5ba84c','#171566']}/>
 </DataTable>
 
 
@@ -123,19 +123,19 @@ union all
  <DataTable data={numbers_othercol}>
   <Column id=name/>
   <Column id=scale_defining_number fontColor={['green','red']}/>
-  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
+  <Column id=number contentType=colorscale colorScale={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
 </DataTable>
 
 
 <DataTable data={negatives}>
   <Column id=name/>
   <Column id=status/>
-  <Column id=number contentType=colorscale scaleColor={['maroon','green','navy']} scaleColumn=status/>
+  <Column id=number contentType=colorscale colorScale={['maroon','green','navy']} scaleColumn=status/>
 </DataTable>
 
 <DataTable data={negatives}>
   <Column id=name/>
-  <Column id=number contentType=colorscale scaleColor={['maroon','green','navy']}  scaleColumn=status/>
+  <Column id=number contentType=colorscale colorScale={['maroon','green','navy']}  scaleColumn=status/>
 </DataTable>
 
 ## Negatives in Red

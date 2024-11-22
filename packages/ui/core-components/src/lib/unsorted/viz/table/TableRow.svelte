@@ -88,11 +88,11 @@
 			{@const color_domain =
 				column.colorBreakpoints ??
 				(column.colorMid ? [column_min, column.colorMid, column_max] : [column_min, column_max])}
-			{@const color_scale = column.colorPalette
-				? chroma.scale(column.colorPalette).domain(color_domain).nodata($theme.colors['base-100'])
+			{@const color_scale = column.colorScale
+				? chroma.scale(column.colorScale).domain(color_domain).nodata($theme.colors['base-100'])
 				: ''}
 			{@const cell_color =
-				column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+				column.contentType === 'colorscale' && is_nonzero && column.colorScale
 					? column.scaleColumn
 						? color_scale(row[column.scaleColumn]).hex()
 						: color_scale(row[column.id]).hex()
@@ -101,7 +101,7 @@
 				? row[column.id] < 0
 					? $theme.colors.negative
 					: ''
-				: column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+				: column.contentType === 'colorscale' && is_nonzero && column.colorScale
 					? chroma.contrast(cell_color, $theme.colors['base-content']) <
 						chroma.contrast(cell_color, $theme.colors['base-100']) + 0.5
 						? $theme.colors['base-100']
@@ -112,7 +112,7 @@
 				rowLines &&
 				column.contentType === 'colorscale' &&
 				is_nonzero &&
-				column.colorPalette
+				column.colorScale
 					? `1px solid ${chroma(cell_color).darken(0.5)}`
 					: ''}
 			<TableCell

@@ -16,6 +16,7 @@
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
 	import chroma from 'chroma-js';
+	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
 
 	const { theme, resolveColorPalette, resolveColorScale } = getThemeStores();
 
@@ -74,28 +75,13 @@
 		}
 	}
 
-	/** @deprecated Use colorScale instead */
 	export let colorPalette = undefined;
+	$: colorPalette = checkDeprecatedColor('USMap', 'colorPalette', colorPalette);
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
-	const colorScales = {
-		blue: ['base-100', '#075985'],
-		green: ['base-100', '#166534'],
-		red: ['base-100', '#991b1b'],
-		bluegreen: [
-			'#f7fcf0',
-			'#e0f3db',
-			'#ccebc5',
-			'#a8ddb5',
-			'#7bccc4',
-			'#4eb3d3',
-			'#2b8cbe',
-			'#0868ac',
-			'#084081'
-		]
-	};
-	export let colorScale = 'blue';
-	$: colorScaleStore = resolveColorScale(colorScales[colorScale] ?? colorScale);
+	export let colorScale = 'info';
+	$: colorScale = checkDeprecatedColor('USMap', 'colorScale', colorScale);
+	$: colorScaleStore = resolveColorScale(colorScale);
 
 	$: colorArray = $colorPaletteStore ?? $colorScaleStore;
 
