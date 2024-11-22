@@ -492,7 +492,7 @@ describe('ThemeStores', async () => {
 		});
 	});
 
-	describe.only('resolveColorScale', () => {
+	describe('resolveColorScale', () => {
 		describe('using scale name', () => {
 			it('should leave undefined as is', () => {
 				const store = resolveColorScale(undefined);
