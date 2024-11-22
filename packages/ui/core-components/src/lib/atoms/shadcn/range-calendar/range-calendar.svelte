@@ -104,7 +104,7 @@
 				>
 					<Select.Value placeholder="Select month" />
 				</SelectPrimitive.Trigger>
-				<Select.Content class="max-h-[200px] overflow-y-auto !w-[118px]">
+				<Select.Content class="max-h-[200px] overflow-y-auto !w-[118px] pretty-scrollbar">
 					{#each monthOptions as { value, label }}
 						<Select.Item {value} {label}>
 							{label}
