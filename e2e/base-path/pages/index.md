@@ -33,7 +33,7 @@ This page can be found in your project at `/pages/index.md`. Make a change to th
       category
   from needful_things.orders
   where category like '${inputs.category.value}'
-  and cast(date_part('year', order_datetime) as varchar) like '${inputs.year.value}'
+  and date_part('year', order_datetime) like '${inputs.year.value}'
   group by all
   order by sales_usd desc
 ```

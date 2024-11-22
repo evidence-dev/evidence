@@ -67,8 +67,11 @@ export async function initDB() {
 			}
 		});
 		connection = await db.connect();
-		// revert breaking change
+
+		// revert breaking changes
 		await connection.query('SET ieee_floating_point_ops = false;');
+		await connection.query('SET old_implicit_casting = true;');
+
 		resolveInit();
 	} catch (e) {
 		rejectInit(e);
