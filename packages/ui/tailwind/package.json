@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@evidence-dev/sdk": "workspace:^",
+		"chroma-js": "^2.4.2",
 		"lodash": "^4.17.21",
 		"tailwindcss": "^3.3.1",
 		"tw-colors": "^3.3.2",
@@ -37,6 +38,7 @@
 	"source": "src/index.js",
 	"type": "module",
 	"devDependencies": {
+		"@types/chroma-js": "^2.4.4",
 		"@types/lodash": "^4.17.9",
 		"postcss": "^8.4.47",
 		"ts-essentials": "^10.0.2",

@@ -1533,6 +1533,9 @@ importers:
       '@evidence-dev/sdk':
         specifier: workspace:^
         version: link:../../lib/sdk
+      chroma-js:
+        specifier: ^2.4.2
+        version: 2.6.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1546,6 +1549,9 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
+      '@types/chroma-js':
+        specifier: ^2.4.4
+        version: 2.4.4
       '@types/lodash':
         specifier: ^4.17.9
         version: 4.17.13
