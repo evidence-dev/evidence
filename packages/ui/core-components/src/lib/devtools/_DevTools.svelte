@@ -30,6 +30,7 @@
 		 * @param {KeyboardEvent} e
 		 */
 		const keybind = (e) => {
+			console.log(e.key.toLowerCase());
 			if (e.key === 'Escape') {
 				open = false;
 				e.stopPropagation();

@@ -110,7 +110,19 @@
 		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
-	const { syncDataThemeAttribute } = getThemeStores();
+	const { syncDataThemeAttribute, cycleAppearance } = getThemeStores();
+
+	onMount(() => {
+		/** @param {KeyboardEvent} e */
+		const onKeydown = (e) => {
+			if (e.key.toLowerCase() === 'l' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+				cycleAppearance();
+			}
+		};
+		window.addEventListener('keydown', onKeydown);
+		return () => window.removeEventListener('keydown', onKeydown);
+	});
+
 	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
 </script>
 
