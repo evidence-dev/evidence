@@ -62,7 +62,7 @@
 	/** @deprecated Use `colorScale` instead */
 	export let colorPalette = undefined;
 	export let colorScale = undefined;
-	$: colorScaleStore = resolveColorScale(colorScale ?? colorPalette ?? 'heat');
+	$: colorScaleStore = resolveColorScale(colorScale ?? colorPalette ?? 'default');
 
 	export let min = undefined;
 	export let max = undefined;

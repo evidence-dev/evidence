@@ -109,10 +109,6 @@ export const defaultThemesConfig = {
 			default: {
 				light: ['lightblue', 'darkblue'],
 				dark: ['lightblue', 'darkblue']
-			},
-			heat: {
-				light: ['rgb(254,234,159)', 'rgb(218,66,41)'],
-				dark: ['rgb(254,234,159)', 'rgb(218,66,41)']
 			}
 		}
 	}
