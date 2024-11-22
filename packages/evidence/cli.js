@@ -35,11 +35,7 @@ const populateTemplate = function () {
 	// - local settings
 	// - telemetry profile
 	// - static folder (mainly to preserve the data directory)
-	const keepers = new Set([
-		'.profile.json',
-		'static',
-		'.evidence-queries'
-	]);
+	const keepers = new Set(['.profile.json', 'static', '.evidence-queries']);
 	fs.readdirSync('./.evidence/template/').forEach((file) => {
 		if (!keepers.has(file)) fs.removeSync(path.join('./.evidence/template/', file));
 	});
