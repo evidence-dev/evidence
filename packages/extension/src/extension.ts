@@ -58,11 +58,12 @@ export const enum Context {
 	isPagesDirectory = 'evidence.isPagesDirectory',
 	isNonLegacyProject = 'evidence.isNonLegacyProject',
 	slashCommands = 'evidence.slashCommands',
-	isSQLContext = 'evidence.isSQLContext'
+	isSQLContext = 'evidence.isSQLContext',
+	isMDXContext = 'evidence.isMDXContext'
 }
 
 let isSQLContext = false;
-
+let isMDXContext = false;
 export let telemetryService: TelemetryService; // Global instance
 
 async function initializeTelemetryService() {
@@ -168,17 +169,463 @@ async function applyCustomSettings() {
 
 	const languageId = editor.document.languageId;
 	const isSQLContext = isInSQLContext(editor.document, editor.selection.active);
+	const isMDXContext = isInMDXComponentContext(editor.document, editor.selection.active);
 
-	await updateEditorConfigForLanguage(languageId, isSQLContext);
+	await updateEditorConfigForLanguage(languageId, isSQLContext, isMDXContext);
+}
+interface ComponentProp {
+	name: string;
+	type: string;
+	description: string;
+	required?: boolean;
+	defaultValue?: string;
+	options?: string[];
 }
 
+interface ComponentDefinition {
+	name: string;
+	props: ComponentProp[];
+}
+
+// Add this constant with component definitions
+const evidenceComponents: ComponentDefinition[] = [
+	{
+		name: 'AreaChart',
+		props: [
+			{
+				"name": "data",
+				"description": "Query name, wrapped in curly braces",
+				"required": true,
+				"type": "query name",
+				"defaultValue": "null"
+			},
+			{
+				"name": "x",
+				"description": "Column to use for the x-axis of the chart",
+				"required": true,
+				"type": "string",
+				"defaultValue": "First column"
+			},
+			{
+				"name": "y",
+				"description": "Column(s) to use for the y-axis of the chart",
+				"required": true,
+				"type": "string | array of strings",
+				"defaultValue": "Any non-assigned numeric columns"
+			},
+			{
+				"name": "series",
+				"description": "Column to use as the series (groups) in a multi-series chart",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"
+			},
+			{
+				"name": "sort",
+				"description": "Whether to apply default sort to your data.",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "type",
+				"description": "Grouping method to use for multi-series charts",
+				"required": false,
+				"type": "string",
+				"options": ['stacked', 'stacked100'],
+				"defaultValue": "stacked"
+			},
+			{
+				"name": "handleMissing",
+				"description": "Treatment of missing values in the dataset",
+				"required": false,
+				"type": "string",
+				"options": ["gap", "connect", "zero"],
+				"defaultValue": "gap (single series) | zero (multi-series)"
+			},
+			{
+				"name": "emptySet",
+				"description": "Sets behaviour for empty datasets.",
+				"required": false,
+				"type": "string",
+				"options": ["error", "warn", "pass"],
+				"defaultValue": "error"
+			},
+			{
+				"name": "emptyMessage",
+				"description": "Text to display when an empty dataset is received",
+				"required": false,
+				"type": "string",
+				"defaultValue": "No records"
+			},
+			{
+				"name": "xFmt",
+				"description": "Format to use for x column",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"
+			},
+			{
+				"name": "yFmt",
+				"description": "Format to use for y column",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"
+			},
+			{
+				"name": "seriesLabelFmt",
+				"description": "Format to use for series label",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"
+			},
+			{
+				"name": "step",
+				"description": "Specifies whether the chart is displayed as a step line.",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "stepPosition",
+				"description": "Configures the position of turn points for a step line chart.",
+				"required": false,
+				"type": "string",
+				"options": ["start", "middle", "end"],
+				"defaultValue": "end"
+			},
+			{
+				"name": "fillColor",
+				"description": "Color to override default series color.",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"	
+			},
+			{
+				"name": "lineColor",
+				"description": "Color to override default line color.",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"	
+			},
+			{
+				"name": "fillOpacity",
+				"description": "Opacity for the fill color",
+				"required": false,
+				"type": "number",
+				"defaultValue": "0.7"
+			},
+			{
+				"name": "line",
+				"description": "Show line on top of the area",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "colorPalette",
+				"description": "Custom color palette for the chart",
+				"required": false,
+				"type": "array",
+				"defaultValue": "built-in color palette"
+			},
+			{
+				"name": "seriesColors",
+				"description": "Assign specific colors to each series in the chart",
+				"required": false,
+				"type": "object",
+				"defaultValue": "colors applied by order of series in data"
+			},
+			{
+				"name": "seriesOrder",
+				"description": "Custom order for the series in a multi-series chart",
+				"required": false,
+				"type": "array",
+				"defaultValue": "default order implied by the data"
+			},
+			{
+				"name": "labels",
+				"description": "Show value labels",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "labelSize",
+				"description": "Font size for value labels",
+				"required": false,
+				"type": "number",
+				"defaultValue": "11"
+			},
+			{
+				"name": "labelPosition",
+				"description": "Position of the value labels",
+				"required": false,
+				"type": "string",
+				"options": ["above", "middle", "below"],
+				"defaultValue": "above"
+			},
+			{
+				"name": "labelColor",
+				"description": "Font color of the value labels",
+				"required": false,
+				"type": "string",
+				"defaultValue": "Automatic based on contrast"
+			},
+			{
+				"name": "labelFmt",
+				"description": "Format to use for value labels",
+				"required": false,
+				"type": "string",
+				"defaultValue": "same as y column"
+			},
+			{
+				"name": "showAllLabels",
+				"description": "Allow overlapping labels",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "yLog",
+				"description": "Use log scale for y-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "yLogBase",
+				"description": "Base for log scale",
+				"required": false,
+				"type": "number",
+				"defaultValue": "10"
+			},
+			{
+				"name": "xAxisTitle",
+				"description": "Title for the x-axis",
+				"required": false,
+				"type": "string | boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "yAxisTitle",
+				"description": "Title for the y-axis",
+				"required": false,
+				"type": "string | boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "xGridlines",
+				"description": "Show gridlines for x-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "yGridlines",
+				"description": "Show gridlines for y-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "xAxisLabels",
+				"description": "Show labels on the x-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "yAxisLabels",
+				"description": "Show labels on the y-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "xBaseline",
+				"description": "Show baseline for x-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "yBaseline",
+				"description": "Show baseline for y-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "xTickMarks",
+				"description": "Show tick marks for x-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "yTickMarks",
+				"description": "Show tick marks for y-axis",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "yMin",
+				"description": "Minimum value for y-axis",
+				"required": false,
+				"type": "number",
+				"defaultValue": "null"
+			},
+			{
+				"name": "yMax",
+				"description": "Maximum value for y-axis",
+				"required": false,
+				"type": "number",
+				"defaultValue": "null"
+			},
+			{
+				"name": "yScale",
+				"description": "Scale y-axis to fit data",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "title",
+				"description": "Chart title",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"
+			},
+			{
+				"name": "subtitle",
+				"description": "Chart subtitle",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"
+			},
+			{
+				"name": "legend",
+				"description": "Show chart legend",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "chartAreaHeight",
+				"description": "Minimum height for the chart area",
+				"required": false,
+				"type": "number",
+				"defaultValue": "180"
+			},
+			{
+				"name": "renderer",
+				"description": "Renderer type for the chart",
+				"required": false,
+				"type": "string",
+				"options": ["canvas", "svg"],
+				"defaultValue": "canvas"
+			},
+			{
+				"name": "downloadableData",
+				"description": "Enable data download button",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "downloadableImage",
+				"description": "Enable image download button",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "true"
+			},
+			{
+				"name": "echartsOptions",
+				"description": "Custom Echarts options",
+				"required": false,
+				"type": "object",
+				"defaultValue": "null"
+			},
+			{
+				"name": "seriesOptions",
+				"description": "Custom Echarts options for series",
+				"required": false,
+				"type": "object",
+				"defaultValue": "null"
+			},
+			{
+				"name": "printEchartsConfig",
+				"description": "Print the Echarts config for debugging",
+				"required": false,
+				"type": "boolean",
+				"defaultValue": "false"
+			},
+			{
+				"name": "connectGroup",
+				"description": "Group name to connect tooltips across charts",
+				"required": false,
+				"type": "string",
+				"defaultValue": "null"
+			}
+		]
+	},
+	// Add more components as needed
+];
+
+// Modify the registerCompletionProvider function
 function registerCompletionProvider(context: ExtensionContext) {
 	const config = workspace.getConfiguration('evidence');
 	const autocompleteEnabled = config.get('enableSqlAutocomplete');
-	if (!autocompleteEnabled) {
-		return;
-	}
+	console.log("autocompleteEnabled", autocompleteEnabled);
 
+	// Add MDX completion provider
+	const mdxProvider = languages.registerCompletionItemProvider(
+		['emd'],
+		{
+			provideCompletionItems(document: TextDocument, position: Position) {
+				const linePrefix = document.lineAt(position).text.substr(0, position.character);
+				console.log("in mdx provider", linePrefix);
+				// Updated regex to match component openings
+				const componentMatch = linePrefix.match(/<(\w*)(\s*)/);
+				console.log("linePrefix:", linePrefix);
+				console.log("match result:", componentMatch);
+				if (componentMatch) {
+					console.log("component match", componentMatch);
+					// Now componentMatch[1] will contain any partial component name typed after <
+					const componentName = componentMatch[1];
+					const component = evidenceComponents.find(c => c.name === componentName);
+					
+					if (component) {
+						console.log("component", component);
+						return component.props.map(prop => {
+							const item = new CompletionItem(prop.name, CompletionItemKind.Property);
+							item.documentation = new MarkdownString(
+								`**Type:** ${prop.type}\n\n${prop.description}` +
+								(prop.defaultValue ? `\n\nDefault: \`${prop.defaultValue}\`` : '') +
+								(prop.required ? '\n\n**Required**' : '')
+							);
+							
+							// Add snippet for boolean props
+							if (prop.type === 'boolean') {
+								item.insertText = new SnippetString(`${prop.name}={${prop.defaultValue || 'true'}}`);
+							} else {
+								item.insertText = new SnippetString(`${prop.name}={$1}`);
+							}
+							
+							return item;
+						});
+					}
+				}
+				
+				return undefined;
+			}
+		},
+		'<' // Add trigger character
+	);
+
+	// Add the existing SQL provider
 	const sqlProvider = languages.registerCompletionItemProvider(
 		['emd', 'sql'],
 		{
@@ -186,7 +633,7 @@ function registerCompletionProvider(context: ExtensionContext) {
 				const isSQLContext = isInSQLCodeBlock(document, position) || isInQueriesDirectory(document);
 				const languageId = document.languageId;
 
-				await updateEditorConfigForLanguage(languageId, isSQLContext);
+				await updateEditorConfigForLanguage(languageId, isSQLContext, isMDXContext);
 
 				if (isSQLContext) {
 					const context = document.languageId === 'sql' ? 'sql' : 'markdown';
@@ -196,10 +643,10 @@ function registerCompletionProvider(context: ExtensionContext) {
 			}
 		},
 		'.',
-		'(' // Trigger characters
+		'('
 	);
 
-	context.subscriptions.push(sqlProvider);
+	context.subscriptions.push(mdxProvider, sqlProvider);
 }
 
 function isInSQLContext(document: TextDocument, position: Position) {
@@ -569,16 +1016,14 @@ function isInQueriesDirectory(document: TextDocument): boolean {
 	return filePath.endsWith('.sql') && filePath.startsWith(queriesDir);
 }
 
-async function updateEditorConfigForLanguage(languageId: string, isSQLContext: boolean) {
+async function updateEditorConfigForLanguage(languageId: string, isSQLContext: boolean, isMDXContext: boolean) {
 	const config = workspace.getConfiguration('editor', { languageId });
 	const customConfig = workspace.getConfiguration('evidence');
 	const sqlAcceptSuggestionsOnEnter = customConfig.get('sqlAcceptSuggestionsOnEnter');
-	const slashCommandsAcceptSuggestionsOnEnter = customConfig.get(
-		'slashCommandsAcceptSuggestionsOnEnter'
-	);
+	const slashCommandsAcceptSuggestionsOnEnter = customConfig.get('slashCommandsAcceptSuggestionsOnEnter');
 
 	try {
-		if (isSQLContext) {
+		if (isSQLContext || isMDXContext) {
 			await config.update(
 				'acceptSuggestionOnEnter',
 				sqlAcceptSuggestionsOnEnter,
@@ -603,10 +1048,6 @@ async function updateEditorConfigForLanguage(languageId: string, isSQLContext: b
 			);
 			await config.update('quickSuggestionsDelay', 300, ConfigurationTarget.Workspace);
 		}
-
-		// Log the current configuration to verify
-		const currentAcceptSuggestionOnEnter = config.get('acceptSuggestionOnEnter');
-		const currentQuickSuggestions = config.get('quickSuggestions');
 	} catch (error) {
 		console.error(`Error updating editor config for ${languageId}:`, error);
 	}
@@ -791,6 +1232,32 @@ function insertTextAtCursor(text: string) {
 			editBuilder.insert(position, text);
 		});
 	}
+}
+
+function isInMDXComponentContext(document: TextDocument, position: Position): boolean {
+	const text = document.getText();
+	const offset = document.offsetAt(position);
+	
+	// Match any Evidence component tag, e.g., <DataTable, <Value, <BigValue, etc.
+	const componentPattern = /<(DataTable|Value|BigValue|Chart|AreaMap|PointMap|BubbleMap|BaseMap|DimensionGrid|Delta)[^>]*>/g;
+	let match;
+
+	while ((match = componentPattern.exec(text)) !== null) {
+		const start = match.index;
+		// Find the closing tag or self-closing tag
+		const closeTag = new RegExp(`</${match[1]}>|/>`, 'g');
+		closeTag.lastIndex = start;
+		const endMatch = closeTag.exec(text);
+		
+		if (endMatch) {
+			const end = endMatch.index + endMatch[0].length;
+			if (offset >= start && offset <= end) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -1319,7 +1786,7 @@ export async function activate(context: ExtensionContext) {
 				// Access workspace configuration
 				const config = workspace.getConfiguration();
 
-				// Set autosave to 'on'
+				// Set autosave to 'off'
 				await config.update('files.autoSave', 'off', ConfigurationTarget.Workspace);
 			}
 
