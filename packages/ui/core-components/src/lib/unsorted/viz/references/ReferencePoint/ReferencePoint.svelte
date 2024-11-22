@@ -15,8 +15,13 @@
 	import { toNumber } from '../../../../utils.js';
 	import { getThemeStores } from '../../../../themes/themes.js';
 	import chroma from 'chroma-js';
+	import { checkDeprecatedColor } from '../../../../deprecated-colors.js';
 
 	const { resolveColor } = getThemeStores();
+
+	// The chartType prop is only used here to allow Callout to use this component
+	// chartType shouldnt be used by consumers of Evidence
+	const chartType = $$props.chartType ?? 'Reference Point';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -38,6 +43,7 @@
 	 * @default "grey"
 	 */
 	export let color = 'grey';
+	$: color = checkDeprecatedColor(chartType, 'color', color);
 	$: colorStore = resolveColor(color);
 
 	/** @type {string | undefined} */
@@ -45,6 +51,7 @@
 
 	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColor = checkDeprecatedColor(chartType, 'labelColor', labelColor);
 	$: labelColorStore = resolveColor(labelColor);
 
 	/**
@@ -64,6 +71,11 @@
 
 	/** @type {string | undefined} */
 	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColor = checkDeprecatedColor(
+		chartType,
+		'labelBackgroundColor',
+		labelBackgroundColor
+	);
 	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
@@ -74,6 +86,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColor = checkDeprecatedColor(chartType, 'labelBorderColor', labelBorderColor);
 	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
@@ -99,6 +112,7 @@
 
 	/** @type {string | undefined} */
 	export let symbolColor = undefined;
+	$: symbolColor = checkDeprecatedColor(chartType, 'symbolColor', symbolColor);
 	$: symbolColorStore = resolveColor(symbolColor);
 
 	/**
@@ -115,6 +129,7 @@
 
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
+	$: symbolBorderColor = checkDeprecatedColor(chartType, 'symbolBorderColor', symbolBorderColor);
 	$: symbolBorderColorStore = resolveColor(symbolBorderColor);
 
 	/**
@@ -139,10 +154,6 @@
 				.join('\n');
 		}
 	}
-
-	// The chartType prop is only used here to allow Callout to use this component
-	// chartType shouldnt be used by consumers of Evidence
-	const chartType = $$props.chartType ?? 'Reference Point';
 
 	const props = getPropContext();
 	const config = getConfigContext();

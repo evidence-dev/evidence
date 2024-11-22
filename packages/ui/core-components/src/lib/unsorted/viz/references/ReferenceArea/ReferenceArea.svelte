@@ -13,6 +13,7 @@
 	import { ReferenceAreaStore } from './reference-area.store.js';
 	import { toBoolean, toNumber } from '../../../../utils.js';
 	import { getThemeStores } from '../../../../themes/themes.js';
+	import { checkDeprecatedColor } from '../../../../deprecated-colors.js';
 
 	const { resolveColor } = getThemeStores();
 
@@ -41,13 +42,15 @@
 
 	/**
 	 * @type {string}
-	 * @default "blue"
+	 * @default "info"
 	 */
-	export let color = 'blue';
+	export let color = 'info';
+	$: color = checkDeprecatedColor('ReferenceArea', 'color', color);
 	$: colorStore = resolveColor(color);
 
 	/** @type {string | undefined} */
 	export let areaColor = undefined;
+	$: areaColor = checkDeprecatedColor('ReferenceArea', 'areaColor', areaColor);
 	$: areaColorStore = resolveColor(areaColor);
 
 	/** @type {number | string} */
@@ -59,8 +62,9 @@
 	/** @type {'solid' | 'dotted' | 'dashed'} */
 	export let borderType = 'dashed';
 
-	/** @type {string | undefined}*/
+	/** @type {string | undefined} */
 	export let borderColor = undefined;
+	$: borderColor = checkDeprecatedColor('ReferenceArea', 'borderColor', borderColor);
 	$: borderColorStore = resolveColor(borderColor);
 
 	/** @type {number | string | undefined} */
@@ -68,6 +72,7 @@
 
 	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColor = checkDeprecatedColor('ReferenceArea', 'labelColor', labelColor);
 	$: labelColorStore = resolveColor(labelColor);
 
 	/**
@@ -81,6 +86,11 @@
 
 	/** @type {string | undefined} */
 	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColor = checkDeprecatedColor(
+		'ReferenceArea',
+		'labelBackgroundColor',
+		labelBackgroundColor
+	);
 	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
@@ -91,6 +101,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColor = checkDeprecatedColor('ReferenceArea', 'labelBorderColor', labelBorderColor);
 	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */

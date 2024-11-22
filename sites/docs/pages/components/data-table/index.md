@@ -424,7 +424,7 @@ limit 5
 
 ### Conditional Formatting
 
-#### Default (`scaleColor=green`)
+#### Default (`scaleColor=positive`)
 
 <DocTab>
     <div slot='preview'>
@@ -447,7 +447,7 @@ limit 5
 </DocTab>
 
 
-#### `scaleColor=red`
+#### `scaleColor=negative`
 
 <DocTab>
     <div slot='preview'>
@@ -455,7 +455,7 @@ limit 5
             <Column id=country />
             <Column id=country_id align=center/>
             <Column id=category align=center/>
-            <Column id=value_usd contentType=colorscale scaleColor=red/>
+            <Column id=value_usd contentType=colorscale scaleColor=negative/>
         </DataTable>
     </div>
 
@@ -464,12 +464,12 @@ limit 5
     <Column id=country />
     <Column id=country_id align=center/>
     <Column id=category align=center/>
-    <Column id=value_usd contentType=colorscale scaleColor=red/>
+    <Column id=value_usd contentType=colorscale scaleColor=negative/>
 </DataTable>
 ```
 </DocTab>
 
-#### `scaleColor=blue`
+#### `scaleColor=info`
 
 <DocTab>
     <div slot='preview'>
@@ -477,7 +477,7 @@ limit 5
             <Column id=country />
             <Column id=country_id align=center/>
             <Column id=category align=center/>
-            <Column id=value_usd contentType=colorscale scaleColor=blue/>
+            <Column id=value_usd contentType=colorscale scaleColor=info/>
         </DataTable>
     </div>
 
@@ -486,7 +486,7 @@ limit 5
     <Column id=country />
     <Column id=country_id align=center/>
     <Column id=category align=center/>
-    <Column id=value_usd contentType=colorscale scaleColor=blue/>
+    <Column id=value_usd contentType=colorscale scaleColor=info/>
 </DataTable>
 ```
 </DocTab>
@@ -1182,7 +1182,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
           <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
           <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
           <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' colGroup="GDP" contentType=delta/>
-          <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=red colGroup="Labour Market"/>
+          <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=negative colGroup="Labour Market"/>
           <Column id=population totalAgg=sum fmt='#,##0"M"' totalFmt='#,##0.0,"B"' colGroup="Labour Market"/>
           <Column id=interest_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' wrapTitle=false colGroup="Other"/>
           <Column id=inflation_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' colGroup="Other"/>
@@ -1197,7 +1197,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
   <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
   <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
   <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' colGroup="GDP" contentType=delta/>
-  <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=red colGroup="Labour Market"/>
+  <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=negative colGroup="Labour Market"/>
   <Column id=population totalAgg=sum fmt='#,##0"M"' totalFmt='#,##0.0,"B"' colGroup="Labour Market"/>
   <Column id=interest_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' wrapTitle=false colGroup="Other"/>
   <Column id=inflation_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct2' colGroup="Other"/>
@@ -1855,7 +1855,6 @@ Background color for bar chart
 
 <PropListing
     name=scaleColor
-    options={['green', 'blue', 'red', 'Hex color code', 'css color name']}
     defaultValue="green"
 >
 

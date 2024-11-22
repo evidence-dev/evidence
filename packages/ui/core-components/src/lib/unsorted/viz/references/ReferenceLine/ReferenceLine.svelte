@@ -14,6 +14,7 @@
 	import { toBoolean, toNumber } from '../../../../utils.js';
 	import { getThemeStores } from '../../../../themes/themes.js';
 	import chroma from 'chroma-js';
+	import { checkDeprecatedColor } from '../../../../deprecated-colors.js';
 
 	const { resolveColor } = getThemeStores();
 
@@ -46,6 +47,7 @@
 	 * @default "grey"
 	 */
 	export let color = 'grey';
+	$: color = checkDeprecatedColor('ReferenceLine', 'color', color);
 	$: colorStore = resolveColor(color);
 
 	/**
@@ -56,6 +58,7 @@
 
 	/** @type {string | undefined} */
 	export let lineColor = undefined;
+	$: lineColor = checkDeprecatedColor('ReferenceLine', 'lineColor', lineColor);
 	$: lineColorStore = resolveColor(lineColor);
 
 	/**
@@ -96,6 +99,7 @@
 
 	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColor = checkDeprecatedColor('ReferenceLine', 'labelColor', labelColor);
 	$: labelColorStore = resolveColor(labelColor);
 
 	/**
@@ -112,6 +116,11 @@
 
 	/** @type {string | undefined} */
 	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColor = checkDeprecatedColor(
+		'ReferenceLine',
+		'labelBackgroundColor',
+		labelBackgroundColor
+	);
 	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
@@ -125,6 +134,7 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColor = checkDeprecatedColor('ReferenceLine', 'labelBorderColor', labelBorderColor);
 	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */

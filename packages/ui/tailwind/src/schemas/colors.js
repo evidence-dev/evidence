@@ -20,12 +20,7 @@ export const BUILTIN_COLORS = /** @type {const} */ ([
 	'negative',
 	'negative-content',
 	'warning',
-	'warning-content',
-	'red',
-	'green',
-	'yellow',
-	'grey',
-	'blue'
+	'warning-content'
 ]);
 
 export const ThemeColorSchema = z.object({

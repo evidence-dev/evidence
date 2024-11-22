@@ -24,8 +24,8 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
   <Column id=month />
   <Column id=category />
   <Column id=sales_usd0k contentType=colorscale />
-  <Column id=num_orders_num0 contentType=colorscale scaleColor=red />
-  <Column id=aov_usd2 contentType=colorscale scaleColor=blue />
+  <Column id=num_orders_num0 contentType=colorscale scaleColor=negative />
+  <Column id=aov_usd2 contentType=colorscale scaleColor=info />
 </DataTable>
 
 

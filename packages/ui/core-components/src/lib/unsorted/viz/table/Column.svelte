@@ -7,6 +7,7 @@
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { getThemeStores } from '../../../themes/themes.js';
 	import { readable } from 'svelte/store';
+	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
 
 	const { theme, resolveColor } = getThemeStores();
 
@@ -76,7 +77,8 @@
 	export let colorMid = undefined;
 	export let colorBreakpoints = undefined;
 
-	export let scaleColor = 'green'; // name of predefined color palette, custom color, array of custom colors
+	export let scaleColor = 'positive';
+	$: scaleColor = checkDeprecatedColor('Column', 'scaleColor', scaleColor);
 	$: scaleColorStore =
 		typeof scaleColor === 'string' ? resolveColor(scaleColor) : readable(scaleColor);
 

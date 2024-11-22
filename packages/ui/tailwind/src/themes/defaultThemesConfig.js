@@ -83,26 +83,6 @@ export const defaultThemesConfig = {
 			'negative-content': {
 				light: colors.zinc[50],
 				dark: colors.zinc[950]
-			},
-			red: {
-				light: colors.red[600],
-				dark: colors.red[400]
-			},
-			green: {
-				light: colors.green[600],
-				dark: colors.green[400]
-			},
-			yellow: {
-				light: '#edb131',
-				dark: colors.yellow[400]
-			},
-			grey: {
-				light: colors.gray[600],
-				dark: colors.gray[400]
-			},
-			blue: {
-				light: colors.blue[600],
-				dark: colors.blue[400]
 			}
 		},
 		colorPalettes: {

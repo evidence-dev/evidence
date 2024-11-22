@@ -19,9 +19,9 @@ Evidence currently offers 4 types of annotations, which can be defined inline or
 <DocTab>
     <div slot='preview'>
         <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-            <ReferenceLine y=7500 label="Reference Line" hideValue labelPosition="aboveStart" color=green/>
-            <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label="Reference Area" color=yellow/>
-            <ReferencePoint x="2019-07-01" y=6590 label="Reference Point" labelPosition=bottom color=red/>
+            <ReferenceLine y=7500 label="Reference Line" hideValue labelPosition="aboveStart" color=positive/>
+            <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label="Reference Area" color=warning/>
+            <ReferencePoint x="2019-07-01" y=6590 label="Reference Point" labelPosition=bottom color=negative/>
             <Callout x="2021-05-01" y=11012 labelPosition=bottom labelWidth=fit>
                 Callout
                 Data trending up here
@@ -31,9 +31,9 @@ Evidence currently offers 4 types of annotations, which can be defined inline or
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <ReferenceLine y=7500 label="Reference Line" hideValue labelPosition="aboveStart" color=green/>
-    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label="Reference Area" color=yellow/>
-    <ReferencePoint x="2019-07-01" y=6590 label="Reference Point" labelPosition=bottom color=red/>
+    <ReferenceLine y=7500 label="Reference Line" hideValue labelPosition="aboveStart" color=positive/>
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label="Reference Area" color=warning/>
+    <ReferencePoint x="2019-07-01" y=6590 label="Reference Point" labelPosition=bottom color=negative/>
     <Callout x="2021-05-01" y=11012 labelPosition=bottom labelWidth=fit>
         Callout
         Data trending up here
@@ -174,7 +174,7 @@ GROUP BY slope, intercept, r_squared
 <DocTab>
     <div slot='preview'>
         <ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0 xFmt=usd>
-            <ReferenceLine data={regression} x=x y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
+            <ReferenceLine data={regression} x=x y=y x2=x2 y2=y2 label=label color=base-content-muted lineType=solid/>
         </ScatterPlot>
     </div>
 
@@ -185,7 +185,7 @@ GROUP BY slope, intercept, r_squared
 
 ```html
 <ScatterPlot data={orders_by_state} x=sales y=num_orders xMin=0 yMin=0>
-    <ReferenceLine data={regression} x=x y=y x2=x2 y2=y2 label=label color=grey lineType=solid/>
+    <ReferenceLine data={regression} x=x y=y x2=x2 y2=y2 label=label color=base-content-muted lineType=solid/>
 </ScatterPlot>
 ```
 
@@ -237,13 +237,13 @@ GROUP BY slope, intercept, r_squared
 <DocTab>
     <div slot='preview'> 
         <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-            <ReferenceLine y=11000 color=red hideValue=true lineWidth=3 lineType=solid/>
+            <ReferenceLine y=11000 color=negative hideValue=true lineWidth=3 lineType=solid/>
         </LineChart>
     </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
-    <ReferenceLine y=110000 color=red hideValue=true lineWidth=3 lineType=solid/>
+    <ReferenceLine y=110000 color=negative hideValue=true lineWidth=3 lineType=solid/>
 </LineChart>
 ```
 </DocTab>
@@ -280,22 +280,22 @@ GROUP BY slope, intercept, r_squared
 <DocTab>
     <div slot='preview'>
         <LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
-            <ReferenceLine y=1500 color=red label=red/>
-            <ReferenceLine y=3500 color=yellow label=yellow/>
-            <ReferenceLine y=5500 color=green label=green/>
-            <ReferenceLine y=7500 color=blue label=blue/>
-            <ReferenceLine y=9500 color=grey label=grey/>
+            <ReferenceLine y=1500 color=negative label=negative/>
+            <ReferenceLine y=3500 color=warning label=warning/>
+            <ReferenceLine y=5500 color=positive label=positive/>
+            <ReferenceLine y=7500 color=info label=info/>
+            <ReferenceLine y=9500 color=base-content-muted label=base-content-muted/>
             <ReferenceLine y=11500 color=#63178f label=custom/>
         </LineChart>
     </div>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
-    <ReferenceLine y=1500 color=red label=red/>
-    <ReferenceLine y=3500 color=yellow label=yellow/>
-    <ReferenceLine y=5500 color=green label=green/>
-    <ReferenceLine y=7500 color=blue label=blue/>
-    <ReferenceLine y=9500 color=grey label=grey/>
+    <ReferenceLine y=1500 color=negative label=negative/>
+    <ReferenceLine y=3500 color=warning label=warning/>
+    <ReferenceLine y=5500 color=positive label=positive/>
+    <ReferenceLine y=7500 color=info label=info/>
+    <ReferenceLine y=9500 color=base-content-muted label=base-content-muted/>
     <ReferenceLine y=11500 color=#63178f label=custom/>
 </LineChart>
 ```
@@ -555,13 +555,13 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 ### X-axis Defined Inline
 
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=yellow/>
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=warning/>
     <ReferenceArea xMin='2021-03-14' xMax='2021-08-15' label=Second/>
 </LineChart>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
-    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=yellow/>
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=warning/>
     <ReferenceArea xMin='2021-03-14' xMax='2021-08-15' label=Second/>
 </LineChart>
 ```
@@ -569,16 +569,16 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 ### Y-axis Defined Inline
 
 <LineChart data={orders_by_month} x=month y=num_orders yAxisTitle="Orders per Month">
-    <ReferenceArea yMin=250 color=green label="Good"/>
-    <ReferenceArea yMin=100 yMax=250 color=yellow label="Okay"/>
-    <ReferenceArea yMin=0 yMax=100 color=red label="Bad"/>
+    <ReferenceArea yMin=250 color=positive label="Good"/>
+    <ReferenceArea yMin=100 yMax=250 color=warning label="Okay"/>
+    <ReferenceArea yMin=0 yMax=100 color=negative label="Bad"/>
 </LineChart>
 
 ```html
 <LineChart data={orders_by_month} x=month y=num_orders yAxisTitle="Orders per Month">
-    <ReferenceArea yMin=250 color=green label="Good"/>
-    <ReferenceArea yMin=100 yMax=250 color=yellow label="Okay"/>
-    <ReferenceArea yMin=0 yMax=100 color=red label="Bad"/>
+    <ReferenceArea yMin=250 color=positive label="Good"/>
+    <ReferenceArea yMin=100 yMax=250 color=warning label="Okay"/>
+    <ReferenceArea yMin=0 yMax=100 color=negative label="Bad"/>
 </LineChart>
 ```
 
@@ -618,7 +618,7 @@ On a continous x-axis (dates or numbers), the reference area will start and stop
 
 ```html
 <ScatterPlot data={countries} x=gdp_usd y=gdp_growth_pct1 tooltipTitle=country series=continent>
-    <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=grey border=true/>
+    <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=base-content-muted border=true/>
 </ScatterPlot>
 ```
 
@@ -656,21 +656,21 @@ Reference areas appear behind chart gridlines, including reference area labels. 
 ### Colours
 
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 >
-    <ReferenceArea xMax='2019-04-01' label=blue color=blue/>
-    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=red color=red/>
-    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=yellow color=yellow/>
-    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=green color=green/>
-    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=grey color=grey/>
+    <ReferenceArea xMax='2019-04-01' label=info color=info/>
+    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=negative color=negative/>
+    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=warning color=warning/>
+    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=positive color=positive/>
+    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=base-content-muted color=base-content-muted/>
     <ReferenceArea xMin='2021-09-01' label=custom color=#f2dbff labelColor=#4d1070/>
 </LineChart>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0 >
-    <ReferenceArea xMax='2019-04-01' label=blue color=blue/>
-    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=red color=red/>
-    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=yellow color=yellow/>
-    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=green color=green/>
-    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=grey color=grey/>
+    <ReferenceArea xMax='2019-04-01' label=info color=info/>
+    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=negative color=negative/>
+    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=warning color=warning/>
+    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=positive color=positive/>
+    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=base-content-muted color=base-content-muted/>
     <ReferenceArea xMin='2021-09-01' label=custom color=#f2dbff labelColor=#4d1070/>
 </LineChart>
 ```
@@ -915,10 +915,10 @@ where sales_diff < -2000
         y=6590
         label="2019-07-01 : Big drop"
         labelPosition=right
-        color=red
+        color=negative
         symbolSize=16
         symbolBorderWidth=1
-        symbolBorderColor=red
+        symbolBorderColor=negative
         symbolOpacity=0.25
     />
 </LineChart>
@@ -930,10 +930,10 @@ where sales_diff < -2000
         y=6590
         label="2019-07-01 : Big drop"
         labelPosition=right
-        color=red
+        color=negative
         symbolSize=16
         symbolBorderWidth=1
-        symbolBorderColor=red
+        symbolBorderColor=negative
         symbolOpacity=0.25
     />
 </LineChart>
@@ -980,21 +980,21 @@ where sales_diff < -2000
 ### Colours
 
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <ReferencePoint x="2019-03-01" y=3000 color=blue label=blue />
-    <ReferencePoint x="2019-09-01" y=3000 color=red label=red />
-    <ReferencePoint x="2020-03-01" y=3000 color=yellow label=yellow />
-    <ReferencePoint x="2020-09-01" y=3000 color=green label=green />
-    <ReferencePoint x="2021-03-01" y=3000 color=grey label=grey />
+    <ReferencePoint x="2019-03-01" y=3000 color=info label=info />
+    <ReferencePoint x="2019-09-01" y=3000 color=negative label=negative />
+    <ReferencePoint x="2020-03-01" y=3000 color=warning label=warning />
+    <ReferencePoint x="2020-09-01" y=3000 color=positive label=positive />
+    <ReferencePoint x="2021-03-01" y=3000 color=base-content-muted label=base-content-muted />
     <ReferencePoint x="2021-09-01" y=3000 color=#63178f label=custom />
 </LineChart>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <ReferencePoint x="2019-03-01" y=3000 color=blue label=blue />
-    <ReferencePoint x="2019-09-01" y=3000 color=red label=red />
-    <ReferencePoint x="2020-03-01" y=3000 color=yellow label=yellow />
-    <ReferencePoint x="2020-09-01" y=3000 color=green label=green />
-    <ReferencePoint x="2021-03-01" y=3000 color=grey label=grey />
+    <ReferencePoint x="2019-03-01" y=3000 color=info label=info />
+    <ReferencePoint x="2019-09-01" y=3000 color=negative label=negative />
+    <ReferencePoint x="2020-03-01" y=3000 color=warning label=warning />
+    <ReferencePoint x="2020-09-01" y=3000 color=positive label=positive />
+    <ReferencePoint x="2021-03-01" y=3000 color=base-content-muted label=base-content-muted />
     <ReferencePoint x="2021-09-01" y=3000 color=#63178f label=custom />
 </LineChart>
 ```
@@ -1217,10 +1217,10 @@ where sales_diff < -2000
         y=6590
         label="Sales really dropped here"
         labelPosition=right
-        color=red
+        color=negative
         symbolSize=16
         symbolBorderWidth=1
-        symbolBorderColor=red
+        symbolBorderColor=negative
         symbolOpacity=0.25
     />
 </LineChart>
@@ -1232,10 +1232,10 @@ where sales_diff < -2000
         y=6590
         label="Sales really dropped here"
         labelPosition=right
-        color=red
+        color=negative
         symbolSize=16
         symbolBorderWidth=1
-        symbolBorderColor=red
+        symbolBorderColor=negative
         symbolOpacity=0.25
     />
 </LineChart>
@@ -1284,21 +1284,21 @@ where sales_diff < -2000
 ### Colours
 
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <Callout x="2019-03-01" y=3000 color=blue label=blue />
-    <Callout x="2019-09-01" y=3000 color=red label=red />
-    <Callout x="2020-03-01" y=3000 color=yellow label=yellow />
-    <Callout x="2020-09-01" y=3000 color=green label=green />
-    <Callout x="2021-03-01" y=3000 color=grey label=grey />
+    <Callout x="2019-03-01" y=3000 color=info label=info />
+    <Callout x="2019-09-01" y=3000 color=negative label=negative />
+    <Callout x="2020-03-01" y=3000 color=warning label=warning />
+    <Callout x="2020-09-01" y=3000 color=positive label=positive />
+    <Callout x="2021-03-01" y=3000 color=base-content-muted label=base-content-muted />
     <Callout x="2021-09-01" y=3000 color=#63178f label=custom />
 </LineChart>
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
-    <Callout x="2019-03-01" y=3000 color=blue label=blue />
-    <Callout x="2019-09-01" y=3000 color=red label=red />
-    <Callout x="2020-03-01" y=3000 color=yellow label=yellow />
-    <Callout x="2020-09-01" y=3000 color=green label=green />
-    <Callout x="2021-03-01" y=3000 color=grey label=grey />
+    <Callout x="2019-03-01" y=3000 color=info label=info />
+    <Callout x="2019-09-01" y=3000 color=negative label=negative />
+    <Callout x="2020-03-01" y=3000 color=warning label=warning />
+    <Callout x="2020-09-01" y=3000 color=positive label=positive />
+    <Callout x="2021-03-01" y=3000 color=base-content-muted label=base-content-muted />
     <Callout x="2021-09-01" y=3000 color=#63178f label=custom />
 </LineChart>
 ```
