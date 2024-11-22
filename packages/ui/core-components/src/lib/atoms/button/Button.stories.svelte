@@ -12,7 +12,7 @@
 	import { Story } from '@storybook/addon-svelte-csf';
 
 	/** @type {import('./Button.svelte').ButtonVariant[]} */
-	const variants = ['primary', 'secondary', 'accent', 'info', 'success', 'warn', 'error'];
+	const variants = ['primary', 'secondary', 'accent', 'info', 'positive', 'warning', 'negative'];
 
 	/** @type {import('./Button.svelte').ButtonSize[]} */
 	const sizes = ['sm', 'md', 'base', 'lg'];

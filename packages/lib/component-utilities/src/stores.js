@@ -55,7 +55,7 @@ function createToastsObject() {
 	};
 }
 
-/** @typedef {"error" | "warning" | "success" | "info"} ToastStatus */
+/** @typedef {"negative" | "warning" | "positive" | "info"} ToastStatus */
 /** @typedef {{ id: string; status?: ToastStatus; title: string; message: string; }} Toast */
 /** @type {import('svelte/store').Readable<Toast[]> & { add: (toast: Toast, timeout: number) => void }} */
 export const toasts = createToastsObject();

@@ -16,14 +16,6 @@ export const defaultThemesConfig = {
 				light: colors.blue[50],
 				dark: colors.blue[950]
 			},
-			secondary: {
-				light: colors.slate[600],
-				dark: colors.slate[400]
-			},
-			'secondary-content': {
-				light: colors.slate[50],
-				dark: colors.slate[950]
-			},
 			accent: {
 				light: colors.orange[700],
 				dark: colors.orange[300]
@@ -117,10 +109,6 @@ export const defaultThemesConfig = {
 			default: {
 				light: ['lightblue', 'darkblue'],
 				dark: ['lightblue', 'darkblue']
-			},
-			heat: {
-				light: ['rgb(254,234,159)', 'rgb(218,66,41)'],
-				dark: ['rgb(254,234,159)', 'rgb(218,66,41)']
 			}
 		}
 	}

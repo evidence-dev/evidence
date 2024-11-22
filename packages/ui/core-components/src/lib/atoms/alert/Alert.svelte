@@ -1,14 +1,33 @@
 <script context="module">
 	export const evidenceInclude = true;
+
+	const DEPRECATED_STATUS_MAP = /** @type {const} */ ({
+		default: 'base',
+		danger: 'negative',
+		success: 'positive'
+	});
+
+	const isDeprecatedStatus = (input) => Object.keys(DEPRECATED_STATUS_MAP).includes(input);
+
+	const checkDeprecatedStatus = (input) => {
+		if (isDeprecatedStatus(input)) {
+			console.warn(
+				`[Alert] The status "${input}" is deprecated. Please use "${DEPRECATED_STATUS_MAP[input]}" instead.`
+			);
+			return DEPRECATED_STATUS_MAP[input];
+		}
+		return input;
+	};
 </script>
 
 <script>
 	// Based on the alert from FlowBite: https://flowbite.com/docs/components/alerts/
 	/**
 	 * Defines the color of the alert
-	 * @type {"default" | "info" | "danger" | "success" | "warning"}
+	 * @type {"base" | "info" | "positive" | "warning" | "negative"}
 	 */
-	export let status = 'default';
+	export let status = 'base';
+	$: status = checkDeprecatedStatus(status);
 </script>
 
 <div class="alert {status}" role="alert">
@@ -24,10 +43,10 @@
 		&.info {
 			@apply border-info/50 bg-info/10;
 		}
-		&.danger {
+		&.negative {
 			@apply border-negative/50 bg-negative/10;
 		}
-		&.success {
+		&.positive {
 			@apply border-positive/50 bg-positive/10;
 		}
 		&.warning {

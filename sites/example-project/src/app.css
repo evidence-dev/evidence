@@ -12,6 +12,11 @@
 		@apply select-none;
 	}
 
+	/* Default border color */
+	* {
+		@apply border-base-300;
+	}
+
 	/* osx style scrollbars */
 	.pretty-scrollbar {
 		scrollbar-width: thin;

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { fromEntries } from './utils.js';
 
-export const BUILTIN_COLOR_SCALES = /** @type {const} */ (['default', 'heat']);
+export const BUILTIN_COLOR_SCALES = /** @type {const} */ (['default']);
 
 export const ThemeColorScaleSchema = z.object({
 	light: z.array(z.string()),

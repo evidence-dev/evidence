@@ -13,8 +13,8 @@
 </script>
 
 <Story name="All variants" let:args>
-	<Toast {...args} status="error" title="Title" message="This is the toast message" />
+	<Toast {...args} status="negative" title="Title" message="This is the toast message" />
 	<Toast {...args} status="warning" title="Title" message="This is the toast message" />
-	<Toast {...args} status="success" title="Title" message="This is the toast message" />
+	<Toast {...args} status="positive" title="Title" message="This is the toast message" />
 	<Toast {...args} status="info" title="Title" message="This is the toast message" />
 </Story>

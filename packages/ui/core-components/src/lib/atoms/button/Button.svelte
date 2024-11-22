@@ -2,7 +2,7 @@
 	export const evidenceInclude = true;
 
 	/** @typedef {"sm" | "md" | "base" | "lg"} ButtonSize */
-	/** @typedef {"primary" | "secondary" | "accent" | "info" | "success" | "warn" | "error"} ButtonVariant */
+	/** @typedef {"primary" | "secondary" | "accent" | "info" | "positive" | "warning" | "negative"} ButtonVariant */
 	/** @typedef {"left" | "right"} ButtonIconPosition */
 	/** @typedef {boolean} ButtonOutline */
 
@@ -20,6 +20,24 @@
 		md: 'w-4',
 		sm: 'w-3',
 		lg: 'w-5'
+	};
+
+	const DEPRECATED_VARIANTS_MAP = /** @type {const} */ ({
+		success: 'positive',
+		warn: 'warning',
+		error: 'negative'
+	});
+
+	const isDeprecatedVariant = (variant) => DEPRECATED_VARIANTS_MAP[variant] !== undefined;
+
+	const checkDeprecatedVariant = (variant) => {
+		if (isDeprecatedVariant(variant)) {
+			console.warn(
+				`The variant "${variant}" is deprecated. Please use "${DEPRECATED_VARIANTS_MAP[variant]}" instead.`
+			);
+			return DEPRECATED_VARIANTS_MAP[variant];
+		}
+		return variant;
 	};
 </script>
 
@@ -39,6 +57,7 @@
 
 	/** @type {ButtonVariant} */
 	export let variant = 'info';
+	$: variant = checkDeprecatedVariant(variant);
 
 	/** @type {boolean} */
 	export let outline = false;
@@ -86,12 +105,12 @@
 		}
 
 		&.variant-secondary {
-			--bg: theme(colors.secondary);
-			--text: theme(colors.secondary-content);
+			--bg: theme(colors.base-300);
+			--text: theme(colors.base-content);
 			&.outlined {
-				--border: theme(colors.secondary);
-				--text: theme(colors.secondary);
-				--hover-bg: theme(colors.secondary / 0.1);
+				--border: theme(colors.base-300);
+				--text: theme(colors.base-300);
+				--hover-bg: theme(colors.base-300 / 0.1);
 			}
 		}
 
@@ -115,7 +134,7 @@
 			}
 		}
 
-		&.variant-success {
+		&.variant-positive {
 			--bg: theme(colors.positive);
 			--text: theme(colors.positive-content);
 			&.outlined {
@@ -125,7 +144,7 @@
 			}
 		}
 
-		&.variant-warn {
+		&.variant-warning {
 			--bg: theme(colors.warning);
 			--text: theme(colors.warning-content);
 			&.outlined {
@@ -135,7 +154,7 @@
 			}
 		}
 
-		&.variant-error {
+		&.variant-negative {
 			--bg: theme(colors.negative);
 			--text: theme(colors.negative-content);
 			&.outlined {

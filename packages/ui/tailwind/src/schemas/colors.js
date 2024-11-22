@@ -4,8 +4,6 @@ import { fromEntries } from './utils.js';
 export const BUILTIN_COLORS = /** @type {const} */ ([
 	'primary',
 	'primary-content',
-	'secondary',
-	'secondary-content',
 	'accent',
 	'accent-content',
 	'base-100',

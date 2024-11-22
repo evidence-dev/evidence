@@ -70,7 +70,7 @@
 			<SourceNameField bind:sourceName={newSourceName} bind:nameError />
 		</div>
 		<div class="ml-auto">
-			<Button size="md" icon={DeviceFloppy} variant="success" type="submit">Confirm</Button>
+			<Button size="md" icon={DeviceFloppy} variant="positive" type="submit">Confirm</Button>
 		</div>
 	</form>
 </div>
