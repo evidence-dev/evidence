@@ -16,14 +16,6 @@ export const defaultThemesConfig = {
 				light: colors.blue[50],
 				dark: colors.blue[950]
 			},
-			secondary: {
-				light: colors.slate[600],
-				dark: colors.slate[400]
-			},
-			'secondary-content': {
-				light: colors.slate[50],
-				dark: colors.slate[950]
-			},
 			accent: {
 				light: colors.orange[700],
 				dark: colors.orange[300]

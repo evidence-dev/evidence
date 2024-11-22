@@ -6,7 +6,6 @@ export const badgeVariants = tv({
 	variants: {
 		variant: {
 			default: 'border-transparent bg-base-300 text-base-content shadow hover:bg-base-300/80',
-			secondary: 'border-transparent bg-secondary text-secondary-content hover:bg-secondary/80',
 			destructive:
 				'border-transparent bg-negative text-negative-content shadow hover:bg-negative/80',
 			outline: 'text-foreground'

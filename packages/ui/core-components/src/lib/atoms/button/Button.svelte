@@ -86,12 +86,12 @@
 		}
 
 		&.variant-secondary {
-			--bg: theme(colors.secondary);
-			--text: theme(colors.secondary-content);
+			--bg: theme(colors.base-300);
+			--text: theme(colors.base-content);
 			&.outlined {
-				--border: theme(colors.secondary);
-				--text: theme(colors.secondary);
-				--hover-bg: theme(colors.secondary / 0.1);
+				--border: theme(colors.base-300);
+				--text: theme(colors.base-300);
+				--hover-bg: theme(colors.base-300 / 0.1);
 			}
 		}
 
