@@ -103,8 +103,8 @@
 							>
 								{option}
 							</button>
-							<div slot="content" class="text-xs text-center min-w-28">
-								<p class="font-mono bg-base-100 rounded-t-md px-4 py-1">
+							<div slot="content" class="text-xs bg-base-100 text-center min-w-28 rounded-md">
+								<p class="font-mono bg-base-200 rounded-t-md px-4 py-1">
 									{name}=<span class="text-info">{option}</span>
 								</p>
 								<p class="px-4 py-1 font-sans">
