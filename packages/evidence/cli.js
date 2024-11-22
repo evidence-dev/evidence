@@ -36,7 +36,6 @@ const populateTemplate = function () {
 	// - telemetry profile
 	// - static folder (mainly to preserve the data directory)
 	const keepers = new Set([
-		'evidence.settings.json',
 		'.profile.json',
 		'static',
 		'.evidence-queries'
