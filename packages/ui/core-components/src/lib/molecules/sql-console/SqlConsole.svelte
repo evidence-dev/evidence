@@ -109,7 +109,7 @@
 				</Button>
 				<Button
 					size="sm"
-					variant="success"
+					variant="positive"
 					outline
 					icon={PlayerPlay}
 					on:click={() => {

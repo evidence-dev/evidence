@@ -170,7 +170,7 @@
 		</Button>
 
 		<Button
-			variant="success"
+			variant="positive"
 			icon={DeviceFloppy}
 			size="md"
 			disabled={configurationLoading || validationLoading}

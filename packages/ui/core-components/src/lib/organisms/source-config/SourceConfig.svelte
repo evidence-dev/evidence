@@ -101,7 +101,7 @@
 					<Button
 						icon={FolderPlus}
 						size="md"
-						variant="success"
+						variant="positive"
 						on:click={() => (showNewSource = !showNewSource)}
 					>
 						Add new source
