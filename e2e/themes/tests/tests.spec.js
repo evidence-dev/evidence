@@ -29,3 +29,23 @@ test('should change colors based on theme', async ({ page }) => {
 	await expect(divMyCustomColorClass).toHaveCSS('background-color', 'rgb(254, 220, 186)');
 	await expect(divMyCustomColorVar).toHaveCSS('background-color', 'rgb(254, 220, 186)');
 });
+
+test('body text should be computed from base', async ({ page }) => {
+	await page.goto('/');
+	await waitForPageToLoad(page);
+
+	const body = await page.locator('body');
+	const text = await page.getByText('This is some body text');
+
+	await switchAppearance(page, 'system');
+	await expect(text).toHaveCSS('color', 'rgb(248, 236, 248)');
+	await expect(body).toHaveCSS('background-color', 'rgb(23, 1, 24)');
+
+	await switchAppearance(page, 'light');
+	await expect(text).toHaveCSS('color', 'rgb(17, 6, 19)');
+	await expect(body).toHaveCSS('background-color', 'rgb(253, 244, 255)');
+
+	await switchAppearance(page, 'dark');
+	await expect(text).toHaveCSS('color', 'rgb(248, 236, 248)');
+	await expect(body).toHaveCSS('background-color', 'rgb(23, 1, 24)');
+});

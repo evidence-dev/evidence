@@ -13,3 +13,5 @@
 <div data-testid="div-myCustomColor-var" style="background: var(--myCustomColor)">
 	div-myCustomColor-var
 </div>
+
+This is some body text
