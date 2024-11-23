@@ -78,6 +78,12 @@
 			"import": "./src/plugins/index.js",
 			"require": null,
 			"types": "./src/plugins/index.js"
+		},
+		"./plugins/discoverPluginPackageRootPathSync": {
+			"default": "./src/plugins/discoverPluginPackageRootPathSync.js",
+			"import": "./src/plugins/discoverPluginPackageRootPathSync.js",
+			"require": "./src/plugins/discoverPluginPackageRootPathSync.js",
+			"types": "./src/plugins/discoverPluginPackageRootPathSync.js"
 		}
 	},
 	"scripts": {
