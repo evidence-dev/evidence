@@ -69,9 +69,7 @@ const DatasourcePluginSchema = BasePluginPackageSchema.extend({
 	evidence: z.object({
 		datasources: z.array(
 			z.union([
-				z.string({
-					description: 'Name of a supported database, this value is used in the UI'
-				}),
+				z.string({ description: 'Name of a supported database, this value is used in the UI' }),
 				z.array(z.string(), {
 					description:
 						'Group of names that are aliases of the same database. First value is used in UI'
