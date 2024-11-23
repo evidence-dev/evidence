@@ -197,6 +197,7 @@ const prog = sade('evidence');
 prog
 	.command('dev')
 	.option('--debug', 'Enables verbose console logs')
+	.option('--override-exec', 'Overrides the method of execution', 'npx')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
 		increaseNodeMemoryLimit();
@@ -204,6 +205,9 @@ prog
 			enableDebug();
 			delete args.debug;
 		}
+
+		const executable = args['override-exec'] || 'npx'
+		delete args['override-exec']
 
 		loadEnvFile();
 
@@ -233,7 +237,7 @@ ${chalk.bold('[!] Unable to load source manifest')}
 
 		logQueryEvent('dev-server-start', undefined, undefined, undefined, true);
 		// Run svelte kit dev in the hidden directory
-		const child = spawn(`npx vite dev --port 3000`, flatArgs, {
+		const child = spawn(`${executable} vite dev --port 3000`, flatArgs, {
 			shell: true,
 			detached: false,
 			cwd: '.evidence/template',
@@ -273,6 +277,7 @@ prog
 prog
 	.command('build')
 	.option('--debug', 'Enables verbose console logs')
+	.option('--override-exec', 'Overrides the method of execution', 'npx')
 	.describe('build production outputs')
 	.action((args) => {
 		increaseNodeMemoryLimit();
@@ -280,16 +285,21 @@ prog
 			enableDebug();
 			delete args.debug;
 		}
+
+		const executable = args['override-exec'] || 'npx'
+		delete args['override-exec']
+
 		loadEnvFile();
 		populateTemplate();
 
 		logQueryEvent('build-start');
-		buildHelper('npx vite build', args);
+		buildHelper(`${executable} vite build`, args);
 	});
 
 prog
 	.command('build:strict')
 	.option('--debug', 'Enables verbose console logs')
+	.option('--override-exec', 'Overrides the method of execution', 'npx')
 	.describe('build production outputs and fails on error')
 	.action((args) => {
 		increaseNodeMemoryLimit();
@@ -297,12 +307,16 @@ prog
 			enableDebug();
 			delete args.debug;
 		}
+
+		const executable = args['override-exec'] || 'npx'
+		delete args['override-exec']
+
 		loadEnvFile();
 		populateTemplate();
 		strictMode();
 
 		logQueryEvent('build-strict-start');
-		buildHelper('npx vite build', args);
+		buildHelper(`${executable} vite build`, args);
 	});
 
 prog
@@ -349,12 +363,18 @@ prog
 prog
 	.command('preview')
 	.describe('preview the production build')
+	.option('--debug', 'Enables verbose console logs')
+	.option('--override-exec', 'Overrides the method of execution', 'npx')
 	.action((args) => {
 		increaseNodeMemoryLimit();
 		if (args.debug) {
 			enableDebug();
 			delete args.debug;
 		}
+
+		const executable = args['override-exec'] || 'npx'
+		delete args['override-exec']
+
 		loadEnvFile();
 		const buildExists = fs.lstatSync(path.join('build'), {
 			throwIfNoEntry: false
@@ -368,7 +388,7 @@ prog
 
 		logQueryEvent('preview-server-start', undefined, undefined, undefined, true);
 
-		let command = 'npx serve build';
+		let command = `${executable} serve build`;
 		if (process.env.VITE_EVIDENCE_SPA === 'true') {
 			command += ' -s';
 		}
