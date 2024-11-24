@@ -250,38 +250,24 @@ function isInComponentContext(document: TextDocument, position: Position): boole
 
 	// Search backward to find the nearest `<`
 	const backwardText = text.slice(0, offset);
-	const openTagIndex = backwardText.lastIndexOf('<');
 
-	if (openTagIndex === -1) {
+	const openTagIndex = backwardText.lastIndexOf('<');
+	const closeTagIndex = backwardText.lastIndexOf('>');
+
+	if (openTagIndex === -1 || closeTagIndex > openTagIndex) {
 		console.log('No opening tag found.');
 		return false;
 	}
 
 	// Extract the tag starting from the nearest `<`
-	const forwardText = text.slice(openTagIndex);
 	const componentPattern = /^<([A-Za-z0-9]+)(?:\s[\s\S]*?)?(>|\/?>)?/;
-	const match = componentPattern.exec(forwardText);
+	const match = componentPattern.exec(backwardText);
 
 	if (match) {
-		const tagName = match[1];
-		const tagIsComplete = !!match[2];
-		const tagStart = openTagIndex; // Where the tag starts
-		const tagEnd = tagIsComplete
-			? openTagIndex + match[0].length // If complete, the tag ends at `>` or `/>`
-			: offset; // If incomplete, treat the cursor as the tag end
-
-		// Validate if the cursor is strictly inside the tag boundaries
-		if (offset >= tagStart && offset <= tagEnd) {
-			console.log('Cursor is inside component:', tagName);
-			return true;
-		}
-
-		console.log('Cursor is outside completed tag boundaries.');
+		return true;
+	} else {
 		return false;
 	}
-
-	console.log('No valid component found.');
-	return false;
 }
 
 
@@ -832,12 +818,14 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 	// Add props as suggestions and include sortText based on rank
 	for (const prop of componentDefinition.props) {
 		const item = new CompletionItem(prop.name, CompletionItemKind.Property);
+		// item.insertText = new SnippetString(prop.name + '=');
 		item.documentation = new MarkdownString(
 			`**Description:** ${prop.description || 'No description available'}\n\n` +
-			`**Type:** ${prop.type}\n` +
-			`**Default:** ${prop.defaultValue || 'None'}`
+			`**Type:** ${prop.type}\n\n` +
+			`**Default:** ${prop.defaultValue || 'None'}\n\n` +
+			`**Options:** ${prop.options}`
 		);
-		item.insertText = prop.name;
+		item.insertText = prop.name + '=';
 		item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
 		completionItems.push(item);
 	}
