@@ -260,8 +260,8 @@ function isInComponentContext(document: TextDocument, position: Position): boole
 	}
 
 	// Extract the tag starting from the nearest `<`
-	const componentPattern = /^<([A-Za-z0-9]+)(?:\s[\s\S]*?)?(>|\/?>)?/;
-	const match = componentPattern.exec(backwardText);
+	const componentPattern = /^<([A-Za-z0-9]+)(?:\s[\s\S]*?)/;
+	const match = componentPattern.exec(backwardText.slice(openTagIndex, offset));
 
 	if (match) {
 		return true;
@@ -780,6 +780,40 @@ async function provideSQLCompletionItems(
 
 	return completionItems;
 }
+
+function extractQueryNames(text: string): string[] {
+	const queries = new Set<string>(); // Use a Set to avoid duplicates
+
+	// Frontmatter: `queries: - myquery1: myquery1.sql`
+	const frontmatterPattern = /^queries:\s*([\s\S]*?)(?:\n{2,}|\n$|$)/m; // Match the `queries` block
+	const frontmatterMatch = text.match(frontmatterPattern);
+	if (frontmatterMatch) {
+		const queryLines = frontmatterMatch[1].split('\n').map((line) => line.trim());
+		for (const line of queryLines) {
+			const match = line.match(/- ([a-zA-Z0-9_]+):/); // Extract query names like `- myquery1:`
+			if (match) {
+				queries.add(match[1]);
+			}
+		}
+	}
+
+	// Non-SQL Markdown Blocks: ```myquery1
+	const nonSQLPattern = /```([a-zA-Z0-9_]+)\n/g;
+	const nonSQLMatches = [...text.matchAll(nonSQLPattern)];
+	for (const match of nonSQLMatches) {
+		queries.add(match[1]);
+	}
+
+	// SQL Markdown Blocks: ```sql myquery1
+	const sqlPattern = /```sql\s+([a-zA-Z0-9_]+)\n/g;
+	const sqlMatches = [...text.matchAll(sqlPattern)];
+	for (const match of sqlMatches) {
+		queries.add(match[1]);
+	}
+
+	return [...queries]; // Convert Set to Array for the final result
+}
+
 
 
 async function provideComponentCompletionItems(document: TextDocument, position: Position) {
