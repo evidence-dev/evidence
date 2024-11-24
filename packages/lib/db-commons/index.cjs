@@ -137,6 +137,13 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 		let null_columns = column_names.filter((column) => firstRow[column] == null);
 		while (null_columns.length > 0) {
 			const next = await iterator.next().then((x) => x.value);
+
+			// When the interator is done, next will be { done: true, value: undefined }
+			// We want to break out of the loop when we reach the end of the iterator
+			if (!next) {
+				break;
+			}
+
 			preread_rows.push(standardizeRow(next));
 			null_columns = null_columns.filter((column) => next[column] == null);
 		}
