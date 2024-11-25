@@ -1,4 +1,4 @@
-import { Type, Table } from 'apache-arrow';
+import { Type } from 'apache-arrow';
 
 /**
  * Converts an Apache Arrow type to an Evidence type.
@@ -24,40 +24,55 @@ function apacheToEvidenceType(type) {
 
 /**
  * Converts an Apache Arrow table to a Javascript array.
- * @param {import("apache-arrow").Table | import("apache-arrow").Vector} table_or_vec
+ * @param {import("apache-arrow").Table} table
  * @returns {any[]}
  */
-export function arrowTableToJSON(table_or_vec) {
-	if (table_or_vec == null) return [];
-	const arr = table_or_vec.toArray();
+export function arrowTableToJSON(table) {
+	if (table == null) return [];
+	const arr = table.toArray();
 
-	let date_cols = [],
-		list_cols = [];
-	if (table_or_vec instanceof Table) {
-		Object.defineProperty(arr, '_evidenceColumnTypes', {
-			enumerable: false,
-			value: table_or_vec.schema.fields.map((field) => ({
-				name: field.name,
-				evidenceType: apacheToEvidenceType(field.type),
-				typeFidelity: 'precise'
-			}))
-		});
+	Object.defineProperty(arr, '_evidenceColumnTypes', {
+		enumerable: false,
+		value: table.schema.fields.map((field) => ({
+			name: field.name,
+			evidenceType: apacheToEvidenceType(field.type),
+			typeFidelity: 'precise'
+		}))
+	});
 
-		date_cols = table_or_vec.schema.fields.filter((field) => field.type.typeId === Type.Date);
-		list_cols = table_or_vec.schema.fields.filter((field) => field.type.typeId === Type.List);
-	} else {
-		date_cols =
-			table_or_vec.type?.children?.filter((field) => field.type.typeId === Type.Date) ?? [];
-		list_cols =
-			table_or_vec.type?.children?.filter((field) => field.type.typeId === Type.List) ?? [];
-	}
+	const date_cols = table.schema.fields.filter((field) => field.type.typeId === Type.Date);
+	const list_cols = table.schema.fields.filter((field) => field.type.typeId === Type.List);
 
 	for (const row of arr) {
 		for (const col of date_cols) {
 			row[col.name] = new Date(row[col.name]);
 		}
 		for (const col of list_cols) {
-			row[col.name] = arrowTableToJSON(row[col.name]);
+			row[col.name] = arrowVectorToJSON(row[col.name]);
+		}
+	}
+
+	return arr;
+}
+
+/**
+ * Converts an Apache Arrow vector to a Javascript array.
+ * @param {import("apache-arrow").Vector} vector
+ * @returns {any[]}
+ */
+function arrowVectorToJSON(vector) {
+	if (vector == null) return [];
+	const arr = vector.toArray();
+
+	const date_cols = vector.type?.children?.filter((field) => field.type.typeId === Type.Date) ?? [];
+	const list_cols = vector.type?.children?.filter((field) => field.type.typeId === Type.List) ?? [];
+
+	for (const row of arr) {
+		for (const col of date_cols) {
+			row[col.name] = new Date(row[col.name]);
+		}
+		for (const col of list_cols) {
+			row[col.name] = arrowVectorToJSON(row[col.name]);
 		}
 	}
 
