@@ -18,6 +18,10 @@ You can also configure Evidence as a [Single Page App (SPA)](/deployment/renderi
 
 The easiest way to deploy Evidence is on [Evidence Cloud](/deployment/evidence-cloud). Evidence Cloud is free for public apps, and has paid plans for private apps.
 
+## Self-host
+
+You can also self-host Evidence anywhere suitable for hosting static sites. See guides for [AWS](/deployment/aws-amplify), [Azure](/deployment/azure-static-apps), [GCP](/deployment/gcp), [Cloudflare](/deployment/cloudflare-pages), [GitHub](/deployment/github-pages), [GitLab](/deployment/gitlab-pages), [Hugging Face](/deployment/hugging-face-spaces), [Netlify](/deployment/netlify) or [Vercel](/deployment/vercel).
+
 ## Build Process
 
 Evidence doesn't run new queries each time someone visits one of your reports.
