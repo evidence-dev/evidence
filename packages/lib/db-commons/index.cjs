@@ -138,7 +138,7 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 		while (null_columns.length > 0) {
 			const next = await iterator.next().then((x) => x.value);
 
-			// When the interator is done, next will be { done: true, value: undefined }
+			// When the iterator is done, next will be { done: true, value: undefined }
 			// We want to break out of the loop when we reach the end of the iterator
 			if (!next) {
 				break;
