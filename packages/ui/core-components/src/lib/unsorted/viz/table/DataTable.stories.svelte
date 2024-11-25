@@ -392,7 +392,6 @@
 	<h3>AreaMap Error</h3>
 	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_codeERROR" />
 </Story>
-
 <Story name="Reactive Datatable"
 			 play={async ({ canvasElement }) => {
 		const screen = within(canvasElement);
