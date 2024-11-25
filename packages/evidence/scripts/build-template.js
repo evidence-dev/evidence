@@ -103,10 +103,12 @@ fsExtra.outputFileSync(
     }
 
 	// Suppress errors when building in non-debug mode
-	if (!isDebug() && process.env.NODE_ENV === 'production') {
+	if (!isDebug() && process.env.IS_BUILDING === 'true') {
 		config.logLevel = 'silent';
 		logger.error = (msg) => log.error(msg);
-		logger.info = logger.warn = logger.warnOnce = () => {};
+		logger.info = () => {};
+		logger.warn = () => {};
+		logger.warnOnce = () => {};
 	} else {
 		const loggerWarn = logger.warn;
 		const loggerOnce = logger.warnOnce

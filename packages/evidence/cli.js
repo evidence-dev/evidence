@@ -173,7 +173,8 @@ const buildHelper = function (command, args) {
 			...process.env,
 			// used for source query HMR
 			EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
-			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
+			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data',
+			IS_BUILDING: 'true'
 		}
 	});
 	// Copy the outputs to the root of the project upon successful exit
