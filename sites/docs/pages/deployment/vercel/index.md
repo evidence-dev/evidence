@@ -2,32 +2,68 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
-description: Deploy a public app to Vercel for free or a password-protected app with the pro plan.
+description: Deploy a public Evidence app to Vercel for free or a password-protected Evidence app with the pro plan.
 ---
-
 
 <Alert status=danger>
 
 **Missing DuckDB Dependencies**
 
-Note that because of missing dependencies, Vercel cannot be used with DuckDB sources. Consider [Evidence Cloud](/deployment/evidence-cloud) or [Netlify](/deployment/netlify) as an alternative if you are using DuckDB. 
+Note that because of missing dependencies, Vercel cannot be used with DuckDB data sources. Consider [Evidence Cloud](/deployment/evidence-cloud) or [Netlify](/deployment/netlify) as an alternative if you are using DuckDB as a data source. 
 
 </Alert>
 
-Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month.
+[Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications, including Evidence apps.
 
-## Deploy to Vercel
+Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan.
 
-1. Run your app in development mode
-1. Visit the [settings page](http://localhost:3000/settings)
-1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
+## Prerequisites
 
-## Optional: Set a site-wide password for your app (Requires Paid Plan)
+- An Evidence project pushed to a Git service like GitHub, GitLab, or Bitbucket.
+- A Vercel account.
 
-Follow the directions provided by Vercel to set up a password for your site:
-https://vercel.com/blog/protecting-deployments
+## Deploy your app
 
-## Optional: Schedule updates using Deploy Hooks
+1. From the Vercel dashboard, select **Add new... Project**
+1. Import the Git repository containing your Evidence project.
+1. Edit the build and output settings:
+   - **Build command**: `npm run sources && npm run build`
+   - **Output directory**: `build`
+1. (If using a monorepo) edit the root directory to point to your Evidence project
+1. Edit the environment variables:
+   - With your Evidence dev server running, use the **Copy All** button on the [settings page](http://localhost:3000/settings#deploy)
+   - Paste them into the Vercel environment variables section, (they will automatically populate all the fields)
+1. Click **Deploy**
+
+Your app will be deployed to https://[project-name].vercel.app
+
+## Domains, Authentication and Scheduling
+
+{@partial "evidence-cloud.md"}
+
+### Authentication
+
+Your deployed app will be public by default. 
+
+#### Global password
+
+This requires a Vercel paid plan with [advanced deployment protection](https://vercel.com/docs/security/deployment-protection#advanced-deployment-protection), starting at $150/month.
+
+Vercel Dashboard > [your-project] > Settings > Deployment Protection > Password protection
+
+### Custom domains
+
+Your app will be deployed to https://[project-name].vercel.app
+
+You can set a custom domain using Vercel from the console:
+
+Vercel Dashboard > [your-project] > Settings > Domains
+
+### Data refresh
+
+Your project will be automatically built when you push to your repository, refreshing your data.
+
+#### Schedule updates using Deploy Hooks
 
 If you want your site to update on a specific schedule, you can use GitHub Actions (or another similar service) to schedule regular calls to a [Vercel deploy hook](https://vercel.com/docs/concepts/git/deploy-hooks).
 

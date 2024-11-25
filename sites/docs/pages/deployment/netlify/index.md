@@ -1,11 +1,13 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 hide_table_of_contents: false
 title: Netlify
 description: Deploy your app to Netlify, which offers free hosting for public apps and password-protected hosting for paid plans.
 ---
 
 <Alert status=warning>
+
+**Netlify URL Lowercasing**
 
 All URLs on Netlify are converted to lowercase. This can cause issues if you're using `{params.my_param}` to filter data in your markdown. It's recommended to use lowercase any time you're using a URL parameter to filter data, like this:
 
@@ -16,24 +18,65 @@ WHERE LOWER(my_column) = LOWER('${params.my_param}')
 
 </Alert>
 
+[Netlify](https://www.netlify.com) is a cloud platform for building and deploying web apps and frontend sites. It can be used to deploy Evidence apps by linking your Evidence project.
+
 Netlify lets you host a public version of your app for free, or you can create and host a password-protected version with Netlify's $15/month plan.
 
-## Deploy to Netlify
+## Prerequisites
 
-1. Run your app in development mode
-1. Visit the [settings page](http://localhost:3000/settings)
-1. Open the deployment panel, and select 'netlify', then follow the provided instructions
+- An Evidence project pushed to a Git service like GitHub, GitLab, or Bitbucket.
+- A Netlify account.
 
-## Optional: Set a site-wide password for your app (Requires Paid Plan)
+## Deploy your app
+
+1. From the Netlify dashboard, select **Add new site >> Import an existing project**
+1. Choose your Git provider (GitHub, GitLab, Bitbucket, Azure DevOps)
+1. Select the repository containing your Evidence project
+1. In the build settings
+  - **Build command**: `npm run sources && npm run build`
+  - **Publish directory**: `build`
+1. In the environment variables
+  - Click **New variable**
+  - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
+  - Paste them into the Netlify environment variables section
+1. (If using a monorepo) edit the base directory to point to your Evidence project
+1. Click **Deploy [your-site-name]**
+
+## Domains, Authentication and Scheduling
+
+{@partial "evidence-cloud.md"}
+
+### Authentication
+
+#### Global password
+
+Setting a global password requires a Netlify paid plan ($15/month).
 
 Follow the directions provided by Netlify to set up a password for your site:
-https://docs.netlify.com/visitor-access/password-protection/
 
-## Optional: Schedule updates using Build Hooks
+Netlify Dashboard >> [your-site] >> Site configuration >> Access & security >> Visitor access >> Configure site protection >> Basic password protection
+
+#### OAuth
+
+Netlify only supports OAuth via GitHub, GitLab, and Bitbucket.
+
+Netlify Dashboard >> [your-site] >> Site configuration >> Access & security >> OAuth
+
+### Custom domains
+
+Your app will be deployed to https://[your-site-name].netlify.app
+
+You can set a custom domain using Netlify from the console:
+
+Netlify Dashboard >> [your-site] >> Domain management >> Add a domain
+
+### Data refresh
+
+#### Schedule updates using Build Hooks
 
 If you want your site to update on a regular schedule, you can use GitHub Actions (or another similar service) to schedule regular calls to a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/).
 
-1. Create a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/) in **Site settings > Build & deploy > Continuous deployment > Build hooks**
+1. Create a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/) in **Site configuration > Build & deploy > Continuous deployment > Build hooks**
    ![netlify-add-build-hook](/img/netlify-add-build-hook.png)
    This will give you a URL that GitHub will use to trigger builds
 
