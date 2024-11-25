@@ -13,7 +13,7 @@ const createTheme = (mode) => {
 	const tooltipBorderColor = themes[mode].colors['base-300'];
 	const tooltipBackgroundColor = themes[mode].colors['base-100'];
 	const tooltipTextColor = themes[mode].colors['base-content'];
-	const titleColor = themes[mode].colors['base-content'];
+	const titleColor = themes[mode].colors['base-heading'];
 	const subtitleColor = themes[mode].colors['base-content-muted'];
 
 	return {

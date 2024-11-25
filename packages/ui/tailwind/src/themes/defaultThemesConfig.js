@@ -36,9 +36,13 @@ export const defaultThemesConfig = {
 				light: colors.zinc[200],
 				dark: colors.zinc[700]
 			},
-			'base-content': {
+			'base-heading': {
 				light: colors.zinc[900],
 				dark: colors.zinc[100]
+			},
+			'base-content': {
+				light: colors.zinc[800],
+				dark: colors.zinc[200]
 			},
 			'base-content-muted': {
 				light: colors.zinc[600],

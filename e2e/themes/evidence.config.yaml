@@ -2,6 +2,9 @@ themes:
   defaultAppearance: light
   appearanceSwitcher: true
   colors:
+    base:
+      light: "#fdf4ff"
+      dark: "#170118"
     primary:
       light: "#ff0000"
       dark: "#00ff00"

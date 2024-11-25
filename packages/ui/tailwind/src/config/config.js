@@ -8,7 +8,11 @@ import { createVarsForColors } from './createVarsForColors/index.js';
 const themesConfig = loadThemesConfig();
 const themes = buildThemes(themesConfig);
 const twcConfig = Object.fromEntries(
-	Object.entries(themes).map(([name, theme]) => [name, theme.colors])
+	Object.entries(themes).map(([name, theme]) => [
+		name,
+		/** @type {Record<string, string>} */
+		(Object.fromEntries(Object.entries(theme.colors).filter(([, value]) => Boolean(value))))
+	])
 );
 
 /** @type {Partial<import('tailwindcss').Config>} */
