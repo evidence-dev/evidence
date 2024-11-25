@@ -36,7 +36,7 @@ describe('computeShades', () => {
 		).toBeGreaterThan(4.5);
 	});
 
-	it('should generate base-200, base-content, and base-content-muted from base-100', () => {
+	it('should generate base-200, base-heading, base-content, and base-content-muted from base-100', () => {
 		/** @type {import('../schemas/types.js').ThemesConfigFile} */
 		const config = {
 			themes: {
@@ -54,7 +54,14 @@ describe('computeShades', () => {
 		expect(afterCompute.themes.colors['base-100'].light).toBeDefined();
 		expect(afterCompute.themes.colors['base-200'].light).toBeDefined();
 		expect(afterCompute.themes.colors['base-content'].light).toBeDefined();
+		expect(afterCompute.themes.colors['base-heading'].light).toBeDefined();
 		expect(afterCompute.themes.colors['base-content-muted'].light).toBeDefined();
+		expect(
+			chroma.contrast(
+				afterCompute.themes.colors['base-100'].light,
+				afterCompute.themes.colors['base-heading'].light
+			)
+		).toBeGreaterThan(7);
 		expect(
 			chroma.contrast(
 				afterCompute.themes.colors['base-100'].light,
@@ -71,7 +78,14 @@ describe('computeShades', () => {
 		expect(afterCompute.themes.colors['base-100'].dark).toBeDefined();
 		expect(afterCompute.themes.colors['base-200'].dark).toBeDefined();
 		expect(afterCompute.themes.colors['base-content'].dark).toBeDefined();
+		expect(afterCompute.themes.colors['base-heading'].dark).toBeDefined();
 		expect(afterCompute.themes.colors['base-content-muted'].dark).toBeDefined();
+		expect(
+			chroma.contrast(
+				afterCompute.themes.colors['base-100'].dark,
+				afterCompute.themes.colors['base-heading'].dark
+			)
+		).toBeGreaterThan(7);
 		expect(
 			chroma.contrast(
 				afterCompute.themes.colors['base-100'].dark,

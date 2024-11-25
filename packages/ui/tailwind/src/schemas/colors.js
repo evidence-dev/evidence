@@ -11,6 +11,7 @@ export const BUILTIN_COLORS = /** @type {const} */ ([
 	'base-100',
 	'base-200',
 	'base-300',
+	'base-heading',
 	'base-content',
 	'base-content-muted',
 	'info',
