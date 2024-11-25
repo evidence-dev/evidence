@@ -37,3 +37,14 @@ Your app will be deployed to a URL like `https://[repo-name].pages.dev`. It can 
 ## Domains, Authentication and Scheduling
 
 {@partial "evidence-cloud.md"}
+
+### Authentication
+
+By default, your app will be public.
+
+Authentication can be configured with [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/identity/access/).
+
+Workers & Pages > [Your app] > Settings > General > Access Policy > Manage
+
+You will need to set up access groups and policies to control access to your app. A one time PIN code can be configured for user login.
+
