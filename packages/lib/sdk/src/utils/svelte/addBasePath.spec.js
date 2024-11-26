@@ -65,4 +65,18 @@ describe('addBasePath', () => {
 		basePath = '/base';
 		expect(addBasePath('/test:123', config)).toBe('/base/test:123');
 	});
+	it('should properly handle String wrapper or non-string values', () => {
+		basePath = '/base';
+		expect(addBasePath(new String('/test'), config)).toBe('/base/test');
+		expect(addBasePath(123, config)).toBe(123);
+		expect(addBasePath(123n, config)).toBe(123n);
+		expect(addBasePath(true, config)).toBe(true);
+		expect(addBasePath(Symbol.for("test"), config)).toBe(Symbol.for("test"));
+		const fn = () => { };
+		expect(addBasePath(fn, config)).toBe(fn);
+		expect(addBasePath(null, config)).toBe(null);
+		expect(addBasePath(undefined, config)).toBe(undefined);
+		const obj = {};
+		expect(addBasePath(obj, config)).toBe(obj);
+	});
 });
