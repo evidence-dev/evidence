@@ -103,7 +103,14 @@ fsExtra.outputFileSync(
 		customLogger: logger
     }
 
-	if (isDebug()) {
+	// Suppress errors when building in non-debug mode
+	if (!isDebug() && process.env.EVIDENCE_IS_BUILDING === 'true') {
+		config.logLevel = 'silent';
+		logger.error = (msg) => log.error(msg);
+		logger.info = () => {};
+		logger.warn = () => {};
+		logger.warnOnce = () => {};
+	} else {
 		const loggerWarn = logger.warn;
 		const loggerOnce = logger.warnOnce
 
@@ -125,10 +132,6 @@ fsExtra.outputFileSync(
 
 			loggerWarn(msg, options);
 		};
-	} else {
-		config.logLevel = 'silent';
-		logger.error = (msg) => log.error(msg);
-		logger.info = logger.warn = logger.warnOnce = () => {};
 	}
 
     export default config`

@@ -35,12 +35,7 @@ const populateTemplate = function () {
 	// - local settings
 	// - telemetry profile
 	// - static folder (mainly to preserve the data directory)
-	const keepers = new Set([
-		'evidence.settings.json',
-		'.profile.json',
-		'static',
-		'.evidence-queries'
-	]);
+	const keepers = new Set(['.profile.json', 'static', '.evidence-queries']);
 	fs.readdirSync('./.evidence/template/').forEach((file) => {
 		if (!keepers.has(file)) fs.removeSync(path.join('./.evidence/template/', file));
 	});
@@ -173,7 +168,8 @@ const buildHelper = function (command, args) {
 			...process.env,
 			// used for source query HMR
 			EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
-			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
+			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data',
+			EVIDENCE_IS_BUILDING: 'true'
 		}
 	});
 	// Copy the outputs to the root of the project upon successful exit
