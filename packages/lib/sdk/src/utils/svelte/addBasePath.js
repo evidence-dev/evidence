@@ -10,7 +10,7 @@
  * @returns
  */
 export const addBasePath = (path, config) => {
-	if (path === undefined) return path;
+	if (typeof path !== 'string') return path;
 	if (path.startsWith('http')) return path;
 	if (path.startsWith('#')) return path; // ignore hash links
 	if (/^[^/]*:/.test(path)) return path; // ignore other protocols
