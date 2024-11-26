@@ -38,14 +38,14 @@ test('body text should be computed from base', async ({ page }) => {
 	const text = await page.getByText('This is some body text');
 
 	await switchAppearance(page, 'system');
-	await expect(text).toHaveCSS('color', 'rgb(248, 236, 248)');
+	await expect(text).toHaveCSS('color', 'rgb(235, 223, 235)');
 	await expect(body).toHaveCSS('background-color', 'rgb(23, 1, 24)');
 
 	await switchAppearance(page, 'light');
-	await expect(text).toHaveCSS('color', 'rgb(17, 6, 19)');
+	await expect(text).toHaveCSS('color', 'rgb(26, 20, 28)');
 	await expect(body).toHaveCSS('background-color', 'rgb(253, 244, 255)');
 
 	await switchAppearance(page, 'dark');
-	await expect(text).toHaveCSS('color', 'rgb(248, 236, 248)');
+	await expect(text).toHaveCSS('color', 'rgb(235, 223, 235)');
 	await expect(body).toHaveCSS('background-color', 'rgb(23, 1, 24)');
 });
