@@ -278,3 +278,24 @@ LIMIT 200`,
 	{@const data = Query.create(`select * from numeric_series`, query)}
 	<AreaChart {data} {...args} />
 </Story>
+<Story
+	name="With seriesLabelFmt"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+	let:args
+>
+	{@const data = Query.create(
+		`SELECT 0.1 AS series, 1 AS x, 10 AS y
+UNION
+SELECT 0.1 AS series, 2 AS x, 20 AS y
+UNION
+SELECT 0.1 AS series, 3 AS x, 30 AS y
+UNION
+SELECT 0.5 AS series, 1 AS x, 5 AS y
+UNION
+SELECT 0.5 AS series, 2 AS x, 15 AS y
+UNION
+SELECT 0.5 AS series, 3 AS x, 25 AS y`,
+		query
+	)}
+	<AreaChart {data} seriesLabelFmt="pct" {...args} />
+</Story>

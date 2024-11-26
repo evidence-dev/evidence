@@ -22,9 +22,11 @@ jobs:
           git checkout -b ${{ steps.branch_name.outputs.branch_name }}
           git push -u origin ${{ steps.branch_name.outputs.branch_name }}
       - name: Create pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr create \
             --base main \
-            --head ${{ steps.branch_name.outputs.branch_name }}}} \
+            --head ${{ steps.branch_name.outputs.branch_name }} \
             --title "Release ${{ steps.branch_name.outputs.branch_name }}" \
             --body "Opened automatically by [cut-release-branch](https://github.com/evidence-dev/evidence/actions/runs/${{ github.run_id }})"

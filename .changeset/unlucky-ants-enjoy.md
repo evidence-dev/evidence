@@ -2,4 +2,4 @@
 '@evidence-dev/evidence': patch
 ---
 
-Always log server error
+re-enable logging on dev mode

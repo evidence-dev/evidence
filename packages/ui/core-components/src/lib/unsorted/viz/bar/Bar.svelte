@@ -197,6 +197,8 @@
 		}
 	};
 
+	export let seriesLabelFmt = undefined;
+
 	$: seriesConfig = getSeriesConfig(
 		data,
 		x,
@@ -210,7 +212,8 @@
 		seriesOrder,
 		undefined,
 		undefined,
-		y2
+		y2,
+		seriesLabelFmt
 	);
 
 	$: config.update((d) => {
