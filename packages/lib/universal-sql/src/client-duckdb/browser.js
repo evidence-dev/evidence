@@ -55,7 +55,7 @@ export async function initDB() {
 
 		// use an intermediate variable to prevent db from being a not-ready database
 		const _db = new AsyncDuckDB(logger, worker);
-		window[Symbol.for('duckdb instance')] = _db;
+		window[Symbol.for('EVIDENCE_QUERY_ENGINE')] = _db;
 
 		await _db.instantiate(DUCKDB_CONFIG.mainModule);
 		db = _db;
