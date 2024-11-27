@@ -33,7 +33,7 @@ export const defaultThemesConfigFile =
 					dark: colors.green[400]
 				},
 				warning: {
-					light: colors.yellow[500],
+					light: '#f8c900',
 					dark: colors.amber[400]
 				},
 				negative: {
