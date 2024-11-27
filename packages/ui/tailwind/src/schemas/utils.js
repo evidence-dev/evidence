@@ -1,5 +1,5 @@
 /**
- * @template {import('zod').z.ZodObject<any>} S
+ * @template {import('zod').z.ZodTypeAny} S
  * @param {S} schema
  */
 export const DefaultEmptyObject = (schema) =>
