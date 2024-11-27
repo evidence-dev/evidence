@@ -14,6 +14,5 @@ export const loadThemesConfig = () => {
 	}
 
 	const out = applyThemeDefaults(config);
-	console.log(JSON.stringify(out.themes.colors, null, 2));
 	return out;
 };

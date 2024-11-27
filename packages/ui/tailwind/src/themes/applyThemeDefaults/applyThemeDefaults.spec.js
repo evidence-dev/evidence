@@ -8,12 +8,6 @@ import { BUILTIN_COLOR_PALETTES } from '../../schemas/colorPalettes';
 import { BUILTIN_COLOR_SCALES } from '../../schemas/colorScales';
 
 describe('applyThemeDefaults', () => {
-	it('test', () => {
-		const input = {};
-		const actual = applyThemeDefaults(input);
-		console.log(JSON.stringify(actual.themes.colors, null, 2));
-		expect(actual).toBeDefined();
-	});
 	describe('with empty input', () => {
 		const input = {};
 
