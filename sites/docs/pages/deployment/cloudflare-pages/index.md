@@ -2,6 +2,8 @@
 sidebar_position: 4
 title: Cloudflare Pages
 description: Deploy Evidence to Cloudflare Pages
+og:
+    image: /img/deployment/deploy-cloudflare-pages.png
 ---
 
 Cloudflare is a popular CDN and DNS provider that also offers a static site hosting service called [Cloudflare Pages](https://pages.cloudflare.com/).

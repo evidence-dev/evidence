@@ -2,6 +2,8 @@
 sidebar_position: 4
 title: GitLab Pages
 description: Deploy Evidence to GitLab Pages
+og:
+    image: /img/deployment/deploy-gitlab-pages.png
 ---
 
 [GitLab Pages](https://docs.gitlab.com/ee/user/project/pages/) is a service that allows you to host static websites and single-page apps. Evidence apps can be deployed to GitLab Pages by pushing your Evidence project to a GitLab repository and enabling Pages for the repository.

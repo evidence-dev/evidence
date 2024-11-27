@@ -2,6 +2,8 @@
 sidebar_position: 4
 title: Hugging Face Spaces
 description: Deploy Evidence to Hugging Face Spaces
+og:
+    image: /img/deployment/deploy-hugging-face-spaces.png
 ---
 
 ... is a service that ...

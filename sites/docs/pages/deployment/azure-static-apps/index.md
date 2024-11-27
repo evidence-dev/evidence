@@ -2,6 +2,8 @@
 sidebar_position: 4
 title: Azure Static Apps
 description: Deploy Evidence to Azure Static Apps
+og:
+    image: /img/deployment/deploy-azure-static-apps.png
 ---
 
 [Azure Static Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/) is a Microsoft Azure service that allows you to deploy static websites and web apps to Azure.

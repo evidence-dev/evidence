@@ -3,6 +3,8 @@ sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
 description: Deploy a public Evidence app to Vercel for free or a password-protected Evidence app with the pro plan.
+og:
+    image: /img/deployment/deploy-vercel.png
 ---
 
 [Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications, including Evidence apps.

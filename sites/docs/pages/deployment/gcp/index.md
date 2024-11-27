@@ -3,6 +3,8 @@ sidebar_position: 4
 title: GCP
 breadcrumb: "select 'GCP' as breadcrumb"
 description: Deploy Evidence to GCP
+og:
+    image: /img/deployment/deploy-firebase.png
 ---
 
 GCP is Google's cloud platform. There are two GCP services that can be used to host Evidence apps: GCP Cloud Storage and Firebase Hosting.

@@ -3,6 +3,8 @@ sidebar_position: 4
 title: AWS Amplify
 breadcrumb: "select 'AWS Amplify' as breadcrumb"
 description: Deploy Evidence to AWS Amplify
+og:
+    image: /img/deployment/deploy-aws-amplify.png
 ---
 
 [AWS Amplify](https://aws.amazon.com/amplify/) is an AWS service that allows you to create full stack web and mobile apps. It can be used to deploy Evidence apps by linking your Evidence project.

@@ -3,6 +3,8 @@ sidebar_position: 4
 hide_table_of_contents: false
 title: Netlify
 description: Deploy your app to Netlify, which offers free hosting for public apps and password-protected hosting for paid plans.
+og:
+    image: /img/deployment/deploy-netlify.png
 ---
 
 <Alert status=warning>
