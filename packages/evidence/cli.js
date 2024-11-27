@@ -10,6 +10,7 @@ import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 import { enableDebug } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
+import { createHash } from 'crypto';
 
 const increaseNodeMemoryLimit = () => {
 	// Don't override the memory limit if it's already set
@@ -152,12 +153,20 @@ const watchPatterns = [
 	}
 ];
 
+function removeStaticDir(dir) {
+	const staticlessDir = path.normalize(dir).split(path.sep).slice(1);
+	return path.join(...staticlessDir);
+}
+
 const strictMode = function () {
 	process.env['VITE_BUILD_STRICT'] = true;
 };
 const buildHelper = function (command, args) {
 	const watchers = runFileWatcher(watchPatterns);
 	const flatArgs = flattenArguments(args);
+
+	const dataDir = process.env.EVIDENCE_DATA_DIR ?? './static/data';
+	const dataPrefix = process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data';
 
 	// Run svelte kit build in the hidden directory
 	const child = spawn(command, flatArgs, {
@@ -174,8 +183,32 @@ const buildHelper = function (command, args) {
 	});
 	// Copy the outputs to the root of the project upon successful exit
 	child.on('exit', function (code) {
+		const outDir = '.evidence/template/build';
 		if (code === 0) {
-			fs.copySync('./.evidence/template/build', './build');
+			const staticlessDataDir = removeStaticDir(dataDir);
+			const buildDataDir = path.join(outDir, staticlessDataDir);
+			const manifestFile = path.join(buildDataDir, 'manifest.json');
+
+			if (fs.existsSync(manifestFile)) {
+				const manifest = fs.readJsonSync(manifestFile);
+				for (const files of Object.values(manifest.renderedFiles)) {
+					for (let i = 0; i < files.length; i++) {
+						const filePath = files[i].replace(dataPrefix, buildDataDir);
+						if (!fs.existsSync(filePath)) continue;
+
+						const contents = fs.readFileSync(filePath);
+						const hash = createHash('md5').update(contents).digest('hex');
+
+						const newFilePath = path.join(path.dirname(filePath), hash, path.basename(filePath));
+						fs.moveSync(filePath, newFilePath);
+
+						files[i] = newFilePath.replace(buildDataDir, dataPrefix);
+					}
+				}
+				fs.writeJsonSync(manifestFile, manifest);
+			}
+
+			fs.copySync(outDir, './build');
 			console.log(`Build complete --> ${process.env.EVIDENCE_BUILD_DIR ?? './build'} `);
 		} else {
 			console.error('Build failed');
