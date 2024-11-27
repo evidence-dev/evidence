@@ -61,7 +61,10 @@ queries:
             data={orders_by_day_2021}
             date=day
             value=sales
-            colorPalette={['rgb(254,234,159)', 'rgb(218,66,41)']}
+            colorPalette={[
+                ['rgb(254,234,159)', 'rgb(254,234,159)'],
+                ['rgb(218,66,41)', 'rgb(218,66,41)']
+            ]}
         />
     </div>
 
@@ -70,7 +73,10 @@ queries:
     data={orders_by_day_2021}
     date=day
     value=sales
-    colorPalette={['rgb(254,234,159)', 'rgb(218,66,41)']}
+    colorPalette={[
+        ['rgb(254,234,159)', 'rgb(254,234,159)'],
+        ['rgb(218,66,41)', 'rgb(218,66,41)']
+    ]}
 />
 ```
 </DocTab>
