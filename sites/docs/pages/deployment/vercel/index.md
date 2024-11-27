@@ -5,14 +5,6 @@ title: Vercel
 description: Deploy a public Evidence app to Vercel for free or a password-protected Evidence app with the pro plan.
 ---
 
-<Alert status=danger>
-
-**Missing DuckDB Dependencies**
-
-Note that because of missing dependencies, Vercel cannot be used with DuckDB data sources. Consider [Evidence Cloud](/deployment/evidence-cloud) or [Netlify](/deployment/netlify) as an alternative if you are using DuckDB as a data source. 
-
-</Alert>
-
 [Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications, including Evidence apps.
 
 Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan.
