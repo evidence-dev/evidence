@@ -54,7 +54,7 @@ og:
       ```
 1. Commit and push this change, and your app will deploy.
 
-Your app will be available at <https://[random-word-12345].azurestaticapps.net/>.
+Your app will be available at `https://[random-word-12345].azurestaticapps.net`
 
 ## Domains, Authentication and Scheduling
 

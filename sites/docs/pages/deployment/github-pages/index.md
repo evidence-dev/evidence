@@ -12,7 +12,7 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
 
     **Base Path**
 
-    GitHub Pages serves sites at subpaths of github.io by default, e.g. <https://[username].github.io/your-app>, so you will need to adjust the [base path](/deployment/base-paths) for your app, unless using a custom domain.
+    GitHub Pages serves sites at subpaths of github.io by default, e.g. `https://[username].github.io/your-app`, so you will need to adjust the [base path](/deployment/base-paths) for your app, unless using a custom domain.
 </Alert>
 
 ## Prerequisites
@@ -23,7 +23,7 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
 ## Deploy your app
 
 1. Adjust the [base path](/deployment/base-paths) for your app to match the name of your GitHub repository. 
-    - If your repo is stored at <https://github.com/username/my-evidence-app>, your base path should be `/my-evidence-app`.
+    - If your repo is stored at `https://github.com/username/my-evidence-app`, your base path should be `/my-evidence-app`.
 1. From your GitHub repository, click the **Settings** tab, and then click **Pages** in the Code and automation section.
 1. Under **Source**, select **GitHub Actions**
 1. Directly underneath, where it says "Use a suggested workflow, browse all workflows or create your own", click **Create your own**, and use the following workflow file, naming it `deploy.yml` or similar.
@@ -81,7 +81,7 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
 1. Click **Commit changes**, either directly to your branch, or create a PR and merge it to your specified branch.
 1. The deploy workflow will run, you can see the progress in the **Actions** tab.
 
-Your app should be available at <https://[username].github.io/[your-app]>.
+Your app should be available at `https://[username].github.io/[your-app]`.
 
 ## Domains, Authentication and Scheduling
 

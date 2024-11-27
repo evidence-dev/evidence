@@ -44,7 +44,7 @@ Netlify lets you host a public version of your app for free, or you can create a
 1. (If using a monorepo) edit the base directory to point to your Evidence project
 1. Click **Deploy [your-site-name]**
 
-Your app will be available at <https://[your-site-name].netlify.app>.
+Your app will be available at `https://[your-site-name].netlify.app`.
 
 ## Domains, Authentication and Scheduling
 

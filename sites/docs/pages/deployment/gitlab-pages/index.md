@@ -27,7 +27,7 @@ og:
         - `cp -r build public`
     - Add a commit message, and click **Commit**
 
-Your app will be available at <https://[your-repo]-[hexcode].gitlab.io/>.
+Your app will be available at `https://[your-repo]-[hexcode].gitlab.io/`.
 
 
 ## Domains, Authentication and Scheduling
