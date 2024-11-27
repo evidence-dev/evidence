@@ -1,4 +1,5 @@
 import defaultsDeep from 'lodash/defaultsDeep.js';
+import merge from 'lodash/merge.js';
 import { defaultThemesConfigFile } from './defaultThemesConfigFile.js';
 import { computeShades } from './computeShades.js';
 
@@ -8,6 +9,7 @@ import { computeShades } from './computeShades.js';
  */
 export const applyThemeDefaults = (configFile) => {
 	const withDefaults = defaultsDeep({}, configFile, defaultThemesConfigFile);
-	withDefaults.themes.colors = computeShades(withDefaults.themes.colors);
+	const computedColors = computeShades(withDefaults.themes.colors);
+	merge(withDefaults.themes.colors, computedColors);
 	return withDefaults;
 };

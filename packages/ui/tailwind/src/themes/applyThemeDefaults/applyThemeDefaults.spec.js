@@ -91,4 +91,20 @@ describe('applyThemeDefaults', () => {
 			);
 		});
 	});
+
+	it('should preserve custom colors', () => {
+		const actual = applyThemeDefaults({
+			themes: {
+				colors: {
+					myCustomColor: {
+						light: '#abcdef',
+						dark: '#fedcba'
+					}
+				}
+			}
+		});
+
+		expect(actual.themes.colors.myCustomColor?.light).toBe('#abcdef');
+		expect(actual.themes.colors.myCustomColor?.dark).toBe('#fedcba');
+	});
 });
