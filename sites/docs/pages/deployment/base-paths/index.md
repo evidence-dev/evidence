@@ -26,11 +26,11 @@ The base path must:
 
 Your `pages/index.md` file will be served from `https://my-domain.com/my-base-path`, and other pages will be served relative to this path.
 
-## Configuring the Build Directory
+## Configuring the Build Directory in `package.json`
 
 Evidence builds your app to the `build` directory, rather than to `build/my-base-path`.
 
-To modify the build directory, set the `EVIDENCE_BUILD_DIR` environment variable:
+To modify the build directory, set the `EVIDENCE_BUILD_DIR` environment variable in `package.json`
 
 ```json
   "build": "EVIDENCE_BUILD_DIR=./build/my-base-path evidence build"
