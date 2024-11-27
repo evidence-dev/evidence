@@ -180,7 +180,7 @@
 			splitLine: {
 				show: true,
 				lineStyle: {
-					color: $theme.colors['base-content-muted']
+					color: $theme.colors['base-content']
 				}
 			},
 			monthLabel: { show: monthLabel, color: $theme.colors['base-content-muted'] },
