@@ -27,9 +27,9 @@ Cloudflare is a popular CDN and DNS provider that also offers a static site host
    - Set the build output directory: `/build`
 1. (Optionally select the root path containing your Evidence project if using a monorepo)
 1. Add environment variables
-  - Click **Add variable**
-  - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
-  - Paste them into the Cloudflare Pages environment variables section
+   - Click **Add variable**
+   - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
+   - Paste them into the Cloudflare Pages environment variables section
 1. Click **Save and Deploy**
 
 Your app will be deployed to a URL like `https://[repo-name].pages.dev`. It can take a few minutes for the site to be available after deployment.

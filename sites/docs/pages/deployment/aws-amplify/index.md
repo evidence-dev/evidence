@@ -1,7 +1,8 @@
 ---
 sidebar_position: 4
 title: AWS Amplify
-description: Deploy Evidence to AWS Amplify, either as a public or a password-protected app.
+breadcrumb: "select 'AWS Amplify' as breadcrumb"
+description: Deploy Evidence to AWS Amplify
 ---
 
 [AWS Amplify](https://aws.amazon.com/amplify/) is an AWS service that allows you to create full stack web and mobile apps. It can be used to deploy Evidence apps by linking your Evidence project.
@@ -48,7 +49,7 @@ Your deployed app will be public by default.
 
 It is possible to set a global site password using AWS Amplify from the console:
 
-Hosting >> Access control >> Manage access.
+Hosting > Access control > Manage access.
 
 #### Cognito
 
@@ -58,14 +59,12 @@ It is also possible to set up auth via [Cognito](https://docs.amplify.aws/react/
 
 Your app will be deployed to https://[branch-name]-[app-id].amplifyapp.com
 
-{@partial "custom-domains.md"}
-
 You can set a custom domain using AWS Amplify from the console:
 
-Hosting >> Custom domains >> Add domain.
+Hosting > Custom domains > Add domain.
 
-{@partial "data-refresh.md"}
+### Data refresh
 
 You can manually refresh your data using AWS Amplify from the console:
 
-[your-app] >> Deployments >> Redeploy this version.
+[your-app] > Deployments > Redeploy this version.

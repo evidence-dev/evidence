@@ -17,3 +17,9 @@ description: Deploy Evidence to Hugging Face Spaces
 ## Domains, Authentication and Scheduling
 
 {@partial "evidence-cloud.md"}
+
+### Authentication
+
+### Custom domains
+
+### Data refresh

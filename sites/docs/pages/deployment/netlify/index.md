@@ -42,6 +42,8 @@ Netlify lets you host a public version of your app for free, or you can create a
 1. (If using a monorepo) edit the base directory to point to your Evidence project
 1. Click **Deploy [your-site-name]**
 
+Your app will be available at <https://[your-site-name].netlify.app>.
+
 ## Domains, Authentication and Scheduling
 
 {@partial "evidence-cloud.md"}
@@ -79,36 +81,30 @@ If you want your site to update on a regular schedule, you can use GitHub Action
 1. Create a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/) in **Site configuration > Build & deploy > Continuous deployment > Build hooks**
    ![netlify-add-build-hook](/img/netlify-add-build-hook.png)
    This will give you a URL that GitHub will use to trigger builds
-
 2. Add `NETLIFY_BUILD_HOOK` to your Github Repo's Secrets
-
-- In your GitHub repo, go to Settings > Secrets > Actions and click **New repository secret**<br/><br/>
-  ![netlify-github-new-secret](/img/netlify-github-new-secret.png)
-  ![netlify-github-secret](/img/netlify-github-secret.png)
-
+   - In your GitHub repo, go to Settings > Secrets > Actions and click **New repository secret**<br/><br/>
+     ![netlify-github-new-secret](/img/netlify-github-new-secret.png)
+   - Add the build hook URL as the secret value
+     ![netlify-github-secret](/img/netlify-github-secret.png)
 3. Add a schedule file to your project
-
-- Create a new directory in your project called `.github`
-- Within that directory, create another called `workflows`
-- Add a new file in `.github/workflows` called `main.yml`
-
+   - Create a new directory in your project called `.github`
+   - Within that directory, create another called `workflows`
+   - Add a new file in `.github/workflows` called `main.yml`
 4. Add the following text to the `main.yml` file you just created. Be sure that the spacing and indentation is exactly as presented here, as it will impact whether the action runs correctly
-
-```yaml
-name: Schedule Netlify Build
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 10 * * *' # Once a day around 6am ET (10am UTC)
-jobs:
-  build:
-    name: Request Netlify Webhook
-    runs-on: ubuntu-latest
-    steps:
-      - name: POST to Build Hook
-        env:
-          BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
-        run: curl -X POST -d {} $BUILD_HOOK
-```
-
+    ```yaml
+    name: Schedule Netlify Build
+    on:
+      workflow_dispatch:
+      schedule:
+        - cron: '0 10 * * *' # Once a day around 6am ET (10am UTC)
+    jobs:
+      build:
+        name: Request Netlify Webhook
+        runs-on: ubuntu-latest
+        steps:
+          - name: POST to Build Hook
+            env:
+              BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+            run: curl -X POST -d {} $BUILD_HOOK
+    ```
 5. See your GitHub Actions run in the **Actions** tab of your GitHub repo
