@@ -13,8 +13,8 @@ export const defaultThemesConfigFile =
 			appearanceSwitcher: false,
 			colors: /** @satisfies {import('./types.js').RequiredThemeColors} */ ({
 				primary: {
-					light: colors.blue[600],
-					dark: colors.blue[400]
+					light: colors.blue[500],
+					dark: colors.blue[500]
 				},
 				accent: {
 					light: colors.orange[700],
