@@ -1,8 +1,8 @@
 // @ts-check
 import { describe, it, expect } from 'vitest';
 import { buildThemes } from './buildThemes.js';
-/** @typedef {import('./types.js').Themes} Themes */
-/** @typedef {import('./types.js').ThemesConfig} ThemesConfig */
+/** @typedef {import('../schemas/types.js').Themes} Themes */
+/** @typedef {import('../schemas/types.js').ThemesConfig} ThemesConfig */
 
 describe('buildThemes', () => {
 	it('should collect correct colors for each theme', () => {
@@ -39,6 +39,10 @@ describe('buildThemes', () => {
 					'base-300': {
 						light: 'base-300_light',
 						dark: 'base-300_dark'
+					},
+					'base-heading': {
+						light: 'base-heading_light',
+						dark: 'base-heading_dark'
 					},
 					'base-content': {
 						light: 'base-content_light',
@@ -87,7 +91,12 @@ describe('buildThemes', () => {
 						dark: ['default_dark_1', 'default_dark_2', 'default_dark_3']
 					}
 				},
-				colorScales: {}
+				colorScales: {
+					default: {
+						light: ['default_light_1', 'default_light_2'],
+						dark: ['default_dark_1', 'default_dark_2']
+					}
+				}
 			}
 		};
 
@@ -104,6 +113,7 @@ describe('buildThemes', () => {
 					'base-100': 'base-100_light',
 					'base-200': 'base-200_light',
 					'base-300': 'base-300_light',
+					'base-heading': 'base-heading_light',
 					'base-content': 'base-content_light',
 					'base-content-muted': 'base-content-muted_light',
 					info: 'info_light',
@@ -118,7 +128,9 @@ describe('buildThemes', () => {
 				colorPalettes: {
 					default: ['default_light_1', 'default_light_2', 'default_light_3']
 				},
-				colorScales: {}
+				colorScales: {
+					default: ['default_light_1', 'default_light_2']
+				}
 			},
 			dark: {
 				colors: {
@@ -129,6 +141,7 @@ describe('buildThemes', () => {
 					'base-100': 'base-100_dark',
 					'base-200': 'base-200_dark',
 					'base-300': 'base-300_dark',
+					'base-heading': 'base-heading_dark',
 					'base-content': 'base-content_dark',
 					'base-content-muted': 'base-content-muted_dark',
 					info: 'info_dark',
@@ -143,7 +156,9 @@ describe('buildThemes', () => {
 				colorPalettes: {
 					default: ['default_dark_1', 'default_dark_2', 'default_dark_3']
 				},
-				colorScales: {}
+				colorScales: {
+					default: ['default_dark_1', 'default_dark_2']
+				}
 			}
 		};
 

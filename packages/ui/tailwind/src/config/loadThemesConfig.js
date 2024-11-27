@@ -1,20 +1,19 @@
-import defaultsDeep from 'lodash/defaultsDeep.js';
 import { getEvidenceConfig } from '@evidence-dev/sdk/config';
 
 import { ThemesConfigFileSchema } from '../schemas/config.js';
-import { defaultThemesConfig } from '../themes/defaultThemesConfig.js';
-import { computeShades } from '../themes/computeShades.js';
+import { applyThemeDefaults } from '../themes/index.js';
 
 /** @returns {import('../schemas/types.js').ThemesConfig} */
 export const loadThemesConfig = () => {
 	/** @type {import('../schemas/types.js').ThemesConfigFile} */
-	let fromEvidenceConfig = {};
+	let config = {};
 	try {
-		fromEvidenceConfig = getEvidenceConfig(ThemesConfigFileSchema);
+		config = getEvidenceConfig(ThemesConfigFileSchema);
 	} catch {
 		// Do nothing
 	}
-	fromEvidenceConfig = computeShades(fromEvidenceConfig);
-	const themesConfig = defaultsDeep({}, fromEvidenceConfig, defaultThemesConfig);
-	return themesConfig;
+
+	const out = applyThemeDefaults(config);
+	console.log(JSON.stringify(out.themes.colors, null, 2));
+	return out;
 };
