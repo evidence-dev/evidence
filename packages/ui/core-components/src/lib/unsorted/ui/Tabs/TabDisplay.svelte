@@ -13,11 +13,11 @@
 
 	export let activeId;
 
-	$: bgColor = chroma($colorStore).alpha(0.05).css();
+	$: bgColor = chroma($colorStore).alpha(0.1).css();
 	$: borderColor = chroma($colorStore).alpha(0.5).css();
 
 	const classes = {
-		notActive: 'border-base-300 border-b-2 bg-base-200/25 border-b hover:bg-base-200',
+		notActive: 'border-base-300 border-b-2 bg-base-200/50 hover:bg-base-200',
 		active: 'border-b-2 border-[--borderColor] bg-[--bgColor]'
 	};
 </script>
