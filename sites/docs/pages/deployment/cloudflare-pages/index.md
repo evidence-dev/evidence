@@ -6,7 +6,7 @@ og:
     image: /img/deployment/deploy-cloudflare-pages.png
 ---
 
-Cloudflare is a popular CDN and DNS provider that also offers a static site hosting service called [Cloudflare Pages](https://pages.cloudflare.com/).
+Cloudflare is a popular CDN and DNS provider that also offers a static site hosting service called [Cloudflare Pages](https://pages.cloudflare.com/). Cloudflare Pages can be used to deploy Evidence from a Git repository.
 
 ## Prerequisites
 

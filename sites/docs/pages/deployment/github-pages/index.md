@@ -6,7 +6,7 @@ og:
     image: /img/deployment/deploy-github-pages.png
 ---
 
-GitHub Pages is a static site hosting service that publishes a website from HTML, CSS, and JavaScript files from a repository on GitHub. It optionally runs a build process to create these files. GitHub Pages can be used to deploy Evidence apps by linking your Evidence project.
+GitHub Pages is a static site hosting service that publishes a website from HTML, CSS, and JavaScript files from a repository on GitHub. It optionally runs a build process to create these files. GitHub Pages can be used to deploy Evidence from a GitHub repository.
 
 <Alert status="warning">
 

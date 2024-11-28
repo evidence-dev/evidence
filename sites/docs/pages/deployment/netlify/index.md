@@ -2,10 +2,12 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Netlify
-description: Deploy your app to Netlify, which offers free hosting for public apps and password-protected hosting for paid plans.
+description: Deploy Evidence to Netlify
 og:
     image: /img/deployment/deploy-netlify.png
 ---
+
+[Netlify](https://www.netlify.com) is a cloud platform for building and deploying web apps and frontend sites. Netlify can be used to deploy Evidence from a Git repository.
 
 <Alert status=warning>
 
@@ -20,7 +22,7 @@ WHERE LOWER(my_column) = LOWER('${params.my_param}')
 
 </Alert>
 
-[Netlify](https://www.netlify.com) is a cloud platform for building and deploying web apps and frontend sites. It can be used to deploy Evidence apps by linking your Evidence project.
+
 
 Netlify lets you host a public version of your app for free, or you can create and host a password-protected version with Netlify's $15/month plan.
 
@@ -35,12 +37,12 @@ Netlify lets you host a public version of your app for free, or you can create a
 1. Choose your Git provider (GitHub, GitLab, Bitbucket, Azure DevOps)
 1. Select the repository containing your Evidence project
 1. In the build settings
-  - **Build command**: `npm run sources && npm run build`
-  - **Publish directory**: `build`
+    - **Build command**: `npm run sources && npm run build`
+    - **Publish directory**: `build`
 1. In the environment variables
-  - Click **New variable**
-  - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
-  - Paste them into the Netlify environment variables section
+    - Click **New variable**
+    - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
+    - Paste them into the Netlify environment variables section
 1. (If using a monorepo) edit the base directory to point to your Evidence project
 1. Click **Deploy [your-site-name]**
 

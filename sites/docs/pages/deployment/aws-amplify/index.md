@@ -7,7 +7,7 @@ og:
     image: /img/deployment/deploy-aws-amplify.png
 ---
 
-[AWS Amplify](https://aws.amazon.com/amplify/) is an AWS service that allows you to create full stack web and mobile apps. It can be used to deploy Evidence apps by linking your Evidence project.
+[AWS Amplify](https://aws.amazon.com/amplify/) is an AWS service that allows you to create full stack web and mobile apps. Amplify can be used to deploy Evidence apps from a Git repository.
 
 ## Prerequisites
 

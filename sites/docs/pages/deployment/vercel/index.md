@@ -2,12 +2,12 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
-description: Deploy a public Evidence app to Vercel for free or a password-protected Evidence app with the pro plan.
+description: Deploy Evidence to Vercel
 og:
     image: /img/deployment/deploy-vercel.png
 ---
 
-[Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications, including Evidence apps.
+[Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications. Vercel can be used to deploy Evidence from a Git repository.
 
 Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan.
 

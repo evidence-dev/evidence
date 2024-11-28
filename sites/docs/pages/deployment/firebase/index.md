@@ -6,7 +6,7 @@ og:
     image: /img/deployment/deploy-firebase.png
 ---
 
-[Firebase Hosting](https://firebase.google.com/products/hosting) is a GCP service that allows you to host static websites and single-page apps. This can be used to host Evidence apps.
+[Firebase Hosting](https://firebase.google.com/products/hosting) is a GCP service that allows you to host static websites and single-page apps. Firebase Hosting can be used to deploy Evidence from a Git repository.
 
 
 ## Prerequisites
