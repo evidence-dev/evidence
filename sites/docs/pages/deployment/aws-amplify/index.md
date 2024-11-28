@@ -16,7 +16,7 @@ og:
 
 ## Deploy your app
 
-1. Login to the [AWS Console](https://console.aws.amazon.com/)
+1. Login to the <a href="https://console.aws.amazon.com/" target="_blank" class="markdown">AWS Console</a>
 2. Navigate to AWS Amplify, and select **Deploy an app** / **Create app**
 3. Choose source code provider
     - Select your source code provider (GitHub, GitLab, Bitbucket or CodeCommit). 

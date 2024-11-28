@@ -15,7 +15,7 @@ Cloudflare is a popular CDN and DNS provider that also offers a static site host
 
 ## Deploy your app
 
-1. Navigate to the [Cloudflare dashboard](https://dash.cloudflare.com/)
+1. Navigate to the <a href="https://dash.cloudflare.com/" target="_blank" class="markdown">Cloudflare dashboard</a>
 1. Select **Workers & Pages** from the left-hand menu, and select **Create**
 1. There are two tabs: **Workers** and **Pages** - choose **Pages**
 1. Select **Connect to Git**, and choose GitHub or GitLab

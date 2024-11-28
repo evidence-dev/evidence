@@ -24,7 +24,7 @@ Evidence Cloud is the easiest way to host Evidence apps. It's maintained by the 
 
 ## Deploying your app
 
-1. Go to [evidence.app](https://evidence.app) and login with GitHub
+1. Go to <a href="https://evidence.app" target="_blank" class="markdown">Evidence Cloud</a> and login with GitHub
 1. Choose an option to get started:
    1. **If you have an existing Evidence project:** click `Add Project`
    1. **If you don't have a Evidence project yet:** select `Start from our templates`, and choose evidence-dev/template.

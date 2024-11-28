@@ -15,7 +15,7 @@ og:
 
 ## Deploy your app
 
-1. In the [Azure Portal](https://portal.azure.com/), select **Create a Resource** and choose **Static Web App**
+1. In the <a href="https://portal.azure.com/" target="_blank" class="markdown">Azure Portal</a>, select **Create a Resource** and choose **Static Web App**
 1. Basics
    - Choose a subscription, and resource group for the app
    - Choose a name for the app

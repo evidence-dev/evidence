@@ -33,7 +33,7 @@ Netlify lets you host a public version of your app for free, or you can create a
 
 ## Deploy your app
 
-1. From the Netlify dashboard, select **Add new site >> Import an existing project**
+1. From the <a href="https://app.netlify.com/" target="_blank" class="markdown">Netlify dashboard</a>, select **Add new site >> Import an existing project**
 1. Choose your Git provider (GitHub, GitLab, Bitbucket, Azure DevOps)
 1. Select the repository containing your Evidence project
 1. In the build settings

@@ -15,7 +15,7 @@ og:
 
 ## Deploy your app
 
-1. Navigate to your Evidence project repository in [GitLab](https://gitlab.com/).
+1. In <a href="https://gitlab.com/" target="_blank" class="markdown">GitLab</a>, navigate to your Evidence project repository.
 1. Select **Deploy > Pages** in the left sidebar.
 1. Get started with GitLab Pages
     - Build image: `node:22`

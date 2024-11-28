@@ -18,7 +18,7 @@ Vercel lets you host a public version of your app for free, or you can create an
 
 ## Deploy your app
 
-1. From the Vercel dashboard, select **Add new... Project**
+1. From the <a href="https://vercel.com/dashboard" target="_blank" class="markdown">Vercel dashboard</a>, select **Add new... Project**
 1. Import the Git repository containing your Evidence project.
 1. Edit the build and output settings:
    - **Build command**: `npm run sources && npm run build`

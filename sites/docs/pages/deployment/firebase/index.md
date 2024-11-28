@@ -16,7 +16,7 @@ og:
 
 ## Deploy your app
 
-1. From the [Firebase console](https://console.firebase.google.com/), click **Create a project**.
+1. From the <a href="https://console.firebase.google.com/" target="_blank" class="markdown">Firebase console</a>, click **Create a project**.
     - Enter a project name, accept the terms of service, and click **Continue**.
     - Choose whether to enable Google Analytics (not required), and click **Create project**.
 1. In the terminal, install the Firebase CLI:
