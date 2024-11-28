@@ -162,6 +162,13 @@ queries:
     required=false
     options="Excel-style format | built-in format name | custom format name"
 />
+<PropListing
+    name="seriesLabelFmt"
+    description="Format to use for series label (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    required=false
+    options="Excel-style format | built-in format name | custom format name"
+    defaultValue="-"
+/>
 <PropListing 
     name="shape"
     description="Options for which shape to use for bubble points"
