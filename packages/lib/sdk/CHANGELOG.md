@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 1.5.1
+
+### Patch Changes
+
+- b5a096723: ignore non-strings in `addBasePath`
+  - @evidence-dev/universal-sql@2.1.11
+
 ## 1.5.0
 
 ### Minor Changes

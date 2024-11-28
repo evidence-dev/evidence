@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.6
+
+### Patch Changes
+
+- 73782e654: dont create legacy file on new project
+
 ## 1.5.4
 
 ### Patch Changes
