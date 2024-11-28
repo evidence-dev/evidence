@@ -200,16 +200,6 @@
 
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
-	let calendarCurrent;
-	if (!range) {
-		if (currentDate > calendarEnd) {
-			calendarCurrent = null;
-		} else if (currentDate < calendarStart) {
-			calendarCurrent = null;
-		} else {
-			calendarCurrent = YYYYMMDDToCalendar(end);
-		}
-	}
 
 	function updateDateRange(start, end) {
 		if (selectedPreset) return;
@@ -221,8 +211,6 @@
 		}
 	}
 	$: updateDateRange(calendarStart, calendarEnd);
-
-	let openVar = writable(false);
 </script>
 
 <div class="flex bg-[white]">
