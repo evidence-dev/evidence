@@ -31,8 +31,8 @@ og:
 1. This will create add a new workflow file in your repository, e.g. `.github/workflows/azure-static-web-apps-thankful-hill-01fbff51e.yml`
 1. Add secrets to your GitHub repo: Settings > Secrets > Actions
    - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
-   - Add each of them as secrets to your GitHub repo
-1. Edit this file's "Build and Deploy" step, adding `app_build_command: "npm run sources && npm run build"`, and adding your environment variables as secrets.
+   - Add each of them as secrets to your GitHub repo (note that GitHub capitalizes the names of secrets).
+1. Edit this file's "Build and Deploy" step, adding `app_build_command: "npm run sources && npm run build"`, and adding your environment variables as GitHub secrets.
       ```yaml
             - name: Build And Deploy
             id: builddeploy
@@ -49,8 +49,8 @@ og:
                github_id_token: ${{ steps.idtoken.outputs.result }}
                ###### End of Repository/Build Configurations ######
             env:
-               YOUR_EVIDENCE_ENV_VAR: ${{ secrets.YOUR_EVIDENCE_ENV_VAR }}
-               ANOTHER_EVIDENCE_ENV_VAR: ${{ secrets.ANOTHER_EVIDENCE_ENV_VAR }}
+               EVIDENCE_SOURCE__my_source__username: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__USERNAME }}
+        EVIDENCE_SOURCE__my_source__password: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__PASSWORD }}
       ```
 1. Commit and push this change, and your app will deploy.
 
@@ -76,7 +76,7 @@ You can add a custom domain to your Azure Static App as follows:
 
 ### Data Refresh
 
-To adjust your deployment schedule, modify the workflow file in your repository.
+To add a deployment schedule, modify the workflow file in your repository, adding a `schedule` trigger.
 
 ```yaml
 on:
@@ -84,4 +84,11 @@ on:
     branches: 'main'
   schedule:
     - cron: '0 0 * * *' # This is midnight every day
+```
+
+Also delete the `if` line from the `build_and_deploy_job` step:
+
+```yaml
+build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed') # delete this line
 ```
