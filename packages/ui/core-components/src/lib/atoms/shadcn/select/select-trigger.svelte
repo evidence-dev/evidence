@@ -6,11 +6,17 @@
 
 	/** @type {string | undefined | null} */
 	let className = undefined;
-
+	export let range = undefined;
+	export let openVar = undefined;
 	export { className as class };
 </script>
 
 <SelectPrimitive.Trigger
+	on:click={() => {
+		if (range === false && openVar) {
+			$openVar = !$openVar;
+		}
+	}}
 	class={cn(
 		'border-input flex h-9 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-white placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-400 disabled:cursor-not-allowed disabled:opacity-50',
 		className

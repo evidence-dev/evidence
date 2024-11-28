@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import DateInput from '../date-input/_DateInput.svelte';
+	import DateInput from './_DateInput.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 	import { getLocalTimeZone } from '@internationalized/date';
@@ -18,6 +18,7 @@
 	}
 
 	const inputs = getInputContext();
+
 	/** @type {string} */
 	export let name;
 	/** @type {string | undefined} */
@@ -38,9 +39,8 @@
 	export let presetRanges;
 	/** @type {string | undefined} */
 	export let defaultValue;
-
 	/** @type {boolean} */
-	let range = true;
+	export let range = false;
 
 	const exec = getQueryFunction();
 	let query;
@@ -50,16 +50,15 @@
 			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
 			exec,
 			{
-				initialData: $page?.data?.data[`DateRange-${name}_data`],
-				knownColumns: $page?.data?.data[`DateRange-${name}_columns`],
+				initialData: $page?.data?.data[`DateInput-${name}_data`],
+				knownColumns: $page?.data?.data[`DateInput-${name}_columns`],
 				disableCache: true,
 				noResolve: false,
-				id: `DateRange-${name}`
+				id: `DateInput-${name}`
 			}
 		);
 		query.fetch();
 	}
-
 	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
 	$: startString =
 		typeof start === 'string' && YYYYMMDD.test(start)
@@ -79,14 +78,27 @@
 					: dateToYYYYMMDD(new Date());
 
 	$: if ((query && $query.dataLoaded) || !query) {
-		$inputs[name] = { start: startString, end: endString };
+		if (range) {
+			$inputs[name] = { value: undefined, start: startString, end: endString };
+		} else {
+			$inputs[name] = { value: startString, start: startString, end: undefined };
+		}
 	}
 
+	let currentDate = dateToYYYYMMDD(new Date(Date.now()));
+
 	let selectedDateInput;
-	$: if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end)) {
+	$: if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
 		$inputs[name] = {
+			value: undefined,
 			start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
 			end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
+		};
+	} else if (selectedDateInput && selectedDateInput && !range) {
+		$inputs[name] = {
+			value: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0)),
+			start: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0)),
+			end: undefined
 		};
 	}
 </script>
@@ -122,6 +134,7 @@
 					{presetRanges}
 					{defaultValue}
 					{range}
+					{currentDate}
 				/>
 			</QueryLoad>
 		{/if}
