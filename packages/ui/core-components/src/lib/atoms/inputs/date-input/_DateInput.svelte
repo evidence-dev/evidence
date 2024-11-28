@@ -46,10 +46,8 @@
 	/** @type {string} */
 	export let currentDate;
 
-	$: presets = range ? presetsRangeCalendar : presetsCalendar;
-
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
-	$: presetsRangeCalendar = [
+	$: presets = [
 		{
 			label: 'Last 7 Days',
 			group: 'Days',
@@ -137,24 +135,6 @@
 				start: calendarStart,
 				end: calendarEnd
 			}
-		}
-	];
-
-	$: presetsCalendar = [
-		{
-			label: 'Last Day',
-			group: 'Single Input',
-			range: calendarEnd
-		},
-		{
-			label: 'Today',
-			group: 'Single Input',
-			range: calendarCurrent
-		},
-		{
-			label: 'First Day',
-			group: 'Single Input',
-			range: calendarStart
 		}
 	];
 
@@ -246,7 +226,7 @@
 </script>
 
 <div class="flex bg-[white]">
-	<Popover.Root openFocus open={$openVar && !range}>
+	<Popover.Root openFocus>
 		<Popover.Trigger asChild let:builder>
 			<Button
 				variant="outline"
@@ -257,12 +237,6 @@
 				)}
 				builders={[builder]}
 				disabled={!loaded}
-				on:click={(e) => {
-					if (!range) {
-						e.stopImmediatePropagation();
-						$openVar = !$openVar;
-					}
-				}}
 			>
 				<span class="hidden sm:inline">
 					{#if !loaded}
@@ -343,16 +317,11 @@
 			bind:selected={selectedPreset}
 			disabled={!loaded}
 		>
-			<Select.Trigger
-				{range}
-				{openVar}
-				class="h-8 w-40 rounded-l-none px-3 text-xs font-medium"
-				sameWidth
-			>
+			<Select.Trigger class="h-8 w-40 rounded-l-none px-3 text-xs font-medium" sameWidth>
 				{#if selectedPreset}
 					{selectedPreset.label}
 				{:else}
-					<span class="hidden sm:inline"> {range ? 'Select a Range' : 'Select a Date'} </span>
+					<span class="hidden sm:inline"> Select a Range </span>
 					<span class="sm:hidden"> Range </span>
 				{/if}
 			</Select.Trigger>
@@ -360,6 +329,7 @@
 				<Select.Content class="text-sm text-center">
 					<p>No Valid Presets</p>
 				</Select.Content>
+			{:else}
 				<Select.Content>
 					{#each presets.filter((d) => d.group === 'Days') as preset}
 						<Select.Item value={preset.range} label={preset.label} class="text-xs"
@@ -386,11 +356,6 @@
 						<Separator orientation="horizontal" />
 					{/if}
 					{#each presets.filter((d) => d.group === 'To Date') as preset}
-						<Select.Item value={preset.range} label={preset.label} class="text-xs"
-							>{preset.label}</Select.Item
-						>
-					{/each}
-					{#each presets.filter((d) => d.group === 'Single Input') as preset}
 						<Select.Item value={preset.range} label={preset.label} class="text-xs"
 							>{preset.label}</Select.Item
 						>
