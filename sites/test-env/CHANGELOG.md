@@ -1,5 +1,12 @@
 # evidence-test-environment
 
+## 3.0.73
+
+### Patch Changes
+
+- Updated dependencies [9043ff73c]
+  - @evidence-dev/evidence@39.2.1
+
 ## 3.0.72
 
 ### Patch Changes

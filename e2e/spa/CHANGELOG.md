@@ -1,5 +1,12 @@
 # e2e-spa
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies [9043ff73c]
+  - @evidence-dev/evidence@39.2.1
+
 ## 0.0.20
 
 ### Patch Changes

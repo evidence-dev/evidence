@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 39.2.1
+
+### Patch Changes
+
+- 9043ff73c: re-enable logging on dev mode
+
 ## 39.2.0
 
 ### Minor Changes
