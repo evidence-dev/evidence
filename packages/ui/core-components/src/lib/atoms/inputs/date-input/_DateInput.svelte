@@ -334,68 +334,69 @@
 			{/if}
 		</Popover.Content>
 	</Popover.Root>
-	<Select.Root
-		onSelectedChange={(v) => {
-			v.range = v.value;
-			applyPreset(v);
-		}}
-		bind:selected={selectedPreset}
-		disabled={!loaded}
-	>
-		<Select.Trigger
-			{range}
-			{openVar}
-			class="h-8 w-40 rounded-l-none px-3 text-xs font-medium"
-			sameWidth
+	{#if range}
+		<Select.Root
+			onSelectedChange={(v) => {
+				v.range = v.value;
+				applyPreset(v);
+			}}
+			bind:selected={selectedPreset}
+			disabled={!loaded}
 		>
-			{#if selectedPreset}
-				{selectedPreset.label}
-			{:else}
-				<span class="hidden sm:inline"> {range ? 'Select a Range' : 'Select a Date'} </span>
-				<span class="sm:hidden"> Range </span>
+			<Select.Trigger
+				{range}
+				{openVar}
+				class="h-8 w-40 rounded-l-none px-3 text-xs font-medium"
+				sameWidth
+			>
+				{#if selectedPreset}
+					{selectedPreset.label}
+				{:else}
+					<span class="hidden sm:inline"> {range ? 'Select a Range' : 'Select a Date'} </span>
+					<span class="sm:hidden"> Range </span>
+				{/if}
+			</Select.Trigger>
+			{#if presets && presets.length === 0}
+				<Select.Content class="text-sm text-center">
+					<p>No Valid Presets</p>
+				</Select.Content>
+				<Select.Content>
+					{#each presets.filter((d) => d.group === 'Days') as preset}
+						<Select.Item value={preset.range} label={preset.label} class="text-xs"
+							>{preset.label}</Select.Item
+						>
+					{/each}
+					{#if groupExists('Months')}
+						<Separator orientation="horizontal" />
+					{/if}
+					{#each presets.filter((d) => d.group === 'Months') as preset}
+						<Select.Item value={preset.range} label={preset.label} class="text-xs"
+							>{preset.label}</Select.Item
+						>
+					{/each}
+					{#if groupExists('Last')}
+						<Separator orientation="horizontal" />
+					{/if}
+					{#each presets.filter((d) => d.group === 'Last') as preset}
+						<Select.Item value={preset.range} label={preset.label} class="text-xs"
+							>{preset.label}</Select.Item
+						>
+					{/each}
+					{#if groupExists('To Date')}
+						<Separator orientation="horizontal" />
+					{/if}
+					{#each presets.filter((d) => d.group === 'To Date') as preset}
+						<Select.Item value={preset.range} label={preset.label} class="text-xs"
+							>{preset.label}</Select.Item
+						>
+					{/each}
+					{#each presets.filter((d) => d.group === 'Single Input') as preset}
+						<Select.Item value={preset.range} label={preset.label} class="text-xs"
+							>{preset.label}</Select.Item
+						>
+					{/each}
+				</Select.Content>
 			{/if}
-		</Select.Trigger>
-		{#if presets && presets.length === 0}
-			<Select.Content class="text-sm text-center">
-				<p>No Valid Presets</p>
-			</Select.Content>
-		{:else if range}
-			<Select.Content>
-				{#each presets.filter((d) => d.group === 'Days') as preset}
-					<Select.Item value={preset.range} label={preset.label} class="text-xs"
-						>{preset.label}</Select.Item
-					>
-				{/each}
-				{#if groupExists('Months')}
-					<Separator orientation="horizontal" />
-				{/if}
-				{#each presets.filter((d) => d.group === 'Months') as preset}
-					<Select.Item value={preset.range} label={preset.label} class="text-xs"
-						>{preset.label}</Select.Item
-					>
-				{/each}
-				{#if groupExists('Last')}
-					<Separator orientation="horizontal" />
-				{/if}
-				{#each presets.filter((d) => d.group === 'Last') as preset}
-					<Select.Item value={preset.range} label={preset.label} class="text-xs"
-						>{preset.label}</Select.Item
-					>
-				{/each}
-				{#if groupExists('To Date')}
-					<Separator orientation="horizontal" />
-				{/if}
-				{#each presets.filter((d) => d.group === 'To Date') as preset}
-					<Select.Item value={preset.range} label={preset.label} class="text-xs"
-						>{preset.label}</Select.Item
-					>
-				{/each}
-				{#each presets.filter((d) => d.group === 'Single Input') as preset}
-					<Select.Item value={preset.range} label={preset.label} class="text-xs"
-						>{preset.label}</Select.Item
-					>
-				{/each}
-			</Select.Content>
-		{/if}
-	</Select.Root>
+		</Select.Root>
+	{/if}
 </div>

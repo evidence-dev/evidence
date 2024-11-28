@@ -18,7 +18,6 @@ where day = '${inputs.date_filtering_a_query.value}'
 
 <DocTab>
     <div slot='preview'>
-        <div class='border rounded-md border-gray-200 p-2 text-center '>
             <DateInput
                 name=date_filtering_a_query
                 data={orders_by_day}
@@ -31,7 +30,6 @@ where day = '${inputs.date_filtering_a_query.value}'
                 y=sales
                 y2=num_orders
             />
-        </div>
     </div>
 
 ````markdown
@@ -66,7 +64,6 @@ The Date selected can be accessed through the `inputs.[name].value`
 
 <DocTab>
     <div slot='preview'>
-        <div class='border rounded-md border-gray-50 p-2 text-center bg-gray-100 shadow-inner '>
             <DateInput
                 name=date_input_from_query
                 data={orders_by_day}
@@ -74,7 +71,6 @@ The Date selected can be accessed through the `inputs.[name].value`
             />
 
             Date Selected: {inputs.date_input_from_query.value}
-        </div>
     </div>
 
 ````markdown
@@ -92,7 +88,6 @@ Date Selected: {inputs.date_input_from_query.value}
 
 <DocTab>
     <div slot='preview'>
-        <div class='border rounded-md border-gray-50 p-2 text-center bg-gray-100 shadow-inner'>
             <DateInput
                 name=date_range_with_title
                 data={orders_by_day}
@@ -100,7 +95,6 @@ Date Selected: {inputs.date_input_from_query.value}
                 title="Select a Date Input"
                 range
             />
-        </div>
     </div>
 
 ```markdown
@@ -131,14 +125,12 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
 
 <DocTab>
     <div slot='preview'>
-        <div class='border rounded-md border-gray-50 p-2 text-center bg-gray-100 shadow-inner '>
             <DateInput
                 name=range_filtering_a_query
                 data={orders_by_day}
                 dates=day
                 range
             />
-        </div>
 
         <LineChart
             data={filtered_query_ranged}
@@ -175,9 +167,7 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-        <div class='border rounded-md border-gray-50 p-2 text-center bg-gray-100 shadow-inner '>
             <DateInput defaultValue={'Last 7 Days'} range/>
-        </div>
     </div>
 
 ````svelte
@@ -193,9 +183,7 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-        <div class='border rounded-md border-gray-50 p-2 text-center bg-gray-100 shadow-inner '>
             <DateInput presetRanges={'Last 7 Days'} range/>
-        </div>
     </div>
 
 ```svelte
@@ -211,9 +199,7 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-        <div class='border rounded-md border-gray-50 p-2 text-center bg-gray-100 shadow-inner '>
             <DateInput presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']} range/>
-        </div>
     </div>
 
 ````svelte
@@ -229,14 +215,12 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-        <div class='border rounded-md border-gray-50 p-2 text-center bg-gray-100 shadow-inner '>
             <DateInput
                 name=manual_date_range
                 start=2019-01-01
                 end=2019-12-31
                 range
             />
-        </div>
     </div>
 
 ```markdown
