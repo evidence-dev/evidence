@@ -6,7 +6,6 @@ node_modules/**
 template/node_modules/**
 template/build/**
 template/.evidence/template/**
-!template/.evidence/template/evidence.settings.json
 data/**
 src/**
 
