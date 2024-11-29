@@ -23,34 +23,28 @@ og:
    - Choose a source code provider: GitHub, Azure DevOps or Other
    - Authenticate with your Git provider
    - Choose a repository, and branch to deploy from
+   - Build presets: `Custom`
    - Output location `/build`
 1. Deployment configuration
-   - Choose either a deployment token, or (recommended) GitHub Identity to deploy your code
+   - Choose either a deployment token, or (recommended) GitHub to deploy your code
 1. Advanced and Tags: No changes needed
-1. Review and create
+1. Review and create: Click Create
 1. This will create add a new workflow file in your repository, e.g. `.github/workflows/azure-static-web-apps-thankful-hill-01fbff51e.yml`
-1. Add secrets to your GitHub repo: Settings > Secrets > Actions
-   - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
-   - Add each of them as secrets to your GitHub repo (note that GitHub capitalizes the names of secrets).
-1. Edit this file's "Build and Deploy" step, adding `app_build_command: "npm run sources && npm run build"`, and adding your environment variables as GitHub secrets.
+1. Add environment variables: Settings > Environment variables
+   - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables
+    - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
+   - Add each of them to the Azure Static App environment variables section
+1. In your git repo, edit this file's "Build and Deploy" step, adding `app_build_command: "npm run sources && npm run build"`.
       ```yaml
             - name: Build And Deploy
             id: builddeploy
             uses: Azure/static-web-apps-deploy@v1
             with:
-               azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_HILL_01FBFF51E }}
-               action: "upload"
-               ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-               # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-               app_location: "/" # App source code path
-               api_location: "" # Api source code path - optional
-               output_location: "/build" # Built app content directory - optional
-               app_build_command: "npm run sources && npm run build"
-               github_id_token: ${{ steps.idtoken.outputs.result }}
+               ...
+               # Add this line
+               app_build_command: "npm run sources && npm run build" 
                ###### End of Repository/Build Configurations ######
-            env:
-               EVIDENCE_SOURCE__my_source__username: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__USERNAME }}
-        EVIDENCE_SOURCE__my_source__password: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__PASSWORD }}
+               ...
       ```
 1. Commit and push this change, and your app will deploy.
 

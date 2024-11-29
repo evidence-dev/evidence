@@ -33,7 +33,7 @@ Netlify lets you host a public version of your app for free, or you can create a
 
 ## Deploy your app
 
-1. From the <a href="https://app.netlify.com/" target="_blank" class="markdown">Netlify dashboard</a>, select **Add new site >> Import an existing project**
+1. From the <a href="https://app.netlify.com/" target="_blank" class="markdown">Netlify dashboard</a>, select **Add new site > Import an existing project**
 1. Choose your Git provider (GitHub, GitLab, Bitbucket, Azure DevOps)
 1. Select the repository containing your Evidence project
 1. In the build settings
@@ -41,7 +41,8 @@ Netlify lets you host a public version of your app for free, or you can create a
     - **Publish directory**: `build`
 1. In the environment variables
     - Click **New variable**
-    - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
+    - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables
+    - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
     - Paste them into the Netlify environment variables section
 1. (If using a monorepo) edit the base directory to point to your Evidence project
 1. Click **Deploy [your-site-name]**

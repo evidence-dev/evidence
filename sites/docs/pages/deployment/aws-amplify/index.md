@@ -35,7 +35,7 @@ og:
     - Edit the build output directory: `build`
     - Open the **Advanced settings** section
         - Build image: `Custom build image`
-        - Reference: `public.ecr.aws/lts/ubuntu:22.04`
+        - Reference: `public.ecr.aws/docker/library/node:20-bookworm`
         - Click to add new **Environment variables**
         - Copy your environment variables from the Evidence settings page: <a href="http://localhost:3000/settings/#deploy" target="_blank" class="markdown">http://localhost:3000/settings/#deploy</a>
         - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.

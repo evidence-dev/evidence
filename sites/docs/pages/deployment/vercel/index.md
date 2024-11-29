@@ -25,8 +25,9 @@ Vercel lets you host a public version of your app for free, or you can create an
    - **Output directory**: `build`
 1. (If using a monorepo) edit the root directory to point to your Evidence project
 1. Edit the environment variables:
-   - With your Evidence dev server running, use the **Copy All** button on the [settings page](http://localhost:3000/settings#deploy)
+   - With your Evidence dev server running, use the **Copy All** button on the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a>
    - Paste them into the Vercel environment variables section, (they will automatically populate all the fields)
+   - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
 1. Click **Deploy**
 
 Your app will be deployed to https://[project-name].vercel.app

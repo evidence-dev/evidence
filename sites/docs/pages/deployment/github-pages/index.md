@@ -24,9 +24,12 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
 
 1. Adjust the [base path](/deployment/base-paths) for your app to match the name of your GitHub repository. 
     - If your repo is stored at `https://github.com/username/my-evidence-app`, your base path should be `/my-evidence-app`.
+1. Add secrets to your GitHub repo: Settings > Secrets and variables > Actions
+    - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables
+    - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
 1. From your GitHub repository, click the **Settings** tab, and then click **Pages** in the Code and automation section.
 1. Under **Source**, select **GitHub Actions**
-1. Directly underneath, where it says "Use a suggested workflow, browse all workflows or create your own", click **Create your own**, and use the following workflow file, naming it `deploy.yml` or similar.
+1. Directly underneath, where it says "Use a suggested workflow, browse all workflows or create your own", click **Create your own**, and use the following workflow file, naming it `deploy.yml` or similar. 
     ```yaml
     name: Deploy to GitHub Pages
 
@@ -52,6 +55,9 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
           - name: build
             env:
               BASE_PATH: '/${{ github.event.repository.name }}'
+              ## Add and uncomment any environment variables here
+              ## EVIDENCE_SOURCE__my_source__username: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__USERNAME }}
+              ## EVIDENCE_SOURCE__my_source__private_key: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__PRIVATE_KEY }}
             run: |
               npm run sources
               npm run build

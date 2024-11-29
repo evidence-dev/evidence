@@ -30,7 +30,7 @@ Cloudflare is a popular CDN and DNS provider that also offers a static site host
 1. (Optionally select the root path containing your Evidence project if using a monorepo)
 1. Add environment variables
    - Click **Add variable**
-   - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
+   - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables
    - Paste them into the Cloudflare Pages environment variables section
 1. Click **Save and Deploy**
 
