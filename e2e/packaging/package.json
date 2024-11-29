@@ -1,0 +1,45 @@
+{
+  "name": "e2e-packaging",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "evidence build",
+    "build:strict": "evidence build:strict",
+    "dev": "evidence dev --open /",
+    "sources": "evidence sources",
+    "preview": "evidence preview",
+    "test:preview": "playwright test",
+    "test:dev": "cross-env DEV=true playwright test"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@evidence-dev/bigquery": "workspace:*",
+    "@evidence-dev/core-components": "workspace:*",
+    "@evidence-dev/csv": "workspace:*",
+    "@evidence-dev/databricks": "workspace:*",
+    "@evidence-dev/duckdb": "workspace:*",
+    "@evidence-dev/evidence": "workspace:*",
+    "@evidence-dev/motherduck": "workspace:*",
+    "@evidence-dev/mssql": "workspace:*",
+    "@evidence-dev/mysql": "workspace:*",
+    "@evidence-dev/postgres": "workspace:*",
+    "@evidence-dev/snowflake": "workspace:*",
+    "@evidence-dev/sqlite": "workspace:*",
+    "@evidence-dev/trino": "workspace:*"
+  },
+  "overrides": {
+    "jsonwebtoken": "9.0.0",
+    "trim@<0.0.3": ">0.0.3",
+    "sqlite3": "5.1.5",
+    "axios": "^1.7.4"
+  },
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "^1.45.3",
+    "@types/node": "^22.10.1",
+    "cross-env": "^7.0.3"
+  }
+}
