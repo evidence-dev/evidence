@@ -22,7 +22,7 @@
 	/** @type {string} */
 	export let name;
 	/** @type {string | undefined} */
-	export let title = 'Date Input';
+	export let title;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
 
@@ -105,7 +105,7 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
-		{#if title}
+		{#if title && range}
 			<span class="text-sm text-gray-500 block mb-1">{title}</span>
 		{/if}
 
@@ -125,7 +125,6 @@
 				<svelte:fragment slot="skeleton">
 					<Skeleton class="h-8 w-72" />
 				</svelte:fragment>
-
 				<DateInput
 					bind:selectedDateInput
 					start={startString}
@@ -135,6 +134,7 @@
 					{defaultValue}
 					{range}
 					{currentDate}
+					{title}
 				/>
 			</QueryLoad>
 		{/if}

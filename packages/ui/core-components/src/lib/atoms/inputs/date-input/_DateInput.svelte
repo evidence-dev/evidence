@@ -15,6 +15,8 @@
 	import * as Popover from '$lib/atoms/shadcn/popover/index.js';
 	import { Separator } from '$lib/atoms/shadcn/separator/index.js';
 	import { Calendar } from '$lib/atoms/shadcn/calendar/index.js';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Calendar as CalendarIcon } from '@steeze-ui/radix-icons';
 
 	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
@@ -42,6 +44,8 @@
 	export let defaultValue;
 	/** @type {boolean} */
 	export let range = false;
+	/** @type {string} */
+	export let title;
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
@@ -223,11 +227,18 @@
 				builders={[builder]}
 				disabled={!loaded}
 			>
+				{#if !range && title}
+					{title}
+					<span class="m-2"> | </span>
+				{/if}
 				<span class="hidden sm:inline">
 					{#if !loaded}
 						Loading...
 					{:else if selectedDateInput && !range}
-						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
+						<span class="flex align-center">
+							{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
+							<Icon src={CalendarIcon} class="ml-1 h-[14px] w-[14px]" />
+						</span>
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfMedium.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
@@ -247,6 +258,7 @@
 						Loading...
 					{:else if selectedDateInput && !range}
 						{dfShort.format(selectedDateInput.toDate(getLocalTimeZone()))}
+						<Icon src={CalendarIcon} class="ml" />
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfShort.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfShort.format(

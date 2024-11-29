@@ -21,6 +21,7 @@ where day > '${inputs.date_filtering_a_query.value}'
     <div slot='preview'>
             <DateInput
                 name=date_filtering_a_query
+                title='Sales After'
                 data={orders_by_day}
                 dates=day
             />
@@ -125,6 +126,7 @@ where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_
                 name=range_filtering_a_query
                 data={orders_by_day}
                 dates=day
+                title='Date Range'
                 range
             />
 
@@ -148,6 +150,7 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
     name=range_filtering_a_query
     data={orders_by_day}
     dates=day
+    title='Date Range'
     range
 />
 
