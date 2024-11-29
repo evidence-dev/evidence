@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "39.1.17",
+	"version": "39.2.2",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -33,7 +33,7 @@
 		"@evidence-dev/component-utilities": "workspace:*",
 		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
-		"@sveltejs/kit": "2.5.4",
+		"@sveltejs/kit": "2.8.4",
 		"svelte": "4.2.19",
 		"vite": "5.4.11"
 	},
@@ -49,7 +49,7 @@
 		"sade": "^1.8.1"
 	},
 	"peerDependencies": {
-		"@sveltejs/kit": "2.5.4",
+		"@sveltejs/kit": "2.8.4",
 		"autoprefixer": "^10.4.7",
 		"debounce": "^1.2.1",
 		"git-remote-origin-url": "4.0.0",

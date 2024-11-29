@@ -8,7 +8,7 @@ SELECT 	'/subfolder-no-index/2' as id,
 		'johndoe' AS username
 UNION ALL
 SELECT 	'/subfolder-no-index/3' as id,
- 		'/subfolder-no-index/30' as id3,
+ 		null as id2,
 		'janedoe' as username
 ```
 

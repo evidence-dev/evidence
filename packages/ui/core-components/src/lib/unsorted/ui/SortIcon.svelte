@@ -10,7 +10,7 @@
 </script>
 
 {#if ascending}
-	<Icon src={ChevronUp} class="w-3 h-3 inline mb-0.5" />
+	<Icon src={ChevronUp} class="w-[10px] h-[10px] mb-0.5 inline" />
 {:else}
-	<Icon src={ChevronDown} class="w-3 h-3 inline mb-0.5" />
+	<Icon src={ChevronDown} class="w-[10px] h-[10px] mb-0.5 inline" />
 {/if}

@@ -1,5 +1,36 @@
 # @evidence-dev/evidence
 
+## 39.2.2
+
+### Patch Changes
+
+- b3465c45d: Upgrade @sveltejs/kit to 2.8.4
+- fe1fa3d6b: re-enable logging on dev mode
+- Updated dependencies [b5a096723]
+  - @evidence-dev/sdk@1.5.1
+  - @evidence-dev/universal-sql@2.1.11
+
+## 39.2.1
+
+### Patch Changes
+
+- 9043ff73c: re-enable logging on dev mode
+
+## 39.2.0
+
+### Minor Changes
+
+- b72e4a809: Remove plugin connector
+- 4e469564d: disable all non-error vite logging
+
+### Patch Changes
+
+- 2decdfac0: build directory path manually when using fs.Dirent
+- e0fb953da: Always log server error
+- Updated dependencies [b72e4a809]
+  - @evidence-dev/sdk@1.5.0
+  - @evidence-dev/universal-sql@2.1.10
+
 ## 39.1.17
 
 ### Patch Changes
