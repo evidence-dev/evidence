@@ -30,11 +30,10 @@ og:
 1. Advanced and Tags: No changes needed
 1. Review and create: Click Create
 1. This will create add a new workflow file in your repository, e.g. `.github/workflows/azure-static-web-apps-thankful-hill-01fbff51e.yml`
-1. Add environment variables: Settings > Environment variables
-   - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables
+1. Add secrets to your GitHub repo: Settings > Secrets and variables > Actions
+    - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables into the GitHub secrets
     - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
-   - Add each of them to the Azure Static App environment variables section
-1. In your git repo, edit this file's "Build and Deploy" step, adding `app_build_command: "npm run sources && npm run build"`.
+1. In your git repo, edit this file's "Build and Deploy" step, adding `app_build_command: "npm run sources && npm run build"`, and environment variables to reference the secrets
       ```yaml
             - name: Build And Deploy
             id: builddeploy
@@ -44,7 +43,11 @@ og:
                # Add this line
                app_build_command: "npm run sources && npm run build" 
                ###### End of Repository/Build Configurations ######
-               ...
+            env: 
+               # Add and uncomment your environment variables here
+               # Note that GitHub capitalizes the names of secrets, but Evidence requires the casing to match your source and option names
+               # EVIDENCE_SOURCE__my_source__username: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__USERNAME }}
+               # EVIDENCE_SOURCE__my_source__private_key: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__PRIVATE_KEY }}
       ```
 1. Commit and push this change, and your app will deploy.
 
