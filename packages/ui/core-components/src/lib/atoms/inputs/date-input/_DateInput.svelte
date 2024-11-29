@@ -15,7 +15,6 @@
 	import * as Popover from '$lib/atoms/shadcn/popover/index.js';
 	import { Separator } from '$lib/atoms/shadcn/separator/index.js';
 	import { Calendar } from '$lib/atoms/shadcn/calendar/index.js';
-	import { writable } from 'svelte/store';
 
 	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
@@ -43,8 +42,6 @@
 	export let defaultValue;
 	/** @type {boolean} */
 	export let range = false;
-	/** @type {string} */
-	export let currentDate;
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
