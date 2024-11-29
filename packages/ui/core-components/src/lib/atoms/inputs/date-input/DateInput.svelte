@@ -22,7 +22,7 @@
 	/** @type {string} */
 	export let name;
 	/** @type {string | undefined} */
-	export let title;
+	export let title = 'Date Input';
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
 

@@ -1,11 +1,12 @@
 ---
 title: Date Input
 sidebar_position: 1
+description: A date input component allows the user to select a date or a range of dates. The selected dates can be used as inputs to queries or components.
 queries: 
 - orders_by_day.sql
 ---
 
-Creates a date picker that can be used to filter a query.
+A date input component allows the user to select a date or a range of dates. The selected dates can be used as inputs to queries or components.
 
 To see how to filter a query using an input component, see [Filters](/core-concepts/filters).
 
@@ -13,7 +14,7 @@ To see how to filter a query using an input component, see [Filters](/core-conce
 select 
 *
 from ${orders_by_day}
-where day = '${inputs.date_filtering_a_query.value}'
+where day > '${inputs.date_filtering_a_query.value}'
 ```
 
 <DocTab>
@@ -38,7 +39,7 @@ where day = '${inputs.date_filtering_a_query.value}'
 select 
     *
 from ${orders_by_day}
-where day = '${inputs.range_filtering_a_query.value}'
+where day > '${inputs.range_filtering_a_query.value}'
 ```
 
 <DateInput
@@ -93,7 +94,6 @@ Date Selected: {inputs.date_input_from_query.value}
                 data={orders_by_day}
                 dates=day
                 title="Select a Date Input"
-                range
             />
     </div>
 
@@ -102,9 +102,7 @@ Date Selected: {inputs.date_input_from_query.value}
     name=date_range_with_title
     data={orders_by_day}
     dates=day
-    title="Select a Date Input"
-    range
-/>
+    title="Select a Date Input"/>
 ```
 </DocTab>
 
