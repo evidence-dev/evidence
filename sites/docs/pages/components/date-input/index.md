@@ -29,7 +29,6 @@ where day > '${inputs.date_filtering_a_query.value}'
                 data={filtered_query}
                 x=day
                 y=sales
-                y2=num_orders
             />
     </div>
 
@@ -43,7 +42,7 @@ where day > '${inputs.range_filtering_a_query.value}'
 ```
 
 <DateInput
-    name=range_filtering_a_query
+    name=date_filtering_a_query
     data={orders_by_day}
     dates=day
 />
@@ -52,7 +51,6 @@ where day > '${inputs.range_filtering_a_query.value}'
     data={filtered_query}
     x=day
     y=sales
-    y2=num_orders
 />
 ````
 </DocTab>
