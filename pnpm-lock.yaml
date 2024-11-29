@@ -220,7 +220,7 @@ importers:
         version: 0.5.2
       vite:
         specifier: 5.4.11
-        version: 5.4.11(@types/node@22.10.1)
+        version: 5.4.11(@types/node@20.11.28)
 
   e2e:
     devDependencies:
@@ -392,58 +392,6 @@ importers:
       '@types/node':
         specifier: ^20.14.12
         version: 20.17.6
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
-
-  e2e/packaging:
-    dependencies:
-      '@evidence-dev/bigquery':
-        specifier: file:./evidence-dev-bigquery.tgz
-        version: file:e2e/packaging/evidence-dev-bigquery.tgz
-      '@evidence-dev/core-components':
-        specifier: file:./evidence-dev-core-components.tgz
-        version: file:e2e/packaging/evidence-dev-core-components.tgz(@algolia/client-search@5.15.0)(@codemirror/state@6.4.1)(@evidence-dev/universal-sql@packages+lib+universal-sql)(@lezer/common@1.2.3)(@sveltejs/kit@2.8.4)(search-insights@2.17.3)(storybook@8.4.5)(svelte@4.2.19)(tailwindcss@3.4.15)(typescript@5.4.2)
-      '@evidence-dev/csv':
-        specifier: file:./evidence-dev-csv.tgz
-        version: file:e2e/packaging/evidence-dev-csv.tgz
-      '@evidence-dev/databricks':
-        specifier: file:./evidence-dev-databricks.tgz
-        version: file:e2e/packaging/evidence-dev-databricks.tgz
-      '@evidence-dev/duckdb':
-        specifier: file:./evidence-dev-duckdb.tgz
-        version: file:e2e/packaging/evidence-dev-duckdb.tgz
-      '@evidence-dev/evidence':
-        specifier: file:./evidence-dev-evidence.tgz
-        version: file:e2e/packaging/evidence-dev-evidence.tgz(@sveltejs/vite-plugin-svelte@3.1.2)(@types/hast@2.3.10)(@types/mdast@3.0.15)(autoprefixer@10.4.20)(debounce@1.2.1)(git-remote-origin-url@4.0.0)(nanoid@5.0.8)(perfect-debounce@1.0.0)(postcss-load-config@4.0.2)(postcss@8.4.49)(svelte-preprocess@5.1.3)(svelte2tsx@0.7.4)(svelte@4.2.19)(tailwindcss@3.4.15)(typescript@5.4.2)(unist-util-visit@4.1.2)(vite@5.4.11)
-      '@evidence-dev/motherduck':
-        specifier: file:./evidence-dev-motherduck.tgz
-        version: file:e2e/packaging/evidence-dev-motherduck.tgz
-      '@evidence-dev/mssql':
-        specifier: file:./evidence-dev-mssql.tgz
-        version: file:e2e/packaging/evidence-dev-mssql.tgz
-      '@evidence-dev/mysql':
-        specifier: file:./evidence-dev-mysql.tgz
-        version: file:e2e/packaging/evidence-dev-mysql.tgz
-      '@evidence-dev/postgres':
-        specifier: file:./evidence-dev-postgres.tgz
-        version: file:e2e/packaging/evidence-dev-postgres.tgz
-      '@evidence-dev/snowflake':
-        specifier: file:./evidence-dev-snowflake.tgz
-        version: file:e2e/packaging/evidence-dev-snowflake.tgz
-      '@evidence-dev/sqlite':
-        specifier: file:./evidence-dev-sqlite.tgz
-        version: file:e2e/packaging/evidence-dev-sqlite.tgz
-      '@evidence-dev/trino':
-        specifier: file:./evidence-dev-trino.tgz
-        version: file:e2e/packaging/evidence-dev-trino.tgz
-    devDependencies:
-      '@playwright/test':
-        specifier: ^1.45.3
-        version: 1.49.0
-      '@types/node':
-        specifier: ^22.10.1
-        version: 22.10.1
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -898,7 +846,7 @@ importers:
         version: 4.2.19
       vite:
         specifier: 5.4.11
-        version: 5.4.11(@types/node@22.10.1)
+        version: 5.4.11(@types/node@20.11.28)
 
   packages/extension:
     dependencies:
@@ -1002,7 +950,7 @@ importers:
         version: 8.4.1
       vitest:
         specifier: ^2.0.5
-        version: 2.1.5
+        version: 2.1.5(@types/node@20.11.28)
 
   packages/lib/db-commons:
     dependencies:
@@ -1091,7 +1039,7 @@ importers:
         version: 5.4.2
       vitest:
         specifier: ^2.0.5
-        version: 2.1.5
+        version: 2.1.5(@types/node@20.11.28)
 
   packages/lib/sdk:
     dependencies:
@@ -1560,10 +1508,10 @@ importers:
         version: 5.4.2
       vite:
         specifier: 5.4.11
-        version: 5.4.11(@types/node@22.10.1)
+        version: 5.4.11(@types/node@20.11.28)
       vitest:
         specifier: ^2.0.5
-        version: 2.1.5
+        version: 2.1.5(@types/node@20.11.28)
 
   packages/ui/icons:
     dependencies:
@@ -1622,7 +1570,7 @@ importers:
     devDependencies:
       vitest:
         specifier: ^2.0.5
-        version: 2.1.5
+        version: 2.1.5(@types/node@20.11.28)
 
   sites/example-project:
     dependencies:
@@ -1779,10 +1727,10 @@ importers:
         version: 3.4.15
       vite:
         specifier: 5.4.11
-        version: 5.4.11(@types/node@22.10.1)
+        version: 5.4.11(@types/node@20.11.28)
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@22.10.1)
+        version: 1.6.0
 
   sites/test-env:
     dependencies:
@@ -4200,339 +4148,6 @@ packages:
   /@eslint/js@8.57.1:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-
-  /@evidence-dev/component-utilities@3.2.22(@evidence-dev/universal-sql@packages+lib+universal-sql)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(typescript@5.4.2):
-    resolution: {integrity: sha512-O4C4zhVWCRYDOPp7i/rmXGAxencCqa4b3YgsR3F1HPN9ONA9bWkSaBUUBgs4vAQaxV7FEvBEaT7DbWD2rqLN9w==}
-    dependencies:
-      '@evidence-dev/sdk': 1.5.1(@evidence-dev/universal-sql@packages+lib+universal-sql)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2)
-      '@steeze-ui/simple-icons': 1.10.1
-      '@steeze-ui/svelte-icon': 1.5.0(svelte@4.2.19)
-      '@steeze-ui/tabler-icons': 2.1.1
-      '@tidyjs/tidy': 2.5.2
-      '@uwdata/mosaic-sql': 0.3.5
-      debounce: 1.2.1
-      downloadjs: 1.4.7
-      echarts: 5.5.1
-      ssf: 0.11.2
-      svelte: 4.2.19
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@evidence-dev/universal-sql'
-      - '@sveltejs/kit'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - bufferutil
-      - canvas
-      - encoding
-      - happy-dom
-      - less
-      - lightningcss
-      - nanoid
-      - perfect-debounce
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - ts-node
-      - typescript
-      - utf-8-validate
-    dev: false
-
-  /@evidence-dev/db-commons@1.0.5:
-    resolution: {integrity: sha512-/QpzkkIXo7/Ev5YQ5oDjqtZY2e047zkfjt7bvVoFLAXF51hs+sbc3+yK7mhZWZEq/WOgnj2A3XFfRGBED7HcdA==}
-    dependencies:
-      fs-extra: 11.2.0
-    dev: false
-
-  /@evidence-dev/duckdb@1.0.12:
-    resolution: {integrity: sha512-gUIShHuoF5vmbt4S5suXTJDKZeQ9GYJpytttzYvP79N+lrmNUZ+T1YKlZcvmiIyD5eXmoN7ZDs/dvgnwLDmYlg==}
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      duckdb-async: 1.1.3
-    transitivePeerDependencies:
-      - bluebird
-      - encoding
-      - supports-color
-    dev: false
-
-  /@evidence-dev/icons@1.0.1:
-    resolution: {integrity: sha512-00SlBpFEYjR8g0fD0D5EZYRU+lr7iIEIKCFDUvuzlHezs+PcxSRgueCSWtLtvLKnwemexjui48uhJBozhTXjbQ==}
-    dependencies:
-      '@steeze-ui/icons': 2.1.0
-    dev: false
-
-  /@evidence-dev/preprocess@5.2.3(@types/hast@2.3.10)(@types/mdast@3.0.15)(postcss-load-config@4.0.2)(postcss@8.4.49)(typescript@5.4.2):
-    resolution: {integrity: sha512-X6yrkJYX2CXavSXubaE/Th0t56XDsi+fp6XQC2bSvweuPV5y7PVNUeYBLS0YweWH58fgay3fvuIjQ5HA36WJCA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      '@types/hast': ^2.0.0
-      '@types/mdast': ^3.0.0
-    dependencies:
-      '@types/hast': 2.3.10
-      '@types/mdast': 3.0.15
-      blueimp-md5: 2.19.0
-      chalk: 4.1.0
-      fs-extra: 11.2.0
-      hast-util-select: 5.0.5
-      mdsvex: 0.11.0(svelte@4.2.19)
-      prismjs: 1.29.0
-      rehype-autolink-headings: 5.1.0
-      rehype-slug: 4.0.1
-      remark-parse: 8.0.2
-      svelte: 4.2.19
-      svelte-preprocess: 5.1.3(postcss-load-config@4.0.2)(postcss@8.4.49)(svelte@4.2.19)(typescript@5.4.2)
-      unified: 9.1.0
-      unist-util-visit: 2.0.3
-      yaml: 2.6.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - coffeescript
-      - less
-      - postcss
-      - postcss-load-config
-      - pug
-      - sass
-      - stylus
-      - sugarss
-      - typescript
-    dev: false
-
-  /@evidence-dev/sdk@1.5.1(@evidence-dev/universal-sql@2.1.11)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2):
-    resolution: {integrity: sha512-CIRiI2GJOubBDJscqodQIix/Tri5iR3t+xY4Z//h576YDJL1Boc5cwGdT7w5227Mgk/PCze9oLCD2A1CpcYqRg==}
-    hasBin: true
-    peerDependencies:
-      '@evidence-dev/universal-sql': 2.1.11
-      nanoid: ^5.0.4
-      perfect-debounce: ^1.0.0
-      svelte: ^4.2.19
-    peerDependenciesMeta:
-      svelte:
-        optional: true
-    dependencies:
-      '@brianmd/citty': 0.0.1
-      '@clack/prompts': 0.7.0
-      '@evidence-dev/icons': 1.0.1
-      '@evidence-dev/telemetry': 2.1.3
-      '@evidence-dev/universal-sql': 2.1.11(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2)
-      '@steeze-ui/simple-icons': 1.10.1
-      '@steeze-ui/tabler-icons': 2.1.1
-      '@types/estree': 1.0.6
-      '@types/express': 4.17.21
-      '@types/jsdom': 21.1.7
-      '@types/lodash.chunk': 4.2.9
-      '@types/lodash.merge': 4.6.9
-      '@types/node': 20.17.6
-      '@typescript-eslint/typescript-estree': 6.21.0(typescript@5.4.2)
-      '@uwdata/mosaic-sql': 0.10.0
-      '@vitest/coverage-v8': 1.6.0(vitest@1.6.0)
-      chalk: 5.3.0
-      chokidar: 3.6.0
-      deep-object-diff: 1.1.9
-      eslint: 8.57.1
-      eslint-config-prettier: 9.1.0(eslint@8.57.1)
-      eslint-plugin-svelte: 2.35.1(eslint@8.57.1)(svelte@4.2.19)
-      estree-walker: 3.0.3
-      express: 4.21.1
-      highlight.js: 11.10.0
-      jsdom: 23.2.0
-      lodash.chunk: 4.2.0
-      lodash.merge: 4.6.2
-      mdsvex: 0.11.0(svelte@4.2.19)
-      nanoid: 5.0.8
-      ora: 8.1.1
-      perfect-debounce: 1.0.0
-      pkg-types: 1.2.1
-      prettier: 3.3.3
-      prettier-plugin-svelte: 3.2.8(prettier@3.3.3)(svelte@4.2.19)
-      recast: 0.23.9
-      svelte: 4.2.19
-      svelte-sequential-preprocessor: 2.0.2
-      sveltekit-autoimport: 1.8.1(@sveltejs/kit@2.8.4)
-      vite: 5.4.11(@types/node@20.17.6)
-      vitest: 1.6.0(@types/node@22.10.1)
-      yaml: 2.6.1
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@sveltejs/kit'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - bufferutil
-      - canvas
-      - encoding
-      - happy-dom
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - ts-node
-      - typescript
-      - utf-8-validate
-    dev: false
-
-  /@evidence-dev/sdk@1.5.1(@evidence-dev/universal-sql@packages+lib+universal-sql)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2):
-    resolution: {integrity: sha512-CIRiI2GJOubBDJscqodQIix/Tri5iR3t+xY4Z//h576YDJL1Boc5cwGdT7w5227Mgk/PCze9oLCD2A1CpcYqRg==}
-    hasBin: true
-    peerDependencies:
-      '@evidence-dev/universal-sql': 2.1.11
-      nanoid: ^5.0.4
-      perfect-debounce: ^1.0.0
-      svelte: ^4.2.19
-    peerDependenciesMeta:
-      svelte:
-        optional: true
-    dependencies:
-      '@brianmd/citty': 0.0.1
-      '@clack/prompts': 0.7.0
-      '@evidence-dev/icons': 1.0.1
-      '@evidence-dev/telemetry': 2.1.3
-      '@evidence-dev/universal-sql': link:packages/lib/universal-sql
-      '@steeze-ui/simple-icons': 1.10.1
-      '@steeze-ui/tabler-icons': 2.1.1
-      '@types/estree': 1.0.6
-      '@types/express': 4.17.21
-      '@types/jsdom': 21.1.7
-      '@types/lodash.chunk': 4.2.9
-      '@types/lodash.merge': 4.6.9
-      '@types/node': 20.17.6
-      '@typescript-eslint/typescript-estree': 6.21.0(typescript@5.4.2)
-      '@uwdata/mosaic-sql': 0.10.0
-      '@vitest/coverage-v8': 1.6.0(vitest@1.6.0)
-      chalk: 5.3.0
-      chokidar: 3.6.0
-      deep-object-diff: 1.1.9
-      eslint: 8.57.1
-      eslint-config-prettier: 9.1.0(eslint@8.57.1)
-      eslint-plugin-svelte: 2.35.1(eslint@8.57.1)(svelte@4.2.19)
-      estree-walker: 3.0.3
-      express: 4.21.1
-      highlight.js: 11.10.0
-      jsdom: 23.2.0
-      lodash.chunk: 4.2.0
-      lodash.merge: 4.6.2
-      mdsvex: 0.11.0(svelte@4.2.19)
-      nanoid: 5.0.8
-      ora: 8.1.1
-      perfect-debounce: 1.0.0
-      pkg-types: 1.2.1
-      prettier: 3.3.3
-      prettier-plugin-svelte: 3.2.8(prettier@3.3.3)(svelte@4.2.19)
-      recast: 0.23.9
-      svelte: 4.2.19
-      svelte-sequential-preprocessor: 2.0.2
-      sveltekit-autoimport: 1.8.1(@sveltejs/kit@2.8.4)
-      vite: 5.4.11(@types/node@20.17.6)
-      vitest: 1.6.0(@types/node@20.17.6)(jsdom@23.2.0)
-      yaml: 2.6.1
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@sveltejs/kit'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - bufferutil
-      - canvas
-      - encoding
-      - happy-dom
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - ts-node
-      - typescript
-      - utf-8-validate
-    dev: false
-
-  /@evidence-dev/tailwind@2.1.11(@evidence-dev/universal-sql@packages+lib+universal-sql)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2):
-    resolution: {integrity: sha512-I9mR6CcFxUJqGdFLX/THQ8DUPfphWmL2Tox6KirHBCDrr7CFz24HAyxhJPrV1/NuIg8bj/Se6c4BiyGRKM3sJw==}
-    dependencies:
-      '@evidence-dev/sdk': 1.5.1(@evidence-dev/universal-sql@packages+lib+universal-sql)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2)
-      lodash: 4.17.21
-      tailwindcss: 3.4.15
-      tw-colors: 3.3.2(tailwindcss@3.4.15)
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@evidence-dev/universal-sql'
-      - '@sveltejs/kit'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - bufferutil
-      - canvas
-      - encoding
-      - happy-dom
-      - less
-      - lightningcss
-      - nanoid
-      - perfect-debounce
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - svelte
-      - terser
-      - ts-node
-      - typescript
-      - utf-8-validate
-    dev: false
-
-  /@evidence-dev/telemetry@2.1.3:
-    resolution: {integrity: sha512-bVYSI+ZJqsVLK9cu2xNICyErXD3GPiI/SKHRcbZG0meP7C2J/wf2QkSGOUJUUMfQbWiHGxmzjcfyRJzzFoVGBQ==}
-    dependencies:
-      '@lukeed/uuid': 2.0.0
-      '@segment/analytics-node': 2.2.0
-      blueimp-md5: 2.19.0
-      fs-extra: 11.2.0
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
-  /@evidence-dev/universal-sql@2.1.11(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2):
-    resolution: {integrity: sha512-4gXd1v0fRp/Mlc0LechDGUNT9OBf315o6UuN6/PdjoGsFOR91HY0rRU+qfWwnEdmcuPOTpVcO8V58xjn0RWKUQ==}
-    dependencies:
-      '@duckdb/duckdb-wasm': 1.28.0
-      '@evidence-dev/sdk': 1.5.1(@evidence-dev/universal-sql@2.1.11)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2)
-      apache-arrow: 13.0.0
-      chalk: 5.3.0
-      cli-progress: 3.12.0
-      lodash.chunk: 4.2.0
-      parquet-wasm: 0.5.0
-      web-worker: 1.3.0
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@sveltejs/kit'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - bufferutil
-      - canvas
-      - encoding
-      - happy-dom
-      - less
-      - lightningcss
-      - nanoid
-      - perfect-debounce
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - svelte
-      - terser
-      - ts-node
-      - typescript
-      - utf-8-validate
-    dev: false
 
   /@faker-js/faker@7.6.0:
     resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
@@ -7610,7 +7225,7 @@ packages:
       dedent: 1.5.3
       magic-string: 0.30.13
       svelte: 4.2.19
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
     transitivePeerDependencies:
       - babel-plugin-macros
       - storybook
@@ -7663,7 +7278,7 @@ packages:
       browser-assert: 1.2.1
       storybook: 8.4.5(prettier@3.3.3)
       ts-dedent: 2.2.0
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
     dev: true
 
   /@storybook/components@8.4.5(storybook@8.4.5):
@@ -7807,7 +7422,7 @@ packages:
       sveltedoc-parser: 4.2.1
       ts-dedent: 2.2.0
       typescript: 5.6.3
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
     transitivePeerDependencies:
       - '@babel/core'
       - coffeescript
@@ -7856,7 +7471,7 @@ packages:
       '@storybook/svelte-vite': 8.4.5(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.49)(storybook@8.4.5)(svelte@4.2.19)(vite@5.4.11)
       storybook: 8.4.5(prettier@3.3.3)
       svelte: 4.2.19
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
     transitivePeerDependencies:
       - '@babel/core'
       - '@sveltejs/vite-plugin-svelte'
@@ -7960,7 +7575,7 @@ packages:
       sirv: 2.0.4
       svelte: 4.2.19
       tiny-glob: 0.2.9
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
     dev: true
 
   /@sveltejs/kit@2.8.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.19)(vite@5.4.11):
@@ -7987,34 +7602,7 @@ packages:
       sirv: 3.0.0
       svelte: 4.2.19
       tiny-glob: 0.2.9
-      vite: 5.4.11(@types/node@22.10.1)
-
-  /@sveltejs/kit@2.8.4(@sveltejs/vite-plugin-svelte@3.1.2)(svelte@4.2.19)(vite@5.4.11):
-    resolution: {integrity: sha512-oDSBHPokbP2iaQlHiEWAkVLsIugsXve8YtABtlyHBUljA63Wgx0UtV8MSOQOGpRft1M+Cd5rzer+0SFlppQwOg==}
-    engines: {node: '>=18.13'}
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      '@sveltejs/vite-plugin-svelte': ^3.0.0 || ^4.0.0-next.1
-      svelte: ^4.0.0 || ^5.0.0-next.0
-      vite: ^5.0.3
-    dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.4.11)
-      '@types/cookie': 0.6.0
-      cookie: 1.0.2
-      devalue: 5.1.1
-      esm-env: 1.1.4
-      import-meta-resolve: 4.1.0
-      kleur: 4.1.5
-      magic-string: 0.30.13
-      mrmime: 2.0.0
-      sade: 1.8.1
-      set-cookie-parser: 2.7.1
-      sirv: 3.0.0
-      svelte: 4.2.19
-      tiny-glob: 0.2.9
-      vite: 5.4.11(@types/node@22.10.1)
-    dev: false
+      vite: 5.4.11(@types/node@20.11.28)
 
   /@sveltejs/package@2.2.7(svelte@4.2.19)(typescript@5.4.2):
     resolution: {integrity: sha512-/vvmrQO2mMvROdM/iGRHtRn+ValnK9xzB50pqRcX0IvoeVoTq7uhYf+KifrZTluBA+km6AX/WXRXajrgrgbmvw==}
@@ -8061,25 +7649,9 @@ packages:
       '@sveltejs/vite-plugin-svelte': 3.0.2(svelte@4.2.19)(vite@5.4.11)
       debug: 4.3.7
       svelte: 4.2.19
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
     transitivePeerDependencies:
       - supports-color
-
-  /@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2)(svelte@4.2.19)(vite@5.4.11):
-    resolution: {integrity: sha512-9QX28IymvBlSCqsCll5t0kQVxipsfhFFL+L2t3nTWfXnddYwxBuAEtTtlaVQpRz9c37BhJjltSeY4AJSC03SSg==}
-    engines: {node: ^18.0.0 || >=20}
-    peerDependencies:
-      '@sveltejs/vite-plugin-svelte': ^3.0.0
-      svelte: ^4.0.0 || ^5.0.0-next.0
-      vite: ^5.0.0
-    dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.4.11)
-      debug: 4.3.7
-      svelte: 4.2.19
-      vite: 5.4.11(@types/node@22.10.1)
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@sveltejs/vite-plugin-svelte@3.0.2(svelte@4.2.19)(vite@5.4.11):
     resolution: {integrity: sha512-MpmF/cju2HqUls50WyTHQBZUV3ovV/Uk8k66AN2gwHogNAG8wnW8xtZDhzNBsFJJuvmq1qnzA5kE7YfMJNFv2Q==}
@@ -8095,30 +7667,10 @@ packages:
       magic-string: 0.30.13
       svelte: 4.2.19
       svelte-hmr: 0.15.3(svelte@4.2.19)
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
       vitefu: 0.2.5(vite@5.4.11)
     transitivePeerDependencies:
       - supports-color
-
-  /@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11):
-    resolution: {integrity: sha512-Txsm1tJvtiYeLUVRNqxZGKR/mI+CzuIQuc2gn+YCs9rMTowpNZ2Nqt53JdL8KF9bLhAf2ruR/dr9eZCwdTriRA==}
-    engines: {node: ^18.0.0 || >=20}
-    peerDependencies:
-      svelte: ^4.0.0 || ^5.0.0-next.0
-      vite: ^5.0.0
-    dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2)(svelte@4.2.19)(vite@5.4.11)
-      debug: 4.3.7
-      deepmerge: 4.3.1
-      kleur: 4.1.5
-      magic-string: 0.30.13
-      svelte: 4.2.19
-      svelte-hmr: 0.16.0(svelte@4.2.19)
-      vite: 5.4.11(@types/node@22.10.1)
-      vitefu: 0.2.5(vite@5.4.11)
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@swc/core-darwin-arm64@1.9.2:
     resolution: {integrity: sha512-nETmsCoY29krTF2PtspEgicb3tqw7Ci5sInTI03EU5zpqYbPjoPH99BVTjj0OsF53jP5MxwnLI5Hm21lUn1d6A==}
@@ -8625,7 +8177,6 @@ packages:
     resolution: {integrity: sha512-M/GPWVS2wLkSkNHVeLkrF2fD5Lx5UC4PxA0uZcKc6QqbIQUJyW1jVjueJYi1z8n0I5PxYrtpnPnWglE+y9A0KA==}
     dependencies:
       undici-types: 5.26.5
-    dev: true
 
   /@types/node@20.17.6:
     resolution: {integrity: sha512-VEI7OdvK2wP7XHnsuXbAJnEpEkF6NjSN45QJlL4VGqZSXsnicpesdTWsg9RISeSdYd3yeRj/y3k5KGjUXYnFwQ==}
@@ -8906,28 +8457,6 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/typescript-estree@6.21.0(typescript@5.4.2):
-    resolution: {integrity: sha512-6npJTkZcO+y2/kr+z0hc4HwNfrrP4kNYh57ek7yCNlrBjWQ1Y0OS7jiZTkgumrvkX5HkEKXFZkkdFNkaW2wmUQ==}
-    engines: {node: ^16.0.0 || >=18.0.0}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@typescript-eslint/types': 6.21.0
-      '@typescript-eslint/visitor-keys': 6.21.0
-      debug: 4.3.7
-      globby: 11.1.0
-      is-glob: 4.0.3
-      minimatch: 9.0.3
-      semver: 7.6.3
-      ts-api-utils: 1.4.0(typescript@5.4.2)
-      typescript: 5.4.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /@typescript-eslint/typescript-estree@6.21.0(typescript@5.6.3):
     resolution: {integrity: sha512-6npJTkZcO+y2/kr+z0hc4HwNfrrP4kNYh57ek7yCNlrBjWQ1Y0OS7jiZTkgumrvkX5HkEKXFZkkdFNkaW2wmUQ==}
     engines: {node: ^16.0.0 || >=18.0.0}
@@ -9065,7 +8594,7 @@ packages:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.1.5
+      vitest: 2.1.5(@types/node@20.11.28)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -9108,7 +8637,7 @@ packages:
       '@vitest/spy': 2.1.5
       estree-walker: 3.0.3
       magic-string: 0.30.13
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
     dev: true
 
   /@vitest/pretty-format@2.0.5:
@@ -18082,15 +17611,6 @@ packages:
     dependencies:
       svelte: 4.2.19
 
-  /svelte-hmr@0.16.0(svelte@4.2.19):
-    resolution: {integrity: sha512-Gyc7cOS3VJzLlfj7wKS0ZnzDVdv3Pn2IuVeJPk9m2skfhcu5bq3wtIZyQGggr7/Iim5rH5cncyQft/kRLupcnA==}
-    engines: {node: ^12.20 || ^14.13.1 || >= 16}
-    peerDependencies:
-      svelte: ^3.19.0 || ^4.0.0
-    dependencies:
-      svelte: 4.2.19
-    dev: false
-
   /svelte-icons@2.1.0:
     resolution: {integrity: sha512-rHPQjweEc9fGSnvM0/4gA3pDHwyZyYsC5KhttCZRhSMJfLttJST5Uq0B16Czhw+HQ+HbSOk8kLigMlPs7gZtfg==}
 
@@ -18698,15 +18218,6 @@ packages:
   /trough@1.0.5:
     resolution: {integrity: sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==}
 
-  /ts-api-utils@1.4.0(typescript@5.4.2):
-    resolution: {integrity: sha512-032cPxaEKwM+GT3vA5JXNzIaizx388rhsSW79vGRNGXfRRAdEAn2mvk36PvK5HnOchyWZ7afLEXqYCvPCrzuzQ==}
-    engines: {node: '>=16'}
-    peerDependencies:
-      typescript: '>=4.2.0'
-    dependencies:
-      typescript: 5.4.2
-    dev: false
-
   /ts-api-utils@1.4.0(typescript@5.6.3):
     resolution: {integrity: sha512-032cPxaEKwM+GT3vA5JXNzIaizx388rhsSW79vGRNGXfRRAdEAn2mvk36PvK5HnOchyWZ7afLEXqYCvPCrzuzQ==}
     engines: {node: '>=16'}
@@ -18977,7 +18488,6 @@ packages:
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
-    dev: true
 
   /undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
@@ -19235,6 +18745,28 @@ packages:
       unist-util-stringify-position: 2.0.3
       vfile-message: 2.0.4
 
+  /vite-node@1.6.0:
+    resolution: {integrity: sha512-de6HJgzC+TFzOu0NTC4RAIsyf/DY/ibWDYQUcuEA84EMHhcefTUGkjFHKKEJhQN4A+6I0u++kr3l36ZF2d7XRw==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    dependencies:
+      cac: 6.7.14
+      debug: 4.3.7
+      pathe: 1.1.2
+      picocolors: 1.1.1
+      vite: 5.4.11(@types/node@20.11.28)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
   /vite-node@1.6.0(@types/node@20.17.6):
     resolution: {integrity: sha512-de6HJgzC+TFzOu0NTC4RAIsyf/DY/ibWDYQUcuEA84EMHhcefTUGkjFHKKEJhQN4A+6I0u++kr3l36ZF2d7XRw==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -19256,49 +18788,6 @@ packages:
       - supports-color
       - terser
     dev: false
-
-  /vite-node@1.6.0(@types/node@22.10.1):
-    resolution: {integrity: sha512-de6HJgzC+TFzOu0NTC4RAIsyf/DY/ibWDYQUcuEA84EMHhcefTUGkjFHKKEJhQN4A+6I0u++kr3l36ZF2d7XRw==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    dependencies:
-      cac: 6.7.14
-      debug: 4.3.7
-      pathe: 1.1.2
-      picocolors: 1.1.1
-      vite: 5.4.11(@types/node@22.10.1)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  /vite-node@2.1.5:
-    resolution: {integrity: sha512-rd0QIgx74q4S1Rd56XIiL2cYEdyWn13cunYBIuqh9mpmQr7gGS0IxXoP8R6OaZtNQQLyXSWbd4rXKYUbhFpK5w==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    dependencies:
-      cac: 6.7.14
-      debug: 4.3.7
-      es-module-lexer: 1.5.4
-      pathe: 1.1.2
-      vite: 5.4.11(@types/node@22.10.1)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
 
   /vite-node@2.1.5(@types/node@20.11.28):
     resolution: {integrity: sha512-rd0QIgx74q4S1Rd56XIiL2cYEdyWn13cunYBIuqh9mpmQr7gGS0IxXoP8R6OaZtNQQLyXSWbd4rXKYUbhFpK5w==}
@@ -19359,7 +18848,6 @@ packages:
       rollup: 4.27.3
     optionalDependencies:
       fsevents: 2.3.3
-    dev: true
 
   /vite@5.4.11(@types/node@20.17.6):
     resolution: {integrity: sha512-c7jFQRklXua0mTzneGW9QVyxFjUgwcihC4bXEtujIo2ouWCe1Ajt/amn2PCxYnhYfd5k09JX3SB7OYWFKYqj8Q==}
@@ -19400,44 +18888,6 @@ packages:
       fsevents: 2.3.3
     dev: false
 
-  /vite@5.4.11(@types/node@22.10.1):
-    resolution: {integrity: sha512-c7jFQRklXua0mTzneGW9QVyxFjUgwcihC4bXEtujIo2ouWCe1Ajt/amn2PCxYnhYfd5k09JX3SB7OYWFKYqj8Q==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 22.10.1
-      esbuild: 0.21.5
-      postcss: 8.4.49
-      rollup: 4.27.3
-    optionalDependencies:
-      fsevents: 2.3.3
-
   /vitefu@0.2.5(vite@5.4.11):
     resolution: {integrity: sha512-SgHtMLoqaeeGnd2evZ849ZbACbnwQCIwRH57t18FxcXoZop0uQu0uzlIhJBlF/eWVzuce0sHeqPcDo+evVcg8Q==}
     peerDependencies:
@@ -19446,7 +18896,63 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 5.4.11(@types/node@22.10.1)
+      vite: 5.4.11(@types/node@20.11.28)
+
+  /vitest@1.6.0:
+    resolution: {integrity: sha512-H5r/dN06swuFnzNFhq/dnz37bPXnq8xB2xB5JOVk8K09rUtoeNN+LHWkoQ0A/i3hvbUKKcCei9KpbxqHMLhLLA==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@types/node': ^18.0.0 || >=20.0.0
+      '@vitest/browser': 1.6.0
+      '@vitest/ui': 1.6.0
+      happy-dom: '*'
+      jsdom: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@types/node':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+    dependencies:
+      '@vitest/expect': 1.6.0
+      '@vitest/runner': 1.6.0
+      '@vitest/snapshot': 1.6.0
+      '@vitest/spy': 1.6.0
+      '@vitest/utils': 1.6.0
+      acorn-walk: 8.3.4
+      chai: 4.5.0
+      debug: 4.3.7
+      execa: 8.0.1
+      local-pkg: 0.5.1
+      magic-string: 0.30.13
+      pathe: 1.1.2
+      picocolors: 1.1.1
+      std-env: 3.8.0
+      strip-literal: 2.1.0
+      tinybench: 2.9.0
+      tinypool: 0.8.4
+      vite: 5.4.11(@types/node@20.11.28)
+      vite-node: 1.6.0
+      why-is-node-running: 2.3.0
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
 
   /vitest@1.6.0(@types/node@20.17.6)(jsdom@23.2.0):
     resolution: {integrity: sha512-H5r/dN06swuFnzNFhq/dnz37bPXnq8xB2xB5JOVk8K09rUtoeNN+LHWkoQ0A/i3hvbUKKcCei9KpbxqHMLhLLA==}
@@ -19505,119 +19011,6 @@ packages:
       - supports-color
       - terser
     dev: false
-
-  /vitest@1.6.0(@types/node@22.10.1):
-    resolution: {integrity: sha512-H5r/dN06swuFnzNFhq/dnz37bPXnq8xB2xB5JOVk8K09rUtoeNN+LHWkoQ0A/i3hvbUKKcCei9KpbxqHMLhLLA==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 1.6.0
-      '@vitest/ui': 1.6.0
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@types/node':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@types/node': 22.10.1
-      '@vitest/expect': 1.6.0
-      '@vitest/runner': 1.6.0
-      '@vitest/snapshot': 1.6.0
-      '@vitest/spy': 1.6.0
-      '@vitest/utils': 1.6.0
-      acorn-walk: 8.3.4
-      chai: 4.5.0
-      debug: 4.3.7
-      execa: 8.0.1
-      local-pkg: 0.5.1
-      magic-string: 0.30.13
-      pathe: 1.1.2
-      picocolors: 1.1.1
-      std-env: 3.8.0
-      strip-literal: 2.1.0
-      tinybench: 2.9.0
-      tinypool: 0.8.4
-      vite: 5.4.11(@types/node@22.10.1)
-      vite-node: 1.6.0(@types/node@22.10.1)
-      why-is-node-running: 2.3.0
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  /vitest@2.1.5:
-    resolution: {integrity: sha512-P4ljsdpuzRTPI/kbND2sDZ4VmieerR2c9szEZpjc+98Z9ebvnXmM5+0tHEKqYZumXqlvnmfWsjeFOjXVriDG7A==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 2.1.5
-      '@vitest/ui': 2.1.5
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@types/node':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@vitest/expect': 2.1.5
-      '@vitest/mocker': 2.1.5(vite@5.4.11)
-      '@vitest/pretty-format': 2.1.5
-      '@vitest/runner': 2.1.5
-      '@vitest/snapshot': 2.1.5
-      '@vitest/spy': 2.1.5
-      '@vitest/utils': 2.1.5
-      chai: 5.1.2
-      debug: 4.3.7
-      expect-type: 1.1.0
-      magic-string: 0.30.13
-      pathe: 1.1.2
-      std-env: 3.8.0
-      tinybench: 2.9.0
-      tinyexec: 0.3.1
-      tinypool: 1.0.2
-      tinyrainbow: 1.2.0
-      vite: 5.4.11(@types/node@22.10.1)
-      vite-node: 2.1.5
-      why-is-node-running: 2.3.0
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - msw
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
 
   /vitest@2.1.5(@types/node@20.11.28):
     resolution: {integrity: sha512-P4ljsdpuzRTPI/kbND2sDZ4VmieerR2c9szEZpjc+98Z9ebvnXmM5+0tHEKqYZumXqlvnmfWsjeFOjXVriDG7A==}
@@ -20187,299 +19580,4 @@ packages:
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
-    dev: false
-
-  file:e2e/packaging/evidence-dev-bigquery.tgz:
-    resolution: {integrity: sha512-UH1zTJ9seQvViabmgCTdl/WRtaptEQKtlZEMTjb+oIZsOnFLOG3Mx/LYbRhJhnZa0vcmHgWKAw8ha/dZOJZQeg==, tarball: file:e2e/packaging/evidence-dev-bigquery.tgz}
-    name: '@evidence-dev/bigquery'
-    version: 2.0.8
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      '@google-cloud/bigquery': 6.2.0
-      fs-extra: 11.2.0
-      google-auth-library: 9.15.0
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: false
-
-  file:e2e/packaging/evidence-dev-core-components.tgz(@algolia/client-search@5.15.0)(@codemirror/state@6.4.1)(@evidence-dev/universal-sql@packages+lib+universal-sql)(@lezer/common@1.2.3)(@sveltejs/kit@2.8.4)(search-insights@2.17.3)(storybook@8.4.5)(svelte@4.2.19)(tailwindcss@3.4.15)(typescript@5.4.2):
-    resolution: {integrity: sha512-A7EAJTo3c/P1f+jvRWq463CTaOQ6ncgOD/AQlmcfK4aL1mdWYxRxf5sqf3jy/8nGcC8jaAxz+4QVR7tb6l7HKQ==, tarball: file:e2e/packaging/evidence-dev-core-components.tgz}
-    id: file:e2e/packaging/evidence-dev-core-components.tgz
-    name: '@evidence-dev/core-components'
-    version: 4.9.1
-    peerDependencies:
-      svelte: ^4.2.19
-    dependencies:
-      '@astronautlabs/jsonpath': 1.1.2
-      '@codemirror/autocomplete': 6.18.3(@codemirror/language@6.10.3)(@codemirror/state@6.4.1)(@codemirror/view@6.34.3)(@lezer/common@1.2.3)
-      '@codemirror/commands': 6.7.1
-      '@codemirror/lang-sql': 6.8.0(@codemirror/view@6.34.3)
-      '@codemirror/language': 6.10.3
-      '@codemirror/lint': 6.8.2
-      '@codemirror/search': 6.5.7
-      '@codemirror/view': 6.34.3
-      '@docsearch/css': 3.8.0
-      '@docsearch/js': 3.8.0(@algolia/client-search@5.15.0)(@types/react@18.3.12)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3)
-      '@evidence-dev/component-utilities': 3.2.22(@evidence-dev/universal-sql@packages+lib+universal-sql)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(typescript@5.4.2)
-      '@evidence-dev/icons': 1.0.1
-      '@evidence-dev/tailwind': 2.1.11(@evidence-dev/universal-sql@packages+lib+universal-sql)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2)
-      '@internationalized/date': 3.5.6
-      '@steeze-ui/radix-icons': 1.1.2
-      '@steeze-ui/simple-icons': 1.10.1
-      '@steeze-ui/svelte-icon': 1.5.0(svelte@4.2.19)
-      '@steeze-ui/tabler-icons': 2.1.1
-      '@storybook/test': 8.4.5(storybook@8.4.5)
-      '@types/leaflet': 1.9.14
-      bits-ui: 0.21.16(svelte@4.2.19)
-      chroma-js: 2.6.0
-      clsx: 2.1.1
-      cmdk-sv: 0.0.12(svelte@4.2.19)
-      codemirror: 6.0.1(@lezer/common@1.2.3)
-      date-fns: 3.6.0
-      echarts: 5.5.1
-      echarts-stat: 1.2.0
-      export-to-csv: 0.2.1
-      leaflet: 1.9.4
-      lodash: 4.17.21
-      nanoid: 5.0.8
-      perfect-debounce: 1.0.0
-      prismjs: 1.29.0
-      ssf: 0.11.2
-      svelte: 4.2.19
-      tailwind-merge: 2.5.4
-      tailwind-variants: 0.1.20(tailwindcss@3.4.15)
-      thememirror: 2.0.1(@codemirror/language@6.10.3)(@codemirror/state@6.4.1)(@codemirror/view@6.34.3)
-      tua-body-scroll-lock: 1.5.3
-      yaml: 2.6.1
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - '@algolia/client-search'
-      - '@codemirror/state'
-      - '@edge-runtime/vm'
-      - '@evidence-dev/universal-sql'
-      - '@lezer/common'
-      - '@sveltejs/kit'
-      - '@types/react'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - bufferutil
-      - canvas
-      - encoding
-      - happy-dom
-      - less
-      - lightningcss
-      - react
-      - react-dom
-      - sass
-      - sass-embedded
-      - search-insights
-      - storybook
-      - stylus
-      - sugarss
-      - supports-color
-      - tailwindcss
-      - terser
-      - ts-node
-      - typescript
-      - utf-8-validate
-    dev: false
-
-  file:e2e/packaging/evidence-dev-csv.tgz:
-    resolution: {integrity: sha512-qikSfRnc0e7PLKLy7/YUaScYgnQAtihBD8VBHtSWOHQdDwVE1MBIAlWpV+jQhWjIbzMJn3cgJYhKqkePA7vfuQ==, tarball: file:e2e/packaging/evidence-dev-csv.tgz}
-    name: '@evidence-dev/csv'
-    version: 1.0.13
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      '@evidence-dev/duckdb': 1.0.12
-    transitivePeerDependencies:
-      - bluebird
-      - encoding
-      - supports-color
-    dev: false
-
-  file:e2e/packaging/evidence-dev-databricks.tgz:
-    resolution: {integrity: sha512-36hhN7vSFSRhMWL4DH73KNZyY5iB2Awd6pFpREtjbfGmYjTdpmEPnl+Ew29KAw5SEmyldZotgJWZjDKgiYVeiQ==, tarball: file:e2e/packaging/evidence-dev-databricks.tgz}
-    name: '@evidence-dev/databricks'
-    version: 1.0.7
-    dependencies:
-      '@databricks/sql': 1.7.1
-      '@evidence-dev/db-commons': 1.0.5
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - supports-color
-      - utf-8-validate
-    dev: false
-
-  file:e2e/packaging/evidence-dev-duckdb.tgz:
-    resolution: {integrity: sha512-uLi8FZ7/oUl9R0fe2xHCPbdhUWx35B6xMTc7w2LO6Tr3owko8XE+gLo6JOG5RAhx8cZ5mrtCjeqybYwn8zRcCQ==, tarball: file:e2e/packaging/evidence-dev-duckdb.tgz}
-    name: '@evidence-dev/duckdb'
-    version: 1.0.12
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      duckdb-async: 1.1.3
-    transitivePeerDependencies:
-      - bluebird
-      - encoding
-      - supports-color
-    dev: false
-
-  file:e2e/packaging/evidence-dev-evidence.tgz(@sveltejs/vite-plugin-svelte@3.1.2)(@types/hast@2.3.10)(@types/mdast@3.0.15)(autoprefixer@10.4.20)(debounce@1.2.1)(git-remote-origin-url@4.0.0)(nanoid@5.0.8)(perfect-debounce@1.0.0)(postcss-load-config@4.0.2)(postcss@8.4.49)(svelte-preprocess@5.1.3)(svelte2tsx@0.7.4)(svelte@4.2.19)(tailwindcss@3.4.15)(typescript@5.4.2)(unist-util-visit@4.1.2)(vite@5.4.11):
-    resolution: {integrity: sha512-25k74Ask8YsJqzz6LagI9YRoCDbxeIFdJbc2VSGMHCQ8blJfJWvwRmZDAJWNtfAGnpCRQiVMV7l+aV8UHGq8yw==, tarball: file:e2e/packaging/evidence-dev-evidence.tgz}
-    id: file:e2e/packaging/evidence-dev-evidence.tgz
-    name: '@evidence-dev/evidence'
-    version: 39.2.2
-    engines: {node: '>=18'}
-    hasBin: true
-    peerDependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.2
-      autoprefixer: ^10.4.7
-      debounce: ^1.2.1
-      git-remote-origin-url: 4.0.0
-      postcss: ^8.4.14
-      postcss-load-config: ^4.0.1
-      svelte: 4.2.19
-      svelte-preprocess: 5.1.3
-      svelte2tsx: 0.7.4
-      tailwindcss: ^3.3.1
-      typescript: 5.4.2
-      unist-util-visit: 4.1.2
-      vite: 5.4.11
-    dependencies:
-      '@evidence-dev/preprocess': 5.2.3(@types/hast@2.3.10)(@types/mdast@3.0.15)(postcss-load-config@4.0.2)(postcss@8.4.49)(typescript@5.4.2)
-      '@evidence-dev/sdk': 1.5.1(@evidence-dev/universal-sql@2.1.11)(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2)
-      '@evidence-dev/telemetry': 2.1.3
-      '@evidence-dev/universal-sql': 2.1.11(@sveltejs/kit@2.8.4)(nanoid@5.0.8)(perfect-debounce@1.0.0)(svelte@4.2.19)(typescript@5.4.2)
-      '@sveltejs/adapter-static': 3.0.1(@sveltejs/kit@2.8.4)
-      '@sveltejs/kit': 2.8.4(@sveltejs/vite-plugin-svelte@3.1.2)(svelte@4.2.19)(vite@5.4.11)
-      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.4.11)
-      autoprefixer: 10.4.20(postcss@8.4.49)
-      chalk: 5.3.0
-      chokidar: 3.6.0
-      debounce: 1.2.1
-      fs-extra: 11.2.0
-      git-remote-origin-url: 4.0.0
-      postcss: 8.4.49
-      postcss-load-config: 4.0.2(postcss@8.4.49)
-      sade: 1.8.1
-      svelte: 4.2.19
-      svelte-preprocess: 5.1.3(postcss-load-config@4.0.2)(postcss@8.4.49)(svelte@4.2.19)(typescript@5.4.2)
-      svelte2tsx: 0.7.4(svelte@4.2.19)(typescript@5.4.2)
-      tailwindcss: 3.4.15
-      typescript: 5.4.2
-      unist-util-visit: 4.1.2
-      vite: 5.4.11(@types/node@22.10.1)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@edge-runtime/vm'
-      - '@types/hast'
-      - '@types/mdast'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - bufferutil
-      - canvas
-      - coffeescript
-      - encoding
-      - happy-dom
-      - less
-      - lightningcss
-      - nanoid
-      - perfect-debounce
-      - pug
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:e2e/packaging/evidence-dev-motherduck.tgz:
-    resolution: {integrity: sha512-2FePoQJkfcOWGXdQRlxYsA7ATymXXy/9Y454PXyuKK2rdVbTDolZ/029HHPjGw5Mu57LGM02VY9E/kDRBLYfww==, tarball: file:e2e/packaging/evidence-dev-motherduck.tgz}
-    name: '@evidence-dev/motherduck'
-    version: 1.0.3
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      '@evidence-dev/duckdb': 1.0.12
-    transitivePeerDependencies:
-      - bluebird
-      - encoding
-      - supports-color
-    dev: false
-
-  file:e2e/packaging/evidence-dev-mssql.tgz:
-    resolution: {integrity: sha512-xid0gIfxgD6np5lcrRnEH7LrdEGYpdO187cneoS3KDE1xVHOqtEbsZ3a0HQyxcVj/g/4NfEUirXUE5yEFtHkcQ==, tarball: file:e2e/packaging/evidence-dev-mssql.tgz}
-    name: '@evidence-dev/mssql'
-    version: 1.1.1
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      mssql: 11.0.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  file:e2e/packaging/evidence-dev-mysql.tgz:
-    resolution: {integrity: sha512-AripZ93aC9XHacwdVpEI95NRkvq0UJen0C7k87wF23fjwIuoxUr3CbWC6kJJTA4Vmj1ZHnudZ8hkupC+g0wB/A==, tarball: file:e2e/packaging/evidence-dev-mysql.tgz}
-    name: '@evidence-dev/mysql'
-    version: 1.1.3
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      mysql2: 3.11.4
-    dev: false
-
-  file:e2e/packaging/evidence-dev-postgres.tgz:
-    resolution: {integrity: sha512-7qYxkVHZ7Zqd6+etZ6rDTdFXA4JIwnkmErGvQMxMRp8LYGf7YKAL+YWgCsKf+ziKXQJC5MVUWOzK8oVhZ9XEjw==, tarball: file:e2e/packaging/evidence-dev-postgres.tgz}
-    name: '@evidence-dev/postgres'
-    version: 1.0.6
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      pg: 8.13.1
-      pg-cursor: 2.12.1(pg@8.13.1)
-    transitivePeerDependencies:
-      - pg-native
-    dev: false
-
-  file:e2e/packaging/evidence-dev-snowflake.tgz:
-    resolution: {integrity: sha512-GhhgH/P6r8Y+HSqhleSWajZ1OsBcT8y0hai7R9Xk4xQ7bUtBVjKTGqtyNOyJfrCXOw/FbTfzwQ2S3eGr4QU7xQ==, tarball: file:e2e/packaging/evidence-dev-snowflake.tgz}
-    name: '@evidence-dev/snowflake'
-    version: 1.2.1
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      asn1.js: 5.4.1
-      fs-extra: 11.2.0
-      node-fetch: 3.3.2
-      open: 9.1.0
-      snowflake-sdk: 1.9.0(asn1.js@5.4.1)
-    transitivePeerDependencies:
-      - aws-crt
-      - encoding
-      - supports-color
-    dev: false
-
-  file:e2e/packaging/evidence-dev-sqlite.tgz:
-    resolution: {integrity: sha512-Bbok4KBObMiKDIrOESoJzs98xHRj0/QxlGxSB2n1Y3J+EEVPQWOe1vf63LxBquL4713ZaC/ERDSgILz9AmkLuQ==, tarball: file:e2e/packaging/evidence-dev-sqlite.tgz}
-    name: '@evidence-dev/sqlite'
-    version: 2.0.6
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      sqlite: 4.2.1
-      sqlite3: 5.1.6
-    transitivePeerDependencies:
-      - bluebird
-      - encoding
-      - supports-color
-    dev: false
-
-  file:e2e/packaging/evidence-dev-trino.tgz:
-    resolution: {integrity: sha512-aD5YsF+aXiyeX0SqTGuZfJgupjkj/am+3Z9GTXsVQqp5cZjMm3QVAq4WOkX/7bbBtrbMIZ4OQyXqGIj9axd48Q==, tarball: file:e2e/packaging/evidence-dev-trino.tgz}
-    name: '@evidence-dev/trino'
-    version: 1.0.8
-    dependencies:
-      '@evidence-dev/db-commons': 1.0.5
-      presto-client: 1.1.0
-    transitivePeerDependencies:
-      - debug
     dev: false

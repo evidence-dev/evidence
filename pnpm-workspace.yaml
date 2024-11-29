@@ -1,5 +1,6 @@
 packages:
   - 'e2e'
   - 'e2e/*'
+  - '!e2e/packaging'
   - 'packages/**'
   - 'sites/*'
