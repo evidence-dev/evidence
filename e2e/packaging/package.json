@@ -5,7 +5,7 @@
     "build": "evidence build",
     "build:strict": "evidence build:strict",
     "dev": "evidence dev --open /",
-    "sources": "evidence sources",
+    "sources": "node ./build-deps-to-tgz.js && npm i",
     "preview": "evidence preview",
     "test:preview": "playwright test",
     "test:dev": "cross-env DEV=true playwright test"
