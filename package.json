@@ -29,7 +29,7 @@
 		"@parcel/transformer-typescript-types": "2.12.0",
 		"@playwright/test": "^1.45.3",
 		"@sveltejs/adapter-static": "3.0.1",
-		"@sveltejs/kit": "2.5.4",
+		"@sveltejs/kit": "2.8.4",
 		"@sveltejs/vite-plugin-svelte": "3.0.2",
 		"@tidyjs/tidy": "2.5.2",
 		"@uwdata/mosaic-sql": "^0.4.0",
