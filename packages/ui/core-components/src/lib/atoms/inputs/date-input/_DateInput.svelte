@@ -237,7 +237,7 @@
 					{:else if selectedDateInput && !range}
 						<span class="flex align-center">
 							{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
-							<Icon src={CalendarIcon} class="ml-1 h-[14px] w-[14px]" />
+							<Icon src={CalendarIcon} class="ml-2 h-[14px] w-[14px] text-gray-500" />
 						</span>
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
