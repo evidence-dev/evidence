@@ -176,7 +176,7 @@
 				"command": "runCommands",
 				"key": "/",
 				"enablement": "evidence.hasProject",
-				"when": "editorTextFocus && resourceLangId == 'emd' && evidence.isPagesDirectory == true && evidence.slashCommands == true && evidence.isSQLContext === false",
+				"when": "editorTextFocus && resourceLangId == 'emd' && evidence.isPagesDirectory == true && evidence.slashCommands == true && evidence.isSQLContext === false && evidence.isInComponentContext === false",
 				"args": {
 					"commands": [
 						{

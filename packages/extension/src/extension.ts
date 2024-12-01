@@ -229,7 +229,6 @@ function registerComponentProvider(context: ExtensionContext) {
 				return provideComponentCompletionItems(document, position);
 			},
 		},
-		'.',
 		' ', // Trigger completion after a space (inside a tag)
 	);
 
@@ -632,7 +631,6 @@ function isInQueriesDirectory(document: TextDocument): boolean {
 }
 
 async function updateEditorConfigForLanguage(languageId: string, autoCompleteContext: boolean) {
-	console.log(autoCompleteContext)
 	const config = workspace.getConfiguration('editor', { languageId });
 	const customConfig = workspace.getConfiguration('evidence');
 	const sqlAcceptSuggestionsOnEnter = customConfig.get('sqlAcceptSuggestionsOnEnter');
@@ -653,7 +651,6 @@ async function updateEditorConfigForLanguage(languageId: string, autoCompleteCon
 				ConfigurationTarget.Workspace
 			);
 			await config.update('quickSuggestionsDelay', 0, ConfigurationTarget.Workspace);
-			console.log('should work')
 		} else {
 			await config.update(
 				'acceptSuggestionOnEnter',
@@ -744,6 +741,17 @@ async function provideSQLCompletionItems(
 				completionItems.push(tableCompletionItem);
 			}
 		}
+
+		const queryNames = extractQueryNames();
+
+		for (const queryName of queryNames) {
+			const queryNameCompletionItem = new CompletionItem(
+				queryName,
+				CompletionItemKind.Interface
+			);
+			queryNameCompletionItem.insertText = `\$\{${queryName}}`
+			completionItems.push(queryNameCompletionItem)
+		}
 	} else {
 		completionItems.push(...keywordCompletionItems);
 		completionItems.push(...functionCompletionItems);
@@ -781,7 +789,15 @@ async function provideSQLCompletionItems(
 	return completionItems;
 }
 
-function extractQueryNames(text: string): string[] {
+function extractQueryNames(): string[] {
+	const editor = window.activeTextEditor;
+
+	if (!editor) {
+		window.showErrorMessage('No active editor. Open a document to extract query names.');
+		return [];
+	}
+
+	const text = editor.document.getText();
 	const queries = new Set<string>(); // Use a Set to avoid duplicates
 
 	// Frontmatter: `queries: - myquery1: myquery1.sql`
@@ -823,8 +839,10 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 	}
 
 	console.log('In component context, providing suggestions...');
+	const text = document.getText();
 	const completionItems: CompletionItem[] = [];
 	const textBeforeCursor = document.getText(new Range(new Position(0, 0), position));
+	const queryNames = extractQueryNames();
 
 	// Extract the component name from the open tag
 	const lastOpenTagIndex = textBeforeCursor.lastIndexOf('<');
@@ -1366,7 +1384,9 @@ export async function activate(context: ExtensionContext) {
 				openEditor.document.fileName.endsWith('.md') &&
 				isPagesDirectory() &&
 				slashCommands === true &&
-				!isInSQLCodeBlock(openEditor.document, openEditor.selection.active)
+				!isInSQLCodeBlock(openEditor.document, openEditor.selection.active) &&
+				!isInComponentContext(openEditor.document, openEditor.selection.active)
+
 			) {
 				try {
 					decorate(openEditor);
@@ -1382,7 +1402,8 @@ export async function activate(context: ExtensionContext) {
 					openEditor.document.fileName.endsWith('.md') &&
 					isPagesDirectory() &&
 					slashCommands === true &&
-					!isInSQLCodeBlock(openEditor.document, openEditor.selection.active)
+					!isInSQLCodeBlock(openEditor.document, openEditor.selection.active) &&
+					!isInComponentContext(openEditor.document, openEditor.selection.active)
 				) {
 					try {
 						decorate(openEditor);
@@ -1400,7 +1421,8 @@ export async function activate(context: ExtensionContext) {
 					openEditor.document.fileName.endsWith('.md') &&
 					isPagesDirectory() &&
 					slashCommands === true &&
-					!isInSQLCodeBlock(openEditor.document, openEditor.selection.active)
+					!isInSQLCodeBlock(openEditor.document, openEditor.selection.active) &&
+					!isInComponentContext(openEditor.document, openEditor.selection.active)
 				) {
 					try {
 						decorate(openEditor);
