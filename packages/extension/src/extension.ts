@@ -691,6 +691,44 @@ function applyCaseToFunction(
 	};
 }
 
+function extractCTENames(query: string) {
+	// Updated regex to match all CTEs after 'WITH' and commas
+	const cteRegex = /WITH\s+([a-zA-Z0-9_]+)\s+AS\s*\(|,\s*([a-zA-Z0-9_]+)\s+AS\s*\(/gi;
+	const matches = [];
+	let match;
+
+	while ((match = cteRegex.exec(query)) !== null) {
+		// Match either the first group (after WITH) or second group (after comma)
+		matches.push(match[1] || match[2]);
+	}
+
+	return matches;
+}
+
+function extractInputNames() {
+
+	const editor = window.activeTextEditor;
+
+	if (!editor) {
+		window.showErrorMessage('No active editor. Open a document to extract query names.');
+		return [];
+	}
+
+	const text = editor.document.getText();
+
+	// Regex to match standalone `name=` props in any Svelte component
+	const nameRegex = /\bname=(["']?)([a-zA-Z0-9_]+)\1/g;
+	const matches = [];
+	let match;
+
+	while ((match = nameRegex.exec(text)) !== null) {
+		matches.push(match[2]); // Capture the value of the 'name' attribute
+	}
+
+	return matches;
+}
+
+
 async function provideSQLCompletionItems(
 	document: TextDocument,
 	position: Position,
@@ -704,8 +742,10 @@ async function provideSQLCompletionItems(
 
 	const fromPattern = /(?<!\bextract\([^\)]*)\bFROM\s+([a-zA-Z0-9_\.]*)$/i;
 	const joinPattern = /\bJOIN\s+([a-zA-Z0-9_\.]*)$/i;
+	const inputPattern = /\$\{inputs\.$/;
 	const fromMatch = fromPattern.exec(textBeforePosition);
 	const joinMatch = joinPattern.exec(textBeforePosition);
+	const inputMatch = inputPattern.exec(textBeforePosition);
 
 	let keywords = [];
 	let functions = duckdbFunctions.map((func) =>
@@ -725,7 +765,20 @@ async function provideSQLCompletionItems(
 		return item;
 	});
 
-	if (fromMatch || joinMatch) {
+	// If the cursor is after `${inputs.`, suggest input names
+	if (inputMatch) {
+		const inputNames = extractInputNames();
+
+		for (const inputName of inputNames) {
+			const inputCompletionItem = new CompletionItem(
+				inputName,
+				CompletionItemKind.Variable
+			);
+			inputCompletionItem.insertText = inputName;
+			inputCompletionItem.detail = 'Input Variable';
+			completionItems.push(inputCompletionItem);
+		}
+	} else if (fromMatch || joinMatch) {
 		// Only add tables if after FROM
 		for (const schemaItem of schemaItems) {
 			const schemaName = schemaItem.label;
@@ -752,6 +805,18 @@ async function provideSQLCompletionItems(
 			queryNameCompletionItem.insertText = `\$\{${queryName}}`
 			completionItems.push(queryNameCompletionItem)
 		}
+
+		const cteNames = extractCTENames(textBeforePosition);
+
+		for (const cteName of cteNames) {
+			const cteNameCompletionItem = new CompletionItem(
+				cteName,
+				CompletionItemKind.File
+			);
+			cteNameCompletionItem.insertText = `${cteName}`;
+			completionItems.push(cteNameCompletionItem);
+		}
+
 	} else {
 		completionItems.push(...keywordCompletionItems);
 		completionItems.push(...functionCompletionItems);
