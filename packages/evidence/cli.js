@@ -166,7 +166,6 @@ const buildHelper = function (command, args) {
 	const flatArgs = flattenArguments(args);
 
 	const dataDir = process.env.EVIDENCE_DATA_DIR ?? './static/data';
-	const dataPrefix = process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data';
 
 	// Run svelte kit build in the hidden directory
 	const child = spawn(command, flatArgs, {
@@ -193,16 +192,26 @@ const buildHelper = function (command, args) {
 				const manifest = fs.readJsonSync(manifestFile);
 				for (const files of Object.values(manifest.renderedFiles)) {
 					for (let i = 0; i < files.length; i++) {
-						const filePath = files[i].replace(dataPrefix, buildDataDir);
+						// <url prefix>/sqlite/transactions/transactions.parquet
+						//              ^^^^^^ ^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^
+						const DISK_PARTS = 3;
+
+						const diskParts = files[i].split('/').slice(-DISK_PARTS).join('/');
+						const filePath = path.posix.join(buildDataDir, diskParts);
 						if (!fs.existsSync(filePath)) continue;
 
 						const contents = fs.readFileSync(filePath);
 						const hash = createHash('md5').update(contents).digest('hex');
 
-						const newFilePath = path.join(path.dirname(filePath), hash, path.basename(filePath));
+						const newDiskPart = path.posix.join(
+							path.dirname(diskParts),
+							hash,
+							path.basename(diskParts)
+						);
+						const newFilePath = path.join(buildDataDir, newDiskPart);
 						fs.moveSync(filePath, newFilePath);
 
-						files[i] = newFilePath.replace(buildDataDir, dataPrefix);
+						files[i] = files[i].replace(diskParts, newDiskPart);
 					}
 				}
 				fs.writeJsonSync(manifestFile, manifest);
