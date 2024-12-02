@@ -194,9 +194,9 @@ const buildHelper = function (command, args) {
 					for (let i = 0; i < files.length; i++) {
 						// <url prefix>/sqlite/transactions/transactions.parquet
 						//              ^^^^^^ ^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^
-						const DISK_PARTS = 3;
+						const nDiskParts = 3;
 
-						const diskParts = files[i].split('/').slice(-DISK_PARTS).join('/');
+						const diskParts = files[i].split('/').slice(-nDiskParts).join('/');
 						const filePath = path.posix.join(buildDataDir, diskParts);
 						if (!fs.existsSync(filePath)) continue;
 
@@ -256,8 +256,8 @@ prog
 ${chalk.bold('[!] Unable to load source manifest')}
 	This likely means you have no source data, and need to generate it.
 	Running ${chalk.bold('npm run sources')} will generate the needed data. See ${chalk.bold(
-		'npm run sources --help'
-	)} for more usage information
+						'npm run sources --help'
+					)} for more usage information
 	Documentation: https://docs.evidence.dev/core-concepts/data-sources/
 		`.trim()
 				)
