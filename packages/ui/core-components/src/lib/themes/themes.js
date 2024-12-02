@@ -13,6 +13,8 @@ import chroma from 'chroma-js';
 /** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
 /** @typedef {import('@evidence-dev/tailwind').ThemesConfig} ThemesConfig */
 
+const { defaultAppearance, appearanceSwitcher } = themesConfig.themes;
+
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
 	const initialValue =
@@ -86,10 +88,12 @@ export class ThemeStores {
 			themesConfig.themes.defaultAppearance,
 			{
 				serialize: (value) => value,
-				deserialize: (raw) =>
-					['system', 'light', 'dark'].includes(raw)
+				deserialize: (raw) => {
+					if (!appearanceSwitcher) return defaultAppearance;
+					return ['system', 'light', 'dark'].includes(raw)
 						? /** @type {'light' | 'dark' | 'system'} */ (raw)
-						: themesConfig.themes.defaultAppearance
+						: themesConfig.themes.defaultAppearance;
+				}
 			}
 		);
 
@@ -137,6 +141,7 @@ export class ThemeStores {
 	};
 
 	cycleAppearance = () => {
+		if (!appearanceSwitcher) return;
 		this.#selectedAppearance.update((current) => {
 			switch (current) {
 				case 'system':
