@@ -256,8 +256,8 @@ prog
 ${chalk.bold('[!] Unable to load source manifest')}
 	This likely means you have no source data, and need to generate it.
 	Running ${chalk.bold('npm run sources')} will generate the needed data. See ${chalk.bold(
-						'npm run sources --help'
-					)} for more usage information
+		'npm run sources --help'
+	)} for more usage information
 	Documentation: https://docs.evidence.dev/core-concepts/data-sources/
 		`.trim()
 				)
