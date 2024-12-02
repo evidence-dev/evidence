@@ -227,16 +227,15 @@
 				builders={[builder]}
 				disabled={!loaded}
 			>
-				{#if !range && title}
-					<span class="border-r-[2px] pr-2.5 h-full flex items-center">
-						{title}
-					</span>
-				{/if}
-				<span class="hidden sm:inline">
+				<span class="hidden sm:inline font-medium">
 					{#if !loaded}
 						Loading...
 					{:else if selectedDateInput && !range}
-						<span class="flex align-center {title ? 'ml-2 ' : ''}">
+						<span class="flex align-center">
+							{#if title}
+								{title}
+								<Separator oritentation="vertical" class="mx-2 h-4 w-[1px]" />
+							{/if}
 							{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
 							<Icon src={CalendarIcon} class="ml-2 h-[14px] w-[14px] text-gray-500" />
 						</span>
