@@ -16,7 +16,7 @@
 	import { Separator } from '$lib/atoms/shadcn/separator/index.js';
 	import { Calendar } from '$lib/atoms/shadcn/calendar/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Calendar as CalendarIcon } from '@steeze-ui/radix-icons';
+	import { Calendar as CalendarIcon } from '@steeze-ui/tabler-icons';
 
 	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
@@ -227,18 +227,17 @@
 				builders={[builder]}
 				disabled={!loaded}
 			>
-				<span class="hidden sm:inline font-medium">
+				<span class="hidden sm:flex font-medium items-center">
 					{#if !loaded}
 						Loading...
 					{:else if selectedDateInput && !range}
-						<span class="flex align-center">
-							{#if title}
-								{title}
-								<Separator oritentation="vertical" class="mx-2 h-4 w-[1px]" />
-							{/if}
-							{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
-							<Icon src={CalendarIcon} class="ml-2 h-[14px] w-[14px] text-gray-500" />
-						</span>
+						{#if title}
+							{title}
+							<Separator oritentation="vertical" class="mx-2 h-4 w-[1px]" />
+						{/if}
+						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
+
+						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 stroke-1 mb-[2px]" />
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfMedium.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
@@ -250,15 +249,15 @@
 					{:else if placeholder}
 						{dfMedium.format(placeholder.toDate(getLocalTimeZone()))}
 					{:else}
-						Date Range
+						Date Input
 					{/if}
 				</span>
-				<span class="sm:hidden">
+				<span class="sm:hidden flex items-center">
 					{#if !loaded}
 						Loading...
 					{:else if selectedDateInput && !range}
 						{dfShort.format(selectedDateInput.toDate(getLocalTimeZone()))}
-						<Icon src={CalendarIcon} class="ml" />
+						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 text-gray-600 mb-[2px]" />
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfShort.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfShort.format(
@@ -270,7 +269,7 @@
 					{:else if placeholder}
 						{dfShort.format(placeholder.toDate(getLocalTimeZone()))}
 					{:else}
-						Date Range
+						Date Input
 					{/if}
 				</span>
 			</Button>
