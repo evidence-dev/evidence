@@ -6,7 +6,7 @@ og:
     image: /img/deployment/deploy-hugging-face-spaces.png
 ---
 
-Hugging Face is an open-source platform for machine learning and artificial intelligence that provides tools and models for building, training, and deploying AI applications. [Hugging Face Spaces](https://huggingface.co/spaces) is a service that allows you to deploy machine learning models as web applications.
+Hugging Face is an open-source platform for machine learning and artificial intelligence that provides tools and models for building, training, and deploying AI applications. [Hugging Face Spaces](https://huggingface.co/spaces) is a service that allows you to deploy machine learning models as web applications. Evidence can be deployed to Hugging Face Spaces by pushing your Evidence project to a GitHub repository and creating a custom workflow.
 
 ## Prerequisites
 
