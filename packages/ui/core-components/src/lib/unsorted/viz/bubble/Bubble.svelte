@@ -89,27 +89,6 @@
 		return Math.sqrt((newPointSize / maxData) * maxSizeSq);
 	}
 
-	$: baseConfig = {
-		type: 'scatter',
-		label: {
-			show: false
-		},
-		labelLayout: { hideOverlap: true },
-		emphasis: {
-			focus: 'series'
-		},
-		symbolSize: function (newPoint) {
-			return bubbleSize(newPoint);
-		},
-		symbol: shape,
-		itemStyle: {
-			color: $fillColorStore,
-			opacity: opacity,
-			borderColor: $outlineColorStore,
-			borderWidth: outlineWidth
-		}
-	};
-
 	// Tooltip settings (scatter and bubble charts require different tooltip than default)
 
 	let tooltipOpts;
@@ -117,7 +96,7 @@
 	if (useTooltip) {
 		tooltipOpts = {
 			tooltip: {
-				formatter: function (params) {
+				formatter: function BubbleTooltipFormatter(params) {
 					if (multiSeries) {
 						if (tooltipTitle) {
 							tooltipOutput = `<span id="tooltip" style='font-weight:600'>${formatValue(
@@ -232,14 +211,34 @@
 			}
 		};
 
-		baseConfig = { ...baseConfig, ...tooltipOpts };
-
 		tooltipOverride = {
 			tooltip: {
 				trigger: 'item'
 			}
 		};
 	}
+
+	$: baseConfig = {
+		type: 'scatter',
+		label: {
+			show: false
+		},
+		labelLayout: { hideOverlap: true },
+		emphasis: {
+			focus: 'series'
+		},
+		symbolSize: function (newPoint) {
+			return bubbleSize(newPoint);
+		},
+		symbol: shape,
+		itemStyle: {
+			color: $fillColorStore,
+			opacity: opacity,
+			borderColor: $outlineColorStore,
+			borderWidth: outlineWidth
+		},
+		...tooltipOpts
+	};
 
 	// If user has passed in custom echarts config options, append to the baseConfig:
 	$: if (options) {
@@ -264,6 +263,7 @@
 		seriesLabelFmt
 	);
 	$: config.update((d) => {
+		console.log('Bubble updating config', d);
 		d.series.push(...seriesConfig);
 		// Push series into legend:
 		d.legend.data.push(...seriesConfig.map((d) => d.name.toString()));
