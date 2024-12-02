@@ -9,23 +9,15 @@ Evidence supports customizing the look and feel of your app using CSS, and by ov
 
 ## Custom Layout 
 
-To customize your, add a `+layout.svelte` file to the root of your pages directory. You can customize the `EvidenceDefaultLayout` with the options below, or replace the contents of the file with an entirely new layout. 
+To customize your, add a `+layout.svelte` file to the root of your pages directory. You can customize the `EvidenceDefaultLayout` with the options below, or replace the contents of the file with an entirely new layout. When you include a `+layout.svelte` file in a directory, any markdown files in that directory (and its subdirectories) will use this layout file instead of the default layout.
 
-```html
-&lt;script&gt;
-	import '@evidence-dev/tailwind/fonts.css';
-	import '../app.css';
-	import { EvidenceDefaultLayout } from '@evidence-dev/core-components';
-	export let data;
-&lt;/script&gt;
+_The recommended approach is to copy and edit the default layout file from `[my-project]/.evidence/template/src/pages/+layout.svelte`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/pages/+layout.svelte)._
 
-<EvidenceDefaultLayout {data}>
-	<slot slot="content" />
-</EvidenceDefaultLayout>
+You can also add your own elements to the default page layout.
 
-```
+### What can be customized with `EvidenceDefaultLayout`?
 
-The `EvidenceDefaultLayout` component accepts the following properties for common customizations.
+The `EvidenceDefaultLayout` component includes a number of features on every page that can be removed or customized via props:
 
 <PropListing
     name="title"
@@ -220,74 +212,3 @@ You can customize the default styles (font, size, color etc) of most HTML elemen
 - Links
 - Page Background
 - etc
-
-You **cannot** currently easily customize the default styles of the following (as these are not defined in the core css styles):
-
-- Evidence Chart colors and themes (see custom chart color section below)
-- Evidence Components
-
-## Page Layout
-
-If you include a `+layout.svelte` file in a directory, any markdown files in that directory (and its subdirectories) will use this layout file instead of the default layout file.
-
-_The recommended approach is to copy and edit the default layout file from `[my-project]/.evidence/template/src/pages/+layout.svelte`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/pages/+layout.svelte)._
-
-### What can be customized with +layout.svelte?
-
-By default, Evidence includes a number of features on every page, which can be removed or customized e.g.
-
-- Sidebar
-- Header
-- Breadcrumbs
-- Table of Contents
-
-You can also add your own elements to the default page layout.
-
-## Chart Color Palette
-
-You can use a custom color palette in your charts by using the `colorPalette` option.
-
-For example, in a bar chart:
-
-```markdown
-<BarChart
-    data={orders}
-    x=date
-    y=sales
-    colorPalette={
-        [
-        '#cf0d06',
-        '#eb5752',
-        '#e88a87',
-        '#fcdad9',
-        ]
-    }
-/>
-```
-
-This can be done within each chart individually, or by using a script tag to create a variable that can be used within one page. For example:
-
-```markdown
-&lt;script&gt;
-    let myColors = [
-        '#cf0d06',
-        '#eb5752',
-        '#e88a87',
-        '#fcdad9',
-    ]
-&lt;/script&gt;
-
-<BarChart
-    data={orders}
-    x=date
-    y=sales
-    colorPalette={myColors}
-/>
-
-<LineChart
-    data={inventory}
-    x=date
-    y=inventory
-    colorPalette={myColors}
-/>
-```
