@@ -66,26 +66,6 @@
 		multiSeries = true;
 	}
 
-	// Set up base config for this type of chart series:
-	$: baseConfig = {
-		type: 'scatter',
-		label: {
-			show: false
-		},
-		labelLayout: { hideOverlap: true },
-		emphasis: {
-			focus: 'item'
-		},
-		symbol: shape,
-		symbolSize: pointSize,
-		itemStyle: {
-			color: $fillColorStore,
-			opacity: opacity,
-			borderColor: $outlineColorStore,
-			borderWidth: outlineWidth
-		}
-	};
-
 	// Tooltip settings (scatter and bubble charts require different tooltip than default)
 	let tooltipOpts;
 	let tooltipOverride;
@@ -179,14 +159,33 @@
 			}
 		};
 
-		baseConfig = { ...baseConfig, ...tooltipOpts };
-
 		tooltipOverride = {
 			tooltip: {
 				trigger: 'item'
 			}
 		};
 	}
+
+	// Set up base config for this type of chart series:
+	$: baseConfig = {
+		type: 'scatter',
+		label: {
+			show: false
+		},
+		labelLayout: { hideOverlap: true },
+		emphasis: {
+			focus: 'item'
+		},
+		symbol: shape,
+		symbolSize: pointSize,
+		itemStyle: {
+			color: $fillColorStore,
+			opacity: opacity,
+			borderColor: $outlineColorStore,
+			borderWidth: outlineWidth
+		},
+		...tooltipOpts
+	};
 
 	// If user has passed in custom echarts config options, append to the baseConfig:
 	$: if (options) {
