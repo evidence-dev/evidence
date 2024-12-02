@@ -1,5 +1,5 @@
 import { copyFile, readdir, rm } from 'node:fs/promises';
-import { glob } from "glob";
+import { glob } from 'glob';
 import path from 'node:path';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -9,7 +9,7 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 for (const pkg of await glob('../../packages/**/package.json', {
 	ignore: {
-		ignored: (path) => path.fullpath().includes("node_modules")
+		ignored: (path) => path.fullpath().includes('node_modules')
 	}
 })) {
 	const package_dir = path.dirname(pkg);

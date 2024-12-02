@@ -32,7 +32,7 @@ const testScripts = {
 	test: undefined,
 	'test:preview': 'playwright test',
 	'test:dev': 'cross-env DEV=true playwright test',
-	'setup': 'pnpm sources'
+	setup: 'pnpm sources'
 };
 
 /** @type {Partial<SpawnOptions>} */
