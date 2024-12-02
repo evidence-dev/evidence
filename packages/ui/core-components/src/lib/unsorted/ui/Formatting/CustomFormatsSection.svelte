@@ -3,21 +3,33 @@
 </script>
 
 <script>
+	// @ts-check
+
 	import CustomFormatGrid from './CustomFormatGrid.svelte';
 	import CollapsibleTableSection from './CollapsibleTableSection.svelte';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import ssf from 'ssf';
-	export let builtInFormats = {};
+
+	/** @type {{ formatTag: string }[]} */
+	export let builtInFormats = [];
+
+	/** @type {{ customFormats?: { formatTag: string }[] }}*/
 	export let customFormattingSettings = {};
 
 	const valueTypeOptions = ['number', 'date'];
 
-	let formatTag;
-	let formatCode;
-	let valueType;
+	let formatTag = '';
+
+	let formatCode = '';
+
+	/** @type {'number' | 'date'} */
+	let valueType = 'number';
+
 	let newFormatValidationErrors = '';
 
+	/** @param {{ formatTag: string }} format */
 	async function deleteCustomFormat(format) {
-		const submitted = await fetch('/api/customFormattingSettings.json', {
+		const submitted = await fetch(addBasePath('/api/customFormattingSettings.json'), {
 			method: 'DELETE',
 			body: JSON.stringify({
 				formatTag: format.formatTag
@@ -34,7 +46,7 @@
 		if (validationErrors && validationErrors.length > 0) {
 			newFormatValidationErrors = validationErrors.join('<br/>');
 		} else {
-			const submitted = await fetch('/api/customFormattingSettings.json', {
+			const submitted = await fetch(addBasePath('/api/customFormattingSettings.json'), {
 				method: 'POST',
 				body: JSON.stringify({
 					newCustomFormat: { formatTag, formatCode, valueType }
@@ -51,8 +63,8 @@
 	}
 
 	function resetNewCustomFormat() {
-		formatTag = undefined;
-		formatCode = undefined;
+		formatTag = '';
+		formatCode = '';
 		valueType = 'number';
 		newFormatValidationErrors = '';
 	}
@@ -64,6 +76,7 @@
 				`"${formatTag}" is not a valid format name. The format name should always start with a letter and only contain letters and numbers.`
 			);
 		}
+		/** @type {number | Date} */
 		let testValue = 10;
 		let testResult;
 		let ssfError;

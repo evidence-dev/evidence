@@ -2,7 +2,7 @@ import express from 'express';
 import { getManifest } from './virtuals/node/static-assets.js';
 import fs from 'fs/promises';
 import path from 'path';
-import { dataDirectory } from './virtuals/node/projectPaths.js';
+import { dataDirectory } from '../../lib/projectPaths.js';
 
 /**
  * Creates an express application that handles Evidence-specific functionality

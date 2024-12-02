@@ -1,12 +1,14 @@
 {
 	"name": "my-evidence-project",
-	"version": "0.0.17",
+	"private": true,
+	"version": "0.0.46",
 	"scripts": {
 		"build": "evidence build",
 		"build:strict": "evidence build:strict",
 		"dev": "EVIDENCE_DISABLE_INCLUDE=true evidence dev --open /",
 		"sources": "evidence sources",
-		"preview": "evidence preview"
+		"preview": "evidence preview",
+		"test:unit": "vitest"
 	},
 	"engines": {
 		"npm": ">=7.0.0",
@@ -19,11 +21,16 @@
 		"@evidence-dev/csv": "workspace:*",
 		"@evidence-dev/duckdb": "workspace:*",
 		"@evidence-dev/evidence": "workspace:*",
-		"@evidence-dev/faker-datasource": "workspace:^"
+		"@evidence-dev/faker-datasource": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
+		"@evidence-dev/tailwind": "workspace:*"
 	},
 	"overrides": {
 		"jsonwebtoken": "9.0.0",
 		"trim@<0.0.3": ">0.0.3",
 		"sqlite3": "5.1.5"
+	},
+	"devDependencies": {
+		"vitest": "^2.0.5"
 	}
 }

@@ -1,29 +1,28 @@
 {
 	"name": "@evidence-dev/tailwind",
-	"version": "2.1.1",
+	"version": "2.1.11",
 	"description": "",
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
-	"devDependencies": {
-		"parcel": "^2.8.3",
-		"typescript": "5.4.2"
-	},
 	"dependencies": {
-		"tailwindcss": "^3.3.1"
-	},
-	"scripts": {
-		"build": "parcel build"
+		"@evidence-dev/sdk": "workspace:^",
+		"lodash": "^4.17.21",
+		"tailwindcss": "^3.3.1",
+		"tw-colors": "^3.3.2",
+		"zod": "^3.23.8"
 	},
 	"exports": {
 		".": {
-			"import": "./dist/index.mjs",
-			"require": "./dist/index.cjs"
+			"import": "./index.js",
+			"require": "./index.js"
 		},
 		"./fonts.css": "./fonts.css",
 		"./fonts/*": "./fonts/*"
 	},
-	"main": "dist/index.cjs",
-	"module": "dist/index.mjs",
-	"source": "index.js"
+	"main": "index.js",
+	"source": "index.js",
+	"devDependencies": {
+		"typescript": "^5.5.4"
+	}
 }

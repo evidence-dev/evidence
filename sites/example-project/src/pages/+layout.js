@@ -3,13 +3,14 @@ import {
 	tableFromIPC,
 	initDB,
 	setParquetURLs,
-	query,
+	query as usqlQuery,
 	updateSearchPath,
 	arrowTableToJSON
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
 import { setTrackProxy } from '@evidence-dev/sdk/usql';
+import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 import md5 from 'blueimp-md5';
 
 export const ssr = !dev;
@@ -25,22 +26,24 @@ const loadDB = async () => {
 			await readFile('./static/data/manifest.json', 'utf-8').catch(() => '{}')
 		));
 	} else {
-		const res = await fetch('/data/manifest.json');
+		const res = await fetch(addBasePath('/data/manifest.json'));
 		if (res.ok) ({ renderedFiles } = await res.json());
 	}
 	await profile(initDB);
 
 	if (Object.keys(renderedFiles ?? {}).length === 0) {
-		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
-		toasts.add(
-			{
-				id: 'MissingManifest',
-				status: 'warning',
-				title: 'Missing Manifest',
-				message: 'Without a manifest file, no data is available'
-			},
-			10000
-		);
+		console.warn(`No sources found, execute "npm run sources" to generate`.trim());
+		if (dev) {
+			toasts.add(
+				{
+					id: 'MissingManifest',
+					status: 'warning',
+					title: 'No Sources Found',
+					message: 'Configure and run sources to include data in your project.'
+				},
+				10000
+			);
+		}
 	} else {
 		await profile(setParquetURLs, renderedFiles);
 		await profile(updateSearchPath, Object.keys(renderedFiles));
@@ -58,14 +61,14 @@ const database_initialization = profile(loadDB);
  */
 async function getPrerenderedQueries(routeHash, paramsHash, fetch) {
 	// get every query that's run in the component
-	const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
+	const res = await fetch(addBasePath(`/api/${routeHash}/${paramsHash}/all-queries.json`));
 	if (!res.ok) return {};
 
 	const sql_cache_with_hashed_query_strings = await res.json();
 
 	const resolved_entries = await Promise.all(
 		Object.entries(sql_cache_with_hashed_query_strings).map(async ([query_name, query_hash]) => {
-			const res = await fetch(`/api/prerendered_queries/${query_hash}.arrow`);
+			const res = await fetch(addBasePath(`/api/prerendered_queries/${query_hash}.arrow`));
 			if (!res.ok) return null;
 
 			const table = await tableFromIPC(res);
@@ -84,9 +87,9 @@ const dummy_pages = new Map();
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({ fetch, route, params, url }) => {
 	const [{ customFormattingSettings }, pagesManifest, evidencemeta] = await Promise.all([
-		fetch('/api/customFormattingSettings.json/GET.json').then((x) => x.json()),
-		fetch('/api/pagesManifest.json').then((x) => x.json()),
-		fetch(`/api/${route.id}/evidencemeta.json`)
+		fetch(addBasePath('/api/customFormattingSettings.json/GET.json')).then((x) => x.json()),
+		fetch(addBasePath('/api/pagesManifest.json')).then((x) => x.json()),
+		fetch(addBasePath(`/api/${route.id}/evidencemeta.json`))
 			.then((x) => x.json())
 			.catch(() => ({ queries: [] }))
 	]);
@@ -103,7 +106,13 @@ export const load = async ({ fetch, route, params, url }) => {
 
 	/** @type {App.PageData["data"]} */
 	let data = {};
-	const { inputs = {} } = dummy_pages.get(url.pathname) ?? {};
+
+	const {
+		inputs = setTrackProxy({
+			label: '',
+			value: '(SELECT NULL WHERE 0 /* An Input has not been set */)'
+		}) /* Create a proxy by default */
+	} = dummy_pages.get(url.pathname) ?? {};
 
 	const is_dummy_page = dummy_pages.has(url.pathname);
 	if ((dev || building) && !browser && !is_dummy_page) {
@@ -121,26 +130,44 @@ export const load = async ({ fetch, route, params, url }) => {
 		data = await getPrerenderedQueries(routeHash, paramsHash, fetch);
 	}
 
+	/** @type {App.PageData["__db"]["query"]} */
+	function query(sql, { query_name, callback = (x) => x } = {}) {
+		if (browser) {
+			return (async () => {
+				await database_initialization;
+				const result = await usqlQuery(sql);
+				return callback(result);
+			})();
+		}
+
+		return callback(
+			usqlQuery(sql, {
+				route_hash: routeHash,
+				additional_hash: paramsHash,
+				query_name,
+				prerendering: building
+			})
+		);
+	}
+
+	let tree = pagesManifest;
+	for (const part of (route.id ?? '').split('/').slice(1)) {
+		tree = tree.children[part];
+		if (!tree) break;
+		if (tree.frontMatter?.title) {
+			tree.title = tree.frontMatter.title;
+		} else if (tree.frontMatter?.breadcrumb) {
+			let { breadcrumb } = tree.frontMatter;
+			for (const [param, value] of Object.entries(params)) {
+				breadcrumb = breadcrumb.replaceAll(`\${params.${param}}`, value);
+			}
+			tree.title = (await query(breadcrumb))[0]?.breadcrumb;
+		}
+	}
+
 	return /** @type {App.PageData} */ ({
 		__db: {
-			query(sql, { query_name, callback = (x) => x } = {}) {
-				if (browser) {
-					return (async () => {
-						await database_initialization;
-						const result = await query(sql);
-						return callback(result);
-					})();
-				}
-
-				return callback(
-					query(sql, {
-						route_hash: routeHash,
-						additional_hash: paramsHash,
-						query_name,
-						prerendering: building
-					})
-				);
-			},
+			query,
 			async load() {
 				return database_initialization;
 			},
@@ -150,10 +177,7 @@ export const load = async ({ fetch, route, params, url }) => {
 				await profile(setParquetURLs, renderedFiles);
 			}
 		},
-		inputs: setTrackProxy({
-			label: '',
-			value: '(SELECT NULL WHERE 0 /* An Input has not been set */)'
-		}),
+		inputs,
 		data,
 		customFormattingSettings,
 		isUserPage,

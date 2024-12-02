@@ -52,7 +52,8 @@ import { sterilizeQuery } from './sterilizeQuery.js';
  * @typedef {Object} QueryGlobalEvents
  * @property {undefined} inFlightQueryStart
  * @property {undefined} inFlightQueryEnd
- * @property {{raw: Query<any>, proxied: QueryValue<any>}} queryCreated
+ * @property {import('../types.js').QueryDebugPayload} queryCreated
+ * @property {undefined} cacheCleared
  */
 /** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
@@ -71,7 +72,6 @@ export class Query {
 	////////////////////////////
 	/// < State Primatives > ///
 	////////////////////////////
-	#hasInitialData = false;
 
 	/** @type {QueryValue<RowType>} */
 	#value;
@@ -238,7 +238,8 @@ export class Query {
 	static #globalHandlerMap = {
 		inFlightQueryStart: new Set(),
 		inFlightQueryEnd: new Set(),
-		queryCreated: new Set()
+		queryCreated: new Set(),
+		cacheCleared: new Set()
 	};
 	/**
 	 * @template {keyof QueryGlobalEvents} Event
@@ -344,6 +345,7 @@ ${this.text.trim()}
 
 				this.#dataQueryTime = after - before;
 
+				this.#fetchLength();
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
@@ -365,10 +367,17 @@ ${this.text.trim()}
 		);
 		return resolved;
 	};
-	fetch = async () => {
-		return Promise.allSettled([this.#fetchColumns(), this.#fetchData(), this.#fetchLength()]).then(
-			() => this.value
-		);
+	fetch = () => {
+		const cols = this.#fetchColumns();
+		if (
+			cols instanceof Promise &&
+			/* noResolve will always return a promise, even when fetch is synchronous */
+			!this.opts.noResolve
+		) {
+			return Promise.allSettled([this.#fetchColumns(), this.#fetchData()]).then(() => this.value);
+		}
+		this.#fetchData();
+		return this.value;
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -665,6 +674,7 @@ DESCRIBE ${this.text.trim()}
 
 	static emptyCache = () => {
 		this.#cache.clear();
+		this.#globalEmit('cacheCleared', undefined);
 	};
 
 	static get cacheSize() {
@@ -680,11 +690,10 @@ DESCRIBE ${this.text.trim()}
 			added: Date.now()
 		});
 
-		if (isDebug())
-			console.debug(`Added to cache: ${q.hash}`, {
-				cacheSize: this.#cache.size,
-				cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
-			});
+		Query.#debugStatic('cache', `Added to cache: ${q.hash}`, {
+			cacheSize: this.#cache.size,
+			cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
+		});
 	};
 
 	/**
@@ -712,7 +721,6 @@ DESCRIBE ${this.text.trim()}
 	};
 
 	/**
-	 *
 	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
 	 * @param {QueryValue<any>} [initialQuery]
@@ -756,7 +764,8 @@ DESCRIBE ${this.text.trim()}
 					: createFn(
 							nextQuery,
 							execFn,
-							Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined })
+							// clear initialData and initialError on opts, but allow for newOpts to provide them
+							Object.assign({}, opts, { initialData: undefined, initialError: undefined }, newOpts)
 						);
 
 				const fetched = newQuery.fetch();
@@ -893,7 +902,10 @@ DESCRIBE ${this.text.trim()}
 
 		Query.#constructing = true;
 		const output = new Query(query, executeQuery, opts);
-		Query.#globalEmit('queryCreated', { raw: output, proxied: output.value });
+		Query.#globalEmit('queryCreated', {
+			raw: output,
+			proxied: output.value
+		});
 		if (!opts.disableCache) {
 			Query.#addToCache(output);
 			Query.#cacheCleanup();
@@ -979,6 +991,13 @@ DESCRIBE ${this.text.trim()}
 	/** @type {import('../types.js').QueryOpts} */
 	opts;
 
+	/** @type {string | undefined} */
+	#createdStack;
+
+	get createdStack() {
+		return this.#createdStack;
+	}
+
 	// TODO: Score (this should be done in another file)
 	// TODO: When dealing with builder functions, add a `select` or similar
 	/**
@@ -988,6 +1007,11 @@ DESCRIBE ${this.text.trim()}
 	 * @deprecated Use {@link Query.create} instead
 	 */
 	constructor(query, executeQuery, opts = {}) {
+		this.#createdStack = new Error().stack
+			?.split('\n')
+			.slice(2)
+			.map((line) => line.slice('    at '.length))
+			.join('\n');
 		const {
 			id,
 			initialData = undefined,
@@ -1037,14 +1061,9 @@ DESCRIBE ${this.text.trim()}
 			return;
 		}
 
-		if (opts.noResolve) {
-			this.#sharedDataPromise.start();
-			this.#sharedLengthPromise.start();
-			this.#sharedColumnsPromise.start();
-			return this;
-		} else if (initialData) {
+		// TODO: Does this make sense?
+		if (initialData) {
 			this.#debug('initial data', 'Created with initial data', initialData);
-			this.#hasInitialData = true;
 
 			resolveMaybePromise(
 				(d) => {
@@ -1062,12 +1081,20 @@ DESCRIBE ${this.text.trim()}
 					this.#error = e;
 				}
 			);
+		} else if (opts.noResolve) {
+			this.#sharedDataPromise.start();
+			this.#sharedLengthPromise.start();
+			this.#sharedColumnsPromise.start();
+			return this;
 		}
 
 		if (knownColumns) {
 			if (!Array.isArray(knownColumns))
 				throw new Error(`Expected knownColumns to be an array`, { cause: knownColumns });
+
+			this.#debug('known columns', 'Created with known columns', knownColumns);
 			this.#columns = knownColumns;
+			this.#sharedColumnsPromise.resolve(this);
 		} else {
 			resolveMaybePromise(
 				() => {
@@ -1195,10 +1222,14 @@ DESCRIBE ${this.text.trim()}
 	/**
 	 * @param {string} searchTerm
 	 * @param {string | string[]} searchCol
-	 * @param {number} searchThreshold
+	 * @param {number | undefined} [searchThreshold]
 	 * @returns {QueryValue<RowType & {similarity: number}>}
 	 */
-	search = (searchTerm, searchCol, searchThreshold = 0.5) => {
+	search = (searchTerm, searchCol, searchThreshold) => {
+		if (typeof searchThreshold === 'undefined' || searchThreshold < 0 || searchThreshold > 1) {
+			// By default, increase threshold as more characters are added
+			searchThreshold = 1 - 1 / searchTerm.length;
+		}
 		/** @type {import('../../types/duckdb-wellknown.js').DescribeResultRow[]} */
 		const colsWithSimilarity = [
 			...this.#columns,
@@ -1216,9 +1247,9 @@ DESCRIBE ${this.text.trim()}
 				const exactMatch = taggedSql`CASE WHEN lower("${col.trim()}") = lower('${escapedSearchTerm}') THEN 2 ELSE 0 END`;
 				const similarity = taggedSql`jaccard(lower('${escapedSearchTerm}'), lower("${col}"))`;
 				const exactSubMatch =
-					// escapedSearchTerm.length >= 4
-					taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`;
-				// : taggedSql`0`;
+					escapedSearchTerm.length >= 1
+						? taggedSql`CASE WHEN lower("${col.trim()}") LIKE lower('%${escapedSearchTerm.split(' ').join('%')}%') THEN 1 ELSE 0 END`
+						: taggedSql`0`;
 				return taggedSql`GREATEST((${exactMatch}), (${similarity}), (${exactSubMatch}))`;
 			})
 			.join(',');

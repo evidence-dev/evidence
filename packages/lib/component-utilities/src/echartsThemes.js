@@ -35,7 +35,7 @@ const dark_subtitleColor = uiColours.grey400;
 export const evidenceThemeLight = {
 	darkMode: false, // if true, echarts will automatically update the font colour to work better on dark background
 	textStyle: {
-		fontFamily: 'sans-serif'
+		fontFamily: ['Inter', 'sans-serif']
 	},
 	grid: {
 		left: '0%',

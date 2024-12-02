@@ -61,9 +61,13 @@
 	export let emptyMessage = undefined;
 
 	export let renderer = undefined;
+	export let downloadableData = undefined;
+	export let downloadableImage = undefined;
 	export let seriesColors = undefined;
+	export let seriesOrder = undefined;
 
 	export let connectGroup = undefined;
+	export let seriesLabelFmt = undefined;
 </script>
 
 <Chart
@@ -105,9 +109,21 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{downloadableData}
+	{downloadableImage}
 	{connectGroup}
 	{seriesColors}
 >
-	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
+	<Bubble
+		{shape}
+		{fillColor}
+		{opacity}
+		{outlineColor}
+		{outlineWidth}
+		{scaleTo}
+		{useTooltip}
+		{seriesOrder}
+		{seriesLabelFmt}
+	/>
 	<slot />
 </Chart>

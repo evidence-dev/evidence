@@ -4,8 +4,14 @@
 
 <script>
 	import Points from './components/Points.svelte';
-	import BaseMap from './BaseMap.svelte';
-	import ErrorChart from '../core/ErrorChart.svelte';
+	import BaseMap from './_BaseMap.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
+
+	/** @type {'pass' | 'warn' | 'error' | undefined} */
+	export let emptySet = undefined;
+
+	/** @type {string | undefined} */
+	export let emptyMessage = undefined;
 
 	let error;
 
@@ -35,19 +41,61 @@
 	export let startingZoom = undefined;
 
 	/** @type {number} */
-	export let height = undefined; // height in pixels
+	export let height = 300; // height in pixels
 
 	/** @type {string} */
 	export let basemap = undefined;
 
 	/** @type {string|undefined} */
 	export let title = undefined;
+
+	/** @type {string[]|undefined} */
+	export let colorPalette = undefined;
+
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
+
+	/** @type {boolean} */
+	export let legend = true;
+
+	/** @type {string|undefined} */
+	export let attribution = undefined;
+
+	const chartType = 'Point Map';
+
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
+	$: isInitial = data?.hash === initialHash;
 </script>
 
-{#if error}
-	<ErrorChart {error} chartType="Point Map" />
-{:else}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Points {data} {lat} {long} {...$$restProps} />
-	</BaseMap>
-{/if}
+<BaseMap
+	let:data
+	{data}
+	{startingLat}
+	{startingLong}
+	{startingZoom}
+	{height}
+	{basemap}
+	{title}
+	{legendPosition}
+	{isInitial}
+	{chartType}
+	{emptySet}
+	{emptyMessage}
+	{error}
+	{attribution}
+>
+	<!-- move dispatch error outside of points to render error outside leafletmaps -->
+	<Points
+		{data}
+		{lat}
+		{long}
+		{colorPalette}
+		{legendType}
+		{chartType}
+		{...$$restProps}
+		{legend}
+		on:error={(e) => (error = e.detail)}
+	/>
+</BaseMap>

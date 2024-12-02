@@ -22,86 +22,87 @@
 				type: 'string',
 				options: ['stacked', 'grouped', 'stacked100'],
 				control: { type: 'select' }
+			},
+			labels: {
+				type: 'boolean',
+				control: { type: 'boolean' }
+			},
+			stackTotalLabel: {
+				type: 'boolean',
+				control: { type: 'boolean' }
+			},
+			seriesLabels: {
+				type: 'boolean',
+				control: { type: 'boolean' }
+			},
+			downloadableData: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			downloadableImage: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			seriesOrder: {
+				control: 'array'
 			}
-		},
-		args: {
-			xHasGaps: false,
-			yHasNulls: false,
-			seriesAlwaysExists: true
 		}
 	};
 </script>
 
 <script>
-	import { Template, Story } from '@storybook/addon-svelte-csf';
+	import { Story } from '@storybook/addon-svelte-csf';
+	import { Query } from '@evidence-dev/sdk/usql';
+	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 
 	import BarChart from './BarChart.svelte';
-
-	import { fakerSeries } from '$lib/faker-data-queries';
 </script>
 
-<Template let:args>
-	<BarChart
-		{...args}
-		x="x"
-		y="y"
-		series="series"
-		data={fakerSeries['numeric_series'][args.xHasGaps][args.yHasNulls][args.seriesAlwaysExists]
-			.store}
-	/>
-</Template>
+<Story name="Base" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<BarChart {data} {...args} />
+</Story>
 
-<Story name="Base" />
-<!-- 
-<Story name="Query" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric", query), x: "x", y: "y", series: "series"}} />
-<Story name="Query (X Gaps)" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric_gaps", query), x: "x", y: "y", series: "series"}} />
-<Story name="Query (Missing Series)" args={{type: "stacked", data: new QueryStore("SELECT * FROM numeric_series", query), x: "x", y: "y", series: "series"}} />
+<Story name="Labels" args={{ x: 'x', y: 'y', series: 'series', labels: true }} let:args>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<BarChart {data} {...args} />
+</Story>
 
 <Story
-	name="Crowded (Explicit X Type)"
-	args={{
-		xType: 'category',
-		data: genSeries({
-			...defaultGenSeriesOpts,
-			minSeriesLen: 15,
-			maxSeriesLen: 15,
-			minSeriesCount: 4
-		}).data
-	}}
-/>
+	name="Total Labels Only"
+	args={{ x: 'x', y: 'y', series: 'series', labels: true, seriesLabels: false }}
+	let:args
+>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<BarChart {data} {...args} />
+</Story>
 
 <Story
-	name="Crowded (Explicit X Type) (Horizontal)"
-	args={{
-		xType: 'category',
-		swapXY: true,
-		data: genSeries({
-			...defaultGenSeriesOpts,
-			minSeriesLen: 15,
-			maxSeriesLen: 15,
-			minSeriesCount: 4
-		}).data
-	}}
-/>
-
-	This story doesn't work because our series mocking currently doesn't include evidenceColumnTypes
-	<Story
-	name="Crowded (Implicit X Type)"
-	args={{
-		data: genSeries({
-			...defaultGenSeriesOpts,
-			minSeriesLen: 15,
-			maxSeriesLen: 15,
-			minSeriesCount: 4
-		}).data
-	}}
-/> 
-
+	name="With seriesOrder"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+	let:args
+>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<BarChart {data} {...args} />
+</Story>
 <Story
-	name="MultiSeries with Missing Entries"
-	args={{
-		type: 'stacked',
-		data: MissingYCase.data,
-		...MissingYCase.keys
-	}}
-/> -->
+	name="With seriesLabelFmt"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: [0.1, 0.5] }}
+	let:args
+>
+	{@const data = Query.create(
+		`SELECT 0.1 AS series, 1 AS x, 10 AS y
+UNION
+SELECT 0.1 AS series, 2 AS x, 20 AS y
+UNION
+SELECT 0.1 AS series, 3 AS x, 30 AS y
+UNION
+SELECT 0.5 AS series, 1 AS x, 5 AS y
+UNION
+SELECT 0.5 AS series, 2 AS x, 15 AS y
+UNION
+SELECT 0.5 AS series, 3 AS x, 25 AS y`,
+		query
+	)}
+	<BarChart {data} seriesLabelFmt="pct" {...args} />
+</Story>

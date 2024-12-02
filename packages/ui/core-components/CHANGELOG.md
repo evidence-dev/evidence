@@ -1,5 +1,267 @@
 # @evidence-dev/core-components
 
+## 4.9.1
+
+### Patch Changes
+
+- 4d1ecd921: series names can be formatted in Area, Bar, Bubble, Line charts and Scatter plot
+- 1f343b638: fixed table header chevron layout shift
+- b3465c45d: Upgrade @sveltejs/kit to 2.8.4
+  - @evidence-dev/component-utilities@3.2.22
+  - @evidence-dev/tailwind@2.1.11
+
+## 4.9.0
+
+### Minor Changes
+
+- b72e4a809: Remove plugin connector
+
+### Patch Changes
+
+- 58f537d79: Align the height of buttongroup to dropdown
+- 9c1ad71a1: fixed dataTable not displaying sorted data
+  - @evidence-dev/component-utilities@3.2.21
+  - @evidence-dev/tailwind@2.1.10
+
+## 4.8.13
+
+### Patch Changes
+
+- 62afe741b: Node 22 support
+- Updated dependencies [62afe741b]
+  - @evidence-dev/component-utilities@3.2.20
+  - @evidence-dev/tailwind@2.1.9
+
+## 4.8.12
+
+### Patch Changes
+
+- 6938c07d0: Added support for deployment.basePath
+- 4ca8cb14a: removed skeleton for annotation components, fixes double skeletons for annotation usage
+- 61342f41e: Updated core components for docTabs
+- Updated dependencies [0c538ac70]
+  - @evidence-dev/component-utilities@3.2.19
+  - @evidence-dev/tailwind@2.1.8
+
+## 4.8.11
+
+### Patch Changes
+
+- 6ecef713f: Fixed Error Chart layering, updated Maps errorchart handling
+- 7a414e88e: fix daterange flickering, slider default
+- ddf5da4d0: fix map loading state layout shift
+- 320c39941: fixed string handling for slider prop values
+- 475c42432: Adds attribution prop to maps and documents how to use it.
+- 7f70975e5: Add bluesky logo to options for header
+- c17626b1c: Allows customization of the name of the Home page in the sidebar
+- 667b7167e: Slider accepts dynamic default and max min values from data
+- 58403f1db: delete columns from prop listing when they're destroyed
+- 4e240652b: Add seriesOrder parameter to allow users to specify a specific order the series are displayed in (fixes #2663)
+- Updated dependencies [4e240652b]
+  - @evidence-dev/component-utilities@3.2.18
+  - @evidence-dev/tailwind@2.1.7
+
+## 4.8.10
+
+### Patch Changes
+
+- e5aa2ccf2: Remove Flowchart component and mermaid dependency
+- 8e8f43d3e: Add a fmt option to dimension grid
+- e3b920690: Modified Last x Days selectors in the DateRange component so they select x days instead of x + 1 days
+- b9b51a0b2: fix transition animation in charts
+- 2ad93ef1d: Prevent CLS when highlighting codeblocks
+
+## 4.8.9
+
+### Patch Changes
+
+- cc086aa50: Add sort prop to DataTable
+- c44853b3f: fixed bubbles + points layering issue
+- eec98520a: Add sparkline and bar viz to DataTable
+- 76dda50ae: Fixes layering issue and allows for layering control of bubbles and points
+- 795f53653: Improved Map Legends, added multi-legends in basemap
+  - @evidence-dev/component-utilities@3.2.17
+  - @evidence-dev/tailwind@2.1.6
+
+## 4.8.8
+
+### Patch Changes
+
+- a94ca734d: add \_\_renderCount hidden property on charts plus testids and aria-labels for accessibility/test targets
+- Updated dependencies [a94ca734d]
+  - @evidence-dev/component-utilities@3.2.16
+  - @evidence-dev/tailwind@2.1.5
+
+## 4.8.7
+
+### Patch Changes
+
+- 163ff7a33: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+
+## 4.8.6
+
+### Patch Changes
+
+- Updated dependencies [2b5d759f1]
+  - @evidence-dev/component-utilities@3.2.15
+
+## 4.8.5
+
+### Patch Changes
+
+- 1cc64f83f: Table rows with links preload data on hover
+  Table rows with links have a chevron icon on the right side
+  Table rows dont have link styling if the link value is falsey
+- 101d58f09: Implemented categorical and scalar map legends
+
+## 4.8.4
+
+### Patch Changes
+
+- 024e93b02: Defer selectAll=false to ensure that all options are available before the behavior is turned off
+
+## 4.8.3
+
+### Patch Changes
+
+- e0abcc56d: Add yellow tint to queries with unresolved inputs in the devtools
+- 0feacbbe5: ySet is now reactive, enabling better support for dynamic y columns
+  - @evidence-dev/component-utilities@3.2.14
+  - @evidence-dev/tailwind@2.1.4
+
+## 4.8.2
+
+### Patch Changes
+
+- eec16e59d: Add Group component for Grids
+- 57c118c16: fixes reactive DataTable columns
+- 952abbd16: DropdownMenuItem has cursor-pointer
+  Create theme stores to manage theme
+  Add appearance toggle to KebabMenu (hidden behind VITE_EVIDENCE_THEMES=true)
+  Show/Hide queries and Appearance in KebabMenu dont close menu when clicked
+- c8315da2e: Update svelte to resolve security vulnerability
+- 06313c848: fix prerendered arrow files not loading
+- Updated dependencies [952abbd16]
+- Updated dependencies [c8315da2e]
+  - @evidence-dev/tailwind@2.1.3
+  - @evidence-dev/component-utilities@3.2.13
+
+## 4.8.1
+
+### Patch Changes
+
+- b87d90971: Fix dev tools keybind on windows
+  - @evidence-dev/component-utilities@3.2.12
+
+## 4.8.0
+
+### Minor Changes
+
+- 999fffa38: Change input store interactions
+
+### Patch Changes
+
+- 999fffa38: Modal emits an event when closed now
+- 999fffa38: Pull prop listing into a component for reusabilitiy
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+- 999fffa38: Add compact prop to accordion
+- 999fffa38: Add maxWidth and direction props to hints
+  - @evidence-dev/component-utilities@3.2.11
+
+## 4.7.8
+
+### Patch Changes
+
+- 33dee6b35: fixed boxplot duplicates
+- d6d64147d: selected tabs with id prop selection persist on refresh/link shared
+- f34ddbae9: added default values for queries in button groups
+- Updated dependencies [221e4261b]
+  - @evidence-dev/component-utilities@3.2.10
+
+## 4.7.7
+
+### Patch Changes
+
+- 2e0115932: Funnel chart's showPercent param should calculate based upon initial value, not total
+- 5daf7675e: Reverts tab styling for Buttongroup, which broke Tabs
+
+## 4.7.6
+
+### Patch Changes
+
+- fa621ad18: Added DataTable Fullscreen y-scroll, added Fullscreen height calc to include search bar height
+- 9ea566854: SelectAllByDefault conditionally checks for strings + booleans
+- 57be334fe: Added button groups with tab styles prop
+
+## 4.7.5
+
+### Patch Changes
+
+- 06bb5f369: Add skeleton loading state for Area Map, Bubble Map, and Point Map
+- 8c2982505: - Switch to perfect-debounce instead of lodash.debounce
+  - Remove all lodash.library in favor of better supported lodash/library
+- 99410c144: feat: AreaMap and Areas react to geoJsonUrl changes
+- 67a94f6f9: Fixed Home Breadcrumbs href
+- 8c2982505: Rewrite Dropdown + DropdownOptionStore
+- 050707ba9: Dropdown has role "combobox" not "combo-box"
+- 8c2982505: Update vitest to latest
+- 2a2d0d914: removed scroll to top and fixed esc close for fullscreen mode
+- 4033c0b6e: Smooth zoom feature for maps
+- 2527838c4: Fix TProtocolException when loading Parquet files on Windows
+- c0c44330b: Added multiple selections to Dimension Grid
+- 4b0c088fd: Removes max height from codeblocks
+- Updated dependencies [8c2982505]
+  - @evidence-dev/component-utilities@3.2.9
+
+## 4.7.4
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- 6ff0e92b8: Adds option to disable downloads for data and/or images from charts
+- Updated dependencies [32035eeaa]
+  - @evidence-dev/tailwind@2.1.2
+  - @evidence-dev/component-utilities@3.2.8
+
+## 4.7.3
+
+### Patch Changes
+
+- f8e76c7d9: changed tabs inactive border styling
+- 8782d9e95: added boxplot stories
+- 5922269dc: Allows using total labels without series labels
+- 4ae4427ea: Updated Value component's props for conditional color rendering
+- 318196074: Fixed char by char search, search by filteredCols, fixed out of bounds pagination
+  - @evidence-dev/component-utilities@3.2.7
+
+## 4.7.2
+
+### Patch Changes
+
+- 3698967f1: References wait for data before updating ECharts config
+
+## 4.7.1
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.6
+
+## 4.7.0
+
+### Minor Changes
+
+- 731d0bb06: Refactor ReferenceLine and ReferenceArea to use a store, add additional styling props
+- 7cb558c32: allow for dynamic breadcrumbs via frontmatter
+
+### Patch Changes
+
+- 08818477d: Dropdown can have option with null value/label
+- 0558bae48: updated checkbox stories
+- f5decad6b: Added CalendarHeatmap Stories
+- ee8f135ac: Fix font styling props for ReferenceLine/ReferenceArea
+  - @evidence-dev/component-utilities@3.2.5
+
 ## 4.6.2
 
 ### Patch Changes

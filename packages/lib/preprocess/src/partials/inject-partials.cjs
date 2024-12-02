@@ -18,6 +18,7 @@ function injectPartials(originalString) {
 	return originalString;
 }
 
+/** @type {import('svelte/compiler').PreprocessorGroup & { injectPartials: typeof injectPartials }} */
 module.exports = {
 	markup: ({ content, filename }) => {
 		if (typeof filename === 'undefined') return;

@@ -1,9 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { sourceQueryHmr } from '@evidence-dev/sdk/vite';
+import { sourceQueryHmr, queryDirectoryHmr } from '@evidence-dev/sdk/build/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-	plugins: [sveltekit(), sourceQueryHmr()],
+	plugins: [sveltekit(), sourceQueryHmr(), queryDirectoryHmr],
 	optimizeDeps: {
 		include: ['echarts-stat', 'echarts'],
 		exclude: ['svelte-icons']
@@ -13,7 +13,7 @@ const config = {
 			'@evidence-dev/db-orchestrator',
 			'@evidence-dev/telemetry',
 			'blueimp-md5',
-			'@evidence-dev/plugin-connector'
+			'@evidence-dev/sdk/plugins'
 		]
 	},
 	server: {

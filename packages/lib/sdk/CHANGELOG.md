@@ -1,5 +1,145 @@
 # @evidence-dev/sdk
 
+## 1.5.1
+
+### Patch Changes
+
+- b5a096723: ignore non-strings in `addBasePath`
+  - @evidence-dev/universal-sql@2.1.11
+
+## 1.5.0
+
+### Minor Changes
+
+- b72e4a809: Remove plugin connector
+
+### Patch Changes
+
+- @evidence-dev/universal-sql@2.1.10
+
+## 1.4.8
+
+### Patch Changes
+
+- 08923de11: Support Node 22: bump echarts and vite
+  - @evidence-dev/universal-sql@2.1.9
+
+## 1.4.7
+
+### Patch Changes
+
+- 00516897e: fix plugin resolution when hoisted by package managers
+- 1de1eca52: Add deployment.basePath config option
+  - @evidence-dev/universal-sql@2.1.8
+
+## 1.4.6
+
+### Patch Changes
+
+- c82ba1516: Support digits 2-9 in source names
+  - @evidence-dev/universal-sql@2.1.7
+
+## 1.4.5
+
+### Patch Changes
+
+- b2126ac1a: add --profile flag to sdk-handled cli commands, add debugging profiling and logs to build-parquet
+- Updated dependencies [b2126ac1a]
+  - @evidence-dev/universal-sql@2.1.6
+
+## 1.4.4
+
+### Patch Changes
+
+- a91b26fb3: Remove console.debug statement
+- cbb8b16f4: Added logger export
+
+## 1.4.3
+
+### Patch Changes
+
+- e0abcc56d: Avoid sharedPromise returned from fetch functions when running on the server
+- e0abcc56d: Allow query to run fetch synchronously for SSR
+
+## 1.4.2
+
+### Patch Changes
+
+- 952abbd16: Add config export
+  getEvidenceConfig is no longer asynchronous
+  getEvidenceConfig supports passing a custom schema
+  Created unnestZodError util
+- c8315da2e: Update svelte to resolve security vulnerability
+- 06313c848: fix prerendered arrow files not loading
+- Updated dependencies [bad1038c1]
+  - @evidence-dev/telemetry@2.1.3
+
+## 1.4.1
+
+### Patch Changes
+
+- 057558028: Fix an issue caused by QueryDebugger keeping queries in memory
+
+## 1.4.0
+
+### Minor Changes
+
+- 999fffa38: Change input store interactions
+
+### Patch Changes
+
+- 999fffa38: Add diff utilities for tracking object store histories
+- 999fffa38: Improve sdk debug behavior for better consistency
+- 1e5e5f1da: Dont throw error if sources directory doesn't exist when running sources
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+- 999fffa38: Add more static events to Query
+
+## 1.3.10
+
+### Patch Changes
+
+- f7253ad4b: Fix noisy "Failed to pre-render columns" log during build
+- Updated dependencies [c0e1799e2]
+  - @evidence-dev/universal-sql@2.1.5
+
+## 1.3.9
+
+### Patch Changes
+
+- 8c2982505: Modify default search threshold behavior for Query
+- Updated dependencies [8c2982505]
+  - @evidence-dev/universal-sql@2.1.4
+
+## 1.3.8
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- Updated dependencies [3572fcfd7]
+- Updated dependencies [907efee29]
+  - @evidence-dev/telemetry@2.1.2
+
+## 1.3.7
+
+### Patch Changes
+
+- e50e7ed58: Pre-render column information using DESCRIBE query
+- fbdfe2dd6: Fix sources HMR on Windows
+
+## 1.3.6
+
+### Patch Changes
+
+- 3571b0b3a: Update scripts, fix build
+
+## 1.3.5
+
+### Patch Changes
+
+- 08818477d: Export sharedPromise from utils/index.d.ts to get type when importing
+- db8326efa: Minor changes to exports
+
 ## 1.3.4
 
 ### Patch Changes

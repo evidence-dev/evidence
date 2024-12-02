@@ -26,7 +26,6 @@
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
-	import EmptyChart from './EmptyChart.svelte';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -56,9 +55,10 @@
 	// then we throw if the fallback column is now missing.
 
 	// This is a hack to get around the above
-	const ySet = y ? true : false;
+	// Reactively updated below to prevent circular reactivity
+	let ySet = y ? true : false;
 	// const y2Set = y2 ? true : false;
-	const xSet = x ? true : false;
+	let xSet = x ? true : false;
 
 	export let swapXY = false; // Flipped axis chart
 	$: if (swapXY === 'true' || swapXY === true) {
@@ -155,6 +155,10 @@
 	export let chartAreaHeight;
 
 	export let renderer = undefined; // can be canvas (default) or SVG
+	export let downloadableData = true;
+	$: downloadableData = downloadableData === 'true' || downloadableData === true;
+	export let downloadableImage = true;
+	$: downloadableImage = downloadableImage === 'true' || downloadableImage === true;
 
 	export let connectGroup = undefined; // string represent name of group for connected charts. Charts with same connectGroup will have connected interactions
 
@@ -243,6 +247,8 @@
 			inputCols = [];
 			optCols = [];
 			uColName = [];
+			ySet = y ? true : false;
+			xSet = x ? true : false;
 
 			checkInputs(data); // check that dataset exists
 
@@ -946,9 +952,9 @@
 									yVal = params[i].value[swapXY ? 0 : 1];
 									output =
 										output +
-										`<br> ${params[i].marker} ${
+										`<br> <span style='font-size: 11px;'>${params[i].marker} ${
 											params[i].seriesName
-										} <span style='float:right; margin-left: 10px;'>${formatValue(
+										}<span/><span style='float:right; margin-left: 10px; font-size: 12px;'>${formatValue(
 											yVal,
 											// Not sure if this will work. Need to check with multi series on both axes
 											// Check if echarts does the order in the same way - y first, then y2
@@ -1000,7 +1006,7 @@
 						type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
 					},
 					extraCssText:
-						'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
+						'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1; font-feature-settings: "cv02", "tnum";',
 					order: 'valueDesc'
 				},
 				legend: {
@@ -1046,26 +1052,24 @@
 
 {#if !error}
 	<slot />
-	{#if !$config.series.length}
-		<EmptyChart emptySet="pass" />
-	{:else}
-		<ECharts
-			config={$config}
-			{height}
-			{width}
-			{data}
-			{queryID}
-			evidenceChartTitle={title}
-			{showAllXAxisLabels}
-			{swapXY}
-			{echartsOptions}
-			{seriesOptions}
-			{printEchartsConfig}
-			{renderer}
-			{connectGroup}
-			{seriesColors}
-		/>
-	{/if}
+	<ECharts
+		config={$config}
+		{height}
+		{width}
+		{data}
+		{queryID}
+		evidenceChartTitle={title}
+		{showAllXAxisLabels}
+		{swapXY}
+		{echartsOptions}
+		{seriesOptions}
+		{printEchartsConfig}
+		{renderer}
+		{downloadableData}
+		{downloadableImage}
+		{connectGroup}
+		{seriesColors}
+	/>
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}

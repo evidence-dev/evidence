@@ -110,7 +110,7 @@
 					selected_value = value;
 					selected_format = fmt
 						? getFormatObjectFromString(fmt, 'number')
-						: format_object ?? undefined;
+						: (format_object ?? undefined);
 				}
 			} else {
 				throw Error(

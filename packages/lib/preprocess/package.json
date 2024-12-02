@@ -1,19 +1,19 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "5.1.3",
+	"version": "5.2.3",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",
 	"engines": {
-		"node": ">=16"
+		"node": ">=18"
 	},
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
-		"build": "parcel build",
+		"build": "parcel build --no-cache",
 		"watch": "parcel watch",
 		"dev": "parcel watch",
-		"prepublish": "parcel build"
+		"prepublish": "parcel build --no-cache"
 	},
 	"dependencies": {
 		"blueimp-md5": "^2.19.0",
@@ -25,7 +25,7 @@
 		"remark-parse": "8.0.2",
 		"rehype-slug": "4.0.1",
 		"rehype-autolink-headings": "5.1.0",
-		"svelte": "4.2.12",
+		"svelte": "4.2.19",
 		"svelte-preprocess": "5.1.3",
 		"unified": "^9.1.0",
 		"unist-util-visit": "^2.0.3",
@@ -33,11 +33,17 @@
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^7.6.0",
+		"@types/blueimp-md5": "^2.18.2",
 		"@types/mock-fs": "^4.13.1",
+		"@types/prismjs": "^1.26.4",
 		"mock-fs": "^5.2.0",
 		"parcel": "^2.8.3",
 		"typescript": "5.4.2",
-		"vitest": "^0.34.2"
+		"vitest": "^2.0.5"
+	},
+	"peerDependencies": {
+		"@types/hast": "^2.0.0",
+		"@types/mdast": "^3.0.0"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",

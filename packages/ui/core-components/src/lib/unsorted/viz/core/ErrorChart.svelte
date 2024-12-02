@@ -4,6 +4,7 @@
 
 <script>
 	import { dev } from '$app/environment';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let error;
 	export let chartType;
 	export let minHeight = '150';
@@ -15,7 +16,7 @@
 
 <div
 	width="100%"
-	class="grid grid-rows-auto box-content grid-cols-1 justify-center bg-red-50 text-grey-700 font-ui font-normal rounded border border-red-200 min-h-[{minHeight}px] py-5 px-8 my-5 print:break-inside-avoid"
+	class="grid grid-rows-auto box-content grid-cols-1 justify-center bg-red-50 text-grey-700 font-ui font-normal rounded border border-red-200 min-h-[{minHeight}px] py-5 px-8 my-5 print:break-inside-avoid relative"
 >
 	<div class="m-auto w-full">
 		<div class="font-bold text-center text-lg">
@@ -24,7 +25,9 @@
 		<div class="text-center [word-wrap:break-work] text-xs">
 			{error}
 			{#if dev && error === DevMissingCredentialsError}
-				<br /><a class="credentials-link" href="/settings"> Add&nbsp;credentials&nbsp;&rarr;</a>
+				<br /><a class="credentials-link" href={addBasePath('/settings')}>
+					Add&nbsp;credentials&nbsp;&rarr;</a
+				>
 			{:else if !dev && error === ProdMissingCredentialsError}
 				<br /><a
 					class="credentials-link"

@@ -4,7 +4,7 @@ title: Pages
 description: Evidence renders markdown files into web pages.
 ---
 
-Evidence renders markdown files into web pages. When developing, the markdown file `/pages/example.md` is rendered at [localhost:3000/example](localhost:3000/example).
+Evidence renders markdown files into web pages. When developing, the markdown file `/pages/example.md` is rendered at [localhost:3000/example](http://localhost:3000/example).
 
 Evidence instantly reloads pages when their markdown files are edited and saved.
 

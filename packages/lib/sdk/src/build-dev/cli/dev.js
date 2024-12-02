@@ -5,7 +5,7 @@ import { copyToLayout } from '../../plugins/layouts/copyToLayout.js';
 import path from 'path';
 import { projectRoot } from '../../lib/projectRoot.js';
 
-/** @type {Promise<import("@brianmd/citty").CommandDef>} */
+/** @type {import("@brianmd/citty").CommandDef} */
 export const dev = evidenceProjectOnlyNotice('dev', {
 	meta: {
 		name: 'dev',

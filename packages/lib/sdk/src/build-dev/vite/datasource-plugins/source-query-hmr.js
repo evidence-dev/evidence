@@ -1,6 +1,6 @@
 import path from 'path';
 import { evalSources } from '../../../plugins/datasources/evalSources.js';
-import { dataDirectory, metaDirectory, sourcesDirectory } from '../virtuals/node/projectPaths.js';
+import { dataDirectory, metaDirectory, sourcesDirectory } from '../../../lib/projectPaths.js';
 import { updateManifest } from '../../../plugins/datasources/updateManifest.js';
 import { ProcessingQueue } from '../../../lib/processing-queue.js';
 import { VITE_EVENTS } from '../constants.js';
@@ -96,13 +96,15 @@ export const sourceQueryHmr = () => {
 		},
 		/** @type {import("vite").Plugin['watchChange']} */
 		watchChange: async function (id) {
-			if (!id.startsWith(sourcesDirectory)) return; // don't care
-			const parts = id.replace(sourcesDirectory, '').split('/');
+			const changed = path.resolve(id);
+			if (!changed.startsWith(sourcesDirectory)) return; // don't care
+
+			const parts = changed.replace(sourcesDirectory, '').split(path.sep);
 			const sourceName = parts.at(1);
-			const queryName = path.basename(id).split('.').at(0);
+			const queryName = path.basename(changed).split('.').at(0);
 			if (!sourceName || !queryName) {
 				console.warn(
-					`Failed to HMR source query at ${id}, could not identify source or query name`
+					`Failed to HMR source query at ${changed}, could not identify source or query name`
 				);
 				return;
 			}

@@ -1,5 +1,61 @@
 # @evidence-dev/universal-sql
 
+## 2.1.11
+
+### Patch Changes
+
+- Updated dependencies [b5a096723]
+  - @evidence-dev/sdk@1.5.1
+
+## 2.1.10
+
+### Patch Changes
+
+- Updated dependencies [b72e4a809]
+  - @evidence-dev/sdk@1.5.0
+
+## 2.1.9
+
+### Patch Changes
+
+- Updated dependencies [08923de11]
+  - @evidence-dev/sdk@1.4.8
+
+## 2.1.8
+
+### Patch Changes
+
+- Updated dependencies [00516897e]
+- Updated dependencies [1de1eca52]
+  - @evidence-dev/sdk@1.4.7
+
+## 2.1.7
+
+### Patch Changes
+
+- Updated dependencies [c82ba1516]
+  - @evidence-dev/sdk@1.4.6
+
+## 2.1.6
+
+### Patch Changes
+
+- b2126ac1a: add --profile flag to sdk-handled cli commands, add debugging profiling and logs to build-parquet
+- Updated dependencies [b2126ac1a]
+  - @evidence-dev/sdk@1.4.5
+
+## 2.1.5
+
+### Patch Changes
+
+- c0e1799e2: Set 644 permissions when writing parquet files
+
+## 2.1.4
+
+### Patch Changes
+
+- 8c2982505: Update vitest to latest
+
 ## 2.1.3
 
 ### Patch Changes

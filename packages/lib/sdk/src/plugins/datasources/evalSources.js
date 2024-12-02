@@ -10,7 +10,7 @@ import { buildMultipartParquet } from '@evidence-dev/universal-sql';
 import { buildSourceDirectoryProxy } from './buildSourceDirectoryProxy.js';
 import { addToCache, checkCache, flushCache, loadCache } from './SourceResultCache.js';
 import ora from 'ora';
-import { dataUrlPrefix } from '../../build-dev/vite/virtuals/node/projectPaths.js';
+import { dataUrlPrefix } from '../../lib/projectPaths.js';
 import { subSourceVariables } from './sub-source-vars.js';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 
@@ -29,14 +29,16 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 	// Setup work
 	const [sourcePlugins, sources] = await Promise.all([
 		loadSourcePlugins(),
-		loadSources(),
+		loadSources(pluginLoader),
 		loadCache(metaPath)
 	]).catch((e) => {
 		pluginLoader.fail();
 		throw e;
 	});
 
-	pluginLoader.succeed();
+	if (sources.length) {
+		pluginLoader.succeed();
+	}
 
 	/** @type {import('./types.js').Manifest} */
 	const outputManifest = { renderedFiles: {}, locatedFiles: {}, locatedSchemas: [] };

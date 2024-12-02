@@ -2,25 +2,34 @@
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		title: 'Atoms/inputs/Checkbox',
-		argTypes: {},
-		args: {
-			title: 'Hide Month Zero',
-			name: 'hide_month_zero'
+		argTypes: {
+			emptySet: {
+				control: 'boolean'
+			}
 		}
 	};
 </script>
 
 <script>
-	import { Template, Story } from '@storybook/addon-svelte-csf';
+	import { Story } from '@storybook/addon-svelte-csf';
 	import Checkbox from './Checkbox.svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputStore = getInputContext();
 </script>
 
-<Template let:args>
-	<div class="h-64">
-		<Checkbox {...args} />
-	</div>
-</Template>
-
-<Story name="Default" />
-<Story name="WithDefaultFalse" args={{ defaultValue: false }} />
-<Story name="WithDefaultTrue" args={{ defaultValue: true }} />
+<Story name="Base" let:args>
+	<Checkbox title="base checkbox" name="base_checkbox" {...args} />
+	<p>{$inputStore.base_checkbox}</p>
+</Story>
+<Story name="Default String + Boolean False" let:args>
+	<Checkbox title="string false" defaultValue="false" name="string_false" {...args} />
+	<p>{$inputStore.string_false}</p>
+	<Checkbox title="boolean false" defaultValue={false} name="boolean_false" {...args} />
+	<p>{$inputStore.boolean_false}</p>
+</Story>
+<Story name="Default String + Boolean True" let:args>
+	<Checkbox title="string true" defaultValue="true" name="string_true" {...args} />
+	<p>{$inputStore.string_true}</p>
+	<Checkbox title="boolean true" defaultValue={true} name="boolean_true" {...args} />
+	<p>{$inputStore.boolean_true}</p>
+</Story>

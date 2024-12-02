@@ -13,7 +13,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 	return [
 		injectPartials,
 		addScriptTags,
-		processQueries(componentDevelopmentMode),
+		processQueries.processQueries(componentDevelopmentMode),
 		mdsvex.mdsvex({
 			extensions: ['.md'],
 			smartypants: {
@@ -53,3 +53,5 @@ const extractQueries = require('./src/extract-queries/extract-queries.cjs');
 module.exports.extractQueries = extractQueries.extractQueries;
 module.exports.getQueryIds = extractQueries.getQueryIds;
 module.exports.injectPartials = injectPartials.injectPartials;
+module.exports.processQueries = processQueries.processQueries;
+module.exports.injectedEvidenceImports = processQueries.injectedEvidenceImports;

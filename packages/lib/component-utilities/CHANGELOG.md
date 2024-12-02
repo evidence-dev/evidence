@@ -1,5 +1,149 @@
 # @evidence-dev/component-utilities
 
+## 3.2.22
+
+### Patch Changes
+
+- Updated dependencies [b5a096723]
+  - @evidence-dev/sdk@1.5.1
+
+## 3.2.21
+
+### Patch Changes
+
+- Updated dependencies [b72e4a809]
+  - @evidence-dev/sdk@1.5.0
+
+## 3.2.20
+
+### Patch Changes
+
+- 62afe741b: Node 22 support
+- Updated dependencies [08923de11]
+  - @evidence-dev/sdk@1.4.8
+
+## 3.2.19
+
+### Patch Changes
+
+- 0c538ac70: remove observation of container element
+- Updated dependencies [00516897e]
+- Updated dependencies [1de1eca52]
+  - @evidence-dev/sdk@1.4.7
+
+## 3.2.18
+
+### Patch Changes
+
+- 4e240652b: Add seriesOrder parameter to allow users to specify a specific order the series are displayed in (fixes #2663)
+- Updated dependencies [c82ba1516]
+  - @evidence-dev/sdk@1.4.6
+
+## 3.2.17
+
+### Patch Changes
+
+- Updated dependencies [b2126ac1a]
+  - @evidence-dev/sdk@1.4.5
+
+## 3.2.16
+
+### Patch Changes
+
+- a94ca734d: add \_\_renderCount hidden property on charts plus testids and aria-labels for accessibility/test targets
+- Updated dependencies [a91b26fb3]
+- Updated dependencies [cbb8b16f4]
+  - @evidence-dev/sdk@1.4.4
+
+## 3.2.15
+
+### Patch Changes
+
+- 2b5d759f1: Add map colors
+
+## 3.2.14
+
+### Patch Changes
+
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+
+## 3.2.13
+
+### Patch Changes
+
+- c8315da2e: Update svelte to resolve security vulnerability
+- Updated dependencies [952abbd16]
+- Updated dependencies [c8315da2e]
+- Updated dependencies [06313c848]
+  - @evidence-dev/sdk@1.4.2
+
+## 3.2.12
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+  - @evidence-dev/sdk@1.4.1
+
+## 3.2.11
+
+### Patch Changes
+
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/sdk@1.4.0
+
+## 3.2.10
+
+### Patch Changes
+
+- 221e4261b: Add hmr error handling for reserved words query names
+- Updated dependencies [f7253ad4b]
+  - @evidence-dev/sdk@1.3.10
+
+## 3.2.9
+
+### Patch Changes
+
+- 8c2982505: Update vitest to latest
+- Updated dependencies [8c2982505]
+  - @evidence-dev/sdk@1.3.9
+
+## 3.2.8
+
+### Patch Changes
+
+- Updated dependencies [32035eeaa]
+  - @evidence-dev/sdk@1.3.8
+
+## 3.2.7
+
+### Patch Changes
+
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [fbdfe2dd6]
+  - @evidence-dev/sdk@1.3.7
+
+## 3.2.6
+
+### Patch Changes
+
+- Updated dependencies [3571b0b3a]
+  - @evidence-dev/sdk@1.3.6
+
+## 3.2.5
+
+### Patch Changes
+
+- Updated dependencies [08818477d]
+- Updated dependencies [db8326efa]
+  - @evidence-dev/sdk@1.3.5
+
 ## 3.2.4
 
 ### Patch Changes

@@ -1,26 +1,26 @@
 <script>
 	import SortIcon from '../../ui/SortIcon.svelte';
 	import { safeExtractColumn } from './datatable.js';
-	import { getContext } from 'svelte';
-	import { propKey } from '@evidence-dev/component-utilities/chartContext';
-	const props = getContext(propKey);
 
 	export let rowNumbers = undefined;
 	export let headerColor = undefined;
 	export let headerFontColor = undefined;
-	export let finalColumnOrder = undefined;
+	export let orderedColumns = undefined;
 	export let columnSummary = undefined;
 	export let sortable = undefined;
-	export let sort = undefined;
+	export let sortClick = undefined;
 	export let formatColumnTitles = undefined;
-	export let sortBy = undefined;
+	export let sortObj = undefined;
 	export let wrapTitles = undefined;
 	export let compact = undefined;
+
+	/** @type {string | undefined} */
+	export let link = undefined;
 </script>
 
 <thead>
-	{#if $props.columns.length > 0}
-		{@const columnsWithGroupSpan = $props.columns.map((column, index, array) => {
+	{#if orderedColumns.length > 0}
+		{@const columnsWithGroupSpan = orderedColumns.map((column, index, array) => {
 			// Determine if this column starts a new group or continues an existing one
 			let isNewGroup = index === 0 || column.colGroup !== array[index - 1].colGroup;
 			let span = 1;
@@ -36,13 +36,14 @@
 			<tr class="border-0" style:background-color={headerColor}>
 				{#if rowNumbers}
 					<th
-						class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+						class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px]'}"
 						style:background-color={headerColor}
 					/>
 				{/if}
 				{#each columnsWithGroupSpan as column}
 					{#if column.colGroup && column.isNewGroup}
 						<th
+							role="columnheader"
 							colspan={column.span}
 							class="pt-1 align-bottom text-gray-900 {compact ? 'px-[1px]' : 'px-[2px]'}"
 						>
@@ -65,55 +66,56 @@
 	<tr class="border-b border-gray-600">
 		{#if rowNumbers}
 			<th
+				role="columnheader"
 				class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 				style:background-color={headerColor}
 			/>
 		{/if}
-		{#if $props.columns.length > 0}
-			{#each $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
-				<th
-					class="{safeExtractColumn(column, columnSummary).type} {compact
-						? 'text-xs py-[1px] px-[4px]'
-						: 'py-[2px] px-[8px]'}"
-					style:text-align={column.align}
-					style:color={headerFontColor}
-					style:background-color={headerColor}
-					style:cursor={sortable ? 'pointer' : 'auto'}
-					style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
-					on:click={sortable ? sort(column.id) : ''}
-					style:vertical-align="bottom"
-				>
-					{column.title
-						? column.title
-						: formatColumnTitles
-							? safeExtractColumn(column, columnSummary).title
-							: safeExtractColumn(column, columnSummary).id}
-					{#if sortBy.col === column.id}
-						<SortIcon ascending={sortBy.ascending} />
-					{/if}
-				</th>
-			{/each}
-		{:else}
-			{#each columnSummary
-				.filter((d) => d.show === true)
-				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
-				<th
-					class="{column.type} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
-					style:color={headerFontColor}
-					style:background-color={headerColor}
-					style:cursor={sortable ? 'pointer' : 'auto'}
-					style:white-space={wrapTitles ? 'normal' : 'nowrap'}
-					style:vertical-align="bottom"
-					on:click={sortable ? sort(column.id) : ''}
-				>
-					<span class="col-header">
-						{formatColumnTitles ? column.title : column.id}
+		{#each orderedColumns as column}
+			<th
+				role="columnheader"
+				class="{safeExtractColumn(column, columnSummary).type} {compact
+					? 'text-xs py-[1px] pl-[1px]'
+					: 'py-[2px] pl-[6px]'}"
+				style:text-align={column.align ??
+					(['sparkline', 'sparkbar', 'sparkarea', 'bar'].includes(column.contentType)
+						? 'center'
+						: undefined)}
+				style:color={headerFontColor}
+				style:background={headerColor}
+				style:cursor={sortable ? 'pointer' : 'auto'}
+				on:click={sortable ? sortClick(column.id) : ''}
+				style:vertical-align="bottom"
+				style:border-radius={sortObj.col === column.id ? '2px' : ''}
+			>
+				<div class="{wrapTitles || column.wrapTitle ? 'flex items-end' : ''} tracking-[-1.5px]">
+					<span class="tracking-normal {wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}">
+						{column.title
+							? column.title
+							: formatColumnTitles
+								? safeExtractColumn(column, columnSummary).title
+								: safeExtractColumn(column, columnSummary).id}
 					</span>
-					{#if sortBy.col === column.id}
-						<SortIcon ascending={sortBy.ascending} />
-					{/if}
-				</th>
-			{/each}
+					<span
+						class="tracking-normal {wrapTitles || column.wrapTitle ? 'ml-0.5' : ''} {compact
+							? 'mr-1'
+							: ''}"
+					>
+						{#if sortObj.col === column.id}
+							<SortIcon ascending={sortObj.ascending} />
+						{:else}
+							<span class="invisible"><SortIcon /></span>
+						{/if}
+					</span>
+				</div>
+			</th>
+		{/each}
+
+		<!-- Extra column for Chevron icons -->
+		{#if link}
+			<th role="columnheader">
+				<span class="sr-only">Links</span>
+			</th>
 		{/if}
 	</tr>
 </thead>

@@ -1,7 +1,25 @@
 /// <reference types="vite/client" />
+
+import chalk from 'chalk';
+
+/** @type {Set<() => unknown>} */
+const enableFns = new Set();
+/** @param {() => unknown} fn */
+export const onEnableDebug = (fn) => {
+	if (isDebug()) fn();
+	else enableFns.add(fn);
+};
+
 export const enableDebug = () => {
+	if (typeof process === 'undefined') {
+		throw new Error('Debug must be enabled server-side');
+	}
+	console.debug(chalk.bold.yellow('Evidence running with debug logging'));
 	process.env.EVIDENCE_DEBUG = 'true';
+	process.env.VITE_EVIDENCE_DEBUG = 'true';
 	process.env.VITE_PUBLIC_EVIDENCE_DEBUG = 'true';
+
+	enableFns.forEach((fn) => fn());
 };
 
 export const isDebug = () => {

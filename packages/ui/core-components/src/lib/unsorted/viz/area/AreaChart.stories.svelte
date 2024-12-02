@@ -58,6 +58,9 @@
 			seriesColors: {
 				control: 'object'
 			},
+			seriesOrder: {
+				control: 'array'
+			},
 			labels: {
 				control: 'boolean'
 			},
@@ -149,6 +152,14 @@
 			renderer: {
 				control: 'options',
 				options: ['canvas', 'svg']
+			},
+			downloadableData: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			downloadableImage: {
+				control: 'boolean',
+				options: [true, false]
 			}
 		}
 	};
@@ -159,7 +170,6 @@
 
 	import AreaChart from './AreaChart.svelte';
 
-	import { fakerSeries } from '$lib/faker-data-queries';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	const planeData = Query.create(
@@ -177,23 +187,24 @@ LIMIT 200`,
 	);
 </script>
 
-<Story
-	name="Base"
-	args={{
-		x: 'x',
-		y: 'y',
-		series: 'series',
-		xHasGaps: false,
-		yHasNulls: false,
-		seriesAlwaysExists: true
-	}}
-	let:args
->
-	<AreaChart
-		{...args}
-		data={fakerSeries['numeric_series'][args.xHasGaps][args.yHasNulls][args.seriesAlwaysExists]
-			.store}
-	/>
+<Story name="Base" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<AreaChart {data} {...args} />
+</Story>
+
+<Story name="With gaps in X" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series_xgaps`, query)}
+	<AreaChart {data} {...args} />
+</Story>
+
+<Story name="With nulls in Y" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series_ynulls`, query)}
+	<AreaChart {data} {...args} />
+</Story>
+
+<Story name="With gaps in series" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
+	{@const data = Query.create(`select * from numeric_series_seriesgaps`, query)}
+	<AreaChart {data} {...args} />
 </Story>
 
 <Story
@@ -242,4 +253,47 @@ LIMIT 200`,
 >
 	{@const emptySet = []}
 	<AreaChart data={emptySet} {...args} />
+</Story>
+
+<Story
+	name="Non-downloadable"
+	args={{
+		x: 'departure_date',
+		y: 'total_fare',
+		downloadableData: false,
+		downloadableImage: false
+	}}
+	let:args
+>
+	<AreaChart data={planeData} {...args} />
+</Story>
+
+<Story
+	name="With seriesOrder"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+	let:args
+>
+	{@const data = Query.create(`select * from numeric_series`, query)}
+	<AreaChart {data} {...args} />
+</Story>
+<Story
+	name="With seriesLabelFmt"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+	let:args
+>
+	{@const data = Query.create(
+		`SELECT 0.1 AS series, 1 AS x, 10 AS y
+UNION
+SELECT 0.1 AS series, 2 AS x, 20 AS y
+UNION
+SELECT 0.1 AS series, 3 AS x, 30 AS y
+UNION
+SELECT 0.5 AS series, 1 AS x, 5 AS y
+UNION
+SELECT 0.5 AS series, 2 AS x, 15 AS y
+UNION
+SELECT 0.5 AS series, 3 AS x, 25 AS y`,
+		query
+	)}
+	<AreaChart {data} seriesLabelFmt="pct" {...args} />
 </Story>

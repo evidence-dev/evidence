@@ -5,6 +5,7 @@
 <script>
 	import Chart from '../core/Chart.svelte';
 	import Box from './Box.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import generateBoxPlotData from '@evidence-dev/component-utilities/generateBoxPlotData';
 
 	export let data = undefined;
@@ -46,6 +47,8 @@
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
+	export let downloadableData = undefined;
+	export let downloadableImage = undefined;
 
 	export let connectGroup = undefined;
 
@@ -62,17 +65,28 @@
 		}
 	}
 
-	$: boxPlotData = generateBoxPlotData(
-		data,
-		min,
-		intervalBottom,
-		midpoint,
-		intervalTop,
-		max,
-		name,
-		color,
-		confidenceInterval
-	);
+	let boxPlotData;
+	const updateBoxPlotData = () => {
+		boxPlotData = generateBoxPlotData(
+			data,
+			min,
+			intervalBottom,
+			midpoint,
+			intervalTop,
+			max,
+			name,
+			color,
+			confidenceInterval
+		);
+	};
+
+	updateBoxPlotData();
+	$: if (data) {
+		(async () => {
+			if (Query.isQuery(data)) await data.fetch();
+			updateBoxPlotData();
+		})();
+	}
 </script>
 
 <Chart
@@ -107,6 +121,8 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{downloadableData}
+	{downloadableImage}
 	{connectGroup}
 	{seriesColors}
 >

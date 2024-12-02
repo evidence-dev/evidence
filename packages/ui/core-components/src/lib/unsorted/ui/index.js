@@ -5,6 +5,7 @@ export { default as CodeBlock } from './CodeBlock.svelte';
 export { default as Details } from './Details.svelte';
 export { default as DownloadData } from './DownloadData.svelte';
 export { default as EmailSignup } from './EmailSignup.svelte';
+export { default as Group } from './Group.svelte';
 export { default as LastRefreshed } from './LastRefreshed.svelte';
 export { default as LineBreak } from './LineBreak.svelte';
 export { default as LoadingIndicator } from './LoadingIndicator.svelte';

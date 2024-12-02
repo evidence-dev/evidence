@@ -4,8 +4,14 @@
 
 <script>
 	import Areas from './components/Areas.svelte';
-	import BaseMap from './BaseMap.svelte';
-	import ErrorChart from '../core/ErrorChart.svelte';
+	import BaseMap from './_BaseMap.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
+
+	/** @type {'pass' | 'warn' | 'error' | undefined} */
+	export let emptySet = undefined;
+
+	/** @type {string | undefined} */
+	export let emptyMessage = undefined;
 
 	let error;
 
@@ -16,10 +22,7 @@
 	}
 
 	/** @type {string} */
-	export let geoJsonUrl = undefined;
-	if (!geoJsonUrl) {
-		error = `geoJsonUrl is required. This is the path to your geoJSON file. If using a local geoJSON file, place it in the static directory and reference it as geoJsonUrl='/yourFileName.json'`;
-	}
+	export let geoJsonUrl = 'https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json';
 
 	/** @type {string|undefined} */
 	export let geoId = undefined;
@@ -44,19 +47,56 @@
 	export let startingZoom = undefined;
 
 	/** @type {number} */
-	export let height = undefined; // height in pixels
+	export let height = 300; // height in pixels
 
 	/** @type {string} */
 	export let basemap = undefined;
 
 	/** @type {string|undefined} */
 	export let title = undefined;
+
+	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
+	export let legendPosition = 'bottomLeft';
+	/** @type {'categorical' | 'scalar' | undefined} */
+	export let legendType = undefined;
+	/** @type {boolean} */
+	export let legend = true;
+
+	/** @type {string|undefined} */
+	export let attribution = undefined;
+
+	const chartType = 'Area Map';
+
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
+	$: isInitial = data?.hash === initialHash;
 </script>
 
-{#if error}
-	<ErrorChart {error} chartType="Area Map" />
-{:else}
-	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Areas {data} {geoJsonUrl} {geoId} {areaCol} {...$$restProps} />
-	</BaseMap>
-{/if}
+<BaseMap
+	let:data
+	{data}
+	{startingLat}
+	{startingLong}
+	{startingZoom}
+	{height}
+	{basemap}
+	{title}
+	{legendPosition}
+	{chartType}
+	{isInitial}
+	{emptySet}
+	{emptyMessage}
+	{error}
+	{attribution}
+>
+	<Areas
+		{data}
+		{geoJsonUrl}
+		{geoId}
+		{areaCol}
+		{legendType}
+		{chartType}
+		{legend}
+		{...$$restProps}
+		on:error={(e) => (error = e.detail)}
+	/>
+</BaseMap>

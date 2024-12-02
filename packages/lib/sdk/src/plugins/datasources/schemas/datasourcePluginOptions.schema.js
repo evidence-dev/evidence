@@ -2,28 +2,31 @@ import { z } from 'zod';
 /** @typedef {string|number|boolean} Primitive */
 
 /**
- * @typedef {Object} IDatasourceOptionSpecSchema
+ * @typedef {Object} IDatasourceOptionSpec
  * @property {string} title
- * @property {'string' | 'number' | 'boolean' | 'select' | 'file'} type
+ * @property {'string' | 'multiline' | 'number' | 'boolean' | 'select' | 'file'} type
  * @property {boolean} [secret]
  * @property {boolean} [shown]
  * @property {string} [description]
  * @property {boolean} [virtual]
+ * @property {string} [references]
+ * @property {boolean} [forceReference]
+ * @property {'json' | 'yaml'} [fileFormat]
  * @property {boolean} [nest]
  * @property {string | number | boolean | undefined} [default]
- * @property {Record<string | number | symbol, Record<string, IDatasourceOptionSpecSchema>> | undefined} [children]
+ * @property {Record<string | number | symbol, Record<string, IDatasourceOptionSpec>> | undefined} [children]
  * @property {Array<string | { value: Primitive, label: string}>} [options]
  * @property {boolean} [required]
  */
 
 const primitive = z.union([z.string(), z.number(), z.boolean()]);
 
-/** @type {z.ZodRecord<z.ZodType<string>, z.ZodType<IDatasourceOptionSpecSchema>>} */
+/** @type {z.ZodRecord<z.ZodType<string>, z.ZodType<IDatasourceOptionSpec>>} */
 export const DatasourceOptionSpecSchema = z.record(
 	z.string(),
 	z.object({
 		title: z.string({ description: 'Title of the option (UI)' }),
-		type: z.enum(['string', 'number', 'boolean', 'select', 'file'], {
+		type: z.enum(['string', 'multiline', 'number', 'boolean', 'select', 'file'], {
 			description: 'Control type to show'
 		}),
 		secret: z.boolean({ description: 'If true, will not be source controlled' }).default(false),

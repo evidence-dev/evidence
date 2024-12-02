@@ -5,7 +5,6 @@ import { initialize } from '../src/lib/storybook-helpers/initializeUSQL.js';
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
 	parameters: {
-		actions: { argTypesRegex: '^on[A-Z].*' },
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,
@@ -13,7 +12,7 @@ const preview = {
 			}
 		},
 		chromatic: {
-			diffThreshold: 0.28
+			delay: 3000
 		}
 	},
 	argTypes: {

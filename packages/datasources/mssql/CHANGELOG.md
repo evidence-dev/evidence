@@ -1,5 +1,33 @@
 # @evidence-dev/mssql
 
+## 1.1.1
+
+### Patch Changes
+
+- 330bb5336: Add requestTimeout to mssql connector
+
+## 1.1.0
+
+### Minor Changes
+
+- bcd56f5bd: Add alternatives authentication methods
+
+### Patch Changes
+
+- 2d89e4624: Add connectionTimeout option to mssql connector
+
+## 1.0.10
+
+### Patch Changes
+
+- 9bbf152d5: Remove icon
+
+## 1.0.9
+
+### Patch Changes
+
+- 16b69f04e: Update mssql to v11 to resolve security vulnerability in @azure/identity
+
 ## 1.0.8
 
 ### Patch Changes

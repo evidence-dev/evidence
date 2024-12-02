@@ -1,5 +1,23 @@
 # Change Log
 
+## 1.5.6
+
+### Patch Changes
+
+- 73782e654: dont create legacy file on new project
+
+## 1.5.4
+
+### Patch Changes
+
+- 9ca3a61e0: support for Node v22
+
+## 1.5.3
+
+### Patch Changes
+
+- bad1038c1: Override dset version to resolve security vulnerability
+
 ## 1.5.1
 
 ### Patch Changes

@@ -2,8 +2,19 @@
 	import { Button } from '../../../atoms/shadcn/button';
 	import * as DropdownMenu from '../../../atoms/shadcn/dropdown-menu';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Settings, _3dCubeSphere, Link, Dots, Table, Prompt } from '@steeze-ui/tabler-icons';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
+	import {
+		Settings,
+		_3dCubeSphere,
+		Link,
+		Dots,
+		Table,
+		Prompt,
+		Sun,
+		Moon
+	} from '@steeze-ui/tabler-icons';
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
+	import { ensureThemeStores, themesFeatureEnabled } from '../../../themes.js';
 	import { dev } from '$app/environment';
 
 	const beforeprint = new Event('export-beforeprint');
@@ -13,53 +24,78 @@
 		setTimeout(() => window.print(), 0);
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
+
+	const { selectedTheme, theme, cycleTheme } = ensureThemeStores();
+	$: themeLabel =
+		$selectedTheme === 'system' ? 'System' : $selectedTheme === 'light' ? 'Light' : 'Dark';
+	$: themeIcon = $theme === 'light' ? Sun : Moon;
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="ghost" size="sm" class="px-1" id="layout-kebab">
+		<Button builders={[builder]} variant="ghost" size="sm" class="px-1" aria-label="Menu">
 			<Icon src={Dots} class="h-6 w-6" />
 		</Button>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content class=" w-44 text-xs">
+	<DropdownMenu.Content class="w-52 text-xs">
 		<DropdownMenu.Group>
 			<DropdownMenu.Item on:click={print}>
 				Print PDF
 				<DropdownMenu.Shortcut>⌘P</DropdownMenu.Shortcut>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
-				on:click={() => {
+				on:click={(e) => {
+					e.preventDefault();
 					showQueries.update((val) => !val);
 				}}
 			>
 				{$showQueries ? 'Hide ' : 'Show '} Queries
 			</DropdownMenu.Item>
+			{#if themesFeatureEnabled}
+				<DropdownMenu.Item
+					on:click={(e) => {
+						e.preventDefault();
+						cycleTheme();
+					}}
+				>
+					Appearance
+					<DropdownMenu.Shortcut class="tracking-normal flex flex-row items-center">
+						<span class="text-xs leading-none">{themeLabel}</span>
+						<Icon src={themeIcon} class="h-4 w-4 ml-1" />
+					</DropdownMenu.Shortcut>
+				</DropdownMenu.Item>
+			{/if}
 		</DropdownMenu.Group>
 		{#if dev}
 			<DropdownMenu.Separator />
 			<DropdownMenu.Group>
-				<DropdownMenu.Item href="/settings" el="a">
+				<DropdownMenu.Item href={addBasePath('/settings')} el="a">
 					Settings
 					<DropdownMenu.Shortcut><Icon src={Settings} class="w-4 h-4" /></DropdownMenu.Shortcut>
 				</DropdownMenu.Item>
-				<DropdownMenu.Item href="/settings/#deploy" el="a">
+				<DropdownMenu.Item href={addBasePath('/settings/#deploy')} el="a">
 					Deploy
 					<DropdownMenu.Shortcut><Icon src={_3dCubeSphere} class="h-4 w-4" /></DropdownMenu.Shortcut
 					>
 				</DropdownMenu.Item>
-				<DropdownMenu.Item href="/explore/schema" el="a">
+				<DropdownMenu.Item href={addBasePath('/explore/schema')} el="a">
 					Schema Viewer
 					<DropdownMenu.Shortcut>
 						<Icon src={Table} class="h-4 w-4" />
 					</DropdownMenu.Shortcut>
 				</DropdownMenu.Item>
-				<DropdownMenu.Item href="/explore/console" el="a">
+				<DropdownMenu.Item href={addBasePath('/explore/console')} el="a">
 					SQL Console
 					<DropdownMenu.Shortcut>
 						<Icon src={Prompt} class="h-4 w-4" />
 					</DropdownMenu.Shortcut>
 				</DropdownMenu.Item>
-				<DropdownMenu.Item href="https://docs.evidence.dev" target="_blank" rel="noreferrer" el="a">
+				<DropdownMenu.Item
+					href={addBasePath('https://docs.evidence.dev')}
+					target="_blank"
+					rel="noreferrer"
+					el="a"
+				>
 					Documentation
 					<DropdownMenu.Shortcut><Icon src={Link} class="h-4 w-4" /></DropdownMenu.Shortcut>
 				</DropdownMenu.Item>

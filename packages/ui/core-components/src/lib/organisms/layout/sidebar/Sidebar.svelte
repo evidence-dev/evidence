@@ -6,36 +6,47 @@
 	import { afterUpdate } from 'svelte';
 	import Badge from './Badge.svelte';
 	import Logo from '../Logo.svelte';
+	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 	export let fileTree = undefined;
 	export let title = undefined;
 	export let logo = undefined;
+	export let homePageName = undefined;
 	export let builtWithEvidence = undefined;
 	export let hideHeader = false;
 	export let sidebarFrontMatter = undefined;
 
+	function deleteEmptyNodes(node) {
+		Object.keys(node.children).forEach(function (key) {
+			deleteEmptyNodes(node.children[key]);
+			if (!node.children[key].label && !node.children[key].href) {
+				delete node.children[key];
+			}
+		});
+	}
+
 	// sort children arrays by sidebar_position
 	function sortChildrenBySidebarPosition(node) {
-		if (node.children) {
-			node.children = node.children.sort((a, b) => {
-				if (!isNaN(a.frontMatter?.sidebar_position) && !isNaN(b.frontMatter?.sidebar_position)) {
-					return (
-						a.frontMatter.sidebar_position - b.frontMatter.sidebar_position ||
-						a.label.localeCompare(b.label)
-					);
-				} else if (!isNaN(a.frontMatter?.sidebar_position)) {
-					return -1;
-				} else if (!isNaN(b.frontMatter?.sidebar_position)) {
-					return 1;
-				} else {
-					return a.label.localeCompare(b.label);
-				}
-			});
-			node.children.forEach(sortChildrenBySidebarPosition);
-		}
+		node.children = Object.values(node.children).sort((a, b) => {
+			if (!isNaN(a.frontMatter?.sidebar_position) && !isNaN(b.frontMatter?.sidebar_position)) {
+				return (
+					a.frontMatter.sidebar_position - b.frontMatter.sidebar_position ||
+					a.label.localeCompare(b.label)
+				);
+			} else if (!isNaN(a.frontMatter?.sidebar_position)) {
+				return -1;
+			} else if (!isNaN(b.frontMatter?.sidebar_position)) {
+				return 1;
+			} else {
+				return a.label.localeCompare(b.label);
+			}
+		});
+		node.children.forEach(sortChildrenBySidebarPosition);
 		return node;
 	}
 
+	fileTree = structuredClone(fileTree);
+	deleteEmptyNodes(fileTree);
 	fileTree = sortChildrenBySidebarPosition(fileTree);
 
 	// children of the index page
@@ -73,7 +84,7 @@
 	>
 		<div class=" pb-4 text-gray-700">
 			<div class="py-3 px-8 mb-3 flex items-start justify-between">
-				<a href="/" class="block mt-1 text-sm font-bold text-gray-800">
+				<a href={addBasePath('/')} class="block mt-1 text-sm font-bold text-gray-800">
 					<Logo {logo} {title} />
 				</a>
 				<span
@@ -84,7 +95,7 @@
 				>
 					<button
 						type="button"
-						class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 transition-all duration-500"
+						class="text-gray-900 hover:bg-gray-100 rounded-lg p-1 transition-all duration-500"
 						on:click={() => {
 							mobileSidebarOpen = false;
 						}}
@@ -111,16 +122,16 @@
 				<div class="flex flex-col pb-6">
 					<a
 						class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
-						href="/"
+						href={addBasePath('/')}
 					>
-						Home
+						{homePageName}
 					</a>
 					{#each firstLevelFiles as file}
 						{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 							{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 							<a
 								class="group inline-block py-1 capitalize transition-colors duration-100"
-								href={file.href}
+								href={addBasePath(file.href)}
 								class:text-blue-600={active}
 								class:hover:text-gray-950={active}
 								class:hover:text-blue-600={active}
@@ -141,7 +152,7 @@
 							{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 								<a
 									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
-									href={file.href}
+									href={addBasePath(file.href)}
 								>
 									{file.frontMatter?.title ?? file.label}
 									{#if file.frontMatter?.sidebar_badge}
@@ -153,7 +164,7 @@
 							{:else}
 								<span
 									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
-									href={file.href}
+									href={addBasePath(file.href)}
 								>
 									{file.frontMatter?.title ?? file.label}
 									{#if file.frontMatter?.sidebar_badge}
@@ -169,7 +180,7 @@
 										$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 									<a
 										class="group inline-block py-1 capitalize transition-colors duration-100"
-										href={file.href}
+										href={addBasePath(file.href)}
 										class:text-blue-600={active}
 										class:hover:text-gray-950={!active}
 										class:hover:text-blue-600={active}
@@ -201,16 +212,16 @@
 			<div class="flex flex-col pb-6">
 				<a
 					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize hover:underline"
-					href="/"
+					href={addBasePath('/')}
 				>
-					Home
+					{homePageName}
 				</a>
 				{#each firstLevelFiles as file}
 					{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 						{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 						<a
 							class="group inline-block py-1 capitalize transition-all duration-100"
-							href={file.href}
+							href={addBasePath(file.href)}
 							class:text-blue-600={active}
 							class:hover:text-gray-950={!active}
 							class:hover:text-blue-600={active}
@@ -231,7 +242,7 @@
 						{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 							<a
 								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize hover:underline"
-								href={file.href}
+								href={addBasePath(file.href)}
 							>
 								{file.frontMatter?.title ?? file.label}
 								{#if file.frontMatter?.sidebar_badge}
@@ -243,7 +254,7 @@
 						{:else}
 							<span
 								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize"
-								href={file.href}
+								href={addBasePath(file.href)}
 							>
 								{file.frontMatter?.title ?? file.label}
 								{#if file.frontMatter?.sidebar_badge}
@@ -257,7 +268,7 @@
 							{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 								{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 								<a
-									href={file.href}
+									href={addBasePath(file.href)}
 									class:text-blue-600={active}
 									class:hover:text-blue-600={active}
 									class:hover:text-gray-950={!active}

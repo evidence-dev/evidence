@@ -1,5 +1,81 @@
 # @evidence-dev/tailwind
 
+## 2.1.11
+
+### Patch Changes
+
+- Updated dependencies [b5a096723]
+  - @evidence-dev/sdk@1.5.1
+
+## 2.1.10
+
+### Patch Changes
+
+- Updated dependencies [b72e4a809]
+  - @evidence-dev/sdk@1.5.0
+
+## 2.1.9
+
+### Patch Changes
+
+- Updated dependencies [08923de11]
+  - @evidence-dev/sdk@1.4.8
+
+## 2.1.8
+
+### Patch Changes
+
+- Updated dependencies [00516897e]
+- Updated dependencies [1de1eca52]
+  - @evidence-dev/sdk@1.4.7
+
+## 2.1.7
+
+### Patch Changes
+
+- Updated dependencies [c82ba1516]
+  - @evidence-dev/sdk@1.4.6
+
+## 2.1.6
+
+### Patch Changes
+
+- Updated dependencies [b2126ac1a]
+  - @evidence-dev/sdk@1.4.5
+
+## 2.1.5
+
+### Patch Changes
+
+- Updated dependencies [a91b26fb3]
+- Updated dependencies [cbb8b16f4]
+  - @evidence-dev/sdk@1.4.4
+
+## 2.1.4
+
+### Patch Changes
+
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+
+## 2.1.3
+
+### Patch Changes
+
+- 952abbd16: Removed build step
+  Theme support
+- Updated dependencies [952abbd16]
+- Updated dependencies [c8315da2e]
+- Updated dependencies [06313c848]
+  - @evidence-dev/sdk@1.4.2
+
+## 2.1.2
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+
 ## 2.1.1
 
 ### Patch Changes

@@ -91,9 +91,14 @@
 	export let emptyMessage = undefined;
 
 	export let renderer = undefined;
+	export let downloadableData = undefined;
+	export let downloadableImage = undefined;
 	export let seriesColors = undefined;
+	export let seriesOrder = undefined;
 
 	export let connectGroup = undefined;
+	/** @type {string | undefined} */
+	export let seriesLabelFmt = undefined;
 </script>
 
 <Chart
@@ -144,6 +149,8 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{downloadableData}
+	{downloadableImage}
 	{connectGroup}
 	{seriesColors}
 >
@@ -167,6 +174,8 @@
 		{y2LabelFmt}
 		{showAllLabels}
 		{y2SeriesType}
+		{seriesOrder}
+		{seriesLabelFmt}
 	/>
 	<slot />
 </Chart>

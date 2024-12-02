@@ -54,6 +54,9 @@
 			seriesColors: {
 				control: 'object'
 			},
+			seriesOrder: {
+				control: 'array'
+			},
 			yLog: {
 				control: 'boolean'
 			},
@@ -112,6 +115,14 @@
 				control: 'select',
 				options: ['canvas', 'svg']
 			},
+			downloadableData: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			downloadableImage: {
+				control: 'boolean',
+				options: [true, false]
+			},
 			echartsOptions: {
 				control: 'object'
 			},
@@ -164,4 +175,46 @@
 >
 	{@const emptyData = []}
 	<BubbleChart data={emptyData} {...args} />
+</Story>
+
+<Story
+	name="With series color and order"
+	args={{
+		series: 'plane',
+		x: 'fare',
+		y: 'total_fare',
+		size: 'total_sales',
+		seriesColors: { 'Embraer 190': 'red', 'Tupolev Tu-204': 'green' },
+		seriesOrder: ['Tupolev Tu-204', 'Embraer 190']
+	}}
+	let:args
+>
+	<BubbleChart {data} {...args} />
+</Story>
+
+<Story
+	name="With seriesLabelFmt"
+	args={{
+		series: 'series',
+		x: 'x',
+		y: 'y',
+		size: 'size'
+	}}
+	let:args
+>
+	{@const data = Query.create(
+		`SELECT 0.1 AS series, 1 AS x, 10 AS y, 100 AS size
+UNION
+SELECT 0.1 AS series, 2 AS x, 20 AS y, 200 AS size
+UNION
+SELECT 0.1 AS series, 3 AS x, 30 AS y, 300 AS size
+UNION
+SELECT 0.5 AS series, 1 AS x, 5 AS y, 50 AS size
+UNION
+SELECT 0.5 AS series, 2 AS x, 15 AS y, 150 AS size
+UNION
+SELECT 0.5 AS series, 3 AS x, 25 AS y, 250 AS size`,
+		query
+	)}
+	<BubbleChart seriesLabelFmt="pct" {data} {...args} />
 </Story>

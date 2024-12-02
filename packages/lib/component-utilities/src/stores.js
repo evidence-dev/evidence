@@ -79,7 +79,7 @@ const getStoreVal = (store) => {
  * @returns {Writable<T>}
  */
 export const localStorageStore = (key, init) => {
-	const store = writable(browser ? JSON.parse(localStorage.getItem(key)) ?? init : init);
+	const store = writable(browser ? (JSON.parse(localStorage.getItem(key)) ?? init) : init);
 	const { subscribe, set } = store;
 
 	/** @type {(v: T) => void} */

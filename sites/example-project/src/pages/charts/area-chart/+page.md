@@ -95,6 +95,17 @@ stepPosition=middle
     yLogBase=2
 />
 
+## Area - Disable Downloads
+
+<AreaChart
+    data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+    x=month
+    y=sales_usd0k 
+    downloadableData=false
+    downloadableImage=false
+/>
+
+
 ## Not allowed Log charts: No Y axis
 
 <AreaChart

@@ -2,7 +2,7 @@
 	"name": "evidence-vscode",
 	"displayName": "Evidence",
 	"description": "Build polished data products with SQL and Markdown",
-	"version": "1.5.1",
+	"version": "1.5.6",
 	"private": true,
 	"engines": {
 		"vscode": "^1.52.0"
@@ -17,7 +17,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/evidence-dev/evidence-vscode.git"
+		"url": "https://github.com/evidence-dev/evidence.git"
 	},
 	"keywords": [
 		"evidence",
@@ -28,7 +28,7 @@
 		"analytics"
 	],
 	"bugs": {
-		"url": "https://github.com/evidence-dev/evidence-vscode/issues"
+		"url": "https://github.com/evidence-dev/evidence/issues"
 	},
 	"homepage": "https://evidence.dev",
 	"icon": "icons/evidence-logo.png",
@@ -176,7 +176,7 @@
 				"command": "runCommands",
 				"key": "/",
 				"enablement": "evidence.hasProject",
-				"when": "editorTextFocus && resourceLangId == 'emd' && evidence.isPagesDirectory == true && evidence.slashCommands == true",
+				"when": "editorTextFocus && resourceLangId == 'emd' && evidence.isPagesDirectory == true && evidence.slashCommands == true && evidence.isSQLContext === false",
 				"args": {
 					"commands": [
 						{
@@ -193,15 +193,17 @@
 			},
 			{
 				"command": "evidence.startServer",
-				"key": "ctrl+R",
-				"mac": "cmd+R",
-				"enablement": "evidence.hasProject"
+				"key": "ctrl+shift+R",
+				"mac": "cmd+shift+R",
+				"enablement": "evidence.hasProject",
+				"when": "!evidence.serverRunning"
 			},
 			{
 				"command": "evidence.stopServer",
 				"key": "ctrl+shift+R",
 				"mac": "cmd+shift+R",
-				"enablement": "evidence.hasProject"
+				"enablement": "evidence.hasProject",
+				"when": "evidence.serverRunning"
 			},
 			{
 				"command": "evidence.build",
@@ -349,7 +351,7 @@
 						"No automatic preview shown"
 					]
 				},
-				"evidence.enableSQLBackground": {
+				"evidence.enableSqlBackground": {
 					"type": "boolean",
 					"default": true,
 					"description": "Enable background color shading for SQL blocks."
@@ -368,6 +370,30 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Enable background color shading for markdown frontmatter."
+				},
+				"evidence.enableSqlAutocomplete": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable or disable SQL autocomplete."
+				},
+				"evidence.sqlAcceptSuggestionsOnEnter": {
+					"type": "boolean",
+					"default": false,
+					"description": "Accept suggestions on Enter in SQL blocks."
+				},
+				"evidence.slashCommandsAcceptSuggestionsOnEnter": {
+					"type": "boolean",
+					"default": true,
+					"description": "Accept suggestions on Enter for slash commands."
+				},
+				"evidence.sqlKeywordSuggestionCase": {
+					"type": "string",
+					"enum": [
+						"uppercase",
+						"lowercase"
+					],
+					"default": "lowercase",
+					"description": "Choose whether SQL keyword suggestions should be in uppercase or lowercase"
 				}
 			}
 		},
@@ -413,14 +439,15 @@
 			"[emd]": {
 				"editor.wordWrap": "on",
 				"editor.suggest.showWords": false,
+				"editor.suggest.snippetsPreventQuickSuggestions": false
+			},
+			"[sql]": {
+				"editor.acceptSuggestionOnEnter": "off",
 				"editor.quickSuggestions": {
-					"other": false,
+					"other": true,
 					"comments": false,
 					"strings": false
-				},
-				"editor.suggest.snippetsPreventQuickSuggestions": false,
-				"editor.quickSuggestionsDelay": 300,
-				"editor.acceptSuggestionOnEnter": "on"
+				}
 			}
 		},
 		"snippets": [
@@ -507,14 +534,14 @@
 		"mocha": "^9.1.3",
 		"ts-loader": "^9.2.5",
 		"typescript": "^4.4.4",
-		"webpack": "^5.52.1",
+		"webpack": "^5.94.0",
 		"webpack-cli": "^4.8.0"
 	},
 	"extensionDependencies": [
 		"svelte.svelte-vscode"
 	],
 	"dependencies": {
-		"@vscode/extension-telemetry": "^0.9.0",
+		"@vscode/extension-telemetry": "^0.9.8",
 		"@vscode/vsce": "^2.21.1",
 		"js-yaml": "^4.1.0",
 		"tiged": "^2.12.5"

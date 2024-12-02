@@ -18,15 +18,17 @@ module.exports = () => {
 		},
 		script: ({ content, filename, attributes }) => {
 			if (!filename?.endsWith('+page.md')) return;
-			if (attributes.context !== 'module') return;
-
-			if (!content.includes('export const metadata =')) {
-				// There is no frontmatter, and we want to make sure that it as at least defined.
-				// Technically this won't _break_ things, just spam the logs with a vite warning.
-				return { code: content + ';const metadata = undefined;' };
+			if (attributes.context === 'module') {
+				if (!content.includes('export const metadata =')) {
+					// There is no frontmatter, and we want to make sure that it as at least defined.
+					// Technically this won't _break_ things, just spam the logs with a vite warning.
+					return { code: content + ';const metadata = undefined;' };
+				} else {
+					// exporting makes tailwind break HMR
+					return { code: content.replace('export const metadata =', 'const metadata =') };
+				}
 			} else {
-				// exporting makes tailwind break HMR
-				return { code: content.replace('export const metadata =', 'const metadata =') };
+				return { code: 'import { addBasePath } from "@evidence-dev/sdk/utils/svelte";' + content };
 			}
 		}
 	};

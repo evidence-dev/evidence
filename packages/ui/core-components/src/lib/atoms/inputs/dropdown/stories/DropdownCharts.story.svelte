@@ -1,13 +1,12 @@
 <script>
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Dropdown from '../Dropdown.svelte';
-	import { getContext } from 'svelte';
 	import BarChart from '../../../../unsorted/viz/bar/BarChart.svelte';
 	import ECharts from '../../../../unsorted/viz/core/ECharts.svelte';
 
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputs = getInputContext();
 
 	const dropdownQuery = Query.create(
 		`SELECT id as value, tag as label from hashtags ORDER BY 1`,

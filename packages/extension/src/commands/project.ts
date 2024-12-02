@@ -440,7 +440,6 @@ async function runDegitCommand(workspaceRoot: string): Promise<void> {
 					reject(error);
 					return;
 				}
-				console.log(stdout);
 
 				// Move contents from usql-template to workspace root
 				await moveContents(usqlTemplatePath, workspaceRoot);
@@ -601,11 +600,8 @@ async function processDirectory(directory: string, sourcesFolderPath: string): P
 async function handleMarkdownFile(filePath: string, sourcesFolderPath: string): Promise<void> {
 	// Here, you can call all the functions required to process the Markdown file
 	await updateFrontmatterInFile(filePath);
-	console.log('Chagned frontmatter to reference queries instead of sources');
 	await processCodeFences(filePath, sourcesFolderPath);
-	console.log('Extracted inline queries into source query files');
 	await updatePageParamsSyntax(filePath);
-	console.log('Updated page parameter syntax');
 }
 
 // Function to update frontmatter in a single file

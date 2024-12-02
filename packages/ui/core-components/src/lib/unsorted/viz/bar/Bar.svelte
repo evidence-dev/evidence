@@ -38,6 +38,8 @@
 
 	export let labels = false;
 	$: labels = labels === 'true' || labels === true;
+	export let seriesLabels = true;
+	$: seriesLabels = seriesLabels === 'true' || seriesLabels === true;
 	export let labelSize = 11;
 	export let labelPosition = undefined;
 	export let labelColor = undefined;
@@ -62,7 +64,7 @@
 	export let stackTotalLabel = true;
 	$: stackTotalLabel = stackTotalLabel === 'true' || stackTotalLabel === true;
 	export let showAllLabels = false;
-
+	export let seriesOrder = undefined;
 	let barMaxWidth = 60;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
@@ -157,7 +159,7 @@
 		type: 'bar',
 		stack: stackName,
 		label: {
-			show: labels,
+			show: labels && seriesLabels,
 			// formatter: function (params) {
 			// 	let output;
 			// 	output =
@@ -195,6 +197,8 @@
 		}
 	};
 
+	export let seriesLabelFmt = undefined;
+
 	$: seriesConfig = getSeriesConfig(
 		data,
 		x,
@@ -205,9 +209,11 @@
 		name,
 		xMismatch,
 		columnSummary,
+		seriesOrder,
 		undefined,
 		undefined,
-		y2
+		y2,
+		seriesLabelFmt
 	);
 
 	$: config.update((d) => {

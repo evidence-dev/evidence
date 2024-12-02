@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/component-utilities",
-	"version": "3.2.4",
+	"version": "3.2.22",
 	"description": "",
 	"main": "index.js",
 	"exports": {
@@ -11,7 +11,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@faker-js/faker": "^8.0.2",
-		"vitest": "^0.34.1"
+		"vitest": "^2.0.5"
 	},
 	"scripts": {
 		"test": "vitest --run",
@@ -27,8 +27,8 @@
 		"@uwdata/mosaic-sql": "^0.3.2",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
-		"echarts": "5.4.3",
+		"echarts": "5.5.1",
 		"ssf": "^0.11.2",
-		"svelte": "4.2.12"
+		"svelte": "4.2.19"
 	}
 }

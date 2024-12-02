@@ -1,7 +1,7 @@
 name: Linting & Formatting
 
 on:
-  pull_request_target:
+  pull_request:
 
 jobs:
   lint:
@@ -12,19 +12,16 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout Repo
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+        uses: actions/checkout@v4
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4.0.0
+      - name: Set up node
+        uses: actions/setup-node@v4
         with:
-          version: 8.6.9
-      - name: Set up node v16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+          node-version: 20
           cache: pnpm
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
       - name: Check Linting & Formatting
         run: pnpm run lint

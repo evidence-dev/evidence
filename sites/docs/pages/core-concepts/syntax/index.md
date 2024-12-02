@@ -99,7 +99,9 @@ The current page path is: {$page.route.id}
 
 ## Frontmatter
 
-You can use frontmatter to reference SQL queries, and set page metadata that social media sites such as Twitter and Facebook use when showing links to your site. [More on Frontmatter](/reference/markdown#frontmatter).
+Use frontmatter to reference SQL queries, configure how titles, breadcrumbs and the sidebar are displayed, and to set open graph metadata for link previews on X, LinkedIn, Slack, Facebook etc.
+
+See the [Frontmatter Reference](/reference/markdown#frontmatter).
 
 ```markdown
 ---
@@ -151,7 +153,7 @@ Partials allow you to reuse chunks of Evidence markdown. [More on Partials](/ref
 
 `./pages/index.md`
 ```markdown
-&#123;@partial "my-first-partial.md"/&#125;
+&#123;@partial "my-first-partial.md"&#125;
 
 And some content specific to this page.
 ```

@@ -1,5 +1,36 @@
 # @evidence-dev/snowflake
 
+## 1.2.1
+
+### Patch Changes
+
+- 7c21833c7: Add Authentication Token caching to Snowflake connector
+
+## 1.2.0
+
+### Minor Changes
+
+- 0e740d056: add resultPrefetch option to snowflake connector
+
+## 1.1.2
+
+### Patch Changes
+
+- 67dbd116b: Adds support for Multiline strings as source config
+  Moves snowflake private key to multi-line string field
+
+## 1.1.1
+
+### Patch Changes
+
+- bf04c39ef: Patches CVE
+
+## 1.1.0
+
+### Minor Changes
+
+- 0de6bc76c: Add Proxy config section/options to snowflake connector
+
 ## 1.0.7
 
 ### Patch Changes

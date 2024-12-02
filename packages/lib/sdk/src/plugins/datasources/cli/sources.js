@@ -1,8 +1,5 @@
 import chalk from 'chalk';
-import {
-	dataDirectory,
-	metaDirectory
-} from '../../../build-dev/vite/virtuals/node/projectPaths.js';
+import { dataDirectory, metaDirectory } from '../../../lib/projectPaths.js';
 import { evalSources } from '../evalSources.js';
 import { updateManifest } from '../updateManifest.js';
 

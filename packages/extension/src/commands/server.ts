@@ -23,6 +23,11 @@ const localhost = 'localhost';
 let _running: boolean = false;
 let _activePort: number = <number>getConfig(Settings.DefaultPort);
 
+// Set a context key
+const setContext = (key: any, value: any) => {
+	commands.executeCommand('setContext', key, value);
+};
+
 /**
  * Creates Evidence app page Uri from the provided pageUrl,
  * and rewrites the host name for the host and port forwarding
@@ -153,6 +158,7 @@ export async function startServer(pageUri?: Uri) {
 		statusBar.showRunning();
 
 		_running = true;
+		setContext('evidence.serverRunning', _running);
 
 		if (previewType.includes('internal')) {
 			// wait for the dev server to start
@@ -215,6 +221,7 @@ export async function stopServer() {
 
 	// reset server state and status display
 	_running = false;
+	setContext('evidence.serverRunning', _running);
 	_activePort = <number>getConfig(Settings.DefaultPort);
 	statusBar.showStart();
 	telemetryService?.sendEvent('stopServer');

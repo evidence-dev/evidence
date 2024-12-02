@@ -1,10 +1,11 @@
 import evidencePreprocess from '@evidence-dev/preprocess';
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
-import { evidencePlugins } from '@evidence-dev/plugin-connector';
+import { addBasePathToHrefAndSrc, injectComponents } from '@evidence-dev/sdk/build/svelte';
 import fs from 'fs';
 import path from 'path';
-
+import { getEvidenceConfig } from '@evidence-dev/sdk/config';
+const evidenceConfig = getEvidenceConfig();
 /**
  * @param {Object} a
  * @param {Object} b
@@ -38,19 +39,28 @@ const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [
 		...evidencePreprocess(true),
-		evidencePlugins(),
+		injectComponents(),
 		preprocess({
 			postcss: true
-		})
+		}),
+		addBasePathToHrefAndSrc
 	],
 	onwarn: errorHandler,
 	kit: {
 		adapter: adapter({
+			pages: process.env.EVIDENCE_BUILD_DIR ?? './build',
 			strict: false
 		}),
 		files: {
 			routes: 'src/pages',
 			lib: 'src/components'
+		},
+		paths: {
+			base: evidenceConfig.deployment.basePath,
+			relative: false
+		},
+		serviceWorker: {
+			register: false
 		}
 	}
 };

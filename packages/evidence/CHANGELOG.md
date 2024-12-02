@@ -1,5 +1,242 @@
 # @evidence-dev/evidence
 
+## 39.2.2
+
+### Patch Changes
+
+- b3465c45d: Upgrade @sveltejs/kit to 2.8.4
+- fe1fa3d6b: re-enable logging on dev mode
+- Updated dependencies [b5a096723]
+  - @evidence-dev/sdk@1.5.1
+  - @evidence-dev/universal-sql@2.1.11
+
+## 39.2.1
+
+### Patch Changes
+
+- 9043ff73c: re-enable logging on dev mode
+
+## 39.2.0
+
+### Minor Changes
+
+- b72e4a809: Remove plugin connector
+- 4e469564d: disable all non-error vite logging
+
+### Patch Changes
+
+- 2decdfac0: build directory path manually when using fs.Dirent
+- e0fb953da: Always log server error
+- Updated dependencies [b72e4a809]
+  - @evidence-dev/sdk@1.5.0
+  - @evidence-dev/universal-sql@2.1.10
+
+## 39.1.17
+
+### Patch Changes
+
+- 08923de11: Support Node 22: bump echarts and vite
+- 670df3dee: Dont import injectedEvidenceImports in template vite config. Instead, just put the packages in as strings when building the template.
+- Updated dependencies [08923de11]
+  - @evidence-dev/plugin-connector@2.1.15
+  - @evidence-dev/sdk@1.4.8
+  - @evidence-dev/universal-sql@2.1.9
+
+## 39.1.16
+
+### Patch Changes
+
+- 2c5fda586: Export injectedEvidenceImports from preprocess
+
+## 39.1.15
+
+### Patch Changes
+
+- 4d5e9c71e: Automatically add injected Evidence imports to Vite's `optimizeDeps.include`
+- Updated dependencies [00516897e]
+- Updated dependencies [4d5e9c71e]
+- Updated dependencies [1de1eca52]
+  - @evidence-dev/sdk@1.4.7
+  - @evidence-dev/preprocess@5.2.3
+  - @evidence-dev/universal-sql@2.1.8
+  - @evidence-dev/plugin-connector@2.1.14
+
+## 39.1.14
+
+### Patch Changes
+
+- 8778bcfc3: fix hmr, rip import.meta.glob out of pagesManifest
+- 011a08be7: Remove loading toasts
+- 32690c270: Add @evidence-dev/sdk/utils/svelte to Vite optimizeDeps.include
+- Updated dependencies [c82ba1516]
+  - @evidence-dev/sdk@1.4.6
+  - @evidence-dev/universal-sql@2.1.7
+  - @evidence-dev/plugin-connector@2.1.13
+
+## 39.1.13
+
+### Patch Changes
+
+- cbe4c1d2f: Hide manifest toast in prod
+- Updated dependencies [b2126ac1a]
+  - @evidence-dev/sdk@1.4.5
+  - @evidence-dev/universal-sql@2.1.6
+  - @evidence-dev/plugin-connector@2.1.12
+
+## 39.1.12
+
+### Patch Changes
+
+- 426ccd4d4: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+- ddc18a271: Windows cache service worker isnt asynchronous
+- Updated dependencies [a91b26fb3]
+- Updated dependencies [cbb8b16f4]
+  - @evidence-dev/sdk@1.4.4
+  - @evidence-dev/plugin-connector@2.1.11
+
+## 39.1.11
+
+### Patch Changes
+
+- f3a352dbe: Disable windows cache service worker with VITE_EVIDENCE_DISABLE_WINDOWS_CACHE_SERVICE_WORKER
+
+## 39.1.10
+
+### Patch Changes
+
+- 71a20080c: When using --debug to build a project, the results are not transpiled or minified
+- Updated dependencies [e0abcc56d]
+- Updated dependencies [71a20080c]
+- Updated dependencies [e0abcc56d]
+  - @evidence-dev/sdk@1.4.3
+  - @evidence-dev/preprocess@5.2.2
+  - @evidence-dev/plugin-connector@2.1.11
+
+## 39.1.9
+
+### Patch Changes
+
+- c8315da2e: Update svelte to resolve security vulnerability
+- 75331a410: fix frontmatter on home page
+- 069acb65a: Allows environment variables to be used in custom components in development mode
+  Loads .env file in cli and keeps VITE\_ prefixed variables
+
+  Fixes #2550
+
+- Updated dependencies [952abbd16]
+- Updated dependencies [0a0695588]
+- Updated dependencies [c8315da2e]
+- Updated dependencies [06313c848]
+- Updated dependencies [bad1038c1]
+  - @evidence-dev/sdk@1.4.2
+  - @evidence-dev/preprocess@5.2.1
+  - @evidence-dev/plugin-connector@2.1.11
+  - @evidence-dev/telemetry@2.1.3
+
+## 39.1.8
+
+### Patch Changes
+
+- Updated dependencies [057558028]
+  - @evidence-dev/sdk@1.4.1
+  - @evidence-dev/plugin-connector@2.1.10
+
+## 39.1.7
+
+### Patch Changes
+
+- Updated dependencies [4c1e5330c]
+  - @evidence-dev/preprocess@5.2.0
+
+## 39.1.6
+
+### Patch Changes
+
+- 999fffa38: Improve sdk debug behavior for better consistency
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [999fffa38]
+- Updated dependencies [1e5e5f1da]
+- Updated dependencies [67dbd116b]
+- Updated dependencies [999fffa38]
+  - @evidence-dev/sdk@1.4.0
+  - @evidence-dev/plugin-connector@2.1.10
+
+## 39.1.5
+
+### Patch Changes
+
+- 190a99590: preview command uses VITE_EVIDENCE_SPA environment variable to serve build in SPA mode
+- f7253ad4b: Fix noisy "Failed to pre-render columns" log during build
+- Updated dependencies [b84f22fce]
+- Updated dependencies [c0e1799e2]
+- Updated dependencies [f7253ad4b]
+  - @evidence-dev/preprocess@5.1.7
+  - @evidence-dev/universal-sql@2.1.5
+  - @evidence-dev/sdk@1.3.10
+  - @evidence-dev/plugin-connector@2.1.9
+
+## 39.1.4
+
+### Patch Changes
+
+- 2527838c4: Fix TProtocolException when loading Parquet files on Windows
+- Updated dependencies [8c2982505]
+- Updated dependencies [8c2982505]
+  - @evidence-dev/plugin-connector@2.1.8
+  - @evidence-dev/preprocess@5.1.6
+  - @evidence-dev/universal-sql@2.1.4
+  - @evidence-dev/sdk@1.3.9
+
+## 39.1.3
+
+### Patch Changes
+
+- 32035eeaa: Override fast-xml-parser version to >=4.4.1 to resolve vulnerability
+- dc29b7fd0: Increase node memory limit to 4GB
+- Updated dependencies [32035eeaa]
+- Updated dependencies [3572fcfd7]
+- Updated dependencies [907efee29]
+  - @evidence-dev/plugin-connector@2.1.7
+  - @evidence-dev/preprocess@5.1.5
+  - @evidence-dev/sdk@1.3.8
+  - @evidence-dev/telemetry@2.1.2
+
+## 39.1.2
+
+### Patch Changes
+
+- e50e7ed58: Pre-render column information using DESCRIBE query
+- Updated dependencies [e50e7ed58]
+- Updated dependencies [fbdfe2dd6]
+  - @evidence-dev/preprocess@5.1.4
+  - @evidence-dev/sdk@1.3.7
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 39.1.1
+
+### Patch Changes
+
+- Updated dependencies [3571b0b3a]
+  - @evidence-dev/sdk@1.3.6
+  - @evidence-dev/plugin-connector@2.1.6
+
+## 39.1.0
+
+### Minor Changes
+
+- 804949397: frontmatter title option sets breadcrumb
+- 7cb558c32: allow for dynamic breadcrumbs via frontmatter
+
+### Patch Changes
+
+- db8326efa: Re-added entry detection to evidencemeta, fixes SPA mode
+- 3b2e06a0b: Remove unnecessary core-component and component-utilities peer dependencies.
+- Updated dependencies [08818477d]
+- Updated dependencies [db8326efa]
+  - @evidence-dev/sdk@1.3.5
+  - @evidence-dev/plugin-connector@2.1.6
+
 ## 39.0.2
 
 ### Patch Changes

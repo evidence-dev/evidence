@@ -10,7 +10,7 @@
  **/
 
 /**
- * @template [ResolveType=unknown]
+ * @template [ResolveType=void]
  * @param {() => void} [stateChangeHook]
  * @returns {SharedPromise<ResolveType>}
  */

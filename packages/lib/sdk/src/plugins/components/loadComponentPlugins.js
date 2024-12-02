@@ -16,7 +16,7 @@ import { validateOverrides } from './validateOverrides.js';
  * @returns {Promise<ComponentInfo[]>}
  */
 export const loadComponentPlugins = async () => {
-	const { plugins, layout } = await getEvidenceConfig();
+	const { plugins, layout } = getEvidenceConfig();
 	const allComponentPlugins = plugins.components ?? {};
 
 	if (layout) {

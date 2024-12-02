@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.45",
+	"version": "3.0.74",
 	"private": true,
 	"scripts": {
 		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 evidence build",
@@ -11,7 +11,7 @@
 	},
 	"engines": {
 		"npm": ">=7.0.0",
-		"node": ">=14.0.0"
+		"node": ">=18.0.0"
 	},
 	"type": "module",
 	"dependencies": {
@@ -22,9 +22,12 @@
 		"@evidence-dev/evidence": "workspace:*",
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/motherduck": "workspace:^",
+		"@evidence-dev/mssql": "workspace:^",
 		"@evidence-dev/postgres": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
-		"@evidence-dev/sqlite": "workspace:*"
+		"@evidence-dev/sqlite": "workspace:*",
+		"@evidence-dev/tailwind": "workspace:*"
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3"

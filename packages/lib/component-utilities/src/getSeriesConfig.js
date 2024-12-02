@@ -1,4 +1,5 @@
 import getDistinctValues from './getDistinctValues.js';
+import { fmt } from '@evidence-dev/component-utilities/formatting';
 
 export default function getSeriesConfig(
 	data,
@@ -10,9 +11,11 @@ export default function getSeriesConfig(
 	name,
 	xMismatch, // this checks for scenarios where xType is string and xDataType is number. When this is the case, we need to inject strings into the x axis, or else it will cause echarts to think there are duplicate x-axis values (e.g., "4" and 4)
 	columnSummary,
+	seriesOrder,
 	size = undefined,
 	tooltipTitle = undefined,
-	y2 = undefined
+	y2 = undefined,
+	seriesLabelFmt = undefined
 ) {
 	function generateTempConfig(seriesData, seriesName, yAxisIndex, baseConfig) {
 		let tempConfig = {
@@ -216,6 +219,17 @@ export default function getSeriesConfig(
 
 		tempConfig = generateTempConfig(seriesData, seriesName, yAxisIndex, baseConfig);
 		seriesConfig.push(tempConfig);
+	}
+
+	if (seriesOrder) {
+		seriesConfig.sort((a, b) => seriesOrder.indexOf(a.name) - seriesOrder.indexOf(b.name));
+	}
+
+	// format series config:
+	if (seriesLabelFmt) {
+		seriesConfig.forEach((item) => {
+			item.name = fmt(item.name, seriesLabelFmt);
+		});
 	}
 
 	return seriesConfig;

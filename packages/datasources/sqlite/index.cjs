@@ -51,7 +51,18 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 
 		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 			mapResultsToEvidenceColumnTypes: inferColumnTypes,
-			closeConnection: () => db.close()
+			closeConnection: () => db.close(),
+			standardizeRow: (row, columnTypes) => {
+				if (!columnTypes) return row;
+				for (const column of columnTypes) {
+					// SQLite always returns date columns as strings
+					if (column.evidenceType === 'date') {
+						row[column.name] = new Date(row[column.name]);
+					}
+				}
+
+				return row;
+			}
 		});
 		results.expectedRowCount = expected_row_count;
 

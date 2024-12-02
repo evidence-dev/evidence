@@ -96,6 +96,7 @@
 	export let y2LabelFmt = undefined;
 
 	export let stackTotalLabel = undefined;
+	export let seriesLabels = undefined;
 	export let showAllLabels = undefined;
 
 	export let yAxisColor = undefined;
@@ -109,9 +110,13 @@
 	export let emptyMessage = undefined;
 
 	export let renderer = undefined;
+	export let downloadableData = undefined;
+	export let downloadableImage = undefined;
 	export let seriesColors = undefined;
-
+	export let seriesOrder = undefined;
 	export let connectGroup = undefined;
+
+	export let seriesLabelFmt = undefined;
 </script>
 
 <Chart
@@ -166,6 +171,8 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{downloadableData}
+	{downloadableImage}
 	{connectGroup}
 	{seriesColors}
 >
@@ -183,8 +190,11 @@
 		{yLabelFmt}
 		{y2LabelFmt}
 		{stackTotalLabel}
+		{seriesLabels}
 		{showAllLabels}
 		{y2SeriesType}
+		{seriesOrder}
+		{seriesLabelFmt}
 	/>
 	<slot />
 </Chart>

@@ -1,8 +1,34 @@
-<script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
-
+<script context="module">
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+
+	/** @type {import("@storybook/svelte").Meta}*/
+	export const meta = {
+		title: 'Charts/LineChart',
+		component: LineChart,
+		argTypes: {
+			title: { control: 'text' },
+			series: { control: 'text' },
+			downloadableData: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			downloadableImage: {
+				control: 'boolean',
+				options: [true, false]
+			},
+			seriesOrder: {
+				control: 'array'
+			}
+		},
+		args: {
+			data: Query.create('select * from series_demo_source.numeric_series', query)
+		}
+	};
+</script>
+
+<script>
+	import { Template, Story } from '@storybook/addon-svelte-csf';
 
 	import LineChart from './LineChart.svelte';
 	import Chart from '../core/Chart.svelte';
@@ -24,19 +50,6 @@
 		brokenData = brokenData.filter((d) => d.x === null);
 	};
 </script>
-
-<Meta
-	title="Charts/LineChart"
-	,
-	component={LineChart}
-	argTypes={{
-		title: { control: 'text' },
-		series: { control: 'text' }
-	}}
-	args={{
-		data: Query.create('select * from series_demo_source.numeric_series', query)
-	}}
-/>
 
 <Template let:args>
 	<LineChart {...args} />
@@ -74,3 +87,8 @@
 
 	<LineChart x="x" y="y" series="series" data={[]} legend sort={false} />
 </Story>
+
+<Story
+	name="With seriesOrder"
+	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+/>

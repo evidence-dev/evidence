@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/mssql",
-	"version": "1.0.8",
+	"version": "1.1.1",
 	"description": "Microsoft Server SQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -10,18 +10,17 @@
 	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:*",
-		"mssql": "^9.1.1"
+		"mssql": "^11.0.1"
 	},
 	"devDependencies": {
-		"dotenv": "^16.0.1",
-		"@types/mssql": "^8.1.2"
+		"@types/mssql": "^9.1.5",
+		"dotenv": "^16.0.1"
 	},
 	"type": "module",
 	"evidence": {
 		"datasources": [
 			"mssql"
-		],
-		"icon": "Microsoftsqlserver"
+		]
 	},
 	"keywords": [
 		"evidence",

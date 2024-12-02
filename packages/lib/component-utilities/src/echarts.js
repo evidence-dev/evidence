@@ -1,6 +1,7 @@
 import { registerTheme, init, connect } from 'echarts';
 import { evidenceThemeLight } from './echartsThemes';
 import debounce from 'debounce';
+import * as chartWindowDebug from './chartWindowDebug';
 
 /**
  * @typedef {import("echarts").EChartsOption & {
@@ -24,8 +25,10 @@ export default (node, option) => {
 	registerTheme('evidence-light', evidenceThemeLight);
 
 	const chart = init(node, 'evidence-light', {
-		renderer: useSvg ? 'svg' : option.renderer ?? 'canvas'
+		renderer: useSvg ? 'svg' : (option.renderer ?? 'canvas')
 	});
+
+	chartWindowDebug.set(chart.id, chart);
 
 	// If connectGroup supplied, connect chart to other charts matching that connectGroup
 	if (option.connectGroup) {
@@ -117,8 +120,6 @@ export default (node, option) => {
 		dispatch('click', params);
 	});
 
-	// Resize logic:
-	const containerElement = document.getElementById('evidence-main-article');
 	// watching parent element is necessary for charts within `Fullscreen` components
 	const parentElement = node.parentElement;
 	const onWindowResize = debounce(() => {
@@ -131,9 +132,8 @@ export default (node, option) => {
 	}, 100);
 
 	let resizeObserver;
-	if (window.ResizeObserver && containerElement) {
+	if (window.ResizeObserver && parentElement) {
 		resizeObserver = new ResizeObserver(onWindowResize);
-		resizeObserver.observe(containerElement);
 		resizeObserver.observe(parentElement);
 	} else {
 		window.addEventListener('resize', onWindowResize);
@@ -196,18 +196,22 @@ export default (node, option) => {
 
 	onWindowResize();
 
+	window[Symbol.for('chart renders')] ??= 0;
+	window[Symbol.for('chart renders')]++;
 	return {
 		update(option) {
+			window[Symbol.for('chart renders')]++;
 			updateChart(option);
 		},
 		destroy() {
 			if (resizeObserver) {
-				resizeObserver.unobserve(containerElement);
 				resizeObserver.unobserve(parentElement);
 			} else {
 				window.removeEventListener('resize', onWindowResize);
 			}
 			chart.dispose();
+
+			chartWindowDebug.unset(chart.id);
 		}
 	};
 };

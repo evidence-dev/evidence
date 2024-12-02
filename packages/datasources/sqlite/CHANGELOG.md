@@ -1,5 +1,11 @@
 # @evidence-dev/sqlite
 
+## 2.0.6
+
+### Patch Changes
+
+- df8e87625: Parse date column string values to real dates
+
 ## 2.0.5
 
 ### Patch Changes

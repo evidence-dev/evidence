@@ -1,80 +1,91 @@
-import fs from 'fs-extra';
-import path from 'path';
 import preprocess from '@evidence-dev/preprocess';
 import { error } from '@sveltejs/kit';
+import fs from 'fs/promises';
+import path from 'path';
 
-// Import pages and create an object structure corresponding to the file structure
-const pages = import.meta.glob(['/src/pages/**/+page.md']);
-const pagePaths = Object.keys(pages).map((path) => path.replace('/src/pages/', ''));
+/**
+ * @typedef {Object} PageManifestNode
+ * @property {string | undefined} label
+ * @property {string | undefined} href
+ * @property {Record<string, PageManifestNode>} children
+ * @property {Record<string, any>} frontMatter
+ * @property {boolean} isTemplated
+ * @property {boolean} isPage
+ */
+
+/**
+ * @param {Record<string, string>} pages
+ * @returns {PageManifestNode}
+ */
+export function _buildPageManifest(pages) {
+	const fileTree = {
+		label: 'Home',
+		href: undefined,
+		children: {},
+		frontMatter: {},
+		isTemplated: false,
+		isPage: false
+	};
+	for (const [pagePath, pageContent] of Object.entries(pages)) {
+		const path = pagePath.replace('/src/pages/', '');
+		let node = fileTree;
+		for (const part of path.split('/')) {
+			if (part === '+page.md') {
+				// cover home page
+				if (path === '+page.md') {
+					node.href = '/';
+				} else if (!path.includes('[')) {
+					node.href = encodeURI('/' + path.replace('/+page.md', ''));
+				}
+				node.frontMatter = preprocess.parseFrontmatter(pageContent);
+				node.isPage = true;
+			} else {
+				const label = part.includes('[') ? undefined : part.replace(/_/g, ' ').replace(/-/g, ' ');
+				node = node.children[part] = node.children[part] ?? {
+					label,
+					href: undefined,
+					children: {},
+					frontMatter: {},
+					isTemplated: part.includes('['),
+					isPage: false
+				};
+			}
+		}
+	}
+	return fileTree;
+}
 
 export const prerender = true;
-
-// Convert children objects into arrays of objects
-function convertChildrenToArray(node) {
-	if (node.children) {
-		node.children = Object.keys(node.children).map(function (key) {
-			return node.children[key];
-		});
-		node.children.forEach(function (child) {
-			convertChildrenToArray(child);
-		});
-	}
-}
-
-// Recursively delete nodes and children nodes that don't have a label
-function deleteEmptyNodes(node) {
-	if (node.children) {
-		Object.keys(node.children).forEach(function (key) {
-			deleteEmptyNodes(node.children[key]);
-			if (!node.children[key].label && !node.children[key].href) {
-				delete node.children[key];
-			}
-		});
-	}
-}
 
 /**
  * @type {import("@sveltejs/kit").RequestHandler}
  */
 export async function GET() {
+	const pages = {};
+
+	/** @param {string} dir */
+	async function recursiveReadDir(dir) {
+		const dirents = await fs.readdir(dir, { withFileTypes: true });
+		for (const dirent of dirents) {
+			if (dirent.isFile() && dirent.name.endsWith('.md')) {
+				const relative_path = path.join(dirent.parentPath ?? dirent.path ?? dir, dirent.name);
+				const content = await fs.readFile(relative_path, 'utf-8');
+				// regularize for windows
+				pages[new URL(`file:///${relative_path}`).pathname] = content;
+			} else if (dirent.isDirectory()) {
+				await recursiveReadDir(path.join(dir, dirent.name));
+			}
+		}
+	}
+
 	try {
-		const fileTree = {
-			label: 'Home',
-			href: '/',
-			children: {},
-			isTemplated: false
-		};
-		pagePaths.forEach(function (pagePath) {
-			pagePath.split('/').reduce(function (r, e) {
-				if (e === '+page.md') {
-					const href = pagePath.includes('[')
-						? undefined
-						: encodeURI('/' + pagePath.replace(/\/?\+page.md$/, ''));
+		await recursiveReadDir(path.join('src', 'pages'));
 
-					const absolutePath = path.join(process.cwd(), 'src', 'pages', pagePath);
-					const pageContent = fs.readFileSync(absolutePath, 'utf-8');
-					const frontMatter = preprocess.parseFrontmatter(pageContent);
+		const fileTree = _buildPageManifest(pages);
 
-					return (r['href'] = href), (r['frontMatter'] = frontMatter);
-				} else {
-					const label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ');
-					r.isTemplated = e.includes('[');
-					return (
-						r?.children[e] ||
-						(r.children[e] = {
-							label,
-							children: {},
-							href: undefined,
-							isTemplated: false
-						})
-					);
-				}
-			}, fileTree);
-		});
-		deleteEmptyNodes(fileTree);
-		convertChildrenToArray(fileTree);
 		return new Response(JSON.stringify(fileTree));
-	} catch {
+	} catch (e) {
+		console.log('Failed to build pages manifest with error: ', e);
 		throw error(500, 'Failed to build pages manifest.');
 	}
 }

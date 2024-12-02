@@ -1,12 +1,16 @@
 <script>
+	// @ts-check
+
 	import yaml from 'yaml';
 	import { JSONPath } from '@astronautlabs/jsonpath';
 
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
 	import Hint from '../../atoms/hint/Hint.svelte';
 
+	/** @type {import('@evidence-dev/sdk/plugins').IDatasourceOptionSpec} */
 	export let spec;
 	export let key;
+	/** @type {Record<string, any>} */
 	export let options;
 	export let disabled;
 	export let rootOptions;
@@ -18,7 +22,7 @@
 
 	/** @type {string} */
 	let fieldValueKey;
-	/** @type {object} */
+	/** @type {Record<string, unknown>} */
 	let childValueTarget;
 	// Identify the proper places to find and set values
 	if (spec.children) {
@@ -79,8 +83,11 @@
 	$: refVal = spec.references ? JSONPath.query(rootOptions, spec.references) : null;
 	$: if (refVal?.length) fieldValue = refVal[0];
 
+	/** @type {import('svelte/elements').ChangeEventHandler<HTMLInputElement>} */
 	async function handleFile(e) {
-		const { files } = e.target;
+		if (!e.target) return;
+
+		const { files } = /** @type {{ files: FileList | null }} */ (/** @type {unknown} */ (e.target));
 		if (!files) return;
 
 		const [file] = files;
@@ -88,7 +95,9 @@
 		switch (spec.fileFormat) {
 			case 'json':
 				try {
-					options[fieldValueKey] = await file.text().then((r) => JSON.parse(r));
+					options[fieldValueKey] = await file
+						.text()
+						.then(/** @param {string} r */ (r) => JSON.parse(r));
 				} catch (e) {
 					// TODO: Handle this more effectively
 					// TODO: Field-level error handling
@@ -98,7 +107,9 @@
 				break;
 			case 'yaml':
 				try {
-					options[fieldValueKey] = await file.text().then((r) => yaml.parse(r));
+					options[fieldValueKey] = await file
+						.text()
+						.then(/** @param {string} r */ (r) => yaml.parse(r));
 				} catch (e) {
 					// TODO: Handle this more effectively
 					// TODO: Field-level error handling
@@ -135,11 +146,15 @@
 	// Flush values back up
 	$: options[fieldValueKey] = fieldValue;
 
-	$: fieldDisabled = disabled || spec.forceReference || (spec.reference && refVal !== null);
+	$: fieldDisabled = disabled || spec.forceReference || (spec.references && refVal !== null);
 </script>
 
 <div class="w-full">
-	<label class="flex justify-between w-full h-11 items-start">
+	<label
+		class="flex justify-between w-full items-start"
+		class:h-11={spec.type !== 'multiline'}
+		class:h-auto={spec.type === 'multiline'}
+	>
 		<div class="mr-2 inline-flex flex-col gap-1">
 			<p class="flex items-center gap-1">
 				{#if spec.description}
@@ -168,6 +183,14 @@
 					bind:value={fieldValue}
 				/>
 			{/if}
+		{:else if spec.type === 'multiline'}
+			<textarea
+				disabled={fieldDisabled}
+				required={spec.required}
+				bind:value={fieldValue}
+				rows="5"
+				class="w-full p-2 mb-3.5"
+			></textarea>
 		{:else if spec.type === 'boolean'}
 			<input
 				class="!w-5"
@@ -183,7 +206,7 @@
 				type="number"
 				bind:value={fieldValue}
 			/>
-		{:else if spec.type === 'select'}
+		{:else if spec.type === 'select' && Array.isArray(spec.options)}
 			<select disabled={fieldDisabled} bind:value={fieldValue}>
 				<option disabled={spec.required} value={undefined} />
 				{#each spec.options as option}
@@ -205,7 +228,7 @@
 				{reveal}
 				disabled={fieldDisabled}
 				bind:options={childValueTarget}
-				optionSpec={spec.children[fieldValue]}
+				optionSpec={spec.children?.[fieldValue]}
 			/>
 		</section>
 	{/if}
@@ -213,7 +236,8 @@
 
 <style>
 	input,
-	select {
+	select,
+	textarea {
 		@apply rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm;
 	}
 </style>

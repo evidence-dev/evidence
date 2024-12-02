@@ -3,11 +3,11 @@
 </script>
 
 <script>
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { getContext } from 'svelte';
 	import Button from '../../shadcn/button/button.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import { toBoolean } from '../../../utils.js';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	const inputs = getInputContext();
 
 	/////
 	// Component Things
@@ -24,9 +24,8 @@
 	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
 
 	export let defaultValue = false;
-	$: defaultValue = defaultValue === 'true' || defaultValue === true;
 
-	$inputs[name] = defaultValue;
+	$: $inputs[name] = toBoolean(defaultValue);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>

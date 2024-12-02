@@ -1,8 +1,9 @@
 import chalk from 'chalk';
 import { PluginPackageSchema } from './schemas/plugin-package.schema.js';
 import fs from 'fs/promises';
+import { createRequire } from 'module';
 import path from 'path';
-import { projectRoot } from '../lib/projectRoot.js';
+import { log } from '../logger/index.js';
 
 /**
  *
@@ -10,8 +11,29 @@ import { projectRoot } from '../lib/projectRoot.js';
  * @returns {Promise<null | import("./schemas/plugin-package.schema.js").PluginPackage & {dir: string}>}
  */
 export const loadPluginPackage = async (name) => {
-	// We have to use this instead of read/resolve PackageJSON because these packages don't have an index file
-	const packagePath = path.join(projectRoot, 'node_modules', name, 'package.json');
+	let pluginPackageDirectory = path.dirname(createRequire(import.meta.url).resolve(name));
+	let pluginPackageDirContents = await fs.readdir(pluginPackageDirectory);
+	while (!pluginPackageDirContents.includes('package.json')) {
+		pluginPackageDirectory = path.dirname(pluginPackageDirectory);
+		pluginPackageDirContents = await fs.readdir(pluginPackageDirectory);
+
+		if (pluginPackageDirectory === path.dirname(pluginPackageDirectory)) {
+			// reached root
+			log.warn(
+				chalk.yellow(
+					`Package ${chalk.bold(
+						`"${name}"`
+					)} not found, run again with --debug for more information`
+				)
+			);
+			return null;
+		}
+	}
+
+	const packagePath = path.join(pluginPackageDirectory, 'package.json');
+	log.debug(
+		chalk.green(`Loading plugin package ${chalk.bold(`"${name}"`)} from ${chalk.bold(packagePath)}`)
+	);
 
 	const packageContent = JSON.parse(await fs.readFile(packagePath, 'utf-8'));
 	const pack = PluginPackageSchema.safeParse(packageContent);

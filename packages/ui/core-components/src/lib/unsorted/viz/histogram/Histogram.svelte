@@ -40,6 +40,8 @@
 	export let emptyMessage = undefined;
 
 	export let renderer = undefined;
+	export let downloadableData = undefined;
+	export let downloadableImage = undefined;
 
 	export let connectGroup = undefined;
 </script>
@@ -73,6 +75,8 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{downloadableData}
+	{downloadableImage}
 	{connectGroup}
 >
 	<Hist {fillColor} {fillOpacity} />

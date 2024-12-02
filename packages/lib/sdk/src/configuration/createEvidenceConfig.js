@@ -14,7 +14,12 @@ export const createEvidenceConfig = async (update) => {
 		path.join(process.cwd(), 'evidence.config.yaml')
 	);
 
-	const existingConfig = await getEvidenceConfig().catch(() => false);
+	let existingConfig;
+	try {
+		existingConfig = getEvidenceConfig();
+	} catch {
+		/* Do nothing */
+	}
 
 	const config = {
 		plugins: {
