@@ -229,6 +229,7 @@ function registerComponentProvider(context: ExtensionContext) {
 				return provideComponentCompletionItems(document, position);
 			},
 		},
+		'{',
 		' ', // Trigger completion after a space (inside a tag)
 	);
 
@@ -775,7 +776,7 @@ async function provideSQLCompletionItems(
 				CompletionItemKind.Variable
 			);
 			inputCompletionItem.insertText = inputName;
-			inputCompletionItem.detail = 'Input Variable';
+			inputCompletionItem.detail = 'Input Variable\n\nRemember to use .value or .label if needed';
 			completionItems.push(inputCompletionItem);
 		}
 	} else if (fromMatch || joinMatch) {
@@ -904,10 +905,8 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 	}
 
 	console.log('In component context, providing suggestions...');
-	const text = document.getText();
 	const completionItems: CompletionItem[] = [];
 	const textBeforeCursor = document.getText(new Range(new Position(0, 0), position));
-	const queryNames = extractQueryNames();
 
 	// Extract the component name from the open tag
 	const lastOpenTagIndex = textBeforeCursor.lastIndexOf('<');
@@ -932,23 +931,43 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 		return []; // No suggestions for unknown components
 	}
 
-	// Add props as suggestions and include sortText based on rank
-	for (const prop of componentDefinition.props) {
-		const item = new CompletionItem(prop.name, CompletionItemKind.Property);
-		// item.insertText = new SnippetString(prop.name + '=');
-		item.documentation = new MarkdownString(
-			`**Description:** ${prop.description || 'No description available'}\n\n` +
-			`**Type:** ${prop.type}\n\n` +
-			`**Default:** ${prop.defaultValue || 'None'}\n\n` +
-			`**Options:** ${prop.options}`
-		);
-		item.insertText = prop.name + '=';
-		item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
-		completionItems.push(item);
-	}
+	const bracePattern = /=\{([^}]*)$/g; // Match `={` and ensure no closing brace `}` has occurred yet
+	const braceMatch = bracePattern.exec(textBeforeCursor);
 
-	// Explicit sorting to ensure rank is respected
-	completionItems.sort((a, b) => a.sortText!.localeCompare(b.sortText!)); // Use the `!` to assert sortText is defined
+	if (braceMatch) {
+		// if (false) {
+		const queryNames = extractQueryNames();
+
+		for (const queryName of queryNames) {
+			const queryNameCompletionItem = new CompletionItem(
+				queryName,
+				CompletionItemKind.Interface
+			);
+			queryNameCompletionItem.insertText = `${queryName}`;
+			completionItems.push(queryNameCompletionItem);
+		}
+
+	} else {
+
+		// Add props as suggestions and include sortText based on rank
+		for (const prop of componentDefinition.props) {
+			const item = new CompletionItem(prop.name, CompletionItemKind.Property);
+			// item.insertText = new SnippetString(prop.name + '=');
+			item.documentation = new MarkdownString(
+				`**Description:** ${prop.description || 'No description available'}\n\n` +
+				`**Type:** ${prop.type}\n\n` +
+				`**Default:** ${prop.defaultValue || 'None'}\n\n` +
+				`**Options:** ${prop.options}`
+			);
+			item.insertText = prop.name + '=';
+			item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
+			completionItems.push(item);
+		}
+
+		// Explicit sorting to ensure rank is respected
+		completionItems.sort((a, b) => a.sortText!.localeCompare(b.sortText!)); // Use the `!` to assert sortText is defined
+
+	}
 
 	return completionItems;
 }
