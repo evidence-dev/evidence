@@ -72,8 +72,14 @@ describe('buildMultipartParquet', () => {
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledOnce();
-		expect(fs.rm).toHaveBeenCalledWith(
+		expect(fs.rm).toHaveBeenCalledTimes(2);
+		expect(fs.rm).toHaveBeenNthCalledWith(
+			1,
+			adaptFilePath('.evidence/template/static/data/out.parquet'),
+			{ force: true }
+		);
+		expect(fs.rm).toHaveBeenNthCalledWith(
+			2,
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
 			{ force: true }
 		);
@@ -104,14 +110,19 @@ describe('buildMultipartParquet', () => {
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledTimes(2);
+		expect(fs.rm).toHaveBeenCalledTimes(3);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			1,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
+			adaptFilePath('.evidence/template/static/data/out.parquet'),
 			{ force: true }
 		);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			2,
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
+			{ force: true }
+		);
+		expect(fs.rm).toHaveBeenNthCalledWith(
+			3,
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet'),
 			{ force: true }
 		);
@@ -132,8 +143,14 @@ describe('buildMultipartParquet', () => {
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledOnce();
-		expect(fs.rm).toHaveBeenCalledWith(
+		expect(fs.rm).toHaveBeenCalledTimes(2);
+		expect(fs.rm).toHaveBeenNthCalledWith(
+			1,
+			adaptFilePath('.evidence/template/static/data/out.parquet'),
+			{ force: true }
+		);
+		expect(fs.rm).toHaveBeenNthCalledWith(
+			2,
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
 			{
 				force: true
@@ -163,7 +180,7 @@ describe('buildMultipartParquet', () => {
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledTimes(VERY_LARGE_NUMBER);
+		expect(fs.rm).toHaveBeenCalledTimes(VERY_LARGE_NUMBER + 1);
 	});
 
 	// TODO: Test how it handles invalid filepath
