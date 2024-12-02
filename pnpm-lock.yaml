@@ -5351,8 +5351,6 @@ packages:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/cache@2.13.2(@parcel/core@2.13.2):
@@ -6363,6 +6361,8 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.13.2)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/workers@2.13.2(@parcel/core@2.13.2):
