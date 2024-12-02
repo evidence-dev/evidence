@@ -228,7 +228,7 @@
 				disabled={!loaded}
 			>
 				{#if !range && title}
-					<span class="border-r-2 border-gray-200 pr-2.5 h-full flex items-center">
+					<span class="border-r-[2px] pr-2.5 h-full flex items-center">
 						{title}
 					</span>
 				{/if}
@@ -236,7 +236,7 @@
 					{#if !loaded}
 						Loading...
 					{:else if selectedDateInput && !range}
-						<span class="flex align-center {title ? 'ml-2' : ''}">
+						<span class="flex align-center {title ? 'ml-2 ' : ''}">
 							{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
 							<Icon src={CalendarIcon} class="ml-2 h-[14px] w-[14px] text-gray-500" />
 						</span>
