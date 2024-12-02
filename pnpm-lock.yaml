@@ -1813,6 +1813,7 @@ packages:
     dependencies:
       lodash: 4.17.21
       typical: 7.3.0
+    dev: false
 
   /@adobe/css-tools@4.4.1:
     resolution: {integrity: sha512-12WGKBQzjUAI4ayyF4IAtfw2QR/IDoqk6jTddXDhtYTJF9ASmoE1zst7cVtP0aL/F1jUJL5r+JxKXKEgHNbEUQ==}
@@ -9248,9 +9249,9 @@ packages:
       '@swc/helpers': 0.5.15
       '@types/command-line-args': 5.2.3
       '@types/command-line-usage': 5.0.4
-      '@types/node': 20.17.6
+      '@types/node': 20.17.9
       command-line-args: 5.2.1
-      command-line-usage: 7.0.1
+      command-line-usage: 7.0.3
       flatbuffers: 24.3.25
       json-bignum: 0.0.3
       tslib: 2.8.1
@@ -10325,6 +10326,16 @@ packages:
       array-back: 6.2.2
       chalk-template: 0.4.0
       table-layout: 3.0.2
+      typical: 7.3.0
+    dev: false
+
+  /command-line-usage@7.0.3:
+    resolution: {integrity: sha512-PqMLy5+YGwhMh1wS04mVG44oqDsgyLRSKJBdOo1bnYhMKBW65gZF1dRp2OZRhiTjgUHljy99qkO7bsctLaw35Q==}
+    engines: {node: '>=12.20.0'}
+    dependencies:
+      array-back: 6.2.2
+      chalk-template: 0.4.0
+      table-layout: 4.1.1
       typical: 7.3.0
 
   /commander@11.1.0:
@@ -15666,9 +15677,6 @@ packages:
     resolution: {integrity: sha512-ROp1Lf6cihWYzdkieXH+KWVkjlqiUMqW18MBMNZQ3sQitnXWGozTgSYIfpUFLQqaHLgBfm5inOwdqmbzExdpYA==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.13.2(@parcel/core@2.13.2)(postcss@8.4.49)(typescript@5.4.2)
       '@parcel/core': 2.13.2
@@ -17328,9 +17336,6 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
@@ -17457,6 +17462,7 @@ packages:
   /stream-read-all@3.0.1:
     resolution: {integrity: sha512-EWZT9XOceBPlVJRrYcykW8jyRSZYbkb/0ZK36uLEmoWVO5gxBOnntNTseNzfREsqxqdfEGQrD8SXQ3QWbBmq8A==}
     engines: {node: '>=10'}
+    dev: false
 
   /stream-shift@1.0.3:
     resolution: {integrity: sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==}
@@ -17924,6 +17930,14 @@ packages:
       command-line-usage: 7.0.1
       stream-read-all: 3.0.1
       typical: 7.3.0
+      wordwrapjs: 5.1.0
+    dev: false
+
+  /table-layout@4.1.1:
+    resolution: {integrity: sha512-iK5/YhZxq5GO5z8wb0bY1317uDF3Zjpha0QFFLA8/trAoiLbQD0HUbMesEaxyzUgDxi2QlcbM8IvqOlEjgoXBA==}
+    engines: {node: '>=12.17'}
+    dependencies:
+      array-back: 6.2.2
       wordwrapjs: 5.1.0
 
   /tailwind-merge@1.14.0:
