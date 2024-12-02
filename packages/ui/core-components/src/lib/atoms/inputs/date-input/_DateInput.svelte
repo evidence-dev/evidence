@@ -237,7 +237,7 @@
 						{/if}
 						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
 
-						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 stroke-1 mb-[2px]" />
+						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-1 text-black" />
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfMedium.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
@@ -257,7 +257,7 @@
 						Loading...
 					{:else if selectedDateInput && !range}
 						{dfShort.format(selectedDateInput.toDate(getLocalTimeZone()))}
-						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 text-gray-600 mb-[2px]" />
+						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-1 text-black" />
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfShort.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfShort.format(
