@@ -2,12 +2,12 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Netlify
-description: Deploy Evidence to Netlify
+description: Deploy Evidence to Netlify by linking to a Git repository. Netlify supports custom domains, global passwords, and GitHub Actions for data refresh.
 og:
     image: /img/deployment/deploy-netlify.png
 ---
 
-[Netlify](https://www.netlify.com) is a cloud platform for building and deploying web apps and frontend sites. Netlify can be used to deploy Evidence from a Git repository.
+[Netlify](https://www.netlify.com) is a cloud platform for building and deploying web apps and frontend sites. Netlify can deploy Evidence apps from a Git repository.
 
 <Alert status=warning>
 
@@ -31,7 +31,7 @@ Netlify lets you host a public version of your app for free, or you can create a
 - An Evidence project pushed to a Git service like GitHub, GitLab, or Bitbucket.
 - A Netlify account.
 
-## Deploy your app
+## Deploy Evidence to Netlify
 
 1. From the <a href="https://app.netlify.com/" target="_blank" class="markdown">Netlify dashboard</a>, select **Add new site > Import an existing project**
 1. Choose your Git provider (GitHub, GitLab, Bitbucket, Azure DevOps)

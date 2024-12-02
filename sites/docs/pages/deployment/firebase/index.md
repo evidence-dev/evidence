@@ -1,20 +1,19 @@
 ---
 sidebar_position: 4
 title: Firebase
-description: Deploy Evidence to Firebase
+description: Deploy Evidence to Firebase Hosting by linking to a Git repository. Hosting supports custom domains and GitHub Actions for data refresh.
 og:
     image: /img/deployment/deploy-firebase.png
 ---
 
-[Firebase Hosting](https://firebase.google.com/products/hosting) is a GCP service that allows you to host static websites and single-page apps. Firebase Hosting can be used to deploy Evidence from a Git repository.
-
+[Firebase Hosting](https://firebase.google.com/products/hosting) is a GCP service that allows you to host static websites and single-page apps. Firebase Hosting can deploy Evidence apps by linking to a Git repository.
 
 ## Prerequisites
 
 - A GCP account
 - An Evidence project pushed to Git service like GitHub, GitLab, or Bitbucket.
 
-## Deploy your app
+## Deploy Evidence to Firebase
 
 <Alert status=warning>
 

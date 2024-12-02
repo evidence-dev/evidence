@@ -1,19 +1,19 @@
 ---
 sidebar_position: 4
 title: Hugging Face Spaces
-description: Deploy Evidence to Hugging Face Spaces
+description: Deploy Evidence to Hugging Face Spaces from a GitHub repository. Spaces can be private to your org, and can use Github Actions for data refresh.
 og:
     image: /img/deployment/deploy-hugging-face-spaces.png
 ---
 
-Hugging Face is an open-source platform for machine learning and artificial intelligence that provides tools and models for building, training, and deploying AI applications. [Hugging Face Spaces](https://huggingface.co/spaces) is a service that allows you to deploy machine learning models as web applications. Evidence can be deployed to Hugging Face Spaces by pushing your Evidence project to a GitHub repository and creating a custom workflow.
+Hugging Face is an open-source platform for machine learning and artificial intelligence that provides tools and models for building, training, and deploying AI applications. [Hugging Face Spaces](https://huggingface.co/spaces) is a service that allows you to deploy machine learning models as web applications. Hugging Face Spaces can deploy Evidence apps from a Git repository.
 
 ## Prerequisites
 
 - A Hugging Face account
 - An Evidence project pushed to a Git service like GitHub
 
-## Deploy your app
+## Deploy Evidence to Hugging Face Spaces
 
 1. Navigate to the <a href="https://huggingface.co/spaces" target="_blank" class="markdown">Hugging Face Spaces</a>
 1. Select **Create new Space**

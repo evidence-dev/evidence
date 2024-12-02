@@ -2,19 +2,19 @@
 sidebar_position: 4
 title: AWS Amplify
 breadcrumb: "select 'AWS Amplify' as breadcrumb"
-description: Deploy Evidence to AWS Amplify
+description: Deploy Evidence to AWS Amplify by linking to a Git repository. Amplify supports global passwords for authentication and custom domains.
 og:
     image: /img/deployment/deploy-aws-amplify.png
 ---
 
-[AWS Amplify](https://aws.amazon.com/amplify/) is an AWS service that allows you to create full stack web and mobile apps. Amplify can be used to deploy Evidence apps from a Git repository.
+[AWS Amplify](https://aws.amazon.com/amplify/) is an AWS service that allows you to create full stack web and mobile apps. Amplify can deploy Evidence apps by linking to a Git repository.
 
 ## Prerequisites
 
 - An AWS account
 - An Evidence project pushed to a Git service like GitHub, GitLab, or Bitbucket.
 
-## Deploy your app
+## Deploy Evidence to AWS Amplify
 
 1. Login to the <a href="https://console.aws.amazon.com/" target="_blank" class="markdown">AWS Console</a>
 2. Navigate to AWS Amplify, and select **Deploy an app** / **Create new app**

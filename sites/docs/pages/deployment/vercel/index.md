@@ -2,12 +2,12 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
-description: Deploy Evidence to Vercel
+description: Deploy Evidence to Vercel by linking to a Git repository. Vercel supports custom domains, global passwords, and GitHub Actions for data refresh.
 og:
     image: /img/deployment/deploy-vercel.png
 ---
 
-[Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications. Vercel can be used to deploy Evidence from a Git repository.
+[Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications. Vercel can deploy Evidence apps from a Git repository.
 
 Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan.
 
@@ -16,7 +16,7 @@ Vercel lets you host a public version of your app for free, or you can create an
 - An Evidence project pushed to a Git service like GitHub, GitLab, or Bitbucket.
 - A Vercel account.
 
-## Deploy your app
+## Deploy Evidence to Vercel
 
 1. From the <a href="https://vercel.com/dashboard" target="_blank" class="markdown">Vercel dashboard</a>, select **Add new... Project**
 1. Import the Git repository containing your Evidence project.

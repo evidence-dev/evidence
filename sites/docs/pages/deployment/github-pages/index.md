@@ -1,12 +1,12 @@
 ---
 sidebar_position: 4
 title: GitHub Pages
-description: Deploy Evidence to GitHub Pages
+description: Deploy Evidence to GitHub Pages from a GitHub repo. GitHub Pages can be private to your org, support custom domains, and using Actions for data refresh.
 og:
     image: /img/deployment/deploy-github-pages.png
 ---
 
-GitHub Pages is a static site hosting service that publishes a website from HTML, CSS, and JavaScript files from a repository on GitHub. It optionally runs a build process to create these files. GitHub Pages can be used to deploy Evidence from a GitHub repository.
+GitHub Pages is a static site hosting service that publishes a website from HTML, CSS, and JavaScript files from a repository on GitHub. It optionally runs a build process to create these files. GitHub Pages can deploy Evidence apps from a GitHub repository.
 
 <Alert status="warning">
 
@@ -20,7 +20,7 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
 - A GitHub account
 - An Evidence project pushed to GitHub
 
-## Deploy your app
+## Deploy Evidence to GitHub Pages
 
 1. Adjust the [base path](/deployment/base-paths) for your app to match the name of your GitHub repository. 
     - If your repo is stored at `https://github.com/username/my-evidence-app`, your base path should be `/my-evidence-app`.

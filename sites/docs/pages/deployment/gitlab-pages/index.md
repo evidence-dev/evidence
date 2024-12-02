@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 title: GitLab Pages
-description: Deploy Evidence to GitLab Pages
+description: Deploy Evidence to GitLab Pages from a GitLab repo. GitLab Pages can be private to your org, support custom domains, and GitLab CI/CD for data refresh.
 og:
     image: /img/deployment/deploy-gitlab-pages.png
 ---
@@ -13,7 +13,7 @@ og:
 - A [GitLab](https://gitlab.com/) account
 - An Evidence project pushed to a GitLab repository
 
-## Deploy your app
+## Deploy Evidence to GitLab Pages
 
 1. In <a href="https://gitlab.com/" target="_blank" class="markdown">GitLab</a>, navigate to your Evidence project repository.
 1. Add credentials as environment variables

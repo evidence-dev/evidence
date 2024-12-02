@@ -2,7 +2,7 @@
 sidebar_position: 2
 hide_table_of_contents: false
 title: Evidence Cloud
-description: Evidence Cloud is the easiest way to host Evidence apps. It's maintained by the Evidence team, and allows you to securely host Evidence apps without having to worry about maintaining your own infrastructure.
+description: Evidence Cloud is the easiest way to deploy Evidence apps. It's maintained by the Evidence team, and allows you to securely host Evidence apps without having to worry about maintaining your own infrastructure.
 og:
     image: /img/deployment/deploy-evidence-cloud.png
 ---
@@ -22,7 +22,7 @@ Evidence Cloud is the easiest way to host Evidence apps. It's maintained by the 
 - A GitHub account
 - An Evidence project pushed to GitHub (optional)
 
-## Deploying your app
+## Deploy Evidence to Evidence Cloud
 
 1. Go to <a href="https://evidence.app" target="_blank" class="markdown">Evidence Cloud</a> and login with GitHub
 1. Choose an option to get started:

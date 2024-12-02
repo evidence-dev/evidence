@@ -1,19 +1,19 @@
 ---
 sidebar_position: 4
 title: Azure Static Apps
-description: Deploy Evidence to Azure Static Apps
+description: Deploy Evidence to Azure Static Apps by linking a Git repository. Static Apps support global passwords, Entra ID, custom domains, and GitHub Actions for refresh.
 og:
     image: /img/deployment/deploy-azure-static-apps.png
 ---
 
-[Azure Static Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/) is a Microsoft Azure service that allows you to deploy static websites and web apps to Azure. Azure Static Apps can be used to deploy Evidence from a Git repository.
+[Azure Static Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/) is a Microsoft Azure service that allows you to deploy static websites and web apps to Azure. Azure Static Apps can deploy Evidence apps by linking to a Git repository.
 
 ## Prerequisites
 
 - A Microsoft Azure account
 - An Evidence project pushed to a Git service like GitHub or Azure DevOps
 
-## Deploy your app
+## Deploy Evidence to Azure Static Apps
 
 1. In the <a href="https://portal.azure.com/" target="_blank" class="markdown">Azure Portal</a>, select **Create a Resource** and choose **Static Web App**
 1. Basics
