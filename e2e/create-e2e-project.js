@@ -31,7 +31,8 @@ test('has title', async ({ page }) => {
 const testScripts = {
 	test: undefined,
 	'test:preview': 'playwright test',
-	'test:dev': 'cross-env DEV=true playwright test'
+	'test:dev': 'cross-env DEV=true playwright test',
+	'setup': 'pnpm sources'
 };
 
 /** @type {Partial<SpawnOptions>} */

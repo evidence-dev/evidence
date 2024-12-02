@@ -65,9 +65,9 @@ jobs:
       - name: Install Playwright and browsers
         run: pnpm playwright install --with-deps
 
-      - name: Run sources
+      - name: Run setup
         working-directory: ./e2e/${{ matrix.project }}
-        run: pnpm run sources
+        run: pnpm run setup
 
       - name: Run dev mode tests
         working-directory: ./e2e/${{ matrix.project }}

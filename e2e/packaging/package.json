@@ -5,10 +5,11 @@
     "build": "evidence build",
     "build:strict": "evidence build:strict",
     "dev": "evidence dev --open /",
-    "sources": "node ./build-deps-to-tgz.js && npm i",
+    "sources": "evidence sources",
     "preview": "evidence preview",
     "test:preview": "playwright test",
-    "test:dev": "cross-env DEV=true playwright test"
+    "test:dev": "cross-env DEV=true playwright test",
+	"setup": "node ./build-deps-to-tgz.js && npm i && pnpm sources"
   },
   "engines": {
     "npm": ">=7.0.0",
