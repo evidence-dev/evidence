@@ -19,7 +19,7 @@ vi.mock('$evidence/themes', () => ({
 			defaultAppearance: 'light'
 		}
 	},
-	theme: {
+	themes: {
 		light: {
 			colors: {
 				'base-100': 'light_base-100',
