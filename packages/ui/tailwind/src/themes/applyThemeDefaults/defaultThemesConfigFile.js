@@ -11,7 +11,7 @@ export const defaultThemesConfigFile =
 			appearanceSwitcher: false,
 			colors: /** @satisfies {import('./types.js').RequiredThemeColors} */ ({
 				primary: {
-					light: '#3b82f6',
+					light: '#2563eb',
 					dark: '#3b82f6'
 				},
 				accent: {
