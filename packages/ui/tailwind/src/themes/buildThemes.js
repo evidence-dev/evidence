@@ -5,7 +5,7 @@
 export const buildThemes = (themesConfig) =>
 	/** @type {const} */ (['colors', 'colorPalettes', 'colorScales']).reduce(
 		(acc, key) => {
-			Object.entries(themesConfig.themes[key]).forEach(([name, values]) => {
+			Object.entries(themesConfig.theme[key]).forEach(([name, values]) => {
 				if (!values) return;
 				acc.light[key][name] = values.light;
 				acc.dark[key][name] = values.dark;

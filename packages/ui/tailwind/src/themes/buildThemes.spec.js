@@ -8,7 +8,7 @@ describe('buildThemes', () => {
 	it('should collect correct colors for each theme', () => {
 		/** @type {ThemesConfig} */
 		const themesConfig = {
-			themes: {
+			theme: {
 				defaultAppearance: 'light',
 				appearanceSwitcher: true,
 				colors: {

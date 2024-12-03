@@ -9,7 +9,7 @@ import { computeShades } from './computeShades.js';
  */
 export const applyThemeDefaults = (configFile) => {
 	const withDefaults = defaultsDeep({}, configFile, defaultThemesConfigFile);
-	const computedColors = computeShades(withDefaults.themes.colors);
-	merge(withDefaults.themes.colors, computedColors);
+	const computedColors = computeShades(withDefaults.theme.colors);
+	merge(withDefaults.theme.colors, computedColors);
 	return withDefaults;
 };

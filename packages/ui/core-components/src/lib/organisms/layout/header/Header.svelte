@@ -32,7 +32,7 @@
 </script>
 
 <header
-	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-base-200 bg-base-100/90 backdrop-blur print:hidden
+	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-base-300/50 bg-base-100/90 backdrop-blur print:hidden
   {sidebarFrontMatter === 'hide' ? 'md:pl-8' : ''}"
 >
 	<div

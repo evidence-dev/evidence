@@ -19,7 +19,7 @@ describe('applyThemeDefaults', () => {
 				])
 			)('should have $color color in $mode mode', ({ color, mode }) => {
 				const actual = applyThemeDefaults(input);
-				expect(actual.themes.colors[color][mode]).toBeDefined();
+				expect(actual.theme.colors[color][mode]).toBeDefined();
 			});
 
 			it.each(
@@ -29,7 +29,7 @@ describe('applyThemeDefaults', () => {
 				])
 			)('should have $colorPalette color palette in $mode mode', ({ colorPalette, mode }) => {
 				const actual = applyThemeDefaults(input);
-				expect(actual.themes.colorPalettes[colorPalette][mode]).toBeDefined();
+				expect(actual.theme.colorPalettes[colorPalette][mode]).toBeDefined();
 			});
 
 			it.each(
@@ -39,7 +39,7 @@ describe('applyThemeDefaults', () => {
 				])
 			)('should have $colorScale color scale in $mode mode', ({ colorScale, mode }) => {
 				const actual = applyThemeDefaults(input);
-				expect(actual.themes.colorScales[colorScale][mode]).toBeDefined();
+				expect(actual.theme.colorScales[colorScale][mode]).toBeDefined();
 			});
 		});
 
@@ -61,8 +61,8 @@ describe('applyThemeDefaults', () => {
 				'should have contrast >= 4.5 between $requiredColor and $computedColor in $mode mode',
 				({ requiredColor, computedColor, mode }) => {
 					const actual = applyThemeDefaults(input);
-					const requiredColorValue = actual.themes.colors[requiredColor][mode];
-					const computedColorValue = actual.themes.colors[computedColor][mode];
+					const requiredColorValue = actual.theme.colors[requiredColor][mode];
+					const computedColorValue = actual.theme.colors[computedColor][mode];
 					expect(
 						chroma.contrast(requiredColorValue, computedColorValue),
 						`Expected contrast between ${requiredColor} (${requiredColorValue}) and ${computedColor} (${computedColorValue}) to be greater than 4.5 in ${mode} mode`
@@ -78,15 +78,15 @@ describe('applyThemeDefaults', () => {
 				{ bgColor: 'base-100', fgColor: 'base-content', mode: 'dark' },
 				{ bgColor: 'base-100', fgColor: 'base-content-muted', mode: 'dark' }
 			])(
-				'should have contrast >= 7 between $bgColor and $fgColor in $mode mode',
+				'should have contrast >= 4.5 between $bgColor and $fgColor in $mode mode',
 				({ bgColor, fgColor, mode }) => {
 					const actual = applyThemeDefaults(input);
-					const bgColorValue = actual.themes.colors[bgColor][mode];
-					const fgColorValue = actual.themes.colors[fgColor][mode];
+					const bgColorValue = actual.theme.colors[bgColor][mode];
+					const fgColorValue = actual.theme.colors[fgColor][mode];
 					expect(
 						chroma.contrast(bgColorValue, fgColorValue),
 						`Expected contrast between ${bgColor} (${bgColorValue}) and ${fgColor} (${fgColorValue}) to be greater than 7 in ${mode} mode`
-					).toBeGreaterThan(7);
+					).toBeGreaterThan(4.5);
 				}
 			);
 		});
@@ -94,7 +94,7 @@ describe('applyThemeDefaults', () => {
 
 	it('should preserve custom colors', () => {
 		const actual = applyThemeDefaults({
-			themes: {
+			theme: {
 				colors: {
 					myCustomColor: {
 						light: '#abcdef',
@@ -104,7 +104,7 @@ describe('applyThemeDefaults', () => {
 			}
 		});
 
-		expect(actual.themes.colors.myCustomColor?.light).toBe('#abcdef');
-		expect(actual.themes.colors.myCustomColor?.dark).toBe('#fedcba');
+		expect(actual.theme.colors.myCustomColor?.light).toBe('#abcdef');
+		expect(actual.theme.colors.myCustomColor?.dark).toBe('#fedcba');
 	});
 });

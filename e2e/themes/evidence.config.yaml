@@ -1,4 +1,4 @@
-themes:
+theme:
   defaultAppearance: light
   appearanceSwitcher: true
   colors:
