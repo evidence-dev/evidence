@@ -24,7 +24,7 @@ export const BUILTIN_COLORS = /** @type {const} */ ([
 	'warning-content'
 ]);
 
-export const BUILTIN_COLOR_ALIASES =
+const BUILTIN_COLOR_ALIASES =
 	/**
 	 * @type {const}
 	 * @satisfies {Record<string, import('./types.js').BuiltinColor>}
@@ -34,19 +34,29 @@ export const BUILTIN_COLOR_ALIASES =
 		base: 'base-100'
 	});
 
-export const ThemeColorSchema = z.object({
-	light: z.string(),
-	dark: z.string()
-});
+const BuiltinThemeColorSchema = z
+	.object({
+		light: z.string(),
+		dark: z.string()
+	})
+	.partial()
+	.or(z.string().transform((s) => ({ light: s, dark: s })));
+
+const CustomThemeColorSchema = z
+	.object({
+		light: z.string(),
+		dark: z.string()
+	})
+	.or(z.string().transform((s) => ({ light: s, dark: s })));
 
 export const ThemeColorsSchema = z
 	.object(
 		fromEntries(
-			BUILTIN_COLORS.map((color) => /** @type {const} */ ([color, ThemeColorSchema.partial()]))
+			BUILTIN_COLORS.map((color) => /** @type {const} */ ([color, BuiltinThemeColorSchema]))
 		)
 	)
 	.partial()
-	.catchall(ThemeColorSchema)
+	.catchall(CustomThemeColorSchema)
 	.transform((colors) => {
 		const result = { ...colors };
 		for (const [alias, color] of Object.entries(BUILTIN_COLOR_ALIASES)) {

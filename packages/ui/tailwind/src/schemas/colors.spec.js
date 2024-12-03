@@ -16,4 +16,15 @@ describe('ThemeColorsSchema', () => {
 		});
 		expect(result['base']).toBeUndefined();
 	});
+
+	it('should transform single color into that color for light and dark', () => {
+		const colors = {
+			primary: 'primary_color'
+		};
+		const result = ThemeColorsSchema.parse(colors);
+		expect(result['primary']).toEqual({
+			light: 'primary_color',
+			dark: 'primary_color'
+		});
+	});
 });
