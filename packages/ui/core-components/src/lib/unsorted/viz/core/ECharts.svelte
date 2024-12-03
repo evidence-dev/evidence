@@ -14,7 +14,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
 
-	const { activeAppearance, resolveColorsObject } = getThemeStores();
+	const { activeAppearance, theme, resolveColorsObject } = getThemeStores();
 
 	export let config = undefined;
 
@@ -178,7 +178,9 @@
 			seriesOptions,
 			seriesColors: $seriesColorsStore,
 			queryID,
-			evidenceChartTitle
+			evidenceChartTitle,
+			theme: $activeAppearance,
+			backgroundColor: $theme.colors['base-100']
 		}}
 	/>
 {/if}
