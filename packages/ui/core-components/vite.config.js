@@ -5,7 +5,6 @@ import { configVirtual } from '@evidence-dev/sdk/build/vite';
 export default defineConfig({
 	plugins: [sveltekit(), configVirtual()],
 	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}'],
-		setupFiles: ['./src/vitest/setup.js']
+		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
 });

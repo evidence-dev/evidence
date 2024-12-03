@@ -162,7 +162,7 @@ export class ThemeStores {
 	 * @returns {string | T | undefined}
 	 */
 	static #resolveColor = (input, appearance) => {
-		if (typeof input === 'string') {
+		if (typeof input === 'string' || input instanceof String) {
 			const lightColor = themes.light.colors[input.trim()];
 			const darkColor = themes.dark.colors[input.trim()];
 
@@ -196,25 +196,31 @@ export class ThemeStores {
 	 * @param {T} input
 	 * @returns {Readable<string | T | undefined>}
 	 */
-	resolveColor = (input) =>
-		derived(this.#activeAppearance, ($activeAppearance) =>
-			ThemeStores.#resolveColor(input, $activeAppearance)
+	resolveColor = (input) => {
+		if (isResolved(input)) return readable(input);
+
+		return derived(this.#activeAppearance, ($activeAppearance) =>
+			setResolved(ThemeStores.#resolveColor(input, $activeAppearance))
 		);
+	};
 
 	/**
 	 * @template T
 	 * @param {Record<string, T> | undefined} input
-	 * @returns {Readable<Record<string, (string | T | undefined)> | undefined>}
+	 * @returns {Readable<WithResolved<Record<string, (string | T | undefined)>> | undefined>}
 	 */
 	resolveColorsObject = (input) => {
+		if (isResolved(input)) return readable(input);
 		if (!input) return readable(undefined);
 
 		return derived(this.#activeAppearance, ($activeAppearance) =>
-			Object.fromEntries(
-				Object.entries(input).map(([key, color]) => [
-					key,
-					ThemeStores.#resolveColor(color, $activeAppearance)
-				])
+			setResolved(
+				Object.fromEntries(
+					Object.entries(input).map(([key, color]) => [
+						key,
+						setResolved(ThemeStores.#resolveColor(color, $activeAppearance))
+					])
+				)
 			)
 		);
 	};
@@ -222,20 +228,22 @@ export class ThemeStores {
 	/**
 	 * @template T
 	 * @param {T} input
-	 * @returns {Readable<string[] | (T[number])[] | undefined>}
+	 * @returns {Readable<WithResolved<T | string[] | (T[number])[]> | undefined>}
 	 */
 	resolveColorPalette = (input) => {
-		if (typeof input === 'string') {
+		if (isResolved(input)) {
+			return readable(input);
+		}
+
+		if (typeof input === 'string' || input instanceof String) {
 			return derived(this.#theme, ($theme) => setResolved($theme.colorPalettes[input.trim()]));
 		}
 
 		if (Array.isArray(input)) {
-			if (isResolved(input)) {
-				return readable(input);
-			}
-
 			return derived(this.#activeAppearance, ($activeAppearance) =>
-				setResolved(input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance)))
+				setResolved(
+					input.map((color) => setResolved(ThemeStores.#resolveColor(color, $activeAppearance)))
+				)
 			);
 		}
 
@@ -245,7 +253,7 @@ export class ThemeStores {
 	/**
 	 * @template T
 	 * @param {T} input
-	 * @returns {Readable<string[] | (T[number])[] | undefined>}
+	 * @returns {Readable<WithResolved<string[] | (T[number])[]> | undefined>}
 	 */
 	resolveColorScale = (input) => {
 		if (typeof input === 'string') {
@@ -270,7 +278,9 @@ export class ThemeStores {
 			}
 
 			return derived(this.#activeAppearance, ($activeAppearance) =>
-				setResolved(input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance)))
+				setResolved(
+					input.map((color) => setResolved(ThemeStores.#resolveColor(color, $activeAppearance)))
+				)
 			);
 		}
 
@@ -299,23 +309,38 @@ export const getThemeStores = () => {
 const isStringTuple = (input) =>
 	Array.isArray(input) &&
 	(input.length === 1 || input.length === 2) &&
-	input.every((item) => typeof item === 'string');
+	input.every((item) => typeof item === 'string' || item instanceof String);
+
+/**
+ * @template T
+ * @typedef {(
+ * 	T extends object
+ * 	  ? T & { resolved?: true }
+ * 	  : T extends string
+ * 		  ? String & { resolved?: true }
+ * 		  : T
+ * )} WithResolved
+ */
 
 /**
  * @template T
  * @param {T} input
- * @returns {T | T & { resolved: true }}
+ * @returns {T | WithResolved<T>}
  */
 const setResolved = (input) => {
-	if (typeof input !== 'object') return input;
-	/** @type {any} */ (input).resolved = true;
-	return /** @type {T & { resolved: true }} */ (input);
+	/** @type {any} */
+	let out;
+	if (typeof input === 'string') out = new String(input);
+	else if (!input || typeof input !== 'object') return input;
+	else out = input;
+
+	out.resolved = true;
+	return out;
 };
 
 /**
- * @param {unknown} input
- * @returns {input is { resolved: true }}
+ * @template T
+ * @param {T} input
+ * @returns {input is WithResolved<T>}
  */
 const isResolved = (input) => typeof input === 'object' && /** @type {any} */ (input)?.resolved;
-
-// Use a proxy instead of defineProperty
