@@ -161,9 +161,6 @@ importers:
       git-remote-origin-url:
         specifier: 4.0.0
         version: 4.0.0
-      glob:
-        specifier: 11.0.0
-        version: 11.0.0
       http-proxy:
         specifier: ^1.18.1
         version: 1.18.1
@@ -233,6 +230,9 @@ importers:
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
+      glob:
+        specifier: 11.0.0
+        version: 11.0.0
       ora:
         specifier: ^8.1.0
         version: 8.1.1

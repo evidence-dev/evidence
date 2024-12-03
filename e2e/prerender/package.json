@@ -8,8 +8,7 @@
     "sources": "evidence sources",
     "preview": "evidence preview",
     "test:preview": "playwright test",
-    "test:dev": "echo e2e/hmr has no dev mode tests",
-	"setup": "pnpm sources"
+    "test:dev": "echo e2e/hmr has no dev mode tests"
   },
   "engines": {
     "npm": ">=7.0.0",

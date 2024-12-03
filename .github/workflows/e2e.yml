@@ -67,7 +67,11 @@ jobs:
 
       - name: Run setup
         working-directory: ./e2e/${{ matrix.project }}
-        run: pnpm run setup
+        run: pnpm run --if-present setup
+
+      - name: Run sources
+        working-directory: ./e2e/${{ matrix.project }}
+        run: pnpm run sources
 
       - name: Run dev mode tests
         working-directory: ./e2e/${{ matrix.project }}

@@ -8,8 +8,7 @@
     "sources": "evidence sources",
     "preview": "cross-env VITE_EVIDENCE_THEMES=true evidence preview",
     "test:preview": "playwright test",
-    "test:dev": "cross-env DEV=true playwright test",
-	"setup": "pnpm sources"
+    "test:dev": "cross-env DEV=true playwright test"
   },
   "engines": {
     "npm": ">=7.0.0",
