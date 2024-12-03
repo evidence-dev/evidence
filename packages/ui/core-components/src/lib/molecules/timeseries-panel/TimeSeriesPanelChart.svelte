@@ -1,18 +1,18 @@
 <script>
 	import { init, graphic } from 'echarts';
 	import { RadioGroup } from 'bits-ui';
-	import { blur, fly, fade } from 'svelte/transition';
+	// import { blur, fly, fade } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
-	import {
-		CalendarDate,
-		DateFormatter,
-		getLocalTimeZone,
-		startOfMonth,
-		endOfMonth,
-		startOfYear,
-		endOfYear
-	} from '@internationalized/date';
+	// import {
+	// 	CalendarDate,
+	// 	DateFormatter,
+	// 	getLocalTimeZone,
+	// 	startOfMonth,
+	// 	endOfMonth,
+	// 	startOfYear,
+	// 	endOfYear
+	// } from '@internationalized/date';
 
 	export let data;
 	export let selectedMetric = undefined;
@@ -20,7 +20,7 @@
 
 	let chart;
 	$: lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date();
-	$: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
+	// $: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
 	$: currentValue =
 		filteredData.length > 0 ? filteredData[filteredData.length - 1][selectedMetric] : 4.28;
 	$: if (selectedTimeRange) {
