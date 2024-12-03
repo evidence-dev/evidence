@@ -83,4 +83,23 @@ describe('ThemesConfigFileSchema', () => {
 			}
 		);
 	});
+
+	it('should not allow unknown keys under theme:', () => {
+		const config = {
+			theme: {
+				colors: {
+					primary: {
+						light: '#abcdef',
+						dark: '#fedcba'
+					}
+				},
+				colorPalette: {
+					default: ['#abcdef', '#fedcba']
+				}
+			}
+		};
+
+		const { success } = ThemesConfigFileSchema.safeParse(config);
+		expect(success).toBe(false);
+	});
 });
