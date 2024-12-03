@@ -7,7 +7,7 @@ import { ThemeColorScalesSchema } from './colorScales.js';
 
 export const ThemesConfigFileSchema = DefaultEmptyObject(
 	z.object({
-		themes: DefaultEmptyObject(
+		theme: DefaultEmptyObject(
 			z.object({
 				defaultAppearance: z
 					.union([z.literal('light'), z.literal('dark'), z.literal('system')])

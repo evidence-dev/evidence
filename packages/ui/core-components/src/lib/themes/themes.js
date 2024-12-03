@@ -13,7 +13,7 @@ import chroma from 'chroma-js';
 /** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
 /** @typedef {import('@evidence-dev/tailwind').ThemesConfig} ThemesConfig */
 
-const { defaultAppearance, appearanceSwitcher } = themesConfig.themes;
+const { defaultAppearance, appearanceSwitcher } = themesConfig.theme;
 
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
@@ -85,14 +85,14 @@ export class ThemeStores {
 
 		this.#selectedAppearance = localStorageStore(
 			'evidence-theme',
-			themesConfig.themes.defaultAppearance,
+			themesConfig.theme.defaultAppearance,
 			{
 				serialize: (value) => value,
 				deserialize: (raw) => {
 					if (!appearanceSwitcher) return defaultAppearance;
 					return ['system', 'light', 'dark'].includes(raw)
 						? /** @type {'light' | 'dark' | 'system'} */ (raw)
-						: themesConfig.themes.defaultAppearance;
+						: themesConfig.theme.defaultAppearance;
 				}
 			}
 		);
