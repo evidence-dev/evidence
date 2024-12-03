@@ -226,12 +226,16 @@ export class ThemeStores {
 	 */
 	resolveColorPalette = (input) => {
 		if (typeof input === 'string') {
-			return derived(this.#theme, ($theme) => $theme.colorPalettes[input.trim()]);
+			return derived(this.#theme, ($theme) => setResolved($theme.colorPalettes[input.trim()]));
 		}
 
 		if (Array.isArray(input)) {
+			if (isResolved(input)) {
+				return readable(input);
+			}
+
 			return derived(this.#activeAppearance, ($activeAppearance) =>
-				input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance))
+				setResolved(input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance)))
 			);
 		}
 
@@ -247,13 +251,13 @@ export class ThemeStores {
 		if (typeof input === 'string') {
 			return derived(this.#theme, ($theme) => {
 				const colorScale = $theme.colorScales[input.trim()];
-				if (colorScale) return colorScale;
+				if (colorScale) return setResolved(colorScale);
 
 				const color = $theme.colors[input.trim()];
-				if (color) return [$theme.colors['base-100'], color];
+				if (color) return setResolved([$theme.colors['base-100'], color]);
 
 				if (chroma.valid(input)) {
-					return [$theme.colors['base-100'], input];
+					return setResolved([$theme.colors['base-100'], input]);
 				}
 
 				return undefined;
@@ -261,8 +265,12 @@ export class ThemeStores {
 		}
 
 		if (Array.isArray(input)) {
+			if (isResolved(input)) {
+				return readable(input);
+			}
+
 			return derived(this.#activeAppearance, ($activeAppearance) =>
-				input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance))
+				setResolved(input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance)))
 			);
 		}
 
@@ -292,3 +300,22 @@ const isStringTuple = (input) =>
 	Array.isArray(input) &&
 	(input.length === 1 || input.length === 2) &&
 	input.every((item) => typeof item === 'string');
+
+/**
+ * @template T
+ * @param {T} input
+ * @returns {T | T & { resolved: true }}
+ */
+const setResolved = (input) => {
+	if (typeof input !== 'object') return input;
+	/** @type {any} */ (input).resolved = true;
+	return /** @type {T & { resolved: true }} */ (input);
+};
+
+/**
+ * @param {unknown} input
+ * @returns {input is { resolved: true }}
+ */
+const isResolved = (input) => typeof input === 'object' && /** @type {any} */ (input)?.resolved;
+
+// Use a proxy instead of defineProperty
