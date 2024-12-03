@@ -78,7 +78,7 @@ describe('applyThemeDefaults', () => {
 				{ bgColor: 'base-100', fgColor: 'base-content', mode: 'dark' },
 				{ bgColor: 'base-100', fgColor: 'base-content-muted', mode: 'dark' }
 			])(
-				'should have contrast >= 7 between $bgColor and $fgColor in $mode mode',
+				'should have contrast >= 4.5 between $bgColor and $fgColor in $mode mode',
 				({ bgColor, fgColor, mode }) => {
 					const actual = applyThemeDefaults(input);
 					const bgColorValue = actual.theme.colors[bgColor][mode];
@@ -86,7 +86,7 @@ describe('applyThemeDefaults', () => {
 					expect(
 						chroma.contrast(bgColorValue, fgColorValue),
 						`Expected contrast between ${bgColor} (${bgColorValue}) and ${fgColor} (${fgColorValue}) to be greater than 7 in ${mode} mode`
-					).toBeGreaterThan(7);
+					).toBeGreaterThan(4.5);
 				}
 			);
 		});

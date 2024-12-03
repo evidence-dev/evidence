@@ -51,8 +51,8 @@ export const computeShades = (colors) => {
 
 	// Compute base-content-muted from base-content
 	const baseContentMutedLight =
-		colors['base-content-muted']?.light ?? brighten(baseContentLight, 0.9);
-	const baseContentMutedDark = colors['base-content-muted']?.dark ?? darken(baseContentDark, 0.9);
+		colors['base-content-muted']?.light ?? brighten(baseContentLight, 1.65);
+	const baseContentMutedDark = colors['base-content-muted']?.dark ?? darken(baseContentDark, 1.65);
 	computed['base-content-muted'] = {
 		light: baseContentMutedLight,
 		dark: baseContentMutedDark
