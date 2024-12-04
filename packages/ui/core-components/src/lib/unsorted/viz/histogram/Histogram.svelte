@@ -76,7 +76,7 @@
 	chartType="Histogram"
 	hist="true"
 	{chartAreaHeight}
-	colorPalette={$colorPaletteStore}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -87,6 +87,6 @@
 	{downloadableImage}
 	{connectGroup}
 >
-	<Hist fillColor={$fillColorStore} {fillOpacity} />
+	<Hist fillColor={fillColorStore} {fillOpacity} />
 	<slot />
 </Chart>

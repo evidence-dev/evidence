@@ -3,19 +3,21 @@ import { describe, it, expect } from 'vitest';
 import { ThemesConfigFileSchema } from './config.js';
 
 describe('ThemesConfigFileSchema', () => {
-	it('should parse themes=null to themes={}', () => {
-		const result = ThemesConfigFileSchema.parse({ theme: null });
-		expect(result).toEqual({ theme: {} });
-	});
+	describe.each([{ key: 'theme' }, { key: 'appearance' }])('$key', ({ key }) => {
+		it(`should parse ${key}=null to ${key}={}`, () => {
+			const result = ThemesConfigFileSchema.parse({ [key]: null });
+			expect(result[key]).toEqual({});
+		});
 
-	it('should parse themes=undefined to themes={}', () => {
-		const result = ThemesConfigFileSchema.parse({ theme: undefined });
-		expect(result).toEqual({ theme: {} });
-	});
+		it(`should parse ${key}=undefined to ${key}={}`, () => {
+			const result = ThemesConfigFileSchema.parse({ [key]: undefined });
+			expect(result[key]).toEqual({});
+		});
 
-	it('should allow themes={}', () => {
-		const { success } = ThemesConfigFileSchema.safeParse({ theme: {} });
-		expect(success).toBe(true);
+		it(`should allow ${key}={}`, () => {
+			const { success } = ThemesConfigFileSchema.safeParse({ [key]: {} });
+			expect(success).toBe(true);
+		});
 	});
 
 	describe('colors', () => {

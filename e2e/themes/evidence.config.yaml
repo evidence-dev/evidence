@@ -1,6 +1,8 @@
+appearance:
+  default: light
+  switcher: true
+
 theme:
-  defaultAppearance: light
-  appearanceSwitcher: true
   colors:
     base:
       light: "#fdf4ff"

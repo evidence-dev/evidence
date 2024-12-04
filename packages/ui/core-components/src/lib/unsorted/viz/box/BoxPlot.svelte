@@ -137,6 +137,6 @@
 	{connectGroup}
 	{seriesColors}
 >
-	<Box {boxPlotData} color={$colorStore} {max} />
+	<Box {boxPlotData} color={colorStore} {max} />
 	<slot />
 </Chart>

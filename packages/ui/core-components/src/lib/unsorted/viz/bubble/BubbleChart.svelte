@@ -117,7 +117,7 @@
 	{bubble}
 	{sort}
 	{chartAreaHeight}
-	colorPalette={$colorPaletteStore}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -127,13 +127,13 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	seriesColors={$seriesColorsStore}
+	seriesColors={seriesColorsStore}
 >
 	<Bubble
 		{shape}
-		fillColor={$fillColorStore}
+		fillColor={fillColorStore}
 		{opacity}
-		outlineColor={$outlineColorStore}
+		outlineColor={outlineColorStore}
 		{outlineWidth}
 		{scaleTo}
 		{useTooltip}

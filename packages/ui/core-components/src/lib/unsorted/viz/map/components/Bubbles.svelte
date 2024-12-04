@@ -28,7 +28,7 @@
 	sizeCol={size}
 	{opacity}
 	{legendType}
-	colorPalette={$colorPaletteStore}
+	colorPalette={colorPaletteStore}
 	{legend}
 	{pointStyle}
 	{...$$restProps}

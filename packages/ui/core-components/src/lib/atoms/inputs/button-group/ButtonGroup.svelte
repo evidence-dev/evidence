@@ -115,7 +115,7 @@
 			>
 				{#if preset}
 					{#each presets[preset] as { value, valueLabel }}
-						<ButtonGroupItem {value} {valueLabel} color={$colorStore} {display} {defaultValue} />
+						<ButtonGroupItem {value} {valueLabel} color={colorStore} {display} {defaultValue} />
 					{/each}
 				{:else}
 					<slot {display} />
@@ -129,7 +129,7 @@
 									<ButtonGroupItem
 										{value}
 										valueLabel={label}
-										color={$colorStore}
+										color={colorStore}
 										{display}
 										{defaultValue}
 									/>

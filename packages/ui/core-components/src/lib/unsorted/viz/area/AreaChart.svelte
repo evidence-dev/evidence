@@ -129,7 +129,7 @@
 	stackType={type}
 	{stacked100}
 	{chartAreaHeight}
-	colorPalette={$colorPaletteStore}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -139,12 +139,12 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	seriesColors={$seriesColorsStore}
+	seriesColors={seriesColorsStore}
 >
 	<Area
 		{line}
-		fillColor={$fillColorStore}
-		lineColor={$lineColorStore}
+		fillColor={fillColorStore}
+		lineColor={lineColorStore}
 		{fillOpacity}
 		{handleMissing}
 		{type}
@@ -156,7 +156,7 @@
 		{labels}
 		{labelSize}
 		{labelPosition}
-		labelColor={$labelColorStore}
+		labelColor={labelColorStore}
 		{labelFmt}
 		{showAllLabels}
 		{seriesOrder}

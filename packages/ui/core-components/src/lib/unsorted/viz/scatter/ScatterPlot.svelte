@@ -116,7 +116,7 @@
 	{chartType}
 	{sort}
 	{chartAreaHeight}
-	colorPalette={$colorPaletteStore}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -126,13 +126,13 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	seriesColors={$seriesColorsStore}
+	seriesColors={seriesColorsStore}
 >
 	<Scatter
 		{shape}
-		fillColor={$fillColorStore}
+		fillColor={fillColorStore}
 		{opacity}
-		outlineColor={$outlineColorStore}
+		outlineColor={outlineColorStore}
 		{outlineWidth}
 		{pointSize}
 		{useTooltip}

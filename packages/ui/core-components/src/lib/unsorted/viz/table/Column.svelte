@@ -110,10 +110,10 @@
 	$: sparkYScale = sparkYScale === 'true' || sparkYScale === true;
 
 	// Bar Viz:
-	export let barColor = 'hsla(207, 69%, 79%, 1)';
+	export let barColor = '#a5cdee';
 	$: barColorStore = resolveColor(barColor);
 
-	export let negativeBarColor = 'rgb(252 165 165)';
+	export let negativeBarColor = '#fca5a5';
 	$: negativeBarColorStore = resolveColor(negativeBarColor);
 
 	export let backgroundColor = 'transparent';

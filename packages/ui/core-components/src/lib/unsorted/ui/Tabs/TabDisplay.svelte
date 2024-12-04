@@ -2,9 +2,9 @@
 	import chroma from 'chroma-js';
 	import { getThemeStores } from '../../../themes/themes.js';
 
-	const { theme, resolveColor } = getThemeStores();
+	const { resolveColor } = getThemeStores();
 
-	export let color = $theme.colors.primary;
+	export let color = 'primary';
 	$: colorStore = resolveColor(color);
 
 	export let id;

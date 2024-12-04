@@ -7,13 +7,14 @@ import { localStorageStore } from '@evidence-dev/component-utilities/stores';
 import { themes, themesConfig } from '$evidence/themes';
 import { convertLightToDark } from './convertLightToDark.js';
 import chroma from 'chroma-js';
+import { isReadable } from '@evidence-dev/sdk/utils/svelte';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable */
 /** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
 /** @typedef {import('@evidence-dev/tailwind').ThemesConfig} ThemesConfig */
 
-const { defaultAppearance, appearanceSwitcher } = themesConfig.theme;
+const { default: defaultAppearance, switcher: appearanceSwitcher } = themesConfig.appearance;
 
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
@@ -83,19 +84,15 @@ export class ThemeStores {
 	constructor() {
 		this.#systemTheme = createSystemThemeStore();
 
-		this.#selectedAppearance = localStorageStore(
-			'evidence-theme',
-			themesConfig.theme.defaultAppearance,
-			{
-				serialize: (value) => value,
-				deserialize: (raw) => {
-					if (!appearanceSwitcher) return defaultAppearance;
-					return ['system', 'light', 'dark'].includes(raw)
-						? /** @type {'light' | 'dark' | 'system'} */ (raw)
-						: themesConfig.theme.defaultAppearance;
-				}
+		this.#selectedAppearance = localStorageStore('evidence-theme', defaultAppearance, {
+			serialize: (value) => value,
+			deserialize: (raw) => {
+				if (!appearanceSwitcher) return defaultAppearance;
+				return ['system', 'light', 'dark'].includes(raw)
+					? /** @type {'light' | 'dark' | 'system'} */ (raw)
+					: defaultAppearance;
 			}
-		);
+		});
 
 		this.#activeAppearance = derived(
 			[this.#systemTheme, this.#selectedAppearance],
@@ -196,10 +193,14 @@ export class ThemeStores {
 	 * @param {T} input
 	 * @returns {Readable<string | T | undefined>}
 	 */
-	resolveColor = (input) =>
-		derived(this.#activeAppearance, ($activeAppearance) =>
+	resolveColor = (input) => {
+		// Don't resolve twice
+		if (isReadable(input)) return input;
+
+		return derived(this.#activeAppearance, ($activeAppearance) =>
 			ThemeStores.#resolveColor(input, $activeAppearance)
 		);
+	};
 
 	/**
 	 * @template T
@@ -207,6 +208,9 @@ export class ThemeStores {
 	 * @returns {Readable<Record<string, (string | T | undefined)> | undefined>}
 	 */
 	resolveColorsObject = (input) => {
+		// Don't resolve twice
+		if (isReadable(input)) return input;
+
 		if (!input) return readable(undefined);
 
 		return derived(this.#activeAppearance, ($activeAppearance) =>
@@ -222,20 +226,19 @@ export class ThemeStores {
 	/**
 	 * @template T
 	 * @param {T} input
-	 * @returns {Readable<string[] | (T[number])[] | undefined>}
+	 * @returns {Readable<T | string[] | (T[number])[] | undefined>}
 	 */
 	resolveColorPalette = (input) => {
+		// Don't resolve twice
+		if (isReadable(input)) return input;
+
 		if (typeof input === 'string') {
-			return derived(this.#theme, ($theme) => setResolved($theme.colorPalettes[input.trim()]));
+			return derived(this.#theme, ($theme) => $theme.colorPalettes[input.trim()]);
 		}
 
 		if (Array.isArray(input)) {
-			if (isResolved(input)) {
-				return readable(input);
-			}
-
 			return derived(this.#activeAppearance, ($activeAppearance) =>
-				setResolved(input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance)))
+				input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance))
 			);
 		}
 
@@ -248,16 +251,19 @@ export class ThemeStores {
 	 * @returns {Readable<string[] | (T[number])[] | undefined>}
 	 */
 	resolveColorScale = (input) => {
+		// Don't resolve twice
+		if (isReadable(input)) return input;
+
 		if (typeof input === 'string') {
 			return derived(this.#theme, ($theme) => {
 				const colorScale = $theme.colorScales[input.trim()];
-				if (colorScale) return setResolved(colorScale);
+				if (colorScale) return colorScale;
 
 				const color = $theme.colors[input.trim()];
-				if (color) return setResolved([$theme.colors['base-100'], color]);
+				if (color) return [$theme.colors['base-100'], color];
 
 				if (chroma.valid(input)) {
-					return setResolved([$theme.colors['base-100'], input]);
+					return [$theme.colors['base-100'], input];
 				}
 
 				return undefined;
@@ -265,12 +271,8 @@ export class ThemeStores {
 		}
 
 		if (Array.isArray(input)) {
-			if (isResolved(input)) {
-				return readable(input);
-			}
-
 			return derived(this.#activeAppearance, ($activeAppearance) =>
-				setResolved(input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance)))
+				input.map((color) => ThemeStores.#resolveColor(color, $activeAppearance))
 			);
 		}
 
@@ -300,22 +302,3 @@ const isStringTuple = (input) =>
 	Array.isArray(input) &&
 	(input.length === 1 || input.length === 2) &&
 	input.every((item) => typeof item === 'string');
-
-/**
- * @template T
- * @param {T} input
- * @returns {T | T & { resolved: true }}
- */
-const setResolved = (input) => {
-	if (typeof input !== 'object') return input;
-	/** @type {any} */ (input).resolved = true;
-	return /** @type {T & { resolved: true }} */ (input);
-};
-
-/**
- * @param {unknown} input
- * @returns {input is { resolved: true }}
- */
-const isResolved = (input) => typeof input === 'object' && /** @type {any} */ (input)?.resolved;
-
-// Use a proxy instead of defineProperty

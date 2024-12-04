@@ -101,7 +101,7 @@
 		{lat}
 		{long}
 		{size}
-		colorPalette={$colorPaletteStore}
+		colorPalette={colorPaletteStore}
 		{legendType}
 		{legend}
 		{...$$restProps}

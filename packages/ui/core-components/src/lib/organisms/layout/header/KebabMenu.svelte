@@ -55,7 +55,7 @@
 			>
 				{$showQueries ? 'Hide ' : 'Show '} Queries
 			</DropdownMenu.Item>
-			{#if themesConfig.theme.appearanceSwitcher}
+			{#if themesConfig.appearance.switcher}
 				<DropdownMenu.Item
 					on:click={(e) => {
 						e.preventDefault();
