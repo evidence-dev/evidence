@@ -6,9 +6,11 @@ export const defaultThemesConfigFile =
 	 * @type {const}
 	 */
 	({
+		appearance: {
+			default: 'light',
+			switcher: false
+		},
 		theme: {
-			defaultAppearance: 'light',
-			appearanceSwitcher: false,
 			colors: /** @satisfies {import('./types.js').RequiredThemeColors} */ ({
 				primary: {
 					light: '#2563eb',

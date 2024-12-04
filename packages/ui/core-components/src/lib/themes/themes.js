@@ -14,7 +14,7 @@ import { isReadable } from '@evidence-dev/sdk/utils/svelte';
 /** @typedef {import('@evidence-dev/tailwind').Theme} Theme */
 /** @typedef {import('@evidence-dev/tailwind').ThemesConfig} ThemesConfig */
 
-const { defaultAppearance, appearanceSwitcher } = themesConfig.theme;
+const { default: defaultAppearance, switcher: appearanceSwitcher } = themesConfig.appearance;
 
 /** @returns {Readable<'light' | 'dark'>} */
 const createSystemThemeStore = () => {
@@ -84,19 +84,15 @@ export class ThemeStores {
 	constructor() {
 		this.#systemTheme = createSystemThemeStore();
 
-		this.#selectedAppearance = localStorageStore(
-			'evidence-theme',
-			themesConfig.theme.defaultAppearance,
-			{
-				serialize: (value) => value,
-				deserialize: (raw) => {
-					if (!appearanceSwitcher) return defaultAppearance;
-					return ['system', 'light', 'dark'].includes(raw)
-						? /** @type {'light' | 'dark' | 'system'} */ (raw)
-						: themesConfig.theme.defaultAppearance;
-				}
+		this.#selectedAppearance = localStorageStore('evidence-theme', defaultAppearance, {
+			serialize: (value) => value,
+			deserialize: (raw) => {
+				if (!appearanceSwitcher) return defaultAppearance;
+				return ['system', 'light', 'dark'].includes(raw)
+					? /** @type {'light' | 'dark' | 'system'} */ (raw)
+					: defaultAppearance;
 			}
-		);
+		});
 
 		this.#activeAppearance = derived(
 			[this.#systemTheme, this.#selectedAppearance],

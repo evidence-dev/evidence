@@ -15,8 +15,8 @@ vi.mock('./convertLightToDark.js', () => ({
 
 vi.mock('$evidence/themes', () => ({
 	themesConfig: {
-		theme: {
-			defaultAppearance: 'light'
+		appearance: {
+			default: 'light'
 		}
 	},
 	themes: {
