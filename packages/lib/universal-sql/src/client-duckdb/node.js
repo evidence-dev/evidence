@@ -67,6 +67,12 @@ export async function initDB() {
 			}
 		});
 		connection = db.connect();
+
+		// https://duckdb.org/2024/09/09/announcing-duckdb-110.html#breaking-sql-changes
+		await connection.query('SET ieee_floating_point_ops = false;');
+		// https://duckdb.org/2024/02/13/announcing-duckdb-0100.html#breaking-sql-changes
+		await connection.query('SET old_implicit_casting = true;');
+
 		resolveInit();
 	} catch (e) {
 		rejectInit(e);
