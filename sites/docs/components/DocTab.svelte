@@ -2,7 +2,9 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
 
-	let activeTab = 'preview';
+	export let defaultTab = 'preview';
+
+	let activeTab = defaultTab;
 
 	const tabs = ['preview', 'code'];
 	let tabButtons = [];

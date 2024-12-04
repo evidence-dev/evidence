@@ -6,6 +6,7 @@ export const loadPrismComponents = async () => {
 	await import('prismjs/components/prism-sql');
 	await import('prismjs/components/prism-python');
 	await import('prismjs/components/prism-markdown');
+	await import('prismjs/components/prism-yaml.js');
 	await import('./prism-svelte.js');
 
 	return Prism;
