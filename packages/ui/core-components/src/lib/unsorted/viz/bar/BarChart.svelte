@@ -166,8 +166,8 @@
 	{xTickMarks}
 	{yTickMarks}
 	{y2TickMarks}
-	yAxisColor={$yAxisColorStore}
-	y2AxisColor={$y2AxisColorStore}
+	yAxisColor={yAxisColorStore}
+	y2AxisColor={y2AxisColorStore}
 	{yMin}
 	{yMax}
 	{yScale}
@@ -183,7 +183,7 @@
 	{stacked100}
 	{chartAreaHeight}
 	{showAllXAxisLabels}
-	colorPalette={$colorPaletteStore}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -193,18 +193,18 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	seriesColors={$seriesColorsStore}
+	seriesColors={seriesColorsStore}
 >
 	<Bar
 		{type}
-		fillColor={$fillColorStore}
+		fillColor={fillColorStore}
 		{fillOpacity}
-		outlineColor={$outlineColorStore}
+		outlineColor={outlineColorStore}
 		{outlineWidth}
 		{labels}
 		{labelSize}
 		{labelPosition}
-		labelColor={$labelColorStore}
+		labelColor={labelColorStore}
 		{labelFmt}
 		{yLabelFmt}
 		{y2LabelFmt}

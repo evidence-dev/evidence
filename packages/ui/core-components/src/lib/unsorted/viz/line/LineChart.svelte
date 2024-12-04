@@ -145,8 +145,8 @@
 	{xTickMarks}
 	{yTickMarks}
 	{y2TickMarks}
-	yAxisColor={$yAxisColorStore}
-	y2AxisColor={$y2AxisColorStore}
+	yAxisColor={yAxisColorStore}
+	y2AxisColor={y2AxisColorStore}
 	{yMin}
 	{yMax}
 	{yScale}
@@ -158,7 +158,7 @@
 	chartType="Line Chart"
 	{sort}
 	{chartAreaHeight}
-	colorPalette={$colorPaletteStore}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -168,10 +168,10 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	seriesColors={$seriesColorsStore}
+	seriesColors={seriesColorsStore}
 >
 	<Line
-		lineColor={$lineColorStore}
+		lineColor={lineColorStore}
 		{lineWidth}
 		{lineOpacity}
 		{lineType}
@@ -184,7 +184,7 @@
 		{labels}
 		{labelSize}
 		{labelPosition}
-		labelColor={$labelColorStore}
+		labelColor={labelColorStore}
 		{labelFmt}
 		{yLabelFmt}
 		{y2LabelFmt}

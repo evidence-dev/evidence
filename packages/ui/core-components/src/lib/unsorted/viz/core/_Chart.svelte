@@ -1069,7 +1069,7 @@
 		{downloadableData}
 		{downloadableImage}
 		{connectGroup}
-		seriesColors={$seriesColorsStore}
+		seriesColors={seriesColorsStore}
 	/>
 {:else}
 	<ErrorChart {error} {chartType} />

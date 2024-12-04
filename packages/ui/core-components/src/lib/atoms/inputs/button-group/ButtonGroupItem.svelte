@@ -43,7 +43,7 @@
 	<TabDisplay
 		id={value}
 		label={valueLabel}
-		color={$colorStore}
+		color={colorStore}
 		on:click={() => update({ valueLabel, value })}
 		activeId={$currentValue?.value}
 	/>

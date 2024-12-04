@@ -104,7 +104,7 @@
 		{printing}
 		{echartsOptions}
 		{seriesOptions}
-		seriesColors={$seriesColorsStore}
+		seriesColors={seriesColorsStore}
 	/>
 
 	{#if downloadableData || downloadableImage}

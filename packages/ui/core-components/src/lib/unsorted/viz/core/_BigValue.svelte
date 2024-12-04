@@ -118,7 +118,7 @@
 					valueCol={value}
 					type={sparklineType}
 					interactive="true"
-					color={$sparklineColorStore}
+					color={sparklineColorStore}
 					valueFmt={fmt ?? sparklineValueFmt}
 					dateFmt={sparklineDateFmt}
 					yScale={sparklineYScale}

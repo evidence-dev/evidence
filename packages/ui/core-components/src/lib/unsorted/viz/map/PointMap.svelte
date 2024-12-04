@@ -95,7 +95,7 @@
 		{data}
 		{lat}
 		{long}
-		colorPalette={$colorPaletteStore}
+		colorPalette={colorPaletteStore}
 		{legendType}
 		{chartType}
 		{...$$restProps}

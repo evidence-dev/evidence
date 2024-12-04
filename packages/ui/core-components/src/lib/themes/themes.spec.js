@@ -3,82 +3,7 @@
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable */
 import { vi, describe, it, expect } from 'vitest';
 import { get } from 'svelte/store';
-import omit from 'lodash/omit.js';
 import { ThemeStores } from './themes.js';
-
-/**
- * @param {unknown} received
- * @param {unknown} expected
- */
-const expectColorsToBeEqual = (received, expected) => {
-	if (typeof received === 'undefined' && typeof expected === 'undefined') return;
-	if (received === null && expected === null) return;
-
-	let _received = received;
-	if (received instanceof String) {
-		_received = received.toString();
-	} else if (typeof received === 'object') {
-		_received = omit(received, 'resolved');
-	}
-
-	let _expected = expected;
-	if (expected instanceof String) {
-		_expected = expected.toString();
-	} else if (typeof expected === 'object') {
-		_expected = omit(expected, 'resolved');
-	}
-
-	expect(_received).toEqual(_expected);
-};
-
-/**
- *
- * @param {unknown} received
- * @param {unknown} expected
- */
-const expectColorArraysToBeEqual = (received, expected) => {
-	if (typeof received === 'undefined' && typeof expected === 'undefined') return;
-	if (received === null && expected === null) return;
-
-	expect(received).toBeInstanceOf(Array);
-	expect(expected).toBeInstanceOf(Array);
-
-	let _received = /** @type {unknown[]} */ (received);
-	let _expected = /** @type {unknown[]} */ (expected);
-
-	delete (/** @type {any} */ (_received).resolved);
-	delete (/** @type {any} */ (_expected).resolved);
-
-	expect(_received.length).toEqual(_expected.length);
-
-	_received.forEach((color, index) => {
-		expectColorsToBeEqual(color, _expected[index]);
-	});
-};
-
-/**
- * @param {unknown} received
- * @param {unknown} expected
- */
-const expectColorObjectsToBeEqual = (received, expected) => {
-	if (typeof received === 'undefined' && typeof expected === 'undefined') return;
-	if (received === null && expected === null) return;
-
-	expect(received).toBeInstanceOf(Object);
-	expect(expected).toBeInstanceOf(Object);
-
-	let _received = /** @type {Record<String, unknown>} */ (received);
-	let _expected = /** @type {Record<String, unknown>} */ (expected);
-
-	delete (/** @type {any} */ (_received).resolved);
-	delete (/** @type {any} */ (_expected).resolved);
-
-	expect(Object.keys(_received)).toEqual(Object.keys(_expected));
-
-	Object.keys(_received).forEach((key) => {
-		expectColorsToBeEqual(_received[key], _expected[key]);
-	});
-};
 
 vi.mock('./convertLightToDark.js', () => ({
 	/**
@@ -169,90 +94,96 @@ describe('ThemeStores', async () => {
 			const store = resolveColor(undefined);
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), undefined);
+			expect(get(store)).toEqual(undefined);
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), undefined);
+			expect(get(store)).toEqual(undefined);
 		});
 
 		it('should convert single hex color to dark mode', () => {
 			const store = resolveColor('#abcdef');
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), '#abcdef');
+			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), '#abcdef_dark');
+			expect(get(store)).toEqual('#abcdef_dark');
 		});
 
 		it('should convert light-only theme color to dark mode', () => {
 			const store = resolveColor('lightOnly');
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), '#abcdef');
+			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), '#abcdef_dark');
+			expect(get(store)).toEqual('#abcdef_dark');
 		});
 
 		it('should resolve colors in theme', () => {
 			const store = resolveColor('myColor1');
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), 'light_myColor1');
+			expect(get(store)).toEqual('light_myColor1');
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), 'dark_myColor1');
+			expect(get(store)).toEqual('dark_myColor1');
 		});
 
 		it('should resolve colors in theme and ignore extraneous whitespace', () => {
 			const store = resolveColor('  myColor2  ');
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), 'light_myColor2');
+			expect(get(store)).toEqual('light_myColor2');
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), 'dark_myColor2');
+			expect(get(store)).toEqual('dark_myColor2');
 		});
 
 		it('should resolve tuple of hex codes', () => {
 			const store = resolveColor(['#abcdef', '#fedcba']);
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), '#abcdef');
+			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), '#fedcba');
+			expect(get(store)).toEqual('#fedcba');
 		});
 
 		it('should resolve a tuple of just one hex code', () => {
 			const store = resolveColor(['#abcdef']);
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), '#abcdef');
+			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), '#abcdef_dark');
+			expect(get(store)).toEqual('#abcdef_dark');
 		});
 
 		it('should resolve tuple of theme colors', () => {
 			const store = resolveColor(['myColor1', 'myColor2']);
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), 'light_myColor1');
+			expect(get(store)).toEqual('light_myColor1');
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), 'dark_myColor2');
+			expect(get(store)).toEqual('dark_myColor2');
 		});
 
 		it('should resolve a tuple of just one theme color', () => {
 			const store = resolveColor(['lightOnly']);
 
 			setAppearance('light');
-			expectColorsToBeEqual(get(store), '#abcdef');
+			expect(get(store)).toEqual('#abcdef');
 
 			setAppearance('dark');
-			expectColorsToBeEqual(get(store), '#abcdef_dark');
+			expect(get(store)).toEqual('#abcdef_dark');
+		});
+
+		it('should not resolve twice', () => {
+			const resolved = resolveColor('primary');
+			const again = resolveColor(resolved);
+			expect(get(again)).toBe(get(resolved));
 		});
 	});
 
@@ -261,90 +192,90 @@ describe('ThemeStores', async () => {
 			const store = resolveColorsObject(undefined);
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), undefined);
+			expect(get(store)).toEqual(undefined);
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), undefined);
+			expect(get(store)).toEqual(undefined);
 		});
 
 		it('should convert single hex color to dark mode', () => {
 			const store = resolveColorsObject({ key1: '#abcdef' });
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef' });
+			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef_dark' });
+			expect(get(store)).toEqual({ key1: '#abcdef_dark' });
 		});
 
 		it('should convert light-only theme color to dark mode', () => {
 			const store = resolveColorsObject({ key1: 'lightOnly' });
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef' });
+			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef_dark' });
+			expect(get(store)).toEqual({ key1: '#abcdef_dark' });
 		});
 
 		it('should resolve colors in theme', () => {
 			const store = resolveColorsObject({ key1: 'myColor1' });
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), { key1: 'light_myColor1' });
+			expect(get(store)).toEqual({ key1: 'light_myColor1' });
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), { key1: 'dark_myColor1' });
+			expect(get(store)).toEqual({ key1: 'dark_myColor1' });
 		});
 
 		it('should resolve colors in theme and ignore extraneous whitespace', () => {
 			const store = resolveColorsObject({ key1: '  myColor2  ' });
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), { key1: 'light_myColor2' });
+			expect(get(store)).toEqual({ key1: 'light_myColor2' });
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), { key1: 'dark_myColor2' });
+			expect(get(store)).toEqual({ key1: 'dark_myColor2' });
 		});
 
 		it('should resolve tuple of hex codes', () => {
 			const store = resolveColorsObject({ key1: ['#abcdef', '#fedcba'] });
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef' });
+			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), { key1: '#fedcba' });
+			expect(get(store)).toEqual({ key1: '#fedcba' });
 		});
 
 		it('should resolve a tuple of just one hex code', () => {
 			const store = resolveColorsObject({ key1: ['#abcdef'] });
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef' });
+			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef_dark' });
+			expect(get(store)).toEqual({ key1: '#abcdef_dark' });
 		});
 
 		it('should resolve tuple of theme colors', () => {
 			const store = resolveColorsObject({ key1: ['myColor1', 'myColor2'] });
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), { key1: 'light_myColor1' });
+			expect(get(store)).toEqual({ key1: 'light_myColor1' });
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), { key1: 'dark_myColor2' });
+			expect(get(store)).toEqual({ key1: 'dark_myColor2' });
 		});
 
 		it('should resolve a tuple of just one theme color', () => {
 			const store = resolveColorsObject({ key1: ['lightOnly'] });
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef' });
+			expect(get(store)).toEqual({ key1: '#abcdef' });
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), { key1: '#abcdef_dark' });
+			expect(get(store)).toEqual({ key1: '#abcdef_dark' });
 		});
 
 		it('should resolve an object with multiple types of color values', () => {
@@ -361,7 +292,7 @@ describe('ThemeStores', async () => {
 			});
 
 			setAppearance('light');
-			expectColorObjectsToBeEqual(get(store), {
+			expect(get(store)).toEqual({
 				key1: undefined,
 				key2: '#abcdef',
 				key3: '#abcdef',
@@ -374,7 +305,7 @@ describe('ThemeStores', async () => {
 			});
 
 			setAppearance('dark');
-			expectColorObjectsToBeEqual(get(store), {
+			expect(get(store)).toEqual({
 				key1: undefined,
 				key2: '#abcdef_dark',
 				key3: '#abcdef_dark',
@@ -388,9 +319,9 @@ describe('ThemeStores', async () => {
 		});
 
 		it('should not resolve twice', () => {
-			const resolved = get(resolveColorsObject({ key1: 'default' }));
-			const again = get(resolveColorsObject(resolved));
-			expectColorObjectsToBeEqual(again, resolved);
+			const resolved = resolveColorsObject({ key1: 'default' });
+			const again = resolveColorsObject(resolved);
+			expect(get(again)).toEqual(get(resolved));
 		});
 	});
 
@@ -400,34 +331,34 @@ describe('ThemeStores', async () => {
 				const store = resolveColorPalette(undefined);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), undefined);
+				expect(get(store)).toEqual(undefined);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), undefined);
+				expect(get(store)).toEqual(undefined);
 			});
 
 			it('should return undefined if color palette doesnt exist in theme', () => {
 				const store = resolveColorPalette('nonExistentPalette');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), undefined);
+				expect(get(store)).toEqual(undefined);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), undefined);
+				expect(get(store)).toEqual(undefined);
 			});
 
 			it('should resolve color palettes in theme', () => {
 				const store = resolveColorPalette('myColorPalette1');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'light_myColorPalette1_color1',
 					'light_myColorPalette1_color2',
 					'light_myColorPalette1_color3'
 				]);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'dark_myColorPalette1_color1',
 					'dark_myColorPalette1_color2',
 					'dark_myColorPalette1_color3'
@@ -438,14 +369,14 @@ describe('ThemeStores', async () => {
 				const store = resolveColorPalette('  myColorPalette2  ');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'light_myColorPalette2_color1',
 					'light_myColorPalette2_color2',
 					'light_myColorPalette2_color3'
 				]);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'dark_myColorPalette2_color1',
 					'dark_myColorPalette2_color2',
 					'dark_myColorPalette2_color3'
@@ -458,80 +389,80 @@ describe('ThemeStores', async () => {
 				const store = resolveColorPalette(['#abcdef']);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#abcdef_dark']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should convert light-only theme color to dark mode', () => {
 				const store = resolveColorPalette(['lightOnly']);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#abcdef_dark']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve colors in theme', () => {
 				const store = resolveColorPalette(['myColor1']);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['light_myColor1']);
+				expect(get(store)).toEqual(['light_myColor1']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['dark_myColor1']);
+				expect(get(store)).toEqual(['dark_myColor1']);
 			});
 
 			it('should resolve colors in theme and ignore extraneous whitespace', () => {
 				const store = resolveColorPalette(['  myColor2  ']);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['light_myColor2']);
+				expect(get(store)).toEqual(['light_myColor2']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['dark_myColor2']);
+				expect(get(store)).toEqual(['dark_myColor2']);
 			});
 
 			it('should resolve tuple of hex codes', () => {
 				const store = resolveColorPalette([['#abcdef', '#fedcba']]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#fedcba']);
+				expect(get(store)).toEqual(['#fedcba']);
 			});
 
 			it('should resolve a tuple of just one hex code', () => {
 				const store = resolveColorPalette([['#abcdef']]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#abcdef_dark']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve tuple of theme colors', () => {
 				const store = resolveColorPalette([['myColor1', 'myColor2']]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['light_myColor1']);
+				expect(get(store)).toEqual(['light_myColor1']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['dark_myColor2']);
+				expect(get(store)).toEqual(['dark_myColor2']);
 			});
 
 			it('should resolve a tuple of just one theme color', () => {
 				const store = resolveColorPalette([['lightOnly']]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#abcdef_dark']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve a palette with multiple types of color values', () => {
@@ -547,7 +478,7 @@ describe('ThemeStores', async () => {
 				]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'#abcdef',
 					'#abcdef',
 					'light_myColor1',
@@ -559,7 +490,7 @@ describe('ThemeStores', async () => {
 				]);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'#abcdef_dark',
 					'#abcdef_dark',
 					'dark_myColor1',
@@ -585,23 +516,23 @@ describe('ThemeStores', async () => {
 				const store = resolveColorScale(undefined);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), undefined);
+				expect(get(store)).toEqual(undefined);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), undefined);
+				expect(get(store)).toEqual(undefined);
 			});
 
 			it('should prefer scale name to color name', () => {
 				const store = resolveColorScale('scaleWithSameNameAsColor');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'light_scaleWithSameNameAsColor_color1',
 					'light_scaleWithSameNameAsColor_color2'
 				]);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'dark_scaleWithSameNameAsColor_color1',
 					'dark_scaleWithSameNameAsColor_color2'
 				]);
@@ -611,42 +542,30 @@ describe('ThemeStores', async () => {
 				const store = resolveColorScale('nonExistentScale');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), undefined);
+				expect(get(store)).toEqual(undefined);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), undefined);
+				expect(get(store)).toEqual(undefined);
 			});
 
 			it('should resolve color scales in theme', () => {
 				const store = resolveColorScale('myColorScale1');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), [
-					'light_myColorScale1_color1',
-					'light_myColorScale1_color2'
-				]);
+				expect(get(store)).toEqual(['light_myColorScale1_color1', 'light_myColorScale1_color2']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), [
-					'dark_myColorScale1_color1',
-					'dark_myColorScale1_color2'
-				]);
+				expect(get(store)).toEqual(['dark_myColorScale1_color1', 'dark_myColorScale1_color2']);
 			});
 
 			it('should resolve color scales in theme and ignore extraneous whitespace', () => {
 				const store = resolveColorScale('  myColorScale2  ');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), [
-					'light_myColorScale2_color1',
-					'light_myColorScale2_color2'
-				]);
+				expect(get(store)).toEqual(['light_myColorScale2_color1', 'light_myColorScale2_color2']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), [
-					'dark_myColorScale2_color1',
-					'dark_myColorScale2_color2'
-				]);
+				expect(get(store)).toEqual(['dark_myColorScale2_color1', 'dark_myColorScale2_color2']);
 			});
 		});
 
@@ -655,20 +574,20 @@ describe('ThemeStores', async () => {
 				const store = resolveColorScale('myColor1');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['light_base-100', 'light_myColor1']);
+				expect(get(store)).toEqual(['light_base-100', 'light_myColor1']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['dark_base-100', 'dark_myColor1']);
+				expect(get(store)).toEqual(['dark_base-100', 'dark_myColor1']);
 			});
 
 			it('should create scale hex color and base-100', () => {
 				const store = resolveColorScale('#abcdef');
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['light_base-100', '#abcdef']);
+				expect(get(store)).toEqual(['light_base-100', '#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['dark_base-100', '#abcdef']);
+				expect(get(store)).toEqual(['dark_base-100', '#abcdef']);
 			});
 		});
 
@@ -677,80 +596,80 @@ describe('ThemeStores', async () => {
 				const store = resolveColorScale(['#abcdef']);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#abcdef_dark']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should convert light-only theme color to dark mode', () => {
 				const store = resolveColorScale(['lightOnly']);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#abcdef_dark']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve colors in theme', () => {
 				const store = resolveColorScale(['myColor1']);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['light_myColor1']);
+				expect(get(store)).toEqual(['light_myColor1']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['dark_myColor1']);
+				expect(get(store)).toEqual(['dark_myColor1']);
 			});
 
 			it('should resolve colors in theme and ignore extraneous whitespace', () => {
 				const store = resolveColorScale(['  myColor2  ']);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['light_myColor2']);
+				expect(get(store)).toEqual(['light_myColor2']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['dark_myColor2']);
+				expect(get(store)).toEqual(['dark_myColor2']);
 			});
 
 			it('should resolve tuple of hex codes', () => {
 				const store = resolveColorScale([['#abcdef', '#fedcba']]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#fedcba']);
+				expect(get(store)).toEqual(['#fedcba']);
 			});
 
 			it('should resolve a tuple of just one hex code', () => {
 				const store = resolveColorScale([['#abcdef']]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#abcdef_dark']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve tuple of theme colors', () => {
 				const store = resolveColorScale([['myColor1', 'myColor2']]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['light_myColor1']);
+				expect(get(store)).toEqual(['light_myColor1']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['dark_myColor2']);
+				expect(get(store)).toEqual(['dark_myColor2']);
 			});
 
 			it('should resolve a tuple of just one theme color', () => {
 				const store = resolveColorScale([['lightOnly']]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), ['#abcdef']);
+				expect(get(store)).toEqual(['#abcdef']);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), ['#abcdef_dark']);
+				expect(get(store)).toEqual(['#abcdef_dark']);
 			});
 
 			it('should resolve a scale with multiple types of color values', () => {
@@ -766,7 +685,7 @@ describe('ThemeStores', async () => {
 				]);
 
 				setAppearance('light');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'#abcdef',
 					'#abcdef',
 					'light_myColor1',
@@ -778,7 +697,7 @@ describe('ThemeStores', async () => {
 				]);
 
 				setAppearance('dark');
-				expectColorArraysToBeEqual(get(store), [
+				expect(get(store)).toEqual([
 					'#abcdef_dark',
 					'#abcdef_dark',
 					'dark_myColor1',
