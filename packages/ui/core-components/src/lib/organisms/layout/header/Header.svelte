@@ -32,7 +32,7 @@
 </script>
 
 <header
-	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-gray-200 bg-white/90 backdrop-blur print:hidden
+	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-base-300/50 bg-base-100/90 backdrop-blur print:hidden
   {sidebarFrontMatter === 'hide' ? 'md:pl-8' : ''}"
 >
 	<div
@@ -41,14 +41,14 @@
 		style="max-width:{maxWidth}px;"
 	>
 		{#if hideSidebar || sidebarFrontMatter === 'never'}
-			<a href={addBasePath('/')} class="block text-sm font-bold text-gray-800">
+			<a href={addBasePath('/')} class="block text-sm font-bold text-base-content">
 				<Logo {logo} {title} />
 			</a>
 		{:else}
 			<div class="flex gap-x-4 items-center">
 				<button
 					type="button"
-					class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 transition-all duration-500
+					class="text-base-content hover:bg-base-200 rounded-lg p-1 transition-all duration-500
           {sidebarFrontMatter === 'hide' ? 'block' : 'md:hidden'}"
 					on:click={() => {
 						mobileSidebarOpen = !mobileSidebarOpen;
@@ -62,7 +62,7 @@
 						<Icon class="w-5 h-5" src={Menu2} />
 					{/if}
 				</button>
-				<a href={addBasePath('/')} class="text-sm font-bold text-gray-800 hidden md:block">
+				<a href={addBasePath('/')} class="text-sm font-bold text-base-content hidden md:block">
 					<Logo {logo} {title} />
 				</a>
 			</div>
@@ -75,21 +75,21 @@
 				{#if githubRepo}
 					<a
 						href={addBasePath(githubRepo)}
-						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
+						class="hover:bg-base-200 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
 					>
-						<Icon src={GithubLogo} class="w-4 h-4 text-gray-900 " />
+						<Icon src={GithubLogo} class="w-4 h-4 text-base-content" />
 					</a>
 				{/if}
 				{#if xProfile}
 					<a
 						href={addBasePath(xProfile)}
-						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
+						class="hover:bg-base-200 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
 					>
-						<Icon src={XLogo} class="w-4 h-4 text-gray-900 " />
+						<Icon src={XLogo} class="w-4 h-4 text-base-content" />
 					</a>
 				{/if}
 				{#if blueskyProfile}
@@ -99,17 +99,17 @@
 						target="_blank"
 						rel="noreferrer"
 					>
-						<Icon src={BlueskyLogo} fill="currentColor" class="w-4 h-4 text-gray-900 " />
+						<Icon src={BlueskyLogo} fill="currentColor" class="w-4 h-4 text-base-content " />
 					</a>
 				{/if}
 				{#if slackCommunity}
 					<a
 						href={addBasePath(slackCommunity)}
-						class="hover:bg-gray-50 rounded-lg p-2 transition-all duration-200"
+						class="hover:bg-base-200 rounded-lg p-2 transition-all duration-200"
 						target="_blank"
 						rel="noreferrer"
 					>
-						<Icon src={SlackLogo} class="w-4 h-4 text-gray-900 " />
+						<Icon src={SlackLogo} class="w-4 h-4 text-base-content " />
 					</a>
 				{/if}
 			</div>

@@ -116,13 +116,13 @@
 	}
 
 	.a {
-		stroke: var(--blue-500);
-		fill: var(--blue-500);
+		stroke: var(--info);
+		fill: var(--info);
 	}
 
 	.b {
-		stroke: var(--green-500);
-		fill: var(--green-500);
+		stroke: var(--positive);
+		fill: var(--positive);
 	}
 
 	.c {
@@ -137,11 +137,11 @@
 	}
 
 	.label-a {
-		fill: var(--blue-800);
+		fill: var(--info);
 	}
 
 	.label-b {
-		fill: var(--green-800);
+		fill: var(--positive);
 	}
 
 	.label-c {

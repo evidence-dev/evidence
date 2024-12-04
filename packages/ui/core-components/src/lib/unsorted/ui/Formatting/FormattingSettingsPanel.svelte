@@ -93,7 +93,7 @@ from table`;
 	<footer>
 		<span
 			>Learn more about <a
-				class="docs-link"
+				class="text-primary hover:brightness-110 active:brightness-90 transition"
 				target="_blank"
 				rel="noreferrer"
 				href="https://docs.evidence.dev/core-concepts/formatting/"
@@ -111,16 +111,16 @@ from table`;
 
 	.formatting-settings-box {
 		margin-top: 2em;
-		border-top: 1px solid var(--grey-200);
-		border-left: 1px solid var(--grey-200);
-		border-right: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
+		border-left: 1px solid var(--base-300);
+		border-right: 1px solid var(--base-300);
 		border-radius: 5px 5px 0 0;
 		font-size: 14px;
 		font-family: var(--ui-font-family);
 		min-width: 100%;
 	}
 	.panel {
-		border-top: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
 		padding: 0em 1em 1em 1em;
 	}
 
@@ -129,36 +129,21 @@ from table`;
 	}
 
 	div.code-container {
-		background-color: var(--grey-100);
-		border: 1px solid var(--grey-200);
+		background-color: var(--base-200);
+		border: 1px solid var(--base-300);
 		overflow: auto;
 		border-radius: 4px;
 	}
 
-	/* .format-tag {
-    background-color: var(--blue-100);
-    border-radius: 4px;
-    padding: 2px 4px 2px 4px;
-  } */
-
 	footer {
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
 		border-radius: 0 0 5px 5px;
-		background-color: var(--grey-100);
+		background-color: var(--base-200);
 		padding: 1em;
 		display: flex;
 		font-size: 14px;
 		align-items: center;
 		font-family: var(--ui-font-family);
-	}
-
-	.docs-link {
-		color: var(--blue-600);
-		text-decoration: none;
-	}
-
-	.docs-link:hover {
-		color: var(--blue-800);
 	}
 
 	h2 {

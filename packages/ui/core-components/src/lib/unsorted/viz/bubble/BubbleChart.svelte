@@ -3,8 +3,12 @@
 </script>
 
 <script>
+	import { getThemeStores } from '../../../themes/themes.js';
+
 	import Chart from '../core/Chart.svelte';
 	import Bubble from './Bubble.svelte';
+
+	const { resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
 	export let data = undefined;
 	export let x = undefined;
@@ -36,9 +40,15 @@
 	export let yMax = undefined;
 
 	export let shape = undefined;
+
 	export let fillColor = undefined;
+	$: fillColorStore = resolveColor(fillColor);
+
 	export let opacity = undefined; // opacity of both fill and outline (ECharts limitation)
+
 	export let outlineColor = undefined;
+	$: outlineColorStore = resolveColor(outlineColor);
+
 	export let outlineWidth = undefined;
 	export let scaleTo = undefined;
 	export let chartAreaHeight = undefined;
@@ -52,7 +62,9 @@
 
 	let useTooltip = true;
 
-	export let colorPalette = undefined;
+	export let colorPalette = 'default';
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -63,7 +75,10 @@
 	export let renderer = undefined;
 	export let downloadableData = undefined;
 	export let downloadableImage = undefined;
+
 	export let seriesColors = undefined;
+	$: seriesColorsStore = resolveColorsObject(seriesColors);
+
 	export let seriesOrder = undefined;
 
 	export let connectGroup = undefined;
@@ -102,7 +117,7 @@
 	{bubble}
 	{sort}
 	{chartAreaHeight}
-	{colorPalette}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -112,13 +127,13 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	{seriesColors}
+	seriesColors={seriesColorsStore}
 >
 	<Bubble
 		{shape}
-		{fillColor}
+		fillColor={fillColorStore}
 		{opacity}
-		{outlineColor}
+		outlineColor={outlineColorStore}
 		{outlineWidth}
 		{scaleTo}
 		{useTooltip}

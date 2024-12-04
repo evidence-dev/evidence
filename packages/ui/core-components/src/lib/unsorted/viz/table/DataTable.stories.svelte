@@ -415,7 +415,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 			weightCol="gdp_usd"
 			fmt="pct1"
 			contentType="colorscale"
-			scaleColor="red"
+			colorScale="red"
 			colGroup="Labour Market"
 		/>
 		<Column

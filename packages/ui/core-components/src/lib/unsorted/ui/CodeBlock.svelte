@@ -46,10 +46,10 @@
 	}
 </script>
 
-<div class="my-5 bg-gray-50 border border-gray-200 rounded px-3 py-2 relative group">
+<div class="my-5 bg-base-200 border border-base-300 rounded px-3 py-2 relative group">
 	{#if copyToClipboard}
 		<button
-			class={'absolute opacity-0 bg-gray-50 rounded-sm p-1 group-hover:opacity-100 top-4 right-6 h-6 w-6 z-10 transition-all duration-200 ease-in-out' +
+			class={'absolute opacity-0 rounded-sm p-1 group-hover:opacity-100 top-4 right-6 h-6 w-6 z-10 transition-all duration-200 ease-in-out' +
 				(copied ? '' : '')}
 			on:click={() => {
 				if (source !== undefined) {
@@ -58,7 +58,7 @@
 			}}
 		>
 			{#if copied}
-				<Success color="var(--green-500)" />
+				<Success />
 			{:else}
 				<Copy />
 			{/if}

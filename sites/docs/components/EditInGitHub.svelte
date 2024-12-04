@@ -12,9 +12,9 @@
 </script>
 
 <div class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex flex-row pb-4">
-	<div class="text-gray-700 text-sm md:ml-48 md:pl-8">
+	<div class="text-base-content-muted text-sm md:ml-48 md:pl-8">
 		<a href={$editUrl} target="_blank" rel="noopener noreferrer" class="hover:underline">
-			<span class="inline-flex items-center"> Edit page on GitHub </span>
+			<span class="inline-flex items-center">Edit page on GitHub</span>
 		</a>
 	</div>
 </div>

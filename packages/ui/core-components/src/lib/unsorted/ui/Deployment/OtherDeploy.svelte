@@ -24,7 +24,7 @@
 	<div class="setting-value"><VariableCopy text={'build/'} /></div>
 </div>
 
-<style lang="postcss">
+<style>
 	h2 {
 		@apply font-semibold text-lg pt-3 pb-2;
 	}
@@ -34,7 +34,6 @@
 	}
 	span.setting {
 		font-size: 0.85em;
-		color: var(--grey-800);
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 	}
@@ -57,14 +56,13 @@
 		align-items: center;
 		text-align: center;
 		margin-block-start: 2.5em;
-		color: var(--grey-700);
 		font-weight: bold;
 	}
 
 	.separator::after {
 		content: '';
 		flex: 1;
-		border-bottom: 1px solid var(--grey-200);
+		border-bottom: 1px solid var(--base-300);
 	}
 
 	.separator:not(:empty)::after {

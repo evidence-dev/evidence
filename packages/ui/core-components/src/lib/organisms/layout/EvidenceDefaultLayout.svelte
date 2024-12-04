@@ -11,7 +11,7 @@
 	import { browser } from '$app/environment';
 	import DevTools from '../../devtools/DevTools.svelte';
 	import { onMount } from 'svelte';
-	import { ensureThemeStores } from '../../themes.js';
+	import { getThemeStores } from '../../themes/themes.js';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 	// Remove splash screen from app.html
@@ -110,15 +110,27 @@
 		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
-	// TODO where should this go? How do we get project splash to be rendered with the proper theme?
-	ensureThemeStores();
+	const { syncDataThemeAttribute, cycleAppearance } = getThemeStores();
+
+	onMount(() => {
+		/** @param {KeyboardEvent} e */
+		const onKeydown = (e) => {
+			if (e.key.toLowerCase() === 'l' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+				cycleAppearance();
+			}
+		};
+		window.addEventListener('keydown', onKeydown);
+		return () => window.removeEventListener('keydown', onKeydown);
+	});
+
+	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
 </script>
 
 <slot />
 
 <ToastWrapper />
 <DevTools>
-	<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
+	<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased">
 		<ErrorOverlay />
 		{#if !hideHeader}
 			<Header
@@ -194,3 +206,9 @@
 		<QueryStatus />
 	{/if}
 </DevTools>
+
+<style lang="postcss">
+	:global(body) {
+		@apply bg-base-100 text-base-content;
+	}
+</style>

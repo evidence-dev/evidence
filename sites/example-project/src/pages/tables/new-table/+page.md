@@ -131,9 +131,9 @@ select date '2020-05-26' as date, 100 as value_usd, 'Zimbabwe' as country, 'A' a
     <Column id=country />
     <Column id=country_id align=center/>
     <Column id=category align=center/>
-    <Column id=value_usd contentType=colorscale scaleColor=green/>
-        <Column id=value_usd contentType=colorscale scaleColor=blue/>
-    <Column id=value_usd contentType=colorscale scaleColor=red/>
+    <Column id=value_usd contentType=colorscale colorScale=positive/>
+        <Column id=value_usd contentType=colorscale colorScale=info/>
+    <Column id=value_usd contentType=colorscale colorScale=negative/>
 
     <Column id=country_url contentType=link linkLabel="Details &rarr;" title="Country Details" align=right openInNewTab=true/>
 </DataTable>

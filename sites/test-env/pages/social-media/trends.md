@@ -151,8 +151,8 @@ handleMissing="connect"
 x="w"
 >
 
-<ReferenceArea xMin='2023-12-1' xMax='2023-12-5' label='Ref Area' color=red />
-<ReferenceLine x='2023-12-10' label='Ref Lin' color=red />
+<ReferenceArea xMin='2023-12-1' xMax='2023-12-5' label='Ref Area' color=negative />
+<ReferenceLine x='2023-12-10' label='Ref Lin' color=negative />
 
 </LineChart>
 

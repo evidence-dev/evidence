@@ -3,8 +3,12 @@
 </script>
 
 <script>
+	import { getThemeStores } from '../../../themes/themes.js';
+
 	import Chart from '../core/Chart.svelte';
 	import Hist from './Hist.svelte';
+
+	const { resolveColor, resolveColorPalette } = getThemeStores();
 
 	export let data = undefined;
 	export let x = undefined;
@@ -29,9 +33,13 @@
 	export let chartAreaHeight = undefined;
 
 	export let fillColor = undefined;
+	$: fillColorStore = resolveColor(fillColor);
+
 	export let fillOpacity = undefined;
 
-	export let colorPalette = undefined;
+	export let colorPalette = 'default';
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -68,7 +76,7 @@
 	chartType="Histogram"
 	hist="true"
 	{chartAreaHeight}
-	{colorPalette}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -79,6 +87,6 @@
 	{downloadableImage}
 	{connectGroup}
 >
-	<Hist {fillColor} {fillOpacity} />
+	<Hist fillColor={fillColorStore} {fillOpacity} />
 	<slot />
 </Chart>

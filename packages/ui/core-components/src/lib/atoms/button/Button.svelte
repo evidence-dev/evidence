@@ -2,7 +2,7 @@
 	export const evidenceInclude = true;
 
 	/** @typedef {"sm" | "md" | "base" | "lg"} ButtonSize */
-	/** @typedef {"info" | "success" | "warn" | "error"} ButtonVariant */
+	/** @typedef {"primary" | "secondary" | "accent" | "info" | "positive" | "warning" | "negative"} ButtonVariant */
 	/** @typedef {"left" | "right"} ButtonIconPosition */
 	/** @typedef {boolean} ButtonOutline */
 
@@ -20,6 +20,24 @@
 		md: 'w-4',
 		sm: 'w-3',
 		lg: 'w-5'
+	};
+
+	const DEPRECATED_VARIANTS_MAP = /** @type {const} */ ({
+		success: 'positive',
+		warn: 'warning',
+		error: 'negative'
+	});
+
+	const isDeprecatedVariant = (variant) => DEPRECATED_VARIANTS_MAP[variant] !== undefined;
+
+	const checkDeprecatedVariant = (variant) => {
+		if (isDeprecatedVariant(variant)) {
+			console.warn(
+				`The variant "${variant}" is deprecated. Please use "${DEPRECATED_VARIANTS_MAP[variant]}" instead.`
+			);
+			return DEPRECATED_VARIANTS_MAP[variant];
+		}
+		return variant;
 	};
 </script>
 
@@ -39,6 +57,7 @@
 
 	/** @type {ButtonVariant} */
 	export let variant = 'info';
+	$: variant = checkDeprecatedVariant(variant);
 
 	/** @type {boolean} */
 	export let outline = false;
@@ -74,58 +93,91 @@
 </button>
 
 <style lang="postcss">
-	/* 
-		Colors are handled here because of the amount of permutations between outlined, variant, and disabled states
-
-		There is probably room to clean this up; but right now it works
-	*/
 	button {
-		&.variant-info {
-			--100: theme(colors.blue.100);
-			--400: theme(colors.blue.400);
-			--500: theme(colors.blue.500);
-			--600: theme(colors.blue.600);
-			--700: theme(colors.blue.700);
-			--800: theme(colors.blue.800);
-			--900: theme(colors.blue.900);
-		}
-		&.variant-warn {
-			--100: theme(colors.yellow.100);
-			--400: theme(colors.yellow.400);
-			--500: theme(colors.yellow.500);
-			--600: theme(colors.yellow.600);
-			--700: theme(colors.yellow.700);
-			--800: theme(colors.yellow.800);
-			--900: theme(colors.yellow.900);
-		}
-		&.variant-success {
-			--100: theme(colors.green.100);
-			--400: theme(colors.green.400);
-			--500: theme(colors.green.500);
-			--600: theme(colors.green.600);
-			--700: theme(colors.green.700);
-			--800: theme(colors.green.800);
-			--900: theme(colors.green.900);
-		}
-		&.variant-error {
-			--100: theme(colors.red.100);
-			--400: theme(colors.red.400);
-			--500: theme(colors.red.500);
-			--600: theme(colors.red.600);
-			--700: theme(colors.red.700);
-			--800: theme(colors.red.800);
-			--900: theme(colors.red.900);
+		&.variant-primary {
+			--bg: theme(colors.primary);
+			--text: theme(colors.primary-content);
+			&.outlined {
+				--border: theme(colors.primary);
+				--text: theme(colors.primary);
+				--hover-bg: theme(colors.primary / 0.1);
+			}
 		}
 
-		@apply disabled:cursor-default enabled:cursor-pointer;
+		&.variant-secondary {
+			--bg: theme(colors.base-300);
+			--text: theme(colors.base-content);
+			&.outlined {
+				--border: theme(colors.base-300);
+				--text: theme(colors.base-300);
+				--hover-bg: theme(colors.base-300 / 0.1);
+			}
+		}
+
+		&.variant-accent {
+			--bg: theme(colors.accent);
+			--text: theme(colors.accent-content);
+			&.outlined {
+				--border: theme(colors.accent);
+				--text: theme(colors.accent);
+				--hover-bg: theme(colors.accent / 0.1);
+			}
+		}
+
+		&.variant-info {
+			--bg: theme(colors.info);
+			--text: theme(colors.info-content);
+			&.outlined {
+				--border: theme(colors.info);
+				--text: theme(colors.info);
+				--hover-bg: theme(colors.info / 0.1);
+			}
+		}
+
+		&.variant-positive {
+			--bg: theme(colors.positive);
+			--text: theme(colors.positive-content);
+			&.outlined {
+				--border: theme(colors.positive);
+				--text: theme(colors.positive);
+				--hover-bg: theme(colors.positive / 0.1);
+			}
+		}
+
+		&.variant-warning {
+			--bg: theme(colors.warning);
+			--text: theme(colors.warning-content);
+			&.outlined {
+				--border: theme(colors.warning);
+				--text: theme(colors.warning);
+				--hover-bg: theme(colors.warning / 0.1);
+			}
+		}
+
+		&.variant-negative {
+			--bg: theme(colors.negative);
+			--text: theme(colors.negative-content);
+			&.outlined {
+				--border: theme(colors.negative);
+				--text: theme(colors.negative);
+				--hover-bg: theme(colors.negative / 0.1);
+			}
+		}
+
+		@apply bg-[var(--bg)] border-[var(--border)] text-[var(--text)];
 
 		&.outlined {
-			@apply border border-[var(--700)] text-[var(--700)] enabled:hover:bg-[var(--100)] enabled:hover:text-[var(--800)] enabled:hover:border-[var(--800)] enabled:active:text-[var(--900)] enabled:active:border-[var(--900)]
-					disabled:border-[var(--400)] disabled:text-[var(--400)];
+			@apply bg-transparent border;
+			&:not(:disabled) {
+				@apply hover:bg-[var(--hover-bg)];
+			}
 		}
 
-		&:not(.outlined) {
-			@apply bg-[var(--600)] text-white enabled:hover:bg-[var(--700)] enabled:active:bg-[var(--800)] border border-transparent disabled:bg-[var(--400)];
+		&:disabled {
+			@apply cursor-not-allowed saturate-50 opacity-50;
+		}
+		&:not(:disabled) {
+			@apply transition-all duration-150 hover:brightness-105 active:brightness-95;
 		}
 	}
 </style>

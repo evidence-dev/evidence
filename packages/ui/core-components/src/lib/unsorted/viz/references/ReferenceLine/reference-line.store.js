@@ -4,8 +4,7 @@ import { nanoid } from 'nanoid';
 import { get, writable } from 'svelte/store';
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 import { formatValue } from '@evidence-dev/component-utilities/formatting';
-import { isPresetColor } from '../types.js';
-import { COLORS, LABEL_POSITIONS } from './constants.js';
+import { LABEL_POSITIONS } from './constants.js';
 import { Query } from '@evidence-dev/sdk/usql';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable */
@@ -95,12 +94,6 @@ export class ReferenceLineStore {
 			// Use preset colors
 			labelColor = labelColor ?? color;
 			lineColor = lineColor ?? color;
-			if (isPresetColor(labelColor)) {
-				labelColor = COLORS[labelColor].labelColor;
-			}
-			if (isPresetColor(lineColor)) {
-				lineColor = COLORS[lineColor].lineColor;
-			}
 
 			const labelPosition = config.labelPosition
 				? LABEL_POSITIONS[config.labelPosition]

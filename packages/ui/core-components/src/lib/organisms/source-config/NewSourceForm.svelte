@@ -35,10 +35,10 @@
 <div
 	class="col-span-4 w-full flex justify-end items-end flex-col py-4 px-4 rounded"
 	transition:slide
-	class:bg-gray-100={!ghost}
+	class:bg-base-200={!ghost}
 >
 	<form class="flex flex-col w-full gap-4" on:submit|preventDefault={submit}>
-		<h3 class="text-sm uppercase gray-600 font-bold text-left">Add new source</h3>
+		<h3 class="text-sm uppercase font-bold text-left">Add new source</h3>
 
 		<label for="sourceType" class="flex justify-between w-full">
 			Datasource Type
@@ -46,7 +46,7 @@
 				required
 				bind:value={newSourceType}
 				name="sourceType"
-				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
+				class="rounded border border-base-300 bg-base-100 p-1 ml-auto w-2/3 align-middle text-sm"
 			>
 				{#each Object.entries(availablePackages) as [name, value]}
 					{@const supports = value.package.package.evidence.datasources}
@@ -70,7 +70,7 @@
 			<SourceNameField bind:sourceName={newSourceName} bind:nameError />
 		</div>
 		<div class="ml-auto">
-			<Button size="md" icon={DeviceFloppy} variant="success" type="submit">Confirm</Button>
+			<Button size="md" icon={DeviceFloppy} variant="positive" type="submit">Confirm</Button>
 		</div>
 	</form>
 </div>

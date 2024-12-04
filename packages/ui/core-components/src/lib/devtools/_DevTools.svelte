@@ -52,11 +52,11 @@
 
 {#if open}
 	<div
-		class="h-[calc(100vh-3rem)] w-96 bg-gray-200 fixed overflow-auto right-0 top-12 px-4 py-4 z-10"
+		class="h-[calc(100vh-3rem)] w-96 bg-base-100 fixed overflow-auto right-0 top-12 px-4 py-4 z-10"
 		transition:fly={{ x: 384, duration: 250, delay: 0 }}
 	>
 		<button
-			class="absolute right-4 top-4 rounded-full bg-blue-400 w-8 h-8 flex items-center justify-center hover:bg-blue-300 z-30"
+			class="absolute right-4 top-4 rounded-full bg-info text-info-content w-8 h-8 flex items-center justify-center hover:brightness-110 z-30"
 			on:click={() => (open = !open)}
 		>
 			<Icon src={open ? X : Bug} class="w-4 h-4" />
@@ -69,13 +69,9 @@
 				<section class="">
 					{#each $queries.entries() as [id, query] (id)}
 						<button
-							class="flex justify-between w-full odd:bg-black/10 hover:bg-black/20"
-							class:odd:bg-red-300={query.error}
-							class:bg-red-400={query.error}
-							class:hover:bg-red-500={query.error}
-							class:odd:bg-yellow-300={query.opts?.noResolve}
-							class:bg-yellow-400={query.opts?.noResolve}
-							class:hover:bg-yellow-500={query.opts?.noResolve}
+							class="flex justify-between w-full odd:bg-base-200/40 hover:bg-base-200"
+							class:bg-negative={query.error}
+							class:bg-warning={query.opts?.noResolve}
 							on:click={() => (selectedQuery = query)}
 						>
 							<p class="w-full text-left truncate">{query.id}</p>
@@ -101,7 +97,7 @@
 {#if isDebug()}
 	<button
 		transition:scale={{ axis: 'x' }}
-		class="fixed right-4 top-16 rounded-full bg-blue-400 w-8 h-8 flex items-center justify-center hover:bg-blue-300 z-0"
+		class="fixed right-4 top-16 rounded-full bg-info text-info-content w-8 h-8 flex items-center justify-center hover:brightness-110 z-0"
 		on:click={() => (open = !open)}
 	>
 		<Icon src={Bug} class="w-4 h-4" />

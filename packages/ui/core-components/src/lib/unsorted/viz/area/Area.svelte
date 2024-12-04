@@ -12,6 +12,9 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import replaceNulls from '@evidence-dev/component-utilities/replaceNulls';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	import {
 		formatValue,
@@ -28,7 +31,11 @@
 	export let type = 'stacked'; // stacked or stacked100
 
 	export let fillColor = undefined;
+	$: fillColorStore = resolveColor(fillColor);
+
 	export let lineColor = undefined;
+	$: lineColorStore = resolveColor(lineColor);
+
 	export let fillOpacity = undefined;
 	export let line = true;
 	$: line = line === 'true' || line === true;
@@ -57,7 +64,10 @@
 	$: labels = labels === 'true' || labels === true;
 	export let labelSize = 11;
 	export let labelPosition = 'top';
+
 	export let labelColor = undefined;
+	$: labelColorStore = resolveColor(labelColor);
+
 	export let labelFmt = undefined;
 	let labelFormat;
 	if (labelFmt) {
@@ -116,13 +126,13 @@
 		type: 'line',
 		stack: stackName,
 		areaStyle: {
-			color: fillColor,
+			color: $fillColorStore,
 			opacity: fillOpacity
 		},
 		connectNulls: handleMissing === 'connect',
 		lineStyle: {
 			width: line ? 1 : 0,
-			color: lineColor
+			color: $lineColorStore
 		},
 		label: {
 			show: labels,
@@ -132,7 +142,7 @@
 					: formatValue(params.value[swapXY ? 0 : 1], labelFormat ?? yFormat);
 			},
 			fontSize: labelSize,
-			color: labelColor,
+			color: $labelColorStore,
 			position: labelPosition,
 			padding: 3
 		},

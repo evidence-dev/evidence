@@ -3,7 +3,7 @@
 import type { Writable, Readable } from 'svelte/store';
 import type { MarkPointComponentOption } from 'echarts';
 
-import type { ReferenceColor, Symbol } from '../types.js';
+import type { Symbol } from '../types.js';
 
 export type LabelPosition = MarkPointComponentOption['label']['position'];
 
@@ -13,9 +13,9 @@ export type ReferencePointConfig = {
 	y?: number | string;
 	label?: string;
 	symbol?: Symbol;
-	color?: ReferenceColor;
-	labelColor?: ReferenceColor;
-	symbolColor?: ReferenceColor;
+	color?: string;
+	labelColor?: string;
+	symbolColor?: string;
 	symbolSize?: number;
 	symbolOpacity?: number;
 	symbolBorderWidth?: number;

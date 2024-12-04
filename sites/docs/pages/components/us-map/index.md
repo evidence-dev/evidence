@@ -28,7 +28,7 @@ queries:
 
 ### Color Scales
 
-`colorScale=blue`
+`colorScale=info`
 
 <DocTab>
     <div slot='preview'>
@@ -36,7 +36,7 @@ queries:
             data={state_population}
             state=state_name
             value=population
-            colorScale=blue
+            colorScale=info
         />
     </div>
 
@@ -45,12 +45,12 @@ queries:
     data={state_population}
     state=state_name
     value=population
-    colorScale=blue
+    colorScale=info
 />
 ````
 </DocTab>
 
-`colorScale=green`
+`colorScale=positive`
 
 <DocTab>
     <div slot='preview'>
@@ -58,7 +58,7 @@ queries:
             data={state_population}
             state=state_name
             value=population
-            colorScale=green
+            colorScale=positive
         />
     </div>
 
@@ -67,12 +67,12 @@ queries:
     data={state_population}
     state=state_name
     value=population
-    colorScale=green
+    colorScale=positive
 />
 ````
 </DocTab>
 
-`colorScale=red`
+`colorScale=negative`
 
 <DocTab>
     <div slot='preview'>
@@ -80,7 +80,7 @@ queries:
             data={state_population}
             state=state_name
             value=population
-            colorScale=red
+            colorScale=negative
         />
     </div>
 
@@ -89,29 +89,7 @@ queries:
     data={state_population}
     state=state_name
     value=population
-    colorScale=red
-/>
-````
-</DocTab>
-
-`colorScale=bluegreen`
-
-<DocTab>
-    <div slot='preview'>
-        <USMap
-            data={state_population}
-            state=state_name
-            value=population
-            colorScale=bluegreen
-        />
-    </div>
-
-````html
-<USMap
-    data={state_population}
-    state=state_name
-    value=population
-    colorScale=bluegreen
+    colorScale=negative
 />
 ````
 </DocTab>
@@ -124,7 +102,7 @@ queries:
             data={state_population}
             state=state_name
             value=population
-            colorPalette={['maroon','white','#1c0d80']}
+            colorScale={['maroon','white','#1c0d80']}
             legend=true
         />
     </div>
@@ -134,7 +112,7 @@ queries:
     data={state_population}
     state=state_name
     value=population
-    colorPalette={['maroon','white','#1c0d80']}
+    colorScale={['maroon','white','#1c0d80']}
     legend=true
 />
 ```
@@ -176,7 +154,7 @@ queries:
             data={state_population}
             state=state_name
             value=population
-            colorPalette={['maroon','white','#1c0d80']}
+            colorScale={['maroon','white','#1c0d80']}
             legend=true
             filter=true
         />
@@ -187,7 +165,7 @@ queries:
     data={state_population}
     state=state_name
     value=population
-    colorPalette={['maroon','white','#1c0d80']}
+    colorScale={['maroon','white','#1c0d80']}
     legend=true
     filter=true
 />
@@ -270,8 +248,7 @@ Column to be used as the value determining the colour of each state
 </PropListing>
 <PropListing
     name="colorScale"
-    options={['blue','green','red','bluegreen']}
-    defaultValue='blue'
+    defaultValue='info'
 >
 
 Colour scale to be used. To use a custom color palette, see the `colorPalette` prop

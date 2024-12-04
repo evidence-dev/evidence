@@ -34,7 +34,7 @@ export const transformQueries = {
 
 			target.classList.add('text-xs');
 			target.classList.add('leading-tight');
-			target.classList.add('bg-gray-200');
+			target.classList.add('bg-base-300');
 			target.classList.add('p-2');
 			target.classList.add('w-fit');
 			target.classList.add('min-w-[60ch]');

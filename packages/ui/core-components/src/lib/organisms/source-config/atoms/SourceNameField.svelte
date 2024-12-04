@@ -27,13 +27,13 @@
 	<input
 		required
 		name="sourceName"
-		class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
+		class="rounded border border-base-300 bg-base-100 p-1 ml-auto w-2/3 align-middle text-sm"
 		bind:value={sourceName}
 		on:change={() => (nameError = '')}
 	/>
 </label>
 <div class="flex justify-end w-full">
 	{#if nameError}
-		<span class="text-red-500 font-bold text-sm">{nameError}</span>
+		<span class="text-negative font-bold text-sm">{nameError}</span>
 	{/if}
 </div>

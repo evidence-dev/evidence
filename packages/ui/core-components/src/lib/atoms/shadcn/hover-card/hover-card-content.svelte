@@ -21,7 +21,7 @@
 	{transitionConfig}
 	{align}
 	{sideOffset}
-	class={cn('z-50 my-2 rounded-md border bg-white shadow-md outline-none', className)}
+	class={cn('z-50 my-2 rounded-md border bg-base-100 shadow-md outline-none', className)}
 	{...$$restProps}
 >
 	<slot />
