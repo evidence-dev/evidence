@@ -16,7 +16,7 @@
 	import { Separator } from '$lib/atoms/shadcn/separator/index.js';
 	import { Calendar } from '$lib/atoms/shadcn/calendar/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Calendar as CalendarIcon } from '@steeze-ui/tabler-icons';
+	import { CalendarOutline as CalendarIcon } from '@steeze-ui/custom-icons';
 
 	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
@@ -236,8 +236,26 @@
 							<Separator oritentation="vertical" class="mx-2 h-4 w-[1px]" />
 						{/if}
 						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
+						<span class="ml-2 mb-[2px]">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								<rect x="4" y="5" width="16" height="16" rx="2" />
+								<path d="M4 11h16" />
 
-						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-1 text-black" />
+								<path d="M8 3v4" />
+								<path d="M16 3v4" />
+							</svg>
+						</span>
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfMedium.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
@@ -257,7 +275,26 @@
 						Loading...
 					{:else if selectedDateInput && !range}
 						{dfShort.format(selectedDateInput.toDate(getLocalTimeZone()))}
-						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-1 text-black" />
+						<span class="ml-2 mb-[2px]">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								<rect x="4" y="5" width="16" height="16" rx="2" />
+								<path d="M4 11h16" />
+
+								<path d="M8 3v4" />
+								<path d="M16 3v4" />
+							</svg>
+						</span>
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfShort.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfShort.format(
