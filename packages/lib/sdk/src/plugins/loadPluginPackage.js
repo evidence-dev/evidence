@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import { PluginPackageSchema } from './schemas/plugin-package.schema.js';
 import fs from 'fs/promises';
-import { createRequire } from 'module';
 import path from 'path';
 import { log } from '../logger/index.js';
+import { discoverPluginPackageRootPathSync } from './discoverPluginPackageRootPathSync.js';
 
 /**
  *
@@ -11,23 +11,10 @@ import { log } from '../logger/index.js';
  * @returns {Promise<null | import("./schemas/plugin-package.schema.js").PluginPackage & {dir: string}>}
  */
 export const loadPluginPackage = async (name) => {
-	let pluginPackageDirectory = path.dirname(createRequire(import.meta.url).resolve(name));
-	let pluginPackageDirContents = await fs.readdir(pluginPackageDirectory);
-	while (!pluginPackageDirContents.includes('package.json')) {
-		pluginPackageDirectory = path.dirname(pluginPackageDirectory);
-		pluginPackageDirContents = await fs.readdir(pluginPackageDirectory);
+	const pluginPackageDirectory = discoverPluginPackageRootPathSync(name);
 
-		if (pluginPackageDirectory === path.dirname(pluginPackageDirectory)) {
-			// reached root
-			log.warn(
-				chalk.yellow(
-					`Package ${chalk.bold(
-						`"${name}"`
-					)} not found, run again with --debug for more information`
-				)
-			);
-			return null;
-		}
+	if (!pluginPackageDirectory) {
+		return null;
 	}
 
 	const packagePath = path.join(pluginPackageDirectory, 'package.json');
