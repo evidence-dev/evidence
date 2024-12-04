@@ -1,7 +1,7 @@
 {
 	"devDependencies": {
 		"@changesets/cli": "2.21.0",
-		"@duckdb/duckdb-wasm": "1.28.0",
+		"@duckdb/duckdb-wasm": "1.29.0",
 		"@evidence-dev/bigquery": "link:packages/datasources/bigquery",
 		"@evidence-dev/component-utilities": "link:packages/lib/component-utilities",
 		"@evidence-dev/core-components": "link:packages/ui/core-components",

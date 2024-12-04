@@ -40,6 +40,42 @@ export function arrowTableToJSON(table) {
 		}))
 	});
 
+	const date_cols = table.schema.fields.filter((field) => field.type.typeId === Type.Date);
+	const list_cols = table.schema.fields.filter((field) => field.type.typeId === Type.List);
+
+	for (const row of arr) {
+		for (const col of date_cols) {
+			row[col.name] = new Date(row[col.name]);
+		}
+		for (const col of list_cols) {
+			row[col.name] = arrowVectorToJSON(row[col.name]);
+		}
+	}
+
+	return arr;
+}
+
+/**
+ * Converts an Apache Arrow vector to a Javascript array.
+ * @param {import("apache-arrow").Vector} vector
+ * @returns {any[]}
+ */
+function arrowVectorToJSON(vector) {
+	if (vector == null) return [];
+	const arr = vector.toArray();
+
+	const date_cols = vector.type?.children?.filter((field) => field.type.typeId === Type.Date) ?? [];
+	const list_cols = vector.type?.children?.filter((field) => field.type.typeId === Type.List) ?? [];
+
+	for (const row of arr) {
+		for (const col of date_cols) {
+			row[col.name] = new Date(row[col.name]);
+		}
+		for (const col of list_cols) {
+			row[col.name] = arrowVectorToJSON(row[col.name]);
+		}
+	}
+
 	return arr;
 }
 
