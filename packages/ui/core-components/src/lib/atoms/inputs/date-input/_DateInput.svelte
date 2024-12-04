@@ -15,8 +15,6 @@
 	import * as Popover from '$lib/atoms/shadcn/popover/index.js';
 	import { Separator } from '$lib/atoms/shadcn/separator/index.js';
 	import { Calendar } from '$lib/atoms/shadcn/calendar/index.js';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { CalendarOutline as CalendarIcon } from '@steeze-ui/custom-icons';
 
 	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
