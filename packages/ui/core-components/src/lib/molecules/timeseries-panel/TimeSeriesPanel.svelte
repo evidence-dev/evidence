@@ -8,6 +8,9 @@
 	import { QueryLoad } from '../../atoms/query-load/index.js';
 	import { writable } from 'svelte/store';
 	import { setContext, onMount } from 'svelte';
+	import timeSeriesStore from './timeSeriesStore.js';
+
+	setContext('timeSeriesStore', timeSeriesStore);
 
 	export let data = undefined;
 	let metricStore = writable([]);
@@ -23,12 +26,25 @@
 
 		return unsubscribe;
 	});
+
+	// $: if ($timeSeriesStore.length > 0 && !selectedMetric) {
+	// 	selectedMetric = $timeSeriesStore.metrics[0].label;
+	// }
+
+	// const buildMetrics = ($metricStore) => {
+	// 	for (const metric of $metricStore) {
+	// 		const queryString = `${metric.metric} as ${metric.label}`;
+	// 		// console.log('queryString', queryString);
+	// 	}
+	// };
+
+	// $: buildMetrics($metricStore);
 </script>
 
 <QueryLoad {data} let:loaded>
 	<div class="rounded-xl p-3 grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-6 bg-gray-50 mb-4">
 		<MetricTable bind:selectedMetric {metricStore} />
-		<TimeSeriesPanelChart {data} {selectedMetric} />
+		<TimeSeriesPanelChart data={loaded} {selectedMetric} />
 	</div>
 	<svelte:fragment let:loaded slot="error">
 		<div class="big-red-100">{data.error}</div>

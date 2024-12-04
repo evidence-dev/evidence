@@ -21,6 +21,37 @@
 
 	const metricsStore = getContext('metrics');
 
+	const timeSeriesStore = getContext('timeSeriesStore');
+
+	// $: {
+	// 	if ($timeSeriesStore) {
+	// 		const currentMetrics = $timeSeriesStore.metrics;
+	// 		console.log('currentMetrics', currentMetrics);
+	// 		timeSeriesStore.update((store) => ({
+	// 			...store,
+	// 			metrics: [...currentMetrics, { metric, label, link, downIsGood }]
+	// 		}));
+	// 	}
+	// }
+
+	// onMount(() => {
+	// 	return () => {
+	// 		if (timeSeriesStore) {
+	// 			const currentMetrics = $timeSeriesStore.metrics;
+	// 			console.log('currentMetrics', currentMetrics);
+	// 			const updatedMetrics = currentMetrics.filter(
+	// 				(m) =>
+	// 					m.metric !== metric ||
+	// 					m.label !== label ||
+	// 					m.link !== link ||
+	// 					m.downIsGood !== downIsGood
+	// 			);
+	// 			console.log('updatedMetrics', updatedMetrics);
+	// 			timeSeriesStore.update((store) => ({ ...store, metrics: updatedMetrics }));
+	// 		}
+	// 	};
+	// });
+
 	$: {
 		if (metricsStore) {
 			const currentMetrics = get(metricsStore);
@@ -39,6 +70,7 @@
 						m.link !== link ||
 						m.downIsGood !== downIsGood
 				);
+				console.log('updatedMetrics', updatedMetrics);
 				metricsStore.set(updatedMetrics);
 			}
 		};

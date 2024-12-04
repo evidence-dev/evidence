@@ -192,7 +192,7 @@
 	/>
 	<div class="row-span-2 relative">
 		<div class="font-bold text-gray-700">{selectedMetric}</div>
-		<div class="text-sm font-light text-gray-800">${Number(currentValue.toFixed(2))}</div>
+		<!-- <div class="text-sm font-light text-gray-800">${Number(currentValue.toFixed(2))}</div> -->
 	</div>
 	<div class="row-span-3 relative">
 		{#key selectedMetric}

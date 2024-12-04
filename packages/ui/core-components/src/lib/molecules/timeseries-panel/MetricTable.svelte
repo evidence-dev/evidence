@@ -4,6 +4,7 @@
 	import { crossfade } from 'svelte/transition';
 
 	export let metricStore = undefined;
+	// export let timeSeriesStore = undefined;
 	export let selectedMetric;
 
 	const [send, receive] = crossfade({
