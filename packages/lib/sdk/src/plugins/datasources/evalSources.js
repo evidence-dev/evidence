@@ -177,7 +177,7 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 				spinner.succeed(`Finished, wrote ${writtenRows} rows.`);
 			} catch (e) {
 				if (e instanceof Error) {
-					if (isDebug() && e.stack) console.error(e.stack);
+					console.error(e.stack);
 					spinner.fail(e.message);
 				} else {
 					spinner.fail('Unknown Error Encountered');
