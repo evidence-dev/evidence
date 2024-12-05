@@ -170,18 +170,16 @@ export async function buildMultipartParquet(
 	await initDB();
 
 	const outputFilepath = path.join(outDir, outputFilename);
-	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
 	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
 
 	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
-	try {
-		await fs.rm(outputFilepath, { force: true });
-	} catch (e) {
-		/* do nothing */
-	}
+	await fs.rm(outputFilepath, { force: true });
+	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
+	console.log(outputFilepath, path.dirname(outputFilepath));
+	console.log(copy);
 	await query(copy);
 
 	await fs.chmod(outputFilepath, 0o644);
