@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import DateInput from '../date-input/_DateInput.svelte';
+	import DateInput from './_DateInput.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 	import { getLocalTimeZone } from '@internationalized/date';
@@ -12,9 +12,11 @@
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { dateToYYYYMMDD, formatDateString } from '../date-input/helpers.js';
+	import { toBoolean } from '../../../utils.js';
+	import { dateToYYYYMMDD, formatDateString } from './helpers.js';
 
 	const inputs = getInputContext();
+
 	/** @type {string} */
 	export let name;
 	/** @type {string | undefined} */
@@ -35,9 +37,10 @@
 	export let presetRanges;
 	/** @type {string | undefined} */
 	export let defaultValue;
-
 	/** @type {boolean} */
-	let range = true;
+	export let range = false;
+
+	$: range = toBoolean(range);
 
 	const exec = getQueryFunction();
 	let query;
@@ -47,11 +50,11 @@
 			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
 			exec,
 			{
-				initialData: $page?.data?.data[`DateRange-${name}_data`],
-				knownColumns: $page?.data?.data[`DateRange-${name}_columns`],
+				initialData: $page?.data?.data[`DateInput-${name}_data`],
+				knownColumns: $page?.data?.data[`DateInput-${name}_columns`],
 				disableCache: true,
 				noResolve: false,
-				id: `DateRange-${name}`
+				id: `DateInput-${name}`
 			}
 		);
 		query.fetch();
@@ -61,21 +64,34 @@
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
 	$: if ((query && $query.dataLoaded) || !query) {
-		$inputs[name] = { start: startString, end: endString };
+		if (range) {
+			$inputs[name] = { value: undefined, start: startString, end: endString };
+		} else {
+			$inputs[name] = { value: startString, start: startString, end: undefined };
+		}
 	}
 
+	let currentDate = dateToYYYYMMDD(new Date(Date.now()));
+
 	let selectedDateInput;
-	$: if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end)) {
+	$: if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
 		$inputs[name] = {
+			value: undefined,
 			start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
 			end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
+		};
+	} else if (selectedDateInput && selectedDateInput && !range) {
+		$inputs[name] = {
+			value: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0)),
+			start: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0)),
+			end: undefined
 		};
 	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
-		{#if title}
+		{#if title && range}
 			<span class="text-sm text-gray-500 block mb-1">{title}</span>
 		{/if}
 
@@ -95,7 +111,6 @@
 				<svelte:fragment slot="skeleton">
 					<Skeleton class="h-8 w-72" />
 				</svelte:fragment>
-
 				<DateInput
 					bind:selectedDateInput
 					start={startString}
@@ -104,6 +119,8 @@
 					{presetRanges}
 					{defaultValue}
 					{range}
+					{currentDate}
+					{title}
 				/>
 			</QueryLoad>
 		{/if}

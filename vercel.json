@@ -45,6 +45,11 @@
 			"source": "/guides/updating-your-project",
 			"destination": "/guides/updating-your-app/",
 			"permanent": true
+		},
+		{
+			"source": "/components/date-range/",
+			"destination": "/components/date-input/",
+			"permanent": true
 		}
 	]
 }
