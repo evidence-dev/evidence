@@ -177,7 +177,11 @@ export async function buildMultipartParquet(
 	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
-	await fs.rm(outputFilepath, { force: true });
+	try {
+		await fs.rm(outputFilepath, { force: true });
+	} catch (e) {
+		/* do nothing */
+	}
 	await query(copy);
 
 	await fs.chmod(outputFilepath, 0o644);
