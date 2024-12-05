@@ -12,10 +12,7 @@
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-
-	function dateToYYYYMMDD(date) {
-		return date.toISOString().split('T')[0];
-	}
+	import { dateToYYYYMMDD, formatDateString } from '../date-input/helpers.js';
 
 	const inputs = getInputContext();
 	/** @type {string} */
@@ -60,23 +57,8 @@
 		query.fetch();
 	}
 
-	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
-	$: startString =
-		typeof start === 'string' && YYYYMMDD.test(start)
-			? start
-			: start instanceof Date
-				? dateToYYYYMMDD(start)
-				: $query?.[0].start instanceof Date
-					? dateToYYYYMMDD($query?.[0].start)
-					: dateToYYYYMMDD(new Date(0));
-	$: endString =
-		typeof end === 'string' && YYYYMMDD.test(end)
-			? end
-			: end instanceof Date
-				? dateToYYYYMMDD(end)
-				: $query?.[0].end instanceof Date
-					? dateToYYYYMMDD($query?.[0].end)
-					: dateToYYYYMMDD(new Date());
+	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
+	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
 	$: if ((query && $query.dataLoaded) || !query) {
 		$inputs[name] = { start: startString, end: endString };
