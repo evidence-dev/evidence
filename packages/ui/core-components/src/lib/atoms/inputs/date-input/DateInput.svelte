@@ -12,6 +12,7 @@
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { toBoolean } from '../../../utils.js';
 
 	function dateToYYYYMMDD(date) {
 		return date.toISOString().split('T')[0];
@@ -41,6 +42,10 @@
 	export let defaultValue;
 	/** @type {boolean} */
 	export let range = false;
+
+	$: range = toBoolean(range);
+
+	$: console.log(range);
 
 	const exec = getQueryFunction();
 	let query;

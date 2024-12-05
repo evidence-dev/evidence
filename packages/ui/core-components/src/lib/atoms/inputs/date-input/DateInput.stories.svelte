@@ -42,5 +42,23 @@
 		<h2>start: {$inputStore.dateInput_range.start}</h2>
 		<h2>end: {$inputStore.dateInput_range.end}</h2>
 	</h1>
-	<DateInput {...args} name="dateInput_range" range />
+	<div>
+		<DateInput {...args} name="dateInput_range" range />
+	</div>
+	<div>
+		boolean true
+		<DateInput {...args} name="dateInput_range" range={true} />
+	</div>
+	<div>
+		string true
+		<DateInput {...args} name="dateInput_range" range="true" />
+	</div>
+	<div>
+		boolean false
+		<DateInput {...args} name="dateInput_range" range={false} />
+	</div>
+	<div>
+		string false
+		<DateInput {...args} name="dateInput_range" range="false" />
+	</div>
 </Story>
