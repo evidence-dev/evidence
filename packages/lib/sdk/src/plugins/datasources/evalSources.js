@@ -13,6 +13,7 @@ import ora from 'ora';
 import { dataUrlPrefix } from '../../lib/projectPaths.js';
 import { subSourceVariables } from './sub-source-vars.js';
 import { logQueryEvent } from '@evidence-dev/telemetry';
+import { isDebug } from '../../lib/debug.js';
 
 // TODO: This is a great candidate for unit testing - but it may need to be broken down further to make that more achievable, right now it would take a _lot_ of mocks
 
@@ -175,8 +176,12 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 
 				spinner.succeed(`Finished, wrote ${writtenRows} rows.`);
 			} catch (e) {
-				if (e instanceof Error) spinner.fail(e.message);
-				else spinner.fail('Unknown Error Encountered');
+				if (e instanceof Error) {
+					if (isDebug() && e.stack) console.error(e.stack);
+					spinner.fail(e.message);
+				} else {
+					spinner.fail('Unknown Error Encountered');
+				}
 				if (e instanceof EvidenceError && e.context) {
 					if (Array.isArray(e.context)) console.warn(chalk.dim('    ' + e.context.join('\n    ')));
 					else console.warn(chalk.dim('    ' + e.context));
