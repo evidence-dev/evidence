@@ -51,7 +51,6 @@
 	// 		}
 	// 	};
 	// });
-
 	$: {
 		if (metricsStore) {
 			const currentMetrics = get(metricsStore);
@@ -70,7 +69,6 @@
 						m.link !== link ||
 						m.downIsGood !== downIsGood
 				);
-				console.log('updatedMetrics', updatedMetrics);
 				metricsStore.set(updatedMetrics);
 			}
 		};

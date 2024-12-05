@@ -8,9 +8,7 @@
 	import { QueryLoad } from '../../atoms/query-load/index.js';
 	import { writable } from 'svelte/store';
 	import { setContext, onMount } from 'svelte';
-	import timeSeriesStore from './timeSeriesStore.js';
-
-	setContext('timeSeriesStore', timeSeriesStore);
+	// import timeSeriesStore from './timeSeriesStore.js';
 
 	export let data = undefined;
 	let metricStore = writable([]);
@@ -26,6 +24,8 @@
 
 		return unsubscribe;
 	});
+
+	// setContext('timeSeriesStore', timeSeriesStore);
 
 	// $: if ($timeSeriesStore.length > 0 && !selectedMetric) {
 	// 	selectedMetric = $timeSeriesStore.metrics[0].label;
