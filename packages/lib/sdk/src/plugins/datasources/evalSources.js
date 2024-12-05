@@ -13,7 +13,6 @@ import ora from 'ora';
 import { dataUrlPrefix } from '../../lib/projectPaths.js';
 import { subSourceVariables } from './sub-source-vars.js';
 import { logQueryEvent } from '@evidence-dev/telemetry';
-import { isDebug } from '../../lib/debug.js';
 
 // TODO: This is a great candidate for unit testing - but it may need to be broken down further to make that more achievable, right now it would take a _lot_ of mocks
 
