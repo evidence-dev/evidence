@@ -15,6 +15,8 @@
 	import * as Popover from '$lib/atoms/shadcn/popover/index.js';
 	import { Separator } from '$lib/atoms/shadcn/separator/index.js';
 	import { Calendar } from '$lib/atoms/shadcn/calendar/index.js';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CalendarEvent as CalendarIcon } from '@steeze-ui/tabler-icons';
 
 	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
@@ -234,7 +236,8 @@
 							<Separator oritentation="vertical" class="mx-2 h-4 w-[1px]" />
 						{/if}
 						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
-						<span class="ml-2 mb-[2px]">
+						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-[1.8px] text-gray-700" />
+						<!-- <span class="ml-2 mb-[2px]">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="16"
@@ -253,7 +256,7 @@
 								<path d="M8 3v4" />
 								<path d="M16 3v4" />
 							</svg>
-						</span>
+						</span> -->
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfMedium.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
@@ -273,7 +276,8 @@
 						Loading...
 					{:else if selectedDateInput && !range}
 						{dfShort.format(selectedDateInput.toDate(getLocalTimeZone()))}
-						<span class="ml-2 mb-[2px]">
+						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-[1.8px] text-gray-700" />
+						<!-- <span class="ml-2 mb-[2px]">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="16"
@@ -292,7 +296,7 @@
 								<path d="M8 3v4" />
 								<path d="M16 3v4" />
 							</svg>
-						</span>
+						</span> -->
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfShort.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfShort.format(
