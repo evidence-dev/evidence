@@ -1,5 +1,13 @@
 # @evidence-dev/redshift
 
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies [cb5687cd9]
+  - @evidence-dev/db-commons@1.0.6
+  - @evidence-dev/postgres@1.0.7
+
 ## 1.0.6
 
 ### Patch Changes

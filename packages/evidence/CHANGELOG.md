@@ -1,5 +1,14 @@
 # @evidence-dev/evidence
 
+## 39.2.3
+
+### Patch Changes
+
+- c4f46da37: fix peer dep mismatch in evidence package
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/universal-sql@2.2.0
+  - @evidence-dev/sdk@2.0.0
+
 ## 39.2.2
 
 ### Patch Changes
