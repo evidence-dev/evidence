@@ -53,7 +53,6 @@ appearance:
 ```
 
 
-Continue reading to learn how to customize your app's light and dark theme.
 
 # Theme
 
