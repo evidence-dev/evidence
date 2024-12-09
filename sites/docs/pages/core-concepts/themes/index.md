@@ -6,7 +6,7 @@ description: Customize the appearance of your Evidence application in light and 
 sidebar_badge: New
 ---
 
-Customize the appearance of your Evidence application in light and dark mode using the theming system.
+Customize the appearance of your Evidence application in light and dark mode.
 
 # Appearance Modes
 
