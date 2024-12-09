@@ -4,6 +4,10 @@ const evidenceConfig = require('@evidence-dev/sdk/config').getEvidenceConfig();
 
 const fs = require('fs');
 const path = require('path');
+const {
+	discoverPluginPackageRootPathSync
+} = require('@evidence-dev/sdk/plugins/discoverPluginPackageRootPathSync');
+
 let presets = [evidenceTailwind];
 
 const altConfigFilenames = ['tailwind.config.js', 'tailwind.config.cjs'];
@@ -24,12 +28,10 @@ const config = {
 		get files() {
 			const pluginConfig = evidenceConfig.plugins;
 			const components = pluginConfig.components;
+
 			const componentPaths = Object.keys(components)
-				.map((pluginName) => [
-					`./node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`,
-					`../../node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`
-				])
-				.flat();
+				.map((pluginName) => discoverPluginPackageRootPathSync(pluginName))
+				.map((pluginDirectory) => `${pluginDirectory}/dist/**/*.{html,js,svelte,ts,md}`);
 
 			return [
 				'./src/**/*.{html,js,svelte,ts,md}', // This is used for everything in base evidence template
