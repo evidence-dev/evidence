@@ -266,11 +266,11 @@
 
 <Story name="Colors">
 	<LineChart x="x" y="y" {data}>
-		<ReferenceArea xMin="10" xMax="20" color="red" label="red" />
-		<ReferenceArea xMin="20" xMax="30" color="yellow" label="yellow" />
-		<ReferenceArea xMin="30" xMax="40" color="green" label="green" />
-		<ReferenceArea xMin="40" xMax="50" color="blue" label="blue" />
-		<ReferenceArea xMin="50" xMax="60" color="grey" label="grey" />
+		<ReferenceArea xMin="10" xMax="20" color="negative" label="negative" />
+		<ReferenceArea xMin="20" xMax="30" color="warning" label="warning" />
+		<ReferenceArea xMin="30" xMax="40" color="positive" label="positive" />
+		<ReferenceArea xMin="40" xMax="50" color="info" label="info" />
+		<ReferenceArea xMin="50" xMax="60" color="base-content-muted" label="base-content-muted" />
 		<ReferenceArea xMin="60" xMax="70" color="#f2dbff" labelColor="#4d1070" label="custom" />
 	</LineChart>
 </Story>

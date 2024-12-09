@@ -24,18 +24,17 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.search-container {
+		@apply bg-base-100 border border-base-300;
 		width: 30%;
 		display: block;
 		align-items: center;
-		border: 1px solid var(--grey-300);
 		border-radius: 4px;
 		height: 22px;
 		position: relative;
 		margin: 25px 3px 10px 0px;
 		box-sizing: content-box;
-		background-color: white;
 	}
 
 	.search-icon {
@@ -47,11 +46,11 @@
 		top: 50%;
 		transform: translateY(-50%);
 		-ms-transform: translateY(-50%);
-		color: var(--grey-400);
 		box-sizing: content-box;
 	}
 
 	.search-bar {
+		@apply bg-base-100;
 		margin: 0;
 		position: absolute;
 		top: 50%;
@@ -61,7 +60,6 @@
 		border: none;
 		padding-left: 23px;
 
-		color: var(--grey-600);
 		font-size: 9pt;
 
 		width: calc(100% - 10px);
@@ -71,7 +69,7 @@
 	}
 
 	input.search-bar::placeholder {
-		color: var(--grey-500);
+		@apply text-base-content-muted;
 	}
 
 	*:focus {

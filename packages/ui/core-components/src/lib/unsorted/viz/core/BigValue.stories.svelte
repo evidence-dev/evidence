@@ -34,12 +34,14 @@
 
 	import BigValue from './BigValue.svelte';
 
-	const data = Query.create(`select sum(fare) as total FROM  flights`, query);
+	const data = Query.create(`select sum(fare) as total FROM flights`, query);
 
 	const data2 = Query.create(
 		`SELECT sum(x) as total_x,sum(y) as total_y, series from numeric_series group by series`,
 		query
 	);
+
+	const data3 = Query.create(`select fare, departure_date from flights limit 10`, query);
 </script>
 
 <Story name="Basic" args={{ title: 'Basic Big Value', fmt: 'usd0', emptySet: 'pass' }} let:args>
@@ -50,4 +52,8 @@
 	{#each $data2 as my_row}
 		<BigValue {...args} data={my_row} value="total_y" />
 	{/each}
+</Story>
+
+<Story name="Sparkline" args={{ sparklineColor: 'black' }} let:args>
+	<BigValue {...args} data={data3} value="fare" sparkline="departure_date" />
 </Story>

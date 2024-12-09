@@ -73,7 +73,7 @@ onDestroy(() => {
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceArea data={generated_multiple_dates} xMin=start_date xMax=end_date color=grey/>
+    <ReferenceArea data={generated_multiple_dates} xMin=start_date xMax=end_date color=base-content-muted/>
 </LineChart>
 
 ```multiple_dates
@@ -351,7 +351,7 @@ FROM sums, means
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceLine y=110000 color=red hideValue=true lineWidth=3 lineType=solid/>
+    <ReferenceLine y=110000 color=negative hideValue=true lineWidth=3 lineType=solid/>
 </LineChart>
 
 <LineChart 
@@ -375,11 +375,11 @@ FROM sums, means
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceLine y=15000 color=red label=red/>
-    <ReferenceLine y=35000 color=yellow label=yellow/>
-    <ReferenceLine y=55000 color=green label=green/>
-    <ReferenceLine y=75000 color=blue label=blue/>
-    <ReferenceLine y=95000 color=grey label=grey/>
+    <ReferenceLine y=15000 color=negative label=negative/>
+    <ReferenceLine y=35000 color=warning label=warning/>
+    <ReferenceLine y=55000 color=positive label=positive/>
+    <ReferenceLine y=75000 color=info label=info/>
+    <ReferenceLine y=95000 color=base-content-muted label=base-content-muted/>
     <ReferenceLine y=115000 color=#63178f label=custom/>
 </LineChart>
 
@@ -392,7 +392,7 @@ FROM sums, means
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=yellow/>
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=warning/>
     <ReferenceArea xMin='2021-03-14' xMax='2021-08-15' label=Second/>
 </LineChart>
 
@@ -402,7 +402,7 @@ FROM sums, means
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceArea yMin=70000 yMax=9000 color=red/>
+    <ReferenceArea yMin=70000 yMax=9000 color=negative/>
 </LineChart>
 
 <LineChart 
@@ -411,9 +411,9 @@ FROM sums, means
     y=num_orders_num0 
     yAxisTitle="Orders per Month"
 >
-    <ReferenceArea yMin=2500 color=green label="Good"/>
-    <ReferenceArea yMin=1000 yMax=2500 color=yellow label="Okay"/>
-    <ReferenceArea yMin=0 yMax=1000 color=red label="Bad" labelPosition=right/>
+    <ReferenceArea yMin=2500 color=positive label="Good"/>
+    <ReferenceArea yMin=1000 yMax=2500 color=warning label="Okay"/>
+    <ReferenceArea yMin=0 yMax=1000 color=negative label="Bad" labelPosition=right/>
 </LineChart>
 
 <ScatterPlot
@@ -424,7 +424,7 @@ FROM sums, means
     series=continent
 >
 	<ReferenceLine data={[{ gdp_growth_pct1: 0.101 }]} y=gdp_growth_pct1 />
-    <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=grey border=true/>
+    <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=base-content-muted border=true/>
 </ScatterPlot>
 
 <BarChart 
@@ -443,7 +443,7 @@ FROM sums, means
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceArea data={multiple_dates} xMin=start_date xMax=end_date color=grey/>
+    <ReferenceArea data={multiple_dates} xMin=start_date xMax=end_date color=base-content-muted/>
 </LineChart>
 
 <LineChart 
@@ -476,11 +476,11 @@ FROM sums, means
     x=month
     y=sales_usd0k 
 >
-    <ReferenceArea xMax='2019-04-01' label=blue color=blue/>
-    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=red color=red/>
-    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=yellow color=yellow/>
-    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=green color=green/>
-    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=grey color=grey/>
+    <ReferenceArea xMax='2019-04-01' label=info color=info/>
+    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=negative color=negative/>
+    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=warning color=warning/>
+    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=positive color=positive/>
+    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=base-content-muted color=base-content-muted/>
     <ReferenceArea xMin='2021-09-01' label=custom color=#f2dbff labelColor=#4d1070/>
 </LineChart>
 

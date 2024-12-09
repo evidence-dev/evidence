@@ -22,11 +22,11 @@
 			<div class="git-item">
 				{#if settings.localGitRepo}
 					<span class="gitcheck-icon">
-						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-green-700" />
+						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-positive" />
 					</span>
 				{:else}
 					<span class="gitx-icon">
-						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-red-700" />
+						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-negative" />
 					</span>
 				{/if}
 				<span class="item-label">Local Git Repo</span>
@@ -47,11 +47,11 @@
 			<div class="git-item">
 				{#if settings.gitRepo}
 					<span class="gitcheck-icon">
-						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-green-700" />
+						<Icon src={CircleCheck} theme="filled" class="h-6 w-6 text-positive" />
 					</span>
 				{:else}
 					<span class="gitx-icon">
-						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-red-700" />
+						<Icon src={CircleX} theme="filled" class="h-6 w-6 text-negative" />
 					</span>
 				{/if}
 				<span class="item-label">Git Repo Published</span>
@@ -83,7 +83,7 @@
 	</footer>
 </form>
 
-<style>
+<style lang="postcss">
 	form {
 		scroll-margin-top: 3.5rem; /* offset for sticky header */
 	}
@@ -94,9 +94,9 @@
 
 	.version-control-box {
 		margin-top: 2em;
-		border-top: 1px solid var(--grey-200);
-		border-left: 1px solid var(--grey-200);
-		border-right: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
+		border-left: 1px solid var(--base-300);
+		border-right: 1px solid var(--base-300);
 		border-radius: 5px 5px 0 0;
 		font-size: 14px;
 		font-family: var(--ui-font-family);
@@ -104,7 +104,7 @@
 	}
 
 	.panel {
-		border-top: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
 		padding: 0em 1em 1em 1em;
 	}
 
@@ -113,9 +113,9 @@
 	}
 
 	footer {
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
 		border-radius: 0 0 5px 5px;
-		background-color: var(--grey-100);
+		background-color: var(--base-200);
 		padding: 1em;
 		display: flex;
 		font-size: 14px;
@@ -124,22 +124,17 @@
 	}
 
 	.docs-link {
-		color: var(--blue-600);
-		text-decoration: none;
-	}
-
-	.docs-link:hover {
-		color: var(--blue-800);
+		@apply text-primary hover:brightness-110 active:brightness-90 transition;
 	}
 
 	.gitcheck-icon {
-		color: var(--green-700);
+		color: var(--positive);
 		float: right;
 		margin-right: 5px;
 	}
 
 	.gitx-icon {
-		color: var(--red-700);
+		color: var(--negative);
 		float: right;
 		margin-right: 5px;
 	}
@@ -155,20 +150,18 @@
 	}
 
 	.repo-location {
-		color: var(--grey-500);
+		@apply text-base-content-muted;
 		font-size: 0.8rem;
 		text-decoration: unset;
 	}
 
 	.item-label {
-		/* font-weight: 600; */
-		color: var(--grey-800);
 		text-transform: uppercase;
 	}
 
 	.help-icon {
 		width: 18px;
-		color: var(--grey-600);
+		color: var(--base-300);
 		display: inline-block;
 		vertical-align: middle;
 		line-height: 1em;
@@ -187,10 +180,9 @@
 		padding-right: 5px;
 		padding-top: 2px;
 		padding-bottom: 1px;
-		color: white;
 		font-size: 0.8em;
-		background-color: var(--grey-900);
-		opacity: 0.85;
+		color: var(--base-content);
+		background-color: var(--base-200);
 		border-radius: 6px;
 		z-index: 1;
 		max-width: 200px;

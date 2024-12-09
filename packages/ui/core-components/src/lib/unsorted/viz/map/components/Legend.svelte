@@ -65,18 +65,18 @@
 
 {#if $legendData.length > 0}
 	<div
-		class="absolute z-[401] m-4 flex max-w-60 flex legend-font {constHandleLegendButtonPosition()} 
+		class="absolute z-[401] m-4 flex max-w-60 legend-font {constHandleLegendButtonPosition()} 
     {positions[legendPosition] ?? 'top-3 left-[-9px]'}"
 		on:wheel={(e) => e.stopPropagation()}
 		on:dblclick={(e) => e.stopPropagation()}
 		role="group"
 	>
-		<div class="bg-white background-blur {containerStyles[legendPosition]}">
+		<div class="bg-base-100 background-blur {containerStyles[legendPosition]}">
 			{#if $categoricalLegendData.length > 0}
 				<div class="flex flex-wrap hover:cursor-default">
 					{#each $categoricalLegendData as legend}
 						<div
-							class="border-l first:border-none flex transition-[border, padding] ease-in-out ease-in-out duration-[350ms] px-2 truncate {multiLegend
+							class="border-l first:border-none flex transition-[border, padding] ease-in-out duration-[350ms] px-2 truncate {multiLegend
 								? 'w-1/2'
 								: 'max-w-48'} {hideLegend ? ' py-0' : ' py-1'}"
 						>
@@ -95,7 +95,7 @@
 			{#if $scalarLegendData.length > 0}
 				{#each $scalarLegendData as legend}
 					<div
-						class="border-t first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
+						class="border-t border-base-300 first:border-none overflow-hidden transition-[border, padding] duration-[350ms] ease-in-out px-2 {hideLegend
 							? 'py-0 border-none'
 							: 'py-1'}"
 					>
@@ -105,7 +105,7 @@
 			{/if}
 		</div>
 		<div
-			class="bg-white background-blur flex justify-center w-fit transition-[border-radius] ease-in-out
+			class="bg-base-100 background-blur flex justify-center w-fit transition-[border-radius] ease-in-out
 			{legendPosition.includes('bottom') ? 'shadow-bottom' : ''}"
 			class:rounded={hideLegend}
 			class:delay-[225ms]={hideLegend}

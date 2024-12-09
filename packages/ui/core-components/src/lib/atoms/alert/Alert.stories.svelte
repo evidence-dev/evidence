@@ -6,16 +6,7 @@
 		argTypes: {
 			content: { control: 'text' },
 			status: {
-				options: ['default', 'info', 'danger', 'success', 'warning'],
-				control: {
-					labels: {
-						default: 'Default',
-						info: 'Info',
-						danger: 'Danger',
-						success: 'Success',
-						warning: 'Warning'
-					}
-				}
+				options: ['base', 'info', 'negative', 'positive', 'warning']
 			},
 			sticky: {
 				control: 'boolean'
@@ -44,12 +35,12 @@
 
 <Story name="Info" args={{ status: 'info' }} />
 
-<Story name="Danger" args={{ status: 'danger' }} />
+<Story name="Negative" args={{ status: 'negative' }} />
 
 <Story name="All the Variants">
 	<Alert status="warning">This is an alert</Alert>
 	<Alert status="info">This is an alert</Alert>
-	<Alert status="success">This is an alert</Alert>
-	<Alert status="danger">This is an alert</Alert>
-	<Alert status="default">This is an alert</Alert>
+	<Alert status="positive">This is an alert</Alert>
+	<Alert status="negative">This is an alert</Alert>
+	<Alert status="base">This is an alert</Alert>
 </Story>

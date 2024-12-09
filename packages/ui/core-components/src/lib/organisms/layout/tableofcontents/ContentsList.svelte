@@ -31,7 +31,7 @@
 </script>
 
 {#if headers && headers.length > 1}
-	<span class="block text-xs sticky top-0 mb-2 text-gray-950 bg-white shadow-white font-medium">
+	<span class="block text-xs sticky top-0 mb-2 bg-base-100 shadow-base-100 font-medium">
 		On this page
 	</span>
 	{#each headers as header}
@@ -41,24 +41,24 @@
 	{/each}
 {/if}
 
-<style>
+<style lang="postcss">
 	a {
-		@apply block text-gray-600 text-xs transition-all duration-200 py-1;
+		@apply block text-xs transition-all duration-200 py-1;
 	}
 
 	a:hover {
 		@apply underline;
 	}
 
+	a.h1 {
+		@apply mt-3 font-semibold block bg-base-100 shadow shadow-base-100;
+	}
+
 	a.h2 {
-		@apply pl-0 text-gray-500;
+		@apply pl-0 text-base-content-muted;
 	}
 
 	a.h3 {
-		@apply pl-4 text-gray-500;
-	}
-
-	a.h1 {
-		@apply mt-3 font-semibold block bg-white shadow shadow-white;
+		@apply pl-4 text-base-content-muted;
 	}
 </style>

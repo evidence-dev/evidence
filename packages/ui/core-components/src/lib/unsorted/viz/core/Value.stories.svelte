@@ -94,3 +94,7 @@
 		</div>
 	{/each}
 </Story>
+
+<Story name="Placeholder">
+	<Value placeholder="Bing bong" />
+</Story>

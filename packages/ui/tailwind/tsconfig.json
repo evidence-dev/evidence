@@ -1,0 +1,22 @@
+{
+	"exclude": ["./**/*.spec.js", "./types", "./src/lib/tests"],
+	"include": ["./src", "./.evidence/shadow-types"],
+	"compilerOptions": {
+		"declarationMap": true,
+		"declarationDir": "./types",
+		"rootDir": "./src",
+		"baseUrl": "./src",
+		"outDir": "dist",
+		"target": "es2022",
+		"lib": ["es2022", "DOM"],
+		"allowJs": true,
+		"checkJs": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"strict": true,
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"isolatedModules": true,
+		"skipLibCheck": true
+	}
+}

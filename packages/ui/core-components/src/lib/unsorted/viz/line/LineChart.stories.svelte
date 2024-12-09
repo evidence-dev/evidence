@@ -89,6 +89,27 @@
 </Story>
 
 <Story
-	name="With seriesOrder"
-	args={{ x: 'x', y: 'y', series: 'series', seriesOrder: ['ivory', 'blue', 'violet', 'olive'] }}
+	name="With seriesOrder and seriesColors"
+	args={{
+		x: 'x',
+		y: 'y',
+		series: 'series',
+		seriesOrder: ['ivory', 'blue', 'violet', 'olive'],
+		seriesColors: { ivory: 'primary', blue: 'secondary', violet: 'accent', olive: 'negative' }
+	}}
+/>
+
+<Story
+	name="Using color tuples in colorPalette"
+	args={{
+		x: 'x',
+		y: 'y',
+		series: 'series',
+		colorPalette: [
+			['#a21caf', '#f5d0fe'],
+			['#86198f', '#f0abfc'],
+			['#701a75', '#e879f9'],
+			['#4a044e', '#d946ef']
+		]
+	}}
 />

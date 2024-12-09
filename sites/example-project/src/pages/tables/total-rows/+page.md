@@ -28,8 +28,8 @@ from ${orders_by_category}
   <Column id=month totalAgg="All Months"/>
   <Column id=category totalAgg=countDistinct totalFmt='# "Unique Categories"'/>
   <Column id=sales_usd0k contentType=colorscale totalAgg=sum totalFmt='$000.0,,"M"'/>
-  <Column id=num_orders_num0 contentType=colorscale scaleColor=red totalAgg=sum totalFmt='num0k'/>
-  <Column id=aov_usd2 contentType=colorscale scaleColor=blue totalAgg="{orders_all[0].aov_usd2}" totalFmt="usd2"/>
+  <Column id=num_orders_num0 contentType=colorscale colorScale=negative totalAgg=sum totalFmt='num0k'/>
+  <Column id=aov_usd2 contentType=colorscale colorScale=info totalAgg="{orders_all[0].aov_usd2}" totalFmt="usd2"/>
 </DataTable>
 
 ### Count
@@ -38,14 +38,14 @@ from ${orders_by_category}
   <Column id=month totalAgg=count />
   <Column id=category totalAgg=count />
   <Column id=sales_usd0k totalAgg=count />
-  <Column id=num_orders_num0 scaleColor=red totalAgg=count />
-  <Column id=aov_usd2 scaleColor=blue totalAgg=count />
+  <Column id=num_orders_num0 colorScale=negative totalAgg=count />
+  <Column id=aov_usd2 colorScale=info totalAgg=count />
   <Column id=prev_sales_usd0k totalAgg=count />
-  <Column id=prev_num_orders_num0 scaleColor=red totalAgg=count />  
-  <Column id=prev_aov_usd2 scaleColor=blue totalAgg=count />
-  <Column id=sales_change_pct0 scaleColor=green totalAgg=count />
-  <Column id=num_orders_change_pct0 scaleColor=green totalAgg=count />
-  <Column id=aov_change_pct0 scaleColor=green totalAgg=count />
+  <Column id=prev_num_orders_num0 colorScale=negative totalAgg=count />  
+  <Column id=prev_aov_usd2 colorScale=info totalAgg=count />
+  <Column id=sales_change_pct0 colorScale=positive totalAgg=count />
+  <Column id=num_orders_change_pct0 colorScale=positive totalAgg=count />
+  <Column id=aov_change_pct0 colorScale=positive totalAgg=count />
 </DataTable>
 
 ### Count Distinct

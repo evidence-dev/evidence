@@ -3,7 +3,6 @@
 import { Writable, Readable } from 'svelte/store';
 import type { MarkAreaComponentOption } from 'echarts';
 
-import type { Color } from '../colors.js';
 import type { Symbol } from '../references.d.ts';
 
 export type LabelPosition =
@@ -27,18 +26,18 @@ export type ReferenceAreaConfig = {
 	label?: string;
 
 	// Color
-	color?: Color;
+	color?: string;
 
 	// Area styling
-	areaColor?: Color;
+	areaColor?: string;
 	opacity?: number;
 	border?: boolean;
 	borderType?: 'solid' | 'dotted' | 'dashed';
-	borderColor?: Color;
+	borderColor?: string;
 	borderWidth?: number;
 
 	// Label styling
-	labelColor?: Color;
+	labelColor?: string;
 	labelPadding?: number;
 	labelPosition?: LabelPosition;
 	labelBackgroundColor?: string;
@@ -50,6 +49,8 @@ export type ReferenceAreaConfig = {
 	align?: 'left' | 'center' | 'right';
 	bold?: boolean;
 	italic?: boolean;
+
+	activeAppearance?: 'light' | 'dark';
 };
 
 export type ReferenceAreaStoreValue = {

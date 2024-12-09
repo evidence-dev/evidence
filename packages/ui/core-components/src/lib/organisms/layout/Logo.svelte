@@ -1,5 +1,7 @@
 <script>
-	import defaultLogo from './wordmark-gray-800.png';
+	import evidenceLogoWhite from './wordmark-white.png';
+	import evidenceLogoBlack from './wordmark-black.png';
+
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let logo;
 	export let title;
@@ -10,5 +12,16 @@
 {:else if title}
 	{title}
 {:else}
-	<img src={defaultLogo} alt="Home" class="h-5 aspect-auto" href={addBasePath('/')} />
+	<img
+		src={evidenceLogoBlack}
+		alt="Home"
+		class="h-5 aspect-auto block dark:hidden"
+		href={addBasePath('/')}
+	/>
+	<img
+		src={evidenceLogoWhite}
+		alt="Home"
+		class="h-5 aspect-auto hidden dark:block"
+		href={addBasePath('/')}
+	/>
 {/if}

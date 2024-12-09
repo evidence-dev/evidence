@@ -50,21 +50,20 @@
 	</span>
 	<div class="w-4 h-4">
 		{#if copied}
-			<Copy class="bx--snippet__icon" color="var(--green-900)" />
+			<Copy class="bx--snippet__icon" />
 		{:else}
 			<Copy class="bx--snippet__icon" />
 		{/if}
 	</div>
 </button>
 
-<style>
+<style lang="postcss">
 	button.container {
 		box-sizing: border-box;
-		background-color: var(--grey-100);
+		background-color: var(--base-200);
 		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
 		padding: 0.9em 0.35em;
-		color: var(--grey-800);
 		size: 0.75em;
 		cursor: pointer;
 		user-select: none;
@@ -82,22 +81,13 @@
 	}
 
 	button.container:hover {
-		border-color: var(--blue-500);
-		background-color: var(--blue-100);
-		color: var(--blue-800);
+		@apply border-info bg-info/10 text-info;
 		transition: all 400ms;
 	}
 
-	button.container:active {
-		border-color: var(--green-500);
-		background-color: var(--green-100);
-		color: var(--green-800);
-	}
-
+	button.container:active,
 	button.container.copied {
-		border-color: var(--green-500);
-		background-color: var(--green-100);
-		color: var(--green-900);
+		@apply border-positive bg-positive/10 text-positive;
 	}
 
 	span.var-value {

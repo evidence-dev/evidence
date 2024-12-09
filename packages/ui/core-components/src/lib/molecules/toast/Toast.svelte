@@ -1,3 +1,22 @@
+<script context="module">
+	const DEPRECATED_STATUS_MAP = /** @type {const} */ ({
+		error: 'negative',
+		success: 'positive'
+	});
+
+	const isDeprecatedStatus = (status) => Object.keys(DEPRECATED_STATUS_MAP).includes(status);
+
+	const checkDeprecatedStatus = (status) => {
+		if (isDeprecatedStatus(status)) {
+			console.warn(
+				`[Toast] The status "${status}" is deprecated. Please use "${DEPRECATED_STATUS_MAP[status]}" instead.`
+			);
+			return DEPRECATED_STATUS_MAP[status];
+		}
+		return status;
+	};
+</script>
+
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { scale, fly } from 'svelte/transition';
@@ -5,6 +24,7 @@
 	export let id;
 	/** @type {import("@evidence-dev/component-utilities/stores).ToastStatus } */
 	export let status = 'info';
+	$: status = checkDeprecatedStatus(status);
 	export let title;
 	export let message;
 	export let dismissable = true;
@@ -31,19 +51,19 @@
 </div>
 
 <style lang="postcss">
-	.error {
-		@apply border-red-200 bg-red-50 text-red-800;
+	.negative {
+		@apply border-negative/50 bg-negative/10 text-negative;
 	}
 
 	.warning {
-		@apply border-yellow-200 bg-yellow-50 text-yellow-800;
+		@apply border-warning/50 bg-warning/10 text-warning;
 	}
 
-	.success {
-		@apply border-green-200 bg-green-50 text-green-800;
+	.positive {
+		@apply border-positive/50 bg-positive/10 text-positive;
 	}
 
 	.info {
-		@apply border-gray-200 bg-white text-gray-800;
+		@apply border-info/50 bg-info/10 text-info;
 	}
 </style>

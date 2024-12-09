@@ -45,7 +45,7 @@
 	</div>
 {/if}
 
-<style>
+<style lang="postcss">
 	h2 {
 		@apply font-semibold text-lg pt-3 pb-2;
 	}
@@ -55,18 +55,11 @@
 	}
 
 	a {
-		color: var(--blue-600);
-		text-decoration: none;
-	}
-
-	a:hover {
-		color: var(--blue-800);
-		text-decoration: none;
+		@apply text-primary hover:brightness-110 active:brightness-90 transition;
 	}
 
 	span.setting {
 		font-size: 0.85em;
-		color: var(--grey-800);
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 	}
@@ -89,14 +82,14 @@
 		align-items: center;
 		text-align: center;
 		margin-block-start: 2.5em;
-		color: var(--grey-700);
+		color: var(--base-content);
 		font-weight: bold;
 	}
 
 	.separator::after {
 		content: '';
 		flex: 1;
-		border-bottom: 1px solid var(--grey-200);
+		border-bottom: 1px solid var(--base-300);
 	}
 
 	.separator:not(:empty)::after {

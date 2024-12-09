@@ -10,6 +10,7 @@
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
+		"@evidence-dev/tailwind": "workspace:^",
 		"@faker-js/faker": "^8.0.2",
 		"vitest": "^2.0.5"
 	},

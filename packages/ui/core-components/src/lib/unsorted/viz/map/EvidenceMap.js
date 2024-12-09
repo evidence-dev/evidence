@@ -5,8 +5,7 @@ import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
-import { uiColours } from '@evidence-dev/component-utilities/colours';
-import { mapColours } from '@evidence-dev/component-utilities/colours';
+import { browser } from '$app/environment';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -123,6 +122,7 @@ export class EvidenceMap {
 		Leaflet.tileLayer(processedBasemap, {
 			subdomains: 'abcd',
 			maxZoom: 20,
+			className: '__evidence-leaflet-tile-layer__',
 			attribution: attribution
 		}).addTo(this.#map);
 
@@ -430,6 +430,8 @@ export class EvidenceMap {
 		const cached = EvidenceMap.#geoJsonCache.get(url);
 		if (cached) return cached;
 
+		if (!browser) return;
+
 		const promise = fetch(url)
 			.then((r) => r.json())
 			.catch((e) => {
@@ -481,8 +483,9 @@ export class EvidenceMap {
 		return values;
 	}
 
-	handleFillColor(item, value, values, colorPalette, colorScale) {
-		if (!value) return uiColours.blue700;
+	/** @param {import('@evidence-dev/tailwind').Theme} theme */
+	handleFillColor(item, value, values, colorPalette, colorScale, theme) {
+		if (!value) return theme.colors['primary'];
 
 		if (item[value]) {
 			if (typeof item[value] === 'string') {
@@ -562,6 +565,10 @@ export class EvidenceMap {
 		return readonly(this.#legendData);
 	}
 
+	/**
+	 * @param {unknown} data
+	 * @param {{ theme: import('@evidence-dev/tailwind').Theme }} opts
+	 */
 	async initializeData(
 		data,
 		{
@@ -575,7 +582,8 @@ export class EvidenceMap {
 			valueFmt,
 			chartType,
 			legendId,
-			legend
+			legend,
+			theme
 		}
 	) {
 		await data.fetch();
@@ -590,7 +598,8 @@ export class EvidenceMap {
 		}
 
 		if (legendType && !colorPalette) {
-			colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+			colorPalette =
+				legendType === 'categorical' ? theme.colorPalettes.default : theme.colorScales.default;
 			colorPalette = colorPalette.map((item) => chroma(item).hex());
 		}
 		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);

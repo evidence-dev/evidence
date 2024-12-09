@@ -26,7 +26,7 @@
 	.marker {
 		border-left: 5px solid transparent;
 		border-right: 5px solid transparent;
-		border-top: 9px solid var(--grey-400);
+		border-top: 9px solid var(--base-content-muted);
 		transform: rotate(-90deg);
 		transition: transform 0.2s ease;
 	}

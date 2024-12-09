@@ -215,3 +215,27 @@ limit 50`,
 	{@const emptySet = []}
 	<BoxPlot {...args} data={emptySet} />
 </Story>
+
+<Story
+	name="Using color tokens"
+	args={{
+		name: 'name',
+		min: 'min',
+		intervalBottom: 'interval_bottom',
+		midpoint: 'midpoint',
+		intervalTop: 'interval_top',
+		max: 'max',
+		color: 'color'
+	}}
+	let:args
+>
+	{@const data = Query.create(
+		`
+			select 'a' as name, 1 as min, 2 as interval_bottom, 3 as midpoint, 4 as interval_top, 5 as max, 'positive' as color
+			union all
+			select 'b' as name, 1 as min, 2 as interval_bottom, 3 as midpoint, 4 as interval_top, 5 as max, 'negative' as color
+		`,
+		query
+	)}
+	<BoxPlot {...args} {data} />
+</Story>

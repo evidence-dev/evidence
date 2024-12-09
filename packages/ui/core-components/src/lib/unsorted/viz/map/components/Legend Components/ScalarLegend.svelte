@@ -1,5 +1,8 @@
 <script>
 	import { fmt } from '@evidence-dev/component-utilities/formatting';
+	import { getThemeStores } from '../../../../../themes/themes.js';
+
+	const { theme } = getThemeStores();
 
 	/** @type {{ colorPalette: string[]; values: string[]; legendType: 'scalar', value: string }} */
 	export let legend;
@@ -29,7 +32,7 @@
 		<span
 			style="background: {legend.colorPalette
 				? `linear-gradient(to right, ${legend.colorPalette.join(', ')})`
-				: 'white'}"
+				: $theme.colors['base-100']}"
 			class="relative h-2 min-w-56"
 		>
 		</span>

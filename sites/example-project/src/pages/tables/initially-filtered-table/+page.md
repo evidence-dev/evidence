@@ -61,7 +61,7 @@ select '2020-05-26' as date, 100 as value_usd, 'Zimbabwe' as country, 'A' as cat
 </script>
 
 <input
-    style="border: 1px solid var(--grey-300); border-radius: 4px; padding: 2px 4px; font-size: 14px;"
+    style="border-radius: 4px; padding: 2px 4px; font-size: 14px;"
     placeholder="External Filter"
     bind:value={externalFilterValue}
 />

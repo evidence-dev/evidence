@@ -9,7 +9,7 @@
 	$: keys = Object.keys($inputStore);
 </script>
 
-<Accordion class="fixed bottom-0 right-0 left-0 px-2 bg-white border-t">
+<Accordion class="fixed bottom-0 right-0 left-0 px-2 bg-base-100 border-t">
 	<AccordionItem
 		title="{keys?.length} Input{keys?.length === 1 ? '' : 's'}"
 		class="text-xs border-none"
@@ -19,7 +19,7 @@
 				{#each keys as input}
 					<Tabs.Trigger
 						value={input}
-						class="text-gray-900 border-b border-white font-medium font-mono data-[state=active]:bg-gray-800 hover:bg-gray-100 data-[state=active]:text-gray-50 data-[state=active]:border-gray-600 px-3 py-1 rounded-t transition-colors duration-100"
+						class="border-b border-base-300 font-medium font-mono data-[state=active]:bg-base-300 hover:bg-base-200 data-[state=active]:border-base-300 px-3 py-1 rounded-t transition-colors duration-100"
 					>
 						inputs.{input}
 					</Tabs.Trigger>
@@ -28,7 +28,7 @@
 			{#each keys as input}
 				<Tabs.Content value={input}>
 					<pre
-						class="text-xs font-mono bg-gray-800 text-gray-50 rounded-b rounded-tr p-4 h-64 overflow-auto text-xs">{JSON.stringify(
+						class="text-xs font-mono bg-base-300 rounded-b rounded-tr p-4 h-64 overflow-auto">{JSON.stringify(
 							$inputStore[input],
 							null,
 							2

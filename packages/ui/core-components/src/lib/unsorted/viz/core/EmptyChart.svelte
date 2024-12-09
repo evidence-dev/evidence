@@ -40,17 +40,22 @@
 
 {#if ['warn', 'pass'].includes(emptySet) || !isInitial}
 	{#if chartType === 'Value'}
-		<span class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded"
+		<span
+			class="text-xs text-base-content-muted p-2 my-2 w-full border border-base-300 border-dashed rounded"
 			>{emptyMessage}</span
 		>
 	{:else if chartType === 'Big Value'}
 		<p
-			class="text-xs text-gray-500 p-2 pt-[32px] my-0 text-center w-full align-middle h-[80px] border border-dashed rounded min-w-[120px]"
+			class="text-xs text-base-content-muted p-2 pt-[32px] my-0 text-center w-full align-middle h-[80px] border border-base-300 border-dashed rounded min-w-[120px]"
 		>
 			{emptyMessage}
 		</p>
 	{:else}
-		<p class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded">{emptyMessage}</p>
+		<p
+			class="text-xs text-base-content-muted p-2 my-2 w-full border border-base-300 border-dashed rounded"
+		>
+			{emptyMessage}
+		</p>
 	{/if}
 {:else if chartType === 'Value'}
 	<ValueError {error} />

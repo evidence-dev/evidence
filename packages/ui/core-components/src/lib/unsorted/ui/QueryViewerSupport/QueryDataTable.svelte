@@ -51,7 +51,7 @@
 </script>
 
 <div class="results-pane py-1" transition:slide|local>
-	<div class="scrollbox">
+	<div class="scrollbox pretty-scrollbar">
 		<table in:blur>
 			<thead>
 				<tr>
@@ -161,13 +161,13 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	div.pagination {
 		padding: 0px 5px;
 		align-content: center;
-		border-bottom: 1px solid var(--grey-200);
+		border-bottom: 1px solid var(--base-200);
 		height: 1.25em;
-		background-color: white;
+		background-color: var(--base-100);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -175,45 +175,38 @@
 	}
 
 	.slider {
+		@apply bg-info/30 hover:bg-info/40 transition-colors;
 		-webkit-appearance: none;
 		width: 75%;
 		height: 10px;
 		margin: 0 0;
-		background: var(--blue-100);
 		outline: none;
-		opacity: 0.7;
-		-webkit-transition: 0.2s;
-		transition: opacity 0.2s;
 		border-radius: 10px;
 		display: inline-block;
 		cursor: pointer;
 	}
 
-	.slider:hover {
-		opacity: 1;
-	}
-
 	.slider::-webkit-slider-thumb {
+		@apply bg-info;
 		-webkit-appearance: none;
 		appearance: none;
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
 		cursor: pointer;
 		border-radius: 10px;
 	}
 
 	.slider::-moz-range-thumb {
+		@apply bg-info;
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
 		cursor: pointer;
 	}
 
 	.slider::-moz-range-thumb {
+		@apply bg-info;
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
 		cursor: pointer;
 	}
 
@@ -224,45 +217,11 @@
 		float: right;
 	}
 
-	:root {
-		--scrollbar-track-color: transparent;
-		--scrollbar-color: rgba(0, 0, 0, 0.2);
-		--scrollbar-active-color: rgba(0, 0, 0, 0.4);
-		--scrollbar-size: 0.75rem;
-		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
-	}
-
 	.scrollbox {
 		width: 100%;
 		overflow-x: auto;
-		border-bottom: 1px solid var(--grey-200);
-		scrollbar-width: thin;
-		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
-		background-color: white;
-	}
-
-	.scrollbox::-webkit-scrollbar {
-		height: var(--scrollbar-size);
-		width: var(--scrollbar-size);
-	}
-	.scrollbox::-webkit-scrollbar-track {
-		background-color: var(--scrollbar-track-color);
-	}
-	.scrollbox::-webkit-scrollbar-thumb {
-		background-color: var(--scrollbar-color);
-		border-radius: 7px;
-		background-clip: padding-box;
-	}
-	.scrollbox::-webkit-scrollbar-thumb:hover {
-		background-color: var(--scrollbar-active-color);
-	}
-	.scrollbox::-webkit-scrollbar-thumb:vertical {
-		min-height: var(--scrollbar-minlength);
-		border: 3px solid transparent;
-	}
-	.scrollbox::-webkit-scrollbar-thumb:horizontal {
-		min-width: var(--scrollbar-minlength);
-		border: 3px solid transparent;
+		border-bottom: 1px solid var(--base-300);
+		background-color: var(--base-100);
 	}
 
 	.results-pane :global(.download-button) {
@@ -315,21 +274,21 @@
 	}
 
 	.null {
-		color: var(--grey-300);
+		@apply text-base-content-muted;
 	}
 
 	.index {
-		color: var(--grey-300);
+		@apply text-base-content-muted;
 		text-align: left;
 		max-width: min-content;
 	}
 
 	th.type-indicator {
-		@apply text-gray-400 font-normal;
+		@apply text-base-content-muted font-normal;
 	}
 
 	tr.type-indicator {
-		border-bottom: 1px solid var(--grey-100);
+		border-bottom: 1px solid var(--base-300);
 	}
 
 	.footer {

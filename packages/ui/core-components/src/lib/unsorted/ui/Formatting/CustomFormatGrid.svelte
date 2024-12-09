@@ -51,7 +51,7 @@
 
 <style>
 	.deleteIcon {
-		color: var(--red-600);
+		color: var(--negative);
 		width: 16px;
 		cursor: pointer;
 	}
@@ -64,7 +64,7 @@
 	}
 
 	.deleteIcon:hover {
-		color: var(--red-700);
+		color: var(--negative);
 	}
 
 	table {
@@ -86,9 +86,6 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	/* tr:hover {
-  background-color: rgb(247, 249, 250);
-} */
 	.align_left {
 		text-align: left;
 	}
@@ -108,12 +105,12 @@
 	input {
 		box-sizing: border-box;
 		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--grey-300);
+		border: 1px solid var(--base-300);
+		background: var(--base-200);
 		padding: 0.25em 0.25em 0.25em 0.25em;
 		margin-left: auto;
 		width: 65%;
 		padding: 0.35em;
-		color: var(--grey-999);
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		vertical-align: middle;

@@ -108,7 +108,7 @@ test.describe('Page', () => {
 		await expect(page.getByText('This is Page B', { exact: true })).toBeVisible();
 		await expect(new URL(page.url()).pathname).toBe(`${basePath}/page-b/`);
 
-		const logoLink = await page.getByAltText('Home');
+		const logoLink = await page.getByAltText('Home').first();
 		await logoLink.click();
 		await waitForPageToLoad(page);
 

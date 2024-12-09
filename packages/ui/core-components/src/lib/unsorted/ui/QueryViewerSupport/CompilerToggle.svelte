@@ -22,11 +22,11 @@
 	{/if}
 </div>
 
-<style>
+<style lang="postcss">
 	div.toggle {
-		background-color: var(--grey-50);
-		border-left: 1px solid var(--grey-200);
-		border-right: 1px solid var(--grey-200);
+		background-color: var(--base-200);
+		border-left: 1px solid var(--base-300);
+		border-right: 1px solid var(--base-300);
 		padding: 6px 0 10px 12px;
 		font-family: var(--ui-font-family);
 		font-size: 10px;
@@ -45,21 +45,16 @@
 	}
 
 	button.off {
-		color: var(--grey-600);
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
 		transition: all 400ms;
 	}
 
 	button.off:hover {
-		color: var(--grey-700);
-		border: 1px solid var(--grey-300);
+		background-color: var(--base-300);
 		transition: all 400ms;
-		background-color: none;
 	}
 
 	button.on {
-		color: var(--blue-700);
-		background-color: var(--blue-100);
-		border: 1px solid var(--blue-200);
+		@apply text-info bg-info/10 border border-info;
 	}
 </style>
