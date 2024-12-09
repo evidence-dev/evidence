@@ -1,5 +1,8 @@
 packages:
   - 'e2e'
   - 'e2e/*'
+  # packaging e2e test installs its own dependencies
+  # based on the `npm pack`-generated tarballs
+  - '!e2e/packaging'
   - 'packages/**'
   - 'sites/*'
