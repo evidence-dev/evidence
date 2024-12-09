@@ -44,7 +44,7 @@ The theme configuration defines the colors used by your app.
 The theme consists of 3 elements that define colors for different purposes:
 
 - [Color palettes](#color-palettes) configure colors for charts with different data series (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette)).
-- [Color scales](#color-scales) configure color ranges for charts with continuous data (e.g. [Heatmaps](/components/heatmap/#props-colorScale)).
+- [Color scales](#color-scales) configure color ranges for charts with continuous data<!--(e.g. [Heatmaps](/components/heatmap/#props-colorScale))-->.
 - [Colors](#colors) configure colors of UI elements (e.g. background, text, inputs).
 
 You can pass any valid CSS color values to these properties (hexadecimal, RGB, HSL, named CSS colors, etc).
