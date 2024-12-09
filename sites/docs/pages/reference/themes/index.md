@@ -25,13 +25,13 @@ appearance:
 ## Options
 
 <PropListing
-    name="appearance.default"
+    name="default"
     description="The default appearance mode."
     options={['dark', 'light', 'system']}
     defaultValue="light"
 />
 <PropListing
-    name="appearance.switcher"
+    name="switcher"
     description="Enables/disables the appearance switcher in the kebab menu in the top right, allowing users to switch the appearance of your application between light and dark mode."
     options={['true', 'false']}
     defaultValue="false"
@@ -43,9 +43,9 @@ The theme configuration defines the colors used by your app.
 
 The theme consists of 3 elements that define colors for different purposes:
 
-- `colorPalettes` configures colors for charts with different data series (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette), [Line Charts](/components/line-chart/#props-colorPalette)).
-- `colorScales` configures color ranges for charts with continuous data<!-- (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale)). -->
-- `colors` configures page colors (e.g. background, text, inputs).
+- [Color palettes](#color-palettes) configure colors for charts with different data series (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette)).
+- [Color scales](#color-scales) configure color ranges for charts with continuous data (e.g. [Heatmaps](/components/heatmap/#props-colorScale)).
+- [Colors](#colors) configure colors of UI elements (e.g. background, text, inputs).
 
 You can pass any valid CSS color values to these properties (hexadecimal, RGB, HSL, named CSS colors, etc).
 
@@ -193,52 +193,52 @@ Then use it in the `colorPalette` prop
 The `colorPalette` prop accepted by many components accepts a color palette in several different formats to reduce the friction of theming your app.
 
 1. **Use a color palette name from your theme.** Its configured light and dark values will be used.
-```markdown
-<BarChart 
-    data={my_data}
-    colorPalette=myColorPalette
-/>
-```
+    ```markdown
+    <BarChart 
+        data={my_data}
+        colorPalette=myColorPalette
+    />
+    ```
 
 2. **Use a list of color names from your theme.** Their configured light and dark values will be used.
-```markdown
-<BarChart
-    data={my_data}
-    colorPalette={[
-        'primary',
-        'accent',
-        'myCustomColor',
-    ]}
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        colorPalette={[
+            'primary',
+            'accent',
+            'myCustomColor',
+        ]}
+    />
+    ```
 
 3. **Use a list of colors (e.g. hex codes).** They will be automatically converted to similar colors for dark mode.
-```markdown
-<BarChart
-    data={my_data}
-    colorPalette={[
-        "#3b82f6",
-        "#14b8a6",
-        "#eab308",
-        "#f97316",
-        "#a855f7",
-    ]}
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        colorPalette={[
+            "#3b82f6",
+            "#14b8a6",
+            "#eab308",
+            "#f97316",
+            "#a855f7",
+        ]}
+    />
+    ```
 
 4. **Use a list of pairs of colors** to explicitly define light and dark mode values. The first column will be used when your application is in light mode, and the second when its in dark mode.
-```markdown
-<BarChart
-    data={my_data}
-    colorPalette={[
-        ["#1d4ed8", "#93c5fd"],
-        ["#0f766e", "#5eead4"],
-        ["#a16207", "#fde047"],
-        ["#c2410c", "#fdba74"],
-        ["#7e22ce", "#d8b4fe"],
-    ]}
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        colorPalette={[
+            ["#1d4ed8", "#93c5fd"],
+            ["#0f766e", "#5eead4"],
+            ["#a16207", "#fde047"],
+            ["#c2410c", "#fdba74"],
+            ["#7e22ce", "#d8b4fe"],
+        ]}
+    />
+    ```
 
 ## Color Scales
 
@@ -304,42 +304,42 @@ Then use it in the `colorScale` prop
 The `colorScale` prop accepted by many components accepts a color scale in several different formats to reduce the friction of theming your app.
 
 1. **Use a color scale name from your theme.** Its configured light and dark values will be used.
-```markdown
-<BarChart 
-    data={my_data}
-    colorScale=myColorScale
-/>
-```
+    ```markdown
+    <BarChart 
+        data={my_data}
+        colorScale=myColorScale
+    />
+    ```
 
 2. **Use a list of color names from your theme.** Their configured light and dark values will be used.
-```markdown
-<BarChart
-    data={my_data}
-    colorScale={[
-        'primary',
-        'accent',
-    ]}
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        colorScale={[
+            'primary',
+            'accent',
+        ]}
+    />
+    ```
 
 3. **Use a list of colors (e.g. hex codes).** They will be automatically converted to similar colors for dark mode.
-```markdown
-<BarChart
-    data={my_data}
-    colorScale={["#3b82f6", "#14b8a6"]}
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        colorScale={["#3b82f6", "#14b8a6"]}
+    />
+    ```
 
 4. **Use a list of pairs of colors** to explicitly define light and dark mode values. The first column will be used when your application is in light mode, and the second when its in dark mode.
-```markdown
-<BarChart
-    data={my_data}
-    colorScale={[
-        ["#1d4ed8", "#93c5fd"],
-        ["#0f766e", "#5eead4"],
-    ]}
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        colorScale={[
+            ["#1d4ed8", "#93c5fd"],
+            ["#0f766e", "#5eead4"],
+        ]}
+    />
+    ```
 
 ## Colors
 
@@ -422,28 +422,28 @@ The color props accepted by many components (e.g. [`fillColor`](/components/bar-
 
 
 1. **Use a color name from your theme.** Its configured light and dark values will be used.
-```markdown
-<BarChart
-    data={my_data}
-    fillColor=primary
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        fillColor=primary
+    />
+    ```
 
 2. **Use a single color (e.g. hex code).** It will be automatically converted to a similar color for dark mode.
-```markdown
-<BarChart
-    data={my_data}
-    fillColor="#3b82f6"
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        fillColor="#3b82f6"
+    />
+    ```
 
 3. **Use a pair of colors** to explicitly define light and dark mode values. The first color will be used when your application is in light mode, and the second when its in dark mode.
-```markdown
-<BarChart
-    data={my_data}
-    fillColor={["#1d4ed8", "#93c5fd"]}
-/>
-```
+    ```markdown
+    <BarChart
+        data={my_data}
+        fillColor={["#1d4ed8", "#93c5fd"]}
+    />
+    ```
 
 
 ## Advanced
