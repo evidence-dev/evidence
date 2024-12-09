@@ -433,7 +433,7 @@ The color props accepted by many components (e.g. [`fillColor`](/components/bar-
 <BarChart
     data={my_data}
     fillColor={["#1d4ed8", "#93c5fd"]}
->
+/>
 ```
 
 3. Use a color name from your theme. Its configured light and dark values will be used.
