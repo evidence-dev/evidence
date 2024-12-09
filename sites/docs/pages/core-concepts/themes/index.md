@@ -10,17 +10,22 @@ Customize the appearance of your Evidence application in light and dark mode usi
 
 # Appearance Modes
 
-Evidence supports three appearance modes: `light`, `dark`, and `system`. An unconfigured Evidence application will use `light` mode and not allow switching appearances. Evidence includes a built-in dark mode without any configuration necessary.
+Evidence supports three appearance modes: light, dark, and system. By default, new Evidence apps use the system mode and allow users to switch to light or dark via the appearance switcher.
 
 When the appearance is `system`, the user's preferred appearance from their operating system is used.
 
-To enable appearance modes in your app, add the following to your `evidence.config.yaml` file:
+The default appearance configuration is listed below, as well as in the [Evidence Template](https://github.com/evidence-dev/templates/blob/main/evidence.config.yaml).
+
+<div id="default-appearance-configuration" class="block relative -top-16 invisible"></div>
+<Details title='Default appearance configuration'>
 
 ```yaml
 appearance:
-    default: system 
+    default: system
     switcher: true
 ```
+
+</Details>
 
 ## Options
 
@@ -32,10 +37,16 @@ appearance:
 />
 <PropListing
     name="switcher"
-    description="Enables/disables the appearance switcher in the kebab menu in the top right, allowing users to switch the appearance of your application between light and dark mode."
+    description="Shows/hides the appearance switcher in the kebab menu in the top right which allows users to switch the appearance of your application between light and dark mode."
     options={['true', 'false']}
     defaultValue="false"
 />
+
+## Migration
+
+To enable themes in an Evidence application created before v((TODO THEMES RELEASE SEMVER)), simply add the [default appearance configuration](#default-appearance-configuration) to your `evidence.config.yaml`.
+
+Your app will use the [default theme configuration](#default-theme-configuration) and will have dark mode without any additional configuration necessary!
 
 # Theme
 
@@ -49,9 +60,10 @@ The theme consists of 3 elements that define colors for different purposes:
 
 You can pass any valid CSS color values to these properties (hexadecimal, RGB, HSL, named CSS colors, etc).
 
-The default theme configuration is accessible below, as well as in the [Evidence Template](https://github.com/evidence-dev/templates/blob/main/evidence.config.yaml).
+The default theme configuration is listed below, as well as in the [Evidence Template](https://github.com/evidence-dev/templates/blob/main/evidence.config.yaml).
 
-<Details title='Default Configuration'>
+<div id="default-theme-configuration" class="block relative -top-16 invisible"></div>
+<Details title='Default theme configuration'>
 
 ```yaml
 theme:
@@ -518,5 +530,3 @@ This is the default text style, which is used when you write text in a markdown 
 <p class="font-mono text-primary mt-3">This is primary colored text using a monospace font, and a custom top margin.</p>
 ```
 </DocTab>
-
-
