@@ -1,0 +1,53 @@
+{
+  "name": "e2e-packaging",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "evidence build",
+    "build:strict": "evidence build:strict",
+    "dev": "evidence dev --open /",
+    "sources": "evidence sources",
+    "preview": "evidence preview",
+    "test:preview": "playwright test",
+    "test:dev": "cross-env DEV=true playwright test",
+	"setup": "node ./build-deps-to-tgz.js && npm i && pnpm sources"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@evidence-dev/bigquery": "file:./evidence-dev-bigquery.tgz",
+    "@evidence-dev/core-components": "file:./evidence-dev-core-components.tgz",
+    "@evidence-dev/csv": "file:./evidence-dev-csv.tgz",
+    "@evidence-dev/databricks": "file:./evidence-dev-databricks.tgz",
+    "@evidence-dev/duckdb": "file:./evidence-dev-duckdb.tgz",
+    "@evidence-dev/evidence": "file:./evidence-dev-evidence.tgz",
+    "@evidence-dev/motherduck": "file:./evidence-dev-motherduck.tgz",
+    "@evidence-dev/mssql": "file:./evidence-dev-mssql.tgz",
+    "@evidence-dev/mysql": "file:./evidence-dev-mysql.tgz",
+    "@evidence-dev/postgres": "file:./evidence-dev-postgres.tgz",
+    "@evidence-dev/snowflake": "file:./evidence-dev-snowflake.tgz",
+    "@evidence-dev/sqlite": "file:./evidence-dev-sqlite.tgz",
+    "@evidence-dev/trino": "file:./evidence-dev-trino.tgz"
+  },
+  "overrides": {
+    "jsonwebtoken": "9.0.0",
+    "trim@<0.0.3": ">0.0.3",
+    "sqlite3": "5.1.5",
+    "axios": "^1.7.4",
+	"@evidence-dev/component-utilities": "file:./evidence-dev-component-utilities.tgz",
+	"@evidence-dev/preprocess": "file:./evidence-dev-preprocess.tgz",
+	"@evidence-dev/sdk": "file:./evidence-dev-sdk.tgz",
+	"@evidence-dev/universal-sql": "file:./evidence-dev-universal-sql.tgz",
+	"@evidence-dev/tailwind": "file:./evidence-dev-tailwind.tgz",
+	"@evidence-dev/db-commons": "file:./evidence-dev-db-commons.tgz",
+	"@evidence-dev/telemetry": "file:./evidence-dev-telemetry.tgz",
+	"@evidence-dev/icons": "file:./evidence-dev-icons.tgz"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "cross-env": "^7.0.3"
+  }
+}
