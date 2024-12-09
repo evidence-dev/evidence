@@ -246,7 +246,7 @@ You can modify the default chart color palette, or create a custom palette for i
 
 Color scales can have any number of colors listed. The colors will be blended into a gradient for values to interpolate from.
 
-### `default` Color Scale
+### Default Color Scale
 
 The default color scale is used by charts that represent continuous data<!-- (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale) -->.
 
