@@ -444,7 +444,7 @@ The color props accepted by many components (e.g. [`fillColor`](/components/bar-
 
 ## Advanced
 
-The [colors listed above](/reference/themes/#colors) are the bare minimum you should configure to theme your application. If you need more control, there are other colors you can customize.
+The [colors listed above](/core-concepts/themes/#colors) are the bare minimum you should configure to theme your application. If you need more control, there are other colors you can customize.
 
 ```sql advanced_color_tokens
     select '<span class="p-0.5 rounded-sm font-semibold bg-primary text-primary-content">primary-content</span>' as 'color', 'Text color used on top of a primary background' as 'where-its-used', 'A readable shade of primary' as default union all
