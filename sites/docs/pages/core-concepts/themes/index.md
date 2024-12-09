@@ -49,7 +49,7 @@ The theme consists of 3 elements that define colors for different purposes:
 
 You can pass any valid CSS color values to these properties (hexadecimal, RGB, HSL, named CSS colors, etc).
 
-The default configuration is accessible below, as well as in the [Evidence Template](https://github.com/evidence-dev/templates/blob/main/evidence.config.yaml).
+The default theme configuration is accessible below, as well as in the [Evidence Template](https://github.com/evidence-dev/templates/blob/main/evidence.config.yaml).
 
 <Details title='Default Configuration'>
 
