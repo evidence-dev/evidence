@@ -134,7 +134,7 @@ Heatmap currently only works with string columns. If you would like to use a dat
 </DocTab>
 
 
-### Custom Color Palette
+### Custom Color Scale
 
 
 <DocTab>
@@ -145,7 +145,7 @@ Heatmap currently only works with string columns. If you would like to use a dat
             y=category 
             value=order_count 
             valueFmt=usd 
-            colorPalette={[
+            colorScale={[
                 ['rgb(254,234,159)', 'rgb(254,234,159)'],
                 ['rgb(218,66,41)', 'rgb(218,66,41)']
             ]}
@@ -159,7 +159,7 @@ Heatmap currently only works with string columns. If you would like to use a dat
     y=category 
     value=order_count 
     valueFmt=usd 
-    colorPalette={[
+    colorScale={[
         ['rgb(254,234,159)', 'rgb(254,234,159)'],
         ['rgb(218,66,41)', 'rgb(218,66,41)']
     ]}
@@ -199,7 +199,7 @@ order by state asc, item asc
     y=state 
     value=orders 
     xLabelRotation=-45
-    colorPalette={['white', 'maroon']} 
+    colorScale={['white', 'maroon']} 
     title="Item Sales"
     subtitle="By State"
     rightPadding=40
@@ -276,7 +276,7 @@ order by state asc, item asc
     options="string"
 />
 <PropListing
-    name=colorPalette
+    name=colorScale
     description="Array of colors to form the gradient for the heatmap."
     options="array of color codes - e.g., {`{['navy', 'white', '#c9c9c9']}`}"
 />
