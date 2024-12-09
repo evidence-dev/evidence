@@ -188,6 +188,58 @@ Then use it like so
 />
 ```
 
+### Props
+
+The `colorPalette` prop accepted by many components accepts a color palette in several different formats to reduce the friction of theming your app.
+
+1. Use a list of colors (e.g. hex codes). They will be automatically converted to similar colors for dark mode.
+```markdown
+<BarChart
+    data={my_data}
+    colorPalette={[
+        "#3b82f6",
+        "#14b8a6",
+        "#eab308",
+        "#f97316",
+        "#a855f7",
+    ]}
+/>
+```
+
+2. Use a list of pairs of colors to explicitly define light and dark mode values. The first column will be used when your application is in light mode, and the second when its in dark mode.
+```markdown
+<BarChart
+    data={my_data}
+    colorPalette={[
+        ["#1d4ed8", "#93c5fd"],
+        ["#0f766e", "#5eead4"],
+        ["#a16207", "#fde047"],
+        ["#c2410c", "#fdba74"],
+        ["#7e22ce", "#d8b4fe"],
+    ]}
+>
+```
+
+3. Use a list of color names from your theme. Their configured light and dark values will be used.
+```markdown
+<BarChart
+    data={my_data}
+    colorPalette={[
+        'primary',
+        'accent',
+        'myCustomColor',
+    ]}
+>
+```
+
+2. Use a color palette name from your theme. Its configured light and dark values will be used.
+```markdown
+<BarChart 
+    data={my_data}
+    colorPalette=myColorPalette
+/>
+```
+
 ## Color Scales
 
 You can modify the default chart color palette, or create a custom palette for individual charts via their `colorScale` prop.
@@ -245,6 +297,48 @@ Then use it like so
     <Column id=country />
     <Column id=value_usd contentType=colorscale colorScale=myCustomScale />
 </DataTable>
+```
+
+### Props
+
+The `colorScale` prop accepted by many components accepts a color scale in several different formats to reduce the friction of theming your app.
+
+1. Use a list of colors (e.g. hex codes). They will be automatically converted to similar colors for dark mode.
+```markdown
+<BarChart
+    data={my_data}
+    colorScale={["#3b82f6", "#14b8a6"]}
+/>
+```
+
+2. Use a list of pairs of colors to explicitly define light and dark mode values. The first column will be used when your application is in light mode, and the second when its in dark mode.
+```markdown
+<BarChart
+    data={my_data}
+    colorScale={[
+        ["#1d4ed8", "#93c5fd"],
+        ["#0f766e", "#5eead4"],
+    ]}
+>
+```
+
+3. Use a list of color names from your theme. Their configured light and dark values will be used.
+```markdown
+<BarChart
+    data={my_data}
+    colorScale={[
+        'primary',
+        'accent',
+    ]}
+>
+```
+
+2. Use a color scale name from your theme. Its configured light and dark values will be used.
+```markdown
+<BarChart 
+    data={my_data}
+    colorScale=myColorScale
+/>
 ```
 
 ## Colors
@@ -322,9 +416,37 @@ Then use them like so
 />
 ```
 
-### Advanced
+### Props
 
-The colors listed above are the bare minimum you should configure to theme your application. If you need more control, there are other colors you can customize.
+The color props accepted by many components (e.g. [`fillColor`](components/bar-chart/#props-fillColor), [`labelColor`](components/annotations/#props-labelColor)) accept a color in several different formats to reduce the friction of theming your app.
+
+1. Use a single color (e.g. hex code). It will be automatically converted to a similar color for dark mode.
+```markdown
+<BarChart
+    data={my_data}
+    fillColor="#3b82f6"
+/>
+```
+
+2. Use a pair of colors to explicitly define light and dark mode values. The first color will be used when your application is in light mode, and the second when its in dark mode.
+```markdown
+<BarChart
+    data={my_data}
+    fillColor={["#1d4ed8", "#93c5fd"]}
+>
+```
+
+3. Use a color name from your theme. Its configured light and dark values will be used.
+```markdown
+<BarChart
+    data={my_data}
+    fillColor=primary
+>
+```
+
+## Advanced
+
+The [colors listed above](/reference/themes/#colors) are the bare minimum you should configure to theme your application. If you need more control, there are other colors you can customize.
 
 ```sql advanced_color_tokens
     select '<span class="p-0.5 rounded-sm font-semibold bg-primary text-primary-content">primary-content</span>' as 'color', 'Text color used on top of a primary background' as 'where-its-used', 'A readable shade of primary' as default union all
