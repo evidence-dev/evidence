@@ -123,7 +123,7 @@ You can modify the default chart color palette, or create a custom palette for i
 
 Color palettes can have any number of colors listed. If a chart has more series than there are colors in a color palette, the colors will be reused.
 
-### `default` Color Palette
+### Default Color Palette
 
 The default color palette is used by all series-based charts (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette), [Line Charts](/components/line-chart/#props-colorPalette)).
 
