@@ -44,9 +44,17 @@ appearance:
 
 ## Migration
 
-To enable themes in an Evidence application created before v((TODO THEMES RELEASE SEMVER)), simply add the [default appearance configuration](#default-appearance-configuration) to your `evidence.config.yaml`.
+To enable themes in an Evidence application created before v((TODO THEMES RELEASE SEMVER)), add the the following to your `evidence.config.yaml`:
 
-Your app will use the [default theme configuration](#default-theme-configuration) and will have dark mode without any additional configuration necessary!
+```yaml
+appearance:
+    default: system
+    switcher: true
+```
+
+Your app will now have a dark mode without any additional configuration necessary.
+
+Continue reading to learn how to customize your app's light and dark theme.
 
 # Theme
 
