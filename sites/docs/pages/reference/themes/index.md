@@ -290,7 +290,7 @@ theme:
                 - "#fb7185"
 ```
 
-Then use it like so
+Then use it in the `colorScale` prop
 
 ```markdown
 <DataTable data={country_summary}>
