@@ -44,7 +44,7 @@ appearance:
 
 ## Migration
 
-To enable themes in an Evidence application created before v((TODO THEMES RELEASE SEMVER)), add the the following to your `evidence.config.yaml`:
+To enable dark mode in an Evidence application created before v((TODO THEMES RELEASE SEMVER)), add the the following to your `evidence.config.yaml`:
 
 ```yaml
 appearance:
