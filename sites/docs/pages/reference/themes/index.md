@@ -41,7 +41,7 @@ appearance:
 
 The theme configuration defines the colors used by your application for everything on the page including the background, text, inputs, and charts.
 
-The theme consists of 3 sections that define colors for different purposes:
+The theme consists of 3 elements that define colors for different purposes:
 
 - `colorPalettes` configures colors for charts with different data series (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette), [Line Charts](/components/line-chart/#props-colorPalette)).
 - `colorScales` configures color ranges for charts with continuous data<!-- (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale)). -->
