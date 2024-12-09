@@ -441,7 +441,7 @@ The color props accepted by many components (e.g. [`fillColor`](/components/bar-
 <BarChart
     data={my_data}
     fillColor=primary
->
+/>
 ```
 
 ## Advanced
