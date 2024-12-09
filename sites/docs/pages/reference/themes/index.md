@@ -209,7 +209,7 @@ The `colorPalette` prop accepted by many components accepts a color palette in s
         'accent',
         'myCustomColor',
     ]}
->
+/>
 ```
 
 3. Use a list of colors (e.g. hex codes). They will be automatically converted to similar colors for dark mode.
@@ -237,7 +237,7 @@ The `colorPalette` prop accepted by many components accepts a color palette in s
         ["#c2410c", "#fdba74"],
         ["#7e22ce", "#d8b4fe"],
     ]}
->
+/>
 ```
 
 ## Color Scales
@@ -319,7 +319,7 @@ The `colorScale` prop accepted by many components accepts a color scale in sever
         'primary',
         'accent',
     ]}
->
+/>
 ```
 
 3. Use a list of colors (e.g. hex codes). They will be automatically converted to similar colors for dark mode.
@@ -338,7 +338,7 @@ The `colorScale` prop accepted by many components accepts a color scale in sever
         ["#1d4ed8", "#93c5fd"],
         ["#0f766e", "#5eead4"],
     ]}
->
+/>
 ```
 
 
