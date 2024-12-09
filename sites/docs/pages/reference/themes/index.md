@@ -400,7 +400,7 @@ theme:
 			dark: "#f472b6"
 ```
 
-Then use them like so
+Then use them in component props
 
 ```markdown
 <Tabs color=myColor>
