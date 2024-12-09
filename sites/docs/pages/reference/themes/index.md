@@ -179,7 +179,7 @@ theme:
                 - "#c4b5fd"
 ```
 
-Then use it like so
+Then use it in the `colorPalette` prop
 
 ```markdown
 <BarChart 
