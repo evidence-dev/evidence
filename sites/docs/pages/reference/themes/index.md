@@ -44,7 +44,7 @@ The theme configuration defines the colors used by your application for everythi
 The theme consists of 3 sections that define colors for different purposes:
 
 - `colorPalettes` configures colors for charts with different data series (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette), [Line Charts](/components/line-chart/#props-colorPalette)).
-- `colorScales` configures color ranges for charts with continuous data (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale)).
+- `colorScales` configures color ranges for charts with continuous data<!-- (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale)). -->
 - `colors` configures page colors (e.g. background, text, inputs).
 
 You can pass any valid CSS color values to these properties (hexadecimal, RGB, HSL, named CSS colors, etc).
@@ -248,7 +248,7 @@ Color scales can have any number of colors listed. The colors will be blended in
 
 ### `default` Color Scale
 
-The default color scale is used by charts that represent continuous data (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale).
+The default color scale is used by charts that represent continuous data<!-- (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale) -->.
 
 You can configure the default color palette for light and dark mode individually (different colors for each):
 
