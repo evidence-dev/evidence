@@ -52,7 +52,6 @@ appearance:
     switcher: true
 ```
 
-Your app will now have a dark mode without any additional configuration necessary.
 
 Continue reading to learn how to customize your app's light and dark theme.
 
