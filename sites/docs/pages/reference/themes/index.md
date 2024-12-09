@@ -39,7 +39,7 @@ appearance:
 
 # Theme
 
-The theme configuration defines the colors used by your application for everything on the page including the background, text, inputs, and charts.
+The theme configuration defines the colors used by your app.
 
 The theme consists of 3 elements that define colors for different purposes:
 
