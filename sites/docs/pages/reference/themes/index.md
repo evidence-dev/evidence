@@ -418,7 +418,7 @@ Then use them like so
 
 ### Props
 
-The color props accepted by many components (e.g. [`fillColor`](components/bar-chart/#props-fillColor), [`labelColor`](components/annotations/#props-labelColor)) accept a color in several different formats to reduce the friction of theming your app.
+The color props accepted by many components (e.g. [`fillColor`](/components/bar-chart/#props-fillColor), [`labelColor`](/components/annotations/#props-labelColor)) accept a color in several different formats to reduce the friction of theming your app.
 
 1. Use a single color (e.g. hex code). It will be automatically converted to a similar color for dark mode.
 ```markdown
