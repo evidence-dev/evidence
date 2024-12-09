@@ -125,7 +125,7 @@ Color palettes can have any number of colors listed. If a chart has more series 
 
 ### Default Color Palette
 
-The default color palette is used by all series-based charts (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette), [Line Charts](/components/line-chart/#props-colorPalette)).
+The `default` color palette is used by all series-based charts (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette), [Line Charts](/components/line-chart/#props-colorPalette)).
 
 You can configure the default color palette for light and dark mode individually (different colors for each):
 
