@@ -3,7 +3,7 @@ sidebar_position: 4
 hide_table_of_contents: false
 title: Themes
 description: Customize the appearance of your Evidence application in light and dark mode using our theming system.
-sidebar_badge: New!
+sidebar_badge: New
 ---
 
 Customize the appearance of your Evidence application in light and dark mode using our theming system.
