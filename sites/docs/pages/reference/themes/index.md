@@ -8,7 +8,7 @@ sidebar_badge: New
 
 Customize the appearance of your Evidence application in light and dark mode using our theming system.
 
-# Appearance
+# Appearance Modes
 
 Evidence supports three appearance modes: `light`, `dark`, and `system`. An unconfigured Evidence application will use `light` mode and not allow switching appearances. Evidence includes a built-in dark mode without any configuration necessary.
 
