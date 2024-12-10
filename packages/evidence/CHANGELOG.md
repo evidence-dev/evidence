@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 40.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- d88e86119: hash parquet file paths after build
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/preprocess@6.0.0
+  - @evidence-dev/sdk@3.0.0
+  - @evidence-dev/universal-sql@2.2.1
+
 ## 39.2.3
 
 ### Patch Changes
