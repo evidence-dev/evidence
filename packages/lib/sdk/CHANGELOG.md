@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 3.0.1
+
+### Patch Changes
+
+- 288f87ec6: evidence.plugins.yaml file is optional
+  - @evidence-dev/universal-sql@2.2.2
+
 ## 3.0.0
 
 ### Major Changes

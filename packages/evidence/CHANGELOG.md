@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 40.0.1
+
+### Patch Changes
+
+- Updated dependencies [288f87ec6]
+  - @evidence-dev/sdk@3.0.1
+  - @evidence-dev/universal-sql@2.2.2
+
 ## 40.0.0
 
 ### Major Changes
