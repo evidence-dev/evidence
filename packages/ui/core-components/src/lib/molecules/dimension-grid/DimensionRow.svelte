@@ -14,25 +14,25 @@
 	<!-- Bar -->
 	<div
 		class={cn(
-			'group-hover:bg-blue-100 bg-white absolute inset-y-0 left-0 z-[-10] transition-colors duration-200 w-full',
+			'group-hover:bg-primary/30 dark:group-hover:bg-primary/40 bg-base-100 absolute inset-y-0 left-0 z-[-10] transition-colors w-full',
 			{
-				'bg-gray-100': isSelected
+				'bg-base-200': isSelected
 			}
 		)}
 	/>
 	<div
 		class={cn(
-			'bg-blue-50 group-hover:bg-blue-100 absolute inset-y-0 left-0 z-[-10]',
+			'bg-primary/20 dark:bg-primary/30 group-hover:bg-primary/30 dark:group-hover:bg-primary/40 absolute inset-y-0 left-0 z-[-10]',
 			{
 				// undefined occurs in multi-selects where the user has selected mutually exclusive options (see null row column combination story)
-				'bg-gray-200': row.metric === undefined
+				'bg-base-300': row.metric === undefined
 			},
 			{
 				// null can occur naturally, allow selection state to show through
 				'bg-transparent': row.metric === null
 			},
 			{
-				'bg-blue-200': row.metric && isSelected
+				'bg-primary/50 dark:bg-primary/60 text-primary-content': row.metric && isSelected
 			}
 		)}
 		style={row.metric
@@ -45,12 +45,12 @@
 
 	<span
 		class={cn(
-			'truncate text-gray-900 transition-colors duration-200',
+			'truncate transition-colors',
 			{
 				'font-medium': isSelected
 			},
 			{
-				'text-gray-800': row.dimensionValue === null
+				'text-base-content-muted': row.dimensionValue === null
 			}
 		)}
 	>

@@ -235,7 +235,12 @@ group by state
             value=sales
             valueFmt=usd
             height=250
-            colorPalette={['yellow','orange','red','darkred']}
+            colorPalette={[
+                ['yellow', 'yellow'],
+                ['orange', 'orange'],
+                ['red', 'red'],
+                ['darkred', 'darkred'],
+            ]}
         />
     </div>
 
@@ -248,7 +253,12 @@ group by state
     value=sales
     valueFmt=usd
     height=250
-    colorPalette={['yellow','orange','red','darkred']}
+    colorPalette={[
+        ['yellow', 'yellow'],
+        ['orange', 'orange'],
+        ['red', 'red'],
+        ['darkred', 'darkred'],
+    ]}
 />
 ```
 </DocTab>

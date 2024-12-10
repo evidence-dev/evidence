@@ -197,11 +197,11 @@
 
 <Story name="Colors">
 	<LineChart x="x" y="y" {data}>
-		<ReferencePoint x="10" y="100" color="blue" label="blue" />
-		<ReferencePoint x="20" y="100" color="red" label="red" />
-		<ReferencePoint x="30" y="100" color="yellow" label="yellow" />
-		<ReferencePoint x="40" y="100" color="green" label="green" />
-		<ReferencePoint x="50" y="100" color="grey" label="grey" />
+		<ReferencePoint x="10" y="100" color="info" label="info" />
+		<ReferencePoint x="20" y="100" color="negative" label="negative" />
+		<ReferencePoint x="30" y="100" color="warning" label="warning" />
+		<ReferencePoint x="40" y="100" color="positive" label="positive" />
+		<ReferencePoint x="50" y="100" color="base-content-muted" label="base-content-muted" />
 		<ReferencePoint x="60" y="100" color="#63178f" label="custom" />
 	</LineChart>
 </Story>

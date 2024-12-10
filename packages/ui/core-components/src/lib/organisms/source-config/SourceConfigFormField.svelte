@@ -162,10 +162,10 @@
 				{/if}
 				<span>
 					{title}
-					{#if spec.required}<sup class="text-red-500">*</sup>{/if}
+					{#if spec.required}<sup class="text-negative">*</sup>{/if}
 				</span>
 			</p>
-			<p class="text-red-500 text-xs font-bold">{error}</p>
+			<p class="text-negative text-xs font-bold">{error}</p>
 		</div>
 		{#if spec.type === 'string'}
 			{#if spec.secret && !reveal && spec.shown !== true}
@@ -234,10 +234,10 @@
 	{/if}
 </div>
 
-<style>
+<style lang="postcss">
 	input,
 	select,
 	textarea {
-		@apply rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm;
+		@apply rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm;
 	}
 </style>

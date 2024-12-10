@@ -1,8 +1,18 @@
-themes:
-  light:
-    mySemanticColor: "#ff0000"
-  dark:
-    mySemanticColor: "#00ff00"
+appearance:
+  default: light
+  switcher: true
+
+theme:
+  colors:
+    base:
+      light: "#fdf4ff"
+      dark: "#170118"
+    primary:
+      light: "#ff0000"
+      dark: "#00ff00"
+    myCustomColor:
+      light: "#abcdef"
+      dark: "#fedcba"
 
 plugins:
   components:

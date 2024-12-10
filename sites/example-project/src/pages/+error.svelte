@@ -30,13 +30,13 @@
 	<h1 class="mt-0 mb-8 py-0">Page Not Found</h1>
 	<p>
 		<span class="font-mono text-base">{$page.status}</span>: The page
-		<span class="font-mono text-base bg-gray-200">{$page.url.pathname}</span> can't be found in the project.
+		<span class="font-mono text-base bg-base-200">{$page.url.pathname}</span> can't be found in the project.
 	</p>
 {:else if $page.status === 500}
 	<h1 class="mt-0 mb-8 py-0">Application Error</h1>
 
 	{#if $page.error.message}
-		<p class="font-mono text-sm bg-gray-200 px-2 py-2">
+		<p class="font-mono text-sm bg-base-200 px-2 py-2">
 			<span class="font-mono text-base">{$page.status}</span>:{$page.error.message}
 		</p>{/if}
 	{#if $page.error.stack || $page.error.cause}
@@ -46,7 +46,7 @@
 					<span class="absolute top-2 right-2">
 						<CopyButton textToCopy={expanded} />
 					</span>
-					<pre class="font-mono text-sm bg-gray-200 px-2 py-2 overflow-auto">{expanded}</pre>
+					<pre class="font-mono text-sm bg-base-200 px-2 py-2 overflow-auto">{expanded}</pre>
 				</div>
 			</AccordionItem>
 		</Accordion>

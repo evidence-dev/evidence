@@ -8,6 +8,9 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ValueError from './ValueError.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	// Passing in value from dataset:
 	export let data = null;
@@ -35,16 +38,18 @@
 
 	// Value Styling Props:
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
+
 	let fontColor = '';
 	// Negative value font color:
 	export let redNegatives = false;
 	$: redNegatives = redNegatives === 'true' || redNegatives === true;
 
-	$: if (redNegatives || color) {
+	$: if (redNegatives || $colorStore) {
 		if (redNegatives && selected_value < 0) {
 			fontColor = 'rgb(220 38 38)';
-		} else if (color) {
-			fontColor = color;
+		} else if ($colorStore) {
+			fontColor = $colorStore;
 		}
 	}
 
@@ -128,7 +133,7 @@
 		display: inline;
 		position: relative;
 		cursor: help;
-		color: blue;
+		color: var(--base-content-muted);
 	}
 
 	.placeholder .error-msg {
@@ -142,10 +147,10 @@
 		padding-right: 5px;
 		padding-top: 2px;
 		padding-bottom: 1px;
-		color: white;
 		font-size: 0.8em;
-		background-color: var(--grey-900);
-		opacity: 0.85;
+		color: var(--base-content);
+		background-color: var(--base-200);
+		border: 1px solid var(--base-300);
 		border-radius: 6px;
 		z-index: 1;
 		word-wrap: break-word;

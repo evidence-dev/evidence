@@ -1,5 +1,4 @@
 import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-import { uiColours } from '@evidence-dev/component-utilities/colours';
 import {
 	formatValue,
 	getFormatObjectFromString
@@ -73,6 +72,7 @@ export function getColumnFormats(data, valueCol, dateCol, valueFmt, dateFmt) {
  * @param {*} sparklineData
  * @param {string} seriesType
  * @param {string} color
+ * @param {import('@evidence-dev/tailwind').Theme} theme
  * @returns {import("echarts").EChartsOption}
  */
 export function getSparklineConfig(
@@ -84,7 +84,8 @@ export function getSparklineConfig(
 	value_format_object,
 	date_format_object,
 	height,
-	tooltipBackgroundColor
+	tooltipBackgroundColor,
+	theme
 ) {
 	return {
 		title: {
@@ -141,13 +142,6 @@ export function getSparklineConfig(
 			type: 'time',
 			splitLine: {
 				show: false
-			},
-			axisLine: {
-				show: true,
-				lineStyle: {
-					width: 0.75,
-					color: uiColours.grey500
-				}
 			},
 			axisTick: {
 				show: false
@@ -230,18 +224,18 @@ export function getSparklineConfig(
 				lineStyle: {
 					width: 1,
 					type: 'solid',
-					color: color ?? uiColours.grey400
+					color: color ?? theme.colors['base-content-muted']
 				},
 				areaStyle: {
 					color:
 						type === 'area'
 							? color
 								? chroma(color).brighten(1.5).hex()
-								: uiColours.grey300
+								: theme.colors['base-300']
 							: 'transparent'
 				},
 				itemStyle: {
-					color: color ?? uiColours.grey400
+					color: color ?? theme.colors['base-content-muted']
 				},
 				showSymbol: false,
 				symbol: 'circle',

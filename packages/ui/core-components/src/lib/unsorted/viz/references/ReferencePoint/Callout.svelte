@@ -24,15 +24,15 @@
 	export let data = undefined;
 
 	/**
-	 * @type {import('../types.js').ReferenceColor}
-	 * @default "grey"
+	 * @type {string}
+	 * @default "base-content-muted"
 	 */
-	export let color = 'grey';
+	export let color = 'base-content-muted';
 
 	/** @type {string | undefined} */
 	export let label = undefined;
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let labelColor = undefined;
 
 	/**
@@ -45,7 +45,7 @@
 	 * @type {number | string | undefined}
 	 * @default 5
 	 */
-	export let labelPadding = 5;
+	export let labelPadding = 8;
 
 	/**
 	 * @type {import('./types.js').LabelPosition}
@@ -53,11 +53,8 @@
 	 */
 	export let labelPosition = 'top';
 
-	/**
-	 * @type {string}
-	 * @default "white"
-	 */
-	export let labelBackgroundColor = 'white';
+	/** @type {string} */
+	export let labelBackgroundColor = 'base-100';
 
 	/**
 	 * @type {number | string | undefined}
@@ -71,11 +68,8 @@
 	 */
 	export let labelBorderRadius = 4;
 
-	/**
-	 * @type {string | undefined}
-	 * @default "gray"
-	 */
-	export let labelBorderColor = 'rgb(154, 165, 177)';
+	/** @type {string | undefined} */
+	export let labelBorderColor = 'base-300';
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -98,7 +92,7 @@
 	 */
 	export let symbol = 'circle';
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let symbolColor = undefined;
 
 	/**

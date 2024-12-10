@@ -43,16 +43,17 @@
 		<div>
 			<ul class="list-none m-0 p-0 flex flex-col gap-1 mb-1">
 				{#each Object.entries(metadata) as [source, meta] (source)}
-					<li class="font-mono m-0 text-sm text-white">
+					<li class="font-mono m-0 text-sm">
 						<button
-							class="bg-gray-500 px-2 py-1 rounded font-bold flex w-full hover:bg-blue-500"
-							class:bg-blue-500={selectedSource === source}
+							class="bg-base-200 px-2 py-1 rounded font-bold flex w-full hover:bg-base-300 hover:text-base-content"
+							class:bg-info={selectedSource === source}
+							class:text-info-content={selectedSource === source}
 							on:click={() => {
 								selectedSource = selectedSource === source ? '' : source;
 								selectedTable = ''; // Reset selectedTable when source is clicked
 							}}
 						>
-							<Icon src={Database} class="text-white w-5 h-5 mr-1" />
+							<Icon src={Database} class="w-5 h-5 mr-1" />
 							{source}
 						</button>
 					</li>
@@ -61,13 +62,14 @@
 							{#each Object.entries(meta) as [name, tableMeta] (name)}
 								<li class="font-mono m-0 text-sm font-bold ml-3">
 									<button
-										class="bg-gray-200 px-2 py-1 rounded flex w-full hover:bg-blue-200"
-										class:bg-blue-200={selectedTable === tableMeta}
+										class="bg-base-200 px-2 py-1 rounded flex w-full hover:bg-base-300 hover:text-base-content"
+										class:bg-info={selectedTable === tableMeta}
+										class:text-info-content={selectedTable === tableMeta}
 										on:click={() => {
 											selectedTable = selectedTable === tableMeta ? '' : tableMeta;
 										}}
 									>
-										<Icon src={Table} class="text-gray-700 w-5 h-5 mr-1" />
+										<Icon src={Table} class="w-5 h-5 mr-1" />
 										{name}
 									</button>
 								</li>
@@ -84,5 +86,5 @@
 {:catch e}
 	An error was encountered while loading project schema.
 
-	<pre class="px-4 py-2 bg-red-800 text-white">{e.message}</pre>
+	<pre class="px-4 py-2 bg-negative">{e.message}</pre>
 {/await}
