@@ -27,7 +27,7 @@ You can also self-host Evidence anywhere suitable for hosting static sites. See 
 - [Firebase](/deployment/firebase)
 - [GitHub Pages](/deployment/github-pages)
 - [GitLab Pages](/deployment/gitlab-pages)
-<!-- - [Hugging Face Spaces](/deployment/hugging-face-spaces) -->
+- [Hugging Face Spaces](/deployment/hugging-face-spaces)
 - [Netlify](/deployment/netlify)
 - [Vercel](/deployment/vercel)
 
