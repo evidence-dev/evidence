@@ -58,7 +58,8 @@ export const enum Context {
 	isPagesDirectory = 'evidence.isPagesDirectory',
 	isNonLegacyProject = 'evidence.isNonLegacyProject',
 	slashCommands = 'evidence.slashCommands',
-	isSQLContext = 'evidence.isSQLContext'
+	isSQLContext = 'evidence.isSQLContext',
+	isComponentContext = 'evidence.isComponentContext'
 }
 
 let isSQLContext = false;
@@ -128,14 +129,14 @@ async function initializeSchemaViewer(context: ExtensionContext) {
 			const packageJsonFolder = await getPackageJsonFolder();
 			const manifestPath = workspaceFolder
 				? path.join(
-						workspaceFolder.uri.fsPath,
-						packageJsonFolder ?? '',
-						'.evidence',
-						'template',
-						'static',
-						'data',
-						'manifest.json'
-					)
+					workspaceFolder.uri.fsPath,
+					packageJsonFolder ?? '',
+					'.evidence',
+					'template',
+					'static',
+					'data',
+					'manifest.json'
+				)
 				: '';
 
 			const manifestWatcher = workspace.createFileSystemWatcher(
@@ -168,8 +169,12 @@ async function applyCustomSettings() {
 
 	const languageId = editor.document.languageId;
 	const isSQLContext = isInSQLContext(editor.document, editor.selection.active);
+	const isComponentContext = isInComponentContext(editor.document, editor.selection.active);
 
-	await updateEditorConfigForLanguage(languageId, isSQLContext);
+	console.log('isSqlContext', isSQLContext)
+	console.log('isComponentContext', isComponentContext)
+	const autocompleteContext = isSQLContext || isComponentContext;
+	await updateEditorConfigForLanguage(languageId, autocompleteContext);
 }
 
 function registerCompletionProvider(context: ExtensionContext) {
@@ -202,6 +207,35 @@ function registerCompletionProvider(context: ExtensionContext) {
 	context.subscriptions.push(sqlProvider);
 }
 
+function registerComponentProvider(context: ExtensionContext) {
+	console.log('register')
+	// const config = workspace.getConfiguration('evidence');
+	// const autocompleteEnabled = config.get('enableComponentAutocomplete');
+
+	// if (!autocompleteEnabled) {
+	// 	return;
+	// }
+
+	const componentProvider = languages.registerCompletionItemProvider(
+		['emd'], // Add other file types if needed
+		{
+			async provideCompletionItems(document, position) {
+				console.log('provideCompletionItems')
+				const isComponentContext = isInComponentContext(document, position);
+				const languageId = document.languageId;
+				console.log('isComponentContext', isComponentContext)
+				await updateEditorConfigForLanguage(languageId, isComponentContext);
+				console.log('proding...')
+				return provideComponentCompletionItems(document, position);
+			},
+		},
+		'{',
+		' ', // Trigger completion after a space (inside a tag)
+	);
+
+	context.subscriptions.push(componentProvider);
+}
+
 function isInSQLContext(document: TextDocument, position: Position) {
 	const isSQL = isInSQLCodeBlock(document, position) || isInQueriesDirectory(document);
 	isSQLContext = isSQL;
@@ -209,6 +243,34 @@ function isInSQLContext(document: TextDocument, position: Position) {
 
 	return isSQL;
 }
+
+function isInComponentContext(document: TextDocument, position: Position): boolean {
+	const text = document.getText();
+	const offset = document.offsetAt(position);
+
+	// Search backward to find the nearest `<`
+	const backwardText = text.slice(0, offset);
+
+	const openTagIndex = backwardText.lastIndexOf('<');
+	const closeTagIndex = backwardText.lastIndexOf('>');
+
+	if (openTagIndex === -1 || closeTagIndex > openTagIndex) {
+		console.log('No opening tag found.');
+		return false;
+	}
+
+	// Extract the tag starting from the nearest `<`
+	const componentPattern = /^<([A-Za-z0-9]+)(?:\s[\s\S]*?)/;
+	const match = componentPattern.exec(backwardText.slice(openTagIndex, offset));
+
+	if (match) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
 
 function isInSQLCodeBlock(document: TextDocument, position: Position): boolean {
 	const text = document.getText();
@@ -569,7 +631,7 @@ function isInQueriesDirectory(document: TextDocument): boolean {
 	return filePath.endsWith('.sql') && filePath.startsWith(queriesDir);
 }
 
-async function updateEditorConfigForLanguage(languageId: string, isSQLContext: boolean) {
+async function updateEditorConfigForLanguage(languageId: string, autoCompleteContext: boolean) {
 	const config = workspace.getConfiguration('editor', { languageId });
 	const customConfig = workspace.getConfiguration('evidence');
 	const sqlAcceptSuggestionsOnEnter = customConfig.get('sqlAcceptSuggestionsOnEnter');
@@ -578,7 +640,7 @@ async function updateEditorConfigForLanguage(languageId: string, isSQLContext: b
 	);
 
 	try {
-		if (isSQLContext) {
+		if (autoCompleteContext) {
 			await config.update(
 				'acceptSuggestionOnEnter',
 				sqlAcceptSuggestionsOnEnter,
@@ -630,6 +692,44 @@ function applyCaseToFunction(
 	};
 }
 
+function extractCTENames(query: string) {
+	// Updated regex to match all CTEs after 'WITH' and commas
+	const cteRegex = /WITH\s+([a-zA-Z0-9_]+)\s+AS\s*\(|,\s*([a-zA-Z0-9_]+)\s+AS\s*\(/gi;
+	const matches = [];
+	let match;
+
+	while ((match = cteRegex.exec(query)) !== null) {
+		// Match either the first group (after WITH) or second group (after comma)
+		matches.push(match[1] || match[2]);
+	}
+
+	return matches;
+}
+
+function extractInputNames() {
+
+	const editor = window.activeTextEditor;
+
+	if (!editor) {
+		window.showErrorMessage('No active editor. Open a document to extract query names.');
+		return [];
+	}
+
+	const text = editor.document.getText();
+
+	// Regex to match standalone `name=` props in any Svelte component
+	const nameRegex = /\bname=(["']?)([a-zA-Z0-9_]+)\1/g;
+	const matches = [];
+	let match;
+
+	while ((match = nameRegex.exec(text)) !== null) {
+		matches.push(match[2]); // Capture the value of the 'name' attribute
+	}
+
+	return matches;
+}
+
+
 async function provideSQLCompletionItems(
 	document: TextDocument,
 	position: Position,
@@ -643,8 +743,10 @@ async function provideSQLCompletionItems(
 
 	const fromPattern = /(?<!\bextract\([^\)]*)\bFROM\s+([a-zA-Z0-9_\.]*)$/i;
 	const joinPattern = /\bJOIN\s+([a-zA-Z0-9_\.]*)$/i;
+	const inputPattern = /\$\{inputs\.$/;
 	const fromMatch = fromPattern.exec(textBeforePosition);
 	const joinMatch = joinPattern.exec(textBeforePosition);
+	const inputMatch = inputPattern.exec(textBeforePosition);
 
 	let keywords = [];
 	let functions = duckdbFunctions.map((func) =>
@@ -664,7 +766,20 @@ async function provideSQLCompletionItems(
 		return item;
 	});
 
-	if (fromMatch || joinMatch) {
+	// If the cursor is after `${inputs.`, suggest input names
+	if (inputMatch) {
+		const inputNames = extractInputNames();
+
+		for (const inputName of inputNames) {
+			const inputCompletionItem = new CompletionItem(
+				inputName,
+				CompletionItemKind.Variable
+			);
+			inputCompletionItem.insertText = inputName;
+			inputCompletionItem.detail = 'Input Variable\n\nRemember to use .value or .label if needed';
+			completionItems.push(inputCompletionItem);
+		}
+	} else if (fromMatch || joinMatch) {
 		// Only add tables if after FROM
 		for (const schemaItem of schemaItems) {
 			const schemaName = schemaItem.label;
@@ -680,6 +795,29 @@ async function provideSQLCompletionItems(
 				completionItems.push(tableCompletionItem);
 			}
 		}
+
+		const queryNames = extractQueryNames();
+
+		for (const queryName of queryNames) {
+			const queryNameCompletionItem = new CompletionItem(
+				queryName,
+				CompletionItemKind.Interface
+			);
+			queryNameCompletionItem.insertText = `\$\{${queryName}}`
+			completionItems.push(queryNameCompletionItem)
+		}
+
+		const cteNames = extractCTENames(textBeforePosition);
+
+		for (const cteName of cteNames) {
+			const cteNameCompletionItem = new CompletionItem(
+				cteName,
+				CompletionItemKind.File
+			);
+			cteNameCompletionItem.insertText = `${cteName}`;
+			completionItems.push(cteNameCompletionItem);
+		}
+
 	} else {
 		completionItems.push(...keywordCompletionItems);
 		completionItems.push(...functionCompletionItems);
@@ -716,6 +854,125 @@ async function provideSQLCompletionItems(
 
 	return completionItems;
 }
+
+function extractQueryNames(): string[] {
+	const editor = window.activeTextEditor;
+
+	if (!editor) {
+		window.showErrorMessage('No active editor. Open a document to extract query names.');
+		return [];
+	}
+
+	const text = editor.document.getText();
+	const queries = new Set<string>(); // Use a Set to avoid duplicates
+
+	// Frontmatter: `queries: - myquery1: myquery1.sql`
+	const frontmatterPattern = /^queries:\s*([\s\S]*?)(?:\n{2,}|\n$|$)/m; // Match the `queries` block
+	const frontmatterMatch = text.match(frontmatterPattern);
+	if (frontmatterMatch) {
+		const queryLines = frontmatterMatch[1].split('\n').map((line) => line.trim());
+		for (const line of queryLines) {
+			const match = line.match(/- ([a-zA-Z0-9_]+):/); // Extract query names like `- myquery1:`
+			if (match) {
+				queries.add(match[1]);
+			}
+		}
+	}
+
+	// Non-SQL Markdown Blocks: ```myquery1
+	const nonSQLPattern = /```([a-zA-Z0-9_]+)\n/g;
+	const nonSQLMatches = [...text.matchAll(nonSQLPattern)];
+	for (const match of nonSQLMatches) {
+		queries.add(match[1]);
+	}
+
+	// SQL Markdown Blocks: ```sql myquery1
+	const sqlPattern = /```sql\s+([a-zA-Z0-9_]+)\n/g;
+	const sqlMatches = [...text.matchAll(sqlPattern)];
+	for (const match of sqlMatches) {
+		queries.add(match[1]);
+	}
+
+	return [...queries]; // Convert Set to Array for the final result
+}
+
+
+
+async function provideComponentCompletionItems(document: TextDocument, position: Position) {
+	if (!isInComponentContext(document, position)) {
+		console.log('Not in component context, returning no suggestions.');
+		return []; // Return no suggestions
+	}
+
+	console.log('In component context, providing suggestions...');
+	const completionItems: CompletionItem[] = [];
+	const textBeforeCursor = document.getText(new Range(new Position(0, 0), position));
+
+	// Extract the component name from the open tag
+	const lastOpenTagIndex = textBeforeCursor.lastIndexOf('<');
+	if (lastOpenTagIndex === -1) {
+		return []; // No opening tag found
+	}
+
+	// Extract the nearest tag's text
+	const nearestTagText = textBeforeCursor.slice(lastOpenTagIndex);
+	const match = /^<([A-Za-z0-9]+)\s?/.exec(nearestTagText);
+	if (!match) {
+		console.log('No valid component name found in context.');
+		return []; // No valid component found
+	}
+
+	const componentName = match[1];
+	console.log('Component name:', componentName);
+	const componentDefinition = evidenceComponents[componentName];
+
+	if (!componentDefinition) {
+		console.log(`No matching component found for "${componentName}".`);
+		return []; // No suggestions for unknown components
+	}
+
+	const bracePattern = /=\{([^}]*)$/g; // Match `={` and ensure no closing brace `}` has occurred yet
+	const braceMatch = bracePattern.exec(textBeforeCursor);
+
+	if (braceMatch) {
+		// if (false) {
+		const queryNames = extractQueryNames();
+
+		for (const queryName of queryNames) {
+			const queryNameCompletionItem = new CompletionItem(
+				queryName,
+				CompletionItemKind.Interface
+			);
+			queryNameCompletionItem.insertText = `${queryName}`;
+			completionItems.push(queryNameCompletionItem);
+		}
+
+	} else {
+
+		// Add props as suggestions and include sortText based on rank
+		for (const prop of componentDefinition.props) {
+			const item = new CompletionItem(prop.name, CompletionItemKind.Property);
+			// item.insertText = new SnippetString(prop.name + '=');
+			item.documentation = new MarkdownString(
+				`**Description:** ${prop.description || 'No description available'}\n\n` +
+				`**Type:** ${prop.type}\n\n` +
+				`**Default:** ${prop.defaultValue || 'None'}\n\n` +
+				`**Options:** ${prop.options}`
+			);
+			item.insertText = prop.name + '=';
+			item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
+			completionItems.push(item);
+		}
+
+		// Explicit sorting to ensure rank is respected
+		completionItems.sort((a, b) => a.sortText!.localeCompare(b.sortText!)); // Use the `!` to assert sortText is defined
+
+	}
+
+	return completionItems;
+}
+
+
 async function getSchemaItems(): Promise<SchemaItem[]> {
 	const manifestUri = await getManifestUri();
 	if (!manifestUri) {
@@ -793,6 +1050,37 @@ function insertTextAtCursor(text: string) {
 	}
 }
 
+interface ComponentProp {
+	name: string;
+	description: string | null;
+	required: boolean;
+	type: string;
+	options?: string;
+	defaultValue: string | null;
+	rank: number;
+}
+
+interface ComponentDefinition {
+	props: ComponentProp[];
+}
+
+type ComponentList = Record<string, ComponentDefinition>;
+
+let evidenceComponents: ComponentList = {};
+
+function loadComponents() {
+	try {
+		const filePath = path.resolve(__dirname, '../src/props_list.json');
+		const data = fs.readFileSync(filePath, 'utf-8');
+		evidenceComponents = JSON.parse(data) as ComponentList;
+		console.log('Components loaded successfully:', evidenceComponents);
+	} catch (error) {
+		console.error('Failed to load components:', error);
+		evidenceComponents = {}; // Fallback to an empty object
+	}
+}
+
+
 /**
  * Activates Evidence vscode extension.
  *
@@ -801,6 +1089,7 @@ function insertTextAtCursor(text: string) {
 export async function activate(context: ExtensionContext) {
 	setExtensionContext(context);
 	registerCommands(context);
+	loadComponents();
 
 	await initializeTelemetryService();
 
@@ -1179,7 +1468,9 @@ export async function activate(context: ExtensionContext) {
 				openEditor.document.fileName.endsWith('.md') &&
 				isPagesDirectory() &&
 				slashCommands === true &&
-				!isInSQLCodeBlock(openEditor.document, openEditor.selection.active)
+				!isInSQLCodeBlock(openEditor.document, openEditor.selection.active) &&
+				!isInComponentContext(openEditor.document, openEditor.selection.active)
+
 			) {
 				try {
 					decorate(openEditor);
@@ -1195,7 +1486,8 @@ export async function activate(context: ExtensionContext) {
 					openEditor.document.fileName.endsWith('.md') &&
 					isPagesDirectory() &&
 					slashCommands === true &&
-					!isInSQLCodeBlock(openEditor.document, openEditor.selection.active)
+					!isInSQLCodeBlock(openEditor.document, openEditor.selection.active) &&
+					!isInComponentContext(openEditor.document, openEditor.selection.active)
 				) {
 					try {
 						decorate(openEditor);
@@ -1213,7 +1505,8 @@ export async function activate(context: ExtensionContext) {
 					openEditor.document.fileName.endsWith('.md') &&
 					isPagesDirectory() &&
 					slashCommands === true &&
-					!isInSQLCodeBlock(openEditor.document, openEditor.selection.active)
+					!isInSQLCodeBlock(openEditor.document, openEditor.selection.active) &&
+					!isInComponentContext(openEditor.document, openEditor.selection.active)
 				) {
 					try {
 						decorate(openEditor);
@@ -1381,6 +1674,7 @@ export async function activate(context: ExtensionContext) {
 
 		initializeSchemaViewer(context);
 		registerCompletionProvider(context);
+		registerComponentProvider(context);
 
 		// Apply custom settings whenever the active editor changes
 		window.onDidChangeActiveTextEditor((editor) => {
