@@ -1,5 +1,41 @@
 # e2e-base-path
 
+## 0.0.10
+
+### Patch Changes
+
+- @evidence-dev/evidence@40.0.1
+- @evidence-dev/core-components@5.0.1
+
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+- Updated dependencies [d88e86119]
+  - @evidence-dev/evidence@40.0.0
+  - @evidence-dev/core-components@5.0.0
+
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [cb5687cd9]
+- Updated dependencies [c4f46da37]
+  - @evidence-dev/sqlite@2.0.7
+  - @evidence-dev/evidence@39.2.3
+  - @evidence-dev/bigquery@2.0.9
+  - @evidence-dev/csv@1.0.14
+  - @evidence-dev/databricks@1.0.8
+  - @evidence-dev/duckdb@1.0.13
+  - @evidence-dev/motherduck@1.0.4
+  - @evidence-dev/mssql@1.1.2
+  - @evidence-dev/mysql@1.1.4
+  - @evidence-dev/postgres@1.0.7
+  - @evidence-dev/snowflake@1.2.2
+  - @evidence-dev/trino@1.0.9
+  - @evidence-dev/core-components@4.9.2
+
 ## 0.0.7
 
 ### Patch Changes

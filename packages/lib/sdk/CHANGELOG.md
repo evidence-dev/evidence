@@ -1,5 +1,32 @@
 # @evidence-dev/sdk
 
+## 3.0.1
+
+### Patch Changes
+
+- 288f87ec6: evidence.plugins.yaml file is optional
+  - @evidence-dev/universal-sql@2.2.2
+
+## 3.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/icons@1.0.2
+  - @evidence-dev/universal-sql@2.2.1
+
+## 2.0.0
+
+### Patch Changes
+
+- d2ce60038: bump duckdb to 1.29.0, fix bugs emerging from that
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/universal-sql@2.2.0
+
 ## 1.5.1
 
 ### Patch Changes

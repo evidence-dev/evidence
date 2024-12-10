@@ -3,9 +3,10 @@ import { glob } from 'glob';
 import path from 'node:path';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
+import { fileURLToPath } from 'node:url';
 
 const aexec = promisify(exec);
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 for (const pkg of await glob('../../packages/**/package.json', {
 	ignore: {
