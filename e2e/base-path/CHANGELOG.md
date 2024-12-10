@@ -1,5 +1,12 @@
 # e2e-base-path
 
+## 0.0.10
+
+### Patch Changes
+
+- @evidence-dev/evidence@40.0.1
+- @evidence-dev/core-components@5.0.1
+
 ## 0.0.9
 
 ### Patch Changes
