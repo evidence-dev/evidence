@@ -18,14 +18,13 @@ export const load = async () => {
 		const plugins = Object.entries(datasources.bySource).reduce((acc, [name, v]) => {
 			acc[name] = {
 				package: { package: v[0] },
-				options: v[1].options,
+				options: v[1].options
 			};
 			return acc;
 		}, {});
-		
 
 		return {
-			sources: sources.map(source => ({
+			sources: sources.map((source) => ({
 				...source,
 				environmentVariables: getDatasourceConfigAsEnvironmentVariables(source)
 			})),

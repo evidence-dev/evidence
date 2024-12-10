@@ -142,6 +142,6 @@ export const getDatasourceConfigAsEnvironmentVariables = (datasource) => {
 		}
 	};
 	generateNestedEnvVars(datasource.options);
-	
+
 	return environmentVariables;
 };
