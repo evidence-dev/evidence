@@ -1,4 +1,5 @@
 import { sources } from './sources.js';
+import { sourcesStrict } from './sources:strict.js';
 import { edit } from './edit.js';
 
 /**
@@ -6,6 +7,7 @@ import { edit } from './edit.js';
  */
 export const datasourcesCli = {
 	sources,
+	sourcesStrict,
 	connections: {
 		meta: {
 			name: 'connections',

@@ -385,6 +385,34 @@ prog
 	});
 
 prog
+	.command('sources:strict')
+	.describe('creates .parquet files from source queries')
+	.option('--changed', 'only build sources whose queries have changed')
+	.option('--sources', 'only build queries from the specified source directories')
+	.option('--queries', 'only build the specified queries')
+	.option('--debug', 'show debug output')
+	.example('npx evidence sources:strict --changed')
+	.example('npx evidence sources:strict --sources needful_things --queries orders,reviews')
+	.example('npx evidence sources:strict --queries needful_things.orders,needful_things.reviews')
+	.example('npx evidence sources:strict --sources needful_things,social_media')
+	.action(async () => {
+		if (!('EVIDENCE_DATA_DIR' in process.env)) {
+			process.env.EVIDENCE_DATA_DIR = './.evidence/template/static/data';
+		}
+		if (!('EVIDENCE_DATA_URL_PREFIX' in process.env)) {
+			process.env.EVIDENCE_DATA_URL_PREFIX = 'static/data';
+		}
+		loadEnvFile();
+
+		// The data directory is defined at import time (because we aren't using getters, and it is set once)
+		// So we need to import it here to give the opportunity to override it above
+		const cli = await import('@evidence-dev/sdk/legacy-compat').then((m) => m.cli);
+		logQueryEvent('build-sources-start');
+		await cli(...process.argv);
+		return;
+	});
+
+prog
 	.command('preview')
 	.describe('preview the production build')
 	.action((args) => {
