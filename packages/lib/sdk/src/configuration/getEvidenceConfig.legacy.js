@@ -11,12 +11,13 @@ export const getEvidenceConfigLegacy = () => {
 		const filepath = path.join(projectRoot, 'evidence.plugins.yaml');
 		fileContents = fs.readFileSync(filepath, 'utf-8');
 	} catch (e) {
-		throw new EvidenceError('Could not find an evidence.plugins.yaml file.');
+		// Do nothing if `evidence.plugins.yaml` isnt found. `evidence.plugins.yaml` is deprecated and `evidence.config.yaml` should be used instead.
+		return;
 	}
 
 	const result = yaml.parse(fileContents.replaceAll(/($|\s)(@.+):/g, '$1"$2":'));
 
-	const { success, data, error } = EvidenceConfigSchema.safeParse({ 		plugins: result 	});
+	const { success, data, error } = EvidenceConfigSchema.safeParse({ plugins: result });
 	if (!success) throw new EvidenceError(`Invalid evidence.plugins.yaml file detected: ${error}`);
 	return data;
 };
