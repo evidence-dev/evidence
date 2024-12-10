@@ -1,5 +1,11 @@
 # @evidence-dev/icons
 
+## 1.0.2
+
+### Patch Changes
+
+- e2c95d172: Icons use currentColor instead of hardcoded color
+
 ## 1.0.1
 
 ### Patch Changes

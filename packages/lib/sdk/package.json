@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "1.5.1",
+	"version": "3.0.0",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js"

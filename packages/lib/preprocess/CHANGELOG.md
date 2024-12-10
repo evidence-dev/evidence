@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 6.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
 ## 5.2.3
 
 ### Patch Changes
