@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 10
 hide_table_of_contents: false
 title: Themes
 description: Customize the appearance of your Evidence application in light and dark mode using the theming system.
@@ -44,7 +44,7 @@ appearance:
 
 ## Migration
 
-To enable dark mode in an Evidence application created before v((TODO THEMES RELEASE SEMVER)), add the the following to your `evidence.config.yaml`:
+To enable dark mode in an Evidence application created before themes was released, add the the following to your `evidence.config.yaml`:
 
 ```yaml
 appearance:
