@@ -10,7 +10,7 @@
 <div class="new-format-buttons my-3">
 	<button type="button">
 		<a
-			class="text-white no-underline hover:no-underline"
+			class="no-underline hover:no-underline"
 			target="_blank"
 			rel="noreferrer"
 			href="https://evidence.app">Sign Up</a
@@ -18,7 +18,7 @@
 	</button>
 </div>
 
-<style>
+<style lang="postcss">
 	h2 {
 		@apply font-semibold text-lg pt-3 pb-2;
 	}
@@ -34,11 +34,10 @@
 		text-decoration: none;
 		font-size: 14px;
 		cursor: pointer;
-		background-color: var(--blue-600);
-		color: white;
+		background-color: var(--primary);
+		color: var(--primary-content);
 		font-weight: bold;
 		border-radius: 4px;
-		border: 1px solid var(--blue-700);
 		padding: 0.4em 1.1em;
 		transition-property: background, color;
 		transition-duration: 350ms;
@@ -57,7 +56,7 @@
 
 	ul li::before {
 		content: '\2022';
-		color: var(--grey-800);
+		color: var(--base-content);
 		font-weight: bold;
 		display: inline-block;
 		width: 0.9em;

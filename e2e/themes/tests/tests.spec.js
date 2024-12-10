@@ -1,23 +1,51 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { waitForPageToLoad } from '../../test-utils';
+import { switchAppearance, waitForPageToLoad } from '../../test-utils';
 
-test('should change color based on theme', async ({ page }) => {
+test('should change colors based on theme', async ({ page }) => {
 	await page.goto('/');
 	await waitForPageToLoad(page);
 
-	const divWithBackground = await page.getByTestId('div-with-background');
+	const divPrimaryClass = await page.getByTestId('div-primary-class');
+	const divPrimaryVar = await page.getByTestId('div-primary-var');
+	const divMyCustomColorClass = await page.getByTestId('div-myCustomColor-class');
+	const divMyCustomColorVar = await page.getByTestId('div-myCustomColor-var');
 
-	// Starts with system theme (dark)
-	await expect(divWithBackground).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+	await switchAppearance(page, 'system');
+	await expect(divPrimaryClass).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+	await expect(divPrimaryVar).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+	await expect(divMyCustomColorClass).toHaveCSS('background-color', 'rgb(254, 220, 186)');
+	await expect(divMyCustomColorVar).toHaveCSS('background-color', 'rgb(254, 220, 186)');
 
-	await page.getByLabel('Menu').click();
+	await switchAppearance(page, 'light');
+	await expect(divPrimaryClass).toHaveCSS('background-color', 'rgb(255, 0, 0)');
+	await expect(divPrimaryVar).toHaveCSS('background-color', 'rgb(255, 0, 0)');
+	await expect(divMyCustomColorClass).toHaveCSS('background-color', 'rgb(171, 205, 239)');
+	await expect(divMyCustomColorVar).toHaveCSS('background-color', 'rgb(171, 205, 239)');
 
-	// Light theme
-	await page.getByRole('menuitem', { name: 'Appearance' }).click();
-	await expect(divWithBackground).toHaveCSS('background-color', 'rgb(255, 0, 0)');
+	await switchAppearance(page, 'dark');
+	await expect(divPrimaryClass).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+	await expect(divPrimaryVar).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+	await expect(divMyCustomColorClass).toHaveCSS('background-color', 'rgb(254, 220, 186)');
+	await expect(divMyCustomColorVar).toHaveCSS('background-color', 'rgb(254, 220, 186)');
+});
 
-	// Dark theme
-	await page.getByRole('menuitem', { name: 'Appearance' }).click();
-	await expect(divWithBackground).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+test('body text should be computed from base', async ({ page }) => {
+	await page.goto('/');
+	await waitForPageToLoad(page);
+
+	const body = await page.locator('body');
+	const text = await page.getByText('This is some body text');
+
+	await switchAppearance(page, 'system');
+	await expect(text).toHaveCSS('color', 'rgb(205, 200, 206)');
+	await expect(body).toHaveCSS('background-color', 'rgb(23, 1, 24)');
+
+	await switchAppearance(page, 'light');
+	await expect(text).toHaveCSS('color', 'rgb(45, 42, 46)');
+	await expect(body).toHaveCSS('background-color', 'rgb(253, 244, 255)');
+
+	await switchAppearance(page, 'dark');
+	await expect(text).toHaveCSS('color', 'rgb(205, 200, 206)');
+	await expect(body).toHaveCSS('background-color', 'rgb(23, 1, 24)');
 });

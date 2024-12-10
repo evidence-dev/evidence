@@ -13,6 +13,9 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { resolveColor, resolveColorPalette } = getThemeStores();
 
 	export let data = undefined;
 	export let nameCol = undefined;
@@ -26,12 +29,16 @@
 	$: legend = legend === 'true' || legend === true;
 
 	export let outlineColor = undefined;
+	$: outlineColorStore = resolveColor(outlineColor);
+
 	export let outlineWidth = undefined;
 	export let labelPosition = 'inside';
 	export let funnelAlign = 'center';
 	export let funnelSort = 'none';
 
-	export let colorPalette = undefined;
+	export let colorPalette = 'default';
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -183,7 +190,7 @@
 				focus: 'series'
 			},
 			itemStyle: {
-				borderColor: outlineColor,
+				borderColor: $outlineColorStore,
 				borderWidth: outlineWidth
 			},
 			tooltip: {
@@ -221,7 +228,7 @@
 				padding: [0, 0, 0, 0]
 			},
 			series: [seriesConfig],
-			color: colorPalette
+			color: $colorPaletteStore
 		};
 	} catch (e) {
 		error = e.message;

@@ -6,6 +6,9 @@
 	import Points from './components/Points.svelte';
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { resolveColorPalette } = getThemeStores();
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -51,6 +54,7 @@
 
 	/** @type {string[]|undefined} */
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
 	export let legendPosition = 'bottomLeft';
@@ -91,7 +95,7 @@
 		{data}
 		{lat}
 		{long}
-		{colorPalette}
+		colorPalette={colorPaletteStore}
 		{legendType}
 		{chartType}
 		{...$$restProps}

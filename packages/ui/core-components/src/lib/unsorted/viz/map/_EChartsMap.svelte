@@ -11,6 +11,9 @@
 	import CodeBlock from '../../ui/CodeBlock.svelte';
 	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { activeAppearance, theme } = getThemeStores();
 
 	export let extraHeight = 0;
 
@@ -163,7 +166,15 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ config, ...$$restProps, echartsOptions, seriesOptions, queryID }}
+		use:echartsCanvasDownload={{
+			config,
+			...$$restProps,
+			echartsOptions,
+			seriesOptions,
+			queryID,
+			theme: $activeAppearance,
+			backgroundColor: $theme.colors['base-100']
+		}}
 	/>
 {/if}
 

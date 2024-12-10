@@ -24,8 +24,8 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
   <Column id=month />
   <Column id=category />
   <Column id=sales_usd0k contentType=colorscale />
-  <Column id=num_orders_num0 contentType=colorscale scaleColor=red />
-  <Column id=aov_usd2 contentType=colorscale scaleColor=blue />
+  <Column id=num_orders_num0 contentType=colorscale colorScale=negative />
+  <Column id=aov_usd2 contentType=colorscale colorScale=info />
 </DataTable>
 
 
@@ -43,9 +43,9 @@ group by all
 
 <DataTable data={summary}> 
  	<Column id=category/> 
-	<Column id=sales fmt=usd0k contentType=colorscale scaleColor={['#304a8a','#e8efff']}/> 
+	<Column id=sales fmt=usd0k contentType=colorscale colorScale={['#304a8a','#e8efff']}/> 
 	<Column id=orders/> 
-	<Column id=aov fmt=usd2 contentType=colorscale scaleColor={['#b52626','#FFFFFF','#2e9939']}/> 
+	<Column id=aov fmt=usd2 contentType=colorscale colorScale={['#b52626','#FFFFFF','#2e9939']}/> 
  </DataTable>
 
 ## Conditional Columns
@@ -59,11 +59,11 @@ group by all
 <DataTable data={summary}>
 	<Column id="category" />
 	{#if inputs.display_column.value === 'sales'}
-		<Column id=sales fmt=usd0k contentType=colorscale scaleColor={['#304a8a','#e8efff']}/>
+		<Column id=sales fmt=usd0k contentType=colorscale colorScale={['#304a8a','#e8efff']}/>
 	{:else if inputs.display_column.value === 'orders'}
 		<Column id=orders/>
 	{:else}
-		<Column id=aov fmt=usd2 contentType=colorscale scaleColor={['#b52626','#FFFFFF','#2e9939']}/>
+		<Column id=aov fmt=usd2 contentType=colorscale colorScale={['#b52626','#FFFFFF','#2e9939']}/>
 	{/if}
 </DataTable>
 
