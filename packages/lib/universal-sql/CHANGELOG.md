@@ -1,5 +1,12 @@
 # @evidence-dev/universal-sql
 
+## 2.2.1
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/sdk@3.0.0
+
 ## 2.2.0
 
 ### Minor Changes

@@ -1,5 +1,17 @@
 # @evidence-dev/sdk
 
+## 3.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/icons@1.0.2
+  - @evidence-dev/universal-sql@2.2.1
+
 ## 2.0.0
 
 ### Patch Changes
