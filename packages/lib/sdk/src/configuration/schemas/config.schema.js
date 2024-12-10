@@ -5,7 +5,7 @@ import { DeploymentConfigSchema } from './deployment.schema.js';
 export const EvidenceConfigSchema = z.object({
 	layout: z.string().or(z.literal(false).default(false)).optional(),
 	plugins: PluginConfigSchema,
-	deployment: DeploymentConfigSchema.optional()
+	deployment: DeploymentConfigSchema.optional().default({})
 });
 
 /** @typedef {z.infer<typeof EvidenceConfigSchema>} EvidenceConfig */
