@@ -1,5 +1,13 @@
 # @evidence-dev/sqlite
 
+## 2.0.7
+
+### Patch Changes
+
+- cb5687cd9: fix(db): Fix bug that tried to read undefined db data
+- Updated dependencies [cb5687cd9]
+  - @evidence-dev/db-commons@1.0.6
+
 ## 2.0.6
 
 ### Patch Changes

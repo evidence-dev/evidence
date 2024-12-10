@@ -1,5 +1,16 @@
 # @evidence-dev/universal-sql
 
+## 2.2.0
+
+### Minor Changes
+
+- d2ce60038: bump duckdb to 1.29.0, fix bugs emerging from that
+
+### Patch Changes
+
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/sdk@2.0.0
+
 ## 2.1.11
 
 ### Patch Changes

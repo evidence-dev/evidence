@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/motherduck",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "",
 	"main": "index.cjs",
 	"keywords": [

@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 4.9.2
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.23
+- @evidence-dev/tailwind@2.1.12
+
 ## 4.9.1
 
 ### Patch Changes
