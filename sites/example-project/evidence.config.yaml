@@ -1,0 +1,17 @@
+plugins:
+  components:
+    # This is the core Evidence UI Library
+    # If you aren't sure that you want to edit it
+    # you probably don't want to edit it.
+    "@evidence-dev/core-components": {}
+  datasources:
+    "@evidence-dev/bigquery": {}
+    "@evidence-dev/csv": {}
+    "@evidence-dev/databricks": {}
+    "@evidence-dev/duckdb": {}
+    "@evidence-dev/mssql": {}
+    "@evidence-dev/mysql": {}
+    "@evidence-dev/postgres": {}
+    "@evidence-dev/snowflake": {}
+    "@evidence-dev/sqlite": {}
+    "@evidence-dev/trino": {}

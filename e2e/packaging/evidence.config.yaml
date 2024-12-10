@@ -1,6 +1,3 @@
-deployment:
-  basePath: /my-base-path
-
 plugins:
   components:
     # This loads all of evidence's core charts and UI components
