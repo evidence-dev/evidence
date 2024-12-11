@@ -40,12 +40,7 @@
 		chartType={spreadProps.chartType}
 		{isInitial}
 	/>
-	<ErrorChart
-		let:loaded
-		slot="error"
-		title={spreadProps.chartType}
-		error={loaded.error.message}
-	/>
+	<ErrorChart let:loaded slot="error" title={spreadProps.chartType} error={loaded.error.message} />
 	<Chart {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Chart>

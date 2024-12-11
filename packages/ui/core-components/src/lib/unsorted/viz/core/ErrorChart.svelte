@@ -14,11 +14,11 @@
 <div
 	width="100%"
 	class="grid grid-rows-auto grid-cols-1 justify-center relative
-			bg-negative/10 text-negative 
-			font-ui font-normal 
-			rounded border border-negative/50 
-			min-h-[{minHeight}px] 
-			py-5 px-8 my-5 
+			bg-negative/10 text-negative
+			font-ui font-normal
+			rounded border border-negative/50
+			min-h-[{minHeight}px]
+			py-5 px-8 my-5
 			print:break-inside-avoid"
 >
 	<div class="m-auto w-full">
