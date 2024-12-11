@@ -1,31 +1,29 @@
----
-sidebar_position: 100
-title: Component Queries
----
+# Component Queries
 
-Custom components in Evidence can include their own queries, allowing you to fetch data directly within the component rather than passing it as props. This gives you more flexibility in how you structure your components and can make them more self-contained.
+In Evidence, components can manage their own data fetching through component queries. This is made possible by Evidence's use of DuckDB-WASM, which runs entirely in your browser. When you create a component query, you're writing SQL that will execute directly against your data in the browser's memory, making it both fast and efficient.
 
-## Basic Query Implementation
+Component queries transform how we build data visualizations. Instead of passing data down through props from parent pages, components become self-contained units that can request exactly what they need. This independence makes components more reusable and easier to maintain, as all the logic for both fetching and displaying data lives in one place.
 
-To add a query to your component, you'll need two key imports from Evidence's utilities:
+## Static Queries
 
-```javascript
-import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
-import { QueryLoad, Skeleton } from '@evidence-dev/core-components';
-```
+Let's start with static queries, which form the foundation of component-level data fetching. We call them "static" because their SQL text remains constant throughout the component's lifecycle. Think of them like prepared statements in traditional databases - they're defined once when your component is created and can be executed whenever fresh data is needed.
 
-Here's a simple example of how to use these imports:
+Here's how to create a component that fetches and displays information about tables in your database:
 
 ```html title="components/TableList.svelte"
 &lt;script>
-    // Build a static query
+    import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+    import { QueryLoad } from '@evidence-dev/core-components';
+
     const query = buildQuery(
         'SELECT * FROM information_schema.tables',
-        'table-list-query' // Optional unique identifier
+        'table-list-tables-query'  // Always required - must be unique
     );
 </script>
 
 <QueryLoad data={query} let:loaded={tables}>
+    <svelte:fragment slot="skeleton" />
+    
     <ul>
         {#each tables as table}
             <li>{table.table_name}</li>
@@ -34,120 +32,54 @@ Here's a simple example of how to use these imports:
 </QueryLoad>
 ```
 
-Let's break down what's happening:
+Let's examine each part of this implementation:
 
-1. First, we use `buildQuery` to create our query. It takes two parameters:
-   - The SQL query text
-   - An optional unique identifier for the query
+### The Query Builder
+The `buildQuery` function creates a query object that Evidence can execute in DuckDB. It requires two arguments:
+1. Your SQL query text
+2. A unique identifier for the query
 
-2. We then use the `QueryLoad` component to handle the query execution and loading states. The `let:loaded` syntax gives us access to our query results once they're ready.
+The query ID is crucial for Evidence's operation. When choosing an ID:
+- Make it descriptive of what the query does (e.g., 'monthly-sales-data')
+- Include your component name to avoid conflicts with other components
+- Add context if your component has multiple queries
+- Use PascalCase for consistency
 
-<Alert status="info">
+For example:
+```javascript
+// Good query IDs
+'SalesChartRevenueByMonth'
+'UserTableActiveAccounts'
+'ProductListTopSellers'
 
-**About Query IDs**
-
-While query IDs are optional, they can be helpful for debugging and performance optimization. If you're using multiple queries in your component, it's recommended to give each a unique identifier.
-
-</Alert>
-
-## Working with Loading States
-
-The `QueryLoad` component automatically handles loading states for your queries. You have three main approaches for managing how loading states appear:
-
-### 1. Custom Loading State (Recommended)
-```html
-<QueryLoad data={query} let:loaded={tables}>
-    <div slot="skeleton" class="h-96 w-72">
-        <Skeleton />
-    </div>
-    <!-- Your component content -->
-</QueryLoad>
+// Poor query IDs
+'query1'    // Not descriptive
+'getData'   // Too generic
+'salesData' // Not PascalCase
 ```
 
-### 2. Hide Loading State
+### The Query Loader
+
+The `QueryLoad` component manages the entire lifecycle of your query execution. It handles:
+- Executing your query against DuckDB
+- Managing loading states
+- Handling any errors that occur
+- Delivering results to your component
+
 ```html
-<QueryLoad data={query} let:loaded={tables}>
+<QueryLoad data={query} let:loaded={tableData}>
     <svelte:fragment slot="skeleton" />
-    <!-- Your component content -->
+    <!-- Your component content here -->
 </QueryLoad>
 ```
 
-### 3. Default Loading State
-```html
-<QueryLoad data={query} let:loaded={tables}>
-    <!-- Your component content -->
-</QueryLoad>
-```
-
-## Working with Query Results
-
-There are several ways to access your query results within the `QueryLoad` component. Here are the different patterns and when to use them:
-
-### Named Variable (Recommended)
-```html
-<QueryLoad data={query} let:loaded={tables}>
-    {#each tables as table}
-        <li>{table.table_name}</li>
-    {/each}
-</QueryLoad>
-```
-This approach is most clear and helps prevent naming conflicts. Use this when you want to give your query results a descriptive name.
-
-### Default Variable
-```html
-<QueryLoad data={query} let:loaded>
-    {#each loaded as table}
-        <li>{table.table_name}</li>
-    {/each}
-</QueryLoad>
-```
-This pattern works well for simple components with only one query. However, it can become confusing in components with multiple queries.
-
-### Query Named Variable
-```html
-<QueryLoad data={query} let:loaded={query}>
-    {#each query as table}
-        <li>{table.table_name}</li>
-    {/each}
-</QueryLoad>
-```
-While this works, it's not recommended as it can lead to confusion between the query definition and its results.
-
-<Alert status="info">
-
-**Best Practices**
-
-- Use descriptive names for your query results that reflect the data they contain
-- Avoid naming conflicts by not reusing variable names
-- Consider using custom loading states for better user experience
-- Include query IDs when debugging or working with multiple queries
-
-</Alert>
-
-## Next Steps
-
-Now that you understand how to implement static queries in your components, you might want to explore:
-
-- Adding multiple queries to a single component
-- Working with dynamic queries that accept parameters
-- Creating reusable query components
-- Implementing error handling for your queries
+The `let:loaded` directive creates a new variable containing your query results. Using a descriptive name (like `tableData` or `salesMetrics`) makes your code more maintainable than the generic `loaded`.
 
 ## Dynamic Queries
 
-Dynamic queries allow you to update your query text based on user input or component state. This is a more advanced feature that requires familiarity with JavaScript and Svelte's reactivity system. If you're new to Svelte, we recommend browsing their [tutorial](https://v4.svelte.dev/tutorial) before implementing dynamic queries.
+As your components become more sophisticated, you might need queries that change based on user input or component state. This is where dynamic queries come in. They extend the static query pattern to create interactive visualizations, filtered tables, or any component that needs to fetch different data based on user actions.
 
-<Alert status="info">
-
-**JavaScript Knowledge Required**
-
-Dynamic queries use more advanced JavaScript concepts including reactive declarations, callback functions, and state management. If you're not comfortable with these concepts yet, we recommend starting with static queries and gradually working your way up to dynamic implementations.
-
-</Alert>
-
-### Setting Up a Dynamic Query
-
-Unlike static queries, dynamic queries require a different setup process that enables reactivity. Here's a basic example:
+Here's an example that lets users control how many rows to display:
 
 ```html title="components/DynamicTableList.svelte"
 &lt;script>
@@ -155,70 +87,20 @@ Unlike static queries, dynamic queries require a different setup process that en
     import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
     import { Query } from '@evidence-dev/sdk/usql';
 
-    // This will hold our query result
+    // This will hold our current query result
     let query;
 
-    // Create a query function that will update whenever we need new data
+    // Create a reactive query function
     const queryFunction = Query.createReactive({
         execFn: getQueryFunction(),
         callback: v => query = v
     });
 
-    // Create a variable that will control our query
-    let limit = 10;
-
-    // This is a reactive declaration - the query will update whenever limit changes
-    $: queryFunction(`SELECT * FROM information_schema.tables LIMIT ${limit}`);
-</script>
-
-<input type="number" bind:value={limit} min={0} />
-
-<QueryLoad data={query} let:loaded={tables}>
-    <ul>
-        {#each tables as table}
-            <li>{table.table_name}</li>
-        {/each}
-    </ul>
-</QueryLoad>
-```
-
-Let's break down what's happening:
-
-1. First, we set up our imports. Note that we're importing different utilities for dynamic queries.
-
-2. We create a `query` variable that will hold our query result. This will be updated whenever our query changes.
-
-3. We create a `queryFunction` using `Query.createReactive()`. This function:
-   - Takes an execution function (provided by Evidence)
-   - Accepts a callback that updates our query variable
-   - Returns a function we can call with new query text
-
-4. We set up a reactive declaration (marked by `$:`) that runs our query function whenever our variables change.
-
-### Understanding Reactivity
-
-The power of dynamic queries comes from Svelte's reactivity system. When you create a reactive declaration (using `$:`), Svelte automatically tracks dependencies and updates your query when they change.
-
-For example, if we wanted to add multiple parameters:
-
-```html
-&lt;script>
-    import { QueryLoad } from '@evidence-dev/core-components';
-    import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
-    import { Query } from '@evidence-dev/sdk/usql';
-    
-    // This will hold our query result
-    let query;
-
-    // Create a query function that will update whenever we need new data
-    const queryFunction = Query.createReactive({
-        execFn: getQueryFunction(),
-        callback: v => query = v
-    });
-
+    // These values will control our query
     let limit = 10;
     let schemaName = 'public';
-    
+
+    // This reactive statement runs whenever limit or schemaName change
     $: queryFunction(`
         SELECT * 
         FROM information_schema.tables 
@@ -228,179 +110,101 @@ For example, if we wanted to add multiple parameters:
 </script>
 
 <div>
-    <input type="number" bind:value={limit} min={0} />
-    <input type="text" bind:value={schemaName} />
+    <label>
+        Rows to show:
+        <input type="number" bind:value={limit} min={0} />
+    </label>
+    <label>
+        Schema:
+        <input type="text" bind:value={schemaName} />
+    </label>
 </div>
+
+<QueryLoad data={query} let:loaded={tables}>
+    <svelte:fragment slot="skeleton" />
+    <ul>
+        {#each tables as table}
+            <li>{table.table_name}</li>
+        {/each}
+    </ul>
+</QueryLoad>
 ```
 
-Now our query will update whenever either `limit` or `schemaName` changes.
+Let's understand how this works:
 
-### Advanced Configuration
+### Query State Management
 
-The `Query.createReactive()` function accepts additional configuration options for more complex use cases. Here are some commonly used options:
+1. First, we create a variable to hold our query result:
+   ```javascript
+   let query;
+   ```
+   This will be updated every time our query executes with new parameters.
 
-```javascript
-const queryFunction = Query.createReactive({
-    execFn: getQueryFunction(),
-    callback: v => query = v,
-    // Additional options:
-    timeout: 5000,          // Query timeout in milliseconds
-    maxRetries: 3,          // Number of retries on failure
-    retryDelay: 1000,       // Delay between retries
-    // See Evidence documentation for more options
-});
-```
+2. Next, we create a reactive query function:
+   ```javascript
+   const queryFunction = Query.createReactive({
+       execFn: getQueryFunction(),
+       callback: v => query = v
+   });
+   ```
+   This sets up an environment that can execute queries and update our component's state.
 
-For a complete list of configuration options, you can refer to:
-- [Query Configuration Source](https://github.com/evidence-dev/evidence/blob/main/packages/lib/sdk/src/usql/query/Query.js#L728)
-- [Query Types Definition](https://github.com/evidence-dev/evidence/blob/main/packages/lib/sdk/src/usql/types.ts#L35-L58)
-
-### Next Steps
-
-Now that you understand both static and dynamic queries, you might want to explore:
-- Implementing error handling for dynamic queries
-- Creating components that combine multiple dynamic queries
-- Building interactive data exploration interfaces
-- Optimizing query performance
-
-Remember that dynamic queries are more powerful but also more complex. Start with simple implementations and gradually add more features as you become comfortable with the system.
-
+3. Finally, we use Svelte's reactive declarations to run our query:
+   ```javascript
+   $: queryFunction(`SELECT * FROM ... LIMIT ${limit}`);
+   ```
+   The `$:` syntax tells Svelte to re-run this statement whenever `limit` changes, creating a connection between your component's state and your query.
 
 ## Error Handling
 
-When working with queries in your components, it's essential to handle errors gracefully to provide a good user experience. The `QueryLoad` component provides built-in error handling capabilities through its error slot.
-
-Here's how you can implement basic error handling:
+When working with queries, things can sometimes go wrong. Maybe a query is malformed, or perhaps it's trying to access a table that doesn't exist. The `QueryLoad` component helps you handle these situations gracefully through its error slot:
 
 ```html
-<QueryLoad data={query} let:loaded={queryResults}>
+<QueryLoad data={query} let:loaded={tables}>
+    <svelte:fragment slot="skeleton" />
+    
     <svelte:fragment slot="error" let:error>
         <div class="text-red-600">
-            An error occurred: {error.message}
+            <h3 class="font-bold">Unable to load data</h3>
+            <p>{error.message}</p>
+            <p class="text-sm mt-2">
+                Please check your query and try again.
+            </p>
         </div>
     </svelte:fragment>
 
     <ul>
-        {#each queryResults as item}
-            <li>{item.name}</li>
+        {#each tables as table}
+            <li>{table.table_name}</li>
         {/each}
     </ul>
 </QueryLoad>
 ```
 
-The error slot provides access to the error object through `let:error`, which contains information about what went wrong during query execution. This allows you to customize how errors are displayed to your users.
+When a query fails, Evidence:
+1. Captures the error information
+2. Prevents the main content from rendering
+3. Makes the error details available through `let:error`
+4. Displays your error handling content
 
-You can make your error handling more sophisticated by providing context-specific messages:
+Common errors you might encounter include:
+- Invalid SQL syntax
+- References to non-existent tables
+- Type mismatches in comparisons
+- Memory limitations in DuckDB
 
-```html
-<QueryLoad data={query} let:loaded={queryResults}>
-    <svelte:fragment slot="error" let:error>
-        <div class="text-red-600">
-            {#if error.message.includes('timeout')}
-                The query is taking longer than expected. Please try again.
-            {:else if error.message.includes('permission')}
-                You don't have permission to access this data.
-            {:else}
-                An unexpected error occurred while loading the data.
-                Error details: {error.message}
-            {/if}
-        </div>
-    </svelte:fragment>
+### Next Steps
 
-    <ul>
-        {#each queryResults as item}
-            <li>{item.name}</li>
-        {/each}
-    </ul>
-</QueryLoad>
-```
+Now that you understand how to work with queries in your components, you might want to explore:
+- Combining multiple queries in a single component
+- Creating more complex interactive visualizations
+- Building reusable query components
+- Optimizing query performance in DuckDB
+
+Remember that effective component queries balance functionality with maintainability. Start simple and add complexity only as needed for your specific use case.
 
 <Alert status="info">
+**Need Help?**
 
-**Error Handling Best Practices**
-
-- Always provide user-friendly error messages that explain what went wrong
-- Include technical details only when they would be helpful to the user
-- Consider providing action items or next steps when appropriate
-- Use consistent error styling across your application
-
+If you've built something interesting with component queries or need assistance, join our [Slack community](https://slack.evidence.dev)! We'd love to see what you're building and help you succeed with Evidence.
 </Alert>
-
-When working with dynamic queries, you might want to handle errors differently depending on the state of your component:
-
-```html
-&lt;script>
-    let retryCount = 0;
-    const MAX_RETRIES = 3;
-
-    function handleError(error) {
-        if (retryCount < MAX_RETRIES) {
-            retryCount++;
-            // You could implement retry logic here
-            queryFunction(currentQueryText);
-        }
-    }
-</script>
-
-<QueryLoad data={query} let:loaded={queryResults}>
-    <svelte:fragment slot="error" let:error>
-        <div class="text-red-600">
-            {#if retryCount < MAX_RETRIES}
-                Attempt {retryCount + 1} of {MAX_RETRIES}...
-            {:else}
-                Unable to load data after {MAX_RETRIES} attempts.
-                Please try again later or contact support.
-            {/if}
-            
-            <div class="text-sm mt-2">
-                Error details: {error.message}
-            </div>
-        </div>
-    </svelte:fragment>
-
-    <ul>
-        {#each queryResults as item}
-            <li>{item.name}</li>
-        {/each}
-    </ul>
-</QueryLoad>
-```
-
-This more advanced implementation includes retry logic and provides progressive feedback to users. The error handling adapts based on the number of retry attempts, giving users more context about what's happening and what they should do next.
-
-Remember that good error handling isn't just about displaying error messages—it's about guiding users through problems and helping them understand what's happening. Consider providing:
-
-1. Clear explanations of what went wrong
-2. Potential solutions or next steps
-3. Ways to recover from the error
-4. Contact information for support when needed
-
-You can combine error handling with loading states to create a complete user experience:
-
-```html
-<QueryLoad data={query} let:loaded={queryResults}>
-    <div slot="skeleton">
-        Loading your data...
-    </div>
-
-    <svelte:fragment slot="error" let:error>
-        <div class="text-red-600">
-            Unable to load data: {error.message}
-            <button 
-                class="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-                on:click={() => queryFunction(currentQueryText)}
-            >
-                Retry
-            </button>
-        </div>
-    </svelte:fragment>
-
-    <ul>
-        {#each queryResults as item}
-            <li>{item.name}</li>
-        {/each}
-    </ul>
-</QueryLoad>
-```
-
-This approach creates a complete feedback loop for users, showing them when data is loading, handling errors gracefully, and providing ways to recover from problems. The combination of clear error messages and interactive elements helps users understand and resolve issues when they occur.
