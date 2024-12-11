@@ -14,7 +14,7 @@ Evidence supports three appearance modes: light, dark, and system. By default, n
 
 When the appearance is `system`, the user's preferred appearance from their operating system is used.
 
-The default appearance configuration is listed below, as well as in the [Evidence Template](https://github.com/evidence-dev/templates/blob/main/evidence.config.yaml).
+The default appearance configuration is listed below, as well as in the [Evidence Template](https://github.com/evidence-dev/template/blob/main/evidence.config.yaml).
 
 <div id="default-appearance-configuration" class="block relative -top-16 invisible"></div>
 <Details title='Default appearance configuration'>
