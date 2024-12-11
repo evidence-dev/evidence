@@ -50,7 +50,7 @@ The `let:loaded` directive creates a new variable containing your query results.
 
 ## Dynamic Queries
 
-As your components become more sophisticated, you might need queries that change based on user input or component state. This is where dynamic queries come in. They extend the static query pattern to create interactive visualizations, filtered tables, or any component that needs to fetch different data based on user actions.
+For queries that change based on user input or component state, you need dynamic queries. This allows you to create interactive components.
 
 Here's an example that lets users control how many rows to display:
 
