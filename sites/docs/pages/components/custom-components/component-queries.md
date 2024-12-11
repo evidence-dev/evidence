@@ -6,7 +6,7 @@ Component queries transform how we build data visualizations. Instead of passing
 
 ## Static Queries
 
-Let's start with static queries, which form the foundation of component-level data fetching. We call them "static" because their SQL text remains constant throughout the component's lifecycle. Think of them like prepared statements in traditional databases - they're defined once when your component is created, and are executed when `QueryLoad` is mounted (usually when your component is mounted).
+Static queries are "static" because the SQL string they run cannot change throughout the component's lifecycle. They are defined once when your component is created, and are executed when `QueryLoad` is mounted.
 
 Here's how to create a component that fetches and displays information about tables in your database:
 
@@ -50,7 +50,7 @@ The `let:loaded` directive creates a new variable containing your query results.
 
 ## Dynamic Queries
 
-As your components become more sophisticated, you might need queries that change based on user input or component state. This is where dynamic queries come in. They extend the static query pattern to create interactive visualizations, filtered tables, or any component that needs to fetch different data based on user actions.
+For queries that change based on user input or component state, you need dynamic queries. This allows you to create interactive components.
 
 Here's an example that lets users control how many rows to display:
 
