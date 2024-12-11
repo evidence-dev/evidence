@@ -159,25 +159,3 @@ When a query fails, Evidence:
 2. Prevents the main content from rendering
 3. Makes the error details available through `let:error`
 4. Displays your error handling content
-
-Common errors you might encounter include:
-- Invalid SQL syntax
-- References to non-existent tables
-- Type mismatches in comparisons
-- Memory limitations in DuckDB
-
-### Next Steps
-
-Now that you understand how to work with queries in your components, you might want to explore:
-- Combining multiple queries in a single component
-- Creating more complex interactive visualizations
-- Building reusable query components
-- Optimizing query performance in DuckDB
-
-Remember that effective component queries balance functionality with maintainability. Start simple and add complexity only as needed for your specific use case.
-
-<Alert status="info">
-**Need Help?**
-
-If you've built something interesting with component queries or need assistance, join our [Slack community](https://slack.evidence.dev)! We'd love to see what you're building and help you succeed with Evidence.
-</Alert>
