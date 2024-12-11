@@ -219,4 +219,4 @@ import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 
 ## Adding Queries
 
-See [component queries](./component-queries)
+Custom components can execute queries rather than requiring data to be passed to them. See [component queries](./component-queries) for details
