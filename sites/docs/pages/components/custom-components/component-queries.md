@@ -1,6 +1,6 @@
 # Component Queries
 
-In Evidence, components can manage their own data fetching through component queries. This is made possible by Evidence's use of DuckDB-WASM, which runs entirely in your browser. When you create a component query, you're writing SQL that will execute directly against your data in the browser's memory, making it both fast and efficient.
+Component queries allow you to run SQL queries in your component code.
 
 Component queries transform how we build data visualizations. Instead of passing data down through props from parent pages, components become self-contained units that can request exactly what they need. This independence makes components more reusable and easier to maintain, as all the logic for both fetching and displaying data lives in one place.
 
@@ -17,7 +17,6 @@ Here's how to create a component that fetches and displays information about tab
 
     const query = buildQuery(
         'SELECT * FROM information_schema.tables',
-        'table-list-tables-query'  // Always required - must be unique
     );
 </script>
 
@@ -30,32 +29,6 @@ Here's how to create a component that fetches and displays information about tab
         {/each}
     </ul>
 </QueryLoad>
-```
-
-Let's examine each part of this implementation:
-
-### The Query Builder
-The `buildQuery` function creates a query object that Evidence can execute in DuckDB. It requires two arguments:
-1. Your SQL query text
-2. A unique identifier for the query
-
-The query ID is crucial for Evidence's operation. When choosing an ID:
-- Make it descriptive of what the query does (e.g., 'monthly-sales-data')
-- Include your component name to avoid conflicts with other components
-- Add context if your component has multiple queries
-- Use PascalCase for consistency
-
-For example:
-```javascript
-// Good query IDs
-'SalesChartRevenueByMonth'
-'UserTableActiveAccounts'
-'ProductListTopSellers'
-
-// Poor query IDs
-'query1'    // Not descriptive
-'getData'   // Too generic
-'salesData' // Not PascalCase
 ```
 
 ### The Query Loader
