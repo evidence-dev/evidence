@@ -6,7 +6,7 @@ Component queries transform how we build data visualizations. Instead of passing
 
 ## Static Queries
 
-Let's start with static queries, which form the foundation of component-level data fetching. We call them "static" because their SQL text remains constant throughout the component's lifecycle. Think of them like prepared statements in traditional databases - they're defined once when your component is created, and are executed when `QueryLoad` is mounted (usually when your component is mounted).
+Static queries are "static" because the SQL string they run cannot change throughout the component's lifecycle. They are defined once when your component is created, and are executed when `QueryLoad` is mounted.
 
 Here's how to create a component that fetches and displays information about tables in your database:
 
