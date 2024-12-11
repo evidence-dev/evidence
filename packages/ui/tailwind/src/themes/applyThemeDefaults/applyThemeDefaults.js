@@ -1,5 +1,5 @@
-import defaultsDeep from 'lodash/defaultsDeep.js';
 import merge from 'lodash/merge.js';
+import mergeWith from 'lodash/mergeWith.js';
 import { defaultThemesConfigFile } from './defaultThemesConfigFile.js';
 import { computeShades } from './computeShades.js';
 
@@ -8,8 +8,14 @@ import { computeShades } from './computeShades.js';
  * @returns {import('../../schemas/types.js').ThemesConfig}
  */
 export const applyThemeDefaults = (configFile) => {
-	const withDefaults = defaultsDeep({}, configFile, defaultThemesConfigFile);
+	/** @satisfies {typeof defaultThemesConfigFile} */
+	const withDefaults = mergeWith({}, defaultThemesConfigFile, configFile, (_, configValue) => {
+		// Don't merge arrays - prevents merging users defined color palette with our defaults
+		if (Array.isArray(configValue) && configValue.length) {
+			return configValue;
+		}
+	});
 	const computedColors = computeShades(withDefaults.theme.colors);
 	merge(withDefaults.theme.colors, computedColors);
-	return withDefaults;
+	return /** @type {import('../../schemas/types.js').ThemesConfig} */ (withDefaults);
 };
