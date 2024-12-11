@@ -26,9 +26,7 @@
 			{title}
 		</div>
 		<div class="w-full [word-wrap:break-work] text-xs">
-			<pre class="text-left mx-auto w-fit select-text">
-				{error}
-			</pre>
+			<pre class="text-left mx-auto w-fit select-text">{error}</pre>
 		</div>
 	</div>
 </div>
