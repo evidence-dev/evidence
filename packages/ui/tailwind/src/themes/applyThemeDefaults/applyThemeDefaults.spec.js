@@ -1,3 +1,5 @@
+// @ts-check
+
 import { describe, it, expect } from 'vitest';
 import chroma from 'chroma-js';
 
@@ -61,8 +63,8 @@ describe('applyThemeDefaults', () => {
 				'should have contrast >= 4.5 between $requiredColor and $computedColor in $mode mode',
 				({ requiredColor, computedColor, mode }) => {
 					const actual = applyThemeDefaults(input);
-					const requiredColorValue = actual.theme.colors[requiredColor][mode];
-					const computedColorValue = actual.theme.colors[computedColor][mode];
+					const requiredColorValue = actual.theme.colors[requiredColor]?.[mode];
+					const computedColorValue = actual.theme.colors[computedColor]?.[mode];
 					expect(
 						chroma.contrast(requiredColorValue, computedColorValue),
 						`Expected contrast between ${requiredColor} (${requiredColorValue}) and ${computedColor} (${computedColorValue}) to be greater than 4.5 in ${mode} mode`
@@ -81,8 +83,8 @@ describe('applyThemeDefaults', () => {
 				'should have contrast >= 4.5 between $bgColor and $fgColor in $mode mode',
 				({ bgColor, fgColor, mode }) => {
 					const actual = applyThemeDefaults(input);
-					const bgColorValue = actual.theme.colors[bgColor][mode];
-					const fgColorValue = actual.theme.colors[fgColor][mode];
+					const bgColorValue = actual.theme.colors[bgColor]?.[mode];
+					const fgColorValue = actual.theme.colors[fgColor]?.[mode];
 					expect(
 						chroma.contrast(bgColorValue, fgColorValue),
 						`Expected contrast between ${bgColor} (${bgColorValue}) and ${fgColor} (${fgColorValue}) to be greater than 7 in ${mode} mode`
@@ -106,5 +108,41 @@ describe('applyThemeDefaults', () => {
 
 		expect(actual.theme.colors.myCustomColor?.light).toBe('#abcdef');
 		expect(actual.theme.colors.myCustomColor?.dark).toBe('#fedcba');
+	});
+
+	it('should not merge default color palette into user configured default color palette', () => {
+		/** @satisfies {import('../../schemas/types.js').ThemesConfigFile} */
+		const config = {
+			theme: {
+				colorPalettes: {
+					default: {
+						light: ['colorPalettes_default_light_1', 'colorPalettes_default_light_2'],
+						dark: ['colorPalettes_default_dark_1', 'colorPalettes_default_dark_2']
+					}
+				}
+			}
+		};
+
+		const withDefaults = applyThemeDefaults(config);
+
+		expect(withDefaults.theme.colorPalettes.default).toEqual(config.theme.colorPalettes.default);
+	});
+
+	it('should not merge default color scale into user configured default color scale', () => {
+		/** @satisfies {import('../../schemas/types.js').ThemesConfigFile} */
+		const config = {
+			theme: {
+				colorScales: {
+					default: {
+						light: ['colorScales_default_light_1', 'colorScales_default_light_2'],
+						dark: ['colorScales_default_dark_1', 'colorScales_default_dark_2']
+					}
+				}
+			}
+		};
+
+		const withDefaults = applyThemeDefaults(config);
+
+		expect(withDefaults.theme.colorScales.default).toEqual(config.theme.colorScales.default);
 	});
 });
