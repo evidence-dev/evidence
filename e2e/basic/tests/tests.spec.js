@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { waitForPageToLoad } from '../../test-utils';
+import { getLogo, switchAppearance, waitForPageToLoad } from '../../test-utils';
 
 test('has title', async ({ page }) => {
 	await page.goto('/');
@@ -14,4 +14,17 @@ test('has hidden sidebar', async ({ page }) => {
 	await waitForPageToLoad(page);
 
 	await expect(page.getByRole('button', { name: 'Open sidebar' })).toBeVisible();
+});
+
+test('shows different logo in light and dark mode', async ({ page }) => {
+	await page.goto('/');
+	await waitForPageToLoad(page);
+
+	await switchAppearance(page, 'light');
+	let logo = await getLogo(page);
+	await expect(logo).toHaveAttribute('src', 'lightLogo');
+
+	await switchAppearance(page, 'dark');
+	logo = await getLogo(page);
+	await expect(logo).toHaveAttribute('src', 'darkLogo');
 });
