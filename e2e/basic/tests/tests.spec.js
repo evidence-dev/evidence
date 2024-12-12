@@ -22,9 +22,9 @@ test('shows different logo in light and dark mode', async ({ page }) => {
 
 	await switchAppearance(page, 'light');
 	let logo = await getLogo(page);
-	await expect(logo).toHaveAttribute('src', 'lightLogo');
+	await expect(logo).toHaveAttribute('src', '/lightLogo.png');
 
 	await switchAppearance(page, 'dark');
 	logo = await getLogo(page);
-	await expect(logo).toHaveAttribute('src', 'darkLogo');
+	await expect(logo).toHaveAttribute('src', '/darkLogo.png');
 });

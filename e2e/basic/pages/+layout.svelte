@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<EvidenceDefaultLayout lightLogo="lightLogo" darkLogo="darkLogo" {data}>
+<EvidenceDefaultLayout lightLogo="/lightLogo.png" darkLogo="/darkLogo.png" {data}>
 	<slot slot="content" />
 </EvidenceDefaultLayout>
