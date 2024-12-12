@@ -43,7 +43,7 @@
 		{isInitial}
 	/>
 	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
-	<Sparkline {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
+	<Sparkline {...spreadProps} data={loaded} {queryID}>
 		<slot />
 	</Sparkline>
 </QueryLoad>

@@ -41,7 +41,7 @@
 		{/if}
 	</span>
 	<span slot="skeleton" class="text-base-content-muted">Loading...</span>
-	<Value {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded}>
+	<Value {...spreadProps} data={loaded}>
 		<slot />
 	</Value>
 </QueryLoad>

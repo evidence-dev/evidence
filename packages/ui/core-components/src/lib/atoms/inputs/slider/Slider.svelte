@@ -33,5 +33,5 @@
 		{/if}
 	</span>
 	<span slot="skeleton" class="text-gray-500">Loading...</span>
-	<Slider {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} />
+	<Slider {...spreadProps} data={loaded} />
 </QueryLoad>

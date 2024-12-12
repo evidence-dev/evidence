@@ -34,7 +34,7 @@
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
-	<SankeyDiagram {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded}>
+	<SankeyDiagram {...spreadProps} data={loaded}>
 		<slot />
 	</SankeyDiagram>
 </QueryLoad>

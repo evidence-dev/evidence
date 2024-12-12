@@ -32,7 +32,7 @@
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
-	<EChartsMap {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded}>
+	<EChartsMap {...spreadProps} data={loaded}>
 		<slot />
 	</EChartsMap>
 </QueryLoad>

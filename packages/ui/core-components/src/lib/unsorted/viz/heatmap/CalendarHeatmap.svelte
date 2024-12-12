@@ -34,11 +34,7 @@
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
-	<CalendarHeatmap
-		{...spreadProps}
-		data={Query.isQuery(loaded) ? Array.from(loaded) : loaded}
-		{queryID}
-	>
+	<CalendarHeatmap {...spreadProps} data={loaded} {queryID}>
 		<slot />
 	</CalendarHeatmap>
 </QueryLoad>

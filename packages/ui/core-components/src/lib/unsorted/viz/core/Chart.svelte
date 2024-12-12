@@ -46,7 +46,7 @@
 		chartType={spreadProps.chartType}
 		error={loaded.error.message}
 	/>
-	<Chart {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
+	<Chart {...spreadProps} data={loaded} {queryID}>
 		<slot />
 	</Chart>
 </QueryLoad>

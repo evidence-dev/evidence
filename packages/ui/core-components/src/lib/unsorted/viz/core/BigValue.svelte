@@ -66,7 +66,7 @@
 		<Value column={$$props.value} fmt={$$props.fmt} data={loaded} />
 	</div>
 
-	<InnerBigValue {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded}>
+	<InnerBigValue {...spreadProps} data={loaded}>
 		<slot />
 	</InnerBigValue>
 </QueryLoad>
