@@ -6,45 +6,40 @@
 	import MetricTable from './MetricTable.svelte';
 	import TimeSeriesPanelChart from './TimeSeriesPanelChart.svelte';
 	import { QueryLoad } from '../../atoms/query-load/index.js';
-	import { writable } from 'svelte/store';
 	import { setContext, onMount } from 'svelte';
-	// import timeSeriesStore from './timeSeriesStore.js';
+	import { TimeSeriesStore } from './timeSeriesStore.js';
 
 	export let data = undefined;
-	let metricStore = writable([]);
-	setContext('metrics', metricStore);
+	export let x = undefined;
+	export let fmt = undefined;
+	export let defaultTimeRange = undefined;
 	let selectedMetric;
+	let metricStore = [];
+
+	const store = new TimeSeriesStore();
+
+	setContext('store', store);
+
+	$: store.updateData(data, x);
 
 	onMount(() => {
-		const unsubscribe = metricStore.subscribe((metrics) => {
-			if (metrics.length > 0 && !selectedMetric) {
-				selectedMetric = metrics[0].label;
-			}
+		const unsubscribe = store.subscribeToMetrics((updatedMetrics) => {
+			metricStore = updatedMetrics;
 		});
 
-		return unsubscribe;
+		if (metricStore.length > 0 && !selectedMetric) {
+			selectedMetric = metricStore[0].label;
+		} else if (metricStore.length === 0) {
+			console.warn('No metrics found');
+		}
+		return () => unsubscribe();
 	});
-
-	// setContext('timeSeriesStore', timeSeriesStore);
-
-	// $: if ($timeSeriesStore.length > 0 && !selectedMetric) {
-	// 	selectedMetric = $timeSeriesStore.metrics[0].label;
-	// }
-
-	// const buildMetrics = ($metricStore) => {
-	// 	for (const metric of $metricStore) {
-	// 		const queryString = `${metric.metric} as ${metric.label}`;
-	// 		// console.log('queryString', queryString);
-	// 	}
-	// };
-
-	// $: buildMetrics($metricStore);
 </script>
 
-<QueryLoad {data} let:loaded>
+<QueryLoad data={$store} let:loaded>
 	<div class="rounded-xl p-3 grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-6 bg-gray-50 mb-4">
-		<MetricTable bind:selectedMetric {metricStore} />
-		<TimeSeriesPanelChart data={loaded} {selectedMetric} />
+		<MetricTable bind:selectedMetric data={loaded} {metricStore} {fmt} />
+		<TimeSeriesPanelChart data={loaded} {selectedMetric} {store} {defaultTimeRange} />
 	</div>
 	<svelte:fragment let:loaded slot="error">
 		<div class="big-red-100">{data.error}</div>

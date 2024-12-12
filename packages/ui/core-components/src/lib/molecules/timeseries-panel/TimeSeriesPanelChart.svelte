@@ -17,53 +17,58 @@
 	export let data;
 	export let selectedMetric = undefined;
 	export let declining = false;
+	export let store;
+	export let defaultTimeRange = undefined;
 
 	let chart;
-	$: lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date();
+	// $: lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date();
 	// $: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
-	$: currentValue =
-		filteredData.length > 0 ? filteredData[filteredData.length - 1][selectedMetric] : 4.28;
-	$: if (selectedTimeRange) {
-		filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
-	}
+	$: currentValue = data.length > 0 ? data[data.length - 1][selectedMetric] : null;
+	// $: if (selectedTimeRange) {
+	// 	filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
+	// }
 
-	function filterDataByTimeRange(data, lastDate, timeRange) {
-		const endDate = new Date(lastDate);
-		let startDate;
+	// function filterDataByTimeRange(data, lastDate, timeRange) {
+	// 	const endDate = new Date(lastDate);
+	// 	let startDate;
 
-		switch (timeRange) {
-			case '1W':
-				startDate = new Date(endDate);
-				startDate.setDate(startDate.getDate() - 7);
-				break;
-			case '1M':
-				startDate = new Date(endDate);
-				startDate.setMonth(startDate.getMonth() - 1);
-				break;
-			case '3M':
-				startDate = new Date(endDate);
-				startDate.setMonth(startDate.getMonth() - 3);
-				break;
-			case '1Y':
-				startDate = new Date(endDate);
-				startDate.setFullYear(startDate.getFullYear() - 1);
-				break;
-			case 'YTD':
-				startDate = new Date(endDate.getFullYear(), 0, 1);
-				break;
-			case 'All':
-				return data;
-			default:
-				startDate = new Date(endDate);
-				startDate.setFullYear(startDate.getFullYear() - 1);
-		}
+	// 	switch (timeRange) {
+	// 		case '1W':
+	// 			startDate = new Date(endDate);
+	// 			startDate.setDate(startDate.getDate() - 7);
+	// 			break;
+	// 		case '1M':
+	// 			startDate = new Date(endDate);
+	// 			startDate.setMonth(startDate.getMonth() - 1);
+	// 			break;
+	// 		case '3M':
+	// 			startDate = new Date(endDate);
+	// 			startDate.setMonth(startDate.getMonth() - 3);
+	// 			break;
+	// 		case '1Y':
+	// 			startDate = new Date(endDate);
+	// 			startDate.setFullYear(startDate.getFullYear() - 1);
+	// 			break;
+	// 		case 'YTD':
+	// 			startDate = new Date(endDate.getFullYear(), 0, 1);
+	// 			break;
+	// 		case 'All':
+	// 			return data;
+	// 		default:
+	// 			startDate = new Date(endDate);
+	// 			startDate.setFullYear(startDate.getFullYear() - 1);
+	// 	}
 
-		return data.filter(
-			(item) => new Date(item.date) >= startDate && new Date(item.date) <= endDate
-		);
-	}
+	// 	return data.filter(
+	// 		(item) => new Date(item.date) >= startDate && new Date(item.date) <= endDate
+	// 	);
+	// }
 
-	$: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
+	// $: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
+
+	// $: if (selectedTimeRange) {
+	// 	store.filterData(data, selectedTimeRange);
+	// }
 
 	const makeChart = (node) => {
 		chart = init(node, null, { renderer: 'svg' });
@@ -85,7 +90,7 @@
 	};
 
 	function updateChartOptions() {
-		if (!chart || !selectedMetric || !filteredData) return;
+		if (!chart || !selectedMetric || !data) return;
 
 		const color = declining ? '#dc2626' : '#16a34a';
 		const gradientColor = declining ? '#ef4444' : '#22c55e';
@@ -93,7 +98,7 @@
 		chart.setOption({
 			animation: false,
 			dataset: {
-				source: filteredData
+				source: data
 			},
 			xAxis: {
 				type: 'time',
@@ -174,11 +179,18 @@
 		});
 	}
 
-	$: if (chart && selectedMetric && filteredData) {
+	$: if (chart && selectedMetric && data) {
 		updateChartOptions();
 	}
 
-	let selectedTimeRange = '1Y';
+	let selectedTimeRange = defaultTimeRange || '1Y';
+
+	$: if (typeof selectedTimeRange === 'string') {
+		selectedTimeRange = selectedTimeRange.toUpperCase();
+		if (selectedTimeRange === 'ALL') {
+			selectedTimeRange = 'All';
+		}
+	}
 
 	const [send, receive] = crossfade({
 		duration: 200,
@@ -192,7 +204,10 @@
 	/>
 	<div class="row-span-2 relative">
 		<div class="font-bold text-gray-700">{selectedMetric}</div>
-		<!-- <div class="text-sm font-light text-gray-800">${Number(currentValue.toFixed(2))}</div> -->
+		<!-- kw: Probably needs to be formatted -->
+		<div class="text-sm font-light text-gray-800">
+			{currentValue ? `$${Number(currentValue.toFixed(2))}` : ''}
+		</div>
 	</div>
 	<div class="row-span-3 relative">
 		{#key selectedMetric}
@@ -213,6 +228,10 @@
 			{#each ['1W', '1M', '3M', '1Y', 'YTD', 'All'] as timeRange (timeRange)}
 				<RadioGroup.Item
 					value={timeRange}
+					on:click={() => {
+						selectedTimeRange = timeRange;
+						store.filterData(selectedTimeRange);
+					}}
 					class=" rounded cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2"
 				>
 					<div

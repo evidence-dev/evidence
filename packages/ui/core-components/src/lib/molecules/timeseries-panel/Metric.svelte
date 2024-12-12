@@ -18,27 +18,29 @@
 	export let link = undefined;
 	/** @type {MetricProps} */
 	export let downIsGood = false;
+	export let fmt = undefined;
 
-	const metricsStore = getContext('metrics');
+	// const metricsStore = getContext('metrics');
 
-	const timeSeriesStore = getContext('timeSeriesStore');
+	const store = getContext('store');
+
+	$: {
+		if (store) {
+			store.updateMetrics({ metric, label, link, downIsGood, fmt });
+		}
+	}
 
 	// $: {
-	// 	if ($timeSeriesStore) {
-	// 		const currentMetrics = $timeSeriesStore.metrics;
-	// 		console.log('currentMetrics', currentMetrics);
-	// 		timeSeriesStore.update((store) => ({
-	// 			...store,
-	// 			metrics: [...currentMetrics, { metric, label, link, downIsGood }]
-	// 		}));
+	// 	if (metricsStore) {
+	// 		const currentMetrics = get(metricsStore);
+	// 		metricsStore.set([...currentMetrics, { metric, label, link, downIsGood }]);
 	// 	}
 	// }
 
 	// onMount(() => {
 	// 	return () => {
-	// 		if (timeSeriesStore) {
-	// 			const currentMetrics = $timeSeriesStore.metrics;
-	// 			console.log('currentMetrics', currentMetrics);
+	// 		if (metricsStore) {
+	// 			const currentMetrics = get(metricsStore);
 	// 			const updatedMetrics = currentMetrics.filter(
 	// 				(m) =>
 	// 					m.metric !== metric ||
@@ -46,31 +48,8 @@
 	// 					m.link !== link ||
 	// 					m.downIsGood !== downIsGood
 	// 			);
-	// 			console.log('updatedMetrics', updatedMetrics);
-	// 			timeSeriesStore.update((store) => ({ ...store, metrics: updatedMetrics }));
+	// 			metricsStore.set(updatedMetrics);
 	// 		}
 	// 	};
 	// });
-	$: {
-		if (metricsStore) {
-			const currentMetrics = get(metricsStore);
-			metricsStore.set([...currentMetrics, { metric, label, link, downIsGood }]);
-		}
-	}
-
-	onMount(() => {
-		return () => {
-			if (metricsStore) {
-				const currentMetrics = get(metricsStore);
-				const updatedMetrics = currentMetrics.filter(
-					(m) =>
-						m.metric !== metric ||
-						m.label !== label ||
-						m.link !== link ||
-						m.downIsGood !== downIsGood
-				);
-				metricsStore.set(updatedMetrics);
-			}
-		};
-	});
 </script>
