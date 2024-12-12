@@ -14,7 +14,7 @@ import {
 import { createProjectFromTemplate } from './template';
 import { startServer, stopServer } from './server';
 import { preview } from './preview';
-import { createTemplatedPageFromQuery } from './documents';
+import { createTemplatedPageFromQuery, addCustomLayout } from './documents';
 import { openSettingsFile, viewExtensionSettings, viewAppSettings } from './settings';
 import { clearCache } from './cache';
 import { showOutput } from '../output';
@@ -55,6 +55,7 @@ export const enum Commands {
 	ShowOutput = 'evidence.showOutput',
 	OpenIndex = 'evidence.openIndex',
 	OpenEvidenceWalkthrough = 'evidence.openWalkthrough',
+	AddCustomLayout = 'evidence.addCustomLayout',
 	CreateTemplatedPageFromQuery = 'evidence.createTemplatedPageFromQuery',
 	OpenSimpleBrowser = 'simpleBrowser.api.open'
 }
@@ -88,6 +89,7 @@ export function registerCommands(context: ExtensionContext) {
 	registerCommand(Commands.ShowOutput, showOutput);
 	registerCommand(Commands.OpenIndex, openIndex);
 	registerCommand(Commands.OpenEvidenceWalkthrough, openWalkthrough);
+	registerCommand(Commands.AddCustomLayout, addCustomLayout);
 	registerCommand(Commands.CreateTemplatedPageFromQuery, createTemplatedPageFromQuery);
 }
 

@@ -64,6 +64,11 @@
 				"category": "Evidence"
 			},
 			{
+				"command": "evidence.addCustomLayout",
+				"title": "Add Custom Layout",
+				"category": "Evidence"
+			},
+			{
 				"command": "evidence.insertColumnName",
 				"title": "Insert",
 				"category": "Evidence"

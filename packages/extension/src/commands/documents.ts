@@ -70,3 +70,68 @@ export async function createTemplatedPageFromQuery() {
 	await window.showTextDocument(document);
 	telemetryService?.sendEvent('templatedPageCreated');
 }
+
+
+export async function addCustomLayout() {
+	telemetryService?.sendEvent('addCustomLayout');
+
+	// Get the workspace folder and ensure it is open
+	const workspaceFolders = workspace.workspaceFolders;
+	if (!workspaceFolders) {
+		window.showErrorMessage('No workspace folder is open.');
+		return;
+	}
+
+	// Define the source and destination paths
+	const workspaceRoot = workspaceFolders[0].uri.fsPath;
+	const packageJsonFolder = await getPackageJsonFolder();
+	const projectRoot = path.join(workspaceRoot, packageJsonFolder ?? '');
+
+	const sourceFilePath = path.join(
+		projectRoot,
+		'.evidence',
+		'template',
+		'src',
+		'pages',
+		'+layout.svelte'
+	);
+	const destinationFolderPath = path.join(projectRoot, 'pages');
+	const destinationFilePath = path.join(destinationFolderPath, '+layout.svelte');
+
+	// Check if the source file exists
+	if (!fs.existsSync(sourceFilePath)) {
+		window.showErrorMessage(
+			`Layout template file not found in ${sourceFilePath}. Run the server to populate this file.`
+		);
+		return;
+	}
+
+	// Check if the destination file already exists
+	if (fs.existsSync(destinationFilePath)) {
+		const overwrite = await window.showWarningMessage(
+			`The file ${destinationFilePath} already exists. Do you want to overwrite it?`,
+			{ modal: true },
+			'Yes',
+			'No'
+		);
+		if (overwrite !== 'Yes') {
+			window.showInformationMessage('Custom layout addition cancelled');
+			return;
+		}
+	}
+
+	// Ensure the destination folder exists
+	fs.mkdirSync(destinationFolderPath, { recursive: true });
+
+	// Copy the layout file to the destination
+	try {
+		fs.copyFileSync(sourceFilePath, destinationFilePath);
+		window.showInformationMessage(
+			`Custom layout added successfully at: ${destinationFilePath}`
+		);
+		telemetryService?.sendEvent('customLayoutAdded');
+	} catch (error) {
+		console.error(error);
+		window.showErrorMessage('Failed to add custom layout.');
+	}
+}
