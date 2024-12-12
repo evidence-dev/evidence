@@ -1,5 +1,13 @@
 # e2e-base-path
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies [2efb8df3e]
+  - @evidence-dev/evidence@40.0.2
+  - @evidence-dev/core-components@5.0.2
+
 ## 0.0.10
 
 ### Patch Changes
