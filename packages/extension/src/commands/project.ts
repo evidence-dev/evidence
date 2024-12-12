@@ -1,11 +1,4 @@
-import {
-	window,
-	workspace,
-	commands,
-	Uri,
-	OutputChannel,
-	env
-} from 'vscode';
+import { window, workspace, commands, Uri, OutputChannel, env } from 'vscode';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { Settings, getConfig, getWorkspaceFolder } from '../config';
@@ -202,5 +195,3 @@ export async function openWalkthrough() {
 	);
 	telemetryService?.sendEvent('openWalkthrough');
 }
-
-

@@ -125,14 +125,14 @@ async function initializeSchemaViewer(context: ExtensionContext) {
 		const packageJsonFolder = await getPackageJsonFolder();
 		const manifestPath = workspaceFolder
 			? path.join(
-				workspaceFolder.uri.fsPath,
-				packageJsonFolder ?? '',
-				'.evidence',
-				'template',
-				'static',
-				'data',
-				'manifest.json'
-			)
+					workspaceFolder.uri.fsPath,
+					packageJsonFolder ?? '',
+					'.evidence',
+					'template',
+					'static',
+					'data',
+					'manifest.json'
+				)
 			: '';
 
 		const manifestWatcher = workspace.createFileSystemWatcher(
@@ -148,7 +148,6 @@ async function initializeSchemaViewer(context: ExtensionContext) {
 		manifestWatcher.onDidDelete(() => schemaViewProvider.refresh());
 
 		context.subscriptions.push(manifestWatcher);
-
 	} catch (error) {
 		console.error('Error initializing schema viewer:', error);
 	}

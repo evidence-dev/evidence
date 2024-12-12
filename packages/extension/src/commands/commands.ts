@@ -5,12 +5,7 @@ import { installDependencies, updateDependencies, buildProject, buildProjectStri
 
 import { runSources } from './sources';
 
-import {
-	createNewProject,
-	openIndex,
-	openWalkthrough,
-	copyProject
-} from './project';
+import { createNewProject, openIndex, openWalkthrough, copyProject } from './project';
 import { createProjectFromTemplate } from './template';
 import { startServer, stopServer } from './server';
 import { preview } from './preview';

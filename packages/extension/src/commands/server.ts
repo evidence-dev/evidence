@@ -11,11 +11,7 @@ import { timeout } from '../utils/timer';
 import { tryPort } from '../utils/httpUtils';
 import { hasDependencies } from './build';
 import { telemetryService } from '../extension';
-import {
-	hasManifest,
-	getTypesFromConnections,
-	getPackageJsonFolder
-} from '../utils/jsonUtils';
+import { hasManifest, getTypesFromConnections, getPackageJsonFolder } from '../utils/jsonUtils';
 
 const localhost = 'localhost';
 let _running: boolean = false;

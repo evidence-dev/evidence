@@ -18,9 +18,7 @@ export async function createTemplatedPageFromQuery() {
 	if (
 		!activeEditor ||
 		!activeEditor.document.fileName.endsWith('.sql') ||
-		!activeEditor.document.fileName.includes(
-			`${path.sep}queries${path.sep}`
-		)
+		!activeEditor.document.fileName.includes(`${path.sep}queries${path.sep}`)
 	) {
 		window.showWarningMessage(
 			`This command can only be run from within a .sql file in your 'queries' folder`,
@@ -59,10 +57,7 @@ export async function createTemplatedPageFromQuery() {
 	const columnFileContent = `---\nqueries:\n   - ${sqlFileName}: ${sqlFileName}.sql\n---\n\n# {params.${columnName}}\n\n\`\`\`sql ${sqlFileName}_filtered\nselect * from \$\{${sqlFileName}\}\nwhere ${columnName} = '\$\{params.${columnName}\}'\n\`\`\`\n\n<DataTable data={${sqlFileName}_filtered}/>\n`;
 
 	fs.writeFileSync(indexPath, indexContent);
-	fs.writeFileSync(
-		columnFilePath,
-		columnFileContent
-	);
+	fs.writeFileSync(columnFilePath, columnFileContent);
 
 	// Open the templated markdown file
 	const columnFileUri = Uri.file(columnFilePath);
@@ -70,7 +65,6 @@ export async function createTemplatedPageFromQuery() {
 	await window.showTextDocument(document);
 	telemetryService?.sendEvent('templatedPageCreated');
 }
-
 
 export async function addCustomLayout() {
 	telemetryService?.sendEvent('addCustomLayout');
@@ -126,9 +120,7 @@ export async function addCustomLayout() {
 	// Copy the layout file to the destination
 	try {
 		fs.copyFileSync(sourceFilePath, destinationFilePath);
-		window.showInformationMessage(
-			`Custom layout added successfully at: ${destinationFilePath}`
-		);
+		window.showInformationMessage(`Custom layout added successfully at: ${destinationFilePath}`);
 		telemetryService?.sendEvent('customLayoutAdded');
 	} catch (error) {
 		console.error(error);

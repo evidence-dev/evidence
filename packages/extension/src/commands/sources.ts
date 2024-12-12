@@ -30,4 +30,4 @@ export async function runSources() {
 	if (serverRunning) {
 		startServer();
 	}
-} 
+}
