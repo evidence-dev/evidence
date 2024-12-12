@@ -123,12 +123,6 @@
 				"enablement": "evidence.hasProject"
 			},
 			{
-				"command": "evidence.migrateProjectToUSQL",
-				"title": "Migrate Project to USQL",
-				"category": "Evidence",
-				"enablement": "evidence.hasProject"
-			},
-			{
 				"command": "evidence.startServer",
 				"title": "Start Evidence Server",
 				"category": "Evidence",
@@ -505,8 +499,7 @@
 			"explorer": [
 				{
 					"id": "schemaView",
-					"name": "Evidence Schema View",
-					"when": "evidence.isNonLegacyProject"
+					"name": "Evidence Schema View"
 				}
 			]
 		}

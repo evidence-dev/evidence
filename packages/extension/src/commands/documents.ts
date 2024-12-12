@@ -2,7 +2,7 @@ import { workspace, window, Uri } from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { telemetryService } from '../extension';
-import { isUSQL, getPackageJsonFolder } from '../utils/jsonUtils';
+import { getPackageJsonFolder } from '../utils/jsonUtils';
 
 function capitalizeWords(str: string) {
 	return str
@@ -19,11 +19,11 @@ export async function createTemplatedPageFromQuery() {
 		!activeEditor ||
 		!activeEditor.document.fileName.endsWith('.sql') ||
 		!activeEditor.document.fileName.includes(
-			(await isUSQL()) ? `${path.sep}queries${path.sep}` : `${path.sep}sources${path.sep}`
+			`${path.sep}queries${path.sep}`
 		)
 	) {
 		window.showWarningMessage(
-			`This command can only be run from within a .sql file in your ${(await isUSQL()) ? 'queries' : 'sources'} folder`,
+			`This command can only be run from within a .sql file in your 'queries' folder`,
 			{ modal: true }
 		);
 		telemetryService?.sendEvent('createTemplatedPageSqlWarning');
@@ -55,15 +55,13 @@ export async function createTemplatedPageFromQuery() {
 	const indexPath = path.join(newFolderPath, 'index.md');
 	const columnFilePath = path.join(newFolderPath, `[${columnName}].md`);
 
-	const legacyIndexContent = `---\ntitle: ${capitalizeWords(sqlFileName)}\nsources:\n   - ${sqlFileName}: ${sqlFileName}.sql\n---\n\nClick on an item to see more detail\n\n\n\`\`\`sql ${sqlFileName}_with_link\nselect *, '/${sqlFileName}/' || ${columnName} as link\nfrom \$\{${sqlFileName}\}\n\`\`\`\n\n<DataTable data={${sqlFileName}_with_link} link=link/>\n`;
-	const usqlIndexContent = `---\ntitle: ${capitalizeWords(sqlFileName)}\nqueries:\n   - ${sqlFileName}: ${sqlFileName}.sql\n---\n\nClick on an item to see more detail\n\n\n\`\`\`sql ${sqlFileName}_with_link\nselect *, '/${sqlFileName}/' || ${columnName} as link\nfrom \$\{${sqlFileName}\}\n\`\`\`\n\n<DataTable data={${sqlFileName}_with_link} link=link/>\n`;
-	const legacyColumnFileContent = `---\nsources:\n   - ${sqlFileName}: ${sqlFileName}.sql\n---\n\n# {$page.params.${columnName}}\n\n<DataTable data={${sqlFileName}.filter(d => d.${columnName} === $page.params.${columnName})}/>\n`;
-	const usqlColumnFileContent = `---\nqueries:\n   - ${sqlFileName}: ${sqlFileName}.sql\n---\n\n# {params.${columnName}}\n\n\`\`\`sql ${sqlFileName}_filtered\nselect * from \$\{${sqlFileName}\}\nwhere ${columnName} = '\$\{params.${columnName}\}'\n\`\`\`\n\n<DataTable data={${sqlFileName}_filtered}/>\n`;
+	const indexContent = `---\ntitle: ${capitalizeWords(sqlFileName)}\nqueries:\n   - ${sqlFileName}: ${sqlFileName}.sql\n---\n\nClick on an item to see more detail\n\n\n\`\`\`sql ${sqlFileName}_with_link\nselect *, '/${sqlFileName}/' || ${columnName} as link\nfrom \$\{${sqlFileName}\}\n\`\`\`\n\n<DataTable data={${sqlFileName}_with_link} link=link/>\n`;
+	const columnFileContent = `---\nqueries:\n   - ${sqlFileName}: ${sqlFileName}.sql\n---\n\n# {params.${columnName}}\n\n\`\`\`sql ${sqlFileName}_filtered\nselect * from \$\{${sqlFileName}\}\nwhere ${columnName} = '\$\{params.${columnName}\}'\n\`\`\`\n\n<DataTable data={${sqlFileName}_filtered}/>\n`;
 
-	fs.writeFileSync(indexPath, (await isUSQL()) ? usqlIndexContent : legacyIndexContent);
+	fs.writeFileSync(indexPath, indexContent);
 	fs.writeFileSync(
 		columnFilePath,
-		(await isUSQL()) ? usqlColumnFileContent : legacyColumnFileContent
+		columnFileContent
 	);
 
 	// Open the templated markdown file
