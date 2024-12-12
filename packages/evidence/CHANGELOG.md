@@ -1,5 +1,14 @@
 # @evidence-dev/evidence
 
+## 40.0.2
+
+### Patch Changes
+
+- 2efb8df3e: fix environment variable display in settings page
+- Updated dependencies [2efb8df3e]
+  - @evidence-dev/sdk@3.0.2
+  - @evidence-dev/universal-sql@2.2.3
+
 ## 40.0.1
 
 ### Patch Changes

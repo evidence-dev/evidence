@@ -1,5 +1,13 @@
 # @evidence-dev/tailwind
 
+## 3.0.2
+
+### Patch Changes
+
+- 6115376f6: Dont merge color palettes/scales
+- Updated dependencies [2efb8df3e]
+  - @evidence-dev/sdk@3.0.2
+
 ## 3.0.1
 
 ### Patch Changes
