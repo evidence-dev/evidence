@@ -75,16 +75,13 @@
 					? dateToYYYYMMDD($query?.[0].end)
 					: dateToYYYYMMDD(new Date());
 
-	$: if ((query && $query.dataLoaded) || !query) {
-		$inputs[name] = { start: startString, end: endString };
-	}
-
-	let selectedDateRange;
-	$: if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
-		$inputs[name] = {
-			start: dateToYYYYMMDD(selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-			end: dateToYYYYMMDD(selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date())
-		};
+	function onSelectedDateRangeChange(selectedDateRange) {
+		if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
+			$inputs[name] = {
+				start: dateToYYYYMMDD(selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
+				end: dateToYYYYMMDD(selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date())
+			};
+		}
 	}
 </script>
 
@@ -112,7 +109,7 @@
 				</svelte:fragment>
 
 				<DateRange
-					bind:selectedDateRange
+					{onSelectedDateRangeChange}
 					start={startString}
 					end={endString}
 					loaded={loaded?.ready ?? true}

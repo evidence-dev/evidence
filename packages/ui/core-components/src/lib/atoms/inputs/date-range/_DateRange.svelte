@@ -29,7 +29,10 @@
 	});
 
 	/** @type {import('bits-ui').DateRange | undefined} */
-	export let selectedDateRange = undefined;
+	let selectedDateRange = undefined;
+
+	/** @type {(selectedDateRange: typeof selectedDateRange) => void} */
+	export let onSelectedDateRangeChange;
 	/** @type {string} */
 	export let start;
 	/** @type {string} */
@@ -197,6 +200,8 @@
 	}
 
 	$: updateDateRange(calendarStart, calendarEnd);
+
+	$: onSelectedDateRangeChange(selectedDateRange);
 </script>
 
 <div class="flex">
