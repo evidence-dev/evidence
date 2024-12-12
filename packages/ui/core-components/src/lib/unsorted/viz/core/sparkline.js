@@ -84,7 +84,6 @@ export function getSparklineConfig(
 	value_format_object,
 	date_format_object,
 	height,
-	tooltipBackgroundColor,
 	theme
 ) {
 	return {
@@ -105,7 +104,7 @@ export function getSparklineConfig(
 				// Assuming params[0] is your primary data point
 				const dataPoint = params[0];
 				// Customize these HTML blocks as needed
-				const valuePart = `<div style="text-align: center; background-color: ${tooltipBackgroundColor}; border-radius: 1px; padding: 0px 2px; height: 12px;">${formatValue(
+				const valuePart = `<div style="text-align: center; background-color: ${theme.colors['base-200']}; border-radius: 1px; padding: 0px 2px;">${formatValue(
 					dataPoint.value[1],
 					value_format_object
 				)}</div>`;
