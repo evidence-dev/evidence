@@ -2,50 +2,75 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
-description: Deploy a public app to Vercel for free or a password-protected app with the pro plan.
+description: Deploy Evidence to Vercel by linking to a Git repository. Vercel supports custom domains, global passwords, and GitHub Actions for data refresh.
+og:
+    image: /img/deployment/deploy-vercel.png
 ---
 
+[Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications. Vercel can deploy Evidence apps from a Git repository.
 
-<Alert status=danger>
+Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan.
 
-**Missing DuckDB Dependencies**
+## Prerequisites
 
-Note that because of missing dependencies, Vercel cannot be used with DuckDB sources. Consider [Evidence Cloud](/deployment/evidence-cloud) or [Netlify](/deployment/netlify) as an alternative if you are using DuckDB. 
+- An Evidence project pushed to a Git service like GitHub, GitLab, or Bitbucket.
+- A Vercel account.
 
-</Alert>
+## Deploy Evidence to Vercel
 
-Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month.
+1. From the <a href="https://vercel.com/dashboard" target="_blank" class="markdown">Vercel dashboard</a>, select **Add new... Project**
+1. Import the Git repository containing your Evidence project.
+1. Edit the build and output settings:
+   - **Build command**: `npm run sources && npm run build`
+   - **Output directory**: `build`
+1. (If using a monorepo) edit the root directory to point to your Evidence project
+1. Edit the environment variables:
+   - With your Evidence dev server running, use the **Copy All** button on the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a>
+   - Paste them into the Vercel environment variables section, (they will automatically populate all the fields)
+   - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
+1. Click **Deploy**
 
-## Deploy to Vercel
+Your app will be deployed to https://[project-name].vercel.app
 
-1. Run your app in development mode
-1. Visit the [settings page](http://localhost:3000/settings)
-1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
+## Domains, Authentication and Scheduling
 
-## Optional: Set a site-wide password for your app (Requires Paid Plan)
+{@partial "evidence-cloud.md"}
 
-Follow the directions provided by Vercel to set up a password for your site:
-https://vercel.com/blog/protecting-deployments
+### Authentication
 
-## Optional: Schedule updates using Deploy Hooks
+Your deployed app will be public by default. 
+
+#### Global password
+
+This requires a Vercel paid plan with [advanced deployment protection](https://vercel.com/docs/security/deployment-protection#advanced-deployment-protection), starting at $150/month.
+
+Vercel Dashboard > [your-project] > Settings > Deployment Protection > Password protection
+
+### Custom domains
+
+Your app will be deployed to https://[project-name].vercel.app
+
+You can set a custom domain using Vercel from the console:
+
+Vercel Dashboard > [your-project] > Settings > Domains
+
+### Data refresh
+
+Your project will be automatically built when you push to your repository, refreshing your data.
+
+#### Schedule updates using Deploy Hooks
 
 If you want your site to update on a specific schedule, you can use GitHub Actions (or another similar service) to schedule regular calls to a [Vercel deploy hook](https://vercel.com/docs/concepts/git/deploy-hooks).
 
 1. Create a [Vercel deploy hook](https://vercel.com/docs/concepts/git/deploy-hooks).
    This will give you a URL that GitHub will use to trigger builds
-
 2. Add `VERCEL_DEPLOY_HOOK` to your Github Repo's Secrets
-
-- In your GitHub repo, go to Settings > Secrets > Actions and click **New repository secret** and create a secret, `VERCEL_DEPLOY_HOOK`, with the URL from step 1.
-
+   - In your GitHub repo, go to Settings > Secrets > Actions and click **New repository secret** and create a secret, `VERCEL_DEPLOY_HOOK`, with the URL from step 1.
 3. Add a schedule file to your project
-
-- Create a new directory in your project called `.github`
-- Within that directory, create another called `workflows`
-- Add a new file in `.github/workflows` called `main.yml`
-
+   - Create a new directory in your project called `.github`
+   - Within that directory, create another called `workflows`
+   - Add a new file in `.github/workflows` called `main.yml`
 4. Add the following text to the `main.yml` file you just created. Be sure that the indentation in your `main.yml` matches the below.
-
 ```yaml
 name: Schedule Vercel Deploy
 on:
@@ -62,5 +87,4 @@ jobs:
           BUILD_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
         run: curl -X POST -d {} $BUILD_HOOK
 ```
-
 5. See your GitHub Actions run in the **Actions** tab of your GitHub repo

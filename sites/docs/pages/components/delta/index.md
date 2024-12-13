@@ -21,11 +21,18 @@ select 0.366 as positive, -0.366 as negative
 
 ### Value Types
 
+#### Positive & Negative
+
+<Delta data={growth} column=positive fmt=pct1 />
+
+<Delta data={growth} column=negative fmt=pct1 />
+
 ```markdown
 <Delta data={sales} column=growth fmt=pct1 />
 ```
 
-#### Positive
+#### Neutral
+<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
 
 <DocTab>
     <div slot='preview'>
@@ -64,11 +71,17 @@ select 0.366 as positive, -0.366 as negative
 
 ### Chips
 
-```html
+#### Positive & Negative
+
+<Delta data={growth} column=positive fmt=pct1 chip=true />
+
+<Delta data={growth} column=negative fmt=pct1 chip=true />
+
+```markdown
 <Delta data={sales} column=growth fmt=pct1 chip=true />
 ```
 
-#### Positive
+#### Neutral
 
 <DocTab>
     <div slot='preview'>

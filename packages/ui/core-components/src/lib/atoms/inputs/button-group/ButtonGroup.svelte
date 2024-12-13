@@ -13,6 +13,7 @@
 	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
+	import { getThemeStores } from '../../../themes/themes.js';
 	/** @type {string} */
 	export let name;
 	/** @type {string} */
@@ -33,7 +34,10 @@
 
 	setContext('button-display', display);
 
+	const { resolveColor } = getThemeStores();
+
 	export let color = 'hsla(207, 65%, 39%, 1)';
+	$: colorStore = resolveColor(color);
 
 	const valueStore = writable(null);
 
@@ -94,35 +98,41 @@
 </script>
 
 {#if error}
-	<ErrorChart chartType={'Button Group'} {error} />
+	<ErrorChart title={'Button Group'} {error} />
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
 			class={display === 'tabs' ? '' : 'inline-flex w-fit max-w-full flex-col mt-2 mb-4 ml-0 mr-2'}
 		>
 			{#if title}
-				<span class="text-gray-900 text-sm block mb-1">{title}</span>
+				<span class="text-sm block mb-1">{title}</span>
 			{/if}
 			<div
 				class={display === 'tabs'
 					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-					: 'inline-flex rounded-md shadow-sm overflow-auto h-8 border no-scrollbar'}
+					: 'inline-flex rounded-md shadow-sm shadow-base-100 overflow-auto h-8 border border-base-300 no-scrollbar'}
 				role="group"
 			>
 				{#if preset}
 					{#each presets[preset] as { value, valueLabel }}
-						<ButtonGroupItem {value} {valueLabel} {color} {display} {defaultValue} />
+						<ButtonGroupItem {value} {valueLabel} color={colorStore} {display} {defaultValue} />
 					{/each}
 				{:else}
 					<slot {display} />
 					{#if hasQuery}
 						<QueryLoad data={query} let:loaded>
 							<svelte:fragment slot="skeleton">
-								<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-gray-200" />
+								<div class="h-8 min-w-24 w-full max-width-24 block animate-pulse bg-base-300" />
 							</svelte:fragment>
 							<svelte:fragment>
 								{#each loaded as { label, value }}
-									<ButtonGroupItem {value} valueLabel={label} {color} {display} {defaultValue} />
+									<ButtonGroupItem
+										{value}
+										valueLabel={label}
+										color={colorStore}
+										{display}
+										{defaultValue}
+									/>
 								{/each}
 							</svelte:fragment>
 						</QueryLoad>

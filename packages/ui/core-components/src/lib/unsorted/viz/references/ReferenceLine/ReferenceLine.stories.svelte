@@ -334,11 +334,11 @@
 
 <Story name="Colors">
 	<LineChart x="x" y="y" {data}>
-		<ReferenceLine x="10" color="red" label="red" />
-		<ReferenceLine x="20" color="yellow" label="yellow" />
-		<ReferenceLine x="30" color="green" label="green" />
-		<ReferenceLine x="40" color="blue" label="blue" />
-		<ReferenceLine x="50" color="grey" label="grey" />
+		<ReferenceLine x="10" color="negative" label="negative" />
+		<ReferenceLine x="20" color="warning" label="warning" />
+		<ReferenceLine x="30" color="positive" label="positive" />
+		<ReferenceLine x="40" color="info" label="info" />
+		<ReferenceLine x="50" color="base-content-muted" label="base-content-muted" />
 		<ReferenceLine x="60" color="#63178f" label="custom" />
 	</LineChart>
 </Story>

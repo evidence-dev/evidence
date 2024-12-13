@@ -1,5 +1,41 @@
 # @evidence-dev/core-components
 
+## 5.0.2
+
+### Patch Changes
+
+- Updated dependencies [6115376f6]
+  - @evidence-dev/tailwind@3.0.2
+  - @evidence-dev/component-utilities@4.0.2
+
+## 5.0.1
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@4.0.1
+- @evidence-dev/tailwind@3.0.1
+
+## 5.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/component-utilities@4.0.0
+  - @evidence-dev/tailwind@3.0.0
+  - @evidence-dev/icons@1.0.2
+
+## 4.9.2
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.23
+- @evidence-dev/tailwind@2.1.12
+
 ## 4.9.1
 
 ### Patch Changes

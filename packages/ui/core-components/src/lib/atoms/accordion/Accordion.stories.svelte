@@ -69,7 +69,7 @@
 </Story>
 
 <Story name="Custom Classes">
-	<Accordion class="rounded-xl bg-gray-50 px-4">
+	<Accordion class="rounded-xl bg-base-200 px-4">
 		<AccordionItem title="Appendix" class="border-none">
 			<p>Content 1</p>
 		</AccordionItem>

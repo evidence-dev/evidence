@@ -73,16 +73,16 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
 		{#if title}
-			<span class="text-sm text-gray-500 block mb-1">{title}</span>
+			<span class="text-sm text-base-content block mb-1">{title}</span>
 		{/if}
 
 		{#if $query?.error}
 			<span
-				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-red-200 py-[1px] bg-red-50 rounded"
+				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>
-				<span class="inline font-sans font-medium text-xs text-red-600">error</span>
+				<span class="inline font-sans font-medium text-xs text-negative">error</span>
 				<span
-					class="hidden text-white font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
+					class="hidden font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-base-200 border border-base-300 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
 				>
 					{$query.error}
 				</span>

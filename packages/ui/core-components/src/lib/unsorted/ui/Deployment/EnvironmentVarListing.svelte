@@ -29,7 +29,7 @@
 		navigator.clipboard.writeText(vars);
 		toasts.add({
 			title: '',
-			status: 'success',
+			status: 'positive',
 			message: 'Copied environment variables to clipboard'
 		});
 	}
@@ -37,7 +37,10 @@
 
 <p>
 	To use different data environments in production vs development,
-	<a class="docs-link" href="https://docs.evidence.dev/deployment/environments">
+	<a
+		class="text-primary hover:brightness-110 active:brightness-90 transition"
+		href="https://docs.evidence.dev/deployment/environments"
+	>
 		use different environment variable values.
 	</a>
 </p>
@@ -85,7 +88,6 @@
 <style>
 	div.environment-variable {
 		font-family: var(--ui-font-family);
-		color: var(--grey-999);
 		font-size: 16px;
 		margin-bottom: 1.25em;
 		display: flex;
@@ -96,7 +98,6 @@
 
 	div.titles {
 		font-family: var(--ui-font-family);
-		color: var(--grey-999);
 		font-size: 16px;
 		margin-bottom: 0.25em;
 		display: flex;
@@ -117,17 +118,7 @@
 	span.title {
 		width: 45%;
 		font-size: 0.85em;
-		color: var(--grey-800);
 		text-transform: uppercase;
 		letter-spacing: 0.07em;
-	}
-
-	.docs-link {
-		color: var(--blue-600);
-		text-decoration: none;
-	}
-
-	.docs-link:hover {
-		color: var(--blue-800);
 	}
 </style>

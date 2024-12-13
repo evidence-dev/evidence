@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 1.0.6
+
+### Patch Changes
+
+- cb5687cd9: fix(db): Fix bug that tried to read undefined db data
+
 ## 1.0.5
 
 ### Patch Changes

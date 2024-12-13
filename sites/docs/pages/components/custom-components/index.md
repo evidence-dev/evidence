@@ -216,3 +216,7 @@ import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 ```
 - `column`: name of column to be formatted
 - `columnFormat`: a format object for column being formatted (can be obtained from the `getColumnSummary` function)
+
+## Adding Queries
+
+Custom components can execute queries rather than requiring data to be passed to them. See [component queries](/components/custom-components/component-queries) for details

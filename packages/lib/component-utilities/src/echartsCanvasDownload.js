@@ -1,11 +1,17 @@
 import { registerTheme, init } from 'echarts';
-import { evidenceThemeLight } from './echartsThemes';
+import { evidenceThemeLight, evidenceThemeDark } from './echartsThemes';
 import download from 'downloadjs';
 
-export default (node, option) => {
-	registerTheme('evidence-light', evidenceThemeLight);
+/** @typedef {{ theme: 'light' | 'dark'; backgroundColor: string }} EChartsCanvasDownloadActionOptions */
 
-	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
+/** @param {HTMLElement} node */
+/** @param {EChartsCanvasDownloadActionOptions} option */
+const echartsCanvasDownloadAction = (node, option) => {
+	registerTheme('light', evidenceThemeLight);
+	registerTheme('dark', evidenceThemeDark);
+
+	console.log('echartsCanvasDownloadAction', option.theme);
+	const chart = init(node, option.theme, { renderer: 'canvas' });
 
 	option.config.animation = false;
 
@@ -79,7 +85,7 @@ export default (node, option) => {
 	let src = chart.getConnectedDataURL({
 		type: 'png',
 		pixelRatio: 3,
-		backgroundColor: 'white',
+		backgroundColor: option.backgroundColor,
 		excludeComponents: ['toolbox']
 	});
 
@@ -102,3 +108,5 @@ export default (node, option) => {
 		}
 	};
 };
+
+export default echartsCanvasDownloadAction;
