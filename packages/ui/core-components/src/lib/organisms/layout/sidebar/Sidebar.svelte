@@ -167,7 +167,8 @@
 							{/if}
 							{#each file.children as secondLevelFile}
 								{#if secondLevelFile.href && (secondLevelFile.frontMatter?.sidebar_link !== false || secondLevelFile.frontMatter?.sidebar_link === undefined)}
-									{@const active = $page.url.pathname.toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
+									{@const active =
+										$page.url.pathname.toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
 									<a
 										class="group inline-block py-1 capitalize transition-colors duration-100 {active
 											? 'text-primary'
@@ -181,7 +182,7 @@
 											</Badge>
 										{/if}
 									</a>
-									{:else}
+								{:else}
 									<span
 										class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted"
 									>
@@ -197,7 +198,9 @@
 									<div class="flex flex-col">
 										{#each secondLevelFile.children as thirdLevelFile}
 											{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
-												{@const active = $page.url.pathname.toUpperCase() === thirdLevelFile.href.toUpperCase() + '/'}
+												{@const active =
+													$page.url.pathname.toUpperCase() ===
+													thirdLevelFile.href.toUpperCase() + '/'}
 												<a
 													href={addBasePath(thirdLevelFile.href)}
 													class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l ml-1 {active
@@ -288,7 +291,8 @@
 						<!-- check if there is an active state for second level headers -->
 						{#each file.children as secondLevelFile}
 							{#if secondLevelFile.href && (secondLevelFile.frontMatter?.sidebar_link !== false || secondLevelFile.frontMatter?.sidebar_link === undefined)}
-								{@const active = $page.url.pathname.toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
+								{@const active =
+									$page.url.pathname.toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
 								<a
 									href={addBasePath(secondLevelFile.href)}
 									class="group inline-block py-1 capitalize transition-all duration-100 {active
@@ -302,23 +306,25 @@
 										</Badge>
 									{/if}
 								</a>
-								{:else}
-									<span
-										class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted font-medium"
-									>
-										{secondLevelFile.frontMatter?.title ?? secondLevelFile.label}
-										{#if secondLevelFile.frontMatter?.sidebar_badge}
-											<Badge>
-												{secondLevelFile.frontMatter.sidebar_badge}
-											</Badge>
-										{/if}
-									</span>
+							{:else}
+								<span
+									class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted font-medium"
+								>
+									{secondLevelFile.frontMatter?.title ?? secondLevelFile.label}
+									{#if secondLevelFile.frontMatter?.sidebar_badge}
+										<Badge>
+											{secondLevelFile.frontMatter.sidebar_badge}
+										</Badge>
+									{/if}
+								</span>
 							{/if}
 							{#if secondLevelFile.children.length > 0}
 								<div class="flex flex-col">
 									{#each secondLevelFile.children as thirdLevelFile}
 										{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
-											{@const active = $page.url.pathname.toUpperCase() === thirdLevelFile.href.toUpperCase() + '/'}
+											{@const active =
+												$page.url.pathname.toUpperCase() ===
+												thirdLevelFile.href.toUpperCase() + '/'}
 											<a
 												href={addBasePath(thirdLevelFile.href)}
 												class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l ml-1 {active
