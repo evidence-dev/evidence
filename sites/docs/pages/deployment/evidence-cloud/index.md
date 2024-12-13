@@ -2,7 +2,7 @@
 sidebar_position: 2
 hide_table_of_contents: false
 title: Evidence Cloud
-description: Evidence Cloud is the easiest way to host Evidence apps. It's maintained by the Evidence team, and allows you to securely host Evidence apps without having to worry about maintaining your own infrastructure.
+description: Evidence Cloud is the easiest way to deploy Evidence apps. It's maintained by the Evidence team, and allows you to securely host Evidence apps without having to worry about maintaining your own infrastructure.
 og:
     image: /img/deployment/deploy-evidence-cloud.png
 ---
@@ -22,9 +22,9 @@ Evidence Cloud is the easiest way to host Evidence apps. It's maintained by the 
 - A GitHub account
 - An Evidence project pushed to GitHub (optional)
 
-## Deploying your app
+## Deploy Evidence to Evidence Cloud
 
-1. Go to [evidence.app](https://evidence.app) and login with GitHub
+1. Go to <a href="https://evidence.app" target="_blank" class="markdown">Evidence Cloud</a> and login with GitHub
 1. Choose an option to get started:
    1. **If you have an existing Evidence project:** click `Add Project`
    1. **If you don't have a Evidence project yet:** select `Start from our templates`, and choose evidence-dev/template.
@@ -35,7 +35,10 @@ Evidence Cloud is the easiest way to host Evidence apps. It's maintained by the 
    - (Optional) Root directory: Edit to point to your Evidence directory if you are using a monorepo
    - Authentication: None, Email and Password (Paid plans only), or SSO (Paid plans only)
 1. Set your environment variables
-   - **If you are deploying an existing project**, click "Paste Environment Variables", navigate to the [settings page](http://localhost:3000/settings#deploy) and use the **Copy All** button to copy them to your clipboard, then paste them into the Environment Variables section. Click **Save**.
+   - **If you are deploying an existing project**, click "Paste Environment Variables"
+        - Navigate to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and use the **Copy All** button to copy them to your clipboard, then paste them into the Environment Variables section. Click **Save**.
+        - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory, and enter them in KEY=VALUE format on separate lines.
+        - The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
    - **If you are deploying from a template**, click "Use Template Environment Variables"
 1. Click `Deploy your project`
 

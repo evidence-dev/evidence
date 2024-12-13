@@ -120,3 +120,28 @@ export const loadSourceConfig = async (sourceDir) => {
 		options
 	};
 };
+
+/**
+ * @param {import('./schemas/datasource.schema.js').DatasourceSpec} datasource
+ */
+export const getDatasourceConfigAsEnvironmentVariables = (datasource) => {
+	/** @type {Record<string,string>} */
+	const environmentVariables = {};
+	/**
+	 * @param {any} obj
+	 * @param {string} [currentKey]
+	 */
+	const generateNestedEnvVars = (obj, currentKey = '') => {
+		for (const [key, value] of Object.entries(obj)) {
+			const newKey = currentKey ? `${currentKey}__${key}` : key;
+			if (typeof value === 'object') {
+				generateNestedEnvVars(value, newKey);
+			} else {
+				environmentVariables[`EVIDENCE_SOURCE__${datasource.name}__${newKey}`] = value.toString();
+			}
+		}
+	};
+	generateNestedEnvVars(datasource.options);
+
+	return environmentVariables;
+};

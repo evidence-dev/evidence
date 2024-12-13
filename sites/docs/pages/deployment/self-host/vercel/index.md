@@ -2,12 +2,12 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
-description: Deploy a public Evidence app to Vercel for free or a password-protected Evidence app with the pro plan.
+description: Deploy Evidence to Vercel by linking to a Git repository. Vercel supports custom domains, global passwords, and GitHub Actions for data refresh.
 og:
     image: /img/deployment/deploy-vercel.png
 ---
 
-[Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications, including Evidence apps.
+[Vercel](https://vercel.com) is a cloud platform that allows you to simply deploy web applications. Vercel can deploy Evidence apps from a Git repository.
 
 Vercel lets you host a public version of your app for free, or you can create and host a password-protected version with Vercel's $150/month pro plan.
 
@@ -16,17 +16,18 @@ Vercel lets you host a public version of your app for free, or you can create an
 - An Evidence project pushed to a Git service like GitHub, GitLab, or Bitbucket.
 - A Vercel account.
 
-## Deploy your app
+## Deploy Evidence to Vercel
 
-1. From the Vercel dashboard, select **Add new... Project**
+1. From the <a href="https://vercel.com/dashboard" target="_blank" class="markdown">Vercel dashboard</a>, select **Add new... Project**
 1. Import the Git repository containing your Evidence project.
 1. Edit the build and output settings:
    - **Build command**: `npm run sources && npm run build`
    - **Output directory**: `build`
 1. (If using a monorepo) edit the root directory to point to your Evidence project
 1. Edit the environment variables:
-   - With your Evidence dev server running, use the **Copy All** button on the [settings page](http://localhost:3000/settings#deploy)
+   - With your Evidence dev server running, use the **Copy All** button on the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a>
    - Paste them into the Vercel environment variables section, (they will automatically populate all the fields)
+   - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
 1. Click **Deploy**
 
 Your app will be deployed to https://[project-name].vercel.app

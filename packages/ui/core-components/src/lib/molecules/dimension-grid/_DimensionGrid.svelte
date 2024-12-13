@@ -4,6 +4,7 @@
 	import { writable } from 'svelte/store';
 	import DimensionCut from './DimensionCut.svelte';
 	import { getWhereClause } from './dimensionGridQuery.js';
+	import Alert from '../../atoms/alert/Alert.svelte';
 
 	/** @type {import('@evidence-dev/sdk/usql').Query} */
 	export let data;
@@ -29,23 +30,15 @@
 </script>
 
 {#if data === undefined}
-	<p
-		class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
-	>
-		`data` is required
-	</p>
+	<Alert status="negative">`data` is required</Alert>
 {:else if typeof data === 'string'}
-	<p
-		class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
-	>
+	<Alert status="negative">
 		`data` must reference a query. Received: data={data}. Try data={'{'}{data}{'}'}.
-	</p>
+	</Alert>
 {:else if data?.error}
-	<p
-		class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
-	>
+	<Alert status="negative">
 		{data.error}
-	</p>
+	</Alert>
 {:else}
 	<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
 		{#each dimensions as dimension}

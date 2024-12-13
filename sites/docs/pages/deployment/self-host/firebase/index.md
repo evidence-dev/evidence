@@ -1,22 +1,29 @@
 ---
 sidebar_position: 4
 title: Firebase
-description: Deploy Evidence to Firebase
+description: Deploy Evidence to Firebase Hosting by linking to a Git repository. Hosting supports custom domains and GitHub Actions for data refresh.
 og:
     image: /img/deployment/deploy-firebase.png
 ---
 
-[Firebase Hosting](https://firebase.google.com/products/hosting) is a GCP service that allows you to host static websites and single-page apps. This can be used to host Evidence apps.
-
+[Firebase Hosting](https://firebase.google.com/products/hosting) is a GCP service that allows you to host static websites and single-page apps. Firebase Hosting can deploy Evidence apps by linking to a Git repository.
 
 ## Prerequisites
 
 - A GCP account
 - An Evidence project pushed to Git service like GitHub, GitLab, or Bitbucket.
 
-## Deploy your app
+## Deploy Evidence to Firebase
 
-1. From the [Firebase console](https://console.firebase.google.com/), click **Create a project**.
+<Alert status=warning>
+
+**Firebase CLI**
+
+    The Firebase CLI is somewhat buggy, so you sometimes need to try the commands multiple times for them to succeed.
+    
+</Alert>
+
+1. From the <a href="https://console.firebase.google.com/" target="_blank" class="markdown">Firebase console</a>, click **Create a project**.
     - Enter a project name, accept the terms of service, and click **Continue**.
     - Choose whether to enable Google Analytics (not required), and click **Create project**.
 1. In the terminal, install the Firebase CLI:
@@ -42,25 +49,26 @@ og:
     - What script should be run before every deploy? `npm ci && npm run sources && npm run build`
     - Set up automatic deployment to your site's live channel when a PR is merged? `Yes`
     - What is the name of the GitHub branch associated with your site's live channel? `main`
-1. Add secrets to your GitHub repo: Settings > Secrets > Actions
-   - With your Evidence dev server running, go to the [settings page](http://localhost:3000/settings#deploy) and copy each of the environment variables
+1. Add secrets to your GitHub repo: Settings > Secrets and variables > Actions
+   - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables
+   - Alternatively, you can find credentials in `connection.options.yaml` files in your `/sources/your_source` directory. The key format used should be `EVIDENCE_SOURCE__[your_source]__[option_name]` (Note the casing matches your source names, and the double underscores). Note that the values are base64 encoded, and will need to be decoded.
    - Add each of them as secrets to your GitHub repo
+1. Build your app locally (if you haven't already):
+    ```bash
+    npm i && npm run sources && npm run build
+    ```
+1. Deploy your app for the first time
+    ```bash
+    firebase deploy --only hosting
+    ```
 1. Edit `firebase-hosting-merge.yml` and `firebase-hosting-pull-request.yml` to add your environment variables as GitHub secrets (note that GitHub capitalizes the names of secrets)
     ```yaml
     - run: npm ci && npm run sources && npm run build
       env:
         EVIDENCE_SOURCE__my_source__username: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__USERNAME }}
-        EVIDENCE_SOURCE__my_source__password: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__PASSWORD }}
+        EVIDENCE_SOURCE__my_source__private_key: ${{ secrets.EVIDENCE_SOURCE__MY_SOURCE__PRIVATE_KEY }}
     ```
 1. Commit and push these newly created files: `firebase.json`, `.firebaserc`,`firebase-hosting-merge.yml`, `firebase-hosting-pull-request.yml`.
-1. Build your app locally (if you haven't already):
-    ```bash
-    npm i && npm run sources && npm run build
-    ```
-1. Deploy your app for the first time:
-    ```bash
-    firebase deploy --only hosting
-    ```
 1. Update your GitHub workflow settings to allow Workflows to Read and write permissions. This is required for the Pull Request preview GitHub Action to work. [your repo] > Settings > Actions > General > Workflow permissions
 
 Your app should now be live on Firebase Hosting at  `https://<project-id>.web.app`.

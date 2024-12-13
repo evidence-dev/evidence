@@ -1,5 +1,44 @@
 # @evidence-dev/component-utilities
 
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [2efb8df3e]
+  - @evidence-dev/sdk@3.0.2
+
+## 4.0.1
+
+### Patch Changes
+
+- Updated dependencies [288f87ec6]
+  - @evidence-dev/sdk@3.0.1
+
+## 4.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/sdk@3.0.0
+
+## 3.2.23
+
+### Patch Changes
+
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/sdk@2.0.0
+
+## 3.2.22
+
+### Patch Changes
+
+- Updated dependencies [b5a096723]
+  - @evidence-dev/sdk@1.5.1
+
 ## 3.2.21
 
 ### Patch Changes

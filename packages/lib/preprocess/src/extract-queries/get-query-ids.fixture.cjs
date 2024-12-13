@@ -108,7 +108,6 @@ z = x + y
 \`\`\`css
 pre {
     overflow: scroll;
-    background: var(--grey-800);
     border-radius: 3px;
     display: flex;
     flex-direction: row;

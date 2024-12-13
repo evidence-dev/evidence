@@ -2,7 +2,7 @@
 	"name": "evidence-vscode",
 	"displayName": "Evidence",
 	"description": "Build polished data products with SQL and Markdown",
-	"version": "1.5.5",
+	"version": "1.5.6",
 	"private": true,
 	"engines": {
 		"vscode": "^1.52.0"
@@ -64,6 +64,11 @@
 				"category": "Evidence"
 			},
 			{
+				"command": "evidence.addCustomLayout",
+				"title": "Add Custom Layout",
+				"category": "Evidence"
+			},
+			{
 				"command": "evidence.insertColumnName",
 				"title": "Insert",
 				"category": "Evidence"
@@ -119,12 +124,6 @@
 			{
 				"command": "evidence.runSources",
 				"title": "Run Sources",
-				"category": "Evidence",
-				"enablement": "evidence.hasProject"
-			},
-			{
-				"command": "evidence.migrateProjectToUSQL",
-				"title": "Migrate Project to USQL",
 				"category": "Evidence",
 				"enablement": "evidence.hasProject"
 			},
@@ -505,8 +504,7 @@
 			"explorer": [
 				{
 					"id": "schemaView",
-					"name": "Evidence Schema View",
-					"when": "evidence.isNonLegacyProject"
+					"name": "Evidence Schema View"
 				}
 			]
 		}

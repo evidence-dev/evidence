@@ -10,6 +10,7 @@ import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 import { enableDebug } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
+import { createHash } from 'crypto';
 
 const increaseNodeMemoryLimit = () => {
 	// Don't override the memory limit if it's already set
@@ -35,12 +36,7 @@ const populateTemplate = function () {
 	// - local settings
 	// - telemetry profile
 	// - static folder (mainly to preserve the data directory)
-	const keepers = new Set([
-		'evidence.settings.json',
-		'.profile.json',
-		'static',
-		'.evidence-queries'
-	]);
+	const keepers = new Set(['.profile.json', 'static', '.evidence-queries']);
 	fs.readdirSync('./.evidence/template/').forEach((file) => {
 		if (!keepers.has(file)) fs.removeSync(path.join('./.evidence/template/', file));
 	});
@@ -157,12 +153,19 @@ const watchPatterns = [
 	}
 ];
 
+function removeStaticDir(dir) {
+	const staticlessDir = path.normalize(dir).split(path.sep).slice(1);
+	return path.join(...staticlessDir);
+}
+
 const strictMode = function () {
 	process.env['VITE_BUILD_STRICT'] = true;
 };
 const buildHelper = function (command, args) {
 	const watchers = runFileWatcher(watchPatterns);
 	const flatArgs = flattenArguments(args);
+
+	const dataDir = process.env.EVIDENCE_DATA_DIR ?? './static/data';
 
 	// Run svelte kit build in the hidden directory
 	const child = spawn(command, flatArgs, {
@@ -173,13 +176,48 @@ const buildHelper = function (command, args) {
 			...process.env,
 			// used for source query HMR
 			EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
-			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
+			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data',
+			EVIDENCE_IS_BUILDING: 'true'
 		}
 	});
 	// Copy the outputs to the root of the project upon successful exit
 	child.on('exit', function (code) {
+		const outDir = '.evidence/template/build';
 		if (code === 0) {
-			fs.copySync('./.evidence/template/build', './build');
+			const staticlessDataDir = removeStaticDir(dataDir);
+			const buildDataDir = path.join(outDir, staticlessDataDir);
+			const manifestFile = path.join(buildDataDir, 'manifest.json');
+
+			if (fs.existsSync(manifestFile)) {
+				const manifest = fs.readJsonSync(manifestFile);
+				for (const files of Object.values(manifest.renderedFiles)) {
+					for (let i = 0; i < files.length; i++) {
+						// <url prefix>/sqlite/transactions/transactions.parquet
+						//              ^^^^^^ ^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^
+						const nDiskParts = 3;
+
+						const diskParts = files[i].split('/').slice(-nDiskParts).join('/');
+						const filePath = path.posix.join(buildDataDir, diskParts);
+						if (!fs.existsSync(filePath)) continue;
+
+						const contents = fs.readFileSync(filePath);
+						const hash = createHash('md5').update(contents).digest('hex');
+
+						const newDiskPart = path.posix.join(
+							path.dirname(diskParts),
+							hash,
+							path.basename(diskParts)
+						);
+						const newFilePath = path.join(buildDataDir, newDiskPart);
+						fs.moveSync(filePath, newFilePath);
+
+						files[i] = files[i].replace(diskParts, newDiskPart);
+					}
+				}
+				fs.writeJsonSync(manifestFile, manifest);
+			}
+
+			fs.copySync(outDir, './build');
 			console.log(`Build complete --> ${process.env.EVIDENCE_BUILD_DIR ?? './build'} `);
 		} else {
 			console.error('Build failed');

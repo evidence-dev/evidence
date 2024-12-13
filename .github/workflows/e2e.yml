@@ -52,8 +52,6 @@ jobs:
 
       - name: Action Setup (pnpm)
         uses: pnpm/action-setup@v4
-        with:
-          version: 8
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -66,6 +64,10 @@ jobs:
 
       - name: Install Playwright and browsers
         run: pnpm playwright install --with-deps
+
+      - name: Run setup
+        working-directory: ./e2e/${{ matrix.project }}
+        run: pnpm run --if-present setup
 
       - name: Run sources
         working-directory: ./e2e/${{ matrix.project }}

@@ -20,7 +20,7 @@
 
 <ButtonPrimitive.Root
 	{builders}
-	class={cn(buttonVariants({ variant, size, className }))}
+	class={cn(buttonVariants({ variant, size, className }), 'hover:bg-base-200 shadow-base-200')}
 	type="button"
 	{...$$restProps}
 	on:click

@@ -13,6 +13,15 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { ReferencePointStore } from './reference-point.store.js';
 	import { toNumber } from '../../../../utils.js';
+	import { getThemeStores } from '../../../../themes/themes.js';
+	import chroma from 'chroma-js';
+	import { checkDeprecatedColor } from '../../../../deprecated-colors.js';
+
+	const { resolveColor } = getThemeStores();
+
+	// The chartType prop is only used here to allow Callout to use this component
+	// chartType shouldnt be used by consumers of Evidence
+	const chartType = $$props.chartType ?? 'Reference Point';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -30,16 +39,20 @@
 	export let data = undefined;
 
 	/**
-	 * @type {import('../types.js').ReferenceColor}
+	 * @type {string}
 	 * @default "grey"
 	 */
 	export let color = 'grey';
+	$: color = checkDeprecatedColor(chartType, 'color', color);
+	$: colorStore = resolveColor(color);
 
 	/** @type {string | undefined} */
 	export let label = undefined;
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColor = checkDeprecatedColor(chartType, 'labelColor', labelColor);
+	$: labelColorStore = resolveColor(labelColor);
 
 	/**
 	 * @type {number | "fit" | string | undefined}
@@ -56,11 +69,14 @@
 	 */
 	export let labelPosition = 'top';
 
-	/**
-	 * @type {string}
-	 * @default "hsla(360, 100%, 100%, 0.7)"
-	 */
-	export let labelBackgroundColor = 'hsla(360, 100%, 100%, 0.7)';
+	/** @type {string | undefined} */
+	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColor = checkDeprecatedColor(
+		chartType,
+		'labelBackgroundColor',
+		labelBackgroundColor
+	);
+	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -70,6 +86,8 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColor = checkDeprecatedColor(chartType, 'labelBorderColor', labelBorderColor);
+	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -92,8 +110,10 @@
 	 */
 	export let symbol = 'circle';
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let symbolColor = undefined;
+	$: symbolColor = checkDeprecatedColor(chartType, 'symbolColor', symbolColor);
+	$: symbolColorStore = resolveColor(symbolColor);
 
 	/**
 	 * @type {number | string}
@@ -109,6 +129,8 @@
 
 	/** @type {string | undefined} */
 	export let symbolBorderColor = undefined;
+	$: symbolBorderColor = checkDeprecatedColor(chartType, 'symbolBorderColor', symbolBorderColor);
+	$: symbolBorderColorStore = resolveColor(symbolBorderColor);
 
 	/**
 	 * @type {boolean}
@@ -133,13 +155,11 @@
 		}
 	}
 
-	// The chartType prop is only used here to allow Callout to use this component
-	// chartType shouldnt be used by consumers of Evidence
-	const chartType = $$props.chartType ?? 'Reference Point';
-
 	const props = getPropContext();
 	const config = getConfigContext();
 	const store = new ReferencePointStore(props, config);
+
+	const { theme } = getThemeStores();
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,
@@ -149,20 +169,21 @@
 			y,
 			label,
 			symbol,
-			color,
-			labelColor,
-			symbolColor,
+			color: $colorStore,
+			labelColor: $labelColorStore,
+			symbolColor: $symbolColorStore,
 			symbolSize: toNumber(symbolSize),
 			symbolOpacity: toNumber(symbolOpacity),
 			symbolBorderWidth: toNumber(symbolBorderWidth),
-			symbolBorderColor,
+			symbolBorderColor: $symbolBorderColorStore,
 			labelWidth: labelWidth === 'fit' ? undefined : toNumber(labelWidth),
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
-			labelBackgroundColor,
+			labelBackgroundColor:
+				$labelBackgroundColorStore ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),
-			labelBorderColor,
+			labelBorderColor: $labelBorderColorStore,
 			labelBorderType,
 			fontSize: toNumber(fontSize),
 			align,
@@ -178,11 +199,11 @@
 {/if}
 
 {#if $store.error}
-	<ErrorChart error={$store.error} minHeight="50px" {chartType} />
+	<ErrorChart error={$store.error} minHeight="50px" title={chartType} />
 {:else}
 	<QueryLoad {data}>
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-		<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+		<ErrorChart let:loaded slot="error" title={chartType} error={loaded.error.message} />
 		<div slot="skeleton" class="hidden"></div>
 	</QueryLoad>
 {/if}

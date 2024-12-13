@@ -198,17 +198,6 @@ export async function cloneTemplateRepository(
 						message: 'Finished cloning template project.'
 					});
 
-					// degit.json does not seem to be respected by tiged in this case
-					// add credentials file to .evidence/template/evidence.settings.json if it is using default template, and also delete the degit.json file
-					if (templateRepositoryUrl === templateProjectUrl) {
-						let credentialsString = `{"database":"duckdb","credentials":{"filename":"needful_things.duckdb","gitignoreDuckdb":null}}`;
-						await workspace.fs.writeFile(
-							Uri.file(`${projectFolderPath}/.evidence/template/evidence.settings.json`),
-							Buffer.from(credentialsString)
-						);
-						await workspace.fs.delete(Uri.file(`${projectFolderPath}/degit.json`));
-					}
-
 					// update Evidence project context and status bar
 					updateProjectContext();
 
@@ -228,6 +217,14 @@ export async function cloneTemplateRepository(
 						} catch (error) {
 							// fail silently - leave the devcontainer folder in
 						}
+					}
+
+					// Remove the 'scripts' folder containing 'update-evidence-packages.js'
+					const scriptsPath = path.join(projectFolderPath, 'scripts');
+					try {
+						await fs.rm(scriptsPath, { recursive: true, force: true });
+					} catch (error) {
+						// fail silently - leave the scripts folder in
 					}
 
 					openNewProjectFolder(Uri.file(projectFolderPath));

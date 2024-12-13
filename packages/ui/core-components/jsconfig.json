@@ -9,6 +9,6 @@
 		"moduleResolution": "NodeNext",
 		"module": "NodeNext",
 		"strict": true,
-		"types": ["@evidence-dev/sdk"]
+		"types": ["@evidence-dev/sdk", "@evidence-dev/tailwind"]
 	}
 }

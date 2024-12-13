@@ -1,7 +1,7 @@
 {
 	"devDependencies": {
 		"@changesets/cli": "2.21.0",
-		"@duckdb/duckdb-wasm": "1.28.0",
+		"@duckdb/duckdb-wasm": "1.29.0",
 		"@evidence-dev/bigquery": "link:packages/datasources/bigquery",
 		"@evidence-dev/component-utilities": "link:packages/lib/component-utilities",
 		"@evidence-dev/core-components": "link:packages/ui/core-components",
@@ -29,7 +29,7 @@
 		"@parcel/transformer-typescript-types": "2.12.0",
 		"@playwright/test": "^1.45.3",
 		"@sveltejs/adapter-static": "3.0.1",
-		"@sveltejs/kit": "2.5.4",
+		"@sveltejs/kit": "2.8.4",
 		"@sveltejs/vite-plugin-svelte": "3.0.2",
 		"@tidyjs/tidy": "2.5.2",
 		"@uwdata/mosaic-sql": "^0.4.0",
@@ -111,5 +111,6 @@
 			"dset": ">=3.1.4",
 			"cookie": ">=0.7.1"
 		}
-	}
+	},
+	"packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81"
 }

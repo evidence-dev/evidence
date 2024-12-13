@@ -53,7 +53,7 @@ queries:
 </DocTab>
 
 
-### Custom Color Palette
+### Custom Color Scale
 
 <DocTab>
     <div slot='preview'>
@@ -61,7 +61,10 @@ queries:
             data={orders_by_day_2021}
             date=day
             value=sales
-            colorPalette={['navy', 'lightyellow', 'purple']}
+            colorScale={[
+                ['rgb(254,234,159)', 'rgb(254,234,159)'],
+                ['rgb(218,66,41)', 'rgb(218,66,41)']
+            ]}
         />
     </div>
 
@@ -70,7 +73,10 @@ queries:
     data={orders_by_day_2021}
     date=day
     value=sales
-    colorPalette={['navy', 'lightyellow', 'purple']}
+    colorScale={[
+        ['rgb(254,234,159)', 'rgb(254,234,159)'],
+        ['rgb(218,66,41)', 'rgb(218,66,41)']
+    ]}
 />
 ```
 </DocTab>
@@ -148,9 +154,9 @@ queries:
 ### Formatting & Styling
 
 <PropListing 
-    name="colorPalette"
+    name="colorScale"
     description="Array of colors to form the gradient for the heatmap. Remember to wrap your array in curly braces."
-    options="array of color codes - e.g., {`colorPalette={['navy', 'white', '#c9c9c9']}`}"
+    options="array of color codes - e.g., {`colorScale={['navy', 'white', '#c9c9c9']}`}"
 />
 <PropListing 
     name="valueFmt"

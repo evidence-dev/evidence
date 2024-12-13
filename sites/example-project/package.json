@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "3.5.37",
+	"version": "3.5.42",
 	"scripts": {
 		"dev": "cross-env EVIDENCE_PAGES_DIR=./src/pages EVIDENCE_DATA_DIR=./static/data EVIDENCE_DATA_URL_PREFIX=static/data vite dev --port 3000",
 		"build": "cross-env EVIDENCE_PAGES_DIR=./src/pages NODE_OPTIONS=--max-old-space-size=8192 vite build",
@@ -10,8 +10,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@evidence-dev/sdk": "workspace:*",
-		"@evidence-dev/tailwind": "workspace:*",
 		"@evidence-dev/bigquery": "workspace:*",
 		"@evidence-dev/component-utilities": "workspace:*",
 		"@evidence-dev/core-components": "workspace:*",
@@ -22,8 +20,10 @@
 		"@evidence-dev/mysql": "workspace:*",
 		"@evidence-dev/postgres": "workspace:*",
 		"@evidence-dev/preprocess": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
 		"@evidence-dev/sqlite": "workspace:*",
+		"@evidence-dev/tailwind": "workspace:*",
 		"@evidence-dev/telemetry": "workspace:*",
 		"@evidence-dev/trino": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
@@ -31,7 +31,7 @@
 		"@steeze-ui/simple-icons": "^1.7.1",
 		"@steeze-ui/svelte-icon": "1.5.0",
 		"@steeze-ui/tabler-icons": "2.1.1",
-		"@sveltejs/kit": "2.5.4",
+		"@sveltejs/kit": "2.8.4",
 		"@tidyjs/tidy": "2.5.2",
 		"chroma-js": "^2.4.2",
 		"cross-env": "^7.0.3",

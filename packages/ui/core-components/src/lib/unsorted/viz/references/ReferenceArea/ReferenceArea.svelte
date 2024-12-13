@@ -12,6 +12,10 @@
 	import { getConfigContext, getPropContext } from '@evidence-dev/component-utilities/chartContext';
 	import { ReferenceAreaStore } from './reference-area.store.js';
 	import { toBoolean, toNumber } from '../../../../utils.js';
+	import { getThemeStores } from '../../../../themes/themes.js';
+	import { checkDeprecatedColor } from '../../../../deprecated-colors.js';
+
+	const { activeAppearance, resolveColor } = getThemeStores();
 
 	/** @type {'pass' | 'warn' | 'error' | undefined}*/
 	export let emptySet = undefined;
@@ -37,13 +41,17 @@
 	export let label = undefined;
 
 	/**
-	 * @type {import('../types.js').PresetColor}
-	 * @default "blue"
+	 * @type {string}
+	 * @default "info"
 	 */
-	export let color = 'blue';
+	export let color = 'info';
+	$: color = checkDeprecatedColor('ReferenceArea', 'color', color);
+	$: colorStore = resolveColor(color);
 
-	/** @type {import('../types.js').PresetColor | undefined} */
+	/** @type {string | undefined} */
 	export let areaColor = undefined;
+	$: areaColor = checkDeprecatedColor('ReferenceArea', 'areaColor', areaColor);
+	$: areaColorStore = resolveColor(areaColor);
 
 	/** @type {number | string} */
 	export let opacity = 1;
@@ -54,14 +62,18 @@
 	/** @type {'solid' | 'dotted' | 'dashed'} */
 	export let borderType = 'dashed';
 
-	/** @type {import('../types.js').PresetColor | undefined}*/
+	/** @type {string | undefined} */
 	export let borderColor = undefined;
+	$: borderColor = checkDeprecatedColor('ReferenceArea', 'borderColor', borderColor);
+	$: borderColorStore = resolveColor(borderColor);
 
 	/** @type {number | string | undefined} */
 	export let borderWidth = undefined;
 
-	/** @type {import('../types.js').PresetColor | undefined} */
+	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColor = checkDeprecatedColor('ReferenceArea', 'labelColor', labelColor);
+	$: labelColorStore = resolveColor(labelColor);
 
 	/**
 	 * @type {number | string}
@@ -74,6 +86,12 @@
 
 	/** @type {string | undefined} */
 	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColor = checkDeprecatedColor(
+		'ReferenceArea',
+		'labelBackgroundColor',
+		labelBackgroundColor
+	);
+	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -83,6 +101,8 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColor = checkDeprecatedColor('ReferenceArea', 'labelBorderColor', labelBorderColor);
+	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -137,25 +157,26 @@
 			yMax,
 			data,
 			label,
-			color,
-			areaColor,
+			color: $colorStore,
+			areaColor: $areaColorStore,
 			opacity: toNumber(opacity),
 			border: toBoolean(border),
 			borderType,
-			borderColor,
+			borderColor: $borderColorStore,
 			borderWidth: toNumber(borderWidth),
-			labelColor,
+			labelColor: $labelColorStore,
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
-			labelBackgroundColor,
-			labelBorderColor,
+			labelBackgroundColor: $labelBackgroundColorStore,
+			labelBorderColor: $labelBorderColorStore,
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),
 			labelBorderType,
 			fontSize: toNumber(fontSize),
 			align,
 			bold: toBoolean(bold),
-			italic: toBoolean(italic)
+			italic: toBoolean(italic),
+			activeAppearance: $activeAppearance
 		});
 </script>
 
@@ -166,11 +187,11 @@
 {/if}
 
 {#if $store.error}
-	<ErrorChart error={$store.error} minHeight="50px" {chartType} />
+	<ErrorChart error={$store.error} minHeight="50px" title={chartType} />
 {:else}
 	<QueryLoad {data}>
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-		<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+		<ErrorChart let:loaded slot="error" title={chartType} error={loaded.error.message} />
 		<div slot="skeleton" class="hidden"></div>
 	</QueryLoad>
 {/if}

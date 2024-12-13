@@ -13,7 +13,9 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { theme, resolveColorScale } = getThemeStores();
 
 	export let data;
 	export let queryID;
@@ -45,7 +47,12 @@
 
 	let height = '400px';
 	let gridHeight;
+
+	/** @deprecated Use `colorScale` instead */
 	export let colorPalette = undefined;
+	export let colorScale = undefined;
+	$: colorScaleStore = resolveColorScale(colorScale ?? colorPalette ?? 'default');
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -166,20 +173,21 @@
 			right: 5,
 			cellSize: ['auto', 13],
 			itemStyle: {
+				color: $theme.colors['base-100'],
 				borderWidth: 0.5,
-				borderColor: uiColours.grey300
+				borderColor: $theme.colors['base-300']
 			},
 			splitLine: {
 				show: true,
 				lineStyle: {
-					color: uiColours.grey600
+					color: $theme.colors['base-content']
 				}
 			},
-			monthLabel: { show: monthLabel, color: uiColours.grey700 },
-			dayLabel: { show: dayLabel, color: uiColours.grey700 },
+			monthLabel: { show: monthLabel, color: $theme.colors['base-content-muted'] },
+			dayLabel: { show: dayLabel, color: $theme.colors['base-content-muted'] },
 			yearLabel: {
 				show: yearLabel,
-				color: uiColours.grey300,
+				color: $theme.colors['base-300'],
 				fontSize: 16,
 				fontWeight: 600,
 				margin: 25
@@ -257,12 +265,12 @@
 				padding: 6,
 				borderRadius: 4,
 				borderWidth: 1,
-				borderColor: uiColours.grey400,
-				backgroundColor: 'white',
+				borderColor: $theme.colors['base-300'],
+				backgroundColor: $theme.colors['base-100'],
 				extraCssText:
 					'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 				textStyle: {
-					color: uiColours.grey900,
+					color: $theme.colors['base-content'],
 					fontSize: 12,
 					fontWeight: 400
 				},
@@ -279,10 +287,13 @@
 				left: 'center',
 				bottom: 10,
 				handleStyle: {
-					borderColor: uiColours.grey200
+					borderColor: $theme.colors['base-100']
+				},
+				textStyle: {
+					color: $theme.colors['base-content-muted']
 				},
 				inRange: {
-					color: colorPalette ?? ['rgb(254,234,159)', 'rgb(218,66,41)']
+					color: $colorScaleStore
 				},
 				text: filter
 					? undefined
@@ -311,17 +322,17 @@
 			cellSize: ['auto', 12],
 			itemStyle: {
 				borderWidth: 0.5,
-				borderColor: uiColours.grey300
+				borderColor: $theme.colors['base-300']
 			},
 			splitLine: {
 				show: true,
 				lineStyle: {
-					color: uiColours.grey600
+					color: $theme.colors['base-content-muted']
 				}
 			},
 			monthLabel: {
 				show: monthLabel,
-				color: uiColours.grey700,
+				color: $theme.colors['base-content-muted'],
 				fontSize: 10,
 				formatter: function (param) {
 					return param.nameMap.substring(0, 1);
@@ -329,13 +340,13 @@
 			},
 			dayLabel: {
 				show: dayLabel,
-				color: uiColours.grey700,
+				color: $theme.colors['base-content-muted'],
 				fontSize: 10,
 				margin: 7
 			},
 			yearLabel: {
 				show: yearLabel,
-				color: uiColours.grey300,
+				color: $theme.colors['base-300'],
 				fontWeight: 600,
 				margin: 25,
 				fontSize: 14
@@ -356,7 +367,7 @@
 </script>
 
 {#if error}
-	<ErrorChart chartType="Calendar Heatmap" {error} />
+	<ErrorChart title="Calendar Heatmap" {error} />
 {:else}
 	<ECharts
 		{height}

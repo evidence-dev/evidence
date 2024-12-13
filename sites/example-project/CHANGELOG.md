@@ -1,5 +1,76 @@
 # @evidence-dev/components
 
+## 3.5.42
+
+### Patch Changes
+
+- Updated dependencies [2efb8df3e]
+- Updated dependencies [6115376f6]
+  - @evidence-dev/sdk@3.0.2
+  - @evidence-dev/tailwind@3.0.2
+  - @evidence-dev/component-utilities@4.0.2
+  - @evidence-dev/universal-sql@2.2.3
+  - @evidence-dev/core-components@5.0.2
+
+## 3.5.41
+
+### Patch Changes
+
+- Updated dependencies [288f87ec6]
+  - @evidence-dev/sdk@3.0.1
+  - @evidence-dev/component-utilities@4.0.1
+  - @evidence-dev/universal-sql@2.2.2
+  - @evidence-dev/core-components@5.0.1
+  - @evidence-dev/tailwind@3.0.1
+
+## 3.5.40
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/component-utilities@4.0.0
+  - @evidence-dev/preprocess@6.0.0
+  - @evidence-dev/sdk@3.0.0
+  - @evidence-dev/core-components@5.0.0
+  - @evidence-dev/tailwind@3.0.0
+  - @evidence-dev/universal-sql@2.2.1
+
+## 3.5.39
+
+### Patch Changes
+
+- Updated dependencies [cb5687cd9]
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/sqlite@2.0.7
+  - @evidence-dev/universal-sql@2.2.0
+  - @evidence-dev/sdk@2.0.0
+  - @evidence-dev/bigquery@2.0.9
+  - @evidence-dev/csv@1.0.14
+  - @evidence-dev/databricks@1.0.8
+  - @evidence-dev/duckdb@1.0.13
+  - @evidence-dev/mssql@1.1.2
+  - @evidence-dev/mysql@1.1.4
+  - @evidence-dev/postgres@1.0.7
+  - @evidence-dev/snowflake@1.2.2
+  - @evidence-dev/trino@1.0.9
+  - @evidence-dev/core-components@4.9.2
+  - @evidence-dev/component-utilities@3.2.23
+  - @evidence-dev/tailwind@2.1.12
+
+## 3.5.38
+
+### Patch Changes
+
+- Updated dependencies [4d1ecd921]
+- Updated dependencies [b5a096723]
+- Updated dependencies [1f343b638]
+- Updated dependencies [b3465c45d]
+  - @evidence-dev/core-components@4.9.1
+  - @evidence-dev/sdk@1.5.1
+  - @evidence-dev/component-utilities@3.2.22
+  - @evidence-dev/universal-sql@2.1.11
+  - @evidence-dev/tailwind@2.1.11
+
 ## 3.5.37
 
 ### Patch Changes
