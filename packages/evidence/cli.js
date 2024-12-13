@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
-import { enableDebug } from '@evidence-dev/sdk/utils';
+import { enableDebug, enableStrictMode } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
 import { createHash } from 'crypto';
 
@@ -159,7 +159,7 @@ function removeStaticDir(dir) {
 }
 
 const strictMode = function () {
-	process.env['VITE_BUILD_STRICT'] = true;
+	enableStrictMode();
 };
 const buildHelper = function (command, args) {
 	const watchers = runFileWatcher(watchPatterns);

@@ -141,7 +141,7 @@ const extractInlineQueries = (content) => {
 	return queries;
 };
 
-const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
+const strictBuild = process.env.EVIDENCE_STRICT_MODE === 'true';
 const circularRefErrorMsg = 'Compiler error: circular reference';
 
 /**

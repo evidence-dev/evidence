@@ -1,9 +1,9 @@
 import { getContext, setContext } from 'svelte';
-
+import { isStrictMode } from '@evidence-dev/sdk/utils';
 const configKey = Symbol();
 const propKey = Symbol();
 
-export const strictBuild = import.meta.env.VITE_BUILD_STRICT === 'true';
+export const strictBuild = isStrictMode();
 export { configKey, propKey };
 
 export const getConfigContext = () => getContext(configKey);
