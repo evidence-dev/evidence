@@ -183,7 +183,7 @@
 									</a>
 									{:else}
 									<span
-										class="group inline-block py-1 capitalize transition-all duration-100"
+										class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted"
 									>
 										{secondLevelFile.frontMatter?.title ?? secondLevelFile.label}
 										{#if secondLevelFile.frontMatter?.sidebar_badge}
@@ -194,25 +194,26 @@
 									</span>
 								{/if}
 								{#if secondLevelFile.children.length > 0}
-									{#each secondLevelFile.children as thirdLevelFile}
-										{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
-											{@const active = $page.url.pathname.toUpperCase() === thirdLevelFile.href.toUpperCase() + '/'}
-											<a
-												href={addBasePath(thirdLevelFile.href)}
-												class:text-blue-600={active}
-												class:hover:text-blue-600={active}
-												class:hover:text-gray-950={!active}
-												class="group inline-block py-1 pl-4 capitalize transition-all duration-100"
-											>
-												{thirdLevelFile.frontMatter?.title ?? thirdLevelFile.label}
-												{#if thirdLevelFile.frontMatter?.sidebar_badge}
-													<Badge>
-														{thirdLevelFile.frontMatter.sidebar_badge}
-													</Badge>
-												{/if}
-											</a>
-										{/if}
-									{/each}
+									<div class="flex flex-col">
+										{#each secondLevelFile.children as thirdLevelFile}
+											{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
+												{@const active = $page.url.pathname.toUpperCase() === thirdLevelFile.href.toUpperCase() + '/'}
+												<a
+													href={addBasePath(thirdLevelFile.href)}
+													class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l ml-1 {active
+														? 'text-primary border-primary'
+														: 'text-base-content-muted hover:text-base-content hover:border-base-content'}"
+												>
+													{thirdLevelFile.frontMatter?.title ?? thirdLevelFile.label}
+													{#if thirdLevelFile.frontMatter?.sidebar_badge}
+														<Badge>
+															{thirdLevelFile.frontMatter.sidebar_badge}
+														</Badge>
+													{/if}
+												</a>
+											{/if}
+										{/each}
+									</div>
 								{/if}
 							{/each}
 						</div>
@@ -284,6 +285,7 @@
 								{/if}
 							</span>
 						{/if}
+						<!-- check if there is an active state for second level headers -->
 						{#each file.children as secondLevelFile}
 							{#if secondLevelFile.href && (secondLevelFile.frontMatter?.sidebar_link !== false || secondLevelFile.frontMatter?.sidebar_link === undefined)}
 								{@const active = $page.url.pathname.toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
@@ -302,7 +304,7 @@
 								</a>
 								{:else}
 									<span
-										class="group inline-block py-1 capitalize transition-all duration-100"
+										class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted font-medium"
 									>
 										{secondLevelFile.frontMatter?.title ?? secondLevelFile.label}
 										{#if secondLevelFile.frontMatter?.sidebar_badge}
@@ -312,26 +314,30 @@
 										{/if}
 									</span>
 							{/if}
+							<!-- Third Level: Make the border color just of that child primary when active, and match the text color on hover -->
+							 <!--reduce padding before first child in the third level list and after last chiold -->
+							 <!-- bold the text of the header for the second level parent if there are children -->
 							{#if secondLevelFile.children.length > 0}
-								{#each secondLevelFile.children as thirdLevelFile}
-									{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
-										{@const active = $page.url.pathname.toUpperCase() === thirdLevelFile.href.toUpperCase() + '/'}
-										<a
-											href={addBasePath(thirdLevelFile.href)}
-											class:text-blue-600={active}
-											class:hover:text-blue-600={active}
-											class:hover:text-gray-950={!active}
-											class="group inline-block py-1 pl-4 capitalize transition-all duration-100"
-										>
-											{thirdLevelFile.frontMatter?.title ?? thirdLevelFile.label}
-											{#if thirdLevelFile.frontMatter?.sidebar_badge}
-												<Badge>
-													{thirdLevelFile.frontMatter.sidebar_badge}
-												</Badge>
-											{/if}
-										</a>
-									{/if}
-								{/each}
+								<div class="flex flex-col">
+									{#each secondLevelFile.children as thirdLevelFile}
+										{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
+											{@const active = $page.url.pathname.toUpperCase() === thirdLevelFile.href.toUpperCase() + '/'}
+											<a
+												href={addBasePath(thirdLevelFile.href)}
+												class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l ml-1 {active
+													? 'text-primary border-primary'
+													: 'text-base-content-muted hover:text-base-content hover:border-base-content'}"
+											>
+												{thirdLevelFile.frontMatter?.title ?? thirdLevelFile.label}
+												{#if thirdLevelFile.frontMatter?.sidebar_badge}
+													<Badge>
+														{thirdLevelFile.frontMatter.sidebar_badge}
+													</Badge>
+												{/if}
+											</a>
+										{/if}
+									{/each}
+								</div>
 							{/if}
 						{/each}
 					</div>
