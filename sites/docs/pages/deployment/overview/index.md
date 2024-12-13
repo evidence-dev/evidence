@@ -21,15 +21,15 @@ The easiest way to deploy Evidence is on [Evidence Cloud](/deployment/evidence-c
 ## Self-host
 
 You can also self-host Evidence anywhere suitable for hosting static sites. See guides for:
-- [AWS Amplify](/deployment/aws-amplify)
-- [Azure Static Apps](/deployment/azure-static-apps)
-- [Cloudflare Pages](/deployment/cloudflare-pages)
-- [Firebase](/deployment/firebase)
-- [GitHub Pages](/deployment/github-pages)
-- [GitLab Pages](/deployment/gitlab-pages)
-- [Hugging Face Spaces](/deployment/hugging-face-spaces)
-- [Netlify](/deployment/netlify)
-- [Vercel](/deployment/vercel)
+- [AWS Amplify](/deployment/self-host/aws-amplify)
+- [Azure Static Apps](/deployment/self-host/azure-static-apps)
+- [Cloudflare Pages](/deployment/self-host/cloudflare-pages)
+- [Firebase](/deployment/self-host/firebase)
+- [GitHub Pages](/deployment/self-host/github-pages)
+- [GitLab Pages](/deployment/self-host/gitlab-pages)
+- [Hugging Face Spaces](/deployment/self-host/hugging-face-spaces)
+- [Netlify](/deployment/self-host/netlify)
+- [Vercel](/deployment/self-host/vercel)
 
 ## Build Process
 
