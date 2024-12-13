@@ -28,18 +28,17 @@ export const sources = {
 			description: "Run only the listed queries (',' delimited)"
 		},
 		strict: {
-			type: "boolean",
-			description: "Fail when a source query fails",
+			type: 'boolean',
+			description: 'Fail when a source query fails',
 			default: false
 		}
 	},
 
 	async run({ args }) {
-		
 		if (args.strict) {
-			enableStrictMode()
+			enableStrictMode();
 			if (!isStrictMode()) {
-				throw new EvidenceError("Failed to enable strict mode")
+				throw new EvidenceError('Failed to enable strict mode');
 			}
 		}
 
@@ -59,11 +58,16 @@ export const sources = {
 		);
 		if (queries.size) log.debug(`\tRunning queries: ${[...queries].join(', ')}`);
 
-		const evaluatedManifest = await evalSources(dataDirectory, metaDirectory, {
-			sources,
-			queries,
-			only_changed: args.changed === true
-		}, isStrictMode());
+		const evaluatedManifest = await evalSources(
+			dataDirectory,
+			metaDirectory,
+			{
+				sources,
+				queries,
+				only_changed: args.changed === true
+			},
+			isStrictMode()
+		);
 
 		log.info('  Evaluated sources, saving manifest');
 
