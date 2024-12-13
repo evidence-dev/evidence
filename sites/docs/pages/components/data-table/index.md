@@ -424,7 +424,7 @@ limit 5
 
 ### Conditional Formatting
 
-#### Default (`colorScale=positive`)
+#### Default (`colorScale=default`)
 
 <DocTab>
     <div slot='preview'>
@@ -446,6 +446,27 @@ limit 5
 ```
 </DocTab>
 
+#### `colorScale=positive`
+
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_summary}>
+            <Column id=country />
+            <Column id=country_id align=center/>
+            <Column id=category align=center/>
+            <Column id=value_usd contentType=colorscale colorScale=positive/>
+        </DataTable>
+    </div>
+
+```svelte
+<DataTable data={countries}>
+    <Column id=country />
+    <Column id=country_id align=center/>
+    <Column id=category align=center/>
+    <Column id=value_usd contentType=colorscale colorScale=positive/>
+</DataTable>
+```
+</DocTab>
 
 #### `colorScale=negative`
 
