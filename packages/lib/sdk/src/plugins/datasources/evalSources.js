@@ -13,6 +13,7 @@ import ora from 'ora';
 import { dataUrlPrefix } from '../../lib/projectPaths.js';
 import { subSourceVariables } from './sub-source-vars.js';
 import { logQueryEvent } from '@evidence-dev/telemetry';
+import { isStrictMode } from '../../lib/strict.js';
 
 // TODO: This is a great candidate for unit testing - but it may need to be broken down further to make that more achievable, right now it would take a _lot_ of mocks
 
@@ -189,6 +190,10 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 				if (e instanceof Error)
 					console.debug(chalk.dim('    ' + e.stack?.split('\n').join('\n    ')));
 				else console.debug(chalk.dim(e));
+
+				if (strict) {
+					throw e;
+				}
 			}
 		}
 	}
