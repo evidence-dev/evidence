@@ -17,10 +17,10 @@
 
 	const inputs = getInputContext();
 
-	/** @type {string} */
-	export let name;
 	/** @type {string | undefined} */
-	export let title;
+	export let name = undefined;
+	/** @type {string | undefined} */
+	export let title = undefined;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
 
@@ -33,11 +33,11 @@
 	export let data;
 	/** @type {string | undefined} */
 	export let dates;
-	/** @type {[]string | undefined} */
+	/** @type {string[] | undefined} */
 	export let presetRanges;
 	/** @type {string | undefined} */
 	export let defaultValue;
-	/** @type {boolean} */
+	/** @type {boolean| string} */
 	export let range = false;
 
 	$: range = toBoolean(range);
@@ -65,13 +65,13 @@
 
 	$: if ((query && $query.dataLoaded) || !query) {
 		if (range) {
-			$inputs[name] = { value: undefined, start: startString, end: endString };
+			$inputs[name] = { start: startString, end: endString };
 		} else {
-			$inputs[name] = { value: startString, start: startString, end: undefined };
+			$inputs[name] = { value: startString };
 		}
 	}
 
-	let currentDate = dateToYYYYMMDD(new Date(Date.now()));
+	let currentDate = dateToYYYYMMDD(new Date());
 
 	let selectedDateInput;
 	$: if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {

@@ -184,9 +184,8 @@
 		);
 		if (!targetPreset) return;
 		selectedPreset = targetPreset;
+		console.log(targetPreset);
 		if (range) {
-			selectedDateInput = targetPreset.range ?? targetPreset.value;
-		} else {
 			selectedDateInput = targetPreset.range;
 		}
 	}
@@ -233,7 +232,7 @@
 					{:else if selectedDateInput && !range}
 						{#if title}
 							{title}
-							<Separator oritentation="vertical" class="mx-2 h-4 w-[1px]" />
+							<Separator orientation="vertical" class="mx-2 h-4 w-[1px]" />
 						{/if}
 						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
 						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-[1.8px] text-gray-700" />

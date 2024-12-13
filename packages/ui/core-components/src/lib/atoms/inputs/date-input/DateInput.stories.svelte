@@ -15,11 +15,14 @@
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import DateInput from './DateInput.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { onMount } from 'svelte';
 	const inputStore = getInputContext();
 
 	// Mock "today"
 	import MockDate from 'mockdate';
+
 	MockDate.set('2024-12-30');
+	onMount(() => () => MockDate.reset());
 </script>
 
 <Template let:args>

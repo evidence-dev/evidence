@@ -36,9 +36,6 @@
 	/** @type {string | undefined} */
 	export let defaultValue;
 
-	/** @type {boolean} */
-	let range = true;
-
 	const exec = getQueryFunction();
 	let query;
 	$: if (data && dates) {
@@ -103,7 +100,7 @@
 					loaded={loaded?.ready ?? true}
 					{presetRanges}
 					{defaultValue}
-					{range}
+					range={true}
 				/>
 			</QueryLoad>
 		{/if}
