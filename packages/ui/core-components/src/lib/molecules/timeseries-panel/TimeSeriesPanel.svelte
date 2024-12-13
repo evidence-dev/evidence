@@ -8,6 +8,7 @@
 	import { QueryLoad } from '../../atoms/query-load/index.js';
 	import { setContext, onMount } from 'svelte';
 	import { TimeSeriesStore } from './timeSeriesStore.js';
+	import { Query } from '@evidence-dev/sdk/usql';
 
 	export let data = undefined;
 	export let x = undefined;
@@ -37,13 +38,18 @@
 </script>
 
 <QueryLoad data={$store} let:loaded>
-	<div class="rounded-xl p-3 grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-6 bg-gray-50 mb-4">
-		<MetricTable bind:selectedMetric data={loaded} {metricStore} {fmt} />
-		<TimeSeriesPanelChart data={loaded} {selectedMetric} {store} {defaultTimeRange} />
-	</div>
+	{#if loaded.length > 0}
+		<div
+			class="rounded-xl p-3 grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-6 bg-gray-50 mb-4"
+		>
+			<MetricTable bind:selectedMetric data={loaded} {metricStore} {fmt} />
+			<TimeSeriesPanelChart data={loaded} {selectedMetric} {store} {defaultTimeRange} />
+		</div>
+	{/if}
 	<svelte:fragment let:loaded slot="error">
 		<div class="big-red-100">{data.error}</div>
 	</svelte:fragment>
+
 	<svelte:fragment slot="skeleton">
 		<!-- No loading state -->
 	</svelte:fragment>

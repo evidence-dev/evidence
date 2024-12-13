@@ -1,10 +1,9 @@
 <script>
-	import { cubicInOut } from 'svelte/easing';
-	import { crossfade } from 'svelte/transition';
+	// import { cubicInOut } from 'svelte/easing';
+	// import { crossfade } from 'svelte/transition';
 	import { fmt as format } from '@evidence-dev/component-utilities/formatting';
 
 	export let metric;
-	export let selectedMetric;
 	export let data;
 	export let fmt = 'num0';
 
@@ -40,10 +39,10 @@
 		return 0;
 	};
 
-	const [send, receive] = crossfade({
-		duration: 200,
-		easing: cubicInOut
-	});
+	// const [send, receive] = crossfade({
+	// 	duration: 200,
+	// 	easing: cubicInOut
+	// });
 </script>
 
 <div
@@ -68,10 +67,10 @@
 		{change < 0 ? '' : '+'}{changePercent}
 	</span>
 </div>
-{#if selectedMetric == metric.label}
+<!-- {#if selectedMetric == metric.label}
 	<div
 		in:send={{ key: 'trigger' }}
 		out:receive={{ key: 'trigger' }}
 		class="absolute top-0 h-full w-full rounded-md bg-white border z-0"
 	/>
-{/if}
+{/if} -->

@@ -21,54 +21,8 @@
 	export let defaultTimeRange = undefined;
 
 	let chart;
-	// $: lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date();
-	// $: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
+
 	$: currentValue = data.length > 0 ? data[data.length - 1][selectedMetric] : null;
-	// $: if (selectedTimeRange) {
-	// 	filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
-	// }
-
-	// function filterDataByTimeRange(data, lastDate, timeRange) {
-	// 	const endDate = new Date(lastDate);
-	// 	let startDate;
-
-	// 	switch (timeRange) {
-	// 		case '1W':
-	// 			startDate = new Date(endDate);
-	// 			startDate.setDate(startDate.getDate() - 7);
-	// 			break;
-	// 		case '1M':
-	// 			startDate = new Date(endDate);
-	// 			startDate.setMonth(startDate.getMonth() - 1);
-	// 			break;
-	// 		case '3M':
-	// 			startDate = new Date(endDate);
-	// 			startDate.setMonth(startDate.getMonth() - 3);
-	// 			break;
-	// 		case '1Y':
-	// 			startDate = new Date(endDate);
-	// 			startDate.setFullYear(startDate.getFullYear() - 1);
-	// 			break;
-	// 		case 'YTD':
-	// 			startDate = new Date(endDate.getFullYear(), 0, 1);
-	// 			break;
-	// 		case 'All':
-	// 			return data;
-	// 		default:
-	// 			startDate = new Date(endDate);
-	// 			startDate.setFullYear(startDate.getFullYear() - 1);
-	// 	}
-
-	// 	return data.filter(
-	// 		(item) => new Date(item.date) >= startDate && new Date(item.date) <= endDate
-	// 	);
-	// }
-
-	// $: filteredData = filterDataByTimeRange(data, lastDate, selectedTimeRange);
-
-	// $: if (selectedTimeRange) {
-	// 	store.filterData(data, selectedTimeRange);
-	// }
 
 	const makeChart = (node) => {
 		chart = init(node, null, { renderer: 'svg' });

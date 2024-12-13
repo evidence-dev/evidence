@@ -3,25 +3,22 @@ import { Query as QueryBuilder, sql as taggedSql } from '@evidence-dev/sdk/query
 import { Query } from '@evidence-dev/sdk/usql';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
 import { writable } from 'svelte/store';
+import { get } from 'svelte/store';
 
 export class TimeSeriesStore {
 	/** @type {QueryValue<RowType>} */
 	#value = [];
+	#xValue = undefined;
 
 	/// Data
 	/** @type {RowType[]} */
 	#data = [];
 
-	#metrics = [];
 	#metricsStore = writable([]);
 
 	#lastDate = new Date();
 
 	#filteredData = [];
-
-	get metrics() {
-		return this.#metrics;
-	}
 
 	subscribeToMetrics = (callback) => {
 		return this.#metricsStore.subscribe(callback);
@@ -29,16 +26,17 @@ export class TimeSeriesStore {
 
 	//runs whenever data changes
 	updateData = async (data, x) => {
+		//need to fix update data re-running probably due to metrics causing a update each time it get updated
+		this.#xValue = x;
 		// Wait for all the metrics to be loaded
-		await Promise.all(this.#metrics.map((metric) => metric.promise));
+		await Promise.all(get(this.#metricsStore).map((metric) => metric.promise));
 
 		// Run buildNewQuery after data has been updated and all metrics have been loaded
-		this.buildNewQuery(data, x);
+		this.buildNewQuery(data);
 	};
 
 	updateMetrics = (metrics) => {
 		return new Promise((resolve) => {
-			this.#metrics.push(metrics);
 			this.#metricsStore.update((m) => [...m, metrics]);
 			resolve();
 		});
@@ -47,26 +45,28 @@ export class TimeSeriesStore {
 	buildNewQuery = async (data, x) => {
 		const newQueryBuild = new QueryBuilder();
 		newQueryBuild
-			.select(`${x}`, {
-				...this.#metrics.reduce(
+			.select(`${this.#xValue}`, {
+				...get(this.#metricsStore).reduce(
 					(acc, obj) => ({ ...acc, [obj.label]: taggedSql`${obj.metric}` }),
 					{}
 				)
 			})
-			.from(taggedSql`(${data.originalText})`)
-			.$groupby(`${x}`);
-		let metricQuery = Query.create(newQueryBuild.toString(), query, { disableCache: true });
+			.from(taggedSql`(${data.originalText}) AS subquery`)
+			.$groupby(`${this.#xValue}`);
+		let metricQuery = Query.create(newQueryBuild.toString(), query);
+		console.log(newQueryBuild.toString());
 
 		this.#data = await metricQuery.fetch();
-
 		this.#lastDate =
-			this.#data.length > 0 ? new Date(this.#data[this.#data.length - 1].date) : new Date();
+			this.#data.length > 0
+				? new Date(this.#data[this.#data.length - 1][this.#xValue])
+				: new Date();
+
 		this.filterData('1Y');
 
 		this.publish('buildNewQuery');
 	};
 
-	//gotta fix and ALL
 	filterData = (selectedTimeRange) => {
 		this.#filteredData = this.filterDataByTimeRange(this.#data, this.#lastDate, selectedTimeRange);
 		this.#value = this.#filteredData;
@@ -107,9 +107,10 @@ export class TimeSeriesStore {
 				startDate = new Date(endDate);
 				startDate.setFullYear(startDate.getFullYear() - 1);
 		}
-		return data.filter(
-			(item) => new Date(item.date) >= startDate && new Date(item.date) <= endDate
-		);
+
+		return data.filter((item) => {
+			return new Date(item[this.#xValue]) >= startDate && new Date(item[this.#xValue]) <= endDate;
+		});
 	}
 	////////////////////////////////////
 	/// < Implement Store Contract > ///
@@ -131,7 +132,7 @@ export class TimeSeriesStore {
 	/**
 	 * @protected
 	 */
-	publish = (/** @type {string} */ source) => {
+	publish = () => {
 		if (this.#publishIdx++ > 100000) throw new Error('Query published too many times.');
 
 		this.#subscribers.forEach((fn) => fn(this.#value));

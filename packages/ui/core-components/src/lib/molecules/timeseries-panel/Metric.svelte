@@ -1,6 +1,9 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
-	import { getContext, onMount } from 'svelte';
-	import { get } from 'svelte/store';
+	import { getContext } from 'svelte';
 
 	/**
 	 * @typedef {Object} MetricProps
