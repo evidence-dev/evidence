@@ -305,5 +305,5 @@
 		<InvisibleLinks {data} {link} />
 	{/if}
 {:else}
-	<ErrorChart {error} {chartType} />
+	<ErrorChart {error} title={chartType} />
 {/if}

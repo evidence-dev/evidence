@@ -1072,5 +1072,5 @@
 		seriesColors={seriesColorsStore}
 	/>
 {:else}
-	<ErrorChart {error} {chartType} />
+	<ErrorChart {error} title={chartType} />
 {/if}

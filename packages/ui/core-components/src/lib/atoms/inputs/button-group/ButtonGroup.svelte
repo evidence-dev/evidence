@@ -98,7 +98,7 @@
 </script>
 
 {#if error}
-	<ErrorChart chartType={'Button Group'} {error} />
+	<ErrorChart title={'Button Group'} {error} />
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
