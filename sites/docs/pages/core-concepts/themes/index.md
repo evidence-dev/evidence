@@ -262,7 +262,7 @@ Color scales can have any number of colors listed. The colors will be blended in
 
 ### Default Color Scale
 
-The `default` color scale is used by charts that represent continuous data<!-- (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale) -->.
+The `default` color scale is used by charts that represent continuous data<!-- (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data/data-table/#props-colorScale) -->.
 
 You can configure the default color palette for light and dark mode individually (different colors for each):
 

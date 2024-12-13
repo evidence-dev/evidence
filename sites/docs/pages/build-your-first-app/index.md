@@ -225,7 +225,7 @@ To learn more about Markdown queries, including how to reuse them across pages, 
 
 ### 8. Create a Data Table
 
-One simple way to display data is with a [Data Table](/components/data-table/). Add a `DataTable` component that uses `my_query_summary` as its data source:
+One simple way to display data is with a [Data Table](/components/data/data-table/). Add a `DataTable` component that uses `my_query_summary` as its data source:
 
 **new-page.md**
 ````markdown
