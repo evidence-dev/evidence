@@ -314,9 +314,6 @@
 										{/if}
 									</span>
 							{/if}
-							<!-- Third Level: Make the border color just of that child primary when active, and match the text color on hover -->
-							 <!--reduce padding before first child in the third level list and after last chiold -->
-							 <!-- bold the text of the header for the second level parent if there are children -->
 							{#if secondLevelFile.children.length > 0}
 								<div class="flex flex-col">
 									{#each secondLevelFile.children as thirdLevelFile}
