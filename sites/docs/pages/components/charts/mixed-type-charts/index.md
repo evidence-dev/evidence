@@ -5,7 +5,7 @@ sidebar_position: 99
 
 <Alert status=info>
 
-The easiest way to create mixed-type charts is setting up [a secondary y-axis in `LineChart`](/components/line-chart#secondary-axis-with-bar) or a [secondary axis in `BarChart`](/components/bar-chart#secondary-axis-with-line)
+The easiest way to create mixed-type charts is setting up [a secondary y-axis in `LineChart`](/components/charts/line-chart#secondary-axis-with-bar) or a [secondary axis in `BarChart`](/components/charts/bar-chart#secondary-axis-with-line)
 
 </Alert>
 
@@ -901,7 +901,7 @@ Group name to connect this chart to other charts for synchronized tooltip hoveri
 
 ## Annotations
 
-Mixed type charts can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
+Mixed type charts can include [annotations](/components/charts/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <Chart data={sales_data} x=date y=sales>

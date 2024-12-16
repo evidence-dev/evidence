@@ -96,6 +96,21 @@
         { "source": "/components/slider", "destination": "/components/inputs/slider", "permanent": true },
         { "source": "/components/date-range", "destination": "/components/inputs/date-range", "permanent": true },
         { "source": "/components/text-input", "destination": "/components/inputs/text-input", "permanent": true },
-        { "source": "/components/button-group", "destination": "/components/inputs/button-group", "permanent": true }
+        { "source": "/components/button-group", "destination": "/components/inputs/button-group", "permanent": true },
+	
+		{ "source": "/deployment/overview", "destination": "/deployment/overview", "permanent": true },
+		{ "source": "/deployment/evidence-cloud", "destination": "/deployment/cloud/evidence-cloud", "permanent": true },
+		{ "source": "/deployment/github-pages", "destination": "/deployment/self-host/github-pages", "permanent": true },
+		{ "source": "/deployment/aws-amplify", "destination": "/deployment/self-host/aws-amplify", "permanent": true },
+		{ "source": "/deployment/azure-static-apps", "destination": "/deployment/self-host/azure-static-apps", "permanent": true },
+		{ "source": "/deployment/cloudflare-pages", "destination": "/deployment/self-host/cloudflare-pages", "permanent": true },
+		{ "source": "/deployment/firebase", "destination": "/deployment/self-host/firebase", "permanent": true },
+		{ "source": "/deployment/gitlab-pages", "destination": "/deployment/self-host/gitlab-pages", "permanent": true },
+		{ "source": "/deployment/hugging-face-spaces", "destination": "/deployment/self-host/hugging-face-spaces", "permanent": true },
+		{ "source": "/deployment/netlify", "destination": "/deployment/self-host/netlify", "permanent": true },
+		{ "source": "/deployment/vercel", "destination": "/deployment/self-host/vercel", "permanent": true },
+		{ "source": "/deployment/rendering-modes", "destination": "/deployment/configuration/rendering-modes", "permanent": true },
+		{ "source": "/deployment/base-paths", "destination": "/deployment/configuration/base-paths", "permanent": true },
+		{ "source": "/deployment/environments", "destination": "/deployment/configuration/environments", "permanent": true }
 	]
 }

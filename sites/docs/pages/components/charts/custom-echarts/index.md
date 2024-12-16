@@ -11,7 +11,7 @@ If you would like to create a fully custom chart, you can use our built-in `<ECh
 
 This will let you create a chart that matches Evidence theming, but gives you access to the [full suite](https://echarts.apache.org/en/option.html#title) of ECharts features.
 
-The downside of this approach is that `<ECharts>` requires data to be included in the configuration object, which can be difficult depending on the type of chart you need. If you would like to use specialized ECharts features, but retain the data management you get with Evidence charts, we recommend building a [mixed-type chart](/components/mixed-type-charts) and passing in an `options` object for the specific features you need.
+The downside of this approach is that `<ECharts>` requires data to be included in the configuration object, which can be difficult depending on the type of chart you need. If you would like to use specialized ECharts features, but retain the data management you get with Evidence charts, we recommend building a [mixed-type chart](/components/charts/mixed-type-charts) and passing in an `options` object for the specific features you need.
 
 ## How to Build the Configuration
 

@@ -150,7 +150,7 @@ The link property makes the Value component clickable, allowing navigation to ot
         comparison=order_growth
         comparisonFmt=pct1
         comparisonTitle="vs. Last Month"
-        link='/components/big-value/'
+        link='/components/data/big-value/'
       />
     </div>
 
@@ -162,7 +162,7 @@ The link property makes the Value component clickable, allowing navigation to ot
   comparison=order_growth
   comparisonFmt=pct1
   comparisonTitle="vs. Last Month"
-  link='/components/big-value/'
+  link='/components/data/big-value/'
 />
 ```
 </DocTab>

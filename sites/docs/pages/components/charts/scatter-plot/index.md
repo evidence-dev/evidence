@@ -464,7 +464,7 @@ Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on
     options="{`{{exampleOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options. See [reference page](/components/echarts-options/) for available options.
+Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options/) for available options.
 
 </PropListing>
 <PropListing
@@ -472,7 +472,7 @@ Custom Echarts options to override the default options. See [reference page](/co
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/echarts-options/) for available options.
+Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/charts/echarts-options/) for available options.
 
 </PropListing>
 <PropListing
@@ -498,7 +498,7 @@ Group name to connect this chart to other charts for synchronized tooltip hoveri
 
 ## Annotations
 
-Scatter plots can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
+Scatter plots can include [annotations](/components/charts/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <ScatterPlot data={sales_data} x=date y=sales>

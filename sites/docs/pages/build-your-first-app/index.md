@@ -309,7 +309,7 @@ A Data Table is a built-in **component** of Evidence, and there are many more. T
 
 ### 9. Create a Bar Chart
 
-Next, let's visualize orders over the past year using a [Bar Chart](/components/bar-chart). Add the following to your page. Notice that we are creating a new Markdown query called `orders_by_month`:
+Next, let's visualize orders over the past year using a [Bar Chart](/components/charts/bar-chart). Add the following to your page. Notice that we are creating a new Markdown query called `orders_by_month`:
 
 ````markdown
 ### Orders by Month
@@ -373,7 +373,7 @@ sources/
 ```
 
 
-That's it! You've set up a new data source. If you'd like to use it, try adding the following Markdown Query and the [USMap](/components/us-map) component:
+That's it! You've set up a new data source. If you'd like to use it, try adding the following Markdown Query and the [USMap](/components/maps/us-map) component:
 
 ````markdown
 ### EV Map

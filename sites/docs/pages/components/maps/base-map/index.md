@@ -38,7 +38,7 @@ Within BaseMap, you can add layers using the following components:
 
 ## Examples
 
-See the pages for [Area Map](/components/area-map), [Point Map](/components/point-map), and [Bubble Map](/components/bubble-map) for examples specific to those layers. The same options can be applied to the layer components within BaseMap.
+See the pages for [Area Map](/components/maps/area-map), [Point Map](/components/maps/point-map), and [Bubble Map](/components/maps/bubble-map) for examples specific to those layers. The same options can be applied to the layer components within BaseMap.
 
 ### Adding Multiple Layers
 

@@ -12,7 +12,7 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
 
     **Base Path**
 
-    GitHub Pages serves sites at subpaths of github.io by default, e.g. `https://[username].github.io/your-app`, so you will need to adjust the [base path](/deployment/base-paths) for your app, unless using a custom domain.
+    GitHub Pages serves sites at subpaths of github.io by default, e.g. `https://[username].github.io/your-app`, so you will need to adjust the [base path](/deployment/configuration/base-paths) for your app, unless using a custom domain.
 </Alert>
 
 ## Prerequisites
@@ -22,7 +22,7 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
 
 ## Deploy Evidence to GitHub Pages
 
-1. Adjust the [base path](/deployment/base-paths) for your app to match the name of your GitHub repository. 
+1. Adjust the [base path](/deployment/configuration/base-paths) for your app to match the name of your GitHub repository. 
     - If your repo is stored at `https://github.com/username/my-evidence-app`, your base path should be `/my-evidence-app`.
 1. Add secrets to your GitHub repo: Settings > Secrets and variables > Actions
     - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables

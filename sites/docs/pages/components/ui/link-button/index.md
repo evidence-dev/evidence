@@ -5,13 +5,13 @@ sidebar_position: 1
 
 <DocTab>
     <div slot='preview'>
-      <LinkButton url='/components/link-button'>
+      <LinkButton url='/components/ui/link-button'>
         My Link Button
       </LinkButton>
     </div>
 
 ```markdown
-<LinkButton url='/components/link-button'>
+<LinkButton url='/components/ui/link-button'>
   My Link Button
 </LinkButton>
 ```

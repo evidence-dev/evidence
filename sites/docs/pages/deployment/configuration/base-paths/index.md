@@ -40,7 +40,7 @@ This is required to use the `npm run preview` command, or else the preview will 
 
 ## Custom Components
 
-[Custom components](/components/custom-components) links are **not automatically adjusted** to include the base path. Links should be adjusted using the `addBasePath` utility function, which adjusts relative links to include the base path.
+[Custom components](/components/custom/custom-component) links are **not automatically adjusted** to include the base path. Links should be adjusted using the `addBasePath` utility function, which adjusts relative links to include the base path.
 
 For example:
 
