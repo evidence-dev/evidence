@@ -14,19 +14,13 @@
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import DateRange from './DateRange.svelte';
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	// From layout.js
-	const inputStore = getInputContext();
 	// Mock "today"
 	import MockDate from 'mockdate';
 	MockDate.set('2024-06-19');
 </script>
 
 <Template let:args>
-	<DateRange {...args} name="date_range" />
-
-	<p>State:</p>
-	{JSON.stringify($inputStore.date_range)}
+	<DateRange {...args} />
 </Template>
 
 <Story name="Basic Usage" let:args>
