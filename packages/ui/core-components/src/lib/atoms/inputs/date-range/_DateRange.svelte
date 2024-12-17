@@ -67,6 +67,14 @@
 			}
 		},
 		{
+			label: 'Last 365 Days',
+			group: 'Days',
+			range: {
+				start: calendarEnd.subtract({ days: 364 }),
+				end: calendarEnd
+			}
+		},
+		{
 			label: 'Last 3 Months',
 			group: 'Months',
 			range: {

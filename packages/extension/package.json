@@ -64,6 +64,11 @@
 				"category": "Evidence"
 			},
 			{
+				"command": "evidence.addCustomLayout",
+				"title": "Add Custom Layout",
+				"category": "Evidence"
+			},
+			{
 				"command": "evidence.insertColumnName",
 				"title": "Insert",
 				"category": "Evidence"
@@ -119,12 +124,6 @@
 			{
 				"command": "evidence.runSources",
 				"title": "Run Sources",
-				"category": "Evidence",
-				"enablement": "evidence.hasProject"
-			},
-			{
-				"command": "evidence.migrateProjectToUSQL",
-				"title": "Migrate Project to USQL",
 				"category": "Evidence",
 				"enablement": "evidence.hasProject"
 			},
@@ -505,8 +504,7 @@
 			"explorer": [
 				{
 					"id": "schemaView",
-					"name": "Evidence Schema View",
-					"when": "evidence.isNonLegacyProject"
+					"name": "Evidence Schema View"
 				}
 			]
 		}
