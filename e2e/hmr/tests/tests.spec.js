@@ -89,7 +89,7 @@ test.describe('error handling', () => {
 
 test.describe('page query HMR', () => {
 	test('editing should HMR', async ({ page }) => {
-		const query0 = "select * from orders;";
+		const query0 = 'select * from orders;';
 
 		await page.goto('/orders');
 		// hard reload page for queries to SSR
@@ -99,12 +99,12 @@ test.describe('page query HMR', () => {
 
 		await expect(page.getByText('Loaded 10000 orders')).toBeVisible();
 
-		const query1 = "select * from orders LIMIT 500;";
+		const query1 = 'select * from orders LIMIT 500;';
 		editFile('pages/orders.md', (content) => content.replace(query0, query1));
 		await waitForHMR(page);
 		await expect(page.getByText('Loaded 500 orders')).toBeVisible();
 
-		const query2 = "select * from orders LIMIT 100;";
+		const query2 = 'select * from orders LIMIT 100;';
 		editFile('pages/orders.md', (content) => content.replace(query1, query2));
 		await waitForHMR(page);
 		await expect(page.getByText('Loaded 100 orders')).toBeVisible();
