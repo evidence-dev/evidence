@@ -47,3 +47,8 @@
 />
 
 <Story name="Default Value" args={{ defaultValue: 'last Month' }} />
+
+<Story
+	name="Last 365 Days"
+	args={{ presetRanges: ['Last 7 Days', 'Last 30 Days', 'Last 90 Days', 'Last 365 Days'] }}
+/>
