@@ -1,7 +1,9 @@
 <script>
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { fly, fade } from 'svelte/transition';
+	import { fly, fade, slide, crossfade } from 'svelte/transition';
+	import { cubicInOut } from 'svelte/easing';
+
 	import { lock, unlock } from 'tua-body-scroll-lock';
 	import { afterUpdate } from 'svelte';
 	import Badge from './Badge.svelte';
@@ -18,6 +20,11 @@
 	export let hideHeader = false;
 	export let sidebarFrontMatter = undefined;
 
+	const [send, receive] = crossfade({
+		duration: 200,
+		easing: cubicInOut
+	});
+
 	function deleteEmptyNodes(node) {
 		Object.keys(node.children).forEach(function (key) {
 			const child = node.children[key];
@@ -25,7 +32,7 @@
 
 			if (
 				(!child.label && !child.href) ||
-				(child.children.length === 0 && (child.frontMatter?.sidebar_link === false))
+				(child.children.length === 0 && child.frontMatter?.sidebar_link === false)
 			) {
 				delete node.children[key];
 			}
@@ -320,7 +327,7 @@
 								</a>
 							{:else}
 								<span
-									class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted "
+									class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted"
 								>
 									{secondLevelFile.frontMatter?.title ?? secondLevelFile.label}
 									{#if secondLevelFile.frontMatter?.sidebar_badge}
@@ -337,19 +344,30 @@
 											{@const active =
 												$page.url.pathname.toUpperCase() ===
 												thirdLevelFile.href.toUpperCase() + '/'}
-											<a
-												href={addBasePath(thirdLevelFile.href)}
-												class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l {active
-													? 'text-primary border-primary'
-													: 'text-base-content-muted hover:text-base-content hover:border-base-content'}"
+											<div
+												class="relative py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 border-l hover:border-base-content"
 											>
-												{thirdLevelFile.frontMatter?.title ?? thirdLevelFile.label}
-												{#if thirdLevelFile.frontMatter?.sidebar_badge}
-													<Badge>
-														{thirdLevelFile.frontMatter.sidebar_badge}
-													</Badge>
+												<a
+													href={addBasePath(thirdLevelFile.href)}
+													class="group inline-block capitalize transition-all duration-200 {active
+														? 'text-primary'
+														: 'text-base-content-muted hover:text-base-content'}"
+												>
+													{thirdLevelFile.frontMatter?.title ?? thirdLevelFile.label}
+													{#if thirdLevelFile.frontMatter?.sidebar_badge}
+														<Badge>
+															{thirdLevelFile.frontMatter.sidebar_badge}
+														</Badge>
+													{/if}
+												</a>
+												{#if active}
+													<div
+														class="absolute top-0 -left-[1px] w-[1px] h-full bg-primary z-0"
+														in:send={{ key: 'trigger' }}
+														out:receive={{ key: 'trigger' }}
+													/>
 												{/if}
-											</a>
+											</div>
 										{/if}
 									{/each}
 								</div>
