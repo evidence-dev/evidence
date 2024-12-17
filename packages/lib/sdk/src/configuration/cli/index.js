@@ -1,4 +1,5 @@
 import { createConfig } from './create.js';
+import { migrateConfig } from './migrate.js';
 
 /** @type {import("@brianmd/citty").CommandDef} */
 export const config = {
@@ -7,6 +8,7 @@ export const config = {
 		description: 'Configure Evidence, add or remove component plugins and datasources'
 	},
 	subCommands: {
-		create: createConfig
+		create: createConfig,
+		migrate: migrateConfig
 	}
 };

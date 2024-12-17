@@ -431,4 +431,12 @@ prog
 		return;
 	});
 
+prog
+	.command('config migrate')
+	.describe('migrate an existing evidence.plugins.yaml file to evidence.config.yaml')
+	.action(async () => {
+		const cli = await import('@evidence-dev/sdk/legacy-compat').then((m) => m.cli);
+		await cli(...process.argv);
+	});
+
 prog.parse(process.argv);
