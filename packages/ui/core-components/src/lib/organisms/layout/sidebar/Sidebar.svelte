@@ -20,8 +20,13 @@
 
 	function deleteEmptyNodes(node) {
 		Object.keys(node.children).forEach(function (key) {
-			deleteEmptyNodes(node.children[key]);
-			if (!node.children[key].label && !node.children[key].href) {
+			const child = node.children[key];
+			deleteEmptyNodes(child);
+
+			if (
+				(!child.label && !child.href) ||
+				(child.children.length === 0 && (child.frontMatter?.sidebar_link === false))
+			) {
 				delete node.children[key];
 			}
 		});
@@ -55,6 +60,13 @@
 	let firstLevelFiles = fileTree?.children;
 
 	export let mobileSidebarOpen = false;
+
+	// No bolding on headers
+	// No accordion behavior
+	// border physically slides down, colour should transition at the same time svelte cross fade: send/ receive. div at the same size that only appears svelte if active, transition: send recieve example https://github.com/evidence-dev/evidence/blob/68253cb7f13b2e3c65e452dddc810a100d8c0bd1/sites/docs/components/DocTab.svelte#L3
+	// consider transition
+	// add an option for sidebar depth in default layout
+	// we should be able to list out templated pages in the sidebar
 
 	// prevent scrolling of the underlying when the mobile sidebar is open
 	afterUpdate(() => {
@@ -203,7 +215,7 @@
 													thirdLevelFile.href.toUpperCase() + '/'}
 												<a
 													href={addBasePath(thirdLevelFile.href)}
-													class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l ml-1 {active
+													class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l {active
 														? 'text-primary border-primary'
 														: 'text-base-content-muted hover:text-base-content hover:border-base-content'}"
 												>
@@ -308,7 +320,7 @@
 								</a>
 							{:else}
 								<span
-									class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted font-medium"
+									class="group inline-block py-1 capitalize transition-all duration-100 text-base-content-muted "
 								>
 									{secondLevelFile.frontMatter?.title ?? secondLevelFile.label}
 									{#if secondLevelFile.frontMatter?.sidebar_badge}
@@ -327,7 +339,7 @@
 												thirdLevelFile.href.toUpperCase() + '/'}
 											<a
 												href={addBasePath(thirdLevelFile.href)}
-												class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l ml-1 {active
+												class="group inline-block py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 capitalize transition-all duration-100 border-l {active
 													? 'text-primary border-primary'
 													: 'text-base-content-muted hover:text-base-content hover:border-base-content'}"
 											>
