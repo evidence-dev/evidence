@@ -9,7 +9,6 @@ import {
 	writeSourceConfig,
 	getDatasourceConfigAsEnvironmentVariables
 } from '@evidence-dev/sdk/plugins';
-import { isDebug } from '@evidence-dev/sdk/utils';
 import { log } from '@evidence-dev/sdk/logger';
 
 export const load = async () => {
