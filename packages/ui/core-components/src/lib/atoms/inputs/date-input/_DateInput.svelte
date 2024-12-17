@@ -221,7 +221,7 @@
 	$: updateDateRange(calendarStart, calendarEnd);
 </script>
 
-<div class="flex bg-[white]">
+<div class="flex">
 	<Popover.Root openFocus>
 		<Popover.Trigger asChild let:builder>
 			<Button
@@ -243,7 +243,7 @@
 							<Separator orientation="vertical" class="mx-2 h-4 w-[1px]" />
 						{/if}
 						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
-						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-[1.8px] text-gray-700" />
+						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-[1.8px]" />
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
 							{dfMedium.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
