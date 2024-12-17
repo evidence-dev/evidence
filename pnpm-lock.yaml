@@ -165,7 +165,7 @@ importers:
         specifier: ^1.18.1
         version: 1.18.1
       nanoid:
-        specifier: ^5.0.4
+        specifier: ^5.0.9
         version: 5.0.9
       node-fetch:
         specifier: ^3.3.2
@@ -1140,7 +1140,7 @@ importers:
         specifier: ^0.11.0
         version: 0.11.0(svelte@4.2.19)
       nanoid:
-        specifier: ^5.0.4
+        specifier: ^5.0.9
         version: 5.0.9
       ora:
         specifier: ^8.0.1
@@ -1353,7 +1353,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       nanoid:
-        specifier: ^5.0.4
+        specifier: ^5.0.9
         version: 5.0.9
       perfect-debounce:
         specifier: ^1.0.0
@@ -5364,6 +5364,8 @@ packages:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/cache@2.13.2(@parcel/core@2.13.2):
@@ -6374,8 +6376,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.13.2)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/workers@2.13.2(@parcel/core@2.13.2):
@@ -16553,7 +16553,6 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
-
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
     dev: false
 

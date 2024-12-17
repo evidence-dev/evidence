@@ -25,8 +25,12 @@
 	// Layout options
 	/** @type {string} */
 	export let title = undefined;
-	/** @type {string} */
+	/** @type {string | undefined} */
 	export let logo = undefined;
+	/** @type {string | undefined} */
+	export let lightLogo = undefined;
+	/** @type {string | undefined} */
+	export let darkLogo = undefined;
 	/** @type {boolean} */
 	export let neverShowQueries = false;
 	/** @type {boolean} */
@@ -137,6 +141,8 @@
 				bind:mobileSidebarOpen
 				{title}
 				{logo}
+				{lightLogo}
+				{darkLogo}
 				{neverShowQueries}
 				{fullWidth}
 				{maxWidth}

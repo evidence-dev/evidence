@@ -367,7 +367,7 @@
 </script>
 
 {#if error}
-	<ErrorChart chartType="Calendar Heatmap" {error} />
+	<ErrorChart title="Calendar Heatmap" {error} />
 {:else}
 	<ECharts
 		{height}

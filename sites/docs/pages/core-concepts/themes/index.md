@@ -14,7 +14,7 @@ Evidence supports three appearance modes: light, dark, and system. By default, n
 
 When the appearance is `system`, the user's preferred appearance from their operating system is used.
 
-The default appearance configuration is listed below, as well as in the [Evidence Template](https://github.com/evidence-dev/templates/blob/main/evidence.config.yaml).
+The default appearance configuration is listed below, as well as in the [Evidence Template](https://github.com/evidence-dev/template/blob/main/evidence.config.yaml).
 
 <div id="default-appearance-configuration" class="block relative -top-16 invisible"></div>
 <Details title='Default appearance configuration'>
@@ -44,12 +44,14 @@ appearance:
 
 ## Migration
 
-To enable dark mode in an Evidence application created before themes was released, add the the following to your `evidence.config.yaml`:
+To enable dark mode in an Evidence application created before themes was released, replace `evidence.plugins.yaml` with `evidence.config.yaml`:
 
 ```yaml
 appearance:
     default: system
     switcher: true
+plugins:
+    [contents of evidence.plugins.yaml, indented one additional level]
 ```
 
 

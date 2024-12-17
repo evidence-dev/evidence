@@ -1,3 +1,7 @@
+appearance:
+  default: system
+  switcher: true
+
 plugins:
   components:
     # This loads all of evidence's core charts and UI components

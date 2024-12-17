@@ -6,7 +6,14 @@ sidebar_position: 3
 
 You can build a component plugin to publish your own custom components, or to make existing open source component libraries easily available for Evidence users.
 
-The easiest way to get started is from the example component library [**on GitHub**](https://github.com/evidence-dev/labs), with a live demo of the components [here](https://labs.evidence.dev).
+
+<Alert status=warning>
+
+Evidence Labs is deprecated and should not be used as a plugin in your Evidence app. This section of the documentation will be updated in the future. 
+
+</Alert>
+
+An example component library [Evidence Labs](https://github.com/evidence-dev/labs) is available on GitHub, with a live demo of the components [here](https://labs.evidence.dev).
 
 ## Basic Steps
 1. Clone the [Evidence Labs example repo](https://github.com/evidence-dev/labs)
@@ -24,7 +31,7 @@ The easiest way to get started is from the example component library [**on GitHu
 
 Plugins must "export" their components to make them available to your Evidence apps.
 
-There are 2 ways to set up component exporting in your plugin:
+There are two ways to set up component exporting in your plugin:
 1. [Module Exports](#module-exports) (recommended)
 2. [Manifest](#manifest) - this method can be used in cases when a large component library already exists
 

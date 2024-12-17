@@ -7,11 +7,9 @@ Custom components allow you to extend the functionality of Evidence, as well as 
 
 In Evidence, you can build your own components and use them anywhere in your app. This is made possible through Svelte, the JavaScript framework Evidence is built on. These components can include the charts used for visualization, custom components created completely from scratch, or adaptations of existing UI components such as the header, sidebar, menu, etc.
 
-[Evidence Labs](https://labs.evidence.dev) contains several good examples of custom components.
-
 Below is a **short guide** on building a simple component in Evidence.
 
-For a fuller guide, Svelte offers a really great interactive tutorial that you can complete in your browser in about an hour: [Svelte Tutorial](https://svelte.dev/tutorial/basics)
+For a fuller guide, Svelte offers a great interactive tutorial that you can complete in your browser in about an hour: [Svelte Tutorial](https://svelte.dev/tutorial/basics)
 
 <Alert status=info>
 
@@ -19,7 +17,7 @@ For a fuller guide, Svelte offers a really great interactive tutorial that you c
 
 Let us know in our [Slack community](https://slack.evidence.dev)!
 
-We'd love to see what you've built, and may add generally applicable components to Evidence Labs, or the Evidence component library!
+We'd love to see what you've built, and may add generally applicable components to the Evidence core component library!
 
 </Alert>
 
@@ -216,3 +214,7 @@ import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 ```
 - `column`: name of column to be formatted
 - `columnFormat`: a format object for column being formatted (can be obtained from the `getColumnSummary` function)
+
+## Adding Queries
+
+Custom components can execute queries rather than requiring data to be passed to them. See [component queries](/components/custom-components/component-queries) for details
