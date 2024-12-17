@@ -26,6 +26,7 @@ You include SQL queries in your page using a markdown code fence (starting and e
 <Alert status=warning>
 
 **Use Snake Case for Queries**
+
 Use `snake_case` query names, query files and query aliases. Don't use `PascalCase`, `camelCase` or `names with-other/separators` - these may break in unexpected ways.
 
 </Alert>
