@@ -1,5 +1,45 @@
 # @evidence-dev/evidence
 
+## 40.0.2
+
+### Patch Changes
+
+- 2efb8df3e: fix environment variable display in settings page
+- Updated dependencies [2efb8df3e]
+  - @evidence-dev/sdk@3.0.2
+  - @evidence-dev/universal-sql@2.2.3
+
+## 40.0.1
+
+### Patch Changes
+
+- Updated dependencies [288f87ec6]
+  - @evidence-dev/sdk@3.0.1
+  - @evidence-dev/universal-sql@2.2.2
+
+## 40.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- d88e86119: hash parquet file paths after build
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/preprocess@6.0.0
+  - @evidence-dev/sdk@3.0.0
+  - @evidence-dev/universal-sql@2.2.1
+
+## 39.2.3
+
+### Patch Changes
+
+- c4f46da37: fix peer dep mismatch in evidence package
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/universal-sql@2.2.0
+  - @evidence-dev/sdk@2.0.0
+
 ## 39.2.2
 
 ### Patch Changes

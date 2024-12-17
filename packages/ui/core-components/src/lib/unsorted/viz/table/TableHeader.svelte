@@ -45,10 +45,10 @@
 						<th
 							role="columnheader"
 							colspan={column.span}
-							class="pt-1 align-bottom text-gray-900 {compact ? 'px-[1px]' : 'px-[2px]'}"
+							class="pt-1 align-bottom {compact ? 'px-[1px]' : 'px-[2px]'}"
 						>
 							<!-- Group header with dynamic colspan -->
-							<div class=" border-b-[1px] border-b-gray-600 whitespace-normal pb-[2px]">
+							<div class=" border-b-[1px] border-base-content-muted whitespace-normal pb-[2px]">
 								{column.colGroup}
 							</div>
 						</th>
@@ -63,7 +63,7 @@
 		{/if}
 	{/if}
 
-	<tr class="border-b border-gray-600">
+	<tr class="border-b border-base-content-muted">
 		{#if rowNumbers}
 			<th
 				role="columnheader"
@@ -131,7 +131,7 @@
 	}
 
 	.index {
-		color: var(--grey-300);
+		@apply text-base-content-muted;
 		text-align: left;
 		max-width: -moz-min-content;
 		max-width: min-content;

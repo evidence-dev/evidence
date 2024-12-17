@@ -47,25 +47,24 @@
 	</div>
 {/if}
 
-<style>
+<style lang="postcss">
 	select {
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
 		padding: 0.35em;
-		width: calc(100% + 14px);
-		border: 1px solid var(--grey-200);
+		width: 100%;
+		border: 1px solid var(--base-300);
 		font-family: var(--ui-font-family);
-		color: var(--grey-800);
-		margin: 0.5em 0 1.5em -7px;
+		background: var(--base-200);
+		margin: 0.5em 0 0 0;
 		transition: all 400ms;
 		cursor: pointer;
-		font-size: 14px;
 	}
 	select:hover {
-		border: 1px solid var(--grey-300);
+		@apply shadow-md;
+		border: 1px solid var(--base-content);
 		transition: all 400ms;
-		box-shadow: 0 5px 5px 2px hsl(0deg 0% 97%);
 	}
 	select:focus {
 		outline: none;
@@ -112,12 +111,12 @@
 	input {
 		box-sizing: border-box;
 		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--grey-300);
+		border: 1px solid var(--base-300);
+		background: var(--base-200);
 		padding: 0.25em 0.25em 0.25em 0.25em;
 		margin-left: auto;
 		width: 65%;
 		padding: 0.35em;
-		color: var(--grey-999);
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		vertical-align: middle;

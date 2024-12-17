@@ -16,7 +16,7 @@ export const InputStoreKey = Symbol('InputStore');
  * @param {unknown} v
  * @returns {v is Readable<any>}
  */
-const isReadable = (v) => {
+export const isReadable = (v) => {
 	if (typeof v !== 'object') return false;
 	if (v === null) return false;
 	return 'subscribe' in v;

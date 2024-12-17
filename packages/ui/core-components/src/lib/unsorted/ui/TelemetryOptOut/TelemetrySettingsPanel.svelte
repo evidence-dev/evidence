@@ -68,7 +68,7 @@
 	<footer>
 		<span
 			>The source code for our telemetry can be <a
-				class="docs-link"
+				class="text-primary hover:brightness-110 active:brightness-90 transition"
 				href="https://github.com/evidence-dev/evidence/blob/main/packages/telemetry/index.cjs"
 				target="_blank"
 				rel="noreferrer">found here &rarr;</a
@@ -77,7 +77,7 @@
 	</footer>
 </form>
 
-<style>
+<style lang="postcss">
 	h2 {
 		@apply font-semibold text-lg pt-3 pb-2;
 	}
@@ -91,9 +91,9 @@
 	}
 	.telemetry-settings-box {
 		margin-top: 2em;
-		border-top: 1px solid var(--grey-200);
-		border-left: 1px solid var(--grey-200);
-		border-right: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
+		border-left: 1px solid var(--base-300);
+		border-right: 1px solid var(--base-300);
 		border-radius: 5px 5px 0 0;
 		font-size: 14px;
 		font-family: var(--ui-font-family);
@@ -101,7 +101,7 @@
 	}
 
 	.panel {
-		border-top: 1px solid var(--grey-200);
+		border-top: 1px solid var(--base-300);
 		padding: 0em 1em 1em 1em;
 	}
 
@@ -110,23 +110,14 @@
 	}
 
 	footer {
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
 		border-radius: 0 0 5px 5px;
-		background-color: var(--grey-100);
+		background-color: var(--base-200);
 		padding: 1em;
 		display: flex;
 		font-size: 14px;
 		align-items: center;
 		font-family: var(--ui-font-family);
-	}
-
-	.docs-link {
-		color: var(--blue-600);
-		text-decoration: none;
-	}
-
-	.docs-link:hover {
-		color: var(--blue-800);
 	}
 
 	.switch {
@@ -169,11 +160,11 @@
 		-webkit-transition: 0.4s;
 		transition: 0.4s;
 		border-radius: 50%;
-		box-shadow: 0px 1px 2px var(--grey-500);
+		@apply shadow-md;
 	}
 
 	input:checked + .slider {
-		background-color: var(--green-500);
+		background-color: var(--positive);
 	}
 
 	input:checked + .slider:before {
@@ -187,13 +178,11 @@
 		text-transform: uppercase;
 		font-weight: normal;
 		font-size: 14px;
-		color: var(--grey-800);
 		white-space: nowrap;
 	}
 
 	div.input-item {
 		font-family: var(--ui-font-family);
-		color: var(--grey-999);
 		font-size: 16px;
 		margin-top: 1.25em;
 		display: flex;
