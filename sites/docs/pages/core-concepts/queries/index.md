@@ -23,6 +23,14 @@ When you open a page in dev mode, Evidence runs all of the queries on the page. 
 
 You include SQL queries in your page using a markdown code fence (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
 
+<Alert status=warning>
+
+**Use Snake Case for Queries**
+Use `snake_case` query names, query files and query aliases. Don't use `PascalCase`, `camelCase` or `names with-other/separators` - these may break in unexpected ways.
+
+</Alert>
+
+
 ### Using Query Results
 
 Reference a query in a component using `data={query_name}`
