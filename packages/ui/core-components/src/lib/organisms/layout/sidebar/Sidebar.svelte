@@ -19,6 +19,7 @@
 	export let builtWithEvidence = undefined;
 	export let hideHeader = false;
 	export let sidebarFrontMatter = undefined;
+	export let sidebarDepth = 3;
 
 	const [send, receive] = crossfade({
 		duration: 200,
@@ -68,9 +69,6 @@
 
 	export let mobileSidebarOpen = false;
 
-	// No bolding on headers
-	// No accordion behavior
-	// border physically slides down, colour should transition at the same time svelte cross fade: send/ receive. div at the same size that only appears svelte if active, transition: send recieve example https://github.com/evidence-dev/evidence/blob/68253cb7f13b2e3c65e452dddc810a100d8c0bd1/sites/docs/components/DocTab.svelte#L3
 	// consider transition
 	// add an option for sidebar depth in default layout
 	// we should be able to list out templated pages in the sidebar
@@ -213,7 +211,7 @@
 										{/if}
 									</span>
 								{/if}
-								{#if secondLevelFile.children.length > 0}
+								{#if secondLevelFile.children.length > 0 && sidebarDepth > 2}
 									<div class="flex flex-col">
 										{#each secondLevelFile.children as thirdLevelFile}
 											{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
@@ -337,7 +335,7 @@
 									{/if}
 								</span>
 							{/if}
-							{#if secondLevelFile.children.length > 0}
+							{#if secondLevelFile.children.length > 0 && sidebarDepth > 2}
 								<div class="flex flex-col">
 									{#each secondLevelFile.children as thirdLevelFile}
 										{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
