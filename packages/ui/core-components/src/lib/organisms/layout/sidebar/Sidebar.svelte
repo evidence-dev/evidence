@@ -301,7 +301,6 @@
 								{/if}
 							</span>
 						{/if}
-						<!-- check if there is an active state for second level headers -->
 						{#each file.children as secondLevelFile}
 							{#if secondLevelFile.href && (secondLevelFile.frontMatter?.sidebar_link !== false || secondLevelFile.frontMatter?.sidebar_link === undefined)}
 								{@const active =
