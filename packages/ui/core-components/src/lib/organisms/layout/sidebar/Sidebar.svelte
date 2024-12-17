@@ -69,10 +69,6 @@
 
 	export let mobileSidebarOpen = false;
 
-	// consider transition
-	// add an option for sidebar depth in default layout
-	// we should be able to list out templated pages in the sidebar
-
 	// prevent scrolling of the underlying when the mobile sidebar is open
 	afterUpdate(() => {
 		// afterupdate ensures that the mobileScrollable div is mounted before we lock everything else
