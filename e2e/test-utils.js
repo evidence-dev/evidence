@@ -126,3 +126,11 @@ export const switchAppearance = async (page, appearance) => {
 		await closeKebabMenu(page);
 	}
 };
+
+/**
+ * @param {import('@playwright/test').Page} page
+ * @returns {Promise<import('@playwright/test').Locator>}
+ */
+export const getLogo = async (page) =>
+	// We render multiple logos and show/hide them in light/dark mode accordingly, so we need to get just the visible one here
+	page.getByAltText('Home', { exact: true }).locator('visible=true');

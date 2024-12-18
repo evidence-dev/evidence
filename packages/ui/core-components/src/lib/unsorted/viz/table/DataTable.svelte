@@ -33,7 +33,7 @@
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+	<ErrorChart let:loaded slot="error" title={chartType} error={loaded.error.message} />
 	<!-- workaround for slot forwarding (svelte 5 makes this better) -->
 	{#if $$slots.default}
 		<DataTable {...spreadProps} data={loaded} {queryID}>
