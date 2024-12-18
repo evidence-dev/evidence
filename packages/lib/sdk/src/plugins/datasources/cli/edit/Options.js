@@ -68,6 +68,7 @@ export const Options = (spec, sourceOptions, opts) => {
 		ownKeys() {
 			const output = [];
 			for (const [specKey, specEntry] of Object.entries(spec)) {
+				if (specEntry.virtual) continue;
 				const valueKey = specEntry.children && specEntry.nest ? `_${specKey}` : specKey;
 				if (
 					!opts?.specMode /* Value Mode */ &&
