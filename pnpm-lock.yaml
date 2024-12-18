@@ -1288,7 +1288,7 @@ importers:
         version: 3.8.2
       '@docsearch/js':
         specifier: ^3.6.0
-        version: 3.8.2(@algolia/client-search@5.17.1)(@types/react@19.0.1)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3)
+        version: 3.8.2(@algolia/client-search@5.18.0)(@types/react@19.0.2)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3)
       '@evidence-dev/component-utilities':
         specifier: workspace:*
         version: link:../../lib/component-utilities
@@ -3690,10 +3690,10 @@ packages:
     resolution: {integrity: sha512-y05ayQFyUmCXze79+56v/4HpycYF3uFqB78pLPrSV5ZKAlDuIAAJNhaRi8tTdRNXh05yxX/TyNnzD6LwSM89vQ==}
     dev: false
 
-  /@docsearch/js@3.8.2(@algolia/client-search@5.17.1)(@types/react@19.0.1)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3):
+  /@docsearch/js@3.8.2(@algolia/client-search@5.18.0)(@types/react@19.0.2)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3):
     resolution: {integrity: sha512-Q5wY66qHn0SwA7Taa0aDbHiJvaFJLOJyHmooQ7y8hlwwQLQ/5WwCcoX0g7ii04Qi2DJlHsd0XXzJ8Ypw9+9YmQ==}
     dependencies:
-      '@docsearch/react': 3.8.2(@algolia/client-search@5.17.1)(@types/react@19.0.1)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3)
+      '@docsearch/react': 3.8.2(@algolia/client-search@5.18.0)(@types/react@19.0.2)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3)
       preact: 10.25.2
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -3703,7 +3703,7 @@ packages:
       - search-insights
     dev: false
 
-  /@docsearch/react@3.8.2(@algolia/client-search@5.17.1)(@types/react@19.0.1)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3):
+  /@docsearch/react@3.8.2(@algolia/client-search@5.18.0)(@types/react@19.0.2)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.17.3):
     resolution: {integrity: sha512-xCRrJQlTt8N9GU0DG4ptwHRkfnSnD/YpdeaXe02iKfqs97TkZJv60yE+1eq/tjPcVnTW8dP5qLP7itifFVV5eg==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -3720,11 +3720,11 @@ packages:
       search-insights:
         optional: true
     dependencies:
-      '@algolia/autocomplete-core': 1.17.7(@algolia/client-search@5.17.1)(algoliasearch@5.17.1)(search-insights@2.17.3)
-      '@algolia/autocomplete-preset-algolia': 1.17.7(@algolia/client-search@5.17.1)(algoliasearch@5.17.1)
+      '@algolia/autocomplete-core': 1.17.7(@algolia/client-search@5.18.0)(algoliasearch@5.18.0)(search-insights@2.17.3)
+      '@algolia/autocomplete-preset-algolia': 1.17.7(@algolia/client-search@5.18.0)(algoliasearch@5.18.0)
       '@docsearch/css': 3.8.2
-      '@types/react': 19.0.1
-      algoliasearch: 5.17.1
+      '@types/react': 19.0.2
+      algoliasearch: 5.18.0
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
       search-insights: 2.17.3
@@ -5357,6 +5357,8 @@ packages:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/cache@2.13.3(@parcel/core@2.13.3):
@@ -6367,8 +6369,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.13.3)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/workers@2.13.3(@parcel/core@2.13.3):
@@ -11253,7 +11253,7 @@ packages:
       is-data-view: 1.0.2
       is-negative-zero: 2.0.3
       is-regex: 1.2.1
-      is-shared-array-buffer: 1.0.3
+      is-shared-array-buffer: 1.0.4
       is-string: 1.1.1
       is-typed-array: 1.1.14
       is-weakref: 1.1.0
@@ -11272,7 +11272,7 @@ packages:
       typed-array-byte-offset: 1.0.3
       typed-array-length: 1.0.7
       unbox-primitive: 1.1.0
-      which-typed-array: 1.1.16
+      which-typed-array: 1.1.18
     dev: true
 
   /es-define-property@1.0.1:
@@ -18738,7 +18738,7 @@ packages:
       gopd: 1.2.0
       has-proto: 1.2.0
       is-typed-array: 1.1.14
-      reflect.getprototypeof: 1.0.8
+      reflect.getprototypeof: 1.0.9
     dev: true
 
   /typed-array-length@1.0.7:
@@ -18797,7 +18797,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bound: 1.0.3
-      has-bigints: 1.0.2
+      has-bigints: 1.1.0
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
     dev: true
@@ -18992,7 +18992,7 @@ packages:
       is-arguments: 1.2.0
       is-generator-function: 1.0.10
       is-typed-array: 1.1.14
-      which-typed-array: 1.1.16
+      which-typed-array: 1.1.18
 
   /utility-types@3.11.0:
     resolution: {integrity: sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw==}
