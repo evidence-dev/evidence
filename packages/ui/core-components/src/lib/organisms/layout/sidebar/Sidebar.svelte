@@ -276,7 +276,7 @@
 					<div class="flex flex-col pb-6">
 						{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 							<a
-								class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group block capitalize hover:underline text-base-heading"
+								class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group block capitalize hover:underline text-base-heading z-10"
 								href={addBasePath(file.href)}
 							>
 								{file.frontMatter?.title ?? file.label}
@@ -288,7 +288,7 @@
 							</a>
 						{:else}
 							<span
-								class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group inline-block capitalize text-base-heading"
+								class="sticky top-0 bg-base-100 shadow shadow-base-100 font-semibold pb-1 mb-1 group inline-block capitalize text-base-heading z-10"
 								href={addBasePath(file.href)}
 							>
 								{file.frontMatter?.title ?? file.label}
