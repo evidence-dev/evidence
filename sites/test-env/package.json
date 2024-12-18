@@ -27,7 +27,8 @@
 		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
 		"@evidence-dev/sqlite": "workspace:*",
-		"@evidence-dev/tailwind": "workspace:*"
+		"@evidence-dev/tailwind": "workspace:*",
+		"@evidence-dev/javascript": "workspace:*"
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3"

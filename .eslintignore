@@ -34,3 +34,7 @@ packages/ui/icons/src
 **/playwright-report*
 
 storybook-static
+
+# This is an invalid test file that should be ignored
+**/test/files/invalid.js
+**/test/files/noExport.js
