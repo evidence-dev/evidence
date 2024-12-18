@@ -13,7 +13,7 @@
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { toBoolean } from '../../../utils.js';
 	import { dateToYYYYMMDD, formatDateString } from './helpers.js';
-	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 
 	const inputs = getInputContext();
 
@@ -44,18 +44,16 @@
 
 	let query;
 	$: if (data && dates) {
+		const queryString = `SELECT min(${dates}) as start, max(${dates}) as end FROM ${typeof data === 'string' ? data : `(${data.text})`}`;
+		const id = `DateRange-${name}`;
 		const opts = {
-			value: dates,
-			data: data,
-			select: [{ start: `min(${dates})`, end: `max(${dates})` }]
+			initialData: $page?.data?.data[`DateRange-${name}_data`],
+			knownColumns: $page?.data?.data[`DateRange-${name}_columns`],
+			disableCache: true,
+			noResolve: false
 		};
-		const { results, update } = buildReactiveInputQuery(
-			opts,
-			`DateRange-${name}`,
-			$page?.data?.data[`DateRange-${name}_data`]
-		);
-		query = results;
-		update(opts);
+		query = buildQuery(queryString, id, opts.initialData, opts);
+		query.fetch();
 	}
 
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
