@@ -8,7 +8,7 @@ import chalk from 'chalk';
 
 /**
  *
- * @param {boolean} [silent=false]
+ * @param {boolean} [silent]
  */
 export const getEvidenceConfigLegacy = (silent) => {
 	let fileContents;

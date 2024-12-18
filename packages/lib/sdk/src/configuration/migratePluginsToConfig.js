@@ -10,11 +10,11 @@ import { EvidenceConfigSchema } from './schemas/config.schema.js';
 
 /** @returns {Promise<boolean>} */
 export const migratePluginsToConfig = async () => {
-	const pluginStat = await fs
+	const pluginsFileExists = await fs
 		.stat(path.join(projectRoot, 'evidence.plugins.yaml'))
 		.then(() => true)
 		.catch(() => false);
-	if (!pluginStat) {
+	if (!pluginsFileExists) {
 		log.warn('No evidence.plugins.yaml file found in project directory, no action was taken.');
 		return false;
 	}
@@ -36,7 +36,7 @@ export const migratePluginsToConfig = async () => {
 		await fs.unlink(path.join(process.cwd(), 'evidence.plugins.yaml'));
 	} catch (e) {
 		// do nothing
-		log.debug('Error Encountered Deleteing evidence.plugins.yaml', [e]);
+		log.debug('Error Encountered Deleteing evidence.plugins.yaml', e);
 	}
 	return true;
 };

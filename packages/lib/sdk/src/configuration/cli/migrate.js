@@ -8,6 +8,6 @@ export const migrateConfig = {
 		description: 'Migrates an existing evidence.plugins.yaml file to evidence.config.yaml'
 	},
 	async run() {
-		if (await migratePluginsToConfig()) log.info('Migrated plugins to config');
+		if (await migratePluginsToConfig()) log.info('Migrated evidence.plugins.yaml to evidence.config.yaml');
 	}
 };
