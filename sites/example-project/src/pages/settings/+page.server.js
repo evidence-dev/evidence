@@ -64,8 +64,7 @@ export const actions = {
 				updatedSource: await writeSourceConfig(opts, source)
 			};
 		} catch (e) {
-			log.debug(`error updating sources: ${e}`);
-			if (e.stack) log.debug(e.stack);
+			log.debug(`error updating sources: ${e}`, {error: e});
 			return fail(500, e.message);
 		}
 	},
