@@ -1,14 +1,24 @@
 <script>
-	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
-	import * as RangeCalendar from './index.js';
+	import { Calendar as CalendarPrimitive } from 'bits-ui';
+	import {
+		Day,
+		Cell,
+		Grid,
+		Header,
+		Months,
+		GridRow,
+		Heading,
+		GridBody,
+		GridHead,
+		HeadCell,
+		NextButton,
+		PrevButton
+	} from './index.js';
 	import * as Select from '../select/index.js';
-	import { cn } from '$lib/utils.js';
-	import { DateFormatter, getLocalTimeZone } from '@internationalized/date';
-	// required to dodge the styling on the shadcn version
 	import { Select as SelectPrimitive } from 'bits-ui';
+	import { DateFormatter, getLocalTimeZone } from '@internationalized/date';
 
-	/** @typedef {import("@internationalized/date").DateValue} DateValue */
-	/** @typedef {import("@internationalized/date").CalendarDate} CalendarDate */
+	import { cn } from '$lib/utils.js';
 
 	/** @type {import("bits-ui").DateRange | undefined} */
 	let value = undefined;
@@ -72,7 +82,7 @@
 	};
 </script>
 
-<RangeCalendarPrimitive.Root
+<CalendarPrimitive.Root
 	bind:value
 	bind:placeholder
 	bind:startValue
@@ -86,9 +96,9 @@
 	let:months
 	let:weekdays
 >
-	<RangeCalendar.Header>
-		<RangeCalendar.PrevButton />
-		<RangeCalendar.Heading class="flex items-center justify-between font-normal">
+	<Header>
+		<PrevButton />
+		<Heading class="flex items-center justify-between font-normal">
 			<Select.Root
 				selected={defaultMonth}
 				items={monthOptions}
@@ -135,33 +145,33 @@
 					{/each}
 				</Select.Content>
 			</Select.Root>
-		</RangeCalendar.Heading>
-		<RangeCalendar.NextButton />
-	</RangeCalendar.Header>
-	<RangeCalendar.Months>
+		</Heading>
+		<NextButton />
+	</Header>
+	<Months>
 		{#each months as month}
-			<RangeCalendar.Grid class="mx-auto w-fit">
-				<RangeCalendar.GridHead>
-					<RangeCalendar.GridRow class="flex">
+			<Grid>
+				<GridHead>
+					<GridRow class="flex">
 						{#each weekdays as weekday}
-							<RangeCalendar.HeadCell>
+							<HeadCell>
 								{weekday.slice(0, 2)}
-							</RangeCalendar.HeadCell>
+							</HeadCell>
 						{/each}
-					</RangeCalendar.GridRow>
-				</RangeCalendar.GridHead>
-				<RangeCalendar.GridBody>
+					</GridRow>
+				</GridHead>
+				<GridBody>
 					{#each month.weeks as weekDates}
-						<RangeCalendar.GridRow class="w-full mt-2">
+						<GridRow class="mt-2 w-full">
 							{#each weekDates as date}
-								<RangeCalendar.Cell {date}>
-									<RangeCalendar.Day {date} month={month.value} />
-								</RangeCalendar.Cell>
+								<Cell {date}>
+									<Day {date} month={month.value} />
+								</Cell>
 							{/each}
-						</RangeCalendar.GridRow>
+						</GridRow>
 					{/each}
-				</RangeCalendar.GridBody>
-			</RangeCalendar.Grid>
+				</GridBody>
+			</Grid>
 		{/each}
-	</RangeCalendar.Months>
-</RangeCalendarPrimitive.Root>
+	</Months>
+</CalendarPrimitive.Root>
