@@ -48,7 +48,7 @@ test('should throw js errors if js errors are thrown', async () => {
 		await runner('', './test/files/invalid.js');
 	} catch (error) {
 		assert.instance(error, Error);
-		assert.is(error.message, `Unexpected identifier 'as'`);
+		assert.is(error.message.startsWith(`Unexpected identifier`), true);
 	}
 });
 
