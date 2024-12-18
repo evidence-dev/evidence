@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { fly, fade, slide, crossfade } from 'svelte/transition';
+	import { fly, fade, crossfade } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 
 	import { lock, unlock } from 'tua-body-scroll-lock';
