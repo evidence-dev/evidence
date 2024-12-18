@@ -12,8 +12,7 @@
   "license": "MIT",
   "devDependencies": {
     "@evidence-dev/plugin-connector": "^2.1.15",
-    "typescript": "^5.3.3",
-    "uvu": "^0.5.10"
+    "typescript": "^5.3.3"
   },
   
   "dependencies": {
