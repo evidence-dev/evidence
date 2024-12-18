@@ -268,12 +268,12 @@ This means that any query chains included in `sources` will need to be replaced 
 If you use the VS Code migration command, chained queries found on markdown pages are left on the page rather than being moved to the `sources` directory like other queries. This is because we assume that most chained queries are simple enough for the syntax of your source database to match with the DuckDB syntax they will need to move to. In some cases, the syntax will not line up and you will need to make an adjustment.
 
 ### Evidence Plugins
-If your app includes an Evidence plugin (e.g., [Evidence Labs](https://labs.evidence.dev)):
+If your app includes an Evidence plugin
 1. Find the `evidence.plugins.yaml` file in your `_legacy_project` folder and copy the line(s) containing the plugin(s) you're using
 2. Paste those lines into the `evidence.plugins.yaml` file in your new project
 3. Install the plugin(s) in your project. E.g.,:
 ```shell
-npm install --save @evidence-dev/labs
+npm install --save your-plugin-name
 ```
 
 ### External Package Dependencies
