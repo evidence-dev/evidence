@@ -134,7 +134,7 @@ SQL file queries can [depend on other query files](/core-concepts/queries/#query
 
 ## Query Parameters
 
-Queries can accept parameters, which might be from an input component such as a [Dropdown](/components/dropdown), or from a URL parameter on a [template page](/core-concepts/templated-pages).
+Queries can accept parameters, which might be from an input component such as a [Dropdown](/components/inputs/dropdown), or from a URL parameter on a [template page](/core-concepts/templated-pages).
 
 ````markdown
 ```sql sales_by_month

@@ -62,8 +62,8 @@ The theme configuration defines the colors used by your app.
 
 The theme consists of 3 elements that define colors for different purposes:
 
-- [Color palettes](#color-palettes) configure colors for charts with different data series (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette)).
-- [Color scales](#color-scales) configure color ranges for charts with continuous data (e.g. [Heatmaps](/components/heatmap/#props-colorScale)).
+- [Color palettes](#color-palettes) configure colors for charts with different data series (e.g. [Bar Charts](/components/charts/bar-chart/#props-colorPalette)).
+- [Color scales](#color-scales) configure color ranges for charts with continuous data (e.g. [Heatmaps](/components/charts/heatmap/#props-colorScale)).
 - [Colors](#colors) configure colors of UI elements (e.g. background, text, inputs).
 
 You can pass any valid CSS color values to these properties (hexadecimal, RGB, HSL, named CSS colors, etc).
@@ -141,7 +141,7 @@ Color palettes can have any number of colors listed. If a chart has more series 
 
 ### Default Color Palette
 
-The `default` color palette is used by all series-based charts (e.g. [Bar Charts](/components/bar-chart/#props-colorPalette), [Line Charts](/components/line-chart/#props-colorPalette)).
+The `default` color palette is used by all series-based charts (e.g. [Bar Charts](/components/charts/bar-chart/#props-colorPalette), [Line Charts](/components/charts/line-chart/#props-colorPalette)).
 
 You can configure the default color palette for light and dark mode individually (different colors for each):
 
@@ -264,7 +264,7 @@ Color scales can have any number of colors listed. The colors will be blended in
 
 ### Default Color Scale
 
-The `default` color scale is used by charts that represent continuous data<!-- (e.g. [Heatmaps](/components/heatmap/#props-colorScale), [Area Maps](/components/area-map/#props-colorScale), [Data Tables](/components/data-table/#props-colorScale) -->.
+The `default` color scale is used by charts that represent continuous data<!-- (e.g. [Heatmaps](/components/charts/heatmap/#props-colorScale), [Area Maps](/components/maps/area-map/#props-colorScale), [Data Tables](/components/data/data-table/#props-colorScale) -->.
 
 You can configure the default color palette for light and dark mode individually (different colors for each):
 
@@ -434,7 +434,7 @@ Then use them in component props
 
 ### Props
 
-The color props accepted by many components (e.g. [`fillColor`](/components/bar-chart/#props-fillColor), [`labelColor`](/components/annotations/#props-labelColor)) accept a color in several different formats to reduce the friction of theming your app.
+The color props accepted by many components (e.g. [`fillColor`](/components/charts/bar-chart/#props-fillColor), [`labelColor`](/components/charts/annotations/#props-labelColor)) accept a color in several different formats to reduce the friction of theming your app.
 
 
 1. **Use a color name from your theme.** Its configured light and dark values will be used.
