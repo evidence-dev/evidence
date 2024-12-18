@@ -28,6 +28,7 @@ export class TimeSeriesStore {
 	updateData = async (data, x) => {
 		//need to fix update data re-running probably due to metrics causing a update each time it get updated
 		this.#xValue = x;
+
 		// Wait for all the metrics to be loaded
 		await Promise.all(get(this.#metricsStore).map((metric) => metric.promise));
 
@@ -42,7 +43,7 @@ export class TimeSeriesStore {
 		});
 	};
 
-	buildNewQuery = async (data, x) => {
+	buildNewQuery = async (data) => {
 		const newQueryBuild = new QueryBuilder();
 		newQueryBuild
 			.select(`${this.#xValue}`, {
@@ -53,7 +54,6 @@ export class TimeSeriesStore {
 			})
 			.from(taggedSql`(${data.originalText}) GROUP BY ALL ORDER BY ${this.#xValue} ASC`);
 		let metricQuery = Query.create(newQueryBuild.toString(), query);
-		console.log(newQueryBuild.toString());
 
 		this.#data = await metricQuery.fetch();
 		this.#lastDate =
