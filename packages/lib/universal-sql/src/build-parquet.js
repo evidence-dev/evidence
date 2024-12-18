@@ -34,6 +34,17 @@ function convertArrayToVector(column, rawValues) {
 		case 'string':
 			return vectorFromArray(rawValues, new Utf8());
 		case 'date':
+			if (!rawValues.some((v) => v !== null)) {
+				// All null date columns error out, so we have to do this
+				// https://github.com/evidence-dev/evidence/issues/2897
+				// separate reason than the bool version
+				console.warn(
+					chalk.yellow(
+						`\nWarning: Column "${column.name}" (type Date) contains only null values so it has been cast to Float64`
+					)
+				);
+				return vectorFromArray(rawValues, new Float64());
+			}
 			// TODO: What gives with timezones
 			return vectorFromArray(rawValues, new TimestampMillisecond());
 		case 'boolean':
