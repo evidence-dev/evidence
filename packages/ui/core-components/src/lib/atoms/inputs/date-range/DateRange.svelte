@@ -4,8 +4,6 @@
 
 <script>
 	import DateInput from '../date-input/_DateInput.svelte';
-	import { Query } from '@evidence-dev/sdk/usql';
-	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
@@ -13,6 +11,7 @@
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { dateToYYYYMMDD, formatDateString } from '../date-input/helpers.js';
+	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 
 	const inputs = getInputContext();
 	/** @type {string} */
@@ -36,22 +35,20 @@
 	/** @type {string | undefined} */
 	export let defaultValue;
 
-	const exec = getQueryFunction();
 	let query;
 	$: if (data && dates) {
-		const source = typeof data === 'string' ? data : `(${data.text})`;
-		query = Query.create(
-			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
-			exec,
-			{
-				initialData: $page?.data?.data[`DateRange-${name}_data`],
-				knownColumns: $page?.data?.data[`DateRange-${name}_columns`],
-				disableCache: true,
-				noResolve: false,
-				id: `DateRange-${name}`
-			}
+		const opts = {
+			value: dates,
+			data: data,
+			select: [{ start: `min(${dates})`, end: `max(${dates})` }]
+		};
+		const { results, update } = buildReactiveInputQuery(
+			opts,
+			`DateRange-${name}`,
+			$page?.data?.data[`DateRange-${name}_data`]
 		);
-		query.fetch();
+		query = results;
+		update(opts);
 	}
 
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));

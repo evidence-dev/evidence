@@ -4,8 +4,7 @@
 
 <script>
 	import DateInput from './_DateInput.svelte';
-	import { Query } from '@evidence-dev/sdk/usql';
-	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
+	// import { Query } from '@evidence-dev/sdk/usql';
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
@@ -14,6 +13,7 @@
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { toBoolean } from '../../../utils.js';
 	import { dateToYYYYMMDD, formatDateString } from './helpers.js';
+	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 
 	const inputs = getInputContext();
 
@@ -42,22 +42,20 @@
 
 	$: range = toBoolean(range);
 
-	const exec = getQueryFunction();
 	let query;
 	$: if (data && dates) {
-		const source = typeof data === 'string' ? data : `(${data.text})`;
-		query = Query.create(
-			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
-			exec,
-			{
-				initialData: $page?.data?.data[`DateInput-${name}_data`],
-				knownColumns: $page?.data?.data[`DateInput-${name}_columns`],
-				disableCache: true,
-				noResolve: false,
-				id: `DateInput-${name}`
-			}
+		const opts = {
+			value: dates,
+			data: data,
+			select: [{ start: `min(${dates})`, end: `max(${dates})` }]
+		};
+		const { results, update } = buildReactiveInputQuery(
+			opts,
+			`DateRange-${name}`,
+			$page?.data?.data[`DateRange-${name}_data`]
 		);
-		query.fetch();
+		query = results;
+		update(opts);
 	}
 
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
@@ -76,15 +74,12 @@
 	let selectedDateInput;
 	$: if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
 		$inputs[name] = {
-			value: undefined,
 			start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
 			end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
 		};
 	} else if (selectedDateInput && selectedDateInput && !range) {
 		$inputs[name] = {
-			value: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0)),
-			start: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0)),
-			end: undefined
+			value: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0))
 		};
 	}
 </script>
