@@ -32,13 +32,7 @@ jobs:
           - ${{ github.base_ref == 'main' }}
         exclude:
           - isMain: false
-            node-version: 18
-          - isMain: false
             node-version: 20
-          - isMain: false
-            os: macOS-latest
-          - isMain: false
-            os: windows-latest
 
     name: e2e/${{ matrix.project }}/${{ matrix.os }}/node-${{ matrix.node-version}}
     runs-on: ${{ matrix.os }}

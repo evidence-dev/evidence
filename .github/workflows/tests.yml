@@ -23,11 +23,7 @@ jobs:
           - ${{ github.base_ref == 'main' }}
         exclude:
           - isMain: false
-            node-version: 18
-          - isMain: false
             node-version: 20
-          - isMain: false
-            os: macOS-latest
 
     steps:
       - run: git config --global core.autocrlf false
