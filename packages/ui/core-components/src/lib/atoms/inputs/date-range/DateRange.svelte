@@ -11,7 +11,6 @@
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { dateToYYYYMMDD, formatDateString } from '../date-input/helpers.js';
-	import { Query } from '@evidence-dev/sdk/usql';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 
 	const inputs = getInputContext();
