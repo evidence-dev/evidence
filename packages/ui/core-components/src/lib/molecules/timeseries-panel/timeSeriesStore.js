@@ -51,8 +51,7 @@ export class TimeSeriesStore {
 					{}
 				)
 			})
-			.from(taggedSql`(${data.originalText}) AS subquery`)
-			.$groupby(`${this.#xValue}`);
+			.from(taggedSql`(${data.originalText}) GROUP BY ALL ORDER BY ${this.#xValue} ASC`);
 		let metricQuery = Query.create(newQueryBuild.toString(), query);
 		console.log(newQueryBuild.toString());
 

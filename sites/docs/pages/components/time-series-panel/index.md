@@ -8,7 +8,6 @@ queries:
 ```sql data2
 SELECT order_month 
 FROM orders 
-ORDER BY order_month ASC
 ```
 
 ```sql data3
