@@ -13,3 +13,5 @@ plugins:
     "@evidence-dev/snowflake": {}
     "@evidence-dev/motherduck": {}
     "@evidence-dev/mssql": {}
+deployment:
+  basePath: ""

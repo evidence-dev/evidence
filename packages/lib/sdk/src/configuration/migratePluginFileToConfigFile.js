@@ -20,7 +20,7 @@ export const migratePluginFileToConfigFile = async () => {
 	}
 
 	/** @type {import("./schemas/config.schema.js").EvidenceConfig} */
-	const config = getEvidenceConfig()
+	const config = getEvidenceConfig(EvidenceConfigSchema, true, true);
 	await updateEvidenceConfig(config);
 
 	// if evidence.plugins.yaml exists in the project directory, delete it

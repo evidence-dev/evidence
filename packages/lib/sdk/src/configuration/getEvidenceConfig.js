@@ -25,7 +25,8 @@ export const getEvidenceConfig = (
 	// that doesn't match the default parameter, but that shouldn't happen
 	// with normal usage (especially since we're using JS, not TS directly)
 	schema = /** @type {Schema} */ (/** @type {unknown} */ (EvidenceConfigSchema)),
-	mergeLegacy = true
+	mergeLegacy = true,
+	silenceLegacy = false
 ) => {
 	try {
 		const configFilePath = path.join(projectRoot, 'evidence.config.yaml');
@@ -45,7 +46,7 @@ export const getEvidenceConfig = (
 				e.message.includes('no such file or directory')) &&
 			mergeLegacy
 		) {
-			return getEvidenceConfigLegacy();
+			return getEvidenceConfigLegacy(silenceLegacy);
 		}
 
 		if (e instanceof z.ZodError) {
