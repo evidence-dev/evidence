@@ -59,26 +59,19 @@
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
-	$: if ((query && $query.dataLoaded) || !query) {
-		if (range) {
-			$inputs[name] = { start: startString, end: endString };
-		} else {
-			$inputs[name] = { value: startString };
-		}
-	}
-
 	let currentDate = dateToYYYYMMDD(new Date());
 
-	let selectedDateInput;
-	$: if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
-		$inputs[name] = {
-			start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-			end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
-		};
-	} else if (selectedDateInput && selectedDateInput && !range) {
-		$inputs[name] = {
-			value: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0))
-		};
+	function onSelectedDateInputChange(selectedDateInput) {
+		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
+			$inputs[name] = {
+				start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
+				end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
+			};
+		} else if (selectedDateInput && selectedDateInput && !range) {
+			$inputs[name] = {
+				value: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0))
+			};
+		}
 	}
 </script>
 
@@ -105,7 +98,7 @@
 					<Skeleton class="h-8 w-72" />
 				</svelte:fragment>
 				<DateInput
-					bind:selectedDateInput
+					{onSelectedDateInputChange}
 					start={startString}
 					end={endString}
 					loaded={loaded?.ready ?? true}
