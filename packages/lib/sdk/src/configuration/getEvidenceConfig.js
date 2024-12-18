@@ -5,6 +5,10 @@ import { EvidenceConfigSchema } from './schemas/config.schema.js';
 import { EvidenceError } from '../lib/EvidenceError.js';
 import { getEvidenceConfigLegacy } from './getEvidenceConfig.legacy.js';
 import { projectRoot } from '../lib/projectPaths.js';
+import chalk from 'chalk';
+import { z } from 'zod';
+import { unnestZodError } from '../lib/unnest-zod-error.js';
+import merge from 'lodash.merge';
 
 /** @typedef {import("zod").AnyZodObject} AnyZodObject */
 /** @typedef {import("zod").z.infer<typeof EvidenceConfigSchema>} EvidenceConfig */
@@ -30,7 +34,7 @@ export const getEvidenceConfig = (
 
 		if (mergeLegacy) {
 			const legacyConfig = getEvidenceConfigLegacy();
-			return schema.parse({ ...legacyConfig, ...result });
+			return schema.parse(merge(legacyConfig, result));
 		}
 
 		return schema.parse(result);
@@ -44,14 +48,12 @@ export const getEvidenceConfig = (
 			return getEvidenceConfigLegacy();
 		}
 
-		// if (e instanceof z.ZodError) {
-		// 	const errors = Object.entries(unnestZodError(e))
-		// 		.map(([path, error]) => `  ${chalk.gray(path)}: ${chalk.redBright(error)}`)
-		// 		.join('\n');
-		// 	console.error(`${chalk.red(`Invalid evidence.config.yaml file:`)}\n${errors}`);
-		// } else {
-		// 	console.log(e);
-		// }
+		if (e instanceof z.ZodError) {
+			const errors = Object.entries(unnestZodError(e))
+				.map(([path, error]) => `  ${chalk.gray(path)}: ${chalk.redBright(error)}`)
+				.join('\n');
+			throw new EvidenceError("Invalid evidence.config.yaml file detected", errors, { cause: e });
+		}
 
 		throw new EvidenceError('Unknown Error while loading Evidence Configuration', [], { cause: e });
 	}
