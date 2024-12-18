@@ -100,7 +100,7 @@
 					loaded={loaded?.ready ?? true}
 					{presetRanges}
 					{defaultValue}
-					range={true}
+					range
 				/>
 			</QueryLoad>
 		{/if}

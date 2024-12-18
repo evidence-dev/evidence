@@ -192,7 +192,6 @@
 		);
 		if (!targetPreset) return;
 		selectedPreset = targetPreset;
-		console.log(targetPreset);
 		if (range) {
 			selectedDateInput = targetPreset.range;
 		}
