@@ -189,6 +189,10 @@ export const evalSources = async (dataPath, metaPath, filters, strict) => {
 				if (e instanceof Error)
 					console.debug(chalk.dim('    ' + e.stack?.split('\n').join('\n    ')));
 				else console.debug(chalk.dim(e));
+
+				if (strict) {
+					throw e;
+				}
 			}
 		}
 	}
