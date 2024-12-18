@@ -23,10 +23,6 @@ This is a JavaScript source for Evidence. It allows you to run arbitrary JavaScr
    ```
    ````
 
-   ```
-
-   ```
-
 ## Credentials
 
 You can pass credentials via environment variables to your JS file. They must be prefixed with `EVIDENCE_`.
