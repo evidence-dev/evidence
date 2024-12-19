@@ -1,19 +1,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import chalk from 'chalk';
 import yaml from 'yaml';
 import { EvidenceConfigSchema } from './schemas/config.schema.js';
 import { EvidenceError } from '../lib/EvidenceError.js';
 import { getEvidenceConfigLegacy } from './getEvidenceConfig.legacy.js';
 import { projectRoot } from '../lib/projectPaths.js';
-import z from 'zod';
+import chalk from 'chalk';
+import { z } from 'zod';
 import { unnestZodError } from '../lib/unnest-zod-error.js';
+import merge from 'lodash.merge';
 
 /** @typedef {import("zod").AnyZodObject} AnyZodObject */
-/** @typedef {z.infer<typeof EvidenceConfigSchema>} EvidenceConfig */
+/** @typedef {import("zod").z.infer<typeof EvidenceConfigSchema>} EvidenceConfig */
 
 /**
- * @template {z.ZodSchema} [Schema=EvidenceConfigSchema]
+ * @template {import("zod").z.ZodSchema} [Schema=EvidenceConfigSchema]
  * @param {Schema} [schema]
  * @returns {import("zod").infer<Schema>}
  */
@@ -24,7 +25,8 @@ export const getEvidenceConfig = (
 	// that doesn't match the default parameter, but that shouldn't happen
 	// with normal usage (especially since we're using JS, not TS directly)
 	schema = /** @type {Schema} */ (/** @type {unknown} */ (EvidenceConfigSchema)),
-	mergeLegacy = true
+	mergeLegacy = true,
+	silenceLegacy = false
 ) => {
 	try {
 		const configFilePath = path.join(projectRoot, 'evidence.config.yaml');
@@ -33,7 +35,7 @@ export const getEvidenceConfig = (
 
 		if (mergeLegacy) {
 			const legacyConfig = getEvidenceConfigLegacy();
-			return schema.parse({ ...legacyConfig, ...result });
+			return schema.parse(merge(legacyConfig, result));
 		}
 
 		return schema.parse(result);
@@ -41,18 +43,17 @@ export const getEvidenceConfig = (
 		if (
 			e instanceof Error &&
 			(e.message.startsWith('Cannot find matching evidence.config.yaml') ||
-				e.message.includes('no such file or directory'))
+				e.message.includes('no such file or directory')) &&
+			mergeLegacy
 		) {
-			return getEvidenceConfigLegacy();
+			return getEvidenceConfigLegacy(silenceLegacy);
 		}
 
 		if (e instanceof z.ZodError) {
 			const errors = Object.entries(unnestZodError(e))
 				.map(([path, error]) => `  ${chalk.gray(path)}: ${chalk.redBright(error)}`)
 				.join('\n');
-			console.error(`${chalk.red(`Invalid evidence.config.yaml file:`)}\n${errors}`);
-		} else {
-			console.log(e);
+			throw new EvidenceError("Invalid evidence.config.yaml file detected", errors, { cause: e });
 		}
 
 		throw new EvidenceError('Unknown Error while loading Evidence Configuration', [], { cause: e });
