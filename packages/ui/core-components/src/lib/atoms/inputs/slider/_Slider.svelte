@@ -164,8 +164,10 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`relative ${sizeClass} mb-10 select-none`}>
 		<p class="pb-2 truncate text-xs">
-			{title} :
-			<span class="text-xs">{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span>
+			<span class="font-medium">{title}: </span>
+			<span class="text-xs">
+				{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span
+			>
 		</p>
 		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 		{#if showMaxMin}
