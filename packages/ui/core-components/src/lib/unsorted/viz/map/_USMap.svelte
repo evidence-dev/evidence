@@ -79,7 +79,7 @@
 	$: colorPalette = checkDeprecatedColor('USMap', 'colorPalette', colorPalette);
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
-	export let colorScale = 'info';
+	export let colorScale = 'default';
 	$: colorScale = checkDeprecatedColor('USMap', 'colorScale', colorScale);
 	$: colorScaleStore = resolveColorScale(colorScale);
 
@@ -305,5 +305,5 @@
 		<InvisibleLinks {data} {link} />
 	{/if}
 {:else}
-	<ErrorChart {error} {chartType} />
+	<ErrorChart {error} title={chartType} />
 {/if}

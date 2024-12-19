@@ -83,7 +83,7 @@
 	}
 	$: colorScale = checkDeprecatedColor('Column', 'colorScale', colorScale);
 
-	export let colorScale = 'positive';
+	export let colorScale = 'default';
 	$: colorScaleStore = resolveColorScale(colorScale ?? colorScale);
 
 	export let scaleColumn = undefined;

@@ -5,17 +5,11 @@ import { installDependencies, updateDependencies, buildProject, buildProjectStri
 
 import { runSources } from './sources';
 
-import {
-	createNewProject,
-	openIndex,
-	openWalkthrough,
-	copyProject,
-	migrateProjectToUSQL
-} from './project';
+import { createNewProject, openIndex, openWalkthrough, copyProject } from './project';
 import { createProjectFromTemplate } from './template';
 import { startServer, stopServer } from './server';
 import { preview } from './preview';
-import { createTemplatedPageFromQuery } from './documents';
+import { createTemplatedPageFromQuery, addCustomLayout } from './documents';
 import { openSettingsFile, viewExtensionSettings, viewAppSettings } from './settings';
 import { clearCache } from './cache';
 import { showOutput } from '../output';
@@ -55,8 +49,8 @@ export const enum Commands {
 	RunSources = 'evidence.runSources',
 	ShowOutput = 'evidence.showOutput',
 	OpenIndex = 'evidence.openIndex',
-	MigrateProjectToUSQL = 'evidence.migrateProjectToUSQL',
 	OpenEvidenceWalkthrough = 'evidence.openWalkthrough',
+	AddCustomLayout = 'evidence.addCustomLayout',
 	CreateTemplatedPageFromQuery = 'evidence.createTemplatedPageFromQuery',
 	OpenSimpleBrowser = 'simpleBrowser.api.open'
 }
@@ -89,8 +83,8 @@ export function registerCommands(context: ExtensionContext) {
 	registerCommand(Commands.RunSources, runSources);
 	registerCommand(Commands.ShowOutput, showOutput);
 	registerCommand(Commands.OpenIndex, openIndex);
-	registerCommand(Commands.MigrateProjectToUSQL, migrateProjectToUSQL);
 	registerCommand(Commands.OpenEvidenceWalkthrough, openWalkthrough);
+	registerCommand(Commands.AddCustomLayout, addCustomLayout);
 	registerCommand(Commands.CreateTemplatedPageFromQuery, createTemplatedPageFromQuery);
 }
 

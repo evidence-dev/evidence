@@ -44,12 +44,14 @@ appearance:
 
 ## Migration
 
-To enable dark mode in an Evidence application created before themes was released, add the the following to your `evidence.config.yaml`:
+To enable dark mode in an Evidence application created before themes was released, replace `evidence.plugins.yaml` with `evidence.config.yaml`:
 
 ```yaml
 appearance:
     default: system
     switcher: true
+plugins:
+    [contents of evidence.plugins.yaml, indented one additional level]
 ```
 
 

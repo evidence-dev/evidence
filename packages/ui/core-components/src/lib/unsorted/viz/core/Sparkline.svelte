@@ -42,7 +42,7 @@
 		chartType={spreadProps.chartType}
 		{isInitial}
 	/>
-	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+	<ErrorChart let:loaded slot="error" title={chartType} error={loaded.error.message} />
 	<Sparkline {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Sparkline>

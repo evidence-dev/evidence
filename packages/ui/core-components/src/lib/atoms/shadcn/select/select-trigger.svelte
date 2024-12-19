@@ -6,7 +6,6 @@
 
 	/** @type {string | undefined | null} */
 	let className = undefined;
-
 	export { className as class };
 </script>
 

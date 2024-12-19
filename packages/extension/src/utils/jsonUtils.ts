@@ -129,26 +129,6 @@ export async function hasManifest() {
 	return manifest.length > 0;
 }
 
-// export async function isUSQL() {
-//   const connectionFiles = await workspace.findFiles('**/sources/**/connection.yaml');
-//   return connectionFiles.length > 0;
-// }
-
-export async function isUSQL(): Promise<boolean> {
-	const workspaceRoot = workspace.workspaceFolders![0].uri.fsPath;
-	const packageJsonFolder = await getPackageJsonFolder();
-	const baseEvidenceFolder = path.join(workspaceRoot, packageJsonFolder ?? '');
-	const pluginsFilePath = path.join(baseEvidenceFolder, 'evidence.plugins.yaml');
-
-	try {
-		const fileContent = await fs.promises.readFile(pluginsFilePath, 'utf-8');
-		return fileContent.includes('datasources:');
-	} catch (err) {
-		console.error('Error reading evidence.plugins.yaml:', err);
-		return false;
-	}
-}
-
 interface ConnectionConfig {
 	type?: string;
 }

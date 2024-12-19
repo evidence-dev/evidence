@@ -62,5 +62,5 @@
 {:else if chartType === 'Big Value'}
 	<BigValueError {error} />
 {:else}
-	<ErrorChart {chartType} {error} />
+	<ErrorChart title={chartType} {error} />
 {/if}

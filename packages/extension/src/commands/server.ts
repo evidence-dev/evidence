@@ -1,4 +1,4 @@
-import { commands, env, workspace, Uri, window } from 'vscode';
+import { commands, env, workspace, Uri } from 'vscode';
 
 import { Commands } from './commands';
 import { Settings, getConfig } from '../config';
@@ -10,14 +10,8 @@ import { statusBar } from '../statusBar';
 import { timeout } from '../utils/timer';
 import { tryPort } from '../utils/httpUtils';
 import { hasDependencies } from './build';
-import { open } from 'fs';
 import { telemetryService } from '../extension';
-import {
-	hasManifest,
-	isUSQL,
-	getTypesFromConnections,
-	getPackageJsonFolder
-} from '../utils/jsonUtils';
+import { hasManifest, getTypesFromConnections, getPackageJsonFolder } from '../utils/jsonUtils';
 
 const localhost = 'localhost';
 let _running: boolean = false;
@@ -116,17 +110,15 @@ export async function startServer(pageUri?: Uri) {
 			telemetryService?.sendEvent('installDependencies');
 		}
 
-		// check if sources have been run (only applicable for USQL) If not, tack on a run sources command
+		// Check if sources have been run. If not, tack on a run sources command
 		// This checks if a manifest file exists. If not, run sources on server start
 		let sourcesCommand = '';
-		if (await isUSQL()) {
-			// if there's no manifest, either the project is unbuilt, or it's legacy - either way there's nothing to show
-			if (!(await hasManifest())) {
-				sourcesCommand = `npm run sources ; `;
-				const sourceNames = await getTypesFromConnections();
+		// if there's no manifest, either the project is unbuilt, or it's legacy - either way there's nothing to show
+		if (!(await hasManifest())) {
+			sourcesCommand = `npm run sources ; `;
+			const sourceNames = await getTypesFromConnections();
 
-				telemetryService?.sendEvent('runSources', { sources: sourceNames.join(', ') });
-			}
+			telemetryService?.sendEvent('runSources', { sources: sourceNames.join(', ') });
 		}
 
 		if (!_running) {

@@ -47,6 +47,8 @@ With a logo file in  `./static/my-logo.png`.
 </EvidenceDefaultLayout>
 ```
 
+If you want to use a different logo in light and dark mode, use the `lightLogo` and `darkLogo` props instead of `logo`.
+
 ## Options
 
 The `EvidenceDefaultLayout` component includes a number of features on every page that can be removed or customized via props
@@ -70,6 +72,24 @@ App title that will replace the Evidence Logo.
 >
 
 Link to an image which will replace the Evidence logo. This will also override any app title in the header. If the image is in your project's static directory, the link should be relative to the static directory.
+
+</PropListing>
+<PropListing
+    name="lightLogo"
+    options="/lightLogo.png"
+    defaultValue=""
+>
+
+Link to an image which will replace the Evidence logo in light mode. This will also override any app title in the header. If the image is in your project's static directory, the link should be relative to the static directory.
+
+</PropListing>
+<PropListing
+    name="darkLogo"
+    options="/darkLogo.png"
+    defaultValue=""
+>
+
+Link to an image which will replace the Evidence logo in dark mode. This will also override any app title in the header. If the image is in your project's static directory, the link should be relative to the static directory.
 
 </PropListing>
 <PropListing

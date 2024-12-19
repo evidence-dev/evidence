@@ -351,7 +351,7 @@
 </script>
 
 {#if error}
-	<ErrorChart chartType="Heatmap" {error} />
+	<ErrorChart title="Heatmap" {error} />
 {:else}
 	<ECharts
 		{data}

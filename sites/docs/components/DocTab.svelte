@@ -7,7 +7,10 @@
 	let activeTab = defaultTab;
 
 	const tabs = ['preview', 'code'];
-	let tabButtons = [];
+
+	function setTab(tab) {
+		activeTab = tab;
+	}
 
 	const [send, receive] = crossfade({
 		duration: 200,
@@ -25,7 +28,6 @@
 						class:text-base-content={activeTab === tab}
 						class:text-base-content-muted={activeTab !== tab}
 						on:click={() => (activeTab = tab)}
-						bind:this={tabButtons[index]}
 					>
 						{tab}
 					</button>
@@ -47,7 +49,9 @@
 			class={activeTab !== 'preview' ? 'h-[0px]' : 'mb-3 mt-2'}
 			class:invisible={activeTab !== 'preview'}
 		>
-			<slot name="preview" />
+			<div>
+				<slot name="preview" />
+			</div>
 		</div>
 		<div
 			class="overflow-auto md-preview {activeTab !== 'code' ? 'h-[0px]' : 'mt-2'}"
@@ -62,5 +66,7 @@
 	/* Styles codeblocks inside doctabs */
 	:global(.md-preview > div:first-of-type) {
 		margin: 0;
+		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+			var(--tw-shadow);
 	}
 </style>

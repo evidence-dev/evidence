@@ -3,19 +3,15 @@
 </script>
 
 <script>
-	import DateRange from './_DateRange.svelte';
-	import { Query } from '@evidence-dev/sdk/usql';
-	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
+	import DateInput from '../date-input/_DateInput.svelte';
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-
-	function dateToYYYYMMDD(date) {
-		return date.toISOString().split('T')[0];
-	}
+	import { dateToYYYYMMDD, formatDateString } from '../date-input/helpers.js';
+	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 
 	const inputs = getInputContext();
 	/** @type {string} */
@@ -39,52 +35,30 @@
 	/** @type {string | undefined} */
 	export let defaultValue;
 
-	const exec = getQueryFunction();
 	let query;
 	$: if (data && dates) {
-		const source = typeof data === 'string' ? data : `(${data.text})`;
-		query = Query.create(
-			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
-			exec,
-			{
-				initialData: $page?.data?.data[`DateRange-${name}_data`],
-				knownColumns: $page?.data?.data[`DateRange-${name}_columns`],
-				disableCache: true,
-				noResolve: false,
-				id: `DateRange-${name}`
-			}
-		);
+		const queryString = `SELECT min(${dates}) as start, max(${dates}) as end FROM ${typeof data === 'string' ? data : `(${data.text})`}`;
+		const id = `DateRange-${name}`;
+		const opts = {
+			initialData: $page?.data?.data[`DateRange-${name}_data`],
+			knownColumns: $page?.data?.data[`DateRange-${name}_columns`],
+			disableCache: true,
+			noResolve: false
+		};
+		query = buildQuery(queryString, id, opts.initialData, opts);
 		query.fetch();
 	}
 
-	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
-	$: startString =
-		typeof start === 'string' && YYYYMMDD.test(start)
-			? start
-			: start instanceof Date
-				? dateToYYYYMMDD(start)
-				: $query?.[0].start instanceof Date
-					? dateToYYYYMMDD($query?.[0].start)
-					: dateToYYYYMMDD(new Date(0));
-	$: endString =
-		typeof end === 'string' && YYYYMMDD.test(end)
-			? end
-			: end instanceof Date
-				? dateToYYYYMMDD(end)
-				: $query?.[0].end instanceof Date
-					? dateToYYYYMMDD($query?.[0].end)
-					: dateToYYYYMMDD(new Date());
+	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
+	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
-	$: if ((query && $query.dataLoaded) || !query) {
-		$inputs[name] = { start: startString, end: endString };
-	}
-
-	let selectedDateRange;
-	$: if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
-		$inputs[name] = {
-			start: dateToYYYYMMDD(selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-			end: dateToYYYYMMDD(selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date())
-		};
+	function onSelectedDateInputChange(selectedDateInput) {
+		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end)) {
+			$inputs[name] = {
+				start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
+				end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
+			};
+		}
 	}
 </script>
 
@@ -111,13 +85,14 @@
 					<Skeleton class="h-8 w-72" />
 				</svelte:fragment>
 
-				<DateRange
-					bind:selectedDateRange
+				<DateInput
+					{onSelectedDateInputChange}
 					start={startString}
 					end={endString}
 					loaded={loaded?.ready ?? true}
 					{presetRanges}
 					{defaultValue}
+					range
 				/>
 			</QueryLoad>
 		{/if}

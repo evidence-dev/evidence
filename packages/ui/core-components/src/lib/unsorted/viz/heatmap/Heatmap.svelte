@@ -33,7 +33,7 @@
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+	<ErrorChart let:loaded slot="error" title={chartType} error={loaded.error.message} />
 	<Heatmap {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Heatmap>

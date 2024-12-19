@@ -15,7 +15,12 @@
 
 	export let mobileSidebarOpen = undefined;
 	export let title = undefined;
+	/** @type {string | undefined} */
 	export let logo = undefined;
+	/** @type {string | undefined} */
+	export let lightLogo = undefined;
+	/** @type {string | undefined} */
+	export let darkLogo = undefined;
 	export let neverShowQueries = undefined;
 	export let fullWidth = undefined;
 	export let maxWidth = undefined;
@@ -42,7 +47,7 @@
 	>
 		{#if hideSidebar || sidebarFrontMatter === 'never'}
 			<a href={addBasePath('/')} class="block text-sm font-bold text-base-content">
-				<Logo {logo} {title} />
+				<Logo {logo} {lightLogo} {darkLogo} {title} />
 			</a>
 		{:else}
 			<div class="flex gap-x-4 items-center">
@@ -63,7 +68,7 @@
 					{/if}
 				</button>
 				<a href={addBasePath('/')} class="text-sm font-bold text-base-content hidden md:block">
-					<Logo {logo} {title} />
+					<Logo {logo} {lightLogo} {darkLogo} {title} />
 				</a>
 			</div>
 		{/if}

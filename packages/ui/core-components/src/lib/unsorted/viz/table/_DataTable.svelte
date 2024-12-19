@@ -774,7 +774,7 @@
 		{/if}
 	{/if}
 {:else}
-	<ErrorChart {error} chartType="Data Table" />
+	<ErrorChart {error} title="Data Table" />
 {/if}
 
 <style lang="postcss">

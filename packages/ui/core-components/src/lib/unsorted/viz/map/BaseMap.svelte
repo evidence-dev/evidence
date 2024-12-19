@@ -91,7 +91,7 @@
 </script>
 
 {#if error}
-	<ErrorChart {error} {chartType} />
+	<ErrorChart {error} title={chartType} />
 {:else}
 	<div class="relative break-inside-avoid">
 		{#if title}

@@ -16,6 +16,20 @@
 
 	/** @type {string | undefined} */
 	export let link = undefined;
+
+	function getWrapTitleAlignment(column, columnSummary) {
+		if (column.align) {
+			if (column.align === 'right') {
+				return 'justify-end';
+			} else if (column.align === 'center') {
+				return 'justify-center';
+			} else {
+				return 'justify-start';
+			}
+		} else if (safeExtractColumn(column, columnSummary).type === 'number') {
+			return 'justify-end';
+		}
+	}
 </script>
 
 <thead>
@@ -88,7 +102,11 @@
 				style:vertical-align="bottom"
 				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 			>
-				<div class="{wrapTitles || column.wrapTitle ? 'flex items-end' : ''} tracking-[-1.5px]">
+				<div
+					class="{wrapTitles || column.wrapTitle
+						? `flex items-end ${getWrapTitleAlignment(column, columnSummary)}`
+						: ''} tracking-[-1.5px]"
+				>
 					<span class="tracking-normal {wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}">
 						{column.title
 							? column.title
