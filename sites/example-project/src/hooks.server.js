@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import { log } from '@evidence-dev/sdk/logger'
 
 /** @param {Error | unknown} e  */
 const transformError = (e) => {
@@ -17,7 +18,8 @@ const transformError = (e) => {
 
 /** @type {import("@sveltejs/kit").HandleClientError } */
 export const handleError = (e) => {
-	console.error(`Uncaught error while server responding`, e);
+	log.error(`${e.message} | ${e.event.route.id ?? ""}`, { url: e.event.url.href, status: e.status });
+	log.debug(e);
 	return transformError(e.error);
 };
 
