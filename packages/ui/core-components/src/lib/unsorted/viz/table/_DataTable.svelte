@@ -130,13 +130,11 @@
 	$: showLinkCol = showLinkCol === 'true' || showLinkCol === true;
 
 	let error = undefined;
-	let groupDataPopulated = false;
 
 	// ---------------------------------------------------------------------------------------
 	// Add props to store to let child components access them
 	// ---------------------------------------------------------------------------------------
 	props.update((d) => {
-		groupDataPopulated = false;
 		return { ...d, data, columns: [] };
 	});
 
@@ -453,7 +451,7 @@
 	let groupRowData = [];
 
 	$: if (!error) {
-		if (groupBy && !groupDataPopulated) {
+		if (groupBy) {
 			groupedData = data.reduce((acc, row) => {
 				const groupName = row[groupBy];
 				if (!acc[groupName]) {
@@ -462,7 +460,6 @@
 				acc[groupName].push(row);
 				return acc;
 			}, {});
-			groupDataPopulated = true;
 		}
 
 		// After groupedData is populated, calculate aggregations for groupRowData
