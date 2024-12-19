@@ -2,6 +2,9 @@ import chalk from 'chalk';
 import { dataDirectory, metaDirectory } from '../../../lib/projectPaths.js';
 import { evalSources } from '../evalSources.js';
 import { updateManifest } from '../updateManifest.js';
+import { log } from '../../../logger/index.js';
+import { enableStrictMode, isStrictMode } from '../../../lib/strict.js';
+import { EvidenceError } from '../../../lib/EvidenceError.js';
 
 /** @type { import("@brianmd/citty").CommandDef } */
 export const sources = {
@@ -23,17 +26,29 @@ export const sources = {
 		queries: {
 			type: 'string',
 			description: "Run only the listed queries (',' delimited)"
+		},
+		strict: {
+			type: 'boolean',
+			description: 'Fail when a source query fails',
+			default: false
 		}
 	},
 
 	async run({ args }) {
+		if (args.strict) {
+			enableStrictMode();
+			if (!isStrictMode()) {
+				throw new EvidenceError('Failed to enable strict mode');
+			}
+		}
+
 		const sources = new Set(
 			args.sources
 				?.toString()
 				.split(',')
 				.map(/** @param {string} s */ (s) => s.trim())
 		);
-		if (sources.size) console.debug(`\tRunning sources: ${[...sources].join(', ')}`);
+		if (sources.size) log.debug(`\tRunning sources: ${[...sources].join(', ')}`);
 
 		const queries = new Set(
 			args.queries
@@ -41,17 +56,22 @@ export const sources = {
 				.split(',')
 				.map(/** @param {string} s */ (s) => s.trim())
 		);
-		if (queries.size) console.debug(`\tRunning queries: ${[...queries].join(', ')}`);
+		if (queries.size) log.debug(`\tRunning queries: ${[...queries].join(', ')}`);
 
-		const evaluatedManifest = await evalSources(dataDirectory, metaDirectory, {
-			sources,
-			queries,
-			only_changed: args.changed === true
-		});
+		const evaluatedManifest = await evalSources(
+			dataDirectory,
+			metaDirectory,
+			{
+				sources,
+				queries,
+				only_changed: args.changed === true
+			},
+			isStrictMode()
+		);
 
-		console.log('  Evaluated sources, saving manifest');
+		log.info('  Evaluated sources, saving manifest');
 
 		await updateManifest(evaluatedManifest, dataDirectory);
-		console.log(chalk.bold.green('  ✅ Done!'));
+		log.info(chalk.bold.green('  ✅ Done!'));
 	}
 };

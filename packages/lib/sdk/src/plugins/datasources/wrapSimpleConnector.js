@@ -82,7 +82,7 @@ export const wrapSimpleConnector = (mod, source) => {
 					}
 					yield new EvidenceError(
 						message,
-						[sourceFileName ?? ''],
+						[`${source.name}/${sourceFileName ?? ''} failed to execute`],
 						{ cause: e },
 						{ tableName: sourceFileName }
 					);

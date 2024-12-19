@@ -28,4 +28,4 @@ WHERE p.user_id = ${inputs.user.value}
   AND ${inputs.user.value} >= 0 AND ${inputs.tag.value} >= 0
 ```
 
-<DataTable data={posts}/>
+<DataTable data={posts} emptySet="warn"/>
