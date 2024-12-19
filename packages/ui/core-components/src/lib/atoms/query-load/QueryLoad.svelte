@@ -13,14 +13,11 @@
 		unsub = data.subscribe((v) => {
 			_data = v;
 		});
-		console.log(_data);
 	}
 
 	let unsub = () => {};
 
 	let _data;
-
-	$: console.log(data);
 
 	onDestroy(unsub);
 </script>
