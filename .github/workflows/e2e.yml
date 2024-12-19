@@ -33,6 +33,8 @@ jobs:
         exclude:
           - isMain: false
             node-version: 20
+          - isMain: false
+            os: windows-latest
 
     name: e2e/${{ matrix.project }}/${{ matrix.os }}/node-${{ matrix.node-version}}
     runs-on: ${{ matrix.os }}
