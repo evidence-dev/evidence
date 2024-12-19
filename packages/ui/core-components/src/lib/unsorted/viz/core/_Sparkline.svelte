@@ -44,8 +44,6 @@
 	let staticSVGSSR;
 	let error;
 
-	let tooltipBackgroundColor = 'white';
-
 	// Initialize chart for interactive mode
 	function initializeChart() {
 		if (interactive && chartContainer && !chartInstance) {
@@ -119,7 +117,6 @@
 			value_format_object,
 			date_format_object,
 			height,
-			tooltipBackgroundColor,
 			$theme
 		);
 

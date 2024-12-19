@@ -15,7 +15,7 @@
 	/** @type {DateValue | undefined} */
 	let placeholder = undefined;
 	/** @type {{ start: DateValue; end: DateValue; } | undefined} */
-	let selectedDateRange = undefined;
+	let selectedDateInput = undefined;
 	/** @type {'short' | 'long' | undefined} */
 	let weekdayFormat = 'short';
 	/** @type {DateValue | undefined} */
@@ -66,7 +66,7 @@
 		placeholder,
 		weekdayFormat,
 		startValue,
-		selectedDateRange,
+		selectedDateInput,
 		minValue,
 		maxValue
 	};
@@ -76,7 +76,7 @@
 	bind:value
 	bind:placeholder
 	bind:startValue
-	bind:selectedDateRange
+	bind:selectedDateInput
 	{minValue}
 	{maxValue}
 	{weekdayFormat}

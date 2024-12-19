@@ -254,5 +254,5 @@
 		{seriesOptions}
 	/>
 {:else}
-	<ErrorChart {error} chartType="Funnel Chart" />
+	<ErrorChart {error} title="Funnel Chart" />
 {/if}

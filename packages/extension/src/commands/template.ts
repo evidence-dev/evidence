@@ -219,6 +219,14 @@ export async function cloneTemplateRepository(
 						}
 					}
 
+					// Remove the 'scripts' folder containing 'update-evidence-packages.js'
+					const scriptsPath = path.join(projectFolderPath, 'scripts');
+					try {
+						await fs.rm(scriptsPath, { recursive: true, force: true });
+					} catch (error) {
+						// fail silently - leave the scripts folder in
+					}
+
 					openNewProjectFolder(Uri.file(projectFolderPath));
 				})
 				.catch((error: any) => {
