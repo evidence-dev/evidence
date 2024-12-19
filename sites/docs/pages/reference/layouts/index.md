@@ -151,6 +151,15 @@ Hides the sidebar navigation
 
 </PropListing>
 <PropListing
+    name="sidebarDepth"
+    options={['2', '3']}
+    defaultValue=3
+>
+
+Sets the depth of pages that will be shown in the sidebar. Reduce to 2 to hide third level pages.
+
+</PropListing>
+<PropListing
     name="hideHeader"
     options={['true', 'false']}
     defaultValue=false

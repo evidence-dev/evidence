@@ -123,7 +123,7 @@ for (name in names) {
 | Row 2    | Row 2    | Row 2    |
 ```
 
-To display data in a table, use a [Data Table](/components/data-table) instead.
+To display data in a table, use a [Data Table](/components/data/data-table) instead.
 
 ## Blockquotes
 
