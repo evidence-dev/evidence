@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 3.0.3
+
+### Patch Changes
+
+- 706963a42: Upgrade nanoid to 5.0.9
+  - @evidence-dev/universal-sql@2.2.4
+
 ## 3.0.2
 
 ### Patch Changes
