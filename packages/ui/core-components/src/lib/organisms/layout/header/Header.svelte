@@ -37,8 +37,7 @@
 </script>
 
 <header
-	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-base-300/50 bg-base-100/90 backdrop-blur print:hidden
-  {sidebarFrontMatter === 'hide' ? 'md:pl-8' : ''}"
+	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-base-300/50 bg-base-100/90 backdrop-blur print:hidden"
 >
 	<div
 		class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
@@ -53,7 +52,7 @@
 			<div class="flex gap-x-4 items-center">
 				<button
 					type="button"
-					class="text-base-content hover:bg-base-200 rounded-lg p-1 transition-all duration-500
+					class="text-base-content hover:bg-base-200 rounded-lg p-1 -ml-1 transition-all duration-500
           {sidebarFrontMatter === 'hide' ? 'block' : 'md:hidden'}"
 					on:click={() => {
 						mobileSidebarOpen = !mobileSidebarOpen;
