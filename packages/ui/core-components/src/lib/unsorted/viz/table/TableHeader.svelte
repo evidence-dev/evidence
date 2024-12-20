@@ -1,5 +1,6 @@
 <script>
 	import SortIcon from '../../ui/SortIcon.svelte';
+	import Info from '../../ui/Info.svelte';
 	import { safeExtractColumn } from './datatable.js';
 
 	export let rowNumbers = undefined;
@@ -113,6 +114,9 @@
 							: formatColumnTitles
 								? safeExtractColumn(column, columnSummary).title
 								: safeExtractColumn(column, columnSummary).id}
+						{#if column.description}
+							<Info description={column.description} size="4" />
+						{/if}
 					</span>
 					<span
 						class="tracking-normal {wrapTitles || column.wrapTitle ? 'ml-0.5' : ''} {compact

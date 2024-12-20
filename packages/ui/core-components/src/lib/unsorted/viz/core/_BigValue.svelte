@@ -7,6 +7,7 @@
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import Delta from './Delta.svelte';
+	import Info from '../../ui/Info.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { resolveColor } = getThemeStores();
@@ -47,6 +48,9 @@
 
 	/** @type {string | null}*/
 	export let link = null;
+
+	/** @type {string | undefined}*/
+	export let description = undefined;
 
 	let error = undefined;
 	$: try {
@@ -101,7 +105,12 @@
 	{#if error}
 		<BigValueError chartType="Big Value" error={error.message} />
 	{:else}
-		<p class="text-sm">{title}</p>
+		<p class="text-sm">
+			{title}
+			{#if description}
+				<Info {description} size="3" />
+			{/if}
+		</p>
 		<div class="relative text-xl font-medium my-0.5">
 			{#if link}
 				<a class="hover:bg-base-200" href={addBasePath(link)}>

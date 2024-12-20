@@ -10,6 +10,7 @@
 	import { expect, userEvent, within, fn } from '@storybook/test';
 	import Dropdown from '$lib/atoms/inputs/dropdown/Dropdown.svelte';
 	import PointMap from '../map/PointMap.svelte';
+	import Info from '../../ui/Info.svelte';
 	import AreaMap from '../map/AreaMap.svelte';
 	import BaseMap from '../map/BaseMap.svelte';
 	import Points from '../map/components/Points.svelte';
@@ -111,9 +112,19 @@
 
 <Story name="With Search">
 	{@const data = Query.create(`SELECT * from flights LIMIT 1000`, query)}
+
+	This is a sentence <Info description="sfiew feiwfj" />
+
 	<DataTable {data} title="Flights" search>
 		<Column id="id" title="ID" />
-		<Column id="airline" title="Airline" />
+		<Column id="airline" title="Airline" description="something" />
+		<Column id="departure_airport" title="Departure Airport" />
+		<Column id="arrival_airport" title="Arrival Airport" />
+	</DataTable>
+
+	<DataTable {data} title="Flights" search>
+		<Column id="id" title="ID" />
+		<Column id="airline" title="Airline" description="something" />
 		<Column id="departure_airport" title="Departure Airport" />
 		<Column id="arrival_airport" title="Arrival Airport" />
 	</DataTable>
