@@ -41,7 +41,7 @@
 >
 	<div
 		class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
-			'mx-auto px-6 sm:px-8 md:px-12 flex flex-1 items-center justify-between'}
+			'mx-auto px-5 sm:px-6 md:px-12 flex flex-1 items-center justify-between'}
 		style="max-width:{maxWidth}px;"
 	>
 		{#if hideSidebar || sidebarFrontMatter === 'never'}
