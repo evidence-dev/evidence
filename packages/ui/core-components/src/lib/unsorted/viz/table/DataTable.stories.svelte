@@ -32,6 +32,15 @@
 
 <script>
 	const inputStore = getInputContext();
+
+	// const data = Query.create(
+	// 	`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`,
+	// 	query
+	// );
+	// const data2 = Query.create(
+	// 		`SELECT * from flights where regulator = ${inputStore.regulator.value} limit 50`,
+	// 		query
+	// 	)
 </script>
 
 <Story name="Simple Case">
@@ -364,6 +373,26 @@
 	)}
 	<h3>AreaMap Error</h3>
 	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zip_codeERROR" />
+</Story>
+<Story name="With Input Filtering Query on GroupBy">
+	{@const data = Query.create(
+		`SELECT * from flights where regulator in ('Afghanistan', 'Belgium', 'Canada', 'Denmark') limit 50`,
+		query
+	)}
+	{@const filteredData = Query.create(
+		`SELECT * from flights where regulator = '${$inputStore.regulator.value}' limit 10`,
+		query
+	)}
+	<Dropdown name="regulator" {data} value="regulator" label="regulator" />
+	<h2>Normal Data</h2>
+	<DataTable {data} title="Flights" search groupBy="regulator" groupsOpen="false">
+		<Column id="id" title="ID" />
+		<Column id="airline" title="Airline" />
+		<Column id="departure_airport" title="Departure Airport" />
+		<Column id="arrival_airport" title="Arrival Airport" />
+	</DataTable>
+	<h2>Filtered Data</h2>
+	<DataTable data={filteredData} title="Flights" groupBy="regulator" groupsOpen="true" />
 </Story>
 <!-- <Story name="column sort layout shift">
 	{@const countries = Query.create(
