@@ -40,6 +40,33 @@ sidebar_position: 1
 
 ## Examples
 
+### Full Width
+
+<DocTab>
+  <div slot='preview'>
+    <Tabs fullWidth=true>
+        <Tab label="First Tab">
+            Content of the First Tab
+        </Tab>
+        <Tab label="Second Tab">
+            Content of the Second Tab
+        </Tab>
+    </Tabs>
+  </div>
+
+```markdown
+<Tabs fullWidth=true>
+    <Tab label="First Tab">
+        Content of the First Tab
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+    </Tab>
+</Tabs>
+```
+</DocTab>
+
+
 ### Custom Color
 
 <DocTab>
@@ -65,6 +92,33 @@ sidebar_position: 1
 </Tabs>
 ```
 </DocTab>
+
+### Background Color
+
+<DocTab>
+  <div slot='preview'>
+    <Tabs background=true>
+        <Tab label="First Tab">
+            Content of the First Tab
+        </Tab>
+        <Tab label="Second Tab">
+            Content of the Second Tab
+        </Tab>
+    </Tabs>
+  </div>
+
+```markdown
+<Tabs background=true>
+    <Tab label="First Tab">
+        Content of the First Tab
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+    </Tab>
+</Tabs>
+```
+</DocTab>
+
 
 ### Persist Selected Tab to URL
 
@@ -111,6 +165,24 @@ Unique Id for this set of tabs. When set, the selected tab is included in the UR
 >
 
 Color for the active tab.
+
+</PropListing>
+<PropListing
+    name="fullWidth"
+    options={[true, false]}
+    defaultValue="false"
+>
+
+Tabs take up full width of page
+
+</PropListing>
+<PropListing
+    name="background"
+    options={[true, false]}
+    defaultValue="false"
+>
+
+Include background color on active tab. Color is automatically determined based on `color` prop
 
 </PropListing>
 
