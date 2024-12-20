@@ -5,16 +5,15 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "uvu test test.js",
+    "test": "vitest",
     "check": "tsc --noEmit -p tsconfig.json"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@evidence-dev/plugin-connector": "^2.1.15",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^2.0.5"
   },
-  
   "dependencies": {
     "@evidence-dev/db-commons": "^1.0.5"
   },
