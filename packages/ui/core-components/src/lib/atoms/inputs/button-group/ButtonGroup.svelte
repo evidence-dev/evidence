@@ -106,10 +106,12 @@
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
-			class={display === 'tabs' ? '' : 'inline-flex w-fit max-w-full flex-col mt-2 mb-4 ml-0 mr-2'}
+			class={display === 'tabs'
+				? ''
+				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col mb-3 ml-0 mr-2`}
 		>
 			{#if title}
-				<span class="text-sm block mb-1"
+				<span class="text-xs font-medium block mb-0.5"
 					>{title}
 					{#if description}
 						<Info {description} />
@@ -119,7 +121,7 @@
 			<div
 				class={display === 'tabs'
 					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-					: 'inline-flex rounded-md shadow-sm shadow-base-100 overflow-auto h-8 border border-base-300 no-scrollbar'}
+					: 'inline-flex rounded-md shadow-sm mb-1 overflow-auto border border-base-300 no-scrollbar h-8'}
 				role="group"
 			>
 				{#if preset}
