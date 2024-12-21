@@ -289,6 +289,51 @@
 	}
 
 	// ---------------------------------------------------------------------------------------
+	// GROUPED DATA
+	// ---------------------------------------------------------------------------------------
+
+	let groupedData = {};
+	let groupRowData = [];
+
+	$: if (!error) {
+		if (groupBy) {
+			groupedData = data.reduce((acc, row) => {
+				const groupName = row[groupBy];
+				if (!acc[groupName]) {
+					acc[groupName] = [];
+				}
+				acc[groupName].push(row);
+				return acc;
+			}, {});
+		}
+
+		// After groupedData is populated, calculate aggregations for groupRowData
+		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
+			acc[groupName] = {}; // Initialize groupRow object for this group
+
+			for (const col of $props.columns) {
+				const id = col.id;
+				const colType = columnSummary.find((d) => d.id === id)?.type;
+				const totalAgg = col.totalAgg;
+				const weightCol = col.weightCol;
+				const rows = groupedData[groupName];
+				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
+			}
+
+			return acc;
+		}, {});
+
+		// Update groupToggleStates only for new groups
+		const existingGroups = Object.keys(groupToggleStates);
+		for (const groupName of Object.keys(groupedData)) {
+			if (!existingGroups.includes(groupName)) {
+				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
+			}
+			// Existing states are untouched
+		}
+	}
+
+	// ---------------------------------------------------------------------------------------
 	// SORTING
 	// ---------------------------------------------------------------------------------------
 
@@ -442,51 +487,6 @@
 		data,
 		$props.columns.map((d) => d.id)
 	);
-
-	// ---------------------------------------------------------------------------------------
-	// GROUPED DATA
-	// ---------------------------------------------------------------------------------------
-
-	let groupedData = {};
-	let groupRowData = [];
-
-	$: if (!error) {
-		if (groupBy) {
-			groupedData = data.reduce((acc, row) => {
-				const groupName = row[groupBy];
-				if (!acc[groupName]) {
-					acc[groupName] = [];
-				}
-				acc[groupName].push(row);
-				return acc;
-			}, {});
-		}
-
-		// After groupedData is populated, calculate aggregations for groupRowData
-		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
-			acc[groupName] = {}; // Initialize groupRow object for this group
-
-			for (const col of $props.columns) {
-				const id = col.id;
-				const colType = columnSummary.find((d) => d.id === id)?.type;
-				const totalAgg = col.totalAgg;
-				const weightCol = col.weightCol;
-				const rows = groupedData[groupName];
-				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
-			}
-
-			return acc;
-		}, {});
-
-		// Update groupToggleStates only for new groups
-		const existingGroups = Object.keys(groupToggleStates);
-		for (const groupName of Object.keys(groupedData)) {
-			if (!existingGroups.includes(groupName)) {
-				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
-			}
-			// Existing states are untouched
-		}
-	}
 
 	let fullscreen = false;
 	/** @type {number} */
