@@ -119,8 +119,8 @@
 				{/if}
 			</div>
 			<div class="relative">
-				{#if dev || !neverShowQueries}
-					<KebabMenu />
+				{#if dev }
+					<KebabMenu neverShowQueries={neverShowQueries} />
 				{/if}
 			</div>
 		</div>
