@@ -57,6 +57,7 @@
 			<TabDisplay
 				id={tab.id}
 				label={tab.label}
+				description={tab.description}
 				{color}
 				activeId={$context.activeId}
 				on:click={() => handleTabClick(tab.id)}

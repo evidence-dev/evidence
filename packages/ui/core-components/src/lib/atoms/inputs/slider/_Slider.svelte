@@ -7,6 +7,7 @@
 	const inputs = getInputContext();
 	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import {
 		formatValue,
 		getFormatObjectFromString
@@ -54,6 +55,9 @@
 
 	/** @type {string} */
 	let format_object;
+
+	/** @type {string | undefined} */
+	export let description = undefined;
 
 	export let data = null;
 
@@ -164,7 +168,12 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`relative ${sizeClass} mb-10 select-none`}>
 		<p class="pb-2 truncate text-xs">
-			{title} :
+			{title}
+			{#if description}
+				<Info {description} className="mr-2" />
+			{:else}
+				:
+			{/if}
 			<span class="text-xs">{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span>
 		</p>
 		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />

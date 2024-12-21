@@ -1,6 +1,7 @@
 <script>
 	import chroma from 'chroma-js';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import Info from '../../ui/Info.svelte';
 
 	const { resolveColor } = getThemeStores();
 
@@ -12,6 +13,8 @@
 	export let label;
 
 	export let activeId;
+
+	export let description = undefined;
 
 	$: bgColor = chroma($colorStore).alpha(0.1).css();
 	$: borderColor = chroma($colorStore).alpha(0.5).css();
@@ -32,4 +35,7 @@
 		: classes.notActive}"
 >
 	{label}
+	{#if description}
+		<Info {description} />
+	{/if}
 </button>

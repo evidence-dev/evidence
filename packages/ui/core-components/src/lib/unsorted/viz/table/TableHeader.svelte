@@ -115,7 +115,11 @@
 								? safeExtractColumn(column, columnSummary).title
 								: safeExtractColumn(column, columnSummary).id}
 						{#if column.description}
-							<Info description={column.description} size="4" />
+							<Info
+								description={column.description}
+								size="4"
+								className="max-w-3 whitespace-normal"
+							/>
 						{/if}
 					</span>
 					<span
