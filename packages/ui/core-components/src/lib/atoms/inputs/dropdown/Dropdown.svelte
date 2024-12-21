@@ -209,7 +209,7 @@
 {/each}
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
+	<div class="mt-2 mb-4 ml-0 mr-2 inline-block bg-base-100">
 		{#if hasQuery && $query.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"

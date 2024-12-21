@@ -8,6 +8,7 @@
 	import { userEvent, within, waitFor } from '@storybook/test';
 
 	import Dropdown from '../Dropdown.svelte';
+	import InputGroup from '../../input-group/InputGroup.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import DropdownOption from '../helpers/DropdownOption.svelte';
@@ -44,7 +45,16 @@
 
 <Story name="Basic Usage">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
-	<Dropdown name="test" {data} value="value" label="label" />
+	<InputGroup>
+		<Dropdown name="test" {data} value="value" label="label" />
+		<Dropdown name="test" {data} value="value" label="label" title="Dropdown" />
+		<Dropdown name="test" {data} value="value" label="label" />
+		<Dropdown name="test" {data} value="value" label="label" />
+		<Dropdown name="test" {data} value="value" label="label" />
+		<Dropdown name="test" {data} value="value" label="label" />
+		<Dropdown name="test" {data} value="value" label="label" />
+		<Dropdown name="test" {data} value="value" label="label" />
+	</InputGroup>
 </Story>
 
 <Story name="Loading state">
