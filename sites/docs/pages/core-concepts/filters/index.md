@@ -6,7 +6,7 @@ description: Filters dynamically change what data is returned by a query. Filter
 
 Filters dynamically change what data is returned by a query. Filters take the input that a user provides via a component, and use it to change the query.
 
-The below example uses the Evidence [`<Dropdown/>`](/components/dropdown) component. 
+The below example uses the Evidence [`<Dropdown/>`](/components/inputs/dropdown) component. 
 
 ## Examples
 

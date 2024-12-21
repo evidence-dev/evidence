@@ -59,6 +59,8 @@
 	export let hideHeader = false;
 	/** @type {boolean} */
 	export let hideTOC = false;
+	/** @type {number} */
+	export let sidebarDepth = 3;
 
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
@@ -171,6 +173,7 @@
 						{builtWithEvidence}
 						{hideHeader}
 						{sidebarFrontMatter}
+						{sidebarDepth}
 					/>
 				</div>
 			{/if}
