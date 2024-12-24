@@ -27,7 +27,7 @@ export function _buildPageManifest(pages) {
 		isPage: false
 	};
 	for (const [pagePath, pageContent] of Object.entries(pages)) {
-		const path = pagePath.replace('/src/pages/', '');
+		const path = pagePath.replace('src/pages/', '');
 		let node = fileTree;
 		for (const part of path.split('/')) {
 			if (part === '+page.md') {
@@ -71,7 +71,8 @@ export async function GET() {
 				const relative_path = path.join(dirent.parentPath ?? dirent.path ?? dir, dirent.name);
 				const content = await fs.readFile(relative_path, 'utf-8');
 				// regularize for windows
-				pages[new URL(`file:///${relative_path}`).pathname] = content;
+				const normalized_path = path.normalize(relative_path).replace('\\', '/');
+				pages[normalized_path] = content;
 			} else if (dirent.isDirectory()) {
 				await recursiveReadDir(path.join(dir, dirent.name));
 			}
