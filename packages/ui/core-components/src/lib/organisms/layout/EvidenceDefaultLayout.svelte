@@ -73,21 +73,25 @@
 	function convertFileTreeToFileMap(fileTree) {
 		const map = new Map();
 
-		function traverse(node) {
-			if (!node) {
-				return;
+		function traverse(node, currentPath = '') {
+			// Build the full path for the current node
+			const fullPath = node.href || currentPath;
+
+			// Add the current node to the map if it's a page
+			if (node.isPage) {
+				map.set(decodeURI(fullPath), node);
 			}
 
-			if (node.href) {
-				const decodedHref = decodeURI(node.href);
-				map.set(decodedHref, node);
+			// Traverse children
+			if (node.children) {
+				Object.entries(node.children).forEach(([key, child]) => {
+					const childPath = `${fullPath}/${key}`;
+					traverse(child, childPath);
+				});
 			}
-
-			Object.values(node.children).forEach(traverse);
 		}
 
 		traverse(fileTree);
-
 		return map;
 	}
 
