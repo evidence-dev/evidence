@@ -452,10 +452,11 @@
 	let groupedData = {};
 	let groupRowData = [];
 
+	$: if (data) {
+		groupDataPopulated = false;
+	}
+
 	$: if (!error) {
-		if (data) {
-			groupDataPopulated = false;
-		}
 		if (groupBy && !groupDataPopulated) {
 			groupedData = data.reduce((acc, row) => {
 				const groupName = row[groupBy];
