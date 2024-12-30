@@ -383,15 +383,16 @@
 		`SELECT * from flights where regulator = '${$inputStore.regulator.value}' limit 10`,
 		query
 	)}
+
 	<Dropdown name="regulator" {data} value="regulator" label="regulator" />
-	<h2>Normal Data</h2>
-	<DataTable {data} title="Flights" search groupBy="regulator" groupsOpen="false">
-		<Column id="id" title="ID" />
-		<Column id="airline" title="Airline" />
-		<Column id="departure_airport" title="Departure Airport" />
-		<Column id="arrival_airport" title="Arrival Airport" />
-	</DataTable>
 	<h2>Filtered Data</h2>
+	<DataTable data={filteredData} title="Flights" groupsOpen="false">
+		<Column id="id" title="ID" />
+		<Column id="plane" title="Plane" />
+		<Column id="airline" title="Airline" />
+		<Column id="regulator" title="Regulator" />
+	</DataTable>
+	<h2>Filtered Data Group By</h2>
 	<DataTable data={filteredData} title="Flights" groupBy="regulator" groupsOpen="true" />
 </Story>
 <!-- <Story name="column sort layout shift">
