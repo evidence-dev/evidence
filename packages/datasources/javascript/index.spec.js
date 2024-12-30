@@ -48,7 +48,11 @@ describe('Runner Tests', () => {
 			await runner('', './test/invalid.js');
 		} catch (error) {
 			expect(error.name).toBe('Error');
-			expect(error.message.startsWith('Failed to parse source for import analysis because the content contains invalid JS syntax')).toBe(true);
+			expect(
+				error.message.startsWith(
+					'Failed to parse source for import analysis because the content contains invalid JS syntax'
+				)
+			).toBe(true);
 		}
 	});
 

@@ -36,5 +36,5 @@ packages/ui/icons/src
 storybook-static
 
 # This is an invalid test file that should be ignored
-**/test/files/invalid.js
-**/test/files/noExport.js
+**/invalid.js
+**/noExport.js
