@@ -1,6 +1,7 @@
 const mdsvex = require('mdsvex');
 const { highlighter } = require('./src/utils/highlighter.cjs');
 const addScriptTags = require('./src/add-script-tags.cjs');
+const addBlankLines = require('./src/add-blank-lines.cjs');
 const processQueries = require('./src/process-queries.cjs');
 const addClasses = require('./src/add-classes.cjs');
 // This is includes future proofing to add support for Prism highlighting
@@ -14,6 +15,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 		injectPartials,
 		addScriptTags,
 		processQueries.processQueries(componentDevelopmentMode),
+		addBlankLines,
 		mdsvex.mdsvex({
 			extensions: ['.md'],
 			smartypants: {
