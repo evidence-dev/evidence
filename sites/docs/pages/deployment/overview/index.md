@@ -12,24 +12,24 @@ In production, Evidence generates [static sites](https://www.netlify.com/blog/20
 
 Static sites are very versatile, and so you can host your Evidence app using Evidence Cloud, cloud services like AWS, Azure, Netlify or Vercel, or your own infrastructure.
 
-You can also configure Evidence as a [Single Page App (SPA)](/deployment/rendering-modes). In SPA mode Evidence will not pre-build all the pages in your application. This can be preferrable if your app has many pages (>1,000) causing long build times.
+You can also configure Evidence as a [Single Page App (SPA)](/deployment/configuration/rendering-modes). In SPA mode Evidence will not pre-build all the pages in your application. This can be preferrable if your app has many pages (>1,000) causing long build times.
 
 ## Evidence Cloud
 
-The easiest way to deploy Evidence is on [Evidence Cloud](/deployment/evidence-cloud). Evidence Cloud is free for public apps, and has paid plans for private apps.
+The easiest way to deploy Evidence is on [Evidence Cloud](/deployment/cloud/evidence-cloud). Evidence Cloud is free for public apps, and has paid plans for private apps.
 
 ## Self-host
 
 You can also self-host Evidence anywhere suitable for hosting static sites. See guides for:
-- [AWS Amplify](/deployment/aws-amplify)
-- [Azure Static Apps](/deployment/azure-static-apps)
-- [Cloudflare Pages](/deployment/cloudflare-pages)
-- [Firebase](/deployment/firebase)
-- [GitHub Pages](/deployment/github-pages)
-- [GitLab Pages](/deployment/gitlab-pages)
-- [Hugging Face Spaces](/deployment/hugging-face-spaces)
-- [Netlify](/deployment/netlify)
-- [Vercel](/deployment/vercel)
+- [AWS Amplify](/deployment/self-host/aws-amplify)
+- [Azure Static Apps](/deployment/self-host/azure-static-apps)
+- [Cloudflare Pages](/deployment/self-host/cloudflare-pages)
+- [Firebase](/deployment/self-host/firebase)
+- [GitHub Pages](/deployment/self-host/github-pages)
+- [GitLab Pages](/deployment/self-host/gitlab-pages)
+- [Hugging Face Spaces](/deployment/self-host/hugging-face-spaces)
+- [Netlify](/deployment/self-host/netlify)
+- [Vercel](/deployment/self-host/vercel)
 
 ## Build Process
 
@@ -76,6 +76,6 @@ To find the environment variables that you'll need to set for your app:
 
 <Alert status=info>
 
-For details on how to use different data for different environments, see [Environments](/deployment/environments).
+For details on how to use different data for different environments, see [Environments](/deployment/configuration/environments).
 
 </Alert>

@@ -14,7 +14,7 @@
 	<!-- Bar -->
 	<div
 		class={cn(
-			'group-hover:bg-primary/30 dark:group-hover:bg-primary/40 bg-base-100 absolute inset-y-0 left-0 z-[-10] transition-colors w-full',
+			'group-hover:bg-primary/15 dark:group-hover:bg-primary/40 bg-base-100 absolute inset-y-0 left-0 z-[-10] transition-colors w-full',
 			{
 				'bg-base-200': isSelected
 			}
@@ -22,7 +22,7 @@
 	/>
 	<div
 		class={cn(
-			'bg-primary/20 dark:bg-primary/30 group-hover:bg-primary/30 dark:group-hover:bg-primary/40 absolute inset-y-0 left-0 z-[-10]',
+			'bg-primary/10 dark:bg-primary/30 group-hover:bg-primary/15 dark:group-hover:bg-primary/40 absolute inset-y-0 left-0 z-[-10]',
 			{
 				// undefined occurs in multi-selects where the user has selected mutually exclusive options (see null row column combination story)
 				'bg-base-300': row.metric === undefined
@@ -32,7 +32,7 @@
 				'bg-transparent': row.metric === null
 			},
 			{
-				'bg-primary/50 dark:bg-primary/60 text-primary-content': row.metric && isSelected
+				'bg-primary/30 dark:bg-primary/60 text-primary-content': row.metric && isSelected
 			}
 		)}
 		style={row.metric
@@ -45,7 +45,7 @@
 
 	<span
 		class={cn(
-			'truncate transition-colors',
+			'truncate transition-colors pl-1',
 			{
 				'font-medium': isSelected
 			},
@@ -56,7 +56,7 @@
 	>
 		{row.dimensionValue ?? 'Missing'}
 	</span>
-	<span class="tabular-nums">
+	<span class="tabular-nums pr-1">
 		{#if row.metric}
 			{formattedValue}
 		{:else}
