@@ -31,6 +31,8 @@
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	import { getThemeStores } from '../../../themes/themes.js';
 
+	import { onMount } from 'svelte';
+
 	const { resolveColor } = getThemeStores();
 
 	// Set up props store
@@ -41,6 +43,7 @@
 	export let data;
 	export let queryID = undefined;
 	export let rows = 10; // number of rows to show
+
 	$: rows = Number.parseInt(rows);
 
 	export let rowNumbers = false;
@@ -136,7 +139,6 @@
 	// Add props to store to let child components access them
 	// ---------------------------------------------------------------------------------------
 	props.update((d) => {
-		groupDataPopulated = false;
 		return { ...d, data, columns: [] };
 	});
 
@@ -288,6 +290,56 @@
 			},
 			5000
 		);
+	}
+
+	// ---------------------------------------------------------------------------------------
+	// GROUPED DATA
+	// ---------------------------------------------------------------------------------------
+
+	let groupedData = {};
+	let groupRowData = [];
+
+	$: if (data) {
+		groupDataPopulated = false;
+	}
+
+	$: if (!error) {
+		if (groupBy && !groupDataPopulated) {
+			groupedData = data.reduce((acc, row) => {
+				const groupName = row[groupBy];
+				if (!acc[groupName]) {
+					acc[groupName] = [];
+				}
+				acc[groupName].push(row);
+				return acc;
+			}, {});
+			groupDataPopulated = true;
+		}
+
+		// After groupedData is populated, calculate aggregations for groupRowData
+		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
+			acc[groupName] = {}; // Initialize groupRow object for this group
+
+			for (const col of $props.columns) {
+				const id = col.id;
+				const colType = columnSummary.find((d) => d.id === id)?.type;
+				const totalAgg = col.totalAgg;
+				const weightCol = col.weightCol;
+				const rows = groupedData[groupName];
+				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
+			}
+
+			return acc;
+		}, {});
+
+		// Update groupToggleStates only for new groups
+		const existingGroups = Object.keys(groupToggleStates);
+		for (const groupName of Object.keys(groupedData)) {
+			if (!existingGroups.includes(groupName)) {
+				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
+			}
+			// Existing states are untouched
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------
@@ -444,56 +496,6 @@
 		data,
 		$props.columns.map((d) => d.id)
 	);
-
-	// ---------------------------------------------------------------------------------------
-	// GROUPED DATA
-	// ---------------------------------------------------------------------------------------
-
-	let groupedData = {};
-	let groupRowData = [];
-
-	$: if (data) {
-		groupDataPopulated = false;
-	}
-
-	$: if (!error) {
-		if (groupBy && !groupDataPopulated) {
-			groupedData = data.reduce((acc, row) => {
-				const groupName = row[groupBy];
-				if (!acc[groupName]) {
-					acc[groupName] = [];
-				}
-				acc[groupName].push(row);
-				return acc;
-			}, {});
-			groupDataPopulated = true;
-		}
-
-		// After groupedData is populated, calculate aggregations for groupRowData
-		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
-			acc[groupName] = {}; // Initialize groupRow object for this group
-
-			for (const col of $props.columns) {
-				const id = col.id;
-				const colType = columnSummary.find((d) => d.id === id)?.type;
-				const totalAgg = col.totalAgg;
-				const weightCol = col.weightCol;
-				const rows = groupedData[groupName];
-				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
-			}
-
-			return acc;
-		}, {});
-
-		// Update groupToggleStates only for new groups
-		const existingGroups = Object.keys(groupToggleStates);
-		for (const groupName of Object.keys(groupedData)) {
-			if (!existingGroups.includes(groupName)) {
-				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
-			}
-			// Existing states are untouched
-		}
-	}
 
 	let fullscreen = false;
 	/** @type {number} */
