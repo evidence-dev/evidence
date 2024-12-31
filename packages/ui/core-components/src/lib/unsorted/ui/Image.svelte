@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { processDimension } from '../../utils.js';
+	import { processDimension, toBoolean } from '../../utils.js';
 	import { cn } from '$lib/utils.js';
 
 	let className = undefined;
@@ -14,6 +14,9 @@
 	export let width = ''; // Width of the image
 	export let height = ''; // Height of the image
 	export let align = 'center'; // center, left, right
+	export let border = false;
+	border = toBoolean(border);
+
 	const alignMap = {
 		center: 'center',
 		left: 'start',
@@ -31,7 +34,10 @@
 		src={url}
 		alt={description}
 		style={`width: ${processedWidth}; height: ${processedHeight};`}
-		class={cn('max-w-full h-auto rounded', className)}
+		class={cn(
+			`max-w-full h-auto rounded ${border ? 'border border-gray-300 rounded-md shadow-sm' : ''}`,
+			className
+		)}
 		loading="lazy"
 	/>
 </div>

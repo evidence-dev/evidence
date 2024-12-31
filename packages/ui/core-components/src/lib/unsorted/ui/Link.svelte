@@ -3,6 +3,7 @@
 </script>
 
 <script>
+	import { cn } from '$lib/utils.js';
 	import { toBoolean } from '../../utils.js';
 
 	let className = undefined;
@@ -18,7 +19,7 @@
 	href={url}
 	target={newTab ? '_blank' : '_self'}
 	rel={newTab ? 'noopener noreferrer' : undefined}
-	class={className}
+	class={cn('markdown', className)}
 >
 	{label}
 </a>
