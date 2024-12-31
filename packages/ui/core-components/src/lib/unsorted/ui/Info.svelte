@@ -24,11 +24,11 @@
 	$: textColor = chroma($colorStore).css();
 </script>
 
-<HoverCard>
+<HoverCard align="start" side="right" alignOffset={-8} sideOffset={4}>
 	<span
 		slot="trigger"
 		style:--textColor={textColor}
-		class="inline-block align-middle pb-0.5 pr-1 leading-4 cursor-helprelative w-fit {className}"
+		class="inline-block align-middle pb-0.5 pr-1 leading-4 w-fit {className}"
 		role="tooltip"
 	>
 		<slot name="handle">
