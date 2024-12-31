@@ -3,6 +3,11 @@
 </script>
 
 <script>
+	import { cn } from '$lib/utils.js';
+
+	let className = undefined;
+	export { className as class };
+
 	export let url = ''; // The URL to embed
 	export let title = ''; // A description or title for the embed
 	export let width = '100%'; // Width of the embed, defaults to full width
@@ -19,9 +24,12 @@
 </script>
 
 <div
-	class={`embed-wrapper relative overflow-hidden ${
-		border ? 'border border-gray-300 rounded-md shadow-sm' : ''
-	}`}
+	class={cn(
+		`embed-wrapper relative overflow-hidden ${
+			border ? 'border border-gray-300 rounded-md shadow-sm' : ''
+		}`,
+		className
+	)}
 	style={`width: ${tailwindWidth}; height: ${tailwindHeight};`}
 >
 	<iframe

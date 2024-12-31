@@ -1,13 +1,12 @@
 export { default as LinkButton } from './LinkButton.svelte';
 export { default as BigLink } from './BigLink.svelte';
-export { default as Card } from './Card.svelte';
 export { default as ChevronToggle } from './ChevronToggle.svelte';
 export { default as CodeBlock } from './CodeBlock.svelte';
 export { default as Details } from './Details.svelte';
 export { default as DownloadData } from './DownloadData.svelte';
 export { default as EmailSignup } from './EmailSignup.svelte';
 export { default as Embed } from './Embed.svelte';
-export { default as Footnote } from './Footnote.svelte';
+export { default as Note } from './Note.svelte';
 export { default as Group } from './Group.svelte';
 export { default as Image } from './Image.svelte';
 export { default as LastRefreshed } from './LastRefreshed.svelte';

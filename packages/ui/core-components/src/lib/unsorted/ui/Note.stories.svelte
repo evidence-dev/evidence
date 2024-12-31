@@ -1,10 +1,10 @@
 <script context="module">
-	import Footnote from './Footnote.svelte';
+	import Note from './Note.svelte';
 
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
-		title: 'UI/Footnote',
-		component: Footnote
+		title: 'UI/Note',
+		component: Note
 	};
 </script>
 
@@ -18,18 +18,18 @@
 
 <Story name="All" args={{ x: 'x', y: 'y', series: 'series' }} let:args>
 	{@const data = Query.create(`select * from numeric_series`, query)}
-	<Footnote id="1">
+	<Note>
 		The data for this report was sourced from the World Bank World Development Indicators dataset.
-	</Footnote>
-	<Footnote id="2">
+	</Note>
+	<Note>
 		The data for this report was sourced from the World Bank World Development Indicators dataset.
-	</Footnote>
-	<Footnote id="3">
+	</Note>
+	<Note>
 		The data for this report was sourced from the World Bank World Development Indicators dataset.
-	</Footnote>
+	</Note>
 	<BarChart {data} {...args} />
-	<Footnote id="1">
+	<Note>
 		The data for this report was sourced from the World Bank World Development Indicators dataset.
-	</Footnote>
+	</Note>
 	<BarChart {data} {...args} />
 </Story>

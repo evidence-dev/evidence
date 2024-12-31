@@ -5,11 +5,13 @@
 <script>
 	import { toBoolean } from '../../utils.js';
 
+	let className = undefined;
+	export { className as class };
+
 	export let url = '#'; // Destination URL
 	export let label = 'Click here'; // Link text
 	export let newTab = false; // Open in a new tab
 	newTab = toBoolean(newTab);
-	export let className = ''; // Additional classes
 </script>
 
 <a
