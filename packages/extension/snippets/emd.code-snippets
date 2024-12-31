@@ -424,9 +424,7 @@
 	},
 	"Note": {
 		"prefix": "/Note",
-		"body": [
-			"<Note>\n\t${1:Note Content}\n</Note>\n\n"
-		],
+		"body": ["<Note>\n\t${1:Note Content}\n</Note>\n\n"],
 		"description": "Insert Note"
 	},
 	"Embed": {
