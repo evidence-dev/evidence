@@ -31,8 +31,6 @@
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	import { getThemeStores } from '../../../themes/themes.js';
 
-	import { onMount } from 'svelte';
-
 	const { resolveColor } = getThemeStores();
 
 	// Set up props store
