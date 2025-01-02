@@ -152,14 +152,14 @@
 	});
 </script>
 
-<div class="grid grid-rows-6 gap-y-1 relative">
+<div class="grid grid-cols-1 grid-rows-6 gap-y-1 relative">
 	<div
-		class="print:hidden absolute inset-0 h-full w-full bg-gray-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
+		class="print:hidden absolute inset-0 h-full w-full bg-base-100 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
 	/>
 	<div class="row-span-2 relative">
-		<div class="font-bold text-gray-700">{selectedMetric}</div>
+		<div class="font-bold text-base-heading">{selectedMetric}</div>
 		<!-- kw: Probably needs to be formatted -->
-		<div class="text-sm font-light text-gray-800">
+		<div class="text-sm font-light text-base-content">
 			{currentValue ? `$${Number(currentValue.toFixed(2))}` : ''}
 		</div>
 	</div>
@@ -174,7 +174,7 @@
 	</div>
 	<div class="row-span-1">
 		<RadioGroup.Root
-			class="flex gap-1 text-xs text-gray-600 font-light justify-end "
+			class="flex gap-x-6 text-xs text- font-light justify-end "
 			type="single"
 			bind:value={selectedTimeRange}
 			orientation="horizontal"
@@ -189,7 +189,7 @@
 					class=" rounded cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2"
 				>
 					<div
-						class="hover:text-gray-700 group-data-[state=checked]:text-gray-700 text-gray-400 font-medium relative py-1 px-3 transition-colors"
+						class="hover:text-base-content group-data-[state=checked]:text-base-content text-base-content-muted/80 font-medium relative py-1 transition-colors"
 					>
 						{timeRange}
 
@@ -197,7 +197,7 @@
 							<div
 								in:send={{ key: 'trigger' }}
 								out:receive={{ key: 'trigger' }}
-								class="absolute bottom-0 left-1/2 h-1 rounded-full w-1 -translate-x-1/2 bg-gray-900"
+								class="absolute bottom-0 left-1/2 h-1 rounded-full w-1 -translate-x-1/2 bg-base-content"
 							/>
 						{/if}
 					</div>

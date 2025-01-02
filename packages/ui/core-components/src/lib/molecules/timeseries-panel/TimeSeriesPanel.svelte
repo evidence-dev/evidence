@@ -4,7 +4,7 @@
 
 <script>
 	import { QueryLoad } from '../../atoms/query-load/index.js';
-	import { setContext, onMount } from 'svelte';
+	import { setContext } from 'svelte';
 	import { TimeSeriesStore } from './timeSeriesStore.js';
 	import TimeSeriesPanel from './_TimeSeriesPanel.svelte';
 	import EmptyChart from '../../unsorted/viz/core/EmptyChart.svelte';

@@ -32,7 +32,7 @@
 	});
 </script>
 
-<div class="rounded-xl p-3 grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-6 bg-gray-50 mb-4">
+<div class="rounded-xl p-3 grid lg:grid-cols-2 md:grid-cols-1 gap-6 alert mb-4 bg-base-200">
 	<MetricTable bind:selectedMetric data={$store} {metricStore} {fmt} />
 	<TimeSeriesPanelChart data={$store} {selectedMetric} {store} {defaultTimeRange} />
 </div>

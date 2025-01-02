@@ -46,22 +46,22 @@
 </script>
 
 <div
-	class="truncate text-left shrink col-span-3 font-medium relative z-10 group-data-[state=checked]:text-gray-900 transition duration-200"
+	class="truncate text-left shrink col-span-3 font-medium relative z-10 group-data-[state=checked]:text-base-content-muted transition duration-200"
 >
 	{metric.label}
 </div>
 <div
-	class="text-right font-medium relative z-10 group-data-[state=checked]:text-gray-900 transition duration-200"
+	class="text-right font-medium relative z-10 group-data-[state=checked]:text-base-content-muted transition duration-200"
 >
 	{latest}
 </div>
-<div class="{change < 0 ? 'text-red-600' : 'text-green-600'} text-right relative z-10">
+<div class="{change < 0 ? 'text-negative' : 'text-positive'} text-right relative z-10">
 	{change < 0 ? '' : '+'}{change}
 </div>
 <div
 	class="text-right relative z-10 border rounded {change < 0
-		? 'bg-red-200/40 border-red-200 text-red-600'
-		: 'bg-green-200/40 border-green-200 text-green-600'}"
+		? 'bg-negative/20 border-negative/40 text-negative'
+		: 'bg-positive/15 border-positive/40 text-positive'}"
 >
 	<span class="px-2">
 		{change < 0 ? '' : '+'}{changePercent}
