@@ -25,7 +25,7 @@
 			{#each metricStore as metric}
 				<RadioGroup.Item value={metric.label} asChild let:builder>
 					<div
-						class="cursor-pointer grid-cols-subgrid grid col-span-6 relative items-center p-2 rounded-md group focus:outline-none focus-visible:ring-2 focus-visible:ring-base-300 focus-visible:ring-offset-2"
+						class="text-base-content-muted/80 cursor-pointer grid-cols-subgrid grid col-span-6 relative items-center p-2 rounded-md group focus:outline-none focus-visible:ring-2 focus-visible:ring-base-300 focus-visible:ring-offset-2"
 						use:builder.action
 						{...builder}
 					>

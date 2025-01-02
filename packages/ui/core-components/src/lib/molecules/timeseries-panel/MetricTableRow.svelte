@@ -46,12 +46,12 @@
 </script>
 
 <div
-	class="truncate text-left shrink col-span-3 font-medium relative z-10 group-data-[state=checked]:text-base-content-muted transition duration-200"
+	class="truncate text-left shrink col-span-3 font-medium relative z-10 group-data-[state=checked]:text-base-content transition duration-200"
 >
 	{metric.label}
 </div>
 <div
-	class="text-right font-medium relative z-10 group-data-[state=checked]:text-base-content-muted transition duration-200"
+	class="text-right font-medium relative z-10 group-data-[state=checked]:text-base-content transition duration-200"
 >
 	{latest}
 </div>

@@ -154,7 +154,7 @@
 
 <div class="grid grid-cols-1 grid-rows-6 gap-y-1 relative">
 	<div
-		class="print:hidden absolute inset-0 h-full w-full bg-base-100 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
+		class="print:hidden absolute inset-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
 	/>
 	<div class="row-span-2 relative">
 		<div class="font-bold text-base-heading">{selectedMetric}</div>
@@ -174,7 +174,7 @@
 	</div>
 	<div class="row-span-1">
 		<RadioGroup.Root
-			class="flex gap-x-6 text-xs text- font-light justify-end "
+			class="flex gap-x-6 text-xs text- font-light justify-end  rounded-md"
 			type="single"
 			bind:value={selectedTimeRange}
 			orientation="horizontal"
