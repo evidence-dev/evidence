@@ -103,14 +103,28 @@
 						width: 1.25,
 						opacity: 1
 					},
+					//Hover styling prop that works with themes vars
 					emphasis: {
 						lineStyle: {
-							color: color, // Ensure hover uses the same color
+							color: color,
 							width: 1.25,
 							opacity: 1
 						},
 						itemStyle: {
-							color: color // Optional: Adjust point color on hover
+							color: color
+						},
+						areaStyle: {
+							color: new graphic.LinearGradient(0, 0, 0, 1, [
+								{
+									offset: 0,
+									color: color
+								},
+								{
+									offset: 0.75,
+									color: '#f9fafb'
+								}
+							]),
+							opacity: 0.1
 						}
 					},
 					itemStyle: {
@@ -121,7 +135,7 @@
 						color: new graphic.LinearGradient(0, 0, 0, 1, [
 							{
 								offset: 0,
-								color: gradientColor
+								color: color
 							},
 							{
 								offset: 0.75,
