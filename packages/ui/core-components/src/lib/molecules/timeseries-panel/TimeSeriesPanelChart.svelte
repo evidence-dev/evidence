@@ -24,6 +24,12 @@
 
 	$: currentValue = data.length > 0 ? data[data.length - 1][selectedMetric] : null;
 
+	$: if (currentValue > data[0][selectedMetric]) {
+		declining = false;
+	} else {
+		declining = true;
+	}
+
 	const makeChart = (node) => {
 		chart = init(node, null, { renderer: 'svg' });
 		updateChartOptions();
@@ -47,7 +53,6 @@
 		if (!chart || !selectedMetric || !data) return;
 
 		const color = declining ? 'hsl(var(--twc-negative))' : 'hsl(var(--twc-positive))';
-		const gradientColor = declining ? 'hsl(var(--twc-negative))' : 'hsl(var(--twc-positive))';
 
 		chart.setOption({
 			animation: false,
@@ -139,7 +144,7 @@
 							},
 							{
 								offset: 0.75,
-								color: '#f9fafb'
+								color: 'hsl(var(--twc-base-200))'
 							}
 						]),
 						opacity: 0.1

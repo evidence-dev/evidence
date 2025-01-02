@@ -34,7 +34,7 @@
 							<div
 								in:send={{ key: 'trigger' }}
 								out:receive={{ key: 'trigger' }}
-								class="absolute top-0 h-full w-full rounded-md bg-base-100 border z-0"
+								class="absolute top-0 h-full w-full rounded-md bg-base-100 border z-0 border-base"
 							/>
 						{/if}
 					</div>
