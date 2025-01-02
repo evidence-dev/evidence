@@ -34,7 +34,7 @@ const addBlankLines = {
 
 			// Updated regex to correctly handle multiline attributes and blank lines
 			const modifiedContent = contentWithoutCode.replace(
-				/(<[A-Z][\w:-]*\s*(?:".*?"|'.*?'|[^>])*>)(\n\s*\S)/g,
+				/(<[A-Z][\w:-]*\s*(?:".*?"|'.*?'|[^>])*?[^/]>)(\n\s*\S)/g,
 				'$1\n\n$2'
 			);
 
