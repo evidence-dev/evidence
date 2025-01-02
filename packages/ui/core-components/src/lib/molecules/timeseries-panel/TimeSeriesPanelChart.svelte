@@ -46,8 +46,8 @@
 	function updateChartOptions() {
 		if (!chart || !selectedMetric || !data) return;
 
-		const color = declining ? '#dc2626' : '#16a34a';
-		const gradientColor = declining ? '#ef4444' : '#22c55e';
+		const color = declining ? 'hsl(var(--twc-negative))' : 'hsl(var(--twc-positive))';
+		const gradientColor = declining ? 'hsl(var(--twc-negative))' : 'hsl(var(--twc-positive))';
 
 		chart.setOption({
 			animation: false,
@@ -102,6 +102,16 @@
 						color: color,
 						width: 1.25,
 						opacity: 1
+					},
+					emphasis: {
+						lineStyle: {
+							color: color, // Ensure hover uses the same color
+							width: 1.25,
+							opacity: 1
+						},
+						itemStyle: {
+							color: color // Optional: Adjust point color on hover
+						}
 					},
 					itemStyle: {
 						color: color,
