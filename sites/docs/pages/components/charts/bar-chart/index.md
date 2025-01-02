@@ -159,7 +159,6 @@ queries:
             x=category
             y=sales
             series=channel
-            swapXY=true
         />
     </div>
 

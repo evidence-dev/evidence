@@ -23,7 +23,7 @@ const createTheme = (mode) => {
 			fontFamily: ['Inter', 'sans-serif']
 		},
 		grid: {
-			left: '0%',
+			left: '1%',
 			right: '4%',
 			bottom: '0%',
 			top: '15%',
@@ -42,7 +42,7 @@ const createTheme = (mode) => {
 				color: subtitleColor,
 				overflow: 'break'
 			},
-			top: '0%'
+			top: '1px'
 		},
 		line: {
 			itemStyle: {
@@ -409,8 +409,31 @@ const createTheme = (mode) => {
 			color: ['#c41621', '#e39588', '#f5ed98']
 		},
 		dataZoom: {
-			handleSize: 'undefined%',
-			textStyle: {}
+			type: 'slider',
+			bottom: 10,
+			height: 30,
+			showDetail: false,
+			handleSize: '80%',
+			borderColor: gridlineColor,
+			handleStyle: {
+				borderColor: gridlineColor,
+				color: gridlineColor
+			},
+			moveHandleStyle: {
+				borderColor: gridlineColor,
+				color: gridlineColor
+			},
+			textStyle: {},
+			emphasis: {
+				handleStyle: {
+					borderColor: gridlineColor,
+					color: gridlineColor
+				},
+				moveHandleStyle: {
+					borderColor: gridlineColor,
+					color: gridlineColor
+				}
+			}
 		},
 		markPoint: {
 			label: {
