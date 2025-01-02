@@ -33,13 +33,16 @@ const addBlankLines = {
 				});
 
 			// Updated regex to correctly handle multiline attributes and blank lines
-			const modifiedContent = contentWithoutCode.replace(
-				/(<[A-Z][\w:-]*\s*(?:".*?"|'.*?'|[^>])*?[^/]>)(\n\s*\S)/g,
-				'$1\n\n$2'
-			).replace(
-                /(\{\/if|\{:else(?: if [^}]+)?\})/g, 
-                `\n$1`
-            ).replace(/\{\/each\}/g, `{/each}\n`);
+			const modifiedContent = contentWithoutCode
+				.replace(/(<[A-Z][\w:-]*\s*(?:".*?"|'.*?'|[^>])*?[^/]>)(\n\s*\S)/g, '$1\n\n$2')
+				.replace(/(\{\/if|\{:else(?: if [^}]+)?\})/g, `\n$1`)
+				.replace(/\{\/each\}/g, `{/each}\n`)
+				.replace(/(<[A-Z][\w:-]*)([^>]*)(\/?>)/g, (_, start, middle, slashEnd) => {
+					// Remove extra blank lines in the attributes
+					// e.g. replace multiple newlines or purely blank lines with a single newline
+					const cleanedMiddle = middle.replace(/\n\s*\n\s*/g, '\n');
+					return start + cleanedMiddle + slashEnd;
+				});
 
 			// Restore placeholders with their original content
 			const finalContent = modifiedContent
