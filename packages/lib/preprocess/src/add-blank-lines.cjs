@@ -36,7 +36,10 @@ const addBlankLines = {
 			const modifiedContent = contentWithoutCode.replace(
 				/(<[A-Z][\w:-]*\s*(?:".*?"|'.*?'|[^>])*?[^/]>)(\n\s*\S)/g,
 				'$1\n\n$2'
-			);
+			).replace(
+                /(\{\/if|\{:else(?: if [^}]+)?\})/g, 
+                `\n$1`
+            ).replace(/\{\/each\}/g, `{/each}\n`);
 
 			// Restore placeholders with their original content
 			const finalContent = modifiedContent
