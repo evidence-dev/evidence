@@ -1801,9 +1801,6 @@ importers:
       '@evidence-dev/faker-datasource':
         specifier: workspace:*
         version: link:../../packages/datasources/faker
-      '@evidence-dev/javascript':
-        specifier: workspace:*
-        version: link:../../packages/datasources/javascript
       '@evidence-dev/motherduck':
         specifier: workspace:^
         version: link:../../packages/datasources/motherduck
@@ -1819,6 +1816,9 @@ importers:
       '@evidence-dev/snowflake':
         specifier: workspace:*
         version: link:../../packages/datasources/snowflake
+      '@evidence-dev/source-javascript':
+        specifier: workspace:*
+        version: link:../../packages/datasources/javascript
       '@evidence-dev/sqlite':
         specifier: workspace:*
         version: link:../../packages/datasources/sqlite

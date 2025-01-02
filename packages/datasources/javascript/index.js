@@ -19,12 +19,19 @@ export const getRunner = () => {
 					rows: data,
 					columnTypes: columnNames.map((name) => ({
 						name,
-						evidenceType:
-							typeof data[0][name] === 'number'
-								? EvidenceType.NUMBER
-								: data[0][name] instanceof Date
-									? EvidenceType.DATE
-									: EvidenceType.STRING,
+						evidenceType: (() => {
+							switch (true) {
+								case typeof data[0][name] === 'number':
+									return EvidenceType.NUMBER;
+								case typeof data[0][name] === 'boolean':
+									return EvidenceType.BOOLEAN;
+								// handle js dates but no other formats
+								case data[0][name] instanceof Date:
+									return EvidenceType.DATE;
+								default:
+									return EvidenceType.STRING;
+							}
+						})(),
 						typeFidelity: 'inferred'
 					})),
 					expectedRowCount: data.length

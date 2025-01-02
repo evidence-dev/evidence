@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getRunner } from './index.js';
-
+import { EvidenceType } from '@evidence-dev/db-commons';
 describe('Runner Tests', () => {
 	it('empty query should not run', async () => {
 		const runner = getRunner();
@@ -59,13 +59,14 @@ describe('Runner Tests', () => {
 	it('javascript dates should be converted to evidence dates', async () => {
 		const runner = getRunner();
 		const data = await runner('', './test/dates.js');
-		expect(data.rows[0].date.toISOString()).toBe(new Date('2024-01-01').toISOString());
+		expect(data.columnTypes[0].evidenceType).toBe(EvidenceType.DATE);
 	});
 
 	it('js numbers should be converted to evidence numbers', async () => {
 		const runner = getRunner();
 		const data = await runner('', './test/numbers.js');
 		expect(data.rows[0].number).toBe(1);
+		expect(data.columnTypes[0].evidenceType).toBe(EvidenceType.NUMBER);
 	});
 
 	it('js booleans should be converted to evidence booleans', async () => {
@@ -73,9 +74,10 @@ describe('Runner Tests', () => {
 		const data = await runner('', './test/bools.js');
 		expect(data.rows[0].bool).toBe(true);
 		expect(data.rows[1].bool).toBe(false);
+		expect(data.columnTypes[0].evidenceType).toBe(EvidenceType.BOOLEAN);
 	});
 
-	it('js arrays should be converted to evidence arrays', async () => {
+	it('js arrays should be converted to arrays', async () => {
 		const runner = getRunner();
 		const data = await runner('', './test/arrays.js');
 		expect(data.rows[0].array.length).toBe(3);
@@ -84,10 +86,16 @@ describe('Runner Tests', () => {
 		expect(data.rows[0].array[2]).toBe(3);
 	});
 
-	it('js objects should be converted to evidence objects', async () => {
+	it('js objects should be converted to objects', async () => {
 		const runner = getRunner();
 		const data = await runner('', './test/objects.js');
 		expect(data.rows[0].object.name).toBe('John Doe');
 		expect(data.rows[0].object.age).toBe(30);
+	});
+
+	it('js nulls should be converted to nulls', async () => {
+		const runner = getRunner();
+		const data = await runner('', './test/nulls.js');
+		expect(data.rows[0].null).toBeNull();
 	});
 });
