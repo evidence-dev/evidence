@@ -7,7 +7,6 @@ import { get } from 'svelte/store';
 
 export class TimeSeriesStore {
 	/** @type {QueryValue<RowType>} */
-	#value = [];
 	#xValue = undefined;
 
 	/// Data
@@ -15,10 +14,12 @@ export class TimeSeriesStore {
 	#data = [];
 
 	#metricsStore = writable([]);
+	#metricsStore2 = [];
 
 	#lastDate = new Date();
 
 	#filteredData = [];
+	#value = { data: this.#data, metricsStore: this.#metricsStore2 };
 
 	subscribeToMetrics = (callback) => {
 		return this.#metricsStore.subscribe(callback);
@@ -31,6 +32,8 @@ export class TimeSeriesStore {
 
 		// Wait for all the metrics to be loaded
 		await Promise.all(get(this.#metricsStore).map((metric) => metric.promise));
+		await Promise.all(this.#metricsStore2.map((metric) => metric.promise));
+		this.value = { ...this.#value, metricsStore: this.#metricsStore2 };
 
 		// Run buildNewQuery after data has been updated and all metrics have been loaded
 		this.buildNewQuery(data);
@@ -39,6 +42,7 @@ export class TimeSeriesStore {
 	updateMetrics = (metrics) => {
 		return new Promise((resolve) => {
 			this.#metricsStore.update((m) => [...m, metrics]);
+			this.#metricsStore2.push(metrics);
 			resolve();
 		});
 	};
@@ -47,12 +51,20 @@ export class TimeSeriesStore {
 		const newQueryBuild = new QueryBuilder();
 		newQueryBuild
 			.select(`${this.#xValue}`, {
-				...get(this.#metricsStore).reduce(
+				...this.#metricsStore2.reduce(
 					(acc, obj) => ({ ...acc, [obj.label]: taggedSql`${obj.metric}` }),
 					{}
 				)
 			})
 			.from(taggedSql`(${data.originalText}) GROUP BY ALL ORDER BY ${this.#xValue} ASC`);
+		// newQueryBuild
+		// 	.select(`${this.#xValue}`, {
+		// 		...get(this.#metricsStore).reduce(
+		// 			(acc, obj) => ({ ...acc, [obj.label]: taggedSql`${obj.metric}` }),
+		// 			{}
+		// 		)
+		// 	})
+		// 	.from(taggedSql`(${data.originalText}) GROUP BY ALL ORDER BY ${this.#xValue} ASC`);
 		let metricQuery = Query.create(newQueryBuild.toString(), query);
 
 		this.#data = await metricQuery.fetch();
@@ -68,7 +80,7 @@ export class TimeSeriesStore {
 
 	filterData = (selectedTimeRange) => {
 		this.#filteredData = this.filterDataByTimeRange(this.#data, this.#lastDate, selectedTimeRange);
-		this.#value = this.#filteredData;
+		this.#value = { ...this.#value, data: this.#filteredData };
 		this.publish('filterData');
 	};
 

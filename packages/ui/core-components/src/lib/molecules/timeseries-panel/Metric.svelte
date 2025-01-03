@@ -23,7 +23,6 @@
 	export let downIsGood = false;
 	export let fmt = undefined;
 
-	// const metricsStore = getContext('metrics');
 
 	const store = getContext('store');
 
@@ -33,26 +32,4 @@
 		}
 	}
 
-	// $: {
-	// 	if (metricsStore) {
-	// 		const currentMetrics = get(metricsStore);
-	// 		metricsStore.set([...currentMetrics, { metric, label, link, downIsGood }]);
-	// 	}
-	// }
-
-	// onMount(() => {
-	// 	return () => {
-	// 		if (metricsStore) {
-	// 			const currentMetrics = get(metricsStore);
-	// 			const updatedMetrics = currentMetrics.filter(
-	// 				(m) =>
-	// 					m.metric !== metric ||
-	// 					m.label !== label ||
-	// 					m.link !== link ||
-	// 					m.downIsGood !== downIsGood
-	// 			);
-	// 			metricsStore.set(updatedMetrics);
-	// 		}
-	// 	};
-	// });
 </script>

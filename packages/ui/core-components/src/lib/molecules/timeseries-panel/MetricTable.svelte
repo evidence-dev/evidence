@@ -5,7 +5,7 @@
 	import { crossfade } from 'svelte/transition';
 
 	export let selectedMetric;
-	export let metricStore;
+	export let metricsStore;
 	export let data;
 	export let fmt = 'num0';
 
@@ -22,7 +22,7 @@
 			use:builder.action
 			{...builder}
 		>
-			{#each metricStore as metric}
+			{#each metricsStore as metric}
 				<RadioGroup.Item value={metric.label} asChild let:builder>
 					<div
 						class="text-base-content-muted/80 cursor-pointer grid-cols-subgrid grid col-span-6 relative items-center p-2 rounded-md group focus:outline-none focus-visible:ring-2 focus-visible:ring-base-300 focus-visible:ring-offset-2"

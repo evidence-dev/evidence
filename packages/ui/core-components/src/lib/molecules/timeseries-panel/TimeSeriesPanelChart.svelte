@@ -1,18 +1,8 @@
 <script>
 	import { init, graphic } from 'echarts';
 	import { RadioGroup } from 'bits-ui';
-	// import { blur, fly, fade } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
-	// import {
-	// 	CalendarDate,
-	// 	DateFormatter,
-	// 	getLocalTimeZone,
-	// 	startOfMonth,
-	// 	endOfMonth,
-	// 	startOfYear,
-	// 	endOfYear
-	// } from '@internationalized/date';
 
 	export let data;
 	export let selectedMetric = undefined;
