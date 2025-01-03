@@ -45,14 +45,14 @@
 		{data.error}
 	</Alert>
 {:else}
-<div class="mt-2">
-{#if title || subtitle}
-	<ComponentTitle {title} {subtitle} />
-{/if}
-<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
-		{#each dimensions as dimension}
-			<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} {multiple} {fmt} />
-		{/each}
+	<div class="mt-2">
+		{#if title || subtitle}
+			<ComponentTitle {title} {subtitle} />
+		{/if}
+		<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
+			{#each dimensions as dimension}
+				<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} {multiple} {fmt} />
+			{/each}
+		</div>
 	</div>
-</div>
 {/if}

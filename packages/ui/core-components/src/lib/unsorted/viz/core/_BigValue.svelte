@@ -107,8 +107,8 @@
 	{#if error}
 		<BigValueError chartType="Big Value" error={error.message} />
 	{:else}
-		<p class={cn("text-sm align-top leading-none",titleClass)}>{title}</p>
-		<div class={cn("relative text-xl font-medium mt-1.5",valueClass)}>
+		<p class={cn('text-sm align-top leading-none', titleClass)}>{title}</p>
+		<div class={cn('relative text-xl font-medium mt-1.5', valueClass)}>
 			{#if link}
 				<a class="hover:bg-base-200" href={addBasePath(link)}>
 					<Value {data} column={value} {fmt} />
@@ -134,7 +134,7 @@
 		</div>
 		{#if comparison}
 			{#if comparisonDelta}
-				<p class={cn("text-xs font-sans mt-1", comparisonClass)}>
+				<p class={cn('text-xs font-sans mt-1', comparisonClass)}>
 					<Delta
 						{data}
 						column={comparison}
