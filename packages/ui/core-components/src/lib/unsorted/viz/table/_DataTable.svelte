@@ -6,6 +6,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import ComponentTitle from '../../viz/core/ComponentTitle.svelte';
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
@@ -43,6 +44,12 @@
 	export let rows = 10; // number of rows to show
 
 	$: rows = Number.parseInt(rows);
+
+	/** @type {string | undefined}*/
+	export let title = undefined;
+
+	/** @type {string | undefined}*/
+	export let subtitle = undefined;
 
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
@@ -554,6 +561,10 @@
 		on:mouseenter={() => (hovering = true)}
 		on:mouseleave={() => (hovering = false)}
 	>
+		{#if title || subtitle}
+			<ComponentTitle {title} {subtitle} />
+		{/if}
+
 		{#if search}
 			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
 		{/if}

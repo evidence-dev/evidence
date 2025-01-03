@@ -15,7 +15,7 @@ limit 100
 
 <DocTab>
     <div slot='preview'>
-        <DataTable data={orders_summary}/>
+        <DataTable data={orders_summary} title="Title" subtitle="Subtitle"/>
     </div>
 
 ```svelte
@@ -1259,6 +1259,22 @@ Query name, wrapped in curly braces
 >
 
 Number of rows to show in the table before paginating results. Use `rows=all` to show all rows in the table.
+
+</PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the table
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
 
 </PropListing>
 <PropListing

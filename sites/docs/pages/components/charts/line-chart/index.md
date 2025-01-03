@@ -15,12 +15,20 @@ group by all
 
 <DocTab>
     <div slot='preview'>
+        <Grid>
         <LineChart 
             data={orders_by_month}
             x=month
             y=sales_usd0k 
             yAxisTitle="Sales per Month"
+            title="Title"
+            subtitle="Subtitle"
         />
+        <DataTable data={orders_by_month} 
+                    title="Title"
+            subtitle="Subtitle"/>
+        </Grid>
+        
     </div>
 
 ```svelte

@@ -590,6 +590,22 @@ options="format string"
 >
 Format string for displaying the value.
 </PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
+</PropListing>
 
 ### Color Scale
 

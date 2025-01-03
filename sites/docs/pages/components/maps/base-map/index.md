@@ -315,6 +315,22 @@ defaultValue="300"
 >
 Height of the map in pixels.
 </PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
+</PropListing>
 
 ## Layer Options
 

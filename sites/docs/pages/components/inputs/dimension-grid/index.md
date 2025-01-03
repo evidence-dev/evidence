@@ -23,7 +23,7 @@ group by all
 
 <DocTab>
     <div slot='preview'>
-        <DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions /> 
+        <DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions/> 
 
         <LineChart data={monthly_sales} handleMissing=zero/> 
     </div>
@@ -133,6 +133,22 @@ SQL aggregate which could be applied to `data` e.g. 'sum(sales)'
 >
 
 Name of the dimension grid, used to reference the selected value elsewhere as `{inputs.name}`
+
+</PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the dimension grid
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
 
 </PropListing>
 <PropListing 
