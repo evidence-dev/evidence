@@ -13,4 +13,5 @@
 
 <Story name="Base">
 	<LinkButton url={'https://evidence.dev/'}>Best Website Ever</LinkButton>
+	<LinkButton url={'https://evidence.dev/'}>Best Website Ever</LinkButton>
 </Story>
