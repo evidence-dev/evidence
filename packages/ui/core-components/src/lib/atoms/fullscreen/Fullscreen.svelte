@@ -72,9 +72,9 @@
 >
 	<button
 		class="absolute top-4 right-[18.5px] hover:bg-base-200 rounded-lg p-1 focus:outline-none focus:ring-1 focus:ring-base-300"
-		><Icon class="w-6 h-6 " src={X} /></button
+		><Icon class="w-5 h-5 " src={X} /></button
 	>
-	<div class="py-2 px-6 {!search ? 'pt-6' : ''}">
+	<div class="py-2 px-6 {!search ? 'pt-8' : 'pt-0'}">
 		<slot />
 	</div>
 </dialog>

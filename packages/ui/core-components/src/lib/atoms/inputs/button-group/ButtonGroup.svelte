@@ -104,15 +104,15 @@
 		<div
 			class={display === 'tabs'
 				? ''
-				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col mb-3 ml-0 mr-2`}
+				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col ${title ? 'mt-0.5' : 'mt-2'} mb-3 ml-0 mr-2`}
 		>
 			{#if title}
-				<span class="text-xs font-medium block mb-0.5">{title}</span>
+				<span class="text-xs font-medium text-base-content block mb-0.5">{title}</span>
 			{/if}
 			<div
 				class={display === 'tabs'
 					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-					: 'inline-flex rounded-md shadow-sm mb-1 overflow-auto border border-base-300 no-scrollbar h-8'}
+					: 'inline-flex rounded-md shadow-sm overflow-auto border border-base-300 no-scrollbar h-8 mb-1'}
 				role="group"
 			>
 				{#if preset}

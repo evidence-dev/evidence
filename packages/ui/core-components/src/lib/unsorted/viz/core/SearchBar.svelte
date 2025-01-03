@@ -11,7 +11,7 @@
 	export let searchFunction;
 </script>
 
-<div class="search-container">
+<div class="search-container mb-1 mr-1">
 	<input
 		class="search-bar"
 		type="text"
@@ -31,7 +31,6 @@
 		display: block;
 		align-items: center;
 		position: relative;
-		margin: 25px 3px 10px 0px;
 		box-sizing: content-box;
 	}
 

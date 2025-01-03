@@ -113,7 +113,7 @@
 
 <div class="w-60 flex-shrink-0 sm:w-1/4 text-xs antialiased pr-4 pb-4 overflow-clip">
 	<div class="capitalize border-b flex justify-between items-baseline">
-		<span class={`truncate pl-1 font-semibold ${metricLabel ? 'w-2/3' : ''}`}>
+		<span class={`truncate pl-1 pb-0.5 font-semibold ${metricLabel ? 'w-2/3' : ''}`}>
 			{formatTitle(dimension.column_name)}
 		</span>
 		{#if metricLabel}
@@ -122,7 +122,7 @@
 			</span>
 		{/if}
 	</div>
-	<QueryLoad data={results} let:loaded>
+	<QueryLoad data={results} skeletonMt="0" let:loaded>
 		<Alert slot="error" status="negative">
 			{$results.error}
 		</Alert>

@@ -6,7 +6,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import ErrorChart from '../core/ErrorChart.svelte';
-	import ComponentTitle from '../../viz/core/ComponentTitle.svelte';
+	import ComponentTitle from '../core/ComponentTitle.svelte';
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
@@ -42,7 +42,6 @@
 	export let data;
 	export let queryID = undefined;
 	export let rows = 10; // number of rows to show
-
 	$: rows = Number.parseInt(rows);
 
 	/** @type {string | undefined}*/
@@ -102,10 +101,6 @@
 	$: paginated = data.length > rows && !groupBy;
 
 	let hovering = false;
-
-	let marginTop = '1.5em';
-	let marginBottom = '1em';
-	let paddingBottom = '0em';
 
 	export let generateMarkdown = false;
 	$: generateMarkdown = generateMarkdown === 'true' || generateMarkdown === true;
@@ -553,11 +548,8 @@
 	<div
 		data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
 		role="none"
-		class="table-container"
+		class="table-container mt-2 {paginated ? 'mb-5' : 'mb-2'}"
 		transition:slide|local
-		style:margin-top={marginTop}
-		style:margin-bottom={marginBottom}
-		style:padding-bottom={paddingBottom}
 		on:mouseenter={() => (hovering = true)}
 		on:mouseleave={() => (hovering = false)}
 	>
@@ -764,7 +756,7 @@
 				{/if}
 			</div>
 		{:else}
-			<div class="table-footer">
+			<div class="table-footer mt-3">
 				{#if downloadable}
 					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
 				{/if}
@@ -829,7 +821,7 @@
 		user-select: none;
 		text-align: right;
 		margin-top: 0.5em;
-		margin-bottom: 1.8em;
+		margin-bottom: 0;
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -882,7 +874,6 @@
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		margin: 10px 0px;
 		font-size: 12px;
 		height: 9px;
 	}
