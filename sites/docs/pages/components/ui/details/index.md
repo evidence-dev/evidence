@@ -10,7 +10,7 @@ The details component allows you to add a collapsible section to your markdown. 
 <DocTab>
     <div slot='preview'>
         <Details title="Definitions">
-            
+
             Definition of metrics in Solutions Targets
 
             ### Time to Proposal
@@ -50,7 +50,7 @@ The details component allows you to add a collapsible section to your markdown. 
 <DocTab>
     <div slot='preview'>
         <Details title="Definitions" open=true>
-            
+
             Definition of metrics in Solutions Targets
 
             ### Time to Proposal
