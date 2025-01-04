@@ -26,6 +26,9 @@
 	}
 
 	const { selectedAppearance, activeAppearance, cycleAppearance, themesConfig } = getThemeStores();
+
+	export let neverShowQueries;
+
 	$: themeLabel =
 		$selectedAppearance === 'system'
 			? 'System'
@@ -47,14 +50,17 @@
 				Print PDF
 				<DropdownMenu.Shortcut>⌘P</DropdownMenu.Shortcut>
 			</DropdownMenu.Item>
-			<DropdownMenu.Item
-				on:click={(e) => {
-					e.preventDefault();
-					showQueries.update((val) => !val);
-				}}
-			>
-				{$showQueries ? 'Hide ' : 'Show '} Queries
-			</DropdownMenu.Item>
+			{#if dev || !neverShowQueries}
+				<DropdownMenu.Item
+					on:click={(e) => {
+						e.preventDefault();
+						showQueries.update((val) => !val);
+					}}
+				>
+					{$showQueries ? 'Hide ' : 'Show '} Queries
+				</DropdownMenu.Item>
+			{/if}
+
 			{#if themesConfig.appearance.switcher}
 				<DropdownMenu.Item
 					on:click={(e) => {
