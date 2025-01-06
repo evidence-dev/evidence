@@ -83,7 +83,7 @@ Make some more changes to the page. You'll see them reflected "live" in the brow
 
 This is called **hot reloading** (HMR), and it allows you to see your changes in real-time as you are building your page.
 
-Evidence pages are `.md` files, and are written in a popular language called Markdown. You can learn more about Markdown [here](https://docs.evidence.dev/reference/markdown).
+Evidence pages are `.md` files, and are written in a popular language called Markdown. You can learn more about Markdown [here](/reference/markdown).
 
 You can also insert HTML directly into your page if you need more control.
 
@@ -358,7 +358,7 @@ Select Source Type: **CSV**, and give your source a name. Hit Confirm:
 
 ![Add new source](/img/getting-started/add_new_source2.png)
 
-You can read about various configuration options for CSV files [here](https://docs.evidence.dev/core-concepts/data-sources#csv-files). For now, leave this blank, and hit **Confirm Changes**:
+You can read about various configuration options for CSV files [here](/core-concepts/data-sources#csv-files). For now, leave this blank, and hit **Confirm Changes**:
 
 ![Add new source](/img/getting-started/add_new_source_confirm_changes.png)
 
