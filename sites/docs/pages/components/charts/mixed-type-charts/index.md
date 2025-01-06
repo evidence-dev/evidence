@@ -364,7 +364,7 @@ Apply a specific color to each series in your chart. Unspecified series will rec
     defaultValue="true"
 />
 
-Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
+Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg).
 
 </PropListing>
 

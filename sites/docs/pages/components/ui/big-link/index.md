@@ -5,11 +5,11 @@ sidebar_position: 1
 
 <DocTab>
     <div slot='preview'>
-      <BigLink href='/components/ui/big-link/'>My Big Link</BigLink> 
+      <BigLink href='/components/ui/big-link'>My Big Link</BigLink> 
     </div>
 
 ```markdown
-<BigLink href='/components/ui/big-link/'>
+<BigLink href='/components/ui/big-link'>
   My Big Link
 </BigLink>
 ```

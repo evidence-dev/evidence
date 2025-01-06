@@ -740,12 +740,12 @@ queries:
 
 <PropListing
     name=echartsOptions
-    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
 />
 <PropListing
     name=seriesOptions
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 />
 <PropListing

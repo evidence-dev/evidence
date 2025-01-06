@@ -81,9 +81,9 @@ Netlify Dashboard >> [your-site] >> Domain management >> Add a domain
 
 #### Schedule updates using Build Hooks
 
-If you want your site to update on a regular schedule, you can use GitHub Actions (or another similar service) to schedule regular calls to a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/).
+If you want your site to update on a regular schedule, you can use GitHub Actions (or another similar service) to schedule regular calls to a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks).
 
-1. Create a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/) in **Site configuration > Build & deploy > Continuous deployment > Build hooks**
+1. Create a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks) in **Site configuration > Build & deploy > Continuous deployment > Build hooks**
    ![netlify-add-build-hook](/img/netlify-add-build-hook.png)
    This will give you a URL that GitHub will use to trigger builds
 2. Add `NETLIFY_BUILD_HOOK` to your Github Repo's Secrets
