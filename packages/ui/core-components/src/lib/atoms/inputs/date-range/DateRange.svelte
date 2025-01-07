@@ -52,6 +52,14 @@
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
+	let extraDayEndString;
+
+	$: if (endString) {
+		extraDayEndString = new Date(endString);
+		extraDayEndString.setDate(extraDayEndString.getDate() + 1);
+		extraDayEndString = formatDateString(extraDayEndString);
+	}
+
 	function onSelectedDateInputChange(selectedDateInput) {
 		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end)) {
 			$inputs[name] = {
@@ -89,6 +97,7 @@
 					{onSelectedDateInputChange}
 					start={startString}
 					end={endString}
+					{extraDayEndString}
 					loaded={loaded?.ready ?? true}
 					{presetRanges}
 					{defaultValue}

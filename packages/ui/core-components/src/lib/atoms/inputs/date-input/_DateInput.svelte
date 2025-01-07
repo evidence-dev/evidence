@@ -49,6 +49,7 @@
 	export let range = false;
 	/** @type {string} */
 	export let title;
+	export let extraDayEndString;
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
@@ -211,6 +212,11 @@
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
 
+	let extraDayCalendarEnd = calendarEnd;
+	$: if (range) {
+		extraDayCalendarEnd = YYYYMMDDToCalendar(extraDayEndString);
+	}
+
 	function updateDateRange(start, end) {
 		if (selectedPreset) return;
 
@@ -296,7 +302,7 @@
 						selectedDateInput = value;
 					}}
 					minValue={calendarStart}
-					maxValue={calendarEnd}
+					maxValue={extraDayCalendarEnd}
 				/>
 			{:else}
 				<Calendar
