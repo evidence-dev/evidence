@@ -155,7 +155,7 @@
 						<RangeCalendar.GridRow class="w-full mt-2">
 							{#each weekDates as date}
 								<RangeCalendar.Cell {date}>
-									<RangeCalendar.Day {date} month={month.value} {maxValue} />
+									<RangeCalendar.Day {date} month={month.value} {maxValue} {minValue} />
 								</RangeCalendar.Cell>
 							{/each}
 						</RangeCalendar.GridRow>

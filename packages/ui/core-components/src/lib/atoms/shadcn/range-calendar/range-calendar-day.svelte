@@ -15,9 +15,11 @@
 	export { className as class };
 
 	export let maxValue = undefined;
+	export let minValue = undefined;
 
 	$: hideExtraDay =
-		date.year >= maxValue.year && date.month >= maxValue.month && date.day >= maxValue.day
+		(date.year >= maxValue.year && date.month >= maxValue.month && date.day >= maxValue.day) ||
+		(date.year <= minValue.year && date.month <= minValue.month && date.day < minValue.day)
 			? true
 			: false;
 </script>
