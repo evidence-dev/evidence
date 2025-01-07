@@ -49,7 +49,7 @@
 	export let range = false;
 	/** @type {string} */
 	export let title;
-	export let extraDayEndString;
+	export let extraDayEndString = undefined;
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
