@@ -512,7 +512,7 @@ or file ilike 'populated_places%'
 order by scale desc, category, file
 ```
 
-Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com/) project, and hosted by [GeoJSON.xyz](https://geojson.xyz/).
+Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com) project, and hosted by [GeoJSON.xyz](https://geojson.xyz).
 
 ### Country, State, and City Locations
 

@@ -453,7 +453,7 @@ Minimum height of the chart area (excl. header and footer) in pixels. Adjusting 
     defaultValue="true"
 />
 
-Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
+Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg).
 
 </PropListing>
 
@@ -464,7 +464,7 @@ Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on
     options="{`{{exampleOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing
@@ -472,7 +472,7 @@ Custom Echarts options to override the default options. See [reference page](/co
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing

@@ -90,7 +90,7 @@ Evidence also has support for queries outside the markdown, which is especially 
 
 ### Basic Usage
 
-To use sql file queries, you need to place them in the `queries` directory, and then reference them in your [frontmatter](/reference/markdown/#frontmatter).
+To use sql file queries, you need to place them in the `queries` directory, and then reference them in your [frontmatter](/reference/markdown#frontmatter).
 
 An example setup could be:
 
@@ -104,7 +104,7 @@ my-evidence-project/
         my_category_file_query.sql
 ```
 
-These queries can then be used on `my_page.md` with the following [frontmatter](/reference/markdown/#frontmatter)
+These queries can then be used on `my_page.md` with the following [frontmatter](/reference/markdown#frontmatter)
 
 ```yaml
 ---
@@ -130,7 +130,7 @@ queries:
 
 #### File Query Chaining
 
-SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_file_query` depends on `some_category_my_category_file_query`, then you will have to have them both in your [frontmatter](/reference/markdown/#frontmatter), as shown above.
+SQL file queries can [depend on other query files](/core-concepts/queries#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_file_query` depends on `some_category_my_category_file_query`, then you will have to have them both in your [frontmatter](/reference/markdown#frontmatter), as shown above.
 
 ## Query Parameters
 

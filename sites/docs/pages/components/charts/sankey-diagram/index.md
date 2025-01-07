@@ -757,7 +757,7 @@ Minimum height of the chart area (excl. header and footer) in pixels. Adjusting 
     options="{`{{exampleOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing

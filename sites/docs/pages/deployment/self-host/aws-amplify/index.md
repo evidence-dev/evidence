@@ -7,7 +7,7 @@ og:
     image: /img/deployment/deploy-aws-amplify.png
 ---
 
-[AWS Amplify](https://aws.amazon.com/amplify/) is an AWS service that allows you to create full stack web and mobile apps. Amplify can deploy Evidence apps by linking to a Git repository.
+[AWS Amplify](https://aws.amazon.com/amplify) is an AWS service that allows you to create full stack web and mobile apps. Amplify can deploy Evidence apps by linking to a Git repository.
 
 ## Prerequisites
 
@@ -61,7 +61,7 @@ Hosting > Access control > Manage access.
 
 #### Cognito
 
-It is also possible to set up auth via [Cognito](https://docs.amplify.aws/react/build-a-backend/auth/).
+It is also possible to set up auth via [Cognito](https://docs.amplify.aws/react/build-a-backend/auth).
 
 ### Custom domains
 

@@ -89,7 +89,7 @@ In the custom component:
 1. **Import any [Evidence components](https://github.com/evidence-dev/evidence/tree/main/sites/example-project/src/components)** you want to use in the custom component
 
 ## Optional: Publishing Your Components as a Plugin
-If you have built custom components that you would like other Evidence users to be able to use in their apps, you can publish them as an Evidence plugin. See the [Plugin section](/plugins/create-component-plugin/) for more details.
+If you have built custom components that you would like other Evidence users to be able to use in their apps, you can publish them as an Evidence plugin. See the [Plugin section](/plugins/create-component-plugin) for more details.
 
 ## Utility Functions
 Evidence provides a collection of helpful utility functions to use within custom components, for things like error handling, data manipulation, and value formatting.
