@@ -1,9 +1,12 @@
 ---
 title: Box Plot
+description: Summarize the distribution and range of a metric around the median value.
 sidebar_position: 1
 queries: 
 - sales_distribution_by_channel.sql
 ---
+
+Use box plots to summarize the distribution and range of a metric around the median value.
 
 <DocTab>
     <div slot='preview'>

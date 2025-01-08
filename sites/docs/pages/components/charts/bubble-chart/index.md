@@ -1,9 +1,12 @@
 ---
 title: Bubble Chart
+description: Display categorical data across three metrics. The X and Y position, and the size of the bubble each represent a different metric for the category.
 sidebar_position: 1
 queries:
 - price_vs_volume.sql
 ---
+
+Use bubble charts to display categorical data across three metrics. The X and Y position, and the size of the bubble each represent a different metric for the category.
 
 <DocTab>
     <div slot='preview'>

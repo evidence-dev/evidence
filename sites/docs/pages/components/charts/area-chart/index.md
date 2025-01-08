@@ -1,10 +1,13 @@
 ---
 title: 'Area Chart'
+description: Track how a metric with multiple series changes over time, or a continuous range. 
 sidebar_position: 1
 queries:
 - orders_by_month.sql
 - orders_by_category_2021.sql
 ---
+
+Use area charts to track how a metric with multiple series changes over time, or a continuous range. Area charts emphasize changes in the sum of series over the individual series.
 
 <DocTab>
     <div slot='preview'>

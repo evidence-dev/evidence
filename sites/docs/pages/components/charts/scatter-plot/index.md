@@ -1,9 +1,12 @@
 ---
 title: Scatter Plot
+description: Show the correlation between two metrics for categorical values, or a set of samples.
 sidebar_position: 1
 queries:
 - price_vs_volume.sql
 ---
+
+Use scatter plots to show the correlation between two metrics for categorical values, or a set of samples.
 
 <DocTab>
   <div slot='preview'>

@@ -1,10 +1,13 @@
 ---
 title: Calendar Heatmap
+description: Display how a single metric varies over weeks and months in a familar GitHub-style format
 sidebar_position: 5
 queries:
 - orders_by_day.sql
 - orders_by_day_2021.sql
 ---
+
+Use calendar heatmaps to display how a single metric varies over weeks and months.
 
 <DocTab>
     <div slot='preview'>
