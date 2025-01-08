@@ -13,7 +13,7 @@
 </head>
 
 <svelte:head>
-	<meta property="og:image" content="{id}/og.png"/>
+	<meta property="og:image" content="{id}og.png"/>
 </svelte:head>
 <EvidenceDefaultLayout
 	{data}
