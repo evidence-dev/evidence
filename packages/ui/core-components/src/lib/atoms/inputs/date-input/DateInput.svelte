@@ -63,7 +63,7 @@
 
 	let extraDayEndString;
 
-	$: if (endString) {
+	$: if (endString && range) {
 		extraDayEndString = new Date(endString);
 		extraDayEndString.setDate(extraDayEndString.getDate() + 1);
 		extraDayEndString = formatDateString(extraDayEndString);
