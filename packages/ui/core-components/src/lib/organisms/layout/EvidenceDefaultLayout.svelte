@@ -162,7 +162,7 @@
 				'print:w-[650px] print:md:w-[841px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
 			style="max-width:{maxWidth}px;"
 		>
-			{#if !hideSidebar && sidebarFrontMatter !== 'never'}
+			{#if !hideSidebar && sidebarFrontMatter !== 'never' && $page.route.id !== '/settings'}
 				<div class="print:hidden">
 					<Sidebar
 						{fileTree}
@@ -178,7 +178,7 @@
 				</div>
 			{/if}
 			<main
-				class={(!hideSidebar ? 'md:pl-8 ' : '') +
+				class={($page.route.id === '/settings' ? 'w-full mt-16 sm:mt-20 ' : (!hideSidebar ? 'md:pl-8 ' : '') +
 					(!hideTOC ? 'md:pr-8 ' : '') +
 					(!hideHeader
 						? !hideBreadcrumbs
@@ -186,10 +186,10 @@
 							: ' mt-16 sm:mt-[74px] '
 						: !hideBreadcrumbs
 							? ' mt-4 sm:mt-8 '
-							: ' mt-4 sm:mt-[26px] ') +
+							: ' mt-4 sm:mt-[26px] ')) +
 					'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
 			>
-				{#if !hideBreadcrumbs}
+				{#if !hideBreadcrumbs && $page.route.id !== '/settings'}
 					<div class="print:hidden">
 						{#if $page.route.id !== '/settings'}
 							<BreadCrumbs {fileTree} />
@@ -204,7 +204,7 @@
 					<LoadingSkeleton />
 				{/if}
 			</main>
-			{#if !hideTOC}
+			{#if !hideTOC && $page.route.id !== '/settings'}
 				<div class="print:hidden">
 					<TableOfContents {hideHeader} />
 				</div>
