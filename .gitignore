@@ -39,5 +39,6 @@ packages/ui/core-components/coverage
 sites/docs/.evidence/meta/query-cache/hashes.json
 
 priority_support_users.csv
+.aider*
 
 evidence-*.tgz
