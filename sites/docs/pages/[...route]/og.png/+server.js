@@ -7,23 +7,30 @@ import path from 'path';
 import satori from 'satori';
 import {Resvg} from '@resvg/resvg-js';
 
-import InterTight from '$lib/InterTight-SemiBold.ttf';
 const fontDataTight = fs.readFileSync(path.join(process.cwd(), 'src/components', 'InterTight-SemiBold.ttf'));
-import Inter from '$lib/Inter_24pt-Regular.ttf';
 const fontData = fs.readFileSync(path.join(process.cwd(), 'src/components', 'Inter_24pt-Regular.ttf'));
-import GTAmericaMono from '$lib/GT-America-Mono-Regular.otf';
 const fontDataMono = fs.readFileSync(path.join(process.cwd(), 'src/components', 'GT-America-Mono-Regular.otf'));
 const height = 600;
 const width = 1200;
 
 
 /** @type {import('./$types').RequestHandler} */
-export const GET = async ({url}) => {
-  const title = url.searchParams.get('title') ?? undefined;
-  const description = url.searchParams.get('description') ?? undefined;
-  const code = url.searchParams.get('code') ?? undefined; 
-  const category = url.searchParams.get('category') ?? undefined;
-  const result = SocialCard.render({title, description, code, category});
+export const GET = async ({url, fetch}) => {
+  // Fetch the pages manifest
+  const manifestRes = await fetch('/api/pagesManifest.json');
+  let tree = await manifestRes.json();
+  // Get the frontmatter for the route by getting the route recursively using split('/') (trimming the /og.png)
+  const route = url.pathname.replace('/og.png', '');
+  let frontMatter = undefined;
+  for (const part of route.split('/').slice(1)) {
+    tree = tree.children[part];
+    frontMatter = tree.frontMatter;
+  }
+  
+  const title = frontMatter?.title || undefined;
+  const description = frontMatter?.description || undefined;
+  const category = frontMatter?.category || undefined;
+  const result = SocialCard.render({title, description, category});
   const element = toReactNode(`${result.html}<style>${result.css.code}</style>`);
   const svg = await satori(element, {
     height,
@@ -55,10 +62,10 @@ export const GET = async ({url}) => {
   });
 
   const image = resvg.render();
-
-  return new Response(image.asPng(), {
+  const imageBuffer = await image.asPng();
+  return new Response(imageBuffer, {
     headers: {
-      'content-type': 'image/png'
+      'Content-Type': 'image/png'
     }
   });
 };

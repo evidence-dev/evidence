@@ -5,16 +5,7 @@
 	import EditInGitHub from '../components/EditInGitHub.svelte';
 	export let data;
 	import { page } from '$app/stores';
-
-		
-	let tree = data.pagesManifest;
 	let id = $page.route.id;
-	let frontMatter = undefined;
-	// get the part of the manifest that matches the id
-	for (const part of id.split('/').slice(1)) {
-		tree = tree.children[part]
-		frontMatter = tree.frontMatter;
-	}
 </script>
 
 <head>
@@ -22,7 +13,7 @@
 </head>
 
 <svelte:head>
-	<meta property="og:image" content="https://evidence.dev/og.png?title={frontMatter.title}&description={frontMatter.description}" />
+	<meta property="og:image" content="{id}/og.png"/>
 </svelte:head>
 <EvidenceDefaultLayout
 	{data}
@@ -41,4 +32,3 @@
 </EvidenceDefaultLayout>
 
 <EditInGitHub />
-<pre>{JSON.stringify(tree, null, 2)}</pre>
