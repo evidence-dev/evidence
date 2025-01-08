@@ -263,6 +263,7 @@
 		seriesLabelFmt
 	);
 	$: config.update((d) => {
+		console.log('Bubble updating config', d);
 		d.series.push(...seriesConfig);
 		// Push series into legend:
 		d.legend.data.push(...seriesConfig.map((d) => d.name.toString()));
