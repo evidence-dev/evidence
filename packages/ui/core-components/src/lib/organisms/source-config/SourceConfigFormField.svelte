@@ -2,10 +2,11 @@
 	// @ts-check
 
 	import yaml from 'yaml';
+	import { slide } from 'svelte/transition';
 	import { JSONPath } from '@astronautlabs/jsonpath';
 
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
-	import Hint from '../../atoms/hint/Hint.svelte';
+	import Switch from '$lib/atoms/switch/Switch.svelte';
 
 	/** @type {import('@evidence-dev/sdk/plugins').IDatasourceOptionSpec} */
 	export let spec;
@@ -149,24 +150,14 @@
 	$: fieldDisabled = disabled || spec.forceReference || (spec.references && refVal !== null);
 </script>
 
-<div class="w-full">
-	<label
-		class="flex justify-between w-full items-start"
-		class:h-11={spec.type !== 'multiline'}
-		class:h-auto={spec.type === 'multiline'}
-	>
-		<div class="mr-2 inline-flex flex-col gap-1">
-			<p class="flex items-center gap-1">
-				{#if spec.description}
-					<Hint>{spec.description}</Hint>
-				{/if}
-				<span>
-					{title}
-					{#if spec.required}<sup class="text-negative">*</sup>{/if}
-				</span>
-			</p>
-			<p class="text-negative text-xs font-bold">{error}</p>
-		</div>
+<div class="w-full mb-2">
+	<label class="flex flex-col gap-2">
+		<span class="text-sm font-medium flex justify-between items-center">
+			{title}
+			{#if spec.type === 'boolean'}
+				<Switch disabled={fieldDisabled} required={spec.required} bind:checked={fieldValue} />
+			{/if}
+		</span>
 		{#if spec.type === 'string'}
 			{#if spec.secret && !reveal && spec.shown !== true}
 				<input
@@ -184,21 +175,8 @@
 				/>
 			{/if}
 		{:else if spec.type === 'multiline'}
-			<textarea
-				disabled={fieldDisabled}
-				required={spec.required}
-				bind:value={fieldValue}
-				rows="5"
-				class="w-full p-2 mb-3.5"
+			<textarea disabled={fieldDisabled} required={spec.required} bind:value={fieldValue} rows="5"
 			></textarea>
-		{:else if spec.type === 'boolean'}
-			<input
-				class="!w-5"
-				disabled={fieldDisabled}
-				required={spec.required}
-				type="checkbox"
-				bind:checked={fieldValue}
-			/>
 		{:else if spec.type === 'number'}
 			<input
 				disabled={fieldDisabled}
@@ -218,11 +196,27 @@
 				{/each}
 			</select>
 		{:else if spec.type === 'file'}
-			<input disabled={fieldDisabled} type="file" on:change={handleFile} />
+			<label
+				class="flex justify-between items-center px-3 py-2 border border-base-300 rounded-md cursor-pointer hover:bg-base-200 transition-colors"
+			>
+				<span class="text-base-content">Choose file</span>
+				<span class="text-base-content-muted">
+					{#if fieldValue}
+						{fieldValue.name}
+					{:else}
+						No file selected
+					{/if}
+				</span>
+				<input class="hidden" disabled={fieldDisabled} type="file" on:change={handleFile} />
+			</label>
 		{/if}
+		<p class="text-negative text-xs">{error}</p>
 	</label>
+	{#if spec.description}
+		<p class="text-xs text-base-content-muted break-words max-w-2xl">{spec.description}</p>
+	{/if}
 	{#if Object.keys(spec?.children?.[fieldValue] ?? {}).length}
-		<section class="ml-4 flex flex-col gap-2 mt-2">
+		<div class="pl-4 border-l-2 mt-2 border-base-200" transition:slide|local>
 			<SourceConfigFormSection
 				{rootOptions}
 				{reveal}
@@ -230,14 +224,18 @@
 				bind:options={childValueTarget}
 				optionSpec={spec.children?.[fieldValue]}
 			/>
-		</section>
+		</div>
 	{/if}
 </div>
 
 <style lang="postcss">
-	input,
+	input:not([type='file']),
 	select,
 	textarea {
-		@apply rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm;
+		@apply rounded-md border border-base-300 bg-base-100 shadow-sm px-2 py-1 text-sm focus-visible:ring-base-300 flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1;
+	}
+
+	input[type='file'] {
+		@apply hidden;
 	}
 </style>
