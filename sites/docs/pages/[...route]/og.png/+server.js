@@ -19,17 +19,19 @@ export const GET = async ({url, fetch}) => {
   // Fetch the pages manifest
   const manifestRes = await fetch('/api/pagesManifest.json');
   let tree = await manifestRes.json();
+  let parent = undefined;
   // Get the frontmatter for the route by getting the route recursively using split('/') (trimming the /og.png)
   const route = url.pathname.replace('/og.png', '');
   let frontMatter = undefined;
   for (const part of route.split('/').slice(1)) {
+    parent = tree;
     tree = tree.children[part];
     frontMatter = tree.frontMatter;
   }
   
   const title = frontMatter?.title || undefined;
   const description = frontMatter?.description || undefined;
-  const category = frontMatter?.category || undefined;
+  const category = parent?.frontMatter?.title || undefined;
   const result = SocialCard.render({title, description, category});
   const element = toReactNode(`${result.html}<style>${result.css.code}</style>`);
   const svg = await satori(element, {
