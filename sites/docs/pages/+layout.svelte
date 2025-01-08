@@ -13,6 +13,7 @@
 </head>
 
 <svelte:head>
+	<meta property="twitter:image" content="https://docs.evidence.dev{pageRoute}/og.png"/>	
 	<meta property="og:image" content="{pageRoute}/og.png"/>
 </svelte:head>
 <EvidenceDefaultLayout
