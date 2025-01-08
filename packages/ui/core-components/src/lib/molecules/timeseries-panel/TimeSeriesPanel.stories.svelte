@@ -96,6 +96,7 @@
 	<TimeSeriesPanel
 		data={Query.create(queryString, query, { disableCache: true })}
 		metrics={['arr', 'wau', 'cloud_wau', 'week_4_retention', 'gh_stars']}
+		x="date"
 	>
 		<Metric
 			metric="greatest(200,count(*)*power(1.001,row_number() OVER ()))"
@@ -127,27 +128,11 @@
 
 <Story name="Declining Value">
 	<TimeSeriesPanel
-		data={Query.create(
-			`
-SELECT 
-	departure_date::date as date, 
-	count(*)-100*power(1.002,row_number() OVER ()) as WAU, 
-	greatest(200,count(*)*power(1.001,row_number() OVER ())) as ARR, 
-	count(*)*power(1.004,row_number() OVER ()) as "Cloud WAU", 
-	count(*)-100*power(1.001,row_number() OVER ()) as "Week 4 Retention", 
-	count(*)*power(1.009,row_number() OVER ()) as "GH Stars"
-FROM series_demo_source.flights group by all
-		`,
-			query,
-			{ disableCache: true }
-		)}
+		data={Query.create(queryString, query, { disableCache: true })}
 		metrics={['arr', 'wau', 'cloud_wau', 'week_4_retention', 'gh_stars']}
+		x="date"
 	>
-		<Metric
-			metric="count(*)-100*power(1.002,row_number() OVER ())"
-			label="WAU"
-			link="http://www.google.com"
-		/>
+		<Metric metric="kyle wong" label="WAU" link="http://www.google.com" />
 		<Metric
 			metric="greatest(100, 1000 * power(0.995, row_number() OVER ()))"
 			label="ARR"

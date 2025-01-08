@@ -2,8 +2,6 @@
 import { Query as QueryBuilder, sql as taggedSql } from '@evidence-dev/sdk/query-builder';
 import { Query } from '@evidence-dev/sdk/usql';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
-import { writable } from 'svelte/store';
-import { get } from 'svelte/store';
 
 export class TimeSeriesStore {
 	/** @type {QueryValue<RowType>} */
@@ -13,17 +11,12 @@ export class TimeSeriesStore {
 	/** @type {RowType[]} */
 	#data = [];
 
-	#metricsStore = writable([]);
-	#metricsStore2 = [];
+	#metricStore = [];
 
 	#lastDate = new Date();
 
 	#filteredData = [];
-	#value = { data: this.#data, metricsStore: this.#metricsStore2 };
-
-	subscribeToMetrics = (callback) => {
-		return this.#metricsStore.subscribe(callback);
-	};
+	#value = { data: this.#data, metricsStore: this.#metricStore };
 
 	//runs whenever data changes
 	updateData = async (data, x) => {
@@ -31,9 +24,8 @@ export class TimeSeriesStore {
 		this.#xValue = x;
 
 		// Wait for all the metrics to be loaded
-		await Promise.all(get(this.#metricsStore).map((metric) => metric.promise));
-		await Promise.all(this.#metricsStore2.map((metric) => metric.promise));
-		this.value = { ...this.#value, metricsStore: this.#metricsStore2 };
+		await Promise.all(this.#metricStore.map((metric) => metric.promise));
+		this.value = { ...this.#value, metricsStore: this.#metricStore };
 
 		// Run buildNewQuery after data has been updated and all metrics have been loaded
 		this.buildNewQuery(data);
@@ -41,41 +33,56 @@ export class TimeSeriesStore {
 
 	updateMetrics = (metrics) => {
 		return new Promise((resolve) => {
-			this.#metricsStore.update((m) => [...m, metrics]);
-			this.#metricsStore2.push(metrics);
+			this.#metricStore.push(metrics);
 			resolve();
 		});
 	};
 
 	buildNewQuery = async (data) => {
-		const newQueryBuild = new QueryBuilder();
-		newQueryBuild
-			.select(`${this.#xValue}`, {
-				...this.#metricsStore2.reduce(
-					(acc, obj) => ({ ...acc, [obj.label]: taggedSql`${obj.metric}` }),
-					{}
-				)
-			})
-			.from(taggedSql`(${data.originalText}) GROUP BY ALL ORDER BY ${this.#xValue} ASC`);
-		// newQueryBuild
-		// 	.select(`${this.#xValue}`, {
-		// 		...get(this.#metricsStore).reduce(
-		// 			(acc, obj) => ({ ...acc, [obj.label]: taggedSql`${obj.metric}` }),
-		// 			{}
-		// 		)
-		// 	})
-		// 	.from(taggedSql`(${data.originalText}) GROUP BY ALL ORDER BY ${this.#xValue} ASC`);
-		let metricQuery = Query.create(newQueryBuild.toString(), query);
+		try {
+			// Ensure that #xValue is valid and not causing issues
+			if (!this.#xValue) {
+				throw new Error('Invalid xValue: Cannot proceed with query building.');
+			}
 
-		this.#data = await metricQuery.fetch();
-		this.#lastDate =
-			this.#data.length > 0
-				? new Date(this.#data[this.#data.length - 1][this.#xValue])
-				: new Date();
+			// Create a new query builder instance
+			const newQueryBuild = new QueryBuilder();
 
-		this.filterData('1Y');
+			// Build the select clause dynamically using reduce
+			const selectFields = this.#metricStore.reduce(
+				(acc, obj) => ({ ...acc, [obj.label]: taggedSql`${obj.metric}` }),
+				{}
+			);
 
-		this.publish('buildNewQuery');
+			// Attempt to build the query
+			newQueryBuild
+				.select(`${this.#xValue}`, selectFields)
+				.from(taggedSql`(${data.originalText}) GROUP BY ALL ORDER BY ${this.#xValue} ASC`);
+			// Try to create and execute the query
+			const queryResult = Query.create(newQueryBuild.toString(), query);
+
+			if (queryResult.error) {
+				throw new Error('Error creating query: ' + queryResult.error);
+			}
+
+			this.#data = await queryResult.fetch();
+
+			// Set the last date based on the fetched data
+			this.#lastDate =
+				this.#data.length > 0
+					? new Date(this.#data[this.#data.length - 1][this.#xValue])
+					: new Date();
+
+			// Apply the filter for '1Y'
+			this.filterData('1Y');
+
+			// Publish the event after the query is built
+			this.publish('buildNewQuery');
+		} catch (error) {
+			// Handle any errors that occur during the query building or fetching process
+			console.error('Error during query execution:', error.message);
+			// Optionally, notify the user or reset the UI if needed
+		}
 	};
 
 	filterData = (selectedTimeRange) => {

@@ -23,7 +23,6 @@
 	export let downIsGood = false;
 	export let fmt = undefined;
 
-
 	const store = getContext('store');
 
 	$: {
@@ -31,5 +30,4 @@
 			store.updateMetrics({ metric, label, link, downIsGood, fmt });
 		}
 	}
-
 </script>

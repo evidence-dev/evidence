@@ -5,9 +5,12 @@
 	import { crossfade } from 'svelte/transition';
 
 	export let selectedMetric;
-	export let metricsStore;
 	export let data;
 	export let fmt = 'num0';
+	export let store
+
+	let metricsStore = $store.metricsStore
+
 
 	const [send, receive] = crossfade({
 		duration: 200,

@@ -10,20 +10,6 @@ SELECT order_month
 FROM orders 
 ```
 
-```sql data3
-SELECT 
-	"order_month", 
-	greatest(200,count(*)*power(1.001,row_number() OVER ())) AS "ARR", 
-	count(*)-100*power(1.002,row_number() OVER ()) AS "WAU", 
-	count(*)*power(1.004,row_number() OVER ()) AS "Cloud WAU", 
-	count(*)-100*power(1.001,row_number() OVER ()) AS "Week 4 Retention", 
-	count(*)*power(1.009,row_number() OVER ()) AS "GH Stars" 
-	FROM (
-		SELECT order_month 
-FROM orders 
-ORDER BY order_month ASC) AS subquery GROUP BY "order_month"
-```
-
 <DocTab>
     <div slot='preview'>
 
