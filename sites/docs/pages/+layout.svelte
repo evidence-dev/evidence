@@ -5,7 +5,7 @@
 	import EditInGitHub from '../components/EditInGitHub.svelte';
 	export let data;
 	import { page } from '$app/stores';
-	let id = $page.route.id;
+	let pageRoute = $page.route.id.replace(/\/$/, '')
 </script>
 
 <head>
@@ -13,7 +13,7 @@
 </head>
 
 <svelte:head>
-	<meta property="og:image" content="{id}og.png"/>
+	<meta property="og:image" content="{pageRoute}/og.png"/>
 </svelte:head>
 <EvidenceDefaultLayout
 	{data}
