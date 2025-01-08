@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.78",
+	"version": "3.0.79",
 	"private": true,
 	"scripts": {
 		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 evidence build",

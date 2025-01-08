@@ -4,3 +4,4 @@ export * from './button-group';
 export * from './date-range';
 export * from './checkbox';
 export * from './slider';
+export * from './date-input';
