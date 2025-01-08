@@ -10,7 +10,7 @@ import {Resvg} from '@resvg/resvg-js';
 const fontDataTight = fs.readFileSync(path.join(process.cwd(), 'src/components', 'InterTight-SemiBold.ttf'));
 const fontData = fs.readFileSync(path.join(process.cwd(), 'src/components', 'Inter_24pt-Regular.ttf'));
 const fontDataMono = fs.readFileSync(path.join(process.cwd(), 'src/components', 'GT-America-Mono-Regular.otf'));
-const height = 600;
+const height = 630;
 const width = 1200;
 
 
