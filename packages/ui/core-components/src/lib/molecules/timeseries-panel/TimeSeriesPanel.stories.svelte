@@ -132,7 +132,11 @@
 		metrics={['arr', 'wau', 'cloud_wau', 'week_4_retention', 'gh_stars']}
 		x="date"
 	>
-		<Metric metric="kyle wong" label="WAU" link="http://www.google.com" />
+		<Metric
+			metric="count(*)-100*power(1.002,row_number() OVER ())"
+			label="WAU"
+			link="http://www.google.com"
+		/>
 		<Metric
 			metric="greatest(100, 1000 * power(0.995, row_number() OVER ()))"
 			label="ARR"
@@ -156,41 +160,32 @@
 	</TimeSeriesPanel>
 </Story>
 
-<!-- <Story name="TEST">
-	{@const data = Query.create(
-		`SELECT departure_date::date as date, fare from flights LIMIT 1000`,
-		query
-	)}
-
-	<DataTable {data} />
+<Story name="Error: Bad Metric">
 	<TimeSeriesPanel
 		data={Query.create(queryString, query, { disableCache: true })}
 		metrics={['arr', 'wau', 'cloud_wau', 'week_4_retention', 'gh_stars']}
+		x="date"
 	>
+		<Metric metric="**Breaking Metric**" label="WAU" link="http://www.google.com" />
 		<Metric
-			metric="greatest(200,count(*)*power(1.001,row_number() OVER ()))"
+			metric="greatest(100, 1000 * power(0.995, row_number() OVER ()))"
 			label="ARR"
 			link="http://www.google.com"
 		/>
 		<Metric
-			metric="greatest(200,count(*)*power(1.001,row_number() OVER ()))"
-			label="WAU"
-			link="http://www.google.com"
-		/>
-		<Metric
-			metric="greatest(200,count(*)*power(1.001,row_number() OVER ()))"
+			metric="count(*)*power(1.004,row_number() OVER ())"
 			label="Cloud WAU"
 			link="http://www.google.com"
 		/>
 		<Metric
-			metric="greatest(200,count(*)*power(1.001,row_number() OVER ()))"
+			metric="count(*)-100*power(1.001,row_number() OVER ())"
 			label="Week 4 Retention"
 			link="http://www.google.com"
 		/>
 		<Metric
-			metric="greatest(200,count(*)*power(1.001,row_number() OVER ()))"
+			metric="count(*)*power(1.009,row_number() OVER ())"
 			label="GH Stars"
 			link="http://www.google.com"
 		/>
 	</TimeSeriesPanel>
-</Story> -->
+</Story>

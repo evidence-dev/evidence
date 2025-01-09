@@ -16,7 +16,10 @@ export class TimeSeriesStore {
 	#lastDate = new Date();
 
 	#filteredData = [];
+
 	#value = { data: this.#data, metricsStore: this.#metricStore };
+
+	#error = undefined;
 
 	//runs whenever data changes
 	updateData = async (data, x) => {
@@ -61,12 +64,11 @@ export class TimeSeriesStore {
 			// Try to create and execute the query
 			const queryResult = Query.create(newQueryBuild.toString(), query);
 
-			if (queryResult.error) {
-				throw new Error('Error creating query: ' + queryResult.error);
-			}
-
 			this.#data = await queryResult.fetch();
 
+			if (queryResult.error) {
+				this.#error = queryResult.error;
+			}
 			// Set the last date based on the fetched data
 			this.#lastDate =
 				this.#data.length > 0
@@ -142,7 +144,7 @@ export class TimeSeriesStore {
 	 */
 	subscribe = (fn) => {
 		this.#subscribers.add(fn);
-		fn(this.#value);
+		fn({ value: this.#value, error: this.#error });
 		return () => this.#subscribers.delete(fn);
 	};
 
@@ -153,7 +155,7 @@ export class TimeSeriesStore {
 	publish = () => {
 		if (this.#publishIdx++ > 100000) throw new Error('Query published too many times.');
 
-		this.#subscribers.forEach((fn) => fn(this.#value));
+		this.#subscribers.forEach((fn) => fn({ value: this.#value, error: this.#error }));
 	};
 	//////////////////////////////////////
 	/// </ Implement Store Contract /> ///

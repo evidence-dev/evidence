@@ -7,10 +7,7 @@
 	export let selectedMetric;
 	export let data;
 	export let fmt = 'num0';
-	export let store
-
-	let metricsStore = $store.metricsStore
-
+	export let metricsStore;
 
 	const [send, receive] = crossfade({
 		duration: 200,
