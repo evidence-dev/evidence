@@ -269,7 +269,7 @@ To connect to a Trino installation that is accessible via HTTPS, you need to set
 
 #### Starburst Quickstart
 
-[Starburst](https://www.starburst.io/), the company behind Trino, offers a SAAS solution where they run Trino for you. Once you have signed up and created a Trino cluster, you should be able to connect Evidence with the following configuration:
+[Starburst](https://www.starburst.io), the company behind Trino, offers a SAAS solution where they run Trino for you. Once you have signed up and created a Trino cluster, you should be able to connect Evidence with the following configuration:
 
 Host: `<YOUR_DOMAIN>-<YOUR_CLUSTER_NAME>.galaxy.starburst.io`
 
