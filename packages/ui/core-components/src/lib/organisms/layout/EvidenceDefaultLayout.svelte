@@ -178,16 +178,17 @@
 				</div>
 			{/if}
 			<main
-				class={($page.route.id === '/settings' ? 'w-full mt-16 sm:mt-20 ' : (!hideSidebar ? 'md:pl-8 ' : '') +
-					(!hideTOC ? 'md:pr-8 ' : '') +
-					(!hideHeader
-						? !hideBreadcrumbs
-							? ' mt-16 sm:mt-20 '
-							: ' mt-16 sm:mt-[74px] '
-						: !hideBreadcrumbs
-							? ' mt-4 sm:mt-8 '
-							: ' mt-4 sm:mt-[26px] ')) +
-					'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
+				class={($page.route.id === '/settings'
+					? 'w-full mt-16 sm:mt-20 '
+					: (!hideSidebar ? 'md:pl-8 ' : '') +
+						(!hideTOC ? 'md:pr-8 ' : '') +
+						(!hideHeader
+							? !hideBreadcrumbs
+								? ' mt-16 sm:mt-20 '
+								: ' mt-16 sm:mt-[74px] '
+							: !hideBreadcrumbs
+								? ' mt-4 sm:mt-8 '
+								: ' mt-4 sm:mt-[26px] ')) + 'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
 			>
 				{#if !hideBreadcrumbs && $page.route.id !== '/settings'}
 					<div class="print:hidden">
