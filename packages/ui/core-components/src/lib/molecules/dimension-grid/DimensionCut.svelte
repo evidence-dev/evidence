@@ -111,16 +111,14 @@
 
 <!-- {dimensionCutQuery} -->
 
-<div class="w-60 flex-shrink-0 sm:w-1/4 text-xs antialiased pr-4 pb-4 overflow-clip">
+<div class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased pr-4 pb-4 overflow-clip">
 	<div class="capitalize border-b flex justify-between items-baseline">
-		<span class={`truncate pl-1 font-semibold ${metricLabel ? 'w-2/3' : ''}`}>
+		<span class="truncate w-2/3">
 			{formatTitle(dimension.column_name)}
 		</span>
-		{#if metricLabel}
-			<span class="truncate w-1/3 text-right font-semibold">
-				{metricLabel ?? ''}
-			</span>
-		{/if}
+		<span class="truncate w-1/3 text-right">
+			{metricLabel ?? ''}
+		</span>
 	</div>
 	<QueryLoad data={results} let:loaded>
 		<Alert slot="error" status="negative">

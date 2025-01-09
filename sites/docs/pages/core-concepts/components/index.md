@@ -42,7 +42,7 @@ The number of orders yesterday was <Value data = {orders} column = num_orders />
 
 Above, we've passed in the query data `orders` in curly braces `{ }`, and specified the column we want to display `num_orders` in the `column` prop.
 
-For more information on the `Value` component, see the [Value docs](/components/data/value).
+For more information on the `Value` component, see the [Value docs](/components/value).
 
 
 ## Charts
@@ -75,7 +75,7 @@ At a minimum, all charts require a data prop, but for other props Evidence has d
 
 ### Annotations
 
-Charts can include [annotations](/components/charts/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
+Charts can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <LineChart data={sales_data} x=date y=sales>
@@ -85,4 +85,4 @@ Charts can include [annotations](/components/charts/annotations) using the `Refe
 
 ## Custom Components
 
-You can also build your own reusable data viz or UI components in Evidence. See [the Custom Component Guide](/components/custom/custom-component) for more details.
+You can also build your own reusable data viz or UI components in Evidence. See [the Custom Component Guide](/components/custom-components) for more details.
