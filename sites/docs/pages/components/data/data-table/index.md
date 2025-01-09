@@ -15,7 +15,7 @@ limit 100
 
 <DocTab>
     <div slot='preview'>
-        <DataTable data={orders_summary} title="Title" subtitle="Subtitle"/>
+        <DataTable data={orders_summary}/>
     </div>
 
 ```svelte
