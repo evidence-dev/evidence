@@ -1,7 +1,10 @@
 ---
 title: Data Table
+description: Display a richly formatted table of data, in a dense, readable format.
 sidebar_position: 1
 ---
+
+Use a DataTable component to display a richly formatted table of data from a query. Tables are powerful default choice for data display that allow high information density, and are easy to read.
 
 ## Examples
 

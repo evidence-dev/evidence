@@ -1,5 +1,6 @@
 ---
 title: Dimension Grid
+description: Display an interactive grid of one dimensional columns to filter by many dimensions simultaneously.
 sidebar_position: 1
 ---
 

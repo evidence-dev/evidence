@@ -1,6 +1,7 @@
 ---
 title: Date Range
 sidebar_position: 1
+description: Display a date picker for selecting a range of dates.
 queries: 
 - orders_by_day.sql
 ---

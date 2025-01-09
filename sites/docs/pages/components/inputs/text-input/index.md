@@ -1,5 +1,6 @@
 ---
 title: Text Input
+description: Display a text box for freeform text input, useful for searching or filtering.
 sidebar_position: 1
 ---
 
