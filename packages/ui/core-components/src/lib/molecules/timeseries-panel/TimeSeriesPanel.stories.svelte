@@ -177,14 +177,61 @@
 			label="Cloud WAU"
 			link="http://www.google.com"
 		/>
+	</TimeSeriesPanel>
+</Story>
+<Story name="Null Metric">
+	<TimeSeriesPanel
+		data={Query.create(queryString, query, { disableCache: true })}
+		metrics={['arr', 'wau', 'cloud_wau', 'week_4_retention', 'gh_stars']}
+		x="date"
+	>
+		<Metric metric={null} label="WAU" link="http://www.google.com" />
 		<Metric
-			metric="count(*)-100*power(1.001,row_number() OVER ())"
-			label="Week 4 Retention"
+			metric="greatest(100, 1000 * power(0.995, row_number() OVER ()))"
+			label="ARR"
 			link="http://www.google.com"
 		/>
 		<Metric
-			metric="count(*)*power(1.009,row_number() OVER ())"
-			label="GH Stars"
+			metric="count(*)*power(1.004,row_number() OVER ())"
+			label="Cloud WAU"
+			link="http://www.google.com"
+		/>
+	</TimeSeriesPanel>
+</Story>
+<Story name="null query string">
+	<TimeSeriesPanel
+		data={Query.create(null, query, { disableCache: true })}
+		metrics={['arr', 'wau', 'cloud_wau', 'week_4_retention', 'gh_stars']}
+		x="date"
+	>
+		<Metric metric={null} label="WAU" link="http://www.google.com" />
+		<Metric
+			metric="greatest(100, 1000 * power(0.995, row_number() OVER ()))"
+			label="ARR"
+			link="http://www.google.com"
+		/>
+		<Metric
+			metric="count(*)*power(1.004,row_number() OVER ())"
+			label="Cloud WAU"
+			link="http://www.google.com"
+		/>
+	</TimeSeriesPanel>
+</Story>
+<Story name="bad query string">
+	<TimeSeriesPanel
+		data={Query.create('not a real query string', query, { disableCache: true })}
+		metrics={['arr', 'wau', 'cloud_wau', 'week_4_retention', 'gh_stars']}
+		x="date"
+	>
+		<Metric metric={null} label="WAU" link="http://www.google.com" />
+		<Metric
+			metric="greatest(100, 1000 * power(0.995, row_number() OVER ()))"
+			label="ARR"
+			link="http://www.google.com"
+		/>
+		<Metric
+			metric="count(*)*power(1.004,row_number() OVER ())"
+			label="Cloud WAU"
 			link="http://www.google.com"
 		/>
 	</TimeSeriesPanel>

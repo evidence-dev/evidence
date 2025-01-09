@@ -22,6 +22,9 @@
 	$: if ($store.value.metricsStore.length > 0 && !selectedMetric) {
 		selectedMetric = $store.value.metricsStore[0].label;
 	}
+
+	$: console.log($store.error);
+	console.log('hello');
 </script>
 
 {#if $store.value.data.length > 0 && $store.value.metricsStore.length > 0}
