@@ -59,7 +59,9 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 ```
 </DocTab>
 
-## Vertical
+## Examples
+
+### Vertical
 
 <DocTab>
   <div slot='preview'>
@@ -77,7 +79,7 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 ```
 </DocTab>
 
-# Echarts Options String 
+### Echarts Options String 
 
 <DocTab>
   <div slot='preview'>
@@ -113,7 +115,7 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 ```
 </DocTab>
 
-# Node Depth Override
+### Node Depth Override
 
 
 ```sql apple_income_statement
@@ -167,11 +169,9 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
 </DocTab>
 
 
-# Labels
+### Labels
 
-## Node Labels
-
-### `nodeLabels=name` (default)
+#### `nodeLabels=name` (default)
 
 <DocTab>
   <div slot='preview'>
@@ -198,7 +198,7 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
 </DocTab>
 
 
-### `nodeLabels=value`
+#### `nodeLabels=value`
 
 <DocTab>
   <div slot='preview'>
@@ -228,7 +228,7 @@ The value labels can be formatted using the `valueFmt` option.
 
 
 
-### `nodeLabels=full`
+#### `nodeLabels=full`
 
 <DocTab>
   <div slot='preview'>
@@ -256,9 +256,7 @@ The value labels can be formatted using the `valueFmt` option.
 ```
 </DocTab>
 
-## Link Labels
-
-### `linkLabels=full` (default)
+#### `linkLabels=full` (default)
 Requires `percentCol` to show percentage beside value
 
 <DocTab>
@@ -288,7 +286,7 @@ Requires `percentCol` to show percentage beside value
 </DocTab>
 
 
-### `linkLabels=value`
+#### `linkLabels=value`
 
 <DocTab>
   <div slot='preview'>
@@ -317,7 +315,7 @@ Requires `percentCol` to show percentage beside value
 </DocTab>
 
 
-### `linkLabels=percent`
+#### `linkLabels=percent`
 
 <DocTab>
   <div slot='preview'>
@@ -345,7 +343,7 @@ Requires `percentCol` to show percentage beside value
 ```
 </DocTab>
 
-## Custom Color Palette
+### Custom Color Palette
 
 <DocTab>
   <div slot='preview'>
@@ -374,9 +372,9 @@ Requires `percentCol` to show percentage beside value
 </DocTab>
 
 
-## Link Colors
+### Link Colors
 
-### `linkColor=grey` (default)
+#### `linkColor=grey` (default)
 
 <DocTab>
   <div slot='preview'>
@@ -405,7 +403,7 @@ Requires `percentCol` to show percentage beside value
 </DocTab>
 
 
-### `linkColor=source` 
+#### `linkColor=source` 
 
 <DocTab>
   <div slot='preview'>
@@ -433,7 +431,7 @@ Requires `percentCol` to show percentage beside value
 ```
 </DocTab>
 
-### `linkColor=target` 
+#### `linkColor=target` 
 
 <DocTab>
   <div slot='preview'>
@@ -462,7 +460,7 @@ Requires `percentCol` to show percentage beside value
 </DocTab>
 
 
-### `linkColor=gradient` 
+#### `linkColor=gradient` 
 
 <DocTab>
   <div slot='preview'>
@@ -491,7 +489,7 @@ Requires `percentCol` to show percentage beside value
 </DocTab>
 
 
-## Multi-level
+### Multi-level
 
 The syntax for multi-level sankey diagrams is the same, but the 
 underlying query must represent all the levels using the same 

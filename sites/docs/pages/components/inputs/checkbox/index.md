@@ -22,6 +22,8 @@ Creates a checkbox with toggleable input. The Title and Name attributes can be d
 ````
 </DocTab>
 
+## Examples
+
 ### Checkbox using Default Value
 
 Defining the defaultValue property will set the initial checked value with true and false.
@@ -97,10 +99,6 @@ WHERE  not ${inputs.exclude_low_value} -- When True, Do not evaluate the next co
 ````
 </DocTab>
 
-
-
-
-# Checkbox
 
 ## Options
 

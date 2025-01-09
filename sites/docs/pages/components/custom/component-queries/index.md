@@ -4,8 +4,6 @@ description: Execute SQL queries from inside custom components.
 sidebar_position: 2
 ---
 
-# Component Queries
-
 Component queries allow you to run SQL queries in your component code.
 
 Component queries transform how we build data visualizations. Instead of passing data down through props from parent pages, components become self-contained units that can request exactly what they need. This independence makes components more reusable and easier to maintain, as all the logic for both fetching and displaying data lives in one place.

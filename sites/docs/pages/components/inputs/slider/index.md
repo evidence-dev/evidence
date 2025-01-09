@@ -26,7 +26,9 @@ Creates a Slider input with default min, max and step values
 ````
 </DocTab>
 
-Min and Max values can be defined, the step property and define the incremental value of the slider
+## Examples
+
+### Step
 
 <DocTab>
     <div slot="preview">
@@ -50,7 +52,8 @@ Min and Max values can be defined, the step property and define the incremental 
 ````
 </DocTab>
 
-showMaxMin property can hide the Max and Min values with false, by default showMaxMin is true
+### Hide Min and Max values
+
 
 <DocTab>
  <div slot="preview">
@@ -74,7 +77,7 @@ showMaxMin property can hide the Max and Min values with false, by default showM
 ````
 </DocTab>
 
-The default size of the slider can be altered with the size property using; medium, large or full
+### Size
 
 <DocTab>
     <div slot="preview">
@@ -149,18 +152,22 @@ The default size of the slider can be altered with the size property using; medi
 </DocTab>
 
 
-````sql flight_data
-		SELECT
-	  CAST(fare AS INT) AS fare,
-	  CAST((SELECT MAX(fare) FROM flights) AS INT) AS max_fare,
-	FROM flights
-	LIMIT 100
-````
+### Specifying Dynamic Columns
 
-## Specifying Dynamic Columns
 
-Supply data with specified column names for minColumn, maxColumn, and/or defaultValue. The first row’s value in each of these columns will determine the minimum, maximum, or default value, respectively.
+```sql flight_data
+SELECT
+CAST(fare AS INT) AS fare,
+CAST((SELECT MAX(fare) FROM flights) AS INT) AS max_fare,
+FROM flights
+LIMIT 100
+```
 
+
+The first row’s value in each of these columns will determine the minimum, maximum, or default value, respectively.
+
+<DocTab>
+    <div slot="preview">
 <Slider
     title='data slider'
     size=large
@@ -169,8 +176,18 @@ Supply data with specified column names for minColumn, maxColumn, and/or default
     maxColumn=max_fare
     defaultValue=max_fare
 />
+    </div>
 
 ````markdown
+```sql flight_data
+SELECT
+CAST(fare AS INT) AS fare,
+CAST((SELECT MAX(fare) FROM flights) AS INT) AS max_fare,
+FROM flights
+LIMIT 100
+```
+
+
 <Slider
     title='data slider'
     size=large
@@ -180,8 +197,8 @@ Supply data with specified column names for minColumn, maxColumn, and/or default
     defaultValue=max_fare
 />
 ````
+</DocTab>
 
-# Slider
 
 ## Options
 
