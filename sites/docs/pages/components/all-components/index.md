@@ -342,19 +342,6 @@ description:  An index of the components available in the Evidence library.
     </div>
 </Grid>
 
-### [Mixed Type Charts](/components/charts/mixed-type-charts)
-
-<Grid>
-    <div class="border rounded-lg p-4 my-2 mx-1 hover:shadow-md transition">
-        <b>Bar and Line</b>
-        <a href="/components/charts/mixed-type-charts">
-    
-        <img src="/img/bar-line.png" alt="bar-line" class="markdown">
-    
-        </a>
-    </div>
-</Grid>
-
 ### [Annotations](/components/charts/annotations)
 
 <Grid>

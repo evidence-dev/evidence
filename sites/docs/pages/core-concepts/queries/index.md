@@ -10,6 +10,18 @@ Evidence runs markdown code fences as SQL queries. These queries use the [DuckDB
 
 If you have a data source called `needful_things`, you run a query against it like this:
 
+<DocTab defaultTab='code'>
+    <div slot='preview'>
+
+```sql sales_by_category
+select 
+  category, sum(sales) as sales
+from needful_things.orders
+group by 1
+```
+
+    </div>
+
 ````markdown
 ```sql sales_by_category
 select 
@@ -18,6 +30,7 @@ from needful_things.orders
 group by 1
 ```
 ````
+</DocTab>
 
 When you open a page in dev mode, Evidence runs all of the queries on the page. In dev mode, Evidence monitors the contents of your SQL blocks, and reloads the page as necessary to reflect any changes you've made to your queries.
 
@@ -71,8 +84,7 @@ from (
 
 ### View Compiled SQL
 
-You can choose whether you want to see the compiled or written SQL inside the query viewer:
-![compiled-written-toggle](/img/compiled-written-toggle.gif)
+You can choose whether you want to see the compiled or written SQL inside the query viewer.
 
 ### Ordering and Circular References
 
@@ -80,9 +92,7 @@ The order that queries appear on the page doesn't matter to the SQL compiler. Yo
 
 Some SQL dialects require sub-queries to be aliased, including Postgres and MySQL. E.g. `from ${sales_by_item} as sales_by_item`.
 
-The SQL compiler detects circular and missing references. If a query includes either a circular reference or a missing reference, Evidence will display an error that looks like a syntax error in a normal SQL query. Queries with compiler errors are not sent to your database.
-
-![circular-error-single](/img/circular-error-single.png)
+The SQL compiler detects circular and missing references. 
 
 ## SQL File Queries
 
