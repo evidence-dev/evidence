@@ -3,8 +3,6 @@
 </script>
 
 <script>
-	import { cn } from '$lib/utils.js';
-
 	/** @type {Error} */
 	export let error;
 	/** @type {string} */
