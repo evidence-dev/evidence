@@ -1,11 +1,12 @@
 ---
 title: Big Value
+description: Display a large value standalone, and optionally include a comparison and a sparkline.
 sidebar_position: 1
 queries: 
 - orders_with_comparisons.sql
 ---
 
-Big Value displays a large value, and can be configured to include a comparison and a sparkline.
+Use big values to display a large value standalone, and optionally include a comparison and a sparkline.
 
 <DocTab>
     <div slot='preview'>

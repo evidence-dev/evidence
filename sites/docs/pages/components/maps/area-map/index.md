@@ -1,7 +1,10 @@
 ---
 title: Area Map
+description: Compare a metric across different regions on a map using a choropleth map
 sidebar_position: 1
 ---
+
+Compare a metric across different regions on a map using a choropleth map
 
 <DocTab>
     <div slot='preview'>

@@ -1,7 +1,10 @@
 ---
 title: Base Map
+description: Combine multiple map layers including areas, points, and bubbles.
 sidebar_position: 2
 ---
+
+Combine multiple map layers including areas, points, and bubbles.
 
 <DocTab>
     <div slot='preview'>
