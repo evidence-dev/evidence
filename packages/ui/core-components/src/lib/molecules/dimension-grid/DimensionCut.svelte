@@ -122,7 +122,7 @@
 			</span>
 		{/if}
 	</div>
-	<QueryLoad data={results} skeletonMt="0" let:loaded>
+	<QueryLoad data={results} skeletonClass="mt-0" let:loaded>
 		<Alert slot="error" status="negative">
 			{$results.error}
 		</Alert>

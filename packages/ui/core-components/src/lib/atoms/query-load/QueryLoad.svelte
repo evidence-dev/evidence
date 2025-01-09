@@ -9,7 +9,7 @@
 
 	export let height = 200;
 
-	export let skeletonMt = undefined;
+	export let skeletonClass = undefined;
 
 	$: if (Query.isQuery(data)) {
 		data.fetch(); // Somebody wants this to load. Without this the query builder features don't work
@@ -41,7 +41,7 @@
 {:else if !_data || (!_data.dataLoaded && !_data.error)}
 	<slot name="skeleton" loaded={_data}>
 		<div class="w-full" style="height: {height}px">
-			<Skeleton mt={skeletonMt} />
+			<Skeleton class={skeletonClass} />
 		</div>
 	</slot>
 {:else if _data.error && $$slots.error}
