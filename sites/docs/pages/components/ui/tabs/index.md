@@ -1,7 +1,10 @@
 ---
 title: Tabs
+description: Organize content across multiple panes.
 sidebar_position: 1
 ---
+
+Use Tabs to organize content across multiple panes.
 
 <DocTab>
   <div slot='preview'>

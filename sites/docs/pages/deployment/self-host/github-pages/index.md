@@ -12,7 +12,7 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
 
     **Base Path**
 
-    GitHub Pages serves sites at subpaths of github.io by default, e.g. `https://[username].github.io/your-app`, so you will need to adjust the [base path](/deployment/configuration/base-paths) AND the [build directory](/deployment/configuration/base-paths/#configuring-the-build-directory-in-packagejson) for your app, unless using a custom domain.
+    GitHub Pages serves sites at subpaths of github.io by default, e.g. `https://[username].github.io/your-app`, so you will need to adjust the [base path](/deployment/configuration/base-paths) AND the [build directory](/deployment/configuration/base-paths#configuring-the-build-directory-in-packagejson) for your app, unless using a custom domain.
 
 </Alert>
 

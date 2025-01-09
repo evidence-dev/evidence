@@ -7,7 +7,7 @@ description: Evidence supports most markdown syntax. Below are some of the most 
 
 # Markdown Reference
 
-Evidence supports most markdown syntax. Below are some of the most common markdown features. For more details, check out [Markdown Guide](https://www.markdownguide.org/cheat-sheet/).
+Evidence supports most markdown syntax. Below are some of the most common markdown features. For more details, check out [Markdown Guide](https://www.markdownguide.org/cheat-sheet).
 
 ## Text Paragraphs
 
@@ -59,7 +59,7 @@ _Italic_ text is wrapped in single asterisks
 ```markdown
 [External link](https://google.com)
 
-[Internal link](another/page/)
+[Internal link](/another/page)
 ```
 
 ## Images
@@ -74,7 +74,7 @@ _Italic_ text is wrapped in single asterisks
 
 Evidence looks for images in the `/static` folder in the root of your project. Create it if it doesn't exist.
 
-```
+```bash
 +-- pages/
 |   `-- index.md
 `-- static/
@@ -172,7 +172,7 @@ title: Evidence Docs
 ---
 ```
 
-You can put whatever data you would like here, and it uses a [yaml syntax](https://yaml.org/), but some properties are special:
+You can put whatever data you would like here, and it uses a [yaml syntax](https://yaml.org), but some properties are special:
 
 <PropListing
     name="title"
@@ -233,7 +233,7 @@ E.g.
 
 </PropListing>
 
-Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
+Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax#expressions) on the page.
 
 ## Partials
 

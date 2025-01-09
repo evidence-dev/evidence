@@ -1,7 +1,10 @@
 ---
 title: Data Table
+description: Display a richly formatted table of data, in a dense, readable format.
 sidebar_position: 1
 ---
+
+Use a DataTable component to display a richly formatted table of data from a query. Tables are powerful default choice for data display that allow high information density, and are easy to read.
 
 ## Examples
 
@@ -53,7 +56,7 @@ limit 100
 
 ### Custom Column Formatting
 
-You can use the `fmt` prop to format your columns using [built-in format names or Excel format codes](/core-concepts/formatting/)
+You can use the `fmt` prop to format your columns using [built-in format names or Excel format codes](/core-concepts/formatting)
 
 <DocTab>
     <div slot='preview'>
@@ -723,7 +726,7 @@ order by number asc
 
 
 ### Including Images
-You can include images by indicating either an absolute path e.g. `https://www.example.com/images/image.png` or a relative path e.g. `/images/image.png`. For relative paths, see [storing static files in a static folder](/reference/markdown/#storing-images-and-static-files). 
+You can include images by indicating either an absolute path e.g. `https://www.example.com/images/image.png` or a relative path e.g. `/images/image.png`. For relative paths, see [storing static files in a static folder](/reference/markdown#storing-images-and-static-files). 
 
 In this example, `flag` is either an absolute path or a relative path to the image.
 
