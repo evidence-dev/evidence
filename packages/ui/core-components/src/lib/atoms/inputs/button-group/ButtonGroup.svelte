@@ -8,7 +8,6 @@
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
@@ -98,7 +97,16 @@
 </script>
 
 {#if error}
-	<ErrorChart title={'Button Group'} {error} />
+	<span
+		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
+	>
+		<span class="inline font-sans font-medium text-xs text-negative">error</span>
+		<span
+			class="hidden font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-base-200 border border-base-300 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
+		>
+			{error}
+		</span>
+	</span>
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
