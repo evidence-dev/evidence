@@ -27,14 +27,14 @@ GitHub Pages is a static site hosting service that publishes a website from HTML
     - If your repo is stored at `https://github.com/username/my-evidence-app`, your base path should be `/my-evidence-app`.
     ```yaml
     # evidence.config.yaml
-	deployment:
-  		basePath: /my-evidence-app
+    deployment:
+      basePath: /my-evidence-app
     ```
     ```json
-	// package.json
-  	"scripts": {
-    	"build": "EVIDENCE_BUILD_DIR=./build/my-evidence-app evidence build",
-  	}
+    // package.json
+    "scripts": {
+      "build": "EVIDENCE_BUILD_DIR=./build/my-evidence-app evidence build",
+    }
     ```
 1. Add secrets to your GitHub repo: Settings > Secrets and variables > Actions
     - With your Evidence dev server running, go to the <a href=http://localhost:3000/settings#deploy target="_blank" class="markdown">settings page</a> and copy each of the environment variables
