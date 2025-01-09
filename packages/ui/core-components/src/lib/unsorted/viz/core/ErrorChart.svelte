@@ -3,24 +3,25 @@
 </script>
 
 <script>
+	import { cn } from '$lib/utils.js';
+
 	/** @type {Error} */
 	export let error;
 	/** @type {string} */
 	export let title;
 	/** @type {string} */
-	export let height = '340';
+	export let height = 200;
 </script>
 
 <div
 	width="100%"
-	class="grid grid-rows-auto grid-cols-1 justify-center relative
+	class={`grid grid-rows-auto grid-cols-1 justify-center relative
 			bg-negative/10 text-negative
 			font-ui font-normal
 			rounded border border-negative/50
-			min-h-[200px]
-			h-[{height}px]
+			min-h-[${height}px]
 			py-5 px-8 mt-2 mb-4
-			print:break-inside-avoid"
+			print:break-inside-avoid`}
 >
 	<div class="m-auto w-full">
 		<div class="font-bold text-center text-lg">
