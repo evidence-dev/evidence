@@ -1,7 +1,10 @@
 ---
 title: Funnel Chart
+description: Display how a single metric changes across a series of stages. Funnel charts are widely used for visualizing conversion.
 sidebar_position: 6
 ---
+
+Use funnel charts to display a single metric across a series of stages. Funnel charts are widely used for visualizing conversion.
 
 ```sql funnel_data
 select * from (

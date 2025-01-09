@@ -1,7 +1,10 @@
 ---
 title: Heatmap
+description: Show patterns in a single metric across two categorical dimensions, using colour to indicate size.
 sidebar_position: 5
 ---
+
+Use heatmaps to show patterns in a single metric across two categorical dimensions, using colour to indicate size.
 
 ```orders
 select category, dayname(order_datetime) as day, dayofweek(order_datetime) as day_num, count(*) as order_count from needful_things.orders

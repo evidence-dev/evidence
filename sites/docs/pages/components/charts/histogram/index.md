@@ -1,7 +1,10 @@
 ---
 title: Histogram
+description: Display the distribution of a metric along a continuous range, aggregated into buckets.
 sidebar_position: 1
 ---
+
+Use histograms to display the distribution of a metric along a continuous range, aggregated into buckets.
 
 ```sql orders
 select * from needful_things.orders limit 1000

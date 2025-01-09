@@ -1,7 +1,7 @@
 ---
 title: Date Input
 sidebar_position: 1
-description: A date input component allows the user to select a date or a range of dates. The selected dates can be used as inputs to queries or components.
+description: Display a date picker for selecting a singledate or a range of dates.
 queries: 
 - orders_by_day.sql
 ---

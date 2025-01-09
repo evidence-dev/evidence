@@ -1,6 +1,6 @@
 ---
 title: Syntax
-description: Extended markdown with additional functionality.
+description: Evidence extends markdown with additional functionality to run queries and create charts.
 sidebar_position: 1
 ---
 
