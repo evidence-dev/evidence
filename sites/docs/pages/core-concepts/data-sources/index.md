@@ -45,8 +45,8 @@ Evidence supports:
 - [DuckDB](/core-concepts/data-sources/duckdb)
 - [MotherDuck](/core-concepts/data-sources/motherduck)
 - [Databricks](/core-concepts/data-sources/databricks)
-- [Cube](/core-concepts/data-sources/cube)
-- [Google Sheets](/core-concepts/data-sources/gsheets)
+- [Cube](/core-concepts/data-sources/postgres#cube)
+- [Google Sheets](/core-concepts/data-sources/google-sheets)
 - [CSV](/core-concepts/data-sources/csv)
 - [Parquet](/core-concepts/data-sources/csv)
 - & More
