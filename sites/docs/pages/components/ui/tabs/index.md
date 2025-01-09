@@ -43,6 +43,58 @@ Use Tabs to organize content across multiple panes.
 
 ## Examples
 
+### Full Width
+
+<DocTab>
+  <div slot='preview'>
+    <Tabs fullWidth=true>
+        <Tab label="First Tab">
+            Content of the First Tab
+        </Tab>
+        <Tab label="Second Tab">
+            Content of the Second Tab
+        </Tab>
+    </Tabs>
+  </div>
+
+```markdown
+<Tabs fullWidth=true>
+    <Tab label="First Tab">
+        Content of the First Tab
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+    </Tab>
+</Tabs>
+```
+</DocTab>
+
+### Theme Color
+
+<DocTab>
+  <div slot='preview'>
+    <Tabs color=primary>
+        <Tab label="Primary Tabs">
+            Content of the First Tab
+        </Tab>
+        <Tab label="Second Tab">
+            Content of the Second Tab
+        </Tab>
+    </Tabs>
+  </div>
+
+```markdown
+<Tabs color=primary>
+    <Tab label="Primary Tabs">
+        Content of the First Tab
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+    </Tab>
+</Tabs>
+```
+</DocTab>
+
 ### Custom Color
 
 <DocTab>
@@ -68,6 +120,34 @@ Use Tabs to organize content across multiple panes.
 </Tabs>
 ```
 </DocTab>
+
+
+### Background Color
+
+<DocTab>
+  <div slot='preview'>
+    <Tabs background=true>
+        <Tab label="First Tab">
+            Content of the First Tab
+        </Tab>
+        <Tab label="Second Tab">
+            Content of the Second Tab
+        </Tab>
+    </Tabs>
+  </div>
+
+```markdown
+<Tabs background=true>
+    <Tab label="First Tab">
+        Content of the First Tab
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+    </Tab>
+</Tabs>
+```
+</DocTab>
+
 
 ### Persist Selected Tab to URL
 
@@ -110,10 +190,28 @@ Unique Id for this set of tabs. When set, the selected tab is included in the UR
 <PropListing
     name="color"
     options="Any valid hex, rgb, or hsl string"
-    defaultValue="blue"
+    defaultValue="base-content"
 >
 
-Color for the active tab.
+Color for the active tab. Accepts [theme tokens](/core-concepts/themes#colors)
+
+</PropListing>
+<PropListing
+    name="fullWidth"
+    options={[true, false]}
+    defaultValue="false"
+>
+
+Tabs take up full width of page
+
+</PropListing>
+<PropListing
+    name="background"
+    options={[true, false]}
+    defaultValue="false"
+>
+
+Include background color on active tab. Color is automatically determined based on `color` prop
 
 </PropListing>
 
