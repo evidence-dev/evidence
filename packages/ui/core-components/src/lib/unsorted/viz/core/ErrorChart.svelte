@@ -17,9 +17,9 @@
 			bg-negative/10 text-negative
 			font-ui font-normal
 			rounded border border-negative/50
-			min-h-[${height}px]
 			py-5 px-8 mt-2 mb-4
 			print:break-inside-avoid`}
+	style="min-height: {height}px"
 >
 	<div class="m-auto w-full">
 		<div class="font-bold text-center text-lg">

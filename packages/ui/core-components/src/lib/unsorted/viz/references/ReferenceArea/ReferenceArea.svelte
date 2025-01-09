@@ -187,7 +187,7 @@
 {/if}
 
 {#if $store.error}
-	<ErrorChart error={$store.error} height="50px" title={chartType} />
+	<ErrorChart error={$store.error} height="50" title={chartType} />
 {:else}
 	<QueryLoad {data}>
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
