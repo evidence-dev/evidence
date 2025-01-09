@@ -74,7 +74,7 @@ _Italic_ text is wrapped in single asterisks
 
 Evidence looks for images in the `/static` folder in the root of your project. Create it if it doesn't exist.
 
-```
+```bash
 +-- pages/
 |   `-- index.md
 `-- static/
