@@ -20,7 +20,7 @@
 
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" />
-	<ErrorChart let:loaded slot="error" error={loaded.error.message} />
+	<ErrorChart let:loaded slot="error" error={loaded.error.message} title="Time Series Panel" />
 	{#if loaded}
 		<TimeSeriesPanel data={loaded} {x} />
 	{/if}
