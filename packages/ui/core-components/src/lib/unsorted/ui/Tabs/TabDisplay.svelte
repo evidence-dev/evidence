@@ -4,7 +4,7 @@
 
 	const { resolveColor } = getThemeStores();
 
-	export let color = 'primary';
+	export let color = 'base-content';
 	$: colorStore = resolveColor(color);
 
 	export let id;

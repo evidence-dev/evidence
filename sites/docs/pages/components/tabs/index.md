@@ -66,6 +66,31 @@ sidebar_position: 1
 ```
 </DocTab>
 
+### Theme Color
+
+<DocTab>
+  <div slot='preview'>
+    <Tabs color=primary>
+        <Tab label="Primary Tabs">
+            Content of the First Tab
+        </Tab>
+        <Tab label="Second Tab">
+            Content of the Second Tab
+        </Tab>
+    </Tabs>
+  </div>
+
+```markdown
+<Tabs color=primary>
+    <Tab label="Primary Tabs">
+        Content of the First Tab
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+    </Tab>
+</Tabs>
+```
+</DocTab>
 
 ### Custom Color
 
@@ -92,6 +117,7 @@ sidebar_position: 1
 </Tabs>
 ```
 </DocTab>
+
 
 ### Background Color
 
@@ -161,10 +187,10 @@ Unique Id for this set of tabs. When set, the selected tab is included in the UR
 <PropListing
     name="color"
     options="Any valid hex, rgb, or hsl string"
-    defaultValue="blue"
+    defaultValue="base-content"
 >
 
-Color for the active tab.
+Color for the active tab. Accepts [theme tokens](/core-concepts/themes#colors)
 
 </PropListing>
 <PropListing
