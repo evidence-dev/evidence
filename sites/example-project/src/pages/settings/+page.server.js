@@ -89,8 +89,6 @@ export const actions = {
 		const datasourcePlugins = await loadSourcePlugins();
 		const [pack, pluginSpec] = datasourcePlugins.getBySource(r.data.type);
 
-		console.log(r, pack, pluginSpec, datasourcePlugins);
-
 		if (!pluginSpec) {
 			logQueryEvent('db-plugin-unvailable', r.data.type, undefined, undefined, dev);
 			return fail(400, { message: `Plugin for datasource "${r.data.type}" not found.` });
@@ -102,7 +100,6 @@ export const actions = {
 			return fail(200, { message: valid.reason });
 		} else {
 			logQueryEvent('db-connection-success', r.data.type, r.data.name, undefined, dev);
-
 			return {
 				success: true
 			};
