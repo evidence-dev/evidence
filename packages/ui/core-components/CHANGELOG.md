@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 5.0.4
+
+### Patch Changes
+
+- 0d6e938f4: fixed border regression in dateinput
+- 87ee3d66c: Add third level pages to sidebar
+- eda30637a: Remove groupDataPopulated flag
+- 70cb324ae: Styling changes for consistency
+  - @evidence-dev/component-utilities@4.0.4
+  - @evidence-dev/tailwind@3.0.4
+
 ## 5.0.3
 
 ### Patch Changes

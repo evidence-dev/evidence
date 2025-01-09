@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 40.0.4
+
+### Patch Changes
+
+- dd4e4724f: Add warning message to default index.md
+- Updated dependencies [fa5179ed4]
+- Updated dependencies [309e27b51]
+- Updated dependencies [f416a339d]
+  - @evidence-dev/preprocess@6.0.1
+  - @evidence-dev/sdk@3.0.4
+  - @evidence-dev/universal-sql@2.2.5
+
 ## 40.0.3
 
 ### Patch Changes

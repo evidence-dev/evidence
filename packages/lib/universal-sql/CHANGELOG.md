@@ -1,5 +1,13 @@
 # @evidence-dev/universal-sql
 
+## 2.2.5
+
+### Patch Changes
+
+- f416a339d: workaround bug in duckdb-wasm that errors when fully null date column is read as parquet
+- Updated dependencies [309e27b51]
+  - @evidence-dev/sdk@3.0.4
+
 ## 2.2.4
 
 ### Patch Changes

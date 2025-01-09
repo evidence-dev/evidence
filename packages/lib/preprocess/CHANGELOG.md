@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 6.0.1
+
+### Patch Changes
+
+- fa5179ed4: fix query HMR
+
 ## 6.0.0
 
 ### Major Changes
