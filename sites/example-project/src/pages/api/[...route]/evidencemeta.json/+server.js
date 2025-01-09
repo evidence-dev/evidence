@@ -27,6 +27,10 @@ export const entries = async () => {
 
 /** @type {import("./$types").RequestHandler} */
 export async function GET({ params: { route } }) {
+	if (route === '/settings') {
+		const queries = [];
+		return json({ queries });
+	}
 	let routesDir;
 	if ((await fs.readdir(process.cwd())).includes('src')) {
 		routesDir = path.join('src', 'pages'); // example project wackiness
