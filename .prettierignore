@@ -20,7 +20,6 @@ yarn.lock
 /packages/components/*
 **/dist/*   
 .changeset/*
-vercel.json
 
 *.yaml
 /packages/ui/storybook-static/*

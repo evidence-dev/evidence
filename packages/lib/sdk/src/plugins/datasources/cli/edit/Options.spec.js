@@ -59,103 +59,6 @@ const testSpec = {
 	}
 };
 
-const complexSpec = {
-	project_id: {
-		title: 'Project ID',
-		type: 'string',
-		secret: true,
-		virtual: false,
-		references: '$.keyfile.project_id',
-		forceReference: false,
-		required: true
-	},
-	location: {
-		title: 'Location (Region)',
-		type: 'string',
-		secret: false,
-		virtual: false,
-		forceReference: false,
-		required: false,
-		default: 'US'
-	},
-	authenticator: {
-		title: 'Authentication Method',
-		type: 'select',
-		secret: false,
-		virtual: false,
-		forceReference: false,
-		children: {
-			'service-account': {
-				keyfile: {
-					title: 'Credentials File',
-					type: 'file',
-					secret: false,
-					virtual: true,
-					forceReference: false,
-					fileFormat: 'json',
-					required: false
-				},
-				client_email: {
-					title: 'Client Email',
-					type: 'string',
-					secret: true,
-					virtual: false,
-					references: '$.keyfile.client_email',
-					forceReference: true,
-					required: true
-				},
-				private_key: {
-					title: 'Private Key',
-					type: 'string',
-					secret: true,
-					virtual: false,
-					references: '$.keyfile.private_key',
-					forceReference: true,
-					required: true
-				}
-			},
-			'gcloud-cli': {},
-			oauth: {
-				token: {
-					title: 'Token',
-					type: 'string',
-					secret: true,
-					virtual: false,
-					forceReference: false,
-					required: true
-				}
-			}
-		},
-		required: true,
-		options: [
-			{ value: 'service-account', label: 'Service Account' },
-			{ value: 'gcloud-cli', label: 'GCloud CLI' },
-			{ value: 'oauth', label: 'OAuth Access Token' }
-		],
-		nest: false,
-		default: 'service-account'
-	}
-};
-const complexOpts = {
-	location: 'US',
-	authenticator: 'service-account',
-	project_id: 'deadbeef-project',
-	keyfile: {
-		type: 'service_account',
-		project_id: 'deadbeef-project',
-		private_key_id: 'deadbeef',
-		private_key: 'my private key',
-		client_email: 'client@email.com',
-		client_id: '42',
-		auth_uri: 'https://evidence.dev',
-		token_uri: 'https://evidence.dev',
-		auth_provider_x509_cert_url: 'https://evidence.dev',
-		client_x509_cert_url: 'https://evidence.dev'
-	},
-	client_email: 'https://evidence.dev',
-	private_key: 'my private key'
-};
-
 describe('Options', () => {
 	describe('get', () => {
 		describe('root-level', () => {
@@ -391,18 +294,6 @@ describe('getSecretOptions', () => {
 		expect(secrets.unnested).toBeUndefined();
 		expect(secrets).toEqual({ _secret: 'Hi!' });
 	});
-
-	it('should ignore virtual fields', () => {
-		const options = Options(complexSpec, complexOpts);
-
-		const secrets = getSecretOptions(options);
-
-		expect(secrets).toEqual({
-			client_email: 'https://evidence.dev',
-			private_key: 'my private key',
-			project_id: 'deadbeef-project'
-		});
-	});
 });
 describe('getSafeOptions', () => {
 	it('should return safe values', () => {
@@ -449,14 +340,6 @@ describe('getSafeOptions', () => {
 		expect(safes._opt).toEqual('Bye!');
 		expect(safes.unnested).toEqual('a');
 		expect(safes).toEqual({ _opt: 'Bye!', unnested: 'a' });
-	});
-
-	it('should ignore virtual fields', () => {
-		const options = Options(complexSpec, complexOpts);
-
-		const safes = getSafeOptions(options);
-
-		expect(safes).toEqual({ authenticator: 'service-account', location: 'US' });
 	});
 });
 

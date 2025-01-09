@@ -19,14 +19,13 @@ npm install @cool-new-db/evidence-source-plugin
 
 ## Registering Source Plugins 
 
-Once the plugin is installed, add it to `evidence.config.yaml` to register it in your project. 
+Once the plugin is installed, add it to `evidence.plugins.yaml` to register it in your project. 
 
 ```yaml
-plugins:
-    components: 
-        @evidence-dev/core-components: {}
-    datasources: 
-        @cool-new-db/evidence-source-plugin
+components:
+    @evidence-dev/core-components: {}
+databases: 
+    @cool-new-db/evidence-source-plugin
 ```
 
 ## Configuring Source Plugins 

@@ -4,22 +4,37 @@
 
 <script>
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
-	export let href; // to be deprecated in favor of url
-	export let url;
+	export let href;
 </script>
 
-<div class="flex w-full max-w-full flex-col mt-2 mb-4 ml-0 mr-0">
-	<a
-		href={addBasePath(url ?? href)}
-		class="rounded-md shadow-sm overflow-hidden h-8 border
-	flex items-center py-1 font-medium px-3 text-xs text-primary truncate
- border-base-300
-hover:bg-base-200 focus:z-10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-300 z-0 bg-base-100"
-	>
-		<div class="w-full">
-			<span>
-				<slot />
-			</span>
-		</div>
-	</a>
-</div>
+<a href={addBasePath(href)}>
+	<div>
+		<span>
+			<slot />
+		</span>
+	</div>
+</a>
+
+<style lang="postcss">
+	div {
+		@apply border border-base-300 hover:shadow-md shadow-base-100;
+		border-radius: 6px;
+		padding: 0.3em 0.6em;
+		font-family: var(--ui-font-family);
+		font-size: 0.8em;
+		margin-top: 1em;
+		margin-bottom: 1.25em;
+		cursor: pointer;
+		transition: all 400ms;
+	}
+
+	a {
+		text-decoration: none;
+		color: var(--primary);
+	}
+
+	a:hover {
+		text-decoration: none;
+		filter: brightness(80%);
+	}
+</style>

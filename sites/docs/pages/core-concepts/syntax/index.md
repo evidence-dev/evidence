@@ -94,7 +94,7 @@ There are a number of variables available to access information about the curren
 ```markdown
 The current page path is: {$page.route.id}
 
-<!-- Result: The current page path is: /core-concepts/syntax -->
+<!-- Result: The current page path is: /core-concepts/syntax/ -->
 ```
 
 ## Frontmatter

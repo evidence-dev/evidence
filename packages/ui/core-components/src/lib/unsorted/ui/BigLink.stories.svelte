@@ -12,5 +12,5 @@
 </script>
 
 <Story name="Base">
-	<BigLink href={'https://evidence.dev/'}>Next: Deep Dive on Metrics &rarr;</BigLink>
+	<BigLink href={'https://evidence.dev/'}>Best Website Ever</BigLink>
 </Story>

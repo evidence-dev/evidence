@@ -9,7 +9,6 @@ import {
 	writeSourceConfig,
 	getDatasourceConfigAsEnvironmentVariables
 } from '@evidence-dev/sdk/plugins';
-import { log } from '@evidence-dev/sdk/logger';
 
 export const load = async () => {
 	if (dev) {
@@ -64,7 +63,6 @@ export const actions = {
 				updatedSource: await writeSourceConfig(opts, source)
 			};
 		} catch (e) {
-			log.debug(`error updating sources: ${e}`, { error: e });
 			return fail(500, e.message);
 		}
 	},

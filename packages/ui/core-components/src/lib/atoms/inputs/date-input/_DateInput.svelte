@@ -232,7 +232,7 @@
 				variant="outline"
 				size="sm"
 				class={cn(
-					`flex justify-start ${range ? 'border-r-0 rounded-r-none text-left' : 'text-center'} font-normal`,
+					`flex justify-start ${range ? 'border-r rounded-r-none text-left' : 'text-center'} font-normal`,
 					!selectedDateInput && 'text-base-content-muted'
 				)}
 				builders={[builder]}
