@@ -52,23 +52,20 @@
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
-	$: if ((query && $query.dataLoaded) || !query) {
-		$inputs[name] = { start: startString, end: endString };
-	}
-
-	let selectedDateInput;
-	$: if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end)) {
-		$inputs[name] = {
-			start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-			end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
-		};
+	function onSelectedDateInputChange(selectedDateInput) {
+		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end)) {
+			$inputs[name] = {
+				start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
+				end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
+			};
+		}
 	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
+	<div class="mb-4 ml-0 mr-2 inline-block">
 		{#if title}
-			<span class="text-sm text-base-content block mb-1">{title}</span>
+			<span class="text-xs font-medium text-base-content block mb-0.5">{title}</span>
 		{/if}
 
 		{#if $query?.error}
@@ -89,7 +86,7 @@
 				</svelte:fragment>
 
 				<DateInput
-					bind:selectedDateInput
+					{onSelectedDateInputChange}
 					start={startString}
 					end={endString}
 					loaded={loaded?.ready ?? true}

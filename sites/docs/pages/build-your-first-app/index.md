@@ -6,7 +6,7 @@ description: A 10 minute guide to building your first Evidence app.
 ---
 
 
-This is a guided tutorial to help you build your first Evidence app. If you'd prefer to learn how Evidence works, start with the [Syntax](/core-concepts/syntax/).
+This is a guided tutorial to help you build your first Evidence app. If you'd prefer to learn how Evidence works, start with the [Syntax](/core-concepts/syntax).
 
 <Alert>
 
@@ -53,7 +53,7 @@ npm run dev
 
 <br>
 
-If you chose a different setup during [Install Evidence](/install-evidence/#other-options), use the command that matches your setup.
+If you chose a different setup during [Install Evidence](/install-evidence#other-options), use the command that matches your setup.
 
 Your browser should open automatically. If it doesn't, open your browser and navigate to `localhost:3000` in the address bar. You should see your Evidence app:
 
@@ -83,7 +83,7 @@ Make some more changes to the page. You'll see them reflected "live" in the brow
 
 This is called **hot reloading** (HMR), and it allows you to see your changes in real-time as you are building your page.
 
-Evidence pages are `.md` files, and are written in a popular language called Markdown. You can learn more about Markdown [here](https://docs.evidence.dev/reference/markdown/).
+Evidence pages are `.md` files, and are written in a popular language called Markdown. You can learn more about Markdown [here](/reference/markdown).
 
 You can also insert HTML directly into your page if you need more control.
 
@@ -118,7 +118,7 @@ Now that you know how to create and edit pages, let's move on to working with da
 
 Navigate to `localhost:3000/settings` in your browser.
 
-Here you'll find our demo dataset, `needful_things`. It is a [DuckDB](https://duckdb.org/) database, which is one of many databases that Evidence supports.
+Here you'll find our demo dataset, `needful_things`. It is a [DuckDB](https://duckdb.org) database, which is one of many databases that Evidence supports.
 
 ![The Evidence settings page.](/img/getting-started/duck_db.png)
 
@@ -161,7 +161,7 @@ Once you have configured source queries, you need to **run sources** to actually
 
 If your dev server is running, sources will run automatically if you make changes to your queries.
 
-If your data source itself has changed, or if you are building pages [for deployment](/deployment/overview/), you may need to run sources manually from the Command Line:
+If your data source itself has changed, or if you are building pages [for deployment](/deployment/overview), you may need to run sources manually from the Command Line:
 
 ```bash
 npm run sources
@@ -176,7 +176,7 @@ Data from various sources and formats (i.e. Snowflake, a Postgres database, and 
 <br/>
 
 
-Learn more at at Core Concepts &gt; [Data Sources](/core-concepts/data-sources/).
+Learn more at at Core Concepts &gt; [Data Sources](/core-concepts/data-sources).
 </Alert>
 
 ### 7. Set up a Markdown Query
@@ -217,7 +217,7 @@ A **source query** is run directly against your data source, and must be written
 A **Markdown query** is written in the DuckDB dialect, and is run against the data cache. Markdown queries run with every page load, and their outputs are directly accessible by components within your pages.
 <br>
 
-To learn more about Markdown queries, including how to reuse them across pages, take a look at Core Concepts &gt; [Markdown Queries](/core-concepts/queries/).
+To learn more about Markdown queries, including how to reuse them across pages, take a look at Core Concepts &gt; [Markdown Queries](/core-concepts/queries).
 
 </Alert>
 
@@ -225,7 +225,7 @@ To learn more about Markdown queries, including how to reuse them across pages, 
 
 ### 8. Create a Data Table
 
-One simple way to display data is with a [Data Table](/components/data-table/). Add a `DataTable` component that uses `my_query_summary` as its data source:
+One simple way to display data is with a [Data Table](/components/data/data-table). Add a `DataTable` component that uses `my_query_summary` as its data source:
 
 **new-page.md**
 ````markdown
@@ -305,11 +305,11 @@ This will display:
 
 
 
-A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components/).
+A Data Table is a built-in **component** of Evidence, and there are many more. To see a full list of components, take a look at the left-hand sidebar, or go to [All Components](/components/all-components).
 
 ### 9. Create a Bar Chart
 
-Next, let's visualize orders over the past year using a [Bar Chart](/components/bar-chart). Add the following to your page. Notice that we are creating a new Markdown query called `orders_by_month`:
+Next, let's visualize orders over the past year using a [Bar Chart](/components/charts/bar-chart). Add the following to your page. Notice that we are creating a new Markdown query called `orders_by_month`:
 
 ````markdown
 ### Orders by Month
@@ -358,7 +358,7 @@ Select Source Type: **CSV**, and give your source a name. Hit Confirm:
 
 ![Add new source](/img/getting-started/add_new_source2.png)
 
-You can read about various configuration options for CSV files [here](https://docs.evidence.dev/core-concepts/data-sources/#csv-files). For now, leave this blank, and hit **Confirm Changes**:
+You can read about various configuration options for CSV files [here](/core-concepts/data-sources#csv-files). For now, leave this blank, and hit **Confirm Changes**:
 
 ![Add new source](/img/getting-started/add_new_source_confirm_changes.png)
 
@@ -373,7 +373,7 @@ sources/
 ```
 
 
-That's it! You've set up a new data source. If you'd like to use it, try adding the following Markdown Query and the [USMap](/components/us-map) component:
+That's it! You've set up a new data source. If you'd like to use it, try adding the following Markdown Query and the [USMap](/components/maps/us-map) component:
 
 ````markdown
 ### EV Map
@@ -403,9 +403,9 @@ That's it! You now know the basics of setting up data sources, writing queries, 
 
 ## Next steps
 
-- Explore other components: [All Components](/components/all-components/)
-- Learn how to deploy your Evidence app: [Deployment](/deployment/overview/)
-- Learn more about writing and organizing Markdown queries: [SQL Queries](/core-concepts/queries/)
+- Explore other components: [All Components](/components/all-components)
+- Learn how to deploy your Evidence app: [Deployment](/deployment/overview)
+- Learn more about writing and organizing Markdown queries: [SQL Queries](/core-concepts/queries)
 
 ### Help and support
 If you need help, or have corrections and suggestions for this tutorial, please join the [Evidence Slack community](https://slack.evidence.dev).

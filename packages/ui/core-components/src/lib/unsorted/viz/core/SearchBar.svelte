@@ -26,18 +26,17 @@
 
 <style lang="postcss">
 	.search-container {
-		@apply bg-base-100 border border-base-300;
+		@apply bg-base-100 border border-base-300 shadow-sm h-7 rounded-md;
 		width: 30%;
 		display: block;
 		align-items: center;
-		border-radius: 4px;
-		height: 22px;
 		position: relative;
 		margin: 25px 3px 10px 0px;
 		box-sizing: content-box;
 	}
 
 	.search-icon {
+		@apply text-base-content-muted/80;
 		height: 16px;
 		width: 16px;
 		padding-left: 3px;
@@ -69,7 +68,7 @@
 	}
 
 	input.search-bar::placeholder {
-		@apply text-base-content-muted;
+		@apply text-base-content-muted/80;
 	}
 
 	*:focus {

@@ -32,7 +32,10 @@
 	});
 
 	/** @type {import('bits-ui').DateRange | undefined} */
-	export let selectedDateInput = undefined;
+	let selectedDateInput = undefined;
+
+	/** @type {(selectedDateInput: import('bits-ui').DateRange | undefined) => void} */
+	export let onSelectedDateInputChange;
 	/** @type {string} */
 	export let start;
 	/** @type {string} */
@@ -218,6 +221,8 @@
 		}
 	}
 	$: updateDateRange(calendarStart, calendarEnd);
+
+	$: onSelectedDateInputChange(selectedDateInput);
 </script>
 
 <div class="flex">
@@ -227,7 +232,7 @@
 				variant="outline"
 				size="sm"
 				class={cn(
-					`flex justify-start ${range ? 'border-r rounded-r-none text-left' : 'text-center'} font-normal`,
+					`flex justify-start ${range ? 'border-r-0 rounded-r-none text-left' : 'text-center'} font-normal`,
 					!selectedDateInput && 'text-base-content-muted'
 				)}
 				builders={[builder]}

@@ -1,5 +1,21 @@
 # @evidence-dev/core-components
 
+## 5.0.3
+
+### Patch Changes
+
+- a9edd3377: Feature: DateInput - supports single and ranged calendar date inputs
+- d8d7b456f: fix ssr'd defaultValue usage with DateRange
+- b1aa2410e: fixed datatable wraptitle alignment issue
+- 1a6a3568a: USMap and Column default colorScale is default
+- b92827ff6: Add lightLogo and darkLogo props to EvidenceDefaultLayout to show different custom logos in light/dark mode
+- 0b90a34f9: Improvments to ErrorChart
+- ee52c8188: Adds a 'Last 365 days' option to defaultValues
+- 0f09fff03: Sparkline tooltip theming
+- 706963a42: Upgrade nanoid to 5.0.9
+  - @evidence-dev/component-utilities@4.0.3
+  - @evidence-dev/tailwind@3.0.3
+
 ## 5.0.2
 
 ### Patch Changes
