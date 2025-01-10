@@ -9,6 +9,8 @@
 	export let fmt = 'num0';
 	export let metricsStore;
 
+	console.log(metricsStore);
+
 	const [send, receive] = crossfade({
 		duration: 200,
 		easing: cubicInOut
@@ -22,11 +24,14 @@
 			use:builder.action
 			{...builder}
 		>
-			{#each metricsStore as metric}
+			{#each metricsStore as metric, i}
 				<RadioGroup.Item value={metric.label} asChild let:builder>
 					<div
 						class="text-base-content-muted/80 cursor-pointer grid-cols-subgrid grid col-span-6 relative items-center p-2 rounded-md group focus:outline-none focus-visible:ring-2 focus-visible:ring-base-300 focus-visible:ring-offset-2"
 						use:builder.action
+						on:dblclick={() => (window.location.href = metric.link)}
+						role="button"
+						tabindex={i}
 						{...builder}
 					>
 						<MetricTableRow {data} {metric} {selectedMetric} {fmt} />

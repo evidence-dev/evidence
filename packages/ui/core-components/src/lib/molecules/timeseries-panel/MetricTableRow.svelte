@@ -67,10 +67,3 @@
 		{change < 0 ? '' : '+'}{changePercent}
 	</span>
 </div>
-<!-- {#if selectedMetric == metric.label}
-	<div
-		in:send={{ key: 'trigger' }}
-		out:receive={{ key: 'trigger' }}
-		class="absolute top-0 h-full w-full rounded-md bg-white border z-0"
-	/>
-{/if} -->
