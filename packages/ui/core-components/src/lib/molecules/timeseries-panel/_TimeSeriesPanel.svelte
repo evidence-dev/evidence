@@ -22,7 +22,6 @@
 	$: if ($store.value.metricsStore.length > 0 && !selectedMetric) {
 		selectedMetric = $store.value.metricsStore[0].label;
 	}
-
 </script>
 
 {#if $store.value.data.length > 0 && $store.value.metricsStore.length > 0}
@@ -38,7 +37,6 @@
 {:else if $store.error}
 	<div class="w-full h-64">
 		<ErrorChart title={'Time Series Panel'} error={$store.error} />
-		
 	</div>
 {:else}
 	<div class="w-full h-64">
