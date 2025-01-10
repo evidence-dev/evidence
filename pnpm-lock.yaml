@@ -56,9 +56,6 @@ importers:
       '@evidence-dev/icons':
         specifier: link:packages/ui/icons
         version: link:packages/ui/icons
-      '@evidence-dev/javascript':
-        specifier: link:packages/datasources/javascript
-        version: link:packages/datasources/javascript
       '@evidence-dev/motherduck':
         specifier: link:packages/datasources/motherduck
         version: link:packages/datasources/motherduck
@@ -83,6 +80,9 @@ importers:
       '@evidence-dev/snowflake':
         specifier: link:packages/datasources/snowflake
         version: link:packages/datasources/snowflake
+      '@evidence-dev/source-javascript':
+        specifier: link:packages/datasources/javascript
+        version: link:packages/datasources/javascript
       '@evidence-dev/sqlite':
         specifier: link:packages/datasources/sqlite
         version: link:packages/datasources/sqlite
