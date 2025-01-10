@@ -368,13 +368,21 @@
 		const forceTopOfAscending = (val) =>
 			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
 
-		const comparator = (a, b) =>
-			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
-				? -1 * sortModifier
-				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
-					  a[column] > b[column]
-					? 1 * sortModifier
-					: 0;
+		const comparator = (a, b) => {
+			const valA = a[column];
+			const valB = b[column];
+
+			if (forceTopOfAscending(valA) && !forceTopOfAscending(valB)) return -1 * sortModifier;
+			if (forceTopOfAscending(valB) && !forceTopOfAscending(valA)) return 1 * sortModifier;
+
+			// Ensure values are strings for case-insensitive comparison
+			const normalizedA = typeof valA === 'string' ? valA.toLowerCase() : valA;
+			const normalizedB = typeof valB === 'string' ? valB.toLowerCase() : valB;
+
+			if (normalizedA < normalizedB) return -1 * sortModifier;
+			if (normalizedA > normalizedB) return 1 * sortModifier;
+			return 0;
+		};
 
 		if (groupBy) {
 			const sortedGroupedData = {};
