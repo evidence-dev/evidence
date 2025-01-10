@@ -9,8 +9,6 @@
 	export let fmt = 'num0';
 	export let metricsStore;
 
-	console.log(metricsStore);
-
 	const [send, receive] = crossfade({
 		duration: 200,
 		easing: cubicInOut
