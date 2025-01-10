@@ -46,7 +46,7 @@
 </script>
 
 <div
-	class="truncate text-left shrink col-span-3 font-medium relative z-10 group-data-[state=checked]:text-base-content transition duration-200"
+	class="truncate text-left shrink col-span-3 font-medium relative z-10 group-data-[state=checked]:text-base-content group-data-[state=checked]:font-bold transition duration-200"
 >
 	{metric.label}
 </div>

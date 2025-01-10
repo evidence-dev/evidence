@@ -80,7 +80,7 @@
 
 		// Check if the third metric is now selected
 		const selectedMetric = await canvas.findByText('Cloud WAU', {
-			selector: '.font-bold.text-gray-700'
+			selector: '.font-bold'
 		});
 		expect(selectedMetric).toBeTruthy();
 
