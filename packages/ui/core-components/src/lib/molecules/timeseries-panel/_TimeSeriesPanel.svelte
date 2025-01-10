@@ -5,7 +5,7 @@
 <script>
 	import MetricTable from './MetricTable.svelte';
 	import TimeSeriesPanelChart from './TimeSeriesPanelChart.svelte';
-	import { getContext, onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import { Skeleton } from '../../atoms/skeletons';
 	import ErrorChart from '../../unsorted/viz/core/ErrorChart.svelte';
 
