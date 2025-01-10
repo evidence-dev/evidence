@@ -320,7 +320,7 @@
 
 <style lang="postcss">
 	.row-lines {
-		@apply border-b border-base-300;
+		@apply border-b border-base-content-muted/20;
 	}
 
 	.shaded-row {

@@ -77,7 +77,7 @@
 		{/if}
 	{/if}
 
-	<tr class="border-b border-base-content-muted">
+	<tr class="border-b border-base-content-muted/60">
 		{#if rowNumbers}
 			<th
 				role="columnheader"
