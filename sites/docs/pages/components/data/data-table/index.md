@@ -1265,6 +1265,22 @@ Number of rows to show in the table before paginating results. Use `rows=all` to
 
 </PropListing>
 <PropListing
+    name=title
+    options="string"
+>
+
+Title for the table
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
+</PropListing>
+<PropListing
     name=headerColor
     required=false
     options="Hex color code | css color name"

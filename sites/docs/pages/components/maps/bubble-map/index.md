@@ -518,6 +518,22 @@ options="column name"
 >
 Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
 </PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
+</PropListing>
 
 ### Color Scale
 
