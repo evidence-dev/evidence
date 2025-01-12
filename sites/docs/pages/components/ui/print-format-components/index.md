@@ -1,5 +1,6 @@
 ---
 title: Print Format Components
+description: Format your report content for PDF export or printing.
 sidebar_position: 1
 ---
 
@@ -54,13 +55,13 @@ The purple line chart in this section will print on a new page.
 - Offers a `hidden` prop. If `true`, the content within the PrintGroup will not be printed
 
 ```html
-    <PrintGroup>
+<PrintGroup>
 
-        The 2 heatmaps below will be printed on the same page if possible
+    The 2 heatmaps below will be printed on the same page if possible
 
-        <Heatmap data={item_channel} x=channel y=item value=orders/>
-        <Heatmap data={item_channel} x=channel y=item value=orders/>
-    </PrintGroup>
+    <Heatmap data={item_channel} x=channel y=item value=orders/>
+    <Heatmap data={item_channel} x=channel y=item value=orders/>
+</PrintGroup>
 ```
 
 ### `hidden=true`

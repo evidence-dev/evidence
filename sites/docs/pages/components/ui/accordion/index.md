@@ -1,7 +1,10 @@
 ---
 title: Accordion
+description: Organize content into collapsible sections.
 sidebar_position: 1
 ---
+
+Use accordions to organize content into collapsible sections.
 
 <DocTab>
   <div slot='preview'>

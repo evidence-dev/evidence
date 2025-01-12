@@ -1,5 +1,6 @@
 ---
 title: Last Refreshed
+description: Display text indicating the last time the data was refreshed.
 sidebar_position: 1
 ---
 

@@ -1,7 +1,10 @@
 ---
 title: Point Map
+description: Display points of interest on a map, optionally color-coded by a metric.
 sidebar_position: 1
 ---
+
+Show points of interest on a map, optionally color-coded by a metric.
 
 <DocTab>
     <div slot='preview'>
@@ -12,9 +15,7 @@ sidebar_position: 1
 <PointMap 
     data={la_locations} 
     lat=lat 
-    long=long 
-    value=sales 
-    valueFmt=usd 
+    long=long  
     pointName=point_name 
     height=200
 />
@@ -419,6 +420,22 @@ name="pointName"
 options="column name"
 >
 Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
+</PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
 </PropListing>
 
 ### Color Scale

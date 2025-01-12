@@ -9,8 +9,11 @@
 	import { slide } from 'svelte/transition';
 </script>
 
-<div class="mb-4 mt-3">
-	<button class="text-sm cursor-pointer inline-flex gap-2" on:click={() => (open = !open)}>
+<div class="mb-4 mt-2">
+	<button
+		class="text-sm text-base-content-muted cursor-pointer inline-flex gap-2"
+		on:click={() => (open = !open)}
+	>
 		<span class={open ? 'marker rotate-marker' : 'marker'} />
 		<span> {title} </span>
 	</button>
