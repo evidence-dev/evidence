@@ -80,6 +80,9 @@ importers:
       '@evidence-dev/snowflake':
         specifier: link:packages/datasources/snowflake
         version: link:packages/datasources/snowflake
+      '@evidence-dev/source-javascript':
+        specifier: link:packages/datasources/javascript
+        version: link:packages/datasources/javascript
       '@evidence-dev/sqlite':
         specifier: link:packages/datasources/sqlite
         version: link:packages/datasources/sqlite
@@ -655,6 +658,19 @@ importers:
       typescript:
         specifier: 5.4.2
         version: 5.4.2
+
+  packages/datasources/javascript:
+    dependencies:
+      '@evidence-dev/db-commons':
+        specifier: ^1.0.5
+        version: link:../../lib/db-commons
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.7.2
+      vitest:
+        specifier: ^2.0.5
+        version: 2.1.8(@types/node@20.11.28)
 
   packages/datasources/motherduck:
     dependencies:
@@ -1809,6 +1825,9 @@ importers:
       '@evidence-dev/snowflake':
         specifier: workspace:*
         version: link:../../packages/datasources/snowflake
+      '@evidence-dev/source-javascript':
+        specifier: workspace:*
+        version: link:../../packages/datasources/javascript
       '@evidence-dev/sqlite':
         specifier: workspace:*
         version: link:../../packages/datasources/sqlite
@@ -15987,6 +16006,9 @@ packages:
     resolution: {integrity: sha512-8GrC8C7J8mwRpAlk7EJ7lwdFTbCN+dcXH2gy5AsEs9pLfzo9wvxOTx6W0fzSlvCOvZOita+8GdfYlGfEt0tRgA==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
     dependencies:
       '@parcel/config-default': 2.13.3(@parcel/core@2.13.3)(postcss@8.4.49)(typescript@5.4.2)
       '@parcel/core': 2.13.3
@@ -17719,6 +17741,9 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
+    peerDependenciesMeta:
+      node-gyp:
+        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
@@ -18327,7 +18352,7 @@ packages:
       '@75lb/deep-merge': 1.1.2
       array-back: 6.2.2
       command-line-args: 5.2.1
-      command-line-usage: 7.0.1
+      command-line-usage: 7.0.3
       stream-read-all: 3.0.1
       typical: 7.3.0
       wordwrapjs: 5.1.0

@@ -12,6 +12,7 @@
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/faker-datasource": "link:packages/datasources/faker",
 		"@evidence-dev/icons": "link:packages/ui/icons",
+		"@evidence-dev/source-javascript": "link:packages/datasources/javascript",
 		"@evidence-dev/motherduck": "link:packages/datasources/motherduck",
 		"@evidence-dev/mssql": "link:packages/datasources/mssql",
 		"@evidence-dev/mysql": "link:packages/datasources/mysql",
