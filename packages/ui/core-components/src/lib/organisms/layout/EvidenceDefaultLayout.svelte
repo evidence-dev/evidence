@@ -38,7 +38,7 @@
 	/** @type {boolean} */
 	export let hideSidebar = false;
 	/** @type {boolean} */
-	export let builtWithEvidence = false;
+	export let builtWithEvidence = true;
 	/** @type {{appId: string, apiKey: string, indexName: string}} */
 	export let algolia = undefined;
 	/** @type {string} */
