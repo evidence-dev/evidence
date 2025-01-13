@@ -135,7 +135,8 @@
 		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
-	const { syncDataThemeAttribute, cycleAppearance } = getThemeStores();
+	const { syncDataThemeAttribute, cycleAppearance, selectedAppearance, setAppearance } =
+		getThemeStores();
 
 	onMount(() => {
 		/** @param {KeyboardEvent} e */
@@ -149,6 +150,32 @@
 	});
 
 	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
+
+	//handles printing in dark mode
+	onMount(() => {
+		let currentTheme;
+
+		//add event listner for print, switch darkmode to light mode
+		window.addEventListener('beforeprint', () => {
+			currentTheme = $selectedAppearance;
+			if ($selectedAppearance === 'dark') {
+				setAppearance('light');
+			}
+		});
+		//when finished printing return to previous mode
+		window.addEventListener('afterprint', () => {
+			if (currentTheme === 'dark') {
+				setAppearance('dark');
+			} else if (currentTheme === 'system') {
+				setAppearance('system');
+			}
+		});
+
+		return () => {
+			window.removeEventListener('beforeprint', () => {});
+			window.removeEventListener('afterprint', () => {});
+		};
+	});
 </script>
 
 <slot />
