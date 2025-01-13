@@ -4,13 +4,24 @@ description: Connect Evidence to Google Sheets
 sidebar_link: false
 ---
 
-Connect Evidence to Google Sheets.
+Google Sheets is a cloud-based spreadsheet application that allows you to store and query data using a web interface. Evidence supports connecting to Google Sheets as a data source, allowing you to query Google Sheets using SQL.
 
+<Alert status="warning">   
+
+**Plugin**<br/>
 The Google Sheets data source is a plugin, you first need to [install the plugin](https://github.com/evidence-dev/datasources/tree/main/gsheets#adding-the-adapter-to-evidence).
+
+</Alert>
+
+<NewSource sourceName="Google Sheets" />
+
+## Configuration
+
+
 
 Adding data from Google Sheets requires a a [service account](https://cloud.google.com/iam/docs/service-accounts).
 
-To create a service account, see the [BigQuery instructions](#bigquery).
+To create a service account, see the [BigQuery instructions](/core-concepts/data-sources/bigquery).
 
 1. Create a service account, and download the JSON key file
 2. Give the service account access to your Google Sheet by sharing the sheet with the service account's email address.

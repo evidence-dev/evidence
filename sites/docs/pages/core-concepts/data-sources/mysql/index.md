@@ -4,9 +4,13 @@ description: Connect Evidence to MySQL
 sidebar_link: false
 ---
 
-Connect Evidence to MySQL.
+MySQL is an open-source relational DBMS. Evidence supports connecting to MySQL as a data source, allowing you to query data using SQL.
 
-## SSL
+<NewSource sourceName="MySQL" />
+
+## Configuration
+
+### SSL
 
 SSL options are:
 

@@ -2,13 +2,13 @@
 title: BigQuery
 description: Connect Evidence to Google BigQuery
 sidebar_link: false
-queries:
-  - datasource_options.sql
 ---
 
-Connect Evidence to Google BigQuery.
+BigQuery is a Google Cloud's data warehouse that allows you to store and query large datasets using SQL. Evidence supports connecting to BigQuery as a data source.
 
-## Authentication Types
+<NewSource sourceName="BigQuery" />
+
+## Configuration
 
 Evidence supports multiple options for connecting to Google BigQuery:
 - [gcloud CLI](#gcloud-cli)

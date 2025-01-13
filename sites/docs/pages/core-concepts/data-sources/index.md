@@ -37,7 +37,7 @@ Evidence supports:
 - [Snowflake](/core-concepts/data-sources/snowflake)
 - [Redshift](/core-concepts/data-sources/redshift)
 - [PostgreSQL](/core-concepts/data-sources/postgres)
-- [Timescale](/core-concepts/data-sources/postgresql)
+- [Timescale](/core-concepts/data-sources/postgres)
 - [Trino](/core-concepts/data-sources/trino)
 - [Microsoft SQL Server](/core-concepts/data-sources/mssql)
 - [MySQL](/core-concepts/data-sources/mysql)

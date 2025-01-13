@@ -4,11 +4,15 @@ description: Connect Evidence to PostgreSQL
 sidebar_link: false
 ---
 
-Connect Evidence to PostgreSQL.
+PostgreSQL is one of the worlds' most widely used databases. It's open-source, and many databases maintain postgres compatible SQL interfaces. Evidence supports connecting to PostgreSQL as a data source, allowing you to query data using SQL.
 
-Many databases and services can be connected by using the Postgres connector, including TimescaleDB and Cube.
+Many databases and services can be connected by using the Postgres connector, including TimescaleDB and [Cube](#cube).
 
-## SSL
+<NewSource sourceName="PostgreSQL" />
+
+## Configuration
+
+### SSL
 
 To connect to a Postgres database using SSL, you may need to modify the SSL settings used. Once you have selected a PostgreSQL data connection type, you can set the SSL value as follows:
  - `false`: Don't connect using SSL (default)
@@ -52,7 +56,7 @@ ssl:
 Here you encode the full user key and cert file as base64 and put them in the correct options. If you do not want to verify the server certificate, for example because you have a self signed certificate, then change rejectUnauthorized to false.
 
 
-# Cube
+## Cube
 
 Cube offers semantic layer for your data. You can connect using the [Cube SQL API](https://cube.dev/docs/product/apis-integrations/sql-api). 
 
