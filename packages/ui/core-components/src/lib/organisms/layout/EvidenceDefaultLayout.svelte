@@ -135,8 +135,13 @@
 		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
-	const { syncDataThemeAttribute, cycleAppearance, selectedAppearance, setAppearance } =
-		getThemeStores();
+	const {
+		syncDataThemeAttribute,
+		cycleAppearance,
+		selectedAppearance,
+		setAppearance,
+		activeAppearance
+	} = getThemeStores();
 
 	onMount(() => {
 		/** @param {KeyboardEvent} e */
@@ -155,25 +160,25 @@
 	onMount(() => {
 		let currentTheme;
 
-		//add event listner for print, switch darkmode to light mode
-		window.addEventListener('beforeprint', () => {
-			currentTheme = $selectedAppearance;
+		const beforePrintHandler = () => {
+			currentTheme = $activeAppearance;
 			if ($selectedAppearance === 'dark') {
 				setAppearance('light');
 			}
-		});
-		//when finished printing return to previous mode
-		window.addEventListener('afterprint', () => {
+		};
+
+		const afterPrintHandler = () => {
 			if (currentTheme === 'dark') {
 				setAppearance('dark');
-			} else if (currentTheme === 'system') {
-				setAppearance('system');
 			}
-		});
+		};
+
+		window.addEventListener('beforeprint', beforePrintHandler);
+		window.addEventListener('afterprint', afterPrintHandler);
 
 		return () => {
-			window.removeEventListener('beforeprint', () => {});
-			window.removeEventListener('afterprint', () => {});
+			window.removeEventListener('beforeprint', beforePrintHandler);
+			window.removeEventListener('afterprint', afterPrintHandler);
 		};
 	});
 </script>
