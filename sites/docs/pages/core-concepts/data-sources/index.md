@@ -49,6 +49,7 @@ Evidence supports:
 - [Google Sheets](/core-concepts/data-sources/google-sheets)
 - [CSV](/core-concepts/data-sources/csv)
 - [Parquet](/core-concepts/data-sources/csv)
+- [JavaScript](/core-concepts/data-sources/javascript)
 - & More
 
 ## Configure Source Queries
@@ -135,12 +136,13 @@ where client_id = 123
 
 Note that these variables are only accessible in source queries, not in file queries or queries in markdown files.
 
+
 ## New Data Sources
+
 
 We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://slack.evidence.dev) if you'd like to use Evidence with a database that isn't currently supported.
 
 The source code for Evidence's connectors is available [on GitHub](https://github.com/evidence-dev/evidence/tree/main/packages/datasources)
-
 
 ## Troubleshooting
 

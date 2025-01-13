@@ -21,9 +21,9 @@ group by all
         <LineChart 
             data={orders_by_month}
             x=month
-            y=sales_usd0k 
+            y=sales_usd0k
             yAxisTitle="Sales per Month"
-        />
+        />        
     </div>
 
 ```svelte
