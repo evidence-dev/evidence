@@ -38,7 +38,7 @@
 	/** @type {boolean} */
 	export let hideSidebar = false;
 	/** @type {boolean} */
-	export let builtWithEvidence = false;
+	export let builtWithEvidence = true;
 	/** @type {{appId: string, apiKey: string, indexName: string}} */
 	export let algolia = undefined;
 	/** @type {string} */
@@ -75,21 +75,25 @@
 	function convertFileTreeToFileMap(fileTree) {
 		const map = new Map();
 
-		function traverse(node) {
-			if (!node) {
-				return;
+		function traverse(node, currentPath = '') {
+			// Build the full path for the current node
+			const fullPath = node.href || currentPath;
+
+			// Add the current node to the map if it's a page
+			if (node.isPage) {
+				map.set(decodeURI(fullPath), node);
 			}
 
-			if (node.href) {
-				const decodedHref = decodeURI(node.href);
-				map.set(decodedHref, node);
+			// Traverse children
+			if (node.children) {
+				Object.entries(node.children).forEach(([key, child]) => {
+					const childPath = `${fullPath}/${key}`;
+					traverse(child, childPath);
+				});
 			}
-
-			Object.values(node.children).forEach(traverse);
 		}
 
 		traverse(fileTree);
-
 		return map;
 	}
 
@@ -102,6 +106,21 @@
 	$: if (!['show', 'hide', 'never'].includes(sidebarFrontMatter)) {
 		sidebarFrontMatter = undefined;
 	}
+
+	$: hideBreadcrumbsFrontmatter = routeFrontMatter?.hide_breadcrumbs;
+	$: hideBreadcrumbsEffective = hideBreadcrumbsFrontmatter ?? hideBreadcrumbs;
+
+	$: fullWidthFrontmatter = routeFrontMatter?.full_width;
+	$: fullWidthEffective = fullWidthFrontmatter ?? fullWidth;
+
+	$: maxWidthFrontmatter = routeFrontMatter?.max_width;
+	$: maxWidthEffective = maxWidthFrontmatter ?? maxWidth;
+
+	$: hideHeaderFrontmatter = routeFrontMatter?.hide_header;
+	$: hideHeaderEffective = hideHeaderFrontmatter ?? hideHeader;
+
+	$: hideTocFrontmatter = routeFrontMatter?.hide_toc;
+	$: hideTocEffective = hideTocFrontmatter ?? hideTOC;
 
 	onMount(async () => {
 		if (!('serviceWorker' in navigator)) return;
@@ -138,7 +157,7 @@
 <DevTools>
 	<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased">
 		<ErrorOverlay />
-		{#if !hideHeader}
+		{#if !hideHeaderEffective}
 			<Header
 				bind:mobileSidebarOpen
 				{title}
@@ -146,8 +165,8 @@
 				{lightLogo}
 				{darkLogo}
 				{neverShowQueries}
-				{fullWidth}
-				{maxWidth}
+				fullWidth={fullWidthEffective}
+				maxWidth={maxWidthEffective}
 				{hideSidebar}
 				{githubRepo}
 				{slackCommunity}
@@ -158,9 +177,9 @@
 			/>
 		{/if}
 		<div
-			class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
+			class={(fullWidthEffective ? 'max-w-full ' : maxWidthEffective ? '' : ' max-w-7xl ') +
 				'print:w-[650px] print:md:w-[841px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
-			style="max-width:{maxWidth}px;"
+			style="max-width:{maxWidthEffective}px;"
 		>
 			{#if !hideSidebar && sidebarFrontMatter !== 'never'}
 				<div class="print:hidden">
@@ -171,25 +190,25 @@
 						{logo}
 						{homePageName}
 						{builtWithEvidence}
-						{hideHeader}
+						hideHeader={hideHeaderEffective}
 						{sidebarFrontMatter}
 						{sidebarDepth}
 					/>
 				</div>
 			{/if}
 			<main
-				class={(!hideSidebar ? 'md:pl-8 ' : '') +
-					(!hideTOC ? 'md:pr-8 ' : '') +
-					(!hideHeader
-						? !hideBreadcrumbs
+				class={(!hideSidebar && !['hide', 'never'].includes(sidebarFrontMatter) ? 'md:pl-8 ' : '') +
+					(!hideTocEffective ? 'md:pr-8 ' : '') +
+					(!hideHeaderEffective
+						? !hideBreadcrumbsEffective
 							? ' mt-16 sm:mt-20 '
 							: ' mt-16 sm:mt-[74px] '
-						: !hideBreadcrumbs
+						: !hideBreadcrumbsEffective
 							? ' mt-4 sm:mt-8 '
 							: ' mt-4 sm:mt-[26px] ') +
 					'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
 			>
-				{#if !hideBreadcrumbs}
+				{#if !hideBreadcrumbsEffective}
 					<div class="print:hidden">
 						{#if $page.route.id !== '/settings'}
 							<BreadCrumbs {fileTree} />
@@ -204,9 +223,9 @@
 					<LoadingSkeleton />
 				{/if}
 			</main>
-			{#if !hideTOC}
+			{#if !hideTocEffective}
 				<div class="print:hidden">
-					<TableOfContents {hideHeader} />
+					<TableOfContents hideHeader={hideHeaderEffective} />
 				</div>
 			{/if}
 		</div>

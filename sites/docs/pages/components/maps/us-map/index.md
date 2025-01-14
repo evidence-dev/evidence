@@ -1,9 +1,12 @@
 ---
 title: US Map
+description: Compare a metric across US states using a flat choropleth map.
 sidebar_position: 3
 queries:
 - state_population.sql
 ---
+
+Compare a metric across US states using a flat choropleth map. For other regions see the more general [Area Map](/components/maps/area-map) component.
 
 <DocTab>
     <div slot='preview'>
@@ -366,7 +369,7 @@ Text to display when an empty dataset is received - only applies when `emptySet`
     defaultValue="true"
 />
 
-Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
+Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg).
 
 </PropListing>
 
@@ -377,7 +380,7 @@ Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on
     options="{`{{exampleOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing
@@ -385,7 +388,7 @@ Custom Echarts options to override the default options. See [reference page](/co
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing

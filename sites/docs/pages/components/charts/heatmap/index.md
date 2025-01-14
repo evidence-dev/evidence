@@ -1,7 +1,10 @@
 ---
 title: Heatmap
+description: Show patterns in a single metric across two categorical dimensions, using colour to indicate size.
 sidebar_position: 5
 ---
+
+Use heatmaps to show patterns in a single metric across two categorical dimensions, using colour to indicate size.
 
 ```orders
 select category, dayname(order_datetime) as day, dayofweek(order_datetime) as day_num, count(*) as order_count from needful_things.orders
@@ -427,12 +430,12 @@ order by state asc, item asc
 
 <PropListing
     name=echartsOptions
-    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
 />
 <PropListing
     name=seriesOptions
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 />
 <PropListing

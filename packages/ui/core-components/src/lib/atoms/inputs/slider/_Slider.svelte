@@ -162,7 +162,7 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class={`relative ${sizeClass} mb-10 select-none`}>
+	<div class={`relative ${sizeClass} mt-2 mb-10 select-none`}>
 		<p class="pb-2 truncate text-xs">
 			<span class="font-medium">{title}: </span>
 			<span class="text-xs">

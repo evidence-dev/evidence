@@ -1,11 +1,12 @@
 ---
 title: Big Value
+description: Display a large value standalone, and optionally include a comparison and a sparkline.
 sidebar_position: 1
 queries: 
 - orders_with_comparisons.sql
 ---
 
-Big Value displays a large value, and can be configured to include a comparison and a sparkline.
+Use big values to display a large value standalone, and optionally include a comparison and a sparkline.
 
 <DocTab>
     <div slot='preview'>
@@ -150,7 +151,7 @@ The link property makes the Value component clickable, allowing navigation to ot
         comparison=order_growth
         comparisonFmt=pct1
         comparisonTitle="vs. Last Month"
-        link='/components/data/big-value/'
+        link='/components/data/big-value'
       />
     </div>
 
@@ -162,7 +163,7 @@ The link property makes the Value component clickable, allowing navigation to ot
   comparison=order_growth
   comparisonFmt=pct1
   comparisonTitle="vs. Last Month"
-  link='/components/data/big-value/'
+  link='/components/data/big-value'
 />
 ```
 </DocTab>

@@ -52,6 +52,9 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
+	/** @type {string|undefined} */
+	export let subtitle = undefined;
+
 	/** @type {string[]|undefined} */
 	export let colorPalette = undefined;
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
@@ -82,6 +85,7 @@
 	{height}
 	{basemap}
 	{title}
+	{subtitle}
 	{legendPosition}
 	{isInitial}
 	{chartType}
