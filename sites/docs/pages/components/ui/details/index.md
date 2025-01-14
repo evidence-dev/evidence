@@ -104,3 +104,12 @@ The text shown next to the triangle icon.
 Whether expanded by default.
 
 </PropListing>
+<PropListing 
+    name="printShowAll"
+    options={['true', 'false']}
+    defaultValue="true"
+>
+
+On print/PDF, the Details component will expand by default. Turn this off to leave the component collapsed in print.
+
+</PropListing>
