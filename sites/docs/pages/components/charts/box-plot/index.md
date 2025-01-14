@@ -279,6 +279,7 @@ from ${sales_distribution_by_channel}
     name=xLabelWrap
     description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
     options={["true", "false"]}
+    defaultValue="false"
 />
 
 ### Axes

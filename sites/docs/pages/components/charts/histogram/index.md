@@ -140,6 +140,7 @@ Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88
     name=xLabelWrap
     description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
     options={["true", "false"]}
+    defaultValue="false"
 />
 
 ### Axes
