@@ -1,7 +1,10 @@
 ---
 title: Base Map
+description: Combine multiple map layers including areas, points, and bubbles.
 sidebar_position: 2
 ---
+
+Combine multiple map layers including areas, points, and bubbles.
 
 <DocTab>
     <div slot='preview'>
@@ -237,7 +240,7 @@ or file ilike 'populated_places%'
 order by scale desc, category, file
 ```
 
-Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com/) project, and hosted by [GeoJSON.xyz](https://geojson.xyz/).
+Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com) project, and hosted by [GeoJSON.xyz](https://geojson.xyz).
 
 ### Country, State, and City Locations
 
@@ -314,6 +317,22 @@ options="pixel value"
 defaultValue="300"
 >
 Height of the map in pixels.
+</PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
 </PropListing>
 
 ## Layer Options

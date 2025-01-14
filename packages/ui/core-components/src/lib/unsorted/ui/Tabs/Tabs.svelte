@@ -6,9 +6,12 @@
 	import { onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import TabDisplay from './TabDisplay.svelte';
+	import { toBoolean } from '../../../utils.js';
 
 	export let id;
 	export let color = undefined;
+	export let fullWidth = false;
+	export let background = false;
 
 	/** @type {import('./index.d.ts').TabsContext} */
 	const context = writable({ tabs: [], activeId: null });
@@ -52,12 +55,14 @@
 </script>
 
 <section>
-	<nav class="my-6 flex flex-wrap gap-x-1 gap-y-1">
+	<nav class="my-5 flex flex-wrap gap-x-0 gap-y-1 border-b">
 		{#each $context.tabs as tab}
 			<TabDisplay
 				id={tab.id}
 				label={tab.label}
 				description={tab.description}
+				fullWidth={toBoolean(fullWidth)}
+				background={toBoolean(background)}
 				{color}
 				activeId={$context.activeId}
 				on:click={() => handleTabClick(tab.id)}

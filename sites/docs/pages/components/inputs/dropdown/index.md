@@ -1,5 +1,6 @@
 ---
 title: Dropdown
+description: Display a dropdown menu with a options from a query or hardcoded options.
 sidebar_position: 1
 ---
 

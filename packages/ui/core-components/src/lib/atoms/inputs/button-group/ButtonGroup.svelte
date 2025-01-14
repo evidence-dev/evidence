@@ -102,16 +102,25 @@
 </script>
 
 {#if error}
-	<ErrorChart title={'Button Group'} {error} />
+	<span
+		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
+	>
+		<span class="inline font-sans font-medium text-xs text-negative">error</span>
+		<span
+			class="hidden font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-base-200 border border-base-300 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
+		>
+			{error}
+		</span>
+	</span>
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
 			class={display === 'tabs'
 				? ''
-				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col mb-3 ml-0 mr-2`}
+				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col ${title ? 'mt-0.5' : 'mt-2'} mb-3 ml-0 mr-2`}
 		>
 			{#if title}
-				<span class="text-xs font-medium block mb-0.5"
+				<span class="text-xs font-medium text-base-content block mb-0.5"
 					>{title}
 					{#if description}
 						<Info {description} />
@@ -121,7 +130,7 @@
 			<div
 				class={display === 'tabs'
 					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-					: 'inline-flex rounded-md shadow-sm mb-1 overflow-auto border border-base-300 no-scrollbar h-8'}
+					: 'inline-flex rounded-md shadow-sm overflow-auto border border-base-300 no-scrollbar h-8 mb-1'}
 				role="group"
 			>
 				{#if preset}

@@ -62,7 +62,7 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mb-4 ml-0 mr-2 inline-block align-bottom">
+	<div class={`${title ? '-mt-0.5' : 'mt-2'} mb-4 ml-0 mr-2 inline-block align-bottom`}>
 		{#if title}
 			<span class="text-xs font-medium block mb-0.5"
 				>{title}

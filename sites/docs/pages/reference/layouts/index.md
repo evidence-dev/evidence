@@ -14,7 +14,7 @@ Evidence will use any `+layout.svelte` file in the `/pages` directory to overrid
 <Alert status=info>
 <b>Creating a Custom Layout</b>
 
-The recommended approach is to copy and edit the default layout file
+The recommended approach is to copy and edit the default layout file. You can do this with the `Add Custom Layout` command in VS Code or with the CLI command below:
 
 ```bash
 cp .evidence/template/src/pages/+layout.svelte pages
@@ -48,6 +48,24 @@ With a logo file in  `./static/my-logo.png`.
 ```
 
 If you want to use a different logo in light and dark mode, use the `lightLogo` and `darkLogo` props instead of `logo`.
+
+### Add a custom favicon
+
+To add your own favicon image, create a `static` folder in the root of your project and include images to override the below images loaded by Evidence. Please note that you will need to include all of these with identical names, as different browsers use different images:
+- apple-touch-icon.png
+- favicon.ico
+- icon-192.png
+- icon-512.png
+- icon.svg
+
+### Add a custom browser tab title
+The browser tab title is controlled via the frontmatter `title` option:
+
+```markdown
+---
+title: My New Page Title
+---
+```
 
 ## Options
 

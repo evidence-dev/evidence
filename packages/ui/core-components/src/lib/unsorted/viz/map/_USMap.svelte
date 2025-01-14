@@ -15,7 +15,6 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
-	import chroma from 'chroma-js';
 	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
 
 	const { theme, resolveColorPalette, resolveColorScale } = getThemeStores();
@@ -164,10 +163,10 @@
 				},
 				subtextStyle: {
 					fontSize: 13,
-					color: chroma($theme.colors['base-content']).alpha(0.8).css(),
+					color: $theme.colors['base-content-muted'],
 					overflow: 'break'
 				},
-				top: '0%'
+				top: '1px'
 			},
 			textStyle: {
 				fontFamily: 'sans-serif'

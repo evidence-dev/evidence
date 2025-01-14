@@ -1,9 +1,10 @@
 ---
 title: Sankey Diagram
+description: Display flows of a metric transferring between different categories.
 sidebar_position: 6
 ---
 
-The SankeyDiagram component accepts a query and displays a flow from one set of values to another.
+Use Sankey diagrams to display flows of a metric transferring between different categories.
 
 To display a flow with multiple levels, like these examples, see [Mutli-level](#multi-level) below.
 
@@ -757,7 +758,7 @@ Minimum height of the chart area (excl. header and footer) in pixels. Adjusting 
     options="{`{{exampleOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing

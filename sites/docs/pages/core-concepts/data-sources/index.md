@@ -137,6 +137,7 @@ Evidence supports:
 - [Google Sheets](#google-sheets)
 - [CSV](#csv-files)
 - [Parquet](#csv-files)
+- [JavaScript](#javascript)
 - & More
 
 We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://slack.evidence.dev) if you'd like to use Evidence with a database that isn't currently supported.
@@ -269,7 +270,7 @@ To connect to a Trino installation that is accessible via HTTPS, you need to set
 
 #### Starburst Quickstart
 
-[Starburst](https://www.starburst.io/), the company behind Trino, offers a SAAS solution where they run Trino for you. Once you have signed up and created a Trino cluster, you should be able to connect Evidence with the following configuration:
+[Starburst](https://www.starburst.io), the company behind Trino, offers a SAAS solution where they run Trino for you. Once you have signed up and created a Trino cluster, you should be able to connect Evidence with the following configuration:
 
 Host: `<YOUR_DOMAIN>-<YOUR_CLUSTER_NAME>.galaxy.starburst.io`
 
@@ -407,6 +408,22 @@ order by row_num
     <Column id="Outcome" />
 </DataTable>
 
+### JavaScript
+
+Evidence's JavaScript data source allows you to run arbitrary JavaScript code to extract data. This can be useful, for example, to extract data from an API.
+
+To use this data source, after adding the data source via the settings page, add a `.js` file to the `sources/[your_source_name]/` folder. The file should export a `data` object.
+
+```javascript
+let url = 'https://pokeapi.co/api/v2/pokemon/';
+
+const response = await fetch(url);
+const json = await response.json();
+const data = json.results;
+
+export { data };
+```
+   
 ## Troubleshooting
 
 If you need help with connecting to your data, please feel free to [send us a message in Slack](https://slack.evidence.dev).

@@ -338,7 +338,7 @@
 										>
 											<a
 												href={addBasePath(thirdLevelFile.href)}
-												class="group inline-block capitalize transition-all duration-200 {active
+												class="group inline-block w-full capitalize transition-all duration-200 {active
 													? 'text-primary'
 													: 'text-base-content-muted hover:text-base-content'}"
 											>

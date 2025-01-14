@@ -1,7 +1,10 @@
 ---
 title: Area Map
+description: Compare a metric across different regions on a map using a choropleth map
 sidebar_position: 1
 ---
+
+Compare a metric across different regions on a map using a choropleth map
 
 <DocTab>
     <div slot='preview'>
@@ -512,7 +515,7 @@ or file ilike 'populated_places%'
 order by scale desc, category, file
 ```
 
-Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com/) project, and hosted by [GeoJSON.xyz](https://geojson.xyz/).
+Below are a selection of publically available GeoJSON files that may be useful for mapping. These are from the [Natural Earth Data](https://www.naturalearthdata.com) project, and hosted by [GeoJSON.xyz](https://geojson.xyz).
 
 ### Country, State, and City Locations
 
@@ -589,6 +592,22 @@ name="valueFmt"
 options="format string"
 >
 Format string for displaying the value.
+</PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
 </PropListing>
 
 ### Color Scale

@@ -1,5 +1,6 @@
 ---
 title: Bar Chart
+description: Compare a metric across a small number of categories. 
 sidebar_position: 1
 queries: 
 - orders_by_month.sql
@@ -7,6 +8,8 @@ queries:
 - orders_by_item_all_time.sql
 - categories_by_channel.sql
 ---
+
+Use bar or column charts to compare a metric across categories. Bar charts are best with a small number of categories and series, and should generally start at 0.
 
 <DocTab>
     <div slot='preview'>
@@ -740,12 +743,12 @@ queries:
 
 <PropListing
     name=echartsOptions
-    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
 />
 <PropListing
     name=seriesOptions
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 />
 <PropListing

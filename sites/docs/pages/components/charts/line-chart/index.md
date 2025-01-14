@@ -1,7 +1,10 @@
 ---
 title: Line Chart
+description: Display how one or more metrics over time. Line charts are suitable for plotting a large number of data points on the same chart.
 sidebar_position: 1
 ---
+
+Use line charts to display how one or more metrics over time. Line charts are suitable for plotting a large number of data points on the same chart.
 
 ```sql orders_by_month
 select order_month as month, sum(sales) as sales_usd0k, count(1) as orders from needful_things.orders
@@ -18,9 +21,9 @@ group by all
         <LineChart 
             data={orders_by_month}
             x=month
-            y=sales_usd0k 
+            y=sales_usd0k
             yAxisTitle="Sales per Month"
-        />
+        />        
     </div>
 
 ```svelte
@@ -686,12 +689,12 @@ group by all
 
 <PropListing
     name=echartsOptions
-    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
 />
 <PropListing
     name=seriesOptions
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 />
 <PropListing

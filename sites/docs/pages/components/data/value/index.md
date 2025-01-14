@@ -1,9 +1,10 @@
 ---
 title: Value
+description: Display a formatted value from a query inline in text.
 sidebar_position: 0
 ---
 
-The Value component accepts a query and displays a formatted value inline in text.
+Use a Value component to display a formatted value from a query inline in text.
 
 By default, `Value` will display the value from the first row of the first column of the referenced data.
 
