@@ -40,4 +40,4 @@ Evidence uses .arrow files to load data into the static site. IIS does not know 
 
 ## Start IIS
 
-You should not be able to start IIS and browse to your website. You can update your site by copying the new build files to your website's Physical Path.
+You should now be able to start IIS and browse to your website. You can update your site by copying the new build files to your website's Physical Path.
