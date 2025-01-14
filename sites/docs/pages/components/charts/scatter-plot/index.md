@@ -253,6 +253,21 @@ Apply a specific color to each series in your chart. Unspecified series will rec
 Apply a specific order to the series in a multi-series chart.
 
 </PropListing>
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=xLabelWrap
+    description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
+    options={["true", "false"]}
+/>
 
 ### Axes
 
