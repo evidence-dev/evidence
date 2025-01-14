@@ -112,11 +112,11 @@
 		<BigValueError chartType="Big Value" error={error.message} />
 	{:else}
 		<p class={cn('text-sm align-top leading-none', titleClass)}>
-      {title}
-      {#if description}
+			{title}
+			{#if description}
 				<Info {description} size="3" />
 			{/if}
-    </p>
+		</p>
 		<div class={cn('relative text-xl font-medium mt-1.5', valueClass)}>
 			{#if link}
 				<a class="hover:bg-base-200" href={addBasePath(link)}>

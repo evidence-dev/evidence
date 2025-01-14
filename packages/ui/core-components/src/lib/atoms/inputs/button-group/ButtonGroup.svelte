@@ -8,7 +8,6 @@
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';

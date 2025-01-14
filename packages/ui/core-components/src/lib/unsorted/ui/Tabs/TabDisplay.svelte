@@ -14,7 +14,7 @@
 
 	export let activeId;
 
- 	export let description = undefined;
+	export let description = undefined;
 
 	export let fullWidth;
 
