@@ -134,8 +134,18 @@
 	args={{
 		defaultValue: '18',
 		fmt: 'usd0',
-		steps: '2',
+		step: '2',
 		max: '20',
+		min: '0'
+	}}
+/>
+<Story
+	name="Large Max Value, small steps"
+	args={{
+		defaultValue: '0',
+		fmt: 'usd0',
+		step: '1',
+		max: '1000000',
 		min: '0'
 	}}
 />
