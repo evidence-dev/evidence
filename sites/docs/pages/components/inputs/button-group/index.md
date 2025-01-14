@@ -1,5 +1,6 @@
 ---
 title: Button Group
+description: Display a group of single-select buttons for quick filtering using a small set of options.
 sidebar_position: 1
 queries:
 - categories.sql

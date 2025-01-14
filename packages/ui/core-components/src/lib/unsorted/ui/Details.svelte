@@ -41,7 +41,6 @@
 {:else}
 	<div class="mb-4 mt-2 text-base-content-muted">
 		<span class="text-sm font-semibold inline-flex"> {title} </span>
-
 		<div class="pt-1 mb-6 text-sm">
 			<slot />
 		</div>

@@ -1,9 +1,12 @@
 ---
 title: Box Plot
+description: Summarize the distribution and range of a metric around the median value.
 sidebar_position: 1
 queries: 
 - sales_distribution_by_channel.sql
 ---
+
+Use box plots to summarize the distribution and range of a metric around the median value.
 
 <DocTab>
     <div slot='preview'>
@@ -394,12 +397,12 @@ from ${sales_distribution_by_channel}
 
 <PropListing 
     name="echartsOptions"
-    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
 />
 <PropListing 
     name="seriesOptions"
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 />
 <PropListing 

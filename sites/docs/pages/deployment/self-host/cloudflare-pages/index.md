@@ -6,7 +6,7 @@ og:
     image: /img/deployment/deploy-cloudflare-pages.png
 ---
 
-Cloudflare is a popular CDN and DNS provider that also offers a static site hosting service called [Cloudflare Pages](https://pages.cloudflare.com/). Cloudflare Pages can deploy Evidence apps from a Git repository.
+Cloudflare is a popular CDN and DNS provider that also offers a static site hosting service called [Cloudflare Pages](https://pages.cloudflare.com). Cloudflare Pages can deploy Evidence apps from a Git repository.
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ Your app will be deployed to a URL like `https://[repo-name].pages.dev`. It can 
 
 By default, your app will be public.
 
-Authentication can be configured with [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/identity/access/).
+Authentication can be configured with [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/identity/access).
 
 Workers & Pages > [Your app] > Settings > General > Access Policy > Manage
 

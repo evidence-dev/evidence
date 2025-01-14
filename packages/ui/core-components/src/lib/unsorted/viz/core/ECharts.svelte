@@ -62,7 +62,7 @@
 
 <div
 	role="none"
-	class="chart-container"
+	class="chart-container mt-2 mb-3"
 	on:mouseenter={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
 >
@@ -75,9 +75,6 @@
 				style="
 				height: {height};
 				width: {width};
-				margin-left: 0;
-				margin-top: 15px;
-				margin-bottom: 10px;
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"

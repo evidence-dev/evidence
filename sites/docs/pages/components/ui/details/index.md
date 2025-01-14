@@ -1,9 +1,10 @@
 ---
 title: Details
+description: Add a collapsible section of markdown content that can be expanded to reveal more information.
 sidebar_position: 1
 ---
 
-The details component allows you to add a collapsible section to your markdown. This is useful for adding additional information that you don't want to be visible by default.
+The details component allows you to add a collapsible section to your markdown. This is useful for adding additional information that you don't want to be visible by default, but can be expanded by the reader.
 
 ## Default state
 

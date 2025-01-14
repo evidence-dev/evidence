@@ -1,9 +1,7 @@
 ---
 sidebar_position: 2
 title: Motivation
-description: It's still too difficult to build high quality data products. We give you the tools to deliver production-quality data products that feel more like the New York Times' data journalism than a drag-and-drop dashboard.
-og:
-  image: /img/how-it-works.png
+description: It's still too difficult to build high quality data products.
 ---
 
 We think it's still too difficult to build high quality data products. Businesses are stuck with BI software that delivers slow and clunky outputs, and analysts are stuck manually configuring reports.

@@ -14,6 +14,9 @@
 	$: printShowAll = toBoolean(printShowAll);
 	let printing = false;
 
+  export let fullWidth = false;
+	export let background = false;
+
 	/** @type {import('./index.d.ts').TabsContext} */
 	const context = writable({ tabs: [], activeId: null });
 
@@ -68,20 +71,23 @@
 
 <section>
 	{#if !printing || !printShowAll}
-		<nav class="my-6 flex flex-wrap gap-x-1 gap-y-1">
-			{#each $context.tabs as tab}
-				<TabDisplay
-					id={tab.id}
-					label={tab.label}
-					{color}
-					activeId={$context.activeId}
-					on:click={() => handleTabClick(tab.id)}
-				>
-					<slot />
-				</TabDisplay>
-			{/each}
-		</nav>
+		<nav class="my-5 flex flex-wrap gap-x-0 gap-y-1 border-b">
+		{#each $context.tabs as tab}
+			<TabDisplay
+				id={tab.id}
+				label={tab.label}
+				fullWidth={toBoolean(fullWidth)}
+				background={toBoolean(background)}
+				{color}
+				activeId={$context.activeId}
+				on:click={() => handleTabClick(tab.id)}
+			>
+				<slot />
+			</TabDisplay>
+		{/each}
+	</nav>
 	{/if}
+
 	<div class="text-base">
 		<slot />
 	</div>

@@ -20,6 +20,10 @@
 	export let multiple = false;
 	/** @type {string} */
 	export let fmt = undefined;
+	/** @type {string | undefined}*/
+	export let title = undefined;
+	/** @type {string | undefined}*/
+	export let subtitle = undefined;
 
 	const handleLimitNum = () => {
 		try {
@@ -35,9 +39,29 @@
 </script>
 
 <QueryLoad {data} let:loaded>
-	<DimensionGrid data={loaded} {metric} {metricLabel} {limit} {name} {multiple} {fmt} />
+	<DimensionGrid
+		data={loaded}
+		{metric}
+		{metricLabel}
+		{limit}
+		{name}
+		{multiple}
+		{fmt}
+		{title}
+		{subtitle}
+	/>
 	<svelte:fragment let:loaded slot="error">
-		<DimensionGrid data={loaded} {metric} {metricLabel} {limit} {name} {multiple} {fmt} />
+		<DimensionGrid
+			data={loaded}
+			{metric}
+			{metricLabel}
+			{limit}
+			{name}
+			{multiple}
+			{fmt}
+			{title}
+			{subtitle}
+		/>
 	</svelte:fragment>
 	<svelte:fragment slot="skeleton">
 		<!-- No loading state -->
