@@ -66,7 +66,7 @@
 		</div>
 	{/if}
 {:else}
-	<nav class="my-6 flex flex-wrap gap-x-1 gap-y-1">
+	<nav class="my-6 flex flex-wrap gap-x-1 gap-y-1 border-b">
 		{#each $context.tabs as tab}
 			<TabDisplay id={tab.id} label={tab.label} activeId={id} {color}>
 				<slot />
