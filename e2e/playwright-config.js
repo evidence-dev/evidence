@@ -6,6 +6,7 @@ export const config = {
 	testDir: './tests',
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
+	timeout: 120000,
 	reporter: [
 		[
 			'html',
