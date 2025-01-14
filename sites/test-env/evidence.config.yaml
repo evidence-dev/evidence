@@ -10,4 +10,4 @@ plugins:
       @evidence-dev/snowflake: { }
       @evidence-dev/motherduck: { }
       @evidence-dev/mssql: { }
-      @evidence-dev/javascript: { }
+      @evidence-dev/source-javascript: { }

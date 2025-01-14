@@ -38,7 +38,7 @@
 	/** @type {boolean} */
 	export let hideSidebar = false;
 	/** @type {boolean} */
-	export let builtWithEvidence = false;
+	export let builtWithEvidence = true;
 	/** @type {{appId: string, apiKey: string, indexName: string}} */
 	export let algolia = undefined;
 	/** @type {string} */
@@ -135,7 +135,13 @@
 		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
-	const { syncDataThemeAttribute, cycleAppearance } = getThemeStores();
+	const {
+		syncDataThemeAttribute,
+		cycleAppearance,
+		selectedAppearance,
+		setAppearance,
+		activeAppearance
+	} = getThemeStores();
 
 	onMount(() => {
 		/** @param {KeyboardEvent} e */
@@ -149,6 +155,32 @@
 	});
 
 	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
+
+	//handles printing in dark mode
+	onMount(() => {
+		let currentTheme;
+
+		const beforePrintHandler = () => {
+			currentTheme = $activeAppearance;
+			if ($selectedAppearance === 'dark') {
+				setAppearance('light');
+			}
+		};
+
+		const afterPrintHandler = () => {
+			if (currentTheme === 'dark') {
+				setAppearance('dark');
+			}
+		};
+
+		window.addEventListener('beforeprint', beforePrintHandler);
+		window.addEventListener('afterprint', afterPrintHandler);
+
+		return () => {
+			window.removeEventListener('beforeprint', beforePrintHandler);
+			window.removeEventListener('afterprint', afterPrintHandler);
+		};
+	});
 </script>
 
 <slot />
