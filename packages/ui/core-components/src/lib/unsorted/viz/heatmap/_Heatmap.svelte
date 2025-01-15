@@ -82,8 +82,8 @@
 	export let cellHeight = 30;
 
 	export let renderer = undefined;
-	export let downloadableData = undefined;
-	export let downloadableImage = undefined;
+	export let downloadableData = true;
+	export let downloadableImage = true;
 
 	$: downloadableData = toBoolean(downloadableData);
 	$: downloadableImage = toBoolean(downloadableImage);
