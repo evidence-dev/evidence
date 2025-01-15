@@ -162,20 +162,25 @@
 
 	// handle steps, slider lags when there are greater then 1000 steps/ticks between max and min
 	let sliderTicks = max - min;
+	let threshold = 0.99;
+	let minStep = Math.round(sliderTicks / 1000);
 	const handleSteps = () => {
-		if (sliderTicks > 1000) {
-			let minStep = Math.round(sliderTicks / 1000);
+		if (sliderTicks > 1000 && step < minStep) {
 			console.error(`Steps must be at least ${minStep} for slider ${name}`);
 			step = minStep;
 		}
 	};
 
 	//depending on the sliderTicks, steps may not be able to reach the max Value, this ensures if the user slides to the end, the value is set to the max
-	$: if (value >= max * 0.99) {
-		value = max;
+	$: {
+		if (value >= max * threshold && value !== max) {
+			value = max;
+		}
 	}
 
-	handleSteps();
+	$: if (sliderTicks > 1000) {
+		handleSteps();
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
