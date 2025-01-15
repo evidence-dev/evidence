@@ -149,4 +149,5 @@
 	<Slider title="G" name="G" min="0" max="7978" step="1" />
 	<Slider title="H" name="H" min="0" max="79789" step="1" />
 	<Slider title="I" name="I" min="0" max="79789" step="1000" />
+	<Slider title="J" name="J" min="0" max="1007" step="1" />
 </Story>
