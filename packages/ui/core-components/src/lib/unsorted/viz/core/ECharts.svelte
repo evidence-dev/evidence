@@ -44,10 +44,6 @@
 	let copying = false;
 	let printing = false;
 	let hovering = false;
-	let fullscreen = false;
-	import Fullscreen from '../../../atoms/fullscreen/Fullscreen.svelte';
-	import EnterFullScreen from '../../../unsorted/viz/table/EnterFullScreen.svelte';
-	export let isFullPage = false;
 </script>
 
 <svelte:window
@@ -149,9 +145,6 @@
 					display={hovering}
 				/>
 			{/if}
-			{#if !isFullPage}
-					<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
-				{/if}
 		</div>
 	{/if}
 
@@ -159,14 +152,6 @@
 		<CodeBlock source={JSON.stringify(config, undefined, 3)} copyToClipboard={true}>
 			{JSON.stringify(config, undefined, 3)}
 		</CodeBlock>
-	{/if}
-
-	{#if !isFullPage}
-		<Fullscreen bind:open={fullscreen}>
-			<div class="pt-4">
-				<svelte:self {...$$props} isFullPage={true} height={`70vh`}></svelte:self>
-			</div>
-		</Fullscreen>
 	{/if}
 </div>
 
