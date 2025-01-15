@@ -284,3 +284,20 @@ ORDER BY 1;
 		/>
 	</BaseMap>
 </Story>
+<Story name="no legend">
+	<BaseMap title="My Map" height="300" legend={false}>
+		<Points data={la_locations} lat="lat" long="long" color="purple" z="1" value="sales" />
+		<Bubbles
+			data={la_locations}
+			lat="lat"
+			long="long"
+			pointName="point_name"
+			value="sales"
+			size="sales"
+			tooltipType="hover"
+			opacity="0.6"
+			color="blue"
+			z="2"
+		/>
+	</BaseMap>
+</Story>
