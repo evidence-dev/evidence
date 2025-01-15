@@ -174,6 +174,7 @@
 	//depending on the sliderTicks, steps may not be able to reach the max Value, this ensures if the user slides to the end, the value is set to the max
 	$: {
 		if (value >= max * threshold && value !== max) {
+			console.warn('steps could not reach max value, value set to max');
 			value = max;
 		}
 	}
