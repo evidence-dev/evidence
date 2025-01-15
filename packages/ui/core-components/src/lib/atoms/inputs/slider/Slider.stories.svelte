@@ -139,13 +139,13 @@
 		min: '0'
 	}}
 />
-<Story
-	name="Large Max Value, small steps"
-	args={{
-		defaultValue: '0',
-		fmt: 'usd0',
-		step: '1',
-		max: '1000000',
-		min: '0'
-	}}
-/>
+<Story name="Large Max Value, small steps">
+	<Slider title="A" name="A" min="0" max="10" step="1" />
+	<Slider title="B" name="B" min="0" max="100" step="1" />
+	<Slider title="C" name="C" min="0" max="1000" step="1" />
+	<Slider title="D" name="D" min="0" max="10000" step="1" />
+	<Slider title="E" name="E" min="0" max="100000" step="1" />
+	<Slider title="F" name="F" min="0" max="1000000" step="1" />
+	<Slider title="G" name="G" min="0" max="7978" step="1" />
+	<Slider title="H" name="H" min="0" max="79789" step="100" />
+</Story>
