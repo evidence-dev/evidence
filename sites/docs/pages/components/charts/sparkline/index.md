@@ -1,7 +1,10 @@
 ---
 title: Sparkline
+description: Display a compact visual representation of a single metric over time.
 sidebar_position: 9
 ---
+
+Use sparklines to display a compact visual representation of a single metric over time or a continuous range.
 
 ```sql orders_by_month
 select order_month as month, sum(sales) as sales_usd0k, count(1) as orders from needful_things.orders

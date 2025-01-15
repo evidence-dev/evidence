@@ -29,6 +29,22 @@
 	</Tabs>
 </Story>
 
+<Story name="Full Width">
+	<Tabs fullWidth="true">
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
+	</Tabs>
+</Story>
+
+<Story name="With Background">
+	<Tabs background="true">
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
+	</Tabs>
+</Story>
+
 <Story name="Generated from a query">
 	{@const data = Query.create(
 		`

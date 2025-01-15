@@ -1,0 +1,30 @@
+{
+  "name": "@evidence-dev/source-javascript",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "check": "tsc --noEmit -p tsconfig.json"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vitest": "^2.0.5"
+  },
+  "dependencies": {
+    "@evidence-dev/db-commons": "^1.0.5"
+  },
+  "evidence": {
+    "datasources": [
+      "javascript"
+    ],
+    "icon": "Javascript"
+  },
+  "keywords": [
+    "evidence",
+    "evidence-datasource"
+  ]
+}

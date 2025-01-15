@@ -1,19 +1,22 @@
 ---
 sidebar_position: 1
 title: Delta
+description: Display an inline indicator that shows how a value has changed.
 ---
 
+Use a Delta component to display an inline indicator that shows how a value has changed.
+
 ```sql growth
-select 0.366 as positive, -0.366 as negative
+select 0.366 as positive, -0.366 as negative, 0.01 as neutral
 ```
 
 <DocTab>
     <div slot='preview'>
-        <Delta data={growth} column=positive fmt=pct1 />
+        This value is <Delta data={growth} column=positive fmt="+0.0%;-0.0%;0.0%" /> since last month.
     </div>
 
 ```markdown
-<Delta data={sales} column=growth fmt=pct1 />
+This value is <Delta data={growth} column=positive fmt="+0.0%;-0.0%;0.0%" /> since last month.
 ```
 </DocTab>
 
@@ -21,22 +24,11 @@ select 0.366 as positive, -0.366 as negative
 
 ### Value Types
 
-#### Positive & Negative
-
-<Delta data={growth} column=positive fmt=pct1 />
-
-<Delta data={growth} column=negative fmt=pct1 />
-
-```markdown
-<Delta data={sales} column=growth fmt=pct1 />
-```
-
-#### Neutral
-<Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
+#### Positive
 
 <DocTab>
     <div slot='preview'>
-        <Delta data={growth} column=positive fmt=pct1/>
+        <Delta data={growth} column=positive fmt=pct1 />
     </div>
 
 ```markdown
@@ -61,37 +53,28 @@ select 0.366 as positive, -0.366 as negative
 
 <DocTab>
     <div slot='preview'>
-        <Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4/>
+        <Delta data={growth} column=neutral fmt=pct1 neutralMin=-0.02 neutralMax=0.02/>
     </div>
 
 ```markdown
-<Delta data={sales} column=growth fmt=pct1 neutralMin=-0.4 neutralMax=0.4 />
+<Delta data={growth} column=neutral fmt=pct1 neutralMin=-0.02 neutralMax=0.02 />
 ```
 </DocTab>
 
 ### Chips
 
-#### Positive & Negative
-
-<Delta data={growth} column=positive fmt=pct1 chip=true />
-
-<Delta data={growth} column=negative fmt=pct1 chip=true />
-
-```markdown
-<Delta data={sales} column=growth fmt=pct1 chip=true />
-```
-
-#### Neutral
+#### Positive
 
 <DocTab>
     <div slot='preview'>
-        <Delta data={growth} column=positive fmt=pct1 chip=true/>
+        <Delta data={growth} column=positive fmt=pct1 chip=true />
     </div>
 
-````markdown
-<Delta data={growth} column=positive fmt=pct1 chip=true/>
-````
+```markdown
+<Delta data={growth} column=growth fmt=pct1 chip=true />
+```
 </DocTab>
+
 
 #### Negative 
 
@@ -100,9 +83,9 @@ select 0.366 as positive, -0.366 as negative
         <Delta data={growth} column=negative fmt=pct1 chip=true/>
     </div>
 
-````markdown
+```markdown
 <Delta data={growth} column=negative fmt=pct1 chip=true/>
-````
+```
 </DocTab>
 
 #### Neutral*
@@ -110,11 +93,11 @@ select 0.366 as positive, -0.366 as negative
 
 <DocTab>
     <div slot='preview'>
-        <Delta data={growth} column=positive fmt=pct1 neutralMin=0 neutralMax=0.4 chip=true/>
+        <Delta data={growth} column=neutral fmt=pct1 neutralMin=-0.02 neutralMax=0.02 chip=true/>
     </div>
 
 ```markdown
-<Delta data={sales} column=growth fmt=pct1 chip=true neutralMin=-0.4 neutralMax=0.4 />
+<Delta data={growth} column=neutral fmt=pct1 chip=true neutralMin=-0.02 neutralMax=0.02 />
 ```
 </DocTab>
 
@@ -129,7 +112,7 @@ select 0.366 as positive, -0.366 as negative
 
 
 ```html
-<Delta data={sales} column=growth fmt=pct1 symbolPosition=left/>
+<Delta data={growth} column=positive fmt=pct1 symbolPosition=left/>
 ```
 </DocTab>
 
@@ -137,11 +120,11 @@ select 0.366 as positive, -0.366 as negative
 
 <DocTab>
     <div slot='preview'>
-        <Delta data={growth} column=negative fmt=pct1 symbolPosition=left/>
+        <Delta data={growth} column=positive fmt=pct1 symbolPosition=left chip=true/>
     </div>
 
 ```html
-<Delta data={sales} column=growth fmt=pct1 chip=true symbolPosition=left/>
+<Delta data={growth} column=positive fmt=pct1 chip=true symbolPosition=left/>
 ```
 </DocTab>
 

@@ -1,6 +1,7 @@
 ---
 sidebar_position: 98
 title: Custom ECharts
+description: Evidence charts are based on ECharts, a powerful and flexible open source charting library. You can configure any ECharts graph directly using the ECharts component.
 ---
 
 Our chart library is based on [ECharts](https://echarts.apache.org/examples/en/index.html), a powerful and flexible open source JavaScript chart library. We use many of the features in ECharts, and combine them with custom data transformation, logic, and theming.

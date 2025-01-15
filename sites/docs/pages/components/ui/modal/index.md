@@ -1,5 +1,6 @@
 ---
 title: Modal
+description: Display a pop-up dialog when a button is clicked.
 sidebar_position: 1
 ---
 
