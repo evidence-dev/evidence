@@ -30,7 +30,7 @@
 	/** @type {string|undefined} */
 	export let value = undefined;
 	/** @type {string|undefined} */
-	export let valueFmt = undefined;
+	export let valueFmt = 'num0';
 	/** @type {number|undefined} */
 	export let min = undefined;
 	/** @type {number|undefined} */

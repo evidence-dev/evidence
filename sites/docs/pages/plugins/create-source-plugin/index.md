@@ -1,10 +1,10 @@
 ---
 title: Create Data Source Plugin
-description: Walkthrough on how to create a data source plugin for Evidence
+description: How to create a data source plugin for Evidence
 sidebar_position: 4
 ---
 
-To see a working example of a data source plugin, the [Evidence postgres source plugin](https://github.com/evidence-dev/evidence/tree/main/packages/postgres) is a good
+To see a working example of a data source plugin, the [Evidence postgres source plugin](https://github.com/evidence-dev/evidence/tree/main/packages/datasources/postgres) is a good
 reference.
 
 ## Get started

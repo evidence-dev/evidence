@@ -14,7 +14,7 @@ Evidence will use any `+layout.svelte` file in the `/pages` directory to overrid
 <Alert status=info>
 <b>Creating a Custom Layout</b>
 
-The recommended approach is to copy and edit the default layout file
+The recommended approach is to copy and edit the default layout file. You can do this with the `Add Custom Layout` command in VS Code or with the CLI command below:
 
 ```bash
 cp .evidence/template/src/pages/+layout.svelte pages

@@ -76,7 +76,7 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
+	<div class={`${title ? '-mt-0.5' : 'mt-2'} mb-4 ml-0 mr-2 inline-block`}>
 		{#if title && range}
 			<span class="text-sm text-gray-500 block mb-1">{title}</span>
 		{/if}

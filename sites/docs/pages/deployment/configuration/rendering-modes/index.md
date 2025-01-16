@@ -2,6 +2,7 @@
 sidebar_position: 5
 hide_table_of_contents: false
 title: Rendering Modes
+description: Evidence supports rendering using Static Site Generation (Default) or Single Page App (SPA) mode.
 ---
 
 Evidence supports two rendering modes:

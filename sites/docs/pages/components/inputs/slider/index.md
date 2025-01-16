@@ -1,5 +1,6 @@
 ---
 title: Slider
+description: Display a linear input to select a value from a range.
 sidebar_position: 1
 ---
 
