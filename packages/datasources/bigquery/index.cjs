@@ -71,7 +71,10 @@ const getCredentials = (database = {}) => {
 			credentials: {
 				client_email: database.client_email,
 				private_key: database.private_key?.replace(/\\n/g, '\n').trim()
-			}
+			},
+			scopes:  ['https://www.googleapis.com/auth/cloud-platform',
+				"https://www.googleapis.com/auth/drive",
+				"https://www.googleapis.com/auth/bigquery"]
 		};
 	}
 };
