@@ -4,7 +4,7 @@
 
 <script>
 	import { cn } from '$lib/utils.js';
-	import { toBoolean } from '../../utils.js';
+	import { toBoolean, processDimension } from '../../utils.js';
 
 	let className = undefined;
 	export { className as class };
@@ -17,13 +17,8 @@
 	export let border = true; // Toggle border visibility
 	border = toBoolean(border);
 
-	// Process dimensions: Add `px` if a number, pass through if a valid unit
-	function processDimension(dimension) {
-		return /^\d+$/.test(dimension) ? `${dimension}px` : dimension;
-	}
-
-	$: tailwindWidth = processDimension(width);
-	$: tailwindHeight = processDimension(height);
+	$: processedWidth = processDimension(width);
+	$: processedHeight = processDimension(height);
 </script>
 
 <div
@@ -33,7 +28,7 @@
 		} ${align === 'center' ? 'mx-auto' : align === 'left' ? 'ml-0' : 'mr-0 ml-auto'}`,
 		className
 	)}
-	style={`width: ${tailwindWidth}; height: ${tailwindHeight};`}
+	style={`width: ${processedWidth}; height: ${processedHeight};`}
 >
 	<iframe
 		src={url}
