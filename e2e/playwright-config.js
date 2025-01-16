@@ -44,6 +44,8 @@ export const config = {
 		command: process.env.DEV ? 'pnpm dev' : 'pnpm preview',
 		port: 3000,
 		reuseExistingServer: !process.env.CI,
-		timeout: 120_000
+		timeout: 120_000,
+		stdout: 'pipe',
+		stderr: 'pipe'
 	}
 };
