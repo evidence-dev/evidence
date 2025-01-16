@@ -1,7 +1,13 @@
+
 ---
 title: Mixed-Type Charts
+description: Display multiple series types on the same chart, for example a bar for an amount, and a line for a related percentage.
 sidebar_position: 99
 ---
+
+Use mixed-type charts to display multiple series types on the same chart, for example a bar for an amount, and a line for a related percentage. 
+
+Mixed-type charts can be confusing, so use them sparingly. To add reference lines, areas or points to a chart instead, see [Annotations](/components/charts/annotations).
 
 <Alert status=info>
 
@@ -364,7 +370,7 @@ Apply a specific color to each series in your chart. Unspecified series will rec
     defaultValue="true"
 />
 
-Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
+Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg).
 
 </PropListing>
 

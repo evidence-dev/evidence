@@ -1,7 +1,10 @@
 ---
 title: Alert
+description: Display a message in a styled container on the page.
 sidebar_position: 1
 ---
+
+Use alerts to display a message in a styled container on the page.
 
 <DocTab>
     <div slot='preview'>

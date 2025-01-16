@@ -431,5 +431,15 @@
 		"prefix": "/Embed",
 		"body": ["<Embed url={${1:query_name}}/>\n\n"],
 		"description": "Insert Embed"
+  },
+	"Slider": {
+		"prefix": "/Slider",
+		"body": "<Slider name=${1:name_of_input} min=${2:0} max=${3:100}/>\n\n",
+		"description": "Insert slider"
+	},
+	"Checkbox": {
+		"prefix": "/Checkbox",
+		"body": "<Checkbox name=${1:name_of_input} title=${2:Checkbox}/>\n\n",
+		"description": "Insert checkbox"
 	}
 }

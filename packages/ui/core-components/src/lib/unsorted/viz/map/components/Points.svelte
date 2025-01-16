@@ -32,9 +32,9 @@
 	/** @type {string|undefined} */
 	export let value = undefined; // column with the value to be represented
 	/** @type {string|undefined} */
-	export let valueFmt = undefined;
+	export let valueFmt = 'num0';
 	/** @type {string|undefined} */
-	export let sizeFmt = undefined;
+	export let sizeFmt = 'num0';
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
 	/** @type {'categorical' | 'scalar' | undefined} */
