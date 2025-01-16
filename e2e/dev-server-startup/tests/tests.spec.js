@@ -16,6 +16,7 @@ if (process.env.GITHUB_ACTIONS) {
 
 test('Should be timed appropriately', { timeout: targetAllowedDur * 5 }, async ({ page }) => {
 	await fs.rm(`./.evidence/template/.evidence-queries`, { recursive: true, force: true });
+	await fs.rm(`./node_modules/.vite`, { recursive: true, force: true });
 	await fs.rm(`test.log`, { force: true });
 
 	const procStartTime = performance.now();
@@ -27,7 +28,7 @@ test('Should be timed appropriately', { timeout: targetAllowedDur * 5 }, async (
 			FORCE_COLOR: ''
 		}
 	});
-	
+
 	const exitCode = await new Promise((resolve, reject) => {
 		let running = false;
 		devServerProcess.on('exit', resolve);
@@ -42,7 +43,7 @@ test('Should be timed appropriately', { timeout: targetAllowedDur * 5 }, async (
 			let message = data.toString();
 			console.log(message);
 			if (running) return; // ignore everything once we have confirmed server start
-			procReadyTime = performance.now()
+			procReadyTime = performance.now();
 			await fs.appendFile(`test.log`, message);
 			// remove any colors from message
 			// @eslint-disable-next-line
@@ -63,17 +64,14 @@ test('Should be timed appropriately', { timeout: targetAllowedDur * 5 }, async (
 				// await new Promise((r) => setTimeout(r, 20000));
 				await fs.rm(`./.evidence/template/.evidence-queries`, { recursive: true, force: true });
 				const reqStartTime = performance.now();
-				await (
-					await fetch('http://localhost:3000?tag=the-real-request', {
-						headers: {
-							'User-Agent': 'Birds ARE real :)'
-						}
-					})
-				);
+				await await fetch('http://localhost:3000?tag=the-real-request', {
+					headers: {
+						'User-Agent': 'Birds ARE real :)'
+					}
+				});
 				const reqFinishTime = performance.now();
 
 				const firstRequestDur = reqFinishTime - reqStartTime;
-				
 
 				const loadStartTime = performance.now();
 				await page.goto('http://localhost:3000');
