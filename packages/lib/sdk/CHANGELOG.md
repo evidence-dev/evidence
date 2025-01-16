@@ -1,5 +1,14 @@
 # @evidence-dev/sdk
 
+## 3.0.4
+
+### Patch Changes
+
+- 309e27b51: fix virtual/references fields in datasource plugin schemas
+- 730321d90: Enable strict mode for sources
+- Updated dependencies [f416a339d]
+  - @evidence-dev/universal-sql@2.2.5
+
 ## 3.0.3
 
 ### Patch Changes
