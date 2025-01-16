@@ -8,7 +8,6 @@
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
@@ -98,19 +97,30 @@
 </script>
 
 {#if error}
-	<ErrorChart title={'Button Group'} {error} />
+	<span
+		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
+	>
+		<span class="inline font-sans font-medium text-xs text-negative">error</span>
+		<span
+			class="hidden font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-base-200 border border-base-300 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
+		>
+			{error}
+		</span>
+	</span>
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
-			class={display === 'tabs' ? '' : 'inline-flex w-fit max-w-full flex-col mt-2 mb-4 ml-0 mr-2'}
+			class={display === 'tabs'
+				? ''
+				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col ${title ? 'mt-0.5' : 'mt-2'} mb-3 ml-0 mr-2`}
 		>
 			{#if title}
-				<span class="text-sm block mb-1">{title}</span>
+				<span class="text-xs font-medium text-base-content block mb-0.5">{title}</span>
 			{/if}
 			<div
 				class={display === 'tabs'
 					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-					: 'inline-flex rounded-md shadow-sm shadow-base-100 overflow-auto h-8 border border-base-300 no-scrollbar'}
+					: 'inline-flex rounded-md shadow-sm overflow-auto border border-base-300 no-scrollbar h-8 mb-1'}
 				role="group"
 			>
 				{#if preset}

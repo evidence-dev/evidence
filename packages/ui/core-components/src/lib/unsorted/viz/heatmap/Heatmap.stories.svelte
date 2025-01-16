@@ -28,3 +28,14 @@
 <Story name="All" let:args>
 	<Heatmap {...args} {data} x="x" y="y" value="value" />
 </Story>
+<Story name="disable download" let:args>
+	<Heatmap
+		{...args}
+		{data}
+		x="x"
+		y="y"
+		value="value"
+		downloadableImage="false"
+		downloadableData="false"
+	/>
+</Story>
