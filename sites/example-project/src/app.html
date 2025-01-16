@@ -66,12 +66,20 @@
 		z-index: 9999;
 	}
 
+	[data-theme='dark'] #__evidence_project_splash {
+		background-color: #000000;
+	}
+
 	.draw-path {
 		fill: #000000;
 		animation: blinking-logo 2s;
 		animation-fill-mode: both;
 		animation-iteration-count: infinite;
 		animation-timing-function: ease-in-out;
+	}
+
+	[data-theme='dark'] .draw-path {
+		fill: #ffffff;
 	}
 
 	@keyframes blinking-logo {
