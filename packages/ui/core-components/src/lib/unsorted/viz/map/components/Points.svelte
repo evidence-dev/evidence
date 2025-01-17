@@ -5,6 +5,7 @@
 <script>
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
+	import { toBoolean } from '../../../../utils.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import Point from './Point.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
@@ -44,6 +45,10 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+
+	/** @type {boolean} */
+	export let ignoreZoom = true;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	if (size) {
 		// if size was user-supplied
@@ -323,6 +328,7 @@
 	{#each $data as item}
 		<Point
 			{map}
+			{ignoreZoom}
 			options={{
 				// kw note:
 				//need to clean this logic

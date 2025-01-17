@@ -150,9 +150,10 @@ export class EvidenceMap {
 
 		this.#map.eachLayer((layer) => {
 			if (
-				layer instanceof Leaflet.Marker ||
-				layer instanceof Leaflet.CircleMarker ||
-				layer instanceof Leaflet.GeoJSON
+				(layer instanceof Leaflet.Marker ||
+					layer instanceof Leaflet.CircleMarker ||
+					layer instanceof Leaflet.GeoJSON) &&
+				!layer.ignoreZoom
 			) {
 				this.#bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
 			}
@@ -189,7 +190,8 @@ export class EvidenceMap {
 		onclick,
 		setInput,
 		unsetInput,
-		link
+		link,
+		ignoreZoom
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
 
@@ -205,6 +207,7 @@ export class EvidenceMap {
 			onEachFeature: (feature, layer) => {
 				// Store the initial style of each layer as soon as it's created
 				this.originalStyles.set(layer, areaOptions);
+				layer.ignoreZoom = ignoreZoom;
 				layer.on('click', () => {
 					if (this.lastSelectedLayer === layer) {
 						layer.setStyle(this.originalStyles.get(layer)); // Restore the original style
@@ -259,7 +262,8 @@ export class EvidenceMap {
 		onclick,
 		setInput,
 		unsetInput,
-		link
+		link,
+		ignoreZoom
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
 
@@ -276,7 +280,7 @@ export class EvidenceMap {
 
 		// Create the marker with the appropriate pane
 		const marker = Leaflet.circleMarker(coords, circleOptions);
-
+		marker.ignoreZoom = ignoreZoom;
 		marker.addTo(this.#map);
 
 		this.updateMarkerStyle(marker, circleOptions); // Initial style setting and storage
