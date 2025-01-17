@@ -13,7 +13,7 @@ import { setTrackProxy } from '@evidence-dev/sdk/usql';
 import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 import md5 from 'blueimp-md5';
 
-export const ssr = !dev;
+// export const ssr = !dev;
 export const prerender = import.meta.env.VITE_EVIDENCE_SPA !== 'true';
 export const trailingSlash = 'always';
 
