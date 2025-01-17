@@ -4,7 +4,7 @@ import child_process from 'child_process';
 import fs from 'fs/promises';
 import { waitForPageToLoad } from '../../test-utils';
 let mod = 1;
-if (process.env.GITHUB_ACTIONS) mod += 2;
+if (process.env.GITHUB_ACTIONS) mod += 3;
 
 // if we are on windows add another 1.5
 if (process.platform === 'win32') mod += 1.5;
