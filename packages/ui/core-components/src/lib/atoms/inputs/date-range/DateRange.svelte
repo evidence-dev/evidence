@@ -63,9 +63,9 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
+	<div class={`${title ? '-mt-0.5' : 'mt-2'} mb-4 ml-0 mr-2 inline-block`}>
 		{#if title}
-			<span class="text-sm text-base-content block mb-1">{title}</span>
+			<span class="text-xs font-medium text-base-content block mb-0.5">{title}</span>
 		{/if}
 
 		{#if $query?.error}

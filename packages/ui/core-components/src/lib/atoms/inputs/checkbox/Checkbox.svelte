@@ -34,7 +34,7 @@
 		on:click={() => ($inputs[name] = !$inputs[name])}
 		variant="outline"
 		size="sm"
-		class="min-w-40 inline-flex justify-between gap-4 items-center w-full max-w-fit mb-2"
+		class="min-w-40 inline-flex justify-between gap-4 items-center w-full max-w-fit mt-2 mb-4 mr-2"
 	>
 		<p class="truncate font-medium">
 			{title}

@@ -1,5 +1,29 @@
 # @evidence-dev/core-components
 
+## 5.0.4
+
+### Patch Changes
+
+- 0d6e938f4: fixed border regression in dateinput
+- 9324590f8: fixed downloadable image and data prop
+- 4e1829b38: Adjust spacing on mobile header
+- 700ea77f8: replace deprecated colors
+- b28d4cf25: Bug fix: mute the color of badges in multi-selects.
+- 1190af0f0: Update default layout
+- 8b8965525: Restyle Tabs component
+- 1dceaa2e0: Fix case sensitivity of sort in DataTable
+- 4d6d41dde: Expand click targets in sidebar level 3
+- c63773aa4: fixes print preview in dark mode
+- b058d924c: Removes console log
+- 87ee3d66c: Add third level pages to sidebar
+- 5ab144e70: Title and subtitle consistency across components
+- e6fa72acd: Minor styling updates
+- eda30637a: Remove groupDataPopulated flag
+- 70cb324ae: Styling changes for consistency
+- Updated dependencies [730321d90]
+  - @evidence-dev/component-utilities@4.0.4
+  - @evidence-dev/tailwind@3.0.4
+
 ## 5.0.3
 
 ### Patch Changes

@@ -23,7 +23,7 @@ const createTheme = (mode) => {
 			fontFamily: ['Inter', 'sans-serif']
 		},
 		grid: {
-			left: '0%',
+			left: '1%',
 			right: '4%',
 			bottom: '0%',
 			top: '15%',
@@ -42,7 +42,7 @@ const createTheme = (mode) => {
 				color: subtitleColor,
 				overflow: 'break'
 			},
-			top: '0%'
+			top: '1px'
 		},
 		line: {
 			itemStyle: {

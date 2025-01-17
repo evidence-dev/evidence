@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "3.5.43",
+	"version": "3.5.44",
 	"scripts": {
 		"dev": "cross-env EVIDENCE_PAGES_DIR=./src/pages EVIDENCE_DATA_DIR=./static/data EVIDENCE_DATA_URL_PREFIX=static/data vite dev --port 3000",
 		"build": "cross-env EVIDENCE_PAGES_DIR=./src/pages NODE_OPTIONS=--max-old-space-size=8192 vite build",
