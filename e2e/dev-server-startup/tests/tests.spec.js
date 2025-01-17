@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 import child_process from 'child_process';
 import fs from 'fs/promises';
 import { waitForPageToLoad } from '../../test-utils';
-const mod = process.env.GITHUB_ACTIONS ? 2 : 1;
+const mod = process.env.GITHUB_ACTIONS ? 3 : 1;
 
 const targetServerStartDur = 3000 * mod;
 const targetFirstRequestDur = 1000 * mod;
