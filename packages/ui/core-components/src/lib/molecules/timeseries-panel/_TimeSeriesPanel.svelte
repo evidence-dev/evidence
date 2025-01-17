@@ -32,7 +32,14 @@
 			{fmt}
 			metricsStore={$store.value.metricsStore}
 		/>
-		<TimeSeriesPanelChart data={$store.value.data} {selectedMetric} {store} {defaultTimeRange} />
+		<TimeSeriesPanelChart
+			data={$store.value.data}
+			{selectedMetric}
+			{store}
+			{defaultTimeRange}
+			{fmt}
+			metricsStore={$store.value.metricsStore}
+		/>
 	</div>
 {:else if $store.error}
 	<div class="w-full h-64">

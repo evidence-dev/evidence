@@ -3,12 +3,18 @@
 	import { RadioGroup } from 'bits-ui';
 	import { cubicInOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
+	import { fmt as format } from '@evidence-dev/component-utilities/formatting';
 
 	export let data;
 	export let selectedMetric = undefined;
 	export let declining = false;
 	export let store;
 	export let defaultTimeRange = undefined;
+	export let metricsStore;
+
+	$: activeFmt = metricsStore.find((metric) => metric.label === selectedMetric).fmt || 'num0';
+
+	$: console.log(activeFmt);
 
 	let chart;
 
@@ -59,7 +65,7 @@
 			},
 			tooltip: {
 				trigger: 'axis',
-				showContent: false,
+				showContent: true,
 				axisPointer: {
 					type: 'line',
 					z: 0,
@@ -73,6 +79,7 @@
 						formatter: function (params) {
 							if (params.seriesData && params.seriesData.length > 0) {
 								const value = params.seriesData[0].value[selectedMetric];
+
 								currentValue = value;
 							}
 							return '';
@@ -89,7 +96,7 @@
 					},
 					type: 'line',
 					silent: false, // Changed to false to enable hover events
-					showSymbol: false,
+					showSymbol: true,
 					symbol: 'circle',
 					symbolSize: 1,
 					smooth: true,
@@ -185,7 +192,7 @@
 	<div class="row-span-3 relative">
 		{#key selectedMetric}
 			<div
-				class="h-full rounded-lg overflow-clip"
+				class="h-full rounded-lg overflow-visible"
 				use:makeChart
 				data-testid="time-series-chart"
 			></div>

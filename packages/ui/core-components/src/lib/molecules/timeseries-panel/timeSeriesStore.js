@@ -89,7 +89,9 @@ export class TimeSeriesStore {
 
 	filterData = (selectedTimeRange) => {
 		this.#filteredData = this.filterDataByTimeRange(this.#data, this.#lastDate, selectedTimeRange);
+		console.log(this.#filteredData);
 		this.#value = { ...this.#value, data: this.#filteredData };
+
 		this.publish('filterData');
 	};
 

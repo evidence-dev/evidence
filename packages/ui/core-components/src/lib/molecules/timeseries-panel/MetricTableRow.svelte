@@ -1,17 +1,13 @@
 <script>
-	// import { cubicInOut } from 'svelte/easing';
-	// import { crossfade } from 'svelte/transition';
 	import { fmt as format } from '@evidence-dev/component-utilities/formatting';
 
 	export let metric;
 	export let data;
-	export let fmt = 'num0';
 
 	let latest = null;
 	let change = null;
 	let changePercent = null;
-	let metricFmt = metric.fmt || fmt;
-
+	let metricFmt = metric.fmt || 'num0';
 	$: if (data.length > 0) {
 		latest = format(displayLatest(metric.label), metricFmt);
 		change = format(displayChange(metric.label), 'num0');
