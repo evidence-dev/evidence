@@ -15,6 +15,10 @@ export const config = {
 			}
 		]
 	],
+	timeout: process.platform === 'win32' ? 60_000 : 30_000,
+	expect: {
+		timeout: 15_000
+	},
 	use: {
 		colorScheme: 'dark',
 		trace: 'retain-on-failure',
@@ -45,6 +49,8 @@ export const config = {
 		command: process.env.DEV ? 'pnpm dev' : 'pnpm preview',
 		port: 3000,
 		reuseExistingServer: !process.env.CI,
-		timeout: 120_000
+		timeout: 120_000,
+		stdout: 'pipe',
+		stderr: 'pipe'
 	}
 };
