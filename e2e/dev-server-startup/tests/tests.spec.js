@@ -46,7 +46,7 @@ test('Should be timed appropriately', { timeout: targetAllowedDur * 5 }, async (
 			procReadyTime = performance.now();
 			await fs.appendFile(`test.log`, message);
 			// remove any colors from message
-			// @eslint-disable-next-line
+			// eslint-disable-next-line no-control-regex
 			const colorRegex = /\x1b\[[0-9;]*m/g;
 			message = message.replace(colorRegex, '');
 
