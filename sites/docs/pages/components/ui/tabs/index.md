@@ -234,3 +234,12 @@ Label for the tab
 Unique Id for this tab. Only needed if 2 tabs have the same label (not recommended).
 
 </PropListing>
+<PropListing 
+    name="printShowAll"
+    options={['true', 'false']}
+    defaultValue="true"
+>
+
+On print/PDF, the Tabs will repeat to show all content by default. Turn this off to leave the component collapsed in print.
+
+</PropListing>

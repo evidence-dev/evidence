@@ -1052,7 +1052,7 @@ where sales_diff < -2000
         name=color
         description="Color to override default line and label colors"
         options="CSS name | hexademical | RGB | HSL"
-        defaultValue=grey
+        defaultValue=base-content-muted
     />
     <PropListing
         name=labelColor
@@ -1356,7 +1356,7 @@ where sales_diff < -2000
         name=color
         description="Color to override default line and label colors"
         options="CSS name | hexademical | RGB | HSL"
-        defaultValue=grey
+        defaultValue=base-content-muted
     />
     <PropListing
         name=labelColor
