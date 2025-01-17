@@ -1,5 +1,6 @@
 ---
 title: Note
+description: Display smaller text for definitions, notes, and footnotes
 sidebar_position: 1
 ---
 

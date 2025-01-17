@@ -1,5 +1,6 @@
 ---
 title: Link
+description: Add an inline link into your markdown
 sidebar_position: 1
 ---
 

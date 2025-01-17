@@ -1,5 +1,6 @@
 ---
 title: Image
+description: Display an image on your page and control dimensions & styling
 sidebar_position: 1
 ---
 

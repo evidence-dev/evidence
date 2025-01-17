@@ -1,5 +1,6 @@
 ---
 title: Embed
+description: Embed content onto your page, like videos or iframes from other applications
 sidebar_position: 1
 ---
 
