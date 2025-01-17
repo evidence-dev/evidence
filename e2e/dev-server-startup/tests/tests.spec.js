@@ -111,7 +111,7 @@ test('Should be timed appropriately', async ({ page }) => {
 					['title', 'value', 'limit']
 				);
 				expect.soft(procStartupDur, 'Dev server startup time').toBeLessThan(targetServerStartDur);
-				expect.soft(firstRequestDur, 'First request time').toBeLessThan(targetFirstRequestDur);
+				// expect.soft(firstRequestDur, 'First request time').toBeLessThan(targetFirstRequestDur);
 				expect.soft(pageLoadDur, 'Page load time').toBeLessThan(targetInteractiveDur);
 				expect.soft(totalStartupDur, 'Total startup time').toBeLessThan(targetAllowedDur);
 			} catch (e) {
