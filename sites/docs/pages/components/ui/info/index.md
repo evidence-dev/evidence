@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: Display an info icon with descriptive tooltip
 title: Info
 ---
 
