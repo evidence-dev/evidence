@@ -1,5 +1,9 @@
 <script>
-	import { HoverCard, HoverCardContent, HoverCardTrigger } from '$lib/atoms/shadcn/hover-card/index.js';
+	import {
+		HoverCard,
+		HoverCardContent,
+		HoverCardTrigger
+	} from '$lib/atoms/shadcn/hover-card/index.js';
 
 	export let align = 'center';
 	export let side = 'bottom';
