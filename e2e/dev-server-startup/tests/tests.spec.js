@@ -43,12 +43,11 @@ test('Should be timed appropriately', async ({ page }) => {
 			console.error(data.toString());
 		});
 
-		let procReadyTime = 0;
 		devServerProcess.stdout.on('data', async (data) => {
 			let message = data.toString();
 			console.log(message);
 			if (running) return; // ignore everything once we have confirmed server start
-			procReadyTime = performance.now();
+			const procReadyTime = performance.now();
 			await fs.appendFile(`test.log`, message);
 			// remove any colors from message
 			// eslint-disable-next-line no-control-regex
@@ -58,7 +57,6 @@ test('Should be timed appropriately', async ({ page }) => {
 			const regex = /VITE v[0-9]+\.[0-9]+\.[0-9]+\s+ready in [\d]+ ms/g;
 			const result = regex.exec(message);
 			if (!result) {
-				procReadyTime = 0;
 				return;
 			}
 			const procStartupDur = procReadyTime - procStartTime;
