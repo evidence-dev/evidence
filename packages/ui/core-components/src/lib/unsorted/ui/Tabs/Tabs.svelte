@@ -10,6 +10,10 @@
 
 	export let id;
 	export let color = undefined;
+	export let printShowAll = true;
+	$: printShowAll = toBoolean(printShowAll);
+	let printing = false;
+
 	export let fullWidth = false;
 	export let background = false;
 
@@ -47,6 +51,10 @@
 		history.replaceState({}, '', url);
 	}
 
+	$: $context.color = color;
+	$: $context.printing = printing;
+	$: $context.printShowAll = printShowAll;
+
 	setContext('TABS_STORE', context);
 
 	const handleTabClick = (id) => {
@@ -54,22 +62,32 @@
 	};
 </script>
 
+<svelte:window
+	on:beforeprint={() => (printing = true)}
+	on:afterprint={() => (printing = false)}
+	on:export-beforeprint={() => (printing = true)}
+	on:export-afterprint={() => (printing = false)}
+/>
+
 <section>
-	<nav class="my-5 flex flex-wrap gap-x-0 gap-y-1 border-b">
-		{#each $context.tabs as tab}
-			<TabDisplay
-				id={tab.id}
-				label={tab.label}
-				fullWidth={toBoolean(fullWidth)}
-				background={toBoolean(background)}
-				{color}
-				activeId={$context.activeId}
-				on:click={() => handleTabClick(tab.id)}
-			>
-				<slot />
-			</TabDisplay>
-		{/each}
-	</nav>
+	{#if !printing || !printShowAll}
+		<nav class="my-5 flex flex-wrap gap-x-0 gap-y-1 border-b">
+			{#each $context.tabs as tab}
+				<TabDisplay
+					id={tab.id}
+					label={tab.label}
+					fullWidth={toBoolean(fullWidth)}
+					background={toBoolean(background)}
+					{color}
+					activeId={$context.activeId}
+					on:click={() => handleTabClick(tab.id)}
+				>
+					<slot />
+				</TabDisplay>
+			{/each}
+		</nav>
+	{/if}
+
 	<div class="text-base">
 		<slot />
 	</div>
