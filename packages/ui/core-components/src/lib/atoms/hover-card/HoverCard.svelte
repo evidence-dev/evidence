@@ -1,5 +1,5 @@
 <script>
-	import * as HoverCard from '$lib/atoms/shadcn/hover-card/index.js';
+	import { HoverCard, HoverCardContent, HoverCardTrigger } from '$lib/atoms/shadcn/hover-card/index.js';
 
 	export let align = 'center';
 	export let side = 'bottom';
@@ -9,11 +9,11 @@
 	export let closeDelay = 0;
 </script>
 
-<HoverCard.Root {openDelay} {closeDelay}>
-	<HoverCard.Trigger>
+<HoverCard {openDelay} {closeDelay}>
+	<HoverCardTrigger>
 		<slot name="trigger" />
-	</HoverCard.Trigger>
-	<HoverCard.Content {align} {side} {alignOffset} {sideOffset}>
+	</HoverCardTrigger>
+	<HoverCardContent {align} {side} {alignOffset} {sideOffset}>
 		<slot name="content" />
-	</HoverCard.Content>
-</HoverCard.Root>
+	</HoverCardContent>
+</HoverCard>
