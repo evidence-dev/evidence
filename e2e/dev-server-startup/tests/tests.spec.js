@@ -20,7 +20,7 @@ if (process.env.GITHUB_ACTIONS) {
 
 test.describe.configure({ timeout: targetAllowedDur * 5, retries: 0 });
 for (const v of ['true', 'false']) {
- const envName = VITE_PUBLIC_DEV_SSR_ENABLED	
+ const envName = "VITE_PUBLIC_DEV_SSR_ENABLED"	
  test(`Should be timed appropriately SSR=${v}`, async ({ page }) => {
 	await fs.rm(`./.evidence/template/.evidence-queries`, { recursive: true, force: true });
 	await fs.rm(`./node_modules/.vite`, { recursive: true, force: true });
