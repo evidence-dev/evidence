@@ -353,3 +353,11 @@ Used to navigate to other pages. Can be a full external link like `https://googl
     description="Group name to connect this sparkline to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
     options="string"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>
