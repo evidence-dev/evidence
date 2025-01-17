@@ -162,7 +162,6 @@ Use bar or column charts to compare a metric across categories. Bar charts are b
             x=category
             y=sales
             series=channel
-            swapXY=true
         />
     </div>
 
@@ -477,6 +476,22 @@ Use bar or column charts to compare a metric across categories. Bar charts are b
     options="Array of series names in the order they should be used in the chart seriesOrder={`{['series one', 'series two']}`}"
     defaultValue="default order implied by the data"
 />
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=xLabelWrap
+    description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Value Labels
 
@@ -678,12 +693,6 @@ Use bar or column charts to compare a metric across categories. Bar charts are b
 <PropListing
     name=y2Scale
     description="Whether to scale the y-axis to fit your data. `y2Min` and `y2Max` take precedence over `y2Scale`"
-    options={['true', 'false']}
-    defaultValue=false
-/>
-<PropListing
-    name=showAllXAxisLabels
-    description="Force every x-axis value to be shown. This can truncate labels if there are too many."
     options={['true', 'false']}
     defaultValue=false
 />

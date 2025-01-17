@@ -61,7 +61,7 @@
 
 <div
 	role="none"
-	class="chart-container"
+	class="chart-container mt-2 mb-6"
 	on:mouseenter={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
 >
@@ -222,9 +222,5 @@
 		margin: 3px 12px;
 		font-size: 12px;
 		height: 9px;
-	}
-
-	.chart-container {
-		margin-bottom: 25px;
 	}
 </style>

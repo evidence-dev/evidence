@@ -42,7 +42,7 @@
 	export let size = undefined;
 	export let tooltipTitle = undefined;
 
-	export let showAllXAxisLabels = false;
+	export let showAllXAxisLabels = undefined;
 
 	export let printEchartsConfig = false; // helper for custom chart development
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
@@ -170,6 +170,14 @@
 	$: downloadableImage = downloadableImage === 'true' || downloadableImage === true;
 
 	export let connectGroup = undefined; // string represent name of group for connected charts. Charts with same connectGroup will have connected interactions
+
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
+
+	export let xLabelWrap = false; // false = truncate, true = wrap
+	$: xLabelWrap = xLabelWrap === 'true' || xLabelWrap === true;
+
+	const xAxisLabelOverflow = xLabelWrap ? 'break' : 'truncate';
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
@@ -416,6 +424,15 @@
 			}
 
 			xType = xType === 'category' ? 'category' : xDataType;
+
+			// Set xAxisLabel overflow behaviour based on column type
+			if (!showAllXAxisLabels) {
+				// if user has not set showXAxisLabels
+				showAllXAxisLabels = xType === 'category';
+			} else {
+				// if user has set showXAxisLabels, convert to boolean
+				showAllXAxisLabels = showAllXAxisLabels === 'true' || showAllXAxisLabels === true;
+			}
 
 			// Throw error if attempting to plot value or time on horizontal x-axis:
 			if (swapXY && xType !== 'category') {
@@ -677,6 +694,15 @@
 					type: xType,
 					min: xMin,
 					max: xMax,
+					tooltip: {
+						show: true,
+						position: 'inside',
+						formatter(p) {
+							if (p.isTruncated()) {
+								return p.name;
+							}
+						}
+					},
 					splitLine: {
 						show: xGridlines
 					},
@@ -865,7 +891,7 @@
 				titleBoxPadding * Math.max(hasTitle, hasSubtitle);
 
 			chartAreaPaddingTop = 10;
-			chartAreaPaddingBottom = 8;
+			chartAreaPaddingBottom = 10;
 
 			bottomAxisTitleSize = 14;
 			topAxisTitleSize = 14 + 0; // font size + padding top
@@ -935,6 +961,7 @@
 				},
 				tooltip: {
 					trigger: 'axis',
+					show: true,
 					// formatter function is overridden in ScatterPlot, BubbleChart, and Histogram
 					formatter: function (params) {
 						let output;
@@ -1018,8 +1045,8 @@
 					data: []
 				},
 				grid: {
-					left: '0.5%',
-					right: swapXY ? '4%' : '3%',
+					left: leftPadding ?? (swapXY ? '1%' : '0.8%'),
+					right: rightPadding ?? (swapXY ? '4%' : '3%'),
 					bottom: chartBottom,
 					top: chartTop,
 					containLabel: true
@@ -1069,6 +1096,7 @@
 		{downloadableData}
 		{downloadableImage}
 		{connectGroup}
+		{xAxisLabelOverflow}
 		seriesColors={seriesColorsStore}
 	/>
 {:else}
