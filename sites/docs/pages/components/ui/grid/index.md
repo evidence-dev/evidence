@@ -1,7 +1,10 @@
 ---
 title: Grid
+description: Arrange components in a grid with a specified number of columns.
 sidebar_position: 1
 ---
+
+Use the grid component to arrange components in a grid with a specified number of columns. On smaller screen widths, the grid will stack the components vertically to maintain readability.
 
 ```sql orders_by_category
 select order_month, count(1) as orders from needful_things.orders

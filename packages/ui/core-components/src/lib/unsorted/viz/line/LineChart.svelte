@@ -115,6 +115,11 @@
 	export let connectGroup = undefined;
 	/** @type {string | undefined} */
 	export let seriesLabelFmt = undefined;
+
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
+
+	export let xLabelWrap = undefined;
 </script>
 
 <Chart
@@ -169,6 +174,9 @@
 	{downloadableImage}
 	{connectGroup}
 	seriesColors={seriesColorsStore}
+	{leftPadding}
+	{rightPadding}
+	{xLabelWrap}
 >
 	<Line
 		lineColor={lineColorStore}

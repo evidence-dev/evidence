@@ -1,5 +1,6 @@
 ---
 title: Bar Chart
+description: Compare a metric across a small number of categories. 
 sidebar_position: 1
 queries: 
 - orders_by_month.sql
@@ -7,6 +8,8 @@ queries:
 - orders_by_item_all_time.sql
 - categories_by_channel.sql
 ---
+
+Use bar or column charts to compare a metric across categories. Bar charts are best with a small number of categories and series, and should generally start at 0.
 
 <DocTab>
     <div slot='preview'>
@@ -159,7 +162,6 @@ queries:
             x=category
             y=sales
             series=channel
-            swapXY=true
         />
     </div>
 
@@ -474,6 +476,22 @@ queries:
     options="Array of series names in the order they should be used in the chart seriesOrder={`{['series one', 'series two']}`}"
     defaultValue="default order implied by the data"
 />
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=xLabelWrap
+    description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Value Labels
 
@@ -679,12 +697,6 @@ queries:
     defaultValue=false
 />
 <PropListing
-    name=showAllXAxisLabels
-    description="Force every x-axis value to be shown. This can truncate labels if there are too many."
-    options={['true', 'false']}
-    defaultValue=false
-/>
-<PropListing
     name=yAxisColor
     description="Turns on/off color on the y-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color"
     options={['true', 'false', 'color string (CSS name | hexademical | RGB | HSL)']}
@@ -740,12 +752,12 @@ queries:
 
 <PropListing
     name=echartsOptions
-    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
 />
 <PropListing
     name=seriesOptions
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 />
 <PropListing

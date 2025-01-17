@@ -21,12 +21,13 @@ npm install @acme/charting
 
 ## Registering Component Plugins 
 
-Once the plugin is installed, add it to `evidence.plugins.yaml` to register it in your project. 
+Once the plugin is installed, add it to `evidence.config.yaml` to register it in your project. 
 
 ```yaml
-components:
-    @evidence-dev/core-components: {}
-    @acme/charting: {}
+plugins:
+    components: 
+        @evidence-dev/core-components: {}
+        @acme/charting: {}
 ```
 
 

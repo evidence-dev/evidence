@@ -1,7 +1,10 @@
 ---
 title: Histogram
+description: Display the distribution of a metric along a continuous range, aggregated into buckets.
 sidebar_position: 1
 ---
+
+Use histograms to display the distribution of a metric along a continuous range, aggregated into buckets.
 
 ```sql orders
 select * from needful_things.orders limit 1000
@@ -126,6 +129,22 @@ Color to override default series color
 Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88a87']}`
 
 </PropListing>
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=xLabelWrap
+    description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Axes
 
@@ -292,7 +311,7 @@ Minimum height of the chart area (excl. header and footer) in pixels. Adjusting 
     defaultValue="true"
 />
 
-Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
+Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg).
 
 </PropListing>
 
@@ -303,7 +322,7 @@ Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on
     options="{`{{exampleOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing
@@ -311,7 +330,7 @@ Custom Echarts options to override the default options. See [reference page](/co
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing

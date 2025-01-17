@@ -1,7 +1,10 @@
 ---
 sidebar_position: 999
 title: ECharts Options
+description: Evidence charts are based on ECharts. Pass options to ECharts directly using the echartsOptions property.
 ---
+
+Evidence charts are based on ECharts. Pass options to ECharts directly using the echartsOptions property.
 
 <Alert status=warning>
 

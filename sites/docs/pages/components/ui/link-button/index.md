@@ -1,7 +1,10 @@
 ---
 title: Link Button
+description: Style a link as a button.
 sidebar_position: 1
 ---
+
+Use the link button component to style a link as a button.
 
 <DocTab>
     <div slot='preview'>
