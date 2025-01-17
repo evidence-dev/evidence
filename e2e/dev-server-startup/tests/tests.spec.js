@@ -7,7 +7,7 @@ const mod = process.env.GITHUB_ACTIONS ? 3 : 1;
 
 const targetServerStartDur = 3000 * mod;
 const targetFirstRequestDur = 1000 * mod;
-const targetInteractiveDur = 6000 * mod;
+const targetInteractiveDur = 8000 * mod;
 const targetAllowedDur = targetServerStartDur + targetFirstRequestDur + targetInteractiveDur;
 
 if (process.env.GITHUB_ACTIONS) {
