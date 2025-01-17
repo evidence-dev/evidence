@@ -13,8 +13,7 @@ import { setTrackProxy } from '@evidence-dev/sdk/usql';
 import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 import md5 from 'blueimp-md5';
 
-console.log("Using SSR?", typeof process !== 'undefined' ? process.env.VITE_PUBLIC_DEV_SSR_ENABLED : import.meta.env.VITE_PUBLIC_DEV_SSR_ENABLED)
-export const ssr = typeof process !== 'undefined' ? process.env.VITE_PUBLIC_DEV_SSR_ENABLED === 'true' : import.meta.env.VITE_PUBLIC_DEV_SSR_ENABLED === 'true';
+export const ssr = !dev;
 export const prerender = import.meta.env.VITE_EVIDENCE_SPA !== 'true';
 export const trailingSlash = 'always';
 
