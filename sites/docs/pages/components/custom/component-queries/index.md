@@ -1,5 +1,6 @@
 ---
 title: Component Queries
+description: Execute SQL queries from inside custom components.
 sidebar_position: 2
 ---
 

@@ -1,9 +1,10 @@
 ---
 title: Sankey Diagram
+description: Display flows of a metric transferring between different categories.
 sidebar_position: 6
 ---
 
-The SankeyDiagram component accepts a query and displays a flow from one set of values to another.
+Use Sankey diagrams to display flows of a metric transferring between different categories.
 
 To display a flow with multiple levels, like these examples, see [Mutli-level](#multi-level) below.
 
@@ -354,7 +355,7 @@ Requires `percentCol` to show percentage beside value
       targetCol=target 
       valueCol=amount 
       percentCol=percent 
-      linkColor=grey
+      linkColor=base-content-muted
       colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
     />
   </div>
@@ -366,7 +367,7 @@ Requires `percentCol` to show percentage beside value
   targetCol=target 
   valueCol=amount 
   percentCol=percent 
-  linkColor=grey
+  linkColor=base-content-muted
   colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
@@ -375,7 +376,7 @@ Requires `percentCol` to show percentage beside value
 
 ## Link Colors
 
-### `linkColor=grey` (default)
+### `linkColor=base-content-muted` (default)
 
 <DocTab>
   <div slot='preview'>
@@ -385,7 +386,7 @@ Requires `percentCol` to show percentage beside value
       targetCol=target 
       valueCol=amount 
       percentCol=percent 
-      linkColor=grey
+      linkColor=base-content-muted
       colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
     />
   </div>
@@ -397,7 +398,7 @@ Requires `percentCol` to show percentage beside value
   targetCol=target 
   valueCol=amount 
   percentCol=percent 
-  linkColor=grey
+  linkColor=base-content-muted
   colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
@@ -696,8 +697,8 @@ Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88
 </PropListing>
 <PropListing
     name="linkColor"
-    options={['grey', 'source', 'target', 'gradient']}
-    defaultValue="grey"
+    options={['base-content-muted', 'source', 'target', 'gradient']}
+    defaultValue="base-content-muted"
 >
 
 Color to use for the links between nodes in the diagram
@@ -757,7 +758,7 @@ Minimum height of the chart area (excl. header and footer) in pixels. Adjusting 
     options="{`{{exampleOption:'exampleValue'}}`}"
 >
 
-Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options/) for available options.
+Custom Echarts options to override the default options. See [reference page](/components/charts/echarts-options) for available options.
 
 </PropListing>
 <PropListing

@@ -1,5 +1,6 @@
 ---
 title: Checkbox
+description: Display a toggleable box for a boolean value.
 sidebar_position: 1
 ---
 
@@ -76,9 +77,20 @@ WHERE  not ${inputs.exclude_low_value} -- When True, Do not evaluate the next co
     </div>
 
 ````markdown
+```sql orders
+select 
+    COUNT(*) as records_count
+from needful_things.orders
+WHERE  not ${inputs.exclude_low_value} -- When True, Do not evaluate the next condition
+    OR ( 
+            ${inputs.exclude_low_value} -- Input is set to false
+        AND sales < 10  -- Apply this condition
+    )
+```
+
 <Checkbox
-title="Exclude low values" 
-name=exclude_low_value
+    title="Exclude low values" 
+    name=exclude_low_value
 />
 
 <BigValue fmt=num0 value=records_count data={orders}/>

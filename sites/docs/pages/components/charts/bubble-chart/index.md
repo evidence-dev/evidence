@@ -1,9 +1,12 @@
 ---
 title: Bubble Chart
+description: Display categorical data across three metrics. The X and Y position, and the size of the bubble each represent a different metric for the category.
 sidebar_position: 1
 queries:
 - price_vs_volume.sql
 ---
+
+Use bubble charts to display categorical data across three metrics. The X and Y position, and the size of the bubble each represent a different metric for the category.
 
 <DocTab>
     <div slot='preview'>
@@ -230,6 +233,22 @@ queries:
     options="Array of series names in the order they should be used in the chart seriesOrder={`{['series one', 'series two']}`}"
     defaultValue="default order implied by the data"
 />
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=xLabelWrap
+    description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Axes
 
@@ -384,12 +403,12 @@ queries:
 
 <PropListing 
     name="echartsOptions"
-    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
 />
 <PropListing 
     name="seriesOptions"
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
 />
 <PropListing 

@@ -1,10 +1,13 @@
 ---
 title: 'Area Chart'
+description: Track how a metric with multiple series changes over time, or a continuous range. 
 sidebar_position: 1
 queries:
 - orders_by_month.sql
 - orders_by_category_2021.sql
 ---
+
+Use area charts to track how a metric with multiple series changes over time, or a continuous range. Area charts emphasize changes in the sum of series over the individual series.
 
 <DocTab>
     <div slot='preview'>
@@ -322,6 +325,22 @@ queries:
     options="Array of series names in the order they should be used in the chart seriesOrder={`{['series one', 'series two']}`}"
     defaultValue="default order implied by the data"
 />
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=xLabelWrap
+    description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Value Labels
 
@@ -532,14 +551,14 @@ queries:
 
 <PropListing
     name="echartsOptions"
-    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options. See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     required=false
     options="{`{{exampleOption:'exampleValue'}}`}"
     defaultValue="-"
 />
 <PropListing
     name="seriesOptions"
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options/' class=markdown>reference page</a> for available options."
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/charts/echarts-options' class=markdown>reference page</a> for available options."
     required=false
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
     defaultValue="-"

@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
-import { enableDebug } from '@evidence-dev/sdk/utils';
+import { enableDebug, enableStrictMode } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
 import { createHash } from 'crypto';
 
@@ -159,7 +159,7 @@ function removeStaticDir(dir) {
 }
 
 const strictMode = function () {
-	process.env['VITE_BUILD_STRICT'] = true;
+	enableStrictMode();
 };
 const buildHelper = function (command, args) {
 	const watchers = runFileWatcher(watchPatterns);
@@ -351,10 +351,12 @@ prog
 	.option('--sources', 'only build queries from the specified source directories')
 	.option('--queries', 'only build the specified queries')
 	.option('--debug', 'show debug output')
+	.option('--strict', 'Fail when a source query fails')
 	.example('npx evidence sources --changed')
 	.example('npx evidence sources --sources needful_things --queries orders,reviews')
 	.example('npx evidence sources --queries needful_things.orders,needful_things.reviews')
 	.example('npx evidence sources --sources needful_things,social_media')
+	.example('npx evidence sources --strict')
 	.action(async () => {
 		if (process.argv.some((arg) => arg.includes('build:sources'))) {
 			console.log(
