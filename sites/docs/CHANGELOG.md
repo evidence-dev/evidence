@@ -1,5 +1,17 @@
 # evidence-docs
 
+## 0.0.53
+
+### Patch Changes
+
+- Updated dependencies [f81376743]
+- Updated dependencies [ddb09ae6a]
+  - @evidence-dev/sdk@3.0.5
+  - @evidence-dev/evidence@40.0.5
+  - @evidence-dev/component-utilities@4.0.5
+  - @evidence-dev/core-components@5.0.5
+  - @evidence-dev/tailwind@3.0.5
+
 ## 0.0.52
 
 ### Patch Changes

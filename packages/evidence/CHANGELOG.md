@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 40.0.5
+
+### Patch Changes
+
+- ddb09ae6a: Fix dev server speed regression
+- Updated dependencies [f81376743]
+- Updated dependencies [f81376743]
+  - @evidence-dev/preprocess@6.0.2
+  - @evidence-dev/sdk@3.0.5
+  - @evidence-dev/universal-sql@2.2.6
+
 ## 40.0.4
 
 ### Patch Changes
