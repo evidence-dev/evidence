@@ -4,7 +4,7 @@
 	import { writable } from 'svelte/store';
 	import DimensionCut from './DimensionCut.svelte';
 	import { getWhereClause } from './dimensionGridQuery.js';
-	import Alert from '../../atoms/alert/Alert.svelte';
+	import ErrorChart from '../../unsorted/viz/core/ErrorChart.svelte';
 
 	/** @type {import('@evidence-dev/sdk/usql').Query} */
 	export let data;
@@ -30,15 +30,19 @@
 </script>
 
 {#if data === undefined}
-	<Alert status="negative">`data` is required</Alert>
+	<ErrorChart title="Error: data is required" error="`data` is required" />
 {:else if typeof data === 'string'}
-	<Alert status="negative">
-		`data` must reference a query. Received: data={data}. Try data={'{'}{data}{'}'}.
-	</Alert>
+	<ErrorChart
+		title="Error: data must reference a query"
+		error={`'data' must reference a query. Received: data=${data}. Try data={${data}}`}
+	/>
 {:else if data?.error}
-	<Alert status="negative">
-		{data.error}
-	</Alert>
+	<ErrorChart title="Error in SQL Query" error={data.error} />
+{:else if dimensions.length === 0}
+	<ErrorChart
+		title="No string columns found"
+		error={`Data must contain at least 1 string column. To use DimensionGrid with non-string columns, first cast the columns to strings in your SQL query using '::VARCHAR'`}
+	/>
 {:else}
 	<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
 		{#each dimensions as dimension}

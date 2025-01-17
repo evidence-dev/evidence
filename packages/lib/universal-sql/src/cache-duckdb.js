@@ -157,7 +157,7 @@ export function get_all_page_queries(route_hash, additional_hash) {
 		// Check if the file exists before attempting to read it
 		const file_path = `${cache_path}/all-queries.json`;
 		if (!existsSync(file_path)) {
-			return "{}"; // Return an empty object string as a fallback
+			return '{}'; // Return an empty object string as a fallback
 		}
 
 		// Read and return the file contents
@@ -165,10 +165,9 @@ export function get_all_page_queries(route_hash, additional_hash) {
 	} catch (error) {
 		// Log the error and return a fallback
 		console.error(`Error reading all-queries.json:`, error);
-		return "{}"; // Return an empty object string as a fallback
+		return '{}'; // Return an empty object string as a fallback
 	}
 }
-
 
 /**
  * If a string has already been queried during the lifetime of the program
