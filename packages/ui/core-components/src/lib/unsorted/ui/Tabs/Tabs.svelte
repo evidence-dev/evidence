@@ -76,6 +76,7 @@
 				<TabDisplay
 					id={tab.id}
 					label={tab.label}
+					description={tab.description}
 					fullWidth={toBoolean(fullWidth)}
 					background={toBoolean(background)}
 					{color}
@@ -87,7 +88,6 @@
 			{/each}
 		</nav>
 	{/if}
-
 	<div class="text-base">
 		<slot />
 	</div>

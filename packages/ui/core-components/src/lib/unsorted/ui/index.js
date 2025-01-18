@@ -8,6 +8,7 @@ export { default as EmailSignup } from './EmailSignup.svelte';
 export { default as Embed } from './Embed.svelte';
 export { default as Note } from './Note.svelte';
 export { default as Group } from './Group.svelte';
+export { default as Info } from './Info.svelte';
 export { default as Image } from './Image.svelte';
 export { default as LastRefreshed } from './LastRefreshed.svelte';
 export { default as LineBreak } from './LineBreak.svelte';
