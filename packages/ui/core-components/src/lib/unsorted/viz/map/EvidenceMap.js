@@ -147,18 +147,26 @@ export class EvidenceMap {
 	 */
 	updateBounds = debounce(() => {
 		this.#bounds = Leaflet.latLngBounds(); // Reset bounds to recalculate
-
+	
 		this.#map.eachLayer((layer) => {
+			// Handle layers with sublayers (_layers) - necessary for setting ignoreZoom correctly
+			if (layer._layers && layer._layers instanceof Object) {
+				const firstLayer = Object.values(layer._layers)?.[0];
+				layer.ignoreZoom = firstLayer?.ignoreZoom ?? false;
+			}
+	
+			// Extend bounds for layers that shouldn't ignore zoom
 			if (
 				(layer instanceof Leaflet.Marker ||
 					layer instanceof Leaflet.CircleMarker ||
 					layer instanceof Leaflet.GeoJSON) &&
 				!layer.ignoreZoom
 			) {
-				this.#bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+				const bounds = layer.getBounds?.() || layer.getLatLng?.();
+				if (bounds) this.#bounds.extend(bounds);
 			}
 		});
-
+	
 		if (this.#bounds.isValid()) {
 			this.#map.fitBounds(this.#bounds, { maxZoom: 12 });
 			if (this.#initZoom) this.#map.setZoom(this.#initZoom);
@@ -167,6 +175,7 @@ export class EvidenceMap {
 			throw new Error('Bounds are invalid!');
 		}
 	}, 100);
+	
 
 	/**
 	 * Adds an interactive geoJSON layer to the map that responds to click events.
@@ -229,6 +238,13 @@ export class EvidenceMap {
 				});
 			}
 		}).addTo(this.#map);
+
+		// Set ignoreZoom for all sublayers to ensure it makes it through to updateBounds()
+		geoJsonLayer.eachLayer((sublayer) => {
+			if (sublayer instanceof Leaflet.Path) {
+				sublayer.ignoreZoom = ignoreZoom; // Apply ignoreZoom to all Path layers
+			}
+		});
 
 		this.#bounds.extend(geoJsonLayer.getBounds());
 		if (!this.#initialViewSet) {

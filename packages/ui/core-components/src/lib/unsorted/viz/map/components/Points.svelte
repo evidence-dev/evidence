@@ -47,7 +47,7 @@
 	export let legend = true;
 
 	/** @type {boolean} */
-	export let ignoreZoom = true;
+	export let ignoreZoom = false;
 	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	if (size) {
