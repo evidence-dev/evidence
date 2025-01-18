@@ -15,7 +15,6 @@ export const config = {
 			}
 		]
 	],
-	timeout: process.platform === 'win32' ? 60_000 : 30_000,
 	expect: {
 		timeout: 15_000
 	},
