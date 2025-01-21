@@ -76,4 +76,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report__e2e_${{ matrix.os }}_node-${{ matrix.node-version }}
-          path: e2e/*/playwright-report
+          path: e2e/**/playwright-report
