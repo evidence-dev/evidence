@@ -959,7 +959,9 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 				`**Default:** ${prop.defaultValue || 'None'}\n\n` +
 				`**Options:** ${prop.options}`
 			);
-			item.insertText = prop.name + '=';
+			item.insertText = new SnippetString(
+				prop.name === 'data' ? `${prop.name}={\${1}}` : `${prop.name}=`
+			);
 			item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
 			completionItems.push(item);
 		}
