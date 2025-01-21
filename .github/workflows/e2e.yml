@@ -17,8 +17,6 @@ jobs:
   #       run: echo "e2e-test-projects=$(find e2e -maxdepth 1 -type d -printf "%f\n" | jq --raw-input --slurp --compact-output 'split("\n")[1:-1]')" >> ${GITHUB_OUTPUT}
 
   run-tests:
-    needs:
-      - find-e2e-test-projects
     timeout-minutes: 60
     strategy:
       fail-fast: false
