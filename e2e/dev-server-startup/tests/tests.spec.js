@@ -25,7 +25,7 @@ test(`Should be timed appropriately`, async ({ page }) => {
 	await fs.rm(`test.log`, { force: true });
 
 	const procStartTime = performance.now();
-	const devServerProcess = child_process.spawn('npm', ['run', 'dev'], {
+	const devServerProcess = child_process.spawn('npm', ['run', 'dev', '--', '--port', '18000'], {
 		stdio: 'pipe',
 		shell: true,
 		env: {
@@ -67,7 +67,7 @@ test(`Should be timed appropriately`, async ({ page }) => {
 				// await new Promise((r) => setTimeout(r, 20000));
 				await fs.rm(`./.evidence/template/.evidence-queries`, { recursive: true, force: true });
 				const reqStartTime = performance.now();
-				await await fetch('http://localhost:3000?tag=the-real-request', {
+				await await fetch('http://localhost:18000?tag=the-real-request', {
 					headers: {
 						'User-Agent': 'Birds ARE real :)'
 					}
@@ -77,7 +77,7 @@ test(`Should be timed appropriately`, async ({ page }) => {
 				const firstRequestDur = reqFinishTime - reqStartTime;
 
 				const loadStartTime = performance.now();
-				await page.goto('http://localhost:3000');
+				await page.goto('http://localhost:18000');
 				await waitForPageToLoad(page);
 				await expect(page.getByText('Magic Text 🪄')).toBeVisible();
 				const lostFinishTime = performance.now();
