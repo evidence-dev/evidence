@@ -3,9 +3,13 @@
 </script>
 
 <script>
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
+  	import { browser } from '$app/environment';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	// import { useUrlParams } from '@evidence-dev/sdk/utils/svelte';
+
 	const inputs = getInputContext();
 
 	/////
@@ -35,7 +39,11 @@
 	$: unsafe = unsafe === true || unsafe === 'true';
 
 	let touched = false;
+	let value = defaultValue;
 
+	// const updateUrl = useUrlParams(name, (v) => value = v ?? "")
+
+	hydrateFromUrlParam(name, (v) => value = v ?? '');
 	const setInputStore = () => {
 		let sqlString = value;
 		if (!unsafe) sqlString = sqlString.replaceAll("'", "''");
@@ -46,6 +54,10 @@
 			sql: `'${sqlString}'`,
 			search: (col) => `damerau_levenshtein(${col}, '${sqlString}')`
 		};
+		if(browser){
+			// updateUrl(value)
+			updateUrlParam(name, value);
+		}
 	};
 
 	$: {
@@ -55,7 +67,6 @@
 		}
 	}
 
-	let value = defaultValue;
 	if (typeof defaultValue !== 'undefined') {
 		setInputStore();
 	}

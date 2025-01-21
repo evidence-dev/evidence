@@ -10,6 +10,7 @@
 	import { nanoid } from 'nanoid';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { getThemeStores } from '../../../../themes/themes.js';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
 
 	const { theme, resolveColor, resolveColorPalette } = getThemeStores();
@@ -253,6 +254,7 @@
 	 */
 	function setInputDefault(item, name) {
 		$inputs[name] = Object.fromEntries(Object.keys(item).map((key) => [key, true]));
+		updateUrlParam(name, $inputs[name]);
 	}
 
 	/**
@@ -269,6 +271,7 @@
 				typeof value === 'string' ? value.replaceAll("'", "''") : value
 			])
 		);
+		updateUrlParam(name, $inputs[name]);
 	}
 
 	/**

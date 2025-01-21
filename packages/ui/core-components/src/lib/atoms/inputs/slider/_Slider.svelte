@@ -4,6 +4,9 @@
 
 <script>
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
 	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
@@ -44,9 +47,6 @@
 	/** @type {number} */
 	export let defaultValue = 0;
 
-	/** @type {[number]} */
-	let value = [defaultValue];
-
 	/** @type {string | undefined} */
 	export let fmt = undefined;
 
@@ -60,6 +60,12 @@
 	export let description = undefined;
 
 	export let data = null;
+	
+	/** @type {[number]} */
+	let value;
+	// const updateUrl = useUrlParams(name, (v) => {
+	// 	value = v ?? defaultValue;
+	// });
 
 	function validateNumber(value, name) {
 		value = toNumber(value);
@@ -97,7 +103,9 @@
 		}
 	}
 
-	$: $inputs[name] = value;
+		// Keep inputs in sync
+		$inputs[name] = value;
+		updateUrlParam(name, value);
 
 	const renderSize = (size) => {
 		const sizeMap = {
@@ -126,6 +134,7 @@
 	if (!initialized) {
 		try {
 			error = undefined;
+
 			if (data) {
 				if (typeof data == 'string') {
 					throw Error(`Received: data=${data}, expected: data={${data}}`);
@@ -148,11 +157,20 @@
 				if (typeof defaultValue === 'string' && data[0]?.[defaultValue]) {
 					value = [data[0][defaultValue]];
 				}
+
 				initialized = true;
 			} else if (maxColumn || minColumn) {
 				throw Error(
 					'No data provided. If you referenced a query result, check that the name is correct.'
 				);
+			} else {
+				hydrateFromUrlParam(name,value, defaultValue, (v) => {
+						value = [v] ?? [defaultValue];
+					});
+				if($page.url.searchParams.has(name)){
+					value = [$page.url.searchParams.get(name)]
+				}
+					initialized = true;
 			}
 		} catch (e) {
 			error = e.message;
@@ -176,7 +194,7 @@
 				{/if}
 			</span>
 			<span class="text-xs">
-				{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span
+				{fmt ? formatValue(value, format_object) : value}</span
 			>
 		</p>
 		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />

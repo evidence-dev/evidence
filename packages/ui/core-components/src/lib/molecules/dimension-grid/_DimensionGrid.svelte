@@ -6,6 +6,7 @@
 	import ComponentTitle from '../../unsorted/viz/core/ComponentTitle.svelte';
 	import { getWhereClause } from './dimensionGridQuery.js';
 	import Alert from '../../atoms/alert/Alert.svelte';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 
 	/** @type {import('@evidence-dev/sdk/usql').Query} */
 	export let data;
@@ -32,6 +33,7 @@
 
 	const inputs = getInputContext();
 	$: $inputs[name] = getWhereClause($selectedDimensions);
+	$: updateUrlParam(name, encodeURIComponent($inputs[name]));
 </script>
 
 {#if data === undefined}

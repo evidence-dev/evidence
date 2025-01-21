@@ -4,6 +4,7 @@
 
 <script>
 	import DateInput from './_DateInput.svelte';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	// import { Query } from '@evidence-dev/sdk/usql';
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
@@ -61,20 +62,46 @@
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
+	$: hydrateFromUrlParam(name, (v) => {
+			if (v) {
+				if (v.includes('_to_')) {
+					// Handle date range
+					const [start, end] = v.split('_to_');
+					startString = start;
+					endString = end;
+				} else {
+					// Handle single date
+					startString = v;
+				}
+			}
+		}
+	);
+
 	let currentDate = dateToYYYYMMDD(new Date());
 
 	function onSelectedDateInputChange(selectedDateInput) {
-		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
-			$inputs[name] = {
-				start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-				end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
-			};
-		} else if (selectedDateInput && selectedDateInput && !range) {
-			$inputs[name] = {
-				value: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0))
-			};
+	if (selectedDateInput) {
+		// Handle date range
+		if ((selectedDateInput.start || selectedDateInput.end) && range) {
+			const start = dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0));
+			const end = dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date());
+			$inputs[name] = { start, end };
+
+			// Serialize range for URL (e.g., "2024-01-01_to_2024-01-31")
+			const serializedRange = `${start}_to_${end}`;
+			updateUrlParam(name, serializedRange);
+		} 
+		// Handle single date
+		else if (!range) {
+			const value = dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0));
+			$inputs[name] = { value };
+
+			// Update URL with single date
+			updateUrlParam(name, value);
 		}
 	}
+}
+
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>

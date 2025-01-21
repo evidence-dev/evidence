@@ -3,6 +3,7 @@
 </script>
 
 <script>
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	import Button from '../../shadcn/button/button.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import Info from '../../../unsorted/ui/Info.svelte';
@@ -29,7 +30,10 @@
 
 	export let defaultValue = false;
 
+	hydrateFromUrlParam(name, (v) => defaultValue = v ?? defaultValue);
+
 	$: $inputs[name] = toBoolean(defaultValue);
+	$: updateUrlParam(name, $inputs[name]);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>

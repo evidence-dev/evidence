@@ -4,6 +4,7 @@
 
 <script>
 	import DateInput from '../date-input/_DateInput.svelte';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
@@ -56,12 +57,30 @@
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
+	$: hydrateFromUrlParam(name, (v) => {
+			if (v) {
+				if (v.includes('_to_')) {
+					// Handle date range
+					const [start, end] = v.split('_to_');
+					startString = `${start}`;
+					endString = `${end}`;
+				} else {
+					// Handle single date
+					startString = v;
+				}
+			}
+		}
+	);
+
 	function onSelectedDateInputChange(selectedDateInput) {
 		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end)) {
-			$inputs[name] = {
-				start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-				end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
-			};
+			const start = dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0));
+			const end =  dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date());
+			$inputs[name] = { start, end };
+
+			// Serialize range for URL (e.g., "2024-01-01_to_2024-01-31")
+			const serializedRange = `${start}_to_${end}`;
+			updateUrlParam(name, serializedRange);
 		}
 	}
 </script>
