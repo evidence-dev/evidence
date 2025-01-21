@@ -5,17 +5,6 @@ on:
     branches: [main, next]
 
 jobs:
-  # find-e2e-test-projects:
-  #   name: Find E2E Test Projects
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     e2e-test-projects: ${{ steps.e2e-test-projects.outputs.e2e-test-projects }}
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - id: e2e-test-projects
-  #       run: echo "e2e-test-projects=$(find e2e -maxdepth 1 -type d -printf "%f\n" | jq --raw-input --slurp --compact-output 'split("\n")[1:-1]')" >> ${GITHUB_OUTPUT}
-
   run-tests:
     timeout-minutes: 60
     strategy:
@@ -63,13 +52,13 @@ jobs:
         run: pnpm --filter "./e2e/*" run sources
 
       - name: Run dev mode tests
-        run: pnpm --filter --sequential "./e2e/*" run test:dev
+        run: pnpm --filter "./e2e/*" --sequential run test:dev
 
       - name: Build
         run: pnpm --filter "./e2e/*" run build
 
       - name: Run preview mode tests
-        run: pnpm --filter --sequential "./e2e/*" run test:preview
+        run: pnpm --filter "./e2e/*" --sequential run test:preview
 
       - name: Upload Playwright reports
         if: always()
