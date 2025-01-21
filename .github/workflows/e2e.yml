@@ -65,13 +65,13 @@ jobs:
         run: pnpm --filter "./e2e/*" run sources
 
       - name: Run dev mode tests
-        run: pnpm --filter "./e2e/*" run test:dev
+        run: pnpm --filter --sequential "./e2e/*" run test:dev
 
       - name: Build
         run: pnpm --filter "./e2e/*" run build
 
       - name: Run preview mode tests
-        run: pnpm --filter "./e2e/*" run test:preview
+        run: pnpm --filter --sequential "./e2e/*" run test:preview
 
       - name: Upload Playwright reports
         if: always()
