@@ -118,6 +118,8 @@ test(`Should be timed appropriately`, async ({ page }) => {
 				devServerProcess.kill();
 			}
 		});
+	}).finally(() => {
+		if (!devServerProcess.killed) devServerProcess.kill();
 	});
 	expect([0, null]).toContain(exitCode);
 });
