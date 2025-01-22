@@ -71,7 +71,8 @@ export async function GET() {
 				const relative_path = path.join(dirent.parentPath ?? dirent.path ?? dir, dirent.name);
 				const content = await fs.readFile(relative_path, 'utf-8');
 				// regularize for windows
-				pages[new URL(`file:///${relative_path}`).pathname] = content;
+				const normalized_path = '/' + path.normalize(relative_path).split(path.sep).join('/');
+				pages[normalized_path] = content;
 			} else if (dirent.isDirectory()) {
 				await recursiveReadDir(path.join(dir, dirent.name));
 			}
