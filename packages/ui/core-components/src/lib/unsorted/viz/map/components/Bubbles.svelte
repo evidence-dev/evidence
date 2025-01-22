@@ -4,7 +4,7 @@
 
 <script>
 	import { getThemeStores } from '../../../../themes/themes.js';
-
+	import { toBoolean } from '../../../../utils.js';
 	import Points from './Points.svelte';
 	const { resolveColorPalette } = getThemeStores();
 
@@ -16,6 +16,10 @@
 	export let pointStyle = 'bubbles';
 	/** @type {'categorical' | 'scalar' | undefined} */
 	export let legendType = undefined;
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	export let colorPalette = undefined;
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
@@ -31,5 +35,6 @@
 	colorPalette={colorPaletteStore}
 	{legend}
 	{pointStyle}
+	{ignoreZoom}
 	{...$$restProps}
 />

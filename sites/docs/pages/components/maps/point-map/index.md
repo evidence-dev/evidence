@@ -438,6 +438,14 @@ Subtitle - appears under the title
 
 </PropListing>
 
+<PropListing
+name="ignoreZoom"
+description="Stops map from zooming out to show all data for this layer"
+required=false
+options={["true", "false"]}
+defaultValue="false"
+/>
+
 ### Color Scale
 
 <PropListing
