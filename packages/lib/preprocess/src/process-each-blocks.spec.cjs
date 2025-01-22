@@ -2,26 +2,27 @@ import { describe, it, expect } from 'vitest';
 import processEachBlocks from '../src/process-each-blocks.cjs';
 
 describe('processEachBlocks Preprocessor', () => {
-
-    it('should handle text without blank line before closing each tag', () => {
-        const input = `{#each something as thing}
+	it('should handle text without blank line before closing each tag', () => {
+		const input = `{#each something as thing}
 <p>text
 {/each}</p>`;
-        const expectedOutput = `{#each something as thing}
+		const expectedOutput = `{#each something as thing}
 <p>text
 </p>
 {/each}`;
 
-        const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-        expect(result.code.replace(/\s+/g, ' ').trim()).toEqual(expectedOutput.replace(/\s+/g, ' ').trim());
-    });
+		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		expect(result.code.replace(/\s+/g, ' ').trim()).toEqual(
+			expectedOutput.replace(/\s+/g, ' ').trim()
+		);
+	});
 
-    it('should handle unordered lists without blank line before closing each tag', () => {
-        const input = `
+	it('should handle unordered lists without blank line before closing each tag', () => {
+		const input = `
 {#each something as thing}<ul>
 <li>one
 {/each}</li></ul>`;
-        const expectedOutput = `
+		const expectedOutput = `
 <ul>
 {#each something as thing}
 <li>one
@@ -29,16 +30,18 @@ describe('processEachBlocks Preprocessor', () => {
 {/each}
 </ul>`;
 
-        const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-        expect(result.code.replace(/\s+/g, ' ').trim()).toBe(expectedOutput.replace(/\s+/g, ' ').trim());
-    });
+		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
+			expectedOutput.replace(/\s+/g, ' ').trim()
+		);
+	});
 
-    it('should handle ordered lists without blank line before closing each tag', () => {
-        const input = `
+	it('should handle ordered lists without blank line before closing each tag', () => {
+		const input = `
 {#each something as thing}<ol>
 <li>one
 {/each}</li></ol>`;
-        const expectedOutput = `
+		const expectedOutput = `
 <ol>
 {#each something as thing}
 <li>one
@@ -46,42 +49,48 @@ describe('processEachBlocks Preprocessor', () => {
 {/each}
 </ol>`;
 
-        const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-        expect(result.code.replace(/\s+/g, ' ').trim()).toBe(expectedOutput.replace(/\s+/g, ' ').trim());
-    });
+		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
+			expectedOutput.replace(/\s+/g, ' ').trim()
+		);
+	});
 
-    it('should handle unordered lists contained inside each tags', () => {
-    const input = `{#each something as thing}<ul>
+	it('should handle unordered lists contained inside each tags', () => {
+		const input = `{#each something as thing}<ul>
 <li>one</li>
 </ul>
 {/each}`;
-    const expectedOutput = `<ul>
+		const expectedOutput = `<ul>
 {#each something as thing}<li>one
 </li>
 {/each}
 </ul>`;
 
-        const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-        expect(result.code.replace(/\s+/g, ' ').trim()).toBe(expectedOutput.replace(/\s+/g, ' ').trim());
-    });
+		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
+			expectedOutput.replace(/\s+/g, ' ').trim()
+		);
+	});
 
-    it('should handle ordered lists contained inside each tags', () => {
-        const input = `{#each something as thing}<ol>
+	it('should handle ordered lists contained inside each tags', () => {
+		const input = `{#each something as thing}<ol>
 <li>one</li>
 </ol>
 {/each}`;
-        const expectedOutput = `<ol>
+		const expectedOutput = `<ol>
 {#each something as thing}<li>one
 </li>
 {/each}
 </ol>`;
-    
-            const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-            expect(result.code.replace(/\s+/g, ' ').trim()).toBe(expectedOutput.replace(/\s+/g, ' ').trim());
-        });
 
-    it('should preserve code blocks and inline code snippets', () => {
-        const input = `# Markdown with Code
+		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
+			expectedOutput.replace(/\s+/g, ' ').trim()
+		);
+	});
+
+	it('should preserve code blocks and inline code snippets', () => {
+		const input = `# Markdown with Code
 
 \`\`\`js
 console.log('Code block');
@@ -94,7 +103,7 @@ Inline code: \`console.log('inline');\`
 <li>{item.name}</li>
 </ul>
 {/each}`;
-        const expectedOutput = `# Markdown with Code
+		const expectedOutput = `# Markdown with Code
 
 \`\`\`js
 console.log('Code block');
@@ -108,7 +117,9 @@ Inline code: \`console.log('inline');\`
 	{/each}
 </ul>`;
 
-        const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-        expect(result.code.replace(/\s+/g, ' ').trim()).toBe(expectedOutput.replace(/\s+/g, ' ').trim());
-    });
+		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
+			expectedOutput.replace(/\s+/g, ' ').trim()
+		);
+	});
 });
