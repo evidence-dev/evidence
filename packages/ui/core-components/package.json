@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "5.0.4",
+	"version": "5.0.5",
 	"evidence": {
 		"components": true
 	},
@@ -55,7 +55,7 @@
 		"cmdk-sv": "^0.0.12",
 		"codemirror": "^6.0.1",
 		"date-fns": "^3.6.0",
-		"echarts": "5.5.1",
+		"echarts": "5.6.0",
 		"echarts-stat": "1.2.0",
 		"export-to-csv": "0.2.1",
 		"leaflet": "^1.9.4",

@@ -66,7 +66,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
                 if (import.meta?.hot) {
 					import.meta.hot.on("vite:beforeUpdate", () => {
 						// remove all prerendered queries
-						delete props.data;
+						props.data = {}
 					});
 
                     import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {

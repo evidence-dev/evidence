@@ -121,9 +121,14 @@ Name of the checkbox, used to reference the selected value elsewhere as `{inputs
 Value to use when checkbox is first loaded. True value for checked, false for unchecked
 
 </PropListing>
+<PropListing
+    name=description
+    options="string"
+>
 
+Adds an info icon with description tooltip on hover
 
-
+</PropListing>
 
 
 

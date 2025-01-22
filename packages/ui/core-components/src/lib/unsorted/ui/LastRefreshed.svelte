@@ -4,9 +4,18 @@
 
 <script>
 	import { version } from '$app/environment';
+	import { toBoolean } from '../../utils.js';
+	import { fmt } from '@evidence-dev/component-utilities/formatting';
+
 	const timestamp = Number(version);
 
 	export let prefix = 'Last refreshed';
+
+	export let printShowDate = true;
+	$: printShowDate = toBoolean(printShowDate);
+	let printing = false;
+
+	export let dateFmt = 'h:mmam/pm mmm d, yyyy';
 
 	function timeAgo(startTimestamp, endTimestamp) {
 		const secondsAgo = Math.floor((endTimestamp - startTimestamp) / 1000);
@@ -37,7 +46,18 @@
 	const varTimeAgo = timeAgo(timestamp, Date.now());
 </script>
 
-<p class="text-sm py-1 cursor-text" title={new Date(timestamp).toLocaleString()}>
+<svelte:window
+	on:beforeprint={() => (printing = true)}
+	on:afterprint={() => (printing = false)}
+	on:export-beforeprint={() => (printing = true)}
+	on:export-afterprint={() => (printing = false)}
+/>
+
+<p class="text-sm mb-4 cursor-text" title={new Date(timestamp).toLocaleString()}>
 	{prefix}
-	{varTimeAgo}
+	{#if !printing || !printShowDate}
+		{varTimeAgo}
+	{:else}
+		{fmt(new Date(timestamp), dateFmt)}
+	{/if}
 </p>

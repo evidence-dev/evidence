@@ -62,3 +62,11 @@ This is a dangerous alert
 Changes the color of the alert
 
 </PropListing>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>

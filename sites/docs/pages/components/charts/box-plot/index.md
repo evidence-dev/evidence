@@ -268,6 +268,22 @@ from ${sales_distribution_by_channel}
     options="object with series names and assigned colors"
     defaultValue="colors applied by order of series in data"
 />
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=xLabelWrap
+    description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Axes
 
@@ -346,12 +362,6 @@ from ${sales_distribution_by_channel}
     name="yMax"
     description="Maximum value for the y-axis"
     options="number"
-/>
-<PropListing 
-    name="showAllXAxisLabels"
-    description="Force every x-axis value to be shown. This can truncate labels if there are too many."
-    options={['true', 'false']}
-    defaultValue="false"
 />
 
 ### Chart

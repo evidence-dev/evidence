@@ -409,8 +409,31 @@ const createTheme = (mode) => {
 			color: ['#c41621', '#e39588', '#f5ed98']
 		},
 		dataZoom: {
-			handleSize: 'undefined%',
-			textStyle: {}
+			type: 'slider',
+			bottom: 10,
+			height: 30,
+			showDetail: false,
+			handleSize: '80%',
+			borderColor: gridlineColor,
+			handleStyle: {
+				borderColor: gridlineColor,
+				color: gridlineColor
+			},
+			moveHandleStyle: {
+				borderColor: gridlineColor,
+				color: gridlineColor
+			},
+			textStyle: {},
+			emphasis: {
+				handleStyle: {
+					borderColor: gridlineColor,
+					color: gridlineColor
+				},
+				moveHandleStyle: {
+					borderColor: gridlineColor,
+					color: gridlineColor
+				}
+			}
 		},
 		markPoint: {
 			label: {
