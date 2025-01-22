@@ -26,7 +26,7 @@ const processEachBlocks = {
 				return `__INLINE_CODE_${index++}__`;
 			});
 
-		// Scenario 1 - Text without blank lank before closing each tag
+		// Scenario 1 - Text without blank line before closing each tag
 		const scenario1Regex = /\{#each([^\}]*)\}([\s\S]*?)\{\/each\}<\/p>/gm;
 		const scenario1Replacement = `{#each$1}$2</p>\n{/each}`;
 
