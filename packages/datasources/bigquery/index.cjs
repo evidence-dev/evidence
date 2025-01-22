@@ -77,7 +77,7 @@ const getCredentials = (database = {}) => {
 		if (database.enable_connected_sheets) {
 			credentials.scopes = [
 				'https://www.googleapis.com/auth/cloud-platform',
-				'https://www.googleapis.com/auth/drive', 
+				'https://www.googleapis.com/auth/drive',
 				'https://www.googleapis.com/auth/bigquery'
 			];
 		}
@@ -305,7 +305,8 @@ module.exports.options = {
 				},
 				enable_connected_sheets: {
 					title: 'Enable Connected Sheets',
-					description: 'Allows access to connected Google Sheets. Adds additional scope to access Drive API.',
+					description:
+						'Allows access to connected Google Sheets. Adds additional scope to access Drive API.',
 					type: 'boolean',
 					secret: false,
 					required: false,
