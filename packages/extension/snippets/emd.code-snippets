@@ -422,6 +422,16 @@
 		],
 		"description": "Insert Map"
 	},
+	"Note": {
+		"prefix": "/Note",
+		"body": ["<Note>\n\t${1:Note Content}\n</Note>\n\n"],
+		"description": "Insert Note"
+	},
+	"Embed": {
+		"prefix": "/Embed",
+		"body": ["<Embed url={${1:query_name}}/>\n\n"],
+		"description": "Insert Embed"
+	},
 	"Slider": {
 		"prefix": "/Slider",
 		"body": "<Slider name=${1:name_of_input} min=${2:0} max=${3:100}/>\n\n",

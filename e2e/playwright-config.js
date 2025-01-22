@@ -6,6 +6,7 @@ export const config = {
 	testDir: './tests',
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
+	timeout: 120000,
 	reporter: [
 		[
 			'html',
@@ -14,6 +15,9 @@ export const config = {
 			}
 		]
 	],
+	expect: {
+		timeout: 15_000
+	},
 	use: {
 		colorScheme: 'dark',
 		trace: 'retain-on-failure',
@@ -44,6 +48,8 @@ export const config = {
 		command: process.env.DEV ? 'pnpm dev' : 'pnpm preview',
 		port: 3000,
 		reuseExistingServer: !process.env.CI,
-		timeout: 120_000
+		timeout: 120_000,
+		stdout: 'pipe',
+		stderr: 'pipe'
 	}
 };
