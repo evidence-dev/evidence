@@ -1,6 +1,7 @@
 <script>
 	import chroma from 'chroma-js';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import Info from '../../ui/Info.svelte';
 
 	const { resolveColor } = getThemeStores();
 
@@ -12,6 +13,8 @@
 	export let label;
 
 	export let activeId;
+
+	export let description = undefined;
 
 	export let fullWidth;
 
@@ -35,4 +38,7 @@
 	{fullWidth ? 'flex-1' : ''}"
 >
 	{label}
+	{#if description}
+		<Info {description} />
+	{/if}
 </button>

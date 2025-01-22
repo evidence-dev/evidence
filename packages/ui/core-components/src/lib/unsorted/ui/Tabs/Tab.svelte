@@ -22,6 +22,11 @@
 	 */
 	export let selected;
 
+	/**
+	 * @type {string | undefined}
+	 */
+	export let description = undefined;
+
 	const internalId = nanoid();
 
 	/** @type {import('./index.d.ts').TabsContext} */
@@ -30,7 +35,7 @@
 	const addTabToContext = () => {
 		$context.tabs = [
 			...$context.tabs.filter((t) => t.internalId !== internalId),
-			{ internalId, id, label }
+			{ internalId, id, label, description }
 		];
 
 		if (selected) {

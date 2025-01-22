@@ -243,3 +243,11 @@ Unique Id for this tab. Only needed if 2 tabs have the same label (not recommend
 On print/PDF, the Tabs will repeat to show all content by default. Turn this off to leave the component collapsed in print.
 
 </PropListing>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>

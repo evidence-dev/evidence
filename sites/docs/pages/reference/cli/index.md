@@ -30,9 +30,13 @@ ORDER BY row_num
 
 ## Options
 
+<Alert>
+
 Append flags with an extra `--` after the command to modify behavior.
 
 For example, `npm run dev -- --port 4000` will start the development server on port 4000.
+
+</Alert>
 
 Some of the most common are:
 
