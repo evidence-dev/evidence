@@ -84,9 +84,8 @@ ORDER BY 1;
 			valueFmt="usd"
 			tooltipType="hover"
 			opacity="1"
-			ignoreZoom="true"
 		/>
-		<!-- <Bubbles
+		<Bubbles
 			data={la_locations}
 			lat="lat"
 			long="long"
@@ -95,8 +94,7 @@ ORDER BY 1;
 			size="sales"
 			tooltipType="hover"
 			opacity="0.6"
-		/> -->
-
+		/>
 		<Points data={la_locations} lat="lat" long="long" color="red" value="sales" />
 	</BaseMap>
 </Story>
@@ -283,5 +281,22 @@ ORDER BY 1;
 			color="blue"
 			z="2"
 		/>
+	</BaseMap>
+</Story>
+<Story name="Ignore Zoom">
+	<BaseMap title="My Map" height="300">
+		<Areas
+			data={la_zip_sales}
+			geoJsonUrl="/geo-json/ca_california_zip_codes_geo_1.min.json"
+			areaCol="zip_code"
+			name="area"
+			value="sales"
+			geoId="ZCTA5CE10"
+			valueFmt="usd"
+			tooltipType="hover"
+			opacity="1"
+			ignoreZoom="true"
+		/>
+		<Points data={la_locations} lat="lat" long="long" color="red" value="sales" />
 	</BaseMap>
 </Story>
