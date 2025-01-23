@@ -1,5 +1,18 @@
 # @evidence-dev/preprocess
 
+## 6.0.2
+
+### Patch Changes
+
+- f81376743: Set props.data to empty object instead of deleting it
+
+## 6.0.1
+
+### Patch Changes
+
+- fa5179ed4: fix query HMR
+- 730321d90: Enable strict mode for sources
+
 ## 6.0.0
 
 ### Major Changes

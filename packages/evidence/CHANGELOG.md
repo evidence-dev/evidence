@@ -1,5 +1,31 @@
 # @evidence-dev/evidence
 
+## 40.0.5
+
+### Patch Changes
+
+- ddb09ae6a: Fix dev server speed regression
+- Updated dependencies [f81376743]
+- Updated dependencies [f81376743]
+  - @evidence-dev/preprocess@6.0.2
+  - @evidence-dev/sdk@3.0.5
+  - @evidence-dev/universal-sql@2.2.6
+
+## 40.0.4
+
+### Patch Changes
+
+- dd4e4724f: Add warning message to default index.md
+- 730321d90: Enable strict mode for sources
+- a6f4c6721: Clean up 404 / 500 errors
+- Updated dependencies [fa5179ed4]
+- Updated dependencies [309e27b51]
+- Updated dependencies [f416a339d]
+- Updated dependencies [730321d90]
+  - @evidence-dev/preprocess@6.0.1
+  - @evidence-dev/sdk@3.0.4
+  - @evidence-dev/universal-sql@2.2.5
+
 ## 40.0.3
 
 ### Patch Changes
