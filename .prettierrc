@@ -1,8 +1,14 @@
 {
+	// Use tabs for indentation instead of spaces
 	"useTabs": true,
+	// Prefer single quotes over double quotes for strings
 	"singleQuote": true,
+	// Do not add trailing commas to objects, arrays, etc.
 	"trailingComma": "none",
+	// Set the maximum line length before wrapping to 100 characters
 	"printWidth": 100,
+	// Include the Prettier plugin for formatting Svelte files
 	"plugins": ["prettier-plugin-svelte"],
+	// Apply specific options for files with the .svelte extension
 	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
 }
