@@ -52,6 +52,9 @@
 	export let downloadableImage = undefined;
 
 	export let connectGroup = undefined;
+
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
 </script>
 
 <Chart
@@ -86,6 +89,8 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
+	{leftPadding}
+	{rightPadding}
 >
 	<Hist fillColor={fillColorStore} {fillOpacity} />
 	<slot />
