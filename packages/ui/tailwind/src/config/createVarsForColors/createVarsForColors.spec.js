@@ -8,11 +8,13 @@ const runPlugin = async (theme) => {
 	const result = await postcss(
 		tailwindcss({
 			content: [{ raw: '' }],
-			plugins: [createVarsForColors(theme)]
+			plugins: [createVarsForColors(theme)],
+			safelist: ['theme-dark', 'theme-light']
 		})
 	)
 		.process('@tailwind utilities')
 		.async();
+	console.log({ result });
 	return result.css;
 };
 
@@ -26,10 +28,10 @@ describe('createVarsForColors', () => {
 
 		// prettier-ignore
 		const expected = `
-html[data-theme="light"] {
+html.theme-light {
     --someColorToken: someColorValue-light
 }
-html[data-theme="dark"] {
+html.theme-dark {
     --someColorToken: someColorValue-dark
 }
 `.trim()

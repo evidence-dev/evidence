@@ -105,26 +105,40 @@ export class ThemeStores {
 	}
 
 	/** @param {HTMLElement} element */
-	syncDataThemeAttribute = (element) => {
-		// Sync activeAppearance -> html[data-theme]
+	syncThemeAttribute = (element) => {
+		// Sync activeAppearance -> .theme-
+		const removeAllThemes = () => {
+			element.classList.values().forEach((className) => {
+				if (className.startsWith('theme-')) {
+					element.classList.remove(className);
+				}
+			});
+		};
+
 		const unsubscribe = this.#activeAppearance.subscribe(($activeAppearance) => {
-			const current = element.getAttribute('data-theme');
-			if (current !== $activeAppearance) {
-				element.setAttribute('data-theme', $activeAppearance);
-			}
+			requestAnimationFrame(() => {
+				// try to do this all in one frame to prevent jitter
+				removeAllThemes();
+				element.classList.add(`theme-${$activeAppearance}`);
+			});
 		});
 
-		// Sync html[data-theme] -> activeAppearance
+		// Sync .theme- -> activeAppearance
 		const observer = new MutationObserver((mutations) => {
 			const html = /** @type {HTMLHtmlElement} */ (mutations[0].target);
-			const theme = html.getAttribute('data-theme');
+			const themes = [
+				...html.classList.values().filter((className) => className.startsWith('theme-'))
+			];
+			if (themes.length === 0) return;
+			const theme = themes[0].replace('theme-', '');
+
 			if (!theme || !['light', 'dark'].includes(theme)) return;
 			const current = get(this.#activeAppearance);
 			if (theme !== current) {
 				this.#selectedAppearance.set(/** @type {'light' | 'dark'} */ (theme));
 			}
 		});
-		observer.observe(element, { attributeFilter: ['data-theme'] });
+		observer.observe(element, { attributeFilter: ['class'] });
 
 		return () => {
 			unsubscribe();

@@ -136,7 +136,7 @@
 	});
 
 	const {
-		syncDataThemeAttribute,
+		syncThemeAttribute,
 		cycleAppearance,
 		selectedAppearance,
 		setAppearance,
@@ -154,7 +154,7 @@
 		return () => window.removeEventListener('keydown', onKeydown);
 	});
 
-	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
+	onMount(() => syncThemeAttribute(document.querySelector('html')));
 
 	//handles printing in dark mode
 	onMount(() => {

@@ -303,7 +303,7 @@
 	--yellow-999: #422006;
 }
 
-[data-theme='dark'] .__evidence-leaflet-tile-layer__ {
+.theme-dark .__evidence-leaflet-tile-layer__ {
 	filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 

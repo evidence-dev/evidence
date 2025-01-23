@@ -23,13 +23,12 @@ const config = {
 		get files() {
 			const pluginConfig = evidenceConfig.plugins;
 			const components = pluginConfig.components;
-			// const componentPaths = Object.keys(components)
-			// 	.map((pluginName) => [
-			// 		`./node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`,
-			// 		`../../node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`
-			// 	])
-			// 	.flat();
-			const componentPaths = [];
+			const componentPaths = Object.keys(components)
+				.map((pluginName) => [
+					`./node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`,
+					`../../node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`
+				])
+				.flat();
 
 			return [
 				'./src/**/*.{html,js,svelte,ts,md}', // This is used for everything in base evidence template

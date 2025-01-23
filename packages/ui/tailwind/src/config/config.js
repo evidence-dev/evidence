@@ -4,6 +4,7 @@ import { createThemes as createTwcThemes } from 'tw-colors';
 import { loadThemesConfig } from './loadThemesConfig.js';
 import { buildThemes } from '../themes/buildThemes.js';
 import { createVarsForColors } from './createVarsForColors/index.js';
+import plugin from 'tailwindcss/plugin.js';
 
 const themesConfig = loadThemesConfig();
 const themes = buildThemes(themesConfig);
@@ -14,6 +15,32 @@ const twcConfig = Object.fromEntries(
 		(Object.fromEntries(Object.entries(theme.colors).filter(([, value]) => Boolean(value))))
 	])
 );
+
+const inner = createTwcThemes(twcConfig, {
+	produceThemeClass: (name) => `theme-${name}`
+});
+const wrappedTwcThemes = plugin((creator) => {
+	const pre = creator.addUtilities;
+	const dataThemeRegex = /,?\[data-theme="([^"]+)"\]/g;
+	creator.addUtilities = function (utilities, options) {
+		utilities = Object.fromEntries(
+			Object.entries(utilities).map(([k, v]) => {
+				console.log('pre', k);
+				k = k.replaceAll(dataThemeRegex, '');
+				console.log('post', k);
+				return [k, v];
+			})
+		);
+		console.log({
+			utilities,
+			options
+		});
+		return pre(utilities, options);
+	}.bind(creator);
+
+	const res = inner.handler(creator);
+	return res;
+}, inner.config);
 
 /** @type {Partial<import('tailwindcss').Config>} */
 export const config = {
@@ -49,8 +76,13 @@ export const config = {
 			}
 		}
 	},
-	plugins: [createTwcThemes(twcConfig), createVarsForColors(themes)],
-	darkMode: ['selector', '[data-theme="dark"]']
+	plugins: [
+		wrappedTwcThemes,
+		// createTwcThemes(twcConfig, { produceThemeClass: (name) => `theme-${name}` }),
+		createVarsForColors(themes)
+	],
+	darkMode: ['class', 'theme-dark'],
+	safelist: ['theme-light', 'theme-dark']
 };
 
 export default config;

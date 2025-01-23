@@ -23,8 +23,8 @@
 	import { onMount } from 'svelte';
 	import { getThemeStores } from '../themes/themes.js';
 
-	const { syncDataThemeAttribute } = getThemeStores();
-	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
+	const { syncThemeAttribute } = getThemeStores();
+	onMount(() => syncThemeAttribute(document.querySelector('html')));
 </script>
 
 <slot />
