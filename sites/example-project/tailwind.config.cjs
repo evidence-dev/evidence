@@ -29,7 +29,7 @@ const config = {
 			// 		`../../node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`
 			// 	])
 			// 	.flat();
-			const componentPaths = []
+			const componentPaths = [];
 
 			return [
 				'./src/**/*.{html,js,svelte,ts,md}', // This is used for everything in base evidence template

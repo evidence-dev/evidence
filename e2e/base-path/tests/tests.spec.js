@@ -191,6 +191,16 @@ test.describe('Page', () => {
 	});
 });
 
+test.describe('Parquet Files', () => {
+	test('Manifest links should use base path', async ({ page }) => {
+		await page.goto(basePath);
+		await waitForPageToLoad(page);
+		const req = await page.waitForRequest(`${basePath}/data/needful_things/orders/orders.parquet`);
+		const res = await req.response();
+		expect(res?.ok()).toBe(true);
+	});
+});
+
 test.describe('Components', () => {
 	test('Table row links should use base path', async ({ page }) => {
 		await page.goto(`${basePath}/table-row-links`);

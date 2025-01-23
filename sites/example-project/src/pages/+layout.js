@@ -45,7 +45,7 @@ const loadDB = async () => {
 			);
 		}
 	} else {
-		await profile(setParquetURLs, renderedFiles);
+		await profile(setParquetURLs, renderedFiles, { addBasePath });
 		await profile(updateSearchPath, Object.keys(renderedFiles));
 	}
 };

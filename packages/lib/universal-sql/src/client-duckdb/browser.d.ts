@@ -25,10 +25,13 @@ export function query(sql: string): Promise<import('apache-arrow').Table | null>
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
  * @param {Record<string, string[]>} urls
- * @param {boolean} [append]
+ * @param {{ append?: boolean, addBasePath?: (path: string) => string }} [opts]
  * @returns {Promise<void>}
  */
-export function setParquetURLs(urls: Record<string, string[]>, append?: boolean): Promise<void>;
+export function setParquetURLs(
+	urls: Record<string, string[]>,
+	opts?: { append?: boolean; addBasePath?: (path: string) => string }
+): Promise<void>;
 
 /**
  * Converts an Apache Arrow table to a Javascript array.
