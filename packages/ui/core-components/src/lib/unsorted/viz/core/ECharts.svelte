@@ -153,8 +153,8 @@
 				/>
 			{/if}
 			{#if !isFullPage}
-					<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
-				{/if}
+				<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
+			{/if}
 		</div>
 	{/if}
 
