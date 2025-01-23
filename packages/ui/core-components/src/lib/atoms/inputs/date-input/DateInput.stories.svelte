@@ -47,3 +47,11 @@
 	</h1>
 	<DateInput {...args} name="dateInput_range" range />
 </Story>
+<Story name="Name Error" let:args>
+	<h1>Date Input</h1>
+	<DateInput {...args} name={undefined} />
+	<h1>Date Input Range</h1>
+	<DateInput {...args} range name={undefined} />
+	<h1>Data is a string</h1>
+	<DateInput name="dataString" data="dateQuery" />
+</Story>

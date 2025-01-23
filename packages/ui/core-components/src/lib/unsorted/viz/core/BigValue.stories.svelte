@@ -57,3 +57,13 @@
 <Story name="Sparkline" args={{ sparklineColor: 'black' }} let:args>
 	<BigValue {...args} data={data3} value="fare" sparkline="departure_date" />
 </Story>
+<Story name="Data Error" args={{ sparklineColor: 'black' }} let:args>
+	<h1>No Data prop</h1>
+	<BigValue {...args} data={undefined} value="fare" sparkline="departure_date" />
+	<h1>No Value prop</h1>
+	<BigValue {...args} data={data3} value="" sparkline="departure_date" />
+	<h1>Data as String</h1>
+	<BigValue {...args} data="data3" value="fare" sparkline="departure_date" />
+	<h1>No props passed</h1>
+	<BigValue {...args} />
+</Story>

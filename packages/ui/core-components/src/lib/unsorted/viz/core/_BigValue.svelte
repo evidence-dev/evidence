@@ -57,6 +57,11 @@
 	let error = undefined;
 	$: try {
 		error = undefined;
+		checkInputs(data, [value]);
+
+		if (!data) {
+			throw new Error('data is required');
+		}
 
 		if (!value) {
 			throw new Error('value is required');
@@ -65,8 +70,6 @@
 		if (!Array.isArray(data)) {
 			data = [data];
 		}
-
-		checkInputs(data, [value]);
 
 		let columnSummary = getColumnSummary(data, 'array');
 

@@ -28,6 +28,7 @@
 	import VirtualList from './Virtual.svelte';
 	import { toBoolean } from '../../../utils.js';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
+	import InputError from '../InputError.svelte';
 	const inputs = getInputContext();
 
 	/////
@@ -210,7 +211,9 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
-		{#if hasQuery && $query.error}
+		{#if !name}
+			<InputError inputType="dropdown" />
+		{:else if hasQuery && $query.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>

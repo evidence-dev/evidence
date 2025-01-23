@@ -7,6 +7,8 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { toBoolean } from '../../../utils.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import InputError from '../InputError.svelte';
+	import checkInputProps from '../checkInputProps.js';
 	const inputs = getInputContext();
 
 	/////
@@ -23,26 +25,47 @@
 	export let hideDuringPrint = true;
 	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
 
-	export let defaultValue = false;
+	/** @type {boolean} */
+	export let checked = false;
 
-	$: $inputs[name] = toBoolean(defaultValue);
+	let isChecked = toBoolean(checked);
+
+	$: $inputs[name] = isChecked;
+
+	// Error Handling
+	/** @type {string | undefined} */
+	let error = undefined;
+
+	try {
+		checkInputProps({ name });
+	} catch (err) {
+		error = err.message;
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<Button
-		type="button"
-		on:click={() => ($inputs[name] = !$inputs[name])}
-		variant="outline"
-		size="sm"
-		class="min-w-40 inline-flex justify-between gap-4 items-center w-full max-w-fit mt-2 mb-4 mr-2"
-	>
-		<p class="truncate font-medium">
-			{title}
-		</p>
-		<input
-			type="checkbox"
-			bind:checked={$inputs[name]}
-			class="[&:not(:checked)]:appearance-none cursor-pointer border border-base-content-muted rounded-sm focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-base-300 shadow-sm accent-primary"
-		/>
-	</Button>
+	{#if error}
+		<InputError inputType="checkbox" {error} height="32" width="160" />
+	{:else}
+		<Button
+			type="button"
+			on:click={() => (isChecked = !isChecked)}
+			variant="outline"
+			size="sm"
+			class="min-w-40 inline-flex justify-between gap-4 items-center w-full max-w-fit mt-2 mb-4 mr-2 {title
+				? ''
+				: 'min-w-10'}"
+		>
+			{#if title}
+				<p class="truncate font-medium">
+					{title}
+				</p>
+			{/if}
+			<input
+				type="checkbox"
+				bind:checked={isChecked}
+				class="[&:not(:checked)]:appearance-none cursor-pointer border border-base-content-muted rounded-sm focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-base-300 shadow-sm accent-primary"
+			/>
+		</Button>
+	{/if}
 </HiddenInPrint>

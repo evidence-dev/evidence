@@ -32,3 +32,6 @@
 </Template>
 
 <Story name="Default" />
+<Story name="Name Error">
+	<TextInput name={undefined} />
+</Story>

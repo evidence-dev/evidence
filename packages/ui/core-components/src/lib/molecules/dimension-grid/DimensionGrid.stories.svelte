@@ -16,6 +16,7 @@
 	import { userEvent, within } from '@storybook/test';
 
 	const data = Query.create('select * from flights', query);
+	const dataSmallColumn = Query.create('select plane, airline, seat from flights', query);
 
 	const dataPlay = Query.create('select plane, airline from flights', query);
 
@@ -28,6 +29,9 @@
 
 <Story name="Named as an Input">
 	<DimensionGrid name="dimensiongrid" {data} />
+</Story>
+<Story name="small column">
+	<DimensionGrid name="dimensiongrid" data={dataSmallColumn} />
 </Story>
 
 <Story name="Labelled Metric">

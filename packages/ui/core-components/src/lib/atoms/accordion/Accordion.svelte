@@ -5,11 +5,16 @@
 <script>
 	import * as BaseAccordion from '../shadcn/accordion';
 	export let single = false;
+	import InputError from '../inputs/InputError.svelte';
 
 	let className = undefined;
 	export { className as class };
 </script>
 
-<BaseAccordion.Root class={className} multiple={!single}>
-	<slot />
-</BaseAccordion.Root>
+{#if !$$slots.default}
+	<InputError inputType="accordion" height="52" width="100%" error="No accordion items found" />
+{:else}
+	<BaseAccordion.Root class={className} multiple={!single}>
+		<slot />
+	</BaseAccordion.Root>
+{/if}

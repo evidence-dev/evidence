@@ -37,7 +37,11 @@ export default function checkInputs(data, reqCols, optCols) {
 		for (var i = 0; i < reqCols.length; i++) {
 			if (reqCols[i] == null) {
 				// missingCols.push(reqCols[i]);
-				throw Error('Missing required columns');
+				throw Error(
+					'Missing required column(s): ' +
+						reqCols[i] +
+						' not found in data set. Please verify required column name(s).'
+				);
 			}
 		}
 
@@ -83,9 +87,10 @@ export default function checkInputs(data, reqCols, optCols) {
 			}
 		}
 
-		if (optCols != undefined && optCols[0] != null) {
+		if (optCols != undefined && optCols.some((col) => col != null)) {
 			for (i = 0; i < optCols.length; i++) {
 				currentCol = optCols[i];
+				if (currentCol == null) continue;
 				if (!columns.includes(currentCol)) {
 					throw Error("'" + currentCol + "' is not a column in the dataset");
 				}

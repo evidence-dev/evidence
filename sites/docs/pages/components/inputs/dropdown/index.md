@@ -12,6 +12,7 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 select distinct category as category_name, upper(left(category, 3)) as abbrev from needful_things.orders
 ```
 
+        <Dropdown data={categories} name=category1 value=category_name title="Select a Category" defaultValue="Sinister Toys"/>
 <DocTab>
     <div slot='preview'>
         <Dropdown data={categories} name=category1 value=category_name title="Select a Category" defaultValue="Sinister Toys"/>

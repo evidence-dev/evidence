@@ -5,6 +5,8 @@
 <script>
 	import { ExportToCsv } from 'export-to-csv';
 	import { fade } from 'svelte/transition';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import InputError from '../../atoms/inputs/InputError.svelte';
 
 	export let data = undefined;
 	export let queryID = undefined;
@@ -19,6 +21,7 @@
 		.replaceAll(':', '-');
 
 	export let downloadData = (data) => {
+		console.log(data);
 		const options = {
 			fieldSeparator: ',',
 			quoteStrings: '"',
@@ -37,9 +40,20 @@
 
 		csvExporter.generateCsv(data_copy);
 	};
+	let errors = [];
+
+	$: if (data) {
+		try {
+			checkInputs(data);
+		} catch (e) {
+			errors.push(e.message);
+		}
+	}
 </script>
 
-{#if display}
+{#if errors.length > 0}
+	<InputError inputType="Download Data" height="32" width="160" error={errors} />
+{:else if display}
 	<div transition:fade|local={{ duration: 200 }}>
 		<button type="button" aria-label={text} class={$$props.class} on:click={downloadData(data)}>
 			<span>{text}</span>

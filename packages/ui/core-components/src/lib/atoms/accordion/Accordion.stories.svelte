@@ -1,6 +1,5 @@
 <script context="module">
 	import Accordion from './Accordion.svelte';
-	import AccordionItem from './AccordionItem.svelte';
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
 		component: Accordion,
@@ -12,6 +11,7 @@
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
 	import { userEvent, within, expect } from '@storybook/test';
+	import { AccordionItem } from './index.js';
 
 	// Play Functions
 	const openItem = async ({ canvasElement }) => {
@@ -79,5 +79,16 @@
 		<AccordionItem title="Downloads" class="border-none">
 			<p>Content 3</p>
 		</AccordionItem>
+	</Accordion>
+</Story>
+<Story name="Error States: No Title, No Children">
+	<Accordion>
+		<AccordionItem>
+			<p>Content 1</p>
+		</AccordionItem>
+	</Accordion>
+	<Accordion></Accordion>
+	<Accordion>
+		<AccordionItem title="Item 1"></AccordionItem>
 	</Accordion>
 </Story>

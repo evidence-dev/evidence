@@ -14,6 +14,9 @@
 	import { toBoolean } from '../../../utils.js';
 	import { dateToYYYYMMDD, formatDateString } from './helpers.js';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import InputError from '../InputError.svelte';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import checkInputProps from '../checkInputProps.js';
 
 	const inputs = getInputContext();
 
@@ -43,7 +46,13 @@
 	$: range = toBoolean(range);
 
 	let query;
-	$: if (data && dates) {
+	let errors = [];
+	$: if (data) {
+		try {
+			checkInputs(data, [dates]);
+		} catch (e) {
+			errors.push(e.message);
+		}
 		const queryString = `SELECT min(${dates}) as start, max(${dates}) as end FROM ${typeof data === 'string' ? data : `(${data.text})`}`;
 		const id = `DateRange-${name}`;
 		const opts = {
@@ -54,6 +63,8 @@
 		};
 		query = buildQuery(queryString, id, opts.initialData, opts);
 		query.fetch();
+	} else if (dates) {
+		errors.push(`data is required to access a ${dates} column`);
 	}
 
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
@@ -73,15 +84,28 @@
 			};
 		}
 	}
+
+	try {
+		checkInputProps({ name });
+	} catch (e) {
+		errors.push(e.message);
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`${title ? '-mt-0.5' : 'mt-2'} mb-4 ml-0 mr-2 inline-block`}>
-		{#if title && range}
+		{#if title}
 			<span class="text-sm text-gray-500 block mb-1">{title}</span>
 		{/if}
 
-		{#if $query?.error}
+		{#if errors.length > 0}
+			<InputError
+				inputType={range ? 'date-range' : 'date input'}
+				height="32"
+				width={range ? 337 : 190}
+				error={errors}
+			/>
+		{:else if $query?.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>
