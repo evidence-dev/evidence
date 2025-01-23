@@ -15,7 +15,7 @@
 <form id="version-control">
 	<div class="version-control-box">
 		<div class="panel">
-			<h2>Version Control</h2>
+			<h2 class="font-semibold text-lg pt-3 pb-2">Version Control</h2>
 			Use version control to keep track of changes to your project. A published git repo is needed if
 			you want to deploy your Evidence project online.
 
@@ -32,7 +32,7 @@
 				<span class="item-label">Local Git Repo</span>
 				{#if settings.localGitRepo}
 					<div class="result-msg">
-						<span class="repo-location">Tracking {settings.localGitRepo}</span>
+						<span class="repo-location text-base-content-muted">Tracking {settings.localGitRepo}</span>
 					</div>
 				{:else}
 					<span class="help-icon">
@@ -58,7 +58,7 @@
 				{#if settings.gitRepo}
 					<div class="result-msg">
 						<a href={settings.gitRepo.replace('.git', '')} target="_blank" rel="noreferrer"
-							><span class="repo-location">{settings.gitRepo.replace('.git', '')}</span></a
+							><span class="repo-location text-base-content-muted">{settings.gitRepo.replace('.git', '')}</span></a
 						>
 					</div>
 				{:else}
@@ -73,7 +73,7 @@
 	<footer>
 		<span
 			>Learn more about <a
-				class="docs-link"
+				class="text-primary hover:brightness-110 active:brightness-90 transition;"
 				target="_blank"
 				rel="noreferrer"
 				href="https://docs.github.com/en/get-started/using-git/about-git"
@@ -88,9 +88,6 @@
 		scroll-margin-top: 3.5rem; /* offset for sticky header */
 	}
 
-	h2 {
-		@apply font-semibold text-lg pt-3 pb-2;
-	}
 
 	.version-control-box {
 		margin-top: 2em;
@@ -123,10 +120,6 @@
 		font-family: var(--ui-font-family);
 	}
 
-	.docs-link {
-		@apply text-primary hover:brightness-110 active:brightness-90 transition;
-	}
-
 	.gitcheck-icon {
 		color: var(--positive);
 		float: right;
@@ -150,7 +143,6 @@
 	}
 
 	.repo-location {
-		@apply text-base-content-muted;
 		font-size: 0.8rem;
 		text-decoration: unset;
 	}
