@@ -1,5 +1,19 @@
 # @evidence-dev/core-components
 
+## 5.1.0
+
+### Minor Changes
+
+- 2e506cdad: Chart upgrades and spacing improvements
+
+### Patch Changes
+
+- 27bca8e8e: Add print behavior for components with hidden content
+- d97a4ce94: Add Info component
+- f30d3ee5c: Add simple wrapper components for common HTML usgae
+  - @evidence-dev/component-utilities@4.0.6
+  - @evidence-dev/tailwind@3.0.6
+
 ## 5.0.5
 
 ### Patch Changes

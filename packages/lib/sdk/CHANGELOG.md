@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 3.0.6
+
+### Patch Changes
+
+- c7547d83f: Fix: Ensure that length is loaded before we returned undefined for out of range indeces
+  - @evidence-dev/universal-sql@2.2.7
+
 ## 3.0.5
 
 ### Patch Changes
