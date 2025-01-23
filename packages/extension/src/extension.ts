@@ -957,8 +957,7 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 				`**Description:** ${prop.description || 'No description available'}\n\n` +
 				`**Type:** ${prop.type}\n\n` +
 				`**Default:** ${prop.defaultValue || 'None'}\n\n` +
-				`**Options:** ${prop.options}`
-			);
+				`**Options:** ${prop.options?.replace('{[','').replace(']}', '')}`),
 			item.insertText = new SnippetString(
 				prop.name === 'data' ? `${prop.name}={\${1}}` : `${prop.name}=`
 			);
