@@ -60,6 +60,9 @@
 
 	export let value, data, label, order, where;
 
+	/** @type {string} */
+	let error = '';
+
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`ButtonGroup-${name}`,
@@ -68,9 +71,6 @@
 	$: update({ value, data, label, order, where });
 
 	$: ({ hasQuery, query } = $results);
-
-	/** @type {string} */
-	let error = '';
 
 	function validateConfiguration(preset, display) {
 		const errors = [];
@@ -103,6 +103,10 @@
 		try {
 			// Validate required props
 			checkInputProps(reqPropsObj);
+			// usually handled by checkInputs, but cannot in this case
+			// if (data && !value) {
+			// 	throw new Error('value is required');
+			// }
 			if (typeof data !== 'object' && data) {
 				throw new Error(
 					"'" +
@@ -124,6 +128,12 @@
 	}
 
 	//Need to add more verbose directions to user
+
+	$: if ($query?.error && value) {
+		error = $query.error;
+	} else {
+		error = 'Missing required prop: "value".';
+	}
 
 	const errors = validateInputs({
 		preset,
@@ -175,6 +185,7 @@
 							<svelte:fragment>
 								{#each loaded as { label, value }}
 									<ButtonGroupItem
+										data={loaded}
 										{value}
 										valueLabel={label}
 										color={colorStore}
