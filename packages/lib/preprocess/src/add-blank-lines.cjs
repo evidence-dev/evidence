@@ -31,7 +31,7 @@ const addBlankLines = {
 		const modifiedContent = contentWithoutCode
 			.replace(/(<[A-Z][\w:-]*\s*(?:".*?"|'.*?'|[^>])*?[^/]>)(\n\s*\S)/g, '$1\n\n$2')
 			.replace(/(\{\/if|\{:else(?: if [^}]+)?\})/g, `\n$1`)
-			.replace(/\{\/each\}/g, `{/each}\n`)
+			.replace(/\{\/each\}/g, `\n{/each}\n`)
 			.replace(/(<[A-Z][\w:-]*)([^>]*)(\/?>)/g, (_, start, middle, slashEnd) => {
 				// Remove extra blank lines in the attributes
 				// e.g. replace multiple newlines or purely blank lines with a single newline

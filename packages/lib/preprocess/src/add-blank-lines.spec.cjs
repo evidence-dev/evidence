@@ -15,27 +15,15 @@ describe('addBlankLines Preprocessor', () => {
 		expect(result.code).toBe(expectedOutput);
 	});
 
-	it('should add a newline after {/each}', () => {
+	it('should add a newline before and after {/each}', () => {
 		const input = `{#each items as item}
 {item.name}
 {/each}`;
 		const expectedOutput = `{#each items as item}
 {item.name}
+
 {/each}
 `;
-
-		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
-	});
-
-	it('should add a newline before {/each}', () => {
-		const input = `{#each items as item}
-{item.name}
-{/each}`;
-		const expectedOutput = `{#each items as item}
-{item.name}
-
-{/each}`;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
 		expect(result.code).toBe(expectedOutput);
