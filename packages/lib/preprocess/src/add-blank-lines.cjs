@@ -29,7 +29,7 @@ const addBlankLines = {
 
 		// Updated regex to correctly handle multiline attributes and blank lines
 		const modifiedContent = contentWithoutCode
-			.replace(/(<[A-Z][\w:-]*\s*(?:".*?"|'.*?'|[^>])*?[^/]>)(\n\s*\S)/g, '$1\n\n$2')
+			.replace(/(<[A-Z][\w:-]*\s*(?:".*?"|'.*?'|[^>])*?[^/]>)(\n\s*\S)/g, '$1\n$2')
 			.replace(/(\{\/if|\{:else(?: if [^}]+)?\})/g, `\n$1`)
 			.replace(/\{\/each\}/g, `\n{/each}\n`)
 			.replace(/(<[A-Z][\w:-]*)([^>]*)(\/?>)/g, (_, start, middle, slashEnd) => {

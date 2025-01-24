@@ -8,7 +8,6 @@ describe('addBlankLines Preprocessor', () => {
 </Details>`;
 		const expectedOutput = `<Details title='Definition'>
 
-
   Here is a metric definition
 </Details>`;
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
