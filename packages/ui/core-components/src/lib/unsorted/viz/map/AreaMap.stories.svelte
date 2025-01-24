@@ -149,3 +149,21 @@ ORDER BY 1;
 	/>
 	<div class="h-32"></div>
 </Story>
+
+
+<Story name="Error States" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<h1>Missing Data</h1>
+	<AreaMap geoId="ZCTA5CE10" value="sales" areaCol="zip_code" />
+
+	<h1>Missing geoId</h1>
+	<AreaMap data={slow_la_zip_sales} value="sales" areaCol="zip_code" />
+
+	<h1>Missing areaCol</h1>
+	<AreaMap data={slow_la_zip_sales} geoId="ZCTA5CE10" value="sales" />
+
+	<h1>value not found in data</h1>
+	<AreaMap data={slow_la_zip_sales} geoId="ZCTA5CE10" value="sadles" areaCol="zip_code" />
+
+	<h1>areaCol not found in data</h1>
+	<AreaMap data={slow_la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zipd_code" />
+</Story>

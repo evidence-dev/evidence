@@ -218,8 +218,10 @@
 	 * @returns {Promise<void>}
 	 */
 	async function init(theme) {
+		if (data) {
+
 		let initDataOptions = {
-			corordinates: [areaCol],
+			coordinates: [areaCol],
 			value,
 			checkInputs,
 			min,
@@ -248,6 +250,7 @@
 			setInputDefault($data[0], name);
 		}
 	}
+}
 
 	/**
 	 * Initializes the input store with default values based on the keys of the item.
@@ -304,6 +307,7 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
+ {#if data}
 {#await Promise.all([map.initPromise, data.fetch()]) then}
 	{#await init($theme) then}
 		{#each geoJson as feature (feature.properties[geoId])}
@@ -357,3 +361,4 @@
 		{map.handleInternalError(e)}
 	{/await}
 {/await}
+{/if}

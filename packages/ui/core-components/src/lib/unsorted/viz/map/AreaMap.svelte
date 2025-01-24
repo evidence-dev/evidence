@@ -6,6 +6,7 @@
 	import Areas from './components/Areas.svelte';
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import ErrorChart from '../core/ErrorChart.svelte';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -74,6 +75,7 @@
 	$: isInitial = data?.hash === initialHash;
 </script>
 
+{#if !error}
 <BaseMap
 	let:data
 	{data}
@@ -104,3 +106,6 @@
 		on:error={(e) => (error = e.detail)}
 	/>
 </BaseMap>
+{:else}
+	<ErrorChart {error} title="Area Map" />
+{/if}

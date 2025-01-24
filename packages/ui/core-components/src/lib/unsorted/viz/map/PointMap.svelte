@@ -7,6 +7,7 @@
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import ErrorChart from '../core/ErrorChart.svelte';
 
 	const { resolveColorPalette } = getThemeStores();
 
@@ -79,6 +80,7 @@
 	$: isInitial = data?.hash === initialHash;
 </script>
 
+{#if !error}
 <BaseMap
 	let:data
 	{data}
@@ -111,3 +113,6 @@
 		on:error={(e) => (error = e.detail)}
 	/>
 </BaseMap>
+{:else}
+	<ErrorChart {error} title="Point Map" />
+{/if}

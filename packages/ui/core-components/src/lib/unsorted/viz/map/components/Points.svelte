@@ -247,7 +247,7 @@
 	async function init(theme) {
 		if (data) {
 			let initDataOptions = {
-				corordinates: [lat, long],
+				coordinates: [lat, long],
 				value,
 				checkInputs,
 				min,
@@ -258,7 +258,8 @@
 				chartType,
 				legendId,
 				legend,
-				theme
+				theme,
+				sizeCol
 			};
 			({
 				values,
@@ -324,6 +325,7 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
+ {#if data}
 {#await Promise.all([map.initPromise, data.fetch(), init($theme)]) then}
 	{#each $data as item}
 		<Point
@@ -377,3 +379,5 @@
 {:catch e}
 	{map.handleInternalError(e)}
 {/await}
+
+{/if}
