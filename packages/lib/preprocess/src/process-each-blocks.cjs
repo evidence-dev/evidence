@@ -23,12 +23,12 @@ const processEachBlocks = {
 			});
 
 		// Scenario 1 - Text without blank line before closing each tag
-		const scenario1Regex = /\{#each([^\}]*)\}([\s\S]*?)\{\/each\}<\/p>/gm;
+		const scenario1Regex = /\{#each([^}]*)\}([\s\S]*?)\{\/each\}<\/p>/gm;
 		const scenario1Replacement = `{#each$1}$2</p>\n{/each}`;
 
 		// Scenario 2 - Lists without blank line before closing each tag
 		const scenario2Regex =
-			/\{#each([^\}]*)\}\s*<(u|o)l([^>]*)>\s*<li([^>]*)>([\s\S]*?)\{\/each\}\s*<\/li>\s*<\/\2l>/gm;
+			/\{#each([^}]*)\}\s*<(u|o)l([^>]*)>\s*<li([^>]*)>([\s\S]*?)\{\/each\}\s*<\/li>\s*<\/\2l>/gm;
 		const scenario2Replacement = `<$2l$3>
 	{#each$1}
 	<li$4>$5
@@ -38,7 +38,7 @@ const processEachBlocks = {
 
 		// Scenario 3 - List with blank line before closing each tag
 		const scenario3Regex =
-			/\{#each([^\}]*)\}\s*<(u|o)l([^>]*)>\s*<li([^>]*)>([\s\S]*?)<\/li>\s*<\/\2l>\s*\{\/each\}/gm;
+			/\{#each([^}]*)\}\s*<(u|o)l([^>]*)>\s*<li([^>]*)>([\s\S]*?)<\/li>\s*<\/\2l>\s*\{\/each\}/gm;
 		const scenario3Replacement = `<$2l$3>
 	{#each$1}<li$4>$5
 	</li>
