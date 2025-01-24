@@ -92,7 +92,7 @@
 	name="Mixed Entries - Text"
 	let:args
 	args={{
-		data: 'hashtags',
+		data,
 		value: 'id',
 		label: 'tag'
 	}}

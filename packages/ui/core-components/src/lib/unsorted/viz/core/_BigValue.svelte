@@ -61,7 +61,9 @@
 	let error = undefined;
 	$: try {
 		error = undefined;
-		checkInputs(data, [value]);
+		if (typeof data === 'array') {
+			checkInputs(data, [value]);
+		}
 
 		if (!data) {
 			throw new Error('data is required');
