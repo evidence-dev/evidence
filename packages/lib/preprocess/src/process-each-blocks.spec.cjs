@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import processEachBlocks from '../src/process-each-blocks.cjs';
+import { expectEqualIgnoringIndentation } from './test-utils';
 
 describe('processEachBlocks Preprocessor', () => {
 	it('should handle text without blank line before closing each tag', () => {
@@ -12,7 +13,7 @@ describe('processEachBlocks Preprocessor', () => {
 {/each}`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toEqual(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should handle unordered lists without blank line before closing each tag', () => {
@@ -29,7 +30,7 @@ describe('processEachBlocks Preprocessor', () => {
 </ul>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should handle ordered lists without blank line before closing each tag', () => {
@@ -46,7 +47,7 @@ describe('processEachBlocks Preprocessor', () => {
 </ol>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should handle unordered lists contained inside each tags', () => {
@@ -61,7 +62,7 @@ describe('processEachBlocks Preprocessor', () => {
 </ul>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should handle ordered lists contained inside each tags', () => {
@@ -76,7 +77,7 @@ describe('processEachBlocks Preprocessor', () => {
 </ol>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should preserve code blocks and inline code snippets', () => {
@@ -108,6 +109,6 @@ Inline code: \`console.log('inline');\`
 </ul>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 });

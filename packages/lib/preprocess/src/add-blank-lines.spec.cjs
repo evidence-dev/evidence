@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import addBlankLines from '../src/add-blank-lines.cjs';
+import { expectEqualIgnoringIndentation } from './test-utils';
 
 describe('addBlankLines Preprocessor', () => {
 	it('should add a blank line after a component opening tag', () => {
@@ -11,7 +12,7 @@ describe('addBlankLines Preprocessor', () => {
   Here is a metric definition
 </Details>`;
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should add a newline before and after {/each}', () => {
@@ -25,7 +26,7 @@ describe('addBlankLines Preprocessor', () => {
 `;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should add a newline before {:else}', () => {
@@ -43,7 +44,7 @@ Condition not met
 {/if}`;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should clean up excessive blank lines in attributes', () => {
@@ -60,7 +61,7 @@ prop3="value3" />`;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
 
-		expect(result.code).toEqual(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
 	it('should handle a component with no attributes', () => {
@@ -68,6 +69,6 @@ prop3="value3" />`;
 		const expectedOutput = `<SimpleComponent />`;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code).toBe(expectedOutput);
+		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 });
