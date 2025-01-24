@@ -950,23 +950,54 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 	} else {
 
 		// Add props as suggestions and include sortText based on rank
-		for (const prop of componentDefinition.props) {
-			const item = new CompletionItem(prop.name, CompletionItemKind.Property);
-			// item.insertText = new SnippetString(prop.name + '=');
-			item.documentation = new MarkdownString(
-				`**Description:** ${prop.description || 'No description available'}\n\n` +
-				`**Type:** ${prop.type}\n\n` +
-				`**Default:** ${prop.defaultValue || 'None'}\n\n` +
-				`**Options:** ${prop.options?.replace('{[','').replace(']}', '')}`),
-			item.insertText = new SnippetString(
-				prop.name === 'data' ? `${prop.name}={\${1}}` : `${prop.name}=`
-			);
-			item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
-			completionItems.push(item);
-		}
+for (const prop of componentDefinition.props) {
+	const item = new CompletionItem(prop.name, CompletionItemKind.Property);
 
-		// Explicit sorting to ensure rank is respected
-		completionItems.sort((a, b) => a.sortText!.localeCompare(b.sortText!)); // Use the `!` to assert sortText is defined
+	// Prepare the documentation
+	item.documentation = new MarkdownString(
+			`**Description:** ${prop.description || 'No description available'}\n\n` +
+			`**Type:** ${prop.type}\n\n` +
+			`**Default:** ${prop.defaultValue || 'None'}\n\n` +
+			`**Options:** ${prop.options?.replace('{[', '').replace(']}', '') || 'None'}`
+	);
+
+	// Process options string
+	const rawOptions = prop.options
+			? prop.options.replace('{[', '').replace(']}', '')
+			: null;
+
+	let options = null;
+
+	// Check if options are valid strings
+	if (rawOptions) {
+			const isValidStrings = rawOptions.split(',').every(opt => 
+					/^"(.*?)"$/.test(opt.trim()) // Ensures all options are enclosed in quotes
+			);
+
+			if (isValidStrings) {
+					options = rawOptions
+							.split(',')
+							.map(opt => opt.trim().replace(/^"(.*?)"$/, '$1')); // Remove quotes for dropdown
+			}
+	}
+
+	// Use SnippetString to insert the prop name with a dropdown for options
+	if (prop.name === 'data') {
+			item.insertText = new SnippetString(`${prop.name}={\${1}}`);
+	} else if (options && options.length > 0) {
+			item.insertText = new SnippetString(
+					`${prop.name}=\${1|${options.join(',')}|}`
+			);
+	} else {
+			item.insertText = new SnippetString(`${prop.name}=`);
+	}
+
+	item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
+	completionItems.push(item);
+}
+
+// Explicit sorting to ensure rank is respected
+completionItems.sort((a, b) => a.sortText!.localeCompare(b.sortText!));
 
 	}
 
