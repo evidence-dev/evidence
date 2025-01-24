@@ -97,16 +97,12 @@
 		return errors;
 	}
 
-	function validateInputs({ preset, display, query, slots, reqPropsObj }) {
+	function validateInputs({ preset, display, reqPropsObj }) {
 		const errors = [];
 
 		try {
 			// Validate required props
 			checkInputProps(reqPropsObj);
-			// usually handled by checkInputs, but cannot in this case
-			// if (data && !value) {
-			// 	throw new Error('value is required');
-			// }
 			if (typeof data !== 'object' && data) {
 				throw new Error(
 					"'" +
@@ -122,7 +118,7 @@
 		}
 
 		// Validate overall configuration
-		errors.push(...validateConfiguration(preset, display, query, slots));
+		errors.push(...validateConfiguration(preset, display));
 
 		return errors;
 	}
@@ -132,14 +128,12 @@
 	$: if ($query?.error) {
 		error = $query.error;
 	} else if (!value && data) {
-		error = 'Missing required prop: "value".';
+		error += 'Missing required prop: "value".';
 	}
 
 	const errors = validateInputs({
 		preset,
 		display,
-		query,
-		slots: $$slots,
 		reqPropsObj: { name }
 	});
 

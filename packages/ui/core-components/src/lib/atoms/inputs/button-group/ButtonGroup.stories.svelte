@@ -222,7 +222,7 @@
 	</div>
 	<div class="mb-8">
 		<h1>No data, no props, no slot</h1>
-		<ButtonGroup />
+		<ButtonGroup name="noData" />
 	</div>
 </Story>
 <Story name="Button Group Data is string" let:args>
