@@ -30,6 +30,7 @@
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	import InputError from '../InputError.svelte';
 	const inputs = getInputContext();
+	import checkInputProps from '../checkInputProps.js';
 
 	/////
 	// Component Things
@@ -196,6 +197,14 @@
 	$: open ? pauseSorting() : resumeSorting();
 
 	$: if ($finalQuery?.dataLoaded) opts = $finalQuery;
+
+	let errors = [];
+
+	try {
+		checkInputProps({ name });
+	} catch (e) {
+		errors.push(e.message);
+	}
 </script>
 
 <slot />
@@ -211,8 +220,8 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
-		{#if !name}
-			<InputError inputType="dropdown" />
+		{#if errors.length > 0}
+			<InputError inputType="dropdown" error={errors} height="32" width="140" />
 		{:else if hasQuery && $query.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
