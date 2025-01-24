@@ -56,8 +56,8 @@ Condition not met
 		prop3="value3" />`;
 		const expectedOutput = `<Component
 		prop1="value1"
-		prop2="value2"
-		prop3="value3" />`;
+prop2="value2"
+prop3="value3" />`;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
 
