@@ -64,9 +64,8 @@
 		if (!Array.isArray(data)) {
 			data = [data];
 		}
-		if (typeof data === 'array') {
-			checkInputs(data, [value]);
-		}
+
+		checkInputs(data, [value]);
 
 		if (!data) {
 			throw new Error('data is required');
