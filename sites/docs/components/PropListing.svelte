@@ -152,8 +152,8 @@
 	</div>
 </section>
 
-<style lang="postcss">
+<style>
 	#markdown-slot :global(*) {
-		@apply text-sm;
+		font-size: var(--text-sm);
 	}
 </style>

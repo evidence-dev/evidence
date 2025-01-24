@@ -29,8 +29,9 @@
 
 <button
 	type="button"
-	class="container h-6 w-6"
-	class:copied
+	class="container h-6 w-6 hover:border-info hover:bg-info/10 hover:text-info
+	active:border-positive active:bg-positive/10 active:text-positive
+	{copied ? 'border-positive bg-positive/10 text-positive' : ''}"
 	on:click={() => {
 		if (text !== undefined) {
 			copy(text);
@@ -57,7 +58,7 @@
 	</div>
 </button>
 
-<style lang="postcss">
+<style>
 	button.container {
 		box-sizing: border-box;
 		background-color: var(--base-200);
@@ -81,13 +82,11 @@
 	}
 
 	button.container:hover {
-		@apply border-info bg-info/10 text-info;
 		transition: all 400ms;
 	}
 
 	button.container:active,
 	button.container.copied {
-		@apply border-positive bg-positive/10 text-positive;
 	}
 
 	span.var-value {

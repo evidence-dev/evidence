@@ -73,6 +73,11 @@
 	export { _type as type };
 
 	$: if (formaction) _type = 'submit';
+
+	const outlineClass = 'bg-transparent border';
+	const enabledOutlineClass = 'hover:bg-[var(--hover-bg)]';
+	const disabledClass = 'cursor-not-allowed saturate-50 opacity-50';
+	const enabledClass = 'transition-all duration-150 hover:brightness-105 active:brightness-95';
 </script>
 
 <button
@@ -80,8 +85,13 @@
 	{disabled}
 	{formaction}
 	on:click|stopPropagation
-	class:outlined={outline}
-	class="flex items-center transition-colors rounded variant-{variant} {sizes[size]}"
+	class="
+		{disabled ? disabledClass : enabledClass}
+		{outline ? (disabled ? outlineClass : enabledOutlineClass) : ''}
+		flex items-center transition-colors rounded variant-{variant} {sizes[
+		size
+	]} bg-[var(--bg)] border-[var(--border)] text-[var(--text)]
+	"
 >
 	{#if iconPosition === 'left' && icon}
 		<Icon src={icon} class={iconSizes[iconSize]} />
@@ -92,92 +102,77 @@
 	{/if}
 </button>
 
-<style lang="postcss">
+<style>
 	button {
+		/* TODO: These should have been moved to css vars, what are those vars? */
 		&.variant-primary {
-			--bg: theme(colors.primary);
-			--text: theme(colors.primary-content);
+			--bg: var(--color-primary);
+			--text: var(--color-primary-content);
 			&.outlined {
-				--border: theme(colors.primary);
-				--text: theme(colors.primary);
-				--hover-bg: theme(colors.primary / 0.1);
+				--border: var(--color-primary);
+				--text: var(--color-primary);
+				--hover-bg: var(--color-primary / 0.1); /* TODO: does this work? */
 			}
 		}
 
 		&.variant-secondary {
-			--bg: theme(colors.base-300);
-			--text: theme(colors.base-content);
+			--bg: var(--color-base-300);
+			--text: var(--color-base-content);
 			&.outlined {
-				--border: theme(colors.base-300);
-				--text: theme(colors.base-300);
-				--hover-bg: theme(colors.base-300 / 0.1);
+				--border: var(--color-base-300);
+				--text: var(--color-base-300);
+				--hover-bg: var(--color-base-300 / 0.1);
 			}
 		}
 
 		&.variant-accent {
-			--bg: theme(colors.accent);
-			--text: theme(colors.accent-content);
+			--bg: var(--color-accent);
+			--text: var(--color-accent-content);
 			&.outlined {
-				--border: theme(colors.accent);
-				--text: theme(colors.accent);
-				--hover-bg: theme(colors.accent / 0.1);
+				--border: var(--color-accent);
+				--text: var(--color-accent);
+				--hover-bg: var(--color-accent / 0.1);
 			}
 		}
 
 		&.variant-info {
-			--bg: theme(colors.info);
-			--text: theme(colors.info-content);
+			--bg: var(--color-info);
+			--text: var(--color-info-content);
 			&.outlined {
-				--border: theme(colors.info);
-				--text: theme(colors.info);
-				--hover-bg: theme(colors.info / 0.1);
+				--border: var(--color-info);
+				--text: var(--color-info);
+				--hover-bg: var(--color-info / 0.1);
 			}
 		}
 
 		&.variant-positive {
-			--bg: theme(colors.positive);
-			--text: theme(colors.positive-content);
+			--bg: var(--color-positive);
+			--text: var(--color-positive-content);
 			&.outlined {
-				--border: theme(colors.positive);
-				--text: theme(colors.positive);
-				--hover-bg: theme(colors.positive / 0.1);
+				--border: var(--color-positive);
+				--text: var(--color-positive);
+				--hover-bg: var(--color-positive / 0.1);
 			}
 		}
 
 		&.variant-warning {
-			--bg: theme(colors.warning);
-			--text: theme(colors.warning-content);
+			--bg: var(--color-warning);
+			--text: var(--color-warning-content);
 			&.outlined {
-				--border: theme(colors.warning);
-				--text: theme(colors.warning);
-				--hover-bg: theme(colors.warning / 0.1);
+				--border: var(--color-warning);
+				--text: var(--color-warning);
+				--hover-bg: var(--color-warning / 0.1);
 			}
 		}
 
 		&.variant-negative {
-			--bg: theme(colors.negative);
-			--text: theme(colors.negative-content);
+			--bg: var(--color-negative);
+			--text: var(--color-negative-content);
 			&.outlined {
-				--border: theme(colors.negative);
-				--text: theme(colors.negative);
-				--hover-bg: theme(colors.negative / 0.1);
+				--border: var(--color-negative);
+				--text: var(--color-negative);
+				--hover-bg: var(--color-negative / 0.1);
 			}
-		}
-
-		@apply bg-[var(--bg)] border-[var(--border)] text-[var(--text)];
-
-		&.outlined {
-			@apply bg-transparent border;
-			&:not(:disabled) {
-				@apply hover:bg-[var(--hover-bg)];
-			}
-		}
-
-		&:disabled {
-			@apply cursor-not-allowed saturate-50 opacity-50;
-		}
-		&:not(:disabled) {
-			@apply transition-all duration-150 hover:brightness-105 active:brightness-95;
 		}
 	}
 </style>

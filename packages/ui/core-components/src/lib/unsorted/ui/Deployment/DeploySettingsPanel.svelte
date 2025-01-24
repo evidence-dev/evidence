@@ -35,18 +35,21 @@
 <form id="deploy">
 	<div class="deploy-settings-box">
 		<div class="panel">
-			<h2>Deployment</h2>
-			<p>
+			<h2 class="font-semibold text-lg pt-3 pb-2">Deployment</h2>
+			<p class="text-sm py-2">
 				Evidence projects can be deployed to a variety of cloud environments. The easiest way to
 				deploy your project is with <b>Evidence Cloud</b>.
 			</p>
-			<h3>Environment Variables</h3>
+			<h3 class="uppercase text-sm leading-loose mt-6 mb-1">Environment Variables</h3>
 			<div>
 				<EnvironmentVarListing {sources} />
 			</div>
 
-			<h3>Deployment Environment</h3>
-			<select bind:value={selectedDeployment} class="mb-2">
+			<h3 class="uppercase text-sm leading-loose mt-6 mb-1">Deployment Environment</h3>
+			<select
+				bind:value={selectedDeployment}
+				class="mb-2 hover:shadow-md hover:border-base-content"
+			>
 				{#each deploymentOptions as option}
 					<option value={option}>
 						{option.name}
@@ -63,7 +66,7 @@
 	<footer>
 		<span
 			>Learn more about <a
-				class="docs-link"
+				class="docs-link text-primary hover:brightness-110 active:brightness-90 transition"
 				target="_blank"
 				rel="noreferrer"
 				href="https://docs.evidence.dev/deployment/overview">Deploying your Project &rarr;</a
@@ -72,18 +75,7 @@
 	</footer>
 </form>
 
-<style lang="postcss">
-	h3 {
-		@apply uppercase text-sm leading-loose mt-6 mb-1;
-	}
-
-	h2 {
-		@apply font-semibold text-lg pt-3 pb-2;
-	}
-
-	p {
-		@apply text-sm py-2;
-	}
+<style>
 	select {
 		-webkit-appearance: none;
 		-moz-appearance: none;
@@ -99,7 +91,6 @@
 	}
 
 	select:hover {
-		@apply shadow-md border-base-content;
 		transition: all 400ms;
 	}
 
@@ -139,9 +130,5 @@
 		font-size: 14px;
 		align-items: center;
 		font-family: var(--ui-font-family);
-	}
-
-	.docs-link {
-		@apply text-primary hover:brightness-110 active:brightness-90 transition;
 	}
 </style>

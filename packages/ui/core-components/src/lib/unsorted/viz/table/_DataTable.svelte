@@ -690,11 +690,11 @@
 		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
 
 		{#if paginated && pageCount > 1}
-			<div class="pagination">
+			<div class="pagination text-base-content-muted">
 				<div class="page-labels mr-auto">
 					<button
 						aria-label="first-page"
-						class="page-changer"
+						class="page-changer disabled:text-base-content-muted/25"
 						class:hovering
 						disabled={currentPage === 1}
 						on:click={() => goToPage(0)}
@@ -705,7 +705,7 @@
 					</button>
 					<button
 						aria-label="previous-page"
-						class="page-changer"
+						class="page-changer disabled:text-base-content-muted/25"
 						class:hovering
 						disabled={currentPage === 1}
 						on:click={() => goToPage(currentPage - 2)}
@@ -717,7 +717,7 @@
 					<span class="page-count">
 						Page
 						<input
-							class="page-input"
+							class="page-input bg-base-200 text-base-content-muted"
 							class:hovering
 							class:error={inputPage > pageCount}
 							style="width: {inputPage ? inputPageElWidth : currentPageElWidth};"
@@ -735,7 +735,7 @@
 					</span>
 					<button
 						aria-label="next-page"
-						class="page-changer"
+						class="page-changer disabled:text-base-content-muted/25"
 						class:hovering
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(currentPage)}
@@ -746,7 +746,7 @@
 					</button>
 					<button
 						aria-label="last-page"
-						class="page-changer"
+						class="page-changer disabled:text-base-content-muted/25"
 						class:hovering
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(pageCount - 1)}
@@ -792,7 +792,7 @@
 	<ErrorChart {error} title="Data Table" />
 {/if}
 
-<style lang="postcss">
+<style>
 	.table-container {
 		font-size: 9.5pt;
 	}
@@ -817,7 +817,6 @@
 	}
 
 	.pagination {
-		@apply text-base-content-muted;
 		font-size: 12px;
 		display: flex;
 		align-items: center;
@@ -849,12 +848,11 @@
 	}
 
 	.page-changer.hovering {
-		color: theme('colors.primary');
+		color: var(--color-primary);
 		transition: color 200ms;
 	}
 
 	.page-changer:disabled {
-		@apply text-base-content-muted/25;
 		cursor: auto;
 		-webkit-user-select: none;
 		-moz-user-select: none;
@@ -868,7 +866,6 @@
 	}
 
 	.page-input {
-		@apply bg-base-200 text-base-content-muted;
 		box-sizing: content-box;
 		text-align: center;
 		padding: 0.25em 0.5em;
@@ -909,11 +906,11 @@
 	}
 
 	.page-input::-moz-placeholder {
-		@apply text-base-content-muted;
+		color: var(--base-content-muted);
 	}
 
 	.page-input::placeholder {
-		@apply text-base-content-muted;
+		color: var(--base-content-muted);
 	}
 
 	button:enabled > .page-icon:hover {
@@ -926,29 +923,29 @@
 
 	::-moz-placeholder {
 		/* Chrome, Firefox, Opera, Safari 10.1+ */
-		@apply text-base-content-muted;
+		color: var(--base-content-muted);
 		opacity: 1; /* Firefox */
 	}
 
 	::placeholder {
 		/* Chrome, Firefox, Opera, Safari 10.1+ */
-		@apply text-base-content-muted;
+		color: var(--base-content-muted);
 		opacity: 1; /* Firefox */
 	}
 
 	:-ms-input-placeholder {
 		/* Internet Explorer 10-11 */
-		@apply text-base-content-muted;
+		color: var(--base-content-muted);
 	}
 
 	::-ms-input-placeholder {
 		/* Microsoft Edge */
-		@apply text-base-content-muted;
+		color: var(--base-content-muted);
 	}
 
 	.noresults {
 		display: none;
-		@apply text-base-content-muted;
+		color: var(--base-content-muted);
 		text-align: center;
 		margin-top: 5px;
 	}

@@ -137,7 +137,7 @@
 	</div>
 </section>
 
-<style lang="postcss">
+<style>
 	.source-config-table {
 		grid-template-columns: auto auto auto 1fr;
 	}

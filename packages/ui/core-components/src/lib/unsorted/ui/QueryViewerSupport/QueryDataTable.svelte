@@ -52,13 +52,13 @@
 
 <div class="results-pane py-1" transition:slide|local>
 	<div class="scrollbox pretty-scrollbar">
-		<table in:blur>
+		<table class="text-xs" in:blur>
 			<thead>
 				<tr>
-					<th class="index" style="width:10%" />
+					<th class="py-0 px-2 font-medium index text-base-content-muted" style="width:10%" />
 					{#each columnSummary as column}
 						<th
-							class={column.type}
+							class="py-0 px-2 font-medium {column.type}"
 							style="width:{columnWidths}%"
 							evidenceType={column.evidenceColumnType?.evidenceType || 'unavailable'}
 							evidenceTypeFidelity={column.evidenceColumnType?.typeFidelity || 'unavailable'}
@@ -68,10 +68,13 @@
 					{/each}
 				</tr><tr />
 				<tr class="type-indicator">
-					<th class="index type-indicator" style="width:10%" />
+					<th
+						class="py-0 px-2 index type-indicator text-base-content-muted font-normal"
+						style="width:10%"
+					/>
 					{#each columnSummary as column}
 						<th
-							class="{column.type} type-indicator"
+							class="{column.type} type-indicator text-base-content-muted font-normal py-0 px-2"
 							style="width:{columnWidths}%"
 							evidenceType={column.evidenceColumnType?.evidenceType || 'unavailable'}
 							evidenceTypeFidelity={column.evidenceColumnType?.typeFidelity || 'unavailable'}
@@ -84,7 +87,7 @@
 			<tbody on:wheel={handleWheel}>
 				{#each dataPage as row, i}
 					<tr>
-						<td class="index" style="width:10%">
+						<td class="index text-base-content-muted" style="width:10%">
 							{#if i === 0}
 								<!-- <input type="number" bind:value={index} max={max} min=0 on:input={slice} class="index-key" autofocus reversed> -->
 								{(index + i + 1).toLocaleString()}
@@ -94,7 +97,10 @@
 						</td>
 						{#each columnSummary as column, j}
 							{#if row[column.id] == null}
-								<td class="null {columnSummary[j].type}" style="width:{columnWidths}%">
+								<td
+									class="text-base-content-muted {columnSummary[j].type}"
+									style="width:{columnWidths}%"
+								>
 									{'Ø'}
 								</td>
 							{:else if columnSummary[j].type === 'number'}
@@ -149,8 +155,15 @@
 
 	{#if max > 0}
 		<div class="pagination">
-			<input type="range" {max} step="1" bind:value={index} on:input={slice} class="slider" />
-			<span>
+			<input
+				type="range"
+				{max}
+				step="1"
+				bind:value={index}
+				on:input={slice}
+				class="slider bg-info/30 hover:bg-info/40 transition-colors"
+			/>
+			<span class="text-xs">
 				{(index + size).toLocaleString()} of {(max + size).toLocaleString()}
 			</span>
 		</div>
@@ -161,7 +174,7 @@
 	</div>
 </div>
 
-<style lang="postcss">
+<style>
 	div.pagination {
 		padding: 0px 5px;
 		align-content: center;
@@ -175,7 +188,6 @@
 	}
 
 	.slider {
-		@apply bg-info/30 hover:bg-info/40 transition-colors;
 		-webkit-appearance: none;
 		width: 75%;
 		height: 10px;
@@ -187,7 +199,7 @@
 	}
 
 	.slider::-webkit-slider-thumb {
-		@apply bg-info;
+		background-color: var(--color-info);
 		-webkit-appearance: none;
 		appearance: none;
 		width: 10px;
@@ -197,21 +209,20 @@
 	}
 
 	.slider::-moz-range-thumb {
-		@apply bg-info;
+		background-color: var(--color-info);
 		width: 10px;
 		height: 10px;
 		cursor: pointer;
 	}
 
 	.slider::-moz-range-thumb {
-		@apply bg-info;
+		background-color: var(--color-info);
 		width: 10px;
 		height: 10px;
 		cursor: pointer;
 	}
 
 	span {
-		@apply text-xs;
 		font-family: var(--ui-font-family-compact);
 		-webkit-font-smoothing: antialiased;
 		float: right;
@@ -229,15 +240,10 @@
 	}
 
 	table {
-		@apply text-xs;
 		width: 100%;
 		border-collapse: collapse;
 		font-family: var(--ui-font-family);
 		font-variant-numeric: tabular-nums;
-	}
-
-	th {
-		@apply py-0 px-2  font-medium;
 	}
 
 	td {
@@ -273,18 +279,9 @@
 		text-align: left;
 	}
 
-	.null {
-		@apply text-base-content-muted;
-	}
-
 	.index {
-		@apply text-base-content-muted;
 		text-align: left;
 		max-width: min-content;
-	}
-
-	th.type-indicator {
-		@apply text-base-content-muted font-normal;
 	}
 
 	tr.type-indicator {

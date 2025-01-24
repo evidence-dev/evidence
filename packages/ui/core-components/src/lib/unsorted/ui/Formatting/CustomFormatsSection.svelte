@@ -116,7 +116,7 @@
 <form on:submit|preventDefault={submitNewCustomFormat} autocomplete="off" class="addFormatForm">
 	<div class="input-item">
 		<label for="valueType">Value Type</label>
-		<select id="valueType" bind:value={valueType}>
+		<select class="hover:shadow-md" id="valueType" bind:value={valueType}>
 			{#each valueTypeOptions as option}
 				<option value={option}>
 					{option}
@@ -201,7 +201,6 @@
 		font-size: 14px;
 	}
 	select:hover {
-		@apply shadow-md;
 		border: 1px solid var(--base-content);
 		transition: all 400ms;
 	}

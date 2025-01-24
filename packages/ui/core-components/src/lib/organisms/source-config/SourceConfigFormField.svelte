@@ -170,6 +170,7 @@
 		{#if spec.type === 'string'}
 			{#if spec.secret && !reveal && spec.shown !== true}
 				<input
+					class="rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
 					disabled={fieldDisabled}
 					required={spec.required}
 					type="password"
@@ -177,6 +178,7 @@
 				/>
 			{:else}
 				<input
+					class="rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
 					disabled={fieldDisabled}
 					required={spec.required}
 					type="text"
@@ -189,11 +191,11 @@
 				required={spec.required}
 				bind:value={fieldValue}
 				rows="5"
-				class="w-full p-2 mb-3.5"
+				class="w-full p-2 mb-3.5 rounded border border-base-300 ml-auto bg-base-100 align-middle text-sm"
 			></textarea>
 		{:else if spec.type === 'boolean'}
 			<input
-				class="!w-5"
+				class="rounded border border-base-300 p-1 ml-auto w-5 bg-base-100 align-middle text-sm"
 				disabled={fieldDisabled}
 				required={spec.required}
 				type="checkbox"
@@ -201,13 +203,18 @@
 			/>
 		{:else if spec.type === 'number'}
 			<input
+				class="rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
 				disabled={fieldDisabled}
 				required={spec.required}
 				type="number"
 				bind:value={fieldValue}
 			/>
 		{:else if spec.type === 'select' && Array.isArray(spec.options)}
-			<select disabled={fieldDisabled} bind:value={fieldValue}>
+			<select
+				disabled={fieldDisabled}
+				bind:value={fieldValue}
+				class="rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
+			>
 				<option disabled={spec.required} value={undefined} />
 				{#each spec.options as option}
 					{#if typeof option === 'string'}
@@ -218,7 +225,12 @@
 				{/each}
 			</select>
 		{:else if spec.type === 'file'}
-			<input disabled={fieldDisabled} type="file" on:change={handleFile} />
+			<input
+				class="rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
+				disabled={fieldDisabled}
+				type="file"
+				on:change={handleFile}
+			/>
 		{/if}
 	</label>
 	{#if Object.keys(spec?.children?.[fieldValue] ?? {}).length}
@@ -233,11 +245,3 @@
 		</section>
 	{/if}
 </div>
-
-<style lang="postcss">
-	input,
-	select,
-	textarea {
-		@apply rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm;
-	}
-</style>

@@ -18,6 +18,13 @@
 		}
 		return input;
 	};
+
+	const classMap = {
+		info: 'border-info/50 bg-info/10',
+		negative: 'border-negative/50 bg-negative/10',
+		positive: 'border-positive/50 bg-positive/10',
+		warning: 'border-warning/50 bg-warning/10'
+	};
 </script>
 
 <script>
@@ -30,34 +37,23 @@
 	$: status = checkDeprecatedStatus(status);
 </script>
 
-<div class="alert {status}" role="alert">
+<div
+	class="alert {classMap[
+		status
+	]} border px-3 py-2 mb-4 rounded border-base-content/50 bg-base-content/10"
+	role="alert"
+>
 	<div>
 		<slot />
 	</div>
 </div>
 
-<style lang="postcss">
-	.alert {
-		@apply border px-3 py-2 mb-4 rounded border-base-content/50 bg-base-content/10;
-
-		&.info {
-			@apply border-info/50 bg-info/10;
-		}
-		&.negative {
-			@apply border-negative/50 bg-negative/10;
-		}
-		&.positive {
-			@apply border-positive/50 bg-positive/10;
-		}
-		&.warning {
-			@apply border-warning/50 bg-warning/10;
-		}
-
-		& :global(.markdown:last-child) {
-			@apply mb-0;
-		}
-		& :global(.markdown:first-child) {
-			@apply mt-0;
-		}
+<style>
+	/* We can't target :global without a style tag, and we can't use tailwind in style tags. */
+	.alert :global(.markdown:first-child) {
+		margin-top: 0;
+	}
+	.alert :global(.markdown:last-child) {
+		margin-bottom: 0;
 	}
 </style>

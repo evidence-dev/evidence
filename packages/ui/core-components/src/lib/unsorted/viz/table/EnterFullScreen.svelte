@@ -15,7 +15,7 @@
 	</div>
 {/if}
 
-<style lang="postcss">
+<style>
 	button :global(svg) {
 		stroke: var(--base-content);
 		margin-top: auto;

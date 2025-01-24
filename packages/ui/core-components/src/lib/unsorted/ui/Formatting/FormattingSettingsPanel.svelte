@@ -29,34 +29,36 @@ from table`;
 <form id="formatting">
 	<div class="formatting-settings-box">
 		<div class="panel">
-			<h2>Value Formatting</h2>
-			<p>
+			<h2 class="font-semibold text-lg pt-3 pb-2">Value Formatting</h2>
+			<p class="text-sm py-2">
 				Evidence supports built-in formats (like <code>usd</code> and <code>pct</code>) and
 				Excel-style formats (like <code>$#,##0.0</code>). The easiest way to apply these formats is
 				using component props. For example:
 			</p>
-			<p>In the Value component, you can use the <code>fmt</code> prop</p>
+			<p class="text-sm py-2">In the Value component, you can use the <code>fmt</code> prop</p>
 			<div class="code-container p-2">
 				<Prism code={valueExample} />
 			</div>
 			<br />
-			<p>In charts, you can use the <code>xFmt</code> and <code>yFmt</code> props</p>
+			<p class="text-sm py-2">
+				In charts, you can use the <code>xFmt</code> and <code>yFmt</code> props
+			</p>
 			<div class="code-container p-2">
 				<Prism code={componentExample} />
 			</div>
 			<br />
-			<p>
+			<p class="text-sm py-2">
 				You can also set formats within your SQL queries using SQL format tags. Use these by
 				aliasing your column names and appending a format. For example:
 			</p>
 			<div class="code-container p-2">
 				<Prism code={exampleQuery} />
 			</div>
-			<p />
+			<p class="text-sm py-2" />
 		</div>
 		<div class="panel">
-			<h2>Built-in Formats</h2>
-			<p>All built-in formats are listed below for reference.</p>
+			<h2 class="font-semibold text-lg pt-3 pb-2">Built-in Formats</h2>
+			<p class="text-sm py-2">All built-in formats are listed below for reference.</p>
 			<CollapsibleTableSection headerText={'Dates'} expanded={false}>
 				<BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter((d) => d.formatCategory === 'date')} />
 			</CollapsibleTableSection>
@@ -77,8 +79,8 @@ from table`;
 			</CollapsibleTableSection>
 		</div>
 		<div class="panel">
-			<h2>Custom Formats</h2>
-			<p>
+			<h2 class="font-semibold text-lg pt-3 pb-2">Custom Formats</h2>
+			<p class="text-sm py-2">
 				Add new formats to your project. Custom formats use <a
 					class="docs-link"
 					target="_blank"
@@ -144,13 +146,5 @@ from table`;
 		font-size: 14px;
 		align-items: center;
 		font-family: var(--ui-font-family);
-	}
-
-	h2 {
-		@apply font-semibold text-lg pt-3 pb-2;
-	}
-
-	p {
-		@apply text-sm py-2;
 	}
 </style>

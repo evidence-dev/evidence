@@ -1,5 +1,5 @@
-<h2>Deploying to Evidence Cloud</h2>
-<p>Evidence Cloud allows you to:</p>
+<h2 class="font-semibold text-lg pt-3 pb-2">Deploying to Evidence Cloud</h2>
+<p class="text-sm py-2">Evidence Cloud allows you to:</p>
 <ul>
 	<li>Host your project at <code>{'<'}project-name{'>'}.evidence.app</code></li>
 	<li>Authenticate users</li>
@@ -18,15 +18,7 @@
 	</button>
 </div>
 
-<style lang="postcss">
-	h2 {
-		@apply font-semibold text-lg pt-3 pb-2;
-	}
-
-	p {
-		@apply text-sm py-2;
-	}
-
+<style>
 	button {
 		margin-right: 0.25em;
 		margin-left: 0.25em;

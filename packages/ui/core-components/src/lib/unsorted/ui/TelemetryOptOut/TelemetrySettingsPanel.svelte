@@ -22,14 +22,16 @@
 <form id="telemetry">
 	<div class="telemetry-settings-box">
 		<div class="panel">
-			<h2>Telemetry</h2>
-			<p>
+			<h2 class="font-semibold text-lg pt-3 pb-2">Telemetry</h2>
+			<p class="text-sm py-2">
 				Evidence collects anonymous usage data to help us understand how often the tool is being
 				used.
 			</p>
 			<CollapsibleTableSection headerText="More" expanded={false}>
 				<div>
-					<p>Each time you run a query, we get the following pieces of information:</p>
+					<p class="text-sm py-2">
+						Each time you run a query, we get the following pieces of information:
+					</p>
 					<ol class="list-decimal px-8">
 						<li>
 							A random identifier that is stored in <code
@@ -48,7 +50,9 @@
 						</li>
 						<li>The operating system your project is running on (windows, mac, etc.)</li>
 					</ol>
-					<p>Sharing anonymous usage data is one of the best ways you can support Evidence.</p>
+					<p class="text-sm py-2">
+						Sharing anonymous usage data is one of the best ways you can support Evidence.
+					</p>
 					<div class="input-item">
 						<label for="telemetry-toggle"> Share anonymous usage data </label>
 						<label class="switch">
@@ -58,7 +62,7 @@
 								on:change={save}
 								id="telemetry-toggle"
 							/>
-							<span class="slider" />
+							<span class="slider before:shadow-md" />
 						</label>
 					</div>
 				</div>
@@ -77,15 +81,7 @@
 	</footer>
 </form>
 
-<style lang="postcss">
-	h2 {
-		@apply font-semibold text-lg pt-3 pb-2;
-	}
-
-	p {
-		@apply text-sm py-2;
-	}
-
+<style>
 	form {
 		scroll-margin-top: 3.5rem; /* offset for sticky header */
 	}
@@ -160,7 +156,6 @@
 		-webkit-transition: 0.4s;
 		transition: 0.4s;
 		border-radius: 50%;
-		@apply shadow-md;
 	}
 
 	input:checked + .slider {

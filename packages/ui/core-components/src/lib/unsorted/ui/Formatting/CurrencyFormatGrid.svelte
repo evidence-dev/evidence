@@ -10,7 +10,7 @@
 	let selectedCurrency = 'Choose a currency';
 </script>
 
-<select bind:value={selectedCurrency}>
+<select class="hover:shadow-md" bind:value={selectedCurrency}>
 	<option>Choose a currency</option>
 	${#each SUPPORTED_CURRENCIES as currency}
 		<option name={currency.primaryCode} id={currency.primaryCode} value={currency.primaryCode}
@@ -47,7 +47,7 @@
 	</div>
 {/if}
 
-<style lang="postcss">
+<style>
 	select {
 		-webkit-appearance: none;
 		-moz-appearance: none;
@@ -62,7 +62,6 @@
 		cursor: pointer;
 	}
 	select:hover {
-		@apply shadow-md;
 		border: 1px solid var(--base-content);
 		transition: all 400ms;
 	}
