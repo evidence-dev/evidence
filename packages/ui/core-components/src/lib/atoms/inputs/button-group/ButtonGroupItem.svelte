@@ -13,8 +13,6 @@
 
 	export let valueLabel;
 
-	export let data;
-
 	/** @type {string | boolean | number | Date} */
 	export let value;
 

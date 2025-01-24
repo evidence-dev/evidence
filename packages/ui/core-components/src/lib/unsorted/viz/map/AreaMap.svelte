@@ -76,36 +76,36 @@
 </script>
 
 {#if !error}
-<BaseMap
-	let:data
-	{data}
-	{startingLat}
-	{startingLong}
-	{startingZoom}
-	{height}
-	{basemap}
-	{title}
-	{legendPosition}
-	{chartType}
-	{isInitial}
-	{emptySet}
-	{emptyMessage}
-	{error}
-	{attribution}
->
-	<Areas
+	<BaseMap
+		let:data
 		{data}
-		{geoJsonUrl}
-		{geoId}
-		{areaCol}
-		{legendType}
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{legendPosition}
 		{chartType}
-		{legend}
-		{ignoreZoom}
-		{...$$restProps}
-		on:error={(e) => (error = e.detail)}
-	/>
-</BaseMap>
+		{isInitial}
+		{emptySet}
+		{emptyMessage}
+		{error}
+		{attribution}
+	>
+		<Areas
+			{data}
+			{geoJsonUrl}
+			{geoId}
+			{areaCol}
+			{legendType}
+			{chartType}
+			{legend}
+			{ignoreZoom}
+			{...$$restProps}
+			on:error={(e) => (error = e.detail)}
+		/>
+	</BaseMap>
 {:else}
 	<ErrorChart {error} title="Area Map" />
 {/if}

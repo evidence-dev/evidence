@@ -49,7 +49,7 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	{#if error}
-		<InputError inputType="checkbox" {error} height="32" width="160" />
+		<InputError inputType="Checkbox" {error} height="32" width="160" />
 	{:else}
 		<Button
 			type="button"

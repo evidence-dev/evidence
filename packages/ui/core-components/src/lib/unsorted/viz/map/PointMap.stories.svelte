@@ -288,50 +288,22 @@
 	<div class="h-32"></div>
 </Story>
 
-
 <Story name="Error States" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<h1>Missing Data</h1>
-	<PointMap
-		lat="lat"
-		long="long"
-		value="sales"
-	/>
+	<PointMap lat="lat" long="long" value="sales" />
 
 	<h1>Missing lat</h1>
-	<PointMap
-		data={la_locations}
-		long="long"
-		value="sales"
-	/>
+	<PointMap data={la_locations} long="long" value="sales" />
 
 	<h1>Missing long</h1>
-	<PointMap
-		data={la_locations}
-		lat="lat"
-		value="sales"
-	/>
+	<PointMap data={la_locations} lat="lat" value="sales" />
 
 	<h1>value not found in data</h1>
-	<PointMap
-		data={la_locations}
-		lat="lat"
-		long="long"
-		value="sadles"
-	/>
+	<PointMap data={la_locations} lat="lat" long="long" value="sadles" />
 
 	<h1>lat not found in data</h1>
-	<PointMap
-		data={la_locations}
-		lat="ladt"
-		long="long"
-		value="sales"
-	/>
+	<PointMap data={la_locations} lat="ladt" long="long" value="sales" />
 
 	<h1>long not found in data</h1>
-	<PointMap
-		data={la_locations}
-		lat="lat"
-		long="lodng"
-		value="sales"
-	/>
+	<PointMap data={la_locations} lat="lat" long="lodng" value="sales" />
 </Story>

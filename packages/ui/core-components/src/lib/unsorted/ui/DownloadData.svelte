@@ -52,7 +52,7 @@
 </script>
 
 {#if errors.length > 0}
-	<InputError inputType="Download Data" height="32" width="160" error={errors} />
+	<InputError inputType="DownloadData" height="32" width="160" error={errors} />
 {:else if display}
 	<div transition:fade|local={{ duration: 200 }}>
 		<button type="button" aria-label={text} class={$$props.class} on:click={downloadData(data)}>

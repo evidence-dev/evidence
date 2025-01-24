@@ -34,7 +34,7 @@
 </script>
 
 {#if !$$slots.default}
-	<InputError inputType="alert" height="52" width="250" error="No {status} alert content found" />
+	<InputError inputType="Alert" height="42" error="No {status} Alert content found" />
 {:else}
 	<div class="alert {status}" role="alert">
 		<div>

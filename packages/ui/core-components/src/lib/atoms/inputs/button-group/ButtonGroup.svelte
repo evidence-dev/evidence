@@ -129,9 +129,9 @@
 
 	//Need to add more verbose directions to user
 
-	$: if ($query?.error && value) {
+	$: if ($query?.error) {
 		error = $query.error;
-	} else {
+	} else if (!value && data) {
 		error = 'Missing required prop: "value".';
 	}
 

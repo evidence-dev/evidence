@@ -84,35 +84,35 @@
 </script>
 
 {#if !error}
-<BaseMap
-	let:data
-	{data}
-	{startingLat}
-	{startingLong}
-	{startingZoom}
-	{height}
-	{basemap}
-	{title}
-	{legendPosition}
-	{isInitial}
-	{chartType}
-	{emptySet}
-	{emptyMessage}
-	{error}
-	{attribution}
->
-	<Bubbles
+	<BaseMap
+		let:data
 		{data}
-		{lat}
-		{long}
-		{size}
-		colorPalette={colorPaletteStore}
-		{legendType}
-		{legend}
-		{ignoreZoom}
-		{...$$restProps}
-	/>
-</BaseMap>
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{legendPosition}
+		{isInitial}
+		{chartType}
+		{emptySet}
+		{emptyMessage}
+		{error}
+		{attribution}
+	>
+		<Bubbles
+			{data}
+			{lat}
+			{long}
+			{size}
+			colorPalette={colorPaletteStore}
+			{legendType}
+			{legend}
+			{ignoreZoom}
+			{...$$restProps}
+		/>
+	</BaseMap>
 {:else}
 	<ErrorChart {error} title="Point Map" />
 {/if}

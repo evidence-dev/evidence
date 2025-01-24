@@ -237,7 +237,7 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
 		{#if errors.length > 0}
-			<InputError inputType="dropdown" error={errors} height="32" width="140" />
+			<InputError inputType="Dropdown" error={errors} height="32" width="140" />
 		{:else if hasQuery && $query.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"

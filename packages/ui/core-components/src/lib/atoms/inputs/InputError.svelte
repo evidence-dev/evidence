@@ -16,7 +16,7 @@
 
 <div
 	style="height: {height}px; width: {width}px"
-	class="group relative cursor-help cursor-helpfont-sans bg-negative/10 font-ui font-normal rounded border border-negative/50 print:break-inside-avoid text-center text-negative flex items-center justify-center"
+	class="group relative cursor-help cursor-helpfont-sans bg-negative/10 font-ui font-normal rounded border border-negative/50 print:break-inside-avoid text-center text-negative flex items-center justify-center mb-4 mt-4"
 >
 	<div>
 		<span class="text-center [word-wrap:break-work] w-full font-bold text-sm">Error:</span>

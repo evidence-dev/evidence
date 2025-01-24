@@ -25,7 +25,7 @@
 </script>
 
 {#if errors.length > 0}
-	<InputError inputType="accordion" height="52" width="100%" error={errors} />
+	<InputError inputType="AccordionItem" height="52" width="100%" error={errors} />
 {:else}
 	{#key title}
 		<BaseAccordion.Item value={title} class={className}>

@@ -174,7 +174,7 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	{#if errors.length > 0}
-		<InputError inputType="slider" error={errors} width="170" height="36" />
+		<InputError inputType="Slider" error={errors} width="170" height="36" />
 	{:else}
 		<div class={`relative ${sizeClass} mt-2 mb-10 select-none`}>
 			<p class="pb-2 truncate text-xs">

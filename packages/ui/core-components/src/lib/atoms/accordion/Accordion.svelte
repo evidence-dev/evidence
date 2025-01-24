@@ -12,7 +12,7 @@
 </script>
 
 {#if !$$slots.default}
-	<InputError inputType="accordion" height="52" width="100%" error="No accordion items found" />
+	<InputError inputType="Accordion" height="52" width="100%" error="No </AccordionItem> found" />
 {:else}
 	<BaseAccordion.Root class={className} multiple={!single}>
 		<slot />

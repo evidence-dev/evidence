@@ -325,59 +325,58 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
- {#if data}
-{#await Promise.all([map.initPromise, data.fetch(), init($theme)]) then}
-	{#each $data as item}
-		<Point
-			{map}
-			{ignoreZoom}
-			options={{
-				// kw note:
-				//need to clean this logic
-				fillColor:
-					$colorStore ??
-					map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme),
-				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
-				fillOpacity: opacity,
-				opacity: opacity,
-				weight: borderWidth,
-				color: $borderColorStore,
-				className: `outline-none ${pointClass}`,
-				markerType: pointStyle,
-				pane: legendId
-			}}
-			selectedOptions={{
-				fillColor: $selectedColorStore,
-				fillOpacity: selectedOpacity,
-				opacity: selectedOpacity,
-				weight: selectedBorderWidth,
-				color: $selectedBorderColorStore,
-				className: `outline-none ${selectedPointClass}`
-			}}
-			coords={[item[lat], item[long]]}
-			onclick={() => {
-				onclick(item);
-			}}
-			setInput={() => {
-				if (name) {
-					updateInput(item, name);
-				}
-			}}
-			unsetInput={() => {
-				if (name) {
-					unsetInput(item, name);
-				}
-			}}
-			{tooltip}
-			{tooltipOptions}
-			{tooltipType}
-			{item}
-			{link}
-			{showTooltip}
-		/>
-	{/each}
-{:catch e}
-	{map.handleInternalError(e)}
-{/await}
-
+{#if data}
+	{#await Promise.all([map.initPromise, data.fetch(), init($theme)]) then}
+		{#each $data as item}
+			<Point
+				{map}
+				{ignoreZoom}
+				options={{
+					// kw note:
+					//need to clean this logic
+					fillColor:
+						$colorStore ??
+						map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme),
+					radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
+					fillOpacity: opacity,
+					opacity: opacity,
+					weight: borderWidth,
+					color: $borderColorStore,
+					className: `outline-none ${pointClass}`,
+					markerType: pointStyle,
+					pane: legendId
+				}}
+				selectedOptions={{
+					fillColor: $selectedColorStore,
+					fillOpacity: selectedOpacity,
+					opacity: selectedOpacity,
+					weight: selectedBorderWidth,
+					color: $selectedBorderColorStore,
+					className: `outline-none ${selectedPointClass}`
+				}}
+				coords={[item[lat], item[long]]}
+				onclick={() => {
+					onclick(item);
+				}}
+				setInput={() => {
+					if (name) {
+						updateInput(item, name);
+					}
+				}}
+				unsetInput={() => {
+					if (name) {
+						unsetInput(item, name);
+					}
+				}}
+				{tooltip}
+				{tooltipOptions}
+				{tooltipType}
+				{item}
+				{link}
+				{showTooltip}
+			/>
+		{/each}
+	{:catch e}
+		{map.handleInternalError(e)}
+	{/await}
 {/if}

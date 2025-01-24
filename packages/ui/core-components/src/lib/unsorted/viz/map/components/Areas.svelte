@@ -219,38 +219,37 @@
 	 */
 	async function init(theme) {
 		if (data) {
-
-		let initDataOptions = {
-			coordinates: [areaCol],
-			value,
-			checkInputs,
-			min,
-			max,
-			colorPalette: $colorPaletteStore,
-			legendType,
-			valueFmt,
-			chartType,
-			legendId,
-			legend,
-			theme
-		};
-		await data.fetch();
-		if (!$colorStore) {
-			({
-				values,
-				colorPalette: colorPaletteFinal,
+			let initDataOptions = {
+				coordinates: [areaCol],
+				value,
+				checkInputs,
+				min,
+				max,
+				colorPalette: $colorPaletteStore,
 				legendType,
-				colorScale
-			} = await map.initializeData(data, initDataOptions));
-		}
+				valueFmt,
+				chartType,
+				legendId,
+				legend,
+				theme
+			};
+			await data.fetch();
+			if (!$colorStore) {
+				({
+					values,
+					colorPalette: colorPaletteFinal,
+					legendType,
+					colorScale
+				} = await map.initializeData(data, initDataOptions));
+			}
 
-		await processAreas();
+			await processAreas();
 
-		if (name && $data.length > 0) {
-			setInputDefault($data[0], name);
+			if (name && $data.length > 0) {
+				setInputDefault($data[0], name);
+			}
 		}
 	}
-}
 
 	/**
 	 * Initializes the input store with default values based on the keys of the item.
@@ -307,58 +306,58 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
- {#if data}
-{#await Promise.all([map.initPromise, data.fetch()]) then}
-	{#await init($theme) then}
-		{#each geoJson as feature (feature.properties[geoId])}
-			{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
-			<MapArea
-				{map}
-				{feature}
-				{item}
-				{name}
-				{ignoreZoom}
-				areaOptions={{
-					fillColor:
-						$colorStore ??
-						map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme) ??
-						colorScale(item[value]).hex(),
-					fillOpacity: opacity,
-					opacity: opacity,
-					weight: borderWidth,
-					color: $borderColorStore,
-					className: `outline-none ${areaClass}`
-				}}
-				selectedAreaOptions={{
-					fillColor: $selectedColorStore,
-					fillOpacity: selectedOpacity,
-					opacity: selectedOpacity,
-					weight: selectedBorderWidth,
-					color: $selectedBorderColorStore,
-					className: `outline-none ${selectedAreaClass}`
-				}}
-				onclick={() => {
-					onclick(item);
-				}}
-				setInput={() => {
-					if (name) {
-						updateInput(item, name);
-					}
-				}}
-				unsetInput={() => {
-					if (name) {
-						unsetInput(item, name);
-					}
-				}}
-				{tooltip}
-				{tooltipOptions}
-				{tooltipType}
-				{showTooltip}
-				{link}
-			/>
-		{/each}
-	{:catch e}
-		{map.handleInternalError(e)}
+{#if data}
+	{#await Promise.all([map.initPromise, data.fetch()]) then}
+		{#await init($theme) then}
+			{#each geoJson as feature (feature.properties[geoId])}
+				{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
+				<MapArea
+					{map}
+					{feature}
+					{item}
+					{name}
+					{ignoreZoom}
+					areaOptions={{
+						fillColor:
+							$colorStore ??
+							map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme) ??
+							colorScale(item[value]).hex(),
+						fillOpacity: opacity,
+						opacity: opacity,
+						weight: borderWidth,
+						color: $borderColorStore,
+						className: `outline-none ${areaClass}`
+					}}
+					selectedAreaOptions={{
+						fillColor: $selectedColorStore,
+						fillOpacity: selectedOpacity,
+						opacity: selectedOpacity,
+						weight: selectedBorderWidth,
+						color: $selectedBorderColorStore,
+						className: `outline-none ${selectedAreaClass}`
+					}}
+					onclick={() => {
+						onclick(item);
+					}}
+					setInput={() => {
+						if (name) {
+							updateInput(item, name);
+						}
+					}}
+					unsetInput={() => {
+						if (name) {
+							unsetInput(item, name);
+						}
+					}}
+					{tooltip}
+					{tooltipOptions}
+					{tooltipType}
+					{showTooltip}
+					{link}
+				/>
+			{/each}
+		{:catch e}
+			{map.handleInternalError(e)}
+		{/await}
 	{/await}
-{/await}
 {/if}

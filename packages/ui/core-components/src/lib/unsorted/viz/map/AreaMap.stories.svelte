@@ -150,7 +150,6 @@ ORDER BY 1;
 	<div class="h-32"></div>
 </Story>
 
-
 <Story name="Error States" parameters={{ chromatic: { disableSnapshot: true } }}>
 	<h1>Missing Data</h1>
 	<AreaMap geoId="ZCTA5CE10" value="sales" areaCol="zip_code" />

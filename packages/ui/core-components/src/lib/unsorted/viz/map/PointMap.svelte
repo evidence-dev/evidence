@@ -81,38 +81,38 @@
 </script>
 
 {#if !error}
-<BaseMap
-	let:data
-	{data}
-	{startingLat}
-	{startingLong}
-	{startingZoom}
-	{height}
-	{basemap}
-	{title}
-	{subtitle}
-	{legendPosition}
-	{isInitial}
-	{chartType}
-	{emptySet}
-	{emptyMessage}
-	{error}
-	{attribution}
->
-	<!-- move dispatch error outside of points to render error outside leafletmaps -->
-	<Points
+	<BaseMap
+		let:data
 		{data}
-		{lat}
-		{long}
-		colorPalette={colorPaletteStore}
-		{legendType}
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{subtitle}
+		{legendPosition}
+		{isInitial}
 		{chartType}
-		{...$$restProps}
-		{legend}
-		{ignoreZoom}
-		on:error={(e) => (error = e.detail)}
-	/>
-</BaseMap>
+		{emptySet}
+		{emptyMessage}
+		{error}
+		{attribution}
+	>
+		<!-- move dispatch error outside of points to render error outside leafletmaps -->
+		<Points
+			{data}
+			{lat}
+			{long}
+			colorPalette={colorPaletteStore}
+			{legendType}
+			{chartType}
+			{...$$restProps}
+			{legend}
+			{ignoreZoom}
+			on:error={(e) => (error = e.detail)}
+		/>
+	</BaseMap>
 {:else}
 	<ErrorChart {error} title="Point Map" />
 {/if}

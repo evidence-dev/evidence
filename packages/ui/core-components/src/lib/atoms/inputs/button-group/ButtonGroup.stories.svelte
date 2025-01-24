@@ -227,7 +227,7 @@
 </Story>
 <Story name="Button Group Data is string" let:args>
 	<div class="mb-8 mt-4">
-		<ButtonGroup {...args} data="queryName" title="Data is string" name="dataString" />
+		<ButtonGroup {...args} data="queryName" title="Data is string" name="dataString" value="id" />
 	</div>
 </Story>
 <Story name="Button Group Data but Value not provided" let:args>

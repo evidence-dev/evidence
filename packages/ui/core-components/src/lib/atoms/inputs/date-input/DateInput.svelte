@@ -102,7 +102,7 @@
 
 		{#if errors.length > 0}
 			<InputError
-				inputType={range ? 'date-range' : 'date input'}
+				inputType={range ? 'DateRange' : 'DateInput'}
 				height="32"
 				width={range ? 337 : 190}
 				error={errors}
