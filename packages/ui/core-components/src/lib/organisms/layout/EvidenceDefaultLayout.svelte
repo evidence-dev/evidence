@@ -11,7 +11,7 @@
 	import { browser } from '$app/environment';
 	import DevTools from '../../devtools/DevTools.svelte';
 	import { onMount } from 'svelte';
-	import { ensureThemeStores } from '../../themes.js';
+	import { getThemeStores } from '../../themes/themes.js';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 	// Remove splash screen from app.html
@@ -25,8 +25,12 @@
 	// Layout options
 	/** @type {string} */
 	export let title = undefined;
-	/** @type {string} */
+	/** @type {string | undefined} */
 	export let logo = undefined;
+	/** @type {string | undefined} */
+	export let lightLogo = undefined;
+	/** @type {string | undefined} */
+	export let darkLogo = undefined;
 	/** @type {boolean} */
 	export let neverShowQueries = false;
 	/** @type {boolean} */
@@ -34,7 +38,7 @@
 	/** @type {boolean} */
 	export let hideSidebar = false;
 	/** @type {boolean} */
-	export let builtWithEvidence = false;
+	export let builtWithEvidence = true;
 	/** @type {{appId: string, apiKey: string, indexName: string}} */
 	export let algolia = undefined;
 	/** @type {string} */
@@ -55,6 +59,8 @@
 	export let hideHeader = false;
 	/** @type {boolean} */
 	export let hideTOC = false;
+	/** @type {number} */
+	export let sidebarDepth = 3;
 
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
@@ -69,21 +75,25 @@
 	function convertFileTreeToFileMap(fileTree) {
 		const map = new Map();
 
-		function traverse(node) {
-			if (!node) {
-				return;
+		function traverse(node, currentPath = '') {
+			// Build the full path for the current node
+			const fullPath = node.href || currentPath;
+
+			// Add the current node to the map if it's a page
+			if (node.isPage) {
+				map.set(decodeURI(fullPath), node);
 			}
 
-			if (node.href) {
-				const decodedHref = decodeURI(node.href);
-				map.set(decodedHref, node);
+			// Traverse children
+			if (node.children) {
+				Object.entries(node.children).forEach(([key, child]) => {
+					const childPath = `${fullPath}/${key}`;
+					traverse(child, childPath);
+				});
 			}
-
-			Object.values(node.children).forEach(traverse);
 		}
 
 		traverse(fileTree);
-
 		return map;
 	}
 
@@ -96,6 +106,21 @@
 	$: if (!['show', 'hide', 'never'].includes(sidebarFrontMatter)) {
 		sidebarFrontMatter = undefined;
 	}
+
+	$: hideBreadcrumbsFrontmatter = routeFrontMatter?.hide_breadcrumbs;
+	$: hideBreadcrumbsEffective = hideBreadcrumbsFrontmatter ?? hideBreadcrumbs;
+
+	$: fullWidthFrontmatter = routeFrontMatter?.full_width;
+	$: fullWidthEffective = fullWidthFrontmatter ?? fullWidth;
+
+	$: maxWidthFrontmatter = routeFrontMatter?.max_width;
+	$: maxWidthEffective = maxWidthFrontmatter ?? maxWidth;
+
+	$: hideHeaderFrontmatter = routeFrontMatter?.hide_header;
+	$: hideHeaderEffective = hideHeaderFrontmatter ?? hideHeader;
+
+	$: hideTocFrontmatter = routeFrontMatter?.hide_toc;
+	$: hideTocEffective = hideTocFrontmatter ?? hideTOC;
 
 	onMount(async () => {
 		if (!('serviceWorker' in navigator)) return;
@@ -110,24 +135,70 @@
 		console.debug('[fix-tprotocol-service-worker] Service Worker registered', { registration });
 	});
 
-	// TODO where should this go? How do we get project splash to be rendered with the proper theme?
-	ensureThemeStores();
+	const {
+		syncDataThemeAttribute,
+		cycleAppearance,
+		selectedAppearance,
+		setAppearance,
+		activeAppearance
+	} = getThemeStores();
+
+	onMount(() => {
+		/** @param {KeyboardEvent} e */
+		const onKeydown = (e) => {
+			if (e.key.toLowerCase() === 'l' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+				cycleAppearance();
+			}
+		};
+		window.addEventListener('keydown', onKeydown);
+		return () => window.removeEventListener('keydown', onKeydown);
+	});
+
+	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
+
+	//handles printing in dark mode
+	onMount(() => {
+		let currentTheme;
+
+		const beforePrintHandler = () => {
+			currentTheme = $activeAppearance;
+			if ($selectedAppearance === 'dark') {
+				setAppearance('light');
+			}
+		};
+
+		const afterPrintHandler = () => {
+			if (currentTheme === 'dark') {
+				setAppearance('dark');
+			}
+		};
+
+		window.addEventListener('beforeprint', beforePrintHandler);
+		window.addEventListener('afterprint', afterPrintHandler);
+
+		return () => {
+			window.removeEventListener('beforeprint', beforePrintHandler);
+			window.removeEventListener('afterprint', afterPrintHandler);
+		};
+	});
 </script>
 
 <slot />
 
 <ToastWrapper />
 <DevTools>
-	<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
+	<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased">
 		<ErrorOverlay />
-		{#if !hideHeader}
+		{#if !hideHeaderEffective}
 			<Header
 				bind:mobileSidebarOpen
 				{title}
 				{logo}
+				{lightLogo}
+				{darkLogo}
 				{neverShowQueries}
-				{fullWidth}
-				{maxWidth}
+				fullWidth={fullWidthEffective}
+				maxWidth={maxWidthEffective}
 				{hideSidebar}
 				{githubRepo}
 				{slackCommunity}
@@ -138,9 +209,9 @@
 			/>
 		{/if}
 		<div
-			class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
+			class={(fullWidthEffective ? 'max-w-full ' : maxWidthEffective ? '' : ' max-w-7xl ') +
 				'print:w-[650px] print:md:w-[841px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
-			style="max-width:{maxWidth}px;"
+			style="max-width:{maxWidthEffective}px;"
 		>
 			{#if !hideSidebar && sidebarFrontMatter !== 'never'}
 				<div class="print:hidden">
@@ -151,24 +222,25 @@
 						{logo}
 						{homePageName}
 						{builtWithEvidence}
-						{hideHeader}
+						hideHeader={hideHeaderEffective}
 						{sidebarFrontMatter}
+						{sidebarDepth}
 					/>
 				</div>
 			{/if}
 			<main
-				class={(!hideSidebar ? 'md:pl-8 ' : '') +
-					(!hideTOC ? 'md:pr-8 ' : '') +
-					(!hideHeader
-						? !hideBreadcrumbs
+				class={(!hideSidebar && !['hide', 'never'].includes(sidebarFrontMatter) ? 'md:pl-8 ' : '') +
+					(!hideTocEffective ? 'md:pr-8 ' : '') +
+					(!hideHeaderEffective
+						? !hideBreadcrumbsEffective
 							? ' mt-16 sm:mt-20 '
 							: ' mt-16 sm:mt-[74px] '
-						: !hideBreadcrumbs
+						: !hideBreadcrumbsEffective
 							? ' mt-4 sm:mt-8 '
 							: ' mt-4 sm:mt-[26px] ') +
 					'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
 			>
-				{#if !hideBreadcrumbs}
+				{#if !hideBreadcrumbsEffective}
 					<div class="print:hidden">
 						{#if $page.route.id !== '/settings'}
 							<BreadCrumbs {fileTree} />
@@ -183,9 +255,9 @@
 					<LoadingSkeleton />
 				{/if}
 			</main>
-			{#if !hideTOC}
+			{#if !hideTocEffective}
 				<div class="print:hidden">
-					<TableOfContents {hideHeader} />
+					<TableOfContents hideHeader={hideHeaderEffective} />
 				</div>
 			{/if}
 		</div>
@@ -194,3 +266,9 @@
 		<QueryStatus />
 	{/if}
 </DevTools>
+
+<style lang="postcss">
+	:global(body) {
+		@apply bg-base-100 text-base-content;
+	}
+</style>

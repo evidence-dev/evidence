@@ -1,5 +1,69 @@
 # @evidence-dev/sdk
 
+## 3.0.5
+
+### Patch Changes
+
+- f81376743: Make query debug logs a little quieter
+  - @evidence-dev/universal-sql@2.2.6
+
+## 3.0.4
+
+### Patch Changes
+
+- 309e27b51: fix virtual/references fields in datasource plugin schemas
+- 730321d90: Enable strict mode for sources
+- Updated dependencies [f416a339d]
+  - @evidence-dev/universal-sql@2.2.5
+
+## 3.0.3
+
+### Patch Changes
+
+- 706963a42: Upgrade nanoid to 5.0.9
+  - @evidence-dev/universal-sql@2.2.4
+
+## 3.0.2
+
+### Patch Changes
+
+- 2efb8df3e: fix environment variable display in settings page
+  - @evidence-dev/universal-sql@2.2.3
+
+## 3.0.1
+
+### Patch Changes
+
+- 288f87ec6: evidence.plugins.yaml file is optional
+  - @evidence-dev/universal-sql@2.2.2
+
+## 3.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/icons@1.0.2
+  - @evidence-dev/universal-sql@2.2.1
+
+## 2.0.0
+
+### Patch Changes
+
+- d2ce60038: bump duckdb to 1.29.0, fix bugs emerging from that
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/universal-sql@2.2.0
+
+## 1.5.1
+
+### Patch Changes
+
+- b5a096723: ignore non-strings in `addBasePath`
+  - @evidence-dev/universal-sql@2.1.11
+
 ## 1.5.0
 
 ### Minor Changes

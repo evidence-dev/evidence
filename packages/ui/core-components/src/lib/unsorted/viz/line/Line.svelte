@@ -13,10 +13,13 @@
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 	import getYAxisIndex from '@evidence-dev/component-utilities/getYAxisIndex';
 
+	const { resolveColor } = getThemeStores();
+
 	import {
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
+	import { getThemeStores } from '../../../themes/themes.js';
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
@@ -28,6 +31,8 @@
 	export let name = undefined; // name to appear in legend (for single series graphics)
 
 	export let lineColor = undefined;
+	$: lineColorStore = resolveColor(lineColor);
+
 	export let lineWidth = 2;
 	export let lineType = 'solid';
 	export let lineOpacity = undefined;
@@ -41,7 +46,10 @@
 	$: labels = labels === 'true' || labels === true;
 	export let labelSize = 11;
 	export let labelPosition = 'top';
+
 	export let labelColor = undefined;
+	$: labelColorStore = resolveColor(labelColor);
+
 	export let labelFmt = undefined;
 	let labelFormat;
 	if (labelFmt) {
@@ -149,7 +157,7 @@
 						);
 			},
 			fontSize: labelSize,
-			color: labelColor,
+			color: $labelColorStore,
 			position: labelPosition,
 			padding: 3
 		},
@@ -173,7 +181,7 @@
 			opacity: lineOpacity
 		},
 		itemStyle: {
-			color: lineColor,
+			color: $lineColorStore,
 			opacity: lineOpacity
 		},
 		showSymbol: labels || markers,

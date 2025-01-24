@@ -66,13 +66,15 @@
 
 <dialog
 	use:popup={open}
-	class="w-[90vw] rounded-lg fixed border shadow-lg {open ? 'slideIn' : 'slideOut'}"
+	class="w-[90vw] rounded-lg fixed border border-base-300 text-base-content shadow-lg bg-base-100 {open
+		? 'slideIn'
+		: 'slideOut'}"
 >
 	<button
-		class="absolute top-4 right-[18.5px] text-gray-900 hover:bg-gray-100 rounded-lg p-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
-		><Icon class="w-6 h-6 " src={X} /></button
+		class="absolute top-4 right-[18.5px] hover:bg-base-200 rounded-lg p-1 focus:outline-none focus:ring-1 focus:ring-base-300"
+		><Icon class="w-5 h-5 " src={X} /></button
 	>
-	<div class="py-2 px-6 {!search ? 'pt-6' : ''}">
+	<div class="py-2 px-6 {!search ? 'pt-8' : 'pt-0'}">
 		<slot />
 	</div>
 </dialog>
@@ -80,7 +82,7 @@
 <style lang="postcss">
 	/* your styles go here */
 	dialog::backdrop {
-		@apply backdrop-blur-sm bg-white/80;
+		@apply backdrop-blur-sm bg-base-100/80;
 	}
 
 	.slideOut::backdrop {

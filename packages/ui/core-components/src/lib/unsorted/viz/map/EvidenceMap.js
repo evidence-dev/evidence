@@ -5,8 +5,7 @@ import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 import { initSmoothZoom } from './LeafletSmoothZoom';
 import { writable, derived, readonly } from 'svelte/store';
 import chroma from 'chroma-js';
-import { uiColours } from '@evidence-dev/component-utilities/colours';
-import { mapColours } from '@evidence-dev/component-utilities/colours';
+import { browser } from '$app/environment';
 
 /** @template T @typedef {import('svelte/store').Writable<T>} Writable<T> */
 /** @template T @typedef {import('svelte/store').Readable<T>} Readable<T> */
@@ -123,6 +122,7 @@ export class EvidenceMap {
 		Leaflet.tileLayer(processedBasemap, {
 			subdomains: 'abcd',
 			maxZoom: 20,
+			className: '__evidence-leaflet-tile-layer__',
 			attribution: attribution
 		}).addTo(this.#map);
 
@@ -149,12 +149,21 @@ export class EvidenceMap {
 		this.#bounds = Leaflet.latLngBounds(); // Reset bounds to recalculate
 
 		this.#map.eachLayer((layer) => {
+			// Handle layers with sublayers (_layers) - necessary for setting ignoreZoom correctly
+			if (layer._layers && layer._layers instanceof Object) {
+				const firstLayer = Object.values(layer._layers)?.[0];
+				layer.ignoreZoom = firstLayer?.ignoreZoom ?? false;
+			}
+
+			// Extend bounds for layers that shouldn't ignore zoom
 			if (
-				layer instanceof Leaflet.Marker ||
-				layer instanceof Leaflet.CircleMarker ||
-				layer instanceof Leaflet.GeoJSON
+				(layer instanceof Leaflet.Marker ||
+					layer instanceof Leaflet.CircleMarker ||
+					layer instanceof Leaflet.GeoJSON) &&
+				!layer.ignoreZoom
 			) {
-				this.#bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+				const bounds = layer.getBounds?.() || layer.getLatLng?.();
+				if (bounds) this.#bounds.extend(bounds);
 			}
 		});
 
@@ -189,7 +198,8 @@ export class EvidenceMap {
 		onclick,
 		setInput,
 		unsetInput,
-		link
+		link,
+		ignoreZoom
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
 
@@ -205,6 +215,7 @@ export class EvidenceMap {
 			onEachFeature: (feature, layer) => {
 				// Store the initial style of each layer as soon as it's created
 				this.originalStyles.set(layer, areaOptions);
+				layer.ignoreZoom = ignoreZoom;
 				layer.on('click', () => {
 					if (this.lastSelectedLayer === layer) {
 						layer.setStyle(this.originalStyles.get(layer)); // Restore the original style
@@ -226,6 +237,13 @@ export class EvidenceMap {
 				});
 			}
 		}).addTo(this.#map);
+
+		// Set ignoreZoom for all sublayers to ensure it makes it through to updateBounds()
+		geoJsonLayer.eachLayer((sublayer) => {
+			if (sublayer instanceof Leaflet.Path) {
+				sublayer.ignoreZoom = ignoreZoom; // Apply ignoreZoom to all Path layers
+			}
+		});
 
 		this.#bounds.extend(geoJsonLayer.getBounds());
 		if (!this.#initialViewSet) {
@@ -259,7 +277,8 @@ export class EvidenceMap {
 		onclick,
 		setInput,
 		unsetInput,
-		link
+		link,
+		ignoreZoom
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
 
@@ -276,7 +295,7 @@ export class EvidenceMap {
 
 		// Create the marker with the appropriate pane
 		const marker = Leaflet.circleMarker(coords, circleOptions);
-
+		marker.ignoreZoom = ignoreZoom;
 		marker.addTo(this.#map);
 
 		this.updateMarkerStyle(marker, circleOptions); // Initial style setting and storage
@@ -430,6 +449,8 @@ export class EvidenceMap {
 		const cached = EvidenceMap.#geoJsonCache.get(url);
 		if (cached) return cached;
 
+		if (!browser) return;
+
 		const promise = fetch(url)
 			.then((r) => r.json())
 			.catch((e) => {
@@ -481,8 +502,9 @@ export class EvidenceMap {
 		return values;
 	}
 
-	handleFillColor(item, value, values, colorPalette, colorScale) {
-		if (!value) return uiColours.blue700;
+	/** @param {import('@evidence-dev/tailwind').Theme} theme */
+	handleFillColor(item, value, values, colorPalette, colorScale, theme) {
+		if (!value) return theme.colors['primary'];
 
 		if (item[value]) {
 			if (typeof item[value] === 'string') {
@@ -562,6 +584,10 @@ export class EvidenceMap {
 		return readonly(this.#legendData);
 	}
 
+	/**
+	 * @param {unknown} data
+	 * @param {{ theme: import('@evidence-dev/tailwind').Theme }} opts
+	 */
 	async initializeData(
 		data,
 		{
@@ -575,7 +601,8 @@ export class EvidenceMap {
 			valueFmt,
 			chartType,
 			legendId,
-			legend
+			legend,
+			theme
 		}
 	) {
 		await data.fetch();
@@ -590,7 +617,8 @@ export class EvidenceMap {
 		}
 
 		if (legendType && !colorPalette) {
-			colorPalette = legendType === 'categorical' ? mapColours : ['lightblue', 'darkblue'];
+			colorPalette =
+				legendType === 'categorical' ? theme.colorPalettes.default : theme.colorScales.default;
 			colorPalette = colorPalette.map((item) => chroma(item).hex());
 		}
 		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);

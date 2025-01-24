@@ -53,6 +53,7 @@ fsExtra.outputFileSync(
 	import { sourceQueryHmr, configVirtual, queryDirectoryHmr } from '@evidence-dev/sdk/build/vite';
 	import { isDebug } from '@evidence-dev/sdk/utils';
 	import { log } from "@evidence-dev/sdk/logger";
+	import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
 
 	const logger = createLogger();
 
@@ -60,7 +61,7 @@ fsExtra.outputFileSync(
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [sveltekit(), configVirtual(), queryDirectoryHmr, sourceQueryHmr()],
+        plugins: [sveltekit(), configVirtual(), queryDirectoryHmr, sourceQueryHmr(), evidenceThemes()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
 				// We need these to prevent HMR from doing a full page reload
@@ -74,7 +75,7 @@ fsExtra.outputFileSync(
 				])
 				
 			],
-            exclude: ['svelte-icons', '@evidence-dev/universal-sql', '$evidence/config']
+            exclude: ['svelte-icons', '@evidence-dev/universal-sql', '$evidence/config', '$evidence/themes']
         },
         ssr: {
             external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/sdk/plugins']
@@ -102,7 +103,14 @@ fsExtra.outputFileSync(
 		customLogger: logger
     }
 
-	if (isDebug()) {
+	// Suppress errors when building in non-debug mode
+	if (!isDebug() && process.env.EVIDENCE_IS_BUILDING === 'true') {
+		config.logLevel = 'silent';
+		logger.error = (msg) => log.error(msg);
+		logger.info = () => {};
+		logger.warn = () => {};
+		logger.warnOnce = () => {};
+	} else {
 		const loggerWarn = logger.warn;
 		const loggerOnce = logger.warnOnce
 
@@ -124,10 +132,6 @@ fsExtra.outputFileSync(
 
 			loggerWarn(msg, options);
 		};
-	} else {
-		config.logLevel = 'silent';
-		logger.error = (msg) => log.error(msg);
-		logger.info = logger.warn = logger.warnOnce = () => {};
 	}
 
     export default config`

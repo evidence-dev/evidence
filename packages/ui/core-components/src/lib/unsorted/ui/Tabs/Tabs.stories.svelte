@@ -29,6 +29,22 @@
 	</Tabs>
 </Story>
 
+<Story name="Full Width">
+	<Tabs fullWidth="true">
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
+	</Tabs>
+</Story>
+
+<Story name="With Background">
+	<Tabs background="true">
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
+	</Tabs>
+</Story>
+
 <Story name="Generated from a query">
 	{@const data = Query.create(
 		`
@@ -98,5 +114,21 @@
 		<Tab label="Tab 4" id="tab4">Tab 4 content</Tab>
 		<Tab label="Tab 4" id="tab5">Tab 5 content</Tab>
 		<Tab label="Tab 6" id="tab6">Tab 6 content</Tab>
+	</Tabs>
+</Story>
+
+<Story name="Using color token">
+	<Tabs color="accent">
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
+	</Tabs>
+</Story>
+
+<Story name="Using color tuple">
+	<Tabs color={['#ff0000', '#0000ff']}>
+		<Tab label="Tab 1" id="tab1">Tab 1 content</Tab>
+		<Tab label="Tab 2" id="tab2">Tab 2 content</Tab>
+		<Tab label="Tab 3" id="tab3">Tab 3 content</Tab>
 	</Tabs>
 </Story>

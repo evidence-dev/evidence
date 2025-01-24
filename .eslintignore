@@ -32,3 +32,9 @@ packages/ui/icons/src
 
 # Don't lint playwright reports
 **/playwright-report*
+
+storybook-static
+
+# This is an invalid test file that should be ignored
+**/invalid.js
+**/noExport.js

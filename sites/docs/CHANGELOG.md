@@ -1,5 +1,137 @@
 # evidence-docs
 
+## 0.0.53
+
+### Patch Changes
+
+- Updated dependencies [f81376743]
+- Updated dependencies [ddb09ae6a]
+  - @evidence-dev/sdk@3.0.5
+  - @evidence-dev/evidence@40.0.5
+  - @evidence-dev/component-utilities@4.0.5
+  - @evidence-dev/core-components@5.0.5
+  - @evidence-dev/tailwind@3.0.5
+
+## 0.0.52
+
+### Patch Changes
+
+- Updated dependencies [309e27b51]
+- Updated dependencies [0d6e938f4]
+- Updated dependencies [9324590f8]
+- Updated dependencies [4e1829b38]
+- Updated dependencies [dd4e4724f]
+- Updated dependencies [700ea77f8]
+- Updated dependencies [b28d4cf25]
+- Updated dependencies [1190af0f0]
+- Updated dependencies [8b8965525]
+- Updated dependencies [1dceaa2e0]
+- Updated dependencies [4d6d41dde]
+- Updated dependencies [c63773aa4]
+- Updated dependencies [730321d90]
+- Updated dependencies [b058d924c]
+- Updated dependencies [a6f4c6721]
+- Updated dependencies [87ee3d66c]
+- Updated dependencies [5ab144e70]
+- Updated dependencies [e6fa72acd]
+- Updated dependencies [eda30637a]
+- Updated dependencies [70cb324ae]
+  - @evidence-dev/sdk@3.0.4
+  - @evidence-dev/core-components@5.0.4
+  - @evidence-dev/evidence@40.0.4
+  - @evidence-dev/component-utilities@4.0.4
+  - @evidence-dev/tailwind@3.0.4
+
+## 0.0.51
+
+### Patch Changes
+
+- Updated dependencies [a9edd3377]
+- Updated dependencies [d8d7b456f]
+- Updated dependencies [b1aa2410e]
+- Updated dependencies [1a6a3568a]
+- Updated dependencies [b92827ff6]
+- Updated dependencies [0b90a34f9]
+- Updated dependencies [ee52c8188]
+- Updated dependencies [0f09fff03]
+- Updated dependencies [706963a42]
+  - @evidence-dev/core-components@5.0.3
+  - @evidence-dev/sdk@3.0.3
+  - @evidence-dev/evidence@40.0.3
+  - @evidence-dev/component-utilities@4.0.3
+  - @evidence-dev/tailwind@3.0.3
+
+## 0.0.50
+
+### Patch Changes
+
+- Updated dependencies [2efb8df3e]
+- Updated dependencies [6115376f6]
+  - @evidence-dev/evidence@40.0.2
+  - @evidence-dev/sdk@3.0.2
+  - @evidence-dev/tailwind@3.0.2
+  - @evidence-dev/component-utilities@4.0.2
+  - @evidence-dev/core-components@5.0.2
+
+## 0.0.49
+
+### Patch Changes
+
+- Updated dependencies [288f87ec6]
+  - @evidence-dev/sdk@3.0.1
+  - @evidence-dev/evidence@40.0.1
+  - @evidence-dev/component-utilities@4.0.1
+  - @evidence-dev/core-components@5.0.1
+  - @evidence-dev/tailwind@3.0.1
+
+## 0.0.48
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+- Updated dependencies [d88e86119]
+  - @evidence-dev/evidence@40.0.0
+  - @evidence-dev/component-utilities@4.0.0
+  - @evidence-dev/sdk@3.0.0
+  - @evidence-dev/core-components@5.0.0
+  - @evidence-dev/tailwind@3.0.0
+
+## 0.0.47
+
+### Patch Changes
+
+- Updated dependencies [d2ce60038]
+- Updated dependencies [c4f46da37]
+  - @evidence-dev/sdk@2.0.0
+  - @evidence-dev/evidence@39.2.3
+  - @evidence-dev/csv@1.0.14
+  - @evidence-dev/duckdb@1.0.13
+  - @evidence-dev/core-components@4.9.2
+  - @evidence-dev/component-utilities@3.2.23
+  - @evidence-dev/tailwind@2.1.12
+
+## 0.0.46
+
+### Patch Changes
+
+- Updated dependencies [4d1ecd921]
+- Updated dependencies [b5a096723]
+- Updated dependencies [1f343b638]
+- Updated dependencies [b3465c45d]
+- Updated dependencies [fe1fa3d6b]
+  - @evidence-dev/core-components@4.9.1
+  - @evidence-dev/sdk@1.5.1
+  - @evidence-dev/evidence@39.2.2
+  - @evidence-dev/component-utilities@3.2.22
+  - @evidence-dev/tailwind@2.1.11
+
+## 0.0.45
+
+### Patch Changes
+
+- Updated dependencies [9043ff73c]
+  - @evidence-dev/evidence@39.2.1
+
 ## 0.0.44
 
 ### Patch Changes

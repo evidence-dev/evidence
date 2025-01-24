@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "1.5.0",
+	"version": "3.0.5",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js"
@@ -124,7 +124,7 @@
 		"lodash.chunk": "^4.2.0",
 		"lodash.merge": "^4.6.2",
 		"mdsvex": "^0.11.0",
-		"nanoid": "^5.0.4",
+		"nanoid": "^5.0.9",
 		"ora": "^8.0.1",
 		"perfect-debounce": "^1.0.0",
 		"pkg-types": "^1.0.3",
@@ -152,7 +152,7 @@
 	},
 	"peerDependencies": {
 		"@evidence-dev/universal-sql": "workspace:*",
-		"nanoid": "^5.0.4",
+		"nanoid": "^5.0.9",
 		"perfect-debounce": "^1.0.0",
 		"svelte": "^4.2.19"
 	},

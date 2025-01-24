@@ -1,5 +1,67 @@
 # @evidence-dev/tailwind
 
+## 3.0.5
+
+### Patch Changes
+
+- Updated dependencies [f81376743]
+  - @evidence-dev/sdk@3.0.5
+
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [309e27b51]
+- Updated dependencies [730321d90]
+  - @evidence-dev/sdk@3.0.4
+
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies [706963a42]
+  - @evidence-dev/sdk@3.0.3
+
+## 3.0.2
+
+### Patch Changes
+
+- 6115376f6: Dont merge color palettes/scales
+- Updated dependencies [2efb8df3e]
+  - @evidence-dev/sdk@3.0.2
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [288f87ec6]
+  - @evidence-dev/sdk@3.0.1
+
+## 3.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/sdk@3.0.0
+
+## 2.1.12
+
+### Patch Changes
+
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/sdk@2.0.0
+
+## 2.1.11
+
+### Patch Changes
+
+- Updated dependencies [b5a096723]
+  - @evidence-dev/sdk@1.5.1
+
 ## 2.1.10
 
 ### Patch Changes

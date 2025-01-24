@@ -4,6 +4,7 @@
 
 <script>
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
 
@@ -25,6 +26,9 @@
 
 	/** @type {string | undefined} */
 	export let defaultValue = undefined;
+
+	/** @type {string | undefined} */
+	export let description = undefined;
 
 	/** @type {boolean} */
 	export let unsafe = false;
@@ -58,13 +62,18 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
+	<div class={`${title ? '-mt-0.5' : 'mt-2'} mb-4 ml-0 mr-2 inline-block align-bottom`}>
 		{#if title}
-			<span class="text-gray-900 text-sm block mb-1">{title}</span>
+			<span class="text-xs font-medium block mb-0.5"
+				>{title}
+				{#if description}
+					<Info {description} />
+				{/if}
+			</span>
 		{/if}
 		<input
 			bind:value
-			class="font-medium border bg-white p-1 mt-2 pr-5 h-8 rounded-md px-3 sm:text-xs flex flex-row items-center max-w-fit bg-transparent cursor-text bg-right bg-no-repeat focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 shadow-sm text-base"
+			class="font-medium border pb-1 pt-[3px] h-8 border-base-300 bg-base-100 pr-3 rounded-md px-2 sm:text-xs max-w-fit bg-transparent cursor-text bg-right bg-no-repeat focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-content-muted shadow-sm text-base placeholder:font-normal placeholder:text-base-content-muted/80"
 			{placeholder}
 		/>
 	</div>

@@ -61,7 +61,7 @@
 </script>
 
 <section class="w-full mt-8">
-	<div class="p-3 rounded-t w-full border-gray-200 border-t border-l border-r">
+	<div class="p-3 rounded-t w-full border-base-300 border-t border-l border-r">
 		<h2 class="font-semibold text-lg mb-2">Data Sources</h2>
 
 		<div
@@ -77,7 +77,7 @@
 
 				{#if duplicatePackageNames.length}
 					<div class="col-span-4">
-						<p class="text-red-500 text-bold text-sm">
+						<p class="text-negative text-bold text-sm">
 							Duplicate Packages found; this could lead to unexpected behavior
 						</p>
 						<ul>
@@ -101,7 +101,7 @@
 					<Button
 						icon={FolderPlus}
 						size="md"
-						variant="success"
+						variant="positive"
 						on:click={() => (showNewSource = !showNewSource)}
 					>
 						Add new source
@@ -125,11 +125,11 @@
 
 		<div />
 	</div>
-	<div class="p-4 rounded-b w-full bg-gray-100 text-sm border-[1px] border-gray-200">
+	<div class="p-4 rounded-b w-full bg-base-200 text-sm border-[1px] border-base-300">
 		<!-- TODO: Update this when we have docs -->
 		Learn more about
 		<a
-			class="text-blue-600 no-underline"
+			class="text-primary hover:brightness-110 active:brightness-90 transition"
 			href="https://docs.evidence.dev/core-concepts/data-sources/"
 		>
 			Configuring Data Sources &rarr;

@@ -1,4 +1,4 @@
-const evidenceTailwind = require('@evidence-dev/tailwind').config;
+const evidenceTailwind = require('@evidence-dev/tailwind/config').config;
 
 /** @type {import("tailwindcss").Config} */
 const config = {

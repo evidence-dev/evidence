@@ -12,6 +12,11 @@
 	import { getConfigContext, getPropContext } from '@evidence-dev/component-utilities/chartContext';
 	import { ReferenceLineStore } from './reference-line.store.js';
 	import { toBoolean, toNumber } from '../../../../utils.js';
+	import { getThemeStores } from '../../../../themes/themes.js';
+	import chroma from 'chroma-js';
+	import { checkDeprecatedColor } from '../../../../deprecated-colors.js';
+
+	const { resolveColor } = getThemeStores();
 
 	/** @type {'pass' | 'warn' | 'error' | undefined}*/
 	export let emptySet = undefined;
@@ -38,10 +43,12 @@
 	export let label = undefined;
 
 	/**
-	 * @type {import('../types.js').ReferenceColor}
-	 * @default "grey"
+	 * @type {string}
+	 * @default "base-content-muted"
 	 */
-	export let color = 'grey';
+	export let color = 'base-content-muted';
+	$: color = checkDeprecatedColor('ReferenceLine', 'color', color);
+	$: colorStore = resolveColor(color);
 
 	/**
 	 * @type {'solid' | 'dotted' | 'dashed'}
@@ -49,8 +56,10 @@
 	 */
 	export let lineType = 'dashed';
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let lineColor = undefined;
+	$: lineColor = checkDeprecatedColor('ReferenceLine', 'lineColor', lineColor);
+	$: lineColorStore = resolveColor(lineColor);
 
 	/**
 	 * @type {number | string}
@@ -88,8 +97,10 @@
 	/** @type {number | string | undefined} */
 	export let symbolEndSize = undefined;
 
-	/** @type {import('../types.js').ReferenceColor | undefined} */
+	/** @type {string | undefined} */
 	export let labelColor = undefined;
+	$: labelColor = checkDeprecatedColor('ReferenceLine', 'labelColor', labelColor);
+	$: labelColorStore = resolveColor(labelColor);
 
 	/**
 	 * @type {number | string}
@@ -103,11 +114,14 @@
 	 */
 	export let labelPosition = 'aboveEnd';
 
-	/**
-	 * @type {string}
-	 * @default "hsla(360, 100%, 100%, 0.7)"
-	 */
-	export let labelBackgroundColor = 'hsla(360, 100%, 100%, 0.7)';
+	/** @type {string | undefined} */
+	export let labelBackgroundColor = undefined;
+	$: labelBackgroundColor = checkDeprecatedColor(
+		'ReferenceLine',
+		'labelBackgroundColor',
+		labelBackgroundColor
+	);
+	$: labelBackgroundColorStore = resolveColor(labelBackgroundColor);
 
 	/** @type {number | string | undefined} */
 	export let labelBorderWidth = undefined;
@@ -120,6 +134,8 @@
 
 	/** @type {string | undefined} */
 	export let labelBorderColor = undefined;
+	$: labelBorderColor = checkDeprecatedColor('ReferenceLine', 'labelBorderColor', labelBorderColor);
+	$: labelBorderColorStore = resolveColor(labelBorderColor);
 
 	/** @type {'solid' | 'dotted' | 'dashed' | undefined} */
 	export let labelBorderType = undefined;
@@ -165,6 +181,8 @@
 	const config = getConfigContext();
 	const store = new ReferenceLineStore(props, config);
 
+	const { theme } = getThemeStores();
+
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
 	$: $props,
 		store.setConfig({
@@ -174,19 +192,20 @@
 			y2,
 			data,
 			label,
-			color,
+			color: $colorStore,
 			symbolStart: symbolStart ?? 'none',
 			symbolStartSize: toNumber(symbolStartSize),
 			symbolEnd: symbolEnd ?? symbol ?? 'none',
 			symbolEndSize: symbolEndSize ? toNumber(symbolEndSize) : toNumber(symbolSize),
 			lineType,
-			lineColor,
+			lineColor: $lineColorStore,
 			lineWidth: toNumber(lineWidth),
-			labelColor,
+			labelColor: $labelColorStore,
 			labelPadding: toNumber(labelPadding),
 			labelPosition,
-			labelBackgroundColor,
-			labelBorderColor,
+			labelBackgroundColor:
+				$labelBackgroundColorStore ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
+			labelBorderColor: $labelBorderColorStore,
 			labelBorderWidth: toNumber(labelBorderWidth),
 			labelBorderRadius: toNumber(labelBorderRadius),
 			labelBorderType,
@@ -205,11 +224,11 @@
 {/if}
 
 {#if $store.error}
-	<ErrorChart error={$store.error} minHeight="50px" {chartType} />
+	<ErrorChart error={$store.error} height="50" title={chartType} />
 {:else}
 	<QueryLoad {data}>
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
-		<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
+		<ErrorChart let:loaded slot="error" title={chartType} error={loaded.error.message} />
 		<div slot="skeleton" class="hidden"></div>
 	</QueryLoad>
 {/if}

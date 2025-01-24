@@ -3,9 +3,12 @@
 </script>
 
 <script>
+	import { getThemeStores } from '../../../themes/themes.js';
+
 	import Chart from '../core/Chart.svelte';
 	import Bar from './Bar.svelte';
-	import { onMount } from 'svelte';
+
+	const { resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
 	export let data = undefined;
 	export let x = undefined;
@@ -48,23 +51,8 @@
 	export let y2Scale = undefined;
 	export let swapXY = false;
 
-	let xEvidenceType = undefined;
-
-	onMount(() => {
-		xEvidenceType = data?.[0]?._evidenceColumnTypes?.find(
-			(ect) => ect.name?.toLowerCase() === x?.toLowerCase()
-		)?.evidenceType;
-	});
-
-	$: if (!showAllXaxisLabelsManuallySet)
-		showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
-
 	/** @type {boolean} */
 	export let showAllXAxisLabels;
-	const showAllXaxisLabelsManuallySet = typeof showAllXAxisLabels !== 'undefined';
-
-	$: if (typeof showAllXAxisLabels === 'string')
-		showAllXAxisLabels = showAllXAxisLabels?.toLowerCase() === 'true';
 
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
@@ -78,19 +66,28 @@
 	let stacked100 = type === 'stacked100';
 
 	export let fillColor = undefined;
+	$: fillColorStore = resolveColor(fillColor);
+
 	export let fillOpacity = undefined;
+
 	export let outlineColor = undefined;
+	$: outlineColorStore = resolveColor(outlineColor);
+
 	export let outlineWidth = undefined;
 	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
 
-	export let colorPalette = undefined;
+	export let colorPalette = 'default';
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	export let labels = undefined;
 	export let labelSize = undefined;
 	export let labelPosition = undefined;
+
 	export let labelColor = undefined;
+	$: labelColorStore = resolveColor(labelColor);
+
 	export let labelFmt = undefined;
 	export let yLabelFmt = undefined;
 	export let y2LabelFmt = undefined;
@@ -100,7 +97,10 @@
 	export let showAllLabels = undefined;
 
 	export let yAxisColor = undefined;
+	$: yAxisColorStore = resolveColor(yAxisColor);
+
 	export let y2AxisColor = undefined;
+	$: y2AxisColorStore = resolveColor(y2AxisColor);
 
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
@@ -112,11 +112,19 @@
 	export let renderer = undefined;
 	export let downloadableData = undefined;
 	export let downloadableImage = undefined;
+
 	export let seriesColors = undefined;
+	$: seriesColorsStore = resolveColorsObject(seriesColors);
+
 	export let seriesOrder = undefined;
 	export let connectGroup = undefined;
 
 	export let seriesLabelFmt = undefined;
+
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
+
+	export let xLabelWrap = undefined;
 </script>
 
 <Chart
@@ -147,8 +155,8 @@
 	{xTickMarks}
 	{yTickMarks}
 	{y2TickMarks}
-	{yAxisColor}
-	{y2AxisColor}
+	yAxisColor={yAxisColorStore}
+	y2AxisColor={y2AxisColorStore}
 	{yMin}
 	{yMax}
 	{yScale}
@@ -164,7 +172,7 @@
 	{stacked100}
 	{chartAreaHeight}
 	{showAllXAxisLabels}
-	{colorPalette}
+	colorPalette={colorPaletteStore}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
@@ -174,18 +182,21 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
-	{seriesColors}
+	{xLabelWrap}
+	seriesColors={seriesColorsStore}
+	{leftPadding}
+	{rightPadding}
 >
 	<Bar
 		{type}
-		{fillColor}
+		fillColor={fillColorStore}
 		{fillOpacity}
-		{outlineColor}
+		outlineColor={outlineColorStore}
 		{outlineWidth}
 		{labels}
 		{labelSize}
 		{labelPosition}
-		{labelColor}
+		labelColor={labelColorStore}
 		{labelFmt}
 		{yLabelFmt}
 		{y2LabelFmt}

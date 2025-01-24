@@ -1,14 +1,33 @@
 <script context="module">
 	export const evidenceInclude = true;
+
+	const DEPRECATED_STATUS_MAP = /** @type {const} */ ({
+		default: 'base',
+		danger: 'negative',
+		success: 'positive'
+	});
+
+	const isDeprecatedStatus = (input) => Object.keys(DEPRECATED_STATUS_MAP).includes(input);
+
+	const checkDeprecatedStatus = (input) => {
+		if (isDeprecatedStatus(input)) {
+			console.warn(
+				`[Alert] The status "${input}" is deprecated. Please use "${DEPRECATED_STATUS_MAP[input]}" instead.`
+			);
+			return DEPRECATED_STATUS_MAP[input];
+		}
+		return input;
+	};
 </script>
 
 <script>
 	// Based on the alert from FlowBite: https://flowbite.com/docs/components/alerts/
 	/**
 	 * Defines the color of the alert
-	 * @type {"default" | "info" | "danger" | "success" | "warning"}
+	 * @type {"base" | "info" | "positive" | "warning" | "negative"}
 	 */
-	export let status = 'default';
+	export let status = 'base';
+	$: status = checkDeprecatedStatus(status);
 </script>
 
 <div class="alert {status}" role="alert">
@@ -19,23 +38,26 @@
 
 <style lang="postcss">
 	.alert {
-		@apply p-2 mb-4 rounded text-gray-800 bg-gray-50 top-14;
+		@apply border px-3 py-2 mb-4 rounded border-base-content/50 bg-base-content/10;
 
 		&.info {
-			@apply text-blue-800 bg-blue-50;
+			@apply border-info/50 bg-info/10;
 		}
-		&.danger {
-			@apply text-red-800 bg-red-50;
+		&.negative {
+			@apply border-negative/50 bg-negative/10;
 		}
-		&.success {
-			@apply text-green-800 bg-green-50;
+		&.positive {
+			@apply border-positive/50 bg-positive/10;
 		}
 		&.warning {
-			@apply text-yellow-800 bg-yellow-50;
+			@apply border-warning/50 bg-warning/10;
 		}
 
-		& :global(p) {
+		& :global(.markdown:last-child) {
 			@apply mb-0;
+		}
+		& :global(.markdown:first-child) {
+			@apply mt-0;
 		}
 	}
 </style>

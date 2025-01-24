@@ -1,5 +1,4 @@
 <script>
-	// @ts-check
 	import DimensionRow from './DimensionRow.svelte';
 
 	import { getContext } from 'svelte';
@@ -15,6 +14,7 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import QueryLoad from '../../atoms/query-load/QueryLoad.svelte';
 	import { resolveMaybePromise } from '@evidence-dev/sdk/usql';
+	import Alert from '../../atoms/alert/Alert.svelte';
 
 	/** @type {import("@evidence-dev/sdk/usql").DescribeResultRow} */
 	export let dimension;
@@ -111,22 +111,21 @@
 
 <!-- {dimensionCutQuery} -->
 
-<div class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-gray-700 pr-4 pb-4 overflow-clip">
+<div class="w-60 flex-shrink-0 sm:w-1/4 text-xs antialiased pr-4 pb-4 overflow-clip">
 	<div class="capitalize border-b flex justify-between items-baseline">
-		<span class="truncate w-2/3">
+		<span class={`truncate pl-1 pb-0.5 font-semibold ${metricLabel ? 'w-2/3' : ''}`}>
 			{formatTitle(dimension.column_name)}
 		</span>
-		<span class="truncate w-1/3 text-right">
-			{metricLabel ?? ''}
-		</span>
+		{#if metricLabel}
+			<span class="truncate w-1/3 text-right font-semibold">
+				{metricLabel ?? ''}
+			</span>
+		{/if}
 	</div>
-	<QueryLoad data={results} let:loaded>
-		<p
-			slot="error"
-			class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
-		>
+	<QueryLoad data={results} skeletonClass="mt-0" let:loaded>
+		<Alert slot="error" status="negative">
 			{$results.error}
-		</p>
+		</Alert>
 		{#if loaded?.length > 0 || (Array.isArray(selectedValue) && selectedValue.length > 0)}
 			{@const columnSummary = getColumnSummary(loaded, 'array')?.filter((d) => d.id === 'metric')}
 			{@const fmtObject = fmt ? getFormatObjectFromString(fmt, 'number') : columnSummary[0].format}
@@ -176,7 +175,9 @@
 				{/if}
 			</div>
 		{:else}
-			<p class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded">No Records</p>
+			<p class="text-xs text-base-content-muted p-2 my-2 w-full border border-dashed rounded">
+				No Records
+			</p>
 		{/if}
 	</QueryLoad>
 </div>

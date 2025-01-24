@@ -11,7 +11,7 @@
 	export let searchFunction;
 </script>
 
-<div class="search-container">
+<div class="search-container mb-1 mr-1">
 	<input
 		class="search-bar"
 		type="text"
@@ -24,21 +24,18 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.search-container {
+		@apply bg-base-100 border border-base-300 shadow-sm h-7 rounded-md;
 		width: 30%;
 		display: block;
 		align-items: center;
-		border: 1px solid var(--grey-300);
-		border-radius: 4px;
-		height: 22px;
 		position: relative;
-		margin: 25px 3px 10px 0px;
 		box-sizing: content-box;
-		background-color: white;
 	}
 
 	.search-icon {
+		@apply text-base-content-muted/80;
 		height: 16px;
 		width: 16px;
 		padding-left: 3px;
@@ -47,11 +44,11 @@
 		top: 50%;
 		transform: translateY(-50%);
 		-ms-transform: translateY(-50%);
-		color: var(--grey-400);
 		box-sizing: content-box;
 	}
 
 	.search-bar {
+		@apply bg-base-100;
 		margin: 0;
 		position: absolute;
 		top: 50%;
@@ -61,7 +58,6 @@
 		border: none;
 		padding-left: 23px;
 
-		color: var(--grey-600);
 		font-size: 9pt;
 
 		width: calc(100% - 10px);
@@ -71,7 +67,7 @@
 	}
 
 	input.search-bar::placeholder {
-		color: var(--grey-500);
+		@apply text-base-content-muted/80;
 	}
 
 	*:focus {

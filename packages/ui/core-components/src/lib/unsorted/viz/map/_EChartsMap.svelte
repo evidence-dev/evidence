@@ -11,6 +11,9 @@
 	import CodeBlock from '../../ui/CodeBlock.svelte';
 	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { activeAppearance, theme } = getThemeStores();
 
 	export let extraHeight = 0;
 
@@ -58,7 +61,7 @@
 
 <div
 	role="none"
-	class="chart-container"
+	class="chart-container mt-2 mb-6"
 	on:mouseenter={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
 >
@@ -163,7 +166,15 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ config, ...$$restProps, echartsOptions, seriesOptions, queryID }}
+		use:echartsCanvasDownload={{
+			config,
+			...$$restProps,
+			echartsOptions,
+			seriesOptions,
+			queryID,
+			theme: $activeAppearance,
+			backgroundColor: $theme.colors['base-100']
+		}}
 	/>
 {/if}
 
@@ -211,9 +222,5 @@
 		margin: 3px 12px;
 		font-size: 12px;
 		height: 9px;
-	}
-
-	.chart-container {
-		margin-bottom: 25px;
 	}
 </style>

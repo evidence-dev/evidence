@@ -6,6 +6,9 @@
 	import Points from './components/Points.svelte';
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { resolveColorPalette } = getThemeStores();
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -49,8 +52,12 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
+	/** @type {string|undefined} */
+	export let subtitle = undefined;
+
 	/** @type {string[]|undefined} */
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	/** @type {'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'} */
 	export let legendPosition = 'bottomLeft';
@@ -59,6 +66,9 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;
@@ -78,6 +88,7 @@
 	{height}
 	{basemap}
 	{title}
+	{subtitle}
 	{legendPosition}
 	{isInitial}
 	{chartType}
@@ -91,11 +102,12 @@
 		{data}
 		{lat}
 		{long}
-		{colorPalette}
+		colorPalette={colorPaletteStore}
 		{legendType}
 		{chartType}
 		{...$$restProps}
 		{legend}
+		{ignoreZoom}
 		on:error={(e) => (error = e.detail)}
 	/>
 </BaseMap>

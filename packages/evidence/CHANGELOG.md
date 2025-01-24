@@ -1,5 +1,95 @@
 # @evidence-dev/evidence
 
+## 40.0.5
+
+### Patch Changes
+
+- ddb09ae6a: Fix dev server speed regression
+- Updated dependencies [f81376743]
+- Updated dependencies [f81376743]
+  - @evidence-dev/preprocess@6.0.2
+  - @evidence-dev/sdk@3.0.5
+  - @evidence-dev/universal-sql@2.2.6
+
+## 40.0.4
+
+### Patch Changes
+
+- dd4e4724f: Add warning message to default index.md
+- 730321d90: Enable strict mode for sources
+- a6f4c6721: Clean up 404 / 500 errors
+- Updated dependencies [fa5179ed4]
+- Updated dependencies [309e27b51]
+- Updated dependencies [f416a339d]
+- Updated dependencies [730321d90]
+  - @evidence-dev/preprocess@6.0.1
+  - @evidence-dev/sdk@3.0.4
+  - @evidence-dev/universal-sql@2.2.5
+
+## 40.0.3
+
+### Patch Changes
+
+- Updated dependencies [706963a42]
+  - @evidence-dev/sdk@3.0.3
+  - @evidence-dev/universal-sql@2.2.4
+
+## 40.0.2
+
+### Patch Changes
+
+- 2efb8df3e: fix environment variable display in settings page
+- Updated dependencies [2efb8df3e]
+  - @evidence-dev/sdk@3.0.2
+  - @evidence-dev/universal-sql@2.2.3
+
+## 40.0.1
+
+### Patch Changes
+
+- Updated dependencies [288f87ec6]
+  - @evidence-dev/sdk@3.0.1
+  - @evidence-dev/universal-sql@2.2.2
+
+## 40.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- d88e86119: hash parquet file paths after build
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/preprocess@6.0.0
+  - @evidence-dev/sdk@3.0.0
+  - @evidence-dev/universal-sql@2.2.1
+
+## 39.2.3
+
+### Patch Changes
+
+- c4f46da37: fix peer dep mismatch in evidence package
+- Updated dependencies [d2ce60038]
+  - @evidence-dev/universal-sql@2.2.0
+  - @evidence-dev/sdk@2.0.0
+
+## 39.2.2
+
+### Patch Changes
+
+- b3465c45d: Upgrade @sveltejs/kit to 2.8.4
+- fe1fa3d6b: re-enable logging on dev mode
+- Updated dependencies [b5a096723]
+  - @evidence-dev/sdk@1.5.1
+  - @evidence-dev/universal-sql@2.1.11
+
+## 39.2.1
+
+### Patch Changes
+
+- 9043ff73c: re-enable logging on dev mode
+
 ## 39.2.0
 
 ### Minor Changes

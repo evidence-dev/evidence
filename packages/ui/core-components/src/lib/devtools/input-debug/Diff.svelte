@@ -15,9 +15,9 @@
 	};
 
 	const typeClasses = {
-		added: 'bg-green-300/75',
-		deleted: 'bg-red-300/75',
-		updated: 'bg-yellow-300/75',
+		added: 'bg-positive/25',
+		deleted: 'bg-negative/25',
+		updated: 'bg-warning/25',
 		unchanged: ''
 	};
 
@@ -57,7 +57,7 @@
 	</span>
 
 	<div
-		class="font-mono text-xs grid grid-cols-[auto,1fr] text-[0.7rem] bg-gray-300 p-2 select-text"
+		class="font-mono text-xs grid grid-cols-[auto,1fr] text-[0.7rem] bg-base-200 p-2 select-text"
 	>
 		{#each formattedDiff as line}
 			<div class="group contents">

@@ -7,6 +7,10 @@
 	/** @type {import("@evidence-dev/sdk/usql).Query | unknown}*/
 	export let data;
 
+	export let height = 200;
+
+	export let skeletonClass = undefined;
+
 	$: if (Query.isQuery(data)) {
 		data.fetch(); // Somebody wants this to load. Without this the query builder features don't work
 		unsub();
@@ -36,8 +40,8 @@
 	{/if}
 {:else if !_data || (!_data.dataLoaded && !_data.error)}
 	<slot name="skeleton" loaded={_data}>
-		<div class="w-full h-64">
-			<Skeleton />
+		<div class="w-full" style="height: {height}px">
+			<Skeleton class={skeletonClass} />
 		</div>
 	</slot>
 {:else if _data.error && $$slots.error}

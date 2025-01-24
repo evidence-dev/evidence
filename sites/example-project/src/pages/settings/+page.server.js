@@ -6,8 +6,10 @@ import {
 	loadSourcePlugins,
 	DatasourceSpecFileSchema,
 	Options,
-	writeSourceConfig
+	writeSourceConfig,
+	getDatasourceConfigAsEnvironmentVariables
 } from '@evidence-dev/sdk/plugins';
+import { log } from '@evidence-dev/sdk/logger';
 
 export const load = async () => {
 	if (dev) {
@@ -15,12 +17,18 @@ export const load = async () => {
 		const datasources = await loadSourcePlugins();
 
 		const plugins = Object.entries(datasources.bySource).reduce((acc, [name, v]) => {
-			acc[name] = { package: { package: v[0] }, options: v[1].options };
+			acc[name] = {
+				package: { package: v[0] },
+				options: v[1].options
+			};
 			return acc;
 		}, {});
 
 		return {
-			sources,
+			sources: sources.map((source) => ({
+				...source,
+				environmentVariables: getDatasourceConfigAsEnvironmentVariables(source)
+			})),
 			plugins
 		};
 	}
@@ -56,6 +64,7 @@ export const actions = {
 				updatedSource: await writeSourceConfig(opts, source)
 			};
 		} catch (e) {
+			log.debug(`error updating sources: ${e}`, { error: e });
 			return fail(500, e.message);
 		}
 	},

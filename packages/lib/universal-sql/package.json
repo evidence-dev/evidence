@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/universal-sql",
-	"version": "2.1.10",
+	"version": "2.2.6",
 	"description": "",
 	"keywords": [],
 	"author": "",
@@ -14,8 +14,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@duckdb/duckdb-wasm": "1.28.0",
-		"apache-arrow": "^13.0.0",
+		"@duckdb/duckdb-wasm": "1.29.0",
+		"apache-arrow": "17.0.0",
 		"chalk": "^5.2.0",
 		"cli-progress": "^3.12.0",
 		"lodash.chunk": "^4.2.0",

@@ -64,6 +64,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			return `
                 // Update external queries
                 if (import.meta?.hot) {
+					import.meta.hot.on("vite:beforeUpdate", () => {
+						// remove all prerendered queries
+						props.data = {}
+					});
+
                     import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
                         let errors = []
                         if (!queryId) errors.push("Malformed event: Missing queryId")

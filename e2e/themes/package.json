@@ -1,12 +1,12 @@
 {
   "name": "e2e-themes",
-  "version": "0.0.16",
+  "version": "0.0.25",
   "scripts": {
-    "build": "cross-env VITE_EVIDENCE_THEMES=true evidence build",
-    "build:strict": "cross-env VITE_EVIDENCE_THEMES=true evidence build:strict",
-    "dev": "cross-env VITE_EVIDENCE_THEMES=true evidence dev",
+    "build": "cross-env evidence build",
+    "build:strict": "cross-env evidence build:strict",
+    "dev": "cross-env evidence dev",
     "sources": "evidence sources",
-    "preview": "cross-env VITE_EVIDENCE_THEMES=true evidence preview",
+    "preview": "cross-env evidence preview",
     "test:preview": "playwright test",
     "test:dev": "cross-env DEV=true playwright test"
   },

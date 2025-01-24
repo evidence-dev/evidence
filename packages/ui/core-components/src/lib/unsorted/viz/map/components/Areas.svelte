@@ -4,13 +4,16 @@
 
 <script>
 	import { mapContextKey } from '../constants.js';
+	import { toBoolean } from '../../../../utils.js';
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import MapArea from './MapArea.svelte';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { nanoid } from 'nanoid';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { getThemeStores } from '../../../../themes/themes.js';
 	const inputs = getInputContext();
+
+	const { theme, resolveColor, resolveColorPalette } = getThemeStores();
 
 	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
 	const map = getContext(mapContextKey);
@@ -28,7 +31,7 @@
 	/** @type {string|undefined} */
 	export let value = undefined;
 	/** @type {string|undefined} */
-	export let valueFmt = undefined;
+	export let valueFmt = 'num0';
 	/** @type {number|undefined} */
 	export let min = undefined;
 	/** @type {number|undefined} */
@@ -44,6 +47,10 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	/**
 	 * Callback function for the area click event.
@@ -69,10 +76,16 @@
 
 	/** @type {string|undefined} */
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
+
 	/** @type {string} */
-	export let borderColor = uiColours.grey300;
+	export let borderColor = 'base-300';
+	$: borderColorStore = resolveColor(borderColor);
+
 	/** @type {string[]} */
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
+
 	/** @type {number|undefined} */
 	export let opacity = undefined;
 	if (opacity) {
@@ -109,10 +122,13 @@
 		selectedBorderWidth = 0.75;
 	}
 
-	/** @type {string|undefined} */
-	export let selectedColor = '#d42a2a';
 	/** @type {string} */
-	export let selectedBorderColor = '#ab1818';
+	export let selectedColor = 'accent';
+	$: selectedColorStore = resolveColor(selectedColor);
+
+	/** @type {string} */
+	export let selectedBorderColor = 'accent-content';
+	$: selectedBorderColorStore = resolveColor(selectedBorderColor);
 
 	/** @type {number|undefined} */
 	export let selectedOpacity = undefined;
@@ -194,31 +210,36 @@
 	let colorScale;
 	let geoJson = [];
 	let legendId = nanoid();
+	let colorPaletteFinal;
 
 	/**
 	 * Initialize the component.
+	 * @param {import('@evidence-dev/tailwind').Theme} theme
 	 * @returns {Promise<void>}
 	 */
-	async function init() {
+	async function init(theme) {
 		let initDataOptions = {
 			corordinates: [areaCol],
 			value,
 			checkInputs,
 			min,
 			max,
-			colorPalette,
+			colorPalette: $colorPaletteStore,
 			legendType,
 			valueFmt,
 			chartType,
 			legendId,
-			legend
+			legend,
+			theme
 		};
 		await data.fetch();
-		if (!color) {
-			({ values, colorPalette, legendType, colorScale } = await map.initializeData(
-				data,
-				initDataOptions
-			));
+		if (!$colorStore) {
+			({
+				values,
+				colorPalette: colorPaletteFinal,
+				legendType,
+				colorScale
+			} = await map.initializeData(data, initDataOptions));
 		}
 
 		await processAreas();
@@ -284,7 +305,7 @@
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
 {#await Promise.all([map.initPromise, data.fetch()]) then}
-	{#await init() then}
+	{#await init($theme) then}
 		{#each geoJson as feature (feature.properties[geoId])}
 			{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
 			<MapArea
@@ -292,23 +313,24 @@
 				{feature}
 				{item}
 				{name}
+				{ignoreZoom}
 				areaOptions={{
 					fillColor:
-						color ??
-						map.handleFillColor(item, value, values, colorPalette, colorScale) ??
+						$colorStore ??
+						map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme) ??
 						colorScale(item[value]).hex(),
 					fillOpacity: opacity,
 					opacity: opacity,
 					weight: borderWidth,
-					color: borderColor,
+					color: $borderColorStore,
 					className: `outline-none ${areaClass}`
 				}}
 				selectedAreaOptions={{
-					fillColor: selectedColor,
+					fillColor: $selectedColorStore,
 					fillOpacity: selectedOpacity,
 					opacity: selectedOpacity,
 					weight: selectedBorderWidth,
-					color: selectedBorderColor,
+					color: $selectedBorderColorStore,
 					className: `outline-none ${selectedAreaClass}`
 				}}
 				onclick={() => {

@@ -5,6 +5,7 @@
 <script>
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
+	import { toBoolean } from '../../../../utils.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import Point from './Point.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
@@ -15,7 +16,11 @@
 	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { getThemeStores } from '../../../../themes/themes.js';
 	import { nanoid } from 'nanoid';
+
+	const { theme, resolveColor, resolveColorPalette } = getThemeStores();
+
 	const inputs = getInputContext();
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
@@ -28,9 +33,9 @@
 	/** @type {string|undefined} */
 	export let value = undefined; // column with the value to be represented
 	/** @type {string|undefined} */
-	export let valueFmt = undefined;
+	export let valueFmt = 'num0';
 	/** @type {string|undefined} */
-	export let sizeFmt = undefined;
+	export let sizeFmt = 'num0';
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
 	/** @type {'categorical' | 'scalar' | undefined} */
@@ -40,6 +45,10 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	if (size) {
 		// if size was user-supplied
@@ -91,10 +100,15 @@
 
 	/** @type {string} */
 	export let borderColor = 'white';
+	$: borderColorStore = resolveColor(borderColor);
+
 	/** @type {string|undefined} */
 	export let color = undefined;
+	$: colorStore = resolveColor(color);
+
 	/** @type {string[] | undefined} */
 	export let colorPalette = undefined;
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
 	/** @type {number|undefined} */
 	export let opacity = undefined;
@@ -132,9 +146,12 @@
 	}
 
 	/** @type {string} */
-	export let selectedBorderColor = '#ab1818';
-	/** @type {string|undefined} */
-	export let selectedColor = '#d42a2a';
+	export let selectedColor = 'accent';
+	$: selectedColorStore = resolveColor(selectedColor);
+
+	/** @type {string} */
+	export let selectedBorderColor = 'accent-content';
+	$: selectedBorderColorStore = resolveColor(selectedBorderColor);
 
 	/** @type {number|undefined} */
 	export let selectedOpacity = undefined;
@@ -214,7 +231,7 @@
 		return Math.sqrt((newPoint / maxData) * maxSizeSq);
 	}
 
-	let values, colorScale, sizeExtents, maxData, maxSizeSq;
+	let values, colorScale, sizeExtents, maxData, maxSizeSq, colorPaletteFinal;
 
 	/** @type {'bubble' | 'points' }*/
 	export let pointStyle = 'points';
@@ -224,9 +241,10 @@
 
 	/**
 	 * Initialize the component.
+	 * @param {import('@evidence-dev/tailwind').Theme} theme
 	 * @returns {Promise<void>}
 	 */
-	async function init() {
+	async function init(theme) {
 		if (data) {
 			let initDataOptions = {
 				corordinates: [lat, long],
@@ -234,14 +252,19 @@
 				checkInputs,
 				min,
 				max,
-				colorPalette,
+				colorPalette: $colorPaletteStore,
 				legendType,
 				valueFmt,
 				chartType,
 				legendId,
-				legend
+				legend,
+				theme
 			};
-			({ values, colorPalette, colorScale } = await map.initializeData(data, initDataOptions));
+			({
+				values,
+				colorPalette: colorPaletteFinal,
+				colorScale
+			} = await map.initializeData(data, initDataOptions));
 
 			if (sizeCol) {
 				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
@@ -301,29 +324,32 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#await Promise.all([map.initPromise, data.fetch(), init()]) then}
+{#await Promise.all([map.initPromise, data.fetch(), init($theme)]) then}
 	{#each $data as item}
 		<Point
 			{map}
+			{ignoreZoom}
 			options={{
 				// kw note:
 				//need to clean this logic
-				fillColor: color ?? map.handleFillColor(item, value, values, colorPalette, colorScale),
+				fillColor:
+					$colorStore ??
+					map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme),
 				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
 				fillOpacity: opacity,
 				opacity: opacity,
 				weight: borderWidth,
-				color: borderColor,
+				color: $borderColorStore,
 				className: `outline-none ${pointClass}`,
 				markerType: pointStyle,
 				pane: legendId
 			}}
 			selectedOptions={{
-				fillColor: selectedColor,
+				fillColor: $selectedColorStore,
 				fillOpacity: selectedOpacity,
 				opacity: selectedOpacity,
 				weight: selectedBorderWidth,
-				color: selectedBorderColor,
+				color: $selectedBorderColorStore,
 				className: `outline-none ${selectedPointClass}`
 			}}
 			coords={[item[lat], item[long]]}

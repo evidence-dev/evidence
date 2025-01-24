@@ -27,6 +27,7 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import VirtualList from './Virtual.svelte';
 	import { toBoolean } from '../../../utils.js';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	const inputs = getInputContext();
 
@@ -64,6 +65,11 @@
 	 * @type {boolean}
 	 */
 	export let selectAllByDefault = false;
+
+	/**
+	 * @type {string | undefined}
+	 */
+	export let description = undefined;
 
 	// Input Query Props
 	export let value = 'value',
@@ -212,11 +218,11 @@
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
 		{#if hasQuery && $query.error}
 			<span
-				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-red-200 py-[1px] bg-red-50 rounded"
+				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>
-				<span class="inline font-sans font-medium text-xs text-red-600">error</span>
+				<span class="inline font-sans font-medium text-xs text-negative">error</span>
 				<span
-					class="hidden text-white font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
+					class="hidden font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-base-200 border border-base-300 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
 				>
 					{$query.error}
 				</span>
@@ -229,11 +235,14 @@
 						variant="outline"
 						role="combobox"
 						size="sm"
-						class="min-w-5 h-8 border"
+						class="min-w-5 h-8 border border-base-300"
 						aria-label={title ?? formatTitle(name)}
 					>
 						{#if title && !multiple}
 							{title}
+							{#if description}
+								<Info {description} className="pl-1" />
+							{/if}
 							{#if $selectedOptions.length > 0}
 								<Separator orientation="vertical" class="mx-2 h-4" />
 								{$selectedOptions[0].label}
@@ -242,21 +251,24 @@
 							{$selectedOptions[0].label}
 						{:else}
 							{title ?? formatTitle(name)}
+							{#if description}
+								<Info {description} className="pl-1" />
+							{/if}
 						{/if}
 						<Icon src={CaretSort} class="ml-2 h-4 w-4" />
 						{#if $selectedOptions.length > 0 && multiple}
 							<Separator orientation="vertical" class="mx-2 h-4" />
-							<Badge variant="secondary" class="rounded-sm px-1 font-normal sm:hidden">
+							<Badge variant="default" class="rounded-sm px-1 font-normal sm:hidden">
 								{$selectedOptions.length}
 							</Badge>
 							<div class="hidden space-x-1 sm:flex">
 								{#if $selectedOptions.length > 3}
-									<Badge variant="secondary" class="rounded-sm px-1 font-normal">
+									<Badge variant="default" class="rounded-sm px-1 font-normal">
 										{$selectedOptions.length} Selected
 									</Badge>
 								{:else}
 									{#each $selectedOptions as option}
-										<Badge variant="secondary" class="rounded-sm px-1 font-normal">
+										<Badge variant="default" class="rounded-sm px-1 font-normal">
 											{option.label}
 										</Badge>
 									{/each}
@@ -310,12 +322,12 @@
 							</Command.Group>
 							{#if multiple}
 								{#if !disableSelectAll}
-									<div class="-mx-1 h-px bg-gray-200" />
+									<div class="-mx-1 h-px bg-base-300" />
 									<Command.Item class="justify-center text-center" onSelect={selectAll}>
 										Select all
 									</Command.Item>
 								{/if}
-								<div class="-mx-1 h-px bg-gray-200" />
+								<div class="-mx-1 h-px bg-base-300" />
 								<Command.Item
 									disabled={$selectedOptions.length === 0}
 									class="justify-center text-center"

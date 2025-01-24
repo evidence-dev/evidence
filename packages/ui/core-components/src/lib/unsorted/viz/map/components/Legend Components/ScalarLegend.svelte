@@ -1,5 +1,8 @@
 <script>
 	import { fmt } from '@evidence-dev/component-utilities/formatting';
+	import { getThemeStores } from '../../../../../themes/themes.js';
+
+	const { theme } = getThemeStores();
 
 	/** @type {{ colorPalette: string[]; values: string[]; legendType: 'scalar', value: string }} */
 	export let legend;
@@ -23,13 +26,13 @@
 		: showLegendStyle} transition-[opacity, max-height, overflow-y] duration-[350ms] ease-in-out w-full"
 >
 	<div class="flex flex-wrap flex-col font-semibold">
-		<span>{legendTitle}</span>
+		<span class="text-xs">{legendTitle}</span>
 	</div>
 	<div class="flex flex-col justify-center overflow-hidden h-8 w-full">
 		<span
 			style="background: {legend.colorPalette
 				? `linear-gradient(to right, ${legend.colorPalette.join(', ')})`
-				: 'white'}"
+				: $theme.colors['base-100']}"
 			class="relative h-2 min-w-56"
 		>
 		</span>

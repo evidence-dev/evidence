@@ -1,28 +1,48 @@
 {
 	"name": "@evidence-dev/tailwind",
-	"version": "2.1.10",
+	"version": "3.0.5",
 	"description": "",
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
+	"scripts": {
+		"test": "vitest",
+		"check": "tsc --noEmit -p tsconfig.json"
+	},
 	"dependencies": {
 		"@evidence-dev/sdk": "workspace:^",
+		"chroma-js": "^2.4.2",
 		"lodash": "^4.17.21",
 		"tailwindcss": "^3.3.1",
 		"tw-colors": "^3.3.2",
 		"zod": "^3.23.8"
 	},
 	"exports": {
-		".": {
-			"import": "./index.js",
-			"require": "./index.js"
+		"./config": {
+			"import": "./src/config/config.js",
+			"require": "./src/config/config.js",
+			"types": "./src/config/config.js"
 		},
-		"./fonts.css": "./fonts.css",
+		"./vite-plugin": {
+			"import": "./src/vite-plugin/vite-plugin.js",
+			"require": "./src/vite-plugin/vite-plugin.js",
+			"types": "./src/vite-plugin/vite-plugin.js"
+		},
+		".": {
+			"types": "./src/types.d.ts"
+		},
+		"./fonts.css": "./src/fonts.css",
 		"./fonts/*": "./fonts/*"
 	},
-	"main": "index.js",
-	"source": "index.js",
+	"main": "src/index.js",
+	"source": "src/index.js",
+	"type": "module",
 	"devDependencies": {
-		"typescript": "^5.5.4"
+		"@types/chroma-js": "^2.4.4",
+		"@types/lodash": "^4.17.9",
+		"postcss": "^8.4.47",
+		"ts-essentials": "^10.0.2",
+		"typescript": "^5.5.4",
+		"vitest": "^2.1.3"
 	}
 }

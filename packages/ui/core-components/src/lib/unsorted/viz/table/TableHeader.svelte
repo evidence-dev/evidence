@@ -1,5 +1,6 @@
 <script>
 	import SortIcon from '../../ui/SortIcon.svelte';
+	import Info from '../../ui/Info.svelte';
 	import { safeExtractColumn } from './datatable.js';
 
 	export let rowNumbers = undefined;
@@ -16,6 +17,20 @@
 
 	/** @type {string | undefined} */
 	export let link = undefined;
+
+	function getWrapTitleAlignment(column, columnSummary) {
+		if (column.align) {
+			if (column.align === 'right') {
+				return 'justify-end';
+			} else if (column.align === 'center') {
+				return 'justify-center';
+			} else {
+				return 'justify-start';
+			}
+		} else if (safeExtractColumn(column, columnSummary).type === 'number') {
+			return 'justify-end';
+		}
+	}
 </script>
 
 <thead>
@@ -45,10 +60,10 @@
 						<th
 							role="columnheader"
 							colspan={column.span}
-							class="pt-1 align-bottom text-gray-900 {compact ? 'px-[1px]' : 'px-[2px]'}"
+							class="pt-1 align-bottom {compact ? 'px-[1px]' : 'px-[2px]'}"
 						>
 							<!-- Group header with dynamic colspan -->
-							<div class=" border-b-[1px] border-b-gray-600 whitespace-normal pb-[2px]">
+							<div class=" border-b-[1px] border-base-content-muted whitespace-normal pb-[2px]">
 								{column.colGroup}
 							</div>
 						</th>
@@ -63,7 +78,7 @@
 		{/if}
 	{/if}
 
-	<tr class="border-b border-gray-600">
+	<tr class="border-b border-base-content-muted/60">
 		{#if rowNumbers}
 			<th
 				role="columnheader"
@@ -88,13 +103,24 @@
 				style:vertical-align="bottom"
 				style:border-radius={sortObj.col === column.id ? '2px' : ''}
 			>
-				<div class="{wrapTitles || column.wrapTitle ? 'flex items-end' : ''} tracking-[-1.5px]">
+				<div
+					class="{wrapTitles || column.wrapTitle
+						? `flex items-end ${getWrapTitleAlignment(column, columnSummary)}`
+						: ''} tracking-[-1.5px]"
+				>
 					<span class="tracking-normal {wrapTitles || column.wrapTitle ? 'whitespace-normal' : ''}">
 						{column.title
 							? column.title
 							: formatColumnTitles
 								? safeExtractColumn(column, columnSummary).title
 								: safeExtractColumn(column, columnSummary).id}
+						{#if column.description}
+							<Info
+								description={column.description}
+								size="4"
+								className="max-w-3 whitespace-normal"
+							/>
+						{/if}
 					</span>
 					<span
 						class="tracking-normal {wrapTitles || column.wrapTitle ? 'ml-0.5' : ''} {compact
@@ -131,7 +157,7 @@
 	}
 
 	.index {
-		color: var(--grey-300);
+		@apply text-base-content-muted;
 		text-align: left;
 		max-width: -moz-min-content;
 		max-width: min-content;

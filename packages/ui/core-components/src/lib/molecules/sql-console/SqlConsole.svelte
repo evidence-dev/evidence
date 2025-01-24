@@ -13,6 +13,7 @@
 
 	import { Eye, EyeOff, PlayerPlay } from '@evidence-dev/component-utilities/icons';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import { getThemeStores } from '../../themes/themes.js';
 
 	/** @type {boolean} */
 	export let hideErrors = false;
@@ -73,19 +74,24 @@
 			};
 		}
 	);
+
+	const { theme } = getThemeStores();
 </script>
 
 <h1 class="markdown">SQL Console</h1>
 <section
-	class="px-0 py-2 bg-white flex flex-col gap-2 min-h-[8rem]"
+	class="px-0 py-2 flex flex-col gap-2 min-h-[8rem]"
 	on:click={() => editor?.focus()}
 	on:keydown={(e) => e.key === 'Enter' && editor?.focus()}
 	role="none"
 >
 	<div
 		bind:this={editor}
-		class="w-full relative rounded border border-gray-300 min-h-[8rem] cursor-text"
-		use:sqlConsole={consoleArgs}
+		class="w-full relative rounded border border-base-300 min-h-[8rem] cursor-text"
+		use:sqlConsole={{
+			...consoleArgs,
+			theme: $theme
+		}}
 	>
 		{#if !disabled}
 			<div class="absolute bottom-2 right-2 z-10 flex gap-2">
@@ -103,7 +109,7 @@
 				</Button>
 				<Button
 					size="sm"
-					variant="success"
+					variant="positive"
 					outline
 					icon={PlayerPlay}
 					on:click={() => {
@@ -117,7 +123,7 @@
 	</div>
 
 	{#if $data.error && !hideErrors && Boolean(currentQuery)}
-		<pre class="text-red-500 text-xs font-mono">{$data.error}</pre>
+		<pre class="text-negative text-xs font-mono">{$data.error}</pre>
 	{/if}
 
 	<!-- Result View -->

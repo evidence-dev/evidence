@@ -1,5 +1,98 @@
 # @evidence-dev/core-components
 
+## 5.0.5
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@4.0.5
+- @evidence-dev/tailwind@3.0.5
+
+## 5.0.4
+
+### Patch Changes
+
+- 0d6e938f4: fixed border regression in dateinput
+- 9324590f8: fixed downloadable image and data prop
+- 4e1829b38: Adjust spacing on mobile header
+- 700ea77f8: replace deprecated colors
+- b28d4cf25: Bug fix: mute the color of badges in multi-selects.
+- 1190af0f0: Update default layout
+- 8b8965525: Restyle Tabs component
+- 1dceaa2e0: Fix case sensitivity of sort in DataTable
+- 4d6d41dde: Expand click targets in sidebar level 3
+- c63773aa4: fixes print preview in dark mode
+- b058d924c: Removes console log
+- 87ee3d66c: Add third level pages to sidebar
+- 5ab144e70: Title and subtitle consistency across components
+- e6fa72acd: Minor styling updates
+- eda30637a: Remove groupDataPopulated flag
+- 70cb324ae: Styling changes for consistency
+- Updated dependencies [730321d90]
+  - @evidence-dev/component-utilities@4.0.4
+  - @evidence-dev/tailwind@3.0.4
+
+## 5.0.3
+
+### Patch Changes
+
+- a9edd3377: Feature: DateInput - supports single and ranged calendar date inputs
+- d8d7b456f: fix ssr'd defaultValue usage with DateRange
+- b1aa2410e: fixed datatable wraptitle alignment issue
+- 1a6a3568a: USMap and Column default colorScale is default
+- b92827ff6: Add lightLogo and darkLogo props to EvidenceDefaultLayout to show different custom logos in light/dark mode
+- 0b90a34f9: Improvments to ErrorChart
+- ee52c8188: Adds a 'Last 365 days' option to defaultValues
+- 0f09fff03: Sparkline tooltip theming
+- 706963a42: Upgrade nanoid to 5.0.9
+  - @evidence-dev/component-utilities@4.0.3
+  - @evidence-dev/tailwind@3.0.3
+
+## 5.0.2
+
+### Patch Changes
+
+- Updated dependencies [6115376f6]
+  - @evidence-dev/tailwind@3.0.2
+  - @evidence-dev/component-utilities@4.0.2
+
+## 5.0.1
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@4.0.1
+- @evidence-dev/tailwind@3.0.1
+
+## 5.0.0
+
+### Major Changes
+
+- e2c95d172: Theming & Appearances
+
+### Patch Changes
+
+- Updated dependencies [e2c95d172]
+- Updated dependencies [e2c95d172]
+  - @evidence-dev/component-utilities@4.0.0
+  - @evidence-dev/tailwind@3.0.0
+  - @evidence-dev/icons@1.0.2
+
+## 4.9.2
+
+### Patch Changes
+
+- @evidence-dev/component-utilities@3.2.23
+- @evidence-dev/tailwind@2.1.12
+
+## 4.9.1
+
+### Patch Changes
+
+- 4d1ecd921: series names can be formatted in Area, Bar, Bubble, Line charts and Scatter plot
+- 1f343b638: fixed table header chevron layout shift
+- b3465c45d: Upgrade @sveltejs/kit to 2.8.4
+  - @evidence-dev/component-utilities@3.2.22
+  - @evidence-dev/tailwind@2.1.11
+
 ## 4.9.0
 
 ### Minor Changes

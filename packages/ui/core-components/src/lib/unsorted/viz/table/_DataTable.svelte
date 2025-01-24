@@ -6,6 +6,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import ComponentTitle from '../core/ComponentTitle.svelte';
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
@@ -29,6 +30,9 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { resolveColor } = getThemeStores();
 
 	// Set up props store
 	let props = writable({});
@@ -39,6 +43,12 @@
 	export let queryID = undefined;
 	export let rows = 10; // number of rows to show
 	$: rows = Number.parseInt(rows);
+
+	/** @type {string | undefined}*/
+	export let title = undefined;
+
+	/** @type {string | undefined}*/
+	export let subtitle = undefined;
 
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
@@ -61,7 +71,10 @@
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
 	export let groupType = 'accordion'; // accordion | section
+
 	export let accordionRowColor = undefined;
+	$: accordionRowColorStore = resolveColor(accordionRowColor);
+
 	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 
 	if (groupType === 'section') {
@@ -72,7 +85,10 @@
 	$: subtotals = subtotals === 'true' || subtotals === true;
 
 	export let subtotalRowColor = undefined;
+	$: subtotalRowColorStore = resolveColor(subtotalRowColor);
+
 	export let subtotalFontColor = undefined;
+	$: subtotalFontColorStore = resolveColor(subtotalFontColor);
 
 	let groupToggleStates = {};
 
@@ -85,10 +101,6 @@
 	$: paginated = data.length > rows && !groupBy;
 
 	let hovering = false;
-
-	let marginTop = '1.5em';
-	let marginBottom = '1em';
-	let paddingBottom = '0em';
 
 	export let generateMarkdown = false;
 	$: generateMarkdown = generateMarkdown === 'true' || generateMarkdown === true;
@@ -107,7 +119,10 @@
 	$: totalRow = totalRow === 'true' || totalRow === true;
 
 	export let totalRowColor = undefined;
+	$: totalRowColorStore = resolveColor(totalRowColor);
+
 	export let totalFontColor = undefined;
+	$: totalFontColorStore = resolveColor(totalFontColor);
 
 	export let isFullPage = false;
 
@@ -124,7 +139,6 @@
 	// Add props to store to let child components access them
 	// ---------------------------------------------------------------------------------------
 	props.update((d) => {
-		groupDataPopulated = false;
 		return { ...d, data, columns: [] };
 	});
 
@@ -141,12 +155,16 @@
 	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
 
 	export let headerColor = undefined;
-	export let headerFontColor = 'var(--grey-900)';
+	$: headerColorStore = resolveColor(headerColor);
+
+	export let headerFontColor = undefined;
+	$: headerFontColorStore = resolveColor(headerFontColor);
 
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
 
-	export let backgroundColor = 'white';
+	export let backgroundColor = undefined;
+	$: backgroundColorStore = resolveColor(backgroundColor);
 
 	export let compact = undefined;
 
@@ -275,6 +293,56 @@
 	}
 
 	// ---------------------------------------------------------------------------------------
+	// GROUPED DATA
+	// ---------------------------------------------------------------------------------------
+
+	let groupedData = {};
+	let groupRowData = [];
+
+	$: if (data) {
+		groupDataPopulated = false;
+	}
+
+	$: if (!error) {
+		if (groupBy && !groupDataPopulated) {
+			groupedData = data.reduce((acc, row) => {
+				const groupName = row[groupBy];
+				if (!acc[groupName]) {
+					acc[groupName] = [];
+				}
+				acc[groupName].push(row);
+				return acc;
+			}, {});
+			groupDataPopulated = true;
+		}
+
+		// After groupedData is populated, calculate aggregations for groupRowData
+		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
+			acc[groupName] = {}; // Initialize groupRow object for this group
+
+			for (const col of $props.columns) {
+				const id = col.id;
+				const colType = columnSummary.find((d) => d.id === id)?.type;
+				const totalAgg = col.totalAgg;
+				const weightCol = col.weightCol;
+				const rows = groupedData[groupName];
+				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
+			}
+
+			return acc;
+		}, {});
+
+		// Update groupToggleStates only for new groups
+		const existingGroups = Object.keys(groupToggleStates);
+		for (const groupName of Object.keys(groupedData)) {
+			if (!existingGroups.includes(groupName)) {
+				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
+			}
+			// Existing states are untouched
+		}
+	}
+
+	// ---------------------------------------------------------------------------------------
 	// SORTING
 	// ---------------------------------------------------------------------------------------
 
@@ -300,13 +368,21 @@
 		const forceTopOfAscending = (val) =>
 			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
 
-		const comparator = (a, b) =>
-			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
-				? -1 * sortModifier
-				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
-					  a[column] > b[column]
-					? 1 * sortModifier
-					: 0;
+		const comparator = (a, b) => {
+			const valA = a[column];
+			const valB = b[column];
+
+			if (forceTopOfAscending(valA) && !forceTopOfAscending(valB)) return -1 * sortModifier;
+			if (forceTopOfAscending(valB) && !forceTopOfAscending(valA)) return 1 * sortModifier;
+
+			// Ensure values are strings for case-insensitive comparison
+			const normalizedA = typeof valA === 'string' ? valA.toLowerCase() : valA;
+			const normalizedB = typeof valB === 'string' ? valB.toLowerCase() : valB;
+
+			if (normalizedA < normalizedB) return -1 * sortModifier;
+			if (normalizedA > normalizedB) return 1 * sortModifier;
+			return 0;
+		};
 
 		if (groupBy) {
 			const sortedGroupedData = {};
@@ -429,52 +505,6 @@
 		$props.columns.map((d) => d.id)
 	);
 
-	// ---------------------------------------------------------------------------------------
-	// GROUPED DATA
-	// ---------------------------------------------------------------------------------------
-
-	let groupedData = {};
-	let groupRowData = [];
-
-	$: if (!error) {
-		if (groupBy && !groupDataPopulated) {
-			groupedData = data.reduce((acc, row) => {
-				const groupName = row[groupBy];
-				if (!acc[groupName]) {
-					acc[groupName] = [];
-				}
-				acc[groupName].push(row);
-				return acc;
-			}, {});
-			groupDataPopulated = true;
-		}
-
-		// After groupedData is populated, calculate aggregations for groupRowData
-		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
-			acc[groupName] = {}; // Initialize groupRow object for this group
-
-			for (const col of $props.columns) {
-				const id = col.id;
-				const colType = columnSummary.find((d) => d.id === id)?.type;
-				const totalAgg = col.totalAgg;
-				const weightCol = col.weightCol;
-				const rows = groupedData[groupName];
-				acc[groupName][id] = aggregateColumn(rows, id, totalAgg, colType, weightCol);
-			}
-
-			return acc;
-		}, {});
-
-		// Update groupToggleStates only for new groups
-		const existingGroups = Object.keys(groupToggleStates);
-		for (const groupName of Object.keys(groupedData)) {
-			if (!existingGroups.includes(groupName)) {
-				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
-			}
-			// Existing states are untouched
-		}
-	}
-
 	let fullscreen = false;
 	/** @type {number} */
 	let innerHeight;
@@ -526,24 +556,25 @@
 	<div
 		data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
 		role="none"
-		class="table-container"
+		class="table-container mt-2 {paginated ? 'mb-5' : 'mb-2'}"
 		transition:slide|local
-		style:margin-top={marginTop}
-		style:margin-bottom={marginBottom}
-		style:padding-bottom={paddingBottom}
 		on:mouseenter={() => (hovering = true)}
 		on:mouseleave={() => (hovering = false)}
 	>
+		{#if title || subtitle}
+			<ComponentTitle {title} {subtitle} />
+		{/if}
+
 		{#if search}
 			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
 		{/if}
 
-		<div class="scrollbox" style:background-color={backgroundColor}>
+		<div class="scrollbox pretty-scrollbar" style:background-color={$backgroundColorStore}>
 			<table>
 				<TableHeader
 					{rowNumbers}
-					{headerColor}
-					{headerFontColor}
+					headerColor={$headerColorStore}
+					headerFontColor={$headerFontColorStore}
 					{orderedColumns}
 					{columnSummary}
 					{compact}
@@ -572,7 +603,7 @@
 									toggled={groupToggleStates[groupName]}
 									on:toggle={handleToggle}
 									{columnSummary}
-									rowColor={accordionRowColor}
+									rowColor={$accordionRowColorStore}
 									{rowNumbers}
 									{subtotals}
 									{compact}
@@ -616,8 +647,8 @@
 										{groupName}
 										currentGroupData={groupedData[groupName]}
 										{columnSummary}
-										rowColor={subtotalRowColor}
-										fontColor={subtotalFontColor}
+										rowColor={$subtotalRowColorStore}
+										fontColor={$subtotalFontColorStore}
 										{groupType}
 										{groupBy}
 										{compact}
@@ -645,8 +676,8 @@
 							{data}
 							{rowNumbers}
 							{columnSummary}
-							rowColor={totalRowColor}
-							fontColor={totalFontColor}
+							rowColor={$totalRowColorStore}
+							fontColor={$totalFontColorStore}
 							{groupType}
 							{compact}
 							{orderedColumns}
@@ -733,7 +764,7 @@
 				{/if}
 			</div>
 		{:else}
-			<div class="table-footer">
+			<div class="table-footer mt-3">
 				{#if downloadable}
 					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
 				{/if}
@@ -758,10 +789,10 @@
 		{/if}
 	{/if}
 {:else}
-	<ErrorChart {error} chartType="Data Table" />
+	<ErrorChart {error} title="Data Table" />
 {/if}
 
-<style>
+<style lang="postcss">
 	.table-container {
 		font-size: 9.5pt;
 	}
@@ -769,46 +800,7 @@
 	.scrollbox {
 		width: 100%;
 		overflow-x: auto;
-		/* border-bottom: 1px solid var(--grey-200);    */
 		scrollbar-width: thin;
-		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
-	}
-
-	:root {
-		--scrollbar-track-color: transparent;
-		--scrollbar-color: rgba(0, 0, 0, 0.2);
-		--scrollbar-active-color: rgba(0, 0, 0, 0.4);
-		--scrollbar-size: 0.75rem;
-		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
-	}
-
-	.scrollbox::-webkit-scrollbar {
-		height: var(--scrollbar-size);
-		width: var(--scrollbar-size);
-	}
-
-	.scrollbox::-webkit-scrollbar-track {
-		background-color: var(--scrollbar-track-color);
-	}
-
-	.scrollbox::-webkit-scrollbar-thumb {
-		background-color: var(--scrollbar-color);
-		border-radius: 7px;
-		background-clip: padding-box;
-	}
-
-	.scrollbox::-webkit-scrollbar-thumb:hover {
-		background-color: var(--scrollbar-active-color);
-	}
-
-	.scrollbox::-webkit-scrollbar-thumb:vertical {
-		min-height: var(--scrollbar-minlength);
-		border: 3px solid transparent;
-	}
-
-	.scrollbox::-webkit-scrollbar-thumb:horizontal {
-		min-width: var(--scrollbar-minlength);
-		border: 3px solid transparent;
 	}
 
 	table {
@@ -820,25 +812,24 @@
 
 	.page-changer {
 		padding: 0;
-		color: var(--grey-400);
 		height: 1.1em;
 		width: 1.1em;
 	}
 
 	.pagination {
+		@apply text-base-content-muted;
 		font-size: 12px;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
 		height: 2em;
 		font-family: var(--ui-font-family);
-		color: var(--grey-500);
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		user-select: none;
 		text-align: right;
 		margin-top: 0.5em;
-		margin-bottom: 1.8em;
+		margin-bottom: 0;
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -858,13 +849,13 @@
 	}
 
 	.page-changer.hovering {
-		color: var(--blue-600);
+		color: theme('colors.primary');
 		transition: color 200ms;
 	}
 
 	.page-changer:disabled {
+		@apply text-base-content-muted/25;
 		cursor: auto;
-		color: var(--grey-300);
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		user-select: none;
@@ -877,6 +868,7 @@
 	}
 
 	.page-input {
+		@apply bg-base-200 text-base-content-muted;
 		box-sizing: content-box;
 		text-align: center;
 		padding: 0.25em 0.5em;
@@ -884,14 +876,12 @@
 		border: 1px solid transparent;
 		border-radius: 4px;
 		font-size: 12px;
-		color: var(--grey-500);
 	}
 
 	.table-footer {
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		margin: 10px 0px;
 		font-size: 12px;
 		height: 9px;
 	}
@@ -911,23 +901,23 @@
 	}
 
 	.page-input.hovering {
-		border: 1px solid var(--grey-200);
+		border: 1px solid var(--base-300);
 	}
 
 	.page-input.error {
-		border: 1px solid var(--red-600);
+		border: 1px solid var(--negative);
 	}
 
 	.page-input::-moz-placeholder {
-		color: var(--grey-500);
+		@apply text-base-content-muted;
 	}
 
 	.page-input::placeholder {
-		color: var(--grey-500);
+		@apply text-base-content-muted;
 	}
 
 	button:enabled > .page-icon:hover {
-		color: var(--blue-800);
+		filter: brightness(0.8);
 	}
 
 	*:focus {
@@ -936,29 +926,29 @@
 
 	::-moz-placeholder {
 		/* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: var(--grey-400);
+		@apply text-base-content-muted;
 		opacity: 1; /* Firefox */
 	}
 
 	::placeholder {
 		/* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: var(--grey-400);
+		@apply text-base-content-muted;
 		opacity: 1; /* Firefox */
 	}
 
 	:-ms-input-placeholder {
 		/* Internet Explorer 10-11 */
-		color: var(--grey-400);
+		@apply text-base-content-muted;
 	}
 
 	::-ms-input-placeholder {
 		/* Microsoft Edge */
-		color: var(--grey-400);
+		@apply text-base-content-muted;
 	}
 
 	.noresults {
 		display: none;
-		color: var(--grey-400);
+		@apply text-base-content-muted;
 		text-align: center;
 		margin-top: 5px;
 	}

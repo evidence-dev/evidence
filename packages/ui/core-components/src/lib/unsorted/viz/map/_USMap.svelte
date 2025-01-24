@@ -9,12 +9,15 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import {
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
+	import { getThemeStores } from '../../../themes/themes.js';
+	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
+
+	const { theme, resolveColorPalette, resolveColorScale } = getThemeStores();
 
 	export let data = undefined;
 	export let queryID = undefined;
@@ -71,63 +74,15 @@
 		}
 	}
 
-	// color palettes
+	export let colorPalette = undefined;
+	$: colorPalette = checkDeprecatedColor('USMap', 'colorPalette', colorPalette);
+	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
-	export let colorPalette = undefined; // custom color palette
+	export let colorScale = 'default';
+	$: colorScale = checkDeprecatedColor('USMap', 'colorScale', colorScale);
+	$: colorScaleStore = resolveColorScale(colorScale);
 
-	export let colorScale = 'blue';
-	let colorArray;
-	$: if (colorPalette) {
-		colorArray = [...colorPalette];
-	} else if (colorScale === 'green') {
-		colorArray = [
-			'#f7fcfd',
-			'#e5f5f9',
-			'#ccece6',
-			'#99d8c9',
-			'#66c2a4',
-			'#41ae76',
-			'#238b45',
-			'#006d2c',
-			'#00441b'
-		];
-	} else if (colorScale === 'blue') {
-		colorArray = [
-			'#f7fbff',
-			'#deebf7',
-			'#c6dbef',
-			'#9ecae1',
-			'#6baed6',
-			'#4292c6',
-			'#2171b5',
-			'#08519c',
-			'#08306b'
-		];
-	} else if (colorScale === 'red') {
-		colorArray = [
-			'#fff5f0',
-			'#fee0d2',
-			'#fcbba1',
-			'#fc9272',
-			'#fb6a4a',
-			'#ef3b2c',
-			'#cb181d',
-			'#a50f15',
-			'#67000d'
-		];
-	} else if (colorScale === 'bluegreen') {
-		colorArray = [
-			'#f7fcf0',
-			'#e0f3db',
-			'#ccebc5',
-			'#a8ddb5',
-			'#7bccc4',
-			'#4eb3d3',
-			'#2b8cbe',
-			'#0868ac',
-			'#084081'
-		];
-	}
+	$: colorArray = $colorPaletteStore ?? $colorScaleStore;
 
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
@@ -204,14 +159,14 @@
 				itemGap: 7,
 				textStyle: {
 					fontSize: 14,
-					color: uiColours.grey800
+					color: $theme.colors['base-content']
 				},
 				subtextStyle: {
 					fontSize: 13,
-					color: uiColours.grey700,
+					color: $theme.colors['base-content-muted'],
 					overflow: 'break'
 				},
-				top: '0%'
+				top: '1px'
 			},
 			textStyle: {
 				fontFamily: 'sans-serif'
@@ -240,12 +195,12 @@
 				padding: 6,
 				borderRadius: 4,
 				borderWidth: 1,
-				borderColor: uiColours.grey400,
-				backgroundColor: 'white',
+				borderColor: $theme.colors['base-300'],
+				backgroundColor: $theme.colors['base-100'],
 				extraCssText:
 					'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 				textStyle: {
-					color: uiColours.grey900,
+					color: $theme.colors['base-content'],
 					fontSize: 12,
 					fontWeight: 400
 				},
@@ -262,14 +217,17 @@
 				handleSize: '130%',
 				orient: 'horizontal',
 				top: (title ? 25 : 0) + (subtitle ? 20 : 0),
+				textStyle: {
+					color: $theme.colors['base-content-muted']
+				},
 				handleStyle: {
-					borderColor: uiColours.grey200
+					borderColor: $theme.colors['base-300']
 				},
 				inRange: {
 					color: colorArray
 				},
 				outOfRange: {
-					color: uiColours.grey100
+					color: $theme.colors['base-300']
 				},
 				calculable: filter,
 				text: filter
@@ -291,25 +249,25 @@
 					map: 'US',
 					nameProperty: nameProperty,
 					itemStyle: {
-						borderColor: uiColours.grey400,
-						areaColor: uiColours.grey100
+						borderColor: $theme.colors['base-300'],
+						areaColor: $theme.colors['base-200']
 					},
 					emphasis: {
 						itemStyle: {
-							areaColor: uiColours.grey200
+							areaColor: $theme.colors['base-200']
 						},
 						label: {
 							show: true,
-							color: uiColours.grey900
+							color: $theme.colors['base-content']
 						}
 					},
 					select: {
 						disabled: false,
 						itemStyle: {
-							areaColor: uiColours.grey200
+							areaColor: $theme.colors['base-300']
 						},
 						label: {
-							color: uiColours.grey900
+							color: $theme.colors['base-content']
 						}
 					},
 					data: mapData
@@ -346,5 +304,5 @@
 		<InvisibleLinks {data} {link} />
 	{/if}
 {:else}
-	<ErrorChart {error} {chartType} />
+	<ErrorChart {error} title={chartType} />
 {/if}

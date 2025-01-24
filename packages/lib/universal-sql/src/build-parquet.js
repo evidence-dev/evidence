@@ -34,6 +34,17 @@ function convertArrayToVector(column, rawValues) {
 		case 'string':
 			return vectorFromArray(rawValues, new Utf8());
 		case 'date':
+			if (!rawValues.some((v) => v !== null)) {
+				// All null date columns error out, so we have to do this
+				// https://github.com/evidence-dev/evidence/issues/2897
+				// separate reason than the bool version
+				console.warn(
+					chalk.yellow(
+						`\nWarning: Column "${column.name}" (type Date) contains only null values so it has been cast to Float64`
+					)
+				);
+				return vectorFromArray(rawValues, new Float64());
+			}
 			// TODO: What gives with timezones
 			return vectorFromArray(rawValues, new TimestampMillisecond());
 		case 'boolean':
@@ -170,13 +181,13 @@ export async function buildMultipartParquet(
 	await initDB();
 
 	const outputFilepath = path.join(outDir, outputFilename);
-	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
 	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
 
 	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
-	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
+	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD', USE_TMP_FILE false);`;
 
+	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 	await query(copy);
 
 	await fs.chmod(outputFilepath, 0o644);

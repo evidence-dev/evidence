@@ -12,10 +12,15 @@
 		@apply select-none;
 	}
 
+	/* Default border color */
+	* {
+		@apply border-base-300;
+	}
+
 	/* osx style scrollbars */
 	.pretty-scrollbar {
 		scrollbar-width: thin;
-		scrollbar-color: theme('colors.gray.200') transparent;
+		scrollbar-color: theme('colors.base-300') transparent;
 	}
 
 	.pretty-scrollbar::-webkit-scrollbar {
@@ -33,7 +38,7 @@
 	}
 
 	.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
-		background-color: theme('colors.gray.200');
+		background-color: theme('colors.base-200');
 	}
 
 	/* hidden scrollbar */
@@ -55,7 +60,7 @@
 
 @layer components {
 	.markdown {
-		@apply leading-normal font-sans text-base antialiased text-gray-700;
+		@apply leading-normal font-sans text-base antialiased;
 	}
 
 	img.markdown {
@@ -63,7 +68,7 @@
 	}
 
 	article.markdown a.markdown {
-		@apply text-blue-600 underline decoration-transparent hover:decoration-blue-600  transition-all duration-200 !important;
+		@apply text-primary underline decoration-transparent hover:decoration-primary  transition-all duration-200 !important;
 	}
 
 	p.markdown,
@@ -119,13 +124,6 @@
 			}
 		}
 	}
-	ol.markdown > li.markdown::marker {
-		@apply text-gray-800;
-	}
-
-	ul.markdown > li.markdown::marker {
-		@apply text-gray-800;
-	}
 
 	h1.markdown,
 	h2.markdown,
@@ -133,7 +131,7 @@
 	h4.markdown,
 	h5.markdown,
 	h6.markdown {
-		@apply scroll-mt-14 break-inside-avoid font-sans;
+		@apply scroll-mt-14 break-inside-avoid font-sans text-base-heading;
 		/* ensure that table of contents links scroll with room for the header */
 	}
 
@@ -143,39 +141,39 @@
 	}
 
 	h1.title {
-		@apply mt-5 mb-1 text-2xl tracking-wide font-bold text-gray-800 break-inside-avoid;
+		@apply mt-5 mb-1 text-2xl tracking-wide font-bold break-inside-avoid;
 	}
 
 	h1.markdown {
-		@apply mt-5 mb-1 text-2xl tracking-wide font-bold text-gray-800 break-inside-avoid;
+		@apply mt-5 mb-1 text-2xl tracking-wide font-bold break-inside-avoid;
 	}
 
 	h2.markdown {
-		@apply mt-3 mb-1 text-xl font-semibold text-gray-800;
+		@apply mt-3 mb-1 text-xl font-semibold;
 	}
 
 	h3.markdown {
-		@apply mt-2 mb-1 font-semibold text-base text-gray-800;
+		@apply mt-2 mb-1 font-semibold text-base;
 	}
 
 	h4.markdown {
-		@apply mt-1 text-sm  font-semibold text-gray-800;
+		@apply mt-1 text-sm  font-semibold;
 	}
 
 	h5.markdown {
-		@apply mt-1 text-xs font-semibold text-gray-800;
+		@apply mt-1 text-xs font-semibold;
 	}
 
 	h6.markdown {
-		@apply mt-1 text-xs text-gray-950;
+		@apply mt-1 text-xs;
 	}
 
 	hr.markdown {
-		@apply h-px my-8 max-w-xl mx-auto bg-gray-200 border-0;
+		@apply h-px my-8 max-w-xl mx-auto bg-base-300 border-0;
 	}
 
 	code.markdown {
-		@apply font-mono text-gray-800 text-[0.875em] bg-gray-50 border rounded px-1 select-all py-0.5;
+		@apply font-mono text-[0.875em] bg-base-200 border border-base-300 rounded px-1 select-all py-0.5;
 	}
 
 	form code {
@@ -183,11 +181,23 @@
 	}
 
 	blockquote.markdown {
-		@apply border-l-4 border-gray-300 pl-3 my-8;
+		@apply bg-base-200 border-l-4 border-base-content-muted pl-3 my-8 py-2;
+	}
+
+	blockquote.markdown > blockquote.markdown {
+		@apply m-0;
+	}
+
+	blockquote.markdown > :first-child {
+		@apply mt-0;
+	}
+
+	blockquote.markdown > :last-child {
+		@apply mb-0;
 	}
 
 	blockquote.markdown * {
-		@apply text-gray-500;
+		@apply text-base-content-muted;
 	}
 	/* Ensure size and color are maintained for bold, italic, strikethrough */
 	strong.markdown {
@@ -211,11 +221,11 @@
 	}
 
 	th.markdown {
-		@apply text-sm text-gray-800 font-medium border-b border-gray-800 py-0 px-2 text-ellipsis overflow-hidden;
+		@apply text-sm font-medium border-b border-gray-800 py-0 px-2 text-ellipsis overflow-hidden;
 	}
 
 	td.markdown {
-		@apply text-sm text-gray-800 py-1 px-2 overflow-hidden text-ellipsis;
+		@apply text-sm py-1 px-2 overflow-hidden text-ellipsis;
 	}
 }
 
@@ -227,63 +237,74 @@
 	--ui-font-family: theme(fontFamily.sans);
 	--ui-font-family-compact: theme(fontFamily.sans);
 
-	/* Colour System */
-	--blue-50: theme(colors.blue.50);
-	--blue-100: theme(colors.blue.100);
-	--blue-200: theme(colors.blue.200);
-	--blue-300: theme(colors.blue.300);
-	--blue-400: theme(colors.blue.400);
-	--blue-500: theme(colors.blue.500);
-	--blue-600: theme(colors.blue.600);
-	--blue-700: theme(colors.blue.700);
-	--blue-800: theme(colors.blue.800);
-	--blue-900: theme(colors.blue.900);
-	--blue-999: theme(colors.blue.950);
-	--blue-link: theme(colors.blue.700);
-	--green-50: theme(colors.green.50);
-	--green-100: theme(colors.green.100);
-	--green-200: theme(colors.green.200);
-	--green-300: theme(colors.green.300);
-	--green-400: theme(colors.green.400);
-	--green-500: theme(colors.green.500);
-	--green-600: theme(colors.green.600);
-	--green-700: theme(colors.green.700);
-	--green-800: theme(colors.green.800);
-	--green-900: theme(colors.green.900);
-	--green-999: theme(colors.green.950);
-	--grey-50: theme(colors.gray.50);
-	--grey-100: theme(colors.gray.100);
-	--grey-200: theme(colors.gray.200);
-	--grey-300: theme(colors.gray.300);
-	--grey-400: theme(colors.gray.400);
-	--grey-500: theme(colors.gray.500);
-	--grey-600: theme(colors.gray.600);
-	--grey-700: theme(colors.gray.700);
-	--grey-800: theme(colors.gray.800);
-	--grey-900: theme(colors.gray.900);
-	--grey-999: theme(colors.gray.950);
-	--red-50: theme(colors.red.50);
-	--red-100: theme(colors.red.100);
-	--red-200: theme(colors.red.200);
-	--red-300: theme(colors.red.300);
-	--red-400: theme(colors.red.400);
-	--red-500: theme(colors.red.500);
-	--red-600: theme(colors.red.600);
-	--red-700: theme(colors.red.700);
-	--red-800: theme(colors.red.800);
-	--red-900: theme(colors.red.900);
-	--red-999: theme(colors.red.950);
-	--yellow-50: theme(colors.yellow.50);
-	--yellow-100: theme(colors.yellow.100);
-	--yellow-200: theme(colors.yellow.200);
-	--yellow-300: theme(colors.yellow.300);
-	--yellow-400: theme(colors.yellow.400);
-	--yellow-500: theme(colors.yellow.500);
-	--yellow-600: theme(colors.yellow.600);
-	--yellow-700: theme(colors.yellow.700);
-	--yellow-800: theme(colors.yellow.800);
-	--yellow-900: theme(colors.yellow.900);
-	--yellow-999: theme(colors.yellow.950);
+	/*
+		!! DEPRECATED !!
+		Kept for backwards compatibility with users projects
+	*/
+	--blue-50: #eff6ff;
+	--blue-100: #dbeafe;
+	--blue-200: #bfdbfe;
+	--blue-300: #93c5fd;
+	--blue-400: #60a5fa;
+	--blue-500: #3b82f6;
+	--blue-600: #2563eb;
+	--blue-700: #1d4ed8;
+	--blue-800: #1e40af;
+	--blue-900: #1e3a8a;
+	--blue-999: #172554;
+	--blue-link: var(--blue-700);
+
+	--green-50: #f0fdf4;
+	--green-100: #dcfce7;
+	--green-200: #bbf7d0;
+	--green-300: #86efac;
+	--green-400: #4ade80;
+	--green-500: #22c55e;
+	--green-600: #16a34a;
+	--green-700: #15803d;
+	--green-800: #166534;
+	--green-900: #14532d;
+	--green-999: #052e16;
+
+	--grey-50: #f9fafb;
+	--grey-100: #f3f4f6;
+	--grey-200: #e5e7eb;
+	--grey-300: #d1d5db;
+	--grey-400: #9ca3af;
+	--grey-500: #6b7280;
+	--grey-600: #4b5563;
+	--grey-700: #374151;
+	--grey-800: #1f2937;
+	--grey-900: #111827;
+	--grey-999: #030712;
+
+	--red-50: #fef2f2;
+	--red-100: #fee2e2;
+	--red-200: #fecaca;
+	--red-300: #fca5a5;
+	--red-400: #f87171;
+	--red-500: #ef4444;
+	--red-600: #dc2626;
+	--red-700: #b91c1c;
+	--red-800: #991b1b;
+	--red-900: #7f1d1d;
+	--red-999: #450a0a;
+
+	--yellow-50: #fefce8;
+	--yellow-100: #fef9c3;
+	--yellow-200: #fef08a;
+	--yellow-300: #fde047;
+	--yellow-400: #facc15;
+	--yellow-500: #eab308;
+	--yellow-600: #ca8a04;
+	--yellow-700: #a16207;
+	--yellow-800: #854d0e;
+	--yellow-900: #713f12;
+	--yellow-999: #422006;
+}
+
+[data-theme='dark'] .__evidence-leaflet-tile-layer__ {
+	filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
 @media print {

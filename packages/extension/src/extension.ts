@@ -34,7 +34,6 @@ import {
 	dependencyVersion,
 	getManifestUri,
 	getManifest,
-	isUSQL,
 	hasManifest
 } from './utils/jsonUtils';
 import { Settings, getConfig, updateProjectContext } from './config';
@@ -56,7 +55,6 @@ import {
 export const enum Context {
 	isNewLine = 'evidence.isNewLine',
 	isPagesDirectory = 'evidence.isPagesDirectory',
-	isNonLegacyProject = 'evidence.isNonLegacyProject',
 	slashCommands = 'evidence.slashCommands',
 	isSQLContext = 'evidence.isSQLContext',
 	isComponentContext = 'evidence.isComponentContext'
@@ -123,38 +121,34 @@ function isPagesDirectory() {
 
 async function initializeSchemaViewer(context: ExtensionContext) {
 	try {
-		if (await isUSQL()) {
-			const manifestUri = await getManifestUri();
-			const workspaceFolder = workspace.workspaceFolders?.[0];
-			const packageJsonFolder = await getPackageJsonFolder();
-			const manifestPath = workspaceFolder
-				? path.join(
-						workspaceFolder.uri.fsPath,
-						packageJsonFolder ?? '',
-						'.evidence',
-						'template',
-						'static',
-						'data',
-						'manifest.json'
-					)
-				: '';
+		const manifestUri = await getManifestUri();
+		const workspaceFolder = workspace.workspaceFolders?.[0];
+		const packageJsonFolder = await getPackageJsonFolder();
+		const manifestPath = workspaceFolder
+			? path.join(
+					workspaceFolder.uri.fsPath,
+					packageJsonFolder ?? '',
+					'.evidence',
+					'template',
+					'static',
+					'data',
+					'manifest.json'
+				)
+			: '';
 
-			const manifestWatcher = workspace.createFileSystemWatcher(
-				manifestUri ? manifestUri.fsPath : manifestPath
-			);
-			registerCopyCommands(context);
+		const manifestWatcher = workspace.createFileSystemWatcher(
+			manifestUri ? manifestUri.fsPath : manifestPath
+		);
+		registerCopyCommands(context);
 
-			const schemaViewProvider = new SchemaViewProvider(manifestUri ?? Uri.file(manifestPath));
-			window.registerTreeDataProvider('schemaView', schemaViewProvider);
+		const schemaViewProvider = new SchemaViewProvider(manifestUri ?? Uri.file(manifestPath));
+		window.registerTreeDataProvider('schemaView', schemaViewProvider);
 
-			manifestWatcher.onDidChange(() => schemaViewProvider.refresh());
-			manifestWatcher.onDidCreate(() => schemaViewProvider.refresh());
-			manifestWatcher.onDidDelete(() => schemaViewProvider.refresh());
+		manifestWatcher.onDidChange(() => schemaViewProvider.refresh());
+		manifestWatcher.onDidCreate(() => schemaViewProvider.refresh());
+		manifestWatcher.onDidDelete(() => schemaViewProvider.refresh());
 
-			context.subscriptions.push(manifestWatcher);
-
-			commands.executeCommand(Commands.SetContext, Context.isNonLegacyProject, await isUSQL());
-		}
+		context.subscriptions.push(manifestWatcher);
 	} catch (error) {
 		console.error('Error initializing schema viewer:', error);
 	}

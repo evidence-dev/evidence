@@ -7,7 +7,7 @@ description: Evidence supports most markdown syntax. Below are some of the most 
 
 # Markdown Reference
 
-Evidence supports most markdown syntax. Below are some of the most common markdown features. For more details, check out [Markdown Guide](https://www.markdownguide.org/cheat-sheet/).
+Evidence supports most markdown syntax. Below are some of the most common markdown features. For more details, check out [Markdown Guide](https://www.markdownguide.org/cheat-sheet).
 
 ## Text Paragraphs
 
@@ -59,7 +59,7 @@ _Italic_ text is wrapped in single asterisks
 ```markdown
 [External link](https://google.com)
 
-[Internal link](another/page/)
+[Internal link](/another/page)
 ```
 
 ## Images
@@ -74,7 +74,7 @@ _Italic_ text is wrapped in single asterisks
 
 Evidence looks for images in the `/static` folder in the root of your project. Create it if it doesn't exist.
 
-```
+```bash
 +-- pages/
 |   `-- index.md
 `-- static/
@@ -123,7 +123,7 @@ for (name in names) {
 | Row 2    | Row 2    | Row 2    |
 ```
 
-To display data in a table, use a [Data Table](/components/data-table) instead.
+To display data in a table, use a [Data Table](/components/data/data-table) instead.
 
 ## Blockquotes
 
@@ -134,6 +134,25 @@ To display data in a table, use a [Data Table](/components/data-table) instead.
 >
 > > And can be nested
 ```
+
+> This is a blockquote
+>
+> It can span multiple lines
+>
+> > And can be nested
+
+
+## Horizontal Rule
+
+```markdown
+Below is a horizontal rule
+
+---
+```
+
+Below is a horizontal rule
+
+---
 
 ## Frontmatter
 
@@ -153,7 +172,7 @@ title: Evidence Docs
 ---
 ```
 
-You can put whatever data you would like here, and it uses a [yaml syntax](https://yaml.org/), but some properties are special:
+You can put whatever data you would like here, and it uses a [yaml syntax](https://yaml.org), but some properties are special:
 
 <PropListing
     name="title"
@@ -213,8 +232,40 @@ E.g.
 `breadcrumb: &quot;select customer_name as breadcrumb from customers_table where customer_id = $&#123params.customer_id&#125&quot;`
 
 </PropListing>
+<PropListing
+    name="hide_header"
+    description="If true, header will not be shown on the page"
+    options={['true', 'false']}
+/>
+<PropListing
+    name="hide_toc"
+    description="If true, table of contents will not be shown on the page"
+    options={['true', 'false']}
+/>
+<PropListing
+    name="hide_breadcrumbs"
+    description="If true, breadcrumbs will not be shown on the page"
+    options={['true', 'false']}
+/>
+<PropListing
+    name="full_width"
+    description="Sets the width of the app content to the full width of the screen."
+    options={['true', 'false']}
+/>
+<PropListing
+    name="max_width"
+    options="Any number"
+    defaultValue=""
+>
 
-Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
+Sets the width of the app content in pixels. The default layout is about 1,280 px wide.
+
+</PropListing>
+
+
+
+
+Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax#expressions) on the page.
 
 ## Partials
 

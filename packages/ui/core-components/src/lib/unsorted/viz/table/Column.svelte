@@ -5,6 +5,10 @@
 <script>
 	import { getContext, onDestroy } from 'svelte';
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
+	import { getThemeStores } from '../../../themes/themes.js';
+	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
+
+	const { resolveColor, resolveColorScale } = getThemeStores();
 
 	let props = getContext(propKey);
 
@@ -29,6 +33,8 @@
 			}
 		}
 	}
+
+	export let description = undefined;
 
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
@@ -71,24 +77,18 @@
 	export let colorMin = undefined;
 	export let colorMid = undefined;
 	export let colorBreakpoints = undefined;
-	export let scaleColor = 'green'; // name of predefined color palette, custom color, array of custom colors
-	export let scaleColumn = undefined;
 
-	let colorList = {
-		green: ['white', 'hsla(129, 33%, 57%,1)'],
-		red: ['white', 'hsla(0, 56%, 56%,1)'],
-		blue: ['white', 'hsla(198, 56%, 56%,1)']
-	};
-
-	let colorPalette;
-	if (scaleColor instanceof Array) {
-		colorPalette = scaleColor;
-	} else {
-		colorPalette = colorList[scaleColor];
-		if (colorPalette == undefined) {
-			colorPalette = ['white', scaleColor];
-		}
+	/** @deprecated Use colorScale instead */
+	export let scaleColor = undefined;
+	$: if (scaleColor) {
+		console.warn('[Column] scaleColor is deprecated. Use colorScale instead.');
 	}
+	$: colorScale = checkDeprecatedColor('Column', 'colorScale', colorScale);
+
+	export let colorScale = 'default';
+	$: colorScaleStore = resolveColorScale(colorScale ?? colorScale);
+
+	export let scaleColumn = undefined;
 
 	// Delta:
 	export let downIsGood = false;
@@ -112,9 +112,15 @@
 	$: sparkYScale = sparkYScale === 'true' || sparkYScale === true;
 
 	// Bar Viz:
-	export let barColor = 'hsla(207, 69%, 79%, 1)';
-	export let negativeBarColor = 'rgb(252 165 165)';
+	export let barColor = '#a5cdee';
+	$: barColorStore = resolveColor(barColor);
+
+	export let negativeBarColor = '#fca5a5';
+	$: negativeBarColorStore = resolveColor(negativeBarColor);
+
 	export let backgroundColor = 'transparent';
+	$: backgroundColorStore = resolveColor(backgroundColor);
+
 	export let hideLabels = false;
 	$: hideLabels = hideLabels === 'true' || hideLabels === true;
 
@@ -155,12 +161,12 @@
 		showValue,
 		colorMax,
 		colorMin,
-		scaleColor,
+		colorScale: $colorScaleStore,
 		scaleColumn,
 		colGroup,
 		colorMid,
 		colorBreakpoints,
-		colorPalette,
+		description,
 		redNegatives,
 		sparkWidth,
 		sparkHeight,
@@ -168,9 +174,9 @@
 		sparkX,
 		sparkY,
 		sparkYScale,
-		barColor,
-		negativeBarColor,
-		backgroundColor,
+		barColor: $barColorStore,
+		negativeBarColor: $negativeBarColorStore,
+		backgroundColor: $backgroundColorStore,
 		hideLabels
 	};
 

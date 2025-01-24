@@ -178,10 +178,12 @@ SELECT f.departure_date, SUM(f.fare) AS total_fare, CONCAT('https://www.google.c
 FROM (
     SELECT DISTINCT plane
     FROM flights
+	ORDER BY plane
     LIMIT 2
 ) p
 JOIN flights f ON p.plane = f.plane
 GROUP BY f.departure_date, f.plane
+ORDER BY f.departure_date
 LIMIT 200`,
 		query
 	);

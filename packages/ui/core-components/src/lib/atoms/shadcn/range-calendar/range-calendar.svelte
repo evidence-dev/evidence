@@ -15,7 +15,7 @@
 	/** @type {DateValue | undefined} */
 	let placeholder = undefined;
 	/** @type {{ start: DateValue; end: DateValue; } | undefined} */
-	let selectedDateRange = undefined;
+	let selectedDateInput = undefined;
 	/** @type {'short' | 'long' | undefined} */
 	let weekdayFormat = 'short';
 	/** @type {DateValue | undefined} */
@@ -66,7 +66,7 @@
 		placeholder,
 		weekdayFormat,
 		startValue,
-		selectedDateRange,
+		selectedDateInput,
 		minValue,
 		maxValue
 	};
@@ -76,7 +76,7 @@
 	bind:value
 	bind:placeholder
 	bind:startValue
-	bind:selectedDateRange
+	bind:selectedDateInput
 	{minValue}
 	{maxValue}
 	{weekdayFormat}
@@ -88,9 +88,7 @@
 >
 	<RangeCalendar.Header>
 		<RangeCalendar.PrevButton />
-		<RangeCalendar.Heading
-			class="flex items-center justify-between font-normal text-gray-700 group"
-		>
+		<RangeCalendar.Heading class="flex items-center justify-between font-normal">
 			<Select.Root
 				selected={defaultMonth}
 				items={monthOptions}
@@ -102,11 +100,11 @@
 			>
 				<SelectPrimitive.Trigger
 					aria-label="Select month"
-					class="text-sm pr-1 pl-2 py-1 rounded-tl rounded-bl border-r border-white transition-colors duration-200 group-hover:bg-gray-100 group-hover:border-gray-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400"
+					class="text-sm px-2 py-1 rounded-tl rounded-bl transition-colors duration-200 hover:bg-base-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-content-muted"
 				>
 					<Select.Value placeholder="Select month" />
 				</SelectPrimitive.Trigger>
-				<Select.Content class="max-h-[200px] overflow-y-auto !w-[118px]">
+				<Select.Content class="max-h-[200px] overflow-y-auto !w-[118px] pretty-scrollbar">
 					{#each monthOptions as { value, label }}
 						<Select.Item {value} {label}>
 							{label}
@@ -125,7 +123,7 @@
 			>
 				<SelectPrimitive.Trigger
 					aria-label="Select year"
-					class=" pr-2 pl-1 py-1 rounded-tr rounded-br text-sm group-hover:bg-gray-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400"
+					class="px-2 py-1 rounded-tr rounded-br text-sm hover:bg-base-200 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-content-muted"
 				>
 					<Select.Value placeholder="Select year" />
 				</SelectPrimitive.Trigger>

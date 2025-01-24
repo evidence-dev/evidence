@@ -23,6 +23,8 @@
 	/** @type {string}*/
 	export let emptyMessage = undefined;
 
+	export let height = 200;
+
 	// Remove any undefined props (e.g. w/o defaults) to prevent them from being passed
 	$: spreadProps = {
 		...Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined))
@@ -32,7 +34,7 @@
 </script>
 
 <!-- Pass all the props through-->
-<QueryLoad {data} let:loaded>
+<QueryLoad {data} {height} let:loaded>
 	<EmptyChart
 		slot="empty"
 		{emptyMessage}
@@ -40,12 +42,7 @@
 		chartType={spreadProps.chartType}
 		{isInitial}
 	/>
-	<ErrorChart
-		let:loaded
-		slot="error"
-		chartType={spreadProps.chartType}
-		error={loaded.error.message}
-	/>
+	<ErrorChart let:loaded slot="error" title={spreadProps.chartType} error={loaded.error.message} />
 	<Chart {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Chart>

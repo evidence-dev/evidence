@@ -164,6 +164,7 @@
 		select null as option
 		union all
 		select 'ghi' as option
+		order by option
 	`,
 		query
 	)}

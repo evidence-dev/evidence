@@ -12,6 +12,9 @@
 	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte';
+	import { getThemeStores } from '../../../themes/themes.js';
+
+	const { activeAppearance, theme, resolveColorsObject } = getThemeStores();
 
 	export let config = undefined;
 
@@ -29,9 +32,13 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig; // helper for custom chart development
+
 	export let seriesColors = undefined;
+	$: seriesColorsStore = resolveColorsObject(seriesColors);
 
 	export let connectGroup = undefined;
+
+	export let xAxisLabelOverflow = undefined;
 
 	const dispatch = createEventDispatcher();
 
@@ -57,7 +64,7 @@
 
 <div
 	role="none"
-	class="chart-container"
+	class="chart-container mt-2 mb-3"
 	on:mouseenter={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
 >
@@ -70,9 +77,6 @@
 				style="
 				height: {height};
 				width: {width};
-				margin-left: 0;
-				margin-top: 15px;
-				margin-bottom: 10px;
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
@@ -84,7 +88,9 @@
 					dispatch,
 					renderer,
 					connectGroup,
-					seriesColors
+					xAxisLabelOverflow,
+					seriesColors: $seriesColorsStore,
+					theme: $activeAppearance
 				}}
 			/>
 		{/if}
@@ -98,7 +104,7 @@
 		{printing}
 		{echartsOptions}
 		{seriesOptions}
-		{seriesColors}
+		seriesColors={seriesColorsStore}
 	/>
 
 	{#if downloadableData || downloadableImage}
@@ -170,9 +176,11 @@
 			...$$restProps,
 			echartsOptions,
 			seriesOptions,
-			seriesColors,
+			seriesColors: $seriesColorsStore,
 			queryID,
-			evidenceChartTitle
+			evidenceChartTitle,
+			theme: $activeAppearance,
+			backgroundColor: $theme.colors['base-100']
 		}}
 	/>
 {/if}

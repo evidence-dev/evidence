@@ -33,11 +33,11 @@
 		height="8"
 		viewBox="6 6 12 12"
 		fill="none"
-		stroke="#374151"
+		stroke="currentColor"
 		stroke-width="1"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		class="transform transition-transform duration-300 ease-in-out text-left gray-500 {hideLegend
+		class="transform transition-transform duration-300 ease-in-out text-left text-base-content-muted {hideLegend
 			? chevronDirections[direction].hide
 			: chevronDirections[direction].show}"
 	>
