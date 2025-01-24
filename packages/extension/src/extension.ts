@@ -129,14 +129,14 @@ async function initializeSchemaViewer(context: ExtensionContext) {
 			const packageJsonFolder = await getPackageJsonFolder();
 			const manifestPath = workspaceFolder
 				? path.join(
-					workspaceFolder.uri.fsPath,
-					packageJsonFolder ?? '',
-					'.evidence',
-					'template',
-					'static',
-					'data',
-					'manifest.json'
-				)
+						workspaceFolder.uri.fsPath,
+						packageJsonFolder ?? '',
+						'.evidence',
+						'template',
+						'static',
+						'data',
+						'manifest.json'
+					)
 				: '';
 
 			const manifestWatcher = workspace.createFileSystemWatcher(
@@ -207,7 +207,6 @@ function registerCompletionProvider(context: ExtensionContext) {
 }
 
 function registerComponentProvider(context: ExtensionContext) {
-
 	const componentProvider = languages.registerCompletionItemProvider(
 		['emd'], // Add other file types if needed
 		{
@@ -216,10 +215,10 @@ function registerComponentProvider(context: ExtensionContext) {
 				const languageId = document.languageId;
 				await updateEditorConfigForLanguage(languageId, isComponentContext);
 				return provideComponentCompletionItems(document, position);
-			},
+			}
 		},
 		'{',
-		' ', // Trigger completion after a space (inside a tag)
+		' ' // Trigger completion after a space (inside a tag)
 	);
 
 	context.subscriptions.push(componentProvider);
@@ -257,8 +256,6 @@ function isInComponentContext(document: TextDocument, position: Position): boole
 		return false;
 	}
 }
-
-
 
 function isInSQLCodeBlock(document: TextDocument, position: Position): boolean {
 	const text = document.getText();
@@ -695,7 +692,6 @@ function extractCTENames(query: string) {
 }
 
 function extractInputNames() {
-
 	const editor = window.activeTextEditor;
 
 	if (!editor) {
@@ -716,7 +712,6 @@ function extractInputNames() {
 
 	return matches;
 }
-
 
 async function provideSQLCompletionItems(
 	document: TextDocument,
@@ -759,10 +754,7 @@ async function provideSQLCompletionItems(
 		const inputNames = extractInputNames();
 
 		for (const inputName of inputNames) {
-			const inputCompletionItem = new CompletionItem(
-				inputName,
-				CompletionItemKind.Variable
-			);
+			const inputCompletionItem = new CompletionItem(inputName, CompletionItemKind.Variable);
 			inputCompletionItem.insertText = inputName;
 			inputCompletionItem.detail = 'Input Variable\n\nRemember to use .value or .label if needed';
 			completionItems.push(inputCompletionItem);
@@ -787,10 +779,7 @@ async function provideSQLCompletionItems(
 		const queryNames = extractQueryNames();
 
 		for (const queryName of queryNames) {
-			const queryNameCompletionItem = new CompletionItem(
-				queryName,
-				CompletionItemKind.Interface
-			);
+			const queryNameCompletionItem = new CompletionItem(queryName, CompletionItemKind.Interface);
 			queryNameCompletionItem.insertText = `\$\{${queryName}}`;
 			completionItems.push(queryNameCompletionItem);
 		}
@@ -798,14 +787,10 @@ async function provideSQLCompletionItems(
 		const cteNames = extractCTENames(textBeforePosition);
 
 		for (const cteName of cteNames) {
-			const cteNameCompletionItem = new CompletionItem(
-				cteName,
-				CompletionItemKind.File
-			);
+			const cteNameCompletionItem = new CompletionItem(cteName, CompletionItemKind.File);
 			cteNameCompletionItem.insertText = `${cteName}`;
 			completionItems.push(cteNameCompletionItem);
 		}
-
 	} else {
 		completionItems.push(...keywordCompletionItems);
 		completionItems.push(...functionCompletionItems);
@@ -884,8 +869,6 @@ function extractQueryNames(): string[] {
 	return [...queries]; // Convert Set to Array for the final result
 }
 
-
-
 async function provideComponentCompletionItems(document: TextDocument, position: Position) {
 	if (!isInComponentContext(document, position)) {
 		return []; // Return no suggestions
@@ -922,71 +905,58 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 		const queryNames = extractQueryNames();
 
 		for (const queryName of queryNames) {
-			const queryNameCompletionItem = new CompletionItem(
-				queryName,
-				CompletionItemKind.Interface
-			);
+			const queryNameCompletionItem = new CompletionItem(queryName, CompletionItemKind.Interface);
 			queryNameCompletionItem.insertText = `${queryName}`;
 			completionItems.push(queryNameCompletionItem);
 		}
-
 	} else {
-
 		// Add props as suggestions and include sortText based on rank
-for (const prop of componentDefinition.props) {
-	const item = new CompletionItem(prop.name, CompletionItemKind.Property);
+		for (const prop of componentDefinition.props) {
+			const item = new CompletionItem(prop.name, CompletionItemKind.Property);
 
-	// Prepare the documentation
-	item.documentation = new MarkdownString(
-			`**Description:** ${prop.description || 'No description available'}\n\n` +
-			`**Type:** ${prop.type}\n\n` +
-			`**Default:** ${prop.defaultValue || 'None'}\n\n` +
-			`**Options:** ${prop.options?.replace('{[', '').replace(']}', '') || 'None'}` 
-	);
-
-	// Process options string
-	const rawOptions = prop.options
-			? prop.options.replace('{[', '').replace(']}', '')
-			: null;
-
-	let options = null;
-
-	// Check if options are valid strings
-	if (rawOptions) {
-			const isValidStrings = rawOptions.split(',').every(opt => 
-					/^"(.*?)"$/.test(opt.trim()) // Ensures all options are enclosed in quotes
+			// Prepare the documentation
+			item.documentation = new MarkdownString(
+				`**Description:** ${prop.description || 'No description available'}\n\n` +
+					`**Type:** ${prop.type}\n\n` +
+					`**Default:** ${prop.defaultValue || 'None'}\n\n` +
+					`**Options:** ${prop.options?.replace('{[', '').replace(']}', '') || 'None'}`
 			);
 
-			if (isValidStrings) {
-					options = rawOptions
-							.split(',')
-							.map(opt => opt.trim().replace(/^"(.*?)"$/, '$1')); // Remove quotes for dropdown
+			// Process options string
+			const rawOptions = prop.options ? prop.options.replace('{[', '').replace(']}', '') : null;
+
+			let options = null;
+
+			// Check if options are valid strings
+			if (rawOptions) {
+				const isValidStrings = rawOptions.split(',').every(
+					(opt) => /^"(.*?)"$/.test(opt.trim()) // Ensures all options are enclosed in quotes
+				);
+
+				if (isValidStrings) {
+					options = rawOptions.split(',').map((opt) => opt.trim().replace(/^"(.*?)"$/, '$1')); // Remove quotes for dropdown
+				}
 			}
-	}
 
-	// Use SnippetString to insert the prop name with a dropdown for options
-	if (prop.name === 'data') {
-			item.insertText = new SnippetString(`${prop.name}={\${1}}`);
-	} else if (options && options.length > 0) {
-			item.insertText = new SnippetString(
-					`${prop.name}=\${1|${options.join(',')}|}`
-			);
-	} else {
-			item.insertText = new SnippetString(`${prop.name}=`);
-	}
+			// Use SnippetString to insert the prop name with a dropdown for options
+			if (prop.name === 'data') {
+				item.insertText = new SnippetString(`${prop.name}={\${1}}`);
+			} else if (options && options.length > 0) {
+				item.insertText = new SnippetString(`${prop.name}=\${1|${options.join(',')}|}`);
+			} else {
+				item.insertText = new SnippetString(`${prop.name}=`);
+			}
 
-	item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
-	completionItems.push(item);
-}
+			item.sortText = String(prop.rank).padStart(3, '0'); // Ensure sortText is always defined
+			completionItems.push(item);
+		}
 
-// Explicit sorting to ensure rank is respected
-completionItems.sort((a, b) => a.sortText!.localeCompare(b.sortText!));
-
+		// Explicit sorting to ensure rank is respected
+		completionItems.sort((a, b) => a.sortText!.localeCompare(b.sortText!));
 	}
 
 	return completionItems;
 }
-
 
 async function getSchemaItems(): Promise<SchemaItem[]> {
 	const manifestUri = await getManifestUri();
@@ -1093,7 +1063,6 @@ function loadComponents() {
 		evidenceComponents = {}; // Fallback to an empty object
 	}
 }
-
 
 /**
  * Activates Evidence vscode extension.
@@ -1484,7 +1453,6 @@ export async function activate(context: ExtensionContext) {
 				slashCommands === true &&
 				!isInSQLCodeBlock(openEditor.document, openEditor.selection.active) &&
 				!isInComponentContext(openEditor.document, openEditor.selection.active)
-
 			) {
 				try {
 					decorate(openEditor);
