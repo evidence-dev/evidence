@@ -1,4 +1,3 @@
-import preprocess from 'svelte-preprocess';
 import evidencePreprocess from '@evidence-dev/preprocess';
 import adapter from '@sveltejs/adapter-static';
 import { injectComponents } from '@evidence-dev/sdk/build/svelte';
@@ -16,13 +15,7 @@ function errorHandler(warning) {
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	extensions: ['.svelte', '.md'],
-	preprocess: [
-		...evidencePreprocess(true),
-		injectComponents(),
-		preprocess({
-			postcss: true
-		})
-	], // Modify preprocess to allow for loading of $lib instead of package version of components library
+	preprocess: [...evidencePreprocess(true), injectComponents()], // Modify preprocess to allow for loading of $lib instead of package version of components library
 	onwarn: errorHandler,
 	kit: {
 		adapter: adapter({
