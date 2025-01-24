@@ -171,8 +171,6 @@ async function applyCustomSettings() {
 	const isSQLContext = isInSQLContext(editor.document, editor.selection.active);
 	const isComponentContext = isInComponentContext(editor.document, editor.selection.active);
 
-	console.log('isSqlContext', isSQLContext)
-	console.log('isComponentContext', isComponentContext)
 	const autocompleteContext = isSQLContext || isComponentContext;
 	await updateEditorConfigForLanguage(languageId, autocompleteContext);
 }
@@ -201,6 +199,7 @@ function registerCompletionProvider(context: ExtensionContext) {
 			}
 		},
 		'.',
+		' ',
 		'(' // Trigger characters
 	);
 
@@ -208,24 +207,14 @@ function registerCompletionProvider(context: ExtensionContext) {
 }
 
 function registerComponentProvider(context: ExtensionContext) {
-	console.log('register')
-	// const config = workspace.getConfiguration('evidence');
-	// const autocompleteEnabled = config.get('enableComponentAutocomplete');
-
-	// if (!autocompleteEnabled) {
-	// 	return;
-	// }
 
 	const componentProvider = languages.registerCompletionItemProvider(
 		['emd'], // Add other file types if needed
 		{
 			async provideCompletionItems(document, position) {
-				console.log('provideCompletionItems')
 				const isComponentContext = isInComponentContext(document, position);
 				const languageId = document.languageId;
-				console.log('isComponentContext', isComponentContext)
 				await updateEditorConfigForLanguage(languageId, isComponentContext);
-				console.log('proding...')
 				return provideComponentCompletionItems(document, position);
 			},
 		},
@@ -255,7 +244,6 @@ function isInComponentContext(document: TextDocument, position: Position): boole
 	const closeTagIndex = backwardText.lastIndexOf('>');
 
 	if (openTagIndex === -1 || closeTagIndex > openTagIndex) {
-		console.log('No opening tag found.');
 		return false;
 	}
 
@@ -803,8 +791,8 @@ async function provideSQLCompletionItems(
 				queryName,
 				CompletionItemKind.Interface
 			);
-			queryNameCompletionItem.insertText = `\$\{${queryName}}`
-			completionItems.push(queryNameCompletionItem)
+			queryNameCompletionItem.insertText = `\$\{${queryName}}`;
+			completionItems.push(queryNameCompletionItem);
 		}
 
 		const cteNames = extractCTENames(textBeforePosition);
@@ -900,11 +888,9 @@ function extractQueryNames(): string[] {
 
 async function provideComponentCompletionItems(document: TextDocument, position: Position) {
 	if (!isInComponentContext(document, position)) {
-		console.log('Not in component context, returning no suggestions.');
 		return []; // Return no suggestions
 	}
 
-	console.log('In component context, providing suggestions...');
 	const completionItems: CompletionItem[] = [];
 	const textBeforeCursor = document.getText(new Range(new Position(0, 0), position));
 
@@ -918,16 +904,13 @@ async function provideComponentCompletionItems(document: TextDocument, position:
 	const nearestTagText = textBeforeCursor.slice(lastOpenTagIndex);
 	const match = /^<([A-Za-z0-9]+)\s?/.exec(nearestTagText);
 	if (!match) {
-		console.log('No valid component name found in context.');
 		return []; // No valid component found
 	}
 
 	const componentName = match[1];
-	console.log('Component name:', componentName);
 	const componentDefinition = evidenceComponents[componentName];
 
 	if (!componentDefinition) {
-		console.log(`No matching component found for "${componentName}".`);
 		return []; // No suggestions for unknown components
 	}
 
@@ -958,7 +941,7 @@ for (const prop of componentDefinition.props) {
 			`**Description:** ${prop.description || 'No description available'}\n\n` +
 			`**Type:** ${prop.type}\n\n` +
 			`**Default:** ${prop.defaultValue || 'None'}\n\n` +
-			`**Options:** ${prop.options?.replace('{[', '').replace(']}', '') || 'None'}`
+			`**Options:** ${prop.options?.replace('{[', '').replace(']}', '') || 'None'}` 
 	);
 
 	// Process options string
@@ -1105,7 +1088,6 @@ function loadComponents() {
 		const filePath = path.resolve(__dirname, '../src/props_list.json');
 		const data = fs.readFileSync(filePath, 'utf-8');
 		evidenceComponents = JSON.parse(data) as ComponentList;
-		console.log('Components loaded successfully:', evidenceComponents);
 	} catch (error) {
 		console.error('Failed to load components:', error);
 		evidenceComponents = {}; // Fallback to an empty object
