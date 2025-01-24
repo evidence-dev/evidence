@@ -1,16 +1,12 @@
 /**
- * @type {import("svelte-preprocess/dist/types").PreprocessorGroup}
+ * @satisfies {import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
 const processEachBlocks = {
 	markup({ content, filename }) {
-		if (!filename?.endsWith('.md')) {
-			return { code: content };
-		}
+		if (!filename?.endsWith('.md')) return { code: content };
 
 		// Array to store code blocks and inline code snippets temporarily
-		/**
-		 * @type {string[]}
-		 */ const placeholders = [];
+		/** @type {string[]} */ const placeholders = [];
 		let index = 0;
 
 		const codeBlockRegex = /(`{3,})[\s\S]*?\1/g;
