@@ -103,8 +103,16 @@
 
 		try {
 			// Validate required props
-			if (reqPropsObj) {
-				checkInputProps(reqPropsObj);
+			checkInputProps(reqPropsObj);
+			if (typeof data !== 'object') {
+				throw new Error(
+					"'" +
+						data +
+						"'" +
+						' is not a recognized query result. Data should be provided in the format: data = {' +
+						data.replace('data.', '') +
+						'}'
+				);
 			}
 		} catch (err) {
 			errors.push(err.message);
