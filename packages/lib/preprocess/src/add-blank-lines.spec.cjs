@@ -12,9 +12,7 @@ describe('addBlankLines Preprocessor', () => {
   Here is a metric definition
 </Details>`;
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 
 	it('should add a newline after {/each}', () => {
@@ -27,9 +25,7 @@ describe('addBlankLines Preprocessor', () => {
 `;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 
 	it('should add a newline before {/each}', () => {
@@ -42,9 +38,7 @@ describe('addBlankLines Preprocessor', () => {
 {/each}`;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 
 	it('should add a newline before {:else}', () => {
@@ -62,9 +56,7 @@ Condition not met
 {/if}`;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 
 	it('should clean up excessive blank lines in attributes', () => {
@@ -81,9 +73,7 @@ Condition not met
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
 
-		expect(result.code.replace(/\s+/g, ' ').trim()).toEqual(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toEqual(expectedOutput);
 	});
 
 	it('should handle a component with no attributes', () => {
@@ -91,8 +81,6 @@ Condition not met
 		const expectedOutput = `<SimpleComponent />`;
 
 		const result = addBlankLines.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 });

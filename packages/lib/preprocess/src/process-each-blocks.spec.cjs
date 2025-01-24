@@ -12,9 +12,7 @@ describe('processEachBlocks Preprocessor', () => {
 {/each}`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toEqual(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toEqual(expectedOutput);
 	});
 
 	it('should handle unordered lists without blank line before closing each tag', () => {
@@ -31,9 +29,7 @@ describe('processEachBlocks Preprocessor', () => {
 </ul>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 
 	it('should handle ordered lists without blank line before closing each tag', () => {
@@ -50,9 +46,7 @@ describe('processEachBlocks Preprocessor', () => {
 </ol>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 
 	it('should handle unordered lists contained inside each tags', () => {
@@ -67,9 +61,7 @@ describe('processEachBlocks Preprocessor', () => {
 </ul>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 
 	it('should handle ordered lists contained inside each tags', () => {
@@ -84,9 +76,7 @@ describe('processEachBlocks Preprocessor', () => {
 </ol>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 
 	it('should preserve code blocks and inline code snippets', () => {
@@ -118,8 +108,6 @@ Inline code: \`console.log('inline');\`
 </ul>`;
 
 		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
-		expect(result.code.replace(/\s+/g, ' ').trim()).toBe(
-			expectedOutput.replace(/\s+/g, ' ').trim()
-		);
+		expect(result.code).toBe(expectedOutput);
 	});
 });
