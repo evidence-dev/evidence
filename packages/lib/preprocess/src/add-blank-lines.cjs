@@ -1,4 +1,7 @@
 /**
+ * This preprocessor adds blank lines around certain elements in markdown files to prevent
+ * mdsvex from wrapping test in paragraph tags and breaking the formatting.
+ *
  * @satisfies {import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
 const addBlankLines = {

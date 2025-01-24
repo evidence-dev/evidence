@@ -1,4 +1,28 @@
 /**
+ * This preprocessor moves `<ul>` and `<ol>` elements outside of each blocks. This is necessary because mdsvex will
+ * add a `<ul>` or `<ol>` within the each block when users create a list inside an each block.
+ *
+ * For example, when the user writes
+ * {#each items as item}
+ *   - {item}
+ * {/each}
+ *
+ * mdsvex will generate:
+ * {#each items as item}
+ *   <ul>
+ *     <li>{item}</li>
+ *   </ul>
+ * {/each}
+ *
+ * Which will create a new list for every element.
+ *
+ * This preprocessor ensures that the generated HTML is:
+ * <ul>
+ *   {#each items as item}
+ *     <li>{item}</li>
+ *   {/each}
+ * </ul>
+ *
  * @satisfies {import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
 const processEachBlocks = {
