@@ -85,7 +85,7 @@
 	}
 
 	article.markdown a.markdown {
-		@apply text-primary underline decoration-transparent hover:decoration-primary  transition-all duration-200 !important;
+		@apply text-primary underline decoration-transparent hover:decoration-primary  transition-all duration-200;
 	}
 
 	p.markdown,

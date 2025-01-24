@@ -1,5 +1,5 @@
 import evidencePreprocess from '@evidence-dev/preprocess';
-import preprocess from 'svelte-preprocess';
+
 import adapter from '@sveltejs/adapter-static';
 import { addBasePathToHrefAndSrc, injectComponents } from '@evidence-dev/sdk/build/svelte';
 import fs from 'fs';
@@ -40,9 +40,6 @@ const config = {
 	preprocess: [
 		...evidencePreprocess(true),
 		injectComponents(),
-		preprocess({
-			postcss: true
-		}),
 		addBasePathToHrefAndSrc
 	],
 	onwarn: errorHandler,
