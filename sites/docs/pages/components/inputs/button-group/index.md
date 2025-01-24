@@ -304,6 +304,14 @@ Selected: {inputs.button_tabs_hardcoded_options}
     options={['tabs', 'buttons']}
     defaultValue="buttons"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover. Appears next to title.
+
+</PropListing>
 
 # ButtonGroupItem
 

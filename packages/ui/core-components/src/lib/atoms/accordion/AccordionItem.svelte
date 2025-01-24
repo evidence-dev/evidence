@@ -5,8 +5,10 @@
 <script>
 	import * as BaseAccordion from '../shadcn/accordion';
 	import InputError from '../inputs/InputError.svelte';
+	import Info from '../../unsorted/ui/Info.svelte';
 	export let title = '';
 	export let compact = false;
+	export let description = undefined;
 
 	let className = undefined;
 	export { className as class };
@@ -28,9 +30,14 @@
 	{#key title}
 		<BaseAccordion.Item value={title} class={className}>
 			<BaseAccordion.Trigger class={compact ? 'py-0' : ''}>
-				<slot name="title">
-					{title}
-				</slot>
+				<span>
+					<slot name="title">
+						{title}
+						{#if description}
+							<Info {description} />
+						{/if}
+					</slot>
+				</span>
 			</BaseAccordion.Trigger>
 			<BaseAccordion.Content>
 				<slot />

@@ -24,6 +24,8 @@
 	export let name = undefined;
 	/** @type {string | undefined} */
 	export let title = undefined;
+	/** @type {string | undefined} */
+	export let description = undefined;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
 
@@ -131,6 +133,7 @@
 					{range}
 					{currentDate}
 					{title}
+					{description}
 				/>
 			</QueryLoad>
 		{/if}

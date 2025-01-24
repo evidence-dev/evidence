@@ -5,6 +5,7 @@
 <script>
 	import Button from '../../shadcn/button/button.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import { toBoolean } from '../../../utils.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import InputError from '../InputError.svelte';
@@ -20,6 +21,9 @@
 
 	/** @type {string} */
 	export let name;
+
+	/** @type {string | undefined} */
+	export let description;
 
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
@@ -59,6 +63,9 @@
 			{#if title}
 				<p class="truncate font-medium">
 					{title}
+					{#if description}
+						<Info {description} />
+					{/if}
 				</p>
 			{/if}
 			<input

@@ -27,6 +27,8 @@
 	/** @type {string|undefined} */
 	export let link = undefined; // link column
 	export let name = undefined;
+	/** @type {boolean|undefined} */
+	export let ignoreZoom = undefined;
 
 	onMount(() => {
 		const area = map.addArea(
@@ -38,7 +40,8 @@
 			onclick,
 			setInput,
 			unsetInput,
-			item[link]
+			item[link],
+			ignoreZoom
 		);
 		if (showTooltip) {
 			const ttip = map.buildTooltip(item, tooltip);

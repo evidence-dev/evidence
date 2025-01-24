@@ -401,6 +401,14 @@ Selected: {inputs.category_multi_selectAllByDefault.value}
     options={["true", "false"]}
     defaultValue="true"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>
 
 # DropdownOption
 

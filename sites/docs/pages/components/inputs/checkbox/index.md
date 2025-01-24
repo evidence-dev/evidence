@@ -129,9 +129,14 @@ Label for the checkbox. If undefined, will default to small checkbox
 Initial value for checkbox. True value for checked, false for unchecked
 
 </PropListing>
+<PropListing
+    name=description
+    options="string"
+>
 
+Adds an info icon with description tooltip on hover
 
-
+</PropListing>
 
 
 

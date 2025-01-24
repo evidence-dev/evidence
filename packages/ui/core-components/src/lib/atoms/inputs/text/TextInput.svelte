@@ -4,6 +4,7 @@
 
 <script>
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import InputError from '../InputError.svelte';
 	const inputs = getInputContext();
@@ -26,6 +27,9 @@
 
 	/** @type {string | undefined} */
 	export let defaultValue = undefined;
+
+	/** @type {string | undefined} */
+	export let description = undefined;
 
 	/** @type {boolean} */
 	export let unsafe = false;
@@ -61,7 +65,12 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`${title ? '-mt-0.5' : 'mt-2'} mb-4 ml-0 mr-2 inline-block align-bottom`}>
 		{#if title}
-			<span class="text-xs font-medium block mb-0.5">{title}</span>
+			<span class="text-xs font-medium block mb-0.5"
+				>{title}
+				{#if description}
+					<Info {description} />
+				{/if}
+			</span>
 		{/if}
 		{#if !name}
 			<InputError inputType="text input" />

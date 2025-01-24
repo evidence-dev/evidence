@@ -204,3 +204,11 @@ Specifies the font color of the Value.
 Conditionally sets the font color to red based on whether the selected value is less than 0
 
 </PropListing>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>
