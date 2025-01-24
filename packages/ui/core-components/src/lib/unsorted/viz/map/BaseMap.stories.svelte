@@ -26,7 +26,8 @@
 		query
 	);
 
-	const la_locations = Query.create(`select * from la_locations order by 1 limit 2`, query);
+	const la_locations = Query.create(`select * from la_locations order by 1`, query);
+	const la_locations_limit2 = Query.create(`select * from la_locations order by 1 limit 2`, query);
 
 	const grouped_locations = Query.create(
 		`SELECT 
@@ -297,6 +298,6 @@ ORDER BY 1;
 			opacity="1"
 			ignoreZoom="true"
 		/>
-		<Points data={la_locations} lat="lat" long="long" color="red" value="sales" />
+		<Points data={la_locations_limit2} lat="lat" long="long" color="red" value="sales" />
 	</BaseMap>
 </Story>
