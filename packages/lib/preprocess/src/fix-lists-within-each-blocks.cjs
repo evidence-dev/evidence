@@ -25,7 +25,7 @@
  *
  * @satisfies {import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
-const processEachBlocks = {
+const fixListsWithinEachBlocks = {
 	markup({ content, filename }) {
 		if (!filename?.endsWith('.md')) return { code: content };
 
@@ -83,4 +83,4 @@ const processEachBlocks = {
 	}
 };
 
-module.exports = processEachBlocks;
+module.exports = fixListsWithinEachBlocks;

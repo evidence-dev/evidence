@@ -1,8 +1,8 @@
 import { describe, it } from 'vitest';
-import processEachBlocks from '../src/process-each-blocks.cjs';
-import { expectEqualIgnoringIndentation } from './test-utils';
+import fixListsWithinEachBlocks from './fix-lists-within-each-blocks.cjs';
+import { expectEqualIgnoringIndentation } from './test-utils.js';
 
-describe('processEachBlocks Preprocessor', () => {
+describe('fixListsWithinEachBlocks Preprocessor', () => {
 	it('should handle text without blank line before closing each tag', () => {
 		const input = `{#each something as thing}
 <p>text
@@ -12,7 +12,7 @@ describe('processEachBlocks Preprocessor', () => {
 </p>
 {/each}`;
 
-		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		const result = fixListsWithinEachBlocks.markup({ content: input, filename: 'test.md' });
 		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
@@ -29,7 +29,7 @@ describe('processEachBlocks Preprocessor', () => {
 {/each}
 </ul>`;
 
-		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		const result = fixListsWithinEachBlocks.markup({ content: input, filename: 'test.md' });
 		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
@@ -46,7 +46,7 @@ describe('processEachBlocks Preprocessor', () => {
 {/each}
 </ol>`;
 
-		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		const result = fixListsWithinEachBlocks.markup({ content: input, filename: 'test.md' });
 		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
@@ -61,7 +61,7 @@ describe('processEachBlocks Preprocessor', () => {
 {/each}
 </ul>`;
 
-		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		const result = fixListsWithinEachBlocks.markup({ content: input, filename: 'test.md' });
 		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
@@ -76,7 +76,7 @@ describe('processEachBlocks Preprocessor', () => {
 {/each}
 </ol>`;
 
-		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		const result = fixListsWithinEachBlocks.markup({ content: input, filename: 'test.md' });
 		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 
@@ -108,7 +108,7 @@ Inline code: \`console.log('inline');\`
 	{/each}
 </ul>`;
 
-		const result = processEachBlocks.markup({ content: input, filename: 'test.md' });
+		const result = fixListsWithinEachBlocks.markup({ content: input, filename: 'test.md' });
 		expectEqualIgnoringIndentation(result.code, expectedOutput);
 	});
 });
