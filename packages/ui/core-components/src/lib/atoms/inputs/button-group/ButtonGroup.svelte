@@ -16,7 +16,6 @@
 	import { getThemeStores } from '../../../themes/themes.js';
 	import InputError from '../InputError.svelte';
 	import checkInputProps from '../checkInputProps.js';
-	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	/** @type {string | undefined} */
 	export let name = undefined;
