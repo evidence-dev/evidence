@@ -104,7 +104,7 @@
 		try {
 			// Validate required props
 			checkInputProps(reqPropsObj);
-			if (typeof data !== 'object') {
+			if (typeof data !== 'object' && data) {
 				throw new Error(
 					"'" +
 						data +
