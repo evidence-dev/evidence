@@ -47,6 +47,8 @@ This page can be found in your project at `/pages/index.md`. Make a change to th
     series=category
 />
 
+The top category is {orders_by_category[0].category}
+
 ## What's Next?
 
 - [Connect your data sources](settings)

@@ -149,12 +149,21 @@ export class EvidenceMap {
 		this.#bounds = Leaflet.latLngBounds(); // Reset bounds to recalculate
 
 		this.#map.eachLayer((layer) => {
+			// Handle layers with sublayers (_layers) - necessary for setting ignoreZoom correctly
+			if (layer._layers && layer._layers instanceof Object) {
+				const firstLayer = Object.values(layer._layers)?.[0];
+				layer.ignoreZoom = firstLayer?.ignoreZoom ?? false;
+			}
+
+			// Extend bounds for layers that shouldn't ignore zoom
 			if (
-				layer instanceof Leaflet.Marker ||
-				layer instanceof Leaflet.CircleMarker ||
-				layer instanceof Leaflet.GeoJSON
+				(layer instanceof Leaflet.Marker ||
+					layer instanceof Leaflet.CircleMarker ||
+					layer instanceof Leaflet.GeoJSON) &&
+				!layer.ignoreZoom
 			) {
-				this.#bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+				const bounds = layer.getBounds?.() || layer.getLatLng?.();
+				if (bounds) this.#bounds.extend(bounds);
 			}
 		});
 
@@ -189,7 +198,8 @@ export class EvidenceMap {
 		onclick,
 		setInput,
 		unsetInput,
-		link
+		link,
+		ignoreZoom
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
 
@@ -205,6 +215,7 @@ export class EvidenceMap {
 			onEachFeature: (feature, layer) => {
 				// Store the initial style of each layer as soon as it's created
 				this.originalStyles.set(layer, areaOptions);
+				layer.ignoreZoom = ignoreZoom;
 				layer.on('click', () => {
 					if (this.lastSelectedLayer === layer) {
 						layer.setStyle(this.originalStyles.get(layer)); // Restore the original style
@@ -226,6 +237,13 @@ export class EvidenceMap {
 				});
 			}
 		}).addTo(this.#map);
+
+		// Set ignoreZoom for all sublayers to ensure it makes it through to updateBounds()
+		geoJsonLayer.eachLayer((sublayer) => {
+			if (sublayer instanceof Leaflet.Path) {
+				sublayer.ignoreZoom = ignoreZoom; // Apply ignoreZoom to all Path layers
+			}
+		});
 
 		this.#bounds.extend(geoJsonLayer.getBounds());
 		if (!this.#initialViewSet) {
@@ -259,7 +277,8 @@ export class EvidenceMap {
 		onclick,
 		setInput,
 		unsetInput,
-		link
+		link,
+		ignoreZoom
 	) {
 		if (!Leaflet) throw new Error('Leaflet is not yet available');
 
@@ -276,7 +295,7 @@ export class EvidenceMap {
 
 		// Create the marker with the appropriate pane
 		const marker = Leaflet.circleMarker(coords, circleOptions);
-
+		marker.ignoreZoom = ignoreZoom;
 		marker.addTo(this.#map);
 
 		this.updateMarkerStyle(marker, circleOptions); // Initial style setting and storage

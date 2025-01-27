@@ -1575,6 +1575,14 @@ Override title of column
 
 </PropListing>
 <PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>
+<PropListing
     name=align
     options={['left', 'center', 'right']}
     defaultValue="left"

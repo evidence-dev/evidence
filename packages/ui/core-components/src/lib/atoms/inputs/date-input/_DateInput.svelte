@@ -13,6 +13,7 @@
 	import { RangeCalendar } from '$lib/atoms/shadcn/range-calendar/index.js';
 	import * as Select from '$lib/atoms/shadcn/select/index.js';
 	import * as Popover from '$lib/atoms/shadcn/popover/index.js';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import { Separator } from '$lib/atoms/shadcn/separator/index.js';
 	import { Calendar } from '$lib/atoms/shadcn/calendar/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -50,6 +51,8 @@
 	/** @type {string} */
 	export let title;
 	export let extraDayEndString = undefined;
+	/** @type {string | undefined} */
+	export let description = undefined;
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
@@ -250,6 +253,9 @@
 					{:else if selectedDateInput && !range}
 						{#if title}
 							{title}
+							{#if description}
+								<Info {description} className="pl-1" />
+							{/if}
 							<Separator orientation="vertical" class="mx-2 h-4 w-[1px]" />
 						{/if}
 						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}

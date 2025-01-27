@@ -4,6 +4,7 @@
 
 <script>
 	import { mapContextKey } from '../constants.js';
+	import { toBoolean } from '../../../../utils.js';
 	import { getContext } from 'svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import MapArea from './MapArea.svelte';
@@ -46,6 +47,10 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	/**
 	 * Callback function for the area click event.
@@ -308,6 +313,7 @@
 				{feature}
 				{item}
 				{name}
+				{ignoreZoom}
 				areaOptions={{
 					fillColor:
 						$colorStore ??

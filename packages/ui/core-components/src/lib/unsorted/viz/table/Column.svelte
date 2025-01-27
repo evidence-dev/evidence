@@ -34,6 +34,8 @@
 		}
 	}
 
+	export let description = undefined;
+
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
 
@@ -164,6 +166,7 @@
 		colGroup,
 		colorMid,
 		colorBreakpoints,
+		description,
 		redNegatives,
 		sparkWidth,
 		sparkHeight,

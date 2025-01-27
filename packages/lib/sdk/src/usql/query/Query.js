@@ -634,7 +634,7 @@ DESCRIBE ${this.text.trim()}
 					if (target === null)
 						if (typeof prop !== 'number') return undefined;
 						else {
-							if (prop > this.#length) return undefined;
+							if (this.lengthLoaded && prop > this.#length) return undefined;
 							return this.#mockRow ?? {};
 						}
 
@@ -1142,7 +1142,7 @@ DESCRIBE ${this.text.trim()}
 	 */
 	publish = (/** @type {string} */ source) => {
 		if (this.#publishIdx++ > 100000) throw new Error('Query published too many times.');
-		this.#debug('publish', `Publishing triggered by ${source}`, this);
+		this.#debug('publish', `Publishing triggered by ${source}`);
 		this.#subscribers.forEach((fn) => fn(this.#value));
 	};
 	//////////////////////////////////////

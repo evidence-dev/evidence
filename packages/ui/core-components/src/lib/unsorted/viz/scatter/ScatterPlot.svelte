@@ -83,6 +83,9 @@
 	export let connectGroup = undefined;
 	/** @type {string | undefined} */
 	export let seriesLabelFmt = undefined;
+
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
 </script>
 
 <Chart
@@ -127,6 +130,8 @@
 	{downloadableImage}
 	{connectGroup}
 	seriesColors={seriesColorsStore}
+	{leftPadding}
+	{rightPadding}
 >
 	<Scatter
 		{shape}

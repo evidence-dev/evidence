@@ -190,3 +190,11 @@ Alternative placeholder text displayed in the text input
 Hide the component when the report is printed
 
 </PropListing>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>
