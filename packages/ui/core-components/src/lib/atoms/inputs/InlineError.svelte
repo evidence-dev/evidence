@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	/** @type {string | undefined} */
 	export let inputType = undefined;
-	/** @type {string | undefined} */
+	/** @type {[string] | undefined} */
 	export let error = undefined;
 	/** @type {string} */
 	export let height = '';
@@ -12,6 +12,10 @@
 	onMount(() => {
 		console.error(`Error in ${inputType}: ${error}`);
 	});
+
+	if (error.length > 0) {
+		error = error.join('\n');
+	}
 </script>
 
 <div

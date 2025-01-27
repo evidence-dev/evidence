@@ -6,7 +6,7 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import InputError from '../InputError.svelte';
+	import InlineError from '../InlineError.svelte';
 	const inputs = getInputContext();
 
 	/////
@@ -73,7 +73,7 @@
 			</span>
 		{/if}
 		{#if !name}
-			<InputError inputType="text input" />
+			<InlineError inputType="text input" />
 		{:else}
 			<input
 				bind:value

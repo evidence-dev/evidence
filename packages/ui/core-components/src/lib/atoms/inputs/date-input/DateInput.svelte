@@ -14,7 +14,7 @@
 	import { toBoolean } from '../../../utils.js';
 	import { dateToYYYYMMDD, formatDateString } from './helpers.js';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import InputError from '../InputError.svelte';
+	import InlineError from '../InlineError.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import checkInputProps from '../checkInputProps.js';
 
@@ -101,13 +101,14 @@
 		{/if}
 
 		{#if errors.length > 0}
-			<InputError
+			<InlineError
 				inputType={range ? 'DateRange' : 'DateInput'}
 				height="32"
 				width={range ? 337 : 190}
 				error={errors}
 			/>
 		{:else if $query?.error}
+			<!-- Should refactor into InlineError -->
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>

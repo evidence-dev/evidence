@@ -8,7 +8,7 @@
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { toBoolean } from '../../../utils.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import InputError from '../InputError.svelte';
+	import InlineError from '../InlineError.svelte';
 	import checkInputProps from '../checkInputProps.js';
 	const inputs = getInputContext();
 
@@ -52,7 +52,7 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	{#if error}
-		<InputError inputType="Checkbox" {error} height="32" width="160" />
+		<InlineError inputType="Checkbox" {error} height="32" width="160" />
 	{:else}
 		<Button
 			type="button"

@@ -13,7 +13,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import { toNumber } from '$lib/utils.js';
-	import InputError from '../InputError.svelte';
+	import InlineError from '../InlineError.svelte';
 	import checkInputProps from '../checkInputProps.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
@@ -174,7 +174,7 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	{#if errors.length > 0}
-		<InputError inputType="Slider" error={errors} width="170" height="36" />
+		<InlineError inputType="Slider" error={errors} width="170" height="36" />
 	{:else}
 		<div class={`relative ${sizeClass} mt-2 mb-10 select-none`}>
 			<p class="pb-2 truncate text-xs">

@@ -6,7 +6,7 @@
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let href; // to be deprecated in favor of url
 	export let url;
-	import InputError from '../../atoms/inputs/InputError.svelte';
+	import InlineError from '../../atoms/inputs/InlineError.svelte';
 
 	if (!href) {
 		console.warn('BigLink: href deprecated in favor of url');
@@ -18,7 +18,7 @@
 </script>
 
 {#if !url && !href}
-	<InputError inputType="BigLink" height="32" width="100%" error="url is required" />
+	<InlineError inputType="BigLink" height="32" width="100%" error="url is required" />
 {:else}
 	<div class="flex w-full max-w-full flex-col mt-2 mb-4 ml-0 mr-0">
 		<a

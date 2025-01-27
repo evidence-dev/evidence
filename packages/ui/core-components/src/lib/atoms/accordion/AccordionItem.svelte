@@ -4,7 +4,7 @@
 
 <script>
 	import * as BaseAccordion from '../shadcn/accordion';
-	import InputError from '../inputs/InputError.svelte';
+	import InlineError from '../inputs/InlineError.svelte';
 	import Info from '../../unsorted/ui/Info.svelte';
 	export let title = '';
 	export let compact = false;
@@ -25,7 +25,7 @@
 </script>
 
 {#if errors.length > 0}
-	<InputError inputType="AccordionItem" height="52" width="100%" error={errors} />
+	<InlineError inputType="AccordionItem" height="52" width="100%" error={errors} />
 {:else}
 	{#key title}
 		<BaseAccordion.Item value={title} class={className}>

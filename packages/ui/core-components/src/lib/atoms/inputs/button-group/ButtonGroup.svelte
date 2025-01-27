@@ -14,7 +14,7 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
-	import InputError from '../InputError.svelte';
+	import InlineError from '../InlineError.svelte';
 	import checkInputProps from '../checkInputProps.js';
 
 	/** @type {string | undefined} */
@@ -60,8 +60,8 @@
 
 	export let value, data, label, order, where;
 
-	/** @type {string} */
-	let error = '';
+	/** @type {[string] | [] } */
+	let errors = [];
 
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
@@ -73,7 +73,6 @@
 	$: ({ hasQuery, query } = $results);
 
 	function validateConfiguration(preset, display) {
-		const errors = [];
 		const checks = [
 			{ value: preset, type: 'string', options: Object.keys(presets), name: 'preset' },
 			{ value: display, type: 'string', options: ['tabs', 'buttons'], name: 'display' }
@@ -93,13 +92,9 @@
 				}
 			}
 		});
-
-		return errors;
 	}
 
 	function validateInputs({ preset, display, reqPropsObj }) {
-		const errors = [];
-
 		try {
 			// Validate required props
 			checkInputProps(reqPropsObj);
@@ -118,32 +113,28 @@
 		}
 
 		// Validate overall configuration
-		errors.push(...validateConfiguration(preset, display));
-
-		return errors;
+		validateConfiguration(preset, display);
 	}
 
 	//Need to add more verbose directions to user
 
 	$: if ($query?.error) {
-		error = $query.error;
+		errors.push($query.error);
 	} else if (!value && data) {
-		error += 'Missing required prop: "value".';
+		errors.push('Missing required prop: "value".');
+	} else if (!value && !data && !$$slots.default) {
+		errors.push('Missing required prop: "value" & "data" or <ButtonGroupItem />.');
 	}
 
-	const errors = validateInputs({
+	validateInputs({
 		preset,
 		display,
 		reqPropsObj: { name }
 	});
-
-	if (errors.length > 0) {
-		error = errors.join('\n');
-	}
 </script>
 
-{#if error}
-	<InputError inputType="button-group" {error} height="32" width="170" />
+{#if errors.length > 0}
+	<InlineError inputType="ButtonGroup" error={errors} height="32" width="170" />
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
@@ -187,9 +178,6 @@
 										{defaultValue}
 									/>
 								{/each}
-							</svelte:fragment>
-							<svelte:fragment slot="inputError">
-								<InputError inputType="button-group" {error} height="32" width="170" />
 							</svelte:fragment>
 						</QueryLoad>
 					{/if}

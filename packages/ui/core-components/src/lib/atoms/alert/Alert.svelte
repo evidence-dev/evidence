@@ -23,7 +23,7 @@
 <script>
 	// Based on the alert from FlowBite: https://flowbite.com/docs/components/alerts/
 
-	import InputError from '../inputs/InputError.svelte';
+	import InlineError from '../inputs/InlineError.svelte';
 
 	/**
 	 * Defines the color of the alert
@@ -34,7 +34,7 @@
 </script>
 
 {#if !$$slots.default}
-	<InputError inputType="Alert" height="42" error="No {status} Alert content found" />
+	<InlineError inputType="Alert" height="42" error="No {status} Alert content found" />
 {:else}
 	<div class="alert {status}" role="alert">
 		<div>

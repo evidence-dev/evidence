@@ -6,7 +6,7 @@
 	import { ExportToCsv } from 'export-to-csv';
 	import { fade } from 'svelte/transition';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import InputError from '../../atoms/inputs/InputError.svelte';
+	import InlineError from '../../atoms/inputs/InlineError.svelte';
 
 	export let data = undefined;
 	export let queryID = undefined;
@@ -52,7 +52,7 @@
 </script>
 
 {#if errors.length > 0}
-	<InputError inputType="DownloadData" height="32" width="160" error={errors} />
+	<InlineError inputType="DownloadData" height="32" width="160" error={errors} />
 {:else if display}
 	<div transition:fade|local={{ duration: 200 }}>
 		<button type="button" aria-label={text} class={$$props.class} on:click={downloadData(data)}>
