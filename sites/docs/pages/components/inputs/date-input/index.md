@@ -299,3 +299,11 @@ Accepts preset in string format to apply default value in Date Input picker. **R
     options={["true", "false"]}
     default="true"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>

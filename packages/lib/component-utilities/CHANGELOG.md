@@ -1,5 +1,21 @@
 # @evidence-dev/component-utilities
 
+## 4.0.5
+
+### Patch Changes
+
+- Updated dependencies [f81376743]
+  - @evidence-dev/sdk@3.0.5
+
+## 4.0.4
+
+### Patch Changes
+
+- 730321d90: Enable strict mode for sources
+- Updated dependencies [309e27b51]
+- Updated dependencies [730321d90]
+  - @evidence-dev/sdk@3.0.4
+
 ## 4.0.3
 
 ### Patch Changes

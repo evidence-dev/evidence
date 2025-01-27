@@ -7,7 +7,6 @@
 
 	import Chart from '../core/Chart.svelte';
 	import Bar from './Bar.svelte';
-	import { onMount } from 'svelte';
 
 	const { resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
@@ -52,23 +51,8 @@
 	export let y2Scale = undefined;
 	export let swapXY = false;
 
-	let xEvidenceType = undefined;
-
-	onMount(() => {
-		xEvidenceType = data?.[0]?._evidenceColumnTypes?.find(
-			(ect) => ect.name?.toLowerCase() === x?.toLowerCase()
-		)?.evidenceType;
-	});
-
-	$: if (!showAllXaxisLabelsManuallySet)
-		showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
-
 	/** @type {boolean} */
 	export let showAllXAxisLabels;
-	const showAllXaxisLabelsManuallySet = typeof showAllXAxisLabels !== 'undefined';
-
-	$: if (typeof showAllXAxisLabels === 'string')
-		showAllXAxisLabels = showAllXAxisLabels?.toLowerCase() === 'true';
 
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
@@ -136,6 +120,11 @@
 	export let connectGroup = undefined;
 
 	export let seriesLabelFmt = undefined;
+
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
+
+	export let xLabelWrap = undefined;
 </script>
 
 <Chart
@@ -193,7 +182,10 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
+	{xLabelWrap}
 	seriesColors={seriesColorsStore}
+	{leftPadding}
+	{rightPadding}
 >
 	<Bar
 		{type}

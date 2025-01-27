@@ -38,6 +38,8 @@
 
 	export let connectGroup = undefined;
 
+	export let xAxisLabelOverflow = undefined;
+
 	const dispatch = createEventDispatcher();
 
 	let downloadChart = false;
@@ -86,6 +88,7 @@
 					dispatch,
 					renderer,
 					connectGroup,
+					xAxisLabelOverflow,
 					seriesColors: $seriesColorsStore,
 					theme: $activeAppearance
 				}}

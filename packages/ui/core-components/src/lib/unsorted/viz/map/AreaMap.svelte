@@ -64,6 +64,8 @@
 	export let legend = true;
 
 	$: legend = toBoolean(legend);
+	/** @type {boolean} */
+	export let ignoreZoom = false;
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;
@@ -99,6 +101,7 @@
 		{legendType}
 		{chartType}
 		{legend}
+		{ignoreZoom}
 		{...$$restProps}
 		on:error={(e) => (error = e.detail)}
 	/>

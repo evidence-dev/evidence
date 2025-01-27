@@ -81,3 +81,18 @@ export const toBoolean = (value) => {
 	}
 	return Boolean(value);
 };
+
+/**
+ * Processes a dimension value to ensure it is in a valid CSS format.
+ *
+ * If the input is a plain number (e.g., "10"), "px" is appended to it.
+ * If the input is already in a valid format (e.g., "10px", "5em", "auto"), it is returned as-is.
+ * If the input is falsy, an empty string is returned.
+ *
+ * @param {string | number | undefined} dimension - The dimension value to process.
+ * @returns {string} The processed dimension with "px" appended if it's a number, or the original value.
+ */
+export const processDimension = (dimension) => {
+	if (!dimension) return ''; // No dimension provided
+	return /^\d+$/.test(dimension) ? `${dimension}px` : dimension; // Add 'px' if it's a number
+};
