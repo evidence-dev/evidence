@@ -21,6 +21,10 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Dropdown from '../dropdown/Dropdown.svelte';
 	import DropdownOption from '../dropdown/helpers/DropdownOption.svelte';
+	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import DataTable from '../../../unsorted/viz/table/DataTable.svelte';
+	// From layout.js
+	const inputStore = getInputContext();
 
 	// const data = Query.create(`SELECT *, MAX(fare) as max_fare from flights limit 10`, query);
 	const data = Query.create(
@@ -32,6 +36,22 @@
 	LIMIT 10`,
 		query
 	);
+	// attempt to make a dynamic query using dropdown in storybook
+
+	// const data2 = Query.create(
+	// 	`SELECT
+	//     CAST(fare AS INT) AS fare,
+	//     CAST(${maxColumn} AS INT) AS max_fare,
+	//     CAST(${minColumn} AS INT) AS min_fare
+	//   FROM flights
+	//   LIMIT 10`,
+	// 	query
+	// );
+
+	$: dynamicMaxColumn = $inputStore?.['maxCol']?.value ? $inputStore['maxCol'].value : 1000;
+	$: dynamicMinColumn = $inputStore?.['maxCol']?.value ? $inputStore['minCol'].value : 0;
+
+	$: console.log(dynamicMaxColumn, dynamicMinColumn);
 </script>
 
 <Template let:args>
@@ -154,12 +174,20 @@
 	<Slider title="J" name="J" min="0" max="1007" step="1" />
 </Story>
 <Story name="Reactive Max Min">
-	{@const data = Query.create(`SELECT * from flights`)}
-	<Dropdown name="maxCol">
-		<DropdownOption value={100} />
+	<!-- <DataTable {data2} fmt="usd0" /> -->
+	<Dropdown name="minCol">
+		<DropdownOption value={0} />
 		<DropdownOption value={1000} />
-		<DropdownOption value={10000} />
 	</Dropdown>
-
-	<Slider step="1" name="slider" title="Slider Max/Min Reactive" />
+	{#if $inputStore['minCol']}
+		minCol Value: {$inputStore['minCol'].value}
+	{/if}
+	<Dropdown name="maxCol">
+		<DropdownOption value={10000} />
+		<DropdownOption value={100000} />
+	</Dropdown>
+	{#if $inputStore['maxCol']}
+		maxCol Value: {$inputStore['maxCol'].value}
+	{/if}
+	<Slider step="1" name="slider" title="Slider" max={dynamicMaxColumn} min={dynamicMinColumn} />
 </Story>
