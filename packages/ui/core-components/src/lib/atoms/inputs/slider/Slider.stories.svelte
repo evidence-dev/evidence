@@ -22,7 +22,6 @@
 	import Dropdown from '../dropdown/Dropdown.svelte';
 	import DropdownOption from '../dropdown/helpers/DropdownOption.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import DataTable from '../../../unsorted/viz/table/DataTable.svelte';
 	// From layout.js
 	const inputStore = getInputContext();
 
