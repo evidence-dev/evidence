@@ -122,7 +122,7 @@
 		errors.push($query.error);
 	} else if (!value && data) {
 		errors.push('Missing required prop: "value".');
-	} else if (!value && !data && !$$slots.default) {
+	} else if (!value && !data && !$$slots.default && !preset) {
 		errors.push('Missing required prop: "value" & "data" or <ButtonGroupItem />.');
 	}
 
