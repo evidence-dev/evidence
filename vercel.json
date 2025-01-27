@@ -72,7 +72,7 @@
 		{ "source": "/deployment/rendering-modes", "destination": "/deployment/configuration/rendering-modes", "permanent": true },
 		{ "source": "/deployment/base-paths", "destination": "/deployment/configuration/base-paths", "permanent": true },
 		{ "source": "/deployment/environments", "destination": "/deployment/configuration/environments", "permanent": true },
-        { "source": "/components/area-map/", "destination": "/components/maps/area-map", "permanent": true },
+		{ "source": "/components/area-map/", "destination": "/components/maps/area-map", "permanent": true },
 		{ "source": "/components/us-map/", "destination": "/components/maps/us-map", "permanent": true },
 		{ "source": "/components/bubble-map/", "destination": "/components/maps/bubble-map", "permanent": true },
 		{ "source": "/components/point-map/", "destination": "/components/maps/point-map", "permanent": true },
