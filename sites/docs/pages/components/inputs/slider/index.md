@@ -260,6 +260,14 @@ Sets the length of the slider. Options are "medium", large" or "full". A empty s
     description="Sets format for the value (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options="Excel-style format | built-in format | custom format"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>
 
 
 

@@ -202,6 +202,13 @@ Pass custom classes to control the styling of the accordion body. Supports [tail
 Pass custom classes to control the styling of an accordion item. Supports [tailwind classes](https://tailwindcss.com). 
 
 </PropListing> 
+<PropListing
+    name=description
+    options="string"
+>
 
+Adds an info icon with description tooltip on hover
+
+</PropListing>
 
 

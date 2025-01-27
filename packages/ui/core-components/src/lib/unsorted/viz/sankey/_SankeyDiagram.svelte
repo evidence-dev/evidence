@@ -54,7 +54,7 @@
 
 	export let depthOverride; // object like: {'node name': 1, 'node name 2': 2} where number is depth level (0-based)
 
-	export let linkColor = 'grey'; // grey (default), source, target, gradient
+	export let linkColor = 'base-content-muted'; // base-content-muted (default), source, target, gradient
 	$: linkColorStore = resolveColor(linkColor);
 
 	// Data Formatting

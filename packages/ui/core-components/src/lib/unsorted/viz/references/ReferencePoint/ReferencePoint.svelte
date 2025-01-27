@@ -40,9 +40,9 @@
 
 	/**
 	 * @type {string}
-	 * @default "grey"
+	 * @default "base-content-muted"
 	 */
-	export let color = 'grey';
+	export let color = 'base-content-muted';
 	$: color = checkDeprecatedColor(chartType, 'color', color);
 	$: colorStore = resolveColor(color);
 

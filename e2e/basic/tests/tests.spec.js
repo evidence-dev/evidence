@@ -28,3 +28,10 @@ test('shows different logo in light and dark mode', async ({ page }) => {
 	logo = await getLogo(page);
 	await expect(logo).toHaveAttribute('src', '/darkLogo.png');
 });
+
+test('bare query reference', async ({ page }) => {
+	await page.goto('/');
+	await waitForPageToLoad(page);
+
+	await expect(page.getByText('The top category is Odd Equipment')).toBeVisible();
+});
