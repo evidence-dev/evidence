@@ -110,6 +110,7 @@
 	}
 
 	validateConfiguration(preset, display);
+	//should change this from using try/catch to pushing to errors
 	try {
 		checkInputProps({ name });
 	} catch (err) {

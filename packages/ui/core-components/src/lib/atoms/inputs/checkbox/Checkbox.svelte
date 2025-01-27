@@ -40,19 +40,19 @@
 	$: $inputs[name] = isChecked;
 
 	// Error Handling
-	/** @type {string | undefined} */
-	let error = undefined;
+	/** @type {[string]} */
+	let errors = [];
 
 	try {
 		checkInputProps({ name });
 	} catch (err) {
-		error = err.message;
+		errors.push(err.message);
 	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	{#if error}
-		<InlineError inputType="Checkbox" {error} height="32" width="160" />
+	{#if errors.length > 0}
+		<InlineError inputType="Checkbox" error={errors} height="32" width="160" />
 	{:else}
 		<Button
 			type="button"
