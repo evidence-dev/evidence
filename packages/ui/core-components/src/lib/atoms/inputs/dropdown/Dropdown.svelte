@@ -206,20 +206,49 @@
 
 	let errors = [];
 
-	try {
-		checkInputProps({ name });
-		if (typeof data !== 'object' && data) {
-			throw new Error(
-				"'" +
-					data +
-					"'" +
-					' is not a recognized query result. Data should be provided in the format: data = {' +
-					data.replace('data.', '') +
-					'}'
+	// try {
+	// 	checkInputProps({ name });
+	// 	if (typeof data !== 'object' && data) {
+	// 		throw new Error(
+	// 			"'" +
+	// 				data +
+	// 				"'" +
+	// 				' is not a recognized query result. Data should be provided in the format: data = {' +
+	// 				data.replace('data.', '') +
+	// 				'}'
+	// 		);
+	// 	}
+	// } catch (e) {
+	// 	errors.push(e.message);
+	// }
+
+	$: if ($query?.error) {
+		errors.push($query.error);
+	}
+
+	if (!value) {
+		if (data) {
+			errors.push('Missing required prop: "value".');
+		} else if (!$$slots.default && !preset) {
+			errors.push('Missing required prop: "value" & "data" or <DropdownOption />.');
+		}
+	}
+
+	if (data) {
+		if (typeof data !== 'object') {
+			errors.push(
+				`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace(
+					'data.',
+					''
+				)}'}`
 			);
 		}
-	} catch (e) {
-		errors.push(e.message);
+	}
+
+	try {
+		checkInputProps({ name });
+	} catch (err) {
+		errors.push(err.message);
 	}
 </script>
 
@@ -238,7 +267,7 @@
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
 		{#if errors.length > 0}
 			<InlineError inputType="Dropdown" error={errors} height="32" width="140" />
-		{:else if hasQuery && $query.error}
+			<!-- {:else if hasQuery && $query.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>
@@ -248,7 +277,7 @@
 				>
 					{$query.error}
 				</span>
-			</span>
+			</span> -->
 		{:else}
 			<Popover.Root bind:open>
 				<Popover.Trigger asChild let:builder>

@@ -96,17 +96,25 @@
 
 	$: if ($query?.error) {
 		errors.push($query.error);
-	} else if (!value && data) {
-		errors.push('Missing required prop: "value".');
-	} else if (!value && !data && !$$slots.default && !preset) {
-		errors.push('Missing required prop: "value" & "data" or <ButtonGroupItem />.');
-	} else if (typeof data !== 'object' && data) {
-		errors.push(
-			`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace(
-				'data.',
-				''
-			)}'}`
-		);
+	}
+
+	if (!value) {
+		if (data) {
+			errors.push('Missing required prop: "value".');
+		} else if (!$$slots.default && !preset) {
+			errors.push('Missing required prop: "value" & "data" or <ButtonGroup />.');
+		}
+	}
+
+	if (data) {
+		if (typeof data !== 'object') {
+			errors.push(
+				`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace(
+					'data.',
+					''
+				)}'}`
+			);
+		}
 	}
 
 	validateConfiguration(preset, display);
