@@ -1,6 +1,6 @@
 import { withThemeByClassName } from '@storybook/addon-themes';
 
-import '../src/app.postcss';
+import '../src/app.css';
 import WithEvidence from '../src/lib/storybook-helpers/WithEvidence.svelte';
 import { initialize } from '../src/lib/storybook-helpers/initializeUSQL.js';
 
