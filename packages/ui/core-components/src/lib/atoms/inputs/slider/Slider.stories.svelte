@@ -19,6 +19,8 @@
 	import Slider from './Slider.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import Dropdown from '../dropdown/Dropdown.svelte';
+	import DropdownOption from '../dropdown/helpers/DropdownOption.svelte';
 
 	// const data = Query.create(`SELECT *, MAX(fare) as max_fare from flights limit 10`, query);
 	const data = Query.create(
@@ -150,4 +152,14 @@
 	<Slider title="H" name="H" min="0" max="79789" step="1" />
 	<Slider title="I" name="I" min="0" max="79789" step="1000" />
 	<Slider title="J" name="J" min="0" max="1007" step="1" />
+</Story>
+<Story name="Reactive Max Min">
+	{@const data = Query.create(`SELECT * from flights`)}
+	<Dropdown name="maxCol">
+		<DropdownOption value={100} />
+		<DropdownOption value={1000} />
+		<DropdownOption value={10000} />
+	</Dropdown>
+
+	<Slider step="1" name="slider" title="Slider Max/Min Reactive" />
 </Story>

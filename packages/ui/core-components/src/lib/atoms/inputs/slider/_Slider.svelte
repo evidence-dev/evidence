@@ -165,9 +165,8 @@
 	}
 
 	// handle steps, slider lags when there are greater then 1000 steps/ticks between max and min
-	let sliderTicks = max - min;
+	$: sliderTicks = max - min;
 	let minStep = sliderTicks / 1000;
-	console.log(`minStep: ${minStep}`, name);
 	const handleSteps = () => {
 		if (sliderTicks > 1000 && step < minStep) {
 			console.error(`Steps must be at least ${minStep} for slider ${name}`);
