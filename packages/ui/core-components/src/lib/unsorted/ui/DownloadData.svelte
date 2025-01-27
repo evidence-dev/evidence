@@ -21,7 +21,6 @@
 		.replaceAll(':', '-');
 
 	export let downloadData = (data) => {
-		console.log(data);
 		const options = {
 			fieldSeparator: ',',
 			quoteStrings: '"',
@@ -48,6 +47,8 @@
 		} catch (e) {
 			errors.push(e.message);
 		}
+	} else {
+		errors.push('No data provided');
 	}
 </script>
 

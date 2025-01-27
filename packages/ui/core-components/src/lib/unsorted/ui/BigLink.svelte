@@ -18,7 +18,7 @@
 </script>
 
 {#if !url && !href}
-	<InlineError inputType="BigLink" height="32" width="100%" error="url is required" />
+	<InlineError inputType="BigLink" height="32" width="100%" error={['url is required']} />
 {:else}
 	<div class="flex w-full max-w-full flex-col mt-2 mb-4 ml-0 mr-0">
 		<a

@@ -3,7 +3,6 @@
  */
 
 export default function checkInputProps(reqPropsObj) {
-	console.log('reqPropsObj', reqPropsObj);
 	if (reqPropsObj === null || typeof reqPropsObj !== 'object') {
 		throw Error('reqProps must be a non-null object');
 	}

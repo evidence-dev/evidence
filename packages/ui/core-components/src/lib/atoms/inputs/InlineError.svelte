@@ -1,5 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
+	import { InfoCircle as CalendarIcon } from '@steeze-ui/tabler-icons';
+	import { Icon } from '@steeze-ui/svelte-icon';
+
 	/** @type {string | undefined} */
 	export let inputType = undefined;
 	/** @type {[string] | undefined} */
@@ -13,6 +16,11 @@
 		console.error(`Error in ${inputType}: ${error}`);
 	});
 
+	//ensure error is an array
+	if (!Array.isArray(error)) {
+		error = [error];
+	}
+
 	if (error.length > 0) {
 		error = error.join('\n');
 	}
@@ -23,7 +31,7 @@
 	class="group relative cursor-help cursor-helpfont-sans bg-negative/10 font-ui font-normal rounded border border-negative/50 print:break-inside-avoid text-center text-negative flex items-center justify-center mb-4 mt-4"
 >
 	<div>
-		<span class="text-center [word-wrap:break-work] w-full font-bold text-sm">Error:</span>
+		<Icon src={CalendarIcon} class="mb-[2px] h-4 w-4 stroke-[1.8px] text-gray-700 inline" />
 		<span class="font-medium text-center text-sm">{inputType}</span>
 	</div>
 	<div

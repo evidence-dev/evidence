@@ -34,7 +34,7 @@
 </script>
 
 {#if !$$slots.default}
-	<InlineError inputType="Alert" height="42" error="No {status} Alert content found" />
+	<InlineError inputType="Alert" height="42" error={['No {status} Alert content found']} />
 {:else}
 	<div class="alert {status}" role="alert">
 		<div>
