@@ -14,13 +14,11 @@
 		{ "source": "/plugins/creating-a-plugin", "destination": "/plugins/create-component-plugin/", "permanent": true },
 		{ "source": "/guides/updating-your-project/", "destination": "/guides/updating-your-app/", "permanent": true },
 		{ "source": "/guides/updating-your-project", "destination": "/guides/updating-your-app/", "permanent": true },
-		
         { "source": "/components/area-map", "destination": "/components/maps/area-map", "permanent": true },
         { "source": "/components/us-map", "destination": "/components/maps/us-map", "permanent": true },
         { "source": "/components/bubble-map", "destination": "/components/maps/bubble-map", "permanent": true },
         { "source": "/components/point-map", "destination": "/components/maps/point-map", "permanent": true },
         { "source": "/components/base-map", "destination": "/components/maps/base-map", "permanent": true },
-
         { "source": "/components/tabs", "destination": "/components/ui/tabs", "permanent": true },
         { "source": "/components/download-data", "destination": "/components/ui/download-data", "permanent": true },
         { "source": "/components/last-refreshed", "destination": "/components/ui/last-refreshed", "permanent": true },
@@ -32,7 +30,6 @@
         { "source": "/components/link-button", "destination": "/components/ui/link-button", "permanent": true },
         { "source": "/components/print-format-components", "destination": "/components/ui/print-format-components", "permanent": true },
         { "source": "/components/grid", "destination": "/components/ui/grid", "permanent": true },
-
         { "source": "/components/bubble-chart", "destination": "/components/charts/bubble-chart", "permanent": true },
         { "source": "/components/mixed-type-charts", "destination": "/components/charts/mixed-type-charts", "permanent": true },
         { "source": "/components/funnel-chart", "destination": "/components/charts/funnel-chart", "permanent": true },
@@ -49,15 +46,12 @@
         { "source": "/components/heatmap", "destination": "/components/charts/heatmap", "permanent": true },
         { "source": "/components/scatter-plot", "destination": "/components/charts/scatter-plot", "permanent": true },
         { "source": "/components/histogram", "destination": "/components/charts/histogram", "permanent": true },
-
         { "source": "/components/custom-components", "destination": "/components/custom/custom-component", "permanent": true },
         { "source": "/components/component-queries", "destination": "/components/custom/component-queries", "permanent": true },
-
         { "source": "/components/delta", "destination": "/components/data/delta", "permanent": true },
         { "source": "/components/value", "destination": "/components/data/value", "permanent": true },
         { "source": "/components/big-value", "destination": "/components/data/big-value", "permanent": true },
         { "source": "/components/data-table", "destination": "/components/data/data-table", "permanent": true },
-
         { "source": "/components/dropdown", "destination": "/components/inputs/dropdown", "permanent": true },
         { "source": "/components/dimension-grid", "destination": "/components/inputs/dimension-grid", "permanent": true },
         { "source": "/components/checkbox", "destination": "/components/inputs/checkbox", "permanent": true },
@@ -65,8 +59,6 @@
         { "source": "/components/date-range", "destination": "/components/inputs/date-range", "permanent": true },
         { "source": "/components/text-input", "destination": "/components/inputs/text-input", "permanent": true },
         { "source": "/components/button-group", "destination": "/components/inputs/button-group", "permanent": true },
-	
-		{ "source": "/deployment/overview", "destination": "/deployment/overview", "permanent": true },
 		{ "source": "/deployment/evidence-cloud", "destination": "/deployment/cloud/evidence-cloud", "permanent": true },
 		{ "source": "/deployment/github-pages", "destination": "/deployment/self-host/github-pages", "permanent": true },
 		{ "source": "/deployment/aws-amplify", "destination": "/deployment/self-host/aws-amplify", "permanent": true },
