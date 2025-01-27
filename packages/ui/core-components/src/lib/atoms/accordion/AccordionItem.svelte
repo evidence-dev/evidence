@@ -6,21 +6,22 @@
 	import * as BaseAccordion from '../shadcn/accordion';
 	import InlineError from '../inputs/InlineError.svelte';
 	import Info from '../../unsorted/ui/Info.svelte';
-	export let title = '';
+	/** @type {string | undefined} */
+	export let title = undefined;
 	export let compact = false;
 	export let description = undefined;
+	import checkInputProps from '../inputs/checkInputProps.js';
 
 	let className = undefined;
 	export { className as class };
 
+	/** @type {[string] | []} */
 	const errors = [];
 
-	if (!title) {
-		errors.push('title is required');
-	}
-
-	if (!$$slots.default) {
-		errors.push('No accordion content found');
+	try {
+		checkInputProps({ title, Accordion_Item_Content: $$slots.default });
+	} catch (err) {
+		errors.push(err);
 	}
 </script>
 

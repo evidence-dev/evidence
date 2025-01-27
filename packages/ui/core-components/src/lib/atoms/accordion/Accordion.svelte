@@ -12,7 +12,12 @@
 </script>
 
 {#if !$$slots.default}
-	<InlineError inputType="Accordion" height="52" width="100%" error="No </AccordionItem> found" />
+	<InlineError
+		inputType="Accordion"
+		height="52"
+		width="100%"
+		error={['No </AccordionItem> found']}
+	/>
 {:else}
 	<BaseAccordion.Root class={className} multiple={!single}>
 		<slot />

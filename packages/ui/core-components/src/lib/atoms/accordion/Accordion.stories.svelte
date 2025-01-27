@@ -82,12 +82,15 @@
 	</Accordion>
 </Story>
 <Story name="Error States: No Title, No Children">
+	<h1>No title</h1>
 	<Accordion>
 		<AccordionItem>
 			<p>Content 1</p>
 		</AccordionItem>
 	</Accordion>
+	<h1>No children</h1>
 	<Accordion></Accordion>
+	<h1>Title no children</h1>
 	<Accordion>
 		<AccordionItem title="Item 1"></AccordionItem>
 	</Accordion>

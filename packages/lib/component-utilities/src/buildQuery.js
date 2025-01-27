@@ -46,7 +46,6 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 		results: derived(internal, (v) => v),
 		update: async (queryProps) => {
 			const { hasQuery, query } = buildInputQuery(queryProps, id);
-
 			if (!hasQuery) {
 				internal.set({ hasQuery: false });
 			} else {
