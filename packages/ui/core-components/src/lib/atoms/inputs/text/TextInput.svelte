@@ -7,6 +7,7 @@
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import InlineError from '../InlineError.svelte';
+	import checkInputProps from '../checkInputProps.js';
 	const inputs = getInputContext();
 
 	/////
@@ -60,6 +61,15 @@
 	if (typeof defaultValue !== 'undefined') {
 		setInputStore();
 	}
+
+	/** @type {[string]} */
+	let errors = [];
+
+	try {
+		checkInputProps({ name });
+	} catch (err) {
+		errors.push(err.message);
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
@@ -73,7 +83,7 @@
 			</span>
 		{/if}
 		{#if !name}
-			<InlineError inputType="text input" />
+			<InlineError inputType="TextInput" error={errors} height="32" width="246" />
 		{:else}
 			<input
 				bind:value
