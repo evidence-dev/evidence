@@ -84,11 +84,6 @@
 	button.container:hover {
 		transition: all 400ms;
 	}
-
-	button.container:active,
-	button.container.copied {
-	}
-
 	span.var-value {
 		width: 85%;
 		white-space: nowrap;

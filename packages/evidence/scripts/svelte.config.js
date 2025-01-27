@@ -37,11 +37,7 @@ function errorHandler(warning) {
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	extensions: ['.svelte', '.md'],
-	preprocess: [
-		...evidencePreprocess(true),
-		injectComponents(),
-		addBasePathToHrefAndSrc
-	],
+	preprocess: [...evidencePreprocess(true), injectComponents(), addBasePathToHrefAndSrc],
 	onwarn: errorHandler,
 	kit: {
 		adapter: adapter({

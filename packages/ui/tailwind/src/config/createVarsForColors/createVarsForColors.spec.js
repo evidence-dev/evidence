@@ -1,22 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import postcss from 'postcss';
-import tailwindcss from 'tailwindcss';
 
 import { createVarsForColors } from './createVarsForColors';
-
-const runPlugin = async (theme) => {
-	const result = await postcss(
-		tailwindcss({
-			content: [{ raw: '' }],
-			plugins: [createVarsForColors(theme)],
-			safelist: ['theme-dark', 'theme-light']
-		})
-	)
-		.process('@tailwind utilities')
-		.async();
-	console.log({ result });
-	return result.css;
-};
 
 describe('createVarsForColors', () => {
 	it('should create CSS variables on the html element based on the theme', async () => {
@@ -26,17 +10,35 @@ describe('createVarsForColors', () => {
 			dark: { colors: { someColorToken: 'someColorValue-dark' } }
 		};
 
+		const plugin = createVarsForColors(themes);
+
+		let baseOut = '';
+		plugin.handler({
+			addBase(base) {
+				baseOut += Object.entries(base).reduce((acc, [selector, value]) => {
+					const statement = `${selector} {\n\t${Object.entries(value)
+						.map(([k, v]) => `${k}: ${v}`)
+						.join(';\n\t')};\n}`;
+					acc += '\n' + statement;
+
+					return acc;
+				}, '');
+			}
+		});
+
 		// prettier-ignore
 		const expected = `
 html.theme-light {
-    --someColorToken: someColorValue-light
+	--color-someColorToken: someColorValue-light;
+	--someColorToken: someColorValue-light;
 }
 html.theme-dark {
-    --someColorToken: someColorValue-dark
+	--color-someColorToken: someColorValue-dark;
+	--someColorToken: someColorValue-dark;
 }
 `.trim()
 
-		const actual = await runPlugin(themes);
-		expect(actual).toEqual(expected);
+		// const actual = await runPlugin(themes);
+		expect(baseOut.trim()).toEqual(expected);
 	});
 });

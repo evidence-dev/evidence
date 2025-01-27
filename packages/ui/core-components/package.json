@@ -105,8 +105,6 @@
 		"eslint-plugin-storybook": "^0.8.0",
 		"eslint-plugin-svelte": "2.35.1",
 		"mockdate": "^3.0.5",
-		"postcss": "^8.4.38",
-		"postcss-load-config": "^4.0.2",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.3",
 		"publint": "^0.1.16",
