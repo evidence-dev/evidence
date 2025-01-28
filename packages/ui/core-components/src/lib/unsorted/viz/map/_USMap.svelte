@@ -16,6 +16,7 @@
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
 	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
+	import { toBoolean } from '../../../utils.js';
 
 	const { theme, resolveColorPalette, resolveColorScale } = getThemeStores();
 
@@ -95,7 +96,7 @@
 	export let connectGroup = undefined;
 
 	export let abbreviations = false;
-	$: abbreviations = abbreviations === 'true' || abbreviations === true;
+	$: abbreviations = toBoolean(abbreviations);
 
 	let nameProperty = abbreviations ? 'abbrev' : 'name';
 

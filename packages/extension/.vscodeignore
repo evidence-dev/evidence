@@ -8,6 +8,7 @@ template/build/**
 template/.evidence/template/**
 data/**
 src/**
+!src/props_list.json
 
 docs/images/**
 

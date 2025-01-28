@@ -149,3 +149,16 @@ ORDER BY 1;
 	/>
 	<div class="h-32"></div>
 </Story>
+<Story name="No Legend" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<AreaMap
+		legendType="categorical"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		geoId="ZCTA5CE10"
+		areaCol="zip_code"
+		legend="false"
+	/>
+</Story>
