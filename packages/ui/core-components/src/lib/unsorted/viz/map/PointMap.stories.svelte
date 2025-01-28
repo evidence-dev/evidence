@@ -307,3 +307,21 @@
 	<h1>long not found in data</h1>
 	<PointMap data={la_locations} lat="lat" long="lodng" value="sales" />
 </Story>
+<Story name="no legend" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<PointMap
+		title="legend false as string"
+		data={la_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		legend="false"
+	/>
+	<PointMap
+		title="legend false as boolean"
+		data={la_locations}
+		lat="lat"
+		long="long"
+		value="sales"
+		legend={false}
+	/>
+</Story>

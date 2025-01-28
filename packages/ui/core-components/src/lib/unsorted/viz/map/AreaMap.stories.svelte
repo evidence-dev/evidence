@@ -166,3 +166,16 @@ ORDER BY 1;
 	<h1>areaCol not found in data</h1>
 	<AreaMap data={slow_la_zip_sales} geoId="ZCTA5CE10" value="sales" areaCol="zipd_code" />
 </Story>
+<Story name="No Legend" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<AreaMap
+		legendType="categorical"
+		legendPosition="bottomLeft"
+		data={grouped_locations}
+		lat="lat"
+		long="long"
+		value="Category"
+		geoId="ZCTA5CE10"
+		areaCol="zip_code"
+		legend="false"
+	/>
+</Story>

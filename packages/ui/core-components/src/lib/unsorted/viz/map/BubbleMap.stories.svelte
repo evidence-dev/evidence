@@ -152,3 +152,7 @@
 	<h1>long not found in data</h1>
 	<BubbleMap data={la_locations} lat="lat" long="lodng" size="sales" value="sales" />
 </Story>
+
+<Story name="No legend" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" value="sales" legend="false" />
+</Story>

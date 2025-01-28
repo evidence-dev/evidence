@@ -65,7 +65,7 @@ const getCredentials = (database = {}) => {
 		};
 	} else {
 		/* service-account */
-		return {
+		const credentials = {
 			projectId: database.project_id,
 			location: database.location,
 			credentials: {
@@ -73,6 +73,16 @@ const getCredentials = (database = {}) => {
 				private_key: database.private_key?.replace(/\\n/g, '\n').trim()
 			}
 		};
+
+		if (database.enable_connected_sheets) {
+			credentials.scopes = [
+				'https://www.googleapis.com/auth/cloud-platform',
+				'https://www.googleapis.com/auth/drive',
+				'https://www.googleapis.com/auth/bigquery'
+			];
+		}
+
+		return credentials;
 	}
 };
 
@@ -292,6 +302,15 @@ module.exports.options = {
 					required: true,
 					references: '$.keyfile.private_key',
 					forceReference: true
+				},
+				enable_connected_sheets: {
+					title: 'Enable Connected Sheets',
+					description:
+						'Allows access to connected Google Sheets. Adds additional scope to access Drive API.',
+					type: 'boolean',
+					secret: false,
+					required: false,
+					default: false
 				}
 			},
 			'gcloud-cli': {
