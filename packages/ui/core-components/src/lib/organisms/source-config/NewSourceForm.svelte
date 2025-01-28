@@ -1,6 +1,6 @@
 <script>
 	// @ts-check
-	import { fly, blur } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 
 	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
 

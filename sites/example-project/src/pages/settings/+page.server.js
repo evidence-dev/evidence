@@ -87,7 +87,7 @@ export const actions = {
 			return fail(400, r.error.format());
 		}
 		const datasourcePlugins = await loadSourcePlugins();
-		const [pack, pluginSpec] = datasourcePlugins.getBySource(r.data.type);
+		const [pluginSpec] = datasourcePlugins.getBySource(r.data.type);
 
 		if (!pluginSpec) {
 			logQueryEvent('db-plugin-unvailable', r.data.type, undefined, undefined, dev);

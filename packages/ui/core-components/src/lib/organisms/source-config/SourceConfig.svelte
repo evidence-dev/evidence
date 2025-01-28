@@ -29,24 +29,6 @@
 		sources = sources;
 	}
 
-	/** @type {string[]} */
-	let duplicatePackageNames = [];
-	$: if (sources.length) {
-		const allNames = sources.reduce(
-			(a, v) => {
-				if (a.sourceNames.has(v.name)) {
-					a.duplicateNames.add(v.name);
-				}
-				a.sourceNames.add(v.name);
-
-				return a;
-			},
-			{ sourceNames: new Set(), duplicateNames: new Set() }
-		);
-
-		duplicatePackageNames = Array.from(allNames.duplicateNames);
-	}
-
 	let addingSource = false;
 </script>
 

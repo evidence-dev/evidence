@@ -40,7 +40,6 @@
 
 	let validationError = '';
 	let validationLoading = false;
-	let validationOkay = false;
 
 	let nameError = '';
 
@@ -70,7 +69,6 @@
 			case '?/testSource':
 				validationLoading = true;
 				validationError = '';
-				validationOkay = false;
 				break;
 		}
 		return ({ result, action }) => {
@@ -90,7 +88,6 @@
 				configurationLoading = false;
 				configurationOkay = false;
 				validationLoading = false;
-				validationOkay = false;
 				return;
 			}
 
@@ -111,7 +108,6 @@
 						lastTestedConfig = JSON.stringify(source);
 					}
 					validationLoading = false;
-					validationOkay = true;
 					break;
 			}
 		};
