@@ -7,6 +7,7 @@
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '../../../utils.js';
 
 	const { resolveColorPalette } = getThemeStores();
 
@@ -70,6 +71,11 @@
 	/** @type {boolean} */
 	export let legend = true;
 
+	$: legend = toBoolean(legend);
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+
 	/** @type {string|undefined} */
 	export let attribution = undefined;
 
@@ -104,6 +110,7 @@
 		colorPalette={colorPaletteStore}
 		{legendType}
 		{legend}
+		{ignoreZoom}
 		{...$$restProps}
 	/>
 </BaseMap>

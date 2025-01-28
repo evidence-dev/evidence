@@ -76,13 +76,13 @@
 		}
 	}
 
-	if (min !== undefined) {
+	$: if (min !== undefined) {
 		min = validateNumber(min, 'min');
 	}
-	if (max !== undefined) {
+	$: if (max !== undefined) {
 		max = validateNumber(max, 'max');
 	}
-	if (max !== undefined && min !== undefined) {
+	$: if (max !== undefined && min !== undefined) {
 		checkMinMax(min, max);
 	}
 
@@ -162,6 +162,19 @@
 				throw error;
 			}
 		}
+	}
+
+	// handle steps, slider lags when there are greater then 1000 steps/ticks between max and min
+	$: sliderTicks = max - min;
+	$: minStep = sliderTicks / 1000;
+	const handleSteps = () => {
+		if (sliderTicks > 1000 && step < minStep) {
+			step = minStep;
+		}
+	};
+
+	$: if (sliderTicks > 1000) {
+		handleSteps();
 	}
 </script>
 

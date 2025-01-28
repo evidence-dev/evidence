@@ -6,6 +6,7 @@
 	import Areas from './components/Areas.svelte';
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import { toBoolean } from '../../../utils.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -62,6 +63,10 @@
 	/** @type {boolean} */
 	export let legend = true;
 
+	$: legend = toBoolean(legend);
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+
 	/** @type {string|undefined} */
 	export let attribution = undefined;
 
@@ -96,6 +101,7 @@
 		{legendType}
 		{chartType}
 		{legend}
+		{ignoreZoom}
 		{...$$restProps}
 		on:error={(e) => (error = e.detail)}
 	/>
