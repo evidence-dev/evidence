@@ -63,6 +63,14 @@
 
 	let currentDate = dateToYYYYMMDD(new Date());
 
+	let extraDayEndString;
+
+	$: if (endString && range) {
+		extraDayEndString = new Date(endString);
+		extraDayEndString.setDate(extraDayEndString.getDate() + 1);
+		extraDayEndString = formatDateString(extraDayEndString);
+	}
+
 	function onSelectedDateInputChange(selectedDateInput) {
 		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
 			$inputs[name] = {
@@ -103,6 +111,7 @@
 					{onSelectedDateInputChange}
 					start={startString}
 					end={endString}
+					{extraDayEndString}
 					loaded={loaded?.ready ?? true}
 					{presetRanges}
 					{defaultValue}
