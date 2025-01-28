@@ -35,22 +35,9 @@
 	LIMIT 10`,
 		query
 	);
-	// attempt to make a dynamic query using dropdown in storybook
-
-	// const data2 = Query.create(
-	// 	`SELECT
-	//     CAST(fare AS INT) AS fare,
-	//     CAST(${maxColumn} AS INT) AS max_fare,
-	//     CAST(${minColumn} AS INT) AS min_fare
-	//   FROM flights
-	//   LIMIT 10`,
-	// 	query
-	// );
 
 	$: dynamicMaxColumn = $inputStore?.['maxCol']?.value ? $inputStore['maxCol'].value : 1000;
 	$: dynamicMinColumn = $inputStore?.['maxCol']?.value ? $inputStore['minCol'].value : 0;
-
-	$: console.log(dynamicMaxColumn, dynamicMinColumn);
 </script>
 
 <Template let:args>
@@ -173,7 +160,6 @@
 	<Slider title="J" name="J" min="0" max="1007" step="1" />
 </Story>
 <Story name="Reactive Max Min">
-	<!-- <DataTable {data2} fmt="usd0" /> -->
 	<Dropdown name="minCol">
 		<DropdownOption value={0} />
 		<DropdownOption value={1000} />

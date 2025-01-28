@@ -176,8 +176,6 @@
 	$: if (sliderTicks > 1000) {
 		handleSteps();
 	}
-
-	$: console.log('min', min, 'max', max, 'step', step);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
