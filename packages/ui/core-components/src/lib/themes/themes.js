@@ -115,7 +115,6 @@ export class ThemeStores {
 			});
 		};
 
-
 		let controlledUpdate = false;
 		const unsubscribe = this.#activeAppearance.subscribe(($activeAppearance) => {
 			requestAnimationFrame(() => {
@@ -123,7 +122,7 @@ export class ThemeStores {
 				// try to do this all in one frame to prevent jitter
 				removeAllThemes();
 				element.classList.add(`theme-${$activeAppearance}`);
-				requestAnimationFrame(() => controlledUpdate = false)
+				requestAnimationFrame(() => (controlledUpdate = false));
 			});
 		});
 
