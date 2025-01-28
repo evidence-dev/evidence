@@ -13,6 +13,7 @@
 	export let text = 'Download';
 	export let display = true;
 	$: display = display === 'true' || display === true;
+	let errors = [];
 
 	const date = new Date();
 	const localISOTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
@@ -21,6 +22,12 @@
 		.replaceAll(':', '-');
 
 	export let downloadData = (data) => {
+		try {
+			checkInputs(data);
+		} catch (e) {
+			errors = [...errors, e.message];
+			return;
+		}
 		const options = {
 			fieldSeparator: ',',
 			quoteStrings: '"',
@@ -39,23 +46,12 @@
 
 		csvExporter.generateCsv(data_copy);
 	};
-	let errors = [];
-
-	$: if (data) {
-		try {
-			checkInputs(data);
-		} catch (e) {
-			errors.push(e.message);
-		}
-	} else {
-		errors.push('No data provided');
-	}
 </script>
 
 {#if errors.length > 0}
 	<InlineError inputType="DownloadData" height="32" width="160" error={errors} />
 {:else if display}
-	<div transition:fade|local={{ duration: 200 }}>
+	<div transition:fade|local={errors.length > 0 ? { duration: 0 } : { duration: 200 }}>
 		<button type="button" aria-label={text} class={$$props.class} on:click={downloadData(data)}>
 			<span>{text}</span>
 			<slot>

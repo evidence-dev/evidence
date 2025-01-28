@@ -193,7 +193,7 @@
 <Story
 	name="Long Title"
 	args={{
-		name: 'Slider',
+		name: 'Slider_Long_title',
 		title: 'A really long title that should be truncated',
 		defaultValue: '18',
 		fmt: 'usd0',
@@ -229,5 +229,11 @@
 	{#if $inputStore['maxCol']}
 		maxCol Value: {$inputStore['maxCol'].value}
 	{/if}
-	<Slider step="1" name="slider" title="Slider" max={dynamicMaxColumn} min={dynamicMinColumn} />
+	<Slider
+		step="1"
+		name="slider_reactive"
+		title="Slider"
+		max={dynamicMaxColumn}
+		min={dynamicMinColumn}
+	/>
 </Story>
