@@ -21,6 +21,9 @@
 	"bin": {
 		"evidence": "cli.js"
 	},
+	"exports": {
+		"./theme.css": "./template/src/app.css"
+	},
 	"scripts": {
 		"build": "node scripts/build-template",
 		"prepublishOnly": "npm run build"

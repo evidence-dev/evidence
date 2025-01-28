@@ -412,6 +412,7 @@ If you need help, or have corrections and suggestions for this tutorial, please 
 
 
 <style>
+   @reference "@evidence-dev/evidence/theme.css";
    :root {
       --lightest-gray: #dee2e6;
    }

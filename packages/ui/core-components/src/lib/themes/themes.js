@@ -115,16 +115,21 @@ export class ThemeStores {
 			});
 		};
 
+
+		let controlledUpdate = false;
 		const unsubscribe = this.#activeAppearance.subscribe(($activeAppearance) => {
 			requestAnimationFrame(() => {
+				controlledUpdate = true;
 				// try to do this all in one frame to prevent jitter
 				removeAllThemes();
 				element.classList.add(`theme-${$activeAppearance}`);
+				requestAnimationFrame(() => controlledUpdate = false)
 			});
 		});
 
 		// Sync .theme- -> activeAppearance
 		const observer = new MutationObserver((mutations) => {
+			if (controlledUpdate) return;
 			const html = /** @type {HTMLHtmlElement} */ (mutations[0].target);
 			const themes = [
 				...html.classList.values().filter((className) => className.startsWith('theme-'))
