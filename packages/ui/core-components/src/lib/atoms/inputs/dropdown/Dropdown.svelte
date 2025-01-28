@@ -206,22 +206,6 @@
 
 	let errors = [];
 
-	// try {
-	// 	checkInputProps({ name });
-	// 	if (typeof data !== 'object' && data) {
-	// 		throw new Error(
-	// 			"'" +
-	// 				data +
-	// 				"'" +
-	// 				' is not a recognized query result. Data should be provided in the format: data = {' +
-	// 				data.replace('data.', '') +
-	// 				'}'
-	// 		);
-	// 	}
-	// } catch (e) {
-	// 	errors.push(e.message);
-	// }
-
 	$: if ($query?.error) {
 		errors.push($query.error);
 	}
@@ -229,7 +213,7 @@
 	if (!value) {
 		if (data) {
 			errors.push('Missing required prop: "value".');
-		} else if (!$$slots.default && !preset) {
+		} else if (!$$slots.default) {
 			errors.push('Missing required prop: "value" & "data" or <DropdownOption />.');
 		}
 	}
