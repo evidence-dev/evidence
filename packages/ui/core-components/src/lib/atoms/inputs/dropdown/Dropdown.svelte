@@ -230,9 +230,11 @@
 	} catch (err) {
 		errors.push(err.message);
 	}
-
-	$: if ($query.error && hasQuery) {
-		errors.push($query.error);
+	// temp fix for multiple queryErrors be thrown
+	let hasQueryError = false;
+	$: if ($query?.error && hasQuery && !hasQueryError) {
+		errors = [...errors, $query.error];
+		hasQueryError = true;
 	}
 </script>
 
@@ -249,8 +251,19 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
-		{#if errors.length > 0 || (hasQuery && $query.error)}
+		{#if errors.length > 0}
 			<InlineError inputType="Dropdown" error={errors} height="32" width="140" />
+			<!-- {:else if hasQuery && $query.error}
+			<span
+				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
+			>
+				<span class="inline font-sans font-medium text-xs text-negative">error</span>
+				<span
+					class="hidden font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-base-200 border border-base-300 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
+				>
+					{$query.error}
+				</span>
+			</span> -->
 		{:else}
 			<Popover.Root bind:open>
 				<Popover.Trigger asChild let:builder>
