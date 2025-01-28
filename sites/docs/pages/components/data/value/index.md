@@ -1,9 +1,10 @@
 ---
 title: Value
+description: Display a formatted value from a query inline in text.
 sidebar_position: 0
 ---
 
-The Value component accepts a query and displays a formatted value inline in text.
+Use a Value component to display a formatted value from a query inline in text.
 
 By default, `Value` will display the value from the first row of the first column of the referenced data.
 
@@ -201,5 +202,13 @@ Specifies the font color of the Value.
 >
 
 Conditionally sets the font color to red based on whether the selected value is less than 0
+
+</PropListing>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
 
 </PropListing>

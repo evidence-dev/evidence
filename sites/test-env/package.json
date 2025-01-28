@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.79",
+	"version": "3.0.81",
 	"private": true,
 	"scripts": {
 		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 evidence build",
@@ -27,7 +27,8 @@
 		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
 		"@evidence-dev/sqlite": "workspace:*",
-		"@evidence-dev/tailwind": "workspace:*"
+		"@evidence-dev/tailwind": "workspace:*",
+		"@evidence-dev/source-javascript": "workspace:*"
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3"

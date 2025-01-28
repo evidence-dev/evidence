@@ -5,6 +5,7 @@
 <script>
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
+	import { toBoolean } from '../../../../utils.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import Point from './Point.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
@@ -32,9 +33,9 @@
 	/** @type {string|undefined} */
 	export let value = undefined; // column with the value to be represented
 	/** @type {string|undefined} */
-	export let valueFmt = undefined;
+	export let valueFmt = 'num0';
 	/** @type {string|undefined} */
-	export let sizeFmt = undefined;
+	export let sizeFmt = 'num0';
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
 	/** @type {'categorical' | 'scalar' | undefined} */
@@ -44,6 +45,10 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	if (size) {
 		// if size was user-supplied
@@ -323,6 +328,7 @@
 	{#each $data as item}
 		<Point
 			{map}
+			{ignoreZoom}
 			options={{
 				// kw note:
 				//need to clean this logic

@@ -27,6 +27,7 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import VirtualList from './Virtual.svelte';
 	import { toBoolean } from '../../../utils.js';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	const inputs = getInputContext();
 
@@ -64,6 +65,11 @@
 	 * @type {boolean}
 	 */
 	export let selectAllByDefault = false;
+
+	/**
+	 * @type {string | undefined}
+	 */
+	export let description = undefined;
 
 	// Input Query Props
 	export let value = 'value',
@@ -209,7 +215,7 @@
 {/each}
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mb-4 ml-0 mr-2 inline-block">
+	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
 		{#if hasQuery && $query.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
@@ -234,6 +240,9 @@
 					>
 						{#if title && !multiple}
 							{title}
+							{#if description}
+								<Info {description} className="pl-1" />
+							{/if}
 							{#if $selectedOptions.length > 0}
 								<Separator orientation="vertical" class="mx-2 h-4" />
 								{$selectedOptions[0].label}
@@ -242,6 +251,9 @@
 							{$selectedOptions[0].label}
 						{:else}
 							{title ?? formatTitle(name)}
+							{#if description}
+								<Info {description} className="pl-1" />
+							{/if}
 						{/if}
 						<Icon src={CaretSort} class="ml-2 h-4 w-4" />
 						{#if $selectedOptions.length > 0 && multiple}

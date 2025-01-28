@@ -421,5 +421,25 @@
 			"<BaseMap>\n\t<Areas data={${1:query_name}} geoJsonUrl='path/to/geoJson' geoId=geoJsonField areaCol=column_name/>\n\t<Points data={${1:query_name}} lat=lat long=long/>\n</BaseMap>"
 		],
 		"description": "Insert Map"
+	},
+	"Note": {
+		"prefix": "/Note",
+		"body": ["<Note>\n\t${1:Note Content}\n</Note>\n\n"],
+		"description": "Insert Note"
+	},
+	"Embed": {
+		"prefix": "/Embed",
+		"body": ["<Embed url={${1:query_name}}/>\n\n"],
+		"description": "Insert Embed"
+	},
+	"Slider": {
+		"prefix": "/Slider",
+		"body": "<Slider name=${1:name_of_input} min=${2:0} max=${3:100}/>\n\n",
+		"description": "Insert slider"
+	},
+	"Checkbox": {
+		"prefix": "/Checkbox",
+		"body": "<Checkbox name=${1:name_of_input} title=${2:Checkbox}/>\n\n",
+		"description": "Insert checkbox"
 	}
 }

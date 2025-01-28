@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Add third level pages to sidebar
+Add ignoreZoom option to maps

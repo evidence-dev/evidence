@@ -1,7 +1,10 @@
 ---
 title: Data Table
+description: Display a richly formatted table of data, in a dense, readable format.
 sidebar_position: 1
 ---
+
+Use a DataTable component to display a richly formatted table of data from a query. Tables are powerful default choice for data display that allow high information density, and are easy to read.
 
 ## Examples
 
@@ -1262,6 +1265,22 @@ Number of rows to show in the table before paginating results. Use `rows=all` to
 
 </PropListing>
 <PropListing
+    name=title
+    options="string"
+>
+
+Title for the table
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
+</PropListing>
+<PropListing
     name=headerColor
     required=false
     options="Hex color code | css color name"
@@ -1553,6 +1572,14 @@ Column id (from SQL query)
 >
 
 Override title of column
+
+</PropListing>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
 
 </PropListing>
 <PropListing

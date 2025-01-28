@@ -1,12 +1,13 @@
 ---
 title: Annotations
+description: Add important context directly to a chart - highlight areas, or specific points to make it easier for your reader to draw insights.
 sidebar_position: 9
 queries: 
 - orders_by_month.sql
 - orders_by_category_2021.sql
 ---
 
-Annotations help you add important context directly within a chart - highlight important dates, time periods, or specific points on a chart to make it easier for your audience to pull insights from the information.
+Use annotations to add important context directly to a chart - highlight areas, or specific points to make it easier for your reader to draw insights.
 
 ## At a glance
 
@@ -1051,7 +1052,7 @@ where sales_diff < -2000
         name=color
         description="Color to override default line and label colors"
         options="CSS name | hexademical | RGB | HSL"
-        defaultValue=grey
+        defaultValue=base-content-muted
     />
     <PropListing
         name=labelColor
@@ -1355,7 +1356,7 @@ where sales_diff < -2000
         name=color
         description="Color to override default line and label colors"
         options="CSS name | hexademical | RGB | HSL"
-        defaultValue=grey
+        defaultValue=base-content-muted
     />
     <PropListing
         name=labelColor

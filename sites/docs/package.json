@@ -1,7 +1,7 @@
 {
 	"name": "my-evidence-project",
 	"private": true,
-	"version": "0.0.51",
+	"version": "0.0.53",
 	"scripts": {
 		"build": "evidence build",
 		"build:strict": "evidence build:strict",
@@ -23,7 +23,10 @@
 		"@evidence-dev/evidence": "workspace:*",
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/sdk": "workspace:*",
-		"@evidence-dev/tailwind": "workspace:*"
+		"@evidence-dev/tailwind": "workspace:*",
+		"satori": "^0.12.1",
+		"satori-html": "^0.3.2",
+		"@resvg/resvg-js": "^2.6.2"
 	},
 	"overrides": {
 		"jsonwebtoken": "9.0.0",

@@ -52,6 +52,9 @@
 	/** @type {string|undefined} */
 	export let title = undefined;
 
+	/** @type {string|undefined} */
+	export let subtitle = undefined;
+
 	/** @type {string[]|undefined} */
 	export let colorPalette = undefined;
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
@@ -63,6 +66,9 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;
@@ -82,6 +88,7 @@
 	{height}
 	{basemap}
 	{title}
+	{subtitle}
 	{legendPosition}
 	{isInitial}
 	{chartType}
@@ -100,6 +107,7 @@
 		{chartType}
 		{...$$restProps}
 		{legend}
+		{ignoreZoom}
 		on:error={(e) => (error = e.detail)}
 	/>
 </BaseMap>

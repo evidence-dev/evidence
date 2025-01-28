@@ -70,6 +70,9 @@
 	/** @type {boolean} */
 	export let legend = true;
 
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+
 	/** @type {string|undefined} */
 	export let attribution = undefined;
 
@@ -104,6 +107,7 @@
 		colorPalette={colorPaletteStore}
 		{legendType}
 		{legend}
+		{ignoreZoom}
 		{...$$restProps}
 	/>
 </BaseMap>

@@ -15,8 +15,8 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
-	import chroma from 'chroma-js';
 	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
+	import { toBoolean } from '../../../utils.js';
 
 	const { theme, resolveColorPalette, resolveColorScale } = getThemeStores();
 
@@ -96,7 +96,7 @@
 	export let connectGroup = undefined;
 
 	export let abbreviations = false;
-	$: abbreviations = abbreviations === 'true' || abbreviations === true;
+	$: abbreviations = toBoolean(abbreviations);
 
 	let nameProperty = abbreviations ? 'abbrev' : 'name';
 
@@ -164,10 +164,10 @@
 				},
 				subtextStyle: {
 					fontSize: 13,
-					color: chroma($theme.colors['base-content']).alpha(0.8).css(),
+					color: $theme.colors['base-content-muted'],
 					overflow: 'break'
 				},
-				top: '0%'
+				top: '1px'
 			},
 			textStyle: {
 				fontFamily: 'sans-serif'

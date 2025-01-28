@@ -1,7 +1,10 @@
 ---
 title: Big Link
+description: Display a url link in a styled container.
 sidebar_position: 1
 ---
+
+Use big links to display a url link in a styled container. To style links like Buttons, use a [Link Button](/components/ui/link-button).
 
 <DocTab>
     <div slot='preview'>

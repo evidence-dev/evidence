@@ -1,7 +1,10 @@
 ---
 title: Area Map
+description: Compare a metric across different regions on a map using a choropleth map
 sidebar_position: 1
 ---
+
+Compare a metric across different regions on a map using a choropleth map
 
 <DocTab>
     <div slot='preview'>
@@ -590,6 +593,30 @@ options="format string"
 >
 Format string for displaying the value.
 </PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
+</PropListing>
+
+<PropListing
+name="ignoreZoom"
+description="Stops map from zooming out to show all data for this layer"
+required=false
+options={["true", "false"]}
+defaultValue="false"
+/>
 
 ### Color Scale
 

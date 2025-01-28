@@ -1,5 +1,6 @@
 ---
 title: Custom Components
+description: Build your own components to extend the functionality of Evidence.
 sidebar_position: 1
 ---
 

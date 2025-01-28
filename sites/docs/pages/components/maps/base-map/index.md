@@ -1,7 +1,10 @@
 ---
 title: Base Map
+description: Combine multiple map layers including areas, points, and bubbles.
 sidebar_position: 2
 ---
+
+Combine multiple map layers including areas, points, and bubbles.
 
 <DocTab>
     <div slot='preview'>
@@ -315,6 +318,22 @@ defaultValue="300"
 >
 Height of the map in pixels.
 </PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
+</PropListing>
 
 ## Layer Options
 
@@ -370,6 +389,14 @@ options="format string"
 Format string for displaying the value.
 </PropListing>
 
+<PropListing
+name="ignoreZoom"
+description="Stops map from zooming out to show all data for this layer"
+required=false
+options={["true", "false"]}
+defaultValue="false"
+/>
+
 ### Points
 Use the `<Points/>` component to add an area layer
 
@@ -418,6 +445,13 @@ options="column name"
 Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
 </PropListing>
 
+<PropListing
+name="ignoreZoom"
+description="Stops map from zooming out to show all data for this layer"
+required=false
+options={["true", "false"]}
+defaultValue="false"
+/>
 
 ### Bubbles
 Use the `<Bubbles/>` component to add an area layer
@@ -503,6 +537,14 @@ Column containing the names/labels of the points - by default, this is shown as 
 >
     Represents the z-index value for the pane, controlling its stacking order relative to other panes (higher values are on top, e.g., z=2 is above z=1).
 </PropListing>
+
+<PropListing
+name="ignoreZoom"
+description="Stops map from zooming out to show all data for this layer"
+required=false
+options={["true", "false"]}
+defaultValue="false"
+/>
 
 ### Common Layer Options
 

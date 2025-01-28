@@ -45,10 +45,10 @@
 	}
 </script>
 
-<div class="my-5 bg-base-200 border border-base-300 rounded-md px-3 py-2 relative group">
+<div class="mt-2 mb-4 bg-base-200 border border-base-300 rounded-md px-3 py-2 relative group">
 	{#if copyToClipboard}
 		<button
-			class="absolute opacity-0 rounded p-1 group-hover:opacity-100 hover:bg-base-300/30 top-4 right-6 h-6 w-6 z-10 transition-all duration-200 ease-in-out text-base-content-muted active:bg-base-300/50"
+			class="absolute opacity-0 rounded p-1 group-hover:opacity-100 hover:bg-base-300/30 top-2 right-2 h-6 w-6 z-10 transition-all duration-200 ease-in-out text-base-content-muted active:bg-base-300/50"
 			on:click={() => {
 				if (source !== undefined) {
 					copy(source);
@@ -83,7 +83,7 @@
 			{/if}
 		</button>
 	{/if}
-	<pre class="overflow-auto pretty-scrollbar my-[0.5em]"><code class="language-{language} text-sm"
+	<pre class="overflow-auto pretty-scrollbar"><code class="language-{language} text-sm"
 			>{#if source}{source}{:else}<slot />{/if}</code
 		></pre>
 </div>

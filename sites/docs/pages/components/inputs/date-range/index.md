@@ -1,6 +1,7 @@
 ---
 title: Date Range
 sidebar_position: 1
+description: Display a date picker for selecting a range of dates.
 queries: 
 - orders_by_day.sql
 ---
@@ -273,3 +274,11 @@ Accepts preset in string format to apply default value in Date Range picker. **R
     options={["true", "false"]}
     default="true"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>

@@ -1,5 +1,6 @@
 ---
 title: Button Group
+description: Display a group of single-select buttons for quick filtering using a small set of options.
 sidebar_position: 1
 queries:
 - categories.sql
@@ -301,6 +302,14 @@ Selected: {inputs.button_tabs_hardcoded_options}
     options={['tabs', 'buttons']}
     defaultValue="buttons"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover. Appears next to title.
+
+</PropListing>
 
 # ButtonGroupItem
 

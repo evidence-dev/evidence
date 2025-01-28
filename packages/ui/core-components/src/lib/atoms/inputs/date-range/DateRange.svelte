@@ -8,6 +8,8 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
+	import Info from '../../../unsorted/ui/Info.svelte';
+
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { dateToYYYYMMDD, formatDateString } from '../date-input/helpers.js';
@@ -18,6 +20,8 @@
 	export let name;
 	/** @type {string | undefined} */
 	export let title;
+	/** @type {string | undefined} */
+	export let description;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
 
@@ -63,9 +67,14 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mb-4 ml-0 mr-2 inline-block">
+	<div class={`${title ? '-mt-0.5' : 'mt-2'} mb-4 ml-0 mr-2 inline-block`}>
 		{#if title}
-			<span class="text-xs font-medium text-base-content block mb-0.5">{title}</span>
+			<span class="text-xs font-medium text-base-content block mb-0.5"
+				>{title}
+				{#if description}
+					<Info {description} />
+				{/if}
+			</span>
 		{/if}
 
 		{#if $query?.error}

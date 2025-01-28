@@ -5,7 +5,8 @@ import { buildThemes } from '../themes/buildThemes.js';
 export const evidenceThemes = () => {
 	const virtualModuleId = '$evidence/themes';
 	const resolvedVirtualModuleId = `\0${virtualModuleId}`;
-
+	/** @type {ReturnType<typeof loadThemesConfig>} */
+	let themesConfig;
 	return {
 		name: 'evidence:themes',
 		resolveId: (id) => {
@@ -15,7 +16,7 @@ export const evidenceThemes = () => {
 		},
 		load: async (id) => {
 			if (id === resolvedVirtualModuleId) {
-				const themesConfig = await loadThemesConfig();
+				if (!themesConfig) themesConfig = await loadThemesConfig();
 				const themes = buildThemes(themesConfig);
 				return `
 					export const themesConfig = ${JSON.stringify(themesConfig)};

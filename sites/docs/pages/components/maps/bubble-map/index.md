@@ -1,7 +1,10 @@
 ---
 title: Bubble Map
+description: Compare points of interest on a map using bubble size, and optionally color, to visualize metrics.
 sidebar_position: 1
 ---
+
+Compare points of interest on a map using bubble size, and optionally color, to visualize metrics. It is easier to distinguish size than color, so the primary metric should generally be used to set the size.
 
 <DocTab>
     <div slot='preview'>
@@ -515,6 +518,30 @@ options="column name"
 >
 Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
 </PropListing>
+<PropListing
+    name=title
+    options="string"
+>
+
+Title for the map
+
+</PropListing>
+<PropListing
+    name=subtitle
+    options="string"
+>
+
+Subtitle - appears under the title
+
+</PropListing>
+
+<PropListing
+name="ignoreZoom"
+description="Stops map from zooming out to show all data for this layer"
+required=false
+options={["true", "false"]}
+defaultValue="false"
+/>
 
 ### Color Scale
 

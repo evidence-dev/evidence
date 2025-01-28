@@ -133,7 +133,7 @@ group by 1
 
 Creating folders with parameters can be useful when nesting inside templated pages:
 
-```
+```bash
 pages/
 `-- customers/
     `-- [customer]/

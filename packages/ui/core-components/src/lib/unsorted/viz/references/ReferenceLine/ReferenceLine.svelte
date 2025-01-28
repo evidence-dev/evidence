@@ -44,9 +44,9 @@
 
 	/**
 	 * @type {string}
-	 * @default "grey"
+	 * @default "base-content-muted"
 	 */
-	export let color = 'grey';
+	export let color = 'base-content-muted';
 	$: color = checkDeprecatedColor('ReferenceLine', 'color', color);
 	$: colorStore = resolveColor(color);
 
@@ -224,7 +224,7 @@
 {/if}
 
 {#if $store.error}
-	<ErrorChart error={$store.error} minHeight="50px" title={chartType} />
+	<ErrorChart error={$store.error} height="50" title={chartType} />
 {:else}
 	<QueryLoad {data}>
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />

@@ -7,7 +7,9 @@
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	import Delta from './Delta.svelte';
+	import Info from '../../ui/Info.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { cn } from '$lib/utils.js';
 
 	const { resolveColor } = getThemeStores();
 
@@ -45,8 +47,16 @@
 	export let maxWidth = 'none';
 	export let minWidth = '18%';
 
+	// Class override props
+	export let titleClass = undefined;
+	export let valueClass = undefined;
+	export let comparisonClass = undefined;
+
 	/** @type {string | null}*/
 	export let link = null;
+
+	/** @type {string | undefined}*/
+	export let description = undefined;
 
 	let error = undefined;
 	$: try {
@@ -92,17 +102,22 @@
 </script>
 
 <div
-	class="inline-block font-sans pt-2 pb-3 pr-3 pl-0 mr-3 items-center align-top"
+	class={`inline-block font-sans pt-2 pb-3 pl-0 mr-3 items-center align-top`}
 	style={`
         min-width: ${minWidth};
         max-width: ${maxWidth};
-    `}
+		`}
 >
 	{#if error}
 		<BigValueError chartType="Big Value" error={error.message} />
 	{:else}
-		<p class="text-sm">{title}</p>
-		<div class="relative text-xl font-medium my-0.5">
+		<p class={cn('text-sm align-top leading-none', titleClass)}>
+			{title}
+			{#if description}
+				<Info {description} size="3" />
+			{/if}
+		</p>
+		<div class={cn('relative text-xl font-medium mt-1.5', valueClass)}>
 			{#if link}
 				<a class="hover:bg-base-200" href={addBasePath(link)}>
 					<Value {data} column={value} {fmt} />
@@ -128,7 +143,7 @@
 		</div>
 		{#if comparison}
 			{#if comparisonDelta}
-				<p class="text-xs font-sans">
+				<p class={cn('text-xs font-sans mt-1', comparisonClass)}>
 					<Delta
 						{data}
 						column={comparison}

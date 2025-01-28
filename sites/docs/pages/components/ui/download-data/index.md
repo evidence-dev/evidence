@@ -1,15 +1,16 @@
 ---
 title: Download Data
+description: Display a standalone button to download a specified dataset as a CSV file.
 sidebar_position: 1
 ---
+
+Display a standalone button to download a specified dataset as a CSV file. Note that this component is not visible on small screen widths.
 
 ```categories
 select category, sum(sales) as sales from needful_things.orders
 group by all
 order by sales desc
 ```
-
-The Download Data component allows you to place a link on your page to download a specified dataset to CSV.
 
 <DocTab>
     <div slot='preview'>

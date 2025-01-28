@@ -1,9 +1,12 @@
 ---
 title: US Map
+description: Compare a metric across US states using a flat choropleth map.
 sidebar_position: 3
 queries:
 - state_population.sql
 ---
+
+Compare a metric across US states using a flat choropleth map. For other regions see the more general [Area Map](/components/maps/area-map) component.
 
 <DocTab>
     <div slot='preview'>
