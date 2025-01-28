@@ -46,11 +46,14 @@
 	 */
 	export let multiple = false;
 
+	$: multiple = toBoolean(multiple);
+
 	/**
 	 * When true, dropdown will not be shown during print
 	 * @type {boolean}
 	 */
 	export let hideDuringPrint = true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	export let disableSelectAll = false;
 
@@ -65,6 +68,8 @@
 	 * @type {boolean}
 	 */
 	export let selectAllByDefault = false;
+
+	$: selectAllByDefault = toBoolean(selectAllByDefault);
 
 	/**
 	 * @type {string | undefined}

@@ -25,7 +25,7 @@
 
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
-	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	export let defaultValue = false;
 
