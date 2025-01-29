@@ -1,5 +1,5 @@
 /**
- * @param {ReqPropsObj} reqPropsObj
+ * @param {unknown} reqPropsObj
  */
 
 export default function checkInputProps(reqPropsObj) {
