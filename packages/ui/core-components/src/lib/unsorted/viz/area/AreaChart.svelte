@@ -7,6 +7,7 @@
 
 	import Chart from '../core/Chart.svelte';
 	import Area from './Area.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
