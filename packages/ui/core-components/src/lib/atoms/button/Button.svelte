@@ -102,7 +102,6 @@
 
 <style>
 	button {
-		/* TODO: These should have been moved to css vars, what are those vars? */
 		&.variant-primary {
 			--bg: var(--color-primary);
 			--text: var(--color-primary-content);
@@ -110,7 +109,7 @@
 				--bg: transparent;
 				--border: var(--color-primary);
 				--text: var(--color-primary);
-				--hover-bg: var(--color-primary / 0.1); /* TODO: does this work? */
+				--hover-bg: var(--color-primary / 0.1);
 			}
 		}
 
