@@ -12,6 +12,8 @@
 
 	let chartType = 'Slider';
 
+	console.log('hello world');
+
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 	let isInitial = data?.hash === initialHash;
 	$: isInitial = data?.hash === initialHash;
