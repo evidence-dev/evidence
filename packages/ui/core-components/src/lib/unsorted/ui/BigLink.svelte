@@ -8,7 +8,7 @@
 	export let url;
 	import InlineError from '../../atoms/inputs/InlineError.svelte';
 
-	if (!href) {
+	if (href) {
 		console.warn('BigLink: href deprecated in favor of url');
 	}
 
