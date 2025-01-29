@@ -108,7 +108,11 @@ export class ThemeStores {
 	syncThemeAttribute = (element) => {
 		// Sync activeAppearance -> .theme-
 		const removeAllThemes = () => {
-			element.classList.values().forEach((className) => {
+			console.log(element.classList.values());
+			// When running in chromatic, it was complaining that forEach was not a function
+			// By explicitly converting to an array, we are ensuring that it will behave
+			// as we expect it to
+			Array.from(element.classList.values()).forEach((className) => {
 				if (className.startsWith('theme-')) {
 					element.classList.remove(className);
 				}
