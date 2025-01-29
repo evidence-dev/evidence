@@ -115,23 +115,23 @@
 			--secondary: var(--color-base-content);
 		}
 		&.variant-accent {
-			--primary: var(--color-color-accent);
+			--primary: var(--color-accent);
 			--secondary: var(--color-accent-content);
 		}
 		&.variant-info {
-			--primary: var(--color-color-info);
+			--primary: var(--color-info);
 			--secondary: var(--color-info-content);
 		}
 		&.variant-positive {
-			--primary: var(--color-color-positive);
+			--primary: var(--color-positive);
 			--secondary: var(--color-positive-content);
 		}
 		&.variant-warning {
-			--primary: var(--color-color-warning);
+			--primary: var(--color-warning);
 			--secondary: var(--color-warning-content);
 		}
 		&.variant-negative {
-			--primary: var(--color-color-negative);
+			--primary: var(--color-negative);
 			--secondary: var(--color-negative-content);
 		}
 		&.outlined {
