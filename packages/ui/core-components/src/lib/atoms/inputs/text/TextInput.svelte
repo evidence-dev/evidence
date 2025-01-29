@@ -82,7 +82,7 @@
 				{/if}
 			</span>
 		{/if}
-		{#if !name}
+		{#if errors.length}
 			<InlineError inputType="TextInput" error={errors} height="32" width="246" />
 		{:else}
 			<input
