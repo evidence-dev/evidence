@@ -50,6 +50,7 @@
 	export let range = false;
 	/** @type {string} */
 	export let title;
+	export let extraDayEndString = undefined;
 	/** @type {string | undefined} */
 	export let description = undefined;
 
@@ -214,6 +215,11 @@
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
 
+	let extraDayCalendarEnd = calendarEnd;
+	$: if (range) {
+		extraDayCalendarEnd = YYYYMMDDToCalendar(extraDayEndString);
+	}
+
 	function updateDateRange(start, end) {
 		if (selectedPreset) return;
 
@@ -302,7 +308,7 @@
 						selectedDateInput = value;
 					}}
 					minValue={calendarStart}
-					maxValue={calendarEnd}
+					maxValue={extraDayCalendarEnd}
 				/>
 			{:else}
 				<Calendar

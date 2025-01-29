@@ -64,6 +64,7 @@
 	export let legend = true;
 	$: legend = toBoolean(legend);
 
+	$: legend = toBoolean(legend);
 	/** @type {boolean} */
 	export let ignoreZoom = false;
 	$: ignoreZoom = toBoolean(ignoreZoom);

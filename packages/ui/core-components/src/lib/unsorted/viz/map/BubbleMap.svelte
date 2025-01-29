@@ -70,7 +70,6 @@
 
 	/** @type {boolean} */
 	export let legend = true;
-	$: legend = toBoolean(legend);
 
 	/** @type {boolean} */
 	export let ignoreZoom = false;

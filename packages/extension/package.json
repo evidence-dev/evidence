@@ -2,7 +2,7 @@
 	"name": "evidence-vscode",
 	"displayName": "Evidence",
 	"description": "Build polished data products with SQL and Markdown",
-	"version": "1.5.7",
+	"version": "1.5.9",
 	"private": true,
 	"engines": {
 		"vscode": "^1.52.0"

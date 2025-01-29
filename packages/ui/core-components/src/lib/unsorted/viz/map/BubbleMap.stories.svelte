@@ -126,3 +126,7 @@
 	/>
 	<div class="h-32"></div>
 </Story>
+
+<Story name="No legend" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" value="sales" legend="false" />
+</Story>
