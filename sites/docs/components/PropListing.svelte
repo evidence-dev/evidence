@@ -1,6 +1,5 @@
 <script context="module">
 	import { writable } from 'svelte/store';
-	import { toBoolean } from '$lib/utils.js';
 	const names = new Set();
 
 	let hashLocation = writable('');

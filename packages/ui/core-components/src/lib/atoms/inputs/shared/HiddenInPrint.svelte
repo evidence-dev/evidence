@@ -3,10 +3,8 @@
 </script>
 
 <script>
-	import { toBoolean } from '$lib/utils.js';
 	export let enabled = true;
-
-	$: enabled = toBoolean(enabled);
+	enabled = enabled === 'true' || enabled === true;
 </script>
 
 <div class:print:hidden={enabled} class="contents">
