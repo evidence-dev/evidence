@@ -35,7 +35,7 @@
 	/** @type {boolean | string} */
 	export let defaultValue = false;
 
-	let isChecked = toBoolean(defaultValue) || checked;
+	let isChecked = toBoolean(defaultValue) || toBoolean(checked);
 
 	$: $inputs[name] = isChecked;
 
