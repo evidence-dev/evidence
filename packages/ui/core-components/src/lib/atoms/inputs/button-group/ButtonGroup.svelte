@@ -102,7 +102,7 @@
 		if (data) {
 			errors.push('Missing required prop: "value".');
 		} else if (!$$slots.default && !preset) {
-			errors.push('Missing required prop: "value" & "data" or <ButtonGroup />.');
+			errors.push('ButtonGroup requires either "value" and "data" props or <ButtonGroupItem />.');
 		}
 	}
 
