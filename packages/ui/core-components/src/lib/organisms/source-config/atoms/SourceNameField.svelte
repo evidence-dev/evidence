@@ -27,7 +27,7 @@
 	<input
 		required
 		name="sourceName"
-		class="rounded border border-base-300 bg-base-100 p-1 ml-auto w-2/3 align-middle text-sm"
+		class="rounded-sm border border-base-300 bg-base-100 p-1 ml-auto w-2/3 align-middle text-sm"
 		bind:value={sourceName}
 		on:change={() => (nameError = '')}
 	/>

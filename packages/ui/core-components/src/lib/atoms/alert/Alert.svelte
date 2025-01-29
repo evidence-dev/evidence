@@ -40,7 +40,7 @@
 <div
 	class="alert {classMap[
 		status
-	]} border px-3 py-2 mb-4 rounded border-base-content/50 bg-base-content/10"
+	]} border px-3 py-2 mb-4 rounded-sm border-base-content/50 bg-base-content/10"
 	role="alert"
 >
 	<div>

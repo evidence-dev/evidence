@@ -78,7 +78,7 @@
 		<div class="font-mono">
 			<a href="#props-{idName}">
 				<span
-					class="px-1 py-0.5 text-xs font-medium bg-base-200 border border-base-300 rounded select-none"
+					class="px-1 py-0.5 text-xs font-medium bg-base-200 border border-base-300 rounded-sm select-none"
 				>
 					{name}
 				</span>

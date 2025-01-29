@@ -33,7 +33,7 @@
 					</button>
 					{#if activeTab === tab}
 						<div
-							class="absolute bottom-0 left-0 w-full h-full rounded border border-base-300 bg-base-100 shadow-sm z-0"
+							class="absolute bottom-0 left-0 w-full h-full rounded-sm border border-base-300 bg-base-100 shadow-sm z-0"
 							in:send={{ key: 'trigger' }}
 							out:receive={{ key: 'trigger' }}
 						/>

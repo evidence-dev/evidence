@@ -75,7 +75,8 @@
 	$: if (formaction) _type = 'submit';
 
 	const disabledClass = 'cursor-not-allowed saturate-50 opacity-50';
-	const enabledClass = 'cursor-pointer transition-all duration-150 hover:brightness-105 active:brightness-95';
+	const enabledClass =
+		'cursor-pointer transition-all duration-150 hover:brightness-105 active:brightness-95';
 </script>
 
 <button
@@ -88,7 +89,7 @@
 	class="
 	 	bg-[var(--bg)] border-[var(--border)] text-[var(--text)] hover:bg-[var(--hover-bg)]
 		{disabled ? disabledClass : enabledClass}
-		flex items-center transition-colors rounded variant-{variant} {sizes[size]}
+		flex items-center transition-colors rounded-sm variant-{variant} {sizes[size]}
 	"
 >
 	{#if iconPosition === 'left' && icon}

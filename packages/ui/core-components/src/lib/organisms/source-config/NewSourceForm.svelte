@@ -33,7 +33,7 @@
 </script>
 
 <div
-	class="col-span-4 w-full flex justify-end items-end flex-col py-4 px-4 rounded"
+	class="col-span-4 w-full flex justify-end items-end flex-col py-4 px-4 rounded-sm"
 	transition:slide
 	class:bg-base-200={!ghost}
 >
@@ -46,7 +46,7 @@
 				required
 				bind:value={newSourceType}
 				name="sourceType"
-				class="rounded border border-base-300 bg-base-100 p-1 ml-auto w-2/3 align-middle text-sm"
+				class="rounded-sm border border-base-300 bg-base-100 p-1 ml-auto w-2/3 align-middle text-sm"
 			>
 				{#each Object.entries(availablePackages) as [name, value]}
 					{@const supports = value.package.package.evidence.datasources}

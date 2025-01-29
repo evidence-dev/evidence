@@ -87,9 +87,9 @@
 >
 	<div
 		bind:this={editor}
-		class="w-full relative rounded border border-base-300 min-h-[8rem] cursor-text
+		class="w-full relative rounded-sm border border-base-300 min-h-[8rem] cursor-text
 		**:[&.cm-editor]:min-h-[8rem]
-		**:[&.cm-editor]:rounded"
+		**:[&.cm-editor]:rounded-sm"
 		use:sqlConsole={{
 			...consoleArgs,
 			theme: $theme

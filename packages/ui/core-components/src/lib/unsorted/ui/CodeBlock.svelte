@@ -46,10 +46,10 @@
 	}
 </script>
 
-<div class="mt-2 mb-4 bg-base-200 border border-base-300 rounded px-3 py-2 relative group">
+<div class="mt-2 mb-4 bg-base-200 border border-base-300 rounded-sm px-3 py-2 relative group">
 	{#if copyToClipboard}
 		<button
-			class={'absolute opacity-0 rounded-sm p-1 group-hover:opacity-100 top-2 right-2 h-6 w-6 z-10 transition-all duration-200 ease-in-out' +
+			class={'absolute opacity-0 rounded-xs p-1 group-hover:opacity-100 top-2 right-2 h-6 w-6 z-10 transition-all duration-200 ease-in-out' +
 				(copied ? '' : '')}
 			on:click={() => {
 				if (source !== undefined) {

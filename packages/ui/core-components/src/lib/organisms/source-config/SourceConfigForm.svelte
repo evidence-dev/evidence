@@ -111,7 +111,7 @@
 	use:enhance={callback}
 	action="?/updateSource"
 	method="POST"
-	class="w-full bg-base-200 px-4 py-2 rounded"
+	class="w-full bg-base-200 px-4 py-2 rounded-sm"
 >
 	<h3 class="text-sm uppercase font-bold">Configure {source.name}</h3>
 	<section class="flex flex-col gap-2">
@@ -128,7 +128,7 @@
 			<input
 				disabled
 				value={source.type}
-				class="rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
+				class="rounded-sm border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
 			/>
 		</label>
 		<label class="flex justify-between">
@@ -136,7 +136,7 @@
 			<input
 				type="checkbox"
 				bind:checked={reveal}
-				class="rounded border border-base-300 p-1 ml-auto w-5 bg-base-100 align-middle text-sm"
+				class="rounded-sm border border-base-300 p-1 ml-auto w-5 bg-base-100 align-middle text-sm"
 			/>
 		</label>
 		{#if Object.keys(sourcePlugin.options).length}

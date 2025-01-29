@@ -102,7 +102,7 @@
 
 {#if error}
 	<span
-		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
+		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded-sm"
 	>
 		<span class="inline font-sans font-medium text-xs text-negative">error</span>
 		<span
