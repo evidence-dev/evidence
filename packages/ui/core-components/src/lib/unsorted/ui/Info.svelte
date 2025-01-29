@@ -32,7 +32,7 @@
 		role="tooltip"
 	>
 		<slot name="handle">
-			<Icon src={icon} class="w-{size} h-{size} text-[--textColor]" />
+			<Icon src={icon} class="w-{size} h-{size} text-[var(--textColor)]" />
 		</slot>
 	</span>
 	<div slot="content" class="bg-base-100 p-2 rounded-md text-base-content text-xs max-w-52">
