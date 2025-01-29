@@ -75,7 +75,7 @@
 	$: if (formaction) _type = 'submit';
 
 	const disabledClass = 'cursor-not-allowed saturate-50 opacity-50';
-	const enabledClass = 'transition-all duration-150 hover:brightness-105 active:brightness-95';
+	const enabledClass = 'cursor-pointer transition-all duration-150 hover:brightness-105 active:brightness-95';
 </script>
 
 <button
@@ -102,81 +102,42 @@
 
 <style>
 	button {
+		--bg: var(--primary);
+		--hover-bg: rgb(from var(--primary) r g b / 90%);
+		--text: var(--secondary);
 		&.variant-primary {
-			--bg: var(--color-primary);
-			--text: var(--color-primary-content);
-			&.outlined {
-				--bg: transparent;
-				--border: var(--color-primary);
-				--text: var(--color-primary);
-				--hover-bg: var(--color-primary / 0.1);
-			}
+			--primary: var(--color-primary);
+			--secondary: var(--color-primary-content);
 		}
-
 		&.variant-secondary {
-			--bg: var(--color-base-300);
-			--text: var(--color-base-content);
-			&.outlined {
-				--bg: transparent;
-				--border: var(--color-base-300);
-				--text: var(--color-base-300);
-				--hover-bg: var(--color-base-300 / 0.1);
-			}
+			--primary: var(--color-base-300);
+			--secondary: var(--color-base-content);
 		}
-
 		&.variant-accent {
-			--bg: var(--color-accent);
-			--text: var(--color-accent-content);
-			&.outlined {
-				--bg: transparent;
-				--border: var(--color-accent);
-				--text: var(--color-accent);
-				--hover-bg: var(--color-accent / 0.1);
-			}
+			--primary: var(--color-color-accent);
+			--secondary: var(--color-accent-content);
 		}
-
 		&.variant-info {
-			--bg: var(--color-info);
-			--text: var(--color-info-content);
-			&.outlined {
-				--bg: transparent;
-				--border: var(--color-info);
-				--text: var(--color-info);
-				--hover-bg: var(--color-info / 0.1);
-			}
+			--primary: var(--color-color-info);
+			--secondary: var(--color-info-content);
 		}
-
 		&.variant-positive {
-			--bg: var(--color-positive);
-			--text: var(--color-positive-content);
-			&.outlined {
-				--bg: transparent;
-				--border: var(--color-positive);
-				--text: var(--color-positive);
-				--hover-bg: var(--color-positive / 0.1);
-			}
+			--primary: var(--color-color-positive);
+			--secondary: var(--color-positive-content);
 		}
-
 		&.variant-warning {
-			--bg: var(--color-warning);
-			--text: var(--color-warning-content);
-			&.outlined {
-				--bg: transparent;
-				--border: var(--color-warning);
-				--text: var(--color-warning);
-				--hover-bg: var(--color-warning / 0.1);
-			}
+			--primary: var(--color-color-warning);
+			--secondary: var(--color-warning-content);
 		}
-
 		&.variant-negative {
-			--bg: var(--color-negative);
-			--text: var(--color-negative-content);
-			&.outlined {
-				--bg: transparent;
-				--border: var(--color-negative);
-				--text: var(--color-negative);
-				--hover-bg: var(--color-negative / 0.1);
-			}
+			--primary: var(--color-color-negative);
+			--secondary: var(--color-negative-content);
+		}
+		&.outlined {
+			--border: var(--primary);
+			--text: var(--primary);
+			--hover-bg: rgb(from var(--primary) r g b / 10%);
+			--bg: transparent;
 		}
 	}
 </style>
