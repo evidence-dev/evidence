@@ -210,7 +210,7 @@
 		if (data) {
 			errors.push('Missing required prop: "value".');
 		} else if (!$$slots.default) {
-			errors.push('Missing required prop: "value" & "data" or <DropdownOption />.');
+			errors.push('Dropdown requires either "value" and "data" props or <DropdownOption />.');
 		}
 	}
 
