@@ -33,7 +33,7 @@
 
 	/** @type {boolean} */
 	export let unsafe = false;
-	unsafe = toBoolean(unsafe);
+	$: unsafe = toBoolean(unsafe);
 
 	let touched = false;
 
