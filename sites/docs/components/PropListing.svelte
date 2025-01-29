@@ -1,5 +1,6 @@
 <script context="module">
 	import { writable } from 'svelte/store';
+	import { toBoolean } from '$lib/utils.js';
 	const names = new Set();
 
 	let hashLocation = writable('');
@@ -28,7 +29,7 @@
 	export let name = '';
 	export let description = '';
 	export let required = false;
-	$: required = required === 'true' || required === true;
+	$: required = toBoolean(required);
 	export let options = [];
 	export let defaultValue = '';
 	export let type = '';

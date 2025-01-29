@@ -26,9 +26,9 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import VirtualList from './Virtual.svelte';
-	import { toBoolean } from '../../../utils.js';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
+	import { toBoolean } from '$lib/utils.js';
 	const inputs = getInputContext();
 
 	/////

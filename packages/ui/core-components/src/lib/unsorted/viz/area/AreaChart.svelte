@@ -80,14 +80,20 @@
 
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
+	/** @type {Boolean} */
 	export let printEchartsConfig = false;
+	$: printEchartsConfig = toBoolean(printEchartsConfig);
 
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;
 
 	export let renderer = undefined;
+	/** @type {Boolean | undefined} */
 	export let downloadableData = undefined;
+	$: downloadableData = toBoolean(downloadableData);
+	/** @type {Boolean | undefined} */
 	export let downloadableImage = undefined;
+	$: downloadableImage = toBoolean(downloadableImage);
 
 	export let seriesColors = undefined;
 	$: seriesColorsStore = resolveColorsObject(seriesColors);
