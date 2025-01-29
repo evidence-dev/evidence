@@ -17,8 +17,8 @@
 	};
 
 	const classLookup = {
-		error: 'border-negative/50 bg-negative/10',
-		success: 'border-positive/50 bg-positive/10',
+		negative: 'border-negative/50 bg-negative/10',
+		positive: 'border-positive/50 bg-positive/10',
 		info: 'border-info/50 bg-info/10',
 		warning: 'border-warning/50 bg-warning/10'
 	};
@@ -44,7 +44,7 @@
 
 <div
 	role="none"
-	class="print:hidden rounded-sm py-1 px-3 my-4 mx-0 shadow-md text-xs font-mono flex justify-between transition-all duration-300 border
+	class="print:hidden rounded py-1 px-3 my-4 mx-0 shadow-md text-xs font-mono flex justify-between transition-all duration-300 border
 	{status ? classLookup[status] : ''}"
 	in:scale
 	out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
