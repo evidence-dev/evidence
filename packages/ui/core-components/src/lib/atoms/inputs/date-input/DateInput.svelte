@@ -16,7 +16,7 @@
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import InlineError from '../InlineError.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import checkInputProps from '../checkInputProps.js';
+	import checkRequiredProps from '../checkRequiredProps.js';
 
 	const inputs = getInputContext();
 
@@ -96,7 +96,7 @@
 	}
 
 	try {
-		checkInputProps({ name });
+		checkRequiredProps({ name });
 	} catch (e) {
 		errors.push(e.message);
 	}

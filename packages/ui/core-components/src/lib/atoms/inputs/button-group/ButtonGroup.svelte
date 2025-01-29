@@ -15,7 +15,7 @@
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
 	import InlineError from '../InlineError.svelte';
-	import checkInputProps from '../checkInputProps.js';
+	import checkRequiredProps from '../checkRequiredProps.js';
 
 	/** @type {string | undefined} */
 	export let name = undefined;
@@ -120,7 +120,7 @@
 	validateConfiguration(preset, display);
 	//should change this from using try/catch to pushing to errors
 	try {
-		checkInputProps({ name });
+		checkRequiredProps({ name });
 	} catch (err) {
 		errors.push(err.message);
 	}

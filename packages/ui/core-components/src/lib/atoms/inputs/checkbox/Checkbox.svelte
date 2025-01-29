@@ -9,7 +9,7 @@
 	import { toBoolean } from '../../../utils.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import InlineError from '../InlineError.svelte';
-	import checkInputProps from '../checkInputProps.js';
+	import checkRequiredProps from '../checkRequiredProps.js';
 	const inputs = getInputContext();
 
 	/////
@@ -44,7 +44,7 @@
 	let errors = [];
 
 	try {
-		checkInputProps({ name });
+		checkRequiredProps({ name });
 	} catch (err) {
 		errors.push(err.message);
 	}

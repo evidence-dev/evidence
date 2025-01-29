@@ -2,7 +2,7 @@
  * @param {unknown} reqPropsObj
  */
 
-export default function checkInputProps(reqPropsObj) {
+export default function checkRequiredProps(reqPropsObj) {
 	if (reqPropsObj === null || typeof reqPropsObj !== 'object') {
 		throw Error('reqProps must be a non-null object');
 	}

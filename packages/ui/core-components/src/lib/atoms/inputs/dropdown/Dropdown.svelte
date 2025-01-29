@@ -31,7 +31,7 @@
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	import InlineError from '../InlineError.svelte';
 	const inputs = getInputContext();
-	import checkInputProps from '../checkInputProps.js';
+	import checkRequiredProps from '../checkRequiredProps.js';
 
 	/////
 	// Component Things
@@ -226,7 +226,7 @@
 	}
 
 	try {
-		checkInputProps({ name });
+		checkRequiredProps({ name });
 	} catch (err) {
 		errors.push(err.message);
 	}

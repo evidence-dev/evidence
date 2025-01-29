@@ -10,7 +10,7 @@
 	export let title = undefined;
 	export let compact = false;
 	export let description = undefined;
-	import checkInputProps from '../inputs/checkInputProps.js';
+	import checkRequiredProps from '../inputs/checkRequiredProps.js';
 
 	let className = undefined;
 	export { className as class };
@@ -19,7 +19,7 @@
 	const errors = [];
 
 	try {
-		checkInputProps({ title, Accordion_Item_Content: $$slots.default });
+		checkRequiredProps({ title, Accordion_Item_Content: $$slots.default });
 	} catch (err) {
 		errors.push(err);
 	}

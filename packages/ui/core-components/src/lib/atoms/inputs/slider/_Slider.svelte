@@ -14,7 +14,7 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import { toNumber } from '$lib/utils.js';
 	import InlineError from '../InlineError.svelte';
-	import checkInputProps from '../checkInputProps.js';
+	import checkRequiredProps from '../checkRequiredProps.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	/////
@@ -163,7 +163,7 @@
 	}
 
 	try {
-		checkInputProps({ name });
+		checkRequiredProps({ name });
 	} catch (err) {
 		errors.push(err.message);
 	}
