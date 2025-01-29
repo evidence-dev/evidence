@@ -162,9 +162,6 @@
 		}
 	}
 
-	//Error Handling
-	/** @type {string | undefined}*/
-
 	try {
 		checkInputProps({ name });
 	} catch (err) {
