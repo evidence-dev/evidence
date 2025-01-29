@@ -28,6 +28,7 @@
 	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	export let defaultValue = false;
+	$: defaultValue = toBoolean(defaultValue);
 
 	$: $inputs[name] = toBoolean(defaultValue);
 </script>

@@ -57,11 +57,15 @@
 
 	export let disableSelectAll = false;
 
+	$: disableSelectAll = toBoolean(disableSelectAll);
+
 	/**
 	 * @type {string | string[]}
 	 */
 	export let defaultValue = [];
 	export let noDefault = false;
+
+	$: noDefault = toBoolean(noDefault);
 
 	/**
 	 * When true, all values will be selected by default

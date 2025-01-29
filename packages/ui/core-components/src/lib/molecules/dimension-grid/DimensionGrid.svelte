@@ -5,6 +5,7 @@
 <script>
 	import { QueryLoad } from '../../atoms/query-load/index.js';
 	import DimensionGrid from './_DimensionGrid.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	/** @type {import('@evidence-dev/sdk/usql').Query} */
 	export let data;
@@ -18,6 +19,7 @@
 	export let name;
 	/** @type {boolean} */
 	export let multiple = false;
+	$: multiple = toBoolean(multiple);
 	/** @type {string} */
 	export let fmt = undefined;
 	/** @type {string | undefined}*/
