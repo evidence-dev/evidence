@@ -31,7 +31,7 @@
 	class="group relative cursor-help cursor-helpfont-sans bg-negative/10 font-ui font-normal rounded border border-negative/50 print:break-inside-avoid text-center text-negative flex items-center justify-center mb-4 mt-4"
 >
 	<div>
-		<Icon src={CalendarIcon} class="mb-[2px] h-4 w-4 stroke-[1.8px] text-negative inline" />
+		<Icon src={InfoCircle} class="mb-[2px] h-4 w-4 stroke-[1.8px] text-negative inline" />
 		<span class="font-medium text-center text-sm">{inputType}</span>
 	</div>
 	<div
