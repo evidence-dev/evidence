@@ -38,9 +38,7 @@ export default function checkInputs(data, reqCols, optCols) {
 			if (reqCols[i] == null) {
 				// missingCols.push(reqCols[i]);
 				throw Error(
-					'Missing required column(s): ' +
-						reqCols[i] +
-						' not found in data set. Please verify required column name(s).'
+					`Missing required column(s): ${reqCols[i]} not found in data set.`
 				);
 			}
 		}
