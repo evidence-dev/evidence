@@ -28,7 +28,7 @@
 	export let name = '';
 	export let description = '';
 	export let required = false;
-	$: required = toBoolean(required);
+	$: required = required === 'true' || required === true;
 	export let options = [];
 	export let defaultValue = '';
 	export let type = '';
