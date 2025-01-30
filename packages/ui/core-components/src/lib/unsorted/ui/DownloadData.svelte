@@ -7,12 +7,13 @@
 	import { fade } from 'svelte/transition';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import InlineError from '../../atoms/inputs/InlineError.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	export let data = undefined;
 	export let queryID = undefined;
 	export let text = 'Download';
 	export let display = true;
-	$: display = display === 'true' || display === true;
+	$: display = toBoolean(display);
 	let errors = [];
 
 	const date = new Date();

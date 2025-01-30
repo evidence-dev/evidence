@@ -27,13 +27,14 @@
 
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
-	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	/** @type {boolean} */
 	export let checked = false;
 
 	/** @type {boolean | string} */
 	export let defaultValue = false;
+	$: defaultValue = toBoolean(defaultValue);
 
 	if (defaultValue !== undefined) {
 		console.warn('`defaultValue` is deprecated. Please use the `checked` prop instead.');

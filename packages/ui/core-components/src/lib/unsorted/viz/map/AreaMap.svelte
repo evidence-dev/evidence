@@ -7,7 +7,7 @@
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import ErrorChart from '../core/ErrorChart.svelte';
-	import { toBoolean } from '../../../utils.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -63,10 +63,12 @@
 	export let legendType = undefined;
 	/** @type {boolean} */
 	export let legend = true;
+	$: legend = toBoolean(legend);
 
 	$: legend = toBoolean(legend);
 	/** @type {boolean} */
 	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;

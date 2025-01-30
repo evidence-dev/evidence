@@ -8,7 +8,7 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getThemeStores } from '../../../themes/themes.js';
 	import ErrorChart from '../core/ErrorChart.svelte';
-	import { toBoolean } from '../../../utils.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColorPalette } = getThemeStores();
 
@@ -69,10 +69,9 @@
 	/** @type {boolean} */
 	export let legend = true;
 
-	$: legend = toBoolean(legend);
-
 	/** @type {boolean} */
 	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;

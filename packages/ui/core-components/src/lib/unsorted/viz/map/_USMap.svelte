@@ -35,10 +35,10 @@
 	export let fmt = undefined;
 
 	export let filter = false;
-	$: filter = filter === 'true' || filter === true;
+	$: filter = toBoolean(filter);
 
 	export let legend = false;
-	$: legend = legend === 'true' || legend === true;
+	$: legend = toBoolean(legend);
 
 	export let link = undefined;
 	let hasLink = link !== undefined;
@@ -88,7 +88,7 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
-	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+	$: printEchartsConfig = toBoolean(printEchartsConfig);
 	export let renderer = undefined;
 	export let downloadableData = undefined;
 	export let downloadableImage = undefined;

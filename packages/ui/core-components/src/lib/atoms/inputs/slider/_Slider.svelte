@@ -12,7 +12,7 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
-	import { toNumber } from '$lib/utils.js';
+	import { toNumber, toBoolean } from '$lib/utils.js';
 	import InlineError from '../InlineError.svelte';
 	import checkRequiredProps from '../checkRequiredProps.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
@@ -38,11 +38,11 @@
 
 	/** @type {boolean} */
 	export let showMaxMin = true;
-	$: showMaxMin = showMaxMin === 'true' || showMaxMin === true;
+	$: showMaxMin = toBoolean(showMaxMin);
 
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
-	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	/** @type {number} */
 	export let defaultValue;

@@ -6,6 +6,7 @@
 	import { getThemeStores } from '../../../../themes/themes.js';
 	import { toBoolean } from '../../../../utils.js';
 	import Points from './Points.svelte';
+
 	const { resolveColorPalette } = getThemeStores();
 
 	/** @type {string|undefined} */
@@ -26,6 +27,7 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+	$: legend = toBoolean(legend);
 </script>
 
 <Points

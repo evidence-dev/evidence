@@ -28,6 +28,7 @@
 	export let description = undefined;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	/** @type {string | Date | undefined} */
 	export let start;
@@ -44,7 +45,6 @@
 	export let defaultValue;
 	/** @type {boolean| string} */
 	export let range = false;
-
 	$: range = toBoolean(range);
 
 	let query;

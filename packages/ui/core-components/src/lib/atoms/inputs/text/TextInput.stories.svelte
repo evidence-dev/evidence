@@ -35,3 +35,13 @@
 <Story name="Name Error">
 	<TextInput name={undefined} />
 </Story>
+
+<Story name="hideDuringPrint string false">
+	<TextInput
+		title="Search Disabled Text Input"
+		name="textInput"
+		disableSearch={true}
+		on:input={() => console.log('input')}
+		hideDuringPrint={'false'}
+	/>
+</Story>

@@ -7,10 +7,12 @@
 	import InlineError from '../inputs/InlineError.svelte';
 	import Info from '../../unsorted/ui/Info.svelte';
 	/** @type {string | undefined} */
+	import { toBoolean } from '$lib/utils.js';
 	export let title = undefined;
 	export let compact = false;
 	export let description = undefined;
 	import checkRequiredProps from '../inputs/checkRequiredProps.js';
+	$: compact = toBoolean(compact);
 
 	let className = undefined;
 	export { className as class };

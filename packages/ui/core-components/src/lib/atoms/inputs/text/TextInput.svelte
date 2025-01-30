@@ -6,6 +6,7 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { toBoolean } from '$lib/utils.js';
 	import InlineError from '../InlineError.svelte';
 	import checkRequiredProps from '../checkRequiredProps.js';
 	const inputs = getInputContext();
@@ -34,7 +35,7 @@
 
 	/** @type {boolean} */
 	export let unsafe = false;
-	$: unsafe = unsafe === true || unsafe === 'true';
+	$: unsafe = toBoolean(unsafe);
 
 	let touched = false;
 
