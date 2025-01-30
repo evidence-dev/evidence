@@ -104,8 +104,6 @@
 	} catch (e) {
 		errors.push(e.message);
 	}
-
-	$: console.log($query?.error !== undefined);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
