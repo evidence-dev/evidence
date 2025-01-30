@@ -5,8 +5,10 @@
 <script>
 	import * as BaseAccordion from '../shadcn/accordion';
 	import Info from '../../unsorted/ui/Info.svelte';
+	import { toBoolean } from '$lib/utils.js';
 	export let title = '';
 	export let compact = false;
+	$: compact = toBoolean(compact);
 
 	let className = undefined;
 	export { className as class };

@@ -14,12 +14,15 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '$lib/utils.js';
+
 	/** @type {string} */
 	export let name;
 	/** @type {string} */
 	export let title;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	/** @type {keyof typeof presets | undefined} */
 	export let preset = undefined;

@@ -5,12 +5,13 @@
 <script>
 	import { ExportToCsv } from 'export-to-csv';
 	import { fade } from 'svelte/transition';
+	import { toBoolean } from '$lib/utils.js';
 
 	export let data = undefined;
 	export let queryID = undefined;
 	export let text = 'Download';
 	export let display = true;
-	$: display = display === 'true' || display === true;
+	$: display = toBoolean(display);
 
 	const date = new Date();
 	const localISOTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
