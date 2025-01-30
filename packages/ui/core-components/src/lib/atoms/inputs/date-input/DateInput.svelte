@@ -15,7 +15,6 @@
 	import { dateToYYYYMMDD, formatDateString } from './helpers.js';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import InlineError from '../InlineError.svelte';
-	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import checkRequiredProps from '../checkRequiredProps.js';
 
 	const inputs = getInputContext();
