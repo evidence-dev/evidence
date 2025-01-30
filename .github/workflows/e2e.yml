@@ -5,25 +5,11 @@ on:
     branches: [main, next]
 
 jobs:
-  find-e2e-test-projects:
-    name: Find E2E Test Projects
-    runs-on: ubuntu-latest
-    outputs:
-      e2e-test-projects: ${{ steps.e2e-test-projects.outputs.e2e-test-projects }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - id: e2e-test-projects
-        run: echo "e2e-test-projects=$(find e2e -maxdepth 1 -type d -printf "%f\n" | jq --raw-input --slurp --compact-output 'split("\n")[1:-1]')" >> ${GITHUB_OUTPUT}
-
   run-tests:
-    needs:
-      - find-e2e-test-projects
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        project: ${{ fromJson(needs.find-e2e-test-projects.outputs.e2e-test-projects) }}
         os: [ubuntu-latest, macOS-latest, windows-latest]
         node-version: [18.13.0, 20, 22]
 
@@ -34,7 +20,7 @@ jobs:
           - isMain: false
             node-version: 20
 
-    name: e2e/${{ matrix.project }}/${{ matrix.os }}/node-${{ matrix.node-version}}
+    name: e2e/${{ matrix.os }}/node-${{ matrix.node-version}}
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -60,28 +46,23 @@ jobs:
         run: pnpm playwright install --with-deps
 
       - name: Run setup
-        working-directory: ./e2e/${{ matrix.project }}
-        run: pnpm run --if-present setup
+        run: pnpm --filter "./e2e/*" run --if-present setup
 
       - name: Run sources
-        working-directory: ./e2e/${{ matrix.project }}
-        run: pnpm run sources
+        run: pnpm --filter "./e2e/*" run sources
 
       - name: Run dev mode tests
-        working-directory: ./e2e/${{ matrix.project }}
-        run: pnpm run test:dev
+        run: pnpm --filter "./e2e/*" --sequential run test:dev
 
       - name: Build
-        working-directory: ./e2e/${{ matrix.project }}
-        run: pnpm run build
+        run: pnpm --filter "./e2e/*" run build
 
       - name: Run preview mode tests
-        working-directory: ./e2e/${{ matrix.project }}
-        run: pnpm run test:preview
+        run: pnpm --filter "./e2e/*" --sequential run test:preview
 
       - name: Upload Playwright reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report__e2e_${{ matrix.project }}_${{ matrix.os }}_node-${{ matrix.node-version }}
-          path: e2e/${{ matrix.project }}/playwright-report
+          name: playwright-report__e2e_${{ matrix.os }}_node-${{ matrix.node-version }}
+          path: e2e/**/playwright-report
