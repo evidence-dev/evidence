@@ -35,12 +35,10 @@ export default function checkInputs(data, reqCols, optCols) {
 		// Check if columns were provided
 		for (var i = 0; i < reqCols.length; i++) {
 			if (reqCols[i] == null) {
-				throw Error(
-					`Missing required column(s): ${reqCols[i]} not found in data set. Please verify required column name(s).`
-				);
+				throw Error(`Missing required column(s): ${reqCols[i]} not found in data set.`);
 			} else if (reqCols[i] == '') {
 				throw Error(
-					`Missing required column(s): A Empty string was provided for one of your props. Please verify required column name(s).`
+					`Missing required column(s): A Empty string was provided for one of your props.`
 				);
 			}
 		}

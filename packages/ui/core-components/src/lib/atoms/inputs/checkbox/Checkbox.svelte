@@ -39,7 +39,7 @@
 		console.warn('`defaultValue` is deprecated. Please use the `checked` prop instead.');
 	}
 
-	let isChecked = toBoolean(defaultValue) || checked;
+	let isChecked = toBoolean(defaultValue) || toBoolean(checked);
 
 	$: $inputs[name] = isChecked;
 
