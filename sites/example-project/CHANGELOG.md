@@ -1,5 +1,22 @@
 # @evidence-dev/components
 
+## 3.5.46
+
+### Patch Changes
+
+- Updated dependencies [27bca8e8e]
+- Updated dependencies [d97a4ce94]
+- Updated dependencies [f30d3ee5c]
+- Updated dependencies [c7547d83f]
+- Updated dependencies [09014326f]
+- Updated dependencies [2e506cdad]
+  - @evidence-dev/core-components@5.1.0
+  - @evidence-dev/sdk@3.0.6
+  - @evidence-dev/preprocess@6.0.3
+  - @evidence-dev/component-utilities@4.0.6
+  - @evidence-dev/universal-sql@2.2.7
+  - @evidence-dev/tailwind@3.0.6
+
 ## 3.5.45
 
 ### Patch Changes
