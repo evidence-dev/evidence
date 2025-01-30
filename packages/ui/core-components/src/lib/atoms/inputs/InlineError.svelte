@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { InfoCircle as CalendarIcon } from '@steeze-ui/tabler-icons';
+	import { InfoCircle } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 
 	/** @type {string | undefined} */
