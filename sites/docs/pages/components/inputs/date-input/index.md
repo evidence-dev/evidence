@@ -166,7 +166,7 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-            <DateInput defaultValue={'Last 7 Days'} range/>
+            <DateInput name="date_range_1" defaultValue={'Last 7 Days'} range/>
     </div>
 
 ````svelte
@@ -182,14 +182,14 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-            <DateInput presetRanges={'Last 7 Days'} range/>
+            <DateInput name="date_range_2" presetRanges={'Last 7 Days'} range/>
     </div>
 
 ```svelte
-<DateInput
-    name=name_of_date_range
+<DateInput 
+    name="date_range_2" 
+    presetRanges={'Last 7 Days'} 
     range
-    presetRanges={'Last 7 Days'}
 />
 ```
 </DocTab>
@@ -198,12 +198,12 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-            <DateInput presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']} range/>
+            <DateInput name="date_range_3" presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']} range/>
     </div>
 
 ````svelte
 <DateInput
-    name=name_of_date_range
+    name="date_range_3"
     range
     presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}
 />

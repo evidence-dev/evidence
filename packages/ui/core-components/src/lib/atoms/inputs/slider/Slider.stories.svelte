@@ -32,7 +32,7 @@
 	  CAST((SELECT MAX(fare) FROM flights) AS INT) AS max_fare,
 	  CAST((SELECT MIN(fare) FROM flights) AS INT) AS min_fare
 	FROM flights
-	LIMIT 10`,
+	LIMIT 100`,
 		query
 	);
 
@@ -62,7 +62,8 @@
 		max: 36,
 		step: 12,
 		showMaxMin: true,
-		size: 'medium'
+		size: 'medium',
+		defaultValue: 12
 	}}
 />
 
@@ -124,22 +125,32 @@
 	}}
 />
 <Story
-	name="With data"
+	name="handle string values"
 	args={{
-		name: 'With data',
-		title: 'With data',
-		step: 10,
-		showMaxMin: true,
-		data: data,
-		defaultValue: 'max_fare',
-		maxColumn: 'max_fare',
-		size: 'large',
-		fmt: 'usd'
+		name: 'String Values',
+		defaultValue: '18',
+		fmt: 'usd0',
+		steps: '2',
+		max: '20',
+		min: '0'
 	}}
 />
 <Story
-	name="handle string values"
+	name="Name Error"
 	args={{
+		name: undefined,
+		defaultValue: '18',
+		fmt: 'usd0',
+		steps: '2',
+		max: '20',
+		min: '0'
+	}}
+/>
+<Story
+	name="Long Title"
+	args={{
+		name: 'Slider_Long_title',
+		title: 'A really long title that should be truncated',
 		defaultValue: '18',
 		fmt: 'usd0',
 		step: '2',
@@ -174,5 +185,55 @@
 	{#if $inputStore['maxCol']}
 		maxCol Value: {$inputStore['maxCol'].value}
 	{/if}
-	<Slider step="1" name="slider" title="Slider" max={dynamicMaxColumn} min={dynamicMinColumn} />
+	<Slider
+		step="1"
+		name="slider_reactive"
+		title="Slider"
+		max={dynamicMaxColumn}
+		min={dynamicMinColumn}
+	/>
 </Story>
+<Story
+	name="With data"
+	args={{
+		name: 'With data',
+		title: 'With data',
+		step: 1,
+		showMaxMin: true,
+		data: data,
+		defaultValue: 'max_fare',
+		range: 'fare',
+		size: 'large',
+		fmt: 'usd'
+	}}
+/>
+<Story
+	name="With data + maxColumn + minColumn"
+	args={{
+		name: 'With data',
+		title: 'With data',
+		step: 5,
+		showMaxMin: true,
+		data: data,
+		defaultValue: 'max_fare',
+		range: 'fare',
+		maxColumn: 'max_fare',
+		minColumn: 'min_fare',
+		size: 'large',
+		fmt: 'usd'
+	}}
+/>
+<Story
+	name="With data incorrect column name"
+	args={{
+		name: 'With data',
+		title: 'With data',
+		step: 10,
+		showMaxMin: true,
+		data: data,
+		defaultValue: 'incorrect_column_name',
+		maxColumn: 'max_fare',
+		size: 'large',
+		fmt: 'usd'
+	}}
+/>

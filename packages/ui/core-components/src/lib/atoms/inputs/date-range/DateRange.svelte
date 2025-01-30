@@ -6,4 +6,4 @@
 	import DateInput from '../date-input/DateInput.svelte';
 </script>
 
-<DateInput {...$$props} range />
+<DateInput {...$$restProps} range />

@@ -591,7 +591,7 @@ export class EvidenceMap {
 	async initializeData(
 		data,
 		{
-			corordinates,
+			coordinates,
 			value,
 			checkInputs,
 			min,
@@ -602,11 +602,12 @@ export class EvidenceMap {
 			chartType,
 			legendId,
 			legend,
-			theme
+			theme,
+			sizeCol
 		}
 	) {
 		await data.fetch();
-		checkInputs(data, corordinates);
+		checkInputs(data, coordinates, [value, sizeCol]);
 		let values = data.map((d) => d[value]);
 		let minValue = Math.min(...values);
 		let maxValue = Math.max(...values);

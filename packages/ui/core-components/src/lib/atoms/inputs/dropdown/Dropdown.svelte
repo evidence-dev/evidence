@@ -28,8 +28,10 @@
 	import VirtualList from './Virtual.svelte';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
+	import InlineError from '../InlineError.svelte';
 	import { toBoolean } from '$lib/utils.js';
 	const inputs = getInputContext();
+	import checkRequiredProps from '../checkRequiredProps.js';
 
 	/////
 	// Component Things
@@ -210,6 +212,42 @@
 	$: open ? pauseSorting() : resumeSorting();
 
 	$: if ($finalQuery?.dataLoaded) opts = $finalQuery;
+
+	let errors = [];
+
+	if (!value) {
+		if (data) {
+			errors.push('Missing required prop: "value".');
+		} else if (!$$slots.default) {
+			errors.push('Dropdown requires either "value" and "data" props or <DropdownOption />.');
+		}
+	}
+
+	if (data) {
+		if (typeof data !== 'object') {
+			if (typeof data === 'string') {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace('data.', '')}'}`
+				);
+			} else {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be an object. e.g data = {QueryName}`
+				);
+			}
+		}
+	}
+
+	try {
+		checkRequiredProps({ name });
+	} catch (err) {
+		errors.push(err.message);
+	}
+	// temp fix for multiple queryErrors be thrown
+	let hasQueryError = false;
+	$: if ($query?.error && hasQuery && !hasQueryError) {
+		errors = [...errors, $query.error];
+		hasQueryError = true;
+	}
 </script>
 
 <slot />
@@ -225,7 +263,9 @@
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
-		{#if hasQuery && $query.error}
+		{#if errors.length > 0}
+			<InlineError inputType="Dropdown" error={errors} height="32" width="140" />
+			<!-- {:else if hasQuery && $query.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>
@@ -235,7 +275,7 @@
 				>
 					{$query.error}
 				</span>
-			</span>
+			</span> -->
 		{:else}
 			<Popover.Root bind:open>
 				<Popover.Trigger asChild let:builder>

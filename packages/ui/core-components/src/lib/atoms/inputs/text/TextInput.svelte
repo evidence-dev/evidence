@@ -7,6 +7,8 @@
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { toBoolean } from '$lib/utils.js';
+	import InlineError from '../InlineError.svelte';
+	import checkRequiredProps from '../checkRequiredProps.js';
 	const inputs = getInputContext();
 
 	/////
@@ -60,6 +62,15 @@
 	if (typeof defaultValue !== 'undefined') {
 		setInputStore();
 	}
+
+	/** @type {[string]} */
+	let errors = [];
+
+	try {
+		checkRequiredProps({ name });
+	} catch (err) {
+		errors.push(err.message);
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
@@ -72,10 +83,14 @@
 				{/if}
 			</span>
 		{/if}
-		<input
-			bind:value
-			class="font-medium border pb-1 pt-[3px] h-8 border-base-300 bg-base-100 pr-3 rounded-md px-2 sm:text-xs max-w-fit bg-transparent cursor-text bg-right bg-no-repeat focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-content-muted shadow-sm text-base placeholder:font-normal placeholder:text-base-content-muted/80"
-			{placeholder}
-		/>
+		{#if errors.length}
+			<InlineError inputType="TextInput" error={errors} height="32" width="246" />
+		{:else}
+			<input
+				bind:value
+				class="font-medium border pb-1 pt-[3px] h-8 border-base-300 bg-base-100 pr-3 rounded-md px-2 sm:text-xs max-w-fit bg-transparent cursor-text bg-right bg-no-repeat focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-content-muted shadow-sm text-base placeholder:font-normal placeholder:text-base-content-muted/80"
+				{placeholder}
+			/>
+		{/if}
 	</div>
 </HiddenInPrint>

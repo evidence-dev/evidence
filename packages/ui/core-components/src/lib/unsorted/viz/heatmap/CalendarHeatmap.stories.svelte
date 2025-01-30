@@ -82,3 +82,6 @@
 		colorPalette={['navy', 'lightyellow', 'purple']}
 	/>
 </Story>
+<Story name="Missing column" let:args>
+	<CalendarHeatmap {data} {...args} date="departure_date" value={undefined} />
+</Story>
