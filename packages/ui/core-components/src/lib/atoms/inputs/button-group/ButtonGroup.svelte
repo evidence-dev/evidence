@@ -108,17 +108,19 @@
 
 	if (data) {
 		if (typeof data !== 'object') {
-			errors.push(
-				`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace(
-					'data.',
-					''
-				)}'}`
-			);
+			if (typeof data === 'string') {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace('data.', '')}'}`
+				);
+			} else {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be an object. e.g data = {QueryName}`
+				);
+			}
 		}
 	}
 
 	validateConfiguration(preset, display);
-	//should change this from using try/catch to pushing to errors
 	try {
 		checkRequiredProps({ name });
 	} catch (err) {

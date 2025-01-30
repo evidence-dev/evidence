@@ -12,9 +12,7 @@ Use big links to display a url link in a styled container. To style links like B
     </div>
 
 ```markdown
-    <div slot='preview'>
       <BigLink url='/components/ui/big-link'>My Big Link</BigLink> 
-    </div>
 ```
 </DocTab>
 

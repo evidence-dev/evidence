@@ -35,7 +35,11 @@
 	/** @type {boolean | string} */
 	export let defaultValue = false;
 
-	let isChecked = toBoolean(defaultValue) || toBoolean(checked);
+	if (defaultValue !== undefined) {
+		console.warn('`defaultValue` is deprecated. Please use the `checked` prop instead.');
+	}
+
+	let isChecked = toBoolean(defaultValue) || checked;
 
 	$: $inputs[name] = isChecked;
 

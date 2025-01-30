@@ -33,12 +33,14 @@ export default function checkInputs(data, reqCols, optCols) {
 		}
 
 		// Check if columns were provided
-		// let missingCols = [];
 		for (var i = 0; i < reqCols.length; i++) {
 			if (reqCols[i] == null) {
-				// missingCols.push(reqCols[i]);
 				throw Error(
-					`Missing required column(s): ${reqCols[i]} not found in data set.`
+					`Missing required column(s): ${reqCols[i]} not found in data set. Please verify required column name(s).`
+				);
+			} else if (reqCols[i] == '') {
+				throw Error(
+					`Missing required column(s): A Empty string was provided for one of your props. Please verify required column name(s).`
 				);
 			}
 		}

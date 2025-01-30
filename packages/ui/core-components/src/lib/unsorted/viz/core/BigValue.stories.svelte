@@ -66,4 +66,12 @@
 	<BigValue {...args} data="data3" value="fare" sparkline="departure_date" />
 	<h1>No props passed</h1>
 	<BigValue {...args} />
+	<h1>Invalid Sparklike prop</h1>
+	<BigValue {...args} {data} value="total" sparkline="invalid" />
+	<h1>empty string Sparklike prop</h1>
+	<BigValue {...args} {data} value="total" sparkline="" />
+	<h1>Invalid comparison prop</h1>
+	<BigValue {...args} {data} value="total" sparkline="departure_date" comparison="invalid" />
+	<h1>Empty string comparison prop</h1>
+	<BigValue {...args} {data} value="total" sparkline="departure_date" comparison="" />
 </Story>

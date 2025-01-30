@@ -15,8 +15,6 @@ To see how to filter a query using a Button Group, see [Filters](/core-concepts/
 
 ### Button Group using Options from a Query
 
-<ButtonGroup data={categories} title="Value missing" name="valueMissing" value='wrong' />
-
 <DocTab>
     <div slot='preview'>
         <ButtonGroup 

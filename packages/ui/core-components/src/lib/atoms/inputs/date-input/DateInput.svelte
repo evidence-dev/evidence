@@ -95,11 +95,17 @@
 		}
 	}
 
+	$: if ($query?.error) {
+		errors.push($query.error);
+	}
+
 	try {
 		checkRequiredProps({ name });
 	} catch (e) {
 		errors.push(e.message);
 	}
+
+	$: console.log($query?.error !== undefined);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
@@ -115,8 +121,7 @@
 				width={range ? 337 : 190}
 				error={errors}
 			/>
-		{:else if $query?.error}
-			<!-- Should refactor into InlineError -->
+			<!-- {:else if $query?.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>
@@ -126,7 +131,7 @@
 				>
 					{$query.error}
 				</span>
-			</span>
+			</span> -->
 		{:else}
 			<QueryLoad data={query} let:loaded>
 				<svelte:fragment slot="skeleton">

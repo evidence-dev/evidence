@@ -99,16 +99,14 @@
 		checkMinMax(min, max);
 	}
 
-	// $: if (defaultValue !== undefined && !data) {
-	// 	defaultValue = validateNumber(defaultValue, 'defaultValue');
-	// 	if (defaultValue !== undefined) {
-	// 		if (defaultValue < min) {
-	// 			errors.push('defaultValue cannot be less than min');
-	// 		} else if (defaultValue > max) {
-	// 			errors.push('defaultValue cannot be greater than max');
-	// 		}
-	// 	}
-	// }
+	$: if (defaultValue !== undefined && !data) {
+		defaultValue = validateNumber(defaultValue, 'defaultValue');
+		if (defaultValue < min) {
+			errors.push('defaultValue cannot be less than min');
+		} else if (defaultValue > max) {
+			errors.push('defaultValue cannot be greater than max');
+		}
+	}
 
 	$: $inputs[name] = value;
 
@@ -128,13 +126,7 @@
 	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
 
-	// let strictBuild;
-
-	// let initialized = false;
-
-	$: if (typeof defaultValue === 'number') {
-		value = [defaultValue];
-	}
+	$: value = [defaultValue];
 
 	if (data) {
 		try {

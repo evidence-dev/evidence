@@ -19,7 +19,13 @@
 	const errors = [];
 
 	try {
-		checkRequiredProps({ title, Accordion_Item_Content: $$slots.default });
+		if (!$$slots.default) {
+			throw new Error(
+				'<AccordionItem> requires content to be provided e.g <AccordionItem>Content</AccordionItem>'
+			);
+		}
+
+		checkRequiredProps({ title });
 	} catch (err) {
 		errors.push(err);
 	}
