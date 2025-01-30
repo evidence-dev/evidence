@@ -26,6 +26,8 @@
 	MockDate.set('2024-12-30');
 	onMount(() => () => MockDate.reset());
 
+	const data = Query.create(`SELECT * FROM Flights`, query);
+
 	const queryErrorData = Query.create(`SELECT * FROM Flights`, query);
 </script>
 
@@ -52,6 +54,8 @@
 	<DateInput {...args} name="dateInput_range" range />
 </Story>
 <Story name="Name Error" let:args>
+	<h1>Good Data</h1>
+	<DateInput {...args} name="dateInput" {data} dates="departure_date" />
 	<h1>Date Input</h1>
 	<DateInput {...args} name={undefined} />
 	<h1>Date Input Range</h1>

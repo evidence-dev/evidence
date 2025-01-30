@@ -50,11 +50,18 @@
 	let query;
 	let errors = [];
 	$: if (data) {
-		try {
-			checkInputs(data, [dates]);
-		} catch (e) {
-			errors.push(e.message);
+		if (typeof data !== 'object') {
+			if (typeof data === 'string') {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace('data.', '')}'}`
+				);
+			} else {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be an object. e.g data = {QueryName}`
+				);
+			}
 		}
+
 		const queryString = `SELECT min(${dates}) as start, max(${dates}) as end FROM ${typeof data === 'string' ? data : `(${data.text})`}`;
 		const id = `DateRange-${name}`;
 		const opts = {
@@ -95,8 +102,10 @@
 		}
 	}
 
-	$: if ($query?.error) {
-		errors.push($query.error);
+	let hasQueryError = false;
+	$: if ($query?.error && !hasQueryError) {
+		errors = [...errors, $query.error];
+		hasQueryError = true;
 	}
 
 	try {
