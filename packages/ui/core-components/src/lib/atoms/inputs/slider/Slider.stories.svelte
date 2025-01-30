@@ -125,50 +125,6 @@
 	}}
 />
 <Story
-	name="With data"
-	args={{
-		name: 'With data',
-		title: 'With data',
-		step: 1,
-		showMaxMin: true,
-		data: data,
-		defaultValue: 'max_fare',
-		range: 'fare',
-		size: 'large',
-		fmt: 'usd'
-	}}
-/>
-<Story
-	name="With data + maxColumn + minColumn"
-	args={{
-		name: 'With data',
-		title: 'With data',
-		step: 5,
-		showMaxMin: true,
-		data: data,
-		defaultValue: 'max_fare',
-		range: 'fare',
-		maxColumn: 'max_fare',
-		minColumn: 'min_fare',
-		size: 'large',
-		fmt: 'usd'
-	}}
-/>
-<Story
-	name="With data incorrect column name"
-	args={{
-		name: 'With data',
-		title: 'With data',
-		step: 10,
-		showMaxMin: true,
-		data: data,
-		defaultValue: 'incorrect_column_name',
-		maxColumn: 'max_fare',
-		size: 'large',
-		fmt: 'usd'
-	}}
-/>
-<Story
 	name="handle string values"
 	args={{
 		name: 'String Values',
@@ -237,3 +193,47 @@
 		min={dynamicMinColumn}
 	/>
 </Story>
+<Story
+	name="With data"
+	args={{
+		name: 'With data',
+		title: 'With data',
+		step: 1,
+		showMaxMin: true,
+		data: data,
+		defaultValue: 'max_fare',
+		range: 'fare',
+		size: 'large',
+		fmt: 'usd'
+	}}
+/>
+<Story
+	name="With data + maxColumn + minColumn"
+	args={{
+		name: 'With data',
+		title: 'With data',
+		step: 5,
+		showMaxMin: true,
+		data: data,
+		defaultValue: 'max_fare',
+		range: 'fare',
+		maxColumn: 'max_fare',
+		minColumn: 'min_fare',
+		size: 'large',
+		fmt: 'usd'
+	}}
+/>
+<Story
+	name="With data incorrect column name"
+	args={{
+		name: 'With data',
+		title: 'With data',
+		step: 10,
+		showMaxMin: true,
+		data: data,
+		defaultValue: 'incorrect_column_name',
+		maxColumn: 'max_fare',
+		size: 'large',
+		fmt: 'usd'
+	}}
+/>

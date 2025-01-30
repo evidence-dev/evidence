@@ -106,6 +106,7 @@
 		} else if (defaultValue > max) {
 			errors.push('defaultValue cannot be greater than max');
 		}
+		value = [defaultValue];
 	}
 
 	$: $inputs[name] = value;
@@ -126,13 +127,11 @@
 	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
 
-	$: value = [defaultValue];
-
 	if (data) {
 		try {
 			checkInputs(data, [], [range, defaultValue, minColumn, maxColumn]);
 		} catch (e) {
-			errors.push(e.message);
+			errors = [...errors, e.message];
 		}
 		// sets the value to the first row of a specified column: this was a user requested added feature
 		// Now looking at it seems strange
