@@ -3,4 +3,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Override nanoid to >=5.0.9
+Override nanoid to 3.3.8
