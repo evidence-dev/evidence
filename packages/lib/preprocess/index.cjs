@@ -1,9 +1,7 @@
 const mdsvex = require('mdsvex');
 const { highlighter } = require('./src/utils/highlighter.cjs');
 const addScriptTags = require('./src/add-script-tags.cjs');
-const addBlankLines = require('./src/add-blank-lines.cjs');
 const processQueries = require('./src/process-queries.cjs');
-const fixListsWithinEachBlocks = require('./src/fix-lists-within-each-blocks.cjs');
 const addClasses = require('./src/add-classes.cjs');
 // This is includes future proofing to add support for Prism highlighting
 const processFrontmatter = require('./src/frontmatter/process-frontmatter.cjs');
@@ -16,7 +14,6 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 		injectPartials,
 		addScriptTags,
 		processQueries.processQueries(componentDevelopmentMode),
-		addBlankLines,
 		mdsvex.mdsvex({
 			extensions: ['.md'],
 			smartypants: {
@@ -45,7 +42,6 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 				]
 			]
 		}),
-		fixListsWithinEachBlocks,
 
 		// Add both script tags to all markdown files, if they are missing
 		processFrontmatter()
