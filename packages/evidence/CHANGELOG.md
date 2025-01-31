@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 40.0.6
+
+### Patch Changes
+
+- 586c4d772: double url encoding
+- Updated dependencies [c7547d83f]
+- Updated dependencies [09014326f]
+  - @evidence-dev/sdk@3.0.6
+  - @evidence-dev/preprocess@6.0.3
+  - @evidence-dev/universal-sql@2.2.7
+
 ## 40.0.5
 
 ### Patch Changes
