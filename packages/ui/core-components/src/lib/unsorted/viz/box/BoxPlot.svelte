@@ -62,6 +62,11 @@
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;
 
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
+
+	export let xLabelWrap = undefined;
+
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -136,6 +141,9 @@
 	{downloadableImage}
 	{connectGroup}
 	{seriesColors}
+	{leftPadding}
+	{rightPadding}
+	{xLabelWrap}
 >
 	<Box {boxPlotData} color={colorStore} {max} />
 	<slot />

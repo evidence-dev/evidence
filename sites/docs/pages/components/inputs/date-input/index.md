@@ -1,7 +1,7 @@
 ---
 title: Date Input
 sidebar_position: 1
-description: A date input component allows the user to select a date or a range of dates. The selected dates can be used as inputs to queries or components.
+description: Display a date picker for selecting a singledate or a range of dates.
 queries: 
 - orders_by_day.sql
 ---
@@ -166,7 +166,7 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-            <DateInput defaultValue={'Last 7 Days'} range/>
+            <DateInput name="date_range_1" defaultValue={'Last 7 Days'} range/>
     </div>
 
 ````svelte
@@ -182,14 +182,14 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-            <DateInput presetRanges={'Last 7 Days'} range/>
+            <DateInput name="date_range_2" presetRanges={'Last 7 Days'} range/>
     </div>
 
 ```svelte
-<DateInput
-    name=name_of_date_range
+<DateInput 
+    name="date_range_2" 
+    presetRanges={'Last 7 Days'} 
     range
-    presetRanges={'Last 7 Days'}
 />
 ```
 </DocTab>
@@ -198,12 +198,12 @@ where day between '${inputs.range_filtering_a_query.start}' - '${inputs.range_fi
 
 <DocTab>
     <div slot='preview'>
-            <DateInput presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']} range/>
+            <DateInput name="date_range_3" presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']} range/>
     </div>
 
 ````svelte
 <DateInput
-    name=name_of_date_range
+    name="date_range_3"
     range
     presetRanges={['Last 7 Days', 'Last 3 Months', 'Year to Date', 'All Time']}
 />
@@ -299,3 +299,11 @@ Accepts preset in string format to apply default value in Date Input picker. **R
     options={["true", "false"]}
     default="true"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>

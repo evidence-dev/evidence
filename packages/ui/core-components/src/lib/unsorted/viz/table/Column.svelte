@@ -7,6 +7,7 @@
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { getThemeStores } from '../../../themes/themes.js';
 	import { checkDeprecatedColor } from '../../../deprecated-colors.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColor, resolveColorScale } = getThemeStores();
 
@@ -33,6 +34,8 @@
 			}
 		}
 	}
+
+	export let description = undefined;
 
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
@@ -90,15 +93,15 @@
 
 	// Delta:
 	export let downIsGood = false;
-	$: downIsGood = downIsGood === 'true' || downIsGood === true;
+	$: downIsGood = toBoolean(downIsGood);
 	export let showValue = true;
-	$: showValue = showValue === 'true' || showValue === true;
+	$: showValue = toBoolean(showValue);
 	export let deltaSymbol = true;
-	$: deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+	$: deltaSymbol = toBoolean(deltaSymbol);
 	export let neutralMin = 0;
 	export let neutralMax = 0;
 	export let chip = false;
-	$: chip = chip === 'true' || chip === true;
+	$: chip = toBoolean(chip);
 
 	// Sparkline:
 	export let sparkWidth = undefined;
@@ -107,7 +110,7 @@
 	export let sparkX = undefined;
 	export let sparkY = undefined;
 	export let sparkYScale = false;
-	$: sparkYScale = sparkYScale === 'true' || sparkYScale === true;
+	$: sparkYScale = toBoolean(sparkYScale);
 
 	// Bar Viz:
 	export let barColor = '#a5cdee';
@@ -120,7 +123,7 @@
 	$: backgroundColorStore = resolveColor(backgroundColor);
 
 	export let hideLabels = false;
-	$: hideLabels = hideLabels === 'true' || hideLabels === true;
+	$: hideLabels = toBoolean(hideLabels);
 
 	// Column Groups:
 	export let colGroup = undefined;
@@ -130,7 +133,7 @@
 
 	// Neagtive value font color:
 	export let redNegatives = false;
-	$: redNegatives = redNegatives === 'true' || redNegatives === true;
+	$: redNegatives = toBoolean(redNegatives);
 
 	$: options = {
 		identifier,
@@ -164,6 +167,7 @@
 		colGroup,
 		colorMid,
 		colorBreakpoints,
+		description,
 		redNegatives,
 		sparkWidth,
 		sparkHeight,

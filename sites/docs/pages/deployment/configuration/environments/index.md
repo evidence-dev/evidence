@@ -2,6 +2,7 @@
 sidebar_position: 7
 hide_table_of_contents: false
 title: Environments
+description: Configure multiple environments for developing and testing your app, using different database credentials if needed.
 ---
 
 ## What are environments?

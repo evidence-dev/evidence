@@ -2,6 +2,10 @@
 SELECT * FROM orders LIMIT 5000
 ```
 
+```sql pokedex
+SELECT * FROM pokedex
+```
+
 <DataTable data={xyz} search/>
 
 ```sql semicolon_comment_test

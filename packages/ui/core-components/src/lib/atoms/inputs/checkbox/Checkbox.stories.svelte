@@ -33,3 +33,10 @@
 	<Checkbox title="boolean true" defaultValue={true} name="boolean_true" {...args} />
 	<p>{$inputStore.boolean_true}</p>
 </Story>
+<Story name="Name Error" let:args>
+	<h1>Name prop undefined</h1>
+	<Checkbox title="string true" defaultValue="true" name={undefined} {...args} />
+</Story>
+<Story name="Checkbox w/ Title undefined" let:args>
+	<Checkbox defaultValue="true" name="undefinedTitle" {...args} />
+</Story>

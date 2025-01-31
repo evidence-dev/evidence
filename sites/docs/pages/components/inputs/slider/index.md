@@ -1,5 +1,6 @@
 ---
 title: Slider
+description: Display a linear input to select a value from a range.
 sidebar_position: 1
 ---
 
@@ -158,34 +159,68 @@ The default size of the slider can be altered with the size property using; medi
 
 ## Specifying Dynamic Columns
 
-Supply data with specified column names for minColumn, maxColumn, and/or defaultValue. The first row’s value in each of these columns will determine the minimum, maximum, or default value, respectively.
+Supply data with a specified column name to define the slider's min and max values. The slider's range will be calculated based on the column's minimum and maximum values.
 
+<DocTab>
+    <div slot="preview">
 <Slider
     title='data slider'
+    name='RangeSlider'
     size=large
     step=100
     data={flight_data}
-    maxColumn=max_fare
-    defaultValue=max_fare
+    range=fare
 />
+    </div>
 
 ````markdown
 <Slider
     title='data slider'
+    name='RangeSlider'
+    size=large
+    step=100
+    data={flight_data}
+    range=fare
+/>
+````
+</DocTab>
+
+Supply data with specified column names for minColumn, maxColumn, and/or defaultValue. The first row’s value in each of these columns will determine the minimum, maximum, or default value, respectively.
+
+<DocTab>
+    <div slot='preview'>
+<Slider
+    title='data slider'
+    name='MaxColSlider'
     size=large
     step=100
     data={flight_data}
     maxColumn=max_fare
+    min=0
+    defaultValue=max_fare
+/>
+    </div>
+
+````markdown
+<Slider
+    title='data slider'
+    name='MaxColSlider'
+    size=large
+    step=100
+    data={flight_data}
+    maxColumn=max_fare
+    min=0
     defaultValue=max_fare
 />
 ````
+</DocTab>
 
 # Slider
 
 ## Options
 
 <PropListing 
-    name="Name"
+    name="name"
     required
 >
 
@@ -221,6 +256,11 @@ Sets the maximum value on the slider. This value must be larger than the min.
     options="query name"
 />
 <PropListing
+    name="range"
+    description="Required for data - Take and sets the max and min values of a column"
+    options="string - column name"
+/>
+<PropListing
     name="maxColumn"
     description="Takes the first value of a column and assigns it to the max value"
     options="string - column name"
@@ -248,16 +288,29 @@ Hides or shows min and max value markers on slider.
 </PropListing>
 <PropListing 
     name="size"
-    size="string"
-    defaultValue=""
+    options="{["small", "medium", "large", "full"]}"
+    defaultValue="small"
 >
-
-Sets the length of the slider. Options are "medium", large" or "full". A empty string of any other strings will not result in default size.
+Sets the length of the slider
 </PropListing>
 <PropListing
     name="fmt"
     description="Sets format for the value (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options="Excel-style format | built-in format | custom format"
+/>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>
+<PropListing 
+    name="hideDuringPrint"
+    description="Hide the component when the report is printed"
+    options={["true", "false"]}
+    default="true"
 />
 
 

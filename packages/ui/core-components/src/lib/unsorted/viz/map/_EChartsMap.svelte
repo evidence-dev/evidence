@@ -12,6 +12,7 @@
 	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { activeAppearance, theme } = getThemeStores();
 
@@ -33,9 +34,9 @@
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
 	export let downloadableData = true;
-	$: downloadableData = downloadableData === 'true' || downloadableData === true;
+	$: downloadableData = toBoolean(downloadableData);
 	export let downloadableImage = true;
-	$: downloadableImage = downloadableImage === 'true' || downloadableImage === true;
+	$: downloadableImage = toBoolean(downloadableImage);
 
 	export let connectGroup = undefined;
 
@@ -61,7 +62,7 @@
 
 <div
 	role="none"
-	class="chart-container"
+	class="chart-container mt-2 mb-6"
 	on:mouseenter={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
 >
@@ -222,9 +223,5 @@
 		margin: 3px 12px;
 		font-size: 12px;
 		height: 9px;
-	}
-
-	.chart-container {
-		margin-bottom: 25px;
 	}
 </style>

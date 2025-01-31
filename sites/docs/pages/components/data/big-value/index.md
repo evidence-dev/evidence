@@ -1,11 +1,12 @@
 ---
 title: Big Value
+description: Display a large value standalone, and optionally include a comparison and a sparkline.
 sidebar_position: 1
 queries: 
 - orders_with_comparisons.sql
 ---
 
-Big Value displays a large value, and can be configured to include a comparison and a sparkline.
+Use big values to display a large value standalone, and optionally include a comparison and a sparkline.
 
 <DocTab>
     <div slot='preview'>
@@ -352,3 +353,11 @@ Used to navigate to other pages. Can be a full external link like `https://googl
     description="Group name to connect this sparkline to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
     options="string"
 />
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
+
+</PropListing>

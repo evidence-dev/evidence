@@ -26,6 +26,7 @@
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { theme, resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
@@ -42,10 +43,10 @@
 	export let size = undefined;
 	export let tooltipTitle = undefined;
 
-	export let showAllXAxisLabels = false;
+	export let showAllXAxisLabels = undefined;
 
 	export let printEchartsConfig = false; // helper for custom chart development
-	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+	$: printEchartsConfig = toBoolean(printEchartsConfig);
 
 	// This should be reworked to fit better with svelte's reactivity.
 
@@ -63,11 +64,7 @@
 	let xSet = x ? true : false;
 
 	export let swapXY = false; // Flipped axis chart
-	$: if (swapXY === 'true' || swapXY === true) {
-		swapXY = true;
-	} else {
-		swapXY = false;
-	}
+	$: swapXY = toBoolean(swapXY);
 
 	// Chart titles:
 	export let title = undefined;
@@ -84,39 +81,39 @@
 	export let xType = undefined; // category or value
 	export let xAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
 	export let xBaseline = true;
-	$: xBaseline = xBaseline === 'true' || xBaseline === true;
+	$: xBaseline = toBoolean(xBaseline);
 	export let xTickMarks = false;
-	$: xTickMarks = xTickMarks === 'true' || xTickMarks === true;
+	$: xTickMarks = toBoolean(xTickMarks);
 	export let xGridlines = false;
-	$: xGridlines = xGridlines === 'true' || xGridlines === true;
+	$: xGridlines = toBoolean(xGridlines);
 	export let xAxisLabels = true;
-	$: xAxisLabels = xAxisLabels === 'true' || xAxisLabels === true;
+	$: xAxisLabels = toBoolean(xAxisLabels);
 	export let sort = true; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
-	$: sort = sort === 'true' || sort === true;
+	$: sort = toBoolean(sort);
 	export let xFmt = undefined;
 	export let xMin = undefined;
 	export let xMax = undefined;
 
 	// Y axis:
 	export let yLog = false;
-	$: yLog = yLog === 'true' || yLog === true;
+	$: yLog = toBoolean(yLog);
 	export let yType = yLog === true ? 'log' : 'value'; // value or log
 	export let yLogBase = 10;
 	export let yAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
 	export let yBaseline = false;
-	$: yBaseline = yBaseline === 'true' || yBaseline === true;
+	$: yBaseline = toBoolean(yBaseline);
 
 	export let yTickMarks = false;
-	$: yTickMarks = yTickMarks === 'true' || yTickMarks === true;
+	$: yTickMarks = toBoolean(yTickMarks);
 	export let yGridlines = true;
-	$: yGridlines = yGridlines === 'true' || yGridlines === true;
+	$: yGridlines = toBoolean(yGridlines);
 	export let yAxisLabels = true;
-	$: yAxisLabels = yAxisLabels === 'true' || yAxisLabels === true;
+	$: yAxisLabels = toBoolean(yAxisLabels);
 
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let yScale = false;
-	$: yScale = yScale === 'true' || yScale === true;
+	$: yScale = toBoolean(yScale);
 	export let yFmt = undefined;
 
 	export let yAxisColor = 'true';
@@ -125,17 +122,17 @@
 	// Y2 axis:
 	export let y2AxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
 	export let y2Baseline = false;
-	$: y2Baseline = y2Baseline === 'true' || y2Baseline === true;
+	$: y2Baseline = toBoolean(y2Baseline);
 	export let y2TickMarks = false;
-	$: y2TickMarks = y2TickMarks === 'true' || y2TickMarks === true;
+	$: y2TickMarks = toBoolean(y2TickMarks);
 	export let y2Gridlines = true;
-	$: y2Gridlines = y2Gridlines === 'true' || y2Gridlines === true;
+	$: y2Gridlines = toBoolean(y2Gridlines);
 	export let y2AxisLabels = true;
-	$: y2AxisLabels = y2AxisLabels === 'true' || y2AxisLabels === true;
+	$: y2AxisLabels = toBoolean(y2AxisLabels);
 	export let y2Min = undefined;
 	export let y2Max = undefined;
 	export let y2Scale = false;
-	$: y2Scale = y2Scale === 'true' || y2Scale === true;
+	$: y2Scale = toBoolean(y2Scale);
 	export let y2Fmt = undefined;
 
 	export let y2AxisColor = 'true';
@@ -165,11 +162,19 @@
 
 	export let renderer = undefined; // can be canvas (default) or SVG
 	export let downloadableData = true;
-	$: downloadableData = downloadableData === 'true' || downloadableData === true;
+	$: downloadableData = toBoolean(downloadableData);
 	export let downloadableImage = true;
-	$: downloadableImage = downloadableImage === 'true' || downloadableImage === true;
+	$: downloadableImage = toBoolean(downloadableImage);
 
 	export let connectGroup = undefined; // string represent name of group for connected charts. Charts with same connectGroup will have connected interactions
+
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
+
+	export let xLabelWrap = false; // false = truncate, true = wrap
+	$: xLabelWrap = toBoolean(xLabelWrap);
+
+	const xAxisLabelOverflow = xLabelWrap ? 'break' : 'truncate';
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
@@ -416,6 +421,15 @@
 			}
 
 			xType = xType === 'category' ? 'category' : xDataType;
+
+			// Set xAxisLabel overflow behaviour based on column type
+			if (!showAllXAxisLabels) {
+				// if user has not set showXAxisLabels
+				showAllXAxisLabels = xType === 'category';
+			} else {
+				// if user has set showXAxisLabels, convert to boolean
+				showAllXAxisLabels = showAllXAxisLabels === 'true' || showAllXAxisLabels === true;
+			}
 
 			// Throw error if attempting to plot value or time on horizontal x-axis:
 			if (swapXY && xType !== 'category') {
@@ -677,6 +691,15 @@
 					type: xType,
 					min: xMin,
 					max: xMax,
+					tooltip: {
+						show: true,
+						position: 'inside',
+						formatter(p) {
+							if (p.isTruncated()) {
+								return p.name;
+							}
+						}
+					},
 					splitLine: {
 						show: xGridlines
 					},
@@ -865,7 +888,7 @@
 				titleBoxPadding * Math.max(hasTitle, hasSubtitle);
 
 			chartAreaPaddingTop = 10;
-			chartAreaPaddingBottom = 8;
+			chartAreaPaddingBottom = 10;
 
 			bottomAxisTitleSize = 14;
 			topAxisTitleSize = 14 + 0; // font size + padding top
@@ -935,6 +958,7 @@
 				},
 				tooltip: {
 					trigger: 'axis',
+					show: true,
 					// formatter function is overridden in ScatterPlot, BubbleChart, and Histogram
 					formatter: function (params) {
 						let output;
@@ -1018,8 +1042,8 @@
 					data: []
 				},
 				grid: {
-					left: '0.5%',
-					right: swapXY ? '4%' : '3%',
+					left: leftPadding ?? (swapXY ? '1%' : '0.8%'),
+					right: rightPadding ?? (swapXY ? '4%' : '3%'),
 					bottom: chartBottom,
 					top: chartTop,
 					containLabel: true
@@ -1069,6 +1093,7 @@
 		{downloadableData}
 		{downloadableImage}
 		{connectGroup}
+		{xAxisLabelOverflow}
 		seriesColors={seriesColorsStore}
 	/>
 {:else}

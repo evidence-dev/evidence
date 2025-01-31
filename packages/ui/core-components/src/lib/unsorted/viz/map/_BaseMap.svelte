@@ -3,12 +3,17 @@
 	import ErrorChart from '../core/ErrorChart.svelte';
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import BaseMap from './BaseMap.svelte';
+	import ComponentTitle from '../core/ComponentTitle.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;
 
 	/** @type {string|undefined} */
 	export let title = undefined;
+
+	/** @type {string|undefined} */
+	export let subtitle = undefined;
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -21,16 +26,19 @@
 
 	/** @type {boolean} */
 	export let isInitial = true;
+	$: isInitial = toBoolean(isInitial);
 
 	export let error = undefined;
+
+	export let height = undefined;
 </script>
 
-<div style="margin-top: 15px; margin-bottom: 10px;">
-	{#if title}
-		<h4 class="markdown mb-2">{title}</h4>
+<div class="mt-2 mb-4">
+	{#if title || subtitle}
+		<ComponentTitle {title} {subtitle} />
 	{/if}
 
-	<QueryLoad {data} let:loaded>
+	<QueryLoad {data} {height} let:loaded>
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 		<ErrorChart let:loaded slot="error" title={chartType} error={error ?? loaded.error.message} />
 

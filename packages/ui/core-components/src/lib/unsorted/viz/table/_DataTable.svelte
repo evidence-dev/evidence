@@ -6,6 +6,7 @@
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import ComponentTitle from '../core/ComponentTitle.svelte';
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
@@ -30,6 +31,7 @@
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColor } = getThemeStores();
 
@@ -41,11 +43,16 @@
 	export let data;
 	export let queryID = undefined;
 	export let rows = 10; // number of rows to show
-
 	$: rows = Number.parseInt(rows);
 
+	/** @type {string | undefined}*/
+	export let title = undefined;
+
+	/** @type {string | undefined}*/
+	export let subtitle = undefined;
+
 	export let rowNumbers = false;
-	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
+	$: rowNumbers = toBoolean(rowNumbers);
 
 	// Sort props
 	export let sort = undefined;
@@ -63,7 +70,7 @@
 
 	export let groupBy = undefined;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
-	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
+	$: groupsOpen = toBoolean(groupsOpen);
 	export let groupType = 'accordion'; // accordion | section
 
 	export let accordionRowColor = undefined;
@@ -76,7 +83,7 @@
 	}
 
 	export let subtotals = false;
-	$: subtotals = subtotals === 'true' || subtotals === true;
+	$: subtotals = toBoolean(subtotals);
 
 	export let subtotalRowColor = undefined;
 	$: subtotalRowColorStore = resolveColor(subtotalRowColor);
@@ -96,25 +103,21 @@
 
 	let hovering = false;
 
-	let marginTop = '1.5em';
-	let marginBottom = '1em';
-	let paddingBottom = '0em';
-
 	export let generateMarkdown = false;
 	$: generateMarkdown = generateMarkdown === 'true' || generateMarkdown === true;
 
 	// Table features
 	export let search = false;
-	$: search = search === 'true' || search === true;
+	$: search = toBoolean(search);
 
 	export let sortable = true;
-	$: sortable = sortable === 'true' || sortable === true;
+	$: sortable = toBoolean(sortable);
 
 	export let downloadable = true;
-	$: downloadable = downloadable === 'true' || downloadable === true;
+	$: downloadable = toBoolean(downloadable);
 
 	export let totalRow = false;
-	$: totalRow = totalRow === 'true' || totalRow === true;
+	$: totalRow = toBoolean(totalRow);
 
 	export let totalRowColor = undefined;
 	$: totalRowColorStore = resolveColor(totalRowColor);
@@ -128,7 +131,7 @@
 	export let link = undefined;
 
 	export let showLinkCol = false; // hides link column when columns have not been explicitly selected
-	$: showLinkCol = showLinkCol === 'true' || showLinkCol === true;
+	$: showLinkCol = toBoolean(showLinkCol);
 
 	let error = undefined;
 	let groupDataPopulated = false;
@@ -144,13 +147,13 @@
 	// STYLING
 	// ---------------------------------------------------------------------------------------
 	export let rowShading = false;
-	$: rowShading = rowShading === 'true' || rowShading === true;
+	$: rowShading = toBoolean(rowShading);
 
 	export let rowLines = true;
-	$: rowLines = rowLines === 'true' || rowLines === true;
+	$: rowLines = toBoolean(rowLines);
 
 	export let wrapTitles = false;
-	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
+	$: wrapTitles = toBoolean(wrapTitles);
 
 	export let headerColor = undefined;
 	$: headerColorStore = resolveColor(headerColor);
@@ -159,7 +162,7 @@
 	$: headerFontColorStore = resolveColor(headerFontColor);
 
 	export let formatColumnTitles = true;
-	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
+	$: formatColumnTitles = toBoolean(formatColumnTitles);
 
 	export let backgroundColor = undefined;
 	$: backgroundColorStore = resolveColor(backgroundColor);
@@ -366,13 +369,21 @@
 		const forceTopOfAscending = (val) =>
 			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
 
-		const comparator = (a, b) =>
-			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
-				? -1 * sortModifier
-				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
-					  a[column] > b[column]
-					? 1 * sortModifier
-					: 0;
+		const comparator = (a, b) => {
+			const valA = a[column];
+			const valB = b[column];
+
+			if (forceTopOfAscending(valA) && !forceTopOfAscending(valB)) return -1 * sortModifier;
+			if (forceTopOfAscending(valB) && !forceTopOfAscending(valA)) return 1 * sortModifier;
+
+			// Ensure values are strings for case-insensitive comparison
+			const normalizedA = typeof valA === 'string' ? valA.toLowerCase() : valA;
+			const normalizedB = typeof valB === 'string' ? valB.toLowerCase() : valB;
+
+			if (normalizedA < normalizedB) return -1 * sortModifier;
+			if (normalizedA > normalizedB) return 1 * sortModifier;
+			return 0;
+		};
 
 		if (groupBy) {
 			const sortedGroupedData = {};
@@ -546,14 +557,15 @@
 	<div
 		data-testid={isFullPage ? undefined : `DataTable-${data?.id ?? 'no-id'}`}
 		role="none"
-		class="table-container"
+		class="table-container mt-2 {paginated ? 'mb-5' : 'mb-2'}"
 		transition:slide|local
-		style:margin-top={marginTop}
-		style:margin-bottom={marginBottom}
-		style:padding-bottom={paddingBottom}
 		on:mouseenter={() => (hovering = true)}
 		on:mouseleave={() => (hovering = false)}
 	>
+		{#if title || subtitle}
+			<ComponentTitle {title} {subtitle} />
+		{/if}
+
 		{#if search}
 			<SearchBar bind:value={searchValue} searchFunction={() => {}} />
 		{/if}
@@ -753,7 +765,7 @@
 				{/if}
 			</div>
 		{:else}
-			<div class="table-footer">
+			<div class="table-footer mt-3">
 				{#if downloadable}
 					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
 				{/if}
@@ -818,7 +830,7 @@
 		user-select: none;
 		text-align: right;
 		margin-top: 0.5em;
-		margin-bottom: 1.8em;
+		margin-bottom: 0;
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -871,7 +883,6 @@
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		margin: 10px 0px;
 		font-size: 12px;
 		height: 9px;
 	}

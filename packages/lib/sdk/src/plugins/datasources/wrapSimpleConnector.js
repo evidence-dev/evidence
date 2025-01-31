@@ -74,7 +74,7 @@ export const wrapSimpleConnector = (mod, source) => {
 						))
 					};
 				} catch (e) {
-					let message = 'Unknown Error';
+					let message = JSON.stringify(e);
 					if (e instanceof Error) message = e.message;
 					if (e instanceof EvidenceError) {
 						e.metadata.tableName = sourceFileName;
@@ -82,7 +82,7 @@ export const wrapSimpleConnector = (mod, source) => {
 					}
 					yield new EvidenceError(
 						message,
-						[sourceFileName ?? ''],
+						[`${source.name}/${sourceFileName ?? ''} failed to execute`],
 						{ cause: e },
 						{ tableName: sourceFileName }
 					);

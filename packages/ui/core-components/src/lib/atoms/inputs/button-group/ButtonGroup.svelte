@@ -8,18 +8,24 @@
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
-	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
-	/** @type {string} */
-	export let name;
-	/** @type {string} */
-	export let title;
+	import { toBoolean } from '$lib/utils.js';
+
+	import InlineError from '../InlineError.svelte';
+	import checkRequiredProps from '../checkRequiredProps.js';
+
+	/** @type {string | undefined} */
+	export let name = undefined;
+	/** @type {string | undefined} */
+	export let title = undefined;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	/** @type {keyof typeof presets | undefined} */
 	export let preset = undefined;
@@ -39,6 +45,9 @@
 	export let color = 'hsla(207, 65%, 39%, 1)';
 	$: colorStore = resolveColor(color);
 
+	/** @type {string | undefined} */
+	export let description = undefined;
+
 	const valueStore = writable(null);
 
 	// TODO: Use getInputSetter instead
@@ -54,6 +63,9 @@
 
 	export let value, data, label, order, where;
 
+	/** @type {[string] | [] } */
+	let errors = [];
+
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`ButtonGroup-${name}`,
@@ -63,11 +75,7 @@
 
 	$: ({ hasQuery, query } = $results);
 
-	/** @type {string} */
-	let error = '';
-
 	function validateConfiguration(preset, display) {
-		error = '';
 		const checks = [
 			{ value: preset, type: 'string', options: Object.keys(presets), name: 'preset' },
 			{ value: display, type: 'string', options: ['tabs', 'buttons'], name: 'display' }
@@ -76,43 +84,74 @@
 		checks.forEach((check) => {
 			if (check.value) {
 				if (typeof check.value !== check.type) {
-					appendError(
+					errors.push(
 						`Invalid type: ${check.name} must be a ${check.type}. ${check.name} is type ${typeof check.value}`
 					);
 				}
 				if (!check.options.includes(check.value)) {
-					appendError(
+					errors.push(
 						`Invalid ${check.name}: ${check.value}. Expected one of the following: ${check.options.join(', ')}`
 					);
 				}
 			}
 		});
+	}
 
-		function appendError(message) {
-			if (error) error += ', ';
-			error += message;
+	$: if ($query?.error) {
+		errors.push($query.error);
+	}
+
+	if (!value) {
+		if (data) {
+			errors.push('Missing required prop: "value".');
+		} else if (!$$slots.default && !preset) {
+			errors.push('ButtonGroup requires either "value" and "data" props or <ButtonGroupItem />.');
+		}
+	}
+
+	if (data) {
+		if (typeof data !== 'object') {
+			if (typeof data === 'string') {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace('data.', '')}'}`
+				);
+			} else {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be an object. e.g data = {QueryName}`
+				);
+			}
 		}
 	}
 
 	validateConfiguration(preset, display);
+	try {
+		checkRequiredProps({ name });
+	} catch (err) {
+		errors.push(err.message);
+	}
 </script>
 
-{#if error}
-	<ErrorChart title={'Button Group'} {error} />
+{#if errors.length > 0}
+	<InlineError inputType="ButtonGroup" error={errors} height="32" width="170" />
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
 			class={display === 'tabs'
 				? ''
-				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col mb-3 ml-0 mr-2`}
+				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col ${title ? 'mt-0.5' : 'mt-2'} mb-3 ml-0 mr-2`}
 		>
 			{#if title}
-				<span class="text-xs font-medium block mb-0.5">{title}</span>
+				<span class="text-xs font-medium text-base-content block mb-0.5"
+					>{title}
+					{#if description}
+						<Info {description} />
+					{/if}
+				</span>
 			{/if}
 			<div
 				class={display === 'tabs'
 					? 'my-6 flex flex-wrap gap-x-1 gap-y-1'
-					: 'inline-flex rounded-md shadow-sm mb-1 overflow-auto border border-base-300 no-scrollbar h-8'}
+					: 'inline-flex rounded-md shadow-sm overflow-auto border border-base-300 no-scrollbar h-8 mb-1'}
 				role="group"
 			>
 				{#if preset}
@@ -129,6 +168,7 @@
 							<svelte:fragment>
 								{#each loaded as { label, value }}
 									<ButtonGroupItem
+										data={loaded}
 										{value}
 										valueLabel={label}
 										color={colorStore}

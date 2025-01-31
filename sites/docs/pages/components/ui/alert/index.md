@@ -1,7 +1,10 @@
 ---
 title: Alert
+description: Display a message in a styled container on the page.
 sidebar_position: 1
 ---
+
+Use alerts to display a message in a styled container on the page.
 
 <DocTab>
     <div slot='preview'>
@@ -57,5 +60,13 @@ This is a dangerous alert
 >
 
 Changes the color of the alert
+
+</PropListing>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
 
 </PropListing>

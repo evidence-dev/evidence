@@ -1,10 +1,11 @@
 <script>
 	import chroma from 'chroma-js';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import Info from '../../ui/Info.svelte';
 
 	const { resolveColor } = getThemeStores();
 
-	export let color = 'primary';
+	export let color = 'base-content';
 	$: colorStore = resolveColor(color);
 
 	export let id;
@@ -13,23 +14,31 @@
 
 	export let activeId;
 
-	$: bgColor = chroma($colorStore).alpha(0.1).css();
-	$: borderColor = chroma($colorStore).alpha(0.5).css();
+	export let description = undefined;
+
+	export let fullWidth;
+
+	export let background;
+
+	$: bgColor = chroma($colorStore).alpha(0.05).css();
+	$: activeColor = chroma($colorStore).css();
 
 	const classes = {
-		notActive: 'border-base-300 border-b-2 bg-base-200/50 hover:bg-base-200',
-		active: 'border-b-2 border-[--borderColor] bg-[--bgColor]'
+		notActive: `border-b border-base-100 text-base-content-muted hover:text-base-content hover:border-base-300`,
+		active: `border-b-2 border-[--activeColor] -mb-px text-[--activeColor] ${background ? 'bg-[--bgColor]' : ''}`
 	};
 </script>
 
 <button
 	style:--bgColor={bgColor}
-	style:--borderColor={borderColor}
+	style:--activeColor={activeColor}
 	on:click
-	class="mt-2 p-2 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition ease-in active:bg-base-300 {activeId ===
-	id
-		? classes.active
-		: classes.notActive}"
+	class="px-3 mt-2 py-2 text-center rounded-t text-sm font-medium font-sans whitespace-nowrap
+	{activeId === id ? `transition ease-in ${classes.active}` : classes.notActive}
+	{fullWidth ? 'flex-1' : ''}"
 >
 	{label}
+	{#if description}
+		<Info {description} />
+	{/if}
 </button>

@@ -172,7 +172,7 @@ const echartsAction = (node, options) => {
 					xAxis: {
 						axisLabel: {
 							interval: 0,
-							overflow: 'truncate',
+							overflow: options.xAxisLabelOverflow,
 							width: (clientWidth * modConst) / distinctXValues.size
 						}
 					}

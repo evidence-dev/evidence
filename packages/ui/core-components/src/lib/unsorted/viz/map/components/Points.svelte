@@ -5,6 +5,7 @@
 <script>
 	import { mapContextKey } from '../constants.js';
 	import { getContext } from 'svelte';
+	import { toBoolean } from '../../../../utils.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import Point from './Point.svelte';
 	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
@@ -32,9 +33,9 @@
 	/** @type {string|undefined} */
 	export let value = undefined; // column with the value to be represented
 	/** @type {string|undefined} */
-	export let valueFmt = undefined;
+	export let valueFmt = 'num0';
 	/** @type {string|undefined} */
-	export let sizeFmt = undefined;
+	export let sizeFmt = 'num0';
 	/** @type {number|undefined} */
 	export let size = undefined; // point size
 	/** @type {'categorical' | 'scalar' | undefined} */
@@ -44,6 +45,11 @@
 
 	/** @type {boolean} */
 	export let legend = true;
+	$: legend = toBoolean(legend);
+
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	if (size) {
 		// if size was user-supplied
@@ -168,6 +174,7 @@
 
 	/** @type {boolean} */
 	export let showTooltip = true;
+	$: showTooltip = toBoolean(showTooltip);
 
 	/**
 	 * @typedef {Object} TooltipItem
@@ -242,7 +249,7 @@
 	async function init(theme) {
 		if (data) {
 			let initDataOptions = {
-				corordinates: [lat, long],
+				coordinates: [lat, long],
 				value,
 				checkInputs,
 				min,
@@ -253,7 +260,8 @@
 				chartType,
 				legendId,
 				legend,
-				theme
+				theme,
+				sizeCol
 			};
 			({
 				values,
@@ -319,55 +327,58 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#await Promise.all([map.initPromise, data.fetch(), init($theme)]) then}
-	{#each $data as item}
-		<Point
-			{map}
-			options={{
-				// kw note:
-				//need to clean this logic
-				fillColor:
-					$colorStore ??
-					map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme),
-				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
-				fillOpacity: opacity,
-				opacity: opacity,
-				weight: borderWidth,
-				color: $borderColorStore,
-				className: `outline-none ${pointClass}`,
-				markerType: pointStyle,
-				pane: legendId
-			}}
-			selectedOptions={{
-				fillColor: $selectedColorStore,
-				fillOpacity: selectedOpacity,
-				opacity: selectedOpacity,
-				weight: selectedBorderWidth,
-				color: $selectedBorderColorStore,
-				className: `outline-none ${selectedPointClass}`
-			}}
-			coords={[item[lat], item[long]]}
-			onclick={() => {
-				onclick(item);
-			}}
-			setInput={() => {
-				if (name) {
-					updateInput(item, name);
-				}
-			}}
-			unsetInput={() => {
-				if (name) {
-					unsetInput(item, name);
-				}
-			}}
-			{tooltip}
-			{tooltipOptions}
-			{tooltipType}
-			{item}
-			{link}
-			{showTooltip}
-		/>
-	{/each}
-{:catch e}
-	{map.handleInternalError(e)}
-{/await}
+{#if data}
+	{#await Promise.all([map.initPromise, data.fetch(), init($theme)]) then}
+		{#each $data as item}
+			<Point
+				{map}
+				{ignoreZoom}
+				options={{
+					// kw note:
+					//need to clean this logic
+					fillColor:
+						$colorStore ??
+						map.handleFillColor(item, value, values, colorPaletteFinal, colorScale, $theme),
+					radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
+					fillOpacity: opacity,
+					opacity: opacity,
+					weight: borderWidth,
+					color: $borderColorStore,
+					className: `outline-none ${pointClass}`,
+					markerType: pointStyle,
+					pane: legendId
+				}}
+				selectedOptions={{
+					fillColor: $selectedColorStore,
+					fillOpacity: selectedOpacity,
+					opacity: selectedOpacity,
+					weight: selectedBorderWidth,
+					color: $selectedBorderColorStore,
+					className: `outline-none ${selectedPointClass}`
+				}}
+				coords={[item[lat], item[long]]}
+				onclick={() => {
+					onclick(item);
+				}}
+				setInput={() => {
+					if (name) {
+						updateInput(item, name);
+					}
+				}}
+				unsetInput={() => {
+					if (name) {
+						unsetInput(item, name);
+					}
+				}}
+				{tooltip}
+				{tooltipOptions}
+				{tooltipType}
+				{item}
+				{link}
+				{showTooltip}
+			/>
+		{/each}
+	{:catch e}
+		{map.handleInternalError(e)}
+	{/await}
+{/if}

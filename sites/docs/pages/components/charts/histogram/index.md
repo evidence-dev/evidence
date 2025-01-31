@@ -1,7 +1,10 @@
 ---
 title: Histogram
+description: Display the distribution of a metric along a continuous range, aggregated into buckets.
 sidebar_position: 1
 ---
+
+Use histograms to display the distribution of a metric along a continuous range, aggregated into buckets.
 
 ```sql orders
 select * from needful_things.orders limit 1000
@@ -126,6 +129,22 @@ Color to override default series color
 Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88a87']}`
 
 </PropListing>
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+/>
+<PropListing
+    name=xLabelWrap
+    description="Whether to wrap x-axis labels when there is not enough space. Default behaviour is to truncate the labels."
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Axes
 

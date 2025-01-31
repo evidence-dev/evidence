@@ -1,5 +1,6 @@
 ---
 title: Text Input
+description: Display a text box for freeform text input, useful for searching or filtering.
 sidebar_position: 1
 ---
 
@@ -187,5 +188,13 @@ Alternative placeholder text displayed in the text input
 >
 
 Hide the component when the report is printed
+
+</PropListing>
+<PropListing
+    name=description
+    options="string"
+>
+
+Adds an info icon with description tooltip on hover
 
 </PropListing>
