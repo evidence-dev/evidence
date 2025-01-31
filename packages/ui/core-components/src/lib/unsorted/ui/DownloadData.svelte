@@ -5,12 +5,16 @@
 <script>
 	import { ExportToCsv } from 'export-to-csv';
 	import { fade } from 'svelte/transition';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import InlineError from '../../atoms/inputs/InlineError.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	export let data = undefined;
 	export let queryID = undefined;
 	export let text = 'Download';
 	export let display = true;
-	$: display = display === 'true' || display === true;
+	$: display = toBoolean(display);
+	let errors = [];
 
 	const date = new Date();
 	const localISOTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
@@ -19,6 +23,12 @@
 		.replaceAll(':', '-');
 
 	export let downloadData = (data) => {
+		try {
+			checkInputs(data);
+		} catch (e) {
+			errors = [...errors, e.message];
+			return;
+		}
 		const options = {
 			fieldSeparator: ',',
 			quoteStrings: '"',
@@ -39,8 +49,10 @@
 	};
 </script>
 
-{#if display}
-	<div transition:fade|local={{ duration: 200 }}>
+{#if errors.length > 0}
+	<InlineError inputType="DownloadData" height="32" width="160" error={errors} />
+{:else if display}
+	<div transition:fade|local={errors.length > 0 ? { duration: 0 } : { duration: 200 }}>
 		<button type="button" aria-label={text} class={$$props.class} on:click={downloadData(data)}>
 			<span>{text}</span>
 			<slot>

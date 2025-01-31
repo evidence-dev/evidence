@@ -52,3 +52,10 @@
 	name="Last 365 Days"
 	args={{ presetRanges: ['Last 7 Days', 'Last 30 Days', 'Last 90 Days', 'Last 365 Days'] }}
 />
+<Story
+	name="Name Error"
+	args={{
+		presetRanges: ['Last 7 Days', 'Last 30 Days', 'Last 90 Days', 'Last 365 Days'],
+		name: undefined
+	}}
+/>

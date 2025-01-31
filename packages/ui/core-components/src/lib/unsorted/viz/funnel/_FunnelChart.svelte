@@ -14,6 +14,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from '../core/ErrorChart.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColor, resolveColorPalette } = getThemeStores();
 
@@ -42,6 +43,7 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+	$: printEchartsConfig = toBoolean(printEchartsConfig);
 	export let renderer = undefined;
 
 	export let connectGroup = undefined;

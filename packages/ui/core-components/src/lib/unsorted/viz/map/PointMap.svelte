@@ -7,6 +7,8 @@
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import ErrorChart from '../core/ErrorChart.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColorPalette } = getThemeStores();
 
@@ -69,6 +71,7 @@
 
 	/** @type {boolean} */
 	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;
@@ -79,35 +82,39 @@
 	$: isInitial = data?.hash === initialHash;
 </script>
 
-<BaseMap
-	let:data
-	{data}
-	{startingLat}
-	{startingLong}
-	{startingZoom}
-	{height}
-	{basemap}
-	{title}
-	{subtitle}
-	{legendPosition}
-	{isInitial}
-	{chartType}
-	{emptySet}
-	{emptyMessage}
-	{error}
-	{attribution}
->
-	<!-- move dispatch error outside of points to render error outside leafletmaps -->
-	<Points
+{#if !error}
+	<BaseMap
+		let:data
 		{data}
-		{lat}
-		{long}
-		colorPalette={colorPaletteStore}
-		{legendType}
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{subtitle}
+		{legendPosition}
+		{isInitial}
 		{chartType}
-		{...$$restProps}
-		{legend}
-		{ignoreZoom}
-		on:error={(e) => (error = e.detail)}
-	/>
-</BaseMap>
+		{emptySet}
+		{emptyMessage}
+		{error}
+		{attribution}
+	>
+		<!-- move dispatch error outside of points to render error outside leafletmaps -->
+		<Points
+			{data}
+			{lat}
+			{long}
+			colorPalette={colorPaletteStore}
+			{legendType}
+			{chartType}
+			{...$$restProps}
+			{legend}
+			{ignoreZoom}
+			on:error={(e) => (error = e.detail)}
+		/>
+	</BaseMap>
+{:else}
+	<ErrorChart {error} title="Point Map" />
+{/if}
