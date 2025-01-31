@@ -7,7 +7,8 @@
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { getThemeStores } from '../../../themes/themes.js';
-	import { toBoolean } from '../../../utils.js';
+	import ErrorChart from '../core/ErrorChart.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColorPalette } = getThemeStores();
 
@@ -71,10 +72,9 @@
 	/** @type {boolean} */
 	export let legend = true;
 
-	$: legend = toBoolean(legend);
-
 	/** @type {boolean} */
 	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;
@@ -85,32 +85,36 @@
 	$: isInitial = data?.hash === initialHash;
 </script>
 
-<BaseMap
-	let:data
-	{data}
-	{startingLat}
-	{startingLong}
-	{startingZoom}
-	{height}
-	{basemap}
-	{title}
-	{legendPosition}
-	{isInitial}
-	{chartType}
-	{emptySet}
-	{emptyMessage}
-	{error}
-	{attribution}
->
-	<Bubbles
+{#if !error}
+	<BaseMap
+		let:data
 		{data}
-		{lat}
-		{long}
-		{size}
-		colorPalette={colorPaletteStore}
-		{legendType}
-		{legend}
-		{ignoreZoom}
-		{...$$restProps}
-	/>
-</BaseMap>
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{legendPosition}
+		{isInitial}
+		{chartType}
+		{emptySet}
+		{emptyMessage}
+		{error}
+		{attribution}
+	>
+		<Bubbles
+			{data}
+			{lat}
+			{long}
+			{size}
+			colorPalette={colorPaletteStore}
+			{legendType}
+			{legend}
+			{ignoreZoom}
+			{...$$restProps}
+		/>
+	</BaseMap>
+{:else}
+	<ErrorChart {error} title="Point Map" />
+{/if}

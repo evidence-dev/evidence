@@ -6,6 +6,7 @@
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import { nanoid } from 'nanoid';
 	import TabDisplay from './TabDisplay.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	/**
 	 * @type {string}
@@ -21,6 +22,7 @@
 	 * @type {boolean}
 	 */
 	export let selected;
+	$: selected = toBoolean(selected);
 
 	/**
 	 * @type {string | undefined}
