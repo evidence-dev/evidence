@@ -151,8 +151,22 @@ export function get_cache_for_hash(query_hash) {
  * @returns {string}
  */
 export function get_all_page_queries(route_hash, additional_hash) {
-	const cache_path = getCacheFolder(route_hash, additional_hash);
-	return readFileSync(`${cache_path}/all-queries.json`);
+	try {
+		const cache_path = getCacheFolder(route_hash, additional_hash);
+
+		// Check if the file exists before attempting to read it
+		const file_path = `${cache_path}/all-queries.json`;
+		if (!existsSync(file_path)) {
+			return '{}'; // Return an empty object string as a fallback
+		}
+
+		// Read and return the file contents
+		return readFileSync(file_path, 'utf8');
+	} catch (error) {
+		// Log the error and return a fallback
+		console.error(`Error reading all-queries.json:`, error);
+		return '{}'; // Return an empty object string as a fallback
+	}
 }
 
 /**
