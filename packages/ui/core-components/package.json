@@ -117,7 +117,7 @@
 		"tailwindcss": "^4.0.0",
 		"tslib": "^2.6.2",
 		"typescript": "5.4.2",
-		"vite": "5.4.11",
+		"vite": "5.4.14",
 		"vitest": "2.0.5"
 	},
 	"overrides": {

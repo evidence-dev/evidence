@@ -38,7 +38,7 @@
 		"@evidence-dev/tailwind": "workspace:*",
 		"@sveltejs/kit": "2.8.4",
 		"svelte": "4.2.19",
-		"vite": "5.4.11"
+		"vite": "5.4.14"
 	},
 	"dependencies": {
 		"@evidence-dev/preprocess": "workspace:*",
@@ -63,7 +63,7 @@
 		"tailwindcss": "^4.0.0",
 		"typescript": "5.4.2",
 		"unist-util-visit": "4.1.2",
-		"vite": "5.4.11"
+		"vite": "5.4.14"
 	},
 	"engines": {
 		"node": ">=18"
