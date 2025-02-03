@@ -1,5 +1,19 @@
 # @evidence-dev/core-components
 
+## 5.1.1
+
+### Patch Changes
+
+- c3ff5614e: fixed US map abbreviaabbreviations string handling
+- 0910a522c: fixed legend false prop to respect strings
+- acef0cfae: fixed deselection issue for start and end date
+- e91eed30c: added informative error handling for data and required props in core-components
+- e93254909: updated components to properly evaluate string true and false props
+- 411fc0a16: fixed slider delay with large min max value difference
+- fcbe2dfb3: Add ignoreZoom option to maps
+  - @evidence-dev/component-utilities@4.0.7
+  - @evidence-dev/tailwind@3.0.7
+
 ## 5.1.0
 
 ### Minor Changes
