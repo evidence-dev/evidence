@@ -355,7 +355,7 @@ Requires `percentCol` to show percentage beside value
       targetCol=target 
       valueCol=amount 
       percentCol=percent 
-      linkColor=grey
+      linkColor=base-content-muted
       colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
     />
   </div>
@@ -367,7 +367,7 @@ Requires `percentCol` to show percentage beside value
   targetCol=target 
   valueCol=amount 
   percentCol=percent 
-  linkColor=grey
+  linkColor=base-content-muted
   colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
@@ -376,7 +376,7 @@ Requires `percentCol` to show percentage beside value
 
 ## Link Colors
 
-### `linkColor=grey` (default)
+### `linkColor=base-content-muted` (default)
 
 <DocTab>
   <div slot='preview'>
@@ -386,7 +386,7 @@ Requires `percentCol` to show percentage beside value
       targetCol=target 
       valueCol=amount 
       percentCol=percent 
-      linkColor=grey
+      linkColor=base-content-muted
       colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
     />
   </div>
@@ -398,7 +398,7 @@ Requires `percentCol` to show percentage beside value
   targetCol=target 
   valueCol=amount 
   percentCol=percent 
-  linkColor=grey
+  linkColor=base-content-muted
   colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
 />
 ```
@@ -697,8 +697,8 @@ Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88
 </PropListing>
 <PropListing
     name="linkColor"
-    options={['grey', 'source', 'target', 'gradient']}
-    defaultValue="grey"
+    options={['base-content-muted', 'source', 'target', 'gradient']}
+    defaultValue="base-content-muted"
 >
 
 Color to use for the links between nodes in the diagram

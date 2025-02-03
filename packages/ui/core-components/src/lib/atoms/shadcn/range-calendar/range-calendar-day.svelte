@@ -13,11 +13,21 @@
 	let className = undefined;
 
 	export { className as class };
+
+	export let maxValue = undefined;
+	export let minValue = undefined;
+
+	$: hideExtraDay =
+		(date.year >= maxValue.year && date.month >= maxValue.month && date.day >= maxValue.day) ||
+		(date.year <= minValue.year && date.month <= minValue.month && date.day < minValue.day)
+			? true
+			: false;
 </script>
 
 <RangeCalendarPrimitive.Day
 	on:click
 	{date}
+	data-disabled={hideExtraDay ? true : undefined}
 	{month}
 	class={cn(
 		buttonVariants({ variant: 'ghost' }),
@@ -34,9 +44,9 @@
 		'data-[disabled]:text-base-content-muted data-[disabled]:opacity-50',
 		// Unavailable
 		'data-[unavailable]:text-negative/20 data-[unavailable]:line-through',
+
 		className
 	)}
-	{...$$restProps}
 	let:disabled
 	let:unavailable
 	let:builder

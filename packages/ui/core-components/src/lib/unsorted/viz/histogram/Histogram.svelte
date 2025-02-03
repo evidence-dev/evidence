@@ -4,6 +4,7 @@
 
 <script>
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	import Chart from '../core/Chart.svelte';
 	import Hist from './Hist.svelte';
@@ -13,6 +14,7 @@
 	export let data = undefined;
 	export let x = undefined;
 	export let legend = false;
+	$: legend = toBoolean(legend);
 
 	export let xFmt;
 
@@ -43,6 +45,7 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+	$: printEchartsConfig = toBoolean(printEchartsConfig);
 
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;
@@ -52,6 +55,9 @@
 	export let downloadableImage = undefined;
 
 	export let connectGroup = undefined;
+
+	export let leftPadding = undefined;
+	export let rightPadding = undefined;
 </script>
 
 <Chart
@@ -86,6 +92,8 @@
 	{downloadableData}
 	{downloadableImage}
 	{connectGroup}
+	{leftPadding}
+	{rightPadding}
 >
 	<Hist fillColor={fillColorStore} {fillOpacity} />
 	<slot />

@@ -9,6 +9,7 @@
 	import ValueError from './ValueError.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import Info from '../../../unsorted/ui/Info.svelte';
 
 	const { resolveColor } = getThemeStores();
 
@@ -28,6 +29,8 @@
 
 	// Placeholder text when data not supplied:
 	export let placeholder = null;
+
+	export let description = undefined;
 
 	// Value Formatting:
 	export let fmt = undefined;
@@ -123,6 +126,9 @@
 {:else if !error}
 	<span style="color: {fontColor}">
 		{formatValue(selected_value, format_object)}
+		{#if description}
+			<Info {description} />
+		{/if}
 	</span>
 {:else}
 	<ValueError {error} />

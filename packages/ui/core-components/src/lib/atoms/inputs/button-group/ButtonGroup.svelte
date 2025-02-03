@@ -8,17 +8,24 @@
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import Info from '../../../unsorted/ui/Info.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
-	/** @type {string} */
-	export let name;
-	/** @type {string} */
-	export let title;
+	import { toBoolean } from '$lib/utils.js';
+
+	import InlineError from '../InlineError.svelte';
+	import checkRequiredProps from '../checkRequiredProps.js';
+
+	/** @type {string | undefined} */
+	export let name = undefined;
+	/** @type {string | undefined} */
+	export let title = undefined;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	/** @type {keyof typeof presets | undefined} */
 	export let preset = undefined;
@@ -38,6 +45,9 @@
 	export let color = 'hsla(207, 65%, 39%, 1)';
 	$: colorStore = resolveColor(color);
 
+	/** @type {string | undefined} */
+	export let description = undefined;
+
 	const valueStore = writable(null);
 
 	// TODO: Use getInputSetter instead
@@ -53,6 +63,9 @@
 
 	export let value, data, label, order, where;
 
+	/** @type {[string] | [] } */
+	let errors = [];
+
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`ButtonGroup-${name}`,
@@ -62,11 +75,7 @@
 
 	$: ({ hasQuery, query } = $results);
 
-	/** @type {string} */
-	let error = '';
-
 	function validateConfiguration(preset, display) {
-		error = '';
 		const checks = [
 			{ value: preset, type: 'string', options: Object.keys(presets), name: 'preset' },
 			{ value: display, type: 'string', options: ['tabs', 'buttons'], name: 'display' }
@@ -75,38 +84,55 @@
 		checks.forEach((check) => {
 			if (check.value) {
 				if (typeof check.value !== check.type) {
-					appendError(
+					errors.push(
 						`Invalid type: ${check.name} must be a ${check.type}. ${check.name} is type ${typeof check.value}`
 					);
 				}
 				if (!check.options.includes(check.value)) {
-					appendError(
+					errors.push(
 						`Invalid ${check.name}: ${check.value}. Expected one of the following: ${check.options.join(', ')}`
 					);
 				}
 			}
 		});
+	}
 
-		function appendError(message) {
-			if (error) error += ', ';
-			error += message;
+	$: if ($query?.error) {
+		errors.push($query.error);
+	}
+
+	if (!value) {
+		if (data) {
+			errors.push('Missing required prop: "value".');
+		} else if (!$$slots.default && !preset) {
+			errors.push('ButtonGroup requires either "value" and "data" props or <ButtonGroupItem />.');
+		}
+	}
+
+	if (data) {
+		if (typeof data !== 'object') {
+			if (typeof data === 'string') {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace('data.', '')}'}`
+				);
+			} else {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be an object. e.g data = {QueryName}`
+				);
+			}
 		}
 	}
 
 	validateConfiguration(preset, display);
+	try {
+		checkRequiredProps({ name });
+	} catch (err) {
+		errors.push(err.message);
+	}
 </script>
 
-{#if error}
-	<span
-		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
-	>
-		<span class="inline font-sans font-medium text-xs text-negative">error</span>
-		<span
-			class="hidden font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-base-200 border border-base-300 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
-		>
-			{error}
-		</span>
-	</span>
+{#if errors.length > 0}
+	<InlineError inputType="ButtonGroup" error={errors} height="32" width="170" />
 {:else}
 	<HiddenInPrint enabled={hideDuringPrint}>
 		<div
@@ -115,7 +141,12 @@
 				: `inline-block overflow-scroll no-scrollbar align-bottom w-fit max-w-full flex-col ${title ? 'mt-0.5' : 'mt-2'} mb-3 ml-0 mr-2`}
 		>
 			{#if title}
-				<span class="text-xs font-medium text-base-content block mb-0.5">{title}</span>
+				<span class="text-xs font-medium text-base-content block mb-0.5"
+					>{title}
+					{#if description}
+						<Info {description} />
+					{/if}
+				</span>
 			{/if}
 			<div
 				class={display === 'tabs'
@@ -137,6 +168,7 @@
 							<svelte:fragment>
 								{#each loaded as { label, value }}
 									<ButtonGroupItem
+										data={loaded}
 										{value}
 										valueLabel={label}
 										color={colorStore}

@@ -5,6 +5,8 @@
 <script>
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import { nanoid } from 'nanoid';
+	import TabDisplay from './TabDisplay.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	/**
 	 * @type {string}
@@ -20,6 +22,12 @@
 	 * @type {boolean}
 	 */
 	export let selected;
+	$: selected = toBoolean(selected);
+
+	/**
+	 * @type {string | undefined}
+	 */
+	export let description = undefined;
 
 	const internalId = nanoid();
 
@@ -29,7 +37,7 @@
 	const addTabToContext = () => {
 		$context.tabs = [
 			...$context.tabs.filter((t) => t.internalId !== internalId),
-			{ internalId, id, label }
+			{ internalId, id, label, description }
 		];
 
 		if (selected) {
@@ -54,8 +62,25 @@
 	onDestroy(() => {
 		$context.tabs = $context.tabs.filter((t) => t.internalId !== internalId);
 	});
+
+	const color = $context.color;
 </script>
 
-{#if selected}
-	<slot />
+{#if !$context.printing || !$context.printShowAll}
+	{#if selected}
+		<div class="mb-5">
+			<slot />
+		</div>
+	{/if}
+{:else}
+	<nav class="my-6 flex flex-wrap gap-x-1 gap-y-1 border-b">
+		{#each $context.tabs as tab}
+			<TabDisplay id={tab.id} label={tab.label} activeId={id} {color}>
+				<slot />
+			</TabDisplay>
+		{/each}
+	</nav>
+	<div class="text-base">
+		<slot />
+	</div>
 {/if}

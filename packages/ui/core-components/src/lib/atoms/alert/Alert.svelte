@@ -22,6 +22,9 @@
 
 <script>
 	// Based on the alert from FlowBite: https://flowbite.com/docs/components/alerts/
+
+	import InlineError from '../inputs/InlineError.svelte';
+
 	/**
 	 * Defines the color of the alert
 	 * @type {"base" | "info" | "positive" | "warning" | "negative"}
@@ -30,11 +33,15 @@
 	$: status = checkDeprecatedStatus(status);
 </script>
 
-<div class="alert {status}" role="alert">
-	<div>
-		<slot />
+{#if !$$slots.default}
+	<InlineError inputType="Alert" height="42" error={['No Alert content found']} />
+{:else}
+	<div class="alert {status}" role="alert">
+		<div>
+			<slot />
+		</div>
 	</div>
-</div>
+{/if}
 
 <style lang="postcss">
 	.alert {

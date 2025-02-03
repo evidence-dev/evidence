@@ -19,7 +19,7 @@ module.exports = `
 {/if}
 
 <!-- default twitter cardtags -->
-<meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@evidence_dev" />
 
 {#if typeof metadata === "object"}

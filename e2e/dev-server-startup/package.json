@@ -1,0 +1,36 @@
+{
+  "name": "e2e-dev-server-startup",
+  "version": "0.0.2",
+  "scripts": {
+    "build": "evidence build",
+    "build:strict": "evidence build:strict",
+    "dev": "evidence dev --open /",
+    "sources": "evidence sources",
+    "preview": "evidence preview",
+    "test:preview": "exit 0",
+    "test:dev": "cross-env DEV=true playwright test"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@evidence-dev/core-components": "workspace:*",
+    "@evidence-dev/duckdb": "workspace:*",
+    "@evidence-dev/evidence": "workspace:*",
+    "vite": "5.4.14",
+    "vitest": "^2.1.8"
+  },
+  "overrides": {
+    "jsonwebtoken": "9.0.0",
+    "trim@<0.0.3": ">0.0.3",
+    "sqlite3": "5.1.5",
+    "axios": "^1.7.4"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^22.10.6",
+    "cross-env": "^7.0.3"
+  }
+}
