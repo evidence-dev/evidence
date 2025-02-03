@@ -106,39 +106,41 @@
 		--bg: var(--primary);
 		--hover-bg: rgb(from var(--primary) r g b / 90%);
 		--text: var(--secondary);
-		&.variant-primary {
-			--primary: var(--color-primary);
-			--secondary: var(--color-primary-content);
-		}
-		&.variant-secondary {
-			--primary: var(--color-base-300);
-			--secondary: var(--color-base-content);
-		}
-		&.variant-accent {
-			--primary: var(--color-accent);
-			--secondary: var(--color-accent-content);
-		}
-		&.variant-info {
-			--primary: var(--color-info);
-			--secondary: var(--color-info-content);
-		}
-		&.variant-positive {
-			--primary: var(--color-positive);
-			--secondary: var(--color-positive-content);
-		}
-		&.variant-warning {
-			--primary: var(--color-warning);
-			--secondary: var(--color-warning-content);
-		}
-		&.variant-negative {
-			--primary: var(--color-negative);
-			--secondary: var(--color-negative-content);
-		}
-		&.outlined {
-			--border: var(--primary);
-			--text: var(--primary);
-			--hover-bg: rgb(from var(--primary) r g b / 10%);
-			--bg: transparent;
-		}
+	}
+
+	button.variant-primary {
+		--primary: var(--color-primary);
+		--secondary: var(--color-primary-content);
+	}
+	button.variant-secondary {
+		--primary: var(--color-base-300);
+		--secondary: var(--color-base-content);
+	}
+
+	button.variant-accent {
+		--primary: var(--color-accent);
+		--secondary: var(--color-accent-content);
+	}
+	button.variant-info {
+		--primary: var(--color-info);
+		--secondary: var(--color-info-content);
+	}
+	button.variant-positive {
+		--primary: var(--color-positive);
+		--secondary: var(--color-positive-content);
+	}
+	button.variant-warning {
+		--primary: var(--color-warning);
+		--secondary: var(--color-warning-content);
+	}
+	button.variant-negative {
+		--primary: var(--color-negative);
+		--secondary: var(--color-negative-content);
+	}
+	button.outlined {
+		--border: var(--primary);
+		--text: var(--primary);
+		--hover-bg: rgb(from var(--primary) r g b / 10%);
+		--bg: transparent;
 	}
 </style>
