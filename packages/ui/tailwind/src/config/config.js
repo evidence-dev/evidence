@@ -42,7 +42,7 @@ export const config = {
 		}
 	},
 	plugins: [createVarsForColors(themes)],
-	darkMode: ['class', 'theme-dark']
+	darkMode: ['class', '.theme-dark']
 };
 
 export default config;
