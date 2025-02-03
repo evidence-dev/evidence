@@ -14,10 +14,14 @@
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
+	import { setContext } from 'svelte';
+	import { readable } from 'svelte/store';
 
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	// From layout.js
 	const inputStore = getInputContext();
+
+	setContext('page-ctx', { page: readable({ data: {} }), url: new URL('http://localhost:3000') });
 
 	const data = Query.create(`select * from hashtags`, query);
 </script>

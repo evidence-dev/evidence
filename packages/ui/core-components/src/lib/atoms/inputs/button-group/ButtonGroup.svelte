@@ -3,8 +3,8 @@
 </script>
 
 <script>
-		  import { page } from '$app/stores';
-		  import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
+	import { page } from '$app/stores';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	import { presets, setButtonGroupContext } from './lib.js';
 	import { writable, readonly } from 'svelte/store';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
@@ -49,33 +49,32 @@
 
 	const valueStore = writable(null);
 
-	hydrateFromUrlParam(name, (v) => defaultValue = v)
+	hydrateFromUrlParam(name, (v) => (defaultValue = v));
 
+	// 	function updateSearchParams(key, value) {
+	// 		if(browser && key){
+	//     // Clone the current URL using $page
+	//     const url = $page.url;
 
-// 	function updateSearchParams(key, value) {
-// 		if(browser && key){
-//     // Clone the current URL using $page
-//     const url = $page.url;
+	// 	if(!value || value === ''){
+	// 		url.searchParams.delete(key);
+	// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
+	// 		return;
+	// 	}
 
-// 	if(!value || value === ''){
-// 		url.searchParams.delete(key);
-// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
-// 		return;
-// 	}
+	// 	 if(!url.searchParams.has(key)){
+	// 		url.searchParams.append(key, value);
+	// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
+	// 	 } else if (url.searchParams.get(key) !== value) {
+	//         url.searchParams.set(key, value);
 
-// 	 if(!url.searchParams.has(key)){
-// 		url.searchParams.append(key, value);
-// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
-// 	 } else if (url.searchParams.get(key) !== value) {
-//         url.searchParams.set(key, value);
-
-//         // Update the URL
-//         // goto(`${url.pathname}?${url.searchParams.toString()}`, { replaceState: true, noScroll: true, keepFocus: true });
-// 		// replaceState($page.url, $page.state)
-// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
-//       }
-// 		}
-//   }
+	//         // Update the URL
+	//         // goto(`${url.pathname}?${url.searchParams.toString()}`, { replaceState: true, noScroll: true, keepFocus: true });
+	// 		// replaceState($page.url, $page.state)
+	// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
+	//       }
+	// 		}
+	//   }
 
 	// TODO: Use getInputSetter instead
 	setButtonGroupContext((v) => {
@@ -83,7 +82,7 @@
 		// the assignment to $inputs is necessary to trigger the change on SSR
 		$inputs[name] = v?.value ?? null;
 		// updateSearchParams(name, v?.value);
-		updateUrlParam(name, v?.value)
+		updateUrlParam(name, v?.value);
 		// hydrateFromUrlParam(name, (newVal) => v.value = newVal)
 		// if($page.url.searchParams.has(name)){
 		// 	v.value = $page.url.searchParams.get(name);
