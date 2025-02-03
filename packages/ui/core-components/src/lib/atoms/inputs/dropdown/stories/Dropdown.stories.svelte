@@ -281,6 +281,15 @@
 	</Dropdown>
 </Story>
 
+<Story name="Name Error">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown {data} value="value" label="label" name={undefined} />
+</Story>
+<Story name="Data as String">
+	{@const data = `Hello`}
+	<Dropdown {data} value="value" label="label" name="dataAsString" />
+</Story>
+
 <!--
 	Stories with:
 		Synced dropdowns on multiple tabs

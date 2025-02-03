@@ -14,3 +14,6 @@
 <Story name="Base">
 	<BigLink href={'https://evidence.dev/'}>Next: Deep Dive on Metrics &rarr;</BigLink>
 </Story>
+<Story name="Error: no url">
+	<BigLink>Next: Deep Dive on Metrics &rarr;</BigLink>
+</Story>

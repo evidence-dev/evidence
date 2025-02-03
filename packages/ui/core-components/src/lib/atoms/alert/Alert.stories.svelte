@@ -44,3 +44,10 @@
 	<Alert status="negative">This is an alert</Alert>
 	<Alert status="base">This is an alert</Alert>
 </Story>
+<Story name="Errors">
+	<Alert status="warning"></Alert>
+	<Alert status="info"></Alert>
+	<Alert status="positive"></Alert>
+	<Alert status="negative"></Alert>
+	<Alert status="base"></Alert>
+</Story>

@@ -4,6 +4,7 @@
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import BaseMap from './BaseMap.svelte';
 	import ComponentTitle from '../core/ComponentTitle.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;
@@ -25,6 +26,7 @@
 
 	/** @type {boolean} */
 	export let isInitial = true;
+	$: isInitial = toBoolean(isInitial);
 
 	export let error = undefined;
 

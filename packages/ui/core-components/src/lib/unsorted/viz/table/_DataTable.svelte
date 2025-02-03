@@ -31,6 +31,7 @@
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColor } = getThemeStores();
 
@@ -51,7 +52,7 @@
 	export let subtitle = undefined;
 
 	export let rowNumbers = false;
-	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
+	$: rowNumbers = toBoolean(rowNumbers);
 
 	// Sort props
 	export let sort = undefined;
@@ -69,7 +70,7 @@
 
 	export let groupBy = undefined;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
-	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
+	$: groupsOpen = toBoolean(groupsOpen);
 	export let groupType = 'accordion'; // accordion | section
 
 	export let accordionRowColor = undefined;
@@ -82,7 +83,7 @@
 	}
 
 	export let subtotals = false;
-	$: subtotals = subtotals === 'true' || subtotals === true;
+	$: subtotals = toBoolean(subtotals);
 
 	export let subtotalRowColor = undefined;
 	$: subtotalRowColorStore = resolveColor(subtotalRowColor);
@@ -107,16 +108,16 @@
 
 	// Table features
 	export let search = false;
-	$: search = search === 'true' || search === true;
+	$: search = toBoolean(search);
 
 	export let sortable = true;
-	$: sortable = sortable === 'true' || sortable === true;
+	$: sortable = toBoolean(sortable);
 
 	export let downloadable = true;
-	$: downloadable = downloadable === 'true' || downloadable === true;
+	$: downloadable = toBoolean(downloadable);
 
 	export let totalRow = false;
-	$: totalRow = totalRow === 'true' || totalRow === true;
+	$: totalRow = toBoolean(totalRow);
 
 	export let totalRowColor = undefined;
 	$: totalRowColorStore = resolveColor(totalRowColor);
@@ -130,7 +131,7 @@
 	export let link = undefined;
 
 	export let showLinkCol = false; // hides link column when columns have not been explicitly selected
-	$: showLinkCol = showLinkCol === 'true' || showLinkCol === true;
+	$: showLinkCol = toBoolean(showLinkCol);
 
 	let error = undefined;
 	let groupDataPopulated = false;
@@ -146,13 +147,13 @@
 	// STYLING
 	// ---------------------------------------------------------------------------------------
 	export let rowShading = false;
-	$: rowShading = rowShading === 'true' || rowShading === true;
+	$: rowShading = toBoolean(rowShading);
 
 	export let rowLines = true;
-	$: rowLines = rowLines === 'true' || rowLines === true;
+	$: rowLines = toBoolean(rowLines);
 
 	export let wrapTitles = false;
-	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
+	$: wrapTitles = toBoolean(wrapTitles);
 
 	export let headerColor = undefined;
 	$: headerColorStore = resolveColor(headerColor);
@@ -161,7 +162,7 @@
 	$: headerFontColorStore = resolveColor(headerFontColor);
 
 	export let formatColumnTitles = true;
-	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
+	$: formatColumnTitles = toBoolean(formatColumnTitles);
 
 	export let backgroundColor = undefined;
 	$: backgroundColorStore = resolveColor(backgroundColor);

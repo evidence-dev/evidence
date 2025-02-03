@@ -13,6 +13,7 @@
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 	import { getThemeStores } from '../../../themes/themes.js';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColor } = getThemeStores();
 
@@ -35,6 +36,7 @@
 	export let pointSize = 10;
 
 	export let useTooltip = false; // if true, will override the default 'axis'-based echarts tooltip. true only for scatter-only charts
+	$: useTooltip = toBoolean(useTooltip);
 	export let tooltipTitle;
 	export let seriesOrder = undefined;
 	/** @type {string | undefined} */

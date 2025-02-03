@@ -37,3 +37,9 @@
 	{@const data = Query.create(`SELECT * from state_sales`, slowQuery)}
 	<USMap {data} {...args} state="state" value="sales" />
 </Story>
+
+<Story name="No Abb" let:args>
+	{@const data = Query.create(`SELECT * from state_sales`, query)}
+	<USMap {data} {...args} state="state" value="sales" abbreviations="false" />
+	<USMap {data} {...args} state="state" value="sales" abbreviations={false} />
+</Story>

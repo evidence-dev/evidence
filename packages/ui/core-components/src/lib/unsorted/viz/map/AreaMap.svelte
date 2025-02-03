@@ -6,6 +6,8 @@
 	import Areas from './components/Areas.svelte';
 	import BaseMap from './_BaseMap.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
+	import ErrorChart from '../core/ErrorChart.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	/** @type {'pass' | 'warn' | 'error' | undefined} */
 	export let emptySet = undefined;
@@ -61,6 +63,12 @@
 	export let legendType = undefined;
 	/** @type {boolean} */
 	export let legend = true;
+	$: legend = toBoolean(legend);
+
+	$: legend = toBoolean(legend);
+	/** @type {boolean} */
+	export let ignoreZoom = false;
+	$: ignoreZoom = toBoolean(ignoreZoom);
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;
@@ -71,32 +79,37 @@
 	$: isInitial = data?.hash === initialHash;
 </script>
 
-<BaseMap
-	let:data
-	{data}
-	{startingLat}
-	{startingLong}
-	{startingZoom}
-	{height}
-	{basemap}
-	{title}
-	{legendPosition}
-	{chartType}
-	{isInitial}
-	{emptySet}
-	{emptyMessage}
-	{error}
-	{attribution}
->
-	<Areas
+{#if !error}
+	<BaseMap
+		let:data
 		{data}
-		{geoJsonUrl}
-		{geoId}
-		{areaCol}
-		{legendType}
+		{startingLat}
+		{startingLong}
+		{startingZoom}
+		{height}
+		{basemap}
+		{title}
+		{legendPosition}
 		{chartType}
-		{legend}
-		{...$$restProps}
-		on:error={(e) => (error = e.detail)}
-	/>
-</BaseMap>
+		{isInitial}
+		{emptySet}
+		{emptyMessage}
+		{error}
+		{attribution}
+	>
+		<Areas
+			{data}
+			{geoJsonUrl}
+			{geoId}
+			{areaCol}
+			{legendType}
+			{chartType}
+			{legend}
+			{ignoreZoom}
+			{...$$restProps}
+			on:error={(e) => (error = e.detail)}
+		/>
+	</BaseMap>
+{:else}
+	<ErrorChart {error} title="Area Map" />
+{/if}
