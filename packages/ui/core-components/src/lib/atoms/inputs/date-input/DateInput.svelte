@@ -14,6 +14,8 @@
 	import { toBoolean } from '../../../utils.js';
 	import { dateToYYYYMMDD, formatDateString } from './helpers.js';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import InlineError from '../InlineError.svelte';
+	import checkRequiredProps from '../checkRequiredProps.js';
 
 	const inputs = getInputContext();
 
@@ -25,6 +27,7 @@
 	export let description = undefined;
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	/** @type {string | Date | undefined} */
 	export let start;
@@ -41,11 +44,23 @@
 	export let defaultValue;
 	/** @type {boolean| string} */
 	export let range = false;
-
 	$: range = toBoolean(range);
 
 	let query;
-	$: if (data && dates) {
+	let errors = [];
+	$: if (data) {
+		if (typeof data !== 'object') {
+			if (typeof data === 'string') {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be provided in the format: data = {'${data.replace('data.', '')}'}`
+				);
+			} else {
+				errors.push(
+					`'${data}' is not a recognized query result. Data should be an object. e.g data = {QueryName}`
+				);
+			}
+		}
+
 		const queryString = `SELECT min(${dates}) as start, max(${dates}) as end FROM ${typeof data === 'string' ? data : `(${data.text})`}`;
 		const id = `DateRange-${name}`;
 		const opts = {
@@ -56,12 +71,22 @@
 		};
 		query = buildQuery(queryString, id, opts.initialData, opts);
 		query.fetch();
+	} else if (dates) {
+		errors.push(`data is required to access a ${dates} column`);
 	}
 
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
 	let currentDate = dateToYYYYMMDD(new Date());
+
+	let extraDayEndString;
+
+	$: if (endString && range) {
+		extraDayEndString = new Date(endString);
+		extraDayEndString.setDate(extraDayEndString.getDate() + 1);
+		extraDayEndString = formatDateString(extraDayEndString);
+	}
 
 	function onSelectedDateInputChange(selectedDateInput) {
 		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
@@ -75,15 +100,34 @@
 			};
 		}
 	}
+
+	let hasQueryError = false;
+	$: if ($query?.error && !hasQueryError) {
+		errors = [...errors, $query.error];
+		hasQueryError = true;
+	}
+
+	try {
+		checkRequiredProps({ name });
+	} catch (e) {
+		errors.push(e.message);
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`${title ? '-mt-0.5' : 'mt-2'} mb-4 ml-0 mr-2 inline-block`}>
-		{#if title && range}
+		{#if title}
 			<span class="text-sm text-gray-500 block mb-1">{title}</span>
 		{/if}
 
-		{#if $query?.error}
+		{#if errors.length > 0}
+			<InlineError
+				inputType={range ? 'DateRange' : 'DateInput'}
+				height="32"
+				width={range ? 337 : 190}
+				error={errors}
+			/>
+			<!-- {:else if $query?.error}
 			<span
 				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded-sm"
 			>
@@ -93,7 +137,7 @@
 				>
 					{$query.error}
 				</span>
-			</span>
+			</span> -->
 		{:else}
 			<QueryLoad data={query} let:loaded>
 				<svelte:fragment slot="skeleton">
@@ -103,6 +147,7 @@
 					{onSelectedDateInputChange}
 					start={startString}
 					end={endString}
+					{extraDayEndString}
 					loaded={loaded?.ready ?? true}
 					{presetRanges}
 					{defaultValue}

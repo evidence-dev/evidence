@@ -8,19 +8,21 @@ Use big links to display a url link in a styled container. To style links like B
 
 <DocTab>
     <div slot='preview'>
-      <BigLink href='/components/ui/big-link'>My Big Link</BigLink> 
+      <BigLink url='/components/ui/big-link'>My Big Link</BigLink> 
     </div>
 
 ```markdown
-<BigLink href='/components/ui/big-link'>
-  My Big Link
-</BigLink>
+      <BigLink url='/components/ui/big-link'>My Big Link</BigLink> 
 ```
 </DocTab>
 
 ## Options
 
-<PropListing name="href" required options='string'>
+<PropListing name="url" required options='string'>
 
 Renders a link that, when clicked, navigates to the specified URL. It can accept either a full external link (e.g. `https://google.com`) or link to another page within your evidence app (e.g. `/sales/performance`).
+</PropListing>
+<PropListing name="href" options='string'>
+
+href deprecated, please use url
 </PropListing>

@@ -29,6 +29,9 @@
 
 <script>
 	// Based on the alert from FlowBite: https://flowbite.com/docs/components/alerts/
+
+	import InlineError from '../inputs/InlineError.svelte';
+
 	/**
 	 * Defines the color of the alert
 	 * @type {"base" | "info" | "positive" | "warning" | "negative"}
@@ -37,16 +40,18 @@
 	$: status = checkDeprecatedStatus(status);
 </script>
 
-<div
-	class="alert {classMap[
-		status
-	]} border px-3 py-2 mb-4 rounded-sm border-base-content/50 bg-base-content/10"
-	role="alert"
->
-	<div>
+{#if !$$slots.default}
+	<InlineError inputType="Alert" height="42" error={['No Alert content found']} />
+{:else}
+	<div
+		class="alert {classMap[
+			status
+		]} border px-3 py-2 mb-4 rounded-sm border-base-content/50 bg-base-content/10"
+		role="alert"
+	>
 		<slot />
 	</div>
-</div>
+{/if}
 
 <style>
 	/* We can't target :global without a style tag, and we can't use tailwind in style tags. */

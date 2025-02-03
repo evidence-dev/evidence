@@ -6,9 +6,11 @@
 	import { X } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { createEventDispatcher } from 'svelte';
+	import { toBoolean } from '$lib/utils.js';
 	const dispatch = createEventDispatcher();
 
 	export let open = false;
+	$: open = toBoolean(open);
 	export let title = '';
 	export let buttonText = '';
 	export let innerText = '';

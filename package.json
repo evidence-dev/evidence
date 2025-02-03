@@ -51,7 +51,7 @@
 		"get-port": "^7.1.0",
 		"git-remote-origin-url": "4.0.0",
 		"http-proxy": "^1.18.1",
-		"nanoid": "^5.0.9",
+		"nanoid": "3.3.8",
 		"node-fetch": "^3.3.2",
 		"npm-run-all": "^4.1.5",
 		"open": "^9.1.0",
@@ -112,7 +112,8 @@
 			"nth-check@<2.0.1": ">=2.0.1",
 			"fast-xml-parser": ">=4.4.1",
 			"dset": ">=3.1.4",
-			"cookie": ">=0.7.1"
+			"cookie": ">=0.7.1",
+			"nanoid": "3.3.8"
 		}
 	},
 	"packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81"

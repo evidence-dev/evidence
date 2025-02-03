@@ -15,7 +15,7 @@
 		<div class="text-center [word-wrap:break-work] w-full font-medium text-xs text-negative">
 			error
 			<span
-				class="hidden font-sans group-hover:inline-block absolute top-[50%] left-[50%] text-sm z-10 px-2 py-1 bg-base-100 border border-base-300 leading-relaxed min-w-[150px] max-w-[400px] rounded-md z-50 overflow-visible"
+				class="hidden font-sans group-hover:inline-block absolute top-[50%] left-[50%] text-sm px-2 py-1 bg-base-100 border border-base-300 leading-relaxed min-w-[150px] max-w-[400px] rounded-md z-50 overflow-visible"
 			>
 				{error}
 			</span>

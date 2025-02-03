@@ -60,7 +60,7 @@
 	name="Query-Based Entries - Text"
 	let:args
 	args={{
-		data: 'hashtags',
+		data,
 		value: 'id',
 		label: 'tag'
 	}}
@@ -92,7 +92,7 @@
 	name="Mixed Entries - Text"
 	let:args
 	args={{
-		data: 'hashtags',
+		data,
 		value: 'id',
 		label: 'tag'
 	}}
@@ -191,9 +191,11 @@
 
 <Story name="Button Group Error States" let:args>
 	<div class="mb-8 mt-4">
+		<h1>Invalid Preset option</h1>
 		<ButtonGroup {...args} preset="date" title="Buttons Preset Error" name="tabsStyle" />
 	</div>
 	<div class="mb-8 mt-4">
+		<h1>Invalid Display option</h1>
 		<ButtonGroup
 			{...args}
 			preset="dates"
@@ -203,6 +205,7 @@
 		/>
 	</div>
 	<div class="mb-8 mt-4">
+		<h1>Preset and display contains array of strings</h1>
 		<ButtonGroup
 			{...args}
 			preset={['dates string in array']}
@@ -210,5 +213,32 @@
 			title="Buttons non-string Error"
 			name="tabsStyle"
 		/>
+	</div>
+	<div class="mb-8">
+		<h1>Missing Required Name prop</h1>
+		<ButtonGroup {...args} display="tabs" name={undefined}>
+			<ButtonGroupItem valueLabel="Option 1" value={1} default />
+		</ButtonGroup>
+	</div>
+	<div class="mb-8">
+		<h1>No data, no props, no slot</h1>
+		<ButtonGroup name="noData" />
+	</div>
+</Story>
+<Story name="Button Group Data is string" let:args>
+	<div class="mb-8 mt-4">
+		<ButtonGroup {...args} data="queryName" title="Data is string" name="dataString" value="id" />
+	</div>
+</Story>
+<Story name="Button Group Data but Value not provided" let:args>
+	<div class="mb-8 mt-4">
+		<ButtonGroup {...args} {data} title="Value missing" name="valueMissing" />
+	</div>
+</Story>
+<Story name="Button Group has slot but no preset" let:args>
+	<div class="mb-8 mt-4">
+		<ButtonGroup {...args} name="noPreset">
+			<ButtonGroupItem valueLabel="Option 1" value={1} default />
+		</ButtonGroup>
 	</div>
 </Story>
