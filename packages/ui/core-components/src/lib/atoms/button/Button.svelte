@@ -87,7 +87,7 @@
 	class:border={outline}
 	on:click|stopPropagation
 	class="
-	 	bg-[var(--bg)] border-[var(--border)] text-[var(--text)] hover:bg-[var(--hover-bg)]
+	 	bg-(--bg) border-(--border) text-(--text) hover:bg-(--hover-bg)
 		{disabled ? disabledClass : enabledClass}
 		flex items-center transition-colors rounded-sm variant-{variant} {sizes[size]}
 	"
