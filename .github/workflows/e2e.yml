@@ -29,11 +29,14 @@ jobs:
         id: docs-check
         shell: bash
         run: |
+          # Fetch the base branch
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          
           # Get list of changed files
           CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }})
           
           # Check if any changed files are outside sites/docs/
-          NON_DOCS_CHANGES=$(echo "$CHANGED_FILES" | grep -vE '^sites/docs/')
+          NON_DOCS_CHANGES=$(echo "$CHANGED_FILES" | grep -vE '^sites/docs/' || true)
 
           if [ -z "$NON_DOCS_CHANGES" ]; then
             echo "only_docs=true" >> "$GITHUB_OUTPUT"
