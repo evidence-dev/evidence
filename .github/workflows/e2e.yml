@@ -40,6 +40,7 @@ jobs:
 
           if [ -z "$NON_DOCS_CHANGES" ]; then
             echo "only_docs=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping e2e tests because only docs were changed."
           else
             echo "only_docs=false" >> "$GITHUB_OUTPUT"
           fi
