@@ -44,47 +44,51 @@ jobs:
             echo "only_docs=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Skip Tests for Docs-only Changes
-        if: steps.docs-check.outputs.only_docs == 'true'
-        run: |
-          echo "Skipping tests because only docs were changed."
-          exit 0
-
       - name: Set OS environment variable
+        if: steps.docs-check.outputs.only_docs != 'true'
         run: echo "__E2E_WORKFLOW_OS__=${{ matrix.os }}" >> $GITHUB_ENV
 
       - name: Action Setup (pnpm)
+        if: steps.docs-check.outputs.only_docs != 'true'
         uses: pnpm/action-setup@v4
 
       - name: Setup Node
+        if: steps.docs-check.outputs.only_docs != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
 
       - name: Install dependencies
+        if: steps.docs-check.outputs.only_docs != 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright and browsers
+        if: steps.docs-check.outputs.only_docs != 'true'
         run: pnpm playwright install --with-deps
 
       - name: Run setup
+        if: steps.docs-check.outputs.only_docs != 'true'
         run: pnpm --filter "./e2e/*" run --if-present setup
 
       - name: Run sources
+        if: steps.docs-check.outputs.only_docs != 'true'
         run: pnpm --filter "./e2e/*" run sources
 
       - name: Run dev mode tests
+        if: steps.docs-check.outputs.only_docs != 'true'
         run: pnpm --filter "./e2e/*" --sequential run test:dev
 
       - name: Build
+        if: steps.docs-check.outputs.only_docs != 'true'
         run: pnpm --filter "./e2e/*" run build
 
       - name: Run preview mode tests
+        if: steps.docs-check.outputs.only_docs != 'true'
         run: pnpm --filter "./e2e/*" --sequential run test:preview
 
       - name: Upload Playwright reports
-        if: always()
+        if: always() && steps.docs-check.outputs.only_docs != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report__e2e_${{ matrix.os }}_node-${{ matrix.node-version }}
