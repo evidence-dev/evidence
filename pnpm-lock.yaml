@@ -2117,15 +2117,15 @@ packages:
       tslib: 2.8.1
     dev: false
 
-  /@aws-sdk/client-s3@3.740.0:
-    resolution: {integrity: sha512-X9aQOFJC3TsYwQP3AGcNhfYcFehVEHRKCHtHYOIKv5t1ydSJxpN/v34OrMMKvG1jFWMNkSYiSCVB9ZVo9KUwVA==}
+  /@aws-sdk/client-s3@3.741.0:
+    resolution: {integrity: sha512-sZvdbRZ+E9/GcOMUOkZvYvob95N6c9LdzDneXHFASA7OIaEOQxQT1Arimz7JpEhfq/h9K2/j7wNO4jh4x80bmA==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@aws-crypto/sha1-browser': 5.2.0
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
       '@aws-sdk/core': 3.734.0
-      '@aws-sdk/credential-provider-node': 3.738.0
+      '@aws-sdk/credential-provider-node': 3.741.0
       '@aws-sdk/middleware-bucket-endpoint': 3.734.0
       '@aws-sdk/middleware-expect-continue': 3.734.0
       '@aws-sdk/middleware-flexible-checksums': 3.735.0
@@ -2271,8 +2271,8 @@ packages:
       tslib: 2.8.1
     dev: false
 
-  /@aws-sdk/credential-provider-ini@3.734.0:
-    resolution: {integrity: sha512-HEyaM/hWI7dNmb4NhdlcDLcgJvrilk8G4DQX6qz0i4pBZGC2l4iffuqP8K6ZQjUfz5/6894PzeFuhTORAMd+cg==}
+  /@aws-sdk/credential-provider-ini@3.741.0:
+    resolution: {integrity: sha512-/XvnVp6zZXsyUlP1FtmspcWnd+Z1u2WK0wwzTE/x277M0oIhAezCW79VmcY4jcDQbYH+qMbtnBexfwgFDARxQg==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@aws-sdk/core': 3.734.0
@@ -2292,13 +2292,13 @@ packages:
       - aws-crt
     dev: false
 
-  /@aws-sdk/credential-provider-node@3.738.0:
-    resolution: {integrity: sha512-3MuREsazwBxghKb2sQQHvie+uuK4dX4/ckFYiSoffzJQd0YHxaGxf8cr4NOSCQCUesWu8D3Y0SzlnHGboVSkpA==}
+  /@aws-sdk/credential-provider-node@3.741.0:
+    resolution: {integrity: sha512-iz/puK9CZZkZjrKXX2W+PaiewHtlcD7RKUIsw4YHFyb8lrOt7yTYpM6VjeI+T//1sozjymmAnnp1SST9TXApLQ==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@aws-sdk/credential-provider-env': 3.734.0
       '@aws-sdk/credential-provider-http': 3.734.0
-      '@aws-sdk/credential-provider-ini': 3.734.0
+      '@aws-sdk/credential-provider-ini': 3.741.0
       '@aws-sdk/credential-provider-process': 3.734.0
       '@aws-sdk/credential-provider-sso': 3.734.0
       '@aws-sdk/credential-provider-web-identity': 3.734.0
@@ -2725,7 +2725,7 @@ packages:
       '@azure/core-tracing': 1.2.0
       '@azure/core-util': 1.11.0
       '@azure/logger': 1.1.4
-      '@azure/msal-browser': 4.0.2
+      '@azure/msal-browser': 4.1.0
       '@azure/msal-node': 2.16.2
       events: 3.3.0
       jws: 4.0.0
@@ -2775,18 +2775,18 @@ packages:
     dependencies:
       tslib: 2.8.1
 
-  /@azure/msal-browser@4.0.2:
-    resolution: {integrity: sha512-bq6PasUpJgBSOSMeSlh8gXh4LZGgAaPoJFNcu5u0zxwueh+I8NpMb9oxlCfS/8CJHyXUhTUAMLSnvThemNdyQw==}
+  /@azure/msal-browser@4.1.0:
+    resolution: {integrity: sha512-PeYJOPEy9s9ZfuQ6Yu3usJyWsVyHiPuWpMrnkUYMhthsymCb5aET1FsNN7CUjMSrdv67woid1dqgK8VEvNIVmQ==}
     engines: {node: '>=0.8.0'}
     dependencies:
-      '@azure/msal-common': 15.0.2
+      '@azure/msal-common': 15.1.0
 
   /@azure/msal-common@14.16.0:
     resolution: {integrity: sha512-1KOZj9IpcDSwpNiQNjt0jDYZpQvNZay7QAEi/5DLubay40iGYtLzya/jbjRPLyOTZhEKyL1MzPuw2HqBCjceYA==}
     engines: {node: '>=0.8.0'}
 
-  /@azure/msal-common@15.0.2:
-    resolution: {integrity: sha512-RQHmI5vOMYLNSO0ER7d/O9TojWWEn4m0YtWbL8mZthkKGQI7ALn5ONHUVTUSxSVYwGYdHGNrwiHAzQhboqwZzQ==}
+  /@azure/msal-common@15.1.0:
+    resolution: {integrity: sha512-gMIA7hk34OLFpHwntmZnfvx9eYnThqEfz/XaSkcGotN+52KnkKZAoKDLzeI6ue1KoL5mRkmT1BS3+MO3ZCy5xg==}
     engines: {node: '>=0.8.0'}
 
   /@azure/msal-node@2.16.2:
@@ -3171,7 +3171,7 @@ packages:
       outdent: 0.5.0
       prettier: 2.8.8
       resolve-from: 5.0.0
-      semver: 7.7.0
+      semver: 7.7.1
     dev: true
 
   /@changesets/assemble-release-plan@5.2.4:
@@ -3182,7 +3182,7 @@ packages:
       '@changesets/get-dependents-graph': 1.3.6
       '@changesets/types': 5.2.1
       '@manypkg/get-packages': 1.1.3
-      semver: 7.7.0
+      semver: 7.7.1
     dev: true
 
   /@changesets/assemble-release-plan@6.0.5:
@@ -3193,7 +3193,7 @@ packages:
       '@changesets/should-skip-package': 0.1.1
       '@changesets/types': 6.0.0
       '@manypkg/get-packages': 1.1.3
-      semver: 7.7.0
+      semver: 7.7.1
     dev: true
 
   /@changesets/changelog-git@0.1.14:
@@ -3274,7 +3274,7 @@ packages:
       package-manager-detector: 0.2.9
       picocolors: 1.1.1
       resolve-from: 5.0.0
-      semver: 7.7.0
+      semver: 7.7.1
       spawndamnit: 3.0.1
       term-size: 2.2.1
     dev: true
@@ -3334,7 +3334,7 @@ packages:
       '@manypkg/get-packages': 1.1.3
       chalk: 2.4.2
       fs-extra: 7.0.1
-      semver: 7.7.0
+      semver: 7.7.1
     dev: true
 
   /@changesets/get-dependents-graph@2.1.2:
@@ -3343,7 +3343,7 @@ packages:
       '@changesets/types': 6.0.0
       '@manypkg/get-packages': 1.1.3
       picocolors: 1.1.1
-      semver: 7.7.0
+      semver: 7.7.1
     dev: true
 
   /@changesets/get-release-plan@3.0.17:
@@ -5095,7 +5095,7 @@ packages:
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
-      semver: 7.7.0
+      semver: 7.7.1
       tar: 6.2.1
     transitivePeerDependencies:
       - encoding
@@ -5324,7 +5324,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@gar/promisify': 1.1.3
-      semver: 7.7.0
+      semver: 7.7.1
     dev: false
     optional: true
 
@@ -5333,7 +5333,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     dependencies:
       '@gar/promisify': 1.1.3
-      semver: 7.7.0
+      semver: 7.7.1
     dev: false
 
   /@npmcli/move-file@1.1.2:
@@ -5381,8 +5381,6 @@ packages:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/cache@2.13.3(@parcel/core@2.13.3):
@@ -5499,7 +5497,7 @@ packages:
       json5: 2.2.3
       msgpackr: 1.11.2
       nullthrows: 1.1.1
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -5625,7 +5623,7 @@ packages:
       '@parcel/rust': 2.12.0
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@parcel/core'
     dev: true
@@ -5640,7 +5638,7 @@ packages:
       '@parcel/rust': 2.13.3
       '@parcel/utils': 2.13.3
       nullthrows: 1.1.1
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@parcel/core'
     dev: true
@@ -5738,7 +5736,7 @@ packages:
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.13.3)
       '@swc/core': 1.10.12
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -5758,7 +5756,7 @@ packages:
       '@parcel/utils': 2.13.3
       '@parcel/workers': 2.13.3(@parcel/core@2.13.3)
       '@swc/core': 1.10.12
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -6002,7 +6000,7 @@ packages:
       browserslist: 4.24.4
       json5: 2.2.3
       nullthrows: 1.1.1
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@parcel/core'
     dev: true
@@ -6033,7 +6031,7 @@ packages:
       posthtml: 0.16.6
       posthtml-parser: 0.12.1
       posthtml-render: 3.0.0
-      semver: 7.7.0
+      semver: 7.7.1
       srcset: 4.0.0
     transitivePeerDependencies:
       - '@parcel/core'
@@ -6069,7 +6067,7 @@ packages:
       browserslist: 4.24.4
       nullthrows: 1.1.1
       regenerator-runtime: 0.14.1
-      semver: 7.7.0
+      semver: 7.7.1
     dev: true
 
   /@parcel/transformer-json@2.13.3(@parcel/core@2.13.3):
@@ -6093,7 +6091,7 @@ packages:
       clone: 2.1.2
       nullthrows: 1.1.1
       postcss-value-parser: 4.2.0
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@parcel/core'
     dev: true
@@ -6108,7 +6106,7 @@ packages:
       posthtml: 0.16.6
       posthtml-parser: 0.12.1
       posthtml-render: 3.0.0
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@parcel/core'
     dev: true
@@ -6144,7 +6142,7 @@ packages:
       posthtml: 0.16.6
       posthtml-parser: 0.12.1
       posthtml-render: 3.0.0
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - '@parcel/core'
     dev: true
@@ -6393,6 +6391,8 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.13.3)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/workers@2.13.3(@parcel/core@2.13.3):
@@ -7524,7 +7524,7 @@ packages:
       prettier: 3.4.2
       process: 0.11.10
       recast: 0.23.9
-      semver: 7.7.0
+      semver: 7.7.1
       util: 0.12.5
       ws: 8.18.0
     transitivePeerDependencies:
@@ -7822,7 +7822,7 @@ packages:
       chokidar: 3.6.0
       kleur: 4.1.5
       sade: 1.8.1
-      semver: 7.7.0
+      semver: 7.7.1
       svelte: 4.2.19
       svelte2tsx: 0.7.4(svelte@4.2.19)(typescript@5.4.2)
     transitivePeerDependencies:
@@ -7839,7 +7839,7 @@ packages:
       chokidar: 4.0.3
       kleur: 4.1.5
       sade: 1.8.1
-      semver: 7.7.0
+      semver: 7.7.1
       svelte: 4.2.19
       svelte2tsx: 0.7.34(svelte@4.2.19)(typescript@5.4.2)
     transitivePeerDependencies:
@@ -8714,7 +8714,7 @@ packages:
       graphemer: 1.4.0
       ignore: 5.3.2
       natural-compare-lite: 1.4.0
-      semver: 7.7.0
+      semver: 7.7.1
       tsutils: 3.21.0(typescript@4.9.5)
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -8793,7 +8793,7 @@ packages:
       debug: 4.4.0
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.7.0
+      semver: 7.7.1
       tsutils: 3.21.0(typescript@4.9.5)
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -8814,7 +8814,7 @@ packages:
       debug: 4.4.0
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.7.0
+      semver: 7.7.1
       tsutils: 3.21.0(typescript@5.4.2)
       typescript: 5.4.2
     transitivePeerDependencies:
@@ -8836,7 +8836,7 @@ packages:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
-      semver: 7.7.0
+      semver: 7.7.1
       ts-api-utils: 1.4.3(typescript@5.7.3)
       typescript: 5.7.3
     transitivePeerDependencies:
@@ -8857,7 +8857,7 @@ packages:
       '@typescript-eslint/typescript-estree': 5.62.0(typescript@5.4.2)
       eslint: 8.45.0
       eslint-scope: 5.1.1
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -8877,7 +8877,7 @@ packages:
       '@typescript-eslint/typescript-estree': 5.62.0(typescript@4.9.5)
       eslint: 8.57.1
       eslint-scope: 5.1.1
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -8986,7 +8986,7 @@ packages:
       chai: 5.1.2
       tinyrainbow: 1.2.0
 
-  /@vitest/mocker@2.1.9(vite@5.4.11):
+  /@vitest/mocker@2.1.9(vite@5.4.14):
     resolution: {integrity: sha512-tVL6uJgoUdi6icpxmdrn5YNo3g3Dxv+IHJBr0GXHaEdTcw3F+cPKnsXFhli6nO+f/6SDKPHEK1UN+k+TQv0Ehg==}
     peerDependencies:
       msw: ^2.4.9
@@ -9000,7 +9000,7 @@ packages:
       '@vitest/spy': 2.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.17
-      vite: 5.4.11(@types/node@20.11.28)
+      vite: 5.4.14(@types/node@20.11.28)
 
   /@vitest/pretty-format@2.0.5:
     resolution: {integrity: sha512-h8k+1oWHfwTkyTkb9egzwNMfJAEx4veaPSnMeKbVSjp4euqGSbQlm5+6VHwTr7u4FJslVVsUG5nopCaAYdOmSQ==}
@@ -9224,7 +9224,7 @@ packages:
       minimatch: 3.1.2
       parse-semver: 1.1.1
       read: 1.0.7
-      semver: 7.7.0
+      semver: 7.7.1
       tmp: 0.2.3
       typed-rest-client: 1.8.11
       url-join: 4.0.1
@@ -11817,7 +11817,7 @@ packages:
       postcss-load-config: 3.1.4(postcss@8.5.1)
       postcss-safe-parser: 6.0.0(postcss@8.5.1)
       postcss-selector-parser: 6.1.2
-      semver: 7.7.0
+      semver: 7.7.1
       svelte: 4.2.19
       svelte-eslint-parser: 0.43.0(svelte@4.2.19)
     transitivePeerDependencies:
@@ -11846,7 +11846,7 @@ packages:
       postcss-load-config: 3.1.4(postcss@8.5.1)
       postcss-safe-parser: 6.0.0(postcss@8.5.1)
       postcss-selector-parser: 6.1.2
-      semver: 7.7.0
+      semver: 7.7.1
       svelte: 4.2.19
       svelte-eslint-parser: 0.43.0(svelte@4.2.19)
     transitivePeerDependencies:
@@ -11927,7 +11927,7 @@ packages:
       optionator: 0.9.4
       progress: 2.0.3
       regexpp: 3.2.0
-      semver: 7.7.0
+      semver: 7.7.1
       strip-ansi: 6.0.1
       strip-json-comments: 3.1.1
       text-table: 0.2.0
@@ -14243,7 +14243,7 @@ packages:
       jest-util: 28.1.3
       natural-compare: 1.4.0
       pretty-format: 28.1.3
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -14271,7 +14271,7 @@ packages:
       jest-util: 29.7.0
       natural-compare: 1.4.0
       pretty-format: 29.7.0
-      semver: 7.7.0
+      semver: 7.7.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -14526,7 +14526,7 @@ packages:
       lodash.isstring: 4.0.1
       lodash.once: 4.1.1
       ms: 2.1.3
-      semver: 7.7.0
+      semver: 7.7.1
 
   /jwa@1.4.1:
     resolution: {integrity: sha512-qiLX/xhEEFKUAJ6FiBMbes3w9ATzyk5W7Hvzpa/SLYdxNtng+gcurvrI7TbACjIXlsJyr05/S1oUhZrc63evQA==}
@@ -14982,7 +14982,7 @@ packages:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
     engines: {node: '>=10'}
     dependencies:
-      semver: 7.7.0
+      semver: 7.7.1
 
   /make-fetch-happen@10.2.1:
     resolution: {integrity: sha512-NgOPbRiaQM10DYXvN3/hhGVI2M5MtITFryzBGxHM5p4wnFxsVCbxkrBrDsk+EZ5OB4jEOT7AjDxtdF+KVEFT7w==}
@@ -15558,7 +15558,7 @@ packages:
     engines: {node: '>=10'}
     requiresBuild: true
     dependencies:
-      semver: 7.7.0
+      semver: 7.7.1
     dev: false
     optional: true
 
@@ -15631,7 +15631,7 @@ packages:
       nopt: 5.0.0
       npmlog: 6.0.2
       rimraf: 3.0.2
-      semver: 7.7.0
+      semver: 7.7.1
       tar: 6.2.1
       which: 2.0.2
     transitivePeerDependencies:
@@ -15653,7 +15653,7 @@ packages:
       nopt: 6.0.0
       npmlog: 6.0.2
       rimraf: 3.0.2
-      semver: 7.7.0
+      semver: 7.7.1
       tar: 6.2.1
       which: 2.0.2
     transitivePeerDependencies:
@@ -17381,8 +17381,8 @@ packages:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
 
-  /semver@7.7.0:
-    resolution: {integrity: sha512-DrfFnPzblFmNrIZzg5RzHegbiRWg7KMR7btwi2yjHwx06zsUbO5g613sVwEV7FTwmzJu+Io0lJe2GJ3LxqpvBQ==}
+  /semver@7.7.1:
+    resolution: {integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -17617,7 +17617,7 @@ packages:
   /snowflake-sdk@1.9.0(asn1.js@5.4.1):
     resolution: {integrity: sha512-RtFRV2KC+ebQk/kOUg8WV42LnAu9puoan2wMXykgrAj1u4sGP/GgQyQhsAfLGwXWzn+J9JAwij07h3+6HYBmFw==}
     dependencies:
-      '@aws-sdk/client-s3': 3.740.0
+      '@aws-sdk/client-s3': 3.741.0
       '@azure/storage-blob': 12.26.0
       '@google-cloud/storage': 6.12.0
       '@techteamer/ocsp': 1.0.0
@@ -18802,7 +18802,7 @@ packages:
       chalk: 4.1.0
       enhanced-resolve: 5.18.0
       micromatch: 4.0.8
-      semver: 7.7.0
+      semver: 7.7.1
       source-map: 0.7.4
       typescript: 4.9.5
       webpack: 5.97.1(webpack-cli@4.10.0)
@@ -19435,83 +19435,6 @@ packages:
       - terser
     dev: false
 
-  /vite@5.4.11(@types/node@20.11.28):
-    resolution: {integrity: sha512-c7jFQRklXua0mTzneGW9QVyxFjUgwcihC4bXEtujIo2ouWCe1Ajt/amn2PCxYnhYfd5k09JX3SB7OYWFKYqj8Q==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 20.11.28
-      esbuild: 0.21.5
-      postcss: 8.5.1
-      rollup: 4.34.1
-    optionalDependencies:
-      fsevents: 2.3.3
-
-  /vite@5.4.11(@types/node@22.13.0):
-    resolution: {integrity: sha512-c7jFQRklXua0mTzneGW9QVyxFjUgwcihC4bXEtujIo2ouWCe1Ajt/amn2PCxYnhYfd5k09JX3SB7OYWFKYqj8Q==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 22.13.0
-      esbuild: 0.21.5
-      postcss: 8.5.1
-      rollup: 4.34.1
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: false
-
   /vite@5.4.14(@types/node@20.11.28):
     resolution: {integrity: sha512-EK5cY7Q1D8JNhSaPKVK4pwBFvaTmZxEnoKXLG/U9gmdDcihQGNzFlgIvaxezFR4glP1LsuiedwMBqCXH3wZccA==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -19832,7 +19755,7 @@ packages:
         optional: true
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.11)
+      '@vitest/mocker': 2.1.9(vite@5.4.14)
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -19848,7 +19771,7 @@ packages:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 1.2.0
-      vite: 5.4.11(@types/node@20.11.28)
+      vite: 5.4.14(@types/node@20.11.28)
       vite-node: 2.1.9
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
@@ -19890,7 +19813,7 @@ packages:
     dependencies:
       '@types/node': 20.11.28
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.11)
+      '@vitest/mocker': 2.1.9(vite@5.4.14)
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -19906,7 +19829,7 @@ packages:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 1.2.0
-      vite: 5.4.11(@types/node@20.11.28)
+      vite: 5.4.14(@types/node@20.11.28)
       vite-node: 2.1.9(@types/node@20.11.28)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
@@ -19948,7 +19871,7 @@ packages:
     dependencies:
       '@types/node': 22.13.0
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.11)
+      '@vitest/mocker': 2.1.9(vite@5.4.14)
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -19964,7 +19887,7 @@ packages:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 1.2.0
-      vite: 5.4.11(@types/node@22.13.0)
+      vite: 5.4.14(@types/node@22.13.0)
       vite-node: 2.1.9(@types/node@22.13.0)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
