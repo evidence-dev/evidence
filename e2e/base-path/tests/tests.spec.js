@@ -192,7 +192,7 @@ test.describe('Page', () => {
 });
 
 test.describe('Parquet Files', () => {
-	test.only('Manifest links should use base path', async ({ page }) => {
+	test('Manifest links should use base path', async ({ page }) => {
 		// Firefox does not behave as expected in playwright.
 		// This isn't a browser-specific test, so we can get away with
 		// not running on firefox
