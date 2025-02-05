@@ -1,5 +1,19 @@
 # @evidence-dev/universal-sql
 
+## 2.2.8
+
+### Patch Changes
+
+- Updated dependencies [243229f46]
+  - @evidence-dev/sdk@3.0.7
+
+## 2.2.7
+
+### Patch Changes
+
+- Updated dependencies [c7547d83f]
+  - @evidence-dev/sdk@3.0.6
+
 ## 2.2.6
 
 ### Patch Changes
