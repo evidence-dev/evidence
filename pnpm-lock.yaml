@@ -1089,7 +1089,7 @@ importers:
         version: 5.4.2
       vitest:
         specifier: ^2.0.5
-        version: 2.1.9(yaml@2.7.0)
+        version: 2.1.9
 
   packages/lib/sdk:
     dependencies:
@@ -5605,6 +5605,8 @@ packages:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/cache@2.13.3(@parcel/core@2.13.3):
@@ -6615,8 +6617,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.13.3)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/workers@2.13.3(@parcel/core@2.13.3):
@@ -9091,7 +9091,7 @@ packages:
     resolution: {integrity: sha512-tVL6uJgoUdi6icpxmdrn5YNo3g3Dxv+IHJBr0GXHaEdTcw3F+cPKnsXFhli6nO+f/6SDKPHEK1UN+k+TQv0Ehg==}
     peerDependencies:
       msw: ^2.4.9
-      vite: '>=6.0.0'
+      vite: ^5.0.0
     peerDependenciesMeta:
       msw:
         optional: true
@@ -19691,10 +19691,9 @@ packages:
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 1.1.2
-      vite: 6.1.0(@types/node@20.11.28)
+      vite: 5.4.11(@types/node@20.11.28)
     transitivePeerDependencies:
       - '@types/node'
-      - jiti
       - less
       - lightningcss
       - sass
@@ -19703,8 +19702,6 @@ packages:
       - sugarss
       - supports-color
       - terser
-      - tsx
-      - yaml
     dev: true
 
   /vite-node@2.1.9(@types/node@20.11.28):
@@ -19716,10 +19713,9 @@ packages:
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 1.1.2
-      vite: 6.1.0(@types/node@20.11.28)
+      vite: 5.4.11(@types/node@20.11.28)
     transitivePeerDependencies:
       - '@types/node'
-      - jiti
       - less
       - lightningcss
       - sass
@@ -19728,8 +19724,6 @@ packages:
       - sugarss
       - supports-color
       - terser
-      - tsx
-      - yaml
     dev: true
 
   /vite-node@2.1.9(@types/node@22.13.1):
@@ -19741,10 +19735,9 @@ packages:
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 1.1.2
-      vite: 6.1.0(@types/node@22.13.1)
+      vite: 5.4.11(@types/node@22.13.1)
     transitivePeerDependencies:
       - '@types/node'
-      - jiti
       - less
       - lightningcss
       - sass
@@ -19753,34 +19746,7 @@ packages:
       - sugarss
       - supports-color
       - terser
-      - tsx
-      - yaml
     dev: false
-
-  /vite-node@2.1.9(yaml@2.7.0):
-    resolution: {integrity: sha512-AM9aQ/IPrW/6ENLQg3AGY4K1N2TGZdR5e4gu/MmmR2xR3Ll1+dib+nook92g4TV3PXVyeyxdWwtaCAiUL0hMxA==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    dependencies:
-      cac: 6.7.14
-      debug: 4.4.0
-      es-module-lexer: 1.6.0
-      pathe: 1.1.2
-      vite: 6.1.0(yaml@2.7.0)
-    transitivePeerDependencies:
-      - '@types/node'
-      - jiti
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - yaml
-    dev: true
 
   /vite@5.2.10(@types/node@22.13.1):
     resolution: {integrity: sha512-PAzgUZbP7msvQvqdSD+ErD5qGnSFiGOoWmV5yAKUEI0kdhjbH6nMWVyZQC/hSc4aXwc0oJ9aEdIiF9Oje0JFCw==}
@@ -19932,150 +19898,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: false
-
-  /vite@6.1.0(@types/node@20.11.28):
-    resolution: {integrity: sha512-RjjMipCKVoR4hVfPY6GQTgveinjNuyLw+qruksLDvA5ktI1150VmcMBKmQaEWJhg/j6Uaf6dNCNA0AfdzUb/hQ==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
-      jiti: '>=1.21.0'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.16.0
-      tsx: ^4.8.1
-      yaml: ^2.4.2
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      jiti:
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-      tsx:
-        optional: true
-      yaml:
-        optional: true
-    dependencies:
-      '@types/node': 20.11.28
-      esbuild: 0.24.2
-      postcss: 8.5.1
-      rollup: 4.34.3
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: true
-
-  /vite@6.1.0(@types/node@22.13.1):
-    resolution: {integrity: sha512-RjjMipCKVoR4hVfPY6GQTgveinjNuyLw+qruksLDvA5ktI1150VmcMBKmQaEWJhg/j6Uaf6dNCNA0AfdzUb/hQ==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
-      jiti: '>=1.21.0'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.16.0
-      tsx: ^4.8.1
-      yaml: ^2.4.2
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      jiti:
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-      tsx:
-        optional: true
-      yaml:
-        optional: true
-    dependencies:
-      '@types/node': 22.13.1
-      esbuild: 0.24.2
-      postcss: 8.5.1
-      rollup: 4.34.3
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: false
-
-  /vite@6.1.0(yaml@2.7.0):
-    resolution: {integrity: sha512-RjjMipCKVoR4hVfPY6GQTgveinjNuyLw+qruksLDvA5ktI1150VmcMBKmQaEWJhg/j6Uaf6dNCNA0AfdzUb/hQ==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
-      jiti: '>=1.21.0'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.16.0
-      tsx: ^4.8.1
-      yaml: ^2.4.2
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      jiti:
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-      tsx:
-        optional: true
-      yaml:
-        optional: true
-    dependencies:
-      esbuild: 0.24.2
-      postcss: 8.5.1
-      rollup: 4.34.3
-      yaml: 2.7.0
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: true
 
   /vitefu@0.2.5(vite@5.4.11):
     resolution: {integrity: sha512-SgHtMLoqaeeGnd2evZ849ZbACbnwQCIwRH57t18FxcXoZop0uQu0uzlIhJBlF/eWVzuce0sHeqPcDo+evVcg8Q==}
@@ -20302,7 +20124,6 @@ packages:
       vite-node: 2.1.9
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
-      - jiti
       - less
       - lightningcss
       - msw
@@ -20312,8 +20133,6 @@ packages:
       - sugarss
       - supports-color
       - terser
-      - tsx
-      - yaml
     dev: true
 
   /vitest@2.1.9(@types/node@20.11.28):
@@ -20363,7 +20182,6 @@ packages:
       vite-node: 2.1.9(@types/node@20.11.28)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
-      - jiti
       - less
       - lightningcss
       - msw
@@ -20373,8 +20191,6 @@ packages:
       - sugarss
       - supports-color
       - terser
-      - tsx
-      - yaml
     dev: true
 
   /vitest@2.1.9(@types/node@22.13.1):
@@ -20424,7 +20240,6 @@ packages:
       vite-node: 2.1.9(@types/node@22.13.1)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
-      - jiti
       - less
       - lightningcss
       - msw
@@ -20434,69 +20249,7 @@ packages:
       - sugarss
       - supports-color
       - terser
-      - tsx
-      - yaml
     dev: false
-
-  /vitest@2.1.9(yaml@2.7.0):
-    resolution: {integrity: sha512-MSmPM9REYqDGBI8439mA4mWhV5sKmDlBKWIYbA3lRb2PTHACE0mgKwA8yQ2xq9vxDTuk4iPrECBAEW2aoFXY0Q==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 2.1.9
-      '@vitest/ui': 2.1.9
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@types/node':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.11)
-      '@vitest/pretty-format': 2.1.9
-      '@vitest/runner': 2.1.9
-      '@vitest/snapshot': 2.1.9
-      '@vitest/spy': 2.1.9
-      '@vitest/utils': 2.1.9
-      chai: 5.1.2
-      debug: 4.4.0
-      expect-type: 1.1.0
-      magic-string: 0.30.17
-      pathe: 1.1.2
-      std-env: 3.8.0
-      tinybench: 2.9.0
-      tinyexec: 0.3.2
-      tinypool: 1.0.2
-      tinyrainbow: 1.2.0
-      vite: 5.4.11(@types/node@20.11.28)
-      vite-node: 2.1.9(yaml@2.7.0)
-      why-is-node-running: 2.3.0
-    transitivePeerDependencies:
-      - jiti
-      - less
-      - lightningcss
-      - msw
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - yaml
-    dev: true
 
   /void-elements@3.1.0:
     resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}

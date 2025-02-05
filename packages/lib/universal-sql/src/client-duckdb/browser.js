@@ -150,7 +150,7 @@ export async function setParquetURLs(urls, append = false) {
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @returns {Promise<import("apache-arrow").Table | null>}
+ * @returns {Promise<Record<string, unknown>[]>}
  */
 export async function query(sql) {
 	// After this point, the database has been initialized
