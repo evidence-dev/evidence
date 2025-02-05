@@ -5,3 +5,4 @@ export * from './date-range';
 export * from './checkbox';
 export * from './slider';
 export * from './date-input';
+export * from './InlineError.svelte';

@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-fixed legend false prop to respect strings
+Fix axis line appearance in sparklines
