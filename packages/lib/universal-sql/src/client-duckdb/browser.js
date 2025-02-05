@@ -108,7 +108,7 @@ export async function emptyDbFs(targetGlob) {
  * @param {{ append?: boolean, addBasePath?: (path: string) => string }} [opts]
  * @returns {Promise<void>}
  */
-export async function setParquetURLs(urls, { append, addBasePath } = {}) {
+export async function setParquetURLs(urls, { append, addBasePath = (x) => x } = {}) {
 	if (!db) await initDB();
 	if (!append) await emptyDbFs('*');
 	if (import.meta.env.VITE_EVIDENCE_DEBUG) console.debug('Updating Parquet URLs');
@@ -141,6 +141,7 @@ export async function setParquetURLs(urls, { append, addBasePath } = {}) {
 		resolveTables();
 	} catch (e) {
 		rejectTables(e);
+		console.error(`Error encountered while updating Parquet URLs`, e);
 		throw e;
 	}
 }

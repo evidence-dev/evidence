@@ -1,6 +1,5 @@
 import plugin from 'tailwindcss/plugin.js';
 
-
 /** @param {import('../../schemas/types.js').Themes} themes */
 export const createVarsForColors = (themes) => {
 	/**
