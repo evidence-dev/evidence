@@ -34,12 +34,12 @@ export const addBasePath = (path, config) => {
 		if (basePath.endsWith('/')) {
 			basePath = basePath.slice(0, -1);
 		}
-		if (path.startsWith(basePath)) return path;
-		if (!path.startsWith('/')) {
-			_path = `/${path}`;
+		if (_path.startsWith(basePath)) return _path;
+		if (!_path.startsWith('/')) {
+			_path = `/${_path}`;
 		}
-		return `${basePath}${path}`;
+		return `${basePath}${_path}`;
 	} else {
-		return path;
+		return _path;
 	}
 };
