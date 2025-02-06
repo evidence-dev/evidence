@@ -1081,7 +1081,7 @@ importers:
         version: 1.26.5
       mock-fs:
         specifier: ^5.2.0
-        version: 5.4.1
+        version: 5.5.0
       parcel:
         specifier: ^2.8.3
         version: 2.13.3(postcss@8.5.1)(typescript@5.4.2)
@@ -1294,7 +1294,7 @@ importers:
         version: 20.11.28
       mock-fs:
         specifier: ^5.2.0
-        version: 5.4.1
+        version: 5.5.0
       vitest:
         specifier: ^2.0.5
         version: 2.1.9(@types/node@20.11.28)
@@ -15332,8 +15332,8 @@ packages:
       yargs-unparser: 2.0.0
     dev: true
 
-  /mock-fs@5.4.1:
-    resolution: {integrity: sha512-sz/Q8K1gXXXHR+qr0GZg2ysxCRr323kuN10O7CtQjraJsFDJ4SJ+0I5MzALz7aRp9lHk8Cc/YdsT95h9Ka1aFw==}
+  /mock-fs@5.5.0:
+    resolution: {integrity: sha512-d/P1M/RacgM3dB0sJ8rjeRNXxtapkPCUnMGmIN0ixJ16F/E4GUZCvWcSGfWGz8eaXYvn1s9baUwNjI4LOPEjiA==}
     engines: {node: '>=12.0.0'}
     dev: true
 
@@ -18566,12 +18566,12 @@ packages:
       jest-worker: 27.5.1
       schema-utils: 4.3.0
       serialize-javascript: 6.0.2
-      terser: 5.38.0
+      terser: 5.38.1
       webpack: 5.97.1(webpack-cli@4.10.0)
     dev: true
 
-  /terser@5.38.0:
-    resolution: {integrity: sha512-a4GD5R1TjEeuCT6ZRiYMHmIf7okbCPEuhQET8bczV6FrQMMlFXA1n+G0KKjdlFCm3TEHV77GxfZB3vZSUQGFpg==}
+  /terser@5.38.1:
+    resolution: {integrity: sha512-GWANVlPM/ZfYzuPHjq0nxT+EbOEDDN3Jwhwdg1D8TU8oSkktp8w64Uq4auuGLxFSoNTRDncTq2hQHX1Ld9KHkA==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
