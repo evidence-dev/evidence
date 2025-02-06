@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 5.1.2
+
+### Patch Changes
+
+- 17eb07aff: Override nanoid to 3.3.8
+- 9179782aa: Fix axis line appearance in sparklines
+- bcb0bf5dd: Update vite to 5.4.14
+- 59d6755a8: Fix mobile usage issue for Info component
+  - @evidence-dev/component-utilities@4.0.8
+  - @evidence-dev/tailwind@3.0.8
+
 ## 5.1.1
 
 ### Patch Changes

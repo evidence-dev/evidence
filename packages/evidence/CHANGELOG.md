@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 40.0.8
+
+### Patch Changes
+
+- bcb0bf5dd: Update vite to 5.4.14
+- Updated dependencies [17eb07aff]
+- Updated dependencies [bcb0bf5dd]
+  - @evidence-dev/sdk@3.0.8
+  - @evidence-dev/universal-sql@2.2.9
+
 ## 40.0.7
 
 ### Patch Changes
