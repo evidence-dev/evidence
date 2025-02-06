@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 40.0.9
+
+### Patch Changes
+
+- b0c5f5c20: Mute a warning that is caused by ESM/CJS interactions. There is an upcoming fix for this issue
+
 ## 40.0.8
 
 ### Patch Changes
