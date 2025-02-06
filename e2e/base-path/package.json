@@ -1,6 +1,6 @@
 {
   "name": "e2e-base-path",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "scripts": {
     "build": "cross-env EVIDENCE_BUILD_DIR=./build/my-base-path evidence build",
     "build:strict": "cross-env EVIDENCE_BUILD_DIR=./build/my-base-path evidence build:strict",

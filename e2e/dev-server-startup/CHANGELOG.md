@@ -1,5 +1,12 @@
 # e2e-dev-server-startup
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [b0c5f5c20]
+  - @evidence-dev/evidence@40.0.9
+
 ## 0.0.5
 
 ### Patch Changes
