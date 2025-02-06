@@ -1,5 +1,13 @@
 # @evidence-dev/sdk
 
+## 3.0.8
+
+### Patch Changes
+
+- 17eb07aff: Override nanoid to 3.3.8
+- bcb0bf5dd: Update vite to 5.4.14
+  - @evidence-dev/universal-sql@2.2.9
+
 ## 3.0.7
 
 ### Patch Changes
