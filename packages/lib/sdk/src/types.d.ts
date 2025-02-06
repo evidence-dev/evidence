@@ -1,1 +1,1 @@
-/// <reference path="./build-dev/vite/config-virtual.d.ts" />
+/// <reference path="./build-dev/vite/evidence-config.d.ts" />
