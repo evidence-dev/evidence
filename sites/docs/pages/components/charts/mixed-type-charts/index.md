@@ -1,4 +1,3 @@
-
 ---
 title: Mixed-Type Charts
 description: Display multiple series types on the same chart, for example a bar for an amount, and a line for a related percentage.
