@@ -11,6 +11,7 @@
 	import { mapContextKey } from './constants.js';
 	import Skeleton from '../../../atoms/skeletons/Skeleton.svelte';
 	import Legend from './components/Legend.svelte';
+	import { toBoolean } from '../../../utils.js';
 
 	let mapElement;
 
@@ -42,6 +43,11 @@
 
 	/** @type {string|undefined} */
 	export let attribution = undefined;
+
+	/** @type {string|boolean} */
+	export let legend = true;
+
+	$: legend = toBoolean(legend);
 
 	const evidenceMap = new EvidenceMap();
 	setContext(mapContextKey, evidenceMap);
@@ -105,7 +111,7 @@
 			<div on:dispatcherror={(e) => (error = e.detail)}>
 				<slot />
 			</div>
-			{#if $legendData}
+			{#if $legendData && legend}
 				<Legend {legendData} {legendPosition} {height} />
 			{/if}
 		</div>

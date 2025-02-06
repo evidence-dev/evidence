@@ -7,6 +7,7 @@
 
 	import Chart from '../core/Chart.svelte';
 	import Bubble from './Bubble.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColor, resolveColorsObject, resolveColorPalette } = getThemeStores();
 
@@ -59,8 +60,10 @@
 
 	let chartType = 'Bubble Chart';
 	let bubble = true;
+	$: bubble = toBoolean(bubble);
 
 	let useTooltip = true;
+	$: useTooltip = toBoolean(useTooltip);
 
 	export let colorPalette = 'default';
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
@@ -68,6 +71,7 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+	$: printEchartsConfig = toBoolean(printEchartsConfig);
 
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;

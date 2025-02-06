@@ -1,5 +1,33 @@
 # e2e-themes
 
+## 0.0.27
+
+### Patch Changes
+
+- Updated dependencies [c3ff5614e]
+- Updated dependencies [0910a522c]
+- Updated dependencies [acef0cfae]
+- Updated dependencies [e91eed30c]
+- Updated dependencies [d67d7246d]
+- Updated dependencies [e93254909]
+- Updated dependencies [411fc0a16]
+- Updated dependencies [fcbe2dfb3]
+  - @evidence-dev/core-components@5.1.1
+  - @evidence-dev/bigquery@2.0.10
+  - @evidence-dev/evidence@40.0.7
+
+## 0.0.26
+
+### Patch Changes
+
+- Updated dependencies [27bca8e8e]
+- Updated dependencies [d97a4ce94]
+- Updated dependencies [586c4d772]
+- Updated dependencies [f30d3ee5c]
+- Updated dependencies [2e506cdad]
+  - @evidence-dev/core-components@5.1.0
+  - @evidence-dev/evidence@40.0.6
+
 ## 0.0.25
 
 ### Patch Changes

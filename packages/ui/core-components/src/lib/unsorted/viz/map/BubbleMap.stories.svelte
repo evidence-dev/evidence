@@ -126,3 +126,33 @@
 	/>
 	<div class="h-32"></div>
 </Story>
+
+<Story name="Error States" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<h1>Missing Data</h1>
+	<BubbleMap lat="lat" long="long" size="sales" value="sales" />
+
+	<h1>Missing lat</h1>
+	<BubbleMap data={la_locations} long="long" size="sales" value="sales" />
+
+	<h1>Missing long</h1>
+	<BubbleMap data={la_locations} lat="lat" size="sales" value="sales" />
+
+	<h1>Missing size</h1>
+	<BubbleMap data={la_locations} lat="lat" long="long" value="sales" />
+
+	<h1>value not found in data</h1>
+	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" value="sadles" />
+
+	<h1>size not found in data</h1>
+	<BubbleMap data={la_locations} lat="lat" long="long" size="sadles" value="sales" />
+
+	<h1>lat not found in data</h1>
+	<BubbleMap data={la_locations} lat="ladt" long="long" size="sales" value="sales" />
+
+	<h1>long not found in data</h1>
+	<BubbleMap data={la_locations} lat="lat" long="lodng" size="sales" value="sales" />
+</Story>
+
+<Story name="No legend" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" value="sales" legend="false" />
+</Story>

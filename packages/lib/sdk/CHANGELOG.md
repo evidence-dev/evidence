@@ -1,5 +1,19 @@
 # @evidence-dev/sdk
 
+## 3.0.7
+
+### Patch Changes
+
+- 243229f46: Improve error logging for source queries
+  - @evidence-dev/universal-sql@2.2.8
+
+## 3.0.6
+
+### Patch Changes
+
+- c7547d83f: Fix: Ensure that length is loaded before we returned undefined for out of range indeces
+  - @evidence-dev/universal-sql@2.2.7
+
 ## 3.0.5
 
 ### Patch Changes

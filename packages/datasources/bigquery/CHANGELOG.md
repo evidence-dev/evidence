@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 2.0.10
+
+### Patch Changes
+
+- d67d7246d: add option to include scopes for google sheets queries
+
 ## 2.0.9
 
 ### Patch Changes

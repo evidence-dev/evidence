@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Add Info component
+Fix mobile usage issue for Info component

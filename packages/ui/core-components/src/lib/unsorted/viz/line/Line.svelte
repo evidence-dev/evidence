@@ -12,6 +12,7 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 	import getYAxisIndex from '@evidence-dev/component-utilities/getYAxisIndex';
+	import { toBoolean } from '$lib/utils.js';
 
 	const { resolveColor } = getThemeStores();
 
@@ -38,12 +39,12 @@
 	export let lineOpacity = undefined;
 
 	export let markers = false;
-	$: markers = markers === 'true' || markers === true;
+	$: markers = toBoolean(markers);
 	export let markerShape = 'circle';
 	export let markerSize = 8;
 
 	export let labels = false;
-	$: labels = labels === 'true' || labels === true;
+	$: labels = toBoolean(labels);
 	export let labelSize = 11;
 	export let labelPosition = 'top';
 
@@ -68,6 +69,7 @@
 
 	export let y2SeriesType = undefined;
 	export let showAllLabels = false;
+	$: showAllLabels = toBoolean(showAllLabels);
 
 	export let handleMissing = 'gap';
 
@@ -76,7 +78,7 @@
 	 * @type {boolean}
 	 */
 	export let step = false;
-	$: step = step === 'true' || step === true;
+	$: step = toBoolean(step);
 
 	/**
 	 * Configures position of steps (e.g. before or after)

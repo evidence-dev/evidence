@@ -145,6 +145,13 @@ export function getSparklineConfig(
 			axisTick: {
 				show: false
 			},
+			axisLine: {
+				show: true,
+				lineStyle: {
+					color: theme.colors['base-300'],
+					width: 0.75
+				}
+			},
 			axisLabel: {
 				show: false,
 				hideOverlap: true,
