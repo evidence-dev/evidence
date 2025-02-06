@@ -11,9 +11,10 @@
 	export let sideOffset = 4;
 	export let openDelay = 0;
 	export let closeDelay = 0;
+	export let open = false;
 </script>
 
-<HoverCard {openDelay} {closeDelay}>
+<HoverCard {open} {openDelay} {closeDelay}>
 	<HoverCardTrigger>
 		<slot name="trigger" />
 	</HoverCardTrigger>
