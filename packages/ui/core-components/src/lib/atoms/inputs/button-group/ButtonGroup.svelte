@@ -15,6 +15,7 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
+
 	/** @type {string} */
 	export let name;
 	/** @type {string} */
@@ -33,10 +34,6 @@
 	/** @type {string | undefined} */
 	export let defaultValue = undefined;
 
-	// $: if($page.url.searchParams.has(name)){
-	// 	defaultValue = $page.url.searchParams.get(name);
-	// }
-
 	setContext('button-display', display);
 
 	const { resolveColor } = getThemeStores();
@@ -50,31 +47,7 @@
 	const valueStore = writable(null);
 
 	hydrateFromUrlParam(name, (v) => (defaultValue = v));
-
-	// 	function updateSearchParams(key, value) {
-	// 		if(browser && key){
-	//     // Clone the current URL using $page
-	//     const url = $page.url;
-
-	// 	if(!value || value === ''){
-	// 		url.searchParams.delete(key);
-	// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
-	// 		return;
-	// 	}
-
-	// 	 if(!url.searchParams.has(key)){
-	// 		url.searchParams.append(key, value);
-	// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
-	// 	 } else if (url.searchParams.get(key) !== value) {
-	//         url.searchParams.set(key, value);
-
-	//         // Update the URL
-	//         // goto(`${url.pathname}?${url.searchParams.toString()}`, { replaceState: true, noScroll: true, keepFocus: true });
-	// 		// replaceState($page.url, $page.state)
-	// 		history.replaceState(null, "", `?${url.searchParams.toString()}`);
-	//       }
-	// 		}
-	//   }
+	setContext('button-group-defaultValue', writable(defaultValue));
 
 	// TODO: Use getInputSetter instead
 	setButtonGroupContext((v) => {
@@ -82,12 +55,14 @@
 		// the assignment to $inputs is necessary to trigger the change on SSR
 		$inputs[name] = v?.value ?? null;
 		// updateSearchParams(name, v?.value);
-		updateUrlParam(name, v?.value);
+		updateUrlParam(name, String(v?.value));
 		// hydrateFromUrlParam(name, (newVal) => v.value = newVal)
 		// if($page.url.searchParams.has(name)){
 		// 	v.value = $page.url.searchParams.get(name);
 		// }
 	}, readonly(valueStore));
+
+	$: console.log('valueStore', $valueStore);
 
 	/////
 	// Query-Related Things

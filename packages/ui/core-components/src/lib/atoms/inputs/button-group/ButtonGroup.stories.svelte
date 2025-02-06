@@ -24,6 +24,35 @@
 	setContext('page-ctx', { page: readable({ data: {} }), url: new URL('http://localhost:3000') });
 
 	const data = Query.create(`select * from hashtags`, query);
+
+	let storyIframeURL = '';
+
+	const updateURL = () => {
+		storyIframeURL = window.location.href;
+
+		// Try forcing Storybook to recognize the change
+		const iframe = document.querySelector('iframe');
+		if (iframe) {
+			iframe.src = iframe.src; // Force reload
+		}
+	};
+
+	(function () {
+		const pushState = history.pushState;
+		const replaceState = history.replaceState;
+
+		history.pushState = function () {
+			pushState.apply(history, arguments);
+			updateURL();
+		};
+
+		history.replaceState = function () {
+			replaceState.apply(history, arguments);
+			updateURL();
+		};
+
+		window.addEventListener('popstate', updateURL);
+	})();
 </script>
 
 <Template let:args>
@@ -215,4 +244,62 @@
 			name="tabsStyle"
 		/>
 	</div>
+</Story>
+<Story name="URL Params Hard Coded Entries" let:args>
+	<div class="mb-8">
+		<ButtonGroup {...args}>
+			<ButtonGroupItem valueLabel="Option 1" value={1} />
+			<ButtonGroupItem valueLabel="Option 2" value={2} />
+			<ButtonGroupItem valueLabel="Option 3" value={3} default />
+			<ButtonGroupItem valueLabel="Option 4" value={4} />
+		</ButtonGroup>
+	</div>
+
+	Current Value: {$inputStore[args.name]}
+	<div>URL: {storyIframeURL}</div>
+	<button on:click={() => window.open(storyIframeURL, '_blank')}>Go to Link</button></Story
+>
+
+<Story
+	name="URL Params Query-Based Entries - Text"
+	let:args
+	args={{
+		data: 'hashtags',
+		value: 'id',
+		label: 'tag'
+	}}
+>
+	<div class="mb-8">
+		<ButtonGroup {...args} defaultValue={2} />
+	</div>
+
+	Current Value: {$inputStore[args.name]}
+	<div class="mt-4">URL: {storyIframeURL}</div>
+</Story>
+<Story
+	name="URL params multiple components"
+	let:args
+	args={{
+		data: 'hashtags',
+		value: 'id',
+		label: 'tag'
+	}}
+>
+	<div class="mb-8">
+		<ButtonGroup {...args} defaultValue={1} name="buttonGroup_A" />
+	</div>
+
+	Current Value: {$inputStore['buttonGroup_A']}
+
+	<div class="mb-8">
+		<ButtonGroup {...args} data={undefined} name="buttonGroup_B">
+			<ButtonGroupItem valueLabel="Option 1" value={1} default />
+			<ButtonGroupItem valueLabel="Option 2" value={2} />
+			<ButtonGroupItem valueLabel="Option 3" value={3} />
+			<ButtonGroupItem valueLabel="Option 4" value={4} />
+		</ButtonGroup>
+	</div>
+
+	Current Value: {$inputStore['buttonGroup_B']}
+	<div class="mt-4">URL: {storyIframeURL}</div>
 </Story>
