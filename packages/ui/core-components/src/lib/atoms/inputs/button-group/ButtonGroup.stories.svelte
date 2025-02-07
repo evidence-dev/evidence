@@ -257,8 +257,13 @@
 
 	Current Value: {$inputStore[args.name]}
 	<div>URL: {storyIframeURL}</div>
-	<button on:click={() => window.open(storyIframeURL, '_blank')}>Go to Link</button></Story
->
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	>
+</Story>
 
 <Story
 	name="URL Params Query-Based Entries - Text"
@@ -290,6 +295,13 @@
 	</div>
 
 	Current Value: {$inputStore['buttonGroup_A']}
+	<div>URL: {storyIframeURL}</div>
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	>
 
 	<div class="mb-8">
 		<ButtonGroup {...args} data={undefined} name="buttonGroup_B">
@@ -302,4 +314,11 @@
 
 	Current Value: {$inputStore['buttonGroup_B']}
 	<div class="mt-4">URL: {storyIframeURL}</div>
+	<div>URL: {storyIframeURL}</div>
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	>
 </Story>

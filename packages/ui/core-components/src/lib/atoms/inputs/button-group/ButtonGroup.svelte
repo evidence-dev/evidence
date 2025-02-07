@@ -62,8 +62,6 @@
 		// }
 	}, readonly(valueStore));
 
-	$: console.log('valueStore', $valueStore);
-
 	/////
 	// Query-Related Things
 	/////

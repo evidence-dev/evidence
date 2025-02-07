@@ -32,10 +32,6 @@
 	let _default = false;
 	export { _default as default };
 
-	// if (_default) {
-	// 	update({ valueLabel, value });
-	// }
-
 	if (
 		$buttonGroupDefaultValue?.toString() === value.toString() ||
 		defaultValue?.toString() === value.toString()

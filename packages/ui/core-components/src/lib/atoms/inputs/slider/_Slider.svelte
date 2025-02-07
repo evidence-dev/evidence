@@ -60,7 +60,7 @@
 	export let description = undefined;
 
 	export let data = null;
-	
+
 	/** @type {[number]} */
 	let value;
 	// const updateUrl = useUrlParams(name, (v) => {
@@ -103,9 +103,14 @@
 		}
 	}
 
-		// Keep inputs in sync
-		$inputs[name] = value;
-		updateUrlParam(name, value);
+	// Keep inputs in sync
+	$inputs[name] = value;
+
+	// URL params hydration
+	hydrateFromUrlParam(name, (v) => {
+		value = [v] ?? [defaultValue];
+	});
+	$: updateUrlParam(name, value);
 
 	const renderSize = (size) => {
 		const sizeMap = {
@@ -164,13 +169,13 @@
 					'No data provided. If you referenced a query result, check that the name is correct.'
 				);
 			} else {
-				hydrateFromUrlParam(name,value, defaultValue, (v) => {
-						value = [v] ?? [defaultValue];
-					});
-				if($page.url.searchParams.has(name)){
-					value = [$page.url.searchParams.get(name)]
+				hydrateFromUrlParam(name, value, defaultValue, (v) => {
+					value = [v] ?? [defaultValue];
+				});
+				if ($page.url.searchParams.has(name)) {
+					value = [$page.url.searchParams.get(name)];
 				}
-					initialized = true;
+				initialized = true;
 			}
 		} catch (e) {
 			error = e.message;
@@ -193,9 +198,7 @@
 					{title}:
 				{/if}
 			</span>
-			<span class="text-xs">
-				{fmt ? formatValue(value, format_object) : value}</span
-			>
+			<span class="text-xs"> {fmt ? formatValue(value, format_object) : value}</span>
 		</p>
 		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 		{#if showMaxMin}

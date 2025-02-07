@@ -13,7 +13,43 @@
 	import TextInput from './TextInput.svelte';
 	// From layout.js
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	// import {
+	// 	displayedStoryURL,
+	// 	initStorybookURLWatcher
+	// } from '/home/kylew/projects/evidence/evidence/packages/lib/sdk/src/utils/svelte/storybookURLWatcher.js';
+
 	const inputStore = getInputContext();
+
+	// initStorybookURLWatcher(); // Start watching for URL changes
+
+	let storyIframeURL = '';
+
+	const updateURL = () => {
+		storyIframeURL = window.location.href;
+
+		// Try forcing Storybook to recognize the change
+		const iframe = document.querySelector('iframe');
+		if (iframe) {
+			iframe.src = iframe.src; // Force reload
+		}
+	};
+
+	(function () {
+		const pushState = history.pushState;
+		const replaceState = history.replaceState;
+
+		history.pushState = function () {
+			pushState.apply(history, arguments);
+			updateURL();
+		};
+
+		history.replaceState = function () {
+			replaceState.apply(history, arguments);
+			updateURL();
+		};
+
+		window.addEventListener('popstate', updateURL);
+	})();
 </script>
 
 <Template let:args>
@@ -32,3 +68,8 @@
 </Template>
 
 <Story name="Default" />
+
+<Story name="URL Params">
+	<TextInput name="URLParams" title="update url params" />
+	<div class="mt-4">URL: {storyIframeURL}</div>
+</Story>
