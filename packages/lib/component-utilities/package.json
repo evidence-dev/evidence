@@ -12,7 +12,7 @@
 	"devDependencies": {
 		"@evidence-dev/tailwind": "workspace:^",
 		"@faker-js/faker": "^8.0.2",
-		"vitest": "^2.0.5"
+		"vitest": "^2.1.9"
 	},
 	"scripts": {
 		"test": "vitest --run",
