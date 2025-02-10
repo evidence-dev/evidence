@@ -1,13 +1,11 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	// @ts-check
 
 	import CustomFormatGrid from './CustomFormatGrid.svelte';
-	import CollapsibleTableSection from './CollapsibleTableSection.svelte';
+	import { Accordion, AccordionItem } from '../../../atoms/accordion/index.js';
+	import Button from '../../../atoms/button/Button.svelte';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
+	import { slide } from 'svelte/transition';
 	import ssf from 'ssf';
 
 	/** @type {{ formatTag: string }[]} */
@@ -105,151 +103,55 @@
 </script>
 
 {#if customFormattingSettings.customFormats && customFormattingSettings.customFormats.length > 0}
-	<CollapsibleTableSection headerText={'Saved Custom Formats'} expanded={false}>
-		<CustomFormatGrid
-			formats={customFormattingSettings.customFormats}
-			deleteHandler={deleteCustomFormat}
-		/>
-	</CollapsibleTableSection>
+	<div transition:slide|local class="my-4">
+		<Accordion>
+			<AccordionItem title="Saved Custom Formats">
+				<CustomFormatGrid
+					formats={customFormattingSettings.customFormats}
+					deleteHandler={deleteCustomFormat}
+				/>
+			</AccordionItem>
+		</Accordion>
+	</div>
 {/if}
 
-<form on:submit|preventDefault={submitNewCustomFormat} autocomplete="off" class="addFormatForm">
-	<div class="input-item">
-		<label for="valueType">Value Type</label>
-		<select class="hover:shadow-md" id="valueType" bind:value={valueType}>
-			{#each valueTypeOptions as option}
-				<option value={option}>
-					{option}
-				</option>
-			{/each}
-		</select>
+<form on:submit|preventDefault={submitNewCustomFormat} autocomplete="off" class="my-6">
+	<div class="flex flex-col gap-4">
+		<div class="flex flex-col gap-2">
+			<label for="valueType" class="text-sm font-medium text-base-content">Value Type </label>
+			<select
+				id="valueType"
+				bind:value={valueType}
+				class="flex-1 border border-base-300 bg-base-100 shadow-sm text-sm h-9 bg-transparent px-3 py-2 transition-colors focus-visible:outline-none rounded-md cursor-pointer"
+			>
+				{#each valueTypeOptions as option}
+					<option value={option}>
+						{option}
+					</option>
+				{/each}
+			</select>
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="formatTag" class="text-sm font-medium text-base-content">Format Name</label>
+			<input
+				id="formatTag"
+				type="text"
+				placeholder="myformat"
+				bind:value={formatTag}
+				class="flex-1 border border-base-300 bg-base-100 shadow-sm text-sm h-9 bg-transparent px-3 py-2 transition-colors focus-visible:outline-none rounded-md"
+			/>
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="formatCode" class="text-sm font-medium text-base-content">Format Code</label>
+			<input
+				id="formatCode"
+				type="text"
+				placeholder={valueType === 'date' ? 'mm/dd/yyyy' : '$#,##0.0'}
+				bind:value={formatCode}
+				class="flex-1 border border-base-300 bg-base-100 shadow-sm text-sm h-9 bg-transparent px-3 py-2 transition-colors focus-visible:outline-none rounded-md"
+			/>
+		</div>
+		<Button type="submit" size="lg" disabled={!(formatTag && formatCode)}>Add Custom Format</Button>
+		<div class="text-negative text-sm">{@html newFormatValidationErrors}</div>
 	</div>
-	<div class="input-item">
-		<label for="formatTag">Format Name</label>
-		<input id="formatTag" type="text" placeholder="myformat" bind:value={formatTag} />
-	</div>
-	<div class="input-item">
-		<label for="formatCode">Format Code</label>
-		<input
-			id="formatCode"
-			type="text"
-			placeholder={valueType === 'date' ? 'mm/dd/yyyy' : '$#,##0.0'}
-			bind:value={formatCode}
-		/>
-	</div>
-	<div class="new-format-buttons">
-		<button id="submitCustomFormatButton" type="submit" disabled={!(formatTag && formatCode)}
-			>Add Custom Format</button
-		>
-	</div>
-	<div class="error">{@html newFormatValidationErrors}</div>
 </form>
-
-<style>
-	input {
-		box-sizing: border-box;
-		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--base-300);
-		background: var(--base-200);
-		padding: 0.25em 0.25em 0.25em 0.25em;
-		margin-left: auto;
-		width: 62%;
-		padding: 0.35em;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		vertical-align: middle;
-		font-size: 14px;
-	}
-	input:required {
-		box-shadow: none;
-	}
-	input:focus {
-		outline: none;
-	}
-	label {
-		width: 35%;
-		text-transform: uppercase;
-		font-weight: normal;
-		font-size: 14px;
-	}
-	button {
-		padding: 0.4em 0.5em;
-		margin-right: 0.25em;
-		margin-left: 0.25em;
-		font-style: normal;
-		text-decoration: none;
-		font-size: 14px;
-		cursor: pointer;
-	}
-	select {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-		border: 1px solid var(--base-300);
-		background: var(--base-200);
-		border-radius: 4px 4px 4px 4px;
-		font-size: 16px;
-		font-family: var(--ui-font-family);
-		transition: all 400ms;
-		cursor: pointer;
-		/* copied */
-		vertical-align: middle;
-		box-sizing: border-box;
-		padding: 0.35em;
-		margin-left: auto;
-		width: 62%;
-		font-size: 14px;
-	}
-	select:hover {
-		border: 1px solid var(--base-content);
-		transition: all 400ms;
-	}
-	select:focus {
-		outline: none;
-	}
-
-	div.input-item {
-		font-family: var(--ui-font-family);
-		font-size: 16px;
-		margin-top: 1.1em;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		align-items: center;
-	}
-	div.new-format-buttons {
-		display: flex;
-		justify-content: flex-end;
-		padding-top: 0.5em;
-	}
-	.error {
-		color: var(--negative);
-	}
-
-	#submitCustomFormatButton {
-		background-color: var(--primary);
-		color: var(--primary-content);
-		font-weight: bold;
-		border-radius: 4px;
-		padding: 0.4em 1.1em;
-		transition-property: background, color;
-		transition-duration: 350ms;
-	}
-
-	#submitCustomFormatButton:active {
-		filter: brightness(1.15);
-		font-weight: bold;
-		border-radius: 4px;
-		padding: 0.4em 1.1em;
-		transition-property: background, color;
-		transition-duration: 350ms;
-	}
-
-	#submitCustomFormatButton:disabled,
-	button[disabled] {
-		opacity: 0.5;
-		cursor: not-allowed;
-		transition-property: background, color;
-		transition-duration: 350ms;
-	}
-</style>

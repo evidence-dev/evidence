@@ -1,20 +1,30 @@
 /**
  * Adjusts a path to include the configured base path
  * Ignores undefined, and absolute URLs
- * @param {unknown} path
+ * @template T
+ * @param {T} path
  * @param {import("../../configuration/schemas/config.schema.js").EvidenceConfig} config
  * @example addBasePath('http://localhost:3000/test') // 'http://localhost:3000/test'
  * @example addBasePath('/test') // '/base/test'
  * @example addBasePath(undefined) // undefined
  *
- * @returns
+ * @returns {T | string}
  */
 export const addBasePath = (path, config) => {
-	if (path instanceof String) path = path.toString();
-	if (typeof path !== 'string') return path;
-	if (path.startsWith('http')) return path;
-	if (path.startsWith('#')) return path; // ignore hash links
-	if (/^[^/]*:/.test(path)) return path; // ignore other protocols
+	/** @type {string} */
+	let _path;
+
+	if (path instanceof String) {
+		_path = path.toString();
+	} else if (typeof path !== 'string') {
+		return path;
+	} else {
+		_path = path;
+	}
+
+	if (_path.startsWith('http')) return _path;
+	if (_path.startsWith('#')) return _path; // ignore hash links
+	if (/^[^/]*:/.test(_path)) return _path; // ignore other protocols
 
 	let basePath = config.deployment.basePath;
 	if (basePath) {
@@ -24,12 +34,12 @@ export const addBasePath = (path, config) => {
 		if (basePath.endsWith('/')) {
 			basePath = basePath.slice(0, -1);
 		}
-		if (path.startsWith(basePath)) return path;
-		if (!path.startsWith('/')) {
-			path = `/${path}`;
+		if (_path.startsWith(basePath)) return _path;
+		if (!_path.startsWith('/')) {
+			_path = `/${_path}`;
 		}
-		return `${basePath}${path}`;
+		return `${basePath}${_path}`;
 	} else {
-		return path;
+		return _path;
 	}
 };

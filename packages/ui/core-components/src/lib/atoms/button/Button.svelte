@@ -1,47 +1,11 @@
 <script context="module">
-	export const evidenceInclude = true;
-
-	/** @typedef {"sm" | "md" | "base" | "lg"} ButtonSize */
-	/** @typedef {"primary" | "secondary" | "accent" | "info" | "positive" | "warning" | "negative"} ButtonVariant */
+	/** @typedef {"default" | "sm" | "lg" | "xl"} ButtonSize */
+	/** @typedef {"default" | "primary" | "destructive" | "muted" | "ghost" | "link"} ButtonVariant */
 	/** @typedef {"left" | "right"} ButtonIconPosition */
-	/** @typedef {boolean} ButtonOutline */
-
-	/** @type {Record<ButtonSize, string>}*/
-	const sizes = {
-		base: 'px-2 py-1 mx-1 gap-2',
-		md: 'px-2 py-1 mx-1 gap-2 text-xs',
-		sm: 'px-1 py-0.5 mx-0.5 gap-1 text-xs',
-		lg: 'px-4 py-2 mx-2 gap-4'
-	};
-
-	/** @type {Record<ButtonSize, string>}*/
-	const iconSizes = {
-		base: 'w-4',
-		md: 'w-4',
-		sm: 'w-3',
-		lg: 'w-5'
-	};
-
-	const DEPRECATED_VARIANTS_MAP = /** @type {const} */ ({
-		success: 'positive',
-		warn: 'warning',
-		error: 'negative'
-	});
-
-	const isDeprecatedVariant = (variant) => DEPRECATED_VARIANTS_MAP[variant] !== undefined;
-
-	const checkDeprecatedVariant = (variant) => {
-		if (isDeprecatedVariant(variant)) {
-			console.warn(
-				`The variant "${variant}" is deprecated. Please use "${DEPRECATED_VARIANTS_MAP[variant]}" instead.`
-			);
-			return DEPRECATED_VARIANTS_MAP[variant];
-		}
-		return variant;
-	};
 </script>
 
 <script>
+	import { tv } from 'tailwind-variants';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	/** @type {import("@steeze-ui/svelte-icon").IconSource | undefined} */
 	export let icon = undefined;
@@ -50,17 +14,10 @@
 	export let iconPosition = 'right';
 
 	/** @type {ButtonSize} */
-	export let size = 'base';
-
-	/** @type {ButtonSize} */
-	export let iconSize = size;
+	export let size = 'default';
 
 	/** @type {ButtonVariant} */
-	export let variant = 'info';
-	$: variant = checkDeprecatedVariant(variant);
-
-	/** @type {boolean} */
-	export let outline = false;
+	export let variant = 'default';
 
 	/** @type {boolean} */
 	export let disabled = false;
@@ -68,79 +25,82 @@
 	/** @type {string | undefined} */
 	export let formaction = undefined;
 
+	/** @type {string | undefined | null} */
+	let className = undefined;
+
+	export { className as class };
+
 	/** @type {HTMLButtonAttributes["type"]} */
 	let _type = 'button';
 	export { _type as type };
 
 	$: if (formaction) _type = 'submit';
 
-	const disabledClass = 'cursor-not-allowed saturate-50 opacity-50';
-	const enabledClass =
-		'cursor-pointer transition-all duration-150 hover:brightness-105 active:brightness-95';
+	const buttonVariants = tv({
+		base: 'inline-flex items-center justify-center rounded-md text-xs font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-base-300 disabled:pointer-events-none disabled:opacity-50',
+		variants: {
+			variant: {
+				default: 'bg-base-100 border shadow-sm hover:bg-base-200 active:bg-base-300',
+				primary:
+					'bg-primary text-primary-content shadow-sm hover:bg-primary/90  active:bg-primary/80',
+				destructive:
+					'bg-negative text-negative-content shadow-sm hover:bg-negative/90 active:bg-negative/80',
+				muted: 'bg-base-200 text-base-content hover:bg-base-300 active:bg-base-300/80',
+				ghost: 'hover:bg-base-200 hover:text-base-content',
+				link: 'text-base-content underline-offset-4 hover:underline'
+			},
+			size: {
+				default: 'h-8 px-3',
+				lg: 'h-8 px-10',
+				xl: 'h-10 px-10 text-sm'
+			}
+		},
+		defaultVariants: {
+			variant: 'default',
+			size: 'default'
+		}
+	});
+
+	const iconVariants = tv({
+		variants: {
+			variant: {
+				default: 'stroke-base-content',
+				primary: 'stroke-primary-content',
+				destructive: 'stroke-negative-content',
+				muted: 'stroke-base-content',
+				ghost: 'stroke-base-content',
+				link: 'stroke-base-content'
+			},
+			size: {
+				default: 'h-4 w-4',
+				lg: 'h-4 w-4',
+				xl: 'h-5 w-5'
+			},
+			iconPosition: {
+				left: 'mr-2',
+				right: 'ml-2'
+			}
+		},
+		defaultVariants: {
+			variant: 'default',
+			size: 'default',
+			iconPosition: 'left'
+		}
+	});
 </script>
 
 <button
 	type={_type}
 	{disabled}
 	{formaction}
-	class:outlined={outline}
-	class:border={outline}
 	on:click|stopPropagation
-	class="
-	 	bg-(--bg) border-(--border) text-(--text) hover:bg-(--hover-bg)
-		{disabled ? disabledClass : enabledClass}
-		flex items-center transition-colors rounded-sm variant-{variant} {sizes[size]}
-	"
+	class={buttonVariants({ variant, size, className })}
 >
 	{#if iconPosition === 'left' && icon}
-		<Icon src={icon} class={iconSizes[iconSize]} />
+		<Icon src={icon} class={iconVariants({ variant, size, iconPosition })} />
 	{/if}
 	<slot />
 	{#if iconPosition === 'right' && icon}
-		<Icon src={icon} class={iconSizes[iconSize]} />
+		<Icon src={icon} class={iconVariants({ variant, size, iconPosition })} />
 	{/if}
 </button>
-
-<style>
-	button {
-		--bg: var(--primary);
-		--hover-bg: rgb(from var(--primary) r g b / 90%);
-		--text: var(--secondary);
-	}
-
-	button.variant-primary {
-		--primary: var(--color-primary);
-		--secondary: var(--color-primary-content);
-	}
-	button.variant-secondary {
-		--primary: var(--color-base-300);
-		--secondary: var(--color-base-content);
-	}
-
-	button.variant-accent {
-		--primary: var(--color-accent);
-		--secondary: var(--color-accent-content);
-	}
-	button.variant-info {
-		--primary: var(--color-info);
-		--secondary: var(--color-info-content);
-	}
-	button.variant-positive {
-		--primary: var(--color-positive);
-		--secondary: var(--color-positive-content);
-	}
-	button.variant-warning {
-		--primary: var(--color-warning);
-		--secondary: var(--color-warning-content);
-	}
-	button.variant-negative {
-		--primary: var(--color-negative);
-		--secondary: var(--color-negative-content);
-	}
-	button.outlined {
-		--border: var(--primary);
-		--text: var(--primary);
-		--hover-bg: rgb(from var(--primary) r g b / 10%);
-		--bg: transparent;
-	}
-</style>

@@ -1,13 +1,8 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import { blur } from 'svelte/transition';
 	import Copy from './CopyIcon.svelte';
 	export let text = undefined;
 	export let hideText = false;
-	export let small = false;
 	let copied = false;
 
 	const toggleCopied = function () {
@@ -29,66 +24,26 @@
 
 <button
 	type="button"
-	class="container h-6 w-6 hover:border-info hover:bg-info/10 hover:text-info
-	active:border-positive active:bg-positive/10 active:text-positive
-	{copied ? 'border-positive bg-positive/10 text-positive' : ''}"
+	class=" rounded-md bg-base-200 border border-base-300 font-mono text-xs p-2 flex items-center justify-between hover:bg-base-200/50 gap-4"
+	class:copied
 	on:click={() => {
 		if (text !== undefined) {
 			copy(text);
 		}
 	}}
 >
-	<span class="var-value">
+	<div class="flex w-3/4 overflow-hidden">
 		{#if copied}
 			<span in:blur>Copied</span>
 		{:else}
-			<span in:blur class:text-xs={small}>
+			<span in:blur>
 				{@html hideText
 					? '&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;'
 					: text}
 			</span>
 		{/if}
-	</span>
+	</div>
 	<div class="w-4 h-4">
-		{#if copied}
-			<Copy class="bx--snippet__icon" />
-		{:else}
-			<Copy class="bx--snippet__icon" />
-		{/if}
+		<Copy />
 	</div>
 </button>
-
-<style>
-	button.container {
-		box-sizing: border-box;
-		background-color: var(--base-200);
-		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--base-300);
-		padding: 0.9em 0.35em;
-		size: 0.75em;
-		cursor: pointer;
-		user-select: none;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		transition: all 400ms;
-		width: 100%;
-		font-family: var(--monospace-font-family);
-		line-height: 1.6;
-		font-size: inherit;
-	}
-
-	button.container:hover {
-		transition: all 400ms;
-	}
-	span.var-value {
-		width: 85%;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		text-align: left;
-	}
-</style>

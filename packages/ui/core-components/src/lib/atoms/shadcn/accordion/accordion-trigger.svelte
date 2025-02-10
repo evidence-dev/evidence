@@ -24,7 +24,7 @@
 		<slot />
 		<Icon
 			src={ChevronDown}
-			class="h-4 w-4 shrink-0 text-base-300 transition-transform duration-200"
+			class="h-4 w-4 shrink-0 text-base-content-muted transition-transform duration-200"
 		/>
 	</AccordionPrimitive.Trigger>
 </AccordionPrimitive.Header>

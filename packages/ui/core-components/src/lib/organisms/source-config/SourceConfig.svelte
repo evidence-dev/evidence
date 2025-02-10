@@ -7,7 +7,8 @@
 	import NewSourceForm from './NewSourceForm.svelte';
 	import SourceConfigRow from './SourceConfigRow.svelte';
 	import { Button } from '../../atoms/button/index.js';
-	import { FolderPlus } from '@evidence-dev/component-utilities/icons';
+	import { Plus, Database, Icon } from '@evidence-dev/component-utilities/icons';
+	import { fly } from 'svelte/transition';
 
 	/** @type {Record<string, DatasourcePlugin>} */
 	export let availableSourcePlugins = {};
@@ -22,123 +23,78 @@
 	/** @type {Pick<DatasourceSpec, 'name' | 'type' | 'options' | 'environmentVariables'>[]} */
 	export let sources = [];
 
-	let showNewSource = sources.length === 0;
-
-	/** @type {string} */
-	let lastAdded;
-
 	/** @param {import('svelte').ComponentEvents<NewSourceForm>['newSource']} e */
 	function addNewSource(e) {
-		const { newSourceType, newSourceName } = e.detail;
-		if (!newSourceType) return;
-		sources.push({
-			name: newSourceName,
-			type: newSourceType,
-			options: {},
-			environmentVariables: {}
-		});
-		lastAdded = newSourceName;
-		showNewSource = false;
+		sources.push(e.detail);
+		sources = sources;
 	}
 
-	/** @type {string[]} */
-	let duplicatePackageNames = [];
-	$: if (sources.length) {
-		const allNames = sources.reduce(
-			(a, v) => {
-				if (a.sourceNames.has(v.name)) {
-					a.duplicateNames.add(v.name);
-				}
-				a.sourceNames.add(v.name);
-
-				return a;
-			},
-			{ sourceNames: new Set(), duplicateNames: new Set() }
-		);
-
-		duplicatePackageNames = Array.from(allNames.duplicateNames);
-	}
+	let addingSource = false;
 </script>
 
-<section class="w-full mt-8">
-	<div class="p-3 rounded-t w-full border-base-300 border-t border-l border-r">
-		<h2 class="font-semibold text-lg mb-2">Data Sources</h2>
-
-		<div
-			class="grid grid-rows-auto source-config-table gap-x-2 gap-y-2 justify-center items-center w-full"
-		>
-			{#if sources.length > 0}
-				<div class="contents font-bold text-sm">
-					<p class="w-4" />
-					<p>Name</p>
-					<p>Type</p>
-					<p />
-				</div>
-
-				{#if duplicatePackageNames.length}
-					<div class="col-span-4">
-						<p class="text-negative text-bold text-sm">
-							Duplicate Packages found; this could lead to unexpected behavior
-						</p>
-						<ul>
-							{#each duplicatePackageNames as d}
-								<li>{d}</li>
-							{/each}
-						</ul>
-					</div>
-				{/if}
-
-				{#each sources as source}
-					<SourceConfigRow
-						{availableSourcePlugins}
-						{source}
-						{sources}
-						startOpen={lastAdded === source.name}
-					/>
+<div>
+	{#if sources?.length > 0}
+		{#if !addingSource}
+			<div
+				class="mb-4 rounded-md shadow-sm bg-gradient-to-br from-base-100 to-base-100/60 border"
+				in:fly|local={{ y: -100 }}
+			>
+				{#each sources as source (source?.name)}
+					<SourceConfigRow {availableSourcePlugins} {source} {sources} />
 				{/each}
-
-				<div class="col-start-4 flex justify-end items-center w-full">
-					<Button
-						icon={FolderPlus}
-						size="md"
-						variant="positive"
-						on:click={() => (showNewSource = !showNewSource)}
-					>
-						Add new source
-					</Button>
-				</div>
-
-				{#if showNewSource}
-					<NewSourceForm
-						{availablePackages}
-						existingSources={sources}
-						on:newSource={addNewSource}
-					/>
-				{/if}
-			{:else}
-				<!-- There are no sources; we should show a hero to make it more clear to the user -->
-				<section class="col-span-4">
-					<NewSourceForm ghost {availablePackages} on:newSource={addNewSource} />
-				</section>
-			{/if}
-		</div>
-
-		<div />
-	</div>
-	<div class="p-4 rounded-b w-full bg-base-200 text-sm border-[1px] border-base-300">
-		<!-- TODO: Update this when we have docs -->
-		Learn more about
-		<a
-			class="text-primary hover:brightness-110 active:brightness-90 transition"
-			href="https://docs.evidence.dev/core-concepts/data-sources/"
+			</div>
+			<Button
+				size="xl"
+				icon={Plus}
+				iconPosition="left"
+				class="w-full"
+				on:click={() => (addingSource = true)}
+			>
+				New Source
+			</Button>
+		{:else}
+			<div in:fly|local={{ y: 100 }} class=" py-4 border rounded-md shadow-sm border-base-300 p-4">
+				<NewSourceForm
+					{availableSourcePlugins}
+					{availablePackages}
+					{sources}
+					on:newSource={addNewSource}
+					bind:addingSource
+				/>
+			</div>
+		{/if}
+	{:else if !addingSource}
+		<div
+			class="bg-base-200 rounded-xl flex flex-col gap-8 items-center p-8"
+			in:fly|local={{ y: -100 }}
 		>
-			Configuring Data Sources &rarr;
-		</a>
-	</div>
-</section>
-
-<style>
-	.source-config-table {
-		grid-template-columns: auto auto auto 1fr;
-	}
-</style>
+			<div class="flex flex-col items-center gap-2">
+				<Icon src={Database} class="text-base-300 h-14 w-14" />
+				<div class="flex flex-col items-center text-sm">
+					<p class="font-semibold text-base-content">No Sources</p>
+					<p class="text-base-content-muted">Get started by adding your first source.</p>
+				</div>
+			</div>
+			<Button
+				variant="primary"
+				size="xl"
+				class="w-full"
+				icon={Plus}
+				iconPosition="left"
+				on:click={() => (addingSource = true)}
+			>
+				New Source
+			</Button>
+		</div>
+	{:else}
+		<div in:fly|local={{ y: 100 }} class="py-4 border rounded-md shadow-sm border-base-300 p-4">
+			<NewSourceForm
+				{availableSourcePlugins}
+				{availablePackages}
+				{sources}
+				on:newSource={addNewSource}
+				bind:addingSource
+			/>
+		</div>
+	{/if}
+</div>

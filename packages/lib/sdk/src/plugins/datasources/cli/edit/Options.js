@@ -10,7 +10,7 @@ export const OptionGetSpec = Symbol();
 export const IsOptions = Symbol();
 
 /**
- * @param {import('../../schemas/datasourcePluginOptions.schema.js').IDatasourceOptionSpecSchema} fieldSpec
+ * @param {import('../../schemas/datasourcePluginOptions.schema.js').IDatasourceOptionSpec} fieldSpec
  * @param {string} prop
  * @param {*} sourceOptions
  * @param {OptionsOpts} [opts]
@@ -228,7 +228,7 @@ export const getSecretOptions = (options) => filterByMode(options, OptionSecretM
 /**
  * @param {*} options
  * @param {string[]} optionPath
- * @returns {import('../../schemas/datasourcePluginOptions.schema.js').IDatasourceOptionSpecSchema}
+ * @returns {import('../../schemas/datasourcePluginOptions.schema.js').IDatasourceOptionSpec}
  */
 export const getSpecAtPath = (options, optionPath) => {
 	let x = options[OptionSpecMode];

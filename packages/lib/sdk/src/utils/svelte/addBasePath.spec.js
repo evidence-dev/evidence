@@ -79,4 +79,8 @@ describe('addBasePath', () => {
 		const obj = {};
 		expect(addBasePath(obj, config)).toBe(obj);
 	});
+	it('should add slash', () => {
+		basePath = '/base';
+		expect(addBasePath('test', config)).toBe('/base/test');
+	});
 });
