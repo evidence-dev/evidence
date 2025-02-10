@@ -20,7 +20,7 @@
     "@evidence-dev/duckdb": "workspace:*",
     "@evidence-dev/evidence": "workspace:*",
     "vite": "5.4.14",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.9"
   },
   "overrides": {
     "jsonwebtoken": "9.0.0",

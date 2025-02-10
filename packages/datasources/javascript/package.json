@@ -12,7 +12,7 @@
   "license": "MIT",
   "devDependencies": {
     "typescript": "^5.3.3",
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.9"
   },
   "dependencies": {
     "@evidence-dev/db-commons": "^1.0.5"
