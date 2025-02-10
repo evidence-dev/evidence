@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 5.1.3
+
+### Patch Changes
+
+- 64486c669: bump vitest
+- Updated dependencies [64486c669]
+  - @evidence-dev/component-utilities@4.0.9
+  - @evidence-dev/tailwind@3.0.9
+
 ## 5.1.2
 
 ### Patch Changes

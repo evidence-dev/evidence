@@ -1,5 +1,13 @@
 # e2e-dev-server-startup
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [64486c669]
+  - @evidence-dev/core-components@5.1.3
+  - @evidence-dev/evidence@40.0.10
+
 ## 0.0.6
 
 ### Patch Changes

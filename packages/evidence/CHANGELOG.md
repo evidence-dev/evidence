@@ -1,5 +1,14 @@
 # @evidence-dev/evidence
 
+## 40.0.10
+
+### Patch Changes
+
+- Updated dependencies [64486c669]
+  - @evidence-dev/preprocess@6.0.4
+  - @evidence-dev/sdk@3.0.9
+  - @evidence-dev/universal-sql@2.2.10
+
 ## 40.0.9
 
 ### Patch Changes

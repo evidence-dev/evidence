@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 6.0.4
+
+### Patch Changes
+
+- 64486c669: bump vitest
+
 ## 6.0.3
 
 ### Patch Changes

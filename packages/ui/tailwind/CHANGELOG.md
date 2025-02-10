@@ -1,5 +1,13 @@
 # @evidence-dev/tailwind
 
+## 3.0.9
+
+### Patch Changes
+
+- 64486c669: bump vitest
+- Updated dependencies [64486c669]
+  - @evidence-dev/sdk@3.0.9
+
 ## 3.0.8
 
 ### Patch Changes

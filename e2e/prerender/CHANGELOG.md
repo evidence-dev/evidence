@@ -1,5 +1,13 @@
 # e2e-prerender
 
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies [64486c669]
+  - @evidence-dev/core-components@5.1.3
+  - @evidence-dev/evidence@40.0.10
+
 ## 0.0.22
 
 ### Patch Changes
