@@ -27,7 +27,6 @@ test.describe('pages', () => {
 		await expect(page.getByText('This page has some different text on it')).toBeVisible();
 	});
 
-
 	/*
 		The following tests are skipped because of a vite behavior where a page is ineligible for
 		HMR if the dev server hasn't yet transformed it. (e.g. the user hasn't opened it)
