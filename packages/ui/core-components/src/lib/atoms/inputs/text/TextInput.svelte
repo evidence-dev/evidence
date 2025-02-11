@@ -4,7 +4,7 @@
 
 <script>
 	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
-  	import { browser } from '$app/environment';
+	import { browser } from '$app/environment';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
@@ -43,7 +43,7 @@
 
 	// const updateUrl = useUrlParams(name, (v) => value = v ?? "")
 
-	hydrateFromUrlParam(name, (v) => value = v ?? '');
+	hydrateFromUrlParam(name, (v) => (value = v ?? ''));
 	const setInputStore = () => {
 		let sqlString = value;
 		if (!unsafe) sqlString = sqlString.replaceAll("'", "''");
@@ -54,9 +54,9 @@
 			sql: `'${sqlString}'`,
 			search: (col) => `damerau_levenshtein(${col}, '${sqlString}')`
 		};
-		if(browser){
+		if (browser) {
 			// updateUrl(value)
-			updateUrlParam(name, value);
+			updateUrlParam(name, value, 300);
 		}
 	};
 

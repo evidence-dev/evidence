@@ -4,8 +4,6 @@
 
 <script>
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
-	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
 	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
 	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
@@ -16,6 +14,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import { toNumber } from '$lib/utils.js';
+	import { browserDebounce } from '@evidence-dev/sdk/utils';
 
 	/////
 	// Component Things
@@ -111,22 +110,8 @@
 		value = [v] ?? [defaultValue];
 	});
 
-	const debounce = (fn, delay) => {
-		let timeout;
-		return (...args) => {
-			clearTimeout(timeout);
-			timeout = setTimeout(() => {
-				fn(...args);
-			}, delay);
-		};
-	};
-
-	let debouncedUpdateUrl = debounce((name, value) => {
-		updateUrlParam(name, value);
-	}, 75); // Adjust the debounce delay (500ms) as needed
-
 	$: if (value) {
-		debouncedUpdateUrl(name, value);
+		updateUrlParam(name, value, 50);
 	}
 
 	const renderSize = (size) => {
