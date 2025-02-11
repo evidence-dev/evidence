@@ -17,10 +17,10 @@
 	};
 
 	const classLookup = {
-		negative: 'border-negative/50 bg-negative/10',
-		positive: 'border-positive/50 bg-positive/10',
-		info: 'border-info/50 bg-info/10',
-		warning: 'border-warning/50 bg-warning/10'
+		negative: 'border-negative/50 bg-negative/10 text-negative-content',
+		positive: 'border-positive/50 bg-positive/10 text-positive-content',
+		info: 'border-info/50 bg-info/10 text-info-content',
+		warning: 'border-warning/50 bg-warning/10 text-warning-content'
 	};
 </script>
 
