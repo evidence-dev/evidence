@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "6.0.2",
+	"version": "6.0.3",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",
@@ -39,7 +39,7 @@
 		"mock-fs": "^5.2.0",
 		"parcel": "^2.8.3",
 		"typescript": "5.4.2",
-		"vitest": "^2.0.5"
+		"vitest": "^2.1.9"
 	},
 	"peerDependencies": {
 		"@types/hast": "^2.0.0",

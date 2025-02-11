@@ -1,3 +1,5 @@
+// @ts-check
+
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 import { logQueryEvent } from '@evidence-dev/telemetry';
@@ -39,7 +41,7 @@ export const load = async () => {
 export const actions = {
 	updateSource: async (e) => {
 		// editSourceConfig, refactor to use logic without prompts
-		const formData = Object.fromEntries(await e.request.formData());
+		const formData = Object.fromEntries(/** @type {any} */ (await e.request.formData()));
 		const source = formData.source ? JSON.parse(formData.source) : null;
 
 		if (!source) {
@@ -70,7 +72,7 @@ export const actions = {
 	},
 	testSource: async (e) => {
 		// loadSourcePlugins().getByPackageName('')[1].testConnection
-		const formData = Object.fromEntries(await e.request.formData());
+		const formData = Object.fromEntries(/** @type {any} */ (await e.request.formData()));
 		if (!formData?.source) {
 			return fail(400, { message: "Missing required field 'source'" });
 		}
@@ -87,9 +89,7 @@ export const actions = {
 			return fail(400, r.error.format());
 		}
 		const datasourcePlugins = await loadSourcePlugins();
-		const [pack, pluginSpec] = datasourcePlugins.getBySource(r.data.type);
-
-		console.log(r, pack, pluginSpec, datasourcePlugins);
+		const [_, pluginSpec] = datasourcePlugins.getBySource(r.data.type);
 
 		if (!pluginSpec) {
 			logQueryEvent('db-plugin-unvailable', r.data.type, undefined, undefined, dev);
@@ -102,7 +102,6 @@ export const actions = {
 			return fail(200, { message: valid.reason });
 		} else {
 			logQueryEvent('db-connection-success', r.data.type, r.data.name, undefined, dev);
-
 			return {
 				success: true
 			};

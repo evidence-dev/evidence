@@ -12,7 +12,6 @@
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/faker-datasource": "link:packages/datasources/faker",
 		"@evidence-dev/icons": "link:packages/ui/icons",
-		"@evidence-dev/source-javascript": "link:packages/datasources/javascript",
 		"@evidence-dev/motherduck": "link:packages/datasources/motherduck",
 		"@evidence-dev/mssql": "link:packages/datasources/mssql",
 		"@evidence-dev/mysql": "link:packages/datasources/mysql",
@@ -21,6 +20,7 @@
 		"@evidence-dev/redshift": "link:packages/datasources/redshift",
 		"@evidence-dev/sdk": "link:packages/lib/sdk",
 		"@evidence-dev/snowflake": "link:packages/datasources/snowflake",
+		"@evidence-dev/source-javascript": "link:packages/datasources/javascript",
 		"@evidence-dev/sqlite": "link:packages/datasources/sqlite",
 		"@evidence-dev/tailwind": "link:packages/ui/tailwind",
 		"@evidence-dev/telemetry": "link:packages/lib/telemetry",
@@ -49,7 +49,7 @@
 		"get-port": "^7.1.0",
 		"git-remote-origin-url": "4.0.0",
 		"http-proxy": "^1.18.1",
-		"nanoid": "^5.0.9",
+		"nanoid": "3.3.8",
 		"node-fetch": "^3.3.2",
 		"npm-run-all": "^4.1.5",
 		"open": "^9.1.0",
@@ -67,7 +67,7 @@
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "5.4.11"
+		"vite": "5.4.14"
 	},
 	"scripts": {
 		"release": "run-s package:core-components build:tailwind build:evidence && pnpm changeset publish",
@@ -110,7 +110,8 @@
 			"nth-check@<2.0.1": ">=2.0.1",
 			"fast-xml-parser": ">=4.4.1",
 			"dset": ">=3.1.4",
-			"cookie": ">=0.7.1"
+			"cookie": ">=0.7.1",
+			"nanoid": "3.3.8"
 		}
 	},
 	"packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81"

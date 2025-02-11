@@ -13,7 +13,10 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
-	import { toNumber } from '$lib/utils.js';
+	import { toNumber, toBoolean } from '$lib/utils.js';
+	import InlineError from '../InlineError.svelte';
+	import checkRequiredProps from '../checkRequiredProps.js';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { browserDebounce } from '@evidence-dev/sdk/utils';
 
 	/////
@@ -37,17 +40,23 @@
 
 	/** @type {boolean} */
 	export let showMaxMin = true;
-	$: showMaxMin = showMaxMin === 'true' || showMaxMin === true;
+	$: showMaxMin = toBoolean(showMaxMin);
 
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
-	$: hideDuringPrint = hideDuringPrint === 'true' || hideDuringPrint === true;
+	$: hideDuringPrint = toBoolean(hideDuringPrint);
 
 	/** @type {number} */
-	export let defaultValue = 0;
+	export let defaultValue;
 
 	/** @type {string | undefined} */
-	export let fmt = undefined;
+	export let range = undefined;
+
+	/** @type {[number]} */
+	let value = [0];
+
+	/** @type {string | undefined} */
+	export let fmt = 'num0';
 
 	/** @type {string} */
 	export let size = '';
@@ -58,7 +67,14 @@
 	/** @type {string | undefined} */
 	export let description = undefined;
 
-	export let data = null;
+	export let data;
+	//let users create columns with a single row to be used for min and max
+	/** @type {string | undefined} */
+	export let maxColumn = undefined;
+	/** @type {string | undefined} */
+	export let minColumn = undefined;
+
+	let errors = [];
 
 	/** @type {[number]} */
 	let value;
@@ -66,10 +82,10 @@
 	// 	value = v ?? defaultValue;
 	// });
 
-	function validateNumber(value, name) {
+	function validateNumber(value, valueType) {
 		value = toNumber(value);
 		if (isNaN(value)) {
-			console.error(`${name} must be a number`);
+			errors.push(`${valueType} must be a number`);
 			return undefined;
 		}
 		return value;
@@ -77,29 +93,28 @@
 
 	function checkMinMax(min, max) {
 		if (min > max) {
-			console.error('min cannot be greater than max');
+			errors.push('min cannot be greater than max');
 		}
 	}
 
-	if (min !== undefined) {
+	$: if (min !== undefined) {
 		min = validateNumber(min, 'min');
 	}
-	if (max !== undefined) {
+	$: if (max !== undefined) {
 		max = validateNumber(max, 'max');
 	}
-	if (max !== undefined && min !== undefined) {
+	$: if (max !== undefined && min !== undefined) {
 		checkMinMax(min, max);
 	}
 
 	$: if (defaultValue !== undefined && !data) {
 		defaultValue = validateNumber(defaultValue, 'defaultValue');
-		if (defaultValue !== undefined) {
-			if (defaultValue < min) {
-				console.error('defaultValue cannot be less than min');
-			} else if (defaultValue > max) {
-				console.error('defaultValue cannot be greater than max');
-			}
+		if (defaultValue < min) {
+			errors.push('defaultValue cannot be less than min');
+		} else if (defaultValue > max) {
+			errors.push('defaultValue cannot be greater than max');
 		}
+		value = [defaultValue];
 	}
 
 	// Keep inputs in sync
@@ -122,6 +137,7 @@
 
 	const renderSize = (size) => {
 		const sizeMap = {
+			small: 'w-40',
 			medium: 'w-64',
 			large: 'w-96',
 			//Full size width requires calc to compensate for shifted range span in sliderShadcn
@@ -135,87 +151,78 @@
 	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
 	else format_object = undefined;
 
-	let error;
-
-	let strictBuild;
-
-	export let maxColumn = undefined;
-	export let minColumn = undefined;
-
-	let initialized = false;
-
-	if (!initialized) {
+	if (data) {
 		try {
-			error = undefined;
-
-			if (data) {
-				if (typeof data == 'string') {
-					throw Error(`Received: data=${data}, expected: data={${data}}`);
-				}
-
-				if (!Array.isArray(data)) {
-					// Accept bare objects
-					data = [data];
-				}
-
-				if (maxColumn && data[0]?.[maxColumn]) {
-					max = data[0][maxColumn];
-				}
-
-				if (minColumn && data[0]?.[minColumn]) {
-					min = data[0][minColumn];
-				}
-
-				// Only set value on initial mount
-				if (typeof defaultValue === 'string' && data[0]?.[defaultValue]) {
-					value = [data[0][defaultValue]];
-				}
-
-				initialized = true;
-			} else if (maxColumn || minColumn) {
-				throw Error(
-					'No data provided. If you referenced a query result, check that the name is correct.'
-				);
-			} else {
-				// hydrateFromUrlParam(name, value, defaultValue, (v) => {
-				// 	value = [v] ?? [defaultValue];
-				// });
-				// if ($page.url.searchParams.has(name)) {
-				// 	value = [$page.url.searchParams.get(name)];
-				// }
-				initialized = true;
-			}
+			checkInputs(data, [], [range, defaultValue, minColumn, maxColumn]);
 		} catch (e) {
-			error = e.message;
-			const setTextRed = '\x1b[31m%s\x1b[0m';
-			console.error(setTextRed, `Error in Value: ${error}`);
-			if (strictBuild) {
-				throw error;
-			}
+			errors = [...errors, e.message];
 		}
+		// sets the value to the first row of a specified column: this was a user requested added feature
+		// Now looking at it seems strange
+		if (typeof defaultValue === 'string' && data[0]?.[defaultValue]) {
+			value = [data[0][defaultValue]];
+		}
+		//set min and max based on column name
+		if (range) {
+			min = data.map((d) => d[range]).reduce((a, b) => Math.min(a, b));
+			max = data.map((d) => d[range]).reduce((a, b) => Math.max(a, b));
+		}
+
+		//if user supplies max and min cols, use them
+		if (maxColumn && data[0]?.[maxColumn]) {
+			max = data[0][maxColumn];
+		}
+		if (minColumn && data[0]?.[minColumn]) {
+			min = data[0][minColumn];
+		}
+	}
+
+	try {
+		checkRequiredProps({ name });
+	} catch (err) {
+		errors.push(err.message);
+	}
+
+	// handle steps, slider lags when there are greater then 1000 steps/ticks between max and min
+	$: sliderTicks = max - min;
+	$: minStep = sliderTicks / 1000;
+	const handleSteps = () => {
+		if (sliderTicks > 1000 && step < minStep) {
+			step = minStep;
+		}
+	};
+
+	$: if (sliderTicks > 1000) {
+		handleSteps();
 	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class={`relative ${sizeClass} mt-2 mb-10 select-none`}>
-		<p class="pb-2 truncate text-xs">
-			<span class="font-medium">
-				{#if description}
-					{title}<Info {description} className="mr-2" />
-				{:else}
-					{title}:
-				{/if}
-			</span>
-			<span class="text-xs"> {fmt ? formatValue(value, format_object) : value}</span>
-		</p>
-		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
-		{#if showMaxMin}
-			<span class="absolute left-0 text-xs pt-1 -z-10"
-				>{fmt ? formatValue(min, format_object) : min}</span
-			>
-			<span class="absolute -right-2.5 text-xs pt-1 -z-10"
-				>{fmt ? formatValue(max, format_object) : max}</span
-			>
-		{/if}
-	</div>
+	{#if errors.length > 0}
+		<InlineError inputType="Slider" error={errors} width="170" height="36" />
+	{:else}
+		<div class={`relative ${sizeClass} mt-2 mb-10 select-none`}>
+			<p class="pb-2 truncate text-xs">
+				<span class="font-medium">
+					{#if description}
+						{title}<Info {description} className="mr-2" />
+					{:else}
+						{title}:
+					{/if}
+				</span>
+				<span class="text-xs">
+					{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span
+				>
+			</p>
+			<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
+			{#if showMaxMin}
+				<span class="absolute left-0 text-xs pt-1 -z-10"
+					>{fmt ? formatValue(min, format_object) : min}</span
+				>
+				<span class="absolute -right-2.5 text-xs pt-1 -z-10"
+					>{fmt ? formatValue(max, format_object) : max}</span
+				>
+			{/if}
+		</div>
+	{/if}
 </HiddenInPrint>

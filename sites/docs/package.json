@@ -1,7 +1,7 @@
 {
 	"name": "my-evidence-project",
 	"private": true,
-	"version": "0.0.53",
+	"version": "0.0.57",
 	"scripts": {
 		"build": "evidence build",
 		"build:strict": "evidence build:strict",
@@ -34,6 +34,6 @@
 		"sqlite3": "5.1.5"
 	},
 	"devDependencies": {
-		"vitest": "^2.0.5"
+		"vitest": "^2.1.9"
 	}
 }

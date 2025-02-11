@@ -30,6 +30,7 @@ You can also self-host Evidence anywhere suitable for hosting static sites. See 
 - [Hugging Face Spaces](/deployment/self-host/hugging-face-spaces)
 - [Netlify](/deployment/self-host/netlify)
 - [Vercel](/deployment/self-host/vercel)
+- [Windows IIS](/deployment/self-host/windows-iis)
 
 ## Build Process
 

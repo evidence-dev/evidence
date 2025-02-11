@@ -634,7 +634,7 @@ DESCRIBE ${this.text.trim()}
 					if (target === null)
 						if (typeof prop !== 'number') return undefined;
 						else {
-							if (prop > this.#length) return undefined;
+							if (this.lengthLoaded && prop > this.#length) return undefined;
 							return this.#mockRow ?? {};
 						}
 

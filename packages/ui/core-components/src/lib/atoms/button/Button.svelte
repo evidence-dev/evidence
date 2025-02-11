@@ -1,47 +1,11 @@
 <script context="module">
-	export const evidenceInclude = true;
-
-	/** @typedef {"sm" | "md" | "base" | "lg"} ButtonSize */
-	/** @typedef {"primary" | "secondary" | "accent" | "info" | "positive" | "warning" | "negative"} ButtonVariant */
+	/** @typedef {"default" | "sm" | "lg" | "xl"} ButtonSize */
+	/** @typedef {"default" | "primary" | "destructive" | "muted" | "ghost" | "link"} ButtonVariant */
 	/** @typedef {"left" | "right"} ButtonIconPosition */
-	/** @typedef {boolean} ButtonOutline */
-
-	/** @type {Record<ButtonSize, string>}*/
-	const sizes = {
-		base: 'px-2 py-1 mx-1 gap-2',
-		md: 'px-2 py-1 mx-1 gap-2 text-xs',
-		sm: 'px-1 py-0.5 mx-0.5 gap-1 text-xs',
-		lg: 'px-4 py-2 mx-2 gap-4'
-	};
-
-	/** @type {Record<ButtonSize, string>}*/
-	const iconSizes = {
-		base: 'w-4',
-		md: 'w-4',
-		sm: 'w-3',
-		lg: 'w-5'
-	};
-
-	const DEPRECATED_VARIANTS_MAP = /** @type {const} */ ({
-		success: 'positive',
-		warn: 'warning',
-		error: 'negative'
-	});
-
-	const isDeprecatedVariant = (variant) => DEPRECATED_VARIANTS_MAP[variant] !== undefined;
-
-	const checkDeprecatedVariant = (variant) => {
-		if (isDeprecatedVariant(variant)) {
-			console.warn(
-				`The variant "${variant}" is deprecated. Please use "${DEPRECATED_VARIANTS_MAP[variant]}" instead.`
-			);
-			return DEPRECATED_VARIANTS_MAP[variant];
-		}
-		return variant;
-	};
 </script>
 
 <script>
+	import { tv } from 'tailwind-variants';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	/** @type {import("@steeze-ui/svelte-icon").IconSource | undefined} */
 	export let icon = undefined;
@@ -50,17 +14,10 @@
 	export let iconPosition = 'right';
 
 	/** @type {ButtonSize} */
-	export let size = 'base';
-
-	/** @type {ButtonSize} */
-	export let iconSize = size;
+	export let size = 'default';
 
 	/** @type {ButtonVariant} */
-	export let variant = 'info';
-	$: variant = checkDeprecatedVariant(variant);
-
-	/** @type {boolean} */
-	export let outline = false;
+	export let variant = 'default';
 
 	/** @type {boolean} */
 	export let disabled = false;
@@ -68,11 +25,68 @@
 	/** @type {string | undefined} */
 	export let formaction = undefined;
 
+	/** @type {string | undefined | null} */
+	let className = undefined;
+
+	export { className as class };
+
 	/** @type {HTMLButtonAttributes["type"]} */
 	let _type = 'button';
 	export { _type as type };
 
 	$: if (formaction) _type = 'submit';
+
+	const buttonVariants = tv({
+		base: 'inline-flex items-center justify-center rounded-md text-xs font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-base-300 disabled:pointer-events-none disabled:opacity-50',
+		variants: {
+			variant: {
+				default: 'bg-base-100 border shadow-sm hover:bg-base-200 active:bg-base-300',
+				primary:
+					'bg-primary text-primary-content shadow-sm hover:bg-primary/90  active:bg-primary/80',
+				destructive:
+					'bg-negative text-negative-content shadow-sm hover:bg-negative/90 active:bg-negative/80',
+				muted: 'bg-base-200 text-base-content hover:bg-base-300 active:bg-base-300/80',
+				ghost: 'hover:bg-base-200 hover:text-base-content',
+				link: 'text-base-content underline-offset-4 hover:underline'
+			},
+			size: {
+				default: 'h-8 px-3',
+				lg: 'h-8 px-10',
+				xl: 'h-10 px-10 text-sm'
+			}
+		},
+		defaultVariants: {
+			variant: 'default',
+			size: 'default'
+		}
+	});
+
+	const iconVariants = tv({
+		variants: {
+			variant: {
+				default: 'stroke-base-content',
+				primary: 'stroke-primary-content',
+				destructive: 'stroke-negative-content',
+				muted: 'stroke-base-content',
+				ghost: 'stroke-base-content',
+				link: 'stroke-base-content'
+			},
+			size: {
+				default: 'h-4 w-4',
+				lg: 'h-4 w-4',
+				xl: 'h-5 w-5'
+			},
+			iconPosition: {
+				left: 'mr-2',
+				right: 'ml-2'
+			}
+		},
+		defaultVariants: {
+			variant: 'default',
+			size: 'default',
+			iconPosition: 'left'
+		}
+	});
 </script>
 
 <button
@@ -80,104 +94,13 @@
 	{disabled}
 	{formaction}
 	on:click|stopPropagation
-	class:outlined={outline}
-	class="flex items-center transition-colors rounded variant-{variant} {sizes[size]}"
+	class={buttonVariants({ variant, size, className })}
 >
 	{#if iconPosition === 'left' && icon}
-		<Icon src={icon} class={iconSizes[iconSize]} />
+		<Icon src={icon} class={iconVariants({ variant, size, iconPosition })} />
 	{/if}
 	<slot />
 	{#if iconPosition === 'right' && icon}
-		<Icon src={icon} class={iconSizes[iconSize]} />
+		<Icon src={icon} class={iconVariants({ variant, size, iconPosition })} />
 	{/if}
 </button>
-
-<style lang="postcss">
-	button {
-		&.variant-primary {
-			--bg: theme(colors.primary);
-			--text: theme(colors.primary-content);
-			&.outlined {
-				--border: theme(colors.primary);
-				--text: theme(colors.primary);
-				--hover-bg: theme(colors.primary / 0.1);
-			}
-		}
-
-		&.variant-secondary {
-			--bg: theme(colors.base-300);
-			--text: theme(colors.base-content);
-			&.outlined {
-				--border: theme(colors.base-300);
-				--text: theme(colors.base-300);
-				--hover-bg: theme(colors.base-300 / 0.1);
-			}
-		}
-
-		&.variant-accent {
-			--bg: theme(colors.accent);
-			--text: theme(colors.accent-content);
-			&.outlined {
-				--border: theme(colors.accent);
-				--text: theme(colors.accent);
-				--hover-bg: theme(colors.accent / 0.1);
-			}
-		}
-
-		&.variant-info {
-			--bg: theme(colors.info);
-			--text: theme(colors.info-content);
-			&.outlined {
-				--border: theme(colors.info);
-				--text: theme(colors.info);
-				--hover-bg: theme(colors.info / 0.1);
-			}
-		}
-
-		&.variant-positive {
-			--bg: theme(colors.positive);
-			--text: theme(colors.positive-content);
-			&.outlined {
-				--border: theme(colors.positive);
-				--text: theme(colors.positive);
-				--hover-bg: theme(colors.positive / 0.1);
-			}
-		}
-
-		&.variant-warning {
-			--bg: theme(colors.warning);
-			--text: theme(colors.warning-content);
-			&.outlined {
-				--border: theme(colors.warning);
-				--text: theme(colors.warning);
-				--hover-bg: theme(colors.warning / 0.1);
-			}
-		}
-
-		&.variant-negative {
-			--bg: theme(colors.negative);
-			--text: theme(colors.negative-content);
-			&.outlined {
-				--border: theme(colors.negative);
-				--text: theme(colors.negative);
-				--hover-bg: theme(colors.negative / 0.1);
-			}
-		}
-
-		@apply bg-[var(--bg)] border-[var(--border)] text-[var(--text)];
-
-		&.outlined {
-			@apply bg-transparent border;
-			&:not(:disabled) {
-				@apply hover:bg-[var(--hover-bg)];
-			}
-		}
-
-		&:disabled {
-			@apply cursor-not-allowed saturate-50 opacity-50;
-		}
-		&:not(:disabled) {
-			@apply transition-all duration-150 hover:brightness-105 active:brightness-95;
-		}
-	}
-</style>

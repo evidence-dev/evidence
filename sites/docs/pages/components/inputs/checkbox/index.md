@@ -24,7 +24,7 @@ Creates a checkbox with toggleable input. The Title and Name attributes can be d
 
 ### Checkbox using Default Value
 
-Defining the defaultValue property will set the initial checked value with true and false.
+Defining the checked property will set the initial checkbox value with true and false.
 
 <!-- <img src="/img/" alt="checkbox" width="300"/> -->
 
@@ -33,7 +33,7 @@ Defining the defaultValue property will set the initial checked value with true 
         <Checkbox
             title="Title of checkbox" 
             name=name_of_checkbox
-            defaultValue=true
+            checked=true
         />
 
         Selected Value: {inputs.name_of_checkbox}
@@ -43,7 +43,7 @@ Defining the defaultValue property will set the initial checked value with true 
 <Checkbox
     title="Title of checkbox" 
     name=name_of_checkbox
-    defaultValue=true
+    checked=true
 />
 
 Selected Value: {inputs.name_of_checkbox}
@@ -113,12 +113,20 @@ Name of the checkbox, used to reference the selected value elsewhere as `{inputs
 
 </PropListing>
 <PropListing 
-    name="defaultValue"
-    options="boolean"
-    defaultValue=false
+    name="title"
+    options='string'
 >
 
-Value to use when checkbox is first loaded. True value for checked, false for unchecked
+Label for the checkbox. If undefined, will default to small checkbox
+
+</PropListing>
+<PropListing 
+    name="checked"
+    options="boolean"
+    checked=false
+>
+
+Initial value for checkbox. True value for checked, false for unchecked
 
 </PropListing>
 <PropListing

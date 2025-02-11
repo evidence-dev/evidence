@@ -6,7 +6,7 @@ sidebar_position: 1
 
 <Alert status=info>
 
-    Note that you can also use [markdown syntax for links](/reference/markdown/#links). This component is useful when you need to customize the behavior or styling of the link (e.g., opening in new tab vs. current tab)
+    Note that you can also use [markdown syntax for links](/reference/markdown#links). This component is useful when you need to customize the behavior or styling of the link (e.g., opening in new tab vs. current tab)
 </Alert>
 
 Use the `Link` component to add styled and accessible links to your markdown pages. This component allows you to control the destination URL, link text, and whether it opens in a new tab.

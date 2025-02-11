@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 6.0.3
+
+### Patch Changes
+
+- 09014326f: Use summary large image on twitter
+
 ## 6.0.2
 
 ### Patch Changes

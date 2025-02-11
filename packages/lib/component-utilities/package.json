@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/component-utilities",
-	"version": "4.0.5",
+	"version": "4.0.8",
 	"description": "",
 	"main": "index.js",
 	"exports": {
@@ -12,7 +12,7 @@
 	"devDependencies": {
 		"@evidence-dev/tailwind": "workspace:^",
 		"@faker-js/faker": "^8.0.2",
-		"vitest": "^2.0.5"
+		"vitest": "^2.1.9"
 	},
 	"scripts": {
 		"test": "vitest --run",

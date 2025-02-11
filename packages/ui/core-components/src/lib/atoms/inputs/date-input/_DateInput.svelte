@@ -18,6 +18,7 @@
 	import { Calendar } from '$lib/atoms/shadcn/calendar/index.js';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { CalendarEvent as CalendarIcon } from '@steeze-ui/tabler-icons';
+	import { toBoolean } from '$lib/utils.js';
 
 	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
@@ -48,8 +49,10 @@
 	export let defaultValue;
 	/** @type {boolean} */
 	export let range = false;
+	$: range = toBoolean(range);
 	/** @type {string} */
 	export let title;
+	export let extraDayEndString = undefined;
 	/** @type {string | undefined} */
 	export let description = undefined;
 
@@ -215,6 +218,11 @@
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
 
+	let extraDayCalendarEnd = calendarEnd;
+	$: if (range) {
+		extraDayCalendarEnd = YYYYMMDDToCalendar(extraDayEndString);
+	}
+
 	function updateDateRange(start, end) {
 		if (selectedPreset) return;
 
@@ -303,7 +311,7 @@
 						selectedDateInput = value;
 					}}
 					minValue={calendarStart}
-					maxValue={calendarEnd}
+					maxValue={extraDayCalendarEnd}
 				/>
 			{:else}
 				<Calendar

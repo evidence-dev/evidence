@@ -8,6 +8,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import TableCell from './TableCell.svelte';
+	import { toBoolean } from '$lib/utils.js';
 
 	export let groupName;
 	export let currentGroupData;
@@ -16,6 +17,7 @@
 	export let rowNumbers;
 	export let rowColor = undefined;
 	export let subtotals = true;
+	$: subtotals = toBoolean(subtotals);
 	export let orderedColumns = undefined;
 	export let compact = undefined;
 

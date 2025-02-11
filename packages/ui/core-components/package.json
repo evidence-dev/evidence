@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "5.0.5",
+	"version": "5.1.2",
 	"evidence": {
 		"components": true
 	},
@@ -60,7 +60,7 @@
 		"export-to-csv": "0.2.1",
 		"leaflet": "^1.9.4",
 		"lodash": "^4.17.21",
-		"nanoid": "^5.0.9",
+		"nanoid": "3.3.8",
 		"perfect-debounce": "^1.0.0",
 		"prismjs": "1.29.0",
 		"ssf": "0.11.2",
@@ -96,7 +96,7 @@
 		"@sveltejs/vite-plugin-svelte": "3.0.2",
 		"@types/chroma-js": "^2.4.4",
 		"@types/lodash.debounce": "^4.0.9",
-		"@vitest/coverage-v8": "2.0.5",
+		"@vitest/coverage-v8": "3.0.5",
 		"autoprefixer": "^10.4.19",
 		"chromatic": "^11.4.0",
 		"eslint": "8.45.0",
@@ -118,8 +118,8 @@
 		"tailwindcss": "^3.4.3",
 		"tslib": "^2.6.2",
 		"typescript": "5.4.2",
-		"vite": "5.4.11",
-		"vitest": "2.0.5"
+		"vite": "5.4.14",
+		"vitest": "^2.1.9"
 	},
 	"overrides": {
 		"svelte2tsx": "^0.6.15"

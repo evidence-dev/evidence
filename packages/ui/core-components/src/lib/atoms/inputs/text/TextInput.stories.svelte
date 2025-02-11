@@ -68,6 +68,19 @@
 </Template>
 
 <Story name="Default" />
+<Story name="Name Error">
+	<TextInput name={undefined} />
+</Story>
+
+<Story name="hideDuringPrint string false">
+	<TextInput
+		title="Search Disabled Text Input"
+		name="textInput"
+		disableSearch={true}
+		on:input={() => console.log('input')}
+		hideDuringPrint={'false'}
+	/>
+</Story>
 
 <Story name="URL Params">
 	<TextInput name="URLParams" title="update url params" />

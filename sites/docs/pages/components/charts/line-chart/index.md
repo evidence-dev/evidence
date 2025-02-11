@@ -1,10 +1,10 @@
 ---
 title: Line Chart
-description: Display how one or more metrics over time. Line charts are suitable for plotting a large number of data points on the same chart.
+description: Display how one or more metrics vary over time. Line charts are suitable for plotting a large number of data points on the same chart.
 sidebar_position: 1
 ---
 
-Use line charts to display how one or more metrics over time. Line charts are suitable for plotting a large number of data points on the same chart.
+Use line charts to display how one or more metrics vary over time. Line charts are suitable for plotting a large number of data points on the same chart.
 
 ```sql orders_by_month
 select order_month as month, sum(sales) as sales_usd0k, count(1) as orders from needful_things.orders
