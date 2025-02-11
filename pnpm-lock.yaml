@@ -2725,7 +2725,7 @@ packages:
       '@azure/core-tracing': 1.2.0
       '@azure/core-util': 1.11.0
       '@azure/logger': 1.1.4
-      '@azure/msal-browser': 4.2.0
+      '@azure/msal-browser': 4.2.1
       '@azure/msal-node': 2.16.2
       events: 3.3.0
       jws: 4.0.0
@@ -2775,8 +2775,8 @@ packages:
     dependencies:
       tslib: 2.8.1
 
-  /@azure/msal-browser@4.2.0:
-    resolution: {integrity: sha512-MXQjgAgjg/2VRKV+UPWHESoZPcue2ZvWKfpBLCyTUyixP+mhCl0q5D1+xDiwBGV3lru2poKZVZDQAOE40wKmWg==}
+  /@azure/msal-browser@4.2.1:
+    resolution: {integrity: sha512-pJX+HNVxEEvxqj3xvnFKMi/Yb6jadwOWN2QkDagj2GV2XXxJg3qq5zkE+czVw6Cmf4QiXxct+J0WF23sE8vZyA==}
     engines: {node: '>=0.8.0'}
     dependencies:
       '@azure/msal-common': 15.1.1

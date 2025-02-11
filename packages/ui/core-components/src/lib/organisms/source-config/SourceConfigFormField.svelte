@@ -149,8 +149,8 @@
 
 	$: fieldDisabled = disabled || spec.forceReference || (spec.references && refVal !== null);
 
-
-	const inputClasses = "rounded-md border border-base-300 bg-base-100 shadow-sm px-2 py-1 text-sm focus-visible:ring-base-300 flex h-9 w-full transition-colors focus-visible:outline-none focus-visible:ring-1 p-1 ml-auto align-middle"
+	const inputClasses =
+		'rounded-md border border-base-300 bg-base-100 shadow-sm px-2 py-1 text-sm focus-visible:ring-base-300 flex h-9 w-full transition-colors focus-visible:outline-none focus-visible:ring-1 p-1 ml-auto align-middle';
 </script>
 
 <div class="w-full mb-2">
@@ -164,7 +164,7 @@
 		{#if spec.type === 'string'}
 			{#if spec.secret && !reveal && spec.shown !== true}
 				<input
-					class="{inputClasses}"
+					class={inputClasses}
 					disabled={fieldDisabled}
 					required={spec.required}
 					type="password"
@@ -172,7 +172,7 @@
 				/>
 			{:else}
 				<input
-					class="{inputClasses}"
+					class={inputClasses}
 					disabled={fieldDisabled}
 					required={spec.required}
 					type="text"
@@ -184,18 +184,14 @@
 			></textarea>
 		{:else if spec.type === 'number'}
 			<input
-				class="{inputClasses}"
+				class={inputClasses}
 				disabled={fieldDisabled}
 				required={spec.required}
 				type="number"
 				bind:value={fieldValue}
 			/>
 		{:else if spec.type === 'select' && Array.isArray(spec.options)}
-			<select
-				disabled={fieldDisabled}
-				bind:value={fieldValue}
-				class="{inputClasses}"
-			>
+			<select disabled={fieldDisabled} bind:value={fieldValue} class={inputClasses}>
 				<option disabled={spec.required} value={undefined} />
 				{#each spec.options as option}
 					{#if typeof option === 'string'}
