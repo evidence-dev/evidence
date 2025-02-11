@@ -42,6 +42,6 @@
 		"@types/node": "20.11.28",
 		"@types/mock-fs": "^4.13.1",
 		"mock-fs": "^5.2.0",
-		"vitest": "^2.0.5"
+		"vitest": "^2.1.9"
 	}
 }
