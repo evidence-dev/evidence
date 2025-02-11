@@ -106,8 +106,14 @@
 	$inputs[name] = value;
 
 	// URL params hydration
+	// hydrateFromUrlParam(name, (v) => {
+	// 	value = [v] ?? [defaultValue];
+	// });
+
 	hydrateFromUrlParam(name, (v) => {
-		value = [v] ?? [defaultValue];
+		if (v) {
+			value = [v];
+		}
 	});
 
 	$: if (value) {

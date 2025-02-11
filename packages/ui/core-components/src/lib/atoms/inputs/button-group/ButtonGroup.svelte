@@ -33,6 +33,7 @@
 
 	/** @type {string | undefined} */
 	export let defaultValue = undefined;
+	$: console.log(defaultValue, 'defaultValue');
 
 	setContext('button-display', display);
 
@@ -46,10 +47,12 @@
 
 	const valueStore = writable(null);
 
-	hydrateFromUrlParam(name, (v) => (defaultValue = v));
+	hydrateFromUrlParam(name, (v) => {
+		if (v) {
+			defaultValue = v;
+		}
+	});
 	setContext('button-group-defaultValue', writable(defaultValue));
-
-	$: console.log(defaultValue, 'defaultValue');
 
 	// TODO: Use getInputSetter instead
 	setButtonGroupContext((v) => {

@@ -34,7 +34,7 @@
 
 	if ($buttonGroupDefaultValue === value || defaultValue === value) {
 		update({ valueLabel, value });
-	} else if (_default && !buttonGroupDefaultValue) {
+	} else if (_default && !$buttonGroupDefaultValue) {
 		update({ valueLabel, value });
 	}
 </script>

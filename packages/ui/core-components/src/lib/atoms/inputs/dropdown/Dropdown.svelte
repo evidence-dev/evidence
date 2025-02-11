@@ -99,7 +99,11 @@
 			: [];
 
 	// hydrateFromUrlParam(name, (v) => (defaultValue = v));
-	hydrateFromUrlParam(name, (v) => (defaultValue = v));
+	hydrateFromUrlParam(name, (v) => {
+		if (v) {
+			defaultValue = v;
+		}
+	});
 
 	const state = dropdownOptionStore({
 		multiselect: multiple,

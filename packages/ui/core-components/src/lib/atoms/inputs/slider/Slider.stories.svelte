@@ -169,7 +169,7 @@
 	}}
 />
 <Story name="URL params">
-	<Slider name="URLParams" title="update url params" />
+	<Slider name="URLParams" title="update url params" defaultValue={12} />
 	<div class="mt-4">URL: {storyIframeURL}</div>
 	<button
 		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
