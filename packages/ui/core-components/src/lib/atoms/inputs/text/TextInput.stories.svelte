@@ -71,5 +71,11 @@
 
 <Story name="URL Params">
 	<TextInput name="URLParams" title="update url params" />
-	<div class="mt-4">URL: {storyIframeURL}</div>
-</Story>
+	<div>URL: {storyIframeURL}</div>
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	></Story
+>

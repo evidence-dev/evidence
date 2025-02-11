@@ -177,6 +177,7 @@ Note:
             name=category_multi
             value=category_name
             multiple=true
+            defaultValue={['Cursed Sporting Goods','Mysterious Apparel']}
         />
         
         Selected: {inputs.category_multi.value}

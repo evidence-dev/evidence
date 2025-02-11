@@ -5,13 +5,12 @@
 </script>
 
 <script>
-			  import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	import { dropdownOptionStore } from './dropdownOptionStore.js';
 	import { onDestroy, setContext } from 'svelte';
 	import { DropdownContext } from './constants.js';
 	import DropdownOption from './helpers/DropdownOption.svelte';
 	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
@@ -98,10 +97,9 @@
 		name in $inputs && 'rawValues' in $inputs[name] && Array.isArray($inputs[name].rawValues)
 			? $inputs[name].rawValues
 			: [];
-	
 
-	hydrateFromUrlParam(name, (v) => defaultValue = [v])
-
+	// hydrateFromUrlParam(name, (v) => (defaultValue = v));
+	hydrateFromUrlParam(name, (v) => (defaultValue = v));
 
 	const state = dropdownOptionStore({
 		multiselect: multiple,
@@ -131,8 +129,9 @@
 			$inputs[name] = newValue;
 		}
 
-		// updateSearchParams(name, newValue.value);
-		updateUrlParam(name, newValue.value);
+		const paramValue = multiple ? newValue.rawValues.map((x) => x.value) : newValue.value;
+
+		updateUrlParam(name, paramValue);
 	};
 
 	let opts = [];

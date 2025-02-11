@@ -125,7 +125,11 @@ export const dropdownOptionStore = (opts = {}) => {
 							}
 
 							// Apply defaults
-							if (option.value !== null && defaults.has(option.value)) {
+							if (
+								option.value !== null &&
+								// ensures urlParams in string format pass condition when values are type numbers
+								(defaults.has(String(option.value)) || defaults.has(option.value))
+							) {
 								option.selected = true;
 								defaults.delete(option.value);
 							}

@@ -248,10 +248,11 @@
 <Story name="URL Params Hard Coded Entries" let:args>
 	<div class="mb-8">
 		<ButtonGroup {...args}>
-			<ButtonGroupItem valueLabel="Option 1" value={1} />
-			<ButtonGroupItem valueLabel="Option 2" value={2} />
-			<ButtonGroupItem valueLabel="Option 3" value={3} default />
-			<ButtonGroupItem valueLabel="Option 4" value={4} />
+			<ButtonGroupItem valueLabel="Num 1" value={1} />
+			<ButtonGroupItem valueLabel="Num 2" value={2} />
+			<ButtonGroupItem valueLabel="Num 3" value={3} default />
+			<ButtonGroupItem valueLabel="Num 4" value={4} />
+			<ButtonGroupItem valueLabel="String 4" value={'4'} />
 		</ButtonGroup>
 	</div>
 
@@ -275,7 +276,7 @@
 	}}
 >
 	<div class="mb-8">
-		<ButtonGroup {...args} defaultValue={2} />
+		<ButtonGroup {...args} defaultValue={1} />
 	</div>
 
 	Current Value: {$inputStore[args.name]}
@@ -314,7 +315,6 @@
 
 	Current Value: {$inputStore['buttonGroup_B']}
 	<div class="mt-4">URL: {storyIframeURL}</div>
-	<div>URL: {storyIframeURL}</div>
 	<button
 		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
 

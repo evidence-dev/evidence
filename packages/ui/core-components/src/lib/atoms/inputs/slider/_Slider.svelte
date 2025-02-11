@@ -110,7 +110,24 @@
 	hydrateFromUrlParam(name, (v) => {
 		value = [v] ?? [defaultValue];
 	});
-	$: updateUrlParam(name, value);
+
+	const debounce = (fn, delay) => {
+		let timeout;
+		return (...args) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				fn(...args);
+			}, delay);
+		};
+	};
+
+	let debouncedUpdateUrl = debounce((name, value) => {
+		updateUrlParam(name, value);
+	}, 75); // Adjust the debounce delay (500ms) as needed
+
+	$: if (value) {
+		debouncedUpdateUrl(name, value);
+	}
 
 	const renderSize = (size) => {
 		const sizeMap = {
@@ -169,12 +186,12 @@
 					'No data provided. If you referenced a query result, check that the name is correct.'
 				);
 			} else {
-				hydrateFromUrlParam(name, value, defaultValue, (v) => {
-					value = [v] ?? [defaultValue];
-				});
-				if ($page.url.searchParams.has(name)) {
-					value = [$page.url.searchParams.get(name)];
-				}
+				// hydrateFromUrlParam(name, value, defaultValue, (v) => {
+				// 	value = [v] ?? [defaultValue];
+				// });
+				// if ($page.url.searchParams.has(name)) {
+				// 	value = [$page.url.searchParams.get(name)];
+				// }
 				initialized = true;
 			}
 		} catch (e) {

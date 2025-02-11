@@ -49,17 +49,14 @@
 	hydrateFromUrlParam(name, (v) => (defaultValue = v));
 	setContext('button-group-defaultValue', writable(defaultValue));
 
+	$: console.log(defaultValue, 'defaultValue');
+
 	// TODO: Use getInputSetter instead
 	setButtonGroupContext((v) => {
 		$valueStore = v;
-		// the assignment to $inputs is necessary to trigger the change on SSR
 		$inputs[name] = v?.value ?? null;
-		// updateSearchParams(name, v?.value);
-		updateUrlParam(name, String(v?.value));
-		// hydrateFromUrlParam(name, (newVal) => v.value = newVal)
-		// if($page.url.searchParams.has(name)){
-		// 	v.value = $page.url.searchParams.get(name);
-		// }
+		//
+		updateUrlParam(name, v?.value);
 	}, readonly(valueStore));
 
 	/////

@@ -40,6 +40,35 @@
 		await userEvent.click(dropdown, { delay: 100 });
 		await userEvent.keyboard('{Enter}');
 	};
+
+	let storyIframeURL = '';
+
+	const updateURL = () => {
+		storyIframeURL = window.location.href;
+
+		// Try forcing Storybook to recognize the change
+		const iframe = document.querySelector('iframe');
+		if (iframe) {
+			iframe.src = iframe.src; // Force reload
+		}
+	};
+
+	(function () {
+		const pushState = history.pushState;
+		const replaceState = history.replaceState;
+
+		history.pushState = function () {
+			pushState.apply(history, arguments);
+			updateURL();
+		};
+
+		history.replaceState = function () {
+			replaceState.apply(history, arguments);
+			updateURL();
+		};
+
+		window.addEventListener('popstate', updateURL);
+	})();
 </script>
 
 <Story name="Basic Usage">
@@ -279,6 +308,34 @@
 		<DropdownOption value="All" />
 		<DropdownOption value="Top 100" />
 	</Dropdown>
+</Story>
+
+<Story name="URL Parameter">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="urlParam" {data} value="value" label="label" defaultValue={1} title="url" />
+
+	<div class="mt-4">URL: {storyIframeURL}</div>
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	>
+</Story>
+<Story name="URL Parameter w/ multiplehardcoded options">
+	<Dropdown name="urlParamMultiple" multiple defaultValue={['1', '2']} title="url multiple">
+		<DropdownOption value={'1'} />
+		<DropdownOption value={2} />
+		<DropdownOption value={3} />
+		<DropdownOption value={4} />
+	</Dropdown>
+	<div class="mt-4">URL: {storyIframeURL}</div>
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	>
 </Story>
 
 <!--
