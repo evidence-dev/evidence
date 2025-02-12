@@ -26,41 +26,6 @@ test.describe('pages', () => {
 
 		await expect(page.getByText('This page has some different text on it')).toBeVisible();
 	});
-
-	/*
-		The following tests are skipped because of a vite behavior where a page is ineligible for
-		HMR if the dev server hasn't yet transformed it. (e.g. the user hasn't opened it)
-
-		While this isn't a behavior we want, it is enough of an edge case to not spend a lot of 
-		time fixing up for now.
-	*/
-	test.skip('creating should add to the sidebar and allow navigation', async ({ page }) => {
-		await page.goto('/');
-		await waitForPageToLoad(page);
-
-		await expect(page.getByText('Index')).toBeVisible();
-
-		createFile('pages/new-page.md', 'This is a new page');
-		// file deletions trigger full reload, so we don't waitForHMR() here
-
-		await expect(page.getByRole('link', { name: 'New Page' })).toBeVisible();
-		await page.goto('/new-page');
-		await expect(page.getByText('This is a new page')).toBeVisible();
-	});
-
-	test.skip('deleting should remove from the sidebar and prevent navigation', async ({ page }) => {
-		await page.goto('/');
-		await waitForPageToLoad(page);
-
-		await expect(page.getByText('Index')).toBeVisible();
-
-		deleteFile('pages/page.md');
-		await waitForHMR(page);
-
-		await expect(page.getByRole('link', { name: 'Page' })).not.toBeVisible();
-		await page.goto('/page');
-		await expect(page.getByText('Page Not Found')).toBeVisible();
-	});
 });
 
 test.describe('sources', () => {
