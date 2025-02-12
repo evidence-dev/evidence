@@ -79,7 +79,7 @@
 			<input
 				type="checkbox"
 				bind:checked={isChecked}
-				class="[&:not(:checked)]:appearance-none cursor-pointer border border-base-content-muted rounded-sm focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-base-300 shadow-sm accent-primary"
+				class="[&:not(:checked)]:appearance-none cursor-pointer border border-base-content-muted rounded-xs focus-visible:outline-none h-3 w-3 focus-visible:ring-1 focus-visible:ring-base-300 shadow-sm accent-primary"
 			/>
 		</Button>
 	{/if}

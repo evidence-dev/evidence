@@ -1,6 +1,6 @@
-import { withThemeByDataAttribute } from '@storybook/addon-themes';
+import { withThemeByClassName } from '@storybook/addon-themes';
 
-import '../src/app.postcss';
+import '../src/app.css';
 import WithEvidence from '../src/lib/storybook-helpers/WithEvidence.svelte';
 import { initialize } from '../src/lib/storybook-helpers/initializeUSQL.js';
 
@@ -23,12 +23,11 @@ const preview = {
 		series: { table: { disable: true } }
 	},
 	decorators: [
-		withThemeByDataAttribute({
+		withThemeByClassName({
 			themes: {
-				light: 'light',
-				dark: 'dark'
+				light: 'theme-light',
+				dark: 'theme-dark'
 			},
-			attributeName: 'data-theme',
 			defaultTheme: 'light'
 		}),
 		() => WithEvidence

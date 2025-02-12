@@ -66,7 +66,7 @@
 
 <dialog
 	use:popup={open}
-	class="w-[90vw] rounded-lg fixed border border-base-300 text-base-content shadow-lg bg-base-100 {open
+	class="w-[90vw] rounded-lg fixed border border-base-300 text-base-content shadow-lg bg-base-100 backdrop:backdrop-blur-sm backdrop:bg-base-100/80 {open
 		? 'slideIn'
 		: 'slideOut'}"
 >
@@ -79,12 +79,8 @@
 	</div>
 </dialog>
 
-<style lang="postcss">
+<style>
 	/* your styles go here */
-	dialog::backdrop {
-		@apply backdrop-blur-sm bg-base-100/80;
-	}
-
 	.slideOut::backdrop {
 		all: unset;
 	}

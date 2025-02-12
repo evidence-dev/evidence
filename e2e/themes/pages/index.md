@@ -6,7 +6,7 @@
 	div-primary-var
 </div>
 
-<div data-testid="div-myCustomColor-class" class="bg-myCustomColor">
+<div data-testid="div-myCustomColor-class" class="bg-my-custom-color">
 	div-myCustomColor-class
 </div>
 

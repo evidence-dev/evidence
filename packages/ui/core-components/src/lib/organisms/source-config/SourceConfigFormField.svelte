@@ -148,6 +148,9 @@
 	$: options[fieldValueKey] = fieldValue;
 
 	$: fieldDisabled = disabled || spec.forceReference || (spec.references && refVal !== null);
+
+	const inputClasses =
+		'rounded-md border border-base-300 bg-base-100 shadow-sm px-2 py-1 text-sm focus-visible:ring-base-300 flex h-9 w-full transition-colors focus-visible:outline-none focus-visible:ring-1 p-1 ml-auto align-middle';
 </script>
 
 <div class="w-full mb-2">
@@ -161,6 +164,7 @@
 		{#if spec.type === 'string'}
 			{#if spec.secret && !reveal && spec.shown !== true}
 				<input
+					class={inputClasses}
 					disabled={fieldDisabled}
 					required={spec.required}
 					type="password"
@@ -168,6 +172,7 @@
 				/>
 			{:else}
 				<input
+					class={inputClasses}
 					disabled={fieldDisabled}
 					required={spec.required}
 					type="text"
@@ -179,13 +184,14 @@
 			></textarea>
 		{:else if spec.type === 'number'}
 			<input
+				class={inputClasses}
 				disabled={fieldDisabled}
 				required={spec.required}
 				type="number"
 				bind:value={fieldValue}
 			/>
 		{:else if spec.type === 'select' && Array.isArray(spec.options)}
-			<select disabled={fieldDisabled} bind:value={fieldValue}>
+			<select disabled={fieldDisabled} bind:value={fieldValue} class={inputClasses}>
 				<option disabled={spec.required} value={undefined} />
 				{#each spec.options as option}
 					{#if typeof option === 'string'}
@@ -227,15 +233,3 @@
 		</div>
 	{/if}
 </div>
-
-<style lang="postcss">
-	input:not([type='file']),
-	select,
-	textarea {
-		@apply rounded-md border border-base-300 bg-base-100 shadow-sm px-2 py-1 text-sm focus-visible:ring-base-300 flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1;
-	}
-
-	input[type='file'] {
-		@apply hidden;
-	}
-</style>

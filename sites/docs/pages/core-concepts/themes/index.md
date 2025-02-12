@@ -467,18 +467,18 @@ The color props accepted by many components (e.g. [`fillColor`](/components/char
 The [colors listed above](/core-concepts/themes#colors) are the bare minimum you should configure to theme your application. If you need more control, there are other colors you can customize.
 
 ```sql advanced_color_tokens
-    select '<span class="p-0.5 rounded-sm font-semibold bg-primary text-primary-content">primary-content</span>' as 'color', 'Text color used on top of a primary background' as 'where-its-used', 'A readable shade of primary' as default union all
-	select '<span class="p-0.5 rounded-sm font-semibold bg-accent text-accent-content">accent-content</span>', 'Text color used on top of an accent background', 'A readable shade of accent' union all
-	select '<span class="p-0.5 rounded-sm font-semibold bg-base-100">base-100</span>', 'Page background color', 'Alias of `base`' union all
-	select '<span class="p-0.5 rounded-sm font-semibold bg-base-200">base-200</span>', 'Secondary page background color', 'A shade of base-100' union all
-	select '<span class="p-0.5 rounded-sm font-semibold bg-base-300">base-300</span>', 'Tertiary page background color', 'A shade of base-100' union all
-	select '<span class="p-0.5 rounded-sm font-semibold text-base-content-muted">base-content-muted</span>', 'Muted text color', 'A shade of base-100' union all
-	select '<span class="p-0.5 rounded-sm font-semibold text-base-content">base-content</span>', 'Body text color', 'A shade of base-100' union all
-	select '<span class="p-0.5 rounded-sm font-semibold text-base-heading">base-heading</span>', 'Header text color', 'A shade of base-100' union all
-	select '<span class="p-0.5 rounded-sm font-semibold bg-info text-info-content">info-content</span>', 'Text color used on top of an info background', 'A readable shade of info' union all
-	select '<span class="p-0.5 rounded-sm font-semibold bg-positive text-positive-content">positive-content</span>', 'Text color used on top of a positive background', 'A readable shade of positive' union all
-	select '<span class="p-0.5 rounded-sm font-semibold bg-warning text-warning-content">warning-content</span>', 'Text color used on top of a warning background', 'A readable shade of warning' union all
-	select '<span class="p-0.5 rounded-sm font-semibold bg-negative text-negative-content">negative-content</span>', 'Text color used on top of a negative background', 'A readable shade of negative'
+    select '<span class="p-0.5 rounded-xs font-semibold bg-primary text-primary-content">primary-content</span>' as 'color', 'Text color used on top of a primary background' as 'where-its-used', 'A readable shade of primary' as default union all
+	select '<span class="p-0.5 rounded-xs font-semibold bg-accent text-accent-content">accent-content</span>', 'Text color used on top of an accent background', 'A readable shade of accent' union all
+	select '<span class="p-0.5 rounded-xs font-semibold bg-base-100">base-100</span>', 'Page background color', 'Alias of `base`' union all
+	select '<span class="p-0.5 rounded-xs font-semibold bg-base-200">base-200</span>', 'Secondary page background color', 'A shade of base-100' union all
+	select '<span class="p-0.5 rounded-xs font-semibold bg-base-300">base-300</span>', 'Tertiary page background color', 'A shade of base-100' union all
+	select '<span class="p-0.5 rounded-xs font-semibold text-base-content-muted">base-content-muted</span>', 'Muted text color', 'A shade of base-100' union all
+	select '<span class="p-0.5 rounded-xs font-semibold text-base-content">base-content</span>', 'Body text color', 'A shade of base-100' union all
+	select '<span class="p-0.5 rounded-xs font-semibold text-base-heading">base-heading</span>', 'Header text color', 'A shade of base-100' union all
+	select '<span class="p-0.5 rounded-xs font-semibold bg-info text-info-content">info-content</span>', 'Text color used on top of an info background', 'A readable shade of info' union all
+	select '<span class="p-0.5 rounded-xs font-semibold bg-positive text-positive-content">positive-content</span>', 'Text color used on top of a positive background', 'A readable shade of positive' union all
+	select '<span class="p-0.5 rounded-xs font-semibold bg-warning text-warning-content">warning-content</span>', 'Text color used on top of a warning background', 'A readable shade of warning' union all
+	select '<span class="p-0.5 rounded-xs font-semibold bg-negative text-negative-content">negative-content</span>', 'Text color used on top of a negative background', 'A readable shade of negative'
 ```
 
 <DataTable data={advanced_color_tokens} rows=12>

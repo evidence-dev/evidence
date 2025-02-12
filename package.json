@@ -26,6 +26,8 @@
 		"@evidence-dev/telemetry": "link:packages/lib/telemetry",
 		"@evidence-dev/trino": "link:packages/datasources/trino",
 		"@evidence-dev/universal-sql": "link:packages/lib/universal-sql",
+		"@tailwindcss/vite": "^4.0.0",
+		"tailwindcss": "^4.0.0",
 		"@parcel/packager-ts": "2.12.0",
 		"@parcel/transformer-typescript-types": "2.12.0",
 		"@playwright/test": "^1.45.3",

@@ -58,12 +58,13 @@
 
 {#each displayedData as row, i}
 	<tr
-		class:shaded-row={rowShading && i % 2 === 1}
+		class:bg-base-200={rowShading && i % 2 === 1}
 		class:row-link={link && row[link]}
+		class:hover:bg-base-200={link && row[link]}
 		on:mouseover={() => preloadLink(row)}
 		on:focus={() => preloadLink(row)}
 		on:click={() => navigateToLink(row)}
-		class:row-lines={rowLines}
+		class={rowLines ? 'border-b border-base-content-muted/20' : ''}
 	>
 		{#if rowNumbers && groupType !== 'section'}
 			<TableCell class={'index w-[2%]'} {compact}>
@@ -318,24 +319,12 @@
 	</tr>
 {/each}
 
-<style lang="postcss">
-	.row-lines {
-		@apply border-b border-base-content-muted/20;
-	}
-
-	.shaded-row {
-		@apply bg-base-200;
-	}
-
+<style>
 	*:focus {
 		outline: none;
 	}
 
 	.row-link {
 		cursor: pointer;
-	}
-
-	.row-link:hover {
-		@apply bg-base-200;
 	}
 </style>
