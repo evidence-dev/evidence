@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { createFile, deleteFile, editFile, restoreChangedFiles } from './fs-utils';
+import { editFile, restoreChangedFiles } from './fs-utils';
 import { waitForPageToLoad } from '../../test-utils';
 
 /** @param {import("@playwright/test").Page} page */
