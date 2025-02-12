@@ -1,17 +1,19 @@
 <script>
 	// @ts-check
+	import { blur } from 'svelte/transition';
 
 	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
 
 	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
-	import { DeviceFloppy, Plug } from '@evidence-dev/component-utilities/icons';
+	import Switch from '$lib/atoms/switch/Switch.svelte';
 
 	import { Button } from '../../atoms/button/index.js';
 	import SourceNameField, { validateName } from './atoms/SourceNameField.svelte';
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
 
 	export let sourcePlugin;
+	export let isNewSource = false;
 
 	/** @type {Pick<DatasourceSpec, 'name' | 'type' | 'options'> & { initialName?: string }} */
 	export let source;
@@ -20,6 +22,10 @@
 	export let sources;
 
 	const dispatch = createEventDispatcher();
+
+	function handleCancel() {
+		dispatch('cancel');
+	}
 
 	/** @type {boolean} */
 	let reveal;
@@ -30,10 +36,10 @@
 	let configurationError = '';
 	let configurationLoading = false;
 	let configurationOkay = false;
+	let lastTestedConfig = '';
 
 	let validationError = '';
 	let validationLoading = false;
-	let validationOkay = false;
 
 	let nameError = '';
 
@@ -41,13 +47,17 @@
 	const callback = ({ action, cancel }) => {
 		configurationLoading = false;
 		validationLoading = false;
-		nameError = validateName(
-			source.name,
-			sources.filter((s) => s !== source)
-		);
-		if (nameError) {
-			cancel();
-			return;
+
+		// Only validate name if not hidden
+		if (!isNewSource) {
+			nameError = validateName(
+				source.name,
+				sources.filter((s) => s !== source)
+			);
+			if (nameError) {
+				cancel();
+				return;
+			}
 		}
 
 		switch (action.search) {
@@ -59,12 +69,10 @@
 			case '?/testSource':
 				validationLoading = true;
 				validationError = '';
-				validationOkay = false;
 				break;
 		}
 		return ({ result, action }) => {
 			if (result.type === 'failure') {
-				// Some system failure occurred
 				if (typeof result.data === 'string') configurationError = result.data;
 				else if (typeof result.data === 'object' && 'message' in result.data) {
 					switch (action.search) {
@@ -80,7 +88,6 @@
 				configurationLoading = false;
 				configurationOkay = false;
 				validationLoading = false;
-				validationOkay = false;
 				return;
 			}
 
@@ -97,86 +104,133 @@
 				case '?/testSource':
 					if (result.type === 'success') {
 						validationError = '';
+						configurationOkay = true;
+						lastTestedConfig = JSON.stringify(source);
 					}
 					validationLoading = false;
-					validationOkay = true;
 					break;
 			}
-			// If the user decides to rename it again, we need to be ready
 		};
 	};
+
+	/**
+	 * @param {Object} options - The options object to check.
+	 * @returns {boolean} - Returns true if there are secret options, otherwise false.
+	 */
+	function hasSecretOptions(options) {
+		if (!options) return false;
+		return Object.values(options).some((option) => {
+			if (option.secret) return true;
+			if (option.children) {
+				return Object.values(option.children).some((child) =>
+					hasSecretOptions({ [child.title]: child })
+				);
+			}
+			return false;
+		});
+	}
 </script>
 
 <form
 	use:enhance={callback}
 	action="?/updateSource"
 	method="POST"
-	class="w-full bg-base-200 px-4 py-2 rounded"
+	class="w-full flex flex-col gap-8 px-1 pt-8 text-sm"
 >
-	<h3 class="text-sm uppercase font-bold">Configure {source.name}</h3>
-	<section class="flex flex-col gap-2">
-		{#if configurationError}
-			<p class="text-negative font-bold text-xs">{configurationError}</p>
-		{:else if configurationOkay}
-			<p class="text-positive font-bold text-xs">Configuration Updated</p>
+	<section class="flex flex-col gap-4">
+		{#if !isNewSource}
+			<SourceNameField bind:sourceName={source.name} bind:nameError />
 		{/if}
-
-		<h4 class="text-xs uppercase font-bold">Source Info</h4>
-		<SourceNameField bind:sourceName={source.name} bind:nameError />
-		<label class="flex justify-between">
-			Source Type
-			<input
-				disabled
-				value={source.type}
-				class="rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
-			/>
-		</label>
-		<label class="flex justify-between">
-			Reveal Secret Values
-			<input
-				type="checkbox"
-				bind:checked={reveal}
-				class="rounded border border-base-300 p-1 ml-auto w-5 bg-base-100 align-middle text-sm"
-			/>
-		</label>
-		{#if Object.keys(sourcePlugin.options).length}
-			<hr />
-			<h4 class="text-xs uppercase font-bold">Source Options</h4>
+		<input
+			type="hidden"
+			disabled
+			value={source.type}
+			class="rounded border border-base-300 p-1 ml-auto w-2/3 bg-base-100 align-middle text-sm"
+		/>
+		{#if Object.keys(sourcePlugin?.options).length}
 			<SourceConfigFormSection
 				{reveal}
 				disabled={configurationLoading || validationLoading}
 				rootOptions={source.options}
 				bind:options={source.options}
-				optionSpec={sourcePlugin.options}
+				optionSpec={sourcePlugin?.options}
 			/>
 		{/if}
-	</section>
-	<input type="hidden" value={JSON.stringify(source)} name="source" />
-	<div class="flex gap-2 justify-end items-center mt-4">
-		{#if validationError}
-			<p class="text-negative font-bold text-xs">{validationError}</p>
-		{:else if validationOkay}
-			<p class="text-positive font-bold text-xs">Connection Successful!</p>
+
+		{#if hasSecretOptions(sourcePlugin?.options)}
+			<label
+				for="reveal-switch-{source?.name}"
+				class="flex gap-2 items-center pt-4 border-t border-base-200"
+			>
+				Show Hidden Values
+				<Switch bind:checked={reveal} id="reveal-switch-{source?.name}" />
+			</label>
 		{/if}
+	</section>
+	<input
+		type="hidden"
+		value={JSON.stringify({ ...source, dir: `sources/${source.name}` })}
+		name="source"
+	/>
+	<div class="flex justify-between items-center pt-4">
+		<div>
+			{#if configurationError}
+				<p class="text-negative text-xs max-w-md break-words" in:blur|local>
+					{configurationError}
+				</p>
+			{:else if validationError}
+				<p class="text-negative text-xs max-w-md break-words" in:blur|local>{validationError}</p>
+			{:else if configurationOkay}
+				<div class="flex gap-2 items-center" in:blur|local>
+					<div
+						class="h-2 w-2 bg-positive rounded-full inline-flex items-center justify-center animate-pulse"
+					>
+						<div class="h-2 w-2 rounded-full bg-positive"></div>
+					</div>
+					<p class="text-base-content-muted font-medium text-xs">Connected</p>
+				</div>
+			{/if}
+		</div>
+		<div class="flex gap-2 justify-end items-center pt-1">
+			{#if isNewSource}
+				<Button variant="ghost" type="button" on:click={handleCancel}>Back</Button>
+			{/if}
 
-		<Button
-			outline
-			size="md"
-			formaction="?/testSource"
-			disabled={validationLoading || configurationLoading}
-			icon={Plug}
-		>
-			{validationLoading ? 'Loading...' : 'Test Connection'}
-		</Button>
-
-		<Button
-			variant="positive"
-			icon={DeviceFloppy}
-			size="md"
-			disabled={configurationLoading || validationLoading}
-			type="submit"
-		>
-			Confirm Changes
-		</Button>
+			{#if isNewSource && source?.type === 'duckdb'}
+				<!-- 
+				The option to create the connection + directory before testing should be added at the plugin level, not in this hardcode. 
+				Testing the connection now preceedes saving it and creating a directory. 
+				This is awkward for duckdb connections, since you must have the directory created before you can put in the db and have your test pass.
+				-->
+				<Button
+					variant="primary"
+					disabled={configurationLoading || validationLoading}
+					class={validationLoading ? 'animate-pulse' : 'w-full'}
+					type="submit"
+				>
+					Save
+				</Button>
+			{:else if !configurationOkay || JSON.stringify(source) !== lastTestedConfig}
+				<Button
+					variant="primary"
+					formaction="?/testSource"
+					disabled={validationLoading || configurationLoading}
+					class={validationLoading ? 'animate-pulse w-32' : 'w-32'}
+				>
+					Test Configuration
+				</Button>
+			{:else}
+				<div in:blur|local>
+					<Button
+						variant="primary"
+						disabled={configurationLoading || validationLoading}
+						class={validationLoading ? 'animate-pulse' : 'w-32'}
+						type="submit"
+					>
+						Save
+					</Button>
+				</div>
+			{/if}
+		</div>
 	</div>
 </form>

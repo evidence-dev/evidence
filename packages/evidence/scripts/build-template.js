@@ -55,6 +55,18 @@ fsExtra.outputFileSync(
 	import { log } from "@evidence-dev/sdk/logger";
 	import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
 
+
+	process.removeAllListeners('warning');
+	process.on('warning', (warning) => {
+	  if (warning.name === 'ExperimentalWarning' && 
+	      warning.message.includes('CommonJS module') && 
+	      warning.message.includes('ES Module')) {
+	    return;
+	  }
+	  console.warn(warning);
+	});
+
+
 	const logger = createLogger();
 
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;

@@ -17,9 +17,9 @@ export function updateSearchPath(schemas): Promise<void>;
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @returns {Promise<import('apache-arrow').Table | null>}
+ * @returns {Promise<Record<string, unknown>[]>}
  */
-export function query(sql: string): Promise<import('apache-arrow').Table | null>;
+export function query(sql: string): Promise<Record<string, unknown>[]>;
 
 /**
  * Adds a new view to the database, pointing to the provided parquet URLs.

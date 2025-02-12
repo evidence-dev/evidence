@@ -434,7 +434,7 @@ Then use them in component props
 
 ### Props
 
-The color props accepted by many components (e.g. [`fillColor`](/components/charts/bar-chart/#props-fillColor), [`labelColor`](/components/charts/annotations#props-labelColor)) accept a color in several different formats to reduce the friction of theming your app.
+The color props accepted by many components (e.g. [`fillColor`](/components/charts/bar-chart#props-fillColor), [`labelColor`](/components/charts/annotations#props-labelColor)) accept a color in several different formats to reduce the friction of theming your app.
 
 
 1. **Use a color name from your theme.** Its configured light and dark values will be used.

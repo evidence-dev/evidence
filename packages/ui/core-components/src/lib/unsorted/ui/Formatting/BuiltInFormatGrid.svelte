@@ -1,18 +1,14 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import { defaultExample, formatExample } from '@evidence-dev/component-utilities/formatting';
 	export let formats;
 </script>
 
-<table>
-	<thead>
-		<th class="align_left narrow_column">Format Name</th>
-		<th class="align_left wide_column">Format Code</th>
-		<th class="align_left wide_column">Example Input</th>
-		<th class="align_right wide_column">Example Output</th>
+<table class="w-full border-separate [border-spacing:0.5rem_0.5rem] -mx-2">
+	<thead class="text-sm py-2">
+		<th class="max-w-14 text-left font-medium">Format Name</th>
+		<th class="min-w-20 text-left font-medium">Format Code</th>
+		<th class="min-w-20 text-left font-medium">Example Input</th>
+		<th class="min-w-20 text-right font-medium">Example Output</th>
 	</thead>
 	{#each formats as format}
 		<tr>
@@ -24,71 +20,12 @@
 					placeholder={format.exampleInput || defaultExample(format.valueType)}
 					bind:value={format.userInput}
 					on:blur={(format.userInput = undefined)}
-					class="align_left input_box"
+					class="rounded shadow-sm border border-base-300 px-2 py-1 text-sm w-full bg-base-100 focus:ring-base-300 focus:border-base-300 focus:outline-none focus:ring-1"
 				/>
 			</td>
-			<td class="align_right">{formatExample(format)}</td>
+			<td class="text-right max-w-0">
+				{formatExample(format)}
+			</td>
 		</tr>
 	{/each}
 </table>
-
-<style>
-	table {
-		font-size: 14px;
-		border-collapse: collapse;
-		/* Offset the cell padding to get the outside edges aligned w/ the parent */
-		margin-left: -8px;
-		width: calc(100% + 16px);
-	}
-	th {
-		max-width: 1px;
-		font-weight: 600;
-		padding: 0px 8px;
-		text-overflow: ellipsis;
-		overflow: hidden;
-	}
-	td {
-		padding: 4px 8px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	/* tr:hover {
-  background-color: rgb(247, 249, 250);
-} */
-	.align_left {
-		text-align: left;
-	}
-	.align_right {
-		text-align: right;
-	}
-	.wide_column {
-		min-width: 120px;
-	}
-	.narrow_column {
-		max-width: 60px;
-	}
-	.input_box {
-		width: 100%;
-	}
-
-	input {
-		background: var(--base-200);
-		box-sizing: border-box;
-		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--base-300);
-		padding: 0.25em 0.25em 0.25em 0.25em;
-		margin-left: auto;
-		width: 65%;
-		padding: 0.35em;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		vertical-align: middle;
-		font-size: 12px;
-	}
-	input:required {
-		box-shadow: none;
-	}
-	input:focus {
-		outline: none;
-	}
-</style>

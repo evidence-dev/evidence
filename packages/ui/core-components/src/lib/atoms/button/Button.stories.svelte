@@ -10,38 +10,92 @@
 
 <script>
 	import { Story } from '@storybook/addon-svelte-csf';
+	import { ServerCog } from '@evidence-dev/component-utilities/icons';
 
 	/** @type {import('./Button.svelte').ButtonVariant[]} */
-	const variants = ['primary', 'secondary', 'accent', 'info', 'positive', 'warning', 'negative'];
+	const variants = ['default', 'primary', 'destructive', 'muted', 'ghost', 'link'];
 
 	/** @type {import('./Button.svelte').ButtonSize[]} */
-	const sizes = ['sm', 'md', 'base', 'lg'];
-
-	const outlines = [false, true];
-
-	const disableds = [false, true];
+	const sizes = ['default', 'lg', 'xl'];
 </script>
 
-<Story name="All">
-	<div class="grid grid-cols-3 gap-2">
-		<span />
-		{#each outlines as outline}
-			<code>outline={outline}</code>
-		{/each}
-		{#each variants as variant}
-			{#each disableds as disabled}
-				<code>disabled={disabled}</code>
-				{#each outlines as outline}
-					<div class="flex flex-col gap-1 p-1 bg-base-100">
-						{#each sizes as size}
-							<span>
-								<Button {variant} {disabled} {outline} {size}>Click me</Button>
-							</span>
-						{/each}
-					</div>
-				{/each}
+<Story name="All Variants">
+	{#each variants as variant}
+		<div class="w-full bg-base-200 px-2 py-1 text-sm rounded border mt-4">
+			<span class="capitalize">{variant}</span>
+		</div>
+		<div class="flex flex-col gap-4 py-4">
+			{#each sizes as size}
+				<div class="flex justify-between">
+					<Button {variant} {size}>Save</Button>
+					<span class="capitalize text-secondary">
+						{size}
+					</span>
+				</div>
 			{/each}
-		{/each}
-	</div>
-	<div style="height:200px" />
+		</div>
+	{/each}
+</Story>
+
+<Story name="Icon Left">
+	{#each variants as variant}
+		<div class="w-full bg-base-200 px-2 py-1 text-sm rounded border mt-4">
+			<span class="capitalize">{variant}</span>
+		</div>
+		<div class="flex flex-col gap-4 py-4">
+			{#each sizes as size}
+				<div class="flex justify-between">
+					<Button {variant} {size} icon={ServerCog} iconPosition="left">Configure</Button>
+					<span class="capitalize text-secondary">
+						{size}
+					</span>
+				</div>
+			{/each}
+		</div>
+	{/each}
+</Story>
+
+<Story name="Icon Right">
+	{#each variants as variant}
+		<div class="w-full bg-base-200 px-2 py-1 text-sm rounded border mt-4">
+			<span class="capitalize">{variant}</span>
+		</div>
+		<div class="flex flex-col gap-4 py-4">
+			{#each sizes as size}
+				<div class="flex justify-between">
+					<Button {variant} {size} icon={ServerCog}>Configure</Button>
+					<span class="capitalize text-secondary">
+						{size}
+					</span>
+				</div>
+			{/each}
+		</div>
+	{/each}
+</Story>
+
+<Story name="Disabled">
+	{#each variants as variant}
+		<div class="w-full bg-base-200 px-2 py-1 text-sm rounded border mt-4">
+			<span class="capitalize">{variant}</span>
+		</div>
+		<div class="flex flex-col gap-4 py-4">
+			{#each sizes as size}
+				<div class="flex justify-between">
+					<Button {variant} {size} disabled>Save</Button>
+					<span class="capitalize text-secondary">
+						{size}
+					</span>
+				</div>
+			{/each}
+		</div>
+	{/each}
+</Story>
+
+<Story name="Custom Classes">
+	<span class="font-mono text-xs bg-base-200 w-full rounded px-2 py-1 border">
+		class='w-full mt-6'
+	</span>
+	{#each variants as variant}
+		<Button {variant} class="w-full mt-6">Save</Button>
+	{/each}
 </Story>

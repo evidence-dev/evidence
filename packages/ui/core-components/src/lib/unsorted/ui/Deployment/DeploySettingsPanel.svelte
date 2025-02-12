@@ -1,147 +1,124 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	// @ts-check
-
 	/** @typedef {import('@evidence-dev/sdk/plugins').DatasourceSpec} DatasourceSpec */
 
-	import EvidenceDeploy from './EvidenceDeploy.svelte';
-	import NetlifyDeploy from './NetlifyDeploy.svelte';
-	import VercelDeploy from './VercelDeploy.svelte';
-	import OtherDeploy from './OtherDeploy.svelte';
+	import CopyEnvironmentVariables from './CopyEnvironmentVariables.svelte';
 	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
-	import { slide } from 'svelte/transition';
-
-	/** @type {{ gitRepo?: string }}*/
-	export let settings;
-
 	/** @type {DatasourceSpec[]} */
 	export let sources;
-
-	/** @typedef {typeof import('svelte').SvelteComponent<{ settings?: { gitRepo?: string }; sources?: unknown }>} FormComponent */
-	/** @type {{ id: string; name: string; FormComponent: FormComponent }[]} */
-	let deploymentOptions = [
-		{ id: 'evidence', name: 'Evidence Cloud', FormComponent: EvidenceDeploy },
-		{ id: 'netlify', name: 'Netlify', FormComponent: NetlifyDeploy },
-		{ id: 'vercel', name: 'Vercel', FormComponent: VercelDeploy },
-		{ id: 'other', name: 'Self-host (other)', FormComponent: OtherDeploy }
-	];
-
-	let selectedDeployment = deploymentOptions[0];
 </script>
 
-<form id="deploy">
-	<div class="deploy-settings-box">
-		<div class="panel">
-			<h2>Deployment</h2>
-			<p>
-				Evidence projects can be deployed to a variety of cloud environments. The easiest way to
-				deploy your project is with <b>Evidence Cloud</b>.
-			</p>
-			<h3>Environment Variables</h3>
-			<div>
-				<EnvironmentVarListing {sources} />
+<section class="w-full pt-2 pb-10">
+	<div class="pb-4">
+		<h3 class="text-base-content text-lg font-semibold mt-0 mb-5">Evidence Cloud</h3>
+		<!-- <ul>
+			<li>Host your project at <code>{'<'}project-name{'>'}.evidence.app</code></li>
+			<li>Authenticate users</li>
+			<li>Schedule updates to your data</li>
+			<li>Re-build when you push changes to your project</li>
+		</ul> -->
+		<div class="flex gap-4 items-center">
+			<div
+				class="flex items-center justify-center text-base-content font-bold border border-base-300 w-8 h-8 rounded-full shadow-sm tabular-nums"
+			>
+				1
 			</div>
-
-			<h3>Deployment Environment</h3>
-			<select bind:value={selectedDeployment} class="mb-2">
-				{#each deploymentOptions as option}
-					<option value={option}>
-						{option.name}
-					</option>
-				{/each}
-			</select>
+			<h4 class="font-bold text-base-content">Check your project into version control</h4>
 		</div>
-		{#if selectedDeployment.FormComponent}
-			<div class="panel" transition:slide|local>
-				<svelte:component this={selectedDeployment.FormComponent} {settings} {sources} />
+		<div class="pl-8 ml-[calc(1rem-0.5px)] pt-1 pb-10 border-l border-base-200">
+			<p>
+				Evidence Cloud deploys your project from its Github repository. As you make changes to your
+				project and commit them to main, Evidence cloud will update your deployed project.
+			</p>
+		</div>
+		<div class="flex gap-4 items-center">
+			<div
+				class="flex items-center justify-center text-base-content font-bold border border-base-300 w-8 h-8 rounded-full shadow-sm tabular-nums"
+			>
+				2
 			</div>
-		{/if}
-	</div>
-	<footer>
-		<span
-			>Learn more about <a
-				class="docs-link"
+			<h4 class="font-bold text-base-content">Sign in to Evidence Cloud</h4>
+		</div>
+		<div class="pl-8 ml-[calc(1rem-0.5px)] pt-1 pb-10 border-l border-base-200">
+			<p>
+				Sign into Evidence Cloud using your GitHub account and add a new project. Follow the steps
+				to connect to your Github repository.
+			</p>
+			<a
+				href="https://evidence.app"
 				target="_blank"
-				rel="noreferrer"
-				href="https://docs.evidence.dev/deployment/overview">Deploying your Project &rarr;</a
-			></span
-		>
-	</footer>
-</form>
+				class="inline-flex items-center justify-center rounded-md font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-base-300 disabled:pointer-events-none disabled:opacity-50 mt-4 w-full h-10 px-10 text-sm w-full bg-base-content text-base-100 shadow-sm hover:bg-base-content/90 active:bg-base-content/80"
+				>Sign In</a
+			>
+		</div>
+		<div class="flex gap-4 items-center">
+			<div
+				class="flex items-center justify-center text-base-content font-bold border border-base-300 w-8 h-8 rounded-full shadow-sm tabular-nums"
+			>
+				3
+			</div>
 
-<style lang="postcss">
-	h3 {
-		@apply uppercase text-sm leading-loose mt-6 mb-1;
-	}
+			<h4 class="font-bold text-base-content">Set your Project Environment Variables</h4>
+		</div>
+		<div class="pl-8 ml-[calc(1rem-0.5px)] pt-1 pb-10 border-l border-base-200">
+			<p>
+				While you are setting up your cloud project, you'll be prompted for your environment
+				variables to connect Evidence cloud to your sources. Copy them here.
+			</p>
+			<CopyEnvironmentVariables {sources} />
+			<div class="mt-4">
+				<p class="text-base-content-muted">
+					To use different connection settings your other deployment environment,
+					<a
+						class=" underline underline-offset-2"
+						href="https://docs.evidence.dev/deployment/environments"
+						target="_blank"
+					>
+						set different environment variable values in cloud
+					</a>
+					.
+				</p>
+			</div>
+		</div>
+		<div class="flex gap-4 items-center">
+			<div
+				class="flex items-center justify-center text-base-content font-bold border border-base-300 w-8 h-8 rounded-full shadow-sm tabular-nums"
+			>
+				4
+			</div>
 
-	h2 {
-		@apply font-semibold text-lg pt-3 pb-2;
-	}
-
-	p {
-		@apply text-sm py-2;
-	}
-	select {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-		padding: 0.35em;
-		width: 100%;
-		border: 1px solid var(--base-300);
-		font-family: var(--ui-font-family);
-		background: var(--base-200);
-		margin: 0.5em 0 0 0;
-		transition: all 400ms;
-		cursor: pointer;
-	}
-
-	select:hover {
-		@apply shadow-md border-base-content;
-		transition: all 400ms;
-	}
-
-	select:focus {
-		outline: none;
-	}
-
-	form {
-		scroll-margin-top: 3.5rem; /* offset for sticky header */
-	}
-	.deploy-settings-box {
-		margin-top: 2em;
-		border-top: 1px solid var(--base-300);
-		border-left: 1px solid var(--base-300);
-		border-right: 1px solid var(--base-300);
-		border-radius: 5px 5px 0 0;
-		font-size: 14px;
-		font-family: var(--ui-font-family);
-		min-width: 100%;
-	}
-
-	.panel {
-		border-top: 1px solid var(--base-300);
-		padding: 0em 1em 1em 1em;
-	}
-
-	.panel:first-of-type {
-		border-top: none;
-	}
-
-	footer {
-		border: 1px solid var(--base-300);
-		border-radius: 0 0 5px 5px;
-		background-color: var(--base-200);
-		padding: 1em;
-		display: flex;
-		font-size: 14px;
-		align-items: center;
-		font-family: var(--ui-font-family);
-	}
-
-	.docs-link {
-		@apply text-primary hover:brightness-110 active:brightness-90 transition;
-	}
-</style>
+			<h4 class="font-bold text-base-content">Done</h4>
+		</div>
+		<div class="pl-8 ml-[calc(1rem-0.5px)] pt-1 pb-4 border-l border-base-200">
+			<p>
+				When you make changes to your project locally, push them to main, and Evidence cloud will
+				update your deployed project.
+			</p>
+		</div>
+		<h3 class="text-base-content text-lg font-semibold mt-0 mb-4 mt-8">Other Environments</h3>
+		<p class="text-base-content mb-4 text-pretty">
+			Documentation on deploying Evidence projects to a variety of cloud environments is available <a
+				href="https://docs.evidence.dev/deployment/overview/"
+				class="markdown"
+				target="_blank"
+			>
+				here.</a
+			> For all deployment environments, you will need to set the environment variables using the key
+			value pairs below.
+		</p>
+		<EnvironmentVarListing {sources} />
+		<div class="mt-6">
+			<p class="text-base-content-muted">
+				To use different connection settings your deployment environment,
+				<a
+					class=" underline underline-offset-2"
+					href="https://docs.evidence.dev/deployment/environments"
+					target="_blank"
+				>
+					set different environment variable values in your deployment environment
+				</a>
+				.
+			</p>
+		</div>
+	</div>
+</section>

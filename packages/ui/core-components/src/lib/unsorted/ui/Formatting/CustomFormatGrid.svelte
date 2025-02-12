@@ -1,26 +1,22 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { CircleX } from '@steeze-ui/tabler-icons';
 	import { defaultExample, formatExample } from '@evidence-dev/component-utilities/formatting';
+	import Button from '../../../atoms/button/Button.svelte';
+	import { flip } from 'svelte/animate';
 
 	export let formats;
 	export let deleteHandler;
 </script>
 
-<table>
-	<thead>
-		<th class="align_left narrow_column">Format Name</th>
-		<th class="align_left wide_column">Format Code</th>
-		<th class="align_left wide_column">Example Input</th>
-		<th class="align_right wide_column">Example Output</th>
-		<th><!--actions --></th>
+<table class="w-full border-separate [border-spacing:0.5rem_0.5rem] -mx-2">
+	<thead class="text-sm py-2">
+		<th class="max-w-18 text-left font-medium">Format Name</th>
+		<th class="max-w-18 text-left font-medium">Format Code</th>
+		<th class="min-w-20 text-left font-medium">Example Input</th>
+		<th class="min-w-20 text-right font-medium">Example Output</th>
+		<th class="max-w-8 text-right"><!--actions --></th>
 	</thead>
-	{#each formats as format}
-		<tr>
+	{#each formats as format (format.formatTag)}
+		<tr animate:flip>
 			<td>{format.formatTag} </td>
 			<td>{format.formatCode} </td>
 			<td>
@@ -29,97 +25,15 @@
 					placeholder={format.exampleInput || defaultExample(format.valueType)}
 					bind:value={format.userInput}
 					on:blur={(format.userInput = undefined)}
-					class="align_left input_box"
+					class="rounded shadow-sm border border-base-300 px-2 py-1 text-sm w-full bg-base-100 focus:ring-base-300 focus:border-base-300 focus:outline-none focus:ring-1"
 				/>
 			</td>
-			<td class="align_right">{formatExample(format)}</td>
-			<td>
-				<button
-					type="button"
-					on:click={() => deleteHandler(format)}
-					tooltip="Remove"
-					class="mb-0.5"
-				>
-					<div class="deleteIcon">
-						<Icon src={CircleX} />
-					</div>
-				</button>
+			<td class="text-right max-w-0">{formatExample(format)}</td>
+			<td class="flex justify-end">
+				<Button type="button" on:click={() => deleteHandler(format)} variant="ghost" size="sm">
+					Delete
+				</Button>
 			</td>
 		</tr>
 	{/each}
 </table>
-
-<style>
-	.deleteIcon {
-		color: var(--negative);
-		width: 16px;
-		cursor: pointer;
-	}
-
-	button {
-		background: none;
-		border: none;
-		cursor: pointer;
-		vertical-align: middle;
-	}
-
-	.deleteIcon:hover {
-		color: var(--negative);
-	}
-
-	table {
-		font-size: 14px;
-		border-collapse: collapse;
-		/* Offset the cell padding to get the outside edges aligned w/ the parent */
-		margin-left: -8px;
-		width: calc(100% + 16px);
-	}
-	th {
-		max-width: 1px;
-		font-weight: 600;
-		padding: 0px 8px;
-		text-overflow: ellipsis;
-		overflow: hidden;
-	}
-	td {
-		padding: 4px 8px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.align_left {
-		text-align: left;
-	}
-	.align_right {
-		text-align: right;
-	}
-	.wide_column {
-		min-width: 120px;
-	}
-	.narrow_column {
-		max-width: 60px;
-	}
-	.input_box {
-		width: 100%;
-	}
-
-	input {
-		box-sizing: border-box;
-		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--base-300);
-		background: var(--base-200);
-		padding: 0.25em 0.25em 0.25em 0.25em;
-		margin-left: auto;
-		width: 65%;
-		padding: 0.35em;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		vertical-align: middle;
-		font-size: 12px;
-	}
-	input:required {
-		box-shadow: none;
-	}
-	input:focus {
-		outline: none;
-	}
-</style>

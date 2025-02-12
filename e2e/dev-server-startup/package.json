@@ -1,6 +1,6 @@
 {
   "name": "e2e-dev-server-startup",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "scripts": {
     "build": "evidence build",
     "build:strict": "evidence build:strict",
@@ -20,7 +20,7 @@
     "@evidence-dev/duckdb": "workspace:*",
     "@evidence-dev/evidence": "workspace:*",
     "vite": "5.4.14",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.9"
   },
   "overrides": {
     "jsonwebtoken": "9.0.0",
