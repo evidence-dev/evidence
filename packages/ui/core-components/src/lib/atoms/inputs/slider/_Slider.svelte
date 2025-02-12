@@ -4,6 +4,7 @@
 
 <script>
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	const inputs = getInputContext();
 	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
@@ -99,7 +100,7 @@
 		checkMinMax(min, max);
 	}
 
-	$: if (defaultValue !== undefined && !data) {
+	if (defaultValue !== undefined && !data) {
 		defaultValue = validateNumber(defaultValue, 'defaultValue');
 		if (defaultValue < min) {
 			errors.push('defaultValue cannot be less than min');
@@ -109,7 +110,19 @@
 		value = [defaultValue];
 	}
 
+	// Keep inputs in sync
 	$: $inputs[name] = value;
+
+	// URL params hydration
+	hydrateFromUrlParam(name, (v) => {
+		if (v[0]) {
+			value = [v];
+		}
+	});
+
+	$: if (value) {
+		updateUrlParam(name, value, 50);
+	}
 
 	const renderSize = (size) => {
 		const sizeMap = {

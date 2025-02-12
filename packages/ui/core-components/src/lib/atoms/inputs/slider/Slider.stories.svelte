@@ -38,6 +38,35 @@
 
 	$: dynamicMaxColumn = $inputStore?.['maxCol']?.value ? $inputStore['maxCol'].value : 1000;
 	$: dynamicMinColumn = $inputStore?.['maxCol']?.value ? $inputStore['minCol'].value : 0;
+
+	let storyIframeURL = '';
+
+	const updateURL = () => {
+		storyIframeURL = window.location.href;
+
+		// Try forcing Storybook to recognize the change
+		const iframe = document.querySelector('iframe');
+		if (iframe) {
+			iframe.src = iframe.src; // Force reload
+		}
+	};
+
+	(function () {
+		const pushState = history.pushState;
+		const replaceState = history.replaceState;
+
+		history.pushState = function () {
+			pushState.apply(history, arguments);
+			updateURL();
+		};
+
+		history.replaceState = function () {
+			replaceState.apply(history, arguments);
+			updateURL();
+		};
+
+		window.addEventListener('popstate', updateURL);
+	})();
 </script>
 
 <Template let:args>
@@ -237,3 +266,13 @@
 		fmt: 'usd'
 	}}
 />
+<Story name="URL params">
+	<Slider name="URLParams" title="update url params" defaultValue={12} />
+	<div class="mt-4">URL: {storyIframeURL}</div>
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	>
+</Story>

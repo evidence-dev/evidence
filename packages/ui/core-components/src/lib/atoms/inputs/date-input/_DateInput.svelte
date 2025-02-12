@@ -211,8 +211,9 @@
 		!selectedDateInput &&
 		!selectedPreset &&
 		presets.length
-	)
+	){
 		applyPreset(defaultValue);
+	}
 
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);

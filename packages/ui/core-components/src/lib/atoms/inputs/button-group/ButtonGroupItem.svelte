@@ -22,6 +22,8 @@
 	/** @type {string} */
 	export let defaultValue;
 
+	let buttonGroupDefaultValue = getContext('button-group-defaultValue');
+
 	let display = getContext('button-display');
 
 	const { update, value: currentValue } = getButtonGroupContext();
@@ -30,11 +32,9 @@
 	let _default = false;
 	export { _default as default };
 
-	if (_default) {
+	if ($buttonGroupDefaultValue === value || defaultValue === value) {
 		update({ valueLabel, value });
-	}
-
-	if (defaultValue === value) {
+	} else if (_default && !$buttonGroupDefaultValue) {
 		update({ valueLabel, value });
 	}
 </script>

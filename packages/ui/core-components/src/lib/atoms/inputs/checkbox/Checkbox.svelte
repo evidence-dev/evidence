@@ -3,6 +3,7 @@
 </script>
 
 <script>
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	import Button from '../../shadcn/button/button.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import Info from '../../../unsorted/ui/Info.svelte';
@@ -34,7 +35,10 @@
 
 	/** @type {boolean | string} */
 	export let defaultValue = false;
+
+	hydrateFromUrlParam(name, (v) => (defaultValue = v ?? defaultValue));
 	$: defaultValue = toBoolean(defaultValue);
+	$: updateUrlParam(name, $inputs[name]);
 
 	if (defaultValue !== undefined) {
 		console.warn('`defaultValue` is deprecated. Please use the `checked` prop instead.');

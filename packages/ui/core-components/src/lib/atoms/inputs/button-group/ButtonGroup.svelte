@@ -3,6 +3,8 @@
 </script>
 
 <script>
+	import { page } from '$app/stores';
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	import { presets, setButtonGroupContext } from './lib.js';
 	import { writable, readonly } from 'svelte/store';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
@@ -10,7 +12,6 @@
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
-	import { page } from '$app/stores';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
@@ -37,6 +38,7 @@
 
 	/** @type {string | undefined} */
 	export let defaultValue = undefined;
+	$: console.log(defaultValue, 'defaultValue');
 
 	setContext('button-display', display);
 
@@ -50,11 +52,19 @@
 
 	const valueStore = writable(null);
 
+	hydrateFromUrlParam(name, (v) => {
+		if (v) {
+			defaultValue = v;
+		}
+	});
+	setContext('button-group-defaultValue', writable(defaultValue));
+
 	// TODO: Use getInputSetter instead
 	setButtonGroupContext((v) => {
 		$valueStore = v;
-		// the assignment to $inputs is necessary to trigger the change on SSR
 		$inputs[name] = v?.value ?? null;
+		//
+		updateUrlParam(name, v?.value);
 	}, readonly(valueStore));
 
 	/////

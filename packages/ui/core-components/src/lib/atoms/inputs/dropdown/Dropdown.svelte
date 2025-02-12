@@ -5,6 +5,7 @@
 </script>
 
 <script>
+	import { hydrateFromUrlParam, updateUrlParam } from '@evidence-dev/sdk/utils/svelte';
 	import { dropdownOptionStore } from './dropdownOptionStore.js';
 	import { onDestroy, setContext } from 'svelte';
 	import { DropdownContext } from './constants.js';
@@ -108,6 +109,13 @@
 			? $inputs[name].rawValues
 			: [];
 
+	// hydrateFromUrlParam(name, (v) => (defaultValue = v));
+	hydrateFromUrlParam(name, (v) => {
+		if (v) {
+			defaultValue = v;
+		}
+	});
+
 	const state = dropdownOptionStore({
 		multiselect: multiple,
 		defaultValues: Array.isArray(defaultValue) ? defaultValue : [defaultValue],
@@ -135,6 +143,10 @@
 		if (JSON.stringify(newValue) !== JSON.stringify($inputs[name])) {
 			$inputs[name] = newValue;
 		}
+
+		const paramValue = multiple ? newValue.rawValues.map((x) => x.value) : newValue.value;
+
+		updateUrlParam(name, paramValue);
 	};
 
 	let opts = [];
