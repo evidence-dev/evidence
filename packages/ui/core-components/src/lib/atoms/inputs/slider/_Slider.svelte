@@ -17,7 +17,6 @@
 	import InlineError from '../InlineError.svelte';
 	import checkRequiredProps from '../checkRequiredProps.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import { browserDebounce } from '@evidence-dev/sdk/utils';
 
 	/////
 	// Component Things
@@ -76,12 +75,6 @@
 
 	let errors = [];
 
-	/** @type {[number]} */
-	let value;
-	// const updateUrl = useUrlParams(name, (v) => {
-	// 	value = v ?? defaultValue;
-	// });
-
 	function validateNumber(value, valueType) {
 		value = toNumber(value);
 		if (isNaN(value)) {
@@ -107,7 +100,7 @@
 		checkMinMax(min, max);
 	}
 
-	$: if (defaultValue !== undefined && !data) {
+	if (defaultValue !== undefined && !data) {
 		defaultValue = validateNumber(defaultValue, 'defaultValue');
 		if (defaultValue < min) {
 			errors.push('defaultValue cannot be less than min');
@@ -118,15 +111,11 @@
 	}
 
 	// Keep inputs in sync
-	$inputs[name] = value;
+	$: $inputs[name] = value;
 
 	// URL params hydration
-	// hydrateFromUrlParam(name, (v) => {
-	// 	value = [v] ?? [defaultValue];
-	// });
-
 	hydrateFromUrlParam(name, (v) => {
-		if (v) {
+		if (v[0]) {
 			value = [v];
 		}
 	});
