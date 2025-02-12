@@ -270,7 +270,6 @@
 
 <style>
 	:global(body) {
-		/* @apply bg-base-100 text-base-content; */
 		background-color: var(--color-base-100);
 		color: var(--color-base-content);
 	}

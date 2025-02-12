@@ -38,7 +38,6 @@ html.theme-dark {
 }
 `.trim()
 
-		// const actual = await runPlugin(themes);
 		expect(baseOut.trim()).toEqual(expected);
 	});
 });
