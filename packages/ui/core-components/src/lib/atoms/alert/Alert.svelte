@@ -23,7 +23,7 @@
 		info: 'border-info/50 bg-info/10 text-info',
 		negative: 'border-negative/50 bg-negative/10 text-negative',
 		positive: 'border-positive/50 bg-positive/10 text-positive',
-		warning: 'border-warning/50 bg-warning/10 text-warning',
+		warning: 'border-warning/50 bg-warning/10 text-warning'
 	};
 </script>
 
