@@ -20,7 +20,7 @@ import { emptyDbFs, initDB, query } from './client-duckdb/node.js';
 import chunk from 'lodash.chunk';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
-import { log } from '@evidence-dev/sdk/logger';
+// import { log } from '@evidence-dev/sdk/logger';
 
 /**
  * @param {{name: string, evidenceType: string}} column
@@ -86,9 +86,9 @@ export async function buildMultipartParquet(
 	outputFilename,
 	batchSize = 1000000
 ) {
-	log.debug(`Building parquet file ${outputFilename}`);
-	let { meta: fn_meta, done: fn_done } = log.measure('buildMultipartParquet');
-	fn_meta('output filename', outputFilename);
+	// log.debug(`Building parquet file ${outputFilename}`);
+	// let { meta: fn_meta, done: fn_done } = log.measure('buildMultipartParquet');
+	// fn_meta('output filename', outputFilename);
 
 	let batchNum = 0;
 	const outputSubpath = outputFilename.split('.parquet')[0];
@@ -96,9 +96,9 @@ export async function buildMultipartParquet(
 	let rowCount = 0;
 
 	const flush = async (results) => {
-		log.debug(`Flushing batch ${batchNum} with ${results.length} rows`);
-		let { meta, done } = log.measure('flush');
-		meta('batch number', batchNum);
+		// log.debug(`Flushing batch ${batchNum} with ${results.length} rows`);
+		// let { meta, done } = log.measure('flush');
+		// meta('batch number', batchNum);
 
 		// Convert JS Objects -> Arrow
 		const vectorized = Object.fromEntries(
@@ -131,8 +131,8 @@ export async function buildMultipartParquet(
 		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
 
-		done();
-		log.debug(`Flushed batch ${batchNum} with ${results.length} rows`);
+		// done();
+		// log.debug(`Flushed batch ${batchNum} with ${results.length} rows`);
 
 		batchNum++;
 	};
@@ -153,26 +153,26 @@ export async function buildMultipartParquet(
 		})();
 	}
 
-	log.debug('Reading rows from a generator object');
-	let { meta, done } = log.measure('buildMultipartParquet');
-	meta('batch number', batchNum);
+	// log.debug('Reading rows from a generator object');
+	// let { meta, done } = log.measure('buildMultipartParquet');
+	// meta('batch number', batchNum);
 
 	const currentBatch = [];
 	for await (const results of data) {
 		for (const result of results) currentBatch.push(result);
 
 		if (currentBatch.length >= batchSize) {
-			done();
-			log.debug(`Flushing batch ${batchNum} with ${currentBatch.length} rows`);
+			// done();
+			// log.debug(`Flushing batch ${batchNum} with ${currentBatch.length} rows`);
 			await flush(currentBatch);
 			currentBatch.length = 0;
-			({ meta, done } = log.measure('buildMultipartParquet'));
-			meta('batch number', batchNum);
+			// ({ meta, done } = log.measure('buildMultipartParquet'));
+			// meta('batch number', batchNum);
 		}
 	}
 
-	done();
-	log.debug(`Flushing batch ${batchNum} with ${currentBatch.length} rows`);
+	// done();
+	// log.debug(`Flushing batch ${batchNum} with ${currentBatch.length} rows`);
 
 	if (currentBatch.length) await flush(currentBatch);
 
@@ -230,7 +230,7 @@ export async function buildMultipartParquet(
 	}
 	await emptyDbFs('*');
 
-	fn_done();
+	// fn_done();
 
 	return rowCount;
 }

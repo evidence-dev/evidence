@@ -2,9 +2,9 @@
 	import VariableCopy from './VariableCopy.svelte';
 </script>
 
-<h2>Deploying your Project</h2>
+<h2 class="font-semibold text-lg pt-3 pb-2">Deploying your Project</h2>
 
-<p>In production, Evidence functions like a static site generator:</p>
+<p class="text-sm py-2">In production, Evidence functions like a static site generator:</p>
 <ol>
 	<li>
 		Running <code>npm run build</code> will build a static site in the <code>/build</code> directory
@@ -25,13 +25,6 @@
 </div>
 
 <style>
-	h2 {
-		@apply font-semibold text-lg pt-3 pb-2;
-	}
-
-	p {
-		@apply text-sm py-2;
-	}
 	span.setting {
 		font-size: 0.85em;
 		text-transform: uppercase;

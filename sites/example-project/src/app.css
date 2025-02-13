@@ -1,7 +1,24 @@
 /* Write your global styles here, in PostCSS syntax */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config "@evidence-dev/tailwind/config";
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentColor);
+	}
+}
 
 @layer base {
 	html {
@@ -68,7 +85,7 @@
 	}
 
 	article.markdown a.markdown {
-		@apply text-primary underline decoration-transparent hover:decoration-primary  transition-all duration-200 !important;
+		@apply text-primary underline decoration-transparent hover:decoration-primary  transition-all duration-200;
 	}
 
 	p.markdown,
@@ -173,7 +190,7 @@
 	}
 
 	code.markdown {
-		@apply font-mono text-[0.875em] bg-base-200 border border-base-300 rounded px-1 select-all py-0.5;
+		@apply font-mono text-[0.875em] bg-base-200 border border-base-300 rounded-sm px-1 select-all py-0.5;
 	}
 
 	form code {
@@ -303,7 +320,7 @@
 	--yellow-999: #422006;
 }
 
-[data-theme='dark'] .__evidence-leaflet-tile-layer__ {
+.theme-dark .__evidence-leaflet-tile-layer__ {
 	filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
