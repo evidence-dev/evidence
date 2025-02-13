@@ -1,5 +1,4 @@
 <script>
-	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { X, Menu2 } from '@steeze-ui/tabler-icons';
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
@@ -118,9 +117,7 @@
 				{/if}
 			</div>
 			<div class="relative">
-				{#if dev || !neverShowQueries}
-					<KebabMenu />
-				{/if}
+				<KebabMenu {neverShowQueries} />
 			</div>
 		</div>
 	</div>
