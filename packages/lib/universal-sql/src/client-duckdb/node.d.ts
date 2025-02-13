@@ -19,21 +19,21 @@ export function updateSearchPath(schemas): Promise<void>;
  *
  * @param {string} sql
  * @param {{ route_hash: string, query_name: string, prerendering: boolean }} [cache_options]
- * @returns {import('apache-arrow').Table | null}
+ * @returns {Record<string, unknown[]>}
  */
 export function query(
 	sql: string,
 	cache_options?: { route_hash: string; query_name: string; prerendering: boolean }
-): import('apache-arrow').Table | null;
+): Record<string, unknown>[];
 
 /**
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
  * @param {Record<string, string[]>} urls
- * @param {boolean} [append]
+ * @param {{ append?: boolean }} [opts]
  * @returns {void}
  */
-export function setParquetURLs(urls: Record<string, string[]>, append?: boolean): void;
+export function setParquetURLs(urls: Record<string, string[]>, opts?: { append?: boolean }): void;
 
 /**
  * Converts an Apache Arrow table to a Javascript array.

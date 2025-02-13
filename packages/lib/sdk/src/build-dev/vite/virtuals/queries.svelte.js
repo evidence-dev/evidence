@@ -1,3 +1,5 @@
+// @ts-nocheck Adding nocheck because type errors in this file were failing the build and @ItsMeBrianD told said this code is dead
+
 import { getContext } from 'svelte';
 import { ALL_QUERIES_CONTEXT_KEY, QUERIES_CONTEXT_KEY } from '$evidence/contextKeys';
 import { Query } from '@evidence-dev/sdk/usql';

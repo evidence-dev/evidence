@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <svg
 	class="copyButtonSuccessIcon text-positive"
 	fill="currentColor"

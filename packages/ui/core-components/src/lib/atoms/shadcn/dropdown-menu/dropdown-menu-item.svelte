@@ -12,7 +12,7 @@
 
 <DropdownMenuPrimitive.Item
 	class={cn(
-		'relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-base-200  data-[disabled]:opacity-50',
+		'relative flex cursor-pointer select-none items-center rounded-xs px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-base-200  data-[disabled]:opacity-50',
 		inset && 'pl-8',
 		className
 	)}

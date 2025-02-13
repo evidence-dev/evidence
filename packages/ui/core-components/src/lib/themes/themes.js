@@ -105,26 +105,47 @@ export class ThemeStores {
 	}
 
 	/** @param {HTMLElement} element */
-	syncDataThemeAttribute = (element) => {
-		// Sync activeAppearance -> html[data-theme]
+	syncThemeAttribute = (element) => {
+		// Sync activeAppearance -> .theme-
+		const removeAllThemes = () => {
+			// When running in chromatic, it was complaining that forEach was not a function
+			// By explicitly converting to an array, we are ensuring that it will behave
+			// as we expect it to
+			Array.from(element.classList.values()).forEach((className) => {
+				if (className.startsWith('theme-')) {
+					element.classList.remove(className);
+				}
+			});
+		};
+
+		let controlledUpdate = false;
 		const unsubscribe = this.#activeAppearance.subscribe(($activeAppearance) => {
-			const current = element.getAttribute('data-theme');
-			if (current !== $activeAppearance) {
-				element.setAttribute('data-theme', $activeAppearance);
-			}
+			requestAnimationFrame(() => {
+				controlledUpdate = true;
+				// try to do this all in one frame to prevent jitter
+				removeAllThemes();
+				element.classList.add(`theme-${$activeAppearance}`);
+				requestAnimationFrame(() => (controlledUpdate = false));
+			});
 		});
 
-		// Sync html[data-theme] -> activeAppearance
+		// Sync .theme- -> activeAppearance
 		const observer = new MutationObserver((mutations) => {
+			if (controlledUpdate) return;
 			const html = /** @type {HTMLHtmlElement} */ (mutations[0].target);
-			const theme = html.getAttribute('data-theme');
+			const themes = [
+				...html.classList.values().filter((className) => className.startsWith('theme-'))
+			];
+			if (themes.length === 0) return;
+			const theme = themes[0].replace('theme-', '');
+
 			if (!theme || !['light', 'dark'].includes(theme)) return;
 			const current = get(this.#activeAppearance);
 			if (theme !== current) {
 				this.#selectedAppearance.set(/** @type {'light' | 'dark'} */ (theme));
 			}
 		});
-		observer.observe(element, { attributeFilter: ['data-theme'] });
+		observer.observe(element, { attributeFilter: ['class'] });
 
 		return () => {
 			unsubscribe();

@@ -26,11 +26,11 @@
 	{#each thumbs ?? [] as thumb}
 		<SliderPrimitive.Thumb
 			{thumb}
-			class="block h-3 w-3 rounded-full border border-base-content bg-base-content shadow transition-colors active:outline-none active:ring-2 active:ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring disabled:opacity-50 cursor-pointer"
+			class="block h-3 w-3 rounded-full border border-base-content bg-base-content shadow transition-colors active:outline-none ring-primary/50 active:ring-2 focus-visible:outline-none focus-visible:ring-2 disabled:opacity-50 cursor-pointer"
 		/>
 	{:else}
 		<SliderPrimitive.Thumb
-			class="block h-3 w-3 rounded-full border border-base-content bg-base-content shadow transition-colors active:outline-none active:ring-2 active:ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring disabled:opacity-50 cursor-pointer"
+			class="block h-3 w-3 rounded-full border border-base-content bg-base-content shadow transition-colors active:outline-none ring-primary/50 active:ring-2 focus-visible:outline-none focus-visible:ring-2 disabled:opacity-50 cursor-pointer"
 		/>
 	{/each}
 </SliderPrimitive.Root>

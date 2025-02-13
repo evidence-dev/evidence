@@ -37,7 +37,7 @@
 	{#if visible}
 		<span
 			transition:fade
-			class="text-sm bg-base-200 border border-base-300 rounded py-1 px-2 absolute -top-[5%] z-50 min-w-min w-max"
+			class="text-sm bg-base-200 border border-base-300 rounded-sm py-1 px-2 absolute -top-[5%] z-50 min-w-min w-max"
 			class:left-[115%]={direction === 'right'}
 			class:right-[115%]={direction === 'left'}
 			class:max-w-sm={maxWidth === 'sm'}

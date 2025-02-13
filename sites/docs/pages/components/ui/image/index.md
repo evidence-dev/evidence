@@ -6,7 +6,7 @@ sidebar_position: 1
 
 <Alert status=info>
 
-    Note that you can also use [markdown syntax for images](/reference/markdown/#images). This component is useful when you need to customize the dimensions or styling of the image.
+    Note that you can also use [markdown syntax for images](/reference/markdown#images). This component is useful when you need to customize the dimensions or styling of the image.
 </Alert>
 
 

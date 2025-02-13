@@ -4,9 +4,9 @@
 	import { BUILT_IN_FORMATS } from '@evidence-dev/component-utilities/builtInFormats';
 	import BuiltInFormatGrid from './BuiltInFormatGrid.svelte';
 	import CustomFormatsSection from './CustomFormatsSection.svelte';
-	import CollapsibleTableSection from './CollapsibleTableSection.svelte';
 	import CurrencyFormatGrid from './CurrencyFormatGrid.svelte';
-	import Prism from '../QueryViewerSupport/Prismjs.svelte';
+	import CodeBlock from '../CodeBlock.svelte';
+	import { Accordion, AccordionItem } from '../../../atoms/accordion/index.js';
 
 	/** @type {{ customFormats?: { formatTag: string }[] }}*/
 	export let customFormattingSettings;
@@ -26,131 +26,54 @@ from table`;
 	let valueExample = `<Value data={sales_data} column=sales fmt='$#,##0' />`;
 </script>
 
-<form id="formatting">
-	<div class="formatting-settings-box">
-		<div class="panel">
-			<h2>Value Formatting</h2>
-			<p>
-				Evidence supports built-in formats (like <code>usd</code> and <code>pct</code>) and
-				Excel-style formats (like <code>$#,##0.0</code>). The easiest way to apply these formats is
-				using component props. For example:
-			</p>
-			<p>In the Value component, you can use the <code>fmt</code> prop</p>
-			<div class="code-container p-2">
-				<Prism code={valueExample} />
-			</div>
-			<br />
-			<p>In charts, you can use the <code>xFmt</code> and <code>yFmt</code> props</p>
-			<div class="code-container p-2">
-				<Prism code={componentExample} />
-			</div>
-			<br />
-			<p>
-				You can also set formats within your SQL queries using SQL format tags. Use these by
-				aliasing your column names and appending a format. For example:
-			</p>
-			<div class="code-container p-2">
-				<Prism code={exampleQuery} />
-			</div>
-			<p />
-		</div>
-		<div class="panel">
-			<h2>Built-in Formats</h2>
-			<p>All built-in formats are listed below for reference.</p>
-			<CollapsibleTableSection headerText={'Dates'} expanded={false}>
+<section class="flex flex-col gap-6">
+	<div>
+		<h3 class="text-base-content text-lg font-semibold mb-2">Using Formats</h3>
+		<p class="markdown">In the Value component, you can use the <code>fmt</code> prop</p>
+		<CodeBlock source={valueExample} language="svelte" />
+		<p class="markdown">In charts, you can use the <code>xFmt</code> and <code>yFmt</code> props</p>
+		<CodeBlock source={componentExample} language="svelte" />
+		<p class="markdown">
+			You can also set formats within your SQL queries using SQL format tags. Use these by aliasing
+			your column names and appending a format. For example:
+		</p>
+		<CodeBlock source={exampleQuery} language="sql" />
+	</div>
+	<div>
+		<h3 class="text-base-content text-lg font-semibold mb-2">Builtin Formats</h3>
+		<p>All built-in formats are listed below for reference.</p>
+		<Accordion single>
+			<AccordionItem title="Dates">
 				<BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter((d) => d.formatCategory === 'date')} />
-			</CollapsibleTableSection>
-			<CollapsibleTableSection headerText={'Currencies'} expanded={false}>
+			</AccordionItem>
+			<AccordionItem title="Currencies">
 				<CurrencyFormatGrid
 					formats={BUILT_IN_FORMATS.filter((d) => d.formatCategory === 'currency')}
 				/>
-			</CollapsibleTableSection>
-			<CollapsibleTableSection headerText={'Numbers'} expanded={false}>
+			</AccordionItem>
+			<AccordionItem title="Numbers">
 				<BuiltInFormatGrid
 					formats={BUILT_IN_FORMATS.filter((d) => d.formatCategory === 'number')}
 				/>
-			</CollapsibleTableSection>
-			<CollapsibleTableSection headerText={'Percentages'} expanded={false}>
+			</AccordionItem>
+			<AccordionItem title="Percentages">
 				<BuiltInFormatGrid
 					formats={BUILT_IN_FORMATS.filter((d) => d.formatCategory === 'percent')}
 				/>
-			</CollapsibleTableSection>
-		</div>
-		<div class="panel">
-			<h2>Custom Formats</h2>
-			<p>
-				Add new formats to your project. Custom formats use <a
-					class="docs-link"
-					target="_blank"
-					rel="noreferrer"
-					href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68"
-					>excel-style format codes.</a
-				>
-			</p>
-			<CustomFormatsSection builtInFormats={BUILT_IN_FORMATS} {customFormattingSettings} />
-		</div>
+			</AccordionItem>
+		</Accordion>
 	</div>
-	<footer>
-		<span
-			>Learn more about <a
-				class="text-primary hover:brightness-110 active:brightness-90 transition"
+	<div>
+		<h3 class="text-base-content text-lg font-semibold mb-2">Custom Formats</h3>
+		<p>
+			Add new formats to your project. Custom formats use <a
+				class="markdown"
 				target="_blank"
 				rel="noreferrer"
-				href="https://docs.evidence.dev/core-concepts/formatting/"
-			>
-				formatting in Evidence &rarr;</a
-			></span
-		>
-	</footer>
-</form>
-
-<style>
-	form {
-		scroll-margin-top: 3.5rem; /* offset for sticky header */
-	}
-
-	.formatting-settings-box {
-		margin-top: 2em;
-		border-top: 1px solid var(--base-300);
-		border-left: 1px solid var(--base-300);
-		border-right: 1px solid var(--base-300);
-		border-radius: 5px 5px 0 0;
-		font-size: 14px;
-		font-family: var(--ui-font-family);
-		min-width: 100%;
-	}
-	.panel {
-		border-top: 1px solid var(--base-300);
-		padding: 0em 1em 1em 1em;
-	}
-
-	.panel:first-of-type {
-		border-top: none;
-	}
-
-	div.code-container {
-		background-color: var(--base-200);
-		border: 1px solid var(--base-300);
-		overflow: auto;
-		border-radius: 4px;
-	}
-
-	footer {
-		border: 1px solid var(--base-300);
-		border-radius: 0 0 5px 5px;
-		background-color: var(--base-200);
-		padding: 1em;
-		display: flex;
-		font-size: 14px;
-		align-items: center;
-		font-family: var(--ui-font-family);
-	}
-
-	h2 {
-		@apply font-semibold text-lg pt-3 pb-2;
-	}
-
-	p {
-		@apply text-sm py-2;
-	}
-</style>
+				href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68"
+				>excel-style format codes</a
+			> and are saved in your project.
+		</p>
+		<CustomFormatsSection builtInFormats={BUILT_IN_FORMATS} {customFormattingSettings} />
+	</div>
+</section>

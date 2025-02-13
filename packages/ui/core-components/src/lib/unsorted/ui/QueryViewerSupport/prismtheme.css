@@ -1,6 +1,6 @@
 code[class*='language-'],
 pre[class*='language-'] {
-	@apply font-mono;
+	font-family: var(--font-mono);
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
@@ -162,7 +162,7 @@ pre[class*='language-'] {
 .token.punctuation {
 	/* color: #a3c7d9; */
 	/* color: #39adb5; */
-	@apply text-base-content-muted;
+	color: var(--color-base-content-muted);
 }
 
 .token.regex {

@@ -11,3 +11,7 @@ plugins:
       @evidence-dev/motherduck: { }
       @evidence-dev/mssql: { }
       @evidence-dev/source-javascript: { }
+
+
+appearance:
+  switcher: true

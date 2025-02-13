@@ -38,7 +38,7 @@ Evidence can be started from VSCode, or from the Command Line. Both will work fo
 
       Click `Start Evidence` in the bottom status bar:
 
-      <img src="/img/getting-started/start_evidence.png" class="w-96 border border-gray-200 rounded"/>
+      <img src="/img/getting-started/start_evidence.png" class="w-96 border border-gray-200 rounded-sm"/>
    </Tab>
    <Tab label="Command Line">
 
@@ -412,6 +412,7 @@ If you need help, or have corrections and suggestions for this tutorial, please 
 
 
 <style>
+   @reference "@evidence-dev/evidence/theme.css";
    :root {
       --lightest-gray: #dee2e6;
    }

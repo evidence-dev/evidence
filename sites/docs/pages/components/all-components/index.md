@@ -647,6 +647,7 @@ description:  An index of the components available in the Evidence library.
 </Grid>
 
 <style>
+    @reference "@evidence-dev/evidence/theme.css";
     .markdown {
         @apply mt-2;
     }

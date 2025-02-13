@@ -1,5 +1,4 @@
 import defaultTheme from 'tailwindcss/defaultTheme.js';
-import { createThemes as createTwcThemes } from 'tw-colors';
 
 import { loadThemesConfig } from './loadThemesConfig.js';
 import { buildThemes } from '../themes/buildThemes.js';
@@ -7,13 +6,6 @@ import { createVarsForColors } from './createVarsForColors/index.js';
 
 const themesConfig = loadThemesConfig();
 const themes = buildThemes(themesConfig);
-const twcConfig = Object.fromEntries(
-	Object.entries(themes).map(([name, theme]) => [
-		name,
-		/** @type {Record<string, string>} */
-		(Object.fromEntries(Object.entries(theme.colors).filter(([, value]) => Boolean(value))))
-	])
-);
 
 /** @type {Partial<import('tailwindcss').Config>} */
 export const config = {
@@ -49,8 +41,8 @@ export const config = {
 			}
 		}
 	},
-	plugins: [createTwcThemes(twcConfig), createVarsForColors(themes)],
-	darkMode: ['selector', '[data-theme="dark"]']
+	plugins: [createVarsForColors(themes)],
+	darkMode: ['class', '.theme-dark']
 };
 
 export default config;

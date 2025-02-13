@@ -14,15 +14,15 @@
 
 <div class="toggle" transition:slide|local>
 	{#if showCompiled}
-		<button class="on">Compiled</button>
+		<button class="text-info bg-info/10 border border-info">Compiled</button>
 		<button on:click={toggleCompiled} class="off">Written</button>
 	{:else}
 		<button on:click={toggleCompiled} class="off">Compiled</button>
-		<button class="on">Written</button>
+		<button class="text-info bg-info/10 border border-info">Written</button>
 	{/if}
 </div>
 
-<style lang="postcss">
+<style>
 	div.toggle {
 		background-color: var(--base-200);
 		border-left: 1px solid var(--base-300);
@@ -52,9 +52,5 @@
 	button.off:hover {
 		background-color: var(--base-300);
 		transition: all 400ms;
-	}
-
-	button.on {
-		@apply text-info bg-info/10 border border-info;
 	}
 </style>

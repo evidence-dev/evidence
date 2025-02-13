@@ -136,7 +136,7 @@
 	});
 
 	const {
-		syncDataThemeAttribute,
+		syncThemeAttribute,
 		cycleAppearance,
 		selectedAppearance,
 		setAppearance,
@@ -154,7 +154,7 @@
 		return () => window.removeEventListener('keydown', onKeydown);
 	});
 
-	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
+	onMount(() => syncThemeAttribute(document.querySelector('html')));
 
 	//handles printing in dark mode
 	onMount(() => {
@@ -213,7 +213,7 @@
 				'print:w-[650px] print:md:w-[841px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
 			style="max-width:{maxWidthEffective}px;"
 		>
-			{#if !hideSidebar && sidebarFrontMatter !== 'never'}
+			{#if !hideSidebar && sidebarFrontMatter !== 'never' && $page.route.id !== '/settings'}
 				<div class="print:hidden">
 					<Sidebar
 						{fileTree}
@@ -229,18 +229,19 @@
 				</div>
 			{/if}
 			<main
-				class={(!hideSidebar && !['hide', 'never'].includes(sidebarFrontMatter) ? 'md:pl-8 ' : '') +
-					(!hideTocEffective ? 'md:pr-8 ' : '') +
-					(!hideHeaderEffective
-						? !hideBreadcrumbsEffective
-							? ' mt-16 sm:mt-20 '
-							: ' mt-16 sm:mt-[74px] '
-						: !hideBreadcrumbsEffective
-							? ' mt-4 sm:mt-8 '
-							: ' mt-4 sm:mt-[26px] ') +
-					'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
+				class={($page.route.id === '/settings'
+					? 'w-full mt-16 sm:mt-20 '
+					: (!hideSidebar && !['hide', 'never'].includes(sidebarFrontMatter) ? 'md:pl-8 ' : '') +
+						(!hideTocEffective ? 'md:pr-8 ' : '') +
+						(!hideHeaderEffective
+							? !hideBreadcrumbsEffective
+								? ' mt-16 sm:mt-20 '
+								: ' mt-16 sm:mt-[74px] '
+							: !hideBreadcrumbsEffective
+								? ' mt-4 sm:mt-8 '
+								: ' mt-4 sm:mt-[26px] ')) + 'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
 			>
-				{#if !hideBreadcrumbsEffective}
+				{#if !hideBreadcrumbsEffective && $page.route.id !== '/settings'}
 					<div class="print:hidden">
 						{#if $page.route.id !== '/settings'}
 							<BreadCrumbs {fileTree} />
@@ -255,7 +256,7 @@
 					<LoadingSkeleton />
 				{/if}
 			</main>
-			{#if !hideTocEffective}
+			{#if !hideTocEffective && $page.route.id !== '/settings'}
 				<div class="print:hidden">
 					<TableOfContents hideHeader={hideHeaderEffective} />
 				</div>
@@ -267,8 +268,9 @@
 	{/if}
 </DevTools>
 
-<style lang="postcss">
+<style>
 	:global(body) {
-		@apply bg-base-100 text-base-content;
+		background-color: var(--color-base-100);
+		color: var(--color-base-content);
 	}
 </style>
