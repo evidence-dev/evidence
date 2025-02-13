@@ -36,7 +36,11 @@ export const writeSourceConfig = async (options, source, spinner) => {
 		yaml.stringify(encodeBase64Deep(secrets))
 	].join('\n');
 
-	if (!source.dir) {
+	if (
+		!source.dir ||
+		!path.dirname(source.dir).startsWith(sourcesDirectory) ||
+		!path.isAbsolute(source.dir)
+	) {
 		source.dir = path.join(sourcesDirectory, source.name);
 	}
 
