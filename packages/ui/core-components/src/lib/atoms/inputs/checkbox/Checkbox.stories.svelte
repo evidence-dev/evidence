@@ -72,7 +72,7 @@
 <Story name="URL Params" let:args>
 	<Checkbox title="string true" defaultValue="true" name="string_true_url" {...args} />
 	<p>{$inputStore.string_true}</p>
-	<Checkbox title="boolean true" defaultValue={true} name="boolean_true_url" {...args} />
+	<Checkbox title="boolean true" checked={true} name="boolean_true_url" {...args} />
 	<p>{$inputStore.boolean_true}</p>
 
 	<div class="mt-4">URL: {storyIframeURL}</div>

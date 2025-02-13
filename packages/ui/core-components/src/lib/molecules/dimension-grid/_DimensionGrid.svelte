@@ -26,14 +26,21 @@
 	export let title = undefined;
 	/** @type {string | undefined}*/
 	export let subtitle = undefined;
+	/** @type {string | string[] | undefined}*/
+	let selectedValue = [];
 
 	$: dimensions = data?.columns?.filter((col) => col.column_type === 'VARCHAR');
 	let selectedDimensions = writable([]);
 	setContext('selected-dimensions', selectedDimensions);
 
 	const inputs = getInputContext();
+	hydrateFromUrlParam(name, (v) => {
+		if (v !== undefined && v !== null) {
+			$selectedDimensions = v;
+		}
+	});
 	$: $inputs[name] = getWhereClause($selectedDimensions);
-	$: updateUrlParam(name, encodeURIComponent($inputs[name]));
+	$: updateUrlParam(name, $selectedDimensions);
 </script>
 
 {#if data === undefined}
@@ -57,7 +64,16 @@
 		{/if}
 		<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
 			{#each dimensions as dimension}
-				<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} {multiple} {fmt} />
+				<DimensionCut
+					{data}
+					{dimension}
+					{metric}
+					{limit}
+					{metricLabel}
+					{multiple}
+					{fmt}
+					{selectedValue}
+				/>
 			{/each}
 		</div>
 	</div>

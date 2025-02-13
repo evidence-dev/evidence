@@ -21,6 +21,35 @@
 	const dataPlay = Query.create('select plane, airline from flights', query);
 
 	const nullComboData = Query.create('select * from flights limit 1000', query);
+
+	let storyIframeURL = '';
+
+	const updateURL = () => {
+		storyIframeURL = window.location.href;
+
+		// Try forcing Storybook to recognize the change
+		const iframe = document.querySelector('iframe');
+		if (iframe) {
+			iframe.src = iframe.src; // Force reload
+		}
+	};
+
+	(function () {
+		const pushState = history.pushState;
+		const replaceState = history.replaceState;
+
+		history.pushState = function () {
+			pushState.apply(history, arguments);
+			updateURL();
+		};
+
+		history.replaceState = function () {
+			replaceState.apply(history, arguments);
+			updateURL();
+		};
+
+		window.addEventListener('popstate', updateURL);
+	})();
 </script>
 
 <Story name="Basic Usage">
@@ -251,4 +280,24 @@
 	}}
 >
 	<DimensionGrid data={nullComboData} multiple fmt="usd" />
+</Story>
+<Story name="URL Params">
+	<DimensionGrid {data} name="urlParams" />
+	<div class="mt-4">URL: {storyIframeURL}</div>
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	>
+</Story>
+<Story name="URL Params Multiple">
+	<DimensionGrid {data} multiple name="urlParamsMultiple" />
+	<div class="mt-4">URL: {storyIframeURL}</div>
+	<button
+		class="mt-4 p-1 border bg-info/60 hover:bg-info/40 active:bg-info/20 rounded-md text-sm
+
+	"
+		on:click={() => window.open(storyIframeURL, '_blank')}>Go to URL</button
+	>
 </Story>

@@ -36,17 +36,22 @@
 	/** @type {boolean | string} */
 	export let defaultValue = false;
 
-	hydrateFromUrlParam(name, (v) => (defaultValue = v ?? defaultValue));
-	$: defaultValue = toBoolean(defaultValue);
-	$: updateUrlParam(name, $inputs[name]);
-
 	if (defaultValue !== undefined) {
 		console.warn('`defaultValue` is deprecated. Please use the `checked` prop instead.');
 	}
+	hydrateFromUrlParam(name, (v) => {
+		if (v !== undefined && v !== null) {
+			checked = v;
+			defaultValue = v;
+		}
+	});
 
-	let isChecked = toBoolean(defaultValue) || toBoolean(checked);
+	$: isChecked = toBoolean(defaultValue) || toBoolean(checked);
 
-	$: $inputs[name] = isChecked;
+	$: {
+		$inputs[name] = isChecked;
+		updateUrlParam(name, isChecked);
+	}
 
 	// Error Handling
 	/** @type {[string]} */

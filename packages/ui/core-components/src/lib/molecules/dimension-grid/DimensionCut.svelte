@@ -36,6 +36,15 @@
 	/** @type {string | string[] | undefined}*/
 	let selectedValue = multiple ? [] : undefined;
 
+	if (multiple) {
+		selectedValue =
+			$selectedDimensions.filter((d) => d.dimension === dimension.column_name)[0]?.value ?? [];
+		console.log(selectedValue);
+	} else {
+		selectedValue = $selectedDimensions.filter((d) => d.dimension === dimension.column_name)[0]
+			?.value;
+	}
+
 	$: {
 		if (
 			selectedValue === undefined ||
@@ -174,6 +183,9 @@
 					{/each}
 				{/if}
 			</div>
+			<!-- this leaks no records for all columns causing user to get stuck -->
+			<!-- occurs during column update, users can click on 2 values that results in no records for all columns -->
+			<!-- seems to only be possible with slow updating columns after initial column value click, due to large data set -->
 		{:else}
 			<p class="text-xs text-base-content-muted p-2 my-2 w-full border border-dashed rounded">
 				No Records

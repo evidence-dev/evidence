@@ -211,7 +211,7 @@
 		!selectedDateInput &&
 		!selectedPreset &&
 		presets.length
-	){
+	) {
 		applyPreset(defaultValue);
 	}
 

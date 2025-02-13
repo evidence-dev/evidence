@@ -115,7 +115,7 @@
 
 	// URL params hydration
 	hydrateFromUrlParam(name, (v) => {
-		if (v[0]) {
+		if (v?.[0]) {
 			value = [v];
 		}
 	});
