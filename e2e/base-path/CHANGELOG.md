@@ -1,5 +1,12 @@
 # e2e-base-path
 
+## 0.0.20
+
+### Patch Changes
+
+- Updated dependencies [aac1170db]
+  - @evidence-dev/evidence@40.1.1
+
 ## 0.0.19
 
 ### Patch Changes

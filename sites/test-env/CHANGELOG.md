@@ -1,5 +1,12 @@
 # evidence-test-environment
 
+## 3.0.87
+
+### Patch Changes
+
+- Updated dependencies [aac1170db]
+  - @evidence-dev/evidence@40.1.1
+
 ## 3.0.86
 
 ### Patch Changes

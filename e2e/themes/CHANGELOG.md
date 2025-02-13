@@ -1,5 +1,12 @@
 # e2e-themes
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies [aac1170db]
+  - @evidence-dev/evidence@40.1.1
+
 ## 0.0.30
 
 ### Patch Changes
