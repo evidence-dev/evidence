@@ -1,5 +1,12 @@
 # @evidence-dev/universal-sql
 
+## 2.2.10
+
+### Patch Changes
+
+- 64486c669: bump vitest
+- fc185c44c: Fix type errors
+
 ## 2.2.9
 
 ### Patch Changes
