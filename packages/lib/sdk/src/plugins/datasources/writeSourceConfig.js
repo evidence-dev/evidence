@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import { getSafeOptions, getSecretOptions } from './cli/edit/Options.js';
 import { encodeBase64Deep } from '../../lib/b64Deep.js';
-import { sourcesDirectory } from '../../lib/projectPaths.js';
+import { projectRoot, sourcesDirectory } from '../../lib/projectPaths.js';
 
 /**
  *
@@ -36,7 +36,7 @@ export const writeSourceConfig = async (options, source, spinner) => {
 		yaml.stringify(encodeBase64Deep(secrets))
 	].join('\n');
 
-	if (!source.dir) {
+	if (!source.dir || !path.dirname(source.dir).startsWith(sourcesDirectory) || !path.isAbsolute(source.dir)) {
 		source.dir = path.join(sourcesDirectory, source.name);
 	}
 
