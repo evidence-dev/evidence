@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 40.1.1
+
+### Patch Changes
+
+- aac1170db: Add @tailwindcss/vite as a dependency
+
 ## 40.1.0
 
 ### Minor Changes

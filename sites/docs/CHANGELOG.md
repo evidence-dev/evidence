@@ -1,5 +1,12 @@
 # evidence-docs
 
+## 0.0.59
+
+### Patch Changes
+
+- Updated dependencies [aac1170db]
+  - @evidence-dev/evidence@40.1.1
+
 ## 0.0.58
 
 ### Patch Changes

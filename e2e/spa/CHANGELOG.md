@@ -1,5 +1,12 @@
 # e2e-spa
 
+## 0.0.35
+
+### Patch Changes
+
+- Updated dependencies [aac1170db]
+  - @evidence-dev/evidence@40.1.1
+
 ## 0.0.34
 
 ### Patch Changes
