@@ -1,5 +1,22 @@
 # @evidence-dev/core-components
 
+## 5.2.0
+
+### Minor Changes
+
+- 7713d3e73: Improved settings page UI
+
+### Patch Changes
+
+- 64486c669: bump vitest
+- 4efd427a7: Use theme class instead of data-
+- 656543815: Dont hide entire kebab menu when neverShowQueries is true
+- Updated dependencies [254a90551]
+- Updated dependencies [64486c669]
+- Updated dependencies [4efd427a7]
+  - @evidence-dev/tailwind@3.0.9
+  - @evidence-dev/component-utilities@4.0.9
+
 ## 5.1.2
 
 ### Patch Changes
