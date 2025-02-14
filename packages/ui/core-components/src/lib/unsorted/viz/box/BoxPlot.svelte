@@ -49,7 +49,6 @@
 	export let swapXY = false;
 	export let chartAreaHeight = undefined;
 
-
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;

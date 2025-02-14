@@ -186,6 +186,6 @@ ORDER BY 1;
 		geoId="ZCTA5CE10"
 		value="sales"
 		areaCol="zip_code"
-		height=500
+		height="500"
 	/>
 </Story>
