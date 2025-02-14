@@ -694,7 +694,7 @@ importers:
   packages/datasources/javascript:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: ^1.0.5
+        specifier: workspace:*
         version: link:../../lib/db-commons
     devDependencies:
       typescript:

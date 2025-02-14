@@ -1,7 +1,34 @@
 import { EvidenceType } from '@evidence-dev/db-commons';
 import { pathToFileURL } from 'url';
-
+import path from 'path';
+import fs from 'fs/promises';
 export const options = {};
+
+export const createSourceTable = async (tableName, sourceDirectory) => {
+	const newFilePath = path.join(sourceDirectory, `${tableName}.js`);
+
+	// check if newFilePath already exists:
+
+	if (await fs.exists(newFilePath)) {
+		throw new Error(`File ${newFilePath} already exists`);
+	}
+
+	await fs.writeFile(
+		newFilePath,
+		`
+let url = 'https://pokeapi.co/api/v2/pokemon/';
+
+const response = await fetch(url);
+const json = await response.json();
+
+// The data export should contain an array of objects
+// It is the only export that is used by Evidence
+export const data = json.results;
+`.trim()
+	);
+
+	return newFilePath;
+};
 
 /**
  * @type {import("@evidence-dev/db-commons").GetRunner<ConnectorOptions>}

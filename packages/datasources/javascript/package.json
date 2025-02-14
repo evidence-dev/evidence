@@ -15,7 +15,7 @@
     "vitest": "^2.1.9"
   },
   "dependencies": {
-    "@evidence-dev/db-commons": "^1.0.5"
+    "@evidence-dev/db-commons": "workspace:*"
   },
   "evidence": {
     "datasources": [

@@ -65,9 +65,9 @@
 				</div>
 			</div>
 			<div class="flex justify-end gap-1">
-				<Button variant="ghost" disabled={!sourcePlugin} on:click={() => (open = !open)}
-					>Edit</Button
-				>
+				<Button variant="ghost" disabled={!sourcePlugin} on:click={() => (open = !open)}>
+					Edit
+				</Button>
 			</div>
 		</div>
 	</div>

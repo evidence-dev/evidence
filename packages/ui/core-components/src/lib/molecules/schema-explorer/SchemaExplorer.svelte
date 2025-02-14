@@ -1,9 +1,13 @@
 <script>
 	import { browser } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Table, Database } from '@steeze-ui/tabler-icons';
+	import { Plus, Table, Database } from '@steeze-ui/tabler-icons';
 	import TableView from '../../atoms/table-view/TableView.svelte';
 	export let data;
+
+	/** @type {(source: string, table: string) => Promise<string>} */
+	export let createSourceTable;
+
 	let { __db: db } = data;
 
 	async function loadMetadata() {
@@ -45,7 +49,7 @@
 				{#each Object.entries(metadata) as [source, meta] (source)}
 					<li class="font-mono m-0 text-sm">
 						<button
-							class="bg-base-200 px-2 py-1 rounded-sm font-bold flex w-full hover:bg-base-300 hover:text-base-content"
+							class="cursor-pointer bg-base-200 px-2 py-1 rounded-sm font-bold flex w-full hover:bg-base-300 hover:text-base-content"
 							class:bg-info={selectedSource === source}
 							class:text-info-content={selectedSource === source}
 							on:click={() => {
@@ -62,7 +66,7 @@
 							{#each Object.entries(meta) as [name, tableMeta] (name)}
 								<li class="font-mono m-0 text-sm font-bold ml-3">
 									<button
-										class="bg-base-200 px-2 py-1 rounded-sm flex w-full hover:bg-base-300 hover:text-base-content"
+										class="cursor-pointer bg-base-200 px-2 py-1 rounded-sm flex w-full hover:bg-base-300 hover:text-base-content"
 										class:bg-info={selectedTable === tableMeta}
 										class:text-info-content={selectedTable === tableMeta}
 										on:click={() => {
@@ -77,6 +81,28 @@
 									<TableView columns={tableMeta.columns} rowClass="ml-6 " />
 								{/if}
 							{/each}
+							{#if createSourceTable}
+								<li class="font-mono m-0 text-sm font-bold ml-3">
+									<button
+										class="cursor-pointer bg-base-200 text-info px-2 py-1 rounded-sm flex w-full hover:bg-base-300"
+										on:click={() => {
+											// We want to open the file in vscode automatically without another window or similar
+											const aHref = document.createElement('a');
+											aHref.setAttribute(
+												'href',
+												`vscode://file//Users/brian/code/evidence/evidence/sites/test-env/sources/pokemon/pokedex.js`
+											);
+											aHref.style.display = 'none';
+											document.body.appendChild(aHref);
+											aHref.click();
+											document.body.removeChild(aHref);
+										}}
+									>
+										<Icon src={Plus} class="w-5 h-5 mr-1" />
+										Create new table
+									</button>
+								</li>
+							{/if}
 						</ul>
 					{/if}
 				{/each}
