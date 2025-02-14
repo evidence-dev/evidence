@@ -239,3 +239,18 @@ limit 50`,
 	)}
 	<BoxPlot {...args} {data} />
 </Story>
+
+<Story
+	name="Custom Height"
+	args={{
+		name: 'airline',
+		intervalBottom: 'min_fare',
+		midpoint: 'median_fare',
+		intervalTop: 'max_fare',
+		yFmt: 'usd0',
+		chartAreaHeight: 500
+	}}
+	let:args
+>
+	<BoxPlot {...args} data={flightData} />
+</Story>

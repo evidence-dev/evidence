@@ -179,3 +179,13 @@ ORDER BY 1;
 		legend="false"
 	/>
 </Story>
+
+<Story name="Custom height" parameters={{ chromatic: { disableSnapshot: true } }}>
+	<AreaMap
+		data={slow_la_zip_sales}
+		geoId="ZCTA5CE10"
+		value="sales"
+		areaCol="zip_code"
+		height="500"
+	/>
+</Story>
