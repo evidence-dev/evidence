@@ -11,7 +11,7 @@ Windows IIS server is a part of any Windows Server operating system and is also 
 
 - A Windows desktop or server operating system with the Internet Information Services feature enabled. The following sub-features are required:
   - Web Management Tools > IIS Management Console
-  - World Wide Web Services > Common HHTP Features:
+  - World Wide Web Services > Common HTTP Features:
     - Default Document
     - Static Content
   - Performance Features > Static Content Compression
