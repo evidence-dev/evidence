@@ -48,7 +48,6 @@ Evidence supports:
 - [Cube](/core-concepts/data-sources/postgres#cube)
 - [Google Sheets](/core-concepts/data-sources/google-sheets)
 - [CSV](/core-concepts/data-sources/csv)
-- [Parquet](/core-concepts/data-sources/csv)
 - [JavaScript](/core-concepts/data-sources/javascript)
 - & More
 
