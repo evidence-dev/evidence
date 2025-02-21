@@ -84,10 +84,9 @@
 	$: if (scaleColor) {
 		console.warn('[Column] scaleColor is deprecated. Use colorScale instead.');
 	}
-	$: colorScale = checkDeprecatedColor('Column', 'colorScale', colorScale);
-
 	export let colorScale = 'default';
-	$: colorScaleStore = resolveColorScale(colorScale ?? colorScale);
+	$: _colorScale = checkDeprecatedColor('Column', 'colorScale', scaleColor ?? colorScale);
+	$: colorScaleStore = resolveColorScale(_colorScale);
 
 	export let scaleColumn = undefined;
 
