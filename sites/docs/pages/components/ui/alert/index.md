@@ -16,16 +16,16 @@ This is a default alert
 This is a informational alert
 </Alert>
 
-<Alert status="success">
-This is a successful alert
+<Alert status="positive">
+This is a positive alert
 </Alert>
 
 <Alert status="warning">
 This is a warning alert
 </Alert>
 
-<Alert status="danger">
-This is a dangerous alert
+<Alert status="negative">
+This is a negative alert
 </Alert>
     </div>
 
@@ -38,16 +38,16 @@ This is a default alert
 This is a informational alert
 </Alert>
 
-<Alert status="success">
-This is a successful alert
+<Alert status="positive">
+This is a positive alert
 </Alert>
 
 <Alert status="warning">
 This is a warning alert
 </Alert>
 
-<Alert status="danger">
-This is a dangerous alert
+<Alert status="negative">
+This is a negative alert
 </Alert>
 ```
 </DocTab>
@@ -56,7 +56,7 @@ This is a dangerous alert
 
 <PropListing
     name="status"  
-    options={['info', 'success', 'warning', 'danger']}
+    options={['info', 'positive', 'warning', 'negative']}
 >
 
 Changes the color of the alert

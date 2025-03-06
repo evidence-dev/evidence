@@ -41,9 +41,15 @@
 		await preloadData(url);
 	};
 
-	const navigateToLink = async (row) => {
+	const navigateToLink = async (row, event) => {
 		if (!link || !row[link]) return;
 		const url = row[link];
+
+		// Don't handle the click if it's on a link element that should open in new tab
+		const target = event?.target?.closest('a');
+		if (target?.getAttribute('target') === '_blank') {
+			return;
+		}
 
 		if (isUrlExternal(url)) {
 			window.location = addBasePath(url);
@@ -63,7 +69,7 @@
 		class:hover:bg-base-200={link && row[link]}
 		on:mouseover={() => preloadLink(row)}
 		on:focus={() => preloadLink(row)}
-		on:click={() => navigateToLink(row)}
+		on:click={(event) => navigateToLink(row, event)}
 		class={rowLines ? 'border-b border-base-content-muted/20' : ''}
 	>
 		{#if rowNumbers && groupType !== 'section'}
