@@ -135,7 +135,7 @@
 			group: 'To Date',
 			range: {
 				start: startOfMonth(calendarEnd),
-				end: endOfMonth(calendarEnd)
+				end: calendarEnd
 			}
 		},
 		{
@@ -143,7 +143,7 @@
 			group: 'To Date',
 			range: {
 				start: startOfYear(calendarEnd),
-				end: endOfYear(calendarEnd)
+				end: calendarEnd
 			}
 		},
 		{
