@@ -135,11 +135,27 @@
 			group: 'To Date',
 			range: {
 				start: startOfMonth(calendarEnd),
+				end: endOfMonth(calendarEnd)
+			}
+		},
+		{
+			label: 'Month to Today',
+			group: 'To Date',
+			range: {
+				start: startOfMonth(calendarEnd),
 				end: calendarEnd
 			}
 		},
 		{
 			label: 'Year to Date',
+			group: 'To Date',
+			range: {
+				start: startOfYear(calendarEnd),
+				end: endOfYear(calendarEnd)
+			}
+		},
+		{
+			label: 'Year to Today',
 			group: 'To Date',
 			range: {
 				start: startOfYear(calendarEnd),
