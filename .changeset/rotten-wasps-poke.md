@@ -2,6 +2,6 @@
 '@evidence-dev/core-components': patch
 ---
 
-Update Date Range presets with better defaults
+Update Date Range presets with new options
 
-Month to Date & Year to Date - now both end on last available date of the data used
+Month to Today & Year to Today - to end on the last available date of the data used
