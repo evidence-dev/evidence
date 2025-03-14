@@ -21,7 +21,7 @@
 		"fs-extra": "^11.2.0",
 		"hast-util-select": "^5.0.5",
 		"mdsvex": "0.11.0",
-		"prismjs": "^1.29.0",
+		"prismjs": "^1.30.0",
 		"remark-parse": "8.0.2",
 		"rehype-slug": "4.0.1",
 		"rehype-autolink-headings": "5.1.0",
