@@ -1,5 +1,16 @@
 # @evidence-dev/sdk
 
+## 3.0.9
+
+### Patch Changes
+
+- 0fd376985: Handle malformed source directories when creating new sources
+- 64486c669: bump vitest
+- fc185c44c: Fix type errors
+- Updated dependencies [64486c669]
+- Updated dependencies [fc185c44c]
+  - @evidence-dev/universal-sql@2.2.10
+
 ## 3.0.8
 
 ### Patch Changes

@@ -1,5 +1,28 @@
 # @evidence-dev/evidence
 
+## 40.1.1
+
+### Patch Changes
+
+- aac1170db: Add @tailwindcss/vite as a dependency
+
+## 40.1.0
+
+### Minor Changes
+
+- 7713d3e73: Improved settings page UI
+
+### Patch Changes
+
+- 4efd427a7: Use theme class instead of data-
+- 1709f885e: Add theme.css export for svelte component <style/> tags that need to access tailwind theme
+- Updated dependencies [0fd376985]
+- Updated dependencies [64486c669]
+- Updated dependencies [fc185c44c]
+  - @evidence-dev/sdk@3.0.9
+  - @evidence-dev/preprocess@6.0.4
+  - @evidence-dev/universal-sql@2.2.10
+
 ## 40.0.9
 
 ### Patch Changes

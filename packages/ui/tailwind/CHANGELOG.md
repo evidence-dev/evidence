@@ -1,5 +1,26 @@
 # @evidence-dev/tailwind
 
+## 3.0.9
+
+### Patch Changes
+
+- 254a90551: [!] BREAKING CHANGE:
+  Custom theme colors are converted implicitly to kebab-case by tailwindcss
+
+  This means that some color defined in `evidence.config.yaml` as `myCustomColor`
+  should be used as (for example) `text-my-custom-color`. (`text-myCustomColor` will not work)
+
+  When referencing custom theme colors in Javascript the original case should still be used
+  (for example) `myCustomColor` would still be `<BarChart ... fillColor=myCustomColor />`
+  _NOT_ `<BarChart ... fillColor="my-custom-color" />`
+
+- 64486c669: bump vitest
+- 4efd427a7: Use theme class instead of data-
+- Updated dependencies [0fd376985]
+- Updated dependencies [64486c669]
+- Updated dependencies [fc185c44c]
+  - @evidence-dev/sdk@3.0.9
+
 ## 3.0.8
 
 ### Patch Changes
