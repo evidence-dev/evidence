@@ -58,7 +58,7 @@
 		"ora": "^7.0.1",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.3",
-		"prismjs": "1.29.0",
+		"prismjs": "^1.30.0",
 		"remark-parse": "8.0.2",
 		"ssf": "^0.11.2",
 		"svelte": "4.2.19",
@@ -113,7 +113,9 @@
 			"fast-xml-parser": ">=4.4.1",
 			"dset": ">=3.1.4",
 			"cookie": ">=0.7.1",
-			"nanoid": "3.3.8"
+			"nanoid": "3.3.8",
+			"serialize-javascript": ">=6.0.2",
+			"esbuild": ">=0.25.0"
 		}
 	},
 	"packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81"
