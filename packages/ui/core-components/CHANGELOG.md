@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 5.2.1
+
+### Patch Changes
+
+- a0fcca759: Fix height prop in maps
+
 ## 5.2.0
 
 ### Minor Changes
