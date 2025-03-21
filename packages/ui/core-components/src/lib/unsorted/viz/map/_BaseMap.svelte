@@ -42,7 +42,7 @@
 		<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 		<ErrorChart let:loaded slot="error" title={chartType} error={error ?? loaded.error.message} />
 
-		<BaseMap {...$$restProps} title={undefined}>
+		<BaseMap {...$$restProps} title={undefined} {height}>
 			<slot data={loaded} />
 		</BaseMap>
 	</QueryLoad>

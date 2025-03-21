@@ -47,6 +47,7 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let swapXY = false;
+	export let chartAreaHeight = undefined;
 
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
@@ -131,6 +132,7 @@
 	{title}
 	{subtitle}
 	chartType="Box Plot"
+	{chartAreaHeight}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
