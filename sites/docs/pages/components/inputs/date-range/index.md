@@ -7,6 +7,7 @@ queries:
 ---
 
 Creates a date picker that can be used to filter a query.
+Includes a set of preset ranges for quick selection of common date ranges. These are relative to the supplied end date.
 
 To see how to filter a query using an input component, see [Filters](/core-concepts/filters).
 
@@ -255,7 +256,7 @@ Title to display in the Date Range component
     default=undefined
 >
 
-Customize "Select a Range" drop down, by including present range options. **Range options**: `'Last 7 Days'` `'Last 30 Days'` `'Last 90 Days'` `'Last 365 Days'` `'Last 3 Months'` `'Last 6 Months'` `'Last 12 Months'` `'Last Month'` `'Last Year'` `'Month to Date'` `'Year to Date'` `'All Time'`
+Customize "Select a Range" drop down, by including present range options. **Range options**: `'Last 7 Days'` `'Last 30 Days'` `'Last 90 Days'` `'Last 365 Days'` `'Last 3 Months'` `'Last 6 Months'` `'Last 12 Months'` `'Last Month'` `'Last Year'` `'Month to Date'` `'Month to Today'` `'Year to Date'` `'Year to Today'` `'All Time'`
 
 </PropListing>
 <PropListing 
@@ -265,7 +266,7 @@ Customize "Select a Range" drop down, by including present range options. **Rang
 >
 
 
-Accepts preset in string format to apply default value in Date Range picker. **Range options**: `'Last 7 Days'` `'Last 30 Days'` `'Last 90 Days'` `'Last 365 Days'` `'Last 3 Months'` `'Last 6 Months'` `'Last 12 Months'` `'Last Month'` `'Last Year'` `'Month to Date'` `'Year to Date'` `'All Time'`
+Accepts preset in string format to apply default value in Date Range picker. **Range options**: `'Last 7 Days'` `'Last 30 Days'` `'Last 90 Days'` `'Last 365 Days'` `'Last 3 Months'` `'Last 6 Months'` `'Last 12 Months'` `'Last Month'` `'Last Year'` `'Month to Date'` `'Month to Today'` `'Year to Date'` `'Year to Today'` `'All Time'`
 
 </PropListing>
 <PropListing 

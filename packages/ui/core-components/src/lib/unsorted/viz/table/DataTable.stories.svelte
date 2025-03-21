@@ -397,3 +397,44 @@
 	<h2>Filtered Data Group By</h2>
 	<DataTable data={filteredData} title="Flights" groupBy="regulator" groupsOpen="true" />
 </Story>
+
+<!-- scaleColor is deprecated but should still work -->
+<Story name="Custom scaleColor">
+	{@const data = Query.create(
+		`
+			select 1 as col
+			union all
+			select 2
+			union all
+			select 3
+			union all
+			select 4
+			union all
+			select 5
+		`,
+		query
+	)}
+	<DataTable {data}>
+		<Column id="col" contentType="colorscale" scaleColor={['red', 'green']} />
+	</DataTable>
+</Story>
+
+<Story name="Custom colorScale">
+	{@const data = Query.create(
+		`
+			select 1 as col
+			union all
+			select 2
+			union all
+			select 3
+			union all
+			select 4
+			union all
+			select 5
+		`,
+		query
+	)}
+	<DataTable {data}>
+		<Column id="col" contentType="colorscale" colorScale={['red', 'green']} />
+	</DataTable>
+</Story>

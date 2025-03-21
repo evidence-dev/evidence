@@ -308,7 +308,7 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#if data}
+{#if data && data.length > 0}
 	{#await Promise.all([map.initPromise, data.fetch()]) then}
 		{#await init($theme) then}
 			{#each geoJson as feature (feature.properties[geoId])}
