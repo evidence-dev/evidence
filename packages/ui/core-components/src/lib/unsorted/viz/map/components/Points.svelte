@@ -327,7 +327,7 @@
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
-{#if data}
+{#if data && data.length > 0}
 	{#await Promise.all([map.initPromise, data.fetch(), init($theme)]) then}
 		{#each $data as item}
 			<Point
