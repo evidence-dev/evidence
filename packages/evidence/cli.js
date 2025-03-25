@@ -166,6 +166,7 @@ const buildHelper = function (command, args) {
 	const flatArgs = flattenArguments(args);
 
 	const dataDir = process.env.EVIDENCE_DATA_DIR ?? './static/data';
+	const outDir = process.env.EVIDENCE_OUT_DIR ?? '.evidence/template/build';
 
 	// Run svelte kit build in the hidden directory
 	const child = spawn(command, flatArgs, {
@@ -182,7 +183,6 @@ const buildHelper = function (command, args) {
 	});
 	// Copy the outputs to the root of the project upon successful exit
 	child.on('exit', function (code) {
-		const outDir = '.evidence/template/build';
 		if (code === 0) {
 			const staticlessDataDir = removeStaticDir(dataDir);
 			const buildDataDir = path.join(outDir, staticlessDataDir);
