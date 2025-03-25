@@ -217,8 +217,10 @@ const buildHelper = function (command, args) {
 				fs.writeJsonSync(manifestFile, manifest);
 			}
 
-			fs.copySync(outDir, './build');
-			console.log(`Build complete --> ${process.env.EVIDENCE_BUILD_DIR ?? './build'} `);
+			const buildDest = process.env.EVIDENCE_BUILD_DIR ?? './build';
+
+			fs.copySync(outDir, buildDest);
+			console.log(`Build complete --> ${buildDest} `);
 		} else {
 			console.error('Build failed');
 		}
