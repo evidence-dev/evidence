@@ -5,14 +5,13 @@
 <script>
 	import DateInput from './_DateInput.svelte';
 	// import { Query } from '@evidence-dev/sdk/usql';
-	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
 	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
 	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
 	import { toBoolean } from '../../../utils.js';
-	import { dateToYYYYMMDD, formatDateString } from './helpers.js';
+	import { dateToYYYYMMDD, dateValueToDate, formatDateString } from './helpers.js';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import InlineError from '../InlineError.svelte';
 	import checkRequiredProps from '../checkRequiredProps.js';
@@ -91,12 +90,16 @@
 	function onSelectedDateInputChange(selectedDateInput) {
 		if (selectedDateInput && (selectedDateInput.start || selectedDateInput.end) && range) {
 			$inputs[name] = {
-				start: dateToYYYYMMDD(selectedDateInput.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-				end: dateToYYYYMMDD(selectedDateInput.end?.toDate(getLocalTimeZone()) ?? new Date())
+				start: dateToYYYYMMDD(
+					selectedDateInput.start ? dateValueToDate(selectedDateInput.start) : new Date(0)
+				),
+				end: dateToYYYYMMDD(
+					selectedDateInput.end ? dateValueToDate(selectedDateInput.end) : new Date()
+				)
 			};
-		} else if (selectedDateInput && selectedDateInput && !range) {
+		} else if (selectedDateInput && !range) {
 			$inputs[name] = {
-				value: dateToYYYYMMDD(selectedDateInput.toDate(getLocalTimeZone()) ?? new Date(0))
+				value: dateToYYYYMMDD(dateValueToDate(selectedDateInput) ?? new Date(0))
 			};
 		}
 	}
