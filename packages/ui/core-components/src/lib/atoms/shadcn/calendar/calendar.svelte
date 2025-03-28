@@ -16,8 +16,9 @@
 	} from './index.js';
 	import * as Select from '../select/index.js';
 	import { Select as SelectPrimitive } from 'bits-ui';
-	import { DateFormatter, getLocalTimeZone } from '@internationalized/date';
+	import { DateFormatter } from '@internationalized/date';
 
+	import { dateValueToDate } from '../../inputs/date-input/helpers.js';
 	import { cn } from '$lib/utils.js';
 
 	/** @type {import("bits-ui").DateRange | undefined} */
@@ -67,7 +68,7 @@
 		: undefined;
 
 	$: defaultMonth = placeholder
-		? { value: placeholder.month, label: monthFmt.format(placeholder.toDate(getLocalTimeZone())) }
+		? { value: placeholder.month, label: monthFmt.format(dateValueToDate(placeholder)) }
 		: undefined;
 
 	export {
