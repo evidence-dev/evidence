@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "6.0.4",
+	"version": "6.0.5",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "e2e-spa",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "scripts": {
     "build": "cross-env VITE_EVIDENCE_SPA=true evidence build",
     "build:strict": "cross-env VITE_EVIDENCE_SPA=true evidence build:strict",

@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 6.0.5
+
+### Patch Changes
+
+- 0400dd479: Upgrade dependencies to resolve CVEs
+
 ## 6.0.4
 
 ### Patch Changes
