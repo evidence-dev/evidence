@@ -1,6 +1,6 @@
 {
   "name": "e2e-themes",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "scripts": {
     "build": "cross-env evidence build",
     "build:strict": "cross-env evidence build:strict",

@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 5.2.2
+
+### Patch Changes
+
+- 0400dd479: Upgrade dependencies to resolve CVEs
+- Updated dependencies [0400dd479]
+  - @evidence-dev/tailwind@3.0.10
+  - @evidence-dev/component-utilities@4.0.9
+
 ## 5.2.1
 
 ### Patch Changes
