@@ -6,6 +6,12 @@ hide_table_of_contents: false
 description:  An index of the components available in the Evidence library.
 ---
 
+Evidence is a library for creating reports in markdown and SQL. It uses ECharts for charts, Leaflet for maps, and Shadcn for UI components.
+
+<BigLink href="https://mentha.fyi">
+    Evidence Online (Beta) &rarr;
+</BigLink>
+
 ## Data
 
 <Grid cols=2>
