@@ -1,6 +1,6 @@
 {
   "name": "e2e-dev-server-startup",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "scripts": {
     "build": "evidence build",
     "build:strict": "evidence build:strict",

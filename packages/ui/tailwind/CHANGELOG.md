@@ -1,5 +1,11 @@
 # @evidence-dev/tailwind
 
+## 3.0.10
+
+### Patch Changes
+
+- 0400dd479: Upgrade dependencies to resolve CVEs
+
 ## 3.0.9
 
 ### Patch Changes
