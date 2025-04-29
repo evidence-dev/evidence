@@ -10,9 +10,9 @@
 	export let code = '';
 </script>
 
-<pre class="text-xs max-h-56 overflow-auto pretty-scrollbar">
-  <code class="language-sql">{@html Prism.highlight(code, prism_sql)}</code>
-</pre>
+<pre class="text-xs max-h-56 overflow-auto pretty-scrollbar"><code class="language-sql"
+		>{@html Prism.highlight(code, prism_sql)}
+</code></pre>
 
 <style>
 	code {
