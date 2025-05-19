@@ -101,7 +101,10 @@ const buildConfig = function (database) {
 			trustServerCertificate:
 				trust_server_certificate === 'true' || trust_server_certificate === true,
 			encrypt: encrypt === 'true' || encrypt === true
-		}
+		},
+		authentication: {
+			type: database.authenticationType
+ 		}
 	};
 
 	if (database.authenticationType === 'default') {
