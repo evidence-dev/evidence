@@ -84,3 +84,20 @@ group by 1
     y=sales_usd
 />
 ````
+
+## Filtering a query with a search parameter in URL
+
+Every search parameter defined in the URL can be accessed and used as filter by using `{$page.url.searchParams.get('myParam')}`
+
+The search parameter should be defined as `.../pagename/?myParam=...`
+```
+<Dropdown data=filteroptions name=dropdownfilter value=name defaultValue='{$page.url.searchParams.get('myParam')}'/>
+```
+
+<Alert status=info>
+
+URL parameters can be useful to share a specific page or present a view with predefined filters.
+
+</Alert>
+
+
