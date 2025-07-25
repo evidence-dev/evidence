@@ -466,7 +466,7 @@ Use bar or column charts to compare a metric across categories. Bar charts are b
 <PropListing
     name=seriesColors
     description="Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax"
-    options="object with series names and assigned colors"
+    options="object with series names and assigned colors seriesColors={`{{'Canada': 'red', 'US': 'blue'}}`}"
     defaultValue="colors applied by order of series in data"
 />
 <PropListing
