@@ -15,6 +15,7 @@ A small multiple can be created by using the grid, loop and query functions opti
 
 # Example
 
+
 ```sql categories
 select distinct category as name from needful_things.orders
 ```
@@ -24,9 +25,10 @@ select category, order_month as month, sum(sales) as sales_usd0k, count(1) as or
 group by all
 ```
 
+<DocTab>
+
 <Grid cols=3 gapSize=lg>
 {#each categories as category}
-
 
 <LineChart 
     data={orders_by_category.where(`category = '${category.name}'`)}
@@ -34,12 +36,25 @@ group by all
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
     title="Monthly Sales"
-    subtitle="Includes all categories"
+    subtitle="{category.name}"
 />
 {/each}
 </Grid>
 
+```markdown
+<Grid cols=3 gapSize=lg>
+{#each categories as category}
 
-
-
+<LineChart 
+    data={orders_by_category.where(`category = '${category.name}'`)}
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    title="Monthly Sales"
+    subtitle="{category.name}"
+/>
+{/each}
+</Grid>
+```
+</DocTab>
 
