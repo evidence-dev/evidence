@@ -155,6 +155,8 @@
 					{currentDate}
 					{title}
 					{description}
+					{data}
+					{dates}
 				/>
 			</QueryLoad>
 		{/if}
