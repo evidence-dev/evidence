@@ -249,9 +249,26 @@
 	// Set default placeholder to today's date instead of calendarEnd
 	$: setPlaceholderDefault(todayDate);
 	
-	// Initialize with today's date if no selection
-	$: if (!selectedDateInput) {
-		selectedDateInput = todayDate;
+	$: if (
+		typeof defaultValue === 'string' &&
+		!selectedPreset &&
+		presets.length
+	) {
+		applyPreset(defaultValue);
+	}
+	
+	// Initialize with default value or today's date if no selection and no default value applied
+	$: if (!selectedDateInput && !selectedPreset) {
+		if (defaultValue && typeof defaultValue === 'string') {
+			try {
+				const defaultDate = YYYYMMDDToCalendar(defaultValue);
+				selectedDateInput = defaultDate;
+			} catch (error) {
+				selectedDateInput = todayDate;
+			}
+		} else {
+			selectedDateInput = todayDate;
+		}
 	}
 
 	// group exists check for nicely rendering group border for dropdown
@@ -278,14 +295,6 @@
 		}
 		onSelectedDateInputChange(selectedDateInput);
 	}
-
-	$: if (
-		typeof defaultValue === 'string' &&
-		!selectedDateInput &&
-		!selectedPreset &&
-		presets.length
-	)
-		applyPreset(defaultValue);
 
 	function updateDateRange(start, end) {
 		if (selectedPreset) return;
