@@ -99,7 +99,9 @@
 		checkMinMax(min, max);
 	}
 
-	$: if (defaultValue !== undefined && !data) {
+	// Initialize default value only once
+	let defaultValueInitialized = false;
+	$: if (defaultValue !== undefined && !data && !defaultValueInitialized) {
 		defaultValue = validateNumber(defaultValue, 'defaultValue');
 		if (defaultValue < min) {
 			errors.push('defaultValue cannot be less than min');
@@ -107,6 +109,7 @@
 			errors.push('defaultValue cannot be greater than max');
 		}
 		value = [defaultValue];
+		defaultValueInitialized = true;
 	}
 
 	$: $inputs[name] = value;
