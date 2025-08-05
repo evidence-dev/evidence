@@ -641,8 +641,8 @@ importers:
         specifier: workspace:*
         version: link:../../lib/db-commons
       duckdb-async:
-        specifier: 1.3.2
-        version: 1.3.2
+        specifier: 1.3.1
+        version: 1.3.1
     devDependencies:
       dotenv:
         specifier: ^16.0.1
@@ -11251,8 +11251,8 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /duckdb-async@1.3.2:
-    resolution: {integrity: sha512-19JmWblNFM6vhmuHd4V4MB7BjxQGre5WTMSUc67nb2Ofjwd/OWUkBgToaraCNofF1aUdOMwg3YmLEfuZ4QppxA==}
+  /duckdb-async@1.3.1:
+    resolution: {integrity: sha512-jx7qlT10FwtNrodVqjgJFf3xbNlt07uSPBOEVvDTBYEEMwD5ONFBR+cE3KZeP5kexqzkzjQQZEkZJlNClWawSg==}
     dependencies:
       duckdb: 1.3.2
     transitivePeerDependencies:
