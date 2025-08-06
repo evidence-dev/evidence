@@ -191,7 +191,7 @@
 			group: 'To Date',
 			range: {
 				start: startOfMonth(referenceDate),
-				end: referenceDate
+				end: todayDate
 			}
 		},
 		{
@@ -207,7 +207,7 @@
 			group: 'To Date',
 			range: {
 				start: startOfYear(referenceDate),
-				end: referenceDate
+				end: todayDate
 			}
 		},
 		{
