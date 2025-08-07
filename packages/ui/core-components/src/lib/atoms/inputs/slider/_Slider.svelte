@@ -76,6 +76,10 @@
 	/** @type {number} */
 	export let debounceDelay = 0;
 
+	/** @type {boolean} */
+	export let showInput = false;
+	$: showInput = toBoolean(showInput);
+
 	let errors = [];
 	let debounceTimer;
 	let initialLoad = true;
@@ -203,6 +207,29 @@
 	$: if (sliderTicks > 1000) {
 		handleSteps();
 	}
+
+	// Create a reactive input value
+	$: inputValue = value && value.length > 0 ? Math.round(value[0]) : min;
+
+	// Handle input value changes
+	function handleInputChange(inputValue, eventTarget = null) {
+		const newValue = Math.round(inputValue);
+		const validValue = Math.max(min, Math.min(max, isNaN(newValue) ? min : newValue));
+		
+		if (eventTarget) {
+			eventTarget.value = validValue;
+		}
+		
+		value = [validValue];
+		debounceUpdate(value);
+	}
+
+	function handleKeydown(e) {
+		if (e.key === 'Enter' || e.key === 'Tab') {
+			handleInputChange(e.target.value, e.target);
+			e.target.blur();
+		}
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
@@ -218,9 +245,21 @@
 						{title}:
 					{/if}
 				</span>
-				<span class="text-xs">
-					{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span
-				>
+				{#if showInput}
+					<input
+						type="number"
+						min={min}
+						max={max}
+						value={inputValue}
+						class="w-auto h-8 px-2 mb-2 text-sm border border-base-300 rounded bg-base-100 focus:outline-none focus:ring-2 focus:ring-primary/50"
+						
+						on:keydown={handleKeydown}
+					/>
+				{:else}
+					<span class="text-xs">
+						{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}
+					</span>
+				{/if}
 			</p>
 			<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 			{#if showMinMax}
