@@ -16,6 +16,7 @@
 	import InlineError from '../InlineError.svelte';
 	import checkRequiredProps from '../checkRequiredProps.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import { onMount } from 'svelte';
 
 	/////
 	// Component Things
@@ -37,8 +38,8 @@
 	export let step = 1;
 
 	/** @type {boolean} */
-	export let showMaxMin = true;
-	$: showMaxMin = toBoolean(showMaxMin);
+	export let showMinMax = true;
+	$: showMinMax = toBoolean(showMinMax);
 
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
@@ -72,7 +73,28 @@
 	/** @type {string | undefined} */
 	export let minColumn = undefined;
 
+	/** @type {number} */
+	export let debounceDelay = 0;
+
 	let errors = [];
+	let debounceTimer;
+	let initialLoad = true;
+	// Debounce function to delay updates
+	function debounceUpdate(newValue) {
+		clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(() => {
+			$inputs[name] = newValue;
+		}, debounceDelay);
+	}
+
+	// Clean up timer on component destruction
+	onMount(() => {
+		return () => {
+			if (debounceTimer) {
+				clearTimeout(debounceTimer);
+			}
+		};
+	});
 
 	function validateNumber(value, valueType) {
 		value = toNumber(value);
@@ -112,7 +134,14 @@
 		defaultValueInitialized = true;
 	}
 
-	$: $inputs[name] = value;
+	$: if (value && value.length > 0) {
+		if (initialLoad) {
+			$inputs[name] = value;
+			initialLoad = false;
+		} else {
+			debounceUpdate(value);
+		}
+	}
 
 	const renderSize = (size) => {
 		const sizeMap = {
@@ -194,7 +223,7 @@
 				>
 			</p>
 			<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
-			{#if showMaxMin}
+			{#if showMinMax}
 				<span class="absolute left-0 text-xs pt-1 -z-10"
 					>{fmt ? formatValue(min, format_object) : min}</span
 				>
