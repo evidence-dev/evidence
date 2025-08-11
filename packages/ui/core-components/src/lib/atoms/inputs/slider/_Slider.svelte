@@ -38,8 +38,8 @@
 	export let step = 1;
 
 	/** @type {boolean} */
-	export let showMinMax = true;
-	$: showMinMax = toBoolean(showMinMax);
+	export let showMaxMin = true;
+	$: showMaxMin = toBoolean(showMaxMin);
 
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
@@ -262,7 +262,7 @@
 				{/if}
 			</p>
 			<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
-			{#if showMinMax}
+			{#if showMaxMin}
 				<span class="absolute left-0 text-xs pt-1 -z-10"
 					>{fmt ? formatValue(min, format_object) : min}</span
 				>
