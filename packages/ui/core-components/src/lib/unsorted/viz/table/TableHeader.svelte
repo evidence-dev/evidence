@@ -33,7 +33,7 @@
 	}
 </script>
 
-<thead>
+<thead class="sticky top-0 z-10">
 	{#if orderedColumns.length > 0}
 		{@const columnsWithGroupSpan = orderedColumns.map((column, index, array) => {
 			// Determine if this column starts a new group or continues an existing one
