@@ -63,7 +63,7 @@
 							class="pt-1 align-bottom {compact ? 'px-[1px]' : 'px-[2px]'}"
 						>
 							<!-- Group header with dynamic colspan -->
-							<div>
+							<div class=" border-b-[1px] border-base-content-muted whitespace-normal pb-[2px]">
 								{column.colGroup}
 							</div>
 						</th>
