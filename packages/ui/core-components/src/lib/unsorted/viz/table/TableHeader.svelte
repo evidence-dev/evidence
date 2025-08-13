@@ -33,7 +33,7 @@
 	}
 </script>
 
-<thead class="sticky top-0 z-10">
+<thead class="sticky top-0 z-10" style="box-shadow: 0 1px 0 0 rgba(138, 138, 138, 0.6);">
 	{#if orderedColumns.length > 0}
 		{@const columnsWithGroupSpan = orderedColumns.map((column, index, array) => {
 			// Determine if this column starts a new group or continues an existing one
@@ -63,7 +63,7 @@
 							class="pt-1 align-bottom {compact ? 'px-[1px]' : 'px-[2px]'}"
 						>
 							<!-- Group header with dynamic colspan -->
-							<div class=" border-b-[1px] border-base-content-muted whitespace-normal pb-[2px]">
+							<div>
 								{column.colGroup}
 							</div>
 						</th>
@@ -78,7 +78,7 @@
 		{/if}
 	{/if}
 
-	<tr class="border-b border-base-content-muted/60">
+	<tr>
 		{#if rowNumbers}
 			<th
 				role="columnheader"
