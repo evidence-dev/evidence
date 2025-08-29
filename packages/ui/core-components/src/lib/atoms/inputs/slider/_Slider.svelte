@@ -215,11 +215,11 @@
 	function handleInputChange(inputValue, eventTarget = null) {
 		const newValue = Math.round(inputValue);
 		const validValue = Math.max(min, Math.min(max, isNaN(newValue) ? min : newValue));
-		
+
 		if (eventTarget) {
 			eventTarget.value = validValue;
 		}
-		
+
 		value = [validValue];
 		debounceUpdate(value);
 	}
@@ -248,11 +248,10 @@
 				{#if showInput}
 					<input
 						type="number"
-						min={min}
-						max={max}
+						{min}
+						{max}
 						value={inputValue}
 						class="w-auto h-8 px-2 mb-2 text-sm border border-base-300 rounded bg-base-100 focus:outline-none focus:ring-2 focus:ring-primary/50"
-						
 						on:keydown={handleKeydown}
 					/>
 				{:else}
