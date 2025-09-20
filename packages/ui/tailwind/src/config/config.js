@@ -9,6 +9,19 @@ const themes = buildThemes(themesConfig);
 
 /** @type {Partial<import('tailwindcss').Config>} */
 export const config = {
+	content: [
+		// Core Evidence components source files (for local development)
+		'../../../core-components/src/**/*.{html,js,svelte,ts,md}',
+		'./node_modules/@evidence-dev/core-components/src/**/*.{html,js,svelte,ts,md}',
+		'./node_modules/@evidence-dev/core-components/dist/**/*.{html,js,svelte,ts,md}',
+		// Additional Evidence UI packages
+		'../../../*/src/**/*.{html,js,svelte,ts,md}',
+		'./node_modules/@evidence-dev/*/src/**/*.{html,js,svelte,ts,md}',
+		'./node_modules/@evidence-dev/*/dist/**/*.{html,js,svelte,ts,md}',
+		// Consumer project files
+		'./src/**/*.{html,js,svelte,ts,md}',
+		'./.evidence/template/src/**/*.{html,js,svelte,ts,md}'
+	],
 	theme: {
 		extend: {
 			fontFamily: {
