@@ -42,6 +42,13 @@ To request a feature, a new data source, or ask for help, create a GitHub discus
 
 ### Getting Started
 
+Evidence development can be done in two ways:
+
+1. **Repository Development** (recommended): Work directly in the Evidence repository using the example project
+2. **Local Package Linking**: Link your existing Evidence project to local Evidence packages
+
+#### Repository Development
+
 Follow these steps to test your changes, once you've started the example project (per steps below),
 you should be able to open the `Evidence Development Workspace` on `localhost:3000`. Any subsequent changes you make will be reflected on the website.
 
@@ -74,6 +81,16 @@ pnpm run dev:core-components
 ```bash
 pnpm run dev:example-project
 ```
+
+#### Local Package Linking
+
+If you prefer to develop using your existing Evidence project instead of the example project:
+
+1. Clone and build the Evidence repository
+2. Link local packages in your project's `package.json`
+3. Configure Tailwind CSS and Vite for local development
+
+For detailed setup instructions, see [DEVELOP.md](./DEVELOP.md).
 
 #### Cannot find package Error
 
