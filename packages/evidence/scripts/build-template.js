@@ -70,14 +70,14 @@ const logger = createLogger();
 
 const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
 /** @type {import('vite').UserConfig} */
-const config = 
+const config =
 {
 	plugins: [
-		tailwindcss(), 
-		sveltekit(), 
-		configVirtual(), 
-		...(isHmrEnabled('queries') ? [queryDirectoryHmr] : []), 
-		...(isHmrEnabled('sources') ? [sourceQueryHmr()]  : []), 
+		tailwindcss(),
+		sveltekit(),
+		configVirtual(),
+		...(isHmrEnabled('queries') ? [queryDirectoryHmr] : []),
+		...(isHmrEnabled('sources') ? [sourceQueryHmr()]  : []),
 		evidenceThemes()
 	],
 	optimizeDeps: {
