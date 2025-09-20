@@ -60,7 +60,7 @@ const runFileWatcher = function (watchPatterns) {
 
 	var watchers = [];
 
-	watchPatterns.forEach((pattern, item) => {
+	watchPatterns.filter(p => p?.disabled !== true).forEach((pattern, item) => {
 		watchers[item] = chokidar.watch(path.join(pattern.sourceRelative, pattern.filePattern), {
 			ignored: ignoredFiles
 		});
@@ -131,11 +131,13 @@ const watchPatterns = [
 		filePattern: '**'
 	}, // static files (eg images)
 	{
+		mnemonic: 'sources',
 		sourceRelative: './sources/',
 		targetRelative: './.evidence/template/sources/',
 		filePattern: '**'
 	}, // source files (eg csv files)
 	{
+		mnemonic: 'queries',
 		sourceRelative: './queries',
 		targetRelative: './.evidence/template/queries',
 		filePattern: '**'
@@ -145,7 +147,11 @@ const watchPatterns = [
 		targetRelative: './.evidence/template/src/components/',
 		filePattern: '**'
 	}, // custom components
-	{ sourceRelative: '.', targetRelative: './.evidence/template/src/', filePattern: 'app.css' }, // custom theme file
+	{ 
+		sourceRelative: '.', 
+		targetRelative: './.evidence/template/src/', 
+		filePattern: 'app.css' 
+	}, // custom theme file
 	{
 		sourceRelative: './partials',
 		targetRelative: './.evidence/template/partials',
@@ -161,6 +167,7 @@ function removeStaticDir(dir) {
 const strictMode = function () {
 	enableStrictMode();
 };
+
 const buildHelper = function (command, args) {
 	const watchers = runFileWatcher(watchPatterns);
 	const flatArgs = flattenArguments(args);
@@ -177,7 +184,7 @@ const buildHelper = function (command, args) {
 			// used for source query HMR
 			EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
 			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data',
-			EVIDENCE_IS_BUILDING: 'true'
+			EVIDENCE_IS_BUILDING: 'true',
 		}
 	});
 	// Copy the outputs to the root of the project upon successful exit
@@ -234,6 +241,7 @@ const prog = sade('evidence');
 
 prog
 	.command('dev')
+	.option('--disable-watchers', 'Disables watching certain directories [sources,queries]')
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
@@ -241,6 +249,23 @@ prog
 		if (args.debug) {
 			enableDebug();
 			delete args.debug;
+		}
+
+		if (args['disable-watchers']) {
+			const directories = args['disable-watchers'].split(/\W/).filter(v => v.length > 0);
+			const mnemonics = watchPatterns.filter(p => Object.hasOwn(p, 'mnemonic')).map(p => p.mnemonic);
+			if (directories.some(v => !mnemonics.includes(v))) {
+				console.warn(chalk.yellow(`Unknown watch directory/directories: "${args['disable-watchers']}"`));
+				console.info(`Directories for which watching can be disabled are: ${mnemonics.join(', ') }`);
+				process.exit(1);
+			}
+
+			watchPatterns.forEach(p => {
+				p.disabled = Object.hasOwn(p, 'mnemonic') && directories.includes(p.mnemonic);
+			});
+
+			console.info(chalk.bold(`These directories will not be watched: ${directories.join(', ')}`));
+			delete args['disable-watchers'];
 		}
 
 		loadEnvFile();
@@ -280,7 +305,7 @@ ${chalk.bold('[!] Unable to load source manifest')}
 				...process.env,
 				// used for source query HMR
 				EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
-				EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
+				EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data',
 			}
 		});
 
