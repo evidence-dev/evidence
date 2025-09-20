@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
-import { enableDebug, enableStrictMode } from '@evidence-dev/sdk/utils';
+import { enableDebug, enableStrictMode, disableHmr } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
 import { createHash } from 'crypto';
 
@@ -241,6 +241,7 @@ const prog = sade('evidence');
 
 prog
 	.command('dev')
+	.option('--disable-hmr', 'Disables hot-reloading of certain features [sources,queries]')
 	.option('--disable-watchers', 'Disables watching certain directories [sources,queries]')
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
@@ -266,6 +267,16 @@ prog
 
 			console.info(chalk.bold(`These directories will not be watched: ${directories.join(', ')}`));
 			delete args['disable-watchers'];
+		}
+
+		if (args['disable-hmr']) {
+			try {
+				disableHmr(args['disable-hmr'].split(/\W/).filter(v => v.length > 0));
+			} catch (_) {
+				console.warn(chalk.yellow(`Unknown HMR feature(s): "${args['disable-hmr']}"`));
+			}
+
+			delete args['disable-hmr'];
 		}
 
 		loadEnvFile();

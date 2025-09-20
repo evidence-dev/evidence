@@ -49,7 +49,7 @@ fsExtra.outputFileSync(
 import { sveltekit } from "@sveltejs/kit/vite"
 import { createLogger } from 'vite';
 import { sourceQueryHmr, configVirtual, queryDirectoryHmr } from '@evidence-dev/sdk/build/vite';
-import { isDebug } from '@evidence-dev/sdk/utils';
+import { isDebug, isHmrEnabled } from '@evidence-dev/sdk/utils';
 import { log } from "@evidence-dev/sdk/logger";
 import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
@@ -72,7 +72,14 @@ const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
 /** @type {import('vite').UserConfig} */
 const config = 
 {
-	plugins: [tailwindcss(), sveltekit(), configVirtual(), queryDirectoryHmr, sourceQueryHmr(), evidenceThemes()],
+	plugins: [
+		tailwindcss(), 
+		sveltekit(), 
+		configVirtual(), 
+		...(isHmrEnabled('queries') ? [queryDirectoryHmr] : []), 
+		...(isHmrEnabled('sources') ? [sourceQueryHmr()]  : []), 
+		evidenceThemes()
+	],
 	optimizeDeps: {
 		include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
 			// We need these to prevent HMR from doing a full page reload
