@@ -94,3 +94,18 @@ export async function waitFor(url: string, interval = 200, max = 30_000) {
 
 	return false;
 }
+
+/**
+ * Checks if the authority part of a URL is a host name
+ * rather than an IP address.
+ *
+ * @param hostname The host part of a URL.
+ *
+ * @returns True if it's not an IP address, false if it is
+ */
+export function isHostname(hostname: string) {
+  const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+  const ipv6Pattern = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+  return !ipv4Pattern.test(hostname) && 
+		!ipv6Pattern.test(hostname);
+}

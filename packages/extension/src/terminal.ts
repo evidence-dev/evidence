@@ -1,4 +1,4 @@
-import { env, window, Disposable, ExtensionContext, OutputChannel, Terminal, Uri } from 'vscode';
+import { window, ExtensionContext, OutputChannel, Terminal } from 'vscode';
 
 import { getExtensionContext } from './extensionContext';
 import { getNodeVersion, isSupportedNodeVersion, promptToInstallNodeJsAndRestart } from './node';
@@ -12,11 +12,11 @@ const terminalName = 'Evidence';
 /**
  * Evidence terminal instance.
  */
-let _terminal: Terminal | undefined;
+let _terminal: () => Terminal | undefined = () =>
+		window.terminals.find(terminal => terminal.name === terminalName);
 let _outputChannel: OutputChannel | undefined;
 let _nodeVersion: string | undefined;
 let _currentDirectory: string | undefined;
-let _disposable: Disposable | undefined;
 
 /**
  * Gets Evidence treminal instance.
@@ -26,36 +26,26 @@ let _disposable: Disposable | undefined;
  * @returns VScode Terminal instance.
  */
 async function getTerminal(
-	context: ExtensionContext,
+	_context: ExtensionContext,
 	workingDirectory?: string
 ): Promise<Terminal> {
 	_outputChannel = getOutputChannel();
-	if (_terminal === undefined) {
-		_terminal = window.createTerminal(terminalName);
-		_terminal.show(false);
-		// _terminal.sendText('node -v');
+
+	let terminal = _terminal();
+	if (terminal === undefined) {
+		terminal = window.createTerminal(terminalName);
+		terminal.show(false);
 		_nodeVersion = await getNodeVersion();
 		_outputChannel.appendLine(`Using node ${_nodeVersion}`);
-
-		// dispose this terminal when terminal panel is closed
-		_disposable = window.onDidCloseTerminal((e: Terminal) => {
-			if (e.name === terminalName) {
-				_terminal = undefined;
-				_disposable?.dispose();
-				_disposable = undefined;
-			}
-		});
-
-		context.subscriptions.push(_disposable);
 		_currentDirectory = undefined;
 	}
 
 	if (_currentDirectory !== workingDirectory && workingDirectory && workingDirectory.length > 0) {
-		_terminal.sendText(`cd "${workingDirectory}"`, true); // add new line
+		terminal.sendText(`cd "${workingDirectory}"`, true); // add new line
 		_currentDirectory = workingDirectory;
 	}
 
-	return _terminal;
+	return terminal;
 }
 
 /**
@@ -94,10 +84,10 @@ export async function sendCommand(
  * Closes active Evidence app terminal.
  */
 export function closeTerminal() {
-	if (_terminal) {
-		_terminal.show(false);
-		_terminal.sendText(`\x03`);
-		_terminal.dispose();
-		_terminal = undefined;
+	const terminal = _terminal();
+	if (terminal !== undefined) {
+		terminal.show(false);
+		terminal.sendText(`\x03`);
+		terminal.dispose();
 	}
 }

@@ -8,12 +8,12 @@ import { localAppUrl, preview } from './preview';
 import { getNodeVersion, isSupportedNodeVersion, promptToInstallNodeJsAndRestart } from '../node';
 import { statusBar } from '../statusBar';
 import { timeout } from '../utils/timer';
-import { tryPort } from '../utils/httpUtils';
+import { isHostname, tryPort } from '../utils/httpUtils';
 import { hasDependencies } from './build';
 import { telemetryService } from '../extension';
 import { hasManifest, getTypesFromConnections, getPackageJsonFolder } from '../utils/jsonUtils';
 
-const localhost = 'localhost';
+const localhost = ['127.0.0.1', '::1', 'localhost'];
 let _running: boolean = false;
 let _activePort: number = <number>getConfig(Settings.DefaultPort);
 
@@ -78,6 +78,8 @@ export async function startServer(pageUri?: Uri) {
 		pageUri = await getAppPageUri('/');
 	}
 
+	const pageHostname = pageUri.authority.split(':')[0];
+
 	// check if we need to run command in a different directory than root of the project:
 	const workspaceFolderPath = workspace.workspaceFolders
 		? workspace.workspaceFolders[0].uri.fsPath
@@ -126,7 +128,7 @@ export async function startServer(pageUri?: Uri) {
 			let serverPortParameter = ` --port ${_activePort}`;
 
 			let devServerHostParameter: string = '';
-			if (!pageUri.authority.startsWith(localhost)) {
+			if (!localhost.includes(pageHostname)) {
 				// use remote host parameter to start dev server on github codespaces
 				devServerHostParameter = ' --host 0.0.0.0';
 			}
@@ -137,9 +139,18 @@ export async function startServer(pageUri?: Uri) {
 				serverPortParameter = '';
 			}
 
+			let envVariables: string = '';
+			if (isHostname(pageHostname)) {
+				envVariables += `EVIDENCE_ALLOWED_HOST=${pageHostname} `;
+			}
+
+			if (!(['', '/'].includes(pageUri.path))) {
+				envVariables += `EVIDENCE_BASE_PATH=${pageUri.path.replace(/\/$/, '')} `;
+			}
+
 			// start dev server via terminal command
 			sendCommand(
-				`${cdCommand}${dependencyCommand}${sourcesCommand}npm exec evidence dev --${devServerHostParameter}${serverPortParameter}${previewParameter}${cdBackCommand}`
+				`${cdCommand}${dependencyCommand}${sourcesCommand}${envVariables}npm exec evidence dev --${devServerHostParameter}${serverPortParameter}${previewParameter}${cdBackCommand}`
 			);
 		}
 
