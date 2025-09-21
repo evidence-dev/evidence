@@ -12,7 +12,8 @@ export const enum Settings {
 	AutoStart = 'autoStart',
 	TemplateProjectUrl = 'templateProjectUrl',
 	PreviewType = 'previewType',
-	SlashCommands = 'slashCommands'
+	SlashCommands = 'slashCommands',
+	DisableAutoSourceBuilding = 'disableAutoSourceBuilding'
 }
 
 /**

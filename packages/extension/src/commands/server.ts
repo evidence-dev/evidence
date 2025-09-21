@@ -148,9 +148,15 @@ export async function startServer(pageUri?: Uri) {
 				envVariables += `EVIDENCE_BASE_PATH=${pageUri.path.replace(/\/$/, '')} `;
 			}
 
+			// prepare disable flags for automatic source building
+			let disableFlags = '';
+			if (getConfig(Settings.DisableAutoSourceBuilding, false)) {
+				disableFlags = ' --disable-watchers sources,queries --disable-hmr sources,queries';
+			}
+
 			// start dev server via terminal command
 			sendCommand(
-				`${cdCommand}${dependencyCommand}${sourcesCommand}${envVariables}npm exec evidence dev --${devServerHostParameter}${serverPortParameter}${previewParameter}${cdBackCommand}`
+				`${cdCommand}${dependencyCommand}${sourcesCommand}${envVariables}npm exec evidence dev --${devServerHostParameter}${serverPortParameter}${previewParameter}${disableFlags}${cdBackCommand}`
 			);
 		}
 
