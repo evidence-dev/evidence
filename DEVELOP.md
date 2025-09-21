@@ -1,6 +1,19 @@
 # Development Setup with Local Evidence Packages
 
-This guide explains how to set up an Evidence project to use local Evidence packages for development, allowing you to edit Evidence source code and see changes immediately.
+## When to Use This Guide
+
+**Most Evidence development should use the standard process:** Work directly in the Evidence repository using the example project, as documented in [CONTRIBUTING.md](./CONTRIBUTING.md). This is simpler, faster, and recommended for most contributors developing Evidence components and framework code.
+
+**Use this local package linking approach only when:**
+- **Developing the Evidence CLI** - Testing template population, file watching, or CLI-specific features
+- **End-to-end testing** - Testing the complete Evidence user experience with real project structures
+- **Testing with your own Evidence project** - You need to validate changes against your specific setup
+
+The key difference: the example project uses `vite dev` directly and bypasses Evidence's CLI template system, while real Evidence projects use `evidence dev` which converts Evidence project structure (pages/, sources/, queries/) into SvelteKit structure.
+
+## Overview
+
+This guide explains how to link your existing Evidence project to local Evidence packages for development, allowing you to edit Evidence source code and see changes immediately in your own project.
 
 ## Prerequisites
 
