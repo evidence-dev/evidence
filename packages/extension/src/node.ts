@@ -7,18 +7,38 @@ const downloadNodeJs = 'Download NodeJS (LTS Version)';
 const downloadNodeJsUrl = 'https://nodejs.org/en/download';
 
 /**
- * Gets NodeJS version.
+ * Gets NodeJS version using the user's login shell environment.
+ * This works with version managers like asdf, nvm, fnm, volta, etc.
  *
  * @returns The NodeJS version.
  */
 export async function getNodeVersion() {
-	let nodeVersion;
+	// Strategy 1: Use login shell in current workspace directory
+	// This loads the user's shell configuration and version manager setup
 	try {
-		nodeVersion = await executeCommand('node --version');
+		const { workspace } = await import('vscode');
+		const workspaceFolder = workspace.workspaceFolders?.[0];
+		const cwd = workspaceFolder?.uri.fsPath || process.cwd();
+
+		const nodeVersion = await executeShellCommand('node --version', cwd);
+		if (nodeVersion && nodeVersion.startsWith('v')) {
+			return nodeVersion;
+		}
 	} catch (e) {
-		nodeVersion = 'none';
+		// Continue to fallback strategy
 	}
-	return nodeVersion;
+
+	// Strategy 2: Fallback to direct command (for system-installed Node)
+	try {
+		const nodeVersion = await executeCommand('node --version');
+		if (nodeVersion && nodeVersion.trim().startsWith('v')) {
+			return nodeVersion.trim();
+		}
+	} catch (e) {
+		// Node not found
+	}
+
+	return 'none';
 }
 
 /**
@@ -84,6 +104,30 @@ export function executeCommand(command: string): Promise<string> {
 				reject(error);
 			} else {
 				resolve(stdout);
+			}
+		});
+	});
+}
+
+/**
+ * Executes command using the user's login shell to load version manager environments.
+ * This works with asdf, nvm, fnm, volta, and other version managers.
+ *
+ * @param command The command to execute.
+ * @param cwd Optional working directory.
+ * @returns The stdout of the executed command.
+ */
+export function executeShellCommand(command: string, cwd?: string): Promise<string> {
+	return new Promise((resolve, reject) => {
+		// Use login shell to load user's environment (version managers)
+		const shell = process.env.SHELL || '/bin/bash';
+		const shellCommand = `${shell} -l -c "${command}"`;
+
+		exec(shellCommand, { cwd }, (error, stdout, stderr) => {
+			if (error) {
+				reject(error);
+			} else {
+				resolve(stdout.trim());
 			}
 		});
 	});

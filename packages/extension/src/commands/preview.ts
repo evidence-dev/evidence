@@ -11,7 +11,25 @@ import { getAppPageUri, isServerRunning, startServer } from './server';
 import { waitFor } from '../utils/httpUtils';
 
 /**
- * Local Evidence app url.
+ * Gets the base Evidence app URL using configuration settings.
+ */
+export function getLocalAppUrl(): string {
+	const allowedHost: string = getConfig(Settings.AllowedHost, '') as string;
+	const basePath: string = getConfig(Settings.BasePath, '') as string;
+
+	if (allowedHost) {
+		// Use the configured host (e.g., for code-server or reverse proxy)
+		const protocol = allowedHost.includes('localhost') ? 'http' : 'https';
+		return `${protocol}://${allowedHost}${basePath}`;
+	} else {
+		// Default to localhost
+		return `http://localhost${basePath}`;
+	}
+}
+
+/**
+ * Legacy export for backward compatibility.
+ * @deprecated Use getLocalAppUrl() instead
  */
 export const localAppUrl = `http://localhost`;
 
@@ -62,7 +80,7 @@ export async function preview(uri?: Uri) {
 		}
 	}
 
-	if (!isEvidenceProject || !isServerRunning() || /\/pages\/|\\pages\\/.test(uri?.path ?? '')) {
+	if (!isEvidenceProject || !isServerRunning() || !/\/pages\/|\\pages\\/.test(uri?.path ?? '')) {
 		// show standard markdown document preview
 		commands.executeCommand(Commands.MarkdownShowPreview, uri);
 		return;

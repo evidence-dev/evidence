@@ -96,6 +96,7 @@ export async function sendCommand(
 export function closeTerminal() {
 	if (_terminal) {
 		_terminal.show(false);
+		// Send Ctrl+C to stop the running process
 		_terminal.sendText(`\x03`);
 		_terminal.dispose();
 		_terminal = undefined;

@@ -4,7 +4,7 @@ import { Commands } from './commands';
 import { Settings, getConfig } from '../config';
 import { getOutputChannel } from '../output';
 import { closeTerminal, sendCommand } from '../terminal';
-import { localAppUrl, preview } from './preview';
+import { getLocalAppUrl, preview } from './preview';
 import { getNodeVersion, isSupportedNodeVersion, promptToInstallNodeJsAndRestart } from '../node';
 import { statusBar } from '../statusBar';
 import { timeout } from '../utils/timer';
@@ -35,33 +35,45 @@ const setContext = (key: any, value: any) => {
  */
 export async function getAppPageUri(pageUrl?: string): Promise<Uri> {
 	const defaultPort = <number>getConfig(Settings.DefaultPort);
-	const serverUrl = `${localAppUrl}:${defaultPort}`;
-	if (pageUrl === undefined) {
-		pageUrl = serverUrl;
-	} else if (pageUrl.startsWith('/')) {
-		// construct page url for page path wihtout host and port
-		pageUrl = `${localAppUrl}:${defaultPort}${pageUrl}`;
+	const allowedHost = getConfig(Settings.AllowedHost, '');
+
+	let baseUrl: string;
+	if (allowedHost) {
+		// Use configured host (for proxy setups) - don't add port
+		baseUrl = getLocalAppUrl();
+	} else {
+		// Use localhost with port
+		baseUrl = `${getLocalAppUrl()}:${defaultPort}`;
 	}
 
-	// get external web page url
-	let pageUri: Uri = await env.asExternalUri(Uri.parse(pageUrl));
+	if (pageUrl === undefined) {
+		pageUrl = baseUrl;
+	} else if (pageUrl.startsWith('/')) {
+		// construct page url for page path without host and port
+		pageUrl = `${baseUrl}${pageUrl}`;
+	}
 
-	// update active server port number
-	if (!_running) {
-		//pageUri.authority.startsWith(localhost) && !isServerRunning()) {
+	// update active server port number (only for localhost)
+	if (!_running && !allowedHost) {
 		// get the next available localhost port number
 		_activePort = await tryPort(defaultPort);
+
+		// rewrite requested app page url to use the new active localhost server port
+		pageUrl = pageUrl.replace(`:${defaultPort}/`, `:${_activePort}/`);
 	}
 
-	// rewrite requested app page url to use the new active localhost server port
-	pageUri = Uri.parse(
-		pageUri
-			.toString(true) // skip encoding
-			.replace(`:${defaultPort}/`, `:${_activePort}/`)
-	);
+	// get external web page url (after port has been finalized)
+	let pageUri: Uri = await env.asExternalUri(Uri.parse(pageUrl));
+
+	// TEST: let's see what asExternalUri gives us for localhost
+	const testLocalhostUrl = `http://localhost:${_activePort}${pageUrl.includes('/') ? pageUrl.split('/').slice(-1)[0] : ''}`;
+	const testPageUri: Uri = await env.asExternalUri(Uri.parse(testLocalhostUrl));
 
 	const outputChannel = getOutputChannel();
-	outputChannel.appendLine(`Requested app page: ${pageUri.toString(true)}`); // skip encoding
+	outputChannel.appendLine(`Original pageUrl: ${pageUrl}`);
+	outputChannel.appendLine(`Test localhost URL: ${testLocalhostUrl}`);
+	outputChannel.appendLine(`Test asExternalUri result: ${testPageUri.toString(true)}`);
+	outputChannel.appendLine(`Actual pageUri: ${pageUri.toString(true)}`); // skip encoding
 	return pageUri;
 }
 
@@ -137,9 +149,28 @@ export async function startServer(pageUri?: Uri) {
 				serverPortParameter = '';
 			}
 
+			// prepare environment variables for Evidence CLI
+			const allowedHost = getConfig(Settings.AllowedHost, '');
+			const basePath = getConfig(Settings.BasePath, '');
+			const disableAutoBuilding = getConfig(Settings.DisableAutoSourceBuilding, false);
+
+			let envVars = '';
+			if (allowedHost) {
+				envVars += `EVIDENCE_ALLOWED_HOST=${allowedHost} `;
+			}
+			if (basePath) {
+				envVars += `EVIDENCE_BASE_PATH=${basePath} `;
+			}
+
+			// prepare disable flags for automatic source building
+			let disableFlags = '';
+			if (disableAutoBuilding) {
+				disableFlags = ' --disable-watchers sources,queries --disable-hmr sources,queries';
+			}
+
 			// start dev server via terminal command
 			sendCommand(
-				`${cdCommand}${dependencyCommand}${sourcesCommand}npm exec evidence dev --${devServerHostParameter}${serverPortParameter}${previewParameter}${cdBackCommand}`
+				`${cdCommand}${dependencyCommand}${sourcesCommand}${envVars}npm exec evidence dev --${devServerHostParameter}${serverPortParameter}${previewParameter}${disableFlags}${cdBackCommand}`
 			);
 		}
 
@@ -171,7 +202,15 @@ export async function startServer(pageUri?: Uri) {
 
 			// open app preview if previewType is set to internal (simple browser)
 			if (previewType === 'internal' || previewType === 'internal - side-by-side') {
-				preview(pageUri);
+				const previewDelay = getConfig(Settings.PreviewDelay, 0) as number;
+				if (previewDelay > 0) {
+					// Add delay for Cloudflare tunnels or slow proxy setups
+					setTimeout(() => {
+						preview(pageUri);
+					}, previewDelay * 1000);
+				} else {
+					preview(pageUri);
+				}
 			}
 
 			// change button to stop server

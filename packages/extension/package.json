@@ -321,12 +321,14 @@
 				"evidence.autoStart": {
 					"type": "boolean",
 					"default": false,
-					"description": "Autostart Evidence server when VS Code opens Evidence project workspace."
+					"description": "Autostart Evidence server when VS Code opens Evidence project workspace.",
+					"order": 1
 				},
 				"evidence.defaultPort": {
 					"type": "number",
 					"default": 3000,
-					"description": "Default Evidence server port."
+					"description": "Default Evidence server port.",
+					"order": 2
 				},
 				"evidence.templateProjectUrl": {
 					"type": "string",
@@ -348,7 +350,8 @@
 						"VS Code default browser - split-screen",
 						"Open in external web browser",
 						"No automatic preview shown"
-					]
+					],
+					"order": 6
 				},
 				"evidence.enableSqlBackground": {
 					"type": "boolean",
@@ -393,6 +396,32 @@
 					],
 					"default": "lowercase",
 					"description": "Choose whether SQL keyword suggestions should be in uppercase or lowercase"
+				},
+				"evidence.allowedHost": {
+					"type": "string",
+					"default": "",
+					"description": "Hostname for accessing Evidence server (e.g., for code-server or reverse proxy setups). Leave empty for localhost.",
+					"order": 3
+				},
+				"evidence.basePath": {
+					"type": "string",
+					"default": "",
+					"description": "Base path for Evidence server URLs (e.g., '/proxy/3710' for code-server auto port forwarding). Must start with '/' if specified.",
+					"order": 4
+				},
+				"evidence.disableAutoSourceBuilding": {
+					"type": "boolean",
+					"default": false,
+					"description": "Disable the automatic building of sources by the server. When checked, the server will not automatically rebuild sources or reload when source files change.",
+					"order": 5
+				},
+				"evidence.previewDelay": {
+					"type": "number",
+					"default": 0,
+					"minimum": 0,
+					"maximum": 30,
+					"description": "Delay in seconds before opening preview after server starts (useful for Cloudflare tunnels or slow proxy setups). Set to 0 for immediate preview.",
+					"order": 7
 				}
 			}
 		},
