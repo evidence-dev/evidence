@@ -1,4 +1,4 @@
-import { commands, env, workspace, Uri, ViewColumn } from 'vscode';
+import { window, commands, env, workspace, Uri, ViewColumn } from 'vscode';
 
 import { Commands } from './commands';
 import { Settings, getConfig, getWorkspaceFolder } from '../config';
@@ -37,24 +37,15 @@ const setContext = (key: any, value: any) => {
  * and rewrites the host name for the host and port forwarding
  * when running in GitHub Codespaces.
  *
- * @param pageUrl Optional target web page Url.
+ * @param pageUrl Optional internal app Url or only the path
+ * part of the Url (e.g. /customers).
  *
- * @returns Rewritten page Uri with the active server port number,
- * and rewritten host name for the host and port forwarding
- * when running in GitHub Codespaces.
+ * @returns External Url which can be safely opened in a browser
+ * on the local system even when vscode is running remotely (e.g.
+ * in code-server, using SSH, or in GitHub Codespaces)
  */
-export async function getAppPageUri(pageUrl?: string): Promise<Uri> {
+export async function getAppPageUri(internalPageUrl?: string): Promise<Uri> {
 	const defaultPort = <number>getConfig(Settings.DefaultPort);
-	const serverUrl = `${localAppUrl}:${defaultPort}`;
-	if (pageUrl === undefined) {
-		pageUrl = serverUrl;
-	} else if (pageUrl.startsWith('/')) {
-		// construct page url for page path wihtout host and port
-		pageUrl = `${localAppUrl}:${defaultPort}${pageUrl}`;
-	}
-
-	// get external web page url
-	let pageUri: Uri = await env.asExternalUri(Uri.parse(pageUrl));
 
 	// update active server port number
 	if (!(await _running())) {
@@ -63,16 +54,21 @@ export async function getAppPageUri(pageUrl?: string): Promise<Uri> {
 		_activePort = await tryPort(defaultPort);
 	}
 
-	// rewrite requested app page url to use the new active localhost server port
-	pageUri = Uri.parse(
-		pageUri
-			.toString(true) // skip encoding
-			.replace(`:${defaultPort}/`, `:${_activePort}/`)
-	);
+	const internalServerUrl = `${localAppUrl}:${_activePort}`;
+	if (internalPageUrl === undefined) {
+		internalPageUrl = internalServerUrl;
+	} else if (internalPageUrl.startsWith('/')) {
+		// construct page url for page path wihtout host and port
+		internalPageUrl = `${internalServerUrl}${internalPageUrl}`;
+	}
 
+	// get external web page url
+	const externalPageUri: Uri = await env.asExternalUri(Uri.parse(internalPageUrl));
+		
 	const outputChannel = getOutputChannel();
-	outputChannel.appendLine(`Requested app page: ${pageUri.toString(true)}`); // skip encoding
-	return pageUri;
+	outputChannel.appendLine(`Requested app page: ${externalPageUri.toString(true)}`); // skip encoding
+
+	return externalPageUri;
 }
 
 /**
@@ -83,6 +79,12 @@ export async function getAppPageUri(pageUrl?: string): Promise<Uri> {
  * to be loaded in the preview.
  */
 export async function startServer(pageUri?: Uri) {
+
+	if (await isServerRunning()) {
+		window.showInformationMessage('There is an Evidence server already running!');
+		return ;
+	}
+
 	telemetryService?.sendEvent('startServer');
 
 	if (!pageUri) {
