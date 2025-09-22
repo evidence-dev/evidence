@@ -12,6 +12,10 @@ const terminalName = 'Evidence';
 /**
  * Evidence terminal instance.
  */
+// Formerly this was managed as a simple variable which was problematic
+// in a workspace extension in remote development scenarios.
+// (namely, we often ended up with the _terminal variable being undefined
+//  while the Terminal launched by the extension is still up and running)
 let _terminal: () => Terminal | undefined = () =>
 		window.terminals.find(terminal => terminal.name === terminalName);
 let _outputChannel: OutputChannel | undefined;

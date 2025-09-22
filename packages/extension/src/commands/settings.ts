@@ -30,7 +30,7 @@ export async function viewExtensionSettings() {
  */
 export async function viewAppSettings() {
 	const settingsPageUri: Uri = await getAppPageUri(settingsPagePath);
-	if (!isServerRunning()) {
+	if (!(await isServerRunning())) {
 		startServer(settingsPageUri);
 	} else {
 		// show app settings page in simple browser webview

@@ -25,7 +25,7 @@ export const localAppUrl = `http://localhost`;
  * For the Evidence markdown documents in the /pages/ folder,
  * opens the requested app page in the built-in simple browser webview.
  *
- * @param uri Optional Uri of the markdown document to preview.
+ * @param uri Optional local Uri of the markdown document to preview.
  *
  * @see Simple browser extension implementation:
  *  https://github.com/microsoft/vscode/pull/109276
@@ -37,7 +37,7 @@ export async function preview(uri?: Uri) {
 	// check if the open workspace has an Evidence project
 	const isEvidenceProject = getExtensionContext().workspaceState.get(Context.HasEvidenceProject);
 
-	if ((!uri || uri.path === '/') && isEvidenceProject && isServerRunning()) {
+	if ((!uri || uri.path === '/') && isEvidenceProject && (await isServerRunning())) {
 		// open the default app page in the built-in simple browser webview
 		const homePage: Uri = await getAppPageUri('/');
 		openPageView(homePage);
@@ -62,7 +62,7 @@ export async function preview(uri?: Uri) {
 		}
 	}
 
-	if (!isEvidenceProject || !isServerRunning() || /\/pages\/|\\pages\\/.test(uri?.path ?? '')) {
+	if (!isEvidenceProject || !(await isServerRunning()) || /\/pages\/|\\pages\\/.test(uri?.path ?? '')) {
 		// show standard markdown document preview
 		commands.executeCommand(Commands.MarkdownShowPreview, uri);
 		return;
@@ -76,7 +76,7 @@ export async function preview(uri?: Uri) {
 		uri.scheme === 'file' &&
 		workspace.workspaceFolders &&
 		isEvidenceProject &&
-		isServerRunning()
+		(await isServerRunning())
 	) {
 		// get project folder root path
 		const workspaceFolderPath: string = getWorkspaceFolder()!.uri.fsPath;

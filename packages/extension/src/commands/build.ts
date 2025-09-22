@@ -44,7 +44,7 @@ export async function installDependencies() {
 	if (!isSupportedNodeVersion(nodeVersion)) {
 		promptToInstallNodeJsAndRestart(nodeVersion);
 	} else {
-		if (isServerRunning()) {
+		if (await isServerRunning()) {
 			stopServer();
 			await timeout(1000);
 		} else {
@@ -72,7 +72,7 @@ export async function updateDependencies() {
 	const cdCommand = packageJsonFolder ? `cd ${packageJsonFolder} ; ` : '';
 	const cdBackCommand = packageJsonFolder ? `; cd ${workspaceFolderPath}` : '';
 
-	if (isServerRunning()) {
+	if (await isServerRunning()) {
 		stopServer();
 		await timeout(1000);
 	}
@@ -89,7 +89,7 @@ export async function updateDependencies() {
  * @see https://docs.evidence.dev/deployment/overview#build-process
  */
 export async function buildProject() {
-	if (isServerRunning()) {
+	if (await isServerRunning()) {
 		stopServer();
 		await timeout(1000);
 	}
@@ -103,7 +103,7 @@ export async function buildProject() {
  * @see https://docs.evidence.dev/deployment/overview#buildstrict
  */
 export async function buildProjectStrict() {
-	if (isServerRunning()) {
+	if (await isServerRunning()) {
 		stopServer();
 		await timeout(1000);
 	}
