@@ -1,10 +1,10 @@
-import { commands, env, workspace, Uri } from 'vscode';
+import { commands, env, workspace, Uri, ViewColumn } from 'vscode';
 
 import { Commands } from './commands';
 import { Settings, getConfig, getWorkspaceFolder } from '../config';
 import { getOutputChannel } from '../output';
 import { closeTerminal, sendCommand } from '../terminal';
-import { localAppUrl, preview } from './preview';
+import { localAppUrl } from './preview';
 import { getNodeVersion, isSupportedNodeVersion, promptToInstallNodeJsAndRestart } from '../node';
 import { statusBar } from '../statusBar';
 import { timeout } from '../utils/timer';
@@ -79,7 +79,8 @@ export async function getAppPageUri(pageUrl?: string): Promise<Uri> {
  * Starts Evidence app dev server, and opens Evidence app preview
  * in the built-in vscode simple browser.
  *
- * @param pageFileUri Optional local Uri of the starting page to load in preview.
+ * @param pageFileUri Optional (internal) Uri of the starting page 
+ * to be loaded in the preview.
  */
 export async function startServer(pageUri?: Uri) {
 	telemetryService?.sendEvent('startServer');
@@ -197,7 +198,12 @@ export async function startServer(pageUri?: Uri) {
 
 			// open app preview if previewType is set to internal (simple browser)
 			if (previewType === 'internal' || previewType === 'internal - side-by-side') {
-				preview(pageUri);
+				// directly open the web URL in simple browser instead of using preview()
+				commands.executeCommand(Commands.OpenSimpleBrowser, pageUri.toString(true), {
+					viewColumn: previewType === 'internal' ? ViewColumn.Active : ViewColumn.Two,
+					preserveFocus: true
+				});
+				telemetryService?.sendEvent('openSimpleBrowser');
 			}
 
 			// change button to stop server
