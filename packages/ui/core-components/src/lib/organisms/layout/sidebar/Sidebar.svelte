@@ -3,6 +3,7 @@
 	import { browser } from '$app/environment';
 	import { fly, fade, crossfade } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
+	import { config } from '$evidence/config';
 
 	import { lock, unlock } from 'tua-body-scroll-lock';
 	import { afterUpdate } from 'svelte';
@@ -133,7 +134,7 @@
 					</a>
 					{#each firstLevelFiles as file}
 						{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
-							{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
+							{@const active = $page.url.pathname.replace(config.deployment.basePath, '').toUpperCase() === file.href.toUpperCase() + '/'}
 							<a
 								class="group inline-block py-1 capitalize transition-colors duration-100 {active
 									? 'text-primary'
@@ -181,7 +182,7 @@
 							{#each file.children as secondLevelFile}
 								{#if secondLevelFile.href && (secondLevelFile.frontMatter?.sidebar_link !== false || secondLevelFile.frontMatter?.sidebar_link === undefined)}
 									{@const active =
-										$page.url.pathname.toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
+										$page.url.pathname.replace(config.deployment.basePath, '').toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
 									<a
 										class="group inline-block py-1 capitalize transition-colors duration-100 {active
 											? 'text-primary'
@@ -211,7 +212,7 @@
 									{#each secondLevelFile.children as thirdLevelFile}
 										{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
 											{@const active =
-												$page.url.pathname.toUpperCase() ===
+												$page.url.pathname.replace(config.deployment.basePath, '').toUpperCase() ===
 												thirdLevelFile.href.toUpperCase() + '/'}
 											<a
 												href={addBasePath(thirdLevelFile.href)}
@@ -254,7 +255,7 @@
 				</a>
 				{#each firstLevelFiles as file}
 					{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
-						{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
+						{@const active = $page.url.pathname.replace(config.deployment.basePath, '').toUpperCase() === file.href.toUpperCase() + '/'}
 						<a
 							class="group inline-block py-1 capitalize transition-all duration-100 {active
 								? 'text-primary'
@@ -302,7 +303,7 @@
 						{#each file.children as secondLevelFile}
 							{#if secondLevelFile.href && (secondLevelFile.frontMatter?.sidebar_link !== false || secondLevelFile.frontMatter?.sidebar_link === undefined)}
 								{@const active =
-									$page.url.pathname.toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
+									$page.url.pathname.replace(config.deployment.basePath, '').toUpperCase() === secondLevelFile.href.toUpperCase() + '/'}
 								<a
 									href={addBasePath(secondLevelFile.href)}
 									class="group inline-block py-1 capitalize transition-all duration-100 {active
@@ -332,7 +333,7 @@
 								{#each secondLevelFile.children as thirdLevelFile}
 									{#if thirdLevelFile.href && (thirdLevelFile.frontMatter?.sidebar_link !== false || thirdLevelFile.frontMatter?.sidebar_link === undefined)}
 										{@const active =
-											$page.url.pathname.toUpperCase() === thirdLevelFile.href.toUpperCase() + '/'}
+											$page.url.pathname.replace(config.deployment.basePath, '').toUpperCase() === thirdLevelFile.href.toUpperCase() + '/'}
 										<div
 											class="relative py-1 first:pt-0.5 first:mt-1 last:pb-0.5 last:mb-1 pl-3 border-l ml-[1px] transition-all duration-200 hover:border-base-content"
 										>
