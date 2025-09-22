@@ -500,7 +500,7 @@
 						"completionEvents": [
 							"onCommand:startServer"
 						],
-						"when": "evidence.hasProject == true"
+						"when": "evidence.hasProject == true && !evidence.serverRunning"
 					}
 				]
 			}

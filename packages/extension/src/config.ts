@@ -20,7 +20,8 @@ export const enum Settings {
  * Evidence extension context and state keys.
  */
 export const enum Context {
-	HasEvidenceProject = 'evidence.hasProject'
+	HasEvidenceProject = 'evidence.hasProject',
+	IsServerRunning = 'evidence.serverRunning',
 }
 
 /**

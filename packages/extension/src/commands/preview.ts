@@ -1,4 +1,4 @@
-import { commands, workspace, Uri, ViewColumn } from 'vscode';
+import { commands, workspace, Uri, ViewColumn, window } from 'vscode';
 
 import { Commands } from './commands';
 import { getExtensionContext } from '../extensionContext';
@@ -25,22 +25,31 @@ export const localAppUrl = `http://localhost`;
  * For the Evidence markdown documents in the /pages/ folder,
  * opens the requested app page in the built-in simple browser webview.
  *
- * @param uri Optional local Uri of the markdown document to preview.
+ * @param uri Optional file location of the markdown document to preview.
+ * No http/https Urls supported.
  *
  * @see Simple browser extension implementation:
  *  https://github.com/microsoft/vscode/pull/109276
  */
 export async function preview(uri?: Uri) {
-	// default page url
-	let pageUrl: string = '/';
-
 	// check if the open workspace has an Evidence project
 	const isEvidenceProject = getExtensionContext().workspaceState.get(Context.HasEvidenceProject);
 
-	if ((!uri || uri.path === '/') && isEvidenceProject && (await isServerRunning())) {
+	// check if the Evidence dev server is running
+	const isEvidenceServerRunning = await isServerRunning();
+
+	if (!isEvidenceProject || !isEvidenceServerRunning) {
+		// show standard markdown document preview
+		commands.executeCommand(Commands.MarkdownShowPreview, uri);
+		return;
+	}
+
+	// from this point on, we know this is an Evidence project with a server running
+	if (!uri || uri.path === '/') {
 		// open the default app page in the built-in simple browser webview
 		const homePage: Uri = await getAppPageUri('/');
-		openPageView(homePage);
+		// I suspect this to be causing the confusing message "please refresh preview"
+		// openPageView(homePage);
 
 		// wait for the server to load the app home page
 		await waitFor(homePage.toString(true), 1000, 30000); // encoding, ms interval, max total wait time ms
@@ -51,52 +60,43 @@ export async function preview(uri?: Uri) {
 		return;
 	}
 
-	if (uri) {
-		// log preview document or page request in output channel for troubleshooting
-		const outputChannel = getOutputChannel();
-		if (uri.scheme === 'file ') {
-			outputChannel.appendLine(`Requested document preview: ${uri.fsPath}`); // skip encoding
-		} else if (uri.scheme === 'http' || uri.scheme === 'https') {
-			// must be a valide http or https
-			outputChannel.appendLine(`Requested page preview: ${uri.path}`); // skip encoding
-		}
-	}
-
-	if (!isEvidenceProject || !(await isServerRunning()) || /\/pages\/|\\pages\\/.test(uri?.path ?? '')) {
-		// show standard markdown document preview
-		commands.executeCommand(Commands.MarkdownShowPreview, uri);
+	// from this point on, we know that "uri" is not 'undefined' or '/'
+	const outputChannel = getOutputChannel();
+	if (uri.scheme !== 'file') {
+		// this should never happen
+		outputChannel.appendLine(`Only document preview is supported, preview received: ${
+			uri.toString(true)}`); // skip encoding
 		return;
+	} else {
+		outputChannel.appendLine(`Requested document preview: ${
+			uri?.fsPath}`); // skip encoding
 	}
 
-	// create web page url from page Uri
-	if (uri && (uri.scheme === 'http' || uri.scheme === 'https')) {
-		pageUrl = uri.toString(true); // skip encoding
-	} else if (
-		uri &&
-		uri.scheme === 'file' &&
-		workspace.workspaceFolders &&
-		isEvidenceProject &&
-		(await isServerRunning())
-	) {
+	// from this point on, we know it is file uri which we need to map to an external app url
+	if (workspace.workspaceFolders) {
+		let pageUrlPath = uri.fsPath;
+
 		// get project folder root path
 		const workspaceFolderPath: string = getWorkspaceFolder()!.uri.fsPath;
 
 		// create web page url from file Uri by converting .md path to app page path
-		let pagePath: string = uri.fsPath
+		pageUrlPath = pageUrlPath
 			.replace(workspaceFolderPath, '')
 			.split('\\')
 			.join('/')
 			.replace('/pages/', '')
 			.replace('index.md', '')
 			.replace('.md', '');
-		pageUrl = `/${pagePath}`;
+		pageUrlPath = `/${pageUrlPath}`;
+		
+		// create external app page Uri from page url path
+		const pageUri: Uri = await getAppPageUri(pageUrlPath);
+		
+		// open requested page in the built-in simple browser webview
+		openPageView(pageUri);
 	}
 
-	// create external app page Uri from page url
-	const pageUri: Uri = await getAppPageUri(pageUrl);
-
-	// open requested page in the built-in simple browser webview
-	openPageView(pageUri);
+	window.showErrorMessage('Preview is not possible without a folder opened.');
 }
 
 /**
@@ -104,7 +104,7 @@ export async function preview(uri?: Uri) {
  *
  * @param pageUri Uri of the page to open.
  */
-async function openPageView(pageUri: Uri) {
+export async function openPageView(pageUri: Uri) {
 	const previewType: string = <string>getConfig(Settings.PreviewType);
 
 	if (pageUri) {
