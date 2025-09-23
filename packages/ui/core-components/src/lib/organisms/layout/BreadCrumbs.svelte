@@ -59,7 +59,7 @@
 
 	let crumbs = [];
 
-	$: crumbs = buildCrumbs($page.url.pathname.replace(config.deployment.basePath, '').split('/').slice(1), fileTree);
+	$: crumbs = buildCrumbs($page.url.pathname.replace(config.deployment.basePath || '', '').split('/').slice(1), fileTree);
 </script>
 
 <div class="flex items-start mt-0 whitespace-nowrap overflow-auto">

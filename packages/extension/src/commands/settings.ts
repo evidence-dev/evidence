@@ -31,7 +31,7 @@ export async function viewExtensionSettings() {
  * @deprecated
  */
 export async function viewAppSettings() {
-	const settingsPageUri: Uri = await getAppPageUri(settingsPagePath);
+	const settingsPageUri: Uri = (await getAppPageUri(settingsPagePath)).external;
 	if (!(await isServerRunning())) {
 		startServer(settingsPageUri);
 	} else {

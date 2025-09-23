@@ -47,16 +47,19 @@ export async function preview(uri?: Uri) {
 	// from this point on, we know this is an Evidence project with a server running
 	if (!uri || uri.path === '/') {
 		// open the default app page in the built-in simple browser webview
-		const homePage: Uri = await getAppPageUri('/');
-		// I suspect this to be causing the confusing message "please refresh preview"
+		const homePageUris = await getAppPageUri('/');
+		// I suspect this to be causing the confusing message "Please reopen the preview"
 		// openPageView(homePage);
 
-		// wait for the server to load the app home page
-		await waitFor(homePage.toString(true), 1000, 30000); // encoding, ms interval, max total wait time ms
+		// to know when the server is ready to serve the page, we ping the local
+		// uri of the page 
+		await waitFor(homePageUris.internal.toString(true), 
+			500, 30_000); // encoding, ms interval, max total wait time ms
 
-		// call the built-in simple browser once more
-		// to load the home page content on server startup
-		openPageView(homePage);
+		// call the built-in simple browser once more to load the home page content 
+		// on server startup, note that this is a browser running on the local machine
+		// and not the remote workspace environment.
+		openPageView(homePageUris.external);
 		return;
 	}
 
@@ -90,10 +93,11 @@ export async function preview(uri?: Uri) {
 		pageUrlPath = `/${pageUrlPath}`;
 		
 		// create external app page Uri from page url path
-		const pageUri: Uri = await getAppPageUri(pageUrlPath);
+		const pageUri: Uri = (await getAppPageUri(pageUrlPath)).external;
 		
 		// open requested page in the built-in simple browser webview
 		openPageView(pageUri);
+		return;
 	}
 
 	window.showErrorMessage('Preview is not possible without a folder opened.');

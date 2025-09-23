@@ -1,10 +1,10 @@
 import { window, commands, env, workspace, Uri, ViewColumn } from 'vscode';
 
 import { Commands } from './commands';
-import { Context as ExtensionContext, Settings, getConfig, getWorkspaceFolder } from '../config';
+import { Context, Settings, getConfig, getWorkspaceFolder } from '../config';
 import { getOutputChannel } from '../output';
 import { closeTerminal, sendCommand } from '../terminal';
-import { localAppUrl, openPageView } from './preview';
+import { localAppUrl, openPageView, preview } from './preview';
 import { getNodeVersion, isSupportedNodeVersion, promptToInstallNodeJsAndRestart } from '../node';
 import { statusBar } from '../statusBar';
 import { timeout } from '../utils/timer';
@@ -13,7 +13,6 @@ import { hasDependencies } from './build';
 import { telemetryService } from '../extension';
 import { hasManifest, getTypesFromConnections, getPackageJsonFolder } from '../utils/jsonUtils';
 import { isProcessRunning } from '../utils/shellUtils';
-import { Context } from 'mocha';
 
 const localhost = ['127.0.0.1', '::1', 'localhost'];
 // Formerly this was managed as a simple boolean variable which was problematic
@@ -41,11 +40,16 @@ const setContext = (key: any, value: any) => {
  * @param pageUrlPath Optional, the path part of the app Url
  * to be converted to an external app Url
  *
- * @returns External Url which can be safely opened in a browser
- * on the local system even when vscode is running remotely (e.g.
- * in code-server, using SSH, or in GitHub Codespaces)
+ * @returns An object that contains both the internal and the
+ * external Urls. The internal Url can be used by workspace
+ * actions such as pinging while the external Url is the one
+ * we can safely open in a browser on the local system when
+ * vscode is running at a remoteworkspace (e.g. using code-
+ * server, SSH, or in GitHub Codespaces)
  */
-export async function getAppPageUri(pageUrlPath?: string): Promise<Uri> {
+export async function getAppPageUri(pageUrlPath?: string): Promise<{
+	internal: Uri, external: Uri}
+> {
 	const defaultPort = <number>getConfig(Settings.DefaultPort);
 
 	// update active server port number
@@ -56,6 +60,7 @@ export async function getAppPageUri(pageUrlPath?: string): Promise<Uri> {
 	}
 
 	const internalServerUrl = `${localAppUrl}:${_activePort ?? defaultPort}`;
+	let internalPageUri = Uri.parse(internalServerUrl);
 
 	// get external web page url
 	let externalPageUri: Uri = await env.asExternalUri(Uri.parse(internalServerUrl));
@@ -64,17 +69,30 @@ export async function getAppPageUri(pageUrlPath?: string): Promise<Uri> {
 	// external form, and discards the path part of the Url when present. Hence this
 	// should be added after the convertion to an external Url.
 	if (pageUrlPath?.startsWith('/')) {
-		// append page path to the external base path (e.g. /proxy/3710 + /another = /proxy/3710/another)
+		// append page path to the external base path 
+		// (e.g. /proxy/3710 + /another = /proxy/3710/another)
 		// handle potential trailing/leading slashes to avoid double slashes
 		const basePath = externalPageUri.path.endsWith('/') ? 
 			externalPageUri.path.slice(0, -1) : externalPageUri.path;
 		externalPageUri = externalPageUri.with({ path: basePath + pageUrlPath });
 	}
+
+	// The assumption here is that EVIDENCE_BASE_PATH has been injected into the local dev
+	// server instance as well (check startServer).
+	internalPageUri = internalPageUri.with({
+		path: externalPageUri.path
+	});
 		
 	const outputChannel = getOutputChannel();
-	outputChannel.appendLine(`Requested app page: ${externalPageUri.toString(true)}`); // skip encoding
+	outputChannel.appendLine(`Requested app page: ${externalPageUri} ${
+		internalPageUri.toString(true) == externalPageUri.toString(true) ?
+			'' : `(this is ${internalPageUri.toString(true)} on the remote)`
+	}`);
 
-	return externalPageUri;
+	return {
+		internal: internalPageUri,
+		external: externalPageUri,
+	};
 }
 
 /**
@@ -94,7 +112,7 @@ export async function startServer(pageUri?: Uri) {
 	telemetryService?.sendEvent('startServer');
 
 	if (!pageUri) {
-		pageUri = await getAppPageUri('/');
+		pageUri = (await getAppPageUri('/')).external;
 	}
 
 	const pageHostname = pageUri.authority.split(':')[0];
@@ -185,7 +203,7 @@ export async function startServer(pageUri?: Uri) {
 		// update server status and show running status bar icon
 		statusBar.showRunning();
 
-		setContext(ExtensionContext.IsServerRunning, true);
+		setContext(Context.IsServerRunning, true);
 
 		if (previewType.includes('internal')) {
 			// wait for the dev server to start
@@ -205,7 +223,7 @@ export async function startServer(pageUri?: Uri) {
 			commands.executeCommand(Commands.FocusActiveEditorGroup);
 
 			// open app preview if previewType is set to internal (simple browser)
-			openPageView(pageUri);
+			preview();
 
 			// change button to stop server
 			statusBar.showStop();
@@ -245,7 +263,7 @@ export async function stopServer() {
 	closeTerminal();
 
 	// reset server state and status display
-	setContext(ExtensionContext.IsServerRunning, false);
+	setContext(Context.IsServerRunning, false);
 	_activePort = <number>getConfig(Settings.DefaultPort);
 	statusBar.showStart();
 	telemetryService?.sendEvent('stopServer');
