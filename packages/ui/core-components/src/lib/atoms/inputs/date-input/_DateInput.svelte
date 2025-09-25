@@ -6,7 +6,8 @@
 		startOfMonth,
 		endOfMonth,
 		startOfYear,
-		endOfYear
+		endOfYear,
+		today
 	} from '@internationalized/date';
 	import { cn } from '$lib/utils.js';
 	import { Button } from '$lib/atoms/shadcn/button/index.js';
@@ -33,8 +34,14 @@
 		dateStyle: 'short'
 	});
 
+	const todayDate = today(getLocalTimeZone());
+
 	/** @type {import('bits-ui').DateRange | undefined} */
 	let selectedDateInput = undefined;
+
+	$: referenceDate = selectedDateInput && !range ? selectedDateInput : selectedDateInput 
+					   && 
+					   selectedDateInput.end ? selectedDateInput.end : todayDate;
 
 	/** @type {(selectedDateInput: import('bits-ui').DateRange | undefined) => void} */
 	export let onSelectedDateInputChange;
@@ -55,111 +62,152 @@
 	export let extraDayEndString = undefined;
 	/** @type {string | undefined} */
 	export let description = undefined;
+	/** @type {any} */
+	export let data = undefined;
+	/** @type {string | undefined} */
+	export let dates = undefined;
+
+	// Extract available years from data if provided
+	$: extractedYears = (() => {
+		if (!data || !dates) {
+			return undefined;
+		}
+		
+		const years = new Set();
+		data.rows.forEach(row => {
+			if (row[dates]) {
+				const year = new Date(row[dates]).getFullYear();
+				years.add(year);
+			}
+		});
+		
+		return Array.from(years).sort((a, b) => b - a);
+	})();
+
+	$: calendarStart = YYYYMMDDToCalendar(start);
+	// Use extraDayEndString for safety measures if available, otherwise use regular end
+	$: calendarEnd = YYYYMMDDToCalendar(extraDayEndString || end);
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
 		{
+			label: 'Yesterday',
+			group: 'Days',
+			range: {
+				start: todayDate.subtract({ days: 1 }),
+				end: todayDate.subtract({ days: 1 })
+			}
+		},
+		{
+			label: 'Today',
+			group: 'Days',
+			range: {
+				start: todayDate,
+				end: todayDate
+			}
+		},
+		{
 			label: 'Last 7 Days',
 			group: 'Days',
 			range: {
-				start: calendarEnd.subtract({ days: 6 }),
-				end: calendarEnd
+				start: referenceDate.subtract({ days: 6 }),
+				end: referenceDate
 			}
 		},
 		{
 			label: 'Last 30 Days',
 			group: 'Days',
 			range: {
-				start: calendarEnd.subtract({ days: 29 }),
-				end: calendarEnd
+				start: referenceDate.subtract({ days: 29 }),
+				end: referenceDate
 			}
 		},
 		{
 			label: 'Last 90 Days',
 			group: 'Days',
 			range: {
-				start: calendarEnd.subtract({ days: 89 }),
-				end: calendarEnd
+				start: referenceDate.subtract({ days: 89 }),
+				end: referenceDate
 			}
 		},
 		{
 			label: 'Last 365 Days',
 			group: 'Days',
 			range: {
-				start: calendarEnd.subtract({ days: 364 }),
-				end: calendarEnd
+				start: referenceDate.subtract({ days: 364 }),
+				end: referenceDate
 			}
 		},
 		{
 			label: 'Last 3 Months',
 			group: 'Months',
 			range: {
-				start: startOfMonth(calendarEnd.subtract({ months: 3 })),
-				end: endOfMonth(calendarEnd.subtract({ months: 1 }))
+				start: startOfMonth(referenceDate.subtract({ months: 3 })),
+				end: endOfMonth(referenceDate.subtract({ months: 1 }))
 			}
 		},
 		{
 			label: 'Last 6 Months',
 			group: 'Months',
 			range: {
-				start: startOfMonth(calendarEnd.subtract({ months: 6 })),
-				end: endOfMonth(calendarEnd.subtract({ months: 1 }))
+				start: startOfMonth(referenceDate.subtract({ months: 6 })),
+				end: endOfMonth(referenceDate.subtract({ months: 1 }))
 			}
 		},
 		{
 			label: 'Last 12 Months',
 			group: 'Months',
 			range: {
-				start: startOfMonth(calendarEnd.subtract({ months: 12 })),
-				end: endOfMonth(calendarEnd.subtract({ months: 1 }))
+				start: startOfMonth(referenceDate.subtract({ months: 12 })),
+				end: endOfMonth(referenceDate.subtract({ months: 1 }))
 			}
 		},
 		{
 			label: 'Last Month',
 			group: 'Last',
 			range: {
-				start: startOfMonth(calendarEnd.subtract({ months: 1 })),
-				end: endOfMonth(calendarEnd.subtract({ months: 1 }))
+				start: startOfMonth(referenceDate.subtract({ months: 1 })),
+				end: endOfMonth(referenceDate.subtract({ months: 1 }))
 			}
 		},
 		{
 			label: 'Last Year',
 			group: 'Last',
 			range: {
-				start: startOfYear(calendarEnd.subtract({ years: 1 })),
-				end: endOfYear(calendarEnd.subtract({ years: 1 }))
+				start: startOfYear(referenceDate.subtract({ years: 1 })),
+				end: endOfYear(referenceDate.subtract({ years: 1 }))
 			}
 		},
 		{
 			label: 'Month to Date',
 			group: 'To Date',
 			range: {
-				start: startOfMonth(calendarEnd),
-				end: endOfMonth(calendarEnd)
+				start: startOfMonth(referenceDate),
+				end: endOfMonth(referenceDate)
 			}
 		},
 		{
 			label: 'Month to Today',
 			group: 'To Date',
 			range: {
-				start: startOfMonth(calendarEnd),
-				end: calendarEnd
+				start: startOfMonth(referenceDate),
+				end: todayDate
 			}
 		},
 		{
 			label: 'Year to Date',
 			group: 'To Date',
 			range: {
-				start: startOfYear(calendarEnd),
-				end: endOfYear(calendarEnd)
+				start: startOfYear(referenceDate),
+				end: endOfYear(referenceDate)
 			}
 		},
 		{
 			label: 'Year to Today',
 			group: 'To Date',
 			range: {
-				start: startOfYear(calendarEnd),
-				end: calendarEnd
+				start: startOfYear(referenceDate),
+				end: todayDate
 			}
 		},
 		{
@@ -198,7 +246,30 @@
 
 	let selectedPreset;
 	let placeholder;
-	$: setPlaceholderDefault(calendarEnd);
+	// Set default placeholder to today's date instead of calendarEnd
+	$: setPlaceholderDefault(todayDate);
+	
+	$: if (
+		typeof defaultValue === 'string' &&
+		!selectedPreset &&
+		presets.length
+	) {
+		applyPreset(defaultValue);
+	}
+	
+	// Initialize with default value or today's date if no selection and no default value applied
+	$: if (!selectedDateInput && !selectedPreset) {
+		if (defaultValue && typeof defaultValue === 'string') {
+			try {
+				const defaultDate = YYYYMMDDToCalendar(defaultValue);
+				selectedDateInput = defaultDate;
+			} catch (error) {
+				selectedDateInput = todayDate;
+			}
+		} else {
+			selectedDateInput = todayDate;
+		}
+	}
 
 	// group exists check for nicely rendering group border for dropdown
 	function groupExists(groupName) {
@@ -219,23 +290,10 @@
 		selectedPreset = targetPreset;
 		if (range) {
 			selectedDateInput = targetPreset.range;
+		} else {
+			selectedDateInput = targetPreset.range.end;
 		}
-	}
-
-	$: if (
-		typeof defaultValue === 'string' &&
-		!selectedDateInput &&
-		!selectedPreset &&
-		presets.length
-	)
-		applyPreset(defaultValue);
-
-	$: calendarStart = YYYYMMDDToCalendar(start);
-	$: calendarEnd = YYYYMMDDToCalendar(end);
-
-	let extraDayCalendarEnd = calendarEnd;
-	$: if (range) {
-		extraDayCalendarEnd = YYYYMMDDToCalendar(extraDayEndString);
+		onSelectedDateInputChange(selectedDateInput);
 	}
 
 	function updateDateRange(start, end) {
@@ -244,7 +302,7 @@
 		if (range) {
 			selectedDateInput = { start, end };
 		} else {
-			selectedDateInput = start;
+			selectedDateInput = selectedDateInput;
 		}
 	}
 	$: updateDateRange(calendarStart, calendarEnd);
@@ -326,7 +384,9 @@
 						selectedDateInput = value;
 					}}
 					minValue={calendarStart}
-					maxValue={extraDayCalendarEnd}
+					maxValue={calendarEnd}
+					defaultValue={todayDate}
+					availableYears={extractedYears}
 				/>
 			{:else}
 				<Calendar
@@ -340,6 +400,8 @@
 					}}
 					minValue={calendarStart}
 					maxValue={calendarEnd}
+					defaultValue={todayDate}
+					availableYears={extractedYears}
 				/>
 			{/if}
 		</Popover.Content>
