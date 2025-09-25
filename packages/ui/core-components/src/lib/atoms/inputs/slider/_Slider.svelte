@@ -237,7 +237,7 @@
 		<InlineError inputType="Slider" error={errors} width="170" height="36" />
 	{:else}
 		<div class={`relative ${sizeClass} mt-2 mb-10 select-none`}>
-			<p class="pb-2 truncate text-xs">
+			<p class="pb-2 pt-0.5 truncate text-xs">
 				<span class="font-medium">
 					{#if description}
 						{title}<Info {description} className="mr-2" />
