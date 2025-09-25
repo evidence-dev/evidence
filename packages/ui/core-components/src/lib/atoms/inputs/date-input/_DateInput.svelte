@@ -39,9 +39,12 @@
 	/** @type {import('bits-ui').DateRange | undefined} */
 	let selectedDateInput = undefined;
 
-	$: referenceDate = selectedDateInput && !range ? selectedDateInput : selectedDateInput 
-					   && 
-					   selectedDateInput.end ? selectedDateInput.end : todayDate;
+	$: referenceDate =
+		selectedDateInput && !range
+			? selectedDateInput
+			: selectedDateInput && selectedDateInput.end
+				? selectedDateInput.end
+				: todayDate;
 
 	/** @type {(selectedDateInput: import('bits-ui').DateRange | undefined) => void} */
 	export let onSelectedDateInputChange;
@@ -72,15 +75,15 @@
 		if (!data || !dates) {
 			return undefined;
 		}
-		
+
 		const years = new Set();
-		data.rows.forEach(row => {
+		data.rows.forEach((row) => {
 			if (row[dates]) {
 				const year = new Date(row[dates]).getFullYear();
 				years.add(year);
 			}
 		});
-		
+
 		return Array.from(years).sort((a, b) => b - a);
 	})();
 
@@ -248,15 +251,11 @@
 	let placeholder;
 	// Set default placeholder to today's date instead of calendarEnd
 	$: setPlaceholderDefault(todayDate);
-	
-	$: if (
-		typeof defaultValue === 'string' &&
-		!selectedPreset &&
-		presets.length
-	) {
+
+	$: if (typeof defaultValue === 'string' && !selectedPreset && presets.length) {
 		applyPreset(defaultValue);
 	}
-	
+
 	// Initialize with default value or today's date if no selection and no default value applied
 	$: if (!selectedDateInput && !selectedPreset) {
 		if (defaultValue && typeof defaultValue === 'string') {

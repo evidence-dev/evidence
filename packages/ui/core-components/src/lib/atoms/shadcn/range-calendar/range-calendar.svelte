@@ -54,7 +54,7 @@
 		if (availableYears?.length > 0) {
 			return availableYears
 				.sort((a, b) => b - a)
-				.map(year => ({ label: String(year), value: year }))
+				.map((year) => ({ label: String(year), value: year }))
 				.filter(({ value }) => !(minValue?.year > value || value > maxValue?.year));
 		}
 	})();
@@ -76,7 +76,7 @@
 		selectedDateInput,
 		minValue,
 		maxValue,
-		availableYears,
+		availableYears
 	};
 </script>
 
@@ -125,28 +125,32 @@
 				items={yearOptions}
 				onSelectedChange={(v) => {
 					if (!v || !placeholder || v.value === placeholder?.year) return;
-					
+
 					const newYear = v.value;
 					const currentMonth = placeholder.month;
-					
+
 					// First, try to keep the same month in the new year
 					const sameMonthDate = placeholder.set({ year: newYear, month: currentMonth });
-					if ((!minValue || sameMonthDate.compare(minValue) >= 0) && 
-						(!maxValue || sameMonthDate.compare(maxValue) <= 0)) {
+					if (
+						(!minValue || sameMonthDate.compare(minValue) >= 0) &&
+						(!maxValue || sameMonthDate.compare(maxValue) <= 0)
+					) {
 						placeholder = sameMonthDate;
 						return;
 					}
-					
+
 					// If the same month is not available, find the closest valid month
 					const isBeyondRange = maxValue && sameMonthDate.compare(maxValue) > 0;
 					const startMonth = isBeyondRange ? 12 : 1;
 					const endMonth = isBeyondRange ? 0 : 13;
 					const step = isBeyondRange ? -1 : 1;
-					
+
 					for (let month = startMonth; month !== endMonth; month += step) {
 						const testDate = placeholder.set({ year: newYear, month });
-						if ((!minValue || testDate.compare(minValue) >= 0) && 
-							(!maxValue || testDate.compare(maxValue) <= 0)) {
+						if (
+							(!minValue || testDate.compare(minValue) >= 0) &&
+							(!maxValue || testDate.compare(maxValue) <= 0)
+						) {
 							placeholder = testDate;
 							break;
 						}
