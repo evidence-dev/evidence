@@ -5,6 +5,9 @@
 	"main": "index.cjs",
 	"author": "evidence.dev",
 	"license": "MIT",
+	"scripts": {
+		"test": "uvu test test.js"
+	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:*",
 		"asn1.js": "^5.0.0",
