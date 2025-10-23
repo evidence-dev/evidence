@@ -2,8 +2,10 @@ import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
 import { batchedAsyncGeneratorToArray, TypeFidelity } from '@evidence-dev/db-commons';
+import 'dotenv/config';
 
 test('query runs', async () => {
+	if (process.env.POSTGRES_DATABASE) {
 	try {
 		const { rows: row_generator, columnTypes } = await runQuery(
 			"select 100 as number_col, now()::date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col",
@@ -45,12 +47,17 @@ test('query runs', async () => {
 			expectedTypePrecision.length === actualTypePrecisions.length &&
 				expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
 		);
-	} catch (e) {
-		throw Error(e);
+		} catch (e) {
+			throw Error(e);
+		}
+	} else {
+		console.log('POSTGRES tests not currently configured to run during the automated builds');
+		return;
 	}
 });
 
 test('query batches results properly', async () => {
+	if (process.env.POSTGRES_DATABASE) {
 	try {
 		const { rows, expectedRowCount } = await runQuery(
 			'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
@@ -75,7 +82,11 @@ test('query batches results properly', async () => {
 		assert.equal(arr[arr.length - 1].length, 1);
 		assert.equal(expectedRowCount, 5);
 	} catch (e) {
-		throw Error(e);
+			throw Error(e);
+		}
+	} else {
+		console.log('POSTGRES tests not currently configured to run during the automated builds');
+		return;
 	}
 });
 
