@@ -37,3 +37,5 @@ packages/ui/icons/src
 
 # This is an invalid test file that should be ignored
 **/invalid.js
+
+README.md
