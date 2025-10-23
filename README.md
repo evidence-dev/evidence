@@ -17,6 +17,9 @@ Business Intelligence as Code: Generate reports using SQL and markdown
 
 </div>
 
+> [!NOTE]
+> Introducing [Evidence Studio](https://evidence.studio): the fastest way to build data products with SQL and markdown.
+
 # How It Works
 
 Evidence is an open-source, code-based alternative to drag-and-drop business intelligence tools.
