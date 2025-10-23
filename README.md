@@ -18,7 +18,7 @@ Business Intelligence as Code: Generate reports using SQL and markdown
 </div>
 
 > [!TIP]
-> **Introducing [Evidence Studio](https://evidence.studio)**: The new, faster way to build data products with SQL and markdown.
+> **Try [Evidence Studio](https://evidence.studio)**: The new, faster way to build data products with SQL, markdown and AI.
 
 # How It Works
 
