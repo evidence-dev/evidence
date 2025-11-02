@@ -2,7 +2,7 @@ name: Changesets
 
 on:
   pull_request:
-    branches: [next]
+    branches: [main]
     paths:
       - 'packages/**'
       - '!packages/extension/**'
@@ -12,7 +12,7 @@ jobs:
   check-changeset:
     name: Status
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false && !(github.event.pull_request.head.ref == 'main')
+    if: github.event.pull_request.draft == false
 
     steps:
       - name: Checkout code
@@ -26,5 +26,5 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm changeset status --since=origin/next
+      - run: pnpm changeset status --since=origin/main
         id: changeset-status

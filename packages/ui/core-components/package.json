@@ -17,8 +17,7 @@
 		"build-demo-source": "evidence-faker build-series-source && npm run sources",
 		"sources": "EVIDENCE_DATA_DIR=./static/data EVIDENCE_DATA_URL_PREFIX=static/data evidence sources",
 		"storybook": "storybook dev -p 6006",
-		"test:unit": "vitest",
-		"chromatic": "npx chromatic --project-token=chpt_c7afdf83f264eaf"
+		"test:unit": "vitest"
 	},
 	"svelte": "./dist/index.js",
 	"main": "./dist/index.js",
@@ -72,7 +71,6 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"@chromatic-com/storybook": "^1.6.1",
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
@@ -99,7 +97,6 @@
 		"@types/lodash.debounce": "^4.0.9",
 		"@vitest/coverage-v8": "3.0.5",
 		"autoprefixer": "^10.4.19",
-		"chromatic": "^11.4.0",
 		"eslint": "8.45.0",
 		"eslint-config-prettier": "^8.10.0",
 		"eslint-plugin-storybook": "^0.8.0",
