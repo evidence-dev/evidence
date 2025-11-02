@@ -24,6 +24,8 @@ Install Evidence with the [VSCode Extension](vscode:extension/Evidence.evidence-
 
 The new, faster way to build data products with SQL, markdown and AI.
 </Alert>
+
+
 ## How does Evidence work?
 
 <img src='/img/how-it-works.png' width="800px"/>
