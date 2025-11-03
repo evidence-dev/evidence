@@ -319,6 +319,17 @@ Hides or shows min and max value markers on slider.
 Hides or shows the input field on the slider.
 
 </PropListing>
+
+<PropListing
+    name="debounceDelay"
+    options=number
+    defaultValue=0
+>
+
+Delays updating the input value (in milliseconds) after the slider changes.
+
+</PropListing>
+
 <PropListing 
     name="size"
     options="{["small", "medium", "large", "full"]}"
