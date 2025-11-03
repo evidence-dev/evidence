@@ -111,7 +111,7 @@ Follow these steps to submit a pull request for your changes:
 3. Test your changes to make sure all results are as expected
 4. Format your code to prevent linting errors `pnpm run format`
 5. Add a [changeset](#adding-a-changeset)
-6. Open a pull request against the `next` branch of the `evidence` repo
+6. Open a pull request against the `main` branch of the `evidence` repo
 
 [Here's an example of a pull request](https://github.com/evidence-dev/evidence/pull/165) from a community member who built Evidence's MySQL connector.
 

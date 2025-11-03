@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/tailwind",
-	"version": "3.0.9",
+	"version": "3.0.10",
 	"description": "",
 	"keywords": [],
 	"author": "",
@@ -13,7 +13,7 @@
 		"@evidence-dev/sdk": "workspace:^",
 		"chroma-js": "^2.4.2",
 		"lodash": "^4.17.21",
-		"tailwindcss": "^4.0.0",
+		"tailwindcss": "4.0.6",
 		"zod": "^3.23.8"
 	},
 	"exports": {

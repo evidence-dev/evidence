@@ -1,5 +1,11 @@
 # @evidence-dev/postgres
 
+## 1.0.8
+
+### Patch Changes
+
+- e81b6fe87: makes tests conditional on having creds
+
 ## 1.0.7
 
 ### Patch Changes

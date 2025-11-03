@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/postgres",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"description": "PostgreSQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -14,7 +14,8 @@
 		"pg-cursor": "^2.10.3"
 	},
 	"devDependencies": {
-		"@types/pg": "^8.10.9"
+		"@types/pg": "^8.10.9",
+		"dotenv": "^16.0.1"
 	},
 	"type": "module",
 	"evidence": {
