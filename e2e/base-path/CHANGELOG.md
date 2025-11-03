@@ -1,5 +1,14 @@
 # e2e-base-path
 
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies [e81b6fe87]
+- Updated dependencies [4c37dbcac]
+  - @evidence-dev/postgres@1.0.8
+  - @evidence-dev/evidence@40.1.3
+
 ## 0.0.22
 
 ### Patch Changes
