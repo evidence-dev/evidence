@@ -1,10 +1,10 @@
 name: Release
 
 on:
-  workflow_dispatch: # Manual trigger only - uncomment push trigger below when ready to enable auto-publishing
-  # push:
-  #   branches:
-  #     - main
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   release:
