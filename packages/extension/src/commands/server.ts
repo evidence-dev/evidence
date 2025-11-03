@@ -1,20 +1,30 @@
-import { commands, env, workspace, Uri } from 'vscode';
+import { window, commands, env, workspace, Uri, ViewColumn } from 'vscode';
 
 import { Commands } from './commands';
-import { Settings, getConfig } from '../config';
+import { Context, Settings, getConfig, getWorkspaceFolder } from '../config';
 import { getOutputChannel } from '../output';
 import { closeTerminal, sendCommand } from '../terminal';
-import { localAppUrl, preview } from './preview';
+import { localAppUrl, openPageView, preview } from './preview';
 import { getNodeVersion, isSupportedNodeVersion, promptToInstallNodeJsAndRestart } from '../node';
 import { statusBar } from '../statusBar';
 import { timeout } from '../utils/timer';
-import { tryPort } from '../utils/httpUtils';
+import { isHostname, tryPort } from '../utils/httpUtils';
 import { hasDependencies } from './build';
 import { telemetryService } from '../extension';
 import { hasManifest, getTypesFromConnections, getPackageJsonFolder } from '../utils/jsonUtils';
+import { isProcessRunning } from '../utils/shellUtils';
 
-const localhost = 'localhost';
-let _running: boolean = false;
+const localhost = ['127.0.0.1', '::1', 'localhost'];
+// Formerly this was managed as a simple boolean variable which was problematic
+// in a workspace extension in remote development scenarios.
+// (namely, we often ended up with the _running variable being false
+//  while the Evidence dev server launched by the extension is still up and running)
+const _running = async (): Promise<boolean> => {
+	const workspaceFolder = getWorkspaceFolder();
+	if (!workspaceFolder) return false;
+
+	return await isProcessRunning('evidence dev', workspaceFolder.uri.fsPath);
+};
 let _activePort: number = <number>getConfig(Settings.DefaultPort);
 
 // Set a context key
@@ -27,56 +37,85 @@ const setContext = (key: any, value: any) => {
  * and rewrites the host name for the host and port forwarding
  * when running in GitHub Codespaces.
  *
- * @param pageUrl Optional target web page Url.
+ * @param pageUrlPath Optional, the path part of the app Url
+ * to be converted to an external app Url
  *
- * @returns Rewritten page Uri with the active server port number,
- * and rewritten host name for the host and port forwarding
- * when running in GitHub Codespaces.
+ * @returns An object that contains both the internal and the
+ * external Urls. The internal Url can be used by workspace
+ * actions such as pinging while the external Url is the one
+ * we can safely open in a browser on the local system when
+ * vscode is running at a remoteworkspace (e.g. using code-
+ * server, SSH, or in GitHub Codespaces)
  */
-export async function getAppPageUri(pageUrl?: string): Promise<Uri> {
+export async function getAppPageUri(pageUrlPath?: string): Promise<{
+	internal: Uri, external: Uri}
+> {
 	const defaultPort = <number>getConfig(Settings.DefaultPort);
-	const serverUrl = `${localAppUrl}:${defaultPort}`;
-	if (pageUrl === undefined) {
-		pageUrl = serverUrl;
-	} else if (pageUrl.startsWith('/')) {
-		// construct page url for page path wihtout host and port
-		pageUrl = `${localAppUrl}:${defaultPort}${pageUrl}`;
-	}
-
-	// get external web page url
-	let pageUri: Uri = await env.asExternalUri(Uri.parse(pageUrl));
 
 	// update active server port number
-	if (!_running) {
+	if (!(await _running())) {
 		//pageUri.authority.startsWith(localhost) && !isServerRunning()) {
 		// get the next available localhost port number
 		_activePort = await tryPort(defaultPort);
 	}
 
-	// rewrite requested app page url to use the new active localhost server port
-	pageUri = Uri.parse(
-		pageUri
-			.toString(true) // skip encoding
-			.replace(`:${defaultPort}/`, `:${_activePort}/`)
-	);
+	const internalServerUrl = `${localAppUrl}:${_activePort ?? defaultPort}`;
+	let internalPageUri = Uri.parse(internalServerUrl);
 
+	// get external web page url
+	let externalPageUri: Uri = await env.asExternalUri(Uri.parse(internalServerUrl));
+
+	// it seems that "asExternalUri" only converts the host part of the Url to its
+	// external form, and discards the path part of the Url when present. Hence this
+	// should be added after the convertion to an external Url.
+	if (pageUrlPath?.startsWith('/')) {
+		// append page path to the external base path 
+		// (e.g. /proxy/3710 + /another = /proxy/3710/another)
+		// handle potential trailing/leading slashes to avoid double slashes
+		const basePath = externalPageUri.path.endsWith('/') ? 
+			externalPageUri.path.slice(0, -1) : externalPageUri.path;
+		externalPageUri = externalPageUri.with({ path: basePath + pageUrlPath });
+	}
+
+	// The assumption here is that EVIDENCE_BASE_PATH has been injected into the local dev
+	// server instance as well (check startServer).
+	internalPageUri = internalPageUri.with({
+		path: externalPageUri.path
+	});
+		
 	const outputChannel = getOutputChannel();
-	outputChannel.appendLine(`Requested app page: ${pageUri.toString(true)}`); // skip encoding
-	return pageUri;
+	outputChannel.appendLine(`Requested app page: ${externalPageUri} ${
+		internalPageUri.toString(true) == externalPageUri.toString(true) ?
+			'' : `(this is ${internalPageUri.toString(true)} on the remote)`
+	}`);
+
+	return {
+		internal: internalPageUri,
+		external: externalPageUri,
+	};
 }
 
 /**
  * Starts Evidence app dev server, and opens Evidence app preview
  * in the built-in vscode simple browser.
  *
- * @param pageFileUri Optional Uri of the starting page to load in preview.
+ * @param pageFileUri Optional (internal) Uri of the starting page 
+ * to be loaded in the preview.
  */
 export async function startServer(pageUri?: Uri) {
+
+	if (await isServerRunning()) {
+		window.showInformationMessage('There is an Evidence server already running!');
+		return ;
+	}
+
 	telemetryService?.sendEvent('startServer');
 
 	if (!pageUri) {
-		pageUri = await getAppPageUri('/');
+		pageUri = (await getAppPageUri('/')).external;
 	}
+
+	const pageHostname = pageUri.authority.split(':')[0];
 
 	// check if we need to run command in a different directory than root of the project:
 	const workspaceFolderPath = workspace.workspaceFolders
@@ -121,12 +160,12 @@ export async function startServer(pageUri?: Uri) {
 			telemetryService?.sendEvent('runSources', { sources: sourceNames.join(', ') });
 		}
 
-		if (!_running) {
+		if (!(await _running())) {
 			// use the last saved active port number to start dev server if using simple browser
 			let serverPortParameter = ` --port ${_activePort}`;
 
 			let devServerHostParameter: string = '';
-			if (!pageUri.authority.startsWith(localhost)) {
+			if (!localhost.includes(pageHostname)) {
 				// use remote host parameter to start dev server on github codespaces
 				devServerHostParameter = ' --host 0.0.0.0';
 			}
@@ -137,9 +176,24 @@ export async function startServer(pageUri?: Uri) {
 				serverPortParameter = '';
 			}
 
+			let envVariables: string = '';
+			if (isHostname(pageHostname)) {
+				envVariables += `EVIDENCE_ALLOWED_HOST=${pageHostname} `;
+			}
+
+			if (!(['', '/'].includes(pageUri.path))) {
+				envVariables += `EVIDENCE_BASE_PATH=${pageUri.path.replace(/\/$/, '')} `;
+			}
+
+			// prepare disable flags for automatic source building
+			let disableFlags = '';
+			if (getConfig(Settings.DisableAutoSourceBuilding, false)) {
+				disableFlags = ' --disable-watchers sources,queries --disable-hmr sources,queries';
+			}
+
 			// start dev server via terminal command
 			sendCommand(
-				`${cdCommand}${dependencyCommand}${sourcesCommand}npm exec evidence dev --${devServerHostParameter}${serverPortParameter}${previewParameter}${cdBackCommand}`
+				`${cdCommand}${dependencyCommand}${sourcesCommand}${envVariables}npm exec evidence dev --${devServerHostParameter}${serverPortParameter}${previewParameter}${disableFlags}${cdBackCommand}`
 			);
 		}
 
@@ -149,8 +203,7 @@ export async function startServer(pageUri?: Uri) {
 		// update server status and show running status bar icon
 		statusBar.showRunning();
 
-		_running = true;
-		setContext('evidence.serverRunning', _running);
+		setContext(Context.IsServerRunning, true);
 
 		if (previewType.includes('internal')) {
 			// wait for the dev server to start
@@ -165,14 +218,12 @@ export async function startServer(pageUri?: Uri) {
 			}
 		}
 
-		if (_running === true) {
+		if (await _running()) {
 			// set focus back to the active vscode editor group
 			commands.executeCommand(Commands.FocusActiveEditorGroup);
 
 			// open app preview if previewType is set to internal (simple browser)
-			if (previewType === 'internal' || previewType === 'internal - side-by-side') {
-				preview(pageUri);
-			}
+			preview();
 
 			// change button to stop server
 			statusBar.showStop();
@@ -185,8 +236,8 @@ export async function startServer(pageUri?: Uri) {
  *
  * @returns True if Evidence dev server is running, and false otherwise.
  */
-export function isServerRunning() {
-	return _running;
+export async function isServerRunning() {
+	return await _running();
 }
 
 /**
@@ -212,9 +263,9 @@ export async function stopServer() {
 	closeTerminal();
 
 	// reset server state and status display
-	_running = false;
-	setContext('evidence.serverRunning', _running);
+	setContext(Context.IsServerRunning, false);
 	_activePort = <number>getConfig(Settings.DefaultPort);
 	statusBar.showStart();
 	telemetryService?.sendEvent('stopServer');
 }
+

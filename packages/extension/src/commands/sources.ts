@@ -7,7 +7,7 @@ import { workspace } from 'vscode';
 
 export async function runSources() {
 	let serverRunning = false;
-	if (isServerRunning()) {
+	if (await isServerRunning()) {
 		serverRunning = true;
 		stopServer();
 		await timeout(1000);

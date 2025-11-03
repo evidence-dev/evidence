@@ -328,6 +328,11 @@
 					"default": 3000,
 					"description": "Default Evidence server port."
 				},
+				"evidence.disableAutoSourceBuilding": {
+					"type": "boolean",
+					"default": false,
+					"description": "Disable the automatic building of sources by the server. When checked, the server will not automatically rebuild sources or reload when source files change."
+				},
 				"evidence.templateProjectUrl": {
 					"type": "string",
 					"default": "https://github.com/evidence-dev/template",
@@ -495,7 +500,7 @@
 						"completionEvents": [
 							"onCommand:startServer"
 						],
-						"when": "evidence.hasProject == true"
+						"when": "evidence.hasProject == true && !evidence.serverRunning"
 					}
 				]
 			}

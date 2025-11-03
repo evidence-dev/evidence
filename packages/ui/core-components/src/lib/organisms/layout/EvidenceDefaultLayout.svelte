@@ -99,7 +99,7 @@
 
 	$: fileMap = convertFileTreeToFileMap(fileTree);
 
-	$: routeFrontMatter = fileMap.get($page.route.id)?.frontMatter;
+	$: routeFrontMatter = fileMap.get($page.route?.id)?.frontMatter;
 
 	$: sidebarFrontMatter = routeFrontMatter?.sidebar;
 
@@ -213,7 +213,7 @@
 				'print:w-[650px] print:md:w-[841px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
 			style="max-width:{maxWidthEffective}px;"
 		>
-			{#if !hideSidebar && sidebarFrontMatter !== 'never' && $page.route.id !== '/settings'}
+			{#if !hideSidebar && sidebarFrontMatter !== 'never' && $page.route?.id !== '/settings'}
 				<div class="print:hidden">
 					<Sidebar
 						{fileTree}
@@ -229,7 +229,7 @@
 				</div>
 			{/if}
 			<main
-				class={($page.route.id === '/settings'
+				class={($page.route?.id === '/settings'
 					? 'w-full mt-16 sm:mt-20 '
 					: (!hideSidebar && !['hide', 'never'].includes(sidebarFrontMatter) ? 'md:pl-8 ' : '') +
 						(!hideTocEffective ? 'md:pr-8 ' : '') +
@@ -241,9 +241,9 @@
 								? ' mt-4 sm:mt-8 '
 								: ' mt-4 sm:mt-[26px] ')) + 'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
 			>
-				{#if !hideBreadcrumbsEffective && $page.route.id !== '/settings'}
+				{#if !hideBreadcrumbsEffective && $page.route?.id !== '/settings'}
 					<div class="print:hidden">
-						{#if $page.route.id !== '/settings'}
+						{#if $page.route?.id !== '/settings'}
 							<BreadCrumbs {fileTree} />
 						{/if}
 					</div>
@@ -256,7 +256,7 @@
 					<LoadingSkeleton />
 				{/if}
 			</main>
-			{#if !hideTocEffective && $page.route.id !== '/settings'}
+			{#if !hideTocEffective && $page.route?.id !== '/settings'}
 				<div class="print:hidden">
 					<TableOfContents hideHeader={hideHeaderEffective} />
 				</div>

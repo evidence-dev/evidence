@@ -47,7 +47,7 @@ export async function tryPort(port = 3000): Promise<number> {
  * @param url The url to ping.
  * @returns Url ping result promise.
  */
-export function ping(url: string) {
+export function ping(url: string, timeout: number = 1000) {
 	const promise = new Promise<boolean>((resolve) => {
 		const useHttps = url.indexOf('https') === 0;
 		const request = useHttps ? https.request : http.request;
@@ -56,18 +56,34 @@ export function ping(url: string) {
 		const outputChannel = getOutputChannel();
 		outputChannel.appendLine(`Pinging page: ${url}`);
 
-		const pingRequest = request(url, () => {
-			resolve(true);
-			pingRequest.destroy();
-		});
+		try {
+			const urlObj = new URL(url);
+			const options = {
+				hostname: urlObj.hostname,
+				port: urlObj.port || (useHttps ? 443 : 80),
+				path: urlObj.pathname + urlObj.search,
+				method: 'HEAD', // HEAD is better for ping
+				timeout
+			};
 
-		pingRequest.on('error', () => {
+			const pingRequest = request(options, (res) => {
+				resolve(true); // Any response means server is reachable
+				pingRequest.destroy();
+			});
+
+			pingRequest.on('error', () => {
+				resolve(false);
+			});
+
+			pingRequest.on('timeout', () => {
+				resolve(false);
+				pingRequest.destroy();
+			});
+
+			pingRequest.end();
+		} catch (error) {
 			resolve(false);
-			pingRequest.destroy();
-		});
-
-		pingRequest.write('');
-		pingRequest.end();
+		}
 	});
 
 	return promise;
@@ -76,21 +92,36 @@ export function ping(url: string) {
 /**
  * Waits for a url to be pingable.
  *
- * @param url The url to ping.
+ * @param url The (internal) url to ping.
  * @param interval The interval to wait between pings.
  * @param max The maximum amount of time to wait.
  *
  * @returns Url ping result promise.
  */
-export async function waitFor(url: string, interval = 200, max = 30_000) {
+export async function waitFor(url: string, interval = 500, max = 30_000) {
 	let time = Math.ceil(max / interval);
 	while (time > 0) {
 		time -= 1;
-		if (await ping(url)) {
+		if (await ping(url, interval)) {
 			return true;
 		}
 		await timeout(interval);
 	}
 
 	return false;
+}
+
+/**
+ * Checks if the authority part of a URL is a host name
+ * rather than an IP address.
+ *
+ * @param hostname The host part of a URL.
+ *
+ * @returns True if it's not an IP address, false if it is
+ */
+export function isHostname(hostname: string) {
+  const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+  const ipv6Pattern = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+  return !ipv4Pattern.test(hostname) && 
+		!ipv6Pattern.test(hostname);
 }

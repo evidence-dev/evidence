@@ -19,7 +19,7 @@
 	export function buildCrumbs(pathArray, fileTree) {
 		const crumbs = [{ href: '/', title: 'Home' }];
 		pathArray.forEach((path, i) => {
-			if (path != '' && `/${path}` !== config.deployment.basePath) {
+			if (path != '') {
 				crumbs.push({
 					href: '/' + pathArray.slice(0, i + 1).join('/'),
 					title: decodeURIComponent(path.replace(/_/g, ' ').replace(/-/g, ' '))
@@ -57,7 +57,9 @@
 	import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 	export let fileTree;
 
-	$: crumbs = buildCrumbs($page.url.pathname.split('/').slice(1), fileTree);
+	let crumbs = [];
+
+	$: crumbs = buildCrumbs($page.url.pathname.replace(config.deployment.basePath || '', '').split('/').slice(1), fileTree);
 </script>
 
 <div class="flex items-start mt-0 whitespace-nowrap overflow-auto">

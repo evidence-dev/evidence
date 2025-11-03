@@ -27,10 +27,12 @@ export async function viewExtensionSettings() {
 
 /**
  * Opens Evidence app settings page in the built-in vscode simple browser webview.
+ * 
+ * @deprecated
  */
 export async function viewAppSettings() {
-	const settingsPageUri: Uri = await getAppPageUri(settingsPagePath);
-	if (!isServerRunning()) {
+	const settingsPageUri: Uri = (await getAppPageUri(settingsPagePath)).external;
+	if (!(await isServerRunning())) {
 		startServer(settingsPageUri);
 	} else {
 		// show app settings page in simple browser webview

@@ -1,24 +1,64 @@
-import { exec } from 'child_process';
-import { window, env, ExtensionContext, Uri } from 'vscode';
+import { window, env, Uri } from 'vscode';
 import { showRestartPrompt } from './views/prompts';
 import { getExtensionContext } from './extensionContext';
+import { getWorkspaceFolder } from './config';
+import { executeCommand, executeShellCommand } from './utils/shellUtils';
 
-const downloadNodeJs = 'Download NodeJS (LTS Version)';
+const downloadNodeJs    = 'Download NodeJS (LTS Version)';
 const downloadNodeJsUrl = 'https://nodejs.org/en/download';
+
+/**
+ * Gets command version while trying to use the user's login shell 
+ * environment. This is in order to support the variety of tooling 
+ * and version managers there are: such as asdf, nvm, fnm, etc.
+ *
+ * @param {'node' | 'node'} cmd
+ * @returns The tooling cmd version.
+ */
+async function getToolingVersion(cmd: 'node' | 'npm') {
+	// Strategy 1: Use login shell in current workspace directory
+	// This loads the user's shell configuration and version manager setup
+	try {
+		const workspaceFolder = getWorkspaceFolder();
+		const cwd = workspaceFolder?.uri.fsPath || process.cwd();
+
+		const cmdVersion = await executeShellCommand(`${cmd} --version`, cwd);
+		if (typeof cmdVersion === 'string' && cmdVersion.length > 0) {
+			return cmdVersion;
+		}
+	} catch (e) {
+		// Continue to fallback strategy
+	}
+
+	// Strategy 2: Fallback to direct command (for system-installed Node)
+	try {
+		const cmdVersion = await executeCommand(`${cmd} --version`);
+		if (typeof cmdVersion === 'string' && cmdVersion.length > 0) {
+			return cmdVersion;
+		}
+	} catch (e) {
+		// cmd not found
+	}
+
+	return 'none';
+}
 
 /**
  * Gets NodeJS version.
  *
- * @returns The NodeJS version.
+ * @returns The NodeJS version (e.g. 'v22.19.0').
  */
 export async function getNodeVersion() {
-	let nodeVersion;
-	try {
-		nodeVersion = await executeCommand('node --version');
-	} catch (e) {
-		nodeVersion = 'none';
-	}
-	return nodeVersion;
+	return await getToolingVersion('node');
+}
+
+/**
+ * Gets NPM version.
+ *
+ * @returns The NPM version (e.g. '10.9.3').
+ */
+export async function getNpmVersion() {
+	return await getToolingVersion('npm');
 }
 
 /**
@@ -60,34 +100,6 @@ export function isSupportedNodeVersion(nodeVersion: string): boolean {
 	return false;
 }
 
-/**
- * Gets NPM version.
- *
- * @returns The NPM version.
- */
-export async function getNpmVersion() {
-	return await executeCommand('npm --version');
-}
-
-/**
- * Executes command using node child_process.exec.
- *
- * @see https://nodejs.org/api/child_process.html#child_processexeccommand-options-callback
- *
- * @param command The node command to execute.
- * @returns The stdout of the executed command.
- */
-export function executeCommand(command: string): Promise<string> {
-	return new Promise((resolve, reject) => {
-		exec(command, (error, stdout, stderr) => {
-			if (error) {
-				reject(error);
-			} else {
-				resolve(stdout);
-			}
-		});
-	});
-}
 
 export async function promptToInstallNodeJsAndRestart(currentVersion: string | undefined) {
 	const context = getExtensionContext();

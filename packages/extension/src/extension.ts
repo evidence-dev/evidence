@@ -37,7 +37,7 @@ import {
 	hasManifest
 } from './utils/jsonUtils';
 import { Settings, getConfig, updateProjectContext } from './config';
-import { startServer } from './commands/server';
+import { isServerRunning, startServer } from './commands/server';
 import { openIndex } from './commands/project';
 import { statusBar } from './statusBar';
 import { closeTerminal } from './terminal';
@@ -1643,7 +1643,11 @@ export async function activate(context: ExtensionContext) {
 		const autoStart: boolean = <boolean>getConfig(Settings.AutoStart);
 
 		// show start dev server status
-		statusBar.showStart();
+		if (!(await isServerRunning())) {
+			statusBar.showStart();
+		} else {
+			statusBar.showStop();
+		}
 
 		// open index.md if no other files are open
 		openIndex();

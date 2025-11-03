@@ -12,14 +12,16 @@ export const enum Settings {
 	AutoStart = 'autoStart',
 	TemplateProjectUrl = 'templateProjectUrl',
 	PreviewType = 'previewType',
-	SlashCommands = 'slashCommands'
+	SlashCommands = 'slashCommands',
+	DisableAutoSourceBuilding = 'disableAutoSourceBuilding'
 }
 
 /**
  * Evidence extension context and state keys.
  */
 export const enum Context {
-	HasEvidenceProject = 'evidence.hasProject'
+	HasEvidenceProject = 'evidence.hasProject',
+	IsServerRunning = 'evidence.serverRunning',
 }
 
 /**

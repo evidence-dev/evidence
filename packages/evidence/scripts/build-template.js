@@ -45,107 +45,116 @@ const configFileLocation = new URL('svelte.config.js', import.meta.url);
 fs.writeFileSync('./template/svelte.config.js', fs.readFileSync(configFileLocation));
 
 fsExtra.outputFileSync(
-	'./template/vite.config.js',
-	`import { sveltekit } from "@sveltejs/kit/vite"
-	import { createLogger } from 'vite';
-	import { sourceQueryHmr, configVirtual, queryDirectoryHmr } from '@evidence-dev/sdk/build/vite';
-	import { isDebug } from '@evidence-dev/sdk/utils';
-	import { log } from "@evidence-dev/sdk/logger";
-	import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
-	import tailwindcss from '@tailwindcss/vite';
+	'./template/vite.config.js', `
+import { sveltekit } from "@sveltejs/kit/vite"
+import { createLogger } from 'vite';
+import { sourceQueryHmr, configVirtual, queryDirectoryHmr } from '@evidence-dev/sdk/build/vite';
+import { isDebug, isHmrEnabled } from '@evidence-dev/sdk/utils';
+import { log } from "@evidence-dev/sdk/logger";
+import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
 
 
-	process.removeAllListeners('warning');
-	process.on('warning', (warning) => {
-	  if (warning.name === 'ExperimentalWarning' && 
-	      warning.message.includes('CommonJS module') && 
-	      warning.message.includes('ES Module')) {
-	    return;
-	  }
-	  console.warn(warning);
-	});
+process.removeAllListeners('warning');
+process.on('warning', (warning) => {
+	if (warning.name === 'ExperimentalWarning' && 
+		warning.message.includes('CommonJS module') && 
+		warning.message.includes('ES Module')) {
+		return;
+	}
+	console.warn(warning);
+});
 
 
-	const logger = createLogger();
+const logger = createLogger();
 
-    const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
-    /** @type {import('vite').UserConfig} */
-     const config = 
-    {
-        plugins: [tailwindcss(), sveltekit(), configVirtual(), queryDirectoryHmr, sourceQueryHmr(), evidenceThemes()],
-        optimizeDeps: {
-            include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
-				// We need these to prevent HMR from doing a full page reload
-				...(process.env.EVIDENCE_DISABLE_INCLUDE ? [] : [
-					'@evidence-dev/core-components',
-					// Evidence packages injected into process-queries
-					${preprocess.injectedEvidenceImports.map((i) => `'${i.from}'`).join(',')},
-					'debounce', 
-					'@duckdb/duckdb-wasm',
-					'apache-arrow'
-				])
-				
-			],
-            exclude: ['svelte-icons', '@evidence-dev/universal-sql', '$evidence/config', '$evidence/themes']
-        },
-        ssr: {
-            external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/sdk/plugins']
-        },
-        server: {
-            fs: {
-                strict: strictFs // allow template to get dependencies outside the .evidence folder
-            },
-			hmr: {
-				overlay: false
-			}
-        },
-		build: {
-			// 🚩 Triple check this
-			minify: isDebug() ? false : true,
-			target: isDebug() ? 'esnext' : undefined,
-			rollupOptions: {
-				external: [/^@evidence-dev\\/tailwind\\/fonts\\//],
-				onwarn(warning, warn) {
-					if (warning.code === 'EVAL') return;
-					warn(warning);
-				}
-			}
+const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
+/** @type {import('vite').UserConfig} */
+const config =
+{
+	plugins: [
+		tailwindcss(),
+		sveltekit(),
+		configVirtual(),
+		...(isHmrEnabled('queries') ? [queryDirectoryHmr] : []),
+		...(isHmrEnabled('sources') ? [sourceQueryHmr()]  : []),
+		evidenceThemes()
+	],
+	optimizeDeps: {
+		include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
+			// We need these to prevent HMR from doing a full page reload
+			...(process.env.EVIDENCE_DISABLE_INCLUDE ? [] : [
+				'@evidence-dev/core-components',
+${ 				// Evidence packages injected into process-queries
+				preprocess.injectedEvidenceImports.map((i) => `\t\t\t\t'${i.from}'`).join(',\n')},
+				'debounce', 
+				'@duckdb/duckdb-wasm',
+				'apache-arrow'
+			])
+		],
+		exclude: ['svelte-icons', '@evidence-dev/universal-sql', '$evidence/config', '$evidence/themes']
+	},
+	ssr: {
+		external: ['@evidence-dev/telemetry', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql', '@evidence-dev/sdk/plugins']
+	},
+	server: {
+		fs: {
+			strict: strictFs // allow template to get dependencies outside the .evidence folder
 		},
-		customLogger: logger
-    }
-
-	// Suppress errors when building in non-debug mode
-	if (!isDebug() && process.env.EVIDENCE_IS_BUILDING === 'true') {
-		config.logLevel = 'silent';
-		logger.error = (msg) => log.error(msg);
-		logger.info = () => {};
-		logger.warn = () => {};
-		logger.warnOnce = () => {};
-	} else {
-		const loggerWarn = logger.warn;
-		const loggerOnce = logger.warnOnce
-
-		/**
-		 * @see https://github.com/evidence-dev/evidence/issues/1876
-		 * Ignore the duckdb-wasm sourcemap warning
-		 */
-		logger.warnOnce = (m, o) => {
-			if (m.match(/Sourcemap for ".+\\/node_modules\\/@duckdb\\/duckdb-wasm\\/dist\\/duckdb-browser-eh\\.worker\\.js" points to missing source files/)) return;
-			loggerOnce(m, o)
+		hmr: {
+			overlay: false
+		},
+		allowedHosts: [
+			...(process.env.EVIDENCE_ALLOWED_HOST ? [process.env.EVIDENCE_ALLOWED_HOST] : [])
+		]
+	},
+	build: {
+		// 🚩 Triple check this
+		minify: isDebug() ? false : true,
+		target: isDebug() ? 'esnext' : undefined,
+		rollupOptions: {
+			external: [/^@evidence-dev\\/tailwind\\/fonts\\//],
+			onwarn(warning, warn) {
+				if (warning.code === 'EVAL') return;
+				warn(warning);
+			}
 		}
+	},
+	customLogger: logger
+}
 
-		logger.warn = (msg, options) => {
-			// ignore fs/promises warning, used in +layout.js behind if (!browser) check
-			if (msg.includes('Module "fs/promises" has been externalized for browser compatibility')) return;
+// Suppress errors when building in non-debug mode
+if (!isDebug() && process.env.EVIDENCE_IS_BUILDING === 'true') {
+	config.logLevel = 'silent';
+	logger.error = (msg) => log.error(msg);
+	logger.info = () => {};
+	logger.warn = () => {};
+	logger.warnOnce = () => {};
+} else {
+	const loggerWarn = logger.warn;
+	const loggerOnce = logger.warnOnce
 
-			// ignore eval warning, used in duckdb-wasm
-			if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
-
-			loggerWarn(msg, options);
-		};
+	/**
+	 * @see https://github.com/evidence-dev/evidence/issues/1876
+	 * Ignore the duckdb-wasm sourcemap warning
+	 */
+	logger.warnOnce = (m, o) => {
+		if (m.match(/Sourcemap for ".+\\/node_modules\\/@duckdb\\/duckdb-wasm\\/dist\\/duckdb-browser-eh\\.worker\\.js" points to missing source files/)) return;
+		loggerOnce(m, o)
 	}
 
-    export default config`
+	logger.warn = (msg, options) => {
+		// ignore fs/promises warning, used in +layout.js behind if (!browser) check
+		if (msg.includes('Module "fs/promises" has been externalized for browser compatibility')) return;
+
+		// ignore eval warning, used in duckdb-wasm
+		if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
+
+		loggerWarn(msg, options);
+	};
+}
+
+export default config`
 );
 
 // Create a readme
