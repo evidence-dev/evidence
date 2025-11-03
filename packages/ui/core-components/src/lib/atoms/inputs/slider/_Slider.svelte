@@ -223,13 +223,6 @@
 		value = [validValue];
 		debounceUpdate(value);
 	}
-
-	function handleKeydown(e) {
-		if (e.key === 'Enter' || e.key === 'Tab') {
-			handleInputChange(e.target.value, e.target);
-			e.target.blur();
-		}
-	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
@@ -252,7 +245,7 @@
 						{max}
 						value={inputValue}
 						class="w-auto h-8 px-2 mb-2 text-sm border border-base-300 rounded bg-base-100 focus:outline-none focus:ring-2 focus:ring-primary/50"
-						on:keydown={handleKeydown}
+						on:input={(e) => handleInputChange(e.target.value, e.target)}
 					/>
 				{:else}
 					<span class="text-xs">
