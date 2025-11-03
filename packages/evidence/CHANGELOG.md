@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 40.1.3
+
+### Patch Changes
+
+- 4c37dbcac: Test publishing flow after CI simplification
+
 ## 40.1.2
 
 ### Patch Changes

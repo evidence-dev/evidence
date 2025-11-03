@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 3.5.52
+
+### Patch Changes
+
+- Updated dependencies [e81b6fe87]
+  - @evidence-dev/postgres@1.0.8
+
 ## 3.5.51
 
 ### Patch Changes
