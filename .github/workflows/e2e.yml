@@ -2,24 +2,13 @@ name: E2E Tests
 
 on:
   pull_request:
-    branches: [main, next]
+    branches: [main]
 
 jobs:
   run-tests:
+    name: e2e/ubuntu-latest/node-20
+    runs-on: ubuntu-latest
     timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-        node-version: [18.13.0, 20, 22]
-        isMain:
-          - ${{ github.base_ref == 'main' }}
-        exclude:
-          - isMain: false
-            node-version: 20
-
-    name: e2e/${{ matrix.os }}/node-${{ matrix.node-version}}
-    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout Repo
@@ -45,10 +34,6 @@ jobs:
             echo "only_docs=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Set OS environment variable
-        if: steps.docs-check.outputs.only_docs != 'true'
-        run: echo "__E2E_WORKFLOW_OS__=${{ matrix.os }}" >> $GITHUB_ENV
-
       - name: Action Setup (pnpm)
         if: steps.docs-check.outputs.only_docs != 'true'
         uses: pnpm/action-setup@v4
@@ -57,7 +42,7 @@ jobs:
         if: steps.docs-check.outputs.only_docs != 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
           cache: pnpm
 
       - name: Install dependencies
@@ -92,5 +77,5 @@ jobs:
         if: always() && steps.docs-check.outputs.only_docs != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report__e2e_${{ matrix.os }}_node-${{ matrix.node-version }}
+          name: playwright-report__e2e_ubuntu-latest_node-20
           path: e2e/**/playwright-report

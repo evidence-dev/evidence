@@ -1,5 +1,27 @@
 # @evidence-dev/core-components
 
+## 5.2.2
+
+### Patch Changes
+
+- 0400dd479: Upgrade dependencies to resolve CVEs
+- Updated dependencies [0400dd479]
+  - @evidence-dev/tailwind@3.0.10
+  - @evidence-dev/component-utilities@4.0.9
+
+## 5.2.1
+
+### Patch Changes
+
+- b68cba4c8: Fixes issue where clicking a table row link with openInNewTab=true did not actually open the link in a new tab
+- 4784cc4ef: Update Date Range presets with new options
+
+  Month to Today & Year to Today - to end on the last available date of the data used
+
+- 356eca8e9: Fix Basemap rendering when used with inputs
+- a0fcca759: Fix height prop in maps
+- 72a635815: Fix Column scaleColor not being used
+
 ## 5.2.0
 
 ### Minor Changes

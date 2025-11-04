@@ -1,5 +1,33 @@
 # @evidence-dev/components
 
+## 3.5.52
+
+### Patch Changes
+
+- Updated dependencies [e81b6fe87]
+  - @evidence-dev/postgres@1.0.8
+
+## 3.5.51
+
+### Patch Changes
+
+- Updated dependencies [0400dd479]
+  - @evidence-dev/preprocess@6.0.5
+  - @evidence-dev/core-components@5.2.2
+  - @evidence-dev/tailwind@3.0.10
+  - @evidence-dev/component-utilities@4.0.9
+
+## 3.5.50
+
+### Patch Changes
+
+- Updated dependencies [b68cba4c8]
+- Updated dependencies [4784cc4ef]
+- Updated dependencies [356eca8e9]
+- Updated dependencies [a0fcca759]
+- Updated dependencies [72a635815]
+  - @evidence-dev/core-components@5.2.1
+
 ## 3.5.49
 
 ### Patch Changes
