@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 5.2.3
+
+### Patch Changes
+
+- 9131715bc: Bump to 5.2.3 to skip blocked 5.2.0, 5.2.1, 5.2.2 versions on npm (from previous Tailwind v4 publish).
+
 ## 5.1.4
 
 ### Patch Changes
