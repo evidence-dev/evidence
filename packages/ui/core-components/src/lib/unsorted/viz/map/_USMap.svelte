@@ -282,7 +282,7 @@
 		}
 	}
 
-	$: data, config;
+	$: (data, config);
 </script>
 
 {#if !error}

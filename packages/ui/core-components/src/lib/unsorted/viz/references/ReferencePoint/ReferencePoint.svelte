@@ -162,7 +162,7 @@
 	const { theme } = getThemeStores();
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
-	$: $props,
+	$: ($props,
 		store.setConfig({
 			data,
 			x,
@@ -189,7 +189,7 @@
 			align,
 			bold,
 			italic
-		});
+		}));
 </script>
 
 {#if $$slots.default}
