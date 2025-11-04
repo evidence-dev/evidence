@@ -28,18 +28,18 @@ jobs:
 
           # Check if only docs changed
           NON_DOCS_CHANGES=$(echo "$CHANGED_FILES" | grep -vE '^sites/docs/' || true)
-          
+
           if [ -z "$NON_DOCS_CHANGES" ]; then
             echo "only_docs=true" >> "$GITHUB_OUTPUT"
             echo "Skipping e2e tests because only docs were changed."
             exit 0
           fi
-          
+
           echo "only_docs=false" >> "$GITHUB_OUTPUT"
 
           # Check if external dependencies changed (lockfile = external deps)
           LOCKFILE_CHANGED=$(echo "$CHANGED_FILES" | grep -E '^pnpm-lock\.yaml$' || true)
-          
+
           if [ -n "$LOCKFILE_CHANGED" ]; then
             echo "run_full_suite=true" >> "$GITHUB_OUTPUT"
             echo "Running FULL e2e suite because external dependencies changed (pnpm-lock.yaml modified)"
