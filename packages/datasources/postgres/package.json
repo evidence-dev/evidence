@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/postgres",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"description": "PostgreSQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",

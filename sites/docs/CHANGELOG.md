@@ -1,5 +1,12 @@
 # evidence-docs
 
+## 0.0.62
+
+### Patch Changes
+
+- Updated dependencies [4c37dbcac]
+  - @evidence-dev/evidence@40.1.3
+
 ## 0.0.61
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # evidence-test-environment
 
+## 3.0.90
+
+### Patch Changes
+
+- Updated dependencies [e81b6fe87]
+- Updated dependencies [4c37dbcac]
+  - @evidence-dev/postgres@1.0.8
+  - @evidence-dev/evidence@40.1.3
+
 ## 3.0.89
 
 ### Patch Changes
