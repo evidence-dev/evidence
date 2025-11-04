@@ -45,7 +45,7 @@ const loadDB = async () => {
 			);
 		}
 	} else {
-		await profile(setParquetURLs, renderedFiles, { addBasePath });
+		await profile(setParquetURLs, renderedFiles);
 		await profile(updateSearchPath, Object.keys(renderedFiles));
 	}
 };
@@ -174,7 +174,7 @@ export const load = async ({ fetch, route, params, url }) => {
 			async updateParquetURLs(manifest) {
 				// todo: maybe diff with old?
 				const { renderedFiles } = JSON.parse(manifest);
-				await profile(setParquetURLs, renderedFiles, { addBasePath });
+				await profile(setParquetURLs, renderedFiles);
 			}
 		},
 		inputs,

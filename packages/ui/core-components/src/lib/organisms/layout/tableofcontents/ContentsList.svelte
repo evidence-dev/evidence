@@ -28,12 +28,6 @@
 	onDestroy(() => {
 		observer?.disconnect();
 	});
-
-	const classLookup = {
-		h1: 'mt-3 font-semibold block bg-base-100 shadow shadow-base-100',
-		h2: 'pl-0 text-base-content-muted',
-		h3: 'pl-4 text-base-content-muted'
-	};
 </script>
 
 {#if headers && headers.length > 1}
@@ -41,13 +35,30 @@
 		On this page
 	</span>
 	{#each headers as header}
-		<a
-			href="#{header.id}"
-			class="{classLookup[
-				header.nodeName.toLowerCase()
-			]} block text-xs transition-all duration-200 py-1 hover:underline"
-		>
+		<a href="#{header.id}" class={header.nodeName.toLowerCase()}>
 			{header.innerText}
 		</a>
 	{/each}
 {/if}
+
+<style lang="postcss">
+	a {
+		@apply block text-xs transition-all duration-200 py-1;
+	}
+
+	a:hover {
+		@apply underline;
+	}
+
+	a.h1 {
+		@apply mt-3 font-semibold block bg-base-100 shadow shadow-base-100;
+	}
+
+	a.h2 {
+		@apply pl-0 text-base-content-muted;
+	}
+
+	a.h3 {
+		@apply pl-4 text-base-content-muted;
+	}
+</style>

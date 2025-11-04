@@ -35,7 +35,7 @@
 		alt={description}
 		style={`width: ${processedWidth}; height: ${processedHeight};`}
 		class={cn(
-			`max-w-full h-auto rounded-sm ${border ? 'border border-gray-300 rounded-md shadow-sm' : ''}`,
+			`max-w-full h-auto rounded ${border ? 'border border-gray-300 rounded-md shadow-sm' : ''}`,
 			className
 		)}
 		loading="lazy"

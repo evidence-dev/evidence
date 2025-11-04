@@ -35,10 +35,7 @@
 	{#each columns as column (column.column_name)}
 		{@const columnType = column.data_type ?? column.column_type}
 		<li
-			class={cn(
-				`font-mono text-sm rounded-sm flex flex-row hover:bg-base-200 max-w-full`,
-				rowClass
-			)}
+			class={cn(`font-mono text-sm rounded flex flex-row hover:bg-base-200 max-w-full`, rowClass)}
 		>
 			<div class="grid grid-cols-[auto,auto,1fr] gap-2 px-2 py-1 w-full lowercase truncate">
 				<Icon src={getIcon(columnType)} class="text-base-content-muted w-5 h-5" />

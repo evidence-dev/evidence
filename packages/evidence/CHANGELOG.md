@@ -1098,7 +1098,6 @@
   on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
 
 - e1facffd: Add QueryStore concept
-
   - Loads data as it is requested, rather than all at page-load / build
   - Uses duckdb to get data length / column data
   - Ties metadata, mutation queries, and data together to make component development easier
@@ -1888,7 +1887,6 @@
 ### Major Changes
 
 - e1facffd: Add QueryStore concept
-
   - Loads data as it is requested, rather than all at page-load / build
   - Uses duckdb to get data length / column data
   - Ties metadata, mutation queries, and data together to make component development easier

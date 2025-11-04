@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { editFile, restoreChangedFiles } from './fs-utils';
+import { createFile, deleteFile, editFile, restoreChangedFiles } from './fs-utils';
 import { waitForPageToLoad } from '../../test-utils';
 
 /** @param {import("@playwright/test").Page} page */
@@ -25,6 +25,34 @@ test.describe('pages', () => {
 		await waitForHMR(page);
 
 		await expect(page.getByText('This page has some different text on it')).toBeVisible();
+	});
+
+	test('creating should add to the sidebar and allow navigation', async ({ page }) => {
+		await page.goto('/');
+		await waitForPageToLoad(page);
+
+		await expect(page.getByText('Index')).toBeVisible();
+
+		createFile('pages/new-page.md', 'This is a new page');
+		// file deletions trigger full reload, so we don't waitForHMR() here
+
+		await expect(page.getByRole('link', { name: 'New Page' })).toBeVisible();
+		await page.goto('/new-page');
+		await expect(page.getByText('This is a new page')).toBeVisible();
+	});
+
+	test('deleting should remove from the sidebar and prevent navigation', async ({ page }) => {
+		await page.goto('/');
+		await waitForPageToLoad(page);
+
+		await expect(page.getByText('Index')).toBeVisible();
+
+		deleteFile('pages/page.md');
+		await waitForHMR(page);
+
+		await expect(page.getByRole('link', { name: 'Page' })).not.toBeVisible();
+		await page.goto('/page');
+		await expect(page.getByText('Page Not Found')).toBeVisible();
 	});
 });
 

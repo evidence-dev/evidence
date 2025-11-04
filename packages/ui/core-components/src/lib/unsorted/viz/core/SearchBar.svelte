@@ -11,21 +11,22 @@
 	export let searchFunction;
 </script>
 
-<div class="search-container bg-base-100 border border-base-300 shadow-sm h-7 rounded-md mb-1 mr-1">
+<div class="search-container mb-1 mr-1">
 	<input
-		class="search-bar bg-base-100 placeholder:text-base-content-muted/80"
+		class="search-bar"
 		type="text"
 		{placeholder}
 		bind:value
 		on:keyup={() => searchFunction(value)}
 	/>
-	<div class="search-icon text-base-content-muted/80">
+	<div class="search-icon">
 		<Icon src={Search} class="pl-0.5" />
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.search-container {
+		@apply bg-base-100 border border-base-300 shadow-sm h-7 rounded-md;
 		width: 30%;
 		display: block;
 		align-items: center;
@@ -34,6 +35,7 @@
 	}
 
 	.search-icon {
+		@apply text-base-content-muted/80;
 		height: 16px;
 		width: 16px;
 		padding-left: 3px;
@@ -46,6 +48,7 @@
 	}
 
 	.search-bar {
+		@apply bg-base-100;
 		margin: 0;
 		position: absolute;
 		top: 50%;
@@ -61,6 +64,10 @@
 
 		font-family: Arial;
 		line-height: normal;
+	}
+
+	input.search-bar::placeholder {
+		@apply text-base-content-muted/80;
 	}
 
 	*:focus {

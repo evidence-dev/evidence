@@ -87,7 +87,11 @@
 	</div>
 {/if}
 
-<style>
+<style lang="postcss">
+	dialog::backdrop {
+		@apply backdrop-blur-sm bg-base-100/80;
+	}
+
 	.modal-enter::backdrop {
 		all: unset;
 	}

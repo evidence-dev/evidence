@@ -9,7 +9,7 @@ export async function initialize() {
 	try {
 		await initDB();
 		const res = await fetch(addBasePath('/data/manifest.json')).then((r) => r.json());
-		await setParquetURLs(res.renderedFiles ?? {}, { addBasePath });
+		await setParquetURLs(res.renderedFiles ?? {});
 		await updateSearchPath(Object.keys(res.renderedFiles ?? {}));
 		if (!res.renderedFiles) console.error('No fixture data available!');
 	} catch (e) {

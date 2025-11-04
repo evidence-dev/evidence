@@ -16,7 +16,7 @@
 	class={`grid grid-rows-auto grid-cols-1 justify-center relative
 			bg-negative/10 text-negative
 			font-ui font-normal
-			rounded-sm border border-negative/50
+			rounded border border-negative/50
 			py-5 px-8 mt-2 mb-4
 			print:break-inside-avoid`}
 	style="min-height: {height}px"

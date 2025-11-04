@@ -10,9 +10,7 @@
 </script>
 
 <div class="h-fit bg-inherit">
-	<section
-		class="flex flex-col border p-4 relative border-base-300 bg-inherit w-full rounded-sm cu"
-	>
+	<section class="flex flex-col border p-4 relative border-base-300 bg-inherit w-full rounded cu">
 		<button
 			class="contents bg-inherit"
 			class:cursor-default={!togglable}
