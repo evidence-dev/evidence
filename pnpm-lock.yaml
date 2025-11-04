@@ -1272,9 +1272,6 @@ importers:
       '@duckdb/duckdb-wasm':
         specifier: 1.29.0
         version: 1.29.0
-      '@evidence-dev/sdk':
-        specifier: workspace:*
-        version: link:../sdk
       apache-arrow:
         specifier: 17.0.0
         version: 17.0.0

@@ -6,7 +6,6 @@ import {
 	getPlatformFeatures,
 	VoidLogger
 } from '@duckdb/duckdb-wasm';
-import { addBasePath } from '@evidence-dev/sdk/utils/svelte';
 
 export { tableFromIPC } from 'apache-arrow';
 
@@ -106,10 +105,10 @@ export async function emptyDbFs(targetGlob) {
 /**
  * Adds a new view to the database, pointing to the provided parquet URL.
  * @param {Record<string, string[]>} urls
- * @param {boolean} [append]
+ * @param {{ append?: boolean, addBasePath?: (path: string) => string }} [opts]
  * @returns {Promise<void>}
  */
-export async function setParquetURLs(urls, append = false) {
+export async function setParquetURLs(urls, { append, addBasePath = (x) => x } = {}) {
 	if (!db) await initDB();
 	if (!append) await emptyDbFs('*');
 	if (import.meta.env.VITE_EVIDENCE_DEBUG) console.debug('Updating Parquet URLs');
@@ -142,6 +141,7 @@ export async function setParquetURLs(urls, append = false) {
 		resolveTables();
 	} catch (e) {
 		rejectTables(e);
+		console.error(`Error encountered while updating Parquet URLs`, e);
 		throw e;
 	}
 }
