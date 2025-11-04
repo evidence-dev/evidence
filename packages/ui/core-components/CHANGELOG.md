@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 5.1.4
+
+### Patch Changes
+
+- 25dc7007b: Fix SearchButton.css for Tailwind v3 compatibility
+- Updated dependencies [1703b33a3]
+  - @evidence-dev/tailwind@3.1.0
+  - @evidence-dev/component-utilities@4.0.9
+
 ## 5.1.3
 
 ### Patch Changes

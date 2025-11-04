@@ -1,5 +1,11 @@
 # @evidence-dev/tailwind
 
+## 3.1.0
+
+### Minor Changes
+
+- 1703b33a3: Bump to 3.1.0 with Tailwind v3.4.18 pinned dependency (skipping 3.0.10 which has incorrect Tailwind v4 dependency on npm).
+
 ## 3.0.9
 
 ### Patch Changes
