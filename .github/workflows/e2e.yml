@@ -102,10 +102,3 @@ jobs:
       - name: Run preview mode tests (full)
         if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite == 'true'
         run: pnpm --filter "./e2e/*" --sequential run test:preview
-
-      - name: Upload Playwright reports
-        if: always() && steps.changes-check.outputs.only_docs != 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report__e2e_ubuntu-latest_node-20
-          path: e2e/**/playwright-report
