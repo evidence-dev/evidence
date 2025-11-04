@@ -16,6 +16,7 @@
 	import InlineError from '../InlineError.svelte';
 	import checkRequiredProps from '../checkRequiredProps.js';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import { onMount } from 'svelte';
 
 	/////
 	// Component Things
@@ -72,7 +73,32 @@
 	/** @type {string | undefined} */
 	export let minColumn = undefined;
 
+	/** @type {number} */
+	export let debounceDelay = 0;
+
+	/** @type {boolean} */
+	export let showInput = false;
+	$: showInput = toBoolean(showInput);
+
 	let errors = [];
+	let debounceTimer;
+	let initialLoad = true;
+	// Debounce function to delay updates
+	function debounceUpdate(newValue) {
+		clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(() => {
+			$inputs[name] = newValue;
+		}, debounceDelay);
+	}
+
+	// Clean up timer on component destruction
+	onMount(() => {
+		return () => {
+			if (debounceTimer) {
+				clearTimeout(debounceTimer);
+			}
+		};
+	});
 
 	function validateNumber(value, valueType) {
 		value = toNumber(value);
@@ -99,7 +125,9 @@
 		checkMinMax(min, max);
 	}
 
-	$: if (defaultValue !== undefined && !data) {
+	// Initialize default value only once
+	let defaultValueInitialized = false;
+	$: if (defaultValue !== undefined && !data && !defaultValueInitialized) {
 		defaultValue = validateNumber(defaultValue, 'defaultValue');
 		if (defaultValue < min) {
 			errors.push('defaultValue cannot be less than min');
@@ -107,9 +135,17 @@
 			errors.push('defaultValue cannot be greater than max');
 		}
 		value = [defaultValue];
+		defaultValueInitialized = true;
 	}
 
-	$: $inputs[name] = value;
+	$: if (value && value.length > 0) {
+		if (initialLoad) {
+			$inputs[name] = value;
+			initialLoad = false;
+		} else {
+			debounceUpdate(value);
+		}
+	}
 
 	const renderSize = (size) => {
 		const sizeMap = {
@@ -171,6 +207,22 @@
 	$: if (sliderTicks > 1000) {
 		handleSteps();
 	}
+
+	// Create a reactive input value
+	$: inputValue = value && value.length > 0 ? Math.round(value[0]) : min;
+
+	// Handle input value changes
+	function handleInputChange(inputValue, eventTarget = null) {
+		const newValue = Math.round(inputValue);
+		const validValue = Math.max(min, Math.min(max, isNaN(newValue) ? min : newValue));
+
+		if (eventTarget) {
+			eventTarget.value = validValue;
+		}
+
+		value = [validValue];
+		debounceUpdate(value);
+	}
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
@@ -178,7 +230,7 @@
 		<InlineError inputType="Slider" error={errors} width="170" height="36" />
 	{:else}
 		<div class={`relative ${sizeClass} mt-2 mb-10 select-none`}>
-			<p class="pb-2 truncate text-xs">
+			<p class="pb-2 pt-0.5 truncate text-xs">
 				<span class="font-medium">
 					{#if description}
 						{title}<Info {description} className="mr-2" />
@@ -186,9 +238,20 @@
 						{title}:
 					{/if}
 				</span>
-				<span class="text-xs">
-					{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span
-				>
+				{#if showInput}
+					<input
+						type="number"
+						{min}
+						{max}
+						value={inputValue}
+						class="w-auto h-8 px-2 mb-2 text-sm border border-base-300 rounded bg-base-100 focus:outline-none focus:ring-2 focus:ring-primary/50"
+						on:input={(e) => handleInputChange(e.target.value, e.target)}
+					/>
+				{:else}
+					<span class="text-xs">
+						{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}
+					</span>
+				{/if}
 			</p>
 			<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 			{#if showMaxMin}

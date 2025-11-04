@@ -1,5 +1,13 @@
 # @evidence-dev/core-components
 
+## 5.3.0
+
+### Minor Changes
+
+- cd8dda7a7: - Added input field to select precise value
+  - Fixed default value bug
+  - Added debounce for the slider
+
 ## 5.2.3
 
 ### Patch Changes
