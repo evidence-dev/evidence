@@ -649,7 +649,6 @@ Evidence is a library for creating reports in markdown and SQL. It uses ECharts 
 </Grid>
 
 <style>
-    @reference "@evidence-dev/evidence/theme.css";
     .markdown {
         @apply mt-2;
     }

@@ -298,13 +298,13 @@
 	}
 
 	// Re-load areas when related props change
-	$: geoJsonUrl,
+	$: (geoJsonUrl,
 		data,
 		areaCol,
 		(async () => {
 			await data.fetch();
 			await processAreas();
-		})();
+		})());
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->

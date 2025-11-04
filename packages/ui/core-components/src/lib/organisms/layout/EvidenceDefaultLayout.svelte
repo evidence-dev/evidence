@@ -136,7 +136,7 @@
 	});
 
 	const {
-		syncThemeAttribute,
+		syncDataThemeAttribute,
 		cycleAppearance,
 		selectedAppearance,
 		setAppearance,
@@ -154,7 +154,7 @@
 		return () => window.removeEventListener('keydown', onKeydown);
 	});
 
-	onMount(() => syncThemeAttribute(document.querySelector('html')));
+	onMount(() => syncDataThemeAttribute(document.querySelector('html')));
 
 	//handles printing in dark mode
 	onMount(() => {
@@ -268,9 +268,8 @@
 	{/if}
 </DevTools>
 
-<style>
+<style lang="postcss">
 	:global(body) {
-		background-color: var(--color-base-100);
-		color: var(--color-base-content);
+		@apply bg-base-100 text-base-content;
 	}
 </style>

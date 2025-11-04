@@ -15,10 +15,8 @@ const config = {
 		builder: '@storybook/builder-vite'
 	},
 	async viteFinal(config) {
-		// This was being weird about the imports, so we did it dynamically
-		const tailwindcss = (await import('@tailwindcss/vite')).default;
 		return mergeConfig(config, {
-			plugins: [tailwindcss(), evidenceThemes()],
+			plugins: [evidenceThemes()],
 			server: {
 				fs: {
 					strict: false

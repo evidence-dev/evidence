@@ -145,7 +145,7 @@
 		}
 	}
 
-	$: data, config;
+	$: (data, config);
 
 	$: if (browser && chartInstance && config) {
 		chartInstance.setOption(config, true); // true forces a complete replacement of the options

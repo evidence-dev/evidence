@@ -9,13 +9,15 @@ jobs:
     name: e2e/ubuntu-latest/node-20
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    # Skip E2E on Version Packages PRs - they're just metadata changes
+    if: github.event.pull_request.user.login != 'github-actions[bot]'
 
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Check if only docs changed
-        id: docs-check
+      - name: Check what changed
+        id: changes-check
         shell: bash
         run: |
           # Fetch the base branch
@@ -24,57 +26,85 @@ jobs:
           # Get list of changed files
           CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }})
 
-          # Check if any changed files are outside sites/docs/
+          # Check if only docs changed
           NON_DOCS_CHANGES=$(echo "$CHANGED_FILES" | grep -vE '^sites/docs/' || true)
 
           if [ -z "$NON_DOCS_CHANGES" ]; then
             echo "only_docs=true" >> "$GITHUB_OUTPUT"
             echo "Skipping e2e tests because only docs were changed."
+            exit 0
+          fi
+
+          echo "only_docs=false" >> "$GITHUB_OUTPUT"
+
+          # Check if external dependencies changed (lockfile = external deps)
+          LOCKFILE_CHANGED=$(echo "$CHANGED_FILES" | grep -E '^pnpm-lock\.yaml$' || true)
+
+          if [ -n "$LOCKFILE_CHANGED" ]; then
+            echo "run_full_suite=true" >> "$GITHUB_OUTPUT"
+            echo "Running FULL e2e suite because external dependencies changed (pnpm-lock.yaml modified)"
           else
-            echo "only_docs=false" >> "$GITHUB_OUTPUT"
+            echo "run_full_suite=false" >> "$GITHUB_OUTPUT"
+            echo "Running MINIMAL e2e suite (basic + hmr only)"
           fi
 
       - name: Action Setup (pnpm)
-        if: steps.docs-check.outputs.only_docs != 'true'
+        if: steps.changes-check.outputs.only_docs != 'true'
         uses: pnpm/action-setup@v4
 
       - name: Setup Node
-        if: steps.docs-check.outputs.only_docs != 'true'
+        if: steps.changes-check.outputs.only_docs != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
 
       - name: Install dependencies
-        if: steps.docs-check.outputs.only_docs != 'true'
+        if: steps.changes-check.outputs.only_docs != 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright and browsers
-        if: steps.docs-check.outputs.only_docs != 'true'
+        if: steps.changes-check.outputs.only_docs != 'true'
         run: pnpm playwright install --with-deps
 
       - name: Run setup
-        if: steps.docs-check.outputs.only_docs != 'true'
+        if: steps.changes-check.outputs.only_docs != 'true'
         run: pnpm --filter "./e2e/*" run --if-present setup
 
-      - name: Run sources
-        if: steps.docs-check.outputs.only_docs != 'true'
+      - name: Run sources (minimal)
+        if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite != 'true'
+        run: pnpm --filter "./e2e/{basic,hmr}" run sources
+
+      - name: Run sources (full)
+        if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite == 'true'
         run: pnpm --filter "./e2e/*" run sources
 
-      - name: Run dev mode tests
-        if: steps.docs-check.outputs.only_docs != 'true'
+      - name: Run dev mode tests (minimal)
+        if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite != 'true'
+        run: pnpm --filter "./e2e/{basic,hmr}" --sequential run test:dev
+
+      - name: Run dev mode tests (full)
+        if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite == 'true'
         run: pnpm --filter "./e2e/*" --sequential run test:dev
 
-      - name: Build
-        if: steps.docs-check.outputs.only_docs != 'true'
+      - name: Build (minimal)
+        if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite != 'true'
+        run: pnpm --filter "./e2e/{basic,hmr}" run build
+
+      - name: Build (full)
+        if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite == 'true'
         run: pnpm --filter "./e2e/*" run build
 
-      - name: Run preview mode tests
-        if: steps.docs-check.outputs.only_docs != 'true'
+      - name: Run preview mode tests (minimal)
+        if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite != 'true'
+        run: pnpm --filter "./e2e/{basic,hmr}" --sequential run test:preview
+
+      - name: Run preview mode tests (full)
+        if: steps.changes-check.outputs.only_docs != 'true' && steps.changes-check.outputs.run_full_suite == 'true'
         run: pnpm --filter "./e2e/*" --sequential run test:preview
 
       - name: Upload Playwright reports
-        if: always() && steps.docs-check.outputs.only_docs != 'true'
+        if: always() && steps.changes-check.outputs.only_docs != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report__e2e_ubuntu-latest_node-20

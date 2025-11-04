@@ -13,7 +13,7 @@
 				const savedTheme = localStorage.getItem('evidence-theme') ?? 'system';
 				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 				const theme = savedTheme === 'system' ? (prefersDark ? 'dark' : 'light') : savedTheme;
-				document.documentElement.classList.add(`theme-${theme}`);
+				document.documentElement.setAttribute('data-theme', theme);
 			} catch (e) {}
 		</script>
 		%sveltekit.head%
@@ -66,7 +66,7 @@
 		z-index: 9999;
 	}
 
-	.theme-dark #__evidence_project_splash {
+	[data-theme='dark'] #__evidence_project_splash {
 		background-color: #000000;
 	}
 
@@ -78,7 +78,7 @@
 		animation-timing-function: ease-in-out;
 	}
 
-	.theme-dark .draw-path {
+	[data-theme='dark'] .draw-path {
 		fill: #ffffff;
 	}
 

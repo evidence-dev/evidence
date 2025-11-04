@@ -37,7 +37,7 @@
 	{#if multiple}
 		<div
 			class={cn(
-				'mr-2 flex h-4 w-4 items-center justify-center rounded-xs border border-base-content',
+				'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-base-content',
 				active ? 'bg-base-content text-base-100' : 'opacity-50 [&_svg]:invisible'
 			)}
 		>

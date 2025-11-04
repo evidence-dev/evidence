@@ -11,21 +11,16 @@
 </script>
 
 {#if !sources.length}
-	<p class="text-sm py-2">
-		You'll need to connect to at least one datasource before deploying to Vercel.
-	</p>
+	<p>You'll need to connect to at least one datasource before deploying to Vercel.</p>
 {:else if !settings.gitRepo}
-	<p class="text-sm py-2">You'll need to set up a git repo before deploying to Vercel.</p>
+	<p>You'll need to set up a git repo before deploying to Vercel.</p>
 {:else}
-	<h2 class="font-semibold text-lg pt-3 pb-2">Deploying to Vercel</h2>
+	<h2>Deploying to Vercel</h2>
 
 	<ol>
 		<li>
-			<a
-				class="text-primary hover:brightness-110 active:brightness-90 transition"
-				href="https://vercel.com/new"
-				target="_blank"
-				rel="noreferrer">Start a new Vercel project &rarr;</a
+			<a href="https://vercel.com/new" target="_blank" rel="noreferrer"
+				>Start a new Vercel project &rarr;</a
 			>
 		</li>
 		<li>Choose the repo containing this project</li>
@@ -50,7 +45,19 @@
 	</div>
 {/if}
 
-<style>
+<style lang="postcss">
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2;
+	}
+
+	p {
+		@apply text-sm py-2;
+	}
+
+	a {
+		@apply text-primary hover:brightness-110 active:brightness-90 transition;
+	}
+
 	span.setting {
 		font-size: 0.85em;
 		text-transform: uppercase;

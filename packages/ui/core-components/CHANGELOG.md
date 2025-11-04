@@ -1,5 +1,29 @@
 # @evidence-dev/core-components
 
+## 5.2.3
+
+### Patch Changes
+
+- 9131715bc: Bump to 5.2.3 to skip blocked 5.2.0, 5.2.1, 5.2.2 versions on npm (from previous Tailwind v4 publish).
+
+## 5.1.4
+
+### Patch Changes
+
+- 25dc7007b: Fix SearchButton.css for Tailwind v3 compatibility
+- Updated dependencies [1703b33a3]
+  - @evidence-dev/tailwind@3.1.0
+  - @evidence-dev/component-utilities@4.0.9
+
+## 5.1.3
+
+### Patch Changes
+
+- c85ec361f: Revert Tailwind v4 upgrade and pin to v3.4.18 for stability. Tailwind v4 is incompatible with current Svelte 4 UI library dependencies (bits-ui, @melt-ui/svelte). Will revisit Tailwind v4 upgrade as part of Svelte 5 migration.
+- Updated dependencies [c85ec361f]
+  - @evidence-dev/tailwind@3.0.9
+  - @evidence-dev/component-utilities@4.0.9
+
 ## 5.2.2
 
 ### Patch Changes
