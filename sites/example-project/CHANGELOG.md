@@ -1,5 +1,14 @@
 # @evidence-dev/components
 
+## 3.5.49
+
+### Patch Changes
+
+- Updated dependencies [c85ec361f]
+  - @evidence-dev/tailwind@3.0.9
+  - @evidence-dev/core-components@5.1.3
+  - @evidence-dev/component-utilities@4.0.9
+
 ## 3.5.52
 
 ### Patch Changes
