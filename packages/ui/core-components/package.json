@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "5.3.0",
+	"version": "5.3.1",
 	"evidence": {
 		"components": true
 	},
