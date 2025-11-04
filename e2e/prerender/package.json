@@ -1,6 +1,6 @@
 {
   "name": "e2e-prerender",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "scripts": {
     "build": "evidence build",
     "build:strict": "evidence build:strict",
