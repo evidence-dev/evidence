@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 40.1.3
+
+### Patch Changes
+
+- 4c37dbcac: Test publishing flow after CI simplification
+
+## 40.1.2
+
+### Patch Changes
+
+- 0400dd479: Upgrade dependencies to resolve CVEs
+- Updated dependencies [0400dd479]
+  - @evidence-dev/preprocess@6.0.5
+
 ## 40.1.1
 
 ### Patch Changes
