@@ -35,12 +35,12 @@ jobs:
           
           echo "only_docs=false" >> "$GITHUB_OUTPUT"
 
-          # Check if dependencies changed (run full suite)
-          DEP_CHANGES=$(echo "$CHANGED_FILES" | grep -E '(package\.json|pnpm-lock\.yaml|\.npmrc|pnpm-workspace\.yaml)$' || true)
+          # Check if external dependencies changed (lockfile = external deps)
+          LOCKFILE_CHANGED=$(echo "$CHANGED_FILES" | grep -E '^pnpm-lock\.yaml$' || true)
           
-          if [ -n "$DEP_CHANGES" ]; then
+          if [ -n "$LOCKFILE_CHANGED" ]; then
             echo "run_full_suite=true" >> "$GITHUB_OUTPUT"
-            echo "Running FULL e2e suite because dependencies changed"
+            echo "Running FULL e2e suite because external dependencies changed (pnpm-lock.yaml modified)"
           else
             echo "run_full_suite=false" >> "$GITHUB_OUTPUT"
             echo "Running MINIMAL e2e suite (basic + hmr only)"
