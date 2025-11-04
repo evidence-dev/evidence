@@ -55,6 +55,8 @@
 	export let extraDayEndString = undefined;
 	/** @type {string | undefined} */
 	export let description = undefined;
+	/** @type {'start' | 'end'} */
+	export let inputDefault = 'start';
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
@@ -192,13 +194,13 @@
 		}
 	}
 
-	function setPlaceholderDefault(d) {
-		placeholder = d;
+	function setPlaceholderDefault(d, defaultType) {
+		placeholder = defaultType === 'end' ? d : calendarStart;
 	}
 
 	let selectedPreset;
 	let placeholder;
-	$: setPlaceholderDefault(calendarEnd);
+	$: setPlaceholderDefault(calendarEnd, inputDefault);
 
 	// group exists check for nicely rendering group border for dropdown
 	function groupExists(groupName) {
@@ -244,7 +246,7 @@
 		if (range) {
 			selectedDateInput = { start, end };
 		} else {
-			selectedDateInput = start;
+			selectedDateInput = inputDefault === 'end' ? end : start;
 		}
 	}
 	$: updateDateRange(calendarStart, calendarEnd);

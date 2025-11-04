@@ -294,11 +294,19 @@ Accepts preset in string format to apply default value in Date Input picker. **R
 
 </PropListing>
 <PropListing 
+    name="inputDefault"
+    description="When used as a single date picker, determines whether the start or end date is selected by default"
+    options={["start", "end"]}
+    default="start"
+/>
+
+<PropListing 
     name="hideDuringPrint"
     description="Hide the component when the report is printed"
     options={["true", "false"]}
     default="true"
 />
+
 <PropListing
     name=description
     options="string"
