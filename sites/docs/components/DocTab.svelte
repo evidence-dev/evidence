@@ -33,7 +33,7 @@
 					</button>
 					{#if activeTab === tab}
 						<div
-							class="absolute bottom-0 left-0 w-full h-full rounded-sm border border-base-300 bg-base-100 shadow-sm z-0"
+							class="absolute bottom-0 left-0 w-full h-full rounded border border-base-300 bg-base-100 shadow-sm z-0"
 							in:send={{ key: 'trigger' }}
 							out:receive={{ key: 'trigger' }}
 						/>
@@ -66,7 +66,7 @@
 	/* Styles codeblocks inside doctabs */
 	:global(.md-preview > div:first-of-type) {
 		margin: 0;
-		box-shadow:
-			var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+			var(--tw-shadow);
 	}
 </style>

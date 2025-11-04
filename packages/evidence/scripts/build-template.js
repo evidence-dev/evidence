@@ -21,7 +21,9 @@ const templatePaths = [
 	'src/pages/settings/',
 	'src/pages/explore',
 	'src/pages/api/',
-	'src/pages/manifest.webmanifest/+server.js'
+	'src/pages/manifest.webmanifest/+server.js',
+	'tailwind.config.cjs',
+	'postcss.config.cjs'
 ];
 const ignorePaths = ['static/data'];
 
@@ -52,7 +54,6 @@ fsExtra.outputFileSync(
 	import { isDebug } from '@evidence-dev/sdk/utils';
 	import { log } from "@evidence-dev/sdk/logger";
 	import { evidenceThemes } from '@evidence-dev/tailwind/vite-plugin';
-	import tailwindcss from '@tailwindcss/vite';
 
 
 	process.removeAllListeners('warning');
@@ -72,7 +73,7 @@ fsExtra.outputFileSync(
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [tailwindcss(), sveltekit(), configVirtual(), queryDirectoryHmr, sourceQueryHmr(), evidenceThemes()],
+        plugins: [sveltekit(), configVirtual(), queryDirectoryHmr, sourceQueryHmr(), evidenceThemes()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts', 'blueimp-md5', 'nanoid', '@uwdata/mosaic-sql',
 				// We need these to prevent HMR from doing a full page reload

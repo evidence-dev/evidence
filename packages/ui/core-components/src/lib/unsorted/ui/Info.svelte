@@ -40,7 +40,7 @@
 		on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && toggleOpen()}
 	>
 		<slot name="handle">
-			<Icon src={icon} class="w-{size} h-{size} text-(--textColor)" />
+			<Icon src={icon} class="w-{size} h-{size} text-[--textColor]" />
 		</slot>
 	</span>
 

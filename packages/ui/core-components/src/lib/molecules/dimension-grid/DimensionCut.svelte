@@ -175,7 +175,7 @@
 				{/if}
 			</div>
 		{:else}
-			<p class="text-xs text-base-content-muted p-2 my-2 w-full border border-dashed rounded-sm">
+			<p class="text-xs text-base-content-muted p-2 my-2 w-full border border-dashed rounded">
 				No Records
 			</p>
 		{/if}

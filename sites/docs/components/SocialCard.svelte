@@ -38,8 +38,7 @@
 	}
 
 	.grid-background {
-		background-image:
-			linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+		background-image: linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
 			linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
 		background-size: 63.157px 63.157px; /* = 1200px/19 = 630px/10 */
 		background-position: 0 0;

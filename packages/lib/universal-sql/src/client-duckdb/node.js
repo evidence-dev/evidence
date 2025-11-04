@@ -103,10 +103,10 @@ export async function emptyDbFs(targetGlob) {
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
  * @param {Record<string, string[]>} urls
- * @param {{ append?: boolean }} [opts]
+ * @param {boolean} [append]
  * @returns {void}
  */
-export async function setParquetURLs(urls, { append } = {}) {
+export async function setParquetURLs(urls, append = false) {
 	if (!append) await emptyDbFs('*');
 
 	const pathDelimiterRegex = /[\\/]/;

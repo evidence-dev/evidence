@@ -267,7 +267,7 @@
 			<InlineError inputType="Dropdown" error={errors} height="32" width="140" />
 			<!-- {:else if hasQuery && $query.error}
 			<span
-				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded-sm"
+				class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-negative py-[1px] bg-negative/10 rounded"
 			>
 				<span class="inline font-sans font-medium text-xs text-negative">error</span>
 				<span
@@ -307,17 +307,17 @@
 						<Icon src={CaretSort} class="ml-2 h-4 w-4" />
 						{#if $selectedOptions.length > 0 && multiple}
 							<Separator orientation="vertical" class="mx-2 h-4" />
-							<Badge variant="default" class="rounded-xs px-1 font-normal sm:hidden">
+							<Badge variant="default" class="rounded-sm px-1 font-normal sm:hidden">
 								{$selectedOptions.length}
 							</Badge>
 							<div class="hidden space-x-1 sm:flex">
 								{#if $selectedOptions.length > 3}
-									<Badge variant="default" class="rounded-xs px-1 font-normal">
+									<Badge variant="default" class="rounded-sm px-1 font-normal">
 										{$selectedOptions.length} Selected
 									</Badge>
 								{:else}
 									{#each $selectedOptions as option}
-										<Badge variant="default" class="rounded-xs px-1 font-normal">
+										<Badge variant="default" class="rounded-sm px-1 font-normal">
 											{option.label}
 										</Badge>
 									{/each}
