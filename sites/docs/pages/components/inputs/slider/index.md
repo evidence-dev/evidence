@@ -74,6 +74,30 @@ showMaxMin property can hide the Max and Min values with false, by default showM
 ````
 </DocTab>
 
+showInput property can show the input field with true, by default showInput is false
+
+<DocTab>
+ <div slot="preview">
+<Slider
+    title="Months" 
+    name=monthsWithInput
+    min=0
+    max=36
+    showInput=true
+/>
+ </div>
+
+````markdown
+<Slider
+    title="Months" 
+    name=monthsWithInput
+    min=0
+    max=36
+    showInput=true
+/>
+````
+</DocTab>
+
 The default size of the slider can be altered with the size property using; medium, large or full
 
 <DocTab>
@@ -286,6 +310,26 @@ Defines the incremental value of the slider
 Hides or shows min and max value markers on slider.  
 
 </PropListing>
+<PropListing 
+    name="showInput"
+    options="boolean"
+    defaultValue="false"
+>
+
+Hides or shows the input field on the slider.
+
+</PropListing>
+
+<PropListing
+    name="debounceDelay"
+    options=number
+    defaultValue=0
+>
+
+Delays updating the input value (in milliseconds) after the slider changes.
+
+</PropListing>
+
 <PropListing 
     name="size"
     options="{["small", "medium", "large", "full"]}"
