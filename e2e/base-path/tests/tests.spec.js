@@ -209,7 +209,6 @@ test.describe('Parquet Files', () => {
 	});
 });
 
-
 test.describe('Components', () => {
 	test('Table row links should use base path', async ({ page }) => {
 		await page.goto(`${basePath}/table-row-links`);
