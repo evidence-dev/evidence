@@ -87,9 +87,7 @@
 >
 	<div
 		bind:this={editor}
-		class="w-full relative rounded-sm border border-base-300 min-h-[8rem] cursor-text
-		**:[&.cm-editor]:min-h-[8rem]
-		**:[&.cm-editor]:rounded-sm"
+		class="w-full relative rounded border border-base-300 min-h-[8rem] cursor-text"
 		use:sqlConsole={{
 			...consoleArgs,
 			theme: $theme
@@ -135,3 +133,9 @@
 		</div>
 	{/if}
 </section>
+
+<style lang="postcss">
+	section :global(.cm-editor) {
+		@apply min-h-[8rem] rounded;
+	}
+</style>

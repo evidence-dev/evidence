@@ -63,7 +63,7 @@
 <div class="over-container" in:blur|local>
 	{#if $showQueries}
 		<!-- Title -->
-		<div class="scrollbox my-3" transition:slide|local>
+		<div class="scrollbox" transition:slide|local>
 			<div class="container-a">
 				<button type="button" aria-label="show-sql" on:click={toggleSQL} class="title">
 					<ChevronToggle toggled={$showSQL} />
@@ -253,6 +253,7 @@
 	}
 
 	.scrollbox {
+		@apply my-3;
 		display: flex;
 		flex-direction: column;
 	}

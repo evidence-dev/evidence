@@ -352,7 +352,7 @@
 		}
 	}
 
-	$: data, height, config;
+	$: (data, height, config);
 </script>
 
 {#if error}

@@ -203,7 +203,7 @@
 			return d;
 		});
 	};
-	$: options, updateProps();
+	$: (options, updateProps());
 
 	onDestroy(() => {
 		props.update((d) => {

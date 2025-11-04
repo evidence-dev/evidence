@@ -6,6 +6,8 @@ hide_table_of_contents: false
 description:  An index of the components available in the Evidence library.
 ---
 
+Evidence is a library for creating reports in markdown and SQL. It uses ECharts for charts, Leaflet for maps, and Shadcn for UI components.
+
 ## Data
 
 <Grid cols=2>
@@ -647,7 +649,6 @@ description:  An index of the components available in the Evidence library.
 </Grid>
 
 <style>
-    @reference "@evidence-dev/evidence/theme.css";
     .markdown {
         @apply mt-2;
     }

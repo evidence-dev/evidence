@@ -15,6 +15,3 @@ plugins:
     "@evidence-dev/snowflake": {}
     "@evidence-dev/sqlite": {}
     "@evidence-dev/trino": {}
-
-appearance:
-  switcher: true

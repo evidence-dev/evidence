@@ -1,5 +1,23 @@
 # @evidence-dev/tailwind
 
+## 3.1.0
+
+### Minor Changes
+
+- 1703b33a3: Bump to 3.1.0 with Tailwind v3.4.18 pinned dependency (skipping 3.0.10 which has incorrect Tailwind v4 dependency on npm).
+
+## 3.0.9
+
+### Patch Changes
+
+- c85ec361f: Revert Tailwind v4 upgrade and pin to v3.4.18 for stability. Tailwind v4 is incompatible with current Svelte 4 UI library dependencies (bits-ui, @melt-ui/svelte). Will revisit Tailwind v4 upgrade as part of Svelte 5 migration.
+
+## 3.0.10
+
+### Patch Changes
+
+- 0400dd479: Upgrade dependencies to resolve CVEs
+
 ## 3.0.9
 
 ### Patch Changes
