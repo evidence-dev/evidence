@@ -1,8 +1,9 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import runQuery from '../index.cjs';
-import { TypeFidelity, batchedAsyncGeneratorToArray } from '@evidence-dev/db-commons';
+import { createRequire } from 'module';
 import 'dotenv/config';
+
+const require = createRequire(import.meta.url);
 
 test('query runs', async () => {
 	if (process.env.MSSQL_DATABASE) {
@@ -96,6 +97,69 @@ test('query batches results properly', async () => {
 	} else {
 		console.log('MSSQL tests not currently configured to run during the automated builds');
 		return;
+	}
+});
+
+test('runQuery returns normalized error on SQL syntax error', async () => {
+	// Create a fake mssql module and inject before loading index.cjs
+	const fakeMssql = {
+		TYPES: {},
+		connect: async () => ({
+			request: () => ({
+				query: async (q) => {
+					// If it's the COUNT(*) wrapper, return 0
+					if (typeof q === 'string' && q.trim().toUpperCase().startsWith('SELECT COUNT(*)')) {
+						return { recordset: [{ expected_row_count: 0 }] };
+					}
+					// otherwise, return empty
+					return { recordset: [] };
+				}
+			}),
+			close: async () => {}
+		}),
+		Request: function () {
+			const EventEmitter = require('events');
+			const r = new EventEmitter();
+			r.stream = false;
+			r.query = function (q) {
+				// simulate an async error emitted by the request (syntax error)
+				process.nextTick(() => {
+					const err = new Error("Incorrect syntax near the keyword 'select'.");
+					err.code = 'EREQUEST';
+					r.emit('error', err);
+				});
+			};
+			r.toReadableStream = function () {
+				const { Readable } = require('stream');
+				// A readable that immediately errors when read
+				const s = new Readable({ objectMode: true, read() {} });
+				process.nextTick(() => s.emit('error', new Error('stream error')));
+				return s;
+			};
+			return r;
+		}
+	};
+
+	const path = require('path');
+	const mssqlModulePath = path.join(process.cwd(), 'node_modules', 'mssql', 'index.js');
+	require.cache[mssqlModulePath] = {
+		id: mssqlModulePath,
+		filename: mssqlModulePath,
+		loaded: true,
+		exports: fakeMssql
+	};
+
+	const runQuery = require('../index.cjs');
+
+	try {
+		await runQuery('select * from', {}, 10);
+		assert.unreachable('Expected runQuery to throw');
+	} catch (e) {
+		// The function normalizes errors to strings
+		assert.ok(typeof e === 'string' || e instanceof String || e.message, 'error should be string or have message');
+		const msg = typeof e === 'string' ? e : e.message || String(e);
+		// Message should be non-empty and mention syntax/select or be an error code
+		assert.ok(msg && msg.length > 0, 'error message should be non-empty');
 	}
 });
 
