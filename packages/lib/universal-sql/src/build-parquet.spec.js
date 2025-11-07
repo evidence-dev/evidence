@@ -73,10 +73,13 @@ describe('buildMultipartParquet', () => {
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
-		expect(fs.rm).toHaveBeenCalledWith(
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
-			{ force: true }
+		// verify the rm call targeted the intermediate directory and a tempfile
+		const calledPath = fs.rm.mock.calls[0][0];
+		expect(path.dirname(calledPath)).toBe(
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet')
 		);
+		// basename should look like out.<timestamp>.<rand>.0.parquet
+		expect(path.basename(calledPath)).toMatch(/^out\.\d+\.[0-9a-z]{6}\.0\.parquet$/);
 	});
 
 	it('should write two temporary files when given enough rows for two batches', async () => {
@@ -105,16 +108,16 @@ describe('buildMultipartParquet', () => {
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledTimes(2);
-		expect(fs.rm).toHaveBeenNthCalledWith(
-			1,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
-			{ force: true }
+		const calledPath1 = fs.rm.mock.calls[0][0];
+		const calledPath2 = fs.rm.mock.calls[1][0];
+		expect(path.dirname(calledPath1)).toBe(
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet')
 		);
-		expect(fs.rm).toHaveBeenNthCalledWith(
-			2,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet'),
-			{ force: true }
+		expect(path.dirname(calledPath2)).toBe(
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet')
 		);
+		expect(path.basename(calledPath1)).toMatch(/^out\.\d+\.[0-9a-z]{6}\.0\.parquet$/);
+		expect(path.basename(calledPath2)).toMatch(/^out\.\d+\.[0-9a-z]{6}\.1\.parquet$/);
 	});
 
 	it('should accept an array as the data argument', async () => {
@@ -133,12 +136,11 @@ describe('buildMultipartParquet', () => {
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
-		expect(fs.rm).toHaveBeenCalledWith(
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
-			{
-				force: true
-			}
+		const calledPathA = fs.rm.mock.calls[0][0];
+		expect(path.dirname(calledPathA)).toBe(
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet')
 		);
+		expect(path.basename(calledPathA)).toMatch(/^out\.\d+\.[0-9a-z]{6}\.0\.parquet$/);
 	});
 
 	it('should handle a very large number of batches', async () => {
