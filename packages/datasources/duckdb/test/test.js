@@ -259,15 +259,67 @@ test('handles nulls in first row', async () => {
 		const actualTypePrecisions = columnTypes.map((columnType) => columnType.typeFidelity);
 
 		const expectedColumnTypes = [
-			'boolean', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number',
-			'date', 'string', 'date', 'date', 'date', 'date', 'string', 'date', 'number', 'number',
-			'number', 'number', 'number', 'number', 'string', 'string', 'string', 'string', 'string'
+			'boolean',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'date',
+			'string',
+			'date',
+			'date',
+			'date',
+			'date',
+			'string',
+			'date',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'string',
+			'string',
+			'string',
+			'string',
+			'string'
 		];
 
 		const expectedColumnNames = [
-			'boolean_col','tinyint_col','smallint_col','int_col','bigint_col','hugeint_col','utinyint_col','usmallint_col','uint_col','ubigint_col',
-			'date_col','time_col','timestamp_col','timestamp_s_col','timestamp_ms_col','timestamp_ns_col','time_with_tz_col','timestamp_with_tz_col','float_col','double_col',
-			'decimal_4_1_col','decimal_9_4_col','decimal_18_6_col','decimal_38_10_col','uuid_col','interval_col','varchar_col','blob_col','bit_col'
+			'boolean_col',
+			'tinyint_col',
+			'smallint_col',
+			'int_col',
+			'bigint_col',
+			'hugeint_col',
+			'utinyint_col',
+			'usmallint_col',
+			'uint_col',
+			'ubigint_col',
+			'date_col',
+			'time_col',
+			'timestamp_col',
+			'timestamp_s_col',
+			'timestamp_ms_col',
+			'timestamp_ns_col',
+			'time_with_tz_col',
+			'timestamp_with_tz_col',
+			'float_col',
+			'double_col',
+			'decimal_4_1_col',
+			'decimal_9_4_col',
+			'decimal_18_6_col',
+			'decimal_38_10_col',
+			'uuid_col',
+			'interval_col',
+			'varchar_col',
+			'blob_col',
+			'bit_col'
 		];
 
 		const expectedTypePrecision = Array(29).fill(TypeFidelity.PRECISE);

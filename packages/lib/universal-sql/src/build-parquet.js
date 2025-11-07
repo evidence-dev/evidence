@@ -130,20 +130,20 @@ export async function buildMultipartParquet(
 
 		const parquetBuffer = writeParquet(Table.fromIPCStream(IPC), writerProperties);
 
-	const finalTempFilename = path.join(tmpDir, `${outputSubpath}.${buildId}.${batchNum}.parquet`);
-	// Write to a unique temporary file first, then atomically rename into place.
-	// This avoids a race where DuckDB may attempt to read a file while it's being written
-	// (e.g., during rapid dev refreshes). Using an atomic rename ensures readers only
-	// see the completed file.
-	const uniqueSuffix = `.${Date.now()}.${Math.random().toString(36).slice(2, 8)}.tmp`;
-	const writeTempFilename = finalTempFilename + uniqueSuffix;
+		const finalTempFilename = path.join(tmpDir, `${outputSubpath}.${buildId}.${batchNum}.parquet`);
+		// Write to a unique temporary file first, then atomically rename into place.
+		// This avoids a race where DuckDB may attempt to read a file while it's being written
+		// (e.g., during rapid dev refreshes). Using an atomic rename ensures readers only
+		// see the completed file.
+		const uniqueSuffix = `.${Date.now()}.${Math.random().toString(36).slice(2, 8)}.tmp`;
+		const writeTempFilename = finalTempFilename + uniqueSuffix;
 
-	await fs.mkdir(path.dirname(finalTempFilename), { recursive: true });
-	await fs.writeFile(writeTempFilename, parquetBuffer);
-	// Atomically move into final location
-	await fs.rename(writeTempFilename, finalTempFilename);
+		await fs.mkdir(path.dirname(finalTempFilename), { recursive: true });
+		await fs.writeFile(writeTempFilename, parquetBuffer);
+		// Atomically move into final location
+		await fs.rename(writeTempFilename, finalTempFilename);
 
-	tmpFilenames.push(finalTempFilename);
+		tmpFilenames.push(finalTempFilename);
 		rowCount += results.length;
 
 		done();
