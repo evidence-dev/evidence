@@ -95,6 +95,12 @@ export async function buildMultipartParquet(
 	let tmpFilenames = [];
 	let rowCount = 0;
 
+	// Unique id for this build run to avoid reusing the same temp filenames across
+	// consecutive builds in the same session. DuckDB (wasm) may keep handles or
+	// mappings to filenames; creating unique filenames per build avoids races or
+	// protocol errors when files are replaced.
+	const buildId = `${Date.now()}.${Math.random().toString(36).slice(2, 8)}`;
+
 	const flush = async (results) => {
 		log.debug(`Flushing batch ${batchNum} with ${results.length} rows`);
 		let { meta, done } = log.measure('flush');
@@ -124,11 +130,20 @@ export async function buildMultipartParquet(
 
 		const parquetBuffer = writeParquet(Table.fromIPCStream(IPC), writerProperties);
 
-		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
-		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
-		await fs.writeFile(tempFilename, parquetBuffer);
+	const finalTempFilename = path.join(tmpDir, `${outputSubpath}.${buildId}.${batchNum}.parquet`);
+	// Write to a unique temporary file first, then atomically rename into place.
+	// This avoids a race where DuckDB may attempt to read a file while it's being written
+	// (e.g., during rapid dev refreshes). Using an atomic rename ensures readers only
+	// see the completed file.
+	const uniqueSuffix = `.${Date.now()}.${Math.random().toString(36).slice(2, 8)}.tmp`;
+	const writeTempFilename = finalTempFilename + uniqueSuffix;
 
-		tmpFilenames.push(tempFilename);
+	await fs.mkdir(path.dirname(finalTempFilename), { recursive: true });
+	await fs.writeFile(writeTempFilename, parquetBuffer);
+	// Atomically move into final location
+	await fs.rename(writeTempFilename, finalTempFilename);
+
+	tmpFilenames.push(finalTempFilename);
 		rowCount += results.length;
 
 		done();
