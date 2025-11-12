@@ -5,7 +5,7 @@ const {
 	cleanQuery,
 	exhaustStream
 } = require('@evidence-dev/db-commons');
-const { Database } = require('@duckdb/node-api');
+const { DuckDBInstance } = require('@duckdb/node-api');
 const path = require('path');
 const fs = require('fs/promises');
 
@@ -129,7 +129,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	}
 
 	const mode = filename !== ':memory:' ? 'READ_ONLY' : 'READ_WRITE';
-	const db = await Database.create(filename, {
+	// Create a DuckDB instance and connection using the new node-api
+	const db = await DuckDBInstance.create(filename, {
 		access_mode: mode,
 		custom_user_agent: 'evidence-dev'
 	});
@@ -141,27 +142,74 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 			const initScript = await fs.readFile(path.resolve(database.directory, 'initialize.sql'), {
 				encoding: 'utf-8'
 			});
-			await conn.exec(initScript);
+			// run the initialization script
+			await conn.run(initScript).catch(() => null);
 		}
 	}
 
-	const stream = conn.stream(queryString);
-
+	// Prepare a reader that can stream chunks
 	const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
-	const expected_count = await db.all(count_query).catch(() => null);
-	const expected_row_count = expected_count?.[0]['count_star()'];
+	let expected_row_count = null;
+	try {
+		const countReader = await conn.runAndReadAll(count_query);
+		await countReader.readAll();
+		const countRow = countReader.getRowObjectsJS()?.[0];
+		if (countRow) {
+			// take the first value from the row (column name may vary)
+			expected_row_count = Object.values(countRow)[0];
+		}
+	} catch (e) {
+		expected_row_count = null;
+	}
 
 	const column_query = `DESCRIBE ${cleanQuery(queryString)}`;
-	const column_types = await db
-		.all(column_query)
-		.then(duckdbDescribeToEvidenceType)
-		.catch(() => null);
+	let column_types = null;
+	try {
+		const colReader = await conn.runAndReadAll(column_query);
+		await colReader.readAll();
+		const describeRows = colReader.getRowObjectsJS();
+		column_types = duckdbDescribeToEvidenceType(describeRows);
+	} catch (e) {
+		column_types = null;
+	}
 
-	const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
-		mapResultsToEvidenceColumnTypes:
-			column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
+	// Create an async generator that yields batches using the DuckDBResultReader
+	const reader = await conn.streamAndRead(queryString);
+
+	const rowsAsyncIterable = (async function* () {
+		try {
+			let prev = 0;
+			// keep reading until done
+			while (!reader.done) {
+				const target = prev + batchSize;
+				await reader.readUntil(target);
+				const allRows = reader.getRowObjectsJS();
+				const newRows = allRows.slice(prev).map(standardizeRow);
+				if (newRows.length > 0) yield newRows;
+				prev = reader.currentRowCount;
+			}
+		} finally {
+			// disconnect the connection and close the instance synchronously
+			try {
+				conn.disconnectSync();
+			} catch (err) {}
+			try {
+				db.closeSync();
+			} catch (err) {}
+		}
+	})();
+
+	const results = await asyncIterableToBatchedAsyncGenerator(rowsAsyncIterable, batchSize, {
+		mapResultsToEvidenceColumnTypes: column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
 		standardizeRow,
-		closeConnection: () => db.close()
+		closeConnection: () => {
+			try {
+				conn.disconnectSync();
+			} catch (err) {}
+			try {
+				db.closeSync();
+			} catch (err) {}
+		}
 	});
 	if (column_types != null) {
 		results.columnTypes = column_types;
