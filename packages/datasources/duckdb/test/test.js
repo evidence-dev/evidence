@@ -1,8 +1,25 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import runQuery from '../index.cjs';
 import { batchedAsyncGeneratorToArray, TypeFidelity } from '@evidence-dev/db-commons';
 import 'dotenv/config';
+
+test('basic select from needful_things.duckdb', async () => {
+	// Resolve the database file path relative to the repository root (from this test file)
+	const __filename = fileURLToPath(import.meta.url);
+	const __dirname = path.dirname(__filename);
+	const dbPath = path.join(__dirname, '..', '..', '..', '..', 'needful_things.duckdb');
+	// Select the rows from sqlite_master; this test database contains 7 entries
+	const query = 'SELECT name FROM sqlite_master';
+	const { rows: rowGen, expectedRowCount } = await runQuery(query, { filename: dbPath });
+	const rows = await batchedAsyncGeneratorToArray(rowGen);
+	assert.instance(rows, Array);
+	assert.type(rows[0], 'object');
+	// Expect exactly 7 rows in this test database
+	assert.equal(rows.length, 7);
+});
 
 // Types to test
 // BOOLEAN
