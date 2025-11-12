@@ -5,7 +5,7 @@ const {
 	cleanQuery,
 	exhaustStream
 } = require('@evidence-dev/db-commons');
-const { Database } = require('duckdb-async');
+const { Database } = require('@duckdb/node-api');
 const path = require('path');
 const fs = require('fs/promises');
 
