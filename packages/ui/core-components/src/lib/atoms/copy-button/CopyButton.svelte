@@ -16,14 +16,14 @@
 	{#if copied}
 		<p
 			transition:fade={{ duration: 250 }}
-			class="absolute -bottom-14 right-0 text-sm bg-base-200 w-[17ch] text-center font-sans p-2 border border-base-300 rounded-sm"
+			class="absolute -bottom-14 right-0 text-sm bg-base-200 w-[17ch] text-center font-sans p-2 border border-base-300 rounded"
 		>
 			Copied to clipboard
 		</p>
 	{/if}
 	<button
 		on:click={copy}
-		class="bg-base-200 border border-base-300 rounded-sm p-2 hover:bg-base-200/80 active:bg-base-200"
+		class="bg-base-200 border border-base-300 rounded p-2 hover:bg-base-200/80 active:bg-base-200"
 		title="Copy to Clipboard"
 	>
 		<Icon src={Clipboard} class="w-4 h-4" />

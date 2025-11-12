@@ -1,5 +1,70 @@
 # @evidence-dev/core-components
 
+## 5.3.1
+
+### Patch Changes
+
+- 6d2782e64: Fixed base path not being applied to data file (parquet) URLs. This resolves an issue where applications deployed with a base path would fail to load data files, resulting in 404 errors.
+
+  The fix restores the dependency injection pattern for the `addBasePath` function in `setParquetURLs`, ensuring that base paths are correctly applied to all data requests in both monorepo and published package environments.
+
+  - @evidence-dev/component-utilities@4.0.10
+  - @evidence-dev/tailwind@3.1.1
+
+## 5.3.0
+
+### Minor Changes
+
+- cd8dda7a7: - Added input field to select precise value
+  - Fixed default value bug
+  - Added debounce for the slider
+
+## 5.2.3
+
+### Patch Changes
+
+- 9131715bc: Bump to 5.2.3 to skip blocked 5.2.0, 5.2.1, 5.2.2 versions on npm (from previous Tailwind v4 publish).
+
+## 5.1.4
+
+### Patch Changes
+
+- 25dc7007b: Fix SearchButton.css for Tailwind v3 compatibility
+- Updated dependencies [1703b33a3]
+  - @evidence-dev/tailwind@3.1.0
+  - @evidence-dev/component-utilities@4.0.9
+
+## 5.1.3
+
+### Patch Changes
+
+- c85ec361f: Revert Tailwind v4 upgrade and pin to v3.4.18 for stability. Tailwind v4 is incompatible with current Svelte 4 UI library dependencies (bits-ui, @melt-ui/svelte). Will revisit Tailwind v4 upgrade as part of Svelte 5 migration.
+- Updated dependencies [c85ec361f]
+  - @evidence-dev/tailwind@3.0.9
+  - @evidence-dev/component-utilities@4.0.9
+
+## 5.2.2
+
+### Patch Changes
+
+- 0400dd479: Upgrade dependencies to resolve CVEs
+- Updated dependencies [0400dd479]
+  - @evidence-dev/tailwind@3.0.10
+  - @evidence-dev/component-utilities@4.0.9
+
+## 5.2.1
+
+### Patch Changes
+
+- b68cba4c8: Fixes issue where clicking a table row link with openInNewTab=true did not actually open the link in a new tab
+- 4784cc4ef: Update Date Range presets with new options
+
+  Month to Today & Year to Today - to end on the last available date of the data used
+
+- 356eca8e9: Fix Basemap rendering when used with inputs
+- a0fcca759: Fix height prop in maps
+- 72a635815: Fix Column scaleColor not being used
+
 ## 5.2.0
 
 ### Minor Changes

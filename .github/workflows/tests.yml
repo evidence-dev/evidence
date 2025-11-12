@@ -7,30 +7,11 @@ jobs:
   external-pr-action-approval:
     uses: ./.github/workflows/external-pr-action-approval.yml
   Tests-sources:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     needs: external-pr-action-approval
     timeout-minutes: 20
 
-    # Conditional Strategy logic from https://github.com/orgs/community/discussions/26253#discussioncomment-3250989
-    strategy:
-      fail-fast: false
-
-      matrix:
-        node-version: [18.13.0, 20, 22]
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-
-        isMain:
-          - ${{ github.base_ref == 'main' }}
-        exclude:
-          - isMain: false
-            node-version: 20
-
     steps:
-      - run: git config --global core.autocrlf false
-
-      # TODO: Should we instead pin the versions we are using for our os?
-      - run: pip install setuptools
-
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -39,7 +20,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -67,7 +48,6 @@ jobs:
 
           DUCKDB_FILENAME: ':memory:'
 
-      - name: Test the CLI via test-env for merges to main
-        if: ${{ github.base_ref == 'main' }}
+      - name: Test the CLI via test-env
         run: |
           pnpm run sources:test-env && pnpm run build:test-env

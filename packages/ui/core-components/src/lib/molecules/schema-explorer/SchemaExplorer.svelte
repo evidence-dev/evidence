@@ -45,7 +45,7 @@
 				{#each Object.entries(metadata) as [source, meta] (source)}
 					<li class="font-mono m-0 text-sm">
 						<button
-							class="bg-base-200 px-2 py-1 rounded-sm font-bold flex w-full hover:bg-base-300 hover:text-base-content"
+							class="bg-base-200 px-2 py-1 rounded font-bold flex w-full hover:bg-base-300 hover:text-base-content"
 							class:bg-info={selectedSource === source}
 							class:text-info-content={selectedSource === source}
 							on:click={() => {
@@ -62,7 +62,7 @@
 							{#each Object.entries(meta) as [name, tableMeta] (name)}
 								<li class="font-mono m-0 text-sm font-bold ml-3">
 									<button
-										class="bg-base-200 px-2 py-1 rounded-sm flex w-full hover:bg-base-300 hover:text-base-content"
+										class="bg-base-200 px-2 py-1 rounded flex w-full hover:bg-base-300 hover:text-base-content"
 										class:bg-info={selectedTable === tableMeta}
 										class:text-info-content={selectedTable === tableMeta}
 										on:click={() => {

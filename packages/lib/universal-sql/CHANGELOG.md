@@ -1,5 +1,13 @@
 # @evidence-dev/universal-sql
 
+## 2.2.11
+
+### Patch Changes
+
+- 6d2782e64: Fixed base path not being applied to data file (parquet) URLs. This resolves an issue where applications deployed with a base path would fail to load data files, resulting in 404 errors.
+
+  The fix restores the dependency injection pattern for the `addBasePath` function in `setParquetURLs`, ensuring that base paths are correctly applied to all data requests in both monorepo and published package environments.
+
 ## 2.2.10
 
 ### Patch Changes

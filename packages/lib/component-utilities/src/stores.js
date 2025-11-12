@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 import { browser } from '$app/environment';
-import { get, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
 export const pageHasQueries = writable(true);
 export const routeHash = writable('');
@@ -60,6 +60,17 @@ function createToastsObject() {
 /** @type {import('svelte/store').Readable<Toast[]> & { add: (toast: Toast, timeout: number) => void }} */
 export const toasts = createToastsObject();
 
+/**
+ * @template T
+ * @param {import('svelte/store').Readable<T>} store
+ * @returns {T}
+ */
+const getStoreVal = (store) => {
+	let v;
+	store.subscribe((x) => (v = x))();
+	return v;
+};
+
 /** @template T @typedef {{ serialize: (value: T) => string; deserialize: (raw: string) => T }} SerializeAndDeserialize */
 
 /**
@@ -88,7 +99,7 @@ export const localStorageStore = (key, init, serializeAndDeserialize) => {
 		}
 	};
 
-	flush(get(store));
+	flush(getStoreVal(store));
 
 	/** @type {Writable<T>} */
 	return {
@@ -98,7 +109,7 @@ export const localStorageStore = (key, init, serializeAndDeserialize) => {
 			flush(v);
 		},
 		update: (cb) => {
-			const updatedStore = cb(get(store));
+			const updatedStore = cb(getStoreVal(store));
 			set(updatedStore);
 			flush(updatedStore);
 		}

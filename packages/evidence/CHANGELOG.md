@@ -1,5 +1,33 @@
 # @evidence-dev/evidence
 
+## 40.1.5
+
+### Patch Changes
+
+- Updated dependencies [6d2782e64]
+  - @evidence-dev/universal-sql@2.2.11
+  - @evidence-dev/sdk@3.0.10
+
+## 40.1.4
+
+### Patch Changes
+
+- c85ec361f: Revert Tailwind v4 upgrade and pin to v3.4.18 for stability. Tailwind v4 is incompatible with current Svelte 4 UI library dependencies (bits-ui, @melt-ui/svelte). Will revisit Tailwind v4 upgrade as part of Svelte 5 migration.
+
+## 40.1.3
+
+### Patch Changes
+
+- 4c37dbcac: Test publishing flow after CI simplification
+
+## 40.1.2
+
+### Patch Changes
+
+- 0400dd479: Upgrade dependencies to resolve CVEs
+- Updated dependencies [0400dd479]
+  - @evidence-dev/preprocess@6.0.5
+
 ## 40.1.1
 
 ### Patch Changes
@@ -1084,7 +1112,6 @@
   on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
 
 - e1facffd: Add QueryStore concept
-
   - Loads data as it is requested, rather than all at page-load / build
   - Uses duckdb to get data length / column data
   - Ties metadata, mutation queries, and data together to make component development easier
@@ -1874,7 +1901,6 @@
 ### Major Changes
 
 - e1facffd: Add QueryStore concept
-
   - Loads data as it is requested, rather than all at page-load / build
   - Uses duckdb to get data length / column data
   - Ties metadata, mutation queries, and data together to make component development easier

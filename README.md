@@ -7,6 +7,8 @@
 
 Business Intelligence as Code: Generate reports using SQL and markdown
 
+<!-- Testing publishing flow -->
+
 ### [Docs](https://docs.evidence.dev) | [Examples](https://evidence.dev/examples) | [Cloud](https://evidence.dev/cloud) | [Slack](https://slack.evidence.dev)
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/evidence-dev/evidence?style=social)
@@ -16,6 +18,9 @@ Business Intelligence as Code: Generate reports using SQL and markdown
 [![Join Slack](https://img.shields.io/badge/slack-join-blue?logo=slack&amp)](https://slack.evidence.dev)
 
 </div>
+
+> [!TIP]
+> **Try [Evidence Studio](https://evidence.studio)**: The new, faster way to build data products with SQL, markdown and AI.
 
 # How It Works
 

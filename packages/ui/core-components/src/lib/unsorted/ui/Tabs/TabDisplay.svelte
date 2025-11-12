@@ -25,7 +25,7 @@
 
 	const classes = {
 		notActive: `border-b border-base-100 text-base-content-muted hover:text-base-content hover:border-base-300`,
-		active: `border-b-2 border-(--activeColor) -mb-px text-(--activeColor) ${background ? 'bg-(--bgColor)' : ''}`
+		active: `border-b-2 border-[--activeColor] -mb-px text-[--activeColor] ${background ? 'bg-[--bgColor]' : ''}`
 	};
 </script>
 
