@@ -204,7 +204,7 @@ const cleanQuery = (query) => {
  * @param {string} sql
  * @returns {string[]}
  */
-const splitSQLStatements = function (sql) {
+const splitSQLStatement = function (sql) {
 	const statements = [];
 	let cur = '';
 	let inSingle = false;
@@ -299,6 +299,6 @@ exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenera
 exports.batchedAsyncGeneratorToArray = batchedAsyncGeneratorToArray;
 exports.cleanQuery = cleanQuery;
 exports.exhaustStream = exhaustStream;
-exports.splitSQLStatements = splitSQLStatements;
+exports.splitSQLStatement = splitSQLStatement;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

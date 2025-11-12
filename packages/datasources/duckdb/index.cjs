@@ -4,7 +4,7 @@ const {
 	asyncIterableToBatchedAsyncGenerator,
 	cleanQuery,
 	exhaustStream,
-	splitSQLStatements
+	splitSQLStatement
 } = require('@evidence-dev/db-commons');
 const { DuckDBInstance } = require('@duckdb/node-api');
 const path = require('path');
@@ -156,7 +156,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	// statements which should be executed before metadata queries or the main
 	// streaming query. This allows SET/USE/CREATE statements to affect the
 	// session.
-	const statements = splitSQLStatements(queryString);
+	const statements = splitSQLStatement(queryString);
 	const prefixStatements = statements.slice(0, -1);
 	const mainStatement = statements.length > 0 ? statements[statements.length - 1] : '';
 
