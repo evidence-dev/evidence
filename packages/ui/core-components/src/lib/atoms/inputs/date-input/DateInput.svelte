@@ -78,8 +78,6 @@
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
-	let currentDate = dateToYYYYMMDD(new Date());
-
 	let extraDayEndString;
 
 	$: if (endString) {
@@ -152,7 +150,6 @@
 					{presetRanges}
 					{defaultValue}
 					{range}
-					{currentDate}
 					{title}
 					{description}
 					{data}

@@ -57,6 +57,15 @@
 				.map((year) => ({ label: String(year), value: year }))
 				.filter(({ value }) => !(minValue?.year > value || value > maxValue?.year));
 		}
+
+		if (minValue && maxValue) {
+			const years = [];
+			for (let year = maxValue.year; year >= minValue.year; year--) {
+				years.push({ label: String(year), value: year });
+			}
+			return years;
+		}
+		return undefined;
 	})();
 
 	$: defaultYear = placeholder
@@ -164,11 +173,13 @@
 					<Select.Value placeholder="Select year" />
 				</SelectPrimitive.Trigger>
 				<Select.Content class="max-h-[200px] overflow-y-auto !w-[79px]">
-					{#each yearOptions as { value, label }}
-						<Select.Item {value} {label}>
-							{label}
-						</Select.Item>
-					{/each}
+					{#if yearOptions && yearOptions.length > 0}
+						{#each yearOptions as { value, label }}
+							<Select.Item {value} {label}>
+								{label}
+							</Select.Item>
+						{/each}
+					{/if}
 				</Select.Content>
 			</Select.Root>
 		</RangeCalendar.Heading>

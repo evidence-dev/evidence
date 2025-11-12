@@ -49,19 +49,19 @@
 	/** @type {(selectedDateInput: import('bits-ui').DateRange | undefined) => void} */
 	export let onSelectedDateInputChange;
 	/** @type {string} */
-	export let start;
+	export let start = undefined;
 	/** @type {string} */
-	export let end;
+	export let end = undefined;
 	export let loaded = true;
 	/** @type {[]string] | undefined} */
-	export let presetRanges;
+	export let presetRanges = undefined;
 	/** @type {string] | undefined} */
-	export let defaultValue;
+	export let defaultValue = undefined;
 	/** @type {boolean} */
 	export let range = false;
 	$: range = toBoolean(range);
 	/** @type {string} */
-	export let title;
+	export let title = undefined;
 	export let extraDayEndString = undefined;
 	/** @type {string | undefined} */
 	export let description = undefined;
@@ -72,7 +72,7 @@
 
 	// Extract available years from data if provided
 	$: extractedYears = (() => {
-		if (!data || !dates) {
+		if (!data || !dates || !data.rows) {
 			return undefined;
 		}
 
@@ -87,9 +87,9 @@
 		return Array.from(years).sort((a, b) => b - a);
 	})();
 
-	$: calendarStart = YYYYMMDDToCalendar(start);
+	$: calendarStart = start ? YYYYMMDDToCalendar(start) : todayDate.subtract({ years: 10 });
 	// Use extraDayEndString for safety measures if available, otherwise use regular end
-	$: calendarEnd = YYYYMMDDToCalendar(extraDayEndString || end);
+	$: calendarEnd = (extraDayEndString || end) ? YYYYMMDDToCalendar(extraDayEndString || end) : todayDate;
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
