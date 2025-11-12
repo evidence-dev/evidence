@@ -198,6 +198,88 @@ const cleanQuery = (query) => {
 };
 
 /**
+ * Split a SQL script into individual statements, respecting single/double/backtick
+ * quotes and block/line comments so semicolons inside those constructs don't split.
+ * Returns an array of statements (strings) without trailing semicolons and trimmed.
+ * @param {string} sql
+ * @returns {string[]}
+ */
+const splitSQLStatements = function (sql) {
+	const statements = [];
+	let cur = '';
+	let inSingle = false;
+	let inDouble = false;
+	let inBacktick = false;
+	let inLineComment = false;
+	let inBlockComment = false;
+	for (let i = 0; i < sql.length; i++) {
+		const ch = sql[i];
+		const next = sql[i + 1];
+
+		if (inLineComment) {
+			cur += ch;
+			if (ch === '\n') {
+				inLineComment = false;
+			}
+			continue;
+		}
+		if (inBlockComment) {
+			cur += ch;
+			if (ch === '*' && next === '/') {
+				cur += next;
+				i++;
+				inBlockComment = false;
+			}
+			continue;
+		}
+
+		// start of line comment
+		if (!inSingle && !inDouble && !inBacktick && ch === '-' && next === '-') {
+			cur += ch;
+			inLineComment = true;
+			continue;
+		}
+		// start of block comment
+		if (!inSingle && !inDouble && !inBacktick && ch === '/' && next === '*') {
+			cur += ch;
+			inBlockComment = true;
+			continue;
+		}
+
+		// quotes
+		if (!inDouble && !inBacktick && ch === "'") {
+			inSingle = !inSingle;
+			cur += ch;
+			continue;
+		}
+		if (!inSingle && !inBacktick && ch === '"') {
+			inDouble = !inDouble;
+			cur += ch;
+			continue;
+		}
+		if (!inSingle && !inDouble && ch === '`') {
+			inBacktick = !inBacktick;
+			cur += ch;
+			continue;
+		}
+
+		// semicolon splits statements only when not inside quotes or comments
+		if (ch === ';' && !inSingle && !inDouble && !inBacktick && !inLineComment && !inBlockComment) {
+			const s = cur.trim();
+			if (s.length > 0) statements.push(s);
+			cur = '';
+			continue;
+		}
+
+		cur += ch;
+	}
+
+	const last = cur.trim();
+	if (last.length > 0) statements.push(last);
+	return statements;
+};
+
+/**
  * @param {QueryResult} stream
  * @returns {Promise<void>}
  */
@@ -217,5 +299,6 @@ exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenera
 exports.batchedAsyncGeneratorToArray = batchedAsyncGeneratorToArray;
 exports.cleanQuery = cleanQuery;
 exports.exhaustStream = exhaustStream;
+exports.splitSQLStatements = splitSQLStatements;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

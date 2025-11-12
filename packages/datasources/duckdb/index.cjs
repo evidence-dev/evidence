@@ -3,11 +3,13 @@ const {
 	TypeFidelity,
 	asyncIterableToBatchedAsyncGenerator,
 	cleanQuery,
-	exhaustStream
+	exhaustStream,
+	splitSQLStatements
 } = require('@evidence-dev/db-commons');
 const { DuckDBInstance } = require('@duckdb/node-api');
 const path = require('path');
 const fs = require('fs/promises');
+
 
 /**
  * Converts BigInt values to Numbers in an object.
@@ -150,49 +152,78 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		}
 	}
 
-	// Prepare a reader that can stream chunks
-	const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
+	// Split the incoming SQL into statements and treat all but the last as prefix
+	// statements which should be executed before metadata queries or the main
+	// streaming query. This allows SET/USE/CREATE statements to affect the
+	// session.
+	const statements = splitSQLStatements(queryString);
+	const prefixStatements = statements.slice(0, -1);
+	const mainStatement = statements.length > 0 ? statements[statements.length - 1] : '';
+
+	const count_query = mainStatement
+		? `WITH root as (${cleanQuery(mainStatement)}) SELECT COUNT(*) FROM root`
+		: null;
 	let expected_row_count = null;
 	try {
-		const countReader = await conn.runAndReadAll(count_query);
-		await countReader.readAll();
-		const countRow = countReader.getRowObjectsJS()?.[0];
-		if (countRow) {
-			// take the first value from the row (column name may vary)
-			expected_row_count = Object.values(countRow)[0];
+		// Execute prefix statements first so they apply to the session
+		for (const ps of prefixStatements) {
+			try {
+				await conn.run(ps).catch(() => null);
+			} catch (err) {
+				// ignore errors from prefix statements to mimic existing behavior
+			}
+		}
+
+		if (count_query) {
+			const countReader = await conn.runAndReadAll(count_query);
+			await countReader.readAll();
+			const countRow = countReader.getRowObjectsJS()?.[0];
+			if (countRow) {
+				// take the first value from the row (column name may vary)
+				expected_row_count = Object.values(countRow)[0];
+			}
 		}
 	} catch (e) {
 		expected_row_count = null;
 	}
 
-	const column_query = `DESCRIBE ${cleanQuery(queryString)}`;
+	const column_query = mainStatement ? `DESCRIBE ${cleanQuery(mainStatement)}` : null;
 	let column_types = null;
 	try {
-		const colReader = await conn.runAndReadAll(column_query);
-		await colReader.readAll();
-		const describeRows = colReader.getRowObjectsJS();
-		column_types = duckdbDescribeToEvidenceType(describeRows);
+		if (column_query) {
+			const colReader = await conn.runAndReadAll(column_query);
+			await colReader.readAll();
+			const describeRows = colReader.getRowObjectsJS();
+			column_types = duckdbDescribeToEvidenceType(describeRows);
+		}
 	} catch (e) {
 		column_types = null;
 	}
 
 	// Create an async generator that yields batches using the DuckDBResultReader
-	const reader = await conn.streamAndRead(queryString);
+	// Stream only the main statement (last statement). If there is no main
+	// statement, create an empty generator.
+	let reader = null;
+	if (mainStatement) {
+		reader = await conn.streamAndRead(mainStatement);
+	}
 
 	const rowsAsyncIterable = (async function* () {
 		try {
 			let prev = 0;
-			// keep reading until done
-			while (!reader.done) {
-				const target = prev + batchSize;
-				await reader.readUntil(target);
-				const allRows = reader.getRowObjectsJS();
-				const newRows = allRows.slice(prev).map(standardizeRow);
-				// yield rows one-by-one (asyncIterableToBatchedAsyncGenerator expects single-row yields)
-				for (const r of newRows) {
-					yield r;
+			if (reader) {
+				// keep reading until done
+				while (!reader.done) {
+					const target = prev + batchSize;
+					await reader.readUntil(target);
+					const allRows = reader.getRowObjectsJS();
+					const newRows = allRows.slice(prev).map(standardizeRow);
+					// yield rows one-by-one (asyncIterableToBatchedAsyncGenerator expects single-row yields)
+					for (const r of newRows) {
+						yield r;
+					}
+					prev = reader.currentRowCount;
 				}
-				prev = reader.currentRowCount;
 			}
 		} finally {
 			// disconnect the connection and close the instance synchronously
