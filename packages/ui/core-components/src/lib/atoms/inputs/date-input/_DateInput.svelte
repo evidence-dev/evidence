@@ -39,12 +39,22 @@
 	/** @type {import('bits-ui').DateRange | undefined} */
 	let selectedDateInput = undefined;
 
-	$: referenceDate =
-		selectedDateInput && !range
-			? selectedDateInput
-			: selectedDateInput && selectedDateInput.end
-				? selectedDateInput.end
-				: todayDate;
+	$: referenceDate = (() => {
+		if (selectedDateInput && !range) {
+			return selectedDateInput;
+		}
+		if (selectedDateInput && selectedDateInput.end) {
+			return selectedDateInput.end;
+		}
+		// If today is outside the data range, use calendarEnd as reference for presets
+		if (calendarEnd && todayDate.compare(calendarEnd) > 0) {
+			return calendarEnd;
+		}
+		if (calendarStart && todayDate.compare(calendarStart) < 0) {
+			return calendarStart;
+		}
+		return todayDate;
+	})();
 
 	/** @type {(selectedDateInput: import('bits-ui').DateRange | undefined) => void} */
 	export let onSelectedDateInputChange;
@@ -249,24 +259,49 @@
 
 	let selectedPreset;
 	let placeholder;
-	// Set default placeholder to today's date instead of calendarEnd
-	$: setPlaceholderDefault(todayDate);
+	// Set default placeholder: use calendarEnd if today is beyond the data range, otherwise use today
+	$: {
+		if (calendarEnd && todayDate.compare(calendarEnd) > 0) {
+			// If today is after the end of the data range, open to the end date
+			setPlaceholderDefault(calendarEnd);
+		} else if (calendarStart && todayDate.compare(calendarStart) < 0) {
+			// If today is before the start of the data range, open to the start date
+			setPlaceholderDefault(calendarStart);
+		} else {
+			// Otherwise, open to today
+			setPlaceholderDefault(todayDate);
+		}
+	}
 
 	$: if (typeof defaultValue === 'string' && !selectedPreset && presets.length) {
 		applyPreset(defaultValue);
 	}
 
-	// Initialize with default value or today's date if no selection and no default value applied
+	// Initialize with default value or a sensible date if no selection and no default value applied
 	$: if (!selectedDateInput && !selectedPreset) {
 		if (defaultValue && typeof defaultValue === 'string') {
 			try {
 				const defaultDate = YYYYMMDDToCalendar(defaultValue);
 				selectedDateInput = defaultDate;
 			} catch (error) {
-				selectedDateInput = todayDate;
+				// If today is outside the data range, use calendarEnd, otherwise use today
+				if (calendarEnd && todayDate.compare(calendarEnd) > 0) {
+					selectedDateInput = calendarEnd;
+				} else if (calendarStart && todayDate.compare(calendarStart) < 0) {
+					selectedDateInput = calendarStart;
+				} else {
+					selectedDateInput = todayDate;
+				}
 			}
 		} else {
-			selectedDateInput = todayDate;
+			// If today is outside the data range, use calendarEnd, otherwise use today
+			if (calendarEnd && todayDate.compare(calendarEnd) > 0) {
+				selectedDateInput = calendarEnd;
+			} else if (calendarStart && todayDate.compare(calendarStart) < 0) {
+				selectedDateInput = calendarStart;
+			} else {
+				selectedDateInput = todayDate;
+			}
 		}
 	}
 
