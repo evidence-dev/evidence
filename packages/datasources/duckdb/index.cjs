@@ -10,7 +10,6 @@ const { DuckDBInstance } = require('@duckdb/node-api');
 const path = require('path');
 const fs = require('fs/promises');
 
-
 /**
  * Converts BigInt values to Numbers in an object.
  * @param {Record<string, unknown>} obj - The input object with potential BigInt values.
@@ -237,7 +236,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	})();
 
 	const results = await asyncIterableToBatchedAsyncGenerator(rowsAsyncIterable, batchSize, {
-		mapResultsToEvidenceColumnTypes: column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
+		mapResultsToEvidenceColumnTypes:
+			column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
 		standardizeRow,
 		closeConnection: () => {
 			try {
