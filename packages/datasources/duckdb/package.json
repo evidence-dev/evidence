@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:*",
-		"@duckdb/node-api": "^1.4.1-r.5"
+		"@duckdb/node-api": "^1.4.2-r.1"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"

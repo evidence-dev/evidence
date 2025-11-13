@@ -14,7 +14,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@duckdb/duckdb-wasm": "^1.31.1-dev1.0",
+		"@duckdb/duckdb-wasm": "^1.30.0",
 		"apache-arrow": "17.0.0",
 		"chalk": "^5.2.0",
 		"cli-progress": "^3.12.0",
