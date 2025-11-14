@@ -2,6 +2,8 @@ import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import { createRequire } from 'module';
 import 'dotenv/config';
+import runQuery from '../index.cjs';
+import { batchedAsyncGeneratorToArray, TypeFidelity } from '@evidence-dev/db-commons';
 
 const require = createRequire(import.meta.url);
 
@@ -121,7 +123,7 @@ test('runQuery returns normalized error on SQL syntax error', async () => {
 			const EventEmitter = require('events');
 			const r = new EventEmitter();
 			r.stream = false;
-			r.query = function (q) {
+			r.query = function (_q) {
 				// simulate an async error emitted by the request (syntax error)
 				process.nextTick(() => {
 					const err = new Error("Incorrect syntax near the keyword 'select'.");
