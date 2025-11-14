@@ -155,7 +155,7 @@
 	export let wrapTitles = false;
 	$: wrapTitles = toBoolean(wrapTitles);
 
-	export let headerColor = undefined;
+	export let headerColor = 'base-100';
 	$: headerColorStore = resolveColor(headerColor);
 
 	export let headerFontColor = undefined;
@@ -571,7 +571,7 @@
 		{/if}
 
 		<div class="scrollbox pretty-scrollbar" style:background-color={$backgroundColorStore}>
-			<table>
+			<table class="relative">
 				<TableHeader
 					{rowNumbers}
 					headerColor={$headerColorStore}
@@ -802,6 +802,7 @@
 		width: 100%;
 		overflow-x: auto;
 		scrollbar-width: thin;
+		max-height: 70vh;
 	}
 
 	table {
