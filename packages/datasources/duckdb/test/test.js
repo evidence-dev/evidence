@@ -199,6 +199,170 @@ test('query runs', async () => {
 	}
 });
 
+test('handles nulls in first row', async () => {
+	try {
+		const { rows: row_generator, columnTypes } = await runQuery(
+			`select 
+				NULL as boolean_col,
+				CAST(NULL AS TINYINT) as tinyint_col,
+				CAST(NULL AS SMALLINT) as smallint_col,
+				CAST(NULL AS INTEGER) as int_col,
+				CAST(NULL AS BIGINT) as bigint_col,
+				CAST(NULL AS HUGEINT) as hugeint_col,
+				CAST(NULL AS UTINYINT) as utinyint_col,
+				CAST(NULL AS USMALLINT) as usmallint_col,
+				CAST(NULL AS UINTEGER) as uint_col,
+				CAST(NULL AS UBIGINT) as ubigint_col,
+				CAST(NULL AS DATE) as date_col,
+				CAST(NULL AS TIME) as time_col,
+				CAST(NULL AS TIMESTAMP) as timestamp_col,
+				CAST(NULL AS TIMESTAMP_S) as timestamp_s_col,
+				CAST(NULL AS TIMESTAMP_MS) as timestamp_ms_col,
+				CAST(NULL AS TIMESTAMP_NS) as timestamp_ns_col,
+				CAST(NULL AS TIME WITH TIME ZONE) as time_with_tz_col,
+				CAST(NULL AS TIMESTAMP WITH TIME ZONE) as timestamp_with_tz_col,
+				CAST(NULL AS FLOAT) as float_col,
+				CAST(NULL AS DOUBLE) as double_col,
+				CAST(NULL AS DECIMAL(4,1)) as decimal_4_1_col,
+				CAST(NULL AS DECIMAL(9,4)) as decimal_9_4_col,
+				CAST(NULL AS DECIMAL(18,6)) as decimal_18_6_col,
+				CAST(NULL AS DECIMAL(38,10)) as decimal_38_10_col,
+				CAST(NULL AS UUID) as uuid_col,
+				CAST(NULL AS INTERVAL) as interval_col,
+				CAST(NULL AS VARCHAR) as varchar_col,
+				CAST(NULL AS BLOB) as blob_col,
+				CAST(NULL AS BIT) as bit_col
+			UNION ALL
+			select 
+				true as boolean_col,
+				CAST(127 AS TINYINT) as tinyint_col,
+				CAST(32767 AS SMALLINT) as smallint_col,
+				CAST(2147483647 AS INTEGER) as int_col,
+				CAST(9223372036854775807 AS BIGINT) as bigint_col,
+				CAST('9223372036854775807000000' AS HUGEINT) as hugeint_col,
+				CAST(255 AS UTINYINT) as utinyint_col,
+				CAST(65535 AS USMALLINT) as usmallint_col,
+				CAST(4294967295 AS UINTEGER) as uint_col,
+				CAST(18446744073709551615 AS UBIGINT) as ubigint_col,
+				CURRENT_DATE as date_col,
+				CURRENT_TIME as time_col,
+				CURRENT_TIMESTAMP as timestamp_col,
+				CAST('2023-12-13' AS TIMESTAMP_S) as timestamp_s_col,
+				CAST('2023-12-13 12:34:56.789' AS TIMESTAMP_MS) as timestamp_ms_col,
+				CAST('2023-12-13 12:34:56.789123456' AS TIMESTAMP_NS) as timestamp_ns_col,
+				TIMETZ '1992-09-20 11:30:00.123456-02:00' as time_with_tz_col,
+				TIMESTAMPTZ  '1992-09-20 11:30:00.123456' as timestamp_with_tz_col,
+				CAST(3.14 AS FLOAT) as float_col,
+				CAST(3.14 AS DOUBLE) as double_col,
+				CAST(3.14 AS DECIMAL(4,1)) as decimal_4_1_col,
+				CAST(3.14 AS DECIMAL(9,4)) as decimal_9_4_col,
+				CAST(3.14 AS DECIMAL(18,6)) as decimal_18_6_col,
+				CAST(3.14 AS DECIMAL(38,10)) as decimal_38_10_col,
+				CAST('550e8400-e29b-41d4-a716-446655440000' AS UUID) as uuid_col,
+				CAST('1 day 2 hours 30 minutes' AS INTERVAL) as interval_col,
+				'Evidence' as varchar_col,
+				CAST('SGVsbG8gd29ybGQ=' AS BLOB) as blob_col,
+				CAST(1 AS BIT) as bit_col
+			`
+		);
+
+		const rows = await batchedAsyncGeneratorToArray(row_generator);
+		assert.instance(rows, Array);
+		assert.instance(columnTypes, Array);
+		assert.type(rows[0], 'object');
+		assert.equal(columnTypes.length, 29);
+
+		const actualColumnTypes = columnTypes.map((columnType) => columnType.evidenceType);
+		const actualColumnNames = columnTypes.map((columnType) => columnType.name);
+		const actualTypePrecisions = columnTypes.map((columnType) => columnType.typeFidelity);
+
+		const expectedColumnTypes = [
+			'boolean',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'date',
+			'string',
+			'date',
+			'date',
+			'date',
+			'date',
+			'string',
+			'date',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'number',
+			'string',
+			'string',
+			'string',
+			'string',
+			'string'
+		];
+
+		const expectedColumnNames = [
+			'boolean_col',
+			'tinyint_col',
+			'smallint_col',
+			'int_col',
+			'bigint_col',
+			'hugeint_col',
+			'utinyint_col',
+			'usmallint_col',
+			'uint_col',
+			'ubigint_col',
+			'date_col',
+			'time_col',
+			'timestamp_col',
+			'timestamp_s_col',
+			'timestamp_ms_col',
+			'timestamp_ns_col',
+			'time_with_tz_col',
+			'timestamp_with_tz_col',
+			'float_col',
+			'double_col',
+			'decimal_4_1_col',
+			'decimal_9_4_col',
+			'decimal_18_6_col',
+			'decimal_38_10_col',
+			'uuid_col',
+			'interval_col',
+			'varchar_col',
+			'blob_col',
+			'bit_col'
+		];
+
+		const expectedTypePrecision = Array(29).fill(TypeFidelity.PRECISE);
+
+		assert.equal(
+			true,
+			expectedColumnTypes.length === actualColumnTypes.length &&
+				expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
+		);
+		assert.equal(
+			true,
+			expectedColumnNames.length === actualColumnNames.length &&
+				expectedColumnNames.every((value, index) => value === actualColumnNames[index])
+		);
+		assert.equal(
+			true,
+			expectedTypePrecision.length === actualTypePrecisions.length &&
+				expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
+		);
+	} catch (e) {
+		console.error('Error in null-first-row test:', e.message);
+		throw e;
+	}
+});
+
 test('expectedRowCount present for UNION with NULL-first-row', async () => {
 	// Simple reproduction: first row has NULL, second row has a value
 	const query = `select NULL as a UNION ALL select 1 as a`;

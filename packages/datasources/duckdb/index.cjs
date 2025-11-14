@@ -30,6 +30,11 @@ function standardizeRow(obj) {
  * @returns {EvidenceType | undefined}
  */
 function nativeTypeToEvidenceType(data) {
+	// Handle null/undefined explicitly: let callers decide (they will mark as INFERRED)
+	if (data === null || data === undefined) return undefined;
+	// Some runtimes may yield bigint; normalize higher-level handling elsewhere but
+	// treat here as a number type.
+	if (typeof data === 'bigint') return EvidenceType.NUMBER;
 	switch (typeof data) {
 		case 'number':
 			return EvidenceType.NUMBER;
@@ -41,7 +46,9 @@ function nativeTypeToEvidenceType(data) {
 			if (data instanceof Date) {
 				return EvidenceType.DATE;
 			}
-			throw new Error(`Unsupported object type: ${data}`);
+			// For other object types (arrays, plain objects, buffers, etc.) return
+			// undefined so the caller will mark the column as inferred (STRING).
+			return undefined;
 		default:
 			return EvidenceType.STRING;
 	}
@@ -52,6 +59,9 @@ function nativeTypeToEvidenceType(data) {
  * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
  */
 const mapResultsToEvidenceColumnTypes = function (rows) {
+	// If there are no rows, return an empty column list. Caller may provide DESCRIBE-based types.
+	if (!rows || rows.length === 0) return [];
+
 	return Object.entries(rows[0]).map(([name, value]) => {
 		/** @type {TypeFidelity} */
 		let typeFidelity = TypeFidelity.PRECISE;

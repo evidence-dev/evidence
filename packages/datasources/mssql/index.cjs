@@ -144,18 +144,51 @@ const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 
 		const request = new mssql.Request();
 		request.stream = true;
+
+		// Promise that resolves when recordset is emitted or rejects on request error
+		const recordsetPromise = new Promise((resolve, reject) => {
+			request.once('recordset', resolve);
+			request.once('error', reject);
+		});
+
+		// Start the streaming query
 		request.query(queryString);
 
-		const columns = await new Promise((res) => request.once('recordset', res));
+		try {
+			const columns = await recordsetPromise;
 
-		const stream = request.toReadableStream();
-		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
-			closeConnection: () => pool.close()
-		});
-		results.columnTypes = mapResultsToEvidenceColumnTypes(columns);
-		results.expectedRowCount = expected_row_count;
+			const stream = request.toReadableStream();
 
-		return results;
+			// Ensure any stream errors are handled to avoid unhandled 'error' events
+			stream.on('error', async (streamErr) => {
+				try {
+					await pool.close();
+				} catch (_) {
+					// ignore close errors
+				}
+				// Nothing else to do here; the asyncIterableToBatchedAsyncGenerator
+				// consumer will observe the error as a rejection when iterating.
+			});
+
+			const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
+				closeConnection: () => pool.close()
+			});
+			results.columnTypes = mapResultsToEvidenceColumnTypes(columns);
+			results.expectedRowCount = expected_row_count;
+
+			return results;
+		} catch (err) {
+			// Close pool when we hit errors from the request/stream and normalize the error
+			try {
+				await pool.close();
+			} catch (_) {}
+
+			if (err && err.message) {
+				throw err.message.replace(/\n|\r/g, ' ');
+			} else {
+				throw ('' + err).replace(/\n|\r/g, ' ');
+			}
+		}
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
