@@ -99,7 +99,8 @@
 
 	$: calendarStart = start ? YYYYMMDDToCalendar(start) : todayDate.subtract({ years: 10 });
 	// Use extraDayEndString for safety measures if available, otherwise use regular end
-	$: calendarEnd = (extraDayEndString || end) ? YYYYMMDDToCalendar(extraDayEndString || end) : todayDate;
+	$: calendarEnd =
+		extraDayEndString || end ? YYYYMMDDToCalendar(extraDayEndString || end) : todayDate;
 
 	/** @type { { label: string, group: string, range: import('bits-ui').DateRange }[] } */
 	$: presets = [
