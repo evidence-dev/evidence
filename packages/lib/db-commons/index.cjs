@@ -266,7 +266,39 @@ const splitSQLStatement = function (sql) {
 		// semicolon splits statements only when not inside quotes or comments
 		if (ch === ';' && !inSingle && !inDouble && !inBacktick && !inLineComment && !inBlockComment) {
 			const s = cur.trim();
-			if (s.length > 0) statements.push(s);
+			// When splitting, ignore segments that contain only comments/whitespace.
+			// If the segment starts with comment(s) but contains SQL after them,
+			// we should still keep it. To determine this, strip leading comments
+			// and whitespace and check whether anything remains.
+			if (s.length > 0) {
+				let remainder = s;
+				// Remove leading whitespace and comments (both line and block) iteratively
+				while (true) {
+					remainder = remainder.trimStart();
+					if (remainder.startsWith('--')) {
+						const nl = remainder.indexOf('\n');
+						if (nl === -1) {
+							remainder = '';
+							break;
+						} else {
+							remainder = remainder.slice(nl + 1);
+							continue;
+						}
+					}
+					if (remainder.startsWith('/*')) {
+						const end = remainder.indexOf('*/', 2);
+						if (end === -1) {
+							remainder = '';
+							break;
+						} else {
+							remainder = remainder.slice(end + 2);
+							continue;
+						}
+					}
+					break;
+				}
+				if (remainder.trim().length > 0) statements.push(s);
+			}
 			cur = '';
 			continue;
 		}
@@ -275,7 +307,36 @@ const splitSQLStatement = function (sql) {
 	}
 
 	const last = cur.trim();
-	if (last.length > 0) statements.push(last);
+	// Ignore trailing content that is only comments. See logic above for stripping
+	// leading comments from a segment before deciding whether it contains SQL.
+	if (last.length > 0) {
+		let remainder = last;
+		while (true) {
+			remainder = remainder.trimStart();
+			if (remainder.startsWith('--')) {
+				const nl = remainder.indexOf('\n');
+				if (nl === -1) {
+					remainder = '';
+					break;
+				} else {
+					remainder = remainder.slice(nl + 1);
+					continue;
+				}
+			}
+			if (remainder.startsWith('/*')) {
+				const end = remainder.indexOf('*/', 2);
+				if (end === -1) {
+					remainder = '';
+					break;
+				} else {
+					remainder = remainder.slice(end + 2);
+					continue;
+				}
+			}
+			break;
+		}
+		if (remainder.trim().length > 0) statements.push(last);
+	}
 	return statements;
 };
 
