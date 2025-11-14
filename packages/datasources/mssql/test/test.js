@@ -156,7 +156,10 @@ test('runQuery returns normalized error on SQL syntax error', async () => {
 		assert.unreachable('Expected runQuery to throw');
 	} catch (e) {
 		// The function normalizes errors to strings
-		assert.ok(typeof e === 'string' || e instanceof String || e.message, 'error should be string or have message');
+		assert.ok(
+			typeof e === 'string' || e instanceof String || e.message,
+			'error should be string or have message'
+		);
 		const msg = typeof e === 'string' ? e : e.message || String(e);
 		// Message should be non-empty and mention syntax/select or be an error code
 		assert.ok(msg && msg.length > 0, 'error message should be non-empty');
