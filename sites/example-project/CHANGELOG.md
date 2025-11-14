@@ -1,5 +1,26 @@
 # @evidence-dev/components
 
+## 3.5.54
+
+### Patch Changes
+
+- Updated dependencies [b28f63f23]
+  - @evidence-dev/duckdb@2.0.0
+  - @evidence-dev/universal-sql@3.0.0
+  - @evidence-dev/core-components@5.4.0
+  - @evidence-dev/csv@1.0.15
+  - @evidence-dev/sdk@4.0.0
+  - @evidence-dev/bigquery@2.0.11
+  - @evidence-dev/databricks@1.0.9
+  - @evidence-dev/mssql@1.1.3
+  - @evidence-dev/mysql@1.1.5
+  - @evidence-dev/postgres@1.0.9
+  - @evidence-dev/snowflake@1.2.3
+  - @evidence-dev/sqlite@2.0.8
+  - @evidence-dev/trino@1.0.10
+  - @evidence-dev/component-utilities@4.0.11
+  - @evidence-dev/tailwind@3.1.2
+
 ## 3.5.53
 
 ### Patch Changes

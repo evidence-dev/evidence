@@ -1,5 +1,13 @@
 # @evidence-dev/motherduck
 
+## 1.0.5
+
+### Patch Changes
+
+- Updated dependencies [b28f63f23]
+  - @evidence-dev/duckdb@2.0.0
+  - @evidence-dev/db-commons@1.1.0
+
 ## 1.0.4
 
 ### Patch Changes
