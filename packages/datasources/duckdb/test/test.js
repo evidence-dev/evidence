@@ -398,6 +398,20 @@ test('query batches results properly', async () => {
 	}
 });
 
+test('handles trailing comments', async () => {
+	// Single-line trailing comment (run in-memory)
+	const q1 = 'select 1 as one -- trailing comment';
+	const { rows: rowGen1 } = await runQuery(q1, undefined);
+	const rows1 = await batchedAsyncGeneratorToArray(rowGen1);
+	assert.equal(rows1[0].one, 1);
+
+	// Block trailing comment
+	const q2 = 'select 2 as two /* trailing block comment */';
+	const { rows: rowGen2 } = await runQuery(q2, undefined);
+	const rows2 = await batchedAsyncGeneratorToArray(rowGen2);
+	assert.equal(rows2[0].two, 2);
+});
+
 test('handles leading SET statements before main query', async () => {
 	try {
 		const query = `
