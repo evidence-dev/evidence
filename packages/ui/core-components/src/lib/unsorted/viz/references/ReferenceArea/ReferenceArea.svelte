@@ -149,7 +149,7 @@
 	const store = new ReferenceAreaStore(props, config);
 
 	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
-	$: ($props,
+	$: $props,
 		store.setConfig({
 			xMin,
 			xMax,
@@ -177,7 +177,7 @@
 			bold: toBoolean(bold),
 			italic: toBoolean(italic),
 			activeAppearance: $activeAppearance
-		}));
+		});
 </script>
 
 {#if $$slots.default}

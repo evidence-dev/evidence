@@ -207,7 +207,7 @@
 			finalQuery = query ?? data;
 		}
 	}, 100);
-	$: (search, data, query, updateQuery());
+	$: search, data, query, updateQuery();
 
 	$: open ? pauseSorting() : resumeSorting();
 

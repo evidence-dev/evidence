@@ -33,7 +33,7 @@
 
 	let intercets;
 
-	$: (distanceToLabels,
+	$: distanceToLabels,
 		(intercets = [
 			// A only
 			{
@@ -62,7 +62,7 @@
 				y: origin.y - apothem + distanceToLabels,
 				value: overlaps[2]?.toLocaleString('en-GB', { style: 'percent' }) ?? ''
 			}
-		]));
+		]);
 </script>
 
 <div class="venndiagram-container">
