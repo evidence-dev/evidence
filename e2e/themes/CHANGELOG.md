@@ -1,5 +1,24 @@
 # e2e-themes
 
+## 0.0.40
+
+### Patch Changes
+
+- Updated dependencies [b28f63f23]
+  - @evidence-dev/duckdb@2.0.0
+  - @evidence-dev/core-components@5.4.0
+  - @evidence-dev/csv@1.0.15
+  - @evidence-dev/motherduck@1.0.5
+  - @evidence-dev/evidence@40.1.6
+  - @evidence-dev/bigquery@2.0.11
+  - @evidence-dev/databricks@1.0.9
+  - @evidence-dev/mssql@1.1.3
+  - @evidence-dev/mysql@1.1.5
+  - @evidence-dev/postgres@1.0.9
+  - @evidence-dev/snowflake@1.2.3
+  - @evidence-dev/sqlite@2.0.8
+  - @evidence-dev/trino@1.0.10
+
 ## 0.0.39
 
 ### Patch Changes

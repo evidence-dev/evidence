@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/bigquery",
-	"version": "2.0.10",
+	"version": "2.0.11",
 	"description": "BigQuery driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
