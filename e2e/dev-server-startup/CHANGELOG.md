@@ -1,5 +1,14 @@
 # e2e-dev-server-startup
 
+## 0.0.17
+
+### Patch Changes
+
+- Updated dependencies [b28f63f23]
+  - @evidence-dev/duckdb@2.0.0
+  - @evidence-dev/core-components@5.4.0
+  - @evidence-dev/evidence@40.1.6
+
 ## 0.0.16
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @evidence-dev/mysql
 
+## 1.1.5
+
+### Patch Changes
+
+- Updated dependencies [b28f63f23]
+  - @evidence-dev/db-commons@1.1.0
+
 ## 1.1.4
 
 ### Patch Changes
