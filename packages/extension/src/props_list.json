@@ -8454,6 +8454,64 @@
 			}
 		]
 	},
+	"VegaLiteChart": {
+		"props": [
+			{
+				"rank": 0,
+				"name": "data",
+				"description": "Query name, wrapped in curly braces",
+				"required": true,
+				"type": "string",
+				"options": "query name",
+				"defaultValue": null
+			},
+			{
+				"rank": 1,
+				"name": "spec",
+				"description": "Vega-Lite specification object literal",
+				"required": true,
+				"type": "string",
+				"options": "Vega-Lite spec",
+				"defaultValue": null
+			},
+			{
+				"rank": 2,
+				"name": "height",
+				"description": "Chart height in pixels",
+				"required": false,
+				"type": "string",
+				"options": "number",
+				"defaultValue": "291"
+			},
+			{
+				"rank": 3,
+				"name": "width",
+				"description": "Chart width (number or CSS size)",
+				"required": false,
+				"type": "string",
+				"options": "number | string",
+				"defaultValue": "\"100%\""
+			},
+			{
+				"rank": 4,
+				"name": "actions",
+				"description": "Toggle the Vega-Embed action menu (download PNG/SVG/JSON)",
+				"required": false,
+				"type": "boolean",
+				"options": "{['true','false']}",
+				"defaultValue": "true"
+			},
+			{
+				"rank": 5,
+				"name": "renderer",
+				"description": "Vega renderer to use (canvas or svg)",
+				"required": false,
+				"type": "string",
+				"options": "{['canvas','svg']}",
+				"defaultValue": null
+			}
+		]
+	},
 	"Value": {
 		"props": [
 			{

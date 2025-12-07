@@ -64,6 +64,13 @@
 		"body": ["<Histogram data={${1:query_name}} x=${2:column}/>\n\n"],
 		"description": "Insert Histogram"
 	},
+	"Vega-Lite Chart": {
+		"prefix": "/VegaLiteChart",
+		"body": [
+			"<VegaLiteChart\n\tdata={${1:query_name}}\n\tspec={${2:{\n\t\ttitle: 'My Vega-Lite Chart',\n\t\tmark: 'bar',\n\t\tencoding: {\n\t\t\tx: { field: '${3:x_column}', type: 'nominal' },\n\t\t\ty: { field: '${4:y_column}', type: 'quantitative' }\n\t\t}\n\t}}}\n/>\n\n"
+		],
+		"description": "Insert Vega-Lite Chart"
+	},
 	"Data Table": {
 		"prefix": "/DataTable",
 		"body": ["<DataTable data={${1:query_name}}/>\n\n"],
