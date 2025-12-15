@@ -1,5 +1,12 @@
 # @evidence-dev/snowflake
 
+## 1.2.4
+
+### Patch Changes
+
+- Updated dependencies [937971eaa]
+  - @evidence-dev/db-commons@1.1.1
+
 ## 1.2.3
 
 ### Patch Changes
