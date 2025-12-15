@@ -133,7 +133,7 @@
 		"recast": "^0.23.4",
 		"svelte-sequential-preprocessor": "^2.0.1",
 		"sveltekit-autoimport": "^1.7.1",
-		"vite": "5.4.14",
+		"vite": "5.4.21",
 		"vitest": "^2.1.9",
 		"yaml": "^2.3.4",
 		"zod": "^3.23.7"
