@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 6.0.6
+
+### Patch Changes
+
+- 937971eaa: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
+
 ## 6.0.5
 
 ### Patch Changes
