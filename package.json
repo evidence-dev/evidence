@@ -122,7 +122,8 @@
 			"jws@>=4": ">=4.0.1",
 			"js-yaml@>=3 <3.14.2": "3.14.2",
 			"js-yaml@>=4": ">=4.1.1",
-			"vite@>=5 <5.4.21": "5.4.21"
+			"vite@>=5 <5.4.21": "5.4.21",
+			"tmp": ">=0.2.4"
 		}
 	},
 	"packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81"
