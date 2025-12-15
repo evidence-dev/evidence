@@ -1,5 +1,12 @@
 # @evidence-dev/sqlite
 
+## 2.0.9
+
+### Patch Changes
+
+- Updated dependencies [937971eaa]
+  - @evidence-dev/db-commons@1.1.1
+
 ## 2.0.8
 
 ### Patch Changes

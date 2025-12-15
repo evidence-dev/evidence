@@ -1,5 +1,13 @@
 # @evidence-dev/duckdb
 
+## 2.0.1
+
+### Patch Changes
+
+- 937971eaa: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
+- Updated dependencies [937971eaa]
+  - @evidence-dev/db-commons@1.1.1
+
 ## 2.0.0
 
 ### Major Changes
