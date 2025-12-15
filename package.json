@@ -118,7 +118,8 @@
 			"serialize-javascript": ">=6.0.2",
 			"node-forge": ">=1.3.2",
 			"glob@>=10.2.0 <11": "10.5.0",
-			"jws@>=3 <4": "3.2.3"
+			"jws@>=3 <4": "3.2.3",
+			"js-yaml@>=3 <3.14.2": "3.14.2"
 		}
 	},
 	"packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81"
