@@ -1,5 +1,25 @@
 # e2e-prerender
 
+## 0.0.34
+
+### Patch Changes
+
+- Updated dependencies [937971eaa]
+- Updated dependencies [aff6f859d]
+  - @evidence-dev/duckdb@2.0.1
+  - @evidence-dev/evidence@40.1.7
+  - @evidence-dev/core-components@5.4.1
+  - @evidence-dev/csv@1.0.16
+  - @evidence-dev/motherduck@1.0.6
+  - @evidence-dev/bigquery@2.0.12
+  - @evidence-dev/databricks@1.0.10
+  - @evidence-dev/mssql@1.1.4
+  - @evidence-dev/mysql@1.1.6
+  - @evidence-dev/postgres@1.0.10
+  - @evidence-dev/snowflake@1.2.4
+  - @evidence-dev/sqlite@2.0.9
+  - @evidence-dev/trino@1.0.11
+
 ## 0.0.33
 
 ### Patch Changes
