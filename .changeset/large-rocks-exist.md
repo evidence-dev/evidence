@@ -10,4 +10,4 @@
 '@evidence-dev/components': patch
 ---
 
-Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3253
+Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
