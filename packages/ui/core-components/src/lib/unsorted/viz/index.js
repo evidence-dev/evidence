@@ -41,3 +41,4 @@ export { default as USMap } from './map/USMap.svelte';
 export { default as Value } from './core/Value.svelte';
 export { default as ValueError } from './core/ValueError.svelte';
 export { default as VennDiagram } from './venn/VennDiagram.svelte';
+export { default as VegaLiteChart } from './vega/VegaLiteChart.svelte';
