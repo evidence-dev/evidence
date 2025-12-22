@@ -51,8 +51,6 @@ Your app will be available at `https://[your-site-name].netlify.app`.
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 #### Global password

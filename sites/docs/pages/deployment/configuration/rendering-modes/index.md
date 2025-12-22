@@ -26,7 +26,7 @@ order by row_number
 You should generally only use the SPA rendering mode if one of the following is true:
 - **You have a large number of pages**, >1000+ is a good rule of thumb
 - **You want to update your data frequently**, so short build times are desirable
-- **Your data sources are large** (in which case you may want to combine this with Evidence's Cloud Execution Engine)
+- **Your data sources are large**
 
 ## Comparison
 
@@ -37,10 +37,6 @@ You should generally only use the SPA rendering mode if one of the following is 
 </DataTable>
 
 ## Enabling SPA Mode
-
-<Alert status=warning>
-    Note: To deploy an SPA mode app on Evidence Cloud, you currently need to deploy on a private site, using the Cloud Execution Engine.
-</Alert>
 
 SPA rendering mode is disabled by default.
 

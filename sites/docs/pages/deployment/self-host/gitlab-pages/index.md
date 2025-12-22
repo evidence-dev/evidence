@@ -37,8 +37,6 @@ Your app will be available at `https://[your-repo]-[hexcode].gitlab.io/`. It wil
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 GitLab pages are only accessible to your account by default. To make it public, you can change the visibility at:

@@ -75,8 +75,6 @@ Your app should now be live on Firebase Hosting at  `https://<project-id>.web.ap
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 Firebase Authentication is _not_ a suitable authentication for static apps on Firebase Hosting.
