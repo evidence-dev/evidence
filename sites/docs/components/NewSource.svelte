@@ -6,8 +6,8 @@
 
 <ol class="markdown">
 	<li class="markdown">
-		Start the Evidence dev server: <code class="markdown">npm run dev</code> or Start Evidence using
-		the VSCode extension.
+		Start the Evidence dev server: <code class="markdown">npm run dev</code> or Start Evidence using the
+		VSCode extension.
 	</li>
 	<li class="markdown">
 		Navigate to the <a class="markdown" href="http://localhost:3000/settings">settings page</a>,

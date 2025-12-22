@@ -7,8 +7,8 @@
 <p>In production, Evidence functions like a static site generator:</p>
 <ol>
 	<li>
-		Running <code>npm run build</code> will build a static site in the <code>/build</code> directory
-		using the credentials in the datasource connections panel, which you can host in a variety of environments
+		Running <code>npm run build</code> will build a static site in the <code>/build</code> directory using
+		the credentials in the datasource connections panel, which you can host in a variety of environments
 	</li>
 </ol>
 
