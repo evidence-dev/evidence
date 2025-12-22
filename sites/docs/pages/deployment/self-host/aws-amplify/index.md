@@ -47,8 +47,6 @@ Your app will be deployed to https://[branch-name]-[app-id].amplifyapp.com
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 Your deployed app will be public by default. 

@@ -38,8 +38,6 @@ Your app will be deployed to a URL like `https://[repo-name].pages.dev`. It can 
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 By default, your app will be public.

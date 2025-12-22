@@ -60,9 +60,7 @@
 					<div class="mb-6">
 						<h2 class="text-2xl text-base-content font-semibold mb-4">Deployment</h2>
 						<p class="text-base-content text-base mb-2">
-							Evidence projects can be deployed to a variety of cloud environments. The easiest way
-							to deploy your project with authentication, scheduled updates, and a custom domain is
-							with Evidence Cloud.
+							Evidence projects can be deployed to a variety of cloud environments.
 							<a
 								href="https://docs.evidence.dev/deployment/overview/"
 								target="_blank"

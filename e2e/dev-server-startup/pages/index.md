@@ -51,7 +51,7 @@ This page can be found in your project at `/pages/index.md`. Make a change to th
 
 - [Connect your data sources](settings)
 - Edit/add markdown files in the `pages` folder
-- Deploy your project with [Evidence Cloud](https://evidence.dev/cloud)
+- Deploy your project with a static site hosting platform
 
 ## Get Support
 

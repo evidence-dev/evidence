@@ -55,8 +55,6 @@ Your app will be available at `https://[random-word-12345].azurestaticapps.net`
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 You can add a global site password to your app: 
