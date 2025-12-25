@@ -35,7 +35,17 @@ export function convertColumnToDate(data, column) {
 
 	data = tidy(
 		data,
-		mutate({ [column]: (d) => (d[column] ? new Date(standardizeDateString(d[column])) : null) })
+		mutate({
+			[column]: (d) => {
+
+				const raw = d[column]
+				if (raw === null | raw === '') return null
+				const standardized = standardizeDateString(raw)
+				const date = new Date(standardized)
+
+				return isNan(date.getTime()) ? null : date
+			}
+		})
 	);
 
 	return data;
@@ -45,7 +55,17 @@ export function standardizeDateColumn(data, column) {
 	// Replaces a date column's string values with standardized date strings, using the standardizeDateString function
 	// Used in Chart.svelte, where using Date objects leads to errors
 
-	data = tidy(data, mutate({ [column]: (d) => standardizeDateString(d[column]) }));
+	data = tidy(data, mutate({
+		[column]: (d) => {
+
+			const raw = d[column]
+			if (raw === null | raw === '') return null
+			const standardized = standardizeDateString(raw)
+			const date = new Date(standardized)
+
+			return isNan(date.getTime()) ? null : date
+		}
+	}));
 
 	return data;
 }
