@@ -23,6 +23,10 @@
 	 */
 	function checkColumnName() {
 		try {
+			// Guard against data not being ready yet (e.g., during initial render or when using Query objects)
+			if (!$props.data || !$props.data.length || !$props.data[0]) {
+				return; // Data not ready, skip validation for now - will be called again when data loads
+			}
 			if (!Object.keys($props.data[0]).includes(id)) {
 				error = 'Error in table: ' + id + ' does not exist in the dataset';
 				throw new Error(error);
