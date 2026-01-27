@@ -81,6 +81,8 @@
 	export let colorPalette = 'default';
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
+	export let paletteOffset = undefined;
+
 	export let labels = undefined;
 	export let labelSize = undefined;
 	export let labelPosition = undefined;
@@ -173,6 +175,7 @@
 	{chartAreaHeight}
 	{showAllXAxisLabels}
 	colorPalette={colorPaletteStore}
+	{paletteOffset}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}

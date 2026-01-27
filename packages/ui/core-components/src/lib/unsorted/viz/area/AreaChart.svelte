@@ -69,6 +69,8 @@
 	export let colorPalette = 'default';
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
+	export let paletteOffset = undefined;
+
 	export let labels = undefined;
 	export let labelSize = undefined;
 	export let labelPosition = undefined;
@@ -142,6 +144,7 @@
 	{stacked100}
 	{chartAreaHeight}
 	colorPalette={colorPaletteStore}
+	{paletteOffset}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}

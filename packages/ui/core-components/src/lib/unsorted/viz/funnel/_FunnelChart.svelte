@@ -40,6 +40,28 @@
 	export let colorPalette = 'default';
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
+	export let paletteOffset = 0;
+
+	// Validate and sanitize paletteOffset
+	$: validatedOffset = (() => {
+		let offset = parseInt(paletteOffset, 10);
+		if (isNaN(offset) || offset < 0) {
+			return 0;
+		}
+		return offset;
+	})();
+
+	// Apply paletteOffset to the resolved color palette
+	let offsetColorPalette;
+	$: {
+		if ($colorPaletteStore && Array.isArray($colorPaletteStore)) {
+			const offset = Math.min(validatedOffset, Math.max(0, $colorPaletteStore.length - 1));
+			offsetColorPalette = $colorPaletteStore.slice(offset);
+		} else {
+			offsetColorPalette = $colorPaletteStore;
+		}
+	}
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -230,7 +252,7 @@
 				padding: [0, 0, 0, 0]
 			},
 			series: [seriesConfig],
-			color: $colorPaletteStore
+			color: offsetColorPalette
 		};
 	} catch (e) {
 		error = e.message;

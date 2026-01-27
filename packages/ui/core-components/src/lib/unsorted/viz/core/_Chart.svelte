@@ -145,6 +145,28 @@
 	export let colorPalette = 'default';
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
+	export let paletteOffset = 0;
+
+	// Validate and sanitize paletteOffset
+	$: validatedOffset = (() => {
+		let offset = parseInt(paletteOffset, 10);
+		if (isNaN(offset) || offset < 0) {
+			return 0;
+		}
+		return offset;
+	})();
+
+	// Apply paletteOffset to the resolved color palette
+	let offsetColorPalette;
+	$: {
+		if ($colorPaletteStore && Array.isArray($colorPaletteStore)) {
+			const offset = Math.min(validatedOffset, Math.max(0, $colorPaletteStore.length - 1));
+			offsetColorPalette = $colorPaletteStore.slice(offset);
+		} else {
+			offsetColorPalette = $colorPaletteStore;
+		}
+	}
+
 	// Legend:
 	export let legend = undefined;
 
@@ -1053,7 +1075,7 @@
 				series: [],
 				animation: true,
 				graphic: horizAxisTitleConfig,
-				color: $colorPaletteStore
+				color: offsetColorPalette
 			};
 
 			config.update(() => {

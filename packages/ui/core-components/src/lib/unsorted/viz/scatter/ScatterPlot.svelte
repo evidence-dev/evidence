@@ -64,6 +64,8 @@
 	export let colorPalette = 'default';
 	$: colorPaletteStore = resolveColorPalette(colorPalette);
 
+	export let paletteOffset = undefined;
+
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
@@ -120,6 +122,7 @@
 	{sort}
 	{chartAreaHeight}
 	colorPalette={colorPaletteStore}
+	{paletteOffset}
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
