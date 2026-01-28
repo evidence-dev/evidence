@@ -42,3 +42,6 @@ priority_support_users.csv
 .aider*
 
 evidence-*.tgz
+
+# Claude Code local settings
+.claude/settings.local.json
