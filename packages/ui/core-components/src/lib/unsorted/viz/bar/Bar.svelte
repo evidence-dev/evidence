@@ -129,7 +129,7 @@
 		}
 
 		// Run fill for missing series entries, only if it's a stacked bar
-		if (swapXY || ((xType === 'value' || xType === 'category') && type.includes('stacked'))) {
+		if ((swapXY || xType === 'value' || xType === 'category') && type.includes('stacked')) {
 			data = getCompletedData(data, x, y, series, true, xType === 'value');
 			xType = 'category';
 		} else if (xType === 'time' && type.includes('stacked')) {
