@@ -8,6 +8,7 @@
 	import { getInputSetter } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
@@ -52,7 +53,8 @@
 	const setInput = getInputSetter(name);
 	setButtonGroupContext((v) => {
 		$valueStore = v;
-		setInput(v?.value ?? null, v?.valueLabel);
+		const sqlFragment = v?.value != null ? duckdbSerialize(v.value, { serializeStrings: false }) : null;
+		setInput(v?.value ?? null, v?.valueLabel, sqlFragment);
 	}, readonly(valueStore));
 
 	/////
