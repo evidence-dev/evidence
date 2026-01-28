@@ -14,6 +14,7 @@
 	import { toBoolean, toNumber } from '../../../../utils.js';
 	import { getThemeStores } from '../../../../themes/themes.js';
 	import { checkDeprecatedColor } from '../../../../deprecated-colors.js';
+	import { onDestroy } from 'svelte';
 
 	const { activeAppearance, resolveColor } = getThemeStores();
 
@@ -148,9 +149,14 @@
 	const config = getConfigContext();
 	const store = new ReferenceAreaStore(props, config);
 
-	// React to the props store to make sure the ReferencePoint is added after the chart is fully rendered
-	$: ($props,
-		store.setConfig({
+	// Cleanup store subscription on component destroy
+	onDestroy(() => {
+		store.destroy();
+	});
+
+	// Update store config when component props change
+	// The store automatically handles chart props changes via internal subscription
+	$: store.setConfig({
 			xMin,
 			xMax,
 			yMin,

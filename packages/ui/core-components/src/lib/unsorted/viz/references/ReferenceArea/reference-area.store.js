@@ -29,6 +29,12 @@ export class ReferenceAreaStore {
 	/** @type {Writable<EChartsOption>} */
 	#configStore;
 
+	/** @type {ReferenceAreaConfig | null} */
+	#lastConfig = null;
+
+	/** @type {(() => void) | null} */
+	#propsUnsubscribe = null;
+
 	/**
 	 * @param {Readable<any>} propsStore
 	 * @param {Writable<EChartsOption>} configStore
@@ -36,9 +42,26 @@ export class ReferenceAreaStore {
 	constructor(propsStore, configStore) {
 		this.#propsStore = propsStore;
 		this.#configStore = configStore;
+
+		// Subscribe to props store to automatically reconfigure when chart props change
+		this.#propsUnsubscribe = propsStore.subscribe(() => {
+			// Only reconfigure if we have a config to apply
+			if (this.#lastConfig) {
+				// Use void to ignore the promise, as we're in a subscription callback
+				void this.setConfig(this.#lastConfig);
+			}
+		});
 	}
 
 	subscribe = this.#store.subscribe;
+
+	/** Cleanup method to unsubscribe from props store */
+	destroy = () => {
+		if (this.#propsUnsubscribe) {
+			this.#propsUnsubscribe();
+			this.#propsUnsubscribe = null;
+		}
+	};
 
 	/** @param {string | undefined} error */
 	setError = (error) => this.#store.update((value) => ({ ...value, error }));
@@ -47,6 +70,9 @@ export class ReferenceAreaStore {
 
 	/** @param {ReferenceAreaConfig} config */
 	setConfig = async (config) => {
+		// Cache the config so we can reapply it when props change
+		this.#lastConfig = config;
+
 		this.clearError();
 		try {
 			let {
@@ -70,7 +96,6 @@ export class ReferenceAreaStore {
 				await data.fetch();
 			}
 
-			// TODO maybe we could subscribe to props in here instead of the jank reactive statement in the component
 			const props = get(this.#propsStore);
 			if (typeof props === 'undefined') {
 				throw new Error('Reference Area cannot be used outside of a chart');
