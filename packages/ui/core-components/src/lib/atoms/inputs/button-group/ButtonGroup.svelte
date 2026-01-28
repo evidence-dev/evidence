@@ -5,9 +5,10 @@
 <script>
 	import { presets, setButtonGroupContext } from './lib.js';
 	import { writable, readonly } from 'svelte/store';
-	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { getInputSetter } from '@evidence-dev/sdk/utils/svelte';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
 	import Info from '../../../unsorted/ui/Info.svelte';
 	import ButtonGroupItem from './ButtonGroupItem.svelte';
 	import { page } from '$app/stores';
@@ -30,7 +31,6 @@
 	/** @type {keyof typeof presets | undefined} */
 	export let preset = undefined;
 
-	const inputs = getInputContext();
 	// for Tabs styling
 	/** @type {'tabs' | 'buttons'} */
 	export let display = 'buttons';
@@ -50,11 +50,11 @@
 
 	const valueStore = writable(null);
 
-	// TODO: Use getInputSetter instead
+	const setInput = getInputSetter(name);
 	setButtonGroupContext((v) => {
 		$valueStore = v;
-		// the assignment to $inputs is necessary to trigger the change on SSR
-		$inputs[name] = v?.value ?? null;
+		const sqlFragment = v?.value != null ? duckdbSerialize(v.value, { serializeStrings: false }) : null;
+		setInput(v?.value ?? null, v?.valueLabel, sqlFragment);
 	}, readonly(valueStore));
 
 	/////
