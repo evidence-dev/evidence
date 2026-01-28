@@ -191,36 +191,36 @@
 
 	// Update store config when component props change
 	// The store automatically handles chart props changes via internal subscription
-	$: store.setConfig({
-			x,
-			y,
-			x2,
-			y2,
-			data,
-			label,
-			color: $colorStore,
-			symbolStart: symbolStart ?? 'none',
-			symbolStartSize: toNumber(symbolStartSize),
-			symbolEnd: symbolEnd ?? symbol ?? 'none',
-			symbolEndSize: symbolEndSize ? toNumber(symbolEndSize) : toNumber(symbolSize),
-			lineType,
-			lineColor: $lineColorStore,
-			lineWidth: toNumber(lineWidth),
-			labelColor: $labelColorStore,
-			labelPadding: toNumber(labelPadding),
-			labelPosition,
-			labelBackgroundColor:
-				$labelBackgroundColorStore ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
-			labelBorderColor: $labelBorderColorStore,
-			labelBorderWidth: toNumber(labelBorderWidth),
-			labelBorderRadius: toNumber(labelBorderRadius),
-			labelBorderType,
-			hideValue: toBoolean(hideValue),
-			fontSize: toNumber(fontSize),
-			align,
-			bold: toBoolean(bold),
-			italic: toBoolean(italic)
-		}));
+	$: void store.setConfig({
+		x,
+		y,
+		x2,
+		y2,
+		data,
+		label,
+		color: $colorStore,
+		symbolStart: symbolStart ?? 'none',
+		symbolStartSize: toNumber(symbolStartSize),
+		symbolEnd: symbolEnd ?? symbol ?? 'none',
+		symbolEndSize: symbolEndSize ? toNumber(symbolEndSize) : toNumber(symbolSize),
+		lineType,
+		lineColor: $lineColorStore,
+		lineWidth: toNumber(lineWidth),
+		labelColor: $labelColorStore,
+		labelPadding: toNumber(labelPadding),
+		labelPosition,
+		labelBackgroundColor:
+			$labelBackgroundColorStore ?? chroma($theme.colors['base-100']).alpha(0.8).css(),
+		labelBorderColor: $labelBorderColorStore,
+		labelBorderWidth: toNumber(labelBorderWidth),
+		labelBorderRadius: toNumber(labelBorderRadius),
+		labelBorderType,
+		hideValue: toBoolean(hideValue),
+		fontSize: toNumber(fontSize),
+		align,
+		bold: toBoolean(bold),
+		italic: toBoolean(italic)
+	});
 </script>
 
 {#if $$slots.default}

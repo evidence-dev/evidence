@@ -156,34 +156,34 @@
 
 	// Update store config when component props change
 	// The store automatically handles chart props changes via internal subscription
-	$: store.setConfig({
-			xMin,
-			xMax,
-			yMin,
-			yMax,
-			data,
-			label,
-			color: $colorStore,
-			areaColor: $areaColorStore,
-			opacity: toNumber(opacity),
-			border: toBoolean(border),
-			borderType,
-			borderColor: $borderColorStore,
-			borderWidth: toNumber(borderWidth),
-			labelColor: $labelColorStore,
-			labelPadding: toNumber(labelPadding),
-			labelPosition,
-			labelBackgroundColor: $labelBackgroundColorStore,
-			labelBorderColor: $labelBorderColorStore,
-			labelBorderWidth: toNumber(labelBorderWidth),
-			labelBorderRadius: toNumber(labelBorderRadius),
-			labelBorderType,
-			fontSize: toNumber(fontSize),
-			align,
-			bold: toBoolean(bold),
-			italic: toBoolean(italic),
-			activeAppearance: $activeAppearance
-		}));
+	$: void store.setConfig({
+		xMin,
+		xMax,
+		yMin,
+		yMax,
+		data,
+		label,
+		color: $colorStore,
+		areaColor: $areaColorStore,
+		opacity: toNumber(opacity),
+		border: toBoolean(border),
+		borderType,
+		borderColor: $borderColorStore,
+		borderWidth: toNumber(borderWidth),
+		labelColor: $labelColorStore,
+		labelPadding: toNumber(labelPadding),
+		labelPosition,
+		labelBackgroundColor: $labelBackgroundColorStore,
+		labelBorderColor: $labelBorderColorStore,
+		labelBorderWidth: toNumber(labelBorderWidth),
+		labelBorderRadius: toNumber(labelBorderRadius),
+		labelBorderType,
+		fontSize: toNumber(fontSize),
+		align,
+		bold: toBoolean(bold),
+		italic: toBoolean(italic),
+		activeAppearance: $activeAppearance
+	});
 </script>
 
 {#if $$slots.default}
