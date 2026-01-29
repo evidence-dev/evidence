@@ -1,6 +1,11 @@
 import { tidy, mutate } from '@tidyjs/tidy';
 
 export function standardizeDateString(date) {
+	// Handle Date objects by converting to ISO string first
+	if (date instanceof Date) {
+		date = date.toISOString();
+	}
+
 	if (date && typeof date === 'string') {
 		// Parses an individual string into a JS date object
 
