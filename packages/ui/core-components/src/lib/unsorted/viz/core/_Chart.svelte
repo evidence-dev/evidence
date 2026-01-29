@@ -752,7 +752,7 @@
 				verticalAxisConfig = {
 					type: xType,
 					data: xType === 'category' ? xDistinct : undefined,
-					inverse: 'true',
+					inverse: true,
 					splitLine: {
 						show: xGridlines
 					},
