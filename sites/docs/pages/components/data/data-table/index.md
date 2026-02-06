@@ -424,6 +424,30 @@ limit 5
 ```
 </DocTab>
 
+#### Aggregating Percentage Changes
+
+When aggregating percentage changes (like year-over-year growth rates) in a total row, use `totalAgg=weightedMean` with the base metric as the `weightCol`. This ensures the total growth rate is properly weighted by the size of each row.
+
+For example, if you have sales and growth rate by category, use sales as the weight column to get the correct overall growth rate:
+
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={country_example} totalRow=true rows=5>
+          <Column id=country/>
+          <Column id=gdp_usd fmt='$#,##0"B"' totalAgg=sum/>
+          <Column id=gdp_growth fmt='pct1' totalAgg=weightedMean weightCol=gdp_usd/>
+        </DataTable>
+    </div>
+
+```svelte
+<DataTable data={country_example} totalRow=true rows=5>
+  <Column id=country/>
+  <Column id=gdp_usd fmt='$#,##0"B"' totalAgg=sum/>
+  <Column id=gdp_growth fmt='pct1' totalAgg=weightedMean weightCol=gdp_usd/>
+</DataTable>
+```
+</DocTab>
+
 
 ### Conditional Formatting
 
