@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 6.0.7
+
+### Patch Changes
+
+- d5d698799: Update packages to resolve CVEs
+
 ## 6.0.6
 
 ### Patch Changes

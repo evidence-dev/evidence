@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 4.0.2
+
+### Patch Changes
+
+- d5d698799: Update packages to resolve CVEs
+- cc197d2e7: Remove references to Evidence Cloud
+
 ## 4.0.1
 
 ### Patch Changes
