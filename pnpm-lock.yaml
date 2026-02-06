@@ -26,6 +26,7 @@ overrides:
   js-yaml@>=4: '>=4.1.1'
   vite@>=5 <5.4.21: 5.4.21
   tmp: '>=0.2.4'
+  qs@<6.14.1: '>=6.14.1'
 
 importers:
 
@@ -5424,6 +5425,8 @@ packages:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
     dev: true
 
   /@parcel/cache@2.16.3(@parcel/core@2.16.3):
@@ -6548,8 +6551,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.16.3)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@parcel/workers@2.16.3(@parcel/core@2.16.3):
@@ -10098,7 +10099,7 @@ packages:
       http-errors: 2.0.1
       iconv-lite: 0.4.24
       on-finished: 2.4.1
-      qs: 6.14.0
+      qs: 6.14.1
       raw-body: 2.5.3
       type-is: 1.6.18
       unpipe: 1.0.0
@@ -12239,7 +12240,7 @@ packages:
       parseurl: 1.3.3
       path-to-regexp: 0.1.12
       proxy-addr: 2.0.7
-      qs: 6.14.0
+      qs: 6.14.1
       range-parser: 1.2.1
       safe-buffer: 5.2.1
       send: 0.19.2
@@ -16043,9 +16044,6 @@ packages:
     resolution: {integrity: sha512-N9jnwcTeVEaRjjJCCHmYfPCvjjJeHZuuO50qL4CCNcQX4RjwPuOaDft7hvTT2W8PIb4XhhZKDYB1lstZhXLJRQ==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.16.3(@parcel/core@2.16.3)
       '@parcel/core': 2.16.3
@@ -16729,8 +16727,8 @@ packages:
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
     dev: false
 
-  /qs@6.14.0:
-    resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
+  /qs@6.14.1:
+    resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
     engines: {node: '>=0.6'}
     dependencies:
       side-channel: 1.1.0
@@ -17690,9 +17688,6 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
@@ -18948,7 +18943,7 @@ packages:
   /typed-rest-client@1.8.11:
     resolution: {integrity: sha512-5UvfMpd1oelmUPRbbaVnq+rHP7ng2cE4qoQkQeAqxRL6PklkxsM0g32/HL0yfvruK6ojQ5x8EE+HF4YV6DtuCA==}
     dependencies:
-      qs: 6.14.0
+      qs: 6.14.1
       tunnel: 0.0.6
       underscore: 1.13.7
     dev: false
