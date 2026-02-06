@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 40.1.8
+
+### Patch Changes
+
+- d5d698799: Update packages to resolve CVEs
+- Updated dependencies [d5d698799]
+- Updated dependencies [cc197d2e7]
+  - @evidence-dev/preprocess@6.0.7
+  - @evidence-dev/sdk@4.0.2
+
 ## 40.1.7
 
 ### Patch Changes

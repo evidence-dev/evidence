@@ -1,5 +1,15 @@
 # e2e-dev-server-startup
 
+## 0.0.19
+
+### Patch Changes
+
+- cc197d2e7: Remove references to Evidence Cloud
+- Updated dependencies [d5d698799]
+- Updated dependencies [cc197d2e7]
+  - @evidence-dev/evidence@40.1.8
+  - @evidence-dev/core-components@5.4.2
+
 ## 0.0.18
 
 ### Patch Changes
