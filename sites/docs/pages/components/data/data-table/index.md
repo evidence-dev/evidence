@@ -368,6 +368,42 @@ limit 5
 ```
 </DocTab>
 
+#### Aggregating Percentage Changes with Custom Weights
+
+When aggregating percentage changes (like growth rates), you typically want to weight them by the underlying value to get an accurate total. For example, to calculate the weighted average of growth rates across regions, use the `weightedMean` aggregation with a `weightCol`:
+
+```pct_changes
+select 'North America' as region, 0.15 as growth_rate, 5000000 as revenue
+union all
+select 'Europe', 0.12, 3500000
+union all
+select 'Asia Pacific', 0.25, 2800000
+union all
+select 'Latin America', 0.08, 1200000
+```
+
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={pct_changes} totalRow=true rows=all>
+        <Column id=region/>
+        <Column id=growth_rate fmt='pct2' contentType=delta/>
+        <Column id=revenue fmt=usd/>
+        <Column id=growth_rate title="Weighted Avg Growth" totalAgg=weightedMean weightCol=revenue fmt='pct2' contentType=delta/>
+        </DataTable>
+    </div>
+
+```svelte
+<DataTable data={pct_changes} totalRow=true rows=all>
+  <Column id=region/>
+  <Column id=growth_rate fmt='pct2' contentType=delta/>
+  <Column id=revenue fmt=usd/>
+  <Column id=growth_rate title="Weighted Avg Growth" totalAgg=weightedMean weightCol=revenue fmt='pct2' contentType=delta/>
+</DataTable>
+```
+</DocTab>
+
+In this example, the total row shows the revenue-weighted average growth rate, which gives more accurate results than a simple mean when the regions have different sizes.
+
 
 
 #### Custom Aggregations Values
