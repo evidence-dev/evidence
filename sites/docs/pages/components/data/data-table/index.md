@@ -369,6 +369,41 @@ limit 5
 </DocTab>
 
 
+#### Aggregating Percentage Changes with Custom Weights
+
+When aggregating percentage changes (e.g., year-over-year growth) in a total row, you typically want to weight each percentage by its corresponding value to get an accurate overall percentage. Use `totalAgg=weightedMean` with a `weightCol` to specify which column to use as the weight.
+
+In this example, we calculate the weighted average of year-over-year growth (`yoy`) using sales (`value_usd`) as the weight column:
+
+```sql monthly_sales
+select 
+    date_trunc('month', order_datetime) as month,
+    sum(sales) as value_usd,
+    0.1 * (random() - 0.5) as yoy
+from needful_things.orders
+group by 1
+order by 1
+limit 10
+```
+
+<DocTab>
+    <div slot='preview'>
+        <DataTable data={monthly_sales} totalRow=true rows=5>
+            <Column id=month/>
+            <Column id=value_usd totalAgg=sum fmt=usd/>
+            <Column id=yoy totalAgg=weightedMean weightCol=value_usd fmt=pct2 title="Y/Y Growth"/>
+        </DataTable>
+    </div>
+
+```svelte
+<DataTable data={monthly_sales} totalRow=true rows=5>
+    <Column id=month/>
+    <Column id=value_usd totalAgg=sum fmt=usd/>
+    <Column id=yoy totalAgg=weightedMean weightCol=value_usd fmt=pct2 title="Y/Y Growth"/>
+</DataTable>
+```
+</DocTab>
+
 
 #### Custom Aggregations Values
 
