@@ -368,6 +368,25 @@ limit 5
 ```
 </DocTab>
 
+#### Aggregating Percentage Changes
+
+When aggregating percentage changes (e.g., year-over-year growth rates) in a total row, a simple average can be misleading. Instead, use `totalAgg=weightedMean` with a `weightCol` to calculate a properly weighted average.
+
+For example, to aggregate growth rates weighted by the size of each entity (e.g., GDP):
+
+```svelte
+<DataTable data={sales_data} totalRow=true>
+  <Column id=region/>
+  <Column id=revenue fmt=usd/>
+  <Column id=growth_rate 
+          title="Y/Y Growth" 
+          fmt=pct2 
+          totalAgg=weightedMean 
+          weightCol=revenue/>
+</DataTable>
+```
+
+In this example, regions with higher revenue contribute more to the overall growth rate calculation, giving you an accurate weighted average.
 
 
 #### Custom Aggregations Values
