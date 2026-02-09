@@ -166,13 +166,44 @@ const strictMode = function () {
 };
 
 const resolveViteBin = (cwd) => {
-	try {
-		return require.resolve('vite/bin/vite.js', { paths: [path.resolve(cwd)] });
-	} catch {
-		throw new Error(
-			`Unable to resolve vite from ${cwd}. Install dependencies for this Evidence project and try again.`
-		);
+	const candidateSearchPaths = [
+		path.resolve(cwd),
+		process.cwd(),
+		path.dirname(fileURLToPath(import.meta.url))
+	];
+
+	for (const searchPath of candidateSearchPaths) {
+		try {
+			return require.resolve('vite/bin/vite.js', { paths: [searchPath] });
+		} catch {
+			// continue searching
+		}
 	}
+
+	try {
+		return require.resolve('vite/bin/vite.js');
+	} catch {
+		// fall through
+	}
+
+	// Fallback for environments that can resolve "vite" but not the bin subpath directly.
+	for (const searchPath of candidateSearchPaths) {
+		try {
+			const viteEntry = require.resolve('vite', { paths: [searchPath] });
+			let current = path.dirname(viteEntry);
+			while (current !== path.dirname(current)) {
+				const viteBin = path.join(current, 'bin', 'vite.js');
+				if (fs.existsSync(viteBin)) return viteBin;
+				current = path.dirname(current);
+			}
+		} catch {
+			// continue searching
+		}
+	}
+
+	throw new Error(
+		`Unable to resolve vite from ${cwd}. Checked project, workspace, and evidence package contexts.`
+	);
 };
 
 const spawnVite = ({ cwd, viteArgs = [], cliArgs = [], env = {}, detached = false }) => {
