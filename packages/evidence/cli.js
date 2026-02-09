@@ -6,11 +6,14 @@ import { spawn } from 'child_process';
 import * as chokidar from 'chokidar';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 import sade from 'sade';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 import { enableDebug, enableStrictMode } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
 import { createHash } from 'crypto';
+
+const require = createRequire(import.meta.url);
 
 const increaseNodeMemoryLimit = () => {
 	// Don't override the memory limit if it's already set
@@ -161,24 +164,46 @@ function removeStaticDir(dir) {
 const strictMode = function () {
 	enableStrictMode();
 };
-const buildHelper = function (command, args) {
+
+const resolveViteBin = (cwd) => {
+	try {
+		return require.resolve('vite/bin/vite.js', { paths: [path.resolve(cwd)] });
+	} catch {
+		throw new Error(
+			`Unable to resolve vite from ${cwd}. Install dependencies for this Evidence project and try again.`
+		);
+	}
+};
+
+const spawnVite = ({ cwd, viteArgs = [], cliArgs = [], env = {}, detached = false }) => {
+	const viteBin = resolveViteBin(cwd);
+	return spawn(process.execPath, [viteBin, ...viteArgs, ...cliArgs], {
+		shell: false,
+		detached,
+		cwd,
+		stdio: 'inherit',
+		env
+	});
+};
+
+const buildHelper = function (args) {
 	const watchers = runFileWatcher(watchPatterns);
 	const flatArgs = flattenArguments(args);
 
 	const dataDir = process.env.EVIDENCE_DATA_DIR ?? './static/data';
 
 	// Run svelte kit build in the hidden directory
-	const child = spawn(command, flatArgs, {
-		shell: true,
+	const child = spawnVite({
 		cwd: '.evidence/template',
-		stdio: 'inherit',
 		env: {
 			...process.env,
 			// used for source query HMR
 			EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
 			EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data',
 			EVIDENCE_IS_BUILDING: 'true'
-		}
+		},
+		viteArgs: ['build'],
+		cliArgs: flatArgs
 	});
 	// Copy the outputs to the root of the project upon successful exit
 	child.on('exit', function (code) {
@@ -271,17 +296,17 @@ ${chalk.bold('[!] Unable to load source manifest')}
 
 		logQueryEvent('dev-server-start', undefined, undefined, undefined, true);
 		// Run svelte kit dev in the hidden directory
-		const child = spawn(`npx vite dev --port 3000`, flatArgs, {
-			shell: true,
-			detached: false,
+		const child = spawnVite({
 			cwd: '.evidence/template',
-			stdio: 'inherit',
 			env: {
 				...process.env,
 				// used for source query HMR
 				EVIDENCE_DATA_URL_PREFIX: process.env.EVIDENCE_DATA_URL_PREFIX ?? 'static/data',
 				EVIDENCE_DATA_DIR: process.env.EVIDENCE_DATA_DIR ?? './static/data'
-			}
+			},
+			viteArgs: ['dev', '--port', '3000'],
+			cliArgs: flatArgs,
+			detached: false
 		});
 
 		child.on('exit', function () {
@@ -322,7 +347,7 @@ prog
 		populateTemplate();
 
 		logQueryEvent('build-start');
-		buildHelper('npx vite build', args);
+		buildHelper(args);
 	});
 
 prog
@@ -340,7 +365,7 @@ prog
 		strictMode();
 
 		logQueryEvent('build-strict-start');
-		buildHelper('npx vite build', args);
+		buildHelper(args);
 	});
 
 prog
