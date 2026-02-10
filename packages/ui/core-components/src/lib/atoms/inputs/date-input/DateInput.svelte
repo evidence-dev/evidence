@@ -45,6 +45,8 @@
 	/** @type {boolean| string} */
 	export let range = false;
 	$: range = toBoolean(range);
+	/** @type {'start' | 'end'} */
+	export let inputDefault = 'start';
 
 	let query;
 	let errors = [];
@@ -155,6 +157,7 @@
 					{currentDate}
 					{title}
 					{description}
+					{inputDefault}
 				/>
 			</QueryLoad>
 		{/if}
