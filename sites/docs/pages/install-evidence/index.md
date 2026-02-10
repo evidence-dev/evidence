@@ -7,7 +7,7 @@ description: Install Evidence with the VSCode Extension, from the command line, 
 
 <Alert status=success>
 
-The easiest way to get started with Evidence is to use the [VSCode Extension](vscode:extension/Evidence.evidence-vscode).
+The easiest way to get started with Evidence is to use Evidence Studio, our AI-powered web IDE. [Sign up here](https://evidence.studio/sign-up).
 
 </Alert>
 
