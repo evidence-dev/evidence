@@ -24,6 +24,7 @@ export { default as Histogram } from './histogram/Histogram.svelte';
 export { default as Hist } from './histogram/Hist.svelte';
 export { default as LineChart } from './line/LineChart.svelte';
 export { default as Line } from './line/Line.svelte';
+export { default as RadarChart } from './radar/RadarChart.svelte';
 export { default as BaseMap } from './map/BaseMap.svelte';
 export { default as AreaMap } from './map/AreaMap.svelte';
 export { default as PointMap } from './map/PointMap.svelte';
