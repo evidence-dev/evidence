@@ -206,9 +206,9 @@ If no `weightCol` is specified, the result will be identical to the result from 
   <Column id=prev_sales_usd0k totalAgg=weightedMean weightCol=sales_usd0k/>
   <Column id=prev_num_orders_num0 totalAgg=weightedMean weightCol=sales_usd0k/>
   <Column id=prev_aov_usd2 totalAgg=weightedMean weightCol=sales_usd0k/>
-  <Column id=sales_change_pct0 totalAgg=weightedMean weightCol=sales_usd0k/>
-  <Column id=num_orders_change_pct0 totalAgg=weightedMean weightCol=sales_usd0k/>
-  <Column id=aov_change_pct0 totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=sales_change_pct0 totalAgg=weightedMean weightCol=prev_sales_usd0k/>
+  <Column id=num_orders_change_pct0 totalAgg=weightedMean weightCol=prev_num_orders_num0/>
+  <Column id=aov_change_pct0 totalAgg=weightedMean weightCol=prev_aov_usd2/>
 </DataTable>
 
 

@@ -368,6 +368,11 @@ limit 5
 ```
 </DocTab>
 
+:::tip Weighted Mean for Percentage Changes
+When aggregating percentage changes (e.g., year-over-year growth rates), use `weightCol` to specify the **baseline/previous value** column, not the current value. This ensures the weighted average is calculated correctly, as percentage changes are relative to their original values.
+
+For example, if you have `sales_change_pct` calculated as `(current_sales - previous_sales) / previous_sales`, the `weightCol` should be `previous_sales`.
+:::
 
 
 #### Custom Aggregations Values
