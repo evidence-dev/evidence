@@ -13554,7 +13554,7 @@ snapshots:
       '@parcel/types': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
       '@parcel/utils': 2.12.0
       '@parcel/watcher': 2.5.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
+      '@parcel/workers': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -13691,7 +13691,7 @@ snapshots:
       '@parcel/node-resolver-core': 3.3.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))
       '@parcel/types': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
+      '@parcel/workers': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))
       '@swc/core': 1.15.7(@swc/helpers@0.5.17)
       semver: 7.7.3
     transitivePeerDependencies:
@@ -14082,7 +14082,7 @@ snapshots:
       '@parcel/fs': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
       '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
+      '@parcel/workers': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))
       utility-types: 3.11.0
     transitivePeerDependencies:
       - '@parcel/core'
@@ -14180,7 +14180,7 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.5.1
       '@parcel/watcher-win32-x64': 2.5.1
 
-  '@parcel/workers@2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)':
+  '@parcel/workers@2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))':
     dependencies:
       '@parcel/core': 2.16.4(@swc/helpers@0.5.17)
       '@parcel/diagnostic': 2.12.0
@@ -14189,8 +14189,6 @@ snapshots:
       '@parcel/types': 2.12.0(@parcel/core@2.16.4(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
 
   '@parcel/workers@2.16.4(@parcel/core@2.16.4(@swc/helpers@0.5.17))':
     dependencies:
