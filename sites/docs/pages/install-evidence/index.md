@@ -5,13 +5,30 @@ title: Install Evidence
 description: Install Evidence with the VSCode Extension, from the command line, alongside dbt, or using Codespaces.
 ---
 
-<Alert status=success>
 
-The easiest way to get started with Evidence is to use Evidence Studio, our AI-powered web IDE. [Sign up here](https://evidence.studio/sign-up).
+<Tabs>
 
-</Alert>
+<Tab value="studio" label="Evidence Studio" default>
 
-## VSCode Extension
+The easiest way to get started with Evidence is to use Evidence Studio, our AI-powered web IDE.
+
+<LinkButton url="https://evidence.studio/sign-up">Get Started</LinkButton>
+
+</Tab>
+
+<Tab value="standalone" label="Command Line">
+
+```shell
+npx degit evidence-dev/template my-project
+cd my-project
+npm install
+npm run sources
+npm run dev
+```
+
+</Tab>
+
+<Tab value="vscode" label="VS Code">
 
 1. Install Evidence from the VSCode Marketplace
 2. Open the Command Palette (`Ctrl/Cmd + Shift + P`) and enter `Evidence: New Evidence Project`
@@ -21,29 +38,9 @@ The easiest way to get started with Evidence is to use Evidence Studio, our AI-p
    - On Windows, this step can take a couple of minutes the first time
 4. Make changes to a markdown file and **save the file** to see the updates in your browser window
 
-
 The template app running in your browser contains a tutorial on how to use Evidence.
 
 <LinkButton url="https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode">Install VSCode Extension</LinkButton>
-
-<br/>
-<br/>
-
-If you run into any issues, [reach out in Slack.](https://slack.evidence.dev)
-
-## Other Options
-
-<Tabs>
-
-<Tab value="standalone" label="Command Line" default>
-
-```shell
-npx degit evidence-dev/template my-project
-cd my-project
-npm install
-npm run sources
-npm run dev
-```
 
 </Tab>
 
@@ -71,8 +68,6 @@ This currently needs to be done from the terminal, rather than from the dbt Clou
    Create Evidence Codespace
 </LinkButton>
 
-
-
 <br/><br/>
 
 **Note:** Codespaces is much faster on the Desktop app. After the Codespace has booted, select the hamburger menu &rarr; Open in VS Code Desktop.
@@ -87,3 +82,7 @@ See [system requirements page](/guides/system-requirements).
 ## Updating Evidence
 
 See [updating your app](/guides/updating-your-app).
+
+---
+
+If you run into any issues, [reach out in Slack.](https://slack.evidence.dev)
