@@ -3,7 +3,8 @@
 	import * as RangeCalendar from './index.js';
 	import * as Select from '../select/index.js';
 	import { cn } from '$lib/utils.js';
-	import { DateFormatter, getLocalTimeZone } from '@internationalized/date';
+	import { dateValueToDate } from '../../inputs/date-input/helpers.js';
+	import { DateFormatter } from '@internationalized/date';
 	// required to dodge the styling on the shadcn version
 	import { Select as SelectPrimitive } from 'bits-ui';
 
@@ -57,7 +58,7 @@
 		: undefined;
 
 	$: defaultMonth = placeholder
-		? { value: placeholder.month, label: monthFmt.format(placeholder.toDate(getLocalTimeZone())) }
+		? { value: placeholder.month, label: monthFmt.format(dateValueToDate(placeholder)) }
 		: undefined;
 
 	export {

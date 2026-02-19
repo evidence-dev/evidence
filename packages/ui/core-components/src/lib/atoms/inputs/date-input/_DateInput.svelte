@@ -276,18 +276,18 @@
 							{/if}
 							<Separator orientation="vertical" class="mx-2 h-4 w-[1px]" />
 						{/if}
-						{dfMedium.format(selectedDateInput.toDate(getLocalTimeZone()))}
+						{dfMedium.format(dateValueToDate(selectedDateInput))}
 						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-[1.8px]" />
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
-							{dfMedium.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
-								selectedDateInput.end.toDate(getLocalTimeZone())
+							{dfMedium.format(dateValueToDate(selectedDateInput.start))} - {dfMedium.format(
+								dateValueToDate(selectedDateInput.end)
 							)}
 						{:else}
-							{dfMedium.format(selectedDateInput.start.toDate(getLocalTimeZone()))}
+							{dfMedium.format(dateValueToDate(selectedDateInput.start))}
 						{/if}
 					{:else if placeholder}
-						{dfMedium.format(placeholder.toDate(getLocalTimeZone()))}
+						{dfMedium.format(dateValueToDate(placeholder))}
 					{:else}
 						Date Input
 					{/if}
@@ -296,18 +296,18 @@
 					{#if !loaded}
 						Loading...
 					{:else if selectedDateInput && !range}
-						{dfShort.format(selectedDateInput.toDate(getLocalTimeZone()))}
+						{dfShort.format(dateValueToDate(selectedDateInput))}
 						<Icon src={CalendarIcon} class="ml-2 h-4 w-4 mb-[2px] stroke-[1.8px] text-gray-700" />
 					{:else if selectedDateInput && selectedDateInput.start}
 						{#if selectedDateInput.end}
-							{dfShort.format(selectedDateInput.start.toDate(getLocalTimeZone()))} - {dfShort.format(
-								selectedDateInput.end.toDate(getLocalTimeZone())
+							{dfShort.format(dateValueToDate(selectedDateInput.start))} - {dfShort.format(
+								dateValueToDate(selectedDateInput.end)
 							)}
 						{:else}
-							{dfShort.format(selectedDateInput.start.toDate(getLocalTimeZone()))}
+							{dfShort.format(dateValueToDate(selectedDateInput.start))}
 						{/if}
 					{:else if placeholder}
-						{dfShort.format(placeholder.toDate(getLocalTimeZone()))}
+						{dfShort.format(dateValueToDate(placeholder))}
 					{:else}
 						Date Input
 					{/if}
