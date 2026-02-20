@@ -33,7 +33,7 @@
 	}
 </script>
 
-<thead>
+<thead class="sticky top-0 z-10">
 	{#if orderedColumns.length > 0}
 		{@const columnsWithGroupSpan = orderedColumns.map((column, index, array) => {
 			// Determine if this column starts a new group or continues an existing one
@@ -78,7 +78,7 @@
 		{/if}
 	{/if}
 
-	<tr class="border-b border-base-content-muted/60">
+	<tr>
 		{#if rowNumbers}
 			<th
 				role="columnheader"
@@ -147,6 +147,9 @@
 </thead>
 
 <style>
+	thead {
+		box-shadow: 0 1px 0 0 rgba(138, 138, 138, 0.6);
+	}
 	th {
 		white-space: nowrap;
 		overflow: hidden;
