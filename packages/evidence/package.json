@@ -2,6 +2,7 @@
 	"name": "@evidence-dev/evidence",
 	"version": "40.1.8",
 	"description": "dependencies for evidence projects",
+	"repository": "github:evidence-dev/evidence",
 	"type": "module",
 	"keywords": [
 		"analytics",
