@@ -216,9 +216,9 @@
 			.filter((d) => d.type === 'date' && !(data[0]?.[d.id] instanceof Date))
 			.map((d) => d.id);
 
-		for (let i = 0; i < dateCols.length; i++) {
-			data = convertColumnToDate(data, dateCols[i]);
-		}
+		dateCols.forEach((col) => {
+			data = convertColumnToDate(data, col);
+		});
 
 		// Hide link column if columns have not been explicitly selected:
 		if (link) {
