@@ -73,10 +73,64 @@ SELECT
 # Nastier Test Values
 
 ```sql all_types
-select 
-    *
-from test_all_types()
-limit 2
+select *
+from (
+    select
+        'row_a'::varchar as varchar,
+        X'53514C' as blob,
+        true as bool,
+        12::tinyint as tinyint,
+        1200::smallint as smallint,
+        120000::int as int,
+        1200000000::bigint as bigint,
+        1234567890123456789::hugeint as hugeint,
+        200::utinyint as utinyint,
+        50000::usmallint as usmallint,
+        3000000000::uinteger as uint,
+        9000000000000000000::ubigint as ubigint,
+        1.25::float as float,
+        2.5::double as double,
+        date '2024-01-01' as date,
+        timestamp '2024-01-01 10:11:12' as timestamp,
+        cast('2024-01-01 10:11:12' as timestamp_s) as timestamp_s,
+        cast('2024-01-01 10:11:12' as timestamp_ms) as timestamp_ms,
+        cast('2024-01-01 10:11:12' as timestamp_ns) as timestamp_ns,
+        cast('2024-01-01 10:11:12+00:00' as timestamp with time zone) as timestamp_tz,
+        cast('10:11:12' as time) as time,
+        cast('10:11:12+00:00' as time with time zone) as time_tz,
+        cast(3.1 as decimal(4,1)) as dec_4_1,
+        cast(3.1415 as decimal(9,4)) as dec_9_4,
+        cast(3.141592 as decimal(18,6)) as dec_18_6,
+        cast(3.1415926535 as decimal(38,10)) as dec38_10
+    union all
+    select
+        'row_b'::varchar as varchar,
+        X'414243' as blob,
+        false as bool,
+        24::tinyint as tinyint,
+        2400::smallint as smallint,
+        240000::int as int,
+        2400000000::bigint as bigint,
+        2234567890123456789::hugeint as hugeint,
+        150::utinyint as utinyint,
+        45000::usmallint as usmallint,
+        2000000000::uinteger as uint,
+        8000000000000000000::ubigint as ubigint,
+        2.25::float as float,
+        3.5::double as double,
+        date '2024-01-02' as date,
+        timestamp '2024-01-02 10:11:12' as timestamp,
+        cast('2024-01-02 10:11:12' as timestamp_s) as timestamp_s,
+        cast('2024-01-02 10:11:12' as timestamp_ms) as timestamp_ms,
+        cast('2024-01-02 10:11:12' as timestamp_ns) as timestamp_ns,
+        cast('2024-01-02 10:11:12+00:00' as timestamp with time zone) as timestamp_tz,
+        cast('11:11:12' as time) as time,
+        cast('11:11:12+00:00' as time with time zone) as time_tz,
+        cast(4.1 as decimal(4,1)) as dec_4_1,
+        cast(4.1415 as decimal(9,4)) as dec_9_4,
+        cast(4.141592 as decimal(18,6)) as dec_18_6,
+        cast(4.1415926535 as decimal(38,10)) as dec38_10
+) t
 ```
 
 <DataTable data={all_types}/>
@@ -341,4 +395,3 @@ My dec(18,6) is **<Value data={all_types} column="dec_18_6" row=0/>**
 />
 
 My decimal(38,10) is **<Value data={all_types} column="dec38_10" row=0/>**
-

@@ -27,7 +27,9 @@
 	},
 	"files": [
 		"template",
-		"cli.js"
+		"cli.js",
+		"index.js",
+		"programmatic.js"
 	],
 	"devDependencies": {
 		"@evidence-dev/component-utilities": "workspace:*",
