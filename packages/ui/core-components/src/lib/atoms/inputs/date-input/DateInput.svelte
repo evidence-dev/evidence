@@ -45,6 +45,8 @@
 	/** @type {boolean| string} */
 	export let range = false;
 	$: range = toBoolean(range);
+	/** @type {boolean | string} */
+	export let defaultToToday = false;
 
 	let query;
 	let errors = [];
@@ -149,6 +151,7 @@
 					loaded={loaded?.ready ?? true}
 					{presetRanges}
 					{defaultValue}
+					{defaultToToday}
 					{range}
 					{title}
 					{description}

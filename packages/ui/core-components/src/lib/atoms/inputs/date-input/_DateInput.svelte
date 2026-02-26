@@ -70,6 +70,9 @@
 	/** @type {boolean} */
 	export let range = false;
 	$: range = toBoolean(range);
+	/** @type {boolean} */
+	export let defaultToToday = false;
+	$: defaultToToday = toBoolean(defaultToToday);
 	/** @type {string} */
 	export let title = undefined;
 	export let extraDayEndString = undefined;
@@ -278,24 +281,24 @@
 		applyPreset(defaultValue);
 	}
 
-	// Initialize with default value or a sensible date if no selection and no default value applied
+	// Initialize with default value or today's date (if defaultToToday is enabled)
 	$: if (!selectedDateInput && !selectedPreset) {
 		if (defaultValue && typeof defaultValue === 'string') {
 			try {
 				const defaultDate = YYYYMMDDToCalendar(defaultValue);
 				selectedDateInput = defaultDate;
 			} catch (error) {
-				// If today is outside the data range, use calendarEnd, otherwise use today
-				if (calendarEnd && todayDate.compare(calendarEnd) > 0) {
-					selectedDateInput = calendarEnd;
-				} else if (calendarStart && todayDate.compare(calendarStart) < 0) {
-					selectedDateInput = calendarStart;
-				} else {
-					selectedDateInput = todayDate;
+				if (defaultToToday) {
+					if (calendarEnd && todayDate.compare(calendarEnd) > 0) {
+						selectedDateInput = calendarEnd;
+					} else if (calendarStart && todayDate.compare(calendarStart) < 0) {
+						selectedDateInput = calendarStart;
+					} else {
+						selectedDateInput = todayDate;
+					}
 				}
 			}
-		} else {
-			// If today is outside the data range, use calendarEnd, otherwise use today
+		} else if (defaultToToday) {
 			if (calendarEnd && todayDate.compare(calendarEnd) > 0) {
 				selectedDateInput = calendarEnd;
 			} else if (calendarStart && todayDate.compare(calendarStart) < 0) {
