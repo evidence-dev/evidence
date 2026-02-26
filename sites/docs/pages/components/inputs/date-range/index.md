@@ -269,7 +269,13 @@ Customize "Select a Range" drop down, by including present range options. **Rang
 Accepts preset in string format to apply default value in Date Range picker. **Range options**: `'Last 7 Days'` `'Last 30 Days'` `'Last 90 Days'` `'Last 365 Days'` `'Last 3 Months'` `'Last 6 Months'` `'Last 12 Months'` `'Last Month'` `'Last Year'` `'Month to Date'` `'Month to Today'` `'Year to Date'` `'Year to Today'` `'All Time'`
 
 </PropListing>
-<PropListing 
+<PropListing
+    name="defaultToToday"
+    description="When true, the component will default to today's date (or nearest available date) if no defaultValue is provided"
+    options={["true", "false"]}
+    default="false"
+/>
+<PropListing
     name="hideDuringPrint"
     description="Hide the component when the report is printed"
     options={["true", "false"]}

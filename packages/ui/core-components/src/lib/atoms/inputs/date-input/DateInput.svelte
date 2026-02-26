@@ -45,6 +45,8 @@
 	/** @type {boolean| string} */
 	export let range = false;
 	$: range = toBoolean(range);
+	/** @type {boolean | string} */
+	export let defaultToToday = false;
 
 	let query;
 	let errors = [];
@@ -78,11 +80,9 @@
 	$: startString = formatDateString(start || $query?.[0].start || new Date(0));
 	$: endString = formatDateString(end || $query?.[0].end || new Date());
 
-	let currentDate = dateToYYYYMMDD(new Date());
-
 	let extraDayEndString;
 
-	$: if (endString && range) {
+	$: if (endString) {
 		extraDayEndString = new Date(endString);
 		extraDayEndString.setDate(extraDayEndString.getDate() + 1);
 		extraDayEndString = formatDateString(extraDayEndString);
@@ -151,10 +151,12 @@
 					loaded={loaded?.ready ?? true}
 					{presetRanges}
 					{defaultValue}
+					{defaultToToday}
 					{range}
-					{currentDate}
 					{title}
 					{description}
+					{data}
+					{dates}
 				/>
 			</QueryLoad>
 		{/if}

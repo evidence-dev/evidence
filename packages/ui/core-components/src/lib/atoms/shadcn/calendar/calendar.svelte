@@ -34,6 +34,8 @@
 	let minValue = undefined;
 	/** @type {CalendarDate | undefined} */
 	let maxValue = undefined;
+	/** @type {number[] | undefined} */
+	let availableYears = undefined;
 
 	/** @type {string | undefined | null} */
 	let className = undefined;
@@ -57,10 +59,23 @@
 		month: 'long'
 	});
 
-	$: yearOptions = Array.from({ length: 100 }, (_, i) => ({
-		label: String(new Date().getFullYear() - i),
-		value: new Date().getFullYear() - i
-	})).filter(({ value }) => !(minValue?.year > value || value > maxValue?.year));
+	// Create year options based on available years from data
+	$: yearOptions = (() => {
+		if (availableYears?.length > 0) {
+			return availableYears
+				.sort((a, b) => b - a)
+				.map((year) => ({ label: String(year), value: year }))
+				.filter(({ value }) => !(minValue?.year > value || value > maxValue?.year));
+		}
+		if (minValue && maxValue) {
+			const years = [];
+			for (let year = maxValue.year; year >= minValue.year; year--) {
+				years.push({ label: String(year), value: year });
+			}
+			return years;
+		}
+		return undefined;
+	})();
 
 	$: defaultYear = placeholder
 		? { value: placeholder.year, label: String(placeholder.year) }
@@ -78,7 +93,8 @@
 		startValue,
 		selectedDateInput,
 		minValue,
-		maxValue
+		maxValue,
+		availableYears
 	};
 </script>
 
@@ -126,9 +142,37 @@
 				selected={defaultYear}
 				items={yearOptions}
 				onSelectedChange={(v) => {
-					if (!v || !placeholder) return;
-					if (v.value === placeholder?.year) return;
-					placeholder = placeholder.set({ year: v.value });
+					if (!v || !placeholder || v.value === placeholder?.year) return;
+
+					const newYear = v.value;
+					const currentMonth = placeholder.month;
+
+					// First, try to keep the same month in the new year
+					const sameMonthDate = placeholder.set({ year: newYear, month: currentMonth });
+					if (
+						(!minValue || sameMonthDate.compare(minValue) >= 0) &&
+						(!maxValue || sameMonthDate.compare(maxValue) <= 0)
+					) {
+						placeholder = sameMonthDate;
+						return;
+					}
+
+					// If the same month is not available, find the closest valid month
+					const isBeyondRange = maxValue && sameMonthDate.compare(maxValue) > 0;
+					const startMonth = isBeyondRange ? 12 : 1;
+					const endMonth = isBeyondRange ? 0 : 13;
+					const step = isBeyondRange ? -1 : 1;
+
+					for (let month = startMonth; month !== endMonth; month += step) {
+						const testDate = placeholder.set({ year: newYear, month });
+						if (
+							(!minValue || testDate.compare(minValue) >= 0) &&
+							(!maxValue || testDate.compare(maxValue) <= 0)
+						) {
+							placeholder = testDate;
+							break;
+						}
+					}
 				}}
 			>
 				<SelectPrimitive.Trigger
@@ -138,11 +182,13 @@
 					<Select.Value placeholder="Select year" />
 				</SelectPrimitive.Trigger>
 				<Select.Content class="max-h-[200px] overflow-y-auto !w-[79px]">
-					{#each yearOptions as { value, label }}
-						<Select.Item {value} {label}>
-							{label}
-						</Select.Item>
-					{/each}
+					{#if yearOptions && yearOptions.length > 0}
+						{#each yearOptions as { value, label }}
+							<Select.Item {value} {label}>
+								{label}
+							</Select.Item>
+						{/each}
+					{/if}
 				</Select.Content>
 			</Select.Root>
 		</Heading>
