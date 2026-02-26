@@ -1,5 +1,21 @@
 # @evidence-dev/sdk
 
+## 4.0.2
+
+### Patch Changes
+
+- d5d698799: Update packages to resolve CVEs
+- cc197d2e7: Remove references to Evidence Cloud
+
+## 4.0.1
+
+### Patch Changes
+
+- 937971eaa: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
+- aff6f859d: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3253
+- Updated dependencies [937971eaa]
+  - @evidence-dev/universal-sql@3.0.1
+
 ## 4.0.0
 
 ### Patch Changes

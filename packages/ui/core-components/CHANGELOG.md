@@ -1,5 +1,23 @@
 # @evidence-dev/core-components
 
+## 5.4.2
+
+### Patch Changes
+
+- d5d698799: Update packages to resolve CVEs
+- cc197d2e7: Remove references to Evidence Cloud
+  - @evidence-dev/component-utilities@4.0.13
+  - @evidence-dev/tailwind@3.1.4
+
+## 5.4.1
+
+### Patch Changes
+
+- 937971eaa: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
+- aff6f859d: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3253
+  - @evidence-dev/component-utilities@4.0.12
+  - @evidence-dev/tailwind@3.1.3
+
 ## 5.4.0
 
 ### Minor Changes

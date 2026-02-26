@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 3.0.1
+
+### Patch Changes
+
+- 937971eaa: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
+
 ## 3.0.0
 
 ### Major Changes

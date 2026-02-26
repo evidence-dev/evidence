@@ -1,5 +1,26 @@
 # e2e-dev-server-startup
 
+## 0.0.19
+
+### Patch Changes
+
+- cc197d2e7: Remove references to Evidence Cloud
+- Updated dependencies [d5d698799]
+- Updated dependencies [cc197d2e7]
+  - @evidence-dev/evidence@40.1.8
+  - @evidence-dev/core-components@5.4.2
+
+## 0.0.18
+
+### Patch Changes
+
+- 937971eaa: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
+- Updated dependencies [937971eaa]
+- Updated dependencies [aff6f859d]
+  - @evidence-dev/duckdb@2.0.1
+  - @evidence-dev/evidence@40.1.7
+  - @evidence-dev/core-components@5.4.1
+
 ## 0.0.17
 
 ### Patch Changes

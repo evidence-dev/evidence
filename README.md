@@ -9,7 +9,7 @@ Business Intelligence as Code: Generate reports using SQL and markdown
 
 <!-- Testing publishing flow -->
 
-### [Docs](https://docs.evidence.dev) | [Examples](https://evidence.dev/examples) | [Cloud](https://evidence.dev/cloud) | [Slack](https://slack.evidence.dev)
+### [Docs](https://docs.evidence.dev) | [Examples](https://evidence.dev/examples) | [Slack](https://slack.evidence.dev)
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/evidence-dev/evidence?style=social)
 ![NPM](https://img.shields.io/npm/l/%40evidence-dev%2Fevidence)
@@ -45,7 +45,6 @@ See docs for [other install options](https://docs.evidence.dev/getting-started/i
 
 # Publish
 
-- [Evidence Cloud](https://evidence.dev/cloud) is the easiest way to securely host your app. It's free to get started.
 - [Self-hosted](https://docs.evidence.dev/deployment/overview/#self-host) options include Netlify, Vercel, your own infra, and other static site hosting platforms.
 
 # Join the Evidence Community

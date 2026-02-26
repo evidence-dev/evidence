@@ -53,7 +53,3 @@ For example:
 
 <a href={addBasePath(link)}>My Component</a>
 ```
-
-## Evidence Cloud
-
-Deploying apps with custom base paths is supported in Evidence Cloud's [Enterprise plan](https://evidence.dev/cloud).

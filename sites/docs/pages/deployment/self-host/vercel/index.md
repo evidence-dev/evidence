@@ -34,8 +34,6 @@ Your app will be deployed to https://[project-name].vercel.app
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 Your deployed app will be public by default. 

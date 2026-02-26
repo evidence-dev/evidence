@@ -71,8 +71,6 @@ Your app will be deployed to a URL like `https://[your-username]-[your-space-nam
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 If you chose a private space, only members of your Hugging Face organization will be able to access the space.

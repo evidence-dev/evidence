@@ -103,8 +103,6 @@ Your app should be available at `https://[username].github.io/[your-app]`.
 
 ## Domains, Authentication and Scheduling
 
-{@partial "evidence-cloud.md"}
-
 ### Authentication
 
 You can set up a private GitHub Pages site by setting the visibility of the repo to **Private**. This requires a GitHub Enterprise account.

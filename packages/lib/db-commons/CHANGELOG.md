@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 1.1.1
+
+### Patch Changes
+
+- 937971eaa: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
+
 ## 1.1.0
 
 ### Minor Changes

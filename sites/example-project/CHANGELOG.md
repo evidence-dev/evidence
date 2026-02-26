@@ -1,5 +1,43 @@
 # @evidence-dev/components
 
+## 3.5.56
+
+### Patch Changes
+
+- cc197d2e7: Remove references to Evidence Cloud
+- Updated dependencies [d5d698799]
+- Updated dependencies [cc197d2e7]
+  - @evidence-dev/preprocess@6.0.7
+  - @evidence-dev/sdk@4.0.2
+  - @evidence-dev/core-components@5.4.2
+  - @evidence-dev/component-utilities@4.0.13
+  - @evidence-dev/tailwind@3.1.4
+
+## 3.5.55
+
+### Patch Changes
+
+- 937971eaa: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3255
+- aff6f859d: Package updates for CVEs. See https://github.com/evidence-dev/evidence/pull/3253
+- Updated dependencies [937971eaa]
+- Updated dependencies [aff6f859d]
+  - @evidence-dev/duckdb@2.0.1
+  - @evidence-dev/preprocess@6.0.6
+  - @evidence-dev/sdk@4.0.1
+  - @evidence-dev/universal-sql@3.0.1
+  - @evidence-dev/core-components@5.4.1
+  - @evidence-dev/csv@1.0.16
+  - @evidence-dev/bigquery@2.0.12
+  - @evidence-dev/databricks@1.0.10
+  - @evidence-dev/mssql@1.1.4
+  - @evidence-dev/mysql@1.1.6
+  - @evidence-dev/postgres@1.0.10
+  - @evidence-dev/snowflake@1.2.4
+  - @evidence-dev/sqlite@2.0.9
+  - @evidence-dev/trino@1.0.11
+  - @evidence-dev/component-utilities@4.0.12
+  - @evidence-dev/tailwind@3.1.3
+
 ## 3.5.54
 
 ### Patch Changes
