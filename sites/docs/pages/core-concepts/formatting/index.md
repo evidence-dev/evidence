@@ -60,7 +60,7 @@ E.g., `fmt = '#,##0.00 "mpg"'`
 </Alert>
 
 ## Built-in Formats
-Evidence supports a variety of date/time, number, percentage, and currency formats. You can find the full list of formats below.
+Evidence supports a variety of date/time, number, percentage, currency, and duration formats. You can find the full list of formats below.
 
 <!-- These are pasted in from the settings menu HTML, with edits -->
 
@@ -214,6 +214,32 @@ order by row_num
     <Column id="example_output" align=right/>
 </DataTable>
 
+
+### Durations
+
+Duration formats display numeric time values as human-friendly strings. Two input units are supported: minutes and hours.
+
+Values are automatically scaled to the most appropriate unit (minutes, hours, or days). Values below 1 minute are shown as `<1 min`. Values under 10 in the display unit show one decimal place; values of 10 or more are rounded to whole numbers.
+
+```sql duration_formats
+select 'duration' as format_name, 'auto' as format_code, 'minutes' as input_unit, 0.5 as example_input, '<1 min' as example_output, 0 as row_num union all
+select 'duration', 'auto', 'minutes', 14, '14 mins', 1 union all
+select 'duration', 'auto', 'minutes', 142, '2.4 hrs', 2 union all
+select 'duration', 'auto', 'minutes', 4320, '3.0 days', 3 union all
+select 'duration_hrs', 'auto', 'hours', 0.25, '15 mins', 4 union all
+select 'duration_hrs', 'auto', 'hours', 3.7, '3.7 hrs', 5 union all
+select 'duration_hrs', 'auto', 'hours', 12, '12 hrs', 6 union all
+select 'duration_hrs', 'auto', 'hours', 36, '1.5 days', 7
+order by row_num
+```
+
+<DataTable data={duration_formats} rows=all>
+    <Column id="format_name" />
+    <Column id="format_code" />
+    <Column id="input_unit" />
+    <Column id="example_input" align=right/>
+    <Column id="example_output" align=right/>
+</DataTable>
 
 
 ## Custom Formats
