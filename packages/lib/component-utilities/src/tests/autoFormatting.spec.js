@@ -277,3 +277,104 @@ describe('autoFormat', () => {
 		expect(computeNumberAutoFormatCode(10000, defaultMaxDecimals, 6)).toBe('#,##0.0');
 	});
 });
+
+describe('duration format (input in minutes)', () => {
+	const durationFormat = BUILT_IN_FORMATS.find((f) => f.formatTag === 'duration');
+
+	it('should be defined with auto format function', () => {
+		expect(durationFormat).toBeDefined();
+		expect(durationFormat.formatCode).toBe(AUTO_FORMAT_CODE);
+		expect(durationFormat._autoFormat.autoFormatFunction).toBeDefined();
+	});
+
+	it('should return dash for null/undefined/NaN', () => {
+		expect(autoFormat(null, durationFormat)).toBe('-');
+		expect(autoFormat(undefined, durationFormat)).toBe('-');
+		expect(autoFormat(NaN, durationFormat)).toBe('-');
+	});
+
+	it('should format sub-minute values', () => {
+		expect(autoFormat(0, durationFormat)).toBe('<1 min');
+		expect(autoFormat(0.5, durationFormat)).toBe('<1 min');
+	});
+
+	it('should format minute values', () => {
+		expect(autoFormat(1, durationFormat)).toBe('1 mins');
+		expect(autoFormat(14, durationFormat)).toBe('14 mins');
+		expect(autoFormat(59, durationFormat)).toBe('59 mins');
+	});
+
+	it('should format hour values with one decimal when under 10', () => {
+		expect(autoFormat(60, durationFormat)).toBe('1.0 hrs');
+		expect(autoFormat(90, durationFormat)).toBe('1.5 hrs');
+		expect(autoFormat(142, durationFormat)).toBe('2.4 hrs');
+		expect(autoFormat(570, durationFormat)).toBe('9.5 hrs');
+	});
+
+	it('should format hour values as integers when 10 or more', () => {
+		expect(autoFormat(600, durationFormat)).toBe('10 hrs');
+		expect(autoFormat(720, durationFormat)).toBe('12 hrs');
+		expect(autoFormat(1439, durationFormat)).toBe('24 hrs');
+	});
+
+	it('should format day values with one decimal when under 10', () => {
+		expect(autoFormat(1440, durationFormat)).toBe('1.0 days');
+		expect(autoFormat(2160, durationFormat)).toBe('1.5 days');
+		expect(autoFormat(10080, durationFormat)).toBe('7.0 days');
+	});
+
+	it('should format day values as integers when 10 or more', () => {
+		expect(autoFormat(14400, durationFormat)).toBe('10 days');
+		expect(autoFormat(43200, durationFormat)).toBe('30 days');
+	});
+});
+
+describe('duration_hrs format (input in hours)', () => {
+	const durationHrsFormat = BUILT_IN_FORMATS.find((f) => f.formatTag === 'duration_hrs');
+
+	it('should be defined with auto format function', () => {
+		expect(durationHrsFormat).toBeDefined();
+		expect(durationHrsFormat.formatCode).toBe(AUTO_FORMAT_CODE);
+		expect(durationHrsFormat._autoFormat.autoFormatFunction).toBeDefined();
+	});
+
+	it('should return dash for null/undefined/NaN', () => {
+		expect(autoFormat(null, durationHrsFormat)).toBe('-');
+		expect(autoFormat(undefined, durationHrsFormat)).toBe('-');
+		expect(autoFormat(NaN, durationHrsFormat)).toBe('-');
+	});
+
+	it('should format sub-minute values', () => {
+		expect(autoFormat(0, durationHrsFormat)).toBe('<1 min');
+		expect(autoFormat(0.01, durationHrsFormat)).toBe('<1 min');
+	});
+
+	it('should format minute values (less than 1 hour input)', () => {
+		expect(autoFormat(0.5, durationHrsFormat)).toBe('30 mins');
+		expect(autoFormat(0.25, durationHrsFormat)).toBe('15 mins');
+	});
+
+	it('should format hour values with one decimal when under 10', () => {
+		expect(autoFormat(1, durationHrsFormat)).toBe('1.0 hrs');
+		expect(autoFormat(1.5, durationHrsFormat)).toBe('1.5 hrs');
+		expect(autoFormat(3.7, durationHrsFormat)).toBe('3.7 hrs');
+		expect(autoFormat(9.5, durationHrsFormat)).toBe('9.5 hrs');
+	});
+
+	it('should format hour values as integers when 10 or more', () => {
+		expect(autoFormat(10, durationHrsFormat)).toBe('10 hrs');
+		expect(autoFormat(12, durationHrsFormat)).toBe('12 hrs');
+		expect(autoFormat(23, durationHrsFormat)).toBe('23 hrs');
+	});
+
+	it('should format day values with one decimal when under 10', () => {
+		expect(autoFormat(24, durationHrsFormat)).toBe('1.0 days');
+		expect(autoFormat(36, durationHrsFormat)).toBe('1.5 days');
+		expect(autoFormat(168, durationHrsFormat)).toBe('7.0 days');
+	});
+
+	it('should format day values as integers when 10 or more', () => {
+		expect(autoFormat(240, durationHrsFormat)).toBe('10 days');
+		expect(autoFormat(720, durationHrsFormat)).toBe('30 days');
+	});
+});

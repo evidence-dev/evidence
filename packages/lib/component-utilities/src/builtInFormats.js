@@ -478,5 +478,52 @@ export const BUILT_IN_FORMATS = [
 		valueType: 'number',
 		exampleInput: 0.731,
 		titleTagReplacement: ''
+	},
+
+	// Duration (input in minutes):
+	{
+		formatTag: 'duration',
+		formatCode: AUTO_FORMAT_CODE,
+		formatCategory: 'number',
+		valueType: 'number',
+		exampleInput: 142,
+		titleTagReplacement: '',
+		_autoFormat: {
+			autoFormatFunction: (typedValue) => {
+				if (typedValue == null || isNaN(typedValue)) return '-';
+				const mins = Number(typedValue);
+				if (mins < 1) return '<1 min';
+				if (mins < 60) return Math.round(mins) + ' mins';
+				if (mins < 1440) {
+					const hrs = mins / 60;
+					return (hrs >= 10 ? Math.round(hrs) : hrs.toFixed(1)) + ' hrs';
+				}
+				const days = mins / 1440;
+				return (days >= 10 ? Math.round(days) : days.toFixed(1)) + ' days';
+			}
+		}
+	},
+	// Duration (input in hours):
+	{
+		formatTag: 'duration_hrs',
+		formatCode: AUTO_FORMAT_CODE,
+		formatCategory: 'number',
+		valueType: 'number',
+		exampleInput: 3.7,
+		titleTagReplacement: '',
+		_autoFormat: {
+			autoFormatFunction: (typedValue) => {
+				if (typedValue == null || isNaN(typedValue)) return '-';
+				const hrs = Number(typedValue);
+				const mins = hrs * 60;
+				if (mins < 1) return '<1 min';
+				if (mins < 60) return Math.round(mins) + ' mins';
+				if (mins < 1440) {
+					return (hrs >= 10 ? Math.round(hrs) : hrs.toFixed(1)) + ' hrs';
+				}
+				const days = hrs / 24;
+				return (days >= 10 ? Math.round(days) : days.toFixed(1)) + ' days';
+			}
+		}
 	}
 ];
