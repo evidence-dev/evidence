@@ -66,6 +66,7 @@
 
 <dialog
 	use:popup={open}
+	data-portal
 	class="w-[90vw] rounded-lg fixed border border-base-300 text-base-content shadow-lg bg-base-100 {open
 		? 'slideIn'
 		: 'slideOut'}"
