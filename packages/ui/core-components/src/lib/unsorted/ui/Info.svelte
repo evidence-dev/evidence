@@ -44,7 +44,10 @@
 		</slot>
 	</span>
 
-	<div slot="content" class="bg-base-100 p-2 rounded-md text-base-content text-xs max-w-52">
+	<div
+		slot="content"
+		class="bg-base-100 p-2 rounded-md text-base-content text-xs max-w-52 text-left font-normal"
+	>
 		<p class="leading-relaxed text-pretty">
 			{description}
 		</p>
