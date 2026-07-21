@@ -63,7 +63,7 @@
 	}
 
 	export let type = 'stacked'; // stacked, grouped, or stacked100
-	let stacked100 = type === 'stacked100';
+	$: stacked100 = type === 'stacked100';
 
 	export let fillColor = undefined;
 	$: fillColorStore = resolveColor(fillColor);
