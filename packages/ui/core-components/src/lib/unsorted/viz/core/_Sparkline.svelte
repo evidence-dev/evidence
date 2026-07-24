@@ -37,7 +37,7 @@
 	export let yScale = false; // scale the y axis to the data
 	$: yScale = yScale === 'true' || yScale === true;
 
-	let seriesType = type === 'area' ? 'line' : type;
+	$: seriesType = type === 'area' ? 'line' : type;
 
 	export let connectGroup = undefined; // connects to all other connected sparklines with the same group name (shared tooltip behaviour)
 

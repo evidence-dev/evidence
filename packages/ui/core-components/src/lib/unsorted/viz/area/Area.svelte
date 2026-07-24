@@ -117,7 +117,7 @@
 		middle: 'inside'
 	};
 
-	let defaultLabelPosition = swapXY ? 'right' : 'top';
+	$: defaultLabelPosition = swapXY ? 'right' : 'top';
 	$: labelPosition =
 		(swapXY ? swapXYLabelPositions[labelPosition] : labelPositions[labelPosition]) ??
 		defaultLabelPosition;
