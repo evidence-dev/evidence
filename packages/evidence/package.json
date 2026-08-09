@@ -27,6 +27,7 @@
 	},
 	"files": [
 		"template",
+		"notebook",
 		"cli.js"
 	],
 	"devDependencies": {

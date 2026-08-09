@@ -200,7 +200,21 @@ export async function buildMultipartParquet(
 	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
 
 	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
-	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD', USE_TMP_FILE false);`;
+
+	// zstd defaults to level 3. Level 6 is 6% smaller on this project's data for
+	// ~90ms per 2M rows, and every byte saved here is a byte the browser does not
+	// fetch — these files are served over HTTP and read by duckdb-wasm. The curve
+	// flattens after 12 while the cost does not: 19 buys 11.6% for 28x the write
+	// time. Measured in docs/openzl-evaluation.md; reproduce with
+	// tests/bench-layout.mjs.
+	//
+	// EVIDENCE_PARQUET_LEVEL overrides it for a build that would rather have the
+	// seconds back.
+	const level = Number(process.env.EVIDENCE_PARQUET_LEVEL ?? 6);
+	const codec = Number.isFinite(level)
+		? `CODEC 'ZSTD', COMPRESSION_LEVEL ${level}`
+		: `CODEC 'ZSTD'`;
+	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', ${codec}, USE_TMP_FILE false);`;
 
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 	await query(copy);

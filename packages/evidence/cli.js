@@ -11,6 +11,13 @@ import { logQueryEvent } from '@evidence-dev/telemetry';
 import { enableDebug, enableStrictMode } from '@evidence-dev/sdk/utils';
 import { loadEnv } from 'vite';
 import { createHash } from 'crypto';
+import {
+	isNotebook,
+	notebookPagePath,
+	writeNotebookPage,
+	removeNotebookPage,
+	NOTEBOOK_IGNORE_PATTERNS
+} from './notebook/index.js';
 
 const increaseNodeMemoryLimit = () => {
 	// Don't override the memory limit if it's already set
@@ -48,6 +55,8 @@ const clearQueryCache = function () {
 	fs.removeSync('.evidence/template/.evidence-queries/cache');
 };
 
+const TEMPLATE_ROOT = path.join('.evidence', 'template');
+
 const runFileWatcher = function (watchPatterns) {
 	const ignoredFiles = [
 		'./pages/explore/**',
@@ -55,7 +64,9 @@ const runFileWatcher = function (watchPatterns) {
 		'./pages/settings/**',
 		'./pages/settings.+(*)',
 		'./pages/api/**',
-		'./pages/api.+(*)'
+		'./pages/api.+(*)',
+		// Jupyter autosaves are not pages
+		...NOTEBOOK_IGNORE_PATTERNS
 	];
 
 	var watchers = [];
@@ -70,15 +81,38 @@ const runFileWatcher = function (watchPatterns) {
 			path.join(pattern.targetRelative, path.relative(pattern.sourceRelative, p));
 		const pagePath = (p) =>
 			p.includes('pages')
-				? p.endsWith('index.md')
-					? p.replace('index.md', '+page.md')
-					: p.replace('.md', '/+page.md')
+				? isNotebook(p)
+					? notebookPagePath(p)
+					: p.endsWith('index.md')
+						? p.replace('index.md', '+page.md')
+						: p.replace('.md', '/+page.md')
 				: p;
+
+		// Notebooks are pages only under ./pages — elsewhere (sources, static) an
+		// .ipynb is just a file and is copied verbatim.
+		const isNotebookPage = (source) =>
+			pattern.sourceRelative.includes('pages') && isNotebook(source);
 
 		const syncFile = (file) => {
 			const source = sourcePath(file);
 			const target = targetPath(source);
 			const svelteKitPagePath = pagePath(target);
+
+			if (isNotebookPage(source)) {
+				const { warnings, error } = writeNotebookPage({
+					sourcePath: source,
+					pagePath: svelteKitPagePath,
+					templateRoot: TEMPLATE_ROOT
+				});
+				if (error) {
+					console.error(chalk.red(`[!] ${source}: ${error.message}`));
+				}
+				for (const warning of warnings) {
+					console.warn(chalk.yellow(`[notebook] ${source}: ${warning}`));
+				}
+				return;
+			}
+
 			fs.copySync(source, svelteKitPagePath);
 		};
 
@@ -86,6 +120,16 @@ const runFileWatcher = function (watchPatterns) {
 			const source = sourcePath(file);
 			const target = targetPath(source);
 			const svelteKitPagePath = pagePath(target);
+
+			if (isNotebookPage(source)) {
+				removeNotebookPage({
+					sourcePath: source,
+					pagePath: svelteKitPagePath,
+					templateRoot: TEMPLATE_ROOT
+				});
+				return;
+			}
+
 			fs.removeSync(svelteKitPagePath);
 		};
 
