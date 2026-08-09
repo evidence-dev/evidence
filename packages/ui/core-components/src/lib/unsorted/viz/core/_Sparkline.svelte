@@ -1,11 +1,17 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
 	import { init, connect } from 'echarts';
+	import chroma from 'chroma-js';
 	import { browser } from '$app/environment';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ValueError from './ValueError.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
-	import { getColumnFormats, getSparklineConfig, validateSize } from './sparkline.js';
+	import {
+		getColumnFormats,
+		getSparklineConfig,
+		getSparklinePaths,
+		validateSize
+	} from './sparkline.js';
 	import { getThemeStores } from '../../../themes/themes.js';
 
 	const { theme, resolveColor } = getThemeStores();
@@ -18,7 +24,6 @@
 
 	let chartContainer;
 	let chartInstance = null;
-	let staticSVG = ''; // Holds the static SVG markup
 
 	export let data = undefined;
 	export let dateCol = undefined;
@@ -44,6 +49,23 @@
 	let staticSVGSSR;
 	let error;
 
+	// Non-interactive sparklines are drawn as plain SVG rather than by creating an
+	// offscreen ECharts instance per sparkline just to call renderToSVGString().
+	// DataTable renders one sparkline per row, and echarts.init() is roughly 30x
+	// slower in WebKit than in V8, so ~100 sparkline cells put Safari into a ~24s
+	// uninterruptible main-thread task (32.6s on an iPhone) where Chrome is fast
+	// enough to hide it. Nothing is lost: a non-interactive sparkline has no
+	// tooltip, no axis labels and no animation. See getSparklinePaths().
+	let staticPaths = null;
+
+	$: lineColor = $colorStore ?? $theme.colors['base-content-muted'];
+	$: areaColor =
+		type === 'area'
+			? $colorStore
+				? chroma($colorStore).brighten(1.5).hex()
+				: $theme.colors['base-300']
+			: 'transparent';
+
 	// Initialize chart for interactive mode
 	function initializeChart() {
 		if (interactive && chartContainer && !chartInstance) {
@@ -56,24 +78,8 @@
 		}
 	}
 
-	// Initialize the static SVG
 	onMount(() => {
-		if (!interactive) {
-			// Generate static SVG for non-interactive mode
-			const offscreenContainer = document.createElement('div');
-			offscreenContainer.style.width = width + 'px';
-			offscreenContainer.style.height = height + 'px';
-			const tempChart = init(offscreenContainer, 'evidence-light', {
-				renderer: 'svg',
-				height,
-				width
-			});
-			tempChart.setOption(config);
-			staticSVG = tempChart.renderToSVGString();
-			tempChart.dispose();
-		} else {
-			initializeChart();
-		}
+		initializeChart();
 	});
 
 	// Cleanup
@@ -120,7 +126,11 @@
 			$theme
 		);
 
-		if (!browser) {
+		if (!interactive) {
+			staticPaths = getSparklinePaths(sparklineData, type, width, height, yScale);
+		}
+
+		if (!browser && interactive) {
 			// SSR-specific initialization
 			const tempChart = init(null, 'evidence-light', {
 				ssr: true,
@@ -150,34 +160,54 @@
 	$: if (browser && chartInstance && config) {
 		chartInstance.setOption(config, true); // true forces a complete replacement of the options
 	}
-
-	$: if (browser && !interactive) {
-		// Generate static SVG for non-interactive mode
-		const offscreenContainer = document.createElement('div');
-		offscreenContainer.style.width = width + 'px';
-		offscreenContainer.style.height = height + 'px';
-		const tempChart = init(offscreenContainer, 'evidence-light', {
-			renderer: 'svg',
-			height,
-			width
-		});
-		tempChart.setOption(config);
-		staticSVG = tempChart.renderToSVGString();
-		tempChart.dispose();
-	} else {
-		initializeChart();
-	}
 </script>
 
 {#if error}
 	<ValueError {error} />
+{:else if !interactive}
+	<!-- Identical markup on the server and in the browser, so hydration replaces
+	     like with like instead of rebuilding the chart. -->
+	<div class="inline-block align-baseline" style="width: {width}px; height: {height}px;">
+		{#if staticPaths}
+			<svg
+				{width}
+				{height}
+				viewBox="0 0 {width} {height}"
+				xmlns="http://www.w3.org/2000/svg"
+				role="presentation"
+				aria-hidden="true"
+				style="display: block;"
+			>
+				{#each staticPaths.areaPaths as d}
+					<path {d} fill={areaColor} stroke="none" />
+				{/each}
+				<line
+					x1="0"
+					x2={width}
+					y1={staticPaths.baseline}
+					y2={staticPaths.baseline}
+					stroke={$theme.colors['base-300']}
+					stroke-width="0.75"
+				/>
+				{#each staticPaths.bars as bar}
+					<rect x={bar.x} y={bar.y} width={bar.w} height={bar.h} fill={lineColor} />
+				{/each}
+				{#each staticPaths.linePaths as d}
+					<path
+						{d}
+						fill="none"
+						stroke={lineColor}
+						stroke-width="1"
+						stroke-linejoin="round"
+						stroke-linecap="round"
+					/>
+				{/each}
+			</svg>
+		{/if}
+	</div>
 {:else if !browser}
 	<div class="inline-block align-baseline" style="width: {width}px; height: {height}px;">
 		{@html staticSVGSSR}
-	</div>
-{:else if !interactive}
-	<div class="inline-block align-baseline" style="width: {width}px; height: {height}px;">
-		{@html staticSVG}
 	</div>
 {:else}
 	<div
