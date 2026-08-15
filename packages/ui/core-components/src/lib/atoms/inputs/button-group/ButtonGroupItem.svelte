@@ -5,6 +5,7 @@
 <script>
 	import { getButtonGroupContext } from './lib.js';
 	import { getContext } from 'svelte';
+	import { inputValuesMatch } from '../inputValue.js';
 	/** @type {string} */
 	import TabDisplay from '../../../unsorted/ui/Tabs/TabDisplay.svelte';
 	import { getThemeStores } from '../../../themes/themes.js';
@@ -34,7 +35,11 @@
 		update({ valueLabel, value });
 	}
 
-	if (defaultValue === value) {
+	// `defaultValue` comes from markdown and is therefore always a string, while
+	// `value` keeps the type it had in the query (number / bigint / Date). Compare
+	// them by value, otherwise the default never applies and every query using this
+	// input stays unset -- i.e. loading forever.
+	if (defaultValue !== undefined && inputValuesMatch(defaultValue, value)) {
 		update({ valueLabel, value });
 	}
 </script>
@@ -45,7 +50,7 @@
 		label={valueLabel}
 		color={colorStore}
 		on:click={() => update({ valueLabel, value })}
-		activeId={$currentValue?.value}
+		activeId={inputValuesMatch($currentValue?.value, value) ? value : $currentValue?.value}
 	/>
 {:else if display === 'buttons'}
 	<button
@@ -53,7 +58,9 @@
 		class="flex-none py-1 font-medium px-3 text-xs truncate
 		border-r last:border-none border-base-300
 		hover:bg-base-200 focus:z-10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-base-300
-		{$currentValue?.value === value ? 'z-10 bg-base-200 text-primary' : 'z-0 bg-base-100'}"
+		{inputValuesMatch($currentValue?.value, value)
+			? 'z-10 bg-base-200 text-primary'
+			: 'z-0 bg-base-100'}"
 		on:click={() => update({ valueLabel, value })}
 	>
 		{valueLabel}

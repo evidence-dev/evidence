@@ -195,6 +195,26 @@ describe('dropdownOptionStore', () => {
 				await vi.advanceTimersByTimeAsync(100);
 				expect(get(options)[0].selected).toBe(false);
 			});
+			it('should select a numeric option from a string defaultValue written in markdown', async () => {
+				// Markdown props are always strings; query values keep their SQL type.
+				const { addOptions, options } = dropdownOptionStore({
+					defaultValues: ['2026']
+				});
+				addOptions({ value: 2025, label: '2025' }, { value: 2026, label: '2026' });
+				await vi.advanceTimersByTimeAsync(100);
+				expect(get(options).find((o) => o.value === 2026)?.selected).toBe(true);
+				expect(get(options).find((o) => o.value === 2025)?.selected).toBe(false);
+			});
+			it('should select multiple numeric options from string defaultValues (multiselect)', async () => {
+				const { addOptions, options } = dropdownOptionStore({
+					defaultValues: ['1', '3'],
+					multiselect: true
+				});
+				addOptions({ value: 1, label: 'a' }, { value: 2, label: 'b' }, { value: 3, label: 'c' });
+				await vi.advanceTimersByTimeAsync(100);
+				const byValue = Object.fromEntries(get(options).map((o) => [o.value, o.selected]));
+				expect(byValue).toEqual({ 1: true, 2: false, 3: true });
+			});
 			it('should select options as they are added if their values are in defaultValues (multiselect)', async () => {
 				const { addOptions, options } = dropdownOptionStore({
 					defaultValues: [1, 2, 3],
