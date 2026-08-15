@@ -6,6 +6,7 @@
 	import { presets, setButtonGroupContext } from './lib.js';
 	import { writable, readonly } from 'svelte/store';
 	import { getInputContext } from '@evidence-dev/sdk/utils/svelte';
+	import { Unset } from '@evidence-dev/sdk/usql';
 	import { setContext } from 'svelte';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import Info from '../../../unsorted/ui/Info.svelte';
@@ -56,6 +57,30 @@
 		// the assignment to $inputs is necessary to trigger the change on SSR
 		$inputs[name] = v?.value ?? null;
 	}, readonly(valueStore));
+
+	/*
+		A data-driven ButtonGroup only renders its <ButtonGroupItem>s once its own
+		query has resolved, so `defaultValue` is applied long after the queries that
+		depend on this input have been created. Those queries see an unset input,
+		are created with `noResolve`, and never leave their loading state.
+
+		Seed the input synchronously at init instead. The matching ButtonGroupItem
+		still runs later and overwrites this with the correctly typed value from the
+		query; until then the input at least holds the value the author asked for
+		rather than nothing at all.
+
+		Only seed when the input is genuinely unset, so a value restored from another
+		component or from a previous selection is never clobbered.
+	*/
+	if (name && defaultValue !== undefined) {
+		const currentInput = $inputs[name];
+		const inputIsUnset =
+			currentInput === undefined || currentInput === null || currentInput[Unset] === true;
+		if (inputIsUnset) {
+			$valueStore = { value: defaultValue, valueLabel: String(defaultValue) };
+			$inputs[name] = defaultValue;
+		}
+	}
 
 	/////
 	// Query-Related Things

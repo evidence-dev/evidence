@@ -3,6 +3,7 @@ import { derived, get, readonly, writable } from 'svelte/store';
 import { batchUp } from '@evidence-dev/sdk/utils';
 import merge from 'lodash/merge';
 import { z } from 'zod';
+import { inputValuesMatch } from '../inputValue.js';
 
 /** @template T @typedef {import("svelte/store").Readable<T>} Readable<T> */
 /** @template T @typedef {import("svelte/store").Writable<T>} Writable<T> */
@@ -82,15 +83,22 @@ export const dropdownOptionStore = (opts = {}) => {
 		? config.defaultValues
 		: [config.defaultValues];
 
-	const defaults = new Set(defaultValues);
-	if (!config.multiselect && defaults.size > 1) {
-		defaults.clear();
-		if (defaultValues?.length) defaults.add(defaultValues[0]);
+	/*
+		Kept as a list (rather than a Set) so defaults can be matched by value instead
+		of by identity: `defaultValue=2026` arrives from markdown as the string "2026"
+		while the option's value comes out of the query as the number 2026. A Set
+		lookup misses, no option is selected, and every query depending on this input
+		stays unset -- loading forever.
+		@type {(string | number | null | undefined)[]}
+	*/
+	let defaults = [...defaultValues];
+	if (!config.multiselect && defaults.length > 1) {
+		defaults = defaultValues.slice(0, 1);
 		console.debug('Single-select dropdowns only accept one default value.');
 	}
 	if ((config.initialOptions?.length ?? 0) > 0) {
 		// We don't apply anything with defaults
-		defaults.clear();
+		defaults = [];
 	}
 
 	let selectFirst =
@@ -125,9 +133,12 @@ export const dropdownOptionStore = (opts = {}) => {
 							}
 
 							// Apply defaults
-							if (option.value !== null && defaults.has(option.value)) {
-								option.selected = true;
-								defaults.delete(option.value);
+							if (option.value !== null) {
+								const defaultIdx = defaults.findIndex((d) => inputValuesMatch(d, option.value));
+								if (defaultIdx !== -1) {
+									option.selected = true;
+									defaults.splice(defaultIdx, 1);
+								}
 							}
 
 							// Apply defaults for option
