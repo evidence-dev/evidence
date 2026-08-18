@@ -11,7 +11,7 @@ import { readFile, writeFile, readdir, appendFile, mkdir, realpath } from 'node:
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
-import { CONNECTION_TYPES } from '@evidence/core/connection-schema';
+import { CONNECTION_TYPES } from '@evidence/core/connectors/connection-schema';
 import type { MigrationNote } from './transform.ts';
 
 const SUPPORTED_TYPES = new Set([
