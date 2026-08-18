@@ -3,8 +3,10 @@
 
 INTERNAL_URL = "https://github.com/evidence-dev/studio.git"
 
-# TODO: point at the real public repo once decided (EVI-2955).
-PUBLIC_URL = "https://github.com/evidence-dev/oss-sync-test.git"
+# Syncs to the "next" branch for now; flips to "main" when the OSS surface
+# replaces the legacy Evidence codebase there.
+PUBLIC_URL = "https://github.com/evidence-dev/evidence.git"
+PUBLIC_BRANCH = "next"
 
 # The oss/ overlay holds the public repo's root files; the rest of the
 # internal root stays behind.
@@ -50,8 +52,8 @@ core.workflow(
     ),
     destination = git.destination(
         url = PUBLIC_URL,
-        fetch = "main",
-        push = "main",
+        fetch = PUBLIC_BRANCH,
+        push = PUBLIC_BRANCH,
     ),
     origin_files = OSS_FILES,
     destination_files = glob(["**"]),
@@ -65,7 +67,7 @@ core.workflow(
     name = "upstream-pr",
     origin = git.origin(
         url = PUBLIC_URL,
-        ref = "main",
+        ref = PUBLIC_BRANCH,
     ),
     destination = git.destination(
         url = INTERNAL_URL,
