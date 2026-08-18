@@ -259,3 +259,8 @@ export function generateFilterSQL(
 	// unbracketed OR would otherwise escape its scope and neutralise them
 	return `(${filterSQLs.join(` ${state.conjunction} `)})`;
 }
+
+// Order by the column/aggregate, never the `value`/`count` aliases — Snowflake folds a bare `ORDER BY value` to `VALUE`.
+export function buildValueQueryOrder(columnName: string, minimumRecords: number | null): string {
+	return minimumRecords !== null ? `COUNT(*) DESC, ${columnName}` : columnName;
+}

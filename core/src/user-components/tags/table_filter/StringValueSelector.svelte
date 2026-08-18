@@ -6,7 +6,7 @@
 	import { Button } from '../../../shadcn/components/ui/button';
 	import { CheckIcon } from 'lucide-svelte';
 	import type { FilterState, ColumnFilter } from './types';
-	import { generateFilterSQL } from './filterUtils.svelte';
+	import { generateFilterSQL, buildValueQueryOrder } from './filterUtils.svelte';
 	import { Virtualizer, type VirtualizerHandle } from 'virtua/svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { processColumnExpression } from '../../common/sql-expression-utils';
@@ -161,7 +161,7 @@
 			tableExpressionName,
 			columns: [valueProcessed, countProcessed],
 			where: whereClause,
-			order: minimumRecords !== null ? 'count DESC, value' : 'value',
+			order: buildValueQueryOrder(columnName, minimumRecords),
 			limit: 10000
 		};
 	}
