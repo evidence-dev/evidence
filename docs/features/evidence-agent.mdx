@@ -1,0 +1,80 @@
+---
+title: 'Evidence Agent'
+description: 'Shape the Evidence Agent with version-controlled context and skills in the agent/ directory.'
+---
+
+The **Evidence Agent** lets your readers ask data questions in natural language and get analytical answers built from your project. It reads your published reports and dashboards as context, generates new **insights** (analyses written in Evidence Markdown), and can reach the underlying SQL and filter definitions behind your reports. It respects your project's existing [access rules](/features/access-rules) and [page-level access control](/features/page-level-access-control), so readers only ever see data they're allowed to.
+
+You can customize the agent's behaviour with an `agent/` directory at your project root — version-controlled files that ship through the same git workflow as your pages. There are two kinds of customization: **context** (always-loaded instructions) and **skills** (on-demand playbooks the agent loads when a task calls for them).
+
+<Note>The Evidence Agent and its `agent/` authoring tools are available once the Evidence Agent is enabled for your organization.</Note>
+
+## The `agent/` directory
+
+Every new project is scaffolded with the reserved structure:
+
+```
+agent/
+  context/
+    instructions.md   # always-loaded instructions (starter file)
+  skills/             # one subdirectory per skill
+```
+
+`agent/` is a reserved sibling of `pages/`, `queries/`, and `components/`. Files are recognized by **location**, not extension — anything under `agent/context/` is context, anything under `agent/skills/<name>/` is a skill.
+
+## Context
+
+Every file under `agent/context/` is treated as freeform markdown and is **always** included in the Evidence Agent's instructions. Use these files to give the agent the organizational knowledge it can't infer from your data — company targets, business processes, the org chart, metric definitions, the product changelog — and to set the tone and guardrails for how it should answer.
+
+```markdown
+# Workspace context
+
+Our fiscal year starts in February. "Revenue" always means net revenue
+(gross minus refunds). When a reader asks about "active users", use the
+28-day rolling definition from the `active_users` model.
+```
+
+Context replaces the legacy org-level **Custom Instructions** (on the AI Agent settings page) — moving those into `agent/context/` makes them version-controlled and per-project. Across projects a reader can access, each project's context is merged.
+
+## Skills
+
+Skills encode an analytical process directly, so the agent runs it the way your team would — the right follow-up questions, the analytical steps, and how to present results. They load **on demand**, keeping the always-on instructions small. Each skill is a folder under `agent/skills/` containing a `SKILL.md` file:
+
+```
+agent/
+  skills/
+    cohort-analysis/
+      SKILL.md
+```
+
+`SKILL.md` follows the open [Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/agent-skills) format — YAML frontmatter plus a markdown body:
+
+```markdown
+---
+name: cohort-analysis
+description: What this skill does and WHEN to use it — this line is how the agent decides to load it, so be specific.
+---
+
+# Cohort analysis
+
+Step-by-step instructions for running a cohort analysis in this workspace.
+```
+
+Frontmatter requirements:
+
+| Field         | Required | Rules                                            |
+| ------------- | -------- | ------------------------------------------------ |
+| `name`        | Yes      | Lowercase letters and hyphens, max 64 characters |
+| `description` | Yes      | Max 1024 characters                              |
+
+The `description` is the only part of a skill loaded up front — it's how the agent decides whether to open the skill, so write it to say **what the skill does and when to use it**. The body loads only when the agent chooses to use the skill.
+
+<Warning>A `SKILL.md` with missing or invalid frontmatter **blocks publishing**. Fix the errors shown in the editor before you publish. Context files are freeform and are never validated.</Warning>
+
+## Creating agent files
+
+New projects already include a starter `agent/context/instructions.md`. To add more context files or skills, use the **Agent config** menu in the editor's project sidebar — it creates a context file or a skill folder with the right structure and a starter template. You can also add the files directly in git.
+
+## Beyond Evidence Studio
+
+The Evidence Agent is available in Studio's chat, and the same context and skills are exposed to external AI clients (such as Claude and ChatGPT) through the Studio MCP server's [`get_context`](/mcp/studio) tool — so a connected assistant sees the same instructions and available skills as the in-app agent.

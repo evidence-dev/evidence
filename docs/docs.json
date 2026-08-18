@@ -105,6 +105,7 @@
               "features/sql-files",
               "features/page-level-access-control",
               "features/access-rules",
+              "features/evidence-agent",
               "features/translations",
               "features/embedded"
             ]
