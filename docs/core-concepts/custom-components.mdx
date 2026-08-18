@@ -1,0 +1,283 @@
+---
+title: 'Custom Components'
+description: 'Build your own Markdoc tags from markdown files — each component declares typed attributes in frontmatter and can be called from any page like a built-in.'
+---
+
+```jinja
+{% kpi_card data="/queries/orders" value="total" title="Revenue" /%}
+```
+
+A custom component is a markdown file in your project's `components/` folder. Each file becomes its own tag: `components/kpi_card.md` is called as `{% kpi_card /%}`. Use custom components for **parameterised widgets** — charts, KPI cards, tables, or any visual pattern you want to reuse with different data or labels. For verbatim snippets with no parameters (footers, disclaimers), use a [partial](/core-concepts/partials) instead.
+
+## Creating a Component
+
+Click the `+` button on the `components/` folder in the sidebar and select "New Component", or create a file at `components/<name>.md`. The file name becomes the tag name, so it must be a valid identifier: lowercase letters, digits, and underscores (`kpi_card`, not `kpi-card`).
+
+A component has two parts: frontmatter declaring its **attributes**, and a Markdoc body that renders wherever the component is called.
+
+```markdown
+---
+type: component
+description: A formatted KPI card
+attributes:
+  data:
+    type: query
+    required: true
+  value:
+    type: column
+    required: true
+  fmt:
+    type: format
+    default: usd
+  title:
+    type: string
+    default: Untitled
+---
+
+{% big_value data=$data value=$value fmt="{{$fmt}}" title="{{$title}}" /%}
+```
+
+## Declaring Attributes
+
+Every attribute is declared under `attributes:` with a `type:` field — there is exactly one declaration syntax:
+
+```yaml
+attributes:
+  value:
+    type: column        # required — see supported types below
+    required: true      # optional — call sites missing this attribute get an error
+    default: total      # optional — used when the call site omits the attribute
+    description: The column to display   # optional — shown in autocomplete
+    options: [total, subtotal]           # optional — restrict to a fixed set of values
+```
+
+Supported types: `string`, `number`, `boolean`, `column`, `query`, `format`, `sql`, `date_range`, `comparison`, `filter`. Types drive editor behavior at the call site — a `query` attribute gets table autocomplete, a `column` attribute gets column autocomplete, and so on.
+
+A common mistake is writing `value: total` intending "default is total" — that position declares the **type**. The editor flags it on the exact line with the fix.
+
+## Using Attributes in the Body
+
+Attribute values are available as `$name` variables inside the body:
+
+- **In tag attributes**: unquoted `data=$data`, or interpolated inside strings `title="{{$title}} (YTD)"`
+- **In text**: `## {{ $title }}`
+- **In SQL**: `select {{ $value }} as v from ...`
+
+Complex types expose properties: a `date_range` attribute named `period` provides `{{ $period.start }}` and `{{ $period.end }}`.
+
+Attributes can also carry **runtime values**: pass a page input's value at the call site — `{% cat_explorer category="{{ region.value }}" /%}` — and it stays live everywhere the attribute is used. The template flows through: in the component's SQL it becomes a real filter reference (the query re-runs when the input changes), and in text or tag attributes it updates reactively, exactly as if written on the page directly.
+
+Calling the component validates against the schema: missing `required` attributes and unknown attribute names error at the call site while you type, and a typo like `{{ $titel }}` inside the body errors when editing the component.
+
+## Previewing While You Build
+
+While a component file is open, its preview renders standalone — but attributes get their real values from call sites, so an attribute the SQL consumes needs an **authoring fixture** to preview against. Two ways to provide one:
+
+- **`default:`** on the attribute — also applies at call sites that omit the attribute.
+- **`preview:`** block — used ONLY when editing this file, never at call sites. This is the right home for required attributes with no sensible production default:
+
+```yaml
+attributes:
+    data:
+        type: query
+        required: true
+    category:
+        type: string
+        required: true
+preview:
+    data: demo.daily_orders
+    category: Toys
+```
+
+A query that still depends on a value-less attribute is **not executed** — its card explains which values are missing and how to supply them (no raw warehouse parse errors), and the attribute declaration gets a hint. Treat `preview:` as the component's built-in test fixture: with real values set, the standalone preview validates your SQL against the actual schema.
+
+## Where a Component's Data Comes From
+
+Two patterns — pick by whether the data varies per use:
+
+**Data varies per call site** (a reusable widget over arbitrary sources): declare a `query`-type attribute and let each caller pass its source.
+
+```jinja
+{% kpi_card data="/queries/orders" value="total" /%}
+{% kpi_card data="/queries/refunds" value="amount" /%}
+```
+
+**The component owns its data** (it always computes the same thing): embed the SQL directly in the component body and reference it by its bare name within that body.
+
+````markdown
+---
+type: component
+---
+
+```sql revenue
+select sum(total) as total from orders
+```
+
+{% big_value data="revenue" value="total" fmt="usd" /%}
+````
+
+Embedded queries are **private to the component**. They can't collide with page queries or other components' queries, they never appear in autocomplete outside the component, and pages cannot reference them. Query-to-query chaining inside a component works with `{{ other_query }}`. If a private query errors, the message names it as `<component>:<query>` (e.g. `kpi_card:revenue`) so you know where to look. The `:` character is reserved for this — you can't use it in your own query names.
+
+## Common Patterns
+
+### Accept data from the caller
+
+Declare a `query` attribute; each call site points it at a table or SQL file. Give it a `preview:` (or `default:`) so the file previews standalone.
+
+````markdown
+---
+type: component
+attributes:
+    data:
+        type: query
+        required: true
+preview:
+    data: demo.daily_orders
+---
+
+{% big_value data=$data value="count(*)" /%}
+````
+
+### Own your data
+
+Embed the SQL when the component always computes the same thing — it stays private to the component (see "Where a Component's Data Comes From").
+
+### React to a page input — two ways
+
+**Decoupled (recommended):** the caller passes the input's *value*; the component never needs to know the input exists. Works with any input on any page.
+
+````markdown
+<!-- components/sales_panel.md -->
+---
+type: component
+attributes:
+    region_value:
+        type: string
+        required: true
+preview:
+    region_value: north
+---
+
+```sql panel_q
+select sum(total_sales) as total from demo.daily_orders
+where region = '{{ $region_value }}'
+```
+
+{% big_value data="panel_q" value="total" /%}
+
+<!-- On a page -->
+{% dropdown id="region" /%}
+{% sales_panel region_value="{{ region.selected }}" /%}
+````
+
+The value stays live — the query re-runs when the dropdown changes. One accessor distinction to know: `.selected` is the **SQL-quoted** form (`'Clothing'`) — right inside a query, wrong in a heading. For display text use the bare form (`## {{ region }}`) or `{{ region.literal }}` (unquoted); validation hints if you mix them up.
+
+**Named coupling:** reference the page input directly by id inside the component's SQL (`where region = {{ region.selected }}`). Simpler, but the component now *requires* every page to have an input with that id — and validation enforces it: a page using the component without the input gets an error at the call site naming the filter and the fixes. (The component file itself stays quiet about it — the file alone can't know what pages provide.)
+
+### Ship your own input
+
+An input declared in the component body registers on the page like any input, and the component's own SQL can reference it — a fully self-contained filter panel:
+
+````markdown
+---
+type: component
+---
+
+{% dropdown id="region" data="demo.daily_orders" value_column="region" /%}
+
+```sql picked
+select sum(total_sales) as total from demo.daily_orders
+where region = {{ region.selected }}
+```
+
+{% big_value data="picked" value="total" /%}
+````
+
+**The id is page-global — decide up front whether instances share.** The page (and other components) can read `{{ region.selected }}` too, and two copies of this component on one page share the ONE filter: selecting in either card updates both. Sometimes that's what you want (one control, many views). If instances should filter independently, declare the id as an attribute and pass a different value per call site:
+
+```yaml
+attributes:
+    filter_id:
+        type: string
+        default: region
+```
+
+```markdown
+{% dropdown id="{{$filter_id}}" /%}
+```
+
+Validation warns when a fixed-id component is used more than once on a page, so the shared behavior is never a surprise.
+
+### Custom visualizations and JS-created filters
+
+`{% html %}` blocks work inside components — pull the component's own queries with `evidence.query("name")`, receive attribute values via `variables={ x=$x }`, and create page filters from JS with `evidence.filters.create(id, initial)`. See the [html block docs](/components/html) for the full SDK.
+
+## Inputs and Filters Inside Components
+
+A component body can contain inputs (`{% dropdown %}`, `{% range_calendar %}`, etc.). These behave exactly as if they were written on the page: the input registers page-wide under its `id`, syncs to the URL, and the page (or other components) can reference `{{ my_input.value }}`. This works at any nesting depth.
+
+Because the `id` is page-global, dropping the same input-containing component onto a page twice makes both instances share one filter. For a component meant to appear multiple times per page, accept the `id` as an attribute instead.
+
+## Composition and Naming
+
+- Components can use other custom components, built-in tags, and `{% html %}` blocks in their bodies. An `{% html %}` body is NOT interpolated — to use an attribute inside one, pass it on the tag (`{% html variables={ title=$title } %}`) and read `evidence.variables.title` from a script. For plain text, prefer markdown outside the block, where `{{ $title }}` interpolates normally. Validation hints teach both if you forget.
+- Components work inside layout tags like `{% row %}`. One layout caveat: a component bundling a full-width input or an autosized `{% html %}` block won't collapse into narrow row columns as neatly as a bare chart — for tight grids, keep inputs outside the component or give the html block a fixed `height=`.
+- A component **cannot use its own tag** — recursion stops after one level, so self-reference is a validation error.
+- Tag names are project-wide and flat: `components/charts/bar.md` and `components/maps/bar.md` both collapse to `{% bar %}` and collide — both files get an error. A component named after a built-in tag (`value`, `note`, `filter_bar`, …) is dropped in favor of the built-in, with an error on the file.
+
+## Slots: Wrapping Page Content
+
+Render `{% slot /%}` anywhere in a component's body and the component becomes a **container** — everything the caller writes between the opening and closing tags renders at the slot position. No frontmatter flag is needed; the slot's presence is what makes the tag accept children.
+
+```markdown
+<!-- components/warning_box.md -->
+---
+type: component
+attributes:
+    tone:
+        type: string
+        default: info
+        options: [info, success, warning, error]
+---
+
+{% callout type="{{$tone}}" %}
+{% slot /%}
+{% /callout %}
+```
+
+```markdown
+<!-- On a page -->
+{% warning_box tone="warning" %}
+Revenue fell **12%** in EMEA this quarter.
+
+{% big_value data="emea_kpis" value="rev" fmt="usd0" /%}
+{% /warning_box %}
+```
+
+Children can be anything a page can contain — markdown, built-in components, other custom components, `{% html %}` blocks. They are evaluated in the **caller's scope**: their queries and inputs are the page's, and `$variables` in them resolve against the page, not the component. A self-closing call (`{% warning_box /%}`) renders the slot's fallback content — whatever you write between `{% slot %}` and `{% /slot %}` — or nothing.
+
+### Named slots
+
+For multi-region layouts, name the slots and fill them with `{% fill %}`:
+
+```markdown
+<!-- components/metric_card.md -->
+{% row %}
+{% slot name="figure" /%}
+{% slot name="detail" %}_No detail provided._{% /slot %}
+{% /row %}
+```
+
+```markdown
+<!-- On a page -->
+{% metric_card %}
+{% fill slot="figure" %}{% big_value data="kpis" value="rev" /%}{% /fill %}
+{% fill slot="detail" %}{% line_chart data="monthly" x="month" y="rev" /%}{% /fill %}
+{% /metric_card %}
+```
+
+Call-site content outside any `{% fill %}` flows into the unnamed default slot (if the body has one). An unfilled named slot keeps its fallback. Mistakes fail loudly at author time: children passed to a component with no slot error with the fix, and a `{% fill %}` naming a nonexistent slot errors listing the slots that do exist.
+
+## Current Limitations
+
+- **Scalar attribute values**: attributes accept strings/numbers/booleans (plus the typed editor behaviors above) — not arrays or objects. For list-shaped props (a set of series or columns), pass a comma-separated string and split it in the body — e.g. `series="revenue,cost,margin"` with SQL that filters on the parts, or hand it to an `{% html %}` block via `variables=` and `String(evidence.variables.series).split(',')`.

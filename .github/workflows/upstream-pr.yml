@@ -1,0 +1,98 @@
+name: Upstream PR
+
+# Maintainers comment "/upstream" on a PR to replay it into the internal repo.
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  upstream:
+    # Exact command match; association prefilter stops non-members burning runner minutes.
+    if: >-
+      github.event.issue.pull_request &&
+      (github.event.comment.body == '/upstream' || startsWith(github.event.comment.body, '/upstream ')) &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require write access
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMENTER: ${{ github.event.comment.user.login }}
+        run: |
+          perm=$(gh api "repos/${{ github.repository }}/collaborators/${COMMENTER}/permission" -q .permission)
+          if [ "$perm" != "admin" ] && [ "$perm" != "write" ]; then
+            echo "::error::@${COMMENTER} does not have write access; ignoring /upstream"
+            exit 1
+          fi
+
+      - name: Acknowledge with a reaction
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions" \
+            -f content=eyes --silent
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Java 21
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Download copybara
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COPYBARA_RELEASE: v20260727
+        run: |
+          gh release download "$COPYBARA_RELEASE" -R google/copybara \
+            -p 'copybara_deploy.jar' -p 'copybara_deploy.jar.sha256'
+          echo "$(cat copybara_deploy.jar.sha256)  copybara_deploy.jar" | sha256sum -c
+
+      # Written after all third-party actions have run so a repointed action
+      # tag can't read the token from disk.
+      - name: Configure git credentials for copybara
+        env:
+          BOT_TOKEN: ${{ secrets.EVIDENCE_BOT_TOKEN }}
+        run: |
+          printf 'https://x-access-token:%s@github.com\n' "$BOT_TOKEN" > "$HOME/.git-credentials"
+          git config --global credential.helper store
+          git config --global user.name "evidence-bot"
+          git config --global user.email "support@evidence.dev"
+
+      - name: Run copybara import
+        env:
+          PR: ${{ github.event.issue.number }}
+        run: |
+          java -jar copybara_deploy.jar copy.bara.sky upstream-pr "refs/pull/${PR}/head" \
+            --force \
+            --git-destination-push "oss/upstream-pr-${PR}"
+
+      - name: Open internal PR
+        env:
+          GH_TOKEN: ${{ secrets.EVIDENCE_BOT_TOKEN }}
+          PR: ${{ github.event.issue.number }}
+          TITLE: ${{ github.event.issue.title }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+        run: |
+          if gh pr view "oss/upstream-pr-${PR}" -R evidence-dev/studio --json url -q .url; then
+            echo "Internal PR already exists — branch force-updated instead."
+          else
+            gh pr create -R evidence-dev/studio \
+              --head "oss/upstream-pr-${PR}" \
+              --title "$TITLE" \
+              --body "Imported from ${{ github.server_url }}/${{ github.repository }}/pull/${PR} by @${AUTHOR}. On merge this change will sync back to the public repo."
+          fi
+
+      - name: Report back on the public PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.issue.number }}
+        run: |
+          gh pr comment "$PR" -R "${{ github.repository }}" \
+            --body "Imported for internal review, this PR will be updated when it merges."

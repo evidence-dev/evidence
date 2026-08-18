@@ -1,0 +1,139 @@
+---
+title: 'Access Rules'
+description: 'Control which tables and rows each user can see with table restrictions, row-level security rules, and user variables.'
+---
+
+Access rules control what data each user can see in your sources, at two levels:
+
+- **Table restrictions** — restrict whole tables to a chosen set of users.
+- **Row level security (RLS)** — control which rows a user sees within a table.
+
+Both are managed by opening [Access Rules](https://www.evidence.studio/settings/access-rules) in your organization settings.
+
+Access rules apply everywhere a user's queries run, including AI features like viewer chat and dev chat — the AI can only see data the user asking could access themselves.
+
+<Warning>
+	To use access rules with a [Direct Connector](/data-sources#direct-connectors), refer to that connector's documentation.
+</Warning>
+
+## Table Restrictions
+
+A table restriction limits who can query a table. Unrestricted tables are open to everyone in the organization; once a table is restricted, only the users you select can query it — everyone else loses access.
+
+To restrict a table, open [Access Rules](https://www.evidence.studio/settings/access-rules) and click **Add Table Restriction**, then pick the table and select the allowed users. To change who can access a restricted table, open it from the restricted tables list — changes save automatically. Removing a restriction reopens the table to the whole organization.
+
+Restricted tables show a lock badge next to their name in the editor's schema list.
+
+### Example
+
+An `employee_salaries` table holds compensation data that should only be visible to the CEO, the CFO, and the finance team.
+
+1. Open [Access Rules](https://www.evidence.studio/settings/access-rules) and click **Add Table Restriction**.
+2. Pick the `employee_salaries` table.
+3. Select the allowed users: `ceo@example.com`, `cfo@example.com`, and each member of the finance team.
+
+Everyone else in the organization loses access: queries against `employee_salaries` no longer return data for them, and reports built on it show them an error instead of results. New members added after the restriction don't have access to the table until you add them to its allowed users.
+
+## Row Level Security
+
+<Note>Row level security is available on the Enterprise plan.</Note>
+
+Row level security controls which rows of data a user can see in a source. You define a rule on a table and a user variable for each user; a user only sees rows where their variable matches the column named in the rule.
+
+<Note>RLS rules apply per user, through user variables — they can't be assigned to [Groups](/features/page-level-access-control#groups).</Note>
+
+Applying a rule to a source takes two parts:
+
+- **A rule** — specifies which tables are affected, which column determines access, and which user variable is compared against that column.
+- **User variables** — a value set for each user, matched against the rule's column.
+
+A rule applies to everyone or to no one by default. When it applies to no one, you grant access to specific users yourself.
+
+<Note>
+	**User variables can take up to 5 minutes to apply.** During this time, users can't access any rows in tables with RLS rules.
+</Note>
+
+To check a rule before you rely on it, use the **Access Preview** tool: select a table and a user to see how many rows that user can access.
+
+### Example
+
+A `leads` table has a `sales_rep_id` column holding the id of each sales rep. You want every rep to see only their own leads.
+
+| lead_name | deal_stage | sales_rep_id | sales_rep  |
+| --------- | ---------- | ------------ | ---------- |
+| ACME      | Prospect   | 1            | John Doe   |
+| Contoso   | Prospect   | 2            | Jane Smith |
+| Fabrikam  | Proposal   | 2            | Jane Smith |
+
+#### Create a rule
+
+- Column: `sales_rep_id`
+- Operator: `=`
+- User variable: `rep_id` (any name works)
+- Apply to tables: `leads`
+
+<Note>The `IN` and `NOT IN` operators only support string user variables at this time.</Note>
+
+#### Create user variables
+
+1. For John Doe:
+   - Variable: `rep_id` (must match the column above)
+   - Value: `1`
+   - Users: select `john.doe@example.com` from the dropdown
+2. For Jane Smith:
+   - Variable: `rep_id`
+   - Value: `2`
+   - Users: select `jane.smith@example.com` from the dropdown
+
+Now John Doe sees only the rows where `sales_rep_id` is `1`, and Jane Smith only the rows where it is `2`.
+
+#### JSON format
+
+User variables are stored as JSON, and the value type must match the column type in your database.
+
+**String value** — for `=` operators:
+
+```json
+"123"
+```
+
+**Numeric value** — for operators like `>`:
+
+```json
+123
+```
+
+**Numeric array** — for `IN` operators:
+
+```json
+[1, 23, 30]
+```
+
+**String array** — for `IN` operators:
+
+```json
+["abc", "true", "22"]
+```
+
+Here both `true` and `22` are stored as strings, not as a boolean or a number.
+
+**Boolean value**:
+
+```json
+true
+```
+
+<Note>Numeric values are stored as the `UInt64` type.</Note>
+
+#### Access Preview
+
+Select a table and a user — for example `leads` and `john.doe@example.com` — to see their access:
+
+- 33.3% accessible
+- Total rows: 3
+- User can access: 1
+- `john.doe@example.com` is bound by an access rule
+
+## Pair with page level access control
+
+Access rules decide which **tables and rows** a user sees when they query; [Page Level Access Control](/features/page-level-access-control) decides which **pages** they can open. For customer-facing reports where each customer should see only their own data, use them together: per-page access in `access.yaml`, table restrictions and RLS rules on the underlying tables.

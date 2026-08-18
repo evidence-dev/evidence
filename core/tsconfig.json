@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"declaration": true,
+		"declarationDir": "./dist",
+		"outDir": "./dist",
+		"rootDir": "./src",
+		// `geojson` is listed explicitly because map layers use the global GeoJSON
+		// namespace; it used to arrive as a side effect of mapbox-gl's bundled types.
+		"types": ["svelte", "geojson"],
+		"baseUrl": ".",
+		"paths": {
+			"$lib/*": ["../studio/src/lib/*"],
+			"$app/*": ["../studio/node_modules/@sveltejs/kit/src/runtime/app/*"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist"]
+}

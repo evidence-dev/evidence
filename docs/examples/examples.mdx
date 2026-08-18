@@ -1,0 +1,103 @@
+---
+title: 'Examples'
+description: 'Examples of Evidence markdown.'
+---
+
+Below are some examples of Evidence markdown using a data source called `demo.order_details`, with columns `order_id`, `date`, `hour`, `category`, `item_name`, `unit_price`, `quantity`.
+
+## Displaying a table
+
+```markdown
+{% table
+    data="demo.order_details"
+/%}
+```
+
+## Displaying a chart
+
+Note that the `y` attribute is a SQL expression - you can use anything you'd put in a `select` clause.
+
+```markdown
+{% line_chart
+    data="demo.order_details"
+    x="date"
+    y="sum(unit_price * quantity) as sales"
+    date_grain="month"
+/%}
+```
+
+## Displaying a pie chart
+
+The pie chart component creates donut-style charts by default. Use `inner_radius="0%"` for a full pie.
+
+```markdown
+<!-- Donut style (default) -->
+
+{% pie_chart
+    data="demo.order_details"
+    category="category"
+    value="sum(unit_price * quantity)"
+    title="Sales by Category"
+/%}
+
+<!-- Full pie style -->
+
+{% pie_chart
+    data="demo.order_details"
+    category="category"
+    value="sum(unit_price * quantity)"
+    title="Sales by Category"
+    inner_radius="0%"
+/%}
+```
+
+## Pivot table
+
+```markdown
+{% table
+	data="demo.order_details"
+	dimensions=["year(date) as date_year"]
+	measures=["sum(quantity) as sum_quantity"]
+	pivots=["category"]
+	subtotals=false
+/%}
+```
+
+## Inline query
+
+````markdown
+```sql my_inline_query
+select
+    category,
+    sum(unit_price * quantity) as sales
+from demo.order_details
+group by all
+order by sales desc
+```
+
+{% table
+    data="my_inline_query"
+/%}
+````
+
+## Aggregations
+
+Some attributes (like `x`, `y`, and `value`) expect SQL expressions - often you'll want to use an aggregation function on one of your columns (e.g. `sum`, `count`, `avg`, etc) rather than display every row.
+
+```markdown
+Orders: {% value
+    data="demo.order_details"
+    value="count(order_id) as orders"
+/%}
+
+Sales: {% value
+    data="demo.order_details"
+    value="sum(unit_price * quantity) as sales"
+    fmt="usd0"
+/%}
+
+Units sold: {% value
+    data="demo.order_details"
+    value="sum(quantity) as units_sold"
+/%}
+```

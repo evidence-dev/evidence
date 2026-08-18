@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+@import '@evidence/core/styles/base.css';
+
+@plugin '@tailwindcss/typography';
+@config '../tailwind.config.ts';
+
+/* Include core in Tailwind's content scanning */
+@source '../../core/src/**/*.{svelte,ts,js}';

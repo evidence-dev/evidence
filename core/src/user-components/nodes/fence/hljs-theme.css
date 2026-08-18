@@ -1,0 +1,59 @@
+/* Syntax highlighting driven by --syntax-* tokens (see SYNTAX_PALETTES).
+   The palette is selected by the code block's SURFACE (bg-muted) — set per
+   app-mode in base.css and overridden per themed-surface by generateThemeCSS —
+   NOT the app's .dark class, so a dark themed background in light mode still
+   gets readable light-on-dark colors. */
+.hljs {
+	color: var(--syntax-text);
+}
+
+.hljs-tag {
+	color: var(--syntax-tag);
+	font-weight: bold;
+}
+
+.hljs-attr {
+	color: var(--syntax-attr);
+}
+
+.hljs-string {
+	color: var(--syntax-string);
+}
+
+.hljs-number,
+.hljs-literal {
+	color: var(--syntax-number);
+}
+
+.hljs-punctuation,
+.hljs-operator {
+	color: var(--syntax-punctuation);
+}
+
+.hljs-keyword,
+.hljs-selector-tag {
+	color: var(--syntax-keyword);
+	font-weight: bold;
+}
+
+.hljs-function,
+.hljs-section {
+	color: var(--syntax-function);
+}
+
+.hljs-link {
+	color: var(--syntax-link);
+	text-decoration: underline;
+}
+
+.hljs-comment {
+	font-style: italic;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}

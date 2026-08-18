@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+build/
+.svelte-kit/
+
+# Compiled executable
+evd
+evidence
+dist/
+dist-static/
+.release-staging/
+
+# Environment
+.env
+.env.local
+
+# Generated files
+src/lib/docs/docs-bundle.generated.ts
+static/sandbox/
+
+# Misc
+.DS_Store
+*.log
+# Samples project
+microslop

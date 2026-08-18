@@ -1,0 +1,268 @@
+---
+title: 'Microsoft Fabric'
+description: 'Query your Microsoft Fabric Warehouse directly from Evidence without syncing data.'
+---
+
+The Microsoft Fabric direct connector lets Evidence run queries live against a Fabric Warehouse (or Lakehouse SQL analytics endpoint) over its SQL endpoint.
+
+<Note>
+This is the **direct** connector. It connects to the Fabric **SQL endpoint** using the TDS protocol (the same protocol as Azure SQL / SQL Server), so any table or view exposed through the endpoint is queryable live.
+</Note>
+
+## Connecting
+
+You'll register an Azure AD (Microsoft Entra ID) application to act as a service principal, grant that service principal access to your Fabric workspace and Warehouse, find the Warehouse's SQL connection string, then enter the credentials in Evidence.
+
+### Prerequisites
+
+- A **Fabric workspace** containing a **Warehouse** (or a Lakehouse with a SQL analytics endpoint) that holds the data you want Evidence to query.
+- Permission to **register applications** in Microsoft Entra ID (Azure AD), or an admin who can do it for you.
+- Permission to **add members to the Fabric workspace** (Admin or Member role on the workspace).
+- Your Entra ID **tenant ID**.
+
+### 1. Register an Azure AD application (service principal)
+
+Evidence authenticates as a service principal — an app identity in your Entra ID tenant — rather than as a human user. This keeps the credential headless and scoped.
+
+<Steps>
+  <Step title="Create the app registration">
+    In the [Azure portal](https://portal.azure.com), go to **Microsoft Entra ID → App registrations → New registration**. Give it a name like `Evidence Fabric` and register it (no redirect URI is needed).
+  </Step>
+  <Step title="Record the IDs">
+    On the app's **Overview** page, copy the **Application (client) ID** and the **Directory (tenant) ID**. You'll enter both in Evidence.
+  </Step>
+  <Step title="Create a client secret">
+    Go to **Certificates & secrets → New client secret**, set an expiry, and **Add**. Copy the secret **Value** immediately — it's only shown once.
+  </Step>
+</Steps>
+
+### 2. Allow service principals to use the Fabric APIs
+
+Service-principal access to Fabric is gated by a tenant setting. A Fabric admin must, in the [Fabric Admin portal](https://app.fabric.microsoft.com) under **Tenant settings → Developer settings**, enable **Service principals can use Fabric APIs** (either for the whole tenant or for a security group that contains your app). Add the app to that security group if the setting is scoped to a group.
+
+### 3. Grant the service principal access to the Warehouse
+
+Add the service principal as a member of the Fabric workspace so it can read the Warehouse.
+
+<Steps>
+  <Step title="Add the SP to the workspace">
+    Open the workspace in Fabric, click **Manage access → Add people or groups**, search for your app registration's name, and grant it the **Viewer** role (sufficient for read-only querying). Use **Member** or **Contributor** only if you need broader access.
+  </Step>
+  <Step title="(Optional) Grant object-level SQL permissions">
+    The workspace role above is usually enough. To scope access to specific tables/views instead, connect to the Warehouse SQL endpoint as an admin and grant the service principal explicitly. The SP appears as a SQL principal named after its **Application (client) ID**:
+
+    <Accordion title="SQL to grant SELECT to the service principal">
+
+    ```sql
+    -- Create a database user mapped to the Entra ID app, then grant read access.
+    -- Replace <client-id> with the app's Application (client) ID.
+    CREATE USER [<client-id>] FROM EXTERNAL PROVIDER;
+
+    -- Grant SELECT on the whole warehouse...
+    GRANT SELECT TO [<client-id>];
+
+    -- ...or scope to a single schema instead:
+    -- GRANT SELECT ON SCHEMA::dbo TO [<client-id>];
+    ```
+
+    </Accordion>
+  </Step>
+</Steps>
+
+### 4. Find the SQL endpoint host
+
+In Fabric, open the Warehouse, click the **Settings** (gear) icon, and open **SQL endpoint** (or **SQL connection string**). Copy the **server / SQL connection string** — it looks like:
+
+```
+<workspace-id>.datawarehouse.fabric.microsoft.com
+```
+
+This host, plus the **database name** (the Warehouse name), is what you enter in Evidence.
+
+### 5. Configure the connector in Evidence
+
+<Steps>
+  <Step title="Open the connectors page">
+    Go to **Connectors** in the sidebar. In the **Warehouse** card at the top, select **Microsoft Fabric**.
+  </Step>
+  <Step title="Enter connection details">
+    Fill in the **SQL Endpoint** (the host), the **Database** (Warehouse name), and the service-principal credentials: **Tenant ID**, **Client ID**, and **Client secret**.
+  </Step>
+  <Step title="Test and save">
+    Click **Test Connection**. Once it passes, click **Save**.
+  </Step>
+</Steps>
+
+{/* GENERATED:CONNECTION-OPTIONS START */}
+
+## Configuration reference
+
+<Tabs>
+  <Tab title="Studio">
+
+    #### Credentials
+
+    <ResponseField name="Tenant ID" type="string" required>
+      Azure Entra (Active Directory) tenant ID that owns the service principal.
+    </ResponseField>
+    <ResponseField name="Client ID" type="string" required>
+      Application (client) ID of the Entra service principal used to authenticate.
+    </ResponseField>
+    <ResponseField name="Client secret" type="string">
+      Client secret for the service principal.
+    </ResponseField>
+    <ResponseField name="SQL endpoint" type="string" required>
+      Fabric SQL connection string / endpoint host, e.g. xxxxxxxx.datawarehouse.fabric.microsoft.com.
+    </ResponseField>
+    <ResponseField name="Database" type="string" required>
+      Warehouse or Lakehouse SQL analytics endpoint name to query.
+    </ResponseField>
+    <ResponseField name="Default schema" type="string">
+      Schema used when queries reference unqualified table names. Default: `"dbo"`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="Schemas" type="string[]">
+      Allowlist of schemas exposed to the editor and schema browser. Default: `[]`.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="Session context" type="{ fabricContextKey: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
+      Evidence identity → Fabric SESSION_CONTEXT key, SET per query for RLS. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+  <Tab title="CLI (connection.yaml)">
+
+    ```yaml
+    type: fabric
+    tenantId: 00000000-0000-0000-0000-000000000000
+    clientId: 11111111-1111-1111-1111-111111111111
+    server: my-workspace.datawarehouse.fabric.microsoft.com
+    database: ANALYTICS
+    # defaultSchema: dbo
+    # schemas: [dbo, dev_alice]
+    # session_context:
+    #   - fabricContextKey: evidence_user_email
+    #     evidenceVariable: user.email
+    ```
+
+    #### Credentials
+
+    <ResponseField name="tenantId" type="string" required>
+      Azure Entra (Active Directory) tenant ID that owns the service principal.
+    </ResponseField>
+    <ResponseField name="clientId" type="string" required>
+      Application (client) ID of the Entra service principal used to authenticate.
+    </ResponseField>
+    <ResponseField name="clientSecret" type="string">
+      Client secret for the service principal.
+    </ResponseField>
+    <ResponseField name="server" type="string" required>
+      Fabric SQL connection string / endpoint host, e.g. xxxxxxxx.datawarehouse.fabric.microsoft.com.
+    </ResponseField>
+    <ResponseField name="database" type="string" required>
+      Warehouse or Lakehouse SQL analytics endpoint name to query.
+    </ResponseField>
+    <ResponseField name="defaultSchema" type="string">
+      Schema used when queries reference unqualified table names. Default: `"dbo"`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="schemas" type="string[]">
+      Allowlist of schemas exposed to the editor and schema browser. Default: `[]`.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="session_context" type="{ fabricContextKey: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
+      Evidence identity → Fabric SESSION_CONTEXT key, SET per query for RLS. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+</Tabs>
+
+{/* GENERATED:CONNECTION-OPTIONS END */}
+
+## Row-Level Security
+
+Evidence supports row-level security on the Microsoft Fabric direct connector using Fabric's native [security policies](https://learn.microsoft.com/fabric/data-warehouse/row-level-security) combined with **session context**.
+
+### How it works
+
+Before each query, Evidence calls `sp_set_session_context` to stamp the current viewer's identity (for example their email) into the session under a key you choose, such as `evidence_user_email`. A **security policy** on your tables adds an inline table-valued function as a filter predicate; that function reads the value back with `SESSION_CONTEXT(N'evidence_user_email')` and returns only the rows the viewer is allowed to see.
+
+Because the predicate runs inside Fabric, the filter is enforced on the server — Evidence can never see rows the policy excludes.
+
+### Setup
+
+The example below filters a `sales` table so each viewer only sees rows whose `owner_email` matches their Evidence email. Substitute your own table, column, and matching logic.
+
+<Steps>
+  <Step title="Map the Evidence identity to a session key">
+    Add a mapping from a Fabric session-context key to an Evidence identity
+    attribute. Today this is configured in your `connection.yaml`'s
+    `session_context` block (a Studio editor is coming):
+
+    ```yaml
+    session_context:
+      - fabricContextKey: evidence_user_email
+        evidenceVariable: user.email
+    ```
+
+    Evidence will run `EXEC sp_set_session_context @key = N'evidence_user_email', @value = '<viewer-email>', @read_only = 1` before every query. The `@read_only = 1` locks the value for that connection, so the query itself cannot re-set the key and impersonate another viewer. Supported identities are `user.email`, `user.id`, `user.name`, and `organization.id`.
+  </Step>
+  <Step title="Create the predicate function">
+    Create an inline table-valued function that returns a row when the session value matches. It must live in a schema the security policy can reference (here `Security`).
+
+    ```sql
+    CREATE SCHEMA Security;
+    GO
+
+    CREATE FUNCTION Security.fn_rls_owner_email(@owner_email AS sysname)
+        RETURNS TABLE
+    WITH SCHEMABINDING
+    AS
+        RETURN
+            SELECT 1 AS fn_result
+            WHERE @owner_email = CAST(SESSION_CONTEXT(N'evidence_user_email') AS sysname);
+    GO
+    ```
+  </Step>
+  <Step title="Attach a security policy">
+    Bind the predicate to the column it filters on with a `CREATE SECURITY POLICY`. A `FILTER PREDICATE` silently drops non-matching rows from `SELECT`/`UPDATE`/`DELETE`.
+
+    ```sql
+    CREATE SECURITY POLICY Security.OwnerEmailPolicy
+    ADD FILTER PREDICATE Security.fn_rls_owner_email(owner_email)
+        ON dbo.sales
+    WITH (STATE = ON);
+    GO
+    ```
+
+    Add an `ADD FILTER PREDICATE ... ON <table>` line for every table that shares the `owner_email` column.
+  </Step>
+  <Step title="Decide on a fallback for unassigned users">
+    With the policy on, a viewer whose email matches no row sees zero rows. If you instead want users without a mapping (for example admins) to see everything, broaden the predicate — e.g. also return a row when the session value is in an allowlist:
+
+    ```sql
+    -- inside the function body:
+    WHERE @owner_email = CAST(SESSION_CONTEXT(N'evidence_user_email') AS sysname)
+       OR CAST(SESSION_CONTEXT(N'evidence_user_email') AS sysname) IN (N'admin@example.com');
+    ```
+
+    Leaving it strict is the more secure default, but then every viewer needs a matching row.
+  </Step>
+</Steps>
+
+## Security Considerations
+
+Evidence executes queries against your Fabric Warehouse. Take pragmatic steps to protect it against misuse, whether accidental or malicious.
+
+1. Grant the service principal the **Viewer** workspace role (read-only), not Member/Admin.
+2. Scope SQL `GRANT SELECT` to specific schemas or tables rather than the whole warehouse where practical.
+3. Rotate the client secret on a schedule and set a short expiry.
+4. Enable Fabric workspace [monitoring / audit logs](https://learn.microsoft.com/fabric/admin/track-user-activities) and alert on unusually large scans or DDL/DCL by the service principal (it should never run any).

@@ -1,0 +1,114 @@
+diff --git a/lib/component/axis/AxisBuilder.js b/lib/component/axis/AxisBuilder.js
+index f33733bb975274beefdbe0fe2ba5bab8e4f7aaaf..9eaf4fa93f7472417d90e15496b096ea653bb013 100644
+--- a/lib/component/axis/AxisBuilder.js
++++ b/lib/component/axis/AxisBuilder.js
+@@ -548,6 +548,31 @@ var builders = {
+       }),
+       z2: 1
+     });
++    // Evidence patch: nameTextStyle.z lifts the axis name above series without
++    // dragging the rest of the axis (gridlines) along; lineJoin/lineCap smooth
++    // textBorder halo strokes (forwarded to TSpans by our zrender patch).
++    var nameZ = textStyleModel.get('z');
++    if (nameZ != null) {
++      textEl.z = nameZ;
++      // Opt out of traverseUpdateZ/doUpdateZ, which would stomp this z with
++      // the axis component's own z (0) after the view renders.
++      textEl.ignoreModelZ = true;
++    }
++    var nameLineJoin = textStyleModel.get('lineJoin');
++    if (nameLineJoin != null) {
++      textEl.style.lineJoin = nameLineJoin;
++    }
++    var nameLineCap = textStyleModel.get('lineCap');
++    if (nameLineCap != null) {
++      textEl.style.lineCap = nameLineCap;
++    }
++    // backgroundZ paints the name's background box at its own z (our zrender
++    // Text patch): below series but above gridlines, so the box cuts gridlines
++    // (including between words) without punching a hole in the data.
++    var nameBackgroundZ = textStyleModel.get('backgroundZ');
++    if (nameBackgroundZ != null) {
++      textEl.style.backgroundZ = nameBackgroundZ;
++    }
+     graphic.setTooltipConfig({
+       el: textEl,
+       componentModel: axisModel,
+diff --git a/lib/component/dataZoom/AxisProxy.js b/lib/component/dataZoom/AxisProxy.js
+index c56ce65052d02ef542ff77c2a11a719bacb31022..52d256eab8c0f8a659e6c3267c21ec38a438593c 100644
+--- a/lib/component/dataZoom/AxisProxy.js
++++ b/lib/component/dataZoom/AxisProxy.js
+@@ -48,6 +48,7 @@ import { getAxisMainType, isCoordSupported } from './helper.js';
+ import { ensureExtentAscSimply, SINGLE_REFERRING } from '../../util/model.js';
+ import { isOrdinalScale, isTimeScale } from '../../scale/helper.js';
+ import { AXIS_EXTENT_INFO_BUILD_FROM_DATA_ZOOM, scaleRawExtentInfoCreate } from '../../coord/scaleRawExtentInfo.js';
++import { getStackedDimension } from '../../data/helper/dataStackHelper.js';
+ /**
+  * Operate single axis.
+  * One axis can only operated by one axis operator.
+@@ -321,6 +322,9 @@ var AxisProxy = /** @class */function () {
+       if (!dataDims.length) {
+         return;
+       }
++      each(dataDims, function (dim, index) {
++        dataDims[index] = getStackedDimension(seriesData, dim);
++      });
+       if (filterMode === 'weakFilter') {
+         var store_1 = seriesData.getStore();
+         var dataDimIndices_1 = map(dataDims, function (dim) {
+diff --git a/lib/data/SeriesData.js b/lib/data/SeriesData.js
+index c92a07b87ee4e95a1cd1a804c4fc5af7ff2f6e94..a10247f242b3343ff69f0ccc6d71f8140a16fd24 100644
+--- a/lib/data/SeriesData.js
++++ b/lib/data/SeriesData.js
+@@ -588,7 +588,12 @@ var SeriesData = /** @class */function () {
+         throw new Error('Do not supported yet');
+       }
+     }
+-    var rawIndex = invertedIndices && invertedIndices[value];
++    var rawIndex;
++    if (invertedIndices instanceof Map) {
++      rawIndex = invertedIndices.get(value);
++    } else {
++      rawIndex = invertedIndices && invertedIndices[value];
++    }
+     if (rawIndex == null || isNaN(rawIndex)) {
+       return INDEX_NOT_FOUND;
+     }
+@@ -892,7 +897,6 @@ var SeriesData = /** @class */function () {
+       var invertedIndicesMap = data._invertedIndicesMap;
+       zrUtil.each(invertedIndicesMap, function (invertedIndices, dim) {
+         var dimInfo = data._dimInfos[dim];
+-        // Currently, only dimensions that has ordinalMeta can create inverted indices.
+         var ordinalMeta = dimInfo.ordinalMeta;
+         var store = data._store;
+         if (ordinalMeta) {
+@@ -907,6 +911,14 @@ var SeriesData = /** @class */function () {
+             invertedIndices[store.get(dimInfo.storeDimIndex, i)] = i;
+           }
+         }
++        else if (dimInfo.type === 'time') {
++          var timeInvertedIndices = invertedIndicesMap[dim] = new Map();
++          for (var i = 0; i < store.count(); i++) {
++            var timeValue = store.get(dimInfo.storeDimIndex, i);
++            // Only support the case that all values are distinct.
++            timeInvertedIndices.set(timeValue, i);
++          }
++        }
+       });
+     };
+     getIdNameFromStore = function (data, dimIdx, idx) {
+diff --git a/lib/data/helper/dataStackHelper.js b/lib/data/helper/dataStackHelper.js
+index 6cdba1a5ab7a3a962e195b53e49f0d264726ebc8..2939ade8ee989ff14497e33620ec4c6604f618a8 100644
+--- a/lib/data/helper/dataStackHelper.js
++++ b/lib/data/helper/dataStackHelper.js
+@@ -101,8 +101,8 @@ export function enableDataStack(seriesModel, dimensionsInput, opt) {
+   });
+   each(dimensionDefineList, function (dimensionInfo, index) {
+     if (mayStack && !dimensionInfo.isExtraCoord) {
+-      // Find the first ordinal dimension as the stackedByDimInfo.
+-      if (!byIndex && !stackedByDimInfo && dimensionInfo.ordinalMeta) {
++      // Find the first ordinal or time dimension as the stackedByDimInfo.
++      if (!byIndex && !stackedByDimInfo && (dimensionInfo.ordinalMeta || dimensionInfo.type === 'time')) {
+         stackedByDimInfo = dimensionInfo;
+       }
+       // Find the first stackable dimension as the stackedDimInfo.

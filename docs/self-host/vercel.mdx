@@ -1,0 +1,87 @@
+---
+title: 'Self Host on Vercel'
+sidebarTitle: 'Vercel'
+description: 'Self-host Evidence on Vercel Container Images with a Dockerfile.'
+---
+
+Vercel runs container images on [Vercel Functions](https://vercel.com/docs/functions/container-images) with autoscaling and Active CPU pricing.
+
+<Steps>
+  <Step title="Add a Dockerfile.vercel">
+    ```docker filename="Dockerfile.vercel"
+    FROM evidencedev/serve:latest
+    COPY --chown=evidence:evidence . /project
+    ```
+
+  </Step>
+  <Step title="Modify and commit connection.yaml">
+    The project must use a [direct connector](/cli/connections), with secrets replaced by `${VAR}` environment references:
+
+    ```yaml filename="connection.yaml"
+    type: snowflake
+    account: xy12345.us-east-1
+    user: ${SNOWFLAKE_USER}
+    private_key: ${SNOWFLAKE_PRIVATE_KEY}
+    warehouse: COMPUTE_WH
+    database: ANALYTICS
+    ```
+
+    `connection.yaml` is gitignored by default. Once its secrets are `${VAR}` placeholders, remove it from `.gitignore` and commit it — the container reads it at runtime.
+
+  </Step>
+  <Step title="Deploy">
+    <Tabs>
+      <Tab title="Using the Vercel UI">
+        Go to [vercel.com/new](https://vercel.com/new) and import the project's GitHub repo.
+
+        In the **Environment Variables** section of the import screen, add:
+
+        - `EVIDENCE_BASIC_USER` — HTTP Basic Auth username
+        - `EVIDENCE_BASIC_PASSWORD` — HTTP Basic Auth password
+        - every `${VAR}` referenced in `connection.yaml`, here `SNOWFLAKE_USER` and `SNOWFLAKE_PRIVATE_KEY`
+
+        Click **Deploy**.
+      </Tab>
+      <Tab title="Using the Vercel CLI">
+        Create the project:
+
+        ```bash
+        vercel link
+        ```
+
+        Accept the defaults — "No framework detected" is expected.
+
+        Set the environment variables:
+
+        ```bash
+        vercel env add SNOWFLAKE_USER production
+        vercel env add SNOWFLAKE_PRIVATE_KEY production
+        vercel env add EVIDENCE_BASIC_USER production
+        vercel env add EVIDENCE_BASIC_PASSWORD production
+        ```
+
+        Repeat with `preview` to make preview deployments work too. Then deploy:
+
+        ```bash
+        vercel deploy --prod
+        ```
+
+        For automatic deploys on every push, connect the repo:
+
+        ```bash
+        vercel git connect
+        ```
+
+        Pushes to the default branch then deploy to production; other branches and PRs get preview URLs.
+      </Tab>
+    </Tabs>
+
+    No `PORT` variable is needed — Vercel provides one and the image binds to it automatically.
+
+  </Step>
+</Steps>
+
+## Notes
+
+- Container Images are in Beta on Vercel.
+- Functions scale to zero when idle; the first request after idle incurs a cold start.

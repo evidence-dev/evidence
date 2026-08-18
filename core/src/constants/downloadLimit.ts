@@ -1,0 +1,1 @@
+export const MAX_DOWNLOAD_LIMIT = 500000;

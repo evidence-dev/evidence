@@ -1,0 +1,93 @@
+---
+title: 'Partials'
+description: 'Partials allow you to define reusable sections of content that can be included across multiple pages in your project.'
+---
+
+```jinja
+{% partial file="new-partial" /%}
+```
+
+## Creating Partials
+
+Partials are created as regular markdown files in your project structure. To create a partial, click the + button in the sidebar of a project and select "New Partial".
+
+Then add the content you want to reuse to the partial.
+
+## Referencing Partials
+
+Reference partials in your markdown by using the `{% partial %}` tag.
+
+```jinja
+{% partial file="/partials/new-partial" /%}
+```
+
+To access from a slash command start typing `/partial`.
+
+### Path Resolution
+
+`file` is a project-relative path. **A leading slash means "from the project root"**; without it, the path resolves relative to the page that's referencing the partial.
+
+```
+partials/
+    ├── new-partial        # Referenced as file="/partials/new-partial"
+    └── components/
+        └── footer         # Referenced as file="/partials/components/footer"
+```
+
+For a page at `pages/home`, `file="footer"` would resolve to `pages/footer` (the page's own directory) — almost certainly not what you want. **Use the leading slash** to make references unambiguous and resilient to the page being moved.
+
+Legacy single-tree projects (no `pages/` / `partials/` / `queries/` split) accept the bare form because there's no relative-resolution layer there.
+
+## Naming Conventions
+
+Partial filenames support letters, numbers, underscores, and hyphens. Names like `my_partial` or `my-partial` are stored as you typed them, so the file you create in the sidebar matches the reference you write in markdown (`{% partial file="my_partial" /%}`) and the on-disk filename if your project is synced to GitHub.
+
+Spaces are normalized to hyphens (`My Partial` → `my-partial`); other punctuation is stripped.
+
+## Variables
+
+Partials have an isolated scope for [variables](/core-concepts/variables). They can be defined in frontmatter, or passed as variables.
+
+### Frontmatter
+
+Partials can define their own variables using frontmatter at the top of the partial file:
+
+```markdown
+---
+title: Developments in Technology
+category: Technology
+---
+
+<!-- Available in partial:              -->
+<!-- $title: Developments in Technology -->
+<!-- $category: Technology              -->
+```
+
+### Passing Variables
+
+You can pass variables to partials when referencing them. Variables of the same name will override those defined in the partial's frontmatter.
+
+```markdown
+---
+title: Developments in Data Tooling
+category: Technology
+---
+
+{% partial
+    file="my_partial"
+    variables={
+        title = "New Data Tools"
+        main_category = $category
+    }
+/%}
+
+<!-- Available in partial:      -->
+<!-- $title: New Data Tools     -->
+<!-- $main_category: Technology -->
+```
+
+### Scoping Rules
+
+- **Isolation**: Partials cannot access variables from the parent page unless explicitly passed
+- **Precedence**: Passed variables take precedence over frontmatter variables
+- **Fallback**: If no variable is provided, the partial uses its frontmatter variable

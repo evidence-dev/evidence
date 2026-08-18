@@ -1,0 +1,62 @@
+---
+title: 'Page Settings'
+description: 'Set a page title, layout, theme, and other per-page settings using YAML frontmatter at the top of a page.'
+---
+
+A page's settings live in a block of YAML **frontmatter** at the top of the file, delimited by `---`. They set the page's title and can override the project-wide defaults (from [`evidence.config.yaml`](/features/project-settings)) for that page only.
+
+```markdown
+---
+title: My Page
+page_width: full
+cards: true
+sidebar_position: 2
+auto_refresh: 300000
+---
+
+# Page content here
+```
+
+Most pages only need a `title`. Add other keys to override a setting for that page; anything you leave out is inherited from the project.
+
+## Supported keys
+
+| Key | Type | Description |
+| --- | --- | --- |
+| `title` | string | The page's display name (used in the sidebar, breadcrumbs, and tab title). |
+| `page_width` | `article` \| `full` | Override the project's page width for this page. |
+| `cards` | boolean | Override whether components are wrapped in cards. |
+| `table_of_contents` | boolean | Override whether the table-of-contents sidebar is shown. |
+| `auto_refresh` | number (ms) | Override how often the page re-runs its queries. `0` disables it. |
+| `sidebar_position` | number | Order the page within its sidebar group (lower numbers first). Page-only — not a project default. |
+| `icon` | string | The icon shown next to the page in the sidebar. Page-only. |
+| `theme` | object | Per-page [theme](/features/themes) overrides (colors, palettes, scales). See below. |
+| `type` | `partial` | Marks the file as a [partial](/core-concepts/partials). Only used for partials. |
+
+### Inheritance
+
+The layout keys (`page_width`, `cards`, `table_of_contents`, `auto_refresh`) override the project's `layout` in [`evidence.config.yaml`](/features/project-settings) for that page.
+
+`sidebar_position` and `icon` are page-only settings; they have no project-wide default.
+
+### `theme`
+
+Per-page theme overrides are nested under `theme:`, mirroring the structure of [`theme.yaml`](/features/project-settings#theme-yaml). Anything you set here overrides the project theme for this page only; anything you leave out is inherited.
+
+```markdown
+---
+title: Revenue
+theme:
+  colors:
+    base:
+      light: '#ffffff'
+      dark: '#0b1020'
+  colorPalettes:
+    default:
+      light: ['#154886', '#45a1bf']
+---
+```
+
+## Frontmatter variables
+
+Any key that isn't one of the settings above is treated as your own custom value and preserved as-is. This is how **page variables** are defined — in the same frontmatter block, alongside your page settings — and then referenced elsewhere on the page with `{{ $my_var }}`. See [Variables → In Frontmatter](/core-concepts/variables#in-frontmatter).

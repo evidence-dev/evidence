@@ -1,1 +1,0 @@
-select category from needful_things.orders group by category

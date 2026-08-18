@@ -1,1 +1,0 @@
-select * from needful_things.marketing_spend

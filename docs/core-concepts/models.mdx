@@ -1,0 +1,233 @@
+---
+title: 'Models'
+description: 'Transform and combine your data with SQL models that run automatically in the background.'
+---
+
+<Warning>
+	Models are currently in beta and are available on Team, Pro, and Enterprise plans.
+</Warning>
+
+Models let you write SQL queries that run in the background and materialize the results. This enables you to prepare optimized, reusable datasets for your reports without slowing down your analysis.
+
+Once created, models are available to use just like sources throughout Evidence - in visualizations, the SQL console, Explore, and anywhere else you reference data.
+
+## When to use models
+
+Models are ideal for:
+
+- **Joining sources together** - Combine data from multiple sources or databases into a single clean table
+- **Type casting** - Convert data types ahead of time so your reports don't need to handle it
+- **Reusable logic** - Centralize calculations and business logic in one place instead of repeating it across reports
+- **Pre-running large queries** - Execute heavy transformations once instead of on every page load
+- **Clean report tables** - Create simple, well-structured tables that are easy to work with when building visualizations
+
+If you have large, complex inline queries on your pages, these might be candidates for models.
+
+## Creating a model
+
+1. Navigate to the **Models** tab in the sidebar
+2. Click **New Model**
+3. Name your model - this is how you'll reference it in your reports
+4. Write your SQL query in the editor
+5. Click **Save** to create the model
+
+Your model will begin running in the background. Once complete, it will be available to use in your reports just like a regular source.
+
+## What should go in models
+
+Models are where complex data preparation happens, keeping your reports fast and focused on presentation.
+
+### Joins belong in models
+
+All joins between sources should be handled in models, not in reports. This ensures:
+
+- Faster report loading times
+- Consistent join logic across all reports
+- Easier maintenance when relationships change
+
+### Model granularity
+
+Create models at the most granular level users need for drilldown and exploration. Think about:
+
+- What's the finest detail users should be able to filter to?
+- What dimensions do they need to slice and dice by?
+- What level of detail supports their analysis?
+
+If users need to drill down to individual orders, your model should have order-level detail. If they only need daily summaries, aggregate to the day level in your model.
+
+### Recategorizing and bucketing
+
+Use CASE statements in models to create clean, consistent categories. This is ideal for:
+
+- Bucketing numeric values into ranges (small/medium/large orders)
+- Standardizing messy category data
+- Creating business-friendly labels from technical values
+
+This ensures categories are the same across reports instead of each person defining their own buckets.
+
+### Keep reports simple
+
+Reports should focus on filtering, sorting, and presenting data from models. Complex transformations and joins slow down reports and make them harder to maintain.
+
+**In models:** Joins, aggregations, complex calculations, data type casting, CASE statements  
+**In reports:** Filtering, sorting, simple calculations, formatting
+
+## Refresh schedules
+
+Models automatically refresh on a schedule to keep your data up to date. You can also manually refresh a model at any time from the Models page.
+
+By default, models refresh every 12 hours. Enterprise plans can configure a custom refresh schedule per model, with hourly intervals ranging from 1 hour to 72 hours.
+
+## Table engines
+
+Models support different table engines that control how your data is stored and optimized. The default engine works well for most use cases, but you can choose a specific engine for better performance depending on your workload.
+
+| Engine                | Description                                                                                                                          | Data location                    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
+| **S3**                | Reads and writes data directly to S3 objects. Best for archival or cold data. Does not support indexes.                              | Region of your organization      |
+| **MergeTree**         | General-purpose table. Faster than the default engine. Good default choice for most workloads.                                       | GCP us-central1                  |
+| **SummingMergeTree**  | Pre-aggregated counters or running totals — things like daily page view counts, revenue by region, or click counters                 | GCP us-central1                  |
+| **AggregatingMergeTree** | Incremental, pre-computed aggregations more complex than simple sums (e.g. unique user counts, averages, or quantiles). Advanced — requires special aggregate function syntax. | GCP us-central1                  |
+
+For more details on each engine, see the ClickHouse documentation: [MergeTree](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree), [SummingMergeTree](https://clickhouse.com/docs/engines/table-engines/mergetree-family/summingmergetree), [AggregatingMergeTree](https://clickhouse.com/docs/engines/table-engines/mergetree-family/aggregatingmergetree), [S3](https://clickhouse.com/docs/engines/table-engines/integrations/s3).
+
+### SummingMergeTree: watch out for non-additive metrics
+
+SummingMergeTree automatically sums numeric columns when merging rows with the same key. This works great for additive metrics like counts and totals, but it will produce incorrect results for non-additive metrics like averages, percentages, or ratios.
+
+For example, this query would give **wrong results** with SummingMergeTree:
+
+```sql
+SELECT
+    avg(avg_transaction_value) as avg_val,
+    category
+FROM demo.daily_orders
+GROUP BY avg_transaction_value, category
+```
+
+Because `avg_val` is an average, SummingMergeTree would sum those averages together during background merges — producing meaningless numbers. Averages of averages are not valid aggregations.
+
+Other things to keep in mind with SummingMergeTree:
+
+- **Always use `sum()` + `GROUP BY` when querying** — background merges may be incomplete at query time, so rows with the same key might not be fully merged yet. Explicit aggregation in your queries ensures correct results.
+- **Rows where all summed columns equal 0 are automatically deleted** — this can be surprising if you expect all rows to be retained.
+
+If your model includes non-additive metrics, use **MergeTree** or **AggregatingMergeTree** instead. SummingMergeTree should only be used when all numeric columns are additive (e.g. counts, sums, totals).
+
+### MergeTree family: primary keys must be non-nullable
+
+All MergeTree family engines (MergeTree, SummingMergeTree, AggregatingMergeTree) require a non-nullable primary key. However, the Evidence Studio Data Lake uses `Nullable` columns by default to allow data ingestion to succeed more easily — even when some values are missing.
+
+This means that if you select a column directly as your primary key, it may fail because it's `Nullable`. Use `coalesce` to provide a fallback value and ensure the column is non-nullable:
+
+```sql
+SELECT
+    coalesce(order_id, 0) as order_id,
+    date,
+    category,
+    quantity
+FROM demo.order_details
+```
+
+This applies to any column you intend to use as a primary key in a MergeTree engine. Always wrap it with `coalesce` to guarantee a non-null value.
+
+If your table has many columns, you can use `* EXCEPT` to select everything else without listing each column individually:
+
+```sql
+SELECT
+    coalesce(order_id, 0) as order_id,
+    * EXCEPT order_id
+FROM demo.order_details
+```
+
+## Examples
+
+### Enriched order details
+
+Create a model called `enriched_orders` that joins order details with item information:
+
+```sql
+SELECT
+    od.order_id,
+    od.date,
+    od.hour,
+    od.category,
+    od.item_name,
+    od.unit_price,
+    od.quantity,
+    od.unit_price * od.quantity as line_total,
+    i.base_price,
+    od.unit_price - i.base_price as price_variance
+FROM demo.order_details od
+LEFT JOIN demo.items i
+    ON od.category = i.category
+    AND od.item_name = i.item_name
+```
+
+Now you can use `enriched_orders` throughout your reports:
+
+```liquid
+{% table data="enriched_orders" /%}
+```
+
+This model enriches order details with base pricing information, making it easy to analyze pricing variance and order profitability across reports.
+
+### Daily sales summary
+
+Create a model called `daily_sales` that pre-aggregates order data by day:
+
+```sql
+SELECT
+    date,
+    category,
+    COUNT(DISTINCT order_id) as orders,
+    SUM(quantity) as items_sold,
+    SUM(unit_price * quantity) as revenue,
+    SUM(unit_price * quantity) / COUNT(DISTINCT order_id) as avg_order_value
+FROM demo.order_details
+GROUP BY date, category
+```
+
+Use `daily_sales` in a line chart to visualize trends over time:
+
+```liquid
+{% line_chart
+    data="daily_sales"
+    x="date"
+    y="sum(revenue)"
+    series="category"
+/%}
+```
+
+This model creates a daily summary that's ready for time-series analysis and dashboard visualizations without heavy aggregation in your reports.
+
+### Order summary with item counts
+
+Create a model called `order_summary` that combines headers with aggregated details:
+
+```sql
+SELECT
+    h.order_id,
+    h.date,
+    h.hour,
+    h.primary_category,
+    COUNT(d.item_name) as item_count,
+    SUM(d.quantity) as total_quantity,
+    SUM(d.unit_price * d.quantity) as order_total,
+    AVG(d.unit_price) as avg_item_price
+FROM demo.order_headers h
+LEFT JOIN demo.order_details d ON h.order_id = d.order_id
+GROUP BY h.order_id, h.date, h.hour, h.primary_category
+```
+
+Use `order_summary` to quickly analyze order patterns:
+
+```liquid
+{% bar_chart
+    data="order_summary"
+    x="primary_category"
+    y="sum(order_total)"
+/%}
+```
+
+This model centralizes order-level calculations, ensuring consistent metrics whether you're analyzing orders by date, category, or order size.

@@ -1,0 +1,77 @@
+---
+title: 'Publishing'
+description: 'Publish your reports on Evidence Studio, or self host your reports to share them with your team.'
+---
+
+## Evidence Studio
+
+### How to publish
+
+There are three ways to publish:
+
+- **From the editor.** Open the Publish menu in the top right of the editor and click **Publish**. The menu shows pending changes, any open pull request, and the current publish state.
+- **From local dev.** Push to the project's published branch using git or the [Evidence CLI](/cli). The push triggers a publish automatically.
+- **From GitHub.** Merge a pull request into the published branch on GitHub.
+
+You can use any combination of these — Studio, your local environment, and GitHub stay in sync through the project's repo.
+
+### Pull requests
+
+When you open a pull request against the published branch, Evidence runs checks and posts a preview:
+
+- **Markdown validation check:** Catches invalid syntax and broken components before merge.
+- **`access.yaml` validation check:** Validates [page level access](/features/page-level-access-control) rules so a bad config can't take down viewer access.
+- **Preview link:** A comment on the PR linking to a deployed preview of the branch, so reviewers can see the report before merging.
+
+The checks appear as status checks on the PR — you can configure branch protection in GitHub to block merges until they pass.
+
+### Publish history and rollback
+
+Every project has a publish history page that lists every publish attempt (publishes, CLI/local pushes, and PR merges), with who triggered it, the commit, the result, and a detail view for failures.
+
+From the history page you can:
+
+- **Roll back** to any previous successful publish.
+- **Retry** a failed publish.
+
+### Reliable publishes
+
+- **Failed publishes never affect viewers.** If a publish fails, the previous successful version stays live. Viewers don't see broken reports while you fix the issue.
+- **Email alerts on failure.** Org admins get an email when a publish fails.
+- **Project banner on failure.** When the latest publish failed, every project page in Studio shows a banner linking to the failure in history.
+
+### Connecting GitHub
+
+By default, every project is backed by an Evidence-managed git repo — you don't need to do anything to get the publish flow above. If you want the repo to live in your own GitHub organization so you can edit it locally, review changes through your existing PR process, or hook it into your own CI, connect the Evidence GitHub App:
+
+1. **Install the Evidence GitHub App.** From **Organization Settings**, connect Evidence to your GitHub account or organization. You can grant access to all repos or just the ones you choose, and update that selection later.
+2. **Link a repo to a project.** Open the project, then **Project Settings → Version Control**, and select **Connect to GitHub repository**. Pick the repo, the branch to use as the published branch, and the project root path.
+3. **First publish.** Click **Publish** in the editor to push the current state to GitHub. From then on, all three publish flows (editor, local dev, GitHub PR merge) work against your repo.
+
+See [Version Control](/features/version-control) for branching strategies and the list of files that are version controlled.
+
+#### GitHub Enterprise Cloud
+
+Enterprise organizations can connect a GitHub Enterprise Cloud account hosted on a dedicated `*.ghe.com` domain:
+
+1. In **Organization Settings**, select **Connect GitHub Enterprise**.
+2. Enter the enterprise hostname (for example, `arkaan.ghe.com`) and the GitHub organization that owns your repositories.
+3. Continue to GitHub to create and install the private, organization-owned Evidence Studio GitHub App.
+4. Return to a project's **Version Control** settings and select one of the repositories available to the App.
+
+Evidence supports GitHub Enterprise Cloud with data residency on `*.ghe.com`. Self-hosted GitHub Enterprise Server domains are not supported. An Evidence organization can connect to either GitHub.com or one GHE.com host at a time. Disconnect all projects from the current host before replacing the organization connection.
+
+### Sharing access
+
+Once a report is published, control who can view it with `access.yaml`. See [Page Level Access Control](/features/page-level-access-control) for the full schema and patterns for sharing with teammates, groups, and external customers.
+
+Roles are managed from the [Team Settings](https://www.evidence.studio/settings/team) page:
+
+- **Viewer:** Can view published reports they've been granted access to.
+- **Org Viewer:** Can view all published reports in the org.
+- **Developer:** Can edit reports and configure data sources.
+- **Admin:** Developer permissions plus organization settings.
+
+## Self Host
+
+Alternatively, run your project as a self-hosted site — no Evidence Studio account required. See [Self Host](/self-host) for the Docker image, project setup, and platform guides for Vercel, Render, Fly.io, and Railway, plus a [feature comparison](/self-host#self-host-vs-evidence-studio) with Evidence Studio.

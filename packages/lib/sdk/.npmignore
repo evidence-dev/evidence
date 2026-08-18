@@ -1,7 +1,0 @@
-coverage/
-.changeset
-.eslintignore
-.eslintrc.cjs
-.prettierignore
-.prettierrc
-result.xml

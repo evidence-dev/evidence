@@ -1,0 +1,80 @@
+# Copybara config: "push" = forward sync on internal merge, "upstream-pr" =
+# /upstream reverse import (.github/workflows/upstream-pr.yml).
+
+INTERNAL_URL = "https://github.com/evidence-dev/studio.git"
+
+# TODO: point at the real public repo once decided (EVI-2955).
+PUBLIC_URL = "https://github.com/evidence-dev/oss-sync-test.git"
+
+# The oss/ overlay holds the public repo's root files; the rest of the
+# internal root stays behind.
+OSS_FILES = glob(
+    include = [
+        "cli/**",
+        "core/**",
+        "docs/**",
+        "patches/**",
+        "vitest.config.ts",
+        "oss/**",
+    ],
+)
+
+# Per-file moves so core.reverse() maps public root files back into oss/ only.
+# IGNORE_NOOP: revisions that predate an overlay file must still replay.
+TRANSFORMS = [
+    core.transform(
+        [
+            core.move("oss/LICENSE", "LICENSE"),
+            core.move("oss/README.md", "README.md"),
+            core.move("oss/CONTRIBUTING.md", "CONTRIBUTING.md"),
+            core.move("oss/AGENTS.md", "AGENTS.md"),
+            core.move("oss/CLAUDE.md", "CLAUDE.md"),
+            core.move("oss/package.json", "package.json"),
+            core.move("oss/pnpm-workspace.yaml", "pnpm-workspace.yaml"),
+            core.move("oss/pnpm-lock.yaml", "pnpm-lock.yaml"),
+            core.move("oss/.npmrc", ".npmrc"),
+            core.move("oss/.gitignore", ".gitignore"),
+            core.move("oss/.github", ".github"),
+            core.move("oss/copy.bara.sky", "copy.bara.sky"),
+        ],
+        noop_behavior = "IGNORE_NOOP",
+    ),
+]
+
+# Replays each internal commit touching OSS files, preserving author and message.
+core.workflow(
+    name = "push",
+    origin = git.origin(
+        url = INTERNAL_URL,
+        ref = "main",
+    ),
+    destination = git.destination(
+        url = PUBLIC_URL,
+        fetch = "main",
+        push = "main",
+    ),
+    origin_files = OSS_FILES,
+    destination_files = glob(["**"]),
+    authoring = authoring.pass_thru("Evidence <support@evidence.dev>"),
+    mode = "ITERATIVE",
+    transformations = TRANSFORMS,
+)
+
+# Imports a public PR as an internal branch; ref and push branch come per-run.
+core.workflow(
+    name = "upstream-pr",
+    origin = git.origin(
+        url = PUBLIC_URL,
+        ref = "main",
+    ),
+    destination = git.destination(
+        url = INTERNAL_URL,
+        fetch = "main",
+        push = "oss/upstream-pr",
+    ),
+    origin_files = glob(["**"]),
+    destination_files = OSS_FILES,
+    authoring = authoring.pass_thru("Evidence <support@evidence.dev>"),
+    mode = "CHANGE_REQUEST",
+    transformations = core.reverse(TRANSFORMS),
+)

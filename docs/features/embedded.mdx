@@ -1,0 +1,351 @@
+---
+title: 'Embedded Analytics'
+description: 'Deliver secure, personalized reports to your customers inside your own product'
+---
+
+Embedded analytics lets you deliver personalized Evidence reports to your customers directly within your application. Each user sees only their data, and the reports match your application's design.
+
+<Note>
+	Embedded Analytics is available on the Enterprise Plan. [Contact us to
+	upgrade](https://calendly.com/evidence-studio/enterprise)
+</Note>
+
+**What you can do:**
+
+- Match your brand with [custom themes](/features/themes)
+- Show different data to each user based on their permissions
+- Embed specific pages from your Evidence project
+- Support multiple languages
+
+**Requirements:**
+
+- Your development team will need to add a backend endpoint to request embed URLs from the Evidence Embed API
+- Each embedded report loads in an iframe on your page
+
+## How It Works
+
+The **Evidence Embed API** allows you to embed Evidence reports directly inside your own application using iframe embedding with secure authentication.
+
+The embed process uses a two-step authentication flow:
+
+1. **Server-side**: Your backend requests an embed URL from the Evidence Embed API for a specific user
+2. **Client-side**: The embed URL is loaded in an iframe, establishing an encrypted session in the user's browser
+
+The embed URL contains a nonce (single-use token) in its path. User attributes are encrypted using JWE and never exposed.
+
+### Authentication
+
+- **Single-use URLs**: Each embed URL contains a nonce that expires in 2 minutes and can only be used once
+- **JWE Encryption**: User attributes and metadata are encrypted using JSON Web Encryption
+- **Row Level Security**: Integrates with [row-level security rules](/features/access-rules) to filter data by user
+
+## Getting Started
+
+<Steps>
+  <Step title="Set Up and Publish a Page">
+    Create the Evidence page you want to embed and publish your project. The page must be published before it can be embedded.
+    
+    Make note of the page's:
+    - **Page ID**: Found in page settings
+    - **Path**: The full path to the page (e.g., `org_id/project_name/page_name`)
+  </Step>
+  
+  <Step title="Create RLS Rules (Optional)">
+    If you need to filter data based on user attributes, set up [row-level security rules](/features/access-rules) in your [Access Settings](https://evidence.studio/settings/access-rules).
+    
+    Define which user attributes will be used to filter data (e.g., `employee_id`, `region`, `department`).
+  </Step>
+  
+  <Step title="Create an API Key">
+    Navigate to your [Organization Settings](https://evidence.studio/settings) and create a new API key for the Evidence Embed API. Store this key securely - you'll need it to authenticate API requests.
+  </Step>
+  
+  <Step title="Test the API">
+    Test the Evidence Embed API using `curl` to verify your setup. Replace `YOUR_API_KEY`, `YOUR_PAGE_ID`, and `YOUR_PAGE_PATH` with your values:
+
+    ```bash
+    curl https://management.evidence.studio/v1/embedded \
+      --request POST \
+      --header 'Content-Type: application/json' \
+      --header 'Authorization: Bearer YOUR_API_KEY' \
+      --data '{
+        "userId": "test_user_123",
+        "pageId": "YOUR_PAGE_ID",
+        "path": "YOUR_PAGE_PATH",
+        "ttl": 3600,
+        "attributes": [
+          {
+            "key": "employee_id",
+            "value": 1102
+          },
+          {
+            "key": "region",
+            "value": "Canada"
+          }
+        ],
+        "cookieless": true,
+        "testMode": true
+      }'
+    ```
+
+    The API will return a response with a `url` field. Copy this URL and open it in an incognito/private browser window to verify the page loads correctly.
+
+    <Note>
+      Use `cookieless: true` when testing to avoid cookie-related issues in development.
+    </Note>
+
+  </Step>
+  
+  <Step title="Backend Integration">
+    Add an endpoint to your backend server that requests embed URLs for authenticated users.
+    
+    **Example:**
+
+    ```javascript
+    app.post('/api/embed-report', async (req, res) => {
+      const { userId, pageId, path } = req.body;
+
+      // Verify user is authenticated (use your auth system)
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      // Fetch user attributes from your database
+      const userAttributes = await getUserAttributes(userId);
+
+      // Request embed URL from the Evidence Embed API
+      const response = await fetch('https://management.evidence.studio/v1/embedded', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.EVIDENCE_API_KEY}`
+        },
+        body: JSON.stringify({
+          userId: userId,
+          pageId: pageId,
+          path: path,
+          ttl: 3600,
+          attributes: userAttributes,
+          cookieless: true
+        })
+      });
+
+      const data = await response.json();
+      res.json({ embedUrl: data.url });
+    });
+    ```
+
+    Store your API key securely on the server and never expose it to the client.
+
+  </Step>
+  
+  <Step title="Frontend Integration">
+    Request an embed URL from your backend endpoint and use it to load the report in an iframe:
+
+    ```html
+    <iframe
+      src="https://management.evidence.studio/v1/embedded/2pgHuWMjErQOoMXkxxGME6uEVhNfY35TLYDvTYEylWiIt0HSIrdjrfAZ7Kk4n25czdYh86bQ4u"
+      width="100%"
+      height="600"
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
+    ```
+
+    Use the full URL returned from your backend in the iframe's `src` attribute.
+
+  </Step>
+</Steps>
+
+## API Reference
+
+### POST /v1/embedded
+
+Creates a secure embed session and returns a single-use embed URL.
+
+#### Request Parameters
+
+| Parameter    | Type    | Required | Description                                          |
+| ------------ | ------- | -------- | ---------------------------------------------------- |
+| `userId`     | string  | Yes      | Unique identifier for the user viewing the report    |
+| `pageId`     | string  | Yes      | UUID of the specific page to embed                   |
+| `path`       | string  | Yes      | Path to the page (e.g., "org_id/project/page-name")  |
+| `ttl`        | number  | No       | Time-to-live in seconds (default: 3600, max: 604800) |
+| `attributes` | array   | No       | User attributes for row-level security               |
+| `cookieless` | boolean | No       | Enable cookieless mode (default: false)              |
+| `testMode`   | boolean | No       | Enable test mode (default: false)                    |
+| `language`   | string  | No       | Display language code (e.g., "en", "fr")             |
+
+#### User Attributes
+
+User attributes are used with [row-level security rules](/features/access-rules) to filter data. Evidence supports rich attribute types:
+
+```json
+{
+	"attributes": [
+		{
+			"key": "employee_id",
+			"value": 1102
+		},
+		{
+			"key": "region",
+			"value": "Canada"
+		},
+		{
+			"key": "departments",
+			"value": ["Sales", "Marketing"]
+		},
+		{
+			"key": "zone_ids",
+			"value": [193, 992, 19183]
+		},
+		{
+			"key": "isAdmin",
+			"value": false
+		}
+	]
+}
+```
+
+**Supported Value Types:**
+
+- **Strings**: `"Canada"`, `"Sales"`
+- **Numbers**: `1102`, `42.5`
+- **Booleans**: `true`, `false`
+- **String Arrays**: `["Sales", "Marketing"]`
+- **Number Arrays**: `[193, 992, 19183]`
+
+<Note>
+	Attributes can be included in embed requests even if they're not currently mapped to an RLS rule.
+</Note>
+
+#### Response
+
+```json
+{
+	"url": "https://management.evidence.studio/v1/embedded/2pgHuWMjErQOoMXkxxGME6uEVhNfY35TLYDvTYEylWiIt0HSIrdjrfAZ7Kk4n25czdYh86bQ4u"
+}
+```
+
+The `url` field contains a single-use embed URL with an embedded nonce. Use this full URL in your iframe's `src` attribute.
+
+### GET /v1/embedded/{nonce}
+
+Loads the embedded report when accessed via iframe. The nonce in the URL path is validated and can only be used once.
+
+## Configuration Options
+
+### Time-to-Live (TTL)
+
+Control how long an embed session remains valid:
+
+```json
+{
+	"ttl": 86400 // 24 hours in seconds
+}
+```
+
+- **Minimum**: 60 seconds (1 minute)
+- **Maximum**: 604800 seconds (7 days)
+- **Default**: 3600 seconds (1 hour)
+
+<Note>
+	Embed URLs are valid for 2 minutes and can only be used once. The TTL parameter controls the
+	session duration after the URL is accessed.
+</Note>
+
+### Cookieless Mode
+
+Enable cookieless mode for privacy compliance:
+
+```json
+{
+	"cookieless": true
+}
+```
+
+When enabled, the embed session will not use browser cookies for authentication. Use cases include:
+
+- GDPR and privacy compliance requirements
+- Third-party cookie restrictions
+- Environments where cookies are blocked
+
+### Language Support
+
+Embed reports in different languages if your Evidence project supports [translations](/features/translations):
+
+```json
+{
+	"language": "fr" // French
+}
+```
+
+### Test Mode
+
+Use test mode for development and debugging on `localhost`
+
+```json
+{
+	"testMode": true
+}
+```
+
+<Warning>
+	Test mode should only be used in development environments. It may bypass certain security checks.
+</Warning>
+
+## Implementation Guidelines
+
+### Security
+
+1. **Protect your API key**: Make Evidence Embed API requests from your backend server only, never from client-side code
+2. **Set appropriate TTLs**: Use the shortest TTL that meets your requirements
+3. **Validate users**: Verify user authentication before requesting embed URLs
+4. **Apply RLS rules**: Use [row-level security](/features/access-rules) to filter data appropriately
+
+### Performance
+
+1. **Pre-generate URLs**: Request embed URLs before the user navigates to the page to reduce perceived loading time
+2. **Session refresh**: Implement logic to refresh sessions before they expire for long-running user sessions
+
+### Error Handling
+
+1. **Handle expired sessions**: Implement logic to request new embed URLs when sessions expire
+2. **Provide feedback**: Show loading states and clear error messages
+3. **Handle edge cases**: Test behavior with expired URLs, network failures, and long-running sessions
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="Can I embed multiple pages for the same user?">
+    Yes, request a separate embed URL for each page you want to embed.
+  </Accordion>
+
+{' '}
+<Accordion title="What happens when a session expires?">
+	The iframe will show an error. Request a new embed URL from your backend and update the iframe's
+	`src` attribute. Consider implementing automatic session refresh before the TTL expires for
+	long-running sessions.
+</Accordion>
+
+{' '}
+<Accordion title="Can I style the embedded report?">
+	Yes, use [themes](/features/themes) to customize the appearance of embedded reports.
+</Accordion>
+
+{' '}
+<Accordion title="Do embedded reports support interactivity?">
+	Yes, [inputs](/components/dropdown), filters, and other interactive features work in embedded
+	reports.
+</Accordion>
+
+  <Accordion title="How do I debug embed issues?">
+    Enable `testMode: true` during development to see detailed error messages. Check the browser console and network tab for additional debugging information.
+  </Accordion>
+</AccordionGroup>
+
+## Additional Resources
+
+- [API Documentation](https://api.evidence.studio/#tag/embedded)
+- [Slack Community](https://slack.evidence.dev)
+- [Enterprise Support](https://calendly.com/evidence-studio/enterprise)

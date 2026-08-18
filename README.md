@@ -1,62 +1,51 @@
-<div id="top" align="center">
+# Evidence
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./sites/docs/static/img/wordmark-dark.svg">
-  <img alt="Evidence Logo" src="./sites/docs/static/img/wordmark-light.svg">
-</picture>
+Evidence is an agent-ready tool for creating reports using your data
+- Fully defined in code
+- Human + agent readable markdown format with inline SQL
+- Self host or deploy on Evidence Studio
 
-Business Intelligence as Code: Generate reports using SQL and markdown
+## Install
 
-<!-- Testing publishing flow -->
+### macOS / Linux
 
-### [Docs](https://docs.evidence.dev) | [Examples](https://evidence.dev/examples) | [Slack](https://slack.evidence.dev)
+```bash
+curl -fsSL https://evidence.studio/install.sh | sh
+evidence help
+```
 
-![GitHub Repo stars](https://img.shields.io/github/stars/evidence-dev/evidence?style=social)
-![NPM](https://img.shields.io/npm/l/%40evidence-dev%2Fevidence)
-![npm](https://img.shields.io/npm/v/@evidence-dev/evidence?logo=npm)
-![Release](https://img.shields.io/github/actions/workflow/status/evidence-dev/evidence/release.yml?logo=npm)
-[![Join Slack](https://img.shields.io/badge/slack-join-blue?logo=slack&amp)](https://slack.evidence.dev)
+### Windows
 
-</div>
+```powershell
+irm https://evidence.studio/install.ps1 | iex
+evidence help
+```
 
-> [!TIP]
-> **Try [Evidence Studio](https://evidence.studio)**: The new, faster way to build data products with SQL, markdown and AI.
+## Create a New Project
 
-# How It Works
+```bash
+evidence init my-project
+cd my-project
+evidence dev
+```
 
-Evidence is an open-source, code-based alternative to drag-and-drop business intelligence tools.
 
-![how-it-works](sites/docs/static/img/how-it-works.png)
+## Build from Source
 
-Evidence generates a website from markdown files:
+Requires [Node](https://nodejs.org) 22.22+, [pnpm](https://pnpm.io) and [bun](https://bun.com).
 
-- **SQL statements** inside markdown files run queries against your data sources
-- **Charts and components** are rendered using these query results
-- **Templated pages** generate many pages from a single markdown template
-- **Loops** and **If / Else** statements allow control of what is displayed to users
+```bash
+pnpm install
+pnpm run cli:build
+```
 
-# Install
+The binary is written to `cli/dist/evidence`.
 
-1. Download the [Evidence VSCode Extension](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
-2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project`
-3. Click the Start Evidence button in the bottom status bar
+## Contributing
 
-See docs for [other install options](https://docs.evidence.dev/getting-started/install-evidence) (CLI, Docker, etc)
+Contributions are welcome.
 
-# Publish
+This project is a mirror - see [CONTRIBUTING.md](CONTRIBUTING.md) for how
+pull requests are reviewed and merged.
 
-- [Self-hosted](https://docs.evidence.dev/deployment/overview/#self-host) options include Netlify, Vercel, your own infra, and other static site hosting platforms.
 
-# Join the Evidence Community
-
-Join our [Slack channel](https://slack.evidence.dev) to get involved in the community's discussion, share what you're working on, or ask for help.
-
-Follow us on [Twitter](https://twitter.com/evidence_dev) to receive the latest updates on Evidence.
-
-# Contributing
-
-If you are interested in contributing, please join us on our [slack channel](https://slack.evidence.dev), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.
-
-# License
-
-Evidence is licensed under the MIT license. See the [LICENSE](LICENSE.md) file for licensing information.

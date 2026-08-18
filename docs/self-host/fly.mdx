@@ -1,0 +1,93 @@
+---
+title: 'Self Host on Fly.io'
+sidebarTitle: 'Fly.io'
+description: 'Self-host Evidence on Fly.io from the dashboard or the fly CLI.'
+---
+
+Fly.io runs the container as Firecracker VMs close to your users, with optional scale-to-zero.
+
+Fly needs two pieces of configuration the other platforms don't: **memory** (the default 256mb machine is too small and the server gets OOM-killed at boot) and **port** (Fly routes to `internal_port` but does not provide `PORT` to the container, so the server listens on its default `3000`).
+
+<Steps>
+  <Step title="Add a Dockerfile">
+    ```docker filename="Dockerfile"
+    FROM evidencedev/serve:latest
+    COPY --chown=evidence:evidence . /project
+    ```
+
+  </Step>
+  <Step title="Modify and commit connection.yaml">
+    The project must use a [direct connector](/cli/connections), with secrets replaced by `${VAR}` environment references, for example:
+
+    ```yaml filename="connection.yaml"
+    type: snowflake
+    account: xy12345.us-east-1
+    user: ${SNOWFLAKE_USER}
+    private_key: ${SNOWFLAKE_PRIVATE_KEY}
+    warehouse: COMPUTE_WH
+    database: ANALYTICS
+    ```
+
+    `connection.yaml` is gitignored by default. Once its secrets are `${VAR}` placeholders, remove it from `.gitignore` and commit it — the container reads it at runtime.
+
+  </Step>
+  <Step title="Deploy">
+    <Tabs>
+      <Tab title="Using the Fly UI">
+        In the [dashboard](https://fly.io/dashboard), click **Launch an App**, choose **Launch an App from GitHub**, and select the project's repo, granting Fly access if prompted.
+
+        Click **Customize deploy** and set:
+
+        - **Internal port**: `3000`
+        - **Memory**: at least 512MB memory
+        - **Environment Variables**: `EVIDENCE_BASIC_USER`, `EVIDENCE_BASIC_PASSWORD`, and every `${VAR}` referenced in `connection.yaml`, here `SNOWFLAKE_USER` and `SNOWFLAKE_PRIVATE_KEY`
+
+        Deploy, then optionally enable **Auto Deploy** under **Deployments → Settings** so pushes to the default branch redeploy automatically.
+      </Tab>
+      <Tab title="Using the Fly CLI">
+        Launch without deploying to generate `fly.toml`:
+
+        ```bash
+        fly launch --no-deploy
+        ```
+
+        Edit `fly.toml` so the port and memory are right:
+
+        ```toml filename="fly.toml"
+        [http_service]
+          internal_port = 3000   # the port the image listens on
+
+        [[vm]]
+          memory = '512mb'       # or more - default 256mb OOM-kills the server
+        ```
+
+        <Warning>
+        Use a single memory key. `fly launch` scaffolds sometimes include `memory_mb` — if both `memory` and `memory_mb` are present with different values, the wrong one can win.
+        </Warning>
+
+        Set the secrets:
+
+        ```bash
+        fly secrets set \
+          SNOWFLAKE_USER=... \
+          SNOWFLAKE_PRIVATE_KEY=... \
+          EVIDENCE_BASIC_USER=reports \
+          EVIDENCE_BASIC_PASSWORD=changeme
+        ```
+
+        Then deploy:
+
+        ```bash
+        fly deploy
+        ```
+
+        Healthy logs show `Ready at http://localhost:3000`.
+      </Tab>
+    </Tabs>
+
+  </Step>
+</Steps>
+
+## Notes
+
+- Ensure fly has enough memory or else you may get `Out of memory: Killed process (evidence)` in `fly logs`. Increase memory with `fly scale memory 512` or in `fly.toml`.
