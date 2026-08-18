@@ -190,24 +190,29 @@ export async function getMarkdownFile(dir: string, slug: string): Promise<Markdo
 	if (slug.replaceAll('\\', '/').split('/').includes('..')) return null;
 
 	const pagesDir = await resolvePagesDir(dir);
-	const filePath = join(pagesDir, `${slug}.md`);
+	// `foo.md` wins; `foo/index.md` is the directory-page fallback (the shape
+	// getNavItems already links to).
+	const candidates = [join(pagesDir, `${slug}.md`), join(pagesDir, slug, 'index.md')];
 
-	try {
-		const stats = await stat(filePath);
-		if (!stats.isFile()) return null;
+	for (const filePath of candidates) {
+		try {
+			const stats = await stat(filePath);
+			if (!stats.isFile()) continue;
 
-		const content = await readFile(filePath, 'utf-8');
-		const parsed = parsePath(slug);
+			const content = await readFile(filePath, 'utf-8');
+			const parsed = parsePath(slug);
 
-		return {
-			path: filePath,
-			slug,
-			name: parsed.name,
-			content
-		};
-	} catch {
-		return null;
+			return {
+				path: filePath,
+				slug,
+				name: parsed.name,
+				content
+			};
+		} catch {
+			continue;
+		}
 	}
+	return null;
 }
 
 /**

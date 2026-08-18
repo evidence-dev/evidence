@@ -46,7 +46,9 @@ export const schema = {
 			required: true
 		}
 	},
-	validate: or(and(startsWith('href', '/'), isTreePath('href')), isUrl('href')),
+	// `#fragment` is standard markdown for a same-page anchor — allowed even
+	// though headings don't emit ids yet, so it can't be a hard error.
+	validate: or(and(startsWith('href', '/'), isTreePath('href')), isUrl('href'), startsWith('href', '#')),
 	componentWrapper: {
 		display: 'inline'
 	}

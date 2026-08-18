@@ -27,7 +27,16 @@ Evidence Studio is a complete reimagining of the Evidence platform - moving from
 
 ## How to Migrate
 
-The easiest way to migrate is to paste your OSS code into the Studio editor and ask the AI assistant to convert it for you.
+The fastest starting point is the CLI's migrate command, run from your OSS project directory:
+
+```bash
+evidence migrate           # convert all pages in place
+evidence migrate --dry-run # preview what would change
+```
+
+It mechanically converts component syntax (`<LineChart .../>` → `{% line_chart ... /%}`), rewrites `${inputs.x.value}` references, converts `<img>` to `{% image /%}`, wraps other raw HTML in `{% html %}`, and prints notes for anything that needs manual attention (source queries, unsupported components, templated pages). Then run `evidence validate` to check the result.
+
+Alternatively, paste your OSS code into the Studio editor and ask the AI assistant to convert it for you.
 
 The Evidence team is available to help with your migration. If you have a large project to migrate, [book a call with our team](https://calendly.com/evidence-studio/evidence-studio-migration) for assistance.
 
@@ -67,6 +76,18 @@ Inline queries do not produce a query viewer on the rendered page. To display re
 ````liquid
 {% table data="my_query" /%}
 ````
+
+### Variables in `.sql` files
+
+A standalone `.sql` file in `queries/` is inlined verbatim wherever it's referenced — Studio does **not** interpolate `{{ ... }}` inside one. An OSS query that reads an input:
+
+```sql
+select * from orders where category = '${inputs.category.value}'
+```
+
+still converts to `{{category}}`, but the variable will not resolve from a `.sql` file. Move any query that depends on an input into a ` ```sql ` fence on the page that uses it, where interpolation does apply. `evidence migrate` prints a warning for every `.sql` file it converts references in.
+
+See [SQL files](/features/sql-files) for the full comparison.
 
 ## Components
 

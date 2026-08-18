@@ -24,6 +24,7 @@ import { listConnectors } from './connectors.ts';
 import { listModelsCommand } from './models.ts';
 import { lineageCommand } from './lineage.ts';
 import { validate } from './validate.ts';
+import { migrate } from './migrate/migrate.ts';
 import { docs } from './docs.ts';
 import { upgrade } from './upgrade.ts';
 import { startupVersionCheck } from './version-check.ts';
@@ -322,6 +323,14 @@ try {
 
 		case 'validate':
 			await validate({ output: args.output, path: args.validatePath ?? undefined });
+			break;
+
+		case 'migrate':
+			await migrate({
+				output: args.output,
+				path: args.migratePath ?? undefined,
+				dryRun: args.migrateDryRun
+			});
 			break;
 
 		case 'docs':

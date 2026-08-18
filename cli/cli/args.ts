@@ -10,7 +10,7 @@ import {
 } from './output.ts';
 import { INIT_WAREHOUSES, parseWarehouse, type InitWarehouse } from './init/connection-template.ts';
 
-export const VERSION = '0.8.2';
+export const VERSION = '0.9.0';
 
 export const BANNER = `
   evidence
@@ -24,6 +24,7 @@ Develop
   init        Scaffold a new Evidence project
   dev         Start the local development server
   validate    Validate project markdown
+  migrate     Convert an Evidence OSS project to Studio syntax
 
 Deploy
   launch      Connect this project to Evidence Studio + GitHub (deploy via git push)
@@ -91,6 +92,7 @@ export type Command =
 	| 'connectors'
 	| 'models'
 	| 'validate'
+	| 'migrate'
 	| 'lineage'
 	| 'docs'
 	| 'token'
@@ -125,6 +127,10 @@ export interface ParsedArgs {
 	initWarehouse: InitWarehouse | null;
 	/** Single page to validate (positional arg after `validate`); null = whole project */
 	validatePath: string | null;
+	/** Single page to migrate (positional arg after `migrate`); null = whole project */
+	migratePath: string | null;
+	/** Report what `migrate` would change without writing files (--dry-run) */
+	migrateDryRun: boolean;
 	/** Subcommand for docs (search, component, read) */
 	docsSubcommand: string | null;
 	/** Arguments for docs subcommand */
@@ -193,7 +199,8 @@ const BOOLEAN_FLAGS = new Set([
 	'-f',
 	'--no-open',
 	'--open',
-	'--upload-credentials'
+	'--upload-credentials',
+	'--dry-run'
 ]);
 
 /**
@@ -291,6 +298,8 @@ export function parseArgs(): ParsedArgs {
 		initForce: false,
 		initWarehouse: null,
 		validatePath: null,
+		migratePath: null,
+		migrateDryRun: false,
 		docsSubcommand: null,
 		docsArgs: [],
 		schemaTable: null,
@@ -340,6 +349,7 @@ export function parseArgs(): ParsedArgs {
 		'connectors',
 		'models',
 		'validate',
+		'migrate',
 		'lineage',
 		'docs',
 		'upgrade',
@@ -403,6 +413,7 @@ export function parseArgs(): ParsedArgs {
 	else if (firstArg === 'connectors') command = 'connectors';
 	else if (firstArg === 'models') command = 'models';
 	else if (firstArg === 'validate') command = 'validate';
+	else if (firstArg === 'migrate') command = 'migrate';
 	else if (firstArg === 'lineage') command = 'lineage';
 	else if (firstArg === 'docs') command = 'docs';
 	else if (firstArg === 'upgrade') command = 'upgrade';
@@ -529,13 +540,29 @@ export function parseArgs(): ParsedArgs {
 		for (let i = 0; i < rest.length; i++) {
 			const arg = rest[i];
 			if (arg.startsWith('-')) {
-				if (arg === '--port' || arg === '-p') i++; // step over its value
+				if (VALUE_FLAGS.has(arg)) i++; // step over the flag's value
 				continue;
 			}
 			validatePath = arg;
 			break;
 		}
 	}
+
+	// Optional single-page positional for migrate (e.g. `evidence migrate orders.md`).
+	let migratePath: string | null = null;
+	if (command === 'migrate') {
+		const rest = args.slice(args.indexOf('migrate') + 1);
+		for (let i = 0; i < rest.length; i++) {
+			const arg = rest[i];
+			if (arg.startsWith('-')) {
+				if (VALUE_FLAGS.has(arg)) i++; // step over the flag's value
+				continue;
+			}
+			migratePath = arg;
+			break;
+		}
+	}
+	const migrateDryRun = args.includes('--dry-run');
 
 	// Parse docs subcommand and args
 	let docsSubcommand: string | null = null;
@@ -581,6 +608,8 @@ export function parseArgs(): ParsedArgs {
 		initForce,
 		initWarehouse,
 		validatePath,
+		migratePath,
+		migrateDryRun,
 		docsSubcommand,
 		docsArgs,
 		schemaTable,
