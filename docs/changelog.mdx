@@ -119,6 +119,18 @@ The sidebar's create page, partial, SQL, component, folder, and agent-file actio
 
 </Update>
 
+<Update label="August 5, 2026" description="" tags={["New Feature"]}>
+
+### ✨ Bring your own model API key
+
+Enterprise organizations can now point both AI agents at their own OpenAI, Anthropic, AWS Bedrock, or Google Vertex account from Settings → AI Agent.
+
+- Both the editor agent and the viewer agent use your provider and model, so your provider bills you for inference directly and Evidence AI credits are neither consumed nor charged.
+- Credentials are stored in the WorkOS Vault and never sent back to the browser. Saving verifies the credential against your provider first, so a wrong key or model ID is rejected rather than stored.
+- There is no fallback to Evidence's models: if your credential stops working, chat reports a clear error instead of quietly switching back and billing you for credits.
+
+</Update>
+
 <Update label="July 31, 2026" description="" tags={["Improvement"]}>
 
 ### 🚀 Big value titles are clickable when linked
