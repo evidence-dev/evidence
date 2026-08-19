@@ -139,18 +139,18 @@
 		const conditions: string[] = [];
 
 		// Add external filter SQL from filterIds
-		const filterSql = processFilterIds(filterIds, [repeatFilters, pageFilters]);
+		const filterSql = processFilterIds(
+			filterIds,
+			[repeatFilters, pageFilters],
+			queryService.dialect
+		);
 		if (filterSql) conditions.push(`(${filterSql})`);
 
 		// Add user's WHERE clause
 		if (where) conditions.push(`(${where})`);
 
 		// Add date range filter
-		if (
-			resolvedDateRange &&
-			resolvedDateRange.range &&
-			resolvedDateRange.range !== 'all time'
-		) {
+		if (resolvedDateRange && resolvedDateRange.range && resolvedDateRange.range !== 'all time') {
 			const settings = extract(projectSettings, DEFAULT_PROJECT_SETTINGS);
 			const processed = processDateRange(
 				resolvedDateRange.range,

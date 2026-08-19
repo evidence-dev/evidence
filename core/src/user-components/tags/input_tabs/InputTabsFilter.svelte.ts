@@ -1,5 +1,6 @@
 import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte';
-import { escapeSqlValue } from '../../../sql-dialect';
+import { escapeSqlValue, type SqlDialect } from '../../../sql-dialect';
+import { renderColumnPredicate } from '../../../filter-predicate';
 import type { UserComponentProps } from '../../types';
 import type { schema } from './schema';
 import type { Option } from '../option/types';
@@ -12,10 +13,10 @@ type InputTabsAttributes = UserComponentProps<typeof schema> & {
 export class InputTabsFilter extends Filter<string> {
 	attributes: Omit<InputTabsAttributes, 'id'>;
 
-	get sql() {
-		if (!this.attributes.value_column) return undefined;
-		if (this.value === undefined || this.value === null || this.value === '') return undefined;
-		return `${this.attributes.value_column}='${escapeSqlValue(String(this.value), this.dialect)}'`;
+	predicateSql(dialect?: SqlDialect): string | undefined {
+		const column = this.attributes.value_column;
+		if (!column) return undefined;
+		return renderColumnPredicate(column, this.value, dialect);
 	}
 
 	// Helper to look up label from options

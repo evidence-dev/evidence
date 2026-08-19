@@ -1,5 +1,6 @@
 import { Filter, type FilterDeps, type FilterInit } from './Filter.svelte';
-import { escapeSqlValue } from './sql-dialect';
+import { escapeSqlValue, type SqlDialect } from './sql-dialect';
+import { renderColumnPredicate } from './filter-predicate';
 
 type ExternalFilterAttributes = {
 	initial_value?: unknown;
@@ -31,16 +32,10 @@ type ExternalFilterAttributes = {
 export class ExternalFilter extends Filter<unknown> {
 	attributes: ExternalFilterAttributes;
 
-	get sql(): string | undefined {
+	predicateSql(dialect?: SqlDialect): string | undefined {
 		const column = this.attributes.column;
 		if (!column) return undefined;
-		const value = this.value;
-		if (Array.isArray(value)) {
-			if (value.length === 0) return undefined;
-			return `${column} IN (${value.map((v) => `'${escapeSqlValue(String(v), this.dialect)}'`).join(', ')})`;
-		}
-		if (value === undefined || value === null || value === '') return undefined;
-		return `${column}='${escapeSqlValue(String(value), this.dialect)}'`;
+		return renderColumnPredicate(column, this.value, dialect);
 	}
 
 	get templateValues(): Record<string, unknown> {

@@ -114,7 +114,7 @@
 			value,
 			series,
 			where,
-			filterSql: processFilterIds(filterIds, [repeatFilters, pageFilters]),
+			filterSql: processFilterIds(filterIds, [repeatFilters, pageFilters], queryService.dialect),
 			bin_count: binCount,
 			bin_width: binWidth,
 			limit

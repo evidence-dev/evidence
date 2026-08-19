@@ -1,5 +1,6 @@
 import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte';
-import { escapeSqlValue } from '../../../sql-dialect';
+import { escapeSqlValue, type SqlDialect } from '../../../sql-dialect';
+import { renderColumnPredicate } from '../../../filter-predicate';
 import type { UserComponentProps } from '../../types';
 import type { schema } from './schema';
 
@@ -18,11 +19,11 @@ export class RepeatFilter extends Filter {
 		return 'value' in this.attributes && this.attributes.value !== undefined;
 	}
 
-	get sql() {
+	predicateSql(dialect?: SqlDialect): string | undefined {
 		if (!this.hasValue) return undefined;
 		const attrs = this.attributes as { value: unknown; column: string };
 		if (!attrs.column || !attrs.value) return undefined;
-		return `${attrs.column}='${typeof attrs.value === 'string' ? escapeSqlValue(attrs.value, this.dialect) : attrs.value}'`;
+		return renderColumnPredicate(attrs.column, attrs.value, dialect);
 	}
 
 	get templateValues() {

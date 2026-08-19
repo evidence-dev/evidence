@@ -1,4 +1,7 @@
-import { DEFAULT_PROJECT_SETTINGS, type ProjectSettings } from './user-components/interfaces/project-settings';
+import {
+	DEFAULT_PROJECT_SETTINGS,
+	type ProjectSettings
+} from './user-components/interfaces/project-settings';
 import { extract, type MaybeGetter } from 'runed';
 import type { SqlDialect } from './sql-dialect';
 
@@ -122,7 +125,14 @@ export abstract class Filter<Value = any> {
 
 	abstract attributes: Record<string, unknown>;
 
-	abstract get sql(): string | undefined;
+	/** The filter's WHERE predicate for the consumer's `dialect`, or `undefined` when it contributes none. */
+	predicateSql(_dialect?: SqlDialect): string | undefined {
+		return undefined;
+	}
+
+	get sql(): string | undefined {
+		return this.predicateSql(this.dialect);
+	}
 
 	abstract get templateValues(): Record<string, unknown>;
 

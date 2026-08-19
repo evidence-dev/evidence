@@ -51,7 +51,7 @@
 
 	// Process filter conditions
 	const filterConditions = $derived.by(() => {
-		return processFilterIds(filters, [parentRepeatFilters, pageFilters]);
+		return processFilterIds(filters, [parentRepeatFilters, pageFilters], queryService.dialect);
 	});
 
 	const queryConfig = $derived.by(() => {

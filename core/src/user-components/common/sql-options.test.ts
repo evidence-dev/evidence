@@ -52,15 +52,9 @@ describe('resolveTableExpressionName', () => {
 	});
 
 	it('preserves pre-quoted identifier paths', () => {
-		expect(resolveTableExpressionName('"my db".orders', undefined, dialect)).toBe(
-			'"my db".orders'
-		);
+		expect(resolveTableExpressionName('"my db".orders', undefined, dialect)).toBe('"my db".orders');
 		expect(
-			resolveTableExpressionName(
-				'`project.dataset.table`',
-				undefined,
-				new BigQueryDialect()
-			)
+			resolveTableExpressionName('`project.dataset.table`', undefined, new BigQueryDialect())
 		).toBe('`project.dataset.table`');
 	});
 
@@ -146,8 +140,8 @@ describe('generateSQLQuery table expression', () => {
 
 describe('normalizeWhitespace', () => {
 	it('should collapse multiple spaces outside string literals', () => {
-		const input = "SELECT *  FROM   table";
-		const expected = "SELECT * FROM table";
+		const input = 'SELECT *  FROM   table';
+		const expected = 'SELECT * FROM table';
 		expect(normalizeWhitespace(input)).toBe(expected);
 	});
 
@@ -170,8 +164,8 @@ describe('normalizeWhitespace', () => {
 	});
 
 	it('should handle tabs in SQL', () => {
-		const input = "SELECT\t\t*\tFROM\ttable";
-		const expected = "SELECT * FROM table";
+		const input = 'SELECT\t\t*\tFROM\ttable';
+		const expected = 'SELECT * FROM table';
 		expect(normalizeWhitespace(input)).toBe(expected);
 	});
 
@@ -181,8 +175,10 @@ describe('normalizeWhitespace', () => {
 	});
 
 	it('should handle real-world organization name with double spaces', () => {
-		const input = "WHERE organization_name  IN  ('ASEQ ( 000081-121 -  CCINTL - Conestoga College )')";
-		const expected = "WHERE organization_name IN ('ASEQ ( 000081-121 -  CCINTL - Conestoga College )')";
+		const input =
+			"WHERE organization_name  IN  ('ASEQ ( 000081-121 -  CCINTL - Conestoga College )')";
+		const expected =
+			"WHERE organization_name IN ('ASEQ ( 000081-121 -  CCINTL - Conestoga College )')";
 		expect(normalizeWhitespace(input)).toBe(expected);
 	});
 
@@ -191,8 +187,8 @@ describe('normalizeWhitespace', () => {
 	});
 
 	it('should handle string with no quotes', () => {
-		const input = "SELECT  *   FROM   table  WHERE  a = 1";
-		const expected = "SELECT * FROM table WHERE a = 1";
+		const input = 'SELECT  *   FROM   table  WHERE  a = 1';
+		const expected = 'SELECT * FROM table WHERE a = 1';
 		expect(normalizeWhitespace(input)).toBe(expected);
 	});
 
@@ -278,16 +274,12 @@ describe('generateSQLQuery', () => {
 		const config = {
 			tableExpressionName: '(SELECT *, upper(category) AS c FROM demo.daily_orders)',
 			tableExpressionIsSql: true,
-			columns: [processColumnExpression({ value: 'category' }, dialect)].filter(
-				(c) => c !== null
-			)
+			columns: [processColumnExpression({ value: 'category' }, dialect)].filter((c) => c !== null)
 		};
 
 		const result = generateSQLQuery(config, undefined, undefined, undefined, 'sunday', dialect);
 
-		expect(result.sql).toContain(
-			'FROM (SELECT *, upper(category) AS c FROM demo.daily_orders)'
-		);
+		expect(result.sql).toContain('FROM (SELECT *, upper(category) AS c FROM demo.daily_orders)');
 	});
 
 	// Without the opt-in, a `data` value that resolves to a subquery is just an
@@ -491,10 +483,11 @@ describe('generateSQLQuery (full output)', () => {
 });
 
 describe('processFilterIds', () => {
+	const dialect = new ClickHouseDialect();
 	const makeFilters = (entries: Record<string, string>): Filters => {
-		const map = new Map<string, { sql: string }>();
+		const map = new Map<string, { predicateSql: () => string }>();
 		for (const [k, v] of Object.entries(entries)) {
-			map.set(k, { sql: v });
+			map.set(k, { predicateSql: () => v });
 		}
 		return {
 			has: (id: string) => map.has(id),
@@ -503,32 +496,34 @@ describe('processFilterIds', () => {
 	};
 
 	it('returns undefined when no filterIds are passed', () => {
-		expect(processFilterIds(undefined as unknown as unknown[], [])).toBeUndefined();
+		expect(processFilterIds(undefined as unknown as unknown[], [], dialect)).toBeUndefined();
 	});
 
 	it('returns undefined when filterIds resolve to nothing', () => {
-		expect(processFilterIds(['unknown'], [makeFilters({})])).toBeUndefined();
+		expect(processFilterIds(['unknown'], [makeFilters({})], dialect)).toBeUndefined();
 	});
 
 	it('joins resolved SQL with AND', () => {
 		const ctx = makeFilters({ a: "country = 'US'", b: 'amount > 0' });
-		expect(processFilterIds(['a', 'b'], [ctx])).toBe("country = 'US' AND amount > 0");
+		expect(processFilterIds(['a', 'b'], [ctx], dialect)).toBe("country = 'US' AND amount > 0");
 	});
 
 	it('skips ids that do not match any context', () => {
 		const ctx = makeFilters({ a: "country = 'US'" });
-		expect(processFilterIds(['a', 'missing'], [ctx])).toBe("country = 'US'");
+		expect(processFilterIds(['a', 'missing'], [ctx], dialect)).toBe("country = 'US'");
 	});
 
 	it('searches across multiple filter contexts', () => {
 		const ctx1 = makeFilters({ a: "country = 'US'" });
 		const ctx2 = makeFilters({ b: 'amount > 0' });
-		expect(processFilterIds(['a', 'b'], [ctx1, ctx2])).toBe("country = 'US' AND amount > 0");
+		expect(processFilterIds(['a', 'b'], [ctx1, ctx2], dialect)).toBe(
+			"country = 'US' AND amount > 0"
+		);
 	});
 
 	it('ignores non-string ids', () => {
 		const ctx = makeFilters({ a: "country = 'US'" });
-		expect(processFilterIds([123, null, 'a'], [ctx])).toBe("country = 'US'");
+		expect(processFilterIds([123, null, 'a'], [ctx], dialect)).toBe("country = 'US'");
 	});
 });
 
@@ -545,9 +540,7 @@ describe('generateGroupingSets', () => {
 	});
 
 	it('emits dimension hierarchy for a single dimension', () => {
-		expect(generateGroupingSets([dim('category'), measure('sum(amount)')])).toBe(
-			'(category), ()'
-		);
+		expect(generateGroupingSets([dim('category'), measure('sum(amount)')])).toBe('(category), ()');
 	});
 
 	it('emits dimension hierarchy for two dimensions', () => {
@@ -561,9 +554,9 @@ describe('generateGroupingSets', () => {
 	});
 
 	it('emits combined dimension x pivot grouping sets', () => {
-		expect(
-			generateGroupingSets([dim('category'), piv('product'), measure('sum(amount)')])
-		).toBe('(category, product), (category), (product), ()');
+		expect(generateGroupingSets([dim('category'), piv('product'), measure('sum(amount)')])).toBe(
+			'(category, product), (category), (product), ()'
+		);
 	});
 });
 
@@ -598,9 +591,8 @@ describe('generateSubtotalHelperColumns', () => {
 	});
 
 	it('emits combined grouping for dimensions + pivots', () => {
-		expect(
-			generateSubtotalHelperColumns([dim('category'), piv('product'), measure('sum(amount)')])
-		).toMatchInlineSnapshot(`
+		expect(generateSubtotalHelperColumns([dim('category'), piv('product'), measure('sum(amount)')]))
+			.toMatchInlineSnapshot(`
 			"GROUPING(category) AS "__ev_grouping_category", GROUPING(product) AS "__ev_grouping_product", CASE WHEN GROUPING(category) = 1 AND GROUPING(product) = 1 THEN 0 WHEN GROUPING(category) = 1 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(product) = 1 THEN 1 ELSE NULL END AS "__ev_subtotal_level", CASE
 			 /* Detail rows have no subtotal level */
 			 WHEN (CASE WHEN GROUPING(category) = 1 AND GROUPING(product) = 1 THEN 0 WHEN GROUPING(category) = 1 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(product) = 1 THEN 1 ELSE NULL END) IS NULL THEN 'cell_data'
@@ -644,9 +636,7 @@ describe('generateSQLQuery search term escaping', () => {
 	}
 
 	it('doubles backslashes on ClickHouse so the pattern literal cannot be closed early', () => {
-		expect(searchSql(new ClickHouseDialect())).toContain(
-			String.raw`%x\\\' UNION ALL SELECT 1 --%`
-		);
+		expect(searchSql(new ClickHouseDialect())).toContain(String.raw`%x\\\' UNION ALL SELECT 1 --%`);
 	});
 
 	it('leaves backslashes alone on Postgres, where they are ordinary characters', () => {

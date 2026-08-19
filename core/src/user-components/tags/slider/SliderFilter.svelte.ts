@@ -1,4 +1,5 @@
 import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte';
+import type { SqlDialect } from '../../../sql-dialect';
 import type { UserComponentProps } from '../../types';
 import type { schema } from './schema';
 
@@ -12,27 +13,20 @@ export class SliderFilter extends Filter<SliderValue> {
 
 	attributes: Omit<UserComponentProps<typeof schema>, 'id'>;
 
-	get sql() {
-		// Generate SQL for use with filters prop
-		const hasValueColumn = !!this.attributes.value_column;
-
-		if (!hasValueColumn) {
-			return undefined;
-		}
+	predicateSql(_dialect?: SqlDialect): string | undefined {
+		const column = this.attributes.value_column;
+		if (!column) return undefined;
 
 		if (this.attributes.range) {
-			// Range mode
 			if (Array.isArray(this.value) && this.value.length === 2) {
-				return `${this.attributes.value_column} BETWEEN ${this.value[0]} AND ${this.value[1]}`;
-			}
-			return undefined;
-		} else {
-			// Single value mode
-			if (typeof this.value === 'number') {
-				return `${this.attributes.value_column} >= ${this.value}`;
+				return `${column} BETWEEN ${this.value[0]} AND ${this.value[1]}`;
 			}
 			return undefined;
 		}
+		if (typeof this.value === 'number') {
+			return `${column} >= ${this.value}`;
+		}
+		return undefined;
 	}
 
 	get templateValues() {

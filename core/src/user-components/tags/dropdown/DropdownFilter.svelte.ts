@@ -1,5 +1,6 @@
 import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte';
-import { escapeSqlValue } from '../../../sql-dialect';
+import { escapeSqlValue, type SqlDialect } from '../../../sql-dialect';
+import { renderColumnPredicate } from '../../../filter-predicate';
 import type { UserComponentProps } from '../../types';
 import type { schema } from './schema';
 import type { Option } from '../option/types';
@@ -12,15 +13,10 @@ type DropdownAttributes = UserComponentProps<typeof schema> & {
 export class DropdownFilter extends Filter<string | string[]> {
 	attributes: Omit<DropdownAttributes, 'id'>;
 
-	get sql() {
-		if (!this.attributes.value_column) return undefined;
-
-		if (Array.isArray(this.value)) {
-			if (this.value.length === 0) return undefined;
-			return `${this.attributes.value_column} IN (${this.value.map((v) => `'${escapeSqlValue(String(v), this.dialect)}'`).join(', ')})`;
-		}
-		if (this.value === undefined || this.value === null || this.value === '') return undefined;
-		return `${this.attributes.value_column}='${escapeSqlValue(String(this.value), this.dialect)}'`;
+	predicateSql(dialect?: SqlDialect): string | undefined {
+		const column = this.attributes.value_column;
+		if (!column) return undefined;
+		return renderColumnPredicate(column, this.value, dialect);
 	}
 
 	// Helper to look up label from options
@@ -121,10 +117,7 @@ export class DropdownFilter extends Filter<string | string[]> {
 					if (raw.startsWith('[')) {
 						try {
 							const parsed = JSON.parse(raw);
-							if (
-								Array.isArray(parsed) &&
-								parsed.every((v) => typeof v === 'string')
-							)
+							if (Array.isArray(parsed) && parsed.every((v) => typeof v === 'string'))
 								return parsed;
 						} catch {
 							// Not valid JSON array — fall through to raw string

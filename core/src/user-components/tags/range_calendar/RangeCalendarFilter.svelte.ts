@@ -1,5 +1,6 @@
 import { extract } from 'runed';
 import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte';
+import type { SqlDialect } from '../../../sql-dialect';
 import type { UserComponentProps } from '../../types';
 import type { schema } from './schema';
 import { processDateRange } from '../../common/date-options';
@@ -58,14 +59,24 @@ export class RangeCalendarFilter extends Filter<RangeCalendarValue> {
 		);
 	}
 
-	get sql() {
+	predicateSql(dialect?: SqlDialect): string | undefined {
 		// Usable in a `filters=[...]` list only when a value_column is configured; otherwise the column
 		// lives in the user's own template (`where="date {{id.between}}"`) and we can't build a predicate.
-		if (!this.attributes.value_column) return undefined;
+		const column = this.attributes.value_column;
+		if (!column) return undefined;
 		const range = this.effectiveRange();
 		// All-time "unbounded"/"none" contributes no predicate (keeps NULL rows), consistent with .filter='true'.
 		if (range === undefined) return undefined;
-		return this.processRange(range).whereClause || undefined;
+		// Date math (anchor + week start) is dialect-independent; only the date-literal syntax uses the dialect.
+		return (
+			processDateRange(
+				range,
+				column,
+				this.anchorDate,
+				this.projectSettings.first_day_of_week,
+				dialect
+			).whereClause || undefined
+		);
 	}
 
 	get templateValues() {

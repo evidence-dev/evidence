@@ -449,7 +449,7 @@ export function generateSQLQuery(
 	// Process filter IDs if provided
 	let processedFilterSql;
 	if (config.filterIds && filterContexts) {
-		processedFilterSql = processFilterIds(config.filterIds, filterContexts);
+		processedFilterSql = processFilterIds(config.filterIds, filterContexts, dialect);
 	}
 
 	// Use either provided filterSql or processed filterSql
@@ -806,17 +806,22 @@ export const REFRESH_INTERVAL_ATTRIBUTE = {
  */
 export function processFilterIds(
 	filterIds: unknown[] = [],
-	filterContexts: (Filters | undefined)[] = []
+	filterContexts: (Filters | undefined)[] = [],
+	// Required (no default): each caller must pass its consuming query's dialect. A
+	// default silently rendered cascading-filter predicates in the wrong dialect on
+	// non-ClickHouse warehouses when a caller forgot it.
+	dialect: SqlDialect
 ): string | undefined {
 	if (!filterIds) return undefined;
 
 	const sqls = filterIds
 		.filter((id): id is string => typeof id === 'string')
 		.map((id) => {
+			// Render with the consuming query's dialect, not the filter's ambient one.
 			const filterContext = filterContexts.find((filterContext) => filterContext?.has(id));
-			return filterContext?.get(id)?.sql;
+			return filterContext?.get(id)?.predicateSql(dialect);
 		})
-		.filter((sql): sql is NonNullable<typeof sql> => typeof sql !== 'undefined');
+		.filter((sql): sql is string => Boolean(sql));
 
 	return sqls.length > 0 ? sqls.join(' AND ') : undefined;
 }

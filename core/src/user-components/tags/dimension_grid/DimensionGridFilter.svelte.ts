@@ -1,5 +1,10 @@
 import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte';
-import { defaultDialect, escapeSqlValue, isSimpleIdentifier } from '../../../sql-dialect';
+import {
+	defaultDialect,
+	escapeSqlValue,
+	isSimpleIdentifier,
+	type SqlDialect
+} from '../../../sql-dialect';
 import type { UserComponentProps } from '../../types';
 import type { schema } from './schema';
 
@@ -42,24 +47,30 @@ export class DimensionGridFilter extends Filter<DimensionGridValue> {
 		return selections;
 	}
 
-	get sql(): string | undefined {
+	predicateSql(dialect?: SqlDialect): string | undefined {
 		const conditions: string[] = [];
 
-		for (const { column, selection } of this.selections()) {
+		// Security (dimension allowlist + backslash reject) stays here; quoting and
+		// value escaping use the passed dialect (mirrors `columnFor`).
+		const declared = this.attributes._dimensionColumns;
+		for (const [dimension, selection] of Object.entries(this.value ?? {})) {
+			if (Array.isArray(declared) && declared.length > 0 && !declared.includes(dimension)) continue;
+			if (dimension.includes('\\')) continue;
 			if (!selection) continue;
-
+			const column = isSimpleIdentifier(dimension)
+				? dimension
+				: (dialect ?? defaultDialect).quoteIdentifierIfNeeded(dimension);
 			if (Array.isArray(selection)) {
 				if (selection.length === 0) continue;
 				if (selection.length === 1) {
-					conditions.push(`${column} = '${escapeSqlValue(String(selection[0]), this.dialect)}'`);
+					conditions.push(`${column} = '${escapeSqlValue(String(selection[0]), dialect)}'`);
 				} else {
-					const escaped = selection
-						.map((v) => `'${escapeSqlValue(String(v), this.dialect)}'`)
-						.join(', ');
-					conditions.push(`${column} IN (${escaped})`);
+					conditions.push(
+						`${column} IN (${selection.map((v) => `'${escapeSqlValue(String(v), dialect)}'`).join(', ')})`
+					);
 				}
 			} else {
-				conditions.push(`${column} = '${escapeSqlValue(String(selection), this.dialect)}'`);
+				conditions.push(`${column} = '${escapeSqlValue(String(selection), dialect)}'`);
 			}
 		}
 

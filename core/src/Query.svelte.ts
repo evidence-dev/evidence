@@ -797,7 +797,11 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 
 		// Process filter IDs if provided
 		if (this.query.filterIds && this.deps.filterContexts) {
-			const filterSql = processFilterIds(this.query.filterIds, this.deps.filterContexts);
+			const filterSql = processFilterIds(
+				this.query.filterIds,
+				this.deps.filterContexts,
+				this.deps.queryService.dialect
+			);
 			if (filterSql) whereParts.push(filterSql);
 		}
 

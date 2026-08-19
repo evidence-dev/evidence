@@ -165,7 +165,11 @@
 		}
 
 		// Generate filter SQL from filterIds
-		const filterSql = processFilterIds(filterIds, [repeatFilters, pageFilters]);
+		const filterSql = processFilterIds(
+			filterIds,
+			[repeatFilters, pageFilters],
+			queryService.dialect
+		);
 
 		// Build the WHERE clause
 		let whereClause = `${valueColumn} IS NOT NULL`;

@@ -1,4 +1,5 @@
 import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte';
+import type { SqlDialect } from '../../../sql-dialect';
 import type { UserComponentProps } from '../../types';
 import { generateFilterSQL } from './filterUtils.svelte';
 import type { schema } from './schema';
@@ -156,10 +157,10 @@ export class TableFilterFilter extends Filter<FilterState> {
 
 	attributes: Omit<UserComponentProps<typeof schema>, 'id'>;
 
-	// Callers join filter fragments with ' AND ', so an empty string would emit `WHERE  AND …`
-	get sql() {
+	predicateSql(dialect?: SqlDialect): string | undefined {
 		if (!this.value) return undefined;
-		return generateFilterSQL(this.value, this.dialect) || undefined;
+		// Normalise an inactive filter's '' to undefined so it isn't AND-ed into a WHERE.
+		return generateFilterSQL(this.value, dialect) || undefined;
 	}
 
 	get templateValues() {
