@@ -14,6 +14,7 @@
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { setMapContext } from './map-context';
+	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
 	import { AreaLayerModel } from './area_layer/AreaLayerModel.svelte';
 	import { PointLayerModel } from './point_layer/PointLayerModel.svelte';
 	import { HeatmapLayerModel } from './heatmap_layer/HeatmapLayerModel.svelte';
@@ -105,6 +106,19 @@
 	const showLoadingOverlay = $derived(
 		isReady && hasConfiguredLayers && anyLayerLoading && !anyLayerHasLoadedData
 	);
+
+	// Layers render in a hidden div, so failing layer queries surface on the map's wrapper
+	const componentWrapper = getComponentWrapperContext();
+	// Errors thrown while adding a layer to the map (bad config, geojson fetch failures)
+	let layerRenderErrors = $state<Record<string, string>>({});
+	const firstLayerError = $derived(
+		[...areaLayers, ...pointLayers, ...heatmapLayers]
+			.map((layer) => layer.query.error ?? layerRenderErrors[layer.layerId])
+			.find(Boolean)
+	);
+	$effect(() => {
+		componentWrapper?.setError(firstLayerError);
+	});
 
 	// Counter for assigning definition order to layers
 	// This ensures layers are rendered in the order they're defined in markup,
@@ -339,8 +353,10 @@
 						beforeId
 					);
 				}
-			} catch (_err) {
+				delete layerRenderErrors[layer.layerId];
+			} catch (err) {
 				// Layer failed to add, will retry on next effect run
+				layerRenderErrors[layer.layerId] = err instanceof Error ? err.message : String(err);
 			}
 		}
 

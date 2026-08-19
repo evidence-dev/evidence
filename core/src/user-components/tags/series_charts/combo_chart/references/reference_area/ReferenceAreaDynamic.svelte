@@ -9,6 +9,7 @@
 	import { getPageFiltersContext } from '../../../../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../../../../common/inline-queries';
 	import { getProjectSettingsContext } from '../../../../../../project-settings.context';
+	import { getComboChartContext } from '../../combo-chart-context';
 
 	const props: ReferenceAreaDynamicProps = $props();
 	const data = $derived(props.data);
@@ -51,6 +52,9 @@
 	});
 
 	const rows = $derived(query.result?.rows ?? []);
+
+	const { registerChildError } = getComboChartContext();
+	$effect(() => registerChildError(() => query.error));
 </script>
 
 {#each rows as row}

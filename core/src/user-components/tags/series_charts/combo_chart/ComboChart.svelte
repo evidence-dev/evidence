@@ -203,7 +203,7 @@
 	});
 
 	// Get component wrapper context for custom export handler and component ID for query registration
-	const { setCustomExportHandler, getComponentId } = getComponentWrapperContext();
+	const { setCustomExportHandler, getComponentId, setError } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
 	const queryInfoContext = getQueryInfoContext();
 
@@ -349,6 +349,9 @@
 		};
 	});
 
+	// Error getters registered by children that own queries (dynamic references)
+	let childErrorGetters = $state<Array<() => string | null | undefined>>([]);
+
 	setComboChartContext({
 		getSharedQueryContext: () => sharedQueryContext,
 		addSeries: (propsGetter) => {
@@ -397,6 +400,13 @@
 				references.splice(references.indexOf(referencePoint), 1);
 			};
 			return { referencePoint, removeReferencePoint };
+		},
+		registerChildError: (getError) => {
+			childErrorGetters.push(getError);
+			return () => {
+				const index = childErrorGetters.indexOf(getError);
+				if (index > -1) childErrorGetters.splice(index, 1);
+			};
 		}
 	});
 
@@ -513,6 +523,16 @@
 
 	// Check if any series is loading
 	const loading: boolean = $derived(seriesInOrder.some((s) => s.query?.loading));
+
+	// Children render in a hidden div, so failing child queries surface on the chart's wrapper
+	const firstChildError = $derived(
+		seriesInOrder.map((s) => s.query?.error).find(Boolean) ??
+			childErrorGetters.map((getError) => getError()).find(Boolean) ??
+			undefined
+	);
+	$effect(() => {
+		setError(firstChildError);
+	});
 
 	// Check if any series is doing a background refresh
 	const refreshing: boolean = $derived(seriesInOrder.some((s) => s.query?.refreshing));

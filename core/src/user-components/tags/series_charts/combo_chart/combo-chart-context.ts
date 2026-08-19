@@ -87,6 +87,9 @@ export type ComboChartContext = {
 		referencePoint: ReferencePointStaticModel;
 		removeReferencePoint: () => void;
 	};
+
+	/** Children render hidden, so child-owned query errors surface on the chart's wrapper */
+	registerChildError: (getError: () => string | null | undefined) => () => void;
 };
 
 export const setComboChartContext = (context: ComboChartContext): ComboChartContext => {

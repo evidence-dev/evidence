@@ -210,8 +210,13 @@
 		return queryInfoContext?.registerQuery(componentId, 'horizontal_bar_chart', query, title);
 	});
 
+	// Error getters registered by children that own queries (dynamic references)
+	let childErrorGetters = $state<Array<() => string | null | undefined>>([]);
+
 	$effect(() => {
-		setError(query.error ?? undefined);
+		setError(
+			query.error ?? childErrorGetters.map((getError) => getError()).find(Boolean) ?? undefined
+		);
 	});
 
 	// Get y column's JavaScript type from query result for gap filling
@@ -396,6 +401,13 @@
 			return {
 				referencePoint,
 				removeReferencePoint: () => references.splice(references.indexOf(referencePoint), 1)
+			};
+		},
+		registerChildError: (getError) => {
+			childErrorGetters.push(getError);
+			return () => {
+				const index = childErrorGetters.indexOf(getError);
+				if (index > -1) childErrorGetters.splice(index, 1);
 			};
 		}
 	});

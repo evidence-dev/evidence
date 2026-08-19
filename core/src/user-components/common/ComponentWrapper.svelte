@@ -35,9 +35,11 @@
 		children: Snippet;
 		validationErrors: ValidateError[];
 		tag: Tag;
+		contentBlocked?: boolean;
 	};
 
-	const { schema, props, children, validationErrors, tag }: Props = $props();
+	const { schema, props, children, validationErrors, tag, contentBlocked = false }: Props =
+		$props();
 
 	let error = $state();
 	let validationError = $derived(validationErrors.find((err) => err.error.level !== 'warning'));
@@ -480,7 +482,9 @@
 	<div
 		class={cn(
 			'flex flex-col *:flex-1 print:h-auto',
-			schema.componentWrapper.display === 'inline' ? 'max-w-full' : 'size-full'
+			schema.componentWrapper.display === 'inline' ? 'max-w-full' : 'size-full',
+			// Blocked components render no content, so guarantee the error overlay a box to centre in
+			contentBlocked && !hasCompactErrorBehavior && 'min-h-40'
 		)}
 		style={styles.minSize}
 	>

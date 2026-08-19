@@ -15,6 +15,7 @@
 	import { useStable } from '../useStable.svelte';
 	import { doesValidateErrorApplyToTag } from './Renderer/MarkdocProcessor/doesValidateErrorApplyToNode';
 	import { logger } from '../shims/logger';
+	import { getShowErrorsContext } from '../show-errors.context';
 
 	type Props = {
 		tag: Tag<string, UserComponentProps<Schema>>;
@@ -35,6 +36,10 @@
 	const shouldRender = $derived(
 		!componentValidationErrors.find((error) => error.error.level === 'error')
 	);
+	// A blocked component still renders its wrapper where errors are shown, so
+	// validation failures surface instead of silently dropping the component
+	const showErrors = getShowErrorsContext();
+	const shouldRenderWrapper = $derived(shouldRender || showErrors);
 
 	const rendererContext = getRendererContext();
 
@@ -59,7 +64,7 @@
 
 <svelte:window onkeydowncapture={resetError ? handle : undefined} />
 
-{#if Component && shouldRender}
+{#if Component && shouldRenderWrapper}
 	{#snippet componentWithOrWithoutChildren()}
 		<svelte:boundary
 			onerror={(err, reset) => {
@@ -95,10 +100,13 @@
 			props={attributes}
 			validationErrors={componentValidationErrors}
 			{tag}
+			contentBlocked={!shouldRender}
 		>
-			{@render componentWithOrWithoutChildren()}
+			{#if shouldRender}
+				{@render componentWithOrWithoutChildren()}
+			{/if}
 		</ComponentWrapper>
-	{:else}
+	{:else if shouldRender}
 		{@render componentWithOrWithoutChildren()}
 	{/if}
 {/if}

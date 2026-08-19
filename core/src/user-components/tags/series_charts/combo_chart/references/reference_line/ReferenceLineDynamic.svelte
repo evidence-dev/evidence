@@ -9,6 +9,7 @@
 	import { getPageFiltersContext } from '../../../../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../../../../common/inline-queries';
 	import { getProjectSettingsContext } from '../../../../../../project-settings.context';
+	import { getComboChartContext } from '../../combo-chart-context';
 
 	const props: ReferenceLineDynamicProps = $props();
 	const data = $derived(props.data);
@@ -57,6 +58,9 @@
 	const MAX_ROWS = 100;
 	const rows = $derived(query.result?.rows ?? []);
 	const limitedRows = $derived(rows.slice(0, MAX_ROWS));
+
+	const { registerChildError } = getComboChartContext();
+	$effect(() => registerChildError(() => query.error));
 </script>
 
 {#each limitedRows as row}
