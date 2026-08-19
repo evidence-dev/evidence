@@ -9,17 +9,6 @@ import { defaultDialect } from '../../../sql-dialect';
 HTMLElement.prototype.scrollIntoView = vi.fn();
 const readComputedStyle = window.getComputedStyle.bind(window);
 
-vi.mock('../../../metadata/context', () => ({
-	getMetadataContext: () => ({
-		getTable: () => ({
-			columns: [
-				{ name: 'total_sales', type: 'Float64', jsType: 'number' },
-				{ name: 'category', type: 'String', jsType: 'string' }
-			]
-		})
-	})
-}));
-
 const pageFilters = vi.hoisted(() => ({ current: undefined as unknown }));
 
 vi.mock('../../../page-filters-context', () => ({
@@ -47,7 +36,15 @@ vi.mock('../../../QueryService.context', async () => {
 			id: 'default',
 			type: 'managed',
 			dialect: defaultDialect,
-			query
+			query,
+			catalog: {
+				getTable: () => ({
+					columns: [
+						{ name: 'total_sales', type: 'Float64', jsType: 'number' },
+						{ name: 'category', type: 'String', jsType: 'string' }
+					]
+				})
+			}
 		})
 	};
 });

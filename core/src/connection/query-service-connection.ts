@@ -1,5 +1,5 @@
 import type { QueryService } from '../user-components/interfaces/query-service';
-import type { Connection } from './types';
+import type { Catalog, Connection } from './types';
 
 /**
  * Bridge the ambient single {@link QueryService} to a {@link Connection} by delegating
@@ -18,5 +18,20 @@ export function connectionFromQueryService(
 			return queryService.dialect;
 		},
 		query: (sql, queryOpts) => queryService.query(sql, queryOpts)
+	};
+}
+
+/** Attach a catalog, forwarding `dialect`/`query` so the live getter isn't snapshotted. */
+export function withCatalog(connection: Connection, catalog: Catalog): Connection {
+	return {
+		id: connection.id,
+		type: connection.type,
+		get dialect() {
+			return connection.dialect;
+		},
+		query: connection.query,
+		get catalog() {
+			return catalog;
+		}
 	};
 }

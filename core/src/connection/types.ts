@@ -1,9 +1,13 @@
 import type { SqlDialect } from '../sql-dialect';
+import type { Metadata } from '../metadata/Metadata.svelte';
 import type {
 	AnyRowType,
 	QueryOpts,
 	QueryResult
 } from '../user-components/interfaces/query-service';
+
+/** The schema catalog for a connection — tables/columns for validation, autocomplete, and the schema viewer. */
+export type Catalog = Metadata;
 
 /**
  * A single warehouse connection: its `dialect` (how to spell SQL) and `query` (how to
@@ -20,6 +24,8 @@ export interface Connection {
 		sql: string,
 		opts?: QueryOpts
 	): Promise<QueryResult<RowType>>;
+	/** Schema catalog. Optional because it's late-bound — attached by `setMetadataContext` after the query service. */
+	readonly catalog?: Catalog;
 }
 
 /**

@@ -3,7 +3,6 @@
 	import { Query } from '../../../Query.svelte';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
 	import SparklineDisplay from './SparklineDisplay.svelte';
-	import { getMetadataContext } from '../../../metadata/context';
 	import { getEchartsType } from '../../common/typeConversions';
 	import { schema } from './schema';
 	import { getDefaultConnection } from '../../../QueryService.context';
@@ -137,8 +136,8 @@
 	const width = 50;
 	const height = 15;
 
-	// Get metadata for column types
-	const metadata = getMetadataContext();
+	// Get metadata for column types (attached to the connection before render)
+	const metadata = connection.catalog!;
 	const xColumnType = $derived(
 		tableName && x ? metadata.getTable(tableName)?.getColumn(x)?.type : undefined
 	);

@@ -7,7 +7,6 @@
 	import * as Popover from '../../../shadcn/components/ui/popover';
 	import { Button } from '../../../shadcn/components/ui/button';
 	import { ListFilter, Calendar, Type, Hash, ToggleLeft } from 'lucide-svelte';
-	import { getMetadataContext } from '../../../metadata/context';
 	import { getInlineQueryMetadataContext } from '../../../metadata/inline-query-metadata.svelte';
 	import type { IColumnMetadata } from '../../../metadata/metadata';
 	import StringValueSelector from './StringValueSelector.svelte';
@@ -77,7 +76,7 @@
 		return columnLabels.get(columnName) ?? formatTitle(columnName);
 	}
 
-	const metadata = getMetadataContext();
+	const metadata = connection.catalog!;
 	const inlineQueryMetadata = getInlineQueryMetadataContext();
 	const pageFilters = getPageFiltersContext();
 

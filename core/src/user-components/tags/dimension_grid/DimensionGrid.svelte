@@ -16,7 +16,7 @@
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { extract } from 'runed';
-	import { getMetadataContext } from '../../../metadata/context';
+	import type { Catalog } from '../../../connection';
 	import { getInlineQueryMetadataContext } from '../../../metadata/inline-query-metadata.svelte';
 	import DimensionCut, { type DimensionQueryRow } from './DimensionCut.svelte';
 	import { setDimensionGridContext } from './dimension-grid-context';
@@ -39,11 +39,11 @@
 	const projectSettings = getProjectSettingsContext();
 
 	// Metadata contexts for dimension auto-detection
-	let metadata: ReturnType<typeof getMetadataContext> | undefined;
+	let metadata: Catalog | undefined;
 	let inlineQueryMetadata: ReturnType<typeof getInlineQueryMetadataContext> | undefined;
 
 	try {
-		metadata = getMetadataContext();
+		metadata = connection.catalog;
 	} catch {
 		// Context may not be available
 	}
