@@ -1,13 +1,16 @@
 import { ZodAttribute } from '../../../../../common/zod-attribute';
+import { SQL_OPTIONS } from '../../../../../common/sql-options';
 import type { UserComponentSchema } from '../../../../../types';
 import {
 	and,
+	filtersExist,
 	validateSqlExpression,
 	validateFormatCode,
 	type Validator,
 	validateEmptyAttributes
 } from '../../../../../validators';
 import { ifCondition } from '../../../../../validators/ifCondition';
+import { requiresData } from '../requiresData.validator';
 import type { LineLabelOption } from 'echarts/types/src/util/types.js';
 import z from 'zod';
 import { isStringNotNumber } from '../isStringNotNumber.validator';
@@ -153,6 +156,15 @@ export const schema = {
 			description: 'Query name to use for calculating dynamic reference values',
 			suggestionType: 'table'
 		},
+		filters: {
+			type: Array,
+			required: false,
+			default: [],
+			description: 'IDs of filters to apply to the query (requires `data`)',
+			suggestionType: 'filter',
+			affectsQuery: true
+		},
+		where: SQL_OPTIONS.where,
 		label: {
 			type: String,
 			description: 'Text label to display on the reference line',
@@ -211,9 +223,12 @@ export const schema = {
 	validate: and(
 		hasXOrYOrX1Y1X2Y2,
 		validateFormatCode('fmt'),
+		filtersExist('filters'),
+		requiresData('filters', 'where'),
 		ifCondition(
 			(node) => typeof node.attributes.data !== 'undefined',
 			and(
+				validateSqlExpression('where', 'data', 'where'),
 				validateSqlExpression('label', 'data', 'select'),
 				isStringNotNumber('x'),
 				validateSqlExpression('x', 'data', 'select'),

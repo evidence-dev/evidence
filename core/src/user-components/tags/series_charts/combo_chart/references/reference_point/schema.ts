@@ -1,13 +1,16 @@
 import { ZodAttribute } from '../../../../../common/zod-attribute';
 import { FMT_OPTIONS } from '../../../../../formatValue';
+import { SQL_OPTIONS } from '../../../../../common/sql-options';
 import type { UserComponentSchema } from '../../../../../types';
 import {
 	and,
+	filtersExist,
 	validateSqlExpression,
 	validateFormatCode,
 	validateEmptyAttributes
 } from '../../../../../validators';
 import { ifCondition } from '../../../../../validators/ifCondition';
+import { requiresData } from '../requiresData.validator';
 import defaultsDeep from 'lodash/defaultsDeep';
 import z from 'zod';
 
@@ -115,6 +118,15 @@ export const schema = {
 			description: 'Query name to use for placing multiple points from data',
 			suggestionType: 'table'
 		},
+		filters: {
+			type: Array,
+			required: false,
+			default: [],
+			description: 'IDs of filters to apply to the query (requires `data`)',
+			suggestionType: 'filter',
+			affectsQuery: true
+		},
+		where: SQL_OPTIONS.where,
 		label: {
 			type: String,
 			description: 'Text label to display at the reference point',
@@ -149,11 +161,14 @@ export const schema = {
 	},
 	validate: and(
 		validateFormatCode('fmt'),
+		filtersExist('filters'),
+		requiresData('filters', 'where'),
 		ifCondition(
 			(node) => typeof node.attributes.data !== 'undefined',
 			and(
 				validateSqlExpression('x', 'data', 'select'),
 				validateSqlExpression('y', 'data', 'select'),
+				validateSqlExpression('where', 'data', 'where'),
 				validateEmptyAttributes()
 			)
 		)

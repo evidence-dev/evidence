@@ -9,6 +9,8 @@
 	import { getPageFiltersContext } from '../../../../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../../../../common/inline-queries';
 	import { getProjectSettingsContext } from '../../../../../../project-settings.context';
+	import { VariableProcessor } from '../../../../../../filter-variables/VariableProcessor';
+	import { createResolvers } from '../../../../../common/use-variable-processing';
 	import { getComboChartContext } from '../../combo-chart-context';
 
 	const props: ReferenceLineDynamicProps = $props();
@@ -25,6 +27,16 @@
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
+
+	const variableProcessor = $derived.by(() => {
+		const filterContexts = [repeatFilters, pageFilters].filter(
+			(ctx): ctx is NonNullable<typeof ctx> => ctx !== undefined
+		);
+		if (filterContexts.length === 0 || !inlineQueries) return null;
+		return new VariableProcessor(filterContexts, inlineQueries);
+	});
+	const { resolveSql } = $derived(createResolvers(variableProcessor));
+	const where = $derived(resolveSql(props.where) ?? props.where);
 
 	// Convert columns to processed column expressions
 	const processedColumns = $derived.by(() => {
@@ -44,7 +56,9 @@
 
 		return {
 			tableExpressionName: data,
-			columns: processedColumns
+			columns: processedColumns,
+			filterIds: props.filters,
+			where
 		};
 	});
 	const query = new Query(() => queryConfig, {

@@ -138,6 +138,14 @@ select 4000000, 'Stretch Goal'
   Query name to use for calculating dynamic reference values
 </ResponseField>
 
+<ResponseField name="filters" type="array">
+  IDs of filters to apply to the query (requires `data`)
+</ResponseField>
+
+<ResponseField name="where" type="string">
+  Custom SQL WHERE condition to apply to the query. For date filters, use date_range instead.
+</ResponseField>
+
 <ResponseField name="label" type="string">
   Text label to display on the reference line
 </ResponseField>
