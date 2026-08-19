@@ -17,6 +17,7 @@
 	import { AreaLayerModel } from './area_layer/AreaLayerModel.svelte';
 	import { PointLayerModel } from './point_layer/PointLayerModel.svelte';
 	import { HeatmapLayerModel } from './heatmap_layer/HeatmapLayerModel.svelte';
+	import { transitionMapLayer, type MapLayerState } from './layer-state';
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
 	import { getPageSettingsContext } from '../../../page-settings.context';
 	import { getQueryService } from '../../../QueryService.context';
@@ -205,8 +206,8 @@
 		getDefaultColorScale: () => defaultColorScale
 	});
 
-	// Track which layers have been added (plain object, not reactive)
-	const layerState = new Map<string, { added: boolean; dataHash: string }>();
+	// Cache the latest rows so new query results need one comparison, even for 100k-point layers.
+	const layerState = new Map<string, MapLayerState>();
 	let lastStyleLoad = 0;
 
 	/**
@@ -251,22 +252,17 @@
 		const areaLayersToAdd: typeof areaLayers = [];
 
 		for (const layer of areaLayers) {
-			const isLoaded = !layer.loading && layer.data.length > 0;
-			if (!isLoaded) continue;
-
-			// Create data hash for change detection
-			const dataHash = `${layer.data.length}-${JSON.stringify(layer.data[0] ?? {})}`;
+			if (layer.loading) continue;
+			const data = layer.data;
 			const state = layerState.get(layer.layerId);
+			const transition = transitionMapLayer(state, data);
+			layerState.set(layer.layerId, transition.state);
 
-			// Add if never added or data changed
-			if (!state || state.dataHash !== dataHash) {
-				// Remove old layer if it exists
-				if (state?.added) {
-					layer.removeFromMap(map);
-				}
+			if (transition.action === 'remove') {
+				layer.removeFromMap(map);
+			} else if (transition.action === 'replace') {
+				if (state?.added) layer.removeFromMap(map);
 				areaLayersToAdd.push(layer);
-				// Mark as added immediately
-				layerState.set(layer.layerId, { added: true, dataHash });
 			}
 		}
 
@@ -274,24 +270,18 @@
 		const pointLayersToAdd: typeof pointLayers = [];
 
 		for (const layer of pointLayers) {
-			const isLoaded = !layer.loading && layer.data.length > 0;
-			if (!isLoaded) continue;
-
-			// Create data hash for change detection. Cluster mode is included so
-			// toggling it tears down and rebuilds the layer (the source's cluster
-			// flag can't be changed in place).
-			const dataHash = `${layer.clusteringEnabled}-${layer.data.length}-${JSON.stringify(layer.data[0] ?? {})}`;
+			if (layer.loading) continue;
+			const data = layer.data;
 			const state = layerState.get(layer.layerId);
+			// The source's cluster flag can't be changed in place.
+			const transition = transitionMapLayer(state, data, layer.clusteringEnabled);
+			layerState.set(layer.layerId, transition.state);
 
-			// Add if never added or data changed
-			if (!state || state.dataHash !== dataHash) {
-				// Remove old layer if it exists
-				if (state?.added) {
-					layer.removeFromMap(map);
-				}
+			if (transition.action === 'remove') {
+				layer.removeFromMap(map);
+			} else if (transition.action === 'replace') {
+				if (state?.added) layer.removeFromMap(map);
 				pointLayersToAdd.push(layer);
-				// Mark as added immediately
-				layerState.set(layer.layerId, { added: true, dataHash });
 			}
 		}
 
@@ -299,22 +289,17 @@
 		const heatmapLayersToAdd: typeof heatmapLayers = [];
 
 		for (const layer of heatmapLayers) {
-			const isLoaded = !layer.loading && layer.data.length > 0;
-			if (!isLoaded) continue;
-
-			// Create data hash for change detection
-			const dataHash = `${layer.data.length}-${JSON.stringify(layer.data[0] ?? {})}`;
+			if (layer.loading) continue;
+			const data = layer.data;
 			const state = layerState.get(layer.layerId);
+			const transition = transitionMapLayer(state, data);
+			layerState.set(layer.layerId, transition.state);
 
-			// Add if never added or data changed
-			if (!state || state.dataHash !== dataHash) {
-				// Remove old layer if it exists
-				if (state?.added) {
-					layer.removeFromMap(map);
-				}
+			if (transition.action === 'remove') {
+				layer.removeFromMap(map);
+			} else if (transition.action === 'replace') {
+				if (state?.added) layer.removeFromMap(map);
 				heatmapLayersToAdd.push(layer);
-				// Mark as added immediately
-				layerState.set(layer.layerId, { added: true, dataHash });
 			}
 		}
 
