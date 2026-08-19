@@ -1,15 +1,15 @@
 /**
- * OSS → Studio page transform.
+ * legacy Evidence → Core page transform.
  *
- * Converts Evidence OSS (Svelte-syntax) markdown pages to Studio Markdoc
+ * Converts legacy Evidence (Svelte-syntax) markdown pages to Core Markdoc
  * syntax. Deterministic, mechanical rules only — anything that needs judgment
  * (attribute semantics, unsupported components, source queries) is surfaced as
  * a note for the human/AI pass that follows. `evidence validate` is the
  * backstop for anything this misses.
  */
 
-/** Studio tag render names — a converted tag outside this set gets a warning. */
-export const STUDIO_TAGS = new Set([
+/** Core tag render names — a converted tag outside this set gets a warning. */
+export const CORE_TAGS = new Set([
 	'accordion',
 	'accordion_body_slot',
 	'accordion_item',
@@ -116,9 +116,9 @@ export interface TransformResult {
 }
 
 export interface TransformOptions {
-	/** Studio tag → allowed attribute names; unknown attrs are dropped with a note. */
+	/** Core tag → allowed attribute names; unknown attrs are dropped with a note. */
 	tagAttrs?: Map<string, Set<string>>;
-	/** OSS `source.table` refs → `{{ /queries/... }}` rewrites, applied in SQL. */
+	/** legacy Evidence `source.table` refs → `{{ /queries/... }}` rewrites, applied in SQL. */
 	sourceRefs?: Map<string, string>;
 	/** Frontmatter-declared query files (name → project path); set per page. */
 	queryFiles?: Map<string, string>;
@@ -149,14 +149,17 @@ interface Attr {
 
 interface ComponentRule {
 	tag?: string;
-	/** OSS attr name → studio attr name (before generic snake_casing). */
+	/** legacy Evidence attr name → Core attr name (before generic snake_casing). */
 	attrRenames?: Record<string, string>;
 	/** Post-rename hook for structural changes (tag swap, attr synthesis). */
 	transform?: (attrs: Attr[], notes: MigrationNote[]) => { tag?: string; attrs: Attr[] };
+	/** Legacy attrs (camelCase) triaged as having no Core equivalent — dropped
+	 * with an "unsupported in Core" warning instead of the generic drop note. */
+	unsupported?: readonly string[];
 	/** Remove the tag entirely (children stay in place). */
 	drop?: true;
 	/** Replace the tag with generated markdown instead of a markdoc tag. */
-	emit?: (attrs: Attr[]) => string;
+	emit?: (attrs: Attr[], notes: MigrationNote[]) => string;
 }
 
 const INPUT_RENAMES = {
@@ -166,56 +169,214 @@ const INPUT_RENAMES = {
 	defaultValue: 'initial_value'
 };
 
-/** OSS per-axis chart props that fold into studio's {x,y}_axis_options objects. */
-const AXIS_OPTION_PROPS: Record<string, { axis: 'x' | 'y'; key: string }> = {
+/** legacy Evidence per-axis chart props that fold into Core's {x,y,y2}_axis_options objects. */
+const AXIS_OPTION_PROPS: Record<string, { axis: 'x' | 'y' | 'y2'; key: string }> = {
 	xAxisLabels: { axis: 'x', key: 'labels' },
 	yAxisLabels: { axis: 'y', key: 'labels' },
+	y2AxisLabels: { axis: 'y2', key: 'labels' },
 	xGridlines: { axis: 'x', key: 'gridlines' },
 	yGridlines: { axis: 'y', key: 'gridlines' },
+	y2Gridlines: { axis: 'y2', key: 'gridlines' },
 	xAxisTitle: { axis: 'x', key: 'title' },
 	yAxisTitle: { axis: 'y', key: 'title' },
+	y2AxisTitle: { axis: 'y2', key: 'title' },
 	xMin: { axis: 'x', key: 'min' },
 	xMax: { axis: 'x', key: 'max' },
 	yMin: { axis: 'y', key: 'min' },
-	yMax: { axis: 'y', key: 'max' }
+	yMax: { axis: 'y', key: 'max' },
+	y2Min: { axis: 'y2', key: 'min' },
+	y2Max: { axis: 'y2', key: 'max' },
+	xBaseline: { axis: 'x', key: 'baseline' },
+	yBaseline: { axis: 'y', key: 'baseline' },
+	y2Baseline: { axis: 'y2', key: 'baseline' },
+	xTickMarks: { axis: 'x', key: 'ticks' },
+	yTickMarks: { axis: 'y', key: 'ticks' },
+	y2TickMarks: { axis: 'y2', key: 'ticks' },
+	yScale: { axis: 'y', key: 'fit_to_data' },
+	y2Scale: { axis: 'y2', key: 'fit_to_data' },
+	xLabelWrap: { axis: 'x', key: 'label_wrap' }
 };
 
-/** Fold OSS axis props into `x_axis_options`/`y_axis_options` and rename `labels`. */
-function chartTransform(attrs: Attr[], notes?: MigrationNote[]): { attrs: Attr[] } {
-	if (notes && attrs.some((a) => a.name.startsWith('y2'))) {
+/** legacy data-label props → keys of Core's data_labels object. */
+const DATA_LABEL_PROPS: Record<string, string> = {
+	labelSize: 'size',
+	labelPosition: 'position',
+	labelFmt: 'fmt',
+	labelColor: 'color',
+	showAllLabels: 'show_overlap'
+};
+
+// 'plain' = charts whose Core schema has no axis/data-label option objects
+// (histogram, heatmap, calendar_heatmap, funnel, sankey) — axis folds are skipped.
+type ChartKind = 'line' | 'area' | 'bar' | 'scatter' | 'bubble' | 'plain' | 'generic';
+
+/** Fold legacy Evidence flat chart props into Core's option-object attrs. */
+function chartTransform(
+	attrs: Attr[],
+	notes?: MigrationNote[],
+	chartKind: ChartKind = 'generic'
+): { attrs: Attr[] } {
+	if (notes && attrs.some((a) => a.name === 'y2' || a.name === 'y2SeriesType')) {
 		notes.push({
 			level: 'warning',
 			message:
-				'chart uses a secondary y2 axis — studio models this as {% combo_chart %} with {% bar %}/{% line %} children (axis="y2" on the secondary series); restructure manually'
+				'chart uses a secondary y2 axis — Core models this as {% combo_chart %} with {% bar %}/{% line %} children (axis="y2" on the secondary series); restructure manually'
 		});
 	}
-	const axisEntries: Record<'x' | 'y', string[]> = { x: [], y: [] };
+	const axisEntries: Record<'x' | 'y' | 'y2', string[]> = { x: [], y: [], y2: [] };
+	const labelEntries: string[] = [];
+	const lineOptEntries: Array<[string, string]> = [];
 	const rest: Attr[] = [];
+	const seriesColors: Attr[] = [];
+	let palette: string | null = null;
+	let seriesColorMap: string | null = null;
+	let labelsOn = false;
+	let markersOn = false;
+	let markerShape: string | null = null;
+	let markerSize: string | null = null;
+	let stepOn = false;
+	let stepPosition: string | null = null;
 	for (const attr of attrs) {
 		const axisProp = AXIS_OPTION_PROPS[attr.name];
-		if (axisProp && attr.value !== null) {
-			axisEntries[axisProp.axis].push(`${axisProp.key}=${attr.value}`);
+		const labelProp = DATA_LABEL_PROPS[attr.name];
+		if (axisProp && attr.value !== null && chartKind !== 'plain') {
+			axisEntries[axisProp.axis].push(`${axisProp.key}=${bare(attr.value)}`);
+		} else if (labelProp && attr.value !== null && chartKind !== 'plain') {
+			let value = attr.value;
+			if (attr.name === 'labelPosition' && chartKind === 'bar') {
+				// legacy bar labels are outside|inside; Core positions them spatially.
+				value = unquote(value) === 'inside' ? '"middle"' : '"above"';
+			}
+			labelEntries.push(`${labelProp}=${bare(value)}`);
+		} else if (attr.name === 'yLabelFmt' && attr.value !== null) {
+			labelEntries.push(`fmt=${attr.value}`);
+		} else if (attr.name === 'colorPalette' && attr.value !== null) {
+			palette = attr.value;
+		} else if (attr.name === 'seriesColors' && attr.value !== null) {
+			seriesColorMap = attr.value;
+		} else if ((attr.name === 'fillColor' || attr.name === 'lineColor') && attr.value !== null) {
+			seriesColors.push(attr);
+		} else if (attr.name === 'sort') {
+			// legacy sort=false preserved query order; Core spells that x_sort="data".
+			if (attr.value === 'false') rest.push({ name: 'x_sort', value: '"data"' });
 		} else if (attr.name === 'labels') {
-			// OSS boolean → studio object form; false just means the default (off).
-			if (attr.value === 'true') rest.push({ name: 'data_labels', value: '{position="above"}' });
+			labelsOn = attr.value === 'true';
+		} else if (attr.name === 'markers') {
+			markersOn = attr.value === 'true';
+		} else if (attr.name === 'markerShape') {
+			markerShape = attr.value;
+		} else if (attr.name === 'markerSize') {
+			markerSize = attr.value;
+		} else if (attr.name === 'step') {
+			stepOn = attr.value === 'true';
+		} else if (attr.name === 'stepPosition') {
+			stepPosition = attr.value;
+		} else if (
+			chartKind === 'line' &&
+			(attr.name === 'lineType' || attr.name === 'lineOpacity' || attr.name === 'lineWidth') &&
+			attr.value !== null
+		) {
+			const key = { lineType: 'type', lineOpacity: 'opacity', lineWidth: 'width' }[attr.name]!;
+			lineOptEntries.push([key, bare(attr.value)!]);
+		} else if (chartKind === 'bar' && attr.name === 'fillOpacity' && attr.value !== null) {
+			rest.push({ name: 'bar_options', value: `{opacity=${bare(attr.value)}}` });
+		} else if (attr.name === 'seriesOptions') {
+			rest.push({ ...attr, name: 'echarts_series_options' });
+		} else if (attr.name === 'tooltipTitle') {
+			rest.push({ ...attr, name: 'point_title' });
+		} else if (attr.name === 'chartAreaHeight' && attr.value !== null) {
+			// legacy sized only the plot area; Core height is the whole component.
+			rest.push({ name: 'height', value: bare(attr.value) });
+			notes?.push({
+				level: 'info',
+				message:
+					'chartAreaHeight sized the plot area only — converted to height= (whole component); expect a slightly shorter plot'
+			});
 		} else if (attr.name === 'nullsZero') {
 			if (attr.value === 'true') rest.push({ name: 'handle_missing', value: '"zero"' });
 		} else if (attr.name === 'type') {
-			// OSS type=grouped|stacked|stacked100 maps onto the `stacked` attr.
+			// legacy Evidence type=grouped|stacked|stacked100 maps onto the `stacked` attr.
 			const kind = unquote(attr.value);
 			if (kind === 'grouped') rest.push({ name: 'stacked', value: 'false' });
 			else if (kind === 'stacked100') rest.push({ name: 'stacked', value: '"100%"' });
-			// plain "stacked" is the studio default — drop.
+			// plain "stacked" is the Core default — drop.
 		} else {
 			rest.push(attr);
 		}
 	}
-	for (const axis of ['x', 'y'] as const) {
+	if (markersOn || markerShape || markerSize) {
+		if (chartKind === 'line') {
+			const entries: string[] = [];
+			if (markerShape) entries.push(`shape=${markerShape}`);
+			if (markerSize) entries.push(`size=${bare(markerSize)}`);
+			lineOptEntries.push(['markers', entries.length ? `{${entries.join(' ')}}` : 'true']);
+		} else {
+			notes?.push({
+				level: 'warning',
+				message: `${chartKind}_chart: unsupported in Core: markers (line charts only)`
+			});
+		}
+	}
+	if (stepOn) {
+		const step = stepPosition ?? '"end"';
+		if (chartKind === 'line') lineOptEntries.push(['step', step]);
+		else if (chartKind === 'area') rest.push({ name: 'area_options', value: `{step=${step}}` });
+	}
+	if (lineOptEntries.length > 0) {
+		rest.push({ name: 'line_options', value: buildObjectAttr(lineOptEntries) });
+	}
+	if (labelsOn || labelEntries.length > 0) {
+		if (!labelEntries.some((e) => e.startsWith('position='))) {
+			labelEntries.unshift('position="above"');
+		}
+		rest.push({ name: 'data_labels', value: `{${labelEntries.join(' ')}}` });
+	}
+	for (const axis of ['x', 'y', 'y2'] as const) {
 		if (axisEntries[axis].length > 0) {
 			rest.push({ name: `${axis}_axis_options`, value: `{${axisEntries[axis].join(' ')}}` });
 		}
 	}
+	// A single legacy Evidence series color maps onto the palette; two competing colors
+	// (area fillColor + lineColor) can't both be expressed — surface for review.
+	const chartOptEntries: string[] = [];
+	if (palette !== null) {
+		chartOptEntries.push(`color_palette=${palette}`);
+		if (seriesColors.length > 0) {
+			notes?.push({
+				level: 'warning',
+				message: `colorPalette wins over ${seriesColors.map((a) => a.name).join('/')} — dropped the latter`
+			});
+		}
+	} else if (seriesColors.length === 1) {
+		chartOptEntries.push(`color_palette=[${seriesColors[0].value}]`);
+	} else if (seriesColors.length > 1) {
+		notes?.push({
+			level: 'warning',
+			message: `chart sets both ${seriesColors
+				.map((a) => `${a.name}=${a.value}`)
+				.join(' and ')} — Core has one series color; set chart_options={color_palette=[<color>]} with the one to keep`
+		});
+	}
+	if (seriesColorMap !== null) chartOptEntries.push(`series_colors=${seriesColorMap}`);
+	if (chartOptEntries.length > 0) {
+		rest.push({ name: 'chart_options', value: `{${chartOptEntries.join(' ')}}` });
+	}
 	return { attrs: rest };
+}
+
+/** legacy Evidence charts infer omitted x/y from the query columns; Core requires both. */
+function warnMissingAxes(tag: string, attrs: Attr[], notes: MigrationNote[]): void {
+	const has = (name: string) => attrs.some((a) => a.name === name);
+	if (!has('data') || has('metric')) return;
+	const missing = (['x', 'y'] as const).filter((axis) => !has(axis));
+	if (missing.length > 0) {
+		notes.push({
+			level: 'warning',
+			message: `${tag}: legacy Evidence inferred ${missing.join(' and ')} from the query columns — Core requires ${missing
+				.map((m) => `${m}=`)
+				.join(' and ')}; add the column name(s)`
+		});
+	}
 }
 
 /** Swap x↔y (and their axis options) — for swapXY → horizontal_bar_chart. */
@@ -230,24 +391,24 @@ function swapAxes(attrs: Attr[]): Attr[] {
 		y_axis_options: 'x_axis_options'
 	};
 	return attrs.map((a) => {
-		if (a.name === 'data_labels' && a.value === '{position="above"}') {
-			return { ...a, value: '{position="right"}' };
+		if (a.name === 'data_labels' && a.value?.includes('position="above"')) {
+			return { ...a, value: a.value.replace('position="above"', 'position="right"') };
 		}
 		return swaps[a.name] ? { ...a, name: swaps[a.name] } : a;
 	});
 }
 
 /**
- * OSS charts never "connect" missing points, but studio's handle_missing
+ * legacy Evidence charts never "connect" missing points, but Core's handle_missing
  * defaults to "connect" — a migrated chart left without the attribute renders
  * differently (sparse stacked areas become diagonal sawtooth ramps). Emit the
- * value matching OSS's effective default: multi-series areas zero-fill
+ * value matching legacy Evidence's effective default: multi-series areas zero-fill
  * unconditionally (Area.svelte: getCompletedData + replaceNulls), everything
- * else gaps. OSS spells the enum "gap"; studio spells it "gaps".
+ * else gaps. legacy Evidence spells the enum "gap"; Core spells it "gaps".
  */
 function withOssMissingDefault(kind: 'line' | 'area') {
 	return (attrs: Attr[], notes: MigrationNote[]): { tag?: string; attrs: Attr[] } => {
-		let out = chartTransform(attrs, notes).attrs;
+		let out = chartTransform(attrs, notes, kind).attrs;
 		out = out.map((a) =>
 			a.name === 'handleMissing' && (a.value === '"gap"' || a.value === '"gaps"')
 				? { ...a, value: '"gaps"' }
@@ -261,97 +422,660 @@ function withOssMissingDefault(kind: 'line' | 'area') {
 			const value = kind === 'area' && multiSeries ? 'zero' : 'gaps';
 			out = [...out, { name: 'handle_missing', value: `"${value}"` }];
 		}
+		warnMissingAxes(`${kind}_chart`, out, notes);
 		return { attrs: out };
 	};
 }
 
+/** Strip quotes from values Core types as number/boolean (legacy accepted both). */
+function bare(value: string | null): string | null {
+	if (value === null) return null;
+	const inner = unquote(value);
+	if (inner !== null && (inner === 'true' || inner === 'false' || /^-?\d+(\.\d+)?$/.test(inner))) {
+		return inner;
+	}
+	return value;
+}
+
+/**
+ * Build a markdoc object literal from dot-path entries:
+ * [['color','"red"'],['border.width','2']] → {color="red" border={width=2}}
+ */
+function buildObjectAttr(entries: Array<[string, string]>): string {
+	const flat: string[] = [];
+	const nested = new Map<string, Array<[string, string]>>();
+	for (const [key, value] of entries) {
+		const dot = key.indexOf('.');
+		if (dot === -1) flat.push(`${key}=${value}`);
+		else {
+			const head = key.slice(0, dot);
+			if (!nested.has(head)) nested.set(head, []);
+			nested.get(head)!.push([key.slice(dot + 1), value]);
+		}
+	}
+	for (const [head, sub] of nested) flat.push(`${head}=${buildObjectAttr(sub)}`);
+	return `{${flat.join(' ')}}`;
+}
+
+/**
+ * Fold flat legacy attrs into Core object attrs per a {legacyName → 'attr.path'}
+ * map (append `#` to coerce quoted numbers/booleans bare). Consumed attrs are
+ * removed; one merged object attr is emitted per top-level target.
+ */
+function foldObjectAttrs(attrs: Attr[], folds: Record<string, string>): Attr[] {
+	const collected = new Map<string, Array<[string, string]>>();
+	const rest: Attr[] = [];
+	for (const attr of attrs) {
+		const target = folds[attr.name];
+		if (!target || attr.value === null) {
+			rest.push(attr);
+			continue;
+		}
+		const coerce = target.endsWith('#');
+		const path = coerce ? target.slice(0, -1) : target;
+		const dot = path.indexOf('.');
+		const head = dot === -1 ? path : path.slice(0, dot);
+		const sub = dot === -1 ? '' : path.slice(dot + 1);
+		if (!collected.has(head)) collected.set(head, []);
+		const value = coerce ? bare(attr.value)! : attr.value;
+		if (sub) collected.get(head)!.push([sub, value]);
+		else collected.get(head)!.push(['', value]);
+	}
+	for (const [head, entries] of collected) {
+		const named = entries.filter(([k]) => k !== '');
+		rest.push({ name: head, value: buildObjectAttr(named) });
+	}
+	return rest;
+}
+
+/** Requote a legacy camelCase enum value as Core's snake_case ("aboveEnd" → "above_end"). */
+function snakeEnum(value: string | null): string | null {
+	const inner = unquote(value);
+	if (inner === null) return value;
+	return `"${camelToSnake(inner.replaceAll('centre', 'center').replaceAll('Centre', 'Center'))}"`;
+}
+
+/** Column → dimension/measure: contentType picks the tag; flat props fold into option objects. */
+function columnTransform(attrs: Attr[], notes: MigrationNote[]): { tag?: string; attrs: Attr[] } {
+	const contentType = attrs.find((a) => a.name === 'contentType');
+	const kind = unquote(contentType?.value ?? null);
+	let out = attrs
+		.filter((a) => a !== contentType)
+		// legacy Evidence accepted the British spelling; Core validates against it.
+		.map((a) => (a.name === 'align' && a.value === '"centre"' ? { ...a, value: '"center"' } : a));
+
+	if (!kind || kind === 'link') {
+		if (kind === 'link' && !out.some((a) => a.name === 'link')) {
+			// legacy Evidence rendered the column's own value as the link href.
+			const value = out.find((a) => a.name === 'value');
+			if (value?.value) out = [...out, { name: 'link', value: value.value }];
+		}
+		return { attrs: out };
+	}
+	if (kind === 'html') {
+		return { attrs: [...out, { name: 'html', value: 'true' }] };
+	}
+	if (kind === 'image') {
+		const value = out.find((a) => a.name === 'value');
+		// legacy image columns rendered only the image; Core also prints the
+		// cell text unless hide_label is set.
+		out = foldObjectAttrs([...out, { name: 'hideLabel', value: 'true' }], {
+			height: 'image_options.height#',
+			width: 'image_options.width#',
+			alt: 'image_options.alt',
+			hideLabel: 'image_options.hide_label#'
+		});
+		if (value?.value) out = [...out, { name: 'image', value: value.value }];
+		return { attrs: out };
+	}
+
+	// Remaining contentTypes are measure viz modes.
+	const vizByKind: Record<string, string> = {
+		delta: 'delta',
+		bar: 'bar',
+		sparkline: 'sparkline',
+		sparkbar: 'sparkline',
+		sparkarea: 'sparkline',
+		colorscale: 'color'
+	};
+	const viz = vizByKind[kind];
+	if (!viz) {
+		notes.push({
+			level: 'warning',
+			message: `Column contentType=${kind} has no Core equivalent — review`
+		});
+		return { attrs: out };
+	}
+	out = foldObjectAttrs(out, {
+		downIsGood: 'delta_options.down_is_good#',
+		deltaSymbol: 'delta_options.show_symbol#',
+		barColor: 'bar_options.bar_color',
+		negativeBarColor: 'bar_options.bar_color_negative',
+		hideLabels: 'bar_options.hide_labels#',
+		sparkColor: 'sparkline_options.color',
+		sparkX: 'sparkline_options.x',
+		sparkYScale: 'sparkline_options.fit_to_data#',
+		colorScale: 'color_options.color_scale',
+		scaleColor: 'color_options.color_scale',
+		scaleColumn: 'color_options.scale_column'
+	});
+	const neutralMin = out.find((a) => a.name === 'neutralMin');
+	const neutralMax = out.find((a) => a.name === 'neutralMax');
+	if (neutralMin || neutralMax) {
+		out = out.filter((a) => a !== neutralMin && a !== neutralMax);
+		const range = `[${bare(neutralMin?.value ?? null) ?? 'null'}, ${bare(neutralMax?.value ?? null) ?? 'null'}]`;
+		const deltaOpts = out.find((a) => a.name === 'delta_options');
+		if (deltaOpts?.value) {
+			out = out.map((a) =>
+				a === deltaOpts ? { ...a, value: `${a.value!.slice(0, -1)} neutral_range=${range}}` } : a
+			);
+		} else {
+			out = [...out, { name: 'delta_options', value: `{neutral_range=${range}}` }];
+		}
+	}
+	if (kind === 'sparkbar' || kind === 'sparkarea') {
+		const type = kind === 'sparkbar' ? 'bar' : 'area';
+		const sparkOpts = out.find((a) => a.name === 'sparkline_options');
+		out = sparkOpts?.value
+			? out.map((a) =>
+					a === sparkOpts ? { ...a, value: `${a.value!.slice(0, -1)} type="${type}"}` } : a
+				)
+			: [...out, { name: 'sparkline_options', value: `{type="${type}"}` }];
+	}
+	const sparkY = out.find((a) => a.name === 'sparkY');
+	if (sparkY) {
+		out = out.filter((a) => a !== sparkY);
+		notes.push({
+			level: 'info',
+			message: `Column sparkY: the Core measure's value IS the sparkline series — set value=${sparkY.value} (aggregated) on the measure`
+		});
+	}
+	if (kind === 'delta') {
+		notes.push({
+			level: 'info',
+			message:
+				'Column contentType=delta read a precomputed column in legacy Evidence; Core measures compute deltas — pair viz="delta" with comparison={...} and drop the delta SQL'
+		});
+	}
+	const scaleDomain = out.filter((a) =>
+		['colorMin', 'colorMax', 'colorMid', 'colorBreakpoints'].includes(a.name)
+	);
+	if (scaleDomain.length > 0) {
+		out = out.filter((a) => !scaleDomain.includes(a));
+		notes.push({
+			level: 'warning',
+			message:
+				'Column color domain (colorMin/colorMid/colorMax/colorBreakpoints) has no direct Core form — pin values with color_options={color_stops=[{value=... color="..."}]}'
+		});
+	}
+	return { tag: 'measure', attrs: [...out, { name: 'viz', value: `"${viz}"` }] };
+}
+
+/** Flat legacy label props shared by all reference components → label_options paths. */
+const REFERENCE_LABEL_FOLDS: Record<string, string> = {
+	labelColor: 'label_options.color',
+	labelPadding: 'label_options.padding#',
+	labelBackgroundColor: 'label_options.background_color',
+	labelBorderWidth: 'label_options.border.width#',
+	labelBorderRadius: 'label_options.border.radius#',
+	labelBorderColor: 'label_options.border.color',
+	labelBorderType: 'label_options.border.type',
+	fontSize: 'label_options.text.size#',
+	align: 'label_options.align',
+	bold: 'label_options.text.bold#',
+	italic: 'label_options.text.italic#'
+};
+
+const REFERENCE_UNSUPPORTED = ['preserveWhitespace', 'emptySet', 'emptyMessage'] as const;
+
+function referenceTransform(kind: 'line' | 'area' | 'point' | 'callout') {
+	return (attrs: Attr[], notes: MigrationNote[]): { attrs: Attr[] } => {
+		let out = [...attrs];
+		const take = (name: string): Attr | undefined => {
+			const found = out.find((a) => a.name === name);
+			if (found) out = out.filter((a) => a !== found);
+			return found;
+		};
+
+		const position = take('labelPosition');
+		if (position?.value) {
+			if (kind === 'point' || kind === 'callout') {
+				// Core points accept only the four cardinals; legacy took any ECharts position.
+				const inner = unquote(position.value);
+				if (inner && ['top', 'right', 'bottom', 'left'].includes(inner)) {
+					out.push({ name: 'labelPosition', value: position.value });
+				} else {
+					notes.push({
+						level: 'info',
+						message: `labelPosition=${position.value} has no Core equivalent (top/right/bottom/left only) — dropped, defaults to top`
+					});
+				}
+			} else {
+				out.push({ name: 'labelPosition', value: snakeEnum(position.value) });
+			}
+		}
+
+		const folds: Record<string, string> = {
+			...REFERENCE_LABEL_FOLDS,
+			labelPosition: 'label_options.position'
+		};
+
+		if (kind === 'line') {
+			// symbol/symbolSize are legacy aliases for the end symbol.
+			const symbol = take('symbol');
+			if (symbol && !out.some((a) => a.name === 'symbolEnd')) {
+				out.push({ ...symbol, name: 'symbolEnd' });
+			}
+			const symbolSize = take('symbolSize');
+			if (symbolSize && !out.some((a) => a.name === 'symbolEndSize')) {
+				out.push({ ...symbolSize, name: 'symbolEndSize' });
+			}
+			// legacy lines default to dashed; Core renders solid when unset.
+			if (!out.some((a) => a.name === 'lineType')) {
+				out.push({ name: 'lineType', value: '"dashed"' });
+			}
+			Object.assign(folds, {
+				hideValue: 'label_options.hide_value#',
+				lineColor: 'line_options.color',
+				lineWidth: 'line_options.width#',
+				lineType: 'line_options.type',
+				symbolStart: 'symbols.start.shape',
+				symbolStartSize: 'symbols.start.size#',
+				symbolEnd: 'symbols.end.shape',
+				symbolEndSize: 'symbols.end.size#'
+			});
+		} else if (kind === 'area') {
+			const border = take('border');
+			if (border?.value === 'true' && !out.some((a) => a.name === 'borderWidth')) {
+				out.push({ name: 'borderWidth', value: '1' });
+			}
+			// legacy area borders default to dashed; Core's default is solid.
+			if (
+				(border?.value === 'true' || out.some((a) => a.name === 'borderWidth')) &&
+				!out.some((a) => a.name === 'borderType')
+			) {
+				out.push({ name: 'borderType', value: '"dashed"' });
+			}
+			Object.assign(folds, {
+				opacity: 'area_options.opacity#',
+				borderWidth: 'area_options.border.width#',
+				borderType: 'area_options.border.type',
+				borderColor: 'area_options.border.color'
+			});
+		} else {
+			const width = take('labelWidth');
+			if (width?.value) {
+				if (unquote(width.value) === 'fit') {
+					notes.push({
+						level: 'info',
+						message: 'labelWidth="fit" dropped — Core auto-sizes reference point labels'
+					});
+				} else {
+					out.push({ name: 'labelWidth', value: width.value });
+				}
+			} else if (kind === 'callout') {
+				// legacy Callout wrapped its text at 80px; Core's callout variant doesn't.
+				out.push({ name: 'labelWidth', value: '80' });
+			}
+			if (kind === 'callout' && !out.some((a) => a.name === 'labelVariant')) {
+				out.push({ name: 'labelVariant', value: '"callout"' });
+			}
+			Object.assign(folds, {
+				labelWidth: 'label_options.width#',
+				labelVariant: 'label_options.variant',
+				symbol: 'symbol_options.shape',
+				symbolSize: 'symbol_options.size#',
+				symbolColor: 'symbol_options.color'
+			});
+		}
+
+		return { attrs: foldObjectAttrs(out, folds) };
+	};
+}
+
+/**
+ * Legacy map components are one flat tag; Core splits them into {% map %}
+ * (viewport/chrome) + a layer child (data/geo/styling). Map-level props are a
+ * fixed set; everything else — including legacy restProps that flowed to the
+ * inner layer — goes on the layer, with per-component renames.
+ */
+function mapEmit(layerTag: string, layerRenames: Record<string, string>) {
+	return (attrs: Attr[], notes: MigrationNote[]): string => {
+		const mapAttrs: Attr[] = [];
+		const layerAttrs: Attr[] = [];
+		const unsupported: string[] = [];
+		let lat: string | null = null;
+		let lng: string | null = null;
+		for (const a of attrs) {
+			switch (a.name) {
+				case 'startingLat':
+					lat = bare(a.value);
+					break;
+				case 'startingLong':
+					lng = bare(a.value);
+					break;
+				case 'startingZoom':
+					mapAttrs.push({ name: 'zoom', value: bare(a.value) });
+					break;
+				case 'height':
+				case 'title':
+				case 'subtitle':
+				case 'legend':
+					mapAttrs.push({ ...a, value: a.name === 'height' ? bare(a.value) : a.value });
+					break;
+				case 'legendPosition':
+					mapAttrs.push({ ...a, name: 'legend_location' });
+					break;
+				case 'basemap':
+				case 'legendType':
+				case 'ignoreZoom':
+				case 'attribution':
+				case 'emptySet':
+				case 'emptyMessage':
+					unsupported.push(camelToSnake(a.name));
+					break;
+				default:
+					layerAttrs.push(layerRenames[a.name] ? { ...a, name: layerRenames[a.name] } : a);
+			}
+		}
+		if (lat !== null && lng !== null) {
+			mapAttrs.push({ name: 'initial_position', value: `[${lat}, ${lng}]` });
+		} else if (lat !== null || lng !== null) {
+			notes.push({
+				level: 'warning',
+				message:
+					'map: startingLat/startingLong must be set together for initial_position=[lat, lng] — dropped the lone one'
+			});
+		}
+		if (unsupported.length > 0) {
+			notes.push({
+				level: 'warning',
+				message: `map: unsupported in Core: ${unsupported.join(', ')}`
+			});
+		}
+		const layerSnake = layerAttrs.map((a) => ({ ...a, name: camelToSnake(a.name) }));
+		const layerText = renderTag(layerTag, layerSnake, true).replaceAll('\n', '\n    ');
+		return `${renderTag('map', mapAttrs, false)}\n    ${layerText}\n{% /map %}`;
+	};
+}
+
+/** Legacy chart props with no Core equivalent on any series chart. */
+const CHART_UNSUPPORTED = [
+	'xType',
+	'yLog',
+	'yLogBase',
+	'y2SeriesType',
+	'y2LabelFmt',
+	'seriesLabelFmt',
+	'leftPadding',
+	'rightPadding',
+	'renderer',
+	'downloadableData',
+	'downloadableImage',
+	'printEchartsConfig',
+	'yAxisColor',
+	'y2AxisColor',
+	'emptySet',
+	'emptyMessage'
+] as const;
+
 const COMPONENT_RULES: Record<string, ComponentRule> = {
 	DataTable: {
 		tag: 'table',
-		attrRenames: { rows: 'page_size', totalRow: 'show_total_row' },
+		attrRenames: {
+			rows: 'page_size',
+			totalRow: 'show_total_row',
+			showLinkCol: 'show_link_column',
+			formatColumnTitles: 'format_titles'
+		},
+		unsupported: [
+			'rowNumbers',
+			'accordionRowColor',
+			'groupNamePosition',
+			'subtotalRowColor',
+			'subtotalFontColor',
+			'totalRowColor',
+			'totalFontColor',
+			'headerColor',
+			'headerFontColor',
+			'backgroundColor',
+			'compact',
+			'sortable',
+			'downloadable',
+			'generateMarkdown',
+			'isFullPage',
+			'emptySet',
+			'emptyMessage'
+		],
 		transform: (attrs, notes) => {
-			// OSS rows=all disables pagination; studio page_size is numeric-only.
-			const pageSize = attrs.find((a) => a.name === 'page_size');
+			let out = attrs;
+			// legacy Evidence rows=all disables pagination; Core page_size is numeric-only.
+			const pageSize = out.find((a) => a.name === 'page_size');
 			if (pageSize && !/^\d+$/.test(unquote(pageSize.value) ?? '')) {
 				notes.push({
 					level: 'warning',
-					message: `DataTable rows=${unquote(pageSize.value) ?? '?'} has no studio equivalent (page_size is numeric) — dropped, default pagination applies`
+					message: `DataTable rows=${unquote(pageSize.value) ?? '?'} has no Core equivalent (page_size is numeric) — dropped, default pagination applies`
 				});
-				return { attrs: attrs.filter((a) => a !== pageSize) };
+				out = out.filter((a) => a !== pageSize);
 			}
-			return { attrs };
-		}
-	},
-	Column: {
-		tag: 'dimension',
-		attrRenames: { id: 'value', linkLabel: 'link_label' },
-		transform: (attrs, notes) => {
-			const contentType = attrs.find((a) => a.name === 'contentType');
-			let out = attrs
-				.filter((a) => a.name !== 'contentType')
-				// OSS accepted the British spelling; studio validates against it.
-				.map((a) =>
-					a.name === 'align' && a.value === '"centre"' ? { ...a, value: '"center"' } : a
-				);
-			if (contentType) {
-				if (unquote(contentType.value) === 'link') {
-					// OSS rendered the column's own value as the link href.
-					if (!out.some((a) => a.name === 'link')) {
-						const value = out.find((a) => a.name === 'value');
-						if (value?.value) out = [...out, { name: 'link', value: value.value }];
-					}
-				} else if (unquote(contentType.value) === 'colorscale') {
-					const scaleAttrs = new Set(['scaleColor', 'colorMin', 'colorMax', 'colorMid']);
-					out = out.filter((a) => !scaleAttrs.has(a.name));
+			const sort = out.find((a) => a.name === 'sort');
+			if (sort) {
+				out = out.filter((a) => a !== sort);
+				notes.push({
+					level: 'warning',
+					message: `DataTable sort=${sort.value} is per-column in Core — set sort="asc"/"desc" on the matching {% dimension %}/{% measure %} child`
+				});
+			}
+			const groupType = out.find((a) => a.name === 'groupType');
+			const collapsible = groupType && unquote(groupType.value) === 'accordion';
+			if (groupType) {
+				out = out.filter((a) => a !== groupType);
+				// accordion → collapsible groups; section = Core's default merged rendering.
+				if (collapsible) out = [...out, { name: 'collapsible', value: 'true' }];
+			}
+			const groupsOpen = out.find((a) => a.name === 'groupsOpen');
+			if (groupsOpen) out = out.filter((a) => a !== groupsOpen);
+			if (collapsible && groupsOpen?.value !== 'false') {
+				// legacy groups started open by default; Core collapsible defaults collapsed.
+				out = [...out, { name: 'collapsed', value: 'false' }];
+			}
+			const groupBy = out.find((a) => a.name === 'groupBy');
+			if (groupBy) {
+				out = out.filter((a) => a !== groupBy);
+				notes.push({
+					level: 'warning',
+					message: `DataTable groupBy=${groupBy.value}: Core groups by dimension order — make this column the first {% dimension %} child`
+				});
+				// legacy subtotals default off, Core default on — preserve the legacy look.
+				// Collapsible groups NEED subtotals (they are the clickable headers).
+				if (!collapsible && !out.some((a) => a.name === 'subtotals')) {
+					out = [...out, { name: 'subtotals', value: 'false' }];
 					notes.push({
-						level: 'warning',
+						level: 'info',
 						message:
-							'Column contentType=colorscale: studio dimensions use `conditional_colors` (a SQL expression returning a color per row) instead of a min/max gradient — write one, e.g. conditional_colors="case when sum(x) > 100 then \'#22c55e\' end"'
-					});
-				} else {
-					notes.push({
-						level: 'warning',
-						message: `Column contentType=${unquote(contentType.value) ?? '?'} has no direct dimension equivalent — review`
+							'Core shows subtotals on grouped tables by default — emitted subtotals=false to match legacy; remove to enable them'
 					});
 				}
 			}
 			return { attrs: out };
 		}
 	},
+	Column: {
+		tag: 'dimension',
+		attrRenames: {
+			id: 'value',
+			linkLabel: 'link_label',
+			description: 'info',
+			colGroup: 'column_group',
+			openInNewTab: 'link_new_tab'
+		},
+		unsupported: [
+			'wrapTitle',
+			'totalAgg',
+			'totalFmt',
+			'subtotalFmt',
+			'weightCol',
+			'chip',
+			'showValue',
+			'sparkWidth',
+			'sparkHeight',
+			'backgroundColor'
+		],
+		transform: columnTransform
+	},
 	BigValue: {
 		tag: 'big_value',
+		attrRenames: { description: 'info' },
+		unsupported: ['downIsGood', 'neutralMin', 'neutralMax'],
 		transform: (attrs, notes) => {
-			// OSS points comparison at a precomputed column; studio computes the
+			// legacy Evidence points comparison at a precomputed column; Core computes the
 			// comparison itself via the `comparison={...}` object.
 			if (attrs.some((a) => a.name.startsWith('comparison'))) {
 				notes.push({
 					level: 'warning',
 					message:
-						'BigValue comparison columns are precomputed in OSS; studio computes them — replace with comparison={compare_vs="prior period"} (plus a date_range) and delete the comparison SQL'
+						'BigValue comparison columns are precomputed in legacy Evidence; Core computes them — replace with comparison={compare_vs="prior period"} (plus a date_range) and delete the comparison SQL'
 				});
 			}
 			let out = attrs.filter((a) => !a.name.startsWith('comparison'));
-			// OSS sparkline=<x column> + sparklineType=<kind> → sparkline={x= type=}.
-			const spark = out.find((a) => a.name === 'sparkline');
-			const sparkType = out.find((a) => a.name === 'sparklineType');
-			if (spark || sparkType) {
-				out = out.filter((a) => a !== spark && a !== sparkType);
-				const entries: string[] = [];
-				if (spark?.value) entries.push(`x=${spark.value}`);
-				if (sparkType?.value) entries.push(`type=${sparkType.value}`);
+			// legacy Evidence flat sparkline* props → Core's sparkline={...} object.
+			const sparkKeys: Record<string, string> = {
+				sparkline: 'x',
+				sparklineType: 'type',
+				sparklineColor: 'color',
+				sparklineValueFmt: 'y_fmt',
+				sparklineDateFmt: 'x_fmt',
+				sparklineYScale: 'fit_to_data',
+				connectGroup: 'connect_group'
+			};
+			const sparkAttrs = out.filter((a) => sparkKeys[a.name] && a.value !== null);
+			if (sparkAttrs.some((a) => a.name === 'sparkline' || a.name === 'sparklineType')) {
+				out = out.filter((a) => !sparkAttrs.includes(a));
+				const entries = sparkAttrs.map((a) => `${sparkKeys[a.name]}=${a.value}`);
 				out.push({ name: 'sparkline', value: `{${entries.join(' ')}}` });
 			}
 			return { attrs: out };
 		}
 	},
-	BigLink: { tag: 'link_button' },
-	LineChart: { tag: 'line_chart', transform: withOssMissingDefault('line') },
-	AreaChart: { tag: 'area_chart', transform: withOssMissingDefault('area') },
-	Histogram: { tag: 'histogram', transform: chartTransform },
-	Heatmap: { tag: 'heatmap', transform: chartTransform },
-	CalendarHeatmap: { tag: 'calendar_heatmap', transform: chartTransform },
-	BubbleChart: { tag: 'bubble_chart', transform: chartTransform },
-	FunnelChart: { tag: 'funnel_chart', transform: chartTransform },
+	BigLink: { tag: 'link_button', attrRenames: { href: 'url' } },
+	LineChart: {
+		tag: 'line_chart',
+		transform: withOssMissingDefault('line'),
+		unsupported: CHART_UNSUPPORTED
+	},
+	AreaChart: {
+		tag: 'area_chart',
+		transform: withOssMissingDefault('area'),
+		unsupported: [...CHART_UNSUPPORTED, 'fillOpacity', 'line']
+	},
+	Histogram: {
+		tag: 'histogram',
+		attrRenames: { x: 'value', xFmt: 'fmt' },
+		transform: (attrs, notes) => chartTransform(attrs, notes, 'plain'),
+		unsupported: [
+			...CHART_UNSUPPORTED,
+			'fillOpacity',
+			// histogram has no axis/data-label option objects at all in Core.
+			...Object.keys(AXIS_OPTION_PROPS),
+			...Object.keys(DATA_LABEL_PROPS)
+		]
+	},
+	AreaMap: {
+		emit: mapEmit('area_layer', {
+			geoJsonUrl: 'geojson_url',
+			geoId: 'geojson_id',
+			areaCol: 'area_id'
+		})
+	},
+	PointMap: { emit: mapEmit('point_layer', { long: 'lng' }) },
+	BubbleMap: { emit: mapEmit('point_layer', { long: 'lng', size: 'size_value' }) },
+	Hist: {
+		tag: 'histogram',
+		attrRenames: { x: 'value', xFmt: 'fmt' },
+		transform: (attrs, notes) => chartTransform(attrs, notes, 'plain')
+	},
+	DownloadData: { tag: 'download' },
+	Heatmap: {
+		tag: 'heatmap',
+		// colorScale is the gradient palette; chartTransform folds colorPalette.
+		attrRenames: { colorScale: 'colorPalette' },
+		unsupported: [
+			'valueLabels',
+			'mobileValueLabels',
+			'xAxisPosition',
+			'xTickMarks',
+			'yTickMarks',
+			'filter',
+			'min',
+			'max',
+			'xLabelRotation',
+			'cellHeight',
+			'zeroDisplay',
+			'leftPadding',
+			'rightPadding',
+			'renderer',
+			'downloadableData',
+			'downloadableImage',
+			'printEchartsConfig',
+			'emptySet',
+			'emptyMessage'
+		],
+		transform: (attrs, notes) => {
+			// legacy splits sort into enable (xSort) + direction (xSortOrder);
+			// Core's x_sort/y_sort is just the direction.
+			let out = [...attrs];
+			for (const axis of ['x', 'y'] as const) {
+				const enable = out.find((a) => a.name === `${axis}Sort`);
+				const order = out.find((a) => a.name === `${axis}SortOrder`);
+				out = out.filter((a) => a !== enable && a !== order);
+				if (enable?.value !== 'false') {
+					const direction = order?.value ?? (enable ? '"asc"' : null);
+					if (direction) out.push({ name: `${axis}_sort`, value: direction });
+				}
+			}
+			return chartTransform(out, notes, 'plain');
+		}
+	},
+	CalendarHeatmap: {
+		tag: 'calendar_heatmap',
+		attrRenames: { colorScale: 'colorPalette' },
+		unsupported: [
+			'yearLabel',
+			'monthLabel',
+			'dayLabel',
+			'height',
+			'filter',
+			'min',
+			'max',
+			'renderer',
+			'downloadableData',
+			'downloadableImage',
+			'printEchartsConfig',
+			'emptySet',
+			'emptyMessage'
+		],
+		transform: (attrs, notes) => chartTransform(attrs, notes, 'plain')
+	},
+	BubbleChart: {
+		tag: 'bubble_chart',
+		transform: (attrs, notes) => chartTransform(attrs, notes, 'bubble'),
+		unsupported: [...CHART_UNSUPPORTED, 'outlineColor', 'outlineWidth', 'pointSize', 'shape', 'scaleTo']
+	},
+	FunnelChart: {
+		tag: 'funnel_chart',
+		attrRenames: { nameCol: 'category', valueCol: 'value', funnelAlign: 'align' },
+		unsupported: [
+			'outlineColor',
+			'outlineWidth',
+			'funnelSort',
+			'dataLabels',
+			'renderer',
+			'printEchartsConfig',
+			'emptySet',
+			'emptyMessage'
+		],
+		transform: (attrs, notes) => chartTransform(attrs, notes, 'plain')
+	},
 	SankeyDiagram: {
 		tag: 'sankey_chart',
 		attrRenames: {
@@ -360,15 +1084,39 @@ const COMPONENT_RULES: Record<string, ComponentRule> = {
 			valueCol: 'value',
 			percentCol: 'percent'
 		},
-		transform: chartTransform
+		unsupported: [
+			'percentFmt',
+			'depthOverride',
+			'renderer',
+			'printEchartsConfig',
+			'emptySet',
+			'emptyMessage'
+		],
+		transform: (attrs, notes) => chartTransform(attrs, notes, 'plain')
 	},
-	ScatterPlot: { tag: 'scatter_chart', transform: chartTransform },
-	ScatterChart: { tag: 'scatter_chart', transform: chartTransform },
+	ScatterPlot: {
+		tag: 'scatter_chart',
+		transform: (attrs, notes) => chartTransform(attrs, notes, 'scatter'),
+		unsupported: [...CHART_UNSUPPORTED, 'outlineColor', 'outlineWidth', 'pointSize', 'shape']
+	},
+	ScatterChart: {
+		tag: 'scatter_chart',
+		transform: (attrs, notes) => chartTransform(attrs, notes, 'scatter'),
+		unsupported: [...CHART_UNSUPPORTED, 'outlineColor', 'outlineWidth', 'pointSize', 'shape']
+	},
 	BarChart: {
 		tag: 'bar_chart',
+		unsupported: [
+			...CHART_UNSUPPORTED,
+			'outlineColor',
+			'outlineWidth',
+			'showAllXAxisLabels',
+			'stackTotalLabel',
+			'seriesLabels'
+		],
 		transform: (attrs, notes) => {
-			const folded = chartTransform(attrs, notes).attrs;
-			// swapXY has no studio attr — the horizontal orientation is its own
+			const folded = chartTransform(attrs, notes, 'bar').attrs;
+			// swapXY has no Core attr — the horizontal orientation is its own
 			// tag, whose x is the value axis, so x/y (and axis options) swap too.
 			const swap = folded.find((a) => a.name === 'swapXY');
 			if (swap && swap.value !== 'false') {
@@ -380,26 +1128,139 @@ const COMPONENT_RULES: Record<string, ComponentRule> = {
 					notes.push({
 						level: 'warning',
 						message:
-							'horizontal 100% stacked bars are not supported in studio — converted to a regular stacked horizontal_bar_chart'
+							'horizontal 100% stacked bars are not supported in Core — converted to a regular stacked horizontal_bar_chart'
 					});
 				}
+				warnMissingAxes('horizontal_bar_chart', attrs, notes);
 				return { tag: 'horizontal_bar_chart', attrs };
 			}
+			warnMissingAxes('bar_chart', folded, notes);
 			return { attrs: folded };
 		}
 	},
-	Value: { tag: 'value' },
-	Delta: { tag: 'delta' },
-	Sparkline: { tag: 'sparkline' },
-	Dropdown: { tag: 'dropdown', attrRenames: INPUT_RENAMES },
-	DropdownOption: { tag: 'dropdown_option' },
-	ButtonGroup: { tag: 'button_group', attrRenames: INPUT_RENAMES },
-	ButtonGroupItem: { tag: 'option' },
+	Value: {
+		tag: 'value',
+		attrRenames: { column: 'value', description: 'info' },
+		unsupported: ['row', 'placeholder'],
+		transform: (attrs, notes) => {
+			// legacy agg=sum + column=x → Core's SQL-expression form value="sum(x)".
+			const agg = attrs.find((a) => a.name === 'agg');
+			const value = attrs.find((a) => a.name === 'value');
+			let out = attrs;
+			if (agg?.value && value?.value) {
+				const fn = unquote(agg.value);
+				const col = unquote(value.value);
+				out = out
+					.filter((a) => a !== agg)
+					.map((a) => (a === value ? { ...a, value: `"${fn}(${col})"` } : a));
+				notes.push({
+					level: 'info',
+					message: `Value agg=${agg.value} folded into the SQL expression value="${fn}(${col})"`
+				});
+			}
+			// legacy Evidence defaulted to the query's first column; Core requires value=.
+			if (out.some((a) => a.name === 'data') && !out.some((a) => a.name === 'value')) {
+				notes.push({
+					level: 'warning',
+					message:
+						'value: legacy Evidence showed the first query column when column= was omitted — Core requires it; add value=<column>'
+				});
+			}
+			return { attrs: out };
+		}
+	},
+	Delta: {
+		tag: 'delta',
+		attrRenames: { column: 'value' },
+		unsupported: ['row', 'downIsGood', 'formatObject', 'columnUnitSummary', 'align', 'fontClass'],
+		transform: (attrs, notes) => {
+			let out = attrs;
+			const neutralMin = out.find((a) => a.name === 'neutralMin');
+			const neutralMax = out.find((a) => a.name === 'neutralMax');
+			if (neutralMin || neutralMax) {
+				out = out.filter((a) => a !== neutralMin && a !== neutralMax);
+				out = [
+					...out,
+					{
+						name: 'neutral_range',
+						value: `[${bare(neutralMin?.value ?? null) ?? 'null'}, ${bare(neutralMax?.value ?? null) ?? 'null'}]`
+					}
+				];
+			}
+			if (attrs.some((a) => a.name === 'downIsGood')) {
+				notes.push({
+					level: 'info',
+					message: 'Delta downIsGood lives inside comparison={down_is_good=true} in Core'
+				});
+			}
+			return { attrs: out };
+		}
+	},
+	Sparkline: {
+		tag: 'sparkline',
+		unsupported: ['config', 'height'],
+		attrRenames: {
+			dateCol: 'x',
+			valueCol: 'y',
+			valueFmt: 'y_fmt',
+			dateFmt: 'x_fmt',
+			yScale: 'fit_to_data'
+		}
+	},
+	Dropdown: {
+		tag: 'dropdown',
+		attrRenames: { ...INPUT_RENAMES, description: 'info' },
+		unsupported: ['hideDuringPrint', 'disableSelectAll', 'selectAllByDefault'],
+		transform: (attrs, notes) => {
+			const noDefault = attrs.find((a) => a.name === 'noDefault');
+			if (!noDefault) return { attrs };
+			notes.push({
+				level: 'info',
+				message: 'Dropdown noDefault converted to select_first=false — verify nothing is preselected'
+			});
+			return {
+				attrs: attrs.map((a) =>
+					a === noDefault
+						? { name: 'select_first', value: a.value === 'true' ? 'false' : 'true' }
+						: a
+				)
+			};
+		}
+	},
+	DropdownOption: { tag: 'dropdown_option', attrRenames: { valueLabel: 'label' } },
+	ButtonGroup: {
+		tag: 'button_group',
+		attrRenames: { ...INPUT_RENAMES, description: 'info' },
+		unsupported: ['hideDuringPrint', 'preset', 'display', 'color']
+	},
+	ButtonGroupItem: {
+		tag: 'option',
+		attrRenames: { valueLabel: 'label' },
+		unsupported: ['color'],
+		transform: (attrs, notes) => {
+			const def = attrs.find((a) => a.name === 'defaultValue');
+			if (!def) return { attrs };
+			notes.push({
+				level: 'warning',
+				message:
+					'ButtonGroupItem defaultValue: Core sets the default on the parent — add initial_value=<value> to the {% button_group %}'
+			});
+			return { attrs: attrs.filter((a) => a !== def) };
+		}
+	},
 	Slider: {
 		tag: 'slider',
-		attrRenames: { name: 'id' },
+		attrRenames: { name: 'id', defaultValue: 'initial_value', description: 'info' },
+		unsupported: [
+			'hideDuringPrint',
+			'showMaxMin',
+			'size',
+			'debounceDelay',
+			'minColumn',
+			'maxColumn'
+		],
 		transform: (attrs) => {
-			// OSS `range=<column>` names the column driving min/max; studio's
+			// legacy Evidence `range=<column>` names the column driving min/max; Core's
 			// `range` is a boolean and the column goes in value_column.
 			const range = attrs.find((a) => a.name === 'range');
 			const rangeValue = unquote(range?.value ?? null);
@@ -411,19 +1272,41 @@ const COMPONENT_RULES: Record<string, ComponentRule> = {
 			return { attrs };
 		}
 	},
-	TextInput: { tag: 'text_input', attrRenames: { name: 'id' } },
-	Checkbox: { tag: 'toggle', attrRenames: { name: 'id' } },
-	Tabs: { tag: 'tabs' },
-	Tab: { tag: 'tab', attrRenames: { label: 'title' } },
+	TextInput: {
+		tag: 'text_input',
+		attrRenames: { name: 'id', defaultValue: 'initial_value', description: 'info' },
+		unsupported: ['hideDuringPrint', 'unsafe']
+	},
+	Checkbox: {
+		tag: 'toggle',
+		attrRenames: { name: 'id', title: 'label', defaultValue: 'initial_value', description: 'info' },
+		unsupported: ['hideDuringPrint'],
+		transform: (attrs) => {
+			// checked is a legacy alias of defaultValue; the rename above wins when both set.
+			const checked = attrs.find((a) => a.name === 'checked');
+			if (!checked) return { attrs };
+			return {
+				attrs: attrs.some((a) => a.name === 'initial_value')
+					? attrs.filter((a) => a !== checked)
+					: attrs.map((a) => (a === checked ? { ...a, name: 'initial_value' } : a))
+			};
+		}
+	},
+	Tabs: { tag: 'tabs', unsupported: ['id', 'printShowAll', 'background'] },
+	Tab: {
+		tag: 'tab',
+		attrRenames: { label: 'title', selected: 'default' },
+		unsupported: ['id', 'description']
+	},
 	Accordion: { tag: 'accordion' },
-	AccordionItem: { tag: 'accordion_item' },
-	Details: { tag: 'details' },
-	Modal: { tag: 'modal' },
+	AccordionItem: { tag: 'accordion_item', unsupported: ['compact', 'description'] },
+	Details: { tag: 'details', unsupported: ['printShowAll'] },
+	Modal: { tag: 'modal', unsupported: ['open', 'innerText'] },
 	Alert: {
 		tag: 'callout',
 		transform: (attrs) => {
-			// OSS statuses: default|info|danger|success|warning (plus legacy
-			// positive/negative/none); studio types: info|success|warning|error.
+			// legacy Evidence statuses: default|info|danger|success|warning (plus legacy
+			// positive/negative/none); Core types: info|success|warning|error.
 			const statusToType: Record<string, string> = {
 				info: 'info',
 				success: 'success',
@@ -440,7 +1323,7 @@ const COMPONENT_RULES: Record<string, ComponentRule> = {
 					continue;
 				}
 				const mapped = statusToType[unquote(a.value) ?? ''];
-				// default/none/unknown → omit; studio falls back to its info default.
+				// default/none/unknown → omit; Core falls back to its info default.
 				if (mapped) out.push({ name: 'type', value: `"${mapped}"` });
 			}
 			return { attrs: out };
@@ -466,27 +1349,49 @@ const COMPONENT_RULES: Record<string, ComponentRule> = {
 			return parts.join(' ');
 		}
 	},
-	// OSS Callout is a chart annotation (x/y + body text), not an alert box.
+	// legacy Evidence Callout is a chart annotation (x/y + body text), not an alert box.
 	Callout: {
 		tag: 'reference_point',
+		unsupported: [
+			...REFERENCE_UNSUPPORTED,
+			'symbolOpacity',
+			'symbolBorderWidth',
+			'symbolBorderColor'
+		],
 		transform: (attrs, notes) => {
 			notes.push({
 				level: 'warning',
 				message:
 					'Callout is a chart annotation — converted to {% reference_point %}; move the body text into the label attribute and make the tag self-closing'
 			});
-			return { attrs };
+			return referenceTransform('callout')(attrs, notes);
 		}
 	},
-	Info: { tag: 'info', attrRenames: { description: 'text' } },
+	Info: { tag: 'info', attrRenames: { description: 'text' }, unsupported: ['size'] },
 	Note: { tag: 'note' },
-	LinkButton: { tag: 'link_button' },
+	LinkButton: { tag: 'link_button', attrRenames: { href: 'url' } },
 	LineBreak: { tag: 'line_break' },
 	PageBreak: { tag: 'page_break' },
-	Grid: { tag: 'row' },
-	Embed: { tag: 'iframe', attrRenames: { url: 'src' } },
-	// OSS ECharts takes a nested JS config object attr the parser can't
-	// mechanically translate; studio's custom_echart puts config in the body.
+	Grid: { tag: 'row', unsupported: ['cols', 'gapSize'] },
+	// legacy Group is a bare div wrapper — grouping stacked children into one
+	// layout cell; Core's vertical-stack tag plays the same role.
+	Group: { tag: 'stack' },
+	Image: { tag: 'image', unsupported: ['height'] },
+	Embed: {
+		tag: 'iframe',
+		attrRenames: { url: 'src' },
+		unsupported: ['align', 'border'],
+		transform: (attrs) => {
+			// iframe passes raw element attributes through attrs={...}.
+			const title = attrs.find((a) => a.name === 'title');
+			if (!title?.value) return { attrs };
+			return {
+				attrs: attrs.map((a) => (a === title ? { name: 'attrs', value: `{title=${a.value}}` } : a))
+			};
+		}
+	},
+	// legacy Evidence ECharts takes a nested JS config object attr the parser can't
+	// mechanically translate; Core's custom_echart puts config in the body.
 	ECharts: {
 		tag: 'custom_echart',
 		transform: (attrs, notes) => {
@@ -505,19 +1410,49 @@ const COMPONENT_RULES: Record<string, ComponentRule> = {
 	},
 	ReferenceLine: {
 		tag: 'reference_line',
-		transform: (attrs) => {
-			// OSS sloped lines use x/y + x2/y2; studio wants x1/y1 + x2/y2.
+		unsupported: REFERENCE_UNSUPPORTED,
+		transform: (attrs, notes) => {
+			// legacy Evidence sloped lines use x/y + x2/y2; Core wants x1/y1 + x2/y2.
 			const sloped = attrs.some((a) => a.name === 'x2' || a.name === 'y2');
-			if (!sloped) return { attrs };
-			return {
-				attrs: attrs.map((a) =>
-					a.name === 'x' ? { ...a, name: 'x1' } : a.name === 'y' ? { ...a, name: 'y1' } : a
-				)
-			};
+			const renamed = sloped
+				? attrs.map((a) =>
+						a.name === 'x' ? { ...a, name: 'x1' } : a.name === 'y' ? { ...a, name: 'y1' } : a
+					)
+				: attrs;
+			return referenceTransform('line')(renamed, notes);
 		}
 	},
-	ReferenceArea: { tag: 'reference_area' },
-	ReferencePoint: { tag: 'reference_point' }
+	ReferenceArea: {
+		tag: 'reference_area',
+		unsupported: REFERENCE_UNSUPPORTED,
+		transform: (attrs, notes) => {
+			// areaColor is the legacy fill color; color wins when both are set.
+			let renamed = attrs;
+			if (attrs.some((a) => a.name === 'color')) {
+				const areaColor = attrs.find((a) => a.name === 'areaColor');
+				if (areaColor) {
+					renamed = attrs.filter((a) => a !== areaColor);
+					notes.push({
+						level: 'info',
+						message: 'ReferenceArea sets both color and areaColor — kept color, dropped areaColor'
+					});
+				}
+			} else {
+				renamed = attrs.map((a) => (a.name === 'areaColor' ? { ...a, name: 'color' } : a));
+			}
+			return referenceTransform('area')(renamed, notes);
+		}
+	},
+	ReferencePoint: {
+		tag: 'reference_point',
+		unsupported: [
+			...REFERENCE_UNSUPPORTED,
+			'symbolOpacity',
+			'symbolBorderWidth',
+			'symbolBorderColor'
+		],
+		transform: referenceTransform('point')
+	}
 };
 
 const HTML_ENTITIES: Record<string, string> = {
@@ -555,29 +1490,95 @@ function camelToSnake(name: string): string {
 	return name.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
 }
 
-/** Parse an OSS attribute string into markdoc-ready attrs. */
-function parseAttrs(raw: string, notes: MigrationNote[], componentName: string): Attr[] {
+/** Index of the closing quote of the string starting at `start`, or -1. */
+function scanString(text: string, start: number): number {
+	const quote = text[start];
+	for (let i = start + 1; i < text.length; i++) {
+		if (text[i] === '\\') i++;
+		else if (text[i] === quote) return i;
+	}
+	return -1;
+}
+
+/**
+ * Index just past a balanced `{...}` starting at `start`, skipping quoted and
+ * template strings (so a `}` inside `'...'` or `` `...${}` `` doesn't close
+ * it). Returns -1 when unbalanced.
+ */
+function scanBraceExpression(text: string, start: number): number {
+	let depth = 0;
+	for (let i = start; i < text.length; i++) {
+		const ch = text[i];
+		if (ch === '"' || ch === "'" || ch === '`') {
+			const end = scanString(text, i);
+			if (end === -1) return -1;
+			i = end;
+		} else if (ch === '{') depth++;
+		else if (ch === '}') {
+			depth--;
+			if (depth === 0) return i + 1;
+		}
+	}
+	return -1;
+}
+
+/** Parse a legacy Evidence attribute string into markdoc-ready attrs. Props
+ * whose expression values can't be converted come back as `todos` (verbatim
+ * source) instead of attrs — honest omission beats plausible-looking junk. */
+function parseAttrs(raw: string): { attrs: Attr[]; todos: string[] } {
 	const attrs: Attr[] = [];
-	const re = /([A-Za-z_][\w-]*)(?:\s*=\s*("[^"]*"|'[^']*'|\{[^}]*\}|[^\s/>]+))?/g;
-	for (const m of raw.matchAll(re)) {
-		const name = m[1];
-		const rawValue = m[2];
-		if (rawValue === undefined) {
+	const todos: string[] = [];
+	const nameRe = /[A-Za-z_][\w-]*/y;
+	let i = 0;
+	while (i < raw.length) {
+		if (/[\s/>]/.test(raw[i])) {
+			i++;
+			continue;
+		}
+		nameRe.lastIndex = i;
+		const nameMatch = nameRe.exec(raw);
+		if (!nameMatch) {
+			i++;
+			continue;
+		}
+		const name = nameMatch[0];
+		i = nameRe.lastIndex;
+		const eq = /^\s*=\s*/.exec(raw.slice(i));
+		if (!eq) {
 			// Bare flag: <BarChart labels /> means true.
 			attrs.push({ name, value: 'true' });
 			continue;
 		}
-		attrs.push({ name, value: convertValue(rawValue, name, componentName, notes) });
+		i += eq[0].length;
+		let rawValue: string;
+		const ch = raw[i];
+		if (ch === '"' || ch === "'") {
+			const end = scanString(raw, i);
+			rawValue = raw.slice(i, end === -1 ? raw.length : end + 1);
+			i = end === -1 ? raw.length : end + 1;
+		} else if (ch === '{') {
+			const end = scanBraceExpression(raw, i);
+			if (end === -1) {
+				todos.push(`${name}=${raw.slice(i)}`);
+				break;
+			}
+			rawValue = raw.slice(i, end);
+			i = end;
+		} else {
+			const end = raw.slice(i).search(/[\s/>]/);
+			rawValue = end === -1 ? raw.slice(i) : raw.slice(i, i + end);
+			i += rawValue.length;
+		}
+		const value = convertValue(rawValue);
+		if (value === null) todos.push(`${name}=${rawValue}`);
+		else attrs.push({ name, value });
 	}
-	return attrs;
+	return { attrs, todos };
 }
 
-function convertValue(
-	raw: string,
-	attrName: string,
-	componentName: string,
-	notes: MigrationNote[]
-): string {
+/** null = the value is a JS expression with no mechanical conversion — the
+ * caller drops the attr and leaves a MIGRATE-TODO comment instead. */
+function convertValue(raw: string): string | null {
 	let inner: string;
 	if (raw.startsWith('"') || raw.startsWith("'")) {
 		inner = raw.slice(1, -1);
@@ -593,19 +1594,45 @@ function convertValue(
 			if (items.every((s) => /^'[^']*'$/.test(s) || /^"[^"]*"$/.test(s) || isLiteral(s))) {
 				return `[${items.map((s) => (isLiteral(s) ? s : `"${s.slice(1, -1)}"`)).join(', ')}]`;
 			}
+			return null;
 		}
-		// {queryName} / {row.col} references become plain string names in studio.
+		// {{key: 'value'}} flat object literals become markdoc objects.
+		if (inner.startsWith('{') && inner.endsWith('}')) {
+			const converted = convertFlatObject(inner);
+			if (converted !== null) return converted;
+			return null;
+		}
+		// {queryName} / {row.col} references become plain string names in Core.
 		if (!/^[A-Za-z_][\w.]*$/.test(inner) && !isLiteral(inner)) {
-			notes.push({
-				level: 'warning',
-				message: `${componentName} ${attrName}={${inner}} is an expression — converted to a string, review`
-			});
+			return null;
 		}
 	} else {
 		inner = raw;
 	}
 	if (isLiteral(inner)) return inner;
 	return `"${decodeEntities(inner).replaceAll('"', '\\"')}"`;
+}
+
+/** `{key: 'val', "other": 2}` → `{key="val" other=2}`, or null if not flat/literal. */
+function convertFlatObject(source: string): string | null {
+	const body = source.slice(1, -1).trim();
+	if (body === '') return null;
+	if (/[{}[\]`]/.test(body)) return null;
+	const entries: string[] = [];
+	for (const part of body.split(',')) {
+		const m = /^\s*(?:'([^']*)'|"([^"]*)"|([A-Za-z_]\w*))\s*:\s*(.+?)\s*$/.exec(part);
+		if (!m) return null;
+		const key = m[1] ?? m[2] ?? m[3];
+		if (!/^[A-Za-z_]\w*$/.test(key)) return null;
+		const rawVal = m[4];
+		let value: string;
+		if (isLiteral(rawVal)) value = rawVal;
+		else if (/^'[^']*'$/.test(rawVal) || /^"[^"]*"$/.test(rawVal)) {
+			value = `"${rawVal.slice(1, -1)}"`;
+		} else return null;
+		entries.push(`${key}=${value}`);
+	}
+	return `{${entries.join(' ')}}`;
 }
 
 function isLiteral(value: string): boolean {
@@ -619,7 +1646,7 @@ function renderTag(tag: string, attrs: Attr[], selfClosing: boolean): string {
 	return `{% ${tag}\n${attrText.map((t) => `    ${t}`).join('\n')}\n${selfClosing ? '/%}' : '%}'}`;
 }
 
-/** Convert one matched OSS component tag (opening or self-closing). */
+/** Convert one matched legacy Evidence component tag (opening or self-closing). */
 function convertComponent(
 	name: string,
 	attrRaw: string,
@@ -630,8 +1657,21 @@ function convertComponent(
 	const rule = COMPONENT_RULES[name];
 	if (rule?.drop) return { text: '', tag: null };
 	let tag = rule?.tag ?? pascalToSnake(name);
-	let attrs = parseAttrs(attrRaw, notes, name);
-	if (rule?.emit) return { text: rule.emit(attrs), tag: null };
+	const parsed = parseAttrs(attrRaw);
+	let attrs = parsed.attrs;
+	for (const todo of parsed.todos) {
+		notes.push({
+			level: 'warning',
+			message: `${name} ${todo.split('=')[0]}= is a JS expression with no Core equivalent — dropped, left a MIGRATE-TODO comment`
+		});
+	}
+	if (rule?.emit) {
+		let text = rule.emit(attrs, notes);
+		for (const todo of parsed.todos) {
+			text += `\n<!-- MIGRATE-TODO: could not convert expression prop: ${todo} -->`;
+		}
+		return { text, tag: null };
+	}
 
 	if (rule?.attrRenames) {
 		attrs = attrs.map((a) =>
@@ -643,9 +1683,28 @@ function convertComponent(
 		attrs = result.attrs;
 		if (result.tag) tag = result.tag;
 	}
-	attrs = attrs.map((a) => ({ ...a, name: camelToSnake(a.name) }));
+	// A few Core schemas keep camelCase attr names (redNegatives, buttonText,
+	// className) — snake-case only when the schema doesn't take the camel form.
+	const tagAllowed = options.tagAttrs?.get(tag);
+	attrs = attrs.map((a) => {
+		const snake = camelToSnake(a.name);
+		if (tagAllowed && !tagAllowed.has(snake) && tagAllowed.has(a.name)) return a;
+		return { ...a, name: snake };
+	});
 
-	// data= pointing at a frontmatter-declared SQL file resolves by path in studio.
+	if (rule?.unsupported?.length) {
+		const unsupported = new Set(rule.unsupported.map(camelToSnake));
+		const flagged = attrs.filter((a) => unsupported.has(a.name));
+		if (flagged.length > 0) {
+			attrs = attrs.filter((a) => !unsupported.has(a.name));
+			notes.push({
+				level: 'warning',
+				message: `${tag}: unsupported in Core: ${flagged.map((a) => a.name).join(', ')}`
+			});
+		}
+	}
+
+	// data= pointing at a frontmatter-declared SQL file resolves by path in Core.
 	if (options.queryFiles?.size) {
 		attrs = attrs.map((a) => {
 			const bare = unquote(a.value);
@@ -654,25 +1713,29 @@ function convertComponent(
 		});
 	}
 
-	const allowed = options.tagAttrs?.get(tag);
+	const allowed = tagAllowed;
 	if (allowed) {
 		const dropped = attrs.filter((a) => !allowed.has(a.name));
 		if (dropped.length > 0) {
 			attrs = attrs.filter((a) => allowed.has(a.name));
 			notes.push({
 				level: 'warning',
-				message: `${tag}: dropped attribute(s) with no studio equivalent: ${dropped.map((a) => a.name).join(', ')}`
+				message: `${tag}: dropped attribute(s) with no Core equivalent: ${dropped.map((a) => a.name).join(', ')}`
 			});
 		}
 	}
 
-	if (!STUDIO_TAGS.has(tag)) {
+	if (!CORE_TAGS.has(tag)) {
 		notes.push({
 			level: 'warning',
-			message: `<${name}> has no known Studio component (converted to {% ${tag} %}) — review or replace`
+			message: `<${name}> has no known Core component (converted to {% ${tag} %}) — review or replace`
 		});
 	}
-	return { text: renderTag(tag, attrs, selfClosing), tag };
+	let text = renderTag(tag, attrs, selfClosing);
+	for (const todo of parsed.todos) {
+		text += `\n<!-- MIGRATE-TODO: could not convert expression prop: ${todo} -->`;
+	}
+	return { text, tag };
 }
 
 function convertClosing(name: string, openTag?: string): string {
@@ -684,12 +1747,12 @@ function convertClosing(name: string, openTag?: string): string {
 }
 
 /**
- * OSS `${...}` interpolation → studio `{{...}}` variables:
+ * legacy Evidence `${...}` interpolation → Core `{{...}}` variables:
  * `'${inputs.category.value}'` → `{{category}}`, `${params.user}` → `{{user}}`
  * (templated-page param — pair with an input of the same id), and query
  * references `${my_query}` → `{{my_query}}`.
  *
- * `context: 'sql-file'` marks a standalone project .sql file, where studio
+ * `context: 'sql-file'` marks a standalone project .sql file, where Core
  * inlines the text verbatim and never interpolates `{{...}}` — the rewrite is
  * still the right shape, but it only runs once the query moves into a page.
  */
@@ -708,7 +1771,7 @@ export function convertInputRefs(
 			notes.push({
 				level: 'warning',
 				message:
-					'studio inlines project .sql files verbatim and never interpolates {{...}} in them, so the references converted below will not resolve here — move this query into a ```sql fence on the page that uses it.'
+					'Core inlines project .sql files verbatim and never interpolates {{...}} in them, so the references converted below will not resolve here — move this query into a ```sql fence on the page that uses it.'
 			});
 		}
 	};
@@ -716,8 +1779,8 @@ export function convertInputRefs(
 	let out = sql.replace(
 		/'?\$\{inputs\.([A-Za-z_]\w*)((?:\.[A-Za-z_]\w*)*)\}'?/g,
 		(_m, name: string, props: string) => {
-			// `.value`/`.raw` are implicit in studio; real properties (.start, .end,
-			// .label, …) carry over. Studio variables emit their own quoting.
+			// `.value`/`.raw` are implicit in Core; real properties (.start, .end,
+			// .label, …) carry over. Core variables emit their own quoting.
 			const kept = props.replace(/\.(?:value|raw)(?=\.|$)/g, '');
 			flagSqlFileVariables();
 			notes.push({
@@ -736,10 +1799,10 @@ export function convertInputRefs(
 		return `{{${name}}}`;
 	});
 	out = out.replace(/\$\{([A-Za-z_]\w*)\}/g, (_m, name: string) => {
-		// Studio inlines a .sql file verbatim, so a nested query reference is left
+		// Core inlines a .sql file verbatim, so a nested query reference is left
 		// literal there too — same non-interpolation caveat as inputs.
 		flagSqlFileVariables();
-		// Frontmatter-declared SQL files resolve by project path in studio.
+		// Frontmatter-declared SQL files resolve by project path in Core.
 		const file = queryFiles.get(name);
 		if (file) {
 			notes.push({
@@ -758,7 +1821,7 @@ export function convertInputRefs(
 }
 
 /**
- * OSS pages declare external SQL files in frontmatter:
+ * legacy Evidence pages declare external SQL files in frontmatter:
  *   queries:
  *     - funnel_by_split: funnel_by_split.sql
  * Returns name → project path ('queries/funnel_by_split'); bare entries
@@ -812,7 +1875,7 @@ const KNOWN_FENCE_LANGS = new Set([
 
 /**
  * Convert simple inline HTML to its markdown equivalent. Runs on prose lines
- * and generated text — raw HTML fails studio validation and only these
+ * and generated text — raw HTML fails Core validation and only these
  * text-level tags translate losslessly.
  */
 function convertInlineHtml(text: string, brReplacement = '\n'): string {
@@ -827,7 +1890,7 @@ function convertInlineHtml(text: string, brReplacement = '\n'): string {
 		.replace(/<(?:i|em)\b[^>]*>(.*?)<\/(?:i|em)>/gi, '*$1*');
 }
 
-/** Legacy OSS fences put the query name where the language goes: ```my_query */
+/** Legacy legacy Evidence fences put the query name where the language goes: ```my_query */
 function isLegacyQueryFence(lang: string | undefined): lang is string {
 	return !!lang && !KNOWN_FENCE_LANGS.has(lang.toLowerCase()) && /^[A-Za-z_]\w*$/.test(lang);
 }
@@ -901,13 +1964,13 @@ function convertImg(imgTag: string): string {
 	for (const m of imgTag.matchAll(re)) {
 		let name = renames[m[1]] ?? m[1];
 		let inner = m[2].startsWith('"') || m[2].startsWith("'") ? m[2].slice(1, -1) : m[2];
-		// HTML width is pixels; studio's image `width` is a percentage — the
+		// HTML width is pixels; Core's image `width` is a percentage — the
 		// pixel cap lives in `max_width`.
 		if (name === 'width') {
 			name = 'max_width';
 			inner = inner.replace(/px$/i, '');
 		}
-		if (name === 'height') continue; // no studio equivalent; aspect is preserved
+		if (name === 'height') continue; // no Core equivalent; aspect is preserved
 		attrs.push({ name, value: isLiteral(inner) ? inner : `"${inner}"` });
 	}
 	// description (alt text) is required by the image schema.
@@ -918,7 +1981,7 @@ function convertImg(imgTag: string): string {
 }
 
 /**
- * Wrap raw HTML in the text with `{% html %}` — Studio markdown does not
+ * Wrap raw HTML in the text with `{% html %}` — Core markdown does not
  * render arbitrary HTML. Standalone `<img>` becomes `{% image /%}` instead
  * (the html sandbox has a strict image-origin CSP). Operates line-block-wise:
  * a block is consecutive non-blank lines starting with a lowercase HTML tag.
@@ -1012,7 +2075,7 @@ function wrapHtmlBlocks(text: string, notes: MigrationNote[]): string {
 			out.push('{% /html %}');
 			notes.push({
 				level: 'warning',
-				message: `raw <${htmlStart[1]}> block wrapped in {% html %} — note the sandbox CSP blocks off-allowlist external images, and links open inside the sandboxed iframe; replace with a Studio component if one exists`
+				message: `raw <${htmlStart[1]}> block wrapped in {% html %} — note the sandbox CSP blocks off-allowlist external images, and links open inside the sandboxed iframe; replace with a Core component if one exists`
 			});
 			continue;
 		}
@@ -1021,32 +2084,76 @@ function wrapHtmlBlocks(text: string, notes: MigrationNote[]): string {
 	return out.join('\n');
 }
 
-/** Convert OSS component tags (Pascal-case) in a text segment. */
+/** Convert legacy Evidence component tags (Pascal-case) in a text segment. */
 function convertComponents(
 	text: string,
 	notes: MigrationNote[],
 	options: TransformOptions
 ): string {
 	// One ordered pass, tracking open tags per component so a closing tag emits
-	// whatever its own opening tag resolved to.
+	// whatever its own opening tag resolved to. Attr regions are scanned with
+	// brace/quote awareness so `}`/`>` inside expression props don't end the tag.
 	const openTags = new Map<string, string[]>();
-	let result = text.replace(
-		/<\/([A-Z]\w*)\s*>|<([A-Z]\w*)((?:"[^"]*"|'[^']*'|\{[^}]*\}|[^>"'{])*?)(\/?)>/g,
-		(_m, closeName: string | undefined, name: string, attrRaw: string, slash: string) => {
-			if (closeName !== undefined) {
-				return convertClosing(closeName, openTags.get(closeName)?.pop());
-			}
-			const selfClosing = slash === '/';
-			const converted = convertComponent(name, attrRaw, selfClosing, notes, options);
-			if (!selfClosing && converted.tag) {
-				const stack = openTags.get(name) ?? [];
-				stack.push(converted.tag);
-				openTags.set(name, stack);
-			}
-			return converted.text;
+	const tagStart = /<(\/?)([A-Z]\w*)/g;
+	let result = '';
+	let pos = 0;
+	let m: RegExpExecArray | null;
+	while ((m = tagStart.exec(text)) !== null) {
+		if (m.index < pos) continue;
+		const isClose = m[1] === '/';
+		const name = m[2];
+		const i = m.index + m[0].length;
+		if (isClose) {
+			const close = /^\s*>/.exec(text.slice(i));
+			if (!close) continue;
+			result += text.slice(pos, m.index) + convertClosing(name, openTags.get(name)?.pop());
+			pos = i + close[0].length;
+			continue;
 		}
-	);
-	// link_button is self-closing in studio (title attribute), but OSS
+		// Scan the attr region for the tag's real `>`.
+		let end = -1;
+		let selfClosing = false;
+		let scan = i;
+		while (scan < text.length) {
+			const ch = text[scan];
+			if (ch === '"' || ch === "'") {
+				const strEnd = scanString(text, scan);
+				if (strEnd === -1) break;
+				scan = strEnd + 1;
+			} else if (ch === '{') {
+				const exprEnd = scanBraceExpression(text, scan);
+				if (exprEnd === -1) break;
+				scan = exprEnd;
+			} else if (ch === '>') {
+				end = scan;
+				selfClosing = text[scan - 1] === '/';
+				break;
+			} else if (ch === '<') {
+				break;
+			} else {
+				scan++;
+			}
+		}
+		if (end === -1) {
+			// Malformed/unclosed tag — leave it untouched rather than guessing.
+			notes.push({
+				level: 'warning',
+				message: `<${name}> tag could not be parsed (unbalanced attribute expression?) — left unconverted`
+			});
+			continue;
+		}
+		const attrRaw = text.slice(i, selfClosing ? end - 1 : end);
+		const converted = convertComponent(name, attrRaw, selfClosing, notes, options);
+		if (!selfClosing && converted.tag) {
+			const stack = openTags.get(name) ?? [];
+			stack.push(converted.tag);
+			openTags.set(name, stack);
+		}
+		result += text.slice(pos, m.index) + converted.text;
+		pos = end + 1;
+	}
+	result += text.slice(pos);
+	// link_button is self-closing in Core (title attribute), but legacy Evidence
 	// LinkButton wrapped its label as children — hoist simple text bodies.
 	result = result.replace(
 		/\{% link_button\s([\s\S]*?)%\}([\s\S]*?)\{% \/link_button %\}/g,
@@ -1099,8 +2206,8 @@ function segment(source: string): Segment[] {
 }
 
 /**
- * OSS rendered the frontmatter `title` as the page h1 (unless
- * `hide_title: true`); studio does not. Returns the `# title` line to insert
+ * legacy Evidence rendered the frontmatter `title` as the page h1 (unless
+ * `hide_title: true`); Core does not. Returns the `# title` line to insert
  * when the body doesn't already open with an h1, else null.
  */
 function titleHeading(frontmatter: string, body: string): string | null {
@@ -1120,7 +2227,7 @@ function titleHeading(frontmatter: string, body: string): string | null {
 }
 
 /**
- * OSS DocTab (tabbed preview/code wrapper) → studio {% tabs %}. The
+ * legacy Evidence DocTab (tabbed preview/code wrapper) → Core {% tabs %}. The
  * `slot='preview'` div becomes a Preview tab and each top-level code fence a
  * Code tab. Runs on the raw source, before segmentation, so the inserted tab
  * tags land outside the fence bodies.
@@ -1250,6 +2357,41 @@ export function convertDocTabs(source: string, notes: MigrationNote[]): string {
 	return out.join('\n');
 }
 
+/** Svelte template blocks Markdoc can't parse — they'd render as literal page text. */
+const SVELTE_BLOCKS: Array<[RegExp, string, string]> = [
+	[
+		/\{#each\b/,
+		'{#each}',
+		'Core has no loops — repeat the component per value, or drive it from a query/component that accepts the whole result set'
+	],
+	[
+		/\{#if\b|\{:else/,
+		'{#if}',
+		'rewrite as {% if %}/{% else_if %}/{% else %} — Core conditions are config-shaped, not JS expressions'
+	],
+	[/\{#await\b/, '{#await}', 'Core has no async blocks — remove it and render the data directly'],
+	[/\{#key\b/, '{#key}', 'Core has no key blocks — remove the wrapper'],
+	[/\{@html\b/, '{@html}', 'move the markup into an {% html %} block instead'],
+	[
+		/\{@const\b/,
+		'{@const}',
+		'Core does not execute JS — inline the value or compute it in the SQL query'
+	],
+	[/\{@debug\b/, '{@debug}', 'remove it']
+];
+
+/** One warning per construct kind per page — the blocks pass through otherwise untouched. */
+function warnSvelteBlocks(text: string, notes: MigrationNote[], seen: Set<string>): void {
+	for (const [pattern, label, fix] of SVELTE_BLOCKS) {
+		if (seen.has(label) || !pattern.test(text)) continue;
+		seen.add(label);
+		notes.push({
+			level: 'warning',
+			message: `${label} has no Core equivalent and is left as-is (renders as literal text) — ${fix}`
+		});
+	}
+}
+
 export function transformPage(source: string, options: TransformOptions = {}): TransformResult {
 	const notes: MigrationNote[] = [];
 	const segments = segment(convertDocTabs(source, notes));
@@ -1260,6 +2402,7 @@ export function transformPage(source: string, options: TransformOptions = {}): T
 		...parseFrontmatterQueries(frontmatter)
 	]);
 
+	const svelteBlocksSeen = new Set<string>();
 	const heading = titleHeading(
 		frontmatter,
 		segments
@@ -1270,7 +2413,7 @@ export function transformPage(source: string, options: TransformOptions = {}): T
 	if (heading) {
 		notes.push({
 			level: 'info',
-			message: `frontmatter title rendered as h1 in OSS — inserted \`${heading}\` at the top of the page`
+			message: `frontmatter title rendered as h1 in legacy Evidence — inserted \`${heading}\` at the top of the page`
 		});
 	}
 
@@ -1281,8 +2424,8 @@ export function transformPage(source: string, options: TransformOptions = {}): T
 				if (seg.lang === 'sql' || isLegacyQueryFence(seg.lang)) {
 					let sql = seg.text;
 					if (seg.lang !== 'sql') {
-						// Legacy OSS query fences name the query where the language
-						// goes (```my_query); studio needs ```sql my_query.
+						// Legacy legacy Evidence query fences name the query where the language
+						// goes (```my_query); Core needs ```sql my_query.
 						sql = sql.replace(/^([ \t]{0,7}```+)[ \t]*/, `$1sql `);
 						notes.push({
 							level: 'info',
@@ -1293,17 +2436,17 @@ export function transformPage(source: string, options: TransformOptions = {}): T
 					if (options.sourceRefs) sql = rewriteSourceRefs(sql, options.sourceRefs, notes);
 					return sql;
 				}
-				// Example fences documenting OSS component syntax get converted
+				// Example fences documenting legacy Evidence component syntax get converted
 				// too, so documented examples match what the page teaches.
 				let text = seg.text;
 				// Docusaurus-style fence metas (```js title="index.js") collide with
-				// studio's fence meta, which names inline queries — drop them.
+				// Core's fence meta, which names inline queries — drop them.
 				const openerMeta = /^([ \t]{0,7}```+[ \t]*\S+)([ \t]+[^\n{][^\n]*)/.exec(text);
 				if (openerMeta) {
 					text = text.replace(openerMeta[0], openerMeta[1]);
 					notes.push({
 						level: 'info',
-						message: `fence meta \`${openerMeta[2].trim()}\` removed (studio reads fence metas as query names)`
+						message: `fence meta \`${openerMeta[2].trim()}\` removed (Core reads fence metas as query names)`
 					});
 				}
 				if (
@@ -1314,13 +2457,14 @@ export function transformPage(source: string, options: TransformOptions = {}): T
 					if (converted !== text) {
 						notes.push({
 							level: 'info',
-							message: `\`\`\`${seg.lang} example fence converted to studio syntax`
+							message: `\`\`\`${seg.lang} example fence converted to Core syntax`
 						});
 						text = converted;
 					}
 				}
 				return text;
 			}
+			warnSvelteBlocks(seg.text, notes, svelteBlocksSeen);
 			let text = convertComponents(seg.text, notes, { ...options, queryFiles });
 			text = convertInputRefs(text, notes, queryFiles);
 			text = wrapHtmlBlocks(text, notes);

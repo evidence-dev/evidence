@@ -1,6 +1,6 @@
 /**
- * `evidence migrate [path] [--dry-run]` — convert an Evidence OSS project's
- * pages to Studio Markdoc syntax.
+ * `evidence migrate [path] [--dry-run]` — convert a legacy Evidence project's
+ * pages to Core Markdoc syntax.
  *
  * Mechanical syntax conversion runs automatically; anything needing judgment
  * is printed as a note for a follow-up manual/AI pass. Finish with
@@ -24,7 +24,7 @@ import { loadProjectConfig, ProjectConfigError } from '../project-config/load-co
 import { printResult, type OutputOptions } from '../output.ts';
 import { VERSION } from '../args.ts';
 
-/** package.json `name` unless it's the OSS template default, else the dir name. */
+/** package.json `name` unless it's the legacy template default, else the dir name. */
 async function inferProjectName(projectRoot: string): Promise<string> {
 	try {
 		const pkg = JSON.parse(await readFile(path.join(projectRoot, 'package.json'), 'utf-8'));
@@ -38,9 +38,9 @@ async function inferProjectName(projectRoot: string): Promise<string> {
 }
 
 /**
- * True when evidence.config.yaml positively carries OSS-only keys (`plugins:`
+ * True when evidence.config.yaml positively carries legacy-only keys (`plugins:`
  * or `appearance:`) and no `project:` block. Absence of `project:` alone isn't
- * enough — a Studio config with the key missing or misspelled must surface its
+ * enough — a Core config with the key missing or misspelled must surface its
  * validation error, not get silently replaced.
  */
 async function isOssConfig(projectRoot: string): Promise<boolean> {
@@ -95,20 +95,20 @@ async function collectFiles(dir: string, extension: string): Promise<string[]> {
 	return out;
 }
 
-/** OSS project features with no Studio equivalent — surfaced once per run. */
+/** legacy project features with no Core equivalent — surfaced once per run. */
 function projectLevelNotes(projectRoot: string, pageFiles: string[]): MigrationNote[] {
 	const notes: MigrationNote[] = [];
 	if (existsSync(path.join(projectRoot, 'sources'))) {
 		notes.push({
 			level: 'warning',
 			message:
-				'`sources/` found: Studio does not run source SQL queries. Connect your warehouse (`evidence init --warehouse <type>` or configure a connection in Studio) and update table references.'
+				'`sources/` found: Core does not run source SQL queries. Connect your warehouse (`evidence init --warehouse <type>` or configure a connection in Evidence Studio) and update table references.'
 		});
 	}
 	if (existsSync(path.join(projectRoot, 'evidence.plugins.yaml'))) {
 		notes.push({
 			level: 'info',
-			message: '`evidence.plugins.yaml` is not used by Studio — safe to delete after migrating.'
+			message: '`evidence.plugins.yaml` is not used by Core — safe to delete after migrating.'
 		});
 	}
 	for (const f of pageFiles) {
@@ -116,7 +116,7 @@ function projectLevelNotes(projectRoot: string, pageFiles: string[]): MigrationN
 		if (/^\[.+\]\.md$/.test(base)) {
 			notes.push({
 				level: 'warning',
-				message: `${base}: templated pages are not supported in Studio — replace with an input-driven page (e.g. a dropdown filtering the whole page).`
+				message: `${base}: templated pages are not supported in Core — replace with an input-driven page (e.g. a dropdown filtering the whole page).`
 			});
 		}
 	}
@@ -143,12 +143,12 @@ export async function migrate(options: MigrateOptions): Promise<void> {
 		const config = await loadProjectConfig(projectRoot);
 		pagesDir = config.pagesDir;
 	} catch (err) {
-		// OSS projects use the same evidence.config.yaml filename with an
+		// legacy projects use the same evidence.config.yaml filename with an
 		// incompatible shape (plugins/appearance) — rewrite it in the new format
 		// so every later command (dev, validate) stops erroring on load.
 		if (!(err instanceof ProjectConfigError)) throw err;
 		// A ProjectConfigError also covers unreadable/malformed YAML and broken
-		// Studio configs, where rewriting would silently destroy settings.
+		// Core configs, where rewriting would silently destroy settings.
 		if (!(await isOssConfig(projectRoot))) {
 			console.error(`  ✖ ${(err as Error).message}`);
 			console.error('    Fix evidence.config.yaml (or delete it) and re-run `evidence migrate`.');
@@ -158,7 +158,7 @@ export async function migrate(options: MigrateOptions): Promise<void> {
 			configNotes.push({
 				level: 'info',
 				message:
-					'`evidence.config.yaml` is in the OSS format — would be rewritten in the Studio format.'
+					'`evidence.config.yaml` is in the legacy format — would be rewritten in the Core format.'
 			});
 		} else {
 			const name = await inferProjectName(projectRoot);
@@ -171,7 +171,7 @@ export async function migrate(options: MigrateOptions): Promise<void> {
 			);
 			configNotes.push({
 				level: 'info',
-				message: `\`evidence.config.yaml\` was in the OSS format — rewritten in the Studio format (project name: "${name}").`
+				message: `\`evidence.config.yaml\` was in the legacy format — rewritten in the Core format (project name: "${name}").`
 			});
 		}
 	}
@@ -211,7 +211,7 @@ export async function migrate(options: MigrateOptions): Promise<void> {
 		? { notes: [] as MigrationNote[], sourceRefs: new Map<string, string>() }
 		: await migrateConnection(projectRoot, options.dryRun);
 
-	// Project-wide SQL files (queries/**/*.sql) resolve by path in studio, so
+	// Project-wide SQL files (queries/**/*.sql) resolve by path in Core, so
 	// bare-name references to them get rewritten even without a frontmatter
 	// `queries:` declaration.
 	const projectQueryFiles = new Map<string, string>();
@@ -245,8 +245,8 @@ export async function migrate(options: MigrateOptions): Promise<void> {
 		});
 	}
 
-	// Studio reads project .sql files (e.g. queries/orders) — migrate their
-	// contents too: only the input-reference syntax differs from OSS.
+	// Core reads project .sql files (e.g. queries/orders) — migrate their
+	// contents too: only the input-reference syntax differs from legacy.
 	if (!options.path) {
 		const queriesDir = path.join(projectRoot, 'queries');
 		if (existsSync(queriesDir)) {
@@ -274,7 +274,7 @@ export async function migrate(options: MigrateOptions): Promise<void> {
 	for (const f of svelteFiles) {
 		projectNotes.push({
 			level: 'warning',
-			message: `${path.relative(projectRoot, f)}: Svelte files are not supported in Studio — port the content into a page or delete.`
+			message: `${path.relative(projectRoot, f)}: Svelte files are not supported in Core — port the content into a page or delete.`
 		});
 	}
 

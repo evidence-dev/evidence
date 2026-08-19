@@ -10,7 +10,7 @@ import {
 } from './output.ts';
 import { INIT_WAREHOUSES, parseWarehouse, type InitWarehouse } from './init/connection-template.ts';
 
-export const VERSION = '0.9.0';
+export const VERSION = '0.9.1';
 
 export const BANNER = `
   evidence
@@ -24,7 +24,7 @@ Develop
   init        Scaffold a new Evidence project
   dev         Start the local development server
   validate    Validate project markdown
-  migrate     Convert an Evidence OSS project to Studio syntax
+  migrate     Convert a legacy Evidence project to Core syntax
 
 Deploy
   launch      Connect this project to Evidence Studio + GitHub (deploy via git push)

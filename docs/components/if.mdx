@@ -21,6 +21,17 @@ description: Conditionally render the contents based on whether rows are returne
 {% /if %}
 ````
 
+### With an else branch
+
+````liquid
+{% if data="demo.daily_orders" condition="has_rows" %}
+	There are orders.
+{% /if %}
+{% else %}
+	No orders found.
+{% /else %}
+````
+
 ## Attributes
 
 <ResponseField name="data" type="string" required>

@@ -21,6 +21,11 @@ type DimensionGridAttributes = UserComponentProps<typeof schema> & {
 };
 
 export class DimensionGridFilter extends Filter<DimensionGridValue> {
+	// `selected` is an object (dimension → values) — the base default would
+	// stringify it into SQL as "[object Object]". The predicate is the only
+	// property that makes sense bare in a WHERE clause.
+	static override defaultProperty = { sql: 'filter', text: 'literal', column: 'literal' };
+
 	attributes: Omit<DimensionGridAttributes, 'id'>;
 
 	/**

@@ -46,6 +46,17 @@ export const schema = {
 	Content
 {% /if %}
 `
+		},
+		{
+			title: 'With an else branch',
+			example: `
+{% if data="demo.daily_orders" condition="has_rows" %}
+	There are orders.
+{% /if %}
+{% else %}
+	No orders found.
+{% /else %}
+`
 		}
 	]
 } as const satisfies UserComponentSchema;

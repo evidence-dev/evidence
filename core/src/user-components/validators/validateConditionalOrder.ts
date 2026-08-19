@@ -17,12 +17,13 @@ export const validateConditionalOrder: Validator = (node, _config, _context) => 
 	if (idx === -1) return [];
 
 	// 'else_if' and 'else' must not be the first child
+	const message = `'${node.tag}' must be its own block placed directly after the closed if block — not inside it: {% if data="q" %}...{% /if %}{% ${node.tag} %}...{% /${node.tag} %}`;
 	if (idx === 0) {
 		return [
 			{
 				id: 'invalid-conditional-order',
 				level: 'error',
-				message: `'${node.tag}' must immediately follow 'if' or 'else_if'`,
+				message,
 				location: node.location
 			}
 		];
@@ -34,7 +35,7 @@ export const validateConditionalOrder: Validator = (node, _config, _context) => 
 			{
 				id: 'invalid-conditional-order',
 				level: 'error',
-				message: `'${node.tag}' must immediately follow 'if' or 'else_if'`,
+				message,
 				location: node.location
 			}
 		];

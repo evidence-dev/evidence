@@ -1,6 +1,6 @@
 /**
- * Loads studio component schemas so the migrate transform can drop OSS
- * attributes that have no studio equivalent (instead of emitting attrs that
+ * Loads Core component schemas so the migrate transform can drop legacy
+ * attributes that have no Core equivalent (instead of emitting attrs that
  * `evidence validate` would reject). Literal dynamic-import paths keep this
  * bundleable; a tag missing here just skips attr filtering for that tag.
  */

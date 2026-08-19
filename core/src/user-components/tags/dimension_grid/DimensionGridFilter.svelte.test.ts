@@ -15,6 +15,17 @@ function makeGrid(attributes: Record<string, unknown> = {}, dialect?: SqlDialect
 	);
 }
 
+describe('DimensionGridFilter sql-context default', () => {
+	it('a bare {{id}} in SQL resolves the predicate, never the selected object', () => {
+		const filter = makeGrid();
+		filter.setDefault({ region: 'West' });
+		const prop = DimensionGridFilter.defaultProperty.sql;
+		const value = filter.templateValues[prop];
+		expect(String(value)).not.toContain('[object');
+		expect(typeof value).toBe('string');
+	});
+});
+
 describe('DimensionGridFilter.predicateSql', () => {
 	it('emits = for a scalar and IN for a list, joined with AND', () => {
 		const filter = makeGrid();

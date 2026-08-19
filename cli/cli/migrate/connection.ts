@@ -1,8 +1,8 @@
 /**
- * OSS source connection → root connection.yaml conversion.
+ * Legacy source connection → root connection.yaml conversion.
  *
- * OSS keeps per-source `sources/<name>/connection.yaml` (public fields) +
- * `connection.options.yaml` (base64-encoded secrets). The Studio CLI reads one
+ * Legacy Evidence keeps per-source `sources/<name>/connection.yaml` (public fields) +
+ * `connection.options.yaml` (base64-encoded secrets). The Core CLI reads one
  * dbt-style `connection.yaml` at the project root with plain values. This
  * converts the first supported source and flags the rest.
  */
@@ -23,9 +23,9 @@ const SUPPORTED_TYPES = new Set([
 	'motherduck'
 ]);
 
-/** Every type the Studio CLI's connection.yaml accepts — an existing file with
- * one of these is a working Studio config and must never be replaced. */
-const STUDIO_CONNECTION_TYPES = new Set<string>(CONNECTION_TYPES);
+/** Every type the Core CLI's connection.yaml accepts — an existing file with
+ * one of these is a working Core config and must never be replaced. */
+const CORE_CONNECTION_TYPES = new Set<string>(CONNECTION_TYPES);
 
 interface OssSource {
 	dir: string;
@@ -34,7 +34,7 @@ interface OssSource {
 	options: Record<string, unknown>;
 }
 
-// OSS base64-encodes every string in connection.options.yaml.
+// Legacy Evidence base64-encodes every string in connection.options.yaml.
 function decodeBase64Values(obj: Record<string, unknown>): Record<string, unknown> {
 	return Object.fromEntries(
 		Object.entries(obj).map(([k, v]) =>
@@ -131,7 +131,7 @@ async function buildNewConnection(
 			...(datasets.length > 0 ? { datasets } : { datasets: ['<dataset>'] })
 		};
 	}
-	// Other supported warehouses: OSS option keys mostly match the new
+	// Other supported warehouses: legacy option keys mostly match the new
 	// top-level fields — carry them over and let validation flag the rest.
 	notes.push({
 		level: 'info',
@@ -168,7 +168,7 @@ export async function migrateConnection(
 	for (const s of sources.filter((s) => !SUPPORTED_TYPES.has(s.type))) {
 		notes.push({
 			level: 'warning',
-			message: `source \`${s.name}\` (type: ${s.type}) has no direct connector — configure it in Studio (or drop it) and update queries that reference it.`
+			message: `source \`${s.name}\` (type: ${s.type}) has no direct connector — configure it in Evidence Studio (or drop it) and update queries that reference it.`
 		});
 	}
 	if (supported.length === 0) return { written: false, notes, sourceRefs };
@@ -177,14 +177,14 @@ export async function migrateConnection(
 	for (const s of rest) {
 		notes.push({
 			level: 'warning',
-			message: `source \`${s.name}\` (type: ${s.type}) skipped — the CLI supports one root connection.yaml; connect extra sources in Studio.`
+			message: `source \`${s.name}\` (type: ${s.type}) skipped — the CLI supports one root connection.yaml; connect extra sources in Evidence Studio.`
 		});
 	}
 
 	const target = path.join(projectRoot, 'connection.yaml');
-	// An existing root config that already parses as a Studio connection
+	// An existing root config that already parses as a Core connection
 	// (recognized `type:`) is the user's working setup — never replace it.
-	// Only a missing or non-Studio-shaped file gets (re)written.
+	// Only a missing or non-Core-shaped file gets (re)written.
 	if (existsSync(target)) {
 		let existing: unknown;
 		try {
@@ -196,7 +196,7 @@ export async function migrateConnection(
 			existing && typeof existing === 'object' && 'type' in existing
 				? String((existing as Record<string, unknown>).type)
 				: null;
-		if (existingType && STUDIO_CONNECTION_TYPES.has(existingType)) {
+		if (existingType && CORE_CONNECTION_TYPES.has(existingType)) {
 			notes.push({
 				level: 'info',
 				message: `existing connection.yaml (${existingType}) kept — delete it and re-run \`evidence migrate\` to regenerate from source \`${chosen.name}\`.`
@@ -208,7 +208,7 @@ export async function migrateConnection(
 	const replacing = existsSync(target);
 	notes.push({
 		level: replacing ? 'warning' : 'info',
-		message: `connection.yaml ${dryRun ? 'would be written' : 'written'} from source \`${chosen.name}\` (${chosen.type})${replacing ? ` — this ${dryRun ? 'would replace' : 'replaced'} the existing non-Studio-format ${path.basename(target)}; back it up first` : ''}.`
+		message: `connection.yaml ${dryRun ? 'would be written' : 'written'} from source \`${chosen.name}\` (${chosen.type})${replacing ? ` — this ${dryRun ? 'would replace' : 'replaced'} the existing non-Core-format ${path.basename(target)}; back it up first` : ''}.`
 	});
 
 	if (!dryRun) {
@@ -240,7 +240,7 @@ export async function migrateConnection(
 }
 
 /**
- * OSS source queries ran on the warehouse — they stay valid SQL. Copy them
+ * Legacy source queries ran on the warehouse — they stay valid SQL. Copy them
  * to queries/<source>/ so pages can reference them as {{ /queries/... }}.
  * Runs whether or not connection.yaml was (re)written.
  */

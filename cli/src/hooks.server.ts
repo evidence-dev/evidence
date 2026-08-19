@@ -27,7 +27,7 @@ const STATIC_CONTENT_TYPES: Record<string, string> = {
 };
 
 /**
- * Serve the project's static/ directory (the OSS convention for images and
+ * Serve the project's static/ directory (the legacy Evidence convention for images and
  * other assets referenced as absolute paths, e.g. /img/logo.png). Only known
  * asset extensions are considered so page routes are never shadowed.
  */
