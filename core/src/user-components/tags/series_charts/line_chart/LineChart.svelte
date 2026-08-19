@@ -5,19 +5,19 @@
 	import Line from '../line/Line.svelte';
 	import MultiSeries from '../MultiSeries/MultiSeries.svelte';
 	import { getMetricsCatalogContext } from '../../../../metrics/metrics-catalog';
-	import { getQueryService } from '../../../../QueryService.context';
+	import { getDefaultConnection } from '../../../../QueryService.context';
 	import { applyMetricChartProps } from '../../../../metrics/resolve-metric';
 
 	const props: UserComponentProps<typeof schema> = $props();
 
 	const metricsCatalog = getMetricsCatalogContext();
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 
 	// `metric="revenue"` resolves to the raw data/x/series/y a line chart already
 	// understands (metric supplies data + y; x defaults to the view's time column,
 	// grain to the view's default; named dimensions resolve for x/series). Keeps
 	// the whole chart pipeline (ComboChart → MultiSeries → SeriesModel) untouched.
-	const chartProps = $derived(applyMetricChartProps(props, metricsCatalog, queryService.dialect));
+	const chartProps = $derived(applyMetricChartProps(props, metricsCatalog, connection.dialect));
 
 	// `metric` mode makes data/x/y optional in the schema (so `metric="revenue"`
 	// alone validates), but ComboChart/MultiSeries require them. `chartProps`

@@ -13,7 +13,7 @@
 	import Info from '../info/Info.svelte';
 	import Ellipsis from '../../../viewer-components/Ellipsis.svelte';
 	import { Query } from '../../../Query.svelte';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
 	import { processColumnExpression } from '../../common/sql-expression-utils';
@@ -27,7 +27,7 @@
 
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const queryInfoContext = getQueryInfoContext();
 	const inlineQueries = getInlineQueriesContext();
 	const { getComponentId, hasBlockingErrors } = getComponentWrapperContext();
@@ -43,7 +43,9 @@
 		return new VariableProcessor(filterContexts, inlineQueries);
 	});
 
-	const { resolveText, resolveColumn, resolveNumber } = $derived(createResolvers(variableProcessor));
+	const { resolveText, resolveColumn, resolveNumber } = $derived(
+		createResolvers(variableProcessor)
+	);
 
 	// Resolved props
 	const id = $derived(props.id);
@@ -56,9 +58,7 @@
 	const userMin = $derived(resolveNumber(props.min));
 	const userMax = $derived(resolveNumber(props.max));
 	const userStep = $derived(resolveNumber(props.step) ?? 1);
-	const safeStep = $derived.by(() =>
-		Number.isFinite(userStep) && userStep > 0 ? userStep : 1
-	);
+	const safeStep = $derived.by(() => (Number.isFinite(userStep) && userStep > 0 ? userStep : 1));
 	const snapToStep = $derived(props.snap_to_step ?? true);
 	const fmt = $derived(resolveText(props.fmt) ?? 'num');
 	const range = $derived(props.range ?? false);
@@ -86,7 +86,7 @@
 			{
 				value: valueColumn
 			},
-			queryService.dialect
+			connection.dialect
 		);
 
 		const minColumn = processColumnExpression(
@@ -94,14 +94,14 @@
 				value: `MIN(${valueProcessed.sqlWithoutAlias}) AS min_value`,
 				type: 'measure'
 			},
-			queryService.dialect
+			connection.dialect
 		);
 		const maxColumn = processColumnExpression(
 			{
 				value: `MAX(${valueProcessed.sqlWithoutAlias}) AS max_value`,
 				type: 'measure'
 			},
-			queryService.dialect
+			connection.dialect
 		);
 
 		return {
@@ -113,7 +113,7 @@
 	});
 
 	const rangeQuery = new Query<{ min_value: number; max_value: number }>(() => rangeQueryConfig, {
-		queryService,
+		connection,
 		filterContexts: [pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),
@@ -131,8 +131,12 @@
 	// Use query results as default min/max, but allow user override
 	// Query results come back as strings — must cast to numbers for math and shadcn Slider props
 	const queryResult = $derived(rangeQuery.result?.rows?.[0]);
-	const queryMin = $derived(queryResult?.min_value != null ? Number(queryResult.min_value) : undefined);
-	const queryMax = $derived(queryResult?.max_value != null ? Number(queryResult.max_value) : undefined);
+	const queryMin = $derived(
+		queryResult?.min_value != null ? Number(queryResult.min_value) : undefined
+	);
+	const queryMax = $derived(
+		queryResult?.max_value != null ? Number(queryResult.max_value) : undefined
+	);
 
 	// Calculate base min/max from user input or query results
 	const baseMin = $derived(userMin !== undefined ? userMin : queryMin !== undefined ? queryMin : 0);

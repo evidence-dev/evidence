@@ -150,7 +150,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 				this.attributes.search && this.searchTerm.trim() && this.searchColumns.length > 0
 					? { term: this.searchTerm.trim(), columns: this.searchColumns }
 					: undefined,
-			dialect: this.deps.queryService.dialect
+			dialect: this.deps.connection.dialect
 		});
 	});
 
@@ -174,7 +174,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 		// Try to interpolate inline queries, but handle errors gracefully during editing.
 		// A name that is not an inline query is quoted here, because the wrappers below
 		// embed this in raw SQL that generateSQLQuery then passes through untouched.
-		const dialect = this.deps.queryService.dialect;
+		const dialect = this.deps.connection.dialect;
 		try {
 			return resolveTableExpressionName(dataValue, this.deps?.inlineQueries, dialect);
 		} catch (error) {
@@ -228,7 +228,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 					type: 'measure',
 					firstDayOfWeek: this.projectSettings.first_day_of_week
 				},
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 			if (!processed.hasAgg) {
 				base = `(SELECT *, ${processed.sqlWithoutAlias} AS __row_conditional_colors FROM ${resolvedBase})`;
@@ -264,7 +264,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 						type: 'dimension',
 						firstDayOfWeek: this.projectSettings.first_day_of_week
 					},
-					this.deps.queryService.dialect
+					this.deps.connection.dialect
 				);
 
 				columns.push({
@@ -290,7 +290,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 						type: 'measure',
 						firstDayOfWeek: this.projectSettings.first_day_of_week
 					},
-					this.deps.queryService.dialect
+					this.deps.connection.dialect
 				);
 
 				columns.push({
@@ -316,7 +316,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 						type: 'pivot',
 						firstDayOfWeek: this.projectSettings.first_day_of_week
 					},
-					this.deps.queryService.dialect
+					this.deps.connection.dialect
 				);
 
 				columns.push({
@@ -369,7 +369,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 				// Add this dimension as a hidden MEASURE (not dimension) to avoid GROUPING SETS participation
 				// Following the same pattern as image/link hidden columns
 				const hiddenAlias = `__benchmark_${benchmarkDim}`;
-				const { dialect } = this.deps.queryService;
+				const { dialect } = this.deps.connection;
 
 				columns.push({
 					type: 'measure',
@@ -410,12 +410,12 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 					type: 'measure',
 					firstDayOfWeek: this.projectSettings.first_day_of_week
 				},
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 
 			const sqlExpression = rowColorProcessed.hasAgg
 				? `${rowColorProcessed.sqlWithoutAlias} AS __row_conditional_colors`
-				: `${this.deps.queryService.dialect.anyValue(rowColorProcessed.sqlWithoutAlias)} AS __row_conditional_colors`;
+				: `${this.deps.connection.dialect.anyValue(rowColorProcessed.sqlWithoutAlias)} AS __row_conditional_colors`;
 
 			const finalProcessed = processColumnExpression(
 				{
@@ -423,7 +423,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 					type: 'measure',
 					firstDayOfWeek: this.projectSettings.first_day_of_week
 				},
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 
 			columns.push({
@@ -471,7 +471,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 							undefined,
 							anchorDate,
 							this.projectSettings.first_day_of_week,
-							this.deps.queryService.dialect
+							this.deps.connection.dialect
 						)
 					: null;
 				const parsedPeriod = processed

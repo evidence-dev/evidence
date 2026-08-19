@@ -76,7 +76,7 @@ export class PointLayerModel {
 		this.clusterLayerId = `${this.layerId}-clusters`;
 		this.clusterCountLayerId = `${this.layerId}-cluster-count`;
 		this.definitionIndex = definitionIndex;
-		this.dialect = options.queryService.dialect;
+		this.dialect = options.connection.dialect;
 		// Carve maps out of the default 10k limit: a WebGL point layer needs every
 		// row at once (no pagination), so honor explicit limits up to the map cap.
 		this.query = new Query(() => this.queryConfig, options, {

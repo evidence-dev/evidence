@@ -22,8 +22,9 @@ function makeDimension(dialect: SqlDialect, conditionalColors: string) {
 		validationErrors: [],
 		parent,
 		deps: {
-			queryService: {
-				workspaceId: 'test',
+			connection: {
+				id: 'default',
+				type: 'managed',
 				dialect,
 				query: vi.fn()
 			},

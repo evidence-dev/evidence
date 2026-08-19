@@ -37,6 +37,7 @@ describe('InlineQueryMetadata', () => {
 		const metadata = new InlineQueryMetadata(
 			{
 				workspaceId: 'workspace',
+				connectionType: 'managed',
 				dialect: defaultDialect,
 				query: query as unknown as QueryService['query']
 			} satisfies QueryService,
@@ -93,6 +94,7 @@ describe('InlineQueryMetadata', () => {
 		const metadata = new InlineQueryMetadata(
 			{
 				workspaceId: 'workspace',
+				connectionType: 'managed',
 				dialect: defaultDialect,
 				query: query as unknown as QueryService['query']
 			} satisfies QueryService,

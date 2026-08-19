@@ -69,7 +69,7 @@ export class ImageModel extends UserComponentModel<ImageModelGenerics> {
 			order: sqlProps.order,
 			filters: this.attributes.filters,
 			limit: this.attributes.limit,
-			dialect: this.deps.queryService.dialect
+			dialect: this.deps.connection.dialect
 		});
 	});
 
@@ -80,7 +80,7 @@ export class ImageModel extends UserComponentModel<ImageModelGenerics> {
 	private columnValue(column: string | undefined): string | undefined {
 		const row = this.firstRow;
 		if (!column || !row) return undefined;
-		const { alias } = processColumnExpression({ value: column }, this.deps.queryService.dialect);
+		const { alias } = processColumnExpression({ value: column }, this.deps.connection.dialect);
 		const value = row[alias];
 		return value === null || value === undefined || value === '' ? undefined : String(value);
 	}
@@ -96,7 +96,7 @@ export class ImageModel extends UserComponentModel<ImageModelGenerics> {
 
 	readonly imageDescription = $derived.by(() =>
 		this.isDataDriven
-			? this.columnValue(this.resolvedDescriptionColumn) ?? this.resolvedDescription
+			? (this.columnValue(this.resolvedDescriptionColumn) ?? this.resolvedDescription)
 			: this.resolvedDescription
 	);
 

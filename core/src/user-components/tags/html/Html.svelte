@@ -10,7 +10,7 @@
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getRepeatContext } from '../repeat/repeat-context';
@@ -44,7 +44,7 @@
 	const { getComponentId, setError } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const inlineQueries = getInlineQueriesContext();
 	const pageFilters = getPageFiltersContext();
 	const repeatFilters = getRepeatContext()?.filters;
@@ -183,11 +183,11 @@
 			throw new Error('No queries are available on this page.');
 		}
 		const subquery = await waitForInterpolatedQuery(
-			() => inlineQueries.getInterpolated(name, queryService.dialect),
+			() => inlineQueries.getInterpolated(name, connection.dialect),
 			name,
 			{ isDisposed: () => disposed }
 		);
-		const result = await queryService.query(`SELECT * FROM ${subquery}`);
+		const result = await connection.query(`SELECT * FROM ${subquery}`);
 		if (result.error) throw new Error(result.error);
 		return { rows: result.rows as Record<string, unknown>[] };
 	}

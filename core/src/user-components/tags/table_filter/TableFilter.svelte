@@ -25,7 +25,7 @@
 		constrainFilters
 	} from './filterUtils.svelte';
 	import { getPageFiltersContext } from '../../../page-filters-context';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { logger } from '../../../shims/logger';
 	import { browser } from '../../../shims/env';
 
@@ -46,7 +46,7 @@
 		UserComponentProps<typeof schema> & { minimumRecords?: number | null; multiple?: boolean }
 	>();
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 
 	// A column in both lists resolves to single-select, matching the select-mode-overlap warning
 	function columnAllowsMultiple(columnName: string): boolean {
@@ -333,7 +333,7 @@
 	}
 
 	// Create a derived state for the SQL fragment
-	let sqlFragment = $derived(generateFilterSQL(filterState, queryService.dialect));
+	let sqlFragment = $derived(generateFilterSQL(filterState, connection.dialect));
 
 	// Debug mode state
 	let debugMode = $state(false);

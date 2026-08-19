@@ -1,5 +1,5 @@
 import { deserializeTree } from './Renderer/MarkdocProcessor/tree-serialization';
-import { getQueryService } from '../QueryService.context';
+import { getDefaultConnection } from '../connection';
 import { getPageFiltersContext } from '../page-filters-context';
 import { getInlineQueriesContext } from './common/inline-queries';
 import { getMetricsCatalogContext } from '../metrics/metrics-catalog';
@@ -19,14 +19,14 @@ export const setupSSRModelsContext = (): void => {
 	const tree = deserializeTree(serializedTree);
 	const validationErrors = page.data.validationErrors ?? [];
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = undefined; // TODO how to incorporate this? Without it, repeat doesn't work during SSR
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
 	const metricsCatalog = getMetricsCatalogContext();
 	const getProjectSettings = getProjectSettingsContext();
 	const deps: QueryDependencies = {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettings,

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getQueryService } from '../../../../../../QueryService.context';
+	import { getDefaultConnection } from '../../../../../../QueryService.context';
 	import { getRepeatContext } from '../../../../repeat/repeat-context';
 	import { Query } from '../../../../../../Query.svelte';
 	import { processColumnExpression } from '../../../../../common/sql-expression-utils';
@@ -18,7 +18,7 @@
 	const y_min = $derived(props.y_min);
 	const y_max = $derived(props.y_max);
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -26,11 +26,11 @@
 	// Convert columns to processed column expressions
 	const processedColumns = $derived.by(() => {
 		const columns = [];
-		if (label) columns.push(processColumnExpression({ value: label }, queryService.dialect));
-		if (x_min) columns.push(processColumnExpression({ value: x_min }, queryService.dialect));
-		if (x_max) columns.push(processColumnExpression({ value: x_max }, queryService.dialect));
-		if (y_min) columns.push(processColumnExpression({ value: y_min }, queryService.dialect));
-		if (y_max) columns.push(processColumnExpression({ value: y_max }, queryService.dialect));
+		if (label) columns.push(processColumnExpression({ value: label }, connection.dialect));
+		if (x_min) columns.push(processColumnExpression({ value: x_min }, connection.dialect));
+		if (x_max) columns.push(processColumnExpression({ value: x_max }, connection.dialect));
+		if (y_min) columns.push(processColumnExpression({ value: y_min }, connection.dialect));
+		if (y_max) columns.push(processColumnExpression({ value: y_max }, connection.dialect));
 		return columns;
 	});
 
@@ -43,7 +43,7 @@
 		};
 	});
 	const query = new Query(() => queryConfig, {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),

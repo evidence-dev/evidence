@@ -1,8 +1,5 @@
-import type {
-	AnyRowType,
-	QueryResult,
-	QueryService
-} from './user-components/interfaces/query-service';
+import type { AnyRowType, QueryResult } from './user-components/interfaces/query-service';
+import type { Connection } from './connection';
 import type { SQLQueryConfig } from './user-components/common/sql-options';
 import {
 	generateSQLQuery,
@@ -35,7 +32,7 @@ import { logger } from './shims/logger';
 // NOTE: When adding fields to this object, use `| undefined` rather than `?` to make a property optional. This
 // makes it so that dependencies must be explicitly ommitted rather than forgotten, resulting in more intentful usage.
 export type QueryDependencies = {
-	queryService: QueryService;
+	connection: Connection;
 	filterContexts: (Filters | undefined)[] | undefined;
 	inlineQueries: InlineQueries | undefined;
 	projectSettings:
@@ -225,7 +222,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 					return lastData;
 				}
 
-				const result = await this.deps.queryService.query<{ max_date: string }>(maxDateQuery, {
+				const result = await this.deps.connection.query<{ max_date: string }>(maxDateQuery, {
 					signal,
 					noCache: this.options.noCache
 				});
@@ -276,7 +273,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 				const shouldRunCountNow = !hasRunCount || countQueryChanged;
 				if (!needsCount || !shouldRunCountNow) return this.countResource.current;
 
-				const result = await this.deps.queryService.query<{ total_count: number }>(countQuery, {
+				const result = await this.deps.connection.query<{ total_count: number }>(countQuery, {
 					signal,
 					noCache: this.options.noCache
 				});
@@ -359,7 +356,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 						(!hasCheckedRowLimit || pivotCheckQueryChanged || limitChanged || isRefresh)
 					) {
 						const result =
-							await this.deps.queryService.query<PivotResultSizeLowerBoundQueryResultRow>(
+							await this.deps.connection.query<PivotResultSizeLowerBoundQueryResultRow>(
 								pivotCheckQuery,
 								{ signal, noCache: this.options.noCache || isRefresh }
 							);
@@ -431,7 +428,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 										? generateGroupingSets(adjustedColumns)
 										: undefined,
 									subtotalHelperColumns: this.query.subtotals
-										? generateSubtotalHelperColumns(adjustedColumns, this.deps.queryService.dialect)
+										? generateSubtotalHelperColumns(adjustedColumns, this.deps.connection.dialect)
 										: undefined
 								};
 
@@ -441,11 +438,11 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 									this.deps.inlineQueries,
 									this.anchorDate,
 									this.projectSettings.first_day_of_week,
-									this.deps.queryService.dialect
+									this.deps.connection.dialect
 								);
 
 								if (!error && adjustedSql) {
-									const adjustedResult = await this.deps.queryService.query<RowType>(adjustedSql, {
+									const adjustedResult = await this.deps.connection.query<RowType>(adjustedSql, {
 										signal,
 										noCache: this.options.noCache
 									});
@@ -480,7 +477,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 						nonPivotCheckQuery &&
 						(!hasCheckedRowLimit || nonPivotCheckQueryChanged || isRefresh)
 					) {
-						const result = await this.deps.queryService.query<RowType>(nonPivotCheckQuery, {
+						const result = await this.deps.connection.query<RowType>(nonPivotCheckQuery, {
 							signal,
 							noCache: this.options.noCache || isRefresh
 						});
@@ -599,7 +596,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 					return lastData;
 				}
 
-				const result = await this.deps.queryService.query<RowType>(sql, {
+				const result = await this.deps.connection.query<RowType>(sql, {
 					signal,
 					// Bypass cache on refresh to get fresh data
 					noCache: this.options.noCache || isRefresh
@@ -800,7 +797,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			const filterSql = processFilterIds(
 				this.query.filterIds,
 				this.deps.filterContexts,
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 			if (filterSql) whereParts.push(filterSql);
 		}
@@ -819,7 +816,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 				this.query.date_range.date,
 				this.anchorDate,
 				this.projectSettings.first_day_of_week,
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 			if (processed.whereClause) whereParts.push(processed.whereClause);
 		}
@@ -851,7 +848,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			this.deps.inlineQueries,
 			this.anchorDate,
 			this.projectSettings.first_day_of_week,
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 
 		if (error) {
@@ -891,7 +888,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			tableExpression = resolveTableExpressionName(
 				this.query.tableExpressionName,
 				this.deps.inlineQueries,
-				this.deps.queryService.dialect,
+				this.deps.connection.dialect,
 				this.query.tableExpressionIsSql === true
 			);
 		} catch (error) {
@@ -901,7 +898,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			);
 			tableExpression = quoteUntrustedIdentifierPath(
 				this.query.tableExpressionName,
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 		}
 
@@ -951,7 +948,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			this.deps.inlineQueries,
 			this.anchorDate,
 			this.projectSettings.first_day_of_week,
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 
 		if (error) {
@@ -981,7 +978,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			this.deps.inlineQueries,
 			this.anchorDate,
 			this.projectSettings.first_day_of_week,
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 		return sql;
 	});
@@ -1005,7 +1002,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			this.deps.inlineQueries,
 			this.anchorDate,
 			this.projectSettings.first_day_of_week,
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 
 		return sql;
@@ -1025,7 +1022,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			this.deps.inlineQueries,
 			this.anchorDate,
 			this.projectSettings.first_day_of_week,
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 
 		if (error) {

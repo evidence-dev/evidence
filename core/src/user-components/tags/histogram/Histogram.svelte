@@ -11,7 +11,7 @@
 	import type { ECharts as EChartsInstance } from 'echarts';
 	import CustomLegend from '../echarts/CustomLegend.svelte';
 	import { cn } from '../../../shadcn/utils';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { extractSQLProps, processFilterIds } from '../../common/sql-options';
 	import { buildHistogramSQL } from './build-histogram-sql';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
@@ -55,7 +55,7 @@
 	// Extract SQL props in a centralized way (limit doesn't support variables)
 	const { limit } = $derived.by(() => extractSQLProps(props));
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -97,7 +97,7 @@
 	const resolvedTableName = $derived.by(() => {
 		if (!tableName) return tableName;
 		try {
-			return inlineQueries?.getInterpolated(tableName, queryService.dialect) || tableName;
+			return inlineQueries?.getInterpolated(tableName, connection.dialect) || tableName;
 		} catch (error) {
 			logger.warn(error, 'Failed to interpolate inline query, using raw table name');
 			return tableName;
@@ -114,7 +114,7 @@
 			value,
 			series,
 			where,
-			filterSql: processFilterIds(filterIds, [repeatFilters, pageFilters], queryService.dialect),
+			filterSql: processFilterIds(filterIds, [repeatFilters, pageFilters], connection.dialect),
 			bin_count: binCount,
 			bin_width: binWidth,
 			limit
@@ -124,7 +124,7 @@
 	const query = new Query(
 		() => sql,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),

@@ -35,11 +35,12 @@ async function settle() {
 
 function makeDeps(query: () => Promise<QueryResult>): QueryDependencies {
 	return {
-		queryService: {
-			workspaceId: 'workspace',
+		connection: {
+			id: 'default',
+			type: 'managed',
 			// dialect is never read on the string-query path (no SQL is generated)
 			dialect: {} as never,
-			query: query as QueryDependencies['queryService']['query']
+			query: query as QueryDependencies['connection']['query']
 		},
 		filterContexts: undefined,
 		inlineQueries: undefined,
@@ -121,10 +122,11 @@ describe('maxUserLimit carve-out', () => {
 
 	function makeDialectDeps(): QueryDependencies {
 		return {
-			queryService: {
-				workspaceId: 'workspace',
+			connection: {
+				id: 'default',
+				type: 'managed',
 				dialect,
-				query: (async () => queryResult()) as QueryDependencies['queryService']['query']
+				query: (async () => queryResult()) as QueryDependencies['connection']['query']
 			},
 			filterContexts: undefined,
 			inlineQueries: undefined,

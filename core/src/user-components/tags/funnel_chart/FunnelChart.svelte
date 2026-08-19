@@ -10,7 +10,7 @@
 	import type { ECharts as EChartsInstance } from 'echarts';
 	import CustomLegend from '../echarts/CustomLegend.svelte';
 	import { cn } from '../../../shadcn/utils';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import type { SQLProps } from '../../common/sql-options';
 	import { extractSQLProps } from '../../common/sql-options';
 	import { processColumnExpression } from '../../common/sql-expression-utils';
@@ -109,7 +109,7 @@
 		qualify
 	} = $derived.by(() => extractSQLProps(props));
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -133,10 +133,12 @@
 	const metricsCatalog = getMetricsCatalogContext();
 	const resolvedMetric = $derived(resolveText(props.metric));
 	const metricCompiled = $derived(
-		resolveMetric(metricsCatalog, resolvedMetric, queryService.dialect)
+		resolveMetric(metricsCatalog, resolvedMetric, connection.dialect)
 	);
 	const resolvedTableName = $derived(resolveText(props.data) ?? metricCompiled?.base ?? '');
-	const resolvedCategory = $derived(applyMetricDimension(metricCompiled, resolveColumn(props.category)));
+	const resolvedCategory = $derived(
+		applyMetricDimension(metricCompiled, resolveColumn(props.category))
+	);
 	const resolvedValue = $derived(
 		resolveColumn(props.value) ?? metricCompiled?.valueExpression ?? ''
 	);
@@ -147,9 +149,7 @@
 	const info_link_title = $derived(resolveText(props.info_link_title) ?? '');
 	const where = $derived(resolveSql(props.where) ?? rawWhere);
 	const effectiveValueFmt = $derived(
-		resolveText(props.value_fmt) ??
-			value_fmt ??
-			metricCompiled?.columnFormats[metricCompiled.name]
+		resolveText(props.value_fmt) ?? value_fmt ?? metricCompiled?.columnFormats[metricCompiled.name]
 	);
 	// Process entire date_range object - recursively handles date and range properties
 	const resolvedDateRange = $derived(resolveText(props.date_range) ?? props.date_range);
@@ -157,7 +157,7 @@
 		resolveText(props.tooltip_fields) as TooltipField[] | undefined
 	);
 	const processedTooltip = $derived(
-		resolveTooltipFields(resolvedTooltipFields, queryService.dialect)
+		resolveTooltipFields(resolvedTooltipFields, connection.dialect)
 	);
 
 	// Process columns using the new system (with resolved variable values)
@@ -167,7 +167,7 @@
 			{
 				value: resolvedCategory
 			},
-			queryService.dialect
+			connection.dialect
 		);
 	});
 
@@ -176,7 +176,7 @@
 			{
 				value: resolvedValue
 			},
-			queryService.dialect
+			connection.dialect
 		);
 	});
 
@@ -200,7 +200,7 @@
 			qualify,
 			order,
 			limit,
-			dialect: queryService.dialect,
+			dialect: connection.dialect,
 			tooltipFieldColumns: processedTooltip.columns
 		});
 	});
@@ -209,7 +209,7 @@
 	const query = new Query(
 		() => queryConfig,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),

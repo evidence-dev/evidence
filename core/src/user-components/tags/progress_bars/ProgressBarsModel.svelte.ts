@@ -44,7 +44,7 @@ export class ProgressBarsModel extends UserComponentModel<ProgressBarsModelGener
 	// helper as big_value/charts.
 	readonly resolvedMetric = $derived(this.resolveText(this.attributes.metric));
 	readonly metricCompiled = $derived(
-		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.queryService.dialect)
+		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.connection.dialect)
 	);
 
 	readonly resolvedData = $derived(
@@ -76,7 +76,7 @@ export class ProgressBarsModel extends UserComponentModel<ProgressBarsModelGener
 				value: this.resolvedDimension,
 				type: 'dimension'
 			},
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 	});
 
@@ -85,7 +85,7 @@ export class ProgressBarsModel extends UserComponentModel<ProgressBarsModelGener
 			{
 				value: this.resolvedNumerator
 			},
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 	});
 
@@ -98,7 +98,7 @@ export class ProgressBarsModel extends UserComponentModel<ProgressBarsModelGener
 				// above prevent a query from firing.
 				value: this.resolvedDenominator ?? ''
 			},
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 	});
 
@@ -129,7 +129,7 @@ export class ProgressBarsModel extends UserComponentModel<ProgressBarsModelGener
 			filters: this.attributes.filters || [],
 			...sqlProps,
 			where: this.resolvedWhere,
-			dialect: this.deps.queryService.dialect
+			dialect: this.deps.connection.dialect
 		});
 	});
 

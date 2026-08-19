@@ -75,10 +75,10 @@ export class DownloadModel extends UserComponentModel<DownloadModelGenerics> {
 			this.deps.inlineQueries,
 			undefined,
 			this.projectSettings.first_day_of_week,
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 
 		// Execute query directly without caching
-		return await this.deps.queryService.query(sql, { noCache: true });
+		return await this.deps.connection.query(sql, { noCache: true });
 	}
 }

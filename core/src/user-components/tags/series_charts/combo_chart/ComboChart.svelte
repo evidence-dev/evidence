@@ -10,7 +10,7 @@
 	import type { ECharts as EChartsInstance } from 'echarts';
 	import CustomLegend from '../../echarts/CustomLegend.svelte';
 	import { cn } from '../../../../shadcn/utils';
-	import { getQueryService } from '../../../../QueryService.context';
+	import { getDefaultConnection } from '../../../../QueryService.context';
 	import { extractSQLProps } from '../../../common/sql-options';
 	import { processColumnExpression } from '../../../common/sql-expression-utils';
 	import { getRepeatContext } from '../../repeat/repeat-context';
@@ -182,7 +182,7 @@
 	let seriesInOrder: SeriesModel[] = $state([]);
 
 	// Get context providers needed for variable interpolation and xProcessed
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const autoRefreshCtx = getAutoRefreshContext();
@@ -296,17 +296,17 @@
 				dateGrain: date_grain,
 				firstDayOfWeek: projectSettings.first_day_of_week
 			},
-			queryService.dialect
+			connection.dialect
 		);
 	});
 	const pointTitleProcessed = $derived.by(() => {
 		if (!point_title) return null;
-		return processColumnExpression({ value: point_title }, queryService.dialect);
+		return processColumnExpression({ value: point_title }, connection.dialect);
 	});
 	const pointTitleColumn = $derived(pointTitleProcessed?.alias);
 	const sizeProcessed = $derived.by(() => {
 		if (!_size) return null;
-		return processColumnExpression({ value: _size }, queryService.dialect);
+		return processColumnExpression({ value: _size }, connection.dialect);
 	});
 	const xColumnName = $derived(xProcessed?.alias);
 
@@ -338,7 +338,7 @@
 			x_sort,
 			limit,
 			queryDeps: {
-				queryService,
+				connection,
 				filterContexts: [repeatFilters, pageFilters],
 				inlineQueries,
 				projectSettings: getProjectSettingsContext(),
@@ -357,7 +357,7 @@
 				yAxes,
 				() => sharedQueryContext,
 				metricsCatalog,
-				queryService.dialect,
+				connection.dialect,
 				[repeatFilters, pageFilters],
 				inlineQueries
 			);

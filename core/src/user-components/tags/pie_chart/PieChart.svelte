@@ -10,7 +10,7 @@
 	import type { ECharts as EChartsInstance } from 'echarts';
 	import CustomLegend from '../echarts/CustomLegend.svelte';
 	import { cn } from '../../../shadcn/utils';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import type { SQLProps } from '../../common/sql-options';
 	import { extractSQLProps } from '../../common/sql-options';
 	import { processColumnExpression } from '../../common/sql-expression-utils';
@@ -60,7 +60,7 @@
 	// Extract SQL props for non-variable processing (limit doesn't support variables)
 	const { limit } = $derived.by(() => extractSQLProps(props));
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -84,7 +84,7 @@
 	const metricsCatalog = getMetricsCatalogContext();
 	const resolvedMetric = $derived(resolveText(props.metric));
 	const metricCompiled = $derived(
-		resolveMetric(metricsCatalog, resolvedMetric, queryService.dialect)
+		resolveMetric(metricsCatalog, resolvedMetric, connection.dialect)
 	);
 	const tableName = $derived(resolveText(props.data) ?? metricCompiled?.base);
 	// In metric mode, resolve dimension attrs against the view's named
@@ -93,9 +93,7 @@
 	// through unchanged. `applyMetricDimension` is a no-op in raw mode.
 	const category = $derived(applyMetricDimension(metricCompiled, resolveColumn(props.category)));
 	const value = $derived(resolveColumn(props.value) ?? metricCompiled?.valueExpression ?? '');
-	const value_fmt = $derived(
-		props.value_fmt ?? metricCompiled?.columnFormats[metricCompiled.name]
-	);
+	const value_fmt = $derived(props.value_fmt ?? metricCompiled?.columnFormats[metricCompiled.name]);
 	const title = $derived(resolveText(props.title) || '');
 	const subtitle = $derived(resolveText(props.subtitle) || '');
 	const info = $derived(resolveText(props.info) || '');
@@ -110,7 +108,7 @@
 		resolveText(props.tooltip_fields) as TooltipField[] | undefined
 	);
 	const processedTooltip = $derived(
-		resolveTooltipFields(resolvedTooltipFields, queryService.dialect)
+		resolveTooltipFields(resolvedTooltipFields, connection.dialect)
 	);
 
 	// Process columns using the new system (after variable interpolation)
@@ -119,7 +117,7 @@
 			{
 				value: category
 			},
-			queryService.dialect
+			connection.dialect
 		);
 	});
 
@@ -128,7 +126,7 @@
 			{
 				value: value
 			},
-			queryService.dialect
+			connection.dialect
 		);
 	});
 
@@ -152,7 +150,7 @@
 			qualify,
 			order,
 			limit,
-			dialect: queryService.dialect,
+			dialect: connection.dialect,
 			tooltipFieldColumns: processedTooltip.columns
 		});
 	});
@@ -160,7 +158,7 @@
 	const query = new Query(
 		() => queryConfig,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),

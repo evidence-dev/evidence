@@ -17,10 +17,12 @@ export type ConnectionType = WarehouseType | null;
 export class ServerQueryService implements QueryService {
 	readonly workspaceId: string;
 	readonly dialect: SqlDialect;
+	readonly connectionType: string;
 
 	constructor(workspaceId: string, connectionType: ConnectionType = null) {
 		this.workspaceId = workspaceId;
 		this.dialect = dialectFor(connectionType);
+		this.connectionType = connectionType ?? 'managed';
 	}
 
 	async query<RowType extends AnyRowType = AnyRowType>(sql: string): Promise<QueryResult<RowType>> {

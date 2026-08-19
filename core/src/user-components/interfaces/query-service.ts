@@ -52,6 +52,8 @@ import type { MaybeGetter } from 'runed';
 export interface QueryService {
 	readonly workspaceId: MaybeGetter<string>;
 	readonly dialect: SqlDialect;
+	/** The warehouse kind (managed, snowflake, bigquery, …) — the connection's `type`. */
+	readonly connectionType: string;
 	query<RowType extends AnyRowType = AnyRowType>(
 		sql: string,
 		opts?: QueryOpts

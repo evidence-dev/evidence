@@ -1,7 +1,7 @@
 <script lang="ts">
 	// This component displays a histogram visualization with min/max labels
 	import { Query } from '../../../Query.svelte';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { fly } from 'svelte/transition';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { getPageFiltersContext } from '../../../page-filters-context';
@@ -77,12 +77,12 @@ ORDER BY
 	`);
 
 	// Create a query instance
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
 	const query = new Query(() => sqlQuery, {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),

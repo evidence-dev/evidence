@@ -48,7 +48,7 @@ export class HeatGridModel extends UserComponentModel<HeatGridModelGenerics> {
 	// `metric="revenue"` supplies base + aggregate SQL + format; dimension +
 	// thresholds stay on the component.
 	readonly metricCompiled = $derived(
-		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.queryService.dialect)
+		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.connection.dialect)
 	);
 
 	readonly resolvedFmt = $derived.by(() => {
@@ -60,14 +60,14 @@ export class HeatGridModel extends UserComponentModel<HeatGridModelGenerics> {
 	readonly dimensionProcessed: ProcessedColumnExpression = $derived.by(() =>
 		processColumnExpression(
 			{ value: this.resolvedDimension, type: 'dimension' },
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		)
 	);
 
 	readonly valueProcessed: ProcessedColumnExpression = $derived.by(() =>
 		processColumnExpression(
 			{ value: this.metricCompiled?.valueExpression ?? this.resolvedValue ?? '' },
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		)
 	);
 
@@ -89,7 +89,7 @@ export class HeatGridModel extends UserComponentModel<HeatGridModelGenerics> {
 			filters: this.attributes.filters || [],
 			...sqlProps,
 			where: this.resolvedWhere,
-			dialect: this.deps.queryService.dialect
+			dialect: this.deps.connection.dialect
 		});
 	});
 

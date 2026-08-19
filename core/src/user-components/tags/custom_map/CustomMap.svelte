@@ -5,7 +5,7 @@
 	import { schema } from './schema';
 	import ComponentTitle from '../../common/ComponentTitle.svelte';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
@@ -35,7 +35,7 @@
 
 	const { getComponentId, setError } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const inlineQueries = getInlineQueriesContext();
 	const pageFilters = getPageFiltersContext();
 	const themeContext = getThemeContext();
@@ -165,12 +165,12 @@
 		// A named query can register a tick after mount; poll briefly.
 		let subquery: string | undefined;
 		for (let i = 0; i < 40 && !disposed; i++) {
-			subquery = inlineQueries.getInterpolated(name, queryService.dialect) ?? undefined;
+			subquery = inlineQueries.getInterpolated(name, connection.dialect) ?? undefined;
 			if (subquery) break;
 			await new Promise((r) => setTimeout(r, 50));
 		}
 		if (!subquery) throw new Error(`Query "${name}" was not found on this page.`);
-		const result = await queryService.query(`SELECT * FROM ${subquery}`);
+		const result = await connection.query(`SELECT * FROM ${subquery}`);
 		if (result.error) throw new Error(result.error);
 		return { rows: result.rows as Record<string, unknown>[] };
 	}

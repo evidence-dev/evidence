@@ -9,7 +9,7 @@
 	import ComponentTitle from '../../common/ComponentTitle.svelte';
 	import type { ECharts as EChartsInstance } from 'echarts';
 	import { cn } from '../../../shadcn/utils';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import type { SQLProps } from '../../common/sql-options';
 	import { extractSQLProps } from '../../common/sql-options';
 	import { processColumnExpression } from '../../common/sql-expression-utils';
@@ -63,7 +63,7 @@
 		qualify
 	} = $derived.by(() => extractSQLProps(props));
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -88,10 +88,12 @@
 	const metricsCatalog = getMetricsCatalogContext();
 	const resolvedMetric = $derived(resolveText(props.metric));
 	const metricCompiled = $derived(
-		resolveMetric(metricsCatalog, resolvedMetric, queryService.dialect)
+		resolveMetric(metricsCatalog, resolvedMetric, connection.dialect)
 	);
 	const resolvedTableName = $derived(metricCompiled?.base ?? resolveText(props.data));
-	const resolvedCategory = $derived(applyMetricDimension(metricCompiled, resolveColumn(props.category)));
+	const resolvedCategory = $derived(
+		applyMetricDimension(metricCompiled, resolveColumn(props.category))
+	);
 	const resolvedGroup = $derived(applyMetricDimension(metricCompiled, resolveColumn(props.group)));
 	const resolvedValue = $derived(metricCompiled?.valueExpression ?? resolveColumn(props.value));
 	const title = $derived(resolveText(props.title) ?? '');
@@ -112,21 +114,21 @@
 		resolveText(props.tooltip_fields) as TooltipField[] | undefined
 	);
 	const processedTooltip = $derived(
-		resolveTooltipFields(resolvedTooltipFields, queryService.dialect)
+		resolveTooltipFields(resolvedTooltipFields, connection.dialect)
 	);
 
 	// Process columns using the new system (with resolved variable values)
 	const categoryProcessed = $derived.by(() => {
-		return processColumnExpression({ value: resolvedCategory }, queryService.dialect);
+		return processColumnExpression({ value: resolvedCategory }, connection.dialect);
 	});
 
 	const groupProcessed = $derived.by(() => {
 		if (!resolvedGroup) return null;
-		return processColumnExpression({ value: resolvedGroup }, queryService.dialect);
+		return processColumnExpression({ value: resolvedGroup }, connection.dialect);
 	});
 
 	const valueProcessed = $derived.by(() => {
-		return processColumnExpression({ value: resolvedValue ?? '' }, queryService.dialect);
+		return processColumnExpression({ value: resolvedValue ?? '' }, connection.dialect);
 	});
 
 	// Extract column aliases for use in chart rendering
@@ -154,7 +156,7 @@
 			qualify,
 			order,
 			limit,
-			dialect: queryService.dialect,
+			dialect: connection.dialect,
 			tooltipFieldColumns: processedTooltip.columns
 		});
 	});
@@ -162,7 +164,7 @@
 	const query = new Query(
 		() => queryConfig,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),

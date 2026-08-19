@@ -1,8 +1,5 @@
 import { UserComponentModel } from '../../../UserComponentModel/UserComponentModel.svelte';
-import type {
-	UserComponentModelInit,
-	WithDefaults
-} from '../../../UserComponentModel/types';
+import type { UserComponentModelInit, WithDefaults } from '../../../UserComponentModel/types';
 import {
 	processColumnExpression,
 	type ProcessedColumnExpression
@@ -58,7 +55,7 @@ export class IfModel extends UserComponentModel<IfModelGenerics> {
 	readonly processedColumn: ProcessedColumnExpression = $derived(
 		processColumnExpression(
 			{ value: 'COUNT(*) as row_count', type: 'measure' },
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		)
 	);
 

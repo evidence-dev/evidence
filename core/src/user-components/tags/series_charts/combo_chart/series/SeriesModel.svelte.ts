@@ -171,7 +171,7 @@ export class SeriesModel {
 		const processedTooltipFields = $derived(
 			resolveTooltipFields(
 				this.resolvedTooltipFields,
-				this.sharedContext.queryDeps.queryService.dialect
+				this.sharedContext.queryDeps.connection.dialect
 			)
 		);
 		this.tooltipFields = $derived(processedTooltipFields.fields);
@@ -180,7 +180,7 @@ export class SeriesModel {
 		// resolve); surface the humanized label via displayAlias, which the ECharts
 		// series name reads — so the legend stays pretty without renaming the column.
 		this.yProcessed = $derived.by(() => {
-			const dialect = this.sharedContext.queryDeps.queryService.dialect;
+			const dialect = this.sharedContext.queryDeps.connection.dialect;
 			const metric = this.metricCompiled;
 			const value = metric?.valueExpression
 				? `${metric.valueExpression} AS ${dialect.quoteAlias(metric.name)}`
@@ -196,7 +196,7 @@ export class SeriesModel {
 				{
 					value: this.resolvedSeries
 				},
-				this.sharedContext.queryDeps.queryService.dialect
+				this.sharedContext.queryDeps.connection.dialect
 			);
 		});
 
@@ -206,7 +206,7 @@ export class SeriesModel {
 				{
 					value: this.resolvedSize
 				},
-				this.sharedContext.queryDeps.queryService.dialect
+				this.sharedContext.queryDeps.connection.dialect
 			);
 		});
 
@@ -218,7 +218,7 @@ export class SeriesModel {
 			// the metric composes with combo_chart's shared context identically.
 			const metric = this.metricCompiled;
 			if (metric?.valueExpression) {
-				const dialect = this.sharedContext.queryDeps.queryService.dialect;
+				const dialect = this.sharedContext.queryDeps.connection.dialect;
 				// Raw-name alias here too (see yProcessed) so `order=`/refs resolve.
 				// x resolution:
 				//  - If the AUTHOR set `x=` on combo_chart, use it (their override).
@@ -255,7 +255,7 @@ export class SeriesModel {
 					limit: this.sharedContext.limit,
 					filters: this.sharedContext.filters,
 					firstDayOfWeek: this.sharedContext.firstDayOfWeek,
-					dialect: this.sharedContext.queryDeps.queryService.dialect,
+					dialect: this.sharedContext.queryDeps.connection.dialect,
 					tooltipFieldColumns: processedTooltipFields.columns
 				});
 			}
@@ -290,7 +290,7 @@ export class SeriesModel {
 				limit: this.sharedContext.limit,
 				filters: this.sharedContext.filters,
 				firstDayOfWeek: this.sharedContext.firstDayOfWeek,
-				dialect: this.sharedContext.queryDeps.queryService.dialect,
+				dialect: this.sharedContext.queryDeps.connection.dialect,
 				tooltipFieldColumns: processedTooltipFields.columns
 			});
 		});

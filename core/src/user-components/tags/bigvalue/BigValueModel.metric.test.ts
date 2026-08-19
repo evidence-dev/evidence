@@ -10,7 +10,7 @@ import type { UserComponentProps } from '../../types';
 type BigValueAttributes = UserComponentProps<typeof schema>;
 
 const dialect = new ClickHouseDialect();
-const deps = { queryService: { dialect } } as unknown as QueryDependencies;
+const deps = { connection: { dialect } } as unknown as QueryDependencies;
 
 const revenueYaml = `
 base: orders

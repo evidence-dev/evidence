@@ -5,7 +5,7 @@
 	import { Label } from '../../../shadcn/components/ui/label';
 	import * as ToggleGroup from '../../../shadcn/components/ui/toggle-group';
 	import { Query } from '../../../Query.svelte';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
@@ -33,7 +33,7 @@
 	const componentId = $derived(getComponentId());
 	const queryInfoContext = getQueryInfoContext();
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -109,7 +109,7 @@
 
 		const valueProcessed = processColumnExpression(
 			{ value: `DISTINCT ${valueColumn} as value` },
-			queryService.dialect
+			connection.dialect
 		);
 
 		const columns = [valueProcessed];
@@ -117,7 +117,7 @@
 		if (labelColumn) {
 			const labelProcessed = processColumnExpression(
 				{ value: `${labelColumn} as label` },
-				queryService.dialect
+				connection.dialect
 			);
 			columns.push(labelProcessed);
 		}
@@ -139,7 +139,7 @@
 	});
 
 	const optionsQuery = new Query<{ value: string; label?: string }>(() => queryConfig, {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),
@@ -305,11 +305,7 @@
 							{#each options as option (option.value)}
 								<ToggleGroup.Item
 									value={option.value}
-									class={cn(
-										'data-[state=off]:bg-input-surface',
-										selectedClass,
-										itemClass
-									)}
+									class={cn('data-[state=off]:bg-input-surface', selectedClass, itemClass)}
 								>
 									<span class={cn(isVertical && 'min-w-0 flex-1 truncate')}>
 										{option.label ?? option.value}
@@ -329,11 +325,7 @@
 							{#each options as option (option.value)}
 								<ToggleGroup.Item
 									value={option.value}
-									class={cn(
-										'data-[state=off]:bg-input-surface',
-										selectedClass,
-										itemClass
-									)}
+									class={cn('data-[state=off]:bg-input-surface', selectedClass, itemClass)}
 								>
 									<span class={cn(isVertical && 'min-w-0 flex-1 truncate')}>
 										{option.label ?? option.value}

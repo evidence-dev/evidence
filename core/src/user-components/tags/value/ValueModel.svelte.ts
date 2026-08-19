@@ -52,7 +52,7 @@ export class ValueModel extends UserComponentModel<ValueModelGenerics> {
 	// `metric="revenue"` supplies base + aggregate SQL + format; everything else
 	// (comparison/where/date_range/filters) flows through the same builder.
 	readonly metricCompiled = $derived(
-		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.queryService.dialect)
+		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.connection.dialect)
 	);
 
 	readonly resolvedFmt = $derived.by(() => {
@@ -118,7 +118,7 @@ export class ValueModel extends UserComponentModel<ValueModelGenerics> {
 				comparison: this.resolvedComparison,
 				filters: this.attributes.filters,
 				limit: this.attributes.limit,
-				dialect: this.deps.queryService.dialect
+				dialect: this.deps.connection.dialect
 			});
 		}
 		// `metric=` set but unresolved → no query (edit-time validation surfaces it).
@@ -141,7 +141,7 @@ export class ValueModel extends UserComponentModel<ValueModelGenerics> {
 			comparison: this.resolvedComparison,
 			filters: this.attributes.filters,
 			limit: this.attributes.limit,
-			dialect: this.deps.queryService.dialect
+			dialect: this.deps.connection.dialect
 		});
 	});
 
@@ -160,7 +160,7 @@ export class ValueModel extends UserComponentModel<ValueModelGenerics> {
 			{
 				value: this.metricCompiled?.valueExpression ?? this.resolvedValue ?? ''
 			},
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 	});
 }

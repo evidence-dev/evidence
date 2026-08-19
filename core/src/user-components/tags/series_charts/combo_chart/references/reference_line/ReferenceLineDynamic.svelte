@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Query } from '../../../../../../Query.svelte';
-	import { getQueryService } from '../../../../../../QueryService.context';
+	import { getDefaultConnection } from '../../../../../../QueryService.context';
 	import { getRepeatContext } from '../../../../repeat/repeat-context';
 	import { processColumnExpression } from '../../../../../common/sql-expression-utils';
 	import ReferenceLineStatic from './ReferenceLineStatic.svelte';
@@ -20,7 +20,7 @@
 	const x2 = $derived(props.x2);
 	const y2 = $derived(props.y2);
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -28,13 +28,13 @@
 	// Convert columns to processed column expressions
 	const processedColumns = $derived.by(() => {
 		const columns = [];
-		if (x) columns.push(processColumnExpression({ value: x }, queryService.dialect));
-		if (y) columns.push(processColumnExpression({ value: y }, queryService.dialect));
-		if (x1) columns.push(processColumnExpression({ value: x1 }, queryService.dialect));
-		if (y1) columns.push(processColumnExpression({ value: y1 }, queryService.dialect));
-		if (x2) columns.push(processColumnExpression({ value: x2 }, queryService.dialect));
-		if (y2) columns.push(processColumnExpression({ value: y2 }, queryService.dialect));
-		if (label) columns.push(processColumnExpression({ value: label }, queryService.dialect));
+		if (x) columns.push(processColumnExpression({ value: x }, connection.dialect));
+		if (y) columns.push(processColumnExpression({ value: y }, connection.dialect));
+		if (x1) columns.push(processColumnExpression({ value: x1 }, connection.dialect));
+		if (y1) columns.push(processColumnExpression({ value: y1 }, connection.dialect));
+		if (x2) columns.push(processColumnExpression({ value: x2 }, connection.dialect));
+		if (y2) columns.push(processColumnExpression({ value: y2 }, connection.dialect));
+		if (label) columns.push(processColumnExpression({ value: label }, connection.dialect));
 		return columns;
 	});
 
@@ -47,7 +47,7 @@
 		};
 	});
 	const query = new Query(() => queryConfig, {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),

@@ -12,6 +12,7 @@ import { ClickHouseDialect, type SqlDialect } from '../../../sql-dialect';
 class MockQueryService implements QueryService {
 	readonly workspaceId: string;
 	readonly dialect: SqlDialect = new ClickHouseDialect();
+	readonly connectionType = 'managed';
 	constructor(workspaceId: string) {
 		this.workspaceId = workspaceId;
 	}

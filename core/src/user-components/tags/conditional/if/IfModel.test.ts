@@ -15,8 +15,9 @@ describe('IfModel', () => {
 			validationErrors: [],
 			parent: null,
 			deps: {
-				queryService: {
-					workspaceId: 'test',
+				connection: {
+					id: 'default',
+					type: 'managed',
 					dialect: new ClickHouseDialect(),
 					query: vi.fn()
 				},
@@ -52,7 +53,12 @@ describe('IfModel', () => {
 			validationErrors: [],
 			parent: null,
 			deps: {
-				queryService: { workspaceId: 'test', dialect: new ClickHouseDialect(), query: vi.fn() },
+				connection: {
+					id: 'default',
+					type: 'managed',
+					dialect: new ClickHouseDialect(),
+					query: vi.fn()
+				},
 				filterContexts: undefined,
 				inlineQueries,
 				projectSettings: undefined,

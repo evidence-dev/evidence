@@ -54,7 +54,7 @@ export class DeltaModel extends UserComponentModel<DeltaModelGenerics> {
 	// `metric="revenue"` supplies base + aggregate SQL + format; everything else
 	// (comparison/where/date_range/filters) flows through the same builder.
 	readonly metricCompiled = $derived(
-		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.queryService.dialect)
+		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.connection.dialect)
 	);
 
 	// Explicit `fmt` wins; otherwise inherit the metric's declared format.
@@ -116,7 +116,7 @@ export class DeltaModel extends UserComponentModel<DeltaModelGenerics> {
 				...sqlProps,
 				where: this.resolvedWhere,
 				limit: this.attributes.limit ?? 1,
-				dialect: this.deps.queryService.dialect
+				dialect: this.deps.connection.dialect
 			});
 		}
 		// `metric=` set but unresolved → no query (edit-time validation surfaces it).
@@ -137,7 +137,7 @@ export class DeltaModel extends UserComponentModel<DeltaModelGenerics> {
 			...sqlProps,
 			where: this.resolvedWhere,
 			limit: this.attributes.limit ?? 1,
-			dialect: this.deps.queryService.dialect
+			dialect: this.deps.connection.dialect
 		});
 	});
 
@@ -156,7 +156,7 @@ export class DeltaModel extends UserComponentModel<DeltaModelGenerics> {
 			{
 				value: this.metricCompiled?.valueExpression ?? this.resolvedValue ?? ''
 			},
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 	});
 }

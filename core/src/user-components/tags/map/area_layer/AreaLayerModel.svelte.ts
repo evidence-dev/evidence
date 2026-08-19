@@ -44,7 +44,7 @@ export class AreaLayerModel {
 		this.layerId = `area-layer-${Math.random().toString(36).substr(2, 9)}`;
 		this.sourceId = `area-source-${Math.random().toString(36).substr(2, 9)}`;
 		this.definitionIndex = definitionIndex;
-		this.dialect = options.queryService.dialect;
+		this.dialect = options.connection.dialect;
 
 		// Store getPointLayerIds function for tooltip priority
 		if (getPointLayerIds) {

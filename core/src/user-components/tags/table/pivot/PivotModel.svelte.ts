@@ -61,11 +61,14 @@ export class PivotModel extends UserComponentModel<PivotModelGenerics> {
 	});
 
 	private readonly processedColumn: ProcessedColumnExpression = $derived.by(() => {
-		return processColumnExpression({
-			value: this.resolvedValue,
-			type: 'pivot',
-			dateGrain: this.resolvedDateGrain,
-			firstDayOfWeek: this.projectSettings.first_day_of_week
-		}, this.deps.queryService.dialect);
+		return processColumnExpression(
+			{
+				value: this.resolvedValue,
+				type: 'pivot',
+				dateGrain: this.resolvedDateGrain,
+				firstDayOfWeek: this.projectSettings.first_day_of_week
+			},
+			this.deps.connection.dialect
+		);
 	});
 }

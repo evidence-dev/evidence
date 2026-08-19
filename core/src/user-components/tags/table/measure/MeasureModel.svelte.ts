@@ -8,10 +8,7 @@ import {
 } from '../../../common/sql-expression-utils';
 import { TableModel } from '../TableModel.svelte';
 import type { UnifiedColumnDefinition } from '../unified-column-definition.types';
-import {
-	getDateRangeShorthand,
-	processDateRange
-} from '../../../common/date-options';
+import { getDateRangeShorthand, processDateRange } from '../../../common/date-options';
 import { parseDateStringAsLocalMidnight } from '../../../../utils/date-utils';
 import {
 	UserComponentModel,
@@ -44,7 +41,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 	// feeds the parent table's FROM via `metricBase`.
 	readonly resolvedMetric = $derived(this.resolveText(this.attributes.metric));
 	readonly metricCompiled = $derived(
-		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.queryService.dialect)
+		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.connection.dialect)
 	);
 	/** The metric view's base relation, for the parent table to use as its FROM. */
 	get metricBase(): string | undefined {
@@ -55,7 +52,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 	// the metric's aggregate expression, aliased by the metric name.
 	readonly resolvedValue = $derived.by((): string => {
 		if (this.metricCompiled?.valueExpression) {
-			return `${this.metricCompiled.valueExpression} AS ${this.deps.queryService.dialect.quoteAlias(this.metricCompiled.name)}`;
+			return `${this.metricCompiled.valueExpression} AS ${this.deps.connection.dialect.quoteAlias(this.metricCompiled.name)}`;
 		}
 		return this.resolveColumn(this.attributes.value) ?? '';
 	});
@@ -164,7 +161,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 					type: 'measure',
 					firstDayOfWeek: this.projectSettings.first_day_of_week
 				},
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 
 			scaleColumnInfo = {
@@ -187,7 +184,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 					type: 'measure',
 					firstDayOfWeek: this.projectSettings.first_day_of_week
 				},
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 
 			conditionalColorsInfo = {
@@ -281,7 +278,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 					this.resolvedDateRange?.date,
 					anchorDate,
 					this.projectSettings.first_day_of_week,
-					this.deps.queryService.dialect
+					this.deps.connection.dialect
 				);
 				if (processed.whereClause) {
 					const targetNeedsAggregation = !hasAgg(target);
@@ -289,7 +286,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 					processedTargetColumn = applyAggregateFilter(
 						targetBase,
 						processed.whereClause,
-						this.deps.queryService.dialect
+						this.deps.connection.dialect
 					);
 				}
 			}
@@ -363,7 +360,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 						type: 'dimension',
 						firstDayOfWeek: this.projectSettings.first_day_of_week
 					},
-					this.deps.queryService.dialect
+					this.deps.connection.dialect
 				);
 				return processed.alias;
 			};
@@ -385,7 +382,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 					// Not aggregated - wrap with the dialect's any-value aggregate and use
 					// the processed alias. For simple columns like "sc", alias is "sc"
 					// For expressions, alias is generated from the expression
-					sqlExpression = `${this.deps.queryService.dialect.anyValue(scaleColumnProcessed.sqlWithoutAlias)} as ${scaleColumnProcessed.alias}`;
+					sqlExpression = `${this.deps.connection.dialect.anyValue(scaleColumnProcessed.sqlWithoutAlias)} as ${scaleColumnProcessed.alias}`;
 				}
 
 				// Process the final expression
@@ -395,7 +392,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 						type: 'measure',
 						firstDayOfWeek: this.projectSettings.first_day_of_week
 					},
-					this.deps.queryService.dialect
+					this.deps.connection.dialect
 				);
 
 				columnsToReturn.push({
@@ -426,7 +423,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 				sqlExpression = conditionalColorsProcessed.sqlWithAlias;
 			} else {
 				// Not aggregated - wrap with the dialect's any-value aggregate
-				sqlExpression = `${this.deps.queryService.dialect.anyValue(conditionalColorsProcessed.sqlWithoutAlias)} as ${conditionalColorsProcessed.alias}`;
+				sqlExpression = `${this.deps.connection.dialect.anyValue(conditionalColorsProcessed.sqlWithoutAlias)} as ${conditionalColorsProcessed.alias}`;
 			}
 
 			// Process the final expression
@@ -436,7 +433,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 					type: 'measure',
 					firstDayOfWeek: this.projectSettings.first_day_of_week
 				},
-				this.deps.queryService.dialect
+				this.deps.connection.dialect
 			);
 
 			columnsToReturn.push({
@@ -487,7 +484,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 				firstDayOfWeek: this.projectSettings.first_day_of_week,
 				anchorDate: this.anchorDate
 			},
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 	});
 }

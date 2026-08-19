@@ -3,7 +3,7 @@
 	import { schema } from './schema';
 	import { type Filter } from '../../../Filter.svelte';
 	import { Query } from '../../../Query.svelte';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
@@ -137,7 +137,7 @@
 	const componentId = $derived(getComponentId());
 	const queryInfoContext = getQueryInfoContext();
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -201,7 +201,7 @@
 
 		const valueProcessed = processColumnExpression(
 			{ value: `DISTINCT ${valueColumn} as value` },
-			queryService.dialect
+			connection.dialect
 		);
 
 		const columns = [valueProcessed];
@@ -209,7 +209,7 @@
 		if (labelColumn) {
 			const labelProcessed = processColumnExpression(
 				{ value: `${labelColumn} as label` },
-				queryService.dialect
+				connection.dialect
 			);
 			columns.push(labelProcessed);
 		}
@@ -231,7 +231,7 @@
 	});
 
 	const optionsQuery = new Query<{ value: string; label?: string }>(() => queryConfig, {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),

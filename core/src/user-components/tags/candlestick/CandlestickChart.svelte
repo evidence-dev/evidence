@@ -14,7 +14,7 @@
 	import ComponentTitle from '../../common/ComponentTitle.svelte';
 	import type { ECharts as EChartsInstance } from 'echarts';
 	import { cn } from '../../../shadcn/utils';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import type { SQLProps } from '../../common/sql-options';
 	import { extractSQLProps } from '../../common/sql-options';
 	import { processColumnExpression } from '../../common/sql-expression-utils';
@@ -70,7 +70,7 @@
 
 	const { limit } = $derived.by(() => extractSQLProps(props));
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -108,7 +108,7 @@
 		resolveText(props.tooltip_fields) as TooltipField[] | undefined
 	);
 	const processedTooltip = $derived(
-		resolveTooltipFields(resolvedTooltipFields, queryService.dialect)
+		resolveTooltipFields(resolvedTooltipFields, connection.dialect)
 	);
 	const date_grain = $derived(resolveText(props.date_grain));
 	const x_fmt = $derived(resolveText(props.x_fmt));
@@ -125,19 +125,17 @@
 				dateGrain: date_grain,
 				firstDayOfWeek: projectSettings.first_day_of_week
 			},
-			queryService.dialect
+			connection.dialect
 		);
 	});
 
-	const openProcessed = $derived(processColumnExpression({ value: openCol }, queryService.dialect));
-	const highProcessed = $derived(processColumnExpression({ value: highCol }, queryService.dialect));
-	const lowProcessed = $derived(processColumnExpression({ value: lowCol }, queryService.dialect));
-	const closeProcessed = $derived(
-		processColumnExpression({ value: closeCol }, queryService.dialect)
-	);
+	const openProcessed = $derived(processColumnExpression({ value: openCol }, connection.dialect));
+	const highProcessed = $derived(processColumnExpression({ value: highCol }, connection.dialect));
+	const lowProcessed = $derived(processColumnExpression({ value: lowCol }, connection.dialect));
+	const closeProcessed = $derived(processColumnExpression({ value: closeCol }, connection.dialect));
 	const volumeProcessed = $derived.by(() => {
 		if (!volumeCol) return null;
-		return processColumnExpression({ value: volumeCol }, queryService.dialect);
+		return processColumnExpression({ value: volumeCol }, connection.dialect);
 	});
 
 	const xColumn = $derived(xProcessed.alias);
@@ -171,7 +169,7 @@
 			order,
 			limit,
 			firstDayOfWeek: projectSettings.first_day_of_week,
-			dialect: queryService.dialect,
+			dialect: connection.dialect,
 			tooltipFieldColumns: processedTooltip.columns
 		});
 	});
@@ -180,7 +178,7 @@
 	const query = new Query(
 		() => queryConfig,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),

@@ -35,11 +35,19 @@ vi.mock('../../../metadata/inline-query-metadata.svelte', () => ({
 
 vi.mock('../../../QueryService.context', async () => {
 	const { defaultDialect } = await import('../../../sql-dialect');
+	const query = vi.fn().mockResolvedValue({ rows: [], columns: [], error: null });
 	return {
 		getQueryService: () => ({
 			workspaceId: 'workspace',
+			connectionType: 'managed',
 			dialect: defaultDialect,
-			query: vi.fn().mockResolvedValue({ rows: [], columns: [], error: null })
+			query
+		}),
+		getDefaultConnection: () => ({
+			id: 'default',
+			type: 'managed',
+			dialect: defaultDialect,
+			query
 		})
 	};
 });
@@ -79,9 +87,7 @@ describe('TableFilter popover', () => {
 			return new Proxy(styles, {
 				get(target, property) {
 					if (property === 'animationName') {
-						return element.getAttribute('data-state') === 'closed'
-							? 'popover-out'
-							: 'popover-in';
+						return element.getAttribute('data-state') === 'closed' ? 'popover-out' : 'popover-in';
 					}
 					return Reflect.get(target, property, target);
 				}

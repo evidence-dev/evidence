@@ -8,7 +8,7 @@
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
 	import ComponentTitle from '../../common/ComponentTitle.svelte';
 	import { cn } from '../../../shadcn/utils';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import type { SQLProps } from '../../common/sql-options';
 	import { extractSQLProps } from '../../common/sql-options';
 	import { buildCustomEchartSQLConfig } from './build-custom-echart-sql';
@@ -62,7 +62,7 @@
 		qualify
 	} = $derived.by(() => extractSQLProps(props));
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -151,7 +151,7 @@
 			qualify,
 			order,
 			limit,
-			dialect: queryService.dialect
+			dialect: connection.dialect
 		});
 	});
 
@@ -159,7 +159,7 @@
 	const query = new Query(
 		() => queryConfig,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),

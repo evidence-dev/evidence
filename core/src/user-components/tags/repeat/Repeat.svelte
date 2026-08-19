@@ -2,7 +2,7 @@
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import { Query } from '../../../Query.svelte';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getRepeatContext } from './repeat-context';
 	import { processFilterIds } from '../../common/sql-options';
 	import { flip } from 'svelte/animate';
@@ -23,7 +23,7 @@
 	const props: UserComponentProps<typeof schema> = $props();
 
 	// Setup query infrastructure
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const parentRepeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -43,7 +43,7 @@
 	const id = $derived(props.id);
 	const data = $derived(resolveText(props.data));
 	const column = $derived(
-		resolveRepeatColumnExpression(props.column, resolveColumn, queryService.dialect)
+		resolveRepeatColumnExpression(props.column, resolveColumn, connection.dialect)
 	);
 	const children = $derived(props.children);
 	const filters = $derived(props.filters ?? []);
@@ -51,7 +51,7 @@
 
 	// Process filter conditions
 	const filterConditions = $derived.by(() => {
-		return processFilterIds(filters, [parentRepeatFilters, pageFilters], queryService.dialect);
+		return processFilterIds(filters, [parentRepeatFilters, pageFilters], connection.dialect);
 	});
 
 	const queryConfig = $derived.by(() => {
@@ -64,11 +64,11 @@
 			column,
 			filterConditions,
 			where,
-			dialect: queryService.dialect
+			dialect: connection.dialect
 		});
 	});
 	const query = new Query(() => queryConfig, {
-		queryService,
+		connection,
 		filterContexts: [parentRepeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),

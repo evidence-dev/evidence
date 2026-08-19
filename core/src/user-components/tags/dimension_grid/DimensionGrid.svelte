@@ -2,7 +2,7 @@
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import { Query } from '../../../Query.svelte';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
@@ -32,7 +32,7 @@
 	const componentId = $derived(getComponentId());
 	const queryInfoContext = getQueryInfoContext();
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -72,7 +72,7 @@
 		if (!table) return '';
 		if (inlineQueries) {
 			try {
-				return inlineQueries.getInterpolated(table, queryService.dialect) ?? table;
+				return inlineQueries.getInterpolated(table, connection.dialect) ?? table;
 			} catch {
 				return table;
 			}
@@ -139,11 +139,7 @@
 		const conditions: string[] = [];
 
 		// Add external filter SQL from filterIds
-		const filterSql = processFilterIds(
-			filterIds,
-			[repeatFilters, pageFilters],
-			queryService.dialect
-		);
+		const filterSql = processFilterIds(filterIds, [repeatFilters, pageFilters], connection.dialect);
 		if (filterSql) conditions.push(`(${filterSql})`);
 
 		// Add user's WHERE clause
@@ -157,7 +153,7 @@
 				resolvedDateRange.date,
 				new Date(),
 				settings.first_day_of_week,
-				queryService.dialect
+				connection.dialect
 			);
 			if (processed.whereClause) conditions.push(`(${processed.whereClause})`);
 		}
@@ -187,7 +183,7 @@
 			const parts: string[] = [];
 			if (nonNullValues.length > 0) {
 				const escaped = nonNullValues
-					.map((v) => `'${escapeSqlValue(String(v), queryService.dialect)}'`)
+					.map((v) => `'${escapeSqlValue(String(v), connection.dialect)}'`)
 					.join(', ');
 				parts.push(`${dim} IN (${escaped})`);
 			}
@@ -215,7 +211,7 @@
 			baseWhereClause,
 			crossFilterClause: getCrossFilterClause(dimension),
 			selectedValues: filter?.getDimensionValue(dimension) ?? [],
-			dialect: queryService.dialect
+			dialect: connection.dialect
 		});
 	}
 
@@ -238,7 +234,7 @@
 		// Create new query instances for each dimension
 		const newQueryInfos: DimensionQueryInfo[] = detectedDimensions.map((dimension) => {
 			const query = new Query<DimensionQueryRow>(() => buildDimensionQuery(dimension), {
-				queryService,
+				connection,
 				filterContexts: [repeatFilters, pageFilters],
 				inlineQueries,
 				projectSettings,

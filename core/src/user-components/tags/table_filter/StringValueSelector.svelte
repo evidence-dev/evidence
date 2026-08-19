@@ -2,7 +2,7 @@
 	import { Query } from '../../../Query.svelte';
 	import { Skeleton } from '../../../shadcn/components/ui/skeleton';
 	import { fade } from 'svelte/transition';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { Button } from '../../../shadcn/components/ui/button';
 	import { CheckIcon } from 'lucide-svelte';
 	import type { FilterState, ColumnFilter } from './types';
@@ -37,7 +37,7 @@
 	}>();
 
 	// Get the query service from context
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -130,7 +130,7 @@
 			filters: filterState.filters.filter((f: ColumnFilter) => f.columnId !== columnName)
 		};
 
-		const otherFilterSQL = generateFilterSQL(otherFilters, queryService.dialect);
+		const otherFilterSQL = generateFilterSQL(otherFilters, connection.dialect);
 
 		if (otherFilterSQL) {
 			whereClause = `${columnName} IS NOT NULL AND (${otherFilterSQL})`;
@@ -138,8 +138,8 @@
 
 		// Add search condition if it exists (like dropdown)
 		if (searchInput.trim()) {
-			const escapedSearch = queryService.dialect.escapeStringLiteral(searchInput.trim());
-			whereClause += ` AND ${queryService.dialect.caseInsensitiveLike(queryService.dialect.castToString(columnName), `%${escapedSearch}%`)}`;
+			const escapedSearch = connection.dialect.escapeStringLiteral(searchInput.trim());
+			whereClause += ` AND ${connection.dialect.caseInsensitiveLike(connection.dialect.castToString(columnName), `%${escapedSearch}%`)}`;
 		}
 
 		// Process column expressions like the Dropdown component
@@ -147,14 +147,14 @@
 			{
 				value: `DISTINCT ${columnName} as value`
 			},
-			queryService.dialect
+			connection.dialect
 		);
 
 		const countProcessed = processColumnExpression(
 			{
 				value: 'COUNT(*) as count'
 			},
-			queryService.dialect
+			connection.dialect
 		);
 
 		columnValuesSql = {
@@ -167,7 +167,7 @@
 	}
 
 	const columnValuesQuery = new Query<{ value: string; count: number }>(() => columnValuesSql, {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),

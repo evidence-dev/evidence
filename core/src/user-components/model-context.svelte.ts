@@ -4,7 +4,7 @@ import type {
 	UserComponentModelClass
 } from './UserComponentModel';
 import { getContext, setContext } from 'svelte';
-import { getQueryService } from '../QueryService.context';
+import { getDefaultConnection } from '../connection';
 import { getPageFiltersContext } from '../page-filters-context';
 import { getInlineQueriesContext } from './common/inline-queries';
 import { getMetricsCatalogContext } from '../metrics/metrics-catalog';
@@ -34,7 +34,7 @@ export const setupModelContext = <
 
 		// If the model wasn't SSRed, create it now
 		if (!model) {
-			const queryService = getQueryService();
+			const connection = getDefaultConnection();
 			const repeatFilters = getRepeatContext()?.filters;
 			const pageFilters = getPageFiltersContext();
 			const inlineQueries = getInlineQueriesContext();
@@ -42,7 +42,7 @@ export const setupModelContext = <
 			const getProjectSettings = getProjectSettingsContext();
 			const autoRefresh = getAutoRefreshContext();
 			const deps: QueryDependencies = {
-				queryService,
+				connection,
 				filterContexts: [repeatFilters, pageFilters],
 				inlineQueries,
 				projectSettings: getProjectSettings,

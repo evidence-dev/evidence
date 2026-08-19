@@ -157,6 +157,7 @@ describe('Map layer data updates', () => {
 			props: {
 				queryService: {
 					workspaceId: 'workspace',
+					connectionType: 'managed',
 					dialect: new ClickHouseDialect(),
 					query: async () => ({ rows: [], columns: [], error: null })
 				}

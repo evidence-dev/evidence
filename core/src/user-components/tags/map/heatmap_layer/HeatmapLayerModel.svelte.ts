@@ -38,7 +38,7 @@ export class HeatmapLayerModel {
 		this.layerId = `heatmap-layer-${Math.random().toString(36).substr(2, 9)}`;
 		this.sourceId = `heatmap-source-${Math.random().toString(36).substr(2, 9)}`;
 		this.definitionIndex = definitionIndex;
-		this.dialect = options.queryService.dialect;
+		this.dialect = options.connection.dialect;
 		// Same map carve-out as point_layer: honor explicit limits up to the map cap.
 		this.query = new Query(() => this.queryConfig, options, {
 			maxUserLimit: MAP_POINT_ROW_LIMIT

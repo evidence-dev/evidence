@@ -24,7 +24,7 @@
 	import { isDropdownValueValid } from './validation';
 	import { Query } from '../../../Query.svelte';
 	import Ellipsis from '../../../viewer-components/Ellipsis.svelte';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { Virtualizer, type VirtualizerHandle } from 'virtua/svelte';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
@@ -51,7 +51,7 @@
 	const componentId = $derived(getComponentId());
 	const queryInfoContext = getQueryInfoContext();
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -149,7 +149,7 @@
 			{
 				value: `DISTINCT ${valueColumn} as value`
 			},
-			queryService.dialect
+			connection.dialect
 		);
 
 		const columns = [valueProcessed];
@@ -159,17 +159,13 @@
 				{
 					value: `${labelColumn} as label`
 				},
-				queryService.dialect
+				connection.dialect
 			);
 			columns.push(labelProcessed);
 		}
 
 		// Generate filter SQL from filterIds
-		const filterSql = processFilterIds(
-			filterIds,
-			[repeatFilters, pageFilters],
-			queryService.dialect
-		);
+		const filterSql = processFilterIds(filterIds, [repeatFilters, pageFilters], connection.dialect);
 
 		// Build the WHERE clause
 		let whereClause = `${valueColumn} IS NOT NULL`;
@@ -197,14 +193,14 @@
 		let whereClause = baseQueryParts.whereClause;
 
 		if (search !== '') {
-			const escapedSearch = escapeSqlValue(search, queryService.dialect);
+			const escapedSearch = escapeSqlValue(search, connection.dialect);
 			// Search both value and label columns if label_column is specified
 			let searchCondition: string;
 			if (labelColumn) {
-				searchCondition = `(${queryService.dialect.caseInsensitiveLike(queryService.dialect.castToString(valueColumn), `%${escapedSearch}%`)} OR ${queryService.dialect.caseInsensitiveLike(queryService.dialect.castToString(labelColumn), `%${escapedSearch}%`)})`;
+				searchCondition = `(${connection.dialect.caseInsensitiveLike(connection.dialect.castToString(valueColumn), `%${escapedSearch}%`)} OR ${connection.dialect.caseInsensitiveLike(connection.dialect.castToString(labelColumn), `%${escapedSearch}%`)})`;
 			} else {
-				searchCondition = queryService.dialect.caseInsensitiveLike(
-					queryService.dialect.castToString(valueColumn),
+				searchCondition = connection.dialect.caseInsensitiveLike(
+					connection.dialect.castToString(valueColumn),
 					`%${escapedSearch}%`
 				);
 			}
@@ -232,7 +228,7 @@
 		}
 
 		const escapedValues = selectedValues
-			.map((v) => `'${escapeSqlValue(String(v), queryService.dialect)}'`)
+			.map((v) => `'${escapeSqlValue(String(v), connection.dialect)}'`)
 			.join(',');
 
 		return {
@@ -248,7 +244,7 @@
 	const projectSettings = getProjectSettingsContext();
 
 	const optionsQuery = new Query<{ value: string; label?: string }>(() => queryConfig, {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings,
@@ -258,7 +254,7 @@
 	const selectedOptionsQuery = new Query<{ value: string; label?: string }>(
 		() => selectedOptionsQueryConfig,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings,

@@ -61,7 +61,7 @@ export type SharedQueryContext = {
 	x_sort: string | readonly string[] | undefined;
 	/** LIMIT clause */
 	limit: number | undefined;
-	/** Query dependencies (queryService, filterContexts, etc.) */
+	/** Query dependencies (connection, filterContexts, etc.) */
 	queryDeps: QueryDependencies;
 	/** Component-level refresh interval in seconds (overrides page default) */
 	refreshInterval: number | undefined;

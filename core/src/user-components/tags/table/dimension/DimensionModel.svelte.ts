@@ -124,7 +124,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 
 		const { alias } = this.processedColumn;
 		const image = this.resolvedImage;
-		const { dialect } = this.deps.queryService;
+		const { dialect } = this.deps.connection;
 
 		return {
 			type: 'measure',
@@ -158,7 +158,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 
 		const { alias } = this.processedColumn;
 		const logo = this.resolvedLogo;
-		const { dialect } = this.deps.queryService;
+		const { dialect } = this.deps.connection;
 
 		return {
 			type: 'measure',
@@ -192,7 +192,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 
 		const { alias } = this.processedColumn;
 		const link = this.resolvedLink;
-		const { dialect } = this.deps.queryService;
+		const { dialect } = this.deps.connection;
 
 		return {
 			type: 'measure',
@@ -225,7 +225,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 		if (!this.resolvedConditionalColors) return undefined;
 
 		const { alias: dimensionAlias } = this.processedColumn;
-		const ccAlias = this.deps.queryService.dialect.formatAlias(`__cc_${dimensionAlias}`);
+		const ccAlias = this.deps.connection.dialect.formatAlias(`__cc_${dimensionAlias}`);
 
 		const processed = processColumnExpression(
 			{
@@ -233,7 +233,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 				type: 'measure',
 				firstDayOfWeek: this.projectSettings.first_day_of_week
 			},
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 
 		// Use a stable alias derived from the dimension name (__cc_<dim>) to
@@ -241,7 +241,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 		// SQL would collide if we derived from the expression.
 		const sqlExpression = processed.hasAgg
 			? `${processed.sqlWithoutAlias} AS ${ccAlias}`
-			: `${this.deps.queryService.dialect.anyValue(processed.sqlWithoutAlias)} AS ${ccAlias}`;
+			: `${this.deps.connection.dialect.anyValue(processed.sqlWithoutAlias)} AS ${ccAlias}`;
 
 		const finalProcessed = processColumnExpression(
 			{
@@ -249,7 +249,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 				type: 'measure',
 				firstDayOfWeek: this.projectSettings.first_day_of_week
 			},
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 
 		return {
@@ -266,11 +266,14 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 	});
 
 	private readonly processedColumn: ProcessedColumnExpression = $derived.by(() => {
-		return processColumnExpression({
-			value: this.resolvedValue,
-			type: 'dimension',
-			dateGrain: this.resolvedDateGrain,
-			firstDayOfWeek: this.projectSettings.first_day_of_week
-		}, this.deps.queryService.dialect);
+		return processColumnExpression(
+			{
+				value: this.resolvedValue,
+				type: 'dimension',
+				dateGrain: this.resolvedDateGrain,
+				firstDayOfWeek: this.projectSettings.first_day_of_week
+			},
+			this.deps.connection.dialect
+		);
 	});
 }

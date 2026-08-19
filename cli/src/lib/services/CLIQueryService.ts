@@ -18,10 +18,12 @@ export type ConnectionType = WarehouseType | null;
 export class CLIQueryService implements QueryService {
 	readonly workspaceId: string;
 	readonly dialect: SqlDialect;
+	readonly connectionType: string;
 
 	constructor(workspaceId: string, connectionType: ConnectionType = null) {
 		this.workspaceId = workspaceId;
 		this.dialect = dialectFor(connectionType);
+		this.connectionType = connectionType ?? 'managed';
 	}
 
 	async query<RowType extends AnyRowType = AnyRowType>(

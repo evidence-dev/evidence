@@ -11,6 +11,7 @@ import { ClickHouseDialect } from '@evidence/core/sql-dialect';
 function fakeQueryService(executed: string[]): QueryService {
 	return {
 		workspaceId: 'test',
+		connectionType: 'managed',
 		dialect: new ClickHouseDialect(),
 		async query<RowType extends AnyRowType = AnyRowType>(
 			sql: string

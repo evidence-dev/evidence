@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getQueryService } from '../../../../../../QueryService.context';
+	import { getDefaultConnection } from '../../../../../../QueryService.context';
 	import { getRepeatContext } from '../../../../repeat/repeat-context';
 	import { Query } from '../../../../../../Query.svelte';
 	import { processColumnExpression } from '../../../../../common/sql-expression-utils';
@@ -16,7 +16,7 @@
 	const x = $derived(props.x);
 	const y = $derived(props.y);
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -24,9 +24,9 @@
 	// Convert columns to processed column expressions
 	const processedColumns = $derived.by(() => {
 		const columns = [];
-		if (x) columns.push(processColumnExpression({ value: x }, queryService.dialect));
-		if (y) columns.push(processColumnExpression({ value: y }, queryService.dialect));
-		if (label) columns.push(processColumnExpression({ value: label }, queryService.dialect));
+		if (x) columns.push(processColumnExpression({ value: x }, connection.dialect));
+		if (y) columns.push(processColumnExpression({ value: y }, connection.dialect));
+		if (label) columns.push(processColumnExpression({ value: label }, connection.dialect));
 		return columns;
 	});
 
@@ -39,7 +39,7 @@
 		};
 	});
 	const query = new Query(() => queryConfig, {
-		queryService,
+		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),

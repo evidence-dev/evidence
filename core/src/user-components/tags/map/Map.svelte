@@ -20,7 +20,7 @@
 	import { transitionMapLayer, type MapLayerState } from './layer-state';
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
 	import { getPageSettingsContext } from '../../../page-settings.context';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { getAutoRefreshContext } from '../../../auto-refresh.context.svelte';
 	import MapLegend from './MapLegend.svelte';
@@ -111,7 +111,7 @@
 	// regardless of when their data finishes loading
 	let layerDefinitionCounter = 0;
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const autoRefreshCtx = getAutoRefreshContext();
 
 	// Set up map context
@@ -121,7 +121,7 @@
 			const areaLayer = new AreaLayerModel(
 				propsGetter,
 				{
-					queryService,
+					connection,
 					filterContexts: [repeatFilters, pageFilters],
 					inlineQueries,
 					projectSettings: getProjectSettingsContext(),
@@ -151,7 +151,7 @@
 			const pointLayer = new PointLayerModel(
 				propsGetter,
 				{
-					queryService,
+					connection,
 					filterContexts: [repeatFilters, pageFilters],
 					inlineQueries,
 					projectSettings: getProjectSettingsContext(),
@@ -179,7 +179,7 @@
 			const heatmapLayer = new HeatmapLayerModel(
 				propsGetter,
 				{
-					queryService,
+					connection,
 					filterContexts: [repeatFilters, pageFilters],
 					inlineQueries,
 					projectSettings: getProjectSettingsContext(),

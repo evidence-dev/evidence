@@ -6,7 +6,7 @@
 	import { getMetadataContext } from '../../../metadata/context';
 	import { getEchartsType } from '../../common/typeConversions';
 	import { schema } from './schema';
-	import { getQueryService } from '../../../QueryService.context';
+	import { getDefaultConnection } from '../../../QueryService.context';
 	import { extractSQLProps, type SQLProps } from '../../common/sql-options';
 	import { processColumnExpression } from '../../common/sql-expression-utils';
 	import { getDefaultFormatForDateGrain } from '../../common/date-options';
@@ -36,7 +36,7 @@
 	// Extract SQL props in a centralized way
 	const { where: rawWhere, having, limit, qualify } = $derived.by(() => extractSQLProps(props));
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -61,7 +61,7 @@
 	const metricsCatalog = getMetricsCatalogContext();
 	const resolvedMetric = $derived(resolveText(props.metric));
 	const metricCompiled = $derived(
-		resolveMetric(metricsCatalog, resolvedMetric, queryService.dialect)
+		resolveMetric(metricsCatalog, resolvedMetric, connection.dialect)
 	);
 	// The metric attr is String | Array; sparkline is scalar so it uses the first
 	// entry (matching resolveMetric's normalization).
@@ -110,11 +110,14 @@
 	// Process columns using the new system
 	const xProcessed = $derived.by(() => {
 		if (!x) return undefined;
-		return processColumnExpression({
-			value: x,
-			dateGrain: date_grain,
-			firstDayOfWeek: projectSettings.first_day_of_week
-		}, queryService.dialect);
+		return processColumnExpression(
+			{
+				value: x,
+				dateGrain: date_grain,
+				firstDayOfWeek: projectSettings.first_day_of_week
+			},
+			connection.dialect
+		);
 	});
 
 	const yProcessed = $derived.by(() => {
@@ -123,7 +126,7 @@
 			{
 				value: y
 			},
-			queryService.dialect
+			connection.dialect
 		);
 	});
 
@@ -170,7 +173,7 @@
 	const query = new Query<Row>(
 		() => queryConfig,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),

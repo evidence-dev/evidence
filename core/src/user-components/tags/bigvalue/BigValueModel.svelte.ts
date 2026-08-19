@@ -69,7 +69,7 @@ export class BigValueModel extends UserComponentModel<BigValueModelGenerics> {
 	// reference is caught at edit time by the `metricExists` validator, exactly
 	// like `tableExists` for `data=` — so there's no bespoke runtime error here.
 	readonly metricCompiled = $derived(
-		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.queryService.dialect)
+		resolveMetric(this.metricsCatalog, this.resolvedMetric, this.deps.connection.dialect)
 	);
 
 	// Explicit `fmt` wins; otherwise inherit the metric's declared format.
@@ -160,7 +160,7 @@ export class BigValueModel extends UserComponentModel<BigValueModelGenerics> {
 				comparison: this.resolvedComparison,
 				sparkline: this.resolvedSparkline,
 				filters: this.attributes.filters,
-				dialect: this.deps.queryService.dialect
+				dialect: this.deps.connection.dialect
 			});
 		}
 		// `metric=` set but unresolved → no query (edit-time validation flags it);
@@ -184,7 +184,7 @@ export class BigValueModel extends UserComponentModel<BigValueModelGenerics> {
 			comparison: this.resolvedComparison,
 			sparkline: this.resolvedSparkline,
 			filters: this.attributes.filters,
-			dialect: this.deps.queryService.dialect
+			dialect: this.deps.connection.dialect
 		});
 	});
 
@@ -203,7 +203,7 @@ export class BigValueModel extends UserComponentModel<BigValueModelGenerics> {
 		// matches the column the query emits (both go through the same builder).
 		return processColumnExpression(
 			{ value: this.metricCompiled?.valueExpression ?? this.resolvedValue ?? '' },
-			this.deps.queryService.dialect
+			this.deps.connection.dialect
 		);
 	});
 }

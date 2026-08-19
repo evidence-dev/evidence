@@ -3,7 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import type * as maplibregl from 'maplibre-gl';
 import { ClickHouseDialect } from '../../../../sql-dialect';
-import type { AnyRowType, QueryService } from '../../../interfaces/query-service';
+import type { AnyRowType } from '../../../interfaces/query-service';
+import type { Connection } from '../../../../connection';
 import { AreaLayerModel } from './AreaLayerModel.svelte';
 
 class TestBounds {
@@ -130,8 +131,9 @@ describe('AreaLayerModel map source integration', () => {
 			{ state: 'New York', sales: 20 }
 		];
 		const queryCalls = vi.fn();
-		const queryService: QueryService = {
-			workspaceId: 'workspace',
+		const connection: Connection = {
+			id: 'default',
+			type: 'managed',
 			dialect: new ClickHouseDialect(),
 			query: async <RowType extends AnyRowType>() => {
 				queryCalls();
@@ -155,7 +157,7 @@ describe('AreaLayerModel map source integration', () => {
 						show_unmatched: true
 					}) as never,
 				{
-					queryService,
+					connection,
 					filterContexts: [],
 					inlineQueries: undefined,
 					projectSettings: undefined,

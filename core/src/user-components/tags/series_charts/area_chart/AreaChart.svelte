@@ -5,17 +5,17 @@
 	import Area from '../area/Area.svelte';
 	import MultiSeries from '../MultiSeries/MultiSeries.svelte';
 	import { getMetricsCatalogContext } from '../../../../metrics/metrics-catalog';
-	import { getQueryService } from '../../../../QueryService.context';
+	import { getDefaultConnection } from '../../../../QueryService.context';
 	import { applyMetricChartProps } from '../../../../metrics/resolve-metric';
 
 	const props: UserComponentProps<typeof schema> = $props();
 
 	const metricsCatalog = getMetricsCatalogContext();
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 
 	// `metric=` resolves to raw data/x/series/y (see LineChart). Non-metric usage
 	// passes through unchanged.
-	const chartProps = $derived(applyMetricChartProps(props, metricsCatalog, queryService.dialect));
+	const chartProps = $derived(applyMetricChartProps(props, metricsCatalog, connection.dialect));
 
 	// Metric mode relaxes data/x/y to optional in the schema; they're always
 	// populated at runtime, so assert that for ComboChart/MultiSeries.

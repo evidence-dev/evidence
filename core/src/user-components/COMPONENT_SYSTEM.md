@@ -93,7 +93,7 @@ const queryConfig = $derived({
 
 // Query class + generateSQLQuery handles Stage 2 internally
 const query = new Query(() => queryConfig, {
-    queryService,
+    connection,
     filterContexts: [repeatFilters, pageFilters],
     inlineQueries,    // ← generateSQLQuery uses this for Stage 2
     projectSettings,
@@ -144,7 +144,7 @@ function buildQuery(): string | undefined {
 
 // Pass raw SQL string to Query
 const query = new Query(() => buildQuery(), {
-    queryService,
+    connection,
     filterContexts: [repeatFilters, pageFilters],
     inlineQueries,
     projectSettings,

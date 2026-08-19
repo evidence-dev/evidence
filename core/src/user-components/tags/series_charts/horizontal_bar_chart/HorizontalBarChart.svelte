@@ -10,7 +10,7 @@
 	import SamplingIndicator from '../../../common/SamplingIndicator.svelte';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import { Query } from '../../../../Query.svelte';
-	import { getQueryService } from '../../../../QueryService.context';
+	import { getDefaultConnection } from '../../../../QueryService.context';
 	import { getRepeatContext } from '../../repeat/repeat-context';
 	import { getPageFiltersContext } from '../../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../../common/inline-queries';
@@ -61,7 +61,7 @@
 	const queryInfoContext = getQueryInfoContext();
 	const hasValidationErrors = $derived(hasBlockingErrors());
 
-	const queryService = getQueryService();
+	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
 	const inlineQueries = getInlineQueriesContext();
@@ -103,7 +103,7 @@
 		resolveText(props.tooltip_fields) as TooltipField[] | undefined
 	);
 	const processedTooltip = $derived(
-		resolveTooltipFields(resolvedTooltipFields, queryService.dialect)
+		resolveTooltipFields(resolvedTooltipFields, connection.dialect)
 	);
 	// Resolve x, y, series, and x_fmt with variable support
 	const resolvedX = $derived(resolveColumn(props.x));
@@ -140,7 +140,7 @@
 	// Note: For horizontal bars, x is the value (horizontal), y is the category (vertical)
 	const xProcessed = $derived.by(() => {
 		if (!resolvedX) return null;
-		return processColumnExpression({ value: resolvedX }, queryService.dialect);
+		return processColumnExpression({ value: resolvedX }, connection.dialect);
 	});
 
 	const yProcessed = $derived.by(() => {
@@ -151,13 +151,13 @@
 				dateGrain: date_grain,
 				firstDayOfWeek: projectSettings.first_day_of_week
 			},
-			queryService.dialect
+			connection.dialect
 		);
 	});
 
 	const seriesProcessed = $derived.by(() => {
 		if (!resolvedSeries) return null;
-		return processColumnExpression({ value: resolvedSeries }, queryService.dialect);
+		return processColumnExpression({ value: resolvedSeries }, connection.dialect);
 	});
 
 	const xColumnName = $derived(xProcessed?.alias); // value column
@@ -188,7 +188,7 @@
 			y_sort,
 			limit,
 			firstDayOfWeek: projectSettings.first_day_of_week,
-			dialect: queryService.dialect,
+			dialect: connection.dialect,
 			tooltipFieldColumns: processedTooltip.columns
 		});
 	});
@@ -197,7 +197,7 @@
 	const query = new Query(
 		() => queryConfig,
 		{
-			queryService,
+			connection,
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),
