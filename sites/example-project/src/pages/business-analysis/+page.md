@@ -53,7 +53,7 @@ select
     sum(completed_orders)::double / nullif(sum(requested_orders), 0) as fulfillment_rate,
     avg(avg_delivery_minutes) as avg_delivery_minutes,
     avg(cost_per_order) as avg_cost_per_order
-from \${daily_operations}
+from ${daily_operations}
 ~~~
 
 <BigValue data={summary} value=fulfillment_rate title="Fulfillment rate" fmt=pct0 />
@@ -72,7 +72,7 @@ select
     sum(completed_orders)::double / nullif(sum(requested_orders), 0) as fulfillment_rate,
     avg(avg_delivery_minutes) as avg_delivery_minutes,
     avg(cost_per_order) as avg_cost_per_order
-from \${daily_operations}
+from ${daily_operations}
 group by weather
 order by fulfillment_rate
 ~~~
