@@ -63,7 +63,7 @@ describe('loadSourceOptions', () => {
 		expect(await loadConnectionOptions('./sources/options')).toEqual({ x: 5 });
 	});
 	it('should throw if an invalid base64 error occurs', async () => {
-		expect(loadConnectionOptions('./sources/invalidB64')).rejects.toThrowError(
+		await expect(loadConnectionOptions('./sources/invalidB64')).rejects.toThrowError(
 			'Error parsing connection.options.yaml file'
 		);
 	});
@@ -100,12 +100,12 @@ describe('loadConnection', () => {
 	});
 
 	it('should throw an error when given a directory with an invalid connection.yaml', async () => {
-		expect(loadConnection('./sources/invalidYaml')).rejects.toThrowError(
+		await expect(loadConnection('./sources/invalidYaml')).rejects.toThrowError(
 			'Error parsing connection.yaml file'
 		);
 	});
 	it('should throw an error when given a directory with a malformed connection.yaml', async () => {
-		expect(loadConnection('./sources/malformedConnection')).rejects.toThrowError(
+		await expect(loadConnection('./sources/malformedConnection')).rejects.toThrowError(
 			'Unable to load connection.yaml'
 		);
 	});
