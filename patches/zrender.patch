@@ -1,0 +1,47 @@
+diff --git a/lib/graphic/Text.d.ts b/lib/graphic/Text.d.ts
+index 7d63b223380ac27af62341b79d90e977b4f5c3b9..79ca4c238a17549416c1fe245943c42d16df7ba4 100644
+--- a/lib/graphic/Text.d.ts
++++ b/lib/graphic/Text.d.ts
+@@ -21,6 +21,9 @@ export interface TextStylePropsPart {
+     lineWidth?: number;
+     lineDash?: false | number[];
+     lineDashOffset?: number;
++    lineJoin?: CanvasLineJoin;
++    lineCap?: CanvasLineCap;
++    backgroundZ?: number;
+     borderDash?: false | number[];
+     borderDashOffset?: number;
+     font?: string;
+diff --git a/lib/graphic/Text.js b/lib/graphic/Text.js
+index d8e3dceaf036b8638e944f2db988b9b55b2cb5e8..721f82b69a57f7cf6d83cf6d14eef7ffea6973c6 100644
+--- a/lib/graphic/Text.js
++++ b/lib/graphic/Text.js
+@@ -56,7 +56,9 @@ var ZRText = (function (_super) {
+         for (var i = 0; i < this._children.length; i++) {
+             var child = this._children[i];
+             child.zlevel = this.zlevel;
+-            child.z = this.z;
++            child.z = (child.type === 'rect' && this.style.backgroundZ != null)
++                ? this.style.backgroundZ
++                : this.z;
+             child.z2 = this.z2;
+             child.culling = this.culling;
+             child.cursor = this.cursor;
+@@ -258,6 +260,8 @@ var ZRText = (function (_super) {
+                 subElStyle.lineWidth = style.lineWidth || defaultLineWidth;
+                 subElStyle.lineDash = style.lineDash;
+                 subElStyle.lineDashOffset = style.lineDashOffset || 0;
++                subElStyle.lineJoin = style.lineJoin;
++                subElStyle.lineCap = style.lineCap;
+             }
+             subElStyle.font = textFont;
+             setSeparateFont(subElStyle, style);
+@@ -389,6 +393,8 @@ var ZRText = (function (_super) {
+             subElStyle.lineWidth = retrieve3(tokenStyle.lineWidth, style.lineWidth, defaultLineWidth);
+             subElStyle.lineDash = retrieve2(tokenStyle.lineDash, style.lineDash);
+             subElStyle.lineDashOffset = style.lineDashOffset || 0;
++            subElStyle.lineJoin = retrieve2(tokenStyle.lineJoin, style.lineJoin);
++            subElStyle.lineCap = retrieve2(tokenStyle.lineCap, style.lineCap);
+             subElStyle.stroke = textStroke;
+         }
+         if (textFill) {

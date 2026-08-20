@@ -1,0 +1,67 @@
+diff --git a/ssf.js b/ssf.js
+index 37eba7a0cbef5319e7bdb0300e8c8be33b72f09f..6fbccfed325036f6b87fe9a9d49e541d936786a3 100644
+--- a/ssf.js
++++ b/ssf.js
+@@ -153,6 +153,11 @@ function parse_date_code(v,opts,b2) {
+ 	var out={D:date, T:time, u:86400*(v-date)-time,y:0,m:0,d:0,H:0,M:0,S:0,q:0};
+ 	if(Math.abs(out.u) < 1e-6) out.u = 0;
+ 	if(opts && opts.date1904) date += 1462;
++	// [MODIFIED]: Adding 1970 base date, see comment in datenum_local
++	// 25569 days between 1899-12-31 and 1970-01-01 inclusive
++		else if (opts && opts.date1970) {
++			date += 25569;
++		}
+ 	if(out.u > 0.9999) {
+ 		out.u = 0;
+ 		if(++time == 86400) { out.T = time = 0; ++date; ++out.D; }
+@@ -180,11 +185,26 @@ SSF.parse_date_code = parse_date_code;
+ var basedate = new Date(1899, 11, 31, 0, 0, 0);
+ var dnthresh = basedate.getTime();
+ var base1904 = new Date(1900, 2, 1, 0, 0, 0);
+-function datenum_local(v, date1904) {
++// [MODIFIED]: We are adding in a base1970 option because:
++// 1. Some timezones eg America/Edmonton have had a timezone offset change since 1900 which has second level precision. See pre 1906 https://www.timeanddate.com/time/zone/canada/edmonton.
++// 2. SSF accounts for changes in offset using getTimezoneOffset(), which measures in minutes: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
++// 3. Some browsers (notably Chrome) return integers for getTimezoneOffset(), which is not accurate enough for second level changes.
++// 4. Very few timezones will have had second-level precision changes since 1970. (This was common around 1900 when timezones were being standardized.)
++var base1970 = new Date(1970, 0, 1, 0, 0, 0);
++var dnthresh1970 = base1970.getTime();
++function datenum_local(v, date1904, date1970) {
+ 	var epoch = v.getTime();
+-	if(date1904) epoch -= 1461*24*60*60*1000;
+-	else if(v >= base1904) epoch += 24*60*60*1000;
+-	return (epoch - (dnthresh + (v.getTimezoneOffset() - basedate.getTimezoneOffset()) * 60000)) / (24 * 60 * 60 * 1000);
++	var result;
++	if (date1970) {
++		result = (epoch - (dnthresh1970 + (v.getTimezoneOffset() - base1970.getTimezoneOffset()) * 60000)) / (24 * 60 * 60 * 1000);
++	} else if (date1904) {
++		epoch -= 1461 * 24 * 60 * 60 * 1000;
++		result = (epoch - (dnthresh + (v.getTimezoneOffset() - basedate.getTimezoneOffset()) * 60000)) / (24 * 60 * 60 * 1000);
++	} else {
++		if (v >= base1904) epoch += 24 * 60 * 60 * 1000;
++		result = (epoch - (dnthresh + (v.getTimezoneOffset() - basedate.getTimezoneOffset()) * 60000)) / (24 * 60 * 60 * 1000);
++	}
++	return result;
+ }
+ /* The longest 32-bit integer text is "-4294967296", exactly 11 chars */
+ function general_fmt_int(v) { return v.toString(10); }
+@@ -252,7 +272,8 @@ function general_fmt(v, opts) {
+ 		case 'undefined': return "";
+ 		case 'object':
+ 			if(v == null) return "";
+-			if(v instanceof Date) return format(14, datenum_local(v, opts && opts.date1904), opts);
++			// [MODIFIED]: Add 1970 option
++			if (v instanceof Date) return format(14, datenum_local(v, opts && opts.date1904, opts && opts.date1970), opts);
+ 	}
+ 	throw new Error("unsupported value in General format: " + v);
+ }
+@@ -932,7 +953,8 @@ function format(fmt,v,o) {
+ 			break;
+ 	}
+ 	if(isgeneral(sfmt,0)) return general_fmt(v, o);
+-	if(v instanceof Date) v = datenum_local(v, o.date1904);
++	// [MODIFIED]: Add 1970 option
++	if (v instanceof Date) v = datenum_local(v, o.date1904, o.date1970);
+ 	var f = choose_fmt(sfmt, v);
+ 	if(isgeneral(f[1])) return general_fmt(v, o);
+ 	if(v === true) v = "TRUE"; else if(v === false) v = "FALSE";

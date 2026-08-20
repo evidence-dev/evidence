@@ -1,1 +1,0 @@
-![start](./evidence-statusbar.png)

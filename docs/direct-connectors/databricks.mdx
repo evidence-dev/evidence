@@ -1,0 +1,171 @@
+---
+title: 'Databricks'
+description: 'Query your own Databricks SQL Warehouse directly from Evidence without syncing data.'
+---
+
+The Databricks direct connector lets Evidence run queries live against your own Databricks workspace via a [SQL Warehouse](https://docs.databricks.com/aws/en/compute/sql-warehouse/), using Unity Catalog.
+
+<Note>
+This is the **direct** connector — it points Evidence at a Databricks workspace **you own**. It's distinct from syncing data into Evidence's built-in managed warehouse.
+</Note>
+
+## Connecting
+
+You need three things: the workspace **server hostname**, the SQL Warehouse **HTTP path**, and an authentication credential — either a **personal access token** or an **OAuth service principal**.
+
+<Steps>
+  <Step title="Find your SQL Warehouse connection details">
+    In the Databricks workspace, open **SQL Warehouses**, select your warehouse, and open the **Connection details** tab. Copy the **Server hostname** (e.g. `dbc-a1b2c3d4-e5f6.cloud.databricks.com`) and the **HTTP path** (e.g. `/sql/1.0/warehouses/abc123def456`).
+  </Step>
+  <Step title="Create a credential">
+    **Personal access token (PAT):** under **Settings → Developer → Access tokens**, generate a token (`dapi…`).
+
+    **OAuth M2M (recommended for production):** create a [service principal](https://docs.databricks.com/aws/en/admin/users-groups/service-principals) and an OAuth secret, then grant it access to the warehouse and catalog. You'll use its **client ID** and **client secret**.
+  </Step>
+  <Step title="Configure the connector in Evidence">
+    Go to **Connectors** in the sidebar, choose **Databricks** in the **Warehouse** card, and fill in the host, HTTP path, and **catalog**. Pick the authentication method and enter the token (or client ID + secret).
+  </Step>
+  <Step title="(Optional) Restrict the schema browser">
+    Add schema names to **Schemas** to limit which ones appear in the schema browser. Leave empty to show just the connection's default schema.
+  </Step>
+  <Step title="Test and save">
+    Click **Test Connection**. Once it passes, click **Save**.
+  </Step>
+</Steps>
+
+### Grant least-privilege access
+
+Give the connecting identity (PAT user or service principal) only what it needs: `USE CATALOG` / `USE SCHEMA` and `SELECT` on the objects Evidence should read. In a SQL editor:
+
+```sql
+GRANT USE CATALOG ON CATALOG main TO `evidence`;
+GRANT USE SCHEMA ON SCHEMA main.analytics TO `evidence`;
+GRANT SELECT ON SCHEMA main.analytics TO `evidence`;
+```
+
+Replace `evidence` with your service principal's application ID (or the token user).
+
+{/* GENERATED:CONNECTION-OPTIONS START */}
+
+## Configuration reference
+
+<Tabs>
+  <Tab title="Studio">
+
+    #### Credentials
+
+    <ResponseField name="Server hostname" type="string" required>
+      Databricks workspace hostname, e.g. dbc-a1b2c3d4-e5f6.cloud.databricks.com or adb-1234567890.1.azuredatabricks.net.
+    </ResponseField>
+    <ResponseField name="HTTP path" type="string" required>
+      SQL Warehouse HTTP path, e.g. /sql/1.0/warehouses/abc123def456 (Warehouse → Connection details).
+    </ResponseField>
+    <ResponseField name="Access token (PAT)" type="string">
+      Databricks personal access token (dapi…). Mutually exclusive with OAuth.
+    </ResponseField>
+    <ResponseField name="OAuth client ID" type="string">
+      Service-principal (M2M) client ID for OAuth. Required when authenticating with a client secret.
+    </ResponseField>
+    <ResponseField name="OAuth client secret" type="string">
+      Service-principal (M2M) OAuth secret. Requires client ID; mutually exclusive with the access token.
+    </ResponseField>
+    <ResponseField name="Catalog" type="string" required>
+      Unity Catalog catalog to query.
+    </ResponseField>
+    <ResponseField name="Schema" type="string">
+      Schema used when queries reference unqualified table names. Default: `"default"`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="Schemas" type="string[]">
+      Allowlist of schemas exposed to the editor and schema browser. Defaults to the connection schema when empty. Default: `[]`.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="Session variables" type="{ databricksVariable: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
+      Evidence identity → Databricks SQL session variable, SET per query for RLS row filters. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+  <Tab title="CLI (connection.yaml)">
+
+    ```yaml
+    type: databricks
+    host: dbc-a1b2c3d4-e5f6.cloud.databricks.com
+    http_path: /sql/1.0/warehouses/abc123def456
+    # client_id: <oauth-client-id> # OAuth M2M alternative to token
+    catalog: main
+    # schema: default
+    # schemas: [sales, marketing]
+    # session_variables:
+    #   - databricksVariable: app_user_email
+    #     evidenceVariable: user.email
+    ```
+
+    #### Credentials
+
+    _Provide exactly one of `token`, `client_secret`._
+
+    <ResponseField name="host" type="string" required>
+      Databricks workspace hostname, e.g. dbc-a1b2c3d4-e5f6.cloud.databricks.com or adb-1234567890.1.azuredatabricks.net.
+    </ResponseField>
+    <ResponseField name="http_path" type="string" required>
+      SQL Warehouse HTTP path, e.g. /sql/1.0/warehouses/abc123def456 (Warehouse → Connection details).
+    </ResponseField>
+    <ResponseField name="token" type="string">
+      Databricks personal access token (dapi…). Mutually exclusive with OAuth.
+    </ResponseField>
+    <ResponseField name="client_id" type="string">
+      Service-principal (M2M) client ID for OAuth. Required when authenticating with a client secret.
+    </ResponseField>
+    <ResponseField name="client_secret" type="string">
+      Service-principal (M2M) OAuth secret. Requires client ID; mutually exclusive with the access token.
+    </ResponseField>
+    <ResponseField name="catalog" type="string" required>
+      Unity Catalog catalog to query.
+    </ResponseField>
+    <ResponseField name="schema" type="string">
+      Schema used when queries reference unqualified table names. Default: `"default"`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="schemas" type="string[]">
+      Allowlist of schemas exposed to the editor and schema browser. Defaults to the connection schema when empty. Default: `[]`.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="session_variables" type="{ databricksVariable: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
+      Evidence identity → Databricks SQL session variable, SET per query for RLS row filters. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+</Tabs>
+
+{/* GENERATED:CONNECTION-OPTIONS END */}
+
+## Row-Level Security
+
+Databricks [row filters and column masks](https://docs.databricks.com/aws/en/tables/row-and-column-filters) apply to queries Evidence issues. By default they evaluate against the connection identity (the PAT user or service principal) via `current_user()`.
+
+To filter per Evidence viewer, map Evidence identity attributes to Databricks SQL **session variables** under **Session Variables (RLS)** in the connection form (or `session_variables` in `connection.yaml`). Before each query Evidence runs `DECLARE OR REPLACE VARIABLE <name> STRING DEFAULT '<value>'`, so your row-filter function can read the current viewer's identity:
+
+```sql
+CREATE FUNCTION analytics.rls_by_email(region STRING)
+RETURN region = session.app_user_email;
+
+ALTER TABLE analytics.orders SET ROW FILTER analytics.rls_by_email ON (owner_email);
+```
+
+## Security Considerations
+
+Evidence executes queries against your Databricks workspace. Take pragmatic steps to protect it against misuse, whether accidental or malicious.
+
+1. Use a dedicated service principal or token user with `SELECT`-only grants — avoid an admin identity.
+2. Scope grants to the specific catalog and schemas Evidence should see, not the whole metastore.
+3. Attach the SQL Warehouse to a workspace with an [IP access list](https://docs.databricks.com/aws/en/security/network/front-end/ip-access-list) restricted to Evidence's [egress IPs](/core-concepts/data-sources#ip-whitelisting) plus your team's networks.
+4. Rotate PATs regularly, or prefer OAuth M2M (short-lived tokens) for production.
+5. Monitor [query history](https://docs.databricks.com/aws/en/sql/user/queries/query-history) for non-`SELECT` statements from the Evidence identity (there shouldn't be any).

@@ -1,0 +1,228 @@
+---
+title: 'Metrics'
+description: 'Define reusable, governed metrics once and reference them by name from any data component.'
+---
+
+Metrics are named aggregations defined once in a project and consumed by components via `metric="..."`. The definition owns the aggregation SQL, filter, fmt, and label; components inherit them automatically.
+
+## Where they live
+
+`metrics/*.yaml` files at the project root. Each file is a **metrics view**: a base table plus the dimensions and metrics defined against it. New projects get an example scaffold; existing projects get the folder on first metric creation.
+
+## Example
+
+```yaml
+# metrics/sales.yaml
+base: demo.order_details
+date: created_at
+default_date_grain: month
+
+dimensions:
+  region: region
+  product: product_line
+  channel: channel
+
+metrics:
+  revenue:
+    sql: sum(unit_price * quantity)
+    fmt: usd
+    label: Revenue
+    description: Total revenue from all order line items
+
+  orders:
+    sql: count(distinct order_id)
+    fmt: num0
+
+  aov:
+    sql: '{revenue} / nullif({orders}, 0)'
+    fmt: usd
+
+  electronics_revenue:
+    sql: sum(unit_price * quantity)
+    filter: category = 'Electronics'
+    fmt: usd
+```
+
+Reference from any data component:
+
+```markdown
+{% big_value  metric="revenue" /%}
+{% line_chart metric="revenue" /%}                       <!-- time series on the view's date/grain -->
+{% bar_chart  metric=["revenue", "orders"] series="region" /%}
+{% pie_chart  metric="revenue" category="region" /%}
+
+{% table %}
+  {% dimension value="region" /%}
+  {% measure   metric="revenue" /%}
+  {% measure   metric="aov" /%}
+{% /table %}
+```
+
+## Metrics view reference
+
+**View-level** (top of file):
+
+| Key          | Required | What                                                                              |
+| ------------ | -------- | --------------------------------------------------------------------------------- |
+| `base`               | one of   | Table or view name to aggregate                                                   |
+| `base_sql`           | one of   | Inline SQL to use as the base (mutually exclusive with `base`)                    |
+| `date`               | no       | Default time column for time-series components                                    |
+| `default_date_grain` | no       | Default time grain (`day`, `week`, `month`, `quarter`, `year`) applied when a chart omits `date_grain=` |
+| `dimensions`         | no       | Named columns to slice by — a map of `name: source_expression`                    |
+| `metrics`            | yes      | Named metrics — a map of `name: { sql, filter, fmt, label, ... }`                 |
+
+**Important**: `dimensions` and `metrics` are **maps**, not arrays. The name is the key.
+
+**Metric-level** (inside `metrics:` map):
+
+| Key           | Required | What                                                                                     |
+| ------------- | -------- | ---------------------------------------------------------------------------------------- |
+| `sql`         | yes      | Aggregate SQL (`sum(amount)`) or a formula over other metrics (`{revenue} / {orders}`)   |
+| `filter`      | no       | Predicate folded into the aggregate (simple metrics only, not calculated)                |
+| `fmt`         | no       | Display format code (`usd`, `pct1`, `num0`, `#,##0.0`, …). Quote values starting with `#` |
+| `label`       | no       | Display name (defaults to a prettified metric name)                                      |
+| `synonyms`    | no       | Alternate names to help the AI assistant match this metric                               |
+| `description` | no       | Free text describing what the metric measures                                            |
+| `date`        | no       | Per-metric time-column override (falls back to the view's `date`)                        |
+
+Metric names are **flat and globally unique across all views** in a project. Defining the same name in more than one view is flagged as a validation error in the editor and in `list_metrics`. At runtime the first-loaded file wins, so a reference isn't broken — but rename one of them to clear the error and keep the resolution deterministic.
+
+## Calculated metrics
+
+Reference another metric in the same view with `{name}` — it expands inline at compile time. Any SQL is fair game around it:
+
+```yaml
+metrics:
+  revenue:
+    sql: sum(amount)
+    fmt: usd
+  orders:
+    sql: count(*)
+    fmt: num0
+  aov:
+    sql: '{revenue} / nullif({orders}, 0)'
+    fmt: usd
+```
+
+Rules:
+
+- Refs must resolve to a metric in the **same view** (cross-view refs are v2)
+- A calculated metric cannot also carry `filter` — filter the referenced metrics instead
+- Cycles are rejected at parse time
+
+Single-brace `{name}` is deliberate — it can't collide with Evidence's double-brace `{{ variable }}` syntax. Note: `{{ … }}` inside a metric's `sql` or `filter` is **not** interpolated today (v1); write literal SQL.
+
+## Using metrics in components
+
+Every data component accepts `metric="name"`:
+
+| Shape       | Components                                                                       | What `metric=` supplies             | What you still supply                    |
+| ----------- | -------------------------------------------------------------------------------- | ----------------------------------- | ---------------------------------------- |
+| Scalar      | `big_value`, `value`, `delta`, `sparkline`                                       | everything                          | nothing                                  |
+| Time series | `line_chart`, `bar_chart`, `area_chart`                                          | data + y; x = view.date, grain = view.default_date_grain (defaults) | nothing (override with `x=`/`date_grain=`) |
+| Categorical | `pie_chart`, `funnel_chart`, `treemap`, `radar_chart`, `polar_chart`             | data + value                        | `category=`                              |
+| Flow        | `sankey_chart`, `chord_chart`                                                    | data + value                        | `source=` + `target=`                    |
+| Matrix      | `heatmap`                                                                        | data + value                        | `x=` + `y=`                              |
+| Grid        | `heat_grid` (with `thresholds`)                                                  | data + value                        | `dimension=`                             |
+| Calendar    | `calendar_heatmap`                                                               | data + value                        | `date=`                                  |
+| Table       | `table` (via `{% measure metric="..." /%}` child)                                | base + aggregate                    | `{% dimension %}` children               |
+
+What auto-inherits from the metric:
+
+- **Aggregation SQL** — the metric's `sql` becomes the component's aggregate
+- **Format** — the metric's `fmt` becomes the component's `fmt`/`value_fmt`
+- **Label** — the metric's `label` (or humanized name) becomes the component's title/series name
+- **Filter** — the metric's `filter` is folded into the aggregate (compose with the component's own `filters=`/`where=`/`date_range=`)
+
+Everything is overridable with the normal attribute:
+
+```markdown
+{% line_chart metric="revenue" x="region" fmt="usd0" title="Revenue by Region" /%}
+```
+
+`metric=` is XOR with the raw `data`/`value`/`y` path — use one or the other, not both.
+
+### How `filter:` composes with the rest of the query
+
+The metric's `filter:` is compiled **into** the aggregate (`SUM(x) FILTER (WHERE …)`), **not** as a query-level `WHERE`. This lets divergent-filter metrics coexist in one query — critical for multi-metric charts and tables — but the composition rule is worth knowing:
+
+```yaml
+us_revenue:
+  sql: sum(unit_price * quantity)
+  filter: region = 'US'
+
+order_count:
+  sql: count(distinct order_id)
+```
+
+```markdown
+{% bar_chart metric=["us_revenue", "order_count"] x="channel" /%}
+```
+
+`us_revenue` sums only US rows. `order_count` counts **all** orders — the US filter is scoped to the metric that declared it, not the whole query. Page filters and the component's `where=` DO scope the whole query and stack on top: `where="region = 'EU'"` here means `us_revenue` returns 0 (US ∩ EU = ∅) and `order_count` restricts to EU. Use `filter:` for per-metric constraints that are part of the metric's definition; use `where=` / page filters for query-wide restrictions.
+
+## Multi-metric charts
+
+`line_chart` / `bar_chart` / `area_chart` accept an **array** of metric names. Each becomes one series:
+
+```markdown
+{% line_chart metric=["revenue", "orders"] /%}
+```
+
+Same shape as the `y` attribute — a single string for one metric, an array for many. Comma-separated strings are **not** supported (they'd collide with metric names containing commas); the editor validator surfaces the fix.
+
+Every metric in the array plots on the **same y-axis** and inherits the chart's `y_fmt`. All metrics must share the same base (v1 limitation — cross-base fan-out needs joins/align, coming later). Series legend uses each metric's label.
+
+For metrics on **separate axes** — or metrics from different bases — use `combo_chart` (below); it renders each series with its own query and supports `axis="y2"` per child.
+
+## Dual-axis and cross-base: `combo_chart`
+
+Every combo_chart series child — `{% line %}` / `{% bar %}` / `{% area %}` / `{% scatter %}` / `{% bubble %}` — accepts `metric="..."`. Each child runs its own query, so metrics from different bases just work; per-child `axis="y2"` gives you dual-axis without any new syntax.
+
+```markdown
+<!-- Two metrics, dual axis, one query per series -->
+{% combo_chart x="date" %}
+    {% line metric="revenue" /%}
+    {% bar  metric="orders" axis="y2" /%}
+{% /combo_chart %}
+
+<!-- Cross-base metrics — each child queries its own metric view's base -->
+{% combo_chart x="date" %}
+    {% line metric="revenue" /%}         <!-- from an `orders` view -->
+    {% line metric="signups" axis="y2" /%}  <!-- from a `users` view -->
+{% /combo_chart %}
+```
+
+Rules:
+
+- `combo_chart`'s `data=` and `x=` both become optional when **every** child series is metric-driven — each child inherits its base from the metric view and its x from the view's time column. Set them explicitly only when at least one child uses raw `y=`, or when you want to override the metric's default axis.
+- Mixing a metric child with a raw child on `combo_chart` requires the metric's base to match the parent's `data=`. The editor flags a mismatch and tells you to either drop `data=` (so every child resolves its own base) or split into two combo_charts.
+
+## Non-additive metrics
+
+Metrics using `count(distinct …)` or a ratio (`{a} / {b}`, `avg(…)`) don't add up across slices. Two situations to know about:
+
+- **Count-distinct on a line-item grain** — `orders = count(distinct order_id)` sliced by `category` counts an order in every category it touches. The per-category bars are individually correct, but their sum exceeds the topline order count.
+- **Ratios and averages** — `aov = revenue / orders` is correct per slice, but per-slice AOVs cannot be averaged to get the overall AOV.
+
+Tables handle the total row correctly (grand totals recompute at total grain via `GROUP BY GROUPING SETS`, not sum-of-rows), so a table showing "AOV by category" produces the true blended AOV in the total row. Bar/pie charts show raw per-slice values — worth calling out in the metric's `description:` when the metric will be sliced by dimensions that aren't 1:1 with its distinct key.
+
+## Editor experience
+
+- **Schema autocomplete** as you type YAML — dimensions, metrics, all the keys.
+- **Live validation** for schema mismatches, missing `base`, invalid `{name}` refs, cycles, and duplicate metric names. The classic `fmt: #,##0.0` footgun (unquoted `#` = comment → null) has a "quote it" hint.
+- **Autocomplete inside `metric="..."`** — every metric in every view.
+- **Autocomplete inside `{name}` refs** — every metric in the same file.
+- **`x=`/`series=` autocomplete** in metric mode — the view's named dimensions first, then the base-table columns.
+
+## AI assistant tools
+
+The Evidence editor AI has three metric-specific tools:
+
+| Tool           | What                                                                          |
+| -------------- | ----------------------------------------------------------------------------- |
+| `list_metrics` | List every metric in the project (name, description, format, base, dimensions) |
+| `get_metric`   | Full definition of one metric (SQL, filter, format, label, view context)      |
+| `query_metric` | Execute a metric with optional `dimensions=` slicing — uses the same compiler as rendered components, so results match |
+
+Prefer these over hand-writing SQL when a metric matches the question. Broken metric YAML surfaces in `invalidFiles` on every tool response — feed the errors back through `debug_code` to fix.

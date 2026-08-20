@@ -1,0 +1,44 @@
+---
+title: 'Editing'
+description: 'The Evidence Editor is the core of Evidence Studio, allowing you to create and edit reports in markdown and SQL.'
+---
+
+## Code Editor
+
+On the left hand side of your screen, you have a code editor. This is where you define your report in markdown.
+
+The code editor is enriched for data development with:
+
+- **Slash commands:** Type a `/` to list components, accept suggestions with `tab`.
+- **Autocompletion:** For components and SQL fences, accept suggestions with `tab`.
+- **Syntax highlighting:** For markdown, SQL, and components.
+- **Validation**: Invalid code is underlined in red, hover to see errors, and click "Fix" for AI assistance.
+
+## Preview
+
+As you modify the code in the editor, the preview will update in real time, including rerunning SQL queries and rerendering charts when you make changes.
+
+Nothing is published until you click the "Publish" button. See [Publishing](/publishing) for details.
+
+## Evidence Agent
+
+The right sidebar contains a chat interface with the Evidence Agent.
+
+- The agent is trained to generate valid Evidence markdown
+- It knows the schema of any data sources you have added
+
+The agent can generate reports, fix errors, and answer general questions about Evidence Studio.
+
+### Agent Capabilities
+
+The agent can help you across most of what you do in Studio, including:
+
+- **Read and edit pages:** Generate new reports or make targeted edits to existing markdown, SQL, and components.
+- **Run SQL queries:** Execute SQL against your connected data sources to explore data and validate results before writing it into a report.
+- **Inspect your data:** Read the schema and metadata of tables, sources, and models, and list available connections to see what data is available.
+- **Read existing visualizations:** Pull the data behind a chart, table, or value already on the page to reason about and extend it.
+- **Update settings:** Adjust project and page settings (theme, layout, table of contents, default date range, and more) and edit project config files like `theme.yaml` and `evidence.config.yaml`.
+- **Diagnose errors:** Identify and fix invalid SQL, broken components, and other issues in your reports.
+- **Search the docs:** Answer questions about Evidence Studio, components, and SQL using the documentation.
+
+The Evidence Agent suggests changes in a "diff view", which you can accept, reject, or refine with another message.

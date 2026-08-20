@@ -1,0 +1,488 @@
+/**
+ * Shared base styles for every surface that renders @evidence/core components
+ * (Studio app/viewer and the CLI preview). Holds the design tokens, fonts, and
+ * third-party CSS that core components depend on.
+ *
+ * Each app's own app.css owns the Tailwind entrypoint and the path-relative
+ * directives that can't be shared: `@import 'tailwindcss'`, `@plugin`,
+ * `@config`, and `@source`. Import this right after `@import 'tailwindcss'`.
+ *
+ * Fonts use absolute `/fonts/...` URLs, so each app must ship the woff2 files
+ * in its own static/ directory.
+ */
+
+@import 'tw-animate-css';
+@import 'dither-plugin';
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+/* Geist Variable Font. Roman only — Vercel ships a matching italic variable
+   face (Geist-Italic[wght].woff2) but we accept the browser's synthetic italic
+   here to keep the bundle small; italic prose is uncommon in reports. */
+@font-face {
+	font-family: 'Geist';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 100 900;
+	src: url('/fonts/geist/Geist-Variable.woff2') format('woff2');
+}
+
+/* Geist Mono font */
+@font-face {
+	font-family: 'Geist Mono';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 100 900;
+	src: url('/fonts/geist-mono/GeistMono-Variable.woff2') format('woff2');
+}
+
+/* Source Serif 4 Variable Font (serif theme option) */
+@font-face {
+	font-family: 'Source Serif 4';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 200 900;
+	src: url('/fonts/source-serif-4/SourceSerif4-Variable.woff2') format('woff2');
+}
+
+/* Source Serif 4 Variable Italic */
+@font-face {
+	font-family: 'Source Serif 4';
+	font-style: italic;
+	font-display: swap;
+	font-weight: 200 900;
+	src: url('/fonts/source-serif-4/SourceSerif4-Variable-italic.woff2') format('woff2');
+}
+
+/* Spectral (primary serif). Shipped as discrete static weights — Spectral has
+   no official variable build — covering only the weights report markup reaches
+   (400/500/600/700 + italics). The browser fetches a face only when the serif
+   family is actually selected AND that weight renders, so the default
+   sans-serif theme pays nothing. Studio ships these files; the CLI does not,
+   so local preview falls back to Source Serif 4 (next in the serif stack). */
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 400;
+	src: url('/fonts/spectral/Spectral-400-normal.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-display: swap;
+	font-weight: 400;
+	src: url('/fonts/spectral/Spectral-400-italic.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 500;
+	src: url('/fonts/spectral/Spectral-500-normal.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-display: swap;
+	font-weight: 500;
+	src: url('/fonts/spectral/Spectral-500-italic.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 600;
+	src: url('/fonts/spectral/Spectral-600-normal.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-display: swap;
+	font-weight: 600;
+	src: url('/fonts/spectral/Spectral-600-italic.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 700;
+	src: url('/fonts/spectral/Spectral-700-normal.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-display: swap;
+	font-weight: 700;
+	src: url('/fonts/spectral/Spectral-700-italic.woff2') format('woff2');
+}
+
+@custom-variant dark (&:is(.dark *));
+
+/* Flush density grouping. Row measures each child's grid position (flex-wrap
+   line and slot within it) and records it as data-flush-x/y; Stack is vertical
+   and never wraps so plain first/last-child works. Those positions drive CSS
+   vars for per-corner radius and per-edge border width, consumed by the tiles
+   themselves AND by nested input shells (which inherit the vars) — so corners
+   keep real borders and internal edges never double up. Shell rules are scoped
+   by the wrapper's data-component-type, so controls nested inside other
+   components (e.g. a table's pagination select) are untouched. Intentionally
+   unlayered so these beat the shells' utility classes. */
+/* Defaults are FULLY ROUNDED, not square: the data-flush attributes only
+   exist after client-side measurement, so SSR'd first paint (and async-
+   loading tiles) render with these. Rounded-everywhere matches the
+   non-flush look, so loading reads as interior corners straightening rather
+   than corners popping in. */
+:is(.flush-row, .flush-stack) > * {
+	--flush-r: calc(var(--radius) - 2px);
+	--flush-tl: var(--flush-r);
+	--flush-tr: var(--flush-r);
+	--flush-bl: var(--flush-r);
+	--flush-br: var(--flush-r);
+	--flush-bw-l: 1px;
+	--flush-bw-t: 1px;
+}
+/* Visual overrides apply only to children that actually carry a border (the
+   card tiles). Tailwind's preflight gives EVERY element border-style: solid
+   at width 0, so width-only overrides on borderless wrappers would otherwise
+   paint phantom borders around them. */
+:is(.flush-row, .flush-stack) > .border {
+	border-radius: var(--flush-tl) var(--flush-tr) var(--flush-br) var(--flush-bl) !important;
+	border-left-width: var(--flush-bw-l) !important;
+	border-top-width: var(--flush-bw-t) !important;
+	box-shadow: none !important;
+}
+/* Once measured, zero the interior corners/edges. The grid-interior sides
+   are the ones that are NOT at a first/only/last position. */
+.flush-row > :is([data-flush-x='mid'], [data-flush-x='last']) {
+	--flush-tl: 0px;
+	--flush-bl: 0px;
+	--flush-bw-l: 0px;
+}
+.flush-row > :is([data-flush-x='mid'], [data-flush-x='first']) {
+	--flush-tr: 0px;
+	--flush-br: 0px;
+}
+.flush-row > :is([data-flush-y='mid'], [data-flush-y='last']) {
+	--flush-tl: 0px;
+	--flush-tr: 0px;
+	--flush-bw-t: 0px;
+}
+.flush-row > :is([data-flush-y='mid'], [data-flush-y='first']) {
+	--flush-bl: 0px;
+	--flush-br: 0px;
+}
+.flush-stack > *:not(:first-child) {
+	--flush-tl: 0px;
+	--flush-tr: 0px;
+	--flush-bw-t: 0px;
+}
+.flush-stack > *:not(:last-child) {
+	--flush-bl: 0px;
+	--flush-br: 0px;
+}
+
+/* Inputs are NOT pilled in flush mode (the unified-pill look read as one
+   control rather than several). They keep their own borders and natural
+   corner rounding (rounded-md follows the theme radius); flush only tightens
+   the gutter between them to a small, consistent value instead of 0. The
+   squaring/border-dedup rules above never touch input wrappers because those
+   wrappers aren't `.border` — so nothing extra is needed to keep them
+   rounded. */
+.flush-row.flush-row-inputs {
+	/* small, consistent breathing room between inputs (both axes) instead of
+	   the 0 gutter cards tile at */
+	gap: 0.5rem;
+}
+/* Row inputs auto-group with align=bottom; neutralizing their internal bottom
+   margins keeps the control bottoms aligned (mb-3 vs mb-4 otherwise offset
+   them). Stacks keep natural margins, which provide their vertical spacing. */
+.flush-row
+	:is(
+		[data-component-type='dropdown'],
+		[data-component-type='date_grain_selector'],
+		[data-component-type='comparison_selector'],
+		[data-component-type='button_group'],
+		[data-component-type='text_input'],
+		[data-component-type='range_calendar'],
+		[data-component-type='toggle'],
+		[data-component-type='slider']
+	)
+	:is(.mb-3, .mb-4, .pb-1) {
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+/* Published report sidebar nav font size follows the sidebarFontSize theme token.
+   Scoped to .report-sidebar (the published viewer's Sidebar.Root) so the studio
+   editor chrome — which shares the Sidebar primitive but never emits this var —
+   is untouched. The fallback reproduces the default text-sm (baseFontSize-scaled),
+   so un-themed sidebars are unchanged. Unlayered so it beats the menu button's
+   text-sm utility. */
+.report-sidebar :is([data-slot='sidebar-menu-button'], [data-slot='sidebar-menu-sub-button']) {
+	font-size: var(--theme-sidebar-font-size, calc(var(--theme-font-scale, 1) * 0.875rem));
+}
+
+:root {
+	--radius: 0.5rem;
+	/* Semantic up/down colors; overridden per-mode by injected theme CSS */
+	--theme-positive: #16a34a;
+	--theme-negative: #ef4444;
+	/* Table chrome tokens (light-surface defaults). Injected theme CSS
+	   (generateThemeCSS) overrides these per-surface with !important; these bare
+	   defaults keep table row backgrounds, hover, borders, spark bars and links
+	   colored on surfaces that DON'T inject theme CSS (insights, viewer AI chat),
+	   where the vars would otherwise be undefined and render transparent. Values
+	   mirror TABLE_TOKEN_DEFAULTS in theme-css-helper.ts. */
+	--theme-table-bar: #60a5fa;
+	--theme-table-subtotal-bg: #f9fafb;
+	--theme-table-total-bg: #f3f4f6;
+	--theme-table-pivot-bg: #eff6ff;
+	--theme-table-link: #1d4ed8;
+	--theme-table-row-border: var(--border);
+	--theme-table-hover: var(--muted);
+	/* Code-fence syntax palette (light-surface default). generateThemeCSS
+	   overrides these by the THEMED surface luminance so a dark themed bg gets
+	   the light-on-dark palette even in light mode. */
+	--syntax-text: #000000;
+	--syntax-tag: #9b2c2c;
+	--syntax-attr: #175899;
+	--syntax-string: #008000;
+	--syntax-number: #6b46c1;
+	--syntax-punctuation: #9ca3af;
+	--syntax-keyword: #0549b5;
+	--syntax-function: #d7346b;
+	--syntax-link: #0066cc;
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.141 0.005 285.823);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.141 0.005 285.823);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.141 0.005 285.823);
+	--primary: oklch(0.21 0.006 285.885);
+	--primary-foreground: oklch(0.985 0 0);
+	--secondary: oklch(0.967 0.001 286.375);
+	--secondary-foreground: oklch(0.21 0.006 285.885);
+	--muted: oklch(0.967 0.001 286.375);
+	--muted-foreground: oklch(0.552 0.016 285.938);
+	--muted-foreground-faded: oklch(0.72 0.01 286);
+	--accent: oklch(0.955 0.003 286.375);
+	--accent-foreground: oklch(0.21 0.006 285.885);
+	--destructive: oklch(0.577 0.245 27.325);
+	--success: oklch(0.63 0.17 149);
+	--success-foreground: oklch(0.98 0 0);
+	--border: oklch(0.92 0.004 286.32);
+	--input: oklch(0.92 0.004 286.32);
+	/* Light inputs default to the surface (white); generateThemeCSS overrides per theme */
+	--input-surface: oklch(1 0 0);
+	--ring: oklch(0.705 0.015 286.067);
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.828 0.189 84.429);
+	--chart-5: oklch(0.769 0.188 70.08);
+	--sidebar: oklch(0.985 0 0);
+	--sidebar-foreground: oklch(0.141 0.005 285.823);
+	--sidebar-primary: oklch(0.21 0.006 285.885);
+	--sidebar-primary-foreground: oklch(0.985 0 0);
+	--sidebar-accent: oklch(0.955 0.003 286.375);
+	--sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+	--sidebar-border: oklch(0.92 0.004 286.32);
+	--sidebar-ring: oklch(0.705 0.015 286.067);
+	--card-mode-background: oklch(0.985 0 0);
+}
+
+.dark {
+	/* Table chrome tokens (dark-surface defaults) — see :root note above. */
+	--theme-table-bar: #60a5fa;
+	--theme-table-subtotal-bg: #1f2937;
+	--theme-table-total-bg: #1f2937;
+	--theme-table-pivot-bg: #172554;
+	--theme-table-link: #93c5fd;
+	--theme-table-row-border: var(--border);
+	--theme-table-hover: var(--muted);
+	/* Code-fence syntax palette (dark-surface default) */
+	--syntax-text: #ffffff;
+	--syntax-tag: #79b8ff;
+	--syntax-attr: #ff7b72;
+	--syntax-string: #7ee787;
+	--syntax-number: #d2a8ff;
+	--syntax-punctuation: #8b949e;
+	--syntax-keyword: #569cd6;
+	--syntax-function: #ce9178;
+	--syntax-link: #569cd6;
+	--background: oklch(0.141 0.005 285.823);
+	--foreground: oklch(0.985 0 0);
+	--card: oklch(0.21 0.006 285.885);
+	--card-foreground: oklch(0.985 0 0);
+	--popover: oklch(0.21 0.006 285.885);
+	--popover-foreground: oklch(0.985 0 0);
+	--primary: oklch(0.92 0.004 286.32);
+	--primary-foreground: oklch(0.21 0.006 285.885);
+	--secondary: oklch(0.274 0.006 286.033);
+	--secondary-foreground: oklch(0.985 0 0);
+	--muted: oklch(0.274 0.006 286.033);
+	--muted-foreground: oklch(0.705 0.015 286.067);
+	--muted-foreground-faded: oklch(0.5 0.01 286);
+	--accent: oklch(0.274 0.006 286.033);
+	--accent-foreground: oklch(0.985 0 0);
+	--destructive: oklch(0.704 0.191 22.216);
+	--success: oklch(0.75 0.15 149);
+	--success-foreground: oklch(0.98 0 0);
+	--border: oklch(1 0 0 / 10%);
+	--input: oklch(1 0 0 / 15%);
+	--input-surface: oklch(0.274 0.006 286.033);
+	--ring: oklch(0.552 0.016 285.938);
+	--chart-1: oklch(0.488 0.243 264.376);
+	--chart-2: oklch(0.696 0.17 162.48);
+	--chart-3: oklch(0.769 0.188 70.08);
+	--chart-4: oklch(0.627 0.265 303.9);
+	--chart-5: oklch(0.645 0.246 16.439);
+	--sidebar: oklch(0.21 0.006 285.885);
+	--sidebar-foreground: oklch(0.985 0 0);
+	--sidebar-primary: oklch(0.488 0.243 264.376);
+	--sidebar-primary-foreground: oklch(0.985 0 0);
+	--sidebar-accent: oklch(0.274 0.006 286.033);
+	--sidebar-accent-foreground: oklch(0.985 0 0);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-ring: oklch(0.552 0.016 285.938);
+	--card-mode-background: oklch(0.21 0.006 285.885);
+}
+
+@theme inline {
+	/* Font families. The --theme-font-* indirection lets injected theme CSS
+	   retheme fonts at runtime: @theme inline bakes these expressions into each
+	   utility, so the var resolves at the use-site and scoped editor-preview
+	   overrides work (a :root-level var would resolve against :root instead). */
+	--font-sans: var(--theme-font-body, 'Geist', sans-serif);
+	--font-heading: var(--theme-font-heading, var(--theme-font-body, 'Geist', sans-serif));
+	--font-mono: var(--theme-font-mono, 'Geist Mono', Consolas, monospace);
+
+	/* Radius (for rounded-*) */
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	/* Depth/flatness theme token. Only shadow-xs is indirected (it's what the
+	   report surface uses); the indirection drops Tailwind's --tw-shadow-color
+	   wrapping, so never combine shadow-xs with shadow-<color>. */
+	--shadow-xs: var(--theme-shadow-xs, 0 1px 2px 0 rgb(0 0 0 / 0.05));
+
+	/* Density theme tokens: grid gutter inside rows/stacks (gap-report),
+	   vertical rhythm between page-level blocks (space-y-block-gap), and card
+	   padding (p-card-pad) */
+	--spacing-report: var(--theme-report-gap, 1rem);
+	--spacing-block-gap: var(--theme-block-gap, 1rem);
+	--spacing-card-pad: var(--theme-card-padding, 1rem);
+
+	/* Type scale, scaled by the baseFontSize theme token (16px → scale 1).
+	   The unitless --text-*--line-height ratios from the default theme still
+	   apply, so line-heights scale proportionally. */
+	--text-xs: calc(var(--theme-font-scale, 1) * 0.75rem);
+	--text-sm: calc(var(--theme-font-scale, 1) * 0.875rem);
+	--text-base: calc(var(--theme-font-scale, 1) * 1rem);
+	--text-lg: calc(var(--theme-font-scale, 1) * 1.125rem);
+	--text-xl: calc(var(--theme-font-scale, 1) * 1.25rem);
+	--text-2xl: calc(var(--theme-font-scale, 1) * 1.5rem);
+	--text-3xl: calc(var(--theme-font-scale, 1) * 1.875rem);
+	--text-4xl: calc(var(--theme-font-scale, 1) * 2.25rem);
+
+	/* Colors */
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted-foreground-faded: var(--muted-foreground-faded);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-input-surface: var(--input-surface);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-success: var(--success);
+	--color-success-foreground: var(--success-foreground);
+	--color-ring: var(--ring);
+	--color-radius: var(--radius);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-card-mode-background: var(--card-mode-background);
+
+	--color-fern-50: #effaf1;
+	--color-fern-100: #d7f1df;
+	--color-fern-200: #c0e9ce;
+	--color-fern-300: #90d6a9;
+	--color-fern-400: #60c383;
+	--color-fern-500: #31b15e;
+	--color-fern-600: #259a4f;
+	--color-fern-700: #1f7e43;
+	--color-fern-800: #1f6539;
+	--color-fern-900: #194e2d;
+	--color-fern-950: #0a2916;
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(100, 100, 100, 0.4) transparent;
+	}
+
+	*::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	*::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	*::-webkit-scrollbar-thumb {
+		background: rgba(100, 100, 100, 0.4);
+		border-radius: 6px;
+		transition: background 0.2s ease;
+	}
+
+	*::-webkit-scrollbar-thumb:hover {
+		background: rgba(100, 100, 100, 0.7);
+	}
+
+	*:not(:hover)::-webkit-scrollbar-thumb {
+		background: transparent;
+	}
+
+	button {
+		@apply cursor-pointer;
+	}
+
+	.prose h1:first-child {
+		margin-top: 0 !important;
+	}
+}

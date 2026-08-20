@@ -1,0 +1,238 @@
+---
+title: 'Evidence Warehouse'
+sidebarTitle: 'Overview'
+description: 'Evidence''s built-in managed warehouse, and the connectors that load data into it.'
+---
+
+The **Evidence Warehouse** is Evidence's built-in, fully managed cloud warehouse. You connect a data source once, Evidence extracts the data into the warehouse, and every report queries it from there — fast, with no infrastructure for you to run. You choose which region the data is stored in (see [Storage Regions](#storage-regions)).
+
+Connectors are how you get data into the Evidence Warehouse. You connect to your data source once, then use that data across all your reports.
+
+Evidence supports different types of connectors: **Databases**, **Object Storage**, **Data Lakes**, **Flat Files**, and **Applications**.
+
+If you'd rather have Evidence query a warehouse you own directly — without extracting data into the Evidence Warehouse — use a [native connector](#direct-connectors) instead.
+
+---
+
+## Databases
+
+Database connectors connect to your existing data warehouse or database. Evidence extracts the data, and you can define a schedule for sync.
+
+**How it works:**
+
+1. You provide connection credentials to your database
+2. Evidence runs queries against your database to extract data
+3. Data is cached in Evidence's query engine in your chosen region
+4. Reports query the cached data for fast performance
+
+You choose where your extracted data is stored. See [available regions](#storage-regions).
+
+**Best for:**
+
+- Existing data warehouses (Snowflake, BigQuery, Redshift, etc.)
+- Data that's already modeled and ready to report on
+- Teams who want Evidence to manage the data pipeline
+
+**Supported databases:**
+
+- [Snowflake](/data-sources/snowflake)
+- [BigQuery](/data-sources/bigquery)
+- [PostgreSQL](/data-sources/postgres)
+- [RDS PostgreSQL](/data-sources/rds-postgres)
+- [Redshift](/data-sources/redshift)
+- [MotherDuck](/data-sources/motherduck)
+- [Athena](/data-sources/athena)
+- [MySQL](/data-sources/mysql)
+- [SQL Server](/data-sources/sqlserver)
+- [Azure SQL Database](/data-sources/azure-sql)
+- [Azure Postgres](/data-sources/azure-postgres)
+- [Databricks](/data-sources/databricks)
+
+We are continuously adding support for new databases. Request one [here](https://evidence.dev/contact-us).
+
+---
+
+## Direct Connectors
+
+Prefer to keep your data in your own warehouse? **Native connectors** are the alternative to the Evidence Warehouse: instead of extracting data, Evidence runs queries live against a warehouse you own. Each request from a viewer issues queries against your warehouse and returns the rows directly.
+
+**How it works:**
+
+1. You provide credentials with read access to your warehouse
+2. Evidence issues queries directly to your warehouse when viewers load reports
+
+**Key characteristics:**
+
+- **Always live**: viewers see the current state of your warehouse on every load — no sync schedule.
+- **Data stays in your warehouse**: Evidence holds credentials but doesn't store data.
+
+**Best for:**
+
+- Use cases where data freshness is important
+- Strict data residency requirements
+- Teams that already maintain RLS policies in their warehouse and want Evidence to honour them
+
+Native connectors live in the **Warehouses** section:
+
+- [Snowflake](/direct-connectors/snowflake)
+- [Fabric](/direct-connectors/fabric)
+- [ClickHouse](/direct-connectors/clickhouse)
+- [BigQuery](/direct-connectors/bigquery)
+
+---
+
+## Object Storage
+
+Object storage connectors read Parquet files directly from cloud storage buckets that you control. Evidence queries the data in place using ClickHouse's S3 table engine. In addition to the below named providers, any S3 compatible storage is supported (via the "custom S3" connector).
+
+**How it works:**
+
+1. You store Parquet files in your own bucket (S3, GCS, Azure, etc.)
+2. You provide bucket credentials to Evidence
+3. Evidence queries the Parquet files directly — no data is copied
+
+**Key characteristics:**
+
+- **Instant data availability**: When you update a Parquet file in your bucket, the new data is immediately available in Evidence—no sync or publish required
+- **Schema changes require publish**: Adding or removing columns requires clicking **Publish** or setting up a refresh schedule
+- **Data stays in your infrastructure**: Your data never leaves your bucket, Evidence queries it in place
+- **S3-compatible**: Any storage provider with an S3-compatible API works (AWS S3, GCS, Azure Blob, Cloudflare R2, MinIO, Backblaze B2, etc.)
+
+**Best for:**
+
+- Data residency or sovereignty requirements
+- Teams who manage their own data pipelines and produce Parquet files
+- High-frequency data updates where you control the source files
+- Keeping data within your own infrastructure
+
+**Supported providers:**
+
+- [AWS S3](/data-sources/s3)
+- [Google Cloud Storage](/data-sources/gcs)
+- [Azure Blob Storage](/data-sources/abs)
+- [Cloudflare R2](/data-sources/r2)
+- [Backblaze B2](/data-sources/backblaze)
+- [Custom S3-compatible provider](/data-sources/custom)
+
+---
+
+## Data Lakes
+
+Data lake connectors connect to open table formats that provide ACID transactions, schema evolution, and time travel capabilities on top of object storage.
+
+**How it works:**
+
+1. You provide credentials to your data lake catalog or storage
+2. Evidence reads the table metadata and data files
+3. Data is queried with full support for the table format's features
+
+**Best for:**
+
+- Teams using modern lakehouse architectures
+- Large-scale data with complex partitioning
+- Scenarios requiring time travel or schema evolution
+
+**Supported data lakes:**
+
+- [Iceberg](/data-sources/iceberg)
+- [Delta Lake](/data-sources/deltalake_s3)
+
+---
+
+## Applications
+
+Application connectors sync data from SaaS applications and APIs. Evidence uses Fivetran to extract and normalize data from these sources.
+
+**How it works:**
+
+1. You authenticate with the application (OAuth or API key)
+2. Evidence syncs data on a configurable schedule
+3. Data is normalized and stored in Evidence's query engine
+
+**Best for:**
+
+- Product analytics and operational reporting
+- Combining SaaS data with your data warehouse
+- Teams who want turnkey integrations without building pipelines
+
+**Supported applications:**
+
+- [Linear](/data-sources/linear)
+- [HubSpot](/data-sources/hubspot)
+- [Stripe](/data-sources/stripe)
+- [GitHub](/data-sources/github)
+- [Attio](/data-sources/attio)
+- [PostHog](/data-sources/posthog)
+- [Google Ads](/data-sources/google-ads)
+- [Facebook Ads](/data-sources/facebook-ads)
+- [Twilio](/data-sources/twilio)
+
+We are continuously adding support for new applications. Request one [here](https://evidence.dev/contact-us).
+
+---
+
+## Flat Files
+
+Upload flat files directly to Evidence for quick data analysis without setting up external connections.
+
+**How it works:**
+
+1. Upload a file directly through the Evidence interface
+2. Evidence processes and stores the data
+3. Query the data immediately in your reports
+
+**Supported formats:**
+
+- CSV
+- Parquet
+- JSONL
+- Excel
+
+**Best for:**
+
+- Quick prototyping and ad-hoc analysis
+- Small datasets that don't require a database
+- Getting started with Evidence before connecting external sources
+
+See [Flat Files](/data-sources/file) for details.
+
+---
+
+## Comparison
+
+|                    | Databases              | Object Storage            | Data Lakes             | Flat Files             | Applications           |
+| ------------------ | ---------------------- | ------------------------- | ---------------------- | ---------------------- | ---------------------- |
+| **Data location**  | Data is extracted      | Stays in your bucket      | Stays in your storage  | Uploaded to Evidence   | Data is extracted      |
+| **Data updates**   | Scheduled sync         | Instant (for row changes) | Scheduled sync         | Re-upload file         | Scheduled sync         |
+| **Schema changes** | Requires re-publish    | Requires re-publish       | Requires re-publish    | Re-upload file         | Requires re-publish    |
+| **Data residency** | Choose Evidence region | Your bucket location      | Your storage location  | Choose Evidence region | Choose Evidence region |
+
+---
+
+## Storage Regions
+
+Evidence supports the following storage regions for extracted data.
+
+| Region                    | Location               |
+| ------------------------- | ---------------------- |
+| `us-central1`             | Iowa, USA              |
+| `us-east1`                | South Carolina, USA    |
+| `us-east4`                | Virginia, USA          |
+| `us-east5`                | Ohio, USA              |
+| `us-west1`                | Oregon, USA            |
+| `us-west2`                | Los Angeles, USA       |
+| `us-west3`                | Salt Lake City, USA    |
+| `us-west4`                | Las Vegas, USA         |
+| `northamerica-northeast1` | Montreal, Canada       |
+| `northamerica-northeast2` | Toronto, Canada        |
+| `europe-west2`            | London, UK             |
+| `europe-west3`            | Frankfurt, Germany     |
+| `europe-west4`            | Eemshaven, Netherlands |
+| `europe-west6`            | Zurich, Switzerland    |
+| `europe-west8`            | Milan, Italy           |
+| `europe-west9`            | Paris, France          |
+| `europe-west10`           | Berlin, Germany        |
+| `asia-south1`             | Mumbai, India          |
+| `asia-southeast1`         | Singapore              |
+| `asia-northeast1`         | Tokyo, Japan           |
+| `australia-southeast1`    | Sydney, Australia      |

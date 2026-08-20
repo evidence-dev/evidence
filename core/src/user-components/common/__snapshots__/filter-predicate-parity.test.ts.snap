@@ -1,0 +1,305 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`filter predicate parity — bigquery > button_group (scalar and list) 1`] = `
+{
+  "list": "region IN ('A', 'O\\'Brien')",
+  "scalar": "region='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — bigquery > dimension_grid (scalar, list, quoted identifier) 1`] = `"category IN ('A', 'O\\'Brien') AND region = 'West' AND \`order date\` = 'x'"`;
+
+exports[`filter predicate parity — bigquery > dropdown (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O\\'Brien')",
+  "scalar": "category='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — bigquery > external (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O\\'Brien')",
+  "scalar": "category='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — bigquery > input_tabs (scalar) 1`] = `"status='O\\'Brien'"`;
+
+exports[`filter predicate parity — bigquery > range_calendar (closed range) 1`] = `"event_date >= DATE '2020-01-01' AND event_date <= DATE '2020-01-31'"`;
+
+exports[`filter predicate parity — bigquery > repeat (scalar) 1`] = `"category='O\\'Brien'"`;
+
+exports[`filter predicate parity — bigquery > slider (range and single) 1`] = `
+{
+  "range": "amount BETWEEN 10 AND 20",
+  "single": "amount >= 5",
+}
+`;
+
+exports[`filter predicate parity — bigquery > table_filter (multi-column compound state) 1`] = `"(status IN ('active', 'pending') AND name IN ('O\\'Brien'))"`;
+
+exports[`filter predicate parity — clickhouse > button_group (scalar and list) 1`] = `
+{
+  "list": "region IN ('A', 'O\\'Brien')",
+  "scalar": "region='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — clickhouse > dimension_grid (scalar, list, quoted identifier) 1`] = `"category IN ('A', 'O\\'Brien') AND region = 'West' AND "order date" = 'x'"`;
+
+exports[`filter predicate parity — clickhouse > dropdown (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O\\'Brien')",
+  "scalar": "category='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — clickhouse > external (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O\\'Brien')",
+  "scalar": "category='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — clickhouse > input_tabs (scalar) 1`] = `"status='O\\'Brien'"`;
+
+exports[`filter predicate parity — clickhouse > range_calendar (closed range) 1`] = `"event_date >= toDate('2020-01-01') AND event_date <= toDate('2020-01-31')"`;
+
+exports[`filter predicate parity — clickhouse > repeat (scalar) 1`] = `"category='O\\'Brien'"`;
+
+exports[`filter predicate parity — clickhouse > slider (range and single) 1`] = `
+{
+  "range": "amount BETWEEN 10 AND 20",
+  "single": "amount >= 5",
+}
+`;
+
+exports[`filter predicate parity — clickhouse > table_filter (multi-column compound state) 1`] = `"(status IN ('active', 'pending') AND name IN ('O\\'Brien'))"`;
+
+exports[`filter predicate parity — cube > button_group (scalar and list) 1`] = `
+{
+  "list": "region IN ('A', 'O''Brien')",
+  "scalar": "region='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — cube > dimension_grid (scalar, list, quoted identifier) 1`] = `"category IN ('A', 'O''Brien') AND region = 'West' AND "order date" = 'x'"`;
+
+exports[`filter predicate parity — cube > dropdown (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O''Brien')",
+  "scalar": "category='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — cube > external (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O''Brien')",
+  "scalar": "category='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — cube > input_tabs (scalar) 1`] = `"status='O''Brien'"`;
+
+exports[`filter predicate parity — cube > range_calendar (closed range) 1`] = `"event_date >= DATE '2020-01-01' AND event_date <= DATE '2020-01-31'"`;
+
+exports[`filter predicate parity — cube > repeat (scalar) 1`] = `"category='O''Brien'"`;
+
+exports[`filter predicate parity — cube > slider (range and single) 1`] = `
+{
+  "range": "amount BETWEEN 10 AND 20",
+  "single": "amount >= 5",
+}
+`;
+
+exports[`filter predicate parity — cube > table_filter (multi-column compound state) 1`] = `"(status IN ('active', 'pending') AND name IN ('O''Brien'))"`;
+
+exports[`filter predicate parity — databricks > button_group (scalar and list) 1`] = `
+{
+  "list": "region IN ('A', 'O\\'Brien')",
+  "scalar": "region='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — databricks > dimension_grid (scalar, list, quoted identifier) 1`] = `"category IN ('A', 'O\\'Brien') AND region = 'West' AND \`order date\` = 'x'"`;
+
+exports[`filter predicate parity — databricks > dropdown (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O\\'Brien')",
+  "scalar": "category='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — databricks > external (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O\\'Brien')",
+  "scalar": "category='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — databricks > input_tabs (scalar) 1`] = `"status='O\\'Brien'"`;
+
+exports[`filter predicate parity — databricks > range_calendar (closed range) 1`] = `"event_date >= DATE '2020-01-01' AND event_date <= DATE '2020-01-31'"`;
+
+exports[`filter predicate parity — databricks > repeat (scalar) 1`] = `"category='O\\'Brien'"`;
+
+exports[`filter predicate parity — databricks > slider (range and single) 1`] = `
+{
+  "range": "amount BETWEEN 10 AND 20",
+  "single": "amount >= 5",
+}
+`;
+
+exports[`filter predicate parity — databricks > table_filter (multi-column compound state) 1`] = `"(status IN ('active', 'pending') AND name IN ('O\\'Brien'))"`;
+
+exports[`filter predicate parity — fabric > button_group (scalar and list) 1`] = `
+{
+  "list": "region IN ('A', 'O''Brien')",
+  "scalar": "region='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — fabric > dimension_grid (scalar, list, quoted identifier) 1`] = `"category IN ('A', 'O''Brien') AND region = 'West' AND "order date" = 'x'"`;
+
+exports[`filter predicate parity — fabric > dropdown (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O''Brien')",
+  "scalar": "category='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — fabric > external (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O''Brien')",
+  "scalar": "category='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — fabric > input_tabs (scalar) 1`] = `"status='O''Brien'"`;
+
+exports[`filter predicate parity — fabric > range_calendar (closed range) 1`] = `"event_date >= CAST('2020-01-01' AS DATE) AND event_date <= CAST('2020-01-31' AS DATE)"`;
+
+exports[`filter predicate parity — fabric > repeat (scalar) 1`] = `"category='O''Brien'"`;
+
+exports[`filter predicate parity — fabric > slider (range and single) 1`] = `
+{
+  "range": "amount BETWEEN 10 AND 20",
+  "single": "amount >= 5",
+}
+`;
+
+exports[`filter predicate parity — fabric > table_filter (multi-column compound state) 1`] = `"(status IN ('active', 'pending') AND name IN ('O''Brien'))"`;
+
+exports[`filter predicate parity — motherduck > button_group (scalar and list) 1`] = `
+{
+  "list": "region IN ('A', 'O''Brien')",
+  "scalar": "region='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — motherduck > dimension_grid (scalar, list, quoted identifier) 1`] = `"category IN ('A', 'O''Brien') AND region = 'West' AND "order date" = 'x'"`;
+
+exports[`filter predicate parity — motherduck > dropdown (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O''Brien')",
+  "scalar": "category='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — motherduck > external (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O''Brien')",
+  "scalar": "category='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — motherduck > input_tabs (scalar) 1`] = `"status='O''Brien'"`;
+
+exports[`filter predicate parity — motherduck > range_calendar (closed range) 1`] = `"event_date >= DATE '2020-01-01' AND event_date <= DATE '2020-01-31'"`;
+
+exports[`filter predicate parity — motherduck > repeat (scalar) 1`] = `"category='O''Brien'"`;
+
+exports[`filter predicate parity — motherduck > slider (range and single) 1`] = `
+{
+  "range": "amount BETWEEN 10 AND 20",
+  "single": "amount >= 5",
+}
+`;
+
+exports[`filter predicate parity — motherduck > table_filter (multi-column compound state) 1`] = `"(status IN ('active', 'pending') AND name IN ('O''Brien'))"`;
+
+exports[`filter predicate parity — postgres > button_group (scalar and list) 1`] = `
+{
+  "list": "region IN ('A', 'O''Brien')",
+  "scalar": "region='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — postgres > dimension_grid (scalar, list, quoted identifier) 1`] = `"category IN ('A', 'O''Brien') AND region = 'West' AND "order date" = 'x'"`;
+
+exports[`filter predicate parity — postgres > dropdown (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O''Brien')",
+  "scalar": "category='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — postgres > external (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O''Brien')",
+  "scalar": "category='O''Brien'",
+}
+`;
+
+exports[`filter predicate parity — postgres > input_tabs (scalar) 1`] = `"status='O''Brien'"`;
+
+exports[`filter predicate parity — postgres > range_calendar (closed range) 1`] = `"event_date >= DATE '2020-01-01' AND event_date <= DATE '2020-01-31'"`;
+
+exports[`filter predicate parity — postgres > repeat (scalar) 1`] = `"category='O''Brien'"`;
+
+exports[`filter predicate parity — postgres > slider (range and single) 1`] = `
+{
+  "range": "amount BETWEEN 10 AND 20",
+  "single": "amount >= 5",
+}
+`;
+
+exports[`filter predicate parity — postgres > table_filter (multi-column compound state) 1`] = `"(status IN ('active', 'pending') AND name IN ('O''Brien'))"`;
+
+exports[`filter predicate parity — snowflake > button_group (scalar and list) 1`] = `
+{
+  "list": "region IN ('A', 'O\\'Brien')",
+  "scalar": "region='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — snowflake > dimension_grid (scalar, list, quoted identifier) 1`] = `"category IN ('A', 'O\\'Brien') AND region = 'West' AND "order date" = 'x'"`;
+
+exports[`filter predicate parity — snowflake > dropdown (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O\\'Brien')",
+  "scalar": "category='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — snowflake > external (scalar and list) 1`] = `
+{
+  "list": "category IN ('A', 'O\\'Brien')",
+  "scalar": "category='O\\'Brien'",
+}
+`;
+
+exports[`filter predicate parity — snowflake > input_tabs (scalar) 1`] = `"status='O\\'Brien'"`;
+
+exports[`filter predicate parity — snowflake > range_calendar (closed range) 1`] = `"event_date >= TO_DATE('2020-01-01') AND event_date <= TO_DATE('2020-01-31')"`;
+
+exports[`filter predicate parity — snowflake > repeat (scalar) 1`] = `"category='O\\'Brien'"`;
+
+exports[`filter predicate parity — snowflake > slider (range and single) 1`] = `
+{
+  "range": "amount BETWEEN 10 AND 20",
+  "single": "amount >= 5",
+}
+`;
+
+exports[`filter predicate parity — snowflake > table_filter (multi-column compound state) 1`] = `"("status" IN ('active', 'pending') AND "name" IN ('O\\'Brien'))"`;

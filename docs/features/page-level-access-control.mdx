@@ -1,0 +1,413 @@
+---
+title: 'Page Level Access Control'
+description: 'Control who can view your published reports and pages with a version-controlled access.yaml file.'
+---
+
+Page level access control determines who can view a project's published reports. It is defined in a single `access.yaml` file at the project root, created for you automatically. The file lives alongside your content, ships through the same git workflow as your pages, and is enforced when readers visit your published reports.
+
+<Note>Users with the `Developer`, `Admin`, or `Org Viewer` role can always view all pages, regardless of `access.yaml`.</Note>
+
+## Who can see your reports
+
+Before you write any rules, it helps to know that an Evidence organization has two kinds of viewers:
+
+- **Internal viewers** — typical employees and teammates inside your organization. They are part of the org, hold a role of viewer or higher, and can be added to [Groups](#groups).
+- **External viewers / customers** — clients or partners you share dashboards with from outside the company. They are managed under [Customers](#customers) and behave like a kind of group, but with one important difference: they are **excluded** from any "everyone in the org" rule.
+
+## Groups
+
+Groups let you organize users for easier access management. Instead of granting page or project access to individual users, you can grant access to a group.
+
+Create groups from the **Settings → Team** page. A group's ID is set at creation and cannot be changed, so references in `access.yaml` keep working even if you rename the group's display name.
+
+### Customers
+
+You can add external viewer users to Customers in your organization. Customers behave like a group, but are **excluded** from any "everyone in the org" (`$org`) rule — they must always be granted access explicitly.
+
+### Groups vs Customers
+
+|                                       | Groups                               | Customers   |
+| ------------------------------------- | ------------------------------------ | ----------- |
+| **Allowed Roles**                     | Viewer, Org Viewer, Developer, Admin | Viewer only |
+| "Everyone in the Organization" Access | Included                             | Excluded    |
+
+## The `access.yaml` schema
+
+The file lives at the project root: `access.yaml`. Here is a complete example covering every supported construct:
+
+```yaml
+project:
+  grants:
+    viewers:
+      - $org # built-in: every internal org member with viewer or higher
+      - alice@example.com # user (email)
+      - marketing # group ID
+
+folders:
+  finance: # folder path = directory slugs joined by "/", no trailing slash
+    inherit: false # override: pages inside are restricted to these grants
+    grants:
+      viewers:
+        - finance-team
+  shared: # additive folder rule
+    grants: # inherit defaults to true → adds these viewers on top of project audience
+      viewers:
+        - customer-acme
+
+pages:
+  reports/q1-overview: # page path = directory slugs + file slug, no extension
+    inherit: true # additive (default): cascade audience + grants below
+    grants:
+      viewers:
+        - finance
+
+  reports/internal:
+    inherit: false # override: ONLY the grants below see this page
+    grants:
+      viewers:
+        - alice@example.com
+        - leadership
+```
+
+<Note>
+	**Page and folder grants are additive by default.** A page's audience is the cascade audience
+	(project + any enclosing folder rules) **plus** anything listed on the page or folder. To
+	restrict access on a page or folder, set `inherit: false` — only the principals you list there
+	(plus any deeper explicit grants) will see it.
+</Note>
+
+### Top-level keys
+
+- `project` — the project-wide audience. Required. Use `project:` with `grants: viewers: []` for an admins-and-developers-only project.
+- `folders` — per-directory overrides keyed by full folder path (no trailing slash). Optional. Applies to every page in the folder's subtree, including nested subdirectories.
+- `pages` — per-page overrides keyed by full page path. Optional. Pages not listed here inherit whatever cascade their enclosing folders and the project settle on.
+
+### `viewers` lists
+
+The `grants.viewers` list defines who can see a project or page. It can contain four kinds of principals, mixed in any order:
+
+- **Users** — referenced by email, e.g. `alice@example.com`. Must resolve to an org member.
+- **Groups** — referenced by group ID, e.g. `marketing`. Group IDs are lowercase letters, digits, and hyphens. Create groups on the [Groups](#groups) page; a group's ID is set at creation and cannot be changed, so existing references keep working even if the display name is renamed.
+- **Customers** — your external customer groups, referenced by their group ID just like internal groups.
+- **`$org`** — a built-in group meaning every internal member of your organization with viewer role or higher.
+
+<Warning>
+	**`$org` does not include customers.** It grants access to every internal member of your
+	organization with viewer role or higher, and nothing else. Customers must be granted access
+	explicitly — either by email or by the customer group they belong to.
+</Warning>
+
+`$org` is **project-level only**. Using it under a page or folder entry is rejected — to make a single page or folder org-wide visible, leave `inherit: true` at that level and grant `$org` at the project level.
+
+### `inherit` (pages and folders)
+
+Controls whether the parent audience (project, plus any shallower folder rules for pages inside a folder subtree) can also see this asset:
+
+- `inherit: true` (default) — parent viewers see this asset, **plus** anyone you list under `grants.viewers`.
+- `inherit: false` — parent viewers do **not** see this asset. Only the principals you list under `grants.viewers` — plus any grants from a deeper `inherit: false` rule further down the chain — can see it.
+
+For pages inside folders, the effective audience uses the **deepest cut wins** rule: the innermost level with `inherit: false` sets the audience, and shallower project or folder audiences are severed. Additive levels (`inherit: true` with grants) stack on top of whatever the deepest cut allows. See the [Folder examples](#folders) section for illustrations.
+
+### Folder paths
+
+Folders are addressed by the full directory path within your project — the same segments used in your published URLs, joined with `/`, with no trailing slash.
+
+- Valid: `finance`, `hr/comp`, `customers/acme`
+- Invalid: `finance/` (trailing slash), `/finance` (leading slash), `Finance` (uppercase), `finance/q3-report` (this addresses a page — folder rules apply to directories, not files)
+
+A folder rule applies to every page in the folder's subtree, including deeper nested directories. See [Folder examples](#folders) below for the cascade semantics.
+
+### Page paths
+
+Use the full path within the project: directory slugs joined by `/`, then the file slug, no extension.
+
+- Valid: `summary`, `reports/sales/monthly`, `q1-overview`
+- Invalid: `Reports/Sales` (uppercase), `/leading-slash`, `trailing-slash/`, `with spaces`
+
+Page paths must be lowercase, matching the form used in your published URLs.
+
+### Closed by default
+
+To declare an admins-and-developers-only project, write a `project` block with an empty viewers list:
+
+```yaml
+project:
+  grants:
+    viewers: []
+```
+
+This is the minimum valid file. An entirely empty file, a comments-only file, or a file that omits the top-level `project:` key (for example, a pages-only file) is **rejected** by validation — see [Validation](#validation) below. We require the explicit `project:` declaration so that a forgotten or accidentally-truncated file fails loudly instead of silently locking your viewers out.
+
+To declare "open to the org", you must write it explicitly:
+
+```yaml
+project:
+  grants:
+    viewers:
+      - $org
+```
+
+## Examples
+
+### 1. Open to the entire org
+
+Every internal org member with viewer role or higher can see every page.
+
+```yaml
+project:
+  grants:
+    viewers:
+      - $org
+```
+
+### 2. Restricted to one group
+
+The whole project is restricted to a single group. Useful for sensitive projects (finance, security, legal) where the audience is a tightly-defined team.
+
+```yaml
+project:
+  grants:
+    viewers:
+      - finance
+```
+
+Anyone outside the `finance` group (other than developers and admins, who always retain access) gets a 404 on every page.
+
+### 3. Restricted to multiple groups + named individuals
+
+Same pattern, but the audience is a few groups plus a couple of specific people not in any of them.
+
+```yaml
+project:
+  grants:
+    viewers:
+      - finance
+      - leadership
+      - alex@example.com
+      - jordan@example.com
+```
+
+Lists can mix users, group IDs, and `$org` freely.
+
+### 4. Open project, but one page is restricted
+
+The project is open to the org, but a specific page (e.g. an executive dashboard or financial detail) is restricted to a smaller group. Use `inherit: false` so the project audience does **not** spill onto this page.
+
+```yaml
+project:
+  grants:
+    viewers:
+      - $org
+
+pages:
+  reports/board-meeting:
+    inherit: false
+    grants:
+      viewers:
+        - executives
+```
+
+Everyone in the org sees the project; only `executives` see `reports/board-meeting`.
+
+### 5. Restricted project, with a few pages opened to a wider audience
+
+The project is restricted to one group, but specific pages need a broader audience. Use `inherit: true` (the default) plus extra grants — the page audience becomes "the project's audience plus these extras".
+
+```yaml
+project:
+  grants:
+    viewers:
+      - finance
+
+pages:
+  reports/quarterly-summary:
+    grants:
+      viewers:
+        - leadership
+  reports/headcount:
+    grants:
+      viewers:
+        - hr
+        - leadership
+```
+
+`finance` sees every page (including the two listed). `leadership` additionally sees `quarterly-summary` and `headcount`. `hr` only sees `headcount`.
+
+## Folders
+
+Folder rules apply to every page in a folder's subtree — including pages in nested subdirectories. Use them when a whole section of your project needs a different audience than the project as a whole.
+
+### Common patterns
+
+#### Restricted folder inside an open project
+
+Everyone in the org sees the project, but the `finance/` subtree is restricted to the finance team.
+
+```yaml
+project:
+  grants:
+    viewers:
+      - $org
+
+folders:
+  finance:
+    inherit: false
+    grants:
+      viewers:
+        - finance-team
+```
+
+Every page under `finance/` — including `finance/q3-report`, `finance/expenses/detail`, and any future page added to that directory — is limited to finance-team members. The rest of the project remains org-wide.
+
+#### Additive folder for external customers
+
+The project is locked to internal staff. A `shared/` folder additionally grants access to an external customer group.
+
+```yaml
+project:
+  grants:
+    viewers:
+      - account-managers
+
+folders:
+  shared:
+    grants: # inherit defaults to true → additive
+      viewers:
+        - customer-acme
+```
+
+Account managers see the whole project. The Acme customer group only sees pages under `shared/`. This is the folder-level equivalent of Case 6 below, applied to an entire subtree instead of an individual page.
+
+#### Nested folders (deepest cut wins)
+
+The `hr/` subtree is HR-only. Inside it, `hr/compensation/` is further narrowed to the compensation committee — HR-team members do NOT see compensation pages.
+
+```yaml
+project:
+  grants:
+    viewers:
+      - $org
+
+folders:
+  hr:
+    inherit: false
+    grants:
+      viewers:
+        - hr-team
+  hr/compensation:
+    inherit: false
+    grants:
+      viewers:
+        - comp-committee
+```
+
+The deepest `inherit: false` rule in a page's chain wins. Grants from levels above the deepest cut do not reach pages below it.
+
+<Warning>
+	**Narrowing a page inside a restricted folder — be explicit about `inherit`.** A page rule
+	whose `inherit` is omitted (or set to `true`) is **additive**: the page's grants stack on top
+	of the surviving folder cascade instead of replacing it. If you want a page inside a
+	restricted folder to be even more restricted, set `inherit: false` explicitly:
+
+	```yaml
+	folders:
+	  finance:
+	    inherit: false
+	    grants:
+	      viewers: [finance-team]
+
+	pages:
+	  finance/executive-summary:
+	    inherit: false # ← required to further restrict; without it, finance-team is still granted
+	    grants:
+	      viewers: [cfo@example.com]
+	```
+
+	Omitting `inherit: false` on the page above would leave finance-team with access to the
+	executive summary.
+</Warning>
+
+### 6. Per-customer pages
+
+When you publish customer-specific pages in the same project (e.g. an "Acme dashboard" and a "Globex dashboard"), grant your internal team at the project level and each customer on their own page. Because `inherit` defaults to `true`, account managers automatically see every page — including customer pages — without being listed on each one.
+
+```yaml
+project:
+  grants:
+    viewers:
+      - account-managers
+
+pages:
+  customers/acme:
+    grants:
+      viewers:
+        - customer-acme
+  customers/globex:
+    grants:
+      viewers:
+        - customer-globex
+```
+
+Each customer sees only their own dashboard; account managers (the project-level audience) see all pages.
+
+<Note>
+	**Pair page-level access with Row-Level Security for true data isolation between customers.**
+	Page level access decides which pages a customer can open;
+	[Row-Level Security](/features/access-rules) decides which rows of data they
+	see when they query. For customer-facing reports where each customer should only see their own
+	data, use them together: per-page access in `access.yaml`, RLS rules on the underlying tables.
+</Note>
+
+## Editing `access.yaml`
+
+`access.yaml` is a regular project file — edit it in the Studio editor (with live validation, autocomplete, and AI-sidebar awareness) or in your own environment for GitHub-connected projects. Changes flow through the same commit and publish workflow as your pages: rules only go live once they reach your published branch.
+
+## Validation
+
+Studio validates `access.yaml` to make sure your access rules are well-formed and resolve against your org. Validation checks that:
+
+- The file exists and contains a top-level `project:` block with a `grants.viewers` list (the minimum valid file is `project:` with `grants: viewers: []`)
+- The YAML parses and matches the expected schema
+- Every email refers to a real org member
+- Every group ID refers to a real group
+- Every page path refers to a real page
+- Every folder path refers to a real (non-root) directory
+
+On feature branches we **warn** so you can stage work in progress. Before changes reach your default branch we **block**, so broken yaml can never affect real viewers.
+
+| Surface                                  | When                                       | On failure                                                                |
+| ---------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------- |
+| Editor live                              | Every keystroke                            | Inline squiggles, autosave proceeds                                       |
+| Studio commit on a feature branch        | On commit                                  | **Warn** with dialog. Choose **Commit anyway** to land WIP, or fix first. |
+| Studio commit on default branch          | On commit                                  | **Block** with dialog. No override.                                       |
+| Studio publish (merge feature → default) | On publish                                 | **Block** with dialog. No override.                                       |
+| GitHub PR                                | PR opened, reopened, or new commits pushed | Check **Evidence: access.yaml Validation** fails with annotated lines     |
+| Default-branch merge applied             | After merge                                | Banner + admin email; viewers continue to see your previous published version |
+
+### Failure recovery
+
+If `access.yaml` is malformed or missing on the default branch after a merge, the publish that would have applied it fails. The behavior is:
+
+1. **Your previous published version stays live.** The atomic publish promote rolls back when access.yaml can't be applied, so viewers continue to see exactly what they saw before the failed publish. New content from the failed publish is not visible until you fix the file.
+2. **Admins are notified.** An email is sent to all organization admins, and a banner appears in Studio on every project page until a subsequent publish succeeds. The Publish History page shows the failed event with the specific reason.
+3. **Fix the file:** edit `access.yaml` to resolve the validation errors, commit, and merge — or retry from the history page. The next successful publish replaces the live version with the new content.
+
+The strictness of the upstream validators means this state should be unreachable through normal use — the Studio commit/publish gates and the GitHub PR check all block invalid yaml before it can land. The failsafe exists for force-pushes, history rewrites, and unusual merge paths.
+
+## Branch behavior
+
+You can use branches to preview access changes before they go live. Each branch uses its own `access.yaml`, so:
+
+- When you open a preview link for a branch, the audience is resolved from that branch's `access.yaml`.
+- Changes on a feature branch do **not** affect the published access rules.
+- The rules only go live once the branch is merged into the published branch.
+
+This lets you stage and review access changes the same way you stage and review content changes.
+
+## CI check on pull requests
+
+When the project is connected to GitHub, every PR runs the **Evidence: access.yaml Validation** check alongside the existing **Evidence: Markdown Validation** check.
+
+- The check parses `access.yaml` from the PR head, validates schema, and resolves references against the project's users, groups, and pages.
+- Errors appear as annotations on the offending lines in the PR file diff.
+- A missing `access.yaml` fails the check.

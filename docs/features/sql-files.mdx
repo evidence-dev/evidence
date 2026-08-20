@@ -1,0 +1,90 @@
+---
+title: 'SQL Files'
+description: 'Create reusable SQL queries as standalone files that can be referenced by components and inline queries.'
+---
+
+SQL files let you define reusable SQL queries that can be referenced across your project. This is useful for:
+
+- Organizing complex queries in dedicated files
+- Reusing the same query across multiple pages
+- Keeping your markdown cleaner by separating SQL from content
+
+---
+
+## Creating SQL Files
+
+Create a new SQL file from the file tree sidebar by clicking the `+` button on a directory and selecting "New SQL File". SQL files use the `.sql` extension.
+
+Write your query directly in the editor with full SQL autocomplete support:
+
+```sql
+SELECT
+    date,
+    sum(amount) as total_amount,
+    count(*) as order_count
+FROM orders
+WHERE status = 'completed'
+GROUP BY date
+ORDER BY date DESC
+```
+
+---
+
+## Referencing SQL Files
+
+### From Components
+
+Reference a SQL file in any component's `data` attribute using the file path:
+
+```jinja
+{% bar_chart data="/queries/orders_by_date" x="date" y="total_amount" /%}
+
+{% table data="/queries/orders_by_date" /%}
+```
+
+### Path Resolution
+
+`data` is a project-relative path. **A leading slash means "from the project root"**; without it, the path resolves relative to the page that's referencing the SQL file.
+
+```
+queries/
+    ├── orders_by_date     # Referenced as data="/queries/orders_by_date"
+    └── sales/
+        └── totals         # Referenced as data="/queries/sales/totals"
+```
+
+For a page at `pages/home`, `data="orders_by_date"` would resolve to `pages/orders_by_date` (the page's own directory) — almost certainly not what you want. **Use the leading slash** to make references unambiguous and resilient to the page being moved.
+
+Legacy single-tree projects (no `pages/` / `partials/` / `queries/` split) accept the bare form because there's no relative-resolution layer there.
+
+### From Inline Queries
+
+Reference a SQL file from an inline query using the same syntax:
+
+~~~markdown
+```sql orders_summary
+SELECT * FROM {{ "/queries/orders_by_date" }}
+WHERE total_amount > 1000
+```
+~~~
+
+This allows you to build on top of SQL file queries with additional filtering or transformations.
+
+---
+
+## Key Differences from Inline Queries
+
+| Feature | SQL Files | Inline Queries |
+|---------|-----------|----------------|
+| Location | Standalone `.sql` files | Embedded in markdown |
+| Reusability | Can be used across multiple pages | Scoped to the page |
+| Variable interpolation | Not supported | Supported |
+
+---
+
+## Best Practices
+
+- **Use SQL files for shared queries**: If you need the same data on multiple pages, put the query in a SQL file.
+- **Use inline queries for page-specific logic**: For queries that use page filters or variables, inline queries are more flexible.
+- **Organize with directories**: Create a `queries/` directory to keep your SQL files organized.
+- **Keep SQL files focused**: Each file should contain a single, well-defined query.

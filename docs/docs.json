@@ -1,0 +1,510 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "thumbnails": {
+    "fonts": {
+      "family": "Geist"
+    }
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "name": "Evidence Docs",
+  "colors": {
+    "primary": "#2c5282",
+    "light": "#2c5282",
+    "dark": "#15803D"
+  },
+  "integrations": {
+    "posthog": {
+      "apiKey": "phc_5gRFl1Rp6a01CZM9CX3qDvFwyxp7YzdWvdGAgi8a1fq"
+    }
+  },
+  "favicon": "/favicon.svg",
+  "redirects": [
+    {
+      "source": "/features/code-managed-access",
+      "destination": "/features/page-level-access-control"
+    },
+    {
+      "source": "/features/page-frontmatter",
+      "destination": "/features/page-settings"
+    },
+    {
+      "source": "/features/access-control",
+      "destination": "/features/access-rules"
+    },
+    {
+      "source": "/features/row-level-security",
+      "destination": "/features/access-rules"
+    },
+    {
+      "source": "/features/project-configuration",
+      "destination": "/features/project-settings"
+    },
+    {
+      "source": "/features/mcp-server",
+      "destination": "/mcp/docs"
+    },
+    {
+      "source": "/features/evidence-mcp",
+      "destination": "/mcp/studio"
+    }
+  ],
+  "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Evidence Studio",
+          "href": "https://evidence.studio",
+          "icon": "app-window"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://slack.evidence.dev",
+          "icon": "slack"
+        }
+      ]
+    },
+    "tabs": [
+      {
+        "tab": "Docs",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "index",
+              "quickstart",
+              "migration-guide",
+              "editing",
+              "publishing"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "core-concepts/markdown",
+              "core-concepts/components",
+              "core-concepts/data-sources",
+              "core-concepts/models",
+              "core-concepts/metrics",
+              "core-concepts/value-formatting",
+              "core-concepts/variables",
+              "core-concepts/partials",
+              "core-concepts/custom-components"
+            ]
+          },
+          {
+            "group": "Features",
+            "pages": [
+              "features/version-control",
+              "features/project-settings",
+              "features/page-settings",
+              "features/themes",
+              "features/layouts",
+              "features/sql-files",
+              "features/page-level-access-control",
+              "features/access-rules",
+              "features/evidence-agent",
+              "features/translations",
+              "features/embedded"
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              "mcp/overview",
+              "mcp/studio",
+              "mcp/docs"
+            ]
+          },
+          {
+            "group": "CLI",
+            "pages": [
+              "cli/index",
+              "cli/connections",
+              "cli/commands"
+            ]
+          },
+          {
+            "group": "Self Host",
+            "pages": [
+              "self-host/index",
+              "self-host/vercel",
+              "self-host/render",
+              "self-host/fly",
+              "self-host/railway"
+            ]
+          },
+          {
+            "group": "Warehouses",
+            "pages": [
+              "warehouses/evidence-warehouse",
+              "direct-connectors/snowflake",
+              "direct-connectors/fabric",
+              "direct-connectors/clickhouse",
+              "direct-connectors/bigquery",
+              "direct-connectors/databricks",
+              "direct-connectors/postgres",
+              "direct-connectors/motherduck"
+            ]
+          },
+          {
+            "group": "Evidence Warehouse",
+            "pages": [
+              "data-sources/index",
+              {
+                "group": "Databases",
+                "expanded": false,
+                "icon": "database",
+                "pages": [
+                  "data-sources/athena",
+                  "data-sources/azure-postgres",
+                  "data-sources/azure-sql",
+                  "data-sources/databricks",
+                  "data-sources/google-cloud-postgresql",
+                  "data-sources/mongo",
+                  "data-sources/motherduck",
+                  "data-sources/mysql",
+                  "data-sources/postgres",
+                  "data-sources/rds-postgres",
+                  "data-sources/redshift",
+                  "data-sources/sap_hana_db",
+                  "data-sources/sqlserver"
+                ]
+              },
+              {
+                "group": "Object Storage",
+                "expanded": false,
+                "icon": "hard-drive",
+                "pages": [
+                  "data-sources/abs",
+                  "data-sources/backblaze",
+                  "data-sources/custom",
+                  "data-sources/gcs",
+                  "data-sources/r2",
+                  "data-sources/s3"
+                ]
+              },
+              {
+                "group": "Data Lakes",
+                "expanded": false,
+                "icon": "layers",
+                "pages": [
+                  "data-sources/deltalake_s3",
+                  "data-sources/iceberg"
+                ]
+              },
+              {
+                "group": "Flat Files",
+                "expanded": false,
+                "icon": "file",
+                "pages": [
+                  "data-sources/file"
+                ]
+              },
+              {
+                "group": "Applications",
+                "expanded": false,
+                "icon": "plug",
+                "pages": [
+                  "data-sources/activecampaign",
+                  "data-sources/adjust",
+                  "data-sources/airtable",
+                  "data-sources/amazon_ads",
+                  "data-sources/amplitude",
+                  "data-sources/apollo",
+                  "data-sources/apple_search_ads",
+                  "data-sources/appsflyer",
+                  "data-sources/asana",
+                  "data-sources/attio",
+                  "data-sources/bingads",
+                  "data-sources/braintree",
+                  "data-sources/braze",
+                  "data-sources/brevo",
+                  "data-sources/brex",
+                  "data-sources/chargebee_product_catalog_2",
+                  "data-sources/clickup",
+                  "data-sources/close",
+                  "data-sources/concur",
+                  "data-sources/confluence",
+                  "data-sources/constant_contact",
+                  "data-sources/copper",
+                  "data-sources/criteo",
+                  "data-sources/customerio",
+                  "data-sources/datadog",
+                  "data-sources/dixa",
+                  "data-sources/drip",
+                  "data-sources/dynamics_365",
+                  "data-sources/expensify",
+                  "data-sources/facebook-ads",
+                  "data-sources/facebook_pages",
+                  "data-sources/freshbooks",
+                  "data-sources/freshdesk",
+                  "data-sources/freshsales",
+                  "data-sources/front",
+                  "data-sources/fullstory",
+                  "data-sources/github",
+                  "data-sources/gitlab",
+                  "data-sources/gladly",
+                  "data-sources/gongio",
+                  "data-sources/google-ads",
+                  "data-sources/google_analytics",
+                  "data-sources/google_business_profile",
+                  "data-sources/google_search_console",
+                  "data-sources/gorgias",
+                  "data-sources/happyfox",
+                  "data-sources/harvest",
+                  "data-sources/heap",
+                  "data-sources/helpscout",
+                  "data-sources/hubspot",
+                  "data-sources/insightly",
+                  "data-sources/instagram_business",
+                  "data-sources/intercom",
+                  "data-sources/iterable",
+                  "data-sources/jira",
+                  "data-sources/klaviyo",
+                  "data-sources/kustomer",
+                  "data-sources/lemlist",
+                  "data-sources/linear",
+                  "data-sources/linkedin_ads",
+                  "data-sources/linkedin_company_pages",
+                  "data-sources/mailchimp",
+                  "data-sources/marketo",
+                  "data-sources/mixpanel",
+                  "data-sources/mollie",
+                  "data-sources/monday",
+                  "data-sources/netsuite_suiteanalytics",
+                  "data-sources/notion",
+                  "data-sources/okta",
+                  "data-sources/optimizely",
+                  "data-sources/outbrain",
+                  "data-sources/outreach",
+                  "data-sources/paddle",
+                  "data-sources/paypal",
+                  "data-sources/pendo",
+                  "data-sources/pinterest_ads",
+                  "data-sources/pipedrive",
+                  "data-sources/posthog",
+                  "data-sources/postmark",
+                  "data-sources/pylon_support_platform",
+                  "data-sources/quickbooks",
+                  "data-sources/quora_ads",
+                  "data-sources/ramp",
+                  "data-sources/recharge",
+                  "data-sources/recurly",
+                  "data-sources/reddit_ads",
+                  "data-sources/revenuecat",
+                  "data-sources/sage_intacct",
+                  "data-sources/sailthru",
+                  "data-sources/salesforce",
+                  "data-sources/salesforce_marketing_cloud",
+                  "data-sources/salesloft",
+                  "data-sources/segment",
+                  "data-sources/sendgrid",
+                  "data-sources/servicenow",
+                  "data-sources/shopify",
+                  "data-sources/slack_app",
+                  "data-sources/snapchat_ads",
+                  "data-sources/spotify_ads",
+                  "data-sources/sprout",
+                  "data-sources/square",
+                  "data-sources/stripe",
+                  "data-sources/sugarcrm",
+                  "data-sources/taboola",
+                  "data-sources/the_trade_desk",
+                  "data-sources/tiktok_ads",
+                  "data-sources/trello",
+                  "data-sources/trustpilot",
+                  "data-sources/twilio",
+                  "data-sources/twitter_ads",
+                  "data-sources/xero",
+                  "data-sources/youtube_analytics",
+                  "data-sources/zendesk",
+                  "data-sources/zoho_books",
+                  "data-sources/zoho_crm",
+                  "data-sources/zoho_desk",
+                  "data-sources/zuora"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Components",
+            "pages": [
+              {
+                "group": "Values",
+                "expanded": false,
+                "icon": "shapes",
+                "pages": [
+                  "components/value",
+                  "components/big_value",
+                  "components/delta",
+                  "components/heat_grid",
+                  "components/progress_bars"
+                ]
+              },
+              {
+                "group": "Tables",
+                "expanded": false,
+                "icon": "table-2",
+                "pages": [
+                  "components/table",
+                  "components/dimension",
+                  "components/measure",
+                  "components/pivot"
+                ]
+              },
+              {
+                "group": "Charts",
+                "expanded": false,
+                "icon": "chart-column-increasing",
+                "pages": [
+                  "components/area_chart",
+                  "components/bar_chart",
+                  "components/bubble_chart",
+                  "components/calendar_heatmap",
+                  "components/candlestick",
+                  "components/chord_chart",
+                  "components/combo_chart",
+                  "components/custom_echart",
+                  "components/funnel_chart",
+                  "components/heatmap",
+                  "components/histogram",
+                  "components/horizontal_bar_chart",
+                  "components/line_chart",
+                  "components/pie_chart",
+                  "components/polar_chart",
+                  "components/radar_chart",
+                  "components/sankey_chart",
+                  "components/scatter_chart",
+                  "components/treemap",
+                  "components/area",
+                  "components/bar",
+                  "components/bubble",
+                  "components/line",
+                  "components/reference_area",
+                  "components/reference_line",
+                  "components/reference_point",
+                  "components/scatter",
+                  "components/sparkline"
+                ]
+              },
+              {
+                "group": "Maps",
+                "expanded": false,
+                "icon": "map",
+                "pages": [
+                  "components/custom_map",
+                  "components/map",
+                  "components/area_layer",
+                  "components/heatmap_layer",
+                  "components/point_layer"
+                ]
+              },
+              {
+                "group": "Inputs",
+                "expanded": false,
+                "icon": "text-cursor-input",
+                "pages": [
+                  "components/button_group",
+                  "components/comparison_selector",
+                  "components/benchmark_comparison",
+                  "components/target_comparison",
+                  "components/date_grain_selector",
+                  "components/dropdown",
+                  "components/filter_bar",
+                  "components/input_tabs",
+                  "components/option",
+                  "components/range_calendar",
+                  "components/slider",
+                  "components/table_filter",
+                  "components/text_input",
+                  "components/toggle",
+                  "components/dimension_grid"
+                ]
+              },
+              {
+                "group": "Custom",
+                "expanded": false,
+                "icon": "code-xml",
+                "pages": [
+                  "components/html"
+                ]
+              },
+              {
+                "group": "UI",
+                "expanded": false,
+                "icon": "layout-template",
+                "pages": [
+                  "components/accordion",
+                  "components/accordion_item",
+                  "components/accordion_title",
+                  "components/audio",
+                  "components/callout",
+                  "components/clock",
+                  "components/commentary",
+                  "components/details",
+                  "components/download",
+                  "components/fence",
+                  "components/icon",
+                  "components/iframe",
+                  "components/image",
+                  "components/info",
+                  "components/line_break",
+                  "components/link",
+                  "components/link_button",
+                  "components/logo",
+                  "components/modal",
+                  "components/note",
+                  "components/page_break",
+                  "components/partial",
+                  "components/print_group",
+                  "components/row",
+                  "components/stack",
+                  "components/tab",
+                  "components/tabs"
+                ]
+              },
+              {
+                "group": "Logic",
+                "expanded": false,
+                "icon": "trending-up-down",
+                "pages": [
+                  "components/if",
+                  "components/else_if",
+                  "components/else",
+                  "components/repeat"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/wordmark-light.png",
+    "dark": "/logo/wordmark-dark.png"
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/evidence_dev",
+      "github": "https://github.com/evidence-dev",
+      "linkedin": "https://linkedin.com/company/evidence-dev",
+      "slack": "https://slack.evidence.dev",
+      "bluesky": "https://bsky.app/profile/evidence.dev"
+    }
+  }
+}

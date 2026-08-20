@@ -1,0 +1,67 @@
+---
+title: 'Version Control'
+description: 'Learn how to manage your Evidence projects with Git.'
+---
+
+Evidence projects correspond to Git repositories. This means you can use Git for version control. 
+
+This allows you to make changes to your code outside of the Studio interface, such as on your local machine using the [CLI](/cli).
+
+A project can either use:
+- **Evidence managed repo (default)**: You can only edit files from the Studio interface.
+- **Your own repo**: You connect your project to an external Git repo. You can edit files from the Studio interface or your own environment. Changes are synced between the two using Git.
+
+## GitHub Integration
+
+<Warning>
+Currently the only supported git provider is GitHub.
+</Warning>
+
+1. Connect Evidence Studio to your GitHub account from the [Organization Settings](https://evidence.studio/settings/organization) page.
+    - Choose to either allow access to all repositories, or only specific repositories. You can update this later using the "Manage" button.
+2. After creating a project, link it to a GitHub repo:
+    - Navigate to the project, and click the Cog icon next to the project name in the sidebar to open project settings.
+    - Under the "Version Control" section, check "Connect to GitHub repository".
+3. Choose:
+    - The repo you want to link to your project. It must be an existing one.
+    - The branch you want to be the published branch. The code on this branch defines what your users will see.
+    - The project root. By default this is `pages`, which means your files will be stored in a `pages` directory. Leave it blank to store files at the root.
+4. Click Save. Your project files are not synced yet!
+5. Navigate back to the editor and click "Publish". This pushes your current code to GitHub.
+
+## Branching Strategies
+
+Evidence supports any git branching strategy, but two common ones are:
+
+1. **Main only**: There is only one branch, and changes are made to this branch. When you click "Publish", your changes are pushed directly to the main branch and are live for your viewers.
+    - Most suitable for: solo developers, proof of concepts, early stage reports
+2. **Feature branches**: There is a main branch that is live for viewers, and separate branches for development. To save changes on a branch, you use the "commit" button in the left sidebar. When your feature is ready you can either:
+    - Hit "Publish" to merge your changes into the published branch. This creates a squash commit, and will overwrite any changes on the published branch.
+    - Open a PR from GitHub and merge it there. This allows you to review changes, and merge when there are no conflicts.
+    - Most suitable for: teams, mature reports with multiple contributors
+
+## Shared Working State
+When you make code changes in the Studio editor, all changes are saved in a shared working state until you commit them. This means other developers will see your changes if they open the same file.
+This is in contrast to a typical git development experience where your changes are local to your machine until you commit them.
+
+## Version Controlled Assets
+
+Your project content and configuration are version controlled, stored as files at the project root:
+
+- Pages
+- Partials
+- SQL files
+- [Project settings](/features/project-settings) — project name and default date/layout settings (`evidence.config.yaml`)
+- [Theme](/features/project-settings#theme-yaml) — project colors, palettes, and scales (`theme.yaml`)
+- [Page settings](/features/page-settings) — per-page title, layout, theme, icon, sidebar position, and auto refresh
+- [Page level access](/features/page-level-access-control) — who can view published pages (`access.yaml`)
+- Translations (`translations.yaml`)
+
+Some settings remain organization-wide and are edited from the Studio UI rather than version controlled:
+
+- Organization display settings:
+    - Logo
+    - Organization theme
+    - Decimal separators
+    - Custom AI prompt
+

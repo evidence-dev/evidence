@@ -1,0 +1,188 @@
+---
+title: 'Snowflake'
+description: 'Query your Snowflake warehouse directly from Evidence without syncing data.'
+---
+
+The Snowflake direct connector lets Evidence run queries live against your Snowflake account.
+
+## Connecting
+
+You'll create a dedicated user in Snowflake, grant it access to the warehouse and data you want Evidence to read, then enter the credentials in Evidence.
+
+### Prerequisites
+
+- A Snowflake account with a warehouse and at least one database you want Evidence to query.
+- A user with `SECURITYADMIN` and `SYSADMIN` (or `ACCOUNTADMIN`) to run the setup SQL.
+
+### 1. Create a role and user for Evidence
+
+If you already have a read-only user suitable for BI workloads, skip to step 2.
+
+Otherwise, run the following, replacing `<warehouse>`, `<database>`, `<schema>`, and `<strong-password>` with your own values:
+
+<Accordion title="SQL to create user">
+
+```sql
+USE ROLE SECURITYADMIN;
+
+CREATE ROLE EVIDENCE_READER;
+
+CREATE USER EVIDENCE_USER
+  PASSWORD = '<strong-password>' -- OR RSA_PUBLIC_KEY = '<your-public-key>'
+  DEFAULT_ROLE = EVIDENCE_READER
+  DEFAULT_WAREHOUSE = <warehouse>
+  MUST_CHANGE_PASSWORD = FALSE;
+
+GRANT ROLE EVIDENCE_READER TO USER EVIDENCE_USER;
+
+USE ROLE SYSADMIN;
+
+GRANT USAGE ON WAREHOUSE <warehouse> TO ROLE EVIDENCE_READER;
+GRANT USAGE ON DATABASE <database> TO ROLE EVIDENCE_READER;
+GRANT USAGE ON SCHEMA <database>.<schema> TO ROLE EVIDENCE_READER;
+
+-- Grants access to all existing tables and views in <database>.<schema>.
+-- You can also enumerate specific tables/views instead.
+GRANT SELECT ON ALL TABLES IN SCHEMA <database>.<schema> TO ROLE EVIDENCE_READER;
+GRANT SELECT ON ALL VIEWS IN SCHEMA <database>.<schema> TO ROLE EVIDENCE_READER;
+
+-- (Optional) Grants access to tables and views added to <database>.<schema> in the future.
+GRANT SELECT ON FUTURE TABLES IN SCHEMA <database>.<schema> TO ROLE EVIDENCE_READER;
+GRANT SELECT ON FUTURE VIEWS IN SCHEMA <database>.<schema> TO ROLE EVIDENCE_READER;
+```
+
+For key-pair authentication, replace the `PASSWORD = '<strong-password>'` line with `RSA_PUBLIC_KEY = '<your-public-key>'`. See the [Snowflake docs on key-pair authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth) for how to generate the key.
+
+</Accordion>
+
+### 2. Configure the connector in Evidence
+
+<Steps>
+  <Step title="Open the connectors page">
+    Go to **Connectors** in the sidebar. In the **Warehouse** card at the top, select **Snowflake**.
+  </Step>
+  <Step title="Enter connection details">
+    Fill in the form with the credentials of the user you created.
+  </Step>
+  <Step title="Test and save">
+    Click **Test Connection**. Once it passes, click **Save**.
+  </Step>
+</Steps>
+
+
+{/* GENERATED:CONNECTION-OPTIONS START */}
+
+## Configuration reference
+
+<Tabs>
+  <Tab title="Studio">
+
+    #### Credentials
+
+    <ResponseField name="Account" type="string" required>
+      Snowflake account identifier, e.g. xy12345.us-east-1.
+    </ResponseField>
+    <ResponseField name="User" type="string" required>
+      Snowflake login name.
+    </ResponseField>
+    <ResponseField name="Password" type="string">
+      Password for password auth.
+    </ResponseField>
+    <ResponseField name="Private key (PEM)" type="string">
+      PEM-encoded RSA private key for key-pair auth.
+    </ResponseField>
+    <ResponseField name="Private key passphrase" type="string">
+      Passphrase for the private key, if it is encrypted.
+    </ResponseField>
+    <ResponseField name="Warehouse" type="string" required>
+      Compute warehouse to use for queries.
+    </ResponseField>
+    <ResponseField name="Database" type="string" required>
+      Default database.
+    </ResponseField>
+    <ResponseField name="Role" type="string">
+      Role applied per session.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="Schemas" type="{ production: string; devSchemas: string[] }">
+      Production schema, plus optional developer schemas that act as preview environments.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="Session variables" type="{ snowflakeVariable: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
+      Evidence identity → Snowflake session variable, ALTERed per query for RLS. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+  <Tab title="CLI (connection.yaml)">
+
+    ```yaml
+    type: snowflake
+    account: xy12345.us-east-1
+    user: evidence_user
+    private_key_path: ./snowflake-key.pem
+    warehouse: COMPUTE_WH
+    database: ANALYTICS
+    # role: EVIDENCE_READER
+    # schema: { production: ANALYTICS, devSchemas: [DEV_ALICE] }
+    # session_variables:
+    #   - snowflakeVariable: APP_USER_EMAIL
+    #     evidenceVariable: user.email
+    ```
+
+    #### Credentials
+
+    _Provide exactly one of `password`, `private_key`, `private_key_path`._
+
+    <ResponseField name="account" type="string" required>
+      Snowflake account identifier, e.g. xy12345.us-east-1.
+    </ResponseField>
+    <ResponseField name="user" type="string" required>
+      Snowflake login name.
+    </ResponseField>
+    <ResponseField name="password" type="string">
+      Password for password auth.
+    </ResponseField>
+    <ResponseField name="private_key" type="string">
+      PEM-encoded RSA private key for key-pair auth.
+    </ResponseField>
+    <ResponseField name="private_key_path" type="string">
+      Path to PEM-encoded RSA private key, resolved relative to connection.yaml.
+    </ResponseField>
+    <ResponseField name="private_key_passphrase" type="string">
+      Passphrase for the private key, if it is encrypted.
+    </ResponseField>
+    <ResponseField name="warehouse" type="string" required>
+      Compute warehouse to use for queries.
+    </ResponseField>
+    <ResponseField name="database" type="string" required>
+      Default database.
+    </ResponseField>
+    <ResponseField name="role" type="string">
+      Role applied per session.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="schema" type="{ production: string; devSchemas: string[] }">
+      Production schema, plus optional developer schemas that act as preview environments.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="session_variables" type="{ snowflakeVariable: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
+      Evidence identity → Snowflake session variable, ALTERed per query for RLS. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+</Tabs>
+
+{/* GENERATED:CONNECTION-OPTIONS END */}
+
+
+## Row-Level Security
+
+Documentation for RLS is not yet available for Snowflake. Please contact support to set up RLS with the Snowflake direct connector.

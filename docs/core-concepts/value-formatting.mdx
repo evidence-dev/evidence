@@ -1,0 +1,112 @@
+---
+title: 'Value Formatting'
+description: 'Format values in components.'
+---
+
+You can use `fmt` attributes (and variants `y_fmt`, `x_fmt`) to format values in components.
+
+The following formats are supported:
+
+### Dates
+
+- `ddd` - Sun
+- `dddd` - Sunday
+- `mmm` - Jan
+- `mmmm` - January
+- `mmm-yy` - Jan-22
+- `yyyy` - 2022
+- `shortdate` - Jan 9/22
+- `longdate` - January 9, 2022
+- `fulldate` - Sunday January 9, 2022
+- `mdy` - 1/9/22
+- `dmy` - 9/1/22
+- `hms` - 11:45:03 AM
+
+### Currencies
+
+The following currencies are supported:
+
+- USD
+- AUD
+- BRL
+- CAD
+- CNY
+- EUR
+- GBP
+- JPY
+- INR
+- KRW
+- NGN
+- SEK
+
+In order to use currency tags, use the currency code, optionally appended with:
+
+- a number indicating the number of decimal places to show (0-2)
+- a letter indication the order of magnitude to show ("","k", "m", "b", "t")
+
+For example, the available tags for USD are:
+
+- `usd` - $412
+- `usd0` - $412
+- `usd1` - $412.1
+- `usd2` - $412.12
+- `usd0k` - $412k
+- `usd1k` - $412.1k
+- `usd2k` - $412.12k
+- `usd0m` - $412m
+- `usd1m` - $412.1m
+- `usd2m` - $412.12m
+- `usd0b` - $412b
+- `usd1b` - $412.1b
+- `usd2b` - $412.12b
+- `usd0t` - $412t
+- `usd1t` - $412.1t
+- `usd2t` - $412.12t
+
+### Numbers
+
+The default number format (when no fmt is specified) automatically handles decimal places and summary units (in the same way that usd does for currency).
+
+- `num0` - 11
+- `num1` - 11.2
+- `num2` - 11.23
+- `num3` - 11.232
+- `num4` - 11.2317
+- `num0k` - 64k
+- `num1k` - 64.2k
+- `num2k` - 64.20k
+- `num0m` - 43M
+- `num1m` - 42.5M
+- `num2m` - 42.54M
+- `num0b` - 1B
+- `num1b` - 1.4B
+- `num2b` - 1.38B
+- `num0t` - 1T
+- `num1t` - 1.4T
+- `num2t` - 1.38T
+- `id` - 921594675
+- `mult` - 5.3x
+- `mult0` - 5x
+- `mult1` - 5.3x
+- `mult2` - 5.32x
+- `sci` - 1.65E+4
+
+### Percentages
+
+- `pct` - 25.1%
+- `pct0` - 25%
+- `pct1` - 25.1%
+- `pct2` - 25.12%
+- `pct3` - 25.123%
+
+## Title Formatting
+
+SQL expressions are automatically formatted into readable titles for legends, tooltips, and axis labels:
+
+| Expression | Display | Rule |
+|------------|---------|------|
+| `y="sum(total_sales)"` | Sum of Total Sales | Auto-formatted to Title Case |
+| `y="sum(total_sales) as total_sales"` | total_sales | Alias used exactly as written |
+| `` y="sum(total_sales) as `Total Sales (USD)`" `` | Total Sales (USD) | Quoted alias preserves spaces/special chars |
+
+You can also override titles using axis options like `y_axis_options={ title="My Title" }`.

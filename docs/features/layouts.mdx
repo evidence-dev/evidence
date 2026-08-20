@@ -1,0 +1,58 @@
+---
+title: 'Layouts'
+description: 'The Row and Stack components help you create flexible layouts in Evidence markdown.'
+---
+
+Use the `Row` and `Stack` components to arrange content horizontally (`Row`) or vertically (`Stack`). These components are especially useful for building dashboards and responsive layouts.
+
+---
+
+## Row
+
+- Arranges elements in a horizontal row.
+- Elements will wrap to the next line if there isn't enough space.
+- Useful for placing charts, tables, or values side by side.
+
+### Props
+
+- **align** (string, default: `stretch`): How to vertically align items. Options: `top`, `center`, `bottom`, or `stretch`.
+
+### Example
+
+```jinja
+{% row %}
+    {% bar_chart data="demo.order_details" x="date" y="sum(unit_price * quantity)" date_grain="month" /%}
+    {% line_chart data="demo.order_details" x="date" y="sum(quantity)" date_grain="month" /%}
+    {% area_chart data="demo.order_details" x="date" y="count(order_id)" date_grain="month" /%}
+{% /row %}
+```
+
+---
+
+## Stack
+
+- Arranges elements in a vertical stack.
+- Useful for grouping related elements in a column within a row.
+- Will have no effect on components that are already vertically aligned.
+
+### Props
+
+- **align** (string, default: `stretch`): How to horizontally align items. Options: `left`, `center`, `right`, or `stretch`.
+
+```jinja
+{% row %}
+    {% stack %}
+        {% bar_chart data="demo.order_details" x="date" y="sum(unit_price * quantity)" date_grain="month" /%}
+        {% line_chart data="demo.order_details" x="date" y="sum(quantity)" date_grain="month" /%}
+    {% /stack %}
+    {% table data="demo.order_details" limit=20 /%}
+{% /row %}
+```
+
+---
+
+### Tip
+
+- Use the `align` prop to control alignment of elements within the layout.
+- Rows wrap their elements if there isn't enough horizontal space. This ensures that the layouts look good on all screen sizes. Each component has a default minimum width.
+- Stacks always arrange elements vertically.

@@ -1,0 +1,337 @@
+---
+title: OSS Migration Guide
+description: A comprehensive guide to help you migrate your Evidence OSS projects to Evidence Studio
+---
+
+This guide covers how to migrate Evidence OSS reports to Evidence Studio.
+
+Evidence Studio is a complete reimagining of the Evidence platform - moving from a local development tool to a fully cloud-based development, publishing, and governance platform. Studio provides a web-based IDE with AI assistance, enterprise features like row-level security and SSO, and self-service analytics for end users. Components have powerful new capabilities including built-in aggregations, date grains, and comparisons that eliminate the need for complex SQL.
+
+## Key Differences
+
+| Feature | Evidence OSS | Evidence Studio |
+|---------|--------------|-----------------|
+| **Data Updates** | Requires build process | Queries run on page load |
+| **Build Process** | Required for every change | No build - instant previews |
+| **Scale & Performance** | Performant up to ~2M rows | Performant with hundreds of millions of rows |
+| **Query Engine** | DuckDB WASM | ClickHouse (managed lakehouse) |
+| **Development** | Local IDE (VS Code, etc.) | Cloud IDE with AI assistant |
+| **Component Syntax** | `<LineChart data={orders} />` | `{% line_chart data="orders" /%}` |
+| **Component Data** | Require inline queries | Run their own queries and aggregations |
+| **Deployment** | Configure hosting + build pipeline | Click "Publish" button |
+| **Access Control** | Manual implementation | Row-level security, page permissions, user groups |
+| **Authentication** | Manual implementation | SSO (Okta, Google, Azure, etc.) |
+| **Self-Service Options** | Reports | Reports + Explore + SQL Console + AI Chat |
+| **Data Sources** | SQL databases, flat files | SQL databases, flat files + direct cloud storage (S3, GCS, Parquet, Delta Lake, Iceberg) |
+| **Reusable SQL** | Via inline queries | Models feature |
+
+## How to Migrate
+
+The fastest starting point is the CLI's migrate command, run from your OSS project directory:
+
+```bash
+evidence migrate           # convert all pages in place
+evidence migrate --dry-run # preview what would change
+```
+
+It mechanically converts component syntax (`<LineChart .../>` → `{% line_chart ... /%}`), rewrites `${inputs.x.value}` references, converts `<img>` to `{% image /%}`, wraps other raw HTML in `{% html %}`, and prints notes for anything that needs manual attention (source queries, unsupported components, templated pages). Then run `evidence validate` to check the result.
+
+Alternatively, paste your OSS code into the Studio editor and ask the AI assistant to convert it for you.
+
+The Evidence team is available to help with your migration. If you have a large project to migrate, [book a call with our team](https://calendly.com/evidence-studio/evidence-studio-migration) for assistance.
+
+## Data Sources
+
+### Connections
+
+Configure connections in the Studio UI. See [Data Sources](/data-sources) for details.
+
+### Data Sync
+
+Studio syncs full tables from SQL databases on a schedule. This allows Evidence to use an optimized ClickHouse instance to deliver high-performance interactive reports with subsecond interaction times. **Studio does not support source SQL queries.** If you need to aggregate or join data before loading it into Evidence, you have two options:
+
+1. **Create a view in your database** and sync that view to Studio
+2. **Use Evidence's Models feature** to join across sources and prepare data for analysis
+
+For bucket connectors (S3, GCS, Azure, R2), Studio connects directly and queries files (Parquet, Delta Lake, Iceberg) without importing.
+
+## SQL Queries
+
+### DuckDB → ClickHouse
+
+Studio uses ClickHouse instead of DuckDB. The syntax is very similar between the two. ClickHouse is optimized for fast performance on huge datasets and supports row-level security, direct connections to storage buckets, and other enterprise features.
+
+### Inline Queries
+
+Write inline queries the same way:
+
+````markdown
+```sql my_query
+select * from orders where date > '2024-01-01'
+```
+````
+
+Inline queries do not produce a query viewer on the rendered page. To display results, use a component:
+
+````liquid
+{% table data="my_query" /%}
+````
+
+### Variables in `.sql` files
+
+A standalone `.sql` file in `queries/` is inlined verbatim wherever it's referenced — Studio does **not** interpolate `{{ ... }}` inside one. An OSS query that reads an input:
+
+```sql
+select * from orders where category = '${inputs.category.value}'
+```
+
+still converts to `{{category}}`, but the variable will not resolve from a `.sql` file. Move any query that depends on an input into a ` ```sql ` fence on the page that uses it, where interpolation does apply. `evidence migrate` prints a warning for every `.sql` file it converts references in.
+
+See [SQL files](/features/sql-files) for the full comparison.
+
+## Components
+
+Studio components use a new tag syntax and support aggregations, date grains, comparisons, and other operations without writing SQL.
+
+### Tag Syntax
+
+**Evidence OSS:**
+````jsx
+<LineChart 
+  data={daily_orders} 
+  x="date" 
+  y="sales" 
+/>
+````
+
+**Evidence Studio:**
+````liquid
+{% line_chart
+    data="daily_orders"
+    x="date"
+    y="sales"
+%}
+````
+
+**Conversion rules:**
+- Replace `<>` with `{% %}`
+- Convert component names to `snake_case`: `LineChart` → `line_chart`, `DataTable` → `table`, `BigValue` → `big_value`
+- Quote all attribute values: `x="date"` instead of `x=date`
+- Self-closing tags end with `/%}` instead of `/>`
+- Closing tags use `{% /component_name %}` instead of `</ComponentName>`
+
+**Component name mappings:**
+
+| Evidence OSS | Evidence Studio |
+|--------------|----------------|
+| `DataTable` | `table` |
+| `BigValue` | `big_value` |
+| `LineChart` | `line_chart` |
+| `BarChart` | `bar_chart` |
+| `AreaChart` | `area_chart` |
+| `ScatterChart` | `scatter_chart` |
+| All chart components | Use `snake_case` |
+
+**Multi-line components:**
+
+**Evidence OSS:**
+````jsx
+<Tabs>
+  <Tab label="Sales">Content</Tab>
+</Tabs>
+````
+
+**Evidence Studio:**
+````liquid
+{% tabs %}
+  {% tab label="Sales" %}Content{% /tab %}
+{% /tabs %}
+````
+
+### Components Run Their Own Queries
+
+Components can query data and apply aggregations directly.
+
+**Evidence OSS:**
+````markdown
+```sql monthly_sales
+select 
+  date_trunc('month', order_date) as month,
+  sum(sales) as total_sales
+from orders
+group by month
+order by month
+```
+
+<LineChart data={monthly_sales} x=month y=total_sales />
+````
+
+**Evidence Studio:**
+````liquid
+{% line_chart
+    data="orders"
+    x="order_date"
+    y="sum(sales)"
+    date_grain="month"
+%}
+````
+
+Components support aggregations like `sum()`, `avg()`, `count()`, `min()`, `max()`, and more:
+
+````liquid
+{% big_value data="orders" value="sum(sales)" /%}
+````
+
+### Built-in Date Grains
+
+Components support automatic date grouping with `date_grain`: `day`, `week`, `month`, `quarter`, `year`, `hour`, `day of week`, `day of month`, `day of year`, `week of year`, `month of year`, `quarter of year`.
+
+**Evidence OSS:**
+````markdown
+```sql monthly_sales
+select 
+  date_trunc('month', order_date) as month,
+  sum(sales) as total_sales
+from orders
+group by 1
+order by 1
+```
+
+<LineChart data={monthly_sales} x=month y=total_sales />
+````
+
+**Evidence Studio:**
+````liquid
+{% line_chart
+    data="orders"
+    x="order_date"
+    y="sum(sales)"
+    date_grain="month"
+%}
+````
+
+### Built-in Comparisons
+
+**Evidence OSS:**
+````markdown
+```sql orders_with_comparisons
+select
+  sum(sales) as num_orders,
+  (sum(sales) - lag(sum(sales)) over (order by month)) / lag(sum(sales)) over (order by month) as order_growth
+from orders
+group by date_trunc('month', order_date) as month
+```
+
+<BigValue
+  data={orders_with_comparisons}
+  value=num_orders
+  comparison=order_growth
+  comparisonFmt=pct1
+  comparisonTitle="MoM"
+/>
+````
+
+**Evidence Studio:**
+````liquid
+{% big_value
+    data="orders"
+    value="sum(sales)"
+    date_range={
+        date="order_date"
+        range="last 30 days"
+    }
+    comparison={
+        compare_vs="prior period"
+    }
+/%}
+````
+
+### Unsupported Components
+
+- **DimensionGrid** - Not yet supported
+- **BoxPlot** - Not yet supported
+
+## Inputs and Variables
+
+Studio provides simplified syntax for referencing input variables.
+
+**Evidence OSS:**
+````markdown
+<Dropdown name=category>
+  <DropdownOption value="Electronics" />
+  <DropdownOption value="Clothing" />
+</Dropdown>
+
+```sql filtered_orders
+select * from orders 
+where category = '${inputs.category.value}'
+```
+
+<BarChart data={filtered_orders} x=product y=sales />
+````
+
+**Evidence Studio - Using inline SQL:**
+````liquid
+{% dropdown
+    id="category"
+    data="orders"
+    value_column="category"
+/%}
+
+```sql filtered_orders
+select * from orders
+where category = {{category}}
+```
+
+{% bar_chart
+    data="filtered_orders"
+    x="product"
+    y="sum(sales)"
+/%}
+````
+
+**Evidence Studio - Using `filters` attribute:**
+````liquid
+{% dropdown
+    id="category"
+    data="orders"
+    value_column="category"
+/%}
+
+{% bar_chart
+    data="orders"
+    x="product"
+    y="sum(sales)"
+    filters=["category"]
+/%}
+````
+
+**Evidence Studio - Using `where` attribute:**
+````liquid
+{% dropdown
+    id="category"
+    data="orders"
+    value_column="category"
+/%}
+
+{% bar_chart
+    data="orders"
+    x="product"
+    y="sum(sales)"
+    where="category = {{category}}"
+/%}
+````
+
+See [Variables](/core-concepts/variables) for details.
+
+## Templated Pages
+
+Templated pages are not supported in the same way as in OSS, but a comparable feature will be added to Evidence Studio in the near future.
+
+We recommend creating an interactive page using an input variable (e.g., a dropdown) that is connected to all queries and components on the page. This allows users to dynamically filter the entire page based on their selection.
+
+## Getting Help
+
+- [Slack community](https://slack.evidence.dev)
+- [Contact Evidence support](mailto:support@evidence.dev)
+- [Book a call to discuss your migration](https://calendly.com/evidence-studio/evidence-studio-migration)
