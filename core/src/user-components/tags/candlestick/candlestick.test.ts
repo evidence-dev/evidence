@@ -406,7 +406,7 @@ describe('candlestick SQL', () => {
 			----
 			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close"
 			 FROM demo.prices
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
 			 GROUP BY date, open, high, low, close
 			 
 			 

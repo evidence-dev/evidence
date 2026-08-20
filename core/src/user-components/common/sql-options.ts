@@ -570,6 +570,12 @@ export function generateSQLQuery(
 	if (willUseGroupBy) {
 		// Use subtotals with GROUPING SETS if needed
 		if (config.subtotals) {
+			if (!dialect.supportsGroupingSets) {
+				return {
+					sql: '',
+					error: `Subtotals aren't supported on ${dialect.name} connections — remove subtotals=true from this component.`
+				};
+			}
 			groupByClause = `GROUP BY GROUPING SETS (${config.groupingSets})`;
 		} else if (selectParts.length > 0) {
 			// Fallback to GROUP BY ALL (or, for dialects without it, an explicit
@@ -586,6 +592,16 @@ export function generateSQLQuery(
 	const allFragments: Fragment[] = [];
 
 	if (config.comparisons && config.comparisons.length > 0) {
+		// Only the period comparisons need date offsets; target/benchmark don't.
+		const periodComparison = config.comparisons.find(
+			(c) => c.compare_vs === 'prior year' || c.compare_vs === 'prior period'
+		);
+		if (periodComparison && !dialect.supportsDateOffsetMath) {
+			return {
+				sql: '',
+				error: `"${periodComparison.compare_vs}" comparisons aren't supported on ${dialect.name} connections — compare against a target or benchmark instead.`
+			};
+		}
 		const comparisonContext = {
 			tableExpression: resolvedTableExpression,
 			whereClause,

@@ -248,7 +248,7 @@ describe('buildSparklines', () => {
 				 FROM (SELECT category AS "category", toStartOfMonth(date) as x_val, sum(total_sales) as y_val
 				 FROM demo.daily_orders
 				 
-				 GROUP BY category, toStartOfMonth(date))
+				 GROUP BY category, toStartOfMonth(date)) as "__ev_spark_src"
 				 GROUP BY category"
 			`);
 			expect(result.fragments[0].joinSql).toMatchInlineSnapshot(
@@ -281,7 +281,7 @@ describe('buildSparklines', () => {
 				 FROM (SELECT category AS "category", region AS "region", toStartOfMonth(date) as x_val, sum(total_sales) as y_val
 				 FROM demo.daily_orders
 				 
-				 GROUP BY category, region, toStartOfMonth(date))
+				 GROUP BY category, region, toStartOfMonth(date)) as "__ev_spark_src"
 				 GROUP BY category, region"
 			`);
 		});
@@ -304,7 +304,7 @@ describe('buildSparklines', () => {
 				 FROM (SELECT category AS "category", toStartOfMonth(date) as x_val, sum(total_sales) as y_val
 				 FROM demo.daily_orders
 				 
-				 GROUP BY GROUPING SETS ((category, toStartOfMonth(date)), (toStartOfMonth(date))))
+				 GROUP BY GROUPING SETS ((category, toStartOfMonth(date)), (toStartOfMonth(date)))) as "__ev_spark_src"
 				 GROUP BY category"
 			`);
 			expect(result.fragments[0].joinSql).toMatchInlineSnapshot(
@@ -335,7 +335,7 @@ describe('buildSparklines', () => {
 							
 							GROUP BY x_val
 							ORDER BY x_val
-						)
+						) as "__ev_spark_src"
 					) as "sum_total_sales_sparkline"",
 				]
 			`);
@@ -361,7 +361,7 @@ describe('buildSparklines', () => {
 				 FROM (SELECT category AS "category", toStartOfMonth(date) as x_val, sum(total_sales) as y_val
 				 FROM demo.daily_orders
 				 WHERE (tenant_id = 7) AND (region = 'EU')
-				 GROUP BY category, toStartOfMonth(date))
+				 GROUP BY category, toStartOfMonth(date)) as "__ev_spark_src"
 				 GROUP BY category"
 			`);
 		});

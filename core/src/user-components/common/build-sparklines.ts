@@ -217,17 +217,16 @@ function buildSparklineInlineSubquery(
 	const aggregatedY = hasAggregation ? sparkline.yColumn : `sum(${sparkline.yColumn})`;
 
 	// Build the inline subquery. T-SQL/Fabric (strictDerivedTables) can't GROUP BY
-	// a SELECT alias, can't ORDER BY inside a derived table, and requires the
-	// derived table to be aliased — so group by the x *expression*, drop the inner
-	// ORDER BY (the groupArray already orders WITHIN GROUP), and alias the source.
+	// a SELECT alias and can't ORDER BY inside a derived table — so group by the x
+	// *expression* and drop the inner ORDER BY (the groupArray already orders
+	// WITHIN GROUP). The alias is unconditional: Postgres and Cube reject an
+	// unaliased derived table too, and it's a harmless no-op everywhere else.
 	const groupArrayExpr = dialect.groupArray('x_val', 'y_val');
 	const innerGroupBy = dialect.strictDerivedTables
 		? `GROUP BY ${processedXColumn}`
 		: 'GROUP BY x_val';
 	const innerOrderBy = dialect.strictDerivedTables ? '' : '\n\t\t\tORDER BY x_val';
-	const sourceAlias = dialect.strictDerivedTables
-		? ` as ${dialect.quoteAlias('__ev_spark_src')}`
-		: '';
+	const sourceAlias = ` as ${dialect.quoteAlias('__ev_spark_src')}`;
 	return `(
 		SELECT ${groupArrayExpr}
 		FROM (
@@ -341,11 +340,10 @@ function buildSparklineCTE(
 					.join(', ')}`
 			: '';
 
-	// Combine into final CTE SQL using subquery. T-SQL/Fabric requires the derived
-	// table to be aliased; the outer GROUP BY then references its (real) columns.
-	const sourceAlias = dialect.strictDerivedTables
-		? ` as ${dialect.quoteAlias('__ev_spark_src')}`
-		: '';
+	// Combine into final CTE SQL using subquery. Always alias the derived table —
+	// T-SQL/Fabric, Postgres and Cube all reject an unaliased one; the outer GROUP
+	// BY then references its (real) columns.
+	const sourceAlias = ` as ${dialect.quoteAlias('__ev_spark_src')}`;
 	return normalizeWhitespace(
 		`
 		SELECT ${outerSelectClause}

@@ -81,6 +81,59 @@ describe('CubeDialect', () => {
 		expect(dialect).toBeInstanceOf(PostgresDialect);
 	});
 
+	it('truncates weeks without INTERVAL arithmetic, ignoring first-day-of-week', () => {
+		// Cube rejects an INTERVAL inside a function argument, so the inherited Postgres
+		// Sunday-start week expression is unrunnable — weeks are ISO/Monday-start here.
+		for (const firstDay of ['sunday', 'monday'] as const) {
+			expect(dialect.dateGrain('week', 'order_date', firstDay)).toBe(
+				"DATE_TRUNC('week', order_date)"
+			);
+		}
+	});
+
+	it('emits no INTERVAL for any grain', () => {
+		const grains = [
+			'day',
+			'week',
+			'month',
+			'quarter',
+			'year',
+			'hour',
+			'day of week',
+			'day of month',
+			'day of year',
+			'week of year',
+			'month of year',
+			'quarter of year'
+		];
+		for (const grain of grains) {
+			expect(dialect.dateGrain(grain, 'order_date', 'sunday')).not.toContain('INTERVAL');
+		}
+	});
+
+	it('keeps the Postgres spelling for non-week grains', () => {
+		expect(dialect.dateGrain('month', 'order_date', 'sunday')).toBe(
+			"DATE_TRUNC('month', order_date)"
+		);
+		expect(dialect.dateGrain('quarter of year', 'order_date', 'sunday')).toBe(
+			'EXTRACT(QUARTER FROM order_date)'
+		);
+	});
+
+	it('builds the short date label from TO_CHAR patterns Cube actually renders', () => {
+		const sql = dialect.shortDateLabel('order_date');
+		// `FM` and `YY` are not implemented by Cube — they'd render as literal text.
+		expect(sql).not.toContain('FM');
+		expect(sql).not.toContain("'YY'");
+		expect(sql).toBe(
+			`(TO_CHAR(order_date, 'Mon') || ' ' || TO_CHAR(order_date, 'DD') || '/' || RIGHT(TO_CHAR(order_date, 'YYYY'), 2))`
+		);
+	});
+
+	it('casts date literals to TIMESTAMP (Cube TO_CHAR rejects a DATE argument)', () => {
+		expect(dialect.dateLiteral('2025-01-31')).toBe("CAST('2025-01-31' AS TIMESTAMP)");
+	});
+
 	it('lowercases both sides for case-insensitive match (Cube has no ILIKE)', () => {
 		expect(dialect.caseInsensitiveLike('name', '%foo%')).toBe("LOWER(name) LIKE LOWER('%foo%')");
 	});
@@ -118,13 +171,35 @@ describe('CubeDialect', () => {
 		expect(dialect.aggregationFunctions.has('BOOL_OR')).toBe(false);
 	});
 
-	it('narrows non-aggregate functions to Cube-documented ones', () => {
-		expect(dialect.nonAggregationFunctions.has('DATE_ADD')).toBe(true);
-		expect(dialect.nonAggregationFunctions.has('STARTS_WITH')).toBe(true);
+	it('narrows non-aggregate functions to what a live Cube actually accepts', () => {
 		expect(dialect.nonAggregationFunctions.has('TO_CHAR')).toBe(true);
+		// CHR is emitted by groupArray above, so the validator has to know it.
+		expect(dialect.nonAggregationFunctions.has('CHR')).toBe(true);
+		// Undocumented by Cube but verified working.
+		expect(dialect.nonAggregationFunctions.has('DATE_PART')).toBe(true);
+		expect(dialect.nonAggregationFunctions.has('CURRENT_DATE')).toBe(true);
+		// Documented by Cube but rejected by it — a false green if listed.
+		expect(dialect.nonAggregationFunctions.has('DATE_ADD')).toBe(false);
+		expect(dialect.nonAggregationFunctions.has('STARTS_WITH')).toBe(false);
+		expect(dialect.nonAggregationFunctions.has('DATEDIFF')).toBe(false);
 		// Postgres-only helpers Cube does not document.
 		expect(dialect.nonAggregationFunctions.has('SPLIT_PART')).toBe(false);
 		expect(dialect.nonAggregationFunctions.has('JSON_BUILD_ARRAY')).toBe(false);
+	});
+
+	it('refuses subtotals and period comparisons', () => {
+		expect(dialect.supportsGroupingSets).toBe(false);
+		expect(dialect.supportsDateOffsetMath).toBe(false);
+		// Contrast with its Postgres parent, which supports both.
+		const postgres = new PostgresDialect();
+		expect(postgres.supportsGroupingSets).toBe(true);
+		expect(postgres.supportsDateOffsetMath).toBe(true);
+	});
+
+	it('keeps FILTER (WHERE …), which Cube supports even on MEASURE()', () => {
+		// Undocumented but verified: flipping this would route Cube to the
+		// agg(CASE WHEN …) rewrite, which Cube rejects.
+		expect(dialect.supportsFilterClause).toBe(true);
 	});
 });
 

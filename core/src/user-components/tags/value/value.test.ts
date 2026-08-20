@@ -25,7 +25,11 @@ const dialects = [
 
 function buildAllDialects(attrs: Omit<ValueSQLAttrs, 'dialect'>) {
 	const sql = dialects
-		.map((dialect) => buildValueSQL({ ...attrs, dialect }).sql)
+		.map((dialect) => {
+			const { sql, error } = buildValueSQL({ ...attrs, dialect });
+			// A dialect that can't express the query returns an error instead of SQL.
+			return error ? `ERROR: ${error}` : sql;
+		})
 		.join('"\n----\n"');
 	return { sql };
 }
@@ -160,7 +164,7 @@ describe('value SQL', () => {
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01') LIMIT 1"
+			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP)) LIMIT 1"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
@@ -247,15 +251,7 @@ describe('value SQL', () => {
 			FROM main_query
 			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
 			----
-			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (TO_CHAR(DATE '2025-01-02', 'Mon FMDD/YY') || ' - ' || TO_CHAR(DATE '2026-01-01', 'Mon FMDD/YY')) as "__ev_sum_total_sales_prior_year_comparison_current_period", (TO_CHAR(DATE '2025-01-02' + (-1 * INTERVAL '1 year'), 'Mon FMDD/YY') || ' - ' || TO_CHAR(DATE '2026-01-01' + (-1 * INTERVAL '1 year'), 'Mon FMDD/YY')) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
-			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-01-02' AND date <= DATE '2026-01-01')),
-			comparison_1_fragment AS (SELECT sum(total_sales) as "__ev_sum_total_sales_prior_year_comparison"
-			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-01-02' + (-1 * INTERVAL '1 year') AND date <= DATE '2026-01-01' + (-1 * INTERVAL '1 year')))
-			SELECT main_query.*, comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison" as "__ev_sum_total_sales_prior_year_comparison_compared_value", (main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 as "__ev_sum_total_sales_prior_year_comparison_abs", ((main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 / nullIf(abs(comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison"), 0)) as "__ev_sum_total_sales_prior_year_comparison_pct"
-			FROM main_query
-			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
+			"ERROR: "prior year" comparisons aren't supported on cube connections — compare against a target or benchmark instead."
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (strftime(DATE '2025-01-02', '%b %-d/%y') || ' - ' || strftime(DATE '2026-01-01', '%b %-d/%y')) as "__ev_sum_total_sales_prior_year_comparison_current_period", (strftime(DATE '2025-01-02' + to_years(-1), '%b %-d/%y') || ' - ' || strftime(DATE '2026-01-01' + to_years(-1), '%b %-d/%y')) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
 			 FROM demo.daily_orders
@@ -349,15 +345,7 @@ describe('value SQL', () => {
 			FROM main_query
 			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
 			----
-			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (TO_CHAR(DATE '2025-12-03', 'Mon FMDD/YY') || ' - ' || TO_CHAR(DATE '2026-01-01', 'Mon FMDD/YY')) as "__ev_sum_total_sales_prior_period_comparison_current_period", (TO_CHAR(DATE '2025-12-03' + (-30 * INTERVAL '1 day'), 'Mon FMDD/YY') || ' - ' || TO_CHAR(DATE '2026-01-01' + (-30 * INTERVAL '1 day'), 'Mon FMDD/YY')) as "__ev_sum_total_sales_prior_period_comparison_previous_period"
-			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')),
-			comparison_1_fragment AS (SELECT sum(total_sales) as "__ev_sum_total_sales_prior_period_comparison"
-			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-12-03' + (-30 * INTERVAL '1 day') AND date <= DATE '2026-01-01' + (-30 * INTERVAL '1 day')))
-			SELECT main_query.*, comparison_1_fragment."__ev_sum_total_sales_prior_period_comparison" as "__ev_sum_total_sales_prior_period_comparison_compared_value", (main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_period_comparison") * 1.0 as "__ev_sum_total_sales_prior_period_comparison_abs", ((main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_period_comparison") * 1.0 / nullIf(abs(comparison_1_fragment."__ev_sum_total_sales_prior_period_comparison"), 0)) as "__ev_sum_total_sales_prior_period_comparison_pct"
-			FROM main_query
-			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
+			"ERROR: "prior period" comparisons aren't supported on cube connections — compare against a target or benchmark instead."
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (strftime(DATE '2025-12-03', '%b %-d/%y') || ' - ' || strftime(DATE '2026-01-01', '%b %-d/%y')) as "__ev_sum_total_sales_prior_period_comparison_current_period", (strftime(DATE '2025-12-03' + to_days(-30), '%b %-d/%y') || ' - ' || strftime(DATE '2026-01-01' + to_days(-30), '%b %-d/%y')) as "__ev_sum_total_sales_prior_period_comparison_previous_period"
 			 FROM demo.daily_orders

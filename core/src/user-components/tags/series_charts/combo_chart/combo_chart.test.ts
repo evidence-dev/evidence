@@ -367,7 +367,7 @@ describe('combo_chart SQL (per-child series queries)', () => {
 			----
 			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-01-02' AND date <= DATE '2026-01-01')
+			 WHERE (date >= CAST('2025-01-02' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
 			 GROUP BY DATE_TRUNC('month', date)
 			 
 			 

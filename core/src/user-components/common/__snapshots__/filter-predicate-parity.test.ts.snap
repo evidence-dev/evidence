@@ -101,7 +101,7 @@ exports[`filter predicate parity — cube > external (scalar and list) 1`] = `
 
 exports[`filter predicate parity — cube > input_tabs (scalar) 1`] = `"status='O''Brien'"`;
 
-exports[`filter predicate parity — cube > range_calendar (closed range) 1`] = `"event_date >= DATE '2020-01-01' AND event_date <= DATE '2020-01-31'"`;
+exports[`filter predicate parity — cube > range_calendar (closed range) 1`] = `"event_date >= CAST('2020-01-01' AS TIMESTAMP) AND event_date <= CAST('2020-01-31' AS TIMESTAMP)"`;
 
 exports[`filter predicate parity — cube > repeat (scalar) 1`] = `"category='O''Brien'"`;
 

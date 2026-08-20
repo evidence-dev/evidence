@@ -193,6 +193,9 @@ export class PostgresDialect implements SqlDialect {
 	readonly supportsFilterClause = true;
 	readonly conditionalAggregateFunctions = NO_CONDITIONAL_AGGREGATES;
 	readonly strictDerivedTables = false;
+	// Typed, not inferred, so the Cube subclass can narrow these to false.
+	readonly supportsGroupingSets: boolean = true;
+	readonly supportsDateOffsetMath: boolean = true;
 
 	readonly aggregationFunctions = new Set<string>([
 		// Postgres has no MEDIAN() or COVARIANCE() (use percentile_cont / covar_pop|samp),

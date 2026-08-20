@@ -98,7 +98,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2026-03-25' AND date <= DATE '2026-04-23')
+			 WHERE (date >= CAST('2026-03-25' AS TIMESTAMP) AND date <= CAST('2026-04-23' AS TIMESTAMP))
 			 GROUP BY DATE_TRUNC('day', date)
 			 
 			 
@@ -175,7 +175,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-12-31')
+			 WHERE (date >= CAST('2026-01-01' AS TIMESTAMP) AND date <= CAST('2026-12-31' AS TIMESTAMP))
 			 GROUP BY DATE_TRUNC('month', date)
 			 
 			 
@@ -252,7 +252,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2026-03-01' AND date <= DATE '2026-03-31')
+			 WHERE (date >= CAST('2026-03-01' AS TIMESTAMP) AND date <= CAST('2026-03-31' AS TIMESTAMP))
 			 GROUP BY DATE_TRUNC('day', date)
 			 
 			 
@@ -329,7 +329,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-04-23')
+			 WHERE (date >= CAST('2026-01-01' AS TIMESTAMP) AND date <= CAST('2026-04-23' AS TIMESTAMP))
 			 GROUP BY DATE_TRUNC('day', date)
 			 
 			 
@@ -483,7 +483,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2023-01-01' AND date <= DATE '2023-12-31')
+			 WHERE (date >= CAST('2023-01-01' AS TIMESTAMP) AND date <= CAST('2023-12-31' AS TIMESTAMP))
 			 GROUP BY DATE_TRUNC('day', date)
 			 
 			 

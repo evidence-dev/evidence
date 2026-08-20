@@ -174,6 +174,8 @@ export class BigQueryDialect implements SqlDialect {
 	readonly supportsFilterClause = false;
 	readonly conditionalAggregateFunctions = NO_CONDITIONAL_AGGREGATES;
 	readonly strictDerivedTables = false;
+	readonly supportsGroupingSets = true;
+	readonly supportsDateOffsetMath = true;
 
 	readonly aggregationFunctions = new Set<string>([
 		...COMMON_AGGREGATION_FUNCTIONS,

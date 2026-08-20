@@ -135,6 +135,13 @@ exports[`generateSQLQuery — bigquery > subtotals table 1`] = `
  GROUP BY GROUPING SETS ((category, region), (category), ())"
 `;
 
+exports[`generateSQLQuery — bigquery > week-grain dimension 1`] = `
+"SELECT DATE_TRUNC(order_date, WEEK) AS \`order_date__week\`, sum(sales) AS \`sum_sales\`
+ FROM orders
+ 
+ GROUP BY ALL"
+`;
+
 exports[`generateSQLQuery — clickhouse > date-grain dimension 1`] = `
 "SELECT category AS "category", toStartOfMonth(order_date) AS "order_date__month", sum(sales) AS "sum_sales"
  FROM orders
@@ -174,6 +181,13 @@ exports[`generateSQLQuery — clickhouse > subtotals table 1`] = `
  GROUP BY GROUPING SETS ((category, region), (category), ())"
 `;
 
+exports[`generateSQLQuery — clickhouse > week-grain dimension 1`] = `
+"SELECT toStartOfWeek(order_date, 0) AS "order_date__week", sum(sales) AS "sum_sales"
+ FROM orders
+ 
+ GROUP BY ALL"
+`;
+
 exports[`generateSQLQuery — cube > date-grain dimension 1`] = `
 "SELECT category AS "category", DATE_TRUNC('month', order_date) AS "order_date__month", sum(sales) AS "sum_sales"
  FROM orders
@@ -202,15 +216,13 @@ exports[`generateSQLQuery — cube > search + pagination 1`] = `
  LIMIT 2000) AS evidence_paged WHERE (LOWER(CAST("category" AS TEXT)) LIKE LOWER('%abc%') OR LOWER(CAST("sum_sales" AS TEXT)) LIKE LOWER('%abc%')) LIMIT 10 OFFSET 20"
 `;
 
-exports[`generateSQLQuery — cube > subtotals table 1`] = `
-"SELECT category AS "category", region AS "region", sum(sales) AS "sum_sales", GROUPING(category) AS "__ev_grouping_category", GROUPING(region) AS "__ev_grouping_region", CASE WHEN GROUPING(category) + GROUPING(region) = 2 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(region) = 1 THEN 1 WHEN GROUPING(category) = 1 AND GROUPING(region) = 1 THEN 0 ELSE NULL END AS "__ev_subtotal_level", CASE
- WHEN (CASE WHEN GROUPING(category) + GROUPING(region) = 2 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(region) = 1 THEN 1 WHEN GROUPING(category) = 1 AND GROUPING(region) = 1 THEN 0 ELSE NULL END) IS NULL THEN 'cell_data'
- WHEN (CASE WHEN GROUPING(category) + GROUPING(region) = 2 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(region) = 1 THEN 1 WHEN GROUPING(category) = 1 AND GROUPING(region) = 1 THEN 0 ELSE NULL END) = 0 THEN 'row_total'
- ELSE 'row_subtotal'
- END AS "__ev_render_type"
+exports[`generateSQLQuery — cube > subtotals table 1`] = `"ERROR: Subtotals aren't supported on cube connections — remove subtotals=true from this component."`;
+
+exports[`generateSQLQuery — cube > week-grain dimension 1`] = `
+"SELECT DATE_TRUNC('week', order_date) AS "order_date__week", sum(sales) AS "sum_sales"
  FROM orders
  
- GROUP BY GROUPING SETS ((category, region), (category), ())"
+ GROUP BY DATE_TRUNC('week', order_date)"
 `;
 
 exports[`generateSQLQuery — databricks > date-grain dimension 1`] = `
@@ -252,6 +264,13 @@ exports[`generateSQLQuery — databricks > subtotals table 1`] = `
  GROUP BY GROUPING SETS ((category, region), (category), ())"
 `;
 
+exports[`generateSQLQuery — databricks > week-grain dimension 1`] = `
+"SELECT DATE_TRUNC('WEEK', order_date) AS \`order_date__week\`, sum(sales) AS \`sum_sales\`
+ FROM orders
+ 
+ GROUP BY ALL"
+`;
+
 exports[`generateSQLQuery — fabric > date-grain dimension 1`] = `
 "SELECT category AS "category", DATETRUNC(month, order_date) AS "order_date__month", sum(sales) AS "sum_sales"
  FROM orders
@@ -289,6 +308,13 @@ exports[`generateSQLQuery — fabric > subtotals table 1`] = `
  FROM orders
  
  GROUP BY GROUPING SETS ((category, region), (category), ())"
+`;
+
+exports[`generateSQLQuery — fabric > week-grain dimension 1`] = `
+"SELECT DATETRUNC(week, order_date) AS "order_date__week", sum(sales) AS "sum_sales"
+ FROM orders
+ 
+ GROUP BY DATETRUNC(week, order_date)"
 `;
 
 exports[`generateSQLQuery — motherduck > date-grain dimension 1`] = `
@@ -330,6 +356,13 @@ exports[`generateSQLQuery — motherduck > subtotals table 1`] = `
  GROUP BY GROUPING SETS ((category, region), (category), ())"
 `;
 
+exports[`generateSQLQuery — motherduck > week-grain dimension 1`] = `
+"SELECT DATE_TRUNC('week', order_date) AS "order_date__week", sum(sales) AS "sum_sales"
+ FROM orders
+ 
+ GROUP BY ALL"
+`;
+
 exports[`generateSQLQuery — postgres > date-grain dimension 1`] = `
 "SELECT category AS "category", DATE_TRUNC('month', order_date) AS "order_date__month", sum(sales) AS "sum_sales"
  FROM orders
@@ -369,6 +402,13 @@ exports[`generateSQLQuery — postgres > subtotals table 1`] = `
  GROUP BY GROUPING SETS ((category, region), (category), ())"
 `;
 
+exports[`generateSQLQuery — postgres > week-grain dimension 1`] = `
+"SELECT (DATE_TRUNC('week', order_date + INTERVAL '1 day') - INTERVAL '1 day') AS "order_date__week", sum(sales) AS "sum_sales"
+ FROM orders
+ 
+ GROUP BY (DATE_TRUNC('week', order_date + INTERVAL '1 day') - INTERVAL '1 day')"
+`;
+
 exports[`generateSQLQuery — snowflake > date-grain dimension 1`] = `
 "SELECT category AS "CATEGORY", DATE_TRUNC('MONTH', order_date) AS "ORDER_DATE__MONTH", sum(sales) AS "SUM_SALES"
  FROM orders
@@ -406,4 +446,11 @@ exports[`generateSQLQuery — snowflake > subtotals table 1`] = `
  FROM orders
  
  GROUP BY GROUPING SETS ((category, region), (category), ())"
+`;
+
+exports[`generateSQLQuery — snowflake > week-grain dimension 1`] = `
+"SELECT DATE_TRUNC('WEEK', order_date) AS "ORDER_DATE__WEEK", sum(sales) AS "SUM_SALES"
+ FROM orders
+ 
+ GROUP BY ALL"
 `;

@@ -56,6 +56,23 @@ function dateGrainDimension(dialect: SqlDialect): SQLQueryConfig {
 	};
 }
 
+/**
+ * A week grain is its own fixture: it's the only grain whose SQL depends on
+ * first-day-of-week, and the dialects disagree on whether they can honour it.
+ */
+function weekGrainDimension(dialect: SqlDialect): SQLQueryConfig {
+	return {
+		tableExpressionName: 'orders',
+		columns: [
+			processColumnExpression(
+				{ value: 'order_date', type: 'dimension', dateGrain: 'week' },
+				dialect
+			),
+			processColumnExpression({ value: 'sum(sales)', type: 'measure' }, dialect)
+		]
+	};
+}
+
 /** A table with subtotals exercises GROUPING SETS + the helper columns. */
 function subtotalsTable(dialect: SqlDialect): SQLQueryConfig {
 	const columns = [
@@ -91,6 +108,7 @@ function searchAndPagination(dialect: SqlDialect): SQLQueryConfig {
 const CONFIGS: Record<string, (dialect: SqlDialect) => SQLQueryConfig> = {
 	'grouped chart': groupedChart,
 	'date-grain dimension': dateGrainDimension,
+	'week-grain dimension': weekGrainDimension,
 	'subtotals table': subtotalsTable,
 	'search + pagination': searchAndPagination
 };
@@ -108,8 +126,9 @@ describe.each(WAREHOUSES)('generateSQLQuery — %s', (warehouse) => {
 				'sunday',
 				dialect
 			);
-			expect(error).toBeUndefined();
-			expect(sql).toMatchSnapshot();
+			// Cube can't express GROUPING SETS, so subtotals are refused up front —
+			// snapshot the refusal so the message itself is covered.
+			expect(sql || `ERROR: ${error}`).toMatchSnapshot();
 		});
 	}
 });

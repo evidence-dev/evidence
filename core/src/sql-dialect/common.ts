@@ -248,6 +248,20 @@ export interface SqlDialect {
 	 */
 	readonly strictDerivedTables: boolean;
 
+	/**
+	 * Whether `GROUP BY GROUPING SETS (…)` / `GROUPING(col)` are available (subtotals).
+	 * False for Cube, which rejects both and has no rewrite — callers must refuse the
+	 * query with an actionable message rather than emit SQL that always errors.
+	 */
+	readonly supportsGroupingSets: boolean;
+
+	/**
+	 * Whether `dateAdd`/`dateSub` survive in a query that also joins fragments — i.e.
+	 * whether period comparisons are expressible. False for Cube, which rejects an
+	 * `INTERVAL` anywhere in a joined query, wherever the shift is placed.
+	 */
+	readonly supportsDateOffsetMath: boolean;
+
 	/** Aggregation function names recognised by this dialect (uppercase). */
 	readonly aggregationFunctions: ReadonlySet<string>;
 	/** Non-aggregation function/keyword names recognised by this dialect (uppercase). */

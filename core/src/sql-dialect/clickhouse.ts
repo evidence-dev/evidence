@@ -145,6 +145,8 @@ export class ClickHouseDialect implements SqlDialect {
 	readonly caseInsensitiveIdentifiers = false;
 	readonly supportsFilterClause = true;
 	readonly strictDerivedTables = false;
+	readonly supportsGroupingSets = true;
+	readonly supportsDateOffsetMath = true;
 
 	readonly conditionalAggregateFunctions: ReadonlySet<string> = new Set<string>([
 		'SUMIF',
