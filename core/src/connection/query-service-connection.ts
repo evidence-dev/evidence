@@ -17,7 +17,8 @@ export function connectionFromQueryService(
 		get dialect() {
 			return queryService.dialect;
 		},
-		query: (sql, queryOpts) => queryService.query(sql, queryOpts)
+		// Tag queries with this connection's id so the server can resolve its warehouse.
+		query: (sql, queryOpts) => queryService.query(sql, { ...queryOpts, connectionId: opts.id })
 	};
 }
 

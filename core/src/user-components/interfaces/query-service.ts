@@ -17,6 +17,9 @@ export type QueryOpts = {
 	signal?: AbortSignal;
 	// Catalog-introspection hint for server-side caching; implementations without one (CLI) ignore it.
 	catalogCache?: boolean;
+	// Which connection to run against (native path); the server resolves it org-scoped, so the
+	// client sends only an id, never credentials. Absent → the org's default warehouse.
+	connectionId?: string;
 };
 
 export type AnyRowType = Record<string, string | number | Date | null | undefined>;

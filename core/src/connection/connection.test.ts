@@ -19,7 +19,7 @@ describe('connectionFromQueryService', () => {
 		const opts = { noCache: true };
 
 		await expect(conn.query('SELECT 1', opts)).resolves.toBe(result);
-		expect(query).toHaveBeenCalledWith('SELECT 1', opts);
+		expect(query).toHaveBeenCalledWith('SELECT 1', { ...opts, connectionId: 'default' });
 		expect(conn.id).toBe('default');
 		expect(conn.type).toBe('managed');
 	});
@@ -78,7 +78,7 @@ describe('connection catalog', () => {
 
 		// query still delegates
 		void conn.query('SELECT 1');
-		expect(query).toHaveBeenCalledWith('SELECT 1', undefined);
+		expect(query).toHaveBeenCalledWith('SELECT 1', { connectionId: 'default' });
 	});
 });
 

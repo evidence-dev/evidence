@@ -50,6 +50,6 @@ describe('setQueryService → getDefaultConnection wiring', () => {
 		expect(resolved!.dialect).toBeInstanceOf(SnowflakeDialect);
 
 		void resolved!.query('SELECT 1');
-		expect(query).toHaveBeenCalledWith('SELECT 1', undefined);
+		expect(query).toHaveBeenCalledWith('SELECT 1', { connectionId: 'default' });
 	});
 });
