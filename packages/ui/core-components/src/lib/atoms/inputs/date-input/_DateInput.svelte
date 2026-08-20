@@ -239,7 +239,12 @@
 	}
 
 	function updateDateRange(start, end) {
-		if (selectedPreset) return;
+		if (selectedPreset || selectedDateInput) return;
+
+		if (!range && typeof defaultValue === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(defaultValue)) {
+			selectedDateInput = YYYYMMDDToCalendar(defaultValue);
+			return;
+		}
 
 		if (range) {
 			selectedDateInput = { start, end };
