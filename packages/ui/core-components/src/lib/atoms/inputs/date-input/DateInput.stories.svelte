@@ -65,3 +65,6 @@
 	<h1>Data has a query error</h1>
 	<DateInput name="QueryError" data={queryErrorData} />
 </Story>
+<Story name="Single Date Default Value" let:args>
+	<DateInput {...args} name="dateInput_default" defaultValue="2024-12-29" />
+</Story>
