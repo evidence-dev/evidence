@@ -8,8 +8,8 @@
 		"@vitest/coverage-v8": "^4.1.2"
 	},
 	"scripts": {
-		"test": "vitest run",
-		"test:coverage": "vitest run --coverage",
+		"test": "pnpm -r test",
+		"test:coverage": "pnpm -r test -- --coverage",
 		"check": "pnpm --filter @evidence/core check && pnpm --filter @evidence/cli check",
 		"cli:build": "pnpm --filter @evidence/cli build",
 		"cli:check": "pnpm --filter @evidence/cli check",
