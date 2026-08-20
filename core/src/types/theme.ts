@@ -154,15 +154,32 @@ const themeColorOverrideSchema = z.object({
 	dark: hexColorSchema.optional().describe('Hex color (e.g. #1e40af) used in dark mode.')
 });
 
-const colorPaletteOverrideSchema = z.object({
-	light: z.array(hexColorSchema).optional().describe('Ordered list of hex colors for light mode.'),
-	dark: z.array(hexColorSchema).optional().describe('Ordered list of hex colors for dark mode.')
-});
+// Also accept a flat color array as shorthand for { light, dark } — rejecting it
+// silently voided the whole theme override. `z.preprocess` (not a union) keeps the
+// object schema so YAML autocomplete still works.
+const coerceModeArray = (v: unknown) => (Array.isArray(v) ? { light: v, dark: v } : v);
 
-const colorScaleOverrideSchema = z.object({
-	light: z.array(hexColorSchema).optional().describe('Ordered list of hex colors for light mode.'),
-	dark: z.array(hexColorSchema).optional().describe('Ordered list of hex colors for dark mode.')
-});
+const colorPaletteOverrideSchema = z.preprocess(
+	coerceModeArray,
+	z.object({
+		light: z
+			.array(hexColorSchema)
+			.optional()
+			.describe('Ordered list of hex colors for light mode.'),
+		dark: z.array(hexColorSchema).optional().describe('Ordered list of hex colors for dark mode.')
+	})
+);
+
+const colorScaleOverrideSchema = z.preprocess(
+	coerceModeArray,
+	z.object({
+		light: z
+			.array(hexColorSchema)
+			.optional()
+			.describe('Ordered list of hex colors for light mode.'),
+		dark: z.array(hexColorSchema).optional().describe('Ordered list of hex colors for dark mode.')
+	})
+);
 
 // Theme overrides schema - values can be null to indicate inheritance from parent.
 // Non-color fields carry per-field `.catch(undefined)` so one invalid hand-edited
@@ -208,18 +225,26 @@ export const themeOverridesSchema = z.object({
 			default: colorPaletteOverrideSchema
 				.nullable()
 				.optional()
-				.describe('Default categorical palette used by charts.')
+				.catch(undefined)
+				.describe(
+					'Default categorical palette used by charts. Accepts a { light, dark } object or a flat array of hex colors (applied to both modes).'
+				)
 		})
 		.optional()
+		.catch(undefined)
 		.describe('Categorical color palettes for charts.'),
 	colorScales: z
 		.object({
 			default: colorScaleOverrideSchema
 				.nullable()
 				.optional()
-				.describe('Default sequential scale used by heatmaps and gradients.')
+				.catch(undefined)
+				.describe(
+					'Default sequential scale used by heatmaps and gradients. Accepts a { light, dark } object or a flat array of hex colors (applied to both modes).'
+				)
 		})
 		.optional()
+		.catch(undefined)
 		.describe('Sequential color scales for heatmaps and gradients.'),
 	fonts: z
 		.object({

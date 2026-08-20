@@ -1,6 +1,69 @@
 import { describe, test, expect } from 'vitest';
 import { resolveTheme, resolveThemeOverrides, diffThemeOverrides } from './resolve-theme';
 import { DEFAULT_THEME } from '../constants/default-theme';
+import { themeOverridesSchema } from '../types/theme';
+
+describe('themeOverridesSchema color scale/palette shorthand', () => {
+	test('accepts a flat array for colorScales.default and applies it to both modes', () => {
+		const parsed = themeOverridesSchema.safeParse({
+			colorScales: { default: ['#fdf4ff', '#701a75'] }
+		});
+		expect(parsed.success).toBe(true);
+		expect(parsed.success && parsed.data.colorScales?.default).toEqual({
+			light: ['#fdf4ff', '#701a75'],
+			dark: ['#fdf4ff', '#701a75']
+		});
+	});
+
+	test('still accepts the canonical { light, dark } object', () => {
+		const parsed = themeOverridesSchema.safeParse({
+			colorScales: { default: { light: ['#fdf4ff'], dark: ['#111111'] } }
+		});
+		expect(parsed.success).toBe(true);
+		expect(parsed.success && parsed.data.colorScales?.default).toEqual({
+			light: ['#fdf4ff'],
+			dark: ['#111111']
+		});
+	});
+
+	test('accepts a flat array for colorPalettes.default too', () => {
+		const parsed = themeOverridesSchema.safeParse({
+			colorPalettes: { default: ['#111111', '#222222'] }
+		});
+		expect(parsed.success).toBe(true);
+		expect(parsed.success && parsed.data.colorPalettes?.default).toEqual({
+			light: ['#111111', '#222222'],
+			dark: ['#111111', '#222222']
+		});
+	});
+
+	test('a malformed scale degrades to inherit without voiding the rest of the theme', () => {
+		const parsed = themeOverridesSchema.safeParse({
+			colorScales: { default: { light: 'not-an-array' } },
+			colorPalettes: { default: ['#111111', '#222222'] }
+		});
+		expect(parsed.success).toBe(true);
+		expect(parsed.success && parsed.data.colorScales?.default).toBeUndefined();
+		expect(parsed.success && parsed.data.colorPalettes?.default).toEqual({
+			light: ['#111111', '#222222'],
+			dark: ['#111111', '#222222']
+		});
+	});
+
+	test('a flat-array page override wins over the project scale end to end', () => {
+		const parsed = themeOverridesSchema.safeParse({
+			colorScales: { default: ['#fdf4ff', '#701a75'] }
+		});
+		expect(parsed.success).toBe(true);
+		const resolved = resolveTheme(
+			null,
+			null,
+			{ colorScales: { default: { light: ['#dbeafe', '#1e40af'], dark: ['#1e3a8a', '#93c5fd'] } } },
+			parsed.success ? parsed.data : null
+		);
+		expect(resolved.colorScales.default.light).toEqual(['#fdf4ff', '#701a75']);
+	});
+});
 
 const defaultLight = DEFAULT_THEME.colorPalettes.default.light;
 const defaultDark = DEFAULT_THEME.colorPalettes.default.dark;
