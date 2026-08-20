@@ -229,7 +229,48 @@ describe('createColorScale', () => {
 		expect(result).toBeNull();
 	});
 
-	it('falls back to a simple range when midpoint sits at min or max', () => {
+	it('uses the neutral→high half of the palette for all-positive data (midpoint 0)', () => {
+		// Regression: previously a midpoint outside the data range collapsed to a
+		// full linear gradient, so a barely-positive value wrongly showed the
+		// low-end (red) color. It should now render neutral→high only.
+		const result = createColorScale([2.5, 40, 78.3], {
+			colorPalette: divergingPalette,
+			defaultColorScale: defaultScale,
+			midpoint: 0
+		});
+
+		expect(result).not.toBeNull();
+		// Only the middle→high colors are used; the low-end (red) is dropped.
+		expect(result!.colorPalette).toEqual(['#ffffbf', '#1a9850']);
+		expect(result!.domain).toEqual([0, 78.3]);
+		// No reported midpoint (it sits at the domain edge, so no tick).
+		expect(result!.midpoint).toBeNull();
+		// The largest value hits the high color; the smallest is near-neutral, NOT red.
+		expect(getColorForValue(78.3, result!).toLowerCase()).toBe('#1a9850');
+		const smallest = getColorForValue(2.5, result!).toLowerCase();
+		expect(smallest).not.toBe('#d73027');
+		expect(smallest).not.toBe('#1a9850');
+	});
+
+	it('uses the low→neutral half of the palette for all-negative data (midpoint 0)', () => {
+		const result = createColorScale([-78.3, -40, -2.5], {
+			colorPalette: divergingPalette,
+			defaultColorScale: defaultScale,
+			midpoint: 0
+		});
+
+		expect(result).not.toBeNull();
+		expect(result!.colorPalette).toEqual(['#d73027', '#ffffbf']);
+		expect(result!.domain).toEqual([-78.3, 0]);
+		expect(result!.midpoint).toBeNull();
+		// The most-negative value hits the low color; the least-negative is near-neutral.
+		expect(getColorForValue(-78.3, result!).toLowerCase()).toBe('#d73027');
+		const leastNegative = getColorForValue(-2.5, result!).toLowerCase();
+		expect(leastNegative).not.toBe('#1a9850');
+		expect(leastNegative).not.toBe('#d73027');
+	});
+
+	it('anchors the neutral color at the midpoint even when it sits at min', () => {
 		const result = createColorScale([0, 100], {
 			colorPalette: divergingPalette,
 			defaultColorScale: defaultScale,
@@ -239,10 +280,12 @@ describe('createColorScale', () => {
 		});
 
 		expect(result).not.toBeNull();
-		// midpoint == min would create a non-monotonic domain; we degrade gracefully.
+		expect(result!.colorPalette).toEqual(['#ffffbf', '#1a9850']);
 		expect(result!.domain).toEqual([0, 100]);
-		// And clear the reported midpoint so callers don't draw a misleading tick.
 		expect(result!.midpoint).toBeNull();
+		// 0 (== min == midpoint) is the neutral color, 100 the high color.
+		expect(getColorForValue(0, result!).toLowerCase()).toBe('#ffffbf');
+		expect(getColorForValue(100, result!).toLowerCase()).toBe('#1a9850');
 	});
 
 	it('clears midpoint when palette has fewer than 3 colors', () => {
@@ -256,7 +299,81 @@ describe('createColorScale', () => {
 		expect(result!.midpoint).toBeNull();
 	});
 
-	it('clamps an out-of-range midpoint and reports null', () => {
+	it('pins colors to values with explicit color_stops (kind=stops)', () => {
+		const result = createColorScale([], {
+			defaultColorScale: defaultScale,
+			colorStops: [
+				{ value: 0, color: '#ffffff' },
+				{ value: 100, color: '#1a9850' }
+			]
+		});
+
+		expect(result).not.toBeNull();
+		expect(result!.kind).toBe('stops');
+		expect(result!.colorPalette).toEqual(['#ffffff', '#1a9850']);
+		expect(result!.domain).toEqual([0, 100]);
+		expect(result!.minValue).toBe(0);
+		expect(result!.maxValue).toBe(100);
+		expect(result!.midpoint).toBeNull();
+		expect(getColorForValue(0, result!).toLowerCase()).toBe('#ffffff');
+		expect(getColorForValue(100, result!).toLowerCase()).toBe('#1a9850');
+		// Values beyond the outermost stops clamp to the end colors.
+		expect(getColorForValue(-50, result!).toLowerCase()).toBe('#ffffff');
+		expect(getColorForValue(9999, result!).toLowerCase()).toBe('#1a9850');
+	});
+
+	it('sorts stops and takes precedence over palette + midpoint', () => {
+		const result = createColorScale([5, 50, 95], {
+			colorPalette: divergingPalette,
+			defaultColorScale: defaultScale,
+			midpoint: 0,
+			colorStops: [
+				{ value: 100, color: '#1a9850' },
+				{ value: 0, color: '#d73027' },
+				{ value: 50, color: '#ffffbf' }
+			]
+		});
+
+		expect(result).not.toBeNull();
+		expect(result!.kind).toBe('stops');
+		expect(result!.domain).toEqual([0, 50, 100]);
+		expect(getColorForValue(0, result!).toLowerCase()).toBe('#d73027');
+		expect(getColorForValue(50, result!).toLowerCase()).toBe('#ffffbf');
+		expect(getColorForValue(100, result!).toLowerCase()).toBe('#1a9850');
+	});
+
+	it('drops invalid stops and collapses duplicate values', () => {
+		const result = createColorScale([], {
+			defaultColorScale: defaultScale,
+			colorStops: [
+				{ value: 0, color: '#000000' },
+				{ value: 0, color: '#111111' }, // duplicate value -> collapsed (first kept)
+				{ value: 50, color: 'not-a-color' }, // invalid -> dropped
+				{ value: 100, color: '#ffffff' }
+			]
+		});
+
+		expect(result).not.toBeNull();
+		expect(result!.kind).toBe('stops');
+		expect(result!.domain).toEqual([0, 100]);
+		expect(result!.colorPalette).toEqual(['#000000', '#ffffff']);
+	});
+
+	it('falls back to the palette scale when fewer than 2 valid stops remain', () => {
+		const result = createColorScale([0, 100], {
+			colorPalette: ['#000000', '#ffffff'],
+			defaultColorScale: defaultScale,
+			colorStops: [{ value: 10, color: '#ff0000' }] // only one stop
+		});
+
+		expect(result).not.toBeNull();
+		expect(result!.kind).toBe('linear');
+		expect(result!.domain).toEqual([0, 100]);
+	});
+
+	it('keeps the midpoint reference when it lies far beyond the data range', () => {
+		// midpoint 500 is above all data (0..100): everything is "below neutral",
+		// so the low→neutral half is used and no value reaches the neutral color.
 		const result = createColorScale([0, 100], {
 			colorPalette: divergingPalette,
 			defaultColorScale: defaultScale,
@@ -266,9 +383,13 @@ describe('createColorScale', () => {
 		});
 
 		expect(result).not.toBeNull();
-		// Midpoint clamps to max=100, which collapses the domain to [min, max].
-		expect(result!.domain).toEqual([0, 100]);
+		expect(result!.colorPalette).toEqual(['#d73027', '#ffffbf']);
+		// Neutral (#ffffbf) is anchored at the midpoint (500), so the domain extends there.
+		expect(result!.domain).toEqual([0, 500]);
 		expect(result!.midpoint).toBeNull();
+		expect(getColorForValue(0, result!).toLowerCase()).toBe('#d73027');
+		// The largest value (100) is still well below neutral -> reddish, not neutral.
+		expect(getColorForValue(100, result!).toLowerCase()).not.toBe('#ffffbf');
 	});
 });
 

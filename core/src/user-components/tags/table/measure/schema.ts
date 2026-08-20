@@ -1,4 +1,5 @@
 import type { UserComponentSchema } from '../../../types';
+import type { ValidationError } from '@markdoc/markdoc';
 import { DATE_RANGE_ATTRIBUTE } from '../../../common/date-options';
 import { baseComparisonSchema } from '../../../common/comparison-schema';
 import {
@@ -180,7 +181,25 @@ export const colorOptionsSchema = z
 					'How to calculate min/max for color and bar visualizations. "individual" calculates range per column (default), "shared" calculates range across all related columns.'
 			})
 			.optional()
-			.default('individual')
+			.default('individual'),
+		min: z
+			.number({
+				description:
+					'Lower bound for the color scale. Values below this clamp to the first color in the scale. Defaults to the minimum value in the column.'
+			})
+			.optional(),
+		max: z
+			.number({
+				description:
+					'Upper bound for the color scale. Values above this clamp to the last color in the scale. Defaults to the maximum value in the column.'
+			})
+			.optional(),
+		midpoint: z
+			.number({
+				description:
+					'Anchor a specific value (typically 0) at the middle of a diverging color scale. Requires a color_scale with 3 or more colors.'
+			})
+			.optional()
 	})
 	.optional();
 
@@ -449,7 +468,37 @@ export const schema = {
 		validateVizOptions(),
 		validateDateRange(),
 		validateEmptyAttributes(),
-		validateVariablesInComponent()
+		validateVariablesInComponent(),
+		// Mirror the map layers' diverging-scale checks so the table color viz
+		// warns the same way when min/max/midpoint are misconfigured.
+		(node) => {
+			const errors: ValidationError[] = [];
+			const colorOptions = node.attributes?.color_options;
+			if (!colorOptions || typeof colorOptions !== 'object') return errors;
+
+			const { min, max, midpoint, color_scale } = colorOptions as Record<string, unknown>;
+
+			if (typeof min === 'number' && typeof max === 'number' && min >= max) {
+				errors.push({
+					id: 'invalid-min-max',
+					level: 'warning' as const,
+					message: `measure: color_options "min" (${min}) must be less than "max" (${max}).`,
+					location: node.location
+				});
+			}
+
+			if (typeof midpoint === 'number' && (!Array.isArray(color_scale) || color_scale.length < 3)) {
+				errors.push({
+					id: 'midpoint-without-diverging-palette',
+					level: 'warning' as const,
+					message:
+						'measure: color_options "midpoint" only takes effect when "color_scale" has 3 or more colors.',
+					location: node.location
+				});
+			}
+
+			return errors;
+		}
 		// TODO: Add validation for scale_column once we determine proper validation strategy for SQL expressions
 	),
 	examples: [
@@ -542,6 +591,25 @@ export const schema = {
         viz="color"
         color_options={
             color_scale=["#c0392b","#f4f4f4","#27ae60"]
+        }
+    /%}
+{% /table %}
+`
+		},
+		{
+			title: 'Viz: Diverging Color Scale Centered at 0',
+			example: `
+{% table data="demo.daily_orders" %}
+    {% dimension value="category" /%}
+    {% measure
+        value="sum(total_sales) - 10000 as vs_target"
+        fmt="usd"
+        viz="color"
+        color_options={
+            color_scale=["#d73027", "#ffffbf", "#1a9850"]
+            min=-10000
+            max=10000
+            midpoint=0
         }
     /%}
 {% /table %}

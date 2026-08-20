@@ -250,6 +250,7 @@ export class AreaLayerModel {
 		const values = Array.from(dataMap.values());
 		const colorScaleResult = createColorScale(values, {
 			colorPalette: colorScale,
+			colorStops: props.color_stops,
 			defaultColorScale,
 			context: 'AreaLayer',
 			min: props.min,

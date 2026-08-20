@@ -37,7 +37,8 @@
 		calculateColorStyles,
 		calculateColorStylesFromHex,
 		calculateVizRanges,
-		calculateFormatRanges
+		calculateFormatRanges,
+		buildColorVizScale
 	} from './table-viz';
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
 	import { getLogoUrl } from '../../../shims/logo-url';
@@ -676,6 +677,19 @@
 		});
 	});
 
+	// Build the continuous color-viz gradient once per column (min/max/midpoint
+	// aware) instead of rebuilding a chroma scale for every cell.
+	const vizColorScales = $derived.by(() => {
+		const scales = new Map<string, ReturnType<typeof buildColorVizScale>>();
+		for (const colMeta of displayPivotData.columnMeta) {
+			if (colMeta.viz !== 'color') continue;
+			const range = vizRanges.get(colMeta.key);
+			if (!range) continue;
+			scales.set(colMeta.key, buildColorVizScale(colMeta, range, defaultColorScale));
+		}
+		return scales;
+	});
+
 	// Pre-calculate format ranges for columns with auto-scalable formats (usd, num, eur, etc.)
 	// This ensures consistent unit scaling (k, M, B) and decimal precision within a column
 	const formatRanges = $derived.by(() => {
@@ -821,7 +835,8 @@
 										col,
 										row,
 										vizRanges.get(col) || { min: 0, max: 0 },
-										defaultColorScale
+										defaultColorScale,
+										vizColorScales.get(col)
 									) : null}
 								{@const isFrozenCell = freeze_columns > 0 && tableColumnIndex < freeze_columns}
 								{@const frozenCellLeft = isFrozenCell ? (frozenColumnOffsets[tableColumnIndex] ?? 0) : 0}

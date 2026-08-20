@@ -1,6 +1,15 @@
 import chroma from 'chroma-js';
 import { logger } from '../../shims/logger';
 
+function isValidColor(color: string): boolean {
+	try {
+		chroma(color);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
 export interface ColorScaleOptions {
 	/**
 	 * Custom color palette to use for the scale.
@@ -43,12 +52,26 @@ export interface ColorScaleOptions {
 	 * Anchor a specific value (typically 0) at the middle color of the
 	 * palette to create a diverging scale.
 	 *
-	 * Only takes effect when the palette has 3 or more colors. With an even
-	 * number of colors, the midpoint sits between the two middle colors.
-	 * Outside that case the option is ignored and the scale is linear from
-	 * `min` to `max`.
+	 * Only takes effect when the palette has 3 or more colors. When the data
+	 * straddles the midpoint, the full palette is used with its middle color
+	 * pinned to `midpoint`. When the data sits entirely on one side of the
+	 * midpoint (e.g. all-positive values with `midpoint: 0`), only the relevant
+	 * half of the palette is used and the neutral color stays anchored at the
+	 * midpoint — so a barely-positive value reads as near-neutral rather than the
+	 * low-end color.
 	 */
 	midpoint?: number;
+
+	/**
+	 * Explicit value→color anchors ("breakpoints") that pin specific colors to
+	 * specific data values, still interpolating between them. Values beyond the
+	 * outermost stops clamp to the end colors.
+	 *
+	 * When two or more valid stops are provided they take precedence over
+	 * `colorPalette`, `min`/`max`, and `midpoint` — the caller has fully described
+	 * the scale. Stops are sorted by value; ties collapse to the first-seen color.
+	 */
+	colorStops?: { value: number; color: string }[];
 }
 
 export interface ColorScaleResult {
@@ -58,7 +81,17 @@ export interface ColorScaleResult {
 	scale: chroma.Scale;
 
 	/**
-	 * The actual color palette being used (for display in legends)
+	 * How the scale was built:
+	 * - `linear`: a plain gradient over `[minValue, maxValue]`.
+	 * - `diverging`: a `midpoint`-anchored scale (full palette or one-sided half).
+	 * - `stops`: explicit value→color anchors (`colorStops`).
+	 */
+	kind: 'linear' | 'diverging' | 'stops';
+
+	/**
+	 * The actual color palette being used (for display in legends). May be a
+	 * subset of the requested palette for one-sided diverging scales, or the stop
+	 * colors when `colorStops` are used.
 	 */
 	colorPalette: string[];
 
@@ -73,10 +106,10 @@ export interface ColorScaleResult {
 	maxValue: number;
 
 	/**
-	 * The full domain passed to chroma. For non-diverging scales this is
-	 * `[minValue, maxValue]`. For diverging scales (with an explicit
-	 * midpoint) this contains intermediate stops so the midpoint lands at
-	 * the correct color.
+	 * The full domain passed to chroma, one entry per palette color. For linear
+	 * scales this is `[minValue, maxValue]`; for diverging scales it contains
+	 * intermediate stops so the midpoint lands at the correct color; for `stops`
+	 * scales it is the (sorted) breakpoint values.
 	 */
 	domain: number[];
 
@@ -89,12 +122,10 @@ export interface ColorScaleResult {
 
 /**
  * Creates a color scale from values and color palette options.
- * This is the canonical color scale creator used across:
- * - area_layer
- * - point_layer
- *
- * TODO: Migrate table (measure color visualization) to use this utility
- * (currently uses similar logic in table-viz.ts)
+ * This is the canonical color scale creator used across area_layer, point_layer,
+ * and the table `viz="color"` measure. It supports three shapes (see
+ * `ColorScaleResult['kind']`): a plain linear gradient, a `midpoint`-anchored
+ * diverging scale, and explicit `colorStops` (value→color breakpoints).
  *
  * @param values - Array of numeric values to scale
  * @param options - Color scale configuration
@@ -111,8 +142,26 @@ export function createColorScale(
 		context = 'ColorScale',
 		min: minOverride,
 		max: maxOverride,
-		midpoint
+		midpoint,
+		colorStops
 	} = options;
+
+	// Explicit stops take precedence over palette/min/max/midpoint.
+	const stops = normalizeColorStops(colorStops);
+	if (stops) {
+		const stopColors = stops.map((s) => s.color);
+		const stopValues = stops.map((s) => s.value);
+		const scale = chroma.scale(stopColors).domain(stopValues).mode(mode);
+		return {
+			scale,
+			kind: 'stops',
+			colorPalette: stopColors,
+			minValue: stopValues[0],
+			maxValue: stopValues[stopValues.length - 1],
+			domain: stopValues,
+			midpoint: null
+		};
+	}
 
 	const validValues = values.filter((v) => !isNaN(v) && isFinite(v));
 
@@ -174,7 +223,6 @@ export function createColorScale(
 
 	const hasMidpoint = typeof midpoint === 'number' && isFinite(midpoint);
 	const supportsMidpoint = hasMidpoint && finalColorPalette.length >= 3;
-	const appliedMidpoint = supportsMidpoint ? (midpoint as number) : null;
 
 	if (hasMidpoint && !supportsMidpoint) {
 		logger.warn(
@@ -182,16 +230,28 @@ export function createColorScale(
 		);
 	}
 
-	const domain = buildDomain(minValue, maxValue, appliedMidpoint, finalColorPalette.length);
+	// One-sided diverging data uses only half the palette, so `colorPalette` may be a subset.
+	let scalePalette = finalColorPalette;
+	let domain: number[] = [minValue, maxValue];
+	let finalMidpoint: number | null = null;
+	let kind: ColorScaleResult['kind'] = 'linear';
 
-	// `buildDomain` returns a 2-element `[min, max]` array when it can't
-	// honour the requested midpoint (palette too small, midpoint at a
-	// boundary, or any non-monotonic intermediate). In that case the scale
-	// is effectively linear, so clear the reported midpoint so callers
-	// (legend, models) don't draw a tick implying a diverging scale.
-	const finalMidpoint = appliedMidpoint !== null && domain.length > 2 ? appliedMidpoint : null;
+	if (supportsMidpoint) {
+		const diverging = buildDivergingScale(
+			minValue,
+			maxValue,
+			midpoint as number,
+			finalColorPalette
+		);
+		if (diverging) {
+			scalePalette = diverging.palette;
+			domain = diverging.domain;
+			finalMidpoint = diverging.midpoint;
+			kind = 'diverging';
+		}
+	}
 
-	const scale = chroma.scale(finalColorPalette).domain(domain).mode(mode);
+	const scale = chroma.scale(scalePalette).domain(domain).mode(mode);
 
 	logger.debug(
 		{
@@ -199,7 +259,7 @@ export function createColorScale(
 			maxValue,
 			midpoint: finalMidpoint,
 			domain,
-			colorPalette: finalColorPalette,
+			colorPalette: scalePalette,
 			usingCustomPalette: !!colorPalette,
 			testColors: {
 				min: scale(minValue).hex(),
@@ -212,7 +272,8 @@ export function createColorScale(
 
 	return {
 		scale,
-		colorPalette: finalColorPalette,
+		kind,
+		colorPalette: scalePalette,
 		minValue,
 		maxValue,
 		domain,
@@ -221,54 +282,100 @@ export function createColorScale(
 }
 
 /**
- * Build the domain array passed to `chroma.scale().domain()`.
- *
- * - With no midpoint, the domain is `[min, max]` and chroma evenly
- *   distributes the palette across the range.
- * - With a midpoint and a 3+ color palette, the domain has one entry per
- *   color so the middle color (or the gap between the two middle colors,
- *   for an even-sized palette) lands exactly at `midpoint`. The remaining
- *   colors are evenly distributed between `[min, midpoint]` and
- *   `[midpoint, max]`.
+ * Validate + normalize explicit color stops for use as a chroma domain.
+ * Drops entries with a non-finite value or an unparseable color, sorts by value,
+ * and collapses ties (chroma requires a strictly increasing domain) keeping the
+ * first color seen at each value. Returns `null` when fewer than two usable stops
+ * remain, so the caller falls back to the palette-based scale.
  */
-function buildDomain(
+function normalizeColorStops(
+	stops: { value: number; color: string }[] | undefined
+): { value: number; color: string }[] | null {
+	if (!Array.isArray(stops) || stops.length < 2) return null;
+
+	const valid = stops.filter(
+		(s): s is { value: number; color: string } =>
+			s != null &&
+			typeof s.value === 'number' &&
+			isFinite(s.value) &&
+			typeof s.color === 'string' &&
+			isValidColor(s.color)
+	);
+	if (valid.length < 2) return null;
+
+	const sorted = [...valid].sort((a, b) => a.value - b.value);
+	const deduped: { value: number; color: string }[] = [];
+	for (const stop of sorted) {
+		if (deduped.length === 0 || stop.value > deduped[deduped.length - 1].value) {
+			deduped.push(stop);
+		}
+	}
+
+	return deduped.length >= 2 ? deduped : null;
+}
+
+interface DivergingScale {
+	/** Palette actually used — a subset of the input when the data is one-sided. */
+	palette: string[];
+	/** Domain passed to `chroma.scale().domain()`, one entry per palette color. */
+	domain: number[];
+	/** Reported midpoint (only when the data straddles it; `null` otherwise). */
+	midpoint: number | null;
+}
+
+function isStrictlyIncreasing(arr: number[]): boolean {
+	for (let i = 1; i < arr.length; i++) {
+		if (!(arr[i] > arr[i - 1])) return false;
+	}
+	return true;
+}
+
+/**
+ * Build the palette + domain for a diverging color scale anchored at `mid`
+ * (3+ colors only). The non-obvious case is one-sided data: when every value is on
+ * one side of `mid`, only the relevant half of the palette is used with the neutral
+ * anchored at `mid`, so the midpoint stays meaningful even outside the data range.
+ * Returns `null` (→ caller uses a linear scale) if no strictly-increasing domain
+ * can be built.
+ */
+function buildDivergingScale(
 	min: number,
 	max: number,
-	midpoint: number | null,
-	colorCount: number
-): number[] {
-	if (midpoint === null || colorCount < 3) {
-		return [min, max];
-	}
-
-	// Clamp midpoint inside the domain so chroma receives a monotonic array.
-	const clampedMid = Math.min(Math.max(midpoint, min), max);
-
+	mid: number,
+	palette: string[]
+): DivergingScale | null {
+	const n = palette.length;
 	// The "logical middle" of an N-color palette sits at index (N-1)/2.
-	const midIdx = (colorCount - 1) / 2;
+	const midIdx = (n - 1) / 2;
 
-	const domain: number[] = new Array(colorCount);
-	for (let i = 0; i < colorCount; i++) {
-		if (i < midIdx) {
-			const t = i / midIdx; // 0..1 across the lower half
-			domain[i] = min + t * (clampedMid - min);
-		} else if (i > midIdx) {
-			const t = (i - midIdx) / (colorCount - 1 - midIdx); // 0..1 across the upper half
-			domain[i] = clampedMid + t * (max - clampedMid);
-		} else {
-			domain[i] = clampedMid;
+	// Data straddles the midpoint: full palette, middle color pinned at `mid`.
+	if (mid > min && mid < max) {
+		const domain = new Array<number>(n);
+		for (let i = 0; i < n; i++) {
+			if (i < midIdx) {
+				domain[i] = min + (i / midIdx) * (mid - min);
+			} else if (i > midIdx) {
+				domain[i] = mid + ((i - midIdx) / (n - 1 - midIdx)) * (max - mid);
+			} else {
+				domain[i] = mid;
+			}
 		}
+		return isStrictlyIncreasing(domain) ? { palette, domain, midpoint: mid } : null;
 	}
 
-	// Chroma requires a strictly increasing domain. If midpoint equals min or
-	// max the formula above produces duplicates — collapse to a simple range.
-	for (let i = 1; i < domain.length; i++) {
-		if (!(domain[i] > domain[i - 1])) {
-			return [min, max];
-		}
+	// One-sided, data all >= mid: use the neutral→high half of the palette.
+	if (mid <= min) {
+		const sub = palette.slice(Math.floor(midIdx)); // includes the middle color
+		if (sub.length < 2) return null;
+		const domain = sub.map((_, i) => mid + (i / (sub.length - 1)) * (max - mid));
+		return isStrictlyIncreasing(domain) ? { palette: sub, domain, midpoint: null } : null;
 	}
 
-	return domain;
+	// One-sided, data all <= mid: use the low→neutral half of the palette.
+	const sub = palette.slice(0, Math.ceil(midIdx) + 1); // includes the middle color
+	if (sub.length < 2) return null;
+	const domain = sub.map((_, i) => min + (i / (sub.length - 1)) * (mid - min));
+	return isStrictlyIncreasing(domain) ? { palette: sub, domain, midpoint: null } : null;
 }
 
 /**

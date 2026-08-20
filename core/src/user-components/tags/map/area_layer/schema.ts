@@ -114,6 +114,13 @@ const attributes = {
 			'Anchor a specific value (typically 0) at the middle of a diverging color scale. Requires a color_scale with 3 or more colors.',
 		affectsQuery: false
 	},
+	color_stops: {
+		type: ZodAttribute.create(z.array(z.object({ value: z.number(), color: z.string() }))),
+		required: false,
+		description:
+			'Pin specific data values to specific colors, interpolating between them. Provide an array of value and color pairs. Values beyond the first and last breakpoint are clamped to the end colors. Takes precedence over color_scale, min, max, and midpoint.',
+		affectsQuery: false
+	},
 	show_unmatched: {
 		type: Boolean,
 		required: false,
@@ -280,16 +287,13 @@ export const schema = {
 				});
 			}
 
-			if (
-				typeof midpointAttr === 'number' &&
-				typeof minAttr === 'number' &&
-				typeof maxAttr === 'number' &&
-				(midpointAttr <= minAttr || midpointAttr >= maxAttr)
-			) {
+			const colorStopsAttr = node.attributes.color_stops;
+			if (Array.isArray(colorStopsAttr) && colorStopsAttr.length === 1) {
 				errors.push({
-					id: 'midpoint-outside-range',
+					id: 'color-stops-need-two',
 					level: 'warning' as const,
-					message: `area_layer: "midpoint" (${midpointAttr}) must be strictly between "min" (${minAttr}) and "max" (${maxAttr}); the scale will fall back to a linear gradient.`,
+					message:
+						'area_layer: "color_stops" needs at least 2 entries to form a scale; the color_scale gradient will be used instead.',
 					location: node.location
 				});
 			}
@@ -385,6 +389,25 @@ export const schema = {
         min=-100
         max=100
         midpoint=0
+    /%}
+{% /map %}
+`
+		},
+		{
+			title: 'Custom Breakpoints',
+			example: `
+{% map %}
+    {% area_layer
+        geography="us_states"
+        match_by="abbr"
+        data="state_sales"
+        area_id="state_abbr"
+        value="sum(sales)"
+        color_stops=[
+            { value=0 color="#ffffff" },
+            { value=10000 color="#f59e0b" },
+            { value=50000 color="#1a9850" }
+        ]
     /%}
 {% /map %}
 `

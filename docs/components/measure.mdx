@@ -108,6 +108,25 @@ description: Add a measure to a table, including comparisons, sparklines, and mo
 {% /table %}
 ````
 
+### Viz: Diverging Color Scale Centered at 0
+
+````liquid
+{% table data="demo.daily_orders" %}
+    {% dimension value="category" /%}
+    {% measure
+        value="sum(total_sales) - 10000 as vs_target"
+        fmt="usd"
+        viz="color"
+        color_options={
+            color_scale=["#d73027", "#ffffbf", "#1a9850"]
+            min=-10000
+            max=10000
+            midpoint=0
+        }
+    /%}
+{% /table %}
+````
+
 ### Viz: Color Scale with Pinned Values
 
 ````liquid
@@ -386,6 +405,9 @@ color_options={
   conditional_colors = "string"
   scale_column = "string"
   scale_mode = "individual"
+  min = 0
+  max = 0
+  midpoint = 0
 }
 ```
 
@@ -398,6 +420,9 @@ color_options={
   - **Allowed values:**
     - `individual`
     - `shared`
+- min: `number` - Lower bound for the color scale. Values below this clamp to the first color in the scale. Defaults to the minimum value in the column.
+- max: `number` - Upper bound for the color scale. Values above this clamp to the last color in the scale. Defaults to the maximum value in the column.
+- midpoint: `number` - Anchor a specific value (typically 0) at the middle of a diverging color scale. Requires a color_scale with 3 or more colors.
 
 </ResponseField>
 

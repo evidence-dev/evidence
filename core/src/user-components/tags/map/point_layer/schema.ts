@@ -127,6 +127,13 @@ const attributes = {
 			'Anchor a specific value (typically 0) at the middle of a diverging color palette. Requires a numeric color_value and a color_palette with 3 or more colors.',
 		affectsQuery: false
 	},
+	color_stops: {
+		type: ZodAttribute.create(z.array(z.object({ value: z.number(), color: z.string() }))),
+		required: false,
+		description:
+			'Pin specific data values to specific colors for a numeric color_value, interpolating between them. Provide an array of value and color pairs. Values beyond the first and last breakpoint are clamped to the end colors. Takes precedence over color_palette, min, max, and midpoint. Ignored for categorical color_value.',
+		affectsQuery: false
+	},
 	size: {
 		type: Number,
 		required: false,
@@ -262,20 +269,6 @@ export const schema = {
 			}
 
 			if (
-				typeof midpointAttr === 'number' &&
-				typeof minAttr === 'number' &&
-				typeof maxAttr === 'number' &&
-				(midpointAttr <= minAttr || midpointAttr >= maxAttr)
-			) {
-				errors.push({
-					id: 'midpoint-outside-range',
-					level: 'warning' as const,
-					message: `point_layer: "midpoint" (${midpointAttr}) must be strictly between "min" (${minAttr}) and "max" (${maxAttr}); the scale will fall back to a linear gradient.`,
-					location: node.location
-				});
-			}
-
-			if (
 				(minAttr !== undefined || maxAttr !== undefined || midpointAttr !== undefined) &&
 				!hasColorValue
 			) {
@@ -284,6 +277,17 @@ export const schema = {
 					level: 'warning' as const,
 					message:
 						'point_layer: "min", "max", and "midpoint" only apply when "color_value" is set.',
+					location: node.location
+				});
+			}
+
+			const colorStopsAttr = node.attributes.color_stops;
+			if (Array.isArray(colorStopsAttr) && colorStopsAttr.length === 1) {
+				errors.push({
+					id: 'color-stops-need-two',
+					level: 'warning' as const,
+					message:
+						'point_layer: "color_stops" needs at least 2 entries to form a scale; the color_palette gradient will be used instead.',
 					location: node.location
 				});
 			}

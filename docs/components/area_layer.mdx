@@ -105,6 +105,25 @@ description: Add a choropleth layer to a map
 {% /map %}
 ````
 
+### Custom Breakpoints
+
+````liquid
+{% map %}
+    {% area_layer
+        geography="us_states"
+        match_by="abbr"
+        data="state_sales"
+        area_id="state_abbr"
+        value="sum(sales)"
+        color_stops=[
+            { value=0 color="#ffffff" },
+            { value=10000 color="#f59e0b" },
+            { value=50000 color="#1a9850" }
+        ]
+    /%}
+{% /map %}
+````
+
 ## Attributes
 
 <ResponseField name="data" type="string" required>
@@ -161,6 +180,10 @@ description: Add a choropleth layer to a map
 
 <ResponseField name="midpoint" type="number">
   Anchor a specific value (typically 0) at the middle of a diverging color scale. Requires a color_scale with 3 or more colors.
+</ResponseField>
+
+<ResponseField name="color_stops" type="array">
+  Pin specific data values to specific colors, interpolating between them. Provide an array of value and color pairs. Values beyond the first and last breakpoint are clamped to the end colors. Takes precedence over color_scale, min, max, and midpoint.
 </ResponseField>
 
 <ResponseField name="show_unmatched" type="boolean" default="true">

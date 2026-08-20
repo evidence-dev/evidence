@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { calculateColorStylesFromHex, calculateColorStyles, calculateVizRanges } from './table-viz';
+import {
+	calculateColorStylesFromHex,
+	calculateColorStyles,
+	calculateVizRanges,
+	buildColorVizScale
+} from './table-viz';
 import { generatePivotData, type PivotConfig } from '../../common/pivot-utils';
 import type { DataPoint } from '../../types';
 import type { UnifiedColumnDefinition } from './unified-column-definition.types';
@@ -188,6 +193,117 @@ describe('calculateColorStyles color_stops', () => {
 			{ min: -100, max: 100 }
 		);
 		expect(result!.backgroundColor.toLowerCase()).toBe('#e74c3c');
+	});
+});
+
+describe('calculateColorStyles diverging midpoint', () => {
+	const diverging = {
+		color_options: {
+			color_scale: ['#d73027', '#ffffbf', '#1a9850'],
+			min: -100,
+			max: 100,
+			midpoint: 0
+		}
+	};
+
+	it('places the middle color exactly at the midpoint value', () => {
+		const atMid = calculateColorStyles(diverging, 'growth', { growth: 0 }, { min: -100, max: 100 });
+		expect(atMid!.backgroundColor.toLowerCase()).toBe('#ffffbf');
+	});
+
+	it('maps the extremes to the end colors of the palette', () => {
+		const low = calculateColorStyles(
+			diverging,
+			'growth',
+			{ growth: -100 },
+			{ min: -100, max: 100 }
+		);
+		expect(low!.backgroundColor.toLowerCase()).toBe('#d73027');
+
+		const high = calculateColorStyles(
+			diverging,
+			'growth',
+			{ growth: 100 },
+			{ min: -100, max: 100 }
+		);
+		expect(high!.backgroundColor.toLowerCase()).toBe('#1a9850');
+	});
+
+	it('keeps the midpoint color fixed even when the data range is skewed', () => {
+		// color_options min/max (-100..100) override the data range, so 0 stays centered
+		// instead of drifting toward the low end as it would in a plain [-100, 900] scale.
+		const skewed = calculateColorStyles(
+			diverging,
+			'growth',
+			{ growth: 0 },
+			{ min: -100, max: 900 }
+		);
+		expect(skewed!.backgroundColor.toLowerCase()).toBe('#ffffbf');
+	});
+});
+
+describe('calculateColorStyles min/max overrides', () => {
+	const scaled = { color_options: { color_scale: ['#000000', '#ffffff'], min: 0, max: 100 } };
+
+	it('clamps values above max to the top color', () => {
+		const r = calculateColorStyles(scaled, 'v', { v: 500 }, { min: 0, max: 1000 });
+		expect(r!.backgroundColor.toLowerCase()).toBe('#ffffff');
+	});
+
+	it('clamps values below min to the bottom color', () => {
+		const r = calculateColorStyles(scaled, 'v', { v: -50 }, { min: -1000, max: 100 });
+		expect(r!.backgroundColor.toLowerCase()).toBe('#000000');
+	});
+});
+
+describe('calculateColorStyles degenerate range', () => {
+	it('anchors single-value columns to the middle of the palette', () => {
+		const r = calculateColorStyles(
+			{ color_options: { color_scale: ['#000000', '#ffffff'] } },
+			'v',
+			{ v: 42 },
+			{ min: 42, max: 42 }
+		);
+		expect(r).not.toBeNull();
+		// The middle of black -> white is a grey, not either endpoint.
+		expect(r!.backgroundColor.toLowerCase()).not.toBe('#000000');
+		expect(r!.backgroundColor.toLowerCase()).not.toBe('#ffffff');
+	});
+});
+
+describe('buildColorVizScale', () => {
+	it('builds a diverging domain when midpoint + a 3-color palette are set', () => {
+		const scale = buildColorVizScale(
+			{
+				color_options: {
+					color_scale: ['#d73027', '#ffffbf', '#1a9850'],
+					min: -100,
+					max: 100,
+					midpoint: 0
+				}
+			},
+			{ min: -100, max: 100 }
+		);
+		expect(scale).not.toBeNull();
+		expect(scale!.midpoint).toBe(0);
+		expect(scale!.domain).toEqual([-100, 0, 100]);
+	});
+
+	it('ignores midpoint for a 2-color palette (needs 3+)', () => {
+		const scale = buildColorVizScale(
+			{ color_options: { color_scale: ['#000000', '#ffffff'], min: -100, max: 100, midpoint: 0 } },
+			{ min: -100, max: 100 }
+		);
+		expect(scale!.midpoint).toBeNull();
+	});
+
+	it('falls back to the passed data range when no min/max override is given', () => {
+		const scale = buildColorVizScale(
+			{ color_options: { color_scale: ['#000000', '#ffffff'] } },
+			{ min: 10, max: 20 }
+		);
+		expect(scale!.minValue).toBe(10);
+		expect(scale!.maxValue).toBe(20);
 	});
 });
 

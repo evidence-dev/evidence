@@ -279,6 +279,7 @@ export class PointLayerModel {
 
 				colorScaleResult = createColorScale(colorValues, {
 					colorPalette: props.color_palette,
+					colorStops: props.color_stops,
 					defaultColorScale,
 					context: 'PointLayer',
 					min: props.min,

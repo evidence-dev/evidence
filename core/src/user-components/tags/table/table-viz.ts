@@ -1,6 +1,11 @@
 import chroma from 'chroma-js';
 import type { DataPoint } from '../../types';
 import { logger } from '../../../shims/logger';
+import {
+	createColorScale,
+	getColorForValue,
+	type ColorScaleResult
+} from '../../common/color-scale-utils';
 
 export interface ColorStylesResult {
 	backgroundColor: string;
@@ -14,22 +19,52 @@ export interface VizRange {
 	max: number;
 }
 
-function isValidColor(color: string): boolean {
-	try {
-		chroma(color);
-		return true;
-	} catch {
-		return false;
-	}
-}
-
 export interface ColorVizMeasure {
 	color_options?: {
 		scale_column?: string;
 		conditional_colors?: string;
 		color_scale?: string[];
 		color_stops?: { value: number; color: string }[];
+		min?: number;
+		max?: number;
+		midpoint?: number;
 	};
+}
+
+/** Fallback gradient used when no theme scale is supplied. */
+const FALLBACK_COLOR_SCALE = ['#dbeafe', '#1e40af'];
+
+/**
+ * Builds the color-viz scale for a column once (rather than per cell), honouring
+ * `color_stops` (value→color breakpoints) and `min`/`max`/`midpoint`. Delegates to
+ * the shared `createColorScale` so tables, maps, and any future surface stay in
+ * lockstep on palette resolution, diverging behaviour, and breakpoints.
+ *
+ * `conditional_colors` is handled separately in `calculateColorStyles` (a per-row
+ * SQL color, not a scale).
+ */
+export function buildColorVizScale(
+	tableMeasure: ColorVizMeasure | undefined,
+	range: { min: number; max: number },
+	defaultColorScale?: string[]
+): ColorScaleResult | null {
+	if (!range) return null;
+
+	const options = tableMeasure?.color_options;
+	const effectiveMin =
+		typeof options?.min === 'number' && isFinite(options.min) ? options.min : range.min;
+	const effectiveMax =
+		typeof options?.max === 'number' && isFinite(options.max) ? options.max : range.max;
+
+	return createColorScale([], {
+		colorPalette: options?.color_scale,
+		colorStops: options?.color_stops,
+		defaultColorScale: defaultColorScale ?? FALLBACK_COLOR_SCALE,
+		context: 'Table',
+		min: effectiveMin,
+		max: effectiveMax,
+		midpoint: options?.midpoint
+	});
 }
 
 /**
@@ -63,7 +98,8 @@ export function calculateColorStyles(
 	col: string,
 	row: Record<string, unknown>,
 	range: { min: number; max: number },
-	defaultColorScale?: string[]
+	defaultColorScale?: string[],
+	precomputedScale?: ColorScaleResult | null
 ): ColorStylesResult | null {
 	if (!range) return null;
 
@@ -96,74 +132,28 @@ export function calculateColorStyles(
 	}
 
 	const scaleValue = Number(row[scaleColumn]);
+	if (isNaN(scaleValue)) return null;
 
-	// Pinned color stops: anchor explicit values to explicit colors, independent of the
-	// column's data range. chroma clamps values outside the stop range to the end colors.
-	const colorStops = tableMeasure?.color_options?.color_stops;
-	if (colorStops && Array.isArray(colorStops) && colorStops.length >= 2) {
-		const validStops = colorStops
-			.filter(
-				(stop): stop is { value: number; color: string } =>
-					stop != null &&
-					typeof stop.value === 'number' &&
-					isFinite(stop.value) &&
-					typeof stop.color === 'string' &&
-					isValidColor(stop.color)
-			)
-			// Sort by value so chroma's domain is monotonic regardless of authoring order.
-			.sort((a, b) => a.value - b.value);
+	// Shared with the map layers via `createColorScale`; normally built once per column
+	// and passed in as `precomputedScale` (falls back to inline for direct callers/tests).
+	const scaleResult =
+		precomputedScale ?? buildColorVizScale(tableMeasure, range, defaultColorScale);
+	if (!scaleResult) return null;
 
-		if (validStops.length >= 2) {
-			if (isNaN(scaleValue)) return null;
-			try {
-				const scale = chroma
-					.scale(validStops.map((stop) => stop.color))
-					.domain(validStops.map((stop) => stop.value))
-					.mode('lch');
-				return calculateColorStylesFromHex(scale(scaleValue).hex());
-			} catch (_error) {
-				return null;
-			}
-		}
-
-		logger.warn(
-			`color_stops for column "${col}" needs at least 2 valid { value, color } entries; ` +
-				`falling back to the data-range gradient.`
-		);
-	}
-
-	// Default behaviour: spread the palette across the column's data range.
-	// Resolve the colour palette: a custom color_scale if valid, otherwise the
-	// (already background-adjusted) theme scale.
-	const customColorScale = tableMeasure?.color_options?.color_scale;
-	let colors = defaultColorScale ?? ['#dbeafe', '#1e40af'];
-
-	if (customColorScale && Array.isArray(customColorScale) && customColorScale.length >= 1) {
-		const validColors = customColorScale.filter(isValidColor);
-
-		if (validColors.length >= 2) {
-			// Multiple colors provided - use them directly
-			colors = validColors;
-		} else if (validColors.length === 1) {
-			// Single color provided - create a scale from background to that color
-			// Use first color from defaultColorScale (which is the background)
-			const bg = colors[0] ?? '#ffffff';
-			colors = [bg, validColors[0]];
-		} else {
-			logger.warn(`Invalid color_scale for column ${col}, using defaults`);
+	// All-equal gradient columns anchor to the palette middle (prior behaviour); stops are exempt.
+	let queryValue = scaleValue;
+	if (scaleResult.kind !== 'stops') {
+		const options = tableMeasure?.color_options;
+		const effectiveMin =
+			typeof options?.min === 'number' && isFinite(options.min) ? options.min : range.min;
+		const effectiveMax =
+			typeof options?.max === 'number' && isFinite(options.max) ? options.max : range.max;
+		if (Math.abs(effectiveMax - effectiveMin) < 1e-10) {
+			queryValue = (scaleResult.minValue + scaleResult.maxValue) / 2;
 		}
 	}
 
-	const { min, max } = range;
-	const rangeSize = max - min;
-	const percent = rangeSize < 1e-10 ? 0.5 : (scaleValue - min) / rangeSize;
-
-	try {
-		const scale = chroma.scale(colors).mode('lch');
-		return calculateColorStylesFromHex(scale(percent).hex());
-	} catch (_error) {
-		return null;
-	}
+	return calculateColorStylesFromHex(getColorForValue(queryValue, scaleResult));
 }
 
 import type { ColumnMetaItem } from '../../common/pivot-utils';
