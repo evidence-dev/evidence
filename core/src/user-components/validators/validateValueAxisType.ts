@@ -5,6 +5,7 @@ import {
 	getTableFromContext,
 	isValidationContext,
 	stripTypeCast,
+	resolveDialect,
 	type Validator
 } from './types';
 
@@ -30,6 +31,7 @@ export const validateValueAxisType =
 	(node, _config, context) => {
 		if (!isValidationContext(context)) return [];
 
+		const dialect = resolveDialect(context);
 		const valueAxisExpression = node.attributes[valueAxisAttribute];
 		const data = node.attributes[dataAttribute];
 
@@ -42,7 +44,7 @@ export const validateValueAxisType =
 		}
 
 		// Aggregated expressions are expected to be numeric and already validated elsewhere.
-		if (hasAgg(valueAxisExpression)) {
+		if (hasAgg(valueAxisExpression, dialect)) {
 			return [];
 		}
 
@@ -82,7 +84,7 @@ export const validateValueAxisType =
 			if (
 				typeof categoryAxisExpression === 'string' &&
 				!containsVariableSyntax(categoryAxisExpression) &&
-				!hasAgg(categoryAxisExpression)
+				!hasAgg(categoryAxisExpression, dialect)
 			) {
 				const categoryAxisColumns = extractColumnReferences(categoryAxisExpression);
 				if (categoryAxisColumns.length === 1) {

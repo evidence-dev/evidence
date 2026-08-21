@@ -1,11 +1,12 @@
 import { logger } from '../../shims/logger';
-import { isValidationContext, type Validator, getTableFromContext, stripTypeCast } from './types';
 import {
-	defaultDialect,
-	type DialectFunctionTypeRule,
-	type DialectJsType,
-	type SqlDialect
-} from '../../sql-dialect';
+	isValidationContext,
+	type Validator,
+	getTableFromContext,
+	stripTypeCast,
+	resolveDialect
+} from './types';
+import type { DialectFunctionTypeRule, DialectJsType, SqlDialect } from '../../sql-dialect';
 
 /**
  * SQL Clause types supported by the validator
@@ -104,12 +105,7 @@ export function validateSqlExpression(
 		// STEP 1: Preliminary validation - check if we can proceed
 		if (!isValidationContext(context)) return [];
 
-		// Resolve dialect once per validator invocation. Prefer the metadata's
-		// dialect (which derives from the active QueryService), fall back to
-		// any explicit override on the context, then to the default
-		// (ClickHouse) for legacy callers.
-		const dialect: SqlDialect =
-			context.metadata?.dialect ?? context.dialect ?? defaultDialect;
+		const dialect: SqlDialect = resolveDialect(context);
 
 		const path = sqlExprAttributePath.split('.');
 		const sqlValue = path.reduce((obj, field) => {

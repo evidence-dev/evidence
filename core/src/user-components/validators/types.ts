@@ -5,7 +5,7 @@ import type { InlineQueryMetadata } from '../../metadata/inline-query-metadata.s
 import type { InlineQueries } from '../common/inline-queries';
 import type { MetricsCatalog } from '../../metrics/metrics-catalog';
 import type { UserComponentSchema } from '../types';
-import type { SqlDialect } from '../../sql-dialect';
+import { defaultDialect, type SqlDialect } from '../../sql-dialect';
 
 export type ValidationContext = {
 	metadata: Metadata | undefined;
@@ -37,6 +37,10 @@ export const isValidationContext = (x: unknown): x is ValidationContext =>
 	(typeof x.inlineQueries === 'undefined' || typeof x.inlineQueries === 'object');
 
 export type Validator = NonNullable<UserComponentSchema['validate']>;
+
+/** Metadata's dialect wins; the default is only for legacy dialect-less callers. */
+export const resolveDialect = (context: ValidationContext): SqlDialect =>
+	context.metadata?.dialect ?? context.dialect ?? defaultDialect;
 
 /**
  * Helper function to get a table from either regular metadata or inline query metadata.

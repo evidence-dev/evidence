@@ -1,4 +1,10 @@
-import { isValidationContext, type Validator, getTableFromContext, stripTypeCast } from './types';
+import {
+	isValidationContext,
+	type Validator,
+	getTableFromContext,
+	stripTypeCast,
+	resolveDialect
+} from './types';
 import { hasAgg } from '../common/sql-expression-utils';
 import { logger } from '../../shims/logger';
 
@@ -37,8 +43,9 @@ export const axisHasAggregation =
 			return [];
 		}
 
-		// If either axis has aggregation, we're good
-		if (hasAgg(xValue) || hasAgg(yValue)) {
+		// Dialect-specific aggregates (Cube `MEASURE()`) are missed without it.
+		const dialect = resolveDialect(context);
+		if (hasAgg(xValue, dialect) || hasAgg(yValue, dialect)) {
 			return [];
 		}
 

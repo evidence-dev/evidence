@@ -1,6 +1,10 @@
-import { isValidationContext, type Validator, containsVariableSyntax } from './types';
+import {
+	isValidationContext,
+	type Validator,
+	containsVariableSyntax,
+	resolveDialect
+} from './types';
 import { hasAgg, processColumnExpression } from '../common/sql-expression-utils';
-import { defaultDialect } from '../../sql-dialect';
 
 /**
  * Author-time guard for single-value components (big_value) whose generated
@@ -41,9 +45,10 @@ export const orderCompatibleWithSingleValue =
 		// Comparison configs project extra groupable dimension columns.
 		if (node.attributes.comparison) return [];
 
+		const dialect = resolveDialect(context);
 		const valueTrimmed = value.trim();
-		const alias = processColumnExpression({ value: valueTrimmed }, defaultDialect).alias;
-		const valueIsAggregate = hasAgg(valueTrimmed, defaultDialect);
+		const alias = processColumnExpression({ value: valueTrimmed }, dialect).alias;
+		const valueIsAggregate = hasAgg(valueTrimmed, dialect);
 
 		// `order` may list several terms, each optionally suffixed asc/desc.
 		// Split on TOP-LEVEL commas only — `argMax(total, category) desc` is
@@ -80,7 +85,7 @@ export const orderCompatibleWithSingleValue =
 		};
 
 		const isLegal = (term: string): boolean =>
-			hasAgg(term, defaultDialect) ||
+			hasAgg(term, dialect) ||
 			term.toLowerCase() === valueTrimmed.toLowerCase() ||
 			term.replace(/^["'`]|["'`]$/g, '').toLowerCase() === alias.toLowerCase() ||
 			referencesValueColumn(term);

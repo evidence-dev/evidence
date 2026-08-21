@@ -179,7 +179,10 @@ const FALLBACK_AGG_FUNCTIONS = [
 	'BIT_OR',
 	'BIT_XOR',
 	'APPROX_COUNT_DISTINCT',
-	'APPROX_TOP_COUNT'
+	'APPROX_TOP_COUNT',
+	// Cube: MEASURE() resolves a pre-defined measure and is itself the aggregate.
+	'MEASURE',
+	'XIRR'
 ];
 
 /**

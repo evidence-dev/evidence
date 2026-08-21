@@ -3,7 +3,8 @@ import {
 	type Validator,
 	getTableFromContext,
 	stripTypeCast,
-	containsVariableSyntax
+	containsVariableSyntax,
+	resolveDialect
 } from './types';
 import { hasAgg } from '../common/sql-expression-utils';
 
@@ -28,7 +29,7 @@ export const expressionHasAggregation =
 		}
 
 		// If prop has aggregation, we're good
-		if (hasAgg(propValue)) {
+		if (hasAgg(propValue, resolveDialect(context))) {
 			return [];
 		}
 

@@ -281,7 +281,7 @@ export class MeasureModel extends UserComponentModel<MeasureModelGenerics> {
 					this.deps.connection.dialect
 				);
 				if (processed.whereClause) {
-					const targetNeedsAggregation = !hasAgg(target);
+					const targetNeedsAggregation = !hasAgg(target, this.deps.connection.dialect);
 					const targetBase = targetNeedsAggregation ? `sum(${target})` : target;
 					processedTargetColumn = applyAggregateFilter(
 						targetBase,
