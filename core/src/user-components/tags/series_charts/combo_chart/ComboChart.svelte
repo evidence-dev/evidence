@@ -31,6 +31,7 @@
 	import { ReferenceLineStaticModel } from './references/reference_line/ReferenceLineStaticModel.svelte';
 	import { ReferenceAreaStaticModel } from './references/reference_area/ReferenceAreaStaticModel.svelte';
 	import { ReferencePointStaticModel } from './references/reference_point/ReferencePointStaticModel.svelte';
+	import { createChildErrorRegistry } from '../child-error-registry.svelte';
 	import { getPageFiltersContext } from '../../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../../common/inline-queries';
 	import { createResolvers } from '../../../common/use-variable-processing';
@@ -350,7 +351,7 @@
 	});
 
 	// Error getters registered by children that own queries (dynamic references)
-	let childErrorGetters = $state<Array<() => string | null | undefined>>([]);
+	const childErrors = createChildErrorRegistry();
 
 	setComboChartContext({
 		getSharedQueryContext: () => sharedQueryContext,
@@ -401,13 +402,7 @@
 			};
 			return { referencePoint, removeReferencePoint };
 		},
-		registerChildError: (getError) => {
-			childErrorGetters.push(getError);
-			return () => {
-				const index = childErrorGetters.indexOf(getError);
-				if (index > -1) childErrorGetters.splice(index, 1);
-			};
-		}
+		registerChildError: (getError) => childErrors.register(getError)
 	});
 
 	// === VARIABLE INTERPOLATION ===
@@ -526,9 +521,7 @@
 
 	// Children render in a hidden div, so failing child queries surface on the chart's wrapper
 	const firstChildError = $derived(
-		seriesInOrder.map((s) => s.query?.error).find(Boolean) ??
-			childErrorGetters.map((getError) => getError()).find(Boolean) ??
-			undefined
+		seriesInOrder.map((s) => s.query?.error).find(Boolean) ?? childErrors.firstError
 	);
 	$effect(() => {
 		setError(firstChildError);

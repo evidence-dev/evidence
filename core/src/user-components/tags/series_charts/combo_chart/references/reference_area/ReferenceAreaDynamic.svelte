@@ -12,6 +12,7 @@
 	import { VariableProcessor } from '../../../../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../../../../common/use-variable-processing';
 	import { getComboChartContext } from '../../combo-chart-context';
+	import { onMount } from 'svelte';
 
 	const props: ReferenceAreaDynamicProps = $props();
 	const data = $derived(props.data);
@@ -67,8 +68,9 @@
 
 	const rows = $derived(query.result?.rows ?? []);
 
+	// Register on mount, not in an $effect: registration must not re-run reactively
 	const { registerChildError } = getComboChartContext();
-	$effect(() => registerChildError(() => query.error));
+	onMount(() => registerChildError(() => query.error));
 </script>
 
 {#each rows as row}

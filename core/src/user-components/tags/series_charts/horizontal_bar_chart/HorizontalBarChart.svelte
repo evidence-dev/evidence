@@ -39,6 +39,7 @@
 	import { ReferenceLineStaticModel } from '../combo_chart/references/reference_line/ReferenceLineStaticModel.svelte';
 	import { ReferenceAreaStaticModel } from '../combo_chart/references/reference_area/ReferenceAreaStaticModel.svelte';
 	import { ReferencePointStaticModel } from '../combo_chart/references/reference_point/ReferencePointStaticModel.svelte';
+	import { createChildErrorRegistry } from '../child-error-registry.svelte';
 	import { coerceNumber } from '../../../common/process-variables';
 	import { getThemeContext } from '../../../../theme/theme.context.svelte';
 	import {
@@ -211,12 +212,10 @@
 	});
 
 	// Error getters registered by children that own queries (dynamic references)
-	let childErrorGetters = $state<Array<() => string | null | undefined>>([]);
+	const childErrors = createChildErrorRegistry();
 
 	$effect(() => {
-		setError(
-			query.error ?? childErrorGetters.map((getError) => getError()).find(Boolean) ?? undefined
-		);
+		setError(query.error ?? childErrors.firstError);
 	});
 
 	// Get y column's JavaScript type from query result for gap filling
@@ -403,13 +402,7 @@
 				removeReferencePoint: () => references.splice(references.indexOf(referencePoint), 1)
 			};
 		},
-		registerChildError: (getError) => {
-			childErrorGetters.push(getError);
-			return () => {
-				const index = childErrorGetters.indexOf(getError);
-				if (index > -1) childErrorGetters.splice(index, 1);
-			};
-		}
+		registerChildError: (getError) => childErrors.register(getError)
 	});
 
 	// Build ECharts options for horizontal bar chart
