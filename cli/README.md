@@ -301,6 +301,37 @@ The adapter in `adapter/index.js` controls the build process. Key functions:
 - `generateAssetImports()` - Creates the import statements
 - `adapt()` - Main build orchestration
 
+## Docker Image
+
+The CLI is published as a Docker image, `evidencedev/serve` ([Docker Hub](https://hub.docker.com/r/evidencedev/serve)), so that self-hosting a project is a two-line `Dockerfile`:
+
+```docker
+FROM evidencedev/serve:latest
+COPY --chown=evidence:evidence . /project
+```
+
+That's the whole point of the image — a user self-hosting a project should never have to figure out how to install the CLI inside a container. `cli/Dockerfile` handles fetching the right binary for the architecture, CA certificates (without them, TLS to the warehouse fails at runtime), a non-root `evidence` user, `/project` as the working directory, honouring a platform-provided `$PORT`, and starting `evidence serve --host 0.0.0.0`. The user's layer is just "copy my project in".
+
+### It ships on a version bump
+
+The image does not build the CLI. Its first stage downloads an already-published binary from Vercel Blob:
+
+```
+https://.../cli/v${EVIDENCE_VERSION}/evidence-${target}
+```
+
+So a new image only appears when a new CLI version is released. In `.github/workflows/cli-release.yml`, the `docker` job has `needs: release` — it cannot run until the release job has uploaded binaries for that version. There is no way to rebuild the image against unreleased CLI code: bump `VERSION` in `cli/cli/args.ts`, add the `cli-release` label to the PR, and merge.
+
+Also bump the `ARG EVIDENCE_VERSION` default in `cli/Dockerfile` to match. CI overrides it, but anyone running `docker build -f cli/Dockerfile .` by hand gets whatever the default says.
+
+### Tags and platforms
+
+- `evidencedev/serve:<version>` on every release.
+- `evidencedev/serve:latest` only for stable versions — a version containing `-` (`0.9.2-alpha.1`) never moves `latest`.
+- Built for `linux/amd64` and `linux/arm64` via QEMU + Buildx. Pushed with the `DOCKERHUB_USERNAME` / `DOCKERHUB_TOKEN` secrets.
+
+The `docker` job lives in the release workflow rather than its own file because the `cli-v*` tag is pushed with `GITHUB_TOKEN`, which cannot trigger another workflow.
+
 ## Telemetry
 
 The CLI reports anonymous usage — to opt out set EVIDENCE_TELEMETRY_DISABLED=1 or DO_NOT_TRACK=1
