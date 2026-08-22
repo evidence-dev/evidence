@@ -1,4 +1,12 @@
 {
+	"headers": [
+		{
+			"source": "/(.*)",
+			"headers": [
+				{ "key": "X-Robots-Tag", "value": "noindex" }
+			]
+		}
+	],
 	"redirects": [
 		{ "source": "/getting-started/what-is-evidence/", "destination": "/", "permanent": true },
 		{ "source": "/getting-started/what-is-evidence", "destination": "/", "permanent": true },
