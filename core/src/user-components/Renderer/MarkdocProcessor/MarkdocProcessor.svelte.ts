@@ -1,5 +1,6 @@
 import Markdoc, { type Node, type RenderableTreeNode, type ValidateError } from '@markdoc/markdoc';
 import type { ValidationContext } from '../../validators/types';
+import { fenceQueryName, parseFenceMeta } from '../../common/fence-meta';
 import assign from 'lodash/assign';
 import isEqual from 'lodash/isEqual';
 import { untrack } from 'svelte';
@@ -598,8 +599,13 @@ export class MarkdocProcessor {
 				// only that transform sees partial and component queries — so removals can't
 				// be reconciled against this AST.
 				for (const node of this.#ast.walk()) {
-					if (node.type === 'fence' && node.attributes.language === 'sql' && node.attributes.meta) {
-						inlineQueries.set(node.attributes.meta as string, node.attributes.content as string);
+					if (
+						node.type === 'fence' &&
+						node.attributes.language === 'sql' &&
+						fenceQueryName(node.attributes.meta as string)
+					) {
+						const { name, attrs } = parseFenceMeta(node.attributes.meta as string);
+						inlineQueries.set(name, node.attributes.content as string, attrs.connection);
 					}
 				}
 			}

@@ -10,6 +10,7 @@
 	import { processDateRange } from '../../common/date-options';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
+	import { resolveCatalogTable } from '../../../metadata/resolve-table';
 	import { setupRenderReadiness } from '../../../readiness.svelte';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { DEFAULT_PROJECT_SETTINGS } from '../../interfaces/project-settings';
@@ -112,8 +113,13 @@
 
 		if (!table) return [];
 
-		// Try to get columns from metadata
-		const tableMetadata = metadata?.getTable(table) ?? inlineQueryMetadata?.getTable(table);
+		// Try to get columns from metadata. Resolve like charts/validation — strip a `connection:`
+		// prefix, then case-insensitive + schema-aware — so auto-detecting dimensions from a bare
+		// lowercase `partners` finds `PUBLIC.PARTNERS` on Snowflake (else the grid renders empty).
+		const catalogTableName = inlineQueries?.splitConnectionPrefix(table).table ?? table;
+		const tableMetadata =
+			(metadata ? resolveCatalogTable(metadata, catalogTableName) : undefined) ??
+			inlineQueryMetadata?.getTable(catalogTableName);
 		if (!tableMetadata) return [];
 
 		// Find string columns (jsType contains 'string')

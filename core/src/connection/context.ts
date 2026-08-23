@@ -15,6 +15,11 @@ export function getConnectionRegistry(): ConnectionRegistry {
 	return registry;
 }
 
+/** Like {@link getConnectionRegistry} but returns undefined instead of throwing when unset (e.g. the CLI, or non-render contexts). */
+export function getConnectionRegistryOptional(): ConnectionRegistry | undefined {
+	return getContext<ConnectionRegistry | undefined>(CONNECTION_REGISTRY_KEY);
+}
+
 /** Convenience accessor for the sole/default connection. */
 export function getDefaultConnection(): Connection {
 	return getConnectionRegistry().default;

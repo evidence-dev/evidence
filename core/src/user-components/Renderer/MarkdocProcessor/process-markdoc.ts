@@ -1,5 +1,6 @@
 import Markdoc, { type Node, type RenderableTreeNode, type ValidateError } from '@markdoc/markdoc';
 import * as MarkdocStar from '@markdoc/markdoc';
+import { fenceQueryName } from '../../common/fence-meta';
 import type { ValidationContext } from '../../validators';
 import { validateDeprecatedFrontmatterKeys } from '../../validators/validateDeprecatedFrontmatter';
 import { validateInvalidIconName } from '../../validators/validateInvalidIconName';
@@ -1287,7 +1288,7 @@ function collectFilterDefinitions(node: Node, filterDefinitions: Map<string, Nod
 function collectFenceDefinitions(node: Node, fenceDefinitions: Map<string, Node[]>): void {
 	// If this is a fence with a meta attribute (name), collect it
 	if (node.type === 'fence' && node.attributes.meta && typeof node.attributes.meta === 'string') {
-		const fenceName = node.attributes.meta.trim();
+		const fenceName = fenceQueryName(node.attributes.meta);
 		if (fenceName) {
 			if (!fenceDefinitions.has(fenceName)) {
 				fenceDefinitions.set(fenceName, []);
@@ -1568,8 +1569,7 @@ const isSqlFence = (node: RenderableTreeNode): node is MarkdocStar.Tag =>
 	Markdoc.Tag.isTag(node) &&
 	node.name === 'fence' &&
 	node.attributes.language === 'sql' &&
-	typeof node.attributes.meta === 'string' &&
-	node.attributes.meta.trim() !== '';
+	fenceQueryName(node.attributes.meta) !== '';
 
 const removeInlineQueries = (tree: RenderableTreeNode): void => {
 	if (!Markdoc.Tag.isTag(tree)) return;

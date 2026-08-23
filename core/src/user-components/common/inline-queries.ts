@@ -1,4 +1,4 @@
-import { SvelteMap } from 'svelte/reactivity';
+import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 import { interpolateQueryStrings } from '../../interpolate-query-strings';
 import type { Filters } from '../../Filters.svelte';
 import { getContext, setContext } from 'svelte';
@@ -9,6 +9,7 @@ import { logger } from '../../shims/logger';
 import type { SqlDialect } from '../../sql-dialect';
 import { defaultDialect } from '../../sql-dialect';
 import { dirOfPath, resolveProjectReference } from './resolve-reference';
+import { parseSqlFileHeader } from './parse-sql-file-header';
 
 export type InlineQueriesDependencies = {
 	filterContexts: (Filters | undefined)[] | undefined;
@@ -32,6 +33,13 @@ export type InlineQueriesResolutionOptions = {
 	basePath?: string;
 	/** Opt into the new "from here / from root" resolution model. */
 	useRelativeResolution?: boolean;
+	/**
+	 * The org's connection slugs, so `connection=` / `slug:table` references parse, validate and
+	 * strip their prefix on THIS surface. Passed here (not per-surface `setConnectionNames`) so every
+	 * render surface lights up through one hook — a per-surface copy is how published/pdf/embedded
+	 * get left behind. Empty/omitted ⇒ dormant.
+	 */
+	connectionSlugs?: string[];
 };
 
 export class InlineQueries {
@@ -47,6 +55,16 @@ export class InlineQueries {
 	 * the context.
 	 */
 	readonly #pathState: SvelteMap<string, string>;
+
+	/** Declared connection names, used to recognise a `connection:table` prefix. */
+	readonly #connectionNames = new SvelteSet<string>();
+
+	/**
+	 * Connection each query declared via `` ```sql name connection=… ``. Separate
+	 * from `#inlineQueries` so the value-equality guard in `set` keeps working on
+	 * the SQL text alone.
+	 */
+	readonly #queryConnections = new SvelteMap<string, string>();
 
 	constructor(
 		private readonly deps: InlineQueriesDependencies,
@@ -178,9 +196,18 @@ export class InlineQueries {
 		return this.#sqlFiles.has(cleanName);
 	}
 
-	set(name: string, expression: string) {
+	set(name: string, expression: string, connection?: string) {
 		const cleanName = name.trim();
 		const cleanExpression = stripTrailingSemicolons(expression);
+		// Store the declared connection apart from the SQL so the value-equality guard below still
+		// compares SQL alone. Guarded the same way (SvelteMap notifies even when unchanged).
+		if (connection) {
+			if (this.#queryConnections.get(cleanName) !== connection) {
+				this.#queryConnections.set(cleanName, connection);
+			}
+		} else if (this.#queryConnections.has(cleanName)) {
+			this.#queryConnections.delete(cleanName);
+		}
 		// Value-equality guard: `SvelteMap.set()` bumps its version (and
 		// notifies every subscriber that reads via get/has/iter) even when the
 		// value is identical. Markdoc's transform pass runs N times per page
@@ -193,8 +220,71 @@ export class InlineQueries {
 		this.#inlineQueries.set(cleanName, cleanExpression);
 	}
 
+	/** Whether an inline query with this name is registered. */
+	has(name: string): boolean {
+		return this.#inlineQueries.has(name.trim());
+	}
+
+	/** The connection a query declared, or undefined to use the page default. */
+	connectionFor(name: string): string | undefined {
+		const cleanName = name.trim();
+		const declared = this.#queryConnections.get(cleanName);
+		if (declared) return declared;
+		// `.sql` files declare their connection in a leading `-- connection:` comment; parse it on
+		// read (file bodies arrive from several surfaces) so the file stays the source of truth.
+		if (!this.isSqlFile(cleanName)) return undefined;
+		return parseSqlFileHeader(this.getRaw(cleanName)).connection;
+	}
+
+	/**
+	 * Register the org's connection names so a `connection:table` reference can be
+	 * told apart from a table whose name merely contains a colon. Without this the
+	 * prefix is never stripped and the raw `postgres:orders` reaches the warehouse.
+	 */
+	setConnectionNames(names: readonly string[]): void {
+		const next = new Set(names);
+		for (const name of [...this.#connectionNames]) {
+			if (!next.has(name)) this.#connectionNames.delete(name);
+		}
+		for (const name of next) {
+			if (!this.#connectionNames.has(name)) this.#connectionNames.add(name);
+		}
+	}
+
+	/** Whether `name` is a registered connection. */
+	isConnectionName(name: string): boolean {
+		return this.#connectionNames.has(name.trim());
+	}
+
+	/** Registered connection names, for diagnostics. */
+	connectionNames(): string[] {
+		return [...this.#connectionNames];
+	}
+
+	/**
+	 * Split a reference into its connection prefix and table, but ONLY when the
+	 * prefix is a registered connection. A custom-component query (`<tag>:<query>`)
+	 * or a stray colon in an identifier is left whole.
+	 */
+	splitConnectionPrefix(name: string): { connection?: string; table: string } {
+		const clean = name.trim();
+		const split = clean.indexOf(':');
+		if (split <= 0) return { table: clean };
+		const connection = clean.slice(0, split);
+		if (!this.#connectionNames.has(connection)) return { table: clean };
+		return { connection, table: clean.slice(split + 1) };
+	}
+
 	getInterpolated(name: string, dialect: SqlDialect = defaultDialect): string | undefined {
 		const cleanName = name.trim();
+
+		// A `connection:table` reference resolves as its bare table (the prefix only picks the engine
+		// and must never reach the warehouse). Registry wins first, so a component query
+		// `<tag>:<query>` is never read as a prefix. Inert until connection names are registered.
+		if (!this.#inlineQueries.has(cleanName) && !this.isSqlFile(cleanName)) {
+			const { connection, table } = this.splitConnectionPrefix(cleanName);
+			if (connection) return this.getInterpolated(table, dialect) ?? table;
+		}
 
 		// New project-root model: resolve sql-file refs "from here / from root"
 		// against the single full-path map; otherwise fall through to inline queries.
@@ -415,6 +505,7 @@ export const createInlineQueriesContext = (
 	options?: InlineQueriesResolutionOptions
 ): InlineQueries => {
 	const context = new InlineQueries(deps, serialized, sqlFiles, projectSqlFiles, options);
+	if (options?.connectionSlugs) context.setConnectionNames(options.connectionSlugs);
 	setContext(INLINE_QUERIES_CONTEXT_KEY, context);
 	return context;
 };

@@ -3,6 +3,7 @@ import type { InlineQueries } from '../../common/inline-queries';
 import Markdoc from '@markdoc/markdoc';
 import { untrack } from 'svelte';
 import { walkTree } from './walkTree';
+import { fenceQueryName, parseFenceMeta } from '../../common/fence-meta';
 
 export const registerInlineQueriesFromTree = (
 	tree: RenderableTreeNode,
@@ -16,8 +17,10 @@ export const registerInlineQueriesFromTree = (
 	for (const { node } of walkTree(tree)) {
 		if (isTreeNodeSqlFenceWithLanguage(node)) {
 			const { meta, content } = node.attributes;
-			untrack(() => inlineQueries.set(meta, content));
-			currentQueryNames.add(meta);
+			// `meta` is `name connection=…`; register under the parsed name with its declared connection.
+			const { name, attrs } = parseFenceMeta(meta);
+			untrack(() => inlineQueries.set(name, content, attrs.connection));
+			currentQueryNames.add(name);
 		}
 	}
 
@@ -33,4 +36,4 @@ const isTreeNodeSqlFenceWithLanguage = (node: RenderableTreeNode): node is Tag =
 	Markdoc.Tag.isTag(node) &&
 	node.name === 'fence' &&
 	node.attributes.language === 'sql' &&
-	Boolean(node.attributes.meta);
+	fenceQueryName(node.attributes.meta) !== '';

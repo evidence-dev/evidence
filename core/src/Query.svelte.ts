@@ -40,6 +40,14 @@ export type QueryDependencies = {
 		| undefined;
 	/** Page-level auto-refresh interval in seconds (0 or undefined = disabled). Used as fallback when no component-level refresh_interval is set. */
 	defaultRefreshInterval: MaybeGetter<number | undefined> | undefined;
+	/**
+	 * Reactive check for a reference to a connection the org doesn't have: returns the error
+	 * message, or undefined. Optional (unlike its siblings) because most deps carry no connection
+	 * reference to enforce. Surfaced through `error` below — which the component reads via
+	 * `$derived` — so editing a fence's `connection=` clears the message live, through the same rail
+	 * as a SQL edit, without swapping the connection (which the SQL-keyed result cache can't see).
+	 */
+	connectionError?: (() => string | undefined) | undefined;
 };
 
 export type QueryOptions = {
@@ -697,6 +705,10 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 
 	// Covers SQL errors returned in the result and thrown fetch failures (which leave result undefined).
 	get error(): string | null {
+		// A reference to a connection that doesn't exist is a static error — surface it before any
+		// query result so the author never sees a warehouse error for a query that never ran.
+		const connectionError = this.deps.connectionError?.();
+		if (connectionError) return connectionError;
 		const thrown = this.dataResource.error;
 		if (typeof thrown !== 'undefined') {
 			return enrichWarehouseError(thrown instanceof Error ? thrown.message : String(thrown));

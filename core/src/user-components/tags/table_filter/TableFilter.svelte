@@ -25,6 +25,8 @@
 	} from './filterUtils.svelte';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getDefaultConnection } from '../../../QueryService.context';
+	import { getInlineQueriesContext } from '../../common/inline-queries';
+	import { resolveCatalogTable } from '../../../metadata/resolve-table';
 	import { logger } from '../../../shims/logger';
 	import { browser } from '../../../shims/env';
 
@@ -47,24 +49,30 @@
 
 	const connection = getDefaultConnection();
 
+	// Author-provided column lists are matched case-insensitively against catalog column names, since
+	// Snowflake folds identifiers (`single_select=["category"]` must apply to catalog `CATEGORY`).
+	const listHas = (list: string[] | undefined, name: string) =>
+		!!list?.some((c) => c.toLowerCase() === name.toLowerCase());
+
 	// A column in both lists resolves to single-select, matching the select-mode-overlap warning
 	function columnAllowsMultiple(columnName: string): boolean {
-		if (single_select.includes(columnName)) return false;
-		if (multi_select.includes(columnName)) return true;
+		if (listHas(single_select, columnName)) return false;
+		if (listHas(multi_select, columnName)) return true;
 		return multiple;
 	}
 
 	function columnRequiresSelection(columnName: string): boolean {
-		return require_selection?.includes(columnName) ?? false;
+		return listHas(require_selection, columnName);
 	}
 
 	// Create a mapping from column names to custom labels
 	let columnLabels = $derived.by(() => {
+		// Keyed lowercase so a custom label applies regardless of the catalog's column casing.
 		const map = new Map<string, string>();
 		if (columns && labels) {
 			columns.forEach((col: string, index: number) => {
 				if (labels[index]) {
-					map.set(col, labels[index]);
+					map.set(col.toLowerCase(), labels[index]);
 				}
 			});
 		}
@@ -73,12 +81,31 @@
 
 	// Helper function to get the display label for a column
 	function getColumnLabel(columnName: string): string {
-		return columnLabels.get(columnName) ?? formatTitle(columnName);
+		return columnLabels.get(columnName.toLowerCase()) ?? formatTitle(columnName);
 	}
 
 	const metadata = connection.catalog!;
 	const inlineQueryMetadata = getInlineQueryMetadataContext();
+	const inlineQueries = getInlineQueriesContext();
 	const pageFilters = getPageFiltersContext();
+
+	// The table name to look up in the CATALOG: strip a `connection:` prefix (the catalog is that
+	// connection's, keyed by bare/qualified table) so `snowflake:partners` resolves too.
+	const catalogTableName = $derived(
+		data ? (inlineQueries?.splitConnectionPrefix(data).table ?? data) : data
+	);
+
+	// All columns for `data`, resolved case-insensitively + schema-aware (Snowflake keys tables
+	// `PUBLIC.PARTNERS`, so a bare lowercase `partners` must still resolve) — mirrors charts/validation.
+	const catalogColumns = $derived([
+		...(resolveCatalogTable(metadata, catalogTableName)?.columns ?? []),
+		...(inlineQueryMetadata.getTable(catalogTableName)?.columns ?? [])
+	]);
+
+	// Case-insensitive membership for the author's `columns=` list against catalog column names
+	// (Snowflake folds identifiers, so `["category"]` must match `CATEGORY`).
+	const columnRequested = (name: string) =>
+		!columns || columns.some((c: string) => c.toLowerCase() === name.toLowerCase());
 
 	// Load inline query metadata when component initializes
 	$effect(() => {
@@ -87,10 +114,7 @@
 
 	// Keep tableColumns for type checking functions
 	let tableColumns = $derived(
-		[
-			...(metadata.getTable(data)?.columns ?? []),
-			...(inlineQueryMetadata.getTable(data)?.columns ?? [])
-		]
+		catalogColumns
 			.filter(
 				(column) =>
 					column.jsType.toLowerCase().includes('string') ||
@@ -98,24 +122,19 @@
 					column.jsType.toLowerCase().includes('number') ||
 					column.jsType.toLowerCase().includes('boolean')
 			)
-			.filter((column) => !columns || columns.includes(column.name))
+			.filter((column) => columnRequested(column.name))
 	);
 
 	// When columns prop is provided, get columns in the exact order specified
 	let orderedColumns = $derived.by(() => {
 		if (!columns) return null;
 
-		const allColumns = [
-			...(metadata.getTable(data)?.columns ?? []),
-			...(inlineQueryMetadata.getTable(data)?.columns ?? [])
-		];
-
-		// Create a map for quick lookup
-		const columnMap = new Map(allColumns.map((col) => [col.name, col]));
+		// Case-insensitive lookup so the author's `["category"]` matches the catalog's `CATEGORY`.
+		const columnMap = new Map(catalogColumns.map((col) => [col.name.toLowerCase(), col]));
 
 		// Return columns in the exact order specified, filtering out unsupported types
 		return columns
-			.map((colName: string) => columnMap.get(colName))
+			.map((colName: string) => columnMap.get(colName.toLowerCase()))
 			.filter((col: IColumnMetadata | undefined): col is IColumnMetadata => {
 				if (!col) return false;
 				const type = col.jsType.toLowerCase();
@@ -139,10 +158,7 @@
 
 	// Get table columns from metadata and organize them by type (used when no columns prop)
 	let groupedColumns = $derived.by(() => {
-		const allColumns = [
-			...(metadata.getTable(data)?.columns ?? []),
-			...(inlineQueryMetadata.getTable(data)?.columns ?? [])
-		];
+		const allColumns = catalogColumns;
 
 		const groups = {
 			dates: [] as IColumnMetadata[],

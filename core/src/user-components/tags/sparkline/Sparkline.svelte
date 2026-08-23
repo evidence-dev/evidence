@@ -13,6 +13,7 @@
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
+	import { resolveCatalogTable } from '../../../metadata/resolve-table';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
@@ -136,10 +137,17 @@
 	const width = 50;
 	const height = 15;
 
-	// Get metadata for column types (attached to the connection before render)
+	// Get metadata for column types (attached to the connection before render). Resolve the table the
+	// same way charts/validation do — strip a `connection:` prefix, then case-insensitive +
+	// schema-aware — so a bare/lowercase `partners` finds `PUBLIC.PARTNERS` on Snowflake.
 	const metadata = connection.catalog!;
+	const catalogTableName = $derived(
+		tableName ? (inlineQueries?.splitConnectionPrefix(tableName).table ?? tableName) : tableName
+	);
 	const xColumnType = $derived(
-		tableName && x ? metadata.getTable(tableName)?.getColumn(x)?.type : undefined
+		catalogTableName && x
+			? resolveCatalogTable(metadata, catalogTableName)?.getColumn(x)?.type
+			: undefined
 	);
 
 	// Determine ECharts column types

@@ -11,6 +11,8 @@ export type ValidationContext = {
 	metadata: Metadata | undefined;
 	filters: Filters | undefined;
 	inlineQueries: InlineQueries | undefined;
+	/** Per-connection catalog resolver for validating a `connection:table` reference against the right warehouse. Absent on single-connection/CLI surfaces (the ambient `metadata` is the only catalog). */
+	metadataForConnection?: ((name: string) => Metadata | undefined) | undefined;
 	inlineQueryMetadata?: InlineQueryMetadata | undefined;
 	trees: ProjectTree[] | undefined;
 	dialect?: SqlDialect | undefined;

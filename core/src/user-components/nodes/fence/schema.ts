@@ -1,6 +1,8 @@
 import type { Node, ValidationError } from '@markdoc/markdoc';
 import { WIDTH_ATTRIBUTE } from '../../common/width-attribute';
 import type { UserComponentSchema } from '../../types';
+import { parseFenceMeta } from '../../common/fence-meta';
+import { isValidationContext } from '../../validators/types';
 
 export const schema = {
 	render: 'fence',
@@ -8,8 +10,26 @@ export const schema = {
 	selfClosing: false,
 	description: 'Display a code block',
 	// Validate SQL fences for common OSS syntax mistakes
-	validate(node: Node): ValidationError[] {
+	validate(node: Node, _config?: unknown, context?: unknown): ValidationError[] {
 		if (node.attributes?.language !== 'sql') return [];
+
+		// A `connection=` naming no configured connection would silently fall back to the default at
+		// runtime — surface it in the editor instead. Dormant until connection names are registered.
+		const declaredConnection = parseFenceMeta(node.attributes?.meta).attrs.connection;
+		if (declaredConnection && isValidationContext(context) && context.inlineQueries) {
+			const iq = context.inlineQueries;
+			if (iq.connectionNames().length > 0 && !iq.isConnectionName(declaredConnection)) {
+				return [
+					{
+						id: 'unknown-connection',
+						level: 'error',
+						message: `connection: no connection named "${declaredConnection}". Available connections: ${iq.connectionNames().join(', ')}.`,
+						location: node.location
+					}
+				];
+			}
+		}
+
 		const content = node.attributes?.content;
 		if (typeof content !== 'string') return [];
 

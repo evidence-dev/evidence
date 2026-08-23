@@ -38,6 +38,10 @@ export interface ConnectionRegistry {
 	readonly default: Connection;
 	/** All connections, in a stable order. */
 	readonly all: readonly Connection[];
-	/** Resolve by id; an unknown/omitted id falls back to the default connection. */
+	/**
+	 * Resolve by id. An omitted id resolves to `default`. An unknown id is resolved
+	 * per-implementation: the registry-of-one returns its sole connection; the multi-connection
+	 * registry returns an error stand-in so a mistyped connection can't silently query the default.
+	 */
 	get(id?: string): Connection;
 }

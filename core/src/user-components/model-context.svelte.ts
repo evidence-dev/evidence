@@ -4,7 +4,9 @@ import type {
 	UserComponentModelClass
 } from './UserComponentModel';
 import { getContext, setContext } from 'svelte';
-import { getDefaultConnection } from '../connection';
+import { getConnectionRegistry } from '../connection';
+import { connectionErrorFor } from '../connection/enforcement';
+import { connectionForAttributes } from './common/connection-for-attributes';
 import { getPageFiltersContext } from '../page-filters-context';
 import { getInlineQueriesContext } from './common/inline-queries';
 import { getMetricsCatalogContext } from '../metrics/metrics-catalog';
@@ -34,19 +36,30 @@ export const setupModelContext = <
 
 		// If the model wasn't SSRed, create it now
 		if (!model) {
-			const connection = getDefaultConnection();
 			const repeatFilters = getRepeatContext()?.filters;
 			const pageFilters = getPageFiltersContext();
 			const inlineQueries = getInlineQueriesContext();
 			const metricsCatalog = getMetricsCatalogContext();
 			const getProjectSettings = getProjectSettingsContext();
 			const autoRefresh = getAutoRefreshContext();
+			// Route this component to the connection its `data`/reference names — the default when it
+			// names none. Registry captured here because `getContext` is only legal during setup; the
+			// `$derived` recomputes on inline-query churn but only NOTIFIES when the resolved
+			// connection actually changes, so the query re-runs only when its engine truly does. Inert
+			// with a single connection: an unqualified reference always resolves to the default, and
+			// `connectionError` stands down until connection names are registered.
+			const registry = getConnectionRegistry();
+			const targetConnection = $derived(connectionForAttributes(attributesGetter(), inlineQueries));
+			const routedConnection = $derived(registry.get(targetConnection));
 			const deps: QueryDependencies = {
-				connection,
+				get connection() {
+					return routedConnection;
+				},
 				filterContexts: [repeatFilters, pageFilters],
 				inlineQueries,
 				projectSettings: getProjectSettings,
-				defaultRefreshInterval: autoRefresh ? () => autoRefresh.intervalSeconds : undefined
+				defaultRefreshInterval: autoRefresh ? () => autoRefresh.intervalSeconds : undefined,
+				connectionError: () => connectionErrorFor(targetConnection, inlineQueries)
 			};
 
 			// Get this Tag's parent model if it exists (it would have been set up by a previous call to setupModelContext by the parent)
