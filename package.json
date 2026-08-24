@@ -47,7 +47,11 @@
 			"thrift": ">=0.23.0",
 			"unzipper": ">=0.12.5",
 			"uuid": ">=11.1.1 <12",
-			"vite": ">=7.3.5 <8"
+			"vite": ">=7.3.5 <8",
+			"dompurify": ">=3.4.13",
+			"fast-uri": ">=3.1.5",
+			"brace-expansion": ">=5.0.9",
+			"ts-deepmerge": ">=8.0.0"
 		},
 		"patchedDependencies": {
 			"ssf": "patches/ssf.patch",
