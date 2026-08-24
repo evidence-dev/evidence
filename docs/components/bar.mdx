@@ -48,8 +48,8 @@ description: Add a bar series to a [combo_chart](/components/combo_chart)
         y="sum(total_sales)"
         fmt="usd"
         tooltip_fields=[
-            { value="count(distinct order_id)", label="Orders" },
-            { value="sum(total_sales) - lag(sum(total_sales)) over (order by date_trunc('month', date))", label="MoM Δ", fmt="usd", color_by_sign=true }
+            { value="count(distinct order_id)" label="Orders" },
+            { value="sum(total_sales) - lag(sum(total_sales)) over (order by date_trunc('month', date))" label="MoM Δ" fmt="usd" color_by_sign=true }
         ]
     /%}
 {% /combo_chart %}
@@ -137,7 +137,7 @@ data_labels={
 ```
 echarts_options={
     endLabel={ show=true }
-    markPoint={ data=[{ type="max" } { type="min" }] }
+    markPoint={ data=[{ type="max" }, { type="min" }] }
 }
 ```
 </ResponseField>

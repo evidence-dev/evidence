@@ -123,13 +123,12 @@ Overrides can be partial:
 Component attributes are the most specific level. Set directly in your markdown, they override every theme setting for that one component.
 
 ```jinja
-{% combo_chart
-    data=sales
-    x=date
-    y=revenue
-    chart_options={
-        color_palette: ['#ff0000', '#00ff00']
-    }
+{% bar_chart
+    data="orders"
+    x="category"
+    y="sum(total_sales)"
+    series="region"
+    chart_options={ color_palette=["#ff0000", "#00ff00"] }
 /%}
 ```
 

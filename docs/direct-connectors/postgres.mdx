@@ -180,5 +180,5 @@ Evidence executes queries against your Postgres database. Take pragmatic steps t
 1. Use a dedicated role with `SELECT`-only grants — never the database owner or a superuser.
 2. Scope grants to the specific schemas Evidence should see.
 3. Require TLS (`verify-full` where possible) so credentials and data aren't sent in the clear.
-4. Restrict network access to Evidence's [egress IPs](/core-concepts/data-sources#ip-whitelisting) plus your team's networks (e.g. an RDS security group or Supabase/Neon IP allowlist).
+4. Restrict network access to Evidence's [egress IPs](/evidence-warehouse#ip-whitelisting) plus your team's networks (e.g. an RDS security group or Supabase/Neon IP allowlist).
 5. Rotate the connection password regularly.

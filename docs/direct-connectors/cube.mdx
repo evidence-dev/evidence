@@ -162,5 +162,5 @@ Evidence executes queries against your Cube deployment through the SQL API.
 1. Use a dedicated SQL API user for Evidence rather than sharing credentials.
 2. Scope what Evidence can read via your Cube data model and any [member-level access control](https://cube.dev/docs/product/auth) you configure in Cube.
 3. Require TLS (`verify-full` where possible) so credentials and data aren't sent in the clear.
-4. Restrict network access to Evidence's [egress IPs](/core-concepts/data-sources#ip-whitelisting) plus your team's networks.
+4. Restrict network access to Evidence's [egress IPs](/evidence-warehouse#ip-whitelisting) plus your team's networks.
 5. Rotate the SQL API password regularly.

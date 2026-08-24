@@ -1,0 +1,55 @@
+---
+title: Tooltip Fields
+description: Add extra rows to a chart's hover tooltip with the tooltip_fields attribute.
+---
+
+{/* Reference page linked from every chart's generated docs via the tooltip_fields schema description. Intentionally not in docs.json navigation — it is a linked-from-schema reference, and the Components nav group is regenerated from component schemas. Mintlify still serves it by URL. */}
+
+`tooltip_fields` adds extra rows to a chart's hover tooltip without dropping to `custom_echart`. Each field is an aggregate (or `GROUP BY`–safe) SQL expression that Evidence appends to the chart's query and renders as an extra row under the primary value.
+
+## Example
+
+```liquid
+{% bar_chart
+    data="orders"
+    x="month"
+    y="sum(total_sales)"
+    y_fmt="usd"
+    tooltip_fields=[
+        { value="count(distinct order_id)" label="Orders" },
+        { value="sum(total_sales) / nullif(count(distinct order_id), 0)" label="Avg order" fmt="usd" }
+    ]
+/%}
+```
+
+## Fields
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `value` | Yes | SQL expression to show in the tooltip, e.g. `"sum(share)"`. Must be an aggregate or a `GROUP BY`–safe column — it runs under the same `GROUP BY`, filters, and date range as the chart's primary `y`. |
+| `label` | No | Text shown to the left of the value. Defaults to a title-cased version of the expression. |
+| `fmt` | No | [Format code](/core-concepts/value-formatting) applied to the value (e.g. `"usd"`, `"pct1"`, `"num0"`, or an Excel-style custom format). Defaults to `num`. |
+| `color_by_sign` | No | Colour the value green when ≥ 0 and red when < 0. Defaults to `false`. |
+| `down_is_good` | No | Flip the sign colouring so negatives are green and positives red. Only applies when `color_by_sign=true`. Defaults to `false`. |
+
+## Syntax
+
+This is **Markdoc, not JSON** — the separator rules differ:
+
+- **Object properties are separated by spaces, not commas**: `{ value="sum(x)" label="X" fmt="usd" }`
+- **Array elements are separated by commas**: `[{ … }, { … }]`
+- Strings use double quotes; booleans are bare (`color_by_sign=true`).
+
+<Warning>
+Do not put commas *between properties inside an object* — `{ value="x", label="y" }` will fail to parse. Commas belong only *between array elements*.
+</Warning>
+
+## Map layers
+
+`point_layer` and `area_layer` take a simpler form — an array of column-name strings:
+
+```liquid
+{% point_layer data="plants" lat="lat" long="long"
+    tooltip_fields=["fuel_type", "capacity_mw", "emissions"]
+/%}
+```

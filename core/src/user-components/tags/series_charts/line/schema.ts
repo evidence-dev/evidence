@@ -88,7 +88,7 @@ export const schema = {
         y="sum(total_sales)"
         echarts_options={
             endLabel={ show=true }
-            markPoint={ data=[{ type="max" } { type="min" }] }
+            markPoint={ data=[{ type="max" }, { type="min" }] }
         }
     /%}
 {% /combo_chart %}

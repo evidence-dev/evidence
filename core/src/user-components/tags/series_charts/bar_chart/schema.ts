@@ -245,8 +245,8 @@ export const schema = {
     y_fmt="usd"
     date_grain="month"
     tooltip_fields=[
-        { value="count(distinct order_id)", label="Orders" },
-        { value="sum(total_sales) / nullif(count(distinct order_id), 0)", label="Avg order", fmt="usd" }
+        { value="count(distinct order_id)" label="Orders" },
+        { value="sum(total_sales) / nullif(count(distinct order_id), 0)" label="Avg order" fmt="usd" }
     ]
 /%}
 `
@@ -259,7 +259,7 @@ export const schema = {
     x="category"
     y="sum(total_sales)"
     echarts_series_options={
-        itemStyle={ borderRadius=[6 6 0 0] }
+        itemStyle={ borderRadius=[6, 6, 0, 0] }
         showBackground=true
         backgroundStyle={ color="rgba(0,0,0,0.04)" }
     }

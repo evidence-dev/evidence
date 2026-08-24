@@ -35,8 +35,8 @@ You choose where your extracted data is stored. See [available regions](#storage
 
 **Supported databases:**
 
-- [Snowflake](/data-sources/snowflake)
-- [BigQuery](/data-sources/bigquery)
+- [Snowflake](/direct-connectors/snowflake)
+- [BigQuery](/direct-connectors/bigquery)
 - [PostgreSQL](/data-sources/postgres)
 - [RDS PostgreSQL](/data-sources/rds-postgres)
 - [Redshift](/data-sources/redshift)
@@ -236,3 +236,70 @@ Evidence supports the following storage regions for extracted data.
 | `asia-southeast1`         | Singapore              |
 | `asia-northeast1`         | Tokyo, Japan           |
 | `australia-southeast1`    | Sydney, Australia      |
+
+---
+
+## Create a connection
+
+(For databases only)
+
+1. On the sources page, click New Connection
+2. Enter the connection details for your database. Note that you require one connection per schema at this time.
+3. Click **Test** to verify the connection is configured correctly.
+4. Click **Save**.
+
+### IP Whitelisting
+
+If your database requires IP whitelisting, add the Evidence Studio IP addresses:
+
+```
+104.197.50.84
+34.56.211.45
+35.234.176.144
+35.234.176.145
+35.234.176.146
+35.234.176.147
+35.234.176.148
+35.234.176.149
+35.234.176.150
+35.234.176.151
+35.192.240.48
+35.192.240.49
+35.192.240.50
+35.192.240.51
+35.192.240.52
+35.192.240.53
+35.192.240.54
+35.192.240.55
+*.us-east4.gcp.proxy.prod.fivetran.com
+*.us-central1.gcp.proxy.prod.fivetran.com
+```
+
+## Import a data source
+
+1. On the sources page, click **New Source**.
+2. Select the connection you just created.
+3. Choose from the tables in the connection.
+4. (Optional) Rename the source - this is used to reference the source in your reports.
+5. Click **Save**.
+
+## Import a file
+
+1. On the sources page, click **Upload File**.
+   - You can upload CSV, Parquet, and JSONL files.
+2. Your file will be automatically imported, and named using a `snake_case` version of the filename.
+
+## Updating data
+
+<Warning>You can only update uploaded **files** by reuploading them.</Warning>
+
+### Manual refresh
+
+1. On the sources page, click the `...` menu on the right of the source and select **Publish**.
+
+### Scheduled refresh
+
+1. In the sources page, click the `...` menu on the right of the source and select **Schedule**.
+2. Choose a refresh interval.
+   - Current refresh intervals are: 5 mins, 15 mins, 1 hour, 1 day, 1 week. Contact Evidence for custom intervals.
+3. Click **Save**.

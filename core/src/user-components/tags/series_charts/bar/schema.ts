@@ -81,8 +81,8 @@ export const schema = {
         y="sum(total_sales)"
         fmt="usd"
         tooltip_fields=[
-            { value="count(distinct order_id)", label="Orders" },
-            { value="sum(total_sales) - lag(sum(total_sales)) over (order by date_trunc('month', date))", label="MoM Δ", fmt="usd", color_by_sign=true }
+            { value="count(distinct order_id)" label="Orders" },
+            { value="sum(total_sales) - lag(sum(total_sales)) over (order by date_trunc('month', date))" label="MoM Δ" fmt="usd" color_by_sign=true }
         ]
     /%}
 {% /combo_chart %}

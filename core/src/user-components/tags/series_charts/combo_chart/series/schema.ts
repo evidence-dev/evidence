@@ -46,7 +46,7 @@ export const seriesEchartsOptionsAttribute = {
 			blockExample: `\`\`\`
 echarts_options={
     endLabel={ show=true }
-    markPoint={ data=[{ type="max" } { type="min" }] }
+    markPoint={ data=[{ type="max" }, { type="min" }] }
 }
 \`\`\``
 		})

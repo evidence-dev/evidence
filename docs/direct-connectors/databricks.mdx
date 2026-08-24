@@ -166,6 +166,6 @@ Evidence executes queries against your Databricks workspace. Take pragmatic step
 
 1. Use a dedicated service principal or token user with `SELECT`-only grants — avoid an admin identity.
 2. Scope grants to the specific catalog and schemas Evidence should see, not the whole metastore.
-3. Attach the SQL Warehouse to a workspace with an [IP access list](https://docs.databricks.com/aws/en/security/network/front-end/ip-access-list) restricted to Evidence's [egress IPs](/core-concepts/data-sources#ip-whitelisting) plus your team's networks.
+3. Attach the SQL Warehouse to a workspace with an [IP access list](https://docs.databricks.com/aws/en/security/network/front-end/ip-access-list) restricted to Evidence's [egress IPs](/evidence-warehouse#ip-whitelisting) plus your team's networks.
 4. Rotate PATs regularly, or prefer OAuth M2M (short-lived tokens) for production.
 5. Monitor [query history](https://docs.databricks.com/aws/en/sql/user/queries/query-history) for non-`SELECT` statements from the Evidence identity (there shouldn't be any).

@@ -49,6 +49,650 @@
     {
       "source": "/features/evidence-mcp",
       "destination": "/mcp/studio"
+    },
+    {
+      "source": "/install-evidence",
+      "destination": "/quickstart"
+    },
+    {
+      "source": "/getting-started/install-evidence",
+      "destination": "/quickstart"
+    },
+    {
+      "source": "/build-your-first-app",
+      "destination": "/quickstart"
+    },
+    {
+      "source": "/core-concepts/queries",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/core-concepts/formatting",
+      "destination": "/core-concepts/value-formatting"
+    },
+    {
+      "source": "/core-concepts/filters",
+      "destination": "/components/filter_bar"
+    },
+    {
+      "source": "/core-concepts/themes",
+      "destination": "/features/themes"
+    },
+    {
+      "source": "/core-concepts/templated-pages",
+      "destination": "/features/page-settings"
+    },
+    {
+      "source": "/core-concepts/exports",
+      "destination": "/components/download"
+    },
+    {
+      "source": "/core-concepts/syntax",
+      "destination": "/core-concepts/markdown"
+    },
+    {
+      "source": "/core-concepts/pages",
+      "destination": "/features/page-settings"
+    },
+    {
+      "source": "/core-concepts/query-functions",
+      "destination": "/core-concepts/models"
+    },
+    {
+      "source": "/core-concepts/if-else",
+      "destination": "/components/if"
+    },
+    {
+      "source": "/core-concepts/loops",
+      "destination": "/components/repeat"
+    },
+    {
+      "source": "/core-concepts/data-sources/duckdb",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/core-concepts/data-sources/bigquery",
+      "destination": "/direct-connectors/bigquery"
+    },
+    {
+      "source": "/core-concepts/data-sources/postgres",
+      "destination": "/direct-connectors/postgres"
+    },
+    {
+      "source": "/core-concepts/data-sources/javascript",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/core-concepts/data-sources/csv",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/core-concepts/data-sources/snowflake",
+      "destination": "/direct-connectors/snowflake"
+    },
+    {
+      "source": "/core-concepts/data-sources/google-sheets",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/core-concepts/data-sources/databricks",
+      "destination": "/direct-connectors/databricks"
+    },
+    {
+      "source": "/core-concepts/data-sources/trino",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/core-concepts/data-sources/mssql",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/core-concepts/data-sources/motherduck",
+      "destination": "/direct-connectors/motherduck"
+    },
+    {
+      "source": "/components/charts/echarts-options",
+      "destination": "/components/custom_echart"
+    },
+    {
+      "source": "/components/charts/custom-echarts",
+      "destination": "/components/custom_echart"
+    },
+    {
+      "source": "/components/charts/bar-chart",
+      "destination": "/components/bar_chart"
+    },
+    {
+      "source": "/components/charts/line-chart",
+      "destination": "/components/line_chart"
+    },
+    {
+      "source": "/components/charts/sankey-diagram",
+      "destination": "/components/sankey_chart"
+    },
+    {
+      "source": "/components/charts/heatmap",
+      "destination": "/components/heatmap"
+    },
+    {
+      "source": "/components/charts/calendar-heatmap",
+      "destination": "/components/calendar_heatmap"
+    },
+    {
+      "source": "/components/charts/mixed-type-charts",
+      "destination": "/components/combo_chart"
+    },
+    {
+      "source": "/components/charts/funnel-chart",
+      "destination": "/components/funnel_chart"
+    },
+    {
+      "source": "/components/charts/annotations",
+      "destination": "/components/reference_line"
+    },
+    {
+      "source": "/components/charts/scatter-plot",
+      "destination": "/components/scatter_chart"
+    },
+    {
+      "source": "/components/charts/area-chart",
+      "destination": "/components/area_chart"
+    },
+    {
+      "source": "/components/charts/histogram",
+      "destination": "/components/histogram"
+    },
+    {
+      "source": "/components/charts/sparkline",
+      "destination": "/components/sparkline"
+    },
+    {
+      "source": "/components/charts/bubble-chart",
+      "destination": "/components/bubble_chart"
+    },
+    {
+      "source": "/components/data/data-table",
+      "destination": "/components/table"
+    },
+    {
+      "source": "/components/data/big-value",
+      "destination": "/components/big_value"
+    },
+    {
+      "source": "/components/data/value",
+      "destination": "/components/value"
+    },
+    {
+      "source": "/components/data/delta",
+      "destination": "/components/delta"
+    },
+    {
+      "source": "/components/inputs/dropdown",
+      "destination": "/components/dropdown"
+    },
+    {
+      "source": "/components/inputs/date-range",
+      "destination": "/components/range_calendar"
+    },
+    {
+      "source": "/components/inputs/date-input",
+      "destination": "/components/range_calendar"
+    },
+    {
+      "source": "/components/inputs/dimension-grid",
+      "destination": "/components/dimension_grid"
+    },
+    {
+      "source": "/components/inputs/button-group",
+      "destination": "/components/button_group"
+    },
+    {
+      "source": "/components/inputs/slider",
+      "destination": "/components/slider"
+    },
+    {
+      "source": "/components/inputs/text-input",
+      "destination": "/components/text_input"
+    },
+    {
+      "source": "/components/inputs/checkbox",
+      "destination": "/components/toggle"
+    },
+    {
+      "source": "/components/inputs",
+      "destination": "/components/dropdown"
+    },
+    {
+      "source": "/components/maps/area-map",
+      "destination": "/components/area_layer"
+    },
+    {
+      "source": "/components/maps/point-map",
+      "destination": "/components/point_layer"
+    },
+    {
+      "source": "/components/maps/bubble-map",
+      "destination": "/components/point_layer"
+    },
+    {
+      "source": "/components/maps/us-map",
+      "destination": "/components/map"
+    },
+    {
+      "source": "/components/maps/base-map",
+      "destination": "/components/map"
+    },
+    {
+      "source": "/components/ui/embed",
+      "destination": "/components/iframe"
+    },
+    {
+      "source": "/components/ui/link",
+      "destination": "/components/link"
+    },
+    {
+      "source": "/components/ui/grid",
+      "destination": "/components/row"
+    },
+    {
+      "source": "/components/ui/tabs",
+      "destination": "/components/tabs"
+    },
+    {
+      "source": "/components/ui/big-link",
+      "destination": "/components/link_button"
+    },
+    {
+      "source": "/components/ui/link-button",
+      "destination": "/components/link_button"
+    },
+    {
+      "source": "/components/ui/image",
+      "destination": "/components/image"
+    },
+    {
+      "source": "/components/ui/info",
+      "destination": "/components/info"
+    },
+    {
+      "source": "/components/ui/alert",
+      "destination": "/components/callout"
+    },
+    {
+      "source": "/components/ui/download-data",
+      "destination": "/components/download"
+    },
+    {
+      "source": "/components/ui/details",
+      "destination": "/components/details"
+    },
+    {
+      "source": "/components/ui/print-format-components",
+      "destination": "/components/print_group"
+    },
+    {
+      "source": "/components/ui/accordion",
+      "destination": "/components/accordion"
+    },
+    {
+      "source": "/components/ui/modal",
+      "destination": "/components/modal"
+    },
+    {
+      "source": "/components/ui/note",
+      "destination": "/components/note"
+    },
+    {
+      "source": "/components/custom/custom-component",
+      "destination": "/core-concepts/custom-components"
+    },
+    {
+      "source": "/components/custom/component-queries",
+      "destination": "/core-concepts/custom-components"
+    },
+    {
+      "source": "/components/all-components",
+      "destination": "/core-concepts/components"
+    },
+    {
+      "source": "/reference/layouts",
+      "destination": "/features/layouts"
+    },
+    {
+      "source": "/reference/markdown",
+      "destination": "/core-concepts/markdown"
+    },
+    {
+      "source": "/reference/cli",
+      "destination": "/cli/commands"
+    },
+    {
+      "source": "/deployment/overview",
+      "destination": "/publishing"
+    },
+    {
+      "source": "/deployment",
+      "destination": "/publishing"
+    },
+    {
+      "source": "/deployment/self-host",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/self-host/vercel",
+      "destination": "/self-host/vercel"
+    },
+    {
+      "source": "/deployment/self-host/github-pages",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/self-host/netlify",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/self-host/gitlab-pages",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/self-host/hugging-face-spaces",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/self-host/azure-static-apps",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/self-host/firebase",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/self-host/aws-amplify",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/configuration/rendering-modes",
+      "destination": "/features/project-settings"
+    },
+    {
+      "source": "/deployment/configuration/environments",
+      "destination": "/features/project-settings"
+    },
+    {
+      "source": "/deployment/configuration/base-paths",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/guides/system-requirements",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/guides/updating-your-app",
+      "destination": "/migration-guide"
+    },
+    {
+      "source": "/guides",
+      "destination": "/quickstart"
+    },
+    {
+      "source": "/plugins/source-plugins",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/plugins/component-plugins",
+      "destination": "/core-concepts/custom-components"
+    },
+    {
+      "source": "/plugins/create-component-plugin",
+      "destination": "/core-concepts/custom-components"
+    },
+    {
+      "source": "/plugins/create-source-plugin",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/plugins",
+      "destination": "/core-concepts/custom-components"
+    },
+    {
+      "source": "/components/charts/box-plot",
+      "destination": "/components/custom_echart"
+    },
+    {
+      "source": "/components/ui/last-refreshed",
+      "destination": "/components/html"
+    },
+    {
+      "source": "/deployment/cloud/evidence-cloud",
+      "destination": "/publishing"
+    },
+    {
+      "source": "/guides/troubleshooting",
+      "destination": "/"
+    },
+    {
+      "source": "/guides/best-practices",
+      "destination": "/"
+    },
+    {
+      "source": "/deployment/self-host/cloudflare-pages",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/getting-started/what-is-evidence",
+      "destination": "/"
+    },
+    {
+      "source": "/markdown",
+      "destination": "/core-concepts/markdown"
+    },
+    {
+      "source": "/themes-and-layouts",
+      "destination": "/features/layouts"
+    },
+    {
+      "source": "/plugins/creating-a-plugin",
+      "destination": "/core-concepts/custom-components"
+    },
+    {
+      "source": "/guides/updating-your-project",
+      "destination": "/migration-guide"
+    },
+    {
+      "source": "/components/area-map",
+      "destination": "/components/area_layer"
+    },
+    {
+      "source": "/components/us-map",
+      "destination": "/components/map"
+    },
+    {
+      "source": "/components/bubble-map",
+      "destination": "/components/point_layer"
+    },
+    {
+      "source": "/components/point-map",
+      "destination": "/components/point_layer"
+    },
+    {
+      "source": "/components/base-map",
+      "destination": "/components/map"
+    },
+    {
+      "source": "/components/download-data",
+      "destination": "/components/download"
+    },
+    {
+      "source": "/components/last-refreshed",
+      "destination": "/components/html"
+    },
+    {
+      "source": "/components/alert",
+      "destination": "/components/callout"
+    },
+    {
+      "source": "/components/big-link",
+      "destination": "/components/link_button"
+    },
+    {
+      "source": "/components/link-button",
+      "destination": "/components/link_button"
+    },
+    {
+      "source": "/components/print-format-components",
+      "destination": "/components/print_group"
+    },
+    {
+      "source": "/components/grid",
+      "destination": "/components/row"
+    },
+    {
+      "source": "/components/bubble-chart",
+      "destination": "/components/bubble_chart"
+    },
+    {
+      "source": "/components/mixed-type-charts",
+      "destination": "/components/combo_chart"
+    },
+    {
+      "source": "/components/funnel-chart",
+      "destination": "/components/funnel_chart"
+    },
+    {
+      "source": "/components/bar-chart",
+      "destination": "/components/bar_chart"
+    },
+    {
+      "source": "/components/custom-echarts",
+      "destination": "/components/custom_echart"
+    },
+    {
+      "source": "/components/box-plot",
+      "destination": "/components/custom_echart"
+    },
+    {
+      "source": "/components/annotations",
+      "destination": "/components/reference_line"
+    },
+    {
+      "source": "/components/calendar-heatmap",
+      "destination": "/components/calendar_heatmap"
+    },
+    {
+      "source": "/components/area-chart",
+      "destination": "/components/area_chart"
+    },
+    {
+      "source": "/components/line-chart",
+      "destination": "/components/line_chart"
+    },
+    {
+      "source": "/components/sankey-diagram",
+      "destination": "/components/sankey_chart"
+    },
+    {
+      "source": "/components/echarts-options",
+      "destination": "/components/custom_echart"
+    },
+    {
+      "source": "/components/scatter-plot",
+      "destination": "/components/scatter_chart"
+    },
+    {
+      "source": "/components/custom-components",
+      "destination": "/core-concepts/custom-components"
+    },
+    {
+      "source": "/components/component-queries",
+      "destination": "/core-concepts/custom-components"
+    },
+    {
+      "source": "/components/big-value",
+      "destination": "/components/big_value"
+    },
+    {
+      "source": "/components/data-table",
+      "destination": "/components/table"
+    },
+    {
+      "source": "/components/dimension-grid",
+      "destination": "/components/dimension_grid"
+    },
+    {
+      "source": "/components/checkbox",
+      "destination": "/components/toggle"
+    },
+    {
+      "source": "/components/date-range",
+      "destination": "/components/range_calendar"
+    },
+    {
+      "source": "/components/text-input",
+      "destination": "/components/text_input"
+    },
+    {
+      "source": "/components/button-group",
+      "destination": "/components/button_group"
+    },
+    {
+      "source": "/deployment/github-pages",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/aws-amplify",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/azure-static-apps",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/cloudflare-pages",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/firebase",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/gitlab-pages",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/hugging-face-spaces",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/netlify",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/vercel",
+      "destination": "/self-host/vercel"
+    },
+    {
+      "source": "/deployment/rendering-modes",
+      "destination": "/features/project-settings"
+    },
+    {
+      "source": "/deployment/base-paths",
+      "destination": "/self-host"
+    },
+    {
+      "source": "/deployment/environments",
+      "destination": "/features/project-settings"
+    },
+    {
+      "source": "/core-concepts/data-sources",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/data-sources",
+      "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/warehouses/evidence-warehouse",
+      "destination": "/evidence-warehouse"
     }
   ],
   "navigation": {
@@ -63,6 +707,11 @@
           "anchor": "Community",
           "href": "https://slack.evidence.dev",
           "icon": "slack"
+        },
+        {
+          "anchor": "Legacy Docs",
+          "href": "https://legacy-docs.evidence.dev",
+          "icon": "book"
         }
       ]
     },
@@ -85,7 +734,6 @@
             "pages": [
               "core-concepts/markdown",
               "core-concepts/components",
-              "core-concepts/data-sources",
               "core-concepts/models",
               "core-concepts/metrics",
               "core-concepts/value-formatting",
@@ -137,9 +785,8 @@
             ]
           },
           {
-            "group": "Warehouses",
+            "group": "Direct Connectors",
             "pages": [
-              "warehouses/evidence-warehouse",
               "direct-connectors/snowflake",
               "direct-connectors/fabric",
               "direct-connectors/clickhouse",
@@ -152,7 +799,7 @@
           {
             "group": "Evidence Warehouse",
             "pages": [
-              "data-sources/index",
+              "evidence-warehouse",
               {
                 "group": "Databases",
                 "expanded": false,
