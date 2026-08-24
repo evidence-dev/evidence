@@ -12,7 +12,6 @@ import {
 	whoami,
 	listOrgs,
 	switchOrg,
-	ensureAuthenticated,
 	getAuthStatus,
 	generateToken
 } from './auth.ts';
@@ -376,12 +375,8 @@ try {
 
 		case 'dev': {
 			console.log(BANNER);
-			// Only managed-engine projects need credentials; prompt them up front
-			// rather than failing on the first query. Local connection.yaml projects
-			// start without a login.
-			if (!hasConnectionYaml()) {
-				await ensureAuthenticated();
-			}
+			// No auth gate: pages render without data, and queries degrade to a
+			// per-query error when unauthenticated — login isn't forced to start.
 			// Detect whether we're the compiled binary or running from source.
 			// The compiled bundle has process.execPath pointing at itself; running
 			// from source via `bun cli/index.ts` has it pointing at the bun runtime.

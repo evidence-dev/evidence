@@ -34,8 +34,8 @@ const AGENTS_MD_TEMPLATE = `# Evidence Project
 This is an Evidence Studio project — interactive data reports written in Markdown with embedded Markdoc components, backed by SQL.
 
 The latest version of Evidence has some key changes you may not be aware of (recent AI models aren't trained on the new syntax) — read these carefully:
-1. The docs are now hosted at https://docs.evidence.studio
-2. You run the [Evidence CLI](https://docs.evidence.studio/cli) to start the dev server, validate syntax, retrieve docs etc. Run \`evidence help\` to see all commands.
+1. The docs are now hosted at https://docs.evidence.dev
+2. You run the [Evidence CLI](https://docs.evidence.dev/cli) to start the dev server, validate syntax, retrieve docs etc. Run \`evidence help\` to see all commands.
 3. The syntax has changed:
   a. Components are markdoc style {% table data="demo.daily_orders" /%}
   b. SQL now runs ClickHouse SQL, unless you are using a direct connector, in which case it runs native SQL for your warehouse
@@ -57,6 +57,7 @@ irm https://evidence.studio/install.ps1 | iex
 - \`evidence login\` — authenticate (the user may need to run this themselves, as it requires a browser verification code step)
 - \`evidence dev\` — start the local dev server to view report pages; show the user the URL, or — better — open it in their browser
 - \`evidence validate\` — check Markdown and component syntax
+- \`evidence launch\` — publish the project to Evidence Studio (connects the GitHub repo; each \`git push\` then deploys). Requires \`evidence login\` and a GitHub repo — confirm with the user before publishing.
 
 ## Example: Sample Data
 
@@ -94,8 +95,12 @@ select 354 as sales, 'Thingys' as product
 
 \`\`\`\`
 
-## Credentials
-Credentials for direct connectors live in connection.yaml in the project root. If connection.yaml is not specified the Evidence Warehouse will be used.
+## Connecting Data
+Two ways to run queries against data:
+- **Your own warehouse — no account needed.** Add a \`connection.yaml\` in the project root with your credentials (Snowflake, BigQuery, Postgres, ClickHouse, and others). Queries run directly against your warehouse from this machine — no login. Scaffold one with \`evidence init --warehouse <type>\`.
+- **Evidence Warehouse — hosted, requires an account.** With no \`connection.yaml\`, queries use the managed Evidence Warehouse, which needs \`evidence login\`.
+
+\`connection.yaml\` holds credentials and is gitignored.
 `;
 
 // Claude Code reads CLAUDE.md, not AGENTS.md — point it at the shared file.

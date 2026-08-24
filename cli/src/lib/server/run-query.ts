@@ -81,7 +81,8 @@ export async function runQuery(sql: string): Promise<RunQueryResult> {
 		return {
 			rows: [],
 			columns: [],
-			error: 'Not authenticated. Run `evd login` first.',
+			error:
+				'Not authenticated. Add a connection.yaml to query your own database, or run `evidence login` to use the hosted Evidence Warehouse.',
 			status: 401
 		};
 	}

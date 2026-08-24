@@ -2,7 +2,7 @@
 </script>
 
 <svelte:head>
-	<title>evd - Login</title>
+	<title>Evidence - Login</title>
 </svelte:head>
 
 <div class="flex min-h-screen items-center justify-center p-4">

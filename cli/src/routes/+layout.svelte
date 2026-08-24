@@ -26,8 +26,7 @@
 	import { ModeWatcher, mode, toggleMode } from 'mode-watcher';
 	import { Toaster, toast } from 'svelte-sonner';
 	import { page } from '$app/state';
-	import { goto, invalidateAll } from '$app/navigation';
-	import { browser } from '$app/environment';
+	import { invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { generateThemeCSS } from '@evidence/core/theme/theme-css-helper';
 	import { setThemeContext } from '@evidence/core/theme/theme.context.svelte';
@@ -45,18 +44,7 @@
 	$effect(() => themeContext.updateConfig(data.resolvedTheme));
 	const themeCSS = $derived(generateThemeCSS(data.resolvedTheme));
 
-	const isAuthenticated = $derived(!!data.organizationId);
 	const isLoginPage = $derived(page.url.pathname === '/login');
-	// Local connection.yaml projects query their warehouse directly, so they run
-	// without a login — don't force them to the login wall.
-	const requiresLogin = $derived(!data.hasLocalConnection);
-
-	// Redirect to login if a login is required but absent (except on login page)
-	$effect(() => {
-		if (browser && requiresLogin && !isAuthenticated && !isLoginPage) {
-			goto('/login');
-		}
-	});
 
 	// Fullscreen presentation mode (bare content, auto-hiding controls). Shared
 	// behaviour with the Studio published/preview viewers.

@@ -25,7 +25,7 @@ export const INIT_WAREHOUSES = [
 
 export type InitWarehouse = (typeof INIT_WAREHOUSES)[number];
 
-const SNOWFLAKE_TEMPLATE = `# Snowflake direct connector. Docs: https://docs.evidence.studio/direct-connectors/snowflake
+const SNOWFLAKE_TEMPLATE = `# Snowflake direct connector. Docs: https://docs.evidence.dev/direct-connectors/snowflake
 type: snowflake
 account: "<account>" # e.g. xy12345.us-east-1
 user: "<user>"
@@ -41,7 +41,7 @@ database: "<database>"
 #   devSchemas: ["<dev_schema>"]
 `;
 
-const BIGQUERY_TEMPLATE = `# BigQuery direct connector. Docs: https://docs.evidence.studio/direct-connectors/bigquery
+const BIGQUERY_TEMPLATE = `# BigQuery direct connector. Docs: https://docs.evidence.dev/direct-connectors/bigquery
 type: bigquery
 project: "<project-id>"
 keyfile: ./service-account.json # or inline keyfile_json
@@ -51,7 +51,7 @@ datasets: # accessible datasets, required (at least one)
 # dataset: "<dataset>" # default dataset for unqualified table names, optional
 `;
 
-const CLICKHOUSE_TEMPLATE = `# ClickHouse direct connector. Docs: https://docs.evidence.studio/direct-connectors/clickhouse
+const CLICKHOUSE_TEMPLATE = `# ClickHouse direct connector. Docs: https://docs.evidence.dev/direct-connectors/clickhouse
 type: clickhouse
 host: "<host>" # hostname only, no https:// — e.g. abc123.us-east-1.aws.clickhouse.cloud
 username: "<username>" # optional, defaults to "default"
@@ -62,7 +62,7 @@ database: "<database>" # optional, defaults to "default"
 # access_token: "<jwt>" # ClickHouse Cloud JWT; mutually exclusive with password
 `;
 
-const FABRIC_TEMPLATE = `# Microsoft Fabric direct connector. Docs: https://docs.evidence.studio/direct-connectors/fabric
+const FABRIC_TEMPLATE = `# Microsoft Fabric direct connector. Docs: https://docs.evidence.dev/direct-connectors/fabric
 type: fabric
 server: "<server>" # SQL endpoint host, no https:// — e.g. xxxxxxxx.datawarehouse.fabric.microsoft.com
 database: "<database>" # warehouse or lakehouse SQL analytics endpoint name
@@ -76,7 +76,7 @@ clientSecret: "<client-secret>" # service principal secret
 #     evidenceVariable: user.email
 `;
 
-const DATABRICKS_TEMPLATE = `# Databricks direct connector. Docs: https://docs.evidence.studio/direct-connectors/databricks
+const DATABRICKS_TEMPLATE = `# Databricks direct connector. Docs: https://docs.evidence.dev/direct-connectors/databricks
 type: databricks
 host: "<host>" # workspace hostname, no https:// — e.g. dbc-a1b2c3d4-e5f6.cloud.databricks.com
 http_path: "<http-path>" # SQL Warehouse HTTP path — e.g. /sql/1.0/warehouses/abc123def456
@@ -92,7 +92,7 @@ token: "<access-token>" # personal access token (dapi…), or use OAuth M2M belo
 #     evidenceVariable: user.email
 `;
 
-const POSTGRES_TEMPLATE = `# Postgres direct connector (also RDS/Aurora, Supabase, Neon, Timescale). Docs: https://docs.evidence.studio/direct-connectors/postgres
+const POSTGRES_TEMPLATE = `# Postgres direct connector (also RDS/Aurora, Supabase, Neon, Timescale). Docs: https://docs.evidence.dev/direct-connectors/postgres
 type: postgres
 host: "<host>" # hostname only, no postgres:// — e.g. db.example.com or mydb.abc123.us-east-1.rds.amazonaws.com
 port: 5432 # 5432 by default; Supabase poolers use 6543
@@ -108,7 +108,7 @@ sslmode: verify-full # verify-full (secure default) | verify-ca | require (no ce
 # ssl_key_path: ./certs/client.key # PEM client private key (mutual TLS)
 `;
 
-const CUBE_TEMPLATE = `# Cube direct connector — Cube's SQL API (Postgres-wire). Docs: https://docs.evidence.studio/direct-connectors/cube
+const CUBE_TEMPLATE = `# Cube direct connector — Cube's SQL API (Postgres-wire). Docs: https://docs.evidence.dev/direct-connectors/cube
 type: cube
 host: "<host>" # Cube SQL API host, hostname only — e.g. your-deployment.aws-us-east-1.cubecloudapp.dev
 port: 5432 # Cube Cloud: 5432. Self-hosted: your CUBEJS_PG_SQL_PORT (often 15432)
@@ -124,7 +124,7 @@ sslmode: verify-full # verify-full (secure default, Cube Cloud) | verify-ca | re
 # ssl_key_path: ./certs/client.key # PEM client private key (mutual TLS)
 `;
 
-const MOTHERDUCK_TEMPLATE = `# MotherDuck direct connector — queried over MotherDuck's Postgres endpoint. Docs: https://docs.evidence.studio/direct-connectors/motherduck
+const MOTHERDUCK_TEMPLATE = `# MotherDuck direct connector — queried over MotherDuck's Postgres endpoint. Docs: https://docs.evidence.dev/direct-connectors/motherduck
 type: motherduck
 database: "<database>" # MotherDuck database name
 token: "<token>" # MotherDuck service/access token (MotherDuck UI: Settings -> Access Tokens)

@@ -20,7 +20,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Pinned version keeps rebuilds reproducible; bump with the CLI release.
-ARG EVIDENCE_VERSION=0.9.1
+ARG EVIDENCE_VERSION=0.9.2
 ARG TARGETARCH
 
 RUN set -e; \

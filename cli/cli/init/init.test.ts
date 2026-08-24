@@ -40,7 +40,7 @@ describe('runInit', () => {
 			await runInit({ targetDir: null, cwd: workDir });
 
 			const agents = await readFile(path.join(workDir, 'AGENTS.md'), 'utf-8');
-			expect(agents).toContain('https://docs.evidence.studio');
+			expect(agents).toContain('https://docs.evidence.dev');
 			// init creates real projects, not templates — don't frame it as one
 			expect(agents).not.toMatch(/template project/i);
 			// orients the agent to run the project
