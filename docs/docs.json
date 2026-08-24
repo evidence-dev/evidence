@@ -755,7 +755,8 @@
               "features/access-rules",
               "features/evidence-agent",
               "features/translations",
-              "features/embedded"
+              "features/embedded",
+              "features/scheduled-reports"
             ]
           },
           {
