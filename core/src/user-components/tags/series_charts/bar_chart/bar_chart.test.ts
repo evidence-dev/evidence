@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { assertParses } from '../../../../test-utils/ch-parse';
 import { buildChartSQL, type ChartSQLAttrs } from '../build-chart-sql';
+import { processColumnExpression } from '../../../common/sql-expression-utils';
 import {
 	SnowflakeDialect,
 	ClickHouseDialect,
@@ -1057,6 +1058,140 @@ describe('bar_chart SQL (schema examples)', () => {
 			 
 			 GROUP BY ALL"
 		`);
+	});
+
+	it('non-aggregating chart skips GROUP BY + default ORDER BY so source order propagates', () => {
+		// Bare x + bare y with no aggregation anywhere is a passthrough over
+		// the user's source query. We must not GROUP BY (would rehash and lose
+		// row order) and must not add a default ORDER BY x (would clobber the
+		// author's own ORDER BY inside the inline query).
+		const { sql } = buildAllDialects({
+			data: 'demo.waterfall_steps',
+			x: 'step',
+			y: 'amount'
+		});
+		expect(sql).not.toContain('GROUP BY');
+		expect(sql).not.toContain('ORDER BY');
+	});
+
+	it('non-aggregating chart with sum() tooltip field still emits GROUP BY (tooltip-agg fix)', () => {
+		// P1 fix: skipGroupBy must look at tooltip columns too. Bare primary
+		// columns with an aggregate tooltip would otherwise emit a mixed
+		// aggregate + bare-column SELECT with no GROUP BY that every warehouse
+		// rejects.
+		const dialect = new ClickHouseDialect();
+		const { sql } = buildChartSQL({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'total',
+			tooltipFieldColumns: [
+				processColumnExpression({ value: 'sum(profit)' }, dialect)
+			] as const,
+			dialect
+		});
+		expect(sql).toContain('GROUP BY');
+	});
+
+	it('sort="x asc" emits ORDER BY x asc', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'sum(total)',
+			sort: 'x asc'
+		});
+		expect(sql).toContain('ORDER BY category asc');
+	});
+
+	it('sort="x desc" emits ORDER BY x desc', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'sum(total)',
+			sort: 'x desc'
+		});
+		expect(sql).toContain('ORDER BY category desc');
+	});
+
+	it('sort="y desc" resolves to y alias so aggregation is preserved', () => {
+		// Referencing the alias (not the raw sum(...)) prevents the SELECT
+		// order-column-lifter from adding the bare column and breaking agg.
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'sum(total_sales)',
+			sort: 'y desc'
+		});
+		expect(sql).toContain('sum_total_sales desc');
+	});
+
+	it('sort="y asc" on non-aggregating chart references the y alias', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'amount',
+			sort: 'y asc'
+		});
+		expect(sql).toContain('amount asc');
+	});
+
+	it('sort=[...] emits stable ORDER BY x (client layer applies the array order)', () => {
+		// Explicit category order needs a deterministic SQL sort for correct
+		// LIMIT semantics; the array reorder happens client-side.
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'sum(total)',
+			sort: ['B', 'A', 'C']
+		});
+		expect(sql).toContain('ORDER BY category');
+	});
+
+	it('sort takes precedence over x_sort when both are provided', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'sum(total)',
+			sort: 'x desc',
+			x_sort: 'asc'
+		});
+		expect(sql).toContain('category desc');
+	});
+
+	it('sort takes precedence over order= raw escape hatch', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'sum(total)',
+			sort: 'x asc',
+			order: 'category desc'
+		});
+		expect(sql).toContain('category asc');
+		expect(sql).not.toContain('category desc');
+	});
+
+	it('skipLimit=true drops the LIMIT clause', () => {
+		// ComboChart flips this on for multi-child unified y-sort so per-child
+		// truncation doesn't skew the client-side cross-child totals.
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'sum(total)',
+			sort: 'y desc',
+			limit: 5,
+			skipLimit: true
+		});
+		expect(sql).not.toContain('LIMIT 5');
+	});
+
+	it('skipLimit=false keeps the LIMIT clause', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.orders',
+			x: 'category',
+			y: 'sum(total)',
+			sort: 'y desc',
+			limit: 5
+		});
+		expect(sql).toContain('LIMIT 5');
 	});
 
 	it('x_sort="data" with series still orders by x, series (stacked-rendering quirk)', () => {

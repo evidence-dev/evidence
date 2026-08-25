@@ -252,7 +252,9 @@ export class SeriesModel {
 					qualify: this.sharedContext.qualify,
 					order: this.sharedContext.order,
 					x_sort: this.sharedContext.x_sort,
+					sort: this.sharedContext.sort,
 					limit: this.sharedContext.limit,
+					skipLimit: this.sharedContext.skipLimit,
 					filters: this.sharedContext.filters,
 					firstDayOfWeek: this.sharedContext.firstDayOfWeek,
 					dialect: this.sharedContext.queryDeps.connection.dialect,
@@ -287,7 +289,9 @@ export class SeriesModel {
 				qualify: this.sharedContext.qualify,
 				order: this.sharedContext.order,
 				x_sort: this.sharedContext.x_sort,
+				sort: this.sharedContext.sort,
 				limit: this.sharedContext.limit,
+				skipLimit: this.sharedContext.skipLimit,
 				filters: this.sharedContext.filters,
 				firstDayOfWeek: this.sharedContext.firstDayOfWeek,
 				dialect: this.sharedContext.queryDeps.connection.dialect,
@@ -337,6 +341,25 @@ export class SeriesModel {
 		xColumnType?: 'date' | 'number' | 'string';
 		/** Sort by stack total for stacked charts with x_sort */
 		sortByStackTotal?: 'asc' | 'desc';
+		/**
+		 * Explicit x order shared across every series/child in the chart.
+		 * Set by ComboChart when `sort=[...]` is provided or when `sort="y *"`
+		 * on a multi-series chart derives a unified ordering across children.
+		 */
+		xValueOrder?: readonly (string | number | Date)[];
+		/**
+		 * When true, `xValueOrder` is exhaustive: rows whose x isn't in it are
+		 * dropped rather than appended after. Set by ComboChart when the order
+		 * came from a `sort="y *"` + `limit=` top-N slice — otherwise the
+		 * client would render more categories than the author asked for.
+		 */
+		xValueOrderIsExhaustive?: boolean;
+		/**
+		 * `'desc'` when the author set `sort="x desc"`; the anti-zigzag x-sort
+		 * for line/area on non-category axes uses this so a reverse-timeline
+		 * still draws monotonically. Ignored for bar/scatter/bubble.
+		 */
+		xSortDirection?: 'asc' | 'desc';
 		/** Color palette for the chart (used when no explicit series color is set) */
 		colorPalette?: string[];
 		/** Starting index for color palette assignment (based on series position in chart) */
@@ -372,6 +395,9 @@ export class SeriesModel {
 			// Sort by stack total when stacked and x_sort is asc/desc
 			sortByStackTotal:
 				this.props.isStacked && options.sortByStackTotal ? options.sortByStackTotal : undefined,
+			xValueOrder: options.xValueOrder,
+			xValueOrderIsExhaustive: options.xValueOrderIsExhaustive,
+			xSortDirection: options.xSortDirection,
 			tooltipFields: this.tooltipFields
 		};
 

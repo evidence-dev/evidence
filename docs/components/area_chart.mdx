@@ -352,12 +352,22 @@ date_range={
 </ResponseField>
 
 <ResponseField name="x_sort" type="string">
-  Sort order for x-axis categories. Options: `asc` (alphabetical), `desc` (reverse alphabetical), `data` (preserve query order), or an array for custom order like `["A", "B", "C"]`
+  Sort order for x-axis categories. Options: `asc` (alphabetical), `desc` (reverse alphabetical), `data` (preserve query order), or an array for custom order like `["A", "B", "C"]`. Prefer the newer `sort` prop for x/y direction sorting.
 
 **Allowed values:**
 - `asc`
 - `desc`
 - `data`
+</ResponseField>
+
+<ResponseField name="sort" type="string">
+  Sort order for the chart. `"x asc"` / `"x desc"` sort by the x-axis label. `"y asc"` / `"y desc"` sort by the y value — `"y desc"` puts the biggest bars first. On stacked or grouped bars, y-sort ranks categories by the stack total. On a multi-child combo (e.g. bar + line), y-sort ranks by the first child's measure — put the measure you want to rank by first, or use `order="sum(...) desc"` for finer control. An array like `["A", "B", "C"]` renders categories in that exact order (unlisted values keep their position and land after). Only affects charts with a categorical x axis — on `date_grain` charts, points and bars position by their date, and on scatter/bubble by (x, y) coordinates. Leave unset and aggregating charts default to alphabetical x; non-aggregating charts (bare `x=`/`y=`) preserve the source query's own `ORDER BY`.
+
+**Allowed values:**
+- `x asc`
+- `x desc`
+- `y asc`
+- `y desc`
 </ResponseField>
 
 <ResponseField name="y_axis_options" type="options group">

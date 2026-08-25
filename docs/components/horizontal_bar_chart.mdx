@@ -30,6 +30,28 @@ keywords: ["horizontal bar graph","row chart"]
 /%}
 ````
 
+### Sort bars biggest first
+
+````liquid
+{% horizontal_bar_chart
+	data="demo.daily_orders"
+	y="category"
+	x="sum(total_sales)"
+	sort="x desc"
+/%}
+````
+
+### Explicit category order
+
+````liquid
+{% horizontal_bar_chart
+	data="demo.daily_orders"
+	y="category"
+	x="sum(total_sales)"
+	sort=["Enterprise", "SMB", "Consumer"]
+/%}
+````
+
 ## Attributes
 
 <ResponseField name="data" type="string" required>
@@ -347,12 +369,22 @@ echarts_series_options={
 </ResponseField>
 
 <ResponseField name="y_sort" type="string">
-  Sort order for y-axis categories. Options: `asc` (alphabetical), `desc` (reverse alphabetical), `data` (preserve query order), or an array for custom order like `["A", "B", "C"]`
+  Sort order for y-axis categories. Options: `asc` (alphabetical), `desc` (reverse alphabetical), `data` (preserve query order), or an array for custom order like `["A", "B", "C"]`. Prefer the newer `sort` prop for x/y direction sorting.
 
 **Allowed values:**
 - `asc`
 - `desc`
 - `data`
+</ResponseField>
+
+<ResponseField name="sort" type="string">
+  Sort order for the bars. Axes are swapped from `bar_chart` — the value axis is `x` and the category axis is `y`, so for **biggest bars first use `sort="x desc"`** (NOT `sort="y desc"`, which sorts categories alphabetically). `"x asc"` / `"x desc"` sort by value. `"y asc"` / `"y desc"` sort the category axis alphabetically. An array like `["Enterprise", "SMB", "Consumer"]` renders categories in that explicit order. Leave unset and the chart preserves the source query's row order for non-aggregating charts, or defaults to biggest-first (`x desc`) for aggregating ones.
+
+**Allowed values:**
+- `x asc`
+- `x desc`
+- `y asc`
+- `y desc`
 </ResponseField>
 
 <ResponseField name="data_labels" type="options group">

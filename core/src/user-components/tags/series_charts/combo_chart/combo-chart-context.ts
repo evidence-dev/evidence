@@ -59,8 +59,22 @@ export type SharedQueryContext = {
 	order: string | undefined;
 	/** Raw user-provided x_sort — takes precedence over `order` in buildChartSQLConfig */
 	x_sort: string | readonly string[] | undefined;
+	/**
+	 * Raw user-provided `sort` (new unified prop). Wins over both `x_sort` and
+	 * `order` in buildChartSQLConfig. Accepts `"x asc"`, `"x desc"`, `"y asc"`,
+	 * `"y desc"`, or an explicit `string[]` category order.
+	 */
+	sort: string | readonly string[] | undefined;
 	/** LIMIT clause */
 	limit: number | undefined;
+	/**
+	 * When true, per-child SeriesModels drop LIMIT from their SQL. Set by
+	 * ComboChart when it needs the full result set to compute a stable
+	 * cross-child ordering (unified `sort="y asc"`/`"y desc"`), and then
+	 * applies the top-N truncation client-side. Independent per-child LIMITs
+	 * would leave each child ranking a different subset of x values.
+	 */
+	skipLimit: boolean;
 	/** Query dependencies (connection, filterContexts, etc.) */
 	queryDeps: QueryDependencies;
 	/** Component-level refresh interval in seconds (overrides page default) */

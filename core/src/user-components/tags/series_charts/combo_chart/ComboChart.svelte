@@ -15,6 +15,7 @@
 	import { processColumnExpression } from '../../../common/sql-expression-utils';
 	import { getRepeatContext } from '../../repeat/repeat-context';
 	import { setComboChartContext } from './combo-chart-context';
+	import { deriveXValueOrder } from './derive-x-value-order';
 	import { YAxisModel } from './YAxisModel.svelte';
 	import { XAxisModel } from './XAxisModel.svelte';
 	import {
@@ -82,6 +83,7 @@
 	// Note: tableName, x, series, size are resolved via resolvers after variableProcessor is created
 	const filterIds = $derived(props.filters);
 	const x_sort = $derived(props.x_sort);
+	const sort = $derived(props.sort);
 
 	const legend = $derived(props.legend ?? true);
 	const legend_location = $derived(props.legend_location ?? 'top');
@@ -315,6 +317,38 @@
 	// resolves its own base + aggregate independently of the combo_chart's `data=`.
 	const metricsCatalog = getMetricsCatalogContext();
 
+	// Reading `s.seriesColumnName` on each child would close a reactive cycle
+	// with `sharedContext.skipLimit` (see the note on `needsUnifiedYSort` below);
+	// the top-level `series=` covers the single-query multi-series shape without
+	// that loop, and child-level series props always come paired with it.
+	const hasMultipleSeries = $derived(seriesInOrder.length > 1 || Boolean(series));
+
+	// Any y-sort that ranks across series needs the full rowset before it can
+	// rank correctly: covers multi-child combos, single-query multi-series, AND
+	// single-child stacked charts (child-level `series=` with `stacked=true` —
+	// same cross-series total ranking as an unstacked multi-series). Reads
+	// `s.props.isStacked` / `s.type` directly to avoid the sharedContext cycle
+	// that reading `s.seriesColumnName` would open.
+	const needsUnifiedYSort = $derived.by(() => {
+		if (sort !== 'y asc' && sort !== 'y desc') return false;
+		if (hasMultipleSeries) return true;
+		return seriesInOrder.some((s) => s.isStacked && (s.type === 'bar' || s.type === 'line'));
+	});
+	// When true, per-child SQL drops LIMIT and the top-N truncation happens
+	// client-side against the derived cross-series order (see xValueOrder).
+	const skipLimit = $derived(needsUnifiedYSort && typeof limit === 'number' && limit > 0);
+	// When true, `xValueOrder` is the complete set of x values the chart should
+	// render — unlisted rows must be dropped so the top-N slice matches SQL
+	// `LIMIT` semantics. Only fires for the `sort="y *"` + skipLimit shape; the
+	// array-form `sort=[...]` intentionally keeps unlisted rows after.
+	const xValueOrderIsExhaustive = $derived(skipLimit);
+
+	// Direction hint for the anti-zigzag x-sort on line/area over time/value
+	// axes. `sort="x desc"` reverses the timeline; every other shape draws
+	// left-to-right (ascending is the safe default that matches how humans
+	// read a time series).
+	const xSortDirection: 'asc' | 'desc' = $derived(sort === 'x desc' ? 'desc' : 'asc');
+
 	// Raw shared context that children (SeriesModels) forward to buildChartSQLConfig
 	const sharedQueryContext = $derived.by(() => {
 		return {
@@ -337,7 +371,9 @@
 			qualify,
 			order,
 			x_sort,
+			sort,
 			limit,
+			skipLimit,
 			queryDeps: {
 				connection,
 				filterContexts: [repeatFilters, pageFilters],
@@ -513,8 +549,8 @@
 		return queryInfoContext.registerQuery(componentId, _tagName, combinedQuery, title);
 	});
 
-	// TODO: Client-side sorting with x_sort array will need to be reimplemented per-series
-	// For now, array-based x_sort is not supported with per-series queries
+	// Array-form ordering (from `sort=[...]` or the derived cross-series y-sort)
+	// is applied per-series in `getSeriesConfig` via `xValueOrder` below.
 
 	// Check if any series is loading
 	const loading: boolean = $derived(seriesInOrder.some((s) => s.query?.loading));
@@ -590,14 +626,41 @@
 	// Only treat as category axis if it's explicitly a category axis (not time axis overridden for stacking)
 	const effectiveTreatAsCategoryAxis = $derived(xAxisOptions.type === 'category');
 
-	// For stacked charts with x_sort='asc'/'desc', sort by stack total instead of x value
-	const sortByStackTotal = $derived.by(() => {
+	// Legacy stack-total sort — unchanged. Fires only for `x_sort='asc'|'desc'`
+	// on a stacked chart. Operates per-series (each SeriesModel sorts its own
+	// data), fine for single-query multi-series (one model has all the rows)
+	// but doesn't unify across multi-child combos. The new `sort` prop uses
+	// `xValueOrder` below instead.
+	const sortByStackTotal = $derived.by((): 'asc' | 'desc' | undefined => {
 		if (!hasStackedSeries) return undefined;
-		if (x_sort === 'asc' || x_sort === 'desc') {
-			return x_sort;
-		}
+		if (x_sort === 'asc' || x_sort === 'desc') return x_sort;
 		return undefined;
 	});
+
+	// Chart-level explicit x order — used by both `sort=[...]` (array form) and
+	// `sort='y asc'|'y desc'` on multi-series (computed from loaded data). One
+	// derivation at the chart level; every series/child reorders its own rows
+	// to match, so multi-child combos share the same x positions.
+	//
+	// Pure client-side JS over already-loaded rows. No SQL wrap, no window
+	// function, no `ROW_NUMBER OVER ()`. Extracted to `deriveXValueOrder` so
+	// the logic is unit-testable without spinning up Svelte state.
+	const xValueOrder = $derived(
+		deriveXValueOrder({
+			sort,
+			hasMultipleSeries,
+			hasStackedSeries,
+			xColumnName,
+			series: seriesInOrder.map((s) => ({
+				rows: s.query?.result?.rows ?? [],
+				yColumnName: s.yColumnName
+			})),
+			// Only pass the limit when we told the SQL layer to drop it — that's
+			// the shape the ranking-then-slice pair belongs to. In every other
+			// shape the SQL `LIMIT` already bounded the returned rowset.
+			limitTopN: skipLimit && typeof limit === 'number' && limit > 0 ? limit : undefined
+		})
+	);
 
 	const seriesComputed = $derived.by(() => {
 		if (!xColumnName) {
@@ -626,6 +689,9 @@
 				dateGrain: date_grain,
 				xColumnType,
 				sortByStackTotal,
+				xValueOrder,
+				xValueOrderIsExhaustive,
+				xSortDirection,
 				colorPalette: effectiveColorPalette,
 				colorPaletteStartIndex: colorPaletteIndex
 			});

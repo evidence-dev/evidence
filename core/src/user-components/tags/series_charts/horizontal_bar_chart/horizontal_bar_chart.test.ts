@@ -353,6 +353,83 @@ describe('horizontal_bar_chart SQL', () => {
 		`);
 	});
 
+	it('sort="x desc" — biggest bars first (equivalent to bar_chart sort="y desc")', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.daily_orders',
+			x: 'sum(total_sales)',
+			y: 'category',
+			sort: 'x desc'
+		});
+		expect(sql).toContain('sum_total_sales desc');
+	});
+
+	it('sort="x asc" — smallest bars first', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.daily_orders',
+			x: 'sum(total_sales)',
+			y: 'category',
+			sort: 'x asc'
+		});
+		expect(sql).toContain('sum_total_sales asc');
+	});
+
+	it('sort="y desc" — categories reverse-alphabetical', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.daily_orders',
+			x: 'sum(total_sales)',
+			y: 'category',
+			sort: 'y desc'
+		});
+		expect(sql).toContain('category desc');
+	});
+
+	it('sort=[array] — SQL stable ORDER BY y, chart layer reorders client-side', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.daily_orders',
+			x: 'sum(total_sales)',
+			y: 'category',
+			sort: ['Enterprise', 'SMB', 'Consumer']
+		});
+		expect(sql).toContain('ORDER BY category');
+	});
+
+	it('sort takes precedence over legacy y_sort', () => {
+		const { sql } = buildAllDialects({
+			data: 'demo.daily_orders',
+			x: 'sum(total_sales)',
+			y: 'category',
+			sort: 'x desc',
+			y_sort: 'asc'
+		});
+		expect(sql).toContain('sum_total_sales desc');
+	});
+
+	it('non-aggregating chart preserves source ORDER BY (no default value-desc)', () => {
+		const { sql } = buildAllDialects({
+			data: 'my_ranked_categories',
+			x: 'total',
+			y: 'category'
+		});
+		expect(sql).not.toContain('GROUP BY');
+		expect(sql).not.toContain('ORDER BY');
+	});
+
+	it('non-aggregating primary + aggregate tooltip still emits GROUP BY (P1 fix)', async () => {
+		const { processColumnExpression } = await import('../../../common/sql-expression-utils');
+		const { ClickHouseDialect } = await import('../../../../sql-dialect');
+		const dialect = new ClickHouseDialect();
+		const aggTooltip = processColumnExpression({ value: 'sum(profit)' }, dialect);
+
+		const { sql } = buildHorizontalBarChartSQL({
+			data: 'demo.daily_orders',
+			x: 'amount',
+			y: 'category',
+			tooltipFieldColumns: [aggTooltip],
+			dialect
+		});
+		expect(sql).toContain('GROUP BY');
+	});
+
 	it('date_range applies ClickHouse toDate WHERE bounds', () => {
 		const { sql } = buildAllDialects({
 			data: 'demo.daily_orders',
