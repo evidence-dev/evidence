@@ -1,0 +1,49 @@
+---
+title: 'Authentication & SSO'
+sidebarTitle: 'Authentication & SSO'
+description: 'Integrate a self-hosted Evidence deployment with your identity provider by fronting it with an authenticating reverse proxy.'
+---
+
+A self-hosted Evidence deployment ([`evidence serve`](/cli/commands#evidence-serve)) includes a single built-in access control: shared [HTTP Basic Auth](/self-host#authentication) (`EVIDENCE_BASIC_USER` / `EVIDENCE_BASIC_PASSWORD`), or unauthenticated access on a trusted private network (`EVIDENCE_AUTH_DISABLED=true`). It does not provide user accounts, single sign-on, or an identity store of its own.
+
+To authenticate users against your organization's identity provider, deploy `evidence serve` behind an authenticating reverse proxy (also known as an identity-aware proxy). The proxy integrates with your identity provider over OIDC or SAML, enforces sign-in on every request, and forwards only authenticated traffic to Evidence.
+
+<Warning>
+  Authentication controls who can reach the deployment; it does not scope what each user sees. Every authenticated user is served the same reports, queried against the single warehouse identity defined in [`connection.yaml`](/cli/connections). Self-hosted deployments do not enforce per-report [access control](/features/page-level-access-control) or [row-level security](/features/access-rules) — those are applied against a per-viewer identity available only in [Evidence Studio](/self-host#self-host-vs-evidence-studio). Deployments that require differentiated access to reports or data should use Evidence Studio.
+</Warning>
+
+## Architecture
+
+```
+User ──▶ Authenticating reverse proxy (OIDC / SAML) ──▶ evidence serve
+```
+
+The proxy is the sole entry point and the authentication boundary; Evidence runs with its built-in authentication disabled. Evidence does not read the authenticated user's identity from the proxy, so reports, queries, and filters are the same for every authenticated user.
+
+<Steps>
+  <Step title="Restrict network access to the proxy">
+    Deploy `evidence serve` on a private network or internal port that is not publicly routable, so the proxy is the only path to the application. A directly reachable deployment with authentication disabled is unprotected.
+  </Step>
+  <Step title="Disable built-in authentication">
+    Set `EVIDENCE_AUTH_DISABLED=true` so Evidence treats the proxy as the authentication boundary. HTTP Basic Auth may be retained as an additional layer where required.
+  </Step>
+  <Step title="Configure the proxy against your identity provider">
+    Connect the proxy to your identity provider over OIDC or SAML, and scope access to the appropriate users, groups, or domains. Route the proxy to the Evidence deployment.
+  </Step>
+</Steps>
+
+## Supported proxies and providers
+
+Any authenticating proxy that integrates with your identity provider over OIDC or SAML is compatible. Commonly used options include:
+
+| Proxy / gateway | Integrates with | Notes |
+| --- | --- | --- |
+| [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/policies/access/) (Zero Trust) | Okta, Microsoft Entra ID, Google Workspace, SAML/OIDC | Managed service; no proxy to operate |
+| [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) | Any OIDC provider | Open source; deployed alongside Evidence |
+| [Pomerium](https://www.pomerium.com/) | OIDC and SAML providers | Open-source identity-aware proxy with group-based policy |
+| [Authelia](https://www.authelia.com/) / [Authentik](https://goauthentik.io/) | Self-hosted identity store | No external provider required |
+| AWS [Application Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html) | Amazon Cognito or any OIDC provider | Native authentication at the load balancer |
+| Google Cloud [Identity-Aware Proxy](https://cloud.google.com/iap) | Google Workspace / Cloud Identity | Wraps the service; no proxy to operate |
+| Azure [App Service authentication](https://learn.microsoft.com/azure/app-service/overview-authentication-authorization) | Microsoft Entra ID | Built-in authentication in front of the container |
+
+These integrate with standard enterprise identity providers — including Okta, Microsoft Entra ID, Google Workspace, Auth0, Ping Identity, and OneLogin — over OIDC or SAML.

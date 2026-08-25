@@ -779,6 +779,7 @@
             "group": "Self Host",
             "pages": [
               "self-host/index",
+              "self-host/authentication",
               "self-host/vercel",
               "self-host/render",
               "self-host/fly",

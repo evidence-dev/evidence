@@ -82,3 +82,5 @@ Self-hosted sites are protected by HTTP Basic Auth. The browser caches credentia
 To force all viewers to re-authenticate, change `EVIDENCE_BASIC_PASSWORD` and redeploy.
 
 For deployments only reachable over a trusted private network (VPN, Tailscale, internal VPC), set `EVIDENCE_AUTH_DISABLED=true` to skip authentication entirely.
+
+To authenticate users against your organization's identity provider, deploy `evidence serve` behind an authenticating reverse proxy — see [Authentication & SSO](/self-host/authentication).
