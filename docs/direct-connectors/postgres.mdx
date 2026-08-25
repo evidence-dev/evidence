@@ -5,10 +5,6 @@ description: 'Query your own Postgres database directly from Evidence without sy
 
 The Postgres direct connector lets Evidence run queries live against your own Postgres database. Because it speaks the standard Postgres wire protocol, it also works with **Amazon RDS / Aurora**, **Supabase**, **Neon**, and **Timescale**.
 
-<Note>
-This is the **direct** connector — it points Evidence at a Postgres database **you own**. It's distinct from syncing data into Evidence's built-in managed warehouse.
-</Note>
-
 ## Connecting
 
 You need the database **host**, **port**, **database** name, a **user**, and its **password**, plus an appropriate **SSL mode** for managed providers.

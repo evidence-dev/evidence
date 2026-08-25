@@ -5,10 +5,6 @@ description: 'Query your own Databricks SQL Warehouse directly from Evidence wit
 
 The Databricks direct connector lets Evidence run queries live against your own Databricks workspace via a [SQL Warehouse](https://docs.databricks.com/aws/en/compute/sql-warehouse/), using Unity Catalog.
 
-<Note>
-This is the **direct** connector — it points Evidence at a Databricks workspace **you own**. It's distinct from syncing data into Evidence's built-in managed warehouse.
-</Note>
-
 ## Connecting
 
 You need three things: the workspace **server hostname**, the SQL Warehouse **HTTP path**, and an authentication credential — either a **personal access token** or an **OAuth service principal**.

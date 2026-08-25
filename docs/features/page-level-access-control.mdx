@@ -3,6 +3,10 @@ title: 'Page Level Access Control'
 description: 'Control who can view your published reports and pages with a version-controlled access.yaml file.'
 ---
 
+import StudioOnly from '/snippets/studio-only.mdx';
+
+<StudioOnly />
+
 Page level access control determines who can view a project's published reports. It is defined in a single `access.yaml` file at the project root, created for you automatically. The file lives alongside your content, ships through the same git workflow as your pages, and is enforced when readers visit your published reports.
 
 <Note>Users with the `Developer`, `Admin`, or `Org Viewer` role can always view all pages, regardless of `access.yaml`.</Note>

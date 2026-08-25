@@ -5,10 +5,6 @@ description: 'Query your MotherDuck (cloud DuckDB) database directly from Eviden
 
 The MotherDuck direct connector lets Evidence run queries live against a [MotherDuck](https://motherduck.com) database. It connects over MotherDuck's [Postgres-wire endpoint](https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/postgres-endpoint/) — the connection method MotherDuck recommends for applications and serverless environments — so no local DuckDB engine is involved.
 
-<Note>
-This is the **direct** connector. It authenticates with a service token and queries your database live, so any table or view in it is available without a sync. You still write **DuckDB SQL** — the Postgres endpoint is only the transport.
-</Note>
-
 ## Connecting
 
 You'll create a MotherDuck access token, find your database name, then enter both in Evidence.

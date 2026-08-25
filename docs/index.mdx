@@ -3,27 +3,36 @@ title: What is Evidence?
 description: 'Evidence is a powerful framework for building and publishing data products using SQL, markdown, and AI.'
 ---
 
-<Steps>
-	<Step title="Connect your Data">
-		[Connect to data](/evidence-warehouse) in SQL databases, flat files and cloud storage buckets.
-	</Step>
-	<Step title="Build Reports">
-		Build reports with [Markdown](/core-concepts/markdown), [SQL](/core-concepts/markdown#sql) and
-		[Components](/core-concepts/components).
-	</Step>
-	<Step title="Publish Online">[Publish reports](/publishing) to share with your team.</Step>
-</Steps>
+Evidence comes in two parts: an open-source framework you can run yourself, and a hosted platform built on top of it.
 
-## Getting Starting
+## Evidence Core
+
+**Evidence Core** is an MIT-licensed framework for building data apps from SQL and Markdown. You write reports in [Markdown](/core-concepts/markdown) with embedded [SQL](/core-concepts/markdown#sql) and [components](/core-concepts/components), query your own warehouse through [direct connectors](/direct-connectors/snowflake), and preview locally with the [CLI](/cli). It builds to a static site you can [self-host](/self-host) anywhere — Vercel, Netlify, Docker, or your own infrastructure. No account required.
+
+## Evidence Studio
+
+**Evidence Studio** is the hosted platform built on Evidence Core. Alongside everything in Core, it adds:
+
+- A managed [Evidence Warehouse](/evidence-warehouse) with connectors that load your data for you
+- A collaborative [editor](/editing) and [publishing](/publishing) with preview deployments
+- The [Evidence Agent](/features/evidence-agent) for building reports with AI
+- [Access rules](/features/access-rules) and [page-level access control](/features/page-level-access-control) for controlling who sees what
+- [Scheduled reports](/features/scheduled-reports) and [embedded analytics](/features/embedded)
+
+Studio-only pages in these docs are marked with a badge.
+
+## Getting Started
 
 Create your first report in minutes.
 
 <CardGroup cols={2}>
-	<Card title="Sign Up" icon="user" href="/quickstart">
-		Create an account and log in to get started
+	<Card title="Sign Up" icon="user" href="https://login.evidence.studio/sign-up">
+		Create an Evidence Studio account and start building in your browser.
 	</Card>
-	<Card title="Connect your Data" icon="plug" href="/evidence-warehouse">
-		Add connections to your SQL databases, flat files or cloud storage buckets
+	<Card title="Download the CLI" icon="terminal" href="/cli">
+		Build locally with Evidence Core:
+
+		`curl -fsSL https://evidence.studio/install.sh | sh`
 	</Card>
 </CardGroup>
 

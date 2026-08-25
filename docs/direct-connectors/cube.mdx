@@ -5,10 +5,6 @@ description: 'Query your Cube semantic layer directly from Evidence through its 
 
 The Cube direct connector points Evidence at [Cube's SQL API](https://cube.dev/docs/product/apis-integrations/core-data-apis/sql-api), which speaks the Postgres wire protocol. Evidence connects as a Postgres client and queries your cubes and views as if they were tables, so your metrics stay defined once in Cube.
 
-<Note>
-This connects to Cube's **SQL API** — the same interface Cube documents for BI tools. It's the direct-query path; Evidence does not sync data or use Cube's Semantic Layer Sync.
-</Note>
-
 ## Connecting
 
 You need the SQL API **host**, **port**, **database** name, a **user** (`CUBEJS_SQL_USER`) and its **password** (`CUBEJS_SQL_PASSWORD`), plus an **SSL mode**.

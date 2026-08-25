@@ -5,10 +5,6 @@ description: 'Query your Microsoft Fabric Warehouse directly from Evidence witho
 
 The Microsoft Fabric direct connector lets Evidence run queries live against a Fabric Warehouse (or Lakehouse SQL analytics endpoint) over its SQL endpoint.
 
-<Note>
-This is the **direct** connector. It connects to the Fabric **SQL endpoint** using the TDS protocol (the same protocol as Azure SQL / SQL Server), so any table or view exposed through the endpoint is queryable live.
-</Note>
-
 ## Connecting
 
 You'll register an Azure AD (Microsoft Entra ID) application to act as a service principal, grant that service principal access to your Fabric workspace and Warehouse, find the Warehouse's SQL connection string, then enter the credentials in Evidence.

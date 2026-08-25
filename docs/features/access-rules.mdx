@@ -3,6 +3,10 @@ title: 'Access Rules'
 description: 'Control which tables and rows each user can see with table restrictions, row-level security rules, and user variables.'
 ---
 
+import StudioOnly from '/snippets/studio-only.mdx';
+
+<StudioOnly />
+
 Access rules control what data each user can see in your sources, at two levels:
 
 - **Table restrictions** — restrict whole tables to a chosen set of users.
@@ -36,7 +40,7 @@ Everyone else in the organization loses access: queries against `employee_salari
 
 ## Row Level Security
 
-<Note>Row level security is available on the Enterprise plan.</Note>
+<Note>Row level security is available in Evidence Studio on the Enterprise plan.</Note>
 
 Row level security controls which rows of data a user can see in a source. You define a rule on a table and a user variable for each user; a user only sees rows where their variable matches the column named in the rule.
 

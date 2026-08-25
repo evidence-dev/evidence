@@ -3,6 +3,10 @@ title: 'Evidence Agent'
 description: 'Shape the Evidence Agent with version-controlled context and skills in the agent/ directory.'
 ---
 
+import StudioOnly from '/snippets/studio-only.mdx';
+
+<StudioOnly />
+
 The **Evidence Agent** lets your readers ask data questions in natural language and get analytical answers built from your project. It reads your published reports and dashboards as context, generates new **insights** (analyses written in Evidence Markdown), and can reach the underlying SQL and filter definitions behind your reports. It respects your project's existing [access rules](/features/access-rules) and [page-level access control](/features/page-level-access-control), so readers only ever see data they're allowed to.
 
 You can customize the agent's behaviour with an `agent/` directory at your project root — version-controlled files that ship through the same git workflow as your pages. There are two kinds of customization: **context** (always-loaded instructions) and **skills** (on-demand playbooks the agent loads when a task calls for them).
