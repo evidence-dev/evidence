@@ -129,7 +129,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 		return {
 			type: 'measure',
 			processedColumnExpression: {
-				sqlWithAlias: `${dialect.anyValue(image)} AS __image_${alias}`,
+				sqlWithAlias: `${dialect.anyValue(image)} AS ${dialect.quoteAlias(`__image_${alias}`)}`,
 				sqlWithoutAlias: dialect.anyValue(image),
 				sqlWithoutDateFiltersOrAlias: dialect.anyValue(image),
 				alias: `__image_${alias}`,
@@ -143,7 +143,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 				isTableComparison: false,
 				isTableSparkline: false
 			},
-			sqlWithAlias: `${dialect.anyValue(image)} AS __image_${alias}`,
+			sqlWithAlias: `${dialect.anyValue(image)} AS ${dialect.quoteAlias(`__image_${alias}`)}`,
 			alias: `__image_${alias}`,
 			columnIdForRendering: `__image_${alias}`,
 			sqlWithoutAlias: dialect.anyValue(image),
@@ -163,7 +163,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 		return {
 			type: 'measure',
 			processedColumnExpression: {
-				sqlWithAlias: `${dialect.anyValue(logo)} AS __logo_${alias}`,
+				sqlWithAlias: `${dialect.anyValue(logo)} AS ${dialect.quoteAlias(`__logo_${alias}`)}`,
 				sqlWithoutAlias: dialect.anyValue(logo),
 				sqlWithoutDateFiltersOrAlias: dialect.anyValue(logo),
 				alias: `__logo_${alias}`,
@@ -177,7 +177,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 				isTableComparison: false,
 				isTableSparkline: false
 			},
-			sqlWithAlias: `${dialect.anyValue(logo)} AS __logo_${alias}`,
+			sqlWithAlias: `${dialect.anyValue(logo)} AS ${dialect.quoteAlias(`__logo_${alias}`)}`,
 			alias: `__logo_${alias}`,
 			columnIdForRendering: `__logo_${alias}`,
 			sqlWithoutAlias: dialect.anyValue(logo),
@@ -197,7 +197,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 		return {
 			type: 'measure',
 			processedColumnExpression: {
-				sqlWithAlias: `${dialect.anyValue(link)} AS __link_${alias}`,
+				sqlWithAlias: `${dialect.anyValue(link)} AS ${dialect.quoteAlias(`__link_${alias}`)}`,
 				sqlWithoutAlias: dialect.anyValue(link),
 				sqlWithoutDateFiltersOrAlias: dialect.anyValue(link),
 				alias: `__link_${alias}`,
@@ -211,7 +211,7 @@ export class DimensionModel extends UserComponentModel<DimensionModelGenerics> {
 				isTableComparison: false,
 				isTableSparkline: false
 			},
-			sqlWithAlias: `${dialect.anyValue(link)} AS __link_${alias}`,
+			sqlWithAlias: `${dialect.anyValue(link)} AS ${dialect.quoteAlias(`__link_${alias}`)}`,
 			alias: `__link_${alias}`,
 			columnIdForRendering: `__link_${alias}`,
 			sqlWithoutAlias: dialect.anyValue(link),

@@ -231,7 +231,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 				this.deps.connection.dialect
 			);
 			if (!processed.hasAgg) {
-				base = `(SELECT *, ${processed.sqlWithoutAlias} AS __row_conditional_colors FROM ${resolvedBase})`;
+				base = `(SELECT *, ${processed.sqlWithoutAlias} AS ${this.deps.connection.dialect.quoteAlias('__row_conditional_colors')} FROM ${resolvedBase})`;
 			}
 		}
 
