@@ -296,7 +296,7 @@
 			<Skeleton class="m-2 h-6 w-1/4" />
 		</div>
 	{:else}
-		<div class="h-[300px] overflow-auto p-1">
+		<div class="max-h-[300px] overflow-auto p-1">
 			{#if !columnValuesQuery.result?.rows || columnValuesQuery.result.rows.length === 0}
 				<div class="text-muted-foreground flex h-12 items-center justify-center text-sm">
 					No matching values
