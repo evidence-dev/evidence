@@ -17,7 +17,6 @@ import {
 	validateVariablesInComponent,
 	validateAxisMinMax
 } from '../../../validators';
-import { getTableFromContext, stripTypeCast } from '../../../validators/types';
 import { WIDTH_ATTRIBUTE } from '../../../common/width-attribute';
 import { HEIGHT_ATTRIBUTE } from '../../../common/height-attribute';
 import { CONNECT_GROUP_ATTRIBUTE } from '../../../common/connect-group-attribute';
@@ -127,16 +126,7 @@ const attributes = {
 		),
 		required: false,
 		description:
-			'Sort order for x-axis categories. Options: `asc` (alphabetical), `desc` (reverse alphabetical), `data` (preserve query order), or an array for custom order like `["A", "B", "C"]`. Prefer the newer `sort` prop for x/y direction sorting.',
-		affectsQuery: true
-	},
-	sort: {
-		type: ZodAttribute.create(
-			z.union([z.enum(['x asc', 'x desc', 'y asc', 'y desc']), z.array(z.string())]).optional()
-		),
-		required: false,
-		description:
-			'Sort order for the chart. `"x asc"` / `"x desc"` sort by the x-axis label. `"y asc"` / `"y desc"` sort by the y value — `"y desc"` puts the biggest bars first. On stacked or grouped bars, y-sort ranks categories by the stack total. On a multi-child combo (e.g. bar + line), y-sort ranks by the first child\'s measure — put the measure you want to rank by first, or use `order="sum(...) desc"` for finer control. An array like `["A", "B", "C"]` renders categories in that exact order (unlisted values keep their position and land after). Only affects charts with a categorical x axis — on `date_grain` charts, points and bars position by their date, and on scatter/bubble by (x, y) coordinates. Leave unset and aggregating charts default to alphabetical x; non-aggregating charts (bare `x=`/`y=`) preserve the source query\'s own `ORDER BY`.',
+			'Sort order for x-axis categories. Options: `asc` (alphabetical), `desc` (reverse alphabetical), `data` (preserve query order), or an array for custom order like `["A", "B", "C"]`',
 		affectsQuery: true
 	},
 	y_axis_options: {
@@ -273,135 +263,6 @@ export const schema = {
 		validateAxisMinMax('y2_axis_options'),
 		validateEmptyAttributes(),
 		validateVariablesInComponent(),
-		// Warn when both `sort` (new) and `x_sort` (legacy) are set. `sort`
-		// wins silently, which surprises anyone still using the old prop —
-		// they'd wonder why editing `x_sort` did nothing.
-		(node) => {
-			if (!node.attributes?.sort || !node.attributes?.x_sort) return [];
-			return [
-				{
-					id: 'sort-shadows-x-sort',
-					level: 'warning' as const,
-					message:
-						'Both `sort` (new) and `x_sort` (legacy) are set. `sort` wins — `x_sort` is ignored. Remove one of them.',
-					location: node.location
-				}
-			];
-		},
-		// Multi-child combo + `sort="y *"` — call out the "first child wins"
-		// rule (matches Tableau/PowerBI/Vega-Lite for dual-axis charts) so an
-		// author who put the "obviously important" measure second doesn't get
-		// silently ranked by the other one. Only fires on combo_chart itself
-		// (bar_chart / line_chart / etc. inherit combo_chart's validate but
-		// only have one implicit child each, so the rule doesn't apply to
-		// them). Skipped when `sort=[...]` (array form) is used — that
-		// bypasses the y-ranking entirely.
-		(node) => {
-			if (node.tag !== 'combo_chart') return [];
-			const sort = node.attributes?.sort;
-			if (sort !== 'y asc' && sort !== 'y desc') return [];
-			const seriesTags = ['area', 'bar', 'bubble', 'line', 'scatter'];
-			const seriesChildren = ((node.children ?? []) as { tag?: string }[]).filter((c) =>
-				seriesTags.includes(c.tag ?? '')
-			);
-			if (seriesChildren.length < 2) return [];
-			return [
-				{
-					id: 'sort-multi-child-first-wins',
-					level: 'warning' as const,
-					message: `sort="${sort}" on a multi-child combo ranks categories by the FIRST child's measure only. If a different child is your primary metric, put it first; for anything else use \`order="sum(...) desc"\` or \`sort=["A","B",...]\`.`,
-					location: node.location
-				}
-			];
-		},
-		// Same warning for `order=` — a raw ORDER BY escape hatch that also
-		// gets silently overridden by `sort`.
-		(node) => {
-			if (!node.attributes?.sort || !node.attributes?.order) return [];
-			return [
-				{
-					id: 'sort-shadows-order',
-					level: 'warning' as const,
-					message:
-						'Both `sort` and `order=` are set. `sort` wins — the `order=` clause is ignored. Remove `order=` or drop `sort`.',
-					location: node.location
-				}
-			];
-		},
-		// Warn when `sort` is set and the x axis will render as a time/value
-		// axis (i.e. positions come from the data value, not from array
-		// order). Three signals — any one is enough to conclude "this is a
-		// time/value x axis":
-		//   1. `date_grain=` set — author's explicit intent
-		//   2. `x_axis_options.type="time"` — author's explicit override
-		//   3. `x` is a bare date/datetime/timestamp column per catalog metadata
-		// Coverage matches what the runtime layer's `XAxisModel` decides
-		// (jsType + date_grain + user override) as closely as we can at edit
-		// time. The runtime layer honors this correctly on its own — the
-		// anti-zigzag `sortRowsByX` fires on `!treatAsCategoryAxis`, and
-		// scatter/bubble skip the reorder — so this warning is purely
-		// author-feedback about intent, never a correctness gate.
-		(node, _config, context) => {
-			const sort = node.attributes?.sort;
-			if (!sort) return [];
-
-			const hasDateGrain = node.attributes?.date_grain !== undefined;
-			const xAxisType = (node.attributes?.x_axis_options as { type?: string } | undefined)?.type;
-			const axisOverrideIsTime = xAxisType === 'time';
-
-			// Metadata lookup — only reachable in ValidationContext (which
-			// carries the catalog). At the CLI syntax-check pass, this call
-			// short-circuits and we fall back to the two attribute signals.
-			let xIsDateColumn = false;
-			if (isValidationContext(context)) {
-				const xRaw = node.attributes?.x;
-				const tableName = node.attributes?.data;
-				if (
-					typeof xRaw === 'string' &&
-					typeof tableName === 'string' &&
-					/^[A-Za-z_][A-Za-z0-9_]*$/.test(xRaw)
-				) {
-					const table = getTableFromContext(tableName, context);
-					const column = table?.getColumn(stripTypeCast(xRaw));
-					const columnType = (column?.type || '').toLowerCase();
-					xIsDateColumn = /date|datetime|timestamp/.test(columnType);
-				}
-			}
-
-			if (!hasDateGrain && !axisOverrideIsTime && !xIsDateColumn) return [];
-
-			const shape = Array.isArray(sort) ? 'sort=[...]' : `sort="${sort}"`;
-			return [
-				{
-					id: 'sort-effectively-ignored-on-time-axis',
-					level: 'warning' as const,
-					message: `${shape} has no visual effect on a time-axis chart — points and bars are positioned by their date/period value, not by array order. (On line/area charts, \`sort="x desc"\` DOES reverse the polyline direction so it draws right-to-left.) To rank by y or an explicit category order, cast the x column to a string / non-date and drop \`date_grain\`.`,
-					location: node.location
-				}
-			];
-		},
-		// Warn when `sort` is set on scatter_chart or bubble_chart. Points
-		// position by their (x, y) coordinates on continuous axes, so `sort`
-		// can't MOVE them — but this is not a clean no-op: the SQL `ORDER BY`
-		// still fires (deliberate; scatter often pairs sort with `limit=` for
-		// top-N row pruning), and reordering the rows changes which series
-		// row lands first in each `series` bucket, which in turn changes
-		// legend order and positional color palette assignment. Give the
-		// author both knobs — `series_order=` for legend order,
-		// `series_colors=` for palette independence — so they can lock those
-		// down instead of relying on data-order side effects.
-		(node) => {
-			if (node.tag !== 'scatter_chart' && node.tag !== 'bubble_chart') return [];
-			if (!node.attributes?.sort) return [];
-			return [
-				{
-					id: 'sort-not-meaningful-on-scatter',
-					level: 'warning' as const,
-					message: `\`sort\` doesn't reposition points on ${node.tag} — they're placed by (x, y) coordinates. It still affects the underlying SQL ORDER BY, which can silently change legend order and palette color assignment when a \`series\` column is set (the first row per series determines that series' position). Use \`series_order=[...]\` to lock the legend and \`series_colors={...}\` to lock colors; use \`order="..."\` + \`limit=\` for row pruning.`,
-					location: node.location
-				}
-			];
-		},
 		(node, ...args) => {
 			// Hack to only run this validation on combo_chart, not components that inherit this component's validation
 			// TODO clean up
@@ -594,46 +455,6 @@ export const schema = {
     }
 %}
     {% bar y="sum(total_sales)" /%}
-{% /combo_chart %}
-`
-		},
-		{
-			title: 'Sort bars biggest first (Pareto)',
-			example: `
-{% combo_chart
-    data="demo.daily_orders"
-    x="category"
-    sort="y desc"
-%}
-    {% bar y="sum(total_sales)" /%}
-{% /combo_chart %}
-`
-		},
-		{
-			title: 'Explicit category order',
-			example: `
-{% combo_chart
-    data="demo.daily_orders"
-    x="category"
-    sort=["Enterprise", "SMB", "Consumer"]
-%}
-    {% bar y="sum(total_sales)" /%}
-{% /combo_chart %}
-`
-		},
-		{
-			title: 'Preserve source ORDER BY (waterfall)',
-			example: `
-\`\`\`sql waterfall
-SELECT 'Start' AS step, 100 AS amount
-UNION ALL SELECT 'Add', 50
-UNION ALL SELECT 'Subtract', -30
-UNION ALL SELECT 'End', 120
-ORDER BY 1
-\`\`\`
-
-{% combo_chart data="waterfall" x="step" %}
-    {% bar y="amount" /%}
 {% /combo_chart %}
 `
 		}

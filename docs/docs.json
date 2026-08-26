@@ -802,7 +802,7 @@
           {
             "group": "Evidence Warehouse",
             "pages": [
-              "data-sources/index",
+              "evidence-warehouse",
               {
                 "group": "Databases",
                 "expanded": false,

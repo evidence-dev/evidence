@@ -33,16 +33,6 @@ export const schema = {
 		// "missing required attribute" surfaces at edit time.
 		data: { ...comboChartSchema.attributes.data, required: true },
 		x: { ...comboChartSchema.attributes.x, required: true },
-		// Override the combo_chart `sort` description — the shared one talks
-		// about "bars biggest first" which doesn't apply to scatter (points
-		// position by (x, y) coordinates, not by array order). The editor
-		// warning that fires when `sort` is set on scatter has the full
-		// story; keep the docs page honest.
-		sort: {
-			...comboChartSchema.attributes.sort,
-			description:
-				"Rarely useful on scatter — points position by (x, y) coordinates so `sort` can't move them. When a `series=` column is set, `sort` still influences which series ends up first in the legend and picks up the first color from the palette (a side effect of row order). Prefer `series_order=[...]` for legend order and `series_colors={...}` for stable colors. Accepts the same shapes as other charts (`\"x asc\"`, `\"x desc\"`, `\"y asc\"`, `\"y desc\"`, or an array) but the editor will warn when you use it here."
-		},
 		...omit(scatterSeries.attributes, 'axis', 'echarts_options'),
 		...multiSeriesSchema.attributes,
 		size: {

@@ -165,7 +165,6 @@
 	const yColumnName = $derived(yProcessed?.alias); // category column
 	const seriesColumnName = $derived(seriesProcessed?.alias);
 	const y_sort = $derived(props.y_sort);
-	const sort = $derived(props.sort);
 	const series_order = $derived(props.series_order);
 
 	// Build query config
@@ -188,7 +187,6 @@
 			qualify,
 			order,
 			y_sort,
-			sort,
 			limit,
 			firstDayOfWeek: projectSettings.first_day_of_week,
 			dialect: connection.dialect,
@@ -266,21 +264,19 @@
 		});
 	});
 
-	// Client-side category reorder. `sort=[array]` (new prop, takes precedence)
-	// or `y_sort=[array]` (legacy) both feed the same reorder — the SQL layer
-	// keeps a stable `ORDER BY y` for deterministic LIMIT and we shuffle the
-	// rows here to match the author's explicit order.
+	// Apply client-side sorting if y_sort is an array
 	const data = $derived.by(() => {
-		const explicitOrder = Array.isArray(sort) ? sort : Array.isArray(y_sort) ? y_sort : undefined;
-		if (!explicitOrder || !yColumnName) {
+		if (!Array.isArray(y_sort) || !yColumnName) {
 			return filledData;
 		}
 
+		// Create a map of y values to their sort order
 		const sortOrderMap = new Map<string, number>();
-		explicitOrder.forEach((value, index) => {
+		y_sort.forEach((value, index) => {
 			sortOrderMap.set(String(value), index);
 		});
 
+		// Sort the data based on the custom order
 		return [...filledData].sort((a, b) => {
 			const aValue = String(a[yColumnName]);
 			const bValue = String(b[yColumnName]);
@@ -288,9 +284,22 @@
 			const aOrder = sortOrderMap.get(aValue);
 			const bOrder = sortOrderMap.get(bValue);
 
-			if (aOrder !== undefined && bOrder !== undefined) return aOrder - bOrder;
-			if (aOrder !== undefined) return -1;
-			if (bOrder !== undefined) return 1;
+			// If both values are in the sort order, sort by their position
+			if (aOrder !== undefined && bOrder !== undefined) {
+				return aOrder - bOrder;
+			}
+
+			// If only a is in the sort order, it comes first
+			if (aOrder !== undefined) {
+				return -1;
+			}
+
+			// If only b is in the sort order, it comes first
+			if (bOrder !== undefined) {
+				return 1;
+			}
+
+			// If neither is in the sort order, maintain data order (stable sort)
 			return 0;
 		});
 	});

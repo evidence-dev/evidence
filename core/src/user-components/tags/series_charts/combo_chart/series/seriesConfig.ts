@@ -49,28 +49,6 @@ export type SeriesConfigOptions = {
 	 */
 	sortByStackTotal?: 'asc' | 'desc';
 	/**
-	 * Explicit x-value order (from `sort=[...]` or a cross-series ordering
-	 * derived from `sort="y asc"/"y desc"`). Takes precedence over
-	 * `sortByStackTotal`. Dates match by ISO instant so cross-child ordering
-	 * with `Date` x values works.
-	 */
-	xValueOrder?: readonly (string | number | Date)[];
-	/**
-	 * When true, drop rows whose x isn't in `xValueOrder`. Set by ComboChart
-	 * for the `sort="y *"` + `limit=` top-N slice so the rendered category
-	 * count matches SQL `LIMIT` semantics (otherwise the reorder would keep
-	 * unlisted rows tacked on the end and blow past the author's limit).
-	 * Ignored when `xValueOrder` isn't set.
-	 */
-	xValueOrderIsExhaustive?: boolean;
-	/**
-	 * Direction the anti-zigzag x-sort should use for line/area on a non-
-	 * category axis. `'desc'` when the author explicitly set `sort="x desc"`
-	 * (so a reverse-timeline line still draws monotonically); otherwise
-	 * `'asc'` (default). Ignored for bar/scatter/bubble types.
-	 */
-	xSortDirection?: 'asc' | 'desc';
-	/**
 	 * Processed tooltip fields for this series. When set, each data item is
 	 * emitted in ECharts' `{ value, extras }` object form so the parent
 	 * tooltip formatter can look up the raw values by field alias without
@@ -119,9 +97,6 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 		xColumnType,
 		generateMissingXValues,
 		sortByStackTotal,
-		xValueOrder,
-		xValueOrderIsExhaustive,
-		xSortDirection = 'asc',
 		tooltipFields
 	} = options;
 
@@ -190,7 +165,7 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 	if (!hasSeries) {
 		// Apply gap filling for single series when requested
 		// For bar charts, this only matters if user explicitly wants gap filling
-		let processedData =
+		const processedData =
 			handleMissing !== 'connect' && shouldGenerateMissingXValues
 				? fillGaps({
 						data,
@@ -203,35 +178,6 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 						generateMissingXValues: shouldGenerateMissingXValues
 					})
 				: data;
-
-		// Explicit array order (from `sort=[...]`) applies to single-series too;
-		// otherwise a plain bar_chart with an array sort would silently no-op
-		// (SQL emits a stable `ORDER BY x` for LIMIT determinism, nothing here).
-		// Scatter/bubble skip this — points position by (x, y) coordinates on
-		// continuous axes, so a reorder only shuffles the underlying array with
-		// no visible effect. Applying it anyway would silently affect series
-		// color assignment on a scatter with a `series=` column (feedback from
-		// PR #1983 audit).
-		if (xValueOrder && xValueOrder.length > 0 && type !== 'scatter') {
-			processedData = reorderDataByXValueOrder(
-				processedData,
-				x,
-				xValueOrder,
-				xValueOrderIsExhaustive ?? false
-			);
-		}
-
-		// Line series on a value/time x axis: the polyline connects points in
-		// array order, so a non-monotonic-in-x arrival (from `sort="y desc"`,
-		// an inline SQL `ORDER BY value`, or an author-set `xValueOrder`)
-		// draws a zigzag instead of a timeline. Sort by x here so line/area
-		// always render monotonic. `sort="x desc"` is honored — descending IS
-		// monotonic and a legitimate reverse-timeline. Bars are unaffected
-		// (they position by x independently). Same rule in the multi-series
-		// branch below.
-		if (isLineType && !treatAsCategoryAxis) {
-			processedData = sortRowsByX(processedData, x, xSortDirection);
-		}
 
 		// Note: Don't add explicit ChartSeriesOption type annotation here.
 		// TypeScript can't narrow discriminated unions when the discriminant is a union value.
@@ -293,27 +239,9 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 		generateMissingXValues: shouldGenerateMissingXValues
 	});
 
-	// Explicit array order (from `sort=[...]` or a cross-child derived order)
-	// takes precedence over the legacy stack-total sort. Skip for scatter —
-	// see the single-series branch above for why (positions come from the
-	// (x, y) coordinates on continuous axes).
-	if (xValueOrder && xValueOrder.length > 0 && type !== 'scatter') {
-		filledData = reorderDataByXValueOrder(
-			filledData,
-			x,
-			xValueOrder,
-			xValueOrderIsExhaustive ?? false
-		);
-	} else if (sortByStackTotal) {
-		// Legacy stacked + x_sort=asc/desc path — unchanged.
+	// Sort by stack totals if requested (for stacked charts with x_sort)
+	if (sortByStackTotal) {
 		filledData = sortDataByStackTotal(filledData, x, y, sortByStackTotal);
-	}
-
-	// Line on a value/time x axis: enforce monotonic x order so the polyline
-	// doesn't zigzag. Direction respects `sort="x desc"`. See single-series
-	// branch above for the full rationale.
-	if (isLineType && !treatAsCategoryAxis) {
-		filledData = sortRowsByX(filledData, x, xSortDirection);
 	}
 
 	// Group data by series in a single pass (O(n) instead of O(n × series))
@@ -405,78 +333,6 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 	}
 
 	return seriesConfigs;
-}
-
-/**
- * Sort rows by their x value so a polyline draws left-to-right on a
- * value/time axis. ECharts positions each line point at its own x, but
- * connects them in ARRAY ORDER — so a query returning rows in y-desc
- * order (or any non-monotonic-x order) produces a criss-cross line that
- * jumps back and forth across the chart. Applied for `type === 'line'`
- * on any non-category axis. Bars are unaffected because their placement
- * is set by the x value alone.
- *
- * Idempotent: rows already sorted by x land in the same positions.
- * Dates compare by millisecond; numbers by subtraction; strings fall back
- * to lexical compare (unusual on a non-category axis but stable).
- */
-function sortRowsByX(
-	data: DataPoint[],
-	xColumn: string,
-	direction: 'asc' | 'desc' = 'asc'
-): DataPoint[] {
-	if (data.length < 2) return data;
-	// Stable JS sort. Non-numeric/non-Date values fall back to string compare
-	// so a mixed batch never throws — the axis type check above rules out the
-	// category-string case where this fallback would misorder.
-	const sign = direction === 'desc' ? -1 : 1;
-	const compare = (a: DataPoint, b: DataPoint) => {
-		const ax = a[xColumn];
-		const bx = b[xColumn];
-		if (ax instanceof Date && bx instanceof Date) return sign * (ax.getTime() - bx.getTime());
-		if (typeof ax === 'number' && typeof bx === 'number') return sign * (ax - bx);
-		return sign * String(ax).localeCompare(String(bx));
-	};
-	return [...data].sort(compare);
-}
-
-/**
- * Reorders rows so x values appear in the order supplied by `xValueOrder`.
- * Runs at the client layer so the same ordering applies uniformly across
- * every series/child in a chart.
- *
- * `exhaustive=false` (default, used by `sort=[...]`): unlisted rows keep
- * their relative position and land after the ordered ones.
- *
- * `exhaustive=true` (used by `sort="y *"` + `limit=` top-N): unlisted rows
- * are dropped. Without this, ComboChart's SQL LIMIT drop for cross-series
- * ranking would leak past the author's `limit=` because the reorder alone
- * doesn't filter — rows outside the top-N would still render at the end.
- */
-function reorderDataByXValueOrder(
-	data: DataPoint[],
-	xColumn: string,
-	xValueOrder: readonly (string | number | Date)[],
-	exhaustive: boolean
-): DataPoint[] {
-	if (data.length === 0 || xValueOrder.length === 0) return data;
-
-	// Date/number keys are string-normalized (matches fill-gaps.ts convention).
-	const toKey = (v: unknown): string => (v instanceof Date ? v.toISOString() : String(v));
-	const orderMap = new Map<string, number>();
-	xValueOrder.forEach((val, i) => orderMap.set(toKey(val), i));
-
-	const indexed = data
-		.map((row, i) => ({ row, i, order: orderMap.get(toKey(row[xColumn])) }))
-		.filter((entry) => !exhaustive || entry.order !== undefined);
-
-	indexed.sort((a, b) => {
-		if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
-		if (a.order !== undefined) return -1;
-		if (b.order !== undefined) return 1;
-		return a.i - b.i;
-	});
-	return indexed.map((entry) => entry.row);
 }
 
 /**

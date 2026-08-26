@@ -5,7 +5,6 @@ import {
 	getOriginalValue,
 	type PercentageSeriesOption
 } from './percentageStack';
-import { generateSeriesConfig } from './seriesConfig';
 
 // 3 series across 3 x-categories, with off-diagonal values that differ from the
 // diagonal so a series-index vs data-index mix-up resolves a visibly wrong value.
@@ -43,43 +42,6 @@ describe('transformToPercentageStack', () => {
 			const total = out.reduce((sum, s) => sum + (s.data as number[][])[i][1], 0);
 			expect(total).toBeCloseTo(1);
 		}
-	});
-
-	it('composes with xValueOrder — categories reorder before the % normalization', () => {
-		// SeriesModel.getSeriesConfig applies xValueOrder inside seriesConfig,
-		// THEN transformToPercentageStack runs over the reordered output. The
-		// invariant: percentage totals per x still sum to 1 after reorder, and
-		// the reorder is visible in each series' data. Ranking on absolute
-		// values before normalizing is the correct behavior (users want the
-		// biggest raw category first even if displayed as %).
-		const configs = generateSeriesConfig({
-			type: 'bar',
-			x: 'x',
-			y: 'y',
-			series: 'category',
-			xValueOrder: ['B', 'A', 'C'],
-			data: [
-				{ x: 'A', y: 10, category: 'p' },
-				{ x: 'A', y: 90, category: 'q' },
-				{ x: 'B', y: 50, category: 'p' },
-				{ x: 'B', y: 50, category: 'q' },
-				{ x: 'C', y: 25, category: 'p' },
-				{ x: 'C', y: 75, category: 'q' }
-			]
-		});
-		const stacked = transformToPercentageStack(configs as SeriesOption[]);
-		// x-order is B, A, C on both series
-		const seriesP = stacked[0].data as unknown[][];
-		expect(seriesP.map((r) => r[0])).toEqual(['B', 'A', 'C']);
-		// Percentages at each x still sum to 1
-		for (let i = 0; i < 3; i++) {
-			const total = stacked.reduce((sum, s) => sum + (s.data as number[][])[i][1], 0);
-			expect(total).toBeCloseTo(1);
-		}
-		// B splits 50/50, A splits 10/90, C splits 25/75
-		expect((stacked[0].data as number[][])[0][1]).toBeCloseTo(0.5);
-		expect((stacked[0].data as number[][])[1][1]).toBeCloseTo(0.1);
-		expect((stacked[0].data as number[][])[2][1]).toBeCloseTo(0.25);
 	});
 
 	it('preserves the x-value and trailing point elements (e.g. size) through the transform', () => {

@@ -31,12 +31,6 @@ export const schema = {
 		// re-require the pair combo_chart made optional for its all-metric case.
 		data: { ...comboChartSchema.attributes.data, required: true },
 		x: { ...comboChartSchema.attributes.x, required: true },
-		// Same override as scatter_chart — bubbles position by (x, y) too.
-		sort: {
-			...comboChartSchema.attributes.sort,
-			description:
-				"Rarely useful on bubble — points position by (x, y) coordinates so `sort` can't move them. When a `series=` column is set, `sort` still influences which series ends up first in the legend and picks up the first color from the palette (a side effect of row order). Prefer `series_order=[...]` for legend order and `series_colors={...}` for stable colors. Accepts the same shapes as other charts (`\"x asc\"`, `\"x desc\"`, `\"y asc\"`, `\"y desc\"`, or an array) but the editor will warn when you use it here."
-		},
 		...omit(bubbleSchema.attributes, 'axis', 'echarts_options'),
 		...multiSeriesSchema.attributes,
 		size_fmt: {
