@@ -1,12 +1,7 @@
 import type { UserComponentSchema } from '../../../types';
 import { schema as comboChartSchema } from '../combo_chart/schema';
 import { schema as bubbleSchema } from '../bubble/schema';
-import {
-	and,
-	validateSqlExpression,
-	axisHasAggregation,
-	validateEmptyAttributes
-} from '../../../validators';
+import { and, validateSqlExpression, axisHasAggregation } from '../../../validators';
 import { schema as multiSeriesSchema } from '../MultiSeries/schema';
 import { validateTooltipFieldFormats } from '../../../common/tooltip-fields';
 import omit from 'lodash/omit';
@@ -22,8 +17,8 @@ export const schema = {
 		validateSqlExpression('y2', 'data', 'select'),
 		validateSqlExpression('tooltip_fields', 'data', 'select'),
 		validateTooltipFieldFormats,
-		axisHasAggregation('x', 'y', { getXFromParent: true }),
-		validateEmptyAttributes()
+		// No top-level validateEmptyAttributes — the embedded combo validate already covers it.
+		axisHasAggregation('x', 'y', { getXFromParent: true })
 	),
 	attributes: {
 		...comboChartSchema.attributes,

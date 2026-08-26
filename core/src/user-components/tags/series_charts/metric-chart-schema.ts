@@ -8,3 +8,7 @@
 /** True when the chart is NOT in metric mode (uses the raw data/x/y path). */
 export const notMetric = (node: { attributes?: Record<string, unknown> }): boolean =>
 	!node.attributes?.metric;
+
+/** True when the chart IS in metric mode (`metric=` supplies data + y). */
+export const isMetric = (node: { attributes?: Record<string, unknown> }): boolean =>
+	!!node.attributes?.metric;

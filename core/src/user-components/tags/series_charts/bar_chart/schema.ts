@@ -14,7 +14,7 @@ import { ifCondition } from '../../../validators/ifCondition';
 import { schema as multiSeriesSchema } from '../MultiSeries/schema';
 import { validateTooltipFieldFormats } from '../../../common/tooltip-fields';
 import { METRIC_ARRAY_ATTRIBUTE } from '../../../common/metric-attribute';
-import { notMetric } from '../metric-chart-schema';
+import { notMetric, isMetric } from '../metric-chart-schema';
 import { validateDataSources, type DataSource } from '../../../common/data-sources';
 import omit from 'lodash/omit';
 
@@ -48,7 +48,8 @@ export const schema = {
 				validateStackedProp()
 			)
 		),
-		validateEmptyAttributes()
+		// Metric-mode only; raw mode's check comes from the embedded combo validate (avoids duplicates).
+		ifCondition(isMetric, validateEmptyAttributes())
 	),
 	attributes: {
 		...comboChartSchema.attributes,
