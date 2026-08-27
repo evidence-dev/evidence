@@ -12,7 +12,8 @@ export const schema = {
 		'date_grain_selector',
 		'comparison_selector',
 		'range_calendar',
-		'button_group'
+		'button_group',
+		'filter_presets'
 	],
 	componentWrapper: false
 } as const satisfies UserComponentSchema;

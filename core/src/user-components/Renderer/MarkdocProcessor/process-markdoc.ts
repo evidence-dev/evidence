@@ -1348,7 +1348,8 @@ const FILTER_INPUT_COMPONENTS = new Set([
 	'toggle',
 	'button_group',
 	'table_filter',
-	'slider'
+	'slider',
+	'filter_presets'
 ]);
 
 // TODO does this need to be recursive to work on non-root-level nodes?
