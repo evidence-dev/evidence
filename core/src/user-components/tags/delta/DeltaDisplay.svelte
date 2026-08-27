@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { formatValue } from '../../formatValue';
 	import { setupRenderReadiness } from '../../../readiness.svelte';
+	import { getDeltaDefaultsContext } from './delta-defaults.context.svelte';
+	import { getPageSettingsContext } from '../../../page-settings.context';
+	import { getThemeContext } from '../../../theme/theme.context.svelte';
 
 	interface Props {
 		value: unknown;
@@ -17,12 +20,44 @@
 
 	const props: Props = $props();
 
+	const deltaDefaults = getDeltaDefaultsContext();
+	const pageSettingsGetter = getPageSettingsContext();
+	const themeContext = getThemeContext();
+
 	const value = $derived(props.value);
 	const className = $derived(props.className);
 	const fmt = $derived(props.fmt);
 	const text = $derived(props.text);
 	const chip = $derived(props.chip ?? false);
-	const downIsGood = $derived(props.downIsGood ?? false);
+	const downIsGood = $derived.by(() => {
+		if (typeof props.downIsGood === 'boolean') {
+			return props.downIsGood;
+		}
+		if (typeof deltaDefaults?.downIsGood === 'boolean') {
+			return deltaDefaults.downIsGood;
+		}
+		const pageSettings = pageSettingsGetter?.();
+		if (typeof pageSettings?.down_is_good === 'boolean') {
+			return pageSettings.down_is_good;
+		}
+		if (typeof pageSettings?.downIsGood === 'boolean') {
+			return pageSettings.downIsGood;
+		}
+		const theme = themeContext?.activeTheme as any;
+		if (typeof theme?.delta?.downIsGood === 'boolean') {
+			return theme.delta.downIsGood;
+		}
+		if (typeof theme?.delta?.down_is_good === 'boolean') {
+			return theme.delta.down_is_good;
+		}
+		if (typeof theme?.defaults?.downIsGood === 'boolean') {
+			return theme.defaults.downIsGood;
+		}
+		if (typeof theme?.defaults?.down_is_good === 'boolean') {
+			return theme.defaults.down_is_good;
+		}
+		return false;
+	});
 	const showValue = $derived(props.showValue ?? true);
 	const showSymbol = $derived(props.showSymbol ?? true);
 	const symbolPosition = $derived(props.symbolPosition ?? 'right');

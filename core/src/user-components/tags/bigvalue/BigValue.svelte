@@ -79,7 +79,7 @@
 							? 'vs. benchmark'
 							: '')
 	);
-	const down_is_good = $derived(coerceBoolean(comparison?.down_is_good) ?? false);
+	const down_is_good = $derived(coerceBoolean(comparison?.down_is_good));
 	const neutralRange = $derived(comparison?.neutral_range ?? [0, 0]);
 	const max_width = $derived(props.max_width ?? 'none');
 	const min_width = $derived(props.min_width ?? 'auto');

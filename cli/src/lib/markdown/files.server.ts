@@ -46,6 +46,8 @@ export function parsePageSettings(content: string): PageSettings {
 	if (fm.page_width !== undefined) settings.page_width = fm.page_width;
 	if (fm.table_of_contents !== undefined) settings.table_of_contents = fm.table_of_contents;
 	if (fm.auto_refresh !== undefined) settings.auto_refresh = fm.auto_refresh;
+	if (fm.down_is_good !== undefined) settings.down_is_good = fm.down_is_good;
+	else if (fm.downIsGood !== undefined) settings.down_is_good = fm.downIsGood;
 	return settings;
 }
 
@@ -82,9 +84,23 @@ export function resolvePageSettings(
 	content: string,
 	projectLayout: ParsedProjectLayout | null | undefined
 ): PageSettings {
+	const layoutSettings: Partial<PageSettings> = {};
+	if (projectLayout) {
+		if (projectLayout.cards !== undefined) layoutSettings.cards = projectLayout.cards;
+		if (projectLayout.page_width !== undefined) layoutSettings.page_width = projectLayout.page_width;
+		if (projectLayout.table_of_contents !== undefined)
+			layoutSettings.table_of_contents = projectLayout.table_of_contents;
+		if (projectLayout.auto_refresh !== undefined)
+			(layoutSettings as any).auto_refresh = projectLayout.auto_refresh;
+		if (projectLayout.down_is_good !== undefined)
+			layoutSettings.down_is_good = projectLayout.down_is_good;
+		else if (projectLayout.downIsGood !== undefined)
+			layoutSettings.down_is_good = projectLayout.downIsGood;
+	}
+
 	return {
 		...DEFAULT_PAGE_SETTINGS,
-		...(projectLayout ?? {}),
+		...layoutSettings,
 		...parsePageSettings(content)
 	};
 }

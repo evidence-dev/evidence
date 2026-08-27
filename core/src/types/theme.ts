@@ -141,7 +141,19 @@ export const themeConfigSchema = z.object({
 		// Behavioral defaults applied when a table doesn't set the attribute itself
 		rowLines: z.boolean().optional(),
 		rowShading: z.boolean().optional()
-	})
+	}),
+	defaults: z
+		.object({
+			downIsGood: z.boolean().optional(),
+			down_is_good: z.boolean().optional()
+		})
+		.optional(),
+	delta: z
+		.object({
+			downIsGood: z.boolean().optional(),
+			down_is_good: z.boolean().optional()
+		})
+		.optional()
 });
 
 // Override variants: `light`/`dark` are independently OPTIONAL so a partial
@@ -263,6 +275,22 @@ export const themeOverridesSchema = z.object({
 			pivotBackground: themeColorOverrideSchema.nullable().optional().catch(undefined),
 			rowLines: z.boolean().nullable().optional().catch(undefined),
 			rowShading: z.boolean().nullable().optional().catch(undefined)
+		})
+		.nullable()
+		.optional()
+		.catch(undefined),
+	defaults: z
+		.object({
+			downIsGood: z.boolean().nullable().optional().catch(undefined),
+			down_is_good: z.boolean().nullable().optional().catch(undefined)
+		})
+		.nullable()
+		.optional()
+		.catch(undefined),
+	delta: z
+		.object({
+			downIsGood: z.boolean().nullable().optional().catch(undefined),
+			down_is_good: z.boolean().nullable().optional().catch(undefined)
 		})
 		.nullable()
 		.optional()

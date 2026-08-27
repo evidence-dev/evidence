@@ -18,7 +18,7 @@
 	const text = $derived(props.text);
 	const pct_fmt = $derived(props.pct_fmt);
 	const abs_fmt = $derived(props.abs_fmt);
-	const down_is_good = $derived(props.down_is_good ?? false);
+	const down_is_good = $derived(props.down_is_good);
 
 	const context = getComparisonSelectorContext();
 
