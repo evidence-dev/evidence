@@ -48,6 +48,7 @@
 		renderTooltipExtras,
 		type TooltipField
 	} from '../../../common/tooltip-fields';
+	import { setupCrossFilter } from '../../../common/cross-filter.svelte';
 
 	const props: UserComponentProps<typeof schema> = $props();
 	const children = $derived(props.children);
@@ -166,6 +167,32 @@
 	const y_sort = $derived(props.y_sort);
 	const series_order = $derived(props.series_order);
 
+	const cross_filter = $derived(props.cross_filter);
+	const cross_filter_column = $derived(resolveColumn(props.cross_filter_column));
+	const cross_filter_multiple = $derived(props.cross_filter_multiple ?? false);
+
+	const crossFilterHelper = $derived.by(() => {
+		return setupCrossFilter({
+			chart: () => chart,
+			pageFilters,
+			crossFilter: cross_filter,
+			crossFilterColumn: cross_filter_column ?? resolvedY,
+			crossFilterMultiple: cross_filter_multiple,
+			id: props.id
+		});
+	});
+
+	const effectiveFilterIds = $derived.by(() => {
+		const fIds = props.filters ?? [];
+		if (crossFilterHelper.isEnabled()) {
+			const selfId = crossFilterHelper.filterId();
+			if (selfId) {
+				return fIds.filter((id) => id !== selfId);
+			}
+		}
+		return fIds;
+	});
+
 	// Build query config
 	const queryConfig = $derived.by(() => {
 		if (hasValidationErrors || !resolvedX || !resolvedY) return;
@@ -179,7 +206,7 @@
 			y: resolvedY,
 			series: resolvedSeries,
 			date_grain,
-			filters: props.filters,
+			filters: effectiveFilterIds,
 			where,
 			date_range: resolvedDateRange,
 			having,
@@ -713,6 +740,21 @@
 	});
 
 	let chart: EChartsInstance | undefined = $state(undefined);
+
+	// Handle cross-filtering on chart element click
+	$effect(() => {
+		if (!chart || !crossFilterHelper.isEnabled()) return;
+
+		const handleCrossFilterClick = (params: any) => {
+			crossFilterHelper.handleChartClick(params);
+		};
+
+		chart.on('click', handleCrossFilterClick);
+
+		return () => {
+			chart?.off('click', handleCrossFilterClick);
+		};
+	});
 </script>
 
 <div

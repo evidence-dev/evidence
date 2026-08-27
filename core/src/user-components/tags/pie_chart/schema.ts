@@ -40,6 +40,8 @@ import {
 	ECHARTS_SERIES_OPTIONS_ATTRIBUTE
 } from '../../common/echarts-options-attributes';
 
+import { CROSS_FILTER_ATTRIBUTES } from '../../common/cross-filter-attributes';
+
 const attributes = {
 	data: {
 		type: String,
@@ -61,6 +63,7 @@ const attributes = {
 		suggestionType: 'filter',
 		affectsQuery: true
 	},
+	...CROSS_FILTER_ATTRIBUTES,
 	...DATE_RANGE_ATTRIBUTE,
 	// Category stays required in both raw and metric modes — there is no
 	// view-level default slice dimension in v1, so `metric="revenue"` without
