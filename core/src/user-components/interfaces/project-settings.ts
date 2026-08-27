@@ -15,7 +15,9 @@ export const pageSettingsSchema = z
 		chart_series_colors: z.record(z.string()).nullable().optional(),
 		cards: z.boolean().optional(),
 		page_width: z.enum(['article', 'full']).optional(),
-		table_of_contents: z.boolean().optional()
+		table_of_contents: z.boolean().optional(),
+		down_is_good: z.boolean().optional(),
+		downIsGood: z.boolean().optional()
 	})
 	.passthrough();
 

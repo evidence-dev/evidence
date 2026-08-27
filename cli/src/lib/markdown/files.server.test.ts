@@ -208,4 +208,25 @@ describe('resolvePageSettings', () => {
 			auto_refresh: 60
 		});
 	});
+
+	it('merges down_is_good from project layout', () => {
+		expect(resolvePageSettings('# Page\n', { down_is_good: true })).toMatchObject({
+			down_is_good: true
+		});
+		expect(resolvePageSettings('# Page\n', { downIsGood: true })).toMatchObject({
+			down_is_good: true
+		});
+	});
+
+	it('lets explicit page frontmatter down_is_good / downIsGood override project layout', () => {
+		const settings1 = resolvePageSettings('---\ndown_is_good: true\n---\n# Page\n', {
+			down_is_good: false
+		});
+		expect(settings1.down_is_good).toBe(true);
+
+		const settings2 = resolvePageSettings('---\ndownIsGood: true\n---\n# Page\n', {
+			down_is_good: false
+		});
+		expect(settings2.down_is_good).toBe(true);
+	});
 });

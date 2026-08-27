@@ -94,6 +94,16 @@ export const projectRootPageFrontmatterSchema = z.object({
 		.optional()
 		.catch(undefined)
 		.describe('Auto-refresh interval in seconds (0 disables auto-refresh).'),
+	down_is_good: z.coerce
+		.boolean()
+		.optional()
+		.catch(undefined)
+		.describe('Whether downward delta trends are considered positive by default on this page.'),
+	downIsGood: z.coerce
+		.boolean()
+		.optional()
+		.catch(undefined)
+		.describe('Alias for down_is_good.'),
 	theme: themeOverridesSchema
 		.optional()
 		.catch(undefined)
@@ -126,7 +136,14 @@ export const projectLayoutSchema = z
 		auto_refresh: z
 			.number()
 			.optional()
-			.describe('Auto-refresh interval in seconds (0 disables auto-refresh).')
+			.describe('Auto-refresh interval in seconds (0 disables auto-refresh).'),
+		down_is_good: z
+			.boolean()
+			.optional()
+			.describe(
+				'Whether downward delta trends are considered positive by default across all pages.'
+			),
+		downIsGood: z.boolean().optional().describe('Alias for down_is_good.')
 	})
 	.passthrough();
 
