@@ -326,12 +326,36 @@ export const PRESET_DEFINITIONS = [
 		periodCount: 7
 	},
 	{
+		key: 'last 14 days',
+		label: 'Last 14 Days',
+		shorthand: 'l14d',
+		type: 'relative',
+		periodGrain: 'day',
+		periodCount: 14
+	},
+	{
 		key: 'last 30 days',
 		label: 'Last 30 Days',
 		shorthand: 'l30d',
 		type: 'relative',
 		periodGrain: 'day',
 		periodCount: 30
+	},
+	{
+		key: 'last 60 days',
+		label: 'Last 60 Days',
+		shorthand: 'l60d',
+		type: 'relative',
+		periodGrain: 'day',
+		periodCount: 60
+	},
+	{
+		key: 'last 90 days',
+		label: 'Last 90 Days',
+		shorthand: 'l90d',
+		type: 'relative',
+		periodGrain: 'day',
+		periodCount: 90
 	},
 	{
 		key: 'last 3 months',

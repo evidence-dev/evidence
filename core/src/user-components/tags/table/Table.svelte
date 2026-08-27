@@ -6,6 +6,7 @@
 	import { type SQLProps } from '../../common/sql-options';
 
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
+	import { getPageFiltersContext } from '../../../page-filters-context';
 
 	import {
 		generatePivotData,
@@ -739,6 +740,79 @@
 		model.pageSizeOverride = undefined;
 		model.page = 0;
 	}
+
+	// === CROSS-FILTERING ===
+	const pageFilters = getPageFiltersContext();
+	const cross_filter = $derived(props.cross_filter);
+	const cross_filter_column = $derived(model.resolveColumn(props.cross_filter_column));
+	const cross_filter_multiple = $derived(props.cross_filter_multiple ?? false);
+
+	const isCrossFilterEnabled = $derived(cross_filter !== undefined && cross_filter !== false);
+	const crossFilterTargetColumn = $derived.by(() => {
+		if (cross_filter_column) return cross_filter_column;
+		if (model.dimensions && model.dimensions.length > 0) return model.dimensions[0];
+		if (displayPivotData.columns && displayPivotData.columns.length > 0) return displayPivotData.columns[0];
+		return undefined;
+	});
+
+	const crossFilterId = $derived.by(() => {
+		if (!isCrossFilterEnabled) return undefined;
+		if (typeof cross_filter === 'string') return cross_filter;
+		return crossFilterTargetColumn ?? props.id ?? 'table_filter';
+	});
+
+	const activeFilter = $derived.by(() => {
+		if (!pageFilters || !crossFilterId) return undefined;
+		return pageFilters.get(crossFilterId);
+	});
+
+	function isRowSelected(row: Record<string, any>): boolean {
+		if (!isCrossFilterEnabled || !crossFilterTargetColumn || !activeFilter) return false;
+		const val = row[crossFilterTargetColumn];
+		if (val === undefined || val === null) return false;
+		const filterVal = activeFilter.value;
+		if (Array.isArray(filterVal)) {
+			return filterVal.includes(val);
+		}
+		return filterVal === val;
+	}
+
+	function handleTableRowClick(row: Record<string, any>) {
+		if (link && row && row[link]) {
+			window.location.href = String(row[link]);
+			return;
+		}
+
+		if (!isCrossFilterEnabled || !crossFilterTargetColumn || !pageFilters || !crossFilterId) return;
+		const val = row[crossFilterTargetColumn];
+		if (val === undefined || val === null) return;
+
+		let filter = pageFilters.get(crossFilterId);
+		if (!filter) {
+			filter = pageFilters.createExternal(crossFilterId, undefined, crossFilterTargetColumn);
+		}
+
+		if (cross_filter_multiple) {
+			const current = Array.isArray(filter.value)
+				? [...filter.value]
+				: filter.value !== undefined
+					? [filter.value]
+					: [];
+			const idx = current.indexOf(val);
+			if (idx >= 0) {
+				current.splice(idx, 1);
+			} else {
+				current.push(val);
+			}
+			filter.value = current.length > 0 ? current : undefined;
+		} else {
+			if (filter.value === val) {
+				filter.value = undefined;
+			} else {
+				filter.value = val;
+			}
+		}
+	}
 </script>
 
 {#snippet tableContent()}
@@ -784,6 +858,8 @@
 						<!-- Row conditional colors -->
 						{@const rowColorValue = isDataRow && row['__row_conditional_colors'] ? String(row['__row_conditional_colors']) : null}
 						{@const rowColorStyles = rowColorValue ? calculateColorStylesFromHex(rowColorValue) : null}
+						{@const isSelected = isRowSelected(row)}
+						{@const isClickableRow = isCollapsibleSubtotal || Boolean(hasRowLink) || isCrossFilterEnabled}
 						<tr 
 							class={isCollapsibleActive ? getRowClasses({
 								rowLines: row_lines,
@@ -791,16 +867,17 @@
 								isCollapsibleActive,
 								isCollapsibleSubtotal,
 								isDataRow,
-								hasRowLink: Boolean(hasRowLink),
+								hasRowLink: Boolean(hasRowLink) || isCrossFilterEnabled,
 								isTotal: row.render_type === 'row_total',
 								totalPosition: total_position
 							}) : cn(
 								row_lines ? 'border-(--theme-table-row-border) border-b' : 'border-0',
 								row_shading && isDataRow && !rowColorStyles ? 'even:bg-muted' : '',
 								'transition-colors',
-								hasRowLink ? 'hover:bg-(--theme-table-hover) cursor-pointer' : ''
+								isClickableRow ? 'hover:bg-(--theme-table-hover) cursor-pointer' : '',
+								isSelected ? 'bg-primary/10 font-medium' : ''
 							)}
-							onclick={isCollapsibleSubtotal ? () => toggleGroupCollapse(subtotalGroupKey) : hasRowLink ? () => handleRowClick(row) : undefined}
+							onclick={isCollapsibleSubtotal ? () => toggleGroupCollapse(subtotalGroupKey) : (hasRowLink || isCrossFilterEnabled) ? () => handleTableRowClick(row) : undefined}
 						>
 							{#each displayPivotData.columns.map((col, tableColumnIndex) => ({ 
 								col, 

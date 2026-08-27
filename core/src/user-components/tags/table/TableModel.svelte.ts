@@ -127,6 +127,31 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 		this.resolveColumn(this.attributes.row_conditional_colors)
 	);
 
+	readonly crossFilterColumn = $derived(
+		this.resolveColumn(this.attributes.cross_filter_column)
+	);
+
+	readonly crossFilterTargetColumn = $derived.by(() => {
+		if (this.crossFilterColumn) return this.crossFilterColumn;
+		if (this.dimensions && this.dimensions.length > 0) return this.dimensions[0];
+		return undefined;
+	});
+
+	readonly crossFilterId = $derived.by(() => {
+		const cf = this.attributes.cross_filter;
+		if (cf === undefined || cf === false) return undefined;
+		if (typeof cf === 'string') return cf;
+		return this.crossFilterTargetColumn ?? this.attributes.id ?? 'table_filter';
+	});
+
+	readonly effectiveFilters = $derived.by(() => {
+		const fIds = this.attributes.filters ?? [];
+		if (this.crossFilterId) {
+			return fIds.filter((id) => id !== this.crossFilterId);
+		}
+		return fIds;
+	});
+
 	readonly queryConfig: SQLQueryConfig | undefined = $derived.by(() => {
 		if (this.hasBlockingError) return undefined;
 
@@ -139,7 +164,7 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 			qualify: this.resolvedQualify,
 			order: this.order ?? this.resolvedOrder,
 			date_range: this.resolvedDateRange,
-			filters: this.attributes.filters,
+			filters: this.effectiveFilters,
 			limit: this.attributes.limit,
 			page_size: this.pageSizeOverride ?? this.attributes.page_size,
 			offset: this.serverSidePaginated
