@@ -31,6 +31,8 @@ import { HANDLE_MISSING_ATTRIBUTE } from '../../../common/handle-missing-attribu
 import { colorPaletteSchema, seriesColorsSchema } from '../../../common/chart-options-schema';
 import { setZodMetadata } from '../../../common/zod-metadata';
 
+import { CROSS_FILTER_ATTRIBUTES } from '../../../common/cross-filter-attributes';
+
 const attributes = {
 	data: {
 		type: String,
@@ -55,6 +57,7 @@ const attributes = {
 		suggestionType: 'filter',
 		affectsQuery: true
 	},
+	...CROSS_FILTER_ATTRIBUTES,
 	...DATE_RANGE_ATTRIBUTE,
 	...DATE_GRAIN_ATTRIBUTE,
 	...HANDLE_MISSING_ATTRIBUTE,

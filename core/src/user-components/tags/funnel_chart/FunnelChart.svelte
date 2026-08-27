@@ -41,6 +41,7 @@
 	import { getThemeToken } from '../../../theme/get-theme-token';
 	import { getCardContext } from '../../common/card-context.svelte';
 	import { colorPalettes } from '../echarts/echarts-themes';
+	import { setupCrossFilter } from '../../common/cross-filter.svelte';
 	import {
 		FUNNEL_LABEL_INSIDE_PADDING,
 		FUNNEL_LABEL_SINGLE_LINE_TOP_NUDGE,
@@ -184,6 +185,32 @@
 	const categoryColumn = $derived(categoryProcessed.alias);
 	const valueColumn = $derived(valueProcessed.alias);
 
+	const cross_filter = $derived(props.cross_filter);
+	const cross_filter_column = $derived(resolveColumn(props.cross_filter_column));
+	const cross_filter_multiple = $derived(props.cross_filter_multiple ?? false);
+
+	const crossFilterHelper = $derived.by(() => {
+		return setupCrossFilter({
+			chart: () => chart,
+			pageFilters,
+			crossFilter: cross_filter,
+			crossFilterColumn: cross_filter_column ?? resolvedCategory,
+			crossFilterMultiple: cross_filter_multiple,
+			id: props.id
+		});
+	});
+
+	const effectiveFilterIds = $derived.by(() => {
+		const fIds = filterIds ?? [];
+		if (crossFilterHelper.isEnabled()) {
+			const selfId = crossFilterHelper.filterId();
+			if (selfId) {
+				return fIds.filter((id) => id !== selfId);
+			}
+		}
+		return fIds;
+	});
+
 	const queryConfig = $derived.by(() => {
 		if (hasValidationErrors || !resolvedTableName) {
 			return;
@@ -193,7 +220,7 @@
 			data: resolvedTableName,
 			category: resolvedCategory,
 			value: resolvedValue,
-			filters: filterIds,
+			filters: effectiveFilterIds,
 			where,
 			date_range: resolvedDateRange,
 			having,
@@ -537,6 +564,21 @@
 	});
 
 	let chart: EChartsInstance | undefined = $state(undefined);
+
+	// Handle cross-filtering on chart element click
+	$effect(() => {
+		if (!chart || !crossFilterHelper.isEnabled()) return;
+
+		const handleCrossFilterClick = (params: any) => {
+			crossFilterHelper.handleChartClick(params);
+		};
+
+		chart.on('click', handleCrossFilterClick);
+
+		return () => {
+			chart?.off('click', handleCrossFilterClick);
+		};
+	});
 </script>
 
 <div

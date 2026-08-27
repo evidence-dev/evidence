@@ -36,6 +36,7 @@
 	} from '../../common/tooltip-fields';
 	import { resolveMetric, applyMetricDimension } from '../../../metrics/resolve-metric';
 	import { getMetricsCatalogContext } from '../../../metrics/metrics-catalog';
+	import { setupCrossFilter } from '../../common/cross-filter.svelte';
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
@@ -136,6 +137,32 @@
 	const groupColumn = $derived(groupProcessed?.alias ?? null);
 	const valueColumn = $derived(valueProcessed.alias);
 
+	const cross_filter = $derived(props.cross_filter);
+	const cross_filter_column = $derived(resolveColumn(props.cross_filter_column));
+	const cross_filter_multiple = $derived(props.cross_filter_multiple ?? false);
+
+	const crossFilterHelper = $derived.by(() => {
+		return setupCrossFilter({
+			chart: () => chart,
+			pageFilters,
+			crossFilter: cross_filter,
+			crossFilterColumn: cross_filter_column ?? resolvedCategory,
+			crossFilterMultiple: cross_filter_multiple,
+			id: props.id
+		});
+	});
+
+	const effectiveFilterIds = $derived.by(() => {
+		const fIds = filterIds ?? [];
+		if (crossFilterHelper.isEnabled()) {
+			const selfId = crossFilterHelper.filterId();
+			if (selfId) {
+				return fIds.filter((id) => id !== selfId);
+			}
+		}
+		return fIds;
+	});
+
 	const queryConfig = $derived.by(() => {
 		if (hasValidationErrors) {
 			return;
@@ -149,7 +176,7 @@
 			category: resolvedCategory,
 			value: resolvedValue,
 			group: resolvedGroup,
-			filters: filterIds,
+			filters: effectiveFilterIds,
 			where,
 			date_range: resolvedDateRange,
 			having,
@@ -319,6 +346,21 @@
 	});
 
 	let chart: EChartsInstance | undefined = $state(undefined);
+
+	// Handle cross-filtering on chart element click
+	$effect(() => {
+		if (!chart || !crossFilterHelper.isEnabled()) return;
+
+		const handleCrossFilterClick = (params: any) => {
+			crossFilterHelper.handleChartClick(params);
+		};
+
+		chart.on('click', handleCrossFilterClick);
+
+		return () => {
+			chart?.off('click', handleCrossFilterClick);
+		};
+	});
 </script>
 
 <div

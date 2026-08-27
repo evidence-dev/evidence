@@ -39,6 +39,8 @@ const dataSources = [
 	{ requires: ['metric', 'category'], forbids: ['data', 'value'] }
 ] as const satisfies readonly DataSource[];
 
+import { CROSS_FILTER_ATTRIBUTES } from '../../common/cross-filter-attributes';
+
 const attributes = {
 	data: {
 		type: String,
@@ -59,6 +61,7 @@ const attributes = {
 		suggestionType: 'filter',
 		affectsQuery: true
 	},
+	...CROSS_FILTER_ATTRIBUTES,
 	...DATE_RANGE_ATTRIBUTE,
 	category: {
 		type: String,
