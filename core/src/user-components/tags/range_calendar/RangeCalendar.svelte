@@ -30,6 +30,7 @@
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { expandCustomRanges, type CustomRangeRule } from '../../common/custom-ranges';
 	import Ellipsis from '../../../viewer-components/Ellipsis.svelte';
+	import { getLocaleContext } from '../../../i18n/locale-context.svelte';
 
 	// Props using UserComponentProps
 	const props: UserComponentProps<typeof schema> = $props();
@@ -119,10 +120,23 @@
 		}
 	});
 
+	const localeContext = getLocaleContext();
+	const activeLocale = $derived(localeContext?.locale ?? 'en-US');
+
+	function getPresetLabel(key: string, defaultLabel: string): string {
+		if (!localeContext) return defaultLabel;
+		const snakeKey = key.replace(/ /g, '_') as any;
+		const translated = localeContext.t(snakeKey);
+		return translated !== snakeKey ? translated : defaultLabel;
+	}
+
 	// Built-in presets (per preset_ranges) plus any generated custom_ranges.
 	// preset_ranges unset → default visible set; preset_ranges=[] → no built-ins (custom_ranges still show).
 	const filteredPresets = $derived.by(() => {
-		const base = DEFAULT_VISIBLE_PRESET_DEFINITIONS.map(({ key, label }) => ({ key, label }));
+		const base = DEFAULT_VISIBLE_PRESET_DEFINITIONS.map(({ key, label }) => ({
+			key,
+			label: getPresetLabel(key, label)
+		}));
 		let builtins: { key: string; label: string }[];
 		if (!presetRanges) {
 			// If a hidden preset is explicitly used as default, include it for this component instance.
@@ -131,20 +145,24 @@
 				: undefined;
 			builtins =
 				defaultPreset && !base.some((preset) => preset.key === defaultPreset.key)
-					? [...base, { key: defaultPreset.key, label: defaultPreset.label }]
+					? [...base, { key: defaultPreset.key, label: getPresetLabel(defaultPreset.key, defaultPreset.label) }]
 					: base;
 		} else {
 			builtins = PRESET_DEFINITIONS.filter((preset) => presetRanges.includes(preset.key)).map(
-				({ key, label }) => ({ key, label })
+				({ key, label }) => ({ key, label: getPresetLabel(key, label) })
 			);
 		}
 		return [...builtins, ...generatedPresets];
 	});
 
 	let selectedPreset = $derived.by(() => {
-		if (!filter?.value || typeof filter.value !== 'object') return 'All Time';
+		if (!filter?.value || typeof filter.value !== 'object') {
+			return localeContext?.t('all_time') ?? 'All Time';
+		}
 		const { range } = filter.value as { range?: string };
-		if (!range || range === 'all time') return 'All Time';
+		if (!range || range === 'all time') {
+			return localeContext?.t('all_time') ?? 'All Time';
+		}
 		// If matches a preset, show label; otherwise null for custom
 		const matchingPreset = filteredPresets.find((p) => p.key === range);
 		return matchingPreset ? matchingPreset.label : null;
@@ -363,6 +381,7 @@
 										</div>
 										<div class="w-fit">
 											<RangeCalendar
+												locale={activeLocale}
 												value={currentRange}
 												onValueChange={handleRangeSelect}
 												numberOfMonths={1}
@@ -409,6 +428,7 @@
 							<!-- Desktop: Calendar only -->
 							<div class="hidden px-6 py-4 lg:block">
 								<RangeCalendar
+									locale={activeLocale}
 									value={currentRange}
 									onValueChange={handleRangeSelect}
 									numberOfMonths={2}

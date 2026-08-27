@@ -38,6 +38,7 @@ export const projectSettingsSchema = z
 	.object({
 		default_page_settings: pageSettingsSchema.optional(),
 		theme: themeOverridesSchema.optional(),
+		locale: z.string().optional().default('en-US'),
 		first_day_of_week: z.enum(['sunday', 'monday']).optional().default('sunday'),
 		default_date_range_end: z
 			.discriminatedUnion('type', [
