@@ -51,9 +51,11 @@ export function buildRepeatQueryConfig({
 	where: string | undefined;
 	dialect: SqlDialect;
 }): SQLQueryConfig {
+	// Deduplication is the GROUP BY's job — see Dropdown.svelte. A `DISTINCT` in the
+	// expression would be copied into `GROUP BY DISTINCT col`, which Cube rejects.
 	const valueProcessed = processColumnExpression(
 		{
-			value: `DISTINCT ${column} as value`
+			value: `${column} as value`
 		},
 		dialect
 	);

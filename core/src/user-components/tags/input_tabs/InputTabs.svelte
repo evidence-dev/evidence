@@ -199,8 +199,10 @@
 			return;
 		}
 
+		// Deduplication is the GROUP BY's job — see Dropdown.svelte. A `DISTINCT` in the
+		// expression would be copied into `GROUP BY DISTINCT col`, which Cube rejects.
 		const valueProcessed = processColumnExpression(
-			{ value: `DISTINCT ${valueColumn} as value` },
+			{ value: `${valueColumn} as value` },
 			connection.dialect
 		);
 

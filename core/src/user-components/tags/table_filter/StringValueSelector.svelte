@@ -143,9 +143,11 @@
 		}
 
 		// Process column expressions like the Dropdown component
+		// The COUNT(*) below already forces a GROUP BY on this column, so the rows are
+		// distinct without the keyword — and `GROUP BY DISTINCT col` breaks Cube.
 		const valueProcessed = processColumnExpression(
 			{
-				value: `DISTINCT ${columnName} as value`
+				value: `${columnName} as value`
 			},
 			connection.dialect
 		);
