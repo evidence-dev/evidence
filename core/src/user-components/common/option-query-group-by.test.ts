@@ -57,23 +57,37 @@ function optionsQuerySql(dialect: SqlDialect, withLabel: boolean): string {
 	return sql!;
 }
 
+/**
+ * The GROUP BY clause only — deliberately not the whole query. `DISTINCT` is legal
+ * elsewhere: `shouldAddDistinct` exists to put one on the SELECT list, and `IS NOT DISTINCT
+ * FROM` is this codebase's own null-safe equality (`SqlDialect.nullSafeEqual`), which an
+ * author's `where` could contain. Asserting over the whole query would fail on SQL that
+ * isn't broken.
+ */
+function groupByClause(sql: string): string {
+	const match = /\bGROUP BY\b([\s\S]*?)(?=\bHAVING\b|\bQUALIFY\b|\bORDER BY\b|\bLIMIT\b|\bOFFSET\b|$)/i.exec(
+		sql
+	);
+	expect(match, `no GROUP BY in: ${sql}`).not.toBeNull();
+	return match![1];
+}
+
 describe.each(WAREHOUSES)('options query for data-driven inputs — %s', (warehouse) => {
 	const dialect = dialectFor(warehouse);
 
 	it.each([
 		['value only', false],
 		['value and label', true]
-	])('emits no DISTINCT anywhere in the query (%s)', (_label, withLabel) => {
-		const sql = optionsQuerySql(dialect, withLabel as boolean);
-		expect(sql).not.toMatch(/\bDISTINCT\b/i);
+	])('emits no DISTINCT quantifier in the GROUP BY (%s)', (_label, withLabel) => {
+		expect(groupByClause(optionsQuerySql(dialect, withLabel as boolean))).not.toMatch(
+			/\bDISTINCT\b/i
+		);
 	});
 
 	it('still de-duplicates via GROUP BY', () => {
-		const sql = optionsQuerySql(dialect, false);
 		// Either an explicit list or `GROUP BY ALL`, depending on the dialect — but never absent,
 		// since the GROUP BY is the only thing making the options unique.
-		expect(sql).toMatch(/\bGROUP BY\b/i);
-		expect(sql).not.toMatch(/GROUP BY\s+DISTINCT\b/i);
+		expect(groupByClause(optionsQuerySql(dialect, false)).trim()).not.toBe('');
 	});
 });
 
