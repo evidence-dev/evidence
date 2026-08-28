@@ -55,6 +55,7 @@
 	const comparison = $derived(model.resolvedComparison);
 	// Coerce booleans in case they came from variable interpolation as strings
 	const comparison_delta = $derived(coerceBoolean(comparison?.delta) ?? true);
+	const comparison_chip = $derived(coerceBoolean(comparison?.chip) ?? false);
 	const sparkline = $derived(model.resolvedSparkline);
 	const sparkline_type = $derived((sparkline?.type ?? 'line') as 'line' | 'area' | 'bar');
 	const sparkline_color = $derived(sparkline?.color);
@@ -81,9 +82,11 @@
 	);
 	const down_is_good = $derived(coerceBoolean(comparison?.down_is_good) ?? false);
 	const neutralRange = $derived(comparison?.neutral_range ?? [0, 0]);
+	const isCard = $derived(props.card ?? false);
 	const max_width = $derived(props.max_width ?? 'none');
 	const min_width = $derived(props.min_width ?? 'auto');
 	const title_class = $derived(props.title_class);
+	const subtitle_class = $derived(props.subtitle_class);
 	const value_class = $derived(props.value_class);
 	const text_size = $derived(props.text_size);
 	const comparison_class = $derived(undefined);
@@ -148,11 +151,13 @@
 
 	// Use resolved props from model (handles variable interpolation)
 	const resolvedTitle = $derived(model.resolvedTitle);
+	const resolvedSubtitle = $derived(model.resolvedSubtitle);
 	const info = $derived(model.resolvedInfo);
 	const info_link = $derived(model.resolvedInfo_link);
 	const info_link_title = $derived(model.resolvedInfo_link_title);
 
 	const title = $derived(resolvedTitle || (props.value ? valueProcessed.displayAlias : ''));
+	const subtitle = $derived(resolvedSubtitle || '');
 
 	// Extract data points from the single-row query results
 	const resultRow = $derived.by(() => {
@@ -280,7 +285,13 @@
 </script>
 
 <span
-	class={cn('block px-0 py-2 font-sans', class_name)}
+	class={cn(
+		'block font-sans',
+		isCard
+			? 'rounded-xl border bg-card p-4 text-card-foreground shadow-xs transition-all'
+			: 'px-0 py-2',
+		class_name
+	)}
 	style={`
 		min-width: ${min_width};
 		max-width: ${max_width};
@@ -305,6 +316,11 @@
 			<Info text={info} link={info_link} link_title={info_link_title} />
 		{/if}
 	</span>
+	{#if subtitle}
+		<span class={cn('mt-1 block w-full truncate text-left text-xs text-muted-foreground/80', subtitle_class)}>
+			{subtitle}
+		</span>
+	{/if}
 
 	<span
 		class={cn(
@@ -360,6 +376,7 @@
 					text={comparison_text}
 					downIsGood={down_is_good}
 					{neutralRange}
+					chip={comparison_chip}
 					symbolPosition="left"
 					className="text-xs"
 				/>

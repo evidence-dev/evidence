@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { schema } from './schema';
 import { buildBigValueSQL, type BigValueSQLAttrs } from './build-bigvalue-sql';
 import { orderCompatibleWithSingleValue } from '../../validators';
 import {
@@ -600,5 +601,14 @@ describe('order × value compatibility (author-time guard for the GROUP BY ALL s
 		expect(
 			validator(node({ value: 'value', order: 'year_date', comparison: { target: 'x' } }), cfg, ctx)
 		).toEqual([]);
+	});
+});
+
+describe('big_value schema attributes', () => {
+	it('supports subtitle, card, and comparison.chip', () => {
+		expect(schema.attributes.title).toBeDefined();
+		expect(schema.attributes.subtitle).toBeDefined();
+		expect(schema.attributes.card).toBeDefined();
+		expect(schema.attributes.comparison).toBeDefined();
 	});
 });

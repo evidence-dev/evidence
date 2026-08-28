@@ -63,6 +63,13 @@ const comparisonSchema = baseComparisonSchema
 					'Range [min, max] for neutral values. Use null for infinity (e.g., [null, 0] means anything ≤ 0 is neutral)'
 				),
 			{ supportsVariables: true }
+		),
+		chip: setZodMetadata(
+			booleanVariableSchema
+				.optional()
+				.default(false)
+				.describe('Whether to display the comparison delta as a chip / pill badge'),
+			{ supportsVariables: true }
 		)
 	})
 	.optional();
@@ -205,6 +212,21 @@ const attributes = {
 		supportsVariables: true,
 		variableContext: 'text'
 	},
+	subtitle: {
+		type: String,
+		required: false,
+		description: 'Subtitle displayed below the title',
+		affectsQuery: false,
+		supportsVariables: true,
+		variableContext: 'text'
+	},
+	card: {
+		type: Boolean,
+		required: false,
+		default: false,
+		description: 'Whether to style the component as an individual card with border and padding',
+		affectsQuery: false
+	},
 	max_width: {
 		type: String,
 		required: false,
@@ -231,6 +253,12 @@ const attributes = {
 		type: String,
 		required: false,
 		description: 'Additional CSS classes for the title',
+		affectsQuery: false
+	},
+	subtitle_class: {
+		type: String,
+		required: false,
+		description: 'Additional CSS classes for the subtitle',
 		affectsQuery: false
 	},
 	value_class: {
