@@ -59,6 +59,7 @@ export class BigValueModel extends UserComponentModel<BigValueModelGenerics> {
 		if (this.metricCompiled) return this.metricCompiled.displayLabel;
 		return explicit;
 	});
+	readonly resolvedSubtitle = $derived(this.resolveText(this.attributes.subtitle));
 	readonly resolvedInfo = $derived(this.resolveText(this.attributes.info));
 	readonly resolvedInfo_link = $derived(this.resolveText(this.attributes.info_link));
 	readonly resolvedInfo_link_title = $derived(this.resolveText(this.attributes.info_link_title));
