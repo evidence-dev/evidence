@@ -143,8 +143,10 @@
 		}
 
 		// Process column expressions like the Dropdown component
-		// The COUNT(*) below already forces a GROUP BY on this column, so the rows are
-		// distinct without the keyword — and `GROUP BY DISTINCT col` breaks Cube.
+		// Deduplication is the GROUP BY's job — see Dropdown.svelte. A `DISTINCT` in the
+		// expression would be copied into `GROUP BY DISTINCT col`, which Cube rejects.
+		// (The COUNT(*) below is for minimum_records, not for grouping — generateSQLQuery
+		// emits the GROUP BY whether or not an aggregate is present.)
 		const valueProcessed = processColumnExpression(
 			{
 				value: `${columnName} as value`

@@ -94,8 +94,26 @@ describe.each(WAREHOUSES)('options query for data-driven inputs — %s', (wareho
 /**
  * A guard on the call sites themselves: the components build their value column as a
  * template string, so a regression would reintroduce `DISTINCT ${col} as value` without
- * failing any assertion above.
+ * failing any assertion above — the dialect assertions build their own input, so they
+ * can't see what a component chose to pass.
+ *
+ * Matched on the shape of the construction rather than on the argument to
+ * `processColumnExpression`, so that assigning the string to a variable first doesn't
+ * slip past. `ALL` is caught alongside `DISTINCT`: it's the other set quantifier, and
+ * `GROUP BY ALL <expr>` fails in DataFusion exactly the same way.
  */
+const QUANTIFIER_IN_EXPRESSION = [
+	/** A template literal opening with a quantifier: `DISTINCT ${col} as value`. */
+	/`\s*(?:DISTINCT|ALL)\s+\$\{/i,
+	/** The concatenated form: 'DISTINCT ' + col + ' as value'. */
+	/['"]\s*(?:DISTINCT|ALL)\s*['"]\s*\+/i
+];
+
+/** Comments legitimately discuss `DISTINCT` — this file's own call sites do. */
+function stripComments(source: string): string {
+	return source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
+}
+
 describe('data-driven input call sites', () => {
 	const CALL_SITES = [
 		'../tags/dropdown/Dropdown.svelte',
@@ -105,8 +123,12 @@ describe('data-driven input call sites', () => {
 		'../tags/repeat/build-repeat-query-config.ts'
 	];
 
-	it.each(CALL_SITES)('%s does not bake DISTINCT into the value column expression', (relative) => {
-		const source = readFileSync(fileURLToPath(new URL(relative, import.meta.url)), 'utf8');
-		expect(source).not.toMatch(/value:\s*[`'"]\s*DISTINCT\b/i);
+	it.each(CALL_SITES)('%s does not bake a set quantifier into a column expression', (relative) => {
+		const source = stripComments(
+			readFileSync(fileURLToPath(new URL(relative, import.meta.url)), 'utf8')
+		);
+		for (const pattern of QUANTIFIER_IN_EXPRESSION) {
+			expect(source).not.toMatch(pattern);
+		}
 	});
 });
