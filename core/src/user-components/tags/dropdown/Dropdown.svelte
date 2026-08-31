@@ -147,7 +147,7 @@
 
 		const valueProcessed = processColumnExpression(
 			{
-				value: `DISTINCT ${valueColumn} as value`
+				value: `${valueColumn} as value`
 			},
 			connection.dialect
 		);
@@ -208,6 +208,8 @@
 			whereClause += ` AND ${searchCondition}`;
 		}
 
+		// Dedup via GROUP BY: inline DISTINCT emits `GROUP BY DISTINCT` (Cube rejects it), and
+		// SELECT DISTINCT would broaden dedup whenever `order` references a column outside value/label.
 		return {
 			tableExpressionName: table ?? '',
 			columns: baseQueryParts.columns,

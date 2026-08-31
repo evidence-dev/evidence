@@ -644,6 +644,54 @@ describe('generateSQLQuery search term escaping', () => {
 	});
 });
 
+describe('generateSQLQuery dropdown option queries', () => {
+	// Dropdown option queries dedup via GROUP BY, not DISTINCT: inline DISTINCT emits
+	// `GROUP BY DISTINCT` (Cube rejects it as a parser error), and SELECT DISTINCT would
+	// broaden dedup whenever `order` references a column outside value/label.
+	function optionSql(
+		sqlDialect: SqlDialect,
+		overrides: { order?: string; extraColumns?: { value: string }[] } = {}
+	) {
+		const columns = [
+			processColumnExpression({ value: 'store as value' }, sqlDialect),
+			...(overrides.extraColumns ?? []).map((c) => processColumnExpression(c, sqlDialect))
+		];
+		const config = {
+			tableExpressionName: 'ga4_sessions',
+			columns,
+			where: 'store IS NOT NULL',
+			order: overrides.order ?? 'store',
+			limit: 10000
+		};
+		return generateSQLQuery(config, undefined, undefined, undefined, 'sunday', sqlDialect).sql;
+	}
+
+	it('emits explicit GROUP BY on Postgres (no `GROUP BY DISTINCT`, no `GROUP BY ALL`)', () => {
+		const sql = optionSql(new PostgresDialect());
+		expect(sql).toContain('SELECT store AS "value"');
+		expect(sql).not.toContain('DISTINCT');
+		expect(sql).toContain('GROUP BY store');
+		expect(sql).not.toContain('GROUP BY ALL');
+	});
+
+	it('emits GROUP BY ALL on ClickHouse', () => {
+		const sql = optionSql(new ClickHouseDialect());
+		expect(sql).not.toContain('DISTINCT');
+		expect(sql).toContain('GROUP BY ALL');
+	});
+
+	// Regression: an `order` referencing a column outside value/label used to broaden dedup
+	// when this query used SELECT DISTINCT (rows differing only on the sort column stayed distinct).
+	// Under GROUP BY, the missing-ORDER-BY-column path wraps it in MIN/MAX, so each option collapses
+	// to a single row again.
+	it('aggregates an order column outside value/label instead of broadening dedup', () => {
+		const sql = optionSql(new PostgresDialect(), { order: 'sales desc' });
+		expect(sql).toContain('MAX(sales) AS "sales"');
+		expect(sql).toContain('GROUP BY store');
+		expect(sql).toContain('ORDER BY sales desc');
+	});
+});
+
 describe('generateSQLQuery ORDER BY on a grained date dimension', () => {
 	function orderClause(extra: { skipGroupBy?: boolean } = {}) {
 		const config = {
