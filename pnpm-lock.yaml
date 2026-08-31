@@ -23,7 +23,7 @@ overrides:
   path-to-regexp: '>=8.4.2'
   qs: '>=6.14.2'
   fast-xml-parser: '>=5.7.0'
-  ip-address: '>=10.1.1'
+  ip-address: '>=10.7.0'
   form-data: '>=2.5.6'
   hono: '>=4.12.25'
   postcss: '>=8.5.18'
@@ -4999,10 +4999,10 @@ packages:
         integrity: sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==
       }
 
-  ip-address@10.2.0:
+  ip-address@10.7.0:
     resolution:
       {
-        integrity: sha512-/+S6j4E9AHvW9SWMSEY9Xfy66O5PWvVEJ08O0y5JGyEKQpojb0K0GKpz/v5HJ/G0vi3D2sjGK78119oXZeE0qA==
+        integrity: sha512-BGFsyJd5mpXp3rK6jIdADLNgpJUK1jnjzvYF8lK+VyDab9JAmqN0YOKDdP17HlgKb2+ehPgDc8EtnRLbGCAMhA==
       }
     engines: { node: '>= 12' }
 
@@ -11407,7 +11407,7 @@ snapshots:
 
   inline-style-parser@0.2.7: {}
 
-  ip-address@10.2.0: {}
+  ip-address@10.7.0: {}
 
   ipaddr.js@1.9.1: {}
 
@@ -12579,7 +12579,7 @@ snapshots:
 
   socks@2.8.9:
     dependencies:
-      ip-address: 10.2.0
+      ip-address: 10.7.0
       smart-buffer: 4.2.0
 
   source-map-js@1.2.1: {}
