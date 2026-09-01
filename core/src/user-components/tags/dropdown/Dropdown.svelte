@@ -355,9 +355,14 @@
 				selectedOptionsQuery.error !== null);
 		const hasQueryResults = optionsQuery.result !== undefined && !selectedRowsPending;
 		const hasStaticOptions = optionsFromProp.length > 0 || optionsFromChildren.length > 0;
+		// A configured options query that has not produced a result yet. Static
+		// options alone must not switch validation on: a dropdown that mixes a
+		// static "All" entry with `data=` options would otherwise clear every
+		// query-sourced selection on first paint, URL-hydrated values included.
+		const optionsQueryPending = queryConfig !== undefined && optionsQuery.result === undefined;
 
 		const availableValues = new Set(combinedOptions.map((opt) => opt.value));
-		const validationOpts = { hasQueryResults, hasStaticOptions };
+		const validationOpts = { hasQueryResults, hasStaticOptions, optionsQueryPending };
 
 		if (multiple) {
 			// Filter out any selections that are no longer available. `isDropdownValueValid`
