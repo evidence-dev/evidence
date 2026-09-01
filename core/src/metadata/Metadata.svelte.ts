@@ -11,13 +11,14 @@ import { getDatabricksToJsType } from '../connectors/databricks/type-mapping';
 import { getPostgresToJsType } from '../connectors/postgres/type-mapping';
 import { getMotherduckToJsType } from '../connectors/motherduck/type-mapping';
 import { TableMetadata } from './TableMetadata.svelte';
+import { groupColumnsByTable } from './group-columns';
 import {
 	managedColumnsSql,
 	managedViewsSql,
 	managedModelsSql,
 	NO_QUERY_CACHE
 } from './managed-catalog';
-import type { IMetadata, IColumnMetadata } from './metadata';
+import type { IMetadata } from './metadata';
 import type {
 	QueryService,
 	AnyRowType,
@@ -310,77 +311,37 @@ export class Metadata {
 				? []
 				: viewTablesResult.rows.map((row) => row.name);
 			const viewNamesSet = new SvelteSet(viewNamesArray);
-			// Filter out views from the table names
-			const allTableNames = [...new SvelteSet(tableColumnsResult.rows.map((row) => row.tableName))];
-			const regularTableNames = allTableNames.filter((name) => !viewNamesSet.has(name));
-
-			// Create a set of view names and model names
 
 			const modelsNamesArray = modelTablesResults.error
 				? []
 				: modelTablesResults.rows.map((row) => row.name);
 			const modelsNamesSet = new SvelteSet(modelsNamesArray);
 
-			// Add regular tables (non-views)
-			for (const tableName of regularTableNames) {
-				const columns = tableColumnsResult.rows
-					.filter((row) => row.tableName === tableName)
-					.reduce(
-						(acc, { columnName, columnType }) => {
-							acc[columnName] = {
-								name: columnName,
-								type: cleanClickHouseType(columnType),
-								jsType: getClickHouseToJsType(columnType)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
+			const columnsByTable = groupColumnsByTable(
+				tableColumnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
+					name: columnName,
+					type: cleanClickHouseType(columnType),
+					jsType: getClickHouseToJsType(columnType)
+				})
+			);
 
+			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
 					tableName,
 					new TableMetadata(
 						{
 							name: tableName,
 							columns,
-							tableType: 'table'
+							// A view is only a model when it's also in the models table; anything
+							// that isn't a view is a plain table.
+							tableType:
+								viewNamesSet.has(tableName) && modelsNamesSet.has(tableName) ? 'model' : 'table'
 						},
 						this.#tableOpts
 					)
 				);
-			}
-
-			// Add views - only mark as models if they exist in the models table
-			for (const viewName of viewNamesSet) {
-				const columns = tableColumnsResult.rows
-					.filter((row) => row.tableName === viewName)
-					.reduce(
-						(acc, { columnName, columnType }) => {
-							acc[columnName] = {
-								name: columnName,
-								type: cleanClickHouseType(columnType),
-								jsType: getClickHouseToJsType(columnType)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
-
-				// Only add if we found columns for this view
-				if (Object.keys(columns).length > 0) {
-					this.#tables.set(
-						viewName,
-						new TableMetadata(
-							{
-								name: viewName,
-								columns,
-								// Only mark as model if it exists in the models table, otherwise treat as regular table
-								tableType: modelsNamesSet.has(viewName) ? 'model' : 'table'
-							},
-							this.#tableOpts
-						)
-					);
-				}
 			}
 		} catch (e) {
 			logger.error(e, 'Failed to fetch organization metadata');
@@ -459,23 +420,17 @@ ${schemaFilter}`
 
 			const viewNames = new SvelteSet(viewsResult.error ? [] : viewsResult.rows.map((r) => r.name));
 
-			const allTableNames = [...new SvelteSet(columnsResult.rows.map((row) => row.tableName))];
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
+					name: columnName,
+					type: columnType,
+					jsType: getSnowflakeToJsType(columnType)
+				})
+			);
 
-			for (const tableName of allTableNames) {
-				const columns = columnsResult.rows
-					.filter((row) => row.tableName === tableName)
-					.reduce(
-						(acc, { columnName, columnType }) => {
-							acc[columnName] = {
-								name: columnName,
-								type: columnType,
-								jsType: getSnowflakeToJsType(columnType)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
-
+			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
 					tableName,
 					new TableMetadata(
@@ -533,23 +488,17 @@ ${schemaFilter}`
 
 			const viewNames = new SvelteSet(viewsResult.error ? [] : viewsResult.rows.map((r) => r.name));
 
-			const allTableNames = [...new SvelteSet(columnsResult.rows.map((row) => row.tableName))];
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
+					name: columnName,
+					type: columnType,
+					jsType: getFabricToJsType(columnType)
+				})
+			);
 
-			for (const tableName of allTableNames) {
-				const columns = columnsResult.rows
-					.filter((row) => row.tableName === tableName)
-					.reduce(
-						(acc, { columnName, columnType }) => {
-							acc[columnName] = {
-								name: columnName,
-								type: columnType,
-								jsType: getFabricToJsType(columnType)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
-
+			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
 					tableName,
 					new TableMetadata(
@@ -608,23 +557,17 @@ ${schemaFilter}`
 
 			const viewNames = new SvelteSet(viewsResult.error ? [] : viewsResult.rows.map((r) => r.name));
 
-			const allTableNames = [...new SvelteSet(columnsResult.rows.map((row) => row.tableName))];
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
+					name: columnName,
+					type: columnType,
+					jsType: getDatabricksToJsType(columnType)
+				})
+			);
 
-			for (const tableName of allTableNames) {
-				const columns = columnsResult.rows
-					.filter((row) => row.tableName === tableName)
-					.reduce(
-						(acc, { columnName, columnType }) => {
-							acc[columnName] = {
-								name: columnName,
-								type: columnType,
-								jsType: getDatabricksToJsType(columnType)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
-
+			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
 					tableName,
 					new TableMetadata(
@@ -682,23 +625,17 @@ ${schemaFilter}`
 
 			const viewNames = new SvelteSet(viewsResult.error ? [] : viewsResult.rows.map((r) => r.name));
 
-			const allTableNames = [...new SvelteSet(columnsResult.rows.map((row) => row.tableName))];
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
+					name: columnName,
+					type: columnType,
+					jsType: getMotherduckToJsType(columnType)
+				})
+			);
 
-			for (const tableName of allTableNames) {
-				const columns = columnsResult.rows
-					.filter((row) => row.tableName === tableName)
-					.reduce(
-						(acc, { columnName, columnType }) => {
-							acc[columnName] = {
-								name: columnName,
-								type: columnType,
-								jsType: getMotherduckToJsType(columnType)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
-
+			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
 					tableName,
 					new TableMetadata(
@@ -762,23 +699,17 @@ ORDER BY n.nspname, c.relname, a.attnum`
 					.map((r) => r.tableName)
 			);
 
-			const allTableNames = [...new SvelteSet(columnsResult.rows.map((row) => row.tableName))];
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
+					name: columnName,
+					type: columnType,
+					jsType: getPostgresToJsType(columnType)
+				})
+			);
 
-			for (const tableName of allTableNames) {
-				const columns = columnsResult.rows
-					.filter((row) => row.tableName === tableName)
-					.reduce(
-						(acc, { columnName, columnType }) => {
-							acc[columnName] = {
-								name: columnName,
-								type: columnType,
-								jsType: getPostgresToJsType(columnType)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
-
+			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
 					tableName,
 					new TableMetadata(
@@ -833,23 +764,17 @@ ORDER BY c.table_schema, c.table_name, c.ordinal_position`
 				throw new Error(`Failed to fetch Cube metadata: ${columnsResult.error}`);
 			}
 
-			const allTableNames = [...new SvelteSet(columnsResult.rows.map((row) => row.tableName))];
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
+					name: columnName,
+					type: columnType,
+					jsType: getPostgresToJsType(columnType)
+				})
+			);
 
-			for (const tableName of allTableNames) {
-				const columns = columnsResult.rows
-					.filter((row) => row.tableName === tableName)
-					.reduce(
-						(acc, { columnName, columnType }) => {
-							acc[columnName] = {
-								name: columnName,
-								type: columnType,
-								jsType: getPostgresToJsType(columnType)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
-
+			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
 					tableName,
 					new TableMetadata(
@@ -911,22 +836,15 @@ WHERE ${dbFilter} AND engine LIKE '%View%'`
 
 			const viewNames = new SvelteSet(viewsResult.error ? [] : viewsResult.rows.map((r) => r.name));
 
-			// Single O(n) pass to group columns by table. The columns query is ORDER
-			// BY database, table, position so insertion order preserves on-disk column
-			// order for each table.
-			const columnsByTable = new Map<string, Record<string, IColumnMetadata>>();
-			for (const { tableName, columnName, columnType } of columnsResult.rows) {
-				let columns = columnsByTable.get(tableName);
-				if (!columns) {
-					columns = {};
-					columnsByTable.set(tableName, columns);
-				}
-				columns[columnName] = {
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
 					name: columnName,
 					type: cleanClickHouseType(columnType),
 					jsType: getClickHouseToJsType(columnType)
-				};
-			}
+				})
+			);
 
 			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
@@ -1004,25 +922,17 @@ WHERE table_type = 'VIEW'`
 				viewsResult.error ? [] : viewsResult.rows.map((r) => `${r.table_schema}.${r.table_name}`)
 			);
 
-			const allTableNames = [
-				...new SvelteSet(columnsResult.rows.map((row) => `${row.table_schema}.${row.table_name}`))
-			];
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => `${row.table_schema}.${row.table_name}`,
+				({ column_name, data_type }) => ({
+					name: column_name,
+					type: data_type,
+					jsType: getBigQueryToJsType(data_type)
+				})
+			);
 
-			for (const tableName of allTableNames) {
-				const columns = columnsResult.rows
-					.filter((row) => `${row.table_schema}.${row.table_name}` === tableName)
-					.reduce(
-						(acc, { column_name, data_type }) => {
-							acc[column_name] = {
-								name: column_name,
-								type: data_type,
-								jsType: getBigQueryToJsType(data_type)
-							};
-							return acc;
-						},
-						{} as Record<string, IColumnMetadata>
-					);
-
+			for (const [tableName, columns] of columnsByTable) {
 				this.#tables.set(
 					tableName,
 					new TableMetadata(

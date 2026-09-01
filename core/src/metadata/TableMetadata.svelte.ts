@@ -14,8 +14,10 @@ export class TableMetadata {
 		return this.#metadata.name;
 	}
 
+	// Cached: the schema browser reads this once per rendered row, and a fresh
+	// Object.values() per read is O(columns) on every one of them.
 	get columns() {
-		return Object.values(this.#metadata.columns);
+		return this.#columns;
 	}
 
 	get tableType() {
@@ -28,6 +30,8 @@ export class TableMetadata {
 
 	// @ts-expect-error #metadata is initialized in the constructor
 	#metadata: ITableMetadata = $state();
+
+	#columns = $derived(Object.values(this.#metadata.columns));
 	readonly #caseInsensitive: boolean;
 
 	constructor(metadata: ITableMetadata, opts?: TableMetadataOpts) {
@@ -35,10 +39,7 @@ export class TableMetadata {
 		this.#caseInsensitive = opts?.caseInsensitive ?? false;
 	}
 
-	getColumn(
-		name: string,
-		opts?: { caseInsensitive?: boolean }
-	): IColumnMetadata | undefined {
+	getColumn(name: string, opts?: { caseInsensitive?: boolean }): IColumnMetadata | undefined {
 		const columns = this.#metadata.columns;
 		const exact = columns[name];
 		if (exact) return exact;
