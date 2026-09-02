@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { themeOverridesSchema } from '../types/theme';
 import { availableIconNames } from '../user-components/common/icon-names';
+import { workflowSchema } from './workflow-frontmatter';
 
 /**
  * Frontmatter schema for the new structure — identity + page settings. Lenient
@@ -97,7 +98,11 @@ export const projectRootPageFrontmatterSchema = z.object({
 	theme: themeOverridesSchema
 		.optional()
 		.catch(undefined)
-		.describe('Per-page theme overrides, layered on top of the project theme.')
+		.describe('Per-page theme overrides, layered on top of the project theme.'),
+	workflow: workflowSchema
+		.optional()
+		.catch(undefined)
+		.describe('Workflow reporting settings — see `workflow.period` to make this a periodic report.')
 });
 
 export type ParsedProjectRootFrontmatter = z.infer<typeof projectRootPageFrontmatterSchema>;

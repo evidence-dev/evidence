@@ -32,6 +32,7 @@ Most pages only need a `title`. Add other keys to override a setting for that pa
 | `icon` | string | The icon shown next to the page in the sidebar. Page-only. |
 | `theme` | object | Per-page [theme](/features/themes) overrides (colors, palettes, scales). See below. |
 | `type` | `partial` | Marks the file as a [partial](/core-concepts/partials). Only used for partials. |
+| `workflow` | object | Turns the page into a periodic report. See [`workflow.period`](#workflow-period) below. |
 
 ### Inheritance
 
@@ -56,6 +57,53 @@ theme:
       light: ['#154886', '#45a1bf']
 ---
 ```
+
+### `workflow.period`
+
+Adding a `workflow.period` block turns the page into a **periodic report**: a period picker appears at the top right, and the selected period is available as the `period` variable.
+
+```markdown
+---
+title: Monthly Operations Report
+workflow:
+  period:
+    grain: month
+    periods: 12
+---
+
+# {{ period.label }} Operations Review
+
+```sql monthly_orders
+select count(*) as orders
+from demo.daily_orders
+where order_date {{ period.between }}
+```
+```
+
+| Key | Type | Description |
+| --- | --- | --- |
+| `grain` | `day` \| `week` \| `month` \| `quarter` \| `year` | The calendar period each entry covers. Defaults to `month`. |
+| `periods` | number | How many periods the picker offers, between 1 and 500. Defaults to `12`. |
+
+`start` and `end` are SQL expressions for the active dialect — writing them in markdown prints `toDate('2026-07-01')`. Use `start_label` / `end_label` for text.
+
+Only **complete** periods are offered — the period in progress never appears, so a published report doesn't change under the reader while its period is still running. The most recent complete period is selected by default, and the selection is kept in the URL so a link points at a specific period.
+
+`period` behaves like any other [input](/core-concepts/variables#in-inputs):
+
+| Property | Example | Description |
+| --- | --- | --- |
+| `period.between` | `BETWEEN toDate('2026-07-01') AND toDate('2026-07-31')` | WHERE-clause fragment for the period. The default in SQL. |
+| `period.label` | `Jul 2026` | Display label. The default in markdown and column attributes. |
+| `period.start` | `toDate('2026-07-01')` | First date of the period, as SQL. Use `start_label` in prose. |
+| `period.end` | `toDate('2026-07-31')` | Last date of the period, inclusive, as SQL. Use `end_label` in prose. |
+| `period.start_label` | `Jul 1, 2026` | First date of the period, formatted for display. |
+| `period.end_label` | `Jul 31, 2026` | Last date of the period, formatted for display. |
+| `period.key` | `2026-07` | Stable identifier for the period. |
+| `period.grain` | `month` | The configured grain. |
+| `period.filter` | `order_date >= … AND order_date <= …` | Complete filter expression. Requires `value_column`. |
+
+`workflow` is reserved for reporting settings; other keys under it are ignored for now.
 
 ## Frontmatter variables
 

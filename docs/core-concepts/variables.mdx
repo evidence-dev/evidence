@@ -37,6 +37,20 @@ When you add an input component, it creates a variable using the `id` attribute:
 
 All available filters for your page can be found in the **Filters** tab in the sidebar.
 
+### From a Reporting Period
+
+A page that declares a [`workflow.period`](/features/page-settings#workflow-period) block gets a `period` variable and a period picker, without adding any component:
+
+```markdown
+---
+workflow:
+  period:
+    grain: month
+---
+
+# {{ period.label }} Review
+```
+
 ## Built-in Variables
 
 Some variables are automatically available based on the logged-in user:

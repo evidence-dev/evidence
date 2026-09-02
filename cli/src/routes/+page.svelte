@@ -2,6 +2,7 @@
 	import type { PageData } from './$types';
 	import { Renderer, deserializeTree } from '$lib/markdown';
 	import CLIPageWrapper from '$lib/components/CLIPageWrapper.svelte';
+	import PeriodPicker from '@evidence/core/viewer-components/PeriodPicker.svelte';
 	import { page } from '$app/state';
 
 	interface Props {
@@ -33,6 +34,7 @@
 			useRelativeResolution={data.markdown?.useRelativeResolution}
 			metricFiles={data.metricFiles}
 		>
+			<PeriodPicker class="mb-4" />
 			<div
 				class="prose dark:prose-invert prose-code:before:content-none prose-code:after:content-none select-text"
 			>

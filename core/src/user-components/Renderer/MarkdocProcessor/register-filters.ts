@@ -14,6 +14,9 @@ import {
 import { extractMapSource } from '../../tags/custom_map/extract-map-source';
 import { extractHtmlSource } from '../../tags/html/extract-html-source';
 import { parseFrontmatter } from '../../../utils/parseFrontmatter';
+import { parseWorkflowPeriod } from '../../../config/workflow-frontmatter';
+import { PeriodFilter } from '../../tags/workflow_period/PeriodFilter.svelte';
+import { WORKFLOW_PERIOD_FILTER_ID } from '../../common/reporting-periods';
 import type { CustomComponentMeta } from '../../custom-components';
 
 /** Map from `node.location.file` ('' for the page itself) to its source text. */
@@ -57,6 +60,14 @@ export function registerFiltersFromAST(
 	// First pass: collect all filter IDs that should exist (main AST + referenced partials)
 	const expectedFilterIds = new Set<string>();
 	collectFilterIds(ast, expectedFilterIds);
+
+	// `workflow.period` declares a page-level input with no AST node of its own.
+	// Listing its id here is what exempts it from the reap loop below — and what
+	// reaps it when the block is deleted.
+	const workflowPeriod = parseWorkflowPeriod(
+		parseFrontmatter(ast.attributes?.frontmatter as string).frontmatter
+	);
+	if (workflowPeriod) expectedFilterIds.add(WORKFLOW_PERIOD_FILTER_ID);
 
 	// Static externals declared inside html blocks via `evidence.filters.create`.
 	// We treat these as a separate expected set because they're reaped via a
@@ -172,6 +183,11 @@ export function registerFiltersFromAST(
 		}
 	}
 
+	// After the AST passes, so an author's own `period` input wins the collision.
+	if (workflowPeriod) {
+		registerWorkflowPeriodFilter(filters, workflowPeriod);
+	}
+
 	// Fourth pass: pre-register static externals. We do this AFTER AST-tag
 	// filter registration so that an AST tag with the same id always wins on
 	// collision (createExternal defers to the existing filter), making the
@@ -179,6 +195,30 @@ export function registerFiltersFromAST(
 	for (const [id, { column }] of expectedStaticExternals) {
 		filters.createExternal(id, undefined, column, { static: true });
 	}
+}
+
+/**
+ * Updating in place rather than recreating preserves the reader's selected
+ * period while the author edits the rest of the frontmatter.
+ */
+function registerWorkflowPeriodFilter(
+	filters: Filters,
+	config: NonNullable<ReturnType<typeof parseWorkflowPeriod>>
+): void {
+	const attributes = { grain: config.grain, periods: config.periods };
+	const existing = filters.get(WORKFLOW_PERIOD_FILTER_ID);
+
+	if (existing) {
+		// An author-declared input owns the id; leave it alone.
+		if (!(existing instanceof PeriodFilter)) return;
+		if (!isEqual(existing.attributes, attributes)) existing.attributes = attributes;
+		return;
+	}
+
+	filters.create(
+		{ id: WORKFLOW_PERIOD_FILTER_ID, userComponentName: 'workflow_period', attributes },
+		PeriodFilter
+	);
 }
 
 function collectComponentTagNodes(
@@ -447,10 +487,7 @@ function addOrUpdateFilters(node: Node, filters: Filters, config: Config): void 
 
 				if (shouldApplyInitialValue) {
 					filters.remove(node.attributes.id);
-					const init: Omit<
-						FilterInit<string, UserComponentProps<UserComponentSchema>>,
-						'url'
-					> = {
+					const init: Omit<FilterInit<string, UserComponentProps<UserComponentSchema>>, 'url'> = {
 						id: node.attributes.id,
 						userComponentName: node.tag,
 						attributes: resolvedAttributes
