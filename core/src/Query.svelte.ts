@@ -171,11 +171,21 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			};
 		});
 
-		// Immediately set loading when query changes (smoother chart transitions)
-		// Also clear _isRefreshing so genuine query changes (filter/attribute) show loading properly
+		// Immediately set loading when the SQL that will be sent changes. Watching
+		// the resolved `dataQuery` (not `queryGetter()`) is deliberate: filters
+		// apply through `filterIds` in the config, so `filter.value` changes leave
+		// `queryGetter()` output byte-identical while `dataQuery` interpolates the
+		// new predicate. Watching only the caller's config missed that path,
+		// leaving `loading=false` through a filter-triggered refetch (no spinner,
+		// stale chart until debounce fires ~500ms later). See EVI-3119.
 		watch(
-			() => this.queryGetter(),
-			() => {
+			() => this.dataQuery,
+			(value) => {
+				// `undefined` means SQL generation failed (or there's no query yet) —
+				// no fetch that returns data will follow, so "loading" would be a
+				// lie. Skip the flip and let the resource's own loading state (which
+				// turns on once the fetcher actually runs) drive the spinner.
+				if (value === undefined) return;
 				this._isRefreshing = false;
 				this._manualLoading = true;
 			}
@@ -681,6 +691,10 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 	}
 
 	loading = $derived.by(() => {
+		// SQL generation failed for an existing query config: no fetch will ever
+		// return data, so settle loading to false and let `error` surface instead.
+		if (this.sqlGenError) return false;
+
 		const dataHasExecuted =
 			typeof this.dataResource.error !== 'undefined' ||
 			typeof this.dataResource.current !== 'undefined';
@@ -709,6 +723,10 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 		// query result so the author never sees a warehouse error for a query that never ran.
 		const connectionError = this.deps.connectionError?.();
 		if (connectionError) return connectionError;
+		// A query config that exists but can't generate SQL will never reach the
+		// warehouse — surface it here so the chart shows the message instead of
+		// spinning forever (see EVI-3119 SQL-gen failure path).
+		if (this.sqlGenError) return enrichWarehouseError(this.sqlGenError);
 		const thrown = this.dataResource.error;
 		if (typeof thrown !== 'undefined') {
 			return enrichWarehouseError(thrown instanceof Error ? thrown.message : String(thrown));
@@ -846,9 +864,14 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 	// generated SQL string is identical — each new fire aborts the in-flight query,
 	// so loading never settles (infinite spinner). $derived's `===` value-equality
 	// short-circuits the cascade when the SQL string is unchanged.
-	readonly dataQuery: string | undefined = $derived.by(() => {
-		if (!this.query) return undefined;
-		if (typeof this.query === 'string') return this.query;
+	//
+	// Single generation pass carrying both outputs: `sql` (undefined on no-query or
+	// failure) and `error` (non-null only when a real query config failed to
+	// generate). Splitting these lets `error`/`loading` distinguish "no query yet"
+	// from "SQL generation failed" without calling generateSQLQuery twice.
+	private readonly sqlGen: { sql: string | undefined; error: string | null } = $derived.by(() => {
+		if (!this.query) return { sql: undefined, error: null };
+		if (typeof this.query === 'string') return { sql: this.query, error: null };
 
 		const { sql, error } = generateSQLQuery(
 			{
@@ -866,11 +889,19 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 		if (error) {
 			logger.error({ generateSQLQueryError: error }, '[Query] Failed to generate dataQuery');
 			if (browser) posthog.capture('Query-dataQuery-failed', { error, query: this.query });
-			return;
+			return { sql: undefined, error };
 		}
 
-		return sql;
+		return { sql, error: null };
 	});
+
+	readonly dataQuery: string | undefined = $derived(this.sqlGen.sql);
+
+	// Non-null only when a query config exists but generateSQLQuery rejected it
+	// (e.g. subtotals on a Cube connection). Drives the error state so the chart
+	// shows the message instead of spinning forever waiting for a fetch that will
+	// never run.
+	private readonly sqlGenError: string | null = $derived(this.sqlGen.error);
 
 	// When using pivots, we check the row limit using a more efficient method: `buildPivotResultSizeLowerBoundQuery`
 	// Memoized via $derived for the same reason as `dataQuery` above.
