@@ -62,7 +62,7 @@ theme:
 
 Adding a `workflow.period` block turns the page into a **periodic report**: a period picker appears at the top right, and the selected period is available as the `period` variable.
 
-```markdown
+````markdown
 ---
 title: Monthly Operations Report
 workflow:
@@ -78,14 +78,12 @@ select count(*) as orders
 from demo.daily_orders
 where order_date {{ period.between }}
 ```
-```
+````
 
 | Key | Type | Description |
 | --- | --- | --- |
 | `grain` | `day` \| `week` \| `month` \| `quarter` \| `year` | The calendar period each entry covers. Defaults to `month`. |
 | `periods` | number | How many periods the picker offers, between 1 and 500. Defaults to `12`. |
-
-`start` and `end` are SQL expressions for the active dialect — writing them in markdown prints `toDate('2026-07-01')`. Use `start_label` / `end_label` for text.
 
 Only **complete** periods are offered — the period in progress never appears, so a published report doesn't change under the reader while its period is still running. The most recent complete period is selected by default, and the selection is kept in the URL so a link points at a specific period.
 
@@ -101,7 +99,8 @@ Only **complete** periods are offered — the period in progress never appears, 
 | `period.end_label` | `Jul 31, 2026` | Last date of the period, formatted for display. |
 | `period.key` | `2026-07` | Stable identifier for the period. |
 | `period.grain` | `month` | The configured grain. |
-| `period.filter` | `order_date >= … AND order_date <= …` | Complete filter expression. Requires `value_column`. |
+
+`period.start` and `period.end` are SQL expressions for the active dialect — writing them in markdown prints `toDate('2026-07-01')`. Use `start_label` / `end_label` for text.
 
 `workflow` is reserved for reporting settings; other keys under it are ignored for now.
 
