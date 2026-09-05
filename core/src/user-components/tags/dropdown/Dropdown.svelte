@@ -145,6 +145,9 @@
 			return;
 		}
 
+		// Distinct values come from the GROUP BY that generateSQLQuery emits for every
+		// non-aggregate column — a `DISTINCT` baked into the expression would also land in
+		// that GROUP BY (`GROUP BY DISTINCT col`), which Cube's parser rejects outright.
 		const valueProcessed = processColumnExpression(
 			{
 				value: `${valueColumn} as value`
