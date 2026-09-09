@@ -1,5 +1,6 @@
 import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 import { interpolateQueryStrings } from '../../interpolate-query-strings';
+import { applyTranslationSqlEscapes } from '../../translations/translation-value';
 import type { Filters } from '../../Filters.svelte';
 import { getContext, setContext } from 'svelte';
 import { browser } from '../../shims/env';
@@ -296,7 +297,12 @@ export class InlineQueries {
 				return `(${sqlFileContent}) ${fileAlias}`;
 			}
 			const inlineAlias = dialect.quoteAlias(`__ev_inline_${cleanName.replace(/\//g, '_')}`);
-			return this.#interpolateInlineQuery(this.#inlineQueries.get(cleanName), name, inlineAlias);
+			return this.#interpolateInlineQuery(
+				this.#inlineQueries.get(cleanName),
+				name,
+				inlineAlias,
+				dialect
+			);
 		}
 
 		// Subquery alias for `FROM (...) alias`. Two constraints:
@@ -326,7 +332,7 @@ export class InlineQueries {
 			return `(${sqlFileContent}) ${alias}`;
 		}
 
-		return this.#interpolateInlineQuery(this.#inlineQueries.get(cleanName), name, alias);
+		return this.#interpolateInlineQuery(this.#inlineQueries.get(cleanName), name, alias, dialect);
 	}
 
 	/**
@@ -336,7 +342,8 @@ export class InlineQueries {
 	#interpolateInlineQuery(
 		query: string | undefined,
 		name: string,
-		alias: string
+		alias: string,
+		dialect?: SqlDialect
 	): string | undefined {
 		if (query === undefined) {
 			return undefined;
@@ -390,7 +397,14 @@ export class InlineQueries {
 			// TODO is this necessary?
 			const _ = validFilterContexts.map((ctx) => ctx.toString());
 
-			const result = interpolateQueryStrings(query, validFilterContexts, this);
+			const result = interpolateQueryStrings(
+				query,
+				validFilterContexts,
+				this,
+				'sql',
+				new Set<string>(),
+				dialect
+			);
 
 			// If there are template errors, check if they're related to missing filter IDs
 			// during navigation/cleanup and handle gracefully
@@ -424,8 +438,8 @@ export class InlineQueries {
 			return `(${result.sql}) ${alias}`;
 		}
 
-		// Fallback to original behavior if no filter contexts
-		return `(${query}) ${alias}`;
+		// No-filter path still resolves `.sql` sentinels — never let one reach the warehouse.
+		return `(${applyTranslationSqlEscapes(query, dialect)}) ${alias}`;
 	}
 
 	getRaw(name: string): string | undefined {

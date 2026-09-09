@@ -8,6 +8,7 @@ import { parse, transform, validate } from './process-markdoc';
 import { parseFrontmatter } from '../../../utils/parseFrontmatter';
 import { Debounced } from 'runed';
 import type { TranslationMap } from '../../../types/translations';
+import { wrapTranslationsForSql } from '../../../translations/translation-value';
 import type { AccountVariables } from '../../../types/account-variables';
 import { TRANSLATIONS_KEY, USER_KEY, ORGANIZATION_KEY } from '../../../constants/variable-keys';
 import {
@@ -189,7 +190,8 @@ export class MarkdocProcessor {
 		const { frontmatter } = parseFrontmatter(this.#ast.attributes?.frontmatter as string);
 		return {
 			...frontmatter,
-			[TRANSLATIONS_KEY]: this.#translations,
+			// Wrap so the SQL console (reads `interpolationVariables`) resolves `.sql` too.
+			[TRANSLATIONS_KEY]: wrapTranslationsForSql(this.#translations),
 			...(this.#account
 				? { [USER_KEY]: this.#account.user, [ORGANIZATION_KEY]: this.#account.organization }
 				: {}),

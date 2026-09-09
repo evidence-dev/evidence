@@ -61,7 +61,8 @@ export abstract class UserComponentModel<T extends GenericsShape = GenericsDefau
 			) ?? [];
 		if (filterContexts.length === 0) return null;
 
-		return new VariableProcessor(filterContexts, inlineQueries);
+		// Dialect lets processString finalise translation `.sql` sentinels for this model's warehouse.
+		return new VariableProcessor(filterContexts, inlineQueries, undefined, this.deps.connection?.dialect);
 	});
 
 	readonly projectSettings = $derived.by(() =>

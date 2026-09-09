@@ -104,6 +104,35 @@ from description
 ```
 ````
 
+### Using Translations Inside SQL String Literals
+
+Translation values often contain apostrophes (`d'affaires`, `l'offre`, `chiffre
+d'affaires`). Interpolating them raw into a `'…'` SQL string literal closes
+the literal early and the warehouse rejects the query. Use the `.sql`
+accessor in that position — Evidence escapes the value using the target
+warehouse's own string-literal rules (doubled quote `''` on Postgres, DuckDB,
+ClickHouse, Snowflake; backslash-escaped `\'` on BigQuery, Databricks):
+
+````markdown
+```sql member_paid_offerings
+select count(*) from t
+where section = '{{ $translations.section_name.sql }}'
+```
+````
+
+Given a French value `Offre d'adhérents`:
+
+- On Postgres / DuckDB / ClickHouse / Snowflake: `where section = 'Offre d''adhérents'`
+- On BigQuery / Databricks: `where section = 'Offre d\'adhérents'`
+
+Both parse back to the same string (`Offre d'adhérents`) — the escape is SQL
+syntax only, never text the reader sees.
+
+Use `.sql` **only** inside a single-quoted SQL string literal. Elsewhere —
+plain text, headings, identifier concatenation like `label_{{
+$translations.langcode }}` — the bare form is correct and `.sql` would
+incorrectly rewrite apostrophes that were never inside a SQL literal.
+
 ## Fallback Behavior
 
 If a translation key is missing for the selected language, it will fall back to English (`en`) if available.

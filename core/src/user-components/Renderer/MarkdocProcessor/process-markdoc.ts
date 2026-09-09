@@ -15,6 +15,7 @@ import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 import { createFrontmatterVariablePattern } from '../../../filter-variables/frontmatter-variable';
 import { preprocessVariables } from './preprocess-variables';
 import type { TranslationMap } from '../../../types/translations';
+import { wrapTranslationsForSql } from '../../../translations/translation-value';
 import type { AccountVariables } from '../../../types/account-variables';
 import { TRANSLATIONS_KEY, USER_KEY, ORGANIZATION_KEY } from '../../../constants/variable-keys';
 import { resolvePartialFile, type ReferenceResolutionConfig } from '../../common/resolve-reference';
@@ -241,7 +242,8 @@ function buildConfig(args: {
 		partials: combinedPartials,
 		variables: {
 			...frontmatter,
-			[TRANSLATIONS_KEY]: translations ?? {},
+			// Wrap for `.sql` — see translation-value.ts.
+			[TRANSLATIONS_KEY]: wrapTranslationsForSql(translations ?? {}),
 			...(account ? { [USER_KEY]: account.user, [ORGANIZATION_KEY]: account.organization } : {}),
 			...(userVariables ?? {}),
 			// Declared caller variables — only the component-editing path
@@ -459,7 +461,8 @@ function validateVariables(
 	// since the actual values come from the call site at runtime.
 	const variables: Record<string, unknown> = {
 		...frontmatter,
-		[TRANSLATIONS_KEY]: translations ?? {},
+		// Match buildConfig, else `.sql` false-positives as `undefined-translation-key`.
+		[TRANSLATIONS_KEY]: wrapTranslationsForSql(translations ?? {}),
 		...(account ? { [USER_KEY]: account.user, [ORGANIZATION_KEY]: account.organization } : {}),
 		...(userVariables ?? {}),
 		...Object.fromEntries(declaredCallerVariables.map((name) => [name, '']))

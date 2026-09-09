@@ -8,6 +8,8 @@ import {
 	stripOneQuotePair
 } from './frontmatter-variable';
 import { logger } from '../shims/logger';
+import type { SqlDialect } from '../sql-dialect';
+import { applyTranslationSqlEscapes } from '../translations/translation-value';
 
 /**
  * Centralized variable processor that handles validation, preprocessing, and runtime processing
@@ -18,7 +20,9 @@ export class VariableProcessor {
 	constructor(
 		private filters: Filters | Filters[] | undefined,
 		private inlineQueries: InlineQueries | undefined,
-		private frontmatterVariables?: Record<string, unknown>
+		private frontmatterVariables?: Record<string, unknown>,
+		// Passing dialect enables dialect-correct translation `.sql` escapes.
+		private dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
 	) {}
 
 	/**
@@ -38,7 +42,9 @@ export class VariableProcessor {
 			value,
 			filterContexts,
 			this.inlineQueries,
-			context.variableContext || 'sql'
+			context.variableContext || 'sql',
+			new Set<string>(),
+			this.dialect
 		);
 
 		return result.errors.map((errorMessage) => ({
@@ -68,12 +74,19 @@ export class VariableProcessor {
 					processedValue,
 					filterContexts,
 					this.inlineQueries,
-					variableContext
+					variableContext,
+					new Set<string>(),
+					this.dialect
 				);
 				processedValue = result.sql;
 			} catch (error) {
 				logger.warn(error, 'Filter variable processing failed');
 			}
+		}
+
+		// Frontmatter-only paths still need translation `.sql` sentinels resolved.
+		if (variableContext === 'sql') {
+			processedValue = applyTranslationSqlEscapes(processedValue, this.dialect);
 		}
 
 		return processedValue;

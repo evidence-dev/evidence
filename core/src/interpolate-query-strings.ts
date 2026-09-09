@@ -5,6 +5,8 @@ import { browser } from './shims/env';
 import { logger } from './shims/logger';
 // posthog is only initialized in Evidence Studio; these captures no-op in the CLI.
 import posthog from 'posthog-js';
+import type { SqlDialect } from './sql-dialect';
+import { applyTranslationSqlEscapes } from './translations/translation-value';
 
 /**
  * Zero-width characters that have no legitimate use inside SQL or template
@@ -217,7 +219,9 @@ export function interpolateQueryStrings(
 	 * of recursing until the JS call stack overflows (a `RangeError` that took
 	 * down the entire page render, not a per-query error).
 	 */
-	visitedQueries: ReadonlySet<string> = new Set<string>()
+	visitedQueries: ReadonlySet<string> = new Set<string>(),
+	// Target dialect for finalising translation `.sql` sentinels; omitted → ANSI fallback.
+	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
 ): { sql: string; errors: string[] } {
 	const errors: string[] = [];
 	let sql = stripZeroWidthChars(query);
@@ -238,13 +242,31 @@ export function interpolateQueryStrings(
 	}
 
 	// Process conditional blocks first (they can contain templates)
-	sql = processConditionalBlocks(sql, filtersArray, inlineQueries, errors, context, visitedQueries);
+	sql = processConditionalBlocks(
+		sql,
+		filtersArray,
+		inlineQueries,
+		errors,
+		context,
+		visitedQueries,
+		dialect
+	);
 
 	// Then process remaining template variables
-	sql = processTemplateVariables(sql, filtersArray, inlineQueries, errors, context, visitedQueries);
+	sql = processTemplateVariables(
+		sql,
+		filtersArray,
+		inlineQueries,
+		errors,
+		context,
+		visitedQueries,
+		dialect
+	);
 
 	// Restore comment bodies now that interpolation is complete.
 	sql = restoreSqlComments(sql, comments);
+
+	sql = applyTranslationSqlEscapes(sql, dialect);
 
 	// Deduplicate errors
 	const uniqueErrors = Array.from(new Set(errors));
@@ -284,7 +306,8 @@ function processConditionalBlocks(
 	inlineQueries: InlineQueries,
 	errors: string[],
 	context: VariableContext,
-	visitedQueries: ReadonlySet<string>
+	visitedQueries: ReadonlySet<string>,
+	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
 ): string {
 	// Find and process conditional blocks from innermost to outermost
 	let result = sql;
@@ -306,7 +329,8 @@ function processConditionalBlocks(
 				inlineQueries,
 				errors,
 				context,
-				visitedQueries
+				visitedQueries,
+				dialect
 			);
 
 			// Replace the block with its content or empty string
@@ -329,7 +353,8 @@ function shouldIncludeConditionalBlock(
 	inlineQueries: InlineQueries,
 	errors: string[],
 	context: VariableContext,
-	visitedQueries: ReadonlySet<string>
+	visitedQueries: ReadonlySet<string>,
+	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
 ): boolean {
 	// Find all template variables in the block
 	const templateRegex = /\{\{([^}]+)\}\}/g;
@@ -343,7 +368,8 @@ function shouldIncludeConditionalBlock(
 			inlineQueries,
 			errors,
 			context,
-			visitedQueries
+			visitedQueries,
+			dialect
 		);
 
 		// If any template has a value (including fallback), include the block
@@ -364,7 +390,8 @@ function processTemplateVariables(
 	inlineQueries: InlineQueries,
 	errors: string[],
 	context: VariableContext,
-	visitedQueries: ReadonlySet<string>
+	visitedQueries: ReadonlySet<string>,
+	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
 ): string {
 	const templateRegex = /\{\{([^}]+)\}\}/g;
 
@@ -375,7 +402,8 @@ function processTemplateVariables(
 			inlineQueries,
 			errors,
 			context,
-			visitedQueries
+			visitedQueries,
+			dialect
 		);
 		return value;
 	});
@@ -390,7 +418,8 @@ function evaluateTemplate(
 	inlineQueries: InlineQueries,
 	errors: string[],
 	context: VariableContext,
-	visitedQueries: ReadonlySet<string>
+	visitedQueries: ReadonlySet<string>,
+	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
 ): { value: string; hasValue: boolean } {
 	// Split on | to separate template from fallback, but be careful with complex filter IDs
 	const pipeIndex = findFallbackPipeIndex(templateContent);
@@ -448,7 +477,8 @@ function evaluateTemplate(
 				filtersArray,
 				inlineQueries,
 				context,
-				new Set(visitedQueries).add(templatePart)
+				new Set(visitedQueries).add(templatePart),
+				dialect
 			);
 			// Add any errors from the nested query
 			errors.push(...processedQuery.errors);
