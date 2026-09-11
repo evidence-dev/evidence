@@ -6,6 +6,7 @@ import {
 	isSimpleIdentifier,
 	wrapWithLimit,
 	escapeAnsiStringLiteral,
+	defaultStringLiteralEscapesBackslash,
 	type DialectFunctionTypeRule,
 	type SqlDialect,
 	NO_CONDITIONAL_AGGREGATES
@@ -163,6 +164,18 @@ export class PostgresDialect implements SqlDialect {
 	}
 
 	readonly escapesBackslashInIdentifiers = false;
+	readonly escapesBackslashInStringLiterals = false;
+	// Postgres dollar-quoting supports tagged delimiters ($tag$…$tag$), including $$.
+	readonly dollarQuoting: 'none' | 'double' | 'tagged' = 'tagged';
+	readonly tripleQuotedStringDelimiters: readonly string[] = [];
+
+	stringLiteralEscapesBackslash(prefix: string): boolean {
+		// `E'…'` / `e'…'` escape strings honour backslash escapes even though
+		// ordinary literals do not (standard_conforming_strings=on assumed).
+		return defaultStringLiteralEscapesBackslash(prefix, this.escapesBackslashInStringLiterals, {
+			escapeStrings: true
+		});
+	}
 
 	quoteIdentifierIfNeeded(identifier: string): string {
 		return isSimpleIdentifier(identifier) ? identifier : this.quoteAlias(identifier);

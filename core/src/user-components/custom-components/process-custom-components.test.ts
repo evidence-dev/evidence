@@ -4,6 +4,7 @@ import type { ValidationContext } from '../validators/types';
 import { InlineQueries } from '../common/inline-queries';
 import { Filters } from '../../Filters.svelte';
 import { parseCustomComponentMeta } from './build-custom-tags';
+import { TranslationValue } from '../../translations/translation-value';
 
 const ctx = (over: Partial<ValidationContext> = {}): ValidationContext => ({
 	metadata: undefined,
@@ -1237,6 +1238,31 @@ body`;
 		// The autocomplete getter keeps its preview fallbacks (unchanged).
 		const preview = processor.variables;
 		expect(String(preview.data)).toContain('Source query');
+	});
+
+	test('variables exposes primitive translations; interpolationVariables wraps for .sql', async () => {
+		const { MarkdocProcessor } =
+			await import('../Renderer/MarkdocProcessor/MarkdocProcessor.svelte');
+		const processor = new MarkdocProcessor({
+			translations: { greeting: "Bonjour d'ami", messages: { welcome: 'Salut' } }
+		});
+		processor.markdown = 'body';
+
+		// Autocomplete-facing: primitive strings, or the completion provider
+		// classifies every boxed leaf as nested (trailing dot + char indexes).
+		const vars = processor.variables as Record<string, unknown>;
+		const varsTranslations = vars.translations as Record<string, unknown>;
+		expect(typeof varsTranslations.greeting).toBe('string');
+		expect(varsTranslations.greeting).toBe("Bonjour d'ami");
+		expect(typeof (varsTranslations.messages as Record<string, unknown>).welcome).toBe('string');
+
+		// SQL-console-facing: wrapped so `.sql` resolves to its sentinel.
+		const interp = processor.interpolationVariables as Record<string, unknown>;
+		const interpTranslations = interp.translations as Record<string, unknown>;
+		expect(interpTranslations.greeting).toBeInstanceOf(TranslationValue);
+		expect((interpTranslations.messages as Record<string, unknown>).welcome).toBeInstanceOf(
+			TranslationValue
+		);
 	});
 });
 

@@ -6,6 +6,7 @@ import {
 	isSimpleIdentifier,
 	wrapWithLimit,
 	escapeBackslashStringLiteral,
+	defaultStringLiteralEscapesBackslash,
 	type DialectFunctionTypeRule,
 	type SqlDialect,
 	NO_CONDITIONAL_AGGREGATES
@@ -59,7 +60,11 @@ export class BigQueryDialect implements SqlDialect {
 	// DATETIME, which is the only way to add hours/minutes anyway).
 	private dateArithFamily(unit: string): 'DATE' | 'DATETIME' {
 		const u = unit.toUpperCase();
-		return u === 'HOUR' || u === 'MINUTE' || u === 'SECOND' || u === 'MILLISECOND' || u === 'MICROSECOND'
+		return u === 'HOUR' ||
+			u === 'MINUTE' ||
+			u === 'SECOND' ||
+			u === 'MILLISECOND' ||
+			u === 'MICROSECOND'
 			? 'DATETIME'
 			: 'DATE';
 	}
@@ -101,7 +106,14 @@ export class BigQueryDialect implements SqlDialect {
 		return wrapWithLimit(sql, limit);
 	}
 
-	rowLimitClause({ limit, offset }: { limit?: number; offset?: number; hasOrderBy: boolean }): string {
+	rowLimitClause({
+		limit,
+		offset
+	}: {
+		limit?: number;
+		offset?: number;
+		hasOrderBy: boolean;
+	}): string {
 		const parts: string[] = [];
 		if (limit !== undefined) parts.push(`LIMIT ${limit}`);
 		if (offset !== undefined) parts.push(`OFFSET ${offset}`);
@@ -142,6 +154,18 @@ export class BigQueryDialect implements SqlDialect {
 	}
 
 	readonly escapesBackslashInIdentifiers = true;
+	readonly escapesBackslashInStringLiterals = true;
+	readonly dollarQuoting: 'none' | 'double' | 'tagged' = 'none';
+	// BigQuery triple-quoted strings: content is literal, no escaping.
+	readonly tripleQuotedStringDelimiters: readonly string[] = ['"""', "'''"];
+
+	stringLiteralEscapesBackslash(prefix: string): boolean {
+		// BigQuery `r'…'` / `R'…'` raw strings do NOT honour backslash escapes
+		// even though ordinary literals do.
+		return defaultStringLiteralEscapesBackslash(prefix, this.escapesBackslashInStringLiterals, {
+			rawStrings: true
+		});
+	}
 
 	quoteIdentifierIfNeeded(identifier: string): string {
 		return isSimpleIdentifier(identifier) ? identifier : this.quoteAlias(identifier);

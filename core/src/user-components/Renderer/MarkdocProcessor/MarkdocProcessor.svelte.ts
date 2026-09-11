@@ -186,12 +186,15 @@ export class MarkdocProcessor {
 		return this.#customComponentRegistry.meta;
 	}
 
-	#baseVariables(): Record<string, unknown> {
+	#baseVariables(wrapTranslations: boolean): Record<string, unknown> {
 		const { frontmatter } = parseFrontmatter(this.#ast.attributes?.frontmatter as string);
 		return {
 			...frontmatter,
-			// Wrap so the SQL console (reads `interpolationVariables`) resolves `.sql` too.
-			[TRANSLATIONS_KEY]: wrapTranslationsForSql(this.#translations),
+			// Only the SQL console path wraps — autocomplete needs primitives or
+			// boxed leaves classify as nested objects (trailing dot + char indexes).
+			[TRANSLATIONS_KEY]: wrapTranslations
+				? wrapTranslationsForSql(this.#translations)
+				: this.#translations,
 			...(this.#account
 				? { [USER_KEY]: this.#account.user, [ORGANIZATION_KEY]: this.#account.organization }
 				: {}),
@@ -211,7 +214,8 @@ export class MarkdocProcessor {
 	 * SQL (`from Source query with columns date, …`).
 	 */
 	get interpolationVariables(): Record<string, unknown> {
-		const base = this.#baseVariables();
+		// Wrapped translations so the SQL console's compiled view resolves `.sql`.
+		const base = this.#baseVariables(true);
 		if (this.#standaloneFileType !== 'component') return base;
 		const fmString = this.#ast.attributes?.frontmatter as string | undefined;
 		if (!fmString) return base;
@@ -228,7 +232,9 @@ export class MarkdocProcessor {
 	}
 
 	get variables() {
-		const base = this.#baseVariables();
+		// Primitive translations — the completion provider treats boxed String
+		// leaves as nested objects, breaking `$translations.key` autocomplete.
+		const base = this.#baseVariables(false);
 
 		// When editing a custom component standalone, surface each declared
 		// attribute's BODY-PROPERTY shape so the editor's `{{ $attr.prop }}`

@@ -6,6 +6,7 @@ import {
 	isSimpleIdentifier,
 	wrapWithLimit,
 	escapeBackslashStringLiteral,
+	defaultStringLiteralEscapesBackslash,
 	type DialectFunctionTypeRule,
 	type SqlDialect,
 	NO_CONDITIONAL_AGGREGATES
@@ -99,7 +100,14 @@ export class DatabricksDialect implements SqlDialect {
 		return wrapWithLimit(sql, limit);
 	}
 
-	rowLimitClause({ limit, offset }: { limit?: number; offset?: number; hasOrderBy: boolean }): string {
+	rowLimitClause({
+		limit,
+		offset
+	}: {
+		limit?: number;
+		offset?: number;
+		hasOrderBy: boolean;
+	}): string {
 		const parts: string[] = [];
 		if (limit !== undefined) parts.push(`LIMIT ${limit}`);
 		if (offset !== undefined) parts.push(`OFFSET ${offset}`);
@@ -143,6 +151,17 @@ export class DatabricksDialect implements SqlDialect {
 	}
 
 	readonly escapesBackslashInIdentifiers = true;
+	readonly escapesBackslashInStringLiterals = true;
+	readonly dollarQuoting: 'none' | 'double' | 'tagged' = 'none';
+	readonly tripleQuotedStringDelimiters: readonly string[] = [];
+
+	stringLiteralEscapesBackslash(prefix: string): boolean {
+		// Spark `r'…'` raw strings do not honour backslash escapes
+		// (spark.sql.parser.escapedStringLiterals default assumed).
+		return defaultStringLiteralEscapesBackslash(prefix, this.escapesBackslashInStringLiterals, {
+			rawStrings: true
+		});
+	}
 
 	quoteIdentifierIfNeeded(identifier: string): string {
 		return isSimpleIdentifier(identifier) ? identifier : this.quoteAlias(identifier);

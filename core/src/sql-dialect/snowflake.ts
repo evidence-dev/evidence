@@ -6,6 +6,7 @@ import {
 	isSimpleIdentifier,
 	wrapWithLimit,
 	escapeBackslashStringLiteral,
+	defaultStringLiteralEscapesBackslash,
 	type DialectFunctionTypeRule,
 	type SqlDialect,
 	NO_CONDITIONAL_AGGREGATES
@@ -81,7 +82,14 @@ export class SnowflakeDialect implements SqlDialect {
 		return wrapWithLimit(sql, limit);
 	}
 
-	rowLimitClause({ limit, offset }: { limit?: number; offset?: number; hasOrderBy: boolean }): string {
+	rowLimitClause({
+		limit,
+		offset
+	}: {
+		limit?: number;
+		offset?: number;
+		hasOrderBy: boolean;
+	}): string {
 		const parts: string[] = [];
 		if (limit !== undefined) parts.push(`LIMIT ${limit}`);
 		if (offset !== undefined) parts.push(`OFFSET ${offset}`);
@@ -112,6 +120,15 @@ export class SnowflakeDialect implements SqlDialect {
 	}
 
 	readonly escapesBackslashInIdentifiers = true;
+	readonly escapesBackslashInStringLiterals = true;
+	// Snowflake dollar-quoting is $$…$$ only (no tagged delimiters).
+	readonly dollarQuoting: 'none' | 'double' | 'tagged' = 'double';
+	readonly tripleQuotedStringDelimiters: readonly string[] = [];
+
+	stringLiteralEscapesBackslash(prefix: string): boolean {
+		// Snowflake has no literal-prefix forms; the ordinary policy applies.
+		return defaultStringLiteralEscapesBackslash(prefix, this.escapesBackslashInStringLiterals);
+	}
 
 	quoteIdentifierIfNeeded(identifier: string): string {
 		// Unquoted Snowflake identifiers fold to uppercase.

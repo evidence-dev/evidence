@@ -2,6 +2,8 @@ import Markdoc, { type Node, type RenderableTreeNode, type ValidateError } from 
 import * as MarkdocStar from '@markdoc/markdoc';
 import { fenceQueryName } from '../../common/fence-meta';
 import type { ValidationContext } from '../../validators';
+import { resolveDialect } from '../../validators/types';
+import { defaultDialect, type SqlDialect } from '../../../sql-dialect';
 import { validateDeprecatedFrontmatterKeys } from '../../validators/validateDeprecatedFrontmatter';
 import { validateInvalidIconName } from '../../validators/validateInvalidIconName';
 import { isAgentPath } from '../../agent-path';
@@ -14,6 +16,7 @@ import { replaceFilterVariablesWithComponents } from './replaceFilterVariablesWi
 import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 import { createFrontmatterVariablePattern } from '../../../filter-variables/frontmatter-variable';
 import { preprocessVariables } from './preprocess-variables';
+import { rewriteSqlFenceTranslationTokens } from './rewrite-bare-translation-sql';
 import type { TranslationMap } from '../../../types/translations';
 import { wrapTranslationsForSql } from '../../../translations/translation-value';
 import type { AccountVariables } from '../../../types/account-variables';
@@ -36,10 +39,19 @@ const tokenizer = new Markdoc.Tokenizer({ allowComments: true, allowIndentation:
 // attribute) because the document schema rejects unknown attributes.
 const documentSources = new WeakMap<Node, string>();
 
-function parsePartial(file: string, content: string): Node {
+// Resolves a fence's `connection=` attr to that connection's dialect.
+type ResolveConnectionDialect = (connection: string) => SqlDialect | undefined;
+
+function parsePartial(
+	file: string,
+	content: string,
+	dialect: SqlDialect,
+	resolveConnectionDialect?: ResolveConnectionDialect
+): Node {
 	const preprocessed = preprocessVariables(content);
 	const tokens = tokenizer.tokenize(preprocessed);
 	const ast = Markdoc.parse(tokens, { file });
+	rewriteSqlFenceTranslationTokens(ast, dialect, resolveConnectionDialect);
 	documentSources.set(ast, preprocessed);
 	return ast;
 }
@@ -105,9 +117,16 @@ function buildEvidenceSources(
 	};
 }
 
-function parsePartials(partials: Record<string, string> = {}): Record<string, Node> {
+function parsePartials(
+	partials: Record<string, string> = {},
+	dialect: SqlDialect,
+	resolveConnectionDialect?: ResolveConnectionDialect
+): Record<string, Node> {
 	return Object.fromEntries(
-		Object.entries(partials).map(([file, content]) => [file, parsePartial(file, content)])
+		Object.entries(partials).map(([file, content]) => [
+			file,
+			parsePartial(file, content, dialect, resolveConnectionDialect)
+		])
 	);
 }
 
@@ -122,7 +141,9 @@ function parsePartials(partials: Record<string, string> = {}): Record<string, No
  */
 function parseComponentBodies(
 	customComponents: Record<string, string> = {},
-	isQueryRefAttribute?: (tagName: string, attrName: string) => boolean
+	isQueryRefAttribute?: (tagName: string, attrName: string) => boolean,
+	dialect: SqlDialect = defaultDialect,
+	resolveConnectionDialect?: ResolveConnectionDialect
 ): Record<string, Node> {
 	return Object.fromEntries(
 		Object.entries(customComponents).map(([file, content]) => {
@@ -132,11 +153,13 @@ function parseComponentBodies(
 			// the source text (not via the AST), so only a source-level rewrite
 			// can scope those calls. The rewrite never adds or removes lines, so
 			// node locations (which the html slice depends on) stay valid.
-			let ast = parsePartial(file, content);
+			let ast = parsePartial(file, content, dialect, resolveConnectionDialect);
 			const localNames = collectLocalQueryNames(ast);
 			if (localNames.size > 0 && content.includes('evidence.query(')) {
 				const rewritten = rewriteEvidenceQueryCalls(content, buildQueryRenameMap(localNames, file));
-				if (rewritten !== content) ast = parsePartial(file, rewritten);
+				if (rewritten !== content) {
+					ast = parsePartial(file, rewritten, dialect, resolveConnectionDialect);
+				}
 			}
 			return [file, namespaceComponentQueries(ast, file, isQueryRefAttribute)];
 		})
@@ -221,8 +244,21 @@ function buildConfig(args: {
 		return attr?.suggestionType === 'table';
 	};
 
-	const partialNodes = parsePartials(partials);
-	const customComponentNodes = parseComponentBodies(customComponents, isQueryRefAttribute);
+	// The parse-time literal scanner must match the target dialect's literal semantics.
+	const dialect = validationContext ? resolveDialect(validationContext) : defaultDialect;
+	// A fence declaring `connection=…` is scanned with THAT connection's dialect.
+	const resolveConnectionDialect: ResolveConnectionDialect | undefined =
+		validationContext?.metadataForConnection
+			? (name) => validationContext.metadataForConnection?.(name)?.dialect
+			: undefined;
+
+	const partialNodes = parsePartials(partials, dialect, resolveConnectionDialect);
+	const customComponentNodes = parseComponentBodies(
+		customComponents,
+		isQueryRefAttribute,
+		dialect,
+		resolveConnectionDialect
+	);
 
 	const combinedPartials: Record<string, Node> = { ...partialNodes, ...customComponentNodes };
 
@@ -382,6 +418,13 @@ export function parse(
 
 	const tokens = tokenizer.tokenize(preprocessed);
 	const ast = Markdoc.parse(tokens);
+	rewriteSqlFenceTranslationTokens(
+		ast,
+		validationContext ? resolveDialect(validationContext) : defaultDialect,
+		validationContext?.metadataForConnection
+			? (name) => validationContext.metadataForConnection?.(name)?.dialect
+			: undefined
+	);
 	documentSources.set(ast, preprocessed);
 
 	const { frontmatter } = parseFrontmatter(ast.attributes?.frontmatter as string);

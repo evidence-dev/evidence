@@ -1237,7 +1237,7 @@ select
 
 		const inlineQueries = new InlineQueries({ filterContexts: [] });
 
-		process(
+		const result = process(
 			content,
 			{
 				filters: undefined,
@@ -1253,6 +1253,57 @@ select
 			const expected = expectedInlineQueries[name];
 			expect(actual).toEqual(expected);
 		}
+
+		// The partials' SQL references frontmatter defaults and call-site-passed
+		// variables — none of those may trip the unresolved-partial-variable warning.
+		const warningIds = result.validationErrors
+			.map((e) => e.error?.id)
+			.filter((id) => id === 'unresolved-partial-variable');
+		expect(warningIds).toHaveLength(0);
+	});
+
+	it('warns when a partial SQL fence references a $var with no source', () => {
+		const content = `---
+root_var: root_var
+---
+
+{% partial
+	file="partial1"
+	variables={
+		passed_var=$root_var
+	}
+/%}
+`;
+		const partials: Record<string, string> = {
+			partial1: `---
+passed_var: passed_var_default
+---
+
+\`\`\`sql partial1_query
+select
+	'{{$passed_var}}' as passed_var,
+	'{{$nowhere_var}}' as nowhere
+\`\`\`
+`
+		};
+
+		const result = process(
+			content,
+			{
+				filters: undefined,
+				inlineQueries: undefined,
+				metadata: undefined,
+				trees: undefined
+			},
+			partials
+		);
+		const warning = result.validationErrors.find(
+			(e) => e.error?.id === 'unresolved-partial-variable'
+		);
+		expect(warning).toBeDefined();
+		expect(warning?.error?.message).toContain('$nowhere_var');
+		expect(warning?.error?.message).not.toContain('$passed_var');
+		expect(warning?.error?.level).toBe('warning');
 	});
 });
 

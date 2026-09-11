@@ -49,6 +49,23 @@ export function escapeSqlValue(
 	return dialect ? dialect.escapeStringLiteral(value) : escapeBackslashStringLiteral(value);
 }
 
+/**
+ * Shared default for `SqlDialect.stringLiteralEscapesBackslash`. A dialect passes
+ * `escapeStrings` for Postgres/DuckDB `E'…'` (escapes on) and `rawStrings` for
+ * BigQuery/Databricks `r'…'` (escapes off); any other prefix falls back to the
+ * ordinary-literal policy.
+ */
+export function defaultStringLiteralEscapesBackslash(
+	prefix: string,
+	escapesBackslashInStringLiterals: boolean,
+	opts: { escapeStrings?: boolean; rawStrings?: boolean } = {}
+): boolean {
+	const p = prefix.toLowerCase();
+	if (opts.escapeStrings && p === 'e') return true;
+	if (opts.rawStrings && p === 'r') return false;
+	return escapesBackslashInStringLiterals;
+}
+
 /** For warehouses with no predicate-argument aggregates — everything but ClickHouse. */
 export const NO_CONDITIONAL_AGGREGATES: ReadonlySet<string> = new Set<string>();
 
@@ -198,6 +215,25 @@ export interface SqlDialect {
 	 * …--"` closes early. Where it is false, doubling would rename a real `my\table`.
 	 */
 	readonly escapesBackslashInIdentifiers: boolean;
+	/**
+	 * True when `\` escapes the next character inside a single-quoted string literal
+	 * (BigQuery/ClickHouse/Snowflake/Databricks write `\'`). False for ANSI-family
+	 * dialects (Postgres/DuckDB/Fabric) where `''` is the escape.
+	 */
+	readonly escapesBackslashInStringLiterals: boolean;
+	/**
+	 * Whether a single-quoted literal with the given prefix honours backslash escapes.
+	 * `prefix` is the maximal `[A-Za-z]` run before the opening quote ('' when unprefixed);
+	 * the dialect owns it because `E`/`r` mean different things per warehouse.
+	 */
+	stringLiteralEscapesBackslash(prefix: string): boolean;
+	/** Dollar-quoting: 'none', 'double' (`$$…$$` only, Snowflake), or 'tagged' (`$tag$…$tag$`, Postgres). */
+	readonly dollarQuoting: 'none' | 'double' | 'tagged';
+	/**
+	 * Delimiters that open a triple-quoted string literal (BigQuery `'''` and
+	 * `"""`), or empty when the dialect has none.
+	 */
+	readonly tripleQuotedStringDelimiters: readonly string[];
 	/**
 	 * Escape the contents of a single-quoted string literal. Returns the inner text only —
 	 * the caller still writes the surrounding quotes.

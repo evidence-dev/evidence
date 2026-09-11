@@ -8,6 +8,7 @@ import {
 	scanTopLevelClauses,
 	stripLeadingIgnorable,
 	escapeAnsiStringLiteral,
+	defaultStringLiteralEscapesBackslash,
 	type DialectFunctionTypeRule,
 	type SqlDialect,
 	NO_CONDITIONAL_AGGREGATES
@@ -238,6 +239,15 @@ export class FabricDialect implements SqlDialect {
 	}
 
 	readonly escapesBackslashInIdentifiers = false;
+	readonly escapesBackslashInStringLiterals = false;
+	readonly dollarQuoting: 'none' | 'double' | 'tagged' = 'none';
+	readonly tripleQuotedStringDelimiters: readonly string[] = [];
+
+	stringLiteralEscapesBackslash(prefix: string): boolean {
+		// T-SQL's `N'…'` prefix changes the literal's type only, not its
+		// escaping — backslash stays ordinary, so the ordinary policy applies.
+		return defaultStringLiteralEscapesBackslash(prefix, this.escapesBackslashInStringLiterals);
+	}
 
 	quoteIdentifierIfNeeded(identifier: string): string {
 		return isSimpleIdentifier(identifier) ? identifier : this.quoteAlias(identifier);

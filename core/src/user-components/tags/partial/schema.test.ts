@@ -401,3 +401,328 @@ describe('Partial schema circular reference validation', () => {
 		expect(validationErrors[0].id).toBe('circular-reference');
 	});
 });
+
+describe('Partial schema unresolved-variable validation', () => {
+	const mockContext = {
+		metadata: undefined,
+		filters: undefined,
+		inlineQueries: undefined,
+		trees: undefined
+	};
+
+	// A partial whose SQL references $passed_var (in frontmatter), $given_var
+	// (passed at the call site), and $missing_var (nowhere).
+	const partialWithSqlFence = {
+		attributes: { frontmatter: 'passed_var: default\n' },
+		children: [
+			{
+				type: 'fence',
+				attributes: {
+					language: 'sql',
+					content: "select '{{ $passed_var }}', '{{ $given_var }}', '{{ $missing_var }}'"
+				},
+				children: []
+			}
+		]
+	} as unknown as Node;
+
+	it('warns on SQL-fence $vars that are neither in frontmatter nor passed', async () => {
+		const { schema } = await import('./schema');
+		const config: Config = {
+			variables: {},
+			partials: { my_partial: partialWithSqlFence }
+		};
+		const node: Node = {
+			attributes: {
+				file: 'my_partial',
+				variables: { given_var: 'x' }
+			}
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		const warning = errors.find((e) => e.id === 'unresolved-partial-variable');
+		expect(warning).toBeDefined();
+		expect(warning?.level).toBe('warning');
+		expect(warning?.message).toContain('$missing_var');
+		expect(warning?.message).not.toContain('$passed_var');
+		expect(warning?.message).not.toContain('$given_var');
+	});
+
+	it('does not warn when every SQL-fence $var is in scope', async () => {
+		const { schema } = await import('./schema');
+		const config: Config = {
+			variables: {},
+			partials: { my_partial: partialWithSqlFence }
+		};
+		const node: Node = {
+			attributes: {
+				file: 'my_partial',
+				variables: { given_var: 'x', missing_var: 'y' }
+			}
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		expect(errors.find((e) => e.id === 'unresolved-partial-variable')).toBeUndefined();
+	});
+
+	it('never warns on $translations (inherited), but does warn on $user/$organization (not inherited)', async () => {
+		const { schema } = await import('./schema');
+		const partialWithTranslations = {
+			attributes: {},
+			children: [
+				{
+					type: 'fence',
+					attributes: {
+						language: 'sql',
+						content: "select '{{ $translations.greeting }}', '{{ $user.email }}'"
+					},
+					children: []
+				}
+			]
+		} as unknown as Node;
+		const config: Config = {
+			variables: {},
+			partials: { my_partial: partialWithTranslations }
+		};
+		const node: Node = {
+			attributes: { file: 'my_partial' }
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		const warning = errors.find((e) => e.id === 'unresolved-partial-variable');
+		// $translations is inherited into partial scope; $user is not —
+		// createScopedConfig drops it, so it resolves to an empty string.
+		expect(warning).toBeDefined();
+		expect(warning?.message).toContain('$user.email');
+		expect(warning?.message).not.toContain('$translations');
+	});
+
+	it('does not treat prototype properties (e.g. toString) as in-scope frontmatter variables', async () => {
+		const { schema } = await import('./schema');
+		const partialWithToString = {
+			attributes: { frontmatter: 'passed_var: default\n' },
+			children: [
+				{
+					type: 'fence',
+					attributes: {
+						language: 'sql',
+						content: "select '{{ $toString }}'"
+					},
+					children: []
+				}
+			]
+		} as unknown as Node;
+		const config: Config = {
+			variables: {},
+			partials: { my_partial: partialWithToString }
+		};
+		const node: Node = {
+			attributes: { file: 'my_partial' }
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		const warning = errors.find((e) => e.id === 'unresolved-partial-variable');
+		expect(warning).toBeDefined();
+		expect(warning?.message).toContain('$toString');
+	});
+
+	it('does not warn when the partial has no SQL fences', async () => {
+		const { schema } = await import('./schema');
+		const plainPartial = {
+			attributes: {},
+			children: [{ type: 'text', attributes: { content: 'hello' }, children: [] }]
+		} as unknown as Node;
+		const config: Config = {
+			variables: {},
+			partials: { my_partial: plainPartial }
+		};
+		const node: Node = {
+			attributes: { file: 'my_partial' }
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		expect(errors.find((e) => e.id === 'unresolved-partial-variable')).toBeUndefined();
+	});
+
+	it("warns on undeclared $vars in a NESTED partial's SQL", async () => {
+		const { schema } = await import('./schema');
+		// outer includes inner, whose SQL uses $inner_ok (inner frontmatter),
+		// $inner_given (passed at the nested call site), and $inner_missing (nowhere).
+		const innerPartial = {
+			attributes: { frontmatter: 'inner_ok: default\n' },
+			children: [
+				{
+					type: 'fence',
+					attributes: {
+						language: 'sql',
+						content: "select '{{ $inner_ok }}', '{{ $inner_given }}', '{{ $inner_missing }}'"
+					},
+					children: []
+				}
+			]
+		} as unknown as Node;
+		const outerPartial = {
+			attributes: { frontmatter: 'outer_ok: default\n' },
+			children: [
+				{
+					tag: 'partial',
+					attributes: { file: 'inner_partial', variables: { inner_given: 'x' } },
+					children: []
+				}
+			]
+		} as unknown as Node;
+		const config: Config = {
+			variables: {},
+			partials: { outer_partial: outerPartial, inner_partial: innerPartial }
+		};
+		const node: Node = {
+			attributes: { file: 'outer_partial' }
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		const warning = errors.find((e) => e.id === 'unresolved-partial-variable');
+		expect(warning).toBeDefined();
+		expect(warning?.message).toContain('$inner_missing');
+		expect(warning?.message).not.toContain('$inner_ok');
+		expect(warning?.message).not.toContain('$inner_given');
+	});
+
+	it('does not warn when every nested-partial $var is in the nested scope', async () => {
+		const { schema } = await import('./schema');
+		const innerPartial = {
+			attributes: { frontmatter: 'inner_ok: default\n' },
+			children: [
+				{
+					type: 'fence',
+					attributes: {
+						language: 'sql',
+						content: "select '{{ $inner_ok }}', '{{ $inner_given }}'"
+					},
+					children: []
+				}
+			]
+		} as unknown as Node;
+		const outerPartial = {
+			attributes: {},
+			children: [
+				{
+					tag: 'partial',
+					attributes: { file: 'inner_partial', variables: { inner_given: 'x' } },
+					children: []
+				}
+			]
+		} as unknown as Node;
+		const config: Config = {
+			variables: {},
+			partials: { outer_partial: outerPartial, inner_partial: innerPartial }
+		};
+		const node: Node = {
+			attributes: { file: 'outer_partial' }
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		expect(errors.find((e) => e.id === 'unresolved-partial-variable')).toBeUndefined();
+	});
+
+	it("nested scope does NOT inherit the outer partial's variables", async () => {
+		const { schema } = await import('./schema');
+		// inner's SQL uses $outer_ok, which exists only in the OUTER partial's
+		// frontmatter — createScopedConfig drops it in inner scope, so it must warn.
+		const innerPartial = {
+			attributes: {},
+			children: [
+				{
+					type: 'fence',
+					attributes: { language: 'sql', content: "select '{{ $outer_ok }}'" },
+					children: []
+				}
+			]
+		} as unknown as Node;
+		const outerPartial = {
+			attributes: { frontmatter: 'outer_ok: default\n' },
+			children: [{ tag: 'partial', attributes: { file: 'inner_partial' }, children: [] }]
+		} as unknown as Node;
+		const config: Config = {
+			variables: {},
+			partials: { outer_partial: outerPartial, inner_partial: innerPartial }
+		};
+		const node: Node = {
+			attributes: { file: 'outer_partial' }
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		const warning = errors.find((e) => e.id === 'unresolved-partial-variable');
+		expect(warning).toBeDefined();
+		expect(warning?.message).toContain('$outer_ok');
+	});
+
+	it('does not infinitely recurse on circular partial references', async () => {
+		const { schema } = await import('./schema');
+		const partialA = {
+			attributes: {},
+			children: [
+				{
+					type: 'fence',
+					attributes: { language: 'sql', content: "select '{{ $a_missing }}'" },
+					children: []
+				},
+				{ tag: 'partial', attributes: { file: 'partial_b' }, children: [] }
+			]
+		} as unknown as Node;
+		const partialB = {
+			attributes: {},
+			children: [{ tag: 'partial', attributes: { file: 'partial_a' }, children: [] }]
+		} as unknown as Node;
+		const config: Config = {
+			variables: {},
+			partials: { partial_a: partialA, partial_b: partialB }
+		};
+		const node: Node = {
+			attributes: { file: 'partial_a' }
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		const warning = errors.find((e) => e.id === 'unresolved-partial-variable');
+		expect(warning).toBeDefined();
+		expect(warning?.message).toContain('$a_missing');
+	});
+
+	it("re-validates a diamond partial at each call site's scope", async () => {
+		const { schema } = await import('./schema');
+		// shared is included twice with different passed variables: the first
+		// call site passes $shared_var, the second does not — the second must warn.
+		const sharedPartial = {
+			attributes: {},
+			children: [
+				{
+					type: 'fence',
+					attributes: { language: 'sql', content: "select '{{ $shared_var }}'" },
+					children: []
+				}
+			]
+		} as unknown as Node;
+		const outerPartial = {
+			attributes: {},
+			children: [
+				{
+					tag: 'partial',
+					attributes: { file: 'shared_partial', variables: { shared_var: 'x' } },
+					children: []
+				},
+				{ tag: 'partial', attributes: { file: 'shared_partial' }, children: [] }
+			]
+		} as unknown as Node;
+		const config: Config = {
+			variables: {},
+			partials: { outer_partial: outerPartial, shared_partial: sharedPartial }
+		};
+		const node: Node = {
+			attributes: { file: 'outer_partial' }
+		} as unknown as Node;
+
+		const errors = schema.validate(node, config, mockContext);
+		const warning = errors.find((e) => e.id === 'unresolved-partial-variable');
+		expect(warning).toBeDefined();
+		expect(warning?.message).toContain('$shared_var');
+	});
+});

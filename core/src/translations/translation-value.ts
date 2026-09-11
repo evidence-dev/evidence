@@ -6,20 +6,25 @@ import { escapeAnsiStringLiteral } from '../sql-dialect/common';
 const OPEN = '\uE000ev-tsql\uE001';
 const CLOSE = '\uE002ev-tsql\uE003';
 
-// Dialect isn't known when Markdoc substitutes variables, so `.sql` defers
-// escaping via a sentinel that `applyTranslationSqlEscapes` finalises later.
+// Dialect isn't known at Markdoc-substitution time, so `.sql` defers escaping
+// via a sentinel that `applyTranslationSqlEscapes` finalises per dialect.
 export class TranslationValue extends String {
 	get sql(): string {
-		const raw = this.toString();
-		return `${OPEN}${raw.length}:${raw}${CLOSE}`;
+		return wrapSqlSentinel(this.toString());
 	}
+}
+
+// Wrap any literal (a fallback, not just a translation value) in the deferred
+// escape sentinel so it is finalised with the dialect's rules at query time.
+export function wrapSqlSentinel(value: string): string {
+	return `${OPEN}${value.length}:${value}${CLOSE}`;
 }
 
 export function wrapTranslationsForSql(map: TranslationMap): TranslationMap {
 	const out: Record<string, unknown> = {};
 	for (const [key, value] of Object.entries(map)) {
-		// `Object.entries(new String('ab'))` yields indexed characters, so a
-		// re-wrap would descend into `[['0','a'],['1','b']]` without this branch.
+		// Object.entries on a boxed String yields char indexes — without this
+		// branch a re-wrap would descend into [['0','a'],['1','b']].
 		if (typeof value === 'string' || value instanceof String) {
 			out[key] = new TranslationValue(value.toString());
 		} else if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
@@ -31,8 +36,7 @@ export function wrapTranslationsForSql(map: TranslationMap): TranslationMap {
 	return out as TranslationMap;
 }
 
-// ANSI fallback when no dialect is passed keeps a stray sentinel from ever
-// reaching the warehouse verbatim.
+// ANSI fallback so a stray sentinel never reaches the warehouse verbatim.
 export function applyTranslationSqlEscapes(
 	sql: string,
 	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>

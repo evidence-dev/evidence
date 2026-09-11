@@ -6,6 +6,7 @@ import {
 	isSimpleIdentifier,
 	wrapWithLimit,
 	escapeAnsiStringLiteral,
+	defaultStringLiteralEscapesBackslash,
 	type DialectFunctionTypeRule,
 	type SqlDialect,
 	NO_CONDITIONAL_AGGREGATES
@@ -107,7 +108,14 @@ export class MotherDuckDialect implements SqlDialect {
 		return wrapWithLimit(sql, limit);
 	}
 
-	rowLimitClause({ limit, offset }: { limit?: number; offset?: number; hasOrderBy: boolean }): string {
+	rowLimitClause({
+		limit,
+		offset
+	}: {
+		limit?: number;
+		offset?: number;
+		hasOrderBy: boolean;
+	}): string {
 		const parts: string[] = [];
 		if (limit !== undefined) parts.push(`LIMIT ${limit}`);
 		if (offset !== undefined) parts.push(`OFFSET ${offset}`);
@@ -147,6 +155,17 @@ export class MotherDuckDialect implements SqlDialect {
 	}
 
 	readonly escapesBackslashInIdentifiers = false;
+	readonly escapesBackslashInStringLiterals = false;
+	readonly dollarQuoting: 'none' | 'double' | 'tagged' = 'none';
+	readonly tripleQuotedStringDelimiters: readonly string[] = [];
+
+	stringLiteralEscapesBackslash(prefix: string): boolean {
+		// DuckDB `E'…'` escape strings honour backslash escapes even though
+		// ordinary literals do not.
+		return defaultStringLiteralEscapesBackslash(prefix, this.escapesBackslashInStringLiterals, {
+			escapeStrings: true
+		});
+	}
 
 	quoteIdentifierIfNeeded(identifier: string): string {
 		// DuckDB does not fold unquoted identifiers, so a simple identifier is safe bare.

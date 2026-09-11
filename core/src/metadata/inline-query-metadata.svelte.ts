@@ -11,6 +11,10 @@ import {
 	hasTemplating,
 	extractFilterIds
 } from '../interpolate-query-strings';
+import {
+	applyTranslationSqlEscapes,
+	hasUnresolvedTranslationSqlEscape
+} from '../translations/translation-value';
 import type { Filters } from '../Filters.svelte';
 import debounce from 'just-debounce-it';
 import { logger } from '../shims/logger';
@@ -66,7 +70,16 @@ export class InlineQueryMetadata extends Metadata {
 				const filterContexts = [this.deps.pageFilters].filter((x): x is NonNullable<typeof x> =>
 					Boolean(x)
 				);
-				const result = interpolateQueryStrings(rawQuery, filterContexts, this.deps.inlineQueries);
+				// Dialect so `.sql` sentinels escape with the warehouse's rules
+				// (backslash on ClickHouse/BigQuery), not the ANSI fallback.
+				const result = interpolateQueryStrings(
+					rawQuery,
+					filterContexts,
+					this.deps.inlineQueries,
+					undefined,
+					undefined,
+					this.getQueryService().dialect
+				);
 
 				if (result.errors.length === 0) {
 					// Successfully interpolated, use the result
@@ -108,6 +121,10 @@ export class InlineQueryMetadata extends Metadata {
 				this.activeQueries.delete(queryName);
 				return;
 			}
+		} else if (hasUnresolvedTranslationSqlEscape(rawQuery)) {
+			// Sentinel-only query (no {{ }} templating) — finalise with the
+			// dialect so no sentinel reaches the warehouse verbatim.
+			queryToDescribe = applyTranslationSqlEscapes(rawQuery, this.getQueryService().dialect);
 		}
 
 		const oldQuery = this.activeQueries.get(queryName);

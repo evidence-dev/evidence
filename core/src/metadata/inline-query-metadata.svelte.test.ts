@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { SvelteMap } from 'svelte/reactivity';
 import { defaultDialect } from '../sql-dialect';
+import { ClickHouseDialect } from '../sql-dialect/clickhouse';
 import { InlineQueries } from '../user-components/common/inline-queries';
 import type { QueryService } from '../user-components/interfaces/query-service';
 import type { Filters } from '../Filters.svelte';
@@ -119,5 +120,47 @@ describe('InlineQueryMetadata', () => {
 		expect(metadata.getTable('orders_by_category')?.error).toContain(
 			'Missing filter ID: `category_filter`'
 		);
+	});
+
+	it('escapes translation .sql sentinels with the query service dialect, not the ANSI fallback', async () => {
+		// A fence whose body carries a translation `.sql` sentinel. The DESCRIBE
+		// must finalise it with the TARGET dialect's escape, not the ANSI `''`.
+		const filters = {
+			get filterIds() {
+				return [];
+			},
+			get: () => undefined
+		} as unknown as Filters;
+		const inlineQueries = new InlineQueries({ filterContexts: [filters] });
+		// Sentinel shape from TranslationValue.sql: OPEN + length + ':' + value + CLOSE.
+		const sentinel = `\uE000ev-tsql\uE001${"Offre d'adhérents".length}:${"Offre d'adhérents"}\uE002ev-tsql\uE003`;
+		inlineQueries.set('offerings', `select * from t where section = '${sentinel}'`);
+
+		const query = vi.fn(async (_sql: string) => ({
+			rows: [
+				{ name: 'section', type: 'String' },
+				{ name: 'n', type: 'UInt64' }
+			],
+			columns: [],
+			error: null
+		}));
+		const metadata = new InlineQueryMetadata(
+			{
+				workspaceId: 'workspace',
+				connectionType: 'managed',
+				dialect: new ClickHouseDialect(),
+				query: query as unknown as QueryService['query']
+			} satisfies QueryService,
+			{ inlineQueries, pageFilters: filters }
+		);
+
+		await metadata.loadInlineQueryMetadata('offerings');
+
+		expect(query).toHaveBeenCalledOnce();
+		const described = query.mock.calls[0][0] as string;
+		// ClickHouse escapes with a backslash: 'Offre d\'adhérents'.
+		expect(described).toContain("section = 'Offre d\\'adhérents'");
+		expect(described).not.toContain("d''adhérents");
+		expect(described).not.toContain('\uE000');
 	});
 });

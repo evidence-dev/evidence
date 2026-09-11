@@ -1,5 +1,6 @@
 import type { Node, Config, RenderableTreeNode } from '@markdoc/markdoc';
 import { partialFileExists, partialCircularReference, and } from '../../validators';
+import { unresolvedPartialVariables } from '../../validators/unresolvedPartialVariables';
 import type { UserComponentSchema } from '../../types';
 import { ZodAttribute } from '../../common/zod-attribute';
 import { z } from 'zod';
@@ -69,7 +70,11 @@ export const schema = {
 		'Use a reusable partial to render a section of content. Create a partial in the page sidebar of your project.',
 	inline: false,
 	selfClosing: true,
-	validate: and(partialFileExists('file'), partialCircularReference()),
+	validate: and(
+		partialFileExists('file'),
+		partialCircularReference(),
+		unresolvedPartialVariables()
+	),
 	attributes: {
 		file: {
 			type: String,

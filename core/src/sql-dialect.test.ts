@@ -1304,9 +1304,107 @@ describe('escapeStringLiteral', () => {
 
 	it('never leaves an odd number of consecutive backslashes before a quote', () => {
 		for (const dialect of backslashDialects) {
-			for (const raw of ["\\'", "\\\\'", "a\\", "\\\\", "''\\", "\\'\\'"]) {
+			for (const raw of ["\\'", "\\\\'", 'a\\', '\\\\', "''\\", "\\'\\'"]) {
 				expect(countLiteralBoundaries(`'${dialect.escapeStringLiteral(raw)}'`)).toBe(2);
 			}
+		}
+	});
+});
+
+describe('stringLiteralEscapesBackslash (literal-prefix policy)', () => {
+	// `E` is a Postgres/DuckDB-only prefix, `r` is BigQuery/Databricks-only —
+	// neither means anything elsewhere, so the ordinary policy applies.
+	const dialects: SqlDialect[] = [
+		new ClickHouseDialect(),
+		new SnowflakeDialect(),
+		new BigQueryDialect(),
+		new DatabricksDialect(),
+		new PostgresDialect(),
+		new CubeDialect(),
+		new MotherDuckDialect(),
+		new FabricDialect()
+	];
+
+	it('unprefixed literals use the dialect default', () => {
+		for (const dialect of dialects) {
+			expect(dialect.stringLiteralEscapesBackslash('')).toBe(
+				dialect.escapesBackslashInStringLiterals
+			);
+		}
+	});
+
+	it('E/e enables backslash escapes only in the Postgres family (Postgres/Cube/MotherDuck)', () => {
+		for (const dialect of [new PostgresDialect(), new CubeDialect(), new MotherDuckDialect()]) {
+			expect(dialect.stringLiteralEscapesBackslash('E')).toBe(true);
+			expect(dialect.stringLiteralEscapesBackslash('e')).toBe(true);
+		}
+		// Everywhere else E is not a prefix — the ordinary policy applies.
+		for (const dialect of [
+			new ClickHouseDialect(),
+			new SnowflakeDialect(),
+			new BigQueryDialect(),
+			new DatabricksDialect(),
+			new FabricDialect()
+		]) {
+			expect(dialect.stringLiteralEscapesBackslash('E')).toBe(
+				dialect.escapesBackslashInStringLiterals
+			);
+		}
+	});
+
+	it('r/R disables backslash escapes only in raw-string dialects (BigQuery/Databricks)', () => {
+		for (const dialect of [new BigQueryDialect(), new DatabricksDialect()]) {
+			expect(dialect.stringLiteralEscapesBackslash('r')).toBe(false);
+			expect(dialect.stringLiteralEscapesBackslash('R')).toBe(false);
+		}
+		// Postgres family has no raw strings — the ordinary policy applies.
+		for (const dialect of [
+			new PostgresDialect(),
+			new CubeDialect(),
+			new MotherDuckDialect(),
+			new FabricDialect(),
+			new ClickHouseDialect(),
+			new SnowflakeDialect()
+		]) {
+			expect(dialect.stringLiteralEscapesBackslash('r')).toBe(
+				dialect.escapesBackslashInStringLiterals
+			);
+		}
+	});
+
+	it('a non-prefix identifier run keeps the dialect default', () => {
+		for (const dialect of dialects) {
+			expect(dialect.stringLiteralEscapesBackslash('SOME')).toBe(
+				dialect.escapesBackslashInStringLiterals
+			);
+		}
+	});
+});
+
+describe('verbatim literal delimiters (dollar/triple-quoting)', () => {
+	it('declares dollar-quoting only where the warehouse has it', () => {
+		expect(new SnowflakeDialect().dollarQuoting).toBe('double');
+		expect(new PostgresDialect().dollarQuoting).toBe('tagged');
+		expect(new CubeDialect().dollarQuoting).toBe('tagged');
+		expect(new BigQueryDialect().dollarQuoting).toBe('none');
+		expect(new ClickHouseDialect().dollarQuoting).toBe('none');
+		expect(new DatabricksDialect().dollarQuoting).toBe('none');
+		expect(new MotherDuckDialect().dollarQuoting).toBe('none');
+		expect(new FabricDialect().dollarQuoting).toBe('none');
+	});
+
+	it('declares \'\'\'/""" triple-quoting only where the warehouse has it', () => {
+		expect(new BigQueryDialect().tripleQuotedStringDelimiters).toEqual(['"""', "'''"]);
+		for (const dialect of [
+			new ClickHouseDialect(),
+			new SnowflakeDialect(),
+			new DatabricksDialect(),
+			new PostgresDialect(),
+			new CubeDialect(),
+			new MotherDuckDialect(),
+			new FabricDialect()
+		]) {
+			expect(dialect.tripleQuotedStringDelimiters).toEqual([]);
 		}
 	});
 });
@@ -1347,9 +1445,11 @@ describe('applyRowLimit', () => {
 	// adjacent to structural punctuation (`(`, `)`, `,`) before comparing so
 	// expected strings stay readable.
 	const norm = (s: string) =>
-		s.replace(/\s+/g, ' ').replace(/\s*([(),])\s*/g, '$1').trim();
-	const eq = (actual: string, expected: string) =>
-		expect(norm(actual)).toBe(norm(expected));
+		s
+			.replace(/\s+/g, ' ')
+			.replace(/\s*([(),])\s*/g, '$1')
+			.trim();
+	const eq = (actual: string, expected: string) => expect(norm(actual)).toBe(norm(expected));
 
 	const limitFamily: Array<[string, SqlDialect]> = [
 		['ClickHouse', new ClickHouseDialect()],
@@ -1399,10 +1499,7 @@ describe('applyRowLimit', () => {
 			// producing malformed SQL. `\n` before `)` prevents this.
 			const result = dialect.applyRowLimit('SELECT * FROM t -- trailing note', 100);
 			expect(result).toMatch(/-- trailing note\s*\n\s*\)/);
-			eq(
-				result,
-				'SELECT * FROM (SELECT * FROM t -- trailing note) AS __ev_limit_wrap LIMIT 100'
-			);
+			eq(result, 'SELECT * FROM (SELECT * FROM t -- trailing note) AS __ev_limit_wrap LIMIT 100');
 		});
 
 		it('picks a non-colliding wrap alias when the caller already uses `__ev_limit_wrap`', () => {
@@ -1488,10 +1585,7 @@ describe('applyRowLimit', () => {
 			// Was previously returned unchanged, letting `run_query` execute an
 			// oversized warehouse read on Fabric CTE queries.
 			eq(
-				dialect.applyRowLimit(
-					'WITH x AS (SELECT * FROM t) SELECT TOP 1000000 * FROM x',
-					100
-				),
+				dialect.applyRowLimit('WITH x AS (SELECT * FROM t) SELECT TOP 1000000 * FROM x', 100),
 				'WITH x AS (SELECT * FROM t), __ev_limit_wrap AS (SELECT TOP 1000000 * FROM x) SELECT TOP 100 * FROM __ev_limit_wrap'
 			);
 		});
@@ -1499,10 +1593,7 @@ describe('applyRowLimit', () => {
 		it('handles a CTE whose tail SELECT has an ORDER BY (append fallback)', () => {
 			// Wrap would violate T-SQL "no bare ORDER BY inside CTE body".
 			eq(
-				dialect.applyRowLimit(
-					'WITH x AS (SELECT * FROM t) SELECT * FROM x ORDER BY y',
-					100
-				),
+				dialect.applyRowLimit('WITH x AS (SELECT * FROM t) SELECT * FROM x ORDER BY y', 100),
 				'WITH x AS (SELECT * FROM t) SELECT * FROM x ORDER BY y OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY'
 			);
 		});
@@ -1512,10 +1603,7 @@ describe('applyRowLimit', () => {
 			// tracks paren depth, so the CTE-body TOP doesn't drag us into the
 			// "tail-has-row-limiter" branch.
 			eq(
-				dialect.applyRowLimit(
-					'WITH x AS (SELECT TOP 5 * FROM t) SELECT * FROM x',
-					100
-				),
+				dialect.applyRowLimit('WITH x AS (SELECT TOP 5 * FROM t) SELECT * FROM x', 100),
 				'WITH x AS (SELECT TOP 5 * FROM t), __ev_limit_wrap AS (SELECT * FROM x) SELECT TOP 100 * FROM __ev_limit_wrap'
 			);
 		});
@@ -1604,19 +1692,13 @@ describe('applyRowLimit', () => {
 			// prevents this, so the warehouse sees valid, bounded SQL.
 			const result = dialect.applyRowLimit('SELECT * FROM t -- trailing', 100);
 			expect(result).toMatch(/-- trailing\s*\n\s*\)/);
-			eq(
-				result,
-				'SELECT TOP 100 * FROM (SELECT * FROM t -- trailing) AS __ev_limit_wrap'
-			);
+			eq(result, 'SELECT TOP 100 * FROM (SELECT * FROM t -- trailing) AS __ev_limit_wrap');
 		});
 
 		it("append path also breaks the line so a trailing '--' can't swallow OFFSET/FETCH", () => {
 			const result = dialect.applyRowLimit('SELECT * FROM t ORDER BY x -- note', 100);
 			expect(result).toMatch(/-- note\s*\n\s*OFFSET/);
-			eq(
-				result,
-				'SELECT * FROM t ORDER BY x -- note OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY'
-			);
+			eq(result, 'SELECT * FROM t ORDER BY x -- note OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY');
 		});
 
 		it('recognises CTE queries that begin with a line comment (Greptile regression)', () => {
@@ -1644,18 +1726,12 @@ describe('applyRowLimit', () => {
 			// close would then read the trailing `order by` as a top-level
 			// ORDER BY and skip synthesising one — invalid FETCH.
 			const sql = 'SELECT [weird]]order by] FROM t';
-			eq(
-				dialect.applyRowLimit(sql, 100),
-				`SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`
-			);
+			eq(dialect.applyRowLimit(sql, 100), `SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`);
 		});
 
 		it('handles escaped `""` inside a double-quoted identifier', () => {
 			const sql = 'SELECT "weird""order by" FROM t';
-			eq(
-				dialect.applyRowLimit(sql, 100),
-				`SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`
-			);
+			eq(dialect.applyRowLimit(sql, 100), `SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`);
 		});
 
 		it('picks a non-colliding wrap CTE name when the caller uses `__ev_limit_wrap` (Greptile regression)', () => {
@@ -1683,24 +1759,16 @@ describe('applyRowLimit', () => {
 			// existing FETCH would drop us to the append path and emit a
 			// second `OFFSET/FETCH` on the same SELECT — a syntax error.
 			// The wrap path is what's expected here — outer TOP still clamps.
-			const sql =
-				'SELECT * FROM t ORDER BY x OFFSET 0 ROWS FETCH NEXT @count ROWS ONLY';
-			eq(
-				dialect.applyRowLimit(sql, 100),
-				`SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`
-			);
+			const sql = 'SELECT * FROM t ORDER BY x OFFSET 0 ROWS FETCH NEXT @count ROWS ONLY';
+			eq(dialect.applyRowLimit(sql, 100), `SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`);
 		});
 
 		it('detects FETCH NEXT (SELECT n) ROWS ONLY as an existing cap', () => {
 			// Parenthesised expression count — depth tracker enters/exits
 			// the inner paren, and the relaxed matcher still recognises the
 			// FETCH clause.
-			const sql =
-				'SELECT * FROM t ORDER BY x OFFSET 0 ROWS FETCH NEXT (SELECT 5) ROWS ONLY';
-			eq(
-				dialect.applyRowLimit(sql, 100),
-				`SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`
-			);
+			const sql = 'SELECT * FROM t ORDER BY x OFFSET 0 ROWS FETCH NEXT (SELECT 5) ROWS ONLY';
+			eq(dialect.applyRowLimit(sql, 100), `SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`);
 		});
 
 		it('detects FETCH with an arbitrarily long count expression (Greptile regression)', () => {
@@ -1709,13 +1777,9 @@ describe('applyRowLimit', () => {
 			// dropping us to the append path and emitting a duplicate
 			// OFFSET/FETCH. The bound is gone — FETCH detection now only
 			// checks the `FETCH NEXT|FIRST` prefix at depth 0.
-			const longExpr =
-				'(CAST(' + '1+'.repeat(200) + '1 AS INT))';
+			const longExpr = '(CAST(' + '1+'.repeat(200) + '1 AS INT))';
 			const sql = `SELECT * FROM t ORDER BY x OFFSET 0 ROWS FETCH NEXT ${longExpr} ROWS ONLY`;
-			eq(
-				dialect.applyRowLimit(sql, 100),
-				`SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`
-			);
+			eq(dialect.applyRowLimit(sql, 100), `SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`);
 		});
 	});
 });

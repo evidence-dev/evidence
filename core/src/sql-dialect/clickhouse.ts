@@ -6,6 +6,7 @@ import {
 	isSimpleIdentifier,
 	wrapWithLimit,
 	escapeBackslashStringLiteral,
+	defaultStringLiteralEscapesBackslash,
 	type DialectFunctionTypeRule,
 	type SqlDialect
 } from './common';
@@ -117,6 +118,14 @@ export class ClickHouseDialect implements SqlDialect {
 	}
 
 	readonly escapesBackslashInIdentifiers = true;
+	readonly escapesBackslashInStringLiterals = true;
+	readonly dollarQuoting: 'none' | 'double' | 'tagged' = 'none';
+	readonly tripleQuotedStringDelimiters: readonly string[] = [];
+
+	stringLiteralEscapesBackslash(prefix: string): boolean {
+		// ClickHouse has no literal-prefix forms; the ordinary policy applies.
+		return defaultStringLiteralEscapesBackslash(prefix, this.escapesBackslashInStringLiterals);
+	}
 
 	quoteIdentifierIfNeeded(identifier: string): string {
 		return isSimpleIdentifier(identifier) ? identifier : this.quoteAlias(identifier);
