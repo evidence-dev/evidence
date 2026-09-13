@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { assertParses, assertRuns, queryClickHouse } from '../../../test-utils/ch-parse';
-import { buildTableSQL, type TableSQLAttrs } from './build-table-sql';
+import { buildTableSQL, buildTableSQLConfig, type TableSQLAttrs } from './build-table-sql';
 import { processColumnExpression } from '../../common/sql-expression-utils';
 import type { UnifiedColumnDefinition } from './unified-column-definition.types';
 import {
@@ -938,6 +938,93 @@ describe('table SQL', () => {
 		expect(new ClickHouseDialect().anyValue('x')).toBe('any(x)');
 		expect(new BigQueryDialect().anyValue('x')).toBe('ANY_VALUE(x)');
 		expect(new FabricDialect().anyValue('x')).toBe('MAX(x)');
+	});
+
+	it('applies a column sort before limiting grouped rows', () => {
+		const dialect = new ClickHouseDialect();
+		const unifiedColumns = cols(dim('category'), measure('sum(total_sales)'))(dialect);
+		unifiedColumns[1].sort = 'desc';
+
+		const { sql } = buildTableSQL({
+			data: `(
+				SELECT *
+				FROM VALUES(
+					'category String, total_sales UInt32',
+					('small', 1),
+					('largest', 100),
+					('medium', 10)
+				)
+			)`,
+			dataIsSql: true,
+			unifiedColumns,
+			limit: 2,
+			page_size: 10,
+			dialect
+		});
+
+		expect(sql).toMatch(/ORDER BY "sum_total_sales" desc\s+LIMIT 2/);
+		expect(queryClickHouse(sql).trim().split('\n')).toEqual(['largest\t100', 'medium\t10']);
+	});
+
+	it('keeps an explicit table order when a sorted column and limit are both set', () => {
+		const dialect = new ClickHouseDialect();
+		const unifiedColumns = cols(dim('category'), measure('sum(total_sales)'))(dialect);
+		unifiedColumns[1].sort = 'desc';
+
+		const { sql } = buildTableSQL({
+			data: 'demo.daily_orders',
+			unifiedColumns,
+			order: 'category asc',
+			limit: 10,
+			page_size: 10,
+			dialect
+		});
+
+		expect(sql).toMatch(/ORDER BY category asc\s+LIMIT 10/);
+		expect(sql).not.toContain('ORDER BY "sum_total_sales"');
+	});
+
+	it('keeps column sorting client-side when there is no limit', () => {
+		const dialect = new ClickHouseDialect();
+		const unifiedColumns = cols(dim('category'), measure('sum(total_sales)'))(dialect);
+		unifiedColumns[1].sort = 'desc';
+
+		const config = buildTableSQLConfig({
+			data: 'demo.daily_orders',
+			unifiedColumns,
+			dialect
+		});
+
+		expect(config.order).toBeUndefined();
+	});
+
+	it('does not push pivoted, sparkline, or derived column sorts into the source query', () => {
+		const dialect = new ClickHouseDialect();
+		const pivotedColumns = cols(
+			dim('category'),
+			pivot('date', 'year'),
+			measure('sum(total_sales)')
+		)(dialect);
+		pivotedColumns[2].sort = 'desc';
+
+		const sparklineColumns = cols(dim('category'), measure('sum(total_sales)'))(dialect);
+		sparklineColumns[1].sort = 'desc';
+		sparklineColumns[1].viz = 'sparkline';
+
+		const derivedColumns = cols(dim('category'), measure('sum(total_sales)'))(dialect);
+		derivedColumns[1].sort = 'desc';
+		derivedColumns[1].columnIdForRendering = 'sum_total_sales_pct';
+
+		for (const unifiedColumns of [pivotedColumns, sparklineColumns, derivedColumns]) {
+			const config = buildTableSQLConfig({
+				data: 'demo.daily_orders',
+				unifiedColumns,
+				limit: 10,
+				dialect
+			});
+
+			expect(config.order).toBeUndefined();
+		}
 	});
 
 	it('limit disables subtotals even when subtotals=true', () => {
