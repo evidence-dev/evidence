@@ -59,7 +59,7 @@
 		"just-debounce-it": "^3.2.0",
 		"lodash": "^4.18.1",
 		"lucide-svelte": "^0.544.0",
-		"maplibre-gl": "^5.24.0",
+		"maplibre-gl": "^6.4.1",
 		"mode-watcher": "^1.0.8",
 		"p-retry": "^7.1.0",
 		"pako": "^2.1.0",

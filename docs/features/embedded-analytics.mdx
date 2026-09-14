@@ -1,13 +1,23 @@
 ---
 title: 'Embedded Analytics'
-description: 'Deliver secure, personalized reports to your customers inside your own product'
+description: 'Deliver secure, personalized customer facing dashboards inside your own product'
+keywords:
+  - embedded analytics
+  - white label analytics
+  - white label reporting tool
+  - customer facing dashboards
+  - multi-tenant analytics
+  - OEM analytics
+  - business intelligence integration
 ---
 
 import StudioOnly from '/snippets/studio-only.mdx';
 
 <StudioOnly />
 
-Embedded analytics lets you deliver personalized Evidence reports to your customers directly within your application. Each user sees only their data, and the reports match your application's design.
+## What is embedded analytics?
+
+Embedded analytics lets you deliver personalized Evidence reports to your customers directly within your application. The business intelligence integration is built on a two-step authentication flow and an iframe embed, so each user sees only their data and the reports match your application's design. Because themes match your brand and published reports surface your organization's logo rather than Evidence branding, embedded analytics works well as white label analytics — letting you ship customer facing dashboards inside your own product.
 
 **What you can do:**
 
@@ -36,7 +46,7 @@ The embed URL contains a nonce (single-use token) in its path. User attributes a
 
 - **Single-use URLs**: Each embed URL contains a nonce that expires in 2 minutes and can only be used once
 - **JWE Encryption**: User attributes and metadata are encrypted using JSON Web Encryption
-- **Row Level Security**: Integrates with [row-level security rules](/features/access-rules) to filter data by user
+- **Row Level Security**: Integrates with [row-level security rules](/features/row-level-security) to filter data by user
 
 ## Getting Started
 
@@ -50,7 +60,7 @@ The embed URL contains a nonce (single-use token) in its path. User attributes a
   </Step>
   
   <Step title="Create RLS Rules (Optional)">
-    If you need to filter data based on user attributes, set up [row-level security rules](/features/access-rules) in your [Access Settings](https://evidence.studio/settings/access-rules).
+    If you need to filter data based on user attributes, set up [row-level security rules](/features/row-level-security) in your [Access Settings](https://evidence.studio/settings/access-rules).
     
     Define which user attributes will be used to filter data (e.g., `employee_id`, `region`, `department`).
   </Step>
@@ -177,7 +187,7 @@ Creates a secure embed session and returns a single-use embed URL.
 
 #### User Attributes
 
-User attributes are used with [row-level security rules](/features/access-rules) to filter data. Evidence supports rich attribute types:
+User attributes are used with [row-level security rules](/features/row-level-security) to filter data. Evidence supports rich attribute types:
 
 ```json
 {
@@ -300,7 +310,7 @@ Use test mode for development and debugging on `localhost`
 1. **Protect your API key**: Make Evidence Embed API requests from your backend server only, never from client-side code
 2. **Set appropriate TTLs**: Use the shortest TTL that meets your requirements
 3. **Validate users**: Verify user authentication before requesting embed URLs
-4. **Apply RLS rules**: Use [row-level security](/features/access-rules) to filter data appropriately
+4. **Apply RLS rules**: Use [row-level security](/features/row-level-security) to filter data appropriately
 
 ### Performance
 

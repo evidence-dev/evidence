@@ -2,15 +2,24 @@
 title: 'Evidence Warehouse'
 sidebarTitle: 'Overview'
 description: 'Evidence''s built-in managed warehouse, and the connectors that load data into it.'
+keywords:
+  - data warehouse
+  - managed warehouse
+  - data integration
+  - cloud warehouse
+  - direct connectors
+  - data lake
+  - etl data integration
+  - zero etl
 ---
 
 import StudioOnly from '/snippets/studio-only.mdx';
 
 <StudioOnly />
 
-The **Evidence Warehouse** is Evidence's built-in, fully managed cloud warehouse. You connect a data source once, Evidence extracts the data into the warehouse, and every report queries it from there — fast, with no infrastructure for you to run. You choose which region the data is stored in (see [Storage Regions](#storage-regions)).
+The **Evidence Warehouse** is Evidence's built-in, fully managed cloud warehouse. You connect a data source once, Evidence extracts the data into the warehouse, and every report queries it from there — fast, with no infrastructure for you to run. You choose which region the data is stored in (see [Storage Regions](#storage-regions)). When you use the managed warehouse, Evidence handles etl data integration for you — extracting, loading, and making data available for reporting on a schedule.
 
-Connectors are how you get data into the Evidence Warehouse. You connect to your data source once, then use that data across all your reports.
+Connectors are how you get data into the Evidence Warehouse. You connect to your data source once, then use that data across all your reports. With this data integration workflow, your reports always query the same extracted data, regardless of which source it came from.
 
 Evidence supports different types of connectors: **Databases**, **Object Storage**, **Data Lakes**, **Flat Files**, and **Applications**.
 
@@ -58,7 +67,7 @@ We are continuously adding support for new databases. Request one [here](https:/
 
 ## Direct Connectors
 
-Prefer to keep your data in your own warehouse? **Native connectors** are the alternative to the Evidence Warehouse: instead of extracting data, Evidence runs queries live against a warehouse you own. Each request from a viewer issues queries against your warehouse and returns the rows directly.
+Prefer to keep your data in your own warehouse? **Native connectors** are the alternative to the Evidence Warehouse: instead of extracting data, Evidence runs queries live against a warehouse you own. Each request from a viewer issues queries against your warehouse and returns the rows directly. This is a zero etl approach — since the warehouse is queried directly, there's no extraction, loading, or sync pipeline to maintain.
 
 **How it works:**
 

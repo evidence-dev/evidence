@@ -23,6 +23,10 @@
   "favicon": "/favicon.svg",
   "redirects": [
     {
+      "source": "/features/embedded",
+      "destination": "/features/embedded-analytics"
+    },
+    {
       "source": "/features/code-managed-access",
       "destination": "/features/page-level-access-control"
     },
@@ -32,11 +36,11 @@
     },
     {
       "source": "/features/access-control",
-      "destination": "/features/access-rules"
+      "destination": "/features/row-level-security"
     },
     {
-      "source": "/features/row-level-security",
-      "destination": "/features/access-rules"
+      "source": "/features/access-rules",
+      "destination": "/features/row-level-security"
     },
     {
       "source": "/features/project-configuration",
@@ -752,10 +756,10 @@
               "features/layouts",
               "features/sql-files",
               "features/page-level-access-control",
-              "features/access-rules",
+              "features/row-level-security",
               "features/evidence-agent",
               "features/translations",
-              "features/embedded",
+              "features/embedded-analytics",
               "features/scheduled-reports"
             ]
           },

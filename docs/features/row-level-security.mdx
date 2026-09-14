@@ -1,42 +1,53 @@
 ---
-title: 'Access Rules'
-description: 'Control which tables and rows each user can see with table restrictions, row-level security rules, and user variables.'
+title: 'Row Level Security'
+description: 'Control which tables and rows each user can see with table access rules, row level security, and user variables.'
+keywords:
+  - row level security
+  - data governance
+  - table-level security
+  - data access control
+  - data security
 ---
 
 import StudioOnly from '/snippets/studio-only.mdx';
 
 <StudioOnly />
 
-Access rules control what data each user can see in your sources, at two levels:
+Access rules are the data access control layer for your sources — they control what data each user can see, at two levels:
 
-- **Table restrictions** — restrict whole tables to a chosen set of users.
-- **Row level security (RLS)** — control which rows a user sees within a table.
+- **Table access** — limit who can query a table.
+- **Row level security** — control which rows a user sees within a table.
 
 Both are managed by opening [Access Rules](https://www.evidence.studio/settings/access-rules) in your organization settings.
 
-Access rules apply everywhere a user's queries run, including AI features like viewer chat and dev chat — the AI can only see data the user asking could access themselves.
+Access rules apply everywhere a user's queries run, including AI features like viewer chat and dev chat — the AI can only see data the user asking the question could access themselves. Together with table access and row level security, this gives you data governance and data security over who can see what across every report and query.
 
 <Warning>
 	To use access rules with a [Direct Connector](/evidence-warehouse#direct-connectors), refer to that connector's documentation.
 </Warning>
 
-## Table Restrictions
+## Table Access
 
-A table restriction limits who can query a table. Unrestricted tables are open to everyone in the organization; once a table is restricted, only the users you select can query it — everyone else loses access.
+A table access rule limits who can query a table. Tables without a rule can be queried by everyone in the organization. Table and schema names remain visible to everyone — the rule only restricts querying the data.
 
-To restrict a table, open [Access Rules](https://www.evidence.studio/settings/access-rules) and click **Add Table Restriction**, then pick the table and select the allowed users. To change who can access a restricted table, open it from the restricted tables list — changes save automatically. Removing a restriction reopens the table to the whole organization.
+Each table can have one access rule, applied in one of two ways:
 
-Restricted tables show a lock badge next to their name in the editor's schema list.
+- **Apply to all users** — the rule applies to everyone in the organization, except the users you add to the **Except users** list.
+- **Apply to specific users** — the rule applies only to the users you list; everyone else can still query the table.
+
+To add a rule, open [Access Rules](https://www.evidence.studio/settings/access-rules) and click **Add Table Access**, then pick the table and choose how to apply it. To change a rule, click the edit icon next to the table and save your changes. To remove a rule, click the delete icon — the table becomes open to everyone again.
+
+Tables with a rule show a lock badge next to their name in the editor's schema list.
 
 ### Example
 
 An `employee_salaries` table holds compensation data that should only be visible to the CEO, the CFO, and the finance team.
 
-1. Open [Access Rules](https://www.evidence.studio/settings/access-rules) and click **Add Table Restriction**.
+1. Open [Access Rules](https://www.evidence.studio/settings/access-rules) and click **Add Table Access**.
 2. Pick the `employee_salaries` table.
-3. Select the allowed users: `ceo@example.com`, `cfo@example.com`, and each member of the finance team.
+3. Keep **Apply to all users** on, and add `ceo@example.com`, `cfo@example.com`, and each member of the finance team to the **Except users** list.
 
-Everyone else in the organization loses access: queries against `employee_salaries` no longer return data for them, and reports built on it show them an error instead of results. New members added after the restriction don't have access to the table until you add them to its allowed users.
+Everyone else in the organization loses access: queries against `employee_salaries` no longer return data for them, and reports built on it show them an error instead of results. New members added after the rule don't have access to the table until you add them to the except list.
 
 ## Row Level Security
 
@@ -138,6 +149,12 @@ Select a table and a user — for example `leads` and `john.doe@example.com` —
 - User can access: 1
 - `john.doe@example.com` is bound by an access rule
 
+### Restrictive rules
+
+By default, multiple rules on the same table are combined with OR — a user sees a row if it matches any of the rules. Mark a rule as **restrictive** to combine it with AND instead: a row is visible only if it matches every restrictive rule.
+
+For example, if a `sales` table has a restrictive rule on `region` and another restrictive rule on `department`, a user sees a row only when both their `region` and `department` variables match that row.
+
 ## Pair with page level access control
 
-Access rules decide which **tables and rows** a user sees when they query; [Page Level Access Control](/features/page-level-access-control) decides which **pages** they can open. For customer-facing reports where each customer should see only their own data, use them together: per-page access in `access.yaml`, table restrictions and RLS rules on the underlying tables.
+Access rules decide which **tables and rows** a user sees when they query; [Page Level Access Control](/features/page-level-access-control) decides which **pages** they can open. For customer-facing reports where each customer should see only their own data, use them together: per-page access in `access.yaml`, table access rules and RLS rules on the underlying tables.

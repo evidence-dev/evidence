@@ -1,5 +1,6 @@
 import type * as maplibregl from 'maplibre-gl';
 import { loadMapboxGl } from '../../common/mapbox-cdn';
+import { MAPLIBRE_GL_WORKER_URL } from '../../common/maplibre-cdn';
 import { PUBLIC_MAPBOX_TOKEN } from '../../../shims/public-env';
 
 // Types are modeled on maplibre-gl (open source). Mapbox GL exposes the same API for the subset we
@@ -61,7 +62,12 @@ export function loadMapGL(): Promise<MapGL> {
 	glPromise ??= (
 		mapProvider === 'mapbox'
 			? loadMapboxGl(PUBLIC_MAPBOX_TOKEN).then((m) => m as unknown as MapGL)
-			: import('maplibre-gl').then((m) => m.default as unknown as MapGL)
+			: import('maplibre-gl').then((m) => {
+					(m as unknown as { setWorkerUrl: (url: string) => void }).setWorkerUrl(
+						MAPLIBRE_GL_WORKER_URL
+					);
+					return m as unknown as MapGL;
+				})
 	).catch((err) => {
 		// Don't cache the rejection — let the next map mount retry the import
 		glPromise = null;

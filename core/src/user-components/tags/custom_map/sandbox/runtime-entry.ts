@@ -1,20 +1,7 @@
-/**
- * custom_map sandbox runtime. Bundled to a standalone IIFE by
- * `studio/vite.sandbox-map.config.ts` → `static/sandbox/custom-map-runtime.js`
- * and loaded inside the opaque-origin iframe.
- *
- * MapLibre GL is bundled (BSD-3, keyless default). Mapbox GL is proprietary, so
- * it is never bundled — see `common/mapbox-cdn` — and loads from a CDN only when
- * the resolved provider is Mapbox.
- *
- * Author code runs like a normal `<script>`: it gets the real `mapboxgl` /
- * `maplibregl` globals (Mapbox's access token pre-set), a `container` element,
- * and the `evidence` SDK (query, variables, theme, filters, resize — the
- * write-back filters are what let a map drive a server-side re-query). Plugins
- * like mapbox-gl-draw are normal dynamic imports from a CDN the CSP allows.
- */
+// custom_map sandbox runtime, bundled to an opaque-origin iframe IIFE by vite.sandbox-map.config.ts; MapLibre is bundled (BSD-3) while Mapbox (proprietary) loads from CDN only when the resolved provider is Mapbox.
 import * as maplibregl from 'maplibre-gl';
 import { MAPBOX_GL_CSS_URL, loadMapboxGl } from '../../../common/mapbox-cdn';
+import { MAPLIBRE_GL_CSS_URL, MAPLIBRE_GL_WORKER_URL } from '../../../common/maplibre-cdn';
 import { bootSandbox, type SandboxHost } from '../../../sandbox/runtime-bootstrap';
 import { errorToLogEntry } from '../../../sandbox/runtime-diagnostics';
 import { createMapEvidenceSdk, type MapEvidenceSdk } from './map-evidence-sdk';
@@ -27,24 +14,17 @@ import {
 	type MapThemeSnapshot
 } from './sandbox-protocol';
 
-// CSS from the CDN (CSP allows jsdelivr); pinned to the major version in
-// core/package.json (maplibre-gl@5).
-const MAPLIBRE_CSS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.css';
+// The IIFE has no http(s) import.meta.url so v6's worker auto-detection fails; this launders the cross-origin URL through a CSP-allowed blob.
+maplibregl.setWorkerUrl(MAPLIBRE_GL_WORKER_URL);
 
 let host: SandboxHost | undefined;
 let sdk: MapEvidenceSdk | undefined;
 let resizeObserver: ResizeObserver | undefined;
-// Provider/token are fixed for a block's lifetime; stash them so a `code`
-// re-render reuses the same provider without re-plumbing the message.
+// Provider/token are fixed for a block's lifetime; stash them so a `code` re-render reuses the same provider.
 let lastProvider: MapProvider = 'maplibre';
 let lastToken: string | undefined;
 
-// Capture safety net. PDF/PNG/screenshot gates on a `rendered` signal, which
-// the author fires via evidence.ready() (typically on `map.on('idle')`). If
-// they don't — or the map never reaches 'idle' in a headless capture context
-// (WebGL not painting, tiles/CDN unreachable) — capture would hang and fail
-// rather than degrade. So `markRendered` posts once, whether from the author's
-// ready() or from a fallback timer; capture then proceeds with whatever painted.
+// Capture safety net: PDF/PNG gates on a `rendered` signal the author fires via evidence.ready(); markRendered posts exactly once, from ready() or this fallback timer, so capture never hangs.
 const RENDER_FALLBACK_MS = 8000;
 let renderedPosted = false;
 function markRendered(): void {
@@ -61,9 +41,7 @@ function loadCss(href: string): void {
 	document.head.appendChild(link);
 }
 
-// Mirror the host theme's surface colors into CSS vars + the body background,
-// so author panels/legends using var(--evidence-*) match the host and the
-// opaque iframe doesn't flash white. Same var names as the html block.
+// Mirror the host theme's surface colors into CSS vars + body background so author panels match the host and the iframe doesn't flash white.
 function applyThemeColors(theme: MapThemeSnapshot): void {
 	const root = document.documentElement.style;
 	root.setProperty('--evidence-background', theme.background);
@@ -78,15 +56,7 @@ function postError(phase: 'load' | 'eval', message: string): void {
 	host?.postLog({ level: 'error', source: 'script', message });
 }
 
-/**
- * Wrap a map library so its `Map` constructor defaults `preserveDrawingBuffer:
- * true`. The PNG "generate image" button reads the map via `canvas.toDataURL()`,
- * which returns a BLANK image on a WebGL canvas unless the drawing buffer is
- * preserved. (PDF export uses a page screenshot and doesn't need this.) Default
- * it on so image export works out of the box; an author who wants the small perf
- * win on a heavy map can pass `preserveDrawingBuffer: false` explicitly — their
- * value wins because it's spread after the default.
- */
+// Wrap a map lib so `Map` defaults preserveDrawingBuffer:true — canvas.toDataURL() is blank on WebGL unless the buffer is preserved (PNG export needs it).
 function wrapMapLib(lib: unknown): unknown {
 	const l = lib as { Map?: unknown } | undefined;
 	if (!l || typeof l.Map !== 'function') return lib;
@@ -113,7 +83,7 @@ async function loadMapLibrary(
 		const mapboxgl = await loadMapboxGl(token);
 		return { mapboxgl, mapgl: mapboxgl };
 	}
-	loadCss(MAPLIBRE_CSS);
+	loadCss(MAPLIBRE_GL_CSS_URL);
 	return { mapboxgl: undefined, mapgl: maplibregl };
 }
 
@@ -167,8 +137,7 @@ async function runAuthorCode(
 		return;
 	}
 
-	// Wrap so `new mapgl.Map(...)` gets preserveDrawingBuffer by default (PNG
-	// export). Wrap each lib once and reuse, so `mapgl === mapboxgl` still holds.
+	// Wrap so `new mapgl.Map(...)` gets preserveDrawingBuffer by default; wrap each lib once so `mapgl === mapboxgl` still holds.
 	const wMaplibre = wrapMapLib(maplibregl);
 	const wMapbox = lib.mapboxgl ? wrapMapLib(lib.mapboxgl) : undefined;
 	const wActive = provider === 'mapbox' ? wMapbox : wMaplibre;
@@ -184,12 +153,7 @@ async function runAuthorCode(
 		return;
 	}
 
-	// Deliberately do NOT post `rendered` here. A map's tiles stream in AFTER the
-	// author's synchronous setup returns, so auto-completing now would let PDF/PNG
-	// capture a blank/half-loaded frame. Instead the author calls evidence.ready()
-	// once the map has painted (e.g. `map.on('idle', () => evidence.ready())`);
-	// SandboxFrame's timeout backstops if they never do. (Same rule the html block
-	// uses for script content.)
+	// Deliberately do NOT post `rendered` here — tiles stream in after the author's sync setup, so auto-completing would capture a blank frame; the author's evidence.ready() (or the timeout backstop) signals completion.
 }
 
 bootSandbox<InitMessage>({
@@ -200,8 +164,7 @@ bootSandbox<InitMessage>({
 		lastProvider = init.provider;
 		lastToken = init.token;
 		applyThemeColors(init.theme);
-		// Route the SDK's evidence.ready() through markRendered so the author's
-		// signal and the fallback timer coordinate (post 'rendered' exactly once).
+		// Route evidence.ready() through markRendered so the author's signal and the fallback timer post 'rendered' exactly once.
 		const renderAwareHost: SandboxHost = {
 			post: (m) => (m.type === 'rendered' ? markRendered() : h.post(m)),
 			postLog: h.postLog,
@@ -232,8 +195,7 @@ bootSandbox<InitMessage>({
 	onCapturePng() {
 		const canvas = document.querySelector<HTMLCanvasElement>('#evidence-map-root canvas');
 		if (!canvas) throw new Error('map not ready — cannot capture');
-		// Mapbox/MapLibre need preserveDrawingBuffer:true for a non-blank readback;
-		// authors who want PNG export set it in their Map options.
+		// Mapbox/MapLibre need preserveDrawingBuffer:true for a non-blank PNG readback; authors who want PNG export set it in their Map options.
 		return canvas.toDataURL('image/png');
 	}
 });
