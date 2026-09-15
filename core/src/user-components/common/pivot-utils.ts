@@ -2145,7 +2145,7 @@ export interface RowWithSpans extends PivotRow {
 interface GroupTracker {
 	dimKey: string;
 	startIndex: number;
-	value: string | number | boolean | Date | number[] | boolean[] | null | undefined;
+	groupKey: string;
 }
 
 export function addRowspanInfo(pivotResult: PivotResult): PivotResult {
@@ -2154,16 +2154,6 @@ export function addRowspanInfo(pivotResult: PivotResult): PivotResult {
 
 	// Track current group for each dimension level
 	const currentGroups: Array<GroupTracker | null> = new Array(dimensions.length).fill(null);
-
-	// Helper function to safely convert any value to string
-	const safeToString = (
-		val: string | number | boolean | Date | number[] | boolean[] | null | undefined
-	): string => {
-		if (val === undefined || val === null) return '';
-		if (Array.isArray(val)) return JSON.stringify(val);
-		if (val instanceof Date) return val.toISOString();
-		return String(val);
-	};
 
 	// Process each row
 	rows.forEach((row, rowIndex) => {
@@ -2179,11 +2169,11 @@ export function addRowspanInfo(pivotResult: PivotResult): PivotResult {
 
 		// For each dimension level
 		dimensions.forEach((_, dimIndex) => {
-			const value = dimParts[dimIndex];
+			// Key on the full parent path so equal child values under different parents never merge
+			const groupKey = dimParts.slice(0, dimIndex + 1).join('|~|');
 			const current = currentGroups[dimIndex];
 
-			// Check if group is ending - match the logic from calculateRowspans
-			const valueChanged = !current || safeToString(current.value) !== safeToString(value);
+			const valueChanged = !current || current.groupKey !== groupKey;
 			const shouldEndGroup =
 				valueChanged ||
 				isTotal ||
@@ -2213,7 +2203,7 @@ export function addRowspanInfo(pivotResult: PivotResult): PivotResult {
 					currentGroups[dimIndex] = {
 						dimKey: row.__dimKey || '',
 						startIndex: rowIndex,
-						value
+						groupKey
 					};
 				} else {
 					currentGroups[dimIndex] = null;
