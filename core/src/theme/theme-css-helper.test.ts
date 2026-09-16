@@ -55,7 +55,7 @@ describe('generateThemeCSS — config-level tokens', () => {
 	test('default theme emits the same values base.css falls back to', () => {
 		const css = generateThemeCSS(DEFAULT_THEME);
 		expect(css).toContain('--radius: 0.5rem !important;');
-		expect(css).toContain("--theme-font-body: 'Geist', sans-serif !important;");
+		expect(css).toContain(`--theme-font-body: ${FONT_FAMILY_STACKS['sans-serif']} !important;`);
 		// shadow color is derived from the background (tinted), geometry matches shadow-xs
 		expect(css).toMatch(/--theme-shadow-xs: 0 1px 2px 0 rgba?\(/);
 		expect(css).toContain('--theme-report-gap: 1rem !important;');

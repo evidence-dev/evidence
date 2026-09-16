@@ -6,11 +6,14 @@ import type { ThemeDepth, ThemeDensity, ThemeFontFamily } from '../types/theme';
  * is Spectral (falling back to Source Serif 4), mono is Geist Mono — all
  * shipped as woff2. The CLI omits Spectral, so local preview lands on Source
  * Serif 4 via this same fallback.
+ *
+ * Every stack ends with the platform emoji fonts — none of our woff2 files contain emoji glyphs.
  */
 export const FONT_FAMILY_STACKS: Record<ThemeFontFamily, string> = {
-	'sans-serif': "'Geist', sans-serif",
-	serif: "'Spectral', 'Source Serif 4', Georgia, 'Times New Roman', serif",
-	mono: "'Geist Mono', Consolas, monospace"
+	'sans-serif': "'Geist', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji'",
+	serif:
+		"'Spectral', 'Source Serif 4', Georgia, 'Times New Roman', serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji'",
+	mono: "'Geist Mono', Consolas, monospace, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji'"
 };
 
 /**
