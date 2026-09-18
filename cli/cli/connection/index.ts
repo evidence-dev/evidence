@@ -69,7 +69,7 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 			// Backtick-quote project and dataset to tolerate hyphens (project IDs
 			// commonly contain them) and reserved words.
 			// __TABLES__ (not INFORMATION_SCHEMA.TABLES) carries row_count.
-			return `SELECT table_id AS name, dataset_id AS schema_name, row_count AS rows FROM \`${config.projectId}\`.\`${config.defaultDataset}\`.__TABLES__ ORDER BY table_id`;
+			return `SELECT table_id AS name, dataset_id AS schema_name, row_count AS \`rows\` FROM \`${config.projectId}\`.\`${config.defaultDataset}\`.__TABLES__ ORDER BY table_id`;
 		}
 		case 'clickhouse': {
 			// Hide Evidence-internal dot-tables. An empty allowlist scopes to the

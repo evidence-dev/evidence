@@ -1,10 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { listTablesSql, qualifyTableName } from './index';
 import type {
+	BigQueryConnectionConfig,
 	ClickHouseConnectionConfig,
 	FabricConnectionConfig,
 	DatabricksConnectionConfig
 } from './types';
+
+const bq = (extra: Partial<BigQueryConnectionConfig> = {}): BigQueryConnectionConfig => ({
+	type: 'bigquery',
+	authType: 'service_account_json',
+	projectId: 'my-proj',
+	serviceAccountJson: { client_email: 'a@b.c', private_key: 'k' },
+	defaultDataset: 'my_dataset',
+	...extra
+});
 
 const ch = (databases: string[]): ClickHouseConnectionConfig => ({
 	type: 'clickhouse',
@@ -36,6 +46,14 @@ const databricks = (extra: Partial<DatabricksConnectionConfig> = {}): Databricks
 		...extra
 		// The `...extra` spread widens the token/oauth discriminant; cast back.
 	}) as DatabricksConnectionConfig;
+
+describe('listTablesSql (bigquery)', () => {
+	it('backtick-quotes the `rows` alias (`rows` is a reserved keyword)', () => {
+		const sql = listTablesSql(bq());
+		expect(sql).toContain('AS `rows`');
+		expect(sql).not.toMatch(/AS rows\b/);
+	});
+});
 
 describe('listTablesSql (clickhouse)', () => {
 	it('scopes to the current database when the allowlist is empty', () => {
