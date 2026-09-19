@@ -84,6 +84,49 @@ describe('isDropdownValueValid', () => {
 		).toBe(false);
 	});
 
+	it('keeps a query-sourced value while the options query is still pending, despite static options', () => {
+		// The regression this guards: a dropdown that mixes a static
+		// `dropdown_option` (an "All" entry) with `data=` options. Before the
+		// query lands, `availableValues` holds only the static value, so
+		// validating there cleared any legitimate query-sourced selection —
+		// including the one hydrated from the URL, which then vanished from
+		// the query string too, breaking shareable links.
+		expect(
+			isDropdownValueValid('active', new Set(['%']), {
+				hasQueryResults: false,
+				hasStaticOptions: true,
+				optionsQueryPending: true
+			})
+		).toBe(true);
+	});
+
+	it('validates again as soon as the options query settles', () => {
+		expect(
+			isDropdownValueValid('active', new Set(['%']), {
+				hasQueryResults: true,
+				hasStaticOptions: true,
+				optionsQueryPending: false
+			})
+		).toBe(false);
+		expect(
+			isDropdownValueValid('active', new Set(['%', 'active']), {
+				hasQueryResults: true,
+				hasStaticOptions: true,
+				optionsQueryPending: false
+			})
+		).toBe(true);
+	});
+
+	it('leaves dropdowns without a query untouched: no pending state, static options still validate', () => {
+		expect(
+			isDropdownValueValid('not_in_static', new Set(['a', 'b']), {
+				hasQueryResults: false,
+				hasStaticOptions: true,
+				optionsQueryPending: false
+			})
+		).toBe(false);
+	});
+
 	it('keeps empty/undefined values without inspecting options', () => {
 		expect(
 			isDropdownValueValid(undefined, availableValues, {

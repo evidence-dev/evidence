@@ -5,7 +5,17 @@
  * Used by `Dropdown.svelte` to decide whether to clear the underlying filter
  * when the options query result no longer contains the user's selection.
  *
- * Three states matter:
+ * Four states matter:
+ *
+ *   0. **Options query configured but not settled** (`optionsQueryPending`) —
+ *      return true, whatever the static options say. A dropdown can mix a
+ *      static `dropdown_option` (typically an "All" entry) with options coming
+ *      from `data=`. Until the query returns, the only values we know are the
+ *      static ones, so validating against them would clear every legitimate
+ *      query-sourced selection — the URL-hydrated one included. Without this
+ *      state, `hasStaticOptions` alone switched validation on, and a single
+ *      `dropdown_option` child was enough to make `?id=<a query value>` reset
+ *      to empty on first paint.
  *
  *   1. **Still loading** (`!hasQueryResults && !hasStaticOptions`) — return
  *      true. We have no information yet, so don't drop the value. This keeps
@@ -30,9 +40,21 @@
 export function isDropdownValueValid(
 	value: string | undefined,
 	availableValues: Set<string>,
-	opts: { hasQueryResults: boolean; hasStaticOptions: boolean }
+	opts: {
+		hasQueryResults: boolean;
+		hasStaticOptions: boolean;
+		/**
+		 * An options query is configured and has not produced a result yet.
+		 * Treated as "we do not know the option universe", which is also the
+		 * conservative reading when the query errored: keeping a selection we
+		 * cannot check beats clearing one that was valid.
+		 */
+		optionsQueryPending?: boolean;
+	}
 ): boolean {
 	if (!value) return true;
+
+	if (opts.optionsQueryPending) return true;
 
 	const shouldValidate = opts.hasQueryResults || opts.hasStaticOptions;
 	if (!shouldValidate) return true;
