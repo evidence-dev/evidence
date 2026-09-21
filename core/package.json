@@ -17,6 +17,10 @@
 			"svelte": "./src/config/page-frontmatter-schema.ts",
 			"default": "./src/config/page-frontmatter-schema.ts"
 		},
+		"./config/markdown-file-kind": {
+			"svelte": "./src/config/markdown-file-kind.ts",
+			"default": "./src/config/markdown-file-kind.ts"
+		},
 		"./types/translations": {
 			"svelte": "./src/types/translations.ts",
 			"default": "./src/types/translations.ts"

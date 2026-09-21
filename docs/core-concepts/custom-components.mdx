@@ -13,6 +13,8 @@ A custom component is a markdown file in your project's `components/` folder. Ea
 
 Click the `+` button on the `components/` folder in the sidebar and select "New Component", or create a file at `components/<name>.md`. The file name becomes the tag name, so it must be a valid identifier: lowercase letters, digits, and underscores (`kpi_card`, not `kpi-card`).
 
+A markdown file in `components/` is a component by default, so the `type: component` frontmatter below is optional there. An explicit `type:` always wins: set `type: page` or `type: partial` on a file in `components/` and it is excluded from component discovery, and add `type: component` to a file outside `components/` to colocate a component next to the page that uses it.
+
 A component has two parts: frontmatter declaring its **attributes**, and a Markdoc body that renders wherever the component is called.
 
 ```markdown

@@ -3,8 +3,11 @@ import { mkdtemp, rm, mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
+	discoverProjectComponents,
+	discoverProjectPartials,
 	getMarkdownFile,
 	getNavItems,
+	getProjectSignature,
 	parsePageSettings,
 	resolvePageSettings
 } from '$lib/markdown/files.server';
@@ -207,5 +210,103 @@ describe('resolvePageSettings', () => {
 		expect(resolvePageSettings('# Page\n', { auto_refresh: 60 })).toMatchObject({
 			auto_refresh: 60
 		});
+	});
+});
+
+describe('discoverProjectComponents', () => {
+	let cwd: string;
+
+	beforeEach(async () => {
+		cwd = await mkdtemp(join(tmpdir(), 'evd-components-'));
+		await mkdir(join(cwd, 'pages'), { recursive: true });
+		await mkdir(join(cwd, 'components'), { recursive: true });
+	});
+
+	afterEach(async () => {
+		await rm(cwd, { recursive: true, force: true });
+	});
+
+	it('treats a marker-less file in components/ as a component', async () => {
+		await writeFile(join(cwd, 'components', 'kpi_card.md'), '# no frontmatter at all\n');
+		expect(Object.keys(await discoverProjectComponents(cwd))).toEqual(['components/kpi_card']);
+	});
+
+	it('still recognises an explicit type: component in components/', async () => {
+		await writeFile(join(cwd, 'components', 'kpi_card.md'), page({ type: 'component' }));
+		expect(Object.keys(await discoverProjectComponents(cwd))).toEqual(['components/kpi_card']);
+	});
+
+	it('honours an explicit non-component type inside components/', async () => {
+		await writeFile(join(cwd, 'components', 'notes.md'), page({ type: 'page' }));
+		await writeFile(join(cwd, 'components', 'footer.md'), page({ type: 'partial' }));
+		expect(await discoverProjectComponents(cwd)).toEqual({});
+	});
+
+	it('requires the marker for a component colocated in pages/', async () => {
+		await writeFile(join(cwd, 'pages', 'marked.md'), page({ type: 'component' }));
+		await writeFile(join(cwd, 'pages', 'unmarked.md'), '# just a page\n');
+		expect(Object.keys(await discoverProjectComponents(cwd))).toEqual(['pages/marked']);
+	});
+
+	it('does not treat a nested user folder named components/ as the reserved one', async () => {
+		await mkdir(join(cwd, 'pages', 'components'), { recursive: true });
+		await writeFile(join(cwd, 'pages', 'components', 'nope.md'), '# a page\n');
+		expect(await discoverProjectComponents(cwd)).toEqual({});
+	});
+});
+
+describe('discoverProjectPartials', () => {
+	let cwd: string;
+
+	beforeEach(async () => {
+		cwd = await mkdtemp(join(tmpdir(), 'evd-partials-'));
+		await mkdir(join(cwd, 'pages'), { recursive: true });
+		await mkdir(join(cwd, 'partials'), { recursive: true });
+	});
+
+	afterEach(async () => {
+		await rm(cwd, { recursive: true, force: true });
+	});
+
+	it('treats a marker-less file in partials/ as a partial', async () => {
+		await writeFile(join(cwd, 'partials', 'footer.md'), '# footer\n');
+		expect(Object.keys(await discoverProjectPartials(cwd))).toEqual(['partials/footer']);
+	});
+
+	it('honours an explicit non-partial type inside partials/', async () => {
+		await writeFile(join(cwd, 'partials', 'widget.md'), page({ type: 'component' }));
+		expect(await discoverProjectPartials(cwd)).toEqual({});
+	});
+
+	it('requires the marker for a partial colocated in pages/', async () => {
+		await writeFile(join(cwd, 'pages', 'marked.md'), page({ type: 'partial' }));
+		await writeFile(join(cwd, 'pages', 'unmarked.md'), '# just a page\n');
+		expect(Object.keys(await discoverProjectPartials(cwd))).toEqual(['pages/marked']);
+	});
+});
+
+describe('getProjectSignature', () => {
+	let cwd: string;
+
+	beforeEach(async () => {
+		cwd = await mkdtemp(join(tmpdir(), 'evd-signature-'));
+		await mkdir(join(cwd, 'pages'), { recursive: true });
+		await mkdir(join(cwd, 'components'), { recursive: true });
+	});
+
+	afterEach(async () => {
+		await rm(cwd, { recursive: true, force: true });
+	});
+
+	it('changes when a component file changes', async () => {
+		const file = join(cwd, 'components', 'kpi_card.md');
+		await writeFile(file, page({ type: 'component' }, 'v1'));
+		const before = await getProjectSignature(cwd);
+
+		await new Promise((resolve) => setTimeout(resolve, 10));
+		await writeFile(file, page({ type: 'component' }, 'v2'));
+		const after = await getProjectSignature(cwd);
+
+		expect(after).not.toBe(before);
 	});
 });
