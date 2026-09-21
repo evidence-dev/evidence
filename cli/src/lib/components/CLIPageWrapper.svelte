@@ -88,7 +88,15 @@
 	// Create filter and inline query contexts
 	// Pass serialized filters so they're deserialized and available to components
 	// Pass SQL files so they can be referenced as data sources
-	const pageFilters = createPageFiltersContext(serializedFilters);
+	// Wire the filters to the browser URL (same pattern as the published/preview
+	// routes in Studio): an input reads its initial value from `?<id>=…` and
+	// writes user choices back, so drill-through links and shared URLs work in
+	// `evidence dev` / `evidence serve` too.
+	const pageFilters = createPageFiltersContext(serializedFilters, {
+		url: () =>
+			typeof window !== 'undefined' ? new URL(window.location.href) : new URL('http://localhost'),
+		updateUrl: (url) => window.history.replaceState(window.history.state, '', url.toString())
+	});
 	const inlineQueries = createInlineQueriesContext(
 		{ filterContexts: [pageFilters] },
 		serializedInlineQueries,

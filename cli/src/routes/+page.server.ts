@@ -127,7 +127,8 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 				customComponents,
 				basePath,
 				useRelativeResolution,
-				translations
+				translations,
+				url
 			});
 		markdownData = {
 			serializedTree: serializeTree(tree),

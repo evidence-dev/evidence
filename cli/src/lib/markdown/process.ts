@@ -63,6 +63,10 @@ export interface ProcessOptions {
 	/** Resolved translations (translations.yaml) for the current language, exposed
 	 * to markdown as the `$translations` variable. */
 	translations?: TranslationMap;
+	/** Request URL of the page being rendered. Inputs read their initial value
+	 * from its search params (`?<filter id>=…`), so server-rendered output
+	 * matches what the client restores from the URL. */
+	url?: URL;
 }
 
 export interface Processed {
@@ -84,7 +88,7 @@ export async function process(markdown: string, options: ProcessOptions = {}): P
 	const dialect = dialectFor(options.connectionType);
 
 	const filters = new Filters({
-		url: new URL('http://localhost'),
+		url: options.url ?? new URL('http://localhost'),
 		projectSettings: { first_day_of_week: 'sunday' },
 		updateUrl: undefined,
 		dialect
