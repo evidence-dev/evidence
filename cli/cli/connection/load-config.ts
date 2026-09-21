@@ -119,7 +119,11 @@ export async function loadConnectionConfig(cwd: string): Promise<ConnectionConfi
 		}
 		const data = parseOrThrow(bigqueryConnectionSchema, obj);
 		const credentials = await resolveBigQueryCredentials(data, { cwd });
-		return { type: 'bigquery', ...credentials };
+		// `datasets` is the schema-introspection allowlist (per-dataset
+		// INFORMATION_SCHEMA fan-out) — keep it alongside the credentials so the
+		// renderer can hand it to Metadata; without it every BigQuery project
+		// showed "No BigQuery datasets configured".
+		return { type: 'bigquery', ...credentials, datasets: data.datasets };
 	}
 
 	if (obj.type === 'clickhouse') {

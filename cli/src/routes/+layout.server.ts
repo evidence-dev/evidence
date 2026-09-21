@@ -67,6 +67,9 @@ export const load: LayoutServerLoad = async ({ url, cookies }) => {
 	const credentials = isServe ? null : await loadCredentials();
 	const connectionConfig = await loadConnectionConfig(cwd).catch(() => null);
 	const connectionType: WarehouseType | null = connectionConfig?.type ?? null;
+	// BigQuery introspects INFORMATION_SCHEMA per allowlisted dataset.
+	const schemaAllowlist: string[] =
+		connectionConfig?.type === 'bigquery' ? (connectionConfig.datasets ?? []) : [];
 	const hasLocalConnection = existsSync(path.join(cwd, 'connection.yaml'));
 	const projectConfig = await loadProjectConfig(cwd).catch(() => null);
 	const projectName = projectConfig?.project.name ?? null;
@@ -106,6 +109,7 @@ export const load: LayoutServerLoad = async ({ url, cookies }) => {
 		organizationName,
 		organizations,
 		connectionType,
+		schemaAllowlist,
 		hasLocalConnection,
 		isServe
 	};
