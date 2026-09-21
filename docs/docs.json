@@ -1033,6 +1033,7 @@
                   "components/sankey_chart",
                   "components/scatter_chart",
                   "components/treemap",
+                  "components/waterfall_chart",
                   "components/area",
                   "components/bar",
                   "components/bubble",

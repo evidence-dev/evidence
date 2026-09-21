@@ -101,7 +101,8 @@ export const CORE_TAGS = new Set([
 	'text_input',
 	'toggle',
 	'treemap',
-	'value'
+	'value',
+	'waterfall_chart'
 ]);
 
 export interface MigrationNote {
