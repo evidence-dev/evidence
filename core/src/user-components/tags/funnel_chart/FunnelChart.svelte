@@ -27,6 +27,7 @@
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { getAutoRefreshContext } from '../../../auto-refresh.context.svelte';
 	import { mergeEchartsOptions } from '../../common/echarts-options-attributes';
+	import { getElevatedChartTooltipCss } from '../../common/chart-tooltip-elevation';
 	import {
 		resolveTooltipFields,
 		extractTooltipExtras,
@@ -419,9 +420,16 @@
 	// Determine if server-side sampling was applied
 	const isSampled = $derived(Boolean(query.samplingForced));
 
+	// Raises this chart's tooltip above the floating chat pane when rendered
+	// inside it; '' (ECharts default) everywhere else.
+	const elevatedTooltipCss = getElevatedChartTooltipCss();
 	const baseOptions = $derived<EChartsOption>({
 		tooltip: {
 			trigger: 'item',
+			// Render on <body> so the tooltip isn't clipped by the ECharts
+			// wrapper's overflow-hidden (matches combo/pie/treemap).
+			appendToBody: true,
+			extraCssText: elevatedTooltipCss,
 			// Same layout combo_chart uses everywhere: bold stage header
 			// at top, 2-column grid for the primary value row (with the
 			// value column's displayAlias as the label), then any

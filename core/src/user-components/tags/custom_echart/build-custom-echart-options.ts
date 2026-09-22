@@ -39,12 +39,24 @@ const DEFAULT_GRID = {
  * (e.g. `dimensions`) wins over our defaults — but `source` always comes from
  * the query, since `data` is what ties the chart to filters and variables.
  */
+export interface BuildCustomEchartOptionsOpts {
+	/**
+	 * When set, an author-declared `tooltip` object is rendered on <body>
+	 * (`appendToBody`) so the host page's overflow-hidden chart wrapper can't
+	 * clip it, and this CSS is appended to its `extraCssText` (floating-chat
+	 * elevation). Author keys still win. Omit in the sandboxed iframe, where the
+	 * iframe body *is* the chart box and there's nothing to escape.
+	 */
+	hostTooltipExtraCssText?: string;
+}
+
 export function buildCustomEchartOptions(
 	config: UnknownRecord,
 	rows: unknown[],
-	columnNames: string[]
+	columnNames: string[],
+	opts: BuildCustomEchartOptionsOpts = {}
 ): EChartsOption {
-	const { dataset: userDataset, grid: userGrid, ...rest } = config;
+	const { dataset: userDataset, grid: userGrid, tooltip: userTooltip, ...rest } = config;
 
 	const userDatasets =
 		userDataset == null
@@ -66,5 +78,23 @@ export function buildCustomEchartOptions(
 		? userGrid
 		: { ...DEFAULT_GRID, ...((userGrid as UnknownRecord | undefined) ?? {}) };
 
-	return { ...rest, grid, dataset } as EChartsOption;
+	const tooltip = withHostTooltipDefaults(userTooltip, opts.hostTooltipExtraCssText);
+
+	return { ...rest, ...(tooltip !== undefined && { tooltip }), grid, dataset } as EChartsOption;
+}
+
+function withHostTooltipDefaults(userTooltip: unknown, extraCssText: string | undefined): unknown {
+	const isPlainObject =
+		typeof userTooltip === 'object' && userTooltip !== null && !Array.isArray(userTooltip);
+	if (extraCssText === undefined || !isPlainObject) return userTooltip;
+
+	const authored = userTooltip as UnknownRecord;
+	const authoredCss = typeof authored.extraCssText === 'string' ? authored.extraCssText : '';
+	const mergedCss = [authoredCss, extraCssText].filter(Boolean).join(' ');
+
+	return {
+		appendToBody: true,
+		...authored,
+		...(mergedCss && { extraCssText: mergedCss })
+	};
 }

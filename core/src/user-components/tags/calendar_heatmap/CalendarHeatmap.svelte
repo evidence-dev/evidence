@@ -28,6 +28,7 @@
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { getAutoRefreshContext } from '../../../auto-refresh.context.svelte';
 	import { mergeEchartsOptions } from '../../common/echarts-options-attributes';
+	import { getElevatedChartTooltipCss } from '../../common/chart-tooltip-elevation';
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
 	import { getPageSettingsContext } from '../../../page-settings.context';
 	import {
@@ -431,6 +432,9 @@
 		}
 	});
 
+	// Raises this chart's tooltip above the floating chat pane when rendered
+	// inside it; '' (ECharts default) everywhere else.
+	const elevatedTooltipCss = getElevatedChartTooltipCss();
 	// Enhanced chart options with Evidence styling
 	const baseOptions = $derived<EChartsOption>({
 		animation: false,
@@ -442,6 +446,10 @@
 			showDelay: 0,
 			transitionDuration: 0.2,
 			confine: true,
+			// Render on <body> so the tooltip isn't clipped by the ECharts
+			// wrapper's overflow-hidden (matches combo/pie/treemap).
+			appendToBody: true,
+			extraCssText: elevatedTooltipCss,
 			axisPointer: {
 				type: 'shadow'
 			},

@@ -27,6 +27,7 @@
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { getAutoRefreshContext } from '../../../auto-refresh.context.svelte';
 	import { mergeEchartsOptions } from '../../common/echarts-options-attributes';
+	import { getElevatedChartTooltipCss } from '../../common/chart-tooltip-elevation';
 	import { logger } from '../../../shims/logger';
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
@@ -194,6 +195,9 @@
 	const CHART_MARGIN_PX = 2;
 	const X_AXIS_FONT_SIZE = 12;
 
+	// Raises this chart's tooltip above the floating chat pane when rendered
+	// inside it; '' (ECharts default) everywhere else.
+	const elevatedTooltipCss = getElevatedChartTooltipCss();
 	const baseOptions = $derived<EChartsOption>({
 		color: color_palette,
 		grid: {
@@ -206,6 +210,10 @@
 		},
 		tooltip: {
 			trigger: 'item',
+			// Render on <body> so the tooltip isn't clipped by the ECharts
+			// wrapper's overflow-hidden (matches combo/pie/treemap).
+			appendToBody: true,
+			extraCssText: elevatedTooltipCss,
 			formatter: function (params: unknown) {
 				// params.value[0] = bin midpoint
 				// params.value[1] = frequency (count)

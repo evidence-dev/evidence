@@ -27,6 +27,7 @@
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { getAutoRefreshContext } from '../../../auto-refresh.context.svelte';
 	import { mergeEchartsOptions } from '../../common/echarts-options-attributes';
+	import { getElevatedChartTooltipCss } from '../../common/chart-tooltip-elevation';
 	import {
 		resolveTooltipFields,
 		extractTooltipExtras,
@@ -232,9 +233,16 @@
 		return `${calculatedRadius}%`;
 	});
 
+	// Raises this chart's tooltip above the floating chat pane when rendered
+	// inside it; '' (ECharts default) everywhere else.
+	const elevatedTooltipCss = getElevatedChartTooltipCss();
 	const baseOptions = $derived<EChartsOption>({
 		tooltip: {
 			trigger: 'item',
+			// Render the tooltip on <body> so it isn't clipped by the ECharts
+			// wrapper's overflow-hidden (matches combo/treemap/radar).
+			appendToBody: true,
+			extraCssText: elevatedTooltipCss,
 			// Same shape combo_chart uses: bold category header, then a
 			// 2-column grid of `<span>label</span><span>value</span>` rows.
 			// Extras from tooltip_fields slot straight into the same grid.

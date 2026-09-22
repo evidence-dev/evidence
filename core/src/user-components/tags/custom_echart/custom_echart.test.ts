@@ -213,6 +213,58 @@ describe('buildCustomEchartOptions', () => {
 		const options = buildCustomEchartOptions({ grid: userGrid }, rows, columns);
 		expect(options.grid).toEqual(userGrid);
 	});
+
+	describe('host tooltip defaults', () => {
+		it('leaves the tooltip untouched when no host CSS is supplied (sandbox path)', () => {
+			const options = buildCustomEchartOptions({ tooltip: { trigger: 'axis' } }, rows, columns);
+			expect(options.tooltip).toEqual({ trigger: 'axis' });
+		});
+
+		it('does not add a tooltip the author never declared', () => {
+			const options = buildCustomEchartOptions({ series: [] }, rows, columns, {
+				hostTooltipExtraCssText: ''
+			});
+			expect('tooltip' in options).toBe(false);
+		});
+
+		it('body-appends an authored tooltip on the host path', () => {
+			const options = buildCustomEchartOptions({ tooltip: { trigger: 'axis' } }, rows, columns, {
+				hostTooltipExtraCssText: ''
+			});
+			expect(options.tooltip).toEqual({ trigger: 'axis', appendToBody: true });
+		});
+
+		it('lets the author opt out of appendToBody', () => {
+			const options = buildCustomEchartOptions(
+				{ tooltip: { trigger: 'item', appendToBody: false } },
+				rows,
+				columns,
+				{ hostTooltipExtraCssText: '' }
+			);
+			expect(options.tooltip).toMatchObject({ appendToBody: false });
+		});
+
+		it('appends the host CSS after the author extraCssText so elevation wins', () => {
+			const options = buildCustomEchartOptions(
+				{ tooltip: { extraCssText: 'padding: 0;' } },
+				rows,
+				columns,
+				{ hostTooltipExtraCssText: 'z-index: 10000001;' }
+			);
+			expect(options.tooltip).toMatchObject({
+				appendToBody: true,
+				extraCssText: 'padding: 0; z-index: 10000001;'
+			});
+		});
+
+		it('passes array tooltips through untouched', () => {
+			const tooltips = [{ trigger: 'axis' }, { trigger: 'item' }];
+			const options = buildCustomEchartOptions({ tooltip: tooltips }, rows, columns, {
+				hostTooltipExtraCssText: ''
+			});
+			expect(options.tooltip).toEqual(tooltips);
+		});
+	});
 });
 
 describe('parseCustomEchartConfig', () => {

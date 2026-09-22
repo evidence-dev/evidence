@@ -13,6 +13,7 @@
 	import { extractSQLProps } from '../../common/sql-options';
 	import { buildCustomEchartSQLConfig } from './build-custom-echart-sql';
 	import { buildCustomEchartOptions } from './build-custom-echart-options';
+	import { getElevatedChartTooltipCss } from '../../common/chart-tooltip-elevation';
 	import {
 		parseCustomEchartConfig,
 		type ParsedCustomEchartConfig
@@ -184,8 +185,14 @@
 	const loading: boolean = $derived(query.loading);
 	const isSampled = $derived(Boolean(query.samplingForced));
 
+	// Host-rendered (JSON5) path only: body-append the author's tooltip so the
+	// chart wrapper can't clip it, like every built-in chart. The sandboxed JS
+	// path renders inside its own iframe and builds options in runtime-entry.
+	const elevatedTooltipCss = getElevatedChartTooltipCss();
 	const options = $derived<EChartsOption>(
-		buildCustomEchartOptions(resolvedConfig, rows, columnNames)
+		buildCustomEchartOptions(resolvedConfig, rows, columnNames, {
+			hostTooltipExtraCssText: elevatedTooltipCss
+		})
 	);
 
 	const ready = $derived(!query.loading);
