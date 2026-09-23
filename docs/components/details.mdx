@@ -38,6 +38,22 @@ keywords: ["expandable","collapsible section","show more"]
 {% /details %}
 ````
 
+### Open on Desktop, Collapsed on Mobile
+
+````liquid
+{% details
+    title="Metric Definitions"
+    open=true
+    open_mobile=false
+%}
+
+**Sales:** includes sales of all core products in all regions
+
+**Sales Growth:** YoY growth in sales
+
+{% /details %}
+````
+
 ## Attributes
 
 <ResponseField name="title" type="string" required>
@@ -45,7 +61,11 @@ keywords: ["expandable","collapsible section","show more"]
 </ResponseField>
 
 <ResponseField name="open" type="boolean" default="false">
-  Whether the details section is open
+  Whether the details section starts open
+</ResponseField>
+
+<ResponseField name="open_mobile" type="boolean">
+  Whether the details section starts open on mobile screens. Defaults to the value of `open`
 </ResponseField>
 
 <ResponseField name="width" type="number">

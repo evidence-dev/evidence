@@ -17,8 +17,14 @@ export const schema = {
 		open: {
 			type: Boolean,
 			required: false,
-			description: 'Whether the details section is open',
+			description: 'Whether the details section starts open',
 			default: false
+		},
+		open_mobile: {
+			type: Boolean,
+			required: false,
+			description:
+				'Whether the details section starts open on mobile screens. Defaults to the value of `open`'
 		},
 		...WIDTH_ATTRIBUTE
 	},
@@ -38,6 +44,22 @@ export const schema = {
 			example: `
 {% details
     title="Metric Definitions"
+%}
+
+**Sales:** includes sales of all core products in all regions
+
+**Sales Growth:** YoY growth in sales
+
+{% /details %}
+`
+		},
+		{
+			title: 'Open on Desktop, Collapsed on Mobile',
+			example: `
+{% details
+    title="Metric Definitions"
+    open=true
+    open_mobile=false
 %}
 
 **Sales:** includes sales of all core products in all regions

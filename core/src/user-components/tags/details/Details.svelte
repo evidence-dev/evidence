@@ -10,6 +10,7 @@
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
+	import { IsMobile } from '../../../shadcn/hooks/is-mobile.svelte';
 
 	let props: UserComponentProps<typeof schema> = $props();
 
@@ -30,17 +31,19 @@
 	const { resolveText } = $derived(createResolvers(variableProcessor));
 
 	const title = $derived(resolveText(props.title) ?? 'Details');
-	let isOpen = $state(props.open ?? false);
+	const isMobile = new IsMobile();
+	// Initial state only, so crossing the breakpoint later doesn't override the reader's toggle
+	let isOpen = $state((isMobile.current ? (props.open_mobile ?? props.open) : props.open) ?? false);
 	const children = $derived(props.children);
 </script>
 
 <div class="flex h-full flex-col">
 	<button
-		class="text-foreground/80 flex shrink-0 cursor-pointer gap-1 text-left text-sm"
+		class="text-foreground/80 flex shrink-0 cursor-pointer items-center gap-0.5 text-left text-sm"
 		onclick={() => (isOpen = !isOpen)}
 	>
 		<ChevronRightIcon
-			class={cn('mt-[3px] size-4 shrink-0 transition-transform', isOpen ? 'rotate-90' : 'rotate-0')}
+			class={cn('size-4 shrink-0 transition-transform', isOpen ? 'rotate-90' : 'rotate-0')}
 		/>
 		<Ellipsis class="cursor-pointer">
 			{title}
@@ -49,7 +52,7 @@
 
 	{#if isOpen}
 		<!-- This div needs this height set for the transition to look nice -->
-		<div class="h-[calc(100%-16px)] pt-1 pl-5 text-sm" transition:slide>
+		<div class="h-[calc(100%-16px)] pt-1 pl-4.5 text-sm" transition:slide>
 			<div class="h-full overflow-y-auto *:h-full *:text-sm">
 				{@render children?.()}
 			</div>
