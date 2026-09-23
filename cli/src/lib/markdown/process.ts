@@ -26,6 +26,7 @@ import {
 } from '@evidence/core/user-components/Renderer/MarkdocProcessor/process-markdoc';
 import { dialectFor, defaultDialect, type SqlDialect, type WarehouseType } from '@evidence/core/sql-dialect';
 import { withTimeout } from '$lib/timeout';
+import type { ResolvedProjectSettings } from '$lib/server/project-settings.server';
 
 export type ConnectionType = WarehouseType | null;
 
@@ -63,6 +64,10 @@ export interface ProcessOptions {
 	/** Resolved translations (translations.yaml) for the current language, exposed
 	 * to markdown as the `$translations` variable. */
 	translations?: TranslationMap;
+	/** Project `date:` settings plus the computed date-range anchor, so date-driven
+	 * filters (`workflow.period`, range_calendar) resolve the same defaults the
+	 * client will. Omit for Sunday weeks anchored on today. */
+	projectSettings?: ResolvedProjectSettings;
 }
 
 export interface Processed {
@@ -85,7 +90,7 @@ export async function process(markdown: string, options: ProcessOptions = {}): P
 
 	const filters = new Filters({
 		url: new URL('http://localhost'),
-		projectSettings: { first_day_of_week: 'sunday' },
+		projectSettings: options.projectSettings ?? { first_day_of_week: 'sunday' },
 		updateUrl: undefined,
 		dialect
 	});

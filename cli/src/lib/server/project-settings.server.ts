@@ -49,11 +49,12 @@ export function dateConfigToProjectSettings(
 /**
  * Compute the YYYY-MM-DD date-range anchor. `today`/`relative` resolve in JS;
  * `custom_sql` runs against the active connection. Any failure (or an unparsable
- * result) falls back to today. Mirrors Studio's `computeDefaultDateRangeEnd`.
+ * result, or no connection to run it on) falls back to today. Mirrors Studio's
+ * `computeDefaultDateRangeEnd`.
  */
 export async function computeDefaultDateRangeEnd(
 	settings: Pick<ProjectSettings, 'default_date_range_end'>,
-	queryService: QueryService
+	queryService: QueryService | undefined
 ): Promise<string> {
 	const end = settings.default_date_range_end;
 
@@ -66,6 +67,8 @@ export async function computeDefaultDateRangeEnd(
 		date.setDate(date.getDate() - (end.daysAgo || 0));
 		return formatDateAsLocal(date);
 	}
+
+	if (!queryService) return formatDateAsLocal(new Date());
 
 	try {
 		const result = await queryService.query(end.sql);
@@ -89,7 +92,7 @@ export async function computeDefaultDateRangeEnd(
  */
 export async function resolveProjectSettings(
 	date: ParsedProjectDate | undefined,
-	queryService: QueryService
+	queryService: QueryService | undefined
 ): Promise<ResolvedProjectSettings> {
 	const base = dateConfigToProjectSettings(date);
 	return {

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import { PeriodFilter } from './PeriodFilter.svelte';
 import { SnowflakeDialect, type SqlDialect } from '../../../sql-dialect';
@@ -7,7 +7,16 @@ import { SnowflakeDialect, type SqlDialect } from '../../../sql-dialect';
 /** Mid-August 2026: July 2026 is the newest complete month. */
 const ANCHOR = '2026-08-14';
 
-function makeFilter(attributes: Record<string, unknown> = {}, dialect?: SqlDialect) {
+type TestProjectSettings = {
+	computedDefaultDateRangeEnd?: string;
+	first_day_of_week?: 'sunday' | 'monday';
+};
+
+function makeFilter(
+	attributes: Record<string, unknown> = {},
+	dialect?: SqlDialect,
+	projectSettings: TestProjectSettings = { computedDefaultDateRangeEnd: ANCHOR }
+) {
 	return new PeriodFilter(
 		{
 			id: 'period',
@@ -17,7 +26,7 @@ function makeFilter(attributes: Record<string, unknown> = {}, dialect?: SqlDiale
 		{
 			url: undefined,
 			updateUrl: undefined,
-			projectSettings: { computedDefaultDateRangeEnd: ANCHOR },
+			projectSettings,
 			dialect
 		} as never
 	);
@@ -46,6 +55,91 @@ describe('PeriodFilter — default selection', () => {
 			key: '2026-07',
 			grain: 'month'
 		});
+	});
+});
+
+describe('PeriodFilter — project date settings', () => {
+	afterEach(() => {
+		vi.useRealTimers();
+	});
+
+	it('judges completeness against the project default date range end', () => {
+		// Anchored on Jun 30, June is still "in progress", so May is the newest
+		// complete month — even though the wall clock says otherwise.
+		const filter = makeFilter({}, undefined, { computedDefaultDateRangeEnd: '2026-06-30' });
+		expect(filter.templateValues).toMatchObject({ key: '2026-05', label: 'May 2026' });
+		expect(filter.periods[0].key).toBe('2026-05');
+	});
+
+	it('anchors on today when the project has no default date range end', () => {
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date(2026, 7, 14));
+		const filter = makeFilter({}, undefined, {});
+		expect(filter.templateValues.key).toBe('2026-07');
+	});
+
+	it('starts weeks on Sunday by default', () => {
+		// 2026-08-14 is a Friday: the newest complete Sunday week is Aug 2–8.
+		const filter = makeFilter({ grain: 'week', periods: 3 });
+		expect(filter.templateValues).toMatchObject({
+			key: '2026-08-02',
+			label: 'Week of Aug 2, 2026',
+			start_label: 'Aug 2, 2026',
+			end_label: 'Aug 8, 2026'
+		});
+		expect(filter.periods.map((p) => p.key)).toEqual(['2026-08-02', '2026-07-26', '2026-07-19']);
+	});
+
+	it('starts weeks on Monday when first_day_of_week is monday', () => {
+		const filter = makeFilter({ grain: 'week', periods: 3 }, undefined, {
+			computedDefaultDateRangeEnd: ANCHOR,
+			first_day_of_week: 'monday'
+		});
+		expect(filter.templateValues).toMatchObject({
+			key: '2026-08-03',
+			label: 'Week of Aug 3, 2026',
+			start_label: 'Aug 3, 2026',
+			end_label: 'Aug 9, 2026',
+			between: "BETWEEN toDate('2026-08-03') AND toDate('2026-08-09')"
+		});
+		expect(filter.periods.map((p) => p.key)).toEqual(['2026-08-03', '2026-07-27', '2026-07-20']);
+	});
+
+	it('snaps a bookmarked week key to the configured week start', () => {
+		// 2026-08-05 is a Wednesday. Under Monday weeks it belongs to Aug 3–9;
+		// under Sunday weeks to Aug 2–8.
+		const monday = makeFilter({ grain: 'week' }, undefined, {
+			computedDefaultDateRangeEnd: ANCHOR,
+			first_day_of_week: 'monday'
+		});
+		monday.setDefault({ key: '2026-08-05' });
+		expect(monday.templateValues).toMatchObject({ key: '2026-08-03', end_label: 'Aug 9, 2026' });
+
+		const sunday = makeFilter({ grain: 'week' });
+		sunday.setDefault({ key: '2026-08-05' });
+		expect(sunday.templateValues).toMatchObject({ key: '2026-08-02', end_label: 'Aug 8, 2026' });
+	});
+
+	it('steps Monday weeks a week at a time', () => {
+		const filter = makeFilter({ grain: 'week', periods: 3 }, undefined, {
+			computedDefaultDateRangeEnd: ANCHOR,
+			first_day_of_week: 'monday'
+		});
+		expect(filter.olderPeriod?.key).toBe('2026-07-27');
+		expect(filter.newerPeriod).toBeUndefined();
+
+		filter.setDefault({ key: '2026-07-27' });
+		expect(filter.olderPeriod?.key).toBe('2026-07-20');
+		expect(filter.newerPeriod?.key).toBe('2026-08-03');
+	});
+
+	it('ignores week start for grains that do not depend on it', () => {
+		const sunday = makeFilter({ grain: 'month' });
+		const monday = makeFilter({ grain: 'month' }, undefined, {
+			computedDefaultDateRangeEnd: ANCHOR,
+			first_day_of_week: 'monday'
+		});
+		expect(monday.templateValues).toEqual(sunday.templateValues);
 	});
 });
 

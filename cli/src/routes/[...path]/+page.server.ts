@@ -160,7 +160,8 @@ export const load: PageServerLoad = async ({ params, url, cookies, setHeaders, p
 			customComponents,
 			basePath,
 			useRelativeResolution,
-			translations
+			translations,
+			projectSettings
 		});
 
 	return {

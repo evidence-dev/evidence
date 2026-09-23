@@ -17,11 +17,17 @@ import {
 	projectRootRelativePath,
 	pageDisplayTitle
 } from '$lib/markdown/files.server';
+import { loadProjectConfig } from '$cli/project-config/load-config';
 import { cliUsesRelativeResolution } from '$lib/markdown/resolution';
 import { loadCredentials } from '$lib/auth/credentials.server';
 import { getProjectCwd } from '$lib/server/project-cwd';
 import { isServeMode } from '$lib/server/serve-mode';
 import { loadTranslations } from '$lib/server/translations.server';
+import {
+	resolveProjectSettings,
+	type ResolvedProjectSettings
+} from '$lib/server/project-settings.server';
+import { ServerQueryService } from '$lib/server/ServerQueryService';
 
 // Track last modified time to detect changes (dev only)
 let lastMtime: number | null = null;
@@ -41,16 +47,20 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 	});
 	// Serve mode: no Studio session exists — never load stored credentials.
 	const isServe = isServeMode();
-	const [credentials, { connectionType }] = await Promise.all([
+	const cwd = getProjectCwd();
+	// `.catch` so a malformed evidence.config.yaml degrades to default date
+	// settings rather than 500-ing the home page (mirrors [...path]).
+	const [credentials, { connectionType }, projectConfig] = await Promise.all([
 		isServe ? null : loadCredentials(),
-		parent()
+		parent(),
+		loadProjectConfig(cwd).catch(() => null)
 	]);
 
 	// Get home markdown file from CWD
-	const cwd = getProjectCwd();
 	const homeFile = await getHomeFile(cwd);
 
 	let markdownData = null;
+	let projectSettings: ResolvedProjectSettings | undefined;
 	// Metric YAML files are discovered per-page (or emptied when there's no home
 	// file); hoisted here so the load return can surface them the same way
 	// [...path]/+page.server.ts does. CLIPageWrapper reads this to build the
@@ -119,6 +129,13 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 			url.searchParams.get('lang') ?? cookies.get('lang') ?? null
 		);
 
+		// Project date config → runtime project settings (first day of week + the
+		// computed date-range anchor). Only `custom_sql` hits the warehouse.
+		projectSettings = await resolveProjectSettings(
+			projectConfig?.date,
+			new ServerQueryService(credentials?.organizationId ?? '', connectionType)
+		);
+
 		const { tree, validationErrors, serializedInlineQueries, serializedFilters } =
 			await processMarkdown(homeFile.content, {
 				sqlFiles,
@@ -127,7 +144,8 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 				customComponents,
 				basePath,
 				useRelativeResolution,
-				translations
+				translations,
+				projectSettings
 			});
 		markdownData = {
 			serializedTree: serializeTree(tree),
@@ -149,7 +167,8 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 			user: null,
 			organizationId: null,
 			markdown: markdownData,
-			metricFiles
+			metricFiles,
+			projectSettings
 		};
 	}
 
@@ -165,6 +184,7 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 		},
 		organizationId: credentials.organizationId,
 		markdown: markdownData,
-		metricFiles
+		metricFiles,
+		projectSettings
 	};
 };

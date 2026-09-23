@@ -87,6 +87,8 @@ where order_date {{ period.between }}
 
 Only **complete** periods are offered — the period in progress never appears, so a published report doesn't change under the reader while its period is still running. The most recent complete period is selected by default, and the selection is kept in the URL so a link points at a specific period.
 
+The picker follows the project's [date settings](/features/project-settings): "complete" is judged against `date.default_date_range_end` (so `days_ago: 1` shifts which period counts as finished, and a `custom_sql` end pins periods to the data actually loaded), and the `week` grain starts weeks on `date.first_day_of_week`.
+
 `period` behaves like any other [input](/core-concepts/variables#in-inputs):
 
 | Property | Example | Description |
@@ -101,19 +103,6 @@ Only **complete** periods are offered — the period in progress never appears, 
 | `period.grain` | `month` | The configured grain. |
 
 `period.start` and `period.end` are SQL expressions for the active dialect — writing them in markdown prints `toDate('2026-07-01')`. Use `start_label` / `end_label` for text.
-
-#### Period-specific commentary
-
-Add `scope="period"` to a [commentary component](/components/commentary) to keep separate text and edit history for each selected period:
-
-```liquid
-{% commentary id="summary" scope="period" /%}
-{% commentary id="background" scope="page" /%}
-```
-
-The summary follows the period picker and the period selected for a PDF. The background remains shared across periods. Omitting `scope` preserves the existing page-wide behavior.
-
-A new period starts empty. Existing page-wide commentary is not copied into periods, and the component requires a `workflow.period` declaration when `scope="period"` is used. Unsaved edits are retained when switching periods within the page; save them before leaving or reloading the page.
 
 `workflow` is reserved for reporting settings; other keys under it are ignored for now.
 

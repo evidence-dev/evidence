@@ -33,6 +33,7 @@
 			basePath={data.markdown?.basePath}
 			useRelativeResolution={data.markdown?.useRelativeResolution}
 			metricFiles={data.metricFiles}
+			projectSettings={data.projectSettings}
 		>
 			<PeriodPicker class="mb-4" />
 			<div

@@ -25,7 +25,9 @@ import { withTimeout } from '$lib/timeout';
 import { process as processMarkdown } from '$lib/markdown';
 import { getProjectCwd } from '$lib/server/project-cwd';
 import { loadTranslations } from '$lib/server/translations.server';
+import { resolveProjectSettings } from '$lib/server/project-settings.server';
 import { loadConnectionConfig } from '$cli/connection';
+import { loadProjectConfig } from '$cli/project-config/load-config';
 import { loadCredentials } from '$lib/auth/credentials.server';
 import { ServerQueryService, type ConnectionType } from '$lib/server/ServerQueryService';
 import { Metadata } from '@evidence/core/metadata/Metadata.svelte';
@@ -139,6 +141,11 @@ export const GET: RequestHandler = async ({ url }) => {
 	// of reporting as undefined keys.
 	const translations = await loadTranslations(cwd, null);
 
+	// Same date settings the dev server renders with, so `{{ period.between }}`
+	// and relative date ranges introspect against the period the page will show.
+	const projectConfig = await loadProjectConfig(cwd).catch(() => null);
+	const projectSettings = await resolveProjectSettings(projectConfig?.date, queryService);
+
 	let totalErrors = 0;
 	let totalWarnings = 0;
 	const files: FileResult[] = [];
@@ -156,7 +163,8 @@ export const GET: RequestHandler = async ({ url }) => {
 					? projectRootRelativePath(cwd, file.path)
 					: undefined,
 				useRelativeResolution,
-				translations
+				translations,
+				projectSettings
 			});
 
 			const errors = validationErrors.map((err) => {

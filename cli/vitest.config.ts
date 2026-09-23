@@ -8,6 +8,13 @@ const coreShims = path.resolve(import.meta.dirname, '../core/src/shims');
 
 export default defineConfig({
 	plugins: [svelte()],
+	define: {
+		// Mirrors vite.config.ts: run-query.ts reads this at import time, so any
+		// test that reaches ServerQueryService needs it defined.
+		__DEFAULT_QUERY_ENGINE_HOST__: JSON.stringify(
+			process.env.BUILD_QUERY_ENGINE_HOST ?? 'https://query-engine-service.evidence.studio'
+		)
+	},
 	resolve: {
 		conditions: ['svelte'],
 		alias: {

@@ -102,6 +102,16 @@ describe('computeDefaultDateRangeEnd', () => {
 		).toBe(ymd(new Date()));
 	});
 
+	it('falls back to today for custom_sql when there is no connection to run it on', async () => {
+		// Syntax-only validation has no query service; the anchor must still resolve.
+		expect(
+			await computeDefaultDateRangeEnd(
+				{ default_date_range_end: { type: 'custom_sql', sql: 'select max(d) from t' } },
+				undefined
+			)
+		).toBe(ymd(new Date()));
+	});
+
 	it('falls back to today when custom_sql returns an unparsable value', async () => {
 		const svc = fakeQueryService(() => ({
 			rows: [{ d: 'not a date' }],
