@@ -244,12 +244,12 @@
 				filterState.conjunction = urlValue.conjunction;
 				filterState.active = urlValue.active;
 
-				// Manually trigger sync to global filter since bulk assignment might not trigger reactivity
-				filter.value = {
+				// Constraining may have changed a URL value; a constrained default must still stay out of the URL.
+				filter.normalize({
 					active: filterState.active,
 					filters: filterState.filters,
 					conjunction: filterState.conjunction
-				};
+				});
 			} catch (error) {
 				logger.error(error, 'Error during URL initialization');
 			}

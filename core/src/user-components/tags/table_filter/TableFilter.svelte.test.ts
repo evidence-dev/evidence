@@ -216,3 +216,167 @@ describe('TableFilter initial_values arriving after mount', () => {
 		expect(filters.get(ID)?.value).toBeDefined();
 	});
 });
+
+describe('TableFilter URL persistence', () => {
+	const ID = 'orders_filter';
+
+	function attributes(
+		initial_values: Record<string, string | string[]>,
+		overrides: Record<string, unknown> = {}
+	) {
+		return {
+			data: 'demo.daily_orders',
+			title: 'Filter',
+			defaultConjunction: 'AND' as const,
+			columns: ['category', 'region'],
+			showClearButton: true,
+			multiple: true,
+			single_select: [],
+			multi_select: [],
+			require_selection: [],
+			initial_values,
+			...overrides
+		};
+	}
+
+	function mountWithUrl(
+		initial_values: Record<string, string | string[]>,
+		{
+			startUrl = 'https://example.com/report',
+			overrides = {}
+		}: { startUrl?: string; overrides?: Record<string, unknown> } = {}
+	) {
+		let url = new URL(startUrl);
+		const updateUrl = vi.fn((next: URL) => {
+			url = new URL(next);
+		});
+		const filters = new Filters({
+			url: () => url,
+			updateUrl,
+			projectSettings: undefined,
+			dialect: () => defaultDialect
+		});
+		pageFilters.current = filters;
+		filters.create(
+			{
+				id: ID,
+				userComponentName: 'table_filter',
+				attributes: attributes(initial_values, overrides)
+			} as unknown as ConstructorParameters<typeof TableFilterFilter>[0],
+			TableFilterFilter
+		);
+
+		target = document.createElement('div');
+		document.body.appendChild(target);
+		mounted = mount(TableFilter, {
+			target,
+			props: { id: ID, ...attributes(initial_values, overrides) }
+		});
+
+		return { filters, updateUrl, getUrl: () => url };
+	}
+
+	function urlWith(state: unknown) {
+		return `https://example.com/report?${ID}=${encodeURIComponent(JSON.stringify(state))}`;
+	}
+
+	const regionIn = (values: string[]) => ({
+		active: true,
+		filters: [
+			{ columnId: 'region', conditions: [{ type: 'string', operator: 'in', value: values }] }
+		],
+		conjunction: 'AND'
+	});
+
+	async function settleWithQueries() {
+		await settle();
+		await new Promise((resolve) => setTimeout(resolve, 20));
+		await settle();
+	}
+
+	it('keeps initial_values out of the URL but persists a user edit', async () => {
+		const { filters, updateUrl, getUrl } = mountWithUrl({
+			category: 'Groceries',
+			region: 'West'
+		});
+		await settle();
+		await new Promise((resolve) => setTimeout(resolve, 20));
+		await settle();
+
+		// The default is applied to the filter's state...
+		expect((filters.get(ID)?.value as { filters: unknown[] }).filters).toHaveLength(2);
+		// ...but never written to the URL, so it can't be carried to other pages.
+		expect(updateUrl).not.toHaveBeenCalled();
+		expect(getUrl().searchParams.has(ID)).toBe(false);
+
+		// A user removing one chip is a real choice and must persist.
+		const removeChip = document.querySelector('button > svg.lucide-x')?.closest('button');
+		expect(removeChip).toBeTruthy();
+		removeChip!.click();
+		await settle();
+
+		expect(updateUrl).toHaveBeenCalled();
+		const persisted = getUrl().searchParams.get(ID);
+		expect(persisted).toBeTruthy();
+		expect(JSON.parse(persisted!).filters).toHaveLength(1);
+	});
+
+	it('persists an operator toggle, which edits the shared filter state in place', async () => {
+		const { updateUrl, getUrl } = mountWithUrl({ region: 'West' });
+		await settleWithQueries();
+		expect(updateUrl).not.toHaveBeenCalled();
+
+		const operatorButton = Array.from(document.querySelectorAll<HTMLButtonElement>('button')).find(
+			(button) => button.textContent?.trim() === 'is'
+		);
+		expect(operatorButton).toBeTruthy();
+		operatorButton!.click();
+		await settleWithQueries();
+
+		expect(updateUrl).toHaveBeenCalled();
+		const persisted = JSON.parse(getUrl().searchParams.get(ID)!);
+		expect(persisted.filters[0].conditions[0].operator).toBe('not_in');
+	});
+
+	it('writes a URL value back once a single_select column has constrained it', async () => {
+		const { filters, updateUrl, getUrl } = mountWithUrl(
+			{},
+			{ startUrl: urlWith(regionIn(['East', 'West'])), overrides: { single_select: ['region'] } }
+		);
+		await settleWithQueries();
+
+		const value = filters.get(ID)?.value as ReturnType<typeof regionIn>;
+		expect(value.filters[0].conditions[0].value).toEqual(['East']);
+		expect(updateUrl).toHaveBeenCalled();
+		const persisted = JSON.parse(getUrl().searchParams.get(ID)!);
+		expect(persisted.filters[0].conditions[0].value).toEqual(['East']);
+	});
+
+	it('loads a tf URL param and round-trips its value (one benign canonicalizing write)', async () => {
+		const original = regionIn(['East', 'West']);
+		const { filters, updateUrl, getUrl } = mountWithUrl({}, { startUrl: urlWith(original) });
+		await settleWithQueries();
+
+		// The value loads intact...
+		const value = filters.get(ID)?.value as ReturnType<typeof regionIn>;
+		expect(value.filters[0].conditions[0].value).toEqual(['East', 'West']);
+		// ...and the one write on load is content-identical (deserialize returns keys in a
+		// different order than the component rebuilds them, so serialize differs as a string
+		// while decoding to the same state). replaceState to an equal value is harmless.
+		expect(updateUrl).toHaveBeenCalledTimes(1);
+		expect(JSON.parse(getUrl().searchParams.get(ID)!)).toEqual(original);
+	});
+
+	it('keeps a constrained initial_values default out of the URL', async () => {
+		const { filters, updateUrl, getUrl } = mountWithUrl(
+			{ region: ['East', 'West'] },
+			{ overrides: { single_select: ['region'] } }
+		);
+		await settleWithQueries();
+
+		const value = filters.get(ID)?.value as ReturnType<typeof regionIn>;
+		expect(value.filters[0].conditions[0].value).toEqual(['East']);
+		expect(updateUrl).not.toHaveBeenCalled();
+		expect(getUrl().searchParams.has(ID)).toBe(false);
+	});
+});

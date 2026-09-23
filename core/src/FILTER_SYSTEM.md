@@ -42,6 +42,9 @@ The Filter class and all input components live in `core`, which must not import 
 4. **Two distinct methods exist for setting filter values:**
    - `filter.value = x` — for user interactions. Updates reactive state AND writes to URL.
    - `filter.setDefault(x)` — for programmatic defaults. Updates reactive state ONLY. Never writes to URL.
+   - `filter.normalize(x)` — for a value the component had to correct (constrained to its rules). Writes to URL only if the filter's param is already there, so a corrected URL value stays in sync and a corrected default stays out.
+
+5. **Re-asserting the current value never writes the URL.** The setter compares the serialized new value with a snapshot of the last serialized value it (or `setDefault`) stored and skips the URL write when they match. Components routinely echo state back through the setter (`bind:value` sync, effects that mirror local state into the filter); when that state came from a default, the echo must not promote it to a URL param — otherwise [cross-page persistence](#cross-page-filter-persistence) carries the default to every other page as if the user had chosen it. The comparison is against a *snapshot*, not a re-serialization of the stored value: components mutate that object in place (chip operator toggles, `addFilter`'s `push`) before re-assigning it, so re-serializing it would already contain the edit and the write would be skipped.
 
 ---
 
@@ -84,25 +87,35 @@ export abstract class Filter<Value = any> {
     set value(newValue: Value | undefined) {
         this.#value = newValue;  // Step 1: update reactive state
 
-        if (this.#isInitializing) return;              // Step 2: block during construction
-        if (this.opts.dontUseQueryParam) return;       // Step 3: opt-out flag
-        if (!this.deps.updateUrl) return;              // Step 4: no write capability (editor, server)
+        if (this.opts.dontUseQueryParam) return;       // Step 2: opt-out flag
+        if (!this.deps.updateUrl) return;              // Step 3: no write capability (editor, server)
+
+        const serialized = this.opts.serialize(newValue);
+        const changed = serialized !== this.#lastSerialized;
+        this.#lastSerialized = serialized;             // Step 4: snapshot — see Core Principle 5
+        if (this.#isInitializing || !changed) return;  // Step 5: block during construction / no-op write
 
         const currentUrl = extract(this.deps.url);
         if (currentUrl) {
-            const url = new URL(currentUrl);           // Step 5: copy (never mutate original)
-            const serialized = this.opts.serialize(newValue);
+            const url = new URL(currentUrl);           // Step 6: copy (never mutate original)
             if (serialized) {                          // ⚠️ Truthiness check — see "Falsy Values"
-                url.searchParams.set(this.id, serialized);  // Step 6: set param
+                url.searchParams.set(this.id, serialized);  // Step 7: set param
             } else {
                 url.searchParams.delete(this.id);
             }
-            this.deps.updateUrl(url);                  // Step 7: write to browser URL
+            this.deps.updateUrl(url);                  // Step 8: write to browser URL
         }
     }
 
     setDefault(newValue: Value | undefined) {
         this.#value = newValue;  // Updates reactive state only. No URL write. Ever.
+        this.#lastSerialized = untrack(() => this.opts.serialize(newValue));  // so an echo of it is a no-op
+    }
+
+    normalize(newValue: Value | undefined) {
+        // URL param present ⇒ the value came from the URL, so keep the URL in sync with the correction
+        if (extract(this.deps.url)?.searchParams.has(this.id)) this.value = newValue;
+        else this.setDefault(newValue);
     }
 }
 ```
@@ -399,7 +412,7 @@ These compute a default value from queried data — the slider needs min/max fro
 
 ##### Slider-specific concern: `bind:value` echo
 
-The slider is the ONLY input that uses Svelte's `bind:value` with a getter/setter pair. All other inputs use explicit event handlers (`onclick`, `handleValueChange`, `handleTabClick`) that only fire on genuine user interaction.
+The slider and the dropdown (`Select.Root`) use Svelte's `bind:value` with a getter/setter pair. The other inputs use explicit event handlers (`onclick`, `handleValueChange`, `handleTabClick`) that only fire on genuine user interaction. Since the setter's no-op guard (Core Principle 5) landed, an echo of the current value is harmless everywhere; the slider's own guard below predates it and remains as documentation of the hazard.
 
 With `bind:value={getter, setter}`, Svelte keeps the component's internal value in sync with the getter. When `setDefault(150.9)` changes `#value`, the getter returns `150.9`. Svelte detects this differs from the previous value (`undefined`) and may call the setter with `150.9` to establish sync. This setter call is NOT a user action — it's a framework sync mechanism.
 
@@ -455,6 +468,52 @@ This guard is safe because:
 ```
 
 RangeCalendar does NOT have the bind:value echo problem — it uses explicit event handlers (`handlePresetSelect`, `onclick`).
+
+---
+
+### Pattern E: Local-state mirror (`initial_values`)
+
+**Components**: TableFilter
+
+TableFilter keeps its own reactive `filterState` (the chips UI edits this directly) and mirrors it into the page filter with an `$effect`. That mirror is the hazard: it runs for *every* `filterState` change, including the one that loads the author's `initial_values`, and it cannot tell a user edit from the initial load.
+
+##### Scenario: Fresh page load, `initial_values={category="Groceries"}`, no URL param
+```
+1. TableFilterFilter constructor builds the initial FilterState from initial_values → value set (no URL write, #isInitializing)
+2. Adoption $effect copies filter.value into filterState (constrained to single/multi rules) and mirrors it back with filter.normalize(...) → no URL param present → setDefault path, no URL write
+3. Sync $effect fires (filterState changed) → filter.value = { active, filters, conjunction }
+4. → setter: serialized form matches the last snapshot → no-op, no URL write
+5. Chips render "Groceries"; URL has NO param
+```
+
+##### Scenario: URL carries `["East","West"]` for a `single_select` column
+```
+1. Constructor deserializes the URL value → snapshot = ["East","West"]
+2. Adoption $effect constrains to ["East"] and calls filter.normalize(...) → URL param present → filter.value = … → serialized differs → URL rewritten to ["East"]
+3. Chips and URL agree; a page visited next receives the constrained value
+```
+
+##### Scenario: User toggles the chip operator ("is" → "is not")
+```
+1. toggleCondition sets condition.operator in place on the object filterState — and the filter's stored value — share
+2. Sync $effect re-runs (the setter's serialize reads deep state) → filter.value = { …same object… }
+3. → setter: serialized "not_in" differs from the snapshot taken at the previous set → URL written
+```
+
+##### Scenario: User removes the "Groceries" chip
+```
+1. removeFilter mutates filterState.filters → []
+2. Sync $effect → filter.value = undefined → serialized differs → URL param deleted (was never there)
+```
+
+##### Scenario: `initial_values` for two columns, user removes one chip
+```
+1. Load as above; URL clean
+2. removeFilter → filterState.filters has one entry
+3. Sync $effect → filter.value = { filters: [one] } → serialized differs → URL written with the remaining filter
+```
+
+This pattern used to write the URL in step 2 *and* step 3 (both used `filter.value =`), which put the author's default into the URL on every page load. Cross-page persistence then carried it to pages whose `table_filter` shared the id, filtering them against a column/value that didn't apply and blanking them out. The no-op guard covers step 3; step 2 uses `normalize()` so a default stays out of the URL while a URL value that constraining changed is written back in its corrected form.
 
 ---
 
@@ -783,6 +842,10 @@ The onclick handler modifies `e.currentTarget.href` before SvelteKit's delegated
 | Data loads, slider computes min | `$effect` → `filter.setDefault(min)` | No | `setDefault` never writes to URL |
 | Data loads, calendar picks default preset | `$effect` → `filter.setDefault({ range })` | No | `setDefault` never writes to URL |
 | Slider bind:value echoes default back | Setter fires, but `filter.value === clamped` | No | Guard prevents write for unchanged value |
+| Page loads, markup has `initial_values={...}` (table_filter) | Constructor sets state → adoption `$effect` → `normalize` (no URL param → `setDefault`) → sync `$effect` → `filter.value = same` | No | Setter no-op: serialized value unchanged |
+| Page loads with a `tf` URL param a `single_select` column must narrow (table_filter) | Constructor sets state → adoption `$effect` → `normalize` (URL param present → `filter.value =`) | Yes | URL value corrected in place; a default is never written this way |
+| User toggles a chip operator or flips a boolean chip (table_filter) | In-place edit of shared state → sync `$effect` → `filter.value = same object` | Yes | Compared against the last serialized snapshot, not the (already mutated) stored object |
+| Any component re-asserts the current value | Setter fires with equal serialized value | No | Setter no-op (Core Principle 5) |
 | User selects dropdown option | Event handler → `filter.value = "Option 2"` | Yes | User intent → URL should reflect choice |
 | User drags slider | bind:value setter → `filter.value = 300` | Yes | User intent |
 | User selects calendar preset | Event handler → `filter.value = { range }` | Yes | User intent |

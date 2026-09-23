@@ -3,6 +3,7 @@ import {
 	type ProjectSettings
 } from './user-components/interfaces/project-settings';
 import { extract, type MaybeGetter } from 'runed';
+import { untrack } from 'svelte';
 import type { SqlDialect } from './sql-dialect';
 
 export type FilterOpts<T> = {
@@ -36,8 +37,11 @@ export type SerializedFilter = {
  *
  * ## ⚠️ Critical: `setDefault()` vs `filter.value =`
  *
- * - `filter.value = x` → updates internal state AND writes to the URL (via updateUrl)
+ * - `filter.value = x` → updates internal state AND writes to the URL (via updateUrl),
+ *   but only when the serialized value differs from the last one set — re-asserting
+ *   the current value (echoes, state mirroring) leaves the URL alone
  * - `filter.setDefault(x)` → updates internal state ONLY (no URL write)
+ * - `filter.normalize(x)` → corrected value; writes the URL only if the param is already there
  *
  * Input components that set programmatic defaults (select_first, default date ranges, etc.)
  * MUST use `setDefault()`. Using `filter.value =` for programmatic defaults can trigger
@@ -68,24 +72,29 @@ export abstract class Filter<Value = any> {
 	set value(newValue: Value | undefined) {
 		this.#value = newValue;
 
-		// Skip URL updates during initialization
-		if (this.#isInitializing) {
+		if (this.opts.dontUseQueryParam || !this.deps.updateUrl) {
 			return;
 		}
 
-		if (!this.opts.dontUseQueryParam && this.deps.updateUrl) {
-			const currentUrl = extract(this.deps.url);
-			if (currentUrl) {
-				const url = new URL(currentUrl);
-				const serialized = this.opts.serialize(newValue);
-				if (serialized) {
-					url.searchParams.set(this.id, serialized);
-				} else {
-					url.searchParams.delete(this.id);
-				}
+		// Compare to the last committed snapshot, not #value: components mutate #value in place.
+		const serialized = this.opts.serialize(newValue);
+		const changed = serialized !== this.#lastSerialized;
+		this.#lastSerialized = serialized;
 
-				this.deps.updateUrl(url);
+		if (this.#isInitializing || !changed) {
+			return;
+		}
+
+		const currentUrl = extract(this.deps.url);
+		if (currentUrl) {
+			const url = new URL(currentUrl);
+			if (serialized) {
+				url.searchParams.set(this.id, serialized);
+			} else {
+				url.searchParams.delete(this.id);
 			}
+
+			this.deps.updateUrl(url);
 		}
 	}
 
@@ -96,6 +105,20 @@ export abstract class Filter<Value = any> {
 	 */
 	setDefault(newValue: Value | undefined) {
 		this.#value = newValue;
+		if (!this.opts.dontUseQueryParam && this.deps.updateUrl) {
+			this.#lastSerialized = untrack(() => this.opts.serialize(newValue));
+		}
+	}
+
+	// Corrected value (e.g. constrained): writes the URL only if the param already exists, so a fixed default stays out.
+	normalize(newValue: Value | undefined) {
+		const inUrl =
+			!this.opts.dontUseQueryParam && (extract(this.deps.url)?.searchParams.has(this.id) ?? false);
+		if (inUrl) {
+			this.value = newValue;
+		} else {
+			this.setDefault(newValue);
+		}
 	}
 
 	/** Current value in its serialized (URL-param) string form. */
@@ -137,6 +160,7 @@ export abstract class Filter<Value = any> {
 	abstract get templateValues(): Record<string, unknown>;
 
 	#value: Value | undefined = $state(undefined);
+	#lastSerialized: string | undefined;
 	#isInitializing = true;
 
 	constructor(
