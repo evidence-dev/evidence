@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
+import { flushSync } from 'svelte';
 import { PeriodFilter } from './PeriodFilter.svelte';
 import { SnowflakeDialect, type SqlDialect } from '../../../sql-dialect';
 
@@ -169,6 +170,28 @@ describe('PeriodFilter — options offered to the picker', () => {
 
 	it('defaults to 12 periods', () => {
 		expect(makeFilter({ periods: undefined }).periods).toHaveLength(12);
+	});
+});
+
+describe('PeriodFilter — frontmatter edits', () => {
+	it('re-derives the picker when attributes are updated in place', () => {
+		// register-filters updates the existing filter rather than recreating it,
+		// so the picker (which has no tag component) must observe the change.
+		const filter = makeFilter();
+		const seen: string[] = [];
+		const cleanup = $effect.root(() => {
+			$effect(() => {
+				seen.push(`${filter.grain}:${filter.period.key}:${filter.periods.length}`);
+			});
+		});
+		flushSync();
+		expect(seen).toEqual(['month:2026-07:12']);
+
+		filter.attributes = { grain: 'week', periods: 4 };
+		flushSync();
+		// The month key no longer parses as a week, so the newest complete week wins.
+		expect(seen.at(-1)).toBe('week:2026-08-02:4');
+		cleanup();
 	});
 });
 

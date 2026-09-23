@@ -8,6 +8,14 @@ const attributes = {
 		required: true,
 		description: 'Unique identifier for the commentary component'
 	},
+	scope: {
+		type: String,
+		required: false,
+		matches: ['page', 'period'],
+		default: 'page',
+		description:
+			'Save commentary for the whole page (page) or the selected reporting period (period). Period scope requires workflow.period in the page frontmatter.'
+	},
 	placeholder: {
 		type: String,
 		required: false,
@@ -60,5 +68,16 @@ export const schema = {
 			grow: 3,
 			minWidth: 250
 		}
-	}
+	},
+	examples: [
+		{
+			title: 'Page-wide commentary',
+			hero: true,
+			example: '{% commentary id="overview" /%}'
+		},
+		{
+			title: 'Reporting-period commentary',
+			example: '{% commentary id="monthly-review" scope="period" /%}'
+		}
+	]
 } as const satisfies UserComponentSchema;

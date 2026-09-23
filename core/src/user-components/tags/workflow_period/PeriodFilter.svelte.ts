@@ -29,7 +29,9 @@ export class PeriodFilter extends Filter<PeriodValue> {
 	// Reads as a label in prose ("Jul 2026 Review"), as a date range in SQL.
 	static override defaultProperty = { sql: 'between', text: 'label', column: 'label' };
 
-	attributes: Omit<PeriodAttributes, 'id'>;
+	// Reactive, unlike other filters: there is no tag component to re-render when the
+	// frontmatter changes, so the picker and period-scoped components read this directly.
+	attributes: Omit<PeriodAttributes, 'id'> = $state.raw({});
 
 	get grain(): PeriodGrain {
 		const grain = this.attributes.grain;

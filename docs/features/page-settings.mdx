@@ -102,6 +102,19 @@ Only **complete** periods are offered — the period in progress never appears, 
 
 `period.start` and `period.end` are SQL expressions for the active dialect — writing them in markdown prints `toDate('2026-07-01')`. Use `start_label` / `end_label` for text.
 
+#### Period-specific commentary
+
+Add `scope="period"` to a [commentary component](/components/commentary) to keep separate text and edit history for each selected period:
+
+```liquid
+{% commentary id="summary" scope="period" /%}
+{% commentary id="background" scope="page" /%}
+```
+
+The summary follows the period picker and the period selected for a PDF. The background remains shared across periods. Omitting `scope` preserves the existing page-wide behavior.
+
+A new period starts empty. Existing page-wide commentary is not copied into periods, and the component requires a `workflow.period` declaration when `scope="period"` is used. Unsaved edits are retained when switching periods within the page; save them before leaving or reloading the page.
+
 `workflow` is reserved for reporting settings; other keys under it are ignored for now.
 
 ## Frontmatter variables

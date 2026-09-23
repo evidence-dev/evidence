@@ -16,7 +16,7 @@ interface PageState {
 	params: Record<string, string>;
 	route: { id: string | null };
 	status: number;
-	error: Error | null;
+	error: { message: string } | null;
 	form: unknown;
 }
 
