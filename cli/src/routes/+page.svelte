@@ -27,6 +27,7 @@
 		<CLIPageWrapper
 			organizationId={data.organizationId ?? ''}
 			connectionType={data.connectionType}
+			schemaAllowlist={data.schemaAllowlist}
 			serializedInlineQueries={data.markdown?.serializedInlineQueries}
 			serializedFilters={data.markdown?.serializedFilters}
 			sqlFiles={data.markdown?.sqlFiles}
