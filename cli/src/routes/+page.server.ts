@@ -15,6 +15,7 @@ import {
 	discoverProjectMetricFiles,
 	hasProjectMetricFiles,
 	projectRootRelativePath,
+	resolvePageSettings,
 	pageDisplayTitle
 } from '$lib/markdown/files.server';
 import { loadProjectConfig } from '$cli/project-config/load-config';
@@ -23,6 +24,8 @@ import { loadCredentials } from '$lib/auth/credentials.server';
 import { getProjectCwd } from '$lib/server/project-cwd';
 import { isServeMode } from '$lib/server/serve-mode';
 import { loadTranslations } from '$lib/server/translations.server';
+import { resolvePageTheme } from '$lib/server/theme.server';
+import type { ThemeConfig } from '@evidence/core/types/theme';
 import {
 	resolveProjectSettings,
 	type ResolvedProjectSettings
@@ -61,6 +64,7 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 
 	let markdownData = null;
 	let projectSettings: ResolvedProjectSettings | undefined;
+	let resolvedPageTheme: ThemeConfig | undefined;
 	// Metric YAML files are discovered per-page (or emptied when there's no home
 	// file); hoisted here so the load return can surface them the same way
 	// [...path]/+page.server.ts does. CLIPageWrapper reads this to build the
@@ -117,7 +121,9 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 		metricFiles = discovered.metricFiles;
 
 		if (Object.keys(sqlFiles).length > 0 && changed) {
-			console.log(`  📄 Found ${Object.keys(sqlFiles).length} SQL file(s): ${Object.keys(sqlFiles).join(', ')}`);
+			console.log(
+				`  📄 Found ${Object.keys(sqlFiles).length} SQL file(s): ${Object.keys(sqlFiles).join(', ')}`
+			);
 		}
 
 		const basePath = useRelativeResolution
@@ -128,6 +134,8 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 			cwd,
 			url.searchParams.get('lang') ?? cookies.get('lang') ?? null
 		);
+
+		resolvedPageTheme = await resolvePageTheme(cwd, homeFile.content);
 
 		// Project date config → runtime project settings (first day of week + the
 		// computed date-range anchor). Only `custom_sql` hits the warehouse.
@@ -157,7 +165,9 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 			title: pageDisplayTitle(homeFile, true),
 			slug: homeFile.slug,
 			basePath,
-			useRelativeResolution
+			useRelativeResolution,
+			// Same layered merge as [...path] so `/` honours page_width, cards, etc.
+			pageSettings: resolvePageSettings(homeFile.content, projectConfig?.layout)
 		};
 	}
 
@@ -168,7 +178,8 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 			organizationId: null,
 			markdown: markdownData,
 			metricFiles,
-			projectSettings
+			projectSettings,
+			resolvedPageTheme
 		};
 	}
 
@@ -185,6 +196,7 @@ export const load: PageServerLoad = async ({ url, cookies, setHeaders, parent })
 		organizationId: credentials.organizationId,
 		markdown: markdownData,
 		metricFiles,
-		projectSettings
+		projectSettings,
+		resolvedPageTheme
 	};
 };

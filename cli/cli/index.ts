@@ -4,8 +4,8 @@
  */
 
 import path from 'node:path';
-import { existsSync } from 'node:fs';
 import { parseArgs, showHelp, showVersion, showDefault, BANNER, VERSION } from './args.ts';
+import { hasConnectionYaml } from './server.shared.ts';
 import {
 	login,
 	logout,
@@ -43,15 +43,6 @@ import { signup } from './signup.ts';
 // ============================================================================
 // Main
 // ============================================================================
-
-// A project with connection.yaml queries its warehouse directly and never hits
-// the managed query engine, so it needs no login. Mirrors getProjectCwd(); a
-// raw existence check (not loadConnectionConfig) keeps a broken file from
-// blocking dev — it's reported at query time instead.
-function hasConnectionYaml(): boolean {
-	const cwd = process.env.EVIDENCE_PROJECT_CWD || process.cwd();
-	return existsSync(path.join(cwd, 'connection.yaml'));
-}
 
 const args = parseArgs();
 

@@ -1,7 +1,7 @@
 /**
  * Dev-mode entry for `evidence dev`.
  *
- * Runs the same Studio health check the binary path runs, then spawns
+ * Runs the same Studio reachability warning the binary path runs, then spawns
  * `vite dev` with the cli package as its cwd (so vite finds its config),
  * forwarding the user's project directory via EVIDENCE_PROJECT_CWD.
  *
@@ -12,7 +12,7 @@
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ensureStudioServerOrExit } from './server.shared.ts';
+import { warnIfStudioUnreachable, describeDevMode } from './server.shared.ts';
 
 export interface DevServerOptions {
 	port: number;
@@ -22,7 +22,7 @@ export interface DevServerOptions {
 export async function startDevServer(options: DevServerOptions): Promise<void> {
 	const { port, open } = options;
 
-	await ensureStudioServerOrExit();
+	await warnIfStudioUnreachable();
 
 	const cliRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -35,6 +35,7 @@ export async function startDevServer(options: DevServerOptions): Promise<void> {
 
 	const projectCwd = process.env.EVIDENCE_PROJECT_CWD ?? process.cwd();
 
+	console.log(`  Mode: dev — ${await describeDevMode()}`);
 	console.log(`  Starting vite dev (project: ${projectCwd})\n`);
 
 	const child = spawn('pnpm', viteArgs, {

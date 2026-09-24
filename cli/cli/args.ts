@@ -10,7 +10,7 @@ import {
 } from './output.ts';
 import { INIT_WAREHOUSES, parseWarehouse, type InitWarehouse } from './init/connection-template.ts';
 
-export const VERSION = '0.10.0';
+export const VERSION = '0.10.1';
 
 export const BANNER = `
   evidence
@@ -30,6 +30,7 @@ Deploy
   launch      Connect this project to Evidence Studio + GitHub (deploy via git push)
   link        Attach this repo to an existing Studio project
   unlink      Disconnect this repo from its Studio project
+  serve       Self-host the project (production server; needs connection.yaml)
 
 Data
   query       Run a SQL query against the warehouse
@@ -688,7 +689,7 @@ export function showDefault(status: AuthStatusForWelcome): void {
 	console.log('');
 
 	// Commands
-	console.log('  Commands:  dev, launch, link, unlink, query, tables, describe, schema,');
+	console.log('  Commands:  dev, serve, launch, link, unlink, query, tables, describe, schema,');
 	console.log(
 		'             connectors, validate, docs, login, logout, whoami, orgs, switch, token'
 	);

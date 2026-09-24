@@ -98,6 +98,25 @@ describe('home route load — project date settings', () => {
 		expect(options?.projectSettings).toEqual(data.projectSettings);
 	});
 
+	it('resolves page_width and cards from home.md frontmatter like every other page', async () => {
+		// Regression: `/` ignored `page_width: full` (and `cards`) while subpages
+		// honoured them, because the home route never read page settings.
+		await writeFile(
+			path.join(projectDir, 'pages', 'home.md'),
+			`---\ntitle: Home\npage_width: full\ncards: true\n---\n\n# Wide\n`
+		);
+
+		const data = await callLoad();
+
+		expect(data.markdown?.pageSettings).toMatchObject({ page_width: 'full', cards: true });
+	});
+
+	it('falls back to the article width when home.md sets no page settings', async () => {
+		const data = await callLoad();
+
+		expect(data.markdown?.pageSettings).toMatchObject({ page_width: 'article', cards: false });
+	});
+
 	it('degrades to default settings when evidence.config.yaml is malformed', async () => {
 		await writeFile(path.join(projectDir, 'evidence.config.yaml'), 'project: [not, an, object]\n');
 

@@ -5,7 +5,7 @@
 import { file } from 'bun';
 import path from 'node:path';
 import { execPath } from 'process';
-import { ensureStudioServerOrExit, openBrowser } from './server.shared.ts';
+import { warnIfStudioUnreachable, describeDevMode, openBrowser } from './server.shared.ts';
 // Auth logic shared with the SvelteKit hook (SSR/API traffic); the static
 // branch below returns before SvelteKit runs, so it must check independently.
 import { authDisabled, checkBasicAuth, SERVE_HARDENED_HEADERS } from './basic-auth.ts';
@@ -180,9 +180,9 @@ export async function startServer(options: ServerOptions): Promise<void> {
 		);
 	}
 
-	// Self-hosting needs nothing from Studio — checking reachability here would
-	// hard-fail valid deployments behind an outbound firewall.
-	if (!isServe) await ensureStudioServerOrExit();
+	// Self-hosting needs nothing from Studio; dev only warns, and only when the
+	// managed engine is actually in play (no connection.yaml).
+	if (!isServe) await warnIfStudioUnreachable();
 
 	let server!: ReturnType<typeof Bun.serve>;
 	let actualPort = port;
@@ -256,6 +256,8 @@ export async function startServer(options: ServerOptions): Promise<void> {
 					: '  Mode: serve (hardened) — localhost only, no auth required'
 		);
 		console.log(`  Bound to ${host}; restart to pick up project changes.\n`);
+	} else {
+		console.log(`  Mode: dev — ${await describeDevMode()}\n`);
 	}
 
 	if (open) openBrowser(url);
