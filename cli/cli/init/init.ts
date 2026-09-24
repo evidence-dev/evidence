@@ -8,6 +8,7 @@
 
 import { mkdir, writeFile, readdir, rm } from 'node:fs/promises';
 import path from 'node:path';
+import { randomUUID } from 'node:crypto';
 import { VERSION } from '../args.ts';
 import { connectionYamlTemplate, type InitWarehouse } from './connection-template.ts';
 import { buildThemeYamlContent } from '@evidence/core/theme/build-theme-yaml';
@@ -20,6 +21,10 @@ const EVIDENCE_CONFIG_TEMPLATE = `project:
   evidence: "{{version}}"
 
 pages: ./pages
+
+# Random id so Evidence can count deployments of this project, not people. Remove to opt out: https://docs.evidence.studio/cli#telemetry
+telemetry:
+  id: "{{telemetryId}}"
 `;
 
 const HOME_MD_TEMPLATE = `# Welcome to Evidence
@@ -168,9 +173,9 @@ export async function runInit(options: RunInitOptions): Promise<RunInitResult> {
 
 	await writeFile(
 		path.join(projectRoot, 'evidence.config.yaml'),
-		EVIDENCE_CONFIG_TEMPLATE
-			.replace('{{name}}', escapeYamlDoubleQuoted(projectName))
-			.replace('{{version}}', escapeYamlDoubleQuoted(VERSION)),
+		EVIDENCE_CONFIG_TEMPLATE.replace('{{name}}', escapeYamlDoubleQuoted(projectName))
+			.replace('{{version}}', escapeYamlDoubleQuoted(VERSION))
+			.replace('{{telemetryId}}', randomUUID()),
 		'utf-8'
 	);
 	await writeFile(path.join(projectRoot, 'pages', 'home.md'), HOME_MD_TEMPLATE, 'utf-8');

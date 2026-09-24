@@ -9,6 +9,7 @@ import { ensureStudioServerOrExit, openBrowser } from './server.shared.ts';
 // Auth logic shared with the SvelteKit hook (SSR/API traffic); the static
 // branch below returns before SvelteKit runs, so it must check independently.
 import { authDisabled, checkBasicAuth, SERVE_HARDENED_HEADERS } from './basic-auth.ts';
+import { track } from './telemetry.ts';
 
 // @ts-ignore - generated at build time
 import { assetMap } from './assets.generated.ts';
@@ -112,7 +113,8 @@ async function handleStaticRequest(req: Request): Promise<Response | null> {
 	if (prerenderedRoutes.includes(url.pathname)) {
 		const htmlPath = url.pathname === '/' ? '/index.html' : `${url.pathname}.html`;
 		const htmlFile = await getFile(htmlPath);
-		if (htmlFile) return respondWithFile({ ...htmlFile, type: htmlFile.type || 'text/html' }, req, headers);
+		if (htmlFile)
+			return respondWithFile({ ...htmlFile, type: htmlFile.type || 'text/html' }, req, headers);
 	}
 
 	// Check static assets
@@ -166,6 +168,7 @@ export async function startServer(options: ServerOptions): Promise<void> {
 				'    Set EVIDENCE_BASIC_USER and EVIDENCE_BASIC_PASSWORD, or keep --host at 127.0.0.1.\n' +
 				'    On a trusted private network only, EVIDENCE_AUTH_DISABLED=true skips auth entirely.'
 		);
+		await track('serve_preflight_failed', { reason: 'no_auth_on_public_host' });
 		process.exit(1);
 	}
 

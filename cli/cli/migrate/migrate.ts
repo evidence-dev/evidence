@@ -9,6 +9,7 @@
 
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { existsSync, statSync, realpathSync } from 'node:fs';
+import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import pc from 'picocolors';
 import yaml from 'js-yaml';
@@ -166,7 +167,9 @@ export async function migrate(options: MigrateOptions): Promise<void> {
 			// quotes/newlines from reshaping the generated document.
 			await writeFile(
 				path.join(projectRoot, 'evidence.config.yaml'),
-				`project:\n  name: ${JSON.stringify(name)}\n  evidence: "${VERSION}"\n\npages: ./pages\n`,
+				`project:\n  name: ${JSON.stringify(name)}\n  evidence: "${VERSION}"\n\npages: ./pages\n\n` +
+					`# Random id so Evidence can count deployments of this project, not people. Remove to opt out: https://docs.evidence.studio/cli#telemetry\n` +
+					`telemetry:\n  id: "${randomUUID()}"\n`,
 				'utf-8'
 			);
 			configNotes.push({

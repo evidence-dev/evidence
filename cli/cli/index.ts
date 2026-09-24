@@ -27,7 +27,13 @@ import { migrate } from './migrate/migrate.ts';
 import { docs } from './docs.ts';
 import { upgrade } from './upgrade.ts';
 import { startupVersionCheck } from './version-check.ts';
-import { track } from './telemetry.ts';
+import {
+	track,
+	startServeHeartbeat,
+	getTelemetryStatus,
+	setTelemetryEnabled,
+	TELEMETRY_DOCS_URL
+} from './telemetry.ts';
 import { runInit } from './init/init.ts';
 import { launch } from './launch.ts';
 import { link } from './link.ts';
@@ -72,8 +78,13 @@ if (args.project) {
 	process.env.EVIDENCE_PROJECT_CWD = resolved;
 }
 
-const startupTasks: Promise<unknown>[] = [track('cli_command', { command: args.command })];
-const skipVersionCheck = ['version', 'upgrade', 'help', 'init'];
+// `telemetry` must not report itself; `serve` reports only once it is listening,
+// so a crash-looping container that fails preflight doesn't emit one event per restart.
+const startupTasks: Promise<unknown>[] =
+	args.command === 'telemetry' || args.command === 'serve'
+		? []
+		: [track('cli_command', { command: args.command })];
+const skipVersionCheck = ['version', 'upgrade', 'help', 'init', 'telemetry'];
 if (!skipVersionCheck.includes(args.command)) {
 	startupTasks.push(startupVersionCheck());
 }
@@ -341,6 +352,27 @@ try {
 			process.exit(0);
 			break;
 
+		case 'telemetry': {
+			if (args.telemetrySubcommand === 'enable' || args.telemetrySubcommand === 'disable') {
+				await setTelemetryEnabled(args.telemetrySubcommand === 'enable');
+			}
+			const status = await getTelemetryStatus();
+			const reason = {
+				env: 'EVIDENCE_TELEMETRY_DISABLED or DO_NOT_TRACK is set',
+				ci: 'CI environment detected',
+				preference: 'disabled with `evidence telemetry disable`',
+				default: 'anonymous usage reporting'
+			}[status.reason];
+			if (args.output.format === 'json' || args.output.format === 'ndjson') {
+				printResult({ kind: 'structured', value: status }, args.output);
+			} else {
+				console.log(`  Telemetry: ${status.enabled ? 'enabled' : 'disabled'} (${reason})`);
+				console.log(`  Details:   ${TELEMETRY_DOCS_URL}`);
+			}
+			process.exit(0);
+			break;
+		}
+
 		case 'publish':
 			console.log(BANNER);
 			console.log('  `evidence publish` is deprecated. Evidence deploys from your Git repo now.\n');
@@ -401,6 +433,7 @@ try {
 					'  ✗ serve requires a connection.yaml (direct connector).\n' +
 						'    The managed query engine is not supported for self-hosting.'
 				);
+				await track('serve_preflight_failed', { reason: 'no_connection_yaml' });
 				process.exit(1);
 			}
 			// EVIDENCE_SERVE is read by the embedded SvelteKit app (hooks, routes,
@@ -413,6 +446,8 @@ try {
 			}
 			const { startServer } = await import('./server.ts');
 			await startServer({ port: args.port, open: args.open ?? false, host: args.host });
+			await track('cli_command', { command: 'serve' });
+			startServeHeartbeat();
 			break;
 		}
 	}

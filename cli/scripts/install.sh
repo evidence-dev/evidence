@@ -169,7 +169,19 @@ done
 if [ -z "$EVD_IS_CI" ] && [ -z "$EVD_OPTED_OUT" ]; then
   STUDIO_HOST="${PUBLIC_STUDIO_HOST:-https://evidence.studio}"
 
-  EVD_DIR="${HOME}/.evd"
+  # Under `curl | sudo sh`, HOME is often /root; the id must live in the invoking user's home
+  # (and be owned by them) or their first `evidence` run mints a second one.
+  EVD_HOME="$HOME"
+  EVD_OWNER=""
+  if [ "$(id -u 2>/dev/null)" = "0" ] && [ -n "$SUDO_USER" ] && [ "$SUDO_USER" != "root" ]; then
+    SUDO_HOME="$(eval echo "~$SUDO_USER" 2>/dev/null)"
+    if [ -n "$SUDO_HOME" ] && [ -d "$SUDO_HOME" ]; then
+      EVD_HOME="$SUDO_HOME"
+      EVD_OWNER="$SUDO_USER"
+    fi
+  fi
+
+  EVD_DIR="${EVD_HOME}/.evd"
   MID_FILE="${EVD_DIR}/machine-id"
   MACHINE_ID=""
   if [ -f "$MID_FILE" ]; then
@@ -184,6 +196,9 @@ if [ -z "$EVD_IS_CI" ] && [ -z "$EVD_OPTED_OUT" ]; then
       mkdir -p "$EVD_DIR" 2>/dev/null \
         && printf '%s' "$MACHINE_ID" > "$MID_FILE" 2>/dev/null \
         && chmod 600 "$MID_FILE" 2>/dev/null
+      if [ -n "$EVD_OWNER" ]; then
+        chown "$EVD_OWNER" "$EVD_DIR" "$MID_FILE" 2>/dev/null || true
+      fi
     fi
   fi
 

@@ -174,11 +174,13 @@ evidence --version
 ```
 
 **Benefits of this approach:**
+
 - Always reflects the latest `dist/evidence` after rebuilds (no re-install needed)
 - Works everywhere (scripts, subshells, GUI tools)
 - Easy to revert (see below)
 
 **Undo the symlink:**
+
 ```bash
 # Remove the symlink
 sudo rm /usr/local/bin/evidence
@@ -334,7 +336,9 @@ The `docker` job lives in the release workflow rather than its own file because 
 
 ## Telemetry
 
-The CLI reports anonymous usage — to opt out set EVIDENCE_TELEMETRY_DISABLED=1 or DO_NOT_TRACK=1
+The CLI reports anonymous usage — to opt out run `evidence telemetry disable`, or set `EVIDENCE_TELEMETRY_DISABLED=1` or `DO_NOT_TRACK=1`. The full payload is documented at https://docs.evidence.studio/cli#telemetry.
+
+Events go to `POST /api/cli/event` in studio (`studio/src/routes/api/cli/event/`), which allow-lists fields and forwards to PostHog. Three rules keep the "unique users" number honest: `serve` runs and the daily `serve_heartbeat` never create a PostHog person (count deployments by `project_id` instead), a machine id that cannot be persisted is sent as `null` rather than a fresh UUID per run, and the first run inside an agent sandbox or container is flagged `sandbox` and recorded personless. Authenticated CLI usage of Studio is captured server-side as `cli_studio_request` in `authenticateCliRequest`, keyed to the user's email and `organization` group, so it is not subject to client opt-out.
 
 ## License
 
