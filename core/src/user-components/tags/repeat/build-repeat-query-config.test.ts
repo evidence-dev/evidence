@@ -23,7 +23,7 @@ describe('buildRepeatQueryConfig', () => {
 
 		expect(sql).toContain('FROM demo."orders"" UNION ALL SELECT * FROM secrets --"');
 		expect(config.columns[0]?.sqlWithAlias).toBe(
-			String.raw`DISTINCT "category\\"" OR 1=1 --" AS "value"`
+			String.raw`"category\\"" OR 1=1 --" AS "value"`
 		);
 		expect(config.where).toBe(String.raw`"category\\"" OR 1=1 --" IS NOT NULL`);
 		expect(config.order).toBe(String.raw`"category\\"" OR 1=1 --" ASC`);
@@ -66,9 +66,7 @@ describe('buildRepeatQueryConfig', () => {
 			dialect
 		});
 
-		expect(expression.columns[0]?.sqlWithAlias).toBe(
-			'DISTINCT "substring(category, 1, 4)" AS "value"'
-		);
+		expect(expression.columns[0]?.sqlWithAlias).toBe('"substring(category, 1, 4)" AS "value"');
 		expect(expression.where).toBe('"substring(category, 1, 4)" IS NOT NULL');
 		expect(resolveRepeatColumnExpression('{{picker}}', () => 'unknown(category)', dialect)).toBe(
 			'"unknown(category)"'
@@ -96,7 +94,7 @@ describe('buildRepeatQueryConfig', () => {
 			"date_trunc('month', ordered_at)"
 		])
 			expect(resolveRepeatColumnExpression(written, () => 'unused', dialect)).toBe(written);
-		expect(qualified.columns[0]?.sqlWithAlias).toBe('DISTINCT daily_orders.category AS "value"');
+		expect(qualified.columns[0]?.sqlWithAlias).toBe('daily_orders.category AS "value"');
 		expect(qualified.where).toBe('daily_orders.category IS NOT NULL');
 	});
 
