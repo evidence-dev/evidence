@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { formatValue } from '../../formatValue';
 	import { setupRenderReadiness } from '../../../readiness.svelte';
+	import { getPageSettingsContext } from '../../../page-settings.context';
 
 	interface Props {
 		value: unknown;
@@ -17,12 +18,26 @@
 
 	const props: Props = $props();
 
+	const pageSettingsGetter = getPageSettingsContext();
+
 	const value = $derived(props.value);
 	const className = $derived(props.className);
 	const fmt = $derived(props.fmt);
 	const text = $derived(props.text);
 	const chip = $derived(props.chip ?? false);
-	const downIsGood = $derived(props.downIsGood ?? false);
+	const downIsGood = $derived.by(() => {
+		if (typeof props.downIsGood === 'boolean') {
+			return props.downIsGood;
+		}
+		const pageSettings = pageSettingsGetter?.();
+		if (typeof pageSettings?.down_is_good === 'boolean') {
+			return pageSettings.down_is_good;
+		}
+		if (typeof pageSettings?.downIsGood === 'boolean') {
+			return pageSettings.downIsGood;
+		}
+		return false;
+	});
 	const showValue = $derived(props.showValue ?? true);
 	const showSymbol = $derived(props.showSymbol ?? true);
 	const symbolPosition = $derived(props.symbolPosition ?? 'right');
