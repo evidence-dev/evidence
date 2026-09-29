@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
+import { queryClickHouse } from '../../../test-utils/ch-parse';
 import { ClickHouseDialect, PostgresDialect } from '../../../sql-dialect';
 import { buildRepeatQueryConfig, resolveRepeatColumnExpression } from './build-repeat-query-config';
 import { generateSQLQuery } from '../../common/sql-options';
-import type { InlineQueries } from '../../common/inline-queries';
+import { InlineQueries } from '../../common/inline-queries';
 
 describe('buildRepeatQueryConfig', () => {
 	it('quotes variable-backed table and column identifiers', () => {
@@ -22,9 +23,7 @@ describe('buildRepeatQueryConfig', () => {
 		const { sql } = generateSQLQuery(config, undefined, undefined, undefined, 'sunday', dialect);
 
 		expect(sql).toContain('FROM demo."orders"" UNION ALL SELECT * FROM secrets --"');
-		expect(config.columns[0]?.sqlWithAlias).toBe(
-			String.raw`DISTINCT "category\\"" OR 1=1 --" AS "value"`
-		);
+		expect(config.columns[0]?.sqlWithAlias).toBe(String.raw`"category\\"" OR 1=1 --" AS "value"`);
 		expect(config.where).toBe(String.raw`"category\\"" OR 1=1 --" IS NOT NULL`);
 		expect(config.order).toBe(String.raw`"category\\"" OR 1=1 --" ASC`);
 		expect(
@@ -66,9 +65,7 @@ describe('buildRepeatQueryConfig', () => {
 			dialect
 		});
 
-		expect(expression.columns[0]?.sqlWithAlias).toBe(
-			'DISTINCT "substring(category, 1, 4)" AS "value"'
-		);
+		expect(expression.columns[0]?.sqlWithAlias).toBe('"substring(category, 1, 4)" AS "value"');
 		expect(expression.where).toBe('"substring(category, 1, 4)" IS NOT NULL');
 		expect(resolveRepeatColumnExpression('{{picker}}', () => 'unknown(category)', dialect)).toBe(
 			'"unknown(category)"'
@@ -96,7 +93,7 @@ describe('buildRepeatQueryConfig', () => {
 			"date_trunc('month', ordered_at)"
 		])
 			expect(resolveRepeatColumnExpression(written, () => 'unused', dialect)).toBe(written);
-		expect(qualified.columns[0]?.sqlWithAlias).toBe('DISTINCT daily_orders.category AS "value"');
+		expect(qualified.columns[0]?.sqlWithAlias).toBe('daily_orders.category AS "value"');
 		expect(qualified.where).toBe('daily_orders.category IS NOT NULL');
 	});
 
@@ -211,5 +208,31 @@ describe('buildRepeatQueryConfig', () => {
 
 		expect(sql).toContain('FROM (SELECT category FROM orders)');
 		expect(sql).not.toContain('"(SELECT');
+	});
+
+	it('returns each value once without a DISTINCT in the query', () => {
+		const dialect = new ClickHouseDialect();
+		const inlineQueries = new InlineQueries({ filterContexts: undefined });
+		inlineQueries.set(
+			'orders',
+			`select arrayJoin(['Shoes', 'Home', 'Shoes', CAST(NULL, 'Nullable(String)'), 'Home']) as category`
+		);
+		const { sql } = generateSQLQuery(
+			buildRepeatQueryConfig({
+				data: 'orders',
+				column: 'category',
+				filterConditions: undefined,
+				where: undefined,
+				dialect
+			}),
+			undefined,
+			inlineQueries,
+			undefined,
+			'sunday',
+			dialect
+		);
+
+		expect(sql).not.toMatch(/DISTINCT/i);
+		expect(queryClickHouse(sql!).trim().split('\n')).toEqual(['Home', 'Shoes']);
 	});
 });

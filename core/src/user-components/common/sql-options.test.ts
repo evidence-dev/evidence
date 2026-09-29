@@ -15,6 +15,7 @@ import { InlineQueries } from './inline-queries';
 import {
 	BigQueryDialect,
 	ClickHouseDialect,
+	CubeDialect,
 	PostgresDialect,
 	SnowflakeDialect,
 	type SqlDialect
@@ -672,6 +673,12 @@ describe('generateSQLQuery dropdown option queries', () => {
 		expect(sql).not.toContain('DISTINCT');
 		expect(sql).toContain('GROUP BY store');
 		expect(sql).not.toContain('GROUP BY ALL');
+	});
+
+	it('emits no DISTINCT on Cube, whose SQL API rejects `GROUP BY DISTINCT`', () => {
+		const sql = optionSql(new CubeDialect());
+		expect(sql).not.toContain('DISTINCT');
+		expect(sql).toContain('GROUP BY store');
 	});
 
 	it('emits GROUP BY ALL on ClickHouse', () => {

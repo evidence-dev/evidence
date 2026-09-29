@@ -143,9 +143,10 @@
 		}
 
 		// Process column expressions like the Dropdown component
+		// Dedup via GROUP BY: inline DISTINCT emits `GROUP BY DISTINCT`, which Cube rejects.
 		const valueProcessed = processColumnExpression(
 			{
-				value: `DISTINCT ${columnName} as value`
+				value: `${columnName} as value`
 			},
 			connection.dialect
 		);

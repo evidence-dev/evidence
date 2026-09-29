@@ -51,9 +51,10 @@ export function buildRepeatQueryConfig({
 	where: string | undefined;
 	dialect: SqlDialect;
 }): SQLQueryConfig {
+	// Dedup via GROUP BY: inline DISTINCT emits `GROUP BY DISTINCT`, which Cube rejects.
 	const valueProcessed = processColumnExpression(
 		{
-			value: `DISTINCT ${column} as value`
+			value: `${column} as value`
 		},
 		dialect
 	);

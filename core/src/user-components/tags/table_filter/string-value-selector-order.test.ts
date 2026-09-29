@@ -6,7 +6,7 @@ import { buildValueQueryOrder } from './filterUtils.svelte';
 
 /**
  * The table-filter value picker (StringValueSelector) lists selectable values with a
- * `SELECT DISTINCT col AS "value", COUNT(*) AS "count" ... ORDER BY …` query. Ordering by
+ * `SELECT col AS "value", COUNT(*) AS "count" ... GROUP BY … ORDER BY …` query. Ordering by
  * the `value`/`count` *aliases* breaks on uppercase-folding warehouses (Snowflake): the
  * alias is emitted quoted-lowercase (`"value"`), but a bare `ORDER BY value` folds to
  * `VALUE` and errors with `invalid identifier 'VALUE'`. The picker must order by the
@@ -32,7 +32,7 @@ function optionsQuerySql(order: string, dialect: SqlDialect): string {
 	const config: SQLQueryConfig = {
 		tableExpressionName: 'orders',
 		columns: [
-			processColumnExpression({ value: `DISTINCT ${COLUMN} as value` }, dialect),
+			processColumnExpression({ value: `${COLUMN} as value` }, dialect),
 			processColumnExpression({ value: 'COUNT(*) as count' }, dialect)
 		],
 		where: `${COLUMN} IS NOT NULL`,

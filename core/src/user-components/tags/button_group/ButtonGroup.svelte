@@ -107,8 +107,9 @@
 			return;
 		}
 
+		// Dedup via GROUP BY: inline DISTINCT emits `GROUP BY DISTINCT`, which Cube rejects.
 		const valueProcessed = processColumnExpression(
-			{ value: `DISTINCT ${valueColumn} as value` },
+			{ value: `${valueColumn} as value` },
 			connection.dialect
 		);
 
