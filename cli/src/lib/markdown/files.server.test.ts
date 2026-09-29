@@ -179,6 +179,12 @@ describe('parsePageSettings', () => {
 	it('omits absent keys so they inherit defaults', () => {
 		expect(parsePageSettings('---\ntitle: Orders\n---\n# Page\n')).toEqual({});
 	});
+
+	it('parses down_is_good from frontmatter', () => {
+		expect(parsePageSettings('---\ndown_is_good: true\n---\n# Page\n')).toEqual({
+			down_is_good: true
+		});
+	});
 });
 
 describe('resolvePageSettings', () => {

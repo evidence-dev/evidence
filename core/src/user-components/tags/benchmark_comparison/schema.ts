@@ -81,8 +81,7 @@ export const schema = {
 		down_is_good: {
 			type: Boolean,
 			description: 'If true, negative changes are shown as positive (green)',
-			required: false,
-			default: false
+			required: false
 		}
 	},
 	componentWrapper: {
