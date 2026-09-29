@@ -355,9 +355,12 @@
 				selectedOptionsQuery.error !== null);
 		const hasQueryResults = optionsQuery.result !== undefined && !selectedRowsPending;
 		const hasStaticOptions = optionsFromProp.length > 0 || optionsFromChildren.length > 0;
+		// Static options alone mustn't switch validation on while query options are still unknown.
+		const optionsQueryPending =
+			(queryConfig !== undefined && optionsQuery.result === undefined) || selectedRowsPending;
 
 		const availableValues = new Set(combinedOptions.map((opt) => opt.value));
-		const validationOpts = { hasQueryResults, hasStaticOptions };
+		const validationOpts = { hasQueryResults, hasStaticOptions, optionsQueryPending };
 
 		if (multiple) {
 			// Filter out any selections that are no longer available. `isDropdownValueValid`

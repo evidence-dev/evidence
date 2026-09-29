@@ -84,6 +84,33 @@ describe('isDropdownValueValid', () => {
 		).toBe(false);
 	});
 
+	it('keeps a query-sourced value while the options query is still pending, despite static options', () => {
+		expect(
+			isDropdownValueValid('active', new Set(['%']), {
+				hasQueryResults: false,
+				hasStaticOptions: true,
+				optionsQueryPending: true
+			})
+		).toBe(true);
+	});
+
+	it('validates again as soon as the options query settles', () => {
+		expect(
+			isDropdownValueValid('active', new Set(['%']), {
+				hasQueryResults: true,
+				hasStaticOptions: true,
+				optionsQueryPending: false
+			})
+		).toBe(false);
+		expect(
+			isDropdownValueValid('active', new Set(['%', 'active']), {
+				hasQueryResults: true,
+				hasStaticOptions: true,
+				optionsQueryPending: false
+			})
+		).toBe(true);
+	});
+
 	it('keeps empty/undefined values without inspecting options', () => {
 		expect(
 			isDropdownValueValid(undefined, availableValues, {

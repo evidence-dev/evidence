@@ -5,7 +5,12 @@
  * Used by `Dropdown.svelte` to decide whether to clear the underlying filter
  * when the options query result no longer contains the user's selection.
  *
- * Three states matter:
+ * Four states matter:
+ *
+ *   0. **Options query pending** (`optionsQueryPending`) — return true, even
+ *      with static options. Before `data=` options load, the static ones (e.g.
+ *      an "All" entry) are all we know, and validating against them would
+ *      clear a URL-hydrated or `initial_value` selection from the query.
  *
  *   1. **Still loading** (`!hasQueryResults && !hasStaticOptions`) — return
  *      true. We have no information yet, so don't drop the value. This keeps
@@ -30,9 +35,15 @@
 export function isDropdownValueValid(
 	value: string | undefined,
 	availableValues: Set<string>,
-	opts: { hasQueryResults: boolean; hasStaticOptions: boolean }
+	opts: {
+		hasQueryResults: boolean;
+		hasStaticOptions: boolean;
+		optionsQueryPending?: boolean;
+	}
 ): boolean {
 	if (!value) return true;
+
+	if (opts.optionsQueryPending) return true;
 
 	const shouldValidate = opts.hasQueryResults || opts.hasStaticOptions;
 	if (!shouldValidate) return true;
