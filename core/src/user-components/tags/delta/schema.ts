@@ -32,7 +32,6 @@ const comparisonSchema = baseComparisonSchema
 				description: 'Whether a downward trend is considered positive'
 			})
 			.optional()
-			.default(false)
 	})
 	.optional();
 

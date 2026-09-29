@@ -99,11 +99,6 @@ export const projectRootPageFrontmatterSchema = z.object({
 		.optional()
 		.catch(undefined)
 		.describe('Whether downward delta trends are considered positive by default on this page.'),
-	downIsGood: z.coerce
-		.boolean()
-		.optional()
-		.catch(undefined)
-		.describe('Alias for down_is_good.'),
 	theme: themeOverridesSchema
 		.optional()
 		.catch(undefined)

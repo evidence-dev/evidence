@@ -16,8 +16,7 @@ export const pageSettingsSchema = z
 		cards: z.boolean().optional(),
 		page_width: z.enum(['article', 'full']).optional(),
 		table_of_contents: z.boolean().optional(),
-		down_is_good: z.boolean().optional(),
-		downIsGood: z.boolean().optional()
+		down_is_good: z.boolean().optional()
 	})
 	.passthrough();
 

@@ -33,9 +33,6 @@
 		if (typeof pageSettings?.down_is_good === 'boolean') {
 			return pageSettings.down_is_good;
 		}
-		if (typeof pageSettings?.downIsGood === 'boolean') {
-			return pageSettings.downIsGood;
-		}
 		return false;
 	});
 	const showValue = $derived(props.showValue ?? true);

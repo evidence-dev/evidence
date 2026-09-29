@@ -180,11 +180,8 @@ describe('parsePageSettings', () => {
 		expect(parsePageSettings('---\ntitle: Orders\n---\n# Page\n')).toEqual({});
 	});
 
-	it('parses down_is_good and downIsGood alias from frontmatter', () => {
+	it('parses down_is_good from frontmatter', () => {
 		expect(parsePageSettings('---\ndown_is_good: true\n---\n# Page\n')).toEqual({
-			down_is_good: true
-		});
-		expect(parsePageSettings('---\ndownIsGood: true\n---\n# Page\n')).toEqual({
 			down_is_good: true
 		});
 	});
