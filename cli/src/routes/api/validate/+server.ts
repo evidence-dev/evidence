@@ -186,7 +186,10 @@ export const GET: RequestHandler = async ({ url }) => {
 				};
 			});
 
-			totalErrors += errors.filter((e) => e.severity === 'error').length;
+			// Markdoc reports structural errors (undefined tags, unclosed blocks) as 'critical'.
+			totalErrors += errors.filter(
+				(e) => e.severity === 'error' || e.severity === 'critical'
+			).length;
 			totalWarnings += errors.filter((e) => e.severity === 'warning').length;
 
 			files.push({
