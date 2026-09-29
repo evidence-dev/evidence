@@ -23,7 +23,6 @@ import {
 	type UserComponentModelInit
 } from '../../UserComponentModel';
 import { PivotModel } from './pivot/PivotModel.svelte';
-import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 import { logger } from '../../../shims/logger';
 
 type TableAttributes = UserComponentProps<typeof schema>;
@@ -83,16 +82,6 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 			}
 		});
 	}
-
-	// === VARIABLE INTERPOLATION ===
-	// Handle reactive variable interpolation for display props
-	readonly variableProcessor = $derived.by(() => {
-		// Find the first valid filter context (some might be undefined)
-		const filters = this.deps?.filterContexts?.find((ctx) => ctx !== undefined);
-		const inlineQueries = this.deps?.inlineQueries;
-
-		return filters && inlineQueries ? new VariableProcessor(filters, inlineQueries) : null;
-	});
 
 	// Resolve attributes with variable interpolation
 	readonly resolvedData = $derived(this.resolveText(this.attributes.data));
