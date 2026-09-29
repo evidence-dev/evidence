@@ -25,8 +25,9 @@ overrides:
   fast-xml-parser: '>=5.7.0'
   ip-address: '>=10.7.0'
   form-data: '>=2.5.6'
-  hono: '>=4.12.25'
-  postcss: '>=8.5.18'
+  hono: '>=4.13.5'
+  '@hono/node-server': '>=1.19.15 <2'
+  postcss: '>=8.5.23'
   nanoid: '>=3.3.17'
   postcss>nanoid: '>=3.3.17 <4'
   joi: '>=17.13.4'
@@ -39,6 +40,7 @@ overrides:
   brace-expansion: '>=5.0.9'
   ts-deepmerge: '>=8.0.0'
   maplibre-gl: '>=6.4.1'
+  toml: '>=4.2.0 <5'
 
 patchedDependencies:
   echarts@6.1.0:
@@ -6362,7 +6364,7 @@ packages:
       }
     engines: { node: '>= 10' }
     peerDependencies:
-      postcss: '>=8.5.18'
+      postcss: '>=8.5.23'
       ts-node: '>=9.0.0'
     peerDependenciesMeta:
       postcss:
@@ -6377,7 +6379,7 @@ packages:
       }
     engines: { node: '>=18.0' }
     peerDependencies:
-      postcss: '>=8.5.18'
+      postcss: '>=8.5.23'
 
   postcss-scss@4.0.9:
     resolution:
@@ -6386,7 +6388,7 @@ packages:
       }
     engines: { node: '>=12.0' }
     peerDependencies:
-      postcss: '>=8.5.18'
+      postcss: '>=8.5.23'
 
   postcss-selector-parser@6.0.10:
     resolution:
@@ -6401,13 +6403,6 @@ packages:
         integrity: sha512-orRsuYpJVw8LdAwqqLykBj9ecS5/cRHlI5+nvTo8LcCKmzDmqVORXtOIYEEQuL9D4BxtA1lm5isAqzQZCoQ6Eg==
       }
     engines: { node: '>=4' }
-
-  postcss@8.5.19:
-    resolution:
-      {
-        integrity: sha512-Mz8SaolMd8nB+G13WkORcxQKHZ/NE4xXevtkJHVuG+guo9/wYKlIMTKAqGdEmYOXR2ijPjTYNHssizdaVSUNdQ==
-      }
-    engines: { node: ^10 || ^12 || >=14 }
 
   postcss@8.5.28:
     resolution:
@@ -7426,11 +7421,12 @@ packages:
       }
     engines: { node: '>=0.6' }
 
-  toml@3.0.0:
+  toml@4.3.0:
     resolution:
       {
-        integrity: sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==
+        integrity: sha512-lVb8X9BsPVuH0M4BKeS91tXAmJvCjQ5UIyAbQFaxkKGyUFK2RPkhwaFSQH8vbpl1d23eu/IBH+dwVMHWaq9A5A==
       }
+    engines: { node: '>=20' }
 
   toposort@2.0.2:
     resolution:
@@ -10886,9 +10882,9 @@ snapshots:
       esutils: 2.0.3
       globals: 16.5.0
       known-css-properties: 0.37.0
-      postcss: 8.5.19
-      postcss-load-config: 3.1.4(postcss@8.5.19)
-      postcss-safe-parser: 7.0.1(postcss@8.5.19)
+      postcss: 8.5.28
+      postcss-load-config: 3.1.4(postcss@8.5.28)
+      postcss-safe-parser: 7.0.1(postcss@8.5.28)
       semver: 7.7.4
       svelte-eslint-parser: 1.6.0(svelte@5.56.0(@typescript-eslint/types@8.57.2))
     optionalDependencies:
@@ -12099,20 +12095,20 @@ snapshots:
 
   picomatch@4.0.7: {}
 
-  postcss-load-config@3.1.4(postcss@8.5.19):
+  postcss-load-config@3.1.4(postcss@8.5.28):
     dependencies:
       lilconfig: 2.1.0
       yaml: 1.10.3
     optionalDependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
 
-  postcss-safe-parser@7.0.1(postcss@8.5.19):
+  postcss-safe-parser@7.0.1(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
 
-  postcss-scss@4.0.9(postcss@8.5.19):
+  postcss-scss@4.0.9(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
 
   postcss-selector-parser@6.0.10:
     dependencies:
@@ -12123,12 +12119,6 @@ snapshots:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
-
-  postcss@8.5.19:
-    dependencies:
-      nanoid: 3.3.19
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
 
   postcss@8.5.28:
     dependencies:
@@ -12540,7 +12530,7 @@ snapshots:
       oauth4webapi: 3.8.5
       open: 7.4.2
       simple-lru-cache: 0.0.2
-      toml: 3.0.0
+      toml: 4.3.0
       uuid: 11.1.1
       winston: 3.19.0
     transitivePeerDependencies:
@@ -12653,8 +12643,8 @@ snapshots:
       eslint-scope: 8.4.0
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
-      postcss: 8.5.19
-      postcss-scss: 4.0.9(postcss@8.5.19)
+      postcss: 8.5.28
+      postcss-scss: 4.0.9(postcss@8.5.28)
       postcss-selector-parser: 7.1.1
       semver: 7.7.4
     optionalDependencies:
@@ -12863,7 +12853,7 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
-  toml@3.0.0: {}
+  toml@4.3.0: {}
 
   toposort@2.0.2:
     optional: true
@@ -12987,7 +12977,7 @@ snapshots:
       esbuild: 0.28.1
       fdir: 6.5.0(picomatch@4.0.5)
       picomatch: 4.0.5
-      postcss: 8.5.19
+      postcss: 8.5.28
       rollup: 4.60.0
       tinyglobby: 0.2.17
     optionalDependencies:
