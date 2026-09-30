@@ -119,7 +119,7 @@ export async function loadConnectionConfig(cwd: string): Promise<ConnectionConfi
 		}
 		const data = parseOrThrow(bigqueryConnectionSchema, obj);
 		const credentials = await resolveBigQueryCredentials(data, { cwd });
-		return { type: 'bigquery', ...credentials };
+		return { type: 'bigquery', ...credentials, datasets: data.datasets };
 	}
 
 	if (obj.type === 'clickhouse') {

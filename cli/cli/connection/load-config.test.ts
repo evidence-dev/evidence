@@ -107,7 +107,8 @@ describe('loadConnectionConfig', () => {
 			expect(cfg).toMatchObject({
 				type: 'bigquery',
 				projectId: 'my-gcp-project',
-				defaultDataset: 'analytics'
+				defaultDataset: 'analytics',
+				datasets: ['analytics']
 			});
 		});
 

@@ -29,6 +29,7 @@
 	interface Props {
 		organizationId?: string;
 		connectionType?: ConnectionType;
+		schemaAllowlist?: string[];
 		serializedInlineQueries?: Record<string, string>;
 		serializedFilters?: SerializedFilters;
 		sqlFiles?: SqlFiles;
@@ -44,6 +45,7 @@
 	let {
 		organizationId = '',
 		connectionType = null,
+		schemaAllowlist = [],
 		serializedInlineQueries = {},
 		serializedFilters = {},
 		sqlFiles = {},
@@ -77,7 +79,8 @@
 	// Set up metadata so components that introspect tables/columns work.
 	// connectionType values match WarehouseMode names 1:1; null → managed engine.
 	const metadata = new Metadata(queryService, {
-		warehouseMode: connectionType ?? 'managed'
+		warehouseMode: connectionType ?? 'managed',
+		schemaAllowlist: () => schemaAllowlist
 	});
 	setMetadataContext(metadata);
 

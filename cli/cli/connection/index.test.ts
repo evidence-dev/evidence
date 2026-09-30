@@ -13,6 +13,7 @@ const bq = (extra: Partial<BigQueryConnectionConfig> = {}): BigQueryConnectionCo
 	projectId: 'my-proj',
 	serviceAccountJson: { client_email: 'a@b.c', private_key: 'k' },
 	defaultDataset: 'my_dataset',
+	datasets: ['my_dataset'],
 	...extra
 });
 

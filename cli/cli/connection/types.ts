@@ -19,7 +19,11 @@ import type { Column } from '@evidence/core/user-components/interfaces/query-ser
 
 export type SnowflakeConnectionConfig = { type: 'snowflake' } & SnowflakeCredentials;
 
-export type BigQueryConnectionConfig = { type: 'bigquery' } & BigQueryCredentials;
+// `datasets` isn't a credential, but Metadata needs it to introspect INFORMATION_SCHEMA.
+export type BigQueryConnectionConfig = {
+	type: 'bigquery';
+	datasets: string[];
+} & BigQueryCredentials;
 
 export type ClickHouseConnectionConfig = { type: 'clickhouse' } & ClickHouseCredentials;
 

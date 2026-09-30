@@ -12,6 +12,7 @@ import { isServeMode } from '$lib/server/serve-mode';
 import { loadConnectionConfig } from '$cli/connection';
 import { loadProjectConfig } from '$cli/project-config/load-config';
 import { resolveProjectTheme } from '$lib/server/theme.server';
+import { schemaAllowlist } from '@evidence/core/connectors/schema-allowlist';
 import { selectLanguage } from '@evidence/core/translations/resolve-translations';
 import { SIDEBAR_WIDTH_COOKIE_NAME } from '@evidence/core/shadcn/components/ui/sidebar/constants.js';
 import { getTranslationLanguages } from '$lib/server/translations.server';
@@ -106,6 +107,7 @@ export const load: LayoutServerLoad = async ({ url, cookies }) => {
 		organizationName,
 		organizations,
 		connectionType,
+		schemaAllowlist: schemaAllowlist(connectionType ?? 'managed', connectionConfig),
 		hasLocalConnection,
 		isServe
 	};

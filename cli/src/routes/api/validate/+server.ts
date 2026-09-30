@@ -27,6 +27,7 @@ import { getProjectCwd } from '$lib/server/project-cwd';
 import { loadTranslations } from '$lib/server/translations.server';
 import { resolveProjectSettings } from '$lib/server/project-settings.server';
 import { loadConnectionConfig } from '$cli/connection';
+import { schemaAllowlist } from '@evidence/core/connectors/schema-allowlist';
 import { loadProjectConfig } from '$cli/project-config/load-config';
 import { loadCredentials } from '$lib/auth/credentials.server';
 import { ServerQueryService, type ConnectionType } from '$lib/server/ServerQueryService';
@@ -236,9 +237,11 @@ async function loadMetadata(cwd: string): Promise<{
 	metadataError?: string;
 }> {
 	let connectionType: ConnectionType = null;
+	let allowlist: string[] = [];
 	try {
 		const config = await loadConnectionConfig(cwd);
 		if (config) connectionType = config.type;
+		if (config) allowlist = schemaAllowlist(config.type, config);
 	} catch (e) {
 		return {
 			metadata: undefined,
@@ -269,7 +272,7 @@ async function loadMetadata(cwd: string): Promise<{
 			credentials?.organizationId ?? 'local',
 			connectionType
 		);
-		const metadata = new Metadata(queryService, { warehouseMode });
+		const metadata = new Metadata(queryService, { warehouseMode, schemaAllowlist: allowlist });
 		// Metadata.load() logs failures straight to console (warehouse driver +
 		// SDK noise) before throwing. We surface the reason via metadataError and
 		// degrade cleanly, so mute console for the load to avoid a scary dump.
