@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+	buildGithubAppInstallUrl,
 	buildGithubWebUrl,
 	getGithubApiBaseUrl,
 	getGithubProvider,
@@ -33,6 +34,17 @@ describe('GitHub hosts', () => {
 	it('encodes web URL path segments', () => {
 		expect(buildGithubWebUrl('octocorp.ghe.com', 'acme', 'my repo', 'tree', 'feature/a')).toBe(
 			'https://octocorp.ghe.com/acme/my%20repo/tree/feature%2Fa'
+		);
+	});
+
+	it('owner-scopes App install URLs on GHE.com only', () => {
+		expect(
+			buildGithubAppInstallUrl('octocorp.ghe.com', 'octocorp', 'evidence-studio-1a2b', 'st&1')
+		).toBe(
+			'https://octocorp.ghe.com/apps/octocorp/evidence-studio-1a2b/installations/new?state=st%261'
+		);
+		expect(buildGithubAppInstallUrl('github.com', 'octocorp', 'evidence-studio', 'org_1')).toBe(
+			'https://github.com/apps/evidence-studio/installations/new?state=org_1'
 		);
 	});
 });

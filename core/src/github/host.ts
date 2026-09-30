@@ -64,3 +64,14 @@ export function buildGithubWebUrl(
 	const encodedPath = segments.map((segment) => encodeURIComponent(String(segment))).join('/');
 	return `${getGithubWebBaseUrl(host)}/${encodedPath}`;
 }
+
+// GHE.com namespaces App pages by owner; the github.com-style /apps/<slug> path 404s there.
+export function buildGithubAppInstallUrl(
+	host: string | null | undefined,
+	owner: string,
+	slug: string,
+	state: string
+): string {
+	const segments = isGithubEnterpriseCloudHost(host) ? ['apps', owner, slug] : ['apps', slug];
+	return `${buildGithubWebUrl(host, ...segments, 'installations', 'new')}?state=${encodeURIComponent(state)}`;
+}
