@@ -59,6 +59,13 @@ describe('buildHtmlSandboxCsp', () => {
 		}
 	});
 
+	it('allows website-builder image CDNs (e.g. Squarespace) on img-src', () => {
+		const imgSrc = directive(csp, 'img-src') ?? '';
+		expect(imgSrc).toContain('https://images.squarespace-cdn.com');
+		expect(imgSrc).toContain('https://static.wixstatic.com');
+		expect(imgSrc).toContain('https://cdn.shopify.com');
+	});
+
 	it('covers both wikimedia image-URL shapes on img-src', () => {
 		// Two shapes an author reaches for:
 		//   1. `https://upload.wikimedia.org/wikipedia/commons/...` — the

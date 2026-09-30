@@ -101,7 +101,28 @@ export const IMAGE_ASSET_ORIGINS = [
 	'https://commons.wikimedia.org',
 	// flagcdn.com — country-flag image API used by half the country-data
 	// dashboards on the internet.
-	'https://flagcdn.com'
+	'https://flagcdn.com',
+	// Website-builder / storefront CDNs — logos and product shots authors
+	// copy from their company site. Every uploaded image on these platforms
+	// is served from the platform CDN, never the customer's own domain.
+	// Squarespace (current + legacy asset hosts).
+	'https://images.squarespace-cdn.com',
+	'https://static1.squarespace.com',
+	// Wix.
+	'https://static.wixstatic.com',
+	// Shopify.
+	'https://cdn.shopify.com',
+	// Webflow (current CDN + the two legacy hosts older sites still embed).
+	'https://cdn.prod.website-files.com',
+	'https://assets-global.website-files.com',
+	'https://uploads-ssl.webflow.com',
+	// WordPress.com / Jetpack image CDN, sharded across i0–i2.
+	'https://i0.wp.com',
+	'https://i1.wp.com',
+	'https://i2.wp.com',
+	// Cloudinary + Unsplash — the common hosted-image services.
+	'https://res.cloudinary.com',
+	'https://images.unsplash.com'
 ] as const;
 
 /**
