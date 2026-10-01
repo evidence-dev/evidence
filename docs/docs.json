@@ -1102,6 +1102,7 @@
                   "components/details",
                   "components/download",
                   "components/fence",
+                  "components/file",
                   "components/icon",
                   "components/iframe",
                   "components/image",
