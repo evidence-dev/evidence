@@ -2,7 +2,6 @@ import type { UserComponentSchema } from '../../types';
 import {
 	and,
 	tableExists,
-	validateDateAttributes,
 	validateDateRange,
 	validateSqlOptions,
 	validateSqlExpression,
@@ -330,7 +329,6 @@ export const schema = {
 		validateSqlExpression('dimensions', 'data', 'select'),
 		validateSqlExpression('pivots', 'data', 'select'),
 		validateSqlExpression('row_conditional_colors', 'data', 'select'),
-		validateDateAttributes(),
 		validateDateRange(),
 		validateSqlOptions(),
 		validateInfoRequiresTitle,
@@ -360,14 +358,13 @@ export const schema = {
 		(node, _config, context) => {
 			if (node.tag !== 'table') return [];
 			if (!isValidationContext(context)) return [];
-			const measureChildren = ((node.children ?? []) as Node[]).filter(
-				(c) => c.tag === 'measure'
-			);
+			const measureChildren = ((node.children ?? []) as Node[]).filter((c) => c.tag === 'measure');
 			const catalog = context.metricsCatalog;
 			if (!catalog) return [];
 
 			// Collect view bases for every metric-driven measure that resolves.
-			const metricBases: { name: string; base: string | undefined; baseSql: string | undefined }[] = [];
+			const metricBases: { name: string; base: string | undefined; baseSql: string | undefined }[] =
+				[];
 			for (const child of measureChildren) {
 				const raw = child.attributes?.metric;
 				const name =

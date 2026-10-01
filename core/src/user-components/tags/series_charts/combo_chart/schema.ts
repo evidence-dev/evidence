@@ -8,7 +8,7 @@ import {
 	filtersExist,
 	tableExists,
 	validateSqlExpression,
-	validateDateAttributes,
+	validateDateGrain,
 	validateDateRange,
 	validateSqlOptions,
 	validateInfoRequiresTitle,
@@ -238,17 +238,14 @@ export const schema = {
 		validateSqlExpression('x', 'data', 'select'),
 		validateSqlExpression('size', 'data', 'select'),
 		validateSqlExpression('series', 'data', 'select'),
-		// Skip the standard date-attributes check when any child series is
-		// metric-driven: `x`/`date` on the parent are optional in that case
-		// (the metric view supplies the time column), so the generic validator's
-		// "must specify a date column" message would be a false positive.
+		// Metric-driven child series supply the time column, so the parent's `x` is optional.
 		(node, config, context) => {
 			const seriesTags = ['area', 'bar', 'bubble', 'line', 'scatter'];
 			const hasMetricChild = ((node.children ?? []) as Node[]).some(
 				(c) => seriesTags.includes(c.tag ?? '') && c.attributes?.metric
 			);
 			if (hasMetricChild) return [];
-			return validateDateAttributes()(node, config, context);
+			return validateDateGrain()(node, config, context);
 		},
 		validateDateRange(),
 		validateSqlOptions(),

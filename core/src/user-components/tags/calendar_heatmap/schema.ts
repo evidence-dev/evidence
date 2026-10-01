@@ -6,7 +6,6 @@ import {
 	filtersExist,
 	tableExists,
 	validateSqlExpression,
-	validateDateAttributes,
 	validateDateRange,
 	validateSqlOptions,
 	expressionHasAggregation,
@@ -154,10 +153,7 @@ const attributes = {
 				// Deprecated alias for `color_scale`; kept to avoid breaking published
 				// pages. Components read `color_scale ?? color_palette` and warn (dev
 				// only) when authors still use this name.
-				color_palette: z
-					.array(z.string())
-					.optional()
-					.describe('Deprecated. Use `color_scale`.'),
+				color_palette: z.array(z.string()).optional().describe('Deprecated. Use `color_scale`.'),
 				conditional_colors: z
 					.string()
 					.optional()
@@ -196,7 +192,6 @@ export const schema = {
 		validateSqlExpression('chart_options.conditional_colors', 'data', 'select'),
 		validateSqlExpression('tooltip_fields', 'data', 'select'),
 		validateTooltipFieldFormats,
-		validateDateAttributes(),
 		validateDateRange(),
 		validateSqlOptions(),
 		ifCondition(notMetric, expressionHasAggregation('value')),

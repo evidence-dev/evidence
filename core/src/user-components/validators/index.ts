@@ -11,7 +11,7 @@ export * from './partialCircularReference';
 export * from './unresolvedPartialVariables';
 export * from './types';
 export * from './validateSqlExpression';
-export * from './validateDateAttributes';
+export * from './validateDateGrain';
 export * from './validateDateRange';
 export * from './validateComparison';
 export * from './validateBenchmarkProperties';

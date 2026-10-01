@@ -3,7 +3,7 @@ import {
 	and,
 	filtersExist,
 	tableExists,
-	validateDateAttributes,
+	validateDateGrain,
 	validateDateRange,
 	validateSqlExpression,
 	validateSqlOptions,
@@ -162,7 +162,7 @@ export const schema = {
 		metricExists('metric'),
 		tableExists('data'),
 		filtersExist('filters'),
-		validateDateAttributes(),
+		validateDateGrain(),
 		validateDateRange(),
 		// Raw-path SQL checks only apply when not driven by `metric` (metric mode
 		// resolves x/y from the view, so there's no `data` to validate against).

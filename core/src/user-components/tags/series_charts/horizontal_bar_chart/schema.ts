@@ -7,7 +7,7 @@ import {
 	validateSqlExpression,
 	axisHasAggregation,
 	validateEmptyAttributes,
-	validateDateAttributes,
+	validateDateGrain,
 	validateDateRange,
 	tableExists,
 	filtersExist,
@@ -39,8 +39,8 @@ export const schema = {
 		validateSqlExpression('series', 'data', 'select'),
 		validateSqlExpression('tooltip_fields', 'data', 'select'),
 		validateTooltipFieldFormats,
-		// Use 'y' as the date column check (4th param) since horizontal bar has categories on y-axis
-		validateDateAttributes('date', 'date_range', 'data', 'y'),
+		// date_grain buckets the y-axis categories on a horizontal bar
+		validateDateGrain('y'),
 		validateDateRange(),
 		validateSqlOptions(),
 		validateInfoRequiresTitle,
