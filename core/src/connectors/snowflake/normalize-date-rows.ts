@@ -14,7 +14,7 @@ export function normalizeDateRows(
 			const val = row[col];
 			let d: Date | null = null;
 			if (val instanceof Date) {
-				d = val;
+				d = shiftToStoredOffset(val);
 			} else if (typeof val === 'string') {
 				d = new Date(val);
 				if (isNaN(d.getTime())) d = null;
@@ -32,4 +32,11 @@ export function normalizeDateRows(
 			}
 		}
 	}
+}
+
+// The SDK exposes a numeric offset (minutes) only for TIMESTAMP_TZ; NTZ/LTZ return zone names.
+function shiftToStoredOffset(d: Date): Date {
+	const offsetMinutes = (d as Date & { getTimezone?: () => unknown }).getTimezone?.();
+	if (typeof offsetMinutes !== 'number' || offsetMinutes === 0) return d;
+	return new Date(d.getTime() + offsetMinutes * 60_000);
 }
