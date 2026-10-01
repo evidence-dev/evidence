@@ -65,20 +65,24 @@ function getPool(config: PostgresCredentials): pg.Pool {
 		types: { getTypeParser: makePostgresTypeParser(pg.types.getTypeParser) },
 		// Analytic queries can run long; the 0 (no timeout) default is fine, but a
 		// short connect timeout surfaces bad hosts quickly instead of hanging.
-		connectionTimeoutMillis: 30_000
+		connectionTimeoutMillis: 30_000,
+		// Set the default schema per connection via SET (not the libpq `options`
+		// startup param, which poolers like Neon/Supabase reject). pg-pool AWAITS
+		// `onConnect` before handing the client to a waiting query, so the SET always
+		// completes first. Do NOT move this back to the 'connect' event: it is
+		// fire-and-forget, so the SET raced the pool's own dispatch and queued the
+		// user's query on an in-flight client — deprecated, and a hard error in pg@9.
+		// (Requires pg >= 8.20 / @types/pg >= 8.20 for the option itself.)
+		onConnect: (client) =>
+			client
+				.query(pgSetSearchPathStatement(config.schema))
+				.catch((err) => console.error('[postgres] failed to set search_path:', err.message))
 	});
 	// node-postgres emits 'error' on the POOL when an idle backend connection dies
 	// (server restart, network blip, pooler idle-kill). With no listener that would
 	// be rethrown as an uncaught exception and crash the long-lived `evidence dev`
 	// process — so swallow it; the pool re-establishes connections on next use.
 	pool.on('error', (err) => console.error('[postgres] idle client error:', err.message));
-	// Set the default schema per connection via SET (not the libpq `options`
-	// startup param, which poolers like Neon/Supabase reject).
-	pool.on('connect', (client) => {
-		client
-			.query(pgSetSearchPathStatement(config.schema))
-			.catch((err) => console.error('[postgres] failed to set search_path:', err.message));
-	});
 	cachedPool = { key, pool };
 	return pool;
 }
