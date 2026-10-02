@@ -298,25 +298,144 @@ export interface TickStrategy {
 	useCustomTicks: boolean;
 	/** True when every label gets full first-tick context (spec § 3 verbose). */
 	useVerboseLabels: boolean;
+	/** Grain the labels speak in: the data grain, or the calendar step chosen for irregular dates. */
+	labelGrain: TimeAxisGrain | undefined;
+}
+
+// Local time, matching the clock ECharts positions series data on.
+export function floorToGrain(ms: number, grain: TimeAxisGrain): number {
+	const d = new Date(ms);
+	switch (grain) {
+		case 'hour':
+			d.setMinutes(0, 0, 0);
+			break;
+		case 'day':
+		case 'week':
+			d.setHours(0, 0, 0, 0);
+			break;
+		case 'month':
+			d.setHours(0, 0, 0, 0);
+			d.setDate(1);
+			break;
+		case 'quarter':
+			d.setHours(0, 0, 0, 0);
+			d.setDate(1);
+			d.setMonth(d.getMonth() - (d.getMonth() % 3));
+			break;
+		case 'year':
+			d.setHours(0, 0, 0, 0);
+			d.setMonth(0, 1);
+			break;
+	}
+	return d.getTime();
+}
+
+const APPROX_GRAIN_MS: Record<TimeAxisGrain, number> = {
+	hour: HOUR_MS,
+	day: DAY_MS,
+	week: 7 * DAY_MS,
+	month: 30 * DAY_MS,
+	quarter: 91 * DAY_MS,
+	year: 365 * DAY_MS
+};
+
+/** Below this fraction of a period, an anchor tick at data-min would crowd the first aligned tick. */
+const ANCHOR_MIN_GAP_FRACTION = 0.4;
+
+export function alignedGrainTicks(
+	minMs: number,
+	maxMs: number,
+	grain: TimeAxisGrain,
+	step = 1
+): number[] {
+	const start = floorToGrain(minMs, grain);
+	const ticks = walkGrainTicks(start, maxMs, grain).filter(
+		(t) => t >= minMs && (grain !== 'month' || new Date(t).getMonth() % step === 0)
+	);
+	if (
+		ticks.length > 0 &&
+		ticks[0] - minMs >= ANCHOR_MIN_GAP_FRACTION * APPROX_GRAIN_MS[grain] * step
+	) {
+		ticks.unshift(minMs);
+	}
+	return ticks;
 }
 
 /**
- * Decide the tick regime for a time axis. (spec § 3)
- *
- * Tick positions come from raw query rows, grain-filled when an effective
- * grain exists: walk every grain-aligned position between data min and max so
- * genuine gaps in the raw data (e.g. a monthly chart missing July) still show
- * a labeled empty slot. Orthogonal to `handle_missing` — whether a bar renders
- * at the synthetic tick is the series layer's business; the label appears
- * either way.
- *
- * Grain-fill output is rejected (falling back to raw positions) when it
- * exceeds the tick budget, or — for *inferred* grains only — when it exceeds
- * GRAIN_FILL_MAX_RATIO × raw count, the guard against a mis-inferred grain
- * ballooning a small raw set into hundreds of ticks. An explicitly declared
- * `date_grain` skips the ratio guard: there's no inference to distrust, and
- * sparse data (3 monthly readings across 11 months) should still label every
- * month. The tick budget and walker iteration cap still apply.
+ * d3's time-scale ladder minus weeks. Multi-month steps stay labelled as months,
+ * never quarters: "Q2" reads as a quarterly total.
+ */
+const CALENDAR_TICK_INTERVALS: readonly { grain: TimeAxisGrain; step: number }[] = [
+	{ grain: 'day', step: 1 },
+	{ grain: 'month', step: 1 },
+	{ grain: 'month', step: 3 },
+	{ grain: 'month', step: 6 },
+	{ grain: 'year', step: 1 }
+];
+
+/** Fewer period ticks than this says too little; such short spans stay pinned to their points. */
+export const MIN_CALENDAR_TICKS = 4;
+
+/** Allowed drift from a whole-multiple gap that still counts as on-cadence (DST shifts by 1h). */
+const CADENCE_TOLERANCE_MS = 1.5 * HOUR_MS;
+
+/** Calendar-month index of a timestamp when it sits on the same day/time as `ref`'s, else undefined. */
+function monthIndexOnSameDay(ms: number, ref: Date): number | undefined {
+	const d = new Date(ms);
+	if (d.getDate() !== ref.getDate() || d.getHours() !== ref.getHours()) return undefined;
+	return d.getFullYear() * 12 + d.getMonth();
+}
+
+/**
+ * Ticks for points whose gaps are whole multiples of the smallest one (weekly
+ * Fridays, every 17th), with a slot for each missing period. (spec § 3)
+ */
+export function steadyCadenceTicks(raw: number[]): number[] | undefined {
+	if (raw.length < 2) return raw.length === 1 ? [...raw] : undefined;
+
+	const ref = new Date(raw[0]);
+	const months = raw.map((t) => monthIndexOnSameDay(t, ref));
+	const inMonths = months.every((m) => m !== undefined);
+	const positions = inMonths ? (months as number[]) : raw;
+	const gaps = positions.slice(1).map((p, i) => p - positions[i]);
+	const unit = Math.min(...gaps);
+	if (!(unit > 0)) return undefined;
+	const tolerance = inMonths ? 0 : CADENCE_TOLERANCE_MS;
+	const steps = gaps.map((g) => Math.round(g / unit));
+	if (gaps.some((g, i) => steps[i] < 1 || Math.abs(g - steps[i] * unit) > tolerance)) {
+		return undefined;
+	}
+
+	const slots = steps.reduce((a, b) => a + b, 1);
+	if (slots > CUSTOM_TICK_THRESHOLD || slots > raw.length * GRAIN_FILL_MAX_RATIO) return undefined;
+
+	// Points at one time of day (dates) step by calendar date: elapsed time
+	// across a DST change would put a missing slot at 11:30 pm the day before.
+	const timeOfDay = (t: number) => new Date(t).toTimeString().slice(0, 8);
+	const unitDays = inMonths ? 0 : Math.round(unit / DAY_MS);
+	const inDays =
+		unitDays >= 1 &&
+		Math.abs(unit - unitDays * DAY_MS) <= CADENCE_TOLERANCE_MS &&
+		raw.every((t) => timeOfDay(t) === timeOfDay(raw[0]));
+	const ticks = [raw[0]];
+	steps.forEach((k, i) => {
+		for (let j = 1; j < k; j++) {
+			const d = new Date(raw[i]);
+			if (inMonths) d.setMonth(d.getMonth() + j * unit);
+			else if (inDays) d.setDate(d.getDate() + j * unitDays);
+			else d.setTime(raw[i] + ((raw[i + 1] - raw[i]) * j) / k);
+			ticks.push(d.getTime());
+		}
+		ticks.push(raw[i + 1]);
+	});
+	return ticks;
+}
+
+/**
+ * Decide the tick regime for a time axis (spec § 3). A label per point only
+ * reads well when the points keep a rhythm, so regular data (grain fill, then
+ * steady cadence) is pinned to its points and irregular data gets calendar
+ * ticks; short irregular spans stay pinned.
  */
 export function buildTickStrategy(args: {
 	isTimeAxis: boolean;
@@ -328,27 +447,47 @@ export function buildTickStrategy(args: {
 }): TickStrategy {
 	const { isTimeAxis, grain, grainIsExplicit, dataMinMs, dataMaxMs, rawTimestamps } = args;
 
+	const nativeTicks = (labelGrain: TimeAxisGrain | undefined): TickStrategy => ({
+		tickValues: rawTimestamps,
+		useCustomTicks: false,
+		useVerboseLabels: false,
+		labelGrain
+	});
+	const pinned = (tickValues: number[], labelGrain: TimeAxisGrain | undefined): TickStrategy => ({
+		tickValues,
+		useCustomTicks: true,
+		useVerboseLabels: tickValues.length <= VERBOSE_LABEL_THRESHOLD,
+		labelGrain
+	});
+
 	if (!isTimeAxis || rawTimestamps === undefined || rawTimestamps.length === 0) {
-		return { tickValues: undefined, useCustomTicks: false, useVerboseLabels: false };
+		return { ...nativeTicks(grain), tickValues: undefined };
+	}
+	if (rawTimestamps.length > CUSTOM_TICK_THRESHOLD) return nativeTicks(grain);
+	if (grain === undefined || dataMinMs === undefined || dataMaxMs === undefined) {
+		return pinned(rawTimestamps, grain);
 	}
 
-	let tickValues = rawTimestamps;
-	if (grain !== undefined && dataMinMs !== undefined && dataMaxMs !== undefined) {
-		const filled = walkGrainTicks(dataMinMs, dataMaxMs, grain);
-		const withinBudget = filled.length > 0 && filled.length <= CUSTOM_TICK_THRESHOLD;
-		const withinRatio =
-			grainIsExplicit || filled.length <= rawTimestamps.length * GRAIN_FILL_MAX_RATIO;
-		if (withinBudget && withinRatio) {
-			tickValues = filled;
+	const fits = (ticks: number[]) =>
+		ticks.length > 0 &&
+		ticks.length <= CUSTOM_TICK_THRESHOLD &&
+		(grainIsExplicit || ticks.length <= rawTimestamps.length * GRAIN_FILL_MAX_RATIO);
+
+	const filled = walkGrainTicks(dataMinMs, dataMaxMs, grain);
+	if (fits(filled)) return pinned(filled, grain);
+
+	const steady = steadyCadenceTicks(rawTimestamps);
+	if (steady) return pinned(steady, grain);
+
+	for (const { grain: tickGrain, step } of CALENDAR_TICK_INTERVALS) {
+		// A step must be coarser than the data's own grain to thin it.
+		if (APPROX_GRAIN_MS[tickGrain] * step <= APPROX_GRAIN_MS[grain]) continue;
+		const aligned = alignedGrainTicks(dataMinMs, dataMaxMs, tickGrain, step);
+		if (aligned.length >= MIN_CALENDAR_TICKS && fits(aligned)) {
+			return pinned(aligned, tickGrain);
 		}
 	}
-
-	const useCustomTicks = tickValues.length <= CUSTOM_TICK_THRESHOLD;
-	return {
-		tickValues: useCustomTicks ? tickValues : rawTimestamps,
-		useCustomTicks,
-		useVerboseLabels: useCustomTicks && tickValues.length <= VERBOSE_LABEL_THRESHOLD
-	};
+	return pinned(rawTimestamps, grain);
 }
 
 /**

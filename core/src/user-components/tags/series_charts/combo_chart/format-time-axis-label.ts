@@ -66,10 +66,13 @@ export function formatTimeAxisLabel(
 	dataMinMs?: number,
 	verbose?: boolean,
 	compactYearRollover?: boolean,
-	spansMultipleYears?: boolean
+	spansMultipleYears?: boolean,
+	// Visibly previous tick: thinning can hide the one that named this month.
+	previousTick?: number | string | Date
 ): string {
 	const date = toDate(value);
 	if (!date) return String(value);
+	const previous = previousTick === undefined ? undefined : toDate(previousTick);
 
 	// Best-effort grain inference when the caller didn't pass one. Rare — most call
 	// sites know the grain — but ECharts may pass us auto-generated tick timestamps
@@ -100,9 +103,7 @@ export function formatTimeAxisLabel(
 	//   anchor, no reserved year gutter (hasTwoTierLabels is false).
 	if (g === 'month' || g === 'quarter') {
 		const periodName =
-			g === 'month'
-				? MONTH_NAMES[date.getMonth()]
-				: quarterLabel(date, /* includeYear */ false);
+			g === 'month' ? MONTH_NAMES[date.getMonth()] : quarterLabel(date, /* includeYear */ false);
 		if (compactYearRollover) {
 			// Collapse to a bare year ONLY at the exact period boundary that opens
 			// the year — Jan 1 (which is also the Q1 start). Above the custom-tick
@@ -111,7 +112,10 @@ export function formatTimeAxisLabel(
 			// matching the whole month would drop the quarter and make that tick
 			// read as a stray year separator instead of its actual position.
 			if (isJanuary1(date)) return String(date.getFullYear());
-			if (isFirstTick(date, index, g, dataMinMs)) {
+			if (
+				isFirstTick(date, index, g, dataMinMs) ||
+				(previous && previous.getFullYear() !== date.getFullYear())
+			) {
 				return `${periodName} ${date.getFullYear()}`;
 			}
 			return periodName;
@@ -167,6 +171,9 @@ export function formatTimeAxisLabel(
 			if (isJanuary1(date)) return String(date.getFullYear());
 			return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
 		}
+		if (previous && previous.toDateString() !== date.toDateString()) {
+			return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}, ${hourLabel(date)}`;
+		}
 		return hourLabel(date);
 	}
 
@@ -202,6 +209,13 @@ export function formatTimeAxisLabel(
 		return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
 	}
 	if (isFirstOfMonth(date)) return MONTH_NAMES[date.getMonth()];
+	if (
+		previous &&
+		(previous.getMonth() !== date.getMonth() || previous.getFullYear() !== date.getFullYear())
+	) {
+		if (previous.getFullYear() !== date.getFullYear()) return yearLabel(date);
+		return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
+	}
 	return String(date.getDate());
 }
 

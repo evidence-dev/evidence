@@ -84,9 +84,16 @@ const getDistinctXValues = (series: unknown, xAxis: OptionRecord | undefined): u
 	return Array.from(distinctXValues);
 };
 
-const formatLabel = (value: unknown, index: number, formatter: unknown): string => {
+type LabelFormatter = (value: unknown, index: number, previousVisible?: unknown) => unknown;
+
+const formatLabel = (
+	value: unknown,
+	index: number,
+	formatter: unknown,
+	previousVisible?: unknown
+): string => {
 	if (typeof formatter === 'function') {
-		return String((formatter as (value: unknown, index: number) => unknown)(value, index));
+		return String((formatter as LabelFormatter)(value, index, previousVisible));
 	}
 
 	if (typeof formatter === 'string') {
@@ -475,7 +482,35 @@ export const withAutoTimeAxisLabelThinning = (
 	}
 
 	if (kept.length === n) return { options };
-	const thinned = kept.sort((a, b) => a - b).map((i) => sorted[i]);
+
+	// Hiding a predecessor can widen a label ("13" → "May 13"), so re-check until nothing collides.
+	kept.sort((a, b) => a - b);
+	const anchors = new Set([0, n - 1, ...twoTier]);
+	for (let pass = 0; pass < n; pass++) {
+		const keptWidths = kept.map((i, k) => {
+			const label = formatLabel(sorted[i], k, formatter, k > 0 ? sorted[kept[k - 1]] : undefined);
+			return label === sortedLabels[i]
+				? widths[i]
+				: (rendered?.labelWidth?.(label) ?? estimateTextWidth(label, axisLabel));
+		});
+		const clash = kept.findIndex(
+			(i, k) =>
+				k > 0 &&
+				Math.abs(positions[i] - positions[kept[k - 1]]) <
+					(keptWidths[k] + keptWidths[k - 1]) / 2 + COLLISION_GAP_PX
+		);
+		if (clash === -1) break;
+		kept.splice(anchors.has(kept[clash]) && clash - 1 > 0 ? clash - 1 : clash, 1);
+	}
+
+	const thinned = kept.map((i) => sorted[i]);
+	// Each label names the month or year a hidden neighbour would have carried.
+	const previousVisible = (value: unknown) => {
+		const ms = typeof value === 'number' ? value : new Date(value as string).getTime();
+		let previous: number | undefined;
+		for (const t of thinned) if (t < ms) previous = t;
+		return previous;
+	};
 
 	return {
 		options: {
@@ -483,7 +518,13 @@ export const withAutoTimeAxisLabelThinning = (
 			xAxis: updateFirstOption((options as OptionRecord).xAxis, {
 				axisLabel: {
 					...axisLabel,
-					customValues: thinned
+					customValues: thinned,
+					...(typeof formatter === 'function'
+						? {
+								formatter: (value: unknown, index: number) =>
+									(formatter as LabelFormatter)(value, index, previousVisible(value))
+							}
+						: {})
 				}
 			}) as XAXisOption | XAXisOption[]
 		}

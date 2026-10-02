@@ -90,6 +90,19 @@ interface XAxisAnalysis {
 	ticks: TickStrategy;
 }
 
+function previousPinnedTick(
+	tickValues: number[] | undefined,
+	value: number | string | Date
+): number | undefined {
+	if (!tickValues) return undefined;
+	const ms = typeof value === 'number' ? value : new Date(value).getTime();
+	let previous: number | undefined;
+	for (const tick of tickValues) {
+		if (tick < ms && (previous === undefined || tick > previous)) previous = tick;
+	}
+	return previous;
+}
+
 export class XAxisModel {
 	readonly options: XAxisOptions;
 
@@ -133,7 +146,7 @@ export class XAxisModel {
 		const analysis = this.#analysis;
 		if (!analysis || analysis.type !== 'time' || this.options.fmt) return false;
 		if ((coerceBoolean(this.options.labels) ?? true) === false) return false;
-		const grain = analysis.timeAxisGrain;
+		const grain = analysis.ticks.labelGrain ?? analysis.timeAxisGrain;
 		if (grain !== 'month' && grain !== 'quarter') return false;
 		// Two-tier only exists on a within-~1-year axis that crosses a calendar
 		// boundary (so a year line actually appears). A single-calendar-year axis
@@ -602,15 +615,21 @@ export class XAxisModel {
 				// even when ECharts places a phantom padding tick at index 0.
 				formatter:
 					type === 'time' && !this.options.fmt
-						? (value: number | string | Date, index: number) =>
+						? // ECharts passes its own object as a third argument; only our numeric tick counts.
+							(value: number | string | Date, index: number, previousVisible?: unknown) =>
 								formatTimeAxisLabel(
 									value,
 									index,
-									timeAxisGrain,
+									ticks.labelGrain ?? timeAxisGrain,
 									dataMinMs,
 									useVerboseLabels,
 									compactYearRollover,
-									spansMultipleYears
+									spansMultipleYears,
+									useCustomTicks
+										? typeof previousVisible === 'number'
+											? previousVisible
+											: previousPinnedTick(tickValues, value)
+										: undefined
 								)
 						: valueAxisLabelFormatter,
 				// Time axes normally let ECharts' hierarchical labeling own the

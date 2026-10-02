@@ -39,7 +39,7 @@ const xLabels = (args: RenderArgs) =>
 		.sort((a, b) => a.corners[0][0] - b.corners[0][0])
 		.map((l) => l.text);
 
-describe('label geometry: irregular dates on a pinned time axis', () => {
+describe('label geometry: irregular dates on a time axis', () => {
 	// An OSS report: dates over ~9 months, `x_fmt="mmm d/yy"`, two bars three
 	// days apart. Every label was pinned to its bar, so "Mar 11/24" and
 	// "Mar 14/24" painted on top of each other.
@@ -68,18 +68,35 @@ describe('label geometry: irregular dates on a pinned time axis', () => {
 		expectClean({ ...userReport, width });
 	});
 
-	it('drops only the crowded label; every other bar keeps its own', () => {
+	it('irregular dates over months get month ticks, not a label per bar', () => {
 		expect(xLabels(userReport)).toEqual([
 			'Jan 8/24',
-			'Feb 12/24',
-			'Mar 11/24',
-			'Apr 22/24',
-			'May 20/24',
-			'Jun 17/24',
-			'Jul 15/24',
-			'Aug 26/24',
-			'Sep 30/24'
+			'Feb 1/24',
+			'Mar 1/24',
+			'Apr 1/24',
+			'May 1/24',
+			'Jun 1/24',
+			'Jul 1/24',
+			'Aug 1/24',
+			'Sep 1/24'
 		]);
+	});
+
+	const fmt = { fmt: 'mmm d/yy', seriesType: 'bar' as const };
+
+	it('a short span of scattered days stays pinned and drops only the crowded label', () => {
+		const dates = [
+			'2024-03-01',
+			'2024-03-08',
+			'2024-03-09',
+			'2024-03-15',
+			'2024-03-22',
+			'2024-03-29',
+			'2024-04-05'
+		];
+		expect(
+			xLabels({ width: 1000, rows: datesToRows(dates), columns: DATE_COL, x: 'x', y: 'y', ...fmt })
+		).toEqual(['Mar 1/24', 'Mar 8/24', 'Mar 15/24', 'Mar 22/24', 'Mar 29/24', 'Apr 5/24']);
 	});
 
 	const shapes: [string, string[], Partial<RenderArgs>][] = [

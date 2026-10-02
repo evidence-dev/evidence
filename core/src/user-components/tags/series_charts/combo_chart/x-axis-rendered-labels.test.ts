@@ -187,6 +187,99 @@ describe('rendered x-axis labels (SSR, exact output per container width)', () =>
 		expect(labels).toEqual(['2022', 'Jul', '2023', 'Jul', '2024', 'Jul', '2025']);
 	});
 
+	it('15 scattered days across five months: regular month ticks, not a day number per point', () => {
+		// Sparse daily data used to pin a tick to every point and label it with a
+		// bare day number ("5 14 20 28 2 14 22 …") — unreadable across months.
+		const rows = [
+			[0, 5],
+			[0, 14],
+			[0, 20],
+			[0, 28],
+			[1, 2],
+			[1, 14],
+			[1, 22],
+			[2, 3],
+			[2, 18],
+			[3, 6],
+			[3, 16],
+			[3, 27],
+			[4, 8],
+			[4, 24],
+			[5, 12]
+		].map(([m, d], i) => ({
+			month: `2024-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`,
+			revenue: 100 + i
+		}));
+		const { labels, rotated } = renderAxis({
+			width: 700,
+			rows,
+			columns: DATE_COLUMNS,
+			x: 'month',
+			y: 'revenue'
+		});
+
+		expect(rotated).toBe(false);
+		expect(labels).toEqual(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']);
+	});
+
+	it('thinned labels keep their context: the first visible tick of a month or year names it', () => {
+		// 12 weekly Mondays thinned to every other week: "May 6" and "Jun 3" are
+		// hidden, so May 13 and Jun 17 carry the month instead of reading "13", "17".
+		const weekly = Array.from({ length: 12 }, (_, i) => {
+			const d = new Date(2024, 3, 1 + i * 7);
+			return {
+				month: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
+				revenue: 100 + i
+			};
+		});
+		expect(
+			renderAxis({
+				width: 340,
+				rows: weekly,
+				columns: DATE_COLUMNS,
+				x: 'month',
+				y: 'revenue',
+				seriesType: 'bar'
+			}).labels
+		).toEqual(['Apr 1', '15', '29', 'May 13', '27', 'Jun 17']);
+
+		// Five events over two years get 3-month ticks labelled as months; thinned
+		// at phone width the "2024" boundary stays visible.
+		const events = ['2023-02-14', '2023-06-02', '2023-11-20', '2024-03-09', '2024-09-30'].map(
+			(month, i) => ({ month, revenue: 100 + i })
+		);
+		expect(
+			renderAxis({ width: 340, rows: events, columns: DATE_COLUMNS, x: 'month', y: 'revenue' })
+				.labels
+		).toEqual(['Feb 2023', 'Jul', '2024', 'Jul']);
+	});
+
+	it('8 scattered days across Jan–Feb: one label per bar, month named at the rollover', () => {
+		const rows = [
+			[0, 20],
+			[0, 23],
+			[0, 27],
+			[0, 31],
+			[1, 2],
+			[1, 6],
+			[1, 9],
+			[1, 14]
+		].map(([m, d], i) => ({
+			month: `2024-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`,
+			revenue: 100 + i
+		}));
+		const { labels, rotated } = renderAxis({
+			width: 700,
+			rows,
+			columns: DATE_COLUMNS,
+			x: 'month',
+			y: 'revenue'
+		});
+
+		expect(rotated).toBe(false);
+		expect(labels).toEqual(['Jan 20', '23', '27', '31', 'Feb 2', '6', '9', '14']);
+	});
+
 	it('3 years of weekly data: same year-anchored first tick as daily', () => {
 		const rows = Array.from({ length: 156 }, (_, i) => {
 			const d = new Date(2022, 0, 1 + i * 7);

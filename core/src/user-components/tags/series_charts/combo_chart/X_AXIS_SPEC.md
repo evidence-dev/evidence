@@ -68,21 +68,21 @@ Two regimes, chosen by data-point count:
 
 ### Pinned ticks (`customValues`) — ≤ 15 positions
 
-Each tick sits exactly on a data position. One label per bar/point. Applied to
-both `axisLabel.customValues` and `axisTick.customValues`. Requires ECharts
-≥ 6.1.0 (customValues on time axes).
-
-The tick positions are built in two steps:
+Ticks are set explicitly via `axisLabel.customValues` and
+`axisTick.customValues` (ECharts ≥ 6.1.0). A label per point only reads well
+when the points keep a rhythm, so regular data pins a tick to every data
+position, and irregular data gets a calendar of period ticks instead. Chosen in
+this order (`buildTickStrategy`):
 
 1. **Raw positions**: sorted, deduped x-timestamps from every series' query
    rows (`seriesTimestamps`).
 2. **Grain fill**: when an effective grain exists, walk from data-min to
    data-max one grain unit at a time (`walkGrainTicks`) and use those
-   positions instead — so a monthly chart missing July still shows a labeled
-   July slot. Whether a bar renders there is the series layer's business (see
+   positions — so a monthly chart missing July still shows a labeled July
+   slot. Whether a bar renders there is the series layer's business (see
    "Interaction with series fill"); the axis label appears either way.
 
-   Grain-fill output is **rejected** (falling back to raw positions) when:
+   Grain-fill output is **rejected** when:
    - it exceeds 15 positions (the tick budget), or
    - for **inferred** grains only, it exceeds `3 × raw count` — a guard
      against a mis-inferred grain ballooning 2 yearly points into 730 daily
@@ -90,7 +90,40 @@ The tick positions are built in two steps:
      to distrust, so sparse data (3 monthly readings across 11 months) still
      labels every month.
 
-3. **Walker mechanics**: local-time Date arithmetic (`setMonth`, `setDate`,
+3. **Steady cadence** (`steadyCadenceTicks`): points whose gaps are all whole
+   multiples of the smallest gap stay pinned at that cadence — weekly Fridays
+   (inferred grain `day`, which can't fill), every 17th of the month, every
+   5 months. Measured in calendar months when every point shares a day of
+   month, else in elapsed time with 1.5h of DST slack. Missing periods get a
+   slot; the same budget and ratio guard apply.
+
+4. **Irregular dates → period ticks**: points with no steady cadence (Mar 11,
+   Mar 14, Apr 22 …) get ticks at period starts, stepping through d3's
+   time-scale ladder — 1 day, 1 month, 3 months, 6 months, 1 year (never
+   week: week ticks phase off the first point and name nothing a reader
+   thinks in) — and taking the finest step coarser than the data grain that
+   yields at least 4 ticks within the budget and ratio guard. Multi-month
+   steps align to January and stay labelled in months (`Apr Jul Oct 2024`),
+   never quarters: no charting library switches label vocabulary on its own,
+   and "Q2" reads as a quarterly total. 10 scattered days from Jan 8 to Sep 30
+   render as `Jan Feb … Sep`; 5 events over Feb 2023 – Sep 2024 as
+   `Feb 2023 Apr Jul Oct 2024 Apr Jul`; 8 hours over five days as
+   `Mar 2 … Mar 6`. Data starting ≥ 40% of a step before the first aligned
+   tick gets an anchor tick at data-min so the opening stretch is labelled
+   (the `Jan` above sits on Jan 8). Points sit at their true dates; the tooltip carries the exact date.
+   A user x `fmt` formats these ticks like any other ("Feb 1/24"), as it does
+   ECharts' own ticks on dense axes. The label grain changes only axis label
+   text and two-tier geometry; tooltips, bar widths and series fill keep the
+   data grain.
+
+5. **Short irregular spans stay pinned**: when no calendar grain gives 4
+   ticks (scattered days across a few weeks), the points keep their own
+   labels. The tick that opens each new month (or day, for hours) names it —
+   `Jan 20, 23, 27, 31, Feb 2, 6, 9, 14`; for hours `9 pm, Mar 3, 4 am, 10 am`;
+   a year rollover uses the year label (`previousTick` in
+   `formatTimeAxisLabel`) — and § 6 thinning keeps them clear of each other.
+
+6. **Walker mechanics**: local-time Date arithmetic (`setMonth`, `setDate`,
    `setHours`) so month lengths and DST roll over correctly; hard cap of 500
    iterations.
 
@@ -353,6 +386,15 @@ with the theme's font). The pre-render estimate can be ~30px off — y-axis
 label width, bar overflow and outer-bounds fitting all move the plot edges.
 The second pass re-runs from the unthinned ticks and merges only when its
 result differs; both `setOption` calls land before the browser paints.
+
+**Thinned labels keep their context.** Hiding a tick can hide the label that
+named a month or year ("May 6" thinned away leaves "29, 13"). The thinning
+wraps the formatter so each kept label receives the tick visibly before it
+(`previousTick` in `formatTimeAxisLabel`): a day tick that opens a month names
+it ("May 13"), an hour tick that opens a day names the date, and a
+month/quarter tick that opens a year states it ("Q3 2024"). A label that grows
+this way is re-measured, and the collision pass re-runs until no kept pair
+collides.
 
 ### Two-tier label geometry
 

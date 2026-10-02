@@ -5,6 +5,7 @@ import {
 	VERBOSE_LABEL_THRESHOLD,
 	asTimeAxisGrain,
 	buildTickStrategy,
+	steadyCadenceTicks,
 	coerceAxisValue,
 	computeTimeDataRangeMs,
 	isNonTemporalNumericGrain,
@@ -251,8 +252,9 @@ describe('buildTickStrategy', () => {
 		expect(strategy.tickValues).toContain(localDate(2024, 7, 1));
 	});
 
-	it('rejects grain fill that would blow the tick budget', () => {
-		// 3 daily points spanning a year: grain fill would be 366 ticks.
+	it('irregular points whose grain fill blows the budget get period ticks', () => {
+		// 3 daily points spanning a year: grain fill would be 366 ticks, and the
+		// points keep no cadence, so the axis reads as a calendar of months.
 		const raw = [localDate(2024, 1, 1), localDate(2024, 1, 2), localDate(2025, 1, 1)];
 		const strategy = buildTickStrategy({
 			isTimeAxis: true,
@@ -262,12 +264,217 @@ describe('buildTickStrategy', () => {
 			dataMaxMs: raw[2],
 			rawTimestamps: raw
 		});
+		expect(strategy.labelGrain).toBe('month');
+		expect(strategy.tickValues).toEqual(
+			Array.from({ length: 13 }, (_, i) => localDate(2024, 1 + i, 1))
+		);
+	});
+
+	it('escalates sparse daily points spanning months to aligned month ticks with an anchor', () => {
+		const raw = [
+			[1, 5],
+			[1, 14],
+			[1, 20],
+			[1, 28],
+			[2, 2],
+			[2, 14],
+			[2, 22],
+			[3, 3],
+			[3, 18],
+			[4, 6],
+			[4, 16],
+			[4, 27],
+			[5, 8],
+			[5, 24],
+			[6, 12]
+		].map(([m, d]) => localDate(2024, m, d));
+		const strategy = buildTickStrategy({
+			isTimeAxis: true,
+			grain: 'day',
+			grainIsExplicit: false,
+			dataMinMs: raw[0],
+			dataMaxMs: raw[raw.length - 1],
+			rawTimestamps: raw
+		});
+		expect(strategy.useCustomTicks).toBe(true);
+		expect(strategy.labelGrain).toBe('month');
+		expect(strategy.tickValues).toEqual([
+			localDate(2024, 1, 5), // anchor at data-min: January would otherwise be unlabelled
+			localDate(2024, 2, 1),
+			localDate(2024, 3, 1),
+			localDate(2024, 4, 1),
+			localDate(2024, 5, 1),
+			localDate(2024, 6, 1)
+		]);
+	});
+
+	it('irregular points over a few weeks stay pinned: too short for month ticks, weeks are never used', () => {
+		const raw = [
+			[1, 20],
+			[1, 23],
+			[1, 27],
+			[1, 31],
+			[2, 2],
+			[2, 6],
+			[2, 9],
+			[2, 14]
+		].map(([m, d]) => localDate(2024, m, d));
+		const strategy = buildTickStrategy({
+			isTimeAxis: true,
+			grain: 'day',
+			grainIsExplicit: false,
+			dataMinMs: raw[0],
+			dataMaxMs: raw[raw.length - 1],
+			rawTimestamps: raw
+		});
+		expect(strategy.labelGrain).toBe('day');
 		expect(strategy.tickValues).toEqual(raw);
+	});
+
+	it('keeps pinned day ticks when every point sits in one month (labels are unambiguous)', () => {
+		const raw = [2, 5, 9, 12, 16, 19, 23, 27].map((d) => localDate(2024, 3, d));
+		const strategy = buildTickStrategy({
+			isTimeAxis: true,
+			grain: 'day',
+			grainIsExplicit: false,
+			dataMinMs: raw[0],
+			dataMaxMs: raw[raw.length - 1],
+			rawTimestamps: raw
+		});
+		expect(strategy.labelGrain).toBe('day');
+		expect(strategy.tickValues).toEqual(raw);
+	});
+
+	it('a few irregular points over months get month ticks too', () => {
+		const raw = [localDate(2024, 1, 5), localDate(2024, 3, 3), localDate(2024, 6, 12)];
+		const strategy = buildTickStrategy({
+			isTimeAxis: true,
+			grain: 'day',
+			grainIsExplicit: false,
+			dataMinMs: raw[0],
+			dataMaxMs: raw[2],
+			rawTimestamps: raw
+		});
+		expect(strategy.labelGrain).toBe('month');
+		expect(strategy.tickValues).toEqual([
+			localDate(2024, 1, 5),
+			...[2, 3, 4, 5, 6].map((m) => localDate(2024, m, 1))
+		]);
+	});
+
+	it('sparse irregular points over two years get 3-month ticks labelled as months, not quarters', () => {
+		// Feb 2023 – Sep 2024: monthly ticks (20) blow the budget; a 3-month step
+		// aligned to January fits. The label grain stays month ("Apr, Jul, Oct").
+		const raw = [
+			localDate(2023, 2, 14),
+			localDate(2023, 6, 2),
+			localDate(2023, 11, 20),
+			localDate(2024, 3, 9),
+			localDate(2024, 9, 30)
+		];
+		const strategy = buildTickStrategy({
+			isTimeAxis: true,
+			grain: 'month',
+			grainIsExplicit: false,
+			dataMinMs: raw[0],
+			dataMaxMs: raw[raw.length - 1],
+			rawTimestamps: raw
+		});
+		expect(strategy.labelGrain).toBe('month');
+		expect(strategy.tickValues).toEqual([
+			localDate(2023, 2, 14),
+			localDate(2023, 4, 1),
+			localDate(2023, 7, 1),
+			localDate(2023, 10, 1),
+			localDate(2024, 1, 1),
+			localDate(2024, 4, 1),
+			localDate(2024, 7, 1)
+		]);
+	});
+
+	it('a missing weekly slot lands on its calendar midnight across DST changes', () => {
+		const originalTZ = process.env.TZ;
+		process.env.TZ = 'America/New_York'; // DST starts Mar 10 and ends Nov 3, 2024
+		try {
+			// Fridays with the middle week missing; each long gap crosses a DST change.
+			for (const [month, days, missing] of [
+				[2, [1, 8, 22], 15],
+				[10, [1, 15, 22], 8]
+			] as const) {
+				const raw = days.map((d) => new Date(2024, month, d).getTime());
+				const ticks = steadyCadenceTicks(raw)!;
+				const slot = new Date(ticks.find((t) => !raw.includes(t))!);
+				expect([slot.getDate(), slot.getHours(), slot.getMinutes()]).toEqual([missing, 0, 0]);
+			}
+		} finally {
+			if (originalTZ === undefined) delete process.env.TZ;
+			else process.env.TZ = originalTZ;
+		}
+	});
+
+	it('a 23-hour cadence keeps elapsed-time slots, not calendar days', () => {
+		const h = (hours: number) => new Date(2024, 0, 1).getTime() + hours * 60 * 60 * 1000;
+		expect(steadyCadenceTicks([h(0), h(23), h(69)])).toEqual([h(0), h(23), h(46), h(69)]);
+	});
+
+	it('points on a steady cadence stay pinned, with a slot for each missing period', () => {
+		// Weekly Fridays with May 24 missing: inferred day grain can't fill
+		// (7x the points), but every gap is a whole number of weeks.
+		const raw = [
+			[5, 3],
+			[5, 10],
+			[5, 17],
+			[5, 31],
+			[6, 7],
+			[6, 14]
+		].map(([m, d]) => localDate(2024, m, d));
+		const strategy = buildTickStrategy({
+			isTimeAxis: true,
+			grain: 'day',
+			grainIsExplicit: false,
+			dataMinMs: raw[0],
+			dataMaxMs: raw[raw.length - 1],
+			rawTimestamps: raw
+		});
+		expect(strategy.labelGrain).toBe('day');
+		expect(strategy.tickValues).toEqual([
+			...raw.slice(0, 3),
+			localDate(2024, 5, 24),
+			...raw.slice(3)
+		]);
+	});
+
+	it('hours across a few days stay pinned; across many days they become day ticks', () => {
+		const h = (d: number, hr: number) => new Date(2024, 2, d, hr).getTime();
+		const threeDays = [h(2, 3), h(2, 9), h(2, 15), h(2, 21), h(3, 4), h(3, 10), h(3, 19), h(4, 2)];
+		const pinned = buildTickStrategy({
+			isTimeAxis: true,
+			grain: 'hour',
+			grainIsExplicit: false,
+			dataMinMs: threeDays[0],
+			dataMaxMs: threeDays[threeDays.length - 1],
+			rawTimestamps: threeDays
+		});
+		expect(pinned.labelGrain).toBe('hour');
+		expect(pinned.tickValues).toEqual(threeDays);
+
+		const fiveDays = [h(2, 3), h(2, 15), h(3, 4), h(3, 19), h(4, 2), h(5, 11), h(6, 8), h(6, 20)];
+		const escalated = buildTickStrategy({
+			isTimeAxis: true,
+			grain: 'hour',
+			grainIsExplicit: false,
+			dataMinMs: fiveDays[0],
+			dataMaxMs: fiveDays[fiveDays.length - 1],
+			rawTimestamps: fiveDays
+		});
+		expect(escalated.labelGrain).toBe('day');
+		expect(escalated.tickValues).toEqual([h(2, 3), h(3, 0), h(4, 0), h(5, 0), h(6, 0)]);
 	});
 
 	it('rejects grain fill from a mis-inferred grain (ratio guard)', () => {
 		// 4 points at a ~quarterly cadence, but grain mis-resolved to 'week':
-		// fill would be ~14 ticks — inside the budget, but 3.5x the raw count.
+		// fill would be ~27 ticks. The points keep no steady cadence, so they get
+		// month ticks rather than week ones.
 		const raw = [
 			localDate(2024, 1, 1),
 			localDate(2024, 4, 1),
@@ -282,7 +489,8 @@ describe('buildTickStrategy', () => {
 			dataMaxMs: raw[raw.length - 1],
 			rawTimestamps: raw
 		});
-		expect(strategy.tickValues).toEqual(raw);
+		expect(strategy.labelGrain).toBe('month');
+		expect(strategy.tickValues).toEqual([1, 2, 3, 4, 5, 6, 7].map((m) => localDate(2024, m, 1)));
 	});
 
 	it('explicit grain skips the ratio guard: sparse data labels every grain slot', () => {
@@ -302,7 +510,7 @@ describe('buildTickStrategy', () => {
 		expect(strategy.tickValues).toContain(localDate(2024, 5, 1));
 	});
 
-	it('inferred grain with the same sparse shape falls back to raw positions', () => {
+	it('inferred grain with the same sparse shape stays on its own 5-month cadence', () => {
 		const raw = [localDate(2024, 2, 1), localDate(2024, 7, 1), localDate(2024, 12, 1)];
 		const strategy = buildTickStrategy({
 			isTimeAxis: true,

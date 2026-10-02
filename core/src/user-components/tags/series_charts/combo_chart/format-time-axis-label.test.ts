@@ -340,7 +340,13 @@ describe('formatTimeAxisLabel', () => {
 			// The exact production case: a 5-year monthly chart ECharts thins down
 			// to one tick per year, all landing on January. Two-tier would stack an
 			// identical "Jan" over every year — pure noise. Collapse to the year.
-			const ticks = [dt(2022, 0, 1), dt(2023, 0, 1), dt(2024, 0, 1), dt(2025, 0, 1), dt(2026, 0, 1)];
+			const ticks = [
+				dt(2022, 0, 1),
+				dt(2023, 0, 1),
+				dt(2024, 0, 1),
+				dt(2025, 0, 1),
+				dt(2026, 0, 1)
+			];
 			const labels = ticks.map((t, i) =>
 				formatTimeAxisLabel(
 					t,
@@ -381,7 +387,14 @@ describe('formatTimeAxisLabel', () => {
 			// stacking a two-tier anchor; year boundaries stay bare.
 			const ticks = [dt(2023, 6, 1), dt(2024, 0, 1), dt(2024, 6, 1), dt(2025, 0, 1)];
 			const labels = ticks.map((t, i) =>
-				formatTimeAxisLabel(t, i, 'month', ticks[0].getTime(), false, /* compactYearRollover */ true)
+				formatTimeAxisLabel(
+					t,
+					i,
+					'month',
+					ticks[0].getTime(),
+					false,
+					/* compactYearRollover */ true
+				)
 			);
 			expect(labels).toEqual(['Jul 2023', '2024', 'Jul', '2025']);
 		});
@@ -389,9 +402,9 @@ describe('formatTimeAxisLabel', () => {
 		it('day grain, multi-year span: first tick anchors to its year (fix B)', () => {
 			// Jan-1 start → bare year; a mid-year start → "Mon Year". Either way the
 			// first tick reads as a year anchor, never a stray day-qualified date.
-			expect(formatTimeAxisLabel(dt(2022, 0, 1), 0, 'day', dt(2022, 0, 1).getTime(), false, true)).toBe(
-				'2022'
-			);
+			expect(
+				formatTimeAxisLabel(dt(2022, 0, 1), 0, 'day', dt(2022, 0, 1).getTime(), false, true)
+			).toBe('2022');
 			expect(
 				formatTimeAxisLabel(dt(2022, 2, 15), 0, 'day', dt(2022, 2, 15).getTime(), false, true)
 			).toBe('Mar 2022');
@@ -598,9 +611,7 @@ describe('formatTimeAxisLabel', () => {
 		});
 
 		it('hour grain: includes year AND hour', () => {
-			expect(formatTimeAxisTooltip(new Date(2025, 5, 15, 14, 0), 'hour')).toBe(
-				'Jun 15, 2025 2 pm'
-			);
+			expect(formatTimeAxisTooltip(new Date(2025, 5, 15, 14, 0), 'hour')).toBe('Jun 15, 2025 2 pm');
 		});
 
 		it('month grain: month + year', () => {
@@ -644,5 +655,46 @@ describe('formatTimeAxisLabel', () => {
 			);
 			expect(formatTimeAxisLabel('2026-06-15T00:00:00Z', 5, 'day')).toBe('15');
 		});
+	});
+});
+
+describe('rollover labels for pinned ticks (previousTick)', () => {
+	it('labels a day tick that opens a new month with the month', () => {
+		const prev = new Date(2024, 0, 31);
+		expect(
+			formatTimeAxisLabel(new Date(2024, 1, 2), 4, 'day', prev.getTime(), false, false, false, prev)
+		).toBe('Feb 2');
+	});
+
+	it('labels a day tick that opens a new year with the year label', () => {
+		const prev = new Date(2024, 11, 28);
+		expect(
+			formatTimeAxisLabel(new Date(2025, 0, 3), 4, 'day', prev.getTime(), false, false, true, prev)
+		).toBe('Jan 2025');
+	});
+
+	it('keeps the plain day when the previous tick is in the same month', () => {
+		const prev = new Date(2024, 1, 2);
+		expect(
+			formatTimeAxisLabel(new Date(2024, 1, 6), 5, 'day', undefined, false, false, false, prev)
+		).toBe('6');
+	});
+
+	it('labels an hour tick that opens a new day with the date and hour', () => {
+		const prev = new Date(2024, 2, 2, 21);
+		expect(
+			formatTimeAxisLabel(new Date(2024, 2, 3, 4), 4, 'hour', undefined, false, false, false, prev)
+		).toBe('Mar 3, 4 am');
+	});
+
+	it('names the year on a quarter tick whose visible predecessor is in another year', () => {
+		const prev = new Date(2023, 9, 1);
+		const dataMin = new Date(2023, 0, 1).getTime();
+		expect(
+			formatTimeAxisLabel(new Date(2024, 6, 1), 2, 'quarter', dataMin, false, true, true, prev)
+		).toBe('Q3 2024');
+		expect(
+			formatTimeAxisLabel(new Date(2024, 6, 1), 2, 'quarter', dataMin, false, true, true)
+		).toBe('Q3');
 	});
 });
