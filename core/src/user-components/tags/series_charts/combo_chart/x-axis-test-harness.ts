@@ -6,21 +6,25 @@ import { TWO_TIER_LABEL_EXTRA_GRID_BOTTOM_PX } from './constants';
 import { canonicalizeTimeAxisValue } from '../../../formatValue';
 import {
 	withAutoTimeAxisLabelThinning,
-	withAutoXAxisLabelLayout
+	withAutoXAxisLabelLayout,
+	withMeasuredTimeAxisLabelThinning
 } from '../../echarts/echarts-utils';
+import { extractLabelGeometry, type LabelGeometry } from './label-geometry';
 
 /**
  * Shared END-TO-END axis-label rendering harness.
  *
  * Runs the REAL `XAxisModel` → assembled ECharts option → the REAL width-aware
  * layout helpers → ECharts' server-side SVG renderer, then reads back exactly
- * which `<text>` labels ECharts painted (and whether they were rotated). This
- * is the ground-truth surface both `x-axis-rendered-labels.test.ts` (scenario
- * deep-dives) and `x-axis-label-matrix.test.ts` (the exhaustive type × grain ×
- * density × span × width matrix) assert against.
+ * which `<text>` labels ECharts painted (and whether they were rotated) and
+ * the box of every label. This is the ground-truth surface
+ * `x-axis-rendered-labels.test.ts` (scenario deep-dives),
+ * `x-axis-label-matrix.test.ts` (the exhaustive type × grain × density × span ×
+ * width matrix) and `label-geometry.test.ts` (overlap/cutoff invariants) assert
+ * against.
  *
- * Fidelity caveat: in Node our label measurement uses the char-count fallback
- * (no canvas) and ECharts uses its built-in measurer, so thin/rotate
+ * Fidelity caveat: in Node, text is measured with ECharts' built-in width
+ * table (the pre-render estimate uses a char-count fallback), so thin/rotate
  * *breakpoints* can sit a few pixels off from a browser with Geist loaded. The
  * decisions are deterministic — any change to what renders at a given width
  * fails loudly.
@@ -45,11 +49,17 @@ export interface RenderArgs {
 	 * stacked bar/area on a numeric grain, which lands on a category axis.
 	 */
 	forceCategory?: boolean;
+	/** Label every point with its value, like `data_labels={position="above"}`. */
+	dataLabels?: boolean;
+	/** A second series on its own query; its x-values join the shared axis. */
+	secondSeriesRows?: Record<string, unknown>[];
 }
 
 export function makeXAxisModel(args: RenderArgs): XAxisModel {
-	const queryResult = { rows: args.rows, columns: args.columns };
-	const stubAxis = { series: [{ query: { result: queryResult } }] } as unknown as YAxisModel;
+	const series = [args.rows, ...(args.secondSeriesRows ? [args.secondSeriesRows] : [])].map(
+		(rows) => ({ query: { result: { rows, columns: args.columns } } })
+	);
+	const stubAxis = { series } as unknown as YAxisModel;
 	const emptyAxis = { series: [] } as unknown as YAxisModel;
 	return new XAxisModel(
 		() => ({
@@ -63,6 +73,7 @@ export function makeXAxisModel(args: RenderArgs): XAxisModel {
 }
 
 const CHART_MARGIN_PX = 3;
+const Y_AXIS_NAME = 'Sum Value';
 export const X_AXIS_FONT_SIZE = 12;
 
 /** Mirrors the ComboChart pieces the axis pipeline depends on (grid budget, title graphic, series shape). */
@@ -103,13 +114,23 @@ function assembleOptions(model: XAxisModel, args: RenderArgs): EChartsOption {
 		// verbatim — the same for every viewer — in any runtime timezone.
 		animation: false,
 		grid: {
-			top: 20,
+			// ComboChart: chartMarginPx + 8 + chart_options.top_padding (default 5).
+			top: CHART_MARGIN_PX + 8 + 5,
 			left: CHART_MARGIN_PX,
 			right: CHART_MARGIN_PX,
 			bottom: gridBottom
 		},
 		xAxis: args.forceCategory ? coerceToCategory(model.axisConfig) : model.axisConfig,
-		yAxis: { type: 'value' },
+		// YAxisModel's label + top-title layout, so y labels and the axis name take
+		// their real room at the plot's left edge.
+		yAxis: {
+			type: 'value',
+			name: Y_AXIS_NAME,
+			nameLocation: 'end',
+			nameGap: 0,
+			nameTextStyle: { align: 'left', verticalAlign: 'middle', padding: [1, 5, 1, 0] },
+			axisLabel: { margin: 4 }
+		},
 		...(titleVisible
 			? {
 					// Same shape as ComboChart's x-axis title graphic: anchored to
@@ -124,13 +145,18 @@ function assembleOptions(model: XAxisModel, args: RenderArgs): EChartsOption {
 					]
 				}
 			: {}),
-		series: [
-			{
-				type: args.seriesType ?? 'line',
-				barMaxWidth: 60,
-				data: args.rows.map((r) => [formatXValue(r[args.x]), r[args.y]])
-			}
-		]
+		series: [args.rows, ...(args.secondSeriesRows ? [args.secondSeriesRows] : [])].map((rows) => ({
+			type: args.seriesType ?? 'line',
+			barMaxWidth: 60,
+			// SeriesModel's data_labels defaults (size 11, distance 5, hideOverlap).
+			...(args.dataLabels
+				? {
+						label: { show: true, position: 'top', fontSize: 11, distance: 5 },
+						labelLayout: { hideOverlap: true }
+					}
+				: {}),
+			data: rows.map((r) => [formatXValue(r[args.x]), r[args.y]])
+		}))
 	} as EChartsOption;
 }
 
@@ -153,6 +179,23 @@ export interface RenderedAxis {
  * x-axis label text from the SVG.
  */
 export function renderAxis(args: RenderArgs): RenderedAxis {
+	const { svg, plotBottom } = renderChart(args);
+	return extractAxisLabels(svg, plotBottom, args.title);
+}
+
+export interface RenderedChart {
+	svg: string;
+	plotBottom: number;
+	/** Every painted label's box, read from ECharts' own element tree. */
+	geometry: LabelGeometry;
+}
+
+/**
+ * Model → options → layout helpers → ECharts SSR, with the same two passes as
+ * echarts.action: an estimated layout, then a re-thin against the rendered
+ * tick positions.
+ */
+export function renderChart(args: RenderArgs): RenderedChart {
 	const { width, height = 240 } = args;
 	const model = makeXAxisModel(args);
 	const assembled = assembleOptions(model, args);
@@ -166,13 +209,21 @@ export function renderAxis(args: RenderArgs): RenderedAxis {
 
 	const chart = init(null, null, { renderer: 'svg', ssr: true, width, height: renderHeight });
 	chart.setOption(finalOptions);
+	const measured = withMeasuredTimeAxisLabelThinning(
+		categoryLayout.options,
+		finalOptions,
+		node,
+		chart
+	);
+	if (measured) chart.setOption(measured);
 	const svg = chart.renderToSVGString();
+	const geometry = extractLabelGeometry(chart, { title: args.title });
 	chart.dispose();
 
 	const grid = (finalOptions as { grid?: { bottom?: number } }).grid;
 	const gridBottom = typeof grid?.bottom === 'number' ? grid.bottom : 0;
 	const plotBottom = renderHeight - gridBottom;
-	return extractAxisLabels(svg, plotBottom, args.title);
+	return { svg, plotBottom, geometry };
 }
 
 /**

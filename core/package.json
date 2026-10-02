@@ -88,6 +88,7 @@
 		"@types/lodash": "^4.17.15",
 		"@types/pako": "^2.0.4",
 		"chdb": "^1.6.0",
+		"fast-check": "^4.8.0",
 		"snowflake-sdk": "^2.3.6",
 		"svelte-check": "^4.3.4",
 		"typescript": "^5.9.3",

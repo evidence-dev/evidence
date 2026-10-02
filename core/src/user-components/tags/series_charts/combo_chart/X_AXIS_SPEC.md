@@ -324,14 +324,35 @@ line, and area charts over the same data share one visual grammar. (Category
 axes — true categorical bars — still rotate via `withAutoXAxisLabelLayout`.)
 
 **Thinning** is stride-based: keep every k-th tick, with k the smallest
-stride that fits the width budget. A fixed stride gives the axis a steady
-calendar rhythm ("Feb, Apr, Jun, Aug") where a greedy closest-fit pick
-produced irregular clusters ("Mar, Apr, Jun, Jul, Sep") on forced-anchor or
-gappy data. Always kept: first, last, and any two-tier year label
-("Jan\n2020") — dropping a year rollover orphans the reader's sense of which
-year surrounding months belong to. Stride picks landing within half a stride
-of a kept anchor are dropped so an anchor never gains an adjacent sibling
-("… Oct, Dec, Jan 2025" yields to "… Oct, Jan 2025").
+stride that fits the width budget (widest label + 8px per tick, as if ticks
+were evenly spaced). A fixed stride gives the axis a steady calendar rhythm
+("Feb, Apr, Jun, Aug") where a greedy closest-fit pick produced irregular
+clusters ("Mar, Apr, Jun, Jul, Sep") on forced-anchor or gappy data. Always
+kept: first, last, and any two-tier year label ("Jan\n2020") — dropping a
+year rollover orphans the reader's sense of which year surrounding months
+belong to. Stride picks landing within half a stride of a kept anchor are
+dropped so an anchor never gains an adjacent sibling ("… Oct, Dec, Jan 2025"
+yields to "… Oct, Jan 2025").
+
+**Collision pass (the overlap guarantee).** The budget assumes evenly spaced
+ticks, but pinned ticks sit at their timestamps: two dates days apart (Mar 11
+and Mar 14 on a 9-month axis) land a few pixels apart even when the label
+count fits. So the stride's picks are then kept in priority order — first,
+last, year rollovers, then left to right — and any label that would come
+within 4px of one already kept is dropped. For a cluster that drops one label
+(Mar 14's bar goes unlabelled) and every other tick keeps its own. The pass
+only removes labels that genuinely collide, so an axis that already reads
+cleanly is untouched; because it runs last, no tick strategy upstream can
+produce overlapping pinned labels.
+
+It runs twice: once before render on estimated positions (linear in time
+across the plot) and again after ECharts has laid out the chart
+(`withMeasuredTimeAxisLabelThinning`, from `echarts.action`), using the real
+tick positions (`convertToPixel`) and label widths (the axis label model,
+with the theme's font). The pre-render estimate can be ~30px off — y-axis
+label width, bar overflow and outer-bounds fitting all move the plot edges.
+The second pass re-runs from the unthinned ticks and merges only when its
+result differs; both `setOption` calls land before the browser paints.
 
 ### Two-tier label geometry
 
@@ -360,12 +381,12 @@ of a kept anchor are dropped so an anchor never gains an adjacent sibling
 
 ### End-to-end rendered-label tests
 
-Two suites pin the FINAL output of this whole spec — dataset + container width
-→ the exact labels ECharts paints, extracted from its server-side SVG render —
-sharing one harness (`x-axis-test-harness.ts`) that runs the real `XAxisModel`,
-the real layout helpers (with a stub node of the given `clientWidth`), real
-series-value canonicalization (`seriesConfig.formatXValue`), and real ECharts
-tick placement:
+Three suites pin the FINAL output of this whole spec — dataset + container
+width → what ECharts paints, from its server-side render — sharing one harness
+(`x-axis-test-harness.ts`) that runs the real `XAxisModel`, the real layout
+helpers (with a stub node of the given `clientWidth`) including the measured
+second pass, real series-value canonicalization (`seriesConfig.formatXValue`),
+YAxisModel's label/title layout, and real ECharts tick placement:
 
 - **`x-axis-label-matrix.test.ts`** — THE matrix: one enforced cell per
   (column type × grain × density × span × width) combination in this spec, plus
@@ -378,11 +399,20 @@ tick placement:
 - **`x-axis-rendered-labels.test.ts`** — deep-dive scenarios (two-tier geometry,
   title clearance, gap handling, multi-year first-tick anchors, DST) that need
   more than a single labels-array assertion.
+- **`label-geometry.test.ts`** — layout INVARIANTS rather than label text: no
+  two painted labels overlap (x, y, data labels, axis title; rotated boxes
+  included) and none is cut off by the container. Boxes are read from
+  ECharts' element tree (`label-geometry.ts`), so the same check runs against
+  a live browser chart. Named regression shapes (irregular and clustered
+  dates) plus a fast-check generator over axis type × date spacing ×
+  count × fmt × grain × width × mark × data labels; failures shrink to a
+  minimal chart. Layout bugs not yet fixed are pinned as `it.fails` cases, and
+  `LABEL_GEOMETRY_SURVEY=1` prints every violation class the generator finds.
 
-When changing anything in this document, add or update cases in both as
-appropriate. (Node measures text with the char-count fallback rather than
-browser canvas, so thin/rotate breakpoints can sit a few pixels off a real
-browser — decisions are deterministic, exact widths are not.)
+When changing anything in this document, add or update cases in all three as
+appropriate. (Node measures text with ECharts' built-in width table rather
+than a browser font, so thin/rotate breakpoints can sit a few pixels off a
+real browser — decisions are deterministic, exact widths are not.)
 
 ## Interaction with series fill (`fillGaps`)
 

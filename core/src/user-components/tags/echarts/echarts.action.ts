@@ -2,7 +2,11 @@ import { registerTheme, init, connect, type EChartsOption, type ECharts } from '
 import { echartsDarkTheme, echartsLightTheme } from './echarts-themes';
 import type { RendererType } from 'echarts/types/src/util/types.js';
 import type { Action } from 'svelte/action';
-import { withAutoTimeAxisLabelThinning, withAutoXAxisLabelLayout } from './echarts-utils';
+import {
+	withAutoTimeAxisLabelThinning,
+	withAutoXAxisLabelLayout,
+	withMeasuredTimeAxisLabelThinning
+} from './echarts-utils';
 import { logger } from '../../../shims/logger';
 import isEqual from 'lodash/isEqual';
 
@@ -49,6 +53,8 @@ export const echarts: Action<HTMLDivElement, Options> = (node, options) => {
 	registerTheme('dark', options.customDarkTheme || echartsDarkTheme);
 
 	const chart = createChart(node, options);
+	// Lets integration-suite browser tests read the painted label geometry.
+	(node as HTMLDivElement & { echartsInstance?: ECharts }).echartsInstance = chart;
 	const initialHasData = hasSeriesData(options.echartsOptions);
 
 	options.onCreate?.(chart);
@@ -149,9 +155,16 @@ export const echarts: Action<HTMLDivElement, Options> = (node, options) => {
 			extraHeight = categoryLayout.extraHeight;
 			options.onExtraHeightChange?.(extraHeight);
 		}
-		return timeLayout.options;
+		return { laidOut: timeLayout.options, unthinned: categoryLayout.options };
 	};
-	chart.setOption(getLaidOutOptions());
+	const applyLaidOutOptions = (notMerge?: boolean) => {
+		const { laidOut, unthinned } = getLaidOutOptions();
+		chart.setOption(laidOut, notMerge ? { notMerge } : undefined);
+		// Label collisions are only knowable once ECharts has placed the ticks.
+		const measured = withMeasuredTimeAxisLabelThinning(unthinned, laidOut, node, chart);
+		if (measured) chart.setOption(measured);
+	};
+	applyLaidOutOptions();
 
 	// Ensure we don't wait forever if events don't fire
 	// Kick off a readiness check even if events don't fire
@@ -273,7 +286,7 @@ export const echarts: Action<HTMLDivElement, Options> = (node, options) => {
 			width: node.clientWidth,
 			height: node.clientHeight
 		});
-		chart.setOption(getLaidOutOptions(), { notMerge: true });
+		applyLaidOutOptions(true);
 	});
 	resizeObserver.observe(node);
 
@@ -306,7 +319,7 @@ export const echarts: Action<HTMLDivElement, Options> = (node, options) => {
 					newOptions.animateUpdates ?? options.animateUpdates
 				);
 				appliedOptions = opts;
-				chart.setOption(getLaidOutOptions(), { notMerge: true });
+				applyLaidOutOptions(true);
 
 				// Re-apply theme if mode or theme config changed
 				if (newOptions.theme !== options.theme || themesChanged) {

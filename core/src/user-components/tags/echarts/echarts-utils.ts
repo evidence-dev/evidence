@@ -1,4 +1,4 @@
-import type { EChartsOption } from 'echarts';
+import type { ECharts, EChartsOption } from 'echarts';
 import type { GridComponentOption } from 'echarts/components';
 import type { XAXisOption } from 'echarts/types/src/coord/cartesian/AxisModel.js';
 
@@ -336,6 +336,16 @@ export const withAutoXAxisLabelLayout = (
 // don't thin more aggressively than necessary; ECharts already reserves a bit
 // of internal padding around each label glyph.
 const MIN_TIME_LABEL_GAP_PX = 8;
+// Below the thinning budget, so only genuinely colliding labels are dropped.
+const COLLISION_GAP_PX = 4;
+// XAxisModel pads pinned-tick time axes with boundaryGap ['2%', '2%'].
+const PINNED_BOUNDARY_GAP = 0.02;
+
+/** What a laid-out chart can tell us about its x-axis: real tick positions and label widths. */
+export interface RenderedXAxisMetrics {
+	toPixel: (value: number) => number | undefined;
+	labelWidth?: (label: string) => number | undefined;
+}
 
 /**
  * Thin `axisLabel.customValues` on a time axis when the labels no longer fit
@@ -357,10 +367,14 @@ const MIN_TIME_LABEL_GAP_PX = 8;
  * dropping a year rollover would orphan the reader's sense of which year the
  * surrounding months belong to. Stride picks landing within half a stride of
  * a preserved anchor are dropped so anchors never gain adjacent siblings.
+ *
+ * Pinned ticks sit at their dates, not in even slots, so a final pass drops
+ * any label that would still collide (Mar 11 next to Mar 14).
  */
 export const withAutoTimeAxisLabelThinning = (
 	options: EChartsOption,
-	node: HTMLDivElement
+	node: HTMLDivElement,
+	rendered?: RenderedXAxisMetrics
 ): { options: EChartsOption } => {
 	const xAxis = getXAxis(options);
 	if (xAxis?.type !== 'time') return { options };
@@ -385,8 +399,10 @@ export const withAutoTimeAxisLabelThinning = (
 	// (not mean) avoids the "everything fit on average, but the two-line
 	// year-rollover label collides with its neighbor" case.
 	const formatter = axisLabel?.formatter;
-	const formattedLabels = numericValues.map((v, i) => formatLabel(v, i, formatter));
-	const maxLabelWidth = Math.max(...formattedLabels.map((l) => estimateTextWidth(l, axisLabel)));
+	const sorted = [...numericValues].sort((a, b) => a - b);
+	const n = sorted.length;
+	const sortedLabels = sorted.map((v, i) => formatLabel(v, i, formatter));
+	const maxLabelWidth = Math.max(...sortedLabels.map((l) => estimateTextWidth(l, axisLabel)));
 	if (!Number.isFinite(maxLabelWidth) || maxLabelWidth <= 0) {
 		return { options };
 	}
@@ -403,47 +419,63 @@ export const withAutoTimeAxisLabelThinning = (
 	const horizontalPerLabelBudget = maxLabelWidth + MIN_TIME_LABEL_GAP_PX;
 	const maxLabelsThatFitHorizontal = Math.max(2, Math.floor(plotWidth / horizontalPerLabelBudget));
 
-	// Case 1: everything fits horizontally, no changes needed.
-	if (maxLabelsThatFitHorizontal >= numericValues.length) {
-		return { options };
+	const twoTier = sortedLabels.flatMap((label, i) => (label.includes('\n') ? [i] : []));
+	let candidates: number[];
+	if (maxLabelsThatFitHorizontal >= n) {
+		// Case 1: the count fits.
+		candidates = sorted.map((_, i) => i);
+	} else {
+		// Case 2: stride-based thinning.
+		//
+		// Pick every k-th datapoint (k = smallest stride that fits the budget),
+		// anchored at the first tick. A fixed stride gives the axis a steady
+		// calendar rhythm — "Feb, Apr, Jun, Aug" — where the previous
+		// closest-to-pixel-target selection produced runs of adjacent labels
+		// with irregular skips ("Mar, Apr, Jun, Jul, Aug, Sep, Nov") on gappy
+		// or forced-anchor data.
+		//
+		// Forced anchors are always kept: the last tick and every two-tier year
+		// label ("Jan\n2020") — dropping a year rollover orphans the reader's
+		// sense of which year the surrounding ticks belong to. Stride picks
+		// closer than half a stride to a forced anchor are dropped, so an anchor
+		// never gains an adjacent sibling ("... Oct, Dec, Jan 2025" yields to
+		// "... Oct, Jan 2025") while picks a comfortable distance away survive.
+		const stride = Math.ceil((n - 1) / (maxLabelsThatFitHorizontal - 1));
+		const tooClose = Math.ceil(stride / 2);
+		const forced = new Set<number>([0, n - 1, ...twoTier]);
+		candidates = [...forced];
+		for (let i = 0; i < n; i += stride) {
+			if (forced.has(i)) continue;
+			if (![...forced].some((f) => Math.abs(i - f) <= tooClose)) candidates.push(i);
+		}
 	}
 
-	// Case 2: stride-based thinning.
-	//
-	// Pick every k-th datapoint (k = smallest stride that fits the budget),
-	// anchored at the first tick. A fixed stride gives the axis a steady
-	// calendar rhythm — "Feb, Apr, Jun, Aug" — where the previous
-	// closest-to-pixel-target selection produced runs of adjacent labels
-	// with irregular skips ("Mar, Apr, Jun, Jul, Aug, Sep, Nov") on gappy
-	// or forced-anchor data.
-	//
-	// Forced anchors are always kept: the last tick and every two-tier year
-	// label ("Jan\n2020") — dropping a year rollover orphans the reader's
-	// sense of which year the surrounding ticks belong to. Stride picks
-	// closer than half a stride to a forced anchor are dropped, so an anchor
-	// never gains an adjacent sibling ("... Oct, Dec, Jan 2025" yields to
-	// "... Oct, Jan 2025") while picks a comfortable distance away survive.
-	const sorted = [...numericValues].sort((a, b) => a - b);
-	const n = sorted.length;
-	const sortedLabels = sorted.map((v, i) => formatLabel(v, i, formatter));
-	const stride = Math.ceil((n - 1) / (maxLabelsThatFitHorizontal - 1));
-	const tooClose = Math.ceil(stride / 2);
-
-	const forced = new Set<number>([0, n - 1]);
-	sortedLabels.forEach((label, i) => {
-		if (label.includes('\n')) forced.add(i);
-	});
-
-	const picked = new Set<number>(forced);
-	for (let i = 0; i < n; i += stride) {
-		if (forced.has(i)) continue;
-		const nearForced = [...forced].some((f) => Math.abs(i - f) <= tooClose);
-		if (!nearForced) picked.add(i);
+	// Case 3: drop any label that collides with one already kept, anchors first.
+	const measured = rendered ? sorted.map((v) => rendered.toPixel(v)) : undefined;
+	const span = sorted[n - 1] - sorted[0];
+	const positions =
+		measured && measured.every((p): p is number => typeof p === 'number' && Number.isFinite(p))
+			? measured
+			: sorted.map(
+					(v) =>
+						gridLeft +
+						plotWidth *
+							(PINNED_BOUNDARY_GAP +
+								(span > 0 ? (v - sorted[0]) / span : 0.5) * (1 - 2 * PINNED_BOUNDARY_GAP))
+				);
+	const widths = sortedLabels.map(
+		(l) => rendered?.labelWidth?.(l) ?? estimateTextWidth(l, axisLabel)
+	);
+	const collides = (i: number, j: number) =>
+		Math.abs(positions[i] - positions[j]) < (widths[i] + widths[j]) / 2 + COLLISION_GAP_PX;
+	const kept: number[] = [];
+	const inPriorityOrder = new Set([0, n - 1, ...twoTier, ...[...candidates].sort((a, b) => a - b)]);
+	for (const i of inPriorityOrder) {
+		if (candidates.includes(i) && !kept.some((k) => collides(i, k))) kept.push(i);
 	}
 
-	const thinned = Array.from(picked)
-		.sort((a, b) => a - b)
-		.map((i) => sorted[i]);
+	if (kept.length === n) return { options };
+	const thinned = kept.sort((a, b) => a - b).map((i) => sorted[i]);
 
 	return {
 		options: {
@@ -456,4 +488,60 @@ export const withAutoTimeAxisLabelThinning = (
 			}) as XAXisOption | XAXisOption[]
 		}
 	};
+};
+
+type TextStyleModel = { getTextRect: (text: string) => { width: number } };
+type GlobalModel = {
+	getComponent: (type: string, index: number) => { getModel: (path: string) => TextStyleModel };
+};
+
+/** Re-thins against the laid-out chart; the pre-render estimate can be ~30px off. */
+export const withMeasuredTimeAxisLabelThinning = (
+	unthinned: EChartsOption,
+	applied: EChartsOption,
+	node: HTMLDivElement,
+	chart: Pick<ECharts, 'convertToPixel'>
+): EChartsOption | undefined => {
+	if (getXAxis(unthinned)?.type !== 'time') return undefined;
+
+	let labelStyle: TextStyleModel | undefined;
+	try {
+		// `getModel` is internal to ECharts' types but stable at runtime.
+		labelStyle = (chart as unknown as { getModel?: () => GlobalModel })
+			.getModel?.()
+			?.getComponent('xAxis', 0)
+			?.getModel('axisLabel');
+	} catch {
+		labelStyle = undefined;
+	}
+	// Measures with the theme font ECharts paints with.
+	const metrics: RenderedXAxisMetrics = {
+		toPixel: (value) => {
+			try {
+				const px = chart.convertToPixel({ xAxisIndex: 0 }, value);
+				return typeof px === 'number' ? px : undefined;
+			} catch {
+				return undefined;
+			}
+		},
+		labelWidth: (label) => {
+			try {
+				return labelStyle?.getTextRect(label).width;
+			} catch {
+				return undefined;
+			}
+		}
+	};
+	const measured = withAutoTimeAxisLabelThinning(unthinned, node, metrics).options;
+	const measuredValues = getAxisLabel(getXAxis(measured))?.customValues;
+	const appliedValues = getAxisLabel(getXAxis(applied))?.customValues;
+	if (
+		Array.isArray(measuredValues) &&
+		Array.isArray(appliedValues) &&
+		measuredValues.length === appliedValues.length &&
+		measuredValues.every((v, i) => v === appliedValues[i])
+	) {
+		return undefined;
+	}
+	return { xAxis: (measured as OptionRecord).xAxis } as EChartsOption;
 };
