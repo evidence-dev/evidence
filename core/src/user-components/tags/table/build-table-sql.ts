@@ -89,6 +89,28 @@ export function buildTableSQLConfig(attrs: TableSQLAttrs): SQLQueryConfig {
 		(c) => c.type === 'measure' && c.processedColumnExpression?.hasAgg && !c.hide
 	);
 
+	// Column-level sorting normally happens after the query so users can re-sort
+	// without another request. A user limit must instead apply to the sorted set;
+	// otherwise the warehouse truncates arbitrary groups and the client only sorts
+	// the surviving rows. Pivoted, comparison, and sparkline render columns still
+	// require client-side sorting because they do not exist in this query.
+	const limitSortColumn =
+		attrs.limit !== undefined && !hasPivots
+			? attrs.unifiedColumns.find(
+					(col) =>
+						col.sort &&
+						col.processedColumnExpression &&
+						col.viz !== 'sparkline' &&
+						col.columnIdForRendering === col.alias &&
+						!col.hide
+				)
+			: undefined;
+	const order =
+		attrs.order ??
+		(limitSortColumn
+			? `${dialect.quoteAlias(limitSortColumn.alias)} ${limitSortColumn.sort}`
+			: undefined);
+
 	const needsSubtotals = Boolean(
 		attrs.subtotals && (hasDimensions || hasPivots) && hasVisibleMeasures && !attrs.limit
 	);
@@ -124,7 +146,7 @@ export function buildTableSQLConfig(attrs: TableSQLAttrs): SQLQueryConfig {
 		date_range: attrs.date_range,
 		having: attrs.having,
 		qualify: attrs.qualify,
-		order: attrs.order,
+		order,
 		limit: attrs.limit,
 		page_size: attrs.page_size,
 		offset: attrs.offset,
