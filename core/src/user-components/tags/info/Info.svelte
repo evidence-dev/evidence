@@ -72,7 +72,7 @@
 		sideOffset={4}
 		class="bg-popover text-popover-foreground w-max max-w-sm min-w-0 rounded-md p-2 text-xs font-normal"
 	>
-		<p class="leading-relaxed text-pretty">
+		<p class="leading-relaxed text-pretty whitespace-pre-wrap">
 			{#if link}
 				{#if link_title}
 					{text}
