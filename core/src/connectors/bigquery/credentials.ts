@@ -1,4 +1,4 @@
-export type BigQueryAuthType = 'service_account_json';
+export type BigQueryAuthType = 'service_account_json' | 'adc';
 
 export type BigQueryServiceAccountJson = {
 	client_email: string;
@@ -18,7 +18,11 @@ export type BigQueryServiceAccountCredentials = BigQueryConnectionParams & {
 	serviceAccountJson: BigQueryServiceAccountJson;
 };
 
-export type BigQueryCredentials = BigQueryServiceAccountCredentials;
+export type BigQueryAdcCredentials = BigQueryConnectionParams & {
+	authType: 'adc';
+};
+
+export type BigQueryCredentials = BigQueryServiceAccountCredentials | BigQueryAdcCredentials;
 
 /**
  * Coerce raw vault payload into BigQueryCredentials.
@@ -26,7 +30,7 @@ export type BigQueryCredentials = BigQueryServiceAccountCredentials;
  * the right shape but assert the load-bearing keys here so a corrupted secret
  * fails with a readable error rather than a downstream SDK error.
  */
-export function normalizeCredentials(raw: unknown): BigQueryCredentials {
+export function normalizeCredentials(raw: unknown): BigQueryServiceAccountCredentials {
 	if (raw === null || raw === undefined || typeof raw !== 'object') {
 		throw new Error('BigQuery credentials are missing or invalid');
 	}
