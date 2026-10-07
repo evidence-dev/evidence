@@ -41,6 +41,7 @@ overrides:
   ts-deepmerge: '>=8.0.0'
   maplibre-gl: '>=6.4.1'
   toml: '>=4.2.0 <5'
+  browserslist: '>=4.28.7'
 
 patchedDependencies:
   echarts@6.1.0:
