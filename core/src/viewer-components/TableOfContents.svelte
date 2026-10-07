@@ -31,7 +31,7 @@
 				const text = (heading as HTMLElement).innerText?.trim();
 				const level = parseInt(heading.tagName.substring(1));
 
-				if (!text) return;
+				if (!text || heading.closest('[data-print-only]')) return;
 
 				// Get existing ID or generate one
 				let id = heading.getAttribute('id');

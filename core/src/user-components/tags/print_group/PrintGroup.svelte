@@ -26,10 +26,17 @@
 	const { resolveBoolean } = $derived(createResolvers(variableProcessor));
 
 	const hide = $derived(resolveBoolean(props.hide) ?? false);
+	const printOnly = $derived(resolveBoolean(props.print_only) ?? false);
 	const children = $derived(props.children);
 </script>
 
-<div class="space-y-block-gap break-inside-avoid" class:print:hidden={hide}>
+<div
+	class="space-y-block-gap break-inside-avoid"
+	class:print:hidden={hide}
+	class:hidden={printOnly}
+	class:print:block={printOnly}
+	data-print-only={printOnly || undefined}
+>
 	{#if children}
 		{@render children()}
 	{/if}
