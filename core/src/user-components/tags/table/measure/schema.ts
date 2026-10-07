@@ -89,10 +89,10 @@ export const deltaOptionsSchema = z
 	.object({
 		down_is_good: z
 			.boolean({
-				description: 'Whether a downward trend is considered positive'
+				description:
+					"Whether a downward trend is considered positive. Defaults to the page's `down_is_good` setting."
 			})
-			.optional()
-			.default(false),
+			.optional(),
 		show_symbol: z
 			.boolean({ description: 'Whether to show the delta symbol' })
 			.optional()

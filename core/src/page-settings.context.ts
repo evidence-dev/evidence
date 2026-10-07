@@ -3,7 +3,7 @@
 import { DEFAULT_PAGE_SETTINGS, type PageSettings } from './user-components/interfaces/project-settings';
 import { getContext, setContext } from 'svelte';
 
-const PAGE_SETTINGS_CONTEXT_KEY = Symbol('PAGE_SETTINGS_CONTEXT');
+export const PAGE_SETTINGS_CONTEXT_KEY = Symbol('PAGE_SETTINGS_CONTEXT');
 
 export const setPageSettingsContext = (pageSettingsGetter: () => PageSettings) => {
 	setContext(PAGE_SETTINGS_CONTEXT_KEY, pageSettingsGetter);

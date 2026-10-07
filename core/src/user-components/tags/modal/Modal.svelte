@@ -4,7 +4,7 @@
 	import * as Drawer from '../../../shadcn/components/ui/drawer/index.js';
 	import * as Tooltip from '../../../shadcn/components/ui/tooltip/index.js';
 	import { userControlledButtonVariants } from '../../common/userControlledButtonVariant';
-	import { setPageSettingsContext } from '../../../page-settings.context';
+	import { getPageSettingsContext, setPageSettingsContext } from '../../../page-settings.context';
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import { loadLucideIcon } from '../../common/dynamic-icon';
@@ -53,12 +53,14 @@
 	let closeButtonRef: HTMLButtonElement | null = $state(null);
 
 	// Provide default page settings for components inside modal
+	const parentPageSettings = getPageSettingsContext();
 	setPageSettingsContext(() => ({
 		cards: false, // No cards inside modal for cleaner look
 		page_width: 'full', // Full width to use modal space
 		table_of_contents: false,
 		sidebar_position: null,
-		icon: null
+		icon: null,
+		down_is_good: parentPageSettings().down_is_good
 	}));
 
 	// Load icon when icon prop changes

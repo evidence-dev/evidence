@@ -32,7 +32,7 @@
 	const text = $derived(model.resolvedText);
 	const comparison = $derived(model.resolvedComparison);
 	const chip = $derived(props.chip ?? false);
-	const downIsGood = $derived(comparison?.down_is_good ?? false);
+	const downIsGood = $derived(comparison?.down_is_good);
 	const showValue = $derived(props.show_value ?? true);
 	const showSymbol = $derived(props.show_symbol ?? true);
 	const symbolPosition = $derived(props.symbol_position ?? 'right');

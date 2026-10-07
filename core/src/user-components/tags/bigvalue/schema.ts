@@ -48,8 +48,9 @@ const comparisonSchema = baseComparisonSchema
 		down_is_good: setZodMetadata(
 			booleanVariableSchema
 				.optional()
-				.default(false)
-				.describe('Whether a decrease is considered positive'),
+				.describe(
+					"Whether a decrease is considered positive. Defaults to the page's `down_is_good` setting."
+				),
 			{ supportsVariables: true }
 		),
 		neutral_range: setZodMetadata(
