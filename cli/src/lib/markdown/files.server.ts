@@ -51,6 +51,7 @@ export function parsePageSettings(content: string): PageSettings {
 	if (fm.table_of_contents !== undefined) settings.table_of_contents = fm.table_of_contents;
 	if (fm.auto_refresh !== undefined) settings.auto_refresh = fm.auto_refresh;
 	if (fm.down_is_good !== undefined) settings.down_is_good = fm.down_is_good;
+	if (fm.downloads !== undefined) settings.downloads = fm.downloads;
 	return settings;
 }
 

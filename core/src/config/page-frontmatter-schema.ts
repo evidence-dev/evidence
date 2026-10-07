@@ -3,6 +3,28 @@ import { themeOverridesSchema } from '../types/theme';
 import { availableIconNames } from '../user-components/common/icon-names';
 import { workflowSchema } from './workflow-frontmatter';
 
+export type PageDownloadKind = 'pdf' | 'data' | 'image';
+
+export const pageDownloadsSchema = z.union([
+	z.boolean(),
+	z.object({
+		pdf: z.boolean().optional().catch(undefined),
+		data: z.boolean().optional().catch(undefined),
+		image: z.boolean().optional().catch(undefined)
+	})
+]);
+
+export type PageDownloads = z.infer<typeof pageDownloadsSchema>;
+
+export function isPageDownloadEnabled(
+	downloads: PageDownloads | null | undefined,
+	kind: PageDownloadKind
+): boolean {
+	if (downloads === undefined || downloads === null) return true;
+	if (typeof downloads === 'boolean') return downloads;
+	return downloads[kind] !== false;
+}
+
 /**
  * A frontmatter boolean: `true`/`false` (any case, optionally quoted) or a real
  * boolean. Anything else is unset. Shared with Studio's editor preview parser so
@@ -121,6 +143,12 @@ export const projectRootPageFrontmatterSchema = z.object({
 		.optional()
 		.catch(undefined)
 		.describe('Per-page theme overrides, layered on top of the project theme.'),
+	downloads: pageDownloadsSchema
+		.optional()
+		.catch(undefined)
+		.describe(
+			'Download options in the published page menu. `false` hides all of them; `{ pdf: false }` hides only PDF (also `data`, `image`).'
+		),
 	workflow: workflowSchema
 		.optional()
 		.catch(undefined)

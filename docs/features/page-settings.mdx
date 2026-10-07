@@ -32,6 +32,7 @@ Most pages only need a `title`. Add other keys to override a setting for that pa
 | `sidebar_position` | number | Order the page within its sidebar group (lower numbers first). Page-only — not a project default. |
 | `icon` | string | The icon shown next to the page in the sidebar. Page-only. |
 | `theme` | object | Per-page [theme](/features/themes) overrides (colors, palettes, scales). See below. |
+| `downloads` | boolean \| object | Show or hide the download options in the published page menu. See [`downloads`](#downloads) below. |
 | `type` | `partial` | Marks the file as a [partial](/core-concepts/partials). Only used for partials. |
 | `workflow` | object | Turns the page into a periodic report. See [`workflow.period`](#workflow-period) below. |
 
@@ -58,6 +59,37 @@ theme:
       light: ['#154886', '#45a1bf']
 ---
 ```
+
+### `downloads`
+
+Controls the **Download PDF**, **Download Image**, and **Download Data** options in the published page's menu. All three are shown by default.
+
+`downloads: false` hides all three:
+
+```markdown
+---
+title: Board Pack
+downloads: false
+---
+```
+
+To hide specific options, list them. Options you leave out stay visible:
+
+```markdown
+---
+title: Board Pack
+downloads:
+  pdf: false
+---
+```
+
+| Key | Type | Description |
+| --- | --- | --- |
+| `pdf` | boolean | Show **Download PDF**. Also controls the <kbd>Cmd/Ctrl</kbd>+<kbd>P</kbd> shortcut. |
+| `image` | boolean | Show **Download Image**. |
+| `data` | boolean | Show **Download Data**. |
+
+This hides the menu options. It doesn't prevent other ways of saving the page, such as the browser's own print dialog.
 
 ### `workflow.period`
 

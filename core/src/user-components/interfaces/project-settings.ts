@@ -4,6 +4,7 @@
  */
 
 import { z } from 'zod';
+import { pageDownloadsSchema } from '../../config/page-frontmatter-schema';
 
 /**
  * Page settings schema - used for default page settings in project.
@@ -16,7 +17,8 @@ export const pageSettingsSchema = z
 		cards: z.boolean().optional(),
 		page_width: z.enum(['article', 'full']).optional(),
 		table_of_contents: z.boolean().optional(),
-		down_is_good: z.boolean().optional()
+		down_is_good: z.boolean().optional(),
+		downloads: pageDownloadsSchema.optional()
 	})
 	.passthrough();
 

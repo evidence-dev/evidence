@@ -164,6 +164,12 @@ describe('parsePageSettings', () => {
 		expect(parsePageSettings('# Just a page\n')).toEqual({});
 	});
 
+	it('reads downloads from frontmatter', () => {
+		expect(parsePageSettings('---\ndownloads:\n  pdf: false\n---\n# Page\n')).toEqual({
+			downloads: { pdf: false }
+		});
+	});
+
 	it('coerces a stringified boolean for cards', () => {
 		expect(parsePageSettings('---\ncards: "true"\n---\n# Page\n')).toEqual({ cards: true });
 	});

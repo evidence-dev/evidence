@@ -23,6 +23,7 @@
 		User
 	} from 'lucide-svelte';
 	import { createFullscreen } from '@evidence/core/utils/fullscreen.svelte';
+	import { isPageDownloadEnabled } from '@evidence/core/config/page-frontmatter-schema';
 	import { ModeWatcher, mode, toggleMode } from 'mode-watcher';
 	import { Toaster, toast } from 'svelte-sonner';
 	import { page } from '$app/state';
@@ -45,6 +46,9 @@
 	const themeCSS = $derived(generateThemeCSS(data.resolvedTheme));
 
 	const isLoginPage = $derived(page.url.pathname === '/login');
+	const pageDownloads = $derived(page.data.markdown?.pageSettings?.downloads);
+	const canDownloadPdf = $derived(isPageDownloadEnabled(pageDownloads, 'pdf'));
+	const canDownloadImage = $derived(isPageDownloadEnabled(pageDownloads, 'image'));
 
 	// Fullscreen presentation mode (bare content, auto-hiding controls). Shared
 	// behaviour with the Studio published/preview viewers.
@@ -316,22 +320,26 @@
 								</Button>
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content align="end" class="w-56">
-								<DropdownMenu.Item class="cursor-pointer text-sm" onclick={() => window.print()}>
-									{#snippet child({ props })}
-										<div class="flex w-full items-center gap-2" {...props}>
-											<FileText class="size-3 shrink-0" />
-											<span>Download PDF</span>
-										</div>
-									{/snippet}
-								</DropdownMenu.Item>
-								<DropdownMenu.Item class="cursor-pointer text-sm" onclick={downloadCurrentPng}>
-									{#snippet child({ props })}
-										<div class="flex w-full items-center gap-2" {...props}>
-											<ImageIcon class="size-3 shrink-0" />
-											<span>Download Image</span>
-										</div>
-									{/snippet}
-								</DropdownMenu.Item>
+								{#if canDownloadPdf}
+									<DropdownMenu.Item class="cursor-pointer text-sm" onclick={() => window.print()}>
+										{#snippet child({ props })}
+											<div class="flex w-full items-center gap-2" {...props}>
+												<FileText class="size-3 shrink-0" />
+												<span>Download PDF</span>
+											</div>
+										{/snippet}
+									</DropdownMenu.Item>
+								{/if}
+								{#if canDownloadImage}
+									<DropdownMenu.Item class="cursor-pointer text-sm" onclick={downloadCurrentPng}>
+										{#snippet child({ props })}
+											<div class="flex w-full items-center gap-2" {...props}>
+												<ImageIcon class="size-3 shrink-0" />
+												<span>Download Image</span>
+											</div>
+										{/snippet}
+									</DropdownMenu.Item>
+								{/if}
 								<LanguageMenuItems
 									languages={data.languages}
 									currentLanguage={data.currentLanguage}
