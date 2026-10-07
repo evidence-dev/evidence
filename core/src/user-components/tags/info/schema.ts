@@ -9,6 +9,8 @@ export const schema = {
 		text: {
 			type: String,
 			required: true,
+			description:
+				'Tooltip text. Wrap in triple quotes (`"""`) to write text across multiple lines',
 			supportsVariables: true,
 			variableContext: 'text'
 		},
@@ -43,6 +45,13 @@ export const schema = {
 			hero: true,
 			example: `
 {% info text="Report data as of Dec 31, 2024" /%}
+`
+		},
+		{
+			title: 'Multi-line Text',
+			example: `
+{% info text="""Revenue is gross sales minus refunds.
+Excludes test orders.""" /%}
 `
 		}
 	]

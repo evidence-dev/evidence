@@ -21,10 +21,17 @@ description: Display an info icon with a tooltip showing additional information 
 {% info text="Report data as of Dec 31, 2024" /%}
 ````
 
+### Multi-line Text
+
+````liquid
+{% info text="""Revenue is gross sales minus refunds.
+Excludes test orders.""" /%}
+````
+
 ## Attributes
 
 <ResponseField name="text" type="string" required>
-  
+  Tooltip text. Wrap in triple quotes (`"""`) to write text across multiple lines
 </ResponseField>
 
 <ResponseField name="color" type="string">
