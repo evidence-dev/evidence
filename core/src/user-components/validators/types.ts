@@ -55,7 +55,9 @@ export const resolveDialect = (context: ValidationContext): SqlDialect =>
  * to know the developer's currently-selected schema.
  */
 export function getTableFromContext(tableName: string, context: ValidationContext) {
-	// First try regular metadata (only if not loading)
+	// Execution (InlineQueries.getInterpolated) lets a query or SQL file shadow a same-named table.
+	if (resolvesToQuery(tableName, context)) return getInlineQueryTable(tableName, context);
+
 	if (context.metadata && !context.metadata.loading) {
 		const table = context.metadata.getTable(tableName);
 		if (table) return table;
@@ -69,7 +71,15 @@ export function getTableFromContext(tableName: string, context: ValidationContex
 		}
 	}
 
-	// Then try inline query metadata (only if initialized)
+	return getInlineQueryTable(tableName, context);
+}
+
+function resolvesToQuery(name: string, context: ValidationContext): boolean {
+	const inlineQueries = context.inlineQueries;
+	return typeof inlineQueries?.getRaw === 'function' && inlineQueries.getRaw(name) !== undefined;
+}
+
+function getInlineQueryTable(tableName: string, context: ValidationContext) {
 	if (context.inlineQueryMetadata && context.inlineQueryMetadata.initialized) {
 		const table = context.inlineQueryMetadata.getTable(tableName);
 		// A failed DESCRIBE leaves an error + zero columns; skip it so validators degrade to no-metadata, not false "column missing".
