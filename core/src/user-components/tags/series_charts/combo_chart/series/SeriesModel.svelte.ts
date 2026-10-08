@@ -464,26 +464,6 @@ export class SeriesModel {
 						return formatValue(yValue, dataLabels.fmt ?? this.fmt, yValue?.toString(), minMax);
 					};
 
-			// Line/area series default to hidden symbols via `itemStyle.opacity = 0` to reduce visual
-			// noise. ECharts ties point label visibility to symbol opacity, so when data labels are
-			// enabled the labels never render. When the symbols are still in their hidden default
-			// state, restore opacity to 1 so labels are drawn, but force `symbolSize: 0` so the dot
-			// itself stays invisible. If the user opted into visible markers (e.g. via `<line>`'s
-			// `markers` option, which sets `itemStyle.opacity: 1` and a custom `symbolSize`), leave
-			// those values alone — labels render naturally on top of the visible markers.
-			const cWithStyle = c as {
-				type?: string;
-				itemStyle?: { opacity?: number } & Record<string, unknown>;
-				symbolSize?: number;
-			};
-			const symbolsHiddenByDefault = cWithStyle.itemStyle?.opacity === 0;
-			const shouldUnhideForLabels =
-				hasDataLabels && cWithStyle.type === 'line' && symbolsHiddenByDefault;
-			const itemStyle = shouldUnhideForLabels
-				? { ...(cWithStyle.itemStyle ?? {}), opacity: 1 }
-				: cWithStyle.itemStyle;
-			const symbolSize = shouldUnhideForLabels ? 0 : cWithStyle.symbolSize;
-
 			// Per-series echarts_options was applied inside the series component's
 			// transformSeriesOptions BEFORE this point, so `c.label` / `c.tooltip`
 			// may already contain user overrides (e.g. { label: { show: true } }).
@@ -507,8 +487,6 @@ export class SeriesModel {
 				name,
 				yAxisIndex: this.props.axis === 'y2' ? 1 : 0,
 				z: options.zIndex,
-				itemStyle,
-				symbolSize,
 				label: {
 					show: cLabel.show ?? hasDataLabels,
 					fontSize: cLabel.fontSize ?? dataLabels.size,

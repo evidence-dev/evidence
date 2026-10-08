@@ -1,4 +1,4 @@
-import type { ScatterSeriesOption, LineSeriesOption, BarSeriesOption } from 'echarts';
+import type { ScatterSeriesOption, LineSeriesOption, BarSeriesOption, SeriesOption } from 'echarts';
 import { getMinMax } from '../../../../getMinMax';
 import { canonicalizeTimeAxisValue } from '../../../../formatValue';
 import type { DataPoint } from '../../../../types';
@@ -11,6 +11,8 @@ import {
 } from '../../../../common/tooltip-fields';
 
 type ChartSeriesOption = ScatterSeriesOption | LineSeriesOption | BarSeriesOption;
+
+const DEFAULT_SYMBOL_SIZE = 9;
 
 export type SeriesConfigOptions = {
 	data: DataPoint[];
@@ -158,7 +160,6 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 		return { value: tuple, extras: extractTooltipExtras(row, tooltipFields!) };
 	};
 
-	// Only hide symbols for line/area charts, not bars
 	const isLineType = type === 'line';
 
 	// If no series property in data points, use the default single series (y column)
@@ -189,7 +190,7 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 			largeThreshold: 1000,
 			sampling: 'lttb',
 			symbol: 'circle',
-			symbolSize: 9,
+			symbolSize: DEFAULT_SYMBOL_SIZE,
 			showSymbol: true,
 			triggerEvent: true, // Enable hover events on the line itself, not just points
 			lineStyle: {
@@ -201,9 +202,7 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 				blurScope: 'coordinateSystem' as const,
 				lineStyle: isLineType ? { width: 3 } : undefined,
 				itemStyle: isLineType ? { opacity: 1 } : undefined
-			},
-			// Only hide symbols for line charts - bars use itemStyle for the bar fill
-			itemStyle: isLineType ? { opacity: 0 } : undefined
+			}
 		};
 
 		// Add symbolSize function for bubble charts (when size column is provided)
@@ -280,7 +279,7 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 			largeThreshold: 1000,
 			sampling: 'lttb',
 			symbol: 'circle',
-			symbolSize: 9,
+			symbolSize: DEFAULT_SYMBOL_SIZE,
 			showSymbol: true,
 			triggerEvent: true, // Enable hover events on the line itself, not just points
 			lineStyle: {
@@ -293,8 +292,6 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 				lineStyle: isLineType ? { width: 3 } : undefined,
 				itemStyle: isLineType ? { opacity: 1 } : undefined
 			},
-			// Only hide symbols for line charts - bars use itemStyle for the bar fill
-			itemStyle: isLineType ? { opacity: 0 } : undefined,
 			color: seriesColorValue
 		};
 
@@ -333,6 +330,45 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 	}
 
 	return seriesConfigs;
+}
+
+type LineDataItem = unknown[] | { value?: unknown; itemStyle?: Record<string, unknown> };
+
+const hasY = (item: LineDataItem | undefined): boolean => {
+	const value = Array.isArray(item) ? item : item?.value;
+	return Array.isArray(value) && value[1] !== null && value[1] !== undefined;
+};
+
+// Owns line marker visibility. Runs after every override so any author marker setting wins.
+export function applyLineMarkerVisibility(series: SeriesOption): void {
+	const s = series as LineSeriesOption;
+	if (s.type !== 'line') return;
+	if (s.itemStyle?.opacity !== undefined || s.showSymbol === false || s.symbol === 'none') return;
+
+	// Markers stay hidden until hover. ECharts hides a label with its symbol, so labels hide by size.
+	const labels = s.label?.show === true;
+	const size = s.symbolSize;
+	s.itemStyle = { ...s.itemStyle, opacity: labels ? 1 : 0 };
+	if (labels) s.symbolSize = 0;
+	if (!Array.isArray(s.data)) return;
+
+	// A point that can't join a line is drawn as a dot, so it takes the line's colour.
+	const lineColor = s.itemStyle.color ? undefined : s.lineStyle?.color;
+	const itemStyle = {
+		...(labels ? {} : { opacity: 1 }),
+		...(lineColor ? { color: lineColor } : {})
+	};
+	const dot = labels ? { symbolSize: size, itemStyle } : { itemStyle };
+
+	const data = s.data as LineDataItem[];
+	const realPoints = data.filter(hasY).length;
+	const canJoin = (i: number) =>
+		s.connectNulls ? realPoints > 1 : hasY(data[i - 1]) || hasY(data[i + 1]);
+	s.data = data.map((item, i) => {
+		if (!hasY(item) || canJoin(i)) return item;
+		if (Array.isArray(item)) return { value: item, ...dot };
+		return { ...dot, ...item, itemStyle: { ...dot.itemStyle, ...item.itemStyle } };
+	}) as LineSeriesOption['data'];
 }
 
 /**

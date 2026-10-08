@@ -53,6 +53,7 @@
 	import { downloadAsExcel, getExcelExportNames } from '../../../../shims/data-export';
 	import { browser } from '../../../../shims/env';
 	import { mergeSeriesData, type SeriesDataInput } from './merge-series-data';
+	import { applyLineMarkerVisibility } from './series/seriesConfig';
 	import { getThemeContext } from '../../../../theme/theme.context.svelte';
 	import { colorPalettes as defaultColorPalettes } from '../../echarts/echarts-themes';
 	import { mode } from 'mode-watcher';
@@ -655,10 +656,9 @@
 		// references so reference_line/area/point overlays don't get clobbered
 		// (preserves the guardrail OSS Evidence shipped with seriesOptions).
 		const seriesOverrides = props.echarts_series_options;
-		if (seriesOverrides) {
-			for (const s of dataSeries) {
-				merge(s, seriesOverrides);
-			}
+		for (const s of dataSeries) {
+			if (seriesOverrides) merge(s, seriesOverrides);
+			applyLineMarkerVisibility(s);
 		}
 
 		return { options: [...dataSeries, ...referencesSeries], modelByIndex };
