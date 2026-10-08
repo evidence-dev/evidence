@@ -57,7 +57,8 @@
 			"maplibre-gl": ">=6.4.1",
 			"toml": ">=4.2.0 <5",
 			"browserslist": ">=4.28.7",
-			"js-yaml@4": ">=4.3.2 <5"
+			"js-yaml@4": ">=4.3.2 <5",
+			"proxy-addr": ">=2.0.8"
 		},
 		"patchedDependencies": {
 			"ssf": "patches/ssf.patch",
