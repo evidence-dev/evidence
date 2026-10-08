@@ -57,7 +57,7 @@
 		"cli-table3": "^0.6.5",
 		"html-to-image": "^1.11.13",
 		"js-base64": "^3.7.7",
-		"js-yaml": "^4.3.0",
+		"js-yaml": "^4.3.2",
 		"lucide-svelte": "^0.544.0",
 		"mode-watcher": "^1.0.8",
 		"mssql": "^11.0.1",

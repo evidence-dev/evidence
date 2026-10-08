@@ -42,6 +42,7 @@ overrides:
   maplibre-gl: '>=6.4.1'
   toml: '>=4.2.0 <5'
   browserslist: '>=4.28.7'
+  js-yaml@4: '>=4.3.2 <5'
 
 patchedDependencies:
   echarts@6.1.0:
@@ -100,8 +101,8 @@ importers:
         specifier: ^3.7.7
         version: 3.7.8
       js-yaml:
-        specifier: ^4.3.0
-        version: 4.3.1
+        specifier: '>=4.3.2 <5'
+        version: 4.3.2
       lucide-svelte:
         specifier: ^0.544.0
         version: 0.544.0(svelte@5.56.0(@typescript-eslint/types@8.57.2))
@@ -275,8 +276,8 @@ importers:
         specifier: ^25.7.1
         version: 25.10.10(typescript@5.9.3)
       js-yaml:
-        specifier: ^4.3.0
-        version: 4.3.1
+        specifier: '>=4.3.2 <5'
+        version: 4.3.2
       json5:
         specifier: ^2.2.3
         version: 2.2.3
@@ -5222,10 +5223,10 @@ packages:
         integrity: sha512-lM/UBzQmfJRo9ABXbPWemivdCW8V2G8FHaHdypQaIy523snUjog0W71ayWXTjiR+ixeMyVHN2XcpnTd/liPg/Q==
       }
 
-  js-yaml@4.3.1:
+  js-yaml@4.3.2:
     resolution:
       {
-        integrity: sha512-CY6crGq313MX8GkwvB7tzgp99vjQxY1++5y10/BKN/GUfHqWaOGQMNZkBvqSzsZKWk/ijwHlWzzkLulsGHhjWQ==
+        integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==
       }
     hasBin: true
 
@@ -9007,7 +9008,7 @@ snapshots:
       globals: 14.0.0
       ignore: 5.3.2
       import-fresh: 3.3.1
-      js-yaml: 4.3.1
+      js-yaml: 4.3.2
       minimatch: 10.2.4
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
@@ -11511,7 +11512,7 @@ snapshots:
 
   js-tokens@10.0.0: {}
 
-  js-yaml@4.3.1:
+  js-yaml@4.3.2:
     dependencies:
       argparse: 2.0.1
 
