@@ -59,7 +59,7 @@
 
 <div class="flex flex-col">
 	{#if title || info}
-		<Label for={id} class="mb-2">
+		<Label for={id} class="mb-2" data-input-title>
 			{title ?? formatTitle(id)}
 			{#if info}
 				<Info text={info} link={info_link} link_title={info_link_title} className="-mb-0.5" />

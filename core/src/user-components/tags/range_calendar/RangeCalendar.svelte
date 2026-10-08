@@ -272,7 +272,7 @@
 
 <div class="mb-4 flex w-full flex-col" style:width>
 	{#if title}
-		<Label for={id} class="mb-2">
+		<Label for={id} class="mb-2" data-input-title>
 			{title ?? formatTitle(id)}
 		</Label>
 	{/if}

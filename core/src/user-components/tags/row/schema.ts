@@ -13,6 +13,13 @@ export const schema = {
 			matches: ['top', 'center', 'bottom', 'stretch'],
 			default: 'stretch'
 		},
+		justify: {
+			type: String,
+			description:
+				'How to distribute items horizontally. `between` pushes the first and last items to the edges, e.g. a heading on the left and an input on the right.',
+			matches: ['start', 'center', 'end', 'between'],
+			default: 'start'
+		},
 		card: {
 			type: Boolean,
 			description: 'Display the row contents as a single card when card mode is enabled',
@@ -48,6 +55,15 @@ export const schema = {
         x="category"
         y="sum(transactions)"
     /%}
+{% /row %}
+`
+		},
+		{
+			title: 'Heading with a button on the right',
+			example: `
+{% row align="center" justify="between" %}
+# Sales Overview
+{% link_button url="https://example.com" title="Full report" /%}
 {% /row %}
 `
 		}

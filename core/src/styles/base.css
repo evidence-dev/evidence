@@ -341,8 +341,8 @@
 /* Row inputs auto-group with align=bottom; neutralizing their internal bottom
    margins keeps the control bottoms aligned (mb-3 vs mb-4 otherwise offset
    them). Stacks keep natural margins, which provide their vertical spacing. */
-.flush-row
-	:is(
+/* Unlabelled inputs in align=center rows too; labelled ones keep it to balance the label. */
+:is(.flush-row *, .row-align-center > :not(:has([data-input-title]))):is(
 		[data-component-type='dropdown'],
 		[data-component-type='date_grain_selector'],
 		[data-component-type='comparison_selector'],
@@ -355,6 +355,16 @@
 	:is(.mb-3, .mb-4, .pb-1) {
 	margin-bottom: 0 !important;
 	padding-bottom: 0 !important;
+}
+
+/* A heading's top margin pushes its text below the centre of an align=center row. */
+.row-align-center > :is(h1, h2, h3, h4, h5, h6, p) {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+/* Flush rows have no gutter, so text that wraps above a control would touch it. */
+.flush-row.row-align-center:has(> :is(h1, h2, h3, h4, h5, h6, p)) {
+	row-gap: 0.5rem;
 }
 
 /* Published report sidebar nav font size follows the sidebarFontSize theme token.

@@ -414,6 +414,7 @@
 {#if title !== undefined || id}
 	<Label
 		for={id}
+		data-input-title
 		class="mb-[12.5px] flex w-64 items-baseline justify-between gap-2"
 		style="min-height: 1.25rem;"
 	>

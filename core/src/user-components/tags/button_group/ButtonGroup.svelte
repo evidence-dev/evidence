@@ -242,7 +242,7 @@
 
 <div class="flex flex-col">
 	{#if title || info}
-		<Label for={id} class="mb-2">
+		<Label for={id} class="mb-2" data-input-title>
 			{title ?? formatTitle(id)}
 			{#if info}
 				<Info text={info} className="-mb-0.5" />

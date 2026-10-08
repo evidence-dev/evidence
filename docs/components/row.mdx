@@ -43,6 +43,15 @@ description: A flexible layout that places its children next to each other
 {% /row %}
 ````
 
+### Heading with a button on the right
+
+````liquid
+{% row align="center" justify="between" %}
+# Sales Overview
+{% link_button url="https://example.com" title="Full report" /%}
+{% /row %}
+````
+
 ## Attributes
 
 <ResponseField name="align" type="string" default="stretch">
@@ -53,6 +62,16 @@ description: A flexible layout that places its children next to each other
 - `center`
 - `bottom`
 - `stretch`
+</ResponseField>
+
+<ResponseField name="justify" type="string" default="start">
+  How to distribute items horizontally. `between` pushes the first and last items to the edges, e.g. a heading on the left and an input on the right.
+
+**Allowed values:**
+- `start`
+- `center`
+- `end`
+- `between`
 </ResponseField>
 
 <ResponseField name="card" type="boolean" default="false">

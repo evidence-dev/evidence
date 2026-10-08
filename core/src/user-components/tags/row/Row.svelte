@@ -5,6 +5,13 @@
 		bottom: 'end',
 		stretch: 'stretch'
 	};
+
+	const JUSTIFY_MAP: Record<UserComponentProps<typeof schema>['justify'], string> = {
+		start: 'flex-start',
+		center: 'center',
+		end: 'flex-end',
+		between: 'space-between'
+	};
 </script>
 
 <script lang="ts">
@@ -20,6 +27,7 @@
 	const props: UserComponentProps<typeof schema> = $props();
 
 	const align = $derived(props.align);
+	const justify = $derived(props.justify ?? 'start');
 	const card = $derived(props.card);
 	const children = $derived(props.children);
 
@@ -200,9 +208,11 @@
 		card && pageSettings.cards && 'bg-card p-card-pad rounded-md border shadow-xs',
 		// Flush density: child corners/borders are driven by base.css rules off
 		// the data-flush-x/y attributes assigned in updateChildrenStyles
-		isFlush && !card && 'flush-row'
+		isFlush && !card && 'flush-row',
+		// base.css drops the text and input spacing that would pull items off-centre
+		align === 'center' && 'row-align-center'
 	)}
-	style="align-items:{ALIGN_MAP[align]};"
+	style="align-items:{ALIGN_MAP[align]}; justify-content:{JUSTIFY_MAP[justify]};"
 >
 	{@render children?.()}
 </div>
