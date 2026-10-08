@@ -459,6 +459,7 @@
 	style={computedStyle}
 	{...debugDataAttributes}
 	data-width={props.width}
+	data-compact={flexConfig?.compact ? '' : undefined}
 	data-render={schema.render}
 	data-component-id={sourceComponentId ?? undefined}
 	data-component-type={schema.render}

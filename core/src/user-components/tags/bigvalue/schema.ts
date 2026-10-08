@@ -348,6 +348,7 @@ export const schema = {
 		width: 'fit',
 		compactErrors: true,
 		flex: {
+			compact: true,
 			grow: 1,
 			minWidth: 180,
 			automaticallyWrapConsecutiveComponentsInRow: true

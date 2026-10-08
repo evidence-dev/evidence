@@ -251,6 +251,7 @@ where sale_price {{price_filter.between}}
 		noCard: true,
 		width: 'fit',
 		flex: {
+			compact: true,
 			grow: 0,
 			minWidth: 200,
 			automaticallyWrapConsecutiveComponentsInRow: true

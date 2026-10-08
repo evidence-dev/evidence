@@ -44,6 +44,13 @@ export type UserComponentFlex = {
 	minHeight?: number | 'children';
 
 	/**
+	 * A compact control (an input or a single value) rather than a content block. In a `row` with
+	 * `justify` set to center, end or between it keeps its minimum width instead of stretching, so
+	 * justify can move it.
+	 */
+	compact?: boolean;
+
+	/**
 	 * Consecutive (in the markdown content) components with `automaticallyWrapConsecutiveComponentsInRow=true` will automatically be wrapped with a `row`
 	 * component.
 	 *

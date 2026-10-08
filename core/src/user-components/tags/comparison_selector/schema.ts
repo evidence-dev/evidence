@@ -177,6 +177,7 @@ group by date
 		noCard: true,
 		width: 'fit',
 		flex: {
+			compact: true,
 			grow: 1,
 			minWidth: 200,
 			automaticallyWrapConsecutiveComponentsInRow: true

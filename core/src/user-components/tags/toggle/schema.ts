@@ -111,6 +111,7 @@ where {{active_only}} = false or total_sales > 1000
 		noCard: true,
 		width: 'full',
 		flex: {
+			compact: true,
 			grow: 0,
 			minWidth: 10,
 			automaticallyWrapConsecutiveComponentsInRow: true

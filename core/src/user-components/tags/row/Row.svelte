@@ -210,7 +210,8 @@
 		// the data-flush-x/y attributes assigned in updateChildrenStyles
 		isFlush && !card && 'flush-row',
 		// base.css drops the text and input spacing that would pull items off-centre
-		align === 'center' && 'row-align-center'
+		align === 'center' && 'row-align-center',
+		justify !== 'start' && 'row-justified'
 	)}
 	style="align-items:{ALIGN_MAP[align]}; justify-content:{JUSTIFY_MAP[justify]};"
 >

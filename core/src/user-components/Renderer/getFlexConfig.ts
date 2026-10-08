@@ -3,7 +3,7 @@ import Markdoc from '@markdoc/markdoc';
 import { getUserComponent, isUserComponent } from '../..';
 import { hasComponentWrapper } from '../types';
 
-type FlexConfig = { grow: number; minWidth: number; minHeight?: number };
+type FlexConfig = { grow: number; minWidth: number; minHeight?: number; compact?: boolean };
 
 export const getFlexConfig = (node: RenderableTreeNode): FlexConfig | undefined => {
 	if (!Markdoc.Tag.isTag(node) || !isUserComponent(node.name)) {
@@ -18,7 +18,7 @@ export const getFlexConfig = (node: RenderableTreeNode): FlexConfig | undefined 
 	) {
 		return;
 	}
-	const { grow, minWidth, minHeight } = schema.componentWrapper.flex;
+	const { grow, minWidth, minHeight, compact } = schema.componentWrapper.flex;
 
 	// TODO there may be some edge cases to handle here to ensure sensible layouts when, for example, a row is nested within a row (or other complex nestings)
 	const childMaxes = node.children.reduce<FlexConfig>(
@@ -60,6 +60,7 @@ export const getFlexConfig = (node: RenderableTreeNode): FlexConfig | undefined 
 	return {
 		grow: grow === 'children' ? childMaxes.grow : grow,
 		minWidth: minWidth === 'children' ? childMaxes.minWidth : minWidth,
-		minHeight: minHeight === 'children' ? childMaxes.minHeight : minHeight
+		minHeight: minHeight === 'children' ? childMaxes.minHeight : minHeight,
+		compact
 	};
 };

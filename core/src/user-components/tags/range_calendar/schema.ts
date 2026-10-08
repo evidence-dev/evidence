@@ -237,6 +237,7 @@ where date {{date_filter.between}}
 		noCard: true,
 		width: 'fit',
 		flex: {
+			compact: true,
 			grow: 1,
 			minWidth: 200,
 			automaticallyWrapConsecutiveComponentsInRow: true

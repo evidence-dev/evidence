@@ -367,6 +367,13 @@
 	row-gap: 0.5rem;
 }
 
+/* Wide screens and PDFs only: a row-width container query needs containment, which collapses content-sized rows. */
+@media (min-width: 1024px), print {
+	.row-justified > [data-compact] {
+		flex-grow: 0 !important;
+	}
+}
+
 /* Published report sidebar nav font size follows the sidebarFontSize theme token.
    Scoped to .report-sidebar (the published viewer's Sidebar.Root) so the studio
    editor chrome — which shares the Sidebar primitive but never emits this var —

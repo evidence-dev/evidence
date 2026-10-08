@@ -231,6 +231,7 @@ Selected: {{category_filter.label}}`
 		noCard: true,
 		width: 'full',
 		flex: {
+			compact: true,
 			grow: 0,
 			minWidth: 10,
 			automaticallyWrapConsecutiveComponentsInRow: true
