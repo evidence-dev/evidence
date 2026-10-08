@@ -184,6 +184,11 @@ Creates a secure embed session and returns a single-use embed URL.
 | `cookieless` | boolean | No       | Enable cookieless mode (default: false)              |
 | `testMode`   | boolean | No       | Enable test mode (default: false)                    |
 | `language`   | string  | No       | Display language code (e.g., "en", "fr")             |
+| `colorScheme` | string  | No       | Report color scheme: `"light"` (default) or `"dark"` |
+
+#### Report Color Scheme
+
+Set `colorScheme` to `"dark"` to render the embedded report with the theme's dark-mode colors (backgrounds, text, chart palettes). Omit it (or pass `"light"`) for the default light rendering. PDFs downloaded from the embedded view follow the same scheme.
 
 #### User Attributes
 
