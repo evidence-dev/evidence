@@ -22,7 +22,7 @@ function configKey(c: BigQueryCredentials): string {
 	// PEM in a join key is wasteful.
 	return [
 		c.projectId,
-		c.serviceAccountJson.client_email,
+		c.authType === 'adc' ? 'adc' : c.serviceAccountJson.client_email,
 		c.location ?? '',
 		c.defaultDataset ?? ''
 	].join('|');

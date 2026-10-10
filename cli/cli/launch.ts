@@ -420,6 +420,11 @@ async function maybeUploadCredentials(
 		// No connection.yaml → Evidence-managed; nothing to upload.
 		return;
 	}
+	if (config.type === 'bigquery' && config.authType === 'adc') {
+		console.log("  • connection.yaml uses ADC, which can't be uploaded.");
+		console.log('    Add a service-account key in Studio → Settings → Warehouse.');
+		return;
+	}
 
 	// Uploading writes org-wide warehouse settings, so require an explicit opt-in:
 	// a confirm in a TTY, or `--upload-credentials` in a non-interactive run. Never
