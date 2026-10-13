@@ -106,9 +106,7 @@
 		// All element children participate in line grouping and flush position
 		// assignment. The flex-grow decision (updateChildStyles) only considers
 		// component-wrapper siblings, so bare markdown elements never affect it.
-		const children = [...element.querySelectorAll(':scope > *')].filter(
-			(child): child is HTMLElement => child instanceof HTMLElement
-		);
+		const children = layoutChildren(element);
 
 		const rects = children.map((child) => {
 			const { left, right } = child.getBoundingClientRect();
@@ -134,6 +132,14 @@
 				children.every((child) => FLUSH_INPUT_TYPES.has(child.dataset.componentType ?? ''))
 		);
 	};
+
+	// hidden_in_print / only_in_print are display:contents, so their children are the real flex items
+	const layoutChildren = (parent: Element): HTMLElement[] =>
+		[...parent.children].flatMap((child) => {
+			if (!(child instanceof HTMLElement)) return [];
+			if (child.dataset.printVisibility === undefined) return [child];
+			return getComputedStyle(child).display === 'contents' ? layoutChildren(child) : [];
+		});
 
 	const positionName = (index: number, count: number): string => {
 		if (count === 1) return 'only';

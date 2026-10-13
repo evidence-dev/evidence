@@ -277,7 +277,7 @@
    loading tiles) render with these. Rounded-everywhere matches the
    non-flush look, so loading reads as interior corners straightening rather
    than corners popping in. */
-:is(.flush-row, .flush-stack) > * {
+:is(.flush-row, .flush-stack, :is(.flush-row, .flush-stack) > [data-print-visibility]) > * {
 	--flush-r: calc(var(--radius) - 2px);
 	--flush-tl: var(--flush-r);
 	--flush-tr: var(--flush-r);
@@ -290,7 +290,7 @@
    card tiles). Tailwind's preflight gives EVERY element border-style: solid
    at width 0, so width-only overrides on borderless wrappers would otherwise
    paint phantom borders around them. */
-:is(.flush-row, .flush-stack) > .border {
+:is(.flush-row, .flush-stack, :is(.flush-row, .flush-stack) > [data-print-visibility]) > .border {
 	border-radius: var(--flush-tl) var(--flush-tr) var(--flush-br) var(--flush-bl) !important;
 	border-left-width: var(--flush-bw-l) !important;
 	border-top-width: var(--flush-bw-t) !important;
@@ -298,30 +298,32 @@
 }
 /* Once measured, zero the interior corners/edges. The grid-interior sides
    are the ones that are NOT at a first/only/last position. */
-.flush-row > :is([data-flush-x='mid'], [data-flush-x='last']) {
+:is(.flush-row, .flush-row > [data-print-visibility]) > :is([data-flush-x='mid'], [data-flush-x='last']) {
 	--flush-tl: 0px;
 	--flush-bl: 0px;
 	--flush-bw-l: 0px;
 }
-.flush-row > :is([data-flush-x='mid'], [data-flush-x='first']) {
+:is(.flush-row, .flush-row > [data-print-visibility]) > :is([data-flush-x='mid'], [data-flush-x='first']) {
 	--flush-tr: 0px;
 	--flush-br: 0px;
 }
-.flush-row > :is([data-flush-y='mid'], [data-flush-y='last']) {
+:is(.flush-row, .flush-row > [data-print-visibility]) > :is([data-flush-y='mid'], [data-flush-y='last']) {
 	--flush-tl: 0px;
 	--flush-tr: 0px;
 	--flush-bw-t: 0px;
 }
-.flush-row > :is([data-flush-y='mid'], [data-flush-y='first']) {
+:is(.flush-row, .flush-row > [data-print-visibility]) > :is([data-flush-y='mid'], [data-flush-y='first']) {
 	--flush-bl: 0px;
 	--flush-br: 0px;
 }
-.flush-stack > *:not(:first-child) {
+:is(.flush-stack, .flush-stack > [data-print-visibility]) > *:not(:first-child),
+.flush-stack > [data-print-visibility]:not(:first-child) > :first-child {
 	--flush-tl: 0px;
 	--flush-tr: 0px;
 	--flush-bw-t: 0px;
 }
-.flush-stack > *:not(:last-child) {
+:is(.flush-stack, .flush-stack > [data-print-visibility]) > *:not(:last-child),
+.flush-stack > [data-print-visibility]:not(:last-child) > :last-child {
 	--flush-bl: 0px;
 	--flush-br: 0px;
 }
@@ -646,5 +648,13 @@
 
 	.prose h1:first-child {
 		margin-top: 0 !important;
+	}
+
+	/* Print-visibility wrappers are display:contents, so in block flow their children carry the page's block gap */
+	:where(
+		:not(.flex) > [data-print-visibility] > :not(:last-child),
+		:not(.flex) > [data-print-visibility]:not(:last-child) > :last-child
+	) {
+		margin-block-end: var(--spacing-block-gap);
 	}
 }

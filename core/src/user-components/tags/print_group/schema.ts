@@ -13,7 +13,8 @@ export const schema = {
 		hide: {
 			type: BooleanVariable,
 			required: false,
-			description: 'Whether to hide this group when printing',
+			description:
+				'Whether to hide this group when printing. To hide content without grouping it, use `hidden_in_print`',
 			default: false,
 			supportsVariables: true,
 			variableContext: 'text'
@@ -21,7 +22,8 @@ export const schema = {
 		print_only: {
 			type: BooleanVariable,
 			required: false,
-			description: 'Show this group only when printing or generating PDFs; hidden on screen',
+			description:
+				'Show this group only when printing or generating PDFs; hidden on screen. To do this without grouping, use `only_in_print`',
 			default: false,
 			supportsVariables: true,
 			variableContext: 'text'
