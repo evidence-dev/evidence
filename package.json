@@ -58,7 +58,8 @@
 			"toml": ">=4.2.0 <5",
 			"browserslist": ">=4.28.7",
 			"js-yaml@4": ">=4.3.2 <5",
-			"proxy-addr": ">=2.0.8"
+			"proxy-addr": ">=2.0.8",
+			"svelte": ">=5.57.2 <6"
 		},
 		"patchedDependencies": {
 			"ssf": "patches/ssf.patch",
