@@ -94,16 +94,17 @@ export function buildTableSQLConfig(attrs: TableSQLAttrs): SQLQueryConfig {
 	// otherwise the warehouse truncates arbitrary groups and the client only sorts
 	// the surviving rows. Pivoted, comparison, and sparkline render columns still
 	// require client-side sorting because they do not exist in this query.
+	// Select the client's first sort before checking pushdown eligibility. Skipping
+	// an unsupported sort would select a different top-N set using a later column.
+	const firstSortColumn = attrs.unifiedColumns.find((col) => col.sort);
 	const limitSortColumn =
-		attrs.limit !== undefined && !hasPivots
-			? attrs.unifiedColumns.find(
-					(col) =>
-						col.sort &&
-						col.processedColumnExpression &&
-						col.viz !== 'sparkline' &&
-						col.columnIdForRendering === col.alias &&
-						!col.hide
-				)
+		attrs.limit !== undefined &&
+		!hasPivots &&
+		firstSortColumn?.processedColumnExpression &&
+		firstSortColumn.viz !== 'sparkline' &&
+		firstSortColumn.columnIdForRendering === firstSortColumn.alias &&
+		!firstSortColumn.hide
+			? firstSortColumn
 			: undefined;
 	const order =
 		attrs.order ??
