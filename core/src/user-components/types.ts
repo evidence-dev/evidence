@@ -29,6 +29,13 @@ export type UserComponentFlex = {
 	minWidth: number | 'children';
 
 	/**
+	 * Minimum width in pixels on screens narrower than 640px, used instead of `minWidth` there. Lets small
+	 * components share a line on phones without changing how they wrap on wider screens. Applies to the
+	 * component itself only; container components (`minWidth: 'children'`) don't inherit it from their children.
+	 */
+	narrowMinWidth?: number;
+
+	/**
 	 * Minimum height of the component in pixels.
 	 *
 	 * The component should be comfortable rendering down to this height without overflow or other layout issues.

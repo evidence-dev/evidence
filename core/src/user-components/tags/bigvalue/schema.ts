@@ -351,6 +351,7 @@ export const schema = {
 			compact: true,
 			grow: 1,
 			minWidth: 180,
+			narrowMinWidth: 120,
 			automaticallyWrapConsecutiveComponentsInRow: true
 		}
 	},

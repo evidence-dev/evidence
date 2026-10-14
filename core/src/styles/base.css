@@ -376,6 +376,19 @@
 	}
 }
 
+/* Phone width floor for components with flex.narrowMinWidth; -narrow is the editor's mobile preview opting in. */
+.component-flex-min {
+	min-width: var(--flex-min-width);
+}
+.component-flex-min.component-flex-min-narrow {
+	min-width: var(--flex-min-width-narrow, var(--flex-min-width));
+}
+@media (max-width: 639px) {
+	.component-flex-min {
+		min-width: var(--flex-min-width-narrow, var(--flex-min-width));
+	}
+}
+
 /* Published report sidebar nav font size follows the sidebarFontSize theme token.
    Scoped to .report-sidebar (the published viewer's Sidebar.Root) so the studio
    editor chrome — which shares the Sidebar primitive but never emits this var —

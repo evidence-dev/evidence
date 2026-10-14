@@ -13,6 +13,11 @@ export function setPreviewViewportContext(get: () => PreviewViewport) {
 	setContext(PREVIEW_VIEWPORT_KEY, get);
 }
 
+/** Raw preview state for callers that don't need the real media query (e.g. every ComponentWrapper). */
+export function getPreviewViewportContext(): (() => PreviewViewport) | undefined {
+	return getContext(PREVIEW_VIEWPORT_KEY);
+}
+
 export class Viewport {
 	#preview = getContext<(() => PreviewViewport) | undefined>(PREVIEW_VIEWPORT_KEY);
 	#media: IsMobile;

@@ -13,6 +13,7 @@
 	import { getRendererContext } from '../Renderer/renderer-context';
 	import type { Tag, ValidateError } from '@markdoc/markdoc';
 	import { getPageSettingsContext } from '../../page-settings.context';
+	import { getPreviewViewportContext } from '../../preview-viewport.context.svelte';
 	import { getFlexConfig } from '../Renderer/getFlexConfig';
 	import { getQueryInfoContext } from '../../query-info-context.svelte';
 	import { downloadAsExcel, getExcelExportNames } from '../../shims/data-export';
@@ -318,6 +319,9 @@
 	});
 
 	const flexConfig = $derived(getFlexConfig(tag));
+	// The editor's mobile preview narrows a container, not the window, so the phone width floor can't come from the media query alone.
+	const previewViewport = getPreviewViewportContext();
+	const simulatingMobile = $derived(previewViewport?.().mobile ?? false);
 
 	let isModifierKeyHeld = $state(false);
 	const isHighlighted = $derived(clickToSourceContext?.highlightedComponentId() === componentId);
@@ -397,9 +401,13 @@
 
 		const hasWidth = 'width' in props && typeof props.width === 'number';
 
+		const minWidth = flexConfig.narrowMinWidth
+			? `--flex-min-width: ${flexConfig.minWidth}px; --flex-min-width-narrow: ${flexConfig.narrowMinWidth}px;`
+			: `min-width: ${flexConfig.minWidth}px;`;
+
 		return {
 			minSize: `
-			min-width: ${flexConfig.minWidth}px;
+			${minWidth}
 			min-height: ${flexConfig.minHeight}px;
 			`,
 			flex: `
@@ -485,6 +493,8 @@
 		class={cn(
 			'flex flex-col *:flex-1 print:h-auto',
 			schema.componentWrapper.display === 'inline' ? 'max-w-full' : 'size-full',
+			flexConfig?.narrowMinWidth && 'component-flex-min',
+			flexConfig?.narrowMinWidth && simulatingMobile && 'component-flex-min-narrow',
 			// Blocked components render no content, so guarantee the error overlay a box to centre in
 			contentBlocked && !hasCompactErrorBehavior && 'min-h-40'
 		)}
