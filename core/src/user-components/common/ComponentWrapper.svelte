@@ -303,6 +303,7 @@
 	// Determine if this component is wrapped in a card
 	const isCard = $derived(
 		pageSettingsGetter().cards &&
+			props.card !== false &&
 			!('noCard' in schema.componentWrapper && schema.componentWrapper.noCard) &&
 			!parentCardContext?.insideCard
 	);

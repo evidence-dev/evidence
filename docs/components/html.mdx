@@ -241,6 +241,8 @@ The block is an isolated iframe, so its own width is the viewport width — CSS 
 
 Tooltips and popovers are **clipped at the block edges** — CSS `overflow` can't escape the frame. Position them relative to your own container and clamp into bounds (e.g. `left = Math.max(0, Math.min(x, mount.clientWidth - tip.offsetWidth))`), or flip them near an edge.
 
+On pages with card mode enabled, the block renders inside a card. Pass `card=false` to drop the card and render it directly on the page background — useful for banners, headers, or visuals that bring their own framing.
+
 ## Network Allowlist
 
 Author code inside an `{% html %}` block runs in a sandboxed iframe with a content-security-policy that blocks all network traffic except to the curated hosts below. `fetch`, XHR, `d3.csv`, and `d3.json` work against these hosts; everything else is blocked at the browser level.
@@ -320,6 +322,10 @@ For data from your own warehouse, use `evidence.query("query_name")` — page qu
 
 <ResponseField name="height" type="number">
   Set a fixed height for the chart in pixels
+</ResponseField>
+
+<ResponseField name="card" type="boolean" default="true">
+  Wrap the block in a card when card mode is enabled. Set to `false` to render it directly on the page background.
 </ResponseField>
 
 <ResponseField name="variables" type="object">

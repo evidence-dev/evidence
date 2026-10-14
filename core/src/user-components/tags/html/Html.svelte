@@ -19,6 +19,7 @@
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
 	import { getThemeToken } from '../../../theme/get-theme-token';
 	import { getCardContext } from '../../common/card-context.svelte';
+	import { getPageSettingsContext } from '../../../page-settings.context';
 	import { getPrintModeContext } from '../../../print-mode.context';
 	import { logger } from '../../../shims/logger';
 	import {
@@ -70,22 +71,28 @@
 	const activeMode = $derived(mode.current === 'dark' ? 'dark' : 'light');
 	const useCardColors = $derived(Boolean(cardContext?.insideCard));
 
+	const pageSettings = getPageSettingsContext();
+	// A card-mode block opted out with card=false sits on the card-layout surface, not the page background.
+	const onCardLayout = $derived(!useCardColors && pageSettings().cards);
+
+	const surfaceToken = (token: 'background' | 'foreground' | 'mutedForeground' | 'border') => {
+		const theme = themeContext.themes[activeMode];
+		if (onCardLayout && theme.cardLayout && token !== 'border') return theme.cardLayout[token];
+		return getThemeToken(theme, token, useCardColors);
+	};
+
 	const themeSnapshot = $derived<HtmlThemeSnapshot>({
 		mode: activeMode,
 		palette: themeContext.activeTheme.colorPalettes?.default ?? [],
 		// Resolved at the same position a host-rendered chart would be, so the
 		// sandboxed iframe (which can't composite transparently) matches the host.
-		background: getThemeToken(themeContext.themes[activeMode], 'background', useCardColors),
+		background: surfaceToken('background'),
 		// Surface text/divider colors the runtime mirrors into CSS vars so the
 		// baked base stylesheet keeps plain author markup readable against
 		// `background` in either mode. Same resolution as `background`.
-		foreground: getThemeToken(themeContext.themes[activeMode], 'foreground', useCardColors),
-		mutedForeground: getThemeToken(
-			themeContext.themes[activeMode],
-			'mutedForeground',
-			useCardColors
-		),
-		border: getThemeToken(themeContext.themes[activeMode], 'border', useCardColors)
+		foreground: surfaceToken('foreground'),
+		mutedForeground: surfaceToken('mutedForeground'),
+		border: surfaceToken('border')
 	});
 
 	// Values from the tag's `variables={…}` attribute, exposed to author code as

@@ -145,6 +145,12 @@ const validateUnpassedVariableReads: Validator = (node, config) => {
 const attributes = {
 	...WIDTH_ATTRIBUTE,
 	...HEIGHT_ATTRIBUTE,
+	card: {
+		type: Boolean,
+		description:
+			'Wrap the block in a card when card mode is enabled. Set to `false` to render it directly on the page background.',
+		default: true
+	},
 	variables: {
 		// Markdoc's built-in Object type accepts any object literal —
 		// `variables={ name=$frontmatter_var label="literal" }`. Markdoc
@@ -421,7 +427,9 @@ Width reflows with the page, but a chart only follows if you build for it: scale
 
 The block is an isolated iframe, so its own width is the viewport width — CSS \`@media (max-width: 480px)\` queries fire at the *block's* width, which makes them behave like container queries. Use them to reflow at narrow widths (stack columns, shrink type).
 
-Tooltips and popovers are **clipped at the block edges** — CSS \`overflow\` can't escape the frame. Position them relative to your own container and clamp into bounds (e.g. \`left = Math.max(0, Math.min(x, mount.clientWidth - tip.offsetWidth))\`), or flip them near an edge.`
+Tooltips and popovers are **clipped at the block edges** — CSS \`overflow\` can't escape the frame. Position them relative to your own container and clamp into bounds (e.g. \`left = Math.max(0, Math.min(x, mount.clientWidth - tip.offsetWidth))\`), or flip them near an edge.
+
+On pages with card mode enabled, the block renders inside a card. Pass \`card=false\` to drop the card and render it directly on the page background — useful for banners, headers, or visuals that bring their own framing.`
 		},
 		{
 			title: 'Network Allowlist',
