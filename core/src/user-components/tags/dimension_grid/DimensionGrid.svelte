@@ -359,18 +359,20 @@
 {/if}
 
 {#if filter && detectedDimensions.length > 0}
-	<div class="no-scrollbar flex flex-nowrap overflow-auto select-none sm:flex-wrap">
-		{#each dimensionQueryInfos as { query, dimension } (dimension)}
-			<DimensionCut
-				{dimension}
-				rows={query.result?.rows ?? []}
-				selectedValues={filter.getDimensionValue(dimension)}
-				{metricLabel}
-				{fmt}
-				onToggle={(value) => handleToggle(dimension, value)}
-				onClear={() => handleClear(dimension)}
-			/>
-		{/each}
+	<div class="@container">
+		<div class="no-scrollbar flex flex-nowrap overflow-auto select-none @min-[640px]:flex-wrap">
+			{#each dimensionQueryInfos as { query, dimension } (dimension)}
+				<DimensionCut
+					{dimension}
+					rows={query.result?.rows ?? []}
+					selectedValues={filter.getDimensionValue(dimension)}
+					{metricLabel}
+					{fmt}
+					onToggle={(value) => handleToggle(dimension, value)}
+					onClear={() => handleClear(dimension)}
+				/>
+			{/each}
+		</div>
 	</div>
 {:else if !filter}
 	<div class="text-muted-foreground text-sm">

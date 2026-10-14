@@ -3,6 +3,8 @@
 	import ComponentTitle from '../../common/ComponentTitle.svelte';
 	import XIcon from 'lucide-svelte/icons/x';
 	import type { Snippet } from 'svelte';
+	import { Viewport } from '../../../preview-viewport.context.svelte';
+	import { cn } from '../../../shadcn/utils';
 
 	type Props = {
 		open: boolean;
@@ -26,6 +28,8 @@
 		children
 	}: Props = $props();
 
+	const viewport = new Viewport();
+
 	function handleOpenChange(value: boolean) {
 		if (!value) {
 			onClose();
@@ -37,7 +41,12 @@
 <Dialog.Root bind:open onOpenChange={handleOpenChange}>
 	<Dialog.Content
 		showCloseButton={false}
-		class="evidence-page-theme flex max-h-[calc(100vh-3rem)] w-[calc(100vw-3rem)] max-w-[calc(100vw-3rem)] flex-col gap-0 overflow-hidden p-4 sm:max-w-[calc(100vw-3rem)]"
+		class={cn(
+			'evidence-page-theme flex max-h-[calc(100vh-3rem)] w-[calc(100vw-3rem)] max-w-[calc(100vw-3rem)] flex-col gap-0 overflow-hidden p-4 sm:max-w-[calc(100vw-3rem)]',
+			viewport.simulatingMobile &&
+				'max-h-[calc(100%-3rem)] w-[calc(100%-3rem)] max-w-[calc(100%-3rem)] sm:max-w-[calc(100%-3rem)]'
+		)}
+		portalProps={{ to: viewport.portalTo }}
 	>
 		<Dialog.Close
 			class="ring-offset-background focus:ring-ring absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none"

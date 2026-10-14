@@ -10,7 +10,7 @@
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
-	import { IsMobile } from '../../../shadcn/hooks/is-mobile.svelte';
+	import { Viewport } from '../../../preview-viewport.context.svelte';
 
 	let props: UserComponentProps<typeof schema> = $props();
 
@@ -31,9 +31,11 @@
 	const { resolveText } = $derived(createResolvers(variableProcessor));
 
 	const title = $derived(resolveText(props.title) ?? 'Details');
-	const isMobile = new IsMobile();
+	const viewport = new Viewport();
 	// Initial state only, so crossing the breakpoint later doesn't override the reader's toggle
-	let isOpen = $state((isMobile.current ? (props.open_mobile ?? props.open) : props.open) ?? false);
+	let isOpen = $state(
+		(viewport.isMobile ? (props.open_mobile ?? props.open) : props.open) ?? false
+	);
 	const children = $derived(props.children);
 </script>
 

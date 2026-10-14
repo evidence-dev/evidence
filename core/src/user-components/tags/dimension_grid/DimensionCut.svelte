@@ -31,7 +31,7 @@
 	const title = $derived(formatTitle(dimension));
 </script>
 
-<div class="w-60 shrink-0 pr-4 pb-2 text-xs antialiased sm:w-1/4">
+<div class="w-60 shrink-0 pr-4 pb-2 text-xs antialiased @min-[640px]:w-1/4">
 	<!-- Header -->
 	<div class="flex items-center justify-between border-b pb-1">
 		<div class="flex min-w-0 flex-1 items-center justify-between">

@@ -15,6 +15,7 @@
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
+	import { Viewport } from '../../../preview-viewport.context.svelte';
 
 	type Props = UserComponentProps<typeof schema>;
 
@@ -48,7 +49,8 @@
 
 	let dialogOpen = $state(false);
 	let drawerOpen = $state(false);
-	let isDesktop = $state(true); // Default for SSR
+	const viewport = new Viewport(640);
+	const isDesktop = $derived(!viewport.isMobile);
 	let IconComponent = $state<Component | null>(null);
 	let closeButtonRef: HTMLButtonElement | null = $state(null);
 
@@ -70,21 +72,6 @@
 		} else {
 			IconComponent = null;
 		}
-	});
-
-	// Use media query to track desktop/mobile breakpoint
-	$effect(() => {
-		if (!browser) return;
-
-		const mediaQuery = window.matchMedia('(min-width: 640px)');
-		isDesktop = mediaQuery.matches;
-
-		const handleChange = (e: MediaQueryListEvent) => {
-			isDesktop = e.matches;
-		};
-
-		mediaQuery.addEventListener('change', handleChange);
-		return () => mediaQuery.removeEventListener('change', handleChange);
 	});
 
 	// Reset modal state when switching between desktop/mobile
@@ -154,6 +141,7 @@
 			<Dialog.Content
 				class="evidence-page-theme flex max-h-[85vh] flex-col backdrop-blur-lg sm:max-w-[800px]"
 				onInteractOutside={handleInteractOutside}
+				portalProps={{ to: viewport.portalTo }}
 			>
 				<Dialog.Header class="shrink-0">
 					<Dialog.Title class="flex items-center gap-2">
@@ -190,7 +178,14 @@
 					{displayButtonText}
 				</Drawer.Trigger>
 			{/if}
-			<Drawer.Content class="flex max-h-[67vh] flex-col" onInteractOutside={handleInteractOutside}>
+			<Drawer.Content
+				class={cn(
+					'flex max-h-[67vh] flex-col',
+					viewport.simulatingMobile && 'data-[vaul-drawer-direction=bottom]:max-h-[80%]'
+				)}
+				onInteractOutside={handleInteractOutside}
+				portalProps={{ to: viewport.portalTo }}
+			>
 				<Drawer.Header class="shrink-0 text-left">
 					<Drawer.Title class="flex items-center gap-2">
 						{#if IconComponent}

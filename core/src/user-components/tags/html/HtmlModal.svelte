@@ -19,6 +19,8 @@
 	 */
 	import * as Dialog from '../../../shadcn/components/ui/dialog/index.js';
 	import HtmlSandbox from './sandbox/HtmlSandbox.svelte';
+	import { Viewport } from '../../../preview-viewport.context.svelte';
+	import { cn } from '../../../shadcn/utils';
 	import type {
 		HtmlVariables,
 		HtmlThemeSnapshot,
@@ -63,6 +65,8 @@
 	// content in once the sandbox signals its first render. A timeout fallback
 	// reveals regardless, so a modal whose script never calls evidence.ready()
 	// can never get stuck hidden.
+	const viewport = new Viewport();
+
 	let ready = $state(false);
 	$effect(() => {
 		if (!open) return;
@@ -74,8 +78,12 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Content
-		class="evidence-page-theme flex max-h-[85vh] w-[calc(100%-2rem)] flex-col sm:max-w-[720px]"
+		class={cn(
+			'evidence-page-theme flex max-h-[85vh] w-[calc(100%-2rem)] flex-col sm:max-w-[720px]',
+			viewport.simulatingMobile && 'max-h-[85%] sm:max-w-[calc(100%-2rem)]'
+		)}
 		onInteractOutside={(e) => e.preventDefault()}
+		portalProps={{ to: viewport.portalTo }}
 	>
 		{#if title}
 			<Dialog.Header class="shrink-0">
