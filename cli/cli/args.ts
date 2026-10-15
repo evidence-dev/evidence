@@ -10,7 +10,7 @@ import {
 } from './output.ts';
 import { INIT_WAREHOUSES, parseWarehouse, type InitWarehouse } from './init/connection-template.ts';
 
-export const VERSION = '0.10.1';
+export const VERSION = '0.10.2';
 
 export const BANNER = `
   evidence
