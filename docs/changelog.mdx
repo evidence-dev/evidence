@@ -112,6 +112,18 @@ Rows can now spread their contents across the full width, for example a heading 
 
 </Update>
 
+<Update label="October 6, 2026" description="" tags={["New Feature"]}>
+
+### ✨ Generate Excel Report
+
+A new **Generate Excel Report** option exports the page as an Excel workbook with a snapshot of the report on the first sheet and a data sheet per component; **Download Data** now also appears in the CLI.
+
+- **Download Data** is unchanged and still exports data only; pick **Generate Excel Report** when you want the report snapshot included.
+- Hide it with `downloads: { excel: false }` in page frontmatter. It is also hidden when `image` or `data` downloads are turned off.
+- The local CLI viewer now has **Download Data** and **Generate Excel Report** in its page menu.
+
+</Update>
+
 <Update label="October 6, 2026" description="" tags={["Improvement"]}>
 
 ### 🚀 Improved info tooltips

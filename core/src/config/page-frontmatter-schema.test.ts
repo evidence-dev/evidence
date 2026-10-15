@@ -43,6 +43,24 @@ describe('isPageDownloadEnabled', () => {
 		expect(isPageDownloadEnabled(downloads, 'image')).toBe(true);
 	});
 
+	it('`excel: false` hides only the Excel report', () => {
+		const downloads = parseDownloads({ excel: false });
+		expect(isPageDownloadEnabled(downloads, 'excel')).toBe(false);
+		expect(isPageDownloadEnabled(downloads, 'data')).toBe(true);
+		expect(isPageDownloadEnabled(downloads, 'image')).toBe(true);
+	});
+
+	it('hides the Excel report when image or data is off, since it contains both', () => {
+		expect(isPageDownloadEnabled(parseDownloads({ image: false }), 'excel')).toBe(false);
+		expect(isPageDownloadEnabled(parseDownloads({ data: false }), 'excel')).toBe(false);
+		expect(isPageDownloadEnabled(parseDownloads({ image: false, excel: true }), 'excel')).toBe(
+			false
+		);
+		expect(isPageDownloadEnabled(parseDownloads({ pdf: false }), 'excel')).toBe(true);
+		expect(isPageDownloadEnabled(parseDownloads(false), 'excel')).toBe(false);
+		expect(isPageDownloadEnabled(undefined, 'excel')).toBe(true);
+	});
+
 	it('ignores a malformed per-kind value instead of the whole object', () => {
 		const downloads = parseDownloads({ pdf: false, data: 'no' });
 		expect(isPageDownloadEnabled(downloads, 'pdf')).toBe(false);

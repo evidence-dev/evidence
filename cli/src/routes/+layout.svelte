@@ -10,10 +10,14 @@
 	import LanguageMenuItems from '@evidence/core/viewer-components/LanguageMenuItems.svelte';
 	import { buildNavTreeFromFlat } from '@evidence/core/utils/nav-tree';
 	import { downloadPng } from '@evidence/core/utils/png-download';
+	import { downloadPageDataAsExcel } from '@evidence/core/shims/data-export';
+	import { setQueryInfoContext } from '@evidence/core/query-info-context.svelte';
 	import {
 		MoreHorizontal,
 		FileText,
 		Image as ImageIcon,
+		FileSpreadsheet,
+		Download,
 		Check,
 		ChevronsUpDown,
 		SunIcon,
@@ -49,6 +53,11 @@
 	const pageDownloads = $derived(page.data.markdown?.pageSettings?.downloads);
 	const canDownloadPdf = $derived(isPageDownloadEnabled(pageDownloads, 'pdf'));
 	const canDownloadImage = $derived(isPageDownloadEnabled(pageDownloads, 'image'));
+	const canDownloadData = $derived(isPageDownloadEnabled(pageDownloads, 'data'));
+	const canDownloadExcel = $derived(isPageDownloadEnabled(pageDownloads, 'excel'));
+
+	// Components register their queries here so Download Data can export every sheet.
+	const queryInfoContext = setQueryInfoContext();
 
 	// Fullscreen presentation mode (bare content, auto-hiding controls). Shared
 	// behaviour with the Studio published/preview viewers.
@@ -121,10 +130,22 @@
 		return (user.email[0] ?? '?').toUpperCase();
 	}
 
+	function currentReportFilename(): string {
+		const slug = page.url.pathname === '/' ? 'home' : page.url.pathname.replace(/^\//, '');
+		return slug.replace(/\//g, '-') || 'report';
+	}
+
 	// Capture the rendered report DOM client-side; mirrors the published kebab.
 	function downloadCurrentPng() {
-		const slug = page.url.pathname === '/' ? 'home' : page.url.pathname.replace(/^\//, '');
-		downloadPng({ filename: slug.replace(/\//g, '-') || 'report' });
+		downloadPng({ filename: currentReportFilename() });
+	}
+
+	async function downloadCurrentData(includeImage = false) {
+		await downloadPageDataAsExcel({
+			pageName: currentReportFilename(),
+			queryInfoContext,
+			includeImage
+		});
 	}
 </script>
 
@@ -336,6 +357,32 @@
 											<div class="flex w-full items-center gap-2" {...props}>
 												<ImageIcon class="size-3 shrink-0" />
 												<span>Download Image</span>
+											</div>
+										{/snippet}
+									</DropdownMenu.Item>
+								{/if}
+								{#if canDownloadData}
+									<DropdownMenu.Item
+										class="cursor-pointer text-sm"
+										onclick={() => downloadCurrentData()}
+									>
+										{#snippet child({ props })}
+											<div class="flex w-full items-center gap-2" {...props}>
+												<Download class="size-3 shrink-0" />
+												<span>Download Data</span>
+											</div>
+										{/snippet}
+									</DropdownMenu.Item>
+								{/if}
+								{#if canDownloadExcel}
+									<DropdownMenu.Item
+										class="cursor-pointer text-sm"
+										onclick={() => downloadCurrentData(true)}
+									>
+										{#snippet child({ props })}
+											<div class="flex w-full items-center gap-2" {...props}>
+												<FileSpreadsheet class="size-3 shrink-0" />
+												<span>Generate Excel Report</span>
 											</div>
 										{/snippet}
 									</DropdownMenu.Item>

@@ -62,9 +62,9 @@ theme:
 
 ### `downloads`
 
-Controls the **Download PDF**, **Download Image**, and **Download Data** options in the published page's menu. All three are shown by default.
+Controls the **Download PDF**, **Download Image**, **Download Data**, and **Generate Excel Report** options in the published page's menu. All are shown by default.
 
-`downloads: false` hides all three:
+`downloads: false` hides all of them:
 
 ```markdown
 ---
@@ -88,6 +88,9 @@ downloads:
 | `pdf` | boolean | Show **Download PDF**. Also controls the <kbd>Cmd/Ctrl</kbd>+<kbd>P</kbd> shortcut. |
 | `image` | boolean | Show **Download Image**. |
 | `data` | boolean | Show **Download Data**. |
+| `excel` | boolean | Show **Generate Excel Report**. Also hidden when `image` or `data` is `false`. |
+
+**Generate Excel Report** exports an Excel workbook with a snapshot of the report on the first sheet and a data sheet per component. Because it includes both, turning off `image` or `data` hides it too.
 
 This hides the menu options. It doesn't prevent other ways of saving the page, such as the browser's own print dialog.
 

@@ -145,6 +145,41 @@ async function withCaptureStyles<T>(target: HTMLElement, fn: () => Promise<T>): 
 	}
 }
 
+export type CapturedPng = {
+	dataUrl: string;
+	/** CSS pixels; the PNG itself is rendered at 2x. */
+	width: number;
+	height: number;
+};
+
+export async function capturePng(
+	target: HTMLElement,
+	options: { padding?: number } = {}
+): Promise<CapturedPng> {
+	const padding = Math.max(0, options.padding ?? 10);
+	const backgroundColor = resolveBackgroundColor(target);
+
+	const rect = target.getBoundingClientRect();
+	const captureWidth = Math.ceil(rect.width) + padding * 2;
+	const captureHeight = Math.ceil(rect.height) + padding * 2;
+
+	const pixelRatio = 2;
+	const dataUrl = await withCaptureStyles(target, () =>
+		withSandboxedIframesReplaced(target, pixelRatio, () =>
+			toPng(target, {
+				pixelRatio,
+				cacheBust: true,
+				backgroundColor,
+				width: padding > 0 ? captureWidth : undefined,
+				height: padding > 0 ? captureHeight : undefined,
+				style: padding > 0 ? { padding: `${padding}px`, boxSizing: 'border-box' } : undefined
+			})
+		)
+	);
+
+	return { dataUrl, width: captureWidth, height: captureHeight };
+}
+
 export async function downloadPng(options: PngDownloadOptions): Promise<void> {
 	if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
@@ -158,29 +193,10 @@ export async function downloadPng(options: PngDownloadOptions): Promise<void> {
 	}
 
 	const filename = `${options.filename || 'report'}.png`;
-	const padding = Math.max(0, options.padding ?? 10);
 	const loadingToast = toast.loading('Generating image…', { duration: Infinity });
 
 	try {
-		const backgroundColor = resolveBackgroundColor(target);
-
-		const rect = target.getBoundingClientRect();
-		const captureWidth = Math.ceil(rect.width) + padding * 2;
-		const captureHeight = Math.ceil(rect.height) + padding * 2;
-
-		const pixelRatio = 2;
-		const dataUrl = await withCaptureStyles(target, () =>
-			withSandboxedIframesReplaced(target, pixelRatio, () =>
-				toPng(target, {
-					pixelRatio,
-					cacheBust: true,
-					backgroundColor,
-					width: padding > 0 ? captureWidth : undefined,
-					height: padding > 0 ? captureHeight : undefined,
-					style: padding > 0 ? { padding: `${padding}px`, boxSizing: 'border-box' } : undefined
-				})
-			)
-		);
+		const { dataUrl } = await capturePng(target, { padding: options.padding });
 
 		const a = document.createElement('a');
 		a.href = dataUrl;

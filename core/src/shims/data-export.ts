@@ -1,10 +1,12 @@
 import ExcelJS from 'exceljs';
-import type { QueryInfoContext } from '../query-info-context.svelte';
+import type { QueryInfo, QueryInfoContext } from '../query-info-context.svelte';
+import type { Query } from '../Query.svelte';
 import formatTitle from '../user-components/formatTitle';
 import { FORMAT_PRESETS, BASE_AUTO_FORMATS, formatAsQuarter } from '../user-components/formatValue';
 import { tags } from '../index';
 import { logger } from './logger';
 import { toast } from 'svelte-sonner';
+import { capturePng, type CapturedPng } from '../utils/png-download';
 
 // Categories to exclude from Excel export (inputs/filters and logic/conditionals don't produce meaningful data)
 const EXCLUDED_EXPORT_CATEGORIES = new Set(['input', 'logic']);
@@ -41,9 +43,19 @@ export interface ExcelExportNamesOptions {
 	fallbackWorksheetName?: string;
 }
 
+export type ExportableQueryInfo = Pick<QueryInfo, 'tag' | 'title'> & {
+	query: Pick<Query, 'result' | 'loading'>;
+};
+
+export interface ExportableQueryInfoContext {
+	queryInfoMap: ReadonlyMap<string, ExportableQueryInfo>;
+}
+
 export interface MultiSheetExportOptions {
 	filename: string;
-	queryInfoContext: QueryInfoContext;
+	queryInfoContext: ExportableQueryInfoContext | undefined;
+	/** Added as the first sheet, ahead of the data sheets. */
+	reportImage?: CapturedPng;
 	onError?: (message: string, description?: string) => void;
 	onSuccess?: () => void;
 }
@@ -51,9 +63,15 @@ export interface MultiSheetExportOptions {
 export interface PageExcelExportOptions {
 	pageName: string;
 	queryInfoContext: QueryInfoContext;
+	/** Capture the report and add it as the first sheet. Off by default: it's slow and most exports only need the data. */
+	includeImage?: boolean;
+	/** Report element to capture when `includeImage` is set. */
+	imageSelector?: string;
 	onError?: (message: string, description?: string) => void;
 	onSuccess?: () => void;
 }
+
+const REPORT_SHEET_NAME = 'Report';
 
 const defaultPageExcelExportErrorHandler = (message: string, description?: string): void => {
 	toast.error(message, { description });
@@ -67,19 +85,73 @@ function buildPageExcelFilename(pageName: string): string {
 	return `${pageName}_${getExcelExportTimestamp()}`;
 }
 
+// A failed capture shouldn't block the data export, so the image is best-effort.
+async function captureReportImage(selector: string): Promise<CapturedPng | undefined> {
+	const target = document.querySelector<HTMLElement>(selector);
+	if (!target) {
+		logger.warn({ selector }, 'Report content not found; exporting without image');
+		return undefined;
+	}
+	try {
+		return await capturePng(target);
+	} catch (err) {
+		logger.warn({ err }, 'Report image capture failed; exporting without image');
+		return undefined;
+	}
+}
+
+// Freeze results before the slow capture so a mid-capture filter change can't alter the export.
+function snapshotQueryInfo(queryInfoContext: QueryInfoContext): ExportableQueryInfoContext {
+	const queryInfoMap = new Map<string, ExportableQueryInfo>();
+	for (const [componentId, { tag, title, query }] of queryInfoContext.queryInfoMap) {
+		queryInfoMap.set(componentId, {
+			tag,
+			title,
+			query: { result: query.result, loading: query.loading }
+		});
+	}
+	return { queryInfoMap };
+}
+
 export async function downloadPageDataAsExcel({
 	pageName,
 	queryInfoContext,
+	includeImage = false,
+	imageSelector = '[data-markdoc-content]',
 	onError = defaultPageExcelExportErrorHandler,
 	onSuccess
 }: PageExcelExportOptions): Promise<void> {
 	const filename = buildPageExcelFilename(pageName);
 
-	await downloadPageAsExcel({
-		filename,
-		queryInfoContext,
-		onError,
-		onSuccess
+	if (!includeImage) {
+		await downloadPageAsExcel({ filename, queryInfoContext, onError, onSuccess });
+		return;
+	}
+
+	const snapshot = snapshotQueryInfo(queryInfoContext);
+	const loadingToast = toast.loading('Generating Excel report…', { duration: Infinity });
+
+	try {
+		const reportImage = await captureReportImage(imageSelector);
+		await downloadPageAsExcel({
+			filename,
+			queryInfoContext: snapshot,
+			reportImage,
+			onError,
+			onSuccess
+		});
+	} finally {
+		toast.dismiss(loadingToast);
+	}
+}
+
+export function addReportImageSheet(workbook: ExcelJS.Workbook, image: CapturedPng): void {
+	const worksheet = workbook.addWorksheet(REPORT_SHEET_NAME);
+	worksheet.views = [{ showGridLines: false }];
+	const imageId = workbook.addImage({ base64: image.dataUrl, extension: 'png' });
+	worksheet.addImage(imageId, {
+		tl: { col: 0, row: 0 },
+		ext: { width: image.width, height: image.height }
 	});
 }
 
@@ -415,11 +487,13 @@ export async function downloadAsExcel({
 export async function downloadPageAsExcel({
 	filename,
 	queryInfoContext,
+	reportImage,
 	onError,
 	onSuccess
 }: MultiSheetExportOptions): Promise<void> {
 	try {
-		if (!queryInfoContext || queryInfoContext.queryInfoMap.size === 0) {
+		const queryInfoMap = queryInfoContext?.queryInfoMap ?? new Map<string, ExportableQueryInfo>();
+		if (queryInfoMap.size === 0 && !reportImage) {
 			onError?.(
 				'No queries found on this page',
 				'Make sure the page contains tables, charts, or other components with data.'
@@ -433,8 +507,14 @@ export async function downloadPageAsExcel({
 		// Track used sheet names for deduplication (case-insensitive)
 		const usedNames = new Set<string>();
 
+		if (reportImage) {
+			addReportImageSheet(workbook, reportImage);
+			usedNames.add(REPORT_SHEET_NAME.toLowerCase());
+			hasData = true;
+		}
+
 		// Add a sheet for each query
-		for (const [componentId, queryInfo] of queryInfoContext.queryInfoMap) {
+		for (const [componentId, queryInfo] of queryInfoMap) {
 			try {
 				// Skip input/filter and logic/conditional components based on their schema category
 				const userComponent = tags[queryInfo.tag];

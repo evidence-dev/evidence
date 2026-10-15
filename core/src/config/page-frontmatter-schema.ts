@@ -3,14 +3,15 @@ import { themeOverridesSchema } from '../types/theme';
 import { availableIconNames } from '../user-components/common/icon-names';
 import { workflowSchema } from './workflow-frontmatter';
 
-export type PageDownloadKind = 'pdf' | 'data' | 'image';
+export type PageDownloadKind = 'pdf' | 'data' | 'image' | 'excel';
 
 export const pageDownloadsSchema = z.union([
 	z.boolean(),
 	z.object({
 		pdf: z.boolean().optional().catch(undefined),
 		data: z.boolean().optional().catch(undefined),
-		image: z.boolean().optional().catch(undefined)
+		image: z.boolean().optional().catch(undefined),
+		excel: z.boolean().optional().catch(undefined)
 	})
 ]);
 
@@ -22,6 +23,10 @@ export function isPageDownloadEnabled(
 ): boolean {
 	if (downloads === undefined || downloads === null) return true;
 	if (typeof downloads === 'boolean') return downloads;
+	// The Excel report bundles the page image and its data, so hiding either one hides it too.
+	if (kind === 'excel') {
+		return downloads.excel !== false && downloads.image !== false && downloads.data !== false;
+	}
 	return downloads[kind] !== false;
 }
 
@@ -147,7 +152,7 @@ export const projectRootPageFrontmatterSchema = z.object({
 		.optional()
 		.catch(undefined)
 		.describe(
-			'Download options in the published page menu. `false` hides all of them; `{ pdf: false }` hides only PDF (also `data`, `image`).'
+			'Download options in the published page menu. `false` hides all of them; `{ pdf: false }` hides only PDF (also `data`, `image`, `excel`).'
 		),
 	workflow: workflowSchema
 		.optional()
