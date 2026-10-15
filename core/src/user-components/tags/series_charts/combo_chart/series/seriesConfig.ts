@@ -98,11 +98,15 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 		dateGrain,
 		xColumnType,
 		generateMissingXValues,
+		stackId,
 		sortByStackTotal,
 		tooltipFields
 	} = options;
 
 	const hasTooltipFields = !!tooltipFields && tooltipFields.length > 0;
+
+	// A null in a stacked area cuts its fill and leaves a hole under the series above it.
+	const zeroFillStack = type === 'line' && !!stackId && handleMissing === 'connect';
 
 	// Determine if we should generate new X values (positions that don't exist in the data)
 	// - Bar charts: NEVER - bars represent discrete data, no phantom bars
@@ -156,6 +160,8 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 			pointTitle ? row[pointTitle] : undefined
 		];
 		if (type === 'bar' && !sourceRows.has(row)) return { value: tuple, isMissing: true };
+		if (zeroFillStack && !sourceRows.has(row))
+			return { value: tuple, isMissing: true, label: { show: false } };
 		if (!hasTooltipFields) return tuple;
 		return { value: tuple, extras: extractTooltipExtras(row, tooltipFields!) };
 	};
@@ -232,10 +238,10 @@ export function generateSeriesConfig(options: SeriesConfigOptions): ChartSeriesO
 		yColumn: y,
 		seriesColumn: series!,
 		sizeColumn: size,
-		handleMissing,
+		handleMissing: zeroFillStack ? 'zero' : handleMissing,
 		dateGrain,
 		xColumnType,
-		generateMissingXValues: shouldGenerateMissingXValues
+		generateMissingXValues: zeroFillStack ? false : shouldGenerateMissingXValues
 	});
 
 	// Sort by stack totals if requested (for stacked charts with x_sort)

@@ -171,4 +171,5 @@
 	{transformSeriesOptions}
 	percentageStack={isPercentageStack}
 	isStacked={!!stackIdentifier}
+	stackId={stackIdentifier}
 />

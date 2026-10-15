@@ -467,6 +467,11 @@ on the same grain-aligned positions:
 | `zero`              | synthetic row with y=0 from `fillGaps`   | same tick; bar/point and label align       |
 | `gaps`              | synthetic row with y=null (visual break) | same tick                                  |
 
+One exception under `connect`: a stacked area series with no row at a date
+another series has gets a y=0 row there (tooltip-hidden, no label), because a
+null in a stacked area cuts its fill and leaves a hole under the series above.
+No new x positions are generated — that stays opt-in via `zero`/`gaps`.
+
 Alignment holds because both systems anchor to the raw data's timestamps:
 
 - String dates (`"2024-02-01"`): axis parses via `parseSeriesTimestampMs`
