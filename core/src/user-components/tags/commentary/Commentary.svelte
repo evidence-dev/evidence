@@ -16,10 +16,16 @@
 	import { untrack } from 'svelte';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getWorkflowPeriodFilter } from '../workflow_period/PeriodFilter.svelte';
-	import { setupRenderReadiness } from '../../../readiness.svelte';
+	import { setupRepeatableRenderReadiness } from '../../../readiness.svelte';
+	import { WORKFLOW_PERIOD_FILTER_ID } from '../../common/reporting-periods';
+	import {
+		commentaryScopeError,
+		commentaryScopeValue,
+		parseCommentaryScope
+	} from './commentary-scope';
 
 	type Props = Omit<UserComponentProps<typeof schema>, 'scope'> & {
-		scope?: 'page' | 'period';
+		scope?: string | string[];
 	};
 	const props: Props = $props();
 	const page = getPageStateContext() ?? fallbackPage;
@@ -32,25 +38,34 @@
 	const style = $derived(props.style);
 	const auth = $state(getAuthContext());
 	const pageFilters = getPageFiltersContext();
-	const scope = $derived(props.scope ?? 'page');
+	const scopeIds = $derived(parseCommentaryScope(props.scope));
 	const periodFilter = $derived(getWorkflowPeriodFilter(pageFilters));
-	const scopeError = $derived(
-		scope === 'period' && !periodFilter
-			? 'Commentary with scope="period" requires workflow.period in the page frontmatter.'
-			: undefined
-	);
+	const scopeError = $derived(commentaryScopeError(scopeIds, pageFilters));
+	// Sorted so the same selections always produce the same bucket and request.
+	const inputs = $derived.by(() => {
+		const selected = scopeIds
+			.filter((inputId) => inputId !== WORKFLOW_PERIOD_FILTER_ID)
+			.sort()
+			.flatMap((inputId) => {
+				const value = commentaryScopeValue(pageFilters?.get(inputId));
+				return value ? [[inputId, value] as const] : [];
+			});
+		return selected.length > 0 ? JSON.stringify(Object.fromEntries(selected)) : undefined;
+	});
 	const identity = $derived.by(() => {
 		const projectId = page.data.project?.id as number | undefined;
 		const fileId = page.data.page?.id as string | undefined;
 		if (!id || !projectId || !fileId || scopeError) return undefined;
+		const scopedToPeriod = scopeIds.includes(WORKFLOW_PERIOD_FILTER_ID) && periodFilter;
 		return {
 			componentId: id,
 			projectId,
 			fileId,
-			scope,
-			...(scope === 'period' && periodFilter
+			scope: scopedToPeriod ? 'period' : 'page',
+			...(scopedToPeriod
 				? { periodGrain: periodFilter.grain, periodKey: periodFilter.period.key }
-				: {})
+				: {}),
+			...(inputs ? { inputs } : {})
 		};
 	});
 
@@ -94,7 +109,7 @@
 		});
 	});
 	let contentEditableElement = $state<HTMLParagraphElement | null>(null);
-	setupRenderReadiness('commentary', () => !bucket?.isLoading);
+	setupRepeatableRenderReadiness('commentary', () => !bucket?.isLoading);
 
 	const canEdit = $derived(
 		page.route.id?.includes('(published)') &&

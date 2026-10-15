@@ -72,7 +72,9 @@ type MarkdocRendererArgs = {
 export const PARTIAL_STANDALONE_SUPPRESSED_ERROR_IDS = new Set([
 	'undefined-frontmatter-variable',
 	'undefined-translation-key',
-	'undefined-account-variable'
+	'undefined-account-variable',
+	// Commentary scope can name an input declared by the including page.
+	'invalid-commentary-scope'
 ]);
 
 /**
@@ -83,7 +85,10 @@ export const PARTIAL_STANDALONE_SUPPRESSED_ERROR_IDS = new Set([
  * inputs (componentBodyErrorsAtCallSite), so a page missing the filter
  * errors there with the fix. Same trade partials make for caller variables.
  */
-export const COMPONENT_STANDALONE_SUPPRESSED_ERROR_IDS = new Set(['invalid-filter-variable']);
+export const COMPONENT_STANDALONE_SUPPRESSED_ERROR_IDS = new Set([
+	'invalid-filter-variable',
+	'invalid-commentary-scope'
+]);
 
 // `partials` and `translations` are re-pushed on every SvelteKit data
 // invalidation (the editor page wires `data.partials` / `data.translationsData`

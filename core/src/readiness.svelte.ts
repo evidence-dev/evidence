@@ -68,6 +68,31 @@ export function setupRenderReadiness(
 	});
 }
 
+// For leaves that reload after first becoming ready (a late input default), so PDFs wait for the reload.
+export function setupRepeatableRenderReadiness(
+	componentName: string,
+	isReady: () => boolean
+): void {
+	const tracker = getPageRenderTrackerContext();
+	if (!tracker) return;
+
+	let mark: (() => void) | undefined = tracker.startTask(componentName);
+
+	$effect(() => {
+		if (isReady()) {
+			mark?.();
+			mark = undefined;
+		} else if (!mark) {
+			mark = tracker.startTask(componentName);
+		}
+	});
+
+	onDestroy(() => {
+		mark?.();
+		mark = undefined;
+	});
+}
+
 /**
  * Call once from the PDF page to tag the root tracker for diagnostics.
  */
@@ -100,10 +125,7 @@ export function setRootTrackerRef(tracker: PageRenderTracker): void {
  *   // In Repeat.svelte:
  *   setupContainerReadiness('repeat', () => !query.loading);
  */
-export function setupContainerReadiness(
-	componentName: string,
-	isSelfReady: () => boolean
-): void {
+export function setupContainerReadiness(componentName: string, isSelfReady: () => boolean): void {
 	const parentTracker = getPageRenderTrackerContext();
 
 	// No tracker in context → not in PDF mode. Skip all overhead.

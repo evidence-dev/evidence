@@ -1,6 +1,22 @@
+import { z } from 'zod';
 import { WIDTH_ATTRIBUTE } from '../../common/width-attribute';
+import { ZodAttribute } from '../../common/zod-attribute';
 import type { UserComponentSchema } from '../../types';
+import { and } from '../../validators';
+import { isValidationContext, type Validator } from '../../validators/types';
 import { validateEmail } from '../../validators/validateEmail';
+import { commentaryScopeError, parseCommentaryScope } from './commentary-scope';
+
+const validateScope: Validator = (node, _config, context) => {
+	if (!isValidationContext(context) || !context.filters) return [];
+	const message = commentaryScopeError(
+		parseCommentaryScope(node.attributes.scope),
+		context.filters
+	);
+	return message
+		? [{ id: 'invalid-commentary-scope', level: 'error', message, location: node.location }]
+		: [];
+};
 
 const attributes = {
 	id: {
@@ -9,12 +25,11 @@ const attributes = {
 		description: 'Unique identifier for the commentary component'
 	},
 	scope: {
-		type: String,
+		type: ZodAttribute.create(z.union([z.string(), z.array(z.string())])),
 		required: false,
-		matches: ['page', 'period'],
 		default: 'page',
 		description:
-			'Save commentary for the whole page (page) or the selected reporting period (period). Period scope requires workflow.period in the page frontmatter.'
+			'What the commentary is kept for: `page` (one for the whole page), `period` (one per reporting period; requires `workflow.period` in the frontmatter), an input id, or a list such as `["period", "fund"]` (one per combination of selected values). Inputs must be single-select: dropdown, button_group, input_tabs, toggle or period_selector.'
 	},
 	placeholder: {
 		type: String,
@@ -59,7 +74,7 @@ export const schema = {
 	selfClosing: true,
 	description: 'Allows users to input commentary to be saved with the page',
 	attributes: attributes,
-	validate: validateEmail('allowedEditors'),
+	validate: and(validateEmail('allowedEditors'), validateScope),
 	componentWrapper: {
 		display: 'block',
 		width: 'full',
@@ -78,6 +93,12 @@ export const schema = {
 		{
 			title: 'Reporting-period commentary',
 			example: '{% commentary id="monthly-review" scope="period" /%}'
+		},
+		{
+			title: 'Commentary per period and input',
+			example: `{% dropdown id="category" data="demo.daily_orders" value_column="category" select_first=true /%}
+
+{% commentary id="category-review" scope=["period", "category"] /%}`
 		}
 	]
 } as const satisfies UserComponentSchema;

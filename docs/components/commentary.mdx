@@ -23,6 +23,14 @@ description: Allows users to input commentary to be saved with the page
 {% commentary id="monthly-review" scope="period" /%}
 ````
 
+### Commentary per period and input
+
+````liquid
+{% dropdown id="category" data="demo.daily_orders" value_column="category" select_first=true /%}
+
+{% commentary id="category-review" scope=["period", "category"] /%}
+````
+
 ## Attributes
 
 <ResponseField name="id" type="string" required>
@@ -30,11 +38,7 @@ description: Allows users to input commentary to be saved with the page
 </ResponseField>
 
 <ResponseField name="scope" type="string" default="page">
-  Save commentary for the whole page (page) or the selected reporting period (period). Period scope requires workflow.period in the page frontmatter.
-
-**Allowed values:**
-- `page`
-- `period`
+  What the commentary is kept for: `page` (one for the whole page), `period` (one per reporting period; requires `workflow.period` in the frontmatter), an input id, or a list such as `["period", "fund"]` (one per combination of selected values). Inputs must be single-select: dropdown, button_group, input_tabs, toggle or period_selector.
 </ResponseField>
 
 <ResponseField name="placeholder" type="string">
