@@ -70,6 +70,27 @@ gcloud iam service-accounts keys create <some/local/path>/evidence-bq-primary.js
   </Step>
 </Steps>
 
+### Application Default Credentials (CLI and self-hosted)
+
+When running the CLI or a self-hosted `evidence serve`, you can skip the key file and use [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials) instead:
+
+```yaml
+type: bigquery
+project: my-gcp-project
+adc: true
+datasets:
+  - analytics
+```
+
+Evidence then authenticates with, in order:
+
+1. The key file at `GOOGLE_APPLICATION_CREDENTIALS`.
+2. Your own login from `gcloud auth application-default login`.
+3. The attached service account when running on GCP (Cloud Run, GCE, GKE).
+
+The identity needs the same **BigQuery Job User** and **BigQuery Data Viewer** roles described above.
+
+
 {/* GENERATED:CONNECTION-OPTIONS START */}
 
 ## Configuration reference
@@ -122,7 +143,7 @@ gcloud iam service-accounts keys create <some/local/path>/evidence-bq-primary.js
 
     #### Credentials
 
-    _Provide exactly one of `keyfile_json`, `keyfile`._
+    _Provide exactly one of `keyfile_json`, `keyfile`, `adc`._
 
     <ResponseField name="project" type="string" required>
       GCP project that owns the BigQuery datasets you want to query.
@@ -132,6 +153,9 @@ gcloud iam service-accounts keys create <some/local/path>/evidence-bq-primary.js
     </ResponseField>
     <ResponseField name="keyfile" type="string">
       Path to a service-account key JSON file, resolved relative to connection.yaml.
+    </ResponseField>
+    <ResponseField name="adc" type="true">
+      Use Application Default Credentials (gcloud auth application-default login, GOOGLE_APPLICATION_CREDENTIALS, or the GCP metadata server).
     </ResponseField>
     <ResponseField name="location" type="string">
       Default query location (e.g. US, EU, us-central1).

@@ -44,7 +44,7 @@ database: "<database>"
 const BIGQUERY_TEMPLATE = `# BigQuery direct connector. Docs: https://docs.evidence.dev/direct-connectors/bigquery
 type: bigquery
 project: "<project-id>"
-keyfile: ./service-account.json # or inline keyfile_json
+keyfile: ./service-account.json # or inline keyfile_json, or adc: true
 datasets: # accessible datasets, required (at least one)
   - "<dataset>"
 # location: US # default query location, optional

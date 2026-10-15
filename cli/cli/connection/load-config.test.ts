@@ -129,11 +129,34 @@ describe('loadConnectionConfig', () => {
 			).toBe(validKeyfileJson.client_email);
 		});
 
-		it('rejects when neither keyfile nor keyfile_json present', async () => {
+		it('rejects when no auth method is present', async () => {
 			await writeYaml(`type: bigquery\nproject: p\ndatasets: [d]\n`);
 			await expect(loadConnectionConfig(workDir)).rejects.toThrow(
-				/Provide one of: keyfile_json, keyfile/
+				/Provide one of: keyfile_json, keyfile, adc/
 			);
+		});
+
+		it('resolves adc: true without a key', async () => {
+			await writeYaml(`type: bigquery\nproject: p\nlocation: EU\ndatasets: [d]\nadc: true\n`);
+			const cfg = await loadConnectionConfig(workDir);
+			expect(cfg).toEqual({
+				type: 'bigquery',
+				authType: 'adc',
+				projectId: 'p',
+				location: 'EU',
+				defaultDataset: undefined,
+				datasets: ['d']
+			});
+		});
+
+		it('rejects adc combined with a keyfile', async () => {
+			await writeYaml(`type: bigquery\nproject: p\ndatasets: [d]\nadc: true\nkeyfile: ./sa.json\n`);
+			await expect(loadConnectionConfig(workDir)).rejects.toThrow(/Provide only one of/);
+		});
+
+		it('rejects adc: false', async () => {
+			await writeYaml(`type: bigquery\nproject: p\ndatasets: [d]\nadc: false\n`);
+			await expect(loadConnectionConfig(workDir)).rejects.toThrow();
 		});
 	});
 

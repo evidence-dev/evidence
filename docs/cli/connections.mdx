@@ -63,7 +63,7 @@ Fill in the placeholders with your own connection details. If `--warehouse` is o
     # location: US
     ```
 
-    Provide exactly one of `keyfile` or `keyfile_json`. The `keyfile` path is resolved relative to `connection.yaml`.
+    Provide exactly one of `keyfile`, `keyfile_json`, or `adc: true`. The `keyfile` path is resolved relative to `connection.yaml`. With `adc: true`, Evidence uses [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials), such as your `gcloud auth application-default login` session.
 
     See the [BigQuery direct connector](/direct-connectors/bigquery) for the full field reference and the service-account setup steps.
   </Tab>
