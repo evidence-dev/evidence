@@ -51,6 +51,12 @@ export type UserComponentFlex = {
 	minHeight?: number | 'children';
 
 	/**
+	 * Size the component to its content in a row instead of starting from zero width. For fixed-size controls
+	 * that should neither stretch nor be squeezed below their natural width.
+	 */
+	fitContent?: boolean;
+
+	/**
 	 * A compact control (an input or a single value) rather than a content block. In a `row` with
 	 * `justify` set to center, end or between it keeps its minimum width instead of stretching, so
 	 * justify can move it.

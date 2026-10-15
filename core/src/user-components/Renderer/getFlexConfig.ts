@@ -8,6 +8,7 @@ type FlexConfig = {
 	minWidth: number;
 	narrowMinWidth?: number;
 	minHeight?: number;
+	fitContent?: boolean;
 	compact?: boolean;
 };
 
@@ -24,7 +25,8 @@ export const getFlexConfig = (node: RenderableTreeNode): FlexConfig | undefined 
 	) {
 		return;
 	}
-	const { grow, minWidth, narrowMinWidth, minHeight, compact } = schema.componentWrapper.flex;
+	const { grow, minWidth, narrowMinWidth, minHeight, fitContent, compact } =
+		schema.componentWrapper.flex;
 
 	// TODO there may be some edge cases to handle here to ensure sensible layouts when, for example, a row is nested within a row (or other complex nestings)
 	const childMaxes = node.children.reduce<FlexConfig>(
@@ -68,6 +70,7 @@ export const getFlexConfig = (node: RenderableTreeNode): FlexConfig | undefined 
 		minWidth: minWidth === 'children' ? childMaxes.minWidth : minWidth,
 		narrowMinWidth,
 		minHeight: minHeight === 'children' ? childMaxes.minHeight : minHeight,
+		fitContent,
 		compact
 	};
 };

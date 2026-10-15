@@ -15,8 +15,7 @@
 	import DOMPurify from 'dompurify';
 	import { untrack } from 'svelte';
 	import { getPageFiltersContext } from '../../../page-filters-context';
-	import { PeriodFilter } from '../workflow_period/PeriodFilter.svelte';
-	import { WORKFLOW_PERIOD_FILTER_ID } from '../../common/reporting-periods';
+	import { getWorkflowPeriodFilter } from '../workflow_period/PeriodFilter.svelte';
 	import { setupRenderReadiness } from '../../../readiness.svelte';
 
 	type Props = Omit<UserComponentProps<typeof schema>, 'scope'> & {
@@ -34,10 +33,7 @@
 	const auth = $state(getAuthContext());
 	const pageFilters = getPageFiltersContext();
 	const scope = $derived(props.scope ?? 'page');
-	const periodFilter = $derived.by(() => {
-		const filter = pageFilters?.get(WORKFLOW_PERIOD_FILTER_ID);
-		return filter instanceof PeriodFilter ? filter : undefined;
-	});
+	const periodFilter = $derived(getWorkflowPeriodFilter(pageFilters));
 	const scopeError = $derived(
 		scope === 'period' && !periodFilter
 			? 'Commentary with scope="period" requires workflow.period in the page frontmatter.'

@@ -15,7 +15,10 @@ import { extractMapSource } from '../../tags/custom_map/extract-map-source';
 import { extractHtmlSource } from '../../tags/html/extract-html-source';
 import { parseFrontmatter } from '../../../utils/parseFrontmatter';
 import { parseWorkflowPeriod } from '../../../config/workflow-frontmatter';
-import { PeriodFilter } from '../../tags/workflow_period/PeriodFilter.svelte';
+import {
+	PeriodFilter,
+	getWorkflowPeriodFilter
+} from '../../tags/workflow_period/PeriodFilter.svelte';
 import { WORKFLOW_PERIOD_FILTER_ID } from '../../common/reporting-periods';
 import type { CustomComponentMeta } from '../../custom-components';
 
@@ -128,6 +131,17 @@ export function registerFiltersFromAST(
 		}
 	}
 
+	// A `period_selector` with the workflow id places the frontmatter's picker
+	// rather than declaring an input of its own.
+	const placedWorkflowPeriod =
+		!!workflowPeriod &&
+		[
+			ast,
+			...[...partialTagNodes.keys()].map((name) => partials?.[name]),
+			...[...componentTagNodes.keys()].map((fullPath) => partials?.[fullPath])
+		].some((node) => node && containsWorkflowPeriodSelector(node));
+	const skipWorkflowPeriodSelector = !!workflowPeriod;
+
 	// Remove filters that are no longer in the AST or partials. Two cleanup
 	// rules layered together:
 	//   1. Static external (pre-registered by our html scan): reap if its
@@ -150,8 +164,15 @@ export function registerFiltersFromAST(
 		}
 	}
 
+	// The frontmatter block was deleted but a period_selector keeps the id alive:
+	// drop the workflow filter so the tag registers its own, keeping the reader's period.
+	const outgoingWorkflowPeriod = workflowPeriod ? undefined : getWorkflowPeriodFilter(filters);
+	if (outgoingWorkflowPeriod) {
+		filters.remove(WORKFLOW_PERIOD_FILTER_ID, { keepValue: true });
+	}
+
 	// Second pass: register new filters from main AST
-	addOrUpdateFilters(ast, filters, config);
+	addOrUpdateFilters(ast, filters, config, skipWorkflowPeriodSelector);
 
 	// Third pass: register new filters from referenced partials only
 	if (partials) {
@@ -162,7 +183,7 @@ export function registerFiltersFromAST(
 				// This reuses the same logic as the partial transform
 				const scopedConfig = createScopedConfig(partialTagNode, config);
 				if (scopedConfig) {
-					addOrUpdateFilters(partialAst, filters, scopedConfig);
+					addOrUpdateFilters(partialAst, filters, scopedConfig, skipWorkflowPeriodSelector);
 				}
 			}
 		}
@@ -179,13 +200,18 @@ export function registerFiltersFromAST(
 			const meta = componentMeta[componentTagNode.tag as string];
 			if (!body || !meta) continue;
 			const scopedConfig = createComponentScopedConfig(componentTagNode, meta, body, config);
-			addOrUpdateFilters(body, filters, scopedConfig);
+			addOrUpdateFilters(body, filters, scopedConfig, skipWorkflowPeriodSelector);
 		}
+	}
+
+	const incoming = filters.get(WORKFLOW_PERIOD_FILTER_ID);
+	if (outgoingWorkflowPeriod && incoming instanceof PeriodFilter && incoming.value === undefined) {
+		incoming.setDefault(outgoingWorkflowPeriod.value);
 	}
 
 	// After the AST passes, so an author's own `period` input wins the collision.
 	if (workflowPeriod) {
-		registerWorkflowPeriodFilter(filters, workflowPeriod);
+		registerWorkflowPeriodFilter(filters, workflowPeriod, placedWorkflowPeriod);
 	}
 
 	// Fourth pass: pre-register static externals. We do this AFTER AST-tag
@@ -203,22 +229,33 @@ export function registerFiltersFromAST(
  */
 function registerWorkflowPeriodFilter(
 	filters: Filters,
-	config: NonNullable<ReturnType<typeof parseWorkflowPeriod>>
+	config: NonNullable<ReturnType<typeof parseWorkflowPeriod>>,
+	placed: boolean
 ): void {
-	const attributes = { grain: config.grain, periods: config.periods };
+	const attributes = {
+		grain: config.grain,
+		periods: config.periods,
+		...(placed ? { placed } : {})
+	};
 	const existing = filters.get(WORKFLOW_PERIOD_FILTER_ID);
 
 	if (existing) {
 		// An author-declared input owns the id; leave it alone.
 		if (!(existing instanceof PeriodFilter)) return;
-		if (!isEqual(existing.attributes, attributes)) existing.attributes = attributes;
-		return;
+		if (existing.isWorkflowPeriod) {
+			if (!isEqual(existing.attributes, attributes)) existing.attributes = attributes;
+			return;
+		}
+		// A period_selector registered the id before the frontmatter block was added.
+		filters.remove(WORKFLOW_PERIOD_FILTER_ID, { keepValue: true });
 	}
 
-	filters.create(
+	const created = filters.create(
 		{ id: WORKFLOW_PERIOD_FILTER_ID, userComponentName: 'workflow_period', attributes },
 		PeriodFilter
 	);
+	if (existing?.value !== undefined && created.value === undefined)
+		created.setDefault(existing.value);
 }
 
 function collectComponentTagNodes(
@@ -433,6 +470,23 @@ function readMapBody(
 	} as Config & { evidenceSources: EvidenceSourcesMap });
 }
 
+function isWorkflowPeriodSelector(node: Node): boolean {
+	return (
+		node.type === 'tag' &&
+		node.tag === 'period_selector' &&
+		node.attributes.id === WORKFLOW_PERIOD_FILTER_ID
+	);
+}
+
+// A selector that may not render must not hide the default one: two selectors beat none.
+const CONDITIONAL_TAGS = new Set(['if', 'slot']);
+
+function containsWorkflowPeriodSelector(node: Node): boolean {
+	if (isWorkflowPeriodSelector(node)) return true;
+	if (node.type === 'tag' && CONDITIONAL_TAGS.has(node.tag ?? '')) return false;
+	return node.children?.some(containsWorkflowPeriodSelector) ?? false;
+}
+
 function collectFilterIds(node: Node, filterIds: Set<string>): void {
 	// If this is a user component with a Filter class, collect its filter ID
 	if (node.type === 'tag' && node.tag && isUserComponent(node.tag)) {
@@ -450,9 +504,19 @@ function collectFilterIds(node: Node, filterIds: Set<string>): void {
 	}
 }
 
-function addOrUpdateFilters(node: Node, filters: Filters, config: Config): void {
+function addOrUpdateFilters(
+	node: Node,
+	filters: Filters,
+	config: Config,
+	skipWorkflowPeriodSelector: boolean
+): void {
 	// If this is a user component with a Filter class, update or create a filter for it
-	if (node.type === 'tag' && node.tag && isUserComponent(node.tag)) {
+	if (
+		node.type === 'tag' &&
+		node.tag &&
+		isUserComponent(node.tag) &&
+		!(skipWorkflowPeriodSelector && isWorkflowPeriodSelector(node))
+	) {
 		const userComponent = getUserComponent(node.tag);
 		if (userComponent.Filter && node.attributes.id && typeof node.attributes.id === 'string') {
 			const filter = filters.get(node.attributes.id);
@@ -510,7 +574,7 @@ function addOrUpdateFilters(node: Node, filters: Filters, config: Config): void 
 	// Recursively walk children
 	if (node.children) {
 		for (const child of node.children) {
-			addOrUpdateFilters(child, filters, config);
+			addOrUpdateFilters(child, filters, config, skipWorkflowPeriodSelector);
 		}
 	}
 }

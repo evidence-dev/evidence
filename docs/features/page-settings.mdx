@@ -93,7 +93,7 @@ This hides the menu options. It doesn't prevent other ways of saving the page, s
 
 ### `workflow.period`
 
-Adding a `workflow.period` block turns the page into a **periodic report**: a period picker appears at the top right, and the selected period is available as the `period` variable.
+Adding a `workflow.period` block turns the page into a **periodic report**: a period picker appears at the top of the page, and the selected period is available as the `period` variable.
 
 ````markdown
 ---
@@ -109,7 +109,7 @@ workflow:
 ```sql monthly_orders
 select count(*) as orders
 from demo.daily_orders
-where order_date {{ period.between }}
+where date {{ period.between }}
 ```
 ````
 
@@ -136,6 +136,15 @@ The picker follows the project's [date settings](/features/project-settings): "c
 | `period.grain` | `month` | The configured grain. |
 
 `period.start` and `period.end` are SQL expressions for the active dialect — writing them in markdown prints `toDate('2026-07-01')`. Use `start_label` / `end_label` for text.
+
+To put the picker somewhere else, such as next to the page title or alongside other inputs, add a [`period_selector`](/components/period_selector) with `id="period"`. The picker then appears there instead of at the top of the page. Its grain and periods still come from the frontmatter. A selector inside an `{% if %}` block or a component slot's fallback content doesn't replace the top one, since it may not render.
+
+```markdown
+{% row align="center" justify="between" %}
+# {{ period.label }} Operations Review
+{% period_selector id="period" /%}
+{% /row %}
+```
 
 `workflow` is reserved for reporting settings; other keys under it are ignored for now.
 

@@ -942,7 +942,8 @@
                   "components/table_filter",
                   "components/text_input",
                   "components/toggle",
-                  "components/dimension_grid"
+                  "components/dimension_grid",
+                  "components/period_selector"
                 ]
               },
               {

@@ -2,8 +2,10 @@ import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte
 import type { SqlDialect } from '../../../sql-dialect';
 import type { UserComponentProps } from '../../types';
 import type { schema } from './schema';
+import type { Filters } from '../../../Filters.svelte';
 import { processDateRange } from '../../common/date-options';
 import {
+	WORKFLOW_PERIOD_FILTER_ID,
 	buildReportingPeriods,
 	isPeriodGrain,
 	parsePeriodKey,
@@ -18,7 +20,12 @@ import {
 } from '../../common/reporting-periods';
 import { parseDateStringAsLocalMidnight } from '../../../utils/date-utils';
 
-type PeriodAttributes = UserComponentProps<typeof schema>;
+type PeriodAttributes = UserComponentProps<typeof schema> & {
+	/** Set on the workflow period when the page places its own `period_selector` for it. */
+	placed?: boolean;
+};
+
+const WORKFLOW_PERIOD_COMPONENT = 'workflow_period';
 
 export type PeriodValue = {
 	/** The selected period's key, e.g. `2026-07`. Single source of truth for URL state. */
@@ -32,6 +39,16 @@ export class PeriodFilter extends Filter<PeriodValue> {
 	// Reactive, unlike other filters: there is no tag component to re-render when the
 	// frontmatter changes, so the picker and period-scoped components read this directly.
 	attributes: Omit<PeriodAttributes, 'id'> = $state.raw({});
+
+	// Follows the live attributes: editing `value_column` in place must make the filter usable in `filters=[...]`.
+	override get queryOnly(): boolean {
+		return !this.attributes.value_column;
+	}
+
+	/** True for the page's `workflow.period`, false for an independent `period_selector`. */
+	get isWorkflowPeriod(): boolean {
+		return this.userComponentName === WORKFLOW_PERIOD_COMPONENT;
+	}
 
 	get grain(): PeriodGrain {
 		const grain = this.attributes.grain;
@@ -118,7 +135,10 @@ export class PeriodFilter extends Filter<PeriodValue> {
 		};
 	}
 
-	constructor(init: FilterInit<'workflow_period', PeriodAttributes>, deps: FilterDeps) {
+	constructor(
+		init: FilterInit<'workflow_period' | 'period_selector', PeriodAttributes>,
+		deps: FilterDeps
+	) {
 		super(
 			init.id,
 			init.userComponentName,
@@ -131,4 +151,10 @@ export class PeriodFilter extends Filter<PeriodValue> {
 		);
 		this.attributes = init.attributes;
 	}
+}
+
+/** The page's `workflow.period` filter, or undefined if the page doesn't declare one. */
+export function getWorkflowPeriodFilter(filters: Filters | undefined): PeriodFilter | undefined {
+	const filter = filters?.get(WORKFLOW_PERIOD_FILTER_ID);
+	return filter instanceof PeriodFilter && filter.isWorkflowPeriod ? filter : undefined;
 }

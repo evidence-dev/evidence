@@ -5,6 +5,7 @@ import type { ValidationContext } from '../../validators';
 import { resolveDialect } from '../../validators/types';
 import { defaultDialect, type SqlDialect } from '../../../sql-dialect';
 import { validateDeprecatedFrontmatterKeys } from '../../validators/validateDeprecatedFrontmatter';
+import { validateWorkflowFrontmatter } from '../../validators/validateWorkflowFrontmatter';
 import { validateInvalidIconName } from '../../validators/validateInvalidIconName';
 import { isAgentPath } from '../../agent-path';
 import { registerFiltersFromAST } from './register-filters';
@@ -976,6 +977,7 @@ export function validate(
 	const deprecatedFrontmatterErrors = isAgentFile
 		? []
 		: validateDeprecatedFrontmatterKeys(rawFrontmatter, validationContext);
+	const workflowFrontmatterErrors = isAgentFile ? [] : validateWorkflowFrontmatter(rawFrontmatter);
 	const invalidIconErrors = isAgentFile
 		? []
 		: validateInvalidIconName(rawFrontmatter, validationContext);
@@ -1004,6 +1006,7 @@ export function validate(
 		...nestedInlineQueryErrors,
 		...htmlTagErrors,
 		...deprecatedFrontmatterErrors,
+		...workflowFrontmatterErrors,
 		...invalidIconErrors,
 		...yamlErrors,
 		...validateSharedComponentInputs(
@@ -1395,7 +1398,8 @@ const FILTER_INPUT_COMPONENTS = new Set([
 	'toggle',
 	'button_group',
 	'table_filter',
-	'slider'
+	'slider',
+	'period_selector'
 ]);
 
 // TODO does this need to be recursive to work on non-root-level nodes?

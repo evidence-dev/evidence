@@ -1,5 +1,5 @@
 import type { UserComponentSchema } from '../../types';
-import { PERIOD_GRAINS, DEFAULT_PERIOD_COUNT } from '../../common/reporting-periods';
+import { PERIOD_CONFIG_ATTRIBUTES, PERIOD_FILTER_PROPERTIES } from '../period_selector/schema';
 
 /**
  * Not an authorable tag — `registerFiltersFromAST` synthesizes this from
@@ -21,79 +21,8 @@ export const schema = {
 			description: 'The id of the reporting period variable',
 			affectsQuery: false
 		},
-		grain: {
-			type: String,
-			required: false,
-			description: 'The calendar grain each reporting period covers',
-			matches: Array.from(PERIOD_GRAINS),
-			affectsQuery: false
-		},
-		periods: {
-			type: Number,
-			required: false,
-			description: `How many complete periods to offer (default ${DEFAULT_PERIOD_COUNT})`,
-			affectsQuery: false
-		},
-		value_column: {
-			type: String,
-			required: false,
-			description: 'Column the period filters on, enabling use in a `filters=[...]` list',
-			affectsQuery: false
-		}
+		...PERIOD_CONFIG_ATTRIBUTES
 	},
-	filterProperties: [
-		{
-			name: 'between',
-			defaultFor: ['sql'],
-			description:
-				'A WHERE-clause fragment covering the period in the active SQL dialect: `BETWEEN <start> AND <end>`.',
-			singleValue: "BETWEEN toDate('2026-07-01') AND toDate('2026-07-31')"
-		},
-		{
-			name: 'label',
-			defaultFor: ['text', 'column'],
-			description: 'The period’s display label, e.g. `Jul 2026`.',
-			singleValue: 'Jul 2026'
-		},
-		{
-			name: 'start',
-			description:
-				'The first date of the period, as an expression for the active SQL dialect. Use `start_label` in prose.',
-			singleValue: "toDate('2026-07-01')"
-		},
-		{
-			name: 'end',
-			description:
-				'The last date of the period (inclusive), for the active SQL dialect. Use `end_label` in prose.',
-			singleValue: "toDate('2026-07-31')"
-		},
-		{
-			name: 'start_label',
-			description: 'The first date of the period, formatted for display.',
-			singleValue: 'Jul 1, 2026'
-		},
-		{
-			name: 'end_label',
-			description: 'The last date of the period (inclusive), formatted for display.',
-			singleValue: 'Jul 31, 2026'
-		},
-		{
-			name: 'filter',
-			description:
-				'A complete SQL filter expression for the period. Requires `value_column`; resolves to `true` without it.',
-			singleValue: "order_date >= toDate('2026-07-01') AND order_date <= toDate('2026-07-31')"
-		},
-		{
-			name: 'key',
-			description:
-				'The period’s stable identifier, e.g. `2026-07`. Use it to key per-period records.',
-			singleValue: '2026-07'
-		},
-		{
-			name: 'grain',
-			description: 'The period grain, e.g. `month`.',
-			singleValue: 'month'
-		}
-	],
+	filterProperties: PERIOD_FILTER_PROPERTIES,
 	componentWrapper: false
 } as const satisfies UserComponentSchema;

@@ -136,9 +136,10 @@ export class Filters {
 		return this.#staticExternalIds.has(id);
 	}
 
-	remove(id: string) {
+	/** `keepValue` leaves the URL param in place, for a filter that is about to be replaced under the same id. */
+	remove(id: string, { keepValue = false }: { keepValue?: boolean } = {}) {
 		const filter = this.#filters.get(id);
-		if (filter) {
+		if (filter && !keepValue) {
 			filter.value = undefined;
 		}
 		this.#filters.delete(id);

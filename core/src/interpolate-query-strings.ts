@@ -1,6 +1,13 @@
 import type { Filters } from './Filters.svelte';
 import type { InlineQueries } from './user-components/common/inline-queries';
 import { findClosestMatch } from './utils/findClosestMatch';
+
+// Name the input's real properties: a generic hint like `.selected` doesn't exist on every input.
+function missingPropertyMessage(filterId: string, property: string, available: string[]): string {
+	const bestMatch = findClosestMatch(property, available);
+	const suggestion = bestMatch ? ` Did you mean \`${filterId}.${bestMatch}\`?` : '';
+	return `Missing filter property \`${filterId}.${property}\`.${suggestion} Available: ${available.join(', ')}.`;
+}
 import { browser } from './shims/env';
 import { logger } from './shims/logger';
 // posthog is only initialized in Evidence Studio; these captures no-op in the CLI.
@@ -617,15 +624,10 @@ function evaluateTemplate(
 
 	if (!propertyExists) {
 		// Property doesn't exist - report error and use fallback if available
+		errors.push(missingPropertyMessage(filterId, property, Object.keys(templateValues)));
 		if (fallbackPart !== undefined) {
-			errors.push(
-				'Missing filter property (e.g. ' + filterId + '.selected, ' + filterId + '.filter)'
-			);
 			return { value: String(fallbackPart || ''), hasValue: true };
 		}
-		errors.push(
-			'Missing filter property (e.g. ' + filterId + '.selected, ' + filterId + '.filter)'
-		);
 		return { value: '', hasValue: false };
 	}
 

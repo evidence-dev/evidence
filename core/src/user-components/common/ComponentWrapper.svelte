@@ -413,7 +413,7 @@
 			flex: `
 			flex-grow: ${hasWidth ? '0' : flexConfig.grow};
 			flex-shrink: 0;
-			flex-basis: ${hasWidth ? `${props.width}%` : '0px'};
+			flex-basis: ${hasWidth ? `${props.width}%` : flexConfig.fitContent ? 'auto' : '0px'};
 		`
 		};
 	});

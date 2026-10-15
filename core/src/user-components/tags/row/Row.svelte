@@ -160,7 +160,8 @@
 		'toggle',
 		'button_group',
 		'table_filter',
-		'slider'
+		'slider',
+		'period_selector'
 	]);
 
 	// Flush density: record each card tile's measured grid position so base.css

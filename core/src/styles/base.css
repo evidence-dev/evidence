@@ -352,7 +352,8 @@
 		[data-component-type='text_input'],
 		[data-component-type='range_calendar'],
 		[data-component-type='toggle'],
-		[data-component-type='slider']
+		[data-component-type='slider'],
+		[data-component-type='period_selector']
 	)
 	:is(.mb-3, .mb-4, .pb-1) {
 	margin-bottom: 0 !important;
