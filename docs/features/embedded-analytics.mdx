@@ -185,10 +185,17 @@ Creates a secure embed session and returns a single-use embed URL.
 | `testMode`   | boolean | No       | Enable test mode (default: false)                    |
 | `language`   | string  | No       | Display language code (e.g., "en", "fr")             |
 | `colorScheme` | string  | No       | Report color scheme: `"light"` (default) or `"dark"` |
+| `enableAIChat` | boolean | No      | Show the AI chat widget inside the embed (default: false) |
 
 #### Report Color Scheme
 
 Set `colorScheme` to `"dark"` to render the embedded report with the theme's dark-mode colors (backgrounds, text, chart palettes). Omit it (or pass `"light"`) for the default light rendering. PDFs downloaded from the embedded view follow the same scheme.
+
+#### AI Chat in Embedded Reports
+
+Set `enableAIChat` to `true` to show the AI chat widget inside the embedded report, so your users can ask questions about the page without leaving your application. Chat is off by default — existing embed sessions are unaffected.
+
+The embedded chat is scoped to the embedded page: it can run the page's own saved queries (not arbitrary SQL), while row-level security still applies per user. Chat usage is metered against your workspace's AI credits, exactly like chat on published reports.
 
 #### User Attributes
 
