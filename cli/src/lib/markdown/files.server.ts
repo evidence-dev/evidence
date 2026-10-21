@@ -349,7 +349,12 @@ export async function getNavItems(dir: string): Promise<NavItem[]> {
  * outside the walked content roots, so without these the signature never flips
  * on a theme/config/translations edit and the page stays stale until refresh.
  */
-const ROOT_CONFIG_FILES = ['theme.yaml', 'evidence.config.yaml', 'translations.yaml'];
+const ROOT_CONFIG_FILES = [
+	'theme.yaml',
+	'evidence.config.yaml',
+	'translations.yaml',
+	'connection.yaml'
+];
 
 /** Path+mtime signature of all render inputs; flips on any change so the dev poll catches shared deps (partials/sql/config) a per-page check misses. */
 export async function getProjectSignature(projectRoot: string): Promise<string> {

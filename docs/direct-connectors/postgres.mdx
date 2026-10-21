@@ -93,6 +93,8 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO evidence;
   </Tab>
   <Tab title="CLI (connection.yaml)">
 
+    If your organization has already set up this connection in Evidence Studio, you don't need a `connection.yaml`. Run `evidence login` instead. See [Connect your CLI to your data](/cli/connections).
+
     ```yaml
     type: postgres
     host: mydb.abc123.us-east-1.rds.amazonaws.com

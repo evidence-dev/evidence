@@ -80,10 +80,10 @@
 			</div>
 			<div class="bg-muted text-muted-foreground mt-8 rounded-lg p-4 text-sm">
 				<p>
-					<strong>Note:</strong> To enable queries, add a
-					<code class="bg-background rounded px-1">connection.yaml</code> to query your own
-					database, or run
-					<code class="bg-background rounded px-1">evidence login</code> to use the hosted Evidence Warehouse.
+					<strong>Note:</strong> To enable queries, run
+					<code class="bg-background rounded px-1">evidence login</code> to use your Evidence Studio
+					organization's connection, or add a
+					<code class="bg-background rounded px-1">connection.yaml</code> to query your own database directly.
 				</p>
 			</div>
 		{/if}

@@ -1,18 +1,28 @@
 ---
 title: 'Connect your CLI to your data'
 sidebarTitle: 'Connections'
-description: 'Connect the Evidence CLI to the Evidence Warehouse or to a warehouse you own.'
+description: 'With an Evidence Studio account, run evidence login. Use connection.yaml only without an account, with different credentials, or offline.'
 ---
 
-How the CLI gets data depends on how your project is set up.
+**If you have an Evidence Studio account, you don't need a `connection.yaml`. Run `evidence login` and the CLI uses the same data connection as your Studio organization.**
 
-## Evidence Warehouse
+```bash
+evidence login
+```
 
-If you use the [Evidence Warehouse](/evidence-warehouse), run `evidence login`. No further setup is needed.
+This works whether your organization uses the [Evidence Warehouse](/evidence-warehouse) or a [direct connection](/evidence-warehouse#direct-connectors) to a warehouse you own (Snowflake, BigQuery, and so on). Queries run through Evidence Studio, so they use the connection, credentials, and access rules your organization has already set up.
 
-## Other warehouses
+## When to use `connection.yaml` instead
 
-If you use a [direct connection](/evidence-warehouse#direct-connectors) to a warehouse you own, add a `connection.yaml` file to the root of your project. When this file is present, the CLI queries your warehouse **directly from your machine** — no login required.
+Add a `connection.yaml` to your project root only if you need one of these:
+
+- **No Evidence Studio account.** For example, you [self-host](/self-host) Evidence.
+- **Different credentials.** For example, a development database or your own warehouse role instead of your organization's.
+- **Offline work.** The CLI queries your warehouse directly from your machine, without going through Evidence Studio.
+
+<Note>
+If a `connection.yaml` is present, the CLI always uses it, even when you're logged in and your organization has a connection. If the file is invalid, queries fail with its error; the CLI does not fall back to your organization's connection. To use your organization's connection, delete the file.
+</Note>
 
 ### Scaffold with `evidence init`
 
@@ -30,7 +40,7 @@ This writes a `connection.yaml` in the project root pre-filled with placeholder 
 `connection.yaml` and any files it references — the Snowflake private-key `.pem` or the BigQuery service-account JSON — contain credentials. Never commit them. `evidence init --warehouse` gitignores `connection.yaml` for you, but **not** the referenced key files: add those to `.gitignore` yourself, or use the inline `private_key` / `keyfile_json` fields so there's no separate file to leak.
 </Warning>
 
-Fill in the placeholders with your own connection details. If `--warehouse` is omitted, no `connection.yaml` is written and the project uses the Evidence Warehouse.
+Fill in the placeholders with your own connection details. If `--warehouse` is omitted, no `connection.yaml` is written and the project uses your Evidence Studio organization's connection after `evidence login`.
 
 ### Configuration
 

@@ -25,7 +25,7 @@ export function hasConnectionYaml(): boolean {
 /** One-line summary of where `dev` will send queries, printed under "Ready at". */
 export async function describeDevMode(): Promise<string> {
 	if (!hasConnectionYaml()) {
-		return 'Evidence Warehouse (managed) — run `evidence login` if you have not yet';
+		return "your Evidence Studio organization's connection — run `evidence login` if you have not yet";
 	}
 	const cwd = process.env.EVIDENCE_PROJECT_CWD || process.cwd();
 	let type = 'connection.yaml';
@@ -83,7 +83,9 @@ export async function warnIfStudioUnreachable(): Promise<void> {
 
 	console.error(`  ⚠ Could not reach Evidence Studio at ${STUDIO_HOST} (${probe.reason}).`);
 	console.error('');
-	console.error('    Pages will render, but queries against the Evidence Warehouse will fail');
+	console.error(
+		"    Pages will render, but queries through your organization's connection will fail"
+	);
 	console.error('    until the connection is restored.');
 	console.error('');
 	console.error('    To query your own database instead, add a connection.yaml — no Studio');

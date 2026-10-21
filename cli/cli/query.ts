@@ -2,8 +2,8 @@
  * SQL Query execution for EVD CLI.
  *
  * If a connection.yaml exists at the project root, queries run directly
- * against the configured warehouse (currently Snowflake). Otherwise the
- * CLI falls back to the managed query engine via studio auth.
+ * against the configured warehouse. Otherwise orgs with a native warehouse
+ * query through Studio's /query/native, and the rest use the managed engine.
  */
 
 import { loadCredentials, clearSessionCache, type StoredCredentials } from './storage.ts';
@@ -16,6 +16,8 @@ import {
 	type ConnectionConfig
 } from './connection/index.ts';
 import { printResult, renderResult, fail, type OutputOptions, type ResultData } from './output.ts';
+import { STUDIO_HOST } from './cli-shared.ts';
+import { queryNative, resolveOrgWarehouse } from './org-warehouse.ts';
 
 /** Default row cap for `query` when neither --limit nor --all is given. */
 const DEFAULT_QUERY_LIMIT = 1000;
@@ -104,6 +106,12 @@ async function getSql(options: QueryOptions): Promise<string> {
 	return readStdin();
 }
 
+function studioAuthCookie(credentials: StoredCredentials): string | undefined {
+	if (credentials.aptToken) return `studio-apt=${credentials.aptToken}`;
+	if (credentials.sealedSession) return `wos-session=${credentials.sealedSession}`;
+	return undefined;
+}
+
 /**
  * Execute a SQL query against the query engine
  */
@@ -114,11 +122,9 @@ async function sendQuery(credentials: StoredCredentials, encodedSql: string): Pr
 		'Content-Type': 'application/json'
 	};
 
-	// Prefer APT cookie if available
-	if (credentials.aptToken) {
-		headers['Cookie'] = `studio-apt=${credentials.aptToken}`;
-	} else if (credentials.sealedSession) {
-		headers['Cookie'] = `wos-session=${credentials.sealedSession}`;
+	const authCookie = studioAuthCookie(credentials);
+	if (authCookie) {
+		headers['Cookie'] = authCookie;
 	} else {
 		headers['Authorization'] = `Bearer ${credentials.accessToken}`;
 	}
@@ -175,7 +181,31 @@ async function executeQueryEngine(sql: string, limit: number | null): Promise<Qu
 		);
 	}
 
+	const organizationId = credentials.organizationId;
 	credentials = await ensureSessionResolved(credentials);
+
+	const authCookie = studioAuthCookie(credentials);
+	const { mode } = await resolveOrgWarehouse(STUDIO_HOST, organizationId, authCookie);
+	if (mode !== 'managed' && authCookie) {
+		let outcome = await queryNative(STUDIO_HOST, authCookie, finalSql);
+		if (!outcome.ok && outcome.status === 401 && !credentials.aptToken) {
+			await clearSessionCache();
+			clearInMemorySessionCache();
+			credentials.sealedSession = undefined;
+			credentials = await ensureSessionResolved(credentials);
+			const retryCookie = studioAuthCookie(credentials);
+			if (retryCookie) outcome = await queryNative(STUDIO_HOST, retryCookie, finalSql);
+		}
+		if (!outcome.ok) throw new Error(outcome.error);
+		return {
+			columns: outcome.columns.map((c) => ({
+				name: c.name,
+				type: c.clickhouseType,
+				nullable: c.nullable
+			})),
+			rows: outcome.rows
+		};
+	}
 
 	const encodedSql = Buffer.from(finalSql).toString('base64');
 

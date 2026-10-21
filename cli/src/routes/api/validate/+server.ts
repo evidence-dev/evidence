@@ -31,6 +31,7 @@ import { schemaAllowlist } from '@evidence/core/connectors/schema-allowlist';
 import { loadProjectConfig } from '$cli/project-config/load-config';
 import { loadCredentials } from '$lib/auth/credentials.server';
 import { ServerQueryService, type ConnectionType } from '$lib/server/ServerQueryService';
+import { resolveConnection } from '$lib/server/run-query';
 import { Metadata } from '@evidence/core/metadata/Metadata.svelte';
 import type { WarehouseMode } from '@evidence/core/connectors/warehouse-mode';
 import pc from 'picocolors';
@@ -263,6 +264,8 @@ async function loadMetadata(cwd: string): Promise<{
 			mode: 'syntax-only'
 		};
 	}
+
+	if (hasManaged) ({ connectionType, schemaAllowlist: allowlist } = await resolveConnection(null));
 
 	// connectionType values match WarehouseMode names 1:1; null → managed engine.
 	const warehouseMode: WarehouseMode = connectionType ?? 'managed';

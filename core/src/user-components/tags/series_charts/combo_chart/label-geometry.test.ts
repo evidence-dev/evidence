@@ -269,7 +269,8 @@ const isKnownFailure = (violation: string, args: RenderArgs) =>
 	// Rotated category labels overlapping on narrow charts.
 	(xAxisType(args) === 'string' && /^overlap: x "[^"]*" ⟷ x /.test(violation));
 
-describe('label geometry: generated charts', () => {
+// Each property renders 300 full charts: ~5–6s under CI coverage, past vitest's 5s default.
+describe('label geometry: generated charts', { timeout: 30_000 }, () => {
 	it('every chart obeys the layout rules, apart from the known failures below', () => {
 		fc.assert(
 			fc.property(anyChartsForSurvey, (args) => {

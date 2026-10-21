@@ -5,6 +5,7 @@
 import { homedir } from 'os';
 import { join } from 'path';
 import { readFile, writeFile, unlink, mkdir } from 'fs/promises';
+import { clearOrgWarehouseCache } from '$cli/org-warehouse';
 
 export interface StoredCredentials {
 	accessToken: string;
@@ -123,9 +124,22 @@ export async function loadCredentials(): Promise<StoredCredentials | null> {
 /** Cached sealed session keyed by org (avoids repeated /api/cli/session calls) */
 let cachedSealedSession: { orgId: string; session: string } | undefined;
 
-/** Clear the in-memory session cache (e.g. after a 401/403 from the query engine) */
-export function clearSessionCache(): void {
+// Offline or slow Studio: back off instead of re-fetching (and re-warning) on every page load.
+const SESSION_RETRY_BACKOFF_MS = 60 * 1000;
+const SESSION_FETCH_TIMEOUT_MS = 5000;
+let lastSessionFailure: { orgId: string; at: number } | undefined;
+// Bumped by logout / org switch / login so a late session exchange can't resurrect stale credentials.
+let credentialsGeneration = 0;
+
+/**
+ * Clear the in-memory session cache (e.g. after a 401/403 from the query engine).
+ * `keepBackoff`: a rejection that never used a sealed session says nothing about Studio's
+ * reachability, so it must not cut short the retry backoff.
+ */
+export function clearSessionCache({ keepBackoff = false }: { keepBackoff?: boolean } = {}): void {
 	cachedSealedSession = undefined;
+	if (!keepBackoff) lastSessionFailure = undefined;
+	clearOrgWarehouseCache();
 }
 
 /**
@@ -148,37 +162,31 @@ export async function ensureSessionResolved(
 		throw new Error('No organization selected. Cannot create session.');
 	}
 
+	if (
+		!credentials.fromEnv &&
+		lastSessionFailure?.orgId === credentials.organizationId &&
+		Date.now() - lastSessionFailure.at < SESSION_RETRY_BACKOFF_MS
+	) {
+		return credentials;
+	}
+
+	const organizationId = credentials.organizationId;
+	// Never abort the exchange itself: it spends the single-use refresh token, so it must be
+	// allowed to finish and save the replacement even after we stop waiting for it.
+	const exchange = exchangeSession(credentials, studioHost, organizationId);
+	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const response = await fetch(`${studioHost}/api/cli/session`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				refreshToken: credentials.refreshToken,
-				organizationId: credentials.organizationId
+		const outcome = await Promise.race([
+			exchange.then(() => 'done' as const),
+			new Promise<'timeout'>((resolve) => {
+				timer = setTimeout(() => resolve('timeout'), SESSION_FETCH_TIMEOUT_MS);
 			})
-		});
-
-		if (!response.ok) {
-			const error = await response.text();
-			throw new Error(`Failed to create session: ${response.status}: ${error}`);
-		}
-
-		const data = await response.json();
-		if (!data.sealedSession) {
-			throw new Error('Server returned OK but sealedSession was missing from response.');
-		}
-
-		credentials.sealedSession = data.sealedSession;
-		cachedSealedSession = { orgId: credentials.organizationId, session: data.sealedSession };
-
-		// Track rotated refresh token
-		if (data.refreshToken) {
-			credentials.refreshToken = data.refreshToken;
-		}
-
-		// Persist to file only if credentials came from file
-		if (!credentials.fromEnv) {
-			await saveCredentials(credentials);
+		]);
+		if (outcome === 'timeout') {
+			exchange.catch(() => {
+				lastSessionFailure = { orgId: organizationId, at: Date.now() };
+			});
+			throw new Error(`Evidence Studio did not respond within ${SESSION_FETCH_TIMEOUT_MS}ms`);
 		}
 	} catch (err) {
 		if (credentials.fromEnv) {
@@ -186,13 +194,59 @@ export async function ensureSessionResolved(
 				`Failed to create session from EVIDENCE_AUTH_TOKEN: ${err}\n  The token may be expired. Run \`evidence login\` and \`evidence token\` to generate a new one.`
 			);
 		}
+		lastSessionFailure = { orgId: organizationId, at: Date.now() };
 		console.error(`  Warning: could not create sealed session: ${err}`);
+	} finally {
+		clearTimeout(timer);
 	}
 
 	return credentials;
 }
 
+async function exchangeSession(
+	credentials: StoredCredentials,
+	studioHost: string,
+	organizationId: string
+): Promise<void> {
+	const generation = credentialsGeneration;
+	const response = await fetch(`${studioHost}/api/cli/session`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ refreshToken: credentials.refreshToken, organizationId })
+	});
+
+	if (!response.ok) {
+		const error = await response.text();
+		throw new Error(`Failed to create session: ${response.status}: ${error}`);
+	}
+
+	const data = await response.json();
+	if (!data.sealedSession) {
+		throw new Error('Server returned OK but sealedSession was missing from response.');
+	}
+	if (generation !== credentialsGeneration) return;
+
+	credentials.sealedSession = data.sealedSession;
+	cachedSealedSession = { orgId: organizationId, session: data.sealedSession };
+	lastSessionFailure = undefined;
+
+	// Track rotated refresh token
+	if (data.refreshToken) {
+		credentials.refreshToken = data.refreshToken;
+	}
+
+	// Persist to file only if credentials came from file
+	if (!credentials.fromEnv) {
+		await writeCredentialsFile(credentials);
+	}
+}
+
 export async function saveCredentials(credentials: StoredCredentials): Promise<void> {
+	credentialsGeneration++;
+	await writeCredentialsFile(credentials);
+}
+
+async function writeCredentialsFile(credentials: StoredCredentials): Promise<void> {
 	await ensureDir();
 	await writeFile(CREDENTIALS_FILE, JSON.stringify(credentials, null, 2), {
 		encoding: 'utf-8',
@@ -201,6 +255,7 @@ export async function saveCredentials(credentials: StoredCredentials): Promise<v
 }
 
 export async function clearCredentials(): Promise<void> {
+	credentialsGeneration++;
 	try {
 		await unlink(CREDENTIALS_FILE);
 	} catch {

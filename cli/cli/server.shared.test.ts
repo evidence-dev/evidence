@@ -127,6 +127,6 @@ describe('describeDevMode', () => {
 
 	it('reports managed mode without a connection.yaml', async () => {
 		const line = await describeDevMode();
-		expect(line).toContain('Evidence Warehouse (managed)');
+		expect(line).toContain("Evidence Studio organization's connection");
 	});
 });

@@ -5,6 +5,7 @@
 	import * as DropdownMenu from '@evidence/core/shadcn/components/ui/dropdown-menu';
 	import * as Avatar from '@evidence/core/shadcn/components/ui/avatar';
 	import { Button } from '@evidence/core/shadcn/components/ui/button';
+	import * as Alert from '@evidence/core/shadcn/components/ui/alert';
 	import { TooltipProvider } from '@evidence/core/shadcn/components/ui/tooltip';
 	import PageNavTree from '@evidence/core/viewer-components/PageNavTree.svelte';
 	import LanguageMenuItems from '@evidence/core/viewer-components/LanguageMenuItems.svelte';
@@ -24,7 +25,8 @@
 		MoonIcon,
 		Fullscreen,
 		Minimize,
-		User
+		User,
+		TriangleAlert
 	} from 'lucide-svelte';
 	import { createFullscreen } from '@evidence/core/utils/fullscreen.svelte';
 	import { isPageDownloadEnabled } from '@evidence/core/config/page-frontmatter-schema';
@@ -81,6 +83,18 @@
 		}, 1000);
 
 		return () => clearInterval(interval);
+	});
+
+	// Once per browser session: it's advice, not an error.
+	const CONNECTION_HINT_SEEN_KEY = 'evidence:connection-yaml-hint-seen';
+	$effect(() => {
+		const hint = data.connectionHint;
+		if (!hint) return;
+		hint.then((message) => {
+			if (!message || sessionStorage.getItem(CONNECTION_HINT_SEEN_KEY)) return;
+			sessionStorage.setItem(CONNECTION_HINT_SEEN_KEY, '1');
+			toast.info(message, { duration: 12000 });
+		});
 	});
 
 	const orgDisplayName = $derived(
@@ -403,6 +417,15 @@
 						</DropdownMenu.Root>
 					</div>
 				</header>
+				{#if data.connectionError}
+					<Alert.Root variant="destructive" class="rounded-none border-x-0 border-t-0 print:hidden">
+						<TriangleAlert />
+						<Alert.Title>connection.yaml is invalid</Alert.Title>
+						<Alert.Description>
+							<p>Queries won't run until it's fixed: {data.connectionError}</p>
+						</Alert.Description>
+					</Alert.Root>
+				{/if}
 				<div class="report-viewport min-w-0 flex-1 overflow-auto overflow-x-hidden scroll-smooth">
 					<!-- Remount page on navigation so that contexts are re-initialized properly -->
 					{#key page.url.pathname}

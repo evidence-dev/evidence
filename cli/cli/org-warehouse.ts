@@ -1,0 +1,140 @@
+/**
+ * Which warehouse a Studio org serves from, and how to query it when it's native.
+ *
+ * Orgs with a native warehouse (Snowflake, BigQuery, …) don't have their data in the
+ * managed engine, so without a local connection.yaml the CLI must go through Studio's
+ * /query/native — the same path the web app uses.
+ */
+
+import { WAREHOUSE_MODES, type WarehouseMode } from '@evidence/core/connectors/warehouse-mode';
+import type { WarehouseType } from '@evidence/core/sql-dialect';
+import type { Column } from '@evidence/core/user-components/interfaces/query-service';
+
+export interface OrgWarehouse {
+	mode: WarehouseMode;
+	schemaAllowlist: string[];
+}
+
+const MANAGED: OrgWarehouse = { mode: 'managed', schemaAllowlist: [] };
+// Bounded so a warehouse switched in Studio is picked up by a running `evidence dev`.
+const CACHE_TTL_MS = 5 * 60 * 1000;
+// Failures are cached too, briefly, so an offline or old Studio isn't re-asked on every query.
+const FAILURE_TTL_MS = 60 * 1000;
+// Short: page loads and validate wait on this before falling back to managed.
+const LOOKUP_TIMEOUT_MS = 5000;
+
+const cache = new Map<string, { value: OrgWarehouse; expiresAt: number }>();
+
+export function clearOrgWarehouseCache(): void {
+	cache.clear();
+}
+
+// Fails open to managed so an unreachable Studio never blocks local dev.
+export async function resolveOrgWarehouse(
+	studioHost: string,
+	organizationId: string,
+	authCookie: string | undefined
+): Promise<OrgWarehouse> {
+	const cached = cache.get(organizationId);
+	if (cached && Date.now() < cached.expiresAt) return cached.value;
+	if (!authCookie) return MANAGED;
+
+	const remember = (value: OrgWarehouse, ttlMs: number) => {
+		cache.set(organizationId, { value, expiresAt: Date.now() + ttlMs });
+		return value;
+	};
+	try {
+		const response = await fetch(`${studioHost}/query/warehouse`, {
+			headers: { Cookie: authCookie },
+			redirect: 'manual',
+			signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS)
+		});
+		if (!response.ok) return remember(MANAGED, FAILURE_TTL_MS);
+		return remember(parseOrgWarehouse(await response.json()), CACHE_TTL_MS);
+	} catch {
+		return remember(MANAGED, FAILURE_TTL_MS);
+	}
+}
+
+export function parseOrgWarehouse(body: unknown): OrgWarehouse {
+	const b = (body ?? {}) as { warehouseMode?: unknown; schemaAllowlist?: unknown };
+	const mode = WAREHOUSE_MODES.includes(b.warehouseMode as WarehouseMode)
+		? (b.warehouseMode as WarehouseMode)
+		: 'managed';
+	const schemaAllowlist = Array.isArray(b.schemaAllowlist)
+		? b.schemaAllowlist.filter((s): s is string => typeof s === 'string')
+		: [];
+	return { mode, schemaAllowlist };
+}
+
+const WAREHOUSE_LABELS: Record<WarehouseMode, string> = {
+	managed: 'Evidence',
+	snowflake: 'Snowflake',
+	bigquery: 'BigQuery',
+	fabric: 'Microsoft Fabric',
+	clickhouse: 'ClickHouse',
+	databricks: 'Databricks',
+	postgres: 'PostgreSQL',
+	cube: 'Cube',
+	motherduck: 'MotherDuck'
+};
+
+export function warehouseLabel(mode: WarehouseMode): string {
+	return WAREHOUSE_LABELS[mode];
+}
+
+export function warehouseTypeForMode(mode: WarehouseMode): WarehouseType | null {
+	return mode === 'managed' ? null : mode;
+}
+
+export type NativeQueryOutcome =
+	| { ok: true; rows: Record<string, unknown>[]; columns: Column[] }
+	| { ok: false; error: string; status: number };
+
+export async function queryNative(
+	studioHost: string,
+	authCookie: string,
+	sql: string
+): Promise<NativeQueryOutcome> {
+	const response = await fetch(`${studioHost}/query/native`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', Cookie: authCookie },
+		body: JSON.stringify({ query: sql }),
+		redirect: 'manual'
+	});
+	return parseNativeQueryResponse(response.status, await response.text());
+}
+
+export function parseNativeQueryResponse(status: number, text: string): NativeQueryOutcome {
+	// An expired session redirects to sign-in rather than 401-ing.
+	if (status === 401 || status === 403 || (status >= 300 && status < 400)) {
+		return { ok: false, error: 'Session expired. Please log in again.', status: 401 };
+	}
+
+	let data: {
+		result?: { rows?: Record<string, unknown>[]; columns?: Column[] };
+		error?: string;
+		message?: string;
+	};
+	try {
+		data = JSON.parse(text);
+	} catch {
+		return {
+			ok: false,
+			error: `Native query error (${status}): ${text}`,
+			status: status >= 400 ? status : 500
+		};
+	}
+
+	if (status < 200 || status >= 300) {
+		return {
+			ok: false,
+			error: data.message || data.error || `Native query error (${status})`,
+			status
+		};
+	}
+	// SQL errors come back as 200 with `error` set.
+	if (data.error) return { ok: false, error: data.error, status: 400 };
+
+	return { ok: true, rows: data.result?.rows ?? [], columns: data.result?.columns ?? [] };
+}

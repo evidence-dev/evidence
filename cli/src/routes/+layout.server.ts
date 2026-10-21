@@ -9,6 +9,7 @@ import { getNavItems } from '$lib/markdown/files.server';
 import { loadCredentials } from '$lib/auth/credentials.server';
 import { getProjectCwd } from '$lib/server/project-cwd';
 import { isServeMode } from '$lib/server/serve-mode';
+import { connectionYamlHint, resolveConnection } from '$lib/server/run-query';
 import { loadConnectionConfig } from '$cli/connection';
 import { loadProjectConfig } from '$cli/project-config/load-config';
 import { resolveProjectTheme } from '$lib/server/theme.server';
@@ -66,8 +67,26 @@ export const load: LayoutServerLoad = async ({ url, cookies }) => {
 	// Serve mode ships only with connection.yaml projects, so there is no
 	// Studio session to load and no org lookup to make.
 	const credentials = isServe ? null : await loadCredentials();
-	const connectionConfig = await loadConnectionConfig(cwd).catch(() => null);
-	const connectionType: WarehouseType | null = connectionConfig?.type ?? null;
+	let connectionConfig: Awaited<ReturnType<typeof loadConnectionConfig>> = null;
+	let connectionError: string | null = null;
+	try {
+		connectionConfig = await loadConnectionConfig(cwd);
+	} catch (e) {
+		connectionError = e instanceof Error ? e.message : 'Failed to load connection.yaml';
+	}
+	// A present connection.yaml always wins, even when invalid: queries report its error rather
+	// than falling back to the Studio or managed warehouse.
+	const connection: { connectionType: WarehouseType | null; schemaAllowlist: string[] } =
+		isServe || connectionError
+			? {
+					connectionType: connectionConfig?.type ?? null,
+					schemaAllowlist: schemaAllowlist(connectionConfig?.type ?? 'managed', connectionConfig)
+				}
+			: await resolveConnection(connectionConfig);
+	// Streamed so the Studio lookup never delays rendering for connection.yaml users.
+	const connectionHint =
+		!isServe && connectionConfig && credentials?.organizationId ? connectionYamlHint() : null;
+	const connectionType = connection.connectionType;
 	const hasLocalConnection = existsSync(path.join(cwd, 'connection.yaml'));
 	const projectConfig = await loadProjectConfig(cwd).catch(() => null);
 	const projectName = projectConfig?.project.name ?? null;
@@ -107,8 +126,10 @@ export const load: LayoutServerLoad = async ({ url, cookies }) => {
 		organizationName,
 		organizations,
 		connectionType,
-		schemaAllowlist: schemaAllowlist(connectionType ?? 'managed', connectionConfig),
+		schemaAllowlist: connection.schemaAllowlist,
 		hasLocalConnection,
+		connectionError,
+		connectionHint,
 		isServe
 	};
 };
