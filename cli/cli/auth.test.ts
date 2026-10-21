@@ -8,7 +8,8 @@ import {
 	ensureAuthenticated,
 	listOrgs,
 	switchOrg,
-	generateToken
+	generateToken,
+	logout
 } from './auth.ts';
 import type { StoredCredentials } from './storage.ts';
 import type { OutputOptions } from './output.ts';
@@ -555,5 +556,111 @@ describe('org commands on an expired token', () => {
 		const out = output();
 		expect(out).toContain('Session expired');
 		expect(out).not.toContain('EVIDENCE_AUTH_TOKEN=');
+	});
+});
+
+describe('logout', () => {
+	let errSpy: ReturnType<typeof vi.spyOn>;
+
+	beforeEach(() => {
+		vi.clearAllMocks();
+		vi.restoreAllMocks();
+		errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+	});
+
+	const errOutput = () => errSpy.mock.calls.map((c: unknown[]) => c[0]).join('\n');
+
+	it('revokes via Studio with APT-only auth when an APT is present', async () => {
+		// `authenticateCliRequest` only takes its APT-only path when
+		// `refreshToken` is empty, so sending both would push revocation back
+		// onto the WorkOS exchange — defeating the whole point of this fix.
+		const creds = makeCredentials({
+			aptToken: 'apt_live',
+			aptIntrospect: {
+				tokenHash: 'hash_abc',
+				userId: 'u1',
+				organizationId: 'org_1',
+				role: 'developer',
+				plan: 'team',
+				expiration: null
+			} as unknown as StoredCredentials['aptIntrospect'],
+			sealedSession: 'expired-sealed-session'
+		});
+		vi.mocked(loadCredentialsFromFile).mockResolvedValueOnce(creds);
+		const fetchSpy = vi
+			.spyOn(globalThis, 'fetch')
+			.mockResolvedValueOnce(new Response(JSON.stringify({ ok: true }), { status: 200 }));
+
+		await logout();
+
+		expect(fetchSpy).toHaveBeenCalledOnce();
+		const [url, opts] = fetchSpy.mock.calls[0];
+		expect(String(url)).toContain('/api/cli/apt');
+		expect((opts as RequestInit).method).toBe('DELETE');
+		const body = JSON.parse((opts as RequestInit).body as string);
+		expect(body).toMatchObject({ aptToken: 'apt_live', tokenHash: 'hash_abc' });
+		expect(body.refreshToken).toBeUndefined();
+		const headers = (opts as RequestInit).headers as Record<string, string>;
+		expect(headers?.Cookie).toBeUndefined();
+		expect(errOutput()).not.toContain('could not revoke');
+		expect(clearCredentials).toHaveBeenCalled();
+		expect(clearSessionCache).toHaveBeenCalled();
+	});
+
+	it('falls back to refresh-token auth when no APT is stored', async () => {
+		const creds = makeCredentials({
+			aptIntrospect: {
+				tokenHash: 'hash_legacy',
+				userId: 'u1',
+				organizationId: 'org_1',
+				role: 'developer',
+				plan: 'team',
+				expiration: null
+			} as unknown as StoredCredentials['aptIntrospect']
+		});
+		vi.mocked(loadCredentialsFromFile).mockResolvedValueOnce(creds);
+		const fetchSpy = vi
+			.spyOn(globalThis, 'fetch')
+			.mockResolvedValueOnce(new Response(JSON.stringify({ ok: true }), { status: 200 }));
+
+		await logout();
+
+		const body = JSON.parse((fetchSpy.mock.calls[0][1] as RequestInit).body as string);
+		expect(body).toMatchObject({ refreshToken: 'rt_test', tokenHash: 'hash_legacy' });
+		expect(body.aptToken).toBeUndefined();
+	});
+
+	it('surfaces revoke failures as a warning but still clears local credentials', async () => {
+		const creds = makeCredentials({
+			aptToken: 'apt_live',
+			aptIntrospect: {
+				tokenHash: 'hash_abc',
+				userId: 'u1',
+				organizationId: 'org_1',
+				role: 'developer',
+				plan: 'team',
+				expiration: null
+			} as unknown as StoredCredentials['aptIntrospect']
+		});
+		vi.mocked(loadCredentialsFromFile).mockResolvedValueOnce(creds);
+		vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+			new Response('"Not authorized"', { status: 401 })
+		);
+
+		await logout();
+
+		expect(errOutput()).toContain('could not revoke CLI token');
+		expect(clearCredentials).toHaveBeenCalled();
+		expect(clearSessionCache).toHaveBeenCalled();
+	});
+
+	it('skips the revoke call when there is no APT to revoke', async () => {
+		vi.mocked(loadCredentialsFromFile).mockResolvedValueOnce(makeCredentials());
+		const fetchSpy = vi.spyOn(globalThis, 'fetch');
+
+		await logout();
+
+		expect(fetchSpy).not.toHaveBeenCalled();
+		expect(clearCredentials).toHaveBeenCalled();
 	});
 });

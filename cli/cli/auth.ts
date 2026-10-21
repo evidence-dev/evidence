@@ -27,9 +27,6 @@ const DEFAULT_CLIENT_ID = DEFAULT_WORKOS_CLIENT_ID;
 // Studio host for session creation endpoint
 const STUDIO_HOST = process.env.PUBLIC_STUDIO_HOST || 'https://evidence.studio';
 
-// Management service host for APT operations
-const MANAGEMENT_SERVICE_HOST = process.env.PUBLIC_MANAGEMENT_SERVICE_HOST || 'https://api.evidence.studio';
-
 interface DeviceAuthResponse {
 	device_code: string;
 	user_code: string;
@@ -360,35 +357,51 @@ async function createCLIToken(
 }
 
 /**
- * Revokes an Auth Proxy Token (APT).
- * Calls the management service DELETE /v1/auth/apt/token directly with the sealed session.
+ * Revokes an Auth Proxy Token (APT) via the Studio proxy.
+ *
+ * Prefer APT auth when available: it's the one credential still live after an
+ * idle period. `authenticateCliRequest` only takes the APT-only path when
+ * `refreshToken` is empty, so send the two inputs as mutually exclusive.
+ *
+ * Returns the rotated refresh token when the refresh-token path was used, so
+ * callers that keep writing credentials (e.g. `switchOrg`) can persist it.
  */
 async function revokeCLIToken(
 	tokenHash: string,
-	sealedSession: string
-): Promise<void> {
-	const response = await fetch(`${MANAGEMENT_SERVICE_HOST}/v1/auth/apt/token`, {
+	credentials: Pick<StoredCredentials, 'aptToken' | 'refreshToken' | 'organizationId'>
+): Promise<{ refreshToken?: string }> {
+	if (!credentials.aptToken && !credentials.refreshToken) {
+		throw new Error('No credentials available to authenticate token revocation');
+	}
+
+	const useApt = !!credentials.aptToken;
+	const response = await fetch(`${STUDIO_HOST}/api/cli/apt`, {
 		method: 'DELETE',
-		headers: {
-			'Content-Type': 'application/json',
-			Cookie: `wos-session=${sealedSession}`
-		},
-		body: JSON.stringify({ tokenHash })
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			aptToken: useApt ? credentials.aptToken : undefined,
+			refreshToken: useApt ? undefined : credentials.refreshToken,
+			organizationId: credentials.organizationId || undefined,
+			tokenHash
+		})
 	});
 
 	if (!response.ok) {
 		const error = await response.text();
 		throw new Error(`${response.status}: ${error}`);
 	}
+
+	const data = (await response.json().catch(() => ({}))) as { refreshToken?: string };
+	return { refreshToken: data.refreshToken || undefined };
 }
 
 export async function login(): Promise<StoredCredentials> {
 	const clientId = getClientId();
 
-	// Capture existing APT for revocation after new one is created
+	// Snapshot the previous credentials so we can revoke the old APT once the
+	// new one is in place, authenticating with the old APT itself.
 	const existingCredentials = await loadCredentialsFromFile();
 	const oldAptTokenHash = existingCredentials?.aptIntrospect?.tokenHash;
-	const oldSealedSession = existingCredentials?.sealedSession;
 
 	// Step 1: Request device authorization
 	const deviceAuth = await requestDeviceAuthorization(clientId);
@@ -467,9 +480,9 @@ export async function login(): Promise<StoredCredentials> {
 	await saveCredentials(credentials);
 
 	// Revoke old APT token if one existed — best-effort, don't fail login
-	if (oldAptTokenHash && oldSealedSession) {
+	if (oldAptTokenHash && existingCredentials) {
 		try {
-			await revokeCLIToken(oldAptTokenHash, oldSealedSession);
+			await revokeCLIToken(oldAptTokenHash, existingCredentials);
 		} catch (err) {
 			console.error(`  Warning: could not revoke previous CLI token: ${err}`);
 		}
@@ -495,10 +508,9 @@ export async function logout(): Promise<void> {
 		});
 	}
 
-	// Revoke APT token if present
-	if (credentials?.aptIntrospect?.tokenHash && credentials?.sealedSession) {
+	if (credentials?.aptIntrospect?.tokenHash && (credentials.aptToken || credentials.refreshToken)) {
 		try {
-			await revokeCLIToken(credentials.aptIntrospect.tokenHash, credentials.sealedSession);
+			await revokeCLIToken(credentials.aptIntrospect.tokenHash, credentials);
 		} catch (err) {
 			console.error(`  Warning: could not revoke CLI token: ${err}`);
 		}
@@ -881,10 +893,11 @@ export async function switchOrg(identifier: string): Promise<void> {
 		console.error('  Queries may not work. Try `evidence login` to re-authenticate.\n');
 	}
 
-	// Capture old APT token hash and sealed session for revocation after new one is created
-	// Do this BEFORE any changes to credentials (which would overwrite sealedSession and aptIntrospect)
+	// Snapshot old-org fields before mutating `credentials` below; the revoke
+	// call needs them to authenticate against the old APT, not the new one.
 	const oldAptTokenHash = credentials.aptIntrospect?.tokenHash;
-	const oldSealedSession = credentials.sealedSession;
+	const oldAptToken = credentials.aptToken;
+	const oldOrganizationId = credentials.organizationId;
 
 	// Update credentials with new org
 	credentials.organizationId = targetOrg.id;
@@ -902,9 +915,16 @@ export async function switchOrg(identifier: string): Promise<void> {
 	}
 
 	// Revoke old APT only after new one is successfully created
-	if (oldAptTokenHash && oldSealedSession && aptResult) {
+	if (oldAptTokenHash && aptResult && (oldAptToken || credentials.refreshToken)) {
 		try {
-			await revokeCLIToken(oldAptTokenHash, oldSealedSession);
+			const result = await revokeCLIToken(oldAptTokenHash, {
+				aptToken: oldAptToken,
+				refreshToken: credentials.refreshToken,
+				organizationId: oldOrganizationId
+			});
+			// Studio rotates the refresh token on the refresh-token auth path; the
+			// unrotated value we still hold would 401 on the next command.
+			if (result.refreshToken) credentials.refreshToken = result.refreshToken;
 		} catch (err) {
 			console.error(`  Warning: could not revoke old CLI token: ${err}`);
 		}
