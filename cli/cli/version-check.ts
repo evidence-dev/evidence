@@ -3,6 +3,7 @@
  * Fetches version.json from Vercel Blob and caches for 12 hours
  */
 
+import { tip } from './log.ts';
 import { homedir } from 'os';
 import { join } from 'path';
 import { mkdir, readFile, writeFile } from 'fs/promises';
@@ -165,7 +166,7 @@ export async function startupVersionCheck(): Promise<void> {
 	}
 
 	if (result.updateAvailable) {
-		console.error(`\n  ↑ Evidence CLI v${result.latest} is available (current: v${VERSION}).`);
-		console.error(`    Run \`evidence upgrade\` to update.\n`);
+		tip(`\n  ↑ Evidence CLI v${result.latest} is available (current: v${VERSION}).`);
+		tip(`    Run \`evidence upgrade\` to update.\n`);
 	}
 }

@@ -35,7 +35,8 @@ export async function startDevServer(options: DevServerOptions): Promise<void> {
 
 	const projectCwd = process.env.EVIDENCE_PROJECT_CWD ?? process.cwd();
 
-	console.log(`  Mode: dev — ${await describeDevMode()}`);
+	const devStatus = await describeDevMode();
+	console.log(`  Mode: dev${devStatus ? `\n  ${devStatus}` : ''}`);
 	console.log(`  Starting vite dev (project: ${projectCwd})\n`);
 
 	const child = spawn('pnpm', viteArgs, {

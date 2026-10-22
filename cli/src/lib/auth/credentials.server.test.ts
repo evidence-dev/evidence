@@ -1,4 +1,21 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterAll } from 'vitest';
+import { rmSync } from 'fs';
+import { join } from 'path';
+
+// The rotated-token test saves credentials; keep it out of the developer's real ~/.evd.
+const { testHomeName } = vi.hoisted(() => ({ testHomeName: `evd-test-home-${process.pid}` }));
+vi.mock('os', async (importOriginal) => {
+	const os = await importOriginal<typeof import('os')>();
+	const { mkdirSync } = await import('fs');
+	const { join } = await import('path');
+	const home = join(os.tmpdir(), testHomeName);
+	mkdirSync(home, { recursive: true });
+	return { ...os, homedir: () => home };
+});
+afterAll(async () => {
+	const os = await vi.importActual<typeof import('os')>('os');
+	rmSync(join(os.tmpdir(), testHomeName), { recursive: true, force: true });
+});
 import { ensureSessionResolved, clearSessionCache } from './credentials.server';
 import type { StoredCredentials } from './credentials.server';
 
@@ -88,7 +105,7 @@ describe('ensureSessionResolved', () => {
 
 	it('logs warning for file-based credentials on failure', async () => {
 		vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new Error('network error'));
-		const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		const consoleSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
 
 		const creds = makeCredentials({ fromEnv: false });
 		const result = await ensureSessionResolved(creds, STUDIO_HOST);

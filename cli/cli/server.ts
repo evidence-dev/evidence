@@ -257,7 +257,8 @@ export async function startServer(options: ServerOptions): Promise<void> {
 		);
 		console.log(`  Bound to ${host}; restart to pick up project changes.\n`);
 	} else {
-		console.log(`  Mode: dev — ${await describeDevMode()}\n`);
+		const devStatus = await describeDevMode();
+		console.log(`  Mode: dev${devStatus ? `\n  ${devStatus}` : ''}\n`);
 	}
 
 	if (open) openBrowser(url);

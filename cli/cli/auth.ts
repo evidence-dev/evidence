@@ -3,6 +3,7 @@
  * https://workos.com/docs/authkit/authentication-methods/cli-auth
  */
 
+import { codeBox, info, tip, warn } from './log.ts';
 import { hostname } from 'os';
 import {
 	saveCredentials,
@@ -205,7 +206,7 @@ export async function ensureSessionResolved(
 				`Failed to create session from EVIDENCE_AUTH_TOKEN: ${err}\n  The token may be expired. Run \`evidence login\` and \`evidence token\` to generate a new one.`
 			);
 		}
-		console.error(`  Warning: could not create sealed session: ${err}`);
+		warn(`  Warning: could not create sealed session: ${err}`);
 	}
 
 	return credentials;
@@ -406,10 +407,10 @@ export async function login(): Promise<StoredCredentials> {
 	// Step 1: Request device authorization
 	const deviceAuth = await requestDeviceAuthorization(clientId);
 
-	// Step 2: Display code and open browser (single line for Cursor preview)
-	console.error(
-		`  Code: ${deviceAuth.user_code} — Opening browser to ${deviceAuth.verification_uri}`
-	);
+	// Step 2: Display code and open browser
+	info('\n  Log in to Evidence Studio in your browser and confirm the code below:\n');
+	info(codeBox(deviceAuth.user_code));
+	info(`\n  Browser didn't open? Go to ${deviceAuth.verification_uri}\n`);
 
 	// Open browser with pre-filled code
 	openBrowser(deviceAuth.verification_uri_complete);
@@ -448,8 +449,8 @@ export async function login(): Promise<StoredCredentials> {
 			refreshToken = sessionData.refreshToken;
 		}
 	} catch (err) {
-		console.error(`  Warning: could not create sealed session: ${err}`);
-		console.error('  Query console may not work.\n');
+		warn(`  Warning: could not create sealed session: ${err}`);
+		warn('  Query console may not work.\n');
 	}
 
 	// Step 5: Store credentials (with the latest refresh token)
@@ -484,12 +485,12 @@ export async function login(): Promise<StoredCredentials> {
 		try {
 			await revokeCLIToken(oldAptTokenHash, existingCredentials);
 		} catch (err) {
-			console.error(`  Warning: could not revoke previous CLI token: ${err}`);
+			warn(`  Warning: could not revoke previous CLI token: ${err}`);
 		}
 	}
 
-	console.error(`  Logged in as ${tokens.user.email}`);
-	console.error(`  Tip: Run \`evidence token\` to get an auth token for headless/CI use.\n`);
+	info(`  Logged in as ${tokens.user.email}`);
+	tip('  Run `evidence dev` to start a dev server.\n');
 
 	return credentials;
 }
@@ -512,13 +513,13 @@ export async function logout(): Promise<void> {
 		try {
 			await revokeCLIToken(credentials.aptIntrospect.tokenHash, credentials);
 		} catch (err) {
-			console.error(`  Warning: could not revoke CLI token: ${err}`);
+			warn(`  Warning: could not revoke CLI token: ${err}`);
 		}
 	}
 
 	await clearCredentials();
 	await clearSessionCache();
-	console.error('  Logged out\n');
+	info('  Logged out\n');
 }
 
 export async function getCredentials(): Promise<StoredCredentials | null> {
@@ -621,7 +622,7 @@ export async function ensureAuthenticated(): Promise<StoredCredentials> {
 
 	// Couldn't reach Studio — proceed with cached credentials (offline dev).
 	if (status === 'network-error') {
-		console.error(
+		warn(
 			'  Warning: could not verify session (offline?). Continuing with cached credentials.\n'
 		);
 		return ensureSessionResolved(credentials);
@@ -889,8 +890,8 @@ export async function switchOrg(identifier: string): Promise<void> {
 			credentials.refreshToken = sessionData.refreshToken;
 		}
 	} catch (err) {
-		console.error(`  Warning: could not create sealed session: ${err}`);
-		console.error('  Queries may not work. Try `evidence login` to re-authenticate.\n');
+		warn(`  Warning: could not create sealed session: ${err}`);
+		warn('  Queries may not work. Try `evidence login` to re-authenticate.\n');
 	}
 
 	// Snapshot old-org fields before mutating `credentials` below; the revoke
@@ -911,7 +912,7 @@ export async function switchOrg(identifier: string): Promise<void> {
 		credentials.aptIntrospect = aptResult.introspect;
 		credentials.refreshToken = aptResult.refreshToken; // Use the rotated refresh token
 	} catch (err) {
-		console.error(`  Warning: could not create CLI token for new org: ${err}`);
+		warn(`  Warning: could not create CLI token for new org: ${err}`);
 	}
 
 	// Revoke old APT only after new one is successfully created
@@ -926,7 +927,7 @@ export async function switchOrg(identifier: string): Promise<void> {
 			// unrotated value we still hold would 401 on the next command.
 			if (result.refreshToken) credentials.refreshToken = result.refreshToken;
 		} catch (err) {
-			console.error(`  Warning: could not revoke old CLI token: ${err}`);
+			warn(`  Warning: could not revoke old CLI token: ${err}`);
 		}
 	}
 

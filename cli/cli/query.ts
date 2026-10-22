@@ -6,6 +6,7 @@
  * query through Studio's /query/native, and the rest use the managed engine.
  */
 
+import { info } from './log.ts';
 import { loadCredentials, clearSessionCache, type StoredCredentials } from './storage.ts';
 import { ensureSessionResolved, clearInMemorySessionCache } from './auth.ts';
 import type { QueryOptions } from './args.ts';
@@ -291,7 +292,7 @@ export async function runQuery(options: QueryOptions, opts: OutputOptions): Prom
 	// Status chatter is for humans only — never pollute the machine-readable
 	// stdout, and only show it under --verbose.
 	const status = (msg: string) => {
-		if (opts.verbose) console.error(msg);
+		if (opts.verbose) info(msg);
 	};
 
 	try {
@@ -330,7 +331,7 @@ export async function runQuery(options: QueryOptions, opts: OutputOptions): Prom
 			const fileOpts: OutputOptions = { ...outOpts, interactive: false };
 			await writeFile(options.output, renderResult(data, fileOpts) + '\n');
 			status(`  📁 Results written to ${options.output}`);
-			if (data.note) console.error(data.note);
+			if (data.note) info(data.note);
 		} else {
 			printResult(data, outOpts);
 		}

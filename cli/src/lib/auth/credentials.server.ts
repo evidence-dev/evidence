@@ -6,6 +6,7 @@ import { homedir } from 'os';
 import { join } from 'path';
 import { readFile, writeFile, unlink, mkdir } from 'fs/promises';
 import { clearOrgWarehouseCache } from '$cli/org-warehouse';
+import { warn } from '$cli/log';
 
 export interface StoredCredentials {
 	accessToken: string;
@@ -195,7 +196,7 @@ export async function ensureSessionResolved(
 			);
 		}
 		lastSessionFailure = { orgId: organizationId, at: Date.now() };
-		console.error(`  Warning: could not create sealed session: ${err}`);
+		warn(`  Warning: could not create sealed session: ${err}`);
 	} finally {
 		clearTimeout(timer);
 	}

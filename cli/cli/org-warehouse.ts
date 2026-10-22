@@ -6,6 +6,7 @@
  * /query/native — the same path the web app uses.
  */
 
+import { warn } from './log.ts';
 import { WAREHOUSE_MODES, type WarehouseMode } from '@evidence/core/connectors/warehouse-mode';
 import type { WarehouseType } from '@evidence/core/sql-dialect';
 import type { Column } from '@evidence/core/user-components/interfaces/query-service';
@@ -29,6 +30,34 @@ export function clearOrgWarehouseCache(): void {
 	cache.clear();
 }
 
+/** evidence.studio ↔ www.evidence.studio: the only redirect our session cookie may follow. */
+export function isSameSiteRedirect(from: string, to: string): boolean {
+	const a = new URL(from);
+	const b = new URL(to);
+	if (b.protocol !== a.protocol) return false;
+	const bare = (host: string) => (host.startsWith('www.') ? host.slice(4) : host);
+	return bare(a.host) === bare(b.host);
+}
+
+// Follow Vercel's apex→www redirect by hand so the cookie only ever goes to Studio.
+async function fetchStudio(url: string, init: RequestInit): Promise<Response> {
+	let current = url;
+	for (let hop = 0; hop < 3; hop++) {
+		const response = await fetch(current, { ...init, redirect: 'manual' });
+		const location = response.headers.get('location');
+		if (response.status < 300 || response.status >= 400 || !location) return response;
+		const next = new URL(location, current).toString();
+		if (
+			!isSameSiteRedirect(current, next) ||
+			new URL(next).pathname !== new URL(current).pathname
+		) {
+			return response;
+		}
+		current = next;
+	}
+	return fetch(current, { ...init, redirect: 'manual' });
+}
+
 // Fails open to managed so an unreachable Studio never blocks local dev.
 export async function resolveOrgWarehouse(
 	studioHost: string,
@@ -43,16 +72,22 @@ export async function resolveOrgWarehouse(
 		cache.set(organizationId, { value, expiresAt: Date.now() + ttlMs });
 		return value;
 	};
+	// Never silent: a failed lookup sends queries to the Evidence Warehouse instead.
+	const fellBack = (reason: string) => {
+		warn(
+			`  Warning: couldn't look up your organization's warehouse (${reason}); using the Evidence Warehouse.`
+		);
+		return remember(MANAGED, FAILURE_TTL_MS);
+	};
 	try {
-		const response = await fetch(`${studioHost}/query/warehouse`, {
+		const response = await fetchStudio(`${studioHost}/query/warehouse`, {
 			headers: { Cookie: authCookie },
-			redirect: 'manual',
 			signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS)
 		});
-		if (!response.ok) return remember(MANAGED, FAILURE_TTL_MS);
+		if (!response.ok) return fellBack(`HTTP ${response.status}`);
 		return remember(parseOrgWarehouse(await response.json()), CACHE_TTL_MS);
-	} catch {
-		return remember(MANAGED, FAILURE_TTL_MS);
+	} catch (err) {
+		return fellBack(err instanceof Error ? err.message : String(err));
 	}
 }
 
@@ -96,11 +131,10 @@ export async function queryNative(
 	authCookie: string,
 	sql: string
 ): Promise<NativeQueryOutcome> {
-	const response = await fetch(`${studioHost}/query/native`, {
+	const response = await fetchStudio(`${studioHost}/query/native`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json', Cookie: authCookie },
-		body: JSON.stringify({ query: sql }),
-		redirect: 'manual'
+		body: JSON.stringify({ query: sql })
 	});
 	return parseNativeQueryResponse(response.status, await response.text());
 }

@@ -5,9 +5,9 @@
 
 import { exec } from 'child_process';
 import { existsSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import yaml from 'js-yaml';
+import { loadCredentials, type StoredCredentials } from './storage.ts';
+import { warn } from './log.ts';
 
 const STUDIO_HOST = process.env.PUBLIC_STUDIO_HOST || 'https://evidence.studio';
 
@@ -22,22 +22,18 @@ export function hasConnectionYaml(): boolean {
 	return existsSync(path.join(cwd, 'connection.yaml'));
 }
 
-/** One-line summary of where `dev` will send queries, printed under "Ready at". */
-export async function describeDevMode(): Promise<string> {
-	if (!hasConnectionYaml()) {
-		return "your Evidence Studio organization's connection — run `evidence login` if you have not yet";
+/** Login status (or the connection.yaml tip) printed under "Mode: dev"; null prints nothing. */
+export async function describeDevMode(
+	getCredentials: () => Promise<StoredCredentials | null> = loadCredentials
+): Promise<string | null> {
+	const credentials = await getCredentials().catch(() => null);
+	if (!credentials?.organizationId) return null;
+	if (hasConnectionYaml()) {
+		return "You're logged in to Evidence Studio. If your organization already has a connection, delete connection.yaml to use it.";
 	}
-	const cwd = process.env.EVIDENCE_PROJECT_CWD || process.cwd();
-	let type = 'connection.yaml';
-	try {
-		// Only `type`: a missing secret must not stop the server from starting.
-		const raw = yaml.load(await readFile(path.join(cwd, 'connection.yaml'), 'utf-8'));
-		const declared = (raw as { type?: unknown } | null)?.type;
-		if (typeof declared === 'string' && declared) type = declared;
-	} catch {
-		/* malformed YAML is reported at query time */
-	}
-	return `direct connector (${type}) — no Evidence Studio login required`;
+	return credentials.user?.email
+		? `Logged in as ${credentials.user.email}`
+		: 'Logged in to Evidence Studio';
 }
 
 export function describeFetchFailure(err: unknown, timeoutMs: number): string {
@@ -81,17 +77,15 @@ export async function warnIfStudioUnreachable(): Promise<void> {
 	const probe = await checkStudioServer();
 	if (probe.ok) return;
 
-	console.error(`  ⚠ Could not reach Evidence Studio at ${STUDIO_HOST} (${probe.reason}).`);
-	console.error('');
-	console.error(
-		"    Pages will render, but queries through your organization's connection will fail"
-	);
-	console.error('    until the connection is restored.');
-	console.error('');
-	console.error('    To query your own database instead, add a connection.yaml — no Studio');
-	console.error('    connection is needed for direct connectors.');
-	console.error('    If you are behind a corporate proxy, set HTTPS_PROXY.');
-	console.error('');
+	warn(`  ⚠ Could not reach Evidence Studio at ${STUDIO_HOST} (${probe.reason}).`);
+	warn('');
+	warn("    Pages will render, but queries through your organization's connection will fail");
+	warn('    until the connection is restored.');
+	warn('');
+	warn('    To query your own database instead, add a connection.yaml — no Studio');
+	warn('    connection is needed for direct connectors.');
+	warn('    If you are behind a corporate proxy, set HTTPS_PROXY.');
+	warn('');
 }
 
 export function openBrowser(url: string): void {

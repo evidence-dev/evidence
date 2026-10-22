@@ -132,7 +132,7 @@ describe('ensureSessionResolved', () => {
 
 	it('logs warning for file-based credentials on fetch failure', async () => {
 		vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new Error('network error'));
-		const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		const consoleSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
 
 		const creds = makeCredentials({ fromEnv: false });
 		const result = await ensureSessionResolved(creds);
@@ -565,7 +565,7 @@ describe('logout', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		vi.restoreAllMocks();
-		errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		errSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
 	});
 
 	const errOutput = () => errSpy.mock.calls.map((c: unknown[]) => c[0]).join('\n');

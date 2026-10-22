@@ -2,6 +2,7 @@
  * Connectors command — list connectors with health status
  */
 
+import { warn } from './log.ts';
 import { loadCredentials } from './storage.ts';
 import { ensureAuthenticated } from './auth.ts';
 import { renderCompactTable } from './table.ts';
@@ -140,7 +141,7 @@ export async function listConnectors(opts: OutputOptions): Promise<void> {
 				console.error(`  ✗ ${c.name}: ${c.statusDetail ?? 'Error'}`);
 			}
 			for (const c of connectors.filter((c) => c.status === 'Warning')) {
-				console.error(`  ⚠ ${c.name}: ${c.statusDetail ?? 'Warning'}`);
+				warn(`  ⚠ ${c.name}: ${c.statusDetail ?? 'Warning'}`);
 			}
 			process.exit(0);
 		}

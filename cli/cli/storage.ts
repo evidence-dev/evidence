@@ -3,6 +3,7 @@
  * Stores auth tokens in ~/.evd/credentials.json
  */
 
+import { warn } from './log.ts';
 import { homedir } from 'os';
 import { join } from 'path';
 import { mkdir, readFile, writeFile, unlink } from 'fs/promises';
@@ -124,7 +125,7 @@ export function loadCredentialsFromEnv(): StoredCredentials | null {
 		const decoded = JSON.parse(Buffer.from(token, 'base64').toString('utf-8'));
 
 		if (!decoded.organizationId) {
-			console.error(
+			warn(
 				'  Warning: EVIDENCE_AUTH_TOKEN is missing required field (organizationId).'
 			);
 			return null;
@@ -150,7 +151,7 @@ export function loadCredentialsFromEnv(): StoredCredentials | null {
 
 		// Legacy format: { refreshToken, organizationId, sealedSession? }
 		if (!decoded.refreshToken) {
-			console.error(
+			warn(
 				'  Warning: EVIDENCE_AUTH_TOKEN is missing required fields (refreshToken or aptToken).'
 			);
 			return null;
@@ -171,7 +172,7 @@ export function loadCredentialsFromEnv(): StoredCredentials | null {
 			fromEnv: true
 		};
 	} catch {
-		console.error('  Warning: EVIDENCE_AUTH_TOKEN is malformed (expected base64-encoded JSON).');
+		warn('  Warning: EVIDENCE_AUTH_TOKEN is malformed (expected base64-encoded JSON).');
 		return null;
 	}
 }

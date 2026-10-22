@@ -1,3 +1,4 @@
+import type { StoredCredentials } from './storage.ts';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mkdtemp, writeFile, rm } from 'fs/promises';
 import { tmpdir } from 'os';
@@ -71,7 +72,7 @@ describe('warnIfStudioUnreachable', () => {
 
 		const fetchSpy = vi.fn();
 		vi.stubGlobal('fetch', fetchSpy);
-		const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		const errSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
 
 		await warnIfStudioUnreachable();
 
@@ -89,7 +90,7 @@ describe('warnIfStudioUnreachable', () => {
 		const exitSpy = vi.spyOn(process, 'exit').mockImplementation((() => {
 			throw new Error('exit called');
 		}) as never);
-		const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		const errSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
 
 		await warnIfStudioUnreachable();
 
@@ -103,7 +104,7 @@ describe('warnIfStudioUnreachable', () => {
 
 	it('stays silent when Studio responds OK', async () => {
 		vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('ok', { status: 200 })));
-		const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		const errSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
 
 		await warnIfStudioUnreachable();
 
@@ -112,21 +113,27 @@ describe('warnIfStudioUnreachable', () => {
 });
 
 describe('describeDevMode', () => {
-	it('reports the direct connector type and that no login is needed', async () => {
+	const loggedOut = async () => null;
+	const loggedIn = async () =>
+		({
+			accessToken: '',
+			refreshToken: 'rt',
+			organizationId: 'org_1',
+			user: { id: 'u', email: 'ada@example.com' }
+		}) as StoredCredentials;
+
+	it('prints the connection.yaml tip when logged in with a connection.yaml', async () => {
 		await writeFile(path.join(projectDir, 'connection.yaml'), 'type: cube\nhost: localhost\n');
-		const line = await describeDevMode();
-		expect(line).toContain('direct connector (cube)');
-		expect(line).toContain('no Evidence Studio login required');
+		expect(await describeDevMode(loggedIn)).toContain('delete connection.yaml');
 	});
 
-	it('still identifies direct mode when connection.yaml is malformed', async () => {
-		await writeFile(path.join(projectDir, 'connection.yaml'), 'type: [not, valid\n');
-		const line = await describeDevMode();
-		expect(line).toContain('direct connector (connection.yaml)');
+	it('says who is logged in without a connection.yaml', async () => {
+		expect(await describeDevMode(loggedIn)).toBe('Logged in as ada@example.com');
 	});
 
-	it('reports managed mode without a connection.yaml', async () => {
-		const line = await describeDevMode();
-		expect(line).toContain("Evidence Studio organization's connection");
+	it('prints nothing when logged out', async () => {
+		expect(await describeDevMode(loggedOut)).toBeNull();
+		await writeFile(path.join(projectDir, 'connection.yaml'), 'type: cube\n');
+		expect(await describeDevMode(loggedOut)).toBeNull();
 	});
 });

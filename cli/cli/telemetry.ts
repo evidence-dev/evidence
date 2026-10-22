@@ -1,3 +1,4 @@
+import { info } from './log.ts';
 import { homedir, tmpdir } from 'os';
 import { join } from 'path';
 import { existsSync } from 'fs';
@@ -229,7 +230,7 @@ export async function track(
 
 		// Only a human at a terminal can act on the notice; servers and agents would just spam logs.
 		if (machine.created && ctx.tty && process.stderr.isTTY) {
-			console.error(firstRunNotice());
+			info(firstRunNotice());
 		}
 
 		const controller = new AbortController();
