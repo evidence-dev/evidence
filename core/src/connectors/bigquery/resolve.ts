@@ -16,6 +16,16 @@ export async function resolveBigQueryCredentials(
 	config: BigQueryConnection,
 	opts: ResolveOpts
 ): Promise<BigQueryCredentials> {
+	const params = {
+		projectId: config.project,
+		location: config.location,
+		defaultDataset: config.dataset
+	};
+
+	if (config.adc) {
+		return { authType: 'adc', ...params };
+	}
+
 	let serviceAccountJson: BigQueryServiceAccountJson;
 
 	if (config.keyfile_json) {
@@ -37,14 +47,8 @@ export async function resolveBigQueryCredentials(
 		}
 	} else {
 		// Schema's auth-group check should have caught this — defensive.
-		throw new Error('BigQuery credentials are missing keyfile_json and keyfile');
+		throw new Error('BigQuery credentials are missing keyfile_json, keyfile and adc');
 	}
 
-	return {
-		authType: 'service_account_json',
-		projectId: config.project,
-		serviceAccountJson,
-		location: config.location,
-		defaultDataset: config.dataset
-	};
+	return { authType: 'service_account_json', serviceAccountJson, ...params };
 }

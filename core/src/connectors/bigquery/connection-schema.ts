@@ -45,6 +45,20 @@ export const bigqueryBase = z.object({
 			})
 		),
 
+	adc: z
+		.literal(true)
+		.optional()
+		.meta(
+			meta({
+				label: 'Application Default Credentials',
+				description:
+					'Use Application Default Credentials (gcloud auth application-default login, GOOGLE_APPLICATION_CREDENTIALS, or the GCP metadata server).',
+				category: 'credential',
+				cliOnly: true,
+				authGroup: 'bigquery-auth'
+			})
+		),
+
 	location: z
 		.string()
 		.optional()
