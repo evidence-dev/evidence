@@ -18,6 +18,7 @@ import {
 import type { Filters } from '../Filters.svelte';
 import debounce from 'just-debounce-it';
 import { logger } from '../shims/logger';
+import type { SqlDialect } from '../sql-dialect';
 
 const INLINE_QUERY_METADATA_CONTEXT_KEY = Symbol('INLINE_QUERY_METADATA_CONTEXT');
 
@@ -148,6 +149,7 @@ export class InlineQueryMetadata extends Metadata {
 				dialectName === 'snowflake' ||
 				dialectName === 'bigquery' ||
 				dialectName === 'fabric' ||
+				dialectName === 'sqlserver' ||
 				dialectName === 'postgres' ||
 				dialectName === 'cube' ||
 				dialectName === 'motherduck'
@@ -156,10 +158,11 @@ export class InlineQueryMetadata extends Metadata {
 				// have no DESCRIBE TABLE on a subquery. Run `SELECT * FROM (...) WHERE 1=0`
 				// instead — zero rows, but the result metadata still carries the column
 				// names and types from the warehouse driver.
-				const aliasQuoted = queryService.dialect.quoteAlias('__describe__');
-				const result = await queryService.query(
-					`SELECT * FROM (${queryToDescribe}) ${aliasQuoted} WHERE 1=0`
-				);
+				const dialect = queryService.dialect;
+				const describeSql = dialect.strictDerivedTables
+					? tsqlZeroRowDescribe(dialect, queryToDescribe)
+					: `SELECT * FROM (${queryToDescribe}) ${dialect.quoteAlias('__describe__')} WHERE 1=0`;
+				const result = await queryService.query(describeSql);
 
 				if (result.error) {
 					this.addTable(queryName, {}, result.error);
@@ -286,3 +289,11 @@ export const getInlineQueryMetadataContext = (): InlineQueryMetadata => {
 	}
 	return context;
 };
+
+// T-SQL can't put a leading WITH or a bare ORDER BY inside a derived table; applyRowLimit
+// knows those rules. TOP 0 returns metadata without reading data. Only the bare-ORDER-BY
+// shape falls back to one row, because FETCH NEXT 0 is invalid T-SQL.
+function tsqlZeroRowDescribe(dialect: SqlDialect, sql: string): string {
+	const zeroRows = dialect.applyRowLimit(sql, 0);
+	return zeroRows.includes('FETCH NEXT 0 ROWS ONLY') ? dialect.applyRowLimit(sql, 1) : zeroRows;
+}

@@ -6,7 +6,7 @@ import {
 } from '../user-components/common/typeConversions';
 import { getSnowflakeToJsType } from '../connectors/snowflake/type-mapping';
 import { getBigQueryToJsType } from '../connectors/bigquery/type-mapping';
-import { getFabricToJsType } from '../connectors/fabric/type-mapping';
+import { getMssqlToJsType } from '../connectors/mssql/type-mapping';
 import { getDatabricksToJsType } from '../connectors/databricks/type-mapping';
 import { getPostgresToJsType } from '../connectors/postgres/type-mapping';
 import { getMotherduckToJsType } from '../connectors/motherduck/type-mapping';
@@ -234,7 +234,8 @@ export class Metadata {
 				this.#warehouseMode === 'databricks' ||
 				this.#warehouseMode === 'postgres' ||
 				this.#warehouseMode === 'cube' ||
-				this.#warehouseMode === 'motherduck')
+				this.#warehouseMode === 'motherduck' ||
+				this.#warehouseMode === 'sqlserver')
 		) {
 			this.#loading = false;
 			return;
@@ -249,7 +250,11 @@ export class Metadata {
 		}
 
 		if (this.#warehouseMode === 'fabric') {
-			return await this.#loadFabric();
+			return await this.#loadTsql('Microsoft Fabric');
+		}
+
+		if (this.#warehouseMode === 'sqlserver') {
+			return await this.#loadTsql('SQL Server');
 		}
 
 		if (this.#warehouseMode === 'clickhouse') {
@@ -451,9 +456,9 @@ ${schemaFilter}`
 		}
 	}
 
-	async #loadFabric(): Promise<void> {
+	async #loadTsql(label: string): Promise<void> {
 		try {
-			// Fabric is T-SQL: INFORMATION_SCHEMA.COLUMNS / .VIEWS (no `system.columns`),
+			// T-SQL (Fabric, SQL Server): INFORMATION_SCHEMA.COLUMNS / .VIEWS (no `system.columns`),
 			// string concat via CONCAT (not `||`), and double-quoted column aliases
 			// (valid with QUOTED_IDENTIFIER ON, the default).
 			const schemaFilter =
@@ -482,8 +487,8 @@ ${schemaFilter}`
 			]);
 
 			if (columnsResult.error) {
-				logger.error({ columnsResult }, 'Failed to fetch Microsoft Fabric metadata');
-				throw new Error(`Failed to fetch Microsoft Fabric metadata: ${columnsResult.error}`);
+				logger.error({ columnsResult }, `Failed to fetch ${label} metadata`);
+				throw new Error(`Failed to fetch ${label} metadata: ${columnsResult.error}`);
 			}
 
 			const viewNames = new SvelteSet(viewsResult.error ? [] : viewsResult.rows.map((r) => r.name));
@@ -494,7 +499,7 @@ ${schemaFilter}`
 				({ columnName, columnType }) => ({
 					name: columnName,
 					type: columnType,
-					jsType: getFabricToJsType(columnType)
+					jsType: getMssqlToJsType(columnType)
 				})
 			);
 
@@ -512,8 +517,8 @@ ${schemaFilter}`
 				);
 			}
 		} catch (e) {
-			logger.error(e, 'Failed to fetch Microsoft Fabric metadata');
-			throw new Error('Failed to fetch Microsoft Fabric metadata', { cause: e });
+			logger.error(e, `Failed to fetch ${label} metadata`);
+			throw new Error(`Failed to fetch ${label} metadata`, { cause: e });
 		} finally {
 			this.#loading = false;
 		}

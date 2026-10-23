@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -60,6 +62,14 @@ describe('heatmap SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category, region
 			 
 			 
 			 ORDER BY sum_total_sales DESC"
@@ -150,6 +160,14 @@ describe('heatmap SQL', () => {
 			 
 			 ORDER BY sum_total_sales DESC"
 			----
+			"SELECT DATEFROMPARTS(YEAR(date), MONTH(date), 1) AS "date__month", region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATEFROMPARTS(YEAR(date), MONTH(date), 1), region
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
 			"SELECT DATE_TRUNC('MONTH', date) AS \`date__month\`, region AS \`region\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 
@@ -227,6 +245,14 @@ describe('heatmap SQL', () => {
 			 
 			 ORDER BY sum_total_sales DESC"
 			----
+			"SELECT (((DATEPART(weekday, date) + @@DATEFIRST - 1) % 7) + 1) AS "date__day_of_week", MONTH(date) AS "date__month_of_year", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY (((DATEPART(weekday, date) + @@DATEFIRST - 1) % 7) + 1), MONTH(date)
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
 			"SELECT DAYOFWEEK(date) AS \`date__day_of_week\`, MONTH(date) AS \`date__month_of_year\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 
@@ -292,6 +318,14 @@ describe('heatmap SQL', () => {
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY category, region
 			 
 			 
 			 ORDER BY sum_total_sales DESC"

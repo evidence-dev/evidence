@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -56,6 +58,9 @@ describe('value SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
@@ -105,6 +110,10 @@ describe('value SQL', () => {
 			 FROM demo.daily_orders
 			 WHERE (category = 'Home') ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
+			"SELECT sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (category = 'Home') ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
+			----
 			"SELECT sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 WHERE (category = 'Home')
@@ -148,6 +157,10 @@ describe('value SQL', () => {
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE)) ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
@@ -218,6 +231,16 @@ describe('value SQL', () => {
 			SELECT main_query.*, comparison_1_fragment.\`__ev_sum_total_sales_prior_year_comparison\` as \`__ev_sum_total_sales_prior_year_comparison_compared_value\`, (main_query.\`sum_total_sales\` - comparison_1_fragment.\`__ev_sum_total_sales_prior_year_comparison\`) * 1.0 as \`__ev_sum_total_sales_prior_year_comparison_abs\`, ((main_query.\`sum_total_sales\` - comparison_1_fragment.\`__ev_sum_total_sales_prior_year_comparison\`) * 1.0 / nullIf(abs(comparison_1_fragment.\`__ev_sum_total_sales_prior_year_comparison\`), 0)) as \`__ev_sum_total_sales_prior_year_comparison_pct\`
 			FROM main_query
 			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
+			----
+			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (CONCAT(FORMAT(CAST('2025-01-02' AS DATE), 'MMM d/yy', 'en-US'), ' - ', FORMAT(CAST('2026-01-01' AS DATE), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_year_comparison_current_period", (CONCAT(FORMAT(DATEADD(year, -1, CAST('2025-01-02' AS DATE)), 'MMM d/yy', 'en-US'), ' - ', FORMAT(DATEADD(year, -1, CAST('2026-01-01' AS DATE)), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-01-02' AS DATE) AND date <= CAST('2026-01-01' AS DATE))),
+			comparison_1_fragment AS (SELECT sum(total_sales) as "__ev_sum_total_sales_prior_year_comparison"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATEADD(year, -1, CAST('2025-01-02' AS DATE)) AND date <= DATEADD(year, -1, CAST('2026-01-01' AS DATE))))
+			SELECT main_query.*, comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison" as "__ev_sum_total_sales_prior_year_comparison_compared_value", (main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 as "__ev_sum_total_sales_prior_year_comparison_abs", ((main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 / nullIf(abs(comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison"), 0)) as "__ev_sum_total_sales_prior_year_comparison_pct"
+			FROM main_query
+			LEFT JOIN comparison_1_fragment ON 1 = 1 ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (CONCAT(FORMAT(CAST('2025-01-02' AS DATE), 'MMM d/yy', 'en-US'), ' - ', FORMAT(CAST('2026-01-01' AS DATE), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_year_comparison_current_period", (CONCAT(FORMAT(DATEADD(year, -1, CAST('2025-01-02' AS DATE)), 'MMM d/yy', 'en-US'), ' - ', FORMAT(DATEADD(year, -1, CAST('2026-01-01' AS DATE)), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
 			 FROM demo.daily_orders
@@ -312,6 +335,16 @@ describe('value SQL', () => {
 			SELECT main_query.*, comparison_1_fragment.\`__ev_sum_total_sales_prior_period_comparison\` as \`__ev_sum_total_sales_prior_period_comparison_compared_value\`, (main_query.\`sum_total_sales\` - comparison_1_fragment.\`__ev_sum_total_sales_prior_period_comparison\`) * 1.0 as \`__ev_sum_total_sales_prior_period_comparison_abs\`, ((main_query.\`sum_total_sales\` - comparison_1_fragment.\`__ev_sum_total_sales_prior_period_comparison\`) * 1.0 / nullIf(abs(comparison_1_fragment.\`__ev_sum_total_sales_prior_period_comparison\`), 0)) as \`__ev_sum_total_sales_prior_period_comparison_pct\`
 			FROM main_query
 			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
+			----
+			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (CONCAT(FORMAT(CAST('2025-12-03' AS DATE), 'MMM d/yy', 'en-US'), ' - ', FORMAT(CAST('2026-01-01' AS DATE), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_period_comparison_current_period", (CONCAT(FORMAT(DATEADD(day, -30, CAST('2025-12-03' AS DATE)), 'MMM d/yy', 'en-US'), ' - ', FORMAT(DATEADD(day, -30, CAST('2026-01-01' AS DATE)), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_period_comparison_previous_period"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))),
+			comparison_1_fragment AS (SELECT sum(total_sales) as "__ev_sum_total_sales_prior_period_comparison"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATEADD(day, -30, CAST('2025-12-03' AS DATE)) AND date <= DATEADD(day, -30, CAST('2026-01-01' AS DATE))))
+			SELECT main_query.*, comparison_1_fragment."__ev_sum_total_sales_prior_period_comparison" as "__ev_sum_total_sales_prior_period_comparison_compared_value", (main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_period_comparison") * 1.0 as "__ev_sum_total_sales_prior_period_comparison_abs", ((main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_period_comparison") * 1.0 / nullIf(abs(comparison_1_fragment."__ev_sum_total_sales_prior_period_comparison"), 0)) as "__ev_sum_total_sales_prior_period_comparison_pct"
+			FROM main_query
+			LEFT JOIN comparison_1_fragment ON 1 = 1 ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (CONCAT(FORMAT(CAST('2025-12-03' AS DATE), 'MMM d/yy', 'en-US'), ' - ', FORMAT(CAST('2026-01-01' AS DATE), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_period_comparison_current_period", (CONCAT(FORMAT(DATEADD(day, -30, CAST('2025-12-03' AS DATE)), 'MMM d/yy', 'en-US'), ' - ', FORMAT(DATEADD(day, -30, CAST('2026-01-01' AS DATE)), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_period_comparison_previous_period"
 			 FROM demo.daily_orders
@@ -438,16 +471,33 @@ describe('value SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY region),
-			benchmark_1_fragment AS (WITH subject_totals AS (SELECT 
+			benchmark_1_fragment AS (SELECT
+			 "region",
+			 avg("__ev_sum_total_sales_benchmark_avg_comparison_subject_total") as "__ev_sum_total_sales_benchmark_avg_comparison_benchmark"
+			 FROM (SELECT 
 			 region as "region",
 			 sum(total_sales) as "__ev_sum_total_sales_benchmark_avg_comparison_subject_total"
 			 FROM demo.daily_orders
 			 
-			 GROUP BY region)
-			 SELECT
+			 GROUP BY region) AS subject_totals
+			 GROUP BY "region")
+			SELECT main_query.*, benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark" as "__ev_sum_total_sales_benchmark_avg_comparison_compared_value", (main_query."sum_total_sales" - benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark") * 1.0 as "__ev_sum_total_sales_benchmark_avg_comparison_abs", ((main_query."sum_total_sales" - benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark") * 1.0 / nullIf(abs(benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark"), 0)) as "__ev_sum_total_sales_benchmark_avg_comparison_pct"
+			FROM main_query
+			LEFT JOIN benchmark_1_fragment ON ((main_query."region" IS NULL AND benchmark_1_fragment."region" IS NULL) OR main_query."region" = benchmark_1_fragment."region") ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
+			----
+			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", region AS "region"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY region),
+			benchmark_1_fragment AS (SELECT
 			 "region",
 			 avg("__ev_sum_total_sales_benchmark_avg_comparison_subject_total") as "__ev_sum_total_sales_benchmark_avg_comparison_benchmark"
-			 FROM subject_totals
+			 FROM (SELECT 
+			 region as "region",
+			 sum(total_sales) as "__ev_sum_total_sales_benchmark_avg_comparison_subject_total"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY region) AS subject_totals
 			 GROUP BY "region")
 			SELECT main_query.*, benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark" as "__ev_sum_total_sales_benchmark_avg_comparison_compared_value", (main_query."sum_total_sales" - benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark") * 1.0 as "__ev_sum_total_sales_benchmark_avg_comparison_abs", ((main_query."sum_total_sales" - benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark") * 1.0 / nullIf(abs(benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark"), 0)) as "__ev_sum_total_sales_benchmark_avg_comparison_pct"
 			FROM main_query
@@ -613,19 +663,38 @@ describe('value SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY region),
-			benchmark_1_fragment AS (WITH subject_totals AS (SELECT 
-			 region as "region",
-			 sum(total_sales) as "__ev_sum_total_sales_benchmark_avg_comparison_subject_total"
-			 FROM demo.daily_orders
-			 
-			 GROUP BY region)
-			 SELECT
+			benchmark_1_fragment AS (SELECT
 			 "region",
 			 
 			 (sum("__ev_sum_total_sales_benchmark_avg_comparison_subject_total") OVER () - "__ev_sum_total_sales_benchmark_avg_comparison_subject_total") /
 			 (count(*) OVER () - 1) as "__ev_sum_total_sales_benchmark_avg_comparison_benchmark"
 			 
-			 FROM subject_totals)
+			 FROM (SELECT 
+			 region as "region",
+			 sum(total_sales) as "__ev_sum_total_sales_benchmark_avg_comparison_subject_total"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY region) AS subject_totals)
+			SELECT main_query.*, benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark" as "__ev_sum_total_sales_benchmark_avg_comparison_compared_value", (main_query."sum_total_sales" - benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark") * 1.0 as "__ev_sum_total_sales_benchmark_avg_comparison_abs", ((main_query."sum_total_sales" - benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark") * 1.0 / nullIf(abs(benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark"), 0)) as "__ev_sum_total_sales_benchmark_avg_comparison_pct"
+			FROM main_query
+			LEFT JOIN benchmark_1_fragment ON ((main_query."region" IS NULL AND benchmark_1_fragment."region" IS NULL) OR main_query."region" = benchmark_1_fragment."region") ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
+			----
+			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", region AS "region"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY region),
+			benchmark_1_fragment AS (SELECT
+			 "region",
+			 
+			 (sum("__ev_sum_total_sales_benchmark_avg_comparison_subject_total") OVER () - "__ev_sum_total_sales_benchmark_avg_comparison_subject_total") /
+			 (count(*) OVER () - 1) as "__ev_sum_total_sales_benchmark_avg_comparison_benchmark"
+			 
+			 FROM (SELECT 
+			 region as "region",
+			 sum(total_sales) as "__ev_sum_total_sales_benchmark_avg_comparison_subject_total"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY region) AS subject_totals)
 			SELECT main_query.*, benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark" as "__ev_sum_total_sales_benchmark_avg_comparison_compared_value", (main_query."sum_total_sales" - benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark") * 1.0 as "__ev_sum_total_sales_benchmark_avg_comparison_abs", ((main_query."sum_total_sales" - benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark") * 1.0 / nullIf(abs(benchmark_1_fragment."__ev_sum_total_sales_benchmark_avg_comparison_benchmark"), 0)) as "__ev_sum_total_sales_benchmark_avg_comparison_pct"
 			FROM main_query
 			LEFT JOIN benchmark_1_fragment ON ((main_query."region" IS NULL AND benchmark_1_fragment."region" IS NULL) OR main_query."region" = benchmark_1_fragment."region") ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"

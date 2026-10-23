@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -59,6 +61,14 @@ describe('pie_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY sum_total_sales DESC"
@@ -147,6 +157,14 @@ describe('pie_chart SQL', () => {
 			 
 			 ORDER BY sum_total_sales DESC"
 			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY category
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
 			"SELECT category AS \`category\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
@@ -210,6 +228,14 @@ describe('pie_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category ASC"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY category ASC"

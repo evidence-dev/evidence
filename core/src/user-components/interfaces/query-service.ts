@@ -46,7 +46,8 @@ export type QueryResult<RowType extends AnyRowType = AnyRowType> = {
 		| 'Databricks'
 		| 'Postgres'
 		| 'Cube'
-		| 'MotherDuck';
+		| 'MotherDuck'
+		| 'SQL Server';
 };
 
 import type { MaybeGetter } from 'runed';

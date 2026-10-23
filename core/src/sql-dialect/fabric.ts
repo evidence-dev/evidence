@@ -33,7 +33,7 @@ import {
  *  - Date formatting uses .NET format strings via `FORMAT(value, 'fmt')`.
  */
 export class FabricDialect implements SqlDialect {
-	readonly name = 'fabric';
+	readonly name: string = 'fabric';
 
 	dateGrain(grain: string, column: string, _firstDayOfWeek: 'sunday' | 'monday'): string {
 		// NOTE on week handling: T-SQL's week boundary (DATETRUNC(week, ...),
@@ -301,7 +301,7 @@ export class FabricDialect implements SqlDialect {
 	]);
 
 	readonly nonAggregationFunctions = new Set<string>([
-		...COMMON_NON_AGG_FUNCTIONS,
+		...COMMON_NON_AGG_FUNCTIONS.filter((fn) => fn !== 'CEIL'),
 		// Fabric / T-SQL date/time functions
 		'DATEADD',
 		'DATEDIFF',

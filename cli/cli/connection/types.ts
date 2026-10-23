@@ -11,6 +11,7 @@ import type { SnowflakeCredentials } from '@evidence/core/connectors/snowflake/c
 import type { BigQueryCredentials } from '@evidence/core/connectors/bigquery/credentials';
 import type { ClickHouseCredentials } from '@evidence/core/connectors/clickhouse/credentials';
 import type { FabricCredentials } from '@evidence/core/connectors/fabric/credentials';
+import type { SqlServerCredentials } from '@evidence/core/connectors/sqlserver/credentials';
 import type { DatabricksCredentials } from '@evidence/core/connectors/databricks/credentials';
 import type { PostgresCredentials } from '@evidence/core/connectors/postgres/credentials';
 import type { CubeCredentials } from '@evidence/core/connectors/cube/credentials';
@@ -29,6 +30,8 @@ export type ClickHouseConnectionConfig = { type: 'clickhouse' } & ClickHouseCred
 
 export type FabricConnectionConfig = { type: 'fabric' } & FabricCredentials;
 
+export type SqlServerConnectionConfig = { type: 'sqlserver' } & SqlServerCredentials;
+
 export type DatabricksConnectionConfig = { type: 'databricks' } & DatabricksCredentials;
 
 export type PostgresConnectionConfig = { type: 'postgres' } & PostgresCredentials;
@@ -43,6 +46,7 @@ export type ConnectionConfig =
 	| BigQueryConnectionConfig
 	| ClickHouseConnectionConfig
 	| FabricConnectionConfig
+	| SqlServerConnectionConfig
 	| DatabricksConnectionConfig
 	| PostgresConnectionConfig
 	| CubeConnectionConfig

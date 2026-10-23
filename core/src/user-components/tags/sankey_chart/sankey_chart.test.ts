@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -60,6 +62,14 @@ describe('sankey_chart SQL', () => {
 			 FROM demo.flows
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_amount DESC"
+			----
+			"SELECT src AS "src", dst AS "dst", sum(amount) AS "sum_amount"
+			 FROM demo.flows
+			 
+			 GROUP BY src, dst
 			 
 			 
 			 ORDER BY sum_amount DESC"
@@ -148,6 +158,14 @@ describe('sankey_chart SQL', () => {
 			 
 			 ORDER BY sum_amount DESC"
 			----
+			"SELECT src AS "src", dst AS "dst", sum(amount) AS "sum_amount", sum(amount) / sum(total) AS "sum_amount_sum_total"
+			 FROM demo.flows
+			 
+			 GROUP BY src, dst
+			 
+			 
+			 ORDER BY sum_amount DESC"
+			----
 			"SELECT src AS \`src\`, dst AS \`dst\`, sum(amount) AS \`sum_amount\`, sum(amount) / sum(total) AS \`sum_amount_sum_total\`
 			 FROM demo.flows
 			 
@@ -213,6 +231,14 @@ describe('sankey_chart SQL', () => {
 			 FROM demo.flows
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_amount DESC"
+			----
+			"SELECT src AS "src", dst AS "dst", sum(amount) AS "sum_amount"
+			 FROM demo.flows
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY src, dst
 			 
 			 
 			 ORDER BY sum_amount DESC"

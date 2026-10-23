@@ -8,6 +8,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect
@@ -18,6 +19,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect()
@@ -35,6 +37,9 @@ describe('custom_echart SQL', () => {
 		const { sql } = buildAllDialects({ data: 'demo.daily_orders' });
 		assertParses(sql.split('"\n----')[0]);
 		expect(sql).toMatchInlineSnapshot(`
+			"SELECT *
+			 FROM demo.daily_orders"
+			----
 			"SELECT *
 			 FROM demo.daily_orders"
 			----
@@ -90,6 +95,14 @@ describe('custom_echart SQL', () => {
 			 
 			 
 			 ORDER BY date LIMIT 100"
+			----
+			"SELECT *
+			 FROM demo.daily_orders
+			 WHERE (category = 'Electronics')
+			 
+			 
+			 
+			 ORDER BY date OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY"
 			----
 			"SELECT *
 			 FROM demo.daily_orders

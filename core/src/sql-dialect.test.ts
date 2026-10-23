@@ -8,6 +8,7 @@ import {
 	PostgresDialect,
 	CubeDialect,
 	MotherDuckDialect,
+	SqlServerDialect,
 	defaultDialect
 } from './sql-dialect';
 import type { SqlDialect } from './sql-dialect';
@@ -1261,6 +1262,7 @@ describe('escapeStringLiteral', () => {
 	const ansiDialects: SqlDialect[] = [
 		new PostgresDialect(),
 		new FabricDialect(),
+		new SqlServerDialect(),
 		new MotherDuckDialect(),
 		new CubeDialect()
 	];
@@ -1781,5 +1783,89 @@ describe('applyRowLimit', () => {
 			const sql = `SELECT * FROM t ORDER BY x OFFSET 0 ROWS FETCH NEXT ${longExpr} ROWS ONLY`;
 			eq(dialect.applyRowLimit(sql, 100), `SELECT TOP 100 * FROM (${sql}) AS __ev_limit_wrap`);
 		});
+	});
+});
+
+describe('SqlServerDialect', () => {
+	const dialect = new SqlServerDialect();
+
+	it('has name "sqlserver" and inherits the T-SQL row limiting', () => {
+		expect(dialect.name).toBe('sqlserver');
+		expect(dialect.applyRowLimit('SELECT * FROM t', 100)).toBe(
+			'SELECT TOP 100 * FROM (SELECT * FROM t\n) AS __ev_limit_wrap'
+		);
+		expect(dialect.groupByAll(['a', 'b', 'a'])).toBe('GROUP BY a, b');
+	});
+
+	it('never emits 2022-only DATETRUNC for any grain', () => {
+		for (const grain of ['day', 'week', 'month', 'quarter', 'year', 'hour', 'day of week']) {
+			expect(dialect.dateGrain(grain, 'd', 'sunday')).not.toMatch(/DATETRUNC/);
+		}
+	});
+
+	it('builds calendar grains from DATEFROMPARTS', () => {
+		expect(dialect.dateGrain('month', 'd', 'sunday')).toBe('DATEFROMPARTS(YEAR(d), MONTH(d), 1)');
+		expect(dialect.dateGrain('quarter', 'd', 'sunday')).toBe(
+			'DATEFROMPARTS(YEAR(d), (DATEPART(quarter, d) - 1) * 3 + 1, 1)'
+		);
+		expect(dialect.dateGrain('year', 'd', 'sunday')).toBe('DATEFROMPARTS(YEAR(d), 1, 1)');
+	});
+
+	it('honors the requested first day of week independent of DATEFIRST', () => {
+		expect(dialect.dateGrain('week', 'd', 'sunday')).toBe(
+			'DATEADD(day, -((DATEPART(weekday, d) + @@DATEFIRST - 1) % 7), CAST(d AS DATE))'
+		);
+		expect(dialect.dateGrain('week', 'd', 'monday')).toBe(
+			'DATEADD(day, -((DATEPART(weekday, d) + @@DATEFIRST - 2) % 7), CAST(d AS DATE))'
+		);
+	});
+
+	// Simulate SQL Server's DATEPART(weekday) under each DATEFIRST setting and check the
+	// offset expression always lands on the requested week start.
+	it('week offset arithmetic is correct under every DATEFIRST', () => {
+		const offset = (jsDay: number, dateFirst: number, startShift: 1 | 2) => {
+			// T-SQL weekday: 1 = the DATEFIRST day. JS: 0 = Sunday; T-SQL DATEFIRST 7 = Sunday.
+			const tsqlDay = ((jsDay - (dateFirst % 7) + 7) % 7) + 1;
+			return (tsqlDay + dateFirst - startShift) % 7;
+		};
+		for (let dateFirst = 1; dateFirst <= 7; dateFirst++) {
+			for (let jsDay = 0; jsDay < 7; jsDay++) {
+				expect(offset(jsDay, dateFirst, 1)).toBe(jsDay);
+				expect(offset(jsDay, dateFirst, 2)).toBe((jsDay + 6) % 7);
+			}
+		}
+	});
+
+	it('numbers weekdays from the requested first day of week', () => {
+		expect(dialect.dateGrain('day of week', 'd', 'sunday')).toBe(
+			'(((DATEPART(weekday, d) + @@DATEFIRST - 1) % 7) + 1)'
+		);
+		expect(dialect.dateGrain('day of week', 'd', 'monday')).toBe(
+			'(((DATEPART(weekday, d) + @@DATEFIRST - 2) % 7) + 1)'
+		);
+	});
+
+	it('renders sparkline x values as ISO 8601 even for legacy DATETIME', () => {
+		expect(dialect.groupArray('x_val', 'y_val')).toContain('CONVERT(VARCHAR(MAX), x_val, 126)');
+	});
+
+	it('validator rejects functions SQL Server 2017 lacks', () => {
+		for (const fn of [
+			'DATETRUNC',
+			'DATE_TRUNC',
+			'APPROX_COUNT_DISTINCT',
+			'GREATEST',
+			'LEAST',
+			'IFF',
+			'IFNULL'
+		]) {
+			expect(dialect.nonAggregationFunctions.has(fn)).toBe(false);
+			expect(dialect.aggregationFunctions.has(fn)).toBe(false);
+		}
+		for (const fn of ['MEDIAN', 'STDDEV', 'VARIANCE', 'CORR']) {
+			expect(dialect.aggregationFunctions.has(fn)).toBe(false);
+		}
+		expect(dialect.aggregationFunctions.has('STRING_AGG')).toBe(true);
+		expect(dialect.nonAggregationFunctions.has('DATEFROMPARTS')).toBe(true);
 	});
 });

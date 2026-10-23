@@ -799,6 +799,7 @@
             "pages": [
               "direct-connectors/snowflake",
               "direct-connectors/fabric",
+              "direct-connectors/sqlserver",
               "direct-connectors/clickhouse",
               "direct-connectors/bigquery",
               "direct-connectors/databricks",

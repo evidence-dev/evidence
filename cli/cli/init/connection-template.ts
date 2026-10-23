@@ -17,6 +17,7 @@ export const INIT_WAREHOUSES = [
 	'bigquery',
 	'clickhouse',
 	'fabric',
+	'sqlserver',
 	'databricks',
 	'postgres',
 	'cube',
@@ -74,6 +75,20 @@ clientSecret: "<client-secret>" # service principal secret
 # session_context: # Evidence identity → Fabric SESSION_CONTEXT key, SET per query for RLS, optional
 #   - fabricContextKey: "<key>"
 #     evidenceVariable: user.email
+`;
+
+const SQLSERVER_TEMPLATE = `# SQL Server direct connector (also Azure SQL Database / Managed Instance). Docs: https://docs.evidence.dev/direct-connectors/sqlserver
+type: sqlserver
+server: "<server>" # hostname only, no connection string — e.g. sql.example.com or myserver.database.windows.net
+port: 1433
+database: "<database>"
+user: "<user>" # SQL login
+password: "<password>"
+encrypt: true # TLS; required by Azure SQL
+trust_cert: false # true skips certificate validation — prefer ssl_ca_path for a self-signed / internal-CA cert
+# ssl_ca_path: ./certs/ca.pem # PEM CA bundle used to verify the server certificate, resolved relative to connection.yaml
+# schema: dbo # schema for unqualified table names, optional (defaults to "dbo")
+# schemas: ["<schema>"] # allowlist of schemas exposed to the schema browser, optional
 `;
 
 const DATABRICKS_TEMPLATE = `# Databricks direct connector. Docs: https://docs.evidence.dev/direct-connectors/databricks
@@ -137,6 +152,7 @@ const TEMPLATES: Record<InitWarehouse, string> = {
 	bigquery: BIGQUERY_TEMPLATE,
 	clickhouse: CLICKHOUSE_TEMPLATE,
 	fabric: FABRIC_TEMPLATE,
+	sqlserver: SQLSERVER_TEMPLATE,
 	databricks: DATABRICKS_TEMPLATE,
 	postgres: POSTGRES_TEMPLATE,
 	cube: CUBE_TEMPLATE,

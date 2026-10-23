@@ -8,6 +8,7 @@ import { executeSnowflakeQuery } from './snowflake';
 import { executeBigQueryQuery } from './bigquery';
 import { executeClickHouseQuery } from './clickhouse';
 import { executeFabricQuery } from './fabric';
+import { executeSqlServerQuery } from './sqlserver';
 import { executeDatabricksQuery } from './databricks';
 import { executePostgresQuery } from './postgres';
 import { executeMotherduckQuery } from './motherduck';
@@ -27,6 +28,8 @@ export async function executeQuery(sql: string, config: ConnectionConfig): Promi
 			return executeClickHouseQuery(sql, config);
 		case 'fabric':
 			return executeFabricQuery(sql, config);
+		case 'sqlserver':
+			return executeSqlServerQuery(sql, config);
 		case 'databricks':
 			return executeDatabricksQuery(sql, config);
 		case 'postgres':
@@ -82,18 +85,9 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 			}
 			return `SELECT name, total_rows AS rows FROM system.tables WHERE database = currentDatabase() AND name NOT LIKE '.%' ORDER BY name`;
 		}
-		case 'fabric': {
-			// Schema-qualify since a Fabric warehouse exposes more than dbo; SHOW TABLES is Snowflake-only.
-			const base =
-				"SELECT CONCAT(TABLE_SCHEMA, '.', TABLE_NAME) AS name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'";
-			// Honour the `schemas:` allowlist (mirrors the ClickHouse `databases:` scoping).
-			const schemas = config.schemas ?? [];
-			if (schemas.length > 0) {
-				const inList = schemas.map((s) => `'${s.replace(/'/g, "''")}'`).join(', ');
-				return `${base} AND TABLE_SCHEMA IN (${inList}) ORDER BY name`;
-			}
-			return `${base} ORDER BY name`;
-		}
+		case 'fabric':
+		case 'sqlserver':
+			return tsqlListTablesSql(config.schemas ?? []);
 		case 'databricks': {
 			// Databricks Unity Catalog INFORMATION_SCHEMA is scoped to the session
 			// catalog; schema-qualify since a catalog exposes more than the default
@@ -146,6 +140,17 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 	}
 }
 
+// Shared by Fabric and SQL Server. Schema-qualified since both expose more than dbo.
+function tsqlListTablesSql(schemas: string[]): string {
+	const base =
+		"SELECT CONCAT(TABLE_SCHEMA, '.', TABLE_NAME) AS name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'";
+	if (schemas.length > 0) {
+		const inList = schemas.map((s) => `'${s.replace(/'/g, "''")}'`).join(', ');
+		return `${base} AND TABLE_SCHEMA IN (${inList}) ORDER BY name`;
+	}
+	return `${base} ORDER BY name`;
+}
+
 /**
  * Resolve a bare table name to its fully-qualified form for the active
  * warehouse. BQ requires `project.dataset.table` for unqualified queries
@@ -170,11 +175,11 @@ export function qualifyTableName(
 		if (schema && !name.includes('.')) return `\`${schema}\`.\`${name}\``;
 		return name;
 	}
-	if (config.type === 'fabric') {
+	if (config.type === 'fabric' || config.type === 'sqlserver') {
 		// A bare name resolves against the login's default schema, not the
-		// configured `defaultSchema` — qualify it so `describe` hits the right table.
+		// configured one — qualify it so `describe` hits the right table.
 		if (name.includes('.')) return name;
-		const ds = config.defaultSchema;
+		const ds = config.type === 'fabric' ? config.defaultSchema : config.schema;
 		if (ds) return `[${ds}].[${name}]`;
 		return name;
 	}

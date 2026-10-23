@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { SvelteMap } from 'svelte/reactivity';
 import { defaultDialect } from '../sql-dialect';
 import { ClickHouseDialect } from '../sql-dialect/clickhouse';
+import { SqlServerDialect } from '../sql-dialect/sqlserver';
 import { InlineQueries } from '../user-components/common/inline-queries';
 import type { QueryService } from '../user-components/interfaces/query-service';
 import type { Filters } from '../Filters.svelte';
@@ -162,5 +163,33 @@ describe('InlineQueryMetadata', () => {
 		expect(described).toContain("section = 'Offre d\\'adhérents'");
 		expect(described).not.toContain("d''adhérents");
 		expect(described).not.toContain('\uE000');
+	});
+
+	it('describes a leading-WITH query on SQL Server with zero rows and no nested CTE', async () => {
+		const pageFilters = { filterIds: [], get: () => undefined } as unknown as Filters;
+		const inlineQueries = new InlineQueries({ filterContexts: [pageFilters] });
+		inlineQueries.set('totals', 'WITH t AS (SELECT 1 AS n) SELECT n FROM t');
+
+		const query = vi.fn(async () => ({
+			rows: [],
+			columns: [{ name: 'n', clickhouseType: 'int', jsType: 'number' as const }],
+			error: null
+		}));
+		const metadata = new InlineQueryMetadata(
+			{
+				workspaceId: 'workspace',
+				connectionType: 'sqlserver',
+				dialect: new SqlServerDialect(),
+				query: query as unknown as QueryService['query']
+			} as unknown as QueryService,
+			{ inlineQueries, pageFilters }
+		);
+
+		await metadata.loadInlineQueryMetadata('totals');
+
+		expect(query).toHaveBeenCalledWith(
+			'WITH t AS (SELECT 1 AS n), __ev_limit_wrap AS (SELECT n FROM t\n) SELECT TOP 0 * FROM __ev_limit_wrap'
+		);
+		expect(metadata.getTable('totals')?.error).toBeFalsy();
 	});
 });

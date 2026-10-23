@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -59,6 +61,14 @@ describe('funnel_chart SQL', () => {
 			 FROM demo.funnel
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_users DESC"
+			----
+			"SELECT stage AS "stage", sum(users) AS "sum_users"
+			 FROM demo.funnel
+			 
+			 GROUP BY stage
 			 
 			 
 			 ORDER BY sum_users DESC"
@@ -135,6 +145,14 @@ describe('funnel_chart SQL', () => {
 			 FROM demo.funnel
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_users DESC"
+			----
+			"SELECT stage AS "stage", sum(users) AS "sum_users"
+			 FROM demo.funnel
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY stage
 			 
 			 
 			 ORDER BY sum_users DESC"

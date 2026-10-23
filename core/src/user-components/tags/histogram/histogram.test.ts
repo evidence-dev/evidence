@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -143,7 +145,41 @@ describe('histogram SQL', () => {
 							SELECT
 								min(transactions) AS "min_val",
 								max(transactions) AS "max_val",
-								ceil(2 * power(count(*), 1.0 / 3)) AS "rice_bin_count"
+								CEILING(2 * power(count(*), 1.0 / 3)) AS "rice_bin_count"
+							FROM demo.daily_orders
+							
+						),
+						binned AS (
+							SELECT
+								floor((transactions - stats."min_val") / ((stats."max_val" - stats."min_val") / 30)) AS "bin_index",
+								stats."min_val" AS "min_val",
+								((stats."max_val" - stats."min_val") / 30) AS "bin_width"
+							FROM demo.daily_orders
+							CROSS JOIN stats
+							
+						)
+						SELECT
+							"bin_index",
+							"min_val" + "bin_index" * "bin_width" AS "bin_start",
+							"min_val" + ("bin_index" + 1) * "bin_width" AS "bin_end",
+							
+							count(*) AS "frequency"
+						FROM binned
+						GROUP BY
+							"bin_index",
+							"min_val",
+							"bin_width"
+						ORDER BY
+							"bin_index"
+						
+					"
+			----
+			"
+						WITH stats AS (
+							SELECT
+								min(transactions) AS "min_val",
+								max(transactions) AS "max_val",
+								CEILING(2 * power(count(*), 1.0 / 3)) AS "rice_bin_count"
 							FROM demo.daily_orders
 							
 						),

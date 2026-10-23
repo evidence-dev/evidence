@@ -21,12 +21,14 @@ import {
 	postgresConnectionSchema,
 	cubeConnectionSchema,
 	motherduckConnectionSchema,
-	snowflakeConnectionSchema
+	snowflakeConnectionSchema,
+	sqlserverConnectionSchema
 } from '@evidence/core/connectors/connection-schema';
 import { resolveSnowflakeCredentials } from '@evidence/core/connectors/snowflake/resolve';
 import { resolveBigQueryCredentials } from '@evidence/core/connectors/bigquery/resolve';
 import { resolveClickHouseCredentials } from '@evidence/core/connectors/clickhouse/resolve';
 import { resolveFabricCredentials } from '@evidence/core/connectors/fabric/resolve';
+import { resolveSqlServerCredentials } from '@evidence/core/connectors/sqlserver/resolve';
 import { resolveDatabricksCredentials } from '@evidence/core/connectors/databricks/resolve';
 import { resolvePostgresCredentials } from '@evidence/core/connectors/postgres/resolve';
 import { resolveCubeCredentials } from '@evidence/core/connectors/cube/resolve';
@@ -136,6 +138,17 @@ export async function loadConnectionConfig(cwd: string): Promise<ConnectionConfi
 		const data = parseOrThrow(fabricConnectionSchema, obj);
 		const credentials = resolveFabricCredentials(data);
 		return { type: 'fabric', ...credentials };
+	}
+
+	if (obj.type === 'sqlserver') {
+		// Session context is Studio-only RLS; rename so a Studio-style config still validates.
+		if ('session_context' in obj) {
+			obj.sessionContextMappings = obj.session_context;
+			delete obj.session_context;
+		}
+		const data = parseOrThrow(sqlserverConnectionSchema, obj);
+		const credentials = await resolveSqlServerCredentials(data, { cwd });
+		return { type: 'sqlserver', ...credentials };
 	}
 
 	if (obj.type === 'databricks') {

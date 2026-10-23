@@ -1,12 +1,12 @@
 export type JsType = 'string' | 'number' | 'boolean' | 'date' | 'object' | 'unknown';
 
 /**
- * T-SQL / Microsoft Fabric Warehouse type names → Evidence column JsType.
+ * T-SQL type names (SQL Server, Azure SQL, Fabric) → Evidence column JsType.
  * Keys are upper-cased and stripped of any (...) precision/length suffix before
- * lookup (see getFabricToJsType). Includes legacy SQL Server names so the same
+ * lookup (see getMssqlToJsType). Includes legacy SQL Server names so the same
  * map also serves a generic SQL Server / Azure SQL endpoint.
  */
-const FABRIC_TYPE_MAP: Record<string, JsType> = {
+const MSSQL_TYPE_MAP: Record<string, JsType> = {
 	BIT: 'boolean', // tedious returns T-SQL BIT as a JS boolean
 
 	TINYINT: 'number',
@@ -43,10 +43,10 @@ const FABRIC_TYPE_MAP: Record<string, JsType> = {
 	TIME: 'date'
 };
 
-export function getFabricToJsType(fabricType: string): JsType {
-	const normalized = fabricType
+export function getMssqlToJsType(mssqlType: string): JsType {
+	const normalized = mssqlType
 		.toUpperCase()
 		.replace(/\(.*\)/, '')
 		.trim();
-	return FABRIC_TYPE_MAP[normalized] ?? 'unknown';
+	return MSSQL_TYPE_MAP[normalized] ?? 'unknown';
 }

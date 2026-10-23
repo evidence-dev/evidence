@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect
@@ -16,6 +17,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect()
@@ -57,6 +59,14 @@ describe('treemap SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY sum_total_sales DESC"
@@ -136,6 +146,14 @@ describe('treemap SQL', () => {
 			 
 			 ORDER BY sum_quantity DESC"
 			----
+			"SELECT category AS "category", item_name AS "item_name", sum(quantity) AS "sum_quantity"
+			 FROM demo.order_details
+			 
+			 GROUP BY category, item_name
+			 
+			 
+			 ORDER BY sum_quantity DESC"
+			----
 			"SELECT category AS \`category\`, item_name AS \`item_name\`, sum(quantity) AS \`sum_quantity\`
 			 FROM demo.order_details
 			 
@@ -191,6 +209,14 @@ describe('treemap SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category ASC"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY category ASC"

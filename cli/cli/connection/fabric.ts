@@ -2,8 +2,8 @@
 
 import sql from 'mssql';
 import { ClientSecretCredential } from '@azure/identity';
-import { mapFabricColumns } from '@evidence/core/connectors/fabric/map-columns';
-import { normalizeDateRows } from '@evidence/core/connectors/fabric/normalize-date-rows';
+import { mapMssqlColumns } from '@evidence/core/connectors/mssql/map-columns';
+import { normalizeDateRows } from '@evidence/core/connectors/mssql/normalize-date-rows';
 import { normalizeSparklineRows } from '@evidence/core/connectors/normalize-sparkline-rows';
 import type { FabricCredentials } from '@evidence/core/connectors/fabric/credentials';
 import type { QueryColumn, QueryResult } from './types';
@@ -101,7 +101,7 @@ export async function executeFabricQuery(
 	try {
 		const result = await pool.request().query(sqlText);
 		rows = (result.recordset as unknown as Record<string, unknown>[]) ?? [];
-		columns = mapFabricColumns(result.recordset?.columns);
+		columns = mapMssqlColumns(result.recordset?.columns);
 	} catch (e) {
 		throw new Error(e instanceof Error ? e.message : 'Fabric query failed');
 	}

@@ -111,7 +111,8 @@ const WAREHOUSE_LABELS: Record<WarehouseMode, string> = {
 	databricks: 'Databricks',
 	postgres: 'PostgreSQL',
 	cube: 'Cube',
-	motherduck: 'MotherDuck'
+	motherduck: 'MotherDuck',
+	sqlserver: 'SQL Server'
 };
 
 export function warehouseLabel(mode: WarehouseMode): string {

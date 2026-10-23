@@ -224,6 +224,59 @@ describe('loadConnectionConfig', () => {
 		});
 	});
 
+	describe('sqlserver', () => {
+		const validBody =
+			`type: sqlserver\n` +
+			`server: sql.octocorp.example\n` +
+			`database: analytics\n` +
+			`user: evidence_reader\n` +
+			`password: shhh\n`;
+
+		it('parses SQL-login config with secure defaults', async () => {
+			await writeYaml(validBody);
+			const cfg = await loadConnectionConfig(workDir);
+			expect(cfg).toMatchObject({
+				type: 'sqlserver',
+				server: 'sql.octocorp.example',
+				port: 1433,
+				database: 'analytics',
+				user: 'evidence_reader',
+				password: 'shhh',
+				encrypt: true,
+				trustServerCertificate: false,
+				schema: 'dbo'
+			});
+			expect(cfg).not.toHaveProperty('ca');
+		});
+
+		it('reads ssl_ca_path relative to the project into ca', async () => {
+			await writeFile(path.join(workDir, 'ca.pem'), 'PEM-CONTENT');
+			await writeYaml(`${validBody}ssl_ca_path: ca.pem\n`);
+			const cfg = await loadConnectionConfig(workDir);
+			expect(cfg).toMatchObject({ type: 'sqlserver', ca: 'PEM-CONTENT' });
+		});
+
+		it('accepts a Studio-style session_context block', async () => {
+			await writeYaml(
+				`${validBody}session_context:\n  - contextKey: user_email\n    evidenceVariable: user.email\n`
+			);
+			const cfg = await loadConnectionConfig(workDir);
+			expect(cfg?.type).toBe('sqlserver');
+		});
+
+		it('rejects a missing password', async () => {
+			await writeYaml(validBody.replace('password: shhh\n', ''));
+			await expect(loadConnectionConfig(workDir)).rejects.toThrow(/password/);
+		});
+
+		it('rejects a connection string in server', async () => {
+			await writeYaml(
+				validBody.replace('server: sql.octocorp.example', 'server: "Server=sql;Database=dw"')
+			);
+			await expect(loadConnectionConfig(workDir)).rejects.toThrow(/server/);
+		});
+	});
+
 	it('rejects unknown type', async () => {
 		await writeYaml(`type: redshift\n`);
 		await expect(loadConnectionConfig(workDir)).rejects.toThrow(/unsupported type/);
@@ -255,7 +308,10 @@ describe('loadConnectionConfig', () => {
 				`type: clickhouse\nhost: local$host\nport: 8123\nuser: default\npassword: $not_interp\ndatabase: default\n`
 			);
 			const cfg = await loadConnectionConfig(workDir);
-			expect(cfg).toMatchObject({ url: expect.stringContaining('local$host'), password: '$not_interp' });
+			expect(cfg).toMatchObject({
+				url: expect.stringContaining('local$host'),
+				password: '$not_interp'
+			});
 		});
 
 		it('preserves secrets containing YAML-significant text verbatim', async () => {

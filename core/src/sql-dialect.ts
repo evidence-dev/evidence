@@ -15,6 +15,7 @@ export { DatabricksDialect } from './sql-dialect/databricks';
 export { PostgresDialect } from './sql-dialect/postgres';
 export { CubeDialect } from './sql-dialect/cube';
 export { MotherDuckDialect } from './sql-dialect/motherduck';
+export { SqlServerDialect } from './sql-dialect/sqlserver';
 
 import { ClickHouseDialect } from './sql-dialect/clickhouse';
 import { SnowflakeDialect } from './sql-dialect/snowflake';
@@ -24,6 +25,7 @@ import { DatabricksDialect } from './sql-dialect/databricks';
 import { PostgresDialect } from './sql-dialect/postgres';
 import { CubeDialect } from './sql-dialect/cube';
 import { MotherDuckDialect } from './sql-dialect/motherduck';
+import { SqlServerDialect } from './sql-dialect/sqlserver';
 import type { SqlDialect } from './sql-dialect/common';
 
 export const defaultDialect: SqlDialect = new ClickHouseDialect();
@@ -36,7 +38,8 @@ export type WarehouseType =
 	| 'databricks'
 	| 'postgres'
 	| 'cube'
-	| 'motherduck';
+	| 'motherduck'
+	| 'sqlserver';
 
 export function dialectFor(type: WarehouseType | null | undefined): SqlDialect {
 	switch (type) {
@@ -54,6 +57,8 @@ export function dialectFor(type: WarehouseType | null | undefined): SqlDialect {
 			return new CubeDialect();
 		case 'motherduck':
 			return new MotherDuckDialect();
+		case 'sqlserver':
+			return new SqlServerDialect();
 		default:
 			return new ClickHouseDialect();
 	}

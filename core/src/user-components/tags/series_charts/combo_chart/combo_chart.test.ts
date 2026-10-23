@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -76,6 +78,11 @@ describe('combo_chart SQL (per-child series queries)', () => {
 			 
 			 GROUP BY category"
 			----
+			"SELECT category AS "category", avg(avg_transaction_value) AS "avg_avg_transaction_value"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category"
+			----
 			"SELECT category AS \`category\`, avg(avg_transaction_value) AS \`avg_avg_transaction_value\`
 			 FROM demo.daily_orders
 			 
@@ -114,6 +121,11 @@ describe('combo_chart SQL (per-child series queries)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT category AS "category", sum(transactions) AS "sum_transactions"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category"
 			----
 			"SELECT category AS "category", sum(transactions) AS "sum_transactions"
 			 FROM demo.daily_orders
@@ -171,6 +183,14 @@ describe('combo_chart SQL (per-child series queries)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY avg(avg_transaction_value) desc"
+			----
+			"SELECT category AS "category", avg(avg_transaction_value) AS "avg_avg_transaction_value"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY avg(avg_transaction_value) desc"
@@ -272,6 +292,14 @@ describe('combo_chart SQL (per-child series queries)', () => {
 			 
 			 ORDER BY date__month"
 			----
+			"SELECT DATEFROMPARTS(YEAR(date), MONTH(date), 1) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATEFROMPARTS(YEAR(date), MONTH(date), 1)
+			 
+			 
+			 ORDER BY date__month"
+			----
 			"SELECT DATE_TRUNC('MONTH', date) AS \`date__month\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 
@@ -345,6 +373,14 @@ describe('combo_chart SQL (per-child series queries)', () => {
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2025-01-02' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
 			 GROUP BY DATETRUNC(month, date)
+			 
+			 
+			 ORDER BY date__month"
+			----
+			"SELECT DATEFROMPARTS(YEAR(date), MONTH(date), 1) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-01-02' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY DATEFROMPARTS(YEAR(date), MONTH(date), 1)
 			 
 			 
 			 ORDER BY date__month"

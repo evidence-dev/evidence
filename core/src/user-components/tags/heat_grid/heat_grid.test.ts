@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -53,6 +55,11 @@ describe('heat_grid SQL', () => {
 			 FROM appointments
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 
+			 GROUP BY province"
 			----
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
 			 FROM appointments
@@ -110,6 +117,11 @@ describe('heat_grid SQL', () => {
 			 WHERE (region = 'North')
 			 GROUP BY province"
 			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 WHERE (region = 'North')
+			 GROUP BY province"
+			----
 			"SELECT province AS \`province\`, avg(wait_time) AS \`avg_wait_time\`
 			 FROM appointments
 			 WHERE (region = 'North')
@@ -157,6 +169,12 @@ describe('heat_grid SQL', () => {
 			 FROM appointments
 			 
 			 GROUP BY ALL
+			 HAVING (avg(wait_time) > 60)"
+			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 
+			 GROUP BY province
 			 HAVING (avg(wait_time) > 60)"
 			----
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
@@ -221,6 +239,11 @@ describe('heat_grid SQL', () => {
 			 WHERE (appt_date >= CAST('2025-12-03' AS DATE) AND appt_date <= CAST('2026-01-01' AS DATE))
 			 GROUP BY province"
 			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 WHERE (appt_date >= CAST('2025-12-03' AS DATE) AND appt_date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY province"
+			----
 			"SELECT province AS \`province\`, avg(wait_time) AS \`avg_wait_time\`
 			 FROM appointments
 			 WHERE (appt_date >= DATE '2025-12-03' AND appt_date <= DATE '2026-01-01')
@@ -276,6 +299,14 @@ describe('heat_grid SQL', () => {
 			 
 			 
 			 ORDER BY avg(wait_time) desc LIMIT 10"
+			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 
+			 GROUP BY province
+			 
+			 
+			 ORDER BY avg(wait_time) desc OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY"
 			----
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
 			 FROM appointments

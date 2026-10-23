@@ -292,6 +292,19 @@ describe('runInit', () => {
 			expect(parsed.clientSecret).toBeDefined();
 		});
 
+		it('scaffolds a sqlserver connection.yaml that resolves end-to-end', async () => {
+			const result = await runInit({ targetDir: null, cwd: workDir, warehouse: 'sqlserver' });
+
+			expect(result.warehouse).toBe('sqlserver');
+			const config = await loadConnectionConfig(workDir);
+			expect(config).toMatchObject({
+				type: 'sqlserver',
+				port: 1433,
+				encrypt: true,
+				trustServerCertificate: false
+			});
+		});
+
 		it('writes connection.yaml into a named target directory', async () => {
 			await runInit({ targetDir: 'wh-project', cwd: workDir, warehouse: 'snowflake' });
 

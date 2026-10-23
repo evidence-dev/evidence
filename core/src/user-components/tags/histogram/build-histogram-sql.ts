@@ -24,6 +24,8 @@ export function buildHistogramSQL(attrs: HistogramSQLAttrs): string {
 	const { data, value, series, where, filterSql, bin_count, bin_width, limit } = attrs;
 	const dialect = attrs.dialect ?? defaultDialect;
 	const q = (name: string) => dialect.quoteAlias(name);
+	// T-SQL only has CEILING; every other dialect accepts ceil.
+	const ceil = dialect.nonAggregationFunctions.has('CEIL') ? 'ceil' : 'CEILING';
 
 	const whereClause = combineWhere(where, filterSql);
 
@@ -49,7 +51,7 @@ export function buildHistogramSQL(attrs: HistogramSQLAttrs): string {
 				SELECT
 					min(${value}) AS ${q('min_val')},
 					max(${value}) AS ${q('max_val')},
-					ceil(2 * power(count(*), 1.0 / 3)) AS ${q('rice_bin_count')}
+					${ceil}(2 * power(count(*), 1.0 / 3)) AS ${q('rice_bin_count')}
 				FROM ${data}
 				${whereClause}
 			),

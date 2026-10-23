@@ -25,6 +25,7 @@ export function schemaAllowlist(
 		case 'clickhouse':
 			return config.databases ?? [];
 		case 'fabric':
+		case 'sqlserver':
 		case 'databricks':
 		case 'motherduck':
 			return config.schemas ?? [];

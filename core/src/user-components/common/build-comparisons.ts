@@ -249,6 +249,18 @@ function buildBenchmarkCTE(
 		${groupBySQL}
 	`.trim();
 
+	// T-SQL rejects a WITH nested inside another CTE body, which is where this
+	// fragment lands, so strict dialects inline subject_totals as a derived table.
+	const withSubjectTotals = dialect.strictDerivedTables
+		? ''
+		: `WITH subject_totals AS (${subjectTotalsCTE})`;
+	const subjectTotals = (alias?: string) =>
+		dialect.strictDerivedTables
+			? `(${subjectTotalsCTE}) AS ${alias ?? 'subject_totals'}`
+			: alias
+				? `subject_totals ${alias}`
+				: 'subject_totals';
+
 	// Step 2: Build benchmark aggregation
 	if (!excludeSelf) {
 		// Simple case: aggregate to benchmark within groups
@@ -262,10 +274,10 @@ function buildBenchmarkCTE(
 		});
 
 		return `
-			WITH subject_totals AS (${subjectTotalsCTE})
+			${withSubjectTotals}
 			SELECT
 				${[...benchmarkSelects, ...benchmarkAggs].join(',\n\t\t\t\t')}
-			FROM subject_totals
+			FROM ${subjectTotals()}
 			${benchmarkGroupBy}
 		`.trim();
 	} else {
@@ -291,10 +303,10 @@ function buildBenchmarkCTE(
 			);
 
 			return `
-				WITH subject_totals AS (${subjectTotalsCTE})
+				${withSubjectTotals}
 				SELECT
 					${[...allDimensionSelects, ...benchmarkCalcs].join(',\n\t\t\t\t')}
-				FROM subject_totals
+				FROM ${subjectTotals()}
 			`.trim();
 		}
 
@@ -344,11 +356,11 @@ function buildBenchmarkCTE(
 		});
 
 		return `
-			WITH subject_totals AS (${subjectTotalsCTE})
+			${withSubjectTotals}
 			SELECT 
 				${[...selectColumns, ...benchmarkAggs].join(',\n\t\t\t\t')}
-			FROM subject_totals t1
-			LEFT JOIN subject_totals t2 
+			FROM ${subjectTotals('t1')}
+			LEFT JOIN ${subjectTotals('t2')} 
 				ON ${partitionConditions}
 				AND (${excludeCondition})
 			GROUP BY ${selectColumns.join(', ')}

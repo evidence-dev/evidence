@@ -12,6 +12,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -23,6 +24,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -160,6 +162,9 @@ describe('waterfall_chart SQL', () => {
 			"SELECT step AS "step", amount AS "amount", bar_type AS "bar_type"
 			 FROM revenue_bridge"
 			----
+			"SELECT step AS "step", amount AS "amount", bar_type AS "bar_type"
+			 FROM revenue_bridge"
+			----
 			"SELECT step AS \`step\`, amount AS \`amount\`, bar_type AS \`bar_type\`
 			 FROM revenue_bridge"
 			----
@@ -202,6 +207,14 @@ describe('waterfall_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY sum_total_sales DESC"
@@ -337,6 +350,14 @@ describe('waterfall_chart SQL', () => {
 			 FROM revenue
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY period ASC"
+			----
+			"SELECT period AS "period", sum(revenue) AS "sum_revenue", segment AS "segment"
+			 FROM revenue
+			 
+			 GROUP BY period, segment
 			 
 			 
 			 ORDER BY period ASC"

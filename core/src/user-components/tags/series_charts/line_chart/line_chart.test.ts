@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -76,6 +78,14 @@ describe('line_chart SQL — date_range classes', () => {
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2026-03-25' AS DATE) AND date <= CAST('2026-04-23' AS DATE))
 			 GROUP BY DATETRUNC(day, date)
+			 
+			 
+			 ORDER BY date__day"
+			----
+			"SELECT CAST(date AS DATE) AS "date__day", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2026-03-25' AS DATE) AND date <= CAST('2026-04-23' AS DATE))
+			 GROUP BY CAST(date AS DATE)
 			 
 			 
 			 ORDER BY date__day"
@@ -157,6 +167,14 @@ describe('line_chart SQL — date_range classes', () => {
 			 
 			 ORDER BY date__month"
 			----
+			"SELECT DATEFROMPARTS(YEAR(date), MONTH(date), 1) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2026-01-01' AS DATE) AND date <= CAST('2026-12-31' AS DATE))
+			 GROUP BY DATEFROMPARTS(YEAR(date), MONTH(date), 1)
+			 
+			 
+			 ORDER BY date__month"
+			----
 			"SELECT DATE_TRUNC('MONTH', date) AS \`date__month\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-12-31')
@@ -230,6 +248,14 @@ describe('line_chart SQL — date_range classes', () => {
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2026-03-01' AS DATE) AND date <= CAST('2026-03-31' AS DATE))
 			 GROUP BY DATETRUNC(day, date)
+			 
+			 
+			 ORDER BY date__day"
+			----
+			"SELECT CAST(date AS DATE) AS "date__day", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2026-03-01' AS DATE) AND date <= CAST('2026-03-31' AS DATE))
+			 GROUP BY CAST(date AS DATE)
 			 
 			 
 			 ORDER BY date__day"
@@ -311,6 +337,14 @@ describe('line_chart SQL — date_range classes', () => {
 			 
 			 ORDER BY date__day"
 			----
+			"SELECT CAST(date AS DATE) AS "date__day", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2026-01-01' AS DATE) AND date <= CAST('2026-04-23' AS DATE))
+			 GROUP BY CAST(date AS DATE)
+			 
+			 
+			 ORDER BY date__day"
+			----
 			"SELECT DATE_TRUNC('DAY', date) AS \`date__day\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-04-23')
@@ -388,6 +422,14 @@ describe('line_chart SQL — date_range classes', () => {
 			 
 			 ORDER BY date__month"
 			----
+			"SELECT DATEFROMPARTS(YEAR(date), MONTH(date), 1) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATEFROMPARTS(YEAR(date), MONTH(date), 1)
+			 
+			 
+			 ORDER BY date__month"
+			----
 			"SELECT DATE_TRUNC('MONTH', date) AS \`date__month\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 
@@ -461,6 +503,14 @@ describe('line_chart SQL — date_range classes', () => {
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2023-01-01' AS DATE) AND date <= CAST('2023-12-31' AS DATE))
 			 GROUP BY DATETRUNC(day, date)
+			 
+			 
+			 ORDER BY date__day"
+			----
+			"SELECT CAST(date AS DATE) AS "date__day", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2023-01-01' AS DATE) AND date <= CAST('2023-12-31' AS DATE))
+			 GROUP BY CAST(date AS DATE)
 			 
 			 
 			 ORDER BY date__day"

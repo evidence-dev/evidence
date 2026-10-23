@@ -11,6 +11,7 @@ import { loadCredentials, clearSessionCache, type StoredCredentials } from './st
 import { ensureSessionResolved, clearInMemorySessionCache } from './auth.ts';
 import type { QueryOptions } from './args.ts';
 import { readFile, writeFile } from 'fs/promises';
+import { dialectFor } from '@evidence/core/sql-dialect';
 import {
 	loadConnectionConfig,
 	executeQuery as executeDirectQuery,
@@ -156,18 +157,21 @@ async function executeDirect(sql: string, config: ConnectionConfig): Promise<Que
 }
 
 async function executeQueryEngine(sql: string, limit: number | null): Promise<QueryResult> {
-	// Apply limit once, regardless of warehouse mode.
+	// connection.yaml takes precedence — query the warehouse directly without
+	// touching studio. The cap goes through the warehouse's dialect: T-SQL has no LIMIT.
+	const connectionConfig = await loadConnectionConfig(process.cwd());
+	if (connectionConfig) {
+		const directSql =
+			limit === null
+				? sql.trim()
+				: dialectFor(connectionConfig.type).applyRowLimit(sql.trim(), limit);
+		return executeDirect(directSql, connectionConfig);
+	}
+
 	let finalSql = sql.trim();
 	if (limit !== null) {
 		finalSql = finalSql.replace(/;+$/, '');
 		finalSql = `SELECT * FROM (${finalSql}) AS limited_query LIMIT ${limit}`;
-	}
-
-	// connection.yaml takes precedence — query the warehouse directly without
-	// touching studio.
-	const connectionConfig = await loadConnectionConfig(process.cwd());
-	if (connectionConfig) {
-		return executeDirect(finalSql, connectionConfig);
 	}
 
 	let credentials = await loadCredentials();

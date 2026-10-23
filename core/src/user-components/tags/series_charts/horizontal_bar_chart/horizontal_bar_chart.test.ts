@@ -9,6 +9,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -20,6 +21,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -62,6 +64,14 @@ describe('horizontal_bar_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales desc"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY sum_total_sales desc"
@@ -137,6 +147,14 @@ describe('horizontal_bar_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category asc"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY category asc"
@@ -244,6 +262,14 @@ describe('horizontal_bar_chart SQL', () => {
 			 
 			 ORDER BY sum_total_sales desc, region"
 			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales", region AS "region"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category, region
+			 
+			 
+			 ORDER BY sum_total_sales desc, region"
+			----
 			"SELECT category AS \`category\`, sum(total_sales) AS \`sum_total_sales\`, region AS \`region\`
 			 FROM demo.daily_orders
 			 
@@ -319,6 +345,14 @@ describe('horizontal_bar_chart SQL', () => {
 			 
 			 ORDER BY sum_total_sales desc"
 			----
+			"SELECT DATEFROMPARTS(YEAR(date), MONTH(date), 1) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATEFROMPARTS(YEAR(date), MONTH(date), 1)
+			 
+			 
+			 ORDER BY sum_total_sales desc"
+			----
 			"SELECT DATE_TRUNC('MONTH', date) AS \`date__month\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 
@@ -383,6 +417,14 @@ describe('horizontal_bar_chart SQL', () => {
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales desc"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY category
 			 
 			 
 			 ORDER BY sum_total_sales desc"

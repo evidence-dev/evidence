@@ -15,6 +15,19 @@ If your Evidence Studio organization connects to Snowflake, BigQuery, or another
 
 </Update>
 
+<Update label="October 19, 2026" description="" tags={["New Feature"]}>
+
+### ✨ SQL Server direct connector
+
+Query SQL Server, Azure SQL Database, and Azure SQL Managed Instance directly from Evidence, without syncing data first.
+
+- Connect with a SQL login: server, port, database, user, and password.
+- TLS is on by default, and you can supply your own CA certificate for servers with a self-signed or internal-CA certificate.
+- Row-level security: your SQL Server security policies can filter data per Evidence viewer.
+- Works in the CLI: `evidence init --warehouse sqlserver` scaffolds a `connection.yaml`, and local queries run directly against your server.
+
+</Update>
+
 <Update label="October 15, 2026" description="" tags={["New Feature"]}>
 
 ### ✨ AI chat in embedded reports

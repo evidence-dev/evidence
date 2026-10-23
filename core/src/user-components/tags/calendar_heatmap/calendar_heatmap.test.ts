@@ -9,6 +9,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -20,6 +21,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -62,6 +64,14 @@ describe('calendar_heatmap SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY date ASC"
+			----
+			"SELECT date AS "date", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY date
 			 
 			 
 			 ORDER BY date ASC"
@@ -150,6 +160,14 @@ describe('calendar_heatmap SQL', () => {
 			 
 			 ORDER BY date ASC"
 			----
+			"SELECT date AS "date", sum(total_sales) AS "sum_total_sales", case when sum(total_sales) > 1000 then '#22c55e' when sum(total_sales) > 500 then '#f59e0b' else '#ef4444' end AS "case_when_sum_total_sales_1000_then_22c55e_when_sum_total_sales_500_then_f59e0b_else_ef4444_end"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY date
+			 
+			 
+			 ORDER BY date ASC"
+			----
 			"SELECT date AS \`date\`, sum(total_sales) AS \`sum_total_sales\`, case when sum(total_sales) > 1000 then '#22c55e' when sum(total_sales) > 500 then '#f59e0b' else '#ef4444' end AS \`case_when_sum_total_sales_1000_then_22c55e_when_sum_total_sales_500_then_f59e0b_else_ef4444_end\`
 			 FROM demo.daily_orders
 			 
@@ -226,6 +244,14 @@ describe('calendar_heatmap SQL', () => {
 			 
 			 ORDER BY date ASC"
 			----
+			"SELECT date AS "date", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-01-02' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY date
+			 
+			 
+			 ORDER BY date ASC"
+			----
 			"SELECT date AS \`date\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2025-01-02' AND date <= DATE '2026-01-01')
@@ -289,6 +315,14 @@ describe('calendar_heatmap SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum(total_sales) desc"
+			----
+			"SELECT date AS "date", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY date
 			 
 			 
 			 ORDER BY sum(total_sales) desc"

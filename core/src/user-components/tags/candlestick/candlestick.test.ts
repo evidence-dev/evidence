@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -62,6 +64,14 @@ describe('candlestick SQL', () => {
 			 FROM demo.prices
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY date"
+			----
+			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close"
+			 FROM demo.prices
+			 
+			 GROUP BY date, open, high, low, close
 			 
 			 
 			 ORDER BY date"
@@ -152,6 +162,14 @@ describe('candlestick SQL', () => {
 			 
 			 ORDER BY date"
 			----
+			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close", volume AS "volume"
+			 FROM demo.prices
+			 
+			 GROUP BY date, open, high, low, close, volume
+			 
+			 
+			 ORDER BY date"
+			----
 			"SELECT date AS \`date\`, open AS \`open\`, high AS \`high\`, low AS \`low\`, close AS \`close\`, volume AS \`volume\`
 			 FROM demo.prices
 			 
@@ -226,6 +244,14 @@ describe('candlestick SQL', () => {
 			 FROM demo.prices
 			 
 			 GROUP BY DATETRUNC(month, date), open, high, low, close
+			 
+			 
+			 ORDER BY date__month"
+			----
+			"SELECT DATEFROMPARTS(YEAR(date), MONTH(date), 1) AS "date__month", open AS "open", high AS "high", low AS "low", close AS "close"
+			 FROM demo.prices
+			 
+			 GROUP BY DATEFROMPARTS(YEAR(date), MONTH(date), 1), open, high, low, close
 			 
 			 
 			 ORDER BY date__month"
@@ -309,6 +335,14 @@ describe('candlestick SQL', () => {
 			 
 			 ORDER BY date__week"
 			----
+			"SELECT DATEADD(day, -((DATEPART(weekday, date) + @@DATEFIRST - 2) % 7), CAST(date AS DATE)) AS "date__week", open AS "open", high AS "high", low AS "low", close AS "close"
+			 FROM demo.prices
+			 
+			 GROUP BY DATEADD(day, -((DATEPART(weekday, date) + @@DATEFIRST - 2) % 7), CAST(date AS DATE)), open, high, low, close
+			 
+			 
+			 ORDER BY date__week"
+			----
 			"SELECT DATE_TRUNC('WEEK', date) AS \`date__week\`, open AS \`open\`, high AS \`high\`, low AS \`low\`, close AS \`close\`
 			 FROM demo.prices
 			 
@@ -376,6 +410,14 @@ describe('candlestick SQL', () => {
 			 FROM demo.prices
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY date"
+			----
+			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close"
+			 FROM demo.prices
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY date, open, high, low, close
 			 
 			 
 			 ORDER BY date"

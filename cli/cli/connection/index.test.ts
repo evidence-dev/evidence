@@ -4,6 +4,7 @@ import type {
 	BigQueryConnectionConfig,
 	ClickHouseConnectionConfig,
 	FabricConnectionConfig,
+	SqlServerConnectionConfig,
 	DatabricksConnectionConfig
 } from './types';
 
@@ -32,6 +33,19 @@ const fabric = (extra: Partial<FabricConnectionConfig> = {}): FabricConnectionCo
 	tenantId: 't',
 	clientId: 'c',
 	clientSecret: 's',
+	...extra
+});
+
+const sqlserver = (extra: Partial<SqlServerConnectionConfig> = {}): SqlServerConnectionConfig => ({
+	type: 'sqlserver',
+	server: 'sql.octocorp.example',
+	port: 1433,
+	user: 'evidence_reader',
+	password: 'pw',
+	database: 'analytics',
+	encrypt: true,
+	trustServerCertificate: false,
+	schema: 'dbo',
 	...extra
 });
 
@@ -149,5 +163,34 @@ describe('qualifyTableName (databricks)', () => {
 
 	it('leaves an already-qualified name unchanged', () => {
 		expect(qualifyTableName('sales.orders', databricks({ schema: 'sales' }))).toBe('sales.orders');
+	});
+});
+
+describe('listTablesSql (sqlserver)', () => {
+	it('lists base tables schema-qualified from INFORMATION_SCHEMA', () => {
+		const sql = listTablesSql(sqlserver());
+		expect(sql).toContain('INFORMATION_SCHEMA.TABLES');
+		expect(sql).toContain("CONCAT(TABLE_SCHEMA, '.', TABLE_NAME)");
+		expect(sql).not.toContain('TABLE_SCHEMA IN');
+	});
+
+	it('scopes to the schemas allowlist and escapes quotes', () => {
+		expect(listTablesSql(sqlserver({ schemas: ['sales', "a'b"] }))).toContain(
+			"TABLE_SCHEMA IN ('sales', 'a''b')"
+		);
+	});
+});
+
+describe('qualifyTableName (sqlserver)', () => {
+	it('qualifies a bare name with the default dbo schema', () => {
+		expect(qualifyTableName('orders', sqlserver())).toBe('[dbo].[orders]');
+	});
+
+	it('qualifies a bare name with a configured schema', () => {
+		expect(qualifyTableName('orders', sqlserver({ schema: 'sales' }))).toBe('[sales].[orders]');
+	});
+
+	it('leaves an already-qualified name unchanged', () => {
+		expect(qualifyTableName('sales.orders', sqlserver())).toBe('sales.orders');
 	});
 });

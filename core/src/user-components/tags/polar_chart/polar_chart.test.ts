@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -53,6 +55,11 @@ describe('polar_chart SQL', () => {
 			 FROM demo.sales
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.sales
+			 
+			 GROUP BY region"
 			----
 			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.sales
@@ -104,6 +111,11 @@ describe('polar_chart SQL', () => {
 			 FROM demo.sales
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT region AS "region", category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.sales
+			 
+			 GROUP BY region, category"
 			----
 			"SELECT region AS "region", category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.sales
@@ -165,6 +177,11 @@ describe('polar_chart SQL', () => {
 			 FROM demo.sales
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL"
+			----
+			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.sales
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY region"
 			----
 			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.sales

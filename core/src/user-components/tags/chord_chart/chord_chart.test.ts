@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect
@@ -16,6 +17,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect()
@@ -58,6 +60,14 @@ describe('chord_chart SQL', () => {
 			 FROM demo.order_details
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_quantity DESC"
+			----
+			"SELECT category AS "category", item_name AS "item_name", sum(quantity) AS "sum_quantity"
+			 FROM demo.order_details
+			 
+			 GROUP BY category, item_name
 			 
 			 
 			 ORDER BY sum_quantity DESC"
@@ -139,6 +149,14 @@ describe('chord_chart SQL', () => {
 			 
 			 ORDER BY sum_quantity DESC"
 			----
+			"SELECT category AS "category", item_name AS "item_name", sum(quantity) AS "sum_quantity"
+			 FROM demo.order_details
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY category, item_name
+			 
+			 
+			 ORDER BY sum_quantity DESC"
+			----
 			"SELECT category AS \`category\`, item_name AS \`item_name\`, sum(quantity) AS \`sum_quantity\`
 			 FROM demo.order_details
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
@@ -195,6 +213,14 @@ describe('chord_chart SQL', () => {
 			 FROM demo.order_details
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category ASC"
+			----
+			"SELECT category AS "category", item_name AS "item_name", sum(quantity) AS "sum_quantity"
+			 FROM demo.order_details
+			 
+			 GROUP BY category, item_name
 			 
 			 
 			 ORDER BY category ASC"

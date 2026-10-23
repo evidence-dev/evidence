@@ -6,6 +6,7 @@ import {
 	ClickHouseDialect,
 	BigQueryDialect,
 	FabricDialect,
+	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
@@ -17,6 +18,7 @@ const dialects = [
 	new SnowflakeDialect(),
 	new BigQueryDialect(),
 	new FabricDialect(),
+	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
@@ -55,6 +57,9 @@ describe('big_value SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
@@ -121,6 +126,16 @@ describe('big_value SQL', () => {
 			SELECT main_query.*, comparison_1_fragment.\`__ev_sum_total_sales_prior_year_comparison\` as \`__ev_sum_total_sales_prior_year_comparison_compared_value\`, (main_query.\`sum_total_sales\` - comparison_1_fragment.\`__ev_sum_total_sales_prior_year_comparison\`) * 1.0 as \`__ev_sum_total_sales_prior_year_comparison_abs\`, ((main_query.\`sum_total_sales\` - comparison_1_fragment.\`__ev_sum_total_sales_prior_year_comparison\`) * 1.0 / nullIf(abs(comparison_1_fragment.\`__ev_sum_total_sales_prior_year_comparison\`), 0)) as \`__ev_sum_total_sales_prior_year_comparison_pct\`
 			FROM main_query
 			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
+			----
+			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (CONCAT(FORMAT(CAST('2025-01-02' AS DATE), 'MMM d/yy', 'en-US'), ' - ', FORMAT(CAST('2026-01-01' AS DATE), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_year_comparison_current_period", (CONCAT(FORMAT(DATEADD(year, -1, CAST('2025-01-02' AS DATE)), 'MMM d/yy', 'en-US'), ' - ', FORMAT(DATEADD(year, -1, CAST('2026-01-01' AS DATE)), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-01-02' AS DATE) AND date <= CAST('2026-01-01' AS DATE))),
+			comparison_1_fragment AS (SELECT sum(total_sales) as "__ev_sum_total_sales_prior_year_comparison"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATEADD(year, -1, CAST('2025-01-02' AS DATE)) AND date <= DATEADD(year, -1, CAST('2026-01-01' AS DATE))))
+			SELECT main_query.*, comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison" as "__ev_sum_total_sales_prior_year_comparison_compared_value", (main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 as "__ev_sum_total_sales_prior_year_comparison_abs", ((main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 / nullIf(abs(comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison"), 0)) as "__ev_sum_total_sales_prior_year_comparison_pct"
+			FROM main_query
+			LEFT JOIN comparison_1_fragment ON 1 = 1 ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (CONCAT(FORMAT(CAST('2025-01-02' AS DATE), 'MMM d/yy', 'en-US'), ' - ', FORMAT(CAST('2026-01-01' AS DATE), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_year_comparison_current_period", (CONCAT(FORMAT(DATEADD(year, -1, CAST('2025-01-02' AS DATE)), 'MMM d/yy', 'en-US'), ' - ', FORMAT(DATEADD(year, -1, CAST('2026-01-01' AS DATE)), 'MMM d/yy', 'en-US'))) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
 			 FROM demo.daily_orders
@@ -221,6 +236,17 @@ describe('big_value SQL', () => {
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
 			 SELECT CONCAT('[', STRING_AGG(CONCAT('["', CAST(x_val AS VARCHAR(MAX)), '",', ISNULL(CAST(y_val AS VARCHAR(MAX)), 'null'), ']'), ',') WITHIN GROUP (ORDER BY x_val), ']')
+			 FROM (
+			 SELECT date as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 
+			 GROUP BY date
+			 ) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT CONCAT('[', STRING_AGG(CONCAT('["', CONVERT(VARCHAR(MAX), x_val, 126), '",', ISNULL(CAST(y_val AS VARCHAR(MAX)), 'null'), ']'), ',') WITHIN GROUP (ORDER BY x_val), ']')
 			 FROM (
 			 SELECT date as x_val, sum(total_sales) as y_val
 			 FROM demo.daily_orders
@@ -344,6 +370,17 @@ describe('big_value SQL', () => {
 			 ) as "__ev_sparkline_sum_total_sales"
 			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT CONCAT('[', STRING_AGG(CONCAT('["', CONVERT(VARCHAR(MAX), x_val, 126), '",', ISNULL(CAST(y_val AS VARCHAR(MAX)), 'null'), ']'), ',') WITHIN GROUP (ORDER BY x_val), ']')
+			 FROM (
+			 SELECT DATEFROMPARTS(YEAR(date), MONTH(date), 1) as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATEFROMPARTS(YEAR(date), MONTH(date), 1)
+			 ) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
+			----
 			"SELECT sum(total_sales) AS \`sum_total_sales\`, count(*) as \`__ev_count\`, (
 			 SELECT CONCAT('[', ARRAY_JOIN(TRANSFORM(SORT_ARRAY(COLLECT_LIST(STRUCT(x_val AS k, y_val AS y))), x -> CONCAT('["', CAST(x.k AS STRING), '",', COALESCE(CAST(x.y AS STRING), 'null'), ']')), ','), ']')
 			 FROM (
@@ -451,6 +488,18 @@ describe('big_value SQL', () => {
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
 			 SELECT CONCAT('[', STRING_AGG(CONCAT('["', CAST(x_val AS VARCHAR(MAX)), '",', ISNULL(CAST(y_val AS VARCHAR(MAX)), 'null'), ']'), ',') WITHIN GROUP (ORDER BY x_val), ']')
+			 FROM (
+			 SELECT date as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE))
+			 GROUP BY date
+			 ) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= CAST('2025-12-03' AS DATE) AND date <= CAST('2026-01-01' AS DATE)) ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT CONCAT('[', STRING_AGG(CONCAT('["', CONVERT(VARCHAR(MAX), x_val, 126), '",', ISNULL(CAST(y_val AS VARCHAR(MAX)), 'null'), ']'), ',') WITHIN GROUP (ORDER BY x_val), ']')
 			 FROM (
 			 SELECT date as x_val, sum(total_sales) as y_val
 			 FROM demo.daily_orders

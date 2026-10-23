@@ -1,0 +1,281 @@
+---
+title: 'SQL Server'
+description: 'Query your SQL Server or Azure SQL database directly from Evidence without syncing data.'
+---
+
+The SQL Server direct connector lets Evidence run queries live against your own SQL Server database using a SQL login.
+
+Supported:
+
+- **SQL Server 2017** and later (on-premises, VMs, or containers)
+- **Azure SQL Database**
+- **Azure SQL Managed Instance**
+
+## Connecting
+
+You need the server **hostname**, **port**, **database** name, and a **SQL login** with its **password**.
+
+### Prerequisites
+
+- **Network access.** Evidence connects to your server over TDS (port `1433` by default). Allow inbound connections from Evidence's [egress IPs](/evidence-warehouse#ip-whitelisting) on that port in your firewall or network security group.
+  - **Azure SQL Database:** add the IPs as server-level firewall rules (**SQL server → Networking → Firewall rules**).
+  - **Azure SQL Managed Instance:** enable the **public endpoint** (port `3342`) and allow the IPs in the instance's network security group.
+- **SQL authentication** enabled on the server ("SQL Server and Windows Authentication mode"). Windows / Microsoft Entra authentication isn't supported by this connector yet.
+
+### 1. Create a read-only login
+
+Create a dedicated login for Evidence that can only read data. Don't reuse an admin login or `sa`.
+
+```sql
+-- On the server (in master):
+CREATE LOGIN evidence_reader WITH PASSWORD = '<strong-password>';
+
+-- In the database Evidence should query:
+USE analytics;
+CREATE USER evidence_reader FOR LOGIN evidence_reader WITH DEFAULT_SCHEMA = dbo;
+ALTER ROLE db_datareader ADD MEMBER evidence_reader;
+```
+
+<Accordion title="Azure SQL Database: use a contained user instead">
+
+Azure SQL Database also supports contained database users, which need no server-level login. Run this in the target database:
+
+```sql
+CREATE USER evidence_reader WITH PASSWORD = '<strong-password>', DEFAULT_SCHEMA = dbo;
+ALTER ROLE db_datareader ADD MEMBER evidence_reader;
+```
+
+</Accordion>
+
+`db_datareader` grants `SELECT` on every table and view in the database. To limit access to specific schemas, skip the role and grant per schema:
+
+```sql
+GRANT SELECT ON SCHEMA::sales TO evidence_reader;
+```
+
+### 2. Choose your TLS settings
+
+**Encrypt** is on by default and Azure SQL requires it. Evidence verifies the server certificate against publicly trusted CAs, so Azure SQL works without extra setup.
+
+If your server uses a **self-signed** or **internal-CA** certificate, supply that CA as the **SSL CA certificate** (PEM). Evidence then verifies the server against your CA. **Trust server certificate** also gets you connected, but it skips certificate validation entirely and leaves the connection open to an active man-in-the-middle. Use it only for testing.
+
+### 3. Configure the connector in Evidence
+
+<Steps>
+  <Step title="Open the connectors page">
+    Go to **Connectors** in the sidebar. In the **Warehouse** card at the top, select **SQL Server**.
+  </Step>
+  <Step title="Enter connection details">
+    Fill in the **Server** (hostname only, e.g. `sql.octocorp.example` or `octocorp.database.windows.net`, not a connection string), **Port**, **Database**, **User**, and **Password**. For a named instance, enter the instance's port rather than `host\instance`.
+  </Step>
+  <Step title="(Optional) Restrict the schema browser">
+    Add schema names to **Schemas** to limit which ones appear in the schema browser. Leave empty to show every schema the login can see.
+  </Step>
+  <Step title="Test and save">
+    Click **Test Connection**. Once it passes, click **Save**.
+  </Step>
+</Steps>
+
+{/* GENERATED:CONNECTION-OPTIONS START */}
+
+## Configuration reference
+
+<Tabs>
+  <Tab title="Studio">
+
+    #### Credentials
+
+    <ResponseField name="Server" type="string" required>
+      SQL Server hostname, e.g. sql.example.com or myserver.database.windows.net. For a named instance, use the instance port rather than host\instance.
+    </ResponseField>
+    <ResponseField name="Port" type="number">
+      TDS port. Default: `1433`.
+    </ResponseField>
+    <ResponseField name="User" type="string" required>
+      SQL login to connect as.
+    </ResponseField>
+    <ResponseField name="Password" type="string" required>
+      Password for the SQL login.
+    </ResponseField>
+    <ResponseField name="Database" type="string" required>
+      Database to connect to.
+    </ResponseField>
+    <ResponseField name="Encrypt" type="boolean">
+      Encrypt the connection with TLS. Required by Azure SQL. Default: `true`.
+    </ResponseField>
+    <ResponseField name="Trust server certificate" type="boolean">
+      Skip server certificate validation. Leaves the connection open to an active man-in-the-middle — prefer supplying your CA in ssl_ca for servers with a self-signed or internal-CA certificate. Default: `false`.
+    </ResponseField>
+    <ResponseField name="SSL CA certificate" type="string">
+      PEM CA bundle used to verify the server certificate.
+    </ResponseField>
+    <ResponseField name="Default schema" type="string">
+      Schema the CLI uses to qualify bare table names (e.g. in `evidence describe`). T-SQL can't switch schema per session, so unqualified names in queries resolve against the login's default schema — set it with ALTER USER … WITH DEFAULT_SCHEMA. Default: `"dbo"`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="Schemas" type="string[]">
+      Allowlist of schemas exposed to the editor and schema browser. Empty exposes every schema the login can see. Default: `[]`.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="Session context" type="{ contextKey: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
+      Evidence identity → SQL Server SESSION_CONTEXT key, set per query for row-level security. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+  <Tab title="CLI (connection.yaml)">
+
+    If your organization has already set up this connection in Evidence Studio, you don't need a `connection.yaml`. Run `evidence login` instead. See [Connect your CLI to your data](/cli/connections).
+
+    ```yaml
+    type: sqlserver
+    server: sql.octocorp.example
+    # port: 1433
+    user: evidence_reader
+    password: <your-password>
+    database: analytics
+    # encrypt: true
+    # trust_cert: false
+    # ssl_ca_path: ./certs/ca.pem # PEM CA bundle for a self-signed or internal-CA server certificate
+    # schema: dbo
+    # schemas: [dbo, sales]
+    # session_context:
+    #   - contextKey: user_email
+    #     evidenceVariable: user.email
+    ```
+
+    #### Credentials
+
+    <ResponseField name="server" type="string" required>
+      SQL Server hostname, e.g. sql.example.com or myserver.database.windows.net. For a named instance, use the instance port rather than host\instance.
+    </ResponseField>
+    <ResponseField name="port" type="number">
+      TDS port. Default: `1433`.
+    </ResponseField>
+    <ResponseField name="user" type="string" required>
+      SQL login to connect as.
+    </ResponseField>
+    <ResponseField name="password" type="string" required>
+      Password for the SQL login.
+    </ResponseField>
+    <ResponseField name="database" type="string" required>
+      Database to connect to.
+    </ResponseField>
+    <ResponseField name="encrypt" type="boolean">
+      Encrypt the connection with TLS. Required by Azure SQL. Default: `true`.
+    </ResponseField>
+    <ResponseField name="trust_cert" type="boolean">
+      Skip server certificate validation. Leaves the connection open to an active man-in-the-middle — prefer supplying your CA in ssl_ca for servers with a self-signed or internal-CA certificate. Default: `false`.
+    </ResponseField>
+    <ResponseField name="ssl_ca" type="string">
+      PEM CA bundle used to verify the server certificate.
+    </ResponseField>
+    <ResponseField name="ssl_ca_path" type="string">
+      Path to a PEM CA bundle, resolved relative to connection.yaml.
+    </ResponseField>
+    <ResponseField name="schema" type="string">
+      Schema the CLI uses to qualify bare table names (e.g. in `evidence describe`). T-SQL can't switch schema per session, so unqualified names in queries resolve against the login's default schema — set it with ALTER USER … WITH DEFAULT_SCHEMA. Default: `"dbo"`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="schemas" type="string[]">
+      Allowlist of schemas exposed to the editor and schema browser. Empty exposes every schema the login can see. Default: `[]`.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="session_context" type="{ contextKey: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
+      Evidence identity → SQL Server SESSION_CONTEXT key, set per query for row-level security. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+</Tabs>
+
+{/* GENERATED:CONNECTION-OPTIONS END */}
+
+## Row-Level Security
+
+Evidence supports row-level security on the SQL Server connector using SQL Server's native [security policies](https://learn.microsoft.com/sql/relational-databases/security/row-level-security) together with **session context**.
+
+### How it works
+
+Before each query, Evidence calls `sp_set_session_context` to store the current viewer's identity (for example their email) in the session under a key you choose, such as `user_email`. A **security policy** on your tables uses an inline table-valued function as a filter predicate. That function reads the value back with `SESSION_CONTEXT(N'user_email')` and returns only the rows the viewer is allowed to see.
+
+The predicate runs inside SQL Server, so the server enforces the filter and Evidence never receives rows the policy excludes.
+
+### Setup
+
+The example below filters a `sales` table so each viewer only sees rows whose `owner_email` matches their Evidence email. Substitute your own table, column, and matching logic.
+
+<Steps>
+  <Step title="Map the Evidence identity to a session key">
+    Add a mapping from a session-context key to an Evidence identity attribute under **Session context**. In `connection.yaml` this is the `session_context` block:
+
+    ```yaml
+    session_context:
+      - contextKey: user_email
+        evidenceVariable: user.email
+    ```
+
+    Before every query, Evidence runs `EXEC sp_set_session_context @key = N'user_email', @value = '<viewer-email>', @read_only = 1`. `@read_only = 1` locks the value for that connection, so a query can't reset the key to impersonate another viewer. Supported identities are `user.email`, `user.id`, `user.name`, and `organization.id`.
+
+    <Note>
+    Session context is applied by Evidence Studio, where each viewer has an identity. The local CLI runs every query as the configured login and ignores `session_context`.
+    </Note>
+  </Step>
+  <Step title="Create the predicate function">
+    Create an inline table-valued function that returns a row when the session value matches. Put it in its own schema (here `Security`) so the login Evidence uses can't change it.
+
+    ```sql
+    CREATE SCHEMA Security;
+    GO
+
+    CREATE FUNCTION Security.fn_rls_owner_email(@owner_email AS nvarchar(256))
+        RETURNS TABLE
+    WITH SCHEMABINDING
+    AS
+        RETURN
+            SELECT 1 AS fn_result
+            WHERE @owner_email = CAST(SESSION_CONTEXT(N'user_email') AS nvarchar(256));
+    GO
+    ```
+  </Step>
+  <Step title="Attach a security policy">
+    Bind the predicate to the column it filters on with `CREATE SECURITY POLICY`. A `FILTER PREDICATE` silently drops non-matching rows from reads.
+
+    ```sql
+    CREATE SECURITY POLICY Security.OwnerEmailPolicy
+    ADD FILTER PREDICATE Security.fn_rls_owner_email(owner_email)
+        ON dbo.sales
+    WITH (STATE = ON);
+    GO
+    ```
+
+    Add an `ADD FILTER PREDICATE ... ON <table>` line for every table that has the `owner_email` column.
+  </Step>
+  <Step title="Decide on a fallback for unassigned users">
+    With the policy on, a viewer whose email matches no row sees zero rows. If you want some users (for example admins) to see everything, broaden the predicate:
+
+    ```sql
+    -- inside the function body:
+    WHERE @owner_email = CAST(SESSION_CONTEXT(N'user_email') AS nvarchar(256))
+       OR CAST(SESSION_CONTEXT(N'user_email') AS nvarchar(256)) IN (N'admin@octocorp.example');
+    ```
+
+    Keeping the predicate strict is the more secure default, but then every viewer needs a matching row.
+  </Step>
+</Steps>
+
+## Security Considerations
+
+Evidence runs queries against your SQL Server database. Take practical steps to protect it from misuse, accidental or malicious.
+
+1. Use a dedicated login with `db_datareader` (or narrower schema-level `SELECT` grants), never `sa`, `db_owner`, or a `sysadmin` member.
+2. Keep **Encrypt** on, and verify the server certificate: supply your CA in **SSL CA certificate** rather than enabling **Trust server certificate**.
+3. Restrict network access to Evidence's [egress IPs](/evidence-warehouse#ip-whitelisting) plus your team's networks.
+4. Keep RLS predicate functions and security policies in a schema the Evidence login can't modify.
+5. Rotate the login's password regularly, and audit its activity with [SQL Server Audit](https://learn.microsoft.com/sql/relational-databases/security/auditing/sql-server-audit-database-engine) or Azure SQL auditing.
