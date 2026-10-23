@@ -1,0 +1,150 @@
+---
+title: 'Designing Reports for PDF'
+description: 'Design reports that look right as PDFs.'
+keywords:
+  - pdf export
+  - print layout
+  - board pack
+  - page break
+  - print group
+  - hidden in print
+  - only in print
+---
+
+import StudioOnly from '/snippets/studio-only.mdx';
+
+For many readers, the PDF is the report. Board packs, investor and client reports, and [scheduled sends](/features/scheduled-reports) all reach people as a PDF. Evidence includes components and options for developing reports that are effective both on the web and in PDF.
+
+## Export Your First PDF
+
+<StudioOnly />
+
+Open the page menu and choose **Download PDF**, or press `Cmd+P` / `Ctrl+P` on a published page.
+
+![The PDF Options dialog, with a preview on the left and the settings on the right](/images/guides/perfect-pdfs/pdf-options-dialog.png)
+
+| Setting | What it does | Default |
+| --- | --- | --- |
+| **Orientation** | Portrait or landscape A4 | Landscape when `page_width: full`; otherwise Portrait |
+| **Color scheme** | Light or dark | Your current mode |
+| **Show cards** | Prints content on cards, as on screen | The page's `cards` setting |
+| **Use page colors** | Prints your page background instead of white | Off |
+| **Margins (mm)** | Space around each page | 20 mm |
+| **Contents** | Untick a heading to leave out that section | All sections |
+
+Use landscape for wide tables and charts.
+
+![The same page exported in portrait and landscape](/images/guides/perfect-pdfs/pdf-portrait-vs-landscape.png)
+
+![The same page with Show cards off and on](/images/guides/perfect-pdfs/pdf-cards-off-vs-on.png)
+
+Light mode is usually best for printed PDFs.
+
+## Print Techniques
+
+### Keep Content on the Same Page
+
+Wrap related content in [print_group](/components/print_group) so it stays together — a heading with its chart, or a chart with its table.
+
+```liquid
+{% print_group %}
+### Quarterly Revenue
+{% bar_chart data="quarterly_sales" x="quarter" y="sum(revenue) as 'Revenue'" /%}
+{% /print_group %}
+```
+
+Use `print_group hide=true` to leave a block out of the PDF entirely.
+
+### Start a New Page
+
+Add [page_break](/components/page_break) where the next page should begin.
+
+```liquid
+{% page_break /%}
+
+## Details
+```
+
+### Hide Filters and Controls
+
+Wrap inputs in [hidden_in_print](/components/hidden_in_print). Otherwise they print as unusable controls.
+
+```liquid
+{% hidden_in_print %}
+{% range_calendar id="date_range" title="Order date" /%}
+{% /hidden_in_print %}
+```
+
+### Add Content for PDF Readers
+
+Use [only_in_print](/components/only_in_print) for text that only PDF readers need.
+
+```liquid
+{% only_in_print %}
+Prepared for the leadership team. All figures in USD.
+{% /only_in_print %}
+```
+
+### Adapt Filters for Print
+
+Filters aren't interactive in print, but they affect the content that's included. Hiding filters and replacing them with a sentence describing the filter state can help a PDF remain clear.
+
+```liquid
+{% hidden_in_print %}
+{% dropdown
+	id="category"
+	title="Category"
+	data="products"
+	value_column="category"
+	multiple=true
+	select_first=true
+/%}
+{% /hidden_in_print %}
+
+{% only_in_print %}
+Showing **{{category}}**.
+{% /only_in_print %}
+```
+
+A multi-select prints as a comma-separated list.
+
+To show every filter value in one PDF instead of a single chart with an input, use a [repeat](/components/repeat). On screen, readers see the interactive dropdown and chart. In the PDF, they see one chart per value.
+
+```liquid
+{% hidden_in_print %}
+{% dropdown id="department" title="Department" data="sales" value_column="department" /%}
+{% line_chart data="sales" x="month" y="sum(revenue) as 'Revenue'" filters=["department"] /%}
+{% /hidden_in_print %}
+
+{% only_in_print %}
+{% repeat id="dept" data="sales" column="department" %}
+{% line_chart data="sales" x="month" y="sum(revenue) as 'Revenue'" title="{{dept}}" filters=["dept"] /%}
+{% /repeat %}
+{% /only_in_print %}
+```
+
+## Tabs
+
+[Tabs](/components/tabs) print every tab in sequence, each with its title as a heading.
+
+```liquid
+{% tabs %}
+	{% tab title="Revenue" %}
+		{% bar_chart data="orders" x="product" y="sum(amount) as 'Amount'" /%}
+	{% /tab %}
+	{% tab title="Orders" %}
+		{% table data="orders" /%}
+	{% /tab %}
+{% /tabs %}
+```
+
+## Print Components
+
+| Component | In the PDF |
+| --- | --- |
+| [Page Break](/components/page_break) | Starts a new page |
+| [Print Group](/components/print_group) | Keeps contents together. `hide=true` leaves it out; `print_only=true` shows it only in print |
+| [Hidden in Print](/components/hidden_in_print) | Leaves contents out |
+| [Only in Print](/components/only_in_print) | Shows contents only in print |
+| [Repeat](/components/repeat) | Prints contents once per value of a column |
+| [Tabs](/components/tabs) | Prints every tab with its title as a heading |

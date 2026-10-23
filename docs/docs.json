@@ -697,6 +697,10 @@
     {
       "source": "/warehouses/evidence-warehouse",
       "destination": "/evidence-warehouse"
+    },
+    {
+      "source": "/guides/pdf-scheduled-reports",
+      "destination": "/guides/designing-reports-for-pdf"
     }
   ],
   "navigation": {
@@ -1002,6 +1006,12 @@
                   "components/repeat"
                 ]
               }
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/designing-reports-for-pdf"
             ]
           }
         ]
