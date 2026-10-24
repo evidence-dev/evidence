@@ -19,6 +19,7 @@
 import type { SandboxHost } from '../../../sandbox/runtime-bootstrap';
 import {
 	HTML_QUERY_REQUEST,
+	isSafeExternalUrl,
 	isSafeInternalPath,
 	type HtmlFiltersSnapshot,
 	type HtmlInitMessage,
@@ -116,6 +117,17 @@ export interface EvidenceApi {
 	 * protocol-relative hosts are rejected: same-origin navigation only.
 	 */
 	navigate(path: string): void;
+	/**
+	 * Open an EXTERNAL `http(s)` URL in a new tab (a link out to a support
+	 * tool, CRM record, ticket, …). The PARENT opens the tab (with
+	 * `noopener,noreferrer`), and only if the URL's host is named in the
+	 * block — written literally in its source, or listed in `linkHosts=` on
+	 * the tag. A blocked host is reported in the diagnostics feed with the
+	 * exact fix. Always a new tab: the report page is never navigated
+	 * off-origin. For in-app drill-through use `navigate`. Call it from a
+	 * click handler — browsers only open tabs from a user gesture.
+	 */
+	openUrl(url: string): void;
 	/**
 	 * Signal that the block has finished its first render. Gates PDF/PNG
 	 * capture: a block that contains a `<script>` does NOT auto-complete (its
@@ -289,6 +301,14 @@ export function createEvidenceSdk(host: SandboxHost, init: HtmlInitMessage): Evi
 				);
 			}
 			host.post({ type: 'navigate', path });
+		},
+		openUrl: (url) => {
+			if (!isSafeExternalUrl(url)) {
+				throw new Error(
+					`evidence.openUrl(url): url must be an absolute http(s) URL (e.g. "https://support.example.com/ticket/42") — no relative paths or other schemes. For another page in this app use evidence.navigate(path). Got: ${JSON.stringify(url)}`
+				);
+			}
+			host.post({ type: 'open-url', url });
 		},
 		ready() {
 			host.post({ type: 'rendered' });

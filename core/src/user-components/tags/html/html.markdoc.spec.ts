@@ -239,3 +239,84 @@ describe('opaque bodies are never parsed as markdown', () => {
 		expect(validationErrors.filter((e) => e.error?.id === 'child-invalid')).toEqual([]);
 	});
 });
+
+describe('linkHosts contract: teaching hints', () => {
+	const ids = (markdown: string) => process(markdown).validationErrors.map((e) => e.error.id);
+
+	it('warns when evidence.openUrl gets a non-literal URL and the tag has no linkHosts', () => {
+		const markdown = `
+{% html %}
+<ul id="t"></ul>
+<script>
+	const rows = await evidence.query("tickets");
+	li.addEventListener("click", () => evidence.openUrl(row.ticket_url));
+</script>
+{% /html %}
+`;
+		const errors = process(markdown).validationErrors;
+		expect(errors.map((e) => e.error.id)).toContain('html-openurl-host-unknown');
+		const hint = errors.find((e) => e.error.id === 'html-openurl-host-unknown')!;
+		expect(hint.error.level).toBe('warning');
+		// The fix must be in the message — that's what makes the failure actionable.
+		expect(hint.error.message).toContain('linkHosts=');
+	});
+
+	it('is satisfied by linkHosts on the tag', () => {
+		const markdown = `
+{% html linkHosts="support.example.com" %}
+<script>evidence.openUrl(row.ticket_url);</script>
+{% /html %}
+`;
+		expect(ids(markdown)).not.toContain('html-openurl-host-unknown');
+	});
+
+	it('does not warn for a literal https:// URL (string or template) — the host is in the source', () => {
+		const markdown = `
+{% html %}
+<script>
+	evidence.openUrl("https://support.example.com/tickets/1");
+	evidence.openUrl(\`https://crm.example.com/accounts/\${r.id}\`);
+</script>
+{% /html %}
+`;
+		expect(ids(markdown)).not.toContain('html-openurl-host-unknown');
+	});
+
+	it('treats a template literal whose host is interpolated as dynamic', () => {
+		const markdown = `
+{% html %}
+<script>evidence.openUrl(\`https://\${host}/x\`);</script>
+{% /html %}
+`;
+		expect(ids(markdown)).toContain('html-openurl-host-unknown');
+	});
+
+	it('when the block names hosts, the warning is conditional and lists them', () => {
+		const markdown = `
+{% html %}
+<a href="https://support.example.com/">Support</a>
+<script>
+	const base = "https://crm.example.com";
+	evidence.openUrl(base + row.path);
+</script>
+{% /html %}
+`;
+		const hint = process(markdown).validationErrors.find(
+			(e) => e.error.id === 'html-openurl-host-unknown'
+		)!;
+		expect(hint).toBeDefined();
+		expect(hint.error.message).toContain('support.example.com');
+		expect(hint.error.message).toContain('crm.example.com');
+		expect(hint.error.message).not.toContain('the click will be blocked');
+		expect(hint.error.message).toContain('linkHosts=');
+	});
+
+	it('does not warn for a block that never calls openUrl', () => {
+		const markdown = `
+{% html %}
+<a href="https://support.example.com/tickets/1">Open</a>
+{% /html %}
+`;
+		expect(ids(markdown)).not.toContain('html-openurl-host-unknown');
+	});
+});

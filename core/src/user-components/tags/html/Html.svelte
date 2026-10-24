@@ -30,6 +30,13 @@
 	import HtmlModal from './HtmlModal.svelte';
 	import { waitForInterpolatedQuery } from './wait-for-query';
 	import { resolveVariables } from './resolve-variables';
+	import {
+		extractLinkHostsFromSource,
+		parseLinkHostsAttribute,
+		isLinkHostAllowed,
+		blockedLinkHostMessage
+	} from './link-hosts';
+	import { isSafeInternalPath } from './sandbox/html-protocol';
 	import type {
 		HtmlVariables,
 		HtmlThemeSnapshot,
@@ -234,6 +241,40 @@
 		void goto(mergeCurrentSearchParams(transformed));
 	}
 
+	// Hosts this block may open in a new tab: every `https://host` written in
+	// its source plus any `linkHosts=` on the tag. Derived from the SOURCE (not
+	// the sandbox's live DOM), so code running in the frame can't add one.
+	// See link-hosts.ts for why this bounds popup egress.
+	const allowedLinkHosts = $derived.by(() => {
+		const hosts = extractLinkHostsFromSource(props.html ?? '');
+		for (const h of parseLinkHostsAttribute((props as { linkHosts?: unknown }).linkHosts)) {
+			hosts.add(h);
+		}
+		return hosts;
+	});
+
+	// `evidence.openUrl(url)` / a link click routed to a new tab. The frame has
+	// no popup permission, so WE open the tab — the viewer's click propagates
+	// user activation up to this document, so the popup blocker allows it.
+	// `noopener` severs window.opener; `noreferrer` keeps the report URL out of
+	// the destination's logs. An app path (a `target="_blank"` internal link)
+	// is same-origin and always allowed; it's resolved like a markdown link.
+	function onOpenUrl(url: string): void {
+		if (typeof window === 'undefined') return;
+		if (isSafeInternalPath(url)) {
+			const transformed = transformInternalLink(url, rendererContext.context, page.params);
+			window.open(mergeCurrentSearchParams(transformed), '_blank', 'noopener,noreferrer');
+			return;
+		}
+		if (!isLinkHostAllowed(url, allowedLinkHosts)) {
+			const message = blockedLinkHostMessage(url);
+			logger.warn({ url }, message);
+			errorSource?.report({ level: 'error', source: 'script', message });
+			return;
+		}
+		window.open(url, '_blank', 'noopener,noreferrer');
+	}
+
 	let errorSource = $state<ComponentErrorSource | undefined>();
 	$effect(() => {
 		if (!sandboxRuntimeErrors) return;
@@ -285,6 +326,7 @@
 	{onModalOpen}
 	{onModalClose}
 	{onNavigate}
+	{onOpenUrl}
 	{height}
 	class="h-full w-full"
 	onError={(message) => (sandboxError = message)}
@@ -303,5 +345,6 @@
 	{onFilterSet}
 	{onFilterCreate}
 	{onNavigate}
+	{onOpenUrl}
 	onLog={(entry) => errorSource?.report(entry)}
 />

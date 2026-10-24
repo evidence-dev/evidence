@@ -27,6 +27,7 @@ import {
 	type ParentToHtmlMessage
 } from './html-protocol';
 import { createEvidenceSdk, type EvidenceSdk } from './evidence-sdk';
+import { installLinkClickHandler } from './link-clicks';
 import { htmlHasScript, injectAndRun } from './inject-html';
 import { TIER_1_CDN_ORIGINS } from './html-csp';
 import type { HtmlMode } from './html-protocol';
@@ -229,7 +230,12 @@ async function applyInit(init: HtmlInitMessage): Promise<void> {
 	applyBodyBackground(init.theme.background);
 	applyThemeColors(init.theme);
 	watchSize();
-	// Install AFTER our own setup (handshake/error/resize wiring) so only
+	// On window (outlives re-injects; author handlers on document run first).
+	installLinkClickHandler(window, {
+		openNewTab: (url) => host?.post({ type: 'open-url', url }),
+		navigateSameTab: (path) => sdk?.evidence.navigate(path)
+	});
+	// Install AFTER our own setup (handshake/error/resize/link wiring) so only
 	// author-registered listeners/timers are tracked for re-inject teardown.
 	authorEffects = installAuthorSideEffectTracker(window);
 	await runBody(init.html);

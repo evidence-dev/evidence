@@ -17,11 +17,13 @@ import type { SandboxMode } from '../../../sandbox/protocol-base';
 export const HTML_SANDBOX_MESSAGE_SOURCE = 'evidence-html-sandbox';
 
 /**
- * Bump on ANY wire-format change (init/state-change shape, request kinds). A
- * mismatch makes both sides drop messages until they agree — surfaces a stale
- * cached runtime bundle instead of silently misbehaving.
+ * Bump on ANY wire-format change (init/state-change shape, request kinds) and
+ * on any new `evidence.*` capability the runtime bundle must ship (the value
+ * also cache-busts the bundle URL). A mismatch makes both sides drop messages
+ * until they agree — surfaces a stale cached runtime bundle instead of
+ * silently misbehaving.
  */
-export const HTML_SANDBOX_PROTOCOL_VERSION = 9;
+export const HTML_SANDBOX_PROTOCOL_VERSION = 10;
 
 /**
  * Safe target for `evidence.navigate`: an INTERNAL, absolute app path only.
@@ -40,6 +42,24 @@ export function isSafeInternalPath(path: unknown): path is string {
 		if (code <= 0x20 || code === 0x5c) return false; // control char / space / backslash
 	}
 	return true;
+}
+
+/**
+ * Shape check for an `open-url` target: an absolute `http(s)` URL. Parsing
+ * with `URL` (no base) rejects relative paths, `javascript:`/`data:`/`blob:`
+ * schemes, and protocol-relative `//host`. This is only the SHAPE gate — the
+ * parent separately checks the host against the block's allowed link hosts
+ * before opening anything (see `link-hosts.ts`).
+ */
+export function isSafeExternalUrl(url: unknown): url is string {
+	if (typeof url !== 'string' || url.trim() === '') return false;
+	let parsed: URL;
+	try {
+		parsed = new URL(url);
+	} catch {
+		return false;
+	}
+	return parsed.protocol === 'http:' || parsed.protocol === 'https:';
 }
 
 /**
@@ -221,6 +241,24 @@ export interface HtmlNavigateMessage {
 	path: string;
 }
 
+/**
+ * Fire-and-forget sandbox → parent message: author called
+ * `evidence.openUrl(url)`, or clicked a link the runtime routes to a new tab
+ * (an absolute `http(s)` href, or a `target="_blank"` app path). The iframe
+ * has NO popup permission — `window.open` / `target="_blank"` inside it are
+ * blocked by the browser — so the PARENT opens the tab. That keeps the
+ * sandbox's egress bounded: the parent opens an external URL only if its host
+ * is named in the block's own source (or `linkHosts=`), so code running in
+ * the frame — a compromised CDN library included — can't use a popup URL to
+ * ship query data to an arbitrary host. The viewer's click propagates user
+ * activation to the parent, so the popup blocker allows the open.
+ */
+export interface HtmlOpenUrlMessage {
+	type: 'open-url';
+	/** Absolute `http(s)` URL, or a safe internal app path (`target="_blank"` link). */
+	url: string;
+}
+
 // ---- Inbound validators ----
 //
 // The iframe → parent channel is a transferred MessagePort and the SDK that
@@ -311,4 +349,17 @@ export function validateNavigateMessage(message: unknown): HtmlNavigateMessage |
 	if (m.type !== 'navigate') return null;
 	if (!isSafeInternalPath(m.path)) return null;
 	return { type: 'navigate', path: m.path };
+}
+
+/**
+ * Narrow an unknown message to a HtmlOpenUrlMessage. `url` must be either an
+ * absolute http(s) URL or a safe internal app path; every other scheme and
+ * shape is dropped here. Host allowlisting is the parent's job, after this.
+ */
+export function validateOpenUrlMessage(message: unknown): HtmlOpenUrlMessage | null {
+	if (!message || typeof message !== 'object') return null;
+	const m = message as Record<string, unknown>;
+	if (m.type !== 'open-url') return null;
+	if (!isSafeExternalUrl(m.url) && !isSafeInternalPath(m.url)) return null;
+	return { type: 'open-url', url: m.url };
 }

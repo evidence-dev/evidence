@@ -4,7 +4,9 @@ import {
 	validateFilterCreateMessage,
 	validateModalOpenMessage,
 	validateNavigateMessage,
-	isSafeInternalPath
+	isSafeInternalPath,
+	isSafeExternalUrl,
+	validateOpenUrlMessage
 } from './html-protocol';
 
 describe('validateFilterSetMessage', () => {
@@ -240,6 +242,36 @@ describe('isSafeInternalPath', () => {
 	});
 });
 
+describe('isSafeExternalUrl', () => {
+	it('accepts absolute http(s) URLs', () => {
+		expect(isSafeExternalUrl('https://support.example.com/ticket/42')).toBe(true);
+		expect(isSafeExternalUrl('http://localhost:8080/?q=1#x')).toBe(true);
+		expect(isSafeExternalUrl('HTTPS://EXAMPLE.COM')).toBe(true);
+	});
+
+	it('rejects relative paths and protocol-relative hosts (no base to resolve against)', () => {
+		expect(isSafeExternalUrl('/reports/detail')).toBe(false);
+		expect(isSafeExternalUrl('reports/detail')).toBe(false);
+		expect(isSafeExternalUrl('//evil.com')).toBe(false);
+	});
+
+	it('rejects non-http schemes', () => {
+		expect(isSafeExternalUrl('javascript:alert(1)')).toBe(false);
+		expect(isSafeExternalUrl('data:text/html,<script>')).toBe(false);
+		expect(isSafeExternalUrl('blob:https://example.com/uuid')).toBe(false);
+		expect(isSafeExternalUrl('mailto:x@y.com')).toBe(false);
+		expect(isSafeExternalUrl('file:///etc/passwd')).toBe(false);
+	});
+
+	it('rejects empty, whitespace-only, and non-string input', () => {
+		expect(isSafeExternalUrl('')).toBe(false);
+		expect(isSafeExternalUrl('   ')).toBe(false);
+		expect(isSafeExternalUrl(42)).toBe(false);
+		expect(isSafeExternalUrl(null)).toBe(false);
+		expect(isSafeExternalUrl(undefined)).toBe(false);
+	});
+});
+
 describe('validateNavigateMessage', () => {
 	it('accepts a navigate to a safe internal path', () => {
 		expect(validateNavigateMessage({ type: 'navigate', path: '/reports/detail' })).toEqual({
@@ -260,5 +292,35 @@ describe('validateNavigateMessage', () => {
 		expect(validateNavigateMessage({ type: 'modal-open', path: '/x' })).toBeNull();
 		expect(validateNavigateMessage(null)).toBeNull();
 		expect(validateNavigateMessage('navigate')).toBeNull();
+	});
+});
+
+describe('validateOpenUrlMessage', () => {
+	it('accepts an absolute http(s) URL', () => {
+		expect(
+			validateOpenUrlMessage({ type: 'open-url', url: 'https://support.example.com/t/1' })
+		).toEqual({ type: 'open-url', url: 'https://support.example.com/t/1' });
+	});
+
+	it('accepts a safe internal app path (target=_blank app link)', () => {
+		expect(validateOpenUrlMessage({ type: 'open-url', url: '/proj/page?x=1' })).toEqual({
+			type: 'open-url',
+			url: '/proj/page?x=1'
+		});
+	});
+
+	it('rejects other schemes, protocol-relative hosts, relative paths, and non-strings', () => {
+		expect(validateOpenUrlMessage({ type: 'open-url', url: 'javascript:alert(1)' })).toBeNull();
+		expect(validateOpenUrlMessage({ type: 'open-url', url: 'data:text/html,x' })).toBeNull();
+		expect(validateOpenUrlMessage({ type: 'open-url', url: '//evil.com' })).toBeNull();
+		expect(validateOpenUrlMessage({ type: 'open-url', url: 'page' })).toBeNull();
+		expect(validateOpenUrlMessage({ type: 'open-url', url: 42 })).toBeNull();
+		expect(validateOpenUrlMessage({ type: 'open-url' })).toBeNull();
+	});
+
+	it('rejects wrong message type and non-objects', () => {
+		expect(validateOpenUrlMessage({ type: 'navigate', url: 'https://x.com' })).toBeNull();
+		expect(validateOpenUrlMessage(null)).toBeNull();
+		expect(validateOpenUrlMessage('open-url')).toBeNull();
 	});
 });

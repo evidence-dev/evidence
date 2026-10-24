@@ -5,6 +5,7 @@ import { WIDTH_ATTRIBUTE } from '../../common/width-attribute';
 import { HEIGHT_ATTRIBUTE } from '../../common/height-attribute';
 import { extractHtmlSource } from './extract-html-source';
 import { findBlockedScriptSources } from './validate-script-sources';
+import { extractLinkHostsFromSource } from './link-hosts';
 import {
 	SCRIPT_CDN_ORIGINS,
 	MAP_TILE_ORIGINS,
@@ -142,9 +143,57 @@ const validateUnpassedVariableReads: Validator = (node, config) => {
 	];
 };
 
+/**
+ * `evidence.openUrl(...)` calls whose argument does not start with a literal
+ * `http(s)://host` — the host comes from data or is assembled at runtime
+ * (`row.url`, `` `https://${host}/x` ``, `base + path`). The parent only opens
+ * hosts named in the block, so such a call works only if the URL lands on a
+ * host that IS named somewhere else in the source or in `linkHosts=`. Text
+ * scan, best-effort — a miss costs a missing hint, never a missing check.
+ */
+export function hasDynamicOpenUrlCall(source: string): boolean {
+	for (const m of source.matchAll(/evidence\.openUrl\s*\(([^)]*)/g)) {
+		const arg = m[1].trim();
+		if (!/^[`'"]https?:\/\/[^$`'"{}\s/?#]+/i.test(arg)) return true;
+	}
+	return false;
+}
+
+/**
+ * A dynamic `evidence.openUrl(...)` with no `linkHosts=` is only discovered at
+ * click time — when it opens nothing. Say so in the editor, with the fix. If
+ * the block already names hosts, the click may well be fine (`base + path`),
+ * so the warning says under which condition it works instead of claiming it
+ * cannot.
+ */
+const validateDynamicOpenUrl: Validator = (node, config) => {
+	const source = extractHtmlSource(node, config);
+	if (!source || !hasDynamicOpenUrlCall(source)) return [];
+	if (node.attributes?.linkHosts) return [];
+	const named = [...extractLinkHostsFromSource(source)];
+	const message =
+		named.length === 0
+			? 'html: evidence.openUrl is called with a URL whose host is not written literally in the block, so the host cannot be known from the source — the click will be blocked. Links may only open hosts the block names: add linkHosts="your.host.example" to the {% html %} tag (comma-separate several), or write the full https:// URL in the block.'
+			: `html: evidence.openUrl is called with a URL whose host is not written literally in the call. It will open only if the URL points at a host this block names (${named.join(', ')}); any other host is blocked at click time. If the URL can point elsewhere, add linkHosts="that.host.example" to the {% html %} tag (comma-separate several).`;
+	return [
+		{
+			id: 'html-openurl-host-unknown',
+			level: 'warning' as const,
+			message,
+			location: node.location
+		}
+	];
+};
+
 const attributes = {
 	...WIDTH_ATTRIBUTE,
 	...HEIGHT_ATTRIBUTE,
+	linkHosts: {
+		type: String,
+		required: false,
+		description:
+			'External hosts this block may open in a new tab (via `evidence.openUrl` or a link), comma-separated: `linkHosts="support.example.com, crm.example.com"`. Only needed when the URL comes from data — any `https://host` written literally in the block is allowed automatically. A click on a host that is not named is blocked and reported in the diagnostics feed with the fix.'
+	},
 	card: {
 		type: Boolean,
 		description:
@@ -221,6 +270,7 @@ export const schema = {
 		validateScriptSources,
 		validateDollarTokens,
 		validateUnpassedVariableReads,
+		validateDynamicOpenUrl,
 		validateEmptyAttributes()
 	),
 	selfClosing: false,
@@ -306,9 +356,68 @@ export const schema = {
 | \`evidence.filters\` | \`get()\`, \`set(id, value)\`, \`create(id, value, { column })\`, \`subscribe(cb)\` — see Parameterizing Queries. |
 | \`evidence.modal.open({ title, html })\` / \`.close()\` | Open a full-page modal the parent renders over the report, in a nested sandbox with the same \`evidence\` API. |
 | \`evidence.navigate(path)\` | Navigate to another page in the app (a drill-through). Same-origin internal paths only. |
+| \`evidence.openUrl(url)\` | Open an external \`http(s)\` URL in a new tab. The host must be named in the block (see Links). |
 | \`evidence.ready()\` | Signal that the first render is done. Call it after async draws so PDF/PNG export captures a finished frame. |
 
 The reliable pattern is to wrap your draw in \`async function render() { … }\`, then \`evidence.subscribe(render); await render();\` — \`evidence.query\` returns fresh rows each call, so the same function serves the first render and every reactive re-render.`
+		},
+		{
+			title: 'Links',
+			content: `Links inside the block work the way they do in markdown, with one difference: external URLs always open in a new tab, because the block is an isolated frame and navigating it to another site would just blank the block.
+
+- **External:** \`<a href="https://support.example.com/ticket/42">Open ticket</a>\` opens the URL in a new tab. \`target="_blank"\` is accepted but not required. From a script — a click on a card, a map marker, a chart segment — call \`evidence.openUrl(url)\` instead. It takes an absolute \`http(s)\` URL and always opens a new tab; the report page itself is never navigated off-site.
+- **Internal:** \`<a href="/my-project/reports/detail">\` is a same-tab drill-through to another page in the app, routed the same way as a markdown link \`[x](/my-project/reports/detail)\`, so it is correct in published, preview, and editor contexts. From a script, call \`evidence.navigate(path)\`. Add \`target="_blank"\` to open the app page in a new tab instead.
+
+Browsers only open new tabs from a user gesture, so call \`evidence.openUrl\` from a click handler, not on load. Modifier clicks (Cmd/Ctrl-click, middle-click) are left to the browser, and a click your own handler has already \`preventDefault()\`ed is left alone. The same rules apply inside a modal opened with \`evidence.modal.open\`.
+
+\`\`\`
+{% html %}
+<div id="cards" style="display:flex; gap:12px; flex-wrap:wrap;"></div>
+<script>
+	const rows = await evidence.query("open_tickets");
+	document.getElementById("cards").replaceChildren(
+		...rows.map((r) => {
+			const card = document.createElement("button");
+			card.textContent = r.title;
+			card.addEventListener("click", () => {
+				evidence.openUrl(\`https://support.example.com/tickets/\${r.id}\`);
+			});
+			return card;
+		})
+	);
+	evidence.ready();
+</script>
+{% /html %}
+\`\`\`
+
+### Which hosts a block can open
+
+A block can only open hosts it names. The block runs in a sandbox so that code inside it — including any library it loads from a CDN — cannot send your report data anywhere you didn't choose, and a URL opened in a new tab is one way data could leave. So the page, not the block, opens the tab, and it checks the host first:
+
+- Any \`https://host\` written in the block's source is allowed automatically. The example above needs no configuration: \`support.example.com\` appears in the \`evidence.openUrl\` template string.
+- If the URL comes entirely from data — \`evidence.openUrl(row.ticket_url)\`, where no host appears in the source — name it on the tag: \`{% html linkHosts="support.example.com" %}\`. Comma-separate several hosts. The editor warns when it sees an \`openUrl\` call like this without \`linkHosts\`.
+- A click on a host that isn't named does nothing, and the diagnostics feed shows which host was blocked and the exact \`linkHosts\` line to add.
+
+Hosts match exactly (including any port); there are no wildcards. Links to other pages in the app are always allowed.
+
+\`\`\`
+{% html linkHosts="support.example.com" %}
+<ul id="tickets"></ul>
+<script>
+	const rows = await evidence.query("open_tickets");
+	document.getElementById("tickets").replaceChildren(
+		...rows.map((r) => {
+			const li = document.createElement("li");
+			li.textContent = r.title;
+			li.style.cursor = "pointer";
+			li.addEventListener("click", () => evidence.openUrl(r.ticket_url));
+			return li;
+		})
+	);
+	evidence.ready();
+</script>
+{% /html %}
+\`\`\``
 		},
 		{
 			title: 'Passing Variables',

@@ -5,7 +5,8 @@ import { installAuthorSideEffectTracker } from './author-side-effects';
 // across cases (and we never mutate the real global). `window` and `document`
 // are real EventTargets; timers delegate to the global (real or faked) ones.
 function makeFakeWindow() {
-	const win = new EventTarget() as unknown as Window & typeof globalThis & { document: EventTarget };
+	const win = new EventTarget() as unknown as Window &
+		typeof globalThis & { document: EventTarget };
 	(win as { document: EventTarget }).document = new EventTarget();
 	win.setInterval = globalThis.setInterval.bind(globalThis) as typeof globalThis.setInterval;
 	win.clearInterval = globalThis.clearInterval.bind(globalThis) as typeof globalThis.clearInterval;

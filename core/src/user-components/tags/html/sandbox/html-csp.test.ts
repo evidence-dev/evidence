@@ -200,10 +200,7 @@ describe('buildHtmlSandboxCsp', () => {
 		// adds a host without explaining why" case.
 		const { readFileSync } = await import('node:fs');
 		const { fileURLToPath } = await import('node:url');
-		const source = readFileSync(
-			fileURLToPath(new URL('./html-csp.ts', import.meta.url)),
-			'utf8'
-		);
+		const source = readFileSync(fileURLToPath(new URL('./html-csp.ts', import.meta.url)), 'utf8');
 		// Spot-check: every DATA_FETCH host string appears in the source
 		// (trivially true) AND there's at least one `//` comment within 6
 		// lines above it.

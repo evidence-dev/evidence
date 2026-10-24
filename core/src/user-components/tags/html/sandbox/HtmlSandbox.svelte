@@ -3,6 +3,8 @@
 	 * Parent-side wrapper for the `{% html %}` sandbox. Composes the shared
 	 * SandboxFrame and owns only the html-specific glue:
 	 *  - the Tier-1 CSP (allowlisted CDNs, no network egress) via `buildCsp`
+	 *  - routing `open-url` (links out of the block) to the parent, which opens
+	 *    the tab — the frame itself has no popup permission
 	 *  - the `query` request handler (delegated to the parent's QueryService via
 	 *    the `runQuery` prop, which Html.svelte wires to the page's inline queries)
 	 *  - posting `state-change` when props/theme/filters change (reactivity)
@@ -24,6 +26,7 @@
 		validateFilterCreateMessage,
 		validateModalOpenMessage,
 		validateNavigateMessage,
+		validateOpenUrlMessage,
 		type HtmlInitMessage,
 		type HtmlMode,
 		type HtmlVariables,
@@ -52,6 +55,11 @@
 		onModalClose?: () => void;
 		/** `evidence.navigate(path)` — drill through to another app page (validated internal path). */
 		onNavigate?: (path: string) => void;
+		/**
+		 * `evidence.openUrl(url)` / a link click routed to a new tab. The parent
+		 * decides whether the host is allowed and performs the `window.open`.
+		 */
+		onOpenUrl?: (url: string) => void;
 		height?: number;
 		class?: string;
 		onError?: (message: string | undefined) => void;
@@ -71,6 +79,7 @@
 		onModalOpen,
 		onModalClose,
 		onNavigate,
+		onOpenUrl,
 		height,
 		class: className,
 		onError,
@@ -181,6 +190,9 @@
 		} else if (message.type === 'navigate') {
 			const validated = validateNavigateMessage(message);
 			if (validated) onNavigate?.(validated.path);
+		} else if (message.type === 'open-url') {
+			const validated = validateOpenUrlMessage(message);
+			if (validated) onOpenUrl?.(validated.url);
 		}
 	}
 

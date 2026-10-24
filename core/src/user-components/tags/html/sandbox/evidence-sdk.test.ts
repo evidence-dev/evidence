@@ -363,6 +363,42 @@ describe('createEvidenceSdk: navigate', () => {
 	});
 });
 
+describe('createEvidenceSdk: openUrl', () => {
+	it('posts an open-url message for an absolute http(s) URL (the parent opens the tab)', () => {
+		const post = vi.fn();
+		const { evidence } = createEvidenceSdk(makeHost({ post }), baseInit());
+		evidence.openUrl('https://support.example.com/ticket/42');
+		expect(post).toHaveBeenCalledWith({
+			type: 'open-url',
+			url: 'https://support.example.com/ticket/42'
+		});
+	});
+
+	it('throws (before posting) on relative paths, other schemes, and non-strings', () => {
+		const post = vi.fn();
+		const { evidence } = createEvidenceSdk(makeHost({ post }), baseInit());
+		expect(() => evidence.openUrl('/reports/detail')).toThrow(/absolute http\(s\) URL/);
+		expect(() => evidence.openUrl('//evil.com')).toThrow(/absolute http\(s\) URL/);
+		expect(() => evidence.openUrl('javascript:alert(1)')).toThrow(/absolute http\(s\) URL/);
+		expect(() => (evidence.openUrl as (u: unknown) => void)(undefined)).toThrow(
+			/absolute http\(s\) URL/
+		);
+		expect(post).not.toHaveBeenCalled();
+	});
+
+	it('never calls window.open itself — the frame has no popup permission', () => {
+		const open = vi.fn();
+		vi.stubGlobal('window', { open });
+		try {
+			const { evidence } = createEvidenceSdk(makeHost(), baseInit());
+			evidence.openUrl('https://example.com');
+			expect(open).not.toHaveBeenCalled();
+		} finally {
+			vi.unstubAllGlobals();
+		}
+	});
+});
+
 describe('createEvidenceSdk: reset', () => {
 	it('drops every subscription so a re-injected body starts clean', () => {
 		const { evidence, applyState, notifyResize, reset } = createEvidenceSdk(makeHost(), baseInit());

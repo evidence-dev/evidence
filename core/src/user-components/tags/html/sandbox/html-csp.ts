@@ -205,7 +205,9 @@ export function buildHtmlSandboxCsp(origin: string): string {
 	// Adding to script-CDN <-> connect-src is a strictly smaller expansion
 	// than adding a brand-new host, because the same origin is already an
 	// unrestricted code-execution surface via script-src.
-	const connectHosts = [...MAP_TILE_ORIGINS, ...DATA_FETCH_ORIGINS, ...SCRIPT_CDN_ORIGINS].join(' ');
+	const connectHosts = [...MAP_TILE_ORIGINS, ...DATA_FETCH_ORIGINS, ...SCRIPT_CDN_ORIGINS].join(
+		' '
+	);
 
 	return [
 		`default-src 'none'`,

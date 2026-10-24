@@ -50,9 +50,9 @@ describe('waitForInterpolatedQuery', () => {
 			throw new Error('Template errors: Unbalanced template brackets');
 		});
 
-		await expect(
-			waitForInterpolatedQuery(resolve, 'orders', { sleep })
-		).rejects.toThrow(/Unbalanced template brackets/);
+		await expect(waitForInterpolatedQuery(resolve, 'orders', { sleep })).rejects.toThrow(
+			/Unbalanced template brackets/
+		);
 		expect(sleep).not.toHaveBeenCalled();
 	});
 

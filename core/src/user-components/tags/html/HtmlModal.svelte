@@ -43,6 +43,8 @@
 		onFilterSet?: (id: string, value: unknown) => void;
 		onFilterCreate?: (id: string, value: unknown, column?: string) => void;
 		onNavigate?: (path: string) => void;
+		/** Links out of the modal — same allowed hosts as the block that opened it. */
+		onOpenUrl?: (url: string) => void;
 		onLog?: (entry: SandboxLogEntry) => void;
 	};
 	let {
@@ -57,6 +59,7 @@
 		onFilterSet,
 		onFilterCreate,
 		onNavigate,
+		onOpenUrl,
 		onLog
 	}: Props = $props();
 
@@ -109,6 +112,7 @@
 					{onFilterSet}
 					{onFilterCreate}
 					{onNavigate}
+					{onOpenUrl}
 					{onLog}
 					onRendered={() => (ready = true)}
 					class="w-full"
