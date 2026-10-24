@@ -127,12 +127,16 @@ export function generateConditionSQL(
 				case 'is_not':
 					stringValue = condition.value as string;
 					return `${quotedColumnId} != '${dialect.escapeStringLiteral(stringValue)}'`;
+				// Case-insensitive to match the value selector's search, which "Select All" saves as `contains`
 				case 'contains':
 					stringValue = condition.value as string;
-					return `${quotedColumnId} LIKE '%${dialect.escapeStringLiteral(stringValue)}%'`;
+					return dialect.caseInsensitiveLike(
+						quotedColumnId,
+						`%${dialect.escapeStringLiteral(stringValue)}%`
+					);
 				case 'not_contains':
 					stringValue = condition.value as string;
-					return `${quotedColumnId} NOT LIKE '%${dialect.escapeStringLiteral(stringValue)}%'`;
+					return `NOT (${dialect.caseInsensitiveLike(quotedColumnId, `%${dialect.escapeStringLiteral(stringValue)}%`)})`;
 				case 'starts_with':
 					stringValue = condition.value as string;
 					return `${quotedColumnId} LIKE '${dialect.escapeStringLiteral(stringValue)}%'`;

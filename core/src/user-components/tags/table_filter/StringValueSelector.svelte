@@ -45,6 +45,8 @@
 	let selectedValues = $state<string[]>([]);
 	// Derived set for efficient lookups and to ensure reactivity in virtualized list
 	let selectedValuesSet = $derived(new Set(selectedValues));
+	// Saved as `contains`, not a value list, so it isn't capped by VALUES_LIMIT and stays small in the URL
+	let matchAllSearch = $state<string | null>(null);
 	let searchInput = $state('');
 	let searchLoading = $state(false);
 	let inputRef = $state<HTMLInputElement | null>(null);
@@ -88,6 +90,13 @@
 		// Set values based on the condition
 		if (condition.operator === 'in' && Array.isArray(condition.value)) {
 			selectedValues = condition.value;
+		} else if (
+			multiple &&
+			condition.operator === 'contains' &&
+			typeof condition.value === 'string'
+		) {
+			matchAllSearch = condition.value;
+			searchInput = condition.value;
 		}
 
 		loadColumnValues();
@@ -119,8 +128,13 @@
 
 	let columnValuesSql: SQLQueryConfig | undefined = $state();
 
-	// Function to generate and execute the column values query
+	const VALUES_LIMIT = 10000;
+
 	function loadColumnValues() {
+		columnValuesSql = buildValuesQuery(searchInput);
+	}
+
+	function buildValuesQuery(search: string): SQLQueryConfig {
 		let whereClause = `${columnName} IS NOT NULL`;
 
 		// When minimumRecords is set, we need to filter based on other filters
@@ -137,8 +151,8 @@
 		}
 
 		// Add search condition if it exists (like dropdown)
-		if (searchInput.trim()) {
-			const escapedSearch = connection.dialect.escapeStringLiteral(searchInput.trim());
+		if (search.trim()) {
+			const escapedSearch = connection.dialect.escapeStringLiteral(search.trim());
 			whereClause += ` AND ${connection.dialect.caseInsensitiveLike(connection.dialect.castToString(columnName), `%${escapedSearch}%`)}`;
 		}
 
@@ -158,22 +172,33 @@
 			connection.dialect
 		);
 
-		columnValuesSql = {
+		return {
 			tableExpressionName,
 			columns: [valueProcessed, countProcessed],
 			where: whereClause,
 			order: buildValueQueryOrder(columnName, minimumRecords),
-			limit: 10000
+			limit: VALUES_LIMIT
 		};
 	}
 
-	const columnValuesQuery = new Query<{ value: string; count: number }>(() => columnValuesSql, {
+	const queryDeps = {
 		connection,
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettingsContext(),
 		defaultRefreshInterval: undefined
-	});
+	};
+
+	const columnValuesQuery = new Query<{ value: string; count: number }>(
+		() => columnValuesSql,
+		queryDeps
+	);
+
+	// Loaded separately so the selection can be expanded even after the search moves on
+	const matchAllQuery = new Query<{ value: string; count: number }>(
+		() => (matchAllSearch === null ? undefined : buildValuesQuery(matchAllSearch)),
+		queryDeps
+	);
 
 	const loading = $derived(columnValuesQuery.loading || searchLoading);
 
@@ -189,6 +214,52 @@
 		return minimumRecords === null || row.count >= minimumRecords;
 	}
 
+	const loadedValues = () =>
+		(columnValuesQuery.result?.rows ?? []).filter(meetsMinimumRequirement).map((row) => row.value);
+
+	const matchesSearch = (value: string, search: string) =>
+		String(value).toLowerCase().includes(search.toLowerCase());
+
+	const matchAllRows = $derived(
+		matchAllSearch !== null && !matchAllQuery.loading ? matchAllQuery.result?.rows : undefined
+	);
+	const matchAllTruncated = $derived((matchAllRows?.length ?? 0) >= VALUES_LIMIT);
+	const matchAllSet = $derived(new Set(matchAllRows?.map((row) => row.value)));
+
+	// SQL LIKE treats `_` and `%` as wildcards, so the loaded matches are the source of truth
+	const isMatchAllSelected = (value: string) =>
+		matchAllSet.has(value) || matchesSearch(value, matchAllSearch ?? '');
+
+	// Converting to an explicit list is only safe once every match is loaded
+	function expandMatchAll(): boolean {
+		if (!matchAllRows || matchAllTruncated) return false;
+		selectedValues = Array.from(
+			new Set([...selectedValues, ...matchAllRows.map((row) => row.value)])
+		);
+		matchAllSearch = null;
+		return true;
+	}
+
+	const canSelectAll = $derived(
+		multiple &&
+			matchAllSearch === null &&
+			searchInput.trim() !== '' &&
+			!loading &&
+			(columnValuesQuery.result?.rows.length ?? 0) > 0
+	);
+
+	function selectAll() {
+		const term = searchInput.trim();
+		// `contains` would also match values disabled by minimumRecords, or drop earlier picks
+		const keepsEarlierPicks = selectedValues.every((value) => matchesSearch(value, term));
+		if (minimumRecords === null && keepsEarlierPicks) {
+			matchAllSearch = term;
+			selectedValues = [];
+		} else {
+			selectedValues = Array.from(new Set([...selectedValues, ...loadedValues()]));
+		}
+	}
+
 	// Function to handle value selection
 	function handleValueSelect(value: string, hasMinimum: boolean) {
 		// If minimumRecords is set and this value doesn't meet the minimum,
@@ -196,6 +267,8 @@
 		if (minimumRecords !== null && !hasMinimum) {
 			return;
 		}
+
+		if (matchAllSearch !== null && !expandMatchAll()) return;
 
 		if (multiple) {
 			// Toggle selection in multi-select mode
@@ -220,6 +293,7 @@
 	// Function to clear all selections
 	function clearSelections() {
 		if (requireSelection) return;
+		matchAllSearch = null;
 		selectedValues = [];
 	}
 
@@ -236,8 +310,14 @@
 			(filter: ColumnFilter) => filter.columnId !== columnName
 		);
 
-		// Add a new filter with the selected values using a single IN condition
-		if (selectedValues.length > 0) {
+		if (matchAllSearch !== null) {
+			filterState.filters.push({
+				columnId: columnName,
+				conditions: [{ type: 'string', operator: 'contains', value: matchAllSearch }]
+			});
+			filterState.active = true;
+		} else if (selectedValues.length > 0) {
+			// Add a new filter with the selected values using a single IN condition
 			filterState.filters.push({
 				columnId: columnName,
 				conditions: [
@@ -269,17 +349,32 @@
 	/>
 
 	<div class="flex items-center justify-between border-y px-2 py-1">
-		<div class="text-muted-foreground text-xs">
-			{selectedValues.length} selected
+		<div class="text-muted-foreground min-w-0 truncate text-xs">
+			{#if matchAllSearch !== null}
+				All matching "{matchAllSearch}"
+			{:else}
+				{selectedValues.length} selected
+			{/if}
 		</div>
-		{#if !requireSelection}
-			<div class="flex gap-1">
-				<Button variant="ghost" size="sm" class="h-7 text-xs" onclick={clearSelections}>
+		<div class="flex shrink-0 gap-1">
+			{#if canSelectAll}
+				<Button variant="ghost" size="sm" class="h-7 px-2 text-xs" onclick={selectAll}>
+					Select All
+				</Button>
+			{/if}
+			{#if !requireSelection}
+				<Button variant="ghost" size="sm" class="h-7 px-2 text-xs" onclick={clearSelections}>
 					Clear All
 				</Button>
-			</div>
-		{/if}
+			{/if}
+		</div>
 	</div>
+
+	{#if matchAllTruncated}
+		<div class="bg-muted/40 text-muted-foreground px-2 py-1 text-xs">
+			Too many matches to change individually. Clear All and use a narrower search.
+		</div>
+	{/if}
 
 	{#if minimumRecords !== null}
 		<div class="bg-muted/40 text-muted-foreground px-2 py-1 text-xs">
@@ -311,7 +406,10 @@
 					>
 						{#snippet children(value)}
 							{@const hasMinimum = meetsMinimumRequirement(value)}
-							{@const isSelected = selectedValuesSet.has(value.value)}
+							{@const isSelected =
+								matchAllSearch !== null
+									? isMatchAllSelected(value.value)
+									: selectedValuesSet.has(value.value)}
 							{#if hasMinimum}
 								<button
 									type="button"

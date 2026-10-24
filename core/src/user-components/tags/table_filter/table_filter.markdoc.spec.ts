@@ -470,8 +470,8 @@ describe('table filter string literal escaping', () => {
 	const escapedPerOperator: Record<(typeof STRING_OPERATORS)[number], string> = {
 		is: `category = '${v}'`,
 		is_not: `category != '${v}'`,
-		contains: `category LIKE '%${v}%'`,
-		not_contains: `category NOT LIKE '%${v}%'`,
+		contains: `category ILIKE '%${v}%'`,
+		not_contains: `NOT (category ILIKE '%${v}%')`,
 		starts_with: `category LIKE '${v}%'`,
 		not_starts_with: `category NOT LIKE '${v}%'`,
 		ends_with: `category LIKE '%${v}'`,
