@@ -284,6 +284,7 @@ export class FabricDialect implements SqlDialect {
 	readonly supportsFilterClause = false;
 	readonly conditionalAggregateFunctions = NO_CONDITIONAL_AGGREGATES;
 	readonly strictDerivedTables = true;
+	readonly integerDivisionTruncates = true;
 	readonly supportsGroupingSets = true;
 	readonly supportsDateOffsetMath = true;
 

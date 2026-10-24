@@ -10,6 +10,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../sql-dialect';
 
@@ -22,6 +23,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -86,6 +88,14 @@ describe('sankey_chart SQL', () => {
 			 FROM demo.flows
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_amount DESC"
+			----
+			"SELECT src AS "src", dst AS "dst", sum(amount) AS "sum_amount"
+			 FROM demo.flows
+			 
+			 GROUP BY src, dst
 			 
 			 
 			 ORDER BY sum_amount DESC"
@@ -193,6 +203,14 @@ describe('sankey_chart SQL', () => {
 			"SELECT src AS "src", dst AS "dst", sum(amount) AS "sum_amount", sum(amount) / sum(total) AS "sum_amount_sum_total"
 			 FROM demo.flows
 			 
+			 GROUP BY src, dst
+			 
+			 
+			 ORDER BY sum_amount DESC"
+			----
+			"SELECT src AS "src", dst AS "dst", sum(amount) AS "sum_amount", sum(amount) / sum(total) AS "sum_amount_sum_total"
+			 FROM demo.flows
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -270,6 +288,14 @@ describe('sankey_chart SQL', () => {
 			"SELECT src AS "src", dst AS "dst", sum(amount) AS "sum_amount"
 			 FROM demo.flows
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY src, dst
+			 
+			 
+			 ORDER BY sum_amount DESC"
+			----
+			"SELECT src AS "src", dst AS "dst", sum(amount) AS "sum_amount"
+			 FROM demo.flows
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY src, dst
 			 
 			 

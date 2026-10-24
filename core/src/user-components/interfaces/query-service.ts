@@ -46,6 +46,7 @@ export type QueryResult<RowType extends AnyRowType = AnyRowType> = {
 		| 'Databricks'
 		| 'Postgres'
 		| 'Cube'
+		| 'Redshift'
 		| 'MotherDuck'
 		| 'SQL Server';
 };

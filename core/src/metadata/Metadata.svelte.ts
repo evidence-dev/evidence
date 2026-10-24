@@ -9,6 +9,8 @@ import { getBigQueryToJsType } from '../connectors/bigquery/type-mapping';
 import { getMssqlToJsType } from '../connectors/mssql/type-mapping';
 import { getDatabricksToJsType } from '../connectors/databricks/type-mapping';
 import { getPostgresToJsType } from '../connectors/postgres/type-mapping';
+import { getRedshiftToJsType } from '../connectors/redshift/type-mapping';
+import { escapeRedshiftStringLiteral } from '../sql-dialect/common';
 import { getMotherduckToJsType } from '../connectors/motherduck/type-mapping';
 import { TableMetadata } from './TableMetadata.svelte';
 import { groupColumnsByTable } from './group-columns';
@@ -18,6 +20,12 @@ import {
 	managedModelsSql,
 	NO_QUERY_CACHE
 } from './managed-catalog';
+import {
+	REDSHIFT_CURRENT_SCHEMA_SQL,
+	REDSHIFT_EXTERNAL_TABLE_TYPE,
+	isRedshiftInternalTable,
+	qualifyRedshiftTableName
+} from './redshift-catalog';
 import type { IMetadata } from './metadata';
 import type {
 	QueryService,
@@ -234,6 +242,7 @@ export class Metadata {
 				this.#warehouseMode === 'databricks' ||
 				this.#warehouseMode === 'postgres' ||
 				this.#warehouseMode === 'cube' ||
+				this.#warehouseMode === 'redshift' ||
 				this.#warehouseMode === 'motherduck' ||
 				this.#warehouseMode === 'sqlserver')
 		) {
@@ -271,6 +280,10 @@ export class Metadata {
 
 		if (this.#warehouseMode === 'cube') {
 			return await this.#loadCube();
+		}
+
+		if (this.#warehouseMode === 'redshift') {
+			return await this.#loadRedshift();
 		}
 
 		if (this.#warehouseMode === 'motherduck') {
@@ -795,6 +808,103 @@ ORDER BY c.table_schema, c.table_name, c.ordinal_position`
 		} catch (e) {
 			logger.error(e, 'Failed to fetch Cube metadata');
 			throw new Error('Failed to fetch Cube metadata', { cause: e });
+		} finally {
+			this.#loading = false;
+		}
+	}
+
+	async #loadRedshift(): Promise<void> {
+		try {
+			// SVV_* (not pg_catalog) so late-binding views and Spectrum tables appear;
+			// lowercase aliases because Redshift folds quoted identifiers to lowercase.
+			const quote = (sc: string) => `'${escapeRedshiftStringLiteral(sc)}'`;
+			const schemaFilter = (col: string) =>
+				this.#schemaAllowlist.length > 0
+					? `AND ${col} IN (${this.#schemaAllowlist.map(quote).join(', ')})`
+					: `AND ${col} !~ '^pg_' AND ${col} <> 'information_schema'`;
+
+			const [schemaResult, columnsResult, tablesResult] = await Promise.all([
+				this.#catalogQuery<{ current_schema: string }>(REDSHIFT_CURRENT_SCHEMA_SQL),
+				this.#catalogQuery<{
+					table_schema: string;
+					table_name: string;
+					column_name: string;
+					column_type: string;
+				}>(
+					`SELECT c.table_schema AS table_schema,
+       c.table_name AS table_name,
+       c.column_name AS column_name,
+       c.data_type AS column_type
+FROM svv_columns c
+WHERE TRUE
+  ${schemaFilter('c.table_schema')}
+ORDER BY c.table_schema, c.table_name, c.ordinal_position`
+				),
+				this.#catalogQuery<{ table_schema: string; table_name: string; table_type: string }>(
+					`SELECT t.table_schema AS table_schema,
+       t.table_name AS table_name,
+       t.table_type AS table_type
+FROM svv_tables t
+WHERE TRUE
+  ${schemaFilter('t.table_schema')}`
+				)
+			]);
+
+			if (columnsResult.error) {
+				logger.error({ columnsResult }, 'Failed to fetch Redshift metadata');
+				throw new Error(`Failed to fetch Redshift metadata: ${columnsResult.error}`);
+			}
+
+			// Without the current schema every table is shown qualified — still usable.
+			if (schemaResult.error) {
+				logger.warn({ schemaResult }, 'Failed to resolve Redshift current_schema()');
+			}
+			const currentSchema = schemaResult.error ? undefined : schemaResult.rows[0]?.current_schema;
+			// SVV_TABLES failing is non-fatal: the browser loses the view badge and
+			// external tables fall back to the current-schema rule.
+			const tableRows = tablesResult.error ? [] : tablesResult.rows;
+			const externalTables = new Set(
+				tableRows
+					.filter((r) => (r.table_type ?? '').toUpperCase() === REDSHIFT_EXTERNAL_TABLE_TYPE)
+					.map((r) => `${r.table_schema}.${r.table_name}`)
+			);
+			const qualify = (row: { table_schema: string; table_name: string }) =>
+				qualifyRedshiftTableName(row.table_schema, row.table_name, currentSchema, {
+					external: externalTables.has(`${row.table_schema}.${row.table_name}`)
+				});
+
+			// Views (regular and late-binding) surface as 'model'; everything else —
+			// base, external (Spectrum) and shared (datashare) tables — as 'table'.
+			const viewNames = new SvelteSet(
+				tableRows.filter((r) => (r.table_type ?? '').toUpperCase() === 'VIEW').map(qualify)
+			);
+
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows.filter((row) => !isRedshiftInternalTable(row.table_name)),
+				qualify,
+				({ column_name, column_type }) => ({
+					name: column_name,
+					type: column_type,
+					jsType: getRedshiftToJsType(column_type)
+				})
+			);
+
+			for (const [tableName, columns] of columnsByTable) {
+				this.#tables.set(
+					tableName,
+					new TableMetadata(
+						{
+							name: tableName,
+							columns,
+							tableType: viewNames.has(tableName) ? 'model' : 'table'
+						},
+						this.#tableOpts
+					)
+				);
+			}
+		} catch (e) {
+			logger.error(e, 'Failed to fetch Redshift metadata');
+			throw new Error('Failed to fetch Redshift metadata', { cause: e });
 		} finally {
 			this.#loading = false;
 		}

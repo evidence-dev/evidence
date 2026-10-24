@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { assertParses } from '../../../test-utils/ch-parse';
 import { buildDimensionGridQuery } from './build-dimension-grid-sql';
 import { DimensionGridFilter } from './DimensionGridFilter.svelte';
-import { ClickHouseDialect } from '../../../sql-dialect';
+import { ClickHouseDialect, RedshiftDialect } from '../../../sql-dialect';
 
 // dimension_grid embeds a raw CTE with ClickHouse-specific `nullIf` and portable
 // window functions (row_number, max OVER ()). Pinned here so a dialect swap
@@ -104,6 +104,36 @@ describe('dimension_grid SQL', () => {
 		});
 		assertParses(sql);
 		expect(sql).toContain("'O\\'Reilly'");
+	});
+
+	// Redshift rejects a WITH inside a CTE body (an inline query written with CTEs
+	// would land there) and truncates count(*) / max(count(*)) to 0 or 1.
+	it('reads a derived table with fractional division on Redshift', () => {
+		const sql = buildDimensionGridQuery({
+			tableExpression:
+				'(WITH recent AS (SELECT * FROM demo.orders) SELECT * FROM recent) "__ev_inline_orders"',
+			dimension: 'category',
+			metric: 'count(*)',
+			limit: 10,
+			selectedValues: ["O'Reilly"],
+			dialect: new RedshiftDialect()
+		});
+		expect(sql).toMatchInlineSnapshot(`
+			"SELECT "dimension_value", "metric_value", "percent_of_top"
+			FROM (
+				SELECT
+					category AS "dimension_value",
+					count(*) AS "metric_value",
+					count(*) * 1.0 / nullIf(max(count(*)) OVER (), 0) AS "percent_of_top",
+					row_number() OVER (ORDER BY count(*) DESC) AS "rn"
+				FROM (WITH recent AS (SELECT * FROM demo.orders) SELECT * FROM recent) "__ev_inline_orders"
+				WHERE category IS NOT NULL
+				GROUP BY category
+			) AS ranked
+			WHERE "rn" <= 10
+				OR ("dimension_value" IN ('O''Reilly') AND "rn" > 10)
+			ORDER BY "metric_value" DESC"
+		`);
 	});
 });
 

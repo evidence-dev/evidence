@@ -32,6 +32,7 @@ export function schemaAllowlist(
 		// Postgres-wire: opt in to more schemas, otherwise just the default one.
 		case 'postgres':
 		case 'cube':
+		case 'redshift':
 			return config.schemas?.length ? config.schemas : config.schema ? [config.schema] : [];
 		default:
 			return [];

@@ -12,6 +12,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect,
 	type SqlDialect
 } from '../../../sql-dialect';
@@ -25,6 +26,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -174,6 +176,9 @@ describe('table SQL', () => {
 			----
 			"SELECT *
 			 FROM demo.daily_orders"
+			----
+			"SELECT *
+			 FROM demo.daily_orders"
 		`);
 	});
 
@@ -213,6 +218,11 @@ describe('table SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT category AS "category", DATE_TRUNC('year', date) AS "date__year", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category, DATE_TRUNC('year', date)"
 			----
 			"SELECT category AS "category", DATE_TRUNC('year', date) AS "date__year", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
@@ -270,6 +280,11 @@ describe('table SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT category AS "category", sum(total_sales) / sum(transactions) AS "avg_price"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category"
 			----
 			"SELECT category AS "category", sum(total_sales) / sum(transactions) AS "avg_price"
 			 FROM demo.daily_orders
@@ -363,6 +378,11 @@ describe('table SQL', () => {
 			"SELECT case when category in ('Home','Clothing') then 'Home & Clothing' else 'Other' end AS "group", category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY case when category in ('Home','Clothing') then 'Home & Clothing' else 'Other' end, category"
+			----
+			"SELECT case when category in ('Home','Clothing') then 'Home & Clothing' else 'Other' end AS "group", category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL"
 		`);
 	});
@@ -439,6 +459,15 @@ describe('table SQL', () => {
 			 GROUP BY GROUPING SETS ((category, region), (category), ())"
 			----
 			"ERROR: Subtotals aren't supported on cube connections — remove subtotals=true from this component."
+			----
+			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales", GROUPING(category) AS "__ev_grouping_category", GROUPING(region) AS "__ev_grouping_region", CASE WHEN GROUPING(category) + GROUPING(region) = 2 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(region) = 1 THEN 1 WHEN GROUPING(category) = 1 AND GROUPING(region) = 1 THEN 0 ELSE NULL END AS "__ev_subtotal_level", CASE
+			 WHEN (CASE WHEN GROUPING(category) + GROUPING(region) = 2 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(region) = 1 THEN 1 WHEN GROUPING(category) = 1 AND GROUPING(region) = 1 THEN 0 ELSE NULL END) IS NULL THEN 'cell_data'
+			 WHEN (CASE WHEN GROUPING(category) + GROUPING(region) = 2 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(region) = 1 THEN 1 WHEN GROUPING(category) = 1 AND GROUPING(region) = 1 THEN 0 ELSE NULL END) = 0 THEN 'row_total'
+			 ELSE 'row_subtotal'
+			 END AS "__ev_render_type"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY GROUPING SETS ((category, region), (category), ())"
 			----
 			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales", GROUPING(category) AS "__ev_grouping_category", GROUPING(region) AS "__ev_grouping_region", CASE WHEN GROUPING(category) + GROUPING(region) = 2 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(region) = 1 THEN 1 WHEN GROUPING(category) = 1 AND GROUPING(region) = 1 THEN 0 ELSE NULL END AS "__ev_subtotal_level", CASE
 			 WHEN (CASE WHEN GROUPING(category) + GROUPING(region) = 2 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(region) = 1 THEN 1 WHEN GROUPING(category) = 1 AND GROUPING(region) = 1 THEN 0 ELSE NULL END) IS NULL THEN 'cell_data'
@@ -691,6 +720,34 @@ describe('table SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY GROUPING SETS ((category, DATE_TRUNC('day', date)), (category), (DATE_TRUNC('day', date)), ())"
+			----
+			"SELECT category AS "category", DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales", GROUPING(category) AS "__ev_grouping_category", GROUPING(DATE_TRUNC('day', date)) AS "__ev_grouping_date__day", CASE WHEN GROUPING(category) = 1 AND GROUPING(DATE_TRUNC('day', date)) = 1 THEN 0 WHEN GROUPING(category) = 1 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(DATE_TRUNC('day', date)) = 1 THEN 1 ELSE NULL END AS "__ev_subtotal_level", CASE
+			 /* Detail rows have no subtotal level */
+			 WHEN (CASE WHEN GROUPING(category) = 1 AND GROUPING(DATE_TRUNC('day', date)) = 1 THEN 0 WHEN GROUPING(category) = 1 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(DATE_TRUNC('day', date)) = 1 THEN 1 ELSE NULL END) IS NULL THEN 'cell_data'
+
+			 /* Grand totals (level 0) */
+			 WHEN (CASE WHEN GROUPING(category) = 1 AND GROUPING(DATE_TRUNC('day', date)) = 1 THEN 0 WHEN GROUPING(category) = 1 THEN 0 WHEN GROUPING(category) = 0 AND GROUPING(DATE_TRUNC('day', date)) = 1 THEN 1 ELSE NULL END) = 0 THEN
+			 CASE
+			 /* If all dimensions are NULL, it's a row total */
+									WHEN GROUPING(category) = 1 THEN 'row_total'
+									/* If all pivots are NULL, it's a column total */
+			 WHEN GROUPING(DATE_TRUNC('day', date)) = 1 THEN 'column_total'
+			 /* Otherwise it's a row total (fallback) */
+									ELSE 'row_total'
+								END
+
+							/* Other subtotal levels */
+							ELSE
+								CASE
+									/* If any dimension is NULL, it's a row subtotal */
+			 WHEN GROUPING(category) = 1 THEN 'row_subtotal'
+			 /* Otherwise it must be a column subtotal */
+			 ELSE 'column_subtotal'
+			 END
+			 END AS "__ev_render_type"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY GROUPING SETS ((category, DATE_TRUNC('day', date)), (category), (DATE_TRUNC('day', date)), ())"
 		`);
 	});
 
@@ -792,6 +849,11 @@ describe('table SQL', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY category LIMIT 25 OFFSET 50"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL LIMIT 25 OFFSET 50"
 		`);
 	});
@@ -855,6 +917,12 @@ describe('table SQL', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY category
+			 HAVING ((CAST("category" AS VARCHAR(MAX)) ILIKE '%shoes%'))"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL
 			 HAVING ((CAST("category" AS VARCHAR) ILIKE '%shoes%'))"
 		`);
@@ -907,6 +975,11 @@ describe('table SQL', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY category"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY category"
 			----
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
@@ -1051,6 +1124,11 @@ describe('table SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL LIMIT 10"
+			----
+			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category, region LIMIT 10"
 			----
 			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders

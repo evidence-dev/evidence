@@ -278,7 +278,7 @@ describe('loadConnectionConfig', () => {
 	});
 
 	it('rejects unknown type', async () => {
-		await writeYaml(`type: redshift\n`);
+		await writeYaml(`type: teradata\n`);
 		await expect(loadConnectionConfig(workDir)).rejects.toThrow(/unsupported type/);
 	});
 

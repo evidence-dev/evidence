@@ -31,6 +31,11 @@ import {
 } from './postgres/connection-schema';
 import { cubeBase, cubeConnectionSchema, type CubeConnection } from './cube/connection-schema';
 import {
+	redshiftBase,
+	redshiftConnectionSchema,
+	type RedshiftConnection
+} from './redshift/connection-schema';
+import {
 	motherduckBase,
 	motherduckConnectionSchema,
 	type MotherDuckConnection
@@ -129,6 +134,8 @@ export {
 	postgresConnectionSchema,
 	cubeBase,
 	cubeConnectionSchema,
+	redshiftBase,
+	redshiftConnectionSchema,
 	motherduckBase,
 	motherduckConnectionSchema,
 	sqlserverBase,
@@ -142,6 +149,7 @@ export type {
 	DatabricksConnection,
 	PostgresConnection,
 	CubeConnection,
+	RedshiftConnection,
 	MotherDuckConnection,
 	SqlServerConnection
 };
@@ -154,6 +162,7 @@ export const CONNECTION_TYPES = [
 	'databricks',
 	'postgres',
 	'cube',
+	'redshift',
 	'motherduck',
 	'sqlserver'
 ] as const;
@@ -167,6 +176,7 @@ export type Connection =
 	| DatabricksConnection
 	| PostgresConnection
 	| CubeConnection
+	| RedshiftConnection
 	| MotherDuckConnection
 	| SqlServerConnection;
 
@@ -178,6 +188,7 @@ const schemasByType = {
 	databricks: databricksConnectionSchema,
 	postgres: postgresConnectionSchema,
 	cube: cubeConnectionSchema,
+	redshift: redshiftConnectionSchema,
 	motherduck: motherduckConnectionSchema,
 	sqlserver: sqlserverConnectionSchema
 } as const;

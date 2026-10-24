@@ -1,0 +1,184 @@
+---
+title: 'Amazon Redshift'
+description: 'Connect Evidence directly to an Amazon Redshift cluster or Redshift Serverless workgroup.'
+---
+
+The Amazon Redshift direct connector runs your queries against Redshift itself, so reports always reflect the live state of your warehouse without a sync step. It works with provisioned clusters and Redshift Serverless workgroups, and authenticates with a Redshift database user and password.
+
+## Connecting
+
+You need the cluster or workgroup **endpoint**, its **port** (normally `5439`), the **database** name, and a database **user** and **password**, plus an **SSL mode**.
+
+<Steps>
+  <Step title="Find your endpoint">
+    In the AWS console open **Amazon Redshift** → your **cluster** (or **Serverless → Workgroup configuration**) and copy the **Endpoint**. Enter the **hostname only** — e.g. `my-cluster.abc123xyz.us-east-1.redshift.amazonaws.com` — not the full `jdbc:redshift://…` string, and leave the port and database for their own fields.
+  </Step>
+  <Step title="Create a read-only user">
+    Create a dedicated user for Evidence and grant it access to the schemas you want to report on:
+
+    ```sql
+    CREATE USER evidence PASSWORD '<strong-password>';
+    GRANT USAGE ON SCHEMA analytics TO evidence;
+    GRANT SELECT ON ALL TABLES IN SCHEMA analytics TO evidence;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA analytics GRANT SELECT ON TABLES TO evidence;
+    ```
+
+    Evidence also reads `svv_columns` and `svv_tables` to populate the schema browser; these system views only return the objects the user is allowed to see.
+  </Step>
+  <Step title="Allow Evidence to reach the cluster">
+    The cluster must be reachable from Evidence: enable **Publicly accessible** (or route through a bastion/NLB) and add Evidence's [egress IPs](/evidence-warehouse#ip-whitelisting) to the cluster's **VPC security group** inbound rules on the Redshift port.
+  </Step>
+  <Step title="Choose an SSL mode">
+    Redshift endpoints serve publicly trusted (ACM-issued) certificates, so keep the default **Verify full** — no CA bundle is needed. If your cluster still uses the legacy Redshift CA or sits behind a private proxy, paste the matching CA bundle into **SSL CA certificate** (see [Configuring security options for connections](https://docs.aws.amazon.com/redshift/latest/mgmt/connecting-ssl-support.html)). `require` encrypts without verifying the server and is not recommended; `disable` only works if `require_SSL` is off in the cluster's parameter group.
+  </Step>
+  <Step title="Configure the connector in Evidence">
+    Go to **Connectors** in the sidebar, choose **Amazon Redshift** in the **Warehouse** card, and fill in host, port, database, user, and password. Set the SSL mode and, optionally, the default schema and the list of schemas to expose.
+  </Step>
+  <Step title="Test and save">
+    Click **Test Connection**. Once it passes, click **Save**.
+  </Step>
+</Steps>
+
+## What Evidence queries
+
+Redshift speaks the Postgres wire protocol but its SQL diverges from modern PostgreSQL. Evidence's Redshift dialect accounts for the differences so components work out of the box:
+
+- **No JSON or array aggregates** — sparklines and other nested values are assembled with `LISTAGG … WITHIN GROUP`.
+- **Date math uses `DATEADD`** instead of interval arithmetic, and week truncation is adjusted so Sunday-start weeks match other warehouses.
+- **`TEXT` is `VARCHAR(256)`** — Evidence casts to `VARCHAR(MAX)` where it needs unbounded strings.
+- **String literals treat `\` as an escape character**, so backslashes in Evidence-generated SQL are doubled automatically.
+- **Identifiers fold to lowercase**, including quoted ones, so prefer lowercase snake_case for table and column names.
+- **`AVG` over an integer column returns a truncated integer** (and `int / int` truncates). Evidence widens the averages and ratios it generates itself; in your own SQL write `avg(qty * 1.0)` or `sum(a) * 1.0 / sum(b)` when you want a fraction.
+- `IS DISTINCT FROM`, aggregate `FILTER (WHERE …)`, `IF`/`IFF`/`IFNULL`, and `COVAR_*`/`CORR` are not available; use `NVL`, `NVL2`, `DECODE`, and `CASE` instead.
+- **Ordinary CTEs work in your queries**, but Redshift rejects `WITH RECURSIVE` inside a subquery — and Evidence wraps every query it runs — so put recursive CTEs in a view and query the view.
+
+Late-binding views and Spectrum external tables appear in the schema browser alongside regular tables. Tables in the connector's default `schema` are listed unqualified; everything else is listed as `schema.table`. Spectrum external tables are always listed qualified because Redshift's `search_path` does not cover external schemas, so reference them as `external_schema.table` in your SQL. The internal `mv_tbl__…` tables Redshift creates behind materialized views are hidden; query the materialized view by name instead.
+
+{/* GENERATED:CONNECTION-OPTIONS START */}
+
+## Configuration reference
+
+<Tabs>
+  <Tab title="Studio">
+
+    #### Credentials
+
+    <ResponseField name="Host" type="string" required>
+      Cluster or workgroup endpoint, e.g. my-cluster.abc123.us-east-1.redshift.amazonaws.com or my-workgroup.123456789012.us-east-1.redshift-serverless.amazonaws.com.
+    </ResponseField>
+    <ResponseField name="Port" type="number">
+      Redshift port (Serverless workgroups also default to 5439). Default: `5439`.
+    </ResponseField>
+    <ResponseField name="User" type="string" required>
+      Redshift database user to connect as.
+    </ResponseField>
+    <ResponseField name="Password" type="string" required>
+      Password for the Redshift database user.
+    </ResponseField>
+    <ResponseField name="Database" type="string" required>
+      Database to connect to (e.g. dev).
+    </ResponseField>
+    <ResponseField name="SSL mode" type="`disable` | `require` | `verify-ca` | `verify-full`">
+      verify-full (default) = encrypt and verify the server certificate + hostname — the secure choice; Redshift endpoints serve publicly trusted certificates so no CA bundle is needed. verify-ca = verify the cert but not the hostname. require = encrypt WITHOUT verifying the cert (vulnerable to an active man-in-the-middle — avoid). disable = no TLS (rejected by clusters with require_SSL on). Default: `"verify-full"`.
+    </ResponseField>
+    <ResponseField name="SSL CA certificate" type="string">
+      PEM CA bundle used to verify the server certificate.
+    </ResponseField>
+    <ResponseField name="SSL client certificate" type="string">
+      PEM client certificate for mutual TLS.
+    </ResponseField>
+    <ResponseField name="SSL client key" type="string">
+      PEM client private key for mutual TLS.
+    </ResponseField>
+    <ResponseField name="Schema" type="string">
+      Schema used when queries reference unqualified table names (sets search_path). Default: `"public"`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="Schemas" type="string[]">
+      Allowlist of schemas exposed to the editor and schema browser. Defaults to just the default schema (the `schema` field) when empty; list additional schemas (including Spectrum external schemas) to include them. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+  <Tab title="CLI (connection.yaml)">
+
+    If your organization has already set up this connection in Evidence Studio, you don't need a `connection.yaml`. Run `evidence login` instead. See [Connect your CLI to your data](/cli/connections).
+
+    ```yaml
+    type: redshift
+    host: my-cluster.abc123xyz.us-east-1.redshift.amazonaws.com
+    # port: 5439
+    user: evidence
+    password: <your-password>
+    database: analytics
+    # sslmode: verify-full
+    # ssl_ca_path: ./certs/ca.pem # only for legacy Redshift CA or private proxies
+    # ssl_cert_path: ./certs/client.crt # mutual TLS client certificate
+    # ssl_key_path: ./certs/client.key # mutual TLS client key
+    # schema: public
+    # schemas: [public, analytics]
+    ```
+
+    #### Credentials
+
+    <ResponseField name="host" type="string" required>
+      Cluster or workgroup endpoint, e.g. my-cluster.abc123.us-east-1.redshift.amazonaws.com or my-workgroup.123456789012.us-east-1.redshift-serverless.amazonaws.com.
+    </ResponseField>
+    <ResponseField name="port" type="number">
+      Redshift port (Serverless workgroups also default to 5439). Default: `5439`.
+    </ResponseField>
+    <ResponseField name="user" type="string" required>
+      Redshift database user to connect as.
+    </ResponseField>
+    <ResponseField name="password" type="string" required>
+      Password for the Redshift database user.
+    </ResponseField>
+    <ResponseField name="database" type="string" required>
+      Database to connect to (e.g. dev).
+    </ResponseField>
+    <ResponseField name="sslmode" type="`disable` | `require` | `verify-ca` | `verify-full`">
+      verify-full (default) = encrypt and verify the server certificate + hostname — the secure choice; Redshift endpoints serve publicly trusted certificates so no CA bundle is needed. verify-ca = verify the cert but not the hostname. require = encrypt WITHOUT verifying the cert (vulnerable to an active man-in-the-middle — avoid). disable = no TLS (rejected by clusters with require_SSL on). Default: `"verify-full"`.
+    </ResponseField>
+    <ResponseField name="ssl_ca" type="string">
+      PEM CA bundle used to verify the server certificate.
+    </ResponseField>
+    <ResponseField name="ssl_ca_path" type="string">
+      Path to a PEM CA bundle, resolved relative to connection.yaml.
+    </ResponseField>
+    <ResponseField name="ssl_cert" type="string">
+      PEM client certificate for mutual TLS.
+    </ResponseField>
+    <ResponseField name="ssl_cert_path" type="string">
+      Path to a PEM client certificate, resolved relative to connection.yaml.
+    </ResponseField>
+    <ResponseField name="ssl_key" type="string">
+      PEM client private key for mutual TLS.
+    </ResponseField>
+    <ResponseField name="ssl_key_path" type="string">
+      Path to a PEM client private key, resolved relative to connection.yaml.
+    </ResponseField>
+    <ResponseField name="schema" type="string">
+      Schema used when queries reference unqualified table names (sets search_path). Default: `"public"`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="schemas" type="string[]">
+      Allowlist of schemas exposed to the editor and schema browser. Defaults to just the default schema (the `schema` field) when empty; list additional schemas (including Spectrum external schemas) to include them. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+</Tabs>
+
+{/* GENERATED:CONNECTION-OPTIONS END */}
+
+## Security Considerations
+
+Evidence executes queries against your Redshift cluster as the configured database user. Those queries can be written by your end users or generated by AI agents on their behalf, so take pragmatic steps to protect the cluster against misuse, whether accidental or malicious.
+
+1. Use a dedicated database user with `SELECT`-only grants — never the cluster admin user (e.g. `awsuser`) or a superuser — rather than sharing credentials with other tools.
+2. Grant only `USAGE` and `SELECT` on the schemas Evidence needs; Redshift's object-level and column-level grants, and [row-level security policies](https://docs.aws.amazon.com/redshift/latest/dg/t_rls.html), scope what the user can read.
+3. Require TLS with certificate verification (`verify-full`) so credentials and data aren't sent in the clear. Consider enabling `require_SSL` in the cluster parameter group.
+4. Restrict inbound security-group rules to Evidence's [egress IPs](/evidence-warehouse#ip-whitelisting) plus your team's networks.
+5. Rotate the password regularly and update it in Evidence.

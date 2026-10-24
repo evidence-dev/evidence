@@ -27,17 +27,38 @@ export function buildDimensionGridQuery(attrs: DimensionGridQueryAttrs): string 
 		.map((v) => `'${escapeSqlValue(String(v), attrs.dialect)}'`)
 		.join(', ');
 
-	return `
-WITH ranked AS (
+	// A count(*) metric would otherwise divide to 0 or 1 on Postgres-family engines.
+	const toFloat = attrs.dialect?.integerDivisionTruncates ? ' * 1.0' : '';
+	const ranked = `
 	SELECT
 		${dimension} AS "dimension_value",
 		${metric} AS "metric_value",
-		${metric} / nullIf(max(${metric}) OVER (), 0) AS "percent_of_top",
+		${metric}${toFloat} / nullIf(max(${metric}) OVER (), 0) AS "percent_of_top",
 		row_number() OVER (ORDER BY ${metric} DESC) AS "rn"
 	FROM ${tableExpression}
 	WHERE ${whereClause}
 	GROUP BY ${dimension}
-)
+`;
+
+	// Redshift rejects a WITH inside a CTE body, and `tableExpression` may be an
+	// inline query the author wrote with CTEs. Read the ranked rows from a derived
+	// table; the two UNION ALL branches are disjoint on "rn", so OR them instead.
+	if (attrs.dialect?.supportsNestedCte === false) {
+		const keepSelected =
+			selectedValues.length > 0
+				? `
+	OR ("dimension_value" IN (${escapedSelectedValues}) AND "rn" > ${limit})`
+				: '';
+		return `
+SELECT "dimension_value", "metric_value", "percent_of_top"
+FROM (${ranked}) AS ranked
+WHERE "rn" <= ${limit}${keepSelected}
+ORDER BY "metric_value" DESC
+		`.trim();
+	}
+
+	return `
+WITH ranked AS (${ranked})
 SELECT "dimension_value", "metric_value", "percent_of_top"
 FROM ranked
 WHERE "rn" <= ${limit}${

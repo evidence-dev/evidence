@@ -10,6 +10,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../sql-dialect';
 
@@ -22,6 +23,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -151,9 +153,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") / ((stats."max_val" - stats."min_val") / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") / 30) AS "bin_width"
+								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -185,9 +187,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") / ((stats."max_val" - stats."min_val") / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") / 30) AS "bin_width"
+								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -253,9 +255,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") / ((stats."max_val" - stats."min_val") / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") / 30) AS "bin_width"
+								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -287,9 +289,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") / ((stats."max_val" - stats."min_val") / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") / 30) AS "bin_width"
+								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -301,6 +303,39 @@ describe('histogram SQL', () => {
 							
 							count(*) AS "frequency"
 						FROM binned
+						GROUP BY
+							"bin_index",
+							"min_val",
+							"bin_width"
+						ORDER BY
+							"bin_index"
+						
+					"
+			----
+			"
+						
+						SELECT
+							"bin_index",
+							"min_val" + "bin_index" * "bin_width" AS "bin_start",
+							"min_val" + ("bin_index" + 1) * "bin_width" AS "bin_end",
+							
+							count(*) AS "frequency"
+						FROM (
+							SELECT
+								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
+								stats."min_val" AS "min_val",
+								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
+							FROM demo.daily_orders
+							CROSS JOIN (
+							SELECT
+								min(transactions) AS "min_val",
+								max(transactions) AS "max_val",
+								ceil(2 * power(count(*), 1.0 / 3)) AS "rice_bin_count"
+							FROM demo.daily_orders
+							
+							) AS stats
+							
+						) AS binned
 						GROUP BY
 							"bin_index",
 							"min_val",
@@ -442,5 +477,33 @@ describe('histogram SQL', () => {
 		expect(sql).toContain('min(total_sales * 1.1)');
 		expect(sql).toContain('max(total_sales * 1.1)');
 		expect(sql).toContain('floor((total_sales * 1.1 - stats."min_val"');
+	});
+
+	// Redshift rejects a WITH inside a CTE body; an inline query written with CTEs
+	// would land in both `stats` and `binned`, so the query nests derived tables.
+	it('nests derived tables instead of CTEs on Redshift', () => {
+		const sql = buildHistogramSQL({
+			data: '(WITH recent AS (SELECT * FROM demo.daily_orders) SELECT * FROM recent) "__ev_inline_orders"',
+			value: 'transactions',
+			bin_count: 30,
+			dialect: new RedshiftDialect()
+		});
+		expect(sql).not.toMatch(/^\s*WITH\b/);
+		expect(sql).toMatch(/CROSS JOIN \(\s*SELECT\s+min\(transactions\)[\s\S]*\) AS stats/);
+		expect(sql).toMatch(/\) AS binned\s+GROUP BY/);
+	});
+
+	// int / int truncates on Postgres-family engines: an integer column with a range
+	// smaller than bin_count would get bin_width 0 and divide by zero.
+	it('forces fractional division where integer division truncates', () => {
+		const attrs = { data: 'demo.daily_orders', value: 'transactions', bin_count: 30 };
+		for (const dialect of [new PostgresDialect(), new RedshiftDialect()]) {
+			const sql = buildHistogramSQL({ ...attrs, dialect });
+			expect(sql).toContain('(stats."max_val" - stats."min_val") * 1.0 / 30');
+			expect(sql).toContain('(transactions - stats."min_val") * 1.0 /');
+		}
+		expect(buildHistogramSQL({ ...attrs, dialect: new ClickHouseDialect() })).not.toContain(
+			'* 1.0'
+		);
 	});
 });

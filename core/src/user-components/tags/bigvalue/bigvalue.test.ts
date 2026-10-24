@@ -10,6 +10,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../sql-dialect';
 
@@ -22,6 +23,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -68,6 +70,9 @@ describe('big_value SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders LIMIT 1"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders LIMIT 1"
@@ -170,6 +175,14 @@ describe('big_value SQL', () => {
 			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
 			----
 			"ERROR: "prior year" comparisons aren't supported on cube connections — compare against a target or benchmark instead."
+			----
+			"SELECT main_query.*, comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison" as "__ev_sum_total_sales_prior_year_comparison_compared_value", (main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 as "__ev_sum_total_sales_prior_year_comparison_abs", ((main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 / nullIf(abs(comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison"), 0)) as "__ev_sum_total_sales_prior_year_comparison_pct"
+			FROM (SELECT sum(total_sales) AS "sum_total_sales", (TO_CHAR(DATE '2025-01-02', 'Mon FMDD/YY') || ' - ' || TO_CHAR(DATE '2026-01-01', 'Mon FMDD/YY')) as "__ev_sum_total_sales_prior_year_comparison_current_period", (TO_CHAR(DATEADD(year, -1, DATE '2025-01-02'), 'Mon FMDD/YY') || ' - ' || TO_CHAR(DATEADD(year, -1, DATE '2026-01-01'), 'Mon FMDD/YY')) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-01-02' AND date <= DATE '2026-01-01')) AS main_query
+			LEFT JOIN (SELECT sum(total_sales) as "__ev_sum_total_sales_prior_year_comparison"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATEADD(year, -1, DATE '2025-01-02') AND date <= DATEADD(year, -1, DATE '2026-01-01'))) AS comparison_1_fragment ON 1 = 1 LIMIT 1"
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (strftime(DATE '2025-01-02', '%b %-d/%y') || ' - ' || strftime(DATE '2026-01-01', '%b %-d/%y')) as "__ev_sum_total_sales_prior_year_comparison_current_period", (strftime(DATE '2025-01-02' + to_years(-1), '%b %-d/%y') || ' - ' || strftime(DATE '2026-01-01' + to_years(-1), '%b %-d/%y')) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
 			 FROM demo.daily_orders
@@ -295,6 +308,18 @@ describe('big_value SQL', () => {
 			 FROM demo.daily_orders LIMIT 1"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT '[' || LISTAGG('["' || REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(CAST(x_val AS VARCHAR(MAX)), '\\\\', '\\\\\\\\'), '"', '\\\\"'), CHR(10), '\\\\n'), CHR(13), '\\\\r'), CHR(9), '\\\\t') || '",' || COALESCE(CAST(y_val AS VARCHAR(MAX)), 'null') || ']', ',') WITHIN GROUP (ORDER BY x_val) || ']'
+			 FROM (SELECT * FROM (SELECT *, ROW_NUMBER() OVER (ORDER BY x_val DESC) AS "__ev_spark_rn" FROM (
+			 SELECT date as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 
+			 GROUP BY x_val
+			 ORDER BY x_val
+			 ) as "__ev_spark_pts") as "__ev_spark_bounded" WHERE "__ev_spark_rn" <= 1000) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
 			 SELECT to_json(list(json_array(x_val, y_val) ORDER BY x_val))
 			 FROM (
 			 SELECT date as x_val, sum(total_sales) as y_val
@@ -416,6 +441,18 @@ describe('big_value SQL', () => {
 			 GROUP BY x_val
 			 ORDER BY x_val
 			 ) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT '[' || LISTAGG('["' || REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(CAST(x_val AS VARCHAR(MAX)), '\\\\', '\\\\\\\\'), '"', '\\\\"'), CHR(10), '\\\\n'), CHR(13), '\\\\r'), CHR(9), '\\\\t') || '",' || COALESCE(CAST(y_val AS VARCHAR(MAX)), 'null') || ']', ',') WITHIN GROUP (ORDER BY x_val) || ']'
+			 FROM (SELECT * FROM (SELECT *, ROW_NUMBER() OVER (ORDER BY x_val DESC) AS "__ev_spark_rn" FROM (
+			 SELECT DATE_TRUNC('month', date) as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 
+			 GROUP BY x_val
+			 ORDER BY x_val
+			 ) as "__ev_spark_pts") as "__ev_spark_bounded" WHERE "__ev_spark_rn" <= 1000) as "__ev_spark_src"
 			 ) as "__ev_sparkline_sum_total_sales"
 			 FROM demo.daily_orders LIMIT 1"
 			----
@@ -549,6 +586,19 @@ describe('big_value SQL', () => {
 			 ) as "__ev_sparkline_sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP)) LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT '[' || LISTAGG('["' || REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(CAST(x_val AS VARCHAR(MAX)), '\\\\', '\\\\\\\\'), '"', '\\\\"'), CHR(10), '\\\\n'), CHR(13), '\\\\r'), CHR(9), '\\\\t') || '",' || COALESCE(CAST(y_val AS VARCHAR(MAX)), 'null') || ']', ',') WITHIN GROUP (ORDER BY x_val) || ']'
+			 FROM (SELECT * FROM (SELECT *, ROW_NUMBER() OVER (ORDER BY x_val DESC) AS "__ev_spark_rn" FROM (
+			 SELECT date as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 GROUP BY x_val
+			 ORDER BY x_val
+			 ) as "__ev_spark_pts") as "__ev_spark_bounded" WHERE "__ev_spark_rn" <= 1000) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01') LIMIT 1"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
 			 SELECT to_json(list(json_array(x_val, y_val) ORDER BY x_val))

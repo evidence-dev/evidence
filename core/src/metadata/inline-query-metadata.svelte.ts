@@ -152,9 +152,10 @@ export class InlineQueryMetadata extends Metadata {
 				dialectName === 'sqlserver' ||
 				dialectName === 'postgres' ||
 				dialectName === 'cube' ||
+				dialectName === 'redshift' ||
 				dialectName === 'motherduck'
 			) {
-				// Snowflake, BigQuery, Fabric (T-SQL), Postgres, Cube, and MotherDuck (DuckDB)
+				// Snowflake, BigQuery, Fabric (T-SQL), Postgres, Cube, Redshift, and MotherDuck (DuckDB)
 				// have no DESCRIBE TABLE on a subquery. Run `SELECT * FROM (...) WHERE 1=0`
 				// instead — zero rows, but the result metadata still carries the column
 				// names and types from the warehouse driver.

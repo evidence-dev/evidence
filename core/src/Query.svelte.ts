@@ -553,7 +553,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 					// If row limit exceeded and we're on the first page (offset=0), return cached data (unless refreshing)
 					else if (nonPivotCheckQuery && rowLimitExceeded && !isRefresh) {
 						// Check if we're on page 1 (offset=0 or undefined)
-						const currentOffset = typeof this.query === 'object' ? (this.query.offset ?? 0) : 0;
+						const currentOffset = typeof this.query === 'object' ? this.query.offset ?? 0 : 0;
 						const currentPageSize =
 							typeof this.query === 'object' ? this.query.page_size || 10 : 10;
 
@@ -1074,7 +1074,10 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			return;
 		}
 
-		return `SELECT COUNT(*) AS "total_count" FROM (${unpaginatedSql})`;
+		// Alias the derived table: Redshift / older Postgres reject an unaliased
+		// subquery in FROM. The `\n` keeps a trailing `--` comment from eating `)`.
+		const alias = this.deps.connection.dialect.quoteAlias('__ev_count');
+		return `SELECT COUNT(*) AS "total_count" FROM (${unpaginatedSql}\n) AS ${alias}`;
 	}
 
 	async init(): Promise<void> {

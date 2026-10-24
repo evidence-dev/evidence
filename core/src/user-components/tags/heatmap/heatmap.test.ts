@@ -10,6 +10,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../sql-dialect';
 
@@ -22,6 +23,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -86,6 +88,14 @@ describe('heatmap SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category, region
 			 
 			 
 			 ORDER BY sum_total_sales DESC"
@@ -195,6 +205,14 @@ describe('heatmap SQL', () => {
 			"SELECT DATE_TRUNC('month', date) AS "date__month", region AS "region", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY DATE_TRUNC('month', date), region
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT DATE_TRUNC('month', date) AS "date__month", region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -257,6 +275,14 @@ describe('heatmap SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT EXTRACT(DOW FROM date) AS "date__day_of_week", EXTRACT(MONTH FROM date) AS "date__month_of_year", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY EXTRACT(DOW FROM date), EXTRACT(MONTH FROM date)
 			 
 			 
 			 ORDER BY sum_total_sales DESC"
@@ -357,6 +383,14 @@ describe('heatmap SQL', () => {
 			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY category, region
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY category, region
 			 
 			 

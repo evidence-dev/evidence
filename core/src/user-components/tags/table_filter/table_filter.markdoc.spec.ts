@@ -448,6 +448,9 @@ describe('table filter string literal escaping', () => {
 		fabric: "category = 'zzz\\'' OR 1=1 --'",
 		postgres: "category = 'zzz\\'' OR 1=1 --'",
 		cube: "category = 'zzz\\'' OR 1=1 --'",
+		// Redshift doubles backslashes (PG 8.0 literal semantics) but doubles quotes too,
+		// so the literal stays closed whether or not the cluster honours `\\'`.
+		redshift: "category = 'zzz\\\\'' OR 1=1 --'",
 		motherduck: "category = 'zzz\\'' OR 1=1 --'",
 		sqlserver: "category = 'zzz\\'' OR 1=1 --'"
 	};
@@ -583,6 +586,7 @@ describe('table filter identifier quoting', () => {
 		fabric: '"Total Sales" = 100',
 		postgres: '"Total Sales" = 100',
 		cube: '"Total Sales" = 100',
+		redshift: '"Total Sales" = 100',
 		motherduck: '"Total Sales" = 100',
 		sqlserver: '"Total Sales" = 100'
 	};
@@ -595,6 +599,7 @@ describe('table filter identifier quoting', () => {
 		fabric: '"total_sales"" OR 1=1 --" = 100',
 		postgres: '"total_sales"" OR 1=1 --" = 100',
 		cube: '"total_sales"" OR 1=1 --" = 100',
+		redshift: '"total_sales"" OR 1=1 --" = 100',
 		motherduck: '"total_sales"" OR 1=1 --" = 100',
 		sqlserver: '"total_sales"" OR 1=1 --" = 100'
 	};

@@ -10,6 +10,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../sql-dialect';
 
@@ -22,6 +23,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -71,6 +73,11 @@ describe('progress_bars SQL', () => {
 			 FROM demo.sales
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT region AS "region", sum(actual) AS "sum_actual", sum(target) AS "sum_target"
+			 FROM demo.sales
+			 
+			 GROUP BY region"
 			----
 			"SELECT region AS "region", sum(actual) AS "sum_actual", sum(target) AS "sum_target"
 			 FROM demo.sales
@@ -143,6 +150,11 @@ describe('progress_bars SQL', () => {
 			"SELECT region AS "region", sum(actual) AS "sum_actual", sum(target) AS "sum_target"
 			 FROM demo.sales
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 GROUP BY region"
+			----
+			"SELECT region AS "region", sum(actual) AS "sum_actual", sum(target) AS "sum_target"
+			 FROM demo.sales
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL"
 		`);
 	});
@@ -202,6 +214,14 @@ describe('progress_bars SQL', () => {
 			 FROM demo.sales
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum(actual) desc LIMIT 5"
+			----
+			"SELECT region AS "region", sum(actual) AS "sum_actual", sum(target) AS "sum_target"
+			 FROM demo.sales
+			 
+			 GROUP BY region
 			 
 			 
 			 ORDER BY sum(actual) desc LIMIT 5"

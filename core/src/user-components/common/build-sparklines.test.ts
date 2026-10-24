@@ -3,7 +3,7 @@ import { buildSparklines } from './build-sparklines';
 import type { SparklineContext, SparklineQueryConfig } from './build-sparklines';
 import { processColumnExpression } from './sql-expression-utils';
 import { generateSQLQuery } from './sql-options';
-import { ClickHouseDialect } from '../../sql-dialect';
+import { ClickHouseDialect, RedshiftDialect } from '../../sql-dialect';
 
 const dialect = new ClickHouseDialect();
 
@@ -168,6 +168,60 @@ describe('buildSparklines', () => {
 			expect(result.inlineColumns.length).toBe(1);
 			expect(result.inlineColumns[0]).toContain('arraySort');
 			expect(result.inlineColumns[0]).toContain('groupArray');
+		});
+	});
+
+	describe('dialect.sparklineMaxPoints (Redshift)', () => {
+		const redshift = new RedshiftDialect();
+		const measure = { value: 'sum(total_sales)', type: 'measure' } as const;
+		const sparklines: SparklineQueryConfig[] = [
+			{ id: 's', xColumn: 'date', yColumn: 'sum(total_sales)' }
+		];
+
+		it('keeps only the most recent N points in inline sparklines', () => {
+			const context: SparklineContext = {
+				tableExpression: 'demo.daily_orders',
+				whereClause: '',
+				groupByClause: 'GROUP BY ALL',
+				processedColumns: [processColumnExpression(measure, redshift)].filter((c) => c !== null)
+			};
+			const result = buildSparklines(sparklines, context, undefined, 'sunday', redshift);
+
+			expect(result.inlineColumns).toHaveLength(1);
+			const sql = result.inlineColumns[0];
+			expect(sql).toContain('ROW_NUMBER() OVER (ORDER BY x_val DESC) AS "__ev_spark_rn"');
+			expect(sql).toContain(`WHERE "__ev_spark_rn" <= ${redshift.sparklineMaxPoints}`);
+			expect(sql).toContain('LISTAGG(');
+		});
+
+		it('partitions the cap by dimension in CTE sparklines', () => {
+			const dimension = { value: 'category', type: 'dimension' } as const;
+			const context: SparklineContext = {
+				tableExpression: 'demo.daily_orders',
+				whereClause: '',
+				groupByClause: 'GROUP BY category',
+				processedColumns: [
+					processColumnExpression(dimension, redshift),
+					processColumnExpression(measure, redshift)
+				].filter((c) => c !== null)
+			};
+			const result = buildSparklines(sparklines, context, undefined, 'sunday', redshift);
+
+			expect(result.fragments).toHaveLength(1);
+			const sql = result.fragments[0].cteSql;
+			expect(sql).toContain('ROW_NUMBER() OVER (PARTITION BY category ORDER BY x_val DESC)');
+			expect(sql).toContain(`WHERE "__ev_spark_rn" <= ${redshift.sparklineMaxPoints}`);
+		});
+
+		it('leaves unbounded dialects untouched', () => {
+			const context: SparklineContext = {
+				tableExpression: 'demo.daily_orders',
+				whereClause: '',
+				groupByClause: 'GROUP BY ALL',
+				processedColumns: [processColumnExpression(measure, dialect)].filter((c) => c !== null)
+			};
+			const result = buildSparklines(sparklines, context, undefined, 'sunday', dialect);
+			expect(result.inlineColumns[0]).not.toContain('__ev_spark_rn');
 		});
 	});
 

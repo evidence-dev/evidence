@@ -15,6 +15,7 @@ import type { SqlServerCredentials } from '@evidence/core/connectors/sqlserver/c
 import type { DatabricksCredentials } from '@evidence/core/connectors/databricks/credentials';
 import type { PostgresCredentials } from '@evidence/core/connectors/postgres/credentials';
 import type { CubeCredentials } from '@evidence/core/connectors/cube/credentials';
+import type { RedshiftCredentials } from '@evidence/core/connectors/redshift/credentials';
 import type { MotherduckCredentials } from '@evidence/core/connectors/motherduck/credentials';
 import type { Column } from '@evidence/core/user-components/interfaces/query-service';
 
@@ -39,6 +40,9 @@ export type PostgresConnectionConfig = { type: 'postgres' } & PostgresCredential
 // Cube's SQL API is Postgres-wire, so it shares the resolved credential shape.
 export type CubeConnectionConfig = { type: 'cube' } & CubeCredentials;
 
+// Redshift is Postgres-wire, so it shares the resolved credential shape.
+export type RedshiftConnectionConfig = { type: 'redshift' } & RedshiftCredentials;
+
 export type MotherDuckConnectionConfig = { type: 'motherduck' } & MotherduckCredentials;
 
 export type ConnectionConfig =
@@ -50,6 +54,7 @@ export type ConnectionConfig =
 	| DatabricksConnectionConfig
 	| PostgresConnectionConfig
 	| CubeConnectionConfig
+	| RedshiftConnectionConfig
 	| MotherDuckConnectionConfig;
 
 export type QueryColumn = Column;

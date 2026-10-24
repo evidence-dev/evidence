@@ -9,7 +9,7 @@ import {
 	type BenchmarkConfig
 } from './build-comparisons';
 import type { ProcessedColumnExpression } from './sql-expression-utils';
-import { ClickHouseDialect } from '../../sql-dialect';
+import { ClickHouseDialect, RedshiftDialect } from '../../sql-dialect';
 
 const dialect = new ClickHouseDialect();
 
@@ -330,6 +330,76 @@ describe('buildComparisonQueryConfig', () => {
 // ============================================================================
 
 describe('buildComparisons - Benchmark Comparisons', () => {
+	it('inlines subject_totals as a derived table when the dialect rejects nested CTEs', () => {
+		const redshift = new RedshiftDialect();
+		const comparisons: ComparisonQueryConfig[] = [
+			{
+				id: '__ev_sum_sales_benchmark_avg_comparison',
+				compare_vs: 'benchmark',
+				valueColumn: 'sum(sales)',
+				valueColumnAlias: 'sum_sales',
+				benchmark: { agg: 'avg', subject: 'store_id' }
+			}
+		];
+		const result = buildComparisons(
+			comparisons,
+			createContext({ processedColumns: [] }),
+			undefined,
+			'sunday',
+			redshift
+		);
+
+		const cte = result.fragments[0].cteSql;
+		expect(cte).not.toContain('WITH subject_totals');
+		expect(cte).toMatch(/FROM \(SELECT[\s\S]*FROM test_table[\s\S]*\) AS subject_totals/);
+	});
+
+	// Redshift AVG(int) returns BIGINT and int / int truncates, so an integer
+	// `sum(sales)` subject total would benchmark to a whole number.
+	it('widens integer subject totals before averaging on Redshift', () => {
+		const redshift = new RedshiftDialect();
+		const base = {
+			id: '__ev_sum_sales_benchmark_avg_comparison',
+			compare_vs: 'benchmark' as const,
+			valueColumn: 'sum(sales)',
+			valueColumnAlias: 'sum_sales'
+		};
+		const ctx = createContext({ processedColumns: [] });
+
+		const plain = buildComparisons(
+			[{ ...base, benchmark: { agg: 'avg', subject: 'store_id' } }],
+			ctx,
+			undefined,
+			'sunday',
+			redshift
+		);
+		expect(plain.fragments[0].cteSql).toContain(
+			'avg("__ev_sum_sales_benchmark_avg_comparison_subject_total" * 1.0)'
+		);
+
+		const excludeSelf = buildComparisons(
+			[{ ...base, benchmark: { agg: 'avg', subject: 'store_id', exclude_self: true } }],
+			ctx,
+			undefined,
+			'sunday',
+			redshift
+		);
+		expect(excludeSelf.fragments[0].cteSql).toMatch(
+			/\) - "__ev_sum_sales_benchmark_avg_comparison_subject_total"\) \* 1\.0 \/\s+\(count\(\*\) OVER \(\) - 1\)/
+		);
+
+		const clickhouse = buildComparisons(
+			[{ ...base, benchmark: { agg: 'avg', subject: 'store_id' } }],
+			ctx,
+			undefined,
+			'sunday',
+			new ClickHouseDialect()
+		);
+		expect(clickhouse.fragments[0].cteSql).toContain(
+			'avg("__ev_sum_sales_benchmark_avg_comparison_subject_total")'
+		);
+	});
+
 	describe('Basic Benchmark CTE Generation', () => {
 		it('should generate benchmark CTE with subject only', () => {
 			const comparisons: ComparisonQueryConfig[] = [

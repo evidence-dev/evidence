@@ -30,6 +30,15 @@ export function escapeBackslashStringLiteral(value: string): string {
 }
 
 /**
+ * Redshift literals honour `\` (PG 8.0 semantics — AWS's own LIKE/POSIX examples write `'\\'`
+ * for one backslash), so backslashes are doubled; quotes are doubled rather than
+ * backslash-escaped because `''` is accepted whether or not a cluster treats `\'` as an escape.
+ */
+export function escapeRedshiftStringLiteral(value: string): string {
+	return value.replace(/\\/g, '\\\\').replace(/'/g, "''");
+}
+
+/**
  * Escape a string literal's contents for dialects where backslash is an ordinary
  * character (Postgres, Fabric, DuckDB). Doubling backslashes here would corrupt the value.
  */
@@ -285,6 +294,27 @@ export interface SqlDialect {
 	readonly strictDerivedTables: boolean;
 
 	/**
+	 * Whether a `WITH` may appear inside another CTE's body. Redshift rejects
+	 * it even though it is otherwise lenient about derived tables; undefined
+	 * means supported.
+	 */
+	readonly supportsNestedCte?: boolean;
+
+	/**
+	 * Whether `int / int` truncates to an integer (Postgres, Redshift, T-SQL) rather
+	 * than producing a fraction (ClickHouse, Snowflake, BigQuery, DuckDB). Builders that
+	 * divide user columns multiply by 1.0 first when this is set; undefined means no.
+	 */
+	readonly integerDivisionTruncates?: boolean;
+
+	/**
+	 * Whether `AVG(int)` returns an integer (Redshift: BIGINT, so avg(qtysold) = 2)
+	 * instead of a fraction as on Postgres and every other engine. Builders that
+	 * average integer-typed intermediates widen them first when this is set.
+	 */
+	readonly avgTruncatesIntegers?: boolean;
+
+	/**
 	 * Whether `GROUP BY GROUPING SETS (…)` / `GROUPING(col)` are available (subtotals).
 	 * False for Cube, which rejects both and has no rewrite — callers must refuse the
 	 * query with an actionable message rather than emit SQL that always errors.
@@ -297,6 +327,13 @@ export interface SqlDialect {
 	 * `INTERVAL` anywhere in a joined query, wherever the shift is placed.
 	 */
 	readonly supportsDateOffsetMath: boolean;
+
+	/**
+	 * Cap on points per sparkline series, applied as "most recent N" before
+	 * `groupArray`. For dialects whose string aggregate errors past a byte limit
+	 * (Redshift `LISTAGG`); undefined means unbounded.
+	 */
+	readonly sparklineMaxPoints?: number;
 
 	/** Aggregation function names recognised by this dialect (uppercase). */
 	readonly aggregationFunctions: ReadonlySet<string>;

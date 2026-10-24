@@ -805,6 +805,7 @@
               "direct-connectors/databricks",
               "direct-connectors/postgres",
               "direct-connectors/cube",
+              "direct-connectors/redshift",
               "direct-connectors/motherduck"
             ]
           },

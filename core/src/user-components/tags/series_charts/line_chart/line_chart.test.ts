@@ -10,6 +10,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../../sql-dialect';
 
@@ -22,6 +23,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -117,6 +119,14 @@ describe('line_chart SQL — date_range classes', () => {
 			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2026-03-25' AND date <= DATE '2026-04-23')
+			 GROUP BY DATE_TRUNC('day', date)
+			 
+			 
+			 ORDER BY date__day"
+			----
+			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2026-03-25' AND date <= DATE '2026-04-23')
 			 GROUP BY ALL
 			 
 			 
@@ -194,6 +204,14 @@ describe('line_chart SQL — date_range classes', () => {
 			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2026-01-01' AS TIMESTAMP) AND date <= CAST('2026-12-31' AS TIMESTAMP))
+			 GROUP BY DATE_TRUNC('month', date)
+			 
+			 
+			 ORDER BY date__month"
+			----
+			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-12-31')
 			 GROUP BY DATE_TRUNC('month', date)
 			 
 			 
@@ -287,6 +305,14 @@ describe('line_chart SQL — date_range classes', () => {
 			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2026-03-01' AND date <= DATE '2026-03-31')
+			 GROUP BY DATE_TRUNC('day', date)
+			 
+			 
+			 ORDER BY date__day"
+			----
+			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2026-03-01' AND date <= DATE '2026-03-31')
 			 GROUP BY ALL
 			 
 			 
@@ -372,6 +398,14 @@ describe('line_chart SQL — date_range classes', () => {
 			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-04-23')
+			 GROUP BY DATE_TRUNC('day', date)
+			 
+			 
+			 ORDER BY date__day"
+			----
+			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-04-23')
 			 GROUP BY ALL
 			 
 			 
@@ -434,6 +468,14 @@ describe('line_chart SQL — date_range classes', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY date__month"
+			----
+			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATE_TRUNC('month', date)
 			 
 			 
 			 ORDER BY date__month"
@@ -534,6 +576,14 @@ describe('line_chart SQL — date_range classes', () => {
 			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2023-01-01' AS TIMESTAMP) AND date <= CAST('2023-12-31' AS TIMESTAMP))
+			 GROUP BY DATE_TRUNC('day', date)
+			 
+			 
+			 ORDER BY date__day"
+			----
+			"SELECT DATE_TRUNC('day', date) AS "date__day", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2023-01-01' AND date <= DATE '2023-12-31')
 			 GROUP BY DATE_TRUNC('day', date)
 			 
 			 

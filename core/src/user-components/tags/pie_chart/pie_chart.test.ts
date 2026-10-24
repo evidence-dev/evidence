@@ -10,6 +10,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../sql-dialect';
 
@@ -22,6 +23,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -85,6 +87,14 @@ describe('pie_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY sum_total_sales DESC"
@@ -192,6 +202,14 @@ describe('pie_chart SQL', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 GROUP BY category
+			 
+			 
+			 ORDER BY sum_total_sales DESC"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY ALL
 			 
 			 
@@ -252,6 +270,14 @@ describe('pie_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category ASC"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY category ASC"

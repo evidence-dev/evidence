@@ -14,6 +14,7 @@ export { FabricDialect } from './sql-dialect/fabric';
 export { DatabricksDialect } from './sql-dialect/databricks';
 export { PostgresDialect } from './sql-dialect/postgres';
 export { CubeDialect } from './sql-dialect/cube';
+export { RedshiftDialect } from './sql-dialect/redshift';
 export { MotherDuckDialect } from './sql-dialect/motherduck';
 export { SqlServerDialect } from './sql-dialect/sqlserver';
 
@@ -24,6 +25,7 @@ import { FabricDialect } from './sql-dialect/fabric';
 import { DatabricksDialect } from './sql-dialect/databricks';
 import { PostgresDialect } from './sql-dialect/postgres';
 import { CubeDialect } from './sql-dialect/cube';
+import { RedshiftDialect } from './sql-dialect/redshift';
 import { MotherDuckDialect } from './sql-dialect/motherduck';
 import { SqlServerDialect } from './sql-dialect/sqlserver';
 import type { SqlDialect } from './sql-dialect/common';
@@ -38,6 +40,7 @@ export type WarehouseType =
 	| 'databricks'
 	| 'postgres'
 	| 'cube'
+	| 'redshift'
 	| 'motherduck'
 	| 'sqlserver';
 
@@ -55,6 +58,8 @@ export function dialectFor(type: WarehouseType | null | undefined): SqlDialect {
 			return new PostgresDialect();
 		case 'cube':
 			return new CubeDialect();
+		case 'redshift':
+			return new RedshiftDialect();
 		case 'motherduck':
 			return new MotherDuckDialect();
 		case 'sqlserver':

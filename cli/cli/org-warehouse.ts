@@ -111,6 +111,7 @@ const WAREHOUSE_LABELS: Record<WarehouseMode, string> = {
 	databricks: 'Databricks',
 	postgres: 'PostgreSQL',
 	cube: 'Cube',
+	redshift: 'Amazon Redshift',
 	motherduck: 'MotherDuck',
 	sqlserver: 'SQL Server'
 };

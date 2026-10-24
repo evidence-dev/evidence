@@ -10,6 +10,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../sql-dialect';
 
@@ -22,6 +23,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -88,6 +90,14 @@ describe('candlestick SQL', () => {
 			 FROM demo.prices
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY date"
+			----
+			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close"
+			 FROM demo.prices
+			 
+			 GROUP BY date, open, high, low, close
 			 
 			 
 			 ORDER BY date"
@@ -197,6 +207,14 @@ describe('candlestick SQL', () => {
 			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close", volume AS "volume"
 			 FROM demo.prices
 			 
+			 GROUP BY date, open, high, low, close, volume
+			 
+			 
+			 ORDER BY date"
+			----
+			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close", volume AS "volume"
+			 FROM demo.prices
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -260,6 +278,14 @@ describe('candlestick SQL', () => {
 			 FROM demo.prices
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY date__month"
+			----
+			"SELECT DATE_TRUNC('month', date) AS "date__month", open AS "open", high AS "high", low AS "low", close AS "close"
+			 FROM demo.prices
+			 
+			 GROUP BY DATE_TRUNC('month', date), open, high, low, close
 			 
 			 
 			 ORDER BY date__month"
@@ -370,6 +396,14 @@ describe('candlestick SQL', () => {
 			"SELECT DATE_TRUNC('week', date) AS "date__week", open AS "open", high AS "high", low AS "low", close AS "close"
 			 FROM demo.prices
 			 
+			 GROUP BY DATE_TRUNC('week', date), open, high, low, close
+			 
+			 
+			 ORDER BY date__week"
+			----
+			"SELECT DATE_TRUNC('week', date) AS "date__week", open AS "open", high AS "high", low AS "low", close AS "close"
+			 FROM demo.prices
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -449,6 +483,14 @@ describe('candlestick SQL', () => {
 			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close"
 			 FROM demo.prices
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY date, open, high, low, close
+			 
+			 
+			 ORDER BY date"
+			----
+			"SELECT date AS "date", open AS "open", high AS "high", low AS "low", close AS "close"
+			 FROM demo.prices
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY date, open, high, low, close
 			 
 			 

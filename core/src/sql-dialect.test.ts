@@ -7,6 +7,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect,
 	SqlServerDialect,
 	defaultDialect
@@ -1088,6 +1089,98 @@ describe('quoteIdentifierIfNeeded', () => {
 		it('quotes identifiers with spaces', () => {
 			expect(dialect.quoteIdentifierIfNeeded('Total Sales')).toBe('"Total Sales"');
 		});
+	});
+});
+
+describe('RedshiftDialect', () => {
+	const dialect = new RedshiftDialect();
+
+	it('has name "redshift" and extends the Postgres dialect', () => {
+		expect(dialect.name).toBe('redshift');
+		expect(dialect).toBeInstanceOf(PostgresDialect);
+	});
+
+	it('shifts Sunday-start weeks with DATEADD instead of INTERVAL arithmetic', () => {
+		expect(dialect.dateGrain('week', 'order_date', 'monday')).toBe(
+			"DATE_TRUNC('week', order_date)"
+		);
+		expect(dialect.dateGrain('week', 'order_date', 'sunday')).toBe(
+			"DATEADD(day, -1, DATE_TRUNC('week', DATEADD(day, 1, order_date)))"
+		);
+		expect(dialect.dateGrain('month', 'order_date', 'sunday')).toBe(
+			"DATE_TRUNC('month', order_date)"
+		);
+	});
+
+	it('adds/subtracts via DATEADD, with quarter as a first-class part', () => {
+		expect(dialect.dateAdd('day', 7, 'created_at')).toBe('DATEADD(day, 7, created_at)');
+		expect(dialect.dateSub('day', 7, 'created_at')).toBe('DATEADD(day, -7, created_at)');
+		expect(dialect.dateAdd('quarter', 2, 'created_at')).toBe('DATEADD(quarter, 2, created_at)');
+		expect(dialect.dateSub('month', 'n', 'created_at')).toBe('DATEADD(month, -(n), created_at)');
+		expect(dialect.dateAdd('day', 1, 'd')).not.toContain('INTERVAL');
+	});
+
+	it('casts to VARCHAR(MAX), never TEXT (which Redshift truncates at 256 chars)', () => {
+		expect(dialect.castToString('col')).toBe('CAST(col AS VARCHAR(MAX))');
+	});
+
+	it('expands null-safe equality (Redshift has no IS NOT DISTINCT FROM)', () => {
+		expect(dialect.nullSafeEqual('a', 'b')).toBe('((a IS NULL AND b IS NULL) OR a = b)');
+	});
+
+	it('builds sparklines with LISTAGG, not the inherited JSON_AGG', () => {
+		const sql = dialect.groupArray('date', 'value');
+		expect(sql).not.toContain('JSON_AGG');
+		expect(sql).not.toContain('AS TEXT');
+		expect(sql).toContain('LISTAGG(');
+		expect(sql).toContain('WITHIN GROUP (ORDER BY date)');
+		// Backslash is an escape character in Redshift literals, so every backslash
+		// in the generated SQL is doubled: '\\' is one backslash, '\\\\' is two.
+		expect(sql).toContain(`REPLACE(CAST(date AS VARCHAR(MAX)), '\\\\', '\\\\\\\\')`);
+		expect(sql).toContain(`'"', '\\\\"'`);
+		expect(sql).toContain(`CHR(10), '\\\\n'`);
+		expect(sql).toContain(`CHR(13), '\\\\r'`);
+		expect(sql).toContain(`CHR(9), '\\\\t'`);
+		expect(sql).toContain(`COALESCE(CAST(value AS VARCHAR(MAX)), 'null')`);
+	});
+
+	it('doubles backslashes (PG 8.0 literal semantics) but doubles quotes, never backslash-escapes them', () => {
+		expect(dialect.escapesBackslashInStringLiterals).toBe(true);
+		expect(dialect.stringLiteralEscapesBackslash('')).toBe(true);
+		expect(dialect.stringLiteralEscapesBackslash('E')).toBe(true);
+		// `''` is accepted whether or not a cluster treats `\'` as an escape, so the
+		// literal can't be terminated early under either interpretation.
+		expect(dialect.escapeStringLiteral(`a\\b'c`)).toBe(`a\\\\b''c`);
+		// Contrast with the Postgres parent, where backslash is ordinary.
+		expect(new PostgresDialect().escapeStringLiteral(`a\\b'c`)).toBe(`a\\b''c`);
+	});
+
+	it('has no FILTER clause but keeps grouping sets and date-offset math', () => {
+		expect(dialect.supportsFilterClause).toBe(false);
+		expect(dialect.supportsGroupingSets).toBe(true);
+		expect(dialect.supportsDateOffsetMath).toBe(true);
+	});
+
+	it('adjusts the validator function sets for Redshift', () => {
+		// Redshift has MEDIAN (Postgres does not) but no COVARIANCE/CORR.
+		expect(dialect.aggregationFunctions.has('MEDIAN')).toBe(true);
+		expect(dialect.aggregationFunctions.has('LISTAGG')).toBe(true);
+		expect(dialect.aggregationFunctions.has('COVARIANCE')).toBe(false);
+		expect(dialect.aggregationFunctions.has('CORR')).toBe(false);
+		// Postgres JSON/array aggregates don't exist on Redshift — must not be a false green.
+		expect(dialect.aggregationFunctions.has('JSON_AGG')).toBe(false);
+		expect(dialect.aggregationFunctions.has('ARRAY_AGG')).toBe(false);
+		expect(dialect.aggregationFunctions.has('STRING_AGG')).toBe(false);
+		// Redshift conditionals.
+		expect(dialect.nonAggregationFunctions.has('NVL')).toBe(true);
+		expect(dialect.nonAggregationFunctions.has('DECODE')).toBe(true);
+		expect(dialect.nonAggregationFunctions.has('DATEADD')).toBe(true);
+		expect(dialect.nonAggregationFunctions.has('IFNULL')).toBe(false);
+		expect(dialect.nonAggregationFunctions.has('IF')).toBe(false);
+		// CHR is emitted by groupArray above, so the validator has to know it.
+		expect(dialect.nonAggregationFunctions.has('CHR')).toBe(true);
+		expect(dialect.nonAggregationFunctions.has('JSON_BUILD_ARRAY')).toBe(false);
+		expect(dialect.nonAggregationFunctions.has('MAKE_DATE')).toBe(false);
 	});
 });
 

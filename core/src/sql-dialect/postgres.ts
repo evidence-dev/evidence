@@ -164,7 +164,7 @@ export class PostgresDialect implements SqlDialect {
 	}
 
 	readonly escapesBackslashInIdentifiers = false;
-	readonly escapesBackslashInStringLiterals = false;
+	readonly escapesBackslashInStringLiterals: boolean = false;
 	// Postgres dollar-quoting supports tagged delimiters ($tag$…$tag$), including $$.
 	readonly dollarQuoting: 'none' | 'double' | 'tagged' = 'tagged';
 	readonly tripleQuotedStringDelimiters: readonly string[] = [];
@@ -203,9 +203,11 @@ export class PostgresDialect implements SqlDialect {
 	}
 
 	readonly caseInsensitiveIdentifiers = true;
-	readonly supportsFilterClause = true;
+	// Typed, not inferred, so the Redshift subclass can narrow this to false.
+	readonly supportsFilterClause: boolean = true;
 	readonly conditionalAggregateFunctions = NO_CONDITIONAL_AGGREGATES;
 	readonly strictDerivedTables = false;
+	readonly integerDivisionTruncates = true;
 	// Typed, not inferred, so the Cube subclass can narrow these to false.
 	readonly supportsGroupingSets: boolean = true;
 	readonly supportsDateOffsetMath: boolean = true;

@@ -5,7 +5,8 @@ import type {
 	ClickHouseConnectionConfig,
 	FabricConnectionConfig,
 	SqlServerConnectionConfig,
-	DatabricksConnectionConfig
+	DatabricksConnectionConfig,
+	RedshiftConnectionConfig
 } from './types';
 
 const bq = (extra: Partial<BigQueryConnectionConfig> = {}): BigQueryConnectionConfig => ({
@@ -178,6 +179,47 @@ describe('listTablesSql (sqlserver)', () => {
 		expect(listTablesSql(sqlserver({ schemas: ['sales', "a'b"] }))).toContain(
 			"TABLE_SCHEMA IN ('sales', 'a''b')"
 		);
+	});
+});
+
+const redshift = (extra: Partial<RedshiftConnectionConfig> = {}): RedshiftConnectionConfig => ({
+	type: 'redshift',
+	host: 'my-cluster.abc123.us-east-1.redshift.amazonaws.com',
+	port: 5439,
+	user: 'evidence_reader',
+	password: 'pw',
+	database: 'dev',
+	schema: 'public',
+	ssl: { mode: 'verify-full' },
+	...extra
+});
+
+describe('listTablesSql (redshift)', () => {
+	// current_schema() is leader-node-only and errors in any statement that also
+	// reads an SVV view, so the default schema must be a literal.
+	it('reads svv_tables without calling current_schema()', () => {
+		const sql = listTablesSql(redshift());
+		expect(sql).toContain('FROM svv_tables');
+		expect(sql).not.toContain('current_schema()');
+	});
+
+	it('unqualifies tables in the configured schema and scopes to it when no allowlist is set', () => {
+		const sql = listTablesSql(redshift({ schema: 'analytics' }));
+		expect(sql).toContain("CASE WHEN table_schema = 'analytics' AND");
+		expect(sql).toContain("table_schema IN ('analytics')");
+	});
+
+	it('scopes to the schemas allowlist and doubles quotes', () => {
+		const sql = listTablesSql(redshift({ schema: 'public', schemas: ['sales', "a'b"] }));
+		expect(sql).toContain("table_schema IN ('sales', 'a''b')");
+	});
+
+	it('always qualifies external tables and hides mv_tbl__ backing tables', () => {
+		const sql = listTablesSql(redshift());
+		expect(sql).toContain("AND table_type <> 'EXTERNAL TABLE' THEN table_name");
+		expect(sql).toContain("LEFT(table_name, 8) <> 'mv_tbl__'");
+		// No LIKE: Redshift's LIKE escape-character semantics differ from Postgres.
+		expect(sql).not.toMatch(/\bLIKE\b/);
 	});
 });
 

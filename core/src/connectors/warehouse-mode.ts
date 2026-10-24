@@ -13,6 +13,7 @@ export const WAREHOUSE_MODES = [
 	'databricks',
 	'postgres',
 	'cube',
+	'redshift',
 	'motherduck',
 	'sqlserver'
 ] as const;

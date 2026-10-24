@@ -161,6 +161,9 @@ function buildAggExpression(
 	if (agg === 'count_distinct') {
 		return dialect.countDistinct(column);
 	}
+	if (agg === 'avg' && dialect.avgTruncatesIntegers) {
+		return `avg(${column} * 1.0)`;
+	}
 	return `${mapAggFunction(agg)}(${column})`;
 }
 
@@ -249,13 +252,14 @@ function buildBenchmarkCTE(
 		${groupBySQL}
 	`.trim();
 
-	// T-SQL rejects a WITH nested inside another CTE body, which is where this
-	// fragment lands, so strict dialects inline subject_totals as a derived table.
-	const withSubjectTotals = dialect.strictDerivedTables
+	// T-SQL and Redshift reject a WITH nested inside another CTE body, which is
+	// where this fragment lands, so those dialects inline subject_totals as a derived table.
+	const inlineSubjectTotals = dialect.strictDerivedTables || dialect.supportsNestedCte === false;
+	const withSubjectTotals = inlineSubjectTotals
 		? ''
 		: `WITH subject_totals AS (${subjectTotalsCTE})`;
 	const subjectTotals = (alias?: string) =>
-		dialect.strictDerivedTables
+		inlineSubjectTotals
 			? `(${subjectTotalsCTE}) AS ${alias ?? 'subject_totals'}`
 			: alias
 				? `subject_totals ${alias}`
@@ -295,9 +299,11 @@ function buildBenchmarkCTE(
 					: '';
 
 			const allDimensionSelects = allDimensions.map((col) => q(col.alias));
+			// Integer subject totals would otherwise average with truncating division.
+			const toFloat = dialect.integerDivisionTruncates ? ' * 1.0' : '';
 			const benchmarkCalcs = comparisons.map(
 				(comp) => `
-					(sum(${q(`${comp.id}_subject_total`)}) OVER (${partitionBy}) - ${q(`${comp.id}_subject_total`)}) /
+					(sum(${q(`${comp.id}_subject_total`)}) OVER (${partitionBy}) - ${q(`${comp.id}_subject_total`)})${toFloat} /
 					(count(*) OVER (${partitionBy}) - 1) as ${q(`${comp.id}_benchmark`)}
 				`
 			);
@@ -1174,11 +1180,11 @@ function buildDateRangeDisplayColumns(
 
 		// Fallback expression using the static dateInfo values (for grand-total rows)
 		const fallbackStart = isPrior
-			? (dateInfo.priorStartDate ?? dateInfo.rangeStartDate)
-			: (dateInfo.currentStartDate ?? dateInfo.rangeStartDate);
+			? dateInfo.priorStartDate ?? dateInfo.rangeStartDate
+			: dateInfo.currentStartDate ?? dateInfo.rangeStartDate;
 		const fallbackEnd = isPrior
-			? (dateInfo.priorEndDate ?? dateInfo.rangeEndDate)
-			: (dateInfo.currentEndDate ?? dateInfo.rangeEndDate);
+			? dateInfo.priorEndDate ?? dateInfo.rangeEndDate
+			: dateInfo.currentEndDate ?? dateInfo.rangeEndDate;
 
 		if (!fallbackStart || !fallbackEnd) return '';
 

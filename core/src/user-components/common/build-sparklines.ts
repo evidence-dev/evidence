@@ -227,15 +227,36 @@ function buildSparklineInlineSubquery(
 		: 'GROUP BY x_val';
 	const innerOrderBy = dialect.strictDerivedTables ? '' : '\n\t\t\tORDER BY x_val';
 	const sourceAlias = ` as ${dialect.quoteAlias('__ev_spark_src')}`;
-	return `(
-		SELECT ${groupArrayExpr}
-		FROM (
+	const pointsSQL = boundSparklinePoints(
+		`
 			SELECT ${processedXColumn} as x_val, ${aggregatedY} as y_val
 			FROM ${context.tableExpression}
 			${whereClause}
 			${innerGroupBy}${innerOrderBy}
-		)${sourceAlias}
+		`,
+		[],
+		dialect
+	);
+	return `(
+		SELECT ${groupArrayExpr}
+		FROM (${pointsSQL})${sourceAlias}
 	) as ${dialect.quoteAlias(sparkline.id)}`;
+}
+
+/**
+ * Keep only the most recent `dialect.sparklineMaxPoints` x values per series
+ * (per `partitionBy` group) so a bounded string aggregate can't overflow.
+ */
+function boundSparklinePoints(
+	pointsSQL: string,
+	partitionBy: string[],
+	dialect: SqlDialect
+): string {
+	const limit = dialect.sparklineMaxPoints;
+	if (!limit) return pointsSQL;
+	const partition = partitionBy.length > 0 ? `PARTITION BY ${partitionBy.join(', ')} ` : '';
+	const rn = dialect.quoteAlias('__ev_spark_rn');
+	return `SELECT * FROM (SELECT *, ROW_NUMBER() OVER (${partition}ORDER BY x_val DESC) AS ${rn} FROM (${pointsSQL}) as ${dialect.quoteAlias('__ev_spark_pts')}) as ${dialect.quoteAlias('__ev_spark_bounded')} WHERE ${rn} <= ${limit}`;
 }
 
 /**
@@ -344,10 +365,17 @@ function buildSparklineCTE(
 	// T-SQL/Fabric, Postgres and Cube all reject an unaliased one; the outer GROUP
 	// BY then references its (real) columns.
 	const sourceAlias = ` as ${dialect.quoteAlias('__ev_spark_src')}`;
+	const pointsSQL = boundSparklinePoints(
+		innerCteSQL,
+		dimensionColumns
+			.filter((col) => col.type === 'dimension' || col.type === 'pivot')
+			.map((col) => col.alias),
+		dialect
+	);
 	return normalizeWhitespace(
 		`
 		SELECT ${outerSelectClause}
-		FROM (${innerCteSQL})${sourceAlias}
+		FROM (${pointsSQL})${sourceAlias}
 		${outerGroupBy}
 	`.trim()
 	);

@@ -118,7 +118,8 @@
 			filterSql: processFilterIds(filterIds, [repeatFilters, pageFilters], connection.dialect),
 			bin_count: binCount,
 			bin_width: binWidth,
-			limit
+			limit,
+			dialect: connection.dialect
 		});
 	});
 	const autoRefreshCtx = getAutoRefreshContext();

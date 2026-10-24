@@ -17,6 +17,7 @@ import {
 	ClickHouseDialect,
 	CubeDialect,
 	PostgresDialect,
+	RedshiftDialect,
 	SnowflakeDialect,
 	type SqlDialect
 } from '../../sql-dialect';
@@ -295,6 +296,49 @@ describe('generateSQLQuery', () => {
 
 		expect(result.sql).toContain(`FROM "(SELECT 'HACKED' AS category FROM secrets)"`);
 		expect(result.sql).not.toContain('FROM (SELECT');
+	});
+
+	// Redshift rejects `WITH` inside a CTE body. An inline query written with CTEs
+	// would land inside `WITH main_query AS (…)`, so fragments join as derived tables.
+	it('joins comparison fragments as derived tables on Redshift', () => {
+		const redshift = new RedshiftDialect();
+		const inlineQueries = new InlineQueries({ filterContexts: undefined });
+		inlineQueries.set(
+			'orders',
+			"WITH recent AS (SELECT * FROM demo.daily_orders WHERE date > DATE '2024-01-01') SELECT * FROM recent"
+		);
+		const value = processColumnExpression({ value: 'sum(total_sales)' }, redshift)!;
+
+		const config = {
+			tableExpressionName: 'orders',
+			columns: [value],
+			date_range: { range: '2025-01-02 to 2026-01-01', date: 'date' },
+			comparisons: [
+				{
+					id: '__ev_sum_total_sales_prior_year_comparison',
+					compare_vs: 'prior year' as const,
+					valueColumn: 'sum(total_sales)',
+					valueColumnAlias: 'sum_total_sales',
+					date_range: { range: '2025-01-02 to 2026-01-01', date: 'date' }
+				}
+			]
+		};
+
+		const result = generateSQLQuery(
+			config,
+			undefined,
+			inlineQueries,
+			undefined,
+			'sunday',
+			redshift
+		);
+
+		expect(result.error).toBeUndefined();
+		expect(result.sql).not.toMatch(/^WITH\b/);
+		expect(result.sql).toContain(') AS main_query');
+		expect(result.sql).toMatch(/LEFT JOIN \(SELECT[\s\S]*\) AS comparison_1_fragment ON 1 = 1/);
+		// The author's CTE survives, only ever inside derived tables.
+		expect(result.sql.match(/WITH recent AS/g)).toHaveLength(2);
 	});
 
 	it('should strip trailing semicolons from inline query SQL', () => {

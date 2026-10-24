@@ -13,6 +13,7 @@ import { executeDatabricksQuery } from './databricks';
 import { executePostgresQuery } from './postgres';
 import { executeMotherduckQuery } from './motherduck';
 import { managedTableNamesSql } from '@evidence/core/metadata/managed-catalog';
+import { escapeRedshiftStringLiteral } from '@evidence/core/sql-dialect/common';
 import type { ConnectionConfig, QueryResult } from './types';
 
 export type { ConnectionConfig, QueryResult, QueryColumn } from './types';
@@ -36,6 +37,9 @@ export async function executeQuery(sql: string, config: ConnectionConfig): Promi
 			return executePostgresQuery(sql, config);
 		case 'cube':
 			// Cube's SQL API is Postgres-wire — reuse the Postgres executor.
+			return executePostgresQuery(sql, config);
+		case 'redshift':
+			// Redshift is Postgres-wire — reuse the Postgres executor.
 			return executePostgresQuery(sql, config);
 		case 'motherduck':
 			return executeMotherduckQuery(sql, config);
@@ -124,6 +128,18 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 			const inList = schemas.map((s) => `'${s.replace(/'/g, "''")}'`).join(', ');
 			return `${base} WHERE table_schema IN (${inList}) ORDER BY name`;
 		}
+		case 'redshift': {
+			// SVV_TABLES (not pg_class) so late-binding views and Spectrum tables are listed.
+			// current_schema() is leader-node-only and errors alongside an SVV view, so
+			// compare against the configured schema literal (what search_path is set to).
+			// External tables are always qualified (search_path doesn't cover external
+			// schemas); materialized views' internal mv_tbl__ backing tables are hidden.
+			const quote = (s: string) => `'${escapeRedshiftStringLiteral(s)}'`;
+			const base = `SELECT CASE WHEN table_schema = ${quote(config.schema)} AND table_type <> 'EXTERNAL TABLE' THEN table_name ELSE table_schema || '.' || table_name END AS name FROM svv_tables`;
+			const schemas = config.schemas?.length ? config.schemas : [config.schema];
+			const inList = schemas.map(quote).join(', ');
+			return `${base} WHERE table_schema IN (${inList}) AND LEFT(table_name, 8) <> 'mv_tbl__' ORDER BY name`;
+		}
 		case 'motherduck': {
 			// DuckDB exposes a standard information_schema. Unqualify the default 'main'
 			// schema; qualify the rest — matches how unqualified names resolve. Exclude
@@ -191,7 +207,7 @@ export function qualifyTableName(
 		if (config.schema) return `\`${config.schema}\`.\`${name}\``;
 		return name;
 	}
-	if (config.type === 'postgres' || config.type === 'cube') {
+	if (config.type === 'postgres' || config.type === 'cube' || config.type === 'redshift') {
 		// Bare names resolve against search_path; qualify with the configured schema
 		// (Postgres-wire uses double quotes) so `describe` hits the right table.
 		if (name.includes('.') || name.includes('"')) return name;

@@ -13,6 +13,7 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
+	RedshiftDialect,
 	MotherDuckDialect
 } from '../../../../sql-dialect';
 
@@ -25,6 +26,7 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
+	new RedshiftDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -111,6 +113,14 @@ describe('horizontal_bar_chart SQL', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY category
+			 
+			 
+			 ORDER BY sum_total_sales desc"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -171,6 +181,14 @@ describe('horizontal_bar_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category asc"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY category asc"
@@ -297,6 +315,14 @@ describe('horizontal_bar_chart SQL', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales", region AS "region"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY category, region
+			 
+			 
+			 ORDER BY sum_total_sales desc, region"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales", region AS "region"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -357,6 +383,14 @@ describe('horizontal_bar_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_total_sales desc"
+			----
+			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATE_TRUNC('month', date)
 			 
 			 
 			 ORDER BY sum_total_sales desc"
@@ -456,6 +490,14 @@ describe('horizontal_bar_chart SQL', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY category
+			 
+			 
+			 ORDER BY sum_total_sales desc"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY category
 			 
 			 

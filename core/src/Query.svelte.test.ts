@@ -10,7 +10,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { flushSync } from 'svelte';
 import { Query, type QueryDependencies } from './Query.svelte';
 import type { QueryResult } from './user-components/interfaces/query-service';
-import { ClickHouseDialect } from './sql-dialect';
+import { ClickHouseDialect, RedshiftDialect } from './sql-dialect';
 import { processColumnExpression } from './user-components/common/sql-expression-utils';
 
 const DEBOUNCE = 500;
@@ -173,5 +173,44 @@ describe('maxUserLimit carve-out', () => {
 		const sql = samplingSqlFor();
 		expect(sql).toContain('2000');
 		expect(sql).not.toContain('50000');
+	});
+});
+
+/**
+ * Redshift (and Postgres before 16) reject `SELECT COUNT(*) FROM (…)` without a
+ * derived-table alias, so the pagination count query must always carry one.
+ */
+describe('countQuery derived-table alias', () => {
+	const dialect = new RedshiftDialect();
+
+	it('aliases the wrapped query', () => {
+		let sql: string | undefined;
+		const cleanup = $effect.root(() => {
+			const q = new Query(
+				() => ({
+					tableExpressionName: 'orders',
+					columns: [processColumnExpression({ value: 'id' }, dialect)].filter((c) => c !== null),
+					filterIds: [],
+					fillProps: { useFill: false, series: '', xColumn: '' }
+				}),
+				{
+					connection: {
+						id: 'default',
+						type: 'managed',
+						dialect,
+						query: (async () => queryResult()) as QueryDependencies['connection']['query']
+					},
+					filterContexts: undefined,
+					inlineQueries: undefined,
+					projectSettings: undefined,
+					defaultRefreshInterval: undefined
+				},
+				{ exceedRowLimitBehavior: 'paginate' }
+			);
+			sql = q.countQuery;
+		});
+		flushSync();
+		cleanup();
+		expect(sql).toMatch(/^SELECT COUNT\(\*\) AS "total_count" FROM \([\s\S]*\n\) AS "__ev_count"$/);
 	});
 });

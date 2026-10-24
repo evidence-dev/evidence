@@ -21,6 +21,7 @@ export const INIT_WAREHOUSES = [
 	'databricks',
 	'postgres',
 	'cube',
+	'redshift',
 	'motherduck'
 ] as const;
 
@@ -139,6 +140,22 @@ sslmode: verify-full # verify-full (secure default, Cube Cloud) | verify-ca | re
 # ssl_key_path: ./certs/client.key # PEM client private key (mutual TLS)
 `;
 
+const REDSHIFT_TEMPLATE = `# Amazon Redshift direct connector (Postgres-wire). Docs: https://docs.evidence.dev/direct-connectors/redshift
+type: redshift
+host: "<host>" # cluster or workgroup endpoint, hostname only — e.g. my-cluster.abc123.us-east-1.redshift.amazonaws.com
+port: 5439
+user: "<user>" # a dedicated read-only database user
+password: "<password>"
+database: "<database>" # e.g. dev
+sslmode: verify-full # verify-full (secure default; Redshift serves publicly trusted certs) | verify-ca | require (no cert check) | disable
+# schema: public # schema for unqualified table names, optional (defaults to "public")
+# schemas: ["<schema>"] # allowlist of schemas exposed to the schema browser (include Spectrum external schemas), optional
+# TLS material for a private CA or mutual TLS, all optional:
+# ssl_ca_path: ./certs/ca.pem # PEM CA bundle, resolved relative to connection.yaml
+# ssl_cert_path: ./certs/client.crt # PEM client certificate (mutual TLS)
+# ssl_key_path: ./certs/client.key # PEM client private key (mutual TLS)
+`;
+
 const MOTHERDUCK_TEMPLATE = `# MotherDuck direct connector — queried over MotherDuck's Postgres endpoint. Docs: https://docs.evidence.dev/direct-connectors/motherduck
 type: motherduck
 database: "<database>" # MotherDuck database name
@@ -156,6 +173,7 @@ const TEMPLATES: Record<InitWarehouse, string> = {
 	databricks: DATABRICKS_TEMPLATE,
 	postgres: POSTGRES_TEMPLATE,
 	cube: CUBE_TEMPLATE,
+	redshift: REDSHIFT_TEMPLATE,
 	motherduck: MOTHERDUCK_TEMPLATE
 };
 

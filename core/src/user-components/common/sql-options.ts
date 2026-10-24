@@ -265,6 +265,22 @@ function buildFragmentQuery(
 				: 'main_query.*';
 	}
 
+	// Redshift rejects a WITH inside a CTE body, and the table expression (an
+	// inline query the author may well have written with CTEs) lands in every
+	// CTE here. A WITH inside a derived table is fine, so join derived tables.
+	if (dialect.supportsNestedCte === false) {
+		const inlined = inlineFragmentJoins(fragments);
+		if (inlined) {
+			return normalizeWhitespace(
+				`
+SELECT ${selectClause}
+FROM (${mainQuerySql}) AS main_query
+${inlined}
+	`.trim()
+			);
+		}
+	}
+
 	return normalizeWhitespace(
 		`
 WITH main_query AS (${mainQuerySql}),
@@ -274,6 +290,24 @@ FROM main_query
 ${joins}
 	`.trim()
 	);
+}
+
+/**
+ * Rewrite each fragment's `LEFT JOIN <alias> ON …` to join the fragment SQL as a
+ * derived table. Returns undefined if any join has an unexpected shape, so the
+ * caller keeps the CTE form rather than emitting a half-rewritten statement.
+ */
+function inlineFragmentJoins(fragments: Fragment[]): string | undefined {
+	const rewritten: string[] = [];
+	for (const fragment of fragments) {
+		const prefix = `LEFT JOIN ${fragment.alias} `;
+		const join = fragment.joinSql.trimStart();
+		if (!join.startsWith(prefix)) return undefined;
+		rewritten.push(
+			`LEFT JOIN (${fragment.cteSql}) AS ${fragment.alias} ${join.slice(prefix.length)}`
+		);
+	}
+	return rewritten.join('\n');
 }
 
 /**

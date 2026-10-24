@@ -20,6 +20,7 @@ import {
 	getFieldMeta,
 	postgresConnectionSchema,
 	cubeConnectionSchema,
+	redshiftConnectionSchema,
 	motherduckConnectionSchema,
 	snowflakeConnectionSchema,
 	sqlserverConnectionSchema
@@ -32,6 +33,7 @@ import { resolveSqlServerCredentials } from '@evidence/core/connectors/sqlserver
 import { resolveDatabricksCredentials } from '@evidence/core/connectors/databricks/resolve';
 import { resolvePostgresCredentials } from '@evidence/core/connectors/postgres/resolve';
 import { resolveCubeCredentials } from '@evidence/core/connectors/cube/resolve';
+import { resolveRedshiftCredentials } from '@evidence/core/connectors/redshift/resolve';
 import { resolveMotherduckCredentials } from '@evidence/core/connectors/motherduck/resolve';
 import type { ConnectionConfig } from './types';
 
@@ -172,6 +174,11 @@ export async function loadConnectionConfig(cwd: string): Promise<ConnectionConfi
 		const data = parseOrThrow(cubeConnectionSchema, obj);
 		const credentials = await resolveCubeCredentials(data, { cwd });
 		return { type: 'cube', ...credentials };
+	}
+	if (obj.type === 'redshift') {
+		const data = parseOrThrow(redshiftConnectionSchema, obj);
+		const credentials = await resolveRedshiftCredentials(data, { cwd });
+		return { type: 'redshift', ...credentials };
 	}
 
 	if (obj.type === 'motherduck') {

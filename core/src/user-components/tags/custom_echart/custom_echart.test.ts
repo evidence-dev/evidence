@@ -11,7 +11,8 @@ import {
 	SqlServerDialect,
 	DatabricksDialect,
 	PostgresDialect,
-	CubeDialect
+	CubeDialect,
+	RedshiftDialect
 } from '../../../sql-dialect';
 
 const dialects = [
@@ -22,7 +23,8 @@ const dialects = [
 	new SqlServerDialect(),
 	new DatabricksDialect(),
 	new PostgresDialect(),
-	new CubeDialect()
+	new CubeDialect(),
+	new RedshiftDialect()
 ];
 
 function buildAllDialects(attrs: Omit<CustomEchartSQLAttrs, 'dialect'>) {
@@ -37,6 +39,9 @@ describe('custom_echart SQL', () => {
 		const { sql } = buildAllDialects({ data: 'demo.daily_orders' });
 		assertParses(sql.split('"\n----')[0]);
 		expect(sql).toMatchInlineSnapshot(`
+			"SELECT *
+			 FROM demo.daily_orders"
+			----
 			"SELECT *
 			 FROM demo.daily_orders"
 			----
@@ -111,6 +116,14 @@ describe('custom_echart SQL', () => {
 			 
 			 
 			 ORDER BY date OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY"
+			----
+			"SELECT *
+			 FROM demo.daily_orders
+			 WHERE (category = 'Electronics')
+			 
+			 
+			 
+			 ORDER BY date LIMIT 100"
 			----
 			"SELECT *
 			 FROM demo.daily_orders
