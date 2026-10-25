@@ -614,8 +614,12 @@ export function generateSQLQuery(
 			dateDimensionGrain: config.dateDimensionGrain,
 			subtotalsEnabled: !!config.subtotals
 		};
+		const filterIdsApply = !config.filterSql;
+		const comparisons = filterIdsApply
+			? borrowFilterDateRanges(config.comparisons, config.filterIds, filterContexts, dialect)
+			: config.comparisons;
 		const comparisonResult = buildComparisons(
-			config.comparisons,
+			comparisons,
 			comparisonContext,
 			anchorDate,
 			firstDayOfWeek,
@@ -841,6 +845,39 @@ export function processFilterIds(
 
 	return sqls.length > 0 ? sqls.join(' AND ') : undefined;
 }
+
+/**
+ * Gives prior period/year comparisons without a `date_range` the period of the first date filter in
+ * `filters=[...]`, and drops that filter's predicate from their CTE so the shifted range applies.
+ */
+function borrowFilterDateRanges(
+	comparisons: ComparisonQueryConfig[],
+	filterIds: unknown[] | undefined,
+	filterContexts: (Filters | undefined)[] | undefined,
+	dialect: SqlDialect
+): ComparisonQueryConfig[] {
+	if (!filterIds?.length || !filterContexts) return comparisons;
+	const needsRange = (c: ComparisonQueryConfig) =>
+		(c.compare_vs === 'prior year' || c.compare_vs === 'prior period') && !c.date_range?.range;
+	if (!comparisons.some(needsRange)) return comparisons;
+
+	const ids = filterIds.filter((id): id is string => typeof id === 'string');
+	for (const id of ids) {
+		const filterContext = filterContexts.find((filterContext) => filterContext?.has(id));
+		const date_range = filterContext?.get(id)?.comparisonDateRange();
+		if (!date_range) continue;
+		// '' rather than undefined, so the CTE doesn't fall back to the full filterSql.
+		const cteFilterSql =
+			processFilterIds(
+				ids.filter((other) => other !== id),
+				filterContexts,
+				dialect
+			) ?? '';
+		return comparisons.map((c) => (needsRange(c) ? { ...c, date_range, cteFilterSql } : c));
+	}
+	return comparisons;
+}
+
 // Additional SQL options can be added here in the future
 
 /**

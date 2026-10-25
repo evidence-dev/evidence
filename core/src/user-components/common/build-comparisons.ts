@@ -623,7 +623,7 @@ export function buildComparisons(
 			dimensionColumns,
 			context!.tableExpression,
 			context!.userWhere,
-			context!.filterSql,
+			firstComparison.cteFilterSql ?? context!.filterSql,
 			context!.groupByClause,
 			dateInfo.whereClause,
 			context?.subtotalsEnabled,
@@ -687,7 +687,7 @@ function groupTemporalComparisons(
 				.filter((col) => col.type === 'dimension' || col.type === 'pivot')
 				.map((col) => col.sqlWithoutAlias),
 			userWhere: context?.userWhere,
-			filterSql: context?.filterSql,
+			filterSql: comparison.cteFilterSql ?? context?.filterSql,
 			groupByClause: context?.groupByClause,
 			subtotalsEnabled: context?.subtotalsEnabled,
 			temporalWhereClause: dateInfo.whereClause,
@@ -1253,6 +1253,7 @@ export interface ComparisonQueryConfig {
 	targetColumn?: string; // for target comparisons
 	date_range?: DateRangeObject; // for temporal comparisons
 	dateGrain?: string; // for temporal comparisons
+	cteFilterSql?: string; // replaces context.filterSql in the CTE when date_range came from a filter
 	// Dynamic comparison properties
 	hasDateDimensions?: boolean; // whether this is a dynamic dimension-based comparison
 	dateDimensions?: string[]; // date dimension expressions for dynamic comparisons

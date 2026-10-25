@@ -5,6 +5,7 @@ import {
 import { extract, type MaybeGetter } from 'runed';
 import { untrack } from 'svelte';
 import type { SqlDialect } from './sql-dialect';
+import type { DateRangeObject } from './user-components/common/date-options';
 
 export type FilterOpts<T> = {
 	initialValue?: T;
@@ -150,6 +151,11 @@ export abstract class Filter<Value = any> {
 
 	/** The filter's WHERE predicate for the consumer's `dialect`, or `undefined` when it contributes none. */
 	predicateSql(_dialect?: SqlDialect): string | undefined {
+		return undefined;
+	}
+
+	/** The filter's bounded period as a `date_range` for prior period/year comparisons, if it has one. */
+	comparisonDateRange(): DateRangeObject | undefined {
 		return undefined;
 	}
 
