@@ -72,6 +72,18 @@ describe('Partial resolution', () => {
 			expect(treeText(tree)).toContain('INNER_LOGO');
 		});
 
+		test('a migrated partial under pages/ renders via its rewritten /pages/ ref', () => {
+			const { validationErrors, tree } = process(
+				'{% partial file="/pages/glossary/metricutilization" /%}',
+				on('pages/dashboards/capacity'),
+				{
+					'pages/glossary/metricutilization': '---\ntype: partial\n---\n\nMIGRATED_GLOSSARY_PARTIAL'
+				}
+			);
+			expect(hasInvalidPartial(validationErrors)).toBe(false);
+			expect(treeText(tree)).toContain('MIGRATED_GLOSSARY_PARTIAL');
+		});
+
 		test('a non-sibling no-slash ref is flagged (from-here only)', () => {
 			const { validationErrors } = process('{% partial file="footer" /%}', on('pages/reports/q4'), {
 				'pages/footer': 'x'
