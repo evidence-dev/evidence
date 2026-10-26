@@ -33,6 +33,15 @@ describe('buildBigQueryClientOptions', () => {
 		});
 		expect(opts.location).toBe('US');
 	});
+
+	it('omits credentials for ADC so the SDK resolves them', () => {
+		const opts = buildBigQueryClientOptions({
+			authType: 'adc',
+			projectId: 'my-proj',
+			location: 'EU'
+		});
+		expect(opts).toEqual({ projectId: 'my-proj', location: 'EU' });
+	});
 });
 
 describe('normalizeCredentials', () => {
