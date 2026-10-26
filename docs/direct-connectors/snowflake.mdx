@@ -188,3 +188,32 @@ For key-pair authentication, replace the `PASSWORD = '<strong-password>'` line w
 ## Row-Level Security
 
 Documentation for RLS is not yet available for Snowflake. Please contact support to set up RLS with the Snowflake direct connector.
+
+### Embedded viewers
+
+For [embedded analytics](/features/embedded-analytics), every entry in the embed request's `attributes` array becomes a Snowflake session variable for that viewer's queries. Evidence runs `SET` before each query and clears the variables afterwards, so one viewer's values never carry over to another viewer.
+
+```json
+{
+	"attributes": [
+		{ "key": "tenant_id", "value": "acme" },
+		{ "key": "regions", "value": ["us", "eu"] }
+	]
+}
+```
+
+Read them in a row access policy with `GETVARIABLE`. An attribute that wasn't sent returns `NULL`, so the policy fails closed:
+
+```sql
+CREATE OR REPLACE ROW ACCESS POLICY tenant_rls
+  AS (tenant VARCHAR) RETURNS BOOLEAN ->
+    tenant = GETVARIABLE('TENANT_ID');
+
+ALTER TABLE my_schema.orders ADD ROW ACCESS POLICY tenant_rls ON (tenant_id);
+```
+
+- **Keys** must contain only letters, digits, and underscores, and can't be a [Snowflake reserved keyword](https://docs.snowflake.com/en/sql-reference/reserved-keywords). Snowflake upper-cases unquoted names, so `tenant_id` is read as `GETVARIABLE('TENANT_ID')`.
+- **Arrays** arrive as a JSON string, e.g. `ARRAY_CONTAINS(region::VARIANT, PARSE_JSON(GETVARIABLE('REGIONS')))`.
+- **Values** are limited to 256 bytes by Snowflake.
+- Attributes that break these rules are skipped, and the policy sees them as unset.
+- A configured session variable mapping with the same name takes precedence over an attribute.

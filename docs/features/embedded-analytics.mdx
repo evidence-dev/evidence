@@ -240,6 +240,10 @@ User attributes are used with [row-level security rules](/features/row-level-sec
 	Attributes can be included in embed requests even if they're not currently mapped to an RLS rule.
 </Note>
 
+<Note>
+	With the [Snowflake direct connector](/direct-connectors/snowflake#embedded-viewers), each attribute is set as a Snowflake session variable that your row access policies can read.
+</Note>
+
 #### Response
 
 ```json
