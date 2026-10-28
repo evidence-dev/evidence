@@ -327,6 +327,7 @@ export const BASE_AUTO_FORMATS = [
 	'eur',
 	'gbp',
 	'aud',
+	'brl',
 	'cad',
 	'cny',
 	'jpy',
@@ -895,9 +896,20 @@ export function getFormatSuggestions(
 			if (format === 'num') return '0a';
 			if (format === 'pct') return '0b';
 			if (
-				['usd', 'eur', 'gbp', 'aud', 'cad', 'cny', 'jpy', 'inr', 'krw', 'ngn', 'sek'].includes(
-					format
-				)
+				[
+					'usd',
+					'eur',
+					'gbp',
+					'aud',
+					'brl',
+					'cad',
+					'cny',
+					'jpy',
+					'inr',
+					'krw',
+					'ngn',
+					'sek'
+				].includes(format)
 			) {
 				return '0c' + format;
 			}
@@ -919,8 +931,8 @@ export function getFormatSuggestions(
 		}
 		// Currency formats fourth, sorted by currency code
 		if (
-			['usd', 'eur', 'gbp', 'aud', 'cad', 'cny', 'jpy', 'inr', 'krw', 'ngn', 'sek'].some((curr) =>
-				format.startsWith(curr)
+			['usd', 'eur', 'gbp', 'aud', 'brl', 'cad', 'cny', 'jpy', 'inr', 'krw', 'ngn', 'sek'].some(
+				(curr) => format.startsWith(curr)
 			)
 		) {
 			return '3' + format.substring(0, 3);
