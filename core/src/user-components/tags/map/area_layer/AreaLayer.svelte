@@ -44,6 +44,7 @@
 		value: resolveColumn(props.value) ?? props.value,
 		value_fmt: resolveText(props.value_fmt) ?? props.value_fmt,
 		legend_label: resolveText(props.legend_label) ?? props.legend_label,
+		data_labels: resolveText(props.data_labels) ?? props.data_labels,
 		date_range: resolveText(props.date_range) ?? props.date_range
 	}));
 

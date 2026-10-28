@@ -33,6 +33,21 @@ export const basemapStyles = {
 	}
 } as const;
 
+// The basemap glyphs differ by provider: Mapbox v11 ships DIN Pro, OpenFreeMap ships Noto Sans.
+// Naming the font explicitly stops Mapbox from falling back to Arial (its default "Open Sans"
+// isn't in v11).
+export function getBoldFontStack(): string[] {
+	return mapProvider === 'mapbox'
+		? ['DIN Pro Medium', 'Arial Unicode MS Regular']
+		: ['Noto Sans Bold'];
+}
+
+// Glyph endpoint for styles that don't bring their own (the blank base style), so text layers render
+export const glyphsUrl =
+	mapProvider === 'mapbox'
+		? 'mapbox://fonts/mapbox/{fontstack}/{range}.pbf'
+		: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf';
+
 // Layer below which data layers should be inserted so labels stay on top.
 export function getLabelInsertionId(map: maplibregl.Map): string | undefined {
 	const layers = map.getStyle()?.layers;

@@ -111,6 +111,43 @@ async function settleQuery() {
 	}
 }
 
+const BASE_PROPS = {
+	data: 'map_data',
+	area_id: 'state',
+	value: 'sales',
+	geojson_url: 'https://example.test/states.json',
+	geojson_id: 'NAME',
+	filters: [],
+	tooltip: false,
+	legend: true,
+	value_fmt: 'num',
+	show_unmatched: true
+};
+
+function createModel(getRows: () => AnyRowType[], props: Record<string, unknown> = {}) {
+	const queryCalls = vi.fn();
+	const connection: Connection = {
+		id: 'default',
+		type: 'managed',
+		dialect: new ClickHouseDialect(),
+		query: async <RowType extends AnyRowType>() => {
+			queryCalls();
+			return { rows: getRows() as RowType[], columns: [], error: null };
+		}
+	};
+	let model!: AreaLayerModel;
+	const cleanup = $effect.root(() => {
+		model = new AreaLayerModel(() => ({ ...BASE_PROPS, ...props }) as never, {
+			connection,
+			filterContexts: [],
+			inlineQueries: undefined,
+			projectSettings: undefined,
+			defaultRefreshInterval: undefined
+		});
+	});
+	return { model, queryCalls, cleanup };
+}
+
 describe('AreaLayerModel map source integration', () => {
 	beforeEach(() => {
 		vi.useFakeTimers();
@@ -130,41 +167,7 @@ describe('AreaLayerModel map source integration', () => {
 			{ state: 'California', sales: 10 },
 			{ state: 'New York', sales: 20 }
 		];
-		const queryCalls = vi.fn();
-		const connection: Connection = {
-			id: 'default',
-			type: 'managed',
-			dialect: new ClickHouseDialect(),
-			query: async <RowType extends AnyRowType>() => {
-				queryCalls();
-				return { rows: rows as unknown as RowType[], columns: [], error: null };
-			}
-		};
-		let model!: AreaLayerModel;
-		const cleanup = $effect.root(() => {
-			model = new AreaLayerModel(
-				() =>
-					({
-						data: 'map_data',
-						area_id: 'state',
-						value: 'sales',
-						geojson_url: 'https://example.test/states.json',
-						geojson_id: 'NAME',
-						filters: [],
-						tooltip: false,
-						legend: true,
-						value_fmt: 'num',
-						show_unmatched: true
-					}) as never,
-				{
-					connection,
-					filterContexts: [],
-					inlineQueries: undefined,
-					projectSettings: undefined,
-					defaultRefreshInterval: undefined
-				}
-			);
-		});
+		const { model, queryCalls, cleanup } = createModel(() => rows);
 		await settleQuery();
 		expect(queryCalls).toHaveBeenCalledTimes(1);
 
@@ -195,6 +198,50 @@ describe('AreaLayerModel map source integration', () => {
 		model.removeFromMap(map as never);
 		expect(map.sources.size).toBe(0);
 		expect(map.layers.size).toBe(0);
+		cleanup();
+	});
+
+	it('adds one formatted label per matched area and removes it with the layer', async () => {
+		const { model, cleanup } = createModel(() => [{ state: 'California', sales: 1500 }], {
+			// Defaults are normally filled in by the schema's ZodAttribute transform
+			data_labels: { fmt: 'usd', size: 14, rotate: 0, show_overlap: true }
+		});
+		await settleQuery();
+
+		const map = new TestMap();
+		await model.addToMap(map as never, ['#f7fbff', '#08306b'], 'light', 'labels');
+
+		const labelLayer = [...map.layers.values()].find(
+			(layer) => layer.type === 'symbol'
+		) as maplibregl.SymbolLayerSpecification;
+		expect(labelLayer.layout).toMatchObject({
+			'text-size': 14,
+			'text-allow-overlap': true,
+			'text-anchor': 'center'
+		});
+
+		const labelSource = map.sources.get(
+			labelLayer.source as string
+		) as maplibregl.GeoJSONSourceSpecification;
+		const labelFeatures = (labelSource.data as GeoJSON.FeatureCollection).features;
+		// New York is unmatched, so only California is labelled
+		expect(labelFeatures).toHaveLength(1);
+		expect(labelFeatures[0].geometry.type).toBe('Point');
+		expect(labelFeatures[0].properties?.__label).toBe('$1,500');
+
+		model.removeFromMap(map as never);
+		expect(map.sources.size).toBe(0);
+		expect(map.layers.size).toBe(0);
+		cleanup();
+	});
+
+	it('does not add a label layer without data_labels', async () => {
+		const { model, cleanup } = createModel(() => [{ state: 'California', sales: 10 }]);
+		await settleQuery();
+
+		const map = new TestMap();
+		await model.addToMap(map as never, ['#f7fbff', '#08306b'], 'light', 'labels');
+		expect([...map.layers.values()].some((layer) => layer.type === 'symbol')).toBe(false);
 		cleanup();
 	});
 });

@@ -2,6 +2,8 @@ import type { UserComponentSchema } from '../../../types';
 import type { ValidationError } from '@markdoc/markdoc';
 import { ZodAttribute } from '../../../common/zod-attribute';
 import { z } from 'zod';
+import { setZodMetadata } from '../../../common/zod-metadata';
+import { FMT_OPTIONS } from '../../../formatValue';
 import {
 	and,
 	validateEmptyAttributes,
@@ -157,6 +159,40 @@ const attributes = {
 		suggestionType: 'format',
 		supportsVariables: true,
 		variableContext: 'text'
+	},
+	data_labels: {
+		description:
+			'Label each area with its value, centered in the area. Set to {} to show labels with the default style.',
+		type: ZodAttribute.create(
+			z.object({
+				fmt: setZodMetadata(
+					z
+						.union([
+							z.enum(FMT_OPTIONS, {
+								description: 'Format the label value. Defaults to value_fmt.'
+							}),
+							z.string()
+						])
+						.optional(),
+					{ supportsVariables: true }
+				),
+				size: z.number({ description: 'Font size in px' }).optional().default(11),
+				rotate: z.number({ description: 'Rotate each label (degrees)' }).optional().default(0),
+				color: z.string({ description: 'Change the text color of the labels' }).optional(),
+				border_color: z
+					.string({
+						description:
+							'Change the border color surrounding text labels. Defaults to white in light mode and black in dark mode.'
+					})
+					.optional(),
+				show_overlap: z
+					.boolean({ description: 'Show labels for every area even when they overlap' })
+					.optional()
+					.default(false)
+			})
+		),
+		required: false,
+		affectsQuery: false
 	},
 	zoom_threshold: {
 		type: ZodAttribute.create(
@@ -389,6 +425,21 @@ export const schema = {
         min=-100
         max=100
         midpoint=0
+    /%}
+{% /map %}
+`
+		},
+		{
+			title: 'Data Labels',
+			example: `
+{% map %}
+    {% area_layer
+        geography="us_states"
+        match_by="abbr"
+        data="state_sales"
+        area_id="state_abbr"
+        value="sum(sales)"
+        data_labels={ fmt="usd0k" }
     /%}
 {% /map %}
 `
