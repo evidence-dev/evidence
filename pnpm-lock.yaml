@@ -30,7 +30,7 @@ overrides:
   postcss: '>=8.5.23'
   nanoid: '>=3.3.17'
   postcss>nanoid: '>=3.3.17 <4'
-  joi: '>=17.13.4'
+  joi: '>=18.2.9'
   thrift: '>=0.23.0'
   unzipper: '>=0.12.5'
   uuid: '>=11.1.1 <12'
@@ -5221,10 +5221,10 @@ packages:
       }
     hasBin: true
 
-  joi@18.2.3:
+  joi@18.2.9:
     resolution:
       {
-        integrity: sha512-N5A3KTWQpPWT4ExxxPlUx7WmykGXRzhNidWhV41d6Abu9YfI2NyWCJuxdPnslJCPWtbRpSVOWSnSS6GakLM/Rg==
+        integrity: sha512-2mD929bUVKUhOLQQEVhlf6EZ0Mlo0DeRb5MO7cViR9AXLtBauuccEtB1py9Ocxpo/P7ucnh442iY/iOwrh3IQw==
       }
     engines: { node: '>= 20' }
 
@@ -11538,7 +11538,7 @@ snapshots:
 
   jiti@2.6.1: {}
 
-  joi@18.2.3:
+  joi@18.2.9:
     dependencies:
       '@hapi/address': 5.1.1
       '@hapi/formula': 3.0.2
@@ -12791,7 +12791,7 @@ snapshots:
       arktype: 2.2.0
       class-validator: 0.14.4
       effect: 3.21.0
-      joi: 18.2.3
+      joi: 18.2.9
       json-schema-to-ts: 3.1.1
       superstruct: 2.0.2
       typebox: 1.1.6
