@@ -36,7 +36,7 @@
 			"cookie": ">=0.7.2",
 			"protobufjs": ">=8.6.6",
 			"path-to-regexp": ">=8.4.2",
-			"qs": ">=6.14.2",
+			"qs": ">=6.16.1",
 			"fast-xml-parser": ">=5.7.0",
 			"ip-address": ">=10.7.0",
 			"form-data": ">=2.5.6",
