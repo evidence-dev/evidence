@@ -30,7 +30,7 @@ Open the page menu and choose **Download PDF**, or press `Cmd+P` / `Ctrl+P` on a
 | **Show cards** | Prints content on cards, as on screen | The page's `cards` setting |
 | **Use page colors** | Prints your page background instead of white | Off |
 | **Margins (mm)** | Space around each page | 20 mm |
-| **Contents** | Untick a heading to leave out that section | All sections |
+| **Contents** | Untick a heading to leave out that section; headings inside a [repeat](/components/repeat) are listed once per value | All sections |
 
 Use landscape for wide tables and charts.
 
@@ -48,8 +48,8 @@ Wrap related content in [print_group](/components/print_group) so it stays toget
 
 ```liquid
 {% print_group %}
-### Quarterly Revenue
-{% bar_chart data="quarterly_sales" x="quarter" y="sum(revenue) as 'Revenue'" /%}
+	### Quarterly Revenue
+	{% bar_chart data="quarterly_sales" x="quarter" y="sum(revenue) as 'Revenue'" /%}
 {% /print_group %}
 ```
 
@@ -71,7 +71,7 @@ Wrap inputs in [hidden_in_print](/components/hidden_in_print). Otherwise they pr
 
 ```liquid
 {% hidden_in_print %}
-{% range_calendar id="date_range" title="Order date" /%}
+	{% range_calendar id="date_range" title="Order date" /%}
 {% /hidden_in_print %}
 ```
 
@@ -81,7 +81,7 @@ Use [only_in_print](/components/only_in_print) for text that only PDF readers ne
 
 ```liquid
 {% only_in_print %}
-Prepared for the leadership team. All figures in USD.
+	Prepared for the leadership team. All figures in USD.
 {% /only_in_print %}
 ```
 
@@ -91,18 +91,18 @@ Filters aren't interactive in print, but they affect the content that's included
 
 ```liquid
 {% hidden_in_print %}
-{% dropdown
-	id="category"
-	title="Category"
-	data="products"
-	value_column="category"
-	multiple=true
-	select_first=true
-/%}
+	{% dropdown
+		id="category"
+		title="Category"
+		data="products"
+		value_column="category"
+		multiple=true
+		select_first=true
+	/%}
 {% /hidden_in_print %}
 
 {% only_in_print %}
-Showing **{{category}}**.
+	Showing **{{category}}**.
 {% /only_in_print %}
 ```
 
@@ -112,16 +112,55 @@ To show every filter value in one PDF instead of a single chart with an input, u
 
 ```liquid
 {% hidden_in_print %}
-{% dropdown id="department" title="Department" data="sales" value_column="department" /%}
-{% line_chart data="sales" x="month" y="sum(revenue) as 'Revenue'" filters=["department"] /%}
+	{% dropdown id="department" title="Department" data="sales" value_column="department" /%}
+	{% line_chart data="sales" x="month" y="sum(revenue) as 'Revenue'" filters=["department"] /%}
 {% /hidden_in_print %}
 
 {% only_in_print %}
-{% repeat id="dept" data="sales" column="department" %}
-{% line_chart data="sales" x="month" y="sum(revenue) as 'Revenue'" title="{{dept}}" filters=["dept"] /%}
-{% /repeat %}
+	{% repeat id="dept" data="sales" column="department" %}
+		{% line_chart data="sales" x="month" y="sum(revenue) as 'Revenue'" title="{{dept}}" filters=["dept"] /%}
+	{% /repeat %}
 {% /only_in_print %}
 ```
+
+### Expanding Dropdown Options into Sections in Print
+
+Add a heading inside the [repeat](/components/repeat) to make each value its own section. The Contents picker lists every repeated heading, so readers can untick values they don't need.
+
+````markdown
+```sql weekly_orders
+select * from (values
+  ('Online',    '2026-01-06', 240),
+  ('Online',    '2026-01-13', 285),
+  ('Online',    '2026-01-20', 310),
+  ('Retail',    '2026-01-06', 180),
+  ('Retail',    '2026-01-13', 165),
+  ('Retail',    '2026-01-20', 190),
+  ('Wholesale', '2026-01-06', 420),
+  ('Wholesale', '2026-01-13', 380),
+  ('Wholesale', '2026-01-20', 450)
+) as t(channel, week, orders)
+```
+
+{% hidden_in_print %}
+	{% dropdown id="channel_picker" title="Channel" data="weekly_orders" value_column="channel" select_first=true /%}
+	{% bar_chart data="weekly_orders" x="week" y="sum(orders) as 'Orders'" filters=["channel_picker"] /%}
+{% /hidden_in_print %}
+
+{% only_in_print %}
+	{% repeat id="channel" data="weekly_orders" column="channel" %}
+
+		## {{channel}}
+
+		{% bar_chart data="weekly_orders" x="week" y="sum(orders) as 'Orders'" filters=["channel"] /%}
+
+	{% /repeat %}
+{% /only_in_print %}
+````
+
+![The PDF Options Contents list showing Online, Retail, and Wholesale as separate sections](/images/guides/perfect-pdfs/pdf-section-picker-repeat.png)
+
+On screen, the dropdown controls a single chart. In print, each channel gets its own heading and chart. In the Contents picker, readers see "Online", "Retail", and "Wholesale" and can exclude any of them.
 
 ## Tabs
 
