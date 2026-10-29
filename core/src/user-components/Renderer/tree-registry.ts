@@ -1,15 +1,17 @@
-import type { RenderableTreeNode } from '@markdoc/markdoc';
+import type { OutlineMode, OutlineSection } from '../../print-outline/resolve-outline';
 
-// Associates each rendered `[data-markdoc-content]` root to its Markdoc tree so
-// consumers (e.g. PdfSettingsModal) can inspect the full tree — including
-// content not currently mounted in the DOM (inactive tabs, conditionals) —
-// without prop-drilling the tree to every modal host.
-const treesByRoot = new WeakMap<HTMLElement, RenderableTreeNode>();
+export type ResolveRendererOutline = (mode: OutlineMode) => Promise<OutlineSection[]>;
 
-export function registerRendererTree(el: HTMLElement, tree: RenderableTreeNode): void {
-	treesByRoot.set(el, tree);
+// Associates each rendered `[data-markdoc-content]` root with an outline resolver bound to its
+// tree and page contexts, so consumers outside the page's context tree (PdfSettingsModal in a
+// layout, the TOC) can read the full outline — including content not mounted in the DOM —
+// without prop-drilling.
+const outlinesByRoot = new WeakMap<HTMLElement, ResolveRendererOutline>();
+
+export function registerRendererOutline(el: HTMLElement, resolve: ResolveRendererOutline): void {
+	outlinesByRoot.set(el, resolve);
 }
 
-export function getRendererTree(el: HTMLElement): RenderableTreeNode | undefined {
-	return treesByRoot.get(el);
+export function getRendererOutline(el: HTMLElement): ResolveRendererOutline | undefined {
+	return outlinesByRoot.get(el);
 }

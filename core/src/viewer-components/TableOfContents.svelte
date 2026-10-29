@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { cn } from '../shadcn/utils';
+	import { getRendererOutline } from '../user-components/Renderer/tree-registry';
+	import type { OutlineSection } from '../print-outline/resolve-outline';
 
 	interface Props {
 		backgroundColor?: string;
@@ -19,25 +21,62 @@
 	onMount(() => {
 		let debounceTimeout: ReturnType<typeof setTimeout> | undefined;
 
-		// Extract headings from the page
-		const extractHeadings = () => {
-			// Look for h1, h2, and h3 headings
-			const headingElements = document.querySelectorAll('.prose h1, .prose h2, .prose h3');
+		// Resolving the outline runs warehouse queries, so never start a second run while one is in
+		// flight; a request made meanwhile reruns once it finishes.
+		let extracting = false;
+		let rerunRequested = false;
+		let disposed = false;
+
+		// Headings come from the markup outline (repeats expanded, variables resolved, print-only
+		// content dropped); the DOM only supplies anchors, so unmounted sections are skipped.
+		const extractHeadings = async () => {
+			if (disposed) return;
+			if (extracting) {
+				rerunRequested = true;
+				return;
+			}
+			extracting = true;
+			try {
+				await extractHeadingsOnce();
+			} finally {
+				extracting = false;
+				if (rerunRequested && !disposed) {
+					rerunRequested = false;
+					extractHeadings();
+				}
+			}
+		};
+
+		const extractHeadingsOnce = async () => {
+			const root = document.querySelector<HTMLElement>('[data-markdoc-content]');
+			const resolve = root ? getRendererOutline(root) : undefined;
+			if (!root || !resolve) return;
+
+			let outline: OutlineSection[];
+			try {
+				outline = await resolve('screen');
+			} catch {
+				return;
+			}
+			if (disposed) return;
+
+			const mountedHeadings = new Map<string, HTMLElement>();
+			for (const el of root.querySelectorAll<HTMLElement>('[data-section-key]')) {
+				const key = el.dataset.sectionKey;
+				if (key && !mountedHeadings.has(key)) mountedHeadings.set(key, el);
+			}
 
 			const newHeadings: Heading[] = [];
 			const usedIds = new Set<string>();
 
-			headingElements.forEach((heading) => {
-				const text = (heading as HTMLElement).innerText?.trim();
-				const level = parseInt(heading.tagName.substring(1));
+			for (const section of outline) {
+				const heading = mountedHeadings.get(section.id);
+				if (!heading) continue;
+				const text = section.label;
 
-				if (!text || heading.closest('[data-print-only]')) return;
-
-				// Get existing ID or generate one
 				let id = heading.getAttribute('id');
 
 				if (!id) {
-					// Generate a slug from the text
 					id = text
 						.toLowerCase()
 						.trim()
@@ -45,7 +84,6 @@
 						.replace(/[\s_-]+/g, '-')
 						.replace(/^-+|-+$/g, '');
 
-					// Ensure uniqueness
 					let uniqueId = id;
 					let counter = 1;
 					while (usedIds.has(uniqueId)) {
@@ -54,18 +92,15 @@
 					}
 					id = uniqueId;
 
-					// Set the ID on the element
 					heading.setAttribute('id', id);
 				}
 
 				usedIds.add(id);
-				newHeadings.push({ id, text, level });
+				newHeadings.push({ id, text, level: section.level });
 
-				// Add scroll offset for anchor links
-				(heading as HTMLElement).style.scrollMarginTop = '6rem';
-			});
+				heading.style.scrollMarginTop = '6rem';
+			}
 
-			// Only update if there's actually a change
 			const hasChanged =
 				newHeadings.length !== headings.length ||
 				newHeadings.some((h, i) => h.id !== headings[i]?.id || h.text !== headings[i]?.text);
@@ -121,6 +156,8 @@
 		}
 
 		return () => {
+			disposed = true;
+			rerunRequested = false;
 			retryTimeouts.forEach((timeout) => clearTimeout(timeout));
 			if (debounceTimeout) clearTimeout(debounceTimeout);
 			observer.disconnect();

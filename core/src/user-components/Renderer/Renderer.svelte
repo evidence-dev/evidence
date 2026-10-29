@@ -2,8 +2,14 @@
 	import Recursive from './Recursive.svelte';
 	import type { RenderableTreeNode, ValidateError } from '@markdoc/markdoc';
 	import { setRendererContext } from './renderer-context';
-	import { registerRendererTree } from './tree-registry';
+	import { registerRendererOutline } from './tree-registry';
 	import { page } from '$app/state';
+	import { resolveOutline } from '../../print-outline/resolve-outline';
+	import { getPageFiltersContext } from '../../page-filters-context';
+	import { getInlineQueriesContext } from '../common/inline-queries';
+	import { getConnectionRegistryOptional } from '../../connection/context';
+	import { getProjectSettingsContext } from '../../project-settings.context';
+	import { connectionForReferenceString } from '../common/connection-for-attributes';
 
 	type Props = {
 		tree: RenderableTreeNode;
@@ -13,8 +19,28 @@
 	let { tree, validationErrors }: Props = $props();
 	let rootEl = $state<HTMLDivElement | null>(null);
 
+	const pageFilters = getPageFiltersContext();
+	const inlineQueries = getInlineQueriesContext();
+	const connections = getConnectionRegistryOptional();
+	const projectSettings = getProjectSettingsContext();
+
 	$effect(() => {
-		if (rootEl) registerRendererTree(rootEl, tree);
+		if (!rootEl || !connections) return;
+		const currentTree = tree;
+		registerRendererOutline(rootEl, (mode) =>
+			resolveOutline(
+				currentTree,
+				{
+					pageFilters,
+					inlineQueries,
+					defaultConnection: connections.default,
+					connectionFor: (data) =>
+						connections.get(data ? connectionForReferenceString(data, inlineQueries) : undefined),
+					projectSettings
+				},
+				mode
+			)
+		);
 	});
 
 	setRendererContext({

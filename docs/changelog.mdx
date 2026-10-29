@@ -30,6 +30,19 @@ Links in `{% html %}` blocks and their modals now open in a new tab, and scripts
 
 <Update label="October 23, 2026" description="" tags={["Improvement"]}>
 
+### 🚀 Pick individual repeat sections for PDFs
+
+The PDF contents picker now lists exactly the headings that will print, including a heading for each `repeat` value, so you can include or exclude them one by one.
+
+- Sections inside `hidden_in_print` are no longer listed; sections inside `only_in_print` are.
+- Headings with `{{ }}` variables show their resolved text, and `if`/`else` blocks list only the branch that will render.
+- A heading inside a `repeat` is listed once per value and can be unticked on its own; new repeat values are included by default in scheduled reports.
+- The "On this page" table of contents lists each repeated heading with its resolved text.
+
+</Update>
+
+<Update label="October 23, 2026" description="" tags={["Improvement"]}>
+
 ### 🚀 Select All in table filters
 
 Table filters now have a Select All option that selects every value matching your search.

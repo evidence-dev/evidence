@@ -3,6 +3,7 @@
 	import { getOrCreateRepeatContext } from './repeat-context';
 	import { RepeatFilter } from './RepeatFilter.svelte';
 	import type { FilterInit } from '../../../Filter.svelte';
+	import { getRepeatIterationChain, setRepeatIterationChain } from './repeat-iteration-context';
 
 	type Props = {
 		id: string;
@@ -16,6 +17,10 @@
 	const children = $derived(props.children);
 
 	const { filters } = getOrCreateRepeatContext();
+
+	// Items are keyed by value, so an iteration's identity is fixed for its lifetime.
+	const chain = untrack(() => [...getRepeatIterationChain(), { id: props.id, value: props.value }]);
+	setRepeatIterationChain(chain);
 
 	let filter: RepeatFilter;
 	$effect(() => {

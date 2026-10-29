@@ -23,6 +23,9 @@
 	import { setNodeContext } from './node-context';
 	import UserComponent from '../UserComponent.svelte';
 	import ReactiveVariable from './ReactiveVariable.svelte';
+	import PdfHiddenWhen from './PdfHiddenWhen.svelte';
+	import { getRepeatIterationChain } from '../tags/repeat/repeat-iteration-context';
+	import { headingSectionKey } from '../../print-outline/section-key';
 	import { getComponentClickToSourceContext } from '../../component-click-to-source.context.svelte';
 	import { page } from '../../shims/page-state';
 
@@ -34,6 +37,14 @@
 	const { treeNode, validationErrors }: Props = $props();
 
 	setNodeContext(treeNode);
+
+	const iterationChain = getRepeatIterationChain();
+	// Lets the TOC find a specific repeat iteration's copy of a heading.
+	const sectionKey = $derived(
+		Markdoc.Tag.isTag(treeNode) && typeof treeNode.attributes['data-heading-id'] === 'string'
+			? headingSectionKey(treeNode.attributes['data-heading-id'], iterationChain)
+			: undefined
+	);
 
 	const clickToSourceContext = getComponentClickToSourceContext();
 	const isEditRoute = $derived(page.route.id?.includes('/edit'));
@@ -76,6 +87,10 @@
 	{#if treeNode.name === 'ReactiveVariable'}
 		<!-- Internal component: Handle ReactiveVariable specially without going through UserComponent wrapper -->
 		<ReactiveVariable expression={treeNode.attributes.expression} />
+	{:else if treeNode.name === 'PdfHiddenWhen'}
+		<PdfHiddenWhen chains={treeNode.attributes.chains}>
+			{@render tagChildren(treeNode)}
+		</PdfHiddenWhen>
 	{:else if treeNode.name === 'html_table'}
 		<!-- Native HTML table from markdown. `data-md-table` marks it as a GFM
 			 markdown table (vs. a `{% table %}` data component's <table>) so chat/
@@ -97,6 +112,7 @@
 		<svelte:element
 			this={treeNode.name}
 			{...treeNode.attributes}
+			data-section-key={sectionKey}
 			onclick={(e: MouseEvent) => handleMarkdownClick(e, treeNode)}
 		>
 			{@render tagChildren(treeNode)}
