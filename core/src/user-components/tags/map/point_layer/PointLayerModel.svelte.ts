@@ -1,6 +1,12 @@
 import type { PointLayerProps } from './PointLayer.svelte';
 import type * as maplibregl from 'maplibre-gl';
-import { loadMapGL, getLabelInsertionId, mapProvider, MAP_POINT_ROW_LIMIT } from '../map-gl';
+import {
+	loadMapGL,
+	getLabelInsertionId,
+	getBoldFontStack,
+	mapProvider,
+	MAP_POINT_ROW_LIMIT
+} from '../map-gl';
 import { Query } from '../../../../Query.svelte';
 import { processColumnExpression } from '../../../common/sql-expression-utils';
 import { extractSQLProps } from '../../../common/sql-options';
@@ -1118,13 +1124,7 @@ export class PointLayerModel {
 		theme: 'light' | 'dark',
 		beforeId?: string
 	): void {
-		// The basemap glyphs differ by provider: Mapbox v11 ships DIN Pro,
-		// OpenFreeMap ships Noto Sans. Naming the font explicitly stops Mapbox
-		// from falling back to Arial (its default "Open Sans" isn't in v11).
-		const countFont =
-			mapProvider === 'mapbox'
-				? ['DIN Pro Medium', 'Arial Unicode MS Regular']
-				: ['Noto Sans Bold'];
+		const countFont = getBoldFontStack();
 
 		if (!map.getLayer(this.clusterLayerId)) {
 			map.addLayer(

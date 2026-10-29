@@ -2,7 +2,7 @@ import type * as maplibregl from 'maplibre-gl';
 import type { Action } from 'svelte/action';
 import debounce from 'just-debounce-it';
 import { logger } from '../../../shims/logger';
-import { loadMapGL, mapProvider, basemapStyles } from './map-gl';
+import { loadMapGL, mapProvider, basemapStyles, glyphsUrl } from './map-gl';
 
 interface Options {
 	theme: 'light' | 'dark';
@@ -36,6 +36,8 @@ export const mapAction: Action<HTMLDivElement, Options> = (node, options) => {
 			// Return a minimal blank style with theme background color
 			return {
 				version: 8,
+				// Data labels and cluster counts are text layers, which need a glyph source
+				glyphs: glyphsUrl,
 				sources: {},
 				layers: [
 					{

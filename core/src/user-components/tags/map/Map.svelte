@@ -269,7 +269,8 @@
 			if (layer.loading) continue;
 			const data = layer.data;
 			const state = layerState.get(layer.layerId);
-			const transition = transitionMapLayer(state, data);
+			// Label text is baked in at add time, so label settings changes need a redraw.
+			const transition = transitionMapLayer(state, data, layer.labelsKey);
 			layerState.set(layer.layerId, transition.state);
 
 			if (transition.action === 'remove') {

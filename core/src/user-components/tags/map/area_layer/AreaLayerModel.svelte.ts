@@ -1,6 +1,6 @@
 import type { AreaLayerProps } from './AreaLayer.svelte';
 import type * as maplibregl from 'maplibre-gl';
-import { loadMapGL, getLabelInsertionId } from '../map-gl';
+import { loadMapGL, getLabelInsertionId, getBoldFontStack } from '../map-gl';
 import chroma from 'chroma-js';
 import { Query } from '../../../../Query.svelte';
 import { processColumnExpression } from '../../../common/sql-expression-utils';
@@ -17,11 +17,15 @@ import {
 	type TooltipField
 } from '../tooltip-utils';
 import { enrichFeaturesWithStateInfo, STATE_NAME_TO_ABBREV } from './state-fips';
+import { getLabelPoint } from './label-points';
+import { formatValue } from '../../../formatValue';
 
 export class AreaLayerModel {
 	private propsGetter: () => AreaLayerProps;
 	public layerId: string;
 	private sourceId: string;
+	private labelLayerId: string;
+	private labelSourceId: string;
 	query: Query;
 	private popup: maplibregl.Popup | null = null;
 	private mouseMoveHandler: ((e: maplibregl.MapLayerMouseEvent) => void) | null = null;
@@ -43,6 +47,8 @@ export class AreaLayerModel {
 		// Generate unique IDs for this layer
 		this.layerId = `area-layer-${Math.random().toString(36).substr(2, 9)}`;
 		this.sourceId = `area-source-${Math.random().toString(36).substr(2, 9)}`;
+		this.labelLayerId = `${this.layerId}-labels`;
+		this.labelSourceId = `${this.sourceId}-labels`;
 		this.definitionIndex = definitionIndex;
 		this.dialect = options.connection.dialect;
 
@@ -57,6 +63,10 @@ export class AreaLayerModel {
 
 	get props(): AreaLayerProps {
 		return this.propsGetter();
+	}
+
+	get labelsKey(): string {
+		return JSON.stringify(this.props.data_labels ?? null);
 	}
 
 	private get queryConfig() {
@@ -449,6 +459,14 @@ export class AreaLayerModel {
 			map.addLayer(borderLayerConfig, insertBeforeId);
 		}
 
+		if (props.data_labels) {
+			// Auto formats scale by the data's range, not the (overridable) color domain
+			const minMax = values.length
+				? { min: Math.min(...values), max: Math.max(...values) }
+				: { min: null, max: null };
+			this.addDataLabels(map, geojson.features, minMax, theme);
+		}
+
 		// Add tooltips if enabled
 		if (props.tooltip !== false) {
 			this.addTooltips(map, valueColumn, geojsonIdConfig);
@@ -456,6 +474,69 @@ export class AreaLayerModel {
 
 		// Mark as added for legend visibility
 		this.isAddedToMap = true;
+	}
+
+	// Own point source, so MultiPolygons (islands, peninsulas) get one label, not one per part
+	private addDataLabels(
+		map: maplibregl.Map,
+		features: GeoJSON.Feature[],
+		minMax: { min: number | null; max: number | null },
+		theme: 'light' | 'dark'
+	): void {
+		const props = this.props;
+		const dataLabels = props.data_labels;
+		if (!dataLabels) return;
+		const fmt = dataLabels.fmt ?? props.value_fmt ?? 'num';
+
+		const labelFeatures: GeoJSON.Feature<GeoJSON.Point>[] = [];
+		for (const feature of features) {
+			if (feature.properties?.__matched !== true) continue;
+			const point = getLabelPoint(feature.geometry);
+			if (!point) continue;
+			const value = feature.properties.__value;
+			labelFeatures.push({
+				type: 'Feature',
+				properties: { __label: formatValue(value, fmt, String(value), minMax) },
+				geometry: { type: 'Point', coordinates: point }
+			});
+		}
+
+		if (!map.getSource(this.labelSourceId)) {
+			map.addSource(this.labelSourceId, {
+				type: 'geojson',
+				data: { type: 'FeatureCollection', features: labelFeatures }
+			});
+		}
+
+		const labelLayerConfig: maplibregl.LayerSpecification = {
+			id: this.labelLayerId,
+			type: 'symbol',
+			source: this.labelSourceId,
+			layout: {
+				'text-field': ['get', '__label'],
+				'text-font': getBoldFontStack(),
+				'text-size': dataLabels.size,
+				'text-rotate': dataLabels.rotate,
+				'text-anchor': 'center',
+				'text-allow-overlap': dataLabels.show_overlap,
+				'text-ignore-placement': dataLabels.show_overlap
+			},
+			paint: {
+				'text-color': dataLabels.color ?? (theme === 'dark' ? '#f5f5f5' : '#1f2937'),
+				'text-halo-color': dataLabels.border_color ?? (theme === 'dark' ? '#000000' : '#ffffff'),
+				'text-halo-width': 1.5
+			}
+		};
+
+		if (props.zoom_threshold) {
+			labelLayerConfig.minzoom = props.zoom_threshold[0];
+			labelLayerConfig.maxzoom = props.zoom_threshold[1];
+		}
+
+		// Above the basemap labels: below them, state and city names win most collisions
+		if (!map.getLayer(this.labelLayerId)) {
+			map.addLayer(labelLayerConfig);
+		}
 	}
 
 	private async addTooltips(
@@ -626,6 +707,12 @@ export class AreaLayerModel {
 		this.popup = null;
 
 		// Remove layers
+		if (map.getLayer(this.labelLayerId)) {
+			map.removeLayer(this.labelLayerId);
+		}
+		if (map.getSource(this.labelSourceId)) {
+			map.removeSource(this.labelSourceId);
+		}
 		if (map.getLayer(`${this.layerId}-border`)) {
 			map.removeLayer(`${this.layerId}-border`);
 		}

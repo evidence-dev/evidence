@@ -105,6 +105,21 @@ description: Add a choropleth layer to a map
 {% /map %}
 ````
 
+### Data Labels
+
+````liquid
+{% map %}
+    {% area_layer
+        geography="us_states"
+        match_by="abbr"
+        data="state_sales"
+        area_id="state_abbr"
+        value="sum(sales)"
+        data_labels={ fmt="usd0k" }
+    /%}
+{% /map %}
+````
+
 ### Custom Breakpoints
 
 ````liquid
@@ -204,6 +219,32 @@ description: Add a choropleth layer to a map
 
 <ResponseField name="value_fmt" type="string" default="num">
   Format for values in tooltip. See [Value Formatting](/core-concepts/value-formatting) for available formats.
+</ResponseField>
+
+<ResponseField name="data_labels" type="options group">
+  Label each area with its value, centered in the area. Set to {} to show labels with the default style.
+
+**Example:**
+```
+data_labels={
+  fmt = "date"
+  size = 0
+  rotate = 0
+  color = "string"
+  border_color = "string"
+  show_overlap = true
+}
+```
+
+**Attributes:**
+- fmt: `string` - Format the label value. Defaults to value_fmt.
+  - **Allowed values:** See [Value Formatting](/core-concepts/value-formatting) for all available formats.
+- size: `number` - Font size in px
+- rotate: `number` - Rotate each label (degrees)
+- color: `string` - Change the text color of the labels
+- border_color: `string` - Change the border color surrounding text labels. Defaults to white in light mode and black in dark mode.
+- show_overlap: `boolean` - Show labels for every area even when they overlap
+
 </ResponseField>
 
 <ResponseField name="zoom_threshold" type="array">
