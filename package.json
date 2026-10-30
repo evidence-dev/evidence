@@ -31,7 +31,7 @@
 			"tar": ">=7.5.22",
 			"axios": ">=1.18.0",
 			"esbuild": ">=0.28.1",
-			"undici": ">=8.9.0",
+			"undici": ">=8.12.2",
 			"@codemirror/state": ">=6.6.0",
 			"cookie": ">=0.7.2",
 			"protobufjs": ">=8.6.6",
