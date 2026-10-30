@@ -14,7 +14,7 @@ overrides:
   minimatch: '>=10.2.4'
   '@isaacs/brace-expansion': '>=5.0.1'
   tar: '>=7.5.22'
-  axios: '>=1.18.0'
+  axios: '>=1.20.0'
   esbuild: '>=0.28.1'
   undici: '>=8.12.2'
   '@codemirror/state': '>=6.6.0'
@@ -3552,10 +3552,10 @@ packages:
         integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
       }
 
-  axios@1.19.0:
+  axios@1.20.0:
     resolution:
       {
-        integrity: sha512-ht/iuYZXEjFxLH/Hkezgd7m6JKlHHXEUSneaDz8uZe1Gj5QZtCnpyDsckvAiEnT89OEbCLmnte4R4sn7P0EKFw==
+        integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==
       }
 
   axobject-query@4.1.0:
@@ -10537,7 +10537,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.19.0:
+  axios@1.20.0:
     dependencies:
       follow-redirects: 1.16.0
       form-data: 4.0.6
@@ -12612,7 +12612,7 @@ snapshots:
       asn1.js: 5.4.1
       asn1.js-rfc2560: 5.0.1(asn1.js@5.4.1)
       asn1.js-rfc5280: 3.0.0
-      axios: 1.19.0
+      axios: 1.20.0
       big-integer: 1.6.52
       bignumber.js: 9.3.1
       browser-request: 0.3.3
