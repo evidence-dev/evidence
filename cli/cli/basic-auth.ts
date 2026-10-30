@@ -1,4 +1,5 @@
 import { timingSafeEqual } from 'node:crypto';
+import { framingHeaders } from './frame-ancestors.ts';
 
 /**
  * Explicit auth opt-out for trusted private networks. Only the exact values
@@ -45,9 +46,32 @@ export function checkBasicAuth(header: string | null): boolean {
 	return eq(decoded.slice(0, sep), user) && eq(decoded.slice(sep + 1), password);
 }
 
-/** Headers applied to every response in serve mode. */
+/** Headers applied to every response in serve mode. Framing: ./frame-ancestors.ts. */
 export const SERVE_HARDENED_HEADERS: Record<string, string> = {
 	'X-Content-Type-Options': 'nosniff',
-	'Referrer-Policy': 'no-referrer',
-	'X-Frame-Options': 'DENY'
+	'Referrer-Policy': 'no-referrer'
 };
+
+/**
+ * Hardens one serve-mode response, framing policy included.
+ *
+ * A function rather than a bare record, because the framing headers depend on
+ * the response — a `frame-ancestors` CSP belongs on a document, not on the JSON
+ * of the query relay — and on the environment, read per request so that a test
+ * can set it and a future code path that sets it is not silently too late.
+ * Called at every point that returns a response in serve mode: both branches of
+ * the SvelteKit hook, and the Bun static branch that returns before the hook.
+ */
+export function hardenServeResponse(response: Response): Response {
+	for (const [k, v] of Object.entries(SERVE_HARDENED_HEADERS)) {
+		response.headers.set(k, v);
+	}
+	const framing = framingHeaders(
+		process.env.EVIDENCE_FRAME_ANCESTORS,
+		response.headers.get('content-type')
+	);
+	for (const [k, v] of Object.entries(framing)) {
+		response.headers.set(k, v);
+	}
+	return response;
+}
