@@ -48,14 +48,24 @@
 		onchange={(e) => {
 			if (!placeholder) return;
 			const v = Number.parseInt(e.currentTarget.value);
-			const newPlaceholder = placeholder.set({ month: v });
-			placeholder = newPlaceholder.subtract({ months: monthIndex });
+			const newPlaceholder = month.set({ month: v });
+			placeholder = newPlaceholder;
 		}}
 	/>
 {/snippet}
 
 {#snippet YearSelect()}
-	<RangeCalendarYearSelect {years} {yearFormat} value={month.year} />
+	<RangeCalendarYearSelect
+		{years}
+		{yearFormat}
+		value={month.year}
+		onchange={(e) => {
+			if (!placeholder) return;
+			const v = Number.parseInt(e.currentTarget.value);
+			const newPlaceholder = month.set({ year: v });
+			placeholder = newPlaceholder;
+		}}
+	/>
 {/snippet}
 
 {#if captionLayout === 'dropdown'}

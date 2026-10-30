@@ -141,4 +141,19 @@ describe('RangeCalendarFilter (bounded all_time_range)', () => {
 			"BETWEEN toDate('2020-01-01') AND toDate('2020-01-31')"
 		);
 	});
+
+	it('fills the missing end boundary on a partial "from X" selection so BETWEEN {{.start}} AND {{.end}} stays valid SQL', () => {
+		const filter = makeFilter({ value_column: 'event_date', all_time_range: '2024-01-01 to 2026-12-31' });
+		filter.value = { range: 'from 2026-09-01' };
+		expect(filter.templateValues.start).toBe("toDate('2026-09-01')");
+		expect(filter.templateValues.end).toBe("toDate('2026-12-31')");
+		expect(filter.templateValues.between).toBe(">= toDate('2026-09-01')");
+	});
+
+	it('fills the missing end boundary with today when all_time_range is unbounded', () => {
+		const filter = makeFilter({ value_column: 'event_date' });
+		filter.value = { range: 'from 2026-09-01' };
+		expect(filter.templateValues.start).toBe("toDate('2026-09-01')");
+		expect(filter.templateValues.end).toMatch(/^toDate\('\d{4}-\d{2}-\d{2}'\)$/);
+	});
 });
