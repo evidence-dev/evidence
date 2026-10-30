@@ -2,6 +2,7 @@
 	import * as DropdownMenu from '../shadcn/components/ui/dropdown-menu/index.js';
 	import { Languages, Check } from 'lucide-svelte';
 	import { invalidateAll } from '$app/navigation';
+	import { htmlLang } from '../translations/html-lang';
 
 	type Props = {
 		languages: string[];
@@ -12,6 +13,9 @@
 
 	function selectLanguage(code: string) {
 		document.cookie = `lang=${code}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+		// `invalidateAll` re-runs the loads but not the document shell, so the
+		// server-rendered `lang` would keep naming the previous language.
+		document.documentElement.lang = htmlLang(code);
 		invalidateAll();
 	}
 
