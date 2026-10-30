@@ -54,7 +54,8 @@ describe('TableModel filter contexts', () => {
 				filterContexts,
 				inlineQueries,
 				projectSettings: undefined,
-				defaultRefreshInterval: undefined
+				defaultRefreshInterval: undefined,
+				isQueryEngineV3: () => false
 			}
 		});
 		flushSync();

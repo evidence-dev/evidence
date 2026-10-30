@@ -11,7 +11,7 @@ import { warnIfStudioUnreachable, describeDevMode, openBrowser } from './server.
 import { authDisabled, checkBasicAuth, SERVE_HARDENED_HEADERS } from './basic-auth.ts';
 import { track } from './telemetry.ts';
 
-// @ts-ignore - generated at build time
+// @ts-expect-error - generated at build time
 import { assetMap } from './assets.generated.ts';
 
 import type { Server as ServerType } from '@sveltejs/kit';
@@ -21,7 +21,7 @@ import type { SSRManifest } from '@sveltejs/kit';
 // Initialize SvelteKit
 // ============================================================================
 
-// @ts-ignore
+// @ts-expect-error - generated at build time
 const manifestModule = await import('../manifest.js');
 const manifest: SSRManifest = manifestModule.default;
 

@@ -228,7 +228,13 @@ export function interpolateQueryStrings(
 	 */
 	visitedQueries: ReadonlySet<string> = new Set<string>(),
 	// Target dialect for finalising translation `.sql` sentinels; omitted → ANSI fallback.
-	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
+	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>,
+	/**
+	 * QEv3: leave unknown bare `{{name}}` placeholders untouched so the engine
+	 * binds them per viewer from the org's attribute values (user → group →
+	 * default) instead of the client substituting text.
+	 */
+	passThroughUnknown = false
 ): { sql: string; errors: string[] } {
 	const errors: string[] = [];
 	let sql = stripZeroWidthChars(query);
@@ -267,7 +273,8 @@ export function interpolateQueryStrings(
 		errors,
 		context,
 		visitedQueries,
-		dialect
+		dialect,
+		passThroughUnknown
 	);
 
 	// Restore comment bodies now that interpolation is complete.
@@ -398,7 +405,8 @@ function processTemplateVariables(
 	errors: string[],
 	context: VariableContext,
 	visitedQueries: ReadonlySet<string>,
-	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
+	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>,
+	passThroughUnknown = false
 ): string {
 	const templateRegex = /\{\{([^}]+)\}\}/g;
 
@@ -410,11 +418,20 @@ function processTemplateVariables(
 			errors,
 			context,
 			visitedQueries,
-			dialect
+			dialect,
+			passThroughUnknown,
+			match
 		);
 		return value;
 	});
 }
+
+/**
+ * The engine's `{{attr}}` token grammar (spec: letter/underscore start, then
+ * letters/digits/underscores — no dots, no pipes). Only tokens matching this
+ * pass through to the engine on QEv3 orgs.
+ */
+const ENGINE_ATTRIBUTE_TOKEN = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
 /**
  * Evaluate a template expression like "filterId.property" or "filterId.property | fallback"
@@ -426,7 +443,9 @@ function evaluateTemplate(
 	errors: string[],
 	context: VariableContext,
 	visitedQueries: ReadonlySet<string>,
-	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
+	dialect?: Pick<SqlDialect, 'escapeStringLiteral'>,
+	passThroughUnknown = false,
+	originalMatch = ''
 ): { value: string; hasValue: boolean } {
 	// Split on | to separate template from fallback, but be careful with complex filter IDs
 	const pipeIndex = findFallbackPipeIndex(templateContent);
@@ -501,6 +520,16 @@ function evaluateTemplate(
 		}
 
 		if (!filter) {
+			// QEv3: a bare unknown name that matches the engine's attribute
+			// token grammar (\{\{\s*[A-Za-z_][A-Za-z0-9_]*\s*\}\}) is an
+			// engine attribute — leave it verbatim so the engine binds it per
+			// viewer (fail closed there if the viewer has no value). Anything
+			// else keeps the legacy client-side error: the engine could never
+			// bind it, so passing it through would just surface a raw parse
+			// error with no path back to the cause.
+			if (passThroughUnknown && ENGINE_ATTRIBUTE_TOKEN.test(templatePart)) {
+				return { value: originalMatch, hasValue: true };
+			}
 			// Not a filter — but before reporting that, check whether the author
 			// meant a SQL FILE. A bare `{{ name }}` resolves relative to the page
 			// (`pages/<name>`), so `{{ daily_orders_recent }}` misses

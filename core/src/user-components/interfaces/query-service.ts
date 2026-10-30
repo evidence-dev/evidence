@@ -59,6 +59,12 @@ export interface QueryService {
 	readonly dialect: SqlDialect;
 	/** The warehouse kind (managed, snowflake, bigquery, …) — the connection's `type`. */
 	readonly connectionType: string;
+	/**
+	 * QEv3: queries run through the Evidence Query Engine — bare `{{attr}}`
+	 * placeholders in SQL bind per viewer server-side, so the client must NOT
+	 * substitute or reject them.
+	 */
+	readonly isQueryEngineV3?: boolean;
 	query<RowType extends AnyRowType = AnyRowType>(
 		sql: string,
 		opts?: QueryOpts

@@ -45,7 +45,8 @@ function makeDeps(query: () => Promise<QueryResult>): QueryDependencies {
 		filterContexts: undefined,
 		inlineQueries: undefined,
 		projectSettings: undefined,
-		defaultRefreshInterval: undefined
+		defaultRefreshInterval: undefined,
+		isQueryEngineV3: () => false
 	};
 }
 
@@ -131,7 +132,8 @@ describe('maxUserLimit carve-out', () => {
 			filterContexts: undefined,
 			inlineQueries: undefined,
 			projectSettings: undefined,
-			defaultRefreshInterval: undefined
+			defaultRefreshInterval: undefined,
+			isQueryEngineV3: () => false
 		};
 	}
 
@@ -203,7 +205,8 @@ describe('countQuery derived-table alias', () => {
 					filterContexts: undefined,
 					inlineQueries: undefined,
 					projectSettings: undefined,
-					defaultRefreshInterval: undefined
+					defaultRefreshInterval: undefined,
+					isQueryEngineV3: () => false
 				},
 				{ exceedRowLimitBehavior: 'paginate' }
 			);

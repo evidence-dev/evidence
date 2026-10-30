@@ -10,6 +10,7 @@ import { logger } from '../../shims/logger';
 import type { SqlDialect } from '../../sql-dialect';
 import { defaultDialect } from '../../sql-dialect';
 import { dirOfPath, resolveProjectReference } from './resolve-reference';
+import { peekQueryService } from '../../QueryService.context';
 import { parseSqlFileHeader } from './parse-sql-file-header';
 
 export type InlineQueriesDependencies = {
@@ -66,6 +67,17 @@ export class InlineQueries {
 	 * the SQL text alone.
 	 */
 	readonly #queryConnections = new SvelteMap<string, string>();
+
+	/**
+	 * QEv3: leave unknown bare {{attr}} placeholders verbatim so the engine
+	 * binds them per viewer. Set once from the ambient QueryService at
+	 * context creation; false on non-engine surfaces by default.
+	 */
+	#passThroughUnknown = false;
+
+	setPassThroughUnknown(value: boolean) {
+		this.#passThroughUnknown = value;
+	}
 
 	constructor(
 		private readonly deps: InlineQueriesDependencies,
@@ -403,7 +415,8 @@ export class InlineQueries {
 				this,
 				'sql',
 				new Set<string>(),
-				dialect
+				dialect,
+				this.#passThroughUnknown
 			);
 
 			// If there are template errors, check if they're related to missing filter IDs
@@ -520,6 +533,9 @@ export const createInlineQueriesContext = (
 ): InlineQueries => {
 	const context = new InlineQueries(deps, serialized, sqlFiles, projectSqlFiles, options);
 	if (options?.connectionSlugs) context.setConnectionNames(options.connectionSlugs);
+	// QEv3 orgs: unknown bare {{attr}} placeholders must survive interpolation —
+	// the engine binds them per viewer. Read once at init; the flag is org-fixed.
+	context.setPassThroughUnknown(peekQueryService()?.isQueryEngineV3 === true);
 	setContext(INLINE_QUERIES_CONTEXT_KEY, context);
 	return context;
 };

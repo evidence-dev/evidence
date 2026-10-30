@@ -48,6 +48,15 @@ export type QueryDependencies = {
 	 * as a SQL edit, without swapping the connection (which the SQL-keyed result cache can't see).
 	 */
 	connectionError?: (() => string | undefined) | undefined;
+	/**
+	 * QEv3: true when queries run through the Evidence Query Engine — unknown
+	 * bare `{{attr}}` placeholders pass through for per-viewer binding.
+	 * Optional because components construct these literals everywhere; absent
+	 * reads as false (legacy behavior, fail-closed). Their SQL still passes
+	 * through the InlineQueries instance, which carries the flag from the
+	 * ambient QueryService at context creation.
+	 */
+	isQueryEngineV3?: (() => boolean) | undefined;
 };
 
 export type QueryOptions = {
@@ -553,7 +562,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 					// If row limit exceeded and we're on the first page (offset=0), return cached data (unless refreshing)
 					else if (nonPivotCheckQuery && rowLimitExceeded && !isRefresh) {
 						// Check if we're on page 1 (offset=0 or undefined)
-						const currentOffset = typeof this.query === 'object' ? this.query.offset ?? 0 : 0;
+						const currentOffset = typeof this.query === 'object' ? (this.query.offset ?? 0) : 0;
 						const currentPageSize =
 							typeof this.query === 'object' ? this.query.page_size || 10 : 10;
 

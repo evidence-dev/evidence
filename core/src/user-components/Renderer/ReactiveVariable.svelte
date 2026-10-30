@@ -3,6 +3,7 @@
 	import { getInlineQueriesContext } from '../common/inline-queries';
 	import { VariableProcessor } from '../../filter-variables/VariableProcessor';
 	import { getRepeatContext } from '../tags/repeat/repeat-context';
+	import { getEngineAttributeValuesContext } from '../engine-attribute-values.context';
 	import { logger } from '../../shims/logger';
 
 	interface Props {
@@ -28,7 +29,14 @@
 		);
 		if (filterContexts.length === 0) return null;
 
-		return new VariableProcessor(filterContexts, inlineQueries);
+		return new VariableProcessor(
+			filterContexts,
+			inlineQueries,
+			undefined,
+			undefined,
+			false,
+			getEngineAttributeValuesContext()
+		);
 	});
 
 	// Process the template expression reactively

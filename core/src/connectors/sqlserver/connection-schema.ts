@@ -156,12 +156,9 @@ export const sqlserverBase = z.object({
 		.array(
 			z.object({
 				// Must match the executor's key check, which embeds the key in a T-SQL literal.
-				contextKey: z
-					.string()
-					.regex(/^[a-zA-Z_][a-zA-Z0-9_]*$/, {
-						message:
-							'Use a letter or underscore first, followed by letters, numbers, or underscores.'
-					}),
+				contextKey: z.string().regex(/^[a-zA-Z_][a-zA-Z0-9_]*$/, {
+					message: 'Use a letter or underscore first, followed by letters, numbers, or underscores.'
+				}),
 				evidenceVariable: z.enum(['user.email', 'user.id', 'user.name', 'organization.id'])
 			})
 		)

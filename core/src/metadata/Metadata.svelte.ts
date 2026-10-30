@@ -26,7 +26,8 @@ import {
 	isRedshiftInternalTable,
 	qualifyRedshiftTableName
 } from './redshift-catalog';
-import type { IMetadata } from './metadata';
+import type { IMetadata, ITableMetadata } from './metadata';
+import { arrowToJsType } from './metadata';
 import type {
 	QueryService,
 	AnyRowType,
@@ -72,6 +73,19 @@ export type MetadataOpts = {
 	 * wait just keeps the schema-panel skeleton up.
 	 */
 	catalogTimeoutMs?: MaybeGetter<number>;
+	/**
+	 * An engine-backed catalog (QEv3): rows come pre-grouped per table (name +
+	 * columns) from the engine's catalogue instead of warehouse-specific
+	 * introspection SQL. Takes precedence over warehouseMode branches when set.
+	 */
+	catalogProvider?: MaybeGetter<CatalogProvider | undefined>;
+};
+
+/** A catalog served whole from one call — the engine's `GET /api/tables` shape. */
+export type CatalogProvider = () => Promise<ProviderCatalogTable[]>;
+export type ProviderCatalogTable = {
+	name: string;
+	columns: { name: string; type?: string }[];
 };
 
 export class Metadata {
@@ -110,6 +124,7 @@ export class Metadata {
 	#warehouseConfiguredSource: MaybeGetter<boolean>;
 
 	#catalogTimeoutSource: MaybeGetter<number>;
+	#catalogProviderSource: MaybeGetter<CatalogProvider | undefined>;
 
 	// Read at load() time so an org swap under a persistent layout picks up the
 	// new org's values rather than the ones captured at construction.
@@ -135,6 +150,7 @@ export class Metadata {
 		this.#schemaAllowlistSource = opts?.schemaAllowlist ?? [];
 		this.#warehouseConfiguredSource = opts?.warehouseConfigured ?? true;
 		this.#catalogTimeoutSource = opts?.catalogTimeoutMs ?? DEFAULT_CATALOG_QUERY_TIMEOUT_MS;
+		this.#catalogProviderSource = opts?.catalogProvider;
 
 		watch(
 			() => extract(this.#queryService.workspaceId),
@@ -230,6 +246,11 @@ export class Metadata {
 	}
 
 	async #dispatchLoad(): Promise<void> {
+		const provider = extract(this.#catalogProviderSource);
+		if (provider) {
+			return await this.#loadFromProvider(provider);
+		}
+
 		// Org picked a native warehouse but hasn't saved credentials yet — every
 		// query would 400. Skip silently so the connectors page can render
 		// without a "Failed to load schema" toast.
@@ -402,6 +423,29 @@ export class Metadata {
 		} catch (e) {
 			return { rows: [], columns: [], error: e instanceof Error ? e.message : String(e) };
 		}
+	}
+
+	async #loadFromProvider(provider: CatalogProvider): Promise<void> {
+		for (const table of await provider()) {
+			const columns: ITableMetadata['columns'] = {};
+			for (const column of table.columns) {
+				columns[column.name] = {
+					name: column.name,
+					type: column.type ?? '',
+					jsType: arrowToJsType(column.type ?? '')
+				};
+			}
+			this.#tables.set(
+				table.name,
+				new TableMetadata(
+					{ name: table.name, columns, tableType: 'table' },
+					{
+						caseInsensitive: true
+					}
+				)
+			);
+		}
+		this.#loading = false;
 	}
 
 	async #loadSnowflake(): Promise<void> {

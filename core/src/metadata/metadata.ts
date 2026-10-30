@@ -29,10 +29,26 @@ interface ITableMetadataProvider {
 	toJSON(): ITableMetadata;
 }
 
-export type {
-	JavaScriptType,
-	IColumnMetadata,
-	ITableMetadata,
-	IMetadata,
-	ITableMetadataProvider
-};
+/**
+ * Arrow type names (the engine catalogue's `arrow_type` — 'Utf8', 'Int64',
+ * 'Timestamp(Nanosecond, None)', 'List(...)', …) to the JavaScriptType the
+ * schema browser displays.
+ */
+export function arrowToJsType(arrowType: string): JavaScriptType {
+	const t = arrowType.toLowerCase();
+	// Containers first — their element types contain scalar names (List(Utf8)).
+	if (t.startsWith('list') || t.startsWith('struct') || t.startsWith('map')) return 'object';
+	if (t.startsWith('bool')) return 'boolean';
+	if (t.includes('utf8') || t.includes('string')) return 'string';
+	if (
+		t.startsWith('int') ||
+		t.startsWith('uint') ||
+		t.startsWith('float') ||
+		t.startsWith('decimal')
+	)
+		return 'number';
+	if (t.startsWith('date') || t.startsWith('time')) return 'date';
+	return 'unknown';
+}
+
+export type { JavaScriptType, IColumnMetadata, ITableMetadata, IMetadata, ITableMetadataProvider };

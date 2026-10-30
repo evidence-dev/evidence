@@ -18,6 +18,8 @@ export type ValidationContext = {
 	dialect?: SqlDialect | undefined;
 	/** Project metric catalog; enables edit-time validation of `metric=` references. */
 	metricsCatalog?: MetricsCatalog | undefined;
+	/** QEv3: unknown bare `{{attr}}` placeholders are engine attributes — validate them as pass-through, not errors. */
+	isQueryEngineV3?: (() => boolean) | undefined;
 	/**
 	 * New project-root model: full project-root-relative path of the page being
 	 * rendered (e.g. `pages/reports/q4`). Used to resolve "from here" partial and

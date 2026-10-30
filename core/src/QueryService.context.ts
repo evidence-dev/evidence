@@ -33,3 +33,7 @@ export const getQueryService = (): QueryService => {
 	}
 	return queryService;
 };
+
+/** Like getQueryService but returns undefined instead of throwing — for optional consumers. */
+export const peekQueryService = (): QueryService | undefined =>
+	getContext<QueryService | undefined>(QUERY_SERVICE_CONTEXT_KEY);

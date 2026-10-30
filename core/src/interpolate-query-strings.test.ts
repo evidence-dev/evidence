@@ -340,3 +340,81 @@ describe('inline query cycle guard', () => {
 		expect(result.sql).toContain('(SELECT * FROM (SELECT 1))');
 	});
 });
+
+describe('QEv3 pass-through of unknown bare placeholders', () => {
+	it('leaves an unknown bare {{attr}} verbatim with no errors when enabled', () => {
+		const filters = createFiltersWithToggle(true);
+		const inlineQueries = new InlineQueries({ filterContexts: [filters] });
+
+		const result = interpolateQueryStrings(
+			'select * from orders where region = {{region}}',
+			[filters],
+			inlineQueries,
+			'sql',
+			new Set(),
+			undefined,
+			true
+		);
+		expect(result.sql).toBe('select * from orders where region = {{region}}');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('still resolves known filters when pass-through is enabled', () => {
+		const filters = createFiltersWithToggle(true);
+		const inlineQueries = new InlineQueries({ filterContexts: [filters] });
+
+		const result = interpolateQueryStrings(
+			'SELECT CASE WHEN {{include_weekly}} THEN {{region}} ELSE 0 END',
+			[filters],
+			inlineQueries,
+			'sql',
+			new Set(),
+			undefined,
+			true
+		);
+		expect(result.sql).toContain('CASE WHEN true');
+		expect(result.sql).toContain('{{region}}');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('does NOT pass through tokens outside the attribute grammar (dotted, piped, symbols)', () => {
+		const filters = createFiltersWithToggle(true);
+		const inlineQueries = new InlineQueries({ filterContexts: [filters] });
+
+		const dotted = interpolateQueryStrings(
+			'select * from t where a = {{typo.filter}}',
+			[filters],
+			inlineQueries,
+			'sql',
+			new Set(),
+			undefined,
+			true
+		);
+		expect(dotted.errors.length).toBeGreaterThan(0);
+		expect(dotted.sql).not.toContain('{{typo.filter}}');
+
+		const symbols = interpolateQueryStrings(
+			'select * from t where a = {{9bad}}',
+			[filters],
+			inlineQueries,
+			'sql',
+			new Set(),
+			undefined,
+			true
+		);
+		expect(symbols.errors.length).toBeGreaterThan(0);
+	});
+
+	it('errors on the unknown placeholder when disabled (legacy behavior)', () => {
+		const filters = createFiltersWithToggle(true);
+		const inlineQueries = new InlineQueries({ filterContexts: [filters] });
+
+		const result = interpolateQueryStrings(
+			'select * from orders where region = {{region}}',
+			[filters],
+			inlineQueries,
+			'sql'
+		);
+		expect(result.errors.length).toBeGreaterThan(0);
+	});
+});

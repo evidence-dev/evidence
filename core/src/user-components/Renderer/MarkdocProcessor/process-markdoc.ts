@@ -610,7 +610,10 @@ function validateFilterVariables(
 
 	const processor = new VariableProcessor(
 		validationContext.filters,
-		validationContext.inlineQueries
+		validationContext.inlineQueries,
+		undefined,
+		undefined,
+		validationContext.isQueryEngineV3?.() ?? false
 	);
 
 	function traverseNode(node: Node) {

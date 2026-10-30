@@ -7,6 +7,9 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SvelteMap } from 'svelte/reactivity';
 import { InlineQueries } from './inline-queries';
+import { Filters } from '../../Filters.svelte';
+import { ToggleFilter } from '../tags/toggle/ToggleFilter.svelte';
+import type { FilterClass } from '../../Filter.svelte';
 
 // SvelteMap.set() / .delete() notify subscribers UNCONDITIONALLY — even when
 // the value is identical or the key is absent. In production this combined
@@ -159,5 +162,40 @@ describe('InlineQueries reactivity: mutators are no-ops when the value is unchan
 
 		iq.setUseRelativeResolution(false);
 		expect(setSpy.mock.calls.length).toBe(baselineSets + 1);
+	});
+});
+
+describe('QEv3: unknown bare {{attr}} placeholders in fence queries', () => {
+	// A non-empty filter context is what switches the interpolation path on —
+	// an empty/absent one skips it entirely (raw SQL passes through).
+	const iqWithQuery = () => {
+		const filters = new Filters({
+			url: undefined,
+			updateUrl: undefined
+		} as never);
+		filters.create(
+			{
+				id: 'region',
+				userComponentName: 'toggle',
+				attributes: { invert: false, initial_value: false }
+			},
+			ToggleFilter as unknown as FilterClass<'toggle', Record<string, unknown>>
+		);
+		const iq = new InlineQueries({ filterContexts: [filters] });
+		iq.set('customers', 'SELECT * FROM customers WHERE city = {{city}}');
+		return iq;
+	};
+
+	test('pass through verbatim when the engine flag is on', () => {
+		const iq = iqWithQuery();
+		iq.setPassThroughUnknown(true);
+		const sql = iq.getInterpolated('customers');
+		expect(sql).toContain('{{city}}');
+	});
+
+	test('are stripped when the flag is off (legacy behavior)', () => {
+		const iq = iqWithQuery();
+		const sql = iq.getInterpolated('customers');
+		expect(sql).not.toContain('{{city}}');
 	});
 });

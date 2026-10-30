@@ -82,7 +82,8 @@ describe('EVI-3119: chart loading and stableOptions after builtin filter change'
 			filterContexts: [pageFilters],
 			inlineQueries: undefined,
 			projectSettings: undefined,
-			defaultRefreshInterval: undefined
+			defaultRefreshInterval: undefined,
+			isQueryEngineV3: () => false
 		};
 
 		let observedStableOptions!: () => { data?: Array<{ category: string; amount: number }> };
@@ -183,7 +184,8 @@ describe('EVI-3119: chart loading and stableOptions after builtin filter change'
 			filterContexts: undefined,
 			inlineQueries: undefined,
 			projectSettings: undefined,
-			defaultRefreshInterval: undefined
+			defaultRefreshInterval: undefined,
+			isQueryEngineV3: () => false
 		};
 
 		let observedLoading!: () => boolean;
@@ -265,7 +267,8 @@ describe('EVI-3119: chart loading and stableOptions after builtin filter change'
 			filterContexts: undefined,
 			inlineQueries: undefined,
 			projectSettings: undefined,
-			defaultRefreshInterval: undefined
+			defaultRefreshInterval: undefined,
+			isQueryEngineV3: () => false
 		};
 
 		let observedLoading!: () => boolean;

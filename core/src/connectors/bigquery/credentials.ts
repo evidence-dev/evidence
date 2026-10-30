@@ -54,7 +54,6 @@ export function normalizeCredentials(raw: unknown): BigQueryServiceAccountCreden
 		projectId: creds.projectId,
 		serviceAccountJson: sa as BigQueryServiceAccountJson,
 		location: typeof creds.location === 'string' ? creds.location : undefined,
-		defaultDataset:
-			typeof creds.defaultDataset === 'string' ? creds.defaultDataset : undefined
+		defaultDataset: typeof creds.defaultDataset === 'string' ? creds.defaultDataset : undefined
 	};
 }

@@ -24,7 +24,8 @@ describe('IfModel', () => {
 				filterContexts: undefined,
 				inlineQueries: undefined,
 				projectSettings: undefined,
-				defaultRefreshInterval: undefined
+				defaultRefreshInterval: undefined,
+				isQueryEngineV3: () => false
 			}
 		});
 
@@ -62,7 +63,8 @@ describe('IfModel', () => {
 				filterContexts: undefined,
 				inlineQueries,
 				projectSettings: undefined,
-				defaultRefreshInterval: undefined
+				defaultRefreshInterval: undefined,
+				isQueryEngineV3: () => false
 			}
 		});
 

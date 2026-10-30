@@ -294,14 +294,9 @@ export const schema = {
 			const midpointAttr = node.attributes.midpoint;
 			// Prefer the new attribute; fall back to the deprecated alias so pages
 			// authored before the rename continue to validate midpoint correctly.
-			const colorScaleAttr =
-				node.attributes.color_scale ?? node.attributes.color_palette;
+			const colorScaleAttr = node.attributes.color_scale ?? node.attributes.color_palette;
 
-			if (
-				typeof minAttr === 'number' &&
-				typeof maxAttr === 'number' &&
-				minAttr >= maxAttr
-			) {
+			if (typeof minAttr === 'number' && typeof maxAttr === 'number' && minAttr >= maxAttr) {
 				errors.push({
 					id: 'invalid-min-max',
 					level: 'warning' as const,

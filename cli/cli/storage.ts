@@ -47,7 +47,7 @@ interface SessionCache {
 async function ensureDir(): Promise<void> {
 	try {
 		await mkdir(EVD_DIR, { recursive: true, mode: 0o700 });
-	} catch (e) {
+	} catch {
 		// Directory might already exist
 	}
 }
@@ -125,9 +125,7 @@ export function loadCredentialsFromEnv(): StoredCredentials | null {
 		const decoded = JSON.parse(Buffer.from(token, 'base64').toString('utf-8'));
 
 		if (!decoded.organizationId) {
-			warn(
-				'  Warning: EVIDENCE_AUTH_TOKEN is missing required field (organizationId).'
-			);
+			warn('  Warning: EVIDENCE_AUTH_TOKEN is missing required field (organizationId).');
 			return null;
 		}
 
@@ -151,9 +149,7 @@ export function loadCredentialsFromEnv(): StoredCredentials | null {
 
 		// Legacy format: { refreshToken, organizationId, sealedSession? }
 		if (!decoded.refreshToken) {
-			warn(
-				'  Warning: EVIDENCE_AUTH_TOKEN is missing required fields (refreshToken or aptToken).'
-			);
+			warn('  Warning: EVIDENCE_AUTH_TOKEN is missing required fields (refreshToken or aptToken).');
 			return null;
 		}
 

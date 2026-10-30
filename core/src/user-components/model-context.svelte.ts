@@ -5,6 +5,7 @@ import type {
 } from './UserComponentModel';
 import { getContext, setContext } from 'svelte';
 import { getConnectionRegistry } from '../connection';
+import { getQueryService } from '../QueryService.context';
 import { connectionErrorFor } from '../connection/enforcement';
 import { connectionForAttributes } from './common/connection-for-attributes';
 import { getPageFiltersContext } from '../page-filters-context';
@@ -59,7 +60,8 @@ export const setupModelContext = <
 				inlineQueries,
 				projectSettings: getProjectSettings,
 				defaultRefreshInterval: autoRefresh ? () => autoRefresh.intervalSeconds : undefined,
-				connectionError: () => connectionErrorFor(targetConnection, inlineQueries)
+				connectionError: () => connectionErrorFor(targetConnection, inlineQueries),
+				isQueryEngineV3: () => getQueryService().isQueryEngineV3 === true
 			};
 
 			// Get this Tag's parent model if it exists (it would have been set up by a previous call to setupModelContext by the parent)

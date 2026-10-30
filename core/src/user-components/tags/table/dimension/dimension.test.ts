@@ -31,7 +31,8 @@ function makeDimension(dialect: SqlDialect, conditionalColors: string) {
 			filterContexts: undefined,
 			inlineQueries: undefined,
 			projectSettings: undefined,
-			defaultRefreshInterval: undefined
+			defaultRefreshInterval: undefined,
+			isQueryEngineV3: () => false
 		}
 	});
 }

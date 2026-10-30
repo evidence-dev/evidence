@@ -3,6 +3,7 @@
  * https://workos.com/docs/authkit/authentication-methods/cli-auth
  */
 
+import { spawn } from 'node:child_process';
 import { codeBox, info, tip, warn } from './log.ts';
 import { hostname } from 'os';
 import {
@@ -76,53 +77,51 @@ export interface OrgFetchResult {
 }
 
 /**
-  * Fetch the user's organizations via Studio API.
-  * The POST exchanges the refresh token server-side (authenticateWithRefreshToken),
-  * so a successful call doubles as a token refresh and returns a rotated token.
-  * (WorkOS API requires API key, so we proxy through Studio)
-  * Also supports APT (Auth Proxy Token) - if aptToken is provided, it will be
-  * introspected via the management service and the refreshToken will be used
-  * only to authenticate the introspect call.
-  */
- export async function fetchUserOrganizations(
- 	refreshToken: string,
- 	aptToken?: string
- ): Promise<OrgFetchResult> {
- 	try {
- 		const response = await fetch(`${STUDIO_HOST}/api/cli/organizations`, {
- 			method: 'POST',
- 			headers: { 'Content-Type': 'application/json' },
- 			body: JSON.stringify({
- 				refreshToken,
- 				aptToken
- 			})
- 		});
+ * Fetch the user's organizations via Studio API.
+ * The POST exchanges the refresh token server-side (authenticateWithRefreshToken),
+ * so a successful call doubles as a token refresh and returns a rotated token.
+ * (WorkOS API requires API key, so we proxy through Studio)
+ * Also supports APT (Auth Proxy Token) - if aptToken is provided, it will be
+ * introspected via the management service and the refreshToken will be used
+ * only to authenticate the introspect call.
+ */
+export async function fetchUserOrganizations(
+	refreshToken: string,
+	aptToken?: string
+): Promise<OrgFetchResult> {
+	try {
+		const response = await fetch(`${STUDIO_HOST}/api/cli/organizations`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				refreshToken,
+				aptToken
+			})
+		});
 
- 		// 401/403 means the refresh token itself was rejected — genuinely expired.
- 		if (response.status === 401 || response.status === 403) {
- 			return { organizations: [], status: 'unauthorized' };
- 		}
+		// 401/403 means the refresh token itself was rejected — genuinely expired.
+		if (response.status === 401 || response.status === 403) {
+			return { organizations: [], status: 'unauthorized' };
+		}
 
- 		// Any other non-OK (5xx, etc.) is a server hiccup, not proof of expiry.
- 		if (!response.ok) {
- 			return { organizations: [], status: 'network-error' };
- 		}
+		// Any other non-OK (5xx, etc.) is a server hiccup, not proof of expiry.
+		if (!response.ok) {
+			return { organizations: [], status: 'network-error' };
+		}
 
- 		const data = await response.json();
- 		return {
- 			organizations: data.organizations || [],
- 			refreshToken: data.refreshToken || undefined,
- 			status: 'ok'
- 		};
- 	} catch {
- 		return { organizations: [], status: 'network-error' };
- 	}
- }
+		const data = await response.json();
+		return {
+			organizations: data.organizations || [],
+			refreshToken: data.refreshToken || undefined,
+			status: 'ok'
+		};
+	} catch {
+		return { organizations: [], status: 'network-error' };
+	}
+}
 
 // APT-first: refresh-token checks rotate a single-use token (races post-login and concurrent runs).
-export async function verifyOrganizations(
-	credentials: StoredCredentials
-): Promise<OrgFetchResult> {
+export async function verifyOrganizations(credentials: StoredCredentials): Promise<OrgFetchResult> {
 	if (credentials.aptToken) {
 		const viaApt = await fetchUserOrganizations('', credentials.aptToken);
 		if (viaApt.status !== 'unauthorized' || !credentials.refreshToken) return viaApt;
@@ -304,7 +303,6 @@ export function decodeJwtClaim(token: string, claim: string): string | undefined
 }
 
 export function openBrowser(url: string, opts: { background?: boolean } = {}): void {
-	const { spawn } = require('child_process');
 	const platform = process.platform;
 
 	// `background` opens the page without stealing focus (used for logout, where
@@ -332,7 +330,12 @@ export function openBrowser(url: string, opts: { background?: boolean } = {}): v
 async function createCLIToken(
 	refreshToken: string,
 	organizationId: string
-): Promise<{ token: string; tokenHash: string; introspect: APTIntrospectResponse; refreshToken: string }> {
+): Promise<{
+	token: string;
+	tokenHash: string;
+	introspect: APTIntrospectResponse;
+	refreshToken: string;
+}> {
 	const response = await fetch(`${STUDIO_HOST}/api/cli/apt`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -544,7 +547,8 @@ export async function getAuthStatus(): Promise<AuthStatus> {
 	}
 
 	const email =
-		credentials.user.email || (credentials.fromEnv ? 'Authenticated via EVIDENCE_AUTH_TOKEN' : undefined);
+		credentials.user.email ||
+		(credentials.fromEnv ? 'Authenticated via EVIDENCE_AUTH_TOKEN' : undefined);
 
 	const { organizations, refreshToken: newToken, status } = await verifyOrganizations(credentials);
 
@@ -622,9 +626,7 @@ export async function ensureAuthenticated(): Promise<StoredCredentials> {
 
 	// Couldn't reach Studio — proceed with cached credentials (offline dev).
 	if (status === 'network-error') {
-		warn(
-			'  Warning: could not verify session (offline?). Continuing with cached credentials.\n'
-		);
+		warn('  Warning: could not verify session (offline?). Continuing with cached credentials.\n');
 		return ensureSessionResolved(credentials);
 	}
 
@@ -651,7 +653,7 @@ export async function ensureAuthenticated(): Promise<StoredCredentials> {
 			if (!credentials.fromEnv) {
 				await saveCredentials(credentials);
 			}
-		} catch (err) {
+		} catch {
 			// Best-effort: if APT creation fails, continue with legacy auth.
 			// The user will see warnings on subsequent commands if needed.
 		}
@@ -713,7 +715,7 @@ export async function whoami(opts: OutputOptions): Promise<void> {
 		return;
 	}
 
- 	// status === 'ok' — token is valid; persist any rotated refresh token.
+	// status === 'ok' — token is valid; persist any rotated refresh token.
 	if (newToken) {
 		credentials.refreshToken = newToken;
 		if (viaEnv) {
@@ -731,7 +733,9 @@ export async function whoami(opts: OutputOptions): Promise<void> {
 	// Report APT state
 	const hasApt = !!credentials.aptToken;
 	if (!hasApt && !viaEnv) {
-		console.log('  Warning: No APT token found. Run `evidence token` to create one for headless/CI use.');
+		console.log(
+			'  Warning: No APT token found. Run `evidence token` to create one for headless/CI use.'
+		);
 	}
 
 	if (viaEnv) {
@@ -751,7 +755,10 @@ export async function whoami(opts: OutputOptions): Promise<void> {
 	}
 
 	if (asJson) {
-		printResult({ kind: 'structured', value: { user: credentials.user.email, org: orgName } }, opts);
+		printResult(
+			{ kind: 'structured', value: { user: credentials.user.email, org: orgName } },
+			opts
+		);
 		return;
 	}
 
@@ -795,7 +802,9 @@ export async function listOrgs(): Promise<void> {
 
 	// Report APT state
 	if (!credentials.aptToken && !credentials.fromEnv) {
-		console.log('  Warning: No APT token found. Run `evidence token` to create one for headless/CI use.');
+		console.log(
+			'  Warning: No APT token found. Run `evidence token` to create one for headless/CI use.'
+		);
 	}
 
 	if (organizations.length === 0) {
@@ -905,7 +914,9 @@ export async function switchOrg(identifier: string): Promise<void> {
 	credentials.sealedSession = sealedSession;
 
 	// Create new APT token
-	let aptResult: { token: string; introspect: APTIntrospectResponse; refreshToken: string } | undefined;
+	let aptResult:
+		| { token: string; introspect: APTIntrospectResponse; refreshToken: string }
+		| undefined;
 	try {
 		aptResult = await createCLIToken(credentials.refreshToken, targetOrg.id);
 		credentials.aptToken = aptResult.token;
@@ -972,9 +983,7 @@ export async function generateToken(): Promise<void> {
 				organizationId: credentials.organizationId
 			})
 		).toString('base64');
-		console.log(
-			`  Token generated for organization: ${credentials.organizationId}\n`
-		);
+		console.log(`  Token generated for organization: ${credentials.organizationId}\n`);
 		console.log('  Set this environment variable to authenticate without interactive login:\n');
 		console.log(`  EVIDENCE_AUTH_TOKEN=${tokenPayload}\n`);
 		console.log('  Treat it as a secret — it contains a long-lived access token.\n');

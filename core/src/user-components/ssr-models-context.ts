@@ -1,5 +1,5 @@
 import { deserializeTree } from './Renderer/MarkdocProcessor/tree-serialization';
-import { getDefaultConnection } from '../connection';
+import { getDefaultConnection, getQueryService } from '../QueryService.context';
 import { getPageFiltersContext } from '../page-filters-context';
 import { getInlineQueriesContext } from './common/inline-queries';
 import { getMetricsCatalogContext } from '../metrics/metrics-catalog';
@@ -30,7 +30,8 @@ export const setupSSRModelsContext = (): void => {
 		filterContexts: [repeatFilters, pageFilters],
 		inlineQueries,
 		projectSettings: getProjectSettings,
-		defaultRefreshInterval: undefined
+		defaultRefreshInterval: undefined,
+		isQueryEngineV3: () => getQueryService().isQueryEngineV3 === true
 	};
 
 	const context = createModelsFromTree(

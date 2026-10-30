@@ -22,7 +22,18 @@ export class VariableProcessor {
 		private inlineQueries: InlineQueries | undefined,
 		private frontmatterVariables?: Record<string, unknown>,
 		// Passing dialect enables dialect-correct translation `.sql` escapes.
-		private dialect?: Pick<SqlDialect, 'escapeStringLiteral'>
+		private dialect?: Pick<SqlDialect, 'escapeStringLiteral'>,
+		/**
+		 * QEv3: unknown bare `{{name}}` placeholders pass through verbatim —
+		 * they're engine attributes, bound per viewer by the engine.
+		 */
+		private passThroughUnknown = false,
+		/**
+		 * QEv3 TEXT contexts only: the viewer's resolved attribute values
+		 * ({ name → value }, bind order already applied). SQL contexts never
+		 * resolve here — the engine binds `{{attr}}` at query time.
+		 */
+		private engineAttributeValues?: Record<string, unknown>
 	) {}
 
 	/**
@@ -44,7 +55,8 @@ export class VariableProcessor {
 			this.inlineQueries,
 			context.variableContext || 'sql',
 			new Set<string>(),
-			this.dialect
+			this.dialect,
+			this.passThroughUnknown
 		);
 
 		return result.errors.map((errorMessage) => ({
@@ -66,6 +78,21 @@ export class VariableProcessor {
 			processedValue = this.interpolateFrontmatterVariables(processedValue);
 		}
 
+		// QEv3 TEXT contexts: `{{attr}}` prints the viewer's own value (the
+		// same token is a bound parameter in SQL — there the engine resolves
+		// it, here WE must). Attributes resolve before filters so an unknown
+		// bare token doesn't error as "Missing filter ID" first.
+		if (this.engineAttributeValues && variableContext !== 'sql') {
+			processedValue = processedValue.replace(
+				/\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g,
+				(match, name: string) => {
+					if (!(name in this.engineAttributeValues!)) return match;
+					const value = this.engineAttributeValues![name];
+					return value === null || value === undefined ? '' : String(value);
+				}
+			);
+		}
+
 		// Step 2: Process filter variables ({{ filter.property }}) if available
 		if (this.filters && this.inlineQueries && /\{\{(?!\s*\$)/.test(processedValue)) {
 			try {
@@ -76,7 +103,8 @@ export class VariableProcessor {
 					this.inlineQueries,
 					variableContext,
 					new Set<string>(),
-					this.dialect
+					this.dialect,
+					this.passThroughUnknown
 				);
 				processedValue = result.sql;
 			} catch (error) {

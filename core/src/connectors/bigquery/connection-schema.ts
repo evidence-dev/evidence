@@ -4,22 +4,28 @@ import { notTemplatePlaceholder, PLACEHOLDER_MESSAGE } from '../connection-place
 
 const meta = (m: ConnectionFieldMeta): ConnectionFieldMeta => m;
 
-const keyfileJsonShape = z.object({
-	client_email: z.string().min(1),
-	private_key: z.string().min(1),
-	project_id: z.string().optional()
-}).loose();
+const keyfileJsonShape = z
+	.object({
+		client_email: z.string().min(1),
+		private_key: z.string().min(1),
+		project_id: z.string().optional()
+	})
+	.loose();
 
 export const bigqueryBase = z.object({
 	type: z.literal('bigquery'),
 
-	project: z.string().min(1).refine(notTemplatePlaceholder, PLACEHOLDER_MESSAGE).meta(
-		meta({
-			label: 'Project ID',
-			description: 'GCP project that owns the BigQuery datasets you want to query.',
-			category: 'credential'
-		})
-	),
+	project: z
+		.string()
+		.min(1)
+		.refine(notTemplatePlaceholder, PLACEHOLDER_MESSAGE)
+		.meta(
+			meta({
+				label: 'Project ID',
+				description: 'GCP project that owns the BigQuery datasets you want to query.',
+				category: 'credential'
+			})
+		),
 
 	keyfile_json: keyfileJsonShape.optional().meta(
 		meta({
@@ -37,7 +43,8 @@ export const bigqueryBase = z.object({
 		.meta(
 			meta({
 				label: 'Service account key path',
-				description: 'Path to a service-account key JSON file, resolved relative to connection.yaml.',
+				description:
+					'Path to a service-account key JSON file, resolved relative to connection.yaml.',
 				category: 'credential',
 				cliOnly: true,
 				fileRef: { resolveRelativeTo: 'cwd' },

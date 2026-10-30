@@ -79,7 +79,10 @@ export class InlineQueryMetadata extends Metadata {
 					this.deps.inlineQueries,
 					undefined,
 					undefined,
-					this.getQueryService().dialect
+					this.getQueryService().dialect,
+					// QEv3: valid {{attr}} tokens must survive the DESCRIBE prep
+					// too — the engine binds them, same as execution.
+					this.getQueryService().isQueryEngineV3 === true
 				);
 
 				if (result.errors.length === 0) {

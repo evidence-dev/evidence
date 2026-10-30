@@ -11,14 +11,20 @@ describe('buildSparklines', () => {
 	describe('with subtotals=false (GROUP BY ALL)', () => {
 		it('should include dimension columns in sparkline GROUP BY', () => {
 			// Setup: table with category dimension and sparkline measure
-			const dimensionCol = processColumnExpression({
-				value: 'category',
-				type: 'dimension'
-			}, dialect);
-			const measureCol = processColumnExpression({
-				value: 'sum(total_sales)',
-				type: 'measure'
-			}, dialect);
+			const dimensionCol = processColumnExpression(
+				{
+					value: 'category',
+					type: 'dimension'
+				},
+				dialect
+			);
+			const measureCol = processColumnExpression(
+				{
+					value: 'sum(total_sales)',
+					type: 'measure'
+				},
+				dialect
+			);
 
 			const context: SparklineContext = {
 				tableExpression: 'demo.daily_orders',
@@ -55,18 +61,27 @@ describe('buildSparklines', () => {
 
 		it('should include multiple dimension columns in sparkline GROUP BY', () => {
 			// Setup: table with multiple dimensions
-			const categoryCol = processColumnExpression({
-				value: 'category',
-				type: 'dimension'
-			}, dialect);
-			const regionCol = processColumnExpression({
-				value: 'region',
-				type: 'dimension'
-			}, dialect);
-			const measureCol = processColumnExpression({
-				value: 'sum(total_sales)',
-				type: 'measure'
-			}, dialect);
+			const categoryCol = processColumnExpression(
+				{
+					value: 'category',
+					type: 'dimension'
+				},
+				dialect
+			);
+			const regionCol = processColumnExpression(
+				{
+					value: 'region',
+					type: 'dimension'
+				},
+				dialect
+			);
+			const measureCol = processColumnExpression(
+				{
+					value: 'sum(total_sales)',
+					type: 'measure'
+				},
+				dialect
+			);
 
 			const context: SparklineContext = {
 				tableExpression: 'demo.daily_orders',
@@ -97,14 +112,20 @@ describe('buildSparklines', () => {
 
 	describe('with subtotals=true (GROUPING SETS)', () => {
 		it('should extend GROUPING SETS with x-column', () => {
-			const dimensionCol = processColumnExpression({
-				value: 'category',
-				type: 'dimension'
-			}, dialect);
-			const measureCol = processColumnExpression({
-				value: 'sum(total_sales)',
-				type: 'measure'
-			}, dialect);
+			const dimensionCol = processColumnExpression(
+				{
+					value: 'category',
+					type: 'dimension'
+				},
+				dialect
+			);
+			const measureCol = processColumnExpression(
+				{
+					value: 'sum(total_sales)',
+					type: 'measure'
+				},
+				dialect
+			);
 
 			const context: SparklineContext = {
 				tableExpression: 'demo.daily_orders',
@@ -141,10 +162,13 @@ describe('buildSparklines', () => {
 
 	describe('without dimensions (single-value components)', () => {
 		it('should use inline subqueries for sparklines', () => {
-			const measureCol = processColumnExpression({
-				value: 'sum(total_sales)',
-				type: 'measure'
-			}, dialect);
+			const measureCol = processColumnExpression(
+				{
+					value: 'sum(total_sales)',
+					type: 'measure'
+				},
+				dialect
+			);
 
 			const context: SparklineContext = {
 				tableExpression: 'demo.daily_orders',
@@ -233,15 +257,21 @@ describe('buildSparklines', () => {
 			// {% measure value="sum(total_sales)" viz="sparkline" sparkline_options={ x="date" } /%}
 			// {% /table %}
 
-			const dimensionCol = processColumnExpression({
-				value: 'category',
-				type: 'dimension'
-			}, dialect);
+			const dimensionCol = processColumnExpression(
+				{
+					value: 'category',
+					type: 'dimension'
+				},
+				dialect
+			);
 
-			const measureCol = processColumnExpression({
-				value: 'sum(total_sales)',
-				type: 'measure'
-			}, dialect);
+			const measureCol = processColumnExpression(
+				{
+					value: 'sum(total_sales)',
+					type: 'measure'
+				},
+				dialect
+			);
 
 			const config = {
 				tableExpressionName: 'demo.daily_orders',

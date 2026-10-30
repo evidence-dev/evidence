@@ -91,7 +91,7 @@ async function getSql(options: QueryOptions): Promise<string> {
 	if (options.file) {
 		try {
 			return (await readFile(options.file, 'utf-8')).trim();
-		} catch (err) {
+		} catch {
 			throw new Error(`Failed to read SQL file: ${options.file}`);
 		}
 	}
@@ -309,7 +309,7 @@ export async function runQuery(options: QueryOptions, opts: OutputOptions): Prom
 
 		// Cap rows by default so an unbounded query can't dump a huge result
 		// set; --all removes the cap, --limit N overrides it.
-		const effectiveLimit = opts.all ? null : (opts.limit ?? DEFAULT_QUERY_LIMIT);
+		const effectiveLimit = opts.all ? null : opts.limit ?? DEFAULT_QUERY_LIMIT;
 
 		status(`  🔍 Executing query...`);
 

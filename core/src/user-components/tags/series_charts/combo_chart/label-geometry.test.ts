@@ -193,7 +193,7 @@ const timeAxisArgs = fc
 			rows: datesToRows(dates),
 			columns: DATE_COL,
 			fmt,
-			dateGrain: spacing === 'regular' ? (grain ?? undefined) : undefined
+			dateGrain: spacing === 'regular' ? grain ?? undefined : undefined
 		};
 	});
 

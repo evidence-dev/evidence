@@ -40,17 +40,6 @@ function formatRelativePast(isoDate: string): string {
 	return `${months}mo ago`;
 }
 
-function formatRelativeFuture(isoDate: string): string {
-	const diff = new Date(isoDate).getTime() - Date.now();
-	if (diff <= 0) return 'now';
-	const mins = Math.floor(diff / 60000);
-	if (mins < 60) return `in ${mins}m`;
-	const hours = Math.floor(mins / 60);
-	if (hours < 24) return `in ${hours}h`;
-	const days = Math.floor(hours / 24);
-	return `in ${days}d`;
-}
-
 function getStatusIcon(status: string): string {
 	const lower = status.toLowerCase();
 	if (lower === 'up to date') return '✓';
@@ -60,12 +49,6 @@ function getStatusIcon(status: string): string {
 	if (lower === 'initial sync') return '◷';
 	if (lower === 'setup incomplete') return '○';
 	return '?';
-}
-
-function formatNextSync(nextSync: 'syncing' | string | null): string {
-	if (nextSync === 'syncing') return 'Syncing';
-	if (nextSync && typeof nextSync === 'string') return formatRelativeFuture(nextSync);
-	return '—';
 }
 
 async function fetchConnectors(): Promise<ConnectorsResponse> {
