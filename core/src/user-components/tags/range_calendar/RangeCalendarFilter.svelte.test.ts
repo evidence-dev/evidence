@@ -60,6 +60,24 @@ describe('RangeCalendarFilter.filter / .sql (self-contained predicate)', () => {
 	});
 });
 
+describe('RangeCalendarFilter.comparisonDateRange', () => {
+	it('lends a bounded range on value_column to prior period/year comparisons', () => {
+		const filter = makeFilter({ value_column: 'event_date' });
+		filter.setDefault(CLOSED_RANGE);
+		expect(filter.comparisonDateRange()).toEqual({ range: CLOSED_RANGE.range, date: 'event_date' });
+	});
+
+	it('lends nothing without value_column, or for an open-ended range', () => {
+		const filter = makeFilter();
+		filter.setDefault(CLOSED_RANGE);
+		expect(filter.comparisonDateRange()).toBeUndefined();
+
+		const openEnded = makeFilter({ value_column: 'event_date' });
+		openEnded.setDefault({ range: 'from 2020-01-01' });
+		expect(openEnded.comparisonDateRange()).toBeUndefined();
+	});
+});
+
 describe('RangeCalendarFilter.between (all-time behavior)', () => {
 	it('emits a BETWEEN fragment when a range is selected', () => {
 		const filter = makeFilter();
