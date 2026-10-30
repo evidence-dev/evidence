@@ -4110,12 +4110,6 @@ packages:
       }
     engines: { node: '>=8' }
 
-  devalue@5.8.1:
-    resolution:
-      {
-        integrity: sha512-4CXDYRBGqN+57wVJkuXBYmpAVUSg3L6JAQa/DFqm238G73E1wuyc/JhGQJzN7vUf/CMphYau2zXbfWzDR5aTEw==
-      }
-
   devalue@5.9.4:
     resolution:
       {
@@ -9876,7 +9870,7 @@ snapshots:
       '@types/cookie': 0.6.0
       acorn: 8.17.0
       cookie: 0.7.2
-      devalue: 5.8.1
+      devalue: 5.9.4
       esm-env: 1.2.2
       kleur: 4.1.5
       magic-string: 0.30.21
@@ -10829,8 +10823,6 @@ snapshots:
   dequal@2.0.3: {}
 
   detect-libc@2.1.2: {}
-
-  devalue@5.8.1: {}
 
   devalue@5.9.4: {}
 
@@ -12806,7 +12798,7 @@ snapshots:
   sveltekit-superforms@2.30.0(@sveltejs/kit@2.70.3(@opentelemetry/api@1.9.1)(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.57.2(@typescript-eslint/types@8.57.2))(vite@7.3.6(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.33.0)(tsx@4.21.0)))(svelte@5.57.2(@typescript-eslint/types@8.57.2))(typescript@5.9.3)(vite@7.3.6(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.33.0)(tsx@4.21.0)))(@types/json-schema@7.0.15)(svelte@5.57.2(@typescript-eslint/types@8.57.2))(typescript@5.9.3):
     dependencies:
       '@sveltejs/kit': 2.70.3(@opentelemetry/api@1.9.1)(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.57.2(@typescript-eslint/types@8.57.2))(vite@7.3.6(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.33.0)(tsx@4.21.0)))(svelte@5.57.2(@typescript-eslint/types@8.57.2))(typescript@5.9.3)(vite@7.3.6(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.33.0)(tsx@4.21.0))
-      devalue: 5.8.1
+      devalue: 5.9.4
       memoize-weak: 1.0.2
       svelte: 5.57.2(@typescript-eslint/types@8.57.2)
       ts-deepmerge: 8.0.0
