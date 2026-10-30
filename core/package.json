@@ -50,7 +50,7 @@
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",
 		"dither-plugin": "^1.1.1",
-		"dompurify": "^3.4.13",
+		"dompurify": "^3.4.17",
 		"echarts": "^6.1.0",
 		"exceljs": "^4.4.0",
 		"fastest-levenshtein": "^1.0.16",
