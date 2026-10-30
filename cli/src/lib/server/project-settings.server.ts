@@ -5,7 +5,10 @@
  * way locally as they do in the product.
  */
 
-import type { ParsedProjectDate } from '@evidence/core/config/page-frontmatter-schema';
+import type {
+	ParsedProjectDate,
+	ParsedProjectFormat
+} from '@evidence/core/config/page-frontmatter-schema';
 import type { ProjectSettings } from '@evidence/core/user-components/interfaces/project-settings';
 import type { QueryService } from '@evidence/core/user-components/interfaces/query-service';
 
@@ -99,4 +102,14 @@ export async function resolveProjectSettings(
 		...base,
 		computedDefaultDateRangeEnd: await computeDefaultDateRangeEnd(base, queryService)
 	};
+}
+
+/**
+ * Map the config `format:` block to the decimal separator `formatValue` reads
+ * from the `formatSettings` store. Absent, or anything the schema let through
+ * that is not a comma, means the Evidence default: a period.
+ */
+export function decimalSeparatorFromConfig(format: ParsedProjectFormat | undefined): '.' | ',' {
+	const value = format?.decimal_separator;
+	return value === 'comma' || value === ',' ? ',' : '.';
 }

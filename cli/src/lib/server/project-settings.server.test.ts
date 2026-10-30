@@ -5,7 +5,8 @@ import type {
 } from '@evidence/core/user-components/interfaces/query-service';
 import {
 	dateConfigToProjectSettings,
-	computeDefaultDateRangeEnd
+	computeDefaultDateRangeEnd,
+	decimalSeparatorFromConfig
 } from '$lib/server/project-settings.server';
 
 function fakeQueryService(impl: (sql: string) => QueryResult): QueryService {
@@ -124,5 +125,23 @@ describe('computeDefaultDateRangeEnd', () => {
 				svc
 			)
 		).toBe(ymd(new Date()));
+	});
+});
+
+describe('decimalSeparatorFromConfig', () => {
+	it('defaults to a period', () => {
+		expect(decimalSeparatorFromConfig(undefined)).toBe('.');
+		expect(decimalSeparatorFromConfig({})).toBe('.');
+	});
+
+	// `as const` keeps each pair's literal type: `decimal_separator` accepts the
+	// schema's enum, and a widened `string` would not typecheck.
+	it.each([
+		['comma', ','],
+		[',', ','],
+		['period', '.'],
+		['.', '.']
+	] as const)('maps %o to %o', (configured, expected) => {
+		expect(decimalSeparatorFromConfig({ decimal_separator: configured })).toBe(expected);
 	});
 });
