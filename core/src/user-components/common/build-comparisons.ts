@@ -3,7 +3,7 @@ import type { DateRangeObject } from './date-options';
 import type { ProcessedColumnExpression } from './sql-expression-utils';
 import type { SqlDialect } from '../../sql-dialect';
 import { defaultDialect } from '../../sql-dialect';
-import { cleanIdentifier, processColumnExpression } from './sql-expression-utils';
+import { cleanIdentifier, hasAgg, processColumnExpression } from './sql-expression-utils';
 import { getGrainRank, processDateRange } from './date-options';
 
 // Dialect-aware SQL helpers.
@@ -774,23 +774,35 @@ function buildCombinedCTE(
  */
 function buildTargetInlineColumns(
 	comparison: ComparisonQueryConfig,
-	_context?: ComparisonContext,
+	context?: ComparisonContext,
 	dialect: SqlDialect = defaultDialect
 ): string[] {
 	const q = (alias: string) => dialect.quoteAlias(alias);
-	// Use valueColumnAlias for the main value reference (this is the column alias in the main query)
-	const mainValueRef = comparison.valueColumnAlias;
-	const targetColumnRef = comparison.targetColumn;
+	const mainValueRef = dialect.supportsLateralAliases
+		? q(comparison.valueColumnAlias!)
+		: `(${comparison.valueColumn})`;
+	const target = comparison.targetColumn ?? '';
+	// Without GROUP BY ALL, an ungrouped column target must be aggregated. Constants stay bare so they survive zero rows.
+	const hasGroupByAll = dialect.groupByAll([]) !== '';
+	const isConstant = /^[\d\s.+\-*/()']+$/.test(target);
+	const isGrouped = !!context?.processedColumns.some(
+		(c) => !c.hasAgg && c.sqlWithoutAlias === target
+	);
+	const targetColumnRef =
+		hasGroupByAll || isConstant || isGrouped || hasAgg(target, dialect)
+			? target
+			: dialect.anyValue(target);
+	const targetRef = `(${targetColumnRef})`;
 
 	return [
 		// 1. Target value as compared_value
 		`${targetColumnRef} as ${q(`${comparison.id}_compared_value`)}`,
 
 		// 2. Absolute change: (main_value - target_value)
-		`(${mainValueRef} - ${targetColumnRef}) * 1.0 as ${q(`${comparison.id}_abs`)}`,
+		`(${mainValueRef} - ${targetRef}) * 1.0 as ${q(`${comparison.id}_abs`)}`,
 
 		// 3. Percentage change: simple floating-point division for reliable percentage calculation
-		`((${mainValueRef} - ${targetColumnRef}) * 1.0 / nullIf(abs(${targetColumnRef}), 0)) as ${q(`${comparison.id}_pct`)}`
+		`((${mainValueRef} - ${targetRef}) * 1.0 / nullIf(abs(${targetRef}), 0)) as ${q(`${comparison.id}_pct`)}`
 	];
 }
 

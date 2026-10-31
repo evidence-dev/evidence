@@ -328,6 +328,9 @@ export interface SqlDialect {
 	 */
 	readonly supportsDateOffsetMath: boolean;
 
+	/** Whether a SELECT item can reference a sibling alias (ClickHouse requires it: a repeated `sum(x) AS x` becomes `sum(sum(x))`). */
+	readonly supportsLateralAliases: boolean;
+
 	/**
 	 * Cap on points per sparkline series, applied as "most recent N" before
 	 * `groupArray`. For dialects whose string aggregate errors past a byte limit

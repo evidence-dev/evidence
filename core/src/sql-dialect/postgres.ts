@@ -210,6 +210,7 @@ export class PostgresDialect implements SqlDialect {
 	readonly integerDivisionTruncates = true;
 	// Typed, not inferred, so the Cube subclass can narrow these to false.
 	readonly supportsGroupingSets: boolean = true;
+	readonly supportsLateralAliases: boolean = false;
 	readonly supportsDateOffsetMath: boolean = true;
 
 	readonly aggregationFunctions = new Set<string>([

@@ -286,6 +286,7 @@ export class FabricDialect implements SqlDialect {
 	readonly strictDerivedTables = true;
 	readonly integerDivisionTruncates = true;
 	readonly supportsGroupingSets = true;
+	readonly supportsLateralAliases = false;
 	readonly supportsDateOffsetMath = true;
 
 	readonly aggregationFunctions = new Set<string>([

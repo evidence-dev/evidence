@@ -155,6 +155,7 @@ export class ClickHouseDialect implements SqlDialect {
 	readonly supportsFilterClause = true;
 	readonly strictDerivedTables = false;
 	readonly supportsGroupingSets = true;
+	readonly supportsLateralAliases = true;
 	readonly supportsDateOffsetMath = true;
 
 	readonly conditionalAggregateFunctions: ReadonlySet<string> = new Set<string>([

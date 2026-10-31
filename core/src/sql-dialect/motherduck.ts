@@ -198,6 +198,7 @@ export class MotherDuckDialect implements SqlDialect {
 	readonly conditionalAggregateFunctions = NO_CONDITIONAL_AGGREGATES;
 	readonly strictDerivedTables = false;
 	readonly supportsGroupingSets = true;
+	readonly supportsLateralAliases = true;
 	readonly supportsDateOffsetMath = true;
 
 	readonly aggregationFunctions = new Set<string>([

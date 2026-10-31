@@ -1176,3 +1176,57 @@ describe('table pre-resolved table expression', () => {
 		expect(sql).toContain(`FROM "(SELECT 'HACKED' AS x FROM secrets)"`);
 	});
 });
+
+describe('table target comparison on SQL Server', () => {
+	it('aggregates a bare-column target so subtotal grouping sets stay valid', () => {
+		const dialect = new SqlServerDialect();
+		const withTarget = (dialect: SqlDialect): UnifiedColumnDefinition => ({
+			...measure('sum(total_sales)')(dialect),
+			comparison: {
+				compare_vs: 'target',
+				display_type: 'abs',
+				id: '__ev_sum_total_sales_target_comparison',
+				targetColumn: 'unit_price'
+			}
+		});
+		const { sql } = buildTableSQL({
+			data: 'demo.daily_orders',
+			unifiedColumns: cols(dim('category'), withTarget)(dialect),
+			subtotals: true,
+			dialect
+		});
+		expect(sql).toMatchInlineSnapshot(`
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales", GROUPING(category) AS "__ev_grouping_category", CASE WHEN GROUPING(category) = 1 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 1 THEN 0 ELSE NULL END AS "__ev_subtotal_level", CASE
+			 WHEN (CASE WHEN GROUPING(category) = 1 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 1 THEN 0 ELSE NULL END) IS NULL THEN 'cell_data'
+			 WHEN (CASE WHEN GROUPING(category) = 1 AND 0 = 0 THEN 0 WHEN GROUPING(category) = 1 THEN 0 ELSE NULL END) = 0 THEN 'row_total'
+			 ELSE 'row_subtotal'
+			 END AS "__ev_render_type", MAX(unit_price) as "__ev_sum_total_sales_target_comparison_compared_value", ((sum(total_sales)) - (MAX(unit_price))) * 1.0 as "__ev_sum_total_sales_target_comparison_abs", (((sum(total_sales)) - (MAX(unit_price))) * 1.0 / nullIf(abs((MAX(unit_price))), 0)) as "__ev_sum_total_sales_target_comparison_pct"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY GROUPING SETS ((category), ())"
+		`);
+	});
+
+	it('leaves a target that is already grouped unaggregated, so subtotal rows match main', () => {
+		const dialect = new SqlServerDialect();
+		const withTarget = (dialect: SqlDialect): UnifiedColumnDefinition => ({
+			...measure('sum(total_sales)')(dialect),
+			comparison: {
+				compare_vs: 'target',
+				display_type: 'abs',
+				id: '__ev_sum_total_sales_target_comparison',
+				targetColumn: 'transactions'
+			}
+		});
+		const { sql } = buildTableSQL({
+			data: 'demo.daily_orders',
+			unifiedColumns: cols(dim('category'), dim('transactions'), withTarget)(dialect),
+			subtotals: true,
+			dialect
+		});
+		expect(sql).toContain(
+			'transactions as "__ev_sum_total_sales_target_comparison_compared_value"'
+		);
+		expect(sql).not.toContain('MAX(transactions)');
+	});
+});

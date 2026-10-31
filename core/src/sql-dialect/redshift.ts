@@ -79,6 +79,8 @@ export class RedshiftDialect extends PostgresDialect {
 
 	readonly supportsNestedCte = false;
 
+	readonly supportsLateralAliases = true;
+
 	// AWS r_AVG: "BIGINT for any integer type argument".
 	readonly avgTruncatesIntegers = true;
 

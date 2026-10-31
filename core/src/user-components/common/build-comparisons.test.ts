@@ -1386,8 +1386,8 @@ describe('buildComparisons (full SQL output)', () => {
 		expect(result.inlineColumns).toMatchInlineSnapshot(`
 			[
 			  "100000 as "__ev_sum_sales_target_comparison_compared_value"",
-			  "(sum_sales - 100000) * 1.0 as "__ev_sum_sales_target_comparison_abs"",
-			  "((sum_sales - 100000) * 1.0 / nullIf(abs(100000), 0)) as "__ev_sum_sales_target_comparison_pct"",
+			  "("sum_sales" - (100000)) * 1.0 as "__ev_sum_sales_target_comparison_abs"",
+			  "(("sum_sales" - (100000)) * 1.0 / nullIf(abs((100000)), 0)) as "__ev_sum_sales_target_comparison_pct"",
 			]
 		`);
 		expect(result.fragments).toMatchInlineSnapshot(`[]`);

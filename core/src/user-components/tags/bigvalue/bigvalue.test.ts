@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { buildBigValueSQL, type BigValueSQLAttrs } from './build-bigvalue-sql';
 import { orderCompatibleWithSingleValue } from '../../validators';
+import { queryClickHouse } from '../../../test-utils/ch-parse';
 import {
 	SnowflakeDialect,
 	ClickHouseDialect,
@@ -695,5 +696,86 @@ describe('order × value compatibility (author-time guard for the GROUP BY ALL s
 		expect(
 			validator(node({ value: 'value', order: 'year_date', comparison: { target: 'x' } }), cfg, ctx)
 		).toEqual([]);
+	});
+});
+
+describe('big_value target comparison', () => {
+	it('repeats the value expression on SQL Server instead of reusing its alias', () => {
+		const { sql } = buildBigValueSQL({
+			data: 'demo.daily_orders',
+			value: 'sum(total_sales)',
+			comparison: { compare_vs: 'target', target: 'sum(transactions)' },
+			dialect: new SqlServerDialect()
+		});
+		expect(sql).toMatchInlineSnapshot(`
+			"SELECT sum(total_sales) AS "sum_total_sales", sum(transactions) as "__ev_sum_total_sales_target_comparison_compared_value", ((sum(total_sales)) - (sum(transactions))) * 1.0 as "__ev_sum_total_sales_target_comparison_abs", (((sum(total_sales)) - (sum(transactions))) * 1.0 / nullIf(abs((sum(transactions))), 0)) as "__ev_sum_total_sales_target_comparison_pct"
+			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
+		`);
+	});
+
+	it('aggregates a bare-column target on SQL Server', () => {
+		const { sql } = buildBigValueSQL({
+			data: 'demo.daily_orders',
+			value: 'max(total_sales)',
+			comparison: { compare_vs: 'target', target: 'unit_price' },
+			dialect: new SqlServerDialect()
+		});
+		expect(sql).toMatchInlineSnapshot(`
+			"SELECT max(total_sales) AS "max_total_sales", MAX(unit_price) as "__ev_max_total_sales_target_comparison_compared_value", ((max(total_sales)) - (MAX(unit_price))) * 1.0 as "__ev_max_total_sales_target_comparison_abs", (((max(total_sales)) - (MAX(unit_price))) * 1.0 / nullIf(abs((MAX(unit_price))), 0)) as "__ev_max_total_sales_target_comparison_pct"
+			 FROM demo.daily_orders ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
+		`);
+	});
+
+	it('leaves constant targets unaggregated and ungrouped', () => {
+		for (const target of ['100', '(100 * 1.1)']) {
+			const { sql } = buildBigValueSQL({
+				data: 'demo.daily_orders',
+				value: 'count(*)',
+				comparison: { compare_vs: 'target', target },
+				dialect: new SqlServerDialect()
+			});
+			expect(sql).toContain(`${target} as`);
+			expect(sql).not.toContain('MAX(');
+			expect(sql).not.toContain('GROUP BY');
+		}
+	});
+
+	it('computes the same difference on ClickHouse', () => {
+		const { sql } = buildBigValueSQL({
+			data: 'demo.daily_orders',
+			value: 'sum(total_sales)',
+			comparison: { compare_vs: 'target', target: 'sum(transactions)' },
+			dialect: new ClickHouseDialect()
+		});
+		expect(queryClickHouse(sql).trim().split('\t')).toEqual([
+			'200',
+			'6',
+			'194',
+			'32.333333333333336'
+		]);
+	});
+
+	it('runs on ClickHouse when the value alias shadows its column or needs quoting', () => {
+		for (const value of ['sum(total_sales) as total_sales', 'sum(total_sales) as "Total Sales"']) {
+			const { sql } = buildBigValueSQL({
+				data: 'demo.daily_orders',
+				value,
+				comparison: { compare_vs: 'target', target: 'sum(transactions)' },
+				dialect: new ClickHouseDialect()
+			});
+			const [, , abs] = queryClickHouse(sql).trim().split('\t');
+			expect(abs).toBe('194');
+		}
+	});
+
+	it('subtracts an arithmetic target as a whole', () => {
+		const { sql } = buildBigValueSQL({
+			data: 'demo.daily_orders',
+			value: 'sum(total_sales)',
+			comparison: { compare_vs: 'target', target: '100 + 50' },
+			dialect: new ClickHouseDialect()
+		});
+		const [, compared, abs] = queryClickHouse(sql).trim().split('\t');
+		expect([compared, abs]).toEqual(['150', '50']);
 	});
 });
