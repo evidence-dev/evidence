@@ -5,7 +5,7 @@ description: 'Configure project-wide settings and theme with version-controlled 
 
 A project's settings live in version-controlled files at the project root, alongside your content:
 
-- **`evidence.config.yaml`** — project name, the pages directory, and default date and layout settings.
+- **`evidence.config.yaml`** — project name, the pages directory, and default date, layout and number-format settings.
 - **`theme.yaml`** — the project's [theme](/features/themes) (colors, palettes, and scales).
 
 Both ship through the same git workflow as your pages, so settings are reviewable in pull requests and roll back the same way your content does. Individual pages can override layout and theme settings in their [page settings](/features/page-settings).
@@ -36,6 +36,9 @@ layout:
   table_of_contents: true
   auto_refresh: 300000
 
+format:
+  decimal_separator: comma
+
 directories:
   pages/reports:
     title: 'Quarterly Reports'
@@ -52,6 +55,7 @@ directories:
 | `layout.cards` | boolean | Wrap each component in a card (border + shadow) for a dashboard look. |
 | `layout.table_of_contents` | boolean | Show the table-of-contents sidebar, generated from page headings. |
 | `layout.auto_refresh` | number (ms) | How often the page re-runs its queries, in milliseconds. Omit (or `0`) to disable. |
+| `format.decimal_separator` | `period` \| `comma` | The decimal mark for formatted numbers: `period` writes `1,234.56`, `comma` writes `1.234,56`. Defaults to `period`. |
 | `directories` | map | Optional display titles for folders in the navigation, keyed by folder path. See [Directory titles](#directory-titles) below. |
 
 `date.default_date_range_end` is one of:

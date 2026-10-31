@@ -12,6 +12,7 @@ import { isServeMode } from '$lib/server/serve-mode';
 import { connectionYamlHint, resolveConnection } from '$lib/server/run-query';
 import { loadConnectionConfig } from '$cli/connection';
 import { loadProjectConfig } from '$cli/project-config/load-config';
+import { decimalSeparatorFromConfig } from '$lib/server/project-settings.server';
 import { resolveProjectTheme } from '$lib/server/theme.server';
 import { schemaAllowlist } from '@evidence/core/connectors/schema-allowlist';
 import { selectLanguage } from '@evidence/core/translations/resolve-translations';
@@ -117,6 +118,7 @@ export const load: LayoutServerLoad = async ({ url, cookies }) => {
 	return {
 		navItems,
 		projectName,
+		decimalSeparator: decimalSeparatorFromConfig(projectConfig?.format),
 		resolvedTheme,
 		languages,
 		currentLanguage,

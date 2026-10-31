@@ -126,6 +126,45 @@ describe('loadProjectConfig', () => {
 			expect(cfg.date).toBeUndefined();
 		});
 
+		it('leaves format undefined when no format block is present', async () => {
+			const cfg = await loadProjectConfig(projectRoot);
+			expect(cfg.format).toBeUndefined();
+		});
+
+		it.each([
+			['comma', 'comma'],
+			["','", ','],
+			['period', 'period']
+		])('parses the format block written as %s', async (written, parsed) => {
+			await writeFile(
+				path.join(projectRoot, 'evidence.config.yaml'),
+				`project:
+  name: My Project
+  evidence: "0.4.3"
+format:
+  decimal_separator: ${written}
+`,
+				'utf-8'
+			);
+			const cfg = await loadProjectConfig(projectRoot);
+			expect(cfg.format).toEqual({ decimal_separator: parsed });
+		});
+
+		it('degrades a malformed format value to undefined rather than throwing', async () => {
+			await writeFile(
+				path.join(projectRoot, 'evidence.config.yaml'),
+				`project:
+  name: My Project
+  evidence: "0.4.3"
+format:
+  decimal_separator: ";"
+`,
+				'utf-8'
+			);
+			const cfg = await loadProjectConfig(projectRoot);
+			expect(cfg.format).toBeUndefined();
+		});
+
 		it('honours a custom `pages` path', async () => {
 			await writeFile(
 				path.join(projectRoot, 'evidence.config.yaml'),

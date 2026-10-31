@@ -133,6 +133,12 @@ plain text, headings, identifier concatenation like `label_{{
 $translations.langcode }}` — the bare form is correct and `.sql` would
 incorrectly rewrite apostrophes that were never inside a SQL literal.
 
+## Selecting a Language
+
+A reader picks a language from the **Language** entry in the page menu, which is shown when `translations.yaml` declares more than one. The choice is remembered in a `lang` cookie, and `?lang=fr` on the URL overrides it — useful for a link that has to open in a given language. With no choice made, the first language in the file is used.
+
+The selected language is also written to the page's `<html lang>` attribute, so screen readers, hyphenation and the browser's spell-check work in the right language. A top-level key that is not a valid language tag still works as a translation key, but the attribute falls back to `en`.
+
 ## Fallback Behavior
 
 If a translation key is missing for the selected language, it will fall back to English (`en`) if available.

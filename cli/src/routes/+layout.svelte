@@ -37,6 +37,7 @@
 	import { onMount } from 'svelte';
 	import { generateThemeCSS } from '@evidence/core/theme/theme-css-helper';
 	import { setThemeContext } from '@evidence/core/theme/theme.context.svelte';
+	import { formatSettings } from '@evidence/core/user-components/format-settings';
 
 	interface Props {
 		data: LayoutData;
@@ -50,6 +51,13 @@
 	const themeContext = setThemeContext(data.resolvedTheme);
 	$effect(() => themeContext.updateConfig(data.resolvedTheme));
 	const themeCSS = $derived(generateThemeCSS(data.resolvedTheme));
+
+	// evidence.config.yaml `format:` drives how numbers are written. Set in the
+	// script body so it holds during SSR and before any child formats a value;
+	// the $effect re-applies it when the dev poll's invalidateAll re-runs load.
+	// The store is module-global, which fits a CLI that serves one project.
+	formatSettings.set({ decimalSeparator: data.decimalSeparator });
+	$effect(() => formatSettings.set({ decimalSeparator: data.decimalSeparator }));
 
 	const isLoginPage = $derived(page.url.pathname === '/login');
 	const pageDownloads = $derived(page.data.markdown?.pageSettings?.downloads);
