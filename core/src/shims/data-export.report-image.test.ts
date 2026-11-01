@@ -1,8 +1,11 @@
 // @vitest-environment jsdom
-import ExcelJS from 'exceljs';
+import type { Workbook } from 'hucre';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { QueryInfoContext } from '../query-info-context.svelte';
 import { downloadPageDataAsExcel } from './data-export';
+import { readWorkbook, readZipEntry } from '../test-utils/xlsx';
+import type { ExcelFont } from './excel/font';
+import type { ExcelSheet } from './excel/workbook';
 
 const { toPngMock } = vi.hoisted(() => ({ toPngMock: vi.fn() }));
 
@@ -20,15 +23,23 @@ vi.mock('svelte-sonner', () => ({
 const ONE_PX_PNG =
 	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
-function queryInfoContextWith(entries: { title: string; rows: Record<string, unknown>[] }[]) {
+interface TestQuery {
+	title: string;
+	rows: Record<string, unknown>[];
+	loading?: boolean;
+	buildExcelSheet?: (font: ExcelFont) => ExcelSheet;
+}
+
+function queryInfoContextWith(entries: TestQuery[]) {
 	const queryInfoMap = new Map(
 		entries.map((entry, i) => [
 			`component-${i}`,
 			{
 				tag: 'table',
 				title: entry.title,
+				buildExcelSheet: entry.buildExcelSheet,
 				query: {
-					loading: false,
+					loading: entry.loading ?? false,
 					result: {
 						rows: entry.rows,
 						columns: Object.keys(entry.rows[0]).map((name) => ({
@@ -43,9 +54,19 @@ function queryInfoContextWith(entries: { title: string; rows: Record<string, unk
 	return { queryInfoMap } as unknown as QueryInfoContext;
 }
 
-// ExcelJS's typings omit `ext`, but it's populated when reading a one-cell-anchored image.
-function imageExt(image: ReturnType<ExcelJS.Worksheet['getImages']>[number]) {
-	return (image.range as unknown as { ext: { width: number; height: number } }).ext;
+function sheetNames(workbook: Workbook): string[] {
+	return workbook.sheets.map((sheet) => sheet.name);
+}
+
+function getSheet(workbook: Workbook, name: string) {
+	const sheet = workbook.sheets.find((s) => s.name === name);
+	if (!sheet) throw new Error(`No sheet named ${name}`);
+	return sheet;
+}
+
+function imageSize(workbook: Workbook) {
+	const [image] = getSheet(workbook, 'Report').images ?? [];
+	return { width: image?.width, height: image?.height };
 }
 
 describe('page Excel export report image', () => {
@@ -68,7 +89,7 @@ describe('page Excel export report image', () => {
 		clickSpy.mockRestore();
 	});
 
-	async function loadDownloadedWorkbook(): Promise<ExcelJS.Workbook> {
+	async function loadDownloadedWorkbook(): Promise<Workbook> {
 		expect(downloadedBlobs).toHaveLength(1);
 		// jsdom's Blob has no arrayBuffer().
 		const buffer = await new Promise<ArrayBuffer>((resolve, reject) => {
@@ -77,9 +98,7 @@ describe('page Excel export report image', () => {
 			reader.onerror = () => reject(reader.error);
 			reader.readAsArrayBuffer(downloadedBlobs[0]);
 		});
-		const workbook = new ExcelJS.Workbook();
-		await workbook.xlsx.load(buffer);
-		return workbook;
+		return readWorkbook(buffer);
 	}
 
 	function mountReport(width: number, height: number): HTMLElement {
@@ -105,7 +124,7 @@ describe('page Excel export report image', () => {
 
 		expect(toPngMock).not.toHaveBeenCalled();
 		const workbook = await loadDownloadedWorkbook();
-		expect(workbook.worksheets.map((ws) => ws.name)).toEqual(['Revenue']);
+		expect(sheetNames(workbook)).toEqual(['Revenue']);
 	});
 
 	it('puts the captured page on a Report sheet ahead of the data sheets', async () => {
@@ -121,17 +140,17 @@ describe('page Excel export report image', () => {
 		});
 
 		const workbook = await loadDownloadedWorkbook();
-		expect(workbook.worksheets.map((ws) => ws.name)).toEqual(['Report', 'Revenue']);
+		expect(sheetNames(workbook)).toEqual(['Report', 'Revenue']);
 
-		const images = workbook.getWorksheet('Report')!.getImages();
+		const images = getSheet(workbook, 'Report').images ?? [];
 		expect(images).toHaveLength(1);
-		expect(images[0].range.tl.nativeCol).toBe(0);
-		expect(images[0].range.tl.nativeRow).toBe(0);
+		expect(images[0].anchor.from).toMatchObject({ row: 0, col: 0 });
 		// Placed at CSS size (content + 10px padding each side) so the 2x PNG stays sharp.
-		expect(imageExt(images[0])).toEqual({ width: 820, height: 1220 });
+		expect(imageSize(workbook)).toEqual({ width: 820, height: 1220 });
+		expect(getSheet(workbook, 'Report').view?.showGridLines).toBe(false);
 
-		const revenue = workbook.getWorksheet('Revenue')!;
-		expect(revenue.getRow(2).values).toEqual([undefined, 'EMEA', 10]);
+		const revenue = getSheet(workbook, 'Revenue');
+		expect(revenue.rows[1]).toEqual(['EMEA', 10]);
 	});
 
 	it('still exports the data sheets when the capture fails', async () => {
@@ -147,7 +166,7 @@ describe('page Excel export report image', () => {
 		});
 
 		const workbook = await loadDownloadedWorkbook();
-		expect(workbook.worksheets.map((ws) => ws.name)).toEqual(['Revenue']);
+		expect(sheetNames(workbook)).toEqual(['Revenue']);
 	});
 
 	it('exports just the Report sheet for a page with no data, but errors without an image', async () => {
@@ -169,7 +188,7 @@ describe('page Excel export report image', () => {
 
 		expect(onError).toHaveBeenCalledTimes(1);
 		const workbook = await loadDownloadedWorkbook();
-		expect(workbook.worksheets.map((ws) => ws.name)).toEqual(['Report']);
+		expect(sheetNames(workbook)).toEqual(['Report']);
 	});
 
 	it('exports the results present when the download started, not ones changed during capture', async () => {
@@ -201,9 +220,9 @@ describe('page Excel export report image', () => {
 		});
 
 		const workbook = await loadDownloadedWorkbook();
-		expect(workbook.worksheets.map((ws) => ws.name)).toEqual(['Report', 'Revenue', 'Orders']);
-		expect(workbook.getWorksheet('Revenue')!.getRow(2).values).toEqual([undefined, 'EMEA', 10]);
-		expect(workbook.getWorksheet('Orders')!.getRow(2).values).toEqual([undefined, 'EMEA', 3]);
+		expect(sheetNames(workbook)).toEqual(['Report', 'Revenue', 'Orders']);
+		expect(getSheet(workbook, 'Revenue').rows[1]).toEqual(['EMEA', 10]);
+		expect(getSheet(workbook, 'Orders').rows[1]).toEqual(['EMEA', 3]);
 	});
 
 	it('captures only the element matching imageSelector', async () => {
@@ -230,10 +249,7 @@ describe('page Excel export report image', () => {
 
 		expect(toPngMock).toHaveBeenCalledWith(main, expect.anything());
 		const workbook = await loadDownloadedWorkbook();
-		expect(imageExt(workbook.getWorksheet('Report')!.getImages()[0])).toEqual({
-			width: 1020,
-			height: 520
-		});
+		expect(imageSize(workbook)).toEqual({ width: 1020, height: 520 });
 	});
 
 	it('renames a data sheet titled Report instead of colliding with the image sheet', async () => {
@@ -249,6 +265,121 @@ describe('page Excel export report image', () => {
 		});
 
 		const workbook = await loadDownloadedWorkbook();
-		expect(workbook.worksheets.map((ws) => ws.name)).toEqual(['Report', 'Report 2']);
+		expect(sheetNames(workbook)).toEqual(['Report', 'Report 2']);
+	});
+});
+
+describe('page Excel export of styled tables', () => {
+	let downloadedBlobs: Blob[];
+	let clickSpy: ReturnType<typeof vi.spyOn>;
+
+	beforeEach(() => {
+		downloadedBlobs = [];
+		toPngMock.mockReset();
+		toPngMock.mockResolvedValue(ONE_PX_PNG);
+		document.body.innerHTML = '<div data-markdoc-content></div>';
+		URL.createObjectURL = vi.fn((blob: Blob) => {
+			downloadedBlobs.push(blob);
+			return 'blob:test';
+		});
+		URL.revokeObjectURL = vi.fn();
+		clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+	});
+
+	afterEach(() => {
+		clickSpy.mockRestore();
+	});
+
+	async function downloadedBytes(): Promise<Uint8Array> {
+		expect(downloadedBlobs).toHaveLength(1);
+		const buffer = await new Promise<ArrayBuffer>((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result as ArrayBuffer);
+			reader.onerror = () => reject(reader.error);
+			reader.readAsArrayBuffer(downloadedBlobs[0]);
+		});
+		return new Uint8Array(buffer);
+	}
+
+	const styled = (): ExcelSheet => ({ rows: [[{ value: 'Styled' }]] });
+	const rows = [{ region: 'EMEA', total: 10 }];
+
+	it.each([false, true])(
+		'exports the styled sheet a table registers (image: %s)',
+		async (includeImage) => {
+			await downloadPageDataAsExcel({
+				pageName: 'Sales',
+				queryInfoContext: queryInfoContextWith([
+					{ title: 'Revenue', rows, buildExcelSheet: styled }
+				]),
+				includeImage
+			});
+
+			const workbook = await readWorkbook(await downloadedBytes());
+			expect(getSheet(workbook, 'Revenue').rows[0][0]).toBe('Styled');
+		}
+	);
+
+	it('falls back to the raw results when the styled sheet fails to build', async () => {
+		const onError = vi.fn();
+		await downloadPageDataAsExcel({
+			pageName: 'Sales',
+			queryInfoContext: queryInfoContextWith([
+				{
+					title: 'Revenue',
+					rows,
+					buildExcelSheet: () => {
+						throw new Error('boom');
+					}
+				}
+			]),
+			onError
+		});
+
+		expect(onError).not.toHaveBeenCalled();
+		const workbook = await readWorkbook(await downloadedBytes());
+		expect(getSheet(workbook, 'Revenue').rows).toEqual([
+			['Region', 'Total'],
+			['EMEA', 10]
+		]);
+	});
+
+	it('builds styled sheets once, before the capture, and only for exportable queries', async () => {
+		const ready = vi.fn(styled);
+		const loading = vi.fn(styled);
+		await downloadPageDataAsExcel({
+			pageName: 'Sales',
+			queryInfoContext: queryInfoContextWith([
+				{ title: 'Revenue', rows, buildExcelSheet: ready },
+				{ title: 'Pending', rows, loading: true, buildExcelSheet: loading }
+			]),
+			includeImage: true
+		});
+
+		expect(ready).toHaveBeenCalledTimes(1);
+		expect(ready.mock.invocationCallOrder[0]).toBeLessThan(toPngMock.mock.invocationCallOrder[0]);
+		expect(loading).not.toHaveBeenCalled();
+	});
+
+	it('points sparklines at their own sheet after duplicate titles are renamed', async () => {
+		const withSparkline = (): ExcelSheet => ({
+			rows: [[{ value: 'Trend' }, null, 1, 2, 3]],
+			sparklines: [
+				{ location: 'A1', dataRange: 'C1:E1' },
+				{ location: 'B1', dataRange: "'Other'!C1:E1" }
+			]
+		});
+		await downloadPageDataAsExcel({
+			pageName: 'Sales',
+			queryInfoContext: queryInfoContextWith([
+				{ title: 'Sales', rows, buildExcelSheet: styled },
+				{ title: 'Sales', rows, buildExcelSheet: withSparkline }
+			])
+		});
+
+		const xml = readZipEntry(await downloadedBytes(), 'xl/worksheets/sheet2.xml');
+		expect(xml).toContain("<xm:f>'Sales 2'!C1:E1</xm:f>");
+		// A range that already names its sheet is left alone.
+		expect(xml).toContain("<xm:f>'Other'!C1:E1</xm:f>");
 	});
 });

@@ -1,0 +1,222 @@
+diff --git a/dist/_types.d.mts b/dist/_types.d.mts
+index 1a7317ffc4ebe43c2938ee63b9272418085b78a6..33777a640502ae8c3698a6c5d2c4bf9ae521a7d6 100644
+--- a/dist/_types.d.mts
++++ b/dist/_types.d.mts
+@@ -261,6 +261,31 @@ export interface ConditionalRule {
+ 		* `"FF638EC6"`.
+ 		*/
+ 		color: string;
++		// [MODIFIED]: showValue and the Excel 2010 options below are added by this patch to hucre 1.3.0.
++		// Setting any of the Excel 2010 options also writes the rule's x14 extension, which Excel
++		// 2010+ renders; readers without it fall back to the 2007 bar.
++		/** Show the cell's value beside the bar; `false` shows only the bar. Default: true. */
++		showValue?: boolean;
++		/** Fill the bar with a gradient. Default: true. */
++		gradient?: boolean;
++		/** Shortest bar, as a percentage of the cell width (0–100). Default: 10. */
++		minLength?: number;
++		/** Longest bar, as a percentage of the cell width (0–100). Default: 90. */
++		maxLength?: number;
++		/** Draw a border around the bar. */
++		border?: boolean;
++		/** Border colour (ARGB or 6-digit RGB); used when `border` is set. */
++		borderColor?: string;
++		/** Fill colour for negative values (ARGB or 6-digit RGB). When unset, negative bars use the positive colour. */
++		negativeFillColor?: string;
++		/** Border colour for negative values; used when `border` is set. */
++		negativeBorderColor?: string;
++		/** Where the zero axis sits when the range spans negative values. Default: "automatic". */
++		axisPosition?: "automatic" | "middle" | "none";
++		/** Axis colour (ARGB or 6-digit RGB). */
++		axisColor?: string;
++		/** Bar direction. Default: "context". */
++		direction?: "context" | "leftToRight" | "rightToLeft";
+ 	};
+ 	/** Icon set configuration */
+ 	iconSet?: {
+@@ -486,6 +511,10 @@ export interface Sparkline {
+ 	color?: string;
+ 	/** Show markers */
+ 	markers?: boolean;
++	/** Plot values in hidden rows and columns, which Excel otherwise skips. */
++	displayHidden?: boolean;
++	/** Fix the vertical axis minimum at this value instead of fitting it to the data. */
++	manualMin?: number;
+ }
+ export interface SheetTextBox {
+ 	text: string;
+diff --git a/dist/xlsx/worksheet-writer.d.mts b/dist/xlsx/worksheet-writer.d.mts
+index 0290f23a12ba1628225ffa7912edb42afcf5f15c..fd6edda64bc2dad146fbc228be252ac737280c9f 100644
+--- a/dist/xlsx/worksheet-writer.d.mts
++++ b/dist/xlsx/worksheet-writer.d.mts
+@@ -167,4 +167,4 @@ export declare function serializeAutoFilter(autoFilter: AutoFilter): string;
+ * Serialize conditional formatting rules into `<conditionalFormatting>` XML blocks.
+ * Rules are grouped by range (sqref) — multiple rules on the same range go into one element.
+ */
+-export declare function serializeConditionalFormatting(rules: ConditionalRule[], styles: StylesCollector): string[];
++export declare function serializeConditionalFormatting(rules: ConditionalRule[], styles: StylesCollector, x14Rules?: unknown[]): string[];
+diff --git a/dist/xlsx/worksheet-writer.mjs b/dist/xlsx/worksheet-writer.mjs
+index 835fda3dedb08ebc34f1639c5615fcb6fe434a8b..c0f0d4f19c127f2dfed237da6479b92c1542f01a 100644
+--- a/dist/xlsx/worksheet-writer.mjs
++++ b/dist/xlsx/worksheet-writer.mjs
+@@ -448,8 +448,9 @@ export function writeWorksheetXml(sheet, styles, sharedStrings, dateSystem, glob
+ 		parts.push(xmlElement("mergeCells", { count: merges.length }, mergeElements));
+ 	}
+ 	
++	const x14Rules = [];
+ 	if (sheet.conditionalRules && sheet.conditionalRules.length > 0) {
+-		parts.push(...serializeConditionalFormatting(sheet.conditionalRules, styles));
++		parts.push(...serializeConditionalFormatting(sheet.conditionalRules, styles, x14Rules));
+ 	}
+ 	
+ 	if (sheet.dataValidations && sheet.dataValidations.length > 0) {
+@@ -572,8 +573,17 @@ export function writeWorksheetXml(sheet, styles, sharedStrings, dateSystem, glob
+ 		parts.push(xmlElement("tableParts", { count: sheet.tables.length }, tablePartElements));
+ 	}
+ 	
++	// [MODIFIED]: one <extLst> holds every extension; Excel lists conditional formattings
++	// before sparklines.
++	const extElements = [];
++	if (x14Rules.length > 0) {
++		extElements.push(serializeX14ConditionalFormattingsExt(x14Rules));
++	}
+ 	if (sheet.sparklines && sheet.sparklines.length > 0) {
+-		parts.push(serializeSparklines(sheet.sparklines));
++		extElements.push(serializeSparklines(sheet.sparklines));
++	}
++	if (extElements.length > 0) {
++		parts.push(xmlElement("extLst", undefined, extElements));
+ 	}
+ 	
+ 	
+@@ -1425,8 +1435,8 @@ function serializeFilterCriterion(col) {
+ }
+ 
+ 
+-export function serializeConditionalFormatting(rules, styles) {
+-	
++export function serializeConditionalFormatting(rules, styles, x14Rules) {
++
+ 	const byRange = new Map();
+ 	for (const rule of rules) {
+ 		const existing = byRange.get(rule.range);
+@@ -1440,13 +1450,60 @@ export function serializeConditionalFormatting(rules, styles) {
+ 	for (const [range, rangeRules] of byRange) {
+ 		const cfRuleElements = [];
+ 		for (const rule of rangeRules) {
+-			cfRuleElements.push(serializeCfRule(rule, styles));
++			cfRuleElements.push(serializeCfRule(rule, styles, x14Rules));
+ 		}
+ 		elements.push(xmlElement("conditionalFormatting", { sqref: range }, cfRuleElements));
+ 	}
+ 	return elements;
+ }
+ 
++// [MODIFIED]: Excel 2010 data-bar settings (solid fill, border, negative-value colours and the
++// zero axis) live in an x14 extension; the 2007 <dataBar> can't express them.
++const X14_DATA_BAR_KEYS = ["gradient", "minLength", "maxLength", "border", "borderColor", "negativeFillColor", "negativeBorderColor", "axisPosition", "axisColor", "direction"];
++const CF_RULE_X14_ID_EXT_URI = "{B025F937-C7B1-47D3-B67F-A62EFF666E3E}";
++const CONDITIONAL_FORMATTINGS_EXT_URI = "{78C0D931-6437-407d-A8EE-F0AAD7539E65}";
++
++function needsX14DataBar(dataBar) {
++	return X14_DATA_BAR_KEYS.some((key) => dataBar[key] !== undefined);
++}
++
++function x14CfvoType(type) {
++	return type === "min" ? "autoMin" : type === "max" ? "autoMax" : type;
++}
++
++function serializeX14DataBarRule(entry) {
++	const { id, range, dataBar } = entry;
++	const attrs = {
++		minLength: dataBar.minLength ?? 10,
++		maxLength: dataBar.maxLength ?? 90
++	};
++	if (dataBar.border) attrs["border"] = 1;
++	attrs["gradient"] = dataBar.gradient === false ? 0 : 1;
++	if (dataBar.direction && dataBar.direction !== "context") attrs["direction"] = dataBar.direction;
++	// Written either way: readers disagree on what an absent attribute means.
++	attrs["negativeBarColorSameAsPositive"] = dataBar.negativeFillColor ? 0 : 1;
++	if (dataBar.border) attrs["negativeBarBorderColorSameAsPositive"] = dataBar.negativeBorderColor ? 0 : 1;
++	if (dataBar.axisPosition && dataBar.axisPosition !== "automatic") attrs["axisPosition"] = dataBar.axisPosition;
++	const children = [];
++	for (const cfvo of dataBar.cfvo) {
++		const type = x14CfvoType(cfvo.type);
++		children.push(cfvo.value !== undefined ? xmlElement("x14:cfvo", { type }, [xmlElement("xm:f", undefined, xmlEscape(addFuturePrefixes(String(cfvo.value))))]) : xmlSelfClose("x14:cfvo", { type }));
++	}
++	if (dataBar.border && dataBar.borderColor) children.push(xmlSelfClose("x14:borderColor", { rgb: toArgb(dataBar.borderColor) }));
++	if (dataBar.negativeFillColor) children.push(xmlSelfClose("x14:negativeFillColor", { rgb: toArgb(dataBar.negativeFillColor) }));
++	if (dataBar.border && dataBar.negativeBorderColor) children.push(xmlSelfClose("x14:negativeBorderColor", { rgb: toArgb(dataBar.negativeBorderColor) }));
++	if (dataBar.axisColor) children.push(xmlSelfClose("x14:axisColor", { rgb: toArgb(dataBar.axisColor) }));
++	const cfRule = xmlElement("x14:cfRule", { type: "dataBar", id }, [xmlElement("x14:dataBar", attrs, children)]);
++	return xmlElement("x14:conditionalFormatting", { "xmlns:xm": NS_XM }, [cfRule, xmlElement("xm:sqref", undefined, xmlEscape(range))]);
++}
++
++function serializeX14ConditionalFormattingsExt(x14Rules) {
++	return xmlElement("ext", {
++		uri: CONDITIONAL_FORMATTINGS_EXT_URI,
++		"xmlns:x14": NS_X14
++	}, [xmlElement("x14:conditionalFormattings", undefined, x14Rules.map(serializeX14DataBarRule))]);
++}
++
+ function cfvoAttributes(cfvo) {
+ 	const attrs = { type: cfvo.type };
+ 	if (cfvo.value !== undefined) {
+@@ -1455,7 +1512,7 @@ function cfvoAttributes(cfvo) {
+ 	return attrs;
+ }
+ 
+-function serializeCfRule(rule, styles) {
++function serializeCfRule(rule, styles, x14Rules) {
+ 	const attrs = {
+ 		type: rule.type,
+ 		priority: rule.priority
+@@ -1504,7 +1561,18 @@ function serializeCfRule(rule, styles) {
+ 			dbChildren.push(xmlSelfClose("cfvo", cfvoAttributes(cfvo)));
+ 		}
+ 		dbChildren.push(xmlSelfClose("color", { rgb: toArgb(rule.dataBar.color) }));
+-		children.push(xmlElement("dataBar", undefined, dbChildren));
++		// [MODIFIED]: write showValue so a bar can hide its cell's value.
++		children.push(xmlElement("dataBar", rule.dataBar.showValue === false ? { showValue: 0 } : undefined, dbChildren));
++		// [MODIFIED]: link the rule to its x14 extension. The streaming writer passes no
++		// collector, so it keeps writing the 2007 bar on its own.
++		if (x14Rules && needsX14DataBar(rule.dataBar)) {
++			const id = `{78C0D931-0000-4000-8000-${String(x14Rules.length + 1).padStart(12, "0")}}`;
++			x14Rules.push({ id, range: rule.range, dataBar: rule.dataBar });
++			children.push(xmlElement("extLst", undefined, [xmlElement("ext", {
++				uri: CF_RULE_X14_ID_EXT_URI,
++				"xmlns:x14": NS_X14
++			}, [xmlElement("x14:id", undefined, id)])]));
++		}
+ 	}
+ 	
+ 	if (rule.type === "iconSet" && rule.iconSet) {
+@@ -1547,6 +1615,14 @@ function serializeSparklines(sparklines) {
+ 		if (sp.markers) {
+ 			groupAttrs["markers"] = "1";
+ 		}
++		// [MODIFIED]: plot data in hidden rows/columns, and pin the vertical axis minimum.
++		if (sp.displayHidden) {
++			groupAttrs["displayHidden"] = "1";
++		}
++		if (sp.manualMin !== undefined) {
++			groupAttrs["minAxisType"] = "custom";
++			groupAttrs["manualMin"] = sp.manualMin;
++		}
+ 		const groupChildren = [];
+ 		
+ 		const color = sp.color ?? "376092";
+@@ -1557,12 +1633,11 @@ function serializeSparklines(sparklines) {
+ 		sparklineGroupElements.push(xmlElement("x14:sparklineGroup", groupAttrs, groupChildren));
+ 	}
+ 	const sparklineGroupsEl = xmlElement("x14:sparklineGroups", { "xmlns:xm": NS_XM }, sparklineGroupElements);
+-	const extEl = xmlElement("ext", {
++	return xmlElement("ext", {
+ 		uri: SPARKLINE_EXT_URI,
+ 		"xmlns:x14": NS_X14,
+ 		"xmlns:xr2": NS_XR2
+ 	}, [sparklineGroupsEl]);
+-	return xmlElement("extLst", undefined, [extEl]);
+ }
+ 
+ function offsetOfPart(xml, parts, index) {

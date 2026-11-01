@@ -101,27 +101,62 @@ function deriveTableSurfaces(background: string, mode: 'light' | 'dark') {
 	}
 }
 
+export interface TableSurface {
+	background: string;
+	border: string;
+	muted: string;
+}
+
+/** The colors behind the `--theme-table-*` vars, resolved for one surface. */
+export interface TableColors {
+	bar: string;
+	subtotalBackground: string;
+	totalBackground: string;
+	rowBorder: string;
+	hover: string;
+	link: string;
+	pivotBackground: string;
+}
+
 /**
- * Build the `--theme-table-*` var lines for a given surface (page or card), so
- * tables track whichever background they actually sit on. Explicit theme
- * overrides win; otherwise backgrounds derive from the surface and
- * rowBorder/hover follow the surface border/muted.
+ * Resolve table colors for a given surface (page or card), so tables track
+ * whichever background they actually sit on. Explicit theme overrides win;
+ * otherwise backgrounds derive from the surface and rowBorder/hover follow the
+ * surface border/muted.
  */
-function tableCSSVars(
+export function resolveTableColors(
 	table: Theme['table'],
-	surface: { background: string; border: string; muted: string },
+	surface: TableSurface,
 	mode: 'light' | 'dark'
-): string[] {
+): TableColors {
 	const defaults = TABLE_TOKEN_DEFAULTS[mode];
 	const derived = deriveTableSurfaces(surface.background, mode);
+	return {
+		bar: table?.barColor ?? defaults.bar,
+		subtotalBackground: table?.subtotalBackground ?? derived.subtotal,
+		totalBackground: table?.totalBackground ?? derived.total,
+		rowBorder: table?.rowBorderColor ?? surface.border,
+		hover: table?.hoverColor ?? surface.muted,
+		link: table?.linkColor ?? defaults.link,
+		pivotBackground: table?.pivotBackground ?? derived.pivot
+	};
+}
+
+/** Build the `--theme-table-*` var lines for a given surface (page or card). */
+function tableCSSVars(
+	table: Theme['table'],
+	surface: TableSurface,
+	mode: 'light' | 'dark'
+): string[] {
+	const colors = resolveTableColors(table, surface, mode);
 	return [
-		`--theme-table-bar: ${table?.barColor ?? defaults.bar} !important;`,
-		`--theme-table-subtotal-bg: ${table?.subtotalBackground ?? derived.subtotal} !important;`,
-		`--theme-table-total-bg: ${table?.totalBackground ?? derived.total} !important;`,
-		`--theme-table-row-border: ${table?.rowBorderColor ?? surface.border} !important;`,
-		`--theme-table-hover: ${table?.hoverColor ?? surface.muted} !important;`,
-		`--theme-table-link: ${table?.linkColor ?? defaults.link} !important;`,
-		`--theme-table-pivot-bg: ${table?.pivotBackground ?? derived.pivot} !important;`
+		`--theme-table-bar: ${colors.bar} !important;`,
+		`--theme-table-subtotal-bg: ${colors.subtotalBackground} !important;`,
+		`--theme-table-total-bg: ${colors.totalBackground} !important;`,
+		`--theme-table-row-border: ${colors.rowBorder} !important;`,
+		`--theme-table-hover: ${colors.hover} !important;`,
+		`--theme-table-link: ${colors.link} !important;`,
+		`--theme-table-pivot-bg: ${colors.pivotBackground} !important;`
 	];
 }
 

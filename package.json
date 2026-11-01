@@ -64,7 +64,8 @@
 		"patchedDependencies": {
 			"ssf": "patches/ssf.patch",
 			"echarts@6.1.0": "patches/echarts@6.1.0.patch",
-			"zrender": "patches/zrender.patch"
+			"zrender": "patches/zrender.patch",
+			"hucre@1.3.0": "patches/hucre@1.3.0.patch"
 		}
 	}
 }

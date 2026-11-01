@@ -9,7 +9,7 @@ import { getDecimalSeparator } from './format-settings';
  * @param formatCode - The format code that may contain single quotes
  * @returns The format code with single quotes converted to double quotes
  */
-function convertSingleQuotesToDouble(formatCode: string): string {
+export function convertSingleQuotesToDouble(formatCode: string): string {
 	// Replace single quotes with double quotes
 	// This is a simple replacement - if users need literal single quotes in their format,
 	// they can use double quotes or escaped single quotes
@@ -40,7 +40,7 @@ const DATE_FORMAT_PRESETS = new Set([
 /**
  * Check if a format code is a date/time format that should not have decimal separator conversion
  */
-function isDateFormat(formatCode: string): boolean {
+export function isDateFormat(formatCode: string): boolean {
 	// Check if it's a known date format preset
 	if (DATE_FORMAT_PRESETS.has(formatCode.toLowerCase())) {
 		return true;
@@ -388,6 +388,55 @@ function getAutoFormat(baseFormat: string, range?: Range): string {
 	return baseFormat + decimals + unit;
 }
 
+/**
+ * The format code a value is rendered with: a base auto format (`usd`) resolves to a specific
+ * one (`usd1m`) from the range, and a zero in an auto or unit format (`usd`, `num0k`) drops the
+ * unit and decimals. Shared with the Excel export so its number formats follow the report's.
+ */
+export function resolveFormatCode(formatCode: string, value: unknown, range?: Range): string {
+	const baseFormats = BASE_AUTO_FORMATS;
+	const isBaseFormat =
+		formatCode.length === 3 && baseFormats.includes(formatCode as (typeof baseFormats)[number]);
+
+	// For zero values, use base format with no scaling or decimals
+	if (value === 0 || value === '0') {
+		// Check if this is a base auto format (e.g., 'num', 'usd')
+		if (isBaseFormat) {
+			return `${formatCode}0`; // Just add 0 decimal places, no scaling
+		}
+		// Check if this is an explicit format with units (e.g., 'usd1m', 'num0k')
+		// Pattern: base format (3 chars) + decimal (1 char) + unit (1 char: k, m, b, or t)
+		if (formatCode.length === 5) {
+			const baseFormat = formatCode.substring(0, 3);
+			const unit = formatCode.substring(4, 5).toLowerCase();
+			if (
+				baseFormats.includes(baseFormat as (typeof baseFormats)[number]) &&
+				['k', 'm', 'b', 't'].includes(unit)
+			) {
+				return `${baseFormat}0`; // Use base format with 0 decimals, no units
+			}
+		}
+		return formatCode;
+	}
+
+	if (isBaseFormat) {
+		// If no range is provided but we have a numeric value, use the value itself as the range
+		// This enables auto-scaling for single value components (BigValue, Value, Delta)
+		let effectiveRange = range;
+		if (!effectiveRange && typeof value === 'number') {
+			effectiveRange = { min: value, max: value };
+		}
+		return getAutoFormat(formatCode, effectiveRange);
+	}
+	return formatCode;
+}
+
+/** Whether a column's type holds dates or times. */
+export function isTemporalColumnType(columnType: string | undefined): boolean {
+	const type = columnType?.toLowerCase() ?? '';
+	return type.includes('date') || type.includes('time');
+}
+
 export function standardizeDateString(date: string | Date) {
 	if (date && typeof date === 'string') {
 		// Parses an individual string into a JS date object
@@ -682,10 +731,7 @@ export function formatValue(
 	// If no format code is provided, apply automatic formatting based on column type
 	if (effectiveFormatCode === null || effectiveFormatCode === undefined) {
 		// Auto-format date columns
-		if (
-			columnType &&
-			(columnType.toLowerCase().includes('date') || columnType.toLowerCase().includes('time'))
-		) {
+		if (isTemporalColumnType(columnType)) {
 			effectiveFormatCode = 'date';
 		}
 		// Auto-format numeric values - use base 'num' format to enable auto-scaling with units
@@ -729,10 +775,7 @@ export function formatValue(
 			// If we have column type from metadata, use it for conversion
 			if (columnType) {
 				// Convert strings to appropriate types based on column metadata
-				if (
-					columnType.toLowerCase().includes('date') ||
-					columnType.toLowerCase().includes('time')
-				) {
+				if (isTemporalColumnType(columnType)) {
 					processedValue = new Date(standardizeDateString(processedValue));
 				} else if (
 					columnType.toLowerCase().includes('int') ||
@@ -772,42 +815,7 @@ export function formatValue(
 			}
 		}
 
-		let actualFormatCode = effectiveFormatCode;
-		const baseFormats = BASE_AUTO_FORMATS;
-
-		// For zero values, use base format with no scaling or decimals
-		if (processedValue === 0 || processedValue === '0') {
-			// Check if this is a base auto format (e.g., 'num', 'usd')
-			if (
-				effectiveFormatCode.length === 3 &&
-				baseFormats.includes(effectiveFormatCode as (typeof baseFormats)[number])
-			) {
-				actualFormatCode = `${effectiveFormatCode}0`; // Just add 0 decimal places, no scaling
-			}
-			// Check if this is an explicit format with units (e.g., 'usd1m', 'num0k')
-			// Pattern: base format (3 chars) + decimal (1 char) + unit (1 char: k, m, b, or t)
-			else if (effectiveFormatCode.length === 5) {
-				const baseFormat = effectiveFormatCode.substring(0, 3);
-				const unit = effectiveFormatCode.substring(4, 5).toLowerCase();
-				if (
-					baseFormats.includes(baseFormat as (typeof baseFormats)[number]) &&
-					['k', 'm', 'b', 't'].includes(unit)
-				) {
-					actualFormatCode = `${baseFormat}0`; // Use base format with 0 decimals, no units
-				}
-			}
-		} else if (
-			effectiveFormatCode.length === 3 &&
-			baseFormats.includes(effectiveFormatCode as (typeof baseFormats)[number])
-		) {
-			// If no range is provided but we have a numeric value, use the value itself as the range
-			// This enables auto-scaling for single value components (BigValue, Value, Delta)
-			let effectiveRange = range;
-			if (!effectiveRange && typeof processedValue === 'number') {
-				effectiveRange = { min: processedValue, max: processedValue };
-			}
-			actualFormatCode = getAutoFormat(effectiveFormatCode, effectiveRange);
-		}
+		let actualFormatCode = resolveFormatCode(effectiveFormatCode, processedValue, range);
 
 		// Handle special quarter format
 		if (actualFormatCode === 'quarter') {

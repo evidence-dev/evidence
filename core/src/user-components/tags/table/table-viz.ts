@@ -67,11 +67,26 @@ export function buildColorVizScale(
 	});
 }
 
+// A color scale maps every value to a color, so the same few hundred colors recur across a
+// table's cells; deriving their text and border colors (contrast, luminance) is the costly part.
+const colorStylesCache = new Map<string, ColorStylesResult | null>();
+const COLOR_STYLES_CACHE_LIMIT = 2000;
+
 /**
  * Converts a hex color string into background/text/border styles.
  * Reusable for both cell-level and row-level conditional colors.
+ * Results are cached and shared, so they're frozen.
  */
 export function calculateColorStylesFromHex(colorValue: string): ColorStylesResult | null {
+	const cached = colorStylesCache.get(colorValue);
+	if (cached !== undefined) return cached;
+	const styles = deriveColorStyles(colorValue);
+	if (colorStylesCache.size >= COLOR_STYLES_CACHE_LIMIT) colorStylesCache.clear();
+	colorStylesCache.set(colorValue, styles);
+	return styles;
+}
+
+function deriveColorStyles(colorValue: string): ColorStylesResult | null {
 	try {
 		const bgColor = chroma(colorValue);
 		const textColor =
@@ -82,12 +97,12 @@ export function calculateColorStylesFromHex(colorValue: string): ColorStylesResu
 		const borderColor = isCellDark ? bgColor.brighten(0.5) : bgColor.darken(0.5);
 		const topBorderColor = isCellDark ? 'rgb(75 85 99)' : 'rgb(156 163 175)';
 
-		return {
+		return Object.freeze({
 			backgroundColor: bgColor.hex(),
 			color: textColor,
 			borderBottomColor: borderColor.hex(),
 			topBorderColor
-		};
+		});
 	} catch {
 		return null;
 	}
@@ -171,7 +186,7 @@ interface VizRangesParams {
 }
 
 interface FormatRangesParams {
-	columnMeta: ColumnMetaItem[];
+	columnMeta: Pick<ColumnMetaItem, 'key' | 'fmt'>[];
 	sortedRows: TableRow[];
 }
 
