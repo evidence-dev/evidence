@@ -1,4 +1,4 @@
-import type { CellStyle, SheetImage, WriteSheet } from 'hucre';
+import type { CellStyle, RowDef, SheetImage, WriteSheet } from 'hucre';
 import type { QueryInfo, QueryInfoContext } from '../query-info-context.svelte';
 import type { Query } from '../Query.svelte';
 import formatTitle from '../user-components/formatTitle';
@@ -354,6 +354,8 @@ export function buildDataSheet(
 		: Object.keys(processedData[0]);
 	const fitter = new ColumnFitter(font);
 	const styles = new StyleCache();
+	// Table rows get explicit heights: Excel for Windows re-measures rows that don't have one.
+	const rowDefs = new Map<number, RowDef>();
 	// Auto formats (`usd`, `num`) pick one unit per column, as a report table does.
 	const formatRanges = calculateFormatRanges({
 		columnMeta: (columns ?? []).map((column) => ({ key: column.name, fmt: column.fmt })),
@@ -362,6 +364,7 @@ export function buildDataSheet(
 	const numFmtCounts = columnNames.map(() => new Map<string, number>());
 
 	const headerRowIndex = rows.length;
+	rowDefs.set(headerRowIndex, { height: tableRowHeight(font) });
 	rows.push(
 		columnNames.map((name, columnIndex) => {
 			const column = columnsByName.get(name);
@@ -382,6 +385,7 @@ export function buildDataSheet(
 	);
 
 	for (const row of processedData) {
+		rowDefs.set(rows.length, { height: tableRowHeight(font) });
 		rows.push(
 			columnNames.map((name, columnIndex) => {
 				const column = columnsByName.get(name);
@@ -407,7 +411,7 @@ export function buildDataSheet(
 
 	return {
 		rows,
-		defaultRowHeight: tableRowHeight(font),
+		rowDefs,
 		// Each column's alignment and most common number format, which Excel gives to data typed
 		// below the table. Cells keep their own style too, for their row lines.
 		columns: columnNames.map((name, columnIndex) => {

@@ -541,14 +541,14 @@ describe('table Excel export: review cases', () => {
 		it('nests each level one deeper, all visible when expanded', () => {
 			const [region, city, store] = outline(new Set());
 			expect(region.outlineLevel).toBeUndefined();
-			expect(city).toEqual({ outlineLevel: 1 });
-			expect(store).toEqual({ outlineLevel: 2 });
+			expect(city).toEqual({ height: 18, outlineLevel: 1 });
+			expect(store).toEqual({ height: 18, outlineLevel: 2 });
 		});
 
 		it('hides a collapsed group’s rows and marks its summary row', () => {
 			const [, city, store] = outline(new Set(['East|~|Boston']));
-			expect(city).toEqual({ outlineLevel: 1, collapsed: true });
-			expect(store).toEqual({ outlineLevel: 2, hidden: true });
+			expect(city).toEqual({ height: 18, outlineLevel: 1, collapsed: true });
+			expect(store).toEqual({ height: 18, outlineLevel: 2, hidden: true });
 		});
 	});
 
@@ -587,5 +587,27 @@ describe('table Excel export: column defaults', () => {
 		expect(east).toEqual(['East', 2_500_000]);
 		// ...and a cell that differs (zero drops the unit, as on screen) keeps its own style.
 		expect(west[1]).toMatchObject({ value: 0, style: { numFmt: '$#,##0' } });
+	});
+});
+
+describe('table Excel export: row heights', () => {
+	it('writes an explicit height on every header and body row', async () => {
+		// Excel for Windows re-measures rows without their own height, so a long table's rows
+		// shrank partway down when only the sheet's default height was set.
+		const rows = Array.from({ length: 120 }, (_, i) => dataRow({ region: `R${i}`, sales: i }));
+		const sheet = build(table([meta('region'), measure('sales')], rows), { title: 'Sales' });
+		const xml = readZipEntry(
+			await writeWorkbook([{ ...sheet, name: 'Data' }], CALIBRI_11),
+			'xl/worksheets/sheet1.xml'
+		);
+		const tableRows = [...xml.matchAll(/<row r="(\d+)"([^>]*)>/g)].filter(
+			([, r]) => Number(r) >= 3
+		);
+
+		expect(tableRows).toHaveLength(121);
+		for (const [, , attributes] of tableRows) {
+			expect(attributes).toContain('ht="18"');
+			expect(attributes).toContain('customHeight="1"');
+		}
 	});
 });

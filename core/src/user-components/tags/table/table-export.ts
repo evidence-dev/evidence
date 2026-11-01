@@ -717,6 +717,13 @@ export function buildTableExcelSheet(
 		}
 	});
 
+	// Every header and body row gets an explicit height. Excel for Windows re-measures a row that
+	// has content but no height of its own, ignoring the sheet's default row height, so a long
+	// table's rows would shrink partway down.
+	for (let r = headerStart; r < sheetRows.length; r++) {
+		rowDefs.set(r, { height: tableRowHeight(font), ...rowDefs.get(r) });
+	}
+
 	// ==================== COLUMN DEFAULTS ====================
 	// Each column's default format is its alignment and most common number format: Excel gives
 	// it to data typed below the table, and cells that match it are written without a style of
@@ -811,8 +818,7 @@ export function buildTableExcelSheet(
 
 	return {
 		rows: sheetRows,
-		defaultRowHeight: tableRowHeight(font),
-		...(rowDefs.size ? { rowDefs } : {}),
+		rowDefs,
 		columns: Array.from(columnDefs, (def) => def ?? {}),
 		// The header stays in view like the report's sticky header, with freeze_columns alongside.
 		freezePane: {

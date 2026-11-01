@@ -153,6 +153,14 @@ describe('buildDataSheet', () => {
 		expect(cellAt(sheet, 1, 2)?.style?.numFmt ?? 'General').toBe('General');
 	});
 
+	it('writes an explicit height on the header and every data row', () => {
+		const data = Array.from({ length: 80 }, (_, i) => ({ region: `R${i}`, sales: i }));
+		const sheet = buildDataSheet(data, columns, { font });
+
+		expect([...(sheet.rowDefs?.keys() ?? [])]).toHaveLength(81);
+		expect([...(sheet.rowDefs?.values() ?? [])].every(({ height }) => height === 18)).toBe(true);
+	});
+
 	it('uses Calibri 11 as the workbook font', async () => {
 		const bytes = await writeWorkbook(
 			[{ ...buildDataSheet([{ a: 1 }], undefined, { font }), name: 'Data' }],
