@@ -19,6 +19,7 @@ import {
 	getExcelExportFont,
 	maxDigitWidthPx,
 	measureTextPx,
+	pxToColumnWidth,
 	type ExcelFont
 } from '../../../shims/excel/font';
 import {
@@ -141,6 +142,12 @@ const COLLAPSIBLE_INDENT = 3;
 const INDENT_STEP = '   ';
 /** Header text longer than this wraps (when titles may wrap) rather than widening its column. */
 const HEADER_WRAP_PX = 200;
+/**
+ * About the width a table gets on a default (article-width) page: 64rem, less the page's and
+ * the card's padding. A table that fits in it keeps its titles on one line; a wider one wraps
+ * them, as the report's table does when it runs out of room.
+ */
+const TABLE_LAYOUT_WIDTH_PX = 960;
 /** Wrapping columns stop growing at this width and wrap instead. */
 const WRAP_COLUMN_MAX_WIDTH = 50;
 /** Room for a sparkline: the report draws them 50px wide. */
@@ -336,8 +343,17 @@ interface HeaderLayout {
 	rows: SheetCell[][];
 	/** Labels centered across several columns, which must be at least as wide as the label. */
 	spans: { first: number; last: number; px: number }[];
-	/** Bottom-row titles too long for their column, which wrap. */
-	wraps: { column: number; text: string }[];
+	/** Bottom-row titles, which share in sizing their columns (see `layoutColumnWidths`). */
+	titles: HeaderTitle[];
+}
+
+interface HeaderTitle {
+	column: number;
+	text: string;
+	/** The title on one line, in bold. */
+	px: number;
+	/** The title's longest word, in bold: the narrowest it can wrap to. */
+	longestWordPx: number;
 }
 
 /**
@@ -347,7 +363,6 @@ interface HeaderLayout {
 function buildHeader(
 	pivotData: PivotResult,
 	columns: ExportColumn[],
-	fitter: ColumnFitter,
 	{
 		palette,
 		font,
@@ -356,7 +371,7 @@ function buildHeader(
 	}: Required<Pick<TableExcelOptions, 'palette' | 'font' | 'wrapTitles' | 'formatTitles'>>
 ): HeaderLayout {
 	const excelColumnByTableIndex = new Map(columns.map((column, i) => [column.tableIndex, i]));
-	const layout: HeaderLayout = { rows: [], spans: [], wraps: [] };
+	const layout: HeaderLayout = { rows: [], spans: [], titles: [] };
 	const levels = pivotData.headerLevels;
 
 	levels.forEach((level, levelIndex) => {
@@ -382,23 +397,23 @@ function buildHeader(
 
 			if (isBottomLevel) {
 				const [column] = covered;
-				const titlePx = measureTextPx(title, font, true);
-				const longestWordPx = Math.max(
-					0,
-					...title.split(/\s+/).map((word) => measureTextPx(word, font, true))
-				);
-				fitter.fitPx(
+				layout.titles.push({
 					column,
-					wrapTitles ? Math.max(longestWordPx, Math.min(titlePx, HEADER_WRAP_PX)) : titlePx
-				);
-				if (wrapTitles && titlePx > HEADER_WRAP_PX) layout.wraps.push({ column, text: title });
+					text: title,
+					px: measureTextPx(title, font, true),
+					longestWordPx: Math.max(
+						0,
+						...title.split(/\s+/).map((word) => measureTextPx(word, font, true))
+					)
+				});
 				headerRow[column] = {
 					value: title,
 					style: {
 						font: { bold: true },
+						// Titles sit on the rule under them, as on screen, when others wrap taller.
 						alignment: {
 							horizontal: cell.align,
-							vertical: 'center',
+							vertical: 'bottom',
 							...(wrapTitles ? { wrapText: true } : {})
 						},
 						border: { bottom: thinBorder(palette.emphasisBorder) },
@@ -427,6 +442,42 @@ function buildHeader(
 		layout.rows.push(headerRow);
 	});
 	return layout;
+}
+
+/**
+ * Column widths with the bottom header titles laid out over the data, the way the report lays
+ * out its table, which fills the page's width. Each column ranges from its narrowest (its data,
+ * or the title's longest word when titles wrap) to its widest (its data, or the title on one
+ * line, up to `HEADER_WRAP_PX`). A table that fits in `TABLE_LAYOUT_WIDTH_PX` at its widest gets
+ * those widths, one that doesn't fit at its narrowest gets those, and in between each column
+ * gets its narrowest plus a share of the remaining room in proportion to how much wider it
+ * could be.
+ */
+function layoutColumnWidths(
+	dataWidths: number[],
+	maxWidths: number[],
+	titles: HeaderTitle[],
+	{ font, wrapTitles }: { font: ExcelFont; wrapTitles: boolean }
+): number[] {
+	const narrowest = [...dataWidths];
+	const widest = [...dataWidths];
+	for (const { column, px, longestWordPx } of titles) {
+		const width = (contentPx: number) =>
+			Math.min(pxToColumnWidth(contentPx + CELL_PADDING_PX, font), maxWidths[column]);
+		const oneLinePx = wrapTitles ? Math.max(longestWordPx, Math.min(px, HEADER_WRAP_PX)) : px;
+		widest[column] = Math.max(widest[column], width(oneLinePx));
+		narrowest[column] = Math.max(narrowest[column], width(wrapTitles ? longestWordPx : px));
+	}
+
+	const sum = (widths: number[]) => widths.reduce((total, width) => total + width, 0);
+	const available = TABLE_LAYOUT_WIDTH_PX / maxDigitWidthPx(font);
+	const [totalNarrowest, totalWidest] = [sum(narrowest), sum(widest)];
+	if (totalWidest <= available) return widest;
+	if (totalNarrowest >= available) return narrowest;
+	const share = (available - totalNarrowest) / (totalWidest - totalNarrowest);
+	return narrowest.map(
+		(width, column) => Math.ceil((width + (widest[column] - width) * share) * 256) / 256
+	);
 }
 
 /** Builds the worksheet for a table, from the same sorted pivot data the table renders. */
@@ -492,7 +543,7 @@ export function buildTableExcelSheet(
 		});
 
 	const fitter = new ColumnFitter(font);
-	const header = buildHeader(pivotData, columns, fitter, {
+	const header = buildHeader(pivotData, columns, {
 		palette,
 		font,
 		wrapTitles,
@@ -526,8 +577,11 @@ export function buildTableExcelSheet(
 	const barRows = new Map<number, number[]>();
 	const sparklineSeries = new Map<number, { row: number; values: number[] }[]>();
 	const wrappedCells = new Map<number, { column: number; text: string; bold?: boolean }[]>();
-	for (const { column, text } of header.wraps) {
-		push(wrappedCells, bodyStart - 1, { column, text, bold: true });
+	// Titles wrap to their column's final width, which the header row grows to fit.
+	if (wrapTitles) {
+		for (const { column, text } of header.titles) {
+			push(wrappedCells, bodyStart - 1, { column, text, bold: true });
+		}
 	}
 	let hyperlinkCount = 0;
 	// Where a merged dimension cell ends, so row lines don't cut through it.
@@ -748,12 +802,12 @@ export function buildTableExcelSheet(
 	}
 
 	// ==================== WIDTHS AND HEIGHTS ====================
-	const widths = columns.map(({ wraps }, column) =>
-		fitter.width(column, wraps ? WRAP_COLUMN_MAX_WIDTH : MAX_COLUMN_WIDTH)
-	);
+	const maxWidths = columns.map(({ wraps }) => (wraps ? WRAP_COLUMN_MAX_WIDTH : MAX_COLUMN_WIDTH));
+	const dataWidths = columns.map((_, column) => fitter.width(column, maxWidths[column]));
 	for (const column of sparklineSeries.keys()) {
-		widths[column] = Math.max(widths[column], SPARKLINE_COLUMN_WIDTH);
+		dataWidths[column] = Math.max(dataWidths[column], SPARKLINE_COLUMN_WIDTH);
 	}
+	const widths = layoutColumnWidths(dataWidths, maxWidths, header.titles, { font, wrapTitles });
 	// Widen the columns under a spanning label that's longer than they are.
 	for (const { first, last, px } of header.spans) {
 		const spanWidth = widths.slice(first, last + 1).reduce((sum, width) => sum + width, 0);

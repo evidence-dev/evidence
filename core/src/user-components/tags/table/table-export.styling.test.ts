@@ -5,7 +5,12 @@ import { buildTableExcelSheet, type TableExcelOptions } from './table-export';
 import { CALIBRI_11, columnWidthToPx, measureTextPx } from '../../../shims/excel/font';
 import { calculateColorStyles } from './table-viz';
 import { resolveExcelPalette, toExcelRgb, blendColors } from '../../../shims/excel/palette';
-import { writeWorkbook, type SheetCell } from '../../../shims/excel/workbook';
+import {
+	countWrappedLines,
+	wrappedRowHeight,
+	writeWorkbook,
+	type SheetCell
+} from '../../../shims/excel/workbook';
 import { readZipEntry, roundTripSheet, cellAt } from '../../../test-utils/xlsx';
 
 const palette = resolveExcelPalette();
@@ -563,6 +568,73 @@ describe('table Excel export: review cases', () => {
 		expect(columnWidthToPx(width, CALIBRI_11)).toBeGreaterThanOrEqual(
 			measureTextPx('1,234,567.89', CALIBRI_11)
 		);
+	});
+});
+
+describe('table Excel export: header widths', () => {
+	/** A dimension column and `count` measure columns titled `title`, holding percentages. */
+	function titledTable(title: string, count: number) {
+		const measures = Array.from({ length: count }, (_, i) =>
+			measure(`m${i}`, { title, fmt: 'pct0' })
+		);
+		return table(
+			[meta('region'), ...measures],
+			[dataRow(Object.fromEntries([['region', 'East'], ...measures.map((m) => [m.key, 0.5])]))]
+		);
+	}
+	const headerHeight = (sheet: ReturnType<typeof build>) =>
+		sheet.rowDefs?.get((sheet.freezePane?.rows ?? 0) - 1)?.height;
+	const widthPx = (sheet: ReturnType<typeof build>, column: number) =>
+		columnWidthToPx(sheet.columns?.[column]?.width ?? 0, CALIBRI_11);
+	const boldPx = (text: string) => measureTextPx(text, CALIBRI_11, true);
+
+	it('keeps titles on one line in a table that fits the page', () => {
+		const sheet = build(titledTable('Net Revenue Growth', 3));
+
+		expect(widthPx(sheet, 1)).toBeGreaterThanOrEqual(boldPx('Net Revenue Growth'));
+		expect(headerHeight(sheet)).toBe(18);
+	});
+
+	it('wraps titles in a table too wide for the page, as the report does', () => {
+		const title = 'SpartanNash Wholesale & Retail';
+		const sheet = build(titledTable(title, 40));
+		const width = sheet.columns?.[1]?.width ?? 0;
+
+		// As narrow as the title's longest word allows, not as wide as the whole title.
+		expect(widthPx(sheet, 1)).toBeGreaterThanOrEqual(boldPx('SpartanNash'));
+		expect(widthPx(sheet, 1)).toBeLessThan(boldPx('SpartanNash Wholesale'));
+		const lines = countWrappedLines(title, width, CALIBRI_11, true);
+		expect(lines).toBe(3);
+		expect(headerHeight(sheet)).toBe(wrappedRowHeight(lines, CALIBRI_11));
+		// Shorter titles in the taller row sit on the rule, as on screen.
+		const headerRow = (sheet.rows as SheetCell[][])[(sheet.freezePane?.rows ?? 0) - 1];
+		expect(style(headerRow[0]).alignment?.vertical).toBe('bottom');
+	});
+
+	it('shares the room left on the page between the titles that would wrap', () => {
+		const sheet = build(titledTable('Average Order Value Growth', 10));
+		const widths = sheet.columns?.map((column) => column.width ?? 0) ?? [];
+		const totalPx = widths.reduce((sum, width) => sum + width, 0) * 7;
+
+		expect(totalPx).toBeCloseTo(960, -1);
+		expect(widthPx(sheet, 1)).toBeGreaterThan(boldPx('Average'));
+		expect(widthPx(sheet, 1)).toBeLessThan(boldPx('Average Order Value Growth'));
+	});
+
+	it('still wraps a title longer than 200px in a table that fits', () => {
+		const title = 'Share of stores selling the item in the latest four weeks';
+		const sheet = build(titledTable(title, 1));
+
+		expect(widthPx(sheet, 1)).toBeLessThan(boldPx(title));
+		expect(headerHeight(sheet)).toBeGreaterThan(18);
+	});
+
+	it('never wraps titles when wrap_titles is off', () => {
+		const title = 'SpartanNash Wholesale & Retail';
+		const sheet = build(titledTable(title, 40), { wrapTitles: false });
+
+		expect(widthPx(sheet, 1)).toBeGreaterThanOrEqual(boldPx(title));
+		expect(headerHeight(sheet)).toBe(18);
 	});
 });
 
