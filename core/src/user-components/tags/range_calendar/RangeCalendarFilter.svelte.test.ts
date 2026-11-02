@@ -142,3 +142,124 @@ describe('RangeCalendarFilter (bounded all_time_range)', () => {
 		);
 	});
 });
+
+describe('RangeCalendarFilter grain', () => {
+	// Monday, Nov 2 2026 — the anchor for relative ranges
+	const settings = {
+		first_day_of_week: 'sunday' as const,
+		computedDefaultDateRangeEnd: '2026-11-02'
+	};
+
+	function makeGrainFilter(attributes: Record<string, unknown>, firstDayOfWeek = 'sunday') {
+		return new RangeCalendarFilter(
+			{ id: 'date_filter', userComponentName: 'range_calendar', attributes } as never,
+			{
+				url: undefined,
+				updateUrl: undefined,
+				projectSettings: { ...settings, first_day_of_week: firstDayOfWeek } as never,
+				dialect: undefined
+			}
+		);
+	}
+
+	it('defaults to day and leaves ranges exactly as selected', () => {
+		const filter = makeGrainFilter({ value_column: 'd' });
+		filter.setDefault({ range: '2025-01-15 to 2025-02-10' });
+		expect(filter.grain).toBe('day');
+		expect(filter.templateValues).toMatchObject({
+			grain: 'day',
+			range: '2025-01-15 to 2025-02-10',
+			between: "BETWEEN toDate('2025-01-15') AND toDate('2025-02-10')"
+		});
+	});
+
+	it('widens a selection to whole periods in every SQL property', () => {
+		const filter = makeGrainFilter({ value_column: 'd', grain: 'month' });
+		// e.g. a hand-edited URL: ?date_filter=2025-01-15 to 2025-02-10
+		filter.setDefault({ range: '2025-01-15 to 2025-02-10' });
+		expect(filter.templateValues).toMatchObject({
+			grain: 'month',
+			start: "toDate('2025-01-01')",
+			end: "toDate('2025-02-28')",
+			between: "BETWEEN toDate('2025-01-01') AND toDate('2025-02-28')",
+			filter: "d >= toDate('2025-01-01') AND d <= toDate('2025-02-28')",
+			range: '2025-01-01 to 2025-02-28'
+		});
+		expect(filter.sql).toBe("d >= toDate('2025-01-01') AND d <= toDate('2025-02-28')");
+	});
+
+	it('keeps a preset that already lines up, so `.range` stays readable', () => {
+		const filter = makeGrainFilter({ grain: 'month', default_range: 'previous 3 months' });
+		expect(filter.templateValues).toMatchObject({
+			range: 'previous 3 months',
+			between: "BETWEEN toDate('2026-08-01') AND toDate('2026-10-31')"
+		});
+	});
+
+	it('reports the widened dates as `.range`, which charts use as their date_range', () => {
+		// The picker still names it "Year to Date", but charts need the whole-month range
+		const filter = makeGrainFilter({ grain: 'month', default_range: 'year to date' });
+		expect(filter.templateValues.range).toBe('2026-01-01 to 2026-11-30');
+	});
+
+	it('widens a rolling default_range to whole periods', () => {
+		// last 30 days on Nov 2 = Oct 4 – Nov 2
+		const filter = makeGrainFilter({ grain: 'month', default_range: 'last 30 days' });
+		expect(filter.templateValues.between).toBe(
+			"BETWEEN toDate('2026-10-01') AND toDate('2026-11-30')"
+		);
+	});
+
+	it('snaps weeks to first_day_of_week', () => {
+		const sunday = makeGrainFilter({ grain: 'week' }, 'sunday');
+		sunday.setDefault({ range: '2026-11-04 to 2026-11-04' });
+		expect(sunday.templateValues.between).toBe(
+			"BETWEEN toDate('2026-11-01') AND toDate('2026-11-07')"
+		);
+		const monday = makeGrainFilter({ grain: 'week' }, 'monday');
+		monday.setDefault({ range: '2026-11-04 to 2026-11-04' });
+		expect(monday.templateValues.between).toBe(
+			"BETWEEN toDate('2026-11-02') AND toDate('2026-11-08')"
+		);
+	});
+
+	it('widens a bounded all_time_range too', () => {
+		const filter = makeGrainFilter({ grain: 'year', all_time_range: 'from 2022-12-01' });
+		expect(filter.templateValues.between).toBe(">= toDate('2022-01-01')");
+	});
+
+	it('leaves unbounded "all time" alone', () => {
+		const filter = makeGrainFilter({ grain: 'quarter' });
+		expect(filter.templateValues).toMatchObject({ between: 'IS NOT NULL', grain: 'quarter' });
+	});
+
+	it('takes the grain from the component when the attribute is a variable', () => {
+		const filter = makeGrainFilter({ grain: '{{grain_selector}}' });
+		filter.setDefault({ range: '2025-05-15 to 2025-05-20' });
+		// Until the component resolves it, a variable grain can't be read here
+		expect(filter.grain).toBe('day');
+		filter.runtimeGrain = 'quarter';
+		expect(filter.grain).toBe('quarter');
+		expect(filter.templateValues.between).toBe(
+			"BETWEEN toDate('2025-04-01') AND toDate('2025-06-30')"
+		);
+	});
+
+	it('prefers a literal grain over a runtime one', () => {
+		const filter = makeGrainFilter({ grain: 'year' });
+		filter.runtimeGrain = 'week';
+		expect(filter.grain).toBe('year');
+	});
+
+	it('leaves an impossible date from the URL alone instead of throwing', () => {
+		const filter = makeGrainFilter({ grain: 'month' });
+		filter.setDefault({ range: '2025-13-01 to 2025-13-31' });
+		expect(filter.templateValues.between).toBe(
+			"BETWEEN toDate('2025-13-01') AND toDate('2025-13-31')"
+		);
+	});
+
+	it('falls back to day for an unrecognized grain', () => {
+		expect(makeGrainFilter({ grain: 'hour' }).grain).toBe('day');
+	});
+});

@@ -143,3 +143,100 @@ describe('range_calendar schema.validate — custom_ranges entry warnings', () =
 		expect(warnings([{ label: '2020 Season', range: '2020-07-23 to 2020-09-08' }])).toEqual([]);
 	});
 });
+
+describe('range_calendar grain validation', () => {
+	const ids = (errors: { id: string }[]) => errors.map((error) => error.id);
+
+	it('accepts every grain and a variable', () => {
+		for (const grain of [
+			'day',
+			'week',
+			'month',
+			'quarter',
+			'year',
+			'Month',
+			'{{grain_selector}}'
+		]) {
+			expect(validate({ grain })).toEqual([]);
+		}
+	});
+
+	it('rejects an unknown grain', () => {
+		const errors = validate({ grain: 'monthly' });
+		expect(ids(errors)).toEqual(['invalid-grain']);
+		expect(errors[0].level).toBe('error');
+	});
+
+	it('warns when default_range will be widened', () => {
+		const errors = validate({ grain: 'month', default_range: 'last 30 days' });
+		expect(ids(errors)).toEqual(['range-wider-than-grain']);
+		expect(errors[0].level).toBe('warning');
+		expect(errors[0].message).toContain('whole months');
+	});
+
+	it('accepts ranges that line up', () => {
+		expect(validate({ grain: 'month', default_range: 'previous 3 months' })).toEqual([]);
+		expect(validate({ grain: 'month', default_range: 'year to date' })).toEqual([]);
+		expect(validate({ grain: 'week', default_range: 'previous week' })).toEqual([]);
+		expect(validate({ grain: 'month', all_time_range: 'unbounded' })).toEqual([]);
+	});
+
+	it('warns for all_time_range and each preset_ranges entry that will be widened', () => {
+		expect(ids(validate({ grain: 'quarter', all_time_range: 'from 2022-12-01' }))).toEqual([
+			'range-wider-than-grain'
+		]);
+		const errors = validate({
+			grain: 'month',
+			preset_ranges: ['last 7 days', 'previous month', 'last 3 months']
+		});
+		expect(errors.map((error) => error.message)).toEqual([
+			expect.stringContaining('"last 7 days"'),
+			expect.stringContaining('"last 3 months"')
+		]);
+	});
+
+	it('warns for custom_ranges that will be widened', () => {
+		expect(ids(validate({ grain: 'month', custom_ranges: [{ range: 'last 30 days' }] }))).toEqual([
+			'range-wider-than-grain'
+		]);
+		// Weeks don't fit in months
+		expect(
+			ids(
+				validate({ grain: 'month', custom_ranges: [{ range: 'from 2024-01-01', grain: 'week' }] })
+			)
+		).toEqual(['range-wider-than-grain']);
+		// A fiscal year from February fits whole months but not whole quarters
+		const fiscal = [{ label: 'FY{start:yyyy}', range: 'from 2022-02-01', grain: 'year' }];
+		expect(validate({ grain: 'month', custom_ranges: fiscal })).toEqual([]);
+		expect(ids(validate({ grain: 'quarter', custom_ranges: fiscal }))).toEqual([
+			'range-wider-than-grain'
+		]);
+		// Relative windows slice into calendar periods, which line up
+		expect(
+			validate({ grain: 'month', custom_ranges: [{ range: 'last 6 months', grain: 'month' }] })
+		).toEqual([]);
+	});
+
+	it('reports grain errors alongside other range errors', () => {
+		expect(ids(validate({ grain: 'monthly', default_range: 'last 7 dayz' }))).toEqual([
+			'invalid-grain',
+			'invalid-default-range'
+		]);
+	});
+
+	it('checks the deprecated defaultRange spelling and every window of a custom range', () => {
+		expect(ids(validate({ grain: 'month', defaultRange: 'last 30 days' }))).toEqual([
+			'range-wider-than-grain'
+		]);
+		const windows = ['2025-01-01 to 2025-12-31', '2026-01-15 to 2026-12-31'];
+		const errors = validate({ grain: 'month', custom_ranges: [{ range: windows }] });
+		expect(errors.map((error) => error.message)).toEqual([
+			expect.stringContaining('"2026-01-15 to 2026-12-31"')
+		]);
+	});
+
+	it('skips the widening check for a variable grain or variable range', () => {
+		expect(validate({ grain: '{{g}}', default_range: 'last 30 days' })).toEqual([]);
+		expect(validate({ grain: 'month', default_range: '{{other.range}}' })).toEqual([]);
+	});
+});

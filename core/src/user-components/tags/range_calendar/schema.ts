@@ -6,13 +6,104 @@ import { ZodAttribute } from '../../common/zod-attribute';
 import { DATE_RANGES_TUPLE, isValidDateRangeExpression } from '../../common/date-options';
 import { CUSTOM_RANGE_GRAINS } from '../../common/custom-ranges';
 import { validateDefaultAgainstPresets } from '../../validators';
+import {
+	CALENDAR_GRAINS,
+	grainFitsInside,
+	parseCalendarGrain,
+	rangeNeedsWidening,
+	type CalendarGrain
+} from '../../common/period-calendar';
 
 // Accepts a preset key OR any other string (a custom_ranges label, a variable) — the enum branch makes the
 // docs generator render the preset keys as an "Allowed values" list, while the string branch keeps it
 // permissive (strict `matches` would reject labels/variables). Real validation is in `validate` below.
 const dateRangeValue = z.union([z.enum(DATE_RANGES_TUPLE), z.string()]);
 
+// Like dateRangeValue: the enum lists the grains in the docs, the string branch admits variables.
+const grainValue = z.union([z.enum(CALENDAR_GRAINS), z.string()]);
+
 const CUSTOM_RANGE_ENTRY_KEYS = ['label', 'range', 'grain'];
+
+const GRAIN_PLURAL: Record<CalendarGrain, string> = {
+	day: 'days',
+	week: 'weeks',
+	month: 'months',
+	quarter: 'quarters',
+	year: 'years'
+};
+
+const hasVariable = (value: unknown) => typeof value === 'string' && value.includes('{{');
+
+// A custom_ranges window with a literal start date, which anchors its sliced periods to that date.
+const LITERAL_START = /^(?:from )?(\d{4}-\d{2}-\d{2})/i;
+
+/**
+ * Check `grain`, and warn about every range the author wrote that will be widened to fit it:
+ * `default_range`, `all_time_range`, `preset_ranges` and `custom_ranges`. Widening is a warning, not
+ * an error — the picker still works, but the dates applied aren't the dates on the page.
+ */
+function validateGrain(
+	attributes: Record<string, unknown>,
+	location: ValidationError['location']
+): ValidationError[] {
+	const raw = attributes.grain;
+	if (raw === undefined || raw === null || raw === '' || hasVariable(raw)) return [];
+	const grain = parseCalendarGrain(raw);
+	if (!grain) {
+		return [
+			{
+				id: 'invalid-grain',
+				level: 'error',
+				message: `grain "${String(raw)}" is not valid — use day, week, month, quarter, or year.`,
+				location
+			}
+		];
+	}
+	if (grain === 'day') return [];
+
+	const warnings: ValidationError[] = [];
+	const warn = (what: string) =>
+		warnings.push({
+			id: 'range-wider-than-grain',
+			level: 'warning',
+			message: `${what} doesn't line up with grain="${grain}", so it will be widened to whole ${GRAIN_PLURAL[grain]}.`,
+			location
+		});
+	const check = (what: string, range: unknown) => {
+		if (typeof range === 'string' && !hasVariable(range) && rangeNeedsWidening(range, grain)) {
+			warn(`${what} "${range}"`);
+		}
+	};
+
+	check('default_range', attributes.default_range ?? attributes.defaultRange);
+	const allTime = attributes.all_time_range;
+	if (allTime !== 'unbounded' && allTime !== 'none') check('all_time_range', allTime);
+	if (Array.isArray(attributes.preset_ranges)) {
+		for (const preset of attributes.preset_ranges) check('preset_ranges entry', preset);
+	}
+	if (Array.isArray(attributes.custom_ranges)) {
+		for (const entry of attributes.custom_ranges) {
+			if (!entry || typeof entry !== 'object' || Array.isArray(entry)) continue;
+			const rule = entry as Record<string, unknown>;
+			const windows = Array.isArray(rule.range) ? rule.range : [rule.range];
+			const slice = parseCalendarGrain(rule.grain);
+			if (!slice) {
+				for (const window of windows) check('custom_ranges range', window);
+			} else if (!grainFitsInside(slice, grain)) {
+				warn(`custom_ranges grain "${slice}"`);
+			} else {
+				// Sliced periods start at a literal start date; relative windows snap to the calendar.
+				for (const window of windows) {
+					const start = typeof window === 'string' ? window.match(LITERAL_START)?.[1] : undefined;
+					if (start && rangeNeedsWidening(`from ${start}`, grain)) {
+						warn(`custom_ranges range "${window}"`);
+					}
+				}
+			}
+		}
+	}
+	return warnings;
+}
 
 // Markdoc only type-checks that `custom_ranges` is an array; it can't see inside each entry. Flag the
 // common silent footguns (a malformed entry otherwise just drops from the picker with no feedback). These
@@ -90,6 +181,16 @@ export const schema = {
 			description: 'Text displayed above the date range picker',
 			required: false,
 			affectsQuery: false,
+			supportsVariables: true,
+			variableContext: 'text'
+		},
+		grain: {
+			type: ZodAttribute.create(grainValue),
+			description:
+				"The period a selection snaps to: `day` (the default), `week`, `month`, `quarter`, or `year`. At `week`, a click selects that whole week; at `month`, `quarter`, and `year` the picker shows a grid of periods instead of days. A click selects one period and a second click extends the selection. Every range — a preset, `default_range`, or dates in the URL — is widened to whole periods, so SQL always gets complete periods. Weeks start on the project's `first_day_of_week`. Accepts a variable, e.g. `grain={{grain_selector}}`.",
+			required: false,
+			default: 'day',
+			affectsQuery: true,
 			supportsVariables: true,
 			variableContext: 'text'
 		},
@@ -229,6 +330,24 @@ where date {{date_filter.between}}
         range={{date_filter}}
     }
 /%}`
+		},
+		{
+			name: 'grain',
+			description:
+				'Returns the grain selections snap to: `day`, `week`, `month`, `quarter`, or `year`. Use it to group a chart by the period the viewer picks in, e.g. `date_grain={{date_filter.grain}}`.',
+			singleValue: 'month',
+			example: `{% range_calendar id="date_filter" grain="month" /%}
+
+{% line_chart
+    data="demo.daily_orders"
+    x="date"
+    y="sum(total_sales)"
+    date_grain={{date_filter.grain}}
+    date_range={
+        date="date"
+        range={{date_filter}}
+    }
+/%}`
 		}
 	],
 	isFilterInput: true,
@@ -301,6 +420,36 @@ where date {{date_filter.between}}
 /%}`
 		},
 		{
+			title: 'Selecting whole periods with `grain`',
+			example: `{% range_calendar id="date_filter" value_column="date" grain="month" /%}
+
+{% bar_chart
+    data="demo.daily_orders"
+    x="date"
+    y="sum(total_sales)"
+    date_grain="month"
+    filters=["date_filter"]
+/%}`
+		},
+		{
+			title: 'Grain from a `date_grain_selector`',
+			example: `{% date_grain_selector
+    id="grain_selector"
+    preset_values=["week", "month", "quarter"]
+    default_value="month"
+/%}
+
+{% range_calendar id="date_filter" value_column="date" grain={{grain_selector}} /%}
+
+{% line_chart
+    data="demo.daily_orders"
+    x="date"
+    y="sum(total_sales)"
+    date_grain={{grain_selector}}
+    filters=["date_filter"]
+/%}`
+		},
+		{
 			title: 'Named presets with `custom_ranges`',
 			example: `{% range_calendar
     id="date_filter"
@@ -316,11 +465,12 @@ where date {{date_filter.between}}
 		}
 	],
 	validate: (node, config, context) => {
+		const grainErrors = validateGrain(node.attributes, node.location);
 		const customRanges = node.attributes.custom_ranges;
 		// With custom_ranges the default may be a generated label we can't resolve statically, so skip the
 		// default_range preset check — but still flag malformed custom_ranges entries.
 		if (Array.isArray(customRanges) && customRanges.length > 0) {
-			return validateCustomRanges(customRanges, node.location);
+			return [...grainErrors, ...validateCustomRanges(customRanges, node.location)];
 		}
 		const errors: ValidationError[] = [];
 		// Every range a user types is validated by the one shared grammar (isValidDateRangeExpression), so
@@ -353,12 +503,15 @@ where date {{date_filter.between}}
 				});
 			}
 		}
-		if (errors.length > 0) return errors;
-		return validateDefaultAgainstPresets({
-			defaultAttrs: ['default_range', 'defaultRange'],
-			presetsAttr: 'preset_ranges',
-			errorId: 'invalid-default-range',
-			displayName: 'default_range'
-		})(node, config, context);
+		if (errors.length > 0) return [...grainErrors, ...errors];
+		return [
+			...grainErrors,
+			...validateDefaultAgainstPresets({
+				defaultAttrs: ['default_range', 'defaultRange'],
+				presetsAttr: 'preset_ranges',
+				errorId: 'invalid-default-range',
+				displayName: 'default_range'
+			})(node, config, context)
+		];
 	}
 } as const satisfies UserComponentSchema;
