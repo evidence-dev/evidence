@@ -1,22 +1,11 @@
-import {
-	addDays,
-	endOfMonth,
-	endOfQuarter,
-	endOfWeek,
-	endOfYear,
-	format,
-	startOfMonth,
-	startOfQuarter,
-	startOfWeek,
-	startOfDay,
-	subDays,
-	startOfYear,
-	subMonths,
-	subQuarters,
-	subWeeks,
-	subYears
-} from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { parseDateStringAsLocalMidnight } from '../../utils/date-utils';
+import {
+	CALENDAR_GRAINS,
+	gregorianCalendar,
+	type CalendarGrain,
+	type FirstDayOfWeek
+} from './period-calendar';
 
 /**
  * Reporting periods for `workflow.period`. Separate from `date-options.ts`,
@@ -25,9 +14,9 @@ import { parseDateStringAsLocalMidnight } from '../../utils/date-utils';
  */
 
 /** The temporal grains from `DATE_GRAIN_DEFINITIONS`, minus `hour`. */
-export const PERIOD_GRAINS = ['day', 'week', 'month', 'quarter', 'year'] as const;
+export const PERIOD_GRAINS = CALENDAR_GRAINS;
 
-export type PeriodGrain = (typeof PERIOD_GRAINS)[number];
+export type PeriodGrain = CalendarGrain;
 
 export const DEFAULT_PERIOD_GRAIN: PeriodGrain = 'month';
 export const DEFAULT_PERIOD_COUNT = 12;
@@ -41,7 +30,7 @@ export const MAX_PERIOD_COUNT = 500;
  */
 export const WORKFLOW_PERIOD_FILTER_ID = 'period';
 
-export type FirstDayOfWeek = 'sunday' | 'monday';
+export type { FirstDayOfWeek } from './period-calendar';
 
 export type ReportingPeriod = {
 	/** Stable, URL-safe identifier, e.g. `2026-07`. Unique within a grain. */
@@ -60,51 +49,17 @@ export function isPeriodGrain(grain: unknown): grain is PeriodGrain {
 
 const toIso = (date: Date) => format(date, 'yyyy-MM-dd');
 
-const weekStartsOn = (firstDayOfWeek: FirstDayOfWeek) => (firstDayOfWeek === 'monday' ? 1 : 0);
-
 function periodStart(date: Date, grain: PeriodGrain, firstDayOfWeek: FirstDayOfWeek): Date {
-	switch (grain) {
-		case 'day':
-			return startOfDay(date);
-		case 'week':
-			return startOfWeek(date, { weekStartsOn: weekStartsOn(firstDayOfWeek) });
-		case 'month':
-			return startOfMonth(date);
-		case 'quarter':
-			return startOfQuarter(date);
-		case 'year':
-			return startOfYear(date);
-	}
+	return gregorianCalendar(firstDayOfWeek).startOf(date, grain);
 }
 
 function periodEnd(start: Date, grain: PeriodGrain, firstDayOfWeek: FirstDayOfWeek): Date {
-	switch (grain) {
-		case 'day':
-			return start;
-		case 'week':
-			return endOfWeek(start, { weekStartsOn: weekStartsOn(firstDayOfWeek) });
-		case 'month':
-			return endOfMonth(start);
-		case 'quarter':
-			return endOfQuarter(start);
-		case 'year':
-			return endOfYear(start);
-	}
+	return gregorianCalendar(firstDayOfWeek).endOf(start, grain);
 }
 
+// Week start doesn't matter when stepping from a period's start by whole periods.
 function previousPeriodStart(start: Date, grain: PeriodGrain): Date {
-	switch (grain) {
-		case 'day':
-			return subDays(start, 1);
-		case 'week':
-			return subWeeks(start, 1);
-		case 'month':
-			return subMonths(start, 1);
-		case 'quarter':
-			return subQuarters(start, 1);
-		case 'year':
-			return subYears(start, 1);
-	}
+	return gregorianCalendar().shift(start, grain, -1);
 }
 
 function periodKey(start: Date, grain: PeriodGrain): string {
@@ -125,18 +80,7 @@ function periodKey(start: Date, grain: PeriodGrain): string {
 }
 
 function periodLabel(start: Date, grain: PeriodGrain): string {
-	switch (grain) {
-		case 'day':
-			return format(start, 'MMM d, yyyy');
-		case 'week':
-			return `Week of ${format(start, 'MMM d, yyyy')}`;
-		case 'month':
-			return format(start, 'MMM yyyy');
-		case 'quarter':
-			return format(start, "'Q'Q yyyy");
-		case 'year':
-			return format(start, 'yyyy');
-	}
+	return gregorianCalendar().label(start, grain);
 }
 
 function toPeriod(
