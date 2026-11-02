@@ -7,6 +7,11 @@ import { processDateRange } from '../../common/date-options';
 import { resolveCustomRangeDefault, type CustomRangeRule } from '../../common/custom-ranges';
 import { DEFAULT_PROJECT_SETTINGS } from '../../interfaces/project-settings';
 import { parseDateStringAsLocalMidnight } from '../../../utils/date-utils';
+import {
+	parseCalendarGrain,
+	snapRangeExpression,
+	type CalendarGrain
+} from '../../common/period-calendar';
 
 type RangeCalendarAttributes = UserComponentProps<typeof schema>;
 
@@ -19,6 +24,17 @@ export class RangeCalendarFilter extends Filter<RangeCalendarValue> {
 	static override defaultProperty = { sql: 'between', text: 'range', column: 'range' };
 
 	attributes: Omit<UserComponentProps<typeof schema>, 'id'>;
+
+	/**
+	 * The grain from a variable `grain` attribute (`grain={{grain_selector}}`), set by the component.
+	 * Filters see attributes unresolved, so only the rendered component can read another input's value.
+	 */
+	runtimeGrain: CalendarGrain | undefined = $state(undefined);
+
+	/** The period every range snaps to: a literal `grain`, else the component-resolved one, else day. */
+	get grain(): CalendarGrain {
+		return parseCalendarGrain(this.attributes.grain) ?? this.runtimeGrain ?? 'day';
+	}
 
 	private get anchorDate() {
 		// Use computed default date range end from project settings
@@ -38,11 +54,22 @@ export class RangeCalendarFilter extends Filter<RangeCalendarValue> {
 	}
 
 	/**
-	 * The range string to process, applying `all_time_range` for the "all time" state (default, explicit
-	 * pick, or cleared filter). Returns undefined only for all-time with all_time_range "unbounded"/"none" —
-	 * those don't map to a bounded range and are special-cased by the callers (IS NOT NULL / empty).
+	 * The range string to process: the selection (or `all_time_range` for the "all time" state), widened
+	 * to whole `grain` periods so SQL only ever sees complete periods — whether the range came from the
+	 * picker, a preset, `default_range`, or a hand-edited URL. Returns undefined only for all-time with
+	 * all_time_range "unbounded"/"none", which callers special-case (IS NOT NULL / empty).
 	 */
 	private effectiveRange(): string | undefined {
+		return snapRangeExpression(
+			this.selectedRange(),
+			this.grain,
+			this.anchorDate,
+			this.projectSettings.first_day_of_week
+		);
+	}
+
+	/** The range before snapping: the selection, or `all_time_range` for the "all time" state. */
+	private selectedRange(): string | undefined {
 		const range = this.value && typeof this.value === 'object' ? this.value.range : undefined;
 		if (range && range !== 'all time') return range;
 
@@ -94,7 +121,8 @@ export class RangeCalendarFilter extends Filter<RangeCalendarValue> {
 				end: '',
 				between: this.attributes.all_time_range === 'none' ? '' : 'IS NOT NULL',
 				range: 'all time',
-				filter: 'true'
+				filter: 'true',
+				grain: this.grain
 			};
 		}
 
@@ -106,7 +134,8 @@ export class RangeCalendarFilter extends Filter<RangeCalendarValue> {
 			end: processed.endDateSql || '',
 			between: processed.betweenFragment,
 			range: processed.range,
-			filter: processed.whereClause || 'true'
+			filter: processed.whereClause || 'true',
+			grain: this.grain
 		};
 	}
 

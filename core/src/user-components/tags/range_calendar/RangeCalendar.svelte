@@ -30,6 +30,17 @@
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { expandCustomRanges, type CustomRangeRule } from '../../common/custom-ranges';
 	import Ellipsis from '../../../viewer-components/Ellipsis.svelte';
+	import PeriodGrid from './PeriodGrid.svelte';
+	import {
+		gregorianCalendar,
+		parseCalendarGrain,
+		periodContaining,
+		rangeFitsGrain,
+		rangeNeedsWidening,
+		snapRangeExpression,
+		type IsoBounds
+	} from '../../common/period-calendar';
+	import { CURRENT_PERIOD_LABEL, presetsForGrain, selectionLabel } from './grain-ui';
 
 	// Props using UserComponentProps
 	const props: UserComponentProps<typeof schema> = $props();
@@ -66,6 +77,9 @@
 	);
 	const defaultRange = $derived(explicitDefault ?? 'all time');
 	const presetRanges = $derived(props.preset_ranges);
+	// `grain` may be a variable (grain={{grain_selector}}); anything unrecognized means day.
+	const grain = $derived(parseCalendarGrain(resolveText(props.grain) ?? props.grain) ?? 'day');
+	const calendar = $derived(gregorianCalendar(firstDayOfWeek));
 
 	// Date formatter for display
 	const df = new DateFormatter('en-US', {
@@ -76,6 +90,11 @@
 	const filter = $derived(
 		id ? (pageFilters?.get(id) as RangeCalendarFilter | undefined) : undefined
 	);
+
+	// Filters see attributes unresolved, so hand a variable grain to the filter once it's resolved here.
+	$effect(() => {
+		if (filter) filter.runtimeGrain = props.grain?.includes('{{') ? grain : undefined;
+	});
 
 	// Get anchor date for date range calculations
 	const anchorDate = $derived(
@@ -93,44 +112,48 @@
 		)
 	);
 
-	// Internal state for the date range - derived from filter value
-	let startValue = $derived.by(() => {
-		if (!filter?.value || typeof filter.value !== 'object') return undefined;
-		const { range } = filter.value;
-		const iso = range
-			? processDateRange(range, undefined, anchorDate, firstDayOfWeek).startDate
-			: undefined;
-		if (!iso) return undefined;
-		try {
-			return parseDate(iso);
-		} catch {
-			return undefined;
-		}
+	// The selected range as ISO dates, widened to whole periods the same way the filter's SQL is.
+	const selectedBounds = $derived.by((): IsoBounds => {
+		if (!filter?.value || typeof filter.value !== 'object') return {};
+		const range = snapRangeExpression(
+			filter.value.range,
+			grain,
+			anchorDate,
+			firstDayOfWeek,
+			calendar
+		);
+		if (!range) return {};
+		const { startDate, endDate } = processDateRange(range, undefined, anchorDate, firstDayOfWeek);
+		return { start: startDate, end: endDate };
 	});
 
-	let endValue = $derived.by(() => {
-		if (!filter?.value || typeof filter.value !== 'object') return undefined;
-		const { range } = filter.value;
-		const iso = range
-			? processDateRange(range, undefined, anchorDate, firstDayOfWeek).endDate
-			: undefined;
+	function toDateValue(iso: string | undefined): DateValue | undefined {
 		if (!iso) return undefined;
 		try {
 			return parseDate(iso);
 		} catch {
 			return undefined;
 		}
-	});
+	}
+
+	const startValue = $derived(toDateValue(selectedBounds.start));
+	const endValue = $derived(toDateValue(selectedBounds.end));
 
 	// Built-in presets (per preset_ranges) plus any generated custom_ranges.
-	// preset_ranges unset → default visible set; preset_ranges=[] → no built-ins (custom_ranges still show).
+	// preset_ranges unset → the grain's default set; preset_ranges=[] → no built-ins (custom_ranges still show).
 	const filteredPresets = $derived.by(() => {
-		const base = DEFAULT_VISIBLE_PRESET_DEFINITIONS.map(({ key, label }) => ({ key, label }));
+		const base =
+			grain === 'day'
+				? DEFAULT_VISIBLE_PRESET_DEFINITIONS.map(({ key, label }) => ({ key, label }))
+				: presetsForGrain(grain);
 		let builtins: { key: string; label: string }[];
 		if (!presetRanges) {
-			// If a hidden preset is explicitly used as default, include it for this component instance.
+			// If a hidden preset is explicitly used as default, include it for this component instance —
+			// unless it doesn't fit the grain, in which case it's applied widened and not offered.
 			const defaultPreset = defaultRange
-				? PRESET_DEFINITIONS.find((preset) => preset.key === defaultRange)
+				? PRESET_DEFINITIONS.find(
+						(preset) => preset.key === defaultRange && !rangeNeedsWidening(preset.key, grain)
+					)
 				: undefined;
 			builtins =
 				defaultPreset && !base.some((preset) => preset.key === defaultPreset.key)
@@ -148,9 +171,13 @@
 		if (!filter?.value || typeof filter.value !== 'object') return 'All Time';
 		const { range } = filter.value as { range?: string };
 		if (!range || range === 'all time') return 'All Time';
-		// If matches a preset, show label; otherwise null for custom
+		// If matches a preset, show label; otherwise null for custom. A preset that had to be widened to
+		// the grain shows its widened dates instead, so the button names the range actually applied.
 		const matchingPreset = filteredPresets.find((p) => p.key === range);
-		return matchingPreset ? matchingPreset.label : null;
+		if (!matchingPreset) return null;
+		return rangeFitsGrain(range, grain, anchorDate, firstDayOfWeek, calendar)
+			? matchingPreset.label
+			: null;
 	});
 
 	let isPopoverOpen = $state(false);
@@ -180,6 +207,8 @@
 			isPopoverOpen = false;
 			mobileView = 'presets';
 		}
+		pendingWeekStart = undefined;
+		revealKey++;
 		filter.value = { range: preset.key };
 	}
 
@@ -232,11 +261,61 @@
 		}
 	}
 
-	// Select today as a single-day range
+	// Week grain: the first click selects that whole week and is held here for an optional second
+	// click that extends the selection. Meanwhile the calendar sees only this start, so it previews the
+	// range under the pointer; the filter already holds the clicked week.
+	let pendingWeekStart = $state<DateValue | undefined>(undefined);
+	const calendarValue = $derived(
+		grain === 'week' && pendingWeekStart
+			? { start: pendingWeekStart, end: undefined }
+			: currentRange
+	);
+	// Bumped by selections made outside the period grid (a preset, "This …"), so it reopens on them.
+	let revealKey = $state(0);
+
+	function selectBounds(start: string, end: string) {
+		if (filter) filter.value = { range: `${start} to ${end}` };
+	}
+
+	// bits-ui reports some clicks in two steps (it clears the end, then sets the start). Each step is
+	// resolved to whole weeks here, so the last one leaves the right selection.
+	function handleWeekSelect(
+		range: { start: DateValue | undefined; end: DateValue | undefined } | undefined
+	) {
+		const start = range?.start;
+		const end = range?.end;
+		if (start && end) {
+			pendingWeekStart = undefined;
+			selectBounds(
+				periodContaining(start.toString(), 'week', calendar).start,
+				periodContaining(end.toString(), 'week', calendar).end
+			);
+		} else if (start) {
+			const week = periodContaining(start.toString(), 'week', calendar);
+			pendingWeekStart = parseDate(week.start);
+			selectBounds(week.start, week.end);
+		} else {
+			clearSelection();
+		}
+	}
+
+	function clearSelection() {
+		pendingWeekStart = undefined;
+		revealKey++;
+		if (filter) filter.value = { range: 'all time' };
+	}
+
+	// Select today; at other grains, the current period — as the "This …" preset, so it resolves
+	// against the same date as the preset list and highlights that preset.
 	function selectToday() {
 		const d = today(getLocalTimeZone());
 		calendarPlaceholder = d;
-		handleRangeSelect({ start: d, end: d });
+		if (grain === 'day') {
+			handleRangeSelect({ start: d, end: d });
+			return;
+		}
+		const key = `this ${grain}`;
+		applyPreset({ key, label: CURRENT_PERIOD_LABEL[grain] });
 	}
 
 	// Format the display text
@@ -248,6 +327,11 @@
 
 		if (!startValue && !endValue) {
 			return 'All Time';
+		}
+
+		if (grain !== 'day') {
+			const label = selectionLabel(selectedBounds, grain, calendar);
+			if (label) return label;
 		}
 
 		if (startValue && endValue) {
@@ -265,13 +349,30 @@
 		return 'All Time';
 	}
 
-	// Reset mobile view when popover opens
+	// Reset mobile view when popover opens, and drop a week click left waiting for its second click
+	// (the popover can close several ways — Done, Escape, outside click — so reset on the way back in)
 	$effect(() => {
 		if (isPopoverOpen) {
 			mobileView = 'presets';
+			pendingWeekStart = undefined;
 		}
 	});
 </script>
+
+{#snippet periodGrid(periodGrain: 'month' | 'quarter' | 'year', panels: number)}
+	<!-- Remounted by revealKey so a preset or "This …" pick opens the grid on that selection. -->
+	{#key revealKey}
+		<PeriodGrid
+			grain={periodGrain}
+			{calendar}
+			start={selectedBounds.start}
+			end={selectedBounds.end}
+			today={anchorDate}
+			{panels}
+			onSelect={({ start, end }) => selectBounds(start, end)}
+		/>
+	{/key}
+{/snippet}
 
 <div class="mb-4 flex w-full flex-col" style:width>
 	{#if title}
@@ -365,32 +466,34 @@
 											</Button>
 										</div>
 										<div class="w-fit">
-											<RangeCalendar
-												value={currentRange}
-												onValueChange={handleRangeSelect}
-												numberOfMonths={1}
-												{weekStartsOn}
-												captionLayout="dropdown-years"
-												disableDaysOutsideMonth={true}
-												placeholder={calendarPlaceholder}
-												class="[&_[data-outside-month]]:pointer-events-none [&_[data-outside-month]]:!bg-transparent [&_[data-outside-month]]:!text-transparent"
-											/>
+											{#if grain === 'day' || grain === 'week'}
+												<RangeCalendar
+													value={calendarValue}
+													onValueChange={grain === 'week' ? handleWeekSelect : handleRangeSelect}
+													preventDeselect={grain === 'week'}
+													data-grain={grain}
+													numberOfMonths={1}
+													{weekStartsOn}
+													captionLayout="dropdown-years"
+													disableDaysOutsideMonth={true}
+													placeholder={calendarPlaceholder}
+													class="[&_[data-outside-month]]:pointer-events-none [&_[data-outside-month]]:!bg-transparent [&_[data-outside-month]]:!text-transparent"
+												/>
+											{:else}
+												{@render periodGrid(grain, 1)}
+											{/if}
 										</div>
 										<div class="mt-3 flex justify-between gap-2">
 											<Button variant="ghost" size="sm" onclick={selectToday}>
 												<Sun class="size-3.5" />
-												Today
+												{CURRENT_PERIOD_LABEL[grain]}
 											</Button>
 											<div class="flex gap-2">
 												<Button
 													variant="ghost"
 													size="sm"
 													disabled={!startValue && !endValue}
-													onclick={() => {
-														if (filter) {
-															filter.value = { range: 'all time' };
-														}
-													}}
+													onclick={clearSelection}
 												>
 													Clear
 												</Button>
@@ -412,33 +515,35 @@
 
 							<!-- Desktop: Calendar only -->
 							<div class="hidden px-6 py-4 lg:block">
-								<RangeCalendar
-									value={currentRange}
-									onValueChange={handleRangeSelect}
-									numberOfMonths={2}
-									{weekStartsOn}
-									captionLayout="dropdown"
-									pagedNavigation={true}
-									fixedWeeks={true}
-									disableDaysOutsideMonth={true}
-									placeholder={calendarPlaceholder}
-									class="p-0 [&_[data-outside-month]]:pointer-events-none [&_[data-outside-month]]:!bg-transparent [&_[data-outside-month]]:!text-transparent"
-								/>
+								{#if grain === 'day' || grain === 'week'}
+									<RangeCalendar
+										value={calendarValue}
+										onValueChange={grain === 'week' ? handleWeekSelect : handleRangeSelect}
+										preventDeselect={grain === 'week'}
+										data-grain={grain}
+										numberOfMonths={2}
+										{weekStartsOn}
+										captionLayout="dropdown"
+										pagedNavigation={true}
+										fixedWeeks={true}
+										disableDaysOutsideMonth={true}
+										placeholder={calendarPlaceholder}
+										class="p-0 [&_[data-outside-month]]:pointer-events-none [&_[data-outside-month]]:!bg-transparent [&_[data-outside-month]]:!text-transparent"
+									/>
+								{:else}
+									{@render periodGrid(grain, 2)}
+								{/if}
 								<div class="mt-3 flex justify-between gap-2">
 									<Button variant="ghost" size="sm" onclick={selectToday}>
 										<Sun class="size-3.5" />
-										Today
+										{CURRENT_PERIOD_LABEL[grain]}
 									</Button>
 									<div class="flex gap-2">
 										<Button
 											variant="ghost"
 											size="sm"
 											disabled={!startValue && !endValue}
-											onclick={() => {
-												if (filter) {
-													filter.value = { range: 'all time' };
-												}
-											}}
+											onclick={clearSelection}
 										>
 											Clear
 										</Button>
@@ -476,6 +581,18 @@
 </div>
 
 <style>
+	/* Week grain: hovering a day highlights the whole week a click would select. While the calendar
+	   waits for a second click, the first week stays highlighted along with the range being previewed. */
+	:global(
+		[data-grain='week'] tbody tr:has([data-bits-day]:hover) [data-bits-day]:not([data-selected])
+	),
+	:global(
+		[data-grain='week'] tbody tr:has([data-selection-start]) [data-bits-day]:not([data-selected])
+	),
+	:global([data-grain='week'] [data-bits-day][data-highlighted]:not([data-selected])) {
+		background-color: var(--accent);
+		color: var(--accent-foreground);
+	}
 	/* Windows paints the native month/year dropdown with the OS light scheme,
 	   which clashes with dark themes. */
 	:global(.dark [class~='group/calendar'] select) {
