@@ -38,6 +38,9 @@
 	const getProjectSettings = getProjectSettingsContext();
 	const projectSettings = $derived(getProjectSettings());
 	const firstDayOfWeek = $derived(projectSettings.first_day_of_week || 'sunday');
+	// bits-ui numbers weekdays from Sunday = 0 and defaults to Sunday, so pass the project setting
+	// through or the grid disagrees with week presets like "Previous Week".
+	const weekStartsOn = $derived(firstDayOfWeek === 'monday' ? 1 : 0);
 
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
@@ -366,6 +369,7 @@
 												value={currentRange}
 												onValueChange={handleRangeSelect}
 												numberOfMonths={1}
+												{weekStartsOn}
 												captionLayout="dropdown-years"
 												disableDaysOutsideMonth={true}
 												placeholder={calendarPlaceholder}
@@ -412,6 +416,7 @@
 									value={currentRange}
 									onValueChange={handleRangeSelect}
 									numberOfMonths={2}
+									{weekStartsOn}
 									captionLayout="dropdown"
 									pagedNavigation={true}
 									fixedWeeks={true}
