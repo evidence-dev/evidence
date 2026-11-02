@@ -55,8 +55,7 @@ import {
 	calculateColorStyles,
 	calculateColorStylesFromHex,
 	calculateFormatRanges,
-	calculateVizRanges,
-	type ColorStylesResult
+	calculateVizRanges
 } from './table-viz';
 import {
 	computeRowMetadata,

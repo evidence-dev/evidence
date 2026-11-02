@@ -269,7 +269,6 @@ export async function writeWorkbook(sheets: WriteSheet[], font: ExcelFont): Prom
 	return writeXlsx({ sheets: resolvedSheets, defaultFont: { name: font.name, size: font.size } });
 }
 
-/** Triggers a browser download of `blob` as `filename`. */
 /**
  * A download filename that every OS accepts as-is. Titles often hold dates like "10/4/26", and
  * browsers would otherwise swap each slash for a character of their own choosing.
@@ -285,6 +284,7 @@ export function sanitizeFilename(filename: string): string {
 	return sanitized || 'download';
 }
 
+/** Triggers a browser download of `blob` as `filename`. */
 export function downloadBlob(blob: Blob, filename: string): void {
 	const url = window.URL.createObjectURL(blob);
 	const link = document.createElement('a');
