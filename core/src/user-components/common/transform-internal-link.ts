@@ -53,7 +53,7 @@ export type TransformOptions = {
 /**
  * Transforms an internal link to the correct URL for the current render context.
  *
- * Published: resolves to /{orgId}/{projectSlug}/{path}
+ * Published: resolves to /{orgId}/{projectSlug}/[~branch/]{path}
  * Preview: resolves to /preview/working/{orgId}/{projectSlug}/{branch}/{path}
  * Edit: sets linkPreviewPath query param to show linked page in preview pane
  *
@@ -117,11 +117,21 @@ export function transformInternalLink(
 	}
 
 	if (context === 'published') {
+		// Branch previews (PR links) mark the branch segment with a leading `~`; keep
+		// links on that branch instead of silently jumping to published content.
+		const branchSegment = params.branch?.startsWith('~') ? `/${params.branch}` : '';
 		if (includesProjectSlug) {
+			const projectPrefix = `/${params.projectSlug}`;
+			const rest = normalizedHref.slice(projectPrefix.length);
+			const isSameProject =
+				normalizedHref.startsWith(projectPrefix) && (rest === '' || '/?#'.includes(rest[0]));
+			if (branchSegment && isSameProject) {
+				return `/${params.organizationId}${projectPrefix}${branchSegment}${rest}`;
+			}
 			// href already has /<projectSlug>/<path>, just prepend /{orgId}
 			return `/${params.organizationId}${normalizedHref}`;
 		} else {
-			return `/${params.organizationId}/${params.projectSlug}${normalizedHref}`;
+			return `/${params.organizationId}/${params.projectSlug}${branchSegment}${normalizedHref}`;
 		}
 	}
 
