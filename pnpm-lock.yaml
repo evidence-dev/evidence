@@ -45,6 +45,7 @@ overrides:
   js-yaml@4: '>=4.3.2 <5'
   proxy-addr: '>=2.0.8'
   svelte: '>=5.57.2 <6'
+  basic-ftp: '>=6.2.1'
 
 patchedDependencies:
   echarts@6.1.0:
@@ -2278,8 +2279,8 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
-  basic-ftp@5.3.1:
-    resolution: {integrity: sha512-bopVNp6ugyA150DDuZfPFdt1KZ5a94ZDiwX4hMgZDzF+GttD80lEy8kj98kbyhLXnPvhtIo93mdnLIjpCAeeOw==}
+  basic-ftp@6.2.5:
+    resolution: {integrity: sha512-JJKYwxdbJM6Z4jFO+ciaIUejHRCyIg6oJ9hoAzuZ0EMlJsHDT07h6vZt4NH8G61DLzddrDKvjoRqfewnPzDSJA==}
     engines: {node: '>=10.0.0'}
 
   big-integer@1.6.52:
@@ -7376,7 +7377,7 @@ snapshots:
 
   base64-js@1.5.1: {}
 
-  basic-ftp@5.3.1: {}
+  basic-ftp@6.2.5: {}
 
   big-integer@1.6.52: {}
 
@@ -8134,7 +8135,7 @@ snapshots:
 
   get-uri@6.0.5:
     dependencies:
-      basic-ftp: 5.3.1
+      basic-ftp: 6.2.5
       data-uri-to-buffer: 6.0.2
       debug: 4.4.3
     transitivePeerDependencies:

@@ -59,7 +59,8 @@
 			"browserslist": ">=4.28.7",
 			"js-yaml@4": ">=4.3.2 <5",
 			"proxy-addr": ">=2.0.8",
-			"svelte": ">=5.57.2 <6"
+			"svelte": ">=5.57.2 <6",
+			"basic-ftp": ">=6.2.1"
 		},
 		"patchedDependencies": {
 			"ssf": "patches/ssf.patch",
