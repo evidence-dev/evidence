@@ -3,7 +3,7 @@ import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte
 import type { SqlDialect } from '../../../sql-dialect';
 import type { UserComponentProps } from '../../types';
 import type { schema } from './schema';
-import { processDateRange } from '../../common/date-options';
+import { processDateRange, type DateRangeObject } from '../../common/date-options';
 import { resolveCustomRangeDefault, type CustomRangeRule } from '../../common/custom-ranges';
 import { DEFAULT_PROJECT_SETTINGS } from '../../interfaces/project-settings';
 import { parseDateStringAsLocalMidnight } from '../../../utils/date-utils';
@@ -77,6 +77,17 @@ export class RangeCalendarFilter extends Filter<RangeCalendarValue> {
 				dialect
 			).whereClause || undefined
 		);
+	}
+
+	comparisonDateRange(): DateRangeObject | undefined {
+		const column = this.attributes.value_column;
+		if (!column) return undefined;
+		const range = this.effectiveRange();
+		if (range === undefined) return undefined;
+		// Open-ended ranges (`from …` / `until …`) have no period to shift.
+		const { startDateSql, endDateSql } = this.processRange(range);
+		if (!startDateSql || !endDateSql) return undefined;
+		return { range, date: column };
 	}
 
 	get templateValues() {
