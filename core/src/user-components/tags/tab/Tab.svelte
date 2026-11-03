@@ -16,6 +16,7 @@
 		icon?: string;
 		print_break?: string;
 		default?: boolean;
+		width?: number;
 		content: Snippet | null;
 	};
 
@@ -41,6 +42,7 @@
 	const icon = $derived(resolveText(props.icon));
 	const print_break = $derived(props.print_break);
 	const isDefault = $derived(props.default);
+	const width = $derived(props.width);
 	const children = $derived(props.children);
 
 	// Get the tabs store from context
@@ -55,7 +57,15 @@
 
 		// Initial add to store
 		tabsStore.update((tabs) => {
-			tabs.set(tabId, { id: tabId, title, icon, print_break, default: isDefault, content: children || null });
+			tabs.set(tabId, {
+				id: tabId,
+				title,
+				icon,
+				print_break,
+				default: isDefault,
+				width,
+				content: children || null
+			});
 			return tabs;
 		});
 
@@ -77,7 +87,14 @@
 		tabsStore.update((tabs) => {
 			const existingTab = tabs.get(tabId);
 			if (existingTab) {
-				tabs.set(tabId, { ...existingTab, title, icon, default: isDefault, content: children || null });
+				tabs.set(tabId, {
+					...existingTab,
+					title,
+					icon,
+					default: isDefault,
+					width,
+					content: children || null
+				});
 			}
 			return tabs;
 		});

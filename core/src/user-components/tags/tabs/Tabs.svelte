@@ -132,6 +132,7 @@
 		icon?: string;
 		print_break?: string;
 		default?: boolean;
+		width?: number;
 		content: Snippet | null;
 	};
 
@@ -211,7 +212,10 @@
 		<!-- Print mode: unfurl tabs into h1 headings with content -->
 		<div class="flex flex-col gap-6">
 			{#each tabs as tab}
-				<div class={tab.print_break !== 'auto' ? 'break-inside-avoid' : ''}>
+				<div
+					class={tab.print_break !== 'auto' ? 'break-inside-avoid' : ''}
+					style:width={tab.width != null ? `${tab.width}%` : undefined}
+				>
 					<h1 class="mb-2 text-xl font-semibold">{tab.title}</h1>
 					{#if tab.content}
 						{@render tab.content()}
@@ -272,7 +276,11 @@
 			{#if selectedTab}
 				{@const selectedTabData = tabs.find((tab) => tab.id === selectedTab)}
 				{#if selectedTabData}
-					<TabsPrimitive.Content value={selectedTab} class="mt-2">
+					<TabsPrimitive.Content
+						value={selectedTab}
+						class="mt-2"
+						style={selectedTabData.width != null ? `width: ${selectedTabData.width}%` : undefined}
+					>
 						{#if selectedTabData.content}
 							{@render selectedTabData.content()}
 						{/if}
