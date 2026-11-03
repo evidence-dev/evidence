@@ -4,8 +4,8 @@
 	"type": "module",
 	"packageManager": "pnpm@9.15.0",
 	"devDependencies": {
-		"vitest": "^4.1.2",
-		"@vitest/coverage-v8": "^4.1.2"
+		"vitest": "^4.1.12",
+		"@vitest/coverage-v8": "^4.1.12"
 	},
 	"scripts": {
 		"test": "pnpm -r test",
