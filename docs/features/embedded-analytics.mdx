@@ -186,6 +186,7 @@ Creates a secure embed session and returns a single-use embed URL.
 | `language`   | string  | No       | Display language code (e.g., "en", "fr")             |
 | `colorScheme` | string  | No       | Report color scheme: `"light"` (default) or `"dark"` |
 | `enableAIChat` | boolean | No      | Show the AI chat widget inside the embed (default: false) |
+| `enableScheduling` | boolean | No  | Let the user schedule the page by email (default: false). Requires an `email` attribute |
 
 #### Report Color Scheme
 
@@ -196,6 +197,21 @@ Set `colorScheme` to `"dark"` to render the embedded report with the theme's dar
 Set `enableAIChat` to `true` to show the AI chat widget inside the embedded report, so your users can ask questions about the page without leaving your application. Chat is off by default — existing embed sessions are unaffected.
 
 The embedded chat is scoped to the embedded page: it can run the page's own saved queries (not arbitrary SQL), while row-level security still applies per user. Chat usage is metered against your workspace's AI credits, exactly like chat on published reports.
+
+#### Scheduled Reports in Embedded Reports
+
+Set `enableScheduling` to `true` and include an `email` attribute to add a **Schedule** option to the embedded report's menu. Your users can then get the page emailed to them as a PDF on a daily, weekly, or monthly schedule, send it once with **Send now**, and pause, edit, or delete their schedules. Scheduling is off by default, and `enableScheduling` without a valid `email` attribute is rejected with a `400`.
+
+```json
+{
+	"enableScheduling": true,
+	"attributes": [{ "key": "email", "value": "jane@example.com" }]
+}
+```
+
+The `email` attribute comes from your backend, so it is the only recipient allowed: users can't send reports to any other address. Scheduled reports render with the same identity and attributes as the user's embed session, so row-level security applies exactly as it does in the embed.
+
+Each new session you create for a user updates their existing schedules with that session's attributes, including `email`. To move a user's reports to a new address, create their next session with the new `email` attribute. Emails include an unsubscribe link.
 
 #### User Attributes
 
