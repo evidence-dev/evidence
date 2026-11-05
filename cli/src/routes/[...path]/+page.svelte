@@ -2,6 +2,7 @@
 	import type { PageData } from './$types';
 	import { Renderer, deserializeTree } from '$lib/markdown';
 	import CLIPageWrapper from '$lib/components/CLIPageWrapper.svelte';
+	import NoConnectionNote from '$lib/components/NoConnectionNote.svelte';
 	import PeriodPicker from '@evidence/core/viewer-components/PeriodPicker.svelte';
 	import { page } from '$app/state';
 	import { generateThemeCSS } from '@evidence/core/theme/theme-css-helper';
@@ -22,6 +23,10 @@
 	const themeCSS = $derived(generateThemeCSS(data.resolvedPageTheme));
 
 	const tree = $derived(deserializeTree(data.markdown.serializedTree));
+
+	// Without a connection the wrapper still runs: components need its contexts even
+	// when their queries can only fail, and crash server rendering otherwise.
+	const hasConnection = $derived(Boolean(data.organizationId || data.hasLocalConnection));
 
 	const fullscreen = $derived(page.url.searchParams.get('fullscreen') !== null);
 
@@ -49,43 +54,29 @@
 
 <div class="min-h-full {cards ? 'bg-card-mode-background' : 'bg-background'}">
 	<div class="mx-auto p-4 {widthClass}">
-		{#if data.organizationId || data.hasLocalConnection}
-			<!-- Queries run via managed engine (organizationId) or local connection.yaml -->
-			<CLIPageWrapper
-				organizationId={data.organizationId ?? ''}
-				connectionType={data.connectionType}
-				schemaAllowlist={data.schemaAllowlist}
-				serializedInlineQueries={data.markdown.serializedInlineQueries}
-				serializedFilters={data.markdown.serializedFilters}
-				sqlFiles={data.markdown.sqlFiles}
-				basePath={data.markdown.basePath}
-				useRelativeResolution={data.markdown.useRelativeResolution}
-				metricFiles={data.metricFiles}
-				{pageSettings}
-				projectSettings={data.projectSettings}
-			>
-				<PeriodPicker class="mb-4" />
-				<div
-					class="prose dark:prose-invert prose-code:before:content-none prose-code:after:content-none select-text"
-				>
-					<Renderer {tree} validationErrors={data.markdown.validationErrors} />
-				</div>
-			</CLIPageWrapper>
-		{:else}
-			<!-- Not logged in and no local connection - render without query support -->
+		<!-- Queries run via managed engine (organizationId) or local connection.yaml -->
+		<CLIPageWrapper
+			organizationId={data.organizationId ?? ''}
+			connectionType={data.connectionType}
+			schemaAllowlist={data.schemaAllowlist}
+			serializedInlineQueries={data.markdown.serializedInlineQueries}
+			serializedFilters={data.markdown.serializedFilters}
+			sqlFiles={data.markdown.sqlFiles}
+			basePath={data.markdown.basePath}
+			useRelativeResolution={data.markdown.useRelativeResolution}
+			metricFiles={data.metricFiles}
+			{pageSettings}
+			projectSettings={data.projectSettings}
+		>
+			<PeriodPicker class="mb-4" />
 			<div
 				class="prose dark:prose-invert prose-code:before:content-none prose-code:after:content-none select-text"
 			>
 				<Renderer {tree} validationErrors={data.markdown.validationErrors} />
 			</div>
-			<div class="bg-muted text-muted-foreground mt-8 rounded-lg p-4 text-sm">
-				<p>
-					<strong>Note:</strong> To enable queries, run
-					<code class="bg-background rounded px-1">evidence login</code> to use your Evidence Studio
-					organization's connection, or add a
-					<code class="bg-background rounded px-1">connection.yaml</code> to query your own database directly.
-				</p>
-			</div>
+		</CLIPageWrapper>
+		{#if !hasConnection}
+			<NoConnectionNote />
 		{/if}
 	</div>
 </div>
