@@ -39,7 +39,7 @@ describe('createEvidenceSdk: query', () => {
 
 		const result = await evidence.query('orders');
 
-		expect(request).toHaveBeenCalledWith('query', { name: 'orders' });
+		expect(request).toHaveBeenCalledWith('query', { name: 'orders' }, { timeoutMs: null });
 		expect(result).toBe(rows);
 	});
 

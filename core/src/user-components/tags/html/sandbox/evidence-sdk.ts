@@ -202,7 +202,13 @@ export function createEvidenceSdk(host: SandboxHost, init: HtmlInitMessage): Evi
 					'evidence.query(name): `name` must not be empty. Pass the query name, e.g. evidence.query("orders").'
 				);
 			}
-			const response = await host.request<HtmlQueryResponse>(HTML_QUERY_REQUEST, { name });
+			// No timeout: a slow warehouse query should wait, as it does in native
+			// components. The channel still rejects this if the frame goes away.
+			const response = await host.request<HtmlQueryResponse>(
+				HTML_QUERY_REQUEST,
+				{ name },
+				{ timeoutMs: null }
+			);
 			return response?.rows ?? [];
 		},
 		get variables() {
