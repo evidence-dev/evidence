@@ -134,17 +134,23 @@ export function compileMetric(
 
 	if (errors.length > 0) return { columnFormats, errors };
 
-	const tableExpressionName =
-		view.base ?? `(${view.baseSql}) ${dialect.quoteAlias('__ev_metric_base')}`;
-
 	const queryConfig: SQLQueryConfig = {
-		tableExpressionName,
+		tableExpressionName: metricBaseExpression(view, dialect),
+		tableExpressionIsSql: view.baseSql !== undefined,
 		columns,
 		hasDimensions: requestedDimensions.length > 0,
 		hasMeasures: request.metrics.length > 0
 	};
 
 	return { queryConfig, columnFormats, errors: [] };
+}
+
+/** The relation a view's metrics aggregate: its `base` table, or its `base_sql` as an aliased subquery. */
+export function metricBaseExpression(
+	view: MetricsView,
+	dialect: SqlDialect = defaultDialect
+): string {
+	return view.base ?? `(${view.baseSql}) ${dialect.quoteAlias('__ev_metric_base')}`;
 }
 
 /**

@@ -3,6 +3,7 @@ import { compileMetric } from './compile-metric';
 import { parseMetricsView, type MetricsView } from './metric-schema';
 import { generateSQLQuery } from '../user-components/common/sql-options';
 import { ClickHouseDialect, SnowflakeDialect, type SqlDialect } from '../sql-dialect';
+import { queryClickHouse } from '../test-utils/ch-parse';
 
 const ch = new ClickHouseDialect();
 const sf = new SnowflakeDialect();
@@ -78,15 +79,13 @@ describe('compileMetric', () => {
 		expect(sql).not.toContain('order_month');
 	});
 
-	it('supports a base query via base_sql', () => {
+	it('runs a base query via base_sql as a subquery', () => {
 		const v = view(`
-base_sql: select * from raw_orders where status = 'complete'
+base_sql: select o.* from demo.daily_orders o where o.region = 'East'
 metrics:
-  sales: { sql: sum(amount) }
+  sales: { sql: sum(total_sales) }
 `);
-		expect(sqlFor(v, { metrics: ['sales'] })).toContain(
-			"select * from raw_orders where status = 'complete'"
-		);
+		expect(queryClickHouse(sqlFor(v, { metrics: ['sales'] })!).trim()).toBe('120');
 	});
 
 	it('returns metric formats keyed by name', () => {

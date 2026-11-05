@@ -1,4 +1,4 @@
-import { compileMetric, metricExpression } from './compile-metric';
+import { compileMetric, metricBaseExpression, metricExpression } from './compile-metric';
 import type { MetricsCatalog } from './metrics-catalog';
 import type { Metric, MetricsView } from './metric-schema';
 import type { SQLQueryConfig } from '../user-components/common/sql-options';
@@ -94,8 +94,7 @@ export function resolveMetric(
 		dialect
 	);
 	const { expr } = metricExpression(found.view, found.metric.name, dialect);
-	const base =
-		found.view.base ?? `(${found.view.baseSql}) ${dialect.quoteAlias('__ev_metric_base')}`;
+	const base = metricBaseExpression(found.view, dialect);
 	return {
 		name: found.metric.name,
 		label: found.metric.label,
@@ -287,7 +286,7 @@ export function resolveMetricChart(
 	// (e.g. usd + a count must NOT force the count into usd).
 	const yFmt = formats[0] && formats.every((f) => f === formats[0]) ? formats[0] : undefined;
 
-	const data = view.base ?? `(${view.baseSql}) ${dialect.quoteAlias('__ev_metric_base')}`;
+	const data = metricBaseExpression(view, dialect);
 	// x: explicit override (resolved against dimensions) → else the view's time column.
 	const timeColumn = first.metric.date ?? view.date;
 	const x = overrides.x ? resolveViewDimension(view, overrides.x) : timeColumn;
