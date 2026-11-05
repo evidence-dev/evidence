@@ -37,6 +37,7 @@
 	import { onMount } from 'svelte';
 	import { generateThemeCSS } from '@evidence/core/theme/theme-css-helper';
 	import { setThemeContext } from '@evidence/core/theme/theme.context.svelte';
+	import { resetScrollOnNavigate } from '$lib/scroll-reset';
 
 	interface Props {
 		data: LayoutData;
@@ -64,6 +65,10 @@
 	// Fullscreen presentation mode (bare content, auto-hiding controls). Shared
 	// behaviour with the Studio published/preview viewers.
 	const fs = createFullscreen();
+
+	let reportViewport = $state<HTMLElement>();
+	let fullscreenViewport = $state<HTMLElement>();
+	resetScrollOnNavigate(() => fullscreenViewport ?? reportViewport);
 
 	const navTree = $derived(buildNavTreeFromFlat(data.navItems));
 
@@ -178,6 +183,7 @@
 {:else if fs.active}
 	<!-- Fullscreen presentation: bare content, no sidebar/header chrome -->
 	<main
+		bind:this={fullscreenViewport}
 		class="bg-background h-svh overflow-auto overflow-x-hidden scroll-smooth"
 		class:cursor-none={!fs.showControls}
 	>
@@ -426,7 +432,10 @@
 						</Alert.Description>
 					</Alert.Root>
 				{/if}
-				<div class="report-viewport min-w-0 flex-1 overflow-auto overflow-x-hidden scroll-smooth">
+				<div
+					bind:this={reportViewport}
+					class="report-viewport min-w-0 flex-1 overflow-auto overflow-x-hidden scroll-smooth"
+				>
 					<!-- Remount page on navigation so that contexts are re-initialized properly -->
 					{#key page.url.pathname}
 						{@render children()}
