@@ -65,6 +65,27 @@ describe('Metadata catalogProvider (engine-backed catalog)', () => {
 		await expect(m.load()).rejects.toThrow('502');
 		expect(m.loadFailed).toBe(true);
 	});
+
+	it('discards tables from an earlier provider load that resolves after a newer load', async () => {
+		const pending: Array<(tables: { name: string; columns: { name: string }[] }[]) => void> = [];
+		const m = new Metadata(new NeverCalledQueryService() as never, {
+			catalogProvider: () => () =>
+				new Promise((resolve) => {
+					pending.push(resolve);
+				})
+		});
+
+		const loadProjectA = m.load();
+		const loadProjectB = m.load();
+
+		pending[1]([{ name: 'project_b_table', columns: [{ name: 'id' }] }]);
+		await loadProjectB;
+
+		pending[0]([{ name: 'project_a_table', columns: [{ name: 'id' }] }]);
+		await loadProjectA;
+
+		expect(m.tables.map((t) => t.name)).toEqual(['project_b_table']);
+	});
 });
 
 describe('arrowToJsType', () => {

@@ -212,16 +212,17 @@ export class Metadata {
 		// Snapshot so a failing reload can fall back to the last-known catalog instead
 		// of blanking the schema panel while the server keeps warming its cache.
 		const lastKnown = new Map(this.#tables);
+		const isProviderLoad = Boolean(extract(this.#catalogProviderSource));
 		this.#tables.clear();
 		try {
-			await this.#dispatchLoad();
+			await this.#dispatchLoad(generation);
 			this.#revalidateAttempts = 0;
 		} catch (e) {
 			// A slower earlier load that fails after a newer load already succeeded
 			// must not flip loadFailed back on over a populated catalog.
 			if (generation === this.#loadGeneration) {
 				this.#loadFailed = true;
-				if (this.#tables.size === 0 && lastKnown.size > 0) {
+				if (!isProviderLoad && this.#tables.size === 0 && lastKnown.size > 0) {
 					for (const [name, table] of lastKnown) this.#tables.set(name, table);
 				}
 				// Cold start with nothing to show: deliberately surface NO toast. Keep the
@@ -245,10 +246,10 @@ export class Metadata {
 		}
 	}
 
-	async #dispatchLoad(): Promise<void> {
+	async #dispatchLoad(generation: number): Promise<void> {
 		const provider = extract(this.#catalogProviderSource);
 		if (provider) {
-			return await this.#loadFromProvider(provider);
+			return await this.#loadFromProvider(provider, generation);
 		}
 
 		// Org picked a native warehouse but hasn't saved credentials yet — every
@@ -425,8 +426,10 @@ export class Metadata {
 		}
 	}
 
-	async #loadFromProvider(provider: CatalogProvider): Promise<void> {
-		for (const table of await provider()) {
+	async #loadFromProvider(provider: CatalogProvider, generation: number): Promise<void> {
+		const tables = await provider();
+		if (generation !== this.#loadGeneration) return;
+		for (const table of tables) {
 			const columns: ITableMetadata['columns'] = {};
 			for (const column of table.columns) {
 				columns[column.name] = {

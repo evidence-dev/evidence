@@ -342,12 +342,12 @@ describe('inline query cycle guard', () => {
 });
 
 describe('QEv3 pass-through of unknown bare placeholders', () => {
-	it('leaves an unknown bare {{attr}} verbatim with no errors when enabled', () => {
+	it('leaves unknown {{attr}}, {{user.attr}}, {{$user.attr}}, and {{$attr}} verbatim with no errors when enabled', () => {
 		const filters = createFiltersWithToggle(true);
 		const inlineQueries = new InlineQueries({ filterContexts: [filters] });
 
 		const result = interpolateQueryStrings(
-			'select * from orders where region = {{region}}',
+			'select * from orders where a = {{region}} and b = {{user.region}} and c = {{$user.region}} and d = {{$region}}',
 			[filters],
 			inlineQueries,
 			'sql',
@@ -355,7 +355,9 @@ describe('QEv3 pass-through of unknown bare placeholders', () => {
 			undefined,
 			true
 		);
-		expect(result.sql).toBe('select * from orders where region = {{region}}');
+		expect(result.sql).toBe(
+			'select * from orders where a = {{region}} and b = {{user.region}} and c = {{$user.region}} and d = {{$region}}'
+		);
 		expect(result.errors).toEqual([]);
 	});
 

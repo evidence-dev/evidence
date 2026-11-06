@@ -81,11 +81,17 @@ export class VariableProcessor {
 		// QEv3 TEXT contexts: `{{attr}}` prints the viewer's own value (the
 		// same token is a bound parameter in SQL — there the engine resolves
 		// it, here WE must). Attributes resolve before filters so an unknown
-		// bare token doesn't error as "Missing filter ID" first.
+		// bare token doesn't error as "Missing filter ID" first. The authoring
+		// forms mirror the engine's strip chain: {{attr}}, {{user.attr}},
+		// {{$user.attr}}, and {{$attr}} all bind the `attr` attribute.
 		if (this.engineAttributeValues && variableContext !== 'sql') {
 			processedValue = processedValue.replace(
-				/\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g,
-				(match, name: string) => {
+				/\{\{\s*([A-Za-z_$][A-Za-z0-9_$.]*)\s*\}\}/g,
+				(match, raw: string) => {
+					const name = raw
+						.replace(/^\$user\./, '')
+						.replace(/^user\./, '')
+						.replace(/^\$/, '');
 					if (!(name in this.engineAttributeValues!)) return match;
 					const value = this.engineAttributeValues![name];
 					return value === null || value === undefined ? '' : String(value);

@@ -428,10 +428,10 @@ function processTemplateVariables(
 
 /**
  * The engine's `{{attr}}` token grammar (spec: letter/underscore start, then
- * letters/digits/underscores — no dots, no pipes). Only tokens matching this
- * pass through to the engine on QEv3 orgs.
+ * letters/digits/underscores, with optional `$`, `user.`, or `$user.` prefix).
+ * Only tokens matching this pass through to the engine on QEv3 orgs.
  */
-const ENGINE_ATTRIBUTE_TOKEN = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const ENGINE_ATTRIBUTE_TOKEN = /^(?:\$?user\.|\$)?[A-Za-z_][A-Za-z0-9_]*$/;
 
 /**
  * Evaluate a template expression like "filterId.property" or "filterId.property | fallback"
@@ -630,6 +630,9 @@ function evaluateTemplate(
 	}
 
 	if (!filter) {
+		if (passThroughUnknown && ENGINE_ATTRIBUTE_TOKEN.test(templatePart)) {
+			return { value: originalMatch, hasValue: true };
+		}
 		// Report error but still use fallback if available
 		let message = `Missing filter ID \`${filterId}\``;
 		const bestMatch = findClosestMatch(filterId, validFilterIds);

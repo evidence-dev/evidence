@@ -30,7 +30,13 @@ export function validateVariablesInComponent(): Validator {
 
 		try {
 			const frontmatter = (config as Config & { variables?: Record<string, unknown> }).variables;
-			const processor = new VariableProcessor(context.filters, context.inlineQueries, frontmatter);
+			const processor = new VariableProcessor(
+				context.filters,
+				context.inlineQueries,
+				frontmatter,
+				undefined,
+				context.isQueryEngineV3?.() ?? false
+			);
 
 			// Get schema from validation context instead of importing user components
 			// This avoids circular dependency via user-components barrel
