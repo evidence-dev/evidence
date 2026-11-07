@@ -234,3 +234,25 @@ export const projectDateSchema = z
 	.passthrough();
 
 export type ParsedProjectDate = z.infer<typeof projectDateSchema>;
+
+/**
+ * Project-level number formatting: `evidence.config.yaml`'s `format:` block.
+ *
+ * Canonical here for the same reason as `projectDateSchema` — one definition
+ * shared by Studio's `evidenceConfigSchema` and the CLI's `loadProjectConfig`.
+ * Both the words and the characters are accepted, because a YAML author reaches
+ * for either and quoting `','` is easy to get wrong. `.passthrough()` keeps
+ * unknown/future keys.
+ */
+export const projectFormatSchema = z
+	.object({
+		decimal_separator: z
+			.enum(['period', 'comma', '.', ','])
+			.optional()
+			.describe(
+				"Decimal mark for formatted numbers: 'period' (1,234.56) or 'comma' (1.234,56). Defaults to 'period'."
+			)
+	})
+	.passthrough();
+
+export type ParsedProjectFormat = z.infer<typeof projectFormatSchema>;
