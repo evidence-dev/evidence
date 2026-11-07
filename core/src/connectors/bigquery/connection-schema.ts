@@ -100,6 +100,19 @@ export const bigqueryBase = z.object({
 			})
 		),
 
+	labels: z
+		.record(z.string().min(1), z.string())
+		.optional()
+		.meta(
+			meta({
+				label: 'Job labels',
+				description:
+					'Labels attached to every BigQuery job (for billing exports and INFORMATION_SCHEMA.JOBS). Keys and values must satisfy BigQuery label rules.',
+				category: 'context',
+				cliOnly: true
+			})
+		),
+
 	roles: z
 		.array(
 			z.object({
