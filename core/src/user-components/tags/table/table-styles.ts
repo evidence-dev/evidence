@@ -230,3 +230,30 @@ function getColumnTypeClasses(
 
 	return '';
 }
+
+// ============================================================================
+// CELL EMPHASIS
+// ============================================================================
+
+/**
+ * The emphasized style a body cell takes, if any: the grand total row, a subtotal row from its
+ * level's column onward, or a pivot total/subtotal column. Shared by the rendered table and its
+ * Excel export.
+ */
+export type CellEmphasis = 'total' | 'subtotal' | 'pivot';
+
+export function getCellEmphasis(
+	renderType: string | undefined,
+	subtotalLevel: number,
+	tableColumnIndex: number,
+	columnRenderType: string | undefined
+): CellEmphasis | null {
+	if (renderType === 'row_total') return 'total';
+	if (renderType === 'row_subtotal') {
+		return tableColumnIndex >= subtotalLevel - 1 ? 'subtotal' : null;
+	}
+	if (columnRenderType === 'column_total' || columnRenderType === 'column_subtotal') {
+		return 'pivot';
+	}
+	return null;
+}

@@ -1,25 +1,37 @@
-import ExcelJS from 'exceljs';
+import type { CellStyle, RowDef, SheetImage, WriteSheet } from 'hucre';
 import type { QueryInfo, QueryInfoContext } from '../query-info-context.svelte';
 import type { Query } from '../Query.svelte';
 import formatTitle from '../user-components/formatTitle';
-import { FORMAT_PRESETS, BASE_AUTO_FORMATS, formatAsQuarter } from '../user-components/formatValue';
 import { tags } from '../index';
 import { logger } from './logger';
 import { toast } from 'svelte-sonner';
 import { capturePng, type CapturedPng } from '../utils/png-download';
+import { toExcelCell } from './excel/cell-value';
+import { resolveExcelPalette, type ExcelPalette } from './excel/palette';
+import { calculateFormatRanges } from '../user-components/tags/table/table-viz';
+import { getExcelExportFont, type ExcelFont } from './excel/font';
+import {
+	ColumnFitter,
+	downloadBlob,
+	downloadWorkbook,
+	mostCommon,
+	StyleCache,
+	tableRowHeight,
+	thinBorder,
+	titleRows,
+	writeWorkbook,
+	type ExcelSheet,
+	type SheetCell
+} from './excel/workbook';
 
 // Categories to exclude from Excel export (inputs/filters and logic/conditionals don't produce meaningful data)
 const EXCLUDED_EXPORT_CATEGORIES = new Set(['input', 'logic']);
 
-export interface CellStyle {
-	font?: Partial<ExcelJS.Font>;
-	border?: Partial<ExcelJS.Borders>;
-}
-
-export interface GetCellStyleArgs {
-	row: Record<string, unknown>;
-	column: { name: string; jsType: string; title?: string; fmt?: string };
-	columnIndex: number;
+export interface ExcelExportColumn {
+	name: string;
+	jsType: string;
+	title?: string;
+	fmt?: string;
 }
 
 export interface ExcelExportMetadata {
@@ -31,9 +43,7 @@ export interface SingleDataExportOptions {
 	filename: string;
 	worksheetName?: string;
 	data: Record<string, unknown>[];
-	filterInternalColumns?: boolean;
-	columns?: { name: string; jsType: string; title?: string; fmt?: string }[];
-	getCellStyle?: (args: GetCellStyleArgs) => CellStyle | undefined;
+	columns?: ExcelExportColumn[];
 	metadata?: ExcelExportMetadata;
 }
 
@@ -45,6 +55,8 @@ export interface ExcelExportNamesOptions {
 
 export type ExportableQueryInfo = Pick<QueryInfo, 'tag' | 'title'> & {
 	query: Pick<Query, 'result' | 'loading'>;
+	/** The component's styled sheet; without one, its query results are exported as-is. */
+	excelSheet?: ExcelSheet;
 };
 
 export interface ExportableQueryInfoContext {
@@ -54,6 +66,8 @@ export interface ExportableQueryInfoContext {
 export interface MultiSheetExportOptions {
 	filename: string;
 	queryInfoContext: ExportableQueryInfoContext | undefined;
+	/** The font the workbook is written in; styled sheets in the context must use it too. */
+	font: ExcelFont;
 	/** Added as the first sheet, ahead of the data sheets. */
 	reportImage?: CapturedPng;
 	onError?: (message: string, description?: string) => void;
@@ -100,14 +114,36 @@ async function captureReportImage(selector: string): Promise<CapturedPng | undef
 	}
 }
 
-// Freeze results before the slow capture so a mid-capture filter change can't alter the export.
-function snapshotQueryInfo(queryInfoContext: QueryInfoContext): ExportableQueryInfoContext {
+function isExportable({ tag, query }: Pick<ExportableQueryInfo, 'tag' | 'query'>): boolean {
+	const userComponent = tags[tag];
+	if (userComponent && EXCLUDED_EXPORT_CATEGORIES.has(userComponent.schema.category)) return false;
+	return Boolean(
+		query.result && !query.loading && !query.result.error && query.result.rows?.length
+	);
+}
+
+// Freeze each component's results, and build its styled sheet, when the export starts, so a
+// filter change during the slow image capture can't alter what's exported.
+function snapshotQueryInfo(
+	queryInfoContext: QueryInfoContext,
+	font: ExcelFont
+): ExportableQueryInfoContext {
 	const queryInfoMap = new Map<string, ExportableQueryInfo>();
-	for (const [componentId, { tag, title, query }] of queryInfoContext.queryInfoMap) {
+	for (const [componentId, info] of queryInfoContext.queryInfoMap) {
+		let excelSheet: ExcelSheet | undefined;
+		if (info.buildExcelSheet && isExportable(info)) {
+			try {
+				excelSheet = info.buildExcelSheet(font);
+			} catch (err) {
+				// The data still exports, unstyled; a failure here is a bug worth seeing.
+				logger.error({ err, componentId }, 'Styled export failed; exporting the raw query results');
+			}
+		}
 		queryInfoMap.set(componentId, {
-			tag,
-			title,
-			query: { result: query.result, loading: query.loading }
+			tag: info.tag,
+			title: info.title,
+			query: { result: info.query.result, loading: info.query.loading },
+			excelSheet
 		});
 	}
 	return { queryInfoMap };
@@ -122,20 +158,25 @@ export async function downloadPageDataAsExcel({
 	onSuccess
 }: PageExcelExportOptions): Promise<void> {
 	const filename = buildPageExcelFilename(pageName);
+	const font = getExcelExportFont();
 
 	if (!includeImage) {
-		await downloadPageAsExcel({ filename, queryInfoContext, onError, onSuccess });
+		const snapshot = snapshotQueryInfo(queryInfoContext, font);
+		await downloadPageAsExcel({ filename, queryInfoContext: snapshot, font, onError, onSuccess });
 		return;
 	}
 
-	const snapshot = snapshotQueryInfo(queryInfoContext);
 	const loadingToast = toast.loading('Generating Excel report…', { duration: Infinity });
 
 	try {
+		// Let the toast paint before building every table's sheet, which can take a moment.
+		await new Promise((resolve) => setTimeout(resolve));
+		const snapshot = snapshotQueryInfo(queryInfoContext, font);
 		const reportImage = await captureReportImage(imageSelector);
 		await downloadPageAsExcel({
 			filename,
 			queryInfoContext: snapshot,
+			font,
 			reportImage,
 			onError,
 			onSuccess
@@ -145,33 +186,23 @@ export async function downloadPageDataAsExcel({
 	}
 }
 
-export function addReportImageSheet(workbook: ExcelJS.Workbook, image: CapturedPng): void {
-	const worksheet = workbook.addWorksheet(REPORT_SHEET_NAME);
-	worksheet.views = [{ showGridLines: false }];
-	const imageId = workbook.addImage({ base64: image.dataUrl, extension: 'png' });
-	worksheet.addImage(imageId, {
-		tl: { col: 0, row: 0 },
-		ext: { width: image.width, height: image.height }
-	});
+export function buildReportImageSheet(image: CapturedPng): ExcelSheet {
+	const reportImage: SheetImage = {
+		data: base64ToBytes(image.dataUrl),
+		type: 'png',
+		anchor: { from: { row: 0, col: 0 } },
+		width: image.width,
+		height: image.height,
+		altText: 'Report'
+	};
+	return { view: { showGridLines: false }, images: [reportImage] };
 }
 
-function getExcelFormat(evidenceFormat: string): string | null {
-	// `quarter` has no Excel equivalent — the cell value is pre-formatted as a
-	// string elsewhere, so don't set a numFmt here.
-	if (evidenceFormat === 'quarter') return null;
-	if (evidenceFormat in FORMAT_PRESETS) {
-		return FORMAT_PRESETS[evidenceFormat as keyof typeof FORMAT_PRESETS];
-	}
-	if (BASE_AUTO_FORMATS.includes(evidenceFormat as (typeof BASE_AUTO_FORMATS)[number])) {
-		if (evidenceFormat === 'pct') {
-			return FORMAT_PRESETS.pct1;
-		}
-		const defaultFormat = `${evidenceFormat}0` as keyof typeof FORMAT_PRESETS;
-		if (defaultFormat in FORMAT_PRESETS) {
-			return FORMAT_PRESETS[defaultFormat];
-		}
-	}
-	return evidenceFormat.replace(/'/g, '"');
+function base64ToBytes(dataUrl: string): Uint8Array {
+	const binary = atob(dataUrl.slice(dataUrl.indexOf(',') + 1));
+	const bytes = new Uint8Array(binary.length);
+	for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+	return bytes;
 }
 
 /**
@@ -189,20 +220,6 @@ function filterInternalColumns(data: Record<string, unknown>[]): Record<string, 
 		});
 		return filteredRow;
 	});
-}
-
-/**
- * Triggers a file download
- */
-function triggerDownload(blob: Blob, filename: string): void {
-	const url = window.URL.createObjectURL(blob);
-	const link = document.createElement('a');
-	link.href = url;
-	link.setAttribute('download', filename.endsWith('.xlsx') ? filename : `${filename}.xlsx`);
-	document.body.appendChild(link);
-	link.click();
-	link.parentNode?.removeChild(link);
-	window.URL.revokeObjectURL(url);
 }
 
 /**
@@ -233,11 +250,6 @@ export function sanitizeWorksheetName(name: string, maxLength: number = 31): str
 		return 'Sheet';
 	}
 
-	// "History" is a reserved name in Excel
-	if (sanitized.toLowerCase() === 'history') {
-		sanitized = 'History Data';
-	}
-
 	// Truncate to maxLength characters
 	if (sanitized.length > maxLength) {
 		sanitized = sanitized.substring(0, maxLength).trim();
@@ -249,6 +261,11 @@ export function sanitizeWorksheetName(name: string, maxLength: number = 31): str
 	// If empty after quote removal, use default
 	if (sanitized === '') {
 		return 'Sheet';
+	}
+
+	// "History" is a reserved name in Excel (checked last, so "'History'" is caught too)
+	if (sanitized.toLowerCase() === 'history') {
+		sanitized = 'History Data';
 	}
 
 	return sanitized;
@@ -308,142 +325,136 @@ export function getExcelExportNames({
 	};
 }
 
-export function addDataToWorksheet(
-	worksheet: ExcelJS.Worksheet,
+export interface DataSheetOptions {
+	/** The font the workbook is written in, which columns are measured in. */
+	font: ExcelFont;
+	metadata?: ExcelExportMetadata;
+	palette?: ExcelPalette;
+}
+
+/**
+ * Lays out query results as a plain report table: optional title block, a bold header
+ * underlined like a report table's, row lines, native number and date formats, autofit
+ * columns, and the header frozen the way a report table's header stays in view.
+ */
+export function buildDataSheet(
 	data: Record<string, unknown>[],
-	columns?: { name: string; jsType: string; fmt?: string; title?: string }[],
-	getCellStyle?: (args: GetCellStyleArgs) => CellStyle | undefined,
-	metadata?: ExcelExportMetadata
-): void {
-	if (!data.length) return;
-
+	columns: ExcelExportColumn[] | undefined,
+	{ font, metadata, palette = resolveExcelPalette() }: DataSheetOptions
+): ExcelSheet {
 	const processedData = filterInternalColumns(data);
-	if (processedData.length === 0) return;
+	const rows: SheetCell[][] = titleRows(metadata?.title, metadata?.subtitle, { palette, font });
+	if (processedData.length === 0) return { rows, view: { showGridLines: false } };
 
+	const columnsByName = new Map(columns?.map((column) => [column.name, column]));
 	const columnNames = columns
 		? columns
 				.map((col) => col.name)
 				.filter((name) => !name.startsWith('__ev_') || name.includes('_comparison'))
 		: Object.keys(processedData[0]);
-
-	const title = metadata?.title?.trim();
-	const subtitle = metadata?.subtitle?.trim();
-	if (title) {
-		const titleRow = worksheet.addRow([title]);
-		titleRow.font = { bold: true, name: 'Arial', size: 14 };
-	}
-	if (subtitle) {
-		const subtitleRow = worksheet.addRow([subtitle]);
-		subtitleRow.font = { italic: true, name: 'Arial' };
-	}
-	if (title || subtitle) {
-		worksheet.addRow([]);
-	}
-
-	const headers = columnNames.map((name) => {
-		const column = columns?.find((col) => col.name === name);
-		return column?.title || formatTitle(name);
+	const fitter = new ColumnFitter(font);
+	const styles = new StyleCache();
+	// Table rows get explicit heights: Excel for Windows re-measures rows that don't have one.
+	const rowDefs = new Map<number, RowDef>();
+	// Auto formats (`usd`, `num`) pick one unit per column, as a report table does.
+	const formatRanges = calculateFormatRanges({
+		columnMeta: (columns ?? []).map((column) => ({ key: column.name, fmt: column.fmt })),
+		sortedRows: processedData
 	});
-	const headerRow = worksheet.addRow(headers);
-	headerRow.font = { bold: true, name: 'Arial' };
-	headerRow.height = 18;
+	const numFmtCounts = columnNames.map(() => new Map<string, number>());
 
-	columnNames.forEach((columnName, colIndex) => {
-		const column = columns?.find((col) => col.name === columnName);
-		const cell = headerRow.getCell(colIndex + 1);
-		cell.border = { bottom: { style: 'thin' } };
-		cell.alignment = {
-			vertical: 'middle',
-			...(column?.jsType === 'number' ? { horizontal: 'right' } : {})
-		};
-	});
-
-	processedData.forEach((row, rowIndex) => {
-		// getCellStyle receives the pre-filter row so hidden columns (e.g.
-		// conditional-color hex) are still accessible.
-		const originalRow = data[rowIndex];
-		const values = columnNames.map((columnName) => {
-			let value = row[columnName];
-			const column = columns?.find((col) => col.name === columnName);
-
-			// ClickHouse Decimal types are returned as strings
-			if (column?.jsType === 'number' && typeof value === 'string' && value !== '') {
-				const numValue = Number(value);
-				if (!isNaN(numValue)) {
-					value = numValue;
+	const headerRowIndex = rows.length;
+	rowDefs.set(headerRowIndex, { height: tableRowHeight(font) });
+	rows.push(
+		columnNames.map((name, columnIndex) => {
+			const column = columnsByName.get(name);
+			const title = column?.title || formatTitle(name);
+			fitter.fit(columnIndex, title, true);
+			return {
+				value: title,
+				style: {
+					font: { bold: true },
+					alignment: {
+						vertical: 'center',
+						horizontal: column?.jsType === 'number' ? 'right' : 'left'
+					},
+					border: { bottom: thinBorder(palette.emphasisBorder) }
 				}
-			}
-
-			// Quarter has no Excel numFmt equivalent — match on-screen output by
-			// pre-formatting the value to a string ("2024-Q1").
-			if (column?.fmt === 'quarter') {
-				const quarter = formatAsQuarter(value);
-				if (quarter !== null) value = quarter;
-			}
-
-			return value;
-		});
-		const dataRow = worksheet.addRow(values);
-		dataRow.height = 18;
-
-		columnNames.forEach((columnName, colIndex) => {
-			const column = columns?.find((col) => col.name === columnName);
-			const cell = dataRow.getCell(colIndex + 1); // ExcelJS uses 1-based indexing
-			cell.font = { name: 'Arial' };
-			if (column?.fmt) {
-				const excelFormat = getExcelFormat(column.fmt);
-				if (excelFormat !== null) {
-					cell.numFmt = excelFormat;
-				}
-			}
-			cell.alignment = {
-				vertical: 'middle',
-				...(column?.jsType === 'number' ? { horizontal: 'right' } : {})
 			};
+		})
+	);
 
-			if (getCellStyle && column) {
-				const style = getCellStyle({
-					row: originalRow,
-					column,
-					columnIndex: colIndex
+	for (const row of processedData) {
+		rowDefs.set(rows.length, { height: tableRowHeight(font) });
+		rows.push(
+			columnNames.map((name, columnIndex) => {
+				const column = columnsByName.get(name);
+				const isNumber = column?.jsType === 'number';
+				// Unformatted numbers stay in Excel's General format rather than the report's auto-scaling.
+				const content = toExcelCell(row[name], {
+					fmt: column?.fmt ?? (isNumber ? 'General' : undefined),
+					columnType: column?.jsType,
+					range: formatRanges.get(name)
 				});
-				if (style?.font) {
-					cell.font = { ...cell.font, ...style.font };
+				fitter.fitNumber(columnIndex, content);
+				const counts = numFmtCounts[columnIndex];
+				counts.set(content.numFmt ?? '', (counts.get(content.numFmt ?? '') ?? 0) + 1);
+				const style = styles.get(`${isNumber}|${content.numFmt ?? ''}`, () => ({
+					alignment: { vertical: 'center', ...(isNumber ? { horizontal: 'right' } : {}) },
+					border: { bottom: thinBorder(palette.rowBorder) },
+					...(content.numFmt ? { numFmt: content.numFmt } : {})
+				}));
+				return { value: content.value, style };
+			})
+		);
+	}
+
+	return {
+		rows,
+		rowDefs,
+		// Each column's alignment and most common number format, which Excel gives to data typed
+		// below the table. Cells keep their own style too, for their row lines.
+		columns: columnNames.map((name, columnIndex) => {
+			const numFmt = mostCommon(numFmtCounts[columnIndex]);
+			return {
+				width: fitter.width(columnIndex),
+				style: {
+					alignment: {
+						vertical: 'center',
+						...(columnsByName.get(name)?.jsType === 'number' ? { horizontal: 'right' } : {})
+					},
+					...(numFmt ? { numFmt } : {})
 				}
-				if (style?.border) {
-					cell.border = { ...cell.border, ...style.border };
-				}
-			}
-		});
-	});
+			};
+		}),
+		freezePane: { rows: headerRowIndex + 1 },
+		view: { showGridLines: false }
+	};
+}
 
-	// Adjust column widths based on content
-	const metadataLength = Math.max(title?.length ?? 0, subtitle?.length ?? 0);
-	worksheet.columns.forEach((column, index) => {
-		if (!column) return;
-
-		const columnName = columnNames[index];
-		const columnMeta = columns?.find((col) => col.name === columnName);
-		const displayTitle = columnMeta?.title || formatTitle(columnName);
-
-		let maxLength = displayTitle.length;
-
-		const sampleRows = processedData.slice(0, 10);
-		sampleRows.forEach((row) => {
-			const value = row[columnName];
-			if (value !== null && value !== undefined) {
-				const cellLength = String(value).length;
-				if (cellLength > maxLength) {
-					maxLength = cellLength;
-				}
-			}
-		});
-
-		column.width = Math.min(maxLength + 2, 50);
-	});
-
-	const firstColumn = worksheet.getColumn(1);
-	firstColumn.width = Math.max(firstColumn.width ?? 0, Math.min(metadataLength + 2, 50));
+/** Writes one sheet to an .xlsx file and downloads it. */
+export async function downloadExcelSheet({
+	filename,
+	worksheetName = 'Data',
+	sheet,
+	font
+}: {
+	filename: string;
+	worksheetName?: string;
+	sheet: ExcelSheet;
+	/** The font the sheet was built with. */
+	font: ExcelFont;
+}): Promise<void> {
+	try {
+		const bytes = await writeWorkbook(
+			[{ ...sheet, name: sanitizeWorksheetName(worksheetName) }],
+			font
+		);
+		downloadWorkbook(bytes, filename);
+	} catch (error) {
+		logger.error(error, 'Error downloading Excel file');
+		throw error;
+	}
 }
 
 /**
@@ -454,7 +465,6 @@ export async function downloadAsExcel({
 	worksheetName = 'Data',
 	data,
 	columns,
-	getCellStyle,
 	metadata
 }: SingleDataExportOptions): Promise<void> {
 	if (!data.length) {
@@ -462,23 +472,30 @@ export async function downloadAsExcel({
 		return;
 	}
 
-	try {
-		const workbook = new ExcelJS.Workbook();
-		const worksheet = workbook.addWorksheet(sanitizeWorksheetName(worksheetName));
-		worksheet.views = [{ showGridLines: false }];
+	const font = getExcelExportFont();
+	await downloadExcelSheet({
+		filename,
+		worksheetName,
+		sheet: buildDataSheet(data, columns, { font, metadata }),
+		font
+	});
+}
 
-		addDataToWorksheet(worksheet, data, columns, getCellStyle, metadata);
-
-		const buffer = await workbook.xlsx.writeBuffer();
-		const blob = new Blob([buffer], {
-			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-		});
-
-		triggerDownload(blob, filename);
-	} catch (error) {
-		logger.error(error, 'Error downloading Excel file');
-		throw error;
-	}
+function buildErrorSheet(componentId: string, err: unknown): ExcelSheet {
+	const header: CellStyle = { font: { bold: true } };
+	return {
+		rows: [
+			[
+				{ value: 'Error', style: header },
+				{ value: 'Message', style: header }
+			],
+			[
+				{ value: `Failed to process query: ${componentId}` },
+				{ value: err instanceof Error ? err.message : 'Unknown error' }
+			]
+		],
+		view: { showGridLines: false }
+	};
 }
 
 /**
@@ -487,6 +504,7 @@ export async function downloadAsExcel({
 export async function downloadPageAsExcel({
 	filename,
 	queryInfoContext,
+	font,
 	reportImage,
 	onError,
 	onSuccess
@@ -501,14 +519,14 @@ export async function downloadPageAsExcel({
 			return;
 		}
 
-		const workbook = new ExcelJS.Workbook();
+		const sheets: WriteSheet[] = [];
 		let hasData = false;
 
 		// Track used sheet names for deduplication (case-insensitive)
 		const usedNames = new Set<string>();
 
 		if (reportImage) {
-			addReportImageSheet(workbook, reportImage);
+			sheets.push({ ...buildReportImageSheet(reportImage), name: REPORT_SHEET_NAME });
 			usedNames.add(REPORT_SHEET_NAME.toLowerCase());
 			hasData = true;
 		}
@@ -516,48 +534,21 @@ export async function downloadPageAsExcel({
 		// Add a sheet for each query
 		for (const [componentId, queryInfo] of queryInfoMap) {
 			try {
-				// Skip input/filter and logic/conditional components based on their schema category
-				const userComponent = tags[queryInfo.tag];
-				if (userComponent && EXCLUDED_EXPORT_CATEGORIES.has(userComponent.schema.category)) {
-					continue;
-				}
+				if (!isExportable(queryInfo)) continue;
+				const result = queryInfo.query.result!;
 
-				const query = queryInfo.query;
-
-				// Skip if query has no results or is loading
-				if (!query.result || query.loading || query.result.error || !query.result.rows?.length) {
-					continue;
-				}
+				// Tables export the way they render; other components export their query results.
+				const sheet = queryInfo.excelSheet ?? buildDataSheet(result.rows, result.columns, { font });
 
 				// Create worksheet - use title if available, otherwise format tag name
-				const sheetName = getUniqueSheetName(
-					queryInfo.title || formatTitle(queryInfo.tag),
-					usedNames
-				);
-
-				const worksheet = workbook.addWorksheet(sheetName);
-				worksheet.views = [{ showGridLines: false }];
-
-				addDataToWorksheet(worksheet, query.result.rows, query.result.columns);
-
-				if (worksheet.rowCount > 0) {
-					hasData = true;
-				}
+				const name = getUniqueSheetName(queryInfo.title || formatTitle(queryInfo.tag), usedNames);
+				sheets.push({ ...sheet, name });
+				hasData = true;
 			} catch (err) {
 				logger.error({ err }, `Error processing query ${componentId}`);
 				// Add an error sheet for failed queries
-				const errorSheetName = getUniqueSheetName(
-					`Error - ${formatTitle(queryInfo.tag)}`,
-					usedNames
-				);
-
-				const errorSheet = workbook.addWorksheet(errorSheetName);
-				errorSheet.views = [{ showGridLines: false }];
-				errorSheet.addRow(['Error', 'Message']);
-				errorSheet.addRow([
-					`Failed to process query: ${componentId}`,
-					err instanceof Error ? err.message : 'Unknown error'
-				]);
+				const name = getUniqueSheetName(`Error - ${formatTitle(queryInfo.tag)}`, usedNames);
+				sheets.push({ ...buildErrorSheet(componentId, err), name });
 			}
 		}
 
@@ -569,15 +560,10 @@ export async function downloadPageAsExcel({
 			return;
 		}
 
-		const buffer = await workbook.xlsx.writeBuffer();
-		const blob = new Blob([buffer], {
-			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-		});
-
-		triggerDownload(blob, filename);
+		downloadWorkbook(await writeWorkbook(sheets, font), filename);
 		onSuccess?.();
 	} catch (error) {
-		logger.error('Error downloading page data');
+		logger.error(error, 'Error downloading page data');
 		onError?.(
 			'Failed to download data',
 			error instanceof Error
@@ -627,15 +613,8 @@ export function downloadAsCSV(data: Record<string, unknown>[], filename: string)
 		return;
 	}
 
-	const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-	const csvFilename = filename.endsWith('.csv') ? filename : `${filename}.csv`;
-
-	const url = window.URL.createObjectURL(blob);
-	const link = document.createElement('a');
-	link.href = url;
-	link.setAttribute('download', csvFilename);
-	document.body.appendChild(link);
-	link.click();
-	link.parentNode?.removeChild(link);
-	window.URL.revokeObjectURL(url);
+	downloadBlob(
+		new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }),
+		filename.endsWith('.csv') ? filename : `${filename}.csv`
+	);
 }

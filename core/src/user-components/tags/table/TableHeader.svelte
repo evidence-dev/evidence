@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Info from '../info/Info.svelte';
-	import formatTitle from '../../formatTitle';
+	import { getHeaderDisplayTitle } from './table-cell-display';
 	import type { HeaderCell, ColumnMetaItem } from '../../common/pivot-utils';
 
 	interface Props {
@@ -46,19 +46,12 @@
 		<tr>
 			{#each level as cell, filteredHeaderIndex}
 				{@const effectiveAlign = cell.align}
-				{@const columnMetaForCell = props.columnMeta.find(
-					(meta) => meta.key === props.columns[cell.startIndex]
+				{@const displayTitle = getHeaderDisplayTitle(
+					cell,
+					props.columnMeta,
+					props.columns,
+					props.format_titles
 				)}
-				{@const grainForTitle = columnMetaForCell?.comparison?.dateGrain}
-				{@const periodCountForTitle = columnMetaForCell?.comparison?.periodCount ?? 1}
-				{@const comparisonNameForTitle = columnMetaForCell?.comparison?.name}
-				{@const displayTitle =
-					cell.title ??
-					(props.format_titles &&
-					cell.headerType !== 'pivot_value' &&
-					cell.headerType !== 'column_group'
-						? formatTitle(cell.label, grainForTitle, periodCountForTitle, comparisonNameForTitle)
-						: cell.label)}
 				{@const _columnKey = props.columns[cell.startIndex]}
 				{@const isLinkColumn = props.columns[cell.startIndex] === props.link}
 				{@const alignClass =

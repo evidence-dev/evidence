@@ -1,10 +1,10 @@
-import ExcelJS from 'exceljs';
 import { describe, expect, it } from 'vitest';
-import { addDataToWorksheet } from '../../../shims/data-export';
 import { generatePivotData, type PivotConfig, type PivotResult } from '../../common/pivot-utils';
 import type { DataPoint } from '../../types';
 import type { UnifiedColumnDefinition } from './unified-column-definition.types';
-import { buildTableExcelExportColumns } from './table-export';
+import { buildTableExcelSheet } from './table-export';
+import { CALIBRI_11 } from '../../../shims/excel/font';
+import type { ExcelSheet, SheetCell } from '../../../shims/excel/workbook';
 
 function makePCE(alias: string, type: 'dimension' | 'measure', hasAgg: boolean) {
 	return {
@@ -163,63 +163,79 @@ function makePivotResult({
 		)
 	};
 
-	return generatePivotData(
-		subtotals ? [...detailRows, ...totalRows] : [...detailRows],
-		config
+	return generatePivotData(subtotals ? [...detailRows, ...totalRows] : [...detailRows], config);
+}
+
+/** The header rows of an exported table (the rows above the frozen pane). */
+function headerRows(sheet: ExcelSheet): SheetCell[][] {
+	return (sheet.rows as SheetCell[][]).slice(0, sheet.freezePane?.rows ?? 0);
+}
+
+/**
+ * Each column's header path, top level first. Spanning labels are written once, in their
+ * first column, and centered across the empty cells that follow, so carry them right.
+ */
+function getHeaderPaths(sheet: ExcelSheet): string[][] {
+	const rows = headerRows(sheet);
+	const width = rows[rows.length - 1].length;
+	return Array.from({ length: width }, (_, column) =>
+		rows
+			.map((row, level) => {
+				const isBottom = level === rows.length - 1;
+				for (let c = column; c >= 0; c--) {
+					const cell = row[c];
+					if (cell?.value) return String(cell.value);
+					if (isBottom || cell?.style?.alignment?.horizontal !== 'centerContinuous') return '';
+				}
+				return '';
+			})
+			.filter(Boolean)
 	);
 }
 
-function getExportedHeaders(result: PivotResult): unknown[] {
-	const workbook = new ExcelJS.Workbook();
-	const worksheet = workbook.addWorksheet('Data');
-	addDataToWorksheet(worksheet, result.rows, buildTableExcelExportColumns(result));
-	return (worksheet.getRow(1).values as unknown[]).slice(1);
+function getBottomHeaders(result: PivotResult): unknown[] {
+	const rows = headerRows(buildTableExcelSheet(result, { font: CALIBRI_11 }));
+	return rows[rows.length - 1].map((cell) => cell.value);
 }
 
 describe('table Excel export headers', () => {
 	it('uses pivot values instead of the titled measure for a single pivot and measure', () => {
 		const result = makePivotResult({ pivots: ['item'], measures: ['acv'] });
 
-		expect(getExportedHeaders(result)).toEqual([
-			'Geography',
-			'Avocado',
-			'Balsamic',
-			'Marinara'
-		]);
+		expect(getBottomHeaders(result)).toEqual(['Geography', 'Avocado', 'Balsamic', 'Marinara']);
 	});
 
-	it('multi-pivot combines the full pivot path so columns are unambiguous', () => {
+	it('multi-pivot renders the pivot hierarchy as header rows, as on screen', () => {
 		const result = makePivotResult({ pivots: ['category', 'item'], measures: ['acv'] });
+		const sheet = buildTableExcelSheet(result, { font: CALIBRI_11 });
 
-		expect(getExportedHeaders(result)).toEqual([
-			'Geography',
-			'Dressings - Avocado',
-			'Dressings - Balsamic',
-			'Sauces - Marinara'
+		expect(headerRows(sheet).map((row) => row.map((cell) => cell.value ?? null))).toEqual([
+			[null, 'Dressings', null, 'Sauces'],
+			['Geography', 'Avocado', 'Balsamic', 'Marinara']
+		]);
+		expect(getHeaderPaths(sheet)).toEqual([
+			['Geography'],
+			['Dressings', 'Avocado'],
+			['Dressings', 'Balsamic'],
+			['Sauces', 'Marinara']
 		]);
 	});
 
-	// The general case the single-measure fix missed: with >1 measure the leaf
-	// header row IS the measure name, so a leaf-only header repeated the measure title on
-	// every column and dropped the pivot context entirely.
+	// With >1 measure the leaf header row is the measure name; the pivot path must stay
+	// visible above it so ACV and Sales columns are never ambiguous.
 	it('multi-measure keeps the pivot path AND the measure on every column', () => {
 		const result = makePivotResult({ pivots: ['category', 'item'], measures: ['acv', 'sales'] });
-		const headers = (getExportedHeaders(result) as string[]).slice(1); // drop the Geography dimension col
+		const paths = getHeaderPaths(buildTableExcelSheet(result, { font: CALIBRI_11 })).slice(1); // drop the Geography dimension col
 
-		// the bug: every measure column read just the bare measure title
-		expect(headers).not.toContain('ACV Wtd Dist');
-		expect(headers).not.toContain('Sales');
-		// each column now carries the full pivot path + the measure
-		expect(headers).toContain('Dressings - Avocado - ACV Wtd Dist');
-		expect(headers).toContain('Dressings - Avocado - Sales');
-		// and no two columns collide
-		expect(new Set(headers).size).toBe(headers.length);
+		expect(paths).toContainEqual(['Dressings', 'Avocado', 'ACV Wtd Dist']);
+		expect(paths).toContainEqual(['Dressings', 'Avocado', 'Sales']);
+		expect(new Set(paths.map((path) => path.join('/'))).size).toBe(paths.length);
 	});
 
 	it('a non-pivot table keeps the plain measure titles', () => {
 		const result = makePivotResult({ pivots: [], measures: ['acv', 'sales'] });
 
-		expect(getExportedHeaders(result)).toEqual(['Geography', 'ACV Wtd Dist', 'Sales']);
+		expect(getBottomHeaders(result)).toEqual(['Geography', 'ACV Wtd Dist', 'Sales']);
 	});
 
 	it.each([
@@ -237,16 +253,14 @@ describe('table Excel export headers', () => {
 				showSubtotalColumns: true
 			}
 		}
-	])('every column header is distinct and carries the measure ($name)', ({ options }) => {
+	])('every column header path is distinct and names its measure ($name)', ({ options }) => {
 		const result = makePivotResult(options);
-		const headers = (getExportedHeaders(result) as string[]).slice(1); // drop the dimension col
+		const paths = getHeaderPaths(buildTableExcelSheet(result, { font: CALIBRI_11 })).slice(1); // drop the dimension col
 
-		expect(headers.length).toBeGreaterThan(0);
-		expect(headers.every((h) => h && h.length > 0)).toBe(true);
-		// every measure column names its measure (so ACV vs Sales is never ambiguous)...
-		expect(headers.every((h) => h.includes('ACV Wtd Dist') || h.includes('Sales'))).toBe(true);
-		// ...but never as a BARE repeated title, and no two columns collide.
-		expect(headers).not.toContain('ACV Wtd Dist');
-		expect(new Set(headers).size).toBe(headers.length);
+		expect(paths.length).toBeGreaterThan(0);
+		expect(paths.every((path) => path.includes('ACV Wtd Dist') || path.includes('Sales'))).toBe(
+			true
+		);
+		expect(new Set(paths.map((path) => path.join('/'))).size).toBe(paths.length);
 	});
 });

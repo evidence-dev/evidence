@@ -573,7 +573,7 @@ function getPivotedFragmentColumnName(
 	return fragmentKeyParts.join('::');
 }
 
-const GROUPED_DIM_MARKER = '[[GROUPED]]';
+export const GROUPED_DIM_MARKER = '[[GROUPED]]';
 
 /**
  * A subtotal row that aggregates a single detail row just duplicates that row,
