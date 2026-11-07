@@ -19,6 +19,8 @@
 	 */
 	import * as Dialog from '../../../shadcn/components/ui/dialog/index.js';
 	import HtmlSandbox from './sandbox/HtmlSandbox.svelte';
+	import HtmlLoadingShell from './HtmlLoadingShell.svelte';
+	import { MODAL_HTML_LOADING_FALLBACK_MS } from './html-loading';
 	import { Viewport } from '../../../preview-viewport.context.svelte';
 	import { cn } from '../../../shadcn/utils';
 	import type {
@@ -64,18 +66,14 @@
 	}: Props = $props();
 
 	// The nested sandbox takes a beat to boot (load runtime, inject, autosize),
-	// which reads as an empty flash. Hold a "Loading…" placeholder and fade the
-	// content in once the sandbox signals its first render. A timeout fallback
-	// reveals regardless, so a modal whose script never calls evidence.ready()
-	// can never get stuck hidden.
+	// which reads as an empty flash. HtmlLoadingShell holds "Loading…" until
+	// onRendered (or the short modal fallback). Bump loadGeneration only when
+	// opening so a close animation doesn't flash the placeholder again.
 	const viewport = new Viewport();
-
-	let ready = $state(false);
+	let loadGeneration = $state(0);
 	$effect(() => {
 		if (!open) return;
-		ready = false;
-		const t = setTimeout(() => (ready = true), 600);
-		return () => clearTimeout(t);
+		loadGeneration += 1;
 	});
 </script>
 
@@ -100,8 +98,12 @@
 		     animation) so the content doesn't collapse to empty and flash as the
 		     dialog animates out. A fresh frame still boots on each open. min-h
 		     keeps the dialog a stable size while the content loads. -->
-		<div class="relative min-h-[10rem] flex-1 overflow-y-auto">
-			<div class="transition-opacity duration-150" style:opacity={ready ? 1 : 0}>
+		<HtmlLoadingShell
+			fallbackMs={MODAL_HTML_LOADING_FALLBACK_MS}
+			resetKey={`${loadGeneration}:${html}`}
+			class="min-h-[10rem] flex-1 overflow-y-auto"
+		>
+			{#snippet children({ onRendered })}
 				<HtmlSandbox
 					{html}
 					{variables}
@@ -114,17 +116,10 @@
 					{onNavigate}
 					{onOpenUrl}
 					{onLog}
-					onRendered={() => (ready = true)}
+					{onRendered}
 					class="w-full"
 				/>
-			</div>
-			{#if !ready}
-				<div
-					class="text-muted-foreground pointer-events-none absolute inset-0 flex items-center justify-center text-sm"
-				>
-					Loading…
-				</div>
-			{/if}
-		</div>
+			{/snippet}
+		</HtmlLoadingShell>
 	</Dialog.Content>
 </Dialog.Root>
