@@ -357,7 +357,7 @@ export const schema = {
 | \`evidence.modal.open({ title, html })\` / \`.close()\` | Open a full-page modal the parent renders over the report, in a nested sandbox with the same \`evidence\` API. |
 | \`evidence.navigate(path)\` | Navigate to another page in the app (a drill-through). Same-origin internal paths only. |
 | \`evidence.openUrl(url)\` | Open an external \`http(s)\` URL in a new tab. The host must be named in the block (see Links). |
-| \`evidence.ready()\` | Signal that the first render is done. Call it after async draws so PDF/PNG export captures a finished frame. |
+| \`evidence.ready()\` | Signal that the first render is done. Call it after async draws so the block's Loading… placeholder clears and PDF/PNG export captures a finished frame. |
 
 The reliable pattern is to wrap your draw in \`async function render() { … }\`, then \`evidence.subscribe(render); await render();\` — \`evidence.query\` returns fresh rows each call, so the same function serves the first render and every reactive re-render.`
 		},

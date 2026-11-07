@@ -28,6 +28,8 @@
 	} from '../../sandbox-runtime-errors-context.svelte';
 	import HtmlSandbox from './sandbox/HtmlSandbox.svelte';
 	import HtmlModal from './HtmlModal.svelte';
+	import HtmlLoadingShell from './HtmlLoadingShell.svelte';
+	import { INLINE_HTML_LOADING_FALLBACK_MS } from './html-loading';
 	import { waitForInterpolatedQuery } from './wait-for-query';
 	import { resolveVariables } from './resolve-variables';
 	import {
@@ -314,24 +316,36 @@
 	});
 </script>
 
-<HtmlSandbox
-	html={props.html ?? ''}
-	variables={evidenceVariables}
-	theme={themeSnapshot}
-	filters={filtersSnapshot}
-	{printing}
-	{runQuery}
-	{onFilterSet}
-	{onFilterCreate}
-	{onModalOpen}
-	{onModalClose}
-	{onNavigate}
-	{onOpenUrl}
-	{height}
+<!-- Same loading placeholder as HtmlModal: empty flash until evidence.ready()
+     (or auto-complete for script-free bodies). Longer fallback than the modal
+     so warehouse-backed evidence.query can settle before we drop "Loading…". -->
+<HtmlLoadingShell
+	fallbackMs={INLINE_HTML_LOADING_FALLBACK_MS}
+	resetKey={props.html}
 	class="h-full w-full"
-	onError={(message) => (sandboxError = message)}
-	onLog={(entry) => errorSource?.report(entry)}
-/>
+>
+	{#snippet children({ onRendered })}
+		<HtmlSandbox
+			html={props.html ?? ''}
+			variables={evidenceVariables}
+			theme={themeSnapshot}
+			filters={filtersSnapshot}
+			{printing}
+			{runQuery}
+			{onFilterSet}
+			{onFilterCreate}
+			{onModalOpen}
+			{onModalClose}
+			{onNavigate}
+			{onOpenUrl}
+			{height}
+			class="h-full w-full"
+			{onRendered}
+			onError={(message) => (sandboxError = message)}
+			onLog={(entry) => errorSource?.report(entry)}
+		/>
+	{/snippet}
+</HtmlLoadingShell>
 
 <HtmlModal
 	bind:open={modal.open}
