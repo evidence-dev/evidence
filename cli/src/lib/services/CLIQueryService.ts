@@ -19,6 +19,7 @@ export class CLIQueryService implements QueryService {
 	readonly workspaceId: string;
 	readonly dialect: SqlDialect;
 	readonly connectionType: string;
+	readonly #abandoned = new AbortController();
 
 	constructor(workspaceId: string, connectionType: ConnectionType = null) {
 		this.workspaceId = workspaceId;
@@ -26,16 +27,26 @@ export class CLIQueryService implements QueryService {
 		this.connectionType = connectionType ?? 'managed';
 	}
 
+	/**
+	 * Cancel in-flight queries and drop any later ones, for a page being left.
+	 * They never settle: an empty result would render as "no data" until the
+	 * page is replaced, while staying pending keeps components in their loading state.
+	 */
+	abandon(): void {
+		this.#abandoned.abort();
+	}
+
 	async query<RowType extends AnyRowType = AnyRowType>(
 		sql: string,
 		opts?: QueryOpts
 	): Promise<QueryResult<RowType>> {
+		const abandoned = this.#abandoned.signal;
 		try {
 			const response = await fetch('/api/query', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ sql }),
-				signal: opts?.signal
+				signal: opts?.signal ? AbortSignal.any([opts.signal, abandoned]) : abandoned
 			});
 
 			const data = await response.json();
@@ -56,6 +67,8 @@ export class CLIQueryService implements QueryService {
 				source: data.source
 			};
 		} catch (e) {
+			if (abandoned.aborted) return new Promise(() => {});
+
 			// Handle abort signals gracefully
 			if (e instanceof Error && e.name === 'AbortError') {
 				return {
