@@ -34,7 +34,7 @@ export interface SandboxHost {
 	request: <T = unknown>(
 		kind: string,
 		payload?: unknown,
-		opts?: { timeoutMs?: number }
+		opts?: { timeoutMs?: number | null }
 	) => Promise<T>;
 }
 
