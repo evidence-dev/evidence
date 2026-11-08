@@ -118,6 +118,7 @@ describe('init --warehouse', () => {
 	it('parses a supported warehouse, case-insensitively', () => {
 		expect(parse('init', '--warehouse', 'snowflake').initWarehouse).toBe('snowflake');
 		expect(parse('init', '--warehouse', 'BigQuery').initWarehouse).toBe('bigquery');
+		expect(parse('init', '--warehouse', 'DUCKDB').initWarehouse).toBe('duckdb');
 	});
 
 	it('parses --warehouse alongside a target directory', () => {

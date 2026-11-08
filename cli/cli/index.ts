@@ -117,7 +117,9 @@ try {
 			console.log('');
 			console.log('Next steps:');
 			if (result.createdDirectory) console.log(`  cd ${args.initTargetDir}`);
-			if (result.warehouse) {
+			if (result.warehouse === 'duckdb') {
+				console.log('  Optionally edit connection.yaml to use a persistent DuckDB file');
+			} else if (result.warehouse) {
 				console.log(`  Add your ${result.warehouse} credentials to connection.yaml`);
 			}
 			console.log('  evidence dev');
