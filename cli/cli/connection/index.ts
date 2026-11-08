@@ -140,6 +140,7 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 			const inList = schemas.map(quote).join(', ');
 			return `${base} WHERE table_schema IN (${inList}) AND LEFT(table_name, 8) <> 'mv_tbl__' ORDER BY name`;
 		}
+		case 'duckdb':
 		case 'motherduck': {
 			// DuckDB exposes a standard information_schema. Unqualify the default 'main'
 			// schema; qualify the rest — matches how unqualified names resolve. Exclude

@@ -17,6 +17,7 @@ import type { PostgresCredentials } from '@evidence/core/connectors/postgres/cre
 import type { CubeCredentials } from '@evidence/core/connectors/cube/credentials';
 import type { RedshiftCredentials } from '@evidence/core/connectors/redshift/credentials';
 import type { MotherduckCredentials } from '@evidence/core/connectors/motherduck/credentials';
+import type { DuckDBCredentials } from '@evidence/core/connectors/duckdb/credentials';
 import type { Column } from '@evidence/core/user-components/interfaces/query-service';
 
 export type SnowflakeConnectionConfig = { type: 'snowflake' } & SnowflakeCredentials;
@@ -45,6 +46,8 @@ export type RedshiftConnectionConfig = { type: 'redshift' } & RedshiftCredential
 
 export type MotherDuckConnectionConfig = { type: 'motherduck' } & MotherduckCredentials;
 
+export type DuckDBConnectionConfig = { type: 'duckdb' } & DuckDBCredentials;
+
 export type ConnectionConfig =
 	| SnowflakeConnectionConfig
 	| BigQueryConnectionConfig
@@ -55,7 +58,8 @@ export type ConnectionConfig =
 	| PostgresConnectionConfig
 	| CubeConnectionConfig
 	| RedshiftConnectionConfig
-	| MotherDuckConnectionConfig;
+	| MotherDuckConnectionConfig
+	| DuckDBConnectionConfig;
 
 export type QueryColumn = Column;
 
