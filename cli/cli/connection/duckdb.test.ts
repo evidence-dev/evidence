@@ -23,6 +23,54 @@ afterEach(async () => {
 });
 
 describe('DuckDB direct query execution', () => {
+	it('reuses one in-memory database within a project', async () => {
+		const memoryConfig = {
+			...config,
+			database: ':memory:'
+		};
+
+		await executeQuery('CREATE TABLE memory_counter AS SELECT 42 AS value', memoryConfig);
+
+		const results = await Promise.all([
+			executeQuery('SELECT value FROM memory_counter', memoryConfig),
+			executeQuery('SELECT value FROM memory_counter', memoryConfig)
+		]);
+
+		expect(results.map((result) => result.rows)).toEqual([[{ value: 42 }], [{ value: 42 }]]);
+	});
+
+	it('isolates in-memory databases belonging to different projects', async () => {
+		const secondProject = path.join(directory, 'second-project');
+		await mkdir(secondProject, { recursive: true });
+
+		const first = {
+			...config,
+			database: ':memory:'
+		};
+
+		const second = {
+			...first,
+			projectDir: secondProject
+		};
+
+		await Promise.all([
+			executeQuery('CREATE TABLE project_identity AS SELECT 101 AS id', first),
+			executeQuery('CREATE TABLE project_identity AS SELECT 202 AS id', second)
+		]);
+
+		const [firstResult, secondResult] = await Promise.all([
+			executeQuery('SELECT id FROM project_identity', first),
+			executeQuery('SELECT id FROM project_identity', second)
+		]);
+
+		expect(firstResult.rows).toEqual([{ id: 101 }]);
+		expect(secondResult.rows).toEqual([{ id: 202 }]);
+
+		await executeQuery('CREATE TABLE only_first_project AS SELECT 1 AS secret', first);
+
+		await expect(executeQuery('SELECT * FROM only_first_project', second)).rejects.toThrow();
+	});
+
 	it('executes SQL and returns Evidence-compatible metadata', async () => {
 		const result = await executeQuery(
 			"SELECT 42::INTEGER AS answer, 'duck'::VARCHAR AS label",

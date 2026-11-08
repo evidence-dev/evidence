@@ -12,6 +12,32 @@ import type { DuckDBCredentials } from '@evidence/core/connectors/duckdb/credent
 import type { QueryResult } from './types';
 
 /**
+ * In-memory databases are scoped to an Evidence project rather than
+ * shared by every project using the DuckDB ':memory:' marker.
+ *
+ * Cache the creation promise so concurrent queries share one instance.
+ */
+const memoryInstances = new Map<string, Promise<DuckDBInstance>>();
+
+function getDuckDBInstance(config: DuckDBCredentials): Promise<DuckDBInstance> {
+	if (config.database !== ':memory:') {
+		return DuckDBInstance.fromCache(config.database);
+	}
+
+	const key = config.projectDir;
+	const existing = memoryInstances.get(key);
+	if (existing) return existing;
+
+	const pending = DuckDBInstance.create(':memory:').catch((error: unknown) => {
+		memoryInstances.delete(key);
+		throw error;
+	});
+
+	memoryInstances.set(key, pending);
+	return pending;
+}
+
+/**
  * Convert numeric JSON strings only when the conversion is lossless.
  * Large integers and high-precision decimals remain strings.
  */
@@ -36,7 +62,7 @@ export async function executeDuckDBQuery(
 	sql: string,
 	config: DuckDBCredentials
 ): Promise<QueryResult> {
-	const instance = await DuckDBInstance.fromCache(config.database);
+	const instance = await getDuckDBInstance(config);
 	const connection = await instance.connect();
 
 	try {
