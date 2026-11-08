@@ -22,6 +22,7 @@ export function resolveDuckDBCredentials(
 
   return {
     database,
+    projectDir: path.resolve(opts.cwd),
     schemas: [...config.schemas],
   };
 }

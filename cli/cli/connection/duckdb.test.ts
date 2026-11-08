@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { executeQuery } from './index';
@@ -13,6 +13,7 @@ beforeEach(async () => {
 	config = {
 		type: 'duckdb',
 		database: path.join(directory, 'analytics.duckdb'),
+		projectDir: directory,
 		schemas: []
 	};
 });
@@ -74,6 +75,37 @@ describe('DuckDB direct query execution', () => {
 		const result = await executeQuery('SELECT 12.50::DECIMAL(10,2) AS price', config);
 
 		expect(result.rows).toEqual([{ price: 12.5 }]);
+	});
+
+	it('resolves Parquet paths relative to the Evidence project', async () => {
+		const dataDir = path.join(directory, 'data');
+		await mkdir(dataDir, { recursive: true });
+
+		const parquetFile = path.join(dataDir, 'relative.parquet');
+
+		await executeQuery(
+			`COPY (SELECT 1 AS id, 'POZ' AS airport)
+			 TO '${parquetFile.replace(/'/g, "''")}' (FORMAT PARQUET)`,
+			config
+		);
+
+		const result = await executeQuery(
+			"SELECT id, airport FROM read_parquet('data/relative.parquet')",
+			config
+		);
+
+		expect(result.rows).toEqual([{ id: 1, airport: 'POZ' }]);
+	});
+
+	it('escapes apostrophes in the project directory', async () => {
+		const projectDir = path.join(directory, "author's project");
+		await mkdir(projectDir, { recursive: true });
+
+		config.projectDir = projectDir;
+
+		const result = await executeQuery('SELECT 7 AS value', config);
+
+		expect(result.rows).toEqual([{ value: 7 }]);
 	});
 
 	it('reads real Parquet files', async () => {

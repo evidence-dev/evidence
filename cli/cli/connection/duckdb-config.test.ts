@@ -25,6 +25,7 @@ describe('DuckDB connection.yaml', () => {
 
 		expect(await loadConnectionConfig(projectDir)).toEqual({
 			type: 'duckdb',
+			projectDir,
 			database: ':memory:',
 			schemas: []
 		});
@@ -37,6 +38,7 @@ describe('DuckDB connection.yaml', () => {
 
 		expect(await loadConnectionConfig(projectDir)).toEqual({
 			type: 'duckdb',
+			projectDir,
 			database: path.join(projectDir, 'data', 'analytics.duckdb'),
 			schemas: ['main', 'analytics']
 		});
@@ -49,6 +51,7 @@ describe('DuckDB connection.yaml', () => {
 
 		expect(await loadConnectionConfig(projectDir)).toEqual({
 			type: 'duckdb',
+			projectDir,
 			database,
 			schemas: []
 		});
@@ -76,6 +79,7 @@ describe('DuckDB connection.yaml', () => {
 
 			expect(await loadConnectionConfig(projectDir)).toEqual({
 				type: 'duckdb',
+				projectDir,
 				database: path.join(projectDir, 'data', 'from-env.duckdb'),
 				schemas: []
 			});
@@ -93,6 +97,7 @@ describe('DuckDB catalog SQL', () => {
 	it('lists non-system tables without an allowlist', () => {
 		const sql = listTablesSql({
 			type: 'duckdb',
+			projectDir,
 			database: ':memory:',
 			schemas: []
 		});
@@ -104,6 +109,7 @@ describe('DuckDB catalog SQL', () => {
 	it('restricts the catalog to selected schemas', () => {
 		const sql = listTablesSql({
 			type: 'duckdb',
+			projectDir,
 			database: ':memory:',
 			schemas: ['main', 'analytics']
 		});
@@ -114,6 +120,7 @@ describe('DuckDB catalog SQL', () => {
 	it('escapes single quotes in schema names', () => {
 		const sql = listTablesSql({
 			type: 'duckdb',
+			projectDir,
 			database: ':memory:',
 			schemas: ["sales'archive"]
 		});

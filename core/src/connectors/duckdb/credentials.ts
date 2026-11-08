@@ -5,5 +5,6 @@
  */
 export type DuckDBCredentials = {
   database: string;
+  projectDir: string;
   schemas: string[];
 };

@@ -40,6 +40,10 @@ export async function executeDuckDBQuery(
 	const connection = await instance.connect();
 
 	try {
+		// Resolve relative CSV/Parquet paths against the Evidence project.
+		const escapedRoot = config.projectDir.replace(/'/g, "''");
+		await connection.runAndReadAll(`SET file_search_path = '${escapedRoot}'`);
+
 		const reader = await connection.runAndReadAll(sql);
 
 		const names = reader.columnNames();
