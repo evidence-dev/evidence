@@ -15,6 +15,7 @@ export const WAREHOUSE_MODES = [
 	'cube',
 	'redshift',
 	'motherduck',
+	'duckdb',
 	'sqlserver'
 ] as const;
 

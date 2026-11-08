@@ -113,6 +113,7 @@ const WAREHOUSE_LABELS: Record<WarehouseMode, string> = {
 	cube: 'Cube',
 	redshift: 'Amazon Redshift',
 	motherduck: 'MotherDuck',
+	duckdb: 'DuckDB',
 	sqlserver: 'SQL Server'
 };
 

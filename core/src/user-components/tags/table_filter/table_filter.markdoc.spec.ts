@@ -452,6 +452,7 @@ describe('table filter string literal escaping', () => {
 		// so the literal stays closed whether or not the cluster honours `\\'`.
 		redshift: "category = 'zzz\\\\'' OR 1=1 --'",
 		motherduck: "category = 'zzz\\'' OR 1=1 --'",
+		duckdb: "category = 'zzz\\'' OR 1=1 --'",
 		sqlserver: "category = 'zzz\\'' OR 1=1 --'"
 	};
 
@@ -588,6 +589,7 @@ describe('table filter identifier quoting', () => {
 		cube: '"Total Sales" = 100',
 		redshift: '"Total Sales" = 100',
 		motherduck: '"Total Sales" = 100',
+		duckdb: '"Total Sales" = 100',
 		sqlserver: '"Total Sales" = 100'
 	};
 
@@ -601,6 +603,7 @@ describe('table filter identifier quoting', () => {
 		cube: '"total_sales"" OR 1=1 --" = 100',
 		redshift: '"total_sales"" OR 1=1 --" = 100',
 		motherduck: '"total_sales"" OR 1=1 --" = 100',
+		duckdb: '"total_sales"" OR 1=1 --" = 100',
 		sqlserver: '"total_sales"" OR 1=1 --" = 100'
 	};
 

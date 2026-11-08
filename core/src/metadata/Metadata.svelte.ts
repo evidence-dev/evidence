@@ -265,6 +265,7 @@ export class Metadata {
 				this.#warehouseMode === 'cube' ||
 				this.#warehouseMode === 'redshift' ||
 				this.#warehouseMode === 'motherduck' ||
+				this.#warehouseMode === 'duckdb' ||
 				this.#warehouseMode === 'sqlserver')
 		) {
 			this.#loading = false;
@@ -307,7 +308,7 @@ export class Metadata {
 			return await this.#loadRedshift();
 		}
 
-		if (this.#warehouseMode === 'motherduck') {
+		if (this.#warehouseMode === 'motherduck' || this.#warehouseMode === 'duckdb') {
 			return this.#loadMotherduck();
 		}
 
