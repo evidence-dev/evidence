@@ -43,6 +43,10 @@ export async function executeQuery(sql: string, config: ConnectionConfig): Promi
 			return executePostgresQuery(sql, config);
 		case 'motherduck':
 			return executeMotherduckQuery(sql, config);
+		case 'duckdb': {
+			const { executeDuckDBQuery } = await import('./duckdb');
+			return executeDuckDBQuery(sql, config);
+		}
 		default:
 			// Belt-and-braces: a future ConnectionConfig variant added without a
 			// matching branch should fail loudly here rather than silently

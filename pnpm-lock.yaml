@@ -83,6 +83,9 @@ importers:
       '@databricks/sql':
         specifier: ^1.16.0
         version: 1.16.0(encoding@0.1.13)
+      '@duckdb/node-api':
+        specifier: 1.5.6-r.2
+        version: 1.5.6-r.2
       '@evidence/core':
         specifier: workspace:*
         version: link:../core
@@ -685,6 +688,7 @@ packages:
 
   '@clickhouse/client-common@1.18.2':
     resolution: {integrity: sha512-J0SG6q9V31ydxonglpj9xhNRsUxCsF71iEZ784yldqMYwsHixj/9xHFDgBDX3DuMiDx/kPDfXnf+pimp08wIBA==}
+    deprecated: 'Deprecated: import from @clickhouse/client or @clickhouse/client-web instead.'
 
   '@clickhouse/client@1.18.2':
     resolution: {integrity: sha512-fuquQswRSHWM6D079ZeuGqkMOsqtcUPL06UdTnowmoeeYjVrqisfVmvnw8pc3OeKS4kVb91oygb/MfLDiMs0TQ==}
@@ -780,6 +784,52 @@ packages:
   '@databricks/sql@1.16.0':
     resolution: {integrity: sha512-kaSBjYUT0rDYsrouvPakwRjs030KKvImOTHRG95EsYOLkNN+/YvJ8JgQ0vQjvgT3NUREoGys+SQ4ZzqwHuwoCA==}
     engines: {node: '>=14.0.0'}
+
+  '@duckdb/node-api@1.5.6-r.2':
+    resolution: {integrity: sha512-xDXSabc44PIe7xzTVYtfXKkp1eqvXJSOPoYfgtcdj5ThYiy1lyNI1AGx8NHIg134pwy2xW4iqQ5IvKXVD/OKPg==}
+
+  '@duckdb/node-bindings-darwin-arm64@1.5.6-r.2':
+    resolution: {integrity: sha512-JGNh1WQtlXrxDs6/5dmSH0tGBrn4Kl/GTlzay/KlIb0rJLray5c5PdZOl6o+ApOsAbgoQ2tRWuFFtoqwsfPqrQ==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@duckdb/node-bindings-darwin-x64@1.5.6-r.2':
+    resolution: {integrity: sha512-kx3tVfqytffRXgJ4AN7wB4dBaSS2WrmA0iy3dfIa7tbDYI8bFf+muZp6jtbsWAxhx+BzHV+wRmtMC/Ygmh/FTw==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@duckdb/node-bindings-linux-arm64-musl@1.5.6-r.2':
+    resolution: {integrity: sha512-scmH9rLsHc2npzWmJwEmhfPMlG/H3U+sHTqBEPs/eUQfD2OYf5uqo5M87BDOiStBaZICCDEpTnMOxoe4mgh2lw==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@duckdb/node-bindings-linux-arm64@1.5.6-r.2':
+    resolution: {integrity: sha512-x/JvEl57X19PBlemOAQuyv0gf3QuP+GrnDZKLnCc6rDY/u8tlPYlzPoKHxWgcSu4FKXMSY0RXosgEm9ulMkOhA==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@duckdb/node-bindings-linux-x64-musl@1.5.6-r.2':
+    resolution: {integrity: sha512-GyLPoJcDRvi7vJMRnBNmI5kT95aaTVwgaFKBvpROen317oxckaA+OsBJovH+vtJlU7D+i+9mwmGN8wuDQAdJtg==}
+    cpu: [x64]
+    os: [linux]
+
+  '@duckdb/node-bindings-linux-x64@1.5.6-r.2':
+    resolution: {integrity: sha512-Vrr5W9xrQB6Xnv4mgFuyzbvjKBrjMCQdAQiIWzcDOuKW+HpJKhjSUuNnOXplFmryy2eTsP/t7fodiqrgDPJYRA==}
+    cpu: [x64]
+    os: [linux]
+
+  '@duckdb/node-bindings-win32-arm64@1.5.6-r.2':
+    resolution: {integrity: sha512-cHb9onfkRv8UG4iWMguu/5//aiJjzUyVncPEL3qkwmHgWtkgDP2psy8TExwoMvtnA+gTAQlIOebpanQ9ZYyzWw==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@duckdb/node-bindings-win32-x64@1.5.6-r.2':
+    resolution: {integrity: sha512-iFPP94+k8ODB0k0FnELFO5vFB3IkI203RiaPa/9gfymE3AaugLFiN/2oOLhKqvowXWzRLuDBF4dJXRAWJDJ0KA==}
+    cpu: [x64]
+    os: [win32]
+
+  '@duckdb/node-bindings@1.5.6-r.2':
+    resolution: {integrity: sha512-VthQ+73BXaxJCAcMEb5/tsArNaDcQ1DusAzlh7F6VXgoWRnK3F/j5+IQaHnlbSVNuYH5aGDZZIpAUQZvJrshlA==}
 
   '@emnapi/core@1.11.1':
     resolution: {integrity: sha512-RSvbQmHzdKzNsLYa/wHrbc3KN4sYLKAdPZxqiM2HATqv/SBk2/ENSHpvXGaLOMcsAyz0poEGqkmmKYG3OWiJEQ==}
@@ -1223,6 +1273,7 @@ packages:
   '@opentelemetry/sdk-trace-base@2.2.0':
     resolution: {integrity: sha512-xWQgL0Bmctsalg6PaXExmzdedSp3gyKV8mQBwK/j9VGdCDu2fmXIb2gAehBKbkXCpJ4HPkgv3QfoJWRT4dHWbw==}
     engines: {node: ^18.19.0 || >=20.6.0}
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       '@opentelemetry/api': '>=1.3.0 <1.10.0'
 
@@ -1492,6 +1543,9 @@ packages:
   '@smithy/core@3.31.1':
     resolution: {integrity: sha512-CyogUINxvi7C7LDsh8Syo6hVJOT9ckz4rG8dRZfTJ8r91HkMY59PnNooaj7WcHyxEkxPfBAmbgztZU+xTo76lg==}
     engines: {node: '>=18.0.0'}
+    deprecated: |-
+      Deprecated due to a bug in custom logger data redaction. Upgrade to the latest version. If you used a custom logger with this
+        version, review your logs and rotate any credentials or other secrets. See https://github.com/aws/aws-sdk-js-v3/issues/8393.
 
   '@smithy/credential-provider-imds@4.2.13':
     resolution: {integrity: sha512-wboCPijzf6RJKLOvnjDAiBxGSmSnGXj35o5ZAWKDaHa/cvQ5U3ZJ13D4tMCE8JG4dxVAZFy/P0x/V9CwwdfULQ==}
@@ -1608,6 +1662,9 @@ packages:
   '@smithy/smithy-client@4.12.9':
     resolution: {integrity: sha512-ovaLEcTU5olSeHcRXcxV6viaKtpkHZumn6Ps0yn7dRf2rRSfy794vpjOtrWDO0d1auDSvAqxO+lyhERSXQ03EQ==}
     engines: {node: '>=18.0.0'}
+    deprecated: |-
+      Deprecated due to a bug in custom logger data redaction. Upgrade to the latest version. If you used a custom logger with
+        this version, review your logs and rotate any credentials or other secrets. See https://github.com/aws/aws-sdk-js-v3/issues/8393.
 
   '@smithy/types@4.14.0':
     resolution: {integrity: sha512-OWgntFLW88kx2qvf/c/67Vno1yuXm/f9M7QFAtVkkO29IJXGBIg0ycEaBTH0kvCtwmvZxRujrgP5a86RvsXJAQ==}
@@ -2709,6 +2766,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -4595,10 +4653,6 @@ packages:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
 
-  type-is@2.0.1:
-    resolution: {integrity: sha512-OZs6gsjF4vMp32qrCbiVSkrFmXtG/AZhY3t0iAMrMBiAZyV9oALtXO8hsrHbMXF9x6L3grlFuwW2oAz7cav+Gw==}
-    engines: {node: '>= 0.6'}
-
   type-is@2.1.0:
     resolution: {integrity: sha512-faYHw0anBbc/kWF3zFTEnxSFOAGUX9GFbOBthvDdLsIlEoWOFOtS0zgCiQYwIskL9iGXZL3kAXD8OoZ4GmMATA==}
     engines: {node: '>= 18'}
@@ -4972,6 +5026,7 @@ snapshots:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
+    optional: true
 
   '@aws-crypto/crc32@5.2.0':
     dependencies:
@@ -5677,12 +5732,14 @@ snapshots:
 
   '@colors/colors@1.6.0': {}
 
-  '@csstools/color-helpers@5.1.0': {}
+  '@csstools/color-helpers@5.1.0':
+    optional: true
 
   '@csstools/css-calc@2.1.4(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)':
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
+    optional: true
 
   '@csstools/css-color-parser@3.1.0(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)':
     dependencies:
@@ -5690,12 +5747,15 @@ snapshots:
       '@csstools/css-calc': 2.1.4(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
+    optional: true
 
   '@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4)':
     dependencies:
       '@csstools/css-tokenizer': 3.0.4
+    optional: true
 
-  '@csstools/css-tokenizer@3.0.4': {}
+  '@csstools/css-tokenizer@3.0.4':
+    optional: true
 
   '@dabh/diagnostics@2.0.8':
     dependencies:
@@ -5756,6 +5816,47 @@ snapshots:
       - encoding
       - supports-color
       - utf-8-validate
+
+  '@duckdb/node-api@1.5.6-r.2':
+    dependencies:
+      '@duckdb/node-bindings': 1.5.6-r.2
+
+  '@duckdb/node-bindings-darwin-arm64@1.5.6-r.2':
+    optional: true
+
+  '@duckdb/node-bindings-darwin-x64@1.5.6-r.2':
+    optional: true
+
+  '@duckdb/node-bindings-linux-arm64-musl@1.5.6-r.2':
+    optional: true
+
+  '@duckdb/node-bindings-linux-arm64@1.5.6-r.2':
+    optional: true
+
+  '@duckdb/node-bindings-linux-x64-musl@1.5.6-r.2':
+    optional: true
+
+  '@duckdb/node-bindings-linux-x64@1.5.6-r.2':
+    optional: true
+
+  '@duckdb/node-bindings-win32-arm64@1.5.6-r.2':
+    optional: true
+
+  '@duckdb/node-bindings-win32-x64@1.5.6-r.2':
+    optional: true
+
+  '@duckdb/node-bindings@1.5.6-r.2':
+    dependencies:
+      detect-libc: 2.1.2
+    optionalDependencies:
+      '@duckdb/node-bindings-darwin-arm64': 1.5.6-r.2
+      '@duckdb/node-bindings-darwin-x64': 1.5.6-r.2
+      '@duckdb/node-bindings-linux-arm64': 1.5.6-r.2
+      '@duckdb/node-bindings-linux-arm64-musl': 1.5.6-r.2
+      '@duckdb/node-bindings-linux-x64': 1.5.6-r.2
+      '@duckdb/node-bindings-linux-x64-musl': 1.5.6-r.2
+      '@duckdb/node-bindings-win32-arm64': 1.5.6-r.2
+      '@duckdb/node-bindings-win32-x64': 1.5.6-r.2
 
   '@emnapi/core@1.11.1':
     dependencies:
@@ -5903,7 +6004,8 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
-  '@exodus/schemasafe@1.3.0': {}
+  '@exodus/schemasafe@1.3.0':
+    optional: true
 
   '@fast-csv/format@4.3.5':
     dependencies:
@@ -7220,6 +7322,7 @@ snapshots:
     dependencies:
       mime-types: 3.0.2
       negotiator: 1.0.0
+    optional: true
 
   acorn-jsx@5.3.2(acorn@8.17.0):
     dependencies:
@@ -7428,6 +7531,7 @@ snapshots:
       type-is: 2.1.0
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   bowser@2.14.1: {}
 
@@ -7461,7 +7565,8 @@ snapshots:
     dependencies:
       run-applescript: 7.1.0
 
-  bytes@3.1.2: {}
+  bytes@3.1.2:
+    optional: true
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
@@ -7567,15 +7672,19 @@ snapshots:
       normalize-path: 3.0.0
       readable-stream: 3.6.2
 
-  content-disposition@1.0.1: {}
+  content-disposition@1.0.1:
+    optional: true
 
-  content-type@1.0.5: {}
+  content-type@1.0.5:
+    optional: true
 
-  content-type@2.1.0: {}
+  content-type@2.1.0:
+    optional: true
 
   convert-source-map@2.0.0: {}
 
-  cookie-signature@1.2.2: {}
+  cookie-signature@1.2.2:
+    optional: true
 
   cookie@0.7.2: {}
 
@@ -7602,6 +7711,7 @@ snapshots:
     dependencies:
       '@asamuzakjp/css-color': 3.2.0
       rrweb-cssom: 0.8.0
+    optional: true
 
   cuint@0.2.2:
     optional: true
@@ -7614,6 +7724,7 @@ snapshots:
     dependencies:
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.2.0
+    optional: true
 
   date-fns@4.1.0: {}
 
@@ -7623,7 +7734,8 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  decimal.js@10.6.0: {}
+  decimal.js@10.6.0:
+    optional: true
 
   deep-is@0.1.4: {}
 
@@ -7648,7 +7760,8 @@ snapshots:
 
   delayed-stream@1.0.0: {}
 
-  depd@2.0.0: {}
+  depd@2.0.0:
+    optional: true
 
   dequal@2.0.3: {}
 
@@ -7693,7 +7806,8 @@ snapshots:
       tslib: 2.3.0
       zrender: 6.1.0(patch_hash=osxf5ahipwlfgc2b5uvcmwl6ya)
 
-  ee-first@1.1.1: {}
+  ee-first@1.1.1:
+    optional: true
 
   effect@3.21.0:
     dependencies:
@@ -7705,11 +7819,13 @@ snapshots:
 
   enabled@2.0.0: {}
 
-  encodeurl@2.0.0: {}
+  encodeurl@2.0.0:
+    optional: true
 
   encoding@0.1.13:
     dependencies:
       iconv-lite: 0.6.3
+    optional: true
 
   end-of-stream@1.4.5:
     dependencies:
@@ -7720,7 +7836,8 @@ snapshots:
       graceful-fs: 4.2.11
       tapable: 2.3.2
 
-  entities@6.0.1: {}
+  entities@6.0.1:
+    optional: true
 
   es-define-property@1.0.1: {}
 
@@ -7768,7 +7885,8 @@ snapshots:
       '@esbuild/win32-ia32': 0.28.1
       '@esbuild/win32-x64': 0.28.1
 
-  escape-html@1.0.3: {}
+  escape-html@1.0.3:
+    optional: true
 
   escape-string-regexp@4.0.0: {}
 
@@ -7886,7 +8004,8 @@ snapshots:
 
   esutils@2.0.3: {}
 
-  etag@1.8.1: {}
+  etag@1.8.1:
+    optional: true
 
   event-target-shim@5.0.1: {}
 
@@ -7938,10 +8057,11 @@ snapshots:
       send: 1.2.1
       serve-static: 2.2.1
       statuses: 2.0.2
-      type-is: 2.0.1
+      type-is: 2.1.0
       vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   extend@3.0.2: {}
 
@@ -8011,6 +8131,7 @@ snapshots:
       statuses: 2.0.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   find-replace@3.0.0:
     dependencies:
@@ -8052,11 +8173,13 @@ snapshots:
       svelte-toolbelt: 0.5.0(svelte@5.57.2(@typescript-eslint/types@8.57.2))
       sveltekit-superforms: 2.30.0(@sveltejs/kit@2.70.3(@opentelemetry/api@1.9.1)(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.57.2(@typescript-eslint/types@8.57.2))(vite@7.3.6(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.33.0)(tsx@4.21.0)))(svelte@5.57.2(@typescript-eslint/types@8.57.2))(typescript@5.9.3)(vite@7.3.6(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.33.0)(tsx@4.21.0)))(@types/json-schema@7.0.15)(svelte@5.57.2(@typescript-eslint/types@8.57.2))(typescript@5.9.3)
 
-  forwarded@0.2.0: {}
+  forwarded@0.2.0:
+    optional: true
 
   frac@1.1.2: {}
 
-  fresh@2.0.0: {}
+  fresh@2.0.0:
+    optional: true
 
   fs-constants@1.0.0: {}
 
@@ -8132,6 +8255,7 @@ snapshots:
   get-tsconfig@4.13.7:
     dependencies:
       resolve-pkg-maps: 1.0.0
+    optional: true
 
   get-uri@6.0.5:
     dependencies:
@@ -8220,6 +8344,7 @@ snapshots:
   html-encoding-sniffer@4.0.0:
     dependencies:
       whatwg-encoding: 3.1.1
+    optional: true
 
   html-entities@2.6.0: {}
 
@@ -8234,6 +8359,7 @@ snapshots:
       setprototypeof: 1.2.0
       statuses: 2.0.2
       toidentifier: 1.0.1
+    optional: true
 
   http-proxy-agent@5.0.0:
     dependencies:
@@ -8281,6 +8407,7 @@ snapshots:
   iconv-lite@0.7.3:
     dependencies:
       safer-buffer: 2.1.2
+    optional: true
 
   ieee754@1.2.1: {}
 
@@ -8308,7 +8435,8 @@ snapshots:
 
   ip-address@10.7.0: {}
 
-  ipaddr.js@1.9.1: {}
+  ipaddr.js@1.9.1:
+    optional: true
 
   iron-session@6.3.1(express@5.2.1):
     dependencies:
@@ -8344,9 +8472,11 @@ snapshots:
 
   is-network-error@1.3.1: {}
 
-  is-potential-custom-element-name@1.0.1: {}
+  is-potential-custom-element-name@1.0.1:
+    optional: true
 
-  is-promise@4.0.0: {}
+  is-promise@4.0.0:
+    optional: true
 
   is-reference@3.0.3:
     dependencies:
@@ -8438,6 +8568,7 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+    optional: true
 
   json-bigint@1.0.0:
     dependencies:
@@ -8451,6 +8582,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.29.2
       ts-algebra: 2.0.0
+    optional: true
 
   json-schema-traverse@0.4.1: {}
 
@@ -8688,7 +8820,8 @@ snapshots:
 
   long@5.3.2: {}
 
-  lru-cache@10.4.3: {}
+  lru-cache@10.4.3:
+    optional: true
 
   lru-cache@6.0.0:
     dependencies:
@@ -8746,15 +8879,18 @@ snapshots:
 
   math-intrinsics@1.1.0: {}
 
-  media-typer@1.1.0: {}
+  media-typer@1.1.0:
+    optional: true
 
   memoize-weak@1.0.2: {}
 
-  merge-descriptors@2.0.0: {}
+  merge-descriptors@2.0.0:
+    optional: true
 
   mime-db@1.52.0: {}
 
-  mime-db@1.54.0: {}
+  mime-db@1.54.0:
+    optional: true
 
   mime-types@2.1.35:
     dependencies:
@@ -8763,6 +8899,7 @@ snapshots:
   mime-types@3.0.2:
     dependencies:
       mime-db: 1.54.0
+    optional: true
 
   minimalistic-assert@1.0.1: {}
 
@@ -8813,7 +8950,8 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  negotiator@1.0.0: {}
+  negotiator@1.0.0:
+    optional: true
 
   netmask@2.1.1: {}
 
@@ -8842,7 +8980,8 @@ snapshots:
   normalize-url@8.1.1:
     optional: true
 
-  nwsapi@2.2.23: {}
+  nwsapi@2.2.23:
+    optional: true
 
   oauth4webapi@3.8.5: {}
 
@@ -8857,6 +8996,7 @@ snapshots:
   on-finished@2.4.1:
     dependencies:
       ee-first: 1.1.1
+    optional: true
 
   once@1.4.0:
     dependencies:
@@ -8953,8 +9093,10 @@ snapshots:
   parse5@7.3.0:
     dependencies:
       entities: 6.0.1
+    optional: true
 
-  parseurl@1.3.3: {}
+  parseurl@1.3.3:
+    optional: true
 
   path-exists@4.0.0: {}
 
@@ -8964,7 +9106,8 @@ snapshots:
 
   path-key@3.1.1: {}
 
-  path-to-regexp@8.4.2: {}
+  path-to-regexp@8.4.2:
+    optional: true
 
   pathe@2.0.3: {}
 
@@ -9106,6 +9249,7 @@ snapshots:
     dependencies:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
+    optional: true
 
   proxy-agent@6.5.0:
     dependencies:
@@ -9146,21 +9290,25 @@ snapshots:
 
   quickselect@3.0.0: {}
 
-  range-parser@1.2.1: {}
+  range-parser@1.2.1:
+    optional: true
 
   raw-body@3.0.2:
     dependencies:
       bytes: 3.1.2
       http-errors: 2.0.1
-      iconv-lite: 0.7.2
+      iconv-lite: 0.7.3
       unpipe: 1.0.0
+    optional: true
 
   react-dom@19.2.4(react@19.2.4):
     dependencies:
       react: 19.2.4
       scheduler: 0.27.0
+    optional: true
 
-  react@19.2.4: {}
+  react@19.2.4:
+    optional: true
 
   readable-stream@2.3.8:
     dependencies:
@@ -9196,7 +9344,8 @@ snapshots:
 
   resolve-from@4.0.0: {}
 
-  resolve-pkg-maps@1.0.0: {}
+  resolve-pkg-maps@1.0.0:
+    optional: true
 
   resolve-protobuf-schema@2.1.0:
     dependencies:
@@ -9274,8 +9423,10 @@ snapshots:
       path-to-regexp: 8.4.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
-  rrweb-cssom@0.8.0: {}
+  rrweb-cssom@0.8.0:
+    optional: true
 
   run-applescript@7.1.0: {}
 
@@ -9332,8 +9483,10 @@ snapshots:
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
+    optional: true
 
-  scheduler@0.27.0: {}
+  scheduler@0.27.0:
+    optional: true
 
   semver@7.7.4: {}
 
@@ -9354,6 +9507,7 @@ snapshots:
       statuses: 2.0.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   serve-static@2.2.1:
     dependencies:
@@ -9363,12 +9517,14 @@ snapshots:
       send: 1.2.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   set-cookie-parser@3.1.0: {}
 
   setimmediate@1.0.5: {}
 
-  setprototypeof@1.2.0: {}
+  setprototypeof@1.2.0:
+    optional: true
 
   shebang-command@2.0.0:
     dependencies:
@@ -9474,7 +9630,8 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  source-map@0.6.1: {}
+  source-map@0.6.1:
+    optional: true
 
   split2@4.2.0: {}
 
@@ -9488,7 +9645,8 @@ snapshots:
 
   stackback@0.0.2: {}
 
-  statuses@2.0.2: {}
+  statuses@2.0.2:
+    optional: true
 
   std-env@4.0.0: {}
 
@@ -9653,7 +9811,8 @@ snapshots:
       - '@types/json-schema'
       - typescript
 
-  symbol-tree@3.2.4: {}
+  symbol-tree@3.2.4:
+    optional: true
 
   tabbable@6.4.0: {}
 
@@ -9763,15 +9922,18 @@ snapshots:
 
   tinyrainbow@3.1.0: {}
 
-  tldts-core@6.1.86: {}
+  tldts-core@6.1.86:
+    optional: true
 
   tldts@6.1.86:
     dependencies:
       tldts-core: 6.1.86
+    optional: true
 
   tmp@0.2.7: {}
 
-  toidentifier@1.0.1: {}
+  toidentifier@1.0.1:
+    optional: true
 
   toml@4.3.0: {}
 
@@ -9783,16 +9945,19 @@ snapshots:
   tough-cookie@5.1.2:
     dependencies:
       tldts: 6.1.86
+    optional: true
 
   tr46@0.0.3: {}
 
   tr46@5.1.1:
     dependencies:
       punycode: 2.3.1
+    optional: true
 
   triple-beam@1.4.1: {}
 
-  ts-algebra@2.0.0: {}
+  ts-algebra@2.0.0:
+    optional: true
 
   ts-api-utils@2.5.0(typescript@5.9.3):
     dependencies:
@@ -9810,6 +9975,7 @@ snapshots:
       get-tsconfig: 4.13.7
     optionalDependencies:
       fsevents: 2.3.3
+    optional: true
 
   tw-animate-css@1.4.0: {}
 
@@ -9822,17 +9988,12 @@ snapshots:
 
   type-fest@4.41.0: {}
 
-  type-is@2.0.1:
-    dependencies:
-      content-type: 1.0.5
-      media-typer: 1.1.0
-      mime-types: 3.0.2
-
   type-is@2.1.0:
     dependencies:
       content-type: 2.1.0
       media-typer: 1.1.0
       mime-types: 3.0.2
+    optional: true
 
   typebox@1.1.6:
     optional: true
@@ -9858,7 +10019,8 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unpipe@1.0.0: {}
+  unpipe@1.0.0:
+    optional: true
 
   unzipper@0.12.5:
     dependencies:
@@ -9884,7 +10046,8 @@ snapshots:
   validator@13.15.26:
     optional: true
 
-  vary@1.1.2: {}
+  vary@1.1.2:
+    optional: true
 
   vaul-svelte@1.0.0-next.7(svelte@5.57.2(@typescript-eslint/types@8.57.2)):
     dependencies:
@@ -9992,6 +10155,7 @@ snapshots:
   w3c-xmlserializer@5.0.0:
     dependencies:
       xml-name-validator: 5.0.0
+    optional: true
 
   web-streams-polyfill@3.3.3: {}
 
@@ -10007,18 +10171,22 @@ snapshots:
 
   webidl-conversions@3.0.1: {}
 
-  webidl-conversions@7.0.0: {}
+  webidl-conversions@7.0.0:
+    optional: true
 
   whatwg-encoding@3.1.1:
     dependencies:
       iconv-lite: 0.6.3
+    optional: true
 
-  whatwg-mimetype@4.0.0: {}
+  whatwg-mimetype@4.0.0:
+    optional: true
 
   whatwg-url@14.2.0:
     dependencies:
       tr46: 5.1.1
       webidl-conversions: 7.0.0
+    optional: true
 
   whatwg-url@5.0.0:
     dependencies:
@@ -10066,7 +10234,8 @@ snapshots:
     dependencies:
       is-wsl: 3.1.1
 
-  xml-name-validator@5.0.0: {}
+  xml-name-validator@5.0.0:
+    optional: true
 
   xml-naming@0.1.0: {}
 
