@@ -154,8 +154,7 @@ try {
 			endpoint,
 			`SELECT content FROM read_text('${sqlPath(symlinkFile)}')`
 		);
-		const escaped =
-			result.ok && JSON.stringify(result.payload?.rows ?? []).includes(marker);
+		const escaped = result.ok && JSON.stringify(result.payload?.rows ?? []).includes(marker);
 		console.log(escaped ? 'SYMLINK_ESCAPE_READ_ALLOWED' : 'SYMLINK_ESCAPE_READ_DENIED');
 		console.log(`Symlink HTTP status: ${result.status}`);
 		assert.equal(escaped, false, 'Serve must not read a file outside the project via symlink');
