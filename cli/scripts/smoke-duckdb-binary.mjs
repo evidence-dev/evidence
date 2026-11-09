@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdtempSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -62,6 +62,10 @@ try {
 	];
 
 	assert.deepEqual(query(sql), expected);
+
+	// Seed a Parquet fixture while the trusted CLI still has file access.
+	query("COPY (SELECT 1 AS flight_id, 'POZ' AS airport) TO 'data/inside.parquet' (FORMAT PARQUET)");
+	writeFileSync(join(root, 'outside-secret.txt'), 'outside-project-private-data');
 	console.log('CLI_DUCKDB_OK');
 
 	console.log('=== NATIVE CLEANUP ===');
@@ -232,6 +236,42 @@ try {
 		);
 	}
 	console.log('SQL_HTTP_SECURITY_OK');
+
+	console.log('=== DUCKDB SERVE FILESYSTEM SECURITY ===');
+	const allowedParquet = await fetch(endpoint, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			sql: "SELECT flight_id, airport FROM read_parquet('data/inside.parquet')"
+		}),
+		signal: AbortSignal.timeout(10000)
+	});
+	assert.equal(allowedParquet.status, 200, 'Project Parquet should remain readable');
+	assert.deepEqual((await allowedParquet.json()).rows, [{ flight_id: 1, airport: 'POZ' }]);
+
+	async function expectSQLDenied(name, statement) {
+		const response = await fetch(endpoint, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ sql: statement }),
+			signal: AbortSignal.timeout(10000)
+		});
+		assert.ok(!response.ok, `${name} must be rejected (got HTTP ${response.status})`);
+		const result = await response.json();
+		assert.ok(result.error, `${name} should report a query error`);
+	}
+
+	const outsideSecret = join(root, 'outside-secret.txt').replace(/\\\\/g, '/').replace(/'/g, "''");
+	const outsideWrite = join(root, 'outside-write.csv').replace(/\\\\/g, '/').replace(/'/g, "''");
+	await expectSQLDenied('Outside project file read', `SELECT * FROM read_text('${outsideSecret}')`);
+	await expectSQLDenied('Unlock configuration', 'SET lock_configuration = false');
+	await expectSQLDenied('Re-enable external access', 'SET enable_external_access = true');
+	await expectSQLDenied(
+		'Outside project file write',
+		`COPY (SELECT 1 AS id) TO '${outsideWrite}' (HEADER, DELIMITER ',')`
+	);
+	assert.equal(existsSync(join(root, 'outside-write.csv')), false);
+	console.log('DUCKDB_SERVE_FS_ISOLATION_OK');
 
 	console.log('=== CONCURRENT HTTP QUERIES ===');
 	const concurrentRequests = 12;
