@@ -13,9 +13,7 @@ const config = {
 		}),
 		alias: {
 			'@evidence/core': path.resolve('../core/src'),
-			'@evidence/core/*': path.resolve('../core/src/*'),
-			'$cli': path.resolve('./cli'),
-			'$cli/*': path.resolve('./cli/*')
+			'$cli': path.resolve('./cli')
 		}
 	}
 };
