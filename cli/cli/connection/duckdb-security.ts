@@ -1,11 +1,11 @@
 /**
- * Restrictive DuckDB configuration for the untrusted HTTP SQL surface.
+ * Restrictive DuckDB configuration for the HTTP SQL surface in serve mode.
  *
- * This protects against file access outside the configured project and
- * disables extension auto-loading. A directory allowlist is not read-only:
- * SQL may still write inside the project, so this is not an OS sandbox.
+ * DuckDB's directory allowlist also permits WRITES inside the project.
+ * This is not an OS sandbox or a read-only guarantee for project files.
  */
 import { realpathSync } from 'node:fs';
+import type { DuckDBInstance } from '@duckdb/node-api';
 import type { DuckDBCredentials } from '@evidence/core/connectors/duckdb/credentials';
 
 export function isHardenedDuckDBServe(): boolean {
@@ -14,15 +14,10 @@ export function isHardenedDuckDBServe(): boolean {
 
 export function duckDBServeConfiguration(config: DuckDBCredentials): Record<string, string> {
 	const root = realpathSync(config.projectDir);
-
-	// DuckDB configuration parses allowed_directories as a VARCHAR[] literal.
-	const allowedDirectories = `['${root.replace(/'/g, "''")}']`;
-
 	return {
-		// Set the search path during instance creation; lock_configuration
-		// prevents the previous per-query SET from changing it.
+		// The configuration is locked after instance initialization, so
+		// relative CSV and Parquet paths must be configured up front.
 		file_search_path: root,
-		allowed_directories: allowedDirectories,
 		allow_community_extensions: 'false',
 		allow_unsigned_extensions: 'false',
 		autoinstall_known_extensions: 'false',
@@ -30,8 +25,27 @@ export function duckDBServeConfiguration(config: DuckDBCredentials): Record<stri
 		allow_persistent_secrets: 'false',
 		allow_unredacted_secrets: 'false',
 		enable_global_s3_configuration: 'false',
-		enable_external_access: 'false',
-		...(config.database === ':memory:' ? {} : { access_mode: 'READ_ONLY' }),
-		lock_configuration: 'true'
+		...(config.database === ':memory:' ? {} : { access_mode: 'READ_ONLY' })
 	};
+}
+
+/**
+ * Finish initialization before returning the instance to any HTTP query.
+ * allowed_directories is a list-valued setting and is not accepted by the
+ * node-api's scalar startup set_config implementation in DuckDB 1.5.6.
+ */
+export async function lockDownDuckDBInstance(
+	instance: DuckDBInstance,
+	config: DuckDBCredentials
+): Promise<void> {
+	const root = realpathSync(config.projectDir);
+	const escapedRoot = root.replace(/'/g, "''");
+	const connection = await instance.connect();
+	try {
+		await connection.runAndReadAll(`SET allowed_directories = ['${escapedRoot}']`);
+		await connection.runAndReadAll('SET enable_external_access = false');
+		await connection.runAndReadAll('SET lock_configuration = true');
+	} finally {
+		connection.closeSync();
+	}
 }
