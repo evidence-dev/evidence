@@ -91,6 +91,33 @@ function safeNumericValue(value: unknown): unknown {
 	return String(parsed) === normalized ? parsed : value;
 }
 
+/**
+ * JSON row objects must have unique keys. DuckDB permits repeated SQL aliases,
+ * so disambiguate only their output labels; avoid colliding with explicit
+ * suffixed aliases later in the result (e.g. duplicate, duplicate, duplicate_2).
+ */
+function uniqueColumnNames(rawNames: string[]): string[] {
+	const reserved = new Set(rawNames);
+	const used = new Set<string>();
+
+	return rawNames.map((name) => {
+		if (!used.has(name)) {
+			used.add(name);
+			return name;
+		}
+
+		let suffix = 2;
+		let candidate = `${name}_${suffix}`;
+		while (reserved.has(candidate) || used.has(candidate)) {
+			suffix += 1;
+			candidate = `${name}_${suffix}`;
+		}
+
+		used.add(candidate);
+		return candidate;
+	});
+}
+
 export async function executeDuckDBQuery(
 	sql: string,
 	config: DuckDBCredentials
@@ -108,7 +135,9 @@ export async function executeDuckDBQuery(
 
 		const reader = await connection.runAndReadAll(sql);
 
-		const names = reader.columnNames();
+		const rawNames = reader.columnNames();
+		const names = uniqueColumnNames(rawNames);
+		const hasDuplicateNames = names.some((name, index) => name !== rawNames[index]);
 		const types = reader.columnTypes();
 
 		const columns = names.map((name, index) => {
@@ -121,7 +150,13 @@ export async function executeDuckDBQuery(
 			};
 		});
 
-		const rows: Record<string, unknown>[] = reader.getRowObjectsJson();
+		// getRowObjectsJson() uses SQL aliases as object keys; duplicate aliases
+		// overwrite earlier values. Read positional JSON rows only when needed.
+		const rows: Record<string, unknown>[] = hasDuplicateNames
+			? reader.getRowsJson().map((values) =>
+					Object.fromEntries(names.map((name, index) => [name, values[index]]))
+				)
+			: reader.getRowObjectsJson();
 
 		const numericColumns = columns
 			.filter((column) => column.jsType === 'number')
