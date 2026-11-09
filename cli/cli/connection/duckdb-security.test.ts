@@ -38,8 +38,11 @@ describe('DuckDB serve security configuration', () => {
 		await lockDownDuckDBInstance(instance, config);
 		const connection = await instance.connect();
 		try {
+			// Vitest runs from the CLI repository; use an absolute in-project
+			// path here. The standalone serve smoke test covers relative paths.
+			const allowedCsv = path.join(dataDir, 'flights.csv').replace(/'/g, "''");
 			const rows = await connection.runAndReadAll(
-				"SELECT * FROM read_csv_auto('data/flights.csv')"
+				`SELECT * FROM read_csv_auto('${allowedCsv}')`
 			);
 			expect(rows.getRowObjectsJson()).toEqual([{ airport: 'POZ', flights: 12 }]);
 
