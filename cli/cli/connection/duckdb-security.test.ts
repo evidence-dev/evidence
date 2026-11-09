@@ -66,4 +66,35 @@ describe('DuckDB serve security configuration', () => {
 			instance.closeSync();
 		}
 	});
+
+	it('opens an existing persistent database read-only for serve', async () => {
+		const database = path.join(project, 'analytics.duckdb');
+		const original = await DuckDBInstance.create(database);
+		const writer = await original.connect();
+		try {
+			await writer.runAndReadAll('CREATE TABLE reports AS SELECT 42 AS answer');
+		} finally {
+			writer.closeSync();
+			original.closeSync();
+		}
+
+		const config: DuckDBCredentials = {
+			database,
+			projectDir: project,
+			schemas: []
+		};
+		const instance = await DuckDBInstance.fromCache(database, duckDBServeConfiguration(config));
+		await lockDownDuckDBInstance(instance, config);
+		const connection = await instance.connect();
+		try {
+			const result = await connection.runAndReadAll('SELECT answer FROM reports');
+			expect(result.getRowObjectsJson()).toEqual([{ answer: 42 }]);
+			await expect(
+				connection.runAndReadAll('INSERT INTO reports VALUES (99)')
+			).rejects.toThrow();
+		} finally {
+			connection.closeSync();
+			instance.closeSync();
+		}
+	});
 });
