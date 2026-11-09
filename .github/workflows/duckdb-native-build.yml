@@ -69,8 +69,8 @@ jobs:
         run: |
           node -e "const {createRequire}=require('node:module'); const req=createRequire(require.resolve('@databricks/sql')); req('lz4'); console.log('LZ4_NATIVE_OK')"
 
-      - name: Test DuckDB concurrent in-memory queries
-        run: pnpm --filter @evidence/cli exec vitest run cli/connection/duckdb.test.ts
+      - name: Test DuckDB native loader and concurrency
+        run: pnpm --filter @evidence/cli exec vitest run cli/duckdb-native-runtime.test.ts cli/connection/duckdb.test.ts
 
       - name: Build standalone CLI
         run: pnpm cli:build
