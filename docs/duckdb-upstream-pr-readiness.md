@@ -16,6 +16,9 @@ which specifically requests queries over local disk and Parquet data.
   metadata and JSON-safe result conversion.
 - Native DuckDB library embedded in the compiled Bun CLI on Linux, Windows
   and macOS; fault injection, concurrent load, cleanup and retry tests.
+- Native DuckDB result data contract: large integer and decimal precision,
+  DATE/TIMESTAMP normalization, JSON-safe nested values, INTERVAL metadata,
+  nulls and collision-free duplicate SQL aliases.
 - Restrictive `evidence serve` mode: HTTP boundary validation, project-contained
   file allowlist, locked DuckDB settings, extension restrictions and read-only
   existing persistent databases.
@@ -41,6 +44,8 @@ general-purpose multi-tenant SQL execution service.
 
 See [security model](duckdb-serve-security.md) and
 [least-privilege deployment runbook](duckdb-serve-deployment.md).
+For the column and value compatibility contract, see
+[DuckDB data quality and metadata](duckdb-data-contract.md).
 
 ## Validation evidence
 
@@ -68,6 +73,7 @@ pnpm install --frozen-lockfile
 pnpm --filter @evidence/cli exec vitest run \
   cli/duckdb-native-runtime.test.ts \
   cli/connection/duckdb.test.ts \
+  cli/connection/duckdb-data-contract.test.ts \
   cli/connection/duckdb-security.test.ts \
   cli/serve-host.test.ts \
   src/lib/server/query-request-guard.test.ts
