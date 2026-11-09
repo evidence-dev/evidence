@@ -70,6 +70,8 @@ try {
 
 	const allowedCsv = join(dataDir, 'safe.csv');
 	writeFileSync(allowedCsv, 'airport,flights\nPOZ,12\n');
+	const allowedText = join(dataDir, 'safe-note.txt');
+	writeFileSync(allowedText, 'AUDIT_ALLOWED_TEXT_FILE');
 
 	const outsideSecret = join(root, 'outside-secret.txt');
 	const marker = 'AUDIT_SECRET_OUTSIDE_PROJECT';
@@ -116,6 +118,15 @@ try {
 		`SELECT airport, flights FROM read_csv_auto('${sqlPath(allowedCsv)}')`
 	);
 	assert.ok(allowedRead.ok, 'In-project CSV must remain readable');
+	const allowedTextRead = await query(
+		endpoint,
+		`SELECT content FROM read_text('${sqlPath(allowedText)}')`
+	);
+	assert.ok(allowedTextRead.ok, 'In-project read_text must work before testing symlinks');
+	assert.ok(
+		JSON.stringify(allowedTextRead.payload?.rows ?? []).includes('AUDIT_ALLOWED_TEXT_FILE'),
+		'In-project text control must return its expected content'
+	);
 
 	console.log('=== IN-PROJECT FILE WRITE ===');
 	const writtenCsv = join(dataDir, 'audit-generated.csv');
@@ -147,6 +158,7 @@ try {
 			result.ok && JSON.stringify(result.payload?.rows ?? []).includes(marker);
 		console.log(escaped ? 'SYMLINK_ESCAPE_READ_ALLOWED' : 'SYMLINK_ESCAPE_READ_DENIED');
 		console.log(`Symlink HTTP status: ${result.status}`);
+		assert.equal(escaped, false, 'Serve must not read a file outside the project via symlink');
 	}
 
 	console.log('FILESYSTEM_SECURITY_AUDIT_COMPLETE');
