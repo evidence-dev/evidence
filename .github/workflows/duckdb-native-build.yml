@@ -80,3 +80,6 @@ jobs:
 
       - name: Smoke test native DuckDB
         run: node cli/scripts/smoke-duckdb-binary.mjs
+
+      - name: Audit DuckDB serve filesystem boundaries
+        run: node cli/scripts/audit-duckdb-serve-filesystem.mjs
