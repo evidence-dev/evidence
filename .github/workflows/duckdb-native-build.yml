@@ -10,6 +10,11 @@ on:
 permissions:
   contents: read
 
+# Multiple commits are pushed during review; only test the newest revision.
+concurrency:
+  group: duckdb-native-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   native-binary:
     name: DuckDB / ${{ matrix.os }}
