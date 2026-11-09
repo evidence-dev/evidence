@@ -20,7 +20,7 @@ jobs:
       matrix:
         os:
           - ubuntu-24.04
-          - windows-2025
+          - windows-2022
           - macos-15-intel
 
     env:
@@ -61,6 +61,13 @@ jobs:
           node -e "console.log(process.platform, process.arch)"
           node -e "require('@duckdb/node-api'); console.log('DUCKDB_PACKAGE_OK')"
         working-directory: cli
+
+      - name: Verify native LZ4 dependency on Windows
+        if: runner.os == 'Windows'
+        working-directory: cli
+        shell: pwsh
+        run: |
+          node -e "const {createRequire}=require('node:module'); const req=createRequire(require.resolve('@databricks/sql')); req('lz4'); console.log('LZ4_NATIVE_OK')"
 
       - name: Build standalone CLI
         run: pnpm cli:build
