@@ -12,7 +12,8 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
-	RedshiftDialect
+	RedshiftDialect,
+	AthenaDialect
 } from '../../../sql-dialect';
 
 const dialects = [
@@ -24,7 +25,8 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
-	new RedshiftDialect()
+	new RedshiftDialect(),
+	new AthenaDialect()
 ];
 
 function buildAllDialects(attrs: Omit<ImageSQLAttrs, 'dialect'>) {
@@ -58,6 +60,9 @@ describe('image SQL', () => {
 			 FROM products ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"SELECT image_url AS \`image_url\`
+			 FROM products LIMIT 1"
+			----
+			"SELECT image_url AS "image_url"
 			 FROM products LIMIT 1"
 			----
 			"SELECT image_url AS "image_url"
@@ -106,6 +111,9 @@ describe('image SQL', () => {
 			----
 			"SELECT image_url AS "image_url", dark_image_url AS "dark_image_url", product_name AS "product_name"
 			 FROM products LIMIT 1"
+			----
+			"SELECT image_url AS "image_url", dark_image_url AS "dark_image_url", product_name AS "product_name"
+			 FROM products LIMIT 1"
 		`);
 	});
 
@@ -133,6 +141,9 @@ describe('image SQL', () => {
 			 FROM products ORDER BY (SELECT NULL) OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"SELECT image_url AS \`image_url\`
+			 FROM products LIMIT 1"
+			----
+			"SELECT image_url AS "image_url"
 			 FROM products LIMIT 1"
 			----
 			"SELECT image_url AS "image_url"
@@ -225,6 +236,14 @@ describe('image SQL', () => {
 			 ORDER BY sales desc OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"
 			----
 			"SELECT image_url AS \`image_url\`, sales
+			 FROM products
+			 WHERE (category = 'Electronics')
+			 
+			 
+			 
+			 ORDER BY sales desc LIMIT 1"
+			----
+			"SELECT image_url AS "image_url", sales
 			 FROM products
 			 WHERE (category = 'Electronics')
 			 

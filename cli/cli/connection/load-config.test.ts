@@ -300,6 +300,39 @@ describe('loadConnectionConfig', () => {
 		});
 	});
 
+	describe('athena', () => {
+		const validBody = `type: athena\nregion_name: us-east-1\nschema: analytics\n`;
+
+		it('parses a default-chain config with dbt-athena defaults', async () => {
+			await writeYaml(validBody);
+			expect(await loadConnectionConfig(workDir)).toEqual({
+				type: 'athena',
+				region: 'us-east-1',
+				workGroup: 'primary',
+				catalog: 'awsdatacatalog',
+				schema: 'analytics',
+				schemas: [],
+				resultReuseMinutes: 60
+			});
+		});
+
+		it('resolves static keys and an assumed role', async () => {
+			await writeYaml(
+				`${validBody}aws_access_key_id: AKIAEXAMPLE\naws_secret_access_key: shhh\nrole_arn: arn:aws:iam::123456789012:role/evidence\n`
+			);
+			expect(await loadConnectionConfig(workDir)).toMatchObject({
+				accessKeyId: 'AKIAEXAMPLE',
+				secretAccessKey: 'shhh',
+				roleArn: 'arn:aws:iam::123456789012:role/evidence'
+			});
+		});
+
+		it('rejects an access key without its secret', async () => {
+			await writeYaml(`${validBody}aws_access_key_id: AKIAEXAMPLE\n`);
+			await expect(loadConnectionConfig(workDir)).rejects.toThrow(/aws_secret_access_key/);
+		});
+	});
+
 	it('rejects unknown type', async () => {
 		await writeYaml(`type: teradata\n`);
 		await expect(loadConnectionConfig(workDir)).rejects.toThrow(/unsupported type/);

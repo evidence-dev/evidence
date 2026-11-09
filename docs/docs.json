@@ -806,6 +806,7 @@
               "direct-connectors/postgres",
               "direct-connectors/cube",
               "direct-connectors/redshift",
+              "direct-connectors/athena",
               "direct-connectors/motherduck"
             ]
           },

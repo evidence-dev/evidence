@@ -10,7 +10,8 @@ import {
 	DatabricksDialect,
 	PostgresDialect,
 	CubeDialect,
-	RedshiftDialect
+	RedshiftDialect,
+	AthenaDialect
 } from '../../../sql-dialect';
 
 const dialects = [
@@ -22,7 +23,8 @@ const dialects = [
 	new DatabricksDialect(),
 	new PostgresDialect(),
 	new CubeDialect(),
-	new RedshiftDialect()
+	new RedshiftDialect(),
+	new AthenaDialect()
 ];
 
 function buildAllDialects(attrs: Omit<RadarChartSQLAttrs, 'dialect'>) {
@@ -70,6 +72,11 @@ describe('radar_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category"
 			----
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
@@ -141,6 +148,11 @@ describe('radar_chart SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY category, year(date)"
+			----
+			"SELECT category AS "category", year(date) AS "year_date", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category, year(date)"
 		`);
 	});
 
@@ -192,6 +204,11 @@ describe('radar_chart SQL', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY category"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY category"
 			----
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"

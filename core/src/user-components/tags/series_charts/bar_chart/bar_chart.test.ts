@@ -11,7 +11,8 @@ import {
 	PostgresDialect,
 	CubeDialect,
 	RedshiftDialect,
-	MotherDuckDialect
+	MotherDuckDialect,
+	AthenaDialect
 } from '../../../../sql-dialect';
 
 const dialects = [
@@ -24,6 +25,7 @@ const dialects = [
 	new PostgresDialect(),
 	new CubeDialect(),
 	new RedshiftDialect(),
+	new AthenaDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -87,6 +89,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY category"
@@ -209,6 +219,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY DATE_TRUNC('month', date)
+			 
+			 
+			 ORDER BY date__month"
+			----
+			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -269,6 +287,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum(total_sales) desc"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY sum(total_sales) desc"
@@ -391,6 +417,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY category
+			 
+			 
+			 ORDER BY category"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -451,6 +485,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category desc"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category
 			 
 			 
 			 ORDER BY category desc"
@@ -574,6 +616,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales", case when sum(total_sales) > 7000 then '>$7k' when sum(total_sales) > 3500 then '>$3.5k' else '<$3.5k' end AS "case_when_sum_total_sales_7000_then_7k_when_sum_total_sales_3500_then_3_5k_else_3_5k_end"
 			 FROM demo.daily_orders
 			 
+			 GROUP BY category
+			 
+			 
+			 ORDER BY category"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales", case when sum(total_sales) > 7000 then '>$7k' when sum(total_sales) > 3500 then '>$3.5k' else '<$3.5k' end AS "case_when_sum_total_sales_7000_then_7k_when_sum_total_sales_3500_then_3_5k_else_3_5k_end"
+			 FROM demo.daily_orders
+			 
 			 GROUP BY ALL
 			 
 			 
@@ -635,6 +685,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY date__month"
+			----
+			"SELECT DATE_TRUNC('month', date) AS "date__month", sum(total_sales) AS "sum_total_sales", category AS "category"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATE_TRUNC('month', date), category
 			 
 			 
 			 ORDER BY date__month"
@@ -754,6 +812,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 
 			 ORDER BY date__day_of_week"
 			----
+			"SELECT (day_of_week(date) % 7 + 1) AS "date__day_of_week", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY (day_of_week(date) % 7 + 1)
+			 
+			 
+			 ORDER BY date__day_of_week"
+			----
 			"SELECT DAYOFWEEK(date) AS "date__day_of_week", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
@@ -841,6 +907,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY EXTRACT(MONTH FROM date)
+			 
+			 
+			 ORDER BY date__month_of_year"
+			----
+			"SELECT month(date) AS "date__month_of_year", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY month(date)
 			 
 			 
 			 ORDER BY date__month_of_year"
@@ -936,6 +1010,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 
 			 ORDER BY date__quarter_of_year"
 			----
+			"SELECT quarter(date) AS "date__quarter_of_year", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY quarter(date)
+			 
+			 
+			 ORDER BY date__quarter_of_year"
+			----
 			"SELECT QUARTER(date) AS "date__quarter_of_year", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
@@ -1023,6 +1105,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY EXTRACT(DAY FROM date)
+			 
+			 
+			 ORDER BY date__day_of_month"
+			----
+			"SELECT day_of_month(date) AS "date__day_of_month", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY day_of_month(date)
 			 
 			 
 			 ORDER BY date__day_of_month"
@@ -1118,6 +1208,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 
 			 ORDER BY date__week_of_year"
 			----
+			"SELECT week_of_year(date) AS "date__week_of_year", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY week_of_year(date)
+			 
+			 
+			 ORDER BY date__week_of_year"
+			----
 			"SELECT WEEKOFYEAR(date) AS "date__week_of_year", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
@@ -1209,6 +1307,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 
 			 ORDER BY date__day_of_year"
 			----
+			"SELECT day_of_year(date) AS "date__day_of_year", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY day_of_year(date)
+			 
+			 
+			 ORDER BY date__day_of_year"
+			----
 			"SELECT DAYOFYEAR(date) AS "date__day_of_year", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
@@ -1258,6 +1364,11 @@ describe('bar_chart SQL (schema examples)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category"
 			----
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
@@ -1335,6 +1446,14 @@ describe('bar_chart SQL (schema examples)', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY category, region"
+			----
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales", region AS "region"
+			 FROM demo.daily_orders
+			 
+			 GROUP BY category, region
 			 
 			 
 			 ORDER BY category, region"

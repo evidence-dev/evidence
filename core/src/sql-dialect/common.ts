@@ -301,6 +301,12 @@ export interface SqlDialect {
 	readonly supportsNestedCte?: boolean;
 
 	/**
+	 * Whether `GROUP BY` may reference a SELECT-list alias. Trino (Athena) resolves
+	 * GROUP BY against input columns only; undefined means supported.
+	 */
+	readonly supportsGroupByAlias?: boolean;
+
+	/**
 	 * Whether `int / int` truncates to an integer (Postgres, Redshift, T-SQL) rather
 	 * than producing a fraction (ClickHouse, Snowflake, BigQuery, DuckDB). Builders that
 	 * divide user columns multiply by 1.0 first when this is set; undefined means no.

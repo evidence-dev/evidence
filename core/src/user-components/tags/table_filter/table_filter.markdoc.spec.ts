@@ -452,7 +452,8 @@ describe('table filter string literal escaping', () => {
 		// so the literal stays closed whether or not the cluster honours `\\'`.
 		redshift: "category = 'zzz\\\\'' OR 1=1 --'",
 		motherduck: "category = 'zzz\\'' OR 1=1 --'",
-		sqlserver: "category = 'zzz\\'' OR 1=1 --'"
+		sqlserver: "category = 'zzz\\'' OR 1=1 --'",
+		athena: "category = 'zzz\\'' OR 1=1 --'"
 	};
 
 	it.each(Object.entries(escapedPayload))(
@@ -588,7 +589,8 @@ describe('table filter identifier quoting', () => {
 		cube: '"Total Sales" = 100',
 		redshift: '"Total Sales" = 100',
 		motherduck: '"Total Sales" = 100',
-		sqlserver: '"Total Sales" = 100'
+		sqlserver: '"Total Sales" = 100',
+		athena: '"Total Sales" = 100'
 	};
 
 	const injectedIdentifier: Record<WarehouseType, string> = {
@@ -601,7 +603,8 @@ describe('table filter identifier quoting', () => {
 		cube: '"total_sales"" OR 1=1 --" = 100',
 		redshift: '"total_sales"" OR 1=1 --" = 100',
 		motherduck: '"total_sales"" OR 1=1 --" = 100',
-		sqlserver: '"total_sales"" OR 1=1 --" = 100'
+		sqlserver: '"total_sales"" OR 1=1 --" = 100',
+		athena: '"total_sales"" OR 1=1 --" = 100'
 	};
 
 	it.each(Object.entries(spacedIdentifier))('quotes a spaced identifier for %s', (type, sql) => {

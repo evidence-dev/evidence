@@ -33,6 +33,7 @@ export function schemaAllowlist(
 		case 'postgres':
 		case 'cube':
 		case 'redshift':
+		case 'athena':
 			return config.schemas?.length ? config.schemas : config.schema ? [config.schema] : [];
 		default:
 			return [];

@@ -23,7 +23,8 @@ import {
 	redshiftConnectionSchema,
 	motherduckConnectionSchema,
 	snowflakeConnectionSchema,
-	sqlserverConnectionSchema
+	sqlserverConnectionSchema,
+	athenaConnectionSchema
 } from '@evidence/core/connectors/connection-schema';
 import { resolveSnowflakeCredentials } from '@evidence/core/connectors/snowflake/resolve';
 import { resolveBigQueryCredentials } from '@evidence/core/connectors/bigquery/resolve';
@@ -35,6 +36,7 @@ import { resolvePostgresCredentials } from '@evidence/core/connectors/postgres/r
 import { resolveCubeCredentials } from '@evidence/core/connectors/cube/resolve';
 import { resolveRedshiftCredentials } from '@evidence/core/connectors/redshift/resolve';
 import { resolveMotherduckCredentials } from '@evidence/core/connectors/motherduck/resolve';
+import { resolveAthenaCredentials } from '@evidence/core/connectors/athena/resolve';
 import type { ConnectionConfig } from './types';
 
 const CONFIG_FILENAME = 'connection.yaml';
@@ -185,6 +187,11 @@ export async function loadConnectionConfig(cwd: string): Promise<ConnectionConfi
 		const data = parseOrThrow(motherduckConnectionSchema, obj);
 		const credentials = await resolveMotherduckCredentials(data, { cwd });
 		return { type: 'motherduck', ...credentials };
+	}
+
+	if (obj.type === 'athena') {
+		const data = parseOrThrow(athenaConnectionSchema, obj);
+		return { type: 'athena', ...resolveAthenaCredentials(data) };
 	}
 
 	throw new Error(

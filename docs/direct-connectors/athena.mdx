@@ -1,0 +1,266 @@
+---
+title: 'Amazon Athena'
+description: 'Connect Evidence directly to Amazon Athena and query your S3 data lake through the Glue Data Catalog.'
+---
+
+The Amazon Athena direct connector runs your queries on Athena itself, so reports always reflect the live state of your data lake without a sync step. Evidence authenticates with an IAM access key and can assume IAM roles, including a different role per Evidence user so Lake Formation enforces row- and column-level access.
+
+## Connecting
+
+You need the **region** of your Athena workgroup, an IAM **access key**, the **workgroup** name, a **Glue database**, and somewhere for Athena to write query results (the workgroup's enforced results location, or an **S3 results location**).
+
+<Steps>
+  <Step title="Create an IAM policy for querying">
+    Athena needs to run queries, read the Glue Data Catalog, read the data in S3, and write query results to S3. Attach a policy like this to the role (or user) Evidence will query as, replacing the bucket names, region, and account ID:
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "athena:StartQueryExecution",
+            "athena:GetQueryExecution",
+            "athena:GetQueryResults",
+            "athena:StopQueryExecution",
+            "athena:GetWorkGroup"
+          ],
+          "Resource": "arn:aws:athena:us-east-1:123456789012:workgroup/primary"
+        },
+        {
+          "Effect": "Allow",
+          "Action": ["glue:GetDatabase", "glue:GetDatabases", "glue:GetTable", "glue:GetTables", "glue:GetPartitions"],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"],
+          "Resource": ["arn:aws:s3:::my-data-lake", "arn:aws:s3:::my-data-lake/*"]
+        },
+        {
+          "Effect": "Allow",
+          "Action": ["s3:GetObject", "s3:PutObject", "s3:ListBucket", "s3:GetBucketLocation", "s3:AbortMultipartUpload"],
+          "Resource": ["arn:aws:s3:::my-athena-results", "arn:aws:s3:::my-athena-results/*"]
+        }
+      ]
+    }
+    ```
+
+    If your tables are governed by Lake Formation, also allow `lakeformation:GetDataAccess` and grant the role `SELECT` on the databases or tables in Lake Formation.
+  </Step>
+  <Step title="Create a role and an assume-only access key (recommended)">
+    Attach the policy above to an IAM role such as `evidence-athena`. Then create an IAM user for Evidence whose only permission is `sts:AssumeRole` on that role, and create an access key for it. The role's trust policy must allow the user:
+
+    ```json
+    {
+      "Effect": "Allow",
+      "Principal": { "AWS": "arn:aws:iam::123456789012:user/evidence" },
+      "Action": "sts:AssumeRole",
+      "Condition": { "StringEquals": { "sts:ExternalId": "<external-id>" } }
+    }
+    ```
+
+    The external ID condition is optional. If you use it, enter the same value in Evidence. You can also attach the query policy straight to the IAM user and leave **Role ARN** blank, but then the access key itself can read your data.
+  </Step>
+  <Step title="Configure the connector in Evidence">
+    Go to **Settings → Warehouse**, choose **Amazon Athena**, and fill in the region, access key ID, secret access key, role ARN, workgroup, and the default Glue database. Set an **S3 results location** unless the workgroup enforces its own.
+  </Step>
+  <Step title="Test and save">
+    Click **Test Connection**. Evidence runs `SELECT 1` as the default role, and as every configured access role, to catch broken trust policies early. Once it passes, click **Save**.
+  </Step>
+</Steps>
+
+## What Evidence queries
+
+Athena runs on the Trino engine. Evidence's Athena dialect generates Trino SQL, and you write Trino SQL in your own queries:
+
+- **`OFFSET` comes before `LIMIT`**: `OFFSET 20 LIMIT 10`.
+- **No `GROUP BY ALL`**, and `GROUP BY` can't reference a `SELECT` alias. List the grouping expressions or use positions (`GROUP BY 1, 2`).
+- **Date math is `date_add('day', -7, col)`**, with the unit as a string first. `date_trunc('week', …)` starts weeks on Monday; Evidence shifts it for Sunday-start weeks.
+- **No `ILIKE`, `MEDIAN`, or `ANY_VALUE`**. Use `LOWER(col) LIKE …`, `approx_percentile(col, 0.5)`, and `arbitrary(col)`.
+- **Identifiers are case-insensitive and returned lowercase**, so prefer lowercase snake_case for column aliases.
+
+The schema browser lists the tables and views in the connection's database, or in the **Databases** allowlist. Tables in the default database are listed unqualified; tables in other databases are listed as `database.table`.
+
+### Cost and performance
+
+Athena bills by data scanned and takes a second or more to start each query, so:
+
+- Evidence turns on Athena **query result reuse** by default. An identical query run within **Result reuse (minutes)** (60 by default) is served from the previous result without scanning again. Set it to `0` to always scan.
+- Partition and compress your tables (Parquet or ORC), and filter on partition columns in your page queries.
+- Set a **per-query data scanned limit** on the workgroup as a guardrail against an expensive query.
+
+{/* GENERATED:CONNECTION-OPTIONS START */}
+
+## Configuration reference
+
+<Tabs>
+  <Tab title="Studio">
+
+    #### Credentials
+
+    <ResponseField name="Region" type="string" required>
+      AWS region of the Athena workgroup, e.g. us-east-1.
+    </ResponseField>
+    <ResponseField name="Access key ID" type="string">
+      IAM access key ID. When omitted, the CLI uses aws_profile_name or the AWS default credential chain.
+    </ResponseField>
+    <ResponseField name="Secret access key" type="string">
+      IAM secret access key paired with the access key ID.
+    </ResponseField>
+    <ResponseField name="Role ARN" type="string">
+      IAM role assumed for every query not covered by a per-user role. Lets the access key be an assume-only principal.
+    </ResponseField>
+    <ResponseField name="External ID" type="string">
+      External ID required by the role trust policies, if any.
+    </ResponseField>
+    <ResponseField name="S3 results location" type="string">
+      S3 URI for query results, e.g. s3://my-bucket/athena-results/. Optional when the workgroup enforces its own results location.
+    </ResponseField>
+    <ResponseField name="Workgroup" type="string">
+      Athena workgroup queries run in. Default: `"primary"`.
+    </ResponseField>
+    <ResponseField name="Data catalog" type="string">
+      Athena data catalog (awsdatacatalog for the Glue Data Catalog). Default: `"awsdatacatalog"`.
+    </ResponseField>
+    <ResponseField name="Database" type="string" required>
+      Glue database used when queries reference unqualified table names.
+    </ResponseField>
+    <ResponseField name="Result reuse (minutes)" type="number">
+      Reuse Athena's cached result for an identical query run within this many minutes. 0 disables reuse. Default: `60`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="Databases" type="string[]">
+      Allowlist of Glue databases exposed to the editor and schema browser. Defaults to the connection database when empty. Default: `[]`.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="Access roles" type="{ name: string; role_arn: string; work_group?: string }[]">
+      Named IAM roles assumed per Evidence user for row/column-level access (e.g. Lake Formation filters). Each trust policy must allow the connection credentials to assume it. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+  <Tab title="CLI (connection.yaml)">
+
+    If your organization has already set up this connection in Evidence Studio, you don't need a `connection.yaml`. Run `evidence login` instead. See [Connect your CLI to your data](/cli/connections).
+
+    ```yaml
+    type: athena
+    region_name: us-east-1
+    # aws_access_key_id: <access-key-id>
+    # aws_secret_access_key: <secret-access-key>
+    # aws_profile_name: analytics # named ~/.aws/config profile instead of access keys
+    # role_arn: arn:aws:iam::123456789012:role/evidence-athena
+    # s3_staging_dir: s3://my-athena-results/evidence/
+    # work_group: primary
+    schema: analytics
+    # schemas: [analytics, marketing]
+    # roles:
+    #   - name: sales
+    #     role_arn: arn:aws:iam::123456789012:role/evidence-sales
+    #     work_group: sales
+    ```
+
+    #### Credentials
+
+    <ResponseField name="region_name" type="string" required>
+      AWS region of the Athena workgroup, e.g. us-east-1.
+    </ResponseField>
+    <ResponseField name="aws_access_key_id" type="string">
+      IAM access key ID. When omitted, the CLI uses aws_profile_name or the AWS default credential chain.
+    </ResponseField>
+    <ResponseField name="aws_secret_access_key" type="string">
+      IAM secret access key paired with the access key ID.
+    </ResponseField>
+    <ResponseField name="aws_session_token" type="string">
+      Session token for temporary credentials.
+    </ResponseField>
+    <ResponseField name="aws_profile_name" type="string">
+      Named profile from ~/.aws/config (including SSO profiles).
+    </ResponseField>
+    <ResponseField name="role_arn" type="string">
+      IAM role assumed for every query not covered by a per-user role. Lets the access key be an assume-only principal.
+    </ResponseField>
+    <ResponseField name="external_id" type="string">
+      External ID required by the role trust policies, if any.
+    </ResponseField>
+    <ResponseField name="s3_staging_dir" type="string">
+      S3 URI for query results, e.g. s3://my-bucket/athena-results/. Optional when the workgroup enforces its own results location.
+    </ResponseField>
+    <ResponseField name="work_group" type="string">
+      Athena workgroup queries run in. Default: `"primary"`.
+    </ResponseField>
+    <ResponseField name="database" type="string">
+      Athena data catalog (awsdatacatalog for the Glue Data Catalog). Default: `"awsdatacatalog"`.
+    </ResponseField>
+    <ResponseField name="schema" type="string" required>
+      Glue database used when queries reference unqualified table names.
+    </ResponseField>
+    <ResponseField name="result_reuse_minutes" type="number">
+      Reuse Athena's cached result for an identical query run within this many minutes. 0 disables reuse. Default: `60`.
+    </ResponseField>
+
+    #### Visibility
+
+    <ResponseField name="schemas" type="string[]">
+      Allowlist of Glue databases exposed to the editor and schema browser. Defaults to the connection database when empty. Default: `[]`.
+    </ResponseField>
+
+    #### Row-level security
+
+    <ResponseField name="roles" type="{ name: string; role_arn: string; work_group?: string }[]">
+      Named IAM roles assumed per Evidence user for row/column-level access (e.g. Lake Formation filters). Each trust policy must allow the connection credentials to assume it. Default: `[]`.
+    </ResponseField>
+
+  </Tab>
+</Tabs>
+
+{/* GENERATED:CONNECTION-OPTIONS END */}
+
+## Row-Level Security
+
+Evidence enforces row- and column-level access on Athena by **assuming a different IAM role per Evidence user**. You define the filters on each role, typically as [Lake Formation data filters](https://docs.aws.amazon.com/lake-formation/latest/dg/data-filters-about.html), and Evidence picks the role at query time from the user's assignment.
+
+### How it works
+
+- Each **access role** pairs an IAM role ARN with a label, plus an optional workgroup to separate cost and limits per role.
+- Admins assign each Evidence user an access role under **Settings → Access Rules**.
+- When a user runs a query, Evidence assumes that user's role with the connection's access key.
+- Users without an assigned role run as the connection's **default role** (the **Role ARN** field), or as the access key itself if no default role is set.
+
+<Warning>
+  Lake Formation has no "deny everything else" fallback, so unassigned users see whatever the default role can see. Make the default role the most restrictive one, or leave it off and give the access key nothing but `sts:AssumeRole`. Then unassigned users can't read any data.
+</Warning>
+
+### Setup
+
+<Steps>
+  <Step title="Create one IAM role per access group">
+    Create a role per access boundary (for example `evidence-sales` and `evidence-finance`) with the query policy from [Connecting](#connecting). Each role's trust policy must allow the connection's IAM user to assume it.
+  </Step>
+  <Step title="Grant each role its slice of the data">
+    In Lake Formation, grant each role `SELECT` on the tables it needs, using a data filter to limit rows (`region = 'EMEA'`) or columns. For data outside Lake Formation, scope each role's IAM policy to the Glue tables and S3 prefixes it may read.
+  </Step>
+  <Step title="Register the roles in Evidence">
+    Go to **Settings → Access Rules** and add each role's ARN under **Roles**, with a label and an optional workgroup.
+  </Step>
+  <Step title="Assign users">
+    Under **User Assignments**, assign each user a role. Use **Access Preview** to check what a user can see in a table before sharing reports.
+  </Step>
+</Steps>
+
+You can also declare roles in `connection.yaml` under `roles:`. `evidence launch` uploads them along with the connection.
+
+## Security Considerations
+
+Evidence executes queries on Athena with the IAM permissions you give it. Those queries can be written by your end users or generated by AI agents on their behalf, so take pragmatic steps to protect your data and your bill against misuse, whether accidental or malicious.
+
+1. Give the access key nothing but `sts:AssumeRole` on Evidence's roles, and put data access on the roles.
+2. Scope each role to the Glue databases, S3 prefixes, and results bucket Evidence needs. Grant read-only S3 access to your data.
+3. Use a dedicated workgroup with a per-query data scanned limit and an enforced results location.
+4. Require an external ID in the role trust policies.
+5. Rotate the access key regularly and update it in Evidence.

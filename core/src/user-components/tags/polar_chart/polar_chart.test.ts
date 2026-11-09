@@ -11,7 +11,8 @@ import {
 	PostgresDialect,
 	CubeDialect,
 	RedshiftDialect,
-	MotherDuckDialect
+	MotherDuckDialect,
+	AthenaDialect
 } from '../../../sql-dialect';
 
 const dialects = [
@@ -24,6 +25,7 @@ const dialects = [
 	new PostgresDialect(),
 	new CubeDialect(),
 	new RedshiftDialect(),
+	new AthenaDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -72,6 +74,11 @@ describe('polar_chart SQL', () => {
 			 FROM demo.sales
 			 
 			 GROUP BY ALL"
+			----
+			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.sales
+			 
+			 GROUP BY region"
 			----
 			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.sales
@@ -152,6 +159,11 @@ describe('polar_chart SQL', () => {
 			"SELECT region AS "region", category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.sales
 			 
+			 GROUP BY region, category"
+			----
+			"SELECT region AS "region", category AS "category", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.sales
+			 
 			 GROUP BY ALL"
 		`);
 	});
@@ -213,6 +225,11 @@ describe('polar_chart SQL', () => {
 			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.sales
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY region"
+			----
+			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
+			 FROM demo.sales
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY region"
 			----
 			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"

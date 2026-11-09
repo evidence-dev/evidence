@@ -22,7 +22,8 @@ export const INIT_WAREHOUSES = [
 	'postgres',
 	'cube',
 	'redshift',
-	'motherduck'
+	'motherduck',
+	'athena'
 ] as const;
 
 export type InitWarehouse = (typeof INIT_WAREHOUSES)[number];
@@ -156,6 +157,23 @@ sslmode: verify-full # verify-full (secure default; Redshift serves publicly tru
 # ssl_key_path: ./certs/client.key # PEM client private key (mutual TLS)
 `;
 
+const ATHENA_TEMPLATE = `# Amazon Athena direct connector. Docs: https://docs.evidence.dev/direct-connectors/athena
+type: athena
+region_name: "<region>" # e.g. us-east-1
+schema: "<database>" # Glue database for unqualified table names
+# Credentials: leave all three out to use the AWS default chain (env vars, SSO, instance role).
+# aws_profile_name: "<profile>" # named profile from ~/.aws/config
+# aws_access_key_id: "<access_key_id>"
+# aws_secret_access_key: "<secret_access_key>"
+# role_arn: "arn:aws:iam::<account_id>:role/<role>" # role assumed for every query, optional
+# external_id: "<external_id>" # required by the role trust policy, optional
+# work_group: primary # Athena workgroup, optional (defaults to "primary")
+# s3_staging_dir: "s3://<bucket>/<prefix>/" # query results location, optional if the workgroup sets one
+# database: awsdatacatalog # data catalog, optional (defaults to the Glue Data Catalog)
+# schemas: ["<database>"] # allowlist of Glue databases exposed to the schema browser, optional
+# result_reuse_minutes: 60 # reuse cached results for identical queries, 0 disables, optional
+`;
+
 const MOTHERDUCK_TEMPLATE = `# MotherDuck direct connector — queried over MotherDuck's Postgres endpoint. Docs: https://docs.evidence.dev/direct-connectors/motherduck
 type: motherduck
 database: "<database>" # MotherDuck database name
@@ -174,7 +192,8 @@ const TEMPLATES: Record<InitWarehouse, string> = {
 	postgres: POSTGRES_TEMPLATE,
 	cube: CUBE_TEMPLATE,
 	redshift: REDSHIFT_TEMPLATE,
-	motherduck: MOTHERDUCK_TEMPLATE
+	motherduck: MOTHERDUCK_TEMPLATE,
+	athena: ATHENA_TEMPLATE
 };
 
 /** Returns the connection.yaml scaffold for a supported warehouse type. */

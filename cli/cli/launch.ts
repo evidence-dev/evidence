@@ -464,6 +464,9 @@ async function maybeUploadCredentials(
 	if (type === 'bigquery') {
 		configPayload.datasets = await readBigQueryDatasets(projectRoot);
 	}
+	if (type === 'athena') {
+		configPayload.roles = await readAthenaRoles(projectRoot);
+	}
 
 	const s = spinner();
 	s.start(`Uploading ${type} credentials`);
@@ -499,6 +502,19 @@ async function readBigQueryDatasets(projectRoot: string): Promise<string[]> {
 		if (Array.isArray(datasets)) return datasets.map(String).filter(Boolean);
 	} catch {
 		// fall through to empty — the server returns a clear error
+	}
+	return [];
+}
+
+// Per-user access roles are dropped during credential resolution (the CLI has no
+// per-user identity), so read them straight from connection.yaml for the upload.
+async function readAthenaRoles(projectRoot: string): Promise<unknown[]> {
+	try {
+		const raw = await readFile(path.join(projectRoot, 'connection.yaml'), 'utf-8');
+		const roles = (yaml.load(raw) as Record<string, unknown> | null)?.roles;
+		if (Array.isArray(roles)) return roles;
+	} catch {
+		// fall through to empty — the server keeps any roles set in Studio
 	}
 	return [];
 }

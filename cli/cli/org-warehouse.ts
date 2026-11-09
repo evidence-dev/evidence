@@ -113,7 +113,8 @@ const WAREHOUSE_LABELS: Record<WarehouseMode, string> = {
 	cube: 'Cube',
 	redshift: 'Amazon Redshift',
 	motherduck: 'MotherDuck',
-	sqlserver: 'SQL Server'
+	sqlserver: 'SQL Server',
+	athena: 'Amazon Athena'
 };
 
 export function warehouseLabel(mode: WarehouseMode): string {

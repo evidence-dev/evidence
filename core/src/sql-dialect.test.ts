@@ -10,7 +10,9 @@ import {
 	RedshiftDialect,
 	MotherDuckDialect,
 	SqlServerDialect,
-	defaultDialect
+	AthenaDialect,
+	defaultDialect,
+	dialectFor
 } from './sql-dialect';
 import type { SqlDialect } from './sql-dialect';
 
@@ -1960,5 +1962,77 @@ describe('SqlServerDialect', () => {
 		}
 		expect(dialect.aggregationFunctions.has('STRING_AGG')).toBe(true);
 		expect(dialect.nonAggregationFunctions.has('DATEFROMPARTS')).toBe(true);
+	});
+});
+
+describe('AthenaDialect', () => {
+	const dialect = new AthenaDialect();
+
+	it('has name "athena" and resolves from dialectFor', () => {
+		expect(dialect.name).toBe('athena');
+		expect(dialectFor('athena').name).toBe('athena');
+	});
+
+	it('puts OFFSET before LIMIT (Trino grammar)', () => {
+		expect(dialect.limitOffset(10, 20)).toBe('OFFSET 20 LIMIT 10');
+		expect(dialect.limitOffset(10)).toBe('LIMIT 10');
+		expect(dialect.rowLimitClause({ limit: 10, offset: 5, hasOrderBy: true })).toBe(
+			'OFFSET 5 LIMIT 10'
+		);
+	});
+
+	it('honours a Sunday-start week and keeps ISO weeks for Monday', () => {
+		expect(dialect.dateGrain('week', 'd', 'monday')).toBe("date_trunc('week', d)");
+		expect(dialect.dateGrain('week', 'd', 'sunday')).toBe(
+			"date_add('day', -1, date_trunc('week', date_add('day', 1, d)))"
+		);
+		expect(dialect.dateGrain('month', 'd', 'sunday')).toBe("DATE_TRUNC('month', d)");
+	});
+
+	it('numbers weekdays from the project first day, like BigQuery (Sunday = 1)', () => {
+		expect(dialect.dateGrain('day of week', 'd', 'monday')).toBe('day_of_week(d)');
+		// Trino: Monday = 1 … Sunday = 7, so Sunday wraps to 1 and Saturday becomes 7.
+		const sundayFirst = (isoDay: number) => (isoDay % 7) + 1;
+		expect(dialect.dateGrain('day of week', 'd', 'sunday')).toBe('(day_of_week(d) % 7 + 1)');
+		expect([7, 1, 6].map(sundayFirst)).toEqual([1, 2, 7]);
+	});
+
+	it('does date math with date_add, quarter included', () => {
+		expect(dialect.dateAdd('QUARTER', 1, 'd')).toBe("date_add('quarter', 1, d)");
+		expect(dialect.dateSub('day', 7, 'd')).toBe("date_add('day', -7, d)");
+		expect(dialect.dateSub('day', 'n', 'd')).toBe("date_add('day', -(n), d)");
+	});
+
+	it('uses Trino spellings for ANY_VALUE, ILIKE and string casts', () => {
+		expect(dialect.anyValue('x')).toBe('arbitrary(x)');
+		expect(dialect.caseInsensitiveLike('c', '%a%')).toBe(
+			"LOWER(CAST(c AS VARCHAR)) LIKE LOWER('%a%')"
+		);
+		expect(dialect.castToString('x')).toBe('CAST(x AS VARCHAR)');
+		expect(dialect.shortDateLabel('d')).toBe("date_format(d, '%b %e/%y')");
+	});
+
+	it('builds sparklines as a JSON string the row layer can parse', () => {
+		expect(dialect.groupArray('x_val', 'y_val')).toBe(
+			'json_format(CAST(array_agg(ARRAY[CAST(CAST(x_val AS VARCHAR) AS JSON), CAST(y_val AS JSON)] ORDER BY x_val) AS JSON))'
+		);
+	});
+
+	it('never treats backslash as an escape', () => {
+		expect(dialect.escapeStringLiteral("a\\'b")).toBe("a\\''b");
+		expect(dialect.stringLiteralEscapesBackslash('e')).toBe(false);
+		expect(dialect.dollarQuoting).toBe('none');
+	});
+
+	it('adjusts the validator function sets for Trino', () => {
+		expect(dialect.aggregationFunctions.has('MEDIAN')).toBe(false);
+		expect(dialect.aggregationFunctions.has('APPROX_PERCENTILE')).toBe(true);
+		expect(dialect.aggregationFunctions.has('ARBITRARY')).toBe(true);
+		expect(dialect.nonAggregationFunctions.has('IFF')).toBe(false);
+		expect(dialect.nonAggregationFunctions.has('DATE_ADD')).toBe(true);
+	});
+
+	it('cannot GROUP BY a select alias', () => {
+		expect(dialect.supportsGroupByAlias).toBe(false);
 	});
 });

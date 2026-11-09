@@ -8,6 +8,7 @@ import { getSnowflakeToJsType } from '../connectors/snowflake/type-mapping';
 import { getBigQueryToJsType } from '../connectors/bigquery/type-mapping';
 import { getMssqlToJsType } from '../connectors/mssql/type-mapping';
 import { getDatabricksToJsType } from '../connectors/databricks/type-mapping';
+import { getAthenaToJsType } from '../connectors/athena/type-mapping';
 import { getPostgresToJsType } from '../connectors/postgres/type-mapping';
 import { getRedshiftToJsType } from '../connectors/redshift/type-mapping';
 import { escapeRedshiftStringLiteral } from '../sql-dialect/common';
@@ -266,7 +267,8 @@ export class Metadata {
 				this.#warehouseMode === 'cube' ||
 				this.#warehouseMode === 'redshift' ||
 				this.#warehouseMode === 'motherduck' ||
-				this.#warehouseMode === 'sqlserver')
+				this.#warehouseMode === 'sqlserver' ||
+				this.#warehouseMode === 'athena')
 		) {
 			this.#loading = false;
 			return;
@@ -310,6 +312,10 @@ export class Metadata {
 
 		if (this.#warehouseMode === 'motherduck') {
 			return this.#loadMotherduck();
+		}
+
+		if (this.#warehouseMode === 'athena') {
+			return await this.#loadAthena();
 		}
 
 		try {
@@ -648,6 +654,73 @@ ${schemaFilter}`
 		} catch (e) {
 			logger.error(e, 'Failed to fetch Databricks metadata');
 			throw new Error('Failed to fetch Databricks metadata', { cause: e });
+		} finally {
+			this.#loading = false;
+		}
+	}
+
+	async #loadAthena(): Promise<void> {
+		try {
+			// Athena (Trino) scopes information_schema to the session catalog. Trino
+			// lowercases output column names even when quoted, so aliases are snake_case.
+			const schemaFilter =
+				this.#schemaAllowlist.length > 0
+					? `WHERE table_schema IN (${this.#schemaAllowlist.map((s) => `'${s.replace(/'/g, "''")}'`).join(', ')})`
+					: `WHERE table_schema <> 'information_schema'`;
+
+			const [columnsResult, viewsResult] = await Promise.all([
+				this.#catalogQuery<{
+					table_name: string;
+					column_name: string;
+					column_type: string;
+				}>(
+					`SELECT table_schema || '.' || table_name AS table_name,
+       column_name AS column_name,
+       data_type AS column_type
+FROM information_schema.columns
+${schemaFilter}
+ORDER BY table_schema, table_name, ordinal_position`
+				),
+				this.#catalogQuery<{ name: string }>(
+					`SELECT table_schema || '.' || table_name AS name
+FROM information_schema.views
+${schemaFilter}`
+				)
+			]);
+
+			if (columnsResult.error) {
+				logger.error({ columnsResult }, 'Failed to fetch Athena metadata');
+				throw new Error(`Failed to fetch Athena metadata: ${columnsResult.error}`);
+			}
+
+			const viewNames = new SvelteSet(viewsResult.error ? [] : viewsResult.rows.map((r) => r.name));
+
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.table_name,
+				({ column_name, column_type }) => ({
+					name: column_name,
+					type: column_type,
+					jsType: getAthenaToJsType(column_type)
+				})
+			);
+
+			for (const [tableName, columns] of columnsByTable) {
+				this.#tables.set(
+					tableName,
+					new TableMetadata(
+						{
+							name: tableName,
+							columns,
+							tableType: viewNames.has(tableName) ? 'model' : 'table'
+						},
+						this.#tableOpts
+					)
+				);
+			}
+		} catch (e) {
+			logger.error(e, 'Failed to fetch Athena metadata');
+			throw new Error('Failed to fetch Athena metadata', { cause: e });
 		} finally {
 			this.#loading = false;
 		}

@@ -12,7 +12,8 @@ import {
 	PostgresDialect,
 	CubeDialect,
 	RedshiftDialect,
-	MotherDuckDialect
+	MotherDuckDialect,
+	AthenaDialect
 } from '../../../sql-dialect';
 
 const dialects = [
@@ -25,6 +26,7 @@ const dialects = [
 	new PostgresDialect(),
 	new CubeDialect(),
 	new RedshiftDialect(),
+	new AthenaDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -71,6 +73,9 @@ describe('big_value SQL', () => {
 			 FROM demo.daily_orders
 			 
 			 GROUP BY ALL LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales"
+			 FROM demo.daily_orders LIMIT 1"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders LIMIT 1"
@@ -184,6 +189,16 @@ describe('big_value SQL', () => {
 			LEFT JOIN (SELECT sum(total_sales) as "__ev_sum_total_sales_prior_year_comparison"
 			 FROM demo.daily_orders
 			 WHERE (date >= DATEADD(year, -1, DATE '2025-01-02') AND date <= DATEADD(year, -1, DATE '2026-01-01'))) AS comparison_1_fragment ON 1 = 1 LIMIT 1"
+			----
+			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (date_format(DATE '2025-01-02', '%b %e/%y') || ' - ' || date_format(DATE '2026-01-01', '%b %e/%y')) as "__ev_sum_total_sales_prior_year_comparison_current_period", (date_format(date_add('year', -1, DATE '2025-01-02'), '%b %e/%y') || ' - ' || date_format(date_add('year', -1, DATE '2026-01-01'), '%b %e/%y')) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-01-02' AND date <= DATE '2026-01-01')),
+			comparison_1_fragment AS (SELECT sum(total_sales) as "__ev_sum_total_sales_prior_year_comparison"
+			 FROM demo.daily_orders
+			 WHERE (date >= date_add('year', -1, DATE '2025-01-02') AND date <= date_add('year', -1, DATE '2026-01-01')))
+			SELECT main_query.*, comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison" as "__ev_sum_total_sales_prior_year_comparison_compared_value", (main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 as "__ev_sum_total_sales_prior_year_comparison_abs", ((main_query."sum_total_sales" - comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison") * 1.0 / nullIf(abs(comparison_1_fragment."__ev_sum_total_sales_prior_year_comparison"), 0)) as "__ev_sum_total_sales_prior_year_comparison_pct"
+			FROM main_query
+			LEFT JOIN comparison_1_fragment ON 1 = 1 LIMIT 1"
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS "sum_total_sales", (strftime(DATE '2025-01-02', '%b %-d/%y') || ' - ' || strftime(DATE '2026-01-01', '%b %-d/%y')) as "__ev_sum_total_sales_prior_year_comparison_current_period", (strftime(DATE '2025-01-02' + to_years(-1), '%b %-d/%y') || ' - ' || strftime(DATE '2026-01-01' + to_years(-1), '%b %-d/%y')) as "__ev_sum_total_sales_prior_year_comparison_previous_period"
 			 FROM demo.daily_orders
@@ -321,6 +336,18 @@ describe('big_value SQL', () => {
 			 FROM demo.daily_orders LIMIT 1"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT json_format(CAST(array_agg(ARRAY[CAST(CAST(x_val AS VARCHAR) AS JSON), CAST(y_val AS JSON)] ORDER BY x_val) AS JSON))
+			 FROM (
+			 SELECT date as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 
+			 GROUP BY date
+			 ORDER BY x_val
+			 ) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
 			 SELECT to_json(list(json_array(x_val, y_val) ORDER BY x_val))
 			 FROM (
 			 SELECT date as x_val, sum(total_sales) as y_val
@@ -454,6 +481,18 @@ describe('big_value SQL', () => {
 			 GROUP BY x_val
 			 ORDER BY x_val
 			 ) as "__ev_spark_pts") as "__ev_spark_bounded" WHERE "__ev_spark_rn" <= 1000) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT json_format(CAST(array_agg(ARRAY[CAST(CAST(x_val AS VARCHAR) AS JSON), CAST(y_val AS JSON)] ORDER BY x_val) AS JSON))
+			 FROM (
+			 SELECT DATE_TRUNC('month', date) as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 
+			 GROUP BY DATE_TRUNC('month', date)
+			 ORDER BY x_val
+			 ) as "__ev_spark_src"
 			 ) as "__ev_sparkline_sum_total_sales"
 			 FROM demo.daily_orders LIMIT 1"
 			----
@@ -597,6 +636,19 @@ describe('big_value SQL', () => {
 			 GROUP BY x_val
 			 ORDER BY x_val
 			 ) as "__ev_spark_pts") as "__ev_spark_bounded" WHERE "__ev_spark_rn" <= 1000) as "__ev_spark_src"
+			 ) as "__ev_sparkline_sum_total_sales"
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01') LIMIT 1"
+			----
+			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (
+			 SELECT json_format(CAST(array_agg(ARRAY[CAST(CAST(x_val AS VARCHAR) AS JSON), CAST(y_val AS JSON)] ORDER BY x_val) AS JSON))
+			 FROM (
+			 SELECT date as x_val, sum(total_sales) as y_val
+			 FROM demo.daily_orders
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 GROUP BY date
+			 ORDER BY x_val
+			 ) as "__ev_spark_src"
 			 ) as "__ev_sparkline_sum_total_sales"
 			 FROM demo.daily_orders
 			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01') LIMIT 1"
