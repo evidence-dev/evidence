@@ -26,12 +26,14 @@ describe('DuckDB serve security configuration', () => {
 			projectDir: project,
 			schemas: []
 		});
+		const applied: Record<string, string> = {};
 		for (const [option, value] of Object.entries(options)) {
+			applied[option] = value;
 			let instance: DuckDBInstance;
 			try {
-				instance = await DuckDBInstance.create(':memory:', { [option]: value });
+				instance = await DuckDBInstance.create(':memory:', applied);
 			} catch (error) {
-				throw new Error(`DuckDB 1.5.6 rejects ${option}=${value}: ${String(error)}`);
+				throw new Error(`DuckDB 1.5.6 fails while adding ${option}=${value}: ${String(error)}`);
 			}
 			instance.closeSync();
 		}
