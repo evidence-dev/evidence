@@ -253,52 +253,44 @@ export default function adapter(options = {}) {
 			builder.copy(cliTemplatePath, join(BUILD_DIR, 'temp-cli'));
 			builder.log.success('CLI template copied');
 
-            // Select DuckDB native assets for the target platform.
-            const buildTarget =
-                opts.target || `${process.platform}-${process.arch}`;
+			// Select DuckDB native assets for the target platform.
+			const buildTarget = opts.target || `${process.platform}-${process.arch}`;
 
-            const nativeTargets = {
-                'linux-x64': ['linux-x64', 'libduckdb.so'],
-                'linux-x64-musl': ['linux-x64-musl', 'libduckdb.so'],
-                'linux-arm64': ['linux-arm64', 'libduckdb.so'],
-                'linux-arm64-musl': ['linux-arm64-musl', 'libduckdb.so'],
-                'darwin-x64': ['darwin-x64', 'libduckdb.dylib'],
-                'darwin-arm64': ['darwin-arm64', 'libduckdb.dylib'],
-                'macos-x64': ['darwin-x64', 'libduckdb.dylib'],
-                'macos-arm64': ['darwin-arm64', 'libduckdb.dylib'],
-                'win32-x64': ['win32-x64', 'duckdb.dll'],
-                'win32-arm64': ['win32-arm64', 'duckdb.dll'],
-                'windows-x64': ['win32-x64', 'duckdb.dll'],
-                'windows-arm64': ['win32-arm64', 'duckdb.dll']
-            };
+			const nativeTargets = {
+				'linux-x64': ['linux-x64', 'libduckdb.so'],
+				'linux-x64-musl': ['linux-x64-musl', 'libduckdb.so'],
+				'linux-arm64': ['linux-arm64', 'libduckdb.so'],
+				'linux-arm64-musl': ['linux-arm64-musl', 'libduckdb.so'],
+				'darwin-x64': ['darwin-x64', 'libduckdb.dylib'],
+				'darwin-arm64': ['darwin-arm64', 'libduckdb.dylib'],
+				'macos-x64': ['darwin-x64', 'libduckdb.dylib'],
+				'macos-arm64': ['darwin-arm64', 'libduckdb.dylib'],
+				'win32-x64': ['win32-x64', 'duckdb.dll'],
+				'win32-arm64': ['win32-arm64', 'duckdb.dll'],
+				'windows-x64': ['win32-x64', 'duckdb.dll'],
+				'windows-arm64': ['win32-arm64', 'duckdb.dll']
+			};
 
-            const native = nativeTargets[buildTarget];
+			const native = nativeTargets[buildTarget];
 
-            if (!native) {
-                throw new Error(
-                    `Unsupported DuckDB native build target: ${buildTarget}`
-                );
-            }
+			if (!native) {
+				throw new Error(`Unsupported DuckDB native build target: ${buildTarget}`);
+			}
 
-            const adapterRequire = createRequire(import.meta.url);
-            const apiEntry = adapterRequire.resolve('@duckdb/node-api');
-            const bindingsEntry = createRequire(apiEntry).resolve(
-                '@duckdb/node-bindings'
-            );
-            const nativeEntry = createRequire(bindingsEntry).resolve(
-                `@duckdb/node-bindings-${native[0]}/duckdb.node`
-            );
+			const adapterRequire = createRequire(import.meta.url);
+			const apiEntry = adapterRequire.resolve('@duckdb/node-api');
+			const bindingsEntry = createRequire(apiEntry).resolve('@duckdb/node-bindings');
+			const nativeEntry = createRequire(bindingsEntry).resolve(
+				`@duckdb/node-bindings-${native[0]}/duckdb.node`
+			);
 
-            const libraryName = native[1];
-            const nativeSource = join(dirname(nativeEntry), libraryName);
-            const tempCliDir = join(BUILD_DIR, 'temp-cli');
+			const libraryName = native[1];
+			const nativeSource = join(dirname(nativeEntry), libraryName);
+			const tempCliDir = join(BUILD_DIR, 'temp-cli');
 
-            await copyFile(
-                nativeSource,
-                join(tempCliDir, libraryName)
-            );
+			await copyFile(nativeSource, join(tempCliDir, libraryName));
 
-            const preloadSource = `
+			const preloadSource = `
 import embeddedLibrary from './${libraryName}' with { type: 'file' };
 import { dlopen, FFIType } from 'bun:ffi';
 import { mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
@@ -339,14 +331,9 @@ export async function preloadDuckDBNative() {
 }
 `;
 
-            await writeFile(
-                join(tempCliDir, 'duckdb-native.ts'),
-                preloadSource,
-                'utf-8'
-            );
+			await writeFile(join(tempCliDir, 'duckdb-native.ts'), preloadSource, 'utf-8');
 
-            builder.log.success('DuckDB native library embedded');
-
+			builder.log.success('DuckDB native library embedded');
 
 			// Generate manifest
 			const manifest = builder.generateManifest({ relativePath: './server' });
@@ -360,9 +347,7 @@ export async function preloadDuckDBNative() {
 				join(BUILD_DIR, 'prerendered')
 			);
 			const savedBytes = await compressAssets(assets, BUILD_DIR);
-			builder.log.success(
-				`Assets gzipped (${(savedBytes / (1024 * 1024)).toFixed(1)} MB saved)`
-			);
+			builder.log.success(`Assets gzipped (${(savedBytes / (1024 * 1024)).toFixed(1)} MB saved)`);
 			const assetImports = generateAssetImports(assets);
 			await writeFile(join(BUILD_DIR, 'temp-cli', 'assets.generated.ts'), assetImports, 'utf-8');
 			builder.log.success(`Asset imports generated (${assets.length} files)`);
@@ -375,11 +360,7 @@ export async function preloadDuckDBNative() {
 			const outFile = join(opts.out, opts.binaryName + (isWindows ? '.exe' : ''));
 
 			// Databricks kernel (CLI is Thrift-only) and vite (source-mode only) never load from the binary.
-			const nativeBindingPackages = [
-                ...new Set(
-                    Object.values(nativeTargets).map(([pkg]) => pkg)
-                )
-            ];
+			const nativeBindingPackages = [...new Set(Object.values(nativeTargets).map(([pkg]) => pkg))];
 
 			const bunArgs = [
 				'build',
@@ -395,10 +376,7 @@ export async function preloadDuckDBNative() {
 				'', // Opaque dynamic imports in the SvelteKit SSR bundle
 				...nativeBindingPackages
 					.filter((target) => target !== native[0])
-					.flatMap((target) => [
-						'--external',
-						`@duckdb/node-bindings-${target}/duckdb.node`
-					])
+					.flatMap((target) => ['--external', `@duckdb/node-bindings-${target}/duckdb.node`])
 			];
 			if (opts.target) bunArgs.push(`--target=${TARGETS_MAP[opts.target]}`);
 			bunArgs.push(entryPoint, '--outfile', outFile);
