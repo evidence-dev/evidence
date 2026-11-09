@@ -44,6 +44,14 @@ jobs:
         with:
           bun-version: '1.3.11'
 
+      # pnpm 9: chdb@1.6.0 has an unsupported Windows install script.
+      # Apply this only in the Windows runner, preserving other native builds.
+      - name: Skip unsupported chDB install script on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          node -e "const fs=require('node:fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));p.pnpm ??= {};p.pnpm.neverBuiltDependencies=[...new Set([...(p.pnpm.neverBuiltDependencies||[]),'chdb'])];fs.writeFileSync('package.json',JSON.stringify(p,null,2)+String.fromCharCode(10))"
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
