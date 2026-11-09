@@ -10,6 +10,11 @@ import { normalizeDateRows } from '@evidence/core/connectors/postgres/normalize-
 import { normalizeSparklineRows } from '@evidence/core/connectors/normalize-sparkline-rows';
 import type { DuckDBCredentials } from '@evidence/core/connectors/duckdb/credentials';
 import type { QueryResult } from './types';
+import {
+	duckDBServeConfiguration,
+	isHardenedDuckDBServe,
+	lockDownDuckDBInstance
+} from './duckdb-security';
 
 /**
  * In-memory databases are scoped to an Evidence project rather than
@@ -18,8 +23,36 @@ import type { QueryResult } from './types';
  * Cache the creation promise so concurrent queries share one instance.
  */
 const memoryInstances = new Map<string, Promise<DuckDBInstance>>();
+const hardenedInstances = new Map<string, Promise<DuckDBInstance>>();
+
+function getHardenedDuckDBInstance(config: DuckDBCredentials): Promise<DuckDBInstance> {
+	const key = `${config.database}\\0${config.projectDir}`;
+	const existing = hardenedInstances.get(key);
+	if (existing) return existing;
+
+	// No query can reach this instance until the full security policy has
+	// been installed and locked. Cache the initialization promise to prevent
+	// concurrent HTTP requests from observing an unconfined connection.
+	const pending = (async () => {
+		const options = duckDBServeConfiguration(config);
+		const instance =
+			config.database === ':memory:'
+				? await DuckDBInstance.create(':memory:', options)
+				: await DuckDBInstance.fromCache(config.database, options);
+		await lockDownDuckDBInstance(instance, config);
+		return instance;
+	})().catch((error: unknown) => {
+		hardenedInstances.delete(key);
+		throw error;
+	});
+
+	hardenedInstances.set(key, pending);
+	return pending;
+}
 
 function getDuckDBInstance(config: DuckDBCredentials): Promise<DuckDBInstance> {
+	if (isHardenedDuckDBServe()) return getHardenedDuckDBInstance(config);
+
 	if (config.database !== ':memory:') {
 		return DuckDBInstance.fromCache(config.database);
 	}
@@ -66,9 +99,12 @@ export async function executeDuckDBQuery(
 	const connection = await instance.connect();
 
 	try {
-		// Resolve relative CSV/Parquet paths against the Evidence project.
-		const escapedRoot = config.projectDir.replace(/'/g, "''");
-		await connection.runAndReadAll(`SET file_search_path = '${escapedRoot}'`);
+		// Serve instances already have a locked, project-scoped file search
+		// path. Trusted CLI/dev connections retain their existing behavior.
+		if (!isHardenedDuckDBServe()) {
+			const escapedRoot = config.projectDir.replace(/'/g, "''");
+			await connection.runAndReadAll(`SET file_search_path = '${escapedRoot}'`);
+		}
 
 		const reader = await connection.runAndReadAll(sql);
 
