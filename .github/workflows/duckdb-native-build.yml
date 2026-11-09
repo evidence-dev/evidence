@@ -72,11 +72,11 @@ jobs:
       - name: Test DuckDB native loader, concurrency, and HTTP security
         run: pnpm --filter @evidence/cli exec vitest run cli/duckdb-native-runtime.test.ts cli/connection/duckdb.test.ts cli/connection/duckdb-security.test.ts cli/serve-host.test.ts src/lib/server/query-request-guard.test.ts
 
-      - name: Typecheck core and CLI
-        run: pnpm check
-
       - name: Build standalone CLI
         run: pnpm cli:build
+
+      - name: Typecheck core and CLI
+        run: pnpm check
 
       - name: Smoke test native DuckDB
         run: node cli/scripts/smoke-duckdb-binary.mjs
