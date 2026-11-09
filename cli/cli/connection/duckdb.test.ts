@@ -23,6 +23,26 @@ afterEach(async () => {
 });
 
 describe('DuckDB direct query execution', () => {
+	it('shares one in-memory instance across concurrent first queries', async () => {
+		const sharedConfig = { ...config, database: ':memory:' };
+		const requestCount = 16;
+
+		const results = await Promise.all(
+			Array.from({ length: requestCount }, (_, index) =>
+				executeQuery(`SELECT ${index} AS request_id`, sharedConfig)
+			)
+		);
+
+		expect(results.map(({ rows }) => rows)).toEqual(
+			Array.from({ length: requestCount }, (_, index) => [{ request_id: index }])
+		);
+
+		// All connections must have used the same in-memory database.
+		await executeQuery('CREATE TABLE shared_state AS SELECT 42 AS answer', sharedConfig);
+		const check = await executeQuery('SELECT answer FROM shared_state', sharedConfig);
+		expect(check.rows).toEqual([{ answer: 42 }]);
+	});
+
 	it('reuses one in-memory database within a project', async () => {
 		const memoryConfig = {
 			...config,
