@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawn } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -14,6 +14,9 @@ const project = join(root, 'report');
 
 const env = {
 	...process.env,
+	TMPDIR: root,
+	TMP: root,
+	TEMP: root,
 	EVIDENCE_TELEMETRY_DISABLED: '1'
 };
 
@@ -60,6 +63,21 @@ try {
 
 	assert.deepEqual(query(sql), expected);
 	console.log('CLI_DUCKDB_OK');
+
+	console.log('=== NATIVE CLEANUP ===');
+
+	const remainingNativeDirs = () =>
+		readdirSync(root).filter((name) => name.startsWith('evidence-duckdb-native-'));
+
+	for (let attempt = 1; attempt <= 5; attempt++) {
+		assert.deepEqual(query('SELECT 42 AS answer'), [{ answer: 42 }]);
+
+		assert.deepEqual(remainingNativeDirs(), [], `Native library leftovers after run ${attempt}`);
+
+		console.log(`Native cleanup ${attempt}/5: OK`);
+	}
+
+	console.log('NATIVE_CLEANUP_OK');
 
 	console.log('=== HTTP SERVER ===');
 
