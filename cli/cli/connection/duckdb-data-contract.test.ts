@@ -146,6 +146,36 @@ describe('DuckDB -> Evidence data quality contract', () => {
 		expect(JSON.parse(JSON.stringify(rows))).toEqual(rows);
 	});
 
+	it('reports native interval and map JSON shapes accurately', async () => {
+		const { rows, columns } = await executeQuery(
+			`SELECT
+				INTERVAL '2 days 3 hours' AS duration,
+				MAP(['a', 'b'], [1, 2]) AS counts,
+				'{"active":true}'::JSON AS raw_json,
+				NULL::INTERVAL AS missing_duration`,
+			config
+		);
+
+		expect(columns.map(({ name, jsType }) => [name, jsType])).toEqual([
+			['duration', 'object'],
+			['counts', 'object'],
+			['raw_json', 'string'],
+			['missing_duration', 'object']
+		]);
+		expect(rows).toEqual([
+			{
+				duration: { months: 0, days: 2, micros: '10800000000' },
+				counts: [
+					{ key: 'a', value: 1 },
+					{ key: 'b', value: 2 }
+				],
+				raw_json: '{"active":true}',
+				missing_duration: null
+			}
+		]);
+		expect(JSON.parse(JSON.stringify(rows))).toEqual(rows);
+	});
+
 	it('preserves column metadata for empty results', async () => {
 		const result = await executeQuery(
 			`SELECT
