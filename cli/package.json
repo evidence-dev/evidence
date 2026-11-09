@@ -6,7 +6,7 @@
 	"scripts": {
 		"build:sandbox": "node ../core/scripts/build-sandbox-runtimes.js --out static/sandbox",
 		"dev": "pnpm run build:sandbox && vite dev",
-		"build": "pnpm run build:sandbox && bun run scripts/bundle-docs.ts && NODE_OPTIONS=\"--max-old-space-size=8192\" vite build",
+		"build": "pnpm run build:sandbox && bun run scripts/bundle-docs.ts && node --max-old-space-size=8192 ./node_modules/vite/bin/vite.js build",
 		"preview": "vite preview",
 		"test": "vitest run",
 		"prepare": "svelte-kit sync || echo ''",
