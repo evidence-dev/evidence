@@ -67,8 +67,8 @@ pnpm --filter @evidence/cli exec vitest run \
   cli/connection/duckdb-security.test.ts \
   cli/serve-host.test.ts \
   src/lib/server/query-request-guard.test.ts
-pnpm check
 pnpm cli:build
+pnpm check
 node cli/scripts/smoke-duckdb-binary.mjs
 node cli/scripts/audit-duckdb-serve-filesystem.mjs
 git diff --check
