@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { execFileSync, spawn } from 'node:child_process';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
 import { mkdtempSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
@@ -97,6 +97,36 @@ try {
 
 	console.log('NATIVE_CLEANUP_OK');
 
+	console.log('=== NATIVE TEMP FAILURE ===');
+
+	// Force native extraction to fail without changing the embedded DLL.
+	// This probes failure reporting and verifies that the next CLI run still works.
+	const unavailableTemp = join(root, 'missing-native-temp-root');
+	const invalidEnv = {
+		...env,
+		TMPDIR: unavailableTemp,
+		TMP: unavailableTemp,
+		TEMP: unavailableTemp
+	};
+	const failedQuery = spawnSync(
+		binary,
+		['--project', project, 'query', 'SELECT 42 AS answer', '--format', 'json'],
+		{ env: invalidEnv, encoding: 'utf8', timeout: 30000 }
+	);
+
+	assert.equal(failedQuery.error, undefined, 'CLI process could not be started');
+	assert.ok(
+		failedQuery.status !== null && failedQuery.status !== 0,
+		'CLI must fail when its native temporary directory is unavailable'
+	);
+	assert.match(
+		`${failedQuery.stderr ?? ''}\n${failedQuery.stdout ?? ''}`,
+		/ENOENT|ENOTDIR|no such file or directory|not a directory/i,
+		'CLI should report the native temporary directory failure'
+	);
+	assert.deepEqual(query('SELECT 42 AS answer'), [{ answer: 42 }]);
+	console.log('NATIVE_TEMP_FAILURE_RECOVERY_OK');
+
 	console.log('=== HTTP SERVER ===');
 
 	const listener = createServer();
@@ -151,6 +181,26 @@ try {
 
 	assert.ok(succeeded);
 	console.log('SERVER_DUCKDB_OK');
+
+	console.log('=== CONCURRENT HTTP QUERIES ===');
+	const concurrentRequests = 12;
+	await Promise.all(
+		Array.from({ length: concurrentRequests }, async (_, index) => {
+			const response = await fetch(endpoint, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ sql }),
+				signal: AbortSignal.timeout(20000)
+			});
+			const result = await response.json();
+			assert.ok(
+				response.ok,
+				`Concurrent query ${index + 1}: HTTP ${response.status}: ${JSON.stringify(result)}`
+			);
+			assert.deepEqual(result.rows, expected, `Concurrent query ${index + 1}`);
+		})
+	);
+	console.log('CONCURRENT_HTTP_DUCKDB_OK');
 	console.log('ALL_DUCKDB_BINARY_SMOKE_TESTS_OK');
 } catch (error) {
 	console.error('SMOKE_TEST_FAILED');
