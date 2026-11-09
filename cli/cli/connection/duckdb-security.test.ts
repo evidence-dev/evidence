@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { DuckDBInstance } from '@duckdb/node-api';
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { duckDBServeConfiguration, lockDownDuckDBInstance } from './duckdb-security';
@@ -95,6 +95,33 @@ describe('DuckDB serve security configuration', () => {
 		} finally {
 			connection.closeSync();
 			instance.closeSync();
+		}
+	});
+
+	it('rejects persistent database files outside the project, including symlink escapes', async () => {
+		const outsideDatabase = path.join(root, 'outside.duckdb');
+		const original = await DuckDBInstance.create(outsideDatabase);
+		const writer = await original.connect();
+		try {
+			await writer.runAndReadAll('CREATE TABLE private_data AS SELECT 1 AS id');
+		} finally {
+			writer.closeSync();
+			original.closeSync();
+		}
+
+		const config: DuckDBCredentials = {
+			database: outsideDatabase,
+			projectDir: project,
+			schemas: []
+		};
+		expect(() => duckDBServeConfiguration(config)).toThrow(/inside the Evidence project/);
+
+		if (process.platform !== 'win32') {
+			const alias = path.join(project, 'alias.duckdb');
+			await symlink(outsideDatabase, alias);
+			expect(() => duckDBServeConfiguration({ ...config, database: alias })).toThrow(
+				/inside the Evidence project/
+			);
 		}
 	});
 });
