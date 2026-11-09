@@ -26,7 +26,7 @@ const memoryInstances = new Map<string, Promise<DuckDBInstance>>();
 const hardenedInstances = new Map<string, Promise<DuckDBInstance>>();
 
 function getHardenedDuckDBInstance(config: DuckDBCredentials): Promise<DuckDBInstance> {
-	const key = `${config.database}\\0${config.projectDir}`;
+	const key = JSON.stringify([config.database, config.projectDir]);
 	const existing = hardenedInstances.get(key);
 	if (existing) return existing;
 
