@@ -198,7 +198,8 @@ try {
 		},
 		{
 			name: 'unsupported-media-type',
-			status: 415,
+			// SvelteKit's own CSRF gate may return 403 before our 415.
+			status: [403, 415],
 			headers: { 'Content-Type': 'text/plain' },
 			body: JSON.stringify({ sql })
 		},
@@ -222,7 +223,13 @@ try {
 			body: testCase.body,
 			signal: AbortSignal.timeout(5000)
 		});
-		assert.equal(response.status, testCase.status, testCase.name);
+		const allowedStatuses = Array.isArray(testCase.status)
+			? testCase.status
+			: [testCase.status];
+		assert.ok(
+			allowedStatuses.includes(response.status),
+			`${testCase.name}: expected HTTP ${allowedStatuses.join(' or ')}, got ${response.status}`
+		);
 	}
 	console.log('SQL_HTTP_SECURITY_OK');
 
