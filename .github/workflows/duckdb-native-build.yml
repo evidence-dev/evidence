@@ -83,3 +83,7 @@ jobs:
 
       - name: Audit DuckDB serve filesystem boundaries
         run: node cli/scripts/audit-duckdb-serve-filesystem.mjs
+
+      - name: Smoke test read-only DuckDB serve container
+        if: runner.os == 'Linux'
+        run: node cli/scripts/smoke-duckdb-readonly-container.mjs
