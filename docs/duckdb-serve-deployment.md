@@ -93,7 +93,7 @@ docker run --rm --name evidence-duckdb-review \
   --security-opt no-new-privileges \
   --pids-limit=128 \
   --memory=2g --cpus=2 \
-  --tmpfs /tmp:rw,nosuid,nodev,size=512m,mode=1777 \
+  --tmpfs /tmp:rw,exec,nosuid,nodev,size=512m,mode=1777 \
   --mount "type=bind,src=$PROJECT_DIR,dst=/project,readonly" \
   --env-file "$SECRETS_FILE" \
   --publish 127.0.0.1:3000:3000 \
@@ -103,8 +103,11 @@ docker run --rm --name evidence-duckdb-review \
 The read-only bind mount prevents ordinary filesystem writes to the report
 project even when the SQL allowlist would otherwise allow them. The separate
 writable `/tmp` supports extraction of the embedded native DuckDB library.
-Do not mount `/tmp` with `noexec` until the native loader has been verified
-on that platform. The container's **image root filesystem** is also read-only.
+The `exec` token is required for this version of the native loader:
+without it, some Docker engines mount tmpfs as `noexec`, preventing `dlopen`
+from mapping the embedded DuckDB library. This grants execution permission
+on this **separate temporary mount**, so keep it isolated, small and accessible
+only to the service container. The container's **image root filesystem** is also read-only.
 
 The example binds the **host-facing** port to loopback only. The CLI binds to
 `0.0.0.0` *inside* the container so Docker port forwarding can work; Basic
