@@ -1,25 +1,20 @@
 /**
  * Query proxy endpoint.
  *
- * Thin HTTP wrapper around `runQuery` (see `$lib/server/run-query`), which holds
- * the shared logic: run against connection.yaml if present, else proxy to the
- * managed Evidence query engine.
+ * Validate the HTTP boundary before forwarding arbitrary SQL to the direct
+ * connector or managed Evidence query engine.
  */
 
-import { json, error } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { runQuery } from '$lib/server/run-query';
+import { parseSqlQueryRequest } from '$lib/server/query-request-guard';
 
 export const POST: RequestHandler = async ({ request }) => {
-	const body = await request.json();
-	const { sql } = body;
+	const parsed = await parseSqlQueryRequest(request);
+	if (parsed instanceof Response) return parsed;
 
-	if (!sql || typeof sql !== 'string') {
-		throw error(400, 'Missing sql parameter');
-	}
-
-	const result = await runQuery(sql);
-
+	const result = await runQuery(parsed);
 	if (result.error) {
 		return json({ error: result.error }, { status: result.status ?? 500 });
 	}
