@@ -4,7 +4,9 @@ This is a maintainer-facing review plan for the DuckDB direct connector
 implemented on `dawidthecactus:feat/duckdb-direct-connector` against
 `evidence-dev/evidence:main`. The upstream repository is a public mirror:
 maintainers review a public PR and move accepted changes into their internal
-repository (see `CONTRIBUTING.md`).
+repository (see `CONTRIBUTING.md`). The implementation addresses
+[issue #3341: Add a DuckDB direct connector](https://github.com/evidence-dev/evidence/issues/3341),
+which specifically requests queries over local disk and Parquet data.
 
 ## Feature scope
 
@@ -53,9 +55,11 @@ The branch's native-binary workflow tests Linux (`ubuntu-24.04`), Windows
    in-project write observation and outside-project symlink read check.
 
 **Snapshot (November 9, 2026):** GitHub Actions run
-[`42654149811`](https://github.com/dawidthecactus/evidence/actions/runs/42654149811)
-was green on all three platforms at commit `332c53cd1`. Repeat the checks
-after any upstream integration or later code change.
+[`42659474948`](https://github.com/dawidthecactus/evidence/actions/runs/42659474948)
+was green on all three platforms at commit `fec20847`. Ubuntu additionally
+passed the **OS-enforced read-only project container test**; Windows and macOS
+run the other native/security checks, but intentionally skip this Docker-only
+Linux test. Repeat the checks after upstream integration or code changes.
 
 Suggested maintainer review commands at the repository root:
 
@@ -82,8 +86,9 @@ if an outside-project fixture becomes readable.
 ## Upstream integration before opening the PR
 
 As of November 9, 2026, comparison of this fork branch with upstream
-`main` showed **63 branch commits, 44 changed files and 10 upstream commits
-not yet integrated**. These numbers are a snapshot, not a live status.
+`main` showed **76 branch commits, 48 changed files and 10 upstream commits
+not yet integrated** at commit `fec20847`. These numbers are a snapshot, not
+a live status.
 
 The recent upstream changes include a new Amazon Athena connector and query
 engine changes. Recheck these integration points in particular:
@@ -128,7 +133,8 @@ Before creating the PR:
 - [x] Explain write permissions, symlink limitations and host isolation.
 - [x] Demonstrate 3-platform native CI and security smoke tests.
 - [x] Provide a **candidate** container recipe using the branch build.
-- [ ] Run candidate read-only container scenario and record the actual result.
+- [x] Run candidate read-only container scenario on Linux CI and record the
+      actual result (`READ_ONLY_CONTAINER_SMOKE_OK`).
 - [ ] Integrate upstream `main` and rerun all three platform jobs.
 - [ ] Review the full diff for unrelated edits, secrets and generated files.
 - [ ] Confirm whether CI workflow should retain branch-specific push triggering
@@ -139,6 +145,9 @@ Before creating the PR:
 ## Proposed PR summary (editable)
 
 **Title:** `feat(cli): add cross-platform DuckDB direct connector`
+
+**Related issue:** `Refs #3341` (the public mirror's contribution process
+may close the PR after internal merge).
 
 **Summary:** Introduces an embedded DuckDB connection type for local CSV,
 Parquet and DuckDB files without an external warehouse. Includes a native
