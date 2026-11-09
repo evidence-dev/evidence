@@ -55,6 +55,22 @@ a read-only filesystem sandbox. The `READ_ONLY` database access mode prevents
 modifications to a persistent DuckDB database, but does not by itself prevent
 `COPY TO` from writing to permitted filesystem locations.
 
+A diagnostic run on WSL/Linux confirmed this boundary: an HTTP SQL query
+successfully executed `COPY TO` within the project directory. In the same run,
+a symlink inside the project pointing to a file outside it did not expose that
+file. The cross-platform CI audit includes a positive in-project `read_text`
+control and fails if the symlink read returns the outside file's contents
+(where symlink creation is permitted by the OS). These checks are not a
+substitute for a filesystem sandbox or a blanket proof against symlink races.
+
+**Deployment recommendation:** serve report projects and data from read-only
+mounts or directories owned by a different OS account than the Evidence
+service process. Give the process a separate writable temporary directory
+for native library extraction. Keep connection credentials out of the readable
+report data tree, use least-privilege credentials and do not expose the SQL
+endpoint to untrusted users. Use a container/VM and resource limits if SQL
+sources cannot be fully trusted.
+
 Do not place symlinks to sensitive locations inside the report's data directories.
 A filesystem allowlist is not a substitute for OS-level isolation.
 
