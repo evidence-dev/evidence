@@ -293,81 +293,21 @@ export default function adapter(options = {}) {
 			const preloadSource = `
 import embeddedLibrary from './${libraryName}' with { type: 'file' };
 import { dlopen, FFIType } from 'bun:ffi';
-import { mkdtempSync, readFileSync, writeFileSync, rmSync, readdirSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { createDuckDBNativeLoader } from './duckdb-native-runtime.ts';
 
-let nativeLibraryHandle;
+// Keep the native handle alive for the full lifetime of the process.
+const loadNative = createDuckDBNativeLoader({
+    embeddedLibrary,
+    libraryName: '${libraryName}',
+    openLibrary: (libraryPath) => dlopen(libraryPath, {
+        duckdb_library_version: { args: [], returns: FFIType.cstring }
+    })
+});
 
 export async function preloadDuckDBNative() {
-    if (nativeLibraryHandle) return;
-
-    // Windows may retain the DLL until the process has exited.
-    // Reclaim directories owned by terminated Evidence processes.
-    if (process.platform === 'win32') {
-        for (const entry of readdirSync(tmpdir(), { withFileTypes: true })) {
-            if (!entry.isDirectory()) continue;
-
-            const match =
-                /^evidence-duckdb-native-([0-9]+)-[A-Za-z0-9]{6}$/.exec(entry.name);
-
-            if (!match) continue;
-
-            const pid = Number(match[1]);
-            if (!Number.isSafeInteger(pid) || pid <= 0 || pid === process.pid) {
-                continue;
-            }
-
-            try {
-                process.kill(pid, 0);
-                // The owning process is still running.
-                continue;
-            } catch (error) {
-                // An access error is not proof the process has exited.
-                if (error?.code !== 'ESRCH') continue;
-            }
-
-            try {
-                rmSync(join(tmpdir(), entry.name), {
-                    recursive: true,
-                    force: true
-                });
-            } catch {
-                // A temporary file may still be locked.
-                // Another invocation can retry cleanup.
-            }
-        }
-    }
-
-    const directory = mkdtempSync(
-        join(tmpdir(), 'evidence-duckdb-native-' + process.pid + '-')
-    );
-    const libraryPath = join(directory, '${libraryName}');
-
-    try {
-        writeFileSync(libraryPath, readFileSync(embeddedLibrary));
-
-        nativeLibraryHandle = dlopen(libraryPath, {
-            duckdb_library_version: {
-                args: [],
-                returns: FFIType.cstring
-            }
-        });
-
-        process.once('exit', () => {
-            try {
-                rmSync(directory, { recursive: true, force: true });
-            } catch {
-                // Best-effort removal of temporary native assets.
-            }
-        });
-    } catch (error) {
-        rmSync(directory, { recursive: true, force: true });
-        throw error;
-    }
+    await loadNative();
 }
 `;
-
 			await writeFile(join(tempCliDir, 'duckdb-native.ts'), preloadSource, 'utf-8');
 
 			builder.log.success('DuckDB native library embedded');
