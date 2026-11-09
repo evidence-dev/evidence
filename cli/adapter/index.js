@@ -4,11 +4,12 @@
  */
 
 import { join, dirname, extname } from 'path';
-import { writeFile, readdir, stat, readFile, mkdir } from 'fs/promises';
+import { writeFile, readdir, stat, readFile, mkdir, copyFile } from 'fs/promises';
 import { spawnSync } from 'child_process';
 import { createHash } from 'crypto';
 import { gzipSync } from 'zlib';
 import { parse, relative, normalize } from 'path';
+import { createRequire } from 'node:module';
 
 // ============================================================================
 // Constants
@@ -18,11 +19,15 @@ const ADAPTER_NAME = 'evd-adapter';
 const BUILD_DIR = `.svelte-kit/${ADAPTER_NAME}`;
 const TARGETS_MAP = {
 	'linux-x64': 'bun-linux-x64',
+	'linux-x64-musl': 'bun-linux-x64-musl',
 	'linux-arm64': 'bun-linux-arm64',
+	'linux-arm64-musl': 'bun-linux-arm64-musl',
 	'macos-arm64': 'bun-darwin-arm64',
 	'darwin-arm64': 'bun-darwin-arm64',
 	'darwin-x64': 'bun-darwin-x64',
-	'windows-x64': 'bun-windows-x64'
+	'windows-x64': 'bun-windows-x64',
+	'windows-arm64': 'bun-windows-arm64',
+	'macos-x64': 'bun-darwin-x64'
 };
 
 // ============================================================================
@@ -248,6 +253,101 @@ export default function adapter(options = {}) {
 			builder.copy(cliTemplatePath, join(BUILD_DIR, 'temp-cli'));
 			builder.log.success('CLI template copied');
 
+            // Select DuckDB native assets for the target platform.
+            const buildTarget =
+                opts.target || `${process.platform}-${process.arch}`;
+
+            const nativeTargets = {
+                'linux-x64': ['linux-x64', 'libduckdb.so'],
+                'linux-x64-musl': ['linux-x64-musl', 'libduckdb.so'],
+                'linux-arm64': ['linux-arm64', 'libduckdb.so'],
+                'linux-arm64-musl': ['linux-arm64-musl', 'libduckdb.so'],
+                'darwin-x64': ['darwin-x64', 'libduckdb.dylib'],
+                'darwin-arm64': ['darwin-arm64', 'libduckdb.dylib'],
+                'macos-x64': ['darwin-x64', 'libduckdb.dylib'],
+                'macos-arm64': ['darwin-arm64', 'libduckdb.dylib'],
+                'win32-x64': ['win32-x64', 'duckdb.dll'],
+                'win32-arm64': ['win32-arm64', 'duckdb.dll'],
+                'windows-x64': ['win32-x64', 'duckdb.dll'],
+                'windows-arm64': ['win32-arm64', 'duckdb.dll']
+            };
+
+            const native = nativeTargets[buildTarget];
+
+            if (!native) {
+                throw new Error(
+                    `Unsupported DuckDB native build target: ${buildTarget}`
+                );
+            }
+
+            const adapterRequire = createRequire(import.meta.url);
+            const apiEntry = adapterRequire.resolve('@duckdb/node-api');
+            const bindingsEntry = createRequire(apiEntry).resolve(
+                '@duckdb/node-bindings'
+            );
+            const nativeEntry = createRequire(bindingsEntry).resolve(
+                `@duckdb/node-bindings-${native[0]}/duckdb.node`
+            );
+
+            const libraryName = native[1];
+            const nativeSource = join(dirname(nativeEntry), libraryName);
+            const tempCliDir = join(BUILD_DIR, 'temp-cli');
+
+            await copyFile(
+                nativeSource,
+                join(tempCliDir, libraryName)
+            );
+
+            const preloadSource = `
+import embeddedLibrary from './${libraryName}' with { type: 'file' };
+import { dlopen, FFIType } from 'bun:ffi';
+import { mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+let nativeLibraryHandle;
+
+export async function preloadDuckDBNative() {
+    if (nativeLibraryHandle) return;
+
+    const directory = mkdtempSync(
+        join(tmpdir(), 'evidence-duckdb-native-')
+    );
+    const libraryPath = join(directory, '${libraryName}');
+
+    try {
+        writeFileSync(libraryPath, readFileSync(embeddedLibrary));
+
+        nativeLibraryHandle = dlopen(libraryPath, {
+            duckdb_library_version: {
+                args: [],
+                returns: FFIType.cstring
+            }
+        });
+
+        process.once('exit', () => {
+            try {
+                rmSync(directory, { recursive: true, force: true });
+            } catch {
+                // Best-effort removal of temporary native assets.
+            }
+        });
+    } catch (error) {
+        rmSync(directory, { recursive: true, force: true });
+        throw error;
+    }
+}
+`;
+
+            await writeFile(
+                join(tempCliDir, 'duckdb-native.ts'),
+                preloadSource,
+                'utf-8'
+            );
+
+            builder.log.success('DuckDB native library embedded');
+
+
 			// Generate manifest
 			const manifest = builder.generateManifest({ relativePath: './server' });
 			const manifestModule = `const manifest = ${manifest};\nexport default manifest;`;
@@ -275,6 +375,12 @@ export default function adapter(options = {}) {
 			const outFile = join(opts.out, opts.binaryName + (isWindows ? '.exe' : ''));
 
 			// Databricks kernel (CLI is Thrift-only) and vite (source-mode only) never load from the binary.
+			const nativeBindingPackages = [
+                ...new Set(
+                    Object.values(nativeTargets).map(([pkg]) => pkg)
+                )
+            ];
+
 			const bunArgs = [
 				'build',
 				'--compile',
@@ -282,7 +388,17 @@ export default function adapter(options = {}) {
 				'--external',
 				'@databricks/databricks-sql-kernel-*',
 				'--external',
-				'vite'
+				'vite',
+				'--allow-unresolved',
+				'@duckdb/node-bindings-*-*/duckdb.node',
+				'--allow-unresolved',
+				'', // Opaque dynamic imports in the SvelteKit SSR bundle
+				...nativeBindingPackages
+					.filter((target) => target !== native[0])
+					.flatMap((target) => [
+						'--external',
+						`@duckdb/node-bindings-${target}/duckdb.node`
+					])
 			];
 			if (opts.target) bunArgs.push(`--target=${TARGETS_MAP[opts.target]}`);
 			bunArgs.push(entryPoint, '--outfile', outFile);

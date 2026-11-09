@@ -4,6 +4,7 @@
  */
 
 import { loadConnectionConfig } from './load-config';
+import { preloadDuckDBNative } from '../duckdb-native';
 import { executeSnowflakeQuery } from './snowflake';
 import { executeBigQueryQuery } from './bigquery';
 import { executeClickHouseQuery } from './clickhouse';
@@ -44,6 +45,7 @@ export async function executeQuery(sql: string, config: ConnectionConfig): Promi
 		case 'motherduck':
 			return executeMotherduckQuery(sql, config);
 		case 'duckdb': {
+			await preloadDuckDBNative();
 			const { executeDuckDBQuery } = await import('./duckdb');
 			return executeDuckDBQuery(sql, config);
 		}
