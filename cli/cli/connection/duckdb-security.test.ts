@@ -3,7 +3,7 @@ import { DuckDBInstance } from '@duckdb/node-api';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { duckDBServeConfiguration } from './duckdb-security';
+import { duckDBServeConfiguration, lockDownDuckDBInstance } from './duckdb-security';
 import type { DuckDBCredentials } from '@evidence/core/connectors/duckdb/credentials';
 
 let root: string;
@@ -20,24 +20,6 @@ afterEach(async () => {
 });
 
 describe('DuckDB serve security configuration', () => {
-	it('accepts each security option at database creation', async () => {
-		const options = duckDBServeConfiguration({
-			database: ':memory:',
-			projectDir: project,
-			schemas: []
-		});
-		const applied: Record<string, string> = {};
-		for (const [option, value] of Object.entries(options)) {
-			applied[option] = value;
-			let instance: DuckDBInstance;
-			try {
-				instance = await DuckDBInstance.create(':memory:', applied);
-			} catch (error) {
-				throw new Error(`DuckDB 1.5.6 fails while adding ${option}=${value}: ${String(error)}`);
-			}
-			instance.closeSync();
-		}
-	});
 
 	it('allows project CSV but denies outside files and locked setting changes', async () => {
 		const dataDir = path.join(project, 'data');
@@ -53,6 +35,7 @@ describe('DuckDB serve security configuration', () => {
 		};
 
 		const instance = await DuckDBInstance.create(':memory:', duckDBServeConfiguration(config));
+		await lockDownDuckDBInstance(instance, config);
 		const connection = await instance.connect();
 		try {
 			const rows = await connection.runAndReadAll(
