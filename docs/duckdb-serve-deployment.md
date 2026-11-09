@@ -45,7 +45,7 @@ copying the entire monorepo or downloading an already released CLI.
 
 ```bash
 cd ~/projects/evidence
-pnpm check && pnpm cli:build
+pnpm cli:build && pnpm check
 
 test -x cli/dist/evidence
 build_context="$(mktemp -d)"
