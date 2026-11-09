@@ -382,6 +382,16 @@ function getAutoFormat(baseFormat: string, range?: Range): string {
 				unit = 'k';
 				decimals = '0';
 			}
+
+			// A max just under the next unit rounds up to 1,000 in this one
+			// (999,800 -> "1,000k"), so move up a unit instead ("1.0M").
+			const unitScale: Record<string, number> = { k: 1e3, m: 1e6, b: 1e9 };
+			const nextUnit: Record<string, string> = { k: 'm', m: 'b', b: 't' };
+			const scale = unitScale[unit];
+			if (scale && Number((max / scale).toFixed(Number(decimals))) >= 1000) {
+				unit = nextUnit[unit];
+				decimals = '1';
+			}
 		}
 	}
 
