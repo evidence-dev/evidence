@@ -146,7 +146,9 @@ export async function executeDuckDBQuery(
 			return {
 				name,
 				clickhouseType: duckdbType,
-				jsType: getMotherduckToJsType(duckdbType)
+				// The native node-api JSON converter returns INTERVAL as a structured
+				// { months, days, micros } object, unlike the Postgres-wire client.
+				jsType: duckdbType === 'INTERVAL' ? 'object' : getMotherduckToJsType(duckdbType)
 			};
 		});
 
