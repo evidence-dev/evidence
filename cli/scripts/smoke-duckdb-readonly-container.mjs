@@ -92,7 +92,7 @@ try {
 		'--memory=2g',
 		'--cpus=2',
 		'--tmpfs',
-		'/tmp:rw,nosuid,nodev,size=512m,mode=1777',
+		'/tmp:rw,exec,nosuid,nodev,size=512m,mode=1777',
 		'--mount',
 		`type=bind,src=${project},dst=/project,readonly`,
 		'--publish',
