@@ -69,11 +69,29 @@ try {
 	const remainingNativeDirs = () =>
 		readdirSync(root).filter((name) => name.startsWith('evidence-duckdb-native-'));
 
+	let previousNativeDirs = remainingNativeDirs();
+
 	for (let attempt = 1; attempt <= 5; attempt++) {
 		assert.deepEqual(query('SELECT 42 AS answer'), [{ answer: 42 }]);
 
-		assert.deepEqual(remainingNativeDirs(), [], `Native library leftovers after run ${attempt}`);
+		const currentNativeDirs = remainingNativeDirs();
 
+		if (process.platform === 'win32') {
+			// The current DLL may remain locked until process termination.
+			assert.ok(
+				currentNativeDirs.length <= 1,
+				`Native directories accumulated after run ${attempt}`
+			);
+
+			assert.ok(
+				previousNativeDirs.every((name) => !currentNativeDirs.includes(name)),
+				`Stale native directories were not reclaimed after run ${attempt}`
+			);
+		} else {
+			assert.deepEqual(currentNativeDirs, [], `Native library leftovers after run ${attempt}`);
+		}
+
+		previousNativeDirs = currentNativeDirs;
 		console.log(`Native cleanup ${attempt}/5: OK`);
 	}
 
