@@ -3,6 +3,11 @@
 This document describes the boundaries of the direct DuckDB connector in Evidence CLI.
 It is intended for operators of **self-hosted** `evidence serve` deployments.
 
+For an example of OS-enforced read-only project mounts, see the
+[least-privilege deployment runbook](duckdb-serve-deployment.md). For
+maintainer validation and integration steps, see the
+[upstream PR readiness checklist](duckdb-upstream-pr-readiness.md).
+
 ## Trusted local SQL versus HTTP
 
 - `evidence query` and `evidence dev` execute SQL in a trusted developer environment.
