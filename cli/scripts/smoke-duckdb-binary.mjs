@@ -182,6 +182,50 @@ try {
 	assert.ok(succeeded);
 	console.log('SERVER_DUCKDB_OK');
 
+	console.log('=== SQL HTTP SECURITY ===');
+	const requestCases = [
+		{
+			name: 'cross-origin',
+			status: 403,
+			headers: { Origin: 'https://attacker.example' },
+			body: JSON.stringify({ sql })
+		},
+		{
+			name: 'cross-site-metadata',
+			status: 403,
+			headers: { 'Sec-Fetch-Site': 'cross-site' },
+			body: JSON.stringify({ sql })
+		},
+		{
+			name: 'unsupported-media-type',
+			status: 415,
+			headers: { 'Content-Type': 'text/plain' },
+			body: JSON.stringify({ sql })
+		},
+		{
+			name: 'malformed-json',
+			status: 400,
+			headers: {},
+			body: '{malformed'
+		},
+		{
+			name: 'oversized-payload',
+			status: 413,
+			headers: {},
+			body: JSON.stringify({ sql: 'x'.repeat(256 * 1024) })
+		}
+	];
+	for (const testCase of requestCases) {
+		const response = await fetch(endpoint, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', ...testCase.headers },
+			body: testCase.body,
+			signal: AbortSignal.timeout(5000)
+		});
+		assert.equal(response.status, testCase.status, testCase.name);
+	}
+	console.log('SQL_HTTP_SECURITY_OK');
+
 	console.log('=== CONCURRENT HTTP QUERIES ===');
 	const concurrentRequests = 12;
 	await Promise.all(
