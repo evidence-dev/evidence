@@ -44,8 +44,9 @@ The server initializes a DuckDB instance before letting any query access it:
 
 **CSV and Parquet inside the project remain supported.** Direct filesystem paths
 outside the project and remote file sources are not part of the default serve
-capability. Keep a persistent DuckDB database inside the project if you plan to
-serve it.
+capability. An existing persistent DuckDB database **must** be located inside
+the canonical project directory. The database path is checked after resolving
+symlinks, and `serve` does not create a new persistent database.
 
 ### Important limitations
 
@@ -53,6 +54,9 @@ DuckDB's `allowed_directories` is a **read/write** allowlist. It is **not**
 a read-only filesystem sandbox. The `READ_ONLY` database access mode prevents
 modifications to a persistent DuckDB database, but does not by itself prevent
 `COPY TO` from writing to permitted filesystem locations.
+
+Do not place symlinks to sensitive locations inside the report's data directories.
+A filesystem allowlist is not a substitute for OS-level isolation.
 
 Use OS/container permissions to ensure that the server process cannot change
 application source files, credentials, or other important assets. Mount data
