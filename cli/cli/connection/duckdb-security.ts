@@ -24,7 +24,6 @@ export function duckDBServeConfiguration(config: DuckDBCredentials): Record<stri
 		autoload_known_extensions: 'false',
 		allow_persistent_secrets: 'false',
 		allow_unredacted_secrets: 'false',
-		enable_global_s3_configuration: 'false',
 		...(config.database === ':memory:' ? {} : { access_mode: 'READ_ONLY' })
 	};
 }
