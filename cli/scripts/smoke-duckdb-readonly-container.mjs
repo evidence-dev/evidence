@@ -52,19 +52,18 @@ async function sqlRequest(endpoint, sql, authorized = true) {
 
 try {
 	assert.ok(existsSync(binary), 'Build cli/dist/evidence before the container smoke test');
-	mkdirSync(project);
 	mkdirSync(context);
 
 	// mkdtemp is 0700 by default; the non-root container user must be able to
 	// traverse the isolated fixture directory.
 	chmodSync(workspace, 0o755);
-	chmodSync(project, 0o755);
 
 	execFileSync(binary, ['init', project, '--warehouse', 'duckdb'], {
 		timeout: 30000,
 		env: { ...process.env, EVIDENCE_TELEMETRY_DISABLED: '1' },
 		stdio: 'pipe'
 	});
+	chmodSync(project, 0o755);
 
 	const dataDir = join(project, 'data');
 	mkdirSync(dataDir, { recursive: true });
