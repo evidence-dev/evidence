@@ -6,6 +6,7 @@ import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
+import { DuckDBInstance } from '@duckdb/node-api';
 
 const binary = resolve('cli', 'dist', process.platform === 'win32' ? 'evidence.exe' : 'evidence');
 
@@ -64,7 +65,19 @@ try {
 	assert.deepEqual(query(sql), expected);
 
 	// Seed a Parquet fixture while the trusted CLI still has file access.
-	query("COPY (SELECT 1 AS flight_id, 'POZ' AS airport) TO 'data/inside.parquet' (FORMAT PARQUET)");
+	const parquetFile = join(project, 'data', 'inside.parquet')
+		.replace(/\\/g, '/')
+		.replace(/'/g, "''");
+	const seedInstance = await DuckDBInstance.create(':memory:');
+	const seedConnection = await seedInstance.connect();
+	try {
+		await seedConnection.runAndReadAll(
+			`COPY (SELECT 1 AS flight_id, 'POZ' AS airport) TO '${parquetFile}' (FORMAT PARQUET)`
+		);
+	} finally {
+		seedConnection.closeSync();
+		seedInstance.closeSync();
+	}
 	writeFileSync(join(root, 'outside-secret.txt'), 'outside-project-private-data');
 	console.log('CLI_DUCKDB_OK');
 
