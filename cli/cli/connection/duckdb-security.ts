@@ -5,6 +5,7 @@
  * This is not an OS sandbox or a read-only guarantee for project files.
  */
 import { realpathSync } from 'node:fs';
+import path from 'node:path';
 import type { DuckDBInstance } from '@duckdb/node-api';
 import type { DuckDBCredentials } from '@evidence/core/connectors/duckdb/credentials';
 
@@ -14,6 +15,22 @@ export function isHardenedDuckDBServe(): boolean {
 
 export function duckDBServeConfiguration(config: DuckDBCredentials): Record<string, string> {
 	const root = realpathSync(config.projectDir);
+
+	if (config.database !== ':memory:') {
+		let database: string;
+		try {
+			// Resolve symlinks before checking containment. Serve must not
+			// silently create or open a database outside the project.
+			database = realpathSync(config.database);
+		} catch {
+			throw new Error('DuckDB serve requires an existing persistent database file');
+		}
+		const relative = path.relative(root, database);
+		if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+			throw new Error('DuckDB serve database must be inside the Evidence project directory');
+		}
+	}
+
 	return {
 		// The configuration is locked after instance initialization, so
 		// relative CSV and Parquet paths must be configured up front.
