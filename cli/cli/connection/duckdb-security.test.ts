@@ -44,7 +44,7 @@ describe('DuckDB serve security configuration', () => {
 			const rows = await connection.runAndReadAll(
 				`SELECT * FROM read_csv_auto('${allowedCsv}')`
 			);
-			expect(rows.getRowObjectsJson()).toEqual([{ airport: 'POZ', flights: 12 }]);
+			expect(rows.getRowObjectsJson()).toEqual([{ airport: 'POZ', flights: '12' }]);
 
 			await expect(
 				connection.runAndReadAll(`SELECT * FROM read_text('${secret.replace(/'/g, "''")}')`)
