@@ -164,6 +164,35 @@ describe('DuckDB -> Evidence data quality contract', () => {
 		]);
 	});
 
+	it('does not reuse explicit alias suffixes when deduplicating columns', async () => {
+		const result = await executeQuery(
+			'SELECT 1 AS id, 2 AS id, 3 AS id_2, NULL::INTEGER AS id',
+			config
+		);
+
+		expect(result.columns.map((column) => column.name)).toEqual([
+			'id',
+			'id_3',
+			'id_2',
+			'id_4'
+		]);
+		expect(result.rows).toEqual([{ id: 1, id_3: 2, id_2: 3, id_4: null }]);
+		expect(JSON.parse(JSON.stringify(result.rows))).toEqual(result.rows);
+	});
+
+	it('retains unique output names for empty duplicate-alias results', async () => {
+		const result = await executeQuery(
+			'SELECT 1::INTEGER AS answer, 2::INTEGER AS answer WHERE FALSE',
+			config
+		);
+
+		expect(result.rows).toEqual([]);
+		expect(result.columns.map((column) => column.name)).toEqual([
+			'answer',
+			'answer_2'
+		]);
+	});
+
 	it('does not silently lose values when columns share an alias', async () => {
 		const result = await executeQuery(
 			'SELECT 1 AS duplicate, 2 AS duplicate, 3 AS duplicate',
