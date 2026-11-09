@@ -199,6 +199,59 @@ try {
 	assert.ok(succeeded);
 	console.log('SERVER_DUCKDB_OK');
 
+	console.log('=== DUCKDB DATA CONTRACT ===');
+	const dataContractSql =
+		"SELECT 9007199254740993::BIGINT AS large_id, " +
+		"123456789012345678901234567890.12345::DECIMAL(38,5) AS exact_amount, " +
+		"DATE '2024-02-29' AS event_day, [1, NULL, 3]::INTEGER[] AS codes, " +
+		"{'airport': 'POZ'} AS details, NULL::INTEGER AS missing";
+	const expectedDataRow = {
+		large_id: '9007199254740993',
+		exact_amount: '123456789012345678901234567890.12345',
+		event_day: '2024-02-29',
+		codes: [1, null, 3],
+		details: { airport: 'POZ' },
+		missing: null
+	};
+
+	// Validate both paths exposed to end users, not just the in-process driver.
+	assert.deepEqual(query(dataContractSql), [expectedDataRow]);
+	const dataContractResponse = await fetch(endpoint, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ sql: dataContractSql }),
+		signal: AbortSignal.timeout(10000)
+	});
+	assert.equal(dataContractResponse.status, 200, 'Native HTTP data contract should succeed');
+	const dataContractResult = await dataContractResponse.json();
+	assert.deepEqual(dataContractResult.rows, [expectedDataRow]);
+	assert.deepEqual(
+		dataContractResult.columns.map(({ name, jsType }) => [name, jsType]),
+		[
+			['large_id', 'number'],
+			['exact_amount', 'number'],
+			['event_day', 'date'],
+			['codes', 'object'],
+			['details', 'object'],
+			['missing', 'number']
+		]
+	);
+
+	const duplicated = await fetch(endpoint, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ sql: 'SELECT 1 AS id, 2 AS id, 3 AS id' }),
+		signal: AbortSignal.timeout(10000)
+	});
+	assert.equal(duplicated.status, 200, 'Duplicate alias SQL should succeed');
+	const duplicateResult = await duplicated.json();
+	assert.deepEqual(duplicateResult.rows, [{ id: 1, id_2: 2, id_3: 3 }]);
+	assert.deepEqual(
+		duplicateResult.columns.map(({ name }) => name),
+		['id', 'id_2', 'id_3']
+	);
+	console.log('DUCKDB_DATA_CONTRACT_OK');
+
 	console.log('=== SQL HTTP SECURITY ===');
 	const requestCases = [
 		{
