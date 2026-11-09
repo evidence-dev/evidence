@@ -20,6 +20,23 @@ afterEach(async () => {
 });
 
 describe('DuckDB serve security configuration', () => {
+	it('accepts each security option at database creation', async () => {
+		const options = duckDBServeConfiguration({
+			database: ':memory:',
+			projectDir: project,
+			schemas: []
+		});
+		for (const [option, value] of Object.entries(options)) {
+			let instance: DuckDBInstance;
+			try {
+				instance = await DuckDBInstance.create(':memory:', { [option]: value });
+			} catch (error) {
+				throw new Error(`DuckDB 1.5.6 rejects ${option}=${value}: ${String(error)}`);
+			}
+			instance.closeSync();
+		}
+	});
+
 	it('allows project CSV but denies outside files and locked setting changes', async () => {
 		const dataDir = path.join(project, 'data');
 		await mkdir(dataDir);
