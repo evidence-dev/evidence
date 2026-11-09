@@ -261,8 +261,8 @@ try {
 		assert.ok(result.error, `${name} should report a query error`);
 	}
 
-	const outsideSecret = join(root, 'outside-secret.txt').replace(/\\\\/g, '/').replace(/'/g, "''");
-	const outsideWrite = join(root, 'outside-write.csv').replace(/\\\\/g, '/').replace(/'/g, "''");
+	const outsideSecret = join(root, 'outside-secret.txt').replace(/\\/g, '/').replace(/'/g, "''");
+	const outsideWrite = join(root, 'outside-write.csv').replace(/\\/g, '/').replace(/'/g, "''");
 	await expectSQLDenied('Outside project file read', `SELECT * FROM read_text('${outsideSecret}')`);
 	await expectSQLDenied('Unlock configuration', 'SET lock_configuration = false');
 	await expectSQLDenied('Re-enable external access', 'SET enable_external_access = true');
