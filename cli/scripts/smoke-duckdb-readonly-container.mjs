@@ -82,7 +82,6 @@ try {
 	containerId = docker(
 		'run',
 		'--detach',
-		'--rm',
 		'--name',
 		containerName,
 		'--read-only',
@@ -114,6 +113,10 @@ try {
 
 	let ready = false;
 	for (let attempt = 0; attempt < 100; attempt++) {
+		const running = docker('inspect', '--format', '{{.State.Running}}', containerId);
+		if (running !== 'true') {
+			throw new Error(`Container exited before readiness (running=${running})`);
+		}
 		try {
 			const response = await sqlRequest(endpoint, 'SELECT 42 AS answer');
 			if (response.ok && (await response.json()).rows?.[0]?.answer === 42) {
@@ -161,7 +164,7 @@ try {
 } finally {
 	if (containerId) {
 		try {
-			docker('stop', '--time', '5', containerId);
+			docker('rm', '--force', containerId);
 		} catch {
 			// Best effort, preserve original failure.
 		}
