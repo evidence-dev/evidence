@@ -1,106 +1,98 @@
-import type { z } from "zod/v4";
+import type { z } from 'zod/v4';
 import {
-  snowflakeBase,
-  snowflakeConnectionSchema,
-  type SnowflakeConnection,
-} from "./snowflake/connection-schema";
+	snowflakeBase,
+	snowflakeConnectionSchema,
+	type SnowflakeConnection
+} from './snowflake/connection-schema';
 import {
-  bigqueryBase,
-  bigqueryConnectionSchema,
-  type BigQueryConnection,
-} from "./bigquery/connection-schema";
+	bigqueryBase,
+	bigqueryConnectionSchema,
+	type BigQueryConnection
+} from './bigquery/connection-schema';
 import {
-  fabricBase,
-  fabricConnectionSchema,
-  type FabricConnection,
-} from "./fabric/connection-schema";
+	fabricBase,
+	fabricConnectionSchema,
+	type FabricConnection
+} from './fabric/connection-schema';
 import {
-  clickhouseBase,
-  clickhouseConnectionSchema,
-  type ClickHouseConnection,
-} from "./clickhouse/connection-schema";
+	clickhouseBase,
+	clickhouseConnectionSchema,
+	type ClickHouseConnection
+} from './clickhouse/connection-schema';
 import {
-  databricksBase,
-  databricksConnectionSchema,
-  type DatabricksConnection,
-} from "./databricks/connection-schema";
+	databricksBase,
+	databricksConnectionSchema,
+	type DatabricksConnection
+} from './databricks/connection-schema';
 import {
-  postgresBase,
-  postgresConnectionSchema,
-  type PostgresConnection,
-} from "./postgres/connection-schema";
+	postgresBase,
+	postgresConnectionSchema,
+	type PostgresConnection
+} from './postgres/connection-schema';
+import { cubeBase, cubeConnectionSchema, type CubeConnection } from './cube/connection-schema';
 import {
-  cubeBase,
-  cubeConnectionSchema,
-  type CubeConnection,
-} from "./cube/connection-schema";
+	redshiftBase,
+	redshiftConnectionSchema,
+	type RedshiftConnection
+} from './redshift/connection-schema';
 import {
-  redshiftBase,
-  redshiftConnectionSchema,
-  type RedshiftConnection,
-} from "./redshift/connection-schema";
+	motherduckBase,
+	motherduckConnectionSchema,
+	type MotherDuckConnection
+} from './motherduck/connection-schema';
 import {
-  motherduckBase,
-  motherduckConnectionSchema,
-  type MotherDuckConnection,
-} from "./motherduck/connection-schema";
+	duckdbBase,
+	duckdbConnectionSchema,
+	type DuckDBConnection
+} from './duckdb/connection-schema';
 import {
-  duckdbBase,
-  duckdbConnectionSchema,
-  type DuckDBConnection,
-} from "./duckdb/connection-schema";
+	sqlserverBase,
+	sqlserverConnectionSchema,
+	type SqlServerConnection
+} from './sqlserver/connection-schema';
 import {
-  sqlserverBase,
-  sqlserverConnectionSchema,
-  type SqlServerConnection,
-} from "./sqlserver/connection-schema";
-import {
-  athenaBase,
-  athenaConnectionSchema,
-  type AthenaConnection,
-} from "./athena/connection-schema";
+	athenaBase,
+	athenaConnectionSchema,
+	type AthenaConnection
+} from './athena/connection-schema';
 
-export type FieldCategory = "credential" | "context" | "visibility" | "rls";
+export type FieldCategory = 'credential' | 'context' | 'visibility' | 'rls';
 
 export type ConnectionFieldMeta = {
-  label: string;
-  description: string;
-  category: FieldCategory;
-  /** Yaml key for this field. Defaults to the zod field name; only set when it differs. */
-  yamlKey?: string;
-  /** Stored in the Studio secret table rather than in org-settings JSON. */
-  secret?: boolean;
-  /** Only meaningful in connection.yaml — Studio never persists/edits this. */
-  cliOnly?: boolean;
-  /** Only meaningful in Studio — connection.yaml has no equivalent (yet). */
-  studioOnly?: boolean;
-  /** CLI resolves the value as a filesystem path relative to connection.yaml's dir. */
-  fileRef?: { resolveRelativeTo: "cwd" };
-  /** Exactly one field per group must be provided. Enforced by per-schema .check(). */
-  authGroup?: string;
+	label: string;
+	description: string;
+	category: FieldCategory;
+	/** Yaml key for this field. Defaults to the zod field name; only set when it differs. */
+	yamlKey?: string;
+	/** Stored in the Studio secret table rather than in org-settings JSON. */
+	secret?: boolean;
+	/** Only meaningful in connection.yaml — Studio never persists/edits this. */
+	cliOnly?: boolean;
+	/** Only meaningful in Studio — connection.yaml has no equivalent (yet). */
+	studioOnly?: boolean;
+	/** CLI resolves the value as a filesystem path relative to connection.yaml's dir. */
+	fileRef?: { resolveRelativeTo: 'cwd' };
+	/** Exactly one field per group must be provided. Enforced by per-schema .check(). */
+	authGroup?: string;
 };
 
-declare module "zod/v4" {
-  interface GlobalMeta extends Partial<ConnectionFieldMeta> {}
+declare module 'zod/v4' {
+	interface GlobalMeta extends Partial<ConnectionFieldMeta> {}
 }
 
-export function getFieldMeta(
-  field: z.ZodType,
-): ConnectionFieldMeta | undefined {
-  const m = field.meta();
-  if (!m || typeof m !== "object" || !("label" in m)) return undefined;
-  return m as ConnectionFieldMeta;
+export function getFieldMeta(field: z.ZodType): ConnectionFieldMeta | undefined {
+	const m = field.meta();
+	if (!m || typeof m !== 'object' || !('label' in m)) return undefined;
+	return m as ConnectionFieldMeta;
 }
 
-export function fieldsByAuthGroup(
-  shape: Record<string, z.ZodType>,
-): Record<string, string[]> {
-  const out: Record<string, string[]> = {};
-  for (const [key, field] of Object.entries(shape)) {
-    const m = getFieldMeta(field);
-    if (m?.authGroup) (out[m.authGroup] ||= []).push(key);
-  }
-  return out;
+export function fieldsByAuthGroup(shape: Record<string, z.ZodType>): Record<string, string[]> {
+	const out: Record<string, string[]> = {};
+	for (const [key, field] of Object.entries(shape)) {
+		const m = getFieldMeta(field);
+		if (m?.authGroup) (out[m.authGroup] ||= []).push(key);
+	}
+	return out;
 }
 
 /**
@@ -109,122 +101,120 @@ export function fieldsByAuthGroup(
  * reference the user-facing yaml keys, not the zod field names (which are
  * identical for most fields, but a few — like `environments` — differ).
  */
-export function authGroupOneOfCheck<S extends z.ZodObject>(
-  schema: S,
-): z.core.CheckFn<z.infer<S>> {
-  const shape = schema.shape as Record<string, z.ZodType>;
-  const groups = fieldsByAuthGroup(shape);
-  const yamlKeyFor = (k: string) => getFieldMeta(shape[k])?.yamlKey ?? k;
-  return (ctx) => {
-    const v = ctx.value as Record<string, unknown>;
-    for (const [, keys] of Object.entries(groups)) {
-      const provided = keys.filter((k) => v[k] !== undefined && v[k] !== "");
-      const yamlKeys = keys.map(yamlKeyFor);
-      if (provided.length === 0) {
-        ctx.issues.push({
-          code: "custom",
-          message: `Provide one of: ${yamlKeys.join(", ")}.`,
-          path: [],
-          input: ctx.value,
-        });
-      } else if (provided.length > 1) {
-        ctx.issues.push({
-          code: "custom",
-          message: `Provide only one of: ${yamlKeys.join(", ")}. Got: ${provided.map(yamlKeyFor).join(", ")}.`,
-          path: [],
-          input: ctx.value,
-        });
-      }
-    }
-  };
+export function authGroupOneOfCheck<S extends z.ZodObject>(schema: S): z.core.CheckFn<z.infer<S>> {
+	const shape = schema.shape as Record<string, z.ZodType>;
+	const groups = fieldsByAuthGroup(shape);
+	const yamlKeyFor = (k: string) => getFieldMeta(shape[k])?.yamlKey ?? k;
+	return (ctx) => {
+		const v = ctx.value as Record<string, unknown>;
+		for (const [, keys] of Object.entries(groups)) {
+			const provided = keys.filter((k) => v[k] !== undefined && v[k] !== '');
+			const yamlKeys = keys.map(yamlKeyFor);
+			if (provided.length === 0) {
+				ctx.issues.push({
+					code: 'custom',
+					message: `Provide one of: ${yamlKeys.join(', ')}.`,
+					path: [],
+					input: ctx.value
+				});
+			} else if (provided.length > 1) {
+				ctx.issues.push({
+					code: 'custom',
+					message: `Provide only one of: ${yamlKeys.join(', ')}. Got: ${provided.map(yamlKeyFor).join(', ')}.`,
+					path: [],
+					input: ctx.value
+				});
+			}
+		}
+	};
 }
 
 export {
-  snowflakeBase,
-  snowflakeConnectionSchema,
-  bigqueryBase,
-  bigqueryConnectionSchema,
-  fabricBase,
-  fabricConnectionSchema,
-  clickhouseBase,
-  clickhouseConnectionSchema,
-  databricksBase,
-  databricksConnectionSchema,
-  postgresBase,
-  postgresConnectionSchema,
-  cubeBase,
-  cubeConnectionSchema,
-  redshiftBase,
-  redshiftConnectionSchema,
-  motherduckBase,
-  motherduckConnectionSchema,
-  duckdbBase,
-  duckdbConnectionSchema,
-  sqlserverBase,
-  sqlserverConnectionSchema,
-  athenaBase,
-  athenaConnectionSchema,
+	snowflakeBase,
+	snowflakeConnectionSchema,
+	bigqueryBase,
+	bigqueryConnectionSchema,
+	fabricBase,
+	fabricConnectionSchema,
+	clickhouseBase,
+	clickhouseConnectionSchema,
+	databricksBase,
+	databricksConnectionSchema,
+	postgresBase,
+	postgresConnectionSchema,
+	cubeBase,
+	cubeConnectionSchema,
+	redshiftBase,
+	redshiftConnectionSchema,
+	motherduckBase,
+	motherduckConnectionSchema,
+	duckdbBase,
+	duckdbConnectionSchema,
+	sqlserverBase,
+	sqlserverConnectionSchema,
+	athenaBase,
+	athenaConnectionSchema
 };
 export type {
-  SnowflakeConnection,
-  BigQueryConnection,
-  FabricConnection,
-  ClickHouseConnection,
-  DatabricksConnection,
-  PostgresConnection,
-  CubeConnection,
-  RedshiftConnection,
-  MotherDuckConnection,
-  DuckDBConnection,
-  SqlServerConnection,
-  AthenaConnection,
+	SnowflakeConnection,
+	BigQueryConnection,
+	FabricConnection,
+	ClickHouseConnection,
+	DatabricksConnection,
+	PostgresConnection,
+	CubeConnection,
+	RedshiftConnection,
+	MotherDuckConnection,
+	DuckDBConnection,
+	SqlServerConnection,
+	AthenaConnection
 };
 
 export const CONNECTION_TYPES = [
-  "snowflake",
-  "bigquery",
-  "fabric",
-  "clickhouse",
-  "databricks",
-  "postgres",
-  "cube",
-  "redshift",
-  "motherduck",
-  "duckdb",
-  "sqlserver",
-  "athena",
+	'snowflake',
+	'bigquery',
+	'fabric',
+	'clickhouse',
+	'databricks',
+	'postgres',
+	'cube',
+	'redshift',
+	'motherduck',
+	'duckdb',
+	'sqlserver',
+	'athena'
 ] as const;
 export type ConnectionType = (typeof CONNECTION_TYPES)[number];
 
 export type Connection =
-  | SnowflakeConnection
-  | BigQueryConnection
-  | FabricConnection
-  | ClickHouseConnection
-  | DatabricksConnection
-  | PostgresConnection
-  | CubeConnection
-  | RedshiftConnection
-  | MotherDuckConnection
-  | DuckDBConnection
-  | SqlServerConnection
-  | AthenaConnection;
+	| SnowflakeConnection
+	| BigQueryConnection
+	| FabricConnection
+	| ClickHouseConnection
+	| DatabricksConnection
+	| PostgresConnection
+	| CubeConnection
+	| RedshiftConnection
+	| MotherDuckConnection
+	| DuckDBConnection
+	| SqlServerConnection
+	| AthenaConnection;
 
 const schemasByType = {
-  snowflake: snowflakeConnectionSchema,
-  bigquery: bigqueryConnectionSchema,
-  fabric: fabricConnectionSchema,
-  clickhouse: clickhouseConnectionSchema,
-  databricks: databricksConnectionSchema,
-  postgres: postgresConnectionSchema,
-  cube: cubeConnectionSchema,
-  redshift: redshiftConnectionSchema,
-  motherduck: motherduckConnectionSchema,
-  duckdb: duckdbConnectionSchema,
-  sqlserver: sqlserverConnectionSchema,
-  athena: athenaConnectionSchema,
+	snowflake: snowflakeConnectionSchema,
+	bigquery: bigqueryConnectionSchema,
+	fabric: fabricConnectionSchema,
+	clickhouse: clickhouseConnectionSchema,
+	databricks: databricksConnectionSchema,
+	postgres: postgresConnectionSchema,
+	cube: cubeConnectionSchema,
+	redshift: redshiftConnectionSchema,
+	motherduck: motherduckConnectionSchema,
+	duckdb: duckdbConnectionSchema,
+	sqlserver: sqlserverConnectionSchema,
+	athena: athenaConnectionSchema
 } as const;
 
 export function getConnectionSchema(type: ConnectionType): z.ZodType {
-  return schemasByType[type];
+	return schemasByType[type];
 }
