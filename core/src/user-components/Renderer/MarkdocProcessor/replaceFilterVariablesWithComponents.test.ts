@@ -15,6 +15,14 @@ describe('replaceFilterVariablesWithComponents', () => {
 		expect(result).toBe('Hello {{ $name }}');
 	});
 
+	it('should replace $-prefixed engine attributes when isQueryEngineV3 is true', () => {
+		const tree = 'Hello {{ $city }} / {{ $user.city }}';
+		const result = replaceFilterVariablesWithComponents(tree, true) as RenderableTreeNode[];
+		expect(Array.isArray(result)).toBe(true);
+		expect((result[1] as Tag).attributes.expression).toBe('$city');
+		expect((result[3] as Tag).attributes.expression).toBe('$user.city');
+	});
+
 	it('should replace filter variables with ReactiveVariable components', () => {
 		const tree = 'Selected: {{ dropdown.selected }}';
 		const result = replaceFilterVariablesWithComponents(tree) as RenderableTreeNode[];

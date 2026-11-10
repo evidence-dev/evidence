@@ -48,7 +48,8 @@ export type QueryResult<RowType extends AnyRowType = AnyRowType> = {
 		| 'Cube'
 		| 'Redshift'
 		| 'MotherDuck'
-		| 'SQL Server';
+		| 'SQL Server'
+		| 'Athena';
 };
 
 import type { MaybeGetter } from 'runed';

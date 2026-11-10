@@ -61,7 +61,8 @@ export const setupModelContext = <
 				projectSettings: getProjectSettings,
 				defaultRefreshInterval: autoRefresh ? () => autoRefresh.intervalSeconds : undefined,
 				connectionError: () => connectionErrorFor(targetConnection, inlineQueries),
-				isQueryEngineV3: () => getQueryService().isQueryEngineV3 === true
+				isQueryEngineV3: () => getQueryService().isQueryEngineV3 === true,
+				metricsCatalog
 			};
 
 			// Get this Tag's parent model if it exists (it would have been set up by a previous call to setupModelContext by the parent)

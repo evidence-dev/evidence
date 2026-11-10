@@ -1,6 +1,8 @@
 import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 import { getContext, setContext } from 'svelte';
 import { parseMetricsView, type Metric, type MetricsView } from './metric-schema';
+import { metricBaseExpression } from './compile-metric';
+import type { SqlDialect } from '../sql-dialect';
 
 /** A metric plus the view it belongs to (base/date/dimensions/joins live on the view). */
 export type CatalogMetric = { metric: Metric; view: MetricsView };
@@ -40,6 +42,16 @@ export class MetricsCatalog {
 	/** Metric names that appear in more than one metrics file (must be unique). */
 	getConflictingNames(): ReadonlySet<string> {
 		return this.#conflicts;
+	}
+
+	/** True only for a `base_sql` subquery this catalog compiled — author SQL, never a viewer-supplied `data=`. */
+	isBaseSqlExpression(expression: string, dialect: SqlDialect): boolean {
+		for (const { view } of this.#metrics.values()) {
+			if (view.baseSql !== undefined && metricBaseExpression(view, dialect) === expression) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/** Number of metrics (not views). */

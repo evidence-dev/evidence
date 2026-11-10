@@ -13,6 +13,7 @@ import { executeSqlServerQuery } from './sqlserver';
 import { executeDatabricksQuery } from './databricks';
 import { executePostgresQuery } from './postgres';
 import { executeMotherduckQuery } from './motherduck';
+import { executeAthenaQuery } from './athena';
 import { managedTableNamesSql } from '@evidence/core/metadata/managed-catalog';
 import { escapeRedshiftStringLiteral } from '@evidence/core/sql-dialect/common';
 import type { ConnectionConfig, QueryResult } from './types';
@@ -49,6 +50,8 @@ export async function executeQuery(sql: string, config: ConnectionConfig): Promi
 			const { executeDuckDBQuery } = await import('./duckdb');
 			return executeDuckDBQuery(sql, config);
 		}
+		case 'athena':
+			return executeAthenaQuery(sql, config);
 		default:
 			// Belt-and-braces: a future ConnectionConfig variant added without a
 			// matching branch should fail loudly here rather than silently
@@ -146,6 +149,14 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 			const inList = schemas.map(quote).join(', ');
 			return `${base} WHERE table_schema IN (${inList}) AND LEFT(table_name, 8) <> 'mv_tbl__' ORDER BY name`;
 		}
+		case 'athena': {
+			// Athena's information_schema is scoped to the session catalog. Unqualify the
+			// connection database; qualify the rest — matches how unqualified names resolve.
+			const quote = (s: string) => `'${s.replace(/'/g, "''")}'`;
+			const base = `SELECT CASE WHEN table_schema = ${quote(config.schema)} THEN table_name ELSE table_schema || '.' || table_name END AS name FROM information_schema.tables`;
+			const schemas = config.schemas?.length ? config.schemas : [config.schema];
+			return `${base} WHERE table_schema IN (${schemas.map(quote).join(', ')}) ORDER BY name`;
+		}
 		case 'duckdb':
 		case 'motherduck': {
 			// DuckDB exposes a standard information_schema. Unqualify the default 'main'
@@ -214,7 +225,12 @@ export function qualifyTableName(
 		if (config.schema) return `\`${config.schema}\`.\`${name}\``;
 		return name;
 	}
-	if (config.type === 'postgres' || config.type === 'cube' || config.type === 'redshift') {
+	if (
+		config.type === 'postgres' ||
+		config.type === 'cube' ||
+		config.type === 'redshift' ||
+		config.type === 'athena'
+	) {
 		// Bare names resolve against search_path; qualify with the configured schema
 		// (Postgres-wire uses double quotes) so `describe` hits the right table.
 		if (name.includes('.') || name.includes('"')) return name;

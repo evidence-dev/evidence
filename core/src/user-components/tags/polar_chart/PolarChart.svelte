@@ -171,7 +171,8 @@
 			filterContexts: [repeatFilters, pageFilters],
 			inlineQueries,
 			projectSettings: getProjectSettingsContext(),
-			defaultRefreshInterval: () => autoRefreshCtx?.intervalSeconds ?? 0
+			defaultRefreshInterval: () => autoRefreshCtx?.intervalSeconds ?? 0,
+			metricsCatalog
 		},
 		{ refreshInterval: () => props.refresh_interval }
 	);

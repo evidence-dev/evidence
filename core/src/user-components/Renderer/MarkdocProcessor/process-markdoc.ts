@@ -495,7 +495,8 @@ function validateVariables(
 	 * suppression destroys. Partials don't supply this (they have no
 	 * declared schema — caller passes arbitrary `variables={...}`).
 	 */
-	declaredCallerVariables: readonly string[] = []
+	declaredCallerVariables: readonly string[] = [],
+	isQueryEngineV3 = false
 ): ValidateError[] {
 	const errors: ValidateError[] = [];
 
@@ -527,6 +528,11 @@ function validateVariables(
 					const isUserKey = variableName === USER_KEY;
 					const isOrganizationKey = variableName === ORGANIZATION_KEY;
 					const isAccountVariables = isUserKey || isOrganizationKey;
+
+					// QEv3: {{$user.attr}} and {{$attr}} are engine attribute authoring forms
+					if (isQueryEngineV3 && /^(?:user\.)?[A-Za-z_][A-Za-z0-9_]*$/.test(variablePath)) {
+						continue;
+					}
 
 					// Skip validation for account variables if not provided (e.g., embedded views)
 					if (isAccountVariables && !account) {
@@ -966,7 +972,8 @@ export function validate(
 		translations,
 		account,
 		userVariables,
-		Object.keys(declaredCallerVariables)
+		Object.keys(declaredCallerVariables),
+		validationContext?.isQueryEngineV3?.() ?? false
 	);
 	const filterVariableErrors = validateFilterVariables(ast, validationContext);
 	const nestedInlineQueryErrors = validateNoNestedInlineQueries(ast);
@@ -1064,7 +1071,10 @@ export function transform(
 	tree = automaticallyWrapConsecutiveComponentsInRow(tree);
 	tree = automaticallyWrapConsecutiveConditionals(tree);
 	tree = restructureAccordionItems(tree);
-	tree = replaceFilterVariablesWithComponents(tree) as RenderableTreeNode;
+	tree = replaceFilterVariablesWithComponents(
+		tree,
+		validationContext?.isQueryEngineV3?.() ?? false
+	) as RenderableTreeNode;
 
 	if (validationContext?.inlineQueries) {
 		registerInlineQueriesFromTree(tree, validationContext.inlineQueries);

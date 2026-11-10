@@ -17,8 +17,13 @@ describe('QEv3: engine attribute values in TEXT contexts', () => {
 		{ aaaa: 'New York', region: 'EMEA' }
 	);
 
-	it('prints the viewer value in text context', () => {
-		expect(processor.processString('My var is {{ aaaa }}', 'text')).toBe('My var is New York');
+	it('prints the viewer value in text context for all four authoring forms', () => {
+		expect(
+			processor.processString(
+				'{{ aaaa }} / {{ user.aaaa }} / {{ $user.aaaa }} / {{ $aaaa }}',
+				'text'
+			)
+		).toBe('New York / New York / New York / New York');
 	});
 
 	it('never resolves attributes in SQL context — the engine binds there', () => {

@@ -17,6 +17,7 @@
  * sandbox/runtime-bootstrap module; this file owns only the ECharts-specific
  * pieces (eval, render, theme registration, print-mode stability waits).
  */
+import '../../../sandbox/raf-fallback';
 import * as echarts from 'echarts';
 import type { EChartsOption } from 'echarts';
 import { createTheme } from '../../echarts/echarts-themes';

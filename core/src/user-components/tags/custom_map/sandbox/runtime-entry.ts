@@ -1,4 +1,5 @@
 // custom_map sandbox runtime, bundled to an opaque-origin iframe IIFE by vite.sandbox-map.config.ts; MapLibre is bundled (BSD-3) while Mapbox (proprietary) loads from CDN only when the resolved provider is Mapbox.
+import '../../../sandbox/raf-fallback';
 import * as maplibregl from 'maplibre-gl';
 import { MAPBOX_GL_CSS_URL, loadMapboxGl } from '../../../common/mapbox-cdn';
 import { MAPLIBRE_GL_CSS_URL, MAPLIBRE_GL_WORKER_URL } from '../../../common/maplibre-cdn';

@@ -31,7 +31,8 @@ export const setupSSRModelsContext = (): void => {
 		inlineQueries,
 		projectSettings: getProjectSettings,
 		defaultRefreshInterval: undefined,
-		isQueryEngineV3: () => getQueryService().isQueryEngineV3 === true
+		isQueryEngineV3: () => getQueryService().isQueryEngineV3 === true,
+		metricsCatalog
 	};
 
 	const context = createModelsFromTree(

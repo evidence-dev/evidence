@@ -165,7 +165,12 @@ export class TableModel extends UserComponentModel<TableModelGenerics> {
 		// embed this in raw SQL that generateSQLQuery then passes through untouched.
 		const dialect = this.deps.connection.dialect;
 		try {
-			return resolveTableExpressionName(dataValue, this.deps?.inlineQueries, dialect);
+			return resolveTableExpressionName(
+				dataValue,
+				this.deps?.inlineQueries,
+				dialect,
+				this.deps.metricsCatalog?.isBaseSqlExpression(dataValue, dialect) === true
+			);
 		} catch (error) {
 			// During editing, user may temporarily have invalid syntax (e.g., unbalanced brackets)
 			// Return the raw data attribute to avoid crashing the page

@@ -4,8 +4,8 @@
 	"type": "module",
 	"packageManager": "pnpm@9.15.0",
 	"devDependencies": {
-		"vitest": "^4.1.2",
-		"@vitest/coverage-v8": "^4.1.2"
+		"vitest": "^4.1.12",
+		"@vitest/coverage-v8": "^4.1.12"
 	},
 	"scripts": {
 		"test": "pnpm -r test",
@@ -60,7 +60,8 @@
 			"js-yaml@4": ">=4.3.2 <5",
 			"proxy-addr": ">=2.0.8",
 			"svelte": ">=5.57.2 <6",
-			"basic-ftp": ">=6.2.1"
+			"basic-ftp": ">=6.2.1",
+			"source-map-js": ">=1.2.2"
 		},
 		"patchedDependencies": {
 			"ssf": "patches/ssf.patch",

@@ -6,7 +6,8 @@ import type {
 	FabricConnectionConfig,
 	SqlServerConnectionConfig,
 	DatabricksConnectionConfig,
-	RedshiftConnectionConfig
+	RedshiftConnectionConfig,
+	AthenaConnectionConfig
 } from './types';
 
 const bq = (extra: Partial<BigQueryConnectionConfig> = {}): BigQueryConnectionConfig => ({
@@ -234,5 +235,34 @@ describe('qualifyTableName (sqlserver)', () => {
 
 	it('leaves an already-qualified name unchanged', () => {
 		expect(qualifyTableName('sales.orders', sqlserver())).toBe('sales.orders');
+	});
+});
+
+const athena = (extra: Partial<AthenaConnectionConfig> = {}): AthenaConnectionConfig => ({
+	type: 'athena',
+	region: 'us-east-1',
+	workGroup: 'primary',
+	catalog: 'awsdatacatalog',
+	schema: 'analytics',
+	resultReuseMinutes: 60,
+	...extra
+});
+
+describe('athena tables', () => {
+	it('unqualifies the connection database and scopes to it without an allowlist', () => {
+		const sql = listTablesSql(athena());
+		expect(sql).toContain("CASE WHEN table_schema = 'analytics' THEN table_name");
+		expect(sql).toContain("table_schema IN ('analytics')");
+	});
+
+	it('scopes to the schemas allowlist and doubles quotes', () => {
+		expect(listTablesSql(athena({ schemas: ['sales', "a'b"] }))).toContain(
+			"table_schema IN ('sales', 'a''b')"
+		);
+	});
+
+	it('qualifies bare names with double quotes', () => {
+		expect(qualifyTableName('orders', athena())).toBe('"analytics"."orders"');
+		expect(qualifyTableName('sales.orders', athena())).toBe('sales.orders');
 	});
 });

@@ -11,7 +11,8 @@ import {
 	PostgresDialect,
 	CubeDialect,
 	RedshiftDialect,
-	MotherDuckDialect
+	MotherDuckDialect,
+	AthenaDialect
 } from '../../../sql-dialect';
 
 const dialects = [
@@ -24,6 +25,7 @@ const dialects = [
 	new PostgresDialect(),
 	new CubeDialect(),
 	new RedshiftDialect(),
+	new AthenaDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -91,6 +93,11 @@ describe('heat_grid SQL', () => {
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
 			 FROM appointments
 			 
+			 GROUP BY province"
+			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 
 			 GROUP BY ALL"
 		`);
 	});
@@ -133,6 +140,11 @@ describe('heat_grid SQL', () => {
 			 FROM appointments
 			 WHERE (region = 'North')
 			 GROUP BY ALL"
+			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 WHERE (region = 'North')
+			 GROUP BY province"
 			----
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
 			 FROM appointments
@@ -222,6 +234,12 @@ describe('heat_grid SQL', () => {
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
 			 FROM appointments
 			 
+			 GROUP BY province
+			 HAVING (avg(wait_time) > 60)"
+			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 
 			 GROUP BY ALL
 			 HAVING (avg(wait_time) > 60)"
 		`);
@@ -275,6 +293,11 @@ describe('heat_grid SQL', () => {
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
 			 FROM appointments
 			 WHERE (appt_date >= CAST('2025-12-03' AS TIMESTAMP) AND appt_date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY province"
+			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 WHERE (appt_date >= DATE '2025-12-03' AND appt_date <= DATE '2026-01-01')
 			 GROUP BY province"
 			----
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
@@ -343,6 +366,14 @@ describe('heat_grid SQL', () => {
 			 FROM appointments
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY avg(wait_time) desc LIMIT 10"
+			----
+			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"
+			 FROM appointments
+			 
+			 GROUP BY province
 			 
 			 
 			 ORDER BY avg(wait_time) desc LIMIT 10"

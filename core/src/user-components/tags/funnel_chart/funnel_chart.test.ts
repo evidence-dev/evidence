@@ -11,7 +11,8 @@ import {
 	PostgresDialect,
 	CubeDialect,
 	RedshiftDialect,
-	MotherDuckDialect
+	MotherDuckDialect,
+	AthenaDialect
 } from '../../../sql-dialect';
 
 const dialects = [
@@ -24,6 +25,7 @@ const dialects = [
 	new PostgresDialect(),
 	new CubeDialect(),
 	new RedshiftDialect(),
+	new AthenaDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -87,6 +89,14 @@ describe('funnel_chart SQL', () => {
 			 FROM demo.funnel
 			 
 			 GROUP BY ALL
+			 
+			 
+			 ORDER BY sum_users DESC"
+			----
+			"SELECT stage AS "stage", sum(users) AS "sum_users"
+			 FROM demo.funnel
+			 
+			 GROUP BY stage
 			 
 			 
 			 ORDER BY sum_users DESC"
@@ -194,6 +204,14 @@ describe('funnel_chart SQL', () => {
 			"SELECT stage AS "stage", sum(users) AS "sum_users"
 			 FROM demo.funnel
 			 WHERE (date >= CAST('2025-12-03' AS TIMESTAMP) AND date <= CAST('2026-01-01' AS TIMESTAMP))
+			 GROUP BY stage
+			 
+			 
+			 ORDER BY sum_users DESC"
+			----
+			"SELECT stage AS "stage", sum(users) AS "sum_users"
+			 FROM demo.funnel
+			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
 			 GROUP BY stage
 			 
 			 

@@ -11,7 +11,8 @@ import {
 	PostgresDialect,
 	CubeDialect,
 	RedshiftDialect,
-	MotherDuckDialect
+	MotherDuckDialect,
+	AthenaDialect
 } from '../../../sql-dialect';
 
 const dialects = [
@@ -24,6 +25,7 @@ const dialects = [
 	new PostgresDialect(),
 	new CubeDialect(),
 	new RedshiftDialect(),
+	new AthenaDialect(),
 	new MotherDuckDialect()
 ];
 
@@ -336,6 +338,40 @@ describe('histogram SQL', () => {
 							) AS stats
 							
 						) AS binned
+						GROUP BY
+							"bin_index",
+							"min_val",
+							"bin_width"
+						ORDER BY
+							"bin_index"
+						
+					"
+			----
+			"
+						WITH stats AS (
+							SELECT
+								min(transactions) AS "min_val",
+								max(transactions) AS "max_val",
+								ceil(2 * power(count(*), 1.0 / 3)) AS "rice_bin_count"
+							FROM demo.daily_orders
+							
+						),
+						binned AS (
+							SELECT
+								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
+								stats."min_val" AS "min_val",
+								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
+							FROM demo.daily_orders
+							CROSS JOIN stats
+							
+						)
+						SELECT
+							"bin_index",
+							"min_val" + "bin_index" * "bin_width" AS "bin_start",
+							"min_val" + ("bin_index" + 1) * "bin_width" AS "bin_end",
+							
+							count(*) AS "frequency"
+						FROM binned
 						GROUP BY
 							"bin_index",
 							"min_val",

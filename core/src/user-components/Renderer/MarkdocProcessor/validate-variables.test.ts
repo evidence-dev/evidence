@@ -51,6 +51,22 @@ describe('validateVariables — skip-on-undefined guards', () => {
 			);
 			expect(errorIds(validationErrors)).toContain('undefined-account-variable');
 		});
+
+		test('skips $user.<attr> and $<attr> on QEv3 orgs while still flagging $organization.<bad>', () => {
+			const { validationErrors } = process(
+				'{{ $user.city }} {{ $city }} {{ $organization.nope }}',
+				ctx({ isQueryEngineV3: () => true }),
+				undefined,
+				undefined,
+				{
+					user: { email: 'x@y', first_name: 'X', last_name: 'Y' },
+					organization: { name: 'Acme' }
+				}
+			);
+			expect(validationErrors.map((e) => e.error?.message)).toEqual([
+				'Undefined account variable: $organization.nope'
+			]);
+		});
 	});
 
 	describe('translations ($translations.*)', () => {

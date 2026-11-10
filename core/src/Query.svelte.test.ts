@@ -12,6 +12,10 @@ import { Query, type QueryDependencies } from './Query.svelte';
 import type { QueryResult } from './user-components/interfaces/query-service';
 import { ClickHouseDialect, RedshiftDialect } from './sql-dialect';
 import { processColumnExpression } from './user-components/common/sql-expression-utils';
+import { MetricsCatalog } from './metrics/metrics-catalog';
+import { resolveMetric } from './metrics/resolve-metric';
+import { buildBigValueSQLConfig } from './user-components/tags/bigvalue/build-bigvalue-sql';
+import { queryClickHouse } from './test-utils/ch-parse';
 
 const DEBOUNCE = 500;
 
@@ -215,5 +219,74 @@ describe('countQuery derived-table alias', () => {
 		flushSync();
 		cleanup();
 		expect(sql).toMatch(/^SELECT COUNT\(\*\) AS "total_count" FROM \([\s\S]*\n\) AS "__ev_count"$/);
+	});
+});
+
+describe('metric base_sql table expressions', () => {
+	const dialect = new ClickHouseDialect();
+	const catalog = new MetricsCatalog({
+		'metrics/active_users.yaml': `
+base_sql: |
+  select u.user_id, l.state, l.city
+  from metrics_join.active_users u
+  left join metrics_join.dim_location l on u.location_id = l.location_id
+dimensions:
+  city: city
+metrics:
+  active_users:
+    sql: count(distinct user_id)
+`
+	});
+
+	queryClickHouse('CREATE DATABASE IF NOT EXISTS metrics_join');
+	queryClickHouse(
+		'CREATE OR REPLACE TABLE metrics_join.active_users (user_id Int64, location_id Int64) ENGINE = MergeTree ORDER BY tuple()'
+	);
+	queryClickHouse(
+		'CREATE OR REPLACE TABLE metrics_join.dim_location (location_id Int64, state String, city String) ENGINE = MergeTree ORDER BY tuple()'
+	);
+	queryClickHouse(
+		"INSERT INTO metrics_join.dim_location VALUES (1, 'CA', 'San Francisco'), (2, 'CA', 'Los Angeles'), (3, 'NY', 'New York')"
+	);
+	queryClickHouse(
+		'INSERT INTO metrics_join.active_users VALUES (10, 1), (10, 1), (11, 1), (12, 2), (13, 3)'
+	);
+
+	function dataQueryFor(data: string, value: string): string | undefined {
+		let sql: string | undefined;
+		const cleanup = $effect.root(() => {
+			const q = new Query(
+				() => buildBigValueSQLConfig({ data, value, where: "state = 'CA'", dialect }),
+				{
+					connection: {
+						id: 'default',
+						type: 'managed',
+						dialect,
+						query: (async () => queryResult()) as QueryDependencies['connection']['query']
+					},
+					filterContexts: undefined,
+					inlineQueries: undefined,
+					projectSettings: undefined,
+					defaultRefreshInterval: undefined,
+					isQueryEngineV3: () => false,
+					metricsCatalog: catalog
+				}
+			);
+			sql = q.dataQuery;
+		});
+		flushSync();
+		cleanup();
+		return sql;
+	}
+
+	it('runs a base_sql view as a subquery, so joined dimensions filter the metric', () => {
+		const metric = resolveMetric(catalog, 'active_users', dialect)!;
+		const sql = dataQueryFor(metric.base, metric.valueExpression!);
+		expect(queryClickHouse(sql!).trim()).toBe('3');
+	});
+
+	it('keeps quoting a subquery-shaped data= value the catalog did not compile', () => {
+		const sql = dataQueryFor('(select 1 as user_id) t', 'count(distinct user_id)');
+		expect(sql).toContain('FROM "(select 1 as user_id) t"');
 	});
 });

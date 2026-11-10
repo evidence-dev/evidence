@@ -15,12 +15,13 @@ import Markdoc, { type RenderableTreeNode } from '@markdoc/markdoc';
  * (frontmatter variables like {{ $var }} are already handled by Markdoc's built-in system)
  */
 export function replaceFilterVariablesWithComponents(
-	tree: RenderableTreeNode
+	tree: RenderableTreeNode,
+	isQueryEngineV3 = false
 ): RenderableTreeNode | RenderableTreeNode[] {
 	if (!Markdoc.Tag.isTag(tree)) {
 		// If it's a string (text node), check if it contains filter variables
 		if (typeof tree === 'string') {
-			return splitTextWithFilterVariables(tree);
+			return splitTextWithFilterVariables(tree, isQueryEngineV3);
 		}
 		return tree;
 	}
@@ -38,7 +39,7 @@ export function replaceFilterVariablesWithComponents(
 	// Recursively process children
 	const newChildren: RenderableTreeNode[] = [];
 	for (const child of tree.children) {
-		const processed = replaceFilterVariablesWithComponents(child);
+		const processed = replaceFilterVariablesWithComponents(child, isQueryEngineV3);
 
 		// If processing returned an array (from text splitting), flatten it
 		if (Array.isArray(processed)) {
@@ -66,11 +67,15 @@ export function replaceFilterVariablesWithComponents(
  *
  * Returns either the original string (if no variables) or an array of mixed nodes
  */
-function splitTextWithFilterVariables(text: string): RenderableTreeNode | RenderableTreeNode[] {
-	// Pattern matches {{ ... }} where content does NOT start with $
-	// Negative lookahead (?!\s*\$) ensures we skip frontmatter variables
-	// [^{}]+ prevents matching nested braces
-	const pattern = /\{\{(?!\s*\$)([^{}]+)\}\}/g;
+function splitTextWithFilterVariables(
+	text: string,
+	isQueryEngineV3 = false
+): RenderableTreeNode | RenderableTreeNode[] {
+	// On QEv3 orgs, allow `$`-prefixed engine-attribute authoring forms
+	// ({{$user.attr}}, {{$attr}}) that survive Markdoc.transform to reach
+	// ReactiveVariable; otherwise keep the negative lookahead so frontmatter
+	// variables ({{ $var }}) are left untouched.
+	const pattern = isQueryEngineV3 ? /\{\{([^{}]+)\}\}/g : /\{\{(?!\s*\$)([^{}]+)\}\}/g;
 
 	// Check if there are any matches
 	if (!pattern.test(text)) {

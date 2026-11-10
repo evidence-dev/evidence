@@ -18,6 +18,7 @@ import {
 } from './user-components/common/buildPivotResultSizeLowerBoundQuery/buildPivotResultSizeLowerBoundQuery';
 import defaults from 'lodash/defaults';
 import type { InlineQueries } from './user-components/common/inline-queries';
+import type { MetricsCatalog } from './metrics/metrics-catalog';
 // posthog is only initialized in Evidence Studio; these captures no-op in the CLI.
 import posthog from 'posthog-js';
 import { browser } from './shims/env';
@@ -57,6 +58,12 @@ export type QueryDependencies = {
 	 * ambient QueryService at context creation.
 	 */
 	isQueryEngineV3?: (() => boolean) | undefined;
+	/**
+	 * The page's metrics catalog. A table expression it recognizes as a `base_sql`
+	 * subquery runs as SQL; every other name stays quoted. Optional because only
+	 * metric-consuming components need it.
+	 */
+	metricsCatalog?: MetricsCatalog | undefined;
 };
 
 export type QueryOptions = {
@@ -680,11 +687,24 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 	);
 
 	get query() {
+		let query: string | SQLQueryConfig | undefined;
 		try {
-			return this.queryGetter();
+			query = this.queryGetter();
 		} catch {
 			return undefined;
 		}
+		if (
+			query &&
+			typeof query === 'object' &&
+			!query.tableExpressionIsSql &&
+			this.deps.metricsCatalog?.isBaseSqlExpression(
+				query.tableExpressionName,
+				this.deps.connection.dialect
+			)
+		) {
+			return { ...query, tableExpressionIsSql: true };
+		}
+		return query;
 	}
 
 	get loadingCount() {
