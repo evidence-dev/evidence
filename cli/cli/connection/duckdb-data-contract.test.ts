@@ -200,12 +200,7 @@ describe('DuckDB -> Evidence data quality contract', () => {
 			config
 		);
 
-		expect(result.columns.map((column) => column.name)).toEqual([
-			'id',
-			'id_3',
-			'id_2',
-			'id_4'
-		]);
+		expect(result.columns.map((column) => column.name)).toEqual(['id', 'id_3', 'id_2', 'id_4']);
 		expect(result.rows).toEqual([{ id: 1, id_3: 2, id_2: 3, id_4: null }]);
 		expect(JSON.parse(JSON.stringify(result.rows))).toEqual(result.rows);
 	});
@@ -217,10 +212,7 @@ describe('DuckDB -> Evidence data quality contract', () => {
 		);
 
 		expect(result.rows).toEqual([]);
-		expect(result.columns.map((column) => column.name)).toEqual([
-			'answer',
-			'answer_2'
-		]);
+		expect(result.columns.map((column) => column.name)).toEqual(['answer', 'answer_2']);
 	});
 
 	it('does not silently lose values when columns share an alias', async () => {

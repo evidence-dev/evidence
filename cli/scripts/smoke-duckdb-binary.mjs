@@ -201,8 +201,8 @@ try {
 
 	console.log('=== DUCKDB DATA CONTRACT ===');
 	const dataContractSql =
-		"SELECT 9007199254740993::BIGINT AS large_id, " +
-		"123456789012345678901234567890.12345::DECIMAL(38,5) AS exact_amount, " +
+		'SELECT 9007199254740993::BIGINT AS large_id, ' +
+		'123456789012345678901234567890.12345::DECIMAL(38,5) AS exact_amount, ' +
 		"DATE '2024-02-29' AS event_day, [1, NULL, 3]::INTEGER[] AS codes, " +
 		"{'airport': 'POZ'} AS details, NULL::INTEGER AS missing";
 	const expectedDataRow = {
@@ -293,9 +293,7 @@ try {
 			body: testCase.body,
 			signal: AbortSignal.timeout(5000)
 		});
-		const allowedStatuses = Array.isArray(testCase.status)
-			? testCase.status
-			: [testCase.status];
+		const allowedStatuses = Array.isArray(testCase.status) ? testCase.status : [testCase.status];
 		assert.ok(
 			allowedStatuses.includes(response.status),
 			`${testCase.name}: expected HTTP ${allowedStatuses.join(' or ')}, got ${response.status}`

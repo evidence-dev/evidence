@@ -155,9 +155,9 @@ export async function executeDuckDBQuery(
 		// getRowObjectsJson() uses SQL aliases as object keys; duplicate aliases
 		// overwrite earlier values. Read positional JSON rows only when needed.
 		const rows: Record<string, unknown>[] = hasDuplicateNames
-			? reader.getRowsJson().map((values) =>
-					Object.fromEntries(names.map((name, index) => [name, values[index]]))
-				)
+			? reader
+					.getRowsJson()
+					.map((values) => Object.fromEntries(names.map((name, index) => [name, values[index]])))
 			: reader.getRowObjectsJson();
 
 		const numericColumns = columns
