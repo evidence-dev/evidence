@@ -53,7 +53,10 @@ export interface SandboxRpcOptions {
 	 * passes plain objects through untouched.
 	 */
 	post: (message: Record<string, unknown>) => void;
-	/** Default per-request timeout. 10s matches the old capture-png ceiling. */
+	/**
+	 * Default per-request timeout. 10s matches the old capture-png ceiling.
+	 * Requests with no upper bound on their duration pass `timeoutMs: null`.
+	 */
 	defaultTimeoutMs?: number;
 	/** Override id minting (tests inject a deterministic counter). */
 	generateId?: () => string;
@@ -70,7 +73,8 @@ function defaultGenerateId(): string {
 interface Pending {
 	resolve: (value: unknown) => void;
 	reject: (error: Error) => void;
-	timer: ReturnType<typeof setTimeout>;
+	/** Unset for requests with `timeoutMs: null`. */
+	timer?: ReturnType<typeof setTimeout>;
 }
 
 export class SandboxRpc {
@@ -90,19 +94,27 @@ export class SandboxRpc {
 	/**
 	 * Send a request and await the peer's reply. Rejects if the peer reports
 	 * an error, has no handler for `kind`, or doesn't reply within the timeout.
+	 * `timeoutMs: null` waits for the reply until the channel is disposed.
 	 */
-	request<T = unknown>(kind: string, payload?: unknown, opts?: { timeoutMs?: number }): Promise<T> {
+	request<T = unknown>(
+		kind: string,
+		payload?: unknown,
+		opts?: { timeoutMs?: number | null }
+	): Promise<T> {
 		if (this.#disposed) {
 			return Promise.reject(new Error('sandbox channel closed'));
 		}
 		const requestId = this.#generateId();
-		const timeoutMs = opts?.timeoutMs ?? this.#defaultTimeoutMs;
+		const timeoutMs = opts?.timeoutMs === undefined ? this.#defaultTimeoutMs : opts.timeoutMs;
 		return new Promise<T>((resolve, reject) => {
-			const timer = setTimeout(() => {
-				if (this.#pending.delete(requestId)) {
-					reject(new Error(`sandbox request "${kind}" timed out after ${timeoutMs}ms`));
-				}
-			}, timeoutMs);
+			const timer =
+				timeoutMs === null
+					? undefined
+					: setTimeout(() => {
+							if (this.#pending.delete(requestId)) {
+								reject(new Error(`sandbox request "${kind}" timed out after ${timeoutMs}ms`));
+							}
+						}, timeoutMs);
 			this.#pending.set(requestId, {
 				resolve: resolve as (value: unknown) => void,
 				reject,
