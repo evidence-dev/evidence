@@ -145,7 +145,21 @@ describe('loadConnectionConfig', () => {
 				projectId: 'p',
 				location: 'EU',
 				defaultDataset: undefined,
+				labels: undefined,
 				datasets: ['d']
+			});
+		});
+
+		it('forwards labels from connection.yaml onto credentials', async () => {
+			await writeYaml(
+				`type: bigquery\nproject: p\ndatasets: [d]\nadc: true\nlabels:\n  app: evidence\n  team: analytics\n`
+			);
+			const cfg = await loadConnectionConfig(workDir);
+			expect(cfg).toMatchObject({
+				type: 'bigquery',
+				authType: 'adc',
+				projectId: 'p',
+				labels: { app: 'evidence', team: 'analytics' }
 			});
 		});
 

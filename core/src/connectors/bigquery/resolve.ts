@@ -19,7 +19,8 @@ export async function resolveBigQueryCredentials(
 	const params = {
 		projectId: config.project,
 		location: config.location,
-		defaultDataset: config.dataset
+		defaultDataset: config.dataset,
+		labels: config.labels
 	};
 
 	if (config.adc) {

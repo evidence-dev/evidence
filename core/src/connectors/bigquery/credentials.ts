@@ -11,6 +11,8 @@ type BigQueryConnectionParams = {
 	projectId: string;
 	location?: string;
 	defaultDataset?: string;
+	/** Attached to every BigQuery job when set (billing / INFORMATION_SCHEMA). */
+	labels?: Record<string, string>;
 };
 
 export type BigQueryServiceAccountCredentials = BigQueryConnectionParams & {
