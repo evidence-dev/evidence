@@ -16,6 +16,7 @@
  * the shared sandbox/runtime-bootstrap module; this file owns only the
  * html-specific pieces (SDK install, DOM injection, height reporting).
  */
+import '../../../sandbox/raf-fallback';
 import * as htmlToImage from 'html-to-image';
 import { bootSandbox, type SandboxHost } from '../../../sandbox/runtime-bootstrap';
 import { errorToLogEntry } from '../../../sandbox/runtime-diagnostics';
