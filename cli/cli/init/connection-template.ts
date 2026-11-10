@@ -23,7 +23,8 @@ export const INIT_WAREHOUSES = [
 	'cube',
 	'redshift',
 	'motherduck',
-	'athena'
+	'athena',
+	'coupler-io'
 ] as const;
 
 export type InitWarehouse = (typeof INIT_WAREHOUSES)[number];
@@ -182,6 +183,18 @@ token: "<token>" # MotherDuck service/access token (MotherDuck UI: Settings -> A
 # schemas: ["<schema>"] # allowlist of schemas exposed to the schema browser, optional
 `;
 
+const COUPLER_IO_TEMPLATE = `# Coupler.io direct connector. Docs: https://docs.evidence.dev/direct-connectors/coupler-io
+type: coupler-io
+token: "\${COUPLER_API_TOKEN}" # personal API token (Coupler.io profile -> API access); \${VAR} reads the environment
+# keyfile: ./coupler-io-api.json # instead of token: {"token": "..."}
+workspace_id: "<workspace-id>" # GET /v1/workspaces lists them
+# Table name -> dataset id. Omit to expose every queryable dataset, named after the dataset.
+datasets:
+  <table_name>: "<dataset-id>"
+# max_concurrent_requests: 4 # API requests in flight at once (the API allows 100/minute per organization)
+# api_host: https://api.coupler.io # *.coupler.io only; defaults to the key file value, then production
+`;
+
 const TEMPLATES: Record<InitWarehouse, string> = {
 	snowflake: SNOWFLAKE_TEMPLATE,
 	bigquery: BIGQUERY_TEMPLATE,
@@ -193,7 +206,8 @@ const TEMPLATES: Record<InitWarehouse, string> = {
 	cube: CUBE_TEMPLATE,
 	redshift: REDSHIFT_TEMPLATE,
 	motherduck: MOTHERDUCK_TEMPLATE,
-	athena: ATHENA_TEMPLATE
+	athena: ATHENA_TEMPLATE,
+	'coupler-io': COUPLER_IO_TEMPLATE
 };
 
 /** Returns the connection.yaml scaffold for a supported warehouse type. */

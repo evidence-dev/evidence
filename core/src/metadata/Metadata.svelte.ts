@@ -13,6 +13,7 @@ import { getPostgresToJsType } from '../connectors/postgres/type-mapping';
 import { getRedshiftToJsType } from '../connectors/redshift/type-mapping';
 import { escapeRedshiftStringLiteral } from '../sql-dialect/common';
 import { getMotherduckToJsType } from '../connectors/motherduck/type-mapping';
+import { COUPLER_IO_COLUMNS_SQL } from './coupler-io-catalog';
 import { TableMetadata } from './TableMetadata.svelte';
 import { groupColumnsByTable } from './group-columns';
 import {
@@ -268,7 +269,8 @@ export class Metadata {
 				this.#warehouseMode === 'redshift' ||
 				this.#warehouseMode === 'motherduck' ||
 				this.#warehouseMode === 'sqlserver' ||
-				this.#warehouseMode === 'athena')
+				this.#warehouseMode === 'athena' ||
+				this.#warehouseMode === 'coupler-io')
 		) {
 			this.#loading = false;
 			return;
@@ -316,6 +318,10 @@ export class Metadata {
 
 		if (this.#warehouseMode === 'athena') {
 			return await this.#loadAthena();
+		}
+
+		if (this.#warehouseMode === 'coupler-io') {
+			return this.#loadCouplerIo();
 		}
 
 		try {
@@ -789,6 +795,45 @@ ${schemaFilter}`
 		} catch (e) {
 			logger.error(e, 'Failed to fetch MotherDuck metadata');
 			throw new Error('Failed to fetch MotherDuck metadata', { cause: e });
+		} finally {
+			this.#loading = false;
+		}
+	}
+
+	async #loadCouplerIo(): Promise<void> {
+		try {
+			// The Coupler.io executor answers this sentinel from the dataset catalog
+			// (one table per dataset, typed DuckDB columns) without calling /query.
+			const columnsResult = await this.#catalogQuery<{
+				tableName: string;
+				columnName: string;
+				columnType: string;
+			}>(COUPLER_IO_COLUMNS_SQL);
+
+			if (columnsResult.error) {
+				logger.error({ columnsResult }, 'Failed to fetch Coupler.io metadata');
+				throw new Error(`Failed to fetch Coupler.io metadata: ${columnsResult.error}`);
+			}
+
+			const columnsByTable = groupColumnsByTable(
+				columnsResult.rows,
+				(row) => row.tableName,
+				({ columnName, columnType }) => ({
+					name: columnName,
+					type: columnType,
+					jsType: getMotherduckToJsType(columnType)
+				})
+			);
+
+			for (const [tableName, columns] of columnsByTable) {
+				this.#tables.set(
+					tableName,
+					new TableMetadata({ name: tableName, columns, tableType: 'table' }, this.#tableOpts)
+				);
+			}
+		} catch (e) {
+			logger.error(e, 'Failed to fetch Coupler.io metadata');
+			throw new Error('Failed to fetch Coupler.io metadata', { cause: e });
 		} finally {
 			this.#loading = false;
 		}

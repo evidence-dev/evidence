@@ -15,9 +15,12 @@ export interface SchemaAllowlistConfig {
  */
 export function schemaAllowlist(
 	mode: WarehouseMode,
-	config: SchemaAllowlistConfig | null | undefined
+	// Any connector config: one with none of these fields (e.g. Coupler.io, whose
+	// catalog is a dataset list) would otherwise fail TypeScript's weak-type check.
+	configOrNull: object | null | undefined
 ): string[] {
-	if (!config) return [];
+	if (!configOrNull) return [];
+	const config: SchemaAllowlistConfig = configOrNull;
 	switch (mode) {
 		case 'bigquery':
 			return config.datasets ?? [];

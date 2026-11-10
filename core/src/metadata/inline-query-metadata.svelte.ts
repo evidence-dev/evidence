@@ -157,7 +157,8 @@ export class InlineQueryMetadata extends Metadata {
 				dialectName === 'cube' ||
 				dialectName === 'redshift' ||
 				dialectName === 'motherduck' ||
-				dialectName === 'athena'
+				dialectName === 'athena' ||
+				dialectName === 'coupler-io'
 			) {
 				// Snowflake, BigQuery, Fabric (T-SQL), Postgres, Cube, Redshift, MotherDuck (DuckDB) and Athena
 				// have no DESCRIBE TABLE on a subquery. Run `SELECT * FROM (...) WHERE 1=0`
