@@ -32,11 +32,7 @@ const everyOperatorCondition: FilterCondition[] = [
 		value: 100,
 		maxValue: 200
 	})),
-	...BOOLEAN_OPERATORS.map((operator) => ({
-		type: 'boolean' as const,
-		operator,
-		value: true
-	})),
+	...BOOLEAN_OPERATORS.map((operator) => ({ type: 'boolean' as const, operator, value: true })),
 	...DATE_OPERATORS.map((operator) => ({
 		type: 'date' as const,
 		operator,
@@ -216,11 +212,7 @@ describe('table filter URL state', () => {
 						columnId: 'category',
 						conditions: [
 							{ type: 'string', operator: 'is', value: 'Electronics' },
-							{
-								type: 'string',
-								operator: 'in',
-								value: ['Electronics', 'Home']
-							},
+							{ type: 'string', operator: 'in', value: ['Electronics', 'Home'] },
 							{ type: 'number', operator: 'greater_than', value: 100 },
 							{ type: 'boolean', operator: 'is', value: true },
 							{
@@ -313,20 +305,10 @@ describe('table filter URL state', () => {
 			active: true,
 			conjunction: 'AND',
 			filters: [
-				{
-					columnId: 'category',
-					conditions: [{ type: 'string', operator: 'in', value: ['Home'] }]
-				},
+				{ columnId: 'category', conditions: [{ type: 'string', operator: 'in', value: ['Home'] }] },
 				{
 					columnId: 'total_sales',
-					conditions: [
-						{
-							type: 'number',
-							operator: 'not_between',
-							value: 100,
-							maxValue: 200
-						}
-					]
+					conditions: [{ type: 'number', operator: 'not_between', value: 100, maxValue: 200 }]
 				},
 				{
 					columnId: 'order_date',
@@ -404,12 +386,7 @@ describe('table filter initial values', () => {
 					multi_select: ['region']
 				}
 			} as unknown as ConstructorParameters<typeof TableFilterFilter>[0],
-			{
-				url: undefined,
-				updateUrl: undefined,
-				projectSettings: undefined,
-				dialect: undefined
-			}
+			{ url: undefined, updateUrl: undefined, projectSettings: undefined, dialect: undefined }
 		);
 
 		expect(filter.value).toEqual({
@@ -451,12 +428,7 @@ describe('table filter initial values', () => {
 					initial_values: { category: 'Groceries' }
 				}
 			} as unknown as ConstructorParameters<typeof TableFilterFilter>[0],
-			{
-				url,
-				updateUrl: undefined,
-				projectSettings: undefined,
-				dialect: undefined
-			}
+			{ url, updateUrl: undefined, projectSettings: undefined, dialect: undefined }
 		);
 
 		expect(filter.value).toEqual(urlState);
@@ -544,14 +516,8 @@ describe('table filter SQL fragment composition', () => {
 		active: true,
 		conjunction,
 		filters: [
-			{
-				columnId: 'a',
-				conditions: [{ type: 'number', operator: 'greater_than', value: 1 }]
-			},
-			{
-				columnId: 'b',
-				conditions: [{ type: 'number', operator: 'less_than', value: 2 }]
-			}
+			{ columnId: 'a', conditions: [{ type: 'number', operator: 'greater_than', value: 1 }] },
+			{ columnId: 'b', conditions: [{ type: 'number', operator: 'less_than', value: 2 }] }
 		]
 	});
 
@@ -570,10 +536,7 @@ describe('table filter SQL fragment composition', () => {
 				active: false,
 				conjunction: 'AND',
 				filters: [
-					{
-						columnId: 'category',
-						conditions: [{ type: 'string', operator: 'is', value: 'Home' }]
-					}
+					{ columnId: 'category', conditions: [{ type: 'string', operator: 'is', value: 'Home' }] }
 				]
 			}
 		],
@@ -583,10 +546,7 @@ describe('table filter SQL fragment composition', () => {
 				active: true,
 				conjunction: 'AND',
 				filters: [
-					{
-						columnId: 'category',
-						conditions: [{ type: 'string', operator: 'in', value: [] }]
-					}
+					{ columnId: 'category', conditions: [{ type: 'string', operator: 'in', value: [] }] }
 				]
 			}
 		]
@@ -597,12 +557,7 @@ describe('table filter SQL fragment composition', () => {
 				userComponentName: 'table_filter',
 				attributes: { data: 'demo.orders' }
 			} as unknown as ConstructorParameters<typeof TableFilterFilter>[0],
-			{
-				url: undefined,
-				updateUrl: undefined,
-				projectSettings: undefined,
-				dialect: undefined
-			}
+			{ url: undefined, updateUrl: undefined, projectSettings: undefined, dialect: undefined }
 		);
 
 		filter.value = value as FilterState;
@@ -613,28 +568,16 @@ describe('table filter SQL fragment composition', () => {
 
 	it('falls back to a plain comparison when a range operator has no upper bound', () => {
 		expect(
-			generateConditionSQL('total_sales', {
-				type: 'number',
-				operator: 'not_between',
-				value: 100
-			})
+			generateConditionSQL('total_sales', { type: 'number', operator: 'not_between', value: 100 })
 		).toBe('total_sales != 100');
 		expect(
-			generateConditionSQL('total_sales', {
-				type: 'number',
-				operator: 'between',
-				value: 100
-			})
+			generateConditionSQL('total_sales', { type: 'number', operator: 'between', value: 100 })
 		).toBe('total_sales = 100');
 	});
 });
 
 describe('table filter identifier quoting', () => {
-	const condition: FilterCondition = {
-		type: 'number',
-		operator: 'equals',
-		value: 100
-	};
+	const condition: FilterCondition = { type: 'number', operator: 'equals', value: 100 };
 
 	// Exhaustive by construction: a new warehouse type fails to compile until listed
 	const spacedIdentifier: Record<WarehouseType, string> = {
