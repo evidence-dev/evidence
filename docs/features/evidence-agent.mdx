@@ -87,6 +87,19 @@ The `description` is the only part of a skill loaded up front — it's how the a
 
 New projects already include a starter `agent/context/instructions.md`. To add more context files or skills, use the **Agent config** menu in the editor's project sidebar — it creates a context file or a skill folder with the right structure and a starter template. You can also add the files directly in git.
 
+## Monitor agent usage
+
+Organization admins can open **AI Observability** from the sidebar to see how report viewers use the Evidence Agent. The page is only available to admins because it shows every viewer's conversations across the organization.
+
+The dashboard covers one calendar month at a time. Use the arrows next to the month to switch periods. A conversation counts in the month it started. For each period, AI Observability shows:
+
+- **Adoption and cost:** conversations, active viewers, messages, and credits, plus daily activity, top viewers, and whether conversations happen on the web or in Slack.
+- **Agent health:** the resolution rate and share of helpful answers, with breakdowns of answer quality and outcome.
+- **Topics:** usage by category and the topics where the agent underperforms, so you know which context or skills to improve.
+- **Recent conversations:** each conversation's topic, viewer, message and credit counts, quality, and outcome.
+
+Quality, outcome, and topic come from analyzing each conversation. Select **Analyze conversations** to analyze any new conversations, or conversations that have grown since they were last analyzed. Conversations that have not been analyzed show **Not analyzed**.
+
 ## Beyond Evidence Studio
 
 The Evidence Agent is available in Studio's chat, and the same context and skills are exposed to external AI clients (such as Claude and ChatGPT) through the Studio MCP server's [`get_context`](/mcp/studio) tool — so a connected assistant sees the same instructions and available skills as the in-app agent.
