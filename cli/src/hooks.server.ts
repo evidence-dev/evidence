@@ -4,6 +4,7 @@ import path from 'node:path';
 import { isServeMode, basicAuthConfigured } from '$lib/server/serve-mode';
 import { checkBasicAuth, SERVE_HARDENED_HEADERS } from '$cli/basic-auth';
 import { getProjectCwd } from '$lib/server/project-cwd';
+import { resolveHtmlLang, replaceHtmlLangPlaceholder } from '$lib/server/html-lang.server';
 
 const STATIC_CONTENT_TYPES: Record<string, string> = {
 	'.png': 'image/png',
@@ -78,6 +79,20 @@ const SERVE_DISABLED_PATHS = [
 // static assets, SSR pages, and the /api/query SQL relay — flows through
 // hooks, so this is the single choke point.
 export const handle: Handle = async ({ event, resolve }) => {
+	// The document shell carries `%evidence.lang%`, because it is emitted before
+	// any load runs and so cannot see the language the layout resolves. Both
+	// render paths below go through this: SvelteKit leaves an unknown placeholder
+	// verbatim, so a page that skipped the transform would ship the literal text.
+	const render = async () => {
+		const lang = await resolveHtmlLang(
+			getProjectCwd(),
+			event.url.searchParams.get('lang') ?? event.cookies.get('lang')
+		);
+		return resolve(event, {
+			transformPageChunk: ({ html }) => replaceHtmlLangPlaceholder(html, lang)
+		});
+	};
+
 	if (event.request.method === 'GET') {
 		const staticResponse = await serveProjectStatic(event.url.pathname);
 		if (staticResponse) {
@@ -109,12 +124,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 			});
 		}
 
-		const response = await resolve(event);
+		const response = await render();
 		for (const [k, v] of Object.entries(SERVE_HARDENED_HEADERS)) {
 			response.headers.set(k, v);
 		}
 		return response;
 	}
 
-	return resolve(event);
+	return render();
 };

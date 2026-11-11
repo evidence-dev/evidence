@@ -16,8 +16,10 @@ import yaml from 'js-yaml';
 import {
 	projectLayoutSchema,
 	projectDateSchema,
+	projectFormatSchema,
 	type ParsedProjectLayout,
-	type ParsedProjectDate
+	type ParsedProjectDate,
+	type ParsedProjectFormat
 } from '@evidence/core/config/page-frontmatter-schema';
 
 const CONFIG_FILENAME = 'evidence.config.yaml';
@@ -57,6 +59,12 @@ export interface ProjectConfig {
 	 * Evidence defaults, mirroring Studio).
 	 */
 	date?: ParsedProjectDate;
+	/**
+	 * Project-level number formatting from the `format:` block (decimal
+	 * separator). Undefined when absent or malformed (degrades to Evidence
+	 * defaults, mirroring Studio).
+	 */
+	format?: ParsedProjectFormat;
 	/** Theme overrides from theme.yaml, or undefined if missing/malformed. */
 	theme?: Record<string, unknown>;
 	/** Raw translations.yaml map (language → key map); empty if missing/malformed. */
@@ -160,11 +168,12 @@ function parseProjectConfig(
 		pages = obj.pages;
 	}
 
-	// Lenient like Studio: a malformed `layout:` / `date:` block degrades to no
+	// Lenient like Studio: a malformed `layout:` / `date:` / `format:` block degrades to no
 	// project defaults rather than failing the whole config (a wrong type for one
 	// key shouldn't blank every page's settings).
 	const layout = obj.layout !== undefined ? projectLayoutSchema.safeParse(obj.layout) : undefined;
 	const date = obj.date !== undefined ? projectDateSchema.safeParse(obj.date) : undefined;
+	const format = obj.format !== undefined ? projectFormatSchema.safeParse(obj.format) : undefined;
 
 	// theme/translations are filled in by loadProjectConfig from their own files.
 	return {
@@ -176,6 +185,7 @@ function parseProjectConfig(
 		pagesDir: path.resolve(projectRoot, pages),
 		layout: layout?.success ? layout.data : undefined,
 		date: date?.success ? date.data : undefined,
+		format: format?.success ? format.data : undefined,
 		theme: undefined,
 		translations: {},
 		configPath,
