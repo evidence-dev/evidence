@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, tick, unmount } from 'svelte';
 import { ClickHouseDialect } from '../../../sql-dialect';
 import {
 	getMapTestRows,
 	mapLayerCalls,
 	resetMapTestControl,
+	setMapTestPropOverrides,
 	setMapTestRows
 } from './Map.test-control.svelte';
 import MapTestHarness from './MapTestHarness.svelte';
@@ -35,12 +36,16 @@ vi.mock('./area_layer/AreaLayerModel.svelte', async () => {
 			query = { error: null };
 
 			constructor(
-				_props: unknown,
+				private propsGetter: () => object,
 				_options: unknown,
 				_getPointLayerIds: unknown,
 				definitionIndex = 0
 			) {
 				this.definitionIndex = definitionIndex;
+			}
+
+			get props() {
+				return this.propsGetter();
 			}
 
 			get loading() {
@@ -73,10 +78,17 @@ vi.mock('./point_layer/PointLayerModel.svelte', async () => {
 			layerId = 'test-point-layer';
 			definitionIndex: number;
 			query = { error: null };
-			clusteringEnabled = false;
 
-			constructor(_props: unknown, _options: unknown, definitionIndex = 0) {
+			constructor(
+				private propsGetter: () => object,
+				_options: unknown,
+				definitionIndex = 0
+			) {
 				this.definitionIndex = definitionIndex;
+			}
+
+			get props() {
+				return this.propsGetter();
 			}
 
 			get loading() {
@@ -110,8 +122,16 @@ vi.mock('./heatmap_layer/HeatmapLayerModel.svelte', async () => {
 			definitionIndex: number;
 			query = { error: null };
 
-			constructor(_props: unknown, _options: unknown, definitionIndex = 0) {
+			constructor(
+				private propsGetter: () => object,
+				_options: unknown,
+				definitionIndex = 0
+			) {
 				this.definitionIndex = definitionIndex;
+			}
+
+			get props() {
+				return this.propsGetter();
 			}
 
 			get loading() {
@@ -143,27 +163,36 @@ async function settle() {
 	await tick();
 }
 
+let mounted: ReturnType<typeof mount> | undefined;
+
+async function mountMap() {
+	mounted = mount(MapTestHarness, {
+		target: document.createElement('div'),
+		props: {
+			queryService: {
+				workspaceId: 'workspace',
+				connectionType: 'managed',
+				dialect: new ClickHouseDialect(),
+				query: async () => ({ rows: [], columns: [], error: null })
+			}
+		}
+	});
+	await settle();
+}
+
 describe('Map layer data updates', () => {
 	beforeEach(resetMapTestControl);
+	afterEach(() => {
+		if (mounted) unmount(mounted);
+		mounted = undefined;
+	});
 
 	it('replaces changed layer data and removes the layer for an empty result', async () => {
 		setMapTestRows([
 			{ area_id: 'CA', value: 10 },
 			{ area_id: 'NY', value: 20 }
 		]);
-		const target = document.createElement('div');
-		const mounted = mount(MapTestHarness, {
-			target,
-			props: {
-				queryService: {
-					workspaceId: 'workspace',
-					connectionType: 'managed',
-					dialect: new ClickHouseDialect(),
-					query: async () => ({ rows: [], columns: [], error: null })
-				}
-			}
-		});
-		await settle();
+		await mountMap();
 		expect(mapLayerCalls).toEqual({
 			area: { add: 1, remove: 0 },
 			point: { add: 1, remove: 0 },
@@ -189,7 +218,48 @@ describe('Map layer data updates', () => {
 			heatmap: { add: 2, remove: 2 }
 		});
 		expect(getMapTestRows()).toEqual([]);
+	});
 
-		unmount(mounted);
+	it('redraws a layer when a styling prop changes without new data', async () => {
+		setMapTestRows([{ area_id: 'CA', value: 10, lat: 1, lng: 2 }]);
+		await mountMap();
+
+		setMapTestPropOverrides({ color: '#ff0000' });
+		await settle();
+		expect(mapLayerCalls).toEqual({
+			area: { add: 1, remove: 0 },
+			point: { add: 2, remove: 1 },
+			heatmap: { add: 1, remove: 0 }
+		});
+
+		setMapTestPropOverrides({ color: '#ff0000', color_palette: ['#fee5d9', '#a50f15'] });
+		await settle();
+		expect(mapLayerCalls).toEqual({
+			area: { add: 2, remove: 1 },
+			point: { add: 3, remove: 2 },
+			heatmap: { add: 2, remove: 1 }
+		});
+	});
+
+	it('leaves query props to the data refresh instead of redrawing on the prop alone', async () => {
+		setMapTestRows([{ area_id: 'CA', value: 10, lat: 1, lng: 2 }]);
+		await mountMap();
+
+		setMapTestPropOverrides({ lat: 'latitude', area_id: 'state', where: 'value > 1' });
+		await settle();
+		expect(mapLayerCalls).toEqual({
+			area: { add: 1, remove: 0 },
+			point: { add: 1, remove: 0 },
+			heatmap: { add: 1, remove: 0 }
+		});
+	});
+
+	it('redraws a point layer when clustering is toggled', async () => {
+		setMapTestRows([{ lat: 1, lng: 2 }]);
+		await mountMap();
+
+		setMapTestPropOverrides({ cluster: true });
+		await settle();
+		expect(mapLayerCalls.point).toEqual({ add: 2, remove: 1 });
 	});
 });

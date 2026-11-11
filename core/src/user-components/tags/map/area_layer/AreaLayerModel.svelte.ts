@@ -65,10 +65,6 @@ export class AreaLayerModel {
 		return this.propsGetter();
 	}
 
-	get labelsKey(): string {
-		return JSON.stringify(this.props.data_labels ?? null);
-	}
-
 	private get queryConfig() {
 		const props = this.props;
 		const { where, having, limit, order, qualify } = extractSQLProps(props);
@@ -107,6 +103,8 @@ export class AreaLayerModel {
 	}
 
 	private cachedBounds: maplibregl.LngLatBounds | null = null;
+	// Draws overlap while GeoJSON loads; only the newest one may touch the map.
+	private drawGeneration = 0;
 
 	// Reactive state for legend display
 	colorScale = $state<string[] | null>(null);
@@ -128,6 +126,7 @@ export class AreaLayerModel {
 		theme: 'light' | 'dark',
 		beforeId?: string
 	): Promise<void> {
+		const generation = ++this.drawGeneration;
 		const props = this.props;
 		const data = this.data;
 
@@ -231,6 +230,7 @@ export class AreaLayerModel {
 		// Fetch the GeoJSON
 		const response = await fetch(geojsonUrl);
 		const geojson = (await response.json()) as GeoJSON.FeatureCollection;
+		if (generation !== this.drawGeneration) return;
 
 		// Enrich features with computed state name/abbreviation from FIPS codes
 		// This allows users to use STATE_NAME or STATE_ABBREV in composite IDs
@@ -385,6 +385,8 @@ export class AreaLayerModel {
 			this.cachedBounds = bounds;
 			logger.debug({ bounds: bounds.toArray() }, '[AreaLayer] Calculated bounds');
 		}
+
+		if (generation !== this.drawGeneration) return;
 
 		// Add source with promoteId for feature-state (only if not already added)
 		if (!map.getSource(this.sourceId)) {
@@ -692,6 +694,8 @@ export class AreaLayerModel {
 	}
 
 	removeFromMap(map: maplibregl.Map): void {
+		this.drawGeneration++;
+
 		// Remove event listeners
 		if (this.mouseMoveHandler) {
 			map.off('mousemove', this.layerId, this.mouseMoveHandler);

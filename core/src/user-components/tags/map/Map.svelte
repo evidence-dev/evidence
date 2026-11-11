@@ -18,7 +18,10 @@
 	import { AreaLayerModel } from './area_layer/AreaLayerModel.svelte';
 	import { PointLayerModel } from './point_layer/PointLayerModel.svelte';
 	import { HeatmapLayerModel } from './heatmap_layer/HeatmapLayerModel.svelte';
-	import { transitionMapLayer, type MapLayerState } from './layer-state';
+	import { schema as areaLayerSchema } from './area_layer/schema';
+	import { schema as pointLayerSchema } from './point_layer/schema';
+	import { schema as heatmapLayerSchema } from './heatmap_layer/schema';
+	import { renderPropsKey, transitionMapLayer, type MapLayerState } from './layer-state';
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
 	import { getPageSettingsContext } from '../../../page-settings.context';
 	import { getDefaultConnection } from '../../../QueryService.context';
@@ -269,8 +272,11 @@
 			if (layer.loading) continue;
 			const data = layer.data;
 			const state = layerState.get(layer.layerId);
-			// Label text is baked in at add time, so label settings changes need a redraw.
-			const transition = transitionMapLayer(state, data, layer.labelsKey);
+			const transition = transitionMapLayer(
+				state,
+				data,
+				renderPropsKey(areaLayerSchema.attributes, layer.props)
+			);
 			layerState.set(layer.layerId, transition.state);
 
 			if (transition.action === 'remove') {
@@ -289,7 +295,11 @@
 			const data = layer.data;
 			const state = layerState.get(layer.layerId);
 			// The source's cluster flag can't be changed in place.
-			const transition = transitionMapLayer(state, data, layer.clusteringEnabled);
+			const transition = transitionMapLayer(
+				state,
+				data,
+				renderPropsKey(pointLayerSchema.attributes, layer.props, ['cluster'])
+			);
 			layerState.set(layer.layerId, transition.state);
 
 			if (transition.action === 'remove') {
@@ -307,7 +317,11 @@
 			if (layer.loading) continue;
 			const data = layer.data;
 			const state = layerState.get(layer.layerId);
-			const transition = transitionMapLayer(state, data);
+			const transition = transitionMapLayer(
+				state,
+				data,
+				renderPropsKey(heatmapLayerSchema.attributes, layer.props)
+			);
 			layerState.set(layer.layerId, transition.state);
 
 			if (transition.action === 'remove') {
