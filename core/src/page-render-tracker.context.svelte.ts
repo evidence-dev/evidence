@@ -1,4 +1,5 @@
 import { getContext, setContext } from 'svelte';
+import { logger } from './shims/logger';
 
 export type PageRenderTrackerOptions = {
 	/**
@@ -45,7 +46,7 @@ export class PageRenderTracker {
 		this.#settleDelayMs = options?.settleMs ?? 0;
 		this.#debug = options?.debug ?? false;
 		if (this.#debug) {
-			console.log(`[PDF-TRACKER] created | settleMs=${this.#settleDelayMs}`);
+			logger.info(`[PDF-TRACKER] created | settleMs=${this.#settleDelayMs}`);
 		}
 	}
 
@@ -103,7 +104,7 @@ export class PageRenderTracker {
 		this.#clearSettleTimer();
 
 		if (this.#debug) {
-			console.log(
+			logger.info(
 				`[PDF-TRACKER] startTask "${label ?? '?'}" | pending=${this.#pendingCount} started=${this.#startedCount} labels=[${this.#pendingLabels.join(', ')}]`
 			);
 		}
@@ -125,7 +126,7 @@ export class PageRenderTracker {
 			}
 
 			if (this.#debug) {
-				console.log(
+				logger.info(
 					`[PDF-TRACKER] completeTask "${label ?? '?'}" | pending=${this.#pendingCount} started=${this.#startedCount} labels=[${this.#pendingLabels.join(', ')}]`
 				);
 			}
@@ -152,37 +153,33 @@ export class PageRenderTracker {
 			if (this.#settleDelayMs === 0) {
 				// No settle delay — mark complete synchronously
 				if (this.#debug) {
-					console.log(
+					logger.info(
 						`[PDF-TRACKER] SETTLED (sync) → isComplete=true | started=${this.#startedCount}`
 					);
 				}
 				this.#settled = true;
 			} else {
 				if (this.#debug) {
-					console.log(
-						`[PDF-TRACKER] scheduleSettle | waiting ${this.#settleDelayMs}ms`
-					);
+					logger.info(`[PDF-TRACKER] scheduleSettle | waiting ${this.#settleDelayMs}ms`);
 				}
 				this.#settleTimer = setTimeout(() => {
 					this.#settleTimer = undefined;
 					if (this.#pendingCount === 0 && this.#startedCount > 0) {
 						if (this.#debug) {
-							console.log(
+							logger.info(
 								`[PDF-TRACKER] SETTLED → isComplete=true | started=${this.#startedCount}`
 							);
 						}
 						this.#settled = true;
 					} else if (this.#debug) {
-						console.log(
+						logger.info(
 							`[PDF-TRACKER] settle timer fired but state changed | pending=${this.#pendingCount} — NOT settling`
 						);
 					}
 				}, this.#settleDelayMs);
 			}
 		} else if (this.#debug && this.#startedCount > 0) {
-			console.log(
-				`[PDF-TRACKER] NOT settling | pending=${this.#pendingCount} > 0`
-			);
+			logger.info(`[PDF-TRACKER] NOT settling | pending=${this.#pendingCount} > 0`);
 		}
 	}
 

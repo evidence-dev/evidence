@@ -5,6 +5,7 @@ import {
 	setPageRenderTrackerContext
 } from './page-render-tracker.context.svelte';
 import { waitForFonts, waitForStableFrames } from './readiness';
+import { logger } from './shims/logger';
 
 // Track the root tracker so diagnostics can distinguish root vs child-scope
 let _lastRootTracker: PageRenderTracker | undefined;
@@ -37,8 +38,7 @@ export function setupRenderReadiness(
 	if (!tracker) return;
 
 	if (tracker.debug) {
-		// eslint-disable-next-line no-console
-		console.log(
+		logger.info(
 			`[PDF-TRACKER] LEAF "${componentName}" registering | tracker=${tracker === _lastRootTracker ? 'ROOT' : 'CHILD-SCOPE'} started=${tracker.startedCount} pending=${tracker.pendingCount}`
 		);
 	}
@@ -134,8 +134,7 @@ export function setupContainerReadiness(componentName: string, isSelfReady: () =
 	const mark = parentTracker.startTask(componentName);
 
 	if (parentTracker.debug) {
-		// eslint-disable-next-line no-console
-		console.log(
+		logger.info(
 			`[PDF-TRACKER] CONTAINER "${componentName}" registering | parentTracker=${parentTracker === _lastRootTracker ? 'ROOT' : 'CHILD-SCOPE'} parent.started=${parentTracker.startedCount} parent.pending=${parentTracker.pendingCount}`
 		);
 	}
@@ -164,8 +163,7 @@ export function setupContainerReadiness(componentName: string, isSelfReady: () =
 		const childrenReady = childScope.isEmpty || childScope.isComplete;
 
 		if (parentTracker.debug) {
-			// eslint-disable-next-line no-console
-			console.log(
+			logger.info(
 				`[PDF-TRACKER] CONTAINER "${componentName}" effect | selfReady=${selfReady} childScope.isEmpty=${childScope.isEmpty} childScope.isComplete=${childScope.isComplete} childScope.started=${childScope.startedCount} childScope.pending=${childScope.pendingCount} childScope.labels=[${childScope.pendingLabels.join(', ')}]`
 			);
 		}
@@ -173,8 +171,7 @@ export function setupContainerReadiness(componentName: string, isSelfReady: () =
 		if (selfReady && childrenReady) {
 			completed = true;
 			if (parentTracker.debug) {
-				// eslint-disable-next-line no-console
-				console.log(
+				logger.info(
 					`[PDF-TRACKER] CONTAINER "${componentName}" ✅ COMPLETE | children: started=${childScope.startedCount} pending=${childScope.pendingCount}`
 				);
 			}
@@ -187,8 +184,7 @@ export function setupContainerReadiness(componentName: string, isSelfReady: () =
 		// don't leave a pending task in the parent tracker
 		if (!completed) {
 			if (parentTracker.debug) {
-				// eslint-disable-next-line no-console
-				console.log(
+				logger.info(
 					`[PDF-TRACKER] CONTAINER "${componentName}" 🗑️ DESTROYED before completing | childScope.started=${childScope.startedCount} childScope.pending=${childScope.pendingCount}`
 				);
 			}

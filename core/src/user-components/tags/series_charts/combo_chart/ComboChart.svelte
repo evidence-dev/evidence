@@ -704,7 +704,7 @@
 			formatter: (arg) => {
 				const { success, data: params, error } = tooltipFormatterArgSchema.safeParse(arg);
 				if (!success) {
-					logger.error({ arg, zodError: error }, 'Failed to parse tooltip formatter arg');
+					logger.error({ arg, err: error }, 'Failed to parse tooltip formatter arg');
 					return '';
 				}
 
