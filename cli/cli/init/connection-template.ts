@@ -23,6 +23,7 @@ export const INIT_WAREHOUSES = [
 	'cube',
 	'redshift',
 	'motherduck',
+	'duckdb',
 	'athena'
 ] as const;
 
@@ -182,6 +183,18 @@ token: "<token>" # MotherDuck service/access token (MotherDuck UI: Settings -> A
 # schemas: ["<schema>"] # allowlist of schemas exposed to the schema browser, optional
 `;
 
+const DUCKDB_TEMPLATE = `# DuckDB direct connector (local embedded database).
+# No server, credentials or network connection required.
+type: duckdb
+database: ":memory:" # in-memory database, scoped to this Evidence project
+# For a persistent database, create the parent directory and use:
+# database: ./data/analytics.duckdb
+# schemas: [main, analytics] # optional schema allowlist
+#
+# Relative file paths in SQL are resolved from the Evidence project root.
+# Example: SELECT * FROM read_parquet('data/flights.parquet')
+`;
+
 const TEMPLATES: Record<InitWarehouse, string> = {
 	snowflake: SNOWFLAKE_TEMPLATE,
 	bigquery: BIGQUERY_TEMPLATE,
@@ -193,6 +206,7 @@ const TEMPLATES: Record<InitWarehouse, string> = {
 	cube: CUBE_TEMPLATE,
 	redshift: REDSHIFT_TEMPLATE,
 	motherduck: MOTHERDUCK_TEMPLATE,
+	duckdb: DUCKDB_TEMPLATE,
 	athena: ATHENA_TEMPLATE
 };
 

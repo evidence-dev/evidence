@@ -1,0 +1,94 @@
+name: DuckDB Native Binary
+
+on:
+  push:
+    branches:
+      - feat/duckdb-direct-connector
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Multiple commits are pushed during review; only test the newest revision.
+concurrency:
+  group: duckdb-native-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native-binary:
+    name: DuckDB / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2022
+          - macos-15-intel
+
+    env:
+      EVIDENCE_TELEMETRY_DISABLED: '1'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+          cache: pnpm
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.11'
+
+      # pnpm 9: chdb@1.6.0 has an unsupported Windows install script.
+      # Apply this only in the Windows runner, preserving other native builds.
+      - name: Skip unsupported chDB install script on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          node -e "const fs=require('node:fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));p.pnpm ??= {};p.pnpm.neverBuiltDependencies=[...new Set([...(p.pnpm.neverBuiltDependencies||[]),'chdb'])];fs.writeFileSync('package.json',JSON.stringify(p,null,2)+String.fromCharCode(10))"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify platform native bindings
+        shell: bash
+        run: |
+          node -e "console.log(process.platform, process.arch)"
+          node -e "require('@duckdb/node-api'); console.log('DUCKDB_PACKAGE_OK')"
+        working-directory: cli
+
+      - name: Verify native LZ4 dependency on Windows
+        if: runner.os == 'Windows'
+        working-directory: cli
+        shell: pwsh
+        run: |
+          node -e "const {createRequire}=require('node:module'); const req=createRequire(require.resolve('@databricks/sql')); req('lz4'); console.log('LZ4_NATIVE_OK')"
+
+      - name: Test DuckDB native loader, concurrency, and HTTP security
+        run: pnpm --filter @evidence/cli exec vitest run cli/duckdb-native-runtime.test.ts cli/connection/duckdb.test.ts cli/connection/duckdb-data-contract.test.ts cli/connection/duckdb-security.test.ts cli/serve-host.test.ts src/lib/server/query-request-guard.test.ts
+
+      - name: Build standalone CLI
+        run: pnpm cli:build
+
+      - name: Typecheck core and CLI
+        run: pnpm check
+
+      - name: Smoke test native DuckDB
+        run: node cli/scripts/smoke-duckdb-binary.mjs
+
+      - name: Audit DuckDB serve filesystem boundaries
+        run: node cli/scripts/audit-duckdb-serve-filesystem.mjs
+
+      - name: Smoke test read-only DuckDB serve container
+        if: runner.os == 'Linux'
+        run: node cli/scripts/smoke-duckdb-readonly-container.mjs

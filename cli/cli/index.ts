@@ -35,6 +35,7 @@ import {
 	TELEMETRY_DOCS_URL
 } from './telemetry.ts';
 import { runInit } from './init/init.ts';
+import { preloadDuckDBNative } from './duckdb-native';
 import { launch } from './launch.ts';
 import { link } from './link.ts';
 import { unlink } from './unlink.ts';
@@ -117,7 +118,9 @@ try {
 			console.log('');
 			console.log('Next steps:');
 			if (result.createdDirectory) console.log(`  cd ${args.initTargetDir}`);
-			if (result.warehouse) {
+			if (result.warehouse === 'duckdb') {
+				console.log('  Optionally edit connection.yaml to use a persistent DuckDB file');
+			} else if (result.warehouse) {
 				console.log(`  Add your ${result.warehouse} credentials to connection.yaml`);
 			}
 			console.log('  evidence dev');
@@ -405,6 +408,10 @@ try {
 			// from source via `bun cli/index.ts` has it pointing at the bun runtime.
 			const isSource = path.basename(process.execPath).startsWith('bun');
 			const open = args.open ?? !isSource;
+			if (!isSource) {
+				const config = await loadConnectionConfig(process.cwd());
+				if (config?.type === 'duckdb') await preloadDuckDBNative();
+			}
 			if (isSource) {
 				const { startDevServer } = await import('./server.dev.ts');
 				await startDevServer({ port: args.port, open });
@@ -435,6 +442,8 @@ try {
 				console.error('  ✗ serve is only available in the compiled CLI binary.');
 				process.exit(1);
 			}
+			const config = await loadConnectionConfig(process.cwd());
+			if (config?.type === 'duckdb') await preloadDuckDBNative();
 			const { startServer } = await import('./server.ts');
 			await startServer({ port: args.port, open: args.open ?? false, host: args.host });
 			await track('cli_command', { command: 'serve' });

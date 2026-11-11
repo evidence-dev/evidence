@@ -22,6 +22,7 @@ import {
 	cubeConnectionSchema,
 	redshiftConnectionSchema,
 	motherduckConnectionSchema,
+	duckdbConnectionSchema,
 	snowflakeConnectionSchema,
 	sqlserverConnectionSchema,
 	athenaConnectionSchema
@@ -36,6 +37,7 @@ import { resolvePostgresCredentials } from '@evidence/core/connectors/postgres/r
 import { resolveCubeCredentials } from '@evidence/core/connectors/cube/resolve';
 import { resolveRedshiftCredentials } from '@evidence/core/connectors/redshift/resolve';
 import { resolveMotherduckCredentials } from '@evidence/core/connectors/motherduck/resolve';
+import { resolveDuckDBCredentials } from '@evidence/core/connectors/duckdb/resolve';
 import { resolveAthenaCredentials } from '@evidence/core/connectors/athena/resolve';
 import type { ConnectionConfig } from './types';
 
@@ -187,6 +189,11 @@ export async function loadConnectionConfig(cwd: string): Promise<ConnectionConfi
 		const data = parseOrThrow(motherduckConnectionSchema, obj);
 		const credentials = await resolveMotherduckCredentials(data, { cwd });
 		return { type: 'motherduck', ...credentials };
+	}
+
+	if (obj.type === 'duckdb') {
+		const data = parseOrThrow(duckdbConnectionSchema, obj);
+		return { type: 'duckdb', ...resolveDuckDBCredentials(data, { cwd }) };
 	}
 
 	if (obj.type === 'athena') {

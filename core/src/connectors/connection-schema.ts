@@ -41,6 +41,11 @@ import {
 	type MotherDuckConnection
 } from './motherduck/connection-schema';
 import {
+	duckdbBase,
+	duckdbConnectionSchema,
+	type DuckDBConnection
+} from './duckdb/connection-schema';
+import {
 	sqlserverBase,
 	sqlserverConnectionSchema,
 	type SqlServerConnection
@@ -143,6 +148,8 @@ export {
 	redshiftConnectionSchema,
 	motherduckBase,
 	motherduckConnectionSchema,
+	duckdbBase,
+	duckdbConnectionSchema,
 	sqlserverBase,
 	sqlserverConnectionSchema,
 	athenaBase,
@@ -158,6 +165,7 @@ export type {
 	CubeConnection,
 	RedshiftConnection,
 	MotherDuckConnection,
+	DuckDBConnection,
 	SqlServerConnection,
 	AthenaConnection
 };
@@ -172,6 +180,7 @@ export const CONNECTION_TYPES = [
 	'cube',
 	'redshift',
 	'motherduck',
+	'duckdb',
 	'sqlserver',
 	'athena'
 ] as const;
@@ -187,6 +196,7 @@ export type Connection =
 	| CubeConnection
 	| RedshiftConnection
 	| MotherDuckConnection
+	| DuckDBConnection
 	| SqlServerConnection
 	| AthenaConnection;
 
@@ -200,6 +210,7 @@ const schemasByType = {
 	cube: cubeConnectionSchema,
 	redshift: redshiftConnectionSchema,
 	motherduck: motherduckConnectionSchema,
+	duckdb: duckdbConnectionSchema,
 	sqlserver: sqlserverConnectionSchema,
 	athena: athenaConnectionSchema
 } as const;

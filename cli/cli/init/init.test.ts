@@ -225,6 +225,36 @@ describe('runInit', () => {
 	});
 
 	describe('--warehouse scaffolds connection.yaml', () => {
+		it('scaffolds a valid DuckDB project without credentials', async () => {
+			const result = await runInit({
+				targetDir: null,
+				cwd: workDir,
+				warehouse: 'duckdb'
+			});
+
+			expect(result.warehouse).toBe('duckdb');
+
+			const raw = await readFile(path.join(workDir, 'connection.yaml'), 'utf-8');
+
+			const parsed = yaml.load(raw) as Record<string, unknown>;
+
+			expect(parsed).toEqual({
+				type: 'duckdb',
+				database: ':memory:'
+			});
+
+			expect(await loadConnectionConfig(workDir)).toEqual({
+				type: 'duckdb',
+				database: ':memory:',
+				projectDir: workDir,
+				schemas: []
+			});
+
+			const gitignore = await readFile(path.join(workDir, '.gitignore'), 'utf-8');
+
+			expect(gitignore).toContain('connection.yaml');
+		});
+
 		it('writes no connection.yaml when warehouse is omitted', async () => {
 			const result = await runInit({ targetDir: null, cwd: workDir });
 

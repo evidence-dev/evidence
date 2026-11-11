@@ -4,6 +4,7 @@
  */
 
 import { loadConnectionConfig } from './load-config';
+import { preloadDuckDBNative } from '../duckdb-native';
 import { executeSnowflakeQuery } from './snowflake';
 import { executeBigQueryQuery } from './bigquery';
 import { executeClickHouseQuery } from './clickhouse';
@@ -44,6 +45,11 @@ export async function executeQuery(sql: string, config: ConnectionConfig): Promi
 			return executePostgresQuery(sql, config);
 		case 'motherduck':
 			return executeMotherduckQuery(sql, config);
+		case 'duckdb': {
+			await preloadDuckDBNative();
+			const { executeDuckDBQuery } = await import('./duckdb');
+			return executeDuckDBQuery(sql, config);
+		}
 		case 'athena':
 			return executeAthenaQuery(sql, config);
 		default:
@@ -151,6 +157,7 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 			const schemas = config.schemas?.length ? config.schemas : [config.schema];
 			return `${base} WHERE table_schema IN (${schemas.map(quote).join(', ')}) ORDER BY name`;
 		}
+		case 'duckdb':
 		case 'motherduck': {
 			// DuckDB exposes a standard information_schema. Unqualify the default 'main'
 			// schema; qualify the rest — matches how unqualified names resolve. Exclude

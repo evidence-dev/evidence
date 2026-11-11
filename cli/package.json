@@ -6,7 +6,7 @@
 	"scripts": {
 		"build:sandbox": "node ../core/scripts/build-sandbox-runtimes.js --out static/sandbox",
 		"dev": "pnpm run build:sandbox && vite dev",
-		"build": "pnpm run build:sandbox && bun run scripts/bundle-docs.ts && NODE_OPTIONS=\"--max-old-space-size=8192\" vite build",
+		"build": "pnpm run build:sandbox && bun run scripts/bundle-docs.ts && node --max-old-space-size=8192 ./node_modules/vite/bin/vite.js build",
 		"preview": "vite preview",
 		"test": "vitest run",
 		"prepare": "svelte-kit sync || echo ''",
@@ -52,6 +52,7 @@
 		"@clack/prompts": "^0.11.0",
 		"@clickhouse/client": "^1.11.0",
 		"@databricks/sql": "^1.16.0",
+		"@duckdb/node-api": "1.5.6-r.2",
 		"@evidence/core": "workspace:*",
 		"@google-cloud/bigquery": "^7.9.0",
 		"@markdoc/markdoc": "npm:@hughess/markdoc@^0.0.0-evidence.29",

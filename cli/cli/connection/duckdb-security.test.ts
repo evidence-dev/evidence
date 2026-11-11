@@ -1,0 +1,127 @@
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { DuckDBInstance } from '@duckdb/node-api';
+import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { duckDBServeConfiguration, lockDownDuckDBInstance } from './duckdb-security';
+import type { DuckDBCredentials } from '@evidence/core/connectors/duckdb/credentials';
+
+let root: string;
+let project: string;
+
+beforeEach(async () => {
+	root = await mkdtemp(path.join(tmpdir(), 'evidence-duckdb-sec-'));
+	project = path.join(root, 'report');
+	await mkdir(project);
+});
+
+afterEach(async () => {
+	await rm(root, { recursive: true, force: true });
+});
+
+describe('DuckDB serve security configuration', () => {
+
+	it('allows project CSV but denies outside files and locked setting changes', async () => {
+		const dataDir = path.join(project, 'data');
+		await mkdir(dataDir);
+		await writeFile(path.join(dataDir, 'flights.csv'), 'airport,flights\nPOZ,12\n');
+		const secret = path.join(root, 'outside-secret.txt');
+		await writeFile(secret, 'not-for-http');
+
+		const config: DuckDBCredentials = {
+			database: ':memory:',
+			projectDir: project,
+			schemas: []
+		};
+
+		const instance = await DuckDBInstance.create(':memory:', duckDBServeConfiguration(config));
+		await lockDownDuckDBInstance(instance, config);
+		const connection = await instance.connect();
+		try {
+			// Vitest runs from the CLI repository; use an absolute in-project
+			// path here. The standalone serve smoke test covers relative paths.
+			const allowedCsv = path.join(dataDir, 'flights.csv').replace(/'/g, "''");
+			const rows = await connection.runAndReadAll(
+				`SELECT * FROM read_csv_auto('${allowedCsv}')`
+			);
+			expect(rows.getRowObjectsJson()).toEqual([{ airport: 'POZ', flights: '12' }]);
+
+			await expect(
+				connection.runAndReadAll(`SELECT * FROM read_text('${secret.replace(/'/g, "''")}')`)
+			).rejects.toThrow();
+
+			await expect(
+				connection.runAndReadAll('SET enable_external_access = true')
+			).rejects.toThrow();
+
+			await expect(connection.runAndReadAll('SET lock_configuration = false')).rejects.toThrow();
+
+			await expect(
+				connection.runAndReadAll(`COPY (SELECT 1 AS id) TO '${path
+					.join(root, 'outside.csv')
+					.replace(/'/g, "''")}' (HEADER, DELIMITER ',')`)
+			).rejects.toThrow();
+		} finally {
+			connection.closeSync();
+			instance.closeSync();
+		}
+	});
+
+	it('opens an existing persistent database read-only for serve', async () => {
+		const database = path.join(project, 'analytics.duckdb');
+		const original = await DuckDBInstance.create(database);
+		const writer = await original.connect();
+		try {
+			await writer.runAndReadAll('CREATE TABLE reports AS SELECT 42 AS answer');
+		} finally {
+			writer.closeSync();
+			original.closeSync();
+		}
+
+		const config: DuckDBCredentials = {
+			database,
+			projectDir: project,
+			schemas: []
+		};
+		const instance = await DuckDBInstance.fromCache(database, duckDBServeConfiguration(config));
+		await lockDownDuckDBInstance(instance, config);
+		const connection = await instance.connect();
+		try {
+			const result = await connection.runAndReadAll('SELECT answer FROM reports');
+			expect(result.getRowObjectsJson()).toEqual([{ answer: 42 }]);
+			await expect(
+				connection.runAndReadAll('INSERT INTO reports VALUES (99)')
+			).rejects.toThrow();
+		} finally {
+			connection.closeSync();
+			instance.closeSync();
+		}
+	});
+
+	it('rejects persistent database files outside the project, including symlink escapes', async () => {
+		const outsideDatabase = path.join(root, 'outside.duckdb');
+		const original = await DuckDBInstance.create(outsideDatabase);
+		const writer = await original.connect();
+		try {
+			await writer.runAndReadAll('CREATE TABLE private_data AS SELECT 1 AS id');
+		} finally {
+			writer.closeSync();
+			original.closeSync();
+		}
+
+		const config: DuckDBCredentials = {
+			database: outsideDatabase,
+			projectDir: project,
+			schemas: []
+		};
+		expect(() => duckDBServeConfiguration(config)).toThrow(/inside the Evidence project/);
+
+		if (process.platform !== 'win32') {
+			const alias = path.join(project, 'alias.duckdb');
+			await symlink(outsideDatabase, alias);
+			expect(() => duckDBServeConfiguration({ ...config, database: alias })).toThrow(
+				/inside the Evidence project/
+			);
+		}
+	});
+});

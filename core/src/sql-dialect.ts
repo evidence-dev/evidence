@@ -44,6 +44,7 @@ export type WarehouseType =
 	| 'cube'
 	| 'redshift'
 	| 'motherduck'
+	| 'duckdb'
 	| 'sqlserver'
 	| 'athena';
 
@@ -64,6 +65,7 @@ export function dialectFor(type: WarehouseType | null | undefined): SqlDialect {
 		case 'redshift':
 			return new RedshiftDialect();
 		case 'motherduck':
+		case 'duckdb':
 			return new MotherDuckDialect();
 		case 'sqlserver':
 			return new SqlServerDialect();

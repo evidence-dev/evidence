@@ -168,7 +168,9 @@ export class Metadata {
 	 * here so every construction site picks it up from the active dialect.
 	 */
 	get #tableOpts() {
-		return { caseInsensitive: this.#queryService.dialect.caseInsensitiveIdentifiers };
+		return {
+			caseInsensitive: this.#queryService.dialect.caseInsensitiveIdentifiers
+		};
 	}
 
 	getTable(name: string): TableMetadata | undefined {
@@ -267,6 +269,7 @@ export class Metadata {
 				this.#warehouseMode === 'cube' ||
 				this.#warehouseMode === 'redshift' ||
 				this.#warehouseMode === 'motherduck' ||
+				this.#warehouseMode === 'duckdb' ||
 				this.#warehouseMode === 'sqlserver' ||
 				this.#warehouseMode === 'athena')
 		) {
@@ -310,7 +313,7 @@ export class Metadata {
 			return await this.#loadRedshift();
 		}
 
-		if (this.#warehouseMode === 'motherduck') {
+		if (this.#warehouseMode === 'motherduck' || this.#warehouseMode === 'duckdb') {
 			return this.#loadMotherduck();
 		}
 
@@ -428,7 +431,11 @@ export class Metadata {
 				{ retries: CATALOG_QUERY_RETRIES }
 			);
 		} catch (e) {
-			return { rows: [], columns: [], error: e instanceof Error ? e.message : String(e) };
+			return {
+				rows: [],
+				columns: [],
+				error: e instanceof Error ? e.message : String(e)
+			};
 		}
 	}
 
@@ -960,7 +967,11 @@ WHERE TRUE
   ${schemaFilter('c.table_schema')}
 ORDER BY c.table_schema, c.table_name, c.ordinal_position`
 				),
-				this.#catalogQuery<{ table_schema: string; table_name: string; table_type: string }>(
+				this.#catalogQuery<{
+					table_schema: string;
+					table_name: string;
+					table_type: string;
+				}>(
 					`SELECT t.table_schema AS table_schema,
        t.table_name AS table_name,
        t.table_type AS table_type

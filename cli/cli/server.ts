@@ -9,6 +9,7 @@ import { warnIfStudioUnreachable, describeDevMode, openBrowser } from './server.
 // Auth logic shared with the SvelteKit hook (SSR/API traffic); the static
 // branch below returns before SvelteKit runs, so it must check independently.
 import { authDisabled, checkBasicAuth, SERVE_HARDENED_HEADERS } from './basic-auth.ts';
+import { isAllowedServeRequestHost } from './serve-host.ts';
 import { track } from './telemetry.ts';
 
 // @ts-expect-error - generated at build time
@@ -196,6 +197,15 @@ export async function startServer(options: ServerOptions): Promise<void> {
 				idleTimeout: 255,
 
 				async fetch(req: Request, bunServer) {
+					// Refuse DNS-rebinding Host headers when bound to loopback.
+					// The Origin header alone cannot detect these same-origin requests.
+					if (isServe && !isAllowedServeRequestHost(host, req.url)) {
+						return new Response('Forbidden', {
+							status: 403,
+							headers: SERVE_HARDENED_HEADERS
+						});
+					}
+
 					// Serve mode: basic auth must cover static responses too — Bun's
 					// static branch returns before SvelteKit hooks run.
 					if (isServe && !checkBasicAuth(req.headers.get('authorization'))) {

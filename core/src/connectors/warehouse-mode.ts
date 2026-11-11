@@ -5,18 +5,19 @@
  * "use the hosted ClickHouse query engine" rather than naming a SQL dialect.
  */
 export const WAREHOUSE_MODES = [
-	'managed',
-	'snowflake',
-	'bigquery',
-	'fabric',
-	'clickhouse',
-	'databricks',
-	'postgres',
-	'cube',
-	'redshift',
-	'motherduck',
-	'sqlserver',
-	'athena'
+  "managed",
+  "snowflake",
+  "bigquery",
+  "fabric",
+  "clickhouse",
+  "databricks",
+  "postgres",
+  "cube",
+  "redshift",
+  "motherduck",
+  "duckdb",
+  "sqlserver",
+  "athena",
 ] as const;
 
 export type WarehouseMode = (typeof WAREHOUSE_MODES)[number];
