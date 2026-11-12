@@ -49,6 +49,9 @@ overrides:
   source-map-js: '>=1.2.2'
 
 patchedDependencies:
+  '@hughess/markdoc@0.0.0-evidence.29':
+    hash: l5e7dpevwe62i2a773nqsohcwu
+    path: patches/@hughess__markdoc@0.0.0-evidence.29.patch
   echarts@6.1.0:
     hash: t7k7kw7rvgawflvm2f3yiyoc34
     path: patches/echarts@6.1.0.patch
@@ -98,7 +101,7 @@ importers:
         version: 7.9.4(encoding@0.1.13)
       '@markdoc/markdoc':
         specifier: npm:@hughess/markdoc@^0.0.0-evidence.29
-        version: '@hughess/markdoc@0.0.0-evidence.29(react@19.2.4)'
+        version: '@hughess/markdoc@0.0.0-evidence.29(patch_hash=l5e7dpevwe62i2a773nqsohcwu)(react@19.2.4)'
       '@workos-inc/node':
         specifier: ^7.77.0
         version: 7.82.0(express@5.2.1)
@@ -237,7 +240,7 @@ importers:
         version: 0.513.0(svelte@5.57.2(@typescript-eslint/types@8.57.2))
       '@markdoc/markdoc':
         specifier: npm:@hughess/markdoc@^0.0.0-evidence.29
-        version: '@hughess/markdoc@0.0.0-evidence.29(react@19.2.4)'
+        version: '@hughess/markdoc@0.0.0-evidence.29(patch_hash=l5e7dpevwe62i2a773nqsohcwu)(react@19.2.4)'
       '@svelte-put/shortcut':
         specifier: ^4.1.0
         version: 4.1.0(svelte@5.57.2(@typescript-eslint/types@8.57.2))
@@ -6280,7 +6283,7 @@ snapshots:
       '@hapi/hoek': 11.0.7
     optional: true
 
-  '@hughess/markdoc@0.0.0-evidence.29(react@19.2.4)':
+  '@hughess/markdoc@0.0.0-evidence.29(patch_hash=l5e7dpevwe62i2a773nqsohcwu)(react@19.2.4)':
     optionalDependencies:
       '@types/linkify-it': 3.0.5
       '@types/markdown-it': 12.2.3

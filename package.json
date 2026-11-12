@@ -66,7 +66,8 @@
 		"patchedDependencies": {
 			"ssf": "patches/ssf.patch",
 			"echarts@6.1.0": "patches/echarts@6.1.0.patch",
-			"zrender": "patches/zrender.patch"
+			"zrender": "patches/zrender.patch",
+			"@hughess/markdoc@0.0.0-evidence.29": "patches/@hughess__markdoc@0.0.0-evidence.29.patch"
 		}
 	}
 }

@@ -36,6 +36,8 @@ export function recursivelyReplaceVariables(
 	value: unknown,
 	variables: Record<string, unknown>
 ): unknown {
+	// Translation values are boxed Strings (for `.sql`); Object.entries would explode them into chars.
+	if (value instanceof String) return value.toString();
 	if (
 		typeof value === 'object' &&
 		value !== null &&
@@ -45,6 +47,7 @@ export function recursivelyReplaceVariables(
 		Array.isArray(value.path)
 	) {
 		const variableValue = getNestedValue(variables, value.path);
+		if (variableValue instanceof String) return variableValue.toString();
 		return variableValue !== undefined ? variableValue : value;
 	}
 	if (Array.isArray(value)) {
