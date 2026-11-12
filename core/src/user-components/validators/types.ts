@@ -76,6 +76,18 @@ export function getTableFromContext(tableName: string, context: ValidationContex
 	return getInlineQueryTable(tableName, context);
 }
 
+// A catalog miss is only conclusive for a schema it scanned (current-schema tables are keyed bare).
+export function inUnscannedSchema(
+	tableName: string,
+	catalog: { tables: { name: string }[] } | undefined
+): boolean {
+	// Paths (`queries/foo.sql`) are SQL-file references, not schema-qualified tables.
+	const dot = tableName.lastIndexOf('.');
+	if (dot === -1 || tableName.includes('/')) return false;
+	const schemaPrefix = `${tableName.slice(0, dot).toLowerCase()}.`;
+	return !catalog?.tables.some((t) => t.name.toLowerCase().startsWith(schemaPrefix));
+}
+
 function resolvesToQuery(name: string, context: ValidationContext): boolean {
 	const inlineQueries = context.inlineQueries;
 	return typeof inlineQueries?.getRaw === 'function' && inlineQueries.getRaw(name) !== undefined;

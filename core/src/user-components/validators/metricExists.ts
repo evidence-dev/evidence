@@ -3,7 +3,7 @@ import {
 	type Validator,
 	containsVariableSyntax,
 	getTableFromContext,
-	type ValidationContext
+	inUnscannedSchema
 } from './types';
 import { compileMetric } from '../../metrics/compile-metric';
 
@@ -106,7 +106,10 @@ export const metricExists =
 				!context.metadata.loading &&
 				!context.metadata.loadFailed
 			) {
-				if (!baseTableKnown(found.view.base, context)) {
+				if (
+					!getTableFromContext(found.view.base, context) &&
+					!inUnscannedSchema(found.view.base, context.metadata)
+				) {
 					return [
 						{
 							id: 'invalid-metric',
@@ -144,13 +147,3 @@ export const metricExists =
 
 		return [];
 	};
-
-// A miss is only conclusive for a schema the catalog scanned (current-schema tables are keyed bare).
-function baseTableKnown(base: string, context: ValidationContext): boolean {
-	if (getTableFromContext(base, context)) return true;
-
-	const dot = base.lastIndexOf('.');
-	if (dot === -1) return false;
-	const schemaPrefix = `${base.slice(0, dot).toLowerCase()}.`;
-	return !context.metadata?.tables.some((t) => t.name.toLowerCase().startsWith(schemaPrefix));
-}

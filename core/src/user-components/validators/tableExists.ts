@@ -2,7 +2,8 @@ import {
 	isValidationContext,
 	type Validator,
 	getTableFromContext,
-	containsVariableSyntax
+	containsVariableSyntax,
+	inUnscannedSchema
 } from './types';
 
 export const tableExists =
@@ -44,6 +45,7 @@ export const tableExists =
 							return [];
 						}
 					}
+					if (inUnscannedSchema(strippedTable, connectionCatalog)) return [];
 					return [
 						{
 							id: 'invalid-table',
@@ -60,6 +62,7 @@ export const tableExists =
 					if (!context.metadata || context.metadata.loading || context.metadata.loadFailed) {
 						return [];
 					}
+					if (inUnscannedSchema(strippedTable, context.metadata)) return [];
 					return [
 						{
 							id: 'invalid-table',
@@ -180,6 +183,8 @@ export const tableExists =
 				];
 			}
 		}
+
+		if (inUnscannedSchema(tableName, context.metadata)) return [];
 
 		return [
 			{
