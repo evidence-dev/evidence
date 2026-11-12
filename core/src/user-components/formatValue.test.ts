@@ -1062,6 +1062,16 @@ describe('formatValue', () => {
 			const result = formatValue(1500000, 'num');
 			expect(result).toContain('M');
 		});
+
+		it('moves up a unit when the max rounds up to 1,000', () => {
+			expect(formatValue(999_499, 'num', '', { min: 0, max: 999_499 })).toBe('999k');
+			expect(formatValue(999_800, 'num', '', { min: 0, max: 999_800 })).toBe('1.0M');
+			expect(formatValue(999_700, 'usd', '', { min: 0, max: 999_700 })).toBe('$1.0M');
+			expect(formatValue(999_960_000, 'num', '', { min: 0, max: 999_960_000 })).toBe('1.0B');
+			expect(formatValue(999_960_000_000, 'num', '', { min: 0, max: 999_960_000_000 })).toBe(
+				'1.0T'
+			);
+		});
 	});
 
 	describe('scenario: no format code provided (auto-format)', () => {
