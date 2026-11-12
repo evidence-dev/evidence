@@ -150,4 +150,62 @@ describe('isTreePath', () => {
 		const errors = validate(makeNode('/sample/home'), config, makeContext(undefined));
 		expect(errors).toEqual([]);
 	});
+
+	describe('project-root layout (pages live under pages/)', () => {
+		const page = (slug: string, name = slug) => ({
+			type: 'page' as const,
+			entry: { id: slug, name, slug }
+		});
+		const rootTree: ProjectTree = {
+			project: { ...sampleTree.project },
+			entries: [
+				{
+					type: 'directory',
+					entry: { id: 'root', name: 'root', slug: null },
+					children: [
+						page('evidence-config', 'evidence.config.yaml'),
+						{
+							type: 'directory',
+							entry: { id: 'pages', name: 'pages', slug: 'pages' },
+							children: [
+								page('energy'),
+								{
+									type: 'directory',
+									entry: { id: 'ops', name: 'operators', slug: 'operators' },
+									children: [page('nordtel')]
+								}
+							]
+						}
+					]
+				}
+			]
+		};
+		const run = (href: string) => validate(makeNode(href), config, makeContext([rootTree]));
+
+		it('resolves a page URL against pages/', () => {
+			expect(run('/sample/energy')).toEqual([]);
+			expect(run('/sample/operators/nordtel')).toEqual([]);
+		});
+
+		it('accepts the bare project URL', () => {
+			expect(run('/sample')).toEqual([]);
+		});
+
+		it('still flags a missing page, without the hidden pages/ segment', () => {
+			const errors = run('/sample/operators/missing');
+			expect(errors).toHaveLength(1);
+			expect(errors[0].message).toBe(
+				'Invalid link: no page or folder named `missing` under `sample/operators`'
+			);
+		});
+
+		it('still flags a link that ends at a folder', () => {
+			expect(run('/sample/operators')[0].message).toContain('ends at a folder');
+		});
+
+		it('does not apply the pages/ prefix to a legacy tree', () => {
+			expect(run('/sample/home')).toHaveLength(1);
+			expect(validate(makeNode('/sample/home'), config, makeContext([sampleTree]))).toEqual([]);
+		});
+	});
 });
