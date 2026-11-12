@@ -330,11 +330,21 @@ describe('URL-supplied filter values cannot break out of a string literal', () =
 	});
 
 	it('escapes per dialect in ButtonGroupFilter', () => {
-		const ch = build(ButtonGroupFilter, 'button_group', { value_column: 'c' }, new ClickHouseDialect());
+		const ch = build(
+			ButtonGroupFilter,
+			'button_group',
+			{ value_column: 'c' },
+			new ClickHouseDialect()
+		);
 		expect(ch.sql).toBe(`c='${CLICKHOUSE}'`);
 		expect(ch.templateValues.selected).toBe(`'${CLICKHOUSE}'`);
 
-		const pg = build(ButtonGroupFilter, 'button_group', { value_column: 'c' }, new PostgresDialect());
+		const pg = build(
+			ButtonGroupFilter,
+			'button_group',
+			{ value_column: 'c' },
+			new PostgresDialect()
+		);
 		expect(pg.sql).toBe(`c='${ANSI}'`);
 	});
 
@@ -345,12 +355,12 @@ describe('URL-supplied filter values cannot break out of a string literal', () =
 	});
 
 	it('escapes per dialect in TextInputFilter (value is dropped straight into user SQL)', () => {
-		expect(build(TextInputFilter, 'text_input', {}, new ClickHouseDialect()).templateValues.value).toBe(
-			CLICKHOUSE
-		);
-		expect(build(TextInputFilter, 'text_input', {}, new PostgresDialect()).templateValues.value).toBe(
-			ANSI
-		);
+		expect(
+			build(TextInputFilter, 'text_input', {}, new ClickHouseDialect()).templateValues.value
+		).toBe(CLICKHOUSE);
+		expect(
+			build(TextInputFilter, 'text_input', {}, new PostgresDialect()).templateValues.value
+		).toBe(ANSI);
 	});
 
 	it('escapes per dialect in ExternalFilter (single and array)', () => {
@@ -383,7 +393,12 @@ describe('URL-supplied filter values cannot break out of a string literal', () =
 	});
 
 	it('escapes per dialect in RepeatFilter (value comes from warehouse rows)', () => {
-		const ch = build(RepeatFilter, 'repeat', { column: 'c', value: PAYLOAD }, new ClickHouseDialect());
+		const ch = build(
+			RepeatFilter,
+			'repeat',
+			{ column: 'c', value: PAYLOAD },
+			new ClickHouseDialect()
+		);
 		expect(ch.sql).toBe(`c='${CLICKHOUSE}'`);
 		expect(ch.templateValues.filter).toBe(`c='${CLICKHOUSE}'`);
 	});
@@ -402,7 +417,13 @@ describe('URL-supplied filter values cannot break out of a string literal', () =
 		expect(hostile.templateValues.selected).toBe('');
 		expect(hostile.templateValues.literal).toBe('');
 
-		const ok = build(DateGrainSelectorFilter, 'date_grain_selector', {}, new ClickHouseDialect(), 'month');
+		const ok = build(
+			DateGrainSelectorFilter,
+			'date_grain_selector',
+			{},
+			new ClickHouseDialect(),
+			'month'
+		);
 		expect(ok.templateValues.selected).toBe("'month'");
 		expect(ok.templateValues.literal).toBe('month');
 	});

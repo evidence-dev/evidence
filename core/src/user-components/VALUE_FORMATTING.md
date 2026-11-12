@@ -108,7 +108,7 @@ Every component that has access to `query.result.columns` **must** look up the c
 
 ```typescript
 // Pattern for looking up columnType:
-const columnType = query.result?.columns?.find(c => c.name === columnAlias)?.jsType;
+const columnType = query.result?.columns?.find((c) => c.name === columnAlias)?.jsType;
 formatValue(value, fmt, fallback, range, columnType, firstDayOfWeek);
 ```
 
@@ -122,10 +122,10 @@ The `convertDatePartToDate` function handles numeric outputs from SQL date-part 
 
 ClickHouse `toDayOfWeek(date, mode)` returns integers 1-7. The meaning depends on the mode:
 
-| Mode | Setting | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-|------|---------|---|---|---|---|---|---|---|
-| 3 | `firstDayOfWeek='sunday'` | Sun | Mon | Tue | Wed | Thu | Fri | Sat |
-| 0 | `firstDayOfWeek='monday'` | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
+| Mode | Setting                   | 1   | 2   | 3   | 4   | 5   | 6   | 7   |
+| ---- | ------------------------- | --- | --- | --- | --- | --- | --- | --- |
+| 3    | `firstDayOfWeek='sunday'` | Sun | Mon | Tue | Wed | Thu | Fri | Sat |
+| 0    | `firstDayOfWeek='monday'` | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
 
 `convertDatePartToDate` returns the day name **as a string** (e.g., `"Mon"`, `"Wednesday"`). When this happens, `formatValue` returns the string directly — it must **never** be passed to SSF, because SSF would interpret any non-numeric string as `0` via bitwise OR (`"Mon"|0 === 0`), which maps to January 1, 1970 (a Thursday).
 
@@ -147,20 +147,20 @@ Numeric values 1900-2100 are converted to `Date` objects (January 1st of that ye
 
 `FORMAT_PRESETS` maps friendly names to SSF format strings:
 
-| Preset | SSF Format | Example Output |
-|--------|-----------|----------------|
-| `date` | `yyyy-mm-dd` | 2024-01-15 |
-| `ddd` | `ddd` | Mon |
-| `dddd` | `dddd` | Monday |
-| `mmm` | `mmm` | Jan |
-| `mmmm` | `mmmm` | January |
-| `mmm-yy` | `mmm-yy` | Jan-24 |
-| `yyyy` | `yyyy` | 2024 |
-| `shortdate` | `mmm d/yy` | Jan 15/24 |
-| `longdate` | `mmmm d, yyyy` | January 15, 2024 |
-| `fulldate` | `dddd mmmm d, yyyy` | Monday January 15, 2024 |
-| `mdy` | `m/d/y` | 1/15/24 |
-| `dmy` | `d/m/y` | 15/1/24 |
+| Preset      | SSF Format          | Example Output          |
+| ----------- | ------------------- | ----------------------- |
+| `date`      | `yyyy-mm-dd`        | 2024-01-15              |
+| `ddd`       | `ddd`               | Mon                     |
+| `dddd`      | `dddd`              | Monday                  |
+| `mmm`       | `mmm`               | Jan                     |
+| `mmmm`      | `mmmm`              | January                 |
+| `mmm-yy`    | `mmm-yy`            | Jan-24                  |
+| `yyyy`      | `yyyy`              | 2024                    |
+| `shortdate` | `mmm d/yy`          | Jan 15/24               |
+| `longdate`  | `mmmm d, yyyy`      | January 15, 2024        |
+| `fulldate`  | `dddd mmmm d, yyyy` | Monday January 15, 2024 |
+| `mdy`       | `m/d/y`             | 1/15/24                 |
+| `dmy`       | `d/m/y`             | 15/1/24                 |
 
 ### Language
 
@@ -222,6 +222,7 @@ Internal comparison alias  →  "Revenue YoY"
 ```
 
 Key behaviors:
+
 - Replaces underscores with spaces, parentheses with "of"
 - Applies title case with acronym preservation (GDP, ROI, MRR, YoY, etc.)
 - Detects ClickHouse date functions and generates semantic titles
@@ -241,47 +242,47 @@ This table shows exactly what each component formats with each function. When mo
 
 ### formatValue usage by component
 
-| Component | Axis labels | Tooltips | Data labels | Cell values |
-|-----------|:-----------:|:--------:|:-----------:|:-----------:|
-| **Combo chart** (XAxisModel) | x-axis ticks | | | |
-| **Combo chart** (YAxisModel) | y-axis ticks | | | |
-| **Combo chart** (SeriesModel) | | y-values, percentages | on chart elements | |
-| **Combo chart** (ReferenceLineModel) | | | line/point labels | |
-| **Horizontal bar chart** | x-axis (value), y-axis (category) | category + value | on bars | |
-| **Heatmap** | x-axis, y-axis categories | x, y, and value | cell labels | |
-| **Table** | | | | cell content |
-| **Table** (pivot headers) | | | | header labels |
-| **BigValue** | | | | main + comparison |
-| **Value** | | | | displayed value |
-| **DeltaDisplay** | | | | delta value |
-| **Pie chart** | | value, percentage | | |
-| **Sankey chart** | | values | node + edge labels | |
-| **Funnel chart** | | values | labels | |
-| **Histogram** | bin axis ticks | bin range | | |
-| **Polar chart** | | values | | |
-| **Calendar heatmap** | | values | cell labels | |
-| **Heat grid** | | | | metric + thresholds |
-| **Progress bars** | | | | numerator/denominator |
-| **Sparkline** (tooltip) | | x + y values | | |
-| **Map** (tooltip + legend) | | field values | | min/max labels |
-| **Slider** | | | | range display |
+| Component                            |            Axis labels            |       Tooltips        |    Data labels     |      Cell values      |
+| ------------------------------------ | :-------------------------------: | :-------------------: | :----------------: | :-------------------: |
+| **Combo chart** (XAxisModel)         |           x-axis ticks            |                       |                    |                       |
+| **Combo chart** (YAxisModel)         |           y-axis ticks            |                       |                    |                       |
+| **Combo chart** (SeriesModel)        |                                   | y-values, percentages | on chart elements  |                       |
+| **Combo chart** (ReferenceLineModel) |                                   |                       | line/point labels  |                       |
+| **Horizontal bar chart**             | x-axis (value), y-axis (category) |   category + value    |      on bars       |                       |
+| **Heatmap**                          |     x-axis, y-axis categories     |    x, y, and value    |    cell labels     |                       |
+| **Table**                            |                                   |                       |                    |     cell content      |
+| **Table** (pivot headers)            |                                   |                       |                    |     header labels     |
+| **BigValue**                         |                                   |                       |                    |   main + comparison   |
+| **Value**                            |                                   |                       |                    |    displayed value    |
+| **DeltaDisplay**                     |                                   |                       |                    |      delta value      |
+| **Pie chart**                        |                                   |   value, percentage   |                    |                       |
+| **Sankey chart**                     |                                   |        values         | node + edge labels |                       |
+| **Funnel chart**                     |                                   |        values         |       labels       |                       |
+| **Histogram**                        |          bin axis ticks           |       bin range       |                    |                       |
+| **Polar chart**                      |                                   |        values         |                    |                       |
+| **Calendar heatmap**                 |                                   |        values         |    cell labels     |                       |
+| **Heat grid**                        |                                   |                       |                    |  metric + thresholds  |
+| **Progress bars**                    |                                   |                       |                    | numerator/denominator |
+| **Sparkline** (tooltip)              |                                   |     x + y values      |                    |                       |
+| **Map** (tooltip + legend)           |                                   |     field values      |                    |    min/max labels     |
+| **Slider**                           |                                   |                       |                    |     range display     |
 
 ### formatTitle usage by component
 
-| Component | What it generates | Category |
-|-----------|-------------------|----------|
-| **sql-expression-utils** | `displayAlias` for all columns | Feeds into axis titles, headers |
-| **XAxisModel** (combo chart) | x-axis title ("Date →") | Axis title |
-| **TableHeader** | Column header text | Column header |
-| **TableFilter / FilterChips** | Column labels in filter UI | Column header |
-| **Dropdown** | Placeholder + label fallback | Component label |
-| **ButtonGroup / Toggle / Slider / TextInput** | Label fallback | Component label |
-| **RangeCalendar** | Calendar label fallback | Component label |
-| **ComparisonSelector / EnumSelector** | Option labels | Legend label |
-| **DimensionCut** | Dimension title | Component label |
-| **MapLegend** | Legend + size labels | Legend label |
-| **map/tooltip-utils** | Field labels in tooltip | Column header |
-| **data-export** | Excel column headers, sheet names | Column header |
+| Component                                     | What it generates                 | Category                        |
+| --------------------------------------------- | --------------------------------- | ------------------------------- |
+| **sql-expression-utils**                      | `displayAlias` for all columns    | Feeds into axis titles, headers |
+| **XAxisModel** (combo chart)                  | x-axis title ("Date →")           | Axis title                      |
+| **TableHeader**                               | Column header text                | Column header                   |
+| **TableFilter / FilterChips**                 | Column labels in filter UI        | Column header                   |
+| **Dropdown**                                  | Placeholder + label fallback      | Component label                 |
+| **ButtonGroup / Toggle / Slider / TextInput** | Label fallback                    | Component label                 |
+| **RangeCalendar**                             | Calendar label fallback           | Component label                 |
+| **ComparisonSelector / EnumSelector**         | Option labels                     | Legend label                    |
+| **DimensionCut**                              | Dimension title                   | Component label                 |
+| **MapLegend**                                 | Legend + size labels              | Legend label                    |
+| **map/tooltip-utils**                         | Field labels in tooltip           | Column header                   |
+| **data-export**                               | Excel column headers, sheet names | Column header                   |
 
 ---
 
@@ -301,32 +302,33 @@ Models (`.svelte.ts`) and pure helpers cannot read context, so they take the lan
 ```typescript
 // Full example with all parameters:
 formatValue(
-  value,                                    // from query result row
-  fmt,                                      // user's format code or date grain default
-  String(value),                            // fallback
-  range,                                    // { min, max } for auto-scaling (optional)
-  query.result?.columns?.find(              // column type from metadata
-    c => c.name === columnAlias
-  )?.jsType,
-  projectSettings.first_day_of_week         // for day-of-week interpretation
+	value, // from query result row
+	fmt, // user's format code or date grain default
+	String(value), // fallback
+	range, // { min, max } for auto-scaling (optional)
+	query.result?.columns?.find(
+		// column type from metadata
+		(c) => c.name === columnAlias
+	)?.jsType,
+	projectSettings.first_day_of_week // for day-of-week interpretation
 );
 ```
 
 ### Component status
 
-| Component | Passes columnType | Passes firstDayOfWeek | Notes |
-|-----------|:-:|:-:|-------|
-| **Table** | ✅ | ✅ | Via `cellColumnMeta?.type` from pivot column metadata |
-| **Value** | ✅ | ❌ | Day-of-week unlikely in Value component |
-| **BigValue** | ✅ | ❌ | Day-of-week unlikely in BigValue |
-| **Heatmap** | ✅ | ✅ | For both x and y axes and tooltips |
-| **XAxisModel** (combo/line/area/bar) | ✅ | ✅ | For x-axis labels |
-| **HorizontalBarChart** | ✅ | ✅ | For y-axis categories and tooltips |
-| **Pivot headers** | ✅ | ✅ | Via `config.firstDayOfWeek` in PivotConfig |
-| **SparklineDisplay** | ❌ | ❌ | No access to query metadata (receives chartData only) |
-| **DeltaDisplay** | ❌ | ❌ | Receives value only, no query context |
-| **Comparison tooltips** | ❌ | ❌ | Uses fallback heuristic |
-| **Map tooltips** (`buildTooltipHTML`) | ❌ | ❌ | Language is threaded (`TooltipContent.language` via the layer models' `getLanguage`); columnType / firstDayOfWeek are not |
+| Component                             | Passes columnType | Passes firstDayOfWeek | Notes                                                                                                                     |
+| ------------------------------------- | :---------------: | :-------------------: | ------------------------------------------------------------------------------------------------------------------------- |
+| **Table**                             |        ✅         |          ✅           | Via `cellColumnMeta?.type` from pivot column metadata                                                                     |
+| **Value**                             |        ✅         |          ❌           | Day-of-week unlikely in Value component                                                                                   |
+| **BigValue**                          |        ✅         |          ❌           | Day-of-week unlikely in BigValue                                                                                          |
+| **Heatmap**                           |        ✅         |          ✅           | For both x and y axes and tooltips                                                                                        |
+| **XAxisModel** (combo/line/area/bar)  |        ✅         |          ✅           | For x-axis labels                                                                                                         |
+| **HorizontalBarChart**                |        ✅         |          ✅           | For y-axis categories and tooltips                                                                                        |
+| **Pivot headers**                     |        ✅         |          ✅           | Via `config.firstDayOfWeek` in PivotConfig                                                                                |
+| **SparklineDisplay**                  |        ❌         |          ❌           | No access to query metadata (receives chartData only)                                                                     |
+| **DeltaDisplay**                      |        ❌         |          ❌           | Receives value only, no query context                                                                                     |
+| **Comparison tooltips**               |        ❌         |          ❌           | Uses fallback heuristic                                                                                                   |
+| **Map tooltips** (`buildTooltipHTML`) |        ❌         |          ❌           | Language is threaded (`TooltipContent.language` via the layer models' `getLanguage`); columnType / firstDayOfWeek are not |
 
 Components marked ❌ rely on the `isDateFormat()` heuristic fallback. This is acceptable for components that primarily format numeric values, but should be addressed if they start formatting date values.
 
@@ -356,21 +358,25 @@ The SQL mode and `formatValue` interpretation must match. Both are driven by the
 When creating a component that displays formatted values:
 
 1. **Import formatValue:**
+
    ```typescript
    import { formatValue } from '../../formatValue';
    ```
 
 2. **Get project settings** (for `firstDayOfWeek`):
+
    ```typescript
    const projectSettings = getProjectSettingsContext();
    ```
 
 3. **Look up column type** from query metadata:
+
    ```typescript
-   const columnType = query.result?.columns?.find(c => c.name === alias)?.jsType;
+   const columnType = query.result?.columns?.find((c) => c.name === alias)?.jsType;
    ```
 
 4. **Call formatValue** with all relevant parameters:
+
    ```typescript
    formatValue(value, fmt, String(value), range, columnType, projectSettings.first_day_of_week);
    ```
@@ -392,34 +398,42 @@ When creating a component that displays formatted values:
 ### What must be tested
 
 #### Format presets on date strings (no columnType)
+
 Every preset date format must produce the correct output when given a date string and no columnType. This validates the `isDateFormat()` fallback path.
 
 #### Format presets on date strings (with columnType)
+
 Same formats with `columnType='date'` — validates the primary columnType path.
 
 #### Day-of-week regression
+
 - Numeric values 1-7 must produce 7 distinct day names (not all "Thursday")
 - Both `firstDayOfWeek` modes must be tested
 - Both `ddd` (short) and `dddd` (long) formats
 - String numeric values ("1"-"7") must produce same results as number values
 
 #### Month formatting
+
 - Numeric values 1-12 with `mmm` and `mmmm` must produce correct month names
 - Must produce 12 distinct results
 
 #### Cross-component consistency
+
 - Same input must produce same output regardless of which call pattern is used (with/without range, with/without columnType)
 - Numeric and string inputs must produce identical results
 
 #### Custom format codes
+
 - Custom date formats like `mmm/yy`, `yyyy-mmm`, `dd-mmm-yyyy` must work on date string values
 - Must NOT return the raw ISO date string
 
 #### Auto-scaling
+
 - Base formats (`num`, `usd`, `pct`) must auto-scale based on range
 - Zero values must not show units
 
 #### Decimal separator
+
 - Comma separator must swap `.` and `,` for numeric values
 - Must NOT modify date format commas
 
@@ -433,25 +447,25 @@ Same formats with `columnType='date'` — validates the primary columnType path.
 
 ## Key Files
 
-| File | Purpose |
-|------|---------|
-| `core/src/user-components/formatValue.ts` | Core value formatting function, presets, date part conversion |
-| `core/src/user-components/formatTitle.ts` | Column name → readable title conversion |
-| `core/src/user-components/common/date-options.ts` | Date grain definitions, SQL functions, default formats |
-| `core/src/user-components/common/sql-expression-utils.ts` | Column processing, generates `displayAlias` via formatTitle |
-| `core/src/user-components/common/pivot-utils.ts` | Pivot header formatting (uses formatValue with PivotConfig.firstDayOfWeek) |
-| `core/src/user-components/formatValue.test.ts` | Unit tests for formatValue |
-| `core/src/user-components/formatTitle.test.ts` | Unit tests for formatTitle |
-| `core/src/user-components/common/pivot-utils.format.test.ts` | Tests for date formatting with columnType |
-| `patches/ssf.patch` | SSF date1970 epoch patch |
+| File                                                         | Purpose                                                                    |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| `core/src/user-components/formatValue.ts`                    | Core value formatting function, presets, date part conversion              |
+| `core/src/user-components/formatTitle.ts`                    | Column name → readable title conversion                                    |
+| `core/src/user-components/common/date-options.ts`            | Date grain definitions, SQL functions, default formats                     |
+| `core/src/user-components/common/sql-expression-utils.ts`    | Column processing, generates `displayAlias` via formatTitle                |
+| `core/src/user-components/common/pivot-utils.ts`             | Pivot header formatting (uses formatValue with PivotConfig.firstDayOfWeek) |
+| `core/src/user-components/formatValue.test.ts`               | Unit tests for formatValue                                                 |
+| `core/src/user-components/formatTitle.test.ts`               | Unit tests for formatTitle                                                 |
+| `core/src/user-components/common/pivot-utils.format.test.ts` | Tests for date formatting with columnType                                  |
+| `patches/ssf.patch`                                          | SSF date1970 epoch patch                                                   |
 
 ---
 
 ## Historical Context
 
-| Date | PR | What changed | Impact |
-|------|-----|-------------|--------|
-| Jul 2025 | #495 | Introduced `convertDatePartToDate`, returned Date objects | Day-of-week formatting worked |
-| Sep 2025 | #987 | Removed custom date format regex fallback | Custom format codes (e.g., `mmm/yy`) stopped working on string values without columnType |
-| Jan 2026 | #113 | Changed `convertDatePartToDate` to return strings, added `firstDayOfWeek` | Day-of-week always showed "Thursday" (SSF re-interpreted strings as 0) |
-| Mar 2026 | #631 | Fixed: early return for day name strings, added `isDateFormat()` fallback, passed columnType from all components | Both issues resolved |
+| Date     | PR   | What changed                                                                                                     | Impact                                                                                   |
+| -------- | ---- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Jul 2025 | #495 | Introduced `convertDatePartToDate`, returned Date objects                                                        | Day-of-week formatting worked                                                            |
+| Sep 2025 | #987 | Removed custom date format regex fallback                                                                        | Custom format codes (e.g., `mmm/yy`) stopped working on string values without columnType |
+| Jan 2026 | #113 | Changed `convertDatePartToDate` to return strings, added `firstDayOfWeek`                                        | Day-of-week always showed "Thursday" (SSF re-interpreted strings as 0)                   |
+| Mar 2026 | #631 | Fixed: early return for day name strings, added `isDateFormat()` fallback, passed columnType from all components | Both issues resolved                                                                     |

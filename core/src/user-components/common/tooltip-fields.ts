@@ -44,7 +44,7 @@ export const tooltipFieldSchema = z.object({
 	color_by_sign: z
 		.boolean({
 			description:
-				'Colour the value green when ≥ 0 and red when < 0. Uses the theme\'s positive/negative tokens so it stays consistent with `delta` and `benchmark_comparison`.'
+				"Colour the value green when ≥ 0 and red when < 0. Uses the theme's positive/negative tokens so it stays consistent with `delta` and `benchmark_comparison`."
 		})
 		.optional()
 		.default(false),

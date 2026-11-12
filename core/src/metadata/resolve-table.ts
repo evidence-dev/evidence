@@ -10,16 +10,16 @@ type CatalogTable = ReturnType<Metadata['getTable']>;
  * otherwise a lowercase/unqualified name that renders fine in a chart shows "No columns found".
  */
 export function resolveCatalogTable(
-	metadata: Pick<Metadata, 'getTable' | 'tables'>,
+	metadata: Pick<Metadata, 'getTable' | 'tables'> & { isQueryEngineV3?: boolean },
 	name: string
 ): CatalogTable {
 	const direct = metadata.getTable(name);
 	if (direct) return direct;
-	if (!name.includes('.')) {
-		const suffix = `.${name.toLowerCase()}`;
-		for (const table of metadata.tables) {
-			if (table.name.toLowerCase().endsWith(suffix)) return table;
-		}
+	// QEv3 keys are 3-part (`DB.SCHEMA.TABLE`), so 2-part names also suffix-match there.
+	if (name.includes('.') && !metadata.isQueryEngineV3) return undefined;
+	const suffix = `.${name.toLowerCase()}`;
+	for (const table of metadata.tables) {
+		if (table.name.toLowerCase().endsWith(suffix)) return table;
 	}
 	return undefined;
 }

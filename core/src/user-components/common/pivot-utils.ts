@@ -12,11 +12,10 @@ type EvidenceDataPoint = DataPoint & {
 	__ev_subtotal_level?: number;
 };
 
-export interface PivotRow
-	extends Record<
-		string,
-		string | number | boolean | null | undefined | Date | number[] | boolean[]
-	> {
+export interface PivotRow extends Record<
+	string,
+	string | number | boolean | null | undefined | Date | number[] | boolean[]
+> {
 	render_type: 'cell_data' | 'row_total' | 'row_subtotal';
 	subtotal_level: number | null;
 	__dimKey?: string; // Make dimKey optional since it's only needed for pivot tables
@@ -286,8 +285,7 @@ export function generateSimpleTable(
 	}));
 
 	// Check if the data has a row color column to preserve
-	const hasRowColorColumn =
-		filteredData.length > 0 && ROW_COLOR_COLUMN in filteredData[0];
+	const hasRowColorColumn = filteredData.length > 0 && ROW_COLOR_COLUMN in filteredData[0];
 
 	// Filter out subtotal/total rows and clean row data
 	const rows = filteredData
@@ -1587,7 +1585,7 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 						label = String(part);
 					}
 				} else {
-					label = part === null ? config.totalLabel ?? 'Total' : String(part ?? '');
+					label = part === null ? (config.totalLabel ?? 'Total') : String(part ?? '');
 				}
 			}
 

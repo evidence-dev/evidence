@@ -254,24 +254,24 @@
 			<div
 				class="h-full w-full overflow-visible"
 				style="background-color: transparent;"
-			use:echarts={{
-				options: stableChartOptions,
-				theme: mode.current,
-				width,
-				height,
-				renderer: 'svg',
-				printing,
-				group,
-				onCreate: (c) => {
-					chart = c;
-				},
-				onReady: () => {
-					echartsReady = true;
-				},
-				onDestroy: () => {
-					chart = null;
-				}
-			}}
+				use:echarts={{
+					options: stableChartOptions,
+					theme: mode.current,
+					width,
+					height,
+					renderer: 'svg',
+					printing,
+					group,
+					onCreate: (c) => {
+						chart = c;
+					},
+					onReady: () => {
+						echartsReady = true;
+					},
+					onDestroy: () => {
+						chart = null;
+					}
+				}}
 			></div>
 		{/if}
 	</svelte:element>

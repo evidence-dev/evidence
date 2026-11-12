@@ -87,6 +87,7 @@ export type CatalogProvider = () => Promise<ProviderCatalogTable[]>;
 export type ProviderCatalogTable = {
 	name: string;
 	columns: { name: string; type?: string }[];
+	tableType?: ITableMetadata['tableType'];
 };
 
 export class Metadata {
@@ -201,6 +202,10 @@ export class Metadata {
 
 	get dialect() {
 		return this.#queryService.dialect;
+	}
+
+	get isQueryEngineV3(): boolean {
+		return this.#queryService.isQueryEngineV3 === true;
 	}
 
 	async load(): Promise<void> {
@@ -447,7 +452,7 @@ export class Metadata {
 			this.#tables.set(
 				table.name,
 				new TableMetadata(
-					{ name: table.name, columns, tableType: 'table' },
+					{ name: table.name, columns, tableType: table.tableType ?? 'table' },
 					{
 						caseInsensitive: true
 					}

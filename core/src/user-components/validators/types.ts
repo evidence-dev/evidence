@@ -64,8 +64,9 @@ export function getTableFromContext(tableName: string, context: ValidationContex
 		const table = context.metadata.getTable(tableName);
 		if (table) return table;
 
-		if (!tableName.includes('.')) {
-			// Match case-insensitively to mirror Snowflake's identifier folding.
+		// Match case-insensitively to mirror Snowflake's identifier folding; QEv3's
+		// 3-part keys (`DB.SCHEMA.TABLE`) also let 2-part references suffix-match.
+		if (!tableName.includes('.') || context.metadata.isQueryEngineV3) {
 			const suffix = `.${tableName.toLowerCase()}`;
 			for (const candidate of context.metadata.tables) {
 				if (candidate.name.toLowerCase().endsWith(suffix)) return candidate;
