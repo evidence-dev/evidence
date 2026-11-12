@@ -1,5 +1,6 @@
 import { buildTooltipContent } from './tooltipHelpers';
 import { getComparisonTooltipContext } from './ComparisonTooltip.svelte';
+import { getLocaleContext } from '../../../locale/locale.context.svelte';
 
 /**
  * Composable for adding comparison tooltips to any component
@@ -7,6 +8,7 @@ import { getComparisonTooltipContext } from './ComparisonTooltip.svelte';
  */
 export function useComparisonTooltip() {
 	const tooltip = getComparisonTooltipContext();
+	const { t } = getLocaleContext();
 
 	/**
 	 * Create tooltip event handlers for an element
@@ -35,6 +37,7 @@ export function useComparisonTooltip() {
 			if (!comparison.compare_vs) return;
 
 			const tooltipContent = buildTooltipContent(
+				t,
 				comparison.compare_vs,
 				row,
 				rawData,

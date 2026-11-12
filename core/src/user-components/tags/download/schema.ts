@@ -24,8 +24,8 @@ const attributes = {
 	label: {
 		type: String,
 		required: false,
-		default: 'Download',
-		description: 'Text displayed on the download button',
+		description:
+			'Text displayed on the download button (defaults to "Download" in the page language)',
 		affectsQuery: false,
 		supportsVariables: true,
 		variableContext: 'text'

@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	import type { TranslationKey } from '../../../locale/messages';
+	import formatTitle from '../../formatTitle';
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import EnumSelector from '../common/EnumSelector.svelte';
@@ -27,12 +30,20 @@
 	});
 
 	const { resolveText } = $derived(createResolvers(variableProcessor));
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const grainLabel = (grain: string) => {
+		const key = `date_grain.${grain.replaceAll(' ', '_')}`;
+		return Object.hasOwn(localeContext.messages, key)
+			? t(key as TranslationKey)
+			: formatTitle(grain);
+	};
 
 	// Resolved props
 	const id = $derived(props.id);
 	const presetValues = $derived(props.preset_values as string[] | undefined);
 	const defaultValue = $derived(resolveText(props.default_value) ?? props.default_value);
-	const title = $derived(resolveText(props.title));
+	const title = $derived(resolveText(props.title) ?? t('input.date_grain_title'));
 	const info = $derived(resolveText(props.info));
 	const info_link = $derived(resolveText(props.info_link));
 	const info_link_title = $derived(resolveText(props.info_link_title));
@@ -88,4 +99,5 @@
 	{info_link_title}
 	{placeholder}
 	{icon}
+	labelFormatter={grainLabel}
 />

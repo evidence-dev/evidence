@@ -110,7 +110,8 @@ async function mountDropdown(search: string, props: Partial<DropdownProps>) {
 			url = new URL(next);
 		},
 		projectSettings: undefined,
-		dialect: () => defaultDialect
+		dialect: () => defaultDialect,
+		language: undefined
 	};
 	const filters = new Filters(deps);
 	pageFilters.current = filters;

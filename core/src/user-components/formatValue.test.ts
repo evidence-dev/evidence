@@ -6,6 +6,7 @@ import {
 	parseSeriesTimestampMs,
 	canonicalizeTimeAxisValue
 } from './formatValue';
+import { getDefaultFormatForDateGrain } from './common/date-options';
 
 describe('formatValue', () => {
 	describe('decimal separator conversion', () => {
@@ -244,7 +245,6 @@ describe('formatValue', () => {
 				expect(formatValue(6, 'ddd', '', undefined, undefined, 'monday')).toBe('Sat');
 				expect(formatValue(7, 'ddd', '', undefined, undefined, 'monday')).toBe('Sun');
 			});
-
 		});
 
 		describe('numeric day-of-week values with dddd format', () => {
@@ -1192,7 +1192,7 @@ describe('formatValue', () => {
 				);
 			});
 
-			it('does not mistake a bare date\'s day component for an offset', () => {
+			it("does not mistake a bare date's day component for an offset", () => {
 				// "2024-06-01" ends in "-01" — only two digits, not a "-hhmm" offset.
 				expect(standardizeDateString('2024-06-01')).toBe('2024-06-01T00:00:00');
 			});
@@ -1217,7 +1217,7 @@ describe('formatValue', () => {
 				);
 			});
 
-			it('a bare date lands on local midnight, not Date.parse\'s UTC midnight', () => {
+			it("a bare date lands on local midnight, not Date.parse's UTC midnight", () => {
 				expect(parseSeriesTimestampMs('2024-06-01')).toBe(new Date(2024, 5, 1).getTime());
 			});
 		});
@@ -1237,6 +1237,90 @@ describe('formatValue', () => {
 				expect(canonicalizeTimeAxisValue(d)).toBe(d);
 				expect(canonicalizeTimeAxisValue(1717200000000)).toBe(1717200000000);
 			});
+		});
+	});
+
+	describe('language (month and weekday names in fmt codes)', () => {
+		const wed15Jan = new Date(2025, 0, 15, 16, 5, 9);
+		const fmtIn = (language: string | null, value: unknown, code: string) =>
+			formatValue(value, code, '', undefined, undefined, 'sunday', undefined, language);
+
+		it('renders name tokens in French while leaving numeric tokens and literals alone', () => {
+			expect(fmtIn('fr', wed15Jan, 'mmm yyyy')).toBe('janv. 2025');
+			expect(fmtIn('fr', wed15Jan, 'mmmm')).toBe('janvier');
+			expect(fmtIn('fr', wed15Jan, 'mmmmm')).toBe('J');
+			expect(fmtIn('fr', wed15Jan, 'ddd d mmm')).toBe('mer. 15 janv.');
+			expect(fmtIn('fr', wed15Jan, 'dddd d mmmm yyyy')).toBe('mercredi 15 janvier 2025');
+			expect(fmtIn('fr', wed15Jan, 'yyyy-mm-dd')).toBe('2025-01-15');
+			expect(fmtIn('fr', wed15Jan, 'dd/mm/yyyy')).toBe('15/01/2025');
+			expect(fmtIn('fr', wed15Jan, '"Mois :" mmmm')).toBe('Mois : janvier');
+		});
+
+		it('resolves a regional tag and falls back to English for unknown languages', () => {
+			expect(fmtIn('fr-CA', wed15Jan, 'mmm')).toBe('janv.');
+			expect(fmtIn('xx', wed15Jan, 'mmm')).toBe('Jan');
+			expect(fmtIn(null, wed15Jan, 'mmm')).toBe('Jan');
+		});
+
+		it('localizes date-part integers the same way as full dates', () => {
+			expect(fmtIn('fr', 3, 'mmm')).toBe('mars');
+			expect(fmtIn('fr', 3, 'mmmm')).toBe('mars');
+			expect(fmtIn('fr', 2, 'ddd')).toBe('lun.');
+			expect(fmtIn('fr', 2, 'dddd')).toBe('lundi');
+			expect(formatValue(1, 'dddd', '', undefined, undefined, 'monday', undefined, 'fr')).toBe(
+				'lundi'
+			);
+		});
+
+		it('uses French word order and 24-hour time for presets that read as English', () => {
+			expect(fmtIn('en', wed15Jan, 'longdate')).toBe('January 15, 2025');
+			expect(fmtIn('fr', wed15Jan, 'longdate')).toBe('15 janvier 2025');
+			expect(fmtIn('fr', wed15Jan, 'fulldate')).toBe('mercredi 15 janvier 2025');
+			expect(fmtIn('fr', wed15Jan, 'shortdate')).toBe('15 janv. 25');
+			expect(fmtIn('en', wed15Jan, 'hms')).toBe('4:05:09 PM');
+			expect(fmtIn('fr', wed15Jan, 'hms')).toBe('16:05:09');
+			expect(fmtIn('fr', wed15Jan, 'date')).toBe('2025-01-15');
+		});
+
+		it('is byte-identical to the unlocalized output for English', () => {
+			const codes = [
+				'mmm yyyy',
+				'mmmm d, yyyy',
+				'dddd',
+				'ddd',
+				'mmmmm',
+				'longdate',
+				'fulldate',
+				'shortdate',
+				'hms'
+			];
+			for (const code of codes) {
+				expect(fmtIn('en', wed15Jan, code)).toBe(fmtIn(null, wed15Jan, code));
+			}
+			expect(fmtIn('en', wed15Jan, 'mmm yyyy')).toBe('Jan 2025');
+			expect(fmtIn('en', wed15Jan, 'fulldate')).toBe('Wednesday January 15, 2025');
+		});
+		it('localizes date_grain default codes, which carry English order and a 12-hour clock', () => {
+			const cases: [string, string, string][] = [
+				[getDefaultFormatForDateGrain('day')!, '15 janv. 2025', 'Jan 15, 2025'],
+				[getDefaultFormatForDateGrain('week')!, '15 janv. 2025', 'Jan 15, 2025'],
+				[getDefaultFormatForDateGrain('hour')!, '15 janv. 2025 16 h', 'Jan 15, 2025 4 PM'],
+				[getDefaultFormatForDateGrain('quarter')!, '2025-T1', '2025-Q1']
+			];
+			for (const [code, fr, en] of cases) {
+				expect(fmtIn('fr', wed15Jan, code)).toBe(fr);
+				expect(fmtIn(null, wed15Jan, code)).toBe(en);
+			}
+			const quarterOfYear = getDefaultFormatForDateGrain('quarter of year')!;
+			expect(fmtIn('fr', 2, quarterOfYear)).toBe('T2');
+			expect(fmtIn(null, 2, quarterOfYear)).toBe('Q2');
+			expect(fmtIn('fr', 7, quarterOfYear)).toBe('');
+			expect(fmtIn('fr', wed15Jan, 'qq')).toBe('T1');
+		});
+
+		it('treats Object.prototype keys as unknown languages', () => {
+			expect(fmtIn('constructor', wed15Jan, 'mmm')).toBe('Jan');
+			expect(fmtIn('__proto__', wed15Jan, 'mmm')).toBe('Jan');
 		});
 	});
 });

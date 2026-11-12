@@ -1,4 +1,5 @@
 import { formatValue } from '../../formatValue';
+import type { Translate } from '../../../locale/messages';
 
 // Helper function to construct target comparison column names
 export function constructVsTargetColumns(
@@ -149,6 +150,7 @@ export function getFormattedValue(
 
 // Build tooltip content based on comparison type
 export function buildTooltipContent(
+	t: Translate,
 	comparisonType: 'target' | 'prior year' | 'prior period' | 'benchmark',
 	row: Record<string, unknown>,
 	rawData?: Record<string, unknown>[],
@@ -185,6 +187,7 @@ export function buildTooltipContent(
 			effectiveFormat
 		);
 	};
+	const display = (value: string) => (value === 'N/A' ? t('comparison.not_available') : value);
 
 	if (comparisonType === 'target') {
 		const columns = constructVsTargetColumns(resultField || '', comparisonId);
@@ -196,18 +199,18 @@ export function buildTooltipContent(
 
 		// Build rows array with the 4 core comparison values
 		const rows: { label: string; value: string }[] = [
-			{ label: 'Actual', value: current },
-			{ label: 'Target', value: target },
+			{ label: t('comparison.actual'), value: display(current) },
+			{ label: t('comparison.target'), value: display(target) },
 			{ label: 'separator', value: '' }, // Special separator row
-			{ label: 'Change (abs)', value: changeAbs }
+			{ label: t('comparison.change_abs'), value: display(changeAbs) }
 		];
 
 		if (!hidePct) {
-			rows.push({ label: 'Change (%)', value: changePct });
+			rows.push({ label: t('comparison.change_pct_parens'), value: display(changePct) });
 		}
 
 		return {
-			title: 'vs Target',
+			title: t('comparison.vs_target'),
 			rows
 		};
 	} else if (comparisonType === 'prior year' || comparisonType === 'prior period') {
@@ -219,8 +222,10 @@ export function buildTooltipContent(
 		const changePct = getFormattedValueWrapper(columns.pct);
 
 		// Get date range values to use as labels
-		let currentLabel = 'Current';
-		let periodLabel = comparisonType === 'prior year' ? 'Prior Year' : 'Prior Period';
+		let currentLabel = t('comparison.current');
+		let periodLabel = t(
+			comparisonType === 'prior year' ? 'comparison.prior_year' : 'comparison.prior_period'
+		);
 
 		if (rawData && (comparisonId || resultField)) {
 			// Determine the comparison ID - either provided or extract from resultField
@@ -249,18 +254,22 @@ export function buildTooltipContent(
 		}
 
 		const rows: { label: string; value: string }[] = [
-			{ label: currentLabel, value: currentValue },
-			{ label: periodLabel, value: comparisonValue },
+			{ label: currentLabel, value: display(currentValue) },
+			{ label: periodLabel, value: display(comparisonValue) },
 			{ label: 'separator', value: '' }, // Special separator row
-			{ label: 'Change', value: changeAbs }
+			{ label: t('comparison.change'), value: display(changeAbs) }
 		];
 
 		if (!hidePct) {
-			rows.push({ label: 'Change %', value: changePct });
+			rows.push({ label: t('comparison.change_pct'), value: display(changePct) });
 		}
 
 		return {
-			title: `${comparisonType === 'prior year' ? 'Prior Year' : 'Prior Period'} Comparison`,
+			title: t(
+				comparisonType === 'prior year'
+					? 'comparison.prior_year_title'
+					: 'comparison.prior_period_title'
+			),
 			rows
 		};
 	} else if (comparisonType === 'benchmark') {
@@ -272,21 +281,21 @@ export function buildTooltipContent(
 		const changePct = getFormattedValueWrapper(columns.pct);
 
 		const rows: { label: string; value: string }[] = [
-			{ label: 'Value', value: currentValue },
-			{ label: 'Benchmark', value: benchmarkValue },
+			{ label: t('comparison.value'), value: display(currentValue) },
+			{ label: t('comparison.benchmark'), value: display(benchmarkValue) },
 			{ label: 'separator', value: '' }, // Special separator row
-			{ label: 'Difference', value: changeAbs }
+			{ label: t('comparison.difference'), value: display(changeAbs) }
 		];
 
 		if (!hidePct) {
-			rows.push({ label: 'Difference %', value: changePct });
+			rows.push({ label: t('comparison.difference_pct'), value: display(changePct) });
 		}
 
 		return {
-			title: 'Benchmark Comparison',
+			title: t('comparison.benchmark_title'),
 			rows
 		};
 	}
 
-	return { title: 'Comparison', rows: [] };
+	return { title: t('comparison.title'), rows: [] };
 }

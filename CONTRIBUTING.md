@@ -42,6 +42,10 @@ pnpm test -- -t "name" # filter by test name
 pnpm check             # type check (core + cli)
 ```
 
+## Adding a language
+
+Chart date labels and the built-in report UI (tables, filters, pickers, legends) are translated per language under `core/src/locale/`. A new language is an i18next JSON file, a date-fns locale config and one registry line — see [`core/src/locale/README.md`](core/src/locale/README.md).
+
 ## Reporting issues
 
 Open issues in this repo. Please include your CLI version (`evidence version`) and steps to reproduce.

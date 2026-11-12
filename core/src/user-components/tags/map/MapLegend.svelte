@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { AreaLayerModel } from './area_layer/AreaLayerModel.svelte';
 	import type { PointLayerModel } from './point_layer/PointLayerModel.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import formatTitle from '../../formatTitle';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	let {
 		layers,

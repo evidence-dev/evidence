@@ -42,12 +42,23 @@ function extractValue(input: unknown): unknown {
 	return undefined;
 }
 
-function formatScalar(value: unknown, formatCode: string): string {
+type Language = string | null | undefined;
+
+function formatScalar(value: unknown, formatCode: string, language: Language): string {
 	if (value === null || value === undefined) return '';
-	return formatValue(value, formatCode);
+	return formatValue(
+		value,
+		formatCode,
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		language
+	);
 }
 
-function makeFormatter(formatCode: string): (input: unknown) => string {
+function makeFormatter(formatCode: string, language: Language): (input: unknown) => string {
 	return (input: unknown) => {
 		// Axis-trigger tooltips call the formatter once with an array of params
 		// (one per series). A single format code can't render the whole tooltip,
@@ -60,14 +71,14 @@ function makeFormatter(formatCode: string): (input: unknown) => string {
 			const header = params[0]?.axisValueLabel ?? '';
 			const rows = params
 				.map((param) => {
-					const formatted = formatScalar(extractValue(param), formatCode);
+					const formatted = formatScalar(extractValue(param), formatCode, language);
 					if (!formatted) return '';
 					return `${param.marker ?? ''}${param.seriesName ? `${param.seriesName}: ` : ''}${formatted}`;
 				})
 				.filter(Boolean);
 			return [header, ...rows].filter(Boolean).join('<br/>');
 		}
-		return formatScalar(extractValue(input), formatCode);
+		return formatScalar(extractValue(input), formatCode, language);
 	};
 }
 
@@ -76,11 +87,11 @@ function makeFormatter(formatCode: string): (input: unknown) => string {
  * formatter functions wrapping Evidence's formatValue. This is the only way to
  * reach function-only echarts options (e.g. tooltip.valueFormatter) from a
  * declarative config, and it never executes user-provided code — the user only
- * names a format code.
+ * names a format code. `language` localizes month/weekday names in date codes.
  */
-export function applyFormatCodes<T>(config: T): T {
+export function applyFormatCodes<T>(config: T, language: Language = null): T {
 	if (Array.isArray(config)) {
-		return config.map((item) => applyFormatCodes(item)) as T;
+		return config.map((item) => applyFormatCodes(item, language)) as T;
 	}
 	if (config === null || typeof config !== 'object') return config;
 
@@ -92,9 +103,9 @@ export function applyFormatCodes<T>(config: T): T {
 				value.startsWith(FMT_PREFIX) &&
 				value.length > FMT_PREFIX.length
 			) {
-				return [key, makeFormatter(value.slice(FMT_PREFIX.length))];
+				return [key, makeFormatter(value.slice(FMT_PREFIX.length), language)];
 			}
-			return [key, applyFormatCodes(value)];
+			return [key, applyFormatCodes(value, language)];
 		})
 	) as T;
 }

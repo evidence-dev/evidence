@@ -15,6 +15,8 @@
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { logger } from '../../../shims/logger';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	let {
 		tableExpressionName,
@@ -342,7 +344,7 @@
 
 <div class="flex flex-col">
 	<input
-		placeholder={`Search ${columnLabel}`}
+		placeholder={t('filter.search_column', { column: columnLabel })}
 		class="bg-background placeholder:text-muted-foreground flex h-9 w-full rounded-t-md border border-b border-none px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 		bind:this={inputRef}
 		bind:value={searchInput}
@@ -351,20 +353,20 @@
 	<div class="flex items-center justify-between border-y px-2 py-1">
 		<div class="text-muted-foreground min-w-0 truncate text-xs">
 			{#if matchAllSearch !== null}
-				All matching "{matchAllSearch}"
+				{t('filter.all_matching', { search: matchAllSearch })}
 			{:else}
-				{selectedValues.length} selected
+				{t('filter.selected_count', { count: selectedValues.length })}
 			{/if}
 		</div>
 		<div class="flex shrink-0 gap-1">
 			{#if canSelectAll}
 				<Button variant="ghost" size="sm" class="h-7 px-2 text-xs" onclick={selectAll}>
-					Select All
+					{t('common.select_all')}
 				</Button>
 			{/if}
 			{#if !requireSelection}
 				<Button variant="ghost" size="sm" class="h-7 px-2 text-xs" onclick={clearSelections}>
-					Clear All
+					{t('common.clear_all')}
 				</Button>
 			{/if}
 		</div>
@@ -372,13 +374,13 @@
 
 	{#if matchAllTruncated}
 		<div class="bg-muted/40 text-muted-foreground px-2 py-1 text-xs">
-			Too many matches to change individually. Clear All and use a narrower search.
+			{t('filter.too_many_matches')}
 		</div>
 	{/if}
 
 	{#if minimumRecords !== null}
 		<div class="bg-muted/40 text-muted-foreground px-2 py-1 text-xs">
-			Values with fewer than {minimumRecords} records are disabled
+			{t('filter.min_records_notice', { count: minimumRecords })}
 		</div>
 	{/if}
 
@@ -395,7 +397,7 @@
 		<div class="max-h-[300px] overflow-auto p-1">
 			{#if !columnValuesQuery.result?.rows || columnValuesQuery.result.rows.length === 0}
 				<div class="text-muted-foreground flex h-12 items-center justify-center text-sm">
-					No matching values
+					{t('filter.no_matching_values')}
 				</div>
 			{:else}
 				{#key selectedValues}
@@ -446,7 +448,7 @@
 		</div>
 	{/if}
 	<div class="flex justify-end gap-2 border-t p-2 pt-1">
-		<Button variant="outline" size="sm" onclick={handleCancel}>Cancel</Button>
-		<Button variant="default" size="sm" onclick={applyFilter}>Apply</Button>
+		<Button variant="outline" size="sm" onclick={handleCancel}>{t('common.cancel')}</Button>
+		<Button variant="default" size="sm" onclick={applyFilter}>{t('common.apply')}</Button>
 	</div>
 </div>

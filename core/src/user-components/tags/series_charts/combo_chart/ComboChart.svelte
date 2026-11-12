@@ -37,6 +37,7 @@
 	import { createResolvers } from '../../../common/use-variable-processing';
 	import { VariableProcessor } from '../../../../filter-variables/VariableProcessor';
 	import { getProjectSettingsContext } from '../../../../project-settings.context';
+	import { getLocaleContext } from '../../../../locale/locale.context.svelte';
 	import { getAutoRefreshContext } from '../../../../auto-refresh.context.svelte';
 	import { getDefaultFormatForDateGrain, coarserGrain } from '../../../common/date-options';
 	import { getElevatedChartTooltipCss } from '../../../common/chart-tooltip-elevation';
@@ -47,7 +48,6 @@
 		type LineStyleType,
 		type SeriesColorValue
 	} from '../../echarts/series-marker';
-	import { formatValue } from '../../../formatValue';
 	import { getComponentWrapperContext } from '../../../common/component-wrapper-context';
 	import { getQueryInfoContext } from '../../../../query-info-context.svelte';
 	import { downloadAsExcel, getExcelExportNames } from '../../../../shims/data-export';
@@ -129,7 +129,9 @@
 			fmt: effectiveXFmt,
 			x: xProcessed?.alias ?? x ?? '',
 			date_grain,
-			firstDayOfWeek: projectSettings.first_day_of_week
+			firstDayOfWeek: projectSettings.first_day_of_week,
+			dateLocale: localeContext.dateLocale,
+			language: localeContext.language
 		}),
 		() => yAxes,
 		() => elevatedTooltipCss
@@ -137,13 +139,13 @@
 
 	const y1AxisModel = new YAxisModel(
 		'y1',
-		() => ({ ...y_axis_options, fmt: y_fmt }),
+		() => ({ ...y_axis_options, fmt: y_fmt, language: localeContext.language }),
 		() => xProcessed?.alias
 	);
 
 	const y2AxisModel = new YAxisModel(
 		'y2',
-		() => ({ ...y2_axis_options, fmt: y2_fmt }),
+		() => ({ ...y2_axis_options, fmt: y2_fmt, language: localeContext.language }),
 		() => xProcessed?.alias
 	);
 
@@ -191,6 +193,7 @@
 	const inlineQueries = getInlineQueriesContext();
 	const getProjectSettings = getProjectSettingsContext();
 	const projectSettings = $derived(getProjectSettings());
+	const localeContext = getLocaleContext();
 	const themeContext = getThemeContext();
 
 	// Effective color palette: use custom if provided, otherwise theme default, with fallback to built-in palettes
@@ -348,7 +351,8 @@
 				metricsCatalog
 			},
 			refreshInterval: props.refresh_interval,
-			firstDayOfWeek: projectSettings.first_day_of_week
+			firstDayOfWeek: projectSettings.first_day_of_week,
+			language: localeContext.language
 		};
 	});
 
@@ -381,7 +385,12 @@
 			return { series, removeSeries };
 		},
 		addReferenceLine: (propsGetter) => {
-			const referenceLine = new ReferenceLineStaticModel(propsGetter, xAxisModel, y1AxisModel);
+			const referenceLine = new ReferenceLineStaticModel(
+				propsGetter,
+				xAxisModel,
+				y1AxisModel,
+				() => localeContext.language
+			);
 			references.push(referenceLine);
 			const removeReferenceLine = () => {
 				references.splice(references.indexOf(referenceLine), 1);
@@ -397,7 +406,12 @@
 			return { referenceArea, removeReferenceArea };
 		},
 		addReferencePoint: (propsGetter) => {
-			const referencePoint = new ReferencePointStaticModel(propsGetter, xAxisModel, y1AxisModel);
+			const referencePoint = new ReferencePointStaticModel(
+				propsGetter,
+				xAxisModel,
+				y1AxisModel,
+				() => localeContext.language
+			);
 			references.push(referencePoint);
 			const removeReferencePoint = () => {
 				references.splice(references.indexOf(referencePoint), 1);
@@ -788,7 +802,7 @@
 							? dataItem.extras
 							: undefined;
 					const extrasRows = seriesModel
-						? renderTooltipExtras(seriesModel.tooltipFields, extras)
+						? renderTooltipExtras(seriesModel.tooltipFields, extras, localeContext.language)
 						: [];
 
 					return {
@@ -815,7 +829,7 @@
 					const sizeLabel = sizeProcessed?.displayAlias;
 					const formattedSizeValue =
 						rawSizeValue != null && sizeLabel
-							? formatValue(rawSizeValue, size_fmt, rawSizeValue.toString())
+							? localeContext.formatValue(rawSizeValue, size_fmt, rawSizeValue.toString())
 							: undefined;
 
 					// Only show marker + series name row when there are multiple series

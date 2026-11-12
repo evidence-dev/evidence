@@ -10,7 +10,8 @@ function makeFilter(attributes: Record<string, unknown> = {}, dialect?: SqlDiale
 			url: undefined,
 			updateUrl: undefined,
 			projectSettings: undefined,
-			dialect
+			dialect,
+			language: undefined
 		}
 	);
 }

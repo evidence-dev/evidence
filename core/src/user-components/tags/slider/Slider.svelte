@@ -9,7 +9,7 @@
 	import { Skeleton } from '../../../shadcn/components/ui/skeleton';
 	import { Input } from '../../../shadcn/components/ui/input';
 	import formatTitle from '../../formatTitle';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import Info from '../info/Info.svelte';
 	import Ellipsis from '../../../viewer-components/Ellipsis.svelte';
 	import { Query } from '../../../Query.svelte';
@@ -22,6 +22,9 @@
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	const props: UserComponentProps<typeof schema> = $props();
 

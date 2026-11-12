@@ -1,25 +1,16 @@
 import { parseSeriesTimestampMs } from '../../../formatValue';
+import {
+	EN_DATE_LOCALE,
+	formatDate,
+	formatWeekRange,
+	type DateLocale
+} from '../../../../locale/date-locale';
 
 /**
  * Grains this formatter supports. Non-temporal grains (day-of-week, month-of-year, etc.)
  * use category axes and don't hit this codepath.
  */
 export type TimeAxisGrain = 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';
-
-const MONTH_NAMES = [
-	'Jan',
-	'Feb',
-	'Mar',
-	'Apr',
-	'May',
-	'Jun',
-	'Jul',
-	'Aug',
-	'Sep',
-	'Oct',
-	'Nov',
-	'Dec'
-] as const;
 
 /**
  * Format an ECharts time-axis tick label.
@@ -58,6 +49,11 @@ const MONTH_NAMES = [
  * A "2024-06-15" renders verbatim as "Jun 15" — and a "…04:00:00Z" renders as
  * "4 am" — for every viewer, in every timezone. See `formatTimeAxisTooltip`
  * for the full rationale.
+ *
+ * `dateLocale` supplies the vocabulary and token order (month abbreviations,
+ * quarter prefix, 12h/24h, day-month order) for the page's selected language.
+ * The hierarchical rollover rules above are language-independent; only how
+ * each label is spelled changes.
  */
 export function formatTimeAxisLabel(
 	value: number | string | Date,
@@ -68,11 +64,13 @@ export function formatTimeAxisLabel(
 	compactYearRollover?: boolean,
 	spansMultipleYears?: boolean,
 	// Visibly previous tick: thinning can hide the one that named this month.
-	previousTick?: number | string | Date
+	previousTick?: number | string | Date,
+	dateLocale: DateLocale = EN_DATE_LOCALE
 ): string {
 	const date = toDate(value);
 	if (!date) return String(value);
 	const previous = previousTick === undefined ? undefined : toDate(previousTick);
+	const fmt = (key: Parameters<typeof formatDate>[1]) => formatDate(dateLocale, key, date);
 
 	// Best-effort grain inference when the caller didn't pass one. Rare — most call
 	// sites know the grain — but ECharts may pass us auto-generated tick timestamps
@@ -102,8 +100,7 @@ export function formatTimeAxisLabel(
 	//   stay single-line bare periods ("Apr", "May", "Jun"). No first-tick
 	//   anchor, no reserved year gutter (hasTwoTierLabels is false).
 	if (g === 'month' || g === 'quarter') {
-		const periodName =
-			g === 'month' ? MONTH_NAMES[date.getMonth()] : quarterLabel(date, /* includeYear */ false);
+		const periodName = fmt(g);
 		if (compactYearRollover) {
 			// Collapse to a bare year ONLY at the exact period boundary that opens
 			// the year — Jan 1 (which is also the Q1 start). Above the custom-tick
@@ -111,17 +108,17 @@ export function formatTimeAxisLabel(
 			// in January (not the Q1/month boundary) must keep its period label:
 			// matching the whole month would drop the quarter and make that tick
 			// read as a stray year separator instead of its actual position.
-			if (isJanuary1(date)) return String(date.getFullYear());
+			if (isJanuary1(date)) return fmt('year');
 			if (
 				isFirstTick(date, index, g, dataMinMs) ||
 				(previous && previous.getFullYear() !== date.getFullYear())
 			) {
-				return `${periodName} ${date.getFullYear()}`;
+				return fmt(g === 'month' ? 'monthYear' : 'quarterYear');
 			}
 			return periodName;
 		}
 		if (spansMultipleYears && (isFirstTick(date, index, g, dataMinMs) || isJanuary(date))) {
-			return `${periodName}\n${date.getFullYear()}`;
+			return `${periodName}\n${fmt('year')}`;
 		}
 		return periodName;
 	}
@@ -134,10 +131,10 @@ export function formatTimeAxisLabel(
 		// we're removing. A mid-year start shows "Mar 2022" so the start year is
 		// still stated. (hour/year grains keep their own first-tick handling.)
 		if (compactYearRollover && !verbose && (g === 'day' || g === 'week')) {
-			if (isJanuary1(date)) return String(date.getFullYear());
-			return `${MONTH_NAMES[date.getMonth()]} ${date.getFullYear()}`;
+			if (isJanuary1(date)) return fmt('year');
+			return fmt('monthYear');
 		}
-		return firstTickLabel(date, g);
+		return firstTickLabel(date, g, dateLocale);
 	}
 
 	// Year rollover format switches on how often it appears in this chart.
@@ -147,10 +144,9 @@ export function formatTimeAxisLabel(
 	// visual weight of an unusually-wide "Jan 2025" between short month
 	// siblings. Caller passes `compactYearRollover = true` when the data
 	// span implies multiple rollovers (>= ~13 months).
-	const yearLabel = (d: Date) =>
-		compactYearRollover ? String(d.getFullYear()) : `${MONTH_NAMES[0]} ${d.getFullYear()}`;
+	const yearLabel = () => (compactYearRollover ? fmt('year') : fmt('monthYear'));
 
-	if (g === 'year') return String(date.getFullYear());
+	if (g === 'year') return fmt('year');
 
 	// Hour grain is handled separately: the day/week scaffolding below (which
 	// runs `isFirstOfMonth` before any hour-specific check) would otherwise
@@ -168,13 +164,13 @@ export function formatTimeAxisLabel(
 	// rollover context reads more clearly than "Jan 1".
 	if (g === 'hour') {
 		if (date.getHours() === 0) {
-			if (isJanuary1(date)) return String(date.getFullYear());
-			return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
+			if (isJanuary1(date)) return fmt('year');
+			return fmt('dayMonth');
 		}
 		if (previous && previous.toDateString() !== date.toDateString()) {
-			return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}, ${hourLabel(date)}`;
+			return fmt('dayMonthHour');
 		}
-		return hourLabel(date);
+		return fmt('hour');
 	}
 
 	// day / week share the same "small unit" scaffolding: year > month > small.
@@ -182,7 +178,7 @@ export function formatTimeAxisLabel(
 	// grain: verbose "Jan 2025" reads as a point in time on single-rollover
 	// charts, compact "2025" reads as a repeating year separator on multi-
 	// year charts.
-	if (isJanuary1(date)) return yearLabel(date);
+	if (isJanuary1(date)) return yearLabel();
 
 	// Weekly month rollover: real weekly buckets almost never land on day-1
 	// of a month (`DATE_TRUNC('week', ...)` aligns to Mon or Sun), so we
@@ -204,26 +200,19 @@ export function formatTimeAxisLabel(
 	// Runs BEFORE `isFirstOfMonth` so that day-1 weekly ticks flow through
 	// case 2 here (identical output) instead of the generic month-only branch.
 	if (g === 'week' && date.getDate() <= 7) {
-		if (date.getMonth() === 0) return yearLabel(date);
-		if (date.getDate() === 1) return MONTH_NAMES[date.getMonth()];
-		return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
+		if (date.getMonth() === 0) return yearLabel();
+		if (date.getDate() === 1) return fmt('month');
+		return fmt('dayMonth');
 	}
-	if (isFirstOfMonth(date)) return MONTH_NAMES[date.getMonth()];
+	if (isFirstOfMonth(date)) return fmt('month');
 	if (
 		previous &&
 		(previous.getMonth() !== date.getMonth() || previous.getFullYear() !== date.getFullYear())
 	) {
-		if (previous.getFullYear() !== date.getFullYear()) return yearLabel(date);
-		return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
+		if (previous.getFullYear() !== date.getFullYear()) return yearLabel();
+		return fmt('dayMonth');
 	}
 	return String(date.getDate());
-}
-
-function hourLabel(date: Date): string {
-	const h24 = date.getHours();
-	const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
-	const ampm = h24 < 12 ? 'am' : 'pm';
-	return `${h12} ${ampm}`;
 }
 
 function isFirstTick(
@@ -266,10 +255,8 @@ function firstTickToleranceMs(grain: TimeAxisGrain): number {
 	}
 }
 
-function firstTickLabel(date: Date, grain: TimeAxisGrain): string {
-	const m = MONTH_NAMES[date.getMonth()];
-	const d = date.getDate();
-	const y = date.getFullYear();
+function firstTickLabel(date: Date, grain: TimeAxisGrain, dateLocale: DateLocale): string {
+	const fmt = (key: Parameters<typeof formatDate>[1]) => formatDate(dateLocale, key, date);
 	switch (grain) {
 		case 'hour':
 			// Hour-grain first tick shows JUST the time — ECharts' native
@@ -280,19 +267,19 @@ function firstTickLabel(date: Date, grain: TimeAxisGrain): string {
 			// rollovers still surface the date via the midnight rule in
 			// `formatTimeAxisLabel`; that path is not a duplicate because
 			// ECharts only tiers up on the FIRST occurrence of each unit.
-			return hourLabel(date);
+			return fmt('hour');
 		case 'day':
 		case 'week':
-			return `${m} ${d}`;
+			return fmt('dayMonth');
 		case 'month':
 			// Unreachable from formatTimeAxisLabel (month and quarter grains
 			// short-circuit to the two-tier branch); kept consistent with it
 			// for any other caller.
-			return `${m}\n${y}`;
+			return `${fmt('month')}\n${fmt('year')}`;
 		case 'quarter':
-			return `${quarterLabel(date, /* includeYear */ false)}\n${y}`;
+			return `${fmt('quarter')}\n${fmt('year')}`;
 		case 'year':
-			return String(y);
+			return fmt('year');
 	}
 }
 
@@ -319,63 +306,41 @@ function firstTickLabel(date: Date, grain: TimeAxisGrain): string {
  */
 export function formatTimeAxisTooltip(
 	value: number | string | Date,
-	grain: TimeAxisGrain | undefined
+	grain: TimeAxisGrain | undefined,
+	dateLocale: DateLocale = EN_DATE_LOCALE
 ): string {
 	const date = toDate(value);
 	if (!date) return String(value);
 
 	const g = grain ?? inferGrain(date);
-	const m = MONTH_NAMES[date.getMonth()];
-	const d = date.getDate();
-	const y = date.getFullYear();
 	switch (g) {
-		case 'hour': {
-			const h24 = date.getHours();
-			const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
-			const ampm = h24 < 12 ? 'am' : 'pm';
-			return `${m} ${d}, ${y} ${h12} ${ampm}`;
-		}
+		case 'hour':
+			return formatDate(dateLocale, 'dayMonthYearHour', date);
 		case 'day':
-			return `${m} ${d}, ${y}`;
+			return formatDate(dateLocale, 'dayMonthYear', date);
 		case 'week':
-			return weekRangeLabel(date);
+			return weekRangeLabel(date, dateLocale);
 		case 'month':
-			return `${m} ${y}`;
+			return formatDate(dateLocale, 'monthYear', date);
 		case 'quarter':
-			return `Q${Math.floor(date.getMonth() / 3) + 1} ${y}`;
+			return formatDate(dateLocale, 'quarterYear', date);
 		case 'year':
-			return String(y);
+			return formatDate(dateLocale, 'year', date);
 	}
 }
 
 /**
  * Weekly aggregations arrive as the week-start (SQL `DATE_TRUNC('week', ...)`).
  * A bare "Jun 15, 2025" tooltip on weekly data is ambiguous — is that the whole
- * week? which day of it? — so we render the full range. Collapses common cases
- * to stay short:
- *  - Same month:      Jun 15–21, 2025
- *  - Cross-month:     Jun 29 – Jul 5, 2025
+ * week? which day of it? — so we render the full range. The language's
+ * `weekRange` templates collapse the common cases to stay short:
+ *  - Same month:      Jun 15–21, 2025        15–21 juin 2025
+ *  - Cross-month:     Jun 29 – Jul 5, 2025   29 juin – 5 juil. 2025
  *  - Cross-year:      Dec 29, 2025 – Jan 4, 2026
  */
-function weekRangeLabel(startDate: Date): string {
-	const endMs = startDate.getTime() + 6 * 24 * 60 * 60 * 1000;
-	const endDate = new Date(endMs);
-
-	const sm = MONTH_NAMES[startDate.getMonth()];
-	const sd = startDate.getDate();
-	const sy = startDate.getFullYear();
-	const em = MONTH_NAMES[endDate.getMonth()];
-	const ed = endDate.getDate();
-	const ey = endDate.getFullYear();
-
-	if (sy !== ey) return `${sm} ${sd}, ${sy} – ${em} ${ed}, ${ey}`;
-	if (sm !== em) return `${sm} ${sd} – ${em} ${ed}, ${sy}`;
-	return `${sm} ${sd}–${ed}, ${sy}`;
-}
-
-function quarterLabel(date: Date, includeYear: boolean): string {
-	const q = Math.floor(date.getMonth() / 3) + 1;
-	return includeYear ? `Q${q} ${date.getFullYear()}` : `Q${q}`;
+function weekRangeLabel(startDate: Date, dateLocale: DateLocale): string {
+	const endDate = new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+	return formatWeekRange(dateLocale, startDate, endDate);
 }
 
 function isJanuary1(date: Date): boolean {

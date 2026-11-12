@@ -43,6 +43,8 @@
 	import { escapeSqlValue } from '../../../sql-dialect';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	const props: UserComponentProps<typeof schema> = $props();
 
@@ -81,7 +83,9 @@
 	const icon = $derived(resolveText(props.icon));
 	const placeholder = $derived(
 		resolveText(props.placeholder) ??
-			(valueColumn ? `Select ${formatTitle(valueColumn)}` : 'Select Option')
+			(valueColumn
+				? t('dropdown.select_column', { column: formatTitle(valueColumn) })
+				: t('dropdown.select_option'))
 	);
 	const enableSearch = $derived(props.search);
 	const multiple = $derived(props.multiple);
@@ -492,7 +496,7 @@
 {#if error}
 	<Alert.Root variant="destructive" class="my-2">
 		<Alert.Title>
-			Error in Dropdown <span class="font-mono">name="{id}"</span>
+			{t('dropdown.error')} <span class="font-mono">name="{id}"</span>
 		</Alert.Title>
 		<Alert.Description>
 			{error}
@@ -550,8 +554,8 @@
 						<div class="relative">
 							<Input
 								bind:value={search}
-								aria-label="Search"
-								placeholder="Search"
+								aria-label={t('common.search')}
+								placeholder={t('common.search')}
 								class="h-8 border-none p-0 pl-8 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
 								autofocus
 							/>
@@ -564,7 +568,7 @@
 				{/if}
 
 				{#if filteredOptions.length === 0}
-					<div class="text-muted-foreground px-2 py-1.5 text-sm">No options found</div>
+					<div class="text-muted-foreground px-2 py-1.5 text-sm">{t('dropdown.no_options')}</div>
 				{:else}
 					<div class="max-h-[300px] overflow-y-auto">
 						<Virtualizer
@@ -586,11 +590,13 @@
 						<Separator orientation="horizontal" class="mb-1" />
 						{#if multiple}
 							<Button variant="ghost" size="sm" class="h-7 w-full" onclick={selectAll}>
-								Select All
+								{t('dropdown.select_all')}
 							</Button>
 							<Separator orientation="horizontal" class="my-1" />
 						{/if}
-						<Button variant="ghost" size="sm" class="h-7 w-full" onclick={clear}>Clear</Button>
+						<Button variant="ghost" size="sm" class="h-7 w-full" onclick={clear}
+							>{t('common.clear')}</Button
+						>
 					</div>
 				{/if}
 			</Select.Content>
@@ -616,7 +622,7 @@
 						{#each selected.slice(0, selected.length > 4 ? 3 : 4) as opt (opt.value)}
 							<button
 								class="pointer-events-auto max-w-[80%] shrink-0"
-								aria-label="Unselect {opt}"
+								aria-label={t('dropdown.unselect', { option: String(opt.label ?? opt.value) })}
 								onclick={() => unselect(opt.value)}
 								out:slide={{ axis: 'x' }}
 							>
@@ -634,7 +640,7 @@
 						{/each}
 						{#if selected.length > 4}
 							<Badge variant="secondary" class="pointer-events-none shrink-0 px-1.5 py-0.5">
-								+{selected.length - 3} more
+								{t('dropdown.more', { count: selected.length - 3 })}
 							</Badge>
 						{/if}
 						{#if selected.length === 0}

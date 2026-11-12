@@ -65,9 +65,12 @@ formatValue(
   range?: { min: number; max: number },        // For auto-scaling (num → num0k, num1m, etc.)
   columnType?: string,                         // Column jsType from query metadata
   firstDayOfWeek?: 'sunday' | 'monday',        // For day-of-week interpretation
-  decimalSeparator?: '.' | ','                 // European number formatting
+  decimalSeparator?: '.' | ',',                // European number formatting
+  language?: string | null                     // Month/weekday names and localized presets
 ): string
 ```
+
+`decimalSeparator` defaults to the `formatSettings` store (`format-settings.ts`), set by the root layout. `language` has **no** global: it defaults to English and must be supplied per call. Svelte components get a pre-bound function from `getLocaleContext().formatValue` (same positional arguments, language already applied); plain modules and `.svelte.ts` models receive the language from their caller. `formatValue-callers.test.ts` enforces that no component imports `formatValue` directly.
 
 ---
 
@@ -158,6 +161,10 @@ Numeric values 1900-2100 are converted to `Date` objects (January 1st of that ye
 | `fulldate` | `dddd mmmm d, yyyy` | Monday January 15, 2024 |
 | `mdy` | `m/d/y` | 1/15/24 |
 | `dmy` | `d/m/y` | 15/1/24 |
+
+### Language
+
+Month and weekday names (`mmm`, `mmmm`, `mmmmm`, `ddd`, `dddd`) come from the page language's `DateLocale` (`locale/date-locale.ts` → `getDateNames`, derived from its date-fns locale) and are handed to SSF via the `months`/`days` options our `patches/ssf.patch` adds. A `DateLocale` may also override the `shortdate`, `longdate`, `fulldate` and `hms` presets, whose shared definitions carry English word order or a 12-hour clock (`fr`: `longdate` → `d mmmm yyyy`). English names equal SSF's built-ins, so `en` output is unchanged.
 | `hms` | `H:MM:SS AM/PM` | 2:30:00 PM |
 | `num0` to `num4` | `#,##0` variants | 1,234 |
 | Percentage presets | Percentage variants | 12.34 percent |
@@ -284,9 +291,12 @@ This table shows exactly what each component formats with each function. When mo
 
 Every component that displays formatted values must:
 
-1. **Look up columnType** from `query.result.columns` for the relevant column
-2. **Pass firstDayOfWeek** from `projectSettings.first_day_of_week` when formatting date-related values
-3. **Use the correct format code** — from user's `fmt` prop, or `getDefaultFormatForDateGrain()` for date grain dimensions
+1. **Take `formatValue` from the locale context** — `const localeContext = getLocaleContext(); const formatValue = $derived(localeContext.formatValue);` — never import it from `formatValue.ts` (that renders English month/weekday names regardless of the page language)
+2. **Look up columnType** from `query.result.columns` for the relevant column
+3. **Pass firstDayOfWeek** from `projectSettings.first_day_of_week` when formatting date-related values
+4. **Use the correct format code** — from user's `fmt` prop, or `getDefaultFormatForDateGrain()` for date grain dimensions
+
+Models (`.svelte.ts`) and pure helpers cannot read context, so they take the language explicitly — an option (`XAxisOptions.language`, `PivotConfig.language`), a context field (`SharedQueryContext.language`), or a trailing parameter (`renderTooltipExtras(fields, extras, language)`) — and the owning component passes `localeContext.language`.
 
 ```typescript
 // Full example with all parameters:
@@ -316,6 +326,7 @@ formatValue(
 | **SparklineDisplay** | ❌ | ❌ | No access to query metadata (receives chartData only) |
 | **DeltaDisplay** | ❌ | ❌ | Receives value only, no query context |
 | **Comparison tooltips** | ❌ | ❌ | Uses fallback heuristic |
+| **Map tooltips** (`buildTooltipHTML`) | ❌ | ❌ | Language is threaded (`TooltipContent.language` via the layer models' `getLanguage`); columnType / firstDayOfWeek are not |
 
 Components marked ❌ rely on the `isDateFormat()` heuristic fallback. This is acceptable for components that primarily format numeric values, but should be addressed if they start formatting date values.
 

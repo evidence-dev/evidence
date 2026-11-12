@@ -2,7 +2,7 @@
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { setupRenderReadiness } from '../../../readiness.svelte';
 	import { ProgressBarsModel } from './ProgressBarsModel.svelte';
@@ -11,6 +11,9 @@
 	import ComponentTitle from '../../common/ComponentTitle.svelte';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import chroma from 'chroma-js';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	type Props = UserComponentProps<typeof schema>;
 	const _props: Props = $props();

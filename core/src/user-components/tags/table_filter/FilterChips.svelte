@@ -16,6 +16,8 @@
 	import NumericValueSelector from './NumericValueSelector.svelte';
 	import formatTitle from '../../formatTitle';
 	import { parseDateStringAsLocalMidnight } from '../../../utils/date-utils';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	import { formatDate } from '../../../locale/date-locale';
 
 	let {
 		data,
@@ -67,32 +69,32 @@
 		conditions: FilterCondition[];
 	};
 
-	// Define the operator display mapping
-	const operatorDisplayMap: OperatorDisplayMap = {
-		// String operators
-		is: 'is',
-		is_not: 'is not',
-		contains: 'contains',
-		not_contains: 'does not contain',
-		starts_with: 'starts with',
-		not_starts_with: 'does not start with',
-		ends_with: 'ends with',
-		not_ends_with: 'does not end with',
-		in: 'is',
-		not_in: 'is not',
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
 
-		// Number operators
+	// Operator words come from the page language; symbolic operators are universal.
+	const operatorDisplayMap: OperatorDisplayMap = $derived({
+		is: t('filter.op.is'),
+		is_not: t('filter.op.is_not'),
+		contains: t('filter.op.contains'),
+		not_contains: t('filter.op.not_contains'),
+		starts_with: t('filter.op.starts_with'),
+		not_starts_with: t('filter.op.not_starts_with'),
+		ends_with: t('filter.op.ends_with'),
+		not_ends_with: t('filter.op.not_ends_with'),
+		in: t('filter.op.is'),
+		not_in: t('filter.op.is_not'),
+
 		equals: '=',
 		not_equals: '≠',
 		greater_than: '>',
 		less_than: '<',
-		between: 'is between',
-		not_between: 'is not between',
+		between: t('filter.op.between'),
+		not_between: t('filter.op.not_between'),
 
-		// Date operators
-		before: 'before',
-		after: 'after'
-	};
+		before: t('filter.op.before'),
+		after: t('filter.op.after')
+	});
 
 	const oppositeOperators = {
 		string: {
@@ -208,25 +210,7 @@
 
 	// Function to format a date in a compact way
 	function formatDateCompact(date: Date): string {
-		const months = [
-			'Jan',
-			'Feb',
-			'Mar',
-			'Apr',
-			'May',
-			'Jun',
-			'Jul',
-			'Aug',
-			'Sep',
-			'Oct',
-			'Nov',
-			'Dec'
-		];
-		const day = date.getDate();
-		const month = months[date.getMonth()];
-		const year = date.getFullYear().toString().slice(2);
-
-		return `${month} ${day} '${year}`;
+		return formatDate(localeContext.dateLocale, 'dayMonthShortYear', date);
 	}
 
 	// Function to get display parts for a filter
@@ -264,7 +248,7 @@
 					return {
 						column: filter.columnId,
 						operator: operatorDisplay,
-						value: `${condition.value} and ${condition.maxValue}`
+						value: t('filter.range_and', { min: condition.value, max: condition.maxValue })
 					};
 				}
 				return {
@@ -276,7 +260,7 @@
 				return {
 					column: filter.columnId,
 					operator: '',
-					value: condition.value ? 'Yes' : 'No'
+					value: condition.value ? t('common.yes') : t('common.no')
 				};
 			case 'date':
 				if (
@@ -288,7 +272,10 @@
 					return {
 						column: filter.columnId,
 						operator: operatorDisplay,
-						value: `${formatDateCompact(fromDate)} & ${formatDateCompact(toDate)}`
+						value: t('filter.date_range', {
+							from: formatDateCompact(fromDate),
+							to: formatDateCompact(toDate)
+						})
 					};
 				}
 				{

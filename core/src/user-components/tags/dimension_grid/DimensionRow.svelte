@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { cn } from '../../../shadcn/utils';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	let {
 		value,
@@ -21,7 +24,7 @@
 	const formattedMetric = $derived(metric !== null ? formatValue(metric, fmt) : '-');
 	// Bar width based on percent of top value
 	const barWidth = $derived(Math.min(Math.max((percentOfTop ?? 0) * 100, 0), 100));
-	const displayValue = $derived(value ?? 'Missing');
+	const displayValue = $derived(value ?? localeContext.t('dimension_grid.missing'));
 </script>
 
 <button

@@ -148,7 +148,8 @@ describe.each(WAREHOUSES)('generateSQLQuery with filters — %s', (warehouse) =>
 			url: undefined,
 			updateUrl: undefined,
 			projectSettings: undefined,
-			dialect: () => dialect
+			dialect: () => dialect,
+			language: undefined
 		});
 		filters.createExternal('category_sel', "O'Brien", 'category');
 		filters.createExternal('region_sel', ['East', 'West'], 'region');

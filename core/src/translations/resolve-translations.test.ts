@@ -19,8 +19,31 @@ describe('selectLanguage', () => {
 		expect(selectLanguage(['es', 'fr'], null)).toBe('es');
 	});
 
+	it('falls back to the first language when a token carries a non-string language', () => {
+		expect(selectLanguage(['en', 'fr'], ['fr'] as unknown as string)).toBe('en');
+		expect(selectLanguage(['en', 'fr'], 42 as unknown as string)).toBe('en');
+	});
+
 	it('returns null when there are no languages', () => {
 		expect(selectLanguage([], 'en')).toBeNull();
+	});
+
+	it('matches regardless of case, separator and surrounding whitespace', () => {
+		for (const requested of ['FR', 'Fr', ' fr ']) {
+			expect(selectLanguage(['en', 'fr'], requested)).toBe('fr');
+		}
+		expect(selectLanguage(['en', 'fr-CA'], 'fr_ca')).toBe('fr-CA');
+	});
+
+	it('serves a regional request from its base language, and a base request from a regional key', () => {
+		expect(selectLanguage(['en', 'fr'], 'fr-FR')).toBe('fr');
+		expect(selectLanguage(['en', 'fr'], 'fr_CA')).toBe('fr');
+		expect(selectLanguage(['en', 'fr-CA'], 'fr')).toBe('fr-CA');
+	});
+
+	it('prefers the exact regional key over the base language', () => {
+		expect(selectLanguage(['en', 'fr', 'fr-CA'], 'fr-CA')).toBe('fr-CA');
+		expect(selectLanguage(['en', 'fr-CA', 'fr'], 'fr-BE')).toBe('fr');
 	});
 });
 

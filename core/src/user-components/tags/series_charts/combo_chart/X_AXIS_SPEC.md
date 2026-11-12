@@ -253,6 +253,19 @@ must agree on the date — both read local components for that reason.
 
 User-provided `fmt` bypasses all of this and formats via `formatValue`/SSF.
 
+**Language.** The rules above are language-independent; how each label is
+spelled comes from a `DateLocale` (`core/src/locale/languages/<code>.ts`, registered in `core/src/locale/registry.ts`) selected
+by the page's active translation language (`LocaleContext`, fed from the
+`lang` cookie the existing translations menu sets — never the browser locale).
+A `DateLocale` pairs a date-fns locale (vocabulary) with one `format` pattern
+per label shape (`dayMonth`, `monthYear`, `quarter`, `hour`, …) plus week-range
+templates, so a language controls token order and punctuation, not just the
+words: "Jun 5" → "5 juin", "Q3" → "T3", "4 pm" → "16 h", "Jun 15–21, 2025" →
+"15–21 juin 2025". The two-tier `period\nyear` stacking is chart layout, not
+language, and stays in the formatter. Omitting the locale is exactly English,
+so every rule and test above holds unchanged for `en`. Currently shipped: `en`, `fr`; unknown languages fall back
+to English. `fmt` (SSF) and category-axis grains (§ 5.1) are not yet localized.
+
 ## 5.1 Label text (non-time axes without user `fmt`)
 
 `time` axes never reach here (§ 5 owns them). Every OTHER axis with a

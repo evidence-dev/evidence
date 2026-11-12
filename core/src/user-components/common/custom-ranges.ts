@@ -23,8 +23,21 @@ import {
 	startOfYear as dfStartOfYear,
 	endOfYear as dfEndOfYear
 } from 'date-fns';
-import { resolveRangeToDates, DATE_BOUNDARY_TOKEN, PRESET_DEFINITIONS } from './date-options';
-import { formatValue } from '../formatValue';
+import {
+	resolveRangeToDates,
+	DATE_BOUNDARY_TOKEN,
+	PRESET_DEFINITIONS,
+	presetLabel
+} from './date-options';
+import {
+	formatPeriodLabel,
+	isPeriodGrain,
+	PERIOD_GRAINS,
+	type PeriodGrain
+} from './reporting-periods';
+import { formatDate } from '../../locale/date-locale';
+import { getLabelLocale, type LabelLocale } from '../../locale/label-locale';
+import type { LocalizedFormatValue } from '../formatValue';
 
 export interface CustomRangeRule {
 	label?: string;
@@ -51,20 +64,6 @@ const monthOf = (iso: string) => Number(iso.slice(5, 7));
 const dayOf = (iso: string) => Number(iso.slice(8, 10));
 // Per-month day limits (Feb base 28; the 29th is allowed only in a leap year — see validIso).
 const MONTH_MAX_DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-const MONTH_NAMES = [
-	'Jan',
-	'Feb',
-	'Mar',
-	'Apr',
-	'May',
-	'Jun',
-	'Jul',
-	'Aug',
-	'Sep',
-	'Oct',
-	'Nov',
-	'Dec'
-];
 const isLeapYear = (y: number) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
 // Validate a literal `YYYY-MM-DD`, honoring leap years so e.g. 2025-02-29 (non-leap) is rejected.
 const validIso = (v: string) => {
@@ -87,37 +86,36 @@ const toIso = (d: Date) =>
  * boundary with any value-formatter date code — `{start:yyyy}` → `2024`, `{start:mmm yyyy}` → `Apr 2024`,
  * `{start:qq}` → `Q2`, `{end:yy}` → `24` — so labels read exactly like the value formatter everywhere else.
  */
-function fillLabel(template: string, startIso: string, endIso: string): string {
+function fillLabel(
+	template: string,
+	startIso: string,
+	endIso: string,
+	formatValue: LocalizedFormatValue
+): string {
 	return template
 		.replace(/\{start:([^}]*)\}/g, (_, code) => formatValue(parseLocal(startIso), code))
 		.replace(/\{end:([^}]*)\}/g, (_, code) => formatValue(parseLocal(endIso), code));
 }
 
-// Default label per grain. A grain period is a single bucket, so its start date names it.
-const GRAIN_DEFAULT_LABEL: Record<string, string> = {
-	day: '{start:mmm d, yyyy}',
-	week: 'Week of {start:mmm d, yyyy}',
-	month: '{start:mmm yyyy}',
-	quarter: '{start:qq} {start:yyyy}',
-	year: '{start:yyyy}'
-};
-
-/** Valid `grain` values — derived from the default-label table so the schema validator can't drift from runtime. */
-export const CUSTOM_RANGE_GRAINS = Object.keys(GRAIN_DEFAULT_LABEL);
+/** Valid `grain` values — the reporting-period grains, whose labels name each generated period. */
+export const CUSTOM_RANGE_GRAINS: readonly string[] = PERIOD_GRAINS;
 
 const PRESET_LABEL = new Map<string, string>(PRESET_DEFINITIONS.map((p) => [p.key, p.label]));
 const titleCase = (s: string) => s.replace(/\b[a-z]/g, (c) => c.toUpperCase());
-const humanIso = (iso: string) => `${MONTH_NAMES[monthOf(iso) - 1]} ${dayOf(iso)}, ${yearOf(iso)}`;
 
 /**
  * Human label for an unlabelled, no-grain window. Reads the range as written — a known preset
  * ("last 30 days" → "Last 30 Days"), a dynamic "last/previous N <unit>" ("Last 5 Months"), else its
  * resolved dates ("Jan 1, 2020 – Apr 5, 2026", "From Jan 1, 2020") — so a one-off never shows a bare year.
  */
-function defaultWindowLabel(range: string, bounds: { start?: string; end?: string }): string {
+function defaultWindowLabel(
+	range: string,
+	bounds: { start?: string; end?: string },
+	{ dateLocale, t }: LabelLocale
+): string {
 	const lc = range.trim().toLowerCase();
 	const preset = PRESET_LABEL.get(lc);
-	if (preset) return preset;
+	if (preset) return presetLabel(t, { key: lc, label: preset });
 	// Only `last`/`previous` take a count; valid `this`/`next <unit>` are presets, handled above. Matching
 	// them here would only fire on invalid input (e.g. "next 2 months" → a 12-month fallback) and mislabel it.
 	const dyn = lc.match(/^(last|previous) (?:(\d+) )?(day|week|month|quarter|year)s?$/);
@@ -126,9 +124,10 @@ function defaultWindowLabel(range: string, bounds: { start?: string; end?: strin
 		const n = count ? Number(count) : 1;
 		return `${titleCase(word)} ${count ? `${n} ` : ''}${titleCase(unit)}${n === 1 ? '' : 's'}`;
 	}
-	if (bounds.start && bounds.end) return `${humanIso(bounds.start)} – ${humanIso(bounds.end)}`;
-	if (bounds.start) return `From ${humanIso(bounds.start)}`;
-	if (bounds.end) return `Until ${humanIso(bounds.end)}`;
+	const human = (iso: string) => formatDate(dateLocale, 'dayMonthYear', parseLocal(iso));
+	if (bounds.start && bounds.end) return `${human(bounds.start)} – ${human(bounds.end)}`;
+	if (bounds.start) return t('calendar.from', { date: human(bounds.start) });
+	if (bounds.end) return t('calendar.until', { date: human(bounds.end) });
 	return titleCase(range.trim());
 }
 
@@ -174,7 +173,8 @@ function expandWindow(
 	grain: string,
 	userLabel: string | undefined,
 	today: Date,
-	firstDayOfWeek: 'sunday' | 'monday'
+	firstDayOfWeek: 'sunday' | 'monday',
+	locale: LabelLocale
 ): GeneratedRange[] {
 	const range = rangeRaw.trim();
 	const bounds = resolveRangeToDates(range, today, firstDayOfWeek);
@@ -193,12 +193,16 @@ function expandWindow(
 		const labelEnd = bounds.end ?? toIso(today);
 		const key = bounds.end ? `${bounds.start} to ${bounds.end}` : `from ${bounds.start}`;
 		const label = userLabel
-			? fillLabel(userLabel, bounds.start, labelEnd)
-			: defaultWindowLabel(range, bounds);
+			? fillLabel(userLabel, bounds.start, labelEnd, locale.formatValue)
+			: defaultWindowLabel(range, bounds, locale);
 		return [{ key, label }];
 	}
 
-	const template = userLabel ?? GRAIN_DEFAULT_LABEL[grain];
+	// A grain period is a single bucket, so by default its start date names it.
+	const labelFor = (startIso: string, endIso: string) =>
+		userLabel !== undefined
+			? fillLabel(userLabel, startIso, endIso, locale.formatValue)
+			: formatPeriodLabel(parseLocal(startIso), grain as PeriodGrain, locale);
 
 	// Anchor stepping to the window start for from/absolute ranges and any `week` grain (so "last N weeks"
 	// is seven-day buckets from its start, not calendar weeks); other relative grains snap to the calendar.
@@ -220,7 +224,7 @@ function expandWindow(
 			if (clampDate && pEnd.getTime() > clampDate.getTime()) pEnd = clampDate;
 			const startIso = toIso(pStart);
 			const endIso = toIso(pEnd);
-			out.push({ key: `${startIso} to ${endIso}`, label: fillLabel(template, startIso, endIso) });
+			out.push({ key: `${startIso} to ${endIso}`, label: labelFor(startIso, endIso) });
 		}
 		return out;
 	}
@@ -249,7 +253,7 @@ function expandWindow(
 		const cursor = addGrain(base, grain, k);
 		const startIso = toIso(cursor);
 		const endIso = toIso(endOf(cursor));
-		out.push({ key: `${startIso} to ${endIso}`, label: fillLabel(template, startIso, endIso) });
+		out.push({ key: `${startIso} to ${endIso}`, label: labelFor(startIso, endIso) });
 	}
 	return out;
 }
@@ -257,12 +261,13 @@ function expandWindow(
 function expandRange(
 	rule: CustomRangeRule,
 	today: Date,
-	firstDayOfWeek: 'sunday' | 'monday'
+	firstDayOfWeek: 'sunday' | 'monday',
+	locale: LabelLocale
 ): GeneratedRange[] {
 	// grain and label are entry-level: resolved once, then applied to every window in `range`. An unknown
 	// grain is an entry-level config error, so the whole entry yields nothing.
 	const grain = typeof rule.grain === 'string' ? rule.grain.trim().toLowerCase() : '';
-	if (grain && !(grain in GRAIN_DEFAULT_LABEL)) return [];
+	if (grain && !isPeriodGrain(grain)) return [];
 	const userLabel = typeof rule.label === 'string' ? rule.label : undefined;
 
 	// `range` is one window or a list. Each expands independently (a malformed one is skipped, siblings kept)
@@ -272,20 +277,25 @@ function expandRange(
 	const out: GeneratedRange[] = [];
 	for (const win of windows) {
 		if (typeof win !== 'string') continue;
-		out.push(...expandWindow(win, grain, userLabel, today, firstDayOfWeek));
+		out.push(...expandWindow(win, grain, userLabel, today, firstDayOfWeek, locale));
 	}
 	return out;
 }
 
+/**
+ * `locale` sets the language of generated labels. Leave it English wherever a label is matched rather than
+ * shown: `default_range` names a custom range by its English label, whatever the page language.
+ */
 export function expandCustomRanges(
 	rules: CustomRangeRule[] | undefined,
 	today: Date,
-	firstDayOfWeek: 'sunday' | 'monday' = 'sunday'
+	firstDayOfWeek: 'sunday' | 'monday' = 'sunday',
+	locale: LabelLocale = getLabelLocale(null)
 ): GeneratedRange[] {
 	const generated: GeneratedRange[] = [];
 	for (const rule of Array.isArray(rules) ? rules : []) {
 		if (!rule || typeof rule !== 'object') continue;
-		const group = rule.range != null ? expandRange(rule, today, firstDayOfWeek) : [];
+		const group = rule.range != null ? expandRange(rule, today, firstDayOfWeek, locale) : [];
 		// Keep each rule's presets together (all of one rule's FYs sit in one group), newest-first within it,
 		// then trim to the cap so a multi-window rule keeps the newest MAX across its windows (never more).
 		group.sort((a, b) => b.key.localeCompare(a.key));

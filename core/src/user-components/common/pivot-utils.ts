@@ -115,6 +115,8 @@ export interface PivotConfig {
 	passThroughMeasures?: string[];
 	collapsible?: boolean; // When true, keep subtotal rows even if all measure cells are hidden
 	firstDayOfWeek?: 'sunday' | 'monday';
+	/** Page language for month/weekday names in pivot column header `fmt` codes. */
+	language?: string | null;
 }
 
 export interface PivotResult {
@@ -649,6 +651,7 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 		showTotalColumn: config.showTotalColumn,
 		showSubtotalColumns: config.showSubtotalColumns,
 		totalLabel: config.totalLabel,
+		language: config.language,
 		// Include ALL column metadata to be future-proof
 		// Exclude only internal properties (processedColumnExpression, sparklineVizConfig)
 		unifiedColumnsMetadata: config.unifiedColumns.map((col) => {
@@ -1492,7 +1495,9 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 								String(part),
 								undefined,
 								pivotColumnType,
-								config.firstDayOfWeek
+								config.firstDayOfWeek,
+								undefined,
+								config.language
 							);
 							label = formattedValue !== null ? formattedValue : String(part);
 						} else {
@@ -1529,7 +1534,9 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 								String(part),
 								undefined,
 								pivotColumnType,
-								config.firstDayOfWeek
+								config.firstDayOfWeek,
+								undefined,
+								config.language
 							);
 							label = formattedValue !== null ? formattedValue : String(part);
 						} else {
@@ -1571,7 +1578,9 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 							String(part),
 							undefined,
 							pivotColumnType,
-							config.firstDayOfWeek
+							config.firstDayOfWeek,
+							undefined,
+							config.language
 						);
 						label = formattedValue !== null ? formattedValue : String(part);
 					} else {

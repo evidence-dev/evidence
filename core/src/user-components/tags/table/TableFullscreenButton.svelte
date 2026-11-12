@@ -4,6 +4,7 @@
 	import { buttonVariants } from '../../../shadcn/components/ui/button';
 	import * as Tooltip from '../../../shadcn/components/ui/tooltip';
 	import { cn } from '../../../shadcn/utils';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 
 	type Props = {
 		onclick: () => void;
@@ -11,6 +12,7 @@
 	};
 
 	const { onclick, expanded = false }: Props = $props();
+	const { t } = getLocaleContext();
 </script>
 
 <Tooltip.Provider>
@@ -20,7 +22,7 @@
 				buttonVariants({ variant: 'ghost', size: 'icon', class: 'text-muted-foreground size-6' })
 			)}
 			{onclick}
-			aria-label={expanded ? 'Exit fullscreen' : 'Expand table'}
+			aria-label={expanded ? t('table.exit_fullscreen') : t('table.expand')}
 		>
 			{#if expanded}
 				<Minimize2 class="h-3.5 w-3.5" />
@@ -29,7 +31,7 @@
 			{/if}
 		</Tooltip.Trigger>
 		<Tooltip.Content class="evidence-page-theme px-2 py-1">
-			{expanded ? 'Exit fullscreen' : 'Fullscreen'}
+			{expanded ? t('table.exit_fullscreen') : t('table.fullscreen')}
 		</Tooltip.Content>
 	</Tooltip.Root>
 </Tooltip.Provider>

@@ -15,7 +15,8 @@ type TestProjectSettings = {
 function makeFilter(
 	attributes: Record<string, unknown> = {},
 	dialect?: SqlDialect,
-	projectSettings: TestProjectSettings = { computedDefaultDateRangeEnd: ANCHOR }
+	projectSettings: TestProjectSettings = { computedDefaultDateRangeEnd: ANCHOR },
+	language?: () => string | null
 ) {
 	return new PeriodFilter(
 		{
@@ -27,7 +28,8 @@ function makeFilter(
 			url: undefined,
 			updateUrl: undefined,
 			projectSettings,
-			dialect
+			dialect,
+			language
 		} as never
 	);
 }
@@ -216,6 +218,38 @@ describe('PeriodFilter — template values', () => {
 			text: 'label',
 			column: 'label'
 		});
+	});
+});
+
+describe('PeriodFilter — page language', () => {
+	it('localizes prose values but not keys or SQL', () => {
+		const english = makeFilter().templateValues;
+		const french = makeFilter({}, undefined, undefined, () => 'fr').templateValues;
+		expect(french).toEqual({
+			...english,
+			label: 'juil. 2026',
+			start_label: '1 juil. 2026',
+			end_label: '31 juil. 2026'
+		});
+	});
+
+	it('relabels live when the page language changes', () => {
+		let language = $state<string | null>('en');
+		const filter = makeFilter({ grain: 'week' }, undefined, undefined, () => language);
+		const seen: string[] = [];
+		const cleanup = $effect.root(() => {
+			$effect(() => {
+				seen.push(`${filter.templateValues.label} | ${filter.periods[1].label}`);
+			});
+		});
+		flushSync();
+		language = 'fr';
+		flushSync();
+		expect(seen).toEqual([
+			'Week of Aug 2, 2026 | Week of Jul 26, 2026',
+			'Semaine du 2 août 2026 | Semaine du 26 juil. 2026'
+		]);
+		cleanup();
 	});
 });
 

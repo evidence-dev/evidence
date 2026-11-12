@@ -94,7 +94,8 @@ function makeFmt(settings: SandboxFormatSettings) {
 			undefined,
 			undefined,
 			settings.firstDayOfWeek ?? 'sunday',
-			settings.decimalSeparator
+			settings.decimalSeparator,
+			settings.language
 		);
 }
 
@@ -128,7 +129,7 @@ function forPrint(option: EChartsOption): EChartsOption {
 
 function buildOption(): EChartsOption {
 	const evaluated = evaluateUserCode();
-	const withFormatters = applyFormatCodes(evaluated);
+	const withFormatters = applyFormatCodes(evaluated, formatSettingsValue.language);
 	const columnNames = data.columns.map((column) => column.name);
 	const withData = buildCustomEchartOptions(withFormatters, data.rows, columnNames) as Record<
 		string,
@@ -313,6 +314,11 @@ function reinitChart(): void {
 	initChart();
 }
 
+function applyFormatSettings(settings: SandboxFormatSettings): void {
+	formatSettingsValue = settings;
+	formatSettings.set({ decimalSeparator: settings.decimalSeparator ?? '.' });
+}
+
 function applyInit(message: InitMessage): void {
 	renderer = message.renderer;
 	userCode = message.userCode;
@@ -321,8 +327,7 @@ function applyInit(message: InitMessage): void {
 	mode = message.mode;
 	useCardColors = message.useCardColors;
 	printing = message.printing;
-	formatSettingsValue = message.formatSettings;
-	formatSettings.set({ decimalSeparator: message.formatSettings.decimalSeparator ?? '.' });
+	applyFormatSettings(message.formatSettings);
 	container = document.getElementById('evidence-echart') ?? undefined;
 	// reinitChart instead of initChart because applyInit can fire more than
 	// once — bootSandbox's dispatch routes port-side init messages back
@@ -390,6 +395,12 @@ bootSandbox<InitMessage>({
 					chart.resize({ width: container.clientWidth, height: container.clientHeight });
 					render();
 				}
+				return;
+			case 'format-settings':
+				// `fmt` is re-bound on every render (evaluateUserCode), so a plain
+				// re-render is enough for both the global and `fmt:` codes.
+				applyFormatSettings(typed.formatSettings);
+				render();
 				return;
 		}
 	}

@@ -14,7 +14,8 @@ function filters(): Filters {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: undefined,
-		dialect: () => dialect
+		dialect: () => dialect,
+		language: undefined
 	});
 }
 

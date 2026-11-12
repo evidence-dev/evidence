@@ -4,10 +4,15 @@ import {
 	parsePeriodKey,
 	isPeriodGrain,
 	periodToRangeExpression,
+	periodBoundaryLabel,
+	previousPeriod,
+	nextPeriod,
 	DEFAULT_PERIOD_COUNT,
 	MAX_PERIOD_COUNT,
-	PERIOD_GRAINS
+	PERIOD_GRAINS,
+	type PeriodGrain
 } from './reporting-periods';
+import { getLabelLocale, type LabelLocale } from '../../locale/label-locale';
 
 /** Mid-month anchor: August 2026 is incomplete, July 2026 is the newest complete month. */
 const midAugust = new Date(2026, 7, 14);
@@ -234,6 +239,46 @@ describe('parsePeriodKey', () => {
 			key: '2026-08-02',
 			start: '2026-08-02'
 		});
+	});
+});
+
+describe('period labels follow the page language', () => {
+	const en = getLabelLocale('en');
+	const fr = getLabelLocale('fr');
+	const newest = (grain: PeriodGrain, locale?: LabelLocale) =>
+		buildReportingPeriods({ grain, count: 1, anchorDate: midAugust, locale })[0];
+
+	it.each<[PeriodGrain, string, string]>([
+		['day', 'Aug 13, 2026', '13 août 2026'],
+		['week', 'Week of Aug 2, 2026', 'Semaine du 2 août 2026'],
+		['month', 'Jul 2026', 'juil. 2026'],
+		['quarter', 'Q2 2026', 'T2 2026'],
+		['year', '2025', '2025']
+	])('labels a %s as "%s" in English and "%s" in French', (grain, english, french) => {
+		expect(newest(grain).label).toBe(english);
+		expect(newest(grain, en).label).toBe(english);
+		expect(newest(grain, fr).label).toBe(french);
+	});
+
+	it('keeps keys and dates language-neutral', () => {
+		for (const grain of PERIOD_GRAINS) {
+			const { label: _en, ...english } = newest(grain, en);
+			const { label: _fr, ...french } = newest(grain, fr);
+			expect(french).toEqual(english);
+			expect(parsePeriodKey(english.key, grain, 'sunday', fr)?.label).toBe(newest(grain, fr).label);
+		}
+	});
+
+	it('labels stepped periods in the same language', () => {
+		const july = newest('month', fr);
+		expect(previousPeriod(july, 'month', 'sunday', fr).label).toBe('juin 2026');
+		expect(nextPeriod(july, 'month', 'sunday', fr).label).toBe('août 2026');
+	});
+
+	it('formats boundaries for prose', () => {
+		expect(periodBoundaryLabel('2026-07-01')).toBe('Jul 1, 2026');
+		expect(periodBoundaryLabel('2026-07-01', fr)).toBe('1 juil. 2026');
+		expect(periodBoundaryLabel('2026-12-31', fr)).toBe('31 déc. 2026');
 	});
 });
 

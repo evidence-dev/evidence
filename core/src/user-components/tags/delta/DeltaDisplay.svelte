@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { setupRenderReadiness } from '../../../readiness.svelte';
 	import { getPageSettingsContext } from '../../../page-settings.context';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	interface Props {
 		value: unknown;

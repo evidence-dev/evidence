@@ -12,6 +12,8 @@
 	import { browser } from '../../../shims/env';
 	import { cn } from '../../../shadcn/utils';
 	import { logger } from '../../../shims/logger';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	type Props = UserComponentProps<typeof schema>;
 
@@ -20,7 +22,7 @@
 
 	const model = getModelContext({ expected: DownloadModel });
 
-	const label = $derived(model.resolvedLabel);
+	const label = $derived(model.resolvedLabel ?? t('common.download'));
 	const filename = $derived(model.resolvedFilename);
 	const variant = $derived(props.variant ?? 'default');
 

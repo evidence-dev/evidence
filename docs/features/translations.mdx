@@ -133,6 +133,38 @@ plain text, headings, identifier concatenation like `label_{{
 $translations.langcode }}` — the bare form is correct and `.sql` would
 incorrectly rewrite apostrophes that were never inside a SQL literal.
 
+## Built-in Report Text
+
+`translations.yaml` covers your content. Everything Evidence itself draws inside a report follows the selected language automatically, with no translation keys required:
+
+- **Chart date axes and tooltips** — both the words (month abbreviations, quarter labels) and the conventions (day-month order, punctuation, 12/24-hour clock) switch.
+- **Component text** — table pagination and search, filter chips and operators, dropdown and date range picker labels and presets, legend "show more", the "Download" button, sampling notices, computed "Total" labels, and similar.
+
+| Language | Axis labels                        | Tooltip           | Component text                  |
+| -------- | ---------------------------------- | ----------------- | ------------------------------- |
+| `en`     | `Jun 5` · `Jul` · `Q3` · `4 pm`    | `Jun 15–21, 2025` | `1 - 10 of 250 rows` · `Today`  |
+| `fr`     | `5 juin` · `juil.` · `T3` · `16 h` | `15–21 juin 2025` | `1 à 10 sur 250 lignes` · `Aujourd'hui` |
+
+Currently supported: English (`en`) and French (`fr`). Regional variants such as `fr-CA` use the base language; any other language renders English built-in text (your `translations.yaml` content is unaffected).
+
+Component attributes you set explicitly always win over the built-in text — `total_label="Net"` on a waterfall chart stays `Net` in every language. Leave the attribute out to get the translated default, or pass `total_label=$translations.net` to translate it yourself.
+
+### Custom date formats
+
+Explicit date formats keep working and translate their month and weekday names, wherever `fmt` is used — chart axes, tooltips, tables, big values. Numeric tokens, separators and quoted literals are left exactly as written:
+
+| `fmt`              | `en`                        | `fr`                       |
+| ------------------ | --------------------------- | -------------------------- |
+| `mmm yyyy`         | `Jan 2025`                  | `janv. 2025`               |
+| `dddd d mmmm yyyy` | `Wednesday 15 January 2025` | `mercredi 15 janvier 2025` |
+| `dd/mm/yyyy`       | `15/01/2025`                | `15/01/2025`               |
+
+Named presets whose English definition carries English word order or a 12-hour clock are redefined per language: in French `longdate` is `15 janvier 2025`, `fulldate` is `mercredi 15 janvier 2025` and `hms` is `16:05:09`. `AM/PM` has no French form and stays as written.
+
+### Contributing a Language
+
+Built-in text lives in the open-source [Evidence repository](https://github.com/evidence-dev/evidence). UI strings are standard [i18next](https://www.i18next.com/) JSON resources (the same library that resolves `translations.yaml`) and date formats are [date-fns](https://date-fns.org/) locale configurations, so a new language is a small, self-contained pull request: one JSON file, one date config, and a one-line registration. The test suite verifies the files are complete. See [`core/src/locale/README.md`](https://github.com/evidence-dev/evidence/blob/main/core/src/locale/README.md) for the step-by-step guide.
+
 ## Fallback Behavior
 
 If a translation key is missing for the selected language, it will fall back to English (`en`) if available.

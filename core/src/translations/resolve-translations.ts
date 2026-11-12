@@ -4,13 +4,27 @@ import merge from 'lodash/merge';
 
 const FALLBACK_LANGUAGE = 'en';
 
+function normalizeTag(language: string): string {
+	return language.trim().toLowerCase().replaceAll('_', '-');
+}
+
 /**
- * Pick the active language for a render: the requested one if it's among the
- * declared languages, else the first declared language, else null. (Individual
- * missing keys still fall back to English inside `resolveTranslations`.)
+ * Pick the active language for a render: the declared language matching the
+ * request (exactly, then case/separator-insensitively, then by primary subtag
+ * so `fr-FR` finds `fr`), else the first declared language, else null.
+ * (Individual missing keys still fall back to English inside `resolveTranslations`.)
  */
 export function selectLanguage(languages: string[], requestedLang: string | null): string | null {
-	if (requestedLang && languages.includes(requestedLang)) return requestedLang;
+	if (requestedLang && typeof requestedLang === 'string') {
+		if (languages.includes(requestedLang)) return requestedLang;
+		const requested = normalizeTag(requestedLang);
+		const primary = requested.split('-')[0];
+		const match =
+			languages.find((lang) => normalizeTag(lang) === requested) ??
+			languages.find((lang) => normalizeTag(lang) === primary) ??
+			languages.find((lang) => normalizeTag(lang).split('-')[0] === primary);
+		if (match) return match;
+	}
 	return languages[0] ?? null;
 }
 

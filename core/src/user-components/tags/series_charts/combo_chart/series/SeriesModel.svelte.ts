@@ -384,6 +384,7 @@ export class SeriesModel {
 
 		// For percentage stacking, use fixed 0-1 range for formatting (SSF % format displays as 0%-100%)
 		const percentageMinMax = { min: 0, max: 1 };
+		const language = this.sharedContext.language;
 
 		return seriesConfig.map((c, seriesIndex) => {
 			// Assign color from palette if no explicit color is set
@@ -427,7 +428,16 @@ export class SeriesModel {
 								: undefined;
 
 						// Format percentage
-						const percentStr = formatValue(value, '0.0%', value?.toString(), percentageMinMax);
+						const percentStr = formatValue(
+							value,
+							'0.0%',
+							value?.toString(),
+							percentageMinMax,
+							undefined,
+							undefined,
+							undefined,
+							language
+						);
 
 						// Format original value if available
 						if (originalValue !== undefined) {
@@ -435,13 +445,27 @@ export class SeriesModel {
 								originalValue,
 								this.fmt,
 								originalValue.toString(),
-								minMax
+								minMax,
+								undefined,
+								undefined,
+								undefined,
+								language
 							);
 							return `${percentStr} (${originalStr})`;
 						}
 						return percentStr;
 					}
-				: (value: unknown) => formatValue(value, this.fmt, value?.toString(), minMax);
+				: (value: unknown) =>
+						formatValue(
+							value,
+							this.fmt,
+							value?.toString(),
+							minMax,
+							undefined,
+							undefined,
+							undefined,
+							language
+						);
 
 			// Create data label formatter based on percentage stacking mode
 			const dataLabels = this.resolvedDataLabels;
@@ -455,13 +479,26 @@ export class SeriesModel {
 							yValue,
 							dataLabels.fmt ?? '0%',
 							yValue?.toString(),
-							percentageMinMax
+							percentageMinMax,
+							undefined,
+							undefined,
+							undefined,
+							language
 						);
 					}
 				: (params: { value?: unknown[] }) => {
 						const value = Array.isArray(params.value) ? params.value : params.value;
 						const yValue = value?.[1];
-						return formatValue(yValue, dataLabels.fmt ?? this.fmt, yValue?.toString(), minMax);
+						return formatValue(
+							yValue,
+							dataLabels.fmt ?? this.fmt,
+							yValue?.toString(),
+							minMax,
+							undefined,
+							undefined,
+							undefined,
+							language
+						);
 					};
 
 			// Per-series echarts_options was applied inside the series component's

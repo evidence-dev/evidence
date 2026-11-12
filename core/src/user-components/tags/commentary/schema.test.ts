@@ -11,7 +11,8 @@ function scopeErrors(markdown: string) {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: { computedDefaultDateRangeEnd: '2026-08-14' } as never,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	});
 	registerFiltersFromAST(ast, filters);
 	const tag = [...ast.walk()].find((node) => node.tag === 'commentary')!;

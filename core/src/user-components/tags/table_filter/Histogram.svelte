@@ -8,6 +8,10 @@
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { logger } from '../../../shims/logger';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	import { getShowErrorsContext } from '../../../show-errors.context';
+	const { t } = getLocaleContext();
+	const showErrors = getShowErrorsContext();
 
 	let {
 		min = 0,
@@ -146,7 +150,9 @@ ORDER BY
 						style="height: {isLoading ? '31' : histogramBars?.[i]?.displayHeight}%; margin: 0 1px;"
 					>
 						<span class="sr-only">
-							{isLoading ? 'Loading...' : histogramBars?.[i]?.height || 0} items
+							{isLoading
+								? t('common.loading')
+								: t('filter.items_count', { count: histogramBars?.[i]?.height || 0 })}
 						</span>
 					</div>
 				{/each}
@@ -172,32 +178,33 @@ ORDER BY
 {:else if query.error}
 	<div class="bg-background mb-2 rounded p-2">
 		<div class="text-destructive text-xs">
-			Error: {query.error}
+			{t('common.error_message', { message: String(query.error) })}
 		</div>
 	</div>
 {:else}
 	<div class="bg-background mb-2 rounded p-2">
 		<div class="text-muted-foreground text-xs">
-			No histogram data available
+			{t('filter.no_histogram_data')}
 
-			<!-- Debug information -->
-			<details class="border-muted mt-1 border-t pt-1 text-[10px]">
-				<summary>Debug Info</summary>
-				<div class="mt-1">
-					<strong>Query:</strong>
-					{sqlQuery}
-				</div>
-				{#if query.result}
+			{#if showErrors}
+				<details class="border-muted mt-1 border-t pt-1 text-[10px]">
+					<summary>Debug Info</summary>
 					<div class="mt-1">
-						<strong>Query Result:</strong>
-						<pre class="mt-1 overflow-x-auto whitespace-pre-wrap">{JSON.stringify(
-								query.result,
-								null,
-								2
-							)}</pre>
+						<strong>Query:</strong>
+						{sqlQuery}
 					</div>
-				{/if}
-			</details>
+					{#if query.result}
+						<div class="mt-1">
+							<strong>Query Result:</strong>
+							<pre class="mt-1 overflow-x-auto whitespace-pre-wrap">{JSON.stringify(
+									query.result,
+									null,
+									2
+								)}</pre>
+						</div>
+					{/if}
+				</details>
+			{/if}
 		</div>
 	</div>
 {/if}

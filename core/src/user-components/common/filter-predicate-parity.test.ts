@@ -36,7 +36,8 @@ function deps(dialect: SqlDialect) {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: undefined,
-		dialect: () => dialect
+		dialect: () => dialect,
+		language: undefined
 	};
 }
 

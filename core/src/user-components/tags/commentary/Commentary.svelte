@@ -18,11 +18,31 @@
 	import { getWorkflowPeriodFilter } from '../workflow_period/PeriodFilter.svelte';
 	import { setupRepeatableRenderReadiness } from '../../../readiness.svelte';
 	import { WORKFLOW_PERIOD_FILTER_ID } from '../../common/reporting-periods';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import {
 		commentaryScopeError,
 		commentaryScopeValue,
 		parseCommentaryScope
 	} from './commentary-scope';
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const timeAgo = (date: Date) =>
+		formatTimeAgo(date, {
+			locale: localeContext.dateLocale.locale,
+			justNow: t('commentary.just_now')
+		});
+	const formatEditedAt = (date: Date) => {
+		const english = localeContext.resolvedLanguage === 'en';
+		return date.toLocaleString(english ? 'en-US' : localeContext.resolvedLanguage, {
+			month: 'short',
+			day: 'numeric',
+			year: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+			hour12: english ? true : undefined,
+			timeZoneName: 'short'
+		});
+	};
 
 	type Props = Omit<UserComponentProps<typeof schema>, 'scope'> & {
 		scope?: string | string[];
@@ -30,7 +50,7 @@
 	const props: Props = $props();
 	const page = getPageStateContext() ?? fallbackPage;
 	const id = $derived(props.id);
-	const placeholder = $derived(props.placeholder ?? 'Add a comment...');
+	const placeholder = $derived(props.placeholder ?? t('commentary.placeholder'));
 	const className = $derived(props.className);
 	const allowedEditors = $derived(props.allowedEditors);
 	const title = $derived(props.title);
@@ -331,7 +351,7 @@
 						: 'flex print:hidden'}"
 		>
 			{#if bucket.isSaving}
-				<div class="text-muted-foreground text-xs" in:fade>Saving...</div>
+				<div class="text-muted-foreground text-xs" in:fade>{t('commentary.saving')}</div>
 			{:else if bucket.createdAt}
 				<div class="group flex items-center">
 					{#each bucket.commentUsers as user, i}
@@ -351,7 +371,7 @@
 							<Tooltip.Content class="evidence-page-theme">
 								{user.name}
 								<div class="text-muted-foreground text-xs">
-									{formatTimeAgo(user.createdAt)}
+									{timeAgo(user.createdAt)}
 								</div>
 							</Tooltip.Content>
 						</Tooltip.Root>
@@ -360,18 +380,10 @@
 				<div class="text-muted-foreground text-xs" in:fade>
 					<Tooltip.Root>
 						<Tooltip.Trigger>
-							Edited {formatTimeAgo(bucket.createdAt)}.
+							{t('commentary.edited', { time_ago: timeAgo(bucket.createdAt) })}
 						</Tooltip.Trigger>
 						<Tooltip.Content class="evidence-page-theme">
-							{new Date(bucket.createdAt).toLocaleString('en-US', {
-								month: 'short',
-								day: 'numeric',
-								year: 'numeric',
-								hour: 'numeric',
-								minute: 'numeric',
-								hour12: true,
-								timeZoneName: 'short'
-							})}
+							{formatEditedAt(new Date(bucket.createdAt))}
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</div>
@@ -379,16 +391,18 @@
 			{#if canEdit && (bucket.text?.trim() || bucket.isEditing) && !bucket.isSaving}
 				<div class="flex flex-row print:hidden">
 					{#if !bucket.isEditing}
-						<Button variant="link" class="h-4 p-0 text-xs" onclick={focusEditor}>Edit</Button>
+						<Button variant="link" class="h-4 p-0 text-xs" onclick={focusEditor}
+							>{t('common.edit')}</Button
+						>
 					{:else}
 						<Button
 							variant="link"
 							class="text-muted-foreground mr-2 h-4 p-0 text-xs"
-							onclick={cancelEdit}>Cancel</Button
+							onclick={cancelEdit}>{t('common.cancel')}</Button
 						>
 						{#if bucket.savedText !== bucket.text}
 							<Button variant="link" class="h-4 p-0 text-xs" onclick={() => saveComment()}
-								>Save</Button
+								>{t('common.save')}</Button
 							>
 						{/if}
 					{/if}

@@ -386,7 +386,13 @@ describe('table filter initial values', () => {
 					multi_select: ['region']
 				}
 			} as unknown as ConstructorParameters<typeof TableFilterFilter>[0],
-			{ url: undefined, updateUrl: undefined, projectSettings: undefined, dialect: undefined }
+			{
+				url: undefined,
+				updateUrl: undefined,
+				projectSettings: undefined,
+				dialect: undefined,
+				language: undefined
+			}
 		);
 
 		expect(filter.value).toEqual({
@@ -428,7 +434,13 @@ describe('table filter initial values', () => {
 					initial_values: { category: 'Groceries' }
 				}
 			} as unknown as ConstructorParameters<typeof TableFilterFilter>[0],
-			{ url, updateUrl: undefined, projectSettings: undefined, dialect: undefined }
+			{
+				url,
+				updateUrl: undefined,
+				projectSettings: undefined,
+				dialect: undefined,
+				language: undefined
+			}
 		);
 
 		expect(filter.value).toEqual(urlState);
@@ -556,7 +568,13 @@ describe('table filter SQL fragment composition', () => {
 				userComponentName: 'table_filter',
 				attributes: { data: 'demo.orders' }
 			} as unknown as ConstructorParameters<typeof TableFilterFilter>[0],
-			{ url: undefined, updateUrl: undefined, projectSettings: undefined, dialect: undefined }
+			{
+				url: undefined,
+				updateUrl: undefined,
+				projectSettings: undefined,
+				dialect: undefined,
+				language: undefined
+			}
 		);
 
 		filter.value = value as FilterState;

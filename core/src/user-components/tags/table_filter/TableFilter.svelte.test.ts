@@ -163,7 +163,8 @@ describe('TableFilter initial_values arriving after mount', () => {
 			url: undefined,
 			updateUrl: undefined,
 			projectSettings: undefined,
-			dialect: () => defaultDialect
+			dialect: () => defaultDialect,
+			language: undefined
 		});
 		pageFilters.current = filters;
 		return filters;
@@ -254,7 +255,8 @@ describe('TableFilter URL persistence', () => {
 			url: () => url,
 			updateUrl,
 			projectSettings: undefined,
-			dialect: () => defaultDialect
+			dialect: () => defaultDialect,
+			language: undefined
 		});
 		pageFilters.current = filters;
 		filters.create(

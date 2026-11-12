@@ -67,6 +67,8 @@ export type SharedQueryContext = {
 	refreshInterval: number | undefined;
 	/** First day of week for date calculations */
 	firstDayOfWeek: 'sunday' | 'monday';
+	/** Page language for month/weekday names in series `fmt` codes; English when null. */
+	language: string | null;
 };
 
 export type ComboChartContext = {

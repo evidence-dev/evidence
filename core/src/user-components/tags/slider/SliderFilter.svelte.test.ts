@@ -7,7 +7,8 @@ function makeSlider(attributes: Record<string, unknown> = {}) {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: undefined,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	});
 }
 

@@ -11,6 +11,8 @@
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { Viewport } from '../../../preview-viewport.context.svelte';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	let props: UserComponentProps<typeof schema> = $props();
 
@@ -30,7 +32,7 @@
 
 	const { resolveText } = $derived(createResolvers(variableProcessor));
 
-	const title = $derived(resolveText(props.title) ?? 'Details');
+	const title = $derived(resolveText(props.title) ?? t('common.details'));
 	const viewport = new Viewport();
 	// Initial state only, so crossing the breakpoint later doesn't override the reader's toggle
 	let isOpen = $state(

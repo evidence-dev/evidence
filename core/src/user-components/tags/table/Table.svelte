@@ -16,7 +16,7 @@
 	} from '../../common/pivot-utils';
 	import ComponentTitle from '../../common/ComponentTitle.svelte';
 	import PivotLimitWarning from '../../common/PivotLimitWarning.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import TablePagination from './TablePagination.svelte';
 
 	import { cn } from '../../../shadcn/utils';
@@ -73,6 +73,8 @@
 		mergeCurrentSearchParams
 	} from '../../common/transform-internal-link';
 	import { page } from '$app/state';
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	// Define the props type
 	type Props = UserComponentProps<typeof schema> & SQLProps;
@@ -97,7 +99,7 @@
 	const info = $derived(model.resolvedInfo);
 	const info_link = $derived(model.resolvedInfo_link);
 	const info_link_title = $derived(model.resolvedInfo_link_title);
-	const total_label = $derived(model.resolvedTotalLabel ?? 'Total');
+	const total_label = $derived(model.resolvedTotalLabel ?? localeContext.t('common.total'));
 
 	const search = $derived(props.search);
 	const page_size = $derived(model.pageSizeOverride ?? props.page_size);
@@ -128,7 +130,7 @@
 	const collapsed = $derived(props.collapsed ?? (collapsible ? true : false));
 	// Force subtotal_position to 'top' when collapsible is enabled (required for collapse/expand to work)
 	// Otherwise use user's setting or default to 'bottom'
-	const subtotal_position = $derived(collapsible ? 'top' : props.subtotal_position ?? 'bottom');
+	const subtotal_position = $derived(collapsible ? 'top' : (props.subtotal_position ?? 'bottom'));
 	const total_position = $derived(props.total_position ?? 'bottom');
 	const children = $derived(props.children);
 
@@ -268,7 +270,8 @@
 			columnTypes, // This will now be the current columnTypes when pivot data is generated
 			unifiedColumns: model.allUnifiedColumns, // Pass unified columns directly
 			collapsible,
-			firstDayOfWeek: projectSettings.first_day_of_week
+			firstDayOfWeek: projectSettings.first_day_of_week,
+			language: localeContext.language
 		};
 
 		let result;
@@ -703,12 +706,9 @@
 	function handleRowClick(row: Record<string, unknown>) {
 		if (!link || !row[link]) return;
 
-		const url = transformInternalLink(
-			String(row[link]),
-			rendererContext.context,
-			page.params,
-			{ hrefIncludesProjectSlug: false }
-		);
+		const url = transformInternalLink(String(row[link]), rendererContext.context, page.params, {
+			hrefIncludesProjectSlug: false
+		});
 		// Merge current page's filter params for cross-page persistence
 		const mergedUrl = mergeCurrentSearchParams(url);
 		if (mergedUrl.trim()) {
@@ -757,33 +757,48 @@
 
 {#snippet tableContent()}
 	<!-- Table scroll container -->
-	<div class={cn("relative mb-1 w-full flex-1", printing ? 'overflow-visible' : 'h-full min-h-0 overflow-auto')}>
-		<table class={cn("m-0 w-full rounded-md text-xs tabular-nums transition-opacity", hasData && query.loading && 'opacity-50')}>
+	<div
+		class={cn(
+			'relative mb-1 w-full flex-1',
+			printing ? 'overflow-visible' : 'h-full min-h-0 overflow-auto'
+		)}
+	>
+		<table
+			class={cn(
+				'm-0 w-full rounded-md text-xs tabular-nums transition-opacity',
+				hasData && query.loading && 'opacity-50'
+			)}
+		>
 			{#if !loading && !showNoResults}
-			<TableHeader
-				headerLevels={displayPivotData.headerLevels}
-				columnMeta={displayPivotData.columnMeta}
-				columns={displayPivotData.columns}
-				config={displayPivotData.config}
-				{measures_first}
-				{wrap_titles}
-				{format_titles}
-				{link}
-				{shouldHideLinkColumn}
-				{currentSort}
-				onHeaderClick={handleHeaderClick}
-				{freeze_columns}
-				{frozenColumnOffsets}
-			/>
-			<tbody>
+				<TableHeader
+					headerLevels={displayPivotData.headerLevels}
+					columnMeta={displayPivotData.columnMeta}
+					columns={displayPivotData.columns}
+					config={displayPivotData.config}
+					{measures_first}
+					{wrap_titles}
+					{format_titles}
+					{link}
+					{shouldHideLinkColumn}
+					{currentSort}
+					onHeaderClick={handleHeaderClick}
+					{freeze_columns}
+					{frozenColumnOffsets}
+				/>
+				<tbody>
 					{#each visibleRows as row, rowIndex}
 						{@const isDataRow = row.render_type === 'cell_data' || row.render_type === undefined}
 						{@const hasRowLink = link && row && row[link]}
-						{@const filteredColumnCount = displayPivotData.columns.filter((c, idx) => shouldRenderCell(rowIndex, idx)).length}
+						{@const filteredColumnCount = displayPivotData.columns.filter((c, idx) =>
+							shouldRenderCell(rowIndex, idx)
+						).length}
 						<!-- ====== COLLAPSIBLE: Row-level metadata ====== -->
-						{@const subtotalGroupKey = isCollapsibleActive ? getSubtotalGroupKey(row as CollapsibleRow) : null}
+						{@const subtotalGroupKey = isCollapsibleActive
+							? getSubtotalGroupKey(row as CollapsibleRow)
+							: null}
 						{@const isCollapsibleSubtotal = isCollapsibleActive && subtotalGroupKey !== null}
-						{@const isGroupCollapsed = isCollapsibleSubtotal && effectiveCollapsedGroups.has(subtotalGroupKey)}
+						{@const isGroupCollapsed =
+							isCollapsibleSubtotal && effectiveCollapsedGroups.has(subtotalGroupKey)}
 						{@const collapsibleRow = row as CollapsibleRow}
 						{@const numDimensions = pivotData.config.dimensions?.length ?? 0}
 						<!-- Use pre-computed metadata (O(1) lookup) instead of O(n) calculation per row -->
@@ -793,200 +808,299 @@
 						{@const _isLastRowBeforeTotal = rowMeta?.isLastRowBeforeTotal ?? false}
 						{@const checkEmptyDimCell = (colIdx: number) => {
 							if (!isCollapsibleActive) return false;
-							return isEmptyDimCell(collapsibleRow, colIdx, numDimensions, parentSubtotalLevel, displayPivotData.columns);
+							return isEmptyDimCell(
+								collapsibleRow,
+								colIdx,
+								numDimensions,
+								parentSubtotalLevel,
+								displayPivotData.columns
+							);
 						}}
 						<!-- Row conditional colors -->
-						{@const rowColorValue = isDataRow && row['__row_conditional_colors'] ? String(row['__row_conditional_colors']) : null}
-						{@const rowColorStyles = rowColorValue ? calculateColorStylesFromHex(rowColorValue) : null}
-						<tr 
-							class={isCollapsibleActive ? getRowClasses({
-								rowLines: row_lines,
-								rowShading: row_shading && !rowColorStyles,
-								isCollapsibleActive,
-								isCollapsibleSubtotal,
-								isDataRow,
-								hasRowLink: Boolean(hasRowLink),
-								isTotal: row.render_type === 'row_total',
-								totalPosition: total_position
-							}) : cn(
-								row_lines ? 'border-(--theme-table-row-border) border-b' : 'border-0',
-								row_shading && isDataRow && !rowColorStyles ? 'even:bg-muted' : '',
-								'transition-colors',
-								hasRowLink ? 'hover:bg-(--theme-table-hover) cursor-pointer' : ''
-							)}
-							onclick={isCollapsibleSubtotal ? () => toggleGroupCollapse(subtotalGroupKey) : hasRowLink ? () => handleRowClick(row) : undefined}
+						{@const rowColorValue =
+							isDataRow && row['__row_conditional_colors']
+								? String(row['__row_conditional_colors'])
+								: null}
+						{@const rowColorStyles = rowColorValue
+							? calculateColorStylesFromHex(rowColorValue)
+							: null}
+						<tr
+							class={isCollapsibleActive
+								? getRowClasses({
+										rowLines: row_lines,
+										rowShading: row_shading && !rowColorStyles,
+										isCollapsibleActive,
+										isCollapsibleSubtotal,
+										isDataRow,
+										hasRowLink: Boolean(hasRowLink),
+										isTotal: row.render_type === 'row_total',
+										totalPosition: total_position
+									})
+								: cn(
+										row_lines ? 'border-b border-(--theme-table-row-border)' : 'border-0',
+										row_shading && isDataRow && !rowColorStyles ? 'even:bg-muted' : '',
+										'transition-colors',
+										hasRowLink ? 'cursor-pointer hover:bg-(--theme-table-hover)' : ''
+									)}
+							onclick={isCollapsibleSubtotal
+								? () => toggleGroupCollapse(subtotalGroupKey)
+								: hasRowLink
+									? () => handleRowClick(row)
+									: undefined}
 						>
-							{#each displayPivotData.columns.map((col, tableColumnIndex) => ({ 
-								col, 
-								tableColumnIndex, 
-								cellColumnMeta: displayPivotData.columnMeta.find(c => c.key === col)
-							})).filter(({ tableColumnIndex }) => 
-								shouldRenderCell(rowIndex, tableColumnIndex)
-							) as { col, tableColumnIndex, cellColumnMeta }, renderedCellIndex}
-									{@const cellEffectiveAlign = cellColumnMeta?.align ?? 'left'}
-						{@const hasColorViz =
-							cellColumnMeta?.viz === 'color' &&
-							row[col] !== null && row[col] !== undefined &&
-							(cellColumnMeta?.color_options?.conditional_colors || !isNaN(Number(row[col]))) &&
-							row.render_type !== 'row_total' &&
-							(row.render_type !== 'row_subtotal' || (!cellColumnMeta?.color_options?.conditional_colors && cellColumnMeta?.viz_include_subtotals !== false))}
-									{@const colorStyles = hasColorViz ? calculateColorStyles(
-										cellColumnMeta,
-										col,
-										row,
-										vizRanges.get(col) || { min: 0, max: 0 },
-										defaultColorScale,
-										vizColorScales.get(col)
-									) : null}
+							{#each displayPivotData.columns
+								.map( (col, tableColumnIndex) => ({ col, tableColumnIndex, cellColumnMeta: displayPivotData.columnMeta.find((c) => c.key === col) }) )
+								.filter( ({ tableColumnIndex }) => shouldRenderCell(rowIndex, tableColumnIndex) ) as { col, tableColumnIndex, cellColumnMeta }, renderedCellIndex}
+								{@const cellEffectiveAlign = cellColumnMeta?.align ?? 'left'}
+								{@const hasColorViz =
+									cellColumnMeta?.viz === 'color' &&
+									row[col] !== null &&
+									row[col] !== undefined &&
+									(cellColumnMeta?.color_options?.conditional_colors || !isNaN(Number(row[col]))) &&
+									row.render_type !== 'row_total' &&
+									(row.render_type !== 'row_subtotal' ||
+										(!cellColumnMeta?.color_options?.conditional_colors &&
+											cellColumnMeta?.viz_include_subtotals !== false))}
+								{@const colorStyles = hasColorViz
+									? calculateColorStyles(
+											cellColumnMeta,
+											col,
+											row,
+											vizRanges.get(col) || { min: 0, max: 0 },
+											defaultColorScale,
+											vizColorScales.get(col)
+										)
+									: null}
 								{@const isFrozenCell = freeze_columns > 0 && tableColumnIndex < freeze_columns}
-								{@const frozenCellLeft = isFrozenCell ? (frozenColumnOffsets[tableColumnIndex] ?? 0) : 0}
+								{@const frozenCellLeft = isFrozenCell
+									? (frozenColumnOffsets[tableColumnIndex] ?? 0)
+									: 0}
 								{@const isLastFrozenCell = isFrozenCell && tableColumnIndex === freeze_columns - 1}
-								{@const dimensionRepeatSetting = cellColumnMeta?.repeat_values !== undefined ? cellColumnMeta.repeat_values : repeat_values}
-								{@const hasRowspan = !collapsible && !dimensionRepeatSetting && (visibleRows[rowIndex].__rowspans?.[tableColumnIndex] ?? 1) > 1}
-								{@const cellZIndex = isFrozenCell 
-									? (hasRowspan ? 12 : 10) + (freeze_columns - tableColumnIndex) 
-									: (freeze_columns > 0 ? 1 : undefined)}
-								{@const isTotalOrSubtotal = row.render_type === "row_total" || row.render_type === "row_subtotal"}
+								{@const dimensionRepeatSetting =
+									cellColumnMeta?.repeat_values !== undefined
+										? cellColumnMeta.repeat_values
+										: repeat_values}
+								{@const hasRowspan =
+									!collapsible &&
+									!dimensionRepeatSetting &&
+									(visibleRows[rowIndex].__rowspans?.[tableColumnIndex] ?? 1) > 1}
+								{@const cellZIndex = isFrozenCell
+									? (hasRowspan ? 12 : 10) + (freeze_columns - tableColumnIndex)
+									: freeze_columns > 0
+										? 1
+										: undefined}
+								{@const isTotalOrSubtotal =
+									row.render_type === 'row_total' || row.render_type === 'row_subtotal'}
 								{@const isEvenRow = rowIndex % 2 === 1}
-								{@const frozenCellBg = row_shading && isDataRow && isEvenRow && !hasRowspan && !rowColorStyles ? "bg-muted" : "bg-background"}
+								{@const frozenCellBg =
+									row_shading && isDataRow && isEvenRow && !hasRowspan && !rowColorStyles
+										? 'bg-muted'
+										: 'bg-background'}
 								{@const cellClasses = cn(
 									// Base cell styles
-									"relative align-middle",
-									
+									'relative align-middle',
+
 									// Frozen column styling - use solid background for frozen cells
-									isFrozenCell && "sticky",
+									isFrozenCell && 'sticky',
 									// Frozen cells need solid backgrounds to prevent content showing through
 									// When row_shading is enabled, use shaded background on even rows to match the row shading
 									isFrozenCell && !isTotalOrSubtotal && frozenCellBg,
-										
-										// Row type styling (totals, subtotals, etc.) — theme-driven via
-										// --theme-table-* vars (defaults match the old solid colors).
-										row.render_type === "row_total"
-											? "border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-total-bg) font-semibold"
-											: row.render_type === "row_subtotal"
-											? tableColumnIndex >= ((row.subtotal_level ?? 1) - 1)
-												? "border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-subtotal-bg) font-semibold"
-												: ""
-											: displayPivotData.columnMeta.find(c => c.key === col)?.render_type === "column_total"
-											? "bg-(--theme-table-pivot-bg) font-semibold"
-											: displayPivotData.columnMeta.find(c => c.key === col)?.render_type === "column_subtotal"
-											? "bg-(--theme-table-pivot-bg) font-semibold dark:border-r-(--theme-table-row-border)"
-											: "",
-										
+
+									// Row type styling (totals, subtotals, etc.) — theme-driven via
+									// --theme-table-* vars (defaults match the old solid colors).
+									row.render_type === 'row_total'
+										? 'border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-total-bg) font-semibold'
+										: row.render_type === 'row_subtotal'
+											? tableColumnIndex >= (row.subtotal_level ?? 1) - 1
+												? 'border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-subtotal-bg) font-semibold'
+												: ''
+											: displayPivotData.columnMeta.find((c) => c.key === col)?.render_type ===
+												  'column_total'
+												? 'bg-(--theme-table-pivot-bg) font-semibold'
+												: displayPivotData.columnMeta.find((c) => c.key === col)?.render_type ===
+													  'column_subtotal'
+													? 'bg-(--theme-table-pivot-bg) font-semibold dark:border-r-(--theme-table-row-border)'
+													: '',
+
 									// Dimension cell merging background (for rowspan cells) - only if not frozen (frozen cells handle this via frozenCellBg)
 									// Use effective dimension count from pivotData config (accounts for converted pivots)
 									// Disabled in collapsible mode or when repeat_values is enabled since we don't use rowspans there
-									!collapsible && !isFrozenCell && !dimensionRepeatSetting && (tableColumnIndex < (pivotData.config.dimensions?.length ?? model.dimensions.length) && !model.serverSidePaginated && (visibleRows[rowIndex].__rowspans?.[tableColumnIndex] ?? 1) > 1) ? 'bg-background' : '',
-										
-										// Text wrapping behavior
-										(cellColumnMeta?.wrap !== undefined ? cellColumnMeta.wrap : wrap) ? '' : 'whitespace-nowrap',
-										
-										// Vertical padding (reduced for sparkline columns)
-										model.allUnifiedColumns.some(column => column.viz === 'sparkline' && col.includes(column.alias)) ? 'pb-0.5' : 'py-1',
-										
-										// Horizontal padding (varies by column position)
-										tableColumnIndex === 0 ? 'pr-3 pl-1' : renderedCellIndex === filteredColumnCount - 1 ? 'pr-3 pl-1.5' : 'pl-1.5 pr-3',
-										
-										// Text alignment
-										cellEffectiveAlign === 'right' ? 'text-right' : 
-											cellEffectiveAlign === 'center' ? 'text-center' : 'text-left',
-										
-										// Visibility (hide link columns when configured)
-										(col === link) && shouldHideLinkColumn ? 'hidden' : ''
-									)}
-									{@const zIndexStyle = cellZIndex !== undefined ? `z-index: ${cellZIndex};` : ''}
-									{@const frozenCellStyle = isFrozenCell 
-										? `left: ${frozenCellLeft}px; ${zIndexStyle}${isLastFrozenCell ? ' box-shadow: 2px 0 4px -2px rgba(0, 0, 0, 0.15);' : ''}` 
-										: zIndexStyle}
-									{@const effectiveColorStyles = hasColorViz && colorStyles ? colorStyles : rowColorStyles}
-									{@const colorVizStyle = effectiveColorStyles ? (() => {
-										const nextRow = visibleRows[rowIndex + 1];
-										const nextRowIsTotal = nextRow?.render_type === 'row_total' || nextRow?.render_type === 'row_subtotal';
-										return `background-color: ${effectiveColorStyles.backgroundColor}; color: ${effectiveColorStyles.color};` +
-											(!nextRowIsTotal ? ` border-bottom: 1px solid ${effectiveColorStyles.borderBottomColor};` : '') +
-											(row.render_type === 'row_total' ? ` border-top: 1px solid ${effectiveColorStyles.topBorderColor};` : '') +
-											(row.render_type === 'row_subtotal' && !collapsible && tableColumnIndex >= ((row.subtotal_level ?? 1) - 1) ? ` border-top: 1px solid ${effectiveColorStyles.topBorderColor};` : '');
-									})() : (cellColumnMeta?.red_negatives && !isNaN(Number(row[col])) && Number(row[col]) < 0) ? 'color: var(--theme-negative, rgb(220 38 38));' : ''}
-									{@const cellRepeat = cellColumnMeta?.repeat_values !== undefined ? cellColumnMeta.repeat_values : repeat_values}
-								{@const effectiveRowspan = model.serverSidePaginated || !model.needsSubtotals || model.measures.length === 0 || collapsible || cellRepeat ? 1 : (visibleRows[rowIndex].__rowspans?.[tableColumnIndex] ?? 1)}
+									!collapsible &&
+										!isFrozenCell &&
+										!dimensionRepeatSetting &&
+										tableColumnIndex <
+											(pivotData.config.dimensions?.length ?? model.dimensions.length) &&
+										!model.serverSidePaginated &&
+										(visibleRows[rowIndex].__rowspans?.[tableColumnIndex] ?? 1) > 1
+										? 'bg-background'
+										: '',
+
+									// Text wrapping behavior
+									(cellColumnMeta?.wrap !== undefined ? cellColumnMeta.wrap : wrap)
+										? ''
+										: 'whitespace-nowrap',
+
+									// Vertical padding (reduced for sparkline columns)
+									model.allUnifiedColumns.some(
+										(column) => column.viz === 'sparkline' && col.includes(column.alias)
+									)
+										? 'pb-0.5'
+										: 'py-1',
+
+									// Horizontal padding (varies by column position)
+									tableColumnIndex === 0
+										? 'pr-3 pl-1'
+										: renderedCellIndex === filteredColumnCount - 1
+											? 'pr-3 pl-1.5'
+											: 'pl-1.5 pr-3',
+
+									// Text alignment
+									cellEffectiveAlign === 'right'
+										? 'text-right'
+										: cellEffectiveAlign === 'center'
+											? 'text-center'
+											: 'text-left',
+
+									// Visibility (hide link columns when configured)
+									col === link && shouldHideLinkColumn ? 'hidden' : ''
+								)}
+								{@const zIndexStyle = cellZIndex !== undefined ? `z-index: ${cellZIndex};` : ''}
+								{@const frozenCellStyle = isFrozenCell
+									? `left: ${frozenCellLeft}px; ${zIndexStyle}${isLastFrozenCell ? ' box-shadow: 2px 0 4px -2px rgba(0, 0, 0, 0.15);' : ''}`
+									: zIndexStyle}
+								{@const effectiveColorStyles =
+									hasColorViz && colorStyles ? colorStyles : rowColorStyles}
+								{@const colorVizStyle = effectiveColorStyles
+									? (() => {
+											const nextRow = visibleRows[rowIndex + 1];
+											const nextRowIsTotal =
+												nextRow?.render_type === 'row_total' ||
+												nextRow?.render_type === 'row_subtotal';
+											return (
+												`background-color: ${effectiveColorStyles.backgroundColor}; color: ${effectiveColorStyles.color};` +
+												(!nextRowIsTotal
+													? ` border-bottom: 1px solid ${effectiveColorStyles.borderBottomColor};`
+													: '') +
+												(row.render_type === 'row_total'
+													? ` border-top: 1px solid ${effectiveColorStyles.topBorderColor};`
+													: '') +
+												(row.render_type === 'row_subtotal' &&
+												!collapsible &&
+												tableColumnIndex >= (row.subtotal_level ?? 1) - 1
+													? ` border-top: 1px solid ${effectiveColorStyles.topBorderColor};`
+													: '')
+											);
+										})()
+									: cellColumnMeta?.red_negatives &&
+										  !isNaN(Number(row[col])) &&
+										  Number(row[col]) < 0
+										? 'color: var(--theme-negative, rgb(220 38 38));'
+										: ''}
+								{@const cellRepeat =
+									cellColumnMeta?.repeat_values !== undefined
+										? cellColumnMeta.repeat_values
+										: repeat_values}
+								{@const effectiveRowspan =
+									model.serverSidePaginated ||
+									!model.needsSubtotals ||
+									model.measures.length === 0 ||
+									collapsible ||
+									cellRepeat
+										? 1
+										: (visibleRows[rowIndex].__rowspans?.[tableColumnIndex] ?? 1)}
 								<td
-										class={cellClasses}
-										rowspan={effectiveRowspan}
-										style={frozenCellStyle + colorVizStyle}
-									>
+									class={cellClasses}
+									rowspan={effectiveRowspan}
+									style={frozenCellStyle + colorVizStyle}
+								>
 									{#if checkEmptyDimCell(tableColumnIndex)}
 										<!-- Empty dimension cell in collapsible mode - keep cell but hide content -->
-									{:else if tableColumnIndex < (pivotData.config.dimensions?.length ?? 0) && row[col] === null && row.__dimKey?.split("|~|")[tableColumnIndex] === '[[GROUPED]]'}
+									{:else if tableColumnIndex < (pivotData.config.dimensions?.length ?? 0) && row[col] === null && row.__dimKey?.split('|~|')[tableColumnIndex] === '[[GROUPED]]'}
 										<!-- Leave grouped-out dimension values blank -->
-									{:else if (row.render_type !== 'cell_data' && (row.__hideCell as Record<string, boolean> | undefined)?.[col])}
+									{:else if row.render_type !== 'cell_data' && (row.__hideCell as Record<string, boolean> | undefined)?.[col]}
 										{#if !collapsible}<span class="text-muted-foreground opacity-70">–</span>{/if}
 									{:else if row[col] === null}
-											<!-- Regular null values show "null" -->
-											<span class="text-muted-foreground opacity-70">–</span>
-										{:else}
-											{@const value = typeof row[col] === 'string' || typeof row[col] === 'number' || row[col] instanceof Date  || row[col] === undefined ? row[col] : String(row[col])}
-											{@const columnMeta = displayPivotData.columnMeta.find(c => c.key === col)}
-											{@const dynamicFmt = (() => {
-												// Check if measure has fmt_column defined
-												if (cellColumnMeta?.fmt_column && cellColumnMeta.fmt_column in row) {
-													const fmtValue = row[cellColumnMeta.fmt_column];
-													return fmtValue !== null && fmtValue !== undefined ? String(fmtValue) : undefined;
+										<!-- Regular null values show "null" -->
+										<span class="text-muted-foreground opacity-70">–</span>
+									{:else}
+										{@const value =
+											typeof row[col] === 'string' ||
+											typeof row[col] === 'number' ||
+											row[col] instanceof Date ||
+											row[col] === undefined
+												? row[col]
+												: String(row[col])}
+										{@const columnMeta = displayPivotData.columnMeta.find((c) => c.key === col)}
+										{@const dynamicFmt = (() => {
+											// Check if measure has fmt_column defined
+											if (cellColumnMeta?.fmt_column && cellColumnMeta.fmt_column in row) {
+												const fmtValue = row[cellColumnMeta.fmt_column];
+												return fmtValue !== null && fmtValue !== undefined
+													? String(fmtValue)
+													: undefined;
+											}
+											return undefined;
+										})()}
+										{@const cellDisplayFormat = (() => {
+											// If there's dynamic formatting, use it
+											if (dynamicFmt) return dynamicFmt;
+
+											// If there's a comparison, use abs_fmt/pct_fmt based on display_type
+											if (cellColumnMeta?.comparison?.compare_vs) {
+												const displayType = cellColumnMeta.comparison.display_type ?? 'pct';
+												if (displayType === 'pct') {
+													return cellColumnMeta.comparison.pct_fmt || 'pct';
+												} else if (displayType === 'compared_value') {
+													return cellColumnMeta?.fmt;
+												} else {
+													return cellColumnMeta.comparison.abs_fmt || cellColumnMeta?.fmt || 'num0';
 												}
-												return undefined;
-											})()}
-											{@const cellDisplayFormat = (() => {
-												// If there's dynamic formatting, use it
-												if (dynamicFmt) return dynamicFmt;
-												
-												// If there's a comparison, use abs_fmt/pct_fmt based on display_type
-												if (cellColumnMeta?.comparison?.compare_vs) {
-													const displayType = cellColumnMeta.comparison.display_type ?? 'pct';
-													if (displayType === 'pct') {
-														return cellColumnMeta.comparison.pct_fmt || 'pct';
-													} else if (displayType === 'compared_value') {
-														return cellColumnMeta?.fmt;
-													} else {
-														return cellColumnMeta.comparison.abs_fmt || cellColumnMeta?.fmt || 'num0';
-													}
-												}
-												
-												// Otherwise use the column's format
-												return cellColumnMeta?.fmt;
-											})()}
-											{@const sparklineVizConfig = model.allUnifiedColumns.find(column => 
-												column.viz === 'sparkline' && 
-												column.alias === (columnMeta?.alias || col)
-											)?.sparklineVizConfig as SparklineColumnProps | undefined}
+											}
 
-											{@const indentAmount = isCollapsibleActive 
-												? getIndentAmount(collapsibleRow, tableColumnIndex, numDimensions)
-												: 0}
-											{#snippet cellContent()}
-												{#if cellColumnMeta?.viz === 'bar'}
-													<BarVisualization 
-														value={Number(row[col])}
-														columnMeta={cellColumnMeta}
-														{row}
-														range={vizRanges.get(col) || { min: 0, max: 0 }}
-													/>
-												{/if}
+											// Otherwise use the column's format
+											return cellColumnMeta?.fmt;
+										})()}
+										{@const sparklineVizConfig = model.allUnifiedColumns.find(
+											(column) =>
+												column.viz === 'sparkline' && column.alias === (columnMeta?.alias || col)
+										)?.sparklineVizConfig as SparklineColumnProps | undefined}
 
-												<!-- Collapse/expand chevron for subtotal rows - appears in the subtotal's dimension column -->
-												{#if isCollapsibleSubtotal && tableColumnIndex === (collapsibleRow.subtotal_level ?? 1) - 1}
-													<ChevronRight 
-														class="h-3.5 w-3.5 mr-0.5 -mt-px inline-block align-middle text-muted-foreground transition-transform duration-200 ease-in-out {isGroupCollapsed ? '' : 'rotate-90'}" 
-													/>
-												{/if}
+										{@const indentAmount = isCollapsibleActive
+											? getIndentAmount(collapsibleRow, tableColumnIndex, numDimensions)
+											: 0}
+										{#snippet cellContent()}
+											{#if cellColumnMeta?.viz === 'bar'}
+												<BarVisualization
+													value={Number(row[col])}
+													columnMeta={cellColumnMeta}
+													{row}
+													range={vizRanges.get(col) || { min: 0, max: 0 }}
+												/>
+											{/if}
 
-												<span 
-													class={cn(
-													"relative inline align-middle",
+											<!-- Collapse/expand chevron for subtotal rows - appears in the subtotal's dimension column -->
+											{#if isCollapsibleSubtotal && tableColumnIndex === (collapsibleRow.subtotal_level ?? 1) - 1}
+												<ChevronRight
+													class="text-muted-foreground -mt-px mr-0.5 inline-block h-3.5 w-3.5 align-middle transition-transform duration-200 ease-in-out {isGroupCollapsed
+														? ''
+														: 'rotate-90'}"
+												/>
+											{/if}
+
+											<span
+												class={cn(
+													'relative inline align-middle',
 													// Only apply z-10 when there are background visualizations that need to be layered beneath the text
-													(cellColumnMeta?.viz === 'bar' || hasColorViz || rowColorStyles) && "z-10",
-													cellEffectiveAlign === 'center' ? 'text-center' : 
-													cellEffectiveAlign === 'right' ? 'text-right' : 
-													'text-left',
-													cellColumnMeta?.viz === 'bar' && cellColumnMeta?.bar_options?.hide_labels && 'opacity-0',
+													(cellColumnMeta?.viz === 'bar' || hasColorViz || rowColorStyles) &&
+														'z-10',
+													cellEffectiveAlign === 'center'
+														? 'text-center'
+														: cellEffectiveAlign === 'right'
+															? 'text-right'
+															: 'text-left',
+													cellColumnMeta?.viz === 'bar' &&
+														cellColumnMeta?.bar_options?.hide_labels &&
+														'opacity-0',
 													// Cursor for comparison tooltips
 													cellColumnMeta?.comparison?.compare_vs ? 'cursor-help' : ''
 												)}
@@ -1003,150 +1117,193 @@
 													measures_first,
 													dynamicFmt || cellColumnMeta?.fmt // user's format for customFormat parameter
 												)}
-												>
-													{#if sparklineVizConfig}
-													    <SparklineTableCell {value} {sparklineVizConfig} />
-													{:else if cellColumnMeta?.viz === 'delta'}
-														{@const deltaOptions = cellColumnMeta?.delta_options}
-														{@const neutralRange = deltaOptions?.neutral_range ?? [0, 0]}
-														<DeltaDisplay 
-															value={value}
-															fmt={cellDisplayFormat}
-															className="text-xs"
-															downIsGood={cellColumnMeta?.delta_options?.down_is_good}
-															showSymbol={cellColumnMeta?.delta_options?.show_symbol}
-															symbolPosition={cellColumnMeta?.delta_options?.symbol_position}
-															neutralRange={neutralRange}
+											>
+												{#if sparklineVizConfig}
+													<SparklineTableCell {value} {sparklineVizConfig} />
+												{:else if cellColumnMeta?.viz === 'delta'}
+													{@const deltaOptions = cellColumnMeta?.delta_options}
+													{@const neutralRange = deltaOptions?.neutral_range ?? [0, 0]}
+													<DeltaDisplay
+														{value}
+														fmt={cellDisplayFormat}
+														className="text-xs"
+														downIsGood={cellColumnMeta?.delta_options?.down_is_good}
+														showSymbol={cellColumnMeta?.delta_options?.show_symbol}
+														symbolPosition={cellColumnMeta?.delta_options?.symbol_position}
+														{neutralRange}
+													/>
+												{:else if cellColumnMeta?.html && typeof value === 'string' && row.render_type === 'cell_data'}
+													<!-- Note: @html renders raw HTML - ensure your data source is trusted -->
+													{@html value}
+												{:else}
+													{@const imageUrl = cellColumnMeta?.image
+														? (row[`__image_${cellColumnMeta.alias}`] ?? row[cellColumnMeta.image])
+														: null}
+													{@const logoDomain = cellColumnMeta?.logo
+														? (row[`__logo_${cellColumnMeta.alias}`] ?? row[cellColumnMeta.logo])
+														: null}
+													{@const showImageLabel = !cellColumnMeta?.image_options?.hide_label}
+													{@const showLogoLabel = !cellColumnMeta?.logo_options?.hide_label}
+													{@const logoSize = cellColumnMeta?.logo_options?.size ?? 'base'}
+													{@const logoGrayscale = cellColumnMeta?.logo_options?.grayscale ?? false}
+													{@const logoSizeMap = {
+														sm: '1em',
+														base: '1.25em',
+														lg: '1.75em',
+														xl: '2.5em'
+													}}
+													{@const logoHeight = logoSizeMap[logoSize] ?? logoSizeMap.base}
+													{@const logoLightUrl = logoDomain
+														? getLogoUrl(String(logoDomain), 'light', 'monogram', logoGrayscale)
+														: null}
+													{@const logoDarkUrl = logoDomain
+														? getLogoUrl(String(logoDomain), 'dark', 'monogram', logoGrayscale)
+														: null}
+
+													{#if logoDomain && row.render_type === 'cell_data' && logoLightUrl && logoDarkUrl}
+														<img
+															src={logoLightUrl}
+															alt={String(logoDomain)}
+															style="height: {logoHeight}; width: auto;"
+															class="mr-1 inline-block -translate-y-[0.1em] align-middle dark:hidden"
 														/>
-													{:else if cellColumnMeta?.html && typeof value === 'string' && row.render_type === 'cell_data'}
-														<!-- Note: @html renders raw HTML - ensure your data source is trusted -->
-														{@html value}
+														<img
+															src={logoDarkUrl}
+															alt={String(logoDomain)}
+															style="height: {logoHeight}; width: auto;"
+															class="mr-1 hidden -translate-y-[0.1em] align-middle dark:inline-block"
+														/>
+														{#if showLogoLabel}
+															<span class="align-middle">
+																{cellColumnMeta?.link_label ||
+																	formatValue(
+																		value,
+																		cellDisplayFormat,
+																		row[col] === undefined
+																			? '-'
+																			: typeof row[col] === 'object'
+																				? JSON.stringify(row[col])
+																				: String(row[col]),
+																		formatRanges.get(col),
+																		cellColumnMeta?.type,
+																		projectSettings.first_day_of_week
+																	) ||
+																	''}
+															</span>
+														{/if}
+													{:else if imageUrl && row.render_type === 'cell_data'}
+														<img
+															src={String(imageUrl)}
+															alt={cellColumnMeta?.image_options?.alt ?? ''}
+															style="height: {cellColumnMeta?.image_options?.height
+																? `${cellColumnMeta?.image_options?.height}px`
+																: 'auto'}; width: {cellColumnMeta?.image_options?.width
+																? `${cellColumnMeta?.image_options?.width}px`
+																: 'auto'}; vertical-align: middle;"
+															class="mr-1 inline h-auto max-w-full rounded-none border-1"
+														/>
+														{#if showImageLabel}
+															<span class="align-middle">
+																{cellColumnMeta?.link_label ||
+																	formatValue(
+																		value,
+																		cellDisplayFormat,
+																		row[col] === undefined
+																			? '-'
+																			: typeof row[col] === 'object'
+																				? JSON.stringify(row[col])
+																				: String(row[col]),
+																		formatRanges.get(col),
+																		cellColumnMeta?.type,
+																		projectSettings.first_day_of_week
+																	) ||
+																	''}
+															</span>
+														{/if}
 													{:else}
-														{@const imageUrl = cellColumnMeta?.image ? (row[`__image_${cellColumnMeta.alias}`] ?? row[cellColumnMeta.image]) : null}
-														{@const logoDomain = cellColumnMeta?.logo ? (row[`__logo_${cellColumnMeta.alias}`] ?? row[cellColumnMeta.logo]) : null}
-														{@const showImageLabel = !cellColumnMeta?.image_options?.hide_label}
-														{@const showLogoLabel = !cellColumnMeta?.logo_options?.hide_label}
-														{@const logoSize = cellColumnMeta?.logo_options?.size ?? 'base'}
-														{@const logoGrayscale = cellColumnMeta?.logo_options?.grayscale ?? false}
-														{@const logoSizeMap = { sm: '1em', base: '1.25em', lg: '1.75em', xl: '2.5em' }}
-														{@const logoHeight = logoSizeMap[logoSize] ?? logoSizeMap.base}
-														{@const logoLightUrl = logoDomain ? getLogoUrl(String(logoDomain), 'light', 'monogram', logoGrayscale) : null}
-														{@const logoDarkUrl = logoDomain ? getLogoUrl(String(logoDomain), 'dark', 'monogram', logoGrayscale) : null}
-														
-														{#if logoDomain && row.render_type === 'cell_data' && logoLightUrl && logoDarkUrl}
-															<img
-																src={logoLightUrl}
-																alt={String(logoDomain)}
-																style="height: {logoHeight}; width: auto;"
-																class="inline-block -translate-y-[0.1em] align-middle dark:hidden mr-1"
-															/>
-															<img
-																src={logoDarkUrl}
-																alt={String(logoDomain)}
-																style="height: {logoHeight}; width: auto;"
-																class="hidden -translate-y-[0.1em] align-middle dark:inline-block mr-1"
-															/>
-															{#if showLogoLabel}
-																<span class="align-middle">
-																	{cellColumnMeta?.link_label || formatValue(
-																		value,
-																		cellDisplayFormat,
-																		row[col] === undefined ? "-" : typeof row[col] === 'object' ? JSON.stringify(row[col]) : String(row[col]),
-																		formatRanges.get(col),
-																		cellColumnMeta?.type,
-																		projectSettings.first_day_of_week
-																	) || ""}
-																</span>
-															{/if}
-														{:else if imageUrl && row.render_type === 'cell_data'}
-															<img
-																src={String(imageUrl)}
-																alt={cellColumnMeta?.image_options?.alt ?? ''}
-																style="height: {cellColumnMeta?.image_options?.height ? `${cellColumnMeta?.image_options?.height}px` : 'auto'}; width: {cellColumnMeta?.image_options?.width ? `${cellColumnMeta?.image_options?.width}px` : 'auto'}; vertical-align: middle;"
-																class="inline h-auto max-w-full rounded-none border-1 mr-1"
-															/>
-															{#if showImageLabel}
-																<span class="align-middle">
-																	{cellColumnMeta?.link_label || formatValue(
-																		value,
-																		cellDisplayFormat,
-																		row[col] === undefined ? "-" : typeof row[col] === 'object' ? JSON.stringify(row[col]) : String(row[col]),
-																		formatRanges.get(col),
-																		cellColumnMeta?.type,
-																		projectSettings.first_day_of_week
-																	) || ""}
-																</span>
-															{/if}
-														{:else}
-															{cellColumnMeta?.link_label || formatValue(
+														{cellColumnMeta?.link_label ||
+															formatValue(
 																value,
 																cellDisplayFormat,
-																row[col] === undefined ? "-" : typeof row[col] === 'object' ? JSON.stringify(row[col]) : String(row[col]),
+																row[col] === undefined
+																	? '-'
+																	: typeof row[col] === 'object'
+																		? JSON.stringify(row[col])
+																		: String(row[col]),
 																formatRanges.get(col),
 																cellColumnMeta?.type,
 																projectSettings.first_day_of_week
-															) || ""}
-														{/if}
+															) ||
+															''}
 													{/if}
-												</span>
-											{/snippet}
+												{/if}
+											</span>
+										{/snippet}
 
-											{@const href = cellColumnMeta?.link ? (row[`__link_${cellColumnMeta.alias}`] ?? row[cellColumnMeta.link]) : null}
-											{@const transformedDimHref = href ? transformInternalLink(String(href), rendererContext.context, page.params, { hrefIncludesProjectSlug: false }) : null}
-											{#if transformedDimHref && row.render_type === 'cell_data'}
-												<a 
-													href={transformedDimHref}
-													target={cellColumnMeta?.link_new_tab ? '_blank' : undefined}
-													rel={cellColumnMeta?.link_new_tab ? 'noopener noreferrer' : undefined}
-													class="text-(--theme-table-link) hover:opacity-80 no-underline"
-													onclick={(e) => {
-														const merged = mergeCurrentSearchParams(transformedDimHref);
-														if (merged !== transformedDimHref && e.currentTarget instanceof HTMLAnchorElement) {
-															e.currentTarget.href = merged;
-														}
-													}}
-												>
-													{@render cellContent()}
-												</a>
-											{:else}
+										{@const href = cellColumnMeta?.link
+											? (row[`__link_${cellColumnMeta.alias}`] ?? row[cellColumnMeta.link])
+											: null}
+										{@const transformedDimHref = href
+											? transformInternalLink(String(href), rendererContext.context, page.params, {
+													hrefIncludesProjectSlug: false
+												})
+											: null}
+										{#if transformedDimHref && row.render_type === 'cell_data'}
+											<a
+												href={transformedDimHref}
+												target={cellColumnMeta?.link_new_tab ? '_blank' : undefined}
+												rel={cellColumnMeta?.link_new_tab ? 'noopener noreferrer' : undefined}
+												class="text-(--theme-table-link) no-underline hover:opacity-80"
+												onclick={(e) => {
+													const merged = mergeCurrentSearchParams(transformedDimHref);
+													if (
+														merged !== transformedDimHref &&
+														e.currentTarget instanceof HTMLAnchorElement
+													) {
+														e.currentTarget.href = merged;
+													}
+												}}
+											>
 												{@render cellContent()}
-											{/if}
-
+											</a>
+										{:else}
+											{@render cellContent()}
 										{/if}
-									</td>
+									{/if}
+								</td>
 							{/each}
 							<!-- Add chevron column for tables with row links - always render cell for alignment -->
 							{#if link}
 								{@const chevronRowClasses = cn(
-									"whitespace-nowrap py-1 pr-1.5 pl-2 w-8 text-center align-middle",
+									'whitespace-nowrap py-1 pr-1.5 pl-2 w-8 text-center align-middle',
 									// Row type styling for chevron column - matches cell styling
-									row.render_type === "row_total"
-										? "border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-total-bg)"
-										: row.render_type === "row_subtotal"
-										? "border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-subtotal-bg)"
-										: ""
+									row.render_type === 'row_total'
+										? 'border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-total-bg)'
+										: row.render_type === 'row_subtotal'
+											? 'border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-subtotal-bg)'
+											: ''
 								)}
 								<td class={chevronRowClasses}>
 									{#if hasRowLink}
-										<ChevronRight class="h-4 w-4 text-muted-foreground inline-block" />
+										<ChevronRight class="text-muted-foreground inline-block h-4 w-4" />
 									{/if}
 								</td>
 							{/if}
 						</tr>
 					{/each}
-			</tbody>
-				{:else if loading}
-					<!-- Placeholder rows during loading -->
-					<TableLoadingSkeleton
-						rowCount={page_size > 200 ? 10 : page_size}
-						rowLines={row_lines}
-						rowShading={row_shading}
-						hasLink={!!link}
-					/>
-					{:else }
-					<!-- No results state -->
-					<TableNoResults />
-				{/if}
+				</tbody>
+			{:else if loading}
+				<!-- Placeholder rows during loading -->
+				<TableLoadingSkeleton
+					rowCount={page_size > 200 ? 10 : page_size}
+					rowLines={row_lines}
+					rowShading={row_shading}
+					hasLink={!!link}
+				/>
+			{:else}
+				<!-- No results state -->
+				<TableNoResults />
+			{/if}
 		</table>
 
 		{#if loading}

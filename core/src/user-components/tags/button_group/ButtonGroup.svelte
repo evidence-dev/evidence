@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import { type Filter } from '../../../Filter.svelte';
@@ -27,6 +28,7 @@
 	import { cn } from '../../../shadcn/utils';
 
 	const props: UserComponentProps<typeof schema> = $props();
+	const { t } = getLocaleContext();
 
 	// Get the query info context for registration
 	const { getComponentId, hasBlockingErrors } = getComponentWrapperContext();
@@ -287,7 +289,7 @@
 							class={cn('text-muted-foreground cursor-not-allowed opacity-50', itemClass)}
 							disabled
 						>
-							No options available
+							{t('common.no_options')}
 						</ToggleGroup.Item>
 					</ToggleGroup.Root>
 				</div>

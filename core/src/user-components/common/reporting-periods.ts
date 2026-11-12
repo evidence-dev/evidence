@@ -17,6 +17,8 @@ import {
 	subYears
 } from 'date-fns';
 import { parseDateStringAsLocalMidnight } from '../../utils/date-utils';
+import { formatDate } from '../../locale/date-locale';
+import { getLabelLocale, type LabelLocale } from '../../locale/label-locale';
 
 /**
  * Reporting periods for `workflow.period`. Separate from `date-options.ts`,
@@ -124,29 +126,35 @@ function periodKey(start: Date, grain: PeriodGrain): string {
 	}
 }
 
-function periodLabel(start: Date, grain: PeriodGrain): string {
+/** A period's display label in `locale`'s language, named by its start date: `Jul 2026` / `juil. 2026`. */
+export function formatPeriodLabel(
+	start: Date,
+	grain: PeriodGrain,
+	{ dateLocale, t }: LabelLocale = getLabelLocale(null)
+): string {
 	switch (grain) {
 		case 'day':
-			return format(start, 'MMM d, yyyy');
+			return formatDate(dateLocale, 'dayMonthYear', start);
 		case 'week':
-			return `Week of ${format(start, 'MMM d, yyyy')}`;
+			return t('period.week_of', { date: formatDate(dateLocale, 'dayMonthYear', start) });
 		case 'month':
-			return format(start, 'MMM yyyy');
+			return formatDate(dateLocale, 'monthYear', start);
 		case 'quarter':
-			return format(start, "'Q'Q yyyy");
+			return formatDate(dateLocale, 'quarterYear', start);
 		case 'year':
-			return format(start, 'yyyy');
+			return formatDate(dateLocale, 'year', start);
 	}
 }
 
 function toPeriod(
 	start: Date,
 	grain: PeriodGrain,
-	firstDayOfWeek: FirstDayOfWeek
+	firstDayOfWeek: FirstDayOfWeek,
+	locale: LabelLocale
 ): ReportingPeriod {
 	return {
 		key: periodKey(start, grain),
-		label: periodLabel(start, grain),
+		label: formatPeriodLabel(start, grain, locale),
 		start: toIso(start),
 		end: toIso(periodEnd(start, grain, firstDayOfWeek))
 	};
@@ -159,6 +167,8 @@ export type BuildReportingPeriodsOptions = {
 	/** "Now" for the purpose of deciding which periods have finished. */
 	anchorDate?: Date;
 	firstDayOfWeek?: FirstDayOfWeek;
+	/** Language of the labels; keys stay language-neutral. Defaults to English. */
+	locale?: LabelLocale;
 };
 
 /**
@@ -170,7 +180,8 @@ export function buildReportingPeriods({
 	grain,
 	count = DEFAULT_PERIOD_COUNT,
 	anchorDate = new Date(),
-	firstDayOfWeek = 'sunday'
+	firstDayOfWeek = 'sunday',
+	locale = getLabelLocale(null)
 }: BuildReportingPeriodsOptions = {}): ReportingPeriod[] {
 	const resolvedGrain = isPeriodGrain(grain) ? grain : DEFAULT_PERIOD_GRAIN;
 	const requested = Number.isFinite(count) ? Math.floor(count) : DEFAULT_PERIOD_COUNT;
@@ -184,7 +195,7 @@ export function buildReportingPeriods({
 
 	const periods: ReportingPeriod[] = [];
 	for (let i = 0; i < total; i++) {
-		periods.push(toPeriod(start, resolvedGrain, firstDayOfWeek));
+		periods.push(toPeriod(start, resolvedGrain, firstDayOfWeek, locale));
 		start = previousPeriodStart(start, resolvedGrain);
 	}
 	return periods;
@@ -205,7 +216,8 @@ const KEY_PATTERNS: Record<PeriodGrain, RegExp> = {
 export function parsePeriodKey(
 	key: string | undefined,
 	grain: string | undefined,
-	firstDayOfWeek: FirstDayOfWeek = 'sunday'
+	firstDayOfWeek: FirstDayOfWeek = 'sunday',
+	locale: LabelLocale = getLabelLocale(null)
 ): ReportingPeriod | undefined {
 	const resolvedGrain = isPeriodGrain(grain) ? grain : DEFAULT_PERIOD_GRAIN;
 	if (!key || !KEY_PATTERNS[resolvedGrain].test(key)) return undefined;
@@ -227,13 +239,17 @@ export function parsePeriodKey(
 	return toPeriod(
 		periodStart(parsed, resolvedGrain, firstDayOfWeek),
 		resolvedGrain,
-		firstDayOfWeek
+		firstDayOfWeek,
+		locale
 	);
 }
 
-/** A period boundary formatted for prose, e.g. `Jul 1, 2026`. */
-export function periodBoundaryLabel(isoDate: string): string {
-	return format(parseDateStringAsLocalMidnight(isoDate), 'MMM d, yyyy');
+/** A period boundary formatted for prose, e.g. `Jul 1, 2026` / `1 juil. 2026`. */
+export function periodBoundaryLabel(
+	isoDate: string,
+	{ dateLocale }: LabelLocale = getLabelLocale(null)
+): string {
+	return formatDate(dateLocale, 'dayMonthYear', parseDateStringAsLocalMidnight(isoDate));
 }
 
 /**
@@ -248,18 +264,20 @@ export function periodToRangeExpression(period: ReportingPeriod): string {
 export function previousPeriod(
 	period: ReportingPeriod,
 	grain: PeriodGrain,
-	firstDayOfWeek: FirstDayOfWeek = 'sunday'
+	firstDayOfWeek: FirstDayOfWeek = 'sunday',
+	locale: LabelLocale = getLabelLocale(null)
 ): ReportingPeriod {
 	const start = previousPeriodStart(parseDateStringAsLocalMidnight(period.start), grain);
-	return toPeriod(start, grain, firstDayOfWeek);
+	return toPeriod(start, grain, firstDayOfWeek, locale);
 }
 
 /** The period immediately after `period`, at the same grain. */
 export function nextPeriod(
 	period: ReportingPeriod,
 	grain: PeriodGrain,
-	firstDayOfWeek: FirstDayOfWeek = 'sunday'
+	firstDayOfWeek: FirstDayOfWeek = 'sunday',
+	locale: LabelLocale = getLabelLocale(null)
 ): ReportingPeriod {
 	const start = addDays(parseDateStringAsLocalMidnight(period.end), 1);
-	return toPeriod(periodStart(start, grain, firstDayOfWeek), grain, firstDayOfWeek);
+	return toPeriod(periodStart(start, grain, firstDayOfWeek), grain, firstDayOfWeek, locale);
 }

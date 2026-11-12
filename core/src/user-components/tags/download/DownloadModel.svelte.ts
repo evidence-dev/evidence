@@ -27,7 +27,7 @@ export class DownloadModel extends UserComponentModel<DownloadModelGenerics> {
 
 	// Resolve attributes with variable interpolation
 	readonly resolvedData = $derived(this.resolveText(this.attributes.data));
-	readonly resolvedLabel = $derived(this.resolveText(this.attributes.label) ?? 'Download');
+	readonly resolvedLabel = $derived(this.resolveText(this.attributes.label));
 	readonly resolvedFilename = $derived(
 		this.resolveText(this.attributes.filename) ??
 			this.resolvedData?.replace(/[^a-zA-Z0-9_-]/g, '_') ??

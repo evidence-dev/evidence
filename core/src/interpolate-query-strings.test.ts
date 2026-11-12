@@ -14,7 +14,8 @@ function createFiltersWithToggle(value: boolean): Filters {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: undefined,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	});
 
 	const toggle = filters.create(

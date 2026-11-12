@@ -13,11 +13,31 @@ interface Options {
 	base_style: string;
 	projection: 'globe' | 'flat';
 	backgroundColor: string;
+	/** Registered page language (e.g. `fr`); basemap labels prefer it, then English. */
+	language?: string;
 	onCreate?: (map: maplibregl.Map) => void;
 	onDestroy?: () => void;
 	onReady?: () => void;
 	onStyleLoad?: () => void;
 	onError?: (err: unknown) => void;
+}
+
+/** Basemap label text: the page language when the tiles carry it, else English, else the local name. */
+export function basemapLabelExpression(
+	language: string | undefined
+): maplibregl.ExpressionSpecification {
+	const english: maplibregl.ExpressionSpecification = [
+		'coalesce',
+		['get', 'name_en'],
+		['get', 'name:latin'],
+		['get', 'name']
+	];
+	if (!language || language === 'en') return english;
+	return [
+		'coalesce',
+		['get', `name:${language}`],
+		...english.slice(1)
+	] as maplibregl.ExpressionSpecification;
 }
 
 export const mapAction: Action<HTMLDivElement, Options> = (node, options) => {
@@ -95,22 +115,27 @@ export const mapAction: Action<HTMLDivElement, Options> = (node, options) => {
 		}
 	};
 
-	const englishOnly: maplibregl.ExpressionSpecification = [
-		'coalesce',
-		['get', 'name_en'],
-		['get', 'name:latin'],
-		['get', 'name']
-	];
+	// Layers whose multilingual labels we collapsed, so a language switch can relabel them
+	let labelLayerIds: string[] = [];
 
-	// Collapse multilingual labels (latin + nonlatin stacked) to English on any OpenFreeMap style
-	const applyEnglishLabels = (m: maplibregl.Map) => {
+	// Collapse multilingual labels (latin + nonlatin stacked) to one language on any OpenFreeMap style
+	const applyLabels = (m: maplibregl.Map) => {
 		if (mapProvider !== 'maplibre') return;
+		labelLayerIds = [];
 		for (const layer of m.getStyle()?.layers ?? []) {
 			if (layer.type !== 'symbol') continue;
 			const textField = (layer.layout as Record<string, unknown> | undefined)?.['text-field'];
 			if (textField && JSON.stringify(textField).includes('name:nonlatin')) {
-				m.setLayoutProperty(layer.id, 'text-field', englishOnly);
+				labelLayerIds.push(layer.id);
 			}
+		}
+		relabel(m, options.language);
+	};
+
+	const relabel = (m: maplibregl.Map, language: string | undefined) => {
+		const expression = basemapLabelExpression(language);
+		for (const id of labelLayerIds) {
+			if (m.getLayer(id)) m.setLayoutProperty(id, 'text-field', expression);
 		}
 	};
 
@@ -369,7 +394,7 @@ export const mapAction: Action<HTMLDivElement, Options> = (node, options) => {
 				if (mapProvider === 'maplibre') {
 					applyProjection(m, options.projection);
 				}
-				applyEnglishLabels(m);
+				applyLabels(m);
 				tunePositron(m);
 				tuneDark(m);
 				options.onStyleLoad?.();
@@ -377,7 +402,7 @@ export const mapAction: Action<HTMLDivElement, Options> = (node, options) => {
 			// Inline (blank) styles could finish loading before the listener registers
 			if (mapProvider === 'maplibre' && m.isStyleLoaded()) {
 				applyProjection(m, options.projection);
-				applyEnglishLabels(m);
+				applyLabels(m);
 				tunePositron(m);
 				tuneDark(m);
 			}
@@ -414,6 +439,9 @@ export const mapAction: Action<HTMLDivElement, Options> = (node, options) => {
 				map.setStyle(
 					getMapStyle(newOptions.theme, newOptions.base_style, newOptions.backgroundColor)
 				);
+			}
+			if (newOptions.language !== options.language) {
+				relabel(map, newOptions.language);
 			}
 			// Update projection if changed
 			if (newOptions.projection !== options.projection) {

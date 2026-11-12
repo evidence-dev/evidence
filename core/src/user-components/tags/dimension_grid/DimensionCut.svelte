@@ -2,6 +2,8 @@
 	import { flip } from 'svelte/animate';
 	import DimensionRow from './DimensionRow.svelte';
 	import formatTitle from '../../formatTitle';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	export type DimensionQueryRow = {
 		dimension_value: string | null;
@@ -46,7 +48,7 @@
 				class="text-muted-foreground hover:text-foreground ml-2 shrink-0 text-xs underline"
 				onclick={onClear}
 			>
-				Clear
+				{t('common.clear')}
 			</button>
 		{/if}
 	</div>
@@ -54,7 +56,7 @@
 	<!-- Values -->
 	<div class="overflow-clip">
 		{#if rows.length === 0}
-			<div class="text-muted-foreground py-2 text-center">No values</div>
+			<div class="text-muted-foreground py-2 text-center">{t('dimension_grid.no_values')}</div>
 		{:else}
 			{#each rows as row (row.dimension_value)}
 				<div animate:flip={{ duration: 300 }} style="will-change: transform;">

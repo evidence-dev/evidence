@@ -45,9 +45,9 @@ export const schema = {
 		},
 		title: {
 			type: String,
-			description: 'Text displayed above the selector',
+			description:
+				'Text displayed above the selector (defaults to "Date Grain" in the page language)',
 			required: false,
-			default: 'Date Grain',
 			affectsQuery: false,
 			supportsVariables: true,
 			variableContext: 'text'

@@ -36,14 +36,17 @@ export class AreaLayerModel {
 	public definitionIndex: number;
 
 	private dialect: SqlDialect;
+	private getLanguage: () => string | null;
 
 	constructor(
 		propsGetter: () => AreaLayerProps,
 		options: ConstructorParameters<typeof Query>[1],
 		getPointLayerIds?: () => string[],
-		definitionIndex: number = 0
+		definitionIndex: number = 0,
+		getLanguage: () => string | null = () => null
 	) {
 		this.propsGetter = propsGetter;
+		this.getLanguage = getLanguage;
 		// Generate unique IDs for this layer
 		this.layerId = `area-layer-${Math.random().toString(36).substr(2, 9)}`;
 		this.sourceId = `area-source-${Math.random().toString(36).substr(2, 9)}`;
@@ -489,6 +492,7 @@ export class AreaLayerModel {
 		const dataLabels = props.data_labels;
 		if (!dataLabels) return;
 		const fmt = dataLabels.fmt ?? props.value_fmt ?? 'num';
+		const language = this.getLanguage();
 
 		const labelFeatures: GeoJSON.Feature<GeoJSON.Point>[] = [];
 		for (const feature of features) {
@@ -498,7 +502,18 @@ export class AreaLayerModel {
 			const value = feature.properties.__value;
 			labelFeatures.push({
 				type: 'Feature',
-				properties: { __label: formatValue(value, fmt, String(value), minMax) },
+				properties: {
+					__label: formatValue(
+						value,
+						fmt,
+						String(value),
+						minMax,
+						undefined,
+						undefined,
+						undefined,
+						language
+					)
+				},
 				geometry: { type: 'Point', coordinates: point }
 			});
 		}
@@ -656,7 +671,8 @@ export class AreaLayerModel {
 			// Build tooltip content
 			const content = buildTooltipHTML({
 				title: areaName,
-				valueFields
+				valueFields,
+				language: this.getLanguage()
 			});
 
 			// Update popup position and content

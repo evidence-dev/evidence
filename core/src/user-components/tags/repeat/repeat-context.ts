@@ -3,6 +3,7 @@ import { Filters } from '../../../Filters.svelte';
 import { getProjectSettingsContext } from '../../../project-settings.context';
 import { getDefaultConnection } from '../../../connection';
 import { getContext, setContext, untrack } from 'svelte';
+import { getLocaleContext } from '../../../locale/locale.context.svelte';
 
 const REPEAT_CONTEXT_KEY = Symbol('REPEAT_CONTEXT');
 
@@ -15,12 +16,14 @@ export const getOrCreateRepeatContext = (): RepeatContext => {
 	if (!context) {
 		// getContext only works during init, so hold the connection and read its dialect lazily.
 		const connection = getDefaultConnection();
+		const locale = getLocaleContext();
 		context = {
 			filters: new Filters({
 				url: () => untrack(() => page.url),
 				updateUrl: undefined,
 				projectSettings: getProjectSettingsContext(),
-				dialect: () => connection.dialect
+				dialect: () => connection.dialect,
+				language: () => locale.language
 			})
 		};
 		setContext(REPEAT_CONTEXT_KEY, context);

@@ -37,6 +37,7 @@
 	import { onMount } from 'svelte';
 	import { generateThemeCSS } from '@evidence/core/theme/theme-css-helper';
 	import { setThemeContext } from '@evidence/core/theme/theme.context.svelte';
+	import { setLocaleContext } from '@evidence/core/locale/locale.context.svelte';
 
 	interface Props {
 		data: LayoutData;
@@ -49,6 +50,8 @@
 	// reloads (invalidateAll re-runs load without remounting the layout).
 	const themeContext = setThemeContext(data.resolvedTheme);
 	$effect(() => themeContext.updateConfig(data.resolvedTheme));
+	const localeContext = setLocaleContext(data.currentLanguage);
+	$effect(() => localeContext.updateLanguage(data.currentLanguage));
 	const themeCSS = $derived(generateThemeCSS(data.resolvedTheme));
 
 	const isLoginPage = $derived(page.url.pathname === '/login');

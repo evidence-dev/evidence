@@ -71,7 +71,8 @@ describe('MarkdocProcessor validation context updates', () => {
 				url: new URL('https://example.com/edit'),
 				updateUrl: undefined,
 				projectSettings: undefined,
-				dialect: undefined
+				dialect: undefined,
+				language: undefined
 			});
 		const swappedIn = newFilters();
 		const processor = new MarkdocProcessor({

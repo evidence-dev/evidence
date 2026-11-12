@@ -34,6 +34,32 @@ Admins can pick Slack channels where the Evidence bot answers data questions wit
 
 </Update>
 
+<Update label="November 4, 2026" description="" tags={["New Feature"]}>
+
+### ✨ French chart date labels
+
+Chart axis date labels, tooltips, table date columns and custom `fmt` date formats now render in French when a viewer selects `fr` from the translations menu.
+
+- Date-grain defaults follow French order and a 24-hour clock (`15 janv. 2025`, `15 janv. 2025 16 h`, `T1`).
+- Fixes an English axis label that showed `Jan` instead of the tick's own month when a chart's first visible tick of a new year was not in January.
+
+</Update>
+
+<Update label="November 4, 2026" description="" tags={["New Feature"]}>
+
+### ✨ Built-in report text in French
+
+Tables, filters, date pickers, legends and other built-in component text now render in French when a viewer selects `fr` from the translations menu.
+
+- Covers table pagination and search, filter chips and operators, dropdown and date range picker labels and presets, date grain and comparison selectors, legend controls, download menus, sampling notices, commentary timestamps, calendar heatmaps, map labels and computed "Total" labels.
+- Table comparison column headers use French finance conventions (`vs N-1`, `vs M-1`, `Objectif`), including in scheduled PDFs, and comparison tooltips are translated too.
+- Reporting periods read in French too (`juil. 2026`, `T2 2026`, `Semaine du 2 août 2026`): in the period picker, at the top of scheduled PDFs, in `{{period}}` text, and in `custom_ranges` names. URLs and `default_range` values are unchanged.
+- Attributes you set explicitly (for example `total_label`) keep your text in every language.
+- In every language, the date range picker calendar now starts weeks on the project's first day of week, and its preset list widens to fit longer labels.
+- Adding another language is a small open-source contribution: see the [translations docs](https://docs.evidence.studio/features/translations#contributing-a-language).
+
+</Update>
+
 <Update label="November 4, 2026" description="" tags={["Bug Fix"]}>
 
 ### 🐛 Table picker keeps your selections while tables sync

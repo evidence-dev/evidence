@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { setConditionalContext } from './conditional-context';
 	import type { Snippet } from 'svelte';
 	import { schema } from './schema';
@@ -10,6 +11,7 @@
 	const showErrors = getShowErrorsContext();
 
 	const props: UserComponentProps<typeof schema> = $props();
+	const { t } = getLocaleContext();
 	const children = $derived(props.children);
 
 	let conditions = $state<
@@ -126,14 +128,14 @@
 				Couldn't evaluate this conditional — the query failed: {error.message}
 			</div>
 		{:else}
-			<div class="p-3 text-xs">This content failed to load</div>
+			<div class="p-3 text-xs">{t('conditional.failed')}</div>
 		{/if}
 		<div class="border-destructive/20 shrink-0 border-t px-3 py-2">
 			<button
 				class="text-primary flex items-center gap-1.5 font-sans text-xs font-medium hover:underline"
 				onclick={retry}
 			>
-				Refresh
+				{t('common.refresh')}
 				<RefreshCw class="size-3 {retrying ? 'animate-spin' : ''}" />
 			</button>
 		</div>

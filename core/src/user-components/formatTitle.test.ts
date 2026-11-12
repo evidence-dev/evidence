@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import formatTitle from './formatTitle';
+import { createTranslator } from '../locale/messages';
+import { getLanguagePack } from '../locale/registry';
 
 describe('formatTitle', () => {
 	describe('basic transformations', () => {
@@ -141,6 +143,196 @@ describe('formatTitle', () => {
 			expect(formatTitle('__EV_SUM_TOTAL_SALES_PRIOR_PERIOD_COMPARISON_PCT', 'month')).toBe(
 				'Sum Total Sales % MoM'
 			);
+		});
+	});
+
+	describe('comparison column labels by page language', () => {
+		const tEn = createTranslator('en', getLanguagePack('en').messages);
+		const tFr = createTranslator('fr', getLanguagePack('fr').messages);
+		const NBSP = '\u00a0';
+
+		type Case = [
+			column: string,
+			grain: string | undefined,
+			periodCount: number,
+			name: string | undefined,
+			en: string,
+			fr: string
+		];
+
+		const suffixes = ['_pct', '_abs', '_compared_value', ''] as const;
+		const grains: Array<[string, string, string, string, string]> = [
+			['day', 'DoD', 'Prior Day', 'vs J-1', 'Jour précédent'],
+			['week', 'WoW', 'Prior Week', 'vs S-1', 'Semaine précédente'],
+			['month', 'MoM', 'Prior Month', 'vs M-1', 'Mois précédent'],
+			['quarter', 'QoQ', 'Prior Quarter', 'vs T-1', 'Trimestre précédent'],
+			['year', 'YoY', 'Prior Year', 'vs N-1', 'Année précédente']
+		];
+
+		// [pct, abs, compared_value, bare] for one comparison
+		const row = (
+			comparison: string,
+			grain: string | undefined,
+			periodCount: number,
+			name: string | undefined,
+			en: string[],
+			fr: string[]
+		): Case[] =>
+			suffixes.map((suffix, i) => [
+				`__ev_sum_sales_${comparison}_comparison${suffix}`,
+				grain,
+				periodCount,
+				name,
+				en[i],
+				fr[i]
+			]);
+
+		const cases: Case[] = [
+			...row(
+				'prior_year',
+				undefined,
+				1,
+				undefined,
+				['Sum Sales % YoY', 'Sum Sales Δ YoY', 'Sum Sales PY', 'Sum Sales YoY'],
+				[`Sum Sales${NBSP}% vs N-1`, 'Sum Sales Δ vs N-1', 'Sum Sales N-1', 'Sum Sales vs N-1']
+			),
+			...grains.flatMap(([grain, abbrev, prior, frAbbrev, frPrior]) =>
+				row(
+					'prior_period',
+					grain,
+					1,
+					undefined,
+					[
+						`Sum Sales % ${abbrev}`,
+						`Sum Sales Δ ${abbrev}`,
+						`Sum Sales ${prior}`,
+						`Sum Sales ${abbrev}`
+					],
+					[
+						`Sum Sales${NBSP}% ${frAbbrev}`,
+						`Sum Sales Δ ${frAbbrev}`,
+						`Sum Sales ${frPrior}`,
+						`Sum Sales ${frAbbrev}`
+					]
+				)
+			),
+			...[
+				['month', 3],
+				[undefined, 1]
+			].flatMap(([grain, periodCount]) =>
+				row(
+					'prior_period',
+					grain as string | undefined,
+					periodCount as number,
+					undefined,
+					[
+						'Sum Sales % vs Prior Period',
+						'Sum Sales Δ vs Prior Period',
+						'Sum Sales Prior Period',
+						'Sum Sales vs Prior Period'
+					],
+					[
+						`Sum Sales${NBSP}% vs période précédente`,
+						'Sum Sales Δ vs période précédente',
+						'Sum Sales Période précédente',
+						'Sum Sales vs période précédente'
+					]
+				)
+			),
+			...row(
+				'target',
+				undefined,
+				1,
+				undefined,
+				[
+					'Sum Sales % vs Target',
+					'Sum Sales Δ vs Target',
+					'Sum Sales vs Target',
+					'Sum Sales vs Target'
+				],
+				[
+					`Sum Sales${NBSP}% vs objectif`,
+					'Sum Sales Δ vs objectif',
+					'Sum Sales vs objectif',
+					'Sum Sales vs objectif'
+				]
+			),
+			...row(
+				'target',
+				undefined,
+				1,
+				'vs. Plan',
+				[
+					'Sum Sales % vs. Plan',
+					'Sum Sales Δ vs. Plan',
+					'Sum Sales vs. Plan',
+					'Sum Sales vs. Plan'
+				],
+				[
+					`Sum Sales${NBSP}% vs. Plan`,
+					'Sum Sales Δ vs. Plan',
+					'Sum Sales vs. Plan',
+					'Sum Sales vs. Plan'
+				]
+			),
+			...row(
+				'benchmark_avg',
+				undefined,
+				1,
+				undefined,
+				[
+					'Sum Sales % Benchmark',
+					'Sum Sales Δ Benchmark',
+					'Sum Sales Benchmark',
+					'Sum Sales Benchmark'
+				],
+				[
+					`Sum Sales${NBSP}% Référence`,
+					'Sum Sales Δ Référence',
+					'Sum Sales Référence',
+					'Sum Sales Référence'
+				]
+			),
+			...row(
+				'benchmark_median',
+				undefined,
+				1,
+				'vs. Franchisees',
+				[
+					'Sum Sales % vs. Franchisees',
+					'Sum Sales Δ vs. Franchisees',
+					'Sum Sales vs. Franchisees',
+					'Sum Sales vs. Franchisees'
+				],
+				[
+					`Sum Sales${NBSP}% vs. Franchisees`,
+					'Sum Sales Δ vs. Franchisees',
+					'Sum Sales vs. Franchisees',
+					'Sum Sales vs. Franchisees'
+				]
+			)
+		];
+
+		it.each(cases)('%s (grain=%s, periods=%s, name=%s)', (column, grain, periods, name, en, fr) => {
+			expect(formatTitle(column, grain, periods, name)).toBe(en);
+			expect(formatTitle(column, grain, periods, name, undefined, tEn)).toBe(en);
+			expect(formatTitle(column, grain, periods, name, undefined, tFr)).toBe(fr);
+		});
+
+		it('localizes only the comparison suffix, including Snowflake-cased columns', () => {
+			expect(formatTitle('sum(total_sales)', undefined, 1, undefined, undefined, tFr)).toBe(
+				'Sum of Total Sales'
+			);
+			expect(
+				formatTitle(
+					'__EV_SUM_TOTAL_SALES_PRIOR_YEAR_COMPARISON_PCT',
+					undefined,
+					1,
+					undefined,
+					undefined,
+					tFr
+				)
+			).toBe(`Sum Total Sales${NBSP}% vs N-1`);
 		});
 	});
 });

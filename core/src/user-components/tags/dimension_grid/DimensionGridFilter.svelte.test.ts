@@ -11,7 +11,13 @@ import {
 function makeGrid(attributes: Record<string, unknown> = {}, dialect?: SqlDialect) {
 	return new DimensionGridFilter(
 		{ id: 'grid', userComponentName: 'dimension_grid', attributes } as never,
-		{ url: undefined, updateUrl: undefined, projectSettings: undefined, dialect }
+		{
+			url: undefined,
+			updateUrl: undefined,
+			projectSettings: undefined,
+			dialect,
+			language: undefined
+		}
 	);
 }
 

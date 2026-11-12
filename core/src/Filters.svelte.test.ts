@@ -18,7 +18,8 @@ const deps = {
 	url: undefined,
 	updateUrl: undefined,
 	projectSettings: undefined,
-	dialect: undefined
+	dialect: undefined,
+	language: undefined
 };
 
 function makeFilters(): Filters {
@@ -288,7 +289,8 @@ describe('URL-supplied filter values cannot break out of a string literal', () =
 			url: new URL(`https://example.com/p?f=${encodeURIComponent(param)}`),
 			updateUrl: undefined,
 			projectSettings: undefined,
-			dialect
+			dialect,
+			language: undefined
 		};
 	}
 

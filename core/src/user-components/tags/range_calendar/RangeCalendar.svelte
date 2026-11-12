@@ -15,21 +15,20 @@
 	import {
 		PRESET_DEFINITIONS,
 		DEFAULT_VISIBLE_PRESET_DEFINITIONS,
+		presetLabel,
 		processDateRange
 	} from '../../common/date-options';
-	import {
-		DateFormatter,
-		getLocalTimeZone,
-		parseDate,
-		type DateValue,
-		today
-	} from '@internationalized/date';
+	import { getLocalTimeZone, parseDate, type DateValue, today } from '@internationalized/date';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { parseDateStringAsLocalMidnight } from '../../../utils/date-utils';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { expandCustomRanges, type CustomRangeRule } from '../../common/custom-ranges';
 	import Ellipsis from '../../../viewer-components/Ellipsis.svelte';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	import { formatDate } from '../../../locale/date-locale';
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
 
 	// Props using UserComponentProps
 	const props: UserComponentProps<typeof schema> = $props();
@@ -38,6 +37,8 @@
 	const getProjectSettings = getProjectSettingsContext();
 	const projectSettings = $derived(getProjectSettings());
 	const firstDayOfWeek = $derived(projectSettings.first_day_of_week || 'sunday');
+	// The grid must agree with the presets ("This Week"), which follow the project setting, not the language.
+	const weekStartsOn = $derived<0 | 1>(firstDayOfWeek === 'monday' ? 1 : 0);
 
 	const repeatFilters = getRepeatContext()?.filters;
 	const pageFilters = getPageFiltersContext();
@@ -64,10 +65,8 @@
 	const defaultRange = $derived(explicitDefault ?? 'all time');
 	const presetRanges = $derived(props.preset_ranges);
 
-	// Date formatter for display
-	const df = new DateFormatter('en-US', {
-		dateStyle: 'medium'
-	});
+	const formatDisplayDate = (value: DateValue) =>
+		formatDate(localeContext.dateLocale, 'dayMonthYear', value.toDate(getLocalTimeZone()));
 
 	// Get the filter for this component
 	const filter = $derived(
@@ -86,7 +85,8 @@
 		expandCustomRanges(
 			props.custom_ranges as CustomRangeRule[] | undefined,
 			anchorDate,
-			firstDayOfWeek
+			firstDayOfWeek,
+			localeContext
 		)
 	);
 
@@ -122,7 +122,11 @@
 	// Built-in presets (per preset_ranges) plus any generated custom_ranges.
 	// preset_ranges unset → default visible set; preset_ranges=[] → no built-ins (custom_ranges still show).
 	const filteredPresets = $derived.by(() => {
-		const base = DEFAULT_VISIBLE_PRESET_DEFINITIONS.map(({ key, label }) => ({ key, label }));
+		const localized = (preset: { key: string; label: string }) => ({
+			key: preset.key,
+			label: presetLabel(t, preset)
+		});
+		const base = DEFAULT_VISIBLE_PRESET_DEFINITIONS.map(localized);
 		let builtins: { key: string; label: string }[];
 		if (!presetRanges) {
 			// If a hidden preset is explicitly used as default, include it for this component instance.
@@ -131,20 +135,20 @@
 				: undefined;
 			builtins =
 				defaultPreset && !base.some((preset) => preset.key === defaultPreset.key)
-					? [...base, { key: defaultPreset.key, label: defaultPreset.label }]
+					? [...base, localized(defaultPreset)]
 					: base;
 		} else {
 			builtins = PRESET_DEFINITIONS.filter((preset) => presetRanges.includes(preset.key)).map(
-				({ key, label }) => ({ key, label })
+				localized
 			);
 		}
 		return [...builtins, ...generatedPresets];
 	});
 
 	let selectedPreset = $derived.by(() => {
-		if (!filter?.value || typeof filter.value !== 'object') return 'All Time';
+		if (!filter?.value || typeof filter.value !== 'object') return t('calendar.all_time');
 		const { range } = filter.value as { range?: string };
-		if (!range || range === 'all time') return 'All Time';
+		if (!range || range === 'all time') return t('calendar.all_time');
 		// If matches a preset, show label; otherwise null for custom
 		const matchingPreset = filteredPresets.find((p) => p.key === range);
 		return matchingPreset ? matchingPreset.label : null;
@@ -244,22 +248,22 @@
 		}
 
 		if (!startValue && !endValue) {
-			return 'All Time';
+			return t('calendar.all_time');
 		}
 
 		if (startValue && endValue) {
-			return `${df.format(startValue.toDate(getLocalTimeZone()))} - ${df.format(endValue.toDate(getLocalTimeZone()))}`;
+			return `${formatDisplayDate(startValue)} - ${formatDisplayDate(endValue)}`;
 		}
 
 		if (startValue) {
-			return `From ${df.format(startValue.toDate(getLocalTimeZone()))}`;
+			return t('calendar.from', { date: formatDisplayDate(startValue) });
 		}
 
 		if (endValue) {
-			return `Until ${df.format(endValue.toDate(getLocalTimeZone()))}`;
+			return t('calendar.until', { date: formatDisplayDate(endValue) });
 		}
 
-		return 'All Time';
+		return t('calendar.all_time');
 	}
 
 	// Reset mobile view when popover opens
@@ -293,7 +297,7 @@
 							<Calendar class="text-muted-foreground mr-1 size-3.5" />
 							<span
 								class={cn(
-									hasSelection || selectedPreset === 'All Time'
+									hasSelection || selectedPreset === t('calendar.all_time')
 										? 'text-foreground'
 										: 'text-muted-foreground'
 								)}
@@ -310,7 +314,7 @@
 				>
 					<div class="flex">
 						<!-- Desktop: Show presets sidebar -->
-						<div class="hidden w-[160px] shrink-0 border-r lg:block">
+						<div class="hidden w-max max-w-[280px] min-w-[160px] shrink-0 border-r lg:block">
 							<div class="px-2 py-2">
 								<div class="max-h-[375px] space-y-1 overflow-y-auto">
 									{#each filteredPresets as preset}
@@ -350,7 +354,7 @@
 											class="w-full justify-start font-normal"
 											onclick={() => (mobileView = 'calendar')}
 										>
-											Custom Range...
+											{t('calendar.custom_range')}
 										</Button>
 									</div>
 								{:else}
@@ -358,11 +362,13 @@
 									<div class="p-3">
 										<div class="mb-3">
 											<Button variant="ghost" size="sm" onclick={() => (mobileView = 'presets')}>
-												← Back to presets
+												{t('calendar.back_to_presets')}
 											</Button>
 										</div>
 										<div class="w-fit">
 											<RangeCalendar
+												locale={localeContext.resolvedLanguage}
+												{weekStartsOn}
 												value={currentRange}
 												onValueChange={handleRangeSelect}
 												numberOfMonths={1}
@@ -375,7 +381,7 @@
 										<div class="mt-3 flex justify-between gap-2">
 											<Button variant="ghost" size="sm" onclick={selectToday}>
 												<Sun class="size-3.5" />
-												Today
+												{t('common.today')}
 											</Button>
 											<div class="flex gap-2">
 												<Button
@@ -388,7 +394,7 @@
 														}
 													}}
 												>
-													Clear
+													{t('common.clear')}
 												</Button>
 												<Button
 													variant="secondary"
@@ -398,7 +404,7 @@
 														mobileView = 'presets';
 													}}
 												>
-													Done
+													{t('common.done')}
 												</Button>
 											</div>
 										</div>
@@ -409,6 +415,8 @@
 							<!-- Desktop: Calendar only -->
 							<div class="hidden px-6 py-4 lg:block">
 								<RangeCalendar
+									locale={localeContext.resolvedLanguage}
+									{weekStartsOn}
 									value={currentRange}
 									onValueChange={handleRangeSelect}
 									numberOfMonths={2}
@@ -422,7 +430,7 @@
 								<div class="mt-3 flex justify-between gap-2">
 									<Button variant="ghost" size="sm" onclick={selectToday}>
 										<Sun class="size-3.5" />
-										Today
+										{t('common.today')}
 									</Button>
 									<div class="flex gap-2">
 										<Button
@@ -435,7 +443,7 @@
 												}
 											}}
 										>
-											Clear
+											{t('common.clear')}
 										</Button>
 										<Button
 											variant="secondary"
@@ -444,7 +452,7 @@
 												isPopoverOpen = false;
 											}}
 										>
-											Done
+											{t('common.done')}
 										</Button>
 									</div>
 								</div>

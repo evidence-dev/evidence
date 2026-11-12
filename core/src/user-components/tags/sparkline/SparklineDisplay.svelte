@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { init } from 'echarts';
 	import type { ECharts } from 'echarts';
 	import { mode } from 'mode-watcher';
@@ -13,6 +13,9 @@
 	import { getThemeToken } from '../../../theme/get-theme-token';
 	import { getCardContext } from '../../common/card-context.svelte';
 	import { escapeHtml } from '../../common/tooltip-fields';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	interface Props {
 		chartData: Array<[string | Date, number]>;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import {
 		ChevronLeftIcon,
 		ChevronRightIcon,
@@ -7,6 +7,10 @@
 		ChevronsRightIcon
 	} from 'lucide-svelte';
 	import TablePaginationButton from './TablePaginationButton.svelte';
+
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const formatValue = $derived(localeContext.formatValue);
 
 	type Props = {
 		page?: number;
@@ -38,20 +42,20 @@
 <div class="flex items-center justify-between pl-1">
 	<div class="text-muted-foreground text-xs">
 		{#if totalRows !== 0}
-			{formatValue(page * pageSize + 1, 'num0')} - {formatValue(
-				Math.min((page + 1) * pageSize, totalRows ?? Infinity),
-				'num0'
-			)}
+			{@const start = formatValue(page * pageSize + 1, 'num0')}
+			{@const end = formatValue(Math.min((page + 1) * pageSize, totalRows ?? Infinity), 'num0')}
 			{#if typeof totalRows !== 'undefined'}
-				of {formatValue(totalRows, 'num0')} rows
+				{t('table.rows_range', { start, end, total: formatValue(totalRows, 'num0') })}
+			{:else}
+				{t('table.rows_range_unbounded', { start, end })}
 			{/if}
 		{:else}
-			No rows found
+			{t('table.no_rows')}
 		{/if}
 	</div>
 	<div class="flex items-center">
 		<TablePaginationButton
-			label="First page"
+			label={t('table.first_page')}
 			Icon={ChevronsLeftIcon}
 			loading={clickedName === 'first' && loading}
 			disabled={!canGoToFirstPage || loading}
@@ -62,7 +66,7 @@
 		/>
 
 		<TablePaginationButton
-			label="Previous page"
+			label={t('table.previous_page')}
 			Icon={ChevronLeftIcon}
 			loading={clickedName === 'previous' && loading}
 			disabled={!canGoToPreviousPage || loading}
@@ -73,14 +77,18 @@
 		/>
 
 		<span class="text-muted-foreground px-1 text-xs whitespace-nowrap">
-			{formatValue(page + 1, 'num0')}
 			{#if typeof totalPages !== 'undefined'}
-				of {formatValue(totalPages, 'num0')}
+				{t('table.page_of', {
+					page: formatValue(page + 1, 'num0'),
+					total: formatValue(totalPages, 'num0')
+				})}
+			{:else}
+				{formatValue(page + 1, 'num0')}
 			{/if}
 		</span>
 
 		<TablePaginationButton
-			label="Next page"
+			label={t('table.next_page')}
 			Icon={ChevronRightIcon}
 			loading={clickedName === 'next' && loading}
 			disabled={!canGoToNextPage || loading}
@@ -91,7 +99,7 @@
 		/>
 
 		<TablePaginationButton
-			label="Last page"
+			label={t('table.last_page')}
 			Icon={ChevronsRightIcon}
 			loading={clickedName === 'last' && loading}
 			disabled={!canGoToLastPage || loading}

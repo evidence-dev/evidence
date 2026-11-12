@@ -16,9 +16,10 @@
 	import { buildHistogramSQL } from './build-histogram-sql';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { getSeriesTypeMarker } from '../echarts/series-marker';
 	import { escapeHtml } from '../../common/tooltip-fields';
+	import { histogramTooltipHtml } from './histogram-tooltip';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
@@ -29,6 +30,10 @@
 	import { mergeEchartsOptions } from '../../common/echarts-options-attributes';
 	import { getElevatedChartTooltipCss } from '../../common/chart-tooltip-elevation';
 	import { logger } from '../../../shims/logger';
+
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const formatValue = $derived(localeContext.formatValue);
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
@@ -239,17 +244,7 @@
 					? `<div style="display:flex;align-items:center;gap:4px;">${marker}<span>${escapeHtml(p.seriesName)}</span></div>`
 					: '';
 
-				return `
-					<div style="display:flex;flex-direction:column;">
-						${seriesRow}
-						<div style="display:grid;grid-template-columns:auto auto;gap:4px 12px;">
-							<span>Range</span>
-							<span style="text-align:right;font-weight:500;">${escapeHtml(String(range))}</span>
-							<span>Count</span>
-							<span style="text-align:right;font-weight:500;">${frequency}</span>
-						</div>
-					</div>
-				`;
+				return histogramTooltipHtml(t, { seriesRow, range: String(range), frequency });
 			}
 		},
 		legend: {
@@ -513,6 +508,11 @@
 		</div>
 
 		{#if isSampled}
+			{@const shownBins = Object.values(sampledGroupedData).reduce(
+				(sum, data) => sum + data.length,
+				0
+			)}
+			{@const totalBins = Object.values(groupedData).reduce((sum, data) => sum + data.length, 0)}
 			<div class="group absolute top-0.5 right-0">
 				<div class="bg-background rounded-sm p-0.5">
 					<InfoIcon class="text-muted-foreground/60 h-3.5 w-3.5" />
@@ -520,16 +520,11 @@
 				<div
 					class="bg-background text-foreground absolute top-0 right-0 z-10 hidden w-44 rounded-md p-1.5 text-[10px] shadow-md group-hover:block"
 				>
-					Showing {Math.round(
-						(Object.values(sampledGroupedData).reduce((sum, data) => sum + data.length, 0) /
-							Object.values(groupedData).reduce((sum, data) => sum + data.length, 0)) *
-							100
-					)}% sample of dataset ({Object.values(sampledGroupedData)
-						.reduce((sum, data) => sum + data.length, 0)
-						.toLocaleString()}
-					of {Object.values(groupedData)
-						.reduce((sum, data) => sum + data.length, 0)
-						.toLocaleString()} bins)
+					{t('sampling.bins_of_total', {
+						pct: Math.round((shownBins / totalBins) * 100),
+						shown: shownBins.toLocaleString(),
+						total: totalBins.toLocaleString()
+					})}
 				</div>
 			</div>
 		{/if}

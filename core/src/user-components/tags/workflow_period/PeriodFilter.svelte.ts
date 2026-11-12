@@ -19,6 +19,7 @@ import {
 	type ReportingPeriod
 } from '../../common/reporting-periods';
 import { parseDateStringAsLocalMidnight } from '../../../utils/date-utils';
+import { getLabelLocale, type LabelLocale } from '../../../locale/label-locale';
 
 type PeriodAttributes = UserComponentProps<typeof schema> & {
 	/** Set on the workflow period when the page places its own `period_selector` for it. */
@@ -65,13 +66,18 @@ export class PeriodFilter extends Filter<PeriodValue> {
 		return this.projectSettings.first_day_of_week === 'monday' ? 'monday' : 'sunday';
 	}
 
+	private get labelLocale(): LabelLocale {
+		return getLabelLocale(this.language);
+	}
+
 	/** The periods offered by the picker, newest first. */
 	get periods(): ReportingPeriod[] {
 		return buildReportingPeriods({
 			grain: this.grain,
 			count: this.attributes.periods ?? DEFAULT_PERIOD_COUNT,
 			anchorDate: this.anchorDate,
-			firstDayOfWeek: this.firstDayOfWeek
+			firstDayOfWeek: this.firstDayOfWeek,
+			locale: this.labelLocale
 		});
 	}
 
@@ -80,7 +86,12 @@ export class PeriodFilter extends Filter<PeriodValue> {
 	 * period rather than rendering an empty range.
 	 */
 	get period(): ReportingPeriod {
-		const fromKey = parsePeriodKey(this.value?.key, this.grain, this.firstDayOfWeek);
+		const fromKey = parsePeriodKey(
+			this.value?.key,
+			this.grain,
+			this.firstDayOfWeek,
+			this.labelLocale
+		);
 		return fromKey ?? this.periods[0];
 	}
 
@@ -90,13 +101,18 @@ export class PeriodFilter extends Filter<PeriodValue> {
 	 */
 	get olderPeriod(): ReportingPeriod | undefined {
 		const offered = this.periods;
-		const candidate = previousPeriod(this.period, this.grain, this.firstDayOfWeek);
+		const candidate = previousPeriod(
+			this.period,
+			this.grain,
+			this.firstDayOfWeek,
+			this.labelLocale
+		);
 		return candidate.start < offered[offered.length - 1].start ? undefined : candidate;
 	}
 
 	/** The next period newer than the selection, or undefined at the newest complete one. */
 	get newerPeriod(): ReportingPeriod | undefined {
-		const candidate = nextPeriod(this.period, this.grain, this.firstDayOfWeek);
+		const candidate = nextPeriod(this.period, this.grain, this.firstDayOfWeek, this.labelLocale);
 		return candidate.start > this.periods[0].start ? undefined : candidate;
 	}
 
@@ -125,8 +141,8 @@ export class PeriodFilter extends Filter<PeriodValue> {
 			end: processed.endDateSql || '',
 			// `.start`/`.end` are dialect SQL expressions; these are the pair to
 			// write in prose, where `toDate(...)` would leak onto the page.
-			start_label: periodBoundaryLabel(period.start),
-			end_label: periodBoundaryLabel(period.end),
+			start_label: periodBoundaryLabel(period.start, this.labelLocale),
+			end_label: periodBoundaryLabel(period.end, this.labelLocale),
 			between: processed.betweenFragment,
 			filter: processed.whereClause || 'true',
 			label: period.label,

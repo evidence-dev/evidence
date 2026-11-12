@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import type { UserComponentProps } from '../../types';
 	import type { schema } from './schema';
 	import { getPageFiltersContext } from '../../../page-filters-context';
@@ -26,6 +27,8 @@
 	import FileCode from 'lucide-svelte/icons/file-code';
 
 	let props: UserComponentProps<typeof schema> = $props();
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
 
 	const pageFilters = getPageFiltersContext();
 	const repeatFilters = getRepeatContext()?.filters;
@@ -48,7 +51,9 @@
 	const typeLabel = $derived(
 		inferFileTypeLabel({ type: resolveText(props.type)?.trim(), name, url: rawUrl })
 	);
-	const dateLabel = $derived(formatFileDate(resolveText(props.date)));
+	const dateLabel = $derived(
+		formatFileDate(resolveText(props.date), localeContext.resolvedLanguage)
+	);
 	const iconKind = $derived(inferFileIconKind({ name, url: rawUrl }));
 
 	const isUpload = $derived(isFileAlias(rawUrl));
@@ -72,7 +77,9 @@
 	const Icon = $derived(icons[iconKind]);
 
 	const ariaLabel = $derived(
-		[isUpload ? 'Download' : 'Open', name, typeLabel, dateLabel].filter(Boolean).join(', ')
+		[isUpload ? t('common.download') : t('common.open'), name, typeLabel, dateLabel]
+			.filter(Boolean)
+			.join(', ')
 	);
 </script>
 

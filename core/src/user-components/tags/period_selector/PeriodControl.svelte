@@ -3,6 +3,7 @@
 	import * as Popover from '../../../shadcn/components/ui/popover';
 	import { cn } from '../../../shadcn/utils';
 	import type { PeriodFilter } from '../workflow_period/PeriodFilter.svelte';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 
 	interface Props {
 		filter: PeriodFilter;
@@ -12,6 +13,7 @@
 	}
 
 	let { filter, readonly = false, class: className }: Props = $props();
+	const { t } = getLocaleContext();
 
 	const periods = $derived(filter.periods);
 	const selectedKey = $derived(filter.period.key);
@@ -40,7 +42,7 @@
 	{:else}
 		<div
 			class="inline-flex h-9 items-center overflow-hidden rounded-md border"
-			aria-label="Reporting period"
+			aria-label={t('period_picker.reporting_period')}
 		>
 			<button
 				type="button"
@@ -49,7 +51,7 @@
 					olderKey ? 'text-foreground hover:bg-muted' : 'text-muted-foreground/40 cursor-default'
 				)}
 				disabled={!olderKey}
-				aria-label="Previous period"
+				aria-label={t('period_picker.previous_period')}
 				onclick={() => select(olderKey)}
 			>
 				<ChevronLeft class="h-4 w-4" />
@@ -87,7 +89,7 @@
 					newerKey ? 'text-foreground hover:bg-muted' : 'text-muted-foreground/40 cursor-default'
 				)}
 				disabled={!newerKey}
-				aria-label="Next period"
+				aria-label={t('period_picker.next_period')}
 				onclick={() => select(newerKey)}
 			>
 				<ChevronRight class="h-4 w-4" />

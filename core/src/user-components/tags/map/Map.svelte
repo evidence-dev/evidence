@@ -27,6 +27,7 @@
 	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { getAutoRefreshContext } from '../../../auto-refresh.context.svelte';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import MapLegend from './MapLegend.svelte';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
@@ -130,6 +131,9 @@
 
 	const connection = getDefaultConnection();
 	const autoRefreshCtx = getAutoRefreshContext();
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const getLanguage = () => localeContext.language;
 
 	// Set up map context
 	setMapContext({
@@ -145,7 +149,8 @@
 					defaultRefreshInterval: () => autoRefreshCtx?.intervalSeconds ?? 0
 				},
 				() => pointLayers.map((l) => l.layerId),
-				definitionIndex
+				definitionIndex,
+				getLanguage
 			);
 			areaLayers.push(areaLayer);
 
@@ -174,7 +179,8 @@
 					projectSettings: getProjectSettingsContext(),
 					defaultRefreshInterval: () => autoRefreshCtx?.intervalSeconds ?? 0
 				},
-				definitionIndex
+				definitionIndex,
+				getLanguage
 			);
 			pointLayers.push(pointLayer);
 
@@ -272,10 +278,14 @@
 			if (layer.loading) continue;
 			const data = layer.data;
 			const state = layerState.get(layer.layerId);
+			// Data labels are formatted when the layer is drawn, so the language is part of the key.
 			const transition = transitionMapLayer(
 				state,
 				data,
-				renderPropsKey(areaLayerSchema.attributes, layer.props)
+				JSON.stringify([
+					renderPropsKey(areaLayerSchema.attributes, layer.props),
+					localeContext.language
+				])
 			);
 			layerState.set(layer.layerId, transition.state);
 
@@ -482,6 +492,7 @@
 					base_style,
 					projection,
 					backgroundColor,
+					language: localeContext.resolvedLanguage,
 					onCreate: (m) => {
 						_map = m;
 
@@ -524,7 +535,7 @@
 						class="bg-background/85 border-border flex items-center gap-2 rounded-md border px-3 py-2 text-xs shadow-sm"
 					>
 						<LoaderCircle class="h-4 w-4 animate-spin [animation-duration:1s]" />
-						<span>Loading map data...</span>
+						<span>{t('map.loading')}</span>
 					</div>
 				</div>
 			{/if}

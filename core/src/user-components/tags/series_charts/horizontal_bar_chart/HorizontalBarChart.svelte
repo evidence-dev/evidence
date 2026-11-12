@@ -25,7 +25,7 @@
 	import { getDefaultFormatForDateGrain } from '../../../common/date-options';
 	import { VariableProcessor } from '../../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../../common/use-variable-processing';
-	import { formatValue } from '../../../formatValue';
+	import { getLocaleContext } from '../../../../locale/locale.context.svelte';
 	import { getMinMax } from '../../../getMinMax';
 	import { cn } from '../../../../shadcn/utils';
 	import { YAxisModel } from '../combo_chart/YAxisModel.svelte';
@@ -49,6 +49,9 @@
 		renderTooltipExtras,
 		type TooltipField
 	} from '../../../common/tooltip-fields';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	const props: UserComponentProps<typeof schema> = $props();
 	const children = $derived(props.children);
@@ -319,7 +322,8 @@
 			baseline: props.x_axis_options?.baseline ?? false,
 			// This x-axis is semantically a measure axis, so keep zero-inclusion
 			// as the default (the x schema no longer defaults fit_to_data).
-			fit_to_data: props.x_axis_options?.fit_to_data ?? false
+			fit_to_data: props.x_axis_options?.fit_to_data ?? false,
+			language: localeContext.language
 		}),
 		() => yColumnName
 	);
@@ -335,7 +339,8 @@
 			fmt: x_fmt,
 			x: xColumnName ?? '', // This generates the title
 			date_grain: undefined,
-			firstDayOfWeek: projectSettings.first_day_of_week
+			firstDayOfWeek: projectSettings.first_day_of_week,
+			language: localeContext.language
 		}),
 		() => ({ y1: xAxisValueModel, y2: xAxisValueModel })
 	);
@@ -349,7 +354,8 @@
 			date_grain: yProcessed?.dateGrain,
 			gridlines: props.y_axis_options?.gridlines ?? false,
 			baseline: props.y_axis_options?.baseline ?? true,
-			firstDayOfWeek: projectSettings.first_day_of_week
+			firstDayOfWeek: projectSettings.first_day_of_week,
+			language: localeContext.language
 		}),
 		() => ({ y1: xAxisValueModel, y2: xAxisValueModel }),
 		// Category labels (the long ones on a horizontal bar chart) live on this
@@ -374,7 +380,8 @@
 			const referenceLine = new ReferenceLineStaticModel(
 				propsGetter,
 				yAxisCategoryModel as unknown as XAxisModel,
-				xAxisValueModel as unknown as YAxisModel
+				xAxisValueModel as unknown as YAxisModel,
+				() => localeContext.language
 			);
 			references.push(referenceLine);
 			return {
@@ -394,7 +401,8 @@
 			const referencePoint = new ReferencePointStaticModel(
 				propsGetter,
 				yAxisCategoryModel as unknown as XAxisModel,
-				xAxisValueModel as unknown as YAxisModel
+				xAxisValueModel as unknown as YAxisModel,
+				() => localeContext.language
 			);
 			references.push(referencePoint);
 			return {
@@ -672,7 +680,11 @@
 								p.data && typeof p.data === 'object' && !Array.isArray(p.data)
 									? p.data.extras
 									: undefined;
-							const extraRows = renderTooltipExtras(processedTooltip.fields, extras);
+							const extraRows = renderTooltipExtras(
+								processedTooltip.fields,
+								extras,
+								localeContext.language
+							);
 							const primaryRow = seriesColumnName
 								? `
 								<div class="flex flex-row items-center gap-1">
