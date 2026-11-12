@@ -191,7 +191,7 @@ const registryCache = new WeakMap<
 	ReturnType<typeof buildCustomComponentRegistry>
 >();
 
-function getCustomComponentRegistry(
+export function getCustomComponentRegistry(
 	customComponents: Record<string, string>
 ): ReturnType<typeof buildCustomComponentRegistry> {
 	const cached = registryCache.get(customComponents);
@@ -199,6 +199,17 @@ function getCustomComponentRegistry(
 	const built = buildCustomComponentRegistry(customComponents, reservedTagNames);
 	registryCache.set(customComponents, built);
 	return built;
+}
+
+export function customComponentNameCollisionError(
+	collision: ReturnType<typeof buildCustomComponentRegistry>['collisions'][number]
+) {
+	const { tagName, collidesWith } = collision;
+	const message =
+		collidesWith === 'builtin'
+			? `Component tag "${tagName}" collides with a built-in tag. Rename this file so it doesn't shadow the built-in (which always wins).`
+			: `Component tag "${tagName}" is already defined by another file. Rename this file so the basename is unique across the project.`;
+	return { id: 'custom-component-name-collision', level: 'error' as const, message };
 }
 
 /**

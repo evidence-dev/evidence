@@ -1,5 +1,5 @@
 /**
- * Validate all markdown files in the project.
+ * Validate project pages and check custom component names.
  * Returns structured JSON with validation errors for each file.
  *
  * Loads warehouse metadata when available (connection.yaml or an authenticated
@@ -33,6 +33,10 @@ import { loadCredentials } from '$lib/auth/credentials.server';
 import { ServerQueryService, type ConnectionType } from '$lib/server/ServerQueryService';
 import { resolveConnection } from '$lib/server/run-query';
 import { Metadata } from '@evidence/core/metadata/Metadata.svelte';
+import {
+	customComponentNameCollisionError,
+	getCustomComponentRegistry
+} from '@evidence/core/user-components/Renderer/MarkdocProcessor/process-markdoc';
 import type { WarehouseMode } from '@evidence/core/connectors/warehouse-mode';
 import pc from 'picocolors';
 
@@ -150,9 +154,10 @@ export const GET: RequestHandler = async ({ url }) => {
 
 	let totalErrors = 0;
 	let totalWarnings = 0;
-	const files: FileResult[] = [];
+	const filesByPath = new Map<string, FileResult>();
 
 	for (const file of filesToValidate) {
+		const projectPath = projectRootRelativePath(cwd, file.path);
 		try {
 			const { validationErrors } = await processMarkdown(file.content, {
 				sqlFiles,
@@ -161,9 +166,7 @@ export const GET: RequestHandler = async ({ url }) => {
 				connectionType: connectionType ?? undefined,
 				metadata,
 				queryService,
-				basePath: useRelativeResolution
-					? projectRootRelativePath(cwd, file.path)
-					: undefined,
+				basePath: useRelativeResolution ? projectPath : undefined,
 				useRelativeResolution,
 				translations,
 				projectSettings
@@ -194,13 +197,13 @@ export const GET: RequestHandler = async ({ url }) => {
 			).length;
 			totalWarnings += errors.filter((e) => e.severity === 'warning').length;
 
-			files.push({
+			filesByPath.set(projectPath, {
 				path: `pages/${file.slug}.md`,
 				errors
 			});
 		} catch (err) {
 			totalErrors += 1;
-			files.push({
+			filesByPath.set(projectPath, {
 				path: `pages/${file.slug}.md`,
 				errors: [
 					{
@@ -214,14 +217,29 @@ export const GET: RequestHandler = async ({ url }) => {
 		}
 	}
 
+	if (!targetPath) {
+		const { collisions } = getCustomComponentRegistry(customComponents);
+		for (const collision of collisions) {
+			const { fullPath } = collision;
+			const { id, level, message } = customComponentNameCollisionError(collision);
+			// A component colocated with pages can already have a file result.
+			const existingErrors = filesByPath.get(fullPath)?.errors ?? [];
+			filesByPath.set(fullPath, {
+				path: `${fullPath}.md`,
+				errors: [...existingErrors, { line: 1, endLine: 1, severity: level, message, id }]
+			});
+			totalErrors += 1;
+		}
+	}
+
 	return json({
 		valid: totalErrors === 0,
-		fileCount: filesToValidate.length,
+		fileCount: filesByPath.size,
 		errorCount: totalErrors,
 		warningCount: totalWarnings,
 		mode,
 		...(metadataError ? { metadataError } : {}),
-		files
+		files: [...filesByPath.values()]
 	});
 };
 

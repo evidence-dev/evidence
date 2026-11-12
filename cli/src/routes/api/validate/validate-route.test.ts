@@ -16,13 +16,19 @@ pages: ./pages
 
 type ValidateResponse = {
 	valid: boolean;
+	fileCount: number;
 	errorCount: number;
 	warningCount: number;
-	files: { path: string; errors: { severity: string; id?: string }[] }[];
+	files: {
+		path: string;
+		errors: { line: number; endLine: number; severity: string; message: string; id?: string }[];
+	}[];
 };
 
-async function validate(): Promise<ValidateResponse> {
-	const response = await GET({ url: new URL('http://localhost/api/validate') } as never);
+async function validate(target?: string): Promise<ValidateResponse> {
+	const url = new URL('http://localhost/api/validate');
+	if (target) url.searchParams.set('path', target);
+	const response = await GET({ url } as never);
 	return response.json();
 }
 
@@ -31,6 +37,12 @@ let previousCwd: string | undefined;
 
 async function writePage(content: string) {
 	await writeFile(path.join(projectDir, 'pages', 'home.md'), content);
+}
+
+async function writeComponent(file: string, content = '# Custom component\n') {
+	const fullPath = path.join(projectDir, file);
+	await mkdir(path.dirname(fullPath), { recursive: true });
+	await writeFile(fullPath, content);
 }
 
 beforeEach(async () => {
@@ -79,5 +91,64 @@ describe('validate route — error counting', () => {
 		const severities = result.files.flatMap((f) => f.errors.map((e) => e.severity));
 		expect(severities.sort()).toEqual(['critical', 'error']);
 		expect(result.errorCount).toBe(2);
+	});
+});
+
+describe('validate route — custom component names', () => {
+	const nameCollision = {
+		id: 'custom-component-name-collision',
+		severity: 'error',
+		line: 1,
+		endLine: 1
+	};
+
+	it('reports a built-in tag name collision on the component file', async () => {
+		await writePage('{% note %}\nA built-in note.\n{% /note %}\n');
+		await writeComponent('components/note.md');
+
+		const result = await validate();
+		expect(result).toMatchObject({
+			valid: false,
+			fileCount: 2,
+			errorCount: 1,
+			warningCount: 0,
+			files: [
+				{ path: 'pages/home.md', errors: [] },
+				{
+					path: 'components/note.md',
+					errors: [{ ...nameCollision, message: expect.stringContaining('built-in tag') }]
+				}
+			]
+		});
+	});
+
+	it('reports both files when unused components share a tag name', async () => {
+		await writePage('# Hello\n');
+		await writeComponent('components/charts/kpi_card.md');
+		await writeComponent('pages/kpi_card.md', '---\ntype: component\n---\n# Custom component\n');
+
+		const result = await validate();
+		expect(result).toMatchObject({ valid: false, fileCount: 3, errorCount: 2 });
+		const collidedPaths = result.files
+			.filter((file) => file.errors.some((error) => error.id === nameCollision.id))
+			.map((file) => file.path)
+			.sort();
+		expect(collidedPaths).toEqual(['components/charts/kpi_card.md', 'pages/kpi_card.md']);
+	});
+
+	it('accepts a page using a uniquely named custom component', async () => {
+		await writePage('{% kpi_card /%}\n');
+		await writeComponent('components/kpi_card.md');
+
+		const result = await validate();
+		expect(result).toMatchObject({ valid: true, fileCount: 1, errorCount: 0 });
+	});
+
+	it('keeps single-page validation scoped to the requested page', async () => {
+		await writePage('# Hello\n');
+		await writeComponent('components/note.md');
+
+		const result = await validate('home.md');
+		expect(result).toMatchObject({ valid: true, fileCount: 1, errorCount: 0 });
 	});
 });
