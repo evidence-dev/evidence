@@ -36,6 +36,11 @@ import {
 	installAuthorSideEffectTracker,
 	type AuthorSideEffectTracker
 } from './author-side-effects';
+import {
+	classifySurface,
+	countPaintedPixels,
+	type SandboxDiagnosticsMessage
+} from '../../../sandbox/render-diagnostics';
 
 const HEIGHT_REPORT_THRESHOLD_PX = 2;
 
@@ -46,6 +51,8 @@ let injected = false;
 let lastReportedHeight = -1;
 let lastNotifiedWidth = -1;
 let reportedFixedClip = false;
+let resizeObserverFires = 0;
+let resizeNotifies = 0;
 
 function reportHeight(): void {
 	// Measure the body's content box, NOT documentElement.scrollHeight: the
@@ -67,11 +74,13 @@ function reportHeight(): void {
 // firing onResize on height would risk a redraw→height→onResize→redraw loop.
 function watchSize(): void {
 	const observer = new ResizeObserver(() => {
+		resizeObserverFires++;
 		reportHeight();
 		checkFixedClip();
 		const width = document.documentElement.clientWidth;
 		if (width !== lastNotifiedWidth) {
 			lastNotifiedWidth = width;
+			resizeNotifies++;
 			sdk?.notifyResize({ width, height: document.documentElement.clientHeight });
 		}
 	});
@@ -151,7 +160,10 @@ async function runBody(html: string): Promise<void> {
 	reportHeight();
 	checkFixedClip();
 	scheduleBlankRenderCheck();
-	if (!htmlHasScript(html)) host?.post({ type: 'rendered' });
+	if (!htmlHasScript(html)) {
+		host?.post({ type: 'rendered' });
+		scheduleDiagnostics();
+	}
 }
 
 /**
@@ -205,6 +217,54 @@ function scheduleBlankRenderCheck(): void {
 	}, 3000);
 }
 
+const SETTLED_DIAGNOSTICS_DELAY_MS = 5000;
+const MAX_DIAGNOSED_CANVASES = 4;
+let diagnosticsScheduled = false;
+
+// An ECharts canvas should fill its `_echarts_instance_` root, not its immediate parent.
+function postDiagnostics(phase: SandboxDiagnosticsMessage['phase']): void {
+	const canvases = [...document.querySelectorAll('canvas')].slice(0, MAX_DIAGNOSED_CANVASES);
+	let anomaly = '';
+	const summaries = canvases.map((canvas) => {
+		const echartsRoot = canvas.closest('[_echarts_instance_]') as HTMLElement | null;
+		const box = echartsRoot ?? canvas.parentElement;
+		const painted = echartsRoot ? countPaintedPixels(canvas) : null;
+		const boxWidth = box?.clientWidth ?? 0;
+		const boxHeight = box?.clientHeight ?? 0;
+		anomaly ||= classifySurface({
+			boxWidth,
+			boxHeight,
+			drawnWidth: canvas.clientWidth,
+			drawnHeight: canvas.clientHeight,
+			painted
+		});
+		return `${canvas.clientWidth}x${canvas.clientHeight} in ${boxWidth}x${boxHeight} painted=${painted ?? '?'}${echartsRoot ? ' echarts' : ''}`;
+	});
+	host?.post({
+		type: 'diag',
+		phase,
+		metrics: {
+			canvasCount: document.querySelectorAll('canvas').length,
+			canvases: summaries.join('; '),
+			innerWidth: window.innerWidth,
+			innerHeight: window.innerHeight,
+			resizeObserverFires,
+			resizeNotifies,
+			visibility: document.visibilityState,
+			msSinceBoot: Math.round(performance.now()),
+			anomaly
+		}
+	});
+}
+
+// Blocks call evidence.ready() on every re-render; one snapshot pair per document is enough.
+function scheduleDiagnostics(): void {
+	if (diagnosticsScheduled) return;
+	diagnosticsScheduled = true;
+	postDiagnostics('rendered');
+	setTimeout(() => postDiagnostics('settled'), SETTLED_DIAGNOSTICS_DELAY_MS);
+}
+
 async function applyInit(init: HtmlInitMessage): Promise<void> {
 	// Re-init (parent reconnect) re-seeds reactive state + repaints the bg;
 	// never re-injects here — a body edit comes through `html-change` instead.
@@ -221,7 +281,14 @@ async function applyInit(init: HtmlInitMessage): Promise<void> {
 	}
 	injected = true;
 
-	sdk = createEvidenceSdk(host!, init);
+	const sdkHost: SandboxHost = {
+		...host!,
+		post: (message) => {
+			host!.post(message);
+			if (message.type === 'rendered') scheduleDiagnostics();
+		}
+	};
+	sdk = createEvidenceSdk(sdkHost, init);
 	// Installed before injection so author scripts see a complete SDK.
 	(window as unknown as { evidence: EvidenceSdk['evidence'] }).evidence = sdk.evidence;
 

@@ -31,6 +31,11 @@
 		unregisterSandboxFrameCapture
 	} from './png-capture-registry';
 	import { SandboxRpc, type RpcHandler } from './request-response';
+	import {
+		reportSandboxDiagnostics,
+		validateDiagnosticsMessage,
+		type SandboxDiagnosticsReport
+	} from './render-diagnostics';
 
 	/**
 	 * Inbound messages every sandbox sends. Consumer-specific messages (e.g.
@@ -198,6 +203,18 @@
 		return true;
 	}
 
+	function reportDiagnostics(
+		report: Omit<SandboxDiagnosticsReport, 'component' | 'frameWidth' | 'frameHeight'>
+	): void {
+		const rect = iframeEl?.getBoundingClientRect();
+		reportSandboxDiagnostics({
+			component: source,
+			frameWidth: rect ? Math.round(rect.width) : null,
+			frameHeight: rect ? Math.round(rect.height) : null,
+			...report
+		});
+	}
+
 	function completeRenderTask(): void {
 		markRenderComplete?.();
 		markRenderComplete = undefined;
@@ -236,6 +253,17 @@
 			case 'ready':
 				// Handled separately on the window-message path during handshake.
 				return;
+			case 'diag': {
+				const validated = validateDiagnosticsMessage(message);
+				if (!validated) return;
+				const anomaly = validated.metrics.anomaly;
+				reportDiagnostics({
+					phase: validated.phase,
+					anomaly: typeof anomaly === 'string' ? anomaly : '',
+					metrics: validated.metrics
+				});
+				return;
+			}
 		}
 		// Anything else is consumer-specific.
 		onMessage?.(message as { type: string } & Record<string, unknown>);
@@ -334,6 +362,13 @@
 		// 20s any async draw has surely finished, so capturing is better than a
 		// permanently-disabled export.
 		const fallback = setTimeout(() => {
+			if (!hasRendered) {
+				reportDiagnostics({
+					phase: 'timeout',
+					anomaly: connected ? 'never-rendered' : 'never-connected',
+					metrics: { connected }
+				});
+			}
 			hasRendered = true;
 			completeRenderTask();
 		}, 20_000);
