@@ -32,6 +32,7 @@
 	} from './png-capture-registry';
 	import { SandboxRpc, type RpcHandler } from './request-response';
 	import {
+		describeCollapsedAncestors,
 		reportSandboxDiagnostics,
 		validateDiagnosticsMessage,
 		type SandboxDiagnosticsReport
@@ -206,11 +207,14 @@
 	function reportDiagnostics(
 		report: Omit<SandboxDiagnosticsReport, 'component' | 'frameWidth' | 'frameHeight'>
 	): void {
-		const rect = iframeEl?.getBoundingClientRect();
+		const frame = iframeEl;
+		const rect = frame?.getBoundingClientRect();
+		const collapsed = frame && rect && (rect.width === 0 || rect.height === 0);
 		reportSandboxDiagnostics({
 			component: source,
 			frameWidth: rect ? Math.round(rect.width) : null,
 			frameHeight: rect ? Math.round(rect.height) : null,
+			...(collapsed ? { collapsedAncestors: describeCollapsedAncestors(frame) } : {}),
 			...report
 		});
 	}

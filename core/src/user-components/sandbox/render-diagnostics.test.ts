@@ -1,5 +1,10 @@
+// @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
-import { classifySurface, validateDiagnosticsMessage } from './render-diagnostics';
+import {
+	classifySurface,
+	describeCollapsedAncestors,
+	validateDiagnosticsMessage
+} from './render-diagnostics';
 
 describe('validateDiagnosticsMessage', () => {
 	it('keeps primitive metrics and clamps long strings and non-finite numbers', () => {
@@ -62,5 +67,35 @@ describe('classifySurface', () => {
 
 	it('flags a correctly sized canvas with no painted pixels', () => {
 		expect(classifySurface({ ...healthy, painted: 0 })).toBe('nothing-painted');
+	});
+});
+
+describe('describeCollapsedAncestors', () => {
+	const sized = (el: Element, width: number, height: number) => {
+		el.getBoundingClientRect = () => ({ width, height }) as DOMRect;
+	};
+
+	it('walks up from the frame to the first ancestor with a real size', () => {
+		document.body.innerHTML = `
+			<div id="page" class="prose">
+				<div class="ignored"></div>
+				<div class="outer">
+					<div class="wrapper a b c d e" data-render="custom_echart" data-component-title="MRR" style="display: none">
+						<div class="relative w-full"><iframe></iframe></div>
+					</div>
+				</div>
+			</div>`;
+		const q = (selector: string) => document.querySelector(selector)!;
+		sized(q('#page'), 900, 2000);
+		sized(q('.outer'), 742, 0);
+		sized(q('.wrapper'), 0, 0);
+		sized(q('.relative'), 0, 0);
+
+		expect(describeCollapsedAncestors(q('iframe'))).toBe(
+			'div.relative.w-full 0x0 block < ' +
+				'div.wrapper.a.b.c [custom_echart "MRR"] 0x0 none < ' +
+				'div.outer 742x0 block < ' +
+				'div.prose 900x2000 block'
+		);
 	});
 });

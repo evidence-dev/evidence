@@ -18,6 +18,8 @@ export interface SandboxDiagnosticsReport {
 	/** The iframe element's size as the parent lays it out. */
 	frameWidth: number | null;
 	frameHeight: number | null;
+	/** Set when the iframe lays out at 0×0: its ancestors up to the first one with a real size. */
+	collapsedAncestors?: string;
 	metrics: SandboxDiagnosticsMetrics;
 }
 
@@ -77,6 +79,41 @@ export function classifySurface(surface: {
 	if (differs(boxWidth, drawnWidth) || differs(boxHeight, drawnHeight)) return 'size-mismatch';
 	if (painted === 0) return 'nothing-painted';
 	return '';
+}
+
+const MAX_ANCESTORS = 30;
+const MAX_CLASSES_PER_ANCESTOR = 4;
+const MAX_ANCESTORS_LENGTH = 3000;
+
+function describeElement(el: Element): string {
+	const rect = el.getBoundingClientRect();
+	const style = getComputedStyle(el);
+	const classes = [...el.classList].slice(0, MAX_CLASSES_PER_ANCESTOR).map((c) => `.${c}`);
+	const render = el.getAttribute('data-render');
+	const title = el.getAttribute('data-component-title');
+	const parts = [
+		`${el.tagName.toLowerCase()}${classes.join('')}`,
+		render ? `[${render}${title ? ` "${title}"` : ''}]` : '',
+		`${Math.round(rect.width)}x${Math.round(rect.height)}`,
+		style.display,
+		style.position !== 'static' ? style.position : '',
+		style.visibility !== 'visible' ? style.visibility : '',
+		style.contentVisibility && style.contentVisibility !== 'visible' ? style.contentVisibility : ''
+	];
+	return parts.filter(Boolean).join(' ');
+}
+
+// Names the element whose layout collapsed a blank chart, which a window resize later repairs.
+export function describeCollapsedAncestors(frame: Element): string {
+	const entries: string[] = [];
+	let el: Element | null = frame.parentElement;
+	while (el && entries.length < MAX_ANCESTORS) {
+		entries.push(describeElement(el));
+		const { width, height } = el.getBoundingClientRect();
+		if (width > 0 && height > 0) break;
+		el = el.parentElement;
+	}
+	return entries.join(' < ').slice(0, MAX_ANCESTORS_LENGTH);
 }
 
 /** Sample a 2D canvas's alpha channel; null if it can't be read (e.g. WebGL). */
