@@ -91,8 +91,7 @@
 		return queryResults.map((row, index) => ({
 			value: row.value,
 			index,
-			// Create a stable key for each item using the value
-			key: String(row.value)
+			key: `${String(row.value)}#${index}`
 		}));
 	});
 </script>

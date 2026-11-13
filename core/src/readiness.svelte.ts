@@ -52,13 +52,17 @@ export function setupRenderReadiness(
 					.then(() => after())
 					.catch(() => {})
 					.finally(() => {
-						mark?.();
-						mark = undefined;
+						if (isReady()) {
+							mark?.();
+							mark = undefined;
+						}
 					});
 			} else {
 				mark?.();
 				mark = undefined;
 			}
+		} else if (!mark) {
+			mark = tracker.startTask(componentName);
 		}
 	});
 
@@ -131,7 +135,7 @@ export function setupContainerReadiness(componentName: string, isSelfReady: () =
 	// No tracker in context → not in PDF mode. Skip all overhead.
 	if (!parentTracker) return;
 
-	const mark = parentTracker.startTask(componentName);
+	let mark: (() => void) | undefined = parentTracker.startTask(componentName);
 
 	if (parentTracker.debug) {
 		logger.info(
@@ -151,11 +155,7 @@ export function setupContainerReadiness(componentName: string, isSelfReady: () =
 	// register their tasks with the child scope
 	setPageRenderTrackerContext(childScope);
 
-	let completed = false;
-
 	$effect(() => {
-		if (completed) return;
-
 		const selfReady = isSelfReady();
 		// Children are ready if either:
 		// - No children registered (isEmpty) — e.g. If condition was false
@@ -169,26 +169,29 @@ export function setupContainerReadiness(componentName: string, isSelfReady: () =
 		}
 
 		if (selfReady && childrenReady) {
-			completed = true;
-			if (parentTracker.debug) {
-				logger.info(
-					`[PDF-TRACKER] CONTAINER "${componentName}" ✅ COMPLETE | children: started=${childScope.startedCount} pending=${childScope.pendingCount}`
-				);
+			if (mark) {
+				if (parentTracker.debug) {
+					logger.info(
+						`[PDF-TRACKER] CONTAINER "${componentName}" ✅ COMPLETE | children: started=${childScope.startedCount} pending=${childScope.pendingCount}`
+					);
+				}
+				mark();
+				mark = undefined;
 			}
-			mark();
+		} else if (!mark) {
+			mark = parentTracker.startTask(componentName);
 		}
 	});
 
 	onDestroy(() => {
-		// Safety net: if the container unmounts before completing,
-		// don't leave a pending task in the parent tracker
-		if (!completed) {
+		if (mark) {
 			if (parentTracker.debug) {
 				logger.info(
 					`[PDF-TRACKER] CONTAINER "${componentName}" 🗑️ DESTROYED before completing | childScope.started=${childScope.startedCount} childScope.pending=${childScope.pendingCount}`
 				);
 			}
 			mark();
+			mark = undefined;
 		}
 		childScope.dispose();
 	});

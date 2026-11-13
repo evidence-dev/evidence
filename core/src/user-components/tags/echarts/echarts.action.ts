@@ -31,20 +31,9 @@ interface Options {
 	animateUpdates?: boolean;
 }
 
-/** Check if ECharts options contain actual series data */
+// Charts pass {} while loading and set series once the query settles (even if 0 rows).
 function hasSeriesData(opts: EChartsOption): boolean {
-	const series = opts.series;
-	if (!series) return false;
-	if (Array.isArray(series)) {
-		// Check if any series has data
-		return series.some((s) => {
-			const data = (s as { data?: unknown[] }).data;
-			return Boolean(data && Array.isArray(data) && data.length > 0);
-		});
-	}
-	// Single series object
-	const data = (series as { data?: unknown[] }).data;
-	return Boolean(data && Array.isArray(data) && data.length > 0);
+	return opts.series !== undefined;
 }
 
 export const echarts: Action<HTMLDivElement, Options> = (node, options) => {
@@ -330,9 +319,10 @@ export const echarts: Action<HTMLDivElement, Options> = (node, options) => {
 					applyConnectGroup(chart, newOptions.group);
 				}
 
+				options = newOptions;
 				// In print mode, check if data has arrived and trigger ready check
-				if (newOptions.printing && !hasReceivedData) {
-					const nowHasData = hasSeriesData(newOptions.echartsOptions);
+				if (options.printing && !hasReceivedData) {
+					const nowHasData = hasSeriesData(options.echartsOptions);
 					if (nowHasData) {
 						hasReceivedData = true;
 						// Reset readyScheduled so we can schedule the check now
@@ -340,7 +330,6 @@ export const echarts: Action<HTMLDivElement, Options> = (node, options) => {
 						scheduleReadyCheck();
 					}
 				}
-				options = newOptions;
 			};
 
 			// In print mode, apply updates synchronously to avoid unpredictable

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getLocaleContext } from '../../../locale/locale.context.svelte';
-	import { setupRenderReadiness } from '../../../readiness.svelte';
 	import { getPageSettingsContext } from '../../../page-settings.context';
 
 	const localeContext = getLocaleContext();
@@ -37,8 +36,6 @@
 	const neutralMax = $derived(neutralRange[1] ?? Infinity);
 
 	const hasValidValue = $derived(value !== null && value !== undefined);
-	// Minimal readiness: purely presentational, ready immediately when it has a value
-	setupRenderReadiness('delta', () => hasValidValue);
 
 	// Format the value
 	const formattedValue = $derived(hasValidValue ? formatValue(value, fmt, String(value)) : '–');

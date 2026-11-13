@@ -717,6 +717,14 @@
 		return props.echarts_options ? merge({}, baseOptions, props.echarts_options) : baseOptions;
 	});
 
+	const ready = $derived(!loading);
+	let stableOptions: EChartsOption = $state({});
+	$effect(() => {
+		if (ready) {
+			stableOptions = options.series !== undefined ? options : { ...options, series: [] };
+		}
+	});
+
 	let chart: EChartsInstance | undefined = $state(undefined);
 </script>
 
@@ -737,7 +745,7 @@
 		<ECharts
 			bind:chart
 			class={cn('h-full w-full flex-1', !height && 'min-h-[215px]')}
-			{options}
+			options={stableOptions}
 			group={props.connect_group}
 		/>
 

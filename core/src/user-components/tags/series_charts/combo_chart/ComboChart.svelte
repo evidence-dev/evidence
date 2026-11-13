@@ -532,8 +532,10 @@
 	// TODO: Client-side sorting with x_sort array will need to be reimplemented per-series
 	// For now, array-based x_sort is not supported with per-series queries
 
-	// Check if any series is loading
-	const loading: boolean = $derived(seriesInOrder.some((s) => s.query?.loading));
+	// Check if any series is loading (or child series haven't mounted yet)
+	const loading: boolean = $derived(
+		(Boolean(children) && seriesInOrder.length === 0) || seriesInOrder.some((s) => s.query?.loading)
+	);
 
 	// Children render in a hidden div, so failing child queries surface on the chart's wrapper
 	const firstChildError = $derived(

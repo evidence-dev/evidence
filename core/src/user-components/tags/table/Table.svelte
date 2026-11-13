@@ -567,7 +567,7 @@
 	// Minimal readiness integration for table: when query done and DOM updated
 	const markRenderComplete = createRenderTask('table');
 	$effect(() => {
-		if (!loading && !error) {
+		if (!loading) {
 			Promise.resolve()
 				.then(() => tick())
 				.then(() => (printing ? waitForFonts() : Promise.resolve()))
