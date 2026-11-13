@@ -235,6 +235,8 @@ Used for loading JS libraries via \`<script src>\` or \`import\`:
 
 ${renderList(SCRIPT_CDN_ORIGINS)}
 
+Import a single-file build of each library. Every block downloads its libraries separately, and an unbundled ES module import (e.g. \`https://esm.sh/echarts@6\`) fetches hundreds of files per block. With several blocks on a page, Chrome and Safari start refusing those requests and some blocks render blank. On esm.sh, add \`?bundle\` (\`https://esm.sh/d3@7?bundle\`). For ECharts, use \`https://cdn.jsdelivr.net/npm/echarts@6/dist/echarts.esm.min.mjs\`.
+
 ### Map tiles
 
 Available to both \`<img>\` tag-based map libraries (Leaflet raster) and modern fetch/WebGL libraries (deck.gl, MapLibre):
@@ -583,7 +585,7 @@ select 'Wed', 90
 {% html %}
 <div id="chart"></div>
 <script type="module">
-	import * as d3 from "https://esm.sh/d3@7";
+	import * as d3 from "https://esm.sh/d3@7?bundle";
 	const mount = document.getElementById("chart");
 	// viewBox + width:100% lets the SVG scale with the container — responsive
 	// with no redraw. Draw in a fixed coordinate space, then let CSS stretch it.

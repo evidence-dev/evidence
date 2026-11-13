@@ -393,7 +393,7 @@ window.addEventListener('securitypolicyviolation', (event) => {
 
 	const fix = isConnect
 		? 'This host is not on the {% html %} sandbox network allowlist. For your own report data, use evidence.query("query_name") (it never hits the network from inside the iframe). For external data, only a curated set of public hosts is reachable — see the html block docs for the list, or ask the platform team to add a project-level allowlist for the host you need.'
-		: `Load libraries only from these CDNs: ${TIER_1_CDN_ORIGINS.join(', ')}. For ES modules use a module script, e.g. <script type="module">import * as d3 from "https://esm.sh/d3@7"</script>.`;
+		: `Load libraries only from these CDNs: ${TIER_1_CDN_ORIGINS.join(', ')}. For ES modules use a module script, e.g. <script type="module">import * as d3 from "https://esm.sh/d3@7?bundle"</script>.`;
 	host?.postLog(
 		errorToLogEntry(
 			`Blocked by Content-Security-Policy: "${event.blockedURI}" (violated ${event.violatedDirective}). ${fix}`
