@@ -215,8 +215,29 @@
 			frameWidth: rect ? Math.round(rect.width) : null,
 			frameHeight: rect ? Math.round(rect.height) : null,
 			...(collapsed ? { collapsedAncestors: describeCollapsedAncestors(frame) } : {}),
+			...(healAttempts > 0 ? { healAttempts } : {}),
 			...report
 		});
+	}
+
+	const MAX_HEAL_ATTEMPTS = 2;
+	let healAttempts = 0;
+
+	// Safari 27.0 can leave a frame inserted by client-side navigation at 0×0 despite a definite height, until a window resize forces a fresh layout.
+	function healCollapsedFrame(): void {
+		const frame = iframeEl;
+		const container = frame?.parentElement;
+		if (!frame || !container || !frame.isConnected || healAttempts >= MAX_HEAL_ATTEMPTS) return;
+		const definiteHeight = height ?? (minHeight ? Math.max(minHeight, reportedHeight) : 0);
+		if (definiteHeight <= 0) return;
+		if (frame.getBoundingClientRect().height > 0) return;
+		// Charts inside closed tabs, accordions or other hidden sections are legitimately 0×0.
+		if (!frame.checkVisibility?.()) return;
+		healAttempts++;
+		container.style.display = 'none';
+		void container.offsetHeight;
+		container.style.removeProperty('display');
+		requestAnimationFrame(healCollapsedFrame);
 	}
 
 	function completeRenderTask(): void {
@@ -236,6 +257,7 @@
 				onError?.(undefined);
 				onRendered?.();
 				completeRenderTask();
+				requestAnimationFrame(healCollapsedFrame);
 				return;
 			case 'height': {
 				// Drop bad payloads (NaN/Infinity/negative/non-number) — they'd

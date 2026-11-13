@@ -20,6 +20,8 @@ export interface SandboxDiagnosticsReport {
 	frameHeight: number | null;
 	/** Set when the iframe lays out at 0×0: its ancestors up to the first one with a real size. */
 	collapsedAncestors?: string;
+	/** Set once the parent has forced a fresh layout of a frame that measured 0 tall despite a definite height. */
+	healAttempts?: number;
 	metrics: SandboxDiagnosticsMetrics;
 }
 
