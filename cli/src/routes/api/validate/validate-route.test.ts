@@ -102,9 +102,12 @@ describe('validate route — custom component names', () => {
 		endLine: 1
 	};
 
-	it('reports a built-in tag name collision on the component file', async () => {
+	it.each([
+		['no frontmatter', '# Custom note\n'],
+		['comment-only frontmatter', '---\n# Notes about the component\n---\n\n# Custom note\n']
+	])('reports a built-in tag name collision on the component file with %s', async (_, content) => {
 		await writePage('{% note %}\nA built-in note.\n{% /note %}\n');
-		await writeComponent('components/note.md');
+		await writeComponent('components/note.md', content);
 
 		const result = await validate();
 		expect(result).toMatchObject({
@@ -138,7 +141,7 @@ describe('validate route — custom component names', () => {
 
 	it('accepts a page using a uniquely named custom component', async () => {
 		await writePage('{% kpi_card /%}\n');
-		await writeComponent('components/kpi_card.md');
+		await writeComponent('components/kpi_card.md', '---\n# KPI card notes\n---\n\n# KPI card\n');
 
 		const result = await validate();
 		expect(result).toMatchObject({ valid: true, fileCount: 1, errorCount: 0 });
