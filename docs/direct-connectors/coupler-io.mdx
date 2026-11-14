@@ -1,0 +1,107 @@
+---
+title: 'Coupler.io'
+description: 'Query your Coupler.io datasets directly from Evidence through the Coupler.io Public API.'
+---
+
+The Coupler.io direct connector lets Evidence run queries live against [Coupler.io](https://coupler.io) datasets. Each dataset is exposed as a table; queries run as DuckDB SQL on the latest successful snapshot of the dataset through the [Coupler.io Public API](https://docs.coupler.io/api) (`POST /v1/workspaces/{workspace_id}/datasets/{dataset_id}/query`).
+
+<Note>
+The Coupler.io connector is available in the CLI (`connection.yaml`) only.
+</Note>
+
+## Connecting
+
+### Prerequisites
+
+- A Coupler.io organization on a plan that includes the Public API.
+- A dataflow whose dataset is **queryable** — shared for analysis in the dataflow destination, with at least one successful run.
+
+### 1. Copy your API token
+
+Open the **API access** section of your [Coupler.io profile](https://app.coupler.io/app/profile) and copy the personal API token. Keep it out of the repository: reference it from the environment with `${COUPLER_API_TOKEN}`, or put it in a gitignored key file.
+
+```json coupler-io-api.json
+{
+  "token": "<personal API token>"
+}
+```
+
+The key file may also set `api_host` (production by default; must be an `https://` origin on `coupler.io`).
+
+### 2. Find the workspace and dataset ids
+
+`GET /v1/workspaces` lists your workspaces; `GET /v1/workspaces/{workspace_id}/datasets` lists the datasets in one, with their `id` and whether they're `queryable`.
+
+### 3. Write connection.yaml
+
+```yaml
+type: coupler-io
+token: ${COUPLER_API_TOKEN} # or: keyfile: ./coupler-io-api.json
+workspace_id: "1042"
+datasets:
+  funnel: 1654ea41-37bf-48b2-8256-87c5ea3c5a90
+```
+
+Then query the dataset by its table name:
+
+```sql monthly
+select event_month, sum(mrr_plan_full) as mrr
+from funnel
+group by 1
+```
+
+Without a `datasets:` map, every queryable dataset in the workspace is exposed under a name derived from the dataset name (`Monthly product funnel` → `monthly_product_funnel`). Run `evidence tables` to see the names.
+
+{/* GENERATED:CONNECTION-OPTIONS START */}
+
+## Configuration reference
+
+```yaml
+type: coupler-io
+token: ${COUPLER_API_TOKEN}
+# keyfile: ./coupler-io-api.json # instead of token
+workspace_id: "1042"
+datasets:
+  funnel: 1654ea41-37bf-48b2-8256-87c5ea3c5a90
+# max_concurrent_requests: 4
+```
+
+#### Credentials
+
+_Provide exactly one of `token`, `keyfile`._
+
+<ResponseField name="token" type="string">
+  Personal API token from the API access section of the Coupler.io user profile. Sent as a Bearer token.
+</ResponseField>
+<ResponseField name="keyfile" type="string">
+  Path to a JSON file with the API token, resolved relative to connection.yaml: {"token": "...", "api_host": "..."} (api_host optional).
+</ResponseField>
+<ResponseField name="workspace_id" type="string" required>
+  Coupler.io workspace that owns the datasets (GET /v1/workspaces lists them).
+</ResponseField>
+<ResponseField name="api_host" type="string">
+  Coupler.io Public API origin. Defaults to the key file value, then https://api.coupler.io.
+</ResponseField>
+<ResponseField name="max_concurrent_requests" type="number">
+  How many Coupler.io API requests run at once (1–50); the rest wait in a queue. The API allows 100 requests per minute per organization. Default: `4`.
+</ResponseField>
+
+#### Visibility
+
+<ResponseField name="datasets" type="Record<string, string>">
+  Table name → dataset id; table names are simple identifiers (letters, digits, underscore). When empty, every queryable dataset in the workspace is exposed under a name derived from the dataset name. Default: `{}`.
+</ResponseField>
+
+{/* GENERATED:CONNECTION-OPTIONS END */}
+
+## How queries run
+
+- **One dataset per query.** The query endpoint reads a single dataset, so a statement may reference at most one configured table (in any number of places). Join datasets inside a Coupler.io dataflow instead. A statement that reads any other table (including the raw `data` table) is rejected. `DESCRIBE funnel` and `SUMMARIZE funnel` work like on any DuckDB table.
+- **Typed columns.** Each table is a view over the dataset that casts every column to the type the API reports (`integer` → `BIGINT`, `number` → `DOUBLE`, `boolean` → `BOOLEAN`, `date` → `DATE`, `date-time` → `TIMESTAMP`, otherwise `VARCHAR`) — snapshots store dates as ISO-8601 text. Column names are the dataset's column names (for example `"Dimension: Source"`); quote names with spaces or colons. Hidden columns are not exposed.
+- **Row cap.** A query returns at most 10,000 rows; larger results are truncated (with a warning in the CLI output). Aggregate or filter in SQL.
+- **Rate limit.** The API allows 100 requests per minute per organization. The connector caches the dataset catalog, column schemas and query results for five minutes, runs at most `max_concurrent_requests` (default four) requests at a time, and starts at most 90 requests a minute so other clients keep some headroom. On a 429 response it pauses all requests (honoring `Retry-After`) and retries up to three times. Schema-browser lookups (one per dataset) queue behind page queries and use at most 30 requests a minute. Without a `datasets:` map, the schema browser shows columns for the 50 most recently refreshed datasets; the rest are still queryable.
+- **Timeout.** Each query has 60 seconds on the Coupler.io side; a request with no response after 90 seconds fails.
+
+## SQL dialect
+
+Queries run as [DuckDB](https://duckdb.org) SQL — the same dialect as the [MotherDuck](/direct-connectors/motherduck) connector: `LIMIT`/`OFFSET`, `GROUP BY ALL`, `||` concatenation, `ILIKE`, `DATE_TRUNC('month', col)`, `col + INTERVAL 7 DAY`. Write `AS` before column aliases: some aliases (such as `days`) are keywords and fail without it.

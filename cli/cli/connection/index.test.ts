@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { listTablesSql, qualifyTableName } from './index';
+import { schemaAllowlist } from '@evidence/core/connectors/schema-allowlist';
+import { COUPLER_IO_TABLES_SQL } from '@evidence/core/metadata/coupler-io-catalog';
 import type {
 	BigQueryConnectionConfig,
 	ClickHouseConnectionConfig,
@@ -7,7 +9,8 @@ import type {
 	SqlServerConnectionConfig,
 	DatabricksConnectionConfig,
 	RedshiftConnectionConfig,
-	AthenaConnectionConfig
+	AthenaConnectionConfig,
+	CouplerIoConnectionConfig
 } from './types';
 
 const bq = (extra: Partial<BigQueryConnectionConfig> = {}): BigQueryConnectionConfig => ({
@@ -264,5 +267,28 @@ describe('athena tables', () => {
 	it('qualifies bare names with double quotes', () => {
 		expect(qualifyTableName('orders', athena())).toBe('"analytics"."orders"');
 		expect(qualifyTableName('sales.orders', athena())).toBe('sales.orders');
+	});
+});
+
+describe('coupler-io tables', () => {
+	const coupler: CouplerIoConnectionConfig = {
+		type: 'coupler-io',
+		token: 't',
+		workspaceId: '9',
+		apiHost: 'https://api.coupler.io',
+		tables: { funnel: 'ds' },
+		maxConcurrentRequests: 4
+	};
+
+	it('lists tables from the dataset catalog, not a SQL catalog', () => {
+		expect(listTablesSql(coupler)).toBe(COUPLER_IO_TABLES_SQL);
+	});
+
+	it('leaves table names unqualified', () => {
+		expect(qualifyTableName('funnel', coupler)).toBe('funnel');
+	});
+
+	it('has no schema allowlist (and its config type-checks against the shared helper)', () => {
+		expect(schemaAllowlist(coupler.type, coupler)).toEqual([]);
 	});
 });

@@ -420,6 +420,10 @@ async function maybeUploadCredentials(
 		// No connection.yaml → Evidence-managed; nothing to upload.
 		return;
 	}
+	if (config.type === 'coupler-io') {
+		console.log('  • Coupler.io connections run from the CLI only; nothing to upload.');
+		return;
+	}
 	if (config.type === 'bigquery' && config.authType === 'adc') {
 		console.log("  • connection.yaml uses ADC, which can't be uploaded.");
 		console.log('    Add a service-account key in Studio → Settings → Warehouse.');

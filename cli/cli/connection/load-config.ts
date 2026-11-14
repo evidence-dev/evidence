@@ -22,6 +22,7 @@ import {
 	cubeConnectionSchema,
 	redshiftConnectionSchema,
 	motherduckConnectionSchema,
+	couplerIoConnectionSchema,
 	snowflakeConnectionSchema,
 	sqlserverConnectionSchema,
 	athenaConnectionSchema
@@ -37,6 +38,7 @@ import { resolveCubeCredentials } from '@evidence/core/connectors/cube/resolve';
 import { resolveRedshiftCredentials } from '@evidence/core/connectors/redshift/resolve';
 import { resolveMotherduckCredentials } from '@evidence/core/connectors/motherduck/resolve';
 import { resolveAthenaCredentials } from '@evidence/core/connectors/athena/resolve';
+import { resolveCouplerIoCredentials } from '@evidence/core/connectors/coupler-io/resolve';
 import type { ConnectionConfig } from './types';
 
 const CONFIG_FILENAME = 'connection.yaml';
@@ -192,6 +194,12 @@ export async function loadConnectionConfig(cwd: string): Promise<ConnectionConfi
 	if (obj.type === 'athena') {
 		const data = parseOrThrow(athenaConnectionSchema, obj);
 		return { type: 'athena', ...resolveAthenaCredentials(data) };
+	}
+
+	if (obj.type === 'coupler-io') {
+		const data = parseOrThrow(couplerIoConnectionSchema, obj);
+		const credentials = await resolveCouplerIoCredentials(data, { cwd });
+		return { type: 'coupler-io', ...credentials };
 	}
 
 	throw new Error(

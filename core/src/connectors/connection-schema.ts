@@ -50,6 +50,11 @@ import {
 	athenaConnectionSchema,
 	type AthenaConnection
 } from './athena/connection-schema';
+import {
+	couplerIoBase,
+	couplerIoConnectionSchema,
+	type CouplerIoConnection
+} from './coupler-io/connection-schema';
 
 export type FieldCategory = 'credential' | 'context' | 'visibility' | 'rls';
 
@@ -146,7 +151,9 @@ export {
 	sqlserverBase,
 	sqlserverConnectionSchema,
 	athenaBase,
-	athenaConnectionSchema
+	athenaConnectionSchema,
+	couplerIoBase,
+	couplerIoConnectionSchema
 };
 export type {
 	SnowflakeConnection,
@@ -159,7 +166,8 @@ export type {
 	RedshiftConnection,
 	MotherDuckConnection,
 	SqlServerConnection,
-	AthenaConnection
+	AthenaConnection,
+	CouplerIoConnection
 };
 
 export const CONNECTION_TYPES = [
@@ -173,7 +181,8 @@ export const CONNECTION_TYPES = [
 	'redshift',
 	'motherduck',
 	'sqlserver',
-	'athena'
+	'athena',
+	'coupler-io'
 ] as const;
 export type ConnectionType = (typeof CONNECTION_TYPES)[number];
 
@@ -188,7 +197,8 @@ export type Connection =
 	| RedshiftConnection
 	| MotherDuckConnection
 	| SqlServerConnection
-	| AthenaConnection;
+	| AthenaConnection
+	| CouplerIoConnection;
 
 const schemasByType = {
 	snowflake: snowflakeConnectionSchema,
@@ -201,7 +211,8 @@ const schemasByType = {
 	redshift: redshiftConnectionSchema,
 	motherduck: motherduckConnectionSchema,
 	sqlserver: sqlserverConnectionSchema,
-	athena: athenaConnectionSchema
+	athena: athenaConnectionSchema,
+	'coupler-io': couplerIoConnectionSchema
 } as const;
 
 export function getConnectionSchema(type: ConnectionType): z.ZodType {

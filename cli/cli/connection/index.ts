@@ -13,6 +13,8 @@ import { executeDatabricksQuery } from './databricks';
 import { executePostgresQuery } from './postgres';
 import { executeMotherduckQuery } from './motherduck';
 import { executeAthenaQuery } from './athena';
+import { executeCouplerIoQuery } from './coupler-io';
+import { COUPLER_IO_TABLES_SQL } from '@evidence/core/metadata/coupler-io-catalog';
 import { managedTableNamesSql } from '@evidence/core/metadata/managed-catalog';
 import { escapeRedshiftStringLiteral } from '@evidence/core/sql-dialect/common';
 import type { ConnectionConfig, QueryResult } from './types';
@@ -46,6 +48,8 @@ export async function executeQuery(sql: string, config: ConnectionConfig): Promi
 			return executeMotherduckQuery(sql, config);
 		case 'athena':
 			return executeAthenaQuery(sql, config);
+		case 'coupler-io':
+			return executeCouplerIoQuery(sql, config);
 		default:
 			// Belt-and-braces: a future ConnectionConfig variant added without a
 			// matching branch should fail loudly here rather than silently
@@ -164,6 +168,9 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 			}
 			return `${base} WHERE table_schema NOT IN ('information_schema', 'pg_catalog') ORDER BY name`;
 		}
+		case 'coupler-io':
+			// Answered from the dataset catalog by the executor, not sent to /query.
+			return COUPLER_IO_TABLES_SQL;
 	}
 }
 
