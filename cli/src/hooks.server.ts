@@ -2,7 +2,7 @@ import type { Handle } from '@sveltejs/kit';
 import { stat, readFile, realpath } from 'node:fs/promises';
 import path from 'node:path';
 import { isServeMode, basicAuthConfigured } from '$lib/server/serve-mode';
-import { checkBasicAuth, SERVE_HARDENED_HEADERS } from '$cli/basic-auth';
+import { checkBasicAuth, hardenServeResponse } from '$cli/basic-auth';
 import { getProjectCwd } from '$lib/server/project-cwd';
 
 const STATIC_CONTENT_TYPES: Record<string, string> = {
@@ -88,9 +88,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 						headers: { 'WWW-Authenticate': 'Basic realm="evidence"' }
 					});
 				}
-				for (const [k, v] of Object.entries(SERVE_HARDENED_HEADERS)) {
-					staticResponse.headers.set(k, v);
-				}
+				hardenServeResponse(staticResponse);
 			}
 			return staticResponse;
 		}
@@ -109,11 +107,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			});
 		}
 
-		const response = await resolve(event);
-		for (const [k, v] of Object.entries(SERVE_HARDENED_HEADERS)) {
-			response.headers.set(k, v);
-		}
-		return response;
+		return hardenServeResponse(await resolve(event));
 	}
 
 	return resolve(event);
