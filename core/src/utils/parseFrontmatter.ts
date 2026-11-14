@@ -16,7 +16,7 @@ export function parseFrontmatter(frontmatter: string | undefined): ParseFrontmat
 	}
 
 	try {
-		const parsed = yaml.load(frontmatter) as Record<string, unknown>;
+		const parsed = (yaml.load(frontmatter) ?? {}) as Record<string, unknown>;
 		return { frontmatter: parsed, errors: [] };
 	} catch (error) {
 		// Create validation error for YAML parsing failure
