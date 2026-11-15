@@ -85,10 +85,24 @@ export async function resolveOrgWarehouse(
 			signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS)
 		});
 		if (!response.ok) return fellBack(`HTTP ${response.status}`);
-		return remember(parseOrgWarehouse(await response.json()), CACHE_TTL_MS);
+		const body = await response.json();
+		const unsupported = unsupportedWarehouseMode(body);
+		if (unsupported) {
+			// A connector Studio shipped after this CLI was released would otherwise silently show
+			// only the Evidence Warehouse's demo tables.
+			warn(
+				`  Warning: your organization uses the '${unsupported}' warehouse, which this CLI version doesn't support. Run \`evidence upgrade\`. Using the Evidence Warehouse for now.`
+			);
+		}
+		return remember(parseOrgWarehouse(body), CACHE_TTL_MS);
 	} catch (err) {
 		return fellBack(err instanceof Error ? err.message : String(err));
 	}
+}
+
+export function unsupportedWarehouseMode(body: unknown): string | null {
+	const mode = (body as { warehouseMode?: unknown } | null)?.warehouseMode;
+	return typeof mode === 'string' && !WAREHOUSE_MODES.includes(mode as WarehouseMode) ? mode : null;
 }
 
 export function parseOrgWarehouse(body: unknown): OrgWarehouse {

@@ -19,7 +19,7 @@ import {
 } from './connection/index.ts';
 import { printResult, renderResult, fail, type OutputOptions, type ResultData } from './output.ts';
 import { STUDIO_HOST } from './cli-shared.ts';
-import { queryNative, resolveOrgWarehouse } from './org-warehouse.ts';
+import { queryNative, resolveOrgWarehouse, type OrgWarehouse } from './org-warehouse.ts';
 
 /** Default row cap for `query` when neither --limit nor --all is given. */
 const DEFAULT_QUERY_LIMIT = 1000;
@@ -280,6 +280,14 @@ export interface QueryResultData {
 	rows: Record<string, unknown>[];
 }
 
+/** The logged-in org's warehouse, for commands that build warehouse-specific SQL. Managed when logged out. */
+export async function resolveLoggedInWarehouse(): Promise<OrgWarehouse> {
+	const stored = await loadCredentials();
+	if (!stored?.organizationId) return { mode: 'managed', schemaAllowlist: [] };
+	const credentials = await ensureSessionResolved(stored);
+	return resolveOrgWarehouse(STUDIO_HOST, stored.organizationId, studioAuthCookie(credentials));
+}
+
 /**
  * Execute a SQL query and return the result (without formatting/output)
  * Throws on error.
@@ -309,7 +317,7 @@ export async function runQuery(options: QueryOptions, opts: OutputOptions): Prom
 
 		// Cap rows by default so an unbounded query can't dump a huge result
 		// set; --all removes the cap, --limit N overrides it.
-		const effectiveLimit = opts.all ? null : opts.limit ?? DEFAULT_QUERY_LIMIT;
+		const effectiveLimit = opts.all ? null : (opts.limit ?? DEFAULT_QUERY_LIMIT);
 
 		status(`  🔍 Executing query...`);
 
