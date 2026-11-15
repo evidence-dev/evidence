@@ -21,6 +21,7 @@
 		HTML_SANDBOX_MESSAGE_SOURCE,
 		HTML_SANDBOX_PROTOCOL_VERSION,
 		HTML_QUERY_REQUEST,
+		HTML_PAGES_REQUEST,
 		DEFAULT_HTML_MIN_HEIGHT,
 		validateFilterSetMessage,
 		validateFilterCreateMessage,
@@ -32,7 +33,8 @@
 		type HtmlVariables,
 		type HtmlThemeSnapshot,
 		type HtmlFiltersSnapshot,
-		type HtmlQueryResponse
+		type HtmlQueryResponse,
+		type HtmlPageEntry
 	} from './html-protocol';
 	import type { SandboxLogEntry } from '../../../sandbox/log-protocol';
 
@@ -45,6 +47,8 @@
 		printing?: boolean;
 		/** Resolve a named query to its rows (parent owns QueryService access). */
 		runQuery: (name: string) => Promise<HtmlQueryResponse>;
+		/** `evidence.pages()` — pages the viewer can open; omitted hosts answer `[]`. */
+		listPages?: () => Promise<HtmlPageEntry[]>;
 		/** Cross-filter callback for `evidence.filters.set(id, value)`. */
 		onFilterSet?: (id: string, value: unknown) => void;
 		/** New-filter callback for `evidence.filters.create(id, value, { column })`. */
@@ -74,6 +78,7 @@
 		filters,
 		printing = false,
 		runQuery,
+		listPages,
 		onFilterSet,
 		onFilterCreate,
 		onModalOpen,
@@ -116,15 +121,15 @@
 		mode
 	});
 
-	// `query` is the only request the sandbox makes. Read fresh state inside the
-	// handler (registered once at connect time) — runQuery closes over the
-	// parent's reactive QueryService/inline-query context.
+	// Handlers are registered once at connect time, so read fresh state inside
+	// them — runQuery closes over the parent's reactive QueryService context.
 	const requestHandlers = {
 		[HTML_QUERY_REQUEST]: async (payload: unknown) => {
 			const name = (payload as { name?: unknown })?.name;
 			if (typeof name !== 'string') throw new Error('query request missing a name');
 			return runQuery(name);
-		}
+		},
+		[HTML_PAGES_REQUEST]: async () => ({ pages: (await listPages?.()) ?? [] })
 	};
 
 	let postToFrame = $state<((message: Record<string, unknown>) => void) | undefined>();

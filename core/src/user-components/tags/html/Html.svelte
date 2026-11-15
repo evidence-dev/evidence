@@ -28,6 +28,7 @@
 	} from '../../sandbox-runtime-errors-context.svelte';
 	import HtmlSandbox from './sandbox/HtmlSandbox.svelte';
 	import HtmlModal from './HtmlModal.svelte';
+	import { getPageListContext } from './page-list-context';
 	import { waitForInterpolatedQuery } from './wait-for-query';
 	import { resolveVariables } from './resolve-variables';
 	import {
@@ -54,6 +55,7 @@
 
 	const connection = getDefaultConnection();
 	const inlineQueries = getInlineQueriesContext();
+	const listPages = getPageListContext();
 	const pageFilters = getPageFiltersContext();
 	const repeatFilters = getRepeatContext()?.filters;
 	// Resolves Evidence `{{ }}` interpolation (filter values, repeat scope,
@@ -321,6 +323,7 @@
 	filters={filtersSnapshot}
 	{printing}
 	{runQuery}
+	{listPages}
 	{onFilterSet}
 	{onFilterCreate}
 	{onModalOpen}
@@ -342,6 +345,7 @@
 	filters={filtersSnapshot}
 	{printing}
 	{runQuery}
+	{listPages}
 	{onFilterSet}
 	{onFilterCreate}
 	{onNavigate}

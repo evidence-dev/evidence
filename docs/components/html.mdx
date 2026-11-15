@@ -118,6 +118,7 @@ Every script inside the block can reach a single `evidence` object. It is the on
 | `evidence.filters` | `get()`, `set(id, value)`, `create(id, value, { column })`, `subscribe(cb)` — see Parameterizing Queries. |
 | `evidence.modal.open({ title, html })` / `.close()` | Open a full-page modal the parent renders over the report, in a nested sandbox with the same `evidence` API. |
 | `evidence.navigate(path)` | Navigate to another page in the app (a drill-through). Same-origin internal paths only. |
+| `evidence.pages()` | The pages the current viewer can open, as `[{ title, path, project, directory }]` — for building navigation. Respects access rules where the host has them (the editor lists every page); returns `[]` where no page list is available. Pass `path` to `evidence.navigate`. See [Access-Aware Navigation](/guides/access-aware-navigation) for menus, gated sections and search. |
 | `evidence.openUrl(url)` | Open an external `http(s)` URL in a new tab. The host must be named in the block (see Links). |
 | `evidence.ready()` | Signal that the first render is done. Call it after async draws so PDF/PNG export captures a finished frame. |
 

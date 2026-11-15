@@ -25,7 +25,8 @@
 		HtmlVariables,
 		HtmlThemeSnapshot,
 		HtmlFiltersSnapshot,
-		HtmlQueryResponse
+		HtmlQueryResponse,
+		HtmlPageEntry
 	} from './sandbox/html-protocol';
 	import type { SandboxLogEntry } from '../../sandbox/log-protocol';
 	import { getLocaleContext } from '../../../locale/locale.context.svelte';
@@ -42,6 +43,7 @@
 		filters: HtmlFiltersSnapshot;
 		printing?: boolean;
 		runQuery: (name: string) => Promise<HtmlQueryResponse>;
+		listPages?: () => Promise<HtmlPageEntry[]>;
 		onFilterSet?: (id: string, value: unknown) => void;
 		onFilterCreate?: (id: string, value: unknown, column?: string) => void;
 		onNavigate?: (path: string) => void;
@@ -58,6 +60,7 @@
 		filters,
 		printing = false,
 		runQuery,
+		listPages,
 		onFilterSet,
 		onFilterCreate,
 		onNavigate,
@@ -111,6 +114,7 @@
 					{filters}
 					{printing}
 					{runQuery}
+					{listPages}
 					{onFilterSet}
 					{onFilterCreate}
 					{onNavigate}

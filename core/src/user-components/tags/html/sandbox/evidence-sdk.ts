@@ -19,11 +19,14 @@
 import type { SandboxHost } from '../../../sandbox/runtime-bootstrap';
 import {
 	HTML_QUERY_REQUEST,
+	HTML_PAGES_REQUEST,
 	isSafeExternalUrl,
 	isSafeInternalPath,
 	type HtmlFiltersSnapshot,
 	type HtmlInitMessage,
 	type HtmlQueryResponse,
+	type HtmlPageEntry,
+	type HtmlPagesResponse,
 	type HtmlThemeSnapshot,
 	type HtmlVariables
 } from './html-protocol';
@@ -84,6 +87,11 @@ export interface EvidenceModal {
 export interface EvidenceApi {
 	/** Rows for a named query/SQL-file declared on the page. */
 	query(name: string): Promise<Record<string, unknown>[]>;
+	/**
+	 * Pages the current viewer can open, for building navigation. The host
+	 * applies access rules; resolves to `[]` where no page list is available.
+	 */
+	pages(): Promise<HtmlPageEntry[]>;
 	/**
 	 * Values passed on the tag via `{% html variables={ name=$name, … } %}`.
 	 * Frontmatter, repeat-scope, filter-bound, and literal expressions all
@@ -204,6 +212,10 @@ export function createEvidenceSdk(host: SandboxHost, init: HtmlInitMessage): Evi
 			}
 			const response = await host.request<HtmlQueryResponse>(HTML_QUERY_REQUEST, { name });
 			return response?.rows ?? [];
+		},
+		async pages(): Promise<HtmlPageEntry[]> {
+			const response = await host.request<HtmlPagesResponse>(HTML_PAGES_REQUEST, {});
+			return response?.pages ?? [];
 		},
 		get variables() {
 			// Shallow copy so author mutation can't corrupt SDK state (matches

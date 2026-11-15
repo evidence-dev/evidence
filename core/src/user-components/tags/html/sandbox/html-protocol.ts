@@ -23,7 +23,7 @@ export const HTML_SANDBOX_MESSAGE_SOURCE = 'evidence-html-sandbox';
  * until they agree — surfaces a stale cached runtime bundle instead of
  * silently misbehaving.
  */
-export const HTML_SANDBOX_PROTOCOL_VERSION = 10;
+export const HTML_SANDBOX_PROTOCOL_VERSION = 11;
 
 /**
  * Safe target for `evidence.navigate`: an INTERNAL, absolute app path only.
@@ -180,6 +180,21 @@ export interface HtmlQueryRequest {
 /** Reply shape for a `query` request. `evidence.query` returns `rows`. */
 export interface HtmlQueryResponse {
 	rows: Record<string, unknown>[];
+}
+
+/** Correlated request kind: list the pages the viewer can open. No payload. */
+export const HTML_PAGES_REQUEST = 'pages';
+
+/** A page the viewer can open; `path` is accepted by `evidence.navigate`. */
+export interface HtmlPageEntry {
+	title: string;
+	path: string;
+	project: { name: string; slug: string } | null;
+	directory: string | null;
+}
+
+export interface HtmlPagesResponse {
+	pages: HtmlPageEntry[];
 }
 
 /**

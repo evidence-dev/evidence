@@ -9,7 +9,8 @@
 	import { TooltipProvider } from '@evidence/core/shadcn/components/ui/tooltip';
 	import PageNavTree from '@evidence/core/viewer-components/PageNavTree.svelte';
 	import LanguageMenuItems from '@evidence/core/viewer-components/LanguageMenuItems.svelte';
-	import { buildNavTreeFromFlat } from '@evidence/core/utils/nav-tree';
+	import { buildNavTreeFromFlat, navTreeToPageEntries } from '@evidence/core/utils/nav-tree';
+	import { setPageListContext } from '@evidence/core/user-components/tags/html/page-list-context';
 	import { downloadPng } from '@evidence/core/utils/png-download';
 	import { downloadPageDataAsExcel } from '@evidence/core/shims/data-export';
 	import { setQueryInfoContext } from '@evidence/core/query-info-context.svelte';
@@ -69,6 +70,7 @@
 	const fs = createFullscreen();
 
 	const navTree = $derived(buildNavTreeFromFlat(data.navItems));
+	setPageListContext(async () => navTreeToPageEntries(navTree, null));
 
 	// Dev poll: user content is read at runtime, not in Vite's module graph, so HMR can't see it.
 	// Serve mode ships immutable content (restart to refresh), so no poll.

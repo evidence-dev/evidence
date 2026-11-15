@@ -1,0 +1,148 @@
+---
+title: 'Access-Aware Navigation'
+description: 'Build custom menus, launchers and landing pages that only show each viewer the pages they can open.'
+keywords:
+  - custom navigation
+  - navigation menu
+  - landing page
+  - page list
+  - access control
+  - role-based navigation
+  - evidence.pages
+---
+
+Use an [html](/components/html) block to build your own navigation: a menu, a launcher or a landing page. `evidence.pages()` returns only the pages the current viewer can open, so each viewer sees a menu built for them.
+
+## What `evidence.pages()` returns
+
+`await evidence.pages()` resolves to an array of pages:
+
+| Field | Description |
+| --- | --- |
+| `title` | The page title. |
+| `path` | The page's app path, e.g. `/sales-reports/finance/margins`. Use it as an `href` or pass it to `evidence.navigate(path)`. |
+| `project` | `{ name, slug }` of the page's project, or `null` when running locally with the CLI. |
+| `directory` | The name of the folder the page is in, or `null` for top-level pages. |
+
+What's in the list depends on where the page is viewed:
+
+| Context | Pages returned |
+| --- | --- |
+| Published reports | Pages the viewer can open under [access.yaml](/features/page-level-access-control) |
+| Editor | Every page in the project |
+| CLI (`evidence dev`) | Every local page, with `project: null` |
+| Elsewhere (e.g. embeds, PDF export) | `[]` |
+
+In published reports the list matches the sidebar: top-level pages and pages one folder deep. Pages nested deeper can still be opened but aren't listed. With the CLI, deeper pages are listed under their top-level folder.
+
+Always handle an empty list, so the block still renders something sensible.
+
+<Warning>
+Hiding a link doesn't stop anyone opening the page. `access.yaml` is what enforces access, so a viewer who opens a page they can't access gets a 404 whether or not your menu lists it. Use this pattern to tidy up navigation, not to secure pages. Users with the `Developer`, `Admin`, or `Org Viewer` role see every page.
+</Warning>
+
+## Navigation Menu Grouped by Folder
+
+Internal `<a href>` links route the same way as markdown links, so they work in published reports, the editor and the CLI.
+
+```liquid
+{% html %}
+<style>
+	.nav { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+	.nav h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; opacity: 0.6; }
+	.nav a { display: block; padding: 3px 0; color: inherit; text-decoration: none; }
+	.nav a:hover { text-decoration: underline; }
+</style>
+<nav id="nav" class="nav"></nav>
+<script>
+	const escape = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+	const nav = document.getElementById("nav");
+	const pages = await evidence.pages();
+
+	if (pages.length === 0) {
+		nav.textContent = "No pages to show.";
+	} else {
+		const groups = {};
+		for (const p of pages) (groups[p.directory ?? "General"] ??= []).push(p);
+		nav.innerHTML = Object.entries(groups)
+			.map(([folder, items]) => `
+				<section>
+					<h4 style="color:${evidence.theme.palette[0]}">${escape(folder)}</h4>
+					${items.map((p) => `<a href="${escape(p.path)}">${escape(p.title)}</a>`).join("")}
+				</section>`)
+			.join("");
+	}
+	evidence.ready();
+</script>
+{% /html %}
+```
+
+## Show a Section Only to Viewers Who Can Open It
+
+Check the list before rendering a card. Here the Finance card only appears for viewers who can open at least one page in the `finance` folder.
+
+```liquid
+{% html %}
+<div id="cards" style="display:flex; gap:12px; flex-wrap:wrap;"></div>
+<script>
+	const pages = await evidence.pages();
+	const canOpen = (prefix) => pages.find((p) => p.path.startsWith(prefix));
+
+	const sections = [
+		{ label: "Sales", prefix: "/sales-reports/sales/" },
+		{ label: "Finance", prefix: "/sales-reports/finance/" },
+		{ label: "People", prefix: "/sales-reports/people/" }
+	];
+
+	const cards = document.getElementById("cards");
+	for (const section of sections) {
+		const first = canOpen(section.prefix);
+		if (!first) continue;
+		const card = document.createElement("button");
+		card.textContent = section.label;
+		card.style.cssText = `padding:16px 24px; border-radius:8px; border:0; cursor:pointer; color:white; background:${evidence.theme.palette[0]};`;
+		card.onclick = () => evidence.navigate(first.path);
+		cards.append(card);
+	}
+	if (!cards.children.length) cards.textContent = "You don't have access to any sections yet.";
+	evidence.ready();
+</script>
+{% /html %}
+```
+
+Replace `sales-reports` with your project's slug. Locally with the CLI, paths have no project prefix, e.g. `/finance/`.
+
+## Quick Page Search
+
+A search box that filters the viewer's pages as they type. Press Enter to open the first match.
+
+```liquid
+{% html %}
+<input id="q" placeholder="Search pages…" style="width:100%; padding:8px; box-sizing:border-box;" />
+<ul id="results" style="list-style:none; padding:0; margin:8px 0 0;"></ul>
+<script>
+	const escape = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+	const pages = await evidence.pages();
+	const input = document.getElementById("q");
+	const results = document.getElementById("results");
+	let matches = [];
+
+	function render() {
+		const term = input.value.trim().toLowerCase();
+		matches = pages.filter((p) => p.title.toLowerCase().includes(term)).slice(0, 8);
+		results.innerHTML = matches.length
+			? matches
+					.map((p) => `<li><a href="${escape(p.path)}">${escape(p.title)}</a>${p.directory ? ` <small style="opacity:.6">${escape(p.directory)}</small>` : ""}</li>`)
+					.join("")
+			: "<li>No matching pages.</li>";
+	}
+
+	input.addEventListener("input", render);
+	input.addEventListener("keydown", (e) => {
+		if (e.key === "Enter" && matches[0]) evidence.navigate(matches[0].path);
+	});
+	render();
+	evidence.ready();
+</script>
+{% /html %}
+```
