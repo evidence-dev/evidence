@@ -34,6 +34,18 @@ When Safari 27.0 leaves a custom chart or HTML block blank after you open a repo
 
 </Update>
 
+<Update label="November 12, 2026" description="" tags={["Improvement"]}>
+
+### 🚀 Emails outside your organization no longer block access.yaml
+
+An email in access.yaml that isn't a member of your organization is now a warning instead of an error, so it no longer fails the GitHub check or blocks publishing.
+
+- The entry grants nothing until the person joins your organization; they get access on the next publish after that.
+- Warnings appear as yellow squiggles in the editor and as warning annotations on the **Evidence: access.yaml Validation** check.
+- Removing someone from your organization no longer breaks publishing on projects whose access.yaml still lists them.
+
+</Update>
+
 <Update label="November 12, 2026" description="" tags={["Bug Fix"]}>
 
 ### 🐛 More reliable library imports in HTML blocks

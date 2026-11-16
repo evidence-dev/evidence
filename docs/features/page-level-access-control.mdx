@@ -380,10 +380,11 @@ Studio validates `access.yaml` to make sure your access rules are well-formed an
 
 - The file exists and contains a top-level `project:` block with a `grants.viewers` list (the minimum valid file is `project:` with `grants: viewers: []`)
 - The YAML parses and matches the expected schema
-- Every email refers to a real org member
 - Every group ID refers to a real group
 - Every page path refers to a real page
 - Every folder path refers to a real (non-root) directory
+
+An email that isn't a member of your organization is a **warning**, not an error. That entry grants nothing, and the rest of the file still applies. Once you invite the person, they get access on the next publish. Warnings show as yellow squiggles in the editor and as warning annotations on the GitHub check, which still passes.
 
 On feature branches we **warn** so you can stage work in progress. Before changes reach your default branch we **block**, so broken yaml can never affect real viewers.
 
@@ -421,5 +422,5 @@ This lets you stage and review access changes the same way you stage and review 
 When the project is connected to GitHub, every PR runs the **Evidence: access.yaml Validation** check alongside the existing **Evidence: Markdown Validation** check.
 
 - The check parses `access.yaml` from the PR head, validates schema, and resolves references against the project's users, groups, and pages.
-- Errors appear as annotations on the offending lines in the PR file diff.
+- Errors appear as annotations on the offending lines in the PR file diff. Emails that aren't org members appear as warning annotations and don't fail the check.
 - A missing `access.yaml` fails the check.
