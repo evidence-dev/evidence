@@ -4,7 +4,7 @@
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import Info from '../info/Info.svelte';
@@ -17,6 +17,7 @@
 	import DeltaDisplay from '../delta/DeltaDisplay.svelte';
 	import { setupRenderReadiness } from '../../../readiness.svelte';
 	import { BigValueModel } from './BigValueModel.svelte';
+	import { bigValueComparisonText } from './comparison-text';
 	import { getModelContext } from '../../model-context.svelte';
 	import { coerceBoolean } from '../../common/process-variables';
 	import { Tween, prefersReducedMotion } from 'svelte/motion';
@@ -29,6 +30,10 @@
 		mergeCurrentSearchParams
 	} from '../../common/transform-internal-link';
 	import { page } from '$app/state';
+
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const formatValue = $derived(localeContext.formatValue);
 
 	// Define interface for query results that's compatible with AnyRowType
 	interface QueryResult {
@@ -62,23 +67,7 @@
 	const sparkline_x_fmt = $derived(sparkline?.x_fmt);
 	const sparkline_fit_to_data = $derived(coerceBoolean(sparkline?.fit_to_data) ?? false);
 	const fmt = $derived(model.resolvedFmt);
-	// Derive comparison display text:
-	// 1. Use explicit 'text' if provided
-	// 2. Use 'name' from custom comparison (e.g., "vs. Franchisees")
-	// 3. Fall back to default text based on compare_vs type
-	const comparison_text = $derived(
-		comparison?.text ||
-			comparison?.name ||
-			(comparison?.compare_vs === 'prior year'
-				? 'vs. last year'
-				: comparison?.compare_vs === 'prior period'
-					? 'vs. last period'
-					: comparison?.compare_vs === 'target'
-						? 'vs. target'
-						: comparison?.compare_vs === 'benchmark'
-							? 'vs. benchmark'
-							: '')
-	);
+	const comparison_text = $derived(bigValueComparisonText(comparison, t));
 	const down_is_good = $derived(coerceBoolean(comparison?.down_is_good));
 	const neutralRange = $derived(comparison?.neutral_range ?? [0, 0]);
 	const max_width = $derived(props.max_width ?? 'none');

@@ -18,7 +18,7 @@
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { Query } from '../../../Query.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import type { DataPoint } from '../../types';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
@@ -54,6 +54,9 @@
 		resolveAutoLabelPlacement,
 		sanitizeRichText
 	} from './funnel-labels';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
@@ -446,7 +449,11 @@
 					effectiveValueFmt,
 					typedParams.value.toString()
 				);
-				const extraRows = renderTooltipExtras(processedTooltip.fields, typedParams.data?.extras);
+				const extraRows = renderTooltipExtras(
+					processedTooltip.fields,
+					typedParams.data?.extras,
+					localeContext.language
+				);
 				const percentSuffix =
 					show_percent && firstStageValue > 0
 						? ` (${formatPercentOfFirst(typedParams.value, firstStageValue)})`

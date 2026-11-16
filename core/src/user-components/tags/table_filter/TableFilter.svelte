@@ -29,6 +29,8 @@
 	import { resolveCatalogTable } from '../../../metadata/resolve-table';
 	import { logger } from '../../../shims/logger';
 	import { browser } from '../../../shims/env';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	let {
 		id,
@@ -36,7 +38,7 @@
 		data,
 		columns,
 		labels,
-		title = 'Filter',
+		title,
 		showClearButton = true,
 		minimumRecords = null,
 		multiple = true,
@@ -363,7 +365,7 @@
 						{#snippet child({ props })}
 							<Button {...props} variant="ghost" size="sm">
 								<ListFilter />
-								{title}
+								{title ?? t('filter.title')}
 							</Button>
 						{/snippet}
 					</Popover.Trigger>
@@ -396,9 +398,9 @@
 									requireSelection={columnRequiresSelection(selectedColumn.name)}
 								/>
 							{:else}
-								<Command.Input placeholder="Filter by..." class="h-9" />
+								<Command.Input placeholder={t('filter.column_placeholder')} class="h-9" />
 								<Command.List class="p-1">
-									<Command.Empty>No columns found.</Command.Empty>
+									<Command.Empty>{t('filter.no_columns')}</Command.Empty>
 									{#if orderedColumns}
 										<!-- When columns prop is provided, render in exact order specified -->
 										{#each orderedColumns as column (column.name)}
@@ -493,7 +495,7 @@
 					filterState.conjunction = filterState.conjunction === 'AND' ? 'OR' : 'AND';
 				}}
 			>
-				{filterState.conjunction === 'AND' ? 'Match all filters' : 'Match any filters'}
+				{filterState.conjunction === 'AND' ? t('filter.match_all') : t('filter.match_any')}
 			</Button>
 		{/if}
 	</div>

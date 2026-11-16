@@ -8,6 +8,7 @@
  */
 
 import { deslugify } from './deslugify';
+import type { HtmlPageEntry } from '../user-components/tags/html/sandbox/html-protocol';
 
 /**
  * Canonical sidebar ordering: pages with an explicit `sidebar_position` sort
@@ -158,4 +159,34 @@ export function buildNavTreeFromFlat(items: FlatNavItem[]): NavTree {
 	}));
 
 	return { rootPages, directories };
+}
+
+// --- html block page list ---------------------------------------------------
+
+/** Flatten a `NavTree` into the page list `evidence.pages()` returns. */
+export function navTreeToPageEntries(
+	tree: NavTree,
+	project: HtmlPageEntry['project']
+): HtmlPageEntry[] {
+	return [
+		...tree.rootPages.map((p) => ({ title: p.name, path: p.href, project, directory: null })),
+		...tree.directories.flatMap((dir) =>
+			dir.pages.map((p) => ({ title: p.name, path: p.href, project, directory: dir.name }))
+		)
+	];
+}
+
+/**
+ * Studio projects → page entries. Paths use the markdown-link form
+ * (`/<projectSlug>/<page>`) so `evidence.navigate` resolves them per context.
+ */
+export function pageEntriesFromProjects(
+	projects: (SidebarProjectInput & { name: string; slug: string })[]
+): HtmlPageEntry[] {
+	return projects.flatMap((project) =>
+		navTreeToPageEntries(
+			toNavTreeFromProject(project, (relSlug) => `/${project.slug}/${relSlug}`),
+			{ name: project.name, slug: project.slug }
+		)
+	);
 }

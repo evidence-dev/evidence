@@ -482,6 +482,77 @@ export async function downloadAsExcel({
 }
 
 /**
+ * Build a multi-sheet workbook (one sheet per component with data).
+ * Returns null when no sheet has data.
+ */
+export async function buildPageWorkbook({
+	queryInfoContext,
+	reportImage
+}: Pick<MultiSheetExportOptions, 'queryInfoContext' | 'reportImage'>): Promise<ArrayBuffer | null> {
+	const queryInfoMap = queryInfoContext?.queryInfoMap ?? new Map<string, ExportableQueryInfo>();
+	const workbook = new ExcelJS.Workbook();
+	let hasData = false;
+
+	// Track used sheet names for deduplication (case-insensitive)
+	const usedNames = new Set<string>();
+
+	if (reportImage) {
+		addReportImageSheet(workbook, reportImage);
+		usedNames.add(REPORT_SHEET_NAME.toLowerCase());
+		hasData = true;
+	}
+
+	// Add a sheet for each query
+	for (const [componentId, queryInfo] of queryInfoMap) {
+		try {
+			// Skip input/filter and logic/conditional components based on their schema category
+			const userComponent = tags[queryInfo.tag];
+			if (userComponent && EXCLUDED_EXPORT_CATEGORIES.has(userComponent.schema.category)) {
+				continue;
+			}
+
+			const query = queryInfo.query;
+
+			// Skip if query has no results or is loading
+			if (!query.result || query.loading || query.result.error || !query.result.rows?.length) {
+				continue;
+			}
+
+			// Create worksheet - use title if available, otherwise format tag name
+			const sheetName = getUniqueSheetName(
+				queryInfo.title || formatTitle(queryInfo.tag),
+				usedNames
+			);
+
+			const worksheet = workbook.addWorksheet(sheetName);
+			worksheet.views = [{ showGridLines: false }];
+
+			addDataToWorksheet(worksheet, query.result.rows, query.result.columns);
+
+			if (worksheet.rowCount > 0) {
+				hasData = true;
+			}
+		} catch (err) {
+			logger.error({ err }, `Error processing query ${componentId}`);
+			// Add an error sheet for failed queries
+			const errorSheetName = getUniqueSheetName(`Error - ${formatTitle(queryInfo.tag)}`, usedNames);
+
+			const errorSheet = workbook.addWorksheet(errorSheetName);
+			errorSheet.views = [{ showGridLines: false }];
+			errorSheet.addRow(['Error', 'Message']);
+			errorSheet.addRow([
+				`Failed to process query: ${componentId}`,
+				err instanceof Error ? err.message : 'Unknown error'
+			]);
+		}
+	}
+
+	if (!hasData) return null;
+
+	return (await workbook.xlsx.writeBuffer()) as ArrayBuffer;
+}
+
+/**
  * Export all queries from a page to a multi-sheet Excel file
  */
 export async function downloadPageAsExcel({
@@ -501,67 +572,8 @@ export async function downloadPageAsExcel({
 			return;
 		}
 
-		const workbook = new ExcelJS.Workbook();
-		let hasData = false;
-
-		// Track used sheet names for deduplication (case-insensitive)
-		const usedNames = new Set<string>();
-
-		if (reportImage) {
-			addReportImageSheet(workbook, reportImage);
-			usedNames.add(REPORT_SHEET_NAME.toLowerCase());
-			hasData = true;
-		}
-
-		// Add a sheet for each query
-		for (const [componentId, queryInfo] of queryInfoMap) {
-			try {
-				// Skip input/filter and logic/conditional components based on their schema category
-				const userComponent = tags[queryInfo.tag];
-				if (userComponent && EXCLUDED_EXPORT_CATEGORIES.has(userComponent.schema.category)) {
-					continue;
-				}
-
-				const query = queryInfo.query;
-
-				// Skip if query has no results or is loading
-				if (!query.result || query.loading || query.result.error || !query.result.rows?.length) {
-					continue;
-				}
-
-				// Create worksheet - use title if available, otherwise format tag name
-				const sheetName = getUniqueSheetName(
-					queryInfo.title || formatTitle(queryInfo.tag),
-					usedNames
-				);
-
-				const worksheet = workbook.addWorksheet(sheetName);
-				worksheet.views = [{ showGridLines: false }];
-
-				addDataToWorksheet(worksheet, query.result.rows, query.result.columns);
-
-				if (worksheet.rowCount > 0) {
-					hasData = true;
-				}
-			} catch (err) {
-				logger.error({ err }, `Error processing query ${componentId}`);
-				// Add an error sheet for failed queries
-				const errorSheetName = getUniqueSheetName(
-					`Error - ${formatTitle(queryInfo.tag)}`,
-					usedNames
-				);
-
-				const errorSheet = workbook.addWorksheet(errorSheetName);
-				errorSheet.views = [{ showGridLines: false }];
-				errorSheet.addRow(['Error', 'Message']);
-				errorSheet.addRow([
-					`Failed to process query: ${componentId}`,
-					err instanceof Error ? err.message : 'Unknown error'
-				]);
-			}
-		}
-
-		if (!hasData) {
+		const buffer = await buildPageWorkbook({ queryInfoContext, reportImage });
+		if (!buffer) {
 			onError?.(
 				'No data available for export',
 				'The queries on this page have no results or encountered errors.'
@@ -569,7 +581,6 @@ export async function downloadPageAsExcel({
 			return;
 		}
 
-		const buffer = await workbook.xlsx.writeBuffer();
 		const blob = new Blob([buffer], {
 			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 		});

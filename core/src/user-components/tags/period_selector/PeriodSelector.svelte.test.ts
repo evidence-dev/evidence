@@ -21,7 +21,8 @@ function render(readonly: boolean) {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: { computedDefaultDateRangeEnd: '2026-08-14' } as never,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	});
 	registerFiltersFromAST(Markdoc.parse('{% period_selector id="q" grain="quarter" /%}'), filters);
 	target = document.createElement('div');

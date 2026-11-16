@@ -2,6 +2,7 @@
 	import Info from '../info/Info.svelte';
 	import formatTitle from '../../formatTitle';
 	import type { HeaderCell, ColumnMetaItem } from '../../common/pivot-utils';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 
 	interface Props {
 		headerLevels: HeaderCell[][];
@@ -28,6 +29,7 @@
 	}
 
 	const props: Props = $props();
+	const { t } = getLocaleContext();
 
 	// Check if a column is frozen based on its index in the bottom-level header
 	function isFrozenColumn(columnIndex: number): boolean {
@@ -57,7 +59,14 @@
 					(props.format_titles &&
 					cell.headerType !== 'pivot_value' &&
 					cell.headerType !== 'column_group'
-						? formatTitle(cell.label, grainForTitle, periodCountForTitle, comparisonNameForTitle)
+						? formatTitle(
+								cell.label,
+								grainForTitle,
+								periodCountForTitle,
+								comparisonNameForTitle,
+								undefined,
+								t
+							)
 						: cell.label)}
 				{@const _columnKey = props.columns[cell.startIndex]}
 				{@const isLinkColumn = props.columns[cell.startIndex] === props.link}

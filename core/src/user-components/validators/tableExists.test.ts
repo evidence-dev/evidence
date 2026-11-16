@@ -60,6 +60,26 @@ describe('tableExists', () => {
 	});
 });
 
+describe('tableExists with a schema-qualified name', () => {
+	const runData = (data: string, tables: string[]) =>
+		// @ts-expect-error config arg unused by tableExists
+		tableExists('data')(node({ data }), {}, ctx(metadataWith(tables)));
+
+	it('stays silent for a schema the catalog did not scan', () => {
+		expect(runData('netops.v_sites', ['public.orders'])).toEqual([]);
+	});
+
+	it('stays silent for a current-schema table keyed bare', () => {
+		expect(runData('netops.v_sites', ['v_sites'])).toEqual([]);
+	});
+
+	it('flags a table missing from a scanned schema', () => {
+		const errors = runData('netops.v_sites', ['netops.v_alarms']);
+		expect(errors).toHaveLength(1);
+		expect(errors[0].message).toContain('Table "netops.v_sites" does not exist');
+	});
+});
+
 // Stub inline-queries exposing just the connection surface tableExists reads.
 const iqStub = (connections: string[], queryNames: string[] = []) => ({
 	connectionNames: () => connections,
@@ -168,6 +188,30 @@ describe('tableExists — connection references', () => {
 		expect(errors).toHaveLength(1);
 		expect(errors[0].id).toBe('invalid-table');
 		expect(errors[0].message).toContain('connection "snowflake"');
+	});
+
+	it('stays silent for a table in a schema the connection catalog did not scan', () => {
+		const errors = runData('snowflake:netops.v_sites', {
+			...connCtx(),
+			metadataForConnection: () => catalogWith(['PUBLIC.ORDERS'])
+		} as unknown as ValidationContext);
+		expect(errors).toEqual([]);
+	});
+
+	it('stays silent for an unscanned schema when the ambient catalog is the connection', () => {
+		const errors = runData(
+			'snowflake:netops.v_sites',
+			connCtx({ metadata: metadataWith(['public.orders']) })
+		);
+		expect(errors).toEqual([]);
+	});
+
+	it('still errors on a missing SQL-file path in a connection reference', () => {
+		const errors = runData('snowflake:/queries/missing.sql', {
+			...connCtx(),
+			metadataForConnection: () => catalogWith(['PUBLIC.ORDERS'])
+		} as unknown as ValidationContext);
+		expect(errors).toHaveLength(1);
 	});
 
 	it('is dormant when no connection names are registered (colon ref falls through)', () => {

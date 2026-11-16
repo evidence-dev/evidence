@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { init } from 'echarts';
 	import type { ECharts } from 'echarts';
 	import { mode } from 'mode-watcher';
@@ -13,6 +13,9 @@
 	import { getThemeToken } from '../../../theme/get-theme-token';
 	import { getCardContext } from '../../common/card-context.svelte';
 	import { escapeHtml } from '../../common/tooltip-fields';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	interface Props {
 		chartData: Array<[string | Date, number]>;
@@ -251,24 +254,24 @@
 			<div
 				class="h-full w-full overflow-visible"
 				style="background-color: transparent;"
-			use:echarts={{
-				options: stableChartOptions,
-				theme: mode.current,
-				width,
-				height,
-				renderer: 'svg',
-				printing,
-				group,
-				onCreate: (c) => {
-					chart = c;
-				},
-				onReady: () => {
-					echartsReady = true;
-				},
-				onDestroy: () => {
-					chart = null;
-				}
-			}}
+				use:echarts={{
+					options: stableChartOptions,
+					theme: mode.current,
+					width,
+					height,
+					renderer: 'svg',
+					printing,
+					group,
+					onCreate: (c) => {
+						chart = c;
+					},
+					onReady: () => {
+						echartsReady = true;
+					},
+					onDestroy: () => {
+						chart = null;
+					}
+				}}
 			></div>
 		{/if}
 	</svelte:element>

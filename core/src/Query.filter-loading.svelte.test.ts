@@ -52,7 +52,8 @@ describe('EVI-3119: chart loading and stableOptions after builtin filter change'
 			url: undefined,
 			updateUrl: undefined,
 			projectSettings: undefined,
-			dialect: () => dialect
+			dialect: () => dialect,
+			language: undefined
 		};
 		const pageFilters = new Filters(filterDeps);
 

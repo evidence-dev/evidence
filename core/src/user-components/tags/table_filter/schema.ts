@@ -40,8 +40,8 @@ const attributes = {
 	},
 	title: {
 		type: String,
-		description: 'Custom title text for the filter button (defaults to "Filter")',
-		default: 'Filter'
+		description:
+			'Custom title text for the filter button (defaults to "Filter" in the page language)'
 	},
 	defaultConjunction: {
 		type: String,

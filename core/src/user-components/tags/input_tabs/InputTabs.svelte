@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
 	import { type Filter } from '../../../Filter.svelte';
@@ -131,6 +132,7 @@
 	});
 
 	const props: UserComponentProps<typeof schema> = $props();
+	const { t } = getLocaleContext();
 
 	// Get the query info context for registration
 	const { getComponentId, hasBlockingErrors } = getComponentWrapperContext();
@@ -353,7 +355,7 @@
 							<span
 								class="text-muted-foreground relative z-20 flex items-center gap-1.5 whitespace-nowrap"
 							>
-								No options available
+								{t('common.no_options')}
 							</span>
 						</div>
 					</button>

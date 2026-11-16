@@ -15,8 +15,15 @@ import {
 	getAuthStatus,
 	generateToken
 } from './auth.ts';
-import { runQuery, executeQuery } from './query.ts';
-import { loadConnectionConfig, listTablesSql, qualifyTableName } from './connection/index.ts';
+import { runQuery, executeQuery, resolveLoggedInWarehouse } from './query.ts';
+import { dialectFor } from '@evidence/core/sql-dialect';
+import { warehouseTypeForMode } from './org-warehouse.ts';
+import {
+	loadConnectionConfig,
+	listTablesSql,
+	nativeListTablesSql,
+	qualifyTableName
+} from './connection/index.ts';
 import { managedColumnsSql, NO_QUERY_CACHE } from '@evidence/core/metadata/managed-catalog';
 import { printResult, fail, EXIT_USAGE } from './output.ts';
 import { listConnectors } from './connectors.ts';
@@ -175,7 +182,14 @@ try {
 			// List available tables — warehouse-specific (BQ has no SHOW TABLES).
 			try {
 				const cfg = await loadConnectionConfig(process.cwd());
-				const result = await executeQuery(listTablesSql(cfg));
+				let catalogSql: string;
+				if (cfg) {
+					catalogSql = listTablesSql(cfg);
+				} else {
+					const org = await resolveLoggedInWarehouse();
+					catalogSql = nativeListTablesSql(org.mode, org.schemaAllowlist);
+				}
+				const result = await executeQuery(catalogSql);
 
 				// The full column set (name/schema/rows/kind) is gated behind
 				// --verbose/--all; the default is a plain `schema.table` name list.
@@ -263,7 +277,8 @@ try {
 				// Default: one row per table with its column count.
 				let summary: { schema: string | null; table: string; columns: number }[];
 
-				if (!cfg) {
+				const org = cfg ? null : await resolveLoggedInWarehouse();
+				if (org?.mode === 'managed') {
 					// One catalog query instead of an N+1 `SELECT * LIMIT 1` per table.
 					const catalog = await executeQuery(`${managedColumnsSql()} ${NO_QUERY_CACHE}`);
 					const counts = new Map<string, number>();
@@ -275,16 +290,23 @@ try {
 						.sort((a, b) => a[0].localeCompare(b[0]))
 						.map(([table, columns]) => ({ schema: null, table, columns }));
 				} else {
-					const tablesResult = await executeQuery(listTablesSql(cfg));
+					const tablesResult = await executeQuery(
+						cfg ? listTablesSql(cfg) : nativeListTablesSql(org!.mode, org!.schemaAllowlist)
+					);
 					summary = [];
 					for (const r of tablesResult.rows) {
 						const table = String(r.name);
 						const schema = (r.schema_name ?? r.table_schema ?? null) as string | null;
 						let columns = 0;
 						try {
-							const colResult = await executeQuery(
-								`SELECT * FROM ${qualifyTableName(table, cfg, schema)} LIMIT 1`
-							);
+							// The row cap goes through the dialect: T-SQL (Fabric/SQL Server) has no LIMIT.
+							const probe = cfg
+								? `SELECT * FROM ${qualifyTableName(table, cfg, schema)} LIMIT 1`
+								: dialectFor(warehouseTypeForMode(org!.mode)).applyRowLimit(
+										`SELECT * FROM ${table}`,
+										1
+									);
+							const colResult = await executeQuery(probe);
 							columns = colResult.columns.length;
 						} catch {
 							columns = 0;

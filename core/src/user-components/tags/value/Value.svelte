@@ -3,7 +3,7 @@
 	import { schema } from './schema';
 	import { getComponentWrapperContext } from '../../common/component-wrapper-context';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import Info from '../info/Info.svelte';
 	import {
@@ -15,6 +15,9 @@
 	import { setupRenderReadiness } from '../../../readiness.svelte';
 	import { ValueModel } from './ValueModel.svelte';
 	import { getModelContext } from '../../model-context.svelte';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	const { getComponentId, setError /*hasBlockingErrors*/ } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());

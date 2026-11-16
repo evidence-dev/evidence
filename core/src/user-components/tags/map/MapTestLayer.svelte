@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { getMapContext } from './map-context';
+	import { getMapTestPropOverrides } from './Map.test-control.svelte';
 
 	const mapContext = getMapContext();
 
@@ -13,7 +14,8 @@
 			tooltip: true,
 			legend: true,
 			value_fmt: 'num',
-			show_unmatched: true
+			show_unmatched: true,
+			...getMapTestPropOverrides()
 		}));
 		const point = mapContext.addPointLayer(() => ({
 			data: 'point_values',
@@ -27,7 +29,8 @@
 			tooltip: true,
 			legend: true,
 			color_value_fmt: 'num',
-			size_value_fmt: 'num'
+			size_value_fmt: 'num',
+			...getMapTestPropOverrides()
 		}));
 		const heatmap = mapContext.addHeatmapLayer(() => ({
 			data: 'heatmap_values',
@@ -36,7 +39,8 @@
 			filters: [],
 			radius: 30,
 			opacity: 0.8,
-			intensity: 1
+			intensity: 1,
+			...getMapTestPropOverrides()
 		}));
 
 		return () => {

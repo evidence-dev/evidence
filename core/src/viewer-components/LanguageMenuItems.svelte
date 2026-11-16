@@ -2,6 +2,7 @@
 	import * as DropdownMenu from '../shadcn/components/ui/dropdown-menu/index.js';
 	import { Languages, Check } from 'lucide-svelte';
 	import { invalidateAll } from '$app/navigation';
+	import { getLanguagePack } from '../locale/registry';
 
 	type Props = {
 		languages: string[];
@@ -9,6 +10,9 @@
 	};
 
 	let { languages, currentLanguage }: Props = $props();
+
+	// Studio mounts this menu in layouts above the page's LocaleContext, so read the pack directly.
+	const label = $derived(getLanguagePack(currentLanguage).messages['language.label']);
 
 	function selectLanguage(code: string) {
 		document.cookie = `lang=${code}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
@@ -35,7 +39,7 @@
 	<DropdownMenu.Sub>
 		<DropdownMenu.SubTrigger class="cursor-pointer text-sm">
 			<Languages class="size-4" />
-			<span>Language</span>
+			<span>{label}</span>
 		</DropdownMenu.SubTrigger>
 		<DropdownMenu.SubContent>
 			{#each languages as lang}

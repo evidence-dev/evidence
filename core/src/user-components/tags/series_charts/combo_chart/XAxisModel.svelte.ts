@@ -24,6 +24,7 @@ import {
 	formatTimeAxisTooltip,
 	type TimeAxisGrain
 } from './format-time-axis-label';
+import type { DateLocale } from '../../../../locale/date-locale';
 import {
 	MULTI_YEAR_SPAN_MS,
 	asTimeAxisGrain,
@@ -47,6 +48,10 @@ export type XAxisOptions = z.input<typeof xAxisOptionsSchema> & {
 	x: string;
 	date_grain?: string;
 	firstDayOfWeek?: 'sunday' | 'monday';
+	/** Calendar vocabulary for the page's selected language; English when omitted. */
+	dateLocale?: DateLocale;
+	/** Page language for month/weekday names in an explicit `fmt`; English when omitted. */
+	language?: string | null;
 };
 
 /**
@@ -343,6 +348,8 @@ export class XAxisModel {
 				? '0'
 				: (grainDefaultFmt ?? undefined));
 		const firstDayOfWeek = this.options.firstDayOfWeek;
+		const language = this.options.language;
+		const dateLocale = this.options.dateLocale;
 
 		const format = (value: unknown): string => {
 			// Year grain reads as a discrete category bucket, but its label is
@@ -355,7 +362,7 @@ export class XAxisModel {
 				if (year !== undefined) return String(year);
 			}
 			if (type === 'time' && !fmt) {
-				return formatTimeAxisTooltip(value as number | string | Date, timeAxisGrain);
+				return formatTimeAxisTooltip(value as number | string | Date, timeAxisGrain, dateLocale);
 			}
 			if (type === 'time') {
 				if (typeof value === 'number') {
@@ -374,7 +381,9 @@ export class XAxisModel {
 				value?.toString(),
 				{ min, max },
 				jsType,
-				firstDayOfWeek
+				firstDayOfWeek,
+				undefined,
+				language
 			);
 
 			if (maxLabelLength && formatted.length > maxLabelLength) {
@@ -470,6 +479,9 @@ export class XAxisModel {
 
 		const labelRotate = coerceNumber(this.options.label_rotate);
 		const maxLabelLengthOption = coerceNumber(this.options.max_label_length);
+		// Captured here, not read inside the axisLabel formatter: ECharts can
+		// invoke it after the component is destroyed (see #formatter).
+		const dateLocale = this.options.dateLocale;
 		const interval = coerceNumber(this.options.interval);
 		const labelWrap = coerceBoolean(this.options.label_wrap) ?? false;
 
@@ -629,7 +641,8 @@ export class XAxisModel {
 										? typeof previousVisible === 'number'
 											? previousVisible
 											: previousPinnedTick(tickValues, value)
-										: undefined
+										: undefined,
+									dateLocale
 								)
 						: valueAxisLabelFormatter,
 				// Time axes normally let ECharts' hierarchical labeling own the

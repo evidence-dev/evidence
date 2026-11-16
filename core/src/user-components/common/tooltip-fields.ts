@@ -44,7 +44,7 @@ export const tooltipFieldSchema = z.object({
 	color_by_sign: z
 		.boolean({
 			description:
-				'Colour the value green when ≥ 0 and red when < 0. Uses the theme\'s positive/negative tokens so it stays consistent with `delta` and `benchmark_comparison`.'
+				"Colour the value green when ≥ 0 and red when < 0. Uses the theme's positive/negative tokens so it stays consistent with `delta` and `benchmark_comparison`."
 		})
 		.optional()
 		.default(false),
@@ -202,11 +202,21 @@ const NEGATIVE_COLOR_CLASS = 'text-(--theme-negative)';
  */
 export function renderTooltipFieldValue(
 	field: ProcessedTooltipField,
-	rawValue: unknown
+	rawValue: unknown,
+	language: string | null = null
 ): string {
 	if (rawValue === null || rawValue === undefined || rawValue === '') return '';
 
-	const formatted = formatValue(rawValue, field.fmt ?? 'num', String(rawValue));
+	const formatted = formatValue(
+		rawValue,
+		field.fmt ?? 'num',
+		String(rawValue),
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		language
+	);
 	const escaped = escapeHtml(formatted);
 
 	if (!field.color_by_sign) return escaped;
@@ -236,12 +246,13 @@ export function renderTooltipFieldValue(
  */
 export function renderTooltipExtras(
 	fields: ProcessedTooltipField[],
-	extras: Record<string, unknown> | undefined
+	extras: Record<string, unknown> | undefined,
+	language: string | null = null
 ): string[] {
 	if (!extras || fields.length === 0) return [];
 	const rows: string[] = [];
 	for (const field of fields) {
-		const rendered = renderTooltipFieldValue(field, extras[field.alias]);
+		const rendered = renderTooltipFieldValue(field, extras[field.alias], language);
 		if (!rendered) continue;
 		rows.push(`
 			<span>${escapeHtml(field.label)}</span>

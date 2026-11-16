@@ -299,7 +299,8 @@ function iterationScope(
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: deps.projectSettings,
-		dialect: () => deps.defaultConnection.dialect
+		dialect: () => deps.defaultConnection.dialect,
+		language: undefined
 	});
 	for (const it of chain) {
 		filters.create<'repeat', { value: unknown; column: string }, typeof RepeatFilter>(

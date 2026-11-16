@@ -14,6 +14,8 @@
 	import { browser } from '../../../shims/env';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	const props: UserComponentProps<typeof schema> = $props();
 
@@ -39,7 +41,7 @@
 	const info_link = $derived(resolveText(props.info_link));
 	const info_link_title = $derived(resolveText(props.info_link_title));
 	const icon = $derived(resolveText(props.icon));
-	const placeholder = $derived(resolveText(props.placeholder) ?? 'Enter text...');
+	const placeholder = $derived(resolveText(props.placeholder) ?? t('text_input.placeholder'));
 
 	let filter: Filter<string> | undefined = $derived(
 		id ? (pageFilters?.get(id) as Filter<string> | undefined) : undefined

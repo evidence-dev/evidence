@@ -45,7 +45,8 @@ function setup(handler: Handler = () => []) {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: undefined,
-		dialect: () => defaultDialect
+		dialect: () => defaultDialect,
+		language: undefined
 	});
 	const inlineQueries = new InlineQueries({ filterContexts: [pageFilters] });
 	const connection = fakeConnection(handler);

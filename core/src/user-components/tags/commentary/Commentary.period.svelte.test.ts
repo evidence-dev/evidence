@@ -95,7 +95,8 @@ function makeFilters(withPeriod = true) {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: { computedDefaultDateRangeEnd: '2026-08-14' } as never,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	});
 	if (withPeriod) {
 		filters.create(

@@ -39,6 +39,7 @@ export interface SandboxThemes {
 export interface SandboxFormatSettings {
 	decimalSeparator?: '.' | ',';
 	firstDayOfWeek?: 'sunday' | 'monday';
+	language?: string | null;
 }
 
 /**

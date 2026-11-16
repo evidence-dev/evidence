@@ -22,7 +22,7 @@
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { Query } from '../../../Query.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import type { DataPoint } from '../../types';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
@@ -45,6 +45,10 @@
 		renderTooltipExtras,
 		type TooltipField
 	} from '../../common/tooltip-fields';
+
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const formatValue = $derived(localeContext.formatValue);
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
@@ -363,19 +367,23 @@
 					const volData = volumeParam.data as [unknown, number];
 					const vol = volData[1];
 					const volFormatted = formatValue(vol, y2_fmt ?? 'num0', vol.toString(), volumeRange);
-					volumeRow = `<span>Volume</span><span class="text-right">${escapeHtml(volFormatted)}</span>`;
+					volumeRow = `<span>${escapeHtml(t('candlestick.volume'))}</span><span class="text-right">${escapeHtml(volFormatted)}</span>`;
 				}
 
-				const extraRows = renderTooltipExtras(processedTooltip.fields, extras).join('');
+				const extraRows = renderTooltipExtras(
+					processedTooltip.fields,
+					extras,
+					localeContext.language
+				).join('');
 
 				return `
 					<div class="flex flex-col">
 						<span class="font-semibold">${escapeHtml(xFormatted)}</span>
 						<div class="grid grid-cols-[auto_auto] gap-x-4">
-							<span>Open</span><span class="text-right">${escapeHtml(openFormatted)}</span>
-							<span>High</span><span class="text-right">${escapeHtml(highFormatted)}</span>
-							<span>Low</span><span class="text-right">${escapeHtml(lowFormatted)}</span>
-							<span>Close</span><span class="text-right">${escapeHtml(closeFormatted)}</span>
+							<span>${escapeHtml(t('candlestick.open'))}</span><span class="text-right">${escapeHtml(openFormatted)}</span>
+							<span>${escapeHtml(t('candlestick.high'))}</span><span class="text-right">${escapeHtml(highFormatted)}</span>
+							<span>${escapeHtml(t('candlestick.low'))}</span><span class="text-right">${escapeHtml(lowFormatted)}</span>
+							<span>${escapeHtml(t('candlestick.close'))}</span><span class="text-right">${escapeHtml(closeFormatted)}</span>
 							${volumeRow}
 							${extraRows}
 						</div>

@@ -18,7 +18,7 @@
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { Query } from '../../../Query.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import type { DataPoint } from '../../types';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
@@ -31,6 +31,9 @@
 	import { resolveMetric, applyMetricDimension } from '../../../metrics/resolve-metric';
 	import { getMetricsCatalogContext } from '../../../metrics/metrics-catalog';
 	import { escapeHtml } from '../../common/tooltip-fields';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());

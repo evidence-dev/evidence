@@ -35,6 +35,7 @@
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { getAutoRefreshContext } from '../../../auto-refresh.context.svelte';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
@@ -93,8 +94,12 @@
 	);
 	// Recursively interpolates {{ }} variables in any string value inside the
 	// config, then turns "fmt:<code>" formatter strings into real functions
+	const localeContext = getLocaleContext();
 	const resolvedConfig = $derived(
-		applyFormatCodes(parsedConfig.config ? resolveText(parsedConfig.config) : {})
+		applyFormatCodes(
+			parsedConfig.config ? resolveText(parsedConfig.config) : {},
+			localeContext.language
+		)
 	);
 	// JS-mode body: interpolate {{ }} over the raw source as injection-safe JS
 	// literals (a filter value can't break out into code).

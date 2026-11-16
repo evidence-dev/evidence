@@ -18,6 +18,7 @@ import { COUPLER_IO_TABLES_SQL } from '@evidence/core/metadata/coupler-io-catalo
 import { managedTableNamesSql } from '@evidence/core/metadata/managed-catalog';
 import { escapeRedshiftStringLiteral } from '@evidence/core/sql-dialect/common';
 import type { ConnectionConfig, QueryResult } from './types';
+import type { WarehouseMode } from '@evidence/core/connectors/warehouse-mode';
 
 export type { ConnectionConfig, QueryResult, QueryColumn } from './types';
 export { loadConnectionConfig };
@@ -171,6 +172,72 @@ export function listTablesSql(config: ConnectionConfig | null): string {
 		case 'coupler-io':
 			// Answered from the dataset catalog by the executor, not sent to /query.
 			return COUPLER_IO_TABLES_SQL;
+	}
+}
+
+/**
+ * Catalog SQL for a logged-in org's native warehouse (no connection.yaml). There's no
+ * default schema to unqualify against, so names are always `schema.table`, scoped to
+ * the org's schema allowlist when it has one.
+ */
+export function nativeListTablesSql(mode: WarehouseMode, schemaAllowlist: string[]): string {
+	const quote = (s: string) => `'${s.replaceAll("'", "''")}'`;
+	const inList = schemaAllowlist.map(quote).join(', ');
+	const schemaFilter = (column: string, excluded: string[]) =>
+		schemaAllowlist.length > 0
+			? `${column} IN (${inList})`
+			: `${column} NOT IN (${excluded.map(quote).join(', ')})`;
+	const infoSchema = (concat: string, excluded: string[]) =>
+		`SELECT ${concat} AS name FROM information_schema.tables WHERE ${
+			schemaAllowlist.length > 0
+				? `table_schema IN (${inList})`
+				: `table_schema NOT IN (${excluded.map(quote).join(', ')})`
+		} ORDER BY name`;
+	switch (mode) {
+		case 'managed':
+			return managedTableNamesSql();
+		case 'snowflake':
+			return 'SHOW TABLES';
+		case 'bigquery': {
+			if (schemaAllowlist.length === 0) {
+				throw new Error(
+					'Listing BigQuery tables needs a dataset allowlist. Add datasets in Studio → Settings → Warehouse, or query INFORMATION_SCHEMA directly.'
+				);
+			}
+			return `${schemaAllowlist
+				.map(
+					(d) =>
+						`SELECT CONCAT(table_schema, '.', table_name) AS name FROM \`${d.replaceAll('`', '')}\`.INFORMATION_SCHEMA.TABLES`
+				)
+				.join(' UNION ALL ')} ORDER BY name`;
+		}
+		case 'clickhouse':
+			return `SELECT concat(database, '.', name) AS name, total_rows AS rows FROM system.tables WHERE ${
+				schemaAllowlist.length > 0 ? `database IN (${inList})` : 'database = currentDatabase()'
+			} AND name NOT LIKE '.%' ORDER BY name`;
+		case 'fabric':
+		case 'sqlserver':
+			return tsqlListTablesSql(schemaAllowlist);
+		case 'databricks':
+			return infoSchema("CONCAT(table_schema, '.', table_name)", ['information_schema']);
+		case 'athena':
+			// Trino lowercases output column names; `name` is already lowercase.
+			return infoSchema("table_schema || '.' || table_name", ['information_schema']);
+		case 'postgres':
+			// pg_catalog so materialized views are listed (information_schema omits them).
+			return `SELECT n.nspname || '.' || c.relname AS name FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace WHERE c.relkind IN ('r', 'v', 'm', 'p', 'f') AND ${schemaFilter('n.nspname', ['information_schema', 'pg_catalog', 'pg_toast'])} ORDER BY name`;
+		case 'redshift':
+			// svv_tables so late-binding views and Spectrum tables are listed; hide matview backing tables.
+			return `SELECT table_schema || '.' || table_name AS name FROM svv_tables WHERE ${schemaFilter('table_schema', ['information_schema', 'pg_catalog'])} AND LEFT(table_name, 8) <> 'mv_tbl__' ORDER BY name`;
+		case 'cube':
+			return infoSchema("table_schema || '.' || table_name", ['information_schema', 'pg_catalog']);
+		case 'motherduck':
+			return infoSchema("table_schema || '.' || table_name", ['information_schema', 'pg_catalog']);
+		case 'coupler-io':
+			// CLI-only: the connector's credentials live in connection.yaml, never in the org.
+			throw new Error(
+				'Coupler.io datasets are queried through connection.yaml. Run `evidence init --warehouse coupler-io`.'
+			);
 	}
 }
 

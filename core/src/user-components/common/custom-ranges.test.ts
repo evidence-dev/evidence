@@ -1,6 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { expandCustomRanges, resolveCustomRangeDefault, type CustomRangeRule } from './custom-ranges';
+import {
+	expandCustomRanges,
+	resolveCustomRangeDefault,
+	type CustomRangeRule
+} from './custom-ranges';
 import { getDateRangeShorthand, processDateRange } from './date-options';
+import { getLabelLocale, type LabelLocale } from '../../locale/label-locale';
 
 const TODAY = new Date(2026, 5, 23); // 2026-06-23
 
@@ -127,7 +132,9 @@ describe('expandCustomRanges — {start:CODE} / {end:CODE} value-formatter date 
 	it('{start:qq} is the bare quarter code (Q#); {start:quarter} is the year-prefixed form', () => {
 		const q = { range: '2024-04-01 to 2024-06-30', grain: 'quarter' };
 		expect(expandCustomRanges([{ label: '{start:qq}', ...q }], TODAY)[0].label).toBe('Q2');
-		expect(expandCustomRanges([{ label: '{start:quarter}', ...q }], TODAY)[0].label).toBe('2024-Q2');
+		expect(expandCustomRanges([{ label: '{start:quarter}', ...q }], TODAY)[0].label).toBe(
+			'2024-Q2'
+		);
 	});
 });
 
@@ -826,5 +833,71 @@ describe('resolveCustomRangeDefault — a custom range as default_range', () => 
 		const processed = processDateRange(key, undefined, TODAY);
 		expect(processed.startDate).toBe('2025-02-01');
 		expect(processed.endDate).toBe('2026-01-31');
+	});
+});
+
+describe('expandCustomRanges — labels in the page language', () => {
+	const en = getLabelLocale('en');
+	const fr = getLabelLocale('fr');
+	const labels = (rule: CustomRangeRule, locale?: LabelLocale) =>
+		expandCustomRanges([rule], TODAY, 'sunday', locale).map((r) => r.label);
+
+	it.each<[CustomRangeRule, string[]]>([
+		[{ range: 'last 3 days', grain: 'day' }, ['23 juin 2026', '22 juin 2026', '21 juin 2026']],
+		[
+			{ range: 'last 2 weeks', grain: 'week' },
+			['Semaine du 17 juin 2026', 'Semaine du 10 juin 2026']
+		],
+		[
+			{ range: 'last 3 months', grain: 'month' },
+			['juin 2026', 'mai 2026', 'avr. 2026', 'mars 2026']
+		],
+		[{ range: 'from 2026-01-01', grain: 'quarter' }, ['T2 2026', 'T1 2026']],
+		[{ range: 'last 30 days' }, ['30 derniers jours']],
+		[{ range: 'year to date' }, ['Cumul annuel']],
+		[{ range: '2020-01-01 to 2026-04-05' }, ['1 janv. 2020 – 5 avr. 2026']],
+		[{ range: 'from 2020-04-06' }, ['À partir du 6 avr. 2020']],
+		[{ label: '{start:mmm yyyy}', range: '2024-04-01 to 2024-12-31' }, ['avr. 2024']]
+	])('labels %j in French', (rule, french) => {
+		expect(labels(rule, fr)).toEqual(french);
+	});
+
+	it('produces the same keys in every language', () => {
+		const rule: CustomRangeRule = { range: 'last 3 months', grain: 'month' };
+		expect(expandCustomRanges([rule], TODAY, 'sunday', fr).map((r) => r.key)).toEqual(
+			expandCustomRanges([rule], TODAY).map((r) => r.key)
+		);
+	});
+
+	it('renders English byte-identically to the default', () => {
+		const rules: CustomRangeRule[] = [
+			{ range: 'last 3 days', grain: 'day' },
+			{ range: 'last 2 weeks', grain: 'week' },
+			{ range: 'last 3 months', grain: 'month' },
+			{ range: 'from 2026-01-01', grain: 'quarter' },
+			{ label: 'FY{end:yyyy}', range: 'from 2024-02-01', grain: 'year' },
+			{ range: 'last 30 days' },
+			{ range: '2020-01-01 to 2026-04-05' },
+			{ range: 'from 2020-04-06' }
+		];
+		expect(expandCustomRanges(rules, TODAY, 'sunday', en)).toEqual(
+			expandCustomRanges(rules, TODAY)
+		);
+		expect(rules.slice(0, 2).flatMap((rule) => labels(rule, en)[0])).toEqual([
+			'Jun 23, 2026',
+			'Week of Jun 17, 2026'
+		]);
+	});
+
+	it('keeps default_range matching the English label while the picker shows French', () => {
+		const rules: CustomRangeRule[] = [{ range: 'last 2 weeks', grain: 'week' }];
+		const key = resolveCustomRangeDefault('Week of Jun 17, 2026', rules, TODAY);
+		expect(key).toBe('2026-06-17 to 2026-06-23');
+		expect(expandCustomRanges(rules, TODAY, 'sunday', fr).find((r) => r.key === key)?.label).toBe(
+			'Semaine du 17 juin 2026'
+		);
+		expect(resolveCustomRangeDefault('Semaine du 17 juin 2026', rules, TODAY)).toBe(
+			'Semaine du 17 juin 2026'
+		);
 	});
 });

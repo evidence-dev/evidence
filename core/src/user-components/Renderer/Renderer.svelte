@@ -2,7 +2,7 @@
 	import Recursive from './Recursive.svelte';
 	import type { RenderableTreeNode, ValidateError } from '@markdoc/markdoc';
 	import { setRendererContext } from './renderer-context';
-	import { registerRendererOutline } from './tree-registry';
+	import { registerRendererOutline, registerRendererPageFilters } from './tree-registry';
 	import { page } from '$app/state';
 	import { resolveOutline } from '../../print-outline/resolve-outline';
 	import { getPageFiltersContext } from '../../page-filters-context';
@@ -25,7 +25,9 @@
 	const projectSettings = getProjectSettingsContext();
 
 	$effect(() => {
-		if (!rootEl || !connections) return;
+		if (!rootEl) return;
+		registerRendererPageFilters(rootEl, pageFilters);
+		if (!connections) return;
 		const currentTree = tree;
 		registerRendererOutline(rootEl, (mode) =>
 			resolveOutline(

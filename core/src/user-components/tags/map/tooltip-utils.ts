@@ -14,6 +14,8 @@ export interface TooltipContent {
 	title?: string;
 	subtitle?: string;
 	valueFields: TooltipField[];
+	/** Page language for month/weekday names in date `format` codes. */
+	language?: string | null;
 }
 
 /**
@@ -60,7 +62,16 @@ export function buildTooltipHTML(content: TooltipContent): string {
 			continue;
 		}
 
-		const formattedValue = formatValue(field.value, field.format ?? 'num', String(field.value));
+		const formattedValue = formatValue(
+			field.value,
+			field.format ?? 'num',
+			String(field.value),
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			content.language
+		);
 		const label = field.label;
 
 		html += `

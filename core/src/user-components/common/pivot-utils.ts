@@ -12,11 +12,10 @@ type EvidenceDataPoint = DataPoint & {
 	__ev_subtotal_level?: number;
 };
 
-export interface PivotRow
-	extends Record<
-		string,
-		string | number | boolean | null | undefined | Date | number[] | boolean[]
-	> {
+export interface PivotRow extends Record<
+	string,
+	string | number | boolean | null | undefined | Date | number[] | boolean[]
+> {
 	render_type: 'cell_data' | 'row_total' | 'row_subtotal';
 	subtotal_level: number | null;
 	__dimKey?: string; // Make dimKey optional since it's only needed for pivot tables
@@ -115,6 +114,8 @@ export interface PivotConfig {
 	passThroughMeasures?: string[];
 	collapsible?: boolean; // When true, keep subtotal rows even if all measure cells are hidden
 	firstDayOfWeek?: 'sunday' | 'monday';
+	/** Page language for month/weekday names in pivot column header `fmt` codes. */
+	language?: string | null;
 }
 
 export interface PivotResult {
@@ -284,8 +285,7 @@ export function generateSimpleTable(
 	}));
 
 	// Check if the data has a row color column to preserve
-	const hasRowColorColumn =
-		filteredData.length > 0 && ROW_COLOR_COLUMN in filteredData[0];
+	const hasRowColorColumn = filteredData.length > 0 && ROW_COLOR_COLUMN in filteredData[0];
 
 	// Filter out subtotal/total rows and clean row data
 	const rows = filteredData
@@ -649,6 +649,7 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 		showTotalColumn: config.showTotalColumn,
 		showSubtotalColumns: config.showSubtotalColumns,
 		totalLabel: config.totalLabel,
+		language: config.language,
 		// Include ALL column metadata to be future-proof
 		// Exclude only internal properties (processedColumnExpression, sparklineVizConfig)
 		unifiedColumnsMetadata: config.unifiedColumns.map((col) => {
@@ -1492,7 +1493,9 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 								String(part),
 								undefined,
 								pivotColumnType,
-								config.firstDayOfWeek
+								config.firstDayOfWeek,
+								undefined,
+								config.language
 							);
 							label = formattedValue !== null ? formattedValue : String(part);
 						} else {
@@ -1529,7 +1532,9 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 								String(part),
 								undefined,
 								pivotColumnType,
-								config.firstDayOfWeek
+								config.firstDayOfWeek,
+								undefined,
+								config.language
 							);
 							label = formattedValue !== null ? formattedValue : String(part);
 						} else {
@@ -1571,14 +1576,16 @@ export function generatePivotData(data: DataPoint[], config: PivotConfig): Pivot
 							String(part),
 							undefined,
 							pivotColumnType,
-							config.firstDayOfWeek
+							config.firstDayOfWeek,
+							undefined,
+							config.language
 						);
 						label = formattedValue !== null ? formattedValue : String(part);
 					} else {
 						label = String(part);
 					}
 				} else {
-					label = part === null ? config.totalLabel ?? 'Total' : String(part ?? '');
+					label = part === null ? (config.totalLabel ?? 'Total') : String(part ?? '');
 				}
 			}
 

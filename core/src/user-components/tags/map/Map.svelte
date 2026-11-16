@@ -18,12 +18,16 @@
 	import { AreaLayerModel } from './area_layer/AreaLayerModel.svelte';
 	import { PointLayerModel } from './point_layer/PointLayerModel.svelte';
 	import { HeatmapLayerModel } from './heatmap_layer/HeatmapLayerModel.svelte';
-	import { transitionMapLayer, type MapLayerState } from './layer-state';
+	import { schema as areaLayerSchema } from './area_layer/schema';
+	import { schema as pointLayerSchema } from './point_layer/schema';
+	import { schema as heatmapLayerSchema } from './heatmap_layer/schema';
+	import { renderPropsKey, transitionMapLayer, type MapLayerState } from './layer-state';
 	import { getThemeContext } from '../../../theme/theme.context.svelte';
 	import { getPageSettingsContext } from '../../../page-settings.context';
 	import { getDefaultConnection } from '../../../QueryService.context';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { getAutoRefreshContext } from '../../../auto-refresh.context.svelte';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import MapLegend from './MapLegend.svelte';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
@@ -127,6 +131,9 @@
 
 	const connection = getDefaultConnection();
 	const autoRefreshCtx = getAutoRefreshContext();
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const getLanguage = () => localeContext.language;
 
 	// Set up map context
 	setMapContext({
@@ -142,7 +149,8 @@
 					defaultRefreshInterval: () => autoRefreshCtx?.intervalSeconds ?? 0
 				},
 				() => pointLayers.map((l) => l.layerId),
-				definitionIndex
+				definitionIndex,
+				getLanguage
 			);
 			areaLayers.push(areaLayer);
 
@@ -171,7 +179,8 @@
 					projectSettings: getProjectSettingsContext(),
 					defaultRefreshInterval: () => autoRefreshCtx?.intervalSeconds ?? 0
 				},
-				definitionIndex
+				definitionIndex,
+				getLanguage
 			);
 			pointLayers.push(pointLayer);
 
@@ -269,8 +278,15 @@
 			if (layer.loading) continue;
 			const data = layer.data;
 			const state = layerState.get(layer.layerId);
-			// Label text is baked in at add time, so label settings changes need a redraw.
-			const transition = transitionMapLayer(state, data, layer.labelsKey);
+			// Data labels are formatted when the layer is drawn, so the language is part of the key.
+			const transition = transitionMapLayer(
+				state,
+				data,
+				JSON.stringify([
+					renderPropsKey(areaLayerSchema.attributes, layer.props),
+					localeContext.language
+				])
+			);
 			layerState.set(layer.layerId, transition.state);
 
 			if (transition.action === 'remove') {
@@ -289,7 +305,11 @@
 			const data = layer.data;
 			const state = layerState.get(layer.layerId);
 			// The source's cluster flag can't be changed in place.
-			const transition = transitionMapLayer(state, data, layer.clusteringEnabled);
+			const transition = transitionMapLayer(
+				state,
+				data,
+				renderPropsKey(pointLayerSchema.attributes, layer.props, ['cluster'])
+			);
 			layerState.set(layer.layerId, transition.state);
 
 			if (transition.action === 'remove') {
@@ -307,7 +327,11 @@
 			if (layer.loading) continue;
 			const data = layer.data;
 			const state = layerState.get(layer.layerId);
-			const transition = transitionMapLayer(state, data);
+			const transition = transitionMapLayer(
+				state,
+				data,
+				renderPropsKey(heatmapLayerSchema.attributes, layer.props)
+			);
 			layerState.set(layer.layerId, transition.state);
 
 			if (transition.action === 'remove') {
@@ -468,6 +492,7 @@
 					base_style,
 					projection,
 					backgroundColor,
+					language: localeContext.resolvedLanguage,
 					onCreate: (m) => {
 						_map = m;
 
@@ -510,7 +535,7 @@
 						class="bg-background/85 border-border flex items-center gap-2 rounded-md border px-3 py-2 text-xs shadow-sm"
 					>
 						<LoaderCircle class="h-4 w-4 animate-spin [animation-duration:1s]" />
-						<span>Loading map data...</span>
+						<span>{t('map.loading')}</span>
 					</div>
 				</div>
 			{/if}

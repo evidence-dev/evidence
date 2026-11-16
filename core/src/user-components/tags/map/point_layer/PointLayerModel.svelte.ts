@@ -70,13 +70,16 @@ export class PointLayerModel {
 	public definitionIndex: number;
 
 	private dialect: SqlDialect;
+	private getLanguage: () => string | null;
 
 	constructor(
 		propsGetter: () => PointLayerProps,
 		options: ConstructorParameters<typeof Query>[1],
-		definitionIndex: number = 0
+		definitionIndex: number = 0,
+		getLanguage: () => string | null = () => null
 	) {
 		this.propsGetter = propsGetter;
+		this.getLanguage = getLanguage;
 		this.layerId = `point-layer-${Math.random().toString(36).substr(2, 9)}`;
 		this.sourceId = `point-source-${Math.random().toString(36).substr(2, 9)}`;
 		this.clusterLayerId = `${this.layerId}-clusters`;
@@ -1072,7 +1075,8 @@ export class PointLayerModel {
 			const content = buildTooltipHTML({
 				title: hasTitle ? properties.__title : undefined,
 				subtitle: hasSubtitle ? properties.__subtitle : undefined,
-				valueFields
+				valueFields,
+				language: this.getLanguage()
 			});
 
 			// If nothing to show, skip tooltip

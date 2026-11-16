@@ -26,6 +26,7 @@ import {
 	subYears,
 	differenceInCalendarDays
 } from 'date-fns';
+import { hasMessage, type Translate } from '../../locale/messages';
 
 /**
  * Centralized registry of all supported date grain definitions.
@@ -157,10 +158,7 @@ export const DATE_GRAINS = DATE_GRAIN_DEFINITIONS.map((d) => d.key) as readonly 
 const GRAIN_COARSENESS = new Map<string, number>(
 	DATE_GRAIN_DEFINITIONS.filter((d) => d.isTemporal).map((d) => [d.key, d.approxDays])
 );
-export function coarserGrain(
-	a: string | undefined,
-	b: string | undefined
-): string | undefined {
+export function coarserGrain(a: string | undefined, b: string | undefined): string | undefined {
 	if (!a) return b;
 	if (!b) return a;
 	const rankA = GRAIN_COARSENESS.get(a) ?? -1;
@@ -483,6 +481,12 @@ export const PRESET_DEFINITIONS = [
 	},
 	{ key: 'all time', label: 'All Time', shorthand: 'all', type: 'allTime' }
 ] as const;
+
+// Author-defined custom presets have no message key and keep their own label.
+export function presetLabel(t: Translate, preset: { key: string; label: string }): string {
+	const messageKey = `date_preset.${preset.key.replaceAll(' ', '_')}`;
+	return hasMessage(messageKey) ? t(messageKey) : preset.label;
+}
 
 /** Array of all supported date range keys extracted from preset definitions */
 export const DATE_RANGES = PRESET_DEFINITIONS.map((d) => d.key) as readonly string[];

@@ -38,7 +38,7 @@ function renderStacked(series: SeriesOption[], xAxisType: 'time' | 'category'): 
 	return out;
 }
 
-// The reported chart (see integration-suite/fixtures/stacked-area-missing-dates.md).
+// The reported chart (see integration-suite/studio/fixtures/stacked-area-missing-dates.md).
 const rows: [string, string, number][] = [
 	['2026-09-14', 'Clean', 26],
 	['2026-09-14', 'Violation', 26],

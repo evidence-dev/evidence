@@ -38,6 +38,19 @@ function rowsEqual(previous: readonly unknown[], current: readonly unknown[]): b
 	});
 }
 
+// Styling props are only read when a layer is drawn, so the map redraws whenever one changes.
+export function renderPropsKey(
+	attributes: Record<string, { affectsQuery?: boolean }>,
+	props: object,
+	extraNames: string[] = []
+): string {
+	const values = props as Record<string, unknown>;
+	const names = Object.keys(attributes).filter(
+		(name) => attributes[name].affectsQuery === false || extraNames.includes(name)
+	);
+	return JSON.stringify(names.map((name) => values[name] ?? null));
+}
+
 export function transitionMapLayer(
 	state: MapLayerState | undefined,
 	data: readonly unknown[],

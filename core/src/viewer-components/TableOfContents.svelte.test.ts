@@ -48,7 +48,8 @@ function renderPage(tree: RenderableTreeNode, mountedHeadings: [string, RepeatIt
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: undefined,
-		dialect: () => defaultDialect
+		dialect: () => defaultDialect,
+		language: undefined
 	});
 	const deps = {
 		pageFilters,

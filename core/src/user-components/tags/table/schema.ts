@@ -139,9 +139,8 @@ const attributes = {
 	total_label: {
 		type: String,
 		required: false,
-		default: 'Total',
 		description:
-			'The label to display in total/subtotal rows and columns. Useful when using non-sum aggregations like avg, min, max, or count.',
+			'The label to display in total/subtotal rows and columns (defaults to "Total" in the page language). Useful when using non-sum aggregations like avg, min, max, or count.',
 		affectsQuery: false,
 		supportsVariables: true,
 		variableContext: 'text'

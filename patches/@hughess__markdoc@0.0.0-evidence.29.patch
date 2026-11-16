@@ -1,0 +1,28 @@
+diff --git a/dist/index.js b/dist/index.js
+index c585b8f236aa5a8bc01fa3ba2adb566b07dd81da..2f6d3c957a42094c4ba12614040a67f3463b8e46 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -7018,6 +7018,9 @@ function interpolateString(value, variables) {
+   return { result, undefinedVariables };
+ }
+ function interpolateValue(value, variables) {
++  if (value instanceof String) {
++    value = value.toString();
++  }
+   if (typeof value === "string") {
+     return interpolateString(value, variables).result;
+   }
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 62c4c9b8881935a210d443216c2c5c4faf5b4ee5..415b20a1e8b1d884bd5f2cd0a5c42272794a8caf 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -6993,6 +6993,9 @@ function interpolateString(value, variables) {
+   return { result, undefinedVariables };
+ }
+ function interpolateValue(value, variables) {
++  if (value instanceof String) {
++    value = value.toString();
++  }
+   if (typeof value === "string") {
+     return interpolateString(value, variables).result;
+   }

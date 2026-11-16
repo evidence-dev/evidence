@@ -112,7 +112,8 @@ async function mountInput(name: string, props: Record<string, unknown>) {
 		url: () => url,
 		updateUrl,
 		projectSettings: undefined,
-		dialect: () => defaultDialect
+		dialect: () => defaultDialect,
+		language: undefined
 	};
 	const filters = new Filters(deps);
 	pageFilters.current = filters;

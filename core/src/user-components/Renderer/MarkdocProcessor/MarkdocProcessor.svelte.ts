@@ -626,13 +626,15 @@ export class MarkdocProcessor {
 	}
 
 	updateValidationContext(toUpdate: Partial<ValidationContext>): void {
-		// Filters are registered as a side effect of `parse`, so a store swapped in here starts
-		// empty — without a reparse the file's own filters validate as missing.
-		const filtersChanged =
-			'filters' in toUpdate && toUpdate.filters !== this.#validationContext?.filters;
+		// Filters and inline queries are registered as a side effect of parsing, so a store swapped
+		// in here starts empty — without a reparse the file's own filters and queries are missing.
+		const storeChanged =
+			('filters' in toUpdate && toUpdate.filters !== this.#validationContext?.filters) ||
+			('inlineQueries' in toUpdate &&
+				toUpdate.inlineQueries !== this.#validationContext?.inlineQueries);
 		untrack(() => {
 			assign(this.#validationContext, toUpdate);
 		});
-		if (filtersChanged) this.#updateAst();
+		if (storeChanged) this.#updateAst();
 	}
 }

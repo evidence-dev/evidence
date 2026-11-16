@@ -61,7 +61,12 @@ export class ReferenceLineStaticModel {
 		const value = formatValue(
 			rawValue,
 			this.props.label_options.fmt ?? this.axis?.options.fmt,
-			rawValue?.toString()
+			rawValue?.toString(),
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			this.getLanguage()
 		);
 
 		if (!value || hideValue) {
@@ -120,7 +125,8 @@ export class ReferenceLineStaticModel {
 	constructor(
 		readonly propsGetter: () => ReferenceLineStaticProps,
 		readonly xAxis: XAxisModel,
-		readonly yAxis: YAxisModel
+		readonly yAxis: YAxisModel,
+		readonly getLanguage: () => string | null = () => null
 	) {
 		this.props = $derived(this.propsGetter());
 	}

@@ -1,9 +1,15 @@
 <script lang="ts">
 	import * as Command from '../../../shadcn/components/ui/command';
 	import type { FilterState, ColumnFilter } from './types';
-import { DEFAULT_VISIBLE_PRESET_DEFINITIONS, processDateRange } from '../../common/date-options';
+	import {
+		DEFAULT_VISIBLE_PRESET_DEFINITIONS,
+		presetLabel,
+		processDateRange
+	} from '../../common/date-options';
 	import { getProjectSettingsContext } from '../../../project-settings.context';
 	import { parseDateStringAsLocalMidnight } from '../../../utils/date-utils';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	let { columnName, columnLabel, onClose, filterState } = $props<{
 		columnName: string;
@@ -25,13 +31,13 @@ import { DEFAULT_VISIBLE_PRESET_DEFINITIONS, processDateRange } from '../../comm
 	);
 
 	// Use the same default-visible presets as range calendar, excluding 'all time'
-	const timePeriods = DEFAULT_VISIBLE_PRESET_DEFINITIONS.filter(
-		(preset) => preset.key !== 'all time'
-	).map(
-		(preset) => ({
-			label: preset.label,
-			key: preset.key
-		})
+	const timePeriods = $derived(
+		DEFAULT_VISIBLE_PRESET_DEFINITIONS.filter((preset) => preset.key !== 'all time').map(
+			(preset) => ({
+				label: presetLabel(t, preset),
+				key: preset.key
+			})
+		)
 	);
 
 	// State for custom date range

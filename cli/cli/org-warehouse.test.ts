@@ -5,6 +5,7 @@ import {
 	parseNativeQueryResponse,
 	parseOrgWarehouse,
 	resolveOrgWarehouse,
+	unsupportedWarehouseMode,
 	warehouseTypeForMode
 } from './org-warehouse.ts';
 
@@ -25,6 +26,15 @@ describe('parseOrgWarehouse', () => {
 			schemaAllowlist: []
 		});
 		expect(parseOrgWarehouse(null).mode).toBe('managed');
+	});
+});
+
+describe('unsupportedWarehouseMode', () => {
+	it('names a mode newer than this CLI, and nothing for known or missing modes', () => {
+		expect(unsupportedWarehouseMode({ warehouseMode: 'oracle' })).toBe('oracle');
+		expect(unsupportedWarehouseMode({ warehouseMode: 'athena' })).toBeNull();
+		expect(unsupportedWarehouseMode({ warehouseMode: 'managed' })).toBeNull();
+		expect(unsupportedWarehouseMode(null)).toBeNull();
 	});
 });
 
@@ -99,6 +109,19 @@ describe('resolveOrgWarehouse caching', () => {
 		vi.advanceTimersByTime(61_000);
 		await resolveOrgWarehouse('https://studio', 'org_1', 'wos-session=x');
 		expect(fetchMock).toHaveBeenCalledTimes(2);
+	});
+
+	it('warns to upgrade when Studio reports a warehouse this CLI does not know', async () => {
+		const stderr = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
+		vi.stubGlobal(
+			'fetch',
+			vi.fn().mockResolvedValue(new Response(JSON.stringify({ warehouseMode: 'oracle' })))
+		);
+
+		expect((await resolveOrgWarehouse('https://studio', 'org_1', 'wos-session=x')).mode).toBe(
+			'managed'
+		);
+		expect(stderr).toHaveBeenCalledWith(expect.stringContaining('evidence upgrade'));
 	});
 
 	it('keeps a successful lookup longer than a failed one', async () => {

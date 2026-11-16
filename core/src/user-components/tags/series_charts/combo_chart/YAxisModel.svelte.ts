@@ -8,6 +8,8 @@ import { coerceBoolean, coerceNumber } from '../../../common/process-variables';
 
 export type YAxisOptions = z.infer<typeof yAxisOptionsSchema> & {
 	fmt?: string;
+	/** Page language for month/weekday names in `fmt`; English when omitted. */
+	language?: string | null;
 };
 
 export class YAxisModel {
@@ -97,6 +99,9 @@ export class YAxisModel {
 		// For percentage-stacked axes, always use percentage format for axis labels
 		// (user's y_fmt only affects the original value in tooltips, not the axis)
 		const axisFormat = allPercentageStacked ? '0%' : this.options.fmt;
+		// Captured here, not read inside the axisLabel formatter: ECharts can
+		// invoke it after the component is destroyed (derived_inert).
+		const language = this.options.language;
 
 		// Title position: 'top' (default) or 'side'
 		// Default to 'side' for percentage-stacked charts to avoid overlap at 100%
@@ -155,7 +160,16 @@ export class YAxisModel {
 				show: coerceBoolean(this.options.labels) ?? true,
 				margin: 4,
 				formatter: (value: unknown) => {
-					return formatValue(value, axisFormat, value?.toString(), { min, max });
+					return formatValue(
+						value,
+						axisFormat,
+						value?.toString(),
+						{ min, max },
+						undefined,
+						undefined,
+						undefined,
+						language
+					);
 				}
 			},
 			// Only set when the chart explicitly configures gridlines; otherwise

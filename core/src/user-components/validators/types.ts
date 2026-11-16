@@ -64,8 +64,9 @@ export function getTableFromContext(tableName: string, context: ValidationContex
 		const table = context.metadata.getTable(tableName);
 		if (table) return table;
 
-		if (!tableName.includes('.')) {
-			// Match case-insensitively to mirror Snowflake's identifier folding.
+		// Match case-insensitively to mirror Snowflake's identifier folding; QEv3's
+		// 3-part keys (`DB.SCHEMA.TABLE`) also let 2-part references suffix-match.
+		if (!tableName.includes('.') || context.metadata.isQueryEngineV3) {
 			const suffix = `.${tableName.toLowerCase()}`;
 			for (const candidate of context.metadata.tables) {
 				if (candidate.name.toLowerCase().endsWith(suffix)) return candidate;
@@ -74,6 +75,18 @@ export function getTableFromContext(tableName: string, context: ValidationContex
 	}
 
 	return getInlineQueryTable(tableName, context);
+}
+
+// A catalog miss is only conclusive for a schema it scanned (current-schema tables are keyed bare).
+export function inUnscannedSchema(
+	tableName: string,
+	catalog: { tables: { name: string }[] } | undefined
+): boolean {
+	// Paths (`queries/foo.sql`) are SQL-file references, not schema-qualified tables.
+	const dot = tableName.lastIndexOf('.');
+	if (dot === -1 || tableName.includes('/')) return false;
+	const schemaPrefix = `${tableName.slice(0, dot).toLowerCase()}.`;
+	return !catalog?.tables.some((t) => t.name.toLowerCase().startsWith(schemaPrefix));
 }
 
 function resolvesToQuery(name: string, context: ValidationContext): boolean {

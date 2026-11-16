@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { compareSidebarPosition, buildNavTreeFromFlat, type FlatNavItem } from './nav-tree';
+import {
+	compareSidebarPosition,
+	buildNavTreeFromFlat,
+	navTreeToPageEntries,
+	pageEntriesFromProjects,
+	type FlatNavItem
+} from './nav-tree';
 
 describe('compareSidebarPosition', () => {
 	it('orders by position ascending when both are set', () => {
@@ -71,5 +77,42 @@ describe('buildNavTreeFromFlat', () => {
 		expect(tree.directories).toHaveLength(1);
 		expect(tree.directories[0].name).toBe('Sales');
 		expect(tree.directories[0].pages.map((p) => p.href)).toEqual(['/sales/second', '/sales/first']);
+	});
+});
+
+describe('pageEntriesFromProjects', () => {
+	it('emits markdown-link paths for root and directory pages, skipping slugless pages', () => {
+		const entries = pageEntriesFromProjects([
+			{
+				name: 'Sales',
+				slug: 'sales',
+				rootPages: [
+					{ name: 'Overview', slug: 'overview' },
+					{ name: 'Draft', slug: null }
+				],
+				secondLevelDirectories: [{ id: 7, name: 'Regions', slug: 'regions' }],
+				secondLevelPages: [{ name: 'EMEA', slug: 'emea', directoryId: 7 }]
+			}
+		]);
+
+		const project = { name: 'Sales', slug: 'sales' };
+		expect(entries).toEqual([
+			{ title: 'Overview', path: '/sales/overview', project, directory: null },
+			{ title: 'EMEA', path: '/sales/regions/emea', project, directory: 'Regions' }
+		]);
+	});
+});
+
+describe('navTreeToPageEntries', () => {
+	it('flattens the CLI tree with plain slug paths and no project', () => {
+		const tree = buildNavTreeFromFlat([
+			{ name: 'index', slug: 'index', isHome: true },
+			{ name: 'emea', slug: 'regions/emea', isHome: false }
+		]);
+
+		expect(navTreeToPageEntries(tree, null)).toEqual([
+			{ title: 'Home', path: '/', project: null, directory: null },
+			{ title: 'Emea', path: '/regions/emea', project: null, directory: 'Regions' }
+		]);
 	});
 });

@@ -1,5 +1,4 @@
 import type { UserComponentSchema } from '../../types';
-import { and } from '../../validators';
 import { isTreePath } from '../../validators/isTreePath';
 import { isUrl } from '../../validators/isUrl';
 import { or } from '../../validators/or';
@@ -48,7 +47,11 @@ export const schema = {
 	},
 	// `#fragment` is standard markdown for a same-page anchor — allowed even
 	// though headings don't emit ids yet, so it can't be a hard error.
-	validate: or(and(startsWith('href', '/'), isTreePath('href')), isUrl('href'), startsWith('href', '#')),
+	// A `/` href is an internal page link, so report only why that path doesn't resolve.
+	validate: (node, config, context) =>
+		typeof node.attributes.href === 'string' && node.attributes.href.startsWith('/')
+			? isTreePath('href')(node, config, context)
+			: or(isUrl('href'), startsWith('href', '#'))(node, config, context),
 	componentWrapper: {
 		display: 'inline'
 	}

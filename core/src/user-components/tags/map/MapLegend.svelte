@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { AreaLayerModel } from './area_layer/AreaLayerModel.svelte';
 	import type { PointLayerModel } from './point_layer/PointLayerModel.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import formatTitle from '../../formatTitle';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	let {
 		layers,
@@ -221,8 +224,8 @@
 								layerMax ?? Math.max(...data.map((d) => Number(d[valueColumn]) || 0))}
 							{@const valueFmt =
 								'color_value_fmt' in props
-									? props.color_value_fmt ?? 'num'
-									: props.value_fmt ?? 'num'}
+									? (props.color_value_fmt ?? 'num')
+									: (props.value_fmt ?? 'num')}
 							{@const midPercent =
 								layerMid !== null && layerMid !== undefined && maxValue > minValue
 									? Math.min(
@@ -272,9 +275,9 @@
 							'legend_label' in props && props.legend_label
 								? undefined
 								: formatTitle(layer.sizeValueColumn ?? 'size')}
-						{@const sizeFmt = 'size_value_fmt' in props ? props.size_value_fmt ?? 'num' : 'num'}
-						{@const baseSize = 'size' in props ? props.size ?? 6 : 6}
-						{@const sizeScale = 'size_scale' in props ? props.size_scale ?? 1 : 1}
+						{@const sizeFmt = 'size_value_fmt' in props ? (props.size_value_fmt ?? 'num') : 'num'}
+						{@const baseSize = 'size' in props ? (props.size ?? 6) : 6}
+						{@const sizeScale = 'size_scale' in props ? (props.size_scale ?? 1) : 1}
 						{@const minVal = layer.minSizeValue ?? 0}
 						{@const maxVal = layer.maxSizeValue ?? 0}
 						{@const minSize = baseSize}

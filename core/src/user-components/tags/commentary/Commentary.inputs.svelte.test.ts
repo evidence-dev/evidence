@@ -90,7 +90,8 @@ function makeFilters(body = '{% dropdown id="fund" data="funds" value_column="fu
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: { computedDefaultDateRangeEnd: '2026-08-14' } as never,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	});
 	registerFiltersFromAST(
 		Markdoc.parse(`---\nworkflow:\n  period:\n    grain: month\n---\n\n${body}\n`),

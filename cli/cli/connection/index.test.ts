@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { listTablesSql, qualifyTableName } from './index';
+import { listTablesSql, nativeListTablesSql, qualifyTableName } from './index';
 import { schemaAllowlist } from '@evidence/core/connectors/schema-allowlist';
 import { COUPLER_IO_TABLES_SQL } from '@evidence/core/metadata/coupler-io-catalog';
 import type {
@@ -290,5 +290,39 @@ describe('coupler-io tables', () => {
 
 	it('has no schema allowlist (and its config type-checks against the shared helper)', () => {
 		expect(schemaAllowlist(coupler.type, coupler)).toEqual([]);
+	});
+});
+
+describe('nativeListTablesSql (logged-in org, no connection.yaml)', () => {
+	it('lists Athena tables schema-qualified, scoped to the allowlist when set', () => {
+		expect(nativeListTablesSql('athena', [])).toBe(
+			"SELECT table_schema || '.' || table_name AS name FROM information_schema.tables WHERE table_schema NOT IN ('information_schema') ORDER BY name"
+		);
+		expect(nativeListTablesSql('athena', ['sales', "o'brien"])).toContain(
+			"WHERE table_schema IN ('sales', 'o''brien')"
+		);
+	});
+
+	it('keeps the managed catalog only for managed orgs', () => {
+		expect(nativeListTablesSql('managed', [])).toContain('system.tables');
+		expect(nativeListTablesSql('postgres', [])).not.toContain('system.tables');
+	});
+
+	it('lists Postgres materialized views and Redshift late-binding/Spectrum tables', () => {
+		expect(nativeListTablesSql('postgres', [])).toContain("relkind IN ('r', 'v', 'm', 'p', 'f')");
+		expect(nativeListTablesSql('redshift', ['sales'])).toContain(
+			"FROM svv_tables WHERE table_schema IN ('sales')"
+		);
+	});
+
+	it('points Coupler.io to connection.yaml (the connector is CLI-only)', () => {
+		expect(() => nativeListTablesSql('coupler-io', [])).toThrow(/connection\.yaml/);
+	});
+
+	it('asks for a dataset allowlist on BigQuery instead of guessing a dataset', () => {
+		expect(() => nativeListTablesSql('bigquery', [])).toThrow(/dataset allowlist/);
+		expect(nativeListTablesSql('bigquery', ['a', 'b'])).toContain(
+			'`a`.INFORMATION_SCHEMA.TABLES UNION ALL'
+		);
 	});
 });

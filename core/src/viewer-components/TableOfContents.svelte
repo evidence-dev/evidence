@@ -3,6 +3,8 @@
 	import { cn } from '../shadcn/utils';
 	import { getRendererOutline } from '../user-components/Renderer/tree-registry';
 	import type { OutlineSection } from '../print-outline/resolve-outline';
+	import { getLocaleContext } from '../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	interface Props {
 		backgroundColor?: string;
@@ -189,7 +191,7 @@
 				<path d="M17 6H3"></path>
 				<path d="M21 12H3"></path>
 			</svg>
-			On this page
+			{t('toc.on_this_page')}
 		</p>
 		<div class="text-muted-foreground flex flex-col text-xs font-normal">
 			{#each headings as heading (heading.id)}

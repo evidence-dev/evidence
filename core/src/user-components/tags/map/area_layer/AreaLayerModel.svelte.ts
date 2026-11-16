@@ -36,14 +36,17 @@ export class AreaLayerModel {
 	public definitionIndex: number;
 
 	private dialect: SqlDialect;
+	private getLanguage: () => string | null;
 
 	constructor(
 		propsGetter: () => AreaLayerProps,
 		options: ConstructorParameters<typeof Query>[1],
 		getPointLayerIds?: () => string[],
-		definitionIndex: number = 0
+		definitionIndex: number = 0,
+		getLanguage: () => string | null = () => null
 	) {
 		this.propsGetter = propsGetter;
+		this.getLanguage = getLanguage;
 		// Generate unique IDs for this layer
 		this.layerId = `area-layer-${Math.random().toString(36).substr(2, 9)}`;
 		this.sourceId = `area-source-${Math.random().toString(36).substr(2, 9)}`;
@@ -63,10 +66,6 @@ export class AreaLayerModel {
 
 	get props(): AreaLayerProps {
 		return this.propsGetter();
-	}
-
-	get labelsKey(): string {
-		return JSON.stringify(this.props.data_labels ?? null);
 	}
 
 	private get queryConfig() {
@@ -107,6 +106,8 @@ export class AreaLayerModel {
 	}
 
 	private cachedBounds: maplibregl.LngLatBounds | null = null;
+	// Draws overlap while GeoJSON loads; only the newest one may touch the map.
+	private drawGeneration = 0;
 
 	// Reactive state for legend display
 	colorScale = $state<string[] | null>(null);
@@ -128,6 +129,7 @@ export class AreaLayerModel {
 		theme: 'light' | 'dark',
 		beforeId?: string
 	): Promise<void> {
+		const generation = ++this.drawGeneration;
 		const props = this.props;
 		const data = this.data;
 
@@ -231,6 +233,7 @@ export class AreaLayerModel {
 		// Fetch the GeoJSON
 		const response = await fetch(geojsonUrl);
 		const geojson = (await response.json()) as GeoJSON.FeatureCollection;
+		if (generation !== this.drawGeneration) return;
 
 		// Enrich features with computed state name/abbreviation from FIPS codes
 		// This allows users to use STATE_NAME or STATE_ABBREV in composite IDs
@@ -386,6 +389,8 @@ export class AreaLayerModel {
 			logger.debug({ bounds: bounds.toArray() }, '[AreaLayer] Calculated bounds');
 		}
 
+		if (generation !== this.drawGeneration) return;
+
 		// Add source with promoteId for feature-state (only if not already added)
 		if (!map.getSource(this.sourceId)) {
 			map.addSource(this.sourceId, {
@@ -487,6 +492,7 @@ export class AreaLayerModel {
 		const dataLabels = props.data_labels;
 		if (!dataLabels) return;
 		const fmt = dataLabels.fmt ?? props.value_fmt ?? 'num';
+		const language = this.getLanguage();
 
 		const labelFeatures: GeoJSON.Feature<GeoJSON.Point>[] = [];
 		for (const feature of features) {
@@ -496,7 +502,18 @@ export class AreaLayerModel {
 			const value = feature.properties.__value;
 			labelFeatures.push({
 				type: 'Feature',
-				properties: { __label: formatValue(value, fmt, String(value), minMax) },
+				properties: {
+					__label: formatValue(
+						value,
+						fmt,
+						String(value),
+						minMax,
+						undefined,
+						undefined,
+						undefined,
+						language
+					)
+				},
 				geometry: { type: 'Point', coordinates: point }
 			});
 		}
@@ -654,7 +671,8 @@ export class AreaLayerModel {
 			// Build tooltip content
 			const content = buildTooltipHTML({
 				title: areaName,
-				valueFields
+				valueFields,
+				language: this.getLanguage()
 			});
 
 			// Update popup position and content
@@ -692,6 +710,8 @@ export class AreaLayerModel {
 	}
 
 	removeFromMap(map: maplibregl.Map): void {
+		this.drawGeneration++;
+
 		// Remove event listeners
 		if (this.mouseMoveHandler) {
 			map.off('mousemove', this.layerId, this.mouseMoveHandler);

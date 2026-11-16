@@ -19,7 +19,8 @@
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { Query } from '../../../Query.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	import { getCalendarNameMaps } from '../../../locale/date-locale';
 	import type { DataPoint } from '../../types';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
@@ -41,6 +42,10 @@
 	import { resolveDeprecatedAttribute } from '../../common/resolve-deprecated-attribute';
 	import { resolveMetric } from '../../../metrics/resolve-metric';
 	import { getMetricsCatalogContext } from '../../../metrics/metrics-catalog';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
+	const calendarNames = $derived(getCalendarNameMaps(localeContext.dateLocale));
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
@@ -354,10 +359,12 @@
 			show: true
 		},
 		monthLabel: {
-			show: true
+			show: true,
+			nameMap: calendarNames.months
 		},
 		dayLabel: {
-			show: true
+			show: true,
+			nameMap: calendarNames.days
 		},
 		yearLabel: {
 			show: true,
@@ -416,12 +423,14 @@
 		monthLabel: {
 			show: true,
 			fontSize: 10,
+			nameMap: calendarNames.narrowMonths,
 			formatter: function (param: { nameMap: string }) {
 				return param.nameMap.substring(0, 1);
 			}
 		},
 		dayLabel: {
 			show: true,
+			nameMap: calendarNames.days,
 			fontSize: 10,
 			margin: 7
 		},
@@ -473,7 +482,11 @@
 				}
 
 				const formattedValue = formatValue(value, effectiveValueFmt, value.toString());
-				const extraRows = renderTooltipExtras(processedTooltip.fields, extras);
+				const extraRows = renderTooltipExtras(
+					processedTooltip.fields,
+					extras,
+					localeContext.language
+				);
 
 				// Same layout combo_chart uses: bold date header +
 				// 2-col grid for the primary value row, plus any extras.

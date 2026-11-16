@@ -1,5 +1,5 @@
 diff --git a/ssf.js b/ssf.js
-index 37eba7a0cbef5319e7bdb0300e8c8be33b72f09f..6fbccfed325036f6b87fe9a9d49e541d936786a3 100644
+index 37eba7a0cbef5319e7bdb0300e8c8be33b72f09f..2228104645688e741ba7263154b90da045c17553 100644
 --- a/ssf.js
 +++ b/ssf.js
 @@ -153,6 +153,11 @@ function parse_date_code(v,opts,b2) {
@@ -55,7 +55,49 @@ index 37eba7a0cbef5319e7bdb0300e8c8be33b72f09f..6fbccfed325036f6b87fe9a9d49e541d
  	}
  	throw new Error("unsupported value in General format: " + v);
  }
-@@ -932,7 +953,8 @@ function format(fmt,v,o) {
+@@ -266,8 +287,10 @@ function fix_hijri(date, o) {
+ }
+ var THAI_DIGITS = "\u0E50\u0E51\u0E52\u0E53\u0E54\u0E55\u0E56\u0E57\u0E58\u0E59".split("");
+ /*jshint -W086 */
+-function write_date(type, fmt, val, ss0) {
++// [MODIFIED]: month/day names come from opts when supplied, so callers can localize `mmm`/`ddd`.
++function write_date(type, fmt, val, ss0, opts) {
+ 	var o="", ss=0, tt=0, y = val.y, out, outl = 0;
++	var M = (opts && opts.months) || months, D = (opts && opts.days) || days;
+ 	switch(type) {
+ 		case 98: /* 'b' buddhist year */
+ 			y = val.y + 543;
+@@ -280,15 +303,15 @@ function write_date(type, fmt, val, ss0) {
+ 		case 109: /* 'm' month */
+ 		switch(fmt.length) {
+ 			case 1: case 2: out = val.m; outl = fmt.length; break;
+-			case 3: return months[val.m-1][1];
+-			case 5: return months[val.m-1][0];
+-			default: return months[val.m-1][2];
++			case 3: return M[val.m-1][1];
++			case 5: return M[val.m-1][0];
++			default: return M[val.m-1][2];
+ 		} break;
+ 		case 100: /* 'd' day */
+ 		switch(fmt.length) {
+ 			case 1: case 2: out = val.d; outl = fmt.length; break;
+-			case 3: return days[val.q][0];
+-			default: return days[val.q][1];
++			case 3: return D[val.q][0];
++			default: return D[val.q][1];
+ 		} break;
+ 		case 104: /* 'h' 12-hour */
+ 		switch(fmt.length) {
+@@ -796,7 +819,7 @@ if(dt.u >= 0.5) { dt.u = 0; ++dt.S; }
+ 			case 't': case 'T': case ' ': case 'D': break;
+ 			case 'X': out[i].v = ""; out[i].t = ";"; break;
+ 			case 'd': case 'm': case 'y': case 'h': case 'H': case 'M': case 's': case 'e': case 'b': case 'Z':
+-out[i].v = write_date(out[i].t.charCodeAt(0), out[i].v, dt, ss0);
++out[i].v = write_date(out[i].t.charCodeAt(0), out[i].v, dt, ss0, opts);
+ 				out[i].t = 't'; break;
+ 			case 'n': case '?':
+ 				jj = i+1;
+@@ -932,7 +955,8 @@ function format(fmt,v,o) {
  			break;
  	}
  	if(isgeneral(sfmt,0)) return general_fmt(v, o);

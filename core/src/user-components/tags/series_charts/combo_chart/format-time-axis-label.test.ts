@@ -673,6 +673,13 @@ describe('rollover labels for pinned ticks (previousTick)', () => {
 		).toBe('Jan 2025');
 	});
 
+	it('names its own month on a day tick that opens a new year outside January', () => {
+		const prev = new Date(2023, 10, 20);
+		expect(
+			formatTimeAxisLabel(new Date(2024, 1, 3), 4, 'day', prev.getTime(), false, false, true, prev)
+		).toBe('Feb 2024');
+	});
+
 	it('keeps the plain day when the previous tick is in the same month', () => {
 		const prev = new Date(2024, 1, 2);
 		expect(

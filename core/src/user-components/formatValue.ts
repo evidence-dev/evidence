@@ -1,6 +1,14 @@
 import { logger } from '../shims/logger';
 import ssf from 'ssf';
 import { getDecimalSeparator } from './format-settings';
+import {
+	getDateLocale,
+	getDateNames,
+	getQuarterPrefix,
+	type DateLocale,
+	type DateNames,
+	type GrainFormatCode
+} from '../locale/date-locale';
 
 /**
  * Converts single quotes to double quotes in format strings for better UX
@@ -454,7 +462,7 @@ export function canonicalizeTimeAxisValue(value: unknown): unknown {
 
 // Shared quarter formatter: "YYYY-Q#". Returns null if the value can't be
 // parsed as a date. Used by formatValue (on-screen) and by the Excel export.
-export function formatAsQuarter(value: unknown): string | null {
+export function formatAsQuarter(value: unknown, prefix = 'Q'): string | null {
 	let dateValue: Date;
 	if (value instanceof Date) {
 		dateValue = value;
@@ -464,12 +472,12 @@ export function formatAsQuarter(value: unknown): string | null {
 		return null;
 	}
 	const quarter = Math.floor(dateValue.getMonth() / 3) + 1;
-	return `${dateValue.getFullYear()}-Q${quarter}`;
+	return `${dateValue.getFullYear()}-${prefix}${quarter}`;
 }
 
 // Bare quarter formatter: "Q#" (no year), for the `qq` format code. Returns null if the value can't be
 // read as a date.
-export function formatAsBareQuarter(value: unknown): string | null {
+export function formatAsBareQuarter(value: unknown, prefix = 'Q'): string | null {
 	let dateValue: Date;
 	if (value instanceof Date) {
 		dateValue = value;
@@ -478,7 +486,7 @@ export function formatAsBareQuarter(value: unknown): string | null {
 	} else {
 		return null;
 	}
-	return `Q${Math.floor(dateValue.getMonth() / 3) + 1}`;
+	return `${prefix}${Math.floor(dateValue.getMonth() / 3) + 1}`;
 }
 
 /**
@@ -532,10 +540,21 @@ function msTimestampToDate(numericValue: number): Date | undefined {
 	);
 }
 
+/** A language may redefine a preset whose shared definition reads as English. */
+function resolvePreset(formatCode: string, dateLocale: DateLocale): string {
+	return (
+		dateLocale.presets?.[formatCode as keyof NonNullable<DateLocale['presets']>] ??
+		FORMAT_PRESETS[formatCode as keyof typeof FORMAT_PRESETS] ??
+		formatCode
+	);
+}
+
 function convertDatePartToDate(
 	value: unknown,
 	formatCode: string,
-	firstDayOfWeek: 'sunday' | 'monday' = 'sunday'
+	firstDayOfWeek: 'sunday' | 'monday' = 'sunday',
+	dateLocale: DateLocale = getDateLocale(null),
+	dateNames: DateNames = getDateNames(dateLocale)
 ): unknown {
 	// Only convert if we have a numeric value (number or string that can be converted) and a date-related format
 	let numericValue: number | null = null;
@@ -550,8 +569,7 @@ function convertDatePartToDate(
 	}
 
 	// Get the resolved format code from presets if needed
-	const resolvedFormatCode =
-		FORMAT_PRESETS[formatCode as keyof typeof FORMAT_PRESETS] || formatCode;
+	const resolvedFormatCode = resolvePreset(formatCode, dateLocale);
 
 	// Day of week formats (ddd, dddd) - directly map numeric values to day names
 	// ClickHouse toDayOfWeek returns 1-7, with the meaning determined by the mode:
@@ -564,17 +582,6 @@ function convertDatePartToDate(
 		resolvedFormatCode === 'dddd';
 
 	if (isDayOfWeekFormat && numericValue >= 1 && numericValue <= 7) {
-		const shortNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-		const longNames = [
-			'Sunday',
-			'Monday',
-			'Tuesday',
-			'Wednesday',
-			'Thursday',
-			'Friday',
-			'Saturday'
-		];
-
 		// ClickHouse toDayOfWeek returns 1-7:
 		// Mode 3 (firstDayOfWeek='sunday'): 1=Sunday, 2=Monday, ..., 7=Saturday
 		// Mode 0 (firstDayOfWeek='monday'): 1=Monday, 2=Tuesday, ..., 7=Sunday
@@ -586,7 +593,7 @@ function convertDatePartToDate(
 		}
 
 		const useShortFormat = formatCode === 'ddd' || resolvedFormatCode === 'ddd';
-		return useShortFormat ? shortNames[dayIndex] : longNames[dayIndex];
+		return dateNames.days[dayIndex][useShortFormat ? 0 : 1];
 	}
 	if (isDayOfWeekFormat) {
 		return msTimestampToDate(numericValue) ?? value;
@@ -656,6 +663,7 @@ function convertDatePartToDate(
  * @param {string} columnType - Optional column type from metadata (e.g., 'date', 'number')
  * @param {'sunday'|'monday'} firstDayOfWeek - First day of week setting for day-of-week formatting
  * @param {'.'|','} decimalSeparator - Decimal separator: '.' (period) or ',' (comma). Thousands separator will be the opposite. Defaults to '.'
+ * @param {string|null} language - Page language for month/weekday names (`mmm`, `dddd`) and localized presets. Defaults to English; components read it from `LocaleContext`.
  * @returns {string} The formatted value
  */
 export function formatValue(
@@ -665,10 +673,13 @@ export function formatValue(
 	range?: Range,
 	columnType?: string,
 	firstDayOfWeek: 'sunday' | 'monday' = 'sunday',
-	decimalSeparator?: '.' | ','
+	decimalSeparator?: '.' | ',',
+	language?: string | null
 ): string {
 	// Use global format settings if not explicitly provided
 	const effectiveDecimalSeparator = decimalSeparator ?? getDecimalSeparator();
+	const dateLocale = getDateLocale(language ?? null);
+	const dateNames = getDateNames(dateLocale);
 
 	// Handle null/undefined values
 	if (value === null || value === undefined) {
@@ -715,7 +726,13 @@ export function formatValue(
 
 		// First, try to convert date parts to dates if using date format codes
 		if (effectiveFormatCode) {
-			const converted = convertDatePartToDate(processedValue, effectiveFormatCode, firstDayOfWeek);
+			const converted = convertDatePartToDate(
+				processedValue,
+				effectiveFormatCode,
+				firstDayOfWeek,
+				dateLocale,
+				dateNames
+			);
 			if (typeof converted === 'string' && converted !== processedValue) {
 				// convertDatePartToDate already produced a formatted string (e.g. day-of-week name),
 				// return it directly to avoid SSF re-interpreting the string as numeric 0 → Thursday
@@ -811,21 +828,23 @@ export function formatValue(
 
 		// Handle special quarter format
 		if (actualFormatCode === 'quarter') {
-			const formatted = formatAsQuarter(processedValue);
+			const formatted = formatAsQuarter(processedValue, getQuarterPrefix(dateLocale));
 			if (formatted === null) return fallbackValue;
 			return formatted;
 		}
 
 		// Handle bare quarter format (`qq` → "Q2"); the year-prefixed form lives in `quarter` above.
 		if (actualFormatCode === 'qq') {
-			const formatted = formatAsBareQuarter(processedValue);
+			const formatted = formatAsBareQuarter(processedValue, getQuarterPrefix(dateLocale));
 			if (formatted === null) return fallbackValue;
 			return formatted;
 		}
 
 		// First check if the format code is in our presets
+		actualFormatCode = resolvePreset(actualFormatCode, dateLocale);
+		const quarterGuardCode = convertSingleQuotesToDouble(actualFormatCode);
 		actualFormatCode =
-			FORMAT_PRESETS[actualFormatCode as keyof typeof FORMAT_PRESETS] || actualFormatCode;
+			dateLocale.grainFormats?.[actualFormatCode as GrainFormatCode] ?? actualFormatCode;
 
 		// Convert single quotes to double quotes for better UX before passing to SSF
 		// This allows users to write fmt="'Q'0" instead of fmt="\"Q\"0"
@@ -835,7 +854,7 @@ export function formatValue(
 		// Matches formats like "Q"0, 'Q'0, or any format containing quoted Q followed by 0
 		if (
 			typeof processedValue === 'number' &&
-			(ssfFormatCode.includes('"Q"') || ssfFormatCode.includes("'Q'")) &&
+			(quarterGuardCode.includes('"Q"') || quarterGuardCode.includes("'Q'")) &&
 			(processedValue < 1 || processedValue > 4)
 		) {
 			return '';
@@ -843,7 +862,11 @@ export function formatValue(
 
 		// Any format code, whether from presets or custom, is now passed to ssf for formatting
 		try {
-			let result = ssf.format(ssfFormatCode, processedValue, { date1970: true });
+			let result = ssf.format(ssfFormatCode, processedValue, {
+				date1970: true,
+				months: dateNames.months,
+				days: dateNames.days
+			});
 
 			// Convert to comma decimal separator if requested: 1,234.56 -> 1.234,56
 			// Only apply to numeric values - skip for dates (which may have commas like "January 15, 2024")
@@ -874,6 +897,37 @@ export function formatValue(
 		}
 		return fallbackValue;
 	}
+}
+
+export type LocalizedFormatValue = (
+	value: unknown,
+	formatCode: string | null | undefined,
+	fallbackValue?: string,
+	range?: Range,
+	columnType?: string,
+	firstDayOfWeek?: 'sunday' | 'monday',
+	decimalSeparator?: '.' | ','
+) => string;
+
+/**
+ * `formatValue` with the page language bound, so components can call it with the
+ * same positional arguments as before and never touch a module-level setting.
+ * Components obtain it from `LocaleContext.formatValue` rather than building it.
+ */
+export function createLocalizedFormatValue(
+	language: string | null | undefined
+): LocalizedFormatValue {
+	return (value, formatCode, fallbackValue, range, columnType, firstDayOfWeek, decimalSeparator) =>
+		formatValue(
+			value,
+			formatCode,
+			fallbackValue ?? (value?.toString() || ''),
+			range,
+			columnType,
+			firstDayOfWeek,
+			decimalSeparator,
+			language
+		);
 }
 
 /**

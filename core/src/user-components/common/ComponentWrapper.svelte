@@ -3,6 +3,7 @@
 </script>
 
 <script lang="ts">
+	import { getLocaleContext } from '../../locale/locale.context.svelte';
 	import { fade, scale } from 'svelte/transition';
 	import { Check, X, HelpCircle, Download, Loader, LoaderCircle } from 'lucide-svelte';
 	import type { UserComponentSchemaWithComponentWrapper } from '../types';
@@ -39,8 +40,15 @@
 		contentBlocked?: boolean;
 	};
 
-	const { schema, props, children, validationErrors, tag, contentBlocked = false }: Props =
-		$props();
+	const {
+		schema,
+		props,
+		children,
+		validationErrors,
+		tag,
+		contentBlocked = false
+	}: Props = $props();
+	const { t } = getLocaleContext();
 
 	let error = $state();
 	let validationError = $derived(validationErrors.find((err) => err.error.level !== 'warning'));
@@ -654,7 +662,7 @@
 					{:else}
 						<Download class="size-4" />
 					{/if}
-					Download Data
+					{t('common.download_data')}
 				</ContextMenuItem>
 			</ContextMenuContent>
 		</ContextMenu>

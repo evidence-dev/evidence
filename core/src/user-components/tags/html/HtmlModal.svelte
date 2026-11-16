@@ -25,9 +25,12 @@
 		HtmlVariables,
 		HtmlThemeSnapshot,
 		HtmlFiltersSnapshot,
-		HtmlQueryResponse
+		HtmlQueryResponse,
+		HtmlPageEntry
 	} from './sandbox/html-protocol';
 	import type { SandboxLogEntry } from '../../sandbox/log-protocol';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	type Props = {
 		open: boolean;
@@ -40,6 +43,7 @@
 		filters: HtmlFiltersSnapshot;
 		printing?: boolean;
 		runQuery: (name: string) => Promise<HtmlQueryResponse>;
+		listPages?: () => Promise<HtmlPageEntry[]>;
 		onFilterSet?: (id: string, value: unknown) => void;
 		onFilterCreate?: (id: string, value: unknown, column?: string) => void;
 		onNavigate?: (path: string) => void;
@@ -56,6 +60,7 @@
 		filters,
 		printing = false,
 		runQuery,
+		listPages,
 		onFilterSet,
 		onFilterCreate,
 		onNavigate,
@@ -93,7 +98,7 @@
 				<Dialog.Title>{title}</Dialog.Title>
 			</Dialog.Header>
 		{:else}
-			<Dialog.Title class="sr-only">Details</Dialog.Title>
+			<Dialog.Title class="sr-only">{t('common.details')}</Dialog.Title>
 		{/if}
 		<!-- No inner {#if open}: the sandbox is tied to Dialog.Content's own mount
 		     lifecycle (only present while open, and KEPT through the close
@@ -109,6 +114,7 @@
 					{filters}
 					{printing}
 					{runQuery}
+					{listPages}
 					{onFilterSet}
 					{onFilterCreate}
 					{onNavigate}
@@ -122,7 +128,7 @@
 				<div
 					class="text-muted-foreground pointer-events-none absolute inset-0 flex items-center justify-center text-sm"
 				>
-					Loading…
+					{t('common.loading')}
 				</div>
 			{/if}
 		</div>

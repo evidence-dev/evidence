@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import * as Select from '../../../shadcn/components/ui/select';
 	import { Label } from '../../../shadcn/components/ui/label';
 	import { loadLucideIcon } from '../../common/dynamic-icon';
@@ -47,7 +48,8 @@
 		}
 	});
 
-	const formattedPlaceholder = $derived(placeholder ?? `Select ${id}`);
+	const { t } = getLocaleContext();
+	const formattedPlaceholder = $derived(placeholder ?? t('input.select_placeholder', { id }));
 
 	// Format the selected value for display
 	const formattedSelected = $derived(

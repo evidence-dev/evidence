@@ -27,7 +27,8 @@ const deps: FilterDeps = {
 	url: undefined,
 	updateUrl: undefined,
 	projectSettings: undefined,
-	dialect: undefined
+	dialect: undefined,
+	language: undefined
 };
 
 type AnyFilter = {

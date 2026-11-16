@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	import type { TranslationKey } from '../../../locale/messages';
 	import { untrack } from 'svelte';
 	import type { UserComponentProps } from '../../types';
 	import { schema } from './schema';
@@ -37,12 +39,14 @@
 	});
 
 	const { resolveText } = $derived(createResolvers(variableProcessor));
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
 
 	// Resolved props
 	const id = $derived(props.id);
 	const presetValues = $derived(props.preset_values as string[] | undefined);
 	const defaultValue = $derived(resolveText(props.default_value) ?? props.default_value);
-	const title = $derived(resolveText(props.title));
+	const title = $derived(resolveText(props.title) ?? t('input.comparison_title'));
 	const info = $derived(resolveText(props.info));
 	const info_link = $derived(resolveText(props.info_link));
 	const info_link_title = $derived(resolveText(props.info_link_title));
@@ -132,7 +136,10 @@
 		if (isCustom) {
 			return value; // Use custom option name as-is
 		}
-		return `vs. ${formatTitle(value)}`;
+		const key = `input.vs_${value.replaceAll(' ', '_')}`;
+		return Object.hasOwn(localeContext.messages, key)
+			? t(key as TranslationKey)
+			: `vs. ${formatTitle(value)}`;
 	};
 </script>
 

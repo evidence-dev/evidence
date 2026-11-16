@@ -6,6 +6,8 @@
 	import './hljs-theme.css';
 	import type { UserComponentProps } from '../../types';
 	import type { schema } from './schema';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	const { content, language }: UserComponentProps<typeof schema> = $props();
 
@@ -38,7 +40,7 @@
 			? 'text-green-500'
 			: ''}"
 		onclick={copyToClipboard}
-		aria-label="Copy code"
+		aria-label={t('fence.copy_code')}
 	>
 		{#if copied}
 			<Check class="mx-auto h-4 w-4" />

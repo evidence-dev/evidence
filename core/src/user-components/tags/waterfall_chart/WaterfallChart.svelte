@@ -18,7 +18,7 @@
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { Query } from '../../../Query.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
@@ -66,6 +66,10 @@
 		resolveBarWidth,
 		resolveSeriesStyleOverrides
 	} from './waterfall-layout';
+
+	const localeContext = getLocaleContext();
+	const { t } = localeContext;
+	const formatValue = $derived(localeContext.formatValue);
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
@@ -126,7 +130,7 @@
 	const info = $derived(resolveText(props.info) || '');
 	const info_link = $derived(resolveText(props.info_link) || '');
 	const info_link_title = $derived(resolveText(props.info_link_title) || '');
-	const totalLabel = $derived(resolveText(props.total_label) || 'Total');
+	const totalLabel = $derived(resolveText(props.total_label) || t('common.total'));
 	const where = $derived(resolveSql(props.where) ?? rawWhere);
 	const having = $derived(resolveSql(props.having) ?? rawHaving);
 	const order = $derived(resolveSql(props.order) ?? rawOrder);
@@ -239,7 +243,8 @@
 				breakdownColumn,
 				xOrder,
 				limit: breakdownLimit,
-				formatName: formatXName
+				formatName: formatXName,
+				otherLabel: t('common.other')
 			});
 		}
 		return buildWaterfallSteps(data, {
@@ -285,11 +290,11 @@
 		decrease: chart_options?.decrease_color ?? activeTheme.negative ?? '#ef4444',
 		total: chart_options?.total_color ?? palette[0] ?? '#154886'
 	});
-	const KIND_LEGEND_NAMES: Record<WaterfallBarKind, string> = {
-		increase: 'Increase',
-		decrease: 'Decrease',
-		total: 'Total'
-	};
+	const KIND_LEGEND_NAMES: Record<WaterfallBarKind, string> = $derived({
+		increase: t('waterfall.increase'),
+		decrease: t('waterfall.decrease'),
+		total: t('common.total')
+	});
 	const legendEntries = $derived(
 		getPresentKinds(steps).map((kind) => ({
 			name: KIND_LEGEND_NAMES[kind],
@@ -420,15 +425,17 @@
 				const rows: string[] = [];
 				if (step.kind === 'total') {
 					rows.push(
-						`<span>Total</span><span class="text-right">${escapeHtml(formatY(step.value))}</span>`
+						`<span>${escapeHtml(t('common.total'))}</span><span class="text-right">${escapeHtml(formatY(step.value))}</span>`
 					);
 				} else {
 					rows.push(
-						`<span>Change</span><span class="text-right">${escapeHtml(formatStepLabel(step, formatY))}</span>`,
-						`<span>Running total</span><span class="text-right">${escapeHtml(formatY(step.end))}</span>`
+						`<span>${escapeHtml(t('waterfall.change'))}</span><span class="text-right">${escapeHtml(formatStepLabel(step, formatY))}</span>`,
+						`<span>${escapeHtml(t('waterfall.running_total'))}</span><span class="text-right">${escapeHtml(formatY(step.end))}</span>`
 					);
 				}
-				rows.push(...renderTooltipExtras(processedTooltip.fields, step.extras));
+				rows.push(
+					...renderTooltipExtras(processedTooltip.fields, step.extras, localeContext.language)
+				);
 
 				const contextLine = step.context
 					? `<span class="text-muted-foreground text-xs">${escapeHtml(step.context)}</span>`

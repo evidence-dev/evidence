@@ -142,4 +142,54 @@ metrics:
 			expect(errs.length).toBeGreaterThan(0);
 		});
 	});
+
+	describe('base table check', () => {
+		const energyCatalog = new MetricsCatalog({
+			energy: `
+base: netops.v_site_energy
+metrics:
+  co2: { sql: sum(co2) }
+`
+		});
+		const withTables = (names: string[], extra: Record<string, unknown> = {}) =>
+			ctx({
+				metricsCatalog: energyCatalog,
+				metadata: {
+					loading: false,
+					loadFailed: false,
+					tables: names.map((name) => ({ name })),
+					getTable: (n: string) => (names.includes(n) ? { name: n } : undefined),
+					...extra
+				} as unknown as ValidationContext['metadata']
+			});
+
+		it('passes when the catalog has the qualified table', () => {
+			expect(validate(node('co2'), config, withTables(['netops.v_site_energy']))).toEqual([]);
+		});
+
+		it('passes when the base schema was not introspected', () => {
+			expect(validate(node('co2'), config, withTables(['public.orders']))).toEqual([]);
+		});
+
+		it('passes when the table is keyed bare as the current schema', () => {
+			expect(validate(node('co2'), config, withTables(['V_SITE_ENERGY']))).toEqual([]);
+		});
+
+		it('errors when the schema is scanned, even if a same-named table exists elsewhere', () => {
+			const errs = validate(node('co2'), config, withTables(['v_site_energy', 'netops.v_sites']));
+			expect(errs).toHaveLength(1);
+		});
+
+		it('errors when the schema is introspected but the table is missing', () => {
+			const errs = validate(node('co2'), config, withTables(['netops.v_sites']));
+			expect(errs).toHaveLength(1);
+			expect(errs[0].message).toContain('does not exist in the warehouse');
+		});
+
+		it('skips when the catalog load failed', () => {
+			expect(
+				validate(node('co2'), config, withTables(['netops.v_sites'], { loadFailed: true }))
+			).toEqual([]);
+		});
+	});
 });

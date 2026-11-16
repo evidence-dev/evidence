@@ -92,7 +92,8 @@ export async function process(markdown: string, options: ProcessOptions = {}): P
 		url: new URL('http://localhost'),
 		projectSettings: options.projectSettings ?? { first_day_of_week: 'sunday' },
 		updateUrl: undefined,
-		dialect
+		dialect,
+		language: undefined
 	});
 	const inlineQueries = new InlineQueries(
 		{ filterContexts: [filters] },

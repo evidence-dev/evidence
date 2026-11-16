@@ -16,6 +16,8 @@
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { Viewport } from '../../../preview-viewport.context.svelte';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	type Props = UserComponentProps<typeof schema>;
 
@@ -208,7 +210,7 @@
 						bind:ref={closeButtonRef}
 						class={userControlledButtonVariants({ variant: 'default' })}
 					>
-						Close
+						{t('common.close')}
 					</Drawer.Close>
 				</Drawer.Footer>
 			</Drawer.Content>

@@ -150,7 +150,8 @@ describe('DimensionGridFilter rejects hostile URL state', () => {
 				url: new URL(`https://example.com/p?grid=${encodeURIComponent(JSON.stringify(value))}`),
 				updateUrl: undefined,
 				projectSettings: undefined,
-				dialect: new ClickHouseDialect()
+				dialect: new ClickHouseDialect(),
+				language: undefined
 			}
 		);
 	}

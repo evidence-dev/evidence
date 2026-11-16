@@ -1,9 +1,17 @@
+import en from '../locale/messages/en.json';
+import { createTranslator, type Translate } from '../locale/messages';
+
+let englishTranslate: Translate | undefined;
+const translateEnglish: Translate = (key, vars) =>
+	(englishTranslate ??= createTranslator('en', en))(key, vars);
+
 export default function formatTitle(
 	column: string | undefined,
 	grain?: string,
 	periodCount: number = 1, // Defaults to a single period when not provided
 	comparisonName?: string, // Custom comparison name (e.g., "vs. Franchisees") for benchmark/target titles
-	isUserProvidedAlias?: boolean // When true, preserve the alias as-is (skip parentheses→"of" etc.)
+	isUserProvidedAlias?: boolean, // When true, preserve the alias as-is (skip parentheses→"of" etc.)
+	t: Translate = translateEnglish // Page language for comparison labels; only those are localized
 ) {
 	// Return empty string if column is undefined or null
 	if (column === undefined || column === null) {
@@ -118,12 +126,7 @@ export default function formatTitle(
 	// Strip quotes, turn underscores into spaces, parens into "of", then title-case.
 	function humanize(str: string) {
 		return toTitleCase(
-			str
-				.trim()
-				.replace(/"/g, '')
-				.replace(/_+/g, ' ')
-				.replace(/\(/g, ' of ')
-				.replace(/\)/g, ' ')
+			str.trim().replace(/"/g, '').replace(/_+/g, ' ').replace(/\(/g, ' of ').replace(/\)/g, ' ')
 		).trim();
 	}
 
@@ -141,70 +144,67 @@ export default function formatTitle(
 			const [, measureName, comparisonType, suffix] = comparisonMatch;
 
 			const formattedMeasure = humanize(measureName);
+			const pct = (label: string) =>
+				t('comparison.pct_header', { measure: formattedMeasure, label });
+			const abs = (label: string) =>
+				t('comparison.abs_header', { measure: formattedMeasure, label });
 
 			// Handle different comparison types and suffixes
 			if (comparisonType === 'prior_year') {
+				const yoy = t('comparison.yoy');
 				if (suffix === 'pct') {
-					return `${formattedMeasure} % YoY`;
+					return pct(yoy);
 				} else if (suffix === 'abs') {
-					return `${formattedMeasure} Δ YoY`;
+					return abs(yoy);
 				} else if (suffix === 'compared_value') {
-					return `${formattedMeasure} PY`;
+					return `${formattedMeasure} ${t('comparison.py')}`;
 				} else {
-					return `${formattedMeasure} YoY`;
+					return `${formattedMeasure} ${yoy}`;
 				}
 			} else if (comparisonType === 'prior_period') {
 				// Map grain to period abbreviations when available (single-unit only)
-				const grainMap = {
-					day: 'DoD',
-					week: 'WoW',
-					month: 'MoM',
-					quarter: 'QoQ',
-					year: 'YoY'
-				};
+				const grainKeys = {
+					day: { abbrev: 'comparison.dod', prior: 'comparison.prior_day' },
+					week: { abbrev: 'comparison.wow', prior: 'comparison.prior_week' },
+					month: { abbrev: 'comparison.mom', prior: 'comparison.prior_month' },
+					quarter: { abbrev: 'comparison.qoq', prior: 'comparison.prior_quarter' },
+					year: { abbrev: 'comparison.yoy', prior: 'comparison.prior_year' }
+				} as const;
 
 				// Determine if we should use the shorthand (MoM, QoQ, etc.) — only for single-unit comparisons
 				const isSingleUnit = periodCount === 1;
-				const hasAbbrev = isSingleUnit && grain && grainMap[grain as keyof typeof grainMap];
-				const periodLabel = hasAbbrev
-					? grainMap[grain as keyof typeof grainMap]
-					: 'vs Prior Period';
+				const keys = isSingleUnit && grain ? grainKeys[grain as keyof typeof grainKeys] : undefined;
+				const periodLabel = t(keys ? keys.abbrev : 'comparison.vs_prior_period');
 
 				if (suffix === 'pct') {
-					return `${formattedMeasure} % ${periodLabel}`;
+					return pct(periodLabel);
 				} else if (suffix === 'abs') {
-					return `${formattedMeasure} Δ ${periodLabel}`;
+					return abs(periodLabel);
 				} else if (suffix === 'compared_value') {
-					return hasAbbrev
-						? `${formattedMeasure} Prior ${grain?.[0]?.toUpperCase() + grain?.slice(1)}`
-						: `${formattedMeasure} Prior Period`;
+					return `${formattedMeasure} ${t(keys ? keys.prior : 'comparison.prior_period')}`;
 				} else {
-					return hasAbbrev
-						? `${formattedMeasure} ${periodLabel.replace('%', '').replace('Δ', '').trim()}`
-						: `${formattedMeasure} vs Prior Period`;
+					return `${formattedMeasure} ${periodLabel}`;
 				}
 			} else if (comparisonType === 'target') {
 				// Use custom comparison name if provided, otherwise default to "Target"
-				const targetLabel = comparisonName || 'vs Target';
+				const targetLabel = comparisonName || t('comparison.vs_target');
 				if (suffix === 'target') {
-					return `${formattedMeasure} ${comparisonName || 'Target'}`;
+					return `${formattedMeasure} ${comparisonName || t('comparison.target')}`;
 				} else if (suffix === 'abs') {
-					return `${formattedMeasure} Δ ${targetLabel}`;
+					return abs(targetLabel);
 				} else if (suffix === 'pct') {
-					return `${formattedMeasure} % ${targetLabel}`;
+					return pct(targetLabel);
 				} else {
 					return `${formattedMeasure} ${targetLabel}`;
 				}
 			} else if (comparisonType.startsWith('benchmark')) {
 				// Handle benchmark comparisons: benchmark_avg, benchmark_median, etc.
 				// Use custom comparison name if provided, otherwise default to "Benchmark"
-				const benchmarkLabel = comparisonName || 'Benchmark';
-				if (suffix === 'compared_value') {
-					return `${formattedMeasure} ${benchmarkLabel}`;
-				} else if (suffix === 'abs') {
-					return `${formattedMeasure} Δ ${benchmarkLabel}`;
+				const benchmarkLabel = comparisonName || t('comparison.benchmark');
+				if (suffix === 'abs') {
+					return abs(benchmarkLabel);
 				} else if (suffix === 'pct') {
-					return `${formattedMeasure} % ${benchmarkLabel}`;
+					return pct(benchmarkLabel);
 				} else {
 					return `${formattedMeasure} ${benchmarkLabel}`;
 				}
@@ -291,7 +291,8 @@ export default function formatTitle(
 	if (filterSnowflakeTruncMatch) {
 		const formattedBaseMeasure = humanize(filterSnowflakeTruncMatch[1]);
 		const unit = filterSnowflakeTruncMatch[2].toUpperCase();
-		const label = unit === 'YEAR' ? 'Year to Date' : unit === 'MONTH' ? 'Month to Date' : 'Week to Date';
+		const label =
+			unit === 'YEAR' ? 'Year to Date' : unit === 'MONTH' ? 'Month to Date' : 'Week to Date';
 		return `${formattedBaseMeasure} (${label})`;
 	}
 

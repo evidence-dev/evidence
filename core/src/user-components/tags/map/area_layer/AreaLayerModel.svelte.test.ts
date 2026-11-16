@@ -235,6 +235,43 @@ describe('AreaLayerModel map source integration', () => {
 		cleanup();
 	});
 
+	it('keeps the newest colors when a restyle overlaps an earlier draw', async () => {
+		const props: Record<string, unknown> = { color_scale: ['#ffffff', '#0000ff'] };
+		const { model, cleanup } = createModel(
+			() => [
+				{ state: 'California', sales: 10 },
+				{ state: 'New York', sales: 20 }
+			],
+			props
+		);
+		await settleQuery();
+
+		const releases: Array<() => void> = [];
+		vi.mocked(fetch).mockImplementation(async () => {
+			await new Promise<void>((resolve) => releases.push(resolve));
+			return new Response(JSON.stringify(GEOJSON), { status: 200 });
+		});
+
+		const map = new TestMap();
+		const staleDraw = model.addToMap(map as never, ['#f7fbff', '#08306b'], 'light', 'labels');
+		props.color_scale = ['#ffffff', '#ff0000'];
+		model.removeFromMap(map as never);
+		const freshDraw = model.addToMap(map as never, ['#f7fbff', '#08306b'], 'light', 'labels');
+
+		releases[0]();
+		await staleDraw;
+		releases[1]();
+		await freshDraw;
+
+		const source = [...map.sources.values()][0] as maplibregl.GeoJSONSourceSpecification;
+		const newYork = (source.data as GeoJSON.FeatureCollection).features.find(
+			(feature) => feature.properties?.NAME === 'New York'
+		);
+		expect(newYork?.properties?.__color).toBe('#ff0000');
+		expect(model.colorScale).toEqual(['#ffffff', '#ff0000']);
+		cleanup();
+	});
+
 	it('does not add a label layer without data_labels', async () => {
 		const { model, cleanup } = createModel(() => [{ state: 'California', sales: 10 }]);
 		await settleQuery();

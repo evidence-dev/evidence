@@ -2,7 +2,8 @@ import {
 	isValidationContext,
 	type Validator,
 	containsVariableSyntax,
-	getTableFromContext
+	getTableFromContext,
+	inUnscannedSchema
 } from './types';
 import { compileMetric } from '../../metrics/compile-metric';
 
@@ -78,7 +79,11 @@ export const metricExists =
 				];
 			}
 
-			const { errors } = compileMetric(found.view, { metrics: [found.metric.name] }, context.dialect);
+			const { errors } = compileMetric(
+				found.view,
+				{ metrics: [found.metric.name] },
+				context.dialect
+			);
 			if (errors.length > 0) {
 				return [
 					{
@@ -95,9 +100,16 @@ export const metricExists =
 			// the metric YAML. Only checked when the view uses `base:` (not
 			// `base_sql:`, which is an inline query we can't introspect) and metadata
 			// is loaded — the same lenient guard `tableExists` uses.
-			if (found.view.base) {
-				const table = getTableFromContext(found.view.base, context);
-				if (!table && context.metadata && !context.metadata.loading) {
+			if (
+				found.view.base &&
+				context.metadata &&
+				!context.metadata.loading &&
+				!context.metadata.loadFailed
+			) {
+				if (
+					!getTableFromContext(found.view.base, context) &&
+					!inUnscannedSchema(found.view.base, context.metadata)
+				) {
 					return [
 						{
 							id: 'invalid-metric',
@@ -118,9 +130,7 @@ export const metricExists =
 		// runs one query per child and IS the supported path for cross-base.
 		if (bases.length > 1) {
 			const first = bases[0];
-			const mismatch = bases.find(
-				(b) => b.base !== first.base || b.baseSql !== first.baseSql
-			);
+			const mismatch = bases.find((b) => b.base !== first.base || b.baseSql !== first.baseSql);
 			if (mismatch) {
 				const firstBase = first.base ?? '(inline base_sql)';
 				const otherBase = mismatch.base ?? '(inline base_sql)';

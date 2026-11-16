@@ -31,6 +31,12 @@
 		unregisterSandboxFrameCapture
 	} from './png-capture-registry';
 	import { SandboxRpc, type RpcHandler } from './request-response';
+	import {
+		describeCollapsedAncestors,
+		reportSandboxDiagnostics,
+		validateDiagnosticsMessage,
+		type SandboxDiagnosticsReport
+	} from './render-diagnostics';
 
 	/**
 	 * Inbound messages every sandbox sends. Consumer-specific messages (e.g.
@@ -198,6 +204,42 @@
 		return true;
 	}
 
+	function reportDiagnostics(
+		report: Omit<SandboxDiagnosticsReport, 'component' | 'frameWidth' | 'frameHeight'>
+	): void {
+		const frame = iframeEl;
+		const rect = frame?.getBoundingClientRect();
+		const collapsed = frame && rect && (rect.width === 0 || rect.height === 0);
+		reportSandboxDiagnostics({
+			component: source,
+			frameWidth: rect ? Math.round(rect.width) : null,
+			frameHeight: rect ? Math.round(rect.height) : null,
+			...(collapsed ? { collapsedAncestors: describeCollapsedAncestors(frame) } : {}),
+			...(healAttempts > 0 ? { healAttempts } : {}),
+			...report
+		});
+	}
+
+	const MAX_HEAL_ATTEMPTS = 2;
+	let healAttempts = 0;
+
+	// Safari 27.0 can leave a frame inserted by client-side navigation at 0×0 despite a definite height, until a window resize forces a fresh layout.
+	function healCollapsedFrame(): void {
+		const frame = iframeEl;
+		const container = frame?.parentElement;
+		if (!frame || !container || !frame.isConnected || healAttempts >= MAX_HEAL_ATTEMPTS) return;
+		const definiteHeight = height ?? (minHeight ? Math.max(minHeight, reportedHeight) : 0);
+		if (definiteHeight <= 0) return;
+		if (frame.getBoundingClientRect().height > 0) return;
+		// Charts inside closed tabs, accordions or other hidden sections are legitimately 0×0.
+		if (!frame.checkVisibility?.()) return;
+		healAttempts++;
+		container.style.display = 'none';
+		void container.offsetHeight;
+		container.style.removeProperty('display');
+		requestAnimationFrame(healCollapsedFrame);
+	}
+
 	function completeRenderTask(): void {
 		markRenderComplete?.();
 		markRenderComplete = undefined;
@@ -215,6 +257,7 @@
 				onError?.(undefined);
 				onRendered?.();
 				completeRenderTask();
+				requestAnimationFrame(healCollapsedFrame);
 				return;
 			case 'height': {
 				// Drop bad payloads (NaN/Infinity/negative/non-number) — they'd
@@ -236,6 +279,17 @@
 			case 'ready':
 				// Handled separately on the window-message path during handshake.
 				return;
+			case 'diag': {
+				const validated = validateDiagnosticsMessage(message);
+				if (!validated) return;
+				const anomaly = validated.metrics.anomaly;
+				reportDiagnostics({
+					phase: validated.phase,
+					anomaly: typeof anomaly === 'string' ? anomaly : '',
+					metrics: validated.metrics
+				});
+				return;
+			}
 		}
 		// Anything else is consumer-specific.
 		onMessage?.(message as { type: string } & Record<string, unknown>);
@@ -334,6 +388,13 @@
 		// 20s any async draw has surely finished, so capturing is better than a
 		// permanently-disabled export.
 		const fallback = setTimeout(() => {
+			if (!hasRendered) {
+				reportDiagnostics({
+					phase: 'timeout',
+					anomaly: connected ? 'never-rendered' : 'never-connected',
+					metrics: { connected }
+				});
+			}
 			hasRendered = true;
 			completeRenderTask();
 		}, 20_000);

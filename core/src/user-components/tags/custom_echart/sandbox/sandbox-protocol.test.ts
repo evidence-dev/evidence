@@ -40,19 +40,28 @@ describe('user-code globals contract', () => {
 		// description AND uncommon enough as locals not to collide.
 		// `rows` and `dimensions` were dropped after they caused
 		// "Cannot declare a const variable twice: 'rows'" in real use.
-		expect(USER_CODE_GLOBAL_NAMES).toEqual([
-			'data',
-			'columns',
-			'echarts',
-			'theme',
-			'fmt'
-		]);
+		expect(USER_CODE_GLOBAL_NAMES).toEqual(['data', 'columns', 'echarts', 'theme', 'fmt']);
 	});
 
 	it('does NOT include common local-variable names that would shadow author code', () => {
 		// Regression guard: any future addition must not include names that
 		// chart authors frequently use as locals.
-		const dangerouslyCommon = ['rows', 'row', 'dimensions', 'dim', 'series', 'options', 'option', 'chart', 'i', 'x', 'y', 'value', 'item', 'index'];
+		const dangerouslyCommon = [
+			'rows',
+			'row',
+			'dimensions',
+			'dim',
+			'series',
+			'options',
+			'option',
+			'chart',
+			'i',
+			'x',
+			'y',
+			'value',
+			'item',
+			'index'
+		];
 		for (const name of dangerouslyCommon) {
 			expect(USER_CODE_GLOBAL_NAMES).not.toContain(name);
 		}

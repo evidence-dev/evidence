@@ -1,6 +1,11 @@
 import ExcelJS from 'exceljs';
 import { describe, expect, it } from 'vitest';
-import { addDataToWorksheet, getExcelExportNames } from './data-export';
+import {
+	addDataToWorksheet,
+	buildPageWorkbook,
+	getExcelExportNames,
+	type ExportableQueryInfoContext
+} from './data-export';
 
 describe('getExcelExportNames', () => {
 	it('uses trimmed title for the filename and worksheet name', () => {
@@ -87,5 +92,78 @@ describe('addDataToWorksheet', () => {
 			Math.min('Acme · L4 WE 2026-07-12 · 5 Boroughs'.length + 2, 50)
 		);
 		expect(exportedWorksheet.getColumn(2).width).toBe('Sales'.length + 2);
+	});
+});
+
+describe('buildPageWorkbook', () => {
+	function contextWith(
+		entries: {
+			tag: string;
+			title?: string;
+			rows: Record<string, unknown>[];
+			loading?: boolean;
+			error?: string;
+		}[]
+	): ExportableQueryInfoContext {
+		return {
+			queryInfoMap: new Map(
+				entries.map((entry, i) => [
+					`component-${i}`,
+					{
+						tag: entry.tag,
+						title: entry.title,
+						query: {
+							loading: entry.loading ?? false,
+							result: {
+								rows: entry.rows,
+								error: entry.error,
+								columns: Object.keys(entry.rows[0] ?? {}).map((name) => ({
+									name,
+									jsType: 'string'
+								}))
+							}
+						}
+					}
+				])
+			) as unknown as ExportableQueryInfoContext['queryInfoMap']
+		};
+	}
+
+	async function readSheets(buffer: ArrayBuffer) {
+		const workbook = new ExcelJS.Workbook();
+		await workbook.xlsx.load(buffer);
+		return workbook.worksheets;
+	}
+
+	it('writes one sheet per component with data, skipping inputs and loading queries', async () => {
+		const buffer = await buildPageWorkbook({
+			queryInfoContext: contextWith([
+				{ tag: 'table', title: 'Orders', rows: [{ region: 'East' }, { region: 'West' }] },
+				{ tag: 'table', title: 'Orders', rows: [{ region: 'North' }] },
+				{ tag: 'button_group', title: 'Region picker', rows: [{ region: 'East' }] },
+				{ tag: 'table', title: 'Pending', rows: [{ region: 'South' }], loading: true }
+			])
+		});
+
+		expect(buffer).not.toBeNull();
+		const magic = new Uint8Array(buffer!).slice(0, 2);
+		expect(Array.from(magic)).toEqual([0x50, 0x4b]);
+		const sheets = await readSheets(buffer!);
+		expect(sheets.map((s) => s.name)).toEqual(['Orders', 'Orders 2']);
+		expect(sheets[0].getRow(2).getCell(1).value).toBe('East');
+		expect(sheets[0].getRow(3).getCell(1).value).toBe('West');
+		expect(sheets[1].getRow(2).getCell(1).value).toBe('North');
+	});
+
+	it('returns null for empty, empty-rows, or error-only contexts', async () => {
+		expect(await buildPageWorkbook({ queryInfoContext: contextWith([]) })).toBeNull();
+		expect(
+			await buildPageWorkbook({
+				queryInfoContext: contextWith([
+					{ tag: 'table', title: 'Empty', rows: [] },
+					{ tag: 'table', title: 'Failed', rows: [{ region: 'East' }], error: 'Query failed' }
+				])
+			})
+		).toBeNull();
 	});
 });

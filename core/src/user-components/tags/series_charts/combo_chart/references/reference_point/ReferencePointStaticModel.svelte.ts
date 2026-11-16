@@ -23,7 +23,13 @@ export class ReferencePointStaticModel {
 
 		const label = formatValue(
 			this.props.label,
-			this.props.label_options.fmt ?? this.axis?.options.fmt
+			this.props.label_options.fmt ?? this.axis?.options.fmt,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			this.getLanguage()
 		);
 
 		return {
@@ -75,7 +81,8 @@ export class ReferencePointStaticModel {
 	constructor(
 		readonly propsGetter: () => ReferencePointStaticProps,
 		readonly xAxis: XAxisModel,
-		readonly yAxis: YAxisModel
+		readonly yAxis: YAxisModel,
+		readonly getLanguage: () => string | null = () => null
 	) {
 		this.props = $derived(this.propsGetter());
 	}

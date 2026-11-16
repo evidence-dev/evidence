@@ -10,6 +10,8 @@
 	import { VariableProcessor } from '../../../filter-variables/VariableProcessor';
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { sanitizeUrl } from '../../common/transform-internal-link';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	const props: UserComponentProps<typeof schema> = $props();
 
@@ -54,7 +56,7 @@
 			class={cn('inline-block w-fit cursor-pointer pb-0.5 align-middle leading-4', className)}
 			role="button"
 			aria-expanded={isOpen}
-			aria-label="Toggle tooltip"
+			aria-label={t('info.toggle_tooltip')}
 			tabindex="0"
 			onclick={toggleOpen}
 			onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && toggleOpen()}

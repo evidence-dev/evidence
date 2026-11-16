@@ -83,6 +83,12 @@ function runScript(original: HTMLScriptElement): Promise<void> {
 			// Inline modules don't fire a reliable execution-complete event, so
 			// we resolve on the next tick (best-effort ordering).
 			replacement.textContent = code;
+			// Failed imports fire `error` here, never on window.
+			replacement.addEventListener('error', () => {
+				console.error(
+					'Failed to load a module imported by this block. Check the import URLs, and prefer single-file builds (e.g. https://esm.sh/d3@7?bundle); unbundled imports can fetch hundreds of files.'
+				);
+			});
 			original.replaceWith(replacement);
 			queueMicrotask(resolve);
 			return;

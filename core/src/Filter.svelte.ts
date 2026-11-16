@@ -146,6 +146,10 @@ export abstract class Filter<Value = any> {
 		return extract(this.deps.dialect);
 	}
 
+	protected get language(): string | null | undefined {
+		return extract(this.deps.language);
+	}
+
 	abstract attributes: Record<string, unknown>;
 
 	/** The filter's WHERE predicate for the consumer's `dialect`, or `undefined` when it contributes none. */
@@ -225,6 +229,11 @@ export type FilterDeps = {
 	 * snapshot taken before then would keep escaping for the wrong dialect.
 	 */
 	dialect: MaybeGetter<SqlDialect> | undefined;
+	/**
+	 * Page language for labels a filter builds itself (`{{period.label}}`). A getter so a live
+	 * language switch relabels; `undefined` means English.
+	 */
+	language: MaybeGetter<string | null | undefined> | undefined;
 };
 
 export type FilterClass<

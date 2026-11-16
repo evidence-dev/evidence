@@ -4,6 +4,8 @@
 	import { Input } from '../../../shadcn/components/ui/input';
 	import { Label } from '../../../shadcn/components/ui/label';
 	import Histogram from './Histogram.svelte';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	let {
 		columnName,
@@ -152,11 +154,11 @@
 
 	<div class="flex gap-4">
 		<div class="flex-1 flex-col space-y-2">
-			<Label class="text-accent-foreground text-right text-xs">Minimum</Label>
+			<Label class="text-accent-foreground text-right text-xs">{t('filter.minimum')}</Label>
 			<Input
 				type="number"
 				bind:value={minValue}
-				placeholder="any"
+				placeholder={t('filter.no_bound')}
 				class="no-spinners w-full"
 				bind:ref={minInputRef}
 				onkeydown={(e) => {
@@ -173,11 +175,11 @@
 		</div>
 
 		<div class="flex-1 flex-col space-y-2">
-			<Label class="text-accent-foreground text-right text-xs">Maximum</Label>
+			<Label class="text-accent-foreground text-right text-xs">{t('filter.maximum')}</Label>
 			<Input
 				type="number"
 				bind:value={maxValue}
-				placeholder="any"
+				placeholder={t('filter.no_bound')}
 				class="no-spinners w-full"
 				onkeydown={(e) => {
 					if (e.key === 'Enter') {
@@ -194,6 +196,8 @@
 	</div>
 
 	<div class="flex justify-end gap-2 pt-2">
-		<Button variant="outline" size="sm" class="w-full" onclick={applyFilter}>Apply</Button>
+		<Button variant="outline" size="sm" class="w-full" onclick={applyFilter}
+			>{t('common.apply')}</Button
+		>
 	</div>
 </div>

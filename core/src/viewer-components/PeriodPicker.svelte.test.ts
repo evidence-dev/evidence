@@ -7,6 +7,8 @@ import { PAGE_FILTERS_CONTEXT_KEY } from '../page-filters-context';
 import { registerFiltersFromAST } from '../user-components/Renderer/MarkdocProcessor/register-filters';
 import { PeriodFilter } from '../user-components/tags/workflow_period/PeriodFilter.svelte';
 import PeriodPicker from './PeriodPicker.svelte';
+import PeriodPickerTestHarness from './PeriodPickerTestHarness.svelte';
+import type { LocaleContext } from '../locale/locale.context.svelte';
 
 const ANCHOR = '2026-08-14';
 
@@ -23,7 +25,8 @@ function makeFilters(
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: projectSettings as never,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	});
 	registerFiltersFromAST(Markdoc.parse(markdown), filters);
 	return filters;
@@ -130,5 +133,40 @@ describe('PeriodPicker', () => {
 		flushSync();
 		expect((monday.filters.get('period') as PeriodFilter).value).toEqual({ key: '2026-07-27' });
 		expect(monday.target.textContent).toContain('Week of Jul 27, 2026');
+	});
+});
+
+describe('PeriodPicker in the page language', () => {
+	function mountInLanguage(language: string, markdown: string, readonly: boolean) {
+		let locale: LocaleContext | undefined;
+		target = document.createElement('div');
+		document.body.appendChild(target);
+		component = mount(PeriodPickerTestHarness, {
+			target,
+			props: { language, markdown, readonly, onLocale: (l: LocaleContext) => (locale = l) }
+		});
+		flushSync();
+		return { target, locale: locale! };
+	}
+
+	it('labels the read-only PDF header in French', () => {
+		const { target } = mountInLanguage('fr', PERIOD_PAGE, true);
+		expect(target.textContent?.trim()).toBe('juil. 2026');
+	});
+
+	it('labels the trigger and stepped periods in French', () => {
+		const { target } = mountInLanguage('fr', WEEKLY_PAGE, false);
+		expect(target.textContent).toContain('Semaine du 2 août 2026');
+		target.querySelector<HTMLButtonElement>('[aria-label="Période précédente"]')?.click();
+		flushSync();
+		expect(target.textContent).toContain('Semaine du 26 juil. 2026');
+	});
+
+	it('relabels when the page language switches', () => {
+		const { target, locale } = mountInLanguage('en', PERIOD_PAGE, true);
+		expect(target.textContent?.trim()).toBe('Jul 2026');
+		locale.updateLanguage('fr');
+		flushSync();
+		expect(target.textContent?.trim()).toBe('juil. 2026');
 	});
 });

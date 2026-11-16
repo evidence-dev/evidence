@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { mode } from 'mode-watcher';
-	import { get } from 'svelte/store';
 	import type { AnyRowType, Column } from '../../../interfaces/query-service';
 	import { getThemeContext } from '../../../../theme/theme.context.svelte';
 	import { getCardContext } from '../../../common/card-context.svelte';
 	import { getPrintModeContext } from '../../../../print-mode.context';
+	import { getLocaleContext } from '../../../../locale/locale.context.svelte';
 	import { formatSettings } from '../../../format-settings';
 	import SandboxFrame from '../../../sandbox/SandboxFrame.svelte';
 	import { getThemeToken } from '../../../../theme/get-theme-token';
@@ -14,6 +14,7 @@
 		SANDBOX_PROTOCOL_VERSION,
 		type InitMessage,
 		type SandboxErrorMessage,
+		type SandboxFormatSettings,
 		type SandboxThemes
 	} from './sandbox-protocol';
 	import type { SandboxLogEntry } from '../../../sandbox/log-protocol';
@@ -51,6 +52,7 @@
 	const themeContext = getThemeContext();
 	const cardContext = getCardContext();
 	const printing = getPrintModeContext();
+	const localeContext = getLocaleContext();
 
 	const useCardColors = $derived(Boolean(cardContext?.insideCard));
 	const activeMode = $derived(mode.current === 'dark' ? 'dark' : 'light');
@@ -78,6 +80,11 @@
 		getThemeToken(themes[activeMode], 'background', useCardColors) ?? 'transparent'
 	);
 
+	const sandboxFormatSettings = $derived<SandboxFormatSettings>({
+		decimalSeparator: $formatSettings.decimalSeparator,
+		language: localeContext.language
+	});
+
 	const init = $derived<InitMessage>({
 		type: 'init',
 		renderer,
@@ -86,15 +93,16 @@
 		themes,
 		mode: activeMode,
 		useCardColors,
-		formatSettings: { decimalSeparator: get(formatSettings).decimalSeparator },
+		formatSettings: sandboxFormatSettings,
 		printing
 	});
 
 	let postToFrame = $state<((message: Record<string, unknown>) => void) | undefined>();
 
 	// Mirror of what the sandbox last received, so a filter change reposts only
-	// rows, a keystroke only code, a theme toggle only the theme. Seeded with
-	// the values that went out in the init payload at connect time.
+	// rows, a keystroke only code, a theme toggle only the theme, a language
+	// switch only the format settings. Seeded with the values that went out in
+	// the init payload at connect time.
 	let sent: {
 		userCode: string;
 		rows: AnyRowType[];
@@ -102,11 +110,20 @@
 		themes: SandboxThemes;
 		mode: 'light' | 'dark';
 		useCardColors: boolean;
+		formatSettings: SandboxFormatSettings;
 	} | null = null;
 
 	function onConnect(post: (message: Record<string, unknown>) => void): void {
 		postToFrame = post;
-		sent = { userCode, rows, columns, themes, mode: activeMode, useCardColors };
+		sent = {
+			userCode,
+			rows,
+			columns,
+			themes,
+			mode: activeMode,
+			useCardColors,
+			formatSettings: sandboxFormatSettings
+		};
 	}
 
 	$effect(() => {
@@ -129,6 +146,13 @@
 			sent.themes = themes;
 			sent.mode = activeMode;
 			sent.useCardColors = useCardColors;
+		}
+		if (
+			sandboxFormatSettings.language !== sent.formatSettings.language ||
+			sandboxFormatSettings.decimalSeparator !== sent.formatSettings.decimalSeparator
+		) {
+			postToFrame({ type: 'format-settings', formatSettings: sandboxFormatSettings });
+			sent.formatSettings = sandboxFormatSettings;
 		}
 	});
 

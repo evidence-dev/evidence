@@ -71,7 +71,8 @@ describe('MarkdocProcessor validation context updates', () => {
 				url: new URL('https://example.com/edit'),
 				updateUrl: undefined,
 				projectSettings: undefined,
-				dialect: undefined
+				dialect: undefined,
+				language: undefined
 			});
 		const swappedIn = newFilters();
 		const processor = new MarkdocProcessor({
@@ -91,5 +92,21 @@ describe('MarkdocProcessor validation context updates', () => {
 		expect(processor.validationErrors.map((error) => error.error?.message)).toEqual([
 			'filters: Filter "ghost" does not exist'
 		]);
+	});
+
+	// Same swap for inline queries, so the edited file can't reap or overwrite the preview's.
+	it('re-registers inline queries when the validation context swaps the query store', () => {
+		const shared = new InlineQueries({ filterContexts: undefined });
+		const swappedIn = new InlineQueries({ filterContexts: undefined });
+		const processor = new MarkdocProcessor({
+			content: '```sql orders\nSELECT 1\n```\n\n{% table data="orders" /%}',
+			validationContext: context(shared),
+			standaloneFileType: 'partial'
+		});
+
+		processor.updateValidationContext({ inlineQueries: swappedIn });
+
+		expect(swappedIn.getAllNames()).toEqual(['orders']);
+		expect(processor.validationErrors).toEqual([]);
 	});
 });

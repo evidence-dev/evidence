@@ -498,7 +498,13 @@ describe('ensureAuthenticated', () => {
 	});
 
 	it('persists the rotated token and resolves the session when valid', async () => {
-		const creds = makeCredentials({ fromEnv: false, sealedSession: 'cached-sess' });
+		// aptToken set so ensureAuthenticated skips the lazy APT backfill, which
+		// would otherwise make a real network call to STUDIO_HOST and flake the test.
+		const creds = makeCredentials({
+			fromEnv: false,
+			sealedSession: 'cached-sess',
+			aptToken: 'apt_existing'
+		});
 		vi.mocked(loadCredentials).mockResolvedValueOnce(creds);
 		vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
 			new Response(JSON.stringify({ organizations: [], refreshToken: 'rt_rotated' }), { status: 200 })

@@ -15,7 +15,8 @@ function makeFilters() {
 		url: undefined,
 		updateUrl: undefined,
 		projectSettings: { computedDefaultDateRangeEnd: ANCHOR } as never,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	});
 }
 
@@ -103,7 +104,8 @@ describe('workflow.period filter lifecycle', () => {
 				url: undefined,
 				updateUrl: undefined,
 				projectSettings: { computedDefaultDateRangeEnd: ANCHOR } as never,
-				dialect: undefined
+				dialect: undefined,
+				language: undefined
 			},
 			filters.toSerialized()
 		);
@@ -142,7 +144,8 @@ describe('period_selector placing the workflow period', () => {
 				url: undefined,
 				updateUrl: undefined,
 				projectSettings: { computedDefaultDateRangeEnd: ANCHOR } as never,
-				dialect: undefined
+				dialect: undefined,
+				language: undefined
 			},
 			filters.toSerialized()
 		);
@@ -189,7 +192,8 @@ describe('period_selector placing the workflow period', () => {
 			url: () => url,
 			updateUrl: (next) => (url = next),
 			projectSettings: { computedDefaultDateRangeEnd: ANCHOR } as never,
-			dialect: undefined
+			dialect: undefined,
+			language: undefined
 		});
 		register(`# Report\n${picker}`, filters);
 		register(periodPage('    grain: month\n') + picker, filters);

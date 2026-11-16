@@ -232,8 +232,7 @@ const attributes = {
 	total_label: {
 		type: String,
 		required: false,
-		default: 'Total',
-		description: 'Label for the computed total bar',
+		description: 'Label for the computed total bar (defaults to the localized "Total")',
 		affectsQuery: false,
 		supportsVariables: true,
 		variableContext: 'text'

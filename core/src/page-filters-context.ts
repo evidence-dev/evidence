@@ -2,6 +2,7 @@ import { getContext, setContext, untrack } from 'svelte';
 import { Filters, type SerializedFilters } from './Filters.svelte';
 import { getProjectSettingsContext } from './project-settings.context';
 import { getDefaultConnection } from './connection';
+import { getLocaleContext } from './locale/locale.context.svelte';
 
 export const PAGE_FILTERS_CONTEXT_KEY = Symbol('PAGE_FILTERS_CONTEXT');
 
@@ -11,12 +12,14 @@ export const createPageFiltersContext = (
 ): Filters => {
 	// getContext only works during init, so hold the connection and read its dialect lazily.
 	const connection = getDefaultConnection();
+	const locale = getLocaleContext();
 	const context = new Filters(
 		{
 			url: opts?.url ? () => untrack(() => opts.url!()) : undefined,
 			updateUrl: opts?.updateUrl,
 			projectSettings: getProjectSettingsContext(),
-			dialect: () => connection.dialect
+			dialect: () => connection.dialect,
+			language: () => locale.language
 		},
 		serializedFilters
 	);

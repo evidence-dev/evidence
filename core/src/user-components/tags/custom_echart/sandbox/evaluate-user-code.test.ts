@@ -116,7 +116,7 @@ describe('validator/runtime sync contract', () => {
 		'const echarts = null; return {};',
 		// Invalid in both — generic syntax errors
 		'{ series: [ }',
-		'const x = ;',
+		'const x = ;'
 		// Edge: empty body. Validator returns its own "add code" message;
 		// runtime compiles a body that returns undefined. Tested separately.
 	];

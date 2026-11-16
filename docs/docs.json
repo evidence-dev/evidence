@@ -1015,7 +1015,8 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/designing-reports-for-pdf"
+              "guides/designing-reports-for-pdf",
+              "guides/access-aware-navigation"
             ]
           }
         ]

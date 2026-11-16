@@ -43,7 +43,8 @@ describe('commentary host context and PDF readiness', () => {
 			projectSettings: { computedDefaultDateRangeEnd: '2026-08-14', first_day_of_week: 'sunday' },
 			url: undefined,
 			updateUrl: undefined,
-			dialect: undefined
+			dialect: undefined,
+			language: undefined
 		});
 		const filter = filters.create(
 			{

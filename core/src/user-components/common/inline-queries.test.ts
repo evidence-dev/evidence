@@ -204,7 +204,8 @@ describe('Inline Queries', () => {
 				url: undefined,
 				updateUrl: undefined,
 				projectSettings: undefined,
-				dialect: undefined
+				dialect: undefined,
+				language: undefined
 			});
 			const scopedInlineQueries = new InlineQueries({ filterContexts: [filters] });
 			scopedInlineQueries.set(

@@ -41,6 +41,11 @@ import {
 } from './sandbox-protocol';
 import { bootSandbox, type SandboxHost } from '../../../sandbox/runtime-bootstrap';
 import { errorToLogEntry } from '../../../sandbox/runtime-diagnostics';
+import {
+	classifySurface,
+	countPaintedPixels,
+	type SandboxDiagnosticsMessage
+} from '../../../sandbox/render-diagnostics';
 
 const HEIGHT_REPORT_THRESHOLD_PX = 2;
 
@@ -94,7 +99,8 @@ function makeFmt(settings: SandboxFormatSettings) {
 			undefined,
 			undefined,
 			settings.firstDayOfWeek ?? 'sunday',
-			settings.decimalSeparator
+			settings.decimalSeparator,
+			settings.language
 		);
 }
 
@@ -128,7 +134,7 @@ function forPrint(option: EChartsOption): EChartsOption {
 
 function buildOption(): EChartsOption {
 	const evaluated = evaluateUserCode();
-	const withFormatters = applyFormatCodes(evaluated);
+	const withFormatters = applyFormatCodes(evaluated, formatSettingsValue.language);
 	const columnNames = data.columns.map((column) => column.name);
 	const withData = buildCustomEchartOptions(withFormatters, data.rows, columnNames) as Record<
 		string,
@@ -219,6 +225,48 @@ async function signalRendered(): Promise<void> {
 	if (renderedFired) return;
 	renderedFired = true;
 	host?.post({ type: 'rendered' });
+	scheduleDiagnostics();
+}
+
+const SETTLED_DIAGNOSTICS_DELAY_MS = 5000;
+let diagnosticsScheduled = false;
+let resizeObserverFires = 0;
+
+function postDiagnostics(phase: SandboxDiagnosticsMessage['phase']): void {
+	if (!chart || chart.isDisposed() || !container) return;
+	const canvas = chart.getDom().querySelector('canvas');
+	const painted = canvas ? countPaintedPixels(canvas) : null;
+	const metrics = {
+		containerWidth: container.clientWidth,
+		containerHeight: container.clientHeight,
+		chartWidth: chart.getWidth(),
+		chartHeight: chart.getHeight(),
+		canvasWidth: canvas?.clientWidth ?? null,
+		canvasHeight: canvas?.clientHeight ?? null,
+		painted,
+		innerWidth: window.innerWidth,
+		innerHeight: window.innerHeight,
+		resizeObserverFires,
+		visibility: document.visibilityState,
+		renderer,
+		msSinceBoot: Math.round(performance.now())
+	};
+	const anomaly = classifySurface({
+		boxWidth: container.clientWidth,
+		boxHeight: container.clientHeight,
+		drawnWidth: canvas?.clientWidth ?? chart.getWidth(),
+		drawnHeight: canvas?.clientHeight ?? chart.getHeight(),
+		painted
+	});
+	host?.post({ type: 'diag', phase, metrics: { ...metrics, anomaly } });
+}
+
+// Once per document: a theme reinit re-fires `rendered` but tells us nothing new.
+function scheduleDiagnostics(): void {
+	if (diagnosticsScheduled || printing) return;
+	diagnosticsScheduled = true;
+	postDiagnostics('rendered');
+	setTimeout(() => postDiagnostics('settled'), SETTLED_DIAGNOSTICS_DELAY_MS);
 }
 
 function reportHeight(): void {
@@ -287,6 +335,7 @@ function initChart(): void {
 	// stack a new observer and re-fire the resize loop multiple times).
 	if (!resizeObserver) {
 		resizeObserver = new ResizeObserver(() => {
+			resizeObserverFires++;
 			if (!chart || chart.isDisposed() || !container) return;
 			chart.resize({ width: container.clientWidth, height: container.clientHeight });
 			render();
@@ -313,6 +362,11 @@ function reinitChart(): void {
 	initChart();
 }
 
+function applyFormatSettings(settings: SandboxFormatSettings): void {
+	formatSettingsValue = settings;
+	formatSettings.set({ decimalSeparator: settings.decimalSeparator ?? '.' });
+}
+
 function applyInit(message: InitMessage): void {
 	renderer = message.renderer;
 	userCode = message.userCode;
@@ -321,8 +375,7 @@ function applyInit(message: InitMessage): void {
 	mode = message.mode;
 	useCardColors = message.useCardColors;
 	printing = message.printing;
-	formatSettingsValue = message.formatSettings;
-	formatSettings.set({ decimalSeparator: message.formatSettings.decimalSeparator ?? '.' });
+	applyFormatSettings(message.formatSettings);
 	container = document.getElementById('evidence-echart') ?? undefined;
 	// reinitChart instead of initChart because applyInit can fire more than
 	// once — bootSandbox's dispatch routes port-side init messages back
@@ -390,6 +443,12 @@ bootSandbox<InitMessage>({
 					chart.resize({ width: container.clientWidth, height: container.clientHeight });
 					render();
 				}
+				return;
+			case 'format-settings':
+				// `fmt` is re-bound on every render (evaluateUserCode), so a plain
+				// re-render is enough for both the global and `fmt:` codes.
+				applyFormatSettings(typed.formatSettings);
+				render();
 				return;
 		}
 	}

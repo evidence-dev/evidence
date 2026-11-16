@@ -41,10 +41,9 @@ export function compileUserBody(
 	globalNames: readonly string[]
 ): (...args: unknown[]) => unknown {
 	try {
-		return new Function(
-			...globalNames,
-			`"use strict";\nreturn (\n${source}\n);`
-		) as (...args: unknown[]) => unknown;
+		return new Function(...globalNames, `"use strict";\nreturn (\n${source}\n);`) as (
+			...args: unknown[]
+		) => unknown;
 	} catch {
 		return new Function(...globalNames, `"use strict";\n${source}`) as (
 			...args: unknown[]

@@ -916,7 +916,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 		);
 
 		if (error) {
-			logger.error({ generateSQLQueryError: error }, '[Query] Failed to generate dataQuery');
+			logger.error({ err: error }, '[Query] Failed to generate dataQuery');
 			if (browser) posthog.capture('Query-dataQuery-failed', { error, query: this.query });
 			return { sql: undefined, error };
 		}
@@ -965,7 +965,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 			);
 		} catch (error) {
 			logger.warn(
-				{ error, tableExpressionName: this.query.tableExpressionName },
+				{ err: error, tableExpressionName: this.query.tableExpressionName },
 				'[Query] Failed to interpolate inline query for pivotCheckQuery, using raw table expression'
 			);
 			tableExpression = quoteUntrustedIdentifierPath(
@@ -1024,10 +1024,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 		);
 
 		if (error) {
-			logger.error(
-				{ generateSQLQueryError: error },
-				'[Query] Failed to generate nonPivotCheckQuery'
-			);
+			logger.error({ err: error }, '[Query] Failed to generate nonPivotCheckQuery');
 			if (browser) posthog.capture('Query-nonPivotCheckQuery-failed', { error, query: this.query });
 			return undefined;
 		}
@@ -1098,7 +1095,7 @@ export class Query<RowType extends AnyRowType = AnyRowType> {
 		);
 
 		if (error) {
-			logger.error({ generateSQLQueryError: error }, '[Query] Failed to generate countQuery');
+			logger.error({ err: error }, '[Query] Failed to generate countQuery');
 			if (browser) posthog.capture('Query-countQuery-failed', { error, query: this.query });
 			return;
 		}

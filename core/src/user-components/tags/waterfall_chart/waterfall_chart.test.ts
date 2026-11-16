@@ -295,7 +295,7 @@ describe('waterfall_chart SQL', () => {
 			date_grain: 'month',
 			x_sort: 'asc',
 			date_range: { date: 'date', range: 'last 6 months' },
-			anchorDate: new Date('2024-07-15T00:00:00Z')
+			anchorDate: new Date(2024, 6, 15)
 		});
 		assertParses(sql);
 		expect(sql).toMatchInlineSnapshot(`

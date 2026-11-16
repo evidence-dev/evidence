@@ -11,6 +11,8 @@
 		type LineStyleType,
 		type SeriesColorValue
 	} from './series-marker';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	const { t } = getLocaleContext();
 
 	type ChartDataPoint = {
 		name: string;
@@ -278,7 +280,9 @@
 					onclick={() => (showAll = !showAll)}
 					transition:fade|local={{ duration: 150 }}
 				>
-					{showAll ? 'Show Less' : `+ ${series.length - maxItems} More`}
+					{showAll
+						? t('legend.show_less')
+						: t('legend.show_more', { count: series.length - maxItems })}
 				</button>
 			{/if}
 		</div>

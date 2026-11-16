@@ -30,6 +30,8 @@ export type { SandboxData, SandboxFormatSettings, SandboxMode, SandboxThemes };
  * `'capture-png'`). The wire format changed, so the version bump also
  * cache-busts the runtime URL — a stale v2 bundle can't answer the v3 PNG
  * request and would otherwise silently fail PNG export.
+ * `format-settings` was added without a bump: it is additive, and an exact-match
+ * bump blanks custom charts in tabs opened before the deploy.
  */
 export const SANDBOX_PROTOCOL_VERSION = 3;
 
@@ -102,12 +104,18 @@ export interface ResizeMessage {
 	height: number;
 }
 
+export interface FormatSettingsMessage {
+	type: 'format-settings';
+	formatSettings: SandboxFormatSettings;
+}
+
 export type ParentToSandboxMessage =
 	| InitMessage
 	| DataMessage
 	| CodeMessage
 	| ThemeMessage
-	| ResizeMessage;
+	| ResizeMessage
+	| FormatSettingsMessage;
 
 // ---- Sandbox → parent ----
 

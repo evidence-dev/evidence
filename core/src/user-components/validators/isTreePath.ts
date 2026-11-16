@@ -1,6 +1,8 @@
 import type { ProjectTreeEntry } from '../interfaces/project-tree';
 import { isValidationContext, type Validator } from './types';
 
+const EVIDENCE_CONFIG_FILENAME = 'evidence.config.yaml';
+
 export const isTreePath =
 	(attributeName: string): Validator =>
 	(node, _config, context) => {
@@ -12,7 +14,6 @@ export const isTreePath =
 		if (typeof attributeValue !== 'string') return [];
 
 		const [projectSlug, ...rawParts] = attributeValue.split('/').filter((part) => part !== '');
-		const parts = [null, ...rawParts]; // add null part for root directory slug
 
 		if (!projectSlug) {
 			const example = trees?.[0]?.project.slug ?? '<project>';
@@ -38,6 +39,14 @@ export const isTreePath =
 			];
 		}
 
+		// The bare project URL is the project landing route, which picks the first page.
+		if (rawParts.length === 0) return [];
+
+		// Project-root layout: the runtime serves `/<project>/<path>` from `pages/<path>`.
+		const root = project.entries.find((entry) => entry.entry.slug === null);
+		const prefix = usesProjectRoot(root) && rawParts[0] !== 'pages' ? ['pages'] : [];
+		const parts = [null, ...prefix, ...rawParts];
+
 		let lastEntry: ProjectTreeEntry | undefined;
 		let entries = project.entries;
 		for (const [i, part] of parts.entries()) {
@@ -45,7 +54,8 @@ export const isTreePath =
 
 			// Return error if we cant find the next part
 			if (!next) {
-				const pathUntilNow = [projectSlug, ...parts].slice(0, i).join('/');
+				const shownParts = parts.slice(1 + prefix.length, i);
+				const pathUntilNow = [projectSlug, ...shownParts].join('/');
 				return [
 					{
 						id: 'invalid-link-href',
@@ -81,3 +91,12 @@ export const isTreePath =
 
 		return [];
 	};
+
+function usesProjectRoot(root: ProjectTreeEntry | undefined): boolean {
+	return (
+		root?.type === 'directory' &&
+		root.children.some(
+			(child) => child.type === 'page' && child.entry.name === EVIDENCE_CONFIG_FILENAME
+		)
+	);
+}

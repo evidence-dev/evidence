@@ -101,15 +101,25 @@ export function inferFileIconKind(opts: { name?: string; url?: string }): FileIc
 
 const DATE_ONLY = /^(\d{4})-(\d{2})-(\d{2})$/;
 
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-	month: 'short',
-	day: 'numeric',
-	year: 'numeric',
-	timeZone: 'UTC'
-});
+const dateFormatters = new Map<string, Intl.DateTimeFormat>();
+
+function dateFormatter(language: string): Intl.DateTimeFormat {
+	const tag = language === 'en' ? 'en-US' : language;
+	let formatter = dateFormatters.get(tag);
+	if (!formatter) {
+		formatter = new Intl.DateTimeFormat(tag, {
+			month: 'short',
+			day: 'numeric',
+			year: 'numeric',
+			timeZone: 'UTC'
+		});
+		dateFormatters.set(tag, formatter);
+	}
+	return formatter;
+}
 
 /** "Sep 29, 2026" from `YYYY-MM-DD` (no timezone shift) or ISO; free text like "Q3 2026" passes through. */
-export function formatFileDate(date: string | undefined): string | undefined {
+export function formatFileDate(date: string | undefined, language = 'en'): string | undefined {
 	if (!date) return undefined;
 	const trimmed = date.trim();
 	if (!trimmed) return undefined;
@@ -122,12 +132,12 @@ export function formatFileDate(date: string | undefined): string | undefined {
 		const isRealDate =
 			parsed.getUTCFullYear() === y && parsed.getUTCMonth() === m - 1 && parsed.getUTCDate() === d;
 		if (!isRealDate) return trimmed;
-		return dateFormatter.format(parsed);
+		return dateFormatter(language).format(parsed);
 	}
 
 	const parsed = new Date(trimmed);
 	if (Number.isNaN(parsed.getTime())) return trimmed;
-	return dateFormatter.format(parsed);
+	return dateFormatter(language).format(parsed);
 }
 
 /** `evd_` alias → authenticated proxy path (with `?name=` for the download filename); other URLs unchanged. */

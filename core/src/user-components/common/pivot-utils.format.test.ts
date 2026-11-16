@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { formatValue } from '../formatValue';
+import { generatePivotData, type PivotConfig } from './pivot-utils';
+import type { UnifiedColumnDefinition } from '../tags/table/unified-column-definition.types';
 
 /**
  * Tests that date formatting works correctly when columnType is provided.
@@ -90,5 +92,75 @@ describe('formatValue with columnType for date formatting', () => {
 
 		const result = formatValue(numberValue, formatCode, String(numberValue), undefined, undefined);
 		expect(result).toBe('1,234.56');
+	});
+});
+
+describe('generatePivotData: pivot header language', () => {
+	const pce = (alias: string, type: 'dimension' | 'measure') => ({
+		sqlWithAlias: alias,
+		sqlWithoutAlias: alias,
+		sqlWithoutDateFiltersOrAlias: alias,
+		alias,
+		displayAlias: alias,
+		type,
+		isComplexExpression: false,
+		hasAgg: type === 'measure',
+		isTemporalDateGrain: false,
+		hasDateGrain: false,
+		hasDateRange: false,
+		isTableComparison: false,
+		isTableSparkline: false
+	});
+	const unifiedColumns: UnifiedColumnDefinition[] = [
+		{
+			type: 'dimension',
+			sqlWithAlias: 'category',
+			alias: 'category',
+			columnIdForRendering: 'category',
+			processedColumnExpression: pce('category', 'dimension')
+		},
+		{
+			type: 'pivot',
+			sqlWithAlias: 'month',
+			alias: 'month',
+			columnIdForRendering: 'month',
+			processedColumnExpression: pce('month', 'dimension'),
+			fmt: 'mmm yyyy'
+		},
+		{
+			type: 'measure',
+			sqlWithAlias: 'sum(sales) AS sales',
+			alias: 'sales',
+			columnIdForRendering: 'sales',
+			sqlWithoutAlias: 'sum(sales)',
+			processedColumnExpression: pce('sales', 'measure')
+		}
+	];
+	const data = [
+		{ category: 'A', month: '2024-01-01', sales: 10 },
+		{ category: 'A', month: '2024-02-01', sales: 20 }
+	];
+	const config = (language: string): PivotConfig => ({
+		dimensions: ['category'],
+		pivots: ['month'],
+		measures: ['sales'],
+		measuresFirst: false,
+		subtotals: false,
+		columnTypes: new Map([
+			['category', 'string'],
+			['month', 'date'],
+			['sales', 'number']
+		]),
+		unifiedColumns,
+		language
+	});
+	const labels = (language: string) =>
+		generatePivotData(data, config(language))
+			.headerLevels.flat()
+			.map((cell) => cell.label);
+
+	it('switching language on the same rows re-renders the headers', () => {
+		expect(labels('en')).toEqual(expect.arrayContaining(['Jan 2024', 'Feb 2024']));
+		expect(labels('fr')).toEqual(expect.arrayContaining(['janv. 2024', 'févr. 2024']));
 	});
 });

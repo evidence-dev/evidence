@@ -12,7 +12,8 @@ function makeDeps(initialUrl = 'https://example.com/report') {
 		url: () => url,
 		updateUrl,
 		projectSettings: undefined,
-		dialect: undefined
+		dialect: undefined,
+		language: undefined
 	};
 	return { deps, updateUrl, param: (id: string) => url.searchParams.get(id) };
 }

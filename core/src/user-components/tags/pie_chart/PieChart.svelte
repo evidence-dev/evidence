@@ -18,7 +18,7 @@
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { Query } from '../../../Query.svelte';
-	import { formatValue } from '../../formatValue';
+	import { getLocaleContext } from '../../../locale/locale.context.svelte';
 	import type { DataPoint } from '../../types';
 	import { getPageFiltersContext } from '../../../page-filters-context';
 	import { getInlineQueriesContext } from '../../common/inline-queries';
@@ -37,6 +37,9 @@
 	} from '../../common/tooltip-fields';
 	import { getMetricsCatalogContext } from '../../../metrics/metrics-catalog';
 	import { resolveMetric, applyMetricDimension } from '../../../metrics/resolve-metric';
+
+	const localeContext = getLocaleContext();
+	const formatValue = $derived(localeContext.formatValue);
 
 	const { getComponentId, setError, hasBlockingErrors } = getComponentWrapperContext();
 	const componentId = $derived(getComponentId());
@@ -253,7 +256,11 @@
 				const formattedValue = formatValue(value, value_fmt, value.toString());
 				const percentage = param.percent;
 				const extras = (param.data as { extras?: Record<string, unknown> } | undefined)?.extras;
-				const extraRows = renderTooltipExtras(processedTooltip.fields, extras);
+				const extraRows = renderTooltipExtras(
+					processedTooltip.fields,
+					extras,
+					localeContext.language
+				);
 				return `
 					<div class="flex flex-col">
 						<span class="font-semibold">${escapeHtml(param.name)}</span>
