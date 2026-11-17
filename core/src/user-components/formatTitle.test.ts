@@ -43,6 +43,24 @@ describe('formatTitle', () => {
 			expect(formatTitle('day_of_week')).toBe('Day of Week');
 			expect(formatTitle('state_of_the_union')).toBe('State of the Union');
 		});
+
+		it('should capitalize a joining word when it starts the title', () => {
+			expect(formatTitle('on_time_outreach')).toBe('On Time Outreach');
+			expect(formatTitle('the_big_number')).toBe('The Big Number');
+		});
+	});
+
+	describe('period suffixes', () => {
+		it('should uppercase number + period unit tokens', () => {
+			expect(formatTitle('on_time_renewals_30d')).toBe('On Time Renewals 30D');
+			expect(formatTitle('churn_12m')).toBe('Churn 12M');
+			expect(formatTitle('signups_24h')).toBe('Signups 24H');
+		});
+
+		it('should leave ordinals and plain numbers alone', () => {
+			expect(formatTitle('2nd_place')).toBe('2nd Place');
+			expect(formatTitle('top_10')).toBe('Top 10');
+		});
 	});
 
 	describe('parentheses transformation (default behavior)', () => {

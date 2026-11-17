@@ -110,15 +110,20 @@ export default function formatTitle(
 	// Allow some joining words to remain fully lowercased in title:
 	const lowercase = ['of', 'the', 'and', 'in', 'on'];
 
+	const periodSuffix = /^\d+[dwmqyh]$/i;
+
 	// Set name to proper casing:
 	function toTitleCase(str: string) {
-		return str.replace(/\S*/g, function (txt) {
-			if (!acronyms.includes(txt) && !lowercase.includes(txt)) {
-				return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-			} else if (acronyms.includes(txt)) {
+		let isFirstWord = true;
+		return str.replace(/\S+/g, function (txt) {
+			const isFirst = isFirstWord;
+			isFirstWord = false;
+			if (acronyms.includes(txt) || periodSuffix.test(txt)) {
 				return txt.toUpperCase();
-			} else {
+			} else if (lowercase.includes(txt) && !isFirst) {
 				return txt.toLowerCase();
+			} else {
+				return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 			}
 		});
 	}
