@@ -6,11 +6,21 @@
 		noTooltip?: boolean;
 		tooltipDelay?: number;
 		tooltipClass?: string;
+		tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
+		tooltipSideOffset?: number;
 		class?: string;
 		children?: Snippet;
 	};
 
-	let { noTooltip, tooltipDelay = 300, tooltipClass, class: className, children }: Props = $props();
+	let {
+		noTooltip,
+		tooltipDelay = 300,
+		tooltipClass,
+		tooltipSide = 'top',
+		tooltipSideOffset = 0,
+		class: className,
+		children
+	}: Props = $props();
 
 	let element: HTMLDivElement | undefined = $state();
 	let hasEllipsis: boolean = $state(false);
@@ -46,7 +56,11 @@
 				</div>
 			{/snippet}
 		</Tooltip.Trigger>
-		<Tooltip.Content class="z-99999 {tooltipClass ?? ''}">
+		<Tooltip.Content
+			side={tooltipSide}
+			sideOffset={tooltipSideOffset}
+			class="z-99999 {tooltipClass ?? ''}"
+		>
 			{@render children?.()}
 		</Tooltip.Content>
 	</Tooltip.Root>

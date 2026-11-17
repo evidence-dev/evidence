@@ -234,3 +234,29 @@ export const projectDateSchema = z
 	.passthrough();
 
 export type ParsedProjectDate = z.infer<typeof projectDateSchema>;
+
+/** `evidence.config.yaml` `format:` — number formatting for the whole project. */
+export const projectFormatSchema = z
+	.object({
+		decimal_separator: z
+			.enum(['period', 'comma'])
+			.optional()
+			.describe(
+				"Decimal separator for formatted numbers: 'period' (1,234.56) or 'comma' (1.234,56). The thousands separator is the other one."
+			)
+	})
+	.passthrough()
+	.describe('Number formatting for the whole project.');
+
+/** `evidence.config.yaml` `query_engine:` — how the query engine reads this project's SQL. */
+export const projectQueryEngineSchema = z
+	.object({
+		dialect: z
+			.enum(['default', 'postgres', 'snowflake'])
+			.optional()
+			.describe(
+				"SQL dialect the query engine parses this project's queries in. 'default' is the engine's own dialect."
+			)
+	})
+	.passthrough()
+	.describe('Query engine settings for the whole project.');

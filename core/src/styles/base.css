@@ -400,6 +400,25 @@
 	font-size: var(--theme-sidebar-font-size, calc(var(--theme-font-scale, 1) * 0.875rem));
 }
 
+/* Viewer chrome (header + sidebar) has its own fixed visual design and tracks the
+   theme's COLORS only — not its radius, fonts, font scale, density, or depth. Those
+   style tokens are reset to Evidence defaults here; the chrome subtree inherits these
+   instead of the themed :root values (a :root rule doesn't match these elements, so
+   the nearest-ancestor value wins for the subtree). Keeps the chrome stable when a
+   report theme sets e.g. radius:0 or a serif font, while colors still come through. */
+.core-chrome {
+	--radius: 0.5rem;
+	--theme-font-scale: 1;
+	--theme-font-body: 'Geist', sans-serif;
+	--theme-font-heading: 'Geist', sans-serif;
+	--theme-font-mono: 'Geist Mono', Consolas, monospace;
+	--theme-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--theme-report-gap: 1rem;
+	--theme-block-gap: 1rem;
+	--theme-card-padding: 1rem;
+	font-family: 'Geist', sans-serif;
+}
+
 :root {
 	--radius: 0.5rem;
 	/* Semantic up/down colors; overridden per-mode by injected theme CSS */
@@ -654,6 +673,33 @@
 
 	*:not(:hover)::-webkit-scrollbar-thumb {
 		background: transparent;
+	}
+
+	.pretty-scrollbar {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(100, 100, 100, 0.4) transparent;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar-thumb {
+		background: transparent;
+		border-radius: 7px;
+	}
+
+	.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
+		background: rgba(100, 100, 100, 0.4);
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar-thumb:hover {
+		background: rgba(100, 100, 100, 0.7);
 	}
 
 	button {
