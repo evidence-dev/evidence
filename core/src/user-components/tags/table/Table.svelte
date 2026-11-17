@@ -1295,7 +1295,7 @@
 			{:else if loading}
 				<!-- Placeholder rows during loading -->
 				<TableLoadingSkeleton
-					rowCount={page_size > 200 ? 10 : page_size}
+					rowCount={Math.min(page_size ?? 10, 10)}
 					rowLines={row_lines}
 					rowShading={row_shading}
 					hasLink={!!link}
