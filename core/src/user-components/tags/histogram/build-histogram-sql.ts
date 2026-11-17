@@ -40,10 +40,11 @@ export function buildHistogramSQL(attrs: HistogramSQLAttrs): string {
 	let binWidthExpr: string;
 	if (bin_width !== undefined && bin_width > 0) {
 		binWidthExpr = `${bin_width}`;
-	} else if (bin_count !== undefined && bin_count > 0) {
-		binWidthExpr = `(${range} / ${bin_count})`;
 	} else {
-		binWidthExpr = `(${range} / stats.${q('rice_bin_count')})`;
+		const binCount =
+			bin_count !== undefined && bin_count > 0 ? bin_count : `stats.${q('rice_bin_count')}`;
+		// Constant data has no natural width; keep its observations in one unit-width bin.
+		binWidthExpr = `(CASE WHEN stats.${q('min_val')} = stats.${q('max_val')} THEN 1 ELSE (${range} / ${binCount}) END)`;
 	}
 
 	const seriesSelect = series ? `, ${series}` : '';
