@@ -15,6 +15,8 @@
 	import { createResolvers } from '../../common/use-variable-processing';
 	import { setupContainerReadiness } from '../../../readiness.svelte';
 	import { getPrintModeContext } from '../../../print-mode.context';
+	import { getQueryInfoContext } from '../../../query-info-context.svelte';
+	import { getNodeContext } from '../../Renderer/node-context';
 	import {
 		buildRepeatQueryConfig,
 		resolveRepeatColumnExpression
@@ -82,6 +84,15 @@
 	// 1. Repeat's own query has resolved (!loading)
 	// 2. All children inside all RepeatChild iterations have completed their readiness
 	setupContainerReadiness('repeat', () => !query.loading);
+
+	// Children don't exist until this query resolves, so exports must see it as pending.
+	const queryInfoContext = getQueryInfoContext();
+	const componentId = getNodeContext()?.tag?.id;
+	$effect(() => {
+		if (queryInfoContext && componentId) {
+			return queryInfoContext.registerQuery(componentId, 'repeat', query);
+		}
+	});
 
 	// Get query results (kept for debugging)
 	const queryResults = $derived(query.result?.rows ?? []);

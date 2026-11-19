@@ -206,6 +206,57 @@ describe('page Excel export report image', () => {
 		expect(workbook.getWorksheet('Orders')!.getRow(2).values).toEqual([undefined, 'EMEA', 3]);
 	});
 
+	it('waits for loading components to render before capturing', async () => {
+		const target = mountReport(800, 1200);
+		const spinner = document.createElement('div');
+		spinner.className = 'animate-spin';
+		target.appendChild(spinner);
+		const queryInfoContext = queryInfoContextWith([
+			{ title: 'Revenue', rows: [{ region: 'EMEA', total: 10 }] }
+		]);
+		const revenue = queryInfoContext.queryInfoMap.get('component-0')!;
+		(revenue.query as unknown as { loading: boolean }).loading = true;
+
+		let renderedAtCapture = false;
+		toPngMock.mockImplementation(async () => {
+			renderedAtCapture = !revenue.query.loading && !target.contains(spinner);
+			return ONE_PX_PNG;
+		});
+		setTimeout(() => {
+			(revenue.query as unknown as { loading: boolean }).loading = false;
+			spinner.remove();
+		}, 300);
+
+		await downloadPageDataAsExcel({ pageName: 'Sales', queryInfoContext, includeImage: true });
+
+		expect(renderedAtCapture).toBe(true);
+		const workbook = await loadDownloadedWorkbook();
+		expect(workbook.worksheets.map((ws) => ws.name)).toEqual(['Report', 'Revenue']);
+	});
+
+	it('cancels instead of mixing pages when the report is replaced mid-wait', async () => {
+		const target = mountReport(800, 1200);
+		const queryInfoContext = queryInfoContextWith([
+			{ title: 'Revenue', rows: [{ region: 'EMEA', total: 10 }] }
+		]);
+		const revenue = queryInfoContext.queryInfoMap.get('component-0')!;
+		(revenue.query as unknown as { loading: boolean }).loading = true;
+		toPngMock.mockResolvedValue(ONE_PX_PNG);
+		const onError = vi.fn();
+		setTimeout(() => target.remove(), 300);
+
+		await downloadPageDataAsExcel({
+			pageName: 'Sales',
+			queryInfoContext,
+			includeImage: true,
+			onError
+		});
+
+		expect(onError).toHaveBeenCalledWith('Excel report cancelled', expect.any(String));
+		expect(toPngMock).not.toHaveBeenCalled();
+		expect(downloadedBlobs).toHaveLength(0);
+	});
+
 	it('captures only the element matching imageSelector', async () => {
 		mountReport(300, 300);
 		const pane = document.createElement('div');

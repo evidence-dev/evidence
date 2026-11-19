@@ -7,6 +7,7 @@ import { tags } from '../index';
 import { logger } from './logger';
 import { toast } from 'svelte-sonner';
 import { capturePng, type CapturedPng } from '../utils/png-download';
+import { waitForFonts } from '../readiness';
 
 // Categories to exclude from Excel export (inputs/filters and logic/conditionals don't produce meaningful data)
 const EXCLUDED_EXPORT_CATEGORIES = new Set(['input', 'logic']);
@@ -85,13 +86,48 @@ function buildPageExcelFilename(pageName: string): string {
 	return `${pageName}_${getExcelExportTimestamp()}`;
 }
 
-// A failed capture shouldn't block the data export, so the image is best-effort.
-async function captureReportImage(selector: string): Promise<CapturedPng | undefined> {
-	const target = document.querySelector<HTMLElement>(selector);
-	if (!target) {
-		logger.warn({ selector }, 'Report content not found; exporting without image');
-		return undefined;
+const REPORT_SETTLE_TIMEOUT_MS = 60_000;
+const REPORT_SETTLE_POLL_MS = 250;
+// A query that finishes can kick off a dependent one, so one quiet poll isn't enough.
+const REPORT_SETTLE_QUIET_POLLS = 2;
+
+// Same signals the scheduled PDF renderer waits on before it captures.
+function isReportSettled(target: HTMLElement, queryInfoContext: QueryInfoContext): boolean {
+	for (const { query } of queryInfoContext.queryInfoMap.values()) {
+		if (query.loading) return false;
 	}
+	if (target.querySelector('[data-echarts-ready="false"], [data-map-ready="false"]')) return false;
+	return !Array.from(target.querySelectorAll('.animate-spin')).some(
+		(spinner) => getComputedStyle(spinner).opacity !== '0'
+	);
+}
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// False if the user navigated away mid-wait, since the shared query context then holds another page's results.
+async function waitForReportToSettle(
+	target: HTMLElement,
+	queryInfoContext: QueryInfoContext
+): Promise<boolean> {
+	const deadline = Date.now() + REPORT_SETTLE_TIMEOUT_MS;
+	const pathname = location.pathname;
+	const isSameReport = () => target.isConnected && location.pathname === pathname;
+	let quietPolls = 0;
+	while (quietPolls < REPORT_SETTLE_QUIET_POLLS) {
+		if (!isSameReport()) return false;
+		if (Date.now() >= deadline) {
+			logger.warn('Report still loading after timeout; capturing as-is');
+			break;
+		}
+		quietPolls = isReportSettled(target, queryInfoContext) ? quietPolls + 1 : 0;
+		if (quietPolls < REPORT_SETTLE_QUIET_POLLS) await sleep(REPORT_SETTLE_POLL_MS);
+	}
+	await Promise.race([waitForFonts(), sleep(Math.max(0, deadline - Date.now()))]);
+	return isSameReport();
+}
+
+// A failed capture shouldn't block the data export, so the image is best-effort.
+async function captureReportImage(target: HTMLElement): Promise<CapturedPng | undefined> {
 	try {
 		return await capturePng(target);
 	} catch (err) {
@@ -128,11 +164,23 @@ export async function downloadPageDataAsExcel({
 		return;
 	}
 
-	const snapshot = snapshotQueryInfo(queryInfoContext);
 	const loadingToast = toast.loading('Generating Excel report…', { duration: Infinity });
 
 	try {
-		const reportImage = await captureReportImage(imageSelector);
+		const target = document.querySelector<HTMLElement>(imageSelector);
+		if (target) {
+			if (!(await waitForReportToSettle(target, queryInfoContext))) {
+				onError(
+					'Excel report cancelled',
+					'The page changed before the report finished loading. Try again on the page you want to export.'
+				);
+				return;
+			}
+		} else {
+			logger.warn({ selector: imageSelector }, 'Report content not found; exporting without image');
+		}
+		const snapshot = snapshotQueryInfo(queryInfoContext);
+		const reportImage = target ? await captureReportImage(target) : undefined;
 		await downloadPageAsExcel({
 			filename,
 			queryInfoContext: snapshot,
