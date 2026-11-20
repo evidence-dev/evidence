@@ -81,6 +81,24 @@ describe('SandboxRpc requests (this end asks the peer)', () => {
 		await assertion;
 	});
 
+	it('waits past the default timeout for a reply when timeoutMs is null', async () => {
+		vi.useFakeTimers();
+		const { rpc } = makeRpc();
+		const promise = rpc.request('slow', undefined, { timeoutMs: null });
+		await vi.advanceTimersByTimeAsync(60 * 60 * 1000);
+
+		rpc.handleMessage({ type: 'rpc-response', requestId: 'id-1', ok: true, result: 'done' });
+		await expect(promise).resolves.toBe('done');
+	});
+
+	it('rejects a request with no timeout when the channel is disposed', async () => {
+		const { rpc } = makeRpc();
+		const promise = rpc.request('slow', undefined, { timeoutMs: null });
+
+		rpc.dispose();
+		await expect(promise).rejects.toThrow('sandbox channel closed');
+	});
+
 	it('ignores a late reply that arrives after the request timed out', async () => {
 		vi.useFakeTimers();
 		const { rpc } = makeRpc();
