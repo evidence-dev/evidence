@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { assertParses } from '../../../test-utils/ch-parse';
+import { assertParses, queryClickHouse } from '../../../test-utils/ch-parse';
 import { buildHistogramSQL, type HistogramSQLAttrs } from './build-histogram-sql';
 import {
 	SnowflakeDialect,
@@ -53,9 +53,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") / ((stats."max_val" - stats."min_val") / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -87,9 +87,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") / ((stats."max_val" - stats."min_val") / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -121,9 +121,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats.\`min_val\`) / ((stats.\`max_val\` - stats.\`min_val\`) / 30)) AS \`bin_index\`,
+								floor((transactions - stats.\`min_val\`) / (CASE WHEN stats.\`min_val\` = stats.\`max_val\` THEN 1 ELSE ((stats.\`max_val\` - stats.\`min_val\`) / 30) END)) AS \`bin_index\`,
 								stats.\`min_val\` AS \`min_val\`,
-								((stats.\`max_val\` - stats.\`min_val\`) / 30) AS \`bin_width\`
+								(CASE WHEN stats.\`min_val\` = stats.\`max_val\` THEN 1 ELSE ((stats.\`max_val\` - stats.\`min_val\`) / 30) END) AS \`bin_width\`
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -155,9 +155,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -189,9 +189,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -223,9 +223,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats.\`min_val\`) / ((stats.\`max_val\` - stats.\`min_val\`) / 30)) AS \`bin_index\`,
+								floor((transactions - stats.\`min_val\`) / (CASE WHEN stats.\`min_val\` = stats.\`max_val\` THEN 1 ELSE ((stats.\`max_val\` - stats.\`min_val\`) / 30) END)) AS \`bin_index\`,
 								stats.\`min_val\` AS \`min_val\`,
-								((stats.\`max_val\` - stats.\`min_val\`) / 30) AS \`bin_width\`
+								(CASE WHEN stats.\`min_val\` = stats.\`max_val\` THEN 1 ELSE ((stats.\`max_val\` - stats.\`min_val\`) / 30) END) AS \`bin_width\`
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -257,9 +257,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -291,9 +291,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -324,9 +324,9 @@ describe('histogram SQL', () => {
 							count(*) AS "frequency"
 						FROM (
 							SELECT
-								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN (
 							SELECT
@@ -358,9 +358,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") * 1.0 / ((stats."max_val" - stats."min_val") * 1.0 / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") * 1.0 / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") * 1.0 / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") * 1.0 / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -392,9 +392,9 @@ describe('histogram SQL', () => {
 						),
 						binned AS (
 							SELECT
-								floor((transactions - stats."min_val") / ((stats."max_val" - stats."min_val") / 30)) AS "bin_index",
+								floor((transactions - stats."min_val") / (CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") / 30) END)) AS "bin_index",
 								stats."min_val" AS "min_val",
-								((stats."max_val" - stats."min_val") / 30) AS "bin_width"
+								(CASE WHEN stats."min_val" = stats."max_val" THEN 1 ELSE ((stats."max_val" - stats."min_val") / 30) END) AS "bin_width"
 							FROM demo.daily_orders
 							CROSS JOIN stats
 							
@@ -532,7 +532,11 @@ describe('histogram SQL', () => {
 	// int / int truncates on Postgres-family engines: an integer column with a range
 	// smaller than bin_count would get bin_width 0 and divide by zero.
 	it('forces fractional division where integer division truncates', () => {
-		const attrs = { data: 'demo.daily_orders', value: 'transactions', bin_count: 30 };
+		const attrs = {
+			data: 'demo.daily_orders',
+			value: 'transactions',
+			bin_count: 30
+		};
 		for (const dialect of [new PostgresDialect(), new RedshiftDialect()]) {
 			const sql = buildHistogramSQL({ ...attrs, dialect });
 			expect(sql).toContain('(stats."max_val" - stats."min_val") * 1.0 / 30');
@@ -541,5 +545,46 @@ describe('histogram SQL', () => {
 		expect(buildHistogramSQL({ ...attrs, dialect: new ClickHouseDialect() })).not.toContain(
 			'* 1.0'
 		);
+	});
+	it.each([7, 0, -5, 0.25])('keeps constant %s observations in one finite bin', (value) => {
+		for (const bins of [{ bin_count: 20 }, {}]) {
+			const sql = buildHistogramSQL({
+				data: `(SELECT arrayJoin([${value}, ${value}, ${value}]) AS value) AS observations`,
+				value: 'value',
+				...bins
+			});
+			expect(queryClickHouse(sql).trim().split('\t').map(Number)).toEqual([0, value, value + 1, 3]);
+		}
+	});
+
+	it('keeps a singleton observation', () => {
+		const sql = buildHistogramSQL({
+			data: '(SELECT 7 AS value) AS observations',
+			value: 'value',
+			bin_count: 20
+		});
+		expect(queryClickHouse(sql).trim().split('\t').map(Number)).toEqual([0, 7, 8, 1]);
+	});
+
+	it('keeps series frequencies when filters leave a constant cohort', () => {
+		const sql = buildHistogramSQL({
+			data: `(SELECT row.1 AS value, row.2 AS cohort FROM (SELECT arrayJoin([(7, 'A'), (7, 'A'), (7, 'B'), (9, 'B')]) AS row)) AS observations`,
+			value: 'value',
+			series: 'cohort',
+			where: 'value < 9',
+			filterSql: "cohort IN ('A', 'B')",
+			bin_count: 20
+		});
+		expect(queryClickHouse(sql).trim().split('\n')).toEqual(['0\t7\t8\tA\t2', '0\t7\t8\tB\t1']);
+	});
+
+	it('preserves an explicit bin width for constant data', () => {
+		const sql = buildHistogramSQL({
+			data: '(SELECT arrayJoin([7, 7, 7]) AS value) AS observations',
+			value: 'value',
+			bin_count: 20,
+			bin_width: 0.5
+		});
+		expect(queryClickHouse(sql).trim().split('\t').map(Number)).toEqual([0, 7, 7.5, 3]);
 	});
 });
