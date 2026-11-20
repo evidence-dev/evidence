@@ -395,6 +395,7 @@ describe('table filter initial values', () => {
 			}
 		);
 
+		expect(filter.templateValues.literal).toBe('Groceries, West');
 		expect(filter.value).toEqual({
 			active: true,
 			conjunction: 'AND',
@@ -444,6 +445,73 @@ describe('table filter initial values', () => {
 		);
 
 		expect(filter.value).toEqual(urlState);
+	});
+});
+
+describe('table filter summary', () => {
+	it('describes active conditions and preserves grouping when switching conjunctions', () => {
+		const filter = new TableFilterFilter(
+			{
+				id: 'orders',
+				userComponentName: 'table_filter',
+				attributes: { data: 'demo.orders', columns: ['AREA'], labels: ['Region'] }
+			} as unknown as ConstructorParameters<typeof TableFilterFilter>[0],
+			{
+				url: undefined,
+				updateUrl: undefined,
+				projectSettings: undefined,
+				dialect: undefined,
+				language: undefined
+			}
+		);
+		const filters: ColumnFilter[] = [
+			{
+				columnId: 'area',
+				conditions: [{ type: 'string', operator: 'in', value: ['West', 'East'] }]
+			},
+			{
+				columnId: 'category',
+				conditions: [{ type: 'string', operator: 'not_in', value: ['Electronics'] }]
+			},
+			{
+				columnId: 'order_total',
+				conditions: [{ type: 'number', operator: 'between', value: 100, maxValue: 500 }]
+			},
+			{
+				columnId: 'order_date',
+				conditions: [{ type: 'date', operator: 'after', value: new Date(2026, 10, 1) }]
+			}
+		];
+		filter.value = { active: true, conjunction: 'AND', filters };
+		expect(filter.templateValues.literal).toBe('West, East, Electronics, 100 – 500, 2026-11-01');
+		expect(filter.templateValues.summary).toBe(
+			'Region is West or East, Category is not Electronics, Order Total is between 100 and 500, and Order Date is after November 1, 2026'
+		);
+
+		filter.value = {
+			active: true,
+			conjunction: 'OR',
+			filters: [
+				{
+					columnId: 'region',
+					conditions: [
+						{ type: 'string', operator: 'not_in', value: ['West', 'East'] },
+						{ type: 'string', operator: 'starts_with', value: 'S' }
+					]
+				},
+				{ columnId: 'paid', conditions: [{ type: 'boolean', operator: 'is', value: false }] }
+			]
+		};
+		expect(filter.templateValues.summary).toBe(
+			'(Region is not one of West and East and Region starts with S) or Paid is false'
+		);
+
+		filter.value = {
+			active: true,
+			conjunction: 'AND',
+			filters: [{ columnId: 'category', conditions: [{ type: 'string', operator: 'in', value: [''] }] }]
+		};
+		expect(filter.templateValues.literal).toBe('“”');
 	});
 });
 
@@ -581,6 +649,8 @@ describe('table filter SQL fragment composition', () => {
 
 		expect(filter.sql).toBeUndefined();
 		expect(filter.templateValues.filter).toBe('true');
+		expect(filter.templateValues.literal).toBe('');
+		expect(filter.templateValues.summary).toBe('');
 	});
 
 	it('falls back to a plain comparison when a range operator has no upper bound', () => {

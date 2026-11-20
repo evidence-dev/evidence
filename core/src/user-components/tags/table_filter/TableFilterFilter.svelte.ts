@@ -1,5 +1,7 @@
 import { Filter, type FilterDeps, type FilterInit } from '../../../Filter.svelte';
 import type { SqlDialect } from '../../../sql-dialect';
+import { format as formatDate } from 'date-fns';
+import formatTitle from '../../formatTitle';
 import type { UserComponentProps } from '../../types';
 import { generateFilterSQL } from './filterUtils.svelte';
 import type { schema } from './schema';
@@ -151,11 +153,89 @@ export function deserializeFilterState(raw: string): FilterState | undefined {
 	return { filters, conjunction: result.data.conjunction, active: result.data.active };
 }
 
+function formatConditionValue(condition: FilterCondition): string {
+	const format = (value: string | number | boolean | Date) =>
+		value instanceof Date ? formatDate(value, 'yyyy-MM-dd') : summaryValue(value);
+
+	if (Array.isArray(condition.value)) return condition.value.map(format).join(', ');
+	if (
+		(condition.operator === 'between' || condition.operator === 'not_between') &&
+		condition.maxValue !== undefined
+	) {
+		return `${format(condition.value)} – ${format(condition.maxValue)}`;
+	}
+	return format(condition.value);
+}
+
+const andList = new Intl.ListFormat('en', { type: 'conjunction' });
+const orList = new Intl.ListFormat('en', { type: 'disjunction' });
+const summaryDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' });
+
+const summaryOperators = {
+	is: 'is',
+	is_not: 'is not',
+	in: 'is',
+	not_in: 'is not',
+	contains: 'contains',
+	not_contains: 'does not contain',
+	starts_with: 'starts with',
+	not_starts_with: 'does not start with',
+	ends_with: 'ends with',
+	not_ends_with: 'does not end with',
+	equals: 'is',
+	not_equals: 'is not',
+	greater_than: 'is greater than',
+	less_than: 'is less than',
+	between: 'is between',
+	not_between: 'is not between',
+	before: 'is before',
+	after: 'is after'
+} satisfies Record<FilterCondition['operator'], string>;
+
+function summaryValue(value: string | number | boolean | Date): string {
+	if (value instanceof Date) return summaryDate.format(value);
+	return value === '' ? '“”' : String(value);
+}
+
+function summarizeCondition(label: string, condition: FilterCondition): string {
+	const { operator, value } = condition;
+	if (Array.isArray(value)) {
+		if (!value.length) return '';
+		if (operator === 'not_in' && value.length > 1) {
+			return `${label} is not one of ${andList.format(value.map(summaryValue))}`;
+		}
+		return `${label} ${summaryOperators[operator]} ${orList.format(value.map(summaryValue))}`;
+	}
+	if (operator === 'between' || operator === 'not_between') {
+		if (condition.maxValue === undefined) {
+			return `${label} ${operator === 'between' ? 'is' : 'is not'} ${summaryValue(value)}`;
+		}
+		return `${label} ${summaryOperators[operator]} ${summaryValue(value)} and ${summaryValue(condition.maxValue)}`;
+	}
+	return `${label} ${summaryOperators[operator]} ${summaryValue(value)}`;
+}
+
+function summarizeFilter(state: FilterState, attributes: Omit<TableFilterAttributes, 'id'>): string {
+	const groups = state.filters.map(({ columnId, conditions }) => {
+		const index = attributes.columns?.findIndex(
+			(column) => typeof column === 'string' && column.toLowerCase() === columnId.toLowerCase()
+		);
+		const customLabel = index != null ? attributes.labels?.[index] : undefined;
+		const label = typeof customLabel === 'string' && customLabel ? customLabel : formatTitle(columnId);
+		const clauses = conditions
+			.map((condition) => summarizeCondition(label, condition))
+			.filter(Boolean);
+		const group = andList.format(clauses);
+		return state.conjunction === 'OR' && clauses.length > 1 ? `(${group})` : group;
+	});
+	return (state.conjunction === 'OR' ? orList : andList).format(groups.filter(Boolean));
+}
+
 export class TableFilterFilter extends Filter<FilterState> {
-	// Override defaults: filter for all contexts (only property available)
+	// Override defaults: filter for all contexts
 	static override defaultProperty = { sql: 'filter', text: 'filter', column: 'filter' };
 
-	attributes: Omit<UserComponentProps<typeof schema>, 'id'>;
+	attributes: Omit<TableFilterAttributes, 'id'>;
 
 	predicateSql(dialect?: SqlDialect): string | undefined {
 		if (!this.value) return undefined;
@@ -164,12 +244,17 @@ export class TableFilterFilter extends Filter<FilterState> {
 	}
 
 	get templateValues() {
-		// Generate template values for table filter
-		const templateValues: Record<string, unknown> = {};
-
-		templateValues.filter = (this.value && generateFilterSQL(this.value, this.dialect)) || 'true';
-
-		return templateValues;
+		const state = this.value;
+		return {
+			filter: (state && generateFilterSQL(state, this.dialect)) || 'true',
+			summary: state?.active ? summarizeFilter(state, this.attributes) : '',
+			literal: state?.active
+				? state.filters
+						.flatMap(({ conditions }) => conditions.map(formatConditionValue))
+						.filter(Boolean)
+						.join(', ')
+				: ''
+		};
 	}
 
 	constructor(init: FilterInit<'table_filter', TableFilterAttributes>, deps: FilterDeps) {

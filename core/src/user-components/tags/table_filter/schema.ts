@@ -128,6 +128,26 @@ export const schema = {
 select * from demo.daily_orders
 where {{my_filter}}
 \`\`\``
+		},
+		{
+			name: 'literal',
+			description:
+				'Returns the active condition values as comma-separated text, in filter order. Ranges show both endpoints. Column names and operators are omitted. Returns an empty string when no filters are active.',
+			noSelectionValue: "''",
+			singleValue: 'Electronics, Clothing',
+			example: `{% table_filter id="categories" data="demo.daily_orders" columns=["category"] /%}
+
+Showing orders for {{categories.literal | all categories}}.`
+		},
+		{
+			name: 'summary',
+			description:
+				'Describes active filters as an English clause for use after “where”. Uses column labels, operators, and the filter’s AND or OR conjunction. Returns an empty string when no filters are active.',
+			noSelectionValue: "''",
+			singleValue: 'Region is West or East and Order Total is between 100 and 500',
+			example: `{% table_filter id="orders" data="demo.daily_orders" /%}
+
+This report shows orders where {{orders.summary | all records match}}.`
 		}
 	],
 	componentWrapper: {
