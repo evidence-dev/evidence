@@ -1214,7 +1214,11 @@ export function processDateRange(
 
 	// Build WHERE clause (only if column provided)
 	let whereClause = '';
-	if (column) {
+	if (column && dialect.dateRangePredicate) {
+		// Dialect-specific predicate (e.g. BigQuery, where a DATE literal can't be compared with a
+		// TIMESTAMP column). It gets the raw ISO bounds, not the DATE literals.
+		if (startDate || endDate) whereClause = dialect.dateRangePredicate(column, startDate, endDate);
+	} else if (column) {
 		if (startDateSql && endDateSql) {
 			whereClause = `${column} >= ${startDateSql} AND ${column} <= ${endDateSql}`;
 		} else if (startDateSql) {

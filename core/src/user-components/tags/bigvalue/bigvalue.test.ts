@@ -128,7 +128,7 @@ describe('big_value SQL', () => {
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS \`sum_total_sales\`, (FORMAT_DATE('%b %d/%y', DATE '2025-01-02') || ' - ' || FORMAT_DATE('%b %d/%y', DATE '2026-01-01')) as \`__ev_sum_total_sales_prior_year_comparison_current_period\`, (FORMAT_DATE('%b %d/%y', DATE_ADD(DATE '2025-01-02', INTERVAL -1 YEAR)) || ' - ' || FORMAT_DATE('%b %d/%y', DATE_ADD(DATE '2026-01-01', INTERVAL -1 YEAR))) as \`__ev_sum_total_sales_prior_year_comparison_previous_period\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-01-02' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-01-02' AND date < '2026-01-02')
 			 GROUP BY ALL),
 			comparison_1_fragment AS (SELECT sum(total_sales) as \`__ev_sum_total_sales_prior_year_comparison\`
 			 FROM demo.daily_orders
@@ -554,13 +554,13 @@ describe('big_value SQL', () => {
 			 FROM (
 			 SELECT date as x_val, sum(total_sales) as y_val
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY x_val
 			 ORDER BY x_val
 			 ) as \`__ev_spark_src\`
 			 ) as \`__ev_sparkline_sum_total_sales\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY ALL LIMIT 1"
 			----
 			"SELECT sum(total_sales) AS "sum_total_sales", count(*) as "__ev_count", (

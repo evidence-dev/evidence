@@ -155,7 +155,7 @@ describe('chord_chart SQL', () => {
 			----
 			"SELECT category AS \`category\`, item_name AS \`item_name\`, sum(quantity) AS \`sum_quantity\`
 			 FROM demo.order_details
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY ALL
 			 
 			 

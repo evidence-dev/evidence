@@ -171,6 +171,16 @@ export interface SqlDialect {
 	shortDateLabel(column: string): string;
 	/** Cast an ISO date string (YYYY-MM-DD) to a DATE value. */
 	dateLiteral(isoDate: string): string;
+	/**
+	 * Optional override for the predicate a date filter applies to a column
+	 * (`range_calendar` with `value_column`, period filters, comparisons — anything
+	 * built by `processDateRange`). `startIso` / `endIso` are inclusive YYYY-MM-DD
+	 * bounds; either may be omitted for an open-ended range. When a dialect doesn't
+	 * implement it, the default is `column >= dateLiteral(start) AND column <= dateLiteral(end)`.
+	 * Implement it when that default can't be compared with the column types users
+	 * filter on — BigQuery rejects `TIMESTAMP >= DATE`.
+	 */
+	dateRangePredicate?(column: string, startIso?: string, endIso?: string): string;
 	castToString(column: string): string;
 	countDistinct(column: string): string;
 	limitOffset(limit: number, offset?: number): string;
