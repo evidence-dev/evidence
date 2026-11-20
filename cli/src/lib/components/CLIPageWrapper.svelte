@@ -23,6 +23,7 @@
 	} from '@evidence/core/metadata/inline-query-metadata.svelte';
 	import { createMetricsCatalogContext } from '@evidence/core/metrics/metrics-catalog';
 	import { CLIQueryService, type ConnectionType } from '$lib/services/CLIQueryService';
+	import { abandonQueriesOnLeave } from '$lib/services/abandon-queries-on-leave';
 	import type { Snippet } from 'svelte';
 	import type { SerializedFilters } from '@evidence/core/Filters.svelte';
 
@@ -75,6 +76,7 @@
 	// Create and set QueryService with the right dialect for the active connection.
 	const queryService = new CLIQueryService(organizationId, connectionType);
 	setQueryService(queryService);
+	abandonQueriesOnLeave(queryService);
 
 	// Set up metadata so components that introspect tables/columns work.
 	// connectionType values match WarehouseMode names 1:1; null → managed engine.
