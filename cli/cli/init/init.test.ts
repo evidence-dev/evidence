@@ -305,6 +305,24 @@ describe('runInit', () => {
 			});
 		});
 
+		it('scaffolds a coupler-io connection.yaml whose unfilled placeholders are rejected', async () => {
+			const result = await runInit({ targetDir: null, cwd: workDir, warehouse: 'coupler-io' });
+
+			expect(result.warehouse).toBe('coupler-io');
+			const raw = await readFile(path.join(workDir, 'connection.yaml'), 'utf-8');
+			const parsed = yaml.load(raw) as Record<string, unknown>;
+			expect(parsed.type).toBe('coupler-io');
+			expect(parsed.token).toBe('${COUPLER_API_TOKEN}');
+
+			// With the token in the environment, the unedited workspace id is what fails.
+			process.env.COUPLER_API_TOKEN = 'test-token';
+			try {
+				await expect(loadConnectionConfig(workDir)).rejects.toThrow('unfilled <placeholder>');
+			} finally {
+				delete process.env.COUPLER_API_TOKEN;
+			}
+		});
+
 		it('writes connection.yaml into a named target directory', async () => {
 			await runInit({ targetDir: 'wh-project', cwd: workDir, warehouse: 'snowflake' });
 

@@ -807,7 +807,8 @@
               "direct-connectors/cube",
               "direct-connectors/redshift",
               "direct-connectors/athena",
-              "direct-connectors/motherduck"
+              "direct-connectors/motherduck",
+              "direct-connectors/coupler-io"
             ]
           },
           {
