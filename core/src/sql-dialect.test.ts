@@ -661,6 +661,32 @@ describe('BigQueryDialect', () => {
 		});
 	});
 
+	describe('dateRangePredicate', () => {
+		it('uses untyped string bounds so DATE, DATETIME and TIMESTAMP columns all compare', () => {
+			const sql = dialect.dateRangePredicate('start_time', '2020-01-01', '2020-01-31');
+			expect(sql).toBe("start_time >= '2020-01-01' AND start_time < '2020-02-01'");
+			// A typed DATE literal is what made `TIMESTAMP >= DATE` fail (#3333).
+			expect(sql).not.toContain('DATE ');
+		});
+
+		it('makes the upper bound exclusive on the next day, across month and year ends', () => {
+			expect(dialect.dateRangePredicate('d', undefined, '2024-02-28')).toBe("d < '2024-02-29'");
+			expect(dialect.dateRangePredicate('d', undefined, '2024-02-29')).toBe("d < '2024-03-01'");
+			expect(dialect.dateRangePredicate('d', undefined, '2024-12-31')).toBe("d < '2025-01-01'");
+		});
+
+		it('emits only the bound that is set for open-ended ranges', () => {
+			expect(dialect.dateRangePredicate('d', '2020-01-01')).toBe("d >= '2020-01-01'");
+			expect(dialect.dateRangePredicate('d')).toBe('');
+		});
+
+		it('leaves the column bare so partition pruning still applies', () => {
+			expect(dialect.dateRangePredicate('`my table`.ts', '2020-01-01', '2020-01-01')).toBe(
+				"`my table`.ts >= '2020-01-01' AND `my table`.ts < '2020-01-02'"
+			);
+		});
+	});
+
 	describe('castToString', () => {
 		it('casts to STRING (BQ has no VARCHAR)', () => {
 			expect(dialect.castToString('amount')).toBe('CAST(amount AS STRING)');

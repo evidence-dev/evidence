@@ -267,7 +267,7 @@ describe('heat_grid SQL', () => {
 			----
 			"SELECT province AS \`province\`, avg(wait_time) AS \`avg_wait_time\`
 			 FROM appointments
-			 WHERE (appt_date >= DATE '2025-12-03' AND appt_date <= DATE '2026-01-01')
+			 WHERE (appt_date >= '2025-12-03' AND appt_date < '2026-01-02')
 			 GROUP BY ALL"
 			----
 			"SELECT province AS "province", avg(wait_time) AS "avg_wait_time"

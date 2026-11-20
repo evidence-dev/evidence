@@ -476,7 +476,7 @@ describe('candlestick SQL', () => {
 			----
 			"SELECT date AS \`date\`, open AS \`open\`, high AS \`high\`, low AS \`low\`, close AS \`close\`
 			 FROM demo.prices
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY ALL
 			 
 			 

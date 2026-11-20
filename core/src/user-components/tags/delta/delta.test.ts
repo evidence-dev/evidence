@@ -129,7 +129,7 @@ describe('delta SQL', () => {
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS \`sum_total_sales\`, (FORMAT_DATE('%b %d/%y', DATE '2025-01-02') || ' - ' || FORMAT_DATE('%b %d/%y', DATE '2026-01-01')) as \`__ev_sum_total_sales_prior_year_comparison_current_period\`, (FORMAT_DATE('%b %d/%y', DATE_ADD(DATE '2025-01-02', INTERVAL -1 YEAR)) || ' - ' || FORMAT_DATE('%b %d/%y', DATE_ADD(DATE '2026-01-01', INTERVAL -1 YEAR))) as \`__ev_sum_total_sales_prior_year_comparison_previous_period\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-01-02' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-01-02' AND date < '2026-01-02')
 			 GROUP BY ALL),
 			comparison_1_fragment AS (SELECT sum(total_sales) as \`__ev_sum_total_sales_prior_year_comparison\`
 			 FROM demo.daily_orders
@@ -251,7 +251,7 @@ describe('delta SQL', () => {
 			----
 			"WITH main_query AS (SELECT sum(total_sales) AS \`sum_total_sales\`, (FORMAT_DATE('%b %d/%y', DATE '2025-12-03') || ' - ' || FORMAT_DATE('%b %d/%y', DATE '2026-01-01')) as \`__ev_sum_total_sales_prior_period_comparison_current_period\`, (FORMAT_DATE('%b %d/%y', DATE_ADD(DATE '2025-12-03', INTERVAL -30 DAY)) || ' - ' || FORMAT_DATE('%b %d/%y', DATE_ADD(DATE '2026-01-01', INTERVAL -30 DAY))) as \`__ev_sum_total_sales_prior_period_comparison_previous_period\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY ALL),
 			comparison_1_fragment AS (SELECT sum(total_sales) as \`__ev_sum_total_sales_prior_period_comparison\`
 			 FROM demo.daily_orders

@@ -199,7 +199,7 @@ describe('polar_chart SQL', () => {
 			----
 			"SELECT region AS \`region\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.sales
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY ALL"
 			----
 			"SELECT region AS "region", sum(total_sales) AS "sum_total_sales"
