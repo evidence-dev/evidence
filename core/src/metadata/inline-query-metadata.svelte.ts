@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte';
 import { Metadata } from './Metadata.svelte';
 import { InlineQueries } from '../user-components/common/inline-queries';
-import type { IColumnMetadata } from './metadata';
+import { arrowToJsType, type IColumnMetadata } from './metadata';
 import { TableMetadata } from './TableMetadata.svelte';
 import { getClickHouseToJsType } from '../user-components/common/typeConversions';
 import type { AnyRowType, QueryService } from '../user-components/interfaces/query-service';
@@ -147,6 +147,23 @@ export class InlineQueryMetadata extends Metadata {
 			const dialectName = queryService.dialect.name;
 
 			let columns: Record<string, IColumnMetadata>;
+
+			// QEv3 answers from the plan without touching the warehouse; if it can't decide, describe as before.
+			const planned = queryService.plan ? await queryService.plan(queryToDescribe) : undefined;
+			if (planned?.kind === 'error') {
+				this.addTable(queryName, {}, planned.message);
+				this.activeQueries.set(queryName, queryToDescribe);
+				return;
+			}
+			if (planned?.kind === 'columns') {
+				columns = {};
+				for (const c of planned.columns) {
+					columns[c.name] = { name: c.name, type: c.arrowType, jsType: arrowToJsType(c.arrowType) };
+				}
+				this.addTable(queryName, columns);
+				this.activeQueries.set(queryName, queryToDescribe);
+				return;
+			}
 
 			if (
 				dialectName === 'snowflake' ||

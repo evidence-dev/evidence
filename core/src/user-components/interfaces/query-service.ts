@@ -54,6 +54,15 @@ export type QueryResult<RowType extends AnyRowType = AnyRowType> = {
 
 import type { MaybeGetter } from 'runed';
 
+/** A query's output column as the QEv3 planner reports it. */
+export type PlannedColumn = { name: string; arrowType: string };
+
+/** Planning a query without running it. `unchecked` is neither a pass nor a fail. */
+export type PlanOutcome =
+	| { kind: 'columns'; columns: PlannedColumn[] }
+	| { kind: 'error'; message: string }
+	| { kind: 'unchecked'; reason: string };
+
 // Interface that QueryService implementations must satisfy
 export interface QueryService {
 	readonly workspaceId: MaybeGetter<string>;
@@ -72,4 +81,6 @@ export interface QueryService {
 	): Promise<QueryResult<RowType>>;
 	// Seed a pre-fetched result under the render-context cache key (used by PDF generation).
 	primeCache?(sql: string, result: QueryResult): void;
+	// Columns without running the query; implementations that can't plan (the CLI) omit it.
+	plan?(sql: string): Promise<PlanOutcome>;
 }
