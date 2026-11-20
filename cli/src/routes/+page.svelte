@@ -2,6 +2,7 @@
 	import type { PageData } from './$types';
 	import { Renderer, deserializeTree } from '$lib/markdown';
 	import CLIPageWrapper from '$lib/components/CLIPageWrapper.svelte';
+	import NoConnectionNote from '$lib/components/NoConnectionNote.svelte';
 	import PeriodPicker from '@evidence/core/viewer-components/PeriodPicker.svelte';
 	import { page } from '$app/state';
 	import { generateThemeCSS } from '@evidence/core/theme/theme-css-helper';
@@ -21,6 +22,10 @@
 	const themeCSS = $derived(data.resolvedPageTheme ? generateThemeCSS(data.resolvedPageTheme) : '');
 
 	const tree = $derived(data.markdown ? deserializeTree(data.markdown.serializedTree) : null);
+
+	// Without a connection the wrapper still runs: components need its contexts even
+	// when their queries can only fail, and crash server rendering otherwise.
+	const hasConnection = $derived(Boolean(data.organizationId || data.hasLocalConnection));
 
 	const fullscreen = $derived(page.url.searchParams.get('fullscreen') !== null);
 
@@ -51,7 +56,7 @@
 
 <div class="min-h-full {cards ? 'bg-card-mode-background' : 'bg-background'}">
 	<div class="mx-auto p-4 {widthClass}">
-		{#if tree && (data.organizationId || data.hasLocalConnection)}
+		{#if tree}
 			<!-- Queries run via managed engine (organizationId) or local connection.yaml -->
 			<CLIPageWrapper
 				organizationId={data.organizationId ?? ''}
@@ -73,21 +78,9 @@
 					<Renderer {tree} validationErrors={data.markdown?.validationErrors ?? []} />
 				</div>
 			</CLIPageWrapper>
-		{:else if tree}
-			<!-- Not logged in and no local connection - render without query support -->
-			<div
-				class="prose select-text dark:prose-invert prose-code:before:content-none prose-code:after:content-none"
-			>
-				<Renderer {tree} validationErrors={data.markdown?.validationErrors ?? []} />
-			</div>
-			<div class="mt-8 rounded-lg bg-muted p-4 text-sm text-muted-foreground">
-				<p>
-					<strong>Note:</strong> To enable queries, run
-					<code class="rounded bg-background px-1">evidence login</code> to use your Evidence Studio
-					organization's connection, or add a
-					<code class="rounded bg-background px-1">connection.yaml</code> to query your own database directly.
-				</p>
-			</div>
+			{#if !hasConnection}
+				<NoConnectionNote />
+			{/if}
 		{:else}
 			<div class="py-16 text-center">
 				<h1 class="text-xl font-semibold">No content found</h1>
