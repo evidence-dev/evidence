@@ -4,7 +4,7 @@ import { fenceQueryName, parseFenceMeta } from '../../common/fence-meta';
 import assign from 'lodash/assign';
 import isEqual from 'lodash/isEqual';
 import { untrack } from 'svelte';
-import { parse, transform, validate } from './process-markdoc';
+import { customComponentNameCollisionError, parse, transform, validate } from './process-markdoc';
 import { parseFrontmatter } from '../../../utils/parseFrontmatter';
 import { Debounced } from 'runed';
 import type { TranslationMap } from '../../../types/translations';
@@ -381,11 +381,7 @@ export class MarkdocProcessor {
 						? raw.filter((e) => !COMPONENT_STANDALONE_SUPPRESSED_ERROR_IDS.has(e.error?.id ?? ''))
 						: raw;
 
-			// When the user is editing a custom component file itself, surface
-			// any collision the registry detected for THIS file. A collision
-			// silently drops the tag from `config.tags`, so the body validates
-			// fine but every page that calls the tag silently does nothing —
-			// the only place to tell the author is here, on the component file.
+			// Anchor name collisions to the first line of the component file being edited.
 			if (this.#standaloneFileType !== 'component') return suppressed;
 			const basePath = this.#validationContext?.basePath;
 			if (!basePath) return suppressed;
@@ -393,16 +389,8 @@ export class MarkdocProcessor {
 			const collisionErrors: ValidateError[] = [];
 			for (const collision of this.#customComponentRegistry.collisions) {
 				if (collision.fullPath !== basePath) continue;
-				const message =
-					collision.collidesWith === 'builtin'
-						? `Component tag "${collision.tagName}" collides with a built-in tag. Rename this file so it doesn't shadow the built-in (which always wins).`
-						: `Component tag "${collision.tagName}" is already defined by another file. Rename this file so the basename is unique across the project.`;
-				// NOTE: file-level synthetic errors must be `type: 'text'` with a
-				// real line + non-empty character range — the editor's decoration
-				// pipeline (ValidationModel) only paints node-anchored errors or
-				// `text`-typed standalone ones, and a zero-width range draws
-				// nothing. Anchor to the first line of the file.
-				collisionErrors.push(this.#fileLevelError('custom-component-name-collision', message));
+				const { id, message, level } = customComponentNameCollisionError(collision);
+				collisionErrors.push(this.#fileLevelError(id, message, undefined, level));
 			}
 
 			// Catch the YAML-indentation footgun: an author types
