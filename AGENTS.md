@@ -18,7 +18,7 @@ Don't add or rename files at the repo root, as they will not be synced.
 
 ## Scripts
 
-Requires [Node](https://nodejs.org) 22.22+, [pnpm](https://pnpm.io) and [bun](https://bun.com).
+Requires [Node](https://nodejs.org) 24+, [pnpm](https://pnpm.io) and [bun](https://bun.com).
 
 | Task                                              | Command          |
 | ------------------------------------------------- | ---------------- |

@@ -16,7 +16,7 @@ The original PR will be marked as closed rather than merged, as the merge happen
 
 ## Build from Source
 
-Requires [Node](https://nodejs.org) 22.22+, [pnpm](https://pnpm.io) and [bun](https://bun.com).
+Requires [Node](https://nodejs.org) 24+, [pnpm](https://pnpm.io) and [bun](https://bun.com).
 
 ```bash
 pnpm install
