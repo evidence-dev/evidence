@@ -50,8 +50,9 @@ Details may differ, but these steps are required for all Docker deployments.
    | `EVIDENCE_BASIC_PASSWORD` | HTTP Basic Auth password                       | Yes\*     |
    | `${VAR}` references       | All variables referenced in `connection.yaml`  | Yes       |
    | `EVIDENCE_AUTH_DISABLED`  | Skip auth entirely on trusted private networks | -         |
-   | `PORT`                    | Port the server listens on (default: 3000)     | -         |
+   | `PORT`                        | Port the server listens on (default: 3000)                                          | -         |
    | `EVIDENCE_TELEMETRY_DISABLED` | Turn off the anonymous startup event and daily heartbeat ([details](/cli#telemetry)) | -         |
+   | `EVIDENCE_FRAME_ANCESTORS`    | Origins allowed to frame reports in an iframe                                       | -         |
 
    \* Unless auth disabled
 
@@ -85,3 +86,15 @@ To force all viewers to re-authenticate, change `EVIDENCE_BASIC_PASSWORD` and re
 For deployments only reachable over a trusted private network (VPN, Tailscale, internal VPC), set `EVIDENCE_AUTH_DISABLED=true` to skip authentication entirely.
 
 To authenticate users against your organization's identity provider, deploy `evidence serve` behind an authenticating reverse proxy — see [Authentication & SSO](/self-host/authentication).
+
+## Embedding
+
+Reports refuse to be framed by default (`X-Frame-Options: DENY`). To embed one in an iframe on your own page, name the origins allowed to frame the deployment:
+
+```bash
+EVIDENCE_FRAME_ANCESTORS=self                       # the same origin as the reports
+EVIDENCE_FRAME_ANCESTORS=https://intranet.example   # one origin
+EVIDENCE_FRAME_ANCESTORS="https://a.example https://b.example"
+```
+
+Documents are then served with a `frame-ancestors` Content Security Policy naming exactly those origins; `https://*.example.com` is accepted for a whole domain. An unset, empty or malformed value keeps framing disabled, so a typo cannot open a deployment up.
