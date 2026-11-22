@@ -47,3 +47,7 @@ Any authenticating proxy that integrates with your identity provider over OIDC o
 | Azure [App Service authentication](https://learn.microsoft.com/azure/app-service/overview-authentication-authorization) | Microsoft Entra ID | Built-in authentication in front of the container |
 
 These integrate with standard enterprise identity providers — including Okta, Microsoft Entra ID, Google Workspace, Auth0, Ping Identity, and OneLogin — over OIDC or SAML.
+
+## Framing behind the proxy
+
+A proxied deployment still refuses to be framed by default. If a page of your intranet needs to embed a report in an iframe, set `EVIDENCE_FRAME_ANCESTORS` to the origins allowed to frame it (see [Self Host](/self-host#embedding)) rather than stripping the header at the proxy — the policy then travels with the response, and a value the deployment cannot parse keeps framing disabled.

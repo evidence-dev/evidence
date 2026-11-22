@@ -8,7 +8,7 @@ import { execPath } from 'process';
 import { warnIfStudioUnreachable, describeDevMode, openBrowser } from './server.shared.ts';
 // Auth logic shared with the SvelteKit hook (SSR/API traffic); the static
 // branch below returns before SvelteKit runs, so it must check independently.
-import { authDisabled, checkBasicAuth, SERVE_HARDENED_HEADERS } from './basic-auth.ts';
+import { authDisabled, checkBasicAuth, hardenServeResponse } from './basic-auth.ts';
 import { track } from './telemetry.ts';
 
 // @ts-expect-error - generated at build time
@@ -209,9 +209,7 @@ export async function startServer(options: ServerOptions): Promise<void> {
 					const staticResponse = await handleStaticRequest(req);
 					if (staticResponse) {
 						if (isServe) {
-							for (const [k, v] of Object.entries(SERVE_HARDENED_HEADERS)) {
-								staticResponse.headers.set(k, v);
-							}
+							hardenServeResponse(staticResponse);
 						}
 						return staticResponse;
 					}
