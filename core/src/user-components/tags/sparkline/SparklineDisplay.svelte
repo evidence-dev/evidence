@@ -13,6 +13,7 @@
 	import { getThemeToken } from '../../../theme/get-theme-token';
 	import { getCardContext } from '../../common/card-context.svelte';
 	import { escapeHtml } from '../../common/tooltip-fields';
+	import { sampleSparkline } from '../table/sparkline-data';
 
 	const localeContext = getLocaleContext();
 	const formatValue = $derived(localeContext.formatValue);
@@ -88,16 +89,7 @@
 		return echartsReady;
 	});
 
-	// Sample data if it exceeds 300 points
-	function sampleData<T>(inputData: T[], maxRows = 100): T[] {
-		if (inputData.length <= maxRows) return inputData;
-
-		const samplingInterval = Math.ceil(inputData.length / maxRows);
-		return inputData.filter((_, index) => index % samplingInterval === 0);
-	}
-
-	// Apply sampling to chart data
-	const chartData = $derived(sampleData(originalChartData));
+	const chartData = $derived(sampleSparkline(originalChartData));
 
 	// Create ECharts options using our utility function
 	const chartOptions = $derived.by(() => {

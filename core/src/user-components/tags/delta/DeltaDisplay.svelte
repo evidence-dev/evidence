@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getLocaleContext } from '../../../locale/locale.context.svelte';
+	import { getDeltaStatus } from './delta-status';
 	import { getPageSettingsContext } from '../../../page-settings.context';
 
 	const localeContext = getLocaleContext();
@@ -32,24 +33,13 @@
 	const showSymbol = $derived(props.showSymbol ?? true);
 	const symbolPosition = $derived(props.symbolPosition ?? 'right');
 	const neutralRange = $derived(props.neutralRange ?? [0, 0]);
-	const neutralMin = $derived(neutralRange[0] ?? -Infinity);
-	const neutralMax = $derived(neutralRange[1] ?? Infinity);
 
 	const hasValidValue = $derived(value !== null && value !== undefined);
 
 	// Format the value
 	const formattedValue = $derived(hasValidValue ? formatValue(value, fmt, String(value)) : '–');
 
-	// Determine value status (positive, negative, or neutral)
-	function getValueStatus(val: unknown): 'positive' | 'negative' | 'neutral' {
-		if (val === null || val === undefined) return 'neutral';
-		if (typeof val === 'number') {
-			return val > neutralMax ? 'positive' : val < neutralMin ? 'negative' : 'neutral';
-		}
-		return 'neutral';
-	}
-
-	const valueStatus = $derived(getValueStatus(value));
+	const valueStatus = $derived(getDeltaStatus(value, neutralRange));
 
 	// Style classes; up/down colors come from the theme tokens
 	const up = 'text-(--theme-positive)';

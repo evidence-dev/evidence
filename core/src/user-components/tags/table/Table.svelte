@@ -52,7 +52,14 @@
 		getIndentAmount,
 		computeRowMetadata
 	} from './table-collapsible';
-	import { getRowClasses } from './table-styles';
+	import { getCellEmphasis, getRowClasses } from './table-styles';
+	import {
+		getCellHref,
+		getColorVizBorders,
+		getColumnDisplayFormat,
+		getDynamicFormat,
+		hasColorViz as cellHasColorViz
+	} from './table-cell-display';
 	import { useComparisonTooltip } from '../../common/comparison-tooltips/useComparisonTooltip';
 	import {
 		ComparisonTooltip,
@@ -63,7 +70,10 @@
 	import { getPrintModeContext } from '../../../print-mode.context';
 	import { TableModel } from './TableModel.svelte';
 	import { getModelContext } from '../../model-context.svelte';
-	import { buildTableExcelExportHandler } from './table-export';
+	import { buildTableExcelExportHandler, buildTableExcelSheet } from './table-export';
+	import type { ExcelSheet } from '../../../shims/excel/workbook';
+	import type { ExcelFont } from '../../../shims/excel/font';
+	import { resolveExcelPalette } from '../../../shims/excel/palette';
 	import { browser } from '../../../shims/env';
 	import { logger } from '../../../shims/logger';
 	import { getPageSettingsContext } from '../../../page-settings.context';
@@ -222,7 +232,13 @@
 	});
 
 	$effect(() => {
-		return queryInfoContext?.registerQuery(componentId, 'table', query, title);
+		return queryInfoContext?.registerQuery(
+			componentId,
+			'table',
+			query,
+			title,
+			browser ? buildExcelSheet : undefined
+		);
 	});
 
 	type TableRow = DataPoint & { __hideCell?: Record<string, boolean> };
@@ -333,9 +349,50 @@
 		return result;
 	});
 
+	// Whether repeated dimension values render as one merged cell (rowspan), as they do with subtotals.
+	const mergesRepeatedValues = $derived(
+		!model.serverSidePaginated && model.needsSubtotals && model.measures.length > 0 && !collapsible
+	);
+
+	function buildExcelSheet(font: ExcelFont): ExcelSheet {
+		return buildTableExcelSheet(sortedPivotData, {
+			font,
+			title,
+			subtitle,
+			rawRows: rows,
+			palette: resolveExcelPalette(themeContext.themes.light, { cardMode: pageSettings().cards }),
+			rowShading: row_shading,
+			rowLines: row_lines,
+			wrap,
+			wrapTitles: wrap_titles,
+			formatTitles: format_titles,
+			freezeColumns: freeze_columns,
+			grouping: isCollapsibleActive
+				? { kind: 'collapsible', collapsedGroups: effectiveCollapsedGroups }
+				: mergesRepeatedValues
+					? { kind: 'merged', repeatValues: Boolean(repeat_values) }
+					: undefined,
+			hiddenColumns: link && shouldHideLinkColumn ? new Set([link]) : undefined,
+			downIsGood: pageSettings().down_is_good,
+			firstDayOfWeek: projectSettings.first_day_of_week,
+			translate: localeContext.t,
+			formatValue: localeContext.formatValue,
+			resolveLink: (href) => {
+				const url = transformInternalLink(href, rendererContext.context, page.params, {
+					hrefIncludesProjectSlug: false
+				});
+				try {
+					return new URL(url, window.location.href).href;
+				} catch {
+					return undefined;
+				}
+			}
+		});
+	}
+
 	const customTableExportHandler = $derived.by(() => {
 		if (!browser) return undefined;
-		return buildTableExcelExportHandler({ sortedPivotData, title, subtitle });
+		return buildTableExcelExportHandler({ getSheet: buildExcelSheet, title });
 	});
 
 	$effect(() => {
@@ -852,15 +909,7 @@
 								.map( (col, tableColumnIndex) => ({ col, tableColumnIndex, cellColumnMeta: displayPivotData.columnMeta.find((c) => c.key === col) }) )
 								.filter( ({ tableColumnIndex }) => shouldRenderCell(rowIndex, tableColumnIndex) ) as { col, tableColumnIndex, cellColumnMeta }, renderedCellIndex}
 								{@const cellEffectiveAlign = cellColumnMeta?.align ?? 'left'}
-								{@const hasColorViz =
-									cellColumnMeta?.viz === 'color' &&
-									row[col] !== null &&
-									row[col] !== undefined &&
-									(cellColumnMeta?.color_options?.conditional_colors || !isNaN(Number(row[col]))) &&
-									row.render_type !== 'row_total' &&
-									(row.render_type !== 'row_subtotal' ||
-										(!cellColumnMeta?.color_options?.conditional_colors &&
-											cellColumnMeta?.viz_include_subtotals !== false))}
+								{@const hasColorViz = cellHasColorViz(cellColumnMeta, row, row[col])}
 								{@const colorStyles = hasColorViz
 									? calculateColorStyles(
 											cellColumnMeta,
@@ -896,6 +945,12 @@
 									row_shading && isDataRow && isEvenRow && !hasRowspan && !rowColorStyles
 										? 'bg-muted'
 										: 'bg-background'}
+								{@const cellEmphasis = getCellEmphasis(
+									row.render_type,
+									row.subtotal_level ?? 1,
+									tableColumnIndex,
+									cellColumnMeta?.render_type
+								)}
 								{@const cellClasses = cn(
 									// Base cell styles
 									'relative align-middle',
@@ -908,19 +963,17 @@
 
 									// Row type styling (totals, subtotals, etc.) — theme-driven via
 									// --theme-table-* vars (defaults match the old solid colors).
-									row.render_type === 'row_total'
+									cellEmphasis === 'total'
 										? 'border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-total-bg) font-semibold'
-										: row.render_type === 'row_subtotal'
-											? tableColumnIndex >= (row.subtotal_level ?? 1) - 1
-												? 'border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-subtotal-bg) font-semibold'
-												: ''
-											: displayPivotData.columnMeta.find((c) => c.key === col)?.render_type ===
-												  'column_total'
-												? 'bg-(--theme-table-pivot-bg) font-semibold'
-												: displayPivotData.columnMeta.find((c) => c.key === col)?.render_type ===
-													  'column_subtotal'
-													? 'bg-(--theme-table-pivot-bg) font-semibold dark:border-r-(--theme-table-row-border)'
-													: '',
+										: cellEmphasis === 'subtotal'
+											? 'border-t border-foreground/40 dark:border-foreground/40 bg-(--theme-table-subtotal-bg) font-semibold'
+											: cellEmphasis === 'pivot'
+												? cn(
+														'bg-(--theme-table-pivot-bg) font-semibold',
+														cellColumnMeta?.render_type === 'column_subtotal' &&
+															'dark:border-r-(--theme-table-row-border)'
+													)
+												: '',
 
 									// Dimension cell merging background (for rowspan cells) - only if not frozen (frozen cells handle this via frozenCellBg)
 									// Use effective dimension count from pivotData config (accounts for converted pivots)
@@ -973,22 +1026,17 @@
 								{@const colorVizStyle = effectiveColorStyles
 									? (() => {
 											const nextRow = visibleRows[rowIndex + 1];
-											const nextRowIsTotal =
-												nextRow?.render_type === 'row_total' ||
-												nextRow?.render_type === 'row_subtotal';
+											const borders = getColorVizBorders(effectiveColorStyles, {
+												nextRowIsTotal:
+													nextRow?.render_type === 'row_total' ||
+													nextRow?.render_type === 'row_subtotal',
+												emphasis: cellEmphasis,
+												collapsible: Boolean(collapsible)
+											});
 											return (
 												`background-color: ${effectiveColorStyles.backgroundColor}; color: ${effectiveColorStyles.color};` +
-												(!nextRowIsTotal
-													? ` border-bottom: 1px solid ${effectiveColorStyles.borderBottomColor};`
-													: '') +
-												(row.render_type === 'row_total'
-													? ` border-top: 1px solid ${effectiveColorStyles.topBorderColor};`
-													: '') +
-												(row.render_type === 'row_subtotal' &&
-												!collapsible &&
-												tableColumnIndex >= (row.subtotal_level ?? 1) - 1
-													? ` border-top: 1px solid ${effectiveColorStyles.topBorderColor};`
-													: '')
+												(borders.bottom ? ` border-bottom: 1px solid ${borders.bottom};` : '') +
+												(borders.top ? ` border-top: 1px solid ${borders.top};` : '')
 											);
 										})()
 									: cellColumnMeta?.red_negatives &&
@@ -1001,11 +1049,7 @@
 										? cellColumnMeta.repeat_values
 										: repeat_values}
 								{@const effectiveRowspan =
-									model.serverSidePaginated ||
-									!model.needsSubtotals ||
-									model.measures.length === 0 ||
-									collapsible ||
-									cellRepeat
+									!mergesRepeatedValues || cellRepeat
 										? 1
 										: (visibleRows[rowIndex].__rowspans?.[tableColumnIndex] ?? 1)}
 								<td
@@ -1031,35 +1075,9 @@
 												? row[col]
 												: String(row[col])}
 										{@const columnMeta = displayPivotData.columnMeta.find((c) => c.key === col)}
-										{@const dynamicFmt = (() => {
-											// Check if measure has fmt_column defined
-											if (cellColumnMeta?.fmt_column && cellColumnMeta.fmt_column in row) {
-												const fmtValue = row[cellColumnMeta.fmt_column];
-												return fmtValue !== null && fmtValue !== undefined
-													? String(fmtValue)
-													: undefined;
-											}
-											return undefined;
-										})()}
-										{@const cellDisplayFormat = (() => {
-											// If there's dynamic formatting, use it
-											if (dynamicFmt) return dynamicFmt;
-
-											// If there's a comparison, use abs_fmt/pct_fmt based on display_type
-											if (cellColumnMeta?.comparison?.compare_vs) {
-												const displayType = cellColumnMeta.comparison.display_type ?? 'pct';
-												if (displayType === 'pct') {
-													return cellColumnMeta.comparison.pct_fmt || 'pct';
-												} else if (displayType === 'compared_value') {
-													return cellColumnMeta?.fmt;
-												} else {
-													return cellColumnMeta.comparison.abs_fmt || cellColumnMeta?.fmt || 'num0';
-												}
-											}
-
-											// Otherwise use the column's format
-											return cellColumnMeta?.fmt;
-										})()}
+										{@const dynamicFmt = getDynamicFormat(cellColumnMeta, row)}
+										{@const cellDisplayFormat =
+											dynamicFmt || getColumnDisplayFormat(cellColumnMeta)}
 										{@const sparklineVizConfig = model.allUnifiedColumns.find(
 											(column) =>
 												column.viz === 'sparkline' && column.alias === (columnMeta?.alias || col)
@@ -1240,9 +1258,7 @@
 											</span>
 										{/snippet}
 
-										{@const href = cellColumnMeta?.link
-											? (row[`__link_${cellColumnMeta.alias}`] ?? row[cellColumnMeta.link])
-											: null}
+										{@const href = getCellHref(cellColumnMeta, row)}
 										{@const transformedDimHref = href
 											? transformInternalLink(String(href), rendererContext.context, page.params, {
 													hrefIncludesProjectSlug: false

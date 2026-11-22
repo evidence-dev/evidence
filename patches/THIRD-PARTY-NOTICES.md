@@ -7,5 +7,6 @@ The `patches/` directory contains modifications to the following third-party pac
 | [ssf](https://www.npmjs.com/package/ssf) | Apache-2.0 | SheetJS LLC |
 | [echarts](https://www.npmjs.com/package/echarts) | Apache-2.0 | The Apache Software Foundation |
 | [zrender](https://www.npmjs.com/package/zrender) | BSD-3-Clause | Baidu Inc. |
+| [hucre](https://www.npmjs.com/package/hucre) | MIT | productdevbook |
 
-Per Apache-2.0 §4(b), the `ssf` and `echarts` patches carry notices of the changes made; see the patch files themselves for details. Full license texts ship with each package under `node_modules/<package>/LICENSE` after install.
+Per Apache-2.0 §4(b), the `ssf` and `echarts` patches carry notices of the changes made; see the patch files themselves for details. The `hucre` patch marks its changes the same way. Full license texts ship with each package under `node_modules/<package>/LICENSE` after install.

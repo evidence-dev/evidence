@@ -2,11 +2,15 @@ import { getContext, setContext } from 'svelte';
 import type { Query } from './Query.svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import type { AnyRowType } from './user-components/interfaces/query-service';
+import type { ExcelSheet } from './shims/excel/workbook';
+import type { ExcelFont } from './shims/excel/font';
 
 export type QueryInfo<RowType extends AnyRowType = AnyRowType> = {
 	tag: string;
 	query: Query<RowType>;
 	title?: string;
+	/** Styled sheet for the page Excel export; without it the raw results are exported. */
+	buildExcelSheet?: (font: ExcelFont) => ExcelSheet;
 };
 
 // Define a type for the query info map indexed by component ID
@@ -19,7 +23,8 @@ export type QueryInfoContext = {
 		componentId: string,
 		tag: string,
 		query: Query<RowType>,
-		title?: string
+		title?: string,
+		buildExcelSheet?: (font: ExcelFont) => ExcelSheet
 	) => () => void;
 };
 
@@ -36,8 +41,13 @@ export const setQueryInfoContext = () => {
 		},
 
 		/** @returns Cleanup function to remove the query info by componentId */
-		registerQuery: (componentId, tag, query, title) => {
-			queryInfoMap.set(componentId, { tag, query: query as unknown as Query<AnyRowType>, title });
+		registerQuery: (componentId, tag, query, title, buildExcelSheet) => {
+			queryInfoMap.set(componentId, {
+				tag,
+				query: query as unknown as Query<AnyRowType>,
+				title,
+				buildExcelSheet
+			});
 			return () => {
 				queryInfoMap.delete(componentId);
 			};

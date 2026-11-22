@@ -31,6 +31,7 @@
 	} from '../../shadcn/components/ui/context-menu';
 	import { sidepaneCollapsed } from '../../shims/sidepane-state';
 	import { logger } from '../../shims/logger';
+	import { toast } from 'svelte-sonner';
 	type Props = {
 		schema: UserComponentSchemaWithComponentWrapper;
 		props: Record<string, unknown>;
@@ -62,7 +63,7 @@
 
 	// Show error overlays when the consuming app opts in via context
 	const showErrors = getShowErrorsContext();
-	let displayError = $derived(showErrors ? (validationError?.error?.message ?? error) : null);
+	let displayError = $derived(showErrors ? validationError?.error?.message ?? error : null);
 
 	// Determine if this component should use compact error behavior (hide children on error, show compact error badge)
 	const hasCompactErrorBehavior = $derived(
@@ -209,6 +210,9 @@
 			}
 		} catch (error) {
 			logger.error(error, 'Error downloading component data');
+			toast.error("Couldn't download the data", {
+				description: error instanceof Error ? error.message : undefined
+			});
 		} finally {
 			downloadingData = false;
 			contextMenuOpen = false;
