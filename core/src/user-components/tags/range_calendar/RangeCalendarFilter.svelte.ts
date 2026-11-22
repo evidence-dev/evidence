@@ -79,6 +79,26 @@ export class RangeCalendarFilter extends Filter<RangeCalendarValue> {
 		);
 	}
 
+	// A single-click selection from the calendar UI sets "from X" (open-ended) while the user
+	// is still choosing the end date, and an explicit open-ended range ("from X" / "until Y")
+	// leaves one boundary undefined. Fall back to the corresponding boundary from `all_time_range`
+	// when configured, or to today for the end of a "from X" selection, so raw SQL templates
+	// referencing both `.start` and `.end` (`BETWEEN {{id.start}} AND {{id.end}}`) remain valid
+	// SQL on the first click instead of emitting an empty token.
+	private fallbackBounds() {
+		const allTime = this.attributes.all_time_range;
+		if (!allTime || allTime === 'unbounded' || allTime === 'none') {
+			return this.processRange('today');
+		}
+		const resolved = resolveCustomRangeDefault(
+			allTime,
+			this.attributes.custom_ranges as CustomRangeRule[] | undefined,
+			this.anchorDate,
+			this.projectSettings.first_day_of_week
+		);
+		return resolved ? this.processRange(resolved) : this.processRange('today');
+	}
+
 	get templateValues() {
 		const range = this.effectiveRange();
 
@@ -100,10 +120,18 @@ export class RangeCalendarFilter extends Filter<RangeCalendarValue> {
 
 		// A real selection OR a bounded all_time_range — both resolve to concrete dates everywhere.
 		const processed = this.processRange(range);
+		const isExplicitAllTime = !this.value?.range || this.value.range === 'all time';
+		let start = processed.startDateSql || '';
+		let end = processed.endDateSql || '';
+		if (!isExplicitAllTime && (!start || !end)) {
+			const fb = this.fallbackBounds();
+			if (!start && fb.startDateSql) start = fb.startDateSql;
+			if (!end && fb.endDateSql) end = fb.endDateSql;
+		}
 
 		return {
-			start: processed.startDateSql || '',
-			end: processed.endDateSql || '',
+			start,
+			end,
 			between: processed.betweenFragment,
 			range: processed.range,
 			filter: processed.whereClause || 'true'
