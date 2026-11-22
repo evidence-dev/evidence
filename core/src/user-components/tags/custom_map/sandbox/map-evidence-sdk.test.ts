@@ -44,7 +44,7 @@ describe('createMapEvidenceSdk', () => {
 		const { host, request } = makeHost();
 		const sdk = createMapEvidenceSdk(host, INIT);
 		const rows = await sdk.evidence.query('locations');
-		expect(request).toHaveBeenCalledWith('query', { name: 'locations' });
+		expect(request).toHaveBeenCalledWith('query', { name: 'locations' }, { timeoutMs: null });
 		expect(rows).toEqual([{ a: 1 }]);
 	});
 
