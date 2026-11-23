@@ -979,10 +979,11 @@ describe('table SQL', () => {
 			 
 			 GROUP BY category) AS evidence_paged WHERE (CAST("category" AS VARCHAR(MAX)) ILIKE '%shoes%')"
 			----
-			"SELECT * FROM (SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
-			 GROUP BY category) AS evidence_paged WHERE (LOWER(CAST(CAST("category" AS VARCHAR) AS VARCHAR)) LIKE LOWER('%shoes%'))"
+			 GROUP BY category
+			 HAVING ((LOWER(CAST(CAST("category" AS VARCHAR) AS VARCHAR)) LIKE LOWER('%shoes%')))"
 			----
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders

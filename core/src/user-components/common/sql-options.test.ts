@@ -13,6 +13,7 @@ import type { ProcessedColumnExpression } from './sql-expression-utils';
 import type { Filters } from '../../Filters.svelte';
 import { InlineQueries } from './inline-queries';
 import {
+	AthenaDialect,
 	BigQueryDialect,
 	ClickHouseDialect,
 	CubeDialect,
@@ -817,5 +818,11 @@ describe('generateSQLQuery search on a table with measures', () => {
 		const sql = groupedSearchSql(new ClickHouseDialect());
 		expect(sql).not.toContain('evidence_paged');
 		expect(sql).toMatch(/HAVING \(\(.*"sum_employees".*'%delta%'/);
+	});
+
+	it('leaves Athena unchanged for now', () => {
+		const sql = groupedSearchSql(new AthenaDialect());
+		expect(sql).not.toContain('evidence_paged');
+		expect(sql).toContain('HAVING');
 	});
 });
