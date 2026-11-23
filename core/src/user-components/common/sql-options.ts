@@ -522,6 +522,12 @@ export function generateSQLQuery(
 	if (config.limit !== undefined && config.page_size !== undefined) {
 		needsSubquery = true;
 	}
+	// Search matches on SELECT aliases. On a grouped table it would go in HAVING,
+	// but some dialects (Postgres) can't see aliases there, so the query fails.
+	// Wrap it and search in the outer WHERE instead, where the aliases are columns.
+	if (searchSql && config.hasMeasures && dialect.supportsHavingAlias === false) {
+		needsSubquery = true;
+	}
 
 	// Generate date filter SQL if date props are provided
 	let dateFilterSql;

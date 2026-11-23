@@ -768,3 +768,49 @@ describe('generateSQLQuery ORDER BY on a grained date dimension', () => {
 		expect(sql).not.toContain('GROUP BY');
 	});
 });
+
+// Table search on a grouped table filters on the SELECT aliases (e.g. "sum_employees").
+// Postgres can't see SELECT aliases in HAVING, so the search has to run in an outer
+// WHERE, where the aliases are real column names.
+describe('generateSQLQuery search on a table with measures', () => {
+	function groupedSearchSql(d: SqlDialect, extra: Record<string, unknown> = {}) {
+		const config = {
+			tableExpressionName: 'companies',
+			columns: [
+				processColumnExpression({ value: 'industry', type: 'dimension' as const }, d),
+				processColumnExpression({ value: 'sum(employees)', type: 'measure' as const }, d)
+			].filter((c) => c !== null),
+			hasMeasures: true,
+			search: { term: 'delta' },
+			...extra
+		};
+		return generateSQLQuery(config, undefined, undefined, undefined, 'sunday', d).sql;
+	}
+
+	it('filters in an outer WHERE on Postgres, not in HAVING', () => {
+		const sql = groupedSearchSql(new PostgresDialect());
+		expect(sql).not.toContain('HAVING');
+		expect(sql).toMatchInlineSnapshot(`
+			"SELECT * FROM (SELECT industry AS "industry", sum(employees) AS "sum_employees"
+			 FROM companies
+			 
+			 GROUP BY industry) AS evidence_paged WHERE (CAST("industry" AS TEXT) ILIKE '%delta%' OR CAST("sum_employees" AS TEXT) ILIKE '%delta%')"
+		`);
+	});
+
+	it('keeps a user HAVING inside and paginates after the search on Postgres', () => {
+		const sql = groupedSearchSql(new PostgresDialect(), {
+			having: 'sum(employees) > 10',
+			page_size: 20,
+			offset: 0
+		});
+		expect(sql).toContain('HAVING (sum(employees) > 10)');
+		expect(sql).toMatch(/\) AS evidence_paged WHERE .*ILIKE '%delta%'\) LIMIT 20 OFFSET 0$/s);
+	});
+
+	it('keeps the search in HAVING on dialects that allow SELECT aliases there', () => {
+		const sql = groupedSearchSql(new ClickHouseDialect());
+		expect(sql).not.toContain('evidence_paged');
+		expect(sql).toMatch(/HAVING \(\(.*"sum_employees".*'%delta%'/);
+	});
+});

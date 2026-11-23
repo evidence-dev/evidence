@@ -964,29 +964,25 @@ describe('table SQL', () => {
 			 GROUP BY ALL
 			 HAVING ((CAST(\`category\` AS STRING) ILIKE '%shoes%'))"
 			----
-			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			"SELECT * FROM (SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
-			 GROUP BY category
-			 HAVING ((CAST("category" AS TEXT) ILIKE '%shoes%'))"
+			 GROUP BY category) AS evidence_paged WHERE (CAST("category" AS TEXT) ILIKE '%shoes%')"
 			----
-			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			"SELECT * FROM (SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
-			 GROUP BY category
-			 HAVING ((LOWER(CAST("category" AS TEXT)) LIKE LOWER('%shoes%')))"
+			 GROUP BY category) AS evidence_paged WHERE (LOWER(CAST("category" AS TEXT)) LIKE LOWER('%shoes%'))"
 			----
-			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			"SELECT * FROM (SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
-			 GROUP BY category
-			 HAVING ((CAST("category" AS VARCHAR(MAX)) ILIKE '%shoes%'))"
+			 GROUP BY category) AS evidence_paged WHERE (CAST("category" AS VARCHAR(MAX)) ILIKE '%shoes%')"
 			----
-			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
+			"SELECT * FROM (SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders
 			 
-			 GROUP BY category
-			 HAVING ((LOWER(CAST(CAST("category" AS VARCHAR) AS VARCHAR)) LIKE LOWER('%shoes%')))"
+			 GROUP BY category) AS evidence_paged WHERE (LOWER(CAST(CAST("category" AS VARCHAR) AS VARCHAR)) LIKE LOWER('%shoes%'))"
 			----
 			"SELECT category AS "category", sum(total_sales) AS "sum_total_sales"
 			 FROM demo.daily_orders

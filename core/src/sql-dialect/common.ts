@@ -307,6 +307,14 @@ export interface SqlDialect {
 	readonly supportsGroupByAlias?: boolean;
 
 	/**
+	 * Whether `HAVING` may reference a SELECT-list alias. Postgres resolves HAVING
+	 * against input columns only (aliases work in GROUP BY/ORDER BY, not HAVING), so
+	 * table search on a grouped table runs in an outer WHERE instead. Undefined
+	 * means supported.
+	 */
+	readonly supportsHavingAlias?: boolean;
+
+	/**
 	 * Whether `int / int` truncates to an integer (Postgres, Redshift, T-SQL) rather
 	 * than producing a fraction (ClickHouse, Snowflake, BigQuery, DuckDB). Builders that
 	 * divide user columns multiply by 1.0 first when this is set; undefined means no.
