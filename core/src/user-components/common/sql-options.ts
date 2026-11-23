@@ -525,9 +525,10 @@ export function generateSQLQuery(
 	// Search matches on SELECT aliases. On a grouped table it would go in HAVING,
 	// but some dialects (Postgres) can't see aliases there, so the query fails.
 	// Wrap it and search in the outer WHERE instead, where the aliases are columns.
-	if (searchSql && config.hasMeasures && dialect.supportsHavingAlias === false) {
-		needsSubquery = true;
-	}
+	// Only the search moves: a user `limit` still applies after the search.
+	const searchOutside =
+		needsSubquery ||
+		Boolean(searchSql && config.hasMeasures && dialect.supportsHavingAlias === false);
 
 	// Generate date filter SQL if date props are provided
 	let dateFilterSql;
@@ -548,7 +549,7 @@ export function generateSQLQuery(
 	if (config.where) whereParts.push(config.where);
 	if (dateFilterSql) whereParts.push(dateFilterSql);
 	// Add search to WHERE clause only when no measures AND not using subquery with search outside
-	if (searchSql && !config.hasMeasures && !needsSubquery) whereParts.push(searchSql);
+	if (searchSql && !config.hasMeasures && !searchOutside) whereParts.push(searchSql);
 
 	let whereClause = '';
 	if (whereParts.length > 0) {
@@ -559,7 +560,7 @@ export function generateSQLQuery(
 	const havingParts = [];
 	if (config.having) havingParts.push(config.having);
 	// Add search to HAVING clause when we have measures AND not using subquery with search outside
-	if (searchSql && config.hasMeasures && !needsSubquery) havingParts.push(searchSql);
+	if (searchSql && config.hasMeasures && !searchOutside) havingParts.push(searchSql);
 
 	const havingClause =
 		havingParts.length > 0
@@ -759,7 +760,7 @@ export function generateSQLQuery(
 
 	// Apply final subquery/search/pagination logic uniformly
 	let sql: string;
-	if (needsSubquery) {
+	if (searchOutside) {
 		const outerWhere = searchSql ? `WHERE ${searchSql}` : '';
 		// The outer wrapper has no ORDER BY of its own (any ordering lives inside
 		// `coreQuery`), so T-SQL dialects must synthesise one for OFFSET/FETCH.

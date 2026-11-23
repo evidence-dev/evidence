@@ -808,6 +808,11 @@ describe('generateSQLQuery search on a table with measures', () => {
 		expect(sql).toMatch(/\) AS evidence_paged WHERE .*ILIKE '%delta%'\) LIMIT 20 OFFSET 0$/s);
 	});
 
+	it('applies a plain limit after the search on Postgres, like other dialects', () => {
+		const sql = groupedSearchSql(new PostgresDialect(), { order: 'sum_employees desc', limit: 3 });
+		expect(sql).toMatch(/ORDER BY sum_employees desc\) AS evidence_paged WHERE .*'%delta%'\) LIMIT 3$/s);
+	});
+
 	it('keeps the search in HAVING on dialects that allow SELECT aliases there', () => {
 		const sql = groupedSearchSql(new ClickHouseDialect());
 		expect(sql).not.toContain('evidence_paged');
