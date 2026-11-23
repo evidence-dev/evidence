@@ -13,7 +13,10 @@ export const schema = {
 		'comparison_selector',
 		'range_calendar',
 		'button_group',
-		'period_selector'
+		'period_selector',
+		'toggle',
+		'text_input',
+		'slider'
 	],
 	componentWrapper: false
 } as const satisfies UserComponentSchema;
