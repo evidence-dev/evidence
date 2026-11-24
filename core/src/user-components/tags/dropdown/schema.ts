@@ -152,7 +152,7 @@ export const schema = {
 		},
 		search: {
 			type: Boolean,
-			description: 'Includes a search input within the dropdown menu',
+			description: 'Focuses a search input when the dropdown opens',
 			required: false,
 			default: true,
 			affectsQuery: false

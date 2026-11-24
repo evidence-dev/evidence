@@ -9,8 +9,8 @@
 	import { Label } from '../../../shadcn/components/ui/label';
 	import * as Alert from '../../../shadcn/components/ui/alert';
 	import { useId } from 'bits-ui';
-	import { LoaderCircle, SearchIcon, XIcon } from 'lucide-svelte';
-	import { Input } from '../../../shadcn/components/ui/input';
+	import { LoaderCircle, XIcon } from 'lucide-svelte';
+	import DropdownSearch from './DropdownSearch.svelte';
 	import Separator from '../../../shadcn/components/ui/separator/separator.svelte';
 	import Button from '../../../shadcn/components/ui/button/button.svelte';
 	import { cn } from '../../../shadcn/utils';
@@ -104,12 +104,19 @@
 	const defaultTopN = $derived(props.default_top_n);
 
 	let error: string | undefined = $state(undefined);
-	let search: string = $state('');
-	let open: boolean = $state(false);
+	let search = $state('');
+	let open = $state(false);
+	let trigger: HTMLButtonElement | null = $state(null);
+	let searchInput: HTMLInputElement | null = $state(null);
+	const optionsId = useId();
 	let virtualizer: VirtualizerHandle | undefined = $state();
 	let IconComponent: Component | null = $state(null);
 
-	// Scroll virtualized list to selected option
+	function focusSearch() {
+		if (open) searchInput?.focus({ preventScroll: true });
+	}
+	$effect(focusSearch);
+
 	$effect(() => {
 		if (open && virtualizer) {
 			let valueToFocus = multiple ? filter?.value?.[0] : filter?.value;
@@ -525,8 +532,10 @@
 			}
 			bind:open
 			onOpenChange={(newOpen) => {
-				// Clear search after dropdown closes
 				if (!newOpen) {
+					if (searchInput && searchInput === document.activeElement) {
+						trigger?.focus({ preventScroll: true });
+					}
 					setTimeout(() => {
 						search = '';
 					}, 200);
@@ -535,11 +544,16 @@
 		>
 			<Select.Trigger
 				{id}
+				bind:ref={trigger}
+				onclick={() => queueMicrotask(focusSearch)}
+				role="combobox"
+				aria-controls={open ? optionsId : undefined}
 				class="bg-input-surface hover:bg-accent/30 justify-end"
 				disabled={loading || Boolean(error)}
 			/>
 
 			<Select.Content
+				id={optionsId}
 				class={cn(
 					'evidence-page-theme relative w-(--bits-select-anchor-width) min-w-(--bits-select-anchor-width) overflow-y-auto',
 					{
@@ -550,21 +564,13 @@
 				)}
 			>
 				{#if enableSearch}
-					<div class="fixed top-0 right-0 left-0 mx-1 mt-1">
-						<div class="relative">
-							<Input
-								bind:value={search}
-								aria-label={t('common.search')}
-								placeholder={t('common.search')}
-								class="h-8 border-none p-0 pl-8 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
-								autofocus
-							/>
-							<div class="absolute top-0 left-0 flex h-full items-center justify-center">
-								<SearchIcon class="text-muted-foreground ml-2 h-4 w-4" />
-							</div>
-						</div>
-						<Separator orientation="horizontal" class="my-1" />
-					</div>
+					<DropdownSearch
+						bind:value={search}
+						bind:ref={searchInput}
+						label={t('common.search')}
+						controls={optionsId}
+						{trigger}
+					/>
 				{/if}
 
 				{#if filteredOptions.length === 0}

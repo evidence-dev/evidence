@@ -200,3 +200,41 @@ describe('dropdown with static options and data= options', () => {
 		}
 	);
 });
+
+describe('dropdown search focus', () => {
+	it.each(['Enter', 'ArrowDown'])('moves focus into search when opened with %s', async (key) => {
+		await mountDropdown('', {
+			data: undefined,
+			value_column: undefined,
+			search: true,
+			options: ['Alpha', 'Gamma']
+		});
+		await advance(50);
+		const trigger = document.querySelector<HTMLButtonElement>('button#dd')!;
+		trigger.focus();
+		trigger.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+		await advance(300);
+
+		const search = document.querySelector<HTMLInputElement>('[role="listbox"] input')!;
+		expect(search).not.toBeNull();
+		expect(document.activeElement).toBe(search);
+		search.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })
+		);
+		await advance(300);
+		expect(document.activeElement).toBe(trigger);
+	});
+
+	it('does not open or focus search while options are loading', async () => {
+		await mountDropdown('', { search: true });
+		await advance(50);
+		const trigger = document.querySelector<HTMLButtonElement>('button#dd')!;
+		expect(trigger.disabled).toBe(true);
+		trigger.click();
+		await advance(50);
+		expect(document.querySelector('[role="listbox"] input')).toBeNull();
+
+		await advance(ALL_SETTLED_MS);
+		expect(trigger.disabled).toBe(false);
+	});
+});

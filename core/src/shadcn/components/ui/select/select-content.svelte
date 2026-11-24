@@ -5,6 +5,7 @@
 	import { cn, type WithoutChild } from '../../../../shadcn/utils.js';
 
 	let {
+		id,
 		ref = $bindable(null),
 		class: className,
 		sideOffset = 4,
@@ -14,10 +15,16 @@
 	}: WithoutChild<SelectPrimitive.ContentProps> & {
 		portalProps?: SelectPrimitive.PortalProps;
 	} = $props();
+
+	$effect(() => {
+		// Bits UI 2.11 forwards the ID to its positioning logic, not the listbox node.
+		if (ref && id) ref.id = id;
+	});
 </script>
 
 <SelectPrimitive.Portal {...portalProps}>
 	<SelectPrimitive.Content
+		{id}
 		bind:ref
 		{sideOffset}
 		data-slot="select-content"
