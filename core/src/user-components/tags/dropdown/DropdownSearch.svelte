@@ -8,14 +8,36 @@
 		ref = $bindable(null),
 		label,
 		controls,
+		open,
 		trigger
 	}: {
 		value: string;
 		ref: HTMLInputElement | null;
 		label: string;
 		controls: string;
+		open: boolean;
 		trigger: HTMLButtonElement | null;
 	} = $props();
+
+	const listbox = $derived(ref?.closest('[role="listbox"]'));
+	let activeOptionId: string | undefined = $state();
+
+	$effect(() => {
+		const button = trigger;
+		const popup = listbox;
+		if (!button || !popup) return;
+		// Keep Select's active option on the textbox, including after filtering virtual items.
+		const syncActiveOption = () => {
+			const id = button.getAttribute('aria-activedescendant');
+			const option = id ? popup.ownerDocument.getElementById(id) : null;
+			activeOptionId = option && popup.contains(option) ? option.id : undefined;
+		};
+		const observer = new MutationObserver(syncActiveOption);
+		observer.observe(button, { attributeFilter: ['aria-activedescendant'] });
+		observer.observe(popup, { childList: true, subtree: true });
+		syncActiveOption();
+		return () => observer.disconnect();
+	});
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (
@@ -26,11 +48,13 @@
 		) {
 			return;
 		}
-		// The select handles option navigation and selection on its trigger.
-		trigger.focus({ preventScroll: true });
-		const activeId = trigger.getAttribute('aria-activedescendant');
-		const active = activeId && trigger.ownerDocument.getElementById(activeId);
-		if (!active && event.key !== 'Tab') {
+		if (event.key === 'Tab') {
+			// The popup is portalled. Continue tabbing from the trigger's position.
+			trigger.focus({ preventScroll: true });
+		} else if (!listbox?.querySelector('[role="option"]:not([data-disabled])')) {
+			event.preventDefault();
+			return;
+		} else if (!activeOptionId) {
 			// Filtering can remove the highlighted option between keystrokes.
 			const key = event.key === 'ArrowUp' ? 'End' : 'Home';
 			trigger.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
@@ -48,8 +72,12 @@
 		<Input
 			bind:ref
 			bind:value
+			role="combobox"
 			aria-label={label}
 			aria-controls={controls}
+			aria-expanded={open}
+			aria-autocomplete="list"
+			aria-activedescendant={open ? activeOptionId : undefined}
 			placeholder={label}
 			class="h-8 border-none p-0 pl-8 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
 			onkeydown={handleKeydown}

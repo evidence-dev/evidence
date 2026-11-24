@@ -532,21 +532,19 @@
 			}
 			bind:open
 			onOpenChange={(newOpen) => {
-				if (!newOpen) {
-					if (searchInput && searchInput === document.activeElement) {
-						trigger?.focus({ preventScroll: true });
-					}
-					setTimeout(() => {
-						search = '';
-					}, 200);
+				if (newOpen) search = '';
+				else if (searchInput?.matches(':focus')) {
+					trigger?.focus({ preventScroll: true });
 				}
+			}}
+			onOpenChangeComplete={(newOpen) => {
+				if (!newOpen) search = '';
 			}}
 		>
 			<Select.Trigger
 				{id}
 				bind:ref={trigger}
 				onclick={() => queueMicrotask(focusSearch)}
-				role="combobox"
 				aria-controls={open ? optionsId : undefined}
 				class="bg-input-surface hover:bg-accent/30 justify-end"
 				disabled={loading || Boolean(error)}
@@ -569,6 +567,7 @@
 						bind:ref={searchInput}
 						label={t('common.search')}
 						controls={optionsId}
+						{open}
 						{trigger}
 					/>
 				{/if}
