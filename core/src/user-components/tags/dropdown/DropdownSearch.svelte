@@ -28,12 +28,12 @@
 		if (!button || !popup) return;
 		// Keep Select's active option on the textbox, including after filtering virtual items.
 		const syncActiveOption = () => {
-			const id = button.getAttribute('aria-activedescendant');
+			const id = button.getAttribute('data-active-descendant');
 			const option = id ? popup.ownerDocument.getElementById(id) : null;
 			activeOptionId = option && popup.contains(option) ? option.id : undefined;
 		};
 		const observer = new MutationObserver(syncActiveOption);
-		observer.observe(button, { attributeFilter: ['aria-activedescendant'] });
+		observer.observe(button, { attributeFilter: ['data-active-descendant'] });
 		observer.observe(popup, { childList: true, subtree: true });
 		syncActiveOption();
 		return () => observer.disconnect();

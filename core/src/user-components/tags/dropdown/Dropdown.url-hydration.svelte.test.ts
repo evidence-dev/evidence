@@ -274,6 +274,7 @@ describe('dropdown search focus', () => {
 		const option = document.querySelector<HTMLElement>('[role="option"]')!;
 		expect(document.activeElement).toBe(search);
 		expect(search.getAttribute('aria-activedescendant')).toBe(option.id);
+		expect(document.querySelector('button#dd')?.getAttribute('aria-activedescendant')).toBeNull();
 
 		await type(search, 'Ga');
 		press(search, 'Enter');

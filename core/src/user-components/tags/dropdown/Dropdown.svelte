@@ -103,14 +103,14 @@
 	const selectFirst = $derived(props.select_first ?? false);
 	const defaultTopN = $derived(props.default_top_n);
 
-	let error: string | undefined = $state(undefined);
+	let error = $state<string>();
 	let search = $state('');
 	let open = $state(false);
-	let trigger: HTMLButtonElement | null = $state(null);
-	let searchInput: HTMLInputElement | null = $state(null);
-	const optionsId = useId();
-	let virtualizer: VirtualizerHandle | undefined = $state();
-	let IconComponent: Component | null = $state(null);
+	let trigger = $state<HTMLButtonElement | null>(null);
+	let searchInput = $state<HTMLInputElement | null>(null);
+	const listId = useId();
+	let virtualizer = $state<VirtualizerHandle>();
+	let IconComponent = $state<Component | null>(null);
 
 	function focusSearch() {
 		if (open) searchInput?.focus({ preventScroll: true });
@@ -544,14 +544,15 @@
 			<Select.Trigger
 				{id}
 				bind:ref={trigger}
+				activeDescendantOnInput={enableSearch}
 				onclick={() => queueMicrotask(focusSearch)}
-				aria-controls={open ? optionsId : undefined}
+				aria-controls={open ? listId : undefined}
 				class="bg-input-surface hover:bg-accent/30 justify-end"
 				disabled={loading || Boolean(error)}
 			/>
 
 			<Select.Content
-				id={optionsId}
+				id={listId}
 				class={cn(
 					'evidence-page-theme relative w-(--bits-select-anchor-width) min-w-(--bits-select-anchor-width) overflow-y-auto',
 					{
@@ -566,7 +567,7 @@
 						bind:value={search}
 						bind:ref={searchInput}
 						label={t('common.search')}
-						controls={optionsId}
+						controls={listId}
 						{open}
 						{trigger}
 					/>
