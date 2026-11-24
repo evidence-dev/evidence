@@ -67,6 +67,7 @@ export async function executeBigQueryQuery(
 			defaultDataset: config.defaultDataset
 				? { datasetId: config.defaultDataset, projectId: config.projectId }
 				: undefined,
+			labels: config.labels,
 			// INT64 outside ±2^53 throws without this; coerce to lossy Number instead.
 			wrapIntegers: { integerTypeCastFunction: (v: unknown) => Number(v) }
 		})) as unknown as [
