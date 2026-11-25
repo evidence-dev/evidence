@@ -87,6 +87,10 @@ export class AthenaDialect extends PostgresDialect {
 	}
 
 	readonly supportsGroupByAlias = false;
+	// Trino can't see SELECT aliases in HAVING either, but the Postgres fix (search in
+	// an outer WHERE) relies on the subquery's ORDER BY, which Trino may drop when the
+	// subquery has no LIMIT. Keep the previous behaviour until that is handled.
+	readonly supportsHavingAlias = undefined;
 
 	readonly dollarQuoting = 'none' as const;
 

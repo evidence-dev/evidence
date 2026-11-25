@@ -207,6 +207,9 @@ export class PostgresDialect implements SqlDialect {
 	readonly supportsFilterClause: boolean = true;
 	readonly conditionalAggregateFunctions = NO_CONDITIONAL_AGGREGATES;
 	readonly strictDerivedTables = false;
+	// HAVING can't see SELECT aliases (`column "sum_x" does not exist`).
+	// Typed, not inferred, so the Athena subclass can opt out.
+	readonly supportsHavingAlias: boolean | undefined = false;
 	readonly integerDivisionTruncates = true;
 	// Typed, not inferred, so the Cube subclass can narrow these to false.
 	readonly supportsGroupingSets: boolean = true;
