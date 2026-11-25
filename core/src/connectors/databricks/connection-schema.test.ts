@@ -15,6 +15,20 @@ describe('databricksConnectionSchema', () => {
 		expect(parsed.schema).toBe('default');
 		expect(parsed.schemas).toEqual([]);
 		expect(parsed.sessionVariableMappings).toEqual([]);
+		expect(parsed.roles).toEqual([]);
+	});
+
+	it('rejects duplicate access role names', () => {
+		const role = { name: 'tenant_a', client_id: 'abc' };
+		expect(databricksConnectionSchema.safeParse({ ...valid, roles: [role, role] }).success).toBe(
+			false
+		);
+		expect(
+			databricksConnectionSchema.safeParse({
+				...valid,
+				roles: [role, { name: 'tenant_b', client_id: 'def' }]
+			}).success
+		).toBe(true);
 	});
 
 	it('trims the host and rejects a host that includes a scheme', () => {

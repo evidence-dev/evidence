@@ -161,6 +161,26 @@ export const databricksBase = z.object({
 					'Evidence identity → Databricks SQL session variable, SET per query for RLS row filters.',
 				category: 'rls'
 			})
+		),
+
+	roles: z
+		.array(
+			z.object({
+				name: z.string().trim().min(1),
+				client_id: z.string().trim().min(1)
+			})
+		)
+		.default([])
+		.refine((roles) => new Set(roles.map((r) => r.name)).size === roles.length, {
+			message: 'Role names must be unique.'
+		})
+		.meta(
+			meta({
+				label: 'Access roles',
+				description:
+					'Named service principals (OAuth M2M) that queries run as per Evidence user, so Unity Catalog row filters and column masks can key on current_user() or group membership. Client secrets are set in Access Rules.',
+				category: 'rls'
+			})
 		)
 });
 

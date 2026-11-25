@@ -83,6 +83,9 @@ Replace `evidence` with your service principal's application ID (or the token us
     <ResponseField name="Session variables" type="{ databricksVariable: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
       Evidence identity → Databricks SQL session variable, SET per query for RLS row filters. Default: `[]`.
     </ResponseField>
+    <ResponseField name="Access roles" type="{ name: string; client_id: string }[]">
+      Named service principals (OAuth M2M) that queries run as per Evidence user, so Unity Catalog row filters and column masks can key on current_user() or group membership. Client secrets are set in Access Rules. Default: `[]`.
+    </ResponseField>
 
   </Tab>
   <Tab title="CLI (connection.yaml)">
@@ -139,6 +142,9 @@ Replace `evidence` with your service principal's application ID (or the token us
     <ResponseField name="session_variables" type="{ databricksVariable: string; evidenceVariable: `user.email` | `user.id` | `user.name` | `organization.id` }[]">
       Evidence identity → Databricks SQL session variable, SET per query for RLS row filters. Default: `[]`.
     </ResponseField>
+    <ResponseField name="roles" type="{ name: string; client_id: string }[]">
+      Named service principals (OAuth M2M) that queries run as per Evidence user, so Unity Catalog row filters and column masks can key on current_user() or group membership. Client secrets are set in Access Rules. Default: `[]`.
+    </ResponseField>
 
   </Tab>
 </Tabs>
@@ -147,7 +153,48 @@ Replace `evidence` with your service principal's application ID (or the token us
 
 ## Row-Level Security
 
-Databricks [row filters and column masks](https://docs.databricks.com/aws/en/tables/row-and-column-filters) apply to queries Evidence issues. By default they evaluate against the connection identity (the PAT user or service principal) via `current_user()`.
+Databricks [row filters and column masks](https://docs.databricks.com/aws/en/tables/row-and-column-filters) apply to queries Evidence issues. They evaluate against the identity running the query, through `current_user()` and `is_account_group_member()`. By default that is the connection identity (the PAT user or service principal).
+
+### Access roles
+
+To give different Evidence users different data, Evidence can **run each user's queries as a different service principal**.
+
+- Each **access role** pairs a label with a service principal's OAuth client ID and secret.
+- Admins assign each Evidence user an access role under **Settings → Access Rules**.
+- When a user runs a query, Evidence connects as that user's service principal, so `current_user()` returns the principal's application ID.
+- Users without an assigned role run as the connection identity.
+
+<Warning>
+  Unassigned users see whatever the connection identity can see. Give the connection identity the narrowest grants, and put broader access on the roles.
+</Warning>
+
+<Steps>
+  <Step title="Create one service principal per access group">
+    In your Databricks account, create a service principal for each access boundary (for example `evidence-emea` and `evidence-apac`), generate an OAuth secret for it, and grant it `CAN USE` on the SQL Warehouse and `SELECT` on the tables it needs.
+  </Step>
+  <Step title="Key your row filters on the principal">
+    Add each principal to an account group, then filter on group membership:
+
+    ```sql
+    CREATE FUNCTION gov.region_filter(region STRING)
+    RETURN is_account_group_member('evidence_admins')
+        OR (is_account_group_member('evidence_emea') AND region = 'EMEA')
+        OR (is_account_group_member('evidence_apac') AND region = 'APAC');
+
+    ALTER TABLE analytics.orders SET ROW FILTER gov.region_filter ON (region);
+    ```
+
+    For many groups, join `current_user()` against a mapping table instead.
+  </Step>
+  <Step title="Register the roles in Evidence">
+    Go to **Settings → Access Rules** and add each principal's client ID and secret under **Roles**, with a label. The secret is stored encrypted and never shown again; leave it blank to keep the stored one.
+  </Step>
+  <Step title="Assign users">
+    Under **User Assignments**, assign each user a role. **Access Preview** shows what a user can see in a table and the `current_user()` value their queries run as.
+  </Step>
+</Steps>
+
+### Session variables
 
 To filter per Evidence viewer, map Evidence identity attributes to Databricks SQL **session variables** under **Session Variables (RLS)** in the connection form (or `session_variables` in `connection.yaml`). Before each query Evidence runs `DECLARE OR REPLACE VARIABLE <name> STRING DEFAULT '<value>'`, so your row-filter function can read the current viewer's identity:
 
