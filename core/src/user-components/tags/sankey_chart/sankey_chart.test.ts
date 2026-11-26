@@ -265,7 +265,7 @@ describe('sankey_chart SQL', () => {
 			----
 			"SELECT src AS \`src\`, dst AS \`dst\`, sum(amount) AS \`sum_amount\`
 			 FROM demo.flows
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY ALL
 			 
 			 

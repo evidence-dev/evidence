@@ -12,6 +12,7 @@ import {
 	PRESET_DEFINITIONS,
 	isValidDateRangeExpression
 } from './date-options';
+import { dialectFor } from '../../sql-dialect';
 
 describe('parseDateRange', () => {
 	it('parses single-day presets', () => {
@@ -397,6 +398,27 @@ describe('processDateRange (comprehensive date processing)', () => {
 		expect(res.type).toBe('relative');
 		expect(res.periodGrain).toBe('day');
 		expect(res.periodCount).toBe(30);
+	});
+
+	it('BigQuery: builds a WHERE clause that works on TIMESTAMP columns (#3333)', () => {
+		const bigquery = dialectFor('bigquery');
+		const res = processDateRange('last 7 days', 'start_time', fixedToday, 'sunday', bigquery);
+		expect(res.whereClause).toBe("start_time >= '2024-05-09' AND start_time < '2024-05-16'");
+		// Template tokens keep the typed DATE literals — only the column predicate changes.
+		expect(res.startDateSql).toBe("DATE '2024-05-09'");
+		expect(res.endDateSql).toBe("DATE '2024-05-15'");
+		expect(res.betweenFragment).toBe("BETWEEN DATE '2024-05-09' AND DATE '2024-05-15'");
+
+		expect(
+			processDateRange('from 2020-01-01', 'ts', fixedToday, 'sunday', bigquery).whereClause
+		).toBe("ts >= '2020-01-01'");
+		expect(
+			processDateRange('until 2020-01-01', 'ts', fixedToday, 'sunday', bigquery).whereClause
+		).toBe("ts < '2020-01-02'");
+		expect(processDateRange('all time', 'ts', fixedToday, 'sunday', bigquery).whereClause).toBe('');
+		expect(
+			processDateRange('last 7 days', undefined, fixedToday, 'sunday', bigquery).whereClause
+		).toBe('');
 	});
 
 	it('handles all time', () => {

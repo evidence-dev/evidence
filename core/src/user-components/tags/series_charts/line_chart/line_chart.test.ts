@@ -72,7 +72,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC(date, DAY) AS \`date__day\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2026-03-25' AND date <= DATE '2026-04-23')
+			 WHERE (date >= '2026-03-25' AND date < '2026-04-24')
 			 GROUP BY ALL
 			 
 			 
@@ -173,7 +173,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC(date, MONTH) AS \`date__month\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-12-31')
+			 WHERE (date >= '2026-01-01' AND date < '2027-01-01')
 			 GROUP BY ALL
 			 
 			 
@@ -274,7 +274,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC(date, DAY) AS \`date__day\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2026-03-01' AND date <= DATE '2026-03-31')
+			 WHERE (date >= '2026-03-01' AND date < '2026-04-01')
 			 GROUP BY ALL
 			 
 			 
@@ -375,7 +375,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC(date, DAY) AS \`date__day\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2026-01-01' AND date <= DATE '2026-04-23')
+			 WHERE (date >= '2026-01-01' AND date < '2026-04-24')
 			 GROUP BY ALL
 			 
 			 
@@ -577,7 +577,7 @@ describe('line_chart SQL — date_range classes', () => {
 			----
 			"SELECT DATE_TRUNC(date, DAY) AS \`date__day\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2023-01-01' AND date <= DATE '2023-12-31')
+			 WHERE (date >= '2023-01-01' AND date < '2024-01-01')
 			 GROUP BY ALL
 			 
 			 

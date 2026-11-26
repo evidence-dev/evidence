@@ -12,6 +12,13 @@ import {
 	NO_CONDITIONAL_AGGREGATES
 } from './common';
 
+/** The calendar day after a YYYY-MM-DD date, computed in UTC so local DST can't shift it. */
+function nextIsoDate(isoDate: string): string {
+	const date = new Date(`${isoDate}T00:00:00Z`);
+	date.setUTCDate(date.getUTCDate() + 1);
+	return date.toISOString().slice(0, 10);
+}
+
 export class BigQueryDialect implements SqlDialect {
 	readonly name = 'bigquery';
 
@@ -85,6 +92,20 @@ export class BigQueryDialect implements SqlDialect {
 
 	dateLiteral(isoDate: string): string {
 		return `DATE '${isoDate}'`;
+	}
+
+	// BigQuery won't compare DATE with TIMESTAMP ("No matching signature for operator >="),
+	// and TIMESTAMP is the usual type for event-time columns, so `ts >= DATE '…'` breaks every
+	// component bound to the filter. An untyped string literal is coerced to the column's own
+	// type (DATE, DATETIME or TIMESTAMP), so the bounds are emitted as plain strings. The upper
+	// bound is exclusive on the next day so DATETIME/TIMESTAMP columns keep the whole last day
+	// (`ts <= '2020-01-31'` would stop at midnight); for a DATE column it's the same rows as
+	// `<=`. The column stays bare (no `DATE(col)`) so partition pruning still applies.
+	dateRangePredicate(column: string, startIso?: string, endIso?: string): string {
+		const parts: string[] = [];
+		if (startIso) parts.push(`${column} >= '${startIso}'`);
+		if (endIso) parts.push(`${column} < '${nextIsoDate(endIso)}'`);
+		return parts.join(' AND ');
 	}
 
 	castToString(column: string): string {

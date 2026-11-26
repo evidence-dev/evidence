@@ -368,7 +368,7 @@ describe('heatmap SQL', () => {
 			----
 			"SELECT category AS \`category\`, region AS \`region\`, sum(total_sales) AS \`sum_total_sales\`
 			 FROM demo.daily_orders
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY ALL
 			 
 			 

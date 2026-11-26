@@ -163,7 +163,7 @@ describe('funnel_chart SQL', () => {
 			----
 			"SELECT stage AS \`stage\`, sum(users) AS \`sum_users\`
 			 FROM demo.funnel
-			 WHERE (date >= DATE '2025-12-03' AND date <= DATE '2026-01-01')
+			 WHERE (date >= '2025-12-03' AND date < '2026-01-02')
 			 GROUP BY ALL
 			 
 			 
