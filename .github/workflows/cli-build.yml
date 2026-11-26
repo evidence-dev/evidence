@@ -25,7 +25,11 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: '1.3.11' # 1.3.12 has a broken macOS code signature bug (oven-sh/bun#29270)
+          # 1.3.12+ fixes node:http response streams that stall before `end` (oven-sh/bun#28703), which
+          # hung ~4% of large ClickHouse /api/query responses on 1.3.11. Skip 1.3.12 (broken macOS code
+          # signature, oven-sh/bun#29270, fixed in 1.3.13) and 1.3.14 (runtime regressions, e.g.
+          # oven-sh/bun#30634, #32178).
+          bun-version: '1.3.13'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
