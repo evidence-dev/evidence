@@ -11,10 +11,10 @@
 	import CustomLegend from '../echarts/CustomLegend.svelte';
 	import { cn } from '../../../shadcn/utils';
 	import { getDefaultConnection } from '../../../QueryService.context';
-	import type { SQLProps } from '../../common/sql-options';
-	import { extractSQLProps } from '../../common/sql-options';
+	import type { SQLProps, SQLQueryConfig } from '../../common/sql-options';
 	import { processColumnExpression } from '../../common/sql-expression-utils';
-	import { buildPieChartSQLConfig } from './build-pie-chart-sql';
+	import { pieChartSql, resolvePieChartSqlInputs } from './sql';
+	import { stableQueries, componentSqlEnv } from '../../component-sql';
 	import { getQueryInfoContext } from '../../../query-info-context.svelte';
 	import { getRepeatContext } from '../repeat/repeat-context';
 	import { Query } from '../../../Query.svelte';
@@ -29,14 +29,11 @@
 	import { mergeEchartsOptions } from '../../common/echarts-options-attributes';
 	import { getElevatedChartTooltipCss } from '../../common/chart-tooltip-elevation';
 	import {
-		resolveTooltipFields,
 		extractTooltipExtras,
 		escapeHtml,
-		renderTooltipExtras,
-		type TooltipField
+		renderTooltipExtras
 	} from '../../common/tooltip-fields';
 	import { getMetricsCatalogContext } from '../../../metrics/metrics-catalog';
-	import { resolveMetric, applyMetricDimension } from '../../../metrics/resolve-metric';
 
 	const localeContext = getLocaleContext();
 	const formatValue = $derived(localeContext.formatValue);
@@ -49,7 +46,6 @@
 
 	const props: Props = $props();
 	const height = $derived(props.height);
-	const filterIds = $derived(props.filters);
 	const inner_radius = $derived(props.inner_radius);
 	const legend = $derived(props.legend);
 	const legend_location = $derived(props.legend_location ?? 'top');
@@ -60,9 +56,6 @@
 	const series_colors = $derived(chart_options?.series_colors);
 
 	const hasValidationErrors = $derived(hasBlockingErrors());
-
-	// Extract SQL props for non-variable processing (limit doesn't support variables)
-	const { limit } = $derived.by(() => extractSQLProps(props));
 
 	const connection = getDefaultConnection();
 	const repeatFilters = getRepeatContext()?.filters;
@@ -79,41 +72,31 @@
 		return new VariableProcessor(filterContexts, inlineQueries);
 	});
 
-	// 2. Create resolvers (same API as Model classes)
-	const { resolveText, resolveColumn, resolveSql } = $derived(createResolvers(variableProcessor));
-
-	// 3. Resolve props using appropriate resolver for each type
-	// `metric="revenue"` supplies base + aggregate SQL + format; category flows
-	// through unchanged (there's no view-level default slice dimension in v1).
 	const metricsCatalog = getMetricsCatalogContext();
-	const resolvedMetric = $derived(resolveText(props.metric));
-	const metricCompiled = $derived(
-		resolveMetric(metricsCatalog, resolvedMetric, connection.dialect)
+	const getProjectSettings = getProjectSettingsContext();
+	const env = $derived(
+		componentSqlEnv({
+			variableProcessor: variableProcessor,
+			dialect: connection.dialect,
+			metricsCatalog,
+			projectSettings: getProjectSettings(),
+			filterContexts: [repeatFilters, pageFilters],
+			inlineQueries
+		})
 	);
-	const tableName = $derived(resolveText(props.data) ?? metricCompiled?.base);
-	// In metric mode, resolve dimension attrs against the view's named
-	// dimensions — `category="product"` → `product_line` when the view
-	// declares `dimensions: { product: product_line }`. Raw columns pass
-	// through unchanged. `applyMetricDimension` is a no-op in raw mode.
-	const category = $derived(applyMetricDimension(metricCompiled, resolveColumn(props.category)));
-	const value = $derived(resolveColumn(props.value) ?? metricCompiled?.valueExpression ?? '');
+	const { resolveText } = $derived(env.resolvers);
+
+	const sqlInputs = $derived(resolvePieChartSqlInputs(props, env));
+	const metricCompiled = $derived(sqlInputs.metricCompiled);
+	const category = $derived(sqlInputs.category);
+	const value = $derived(sqlInputs.value);
 	const value_fmt = $derived(props.value_fmt ?? metricCompiled?.columnFormats[metricCompiled.name]);
 	const title = $derived(resolveText(props.title) || '');
 	const subtitle = $derived(resolveText(props.subtitle) || '');
 	const info = $derived(resolveText(props.info) || '');
 	const info_link = $derived(resolveText(props.info_link) || '');
 	const info_link_title = $derived(resolveText(props.info_link_title) || '');
-	const where = $derived(resolveSql(props.where));
-	const having = $derived(resolveSql(props.having));
-	const order = $derived(resolveSql(props.order));
-	const qualify = $derived(resolveSql(props.qualify));
-	const resolvedDateRange = $derived(resolveText(props.date_range));
-	const resolvedTooltipFields = $derived(
-		resolveText(props.tooltip_fields) as TooltipField[] | undefined
-	);
-	const processedTooltip = $derived(
-		resolveTooltipFields(resolvedTooltipFields, connection.dialect)
-	);
+	const processedTooltip = $derived(sqlInputs.tooltip);
 
 	// Process columns using the new system (after variable interpolation)
 	const categoryProcessed = $derived.by(() => {
@@ -138,26 +121,11 @@
 	const categoryColumn = $derived(categoryProcessed.alias);
 	const valueColumn = $derived(valueProcessed.alias);
 
-	const queryConfig = $derived.by(() => {
-		if (hasValidationErrors || !tableName) {
-			return;
-		}
-
-		return buildPieChartSQLConfig({
-			data: tableName,
-			category,
-			value,
-			filters: filterIds,
-			where,
-			date_range: resolvedDateRange,
-			having,
-			qualify,
-			order,
-			limit,
-			dialect: connection.dialect,
-			tooltipFieldColumns: processedTooltip.columns
-		});
-	});
+	const keepStable = stableQueries<SQLQueryConfig>();
+	const queries = $derived(
+		keepStable(hasValidationErrors ? [] : pieChartSql.queries(props, env, undefined))
+	);
+	const queryConfig = $derived(queries.find((q) => q.role === 'data')?.config);
 	const autoRefreshCtx = getAutoRefreshContext();
 	const query = new Query(
 		() => queryConfig,

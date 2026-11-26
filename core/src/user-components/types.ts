@@ -10,6 +10,7 @@ import type { Component, Snippet } from 'svelte';
 import type { Simplify } from 'type-fest';
 import { z } from 'zod';
 import type { UserComponentModelClass } from './UserComponentModel';
+import type { ComponentSql } from './component-sql';
 import type { DataSource } from './common/data-sources';
 
 type NoneComponentWrapperConfig = { display: 'none' };
@@ -393,6 +394,9 @@ export type UserComponent<Schema extends UserComponentSchema = UserComponentSche
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		ValidParents: any;
 	}>;
+	/** Every query the component issues, as a pure function of props + env + state. */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	sql?: ComponentSql<any, any>;
 };
 
 export interface DataPoint {

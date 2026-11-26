@@ -28,6 +28,10 @@ export class TableMetadata {
 		return this.#metadata.error;
 	}
 
+	get source() {
+		return this.#metadata.source;
+	}
+
 	// @ts-expect-error #metadata is initialized in the constructor
 	#metadata: ITableMetadata = $state();
 

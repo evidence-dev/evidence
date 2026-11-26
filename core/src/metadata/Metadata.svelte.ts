@@ -84,10 +84,44 @@ export type MetadataOpts = {
 
 /** A catalog served whole from one call — the engine's `GET /api/tables` shape. */
 export type CatalogProvider = () => Promise<ProviderCatalogTable[]>;
+
+/**
+ * Catalogue column types are the source's own SQL names (`NUMBER`, `VARCHAR`), so they map with that
+ * source's rules; anything else (models, unknown sources) carries Arrow names.
+ */
+function catalogJsType(connectionType: string | undefined, columnType: string) {
+	const sourceType = (() => {
+		switch (connectionType) {
+			case 'snowflake':
+				return getSnowflakeToJsType(columnType);
+			case 'postgres':
+				return getPostgresToJsType(columnType);
+			case 'redshift':
+				return getRedshiftToJsType(columnType);
+			case 'databricks':
+				return getDatabricksToJsType(columnType);
+			case 'bigquery':
+				return getBigQueryToJsType(columnType);
+			case 'mssql':
+			case 'sqlserver':
+				return getMssqlToJsType(columnType);
+			case 'athena':
+				return getAthenaToJsType(columnType);
+			case 'motherduck':
+				return getMotherduckToJsType(columnType);
+			case 'clickhouse':
+				return getClickHouseToJsType(columnType);
+			default:
+				return 'unknown';
+		}
+	})();
+	return sourceType === 'unknown' ? arrowToJsType(columnType) : sourceType;
+}
 export type ProviderCatalogTable = {
 	name: string;
 	columns: { name: string; type?: string }[];
 	tableType?: ITableMetadata['tableType'];
+	source?: ITableMetadata['source'];
 };
 
 export class Metadata {
@@ -446,13 +480,18 @@ export class Metadata {
 				columns[column.name] = {
 					name: column.name,
 					type: column.type ?? '',
-					jsType: arrowToJsType(column.type ?? '')
+					jsType: catalogJsType(table.source?.connectionType, column.type ?? '')
 				};
 			}
 			this.#tables.set(
 				table.name,
 				new TableMetadata(
-					{ name: table.name, columns, tableType: table.tableType ?? 'table' },
+					{
+						name: table.name,
+						columns,
+						tableType: table.tableType ?? 'table',
+						...(table.source ? { source: table.source } : {})
+					},
 					{
 						caseInsensitive: true
 					}

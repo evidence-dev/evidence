@@ -16,6 +16,7 @@ import type { ValidateError } from '@markdoc/markdoc';
 import { processVariables as processVariablesUtil } from '../common/process-variables';
 import { VariableProcessor } from '../../filter-variables/VariableProcessor';
 import { DEFAULT_PROJECT_SETTINGS } from '../interfaces/project-settings';
+import { componentSqlEnv, projectAnchorDate, type ComponentSqlEnv } from '../component-sql';
 
 /**
  * Interface for parent components that support variable processing.
@@ -171,14 +172,36 @@ export abstract class UserComponentModel<T extends GenericsShape = GenericsDefau
 		context?: import('../../interpolate-query-strings').VariableContext,
 		options?: import('../common/process-variables').ProcessVariablesOptions
 	): V {
-		// Use this component's variableProcessor if available (root components with deps)
-		// Otherwise fall back to parent's variableProcessor (child components)
-		const processor =
-			this.variableProcessor ||
-			(this.parent as ParentWithVariableSupport | null)?.variableProcessor;
-
-		return processVariablesUtil(value, processor, context, options);
+		return processVariablesUtil(value, this.effectiveVariableProcessor, context, options);
 	}
+
+	/**
+	 * The processor variables resolve through: this component's own (root
+	 * components with deps), otherwise the parent's (child components).
+	 */
+	protected get effectiveVariableProcessor(): VariableProcessor | null | undefined {
+		return (
+			this.variableProcessor || (this.parent as ParentWithVariableSupport | null)?.variableProcessor
+		);
+	}
+
+	/** Everything this component's SQL may depend on beyond its attributes (see component-sql.ts). */
+	get sqlEnv(): ComponentSqlEnv {
+		return componentSqlEnv({
+			variableProcessor: this.effectiveVariableProcessor,
+			dialect: this.deps.connection.dialect,
+			metricsCatalog: this.metricsCatalog,
+			projectSettings: this.projectSettings,
+			filterContexts: this.deps.filterContexts ?? [],
+			inlineQueries: this.deps.inlineQueries,
+			anchorDate: this.#sqlAnchorDate
+		});
+	}
+
+	// Falls back to the clock when the project has no computed range end.
+	readonly #sqlAnchorDate = $derived.by(() =>
+		projectAnchorDate(this.projectSettings, () => new Date())
+	);
 
 	// ============================================================================
 	// SEMANTIC VARIABLE RESOLUTION HELPERS

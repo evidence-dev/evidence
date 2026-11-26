@@ -47,6 +47,25 @@ describe('Metadata catalogProvider (engine-backed catalog)', () => {
 		expect(m.loading).toBe(false);
 	});
 
+	it("maps a source table's SQL column types with that source's rules", async () => {
+		const m = new Metadata(new NeverCalledQueryService() as never, {
+			catalogProvider: () => async () => [
+				{
+					name: 'PUBLIC.ORDERS',
+					source: { connectionType: 'snowflake' } as never,
+					columns: [
+						{ name: 'amount', type: 'NUMBER' },
+						{ name: 'label', type: 'VARCHAR' },
+						{ name: 'created_at', type: 'TIMESTAMP_NTZ' }
+					]
+				}
+			]
+		});
+		await m.load();
+		const columns = Object.values(m.getTable('PUBLIC.ORDERS')?.toJSON().columns ?? {});
+		expect(columns.map((c) => c.jsType)).toEqual(['number', 'string', 'date']);
+	});
+
 	it('an empty catalog loads clean (no tables, no failure)', async () => {
 		const m = new Metadata(new NeverCalledQueryService() as never, {
 			catalogProvider: () => async () => []

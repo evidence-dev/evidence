@@ -13,6 +13,21 @@ interface ITableMetadata {
 	};
 	tableType?: 'table' | 'model' | 'inline_query'; // 'model' for views, 'table' for regular tables, 'inline_query' for inline SQL queries
 	error?: string;
+	source?: ITableSource;
+}
+
+/**
+ * Where a catalog table lives, when the catalog provider knows it — lets the schema
+ * browser group by connection and schema without parsing table names.
+ */
+interface ITableSource {
+	connectionId: string;
+	connectionName: string;
+	/** The connection's type (e.g. `snowflake`, `postgres`, `linear`). */
+	connectionType: string;
+	schema?: string;
+	/** The table's own name, without connection or schema qualifiers. */
+	table: string;
 }
 
 interface IMetadata {
@@ -51,4 +66,11 @@ export function arrowToJsType(arrowType: string): JavaScriptType {
 	return 'unknown';
 }
 
-export type { JavaScriptType, IColumnMetadata, ITableMetadata, IMetadata, ITableMetadataProvider };
+export type {
+	JavaScriptType,
+	IColumnMetadata,
+	ITableMetadata,
+	ITableSource,
+	IMetadata,
+	ITableMetadataProvider
+};
