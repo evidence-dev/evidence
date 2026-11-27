@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { listTablesSql, nativeListTablesSql, qualifyTableName } from './index';
+import { schemaAllowlist } from '@evidence/core/connectors/schema-allowlist';
+import { COUPLER_IO_TABLES_SQL } from '@evidence/core/metadata/coupler-io-catalog';
 import type {
 	BigQueryConnectionConfig,
 	ClickHouseConnectionConfig,
@@ -7,7 +9,8 @@ import type {
 	SqlServerConnectionConfig,
 	DatabricksConnectionConfig,
 	RedshiftConnectionConfig,
-	AthenaConnectionConfig
+	AthenaConnectionConfig,
+	CouplerIoConnectionConfig
 } from './types';
 
 const bq = (extra: Partial<BigQueryConnectionConfig> = {}): BigQueryConnectionConfig => ({
@@ -267,6 +270,29 @@ describe('athena tables', () => {
 	});
 });
 
+describe('coupler-io tables', () => {
+	const coupler: CouplerIoConnectionConfig = {
+		type: 'coupler-io',
+		token: 't',
+		workspaceId: '9',
+		apiHost: 'https://api.coupler.io',
+		tables: { funnel: 'ds' },
+		maxConcurrentRequests: 4
+	};
+
+	it('lists tables from the dataset catalog, not a SQL catalog', () => {
+		expect(listTablesSql(coupler)).toBe(COUPLER_IO_TABLES_SQL);
+	});
+
+	it('leaves table names unqualified', () => {
+		expect(qualifyTableName('funnel', coupler)).toBe('funnel');
+	});
+
+	it('has no schema allowlist (and its config type-checks against the shared helper)', () => {
+		expect(schemaAllowlist(coupler.type, coupler)).toEqual([]);
+	});
+});
+
 describe('nativeListTablesSql (logged-in org, no connection.yaml)', () => {
 	it('lists Athena tables schema-qualified, scoped to the allowlist when set', () => {
 		expect(nativeListTablesSql('athena', [])).toBe(
@@ -287,6 +313,10 @@ describe('nativeListTablesSql (logged-in org, no connection.yaml)', () => {
 		expect(nativeListTablesSql('redshift', ['sales'])).toContain(
 			"FROM svv_tables WHERE table_schema IN ('sales')"
 		);
+	});
+
+	it('points Coupler.io to connection.yaml (the connector is CLI-only)', () => {
+		expect(() => nativeListTablesSql('coupler-io', [])).toThrow(/connection\.yaml/);
 	});
 
 	it('asks for a dataset allowlist on BigQuery instead of guessing a dataset', () => {
