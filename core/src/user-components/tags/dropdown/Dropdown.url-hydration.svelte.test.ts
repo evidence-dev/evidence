@@ -200,3 +200,113 @@ describe('dropdown with static options and data= options', () => {
 		}
 	);
 });
+
+describe('dropdown search focus', () => {
+	async function openStaticSearch() {
+		const { filter } = await mountDropdown('', {
+			data: undefined,
+			value_column: undefined,
+			multiple: true,
+			search: true,
+			options: ['Alpha', 'Gamma']
+		});
+		await advance(50);
+		const trigger = document.querySelector<HTMLButtonElement>('button#dd')!;
+		trigger.focus();
+		press(trigger, 'Enter');
+		await advance(300);
+		const search = document.querySelector<HTMLInputElement>('[role="listbox"] input')!;
+		return { filter, search };
+	}
+
+	function press(target: HTMLElement, key: string) {
+		target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+	}
+
+	async function type(search: HTMLInputElement, value: string) {
+		search.value = value;
+		search.dispatchEvent(new Event('input', { bubbles: true }));
+		await advance(50);
+	}
+
+	it.each(['Enter', 'ArrowDown'])('moves focus into search when opened with %s', async (key) => {
+		await mountDropdown('', {
+			data: undefined,
+			value_column: undefined,
+			search: true,
+			options: ['Alpha', 'Gamma']
+		});
+		await advance(50);
+		const trigger = document.querySelector<HTMLButtonElement>('button#dd')!;
+		trigger.focus();
+		trigger.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+		await advance(300);
+
+		const search = document.querySelector<HTMLInputElement>('[role="listbox"] input')!;
+		expect(search).not.toBeNull();
+		expect(document.activeElement).toBe(search);
+		search.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })
+		);
+		await advance(300);
+		expect(document.activeElement).toBe(trigger);
+	});
+
+	it('does not open or focus search while options are loading', async () => {
+		await mountDropdown('', { search: true });
+		await advance(50);
+		const trigger = document.querySelector<HTMLButtonElement>('button#dd')!;
+		expect(trigger.disabled).toBe(true);
+		trigger.click();
+		await advance(50);
+		expect(document.querySelector('[role="listbox"] input')).toBeNull();
+
+		await advance(ALL_SETTLED_MS);
+		expect(trigger.disabled).toBe(false);
+	});
+
+	it('retains focus at the editable combobox when navigating or choosing an option', async () => {
+		const { filter, search } = await openStaticSearch();
+		await type(search, 'Gam');
+		press(search, 'ArrowDown');
+		await advance(50);
+
+		const option = document.querySelector<HTMLElement>('[role="option"]')!;
+		expect(document.activeElement).toBe(search);
+		expect(search.getAttribute('aria-activedescendant')).toBe(option.id);
+		expect(document.querySelector('button#dd')?.getAttribute('aria-activedescendant')).toBeNull();
+
+		await type(search, 'Ga');
+		press(search, 'Enter');
+		await advance(50);
+		expect(filter.value).toEqual(['Gamma']);
+		expect(document.activeElement).toBe(search);
+	});
+
+	it('keeps the search field editable when no option matches', async () => {
+		const { filter, search } = await openStaticSearch();
+		await type(search, 'No match');
+		for (const key of ['ArrowDown', 'ArrowUp', 'Enter']) press(search, key);
+		await advance(50);
+
+		expect(document.querySelector('[role="option"]')).toBeNull();
+		expect(filter.value ?? []).toEqual([]);
+		expect(document.activeElement).toBe(search);
+		expect(search.getAttribute('aria-activedescendant')).toBeNull();
+	});
+
+	it('does not erase a fresh query after a rapid reopen', async () => {
+		const { search } = await openStaticSearch();
+		await type(search, 'Al');
+		press(search, 'Escape');
+		await advance(20);
+		press(document.querySelector<HTMLButtonElement>('button#dd')!, 'Enter');
+		await advance(20);
+
+		const reopened = document.querySelector<HTMLInputElement>('[role="listbox"] input')!;
+		expect(reopened.value).toBe('');
+		await type(reopened, 'Gam');
+		await advance(300);
+		expect(reopened.value).toBe('Gam');
+	});
+});

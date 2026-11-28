@@ -8,9 +8,11 @@
 		class: className,
 		children,
 		size = 'default',
+		activeDescendantOnInput = false,
 		...restProps
 	}: WithoutChild<SelectPrimitive.TriggerProps> & {
 		size?: 'sm' | 'default';
+		activeDescendantOnInput?: boolean;
 	} = $props();
 </script>
 
@@ -24,6 +26,16 @@
 	)}
 	{...restProps}
 >
-	{@render children?.()}
-	<ChevronDownIcon class="size-4 opacity-50" />
+	{#snippet child({ props })}
+		{@const inputActiveDescendantProps = activeDescendantOnInput
+			? {
+					'aria-activedescendant': undefined,
+					'data-active-descendant': props['aria-activedescendant']
+				}
+			: {}}
+		<button {...props} {...inputActiveDescendantProps}>
+			{@render children?.()}
+			<ChevronDownIcon class="size-4 opacity-50" />
+		</button>
+	{/snippet}
 </SelectPrimitive.Trigger>
